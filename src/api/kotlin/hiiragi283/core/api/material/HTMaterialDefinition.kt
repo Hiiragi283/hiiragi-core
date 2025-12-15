@@ -4,7 +4,7 @@ import hiiragi283.core.api.material.attribute.HTMaterialAttribute
 
 /**
  * 素材の属性を保持するインターフェース
- * @see hiiragi283.ragium.api.block.type.HTBlockType
+ * @see hiiragi283.core.api.block.type.HTBlockType
  */
 interface HTMaterialDefinition {
     /**

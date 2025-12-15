@@ -4,6 +4,7 @@ import hiiragi283.core.api.data.lang.HTLanguageType
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTPrefixLike
+import net.minecraft.world.level.block.state.BlockBehaviour
 
 sealed interface HCMaterial : HTMaterialLike.Translatable {
     companion object {
@@ -26,6 +27,8 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
     val basePrefix: HTPrefixLike
 
     fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes>
+
+    fun getStorageBlockProp(): BlockBehaviour.Properties? = null
 
     fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = getSupportedItemPrefixes()
 
@@ -145,12 +148,14 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         COPPER("Copper", "銅") {
             override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = buildList {
                 addAll(super.getSupportedItemPrefixes())
+                remove(CommonMaterialPrefixes.RAW_MATERIAL)
                 remove(CommonMaterialPrefixes.INGOT)
             }
         },
         IRON("Iron", "鉄") {
             override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = buildList {
                 addAll(super.getSupportedItemPrefixes())
+                remove(CommonMaterialPrefixes.RAW_MATERIAL)
                 remove(CommonMaterialPrefixes.INGOT)
                 remove(CommonMaterialPrefixes.NUGGET)
             }
@@ -158,6 +163,7 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         GOLD("Gold", "金") {
             override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = buildList {
                 addAll(super.getSupportedItemPrefixes())
+                remove(CommonMaterialPrefixes.RAW_MATERIAL)
                 remove(CommonMaterialPrefixes.INGOT)
                 remove(CommonMaterialPrefixes.NUGGET)
             }

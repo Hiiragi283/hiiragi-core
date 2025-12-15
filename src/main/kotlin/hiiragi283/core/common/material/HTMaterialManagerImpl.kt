@@ -1,6 +1,7 @@
 package hiiragi283.core.common.material
 
 import hiiragi283.core.HiiragiCore
+import hiiragi283.core.api.collection.MutableAttributeMap
 import hiiragi283.core.api.material.HTMaterialDefinition
 import hiiragi283.core.api.material.HTMaterialDefinitionEvent
 import hiiragi283.core.api.material.HTMaterialKey
@@ -8,34 +9,37 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.attribute.HTMaterialAttribute
 import net.neoforged.neoforge.common.NeoForge
 
-private typealias MutableAttributeMap = MutableMap<Class<out HTMaterialAttribute>, HTMaterialAttribute>
-
-class HTMaterialManagerImpl :
-    HTMaterialManager,
-    Map<HTMaterialKey, HTMaterialDefinition> by definitions {
+class HTMaterialManagerImpl : HTMaterialManager {
     companion object {
+        @JvmStatic
         private var definitions: Map<HTMaterialKey, HTMaterialDefinition> = mapOf()
 
         @JvmStatic
         fun gatherAttributes() {
-            val builderMap: MutableMap<HTMaterialKey, MutableAttributeMap> = hashMapOf()
+            val builderMap: MutableMap<HTMaterialKey, MutableAttributeMap<HTMaterialAttribute>> = hashMapOf()
             NeoForge.EVENT_BUS.post(
                 HTMaterialDefinitionEvent { key: HTMaterialKey ->
-                    val attributeMap: MutableAttributeMap =
+                    val attributeMap: MutableAttributeMap<HTMaterialAttribute> =
                         builderMap.computeIfAbsent(key) { hashMapOf() }
                     BuilderImpl(key, attributeMap)
                 },
             )
             definitions = builderMap
-                .filterValues { attributeMap: MutableAttributeMap -> attributeMap.isNotEmpty() }
-                .mapValues { (_, map: MutableAttributeMap) -> DefinitionImpl(map) }
+                .filterValues { attributeMap: MutableAttributeMap<HTMaterialAttribute> -> attributeMap.isNotEmpty() }
+                .mapValues { (_, map: MutableAttributeMap<HTMaterialAttribute>) -> DefinitionImpl(map) }
             HiiragiCore.LOGGER.info("Gathered Material Attributes!")
         }
     }
 
+    override fun get(key: HTMaterialKey): HTMaterialDefinition? = definitions[key]
+
+    override fun getAllKeys(): Set<HTMaterialKey> = definitions.keys
+
+    override fun unwrap(): Map<HTMaterialKey, HTMaterialDefinition> = definitions
+
     //    DefinitionImpl    //
 
-    private class DefinitionImpl(private val attributeMap: MutableAttributeMap) : HTMaterialDefinition {
+    private class DefinitionImpl(private val attributeMap: MutableAttributeMap<HTMaterialAttribute>) : HTMaterialDefinition {
         override fun contains(clazz: Class<out HTMaterialAttribute>): Boolean = clazz in attributeMap
 
         @Suppress("UNCHECKED_CAST")
@@ -46,7 +50,7 @@ class HTMaterialManagerImpl :
 
     //    BuilderImpl    //
 
-    private class BuilderImpl(private val key: HTMaterialKey, private val attributeMap: MutableAttributeMap) :
+    private class BuilderImpl(private val key: HTMaterialKey, private val attributeMap: MutableAttributeMap<HTMaterialAttribute>) :
         HTMaterialDefinition.Builder {
         @Suppress("UNCHECKED_CAST")
         override fun <T : HTMaterialAttribute> get(clazz: Class<T>): T? = attributeMap[clazz] as? T

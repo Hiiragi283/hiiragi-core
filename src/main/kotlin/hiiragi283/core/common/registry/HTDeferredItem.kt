@@ -2,9 +2,9 @@ package hiiragi283.core.common.registry
 
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTItemHolderLike
-import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.HTHasTranslationKey
+import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
@@ -19,7 +19,7 @@ class HTDeferredItem<ITEM : Item> :
     HTItemHolderLike<ITEM> {
     constructor(key: ResourceKey<Item>) : super(key)
 
-    constructor(key: RegistryKey<Item>, id: ResourceLocation) : super(key, id)
+    constructor(id: ResourceLocation) : super(Registries.ITEM, id)
 
     override val translationKey: String get() = get().descriptionId
 
