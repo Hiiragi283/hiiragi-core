@@ -9,7 +9,6 @@ import com.mojang.serialization.DataResult
 import com.mojang.serialization.DynamicOps
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
-import hiiragi283.core.api.HiiragiCoreAPI
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
@@ -264,13 +263,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
 
     fun <T : Any> decode(ops: DynamicOps<T>, input: T): DataResult<V> = codec.parse(ops, input)
 
-    fun encode(buf: B, input: V) {
-        runCatching {
-            streamCodec.encode(buf, input)
-        }.onFailure { throwable: Throwable ->
-            HiiragiCoreAPI.LOGGER.error("Failed to encode packet", throwable)
-        }
-    }
+    fun encode(buf: B, input: V): Result<Unit> = runCatching { streamCodec.encode(buf, input) }
 
     fun decode(buf: B): Result<V> = runCatching { streamCodec.decode(buf) }
 

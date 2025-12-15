@@ -2,8 +2,8 @@ package hiiragi283.core.api.serialization.codec
 
 import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
-import hiiragi283.ragium.api.util.Ior
-import hiiragi283.ragium.api.util.toIor
+import hiiragi283.core.api.tuple.Ior
+import hiiragi283.core.api.tuple.toIor
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import java.util.Optional

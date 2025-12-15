@@ -1,6 +1,5 @@
 package hiiragi283.core.api.serialization.value
 
-import hiiragi283.ragium.api.RagiumPlatform
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
 import net.neoforged.neoforge.common.util.INBTSerializable
@@ -22,14 +21,14 @@ interface HTValueSerializable : INBTSerializable<CompoundTag> {
     @Deprecated("Use `serialize(HTValueOutput)` instead", level = DeprecationLevel.ERROR)
     override fun serializeNBT(provider: HolderLookup.Provider): CompoundTag {
         val tag = CompoundTag()
-        val output: HTValueOutput = RagiumPlatform.INSTANCE.createValueOutput(provider, tag)
+        val output: HTValueOutput = HTValueAccess.INSTANCE.createOutput(provider, tag)
         serialize(output)
         return tag
     }
 
     @Deprecated("Use `deserialize(HTValueInput)` instead", level = DeprecationLevel.ERROR)
     override fun deserializeNBT(provider: HolderLookup.Provider, nbt: CompoundTag) {
-        val input: HTValueInput = RagiumPlatform.INSTANCE.createValueInput(provider, nbt)
+        val input: HTValueInput = HTValueAccess.INSTANCE.createInput(provider, nbt)
         deserialize(input)
     }
 

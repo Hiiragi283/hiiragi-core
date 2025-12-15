@@ -1,9 +1,9 @@
 package hiiragi283.core.common.text
 
+import hiiragi283.core.api.stack.ImmutableFluidStack
 import hiiragi283.core.api.text.HTTextUtil.getModName
 import hiiragi283.core.api.text.RagiumTranslation
 import hiiragi283.core.api.text.literalText
-import hiiragi283.core.common.stack.ImmutableFluidStack
 import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.TooltipFlag

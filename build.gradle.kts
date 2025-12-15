@@ -9,7 +9,7 @@ plugins {
     alias(libs.plugins.ktlint)
 }
 
-val modId = "ragium"
+val modId = "hiiragi_core"
 val modVersion: String = libs.versions.hiiragi.core
     .get()
 
@@ -291,7 +291,7 @@ tasks {
         }
         from(apiModule.output)
         from(dataModule.output)
-        exclude("**/core/data/**")
+        // exclude("**/core/data/**")
     }
 
     /*wrapper {

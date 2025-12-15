@@ -8,5 +8,4 @@ import net.minecraft.world.level.ItemLike
 fun ItemLike.toHolderLike(): HTItemHolderLike<*> =
     (this as? HTItemHolderLike<*>) ?: HTItemHolderLike.HolderDelegate { this@toHolderLike.builtInRegistryHolder() }
 
-fun Holder<Item>.toItemLike(): HTItemHolderLike<*> =
-    (this as? HTItemHolderLike<*>) ?: HTItemHolderLike.HolderDelegate { this@toItemLike }
+fun Holder<Item>.toItemLike(): HTItemHolderLike<*> = (this as? HTItemHolderLike<*>) ?: HTItemHolderLike.HolderDelegate { this@toItemLike }

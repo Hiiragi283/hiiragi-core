@@ -1,15 +1,11 @@
 package hiiragi283.core.api
 
-import com.mojang.logging.LogUtils
 import hiiragi283.core.api.resource.toId
 import net.minecraft.resources.ResourceLocation
-import org.slf4j.Logger
+import java.util.ServiceLoader
 
 data object HiiragiCoreAPI {
     const val MOD_ID = "hiiragi_core"
-
-    @JvmField
-    val LOGGER: Logger = LogUtils.getLogger()
 
     //    ResourceLocation    //
 
@@ -24,4 +20,14 @@ data object HiiragiCoreAPI {
      */
     @JvmStatic
     fun id(vararg path: String): ResourceLocation = MOD_ID.toId(*path)
+
+    //    Service    //
+
+    /**
+     * @see mekanism.api.MekanismAPI.getService
+     */
+    @Suppress("UnstableApiUsage")
+    @JvmStatic
+    inline fun <reified SERVICE : Any> getService(): SERVICE =
+        ServiceLoader.load(SERVICE::class.java, HiiragiCoreAPI::class.java.classLoader).first()
 }
