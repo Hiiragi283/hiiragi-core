@@ -17,5 +17,7 @@ open class HTDeferredHolder<R : Any, T : R>(key: ResourceKey<R>) :
 
     override fun getId(): ResourceLocation = super<DeferredHolder>.getId()
 
+    override fun getKey(): ResourceKey<R> = super.key
+
     override fun getHolder(): Holder<R> = this
 }

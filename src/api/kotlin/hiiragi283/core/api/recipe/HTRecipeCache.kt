@@ -1,0 +1,19 @@
+package hiiragi283.core.api.recipe
+
+import net.minecraft.world.item.crafting.RecipeInput
+import net.minecraft.world.level.Level
+
+/**
+ * レシピを保持するキャッシュのクラス
+ * @param INPUT レシピの入力となるクラス
+ * @param RECIPE レシピのクラス
+ */
+fun interface HTRecipeCache<INPUT : RecipeInput, RECIPE : Any> {
+    /**
+     * 指定された[input], [level]から最初に一致するレシピを返します。
+     * @param input レシピの入力
+     * @param level レシピを取得するレベル
+     * @return 見つからなかった場合は`null`
+     */
+    fun getFirstRecipe(input: INPUT, level: Level): RECIPE?
+}

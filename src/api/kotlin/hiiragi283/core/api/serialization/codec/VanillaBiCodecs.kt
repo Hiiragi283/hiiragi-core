@@ -2,7 +2,7 @@ package hiiragi283.core.api.serialization.codec
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.RegistryKey
-import hiiragi283.ragium.api.tag.createTagKey
+import hiiragi283.core.api.tag.createTagKey
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.Direction
 import net.minecraft.core.Holder
