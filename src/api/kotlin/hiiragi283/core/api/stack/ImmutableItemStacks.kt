@@ -1,4 +1,4 @@
-package hiiragi283.core.common.stack
+package hiiragi283.core.api.stack
 
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.food.FoodProperties

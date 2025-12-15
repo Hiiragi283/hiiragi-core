@@ -1,6 +1,5 @@
-package hiiragi283.core.common.stack
+package hiiragi283.core.api.stack
 
-import hiiragi283.core.api.stack.ImmutableComponentStack
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponentPatch
