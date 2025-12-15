@@ -1,0 +1,27 @@
+{
+  "values": [
+    "#c:raw_materials/aluminum",
+    "#c:raw_materials/amethyst",
+    "#c:raw_materials/azure",
+    "#c:raw_materials/cinnabar",
+    "#c:raw_materials/copper",
+    "#c:raw_materials/crimson_crystal",
+    "#c:raw_materials/diamond",
+    "#c:raw_materials/echo",
+    "#c:raw_materials/eldritch_pearl",
+    "#c:raw_materials/emerald",
+    "#c:raw_materials/gold",
+    "#c:raw_materials/iron",
+    "#c:raw_materials/lapis",
+    "#c:raw_materials/lead",
+    "#c:raw_materials/nickel",
+    "#c:raw_materials/platinum",
+    "#c:raw_materials/quartz",
+    "#c:raw_materials/saltpeter",
+    "#c:raw_materials/silver",
+    "#c:raw_materials/sulfur",
+    "#c:raw_materials/tin",
+    "#c:raw_materials/warped_crystal",
+    "#c:raw_materials/zinc"
+  ]
+}

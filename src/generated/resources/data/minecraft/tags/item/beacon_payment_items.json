@@ -1,0 +1,22 @@
+{
+  "values": [
+    "#c:gems/azure",
+    "#c:gems/cinnabar",
+    "#c:gems/crimson_crystal",
+    "#c:gems/eldritch_pearl",
+    "#c:gems/saltpeter",
+    "#c:gems/sulfur",
+    "#c:gems/warped_crystal",
+    "#c:ingots/aluminum",
+    "#c:ingots/azure_steel",
+    "#c:ingots/deep_steel",
+    "#c:ingots/lead",
+    "#c:ingots/nickel",
+    "#c:ingots/night_metal",
+    "#c:ingots/platinum",
+    "#c:ingots/silver",
+    "#c:ingots/steel",
+    "#c:ingots/tin",
+    "#c:ingots/zinc"
+  ]
+}

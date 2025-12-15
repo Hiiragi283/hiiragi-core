@@ -3,6 +3,7 @@ package hiiragi283.core.data
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTRootDataGenerator
 import hiiragi283.core.data.server.HCRecipeProvider
+import hiiragi283.core.data.server.tag.HCItemTagsProvider
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.data.event.GatherDataEvent
@@ -14,5 +15,7 @@ data object HiiragiCoreDataGen {
         val (server: HTRootDataGenerator, client: HTRootDataGenerator) = HTRootDataGenerator.withDataPack(event)
 
         server.addProvider(::HCRecipeProvider)
+
+        server.addProvider(::HCItemTagsProvider)
     }
 }

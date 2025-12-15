@@ -1,0 +1,19 @@
+{
+  "values": [
+    "#c:nuggets/aluminum",
+    "#c:nuggets/azure_steel",
+    "#c:nuggets/copper",
+    "#c:nuggets/deep_steel",
+    "#c:nuggets/gold",
+    "#c:nuggets/iron",
+    "#c:nuggets/lead",
+    "#c:nuggets/netherite",
+    "#c:nuggets/nickel",
+    "#c:nuggets/night_metal",
+    "#c:nuggets/platinum",
+    "#c:nuggets/silver",
+    "#c:nuggets/steel",
+    "#c:nuggets/tin",
+    "#c:nuggets/zinc"
+  ]
+}

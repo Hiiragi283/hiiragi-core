@@ -9,5 +9,7 @@ fun interface HTIdLike {
 
     fun getIdWithSuffix(suffix: String): ResourceLocation = getId().withSuffix(suffix)
 
+    fun getNamespace(): String = getId().namespace
+
     fun getPath(): String = getId().path
 }

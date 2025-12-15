@@ -1,6 +1,6 @@
 package hiiragi283.core.api.data.tag
 
-import com.google.common.collect.ImmutableMultimap
+import hiiragi283.core.api.collection.buildMultiMap
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTPrefixLike
@@ -14,7 +14,7 @@ import java.util.function.Function
 /**
  * [HTTagBuilder]に基づいた[TagsProvider]の拡張クラス
  */
-abstract class HTTagsProvider<T : Any>(registryKey: RegistryKey<T>, modId: String, context: HTDataGenContext) :
+abstract class HTTagsProvider<T : Any>(modId: String, registryKey: RegistryKey<T>, context: HTDataGenContext) :
     TagsProvider<T>(
         context.output,
         registryKey,
@@ -32,17 +32,14 @@ abstract class HTTagsProvider<T : Any>(registryKey: RegistryKey<T>, modId: Strin
 
     @Suppress("DEPRECATION")
     final override fun addTags(provider: HolderLookup.Provider) {
-        val builder: ImmutableMultimap.Builder<TagKey<T>, TagEntry> = ImmutableMultimap.builder()
-        addTagsInternal { tagKey: TagKey<T> -> HTTagBuilder(registryKey) { builder.put(tagKey, it) } }
-        builder
-            .build()
-            .asMap()
-            .forEach { (tagKey: TagKey<T>, entries: Collection<TagEntry>) ->
-                entries
-                    .sortedWith(COMPARATOR)
-                    .toSet()
-                    .forEach { entry: TagEntry -> tag(tagKey).add(entry) }
-            }
+        buildMultiMap {
+            addTagsInternal { tagKey: TagKey<T> -> HTTagBuilder(registryKey) { this.put(tagKey, it) } }
+        }.map.forEach { (tagKey: TagKey<T>, entries: Collection<TagEntry>) ->
+            entries
+                .sortedWith(COMPARATOR)
+                .toSet()
+                .forEach { entry: TagEntry -> tag(tagKey).add(entry) }
+        }
     }
 
     /**
