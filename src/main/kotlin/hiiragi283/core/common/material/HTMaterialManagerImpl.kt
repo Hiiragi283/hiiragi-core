@@ -14,8 +14,7 @@ class HTMaterialManagerImpl :
     HTMaterialManager,
     Map<HTMaterialKey, HTMaterialDefinition> by definitions {
     companion object {
-        internal var definitions: Map<HTMaterialKey, HTMaterialDefinition> = mapOf()
-            private set
+        private var definitions: Map<HTMaterialKey, HTMaterialDefinition> = mapOf()
 
         @JvmStatic
         fun gatherAttributes() {

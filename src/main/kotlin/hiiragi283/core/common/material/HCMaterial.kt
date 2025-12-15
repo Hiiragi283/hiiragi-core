@@ -50,8 +50,8 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         override val basePrefix: HTPrefixLike = CommonMaterialPrefixes.FUEL
 
         override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = listOf(
-            CommonMaterialPrefixes.DUST,
             CommonMaterialPrefixes.FUEL,
+            CommonMaterialPrefixes.DUST,
         )
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
@@ -99,8 +99,8 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         override val basePrefix: HTPrefixLike = CommonMaterialPrefixes.GEM
 
         override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = listOf(
-            CommonMaterialPrefixes.DUST,
             CommonMaterialPrefixes.GEM,
+            CommonMaterialPrefixes.DUST,
         )
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
@@ -126,8 +126,8 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         override val basePrefix: HTPrefixLike = CommonMaterialPrefixes.PEARL
 
         override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = listOf(
-            CommonMaterialPrefixes.DUST,
             CommonMaterialPrefixes.PEARL,
+            CommonMaterialPrefixes.DUST,
         )
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
@@ -143,29 +143,24 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
     enum class Metals(private val usName: String, private val jpName: String) : HCMaterial {
         // Vanilla
         COPPER("Copper", "銅") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf(
-                CommonMaterialPrefixes.DUST,
-                CommonMaterialPrefixes.GEAR,
-                CommonMaterialPrefixes.NUGGET,
-                CommonMaterialPrefixes.PLATE,
-                CommonMaterialPrefixes.ROD,
-            )
+            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = buildList {
+                addAll(super.getSupportedItemPrefixes())
+                remove(CommonMaterialPrefixes.INGOT)
+            }
         },
         IRON("Iron", "鉄") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf(
-                CommonMaterialPrefixes.DUST,
-                CommonMaterialPrefixes.GEAR,
-                CommonMaterialPrefixes.PLATE,
-                CommonMaterialPrefixes.ROD,
-            )
+            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = buildList {
+                addAll(super.getSupportedItemPrefixes())
+                remove(CommonMaterialPrefixes.INGOT)
+                remove(CommonMaterialPrefixes.NUGGET)
+            }
         },
         GOLD("Gold", "金") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf(
-                CommonMaterialPrefixes.DUST,
-                CommonMaterialPrefixes.GEAR,
-                CommonMaterialPrefixes.PLATE,
-                CommonMaterialPrefixes.ROD,
-            )
+            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = buildList {
+                addAll(super.getSupportedItemPrefixes())
+                remove(CommonMaterialPrefixes.INGOT)
+                remove(CommonMaterialPrefixes.NUGGET)
+            }
         },
 
         // Common
@@ -181,12 +176,12 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         override val basePrefix: HTPrefixLike = CommonMaterialPrefixes.INGOT
 
         override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = listOf(
+            CommonMaterialPrefixes.RAW_MATERIAL,
+            CommonMaterialPrefixes.INGOT,
             CommonMaterialPrefixes.DUST,
             CommonMaterialPrefixes.GEAR,
-            CommonMaterialPrefixes.INGOT,
             CommonMaterialPrefixes.NUGGET,
             CommonMaterialPrefixes.PLATE,
-            CommonMaterialPrefixes.RAW_MATERIAL,
             CommonMaterialPrefixes.ROD,
         )
 
@@ -204,17 +199,14 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         // Vanilla
         NETHERITE("Netherite", "ネザライト") {
             override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = buildList {
-                addAll(super.getSupportedItemPrefixes())
                 add(CommonMaterialPrefixes.SCRAP)
+                addAll(super.getSupportedItemPrefixes())
             }
 
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf(
-                CommonMaterialPrefixes.DUST,
-                CommonMaterialPrefixes.GEAR,
-                CommonMaterialPrefixes.NUGGET,
-                CommonMaterialPrefixes.PLATE,
-                CommonMaterialPrefixes.ROD,
-            )
+            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = buildList {
+                addAll(super.getSupportedItemPrefixes())
+                remove(CommonMaterialPrefixes.INGOT)
+            }
         },
 
         // Common
@@ -224,8 +216,8 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         AZURE_STEEL("Azure Steel", "紺鉄"),
         DEEP_STEEL("Deep Steel", "深層鋼") {
             override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = buildList {
-                addAll(super.getSupportedItemPrefixes())
                 add(CommonMaterialPrefixes.SCRAP)
+                addAll(super.getSupportedItemPrefixes())
             }
 
             override fun createPath(prefix: CommonMaterialPrefixes): String = when (prefix) {
@@ -239,9 +231,9 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         override val basePrefix: HTPrefixLike = CommonMaterialPrefixes.INGOT
 
         override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = listOf(
+            CommonMaterialPrefixes.INGOT,
             CommonMaterialPrefixes.DUST,
             CommonMaterialPrefixes.GEAR,
-            CommonMaterialPrefixes.INGOT,
             CommonMaterialPrefixes.NUGGET,
             CommonMaterialPrefixes.PLATE,
             CommonMaterialPrefixes.ROD,
