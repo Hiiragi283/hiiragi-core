@@ -2,7 +2,7 @@ package hiiragi283.core
 
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.common.material.HTMaterialManager
+import hiiragi283.core.common.material.HTMaterialManagerImpl
 import hiiragi283.core.setup.HCCreativeTabs
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeSerializers
@@ -34,6 +34,6 @@ data object HiiragiCore {
 
     @JvmStatic
     private fun commonSetup(event: FMLCommonSetupEvent) {
-        event.enqueueWork(HTMaterialManager::gatherAttributes)
+        event.enqueueWork(HTMaterialManagerImpl::gatherAttributes)
     }
 }

@@ -19,6 +19,8 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
                 addAll(Plates.entries)
             }
         }
+
+        private val dustList: List<CommonMaterialPrefixes> = listOf(CommonMaterialPrefixes.DUST)
     }
 
     val basePrefix: HTPrefixLike
@@ -34,10 +36,10 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
     enum class Fuels(private val usName: String, private val jpName: String) : HCMaterial {
         // Vanilla
         COAL("Coal", "石炭") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf(CommonMaterialPrefixes.DUST)
+            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
         },
         CHARCOAL("Charcoal", "木炭") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf(CommonMaterialPrefixes.DUST)
+            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
         },
 
         // Common
@@ -65,40 +67,22 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
     enum class Gems(private val usName: String, private val jpName: String) : HCMaterial {
         // Vanilla
         LAPIS("Lapis", "ラピス") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf(
-                CommonMaterialPrefixes.DUST,
-                CommonMaterialPrefixes.RAW_MATERIAL,
-            )
+            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
         },
         QUARTZ("Quartz", "水晶") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf(
-                CommonMaterialPrefixes.DUST,
-                CommonMaterialPrefixes.RAW_MATERIAL,
-            )
+            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
         },
         AMETHYST("Amethyst", "アメジスト") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf(
-                CommonMaterialPrefixes.DUST,
-                CommonMaterialPrefixes.RAW_MATERIAL,
-            )
+            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
         },
         DIAMOND("Diamond", "ダイアモンド") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf(
-                CommonMaterialPrefixes.DUST,
-                CommonMaterialPrefixes.RAW_MATERIAL,
-            )
+            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
         },
         EMERALD("Emerald", "エメラルド") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf(
-                CommonMaterialPrefixes.DUST,
-                CommonMaterialPrefixes.RAW_MATERIAL,
-            )
+            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
         },
         ECHO("Echo", "残響") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf(
-                CommonMaterialPrefixes.DUST,
-                CommonMaterialPrefixes.RAW_MATERIAL,
-            )
+            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
         },
 
         // Common
@@ -110,7 +94,6 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         AZURE("Azure Shard", "紺碧の欠片"),
         CRIMSON_CRYSTAL("Crimson Crystal", "深紅のクリスタリル"),
         WARPED_CRYSTAL("Warped Crystal", "歪んだクリスタリル"),
-        ELDRITCH_PEARL("Eldritch Pearl", "異質な真珠"),
         ;
 
         override val basePrefix: HTPrefixLike = CommonMaterialPrefixes.GEM
@@ -118,7 +101,6 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = listOf(
             CommonMaterialPrefixes.DUST,
             CommonMaterialPrefixes.GEM,
-            CommonMaterialPrefixes.RAW_MATERIAL,
         )
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
@@ -134,7 +116,7 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
     enum class Pearls(private val usName: String, private val jpName: String) : HCMaterial {
         // Vanilla
         ENDER("Ender", "エンダー") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf(CommonMaterialPrefixes.DUST)
+            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
         },
 
         // Hiiragi Series
@@ -187,13 +169,13 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         },
 
         // Common
-        ALUMINUM("Aluminum", "アルミニウム"),
-        NICKEL("Nickel", "ニッケル"),
-        ZINC("Zinc", "亜鉛"),
-        SILVER("silver", "銀"),
-        TIN("Tin", "錫"),
-        PLATINUM("Platinum", "プラチナ"),
-        LEAD("Lead", "鉛"),
+        // ALUMINUM("Aluminum", "アルミニウム"),
+        // NICKEL("Nickel", "ニッケル"),
+        // ZINC("Zinc", "亜鉛"),
+        // SILVER("silver", "銀"),
+        // TIN("Tin", "錫"),
+        // PLATINUM("Platinum", "プラチナ"),
+        // LEAD("Lead", "鉛"),
         ;
 
         override val basePrefix: HTPrefixLike = CommonMaterialPrefixes.INGOT
@@ -225,7 +207,7 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
                 addAll(super.getSupportedItemPrefixes())
                 add(CommonMaterialPrefixes.SCRAP)
             }
-            
+
             override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf(
                 CommonMaterialPrefixes.DUST,
                 CommonMaterialPrefixes.GEAR,
@@ -299,7 +281,7 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
 
         override val basePrefix: HTPrefixLike = CommonMaterialPrefixes.DUST
 
-        override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = listOf(CommonMaterialPrefixes.DUST)
+        override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = dustList
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
             HTLanguageType.EN_US -> usName

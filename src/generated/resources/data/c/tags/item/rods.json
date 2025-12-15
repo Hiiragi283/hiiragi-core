@@ -1,19 +1,12 @@
 {
   "values": [
-    "#c:rods/aluminum",
     "#c:rods/azure_steel",
     "#c:rods/copper",
     "#c:rods/deep_steel",
     "#c:rods/gold",
     "#c:rods/iron",
-    "#c:rods/lead",
     "#c:rods/netherite",
-    "#c:rods/nickel",
     "#c:rods/night_metal",
-    "#c:rods/platinum",
-    "#c:rods/silver",
-    "#c:rods/steel",
-    "#c:rods/tin",
-    "#c:rods/zinc"
+    "#c:rods/steel"
   ]
 }

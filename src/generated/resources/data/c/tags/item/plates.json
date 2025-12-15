@@ -1,23 +1,16 @@
 {
   "values": [
-    "#c:plates/aluminum",
     "#c:plates/azure_steel",
     "#c:plates/copper",
     "#c:plates/deep_steel",
     "#c:plates/gold",
     "#c:plates/iron",
-    "#c:plates/lead",
     "#c:plates/netherite",
-    "#c:plates/nickel",
     "#c:plates/night_metal",
     "#c:plates/plastic",
-    "#c:plates/platinum",
     "#c:plates/raw_rubber",
     "#c:plates/rubber",
-    "#c:plates/silver",
     "#c:plates/steel",
-    "#c:plates/tin",
-    "#c:plates/wood",
-    "#c:plates/zinc"
+    "#c:plates/wood"
   ]
 }

@@ -1,15 +1,8 @@
 {
   "values": [
-    "#c:ingots/aluminum",
     "#c:ingots/azure_steel",
     "#c:ingots/deep_steel",
-    "#c:ingots/lead",
-    "#c:ingots/nickel",
     "#c:ingots/night_metal",
-    "#c:ingots/platinum",
-    "#c:ingots/silver",
-    "#c:ingots/steel",
-    "#c:ingots/tin",
-    "#c:ingots/zinc"
+    "#c:ingots/steel"
   ]
 }
