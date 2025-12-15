@@ -10,7 +10,8 @@ plugins {
 }
 
 val modId = "ragium"
-val modVersion: String = libs.versions.hiiragi.core.get()
+val modVersion: String = libs.versions.hiiragi.core
+    .get()
 
 version = modVersion
 group = "hiiragi283.core"
@@ -210,7 +211,7 @@ dependencies {
     implementation(libs.bundles.mods.transitive) { isTransitive = false }
     compileOnly(libs.bundles.mods.compile)
     runtimeOnly(libs.bundles.mods.runtime)
-    
+
     implementation(libs.mek.get().toString() + ":all")
 }
 

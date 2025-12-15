@@ -1,0 +1,31 @@
+package hiiragi283.core.common.registry
+
+import hiiragi283.core.api.registry.HTDeferredHolder
+import hiiragi283.core.api.text.HTHasText
+import hiiragi283.core.api.text.HTHasTranslationKey
+import hiiragi283.core.api.text.translatableText
+import net.minecraft.core.registries.Registries
+import net.minecraft.network.chat.Component
+import net.minecraft.resources.ResourceKey
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.item.crafting.Recipe
+import net.minecraft.world.item.crafting.RecipeInput
+import net.minecraft.world.item.crafting.RecipeType
+
+class HTDeferredRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>> :
+    HTDeferredHolder<RecipeType<*>, RecipeType<RECIPE>>,
+    HTHasTranslationKey,
+    HTHasText {
+    constructor(key: ResourceKey<RecipeType<*>>) : super(key)
+
+    constructor(id: ResourceLocation) : super(Registries.RECIPE_TYPE, id)
+
+    override val translationKey: String = id.toLanguageKey("recipe_type")
+
+    override fun getText(): Component = translatableText(translationKey)
+
+    /*override fun getVanillaRecipeFor(input: INPUT, level: Level, lastRecipe: RecipeHolder<RECIPE>?): RecipeHolder<RECIPE>? =
+        level.recipeManager
+            .getRecipeFor(get(), input, level, lastRecipe)
+            .getOrNull()*/
+}

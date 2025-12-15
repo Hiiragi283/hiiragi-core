@@ -1,0 +1,40 @@
+package hiiragi283.core.common.registry.register
+
+import com.mojang.serialization.Codec
+import hiiragi283.core.api.registry.RegistryKey
+import hiiragi283.core.api.registry.register.HTDeferredRegister
+import hiiragi283.core.api.serialization.codec.BiCodec
+import net.minecraft.core.component.DataComponentType
+import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.network.codec.StreamCodec
+import net.minecraft.resources.ResourceLocation
+
+/**
+ * @see net.neoforged.neoforge.registries.DeferredRegister.DataComponents
+ */
+class HTDeferredDataComponentRegister(registryKey: RegistryKey<DataComponentType<*>>, namespace: String) :
+    HTDeferredRegister<DataComponentType<*>>(
+        registryKey,
+        namespace,
+    ) {
+    fun <DATA : Any> registerType(name: String, builderAction: (DataComponentType.Builder<DATA>) -> Unit): DataComponentType<DATA> {
+        val type: DataComponentType<DATA> = DataComponentType
+            .builder<DATA>()
+            .apply(builderAction)
+            .build()
+        register(name) { _: ResourceLocation -> type }
+        return type
+    }
+
+    fun <DATA : Any> registerType(
+        name: String,
+        codec: Codec<DATA>,
+        streamCodec: StreamCodec<in RegistryFriendlyByteBuf, DATA>?,
+    ): DataComponentType<DATA> = registerType(name) { builder: DataComponentType.Builder<DATA> ->
+        builder.persistent(codec)
+        streamCodec?.let(builder::networkSynchronized)
+    }
+
+    fun <DATA : Any> registerType(name: String, codec: BiCodec<in RegistryFriendlyByteBuf, DATA>): DataComponentType<DATA> =
+        registerType(name, codec.codec, codec.streamCodec)
+}

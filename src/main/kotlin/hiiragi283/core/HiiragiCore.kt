@@ -6,5 +6,4 @@ import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 
 @Mod(HiiragiCoreAPI.MOD_ID)
-class HiiragiCore(eventBus: IEventBus, container: ModContainer) {
-}
+class HiiragiCore(eventBus: IEventBus, container: ModContainer)
