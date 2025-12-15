@@ -1,0 +1,10 @@
+{
+  "values": {
+    "#c:dusts/crimson_crystal": {
+      "burn_time": 4800
+    },
+    "#c:gems/crimson_crystal": {
+      "burn_time": 4800
+    }
+  }
+}

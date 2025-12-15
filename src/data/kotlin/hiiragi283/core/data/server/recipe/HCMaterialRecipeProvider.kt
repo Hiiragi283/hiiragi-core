@@ -3,6 +3,7 @@ package hiiragi283.core.data.server.recipe
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.common.data.recipe.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.HTShapelessRecipeBuilder
 import hiiragi283.core.common.material.CommonMaterialPrefixes
@@ -14,8 +15,29 @@ import net.minecraft.world.level.ItemLike
 
 object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipeInternal() {
+        baseToDust()
+
         ingotToGear()
         ingotToNugget()
+    }
+
+    @JvmStatic
+    private fun baseToDust() {
+        for (material: HCMaterial in HCMaterial.entries) {
+            val basePrefix: HTPrefixLike = material.basePrefix
+            if (basePrefix.isOf(CommonMaterialPrefixes.DUST)) continue
+            val dust: HTSimpleDeferredItem = HCItems.MATERIALS[CommonMaterialPrefixes.DUST, material] ?: continue
+            // Shaped
+            HTShapedRecipeBuilder
+                .create(dust, 2)
+                .pattern(
+                    "AB",
+                    "CB",
+                ).define('A', Items.FLINT)
+                .define('B', basePrefix, material)
+                .define('C', Items.BOWL)
+                .saveSuffixed(output, "_with_manual")
+        }
     }
 
     @JvmStatic

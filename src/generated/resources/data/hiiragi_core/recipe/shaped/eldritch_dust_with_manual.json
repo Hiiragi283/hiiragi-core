@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:flint"
+    },
+    "B": {
+      "tag": "c:pearls/eldritch"
+    },
+    "C": {
+      "item": "minecraft:bowl"
+    }
+  },
+  "pattern": [
+    "AB",
+    "CB"
+  ],
+  "result": {
+    "count": 2,
+    "id": "hiiragi_core:eldritch_dust"
+  }
+}

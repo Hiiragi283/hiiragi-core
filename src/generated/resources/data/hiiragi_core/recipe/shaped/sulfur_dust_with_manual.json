@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:flint"
+    },
+    "B": {
+      "tag": "c:gems/sulfur"
+    },
+    "C": {
+      "item": "minecraft:bowl"
+    }
+  },
+  "pattern": [
+    "AB",
+    "CB"
+  ],
+  "result": {
+    "count": 2,
+    "id": "hiiragi_core:sulfur_dust"
+  }
+}

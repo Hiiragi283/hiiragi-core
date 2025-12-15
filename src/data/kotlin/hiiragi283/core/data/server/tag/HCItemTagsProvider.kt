@@ -38,6 +38,8 @@ class HCItemTagsProvider(context: HTDataGenContext) : HTTagsProvider<Item>(Hiira
         addBaseMaterial(factory, HCMaterial.Pearls.ENDER, Items.ENDER_PEARL)
 
         addMaterial(factory, CommonMaterialPrefixes.SCRAP, HCMaterial.Alloys.NETHERITE).addItem(Items.NETHERITE_SCRAP)
+
+        factory.apply(ItemTags.PLANKS).addTag(CommonMaterialPrefixes.PLATE, HCMaterial.Dusts.WOOD)
     }
 
     private fun addBaseMaterial(factory: BuilderFactory<Item>, material: HCMaterial, item: ItemLike) {

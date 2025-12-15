@@ -28,7 +28,6 @@ enum class CommonMaterialPrefixes(customPattern: String? = null) : HTPrefixLike 
     DOUGH,
     FLOUR,
     FUEL("%s"),
-    JAM,
     PEARL,
     RAW_MATERIAL_DYE {
         override val prefix: HTMaterialPrefix = HTMaterialPrefix("raw_materials/dye")
