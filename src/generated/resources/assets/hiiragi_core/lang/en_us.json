@@ -10,6 +10,8 @@
   "block.hiiragi_core.echo_block": "Block of Echo",
   "block.hiiragi_core.eldritch_block": "Block of Eldritch",
   "block.hiiragi_core.ender_block": "Block of Ender",
+  "block.hiiragi_core.honey": "Honey",
+  "block.hiiragi_core.mushroom_stew": "Mushroom Stew",
   "block.hiiragi_core.night_metal_block": "Block of Night Metal",
   "block.hiiragi_core.plastic_block": "Block of Plastic",
   "block.hiiragi_core.rubber_block": "Block of Rubber",
@@ -64,6 +66,7 @@
   "item.hiiragi_core.gold_plate": "Gold Plate",
   "item.hiiragi_core.gold_rod": "Gold Rod",
   "item.hiiragi_core.gold_wire": "Gold Wire",
+  "item.hiiragi_core.honey_bucket": "Honey Bucket",
   "item.hiiragi_core.iron_dust": "Iron Dust",
   "item.hiiragi_core.iron_gear": "Iron Gear",
   "item.hiiragi_core.iron_hammer": "Iron Hammer",
@@ -71,6 +74,7 @@
   "item.hiiragi_core.iron_rod": "Iron Rod",
   "item.hiiragi_core.iron_wire": "Iron Wire",
   "item.hiiragi_core.lapis_dust": "Lapis Dust",
+  "item.hiiragi_core.mushroom_stew_bucket": "Mushroom Stew Bucket",
   "item.hiiragi_core.netherite_dust": "Netherite Dust",
   "item.hiiragi_core.netherite_gear": "Netherite Gear",
   "item.hiiragi_core.netherite_hammer": "Netherite Hammer",
@@ -109,5 +113,7 @@
   "item.hiiragi_core.wood_hammer": "Wood Hammer",
   "item.hiiragi_core.wood_plate": "Wood Plate",
   "item_group.hiiragi_core.material": "Hiiragi Core - Material",
-  "item_group.hiiragi_core.tool": "Hiiragi Core - Tool"
+  "item_group.hiiragi_core.tool": "Hiiragi Core - Tool",
+  "tag.fluid.c.honey": "Honey",
+  "tag.fluid.c.mushroom_stew": "Mushroom Stew"
 }

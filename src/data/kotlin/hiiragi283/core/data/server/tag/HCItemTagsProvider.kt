@@ -10,12 +10,14 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.toHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.common.item.HTToolType
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
@@ -26,6 +28,7 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
+import net.neoforged.neoforge.common.Tags
 import java.util.concurrent.CompletableFuture
 
 class HCItemTagsProvider(private val blockTags: CompletableFuture<TagLookup<Block>>, context: HTDataGenContext) :
@@ -34,7 +37,9 @@ class HCItemTagsProvider(private val blockTags: CompletableFuture<TagLookup<Bloc
         copyTags()
 
         material(factory)
+
         tool(factory)
+        bucket(factory)
     }
 
     //    Copy    //
@@ -91,6 +96,14 @@ class HCItemTagsProvider(private val blockTags: CompletableFuture<TagLookup<Bloc
             for (tagKey: TagKey<Item> in toolType.getToolTags()) {
                 factory.apply(tagKey).add(item)
             }
+        }
+    }
+
+    //    Bucket    //
+
+    private fun bucket(factory: BuilderFactory<Item>) {
+        for (content: HTFluidContent<*, *, *> in HCFluids.REGISTER.entries) {
+            addTags(factory, Tags.Items.BUCKETS, content.bucketTag).add(content.bucket)
         }
     }
 

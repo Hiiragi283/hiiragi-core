@@ -1,8 +1,8 @@
 package hiiragi283.core.common.text
 
 import hiiragi283.core.api.stack.ImmutableFluidStack
+import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextUtil.getModName
-import hiiragi283.core.api.text.RagiumTranslation
 import hiiragi283.core.api.text.literalText
 import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
@@ -14,14 +14,14 @@ object HTTooltipHelper {
     fun addEnergyTooltip(amount: Int, consumer: Consumer<Component>, isCreative: Boolean) {
         // Empty name if amount is not positive
         if (amount <= 0) {
-            consumer.accept(RagiumTranslation.EMPTY.translate())
+            consumer.accept(HTCommonTranslation.EMPTY.translate())
             return
         }
         // Fluid Name and Amount
         if (isCreative) {
-            RagiumTranslation.STORED_FE.translate(RagiumTranslation.INFINITE)
+            HTCommonTranslation.STORED_FE.translate(HTCommonTranslation.INFINITE)
         } else {
-            RagiumTranslation.STORED_FE.translate(amount)
+            HTCommonTranslation.STORED_FE.translate(amount)
         }.let(consumer::accept)
     }
 
@@ -34,14 +34,14 @@ object HTTooltipHelper {
     ) {
         // Empty name if stack is empty
         if (stack == null) {
-            consumer.accept(RagiumTranslation.EMPTY.translate())
+            consumer.accept(HTCommonTranslation.EMPTY.translate())
             return
         }
         // Fluid Name and Amount
         if (isCreative) {
-            RagiumTranslation.STORED.translate(stack, RagiumTranslation.INFINITE)
+            HTCommonTranslation.STORED.translate(stack, HTCommonTranslation.INFINITE)
         } else {
-            RagiumTranslation.STORED_MB.translate(stack, stack.getAmount())
+            HTCommonTranslation.STORED_MB.translate(stack, stack.getAmount())
         }.let(consumer::accept)
         // Fluid id if advanced
         if (flag.isAdvanced) {

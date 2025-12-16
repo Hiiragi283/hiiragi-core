@@ -3,6 +3,7 @@ package hiiragi283.core.api.data.lang
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
 import hiiragi283.core.api.data.advancement.descKey
 import hiiragi283.core.api.data.advancement.titleKey
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toDescriptionKey
 import hiiragi283.core.api.text.HTHasTranslationKey
 import net.minecraft.data.PackOutput
@@ -28,11 +29,27 @@ sealed class HTLangProvider(output: PackOutput, modid: String, val langType: HTL
         add(key.toDescriptionKey("enchantment", "desc"), desc)
     }
 
+    fun addFluid(content: HTFluidContent<*, *, *>, value: String) {
+        add(content.typeHolder.get().descriptionId, value)
+        addFluidBucket(content, value)
+        add(content.getFluidTag(), value)
+    }
+
+    protected abstract fun addFluidBucket(content: HTFluidContent<*, *, *>, value: String)
+
     //    English    //
 
-    abstract class English(output: PackOutput, modid: String) : HTLangProvider(output, modid, HTLanguageType.EN_US)
+    abstract class English(output: PackOutput, modid: String) : HTLangProvider(output, modid, HTLanguageType.EN_US) {
+        final override fun addFluidBucket(content: HTFluidContent<*, *, *>, value: String) {
+            add(content.bucket, "$value Bucket")
+        }
+    }
 
     //    Japanese    //
 
-    abstract class Japanese(output: PackOutput, modid: String) : HTLangProvider(output, modid, HTLanguageType.JA_JP)
+    abstract class Japanese(output: PackOutput, modid: String) : HTLangProvider(output, modid, HTLanguageType.JA_JP) {
+        final override fun addFluidBucket(content: HTFluidContent<*, *, *>, value: String) {
+            add(content.bucket, "${value}入りバケツ")
+        }
+    }
 }

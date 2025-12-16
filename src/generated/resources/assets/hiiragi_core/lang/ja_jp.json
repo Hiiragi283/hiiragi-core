@@ -10,6 +10,8 @@
   "block.hiiragi_core.echo_block": "残響ブロック",
   "block.hiiragi_core.eldritch_block": "エルドリッチブロック",
   "block.hiiragi_core.ender_block": "エンダーブロック",
+  "block.hiiragi_core.honey": "ハチミツ",
+  "block.hiiragi_core.mushroom_stew": "キノコシチュー",
   "block.hiiragi_core.night_metal_block": "夜金ブロック",
   "block.hiiragi_core.plastic_block": "プラスチックブロック",
   "block.hiiragi_core.rubber_block": "ゴムブロック",
@@ -64,6 +66,7 @@
   "item.hiiragi_core.gold_plate": "金の板",
   "item.hiiragi_core.gold_rod": "金の棒",
   "item.hiiragi_core.gold_wire": "金のワイヤ",
+  "item.hiiragi_core.honey_bucket": "ハチミツ入りバケツ",
   "item.hiiragi_core.iron_dust": "鉄の粉",
   "item.hiiragi_core.iron_gear": "鉄の歯車",
   "item.hiiragi_core.iron_hammer": "鉄のハンマー",
@@ -71,6 +74,7 @@
   "item.hiiragi_core.iron_rod": "鉄の棒",
   "item.hiiragi_core.iron_wire": "鉄のワイヤ",
   "item.hiiragi_core.lapis_dust": "ラピスの粉",
+  "item.hiiragi_core.mushroom_stew_bucket": "キノコシチュー入りバケツ",
   "item.hiiragi_core.netherite_dust": "ネザライトの粉",
   "item.hiiragi_core.netherite_gear": "ネザライトの歯車",
   "item.hiiragi_core.netherite_hammer": "ネザライトのハンマー",
@@ -109,5 +113,7 @@
   "item.hiiragi_core.wood_hammer": "木のハンマー",
   "item.hiiragi_core.wood_plate": "木の板",
   "item_group.hiiragi_core.material": "Hiiragi Core - 素材",
-  "item_group.hiiragi_core.tool": "Hiiragi Core - 道具"
+  "item_group.hiiragi_core.tool": "Hiiragi Core - 道具",
+  "tag.fluid.c.honey": "ハチミツ",
+  "tag.fluid.c.mushroom_stew": "キノコシチュー"
 }

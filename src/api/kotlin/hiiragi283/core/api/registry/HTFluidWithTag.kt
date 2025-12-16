@@ -8,6 +8,7 @@ import net.minecraft.world.level.material.Fluid
 import net.minecraft.world.level.material.Fluids
 import net.neoforged.neoforge.common.NeoForgeMod
 import net.neoforged.neoforge.common.Tags
+import net.neoforged.neoforge.fluids.FluidType
 
 interface HTFluidWithTag<FLUID : Fluid> :
     HTHolderLike<Fluid, FLUID>,
@@ -17,6 +18,8 @@ interface HTFluidWithTag<FLUID : Fluid> :
         @JvmField
         val WATER: HTFluidWithTag<FlowingFluid> = object : HTFluidWithTag<FlowingFluid> {
             override fun getFluidTag(): TagKey<Fluid> = Tags.Fluids.WATER
+
+            override fun getFluidType(): FluidType = NeoForgeMod.WATER_TYPE.value()
 
             override fun get(): FlowingFluid = Fluids.WATER
 
@@ -28,6 +31,8 @@ interface HTFluidWithTag<FLUID : Fluid> :
         val LAVA: HTFluidWithTag<FlowingFluid> = object : HTFluidWithTag<FlowingFluid> {
             override fun getFluidTag(): TagKey<Fluid> = Tags.Fluids.LAVA
 
+            override fun getFluidType(): FluidType = NeoForgeMod.LAVA_TYPE.value()
+
             override fun get(): FlowingFluid = Fluids.LAVA
 
             override fun getHolder(): Holder<Fluid> = get().builtInRegistryHolder()
@@ -37,6 +42,8 @@ interface HTFluidWithTag<FLUID : Fluid> :
         val MILK: HTFluidWithTag<Fluid> = object : HTFluidWithTag<Fluid> {
             override fun getFluidTag(): TagKey<Fluid> = Tags.Fluids.MILK
 
+            override fun getFluidType(): FluidType = NeoForgeMod.MILK_TYPE.get()
+
             override fun get(): Fluid = getHolder().value()
 
             override fun getHolder(): Holder<Fluid> = NeoForgeMod.MILK.delegate
@@ -44,4 +51,6 @@ interface HTFluidWithTag<FLUID : Fluid> :
     }
 
     fun getFluidTag(): TagKey<Fluid>
+
+    fun getFluidType(): FluidType
 }

@@ -4,8 +4,8 @@ import hiiragi283.core.api.block.attribute.HTBlockAttribute
 import hiiragi283.core.api.block.attribute.HTShapeBlockAttribute
 import hiiragi283.core.api.collection.AttributeMap
 import hiiragi283.core.api.collection.MutableAttributeMap
+import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTranslation
-import hiiragi283.core.api.text.RagiumTranslation
 import net.minecraft.world.phys.shapes.VoxelShape
 import java.util.function.BiFunction
 
@@ -110,7 +110,7 @@ open class HTBlockType(val description: HTTranslation, private val attributeMap:
         }
 
         @Deprecated("Use `build(HTTranslation)` instead")
-        fun build(): TYPE = build(RagiumTranslation.EMPTY_ENTRY)
+        fun build(): TYPE = build(HTCommonTranslation.EMPTY_ENTRY)
 
         //    Impl    //
 

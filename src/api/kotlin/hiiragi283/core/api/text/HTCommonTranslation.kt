@@ -7,9 +7,8 @@ import net.minecraft.Util
  * @see mekanism.api.text.APILang
  * @see mekanism.common.MekanismLang
  */
-enum class RagiumTranslation(type: String, vararg path: String) : HTTranslation {
+enum class HTCommonTranslation(type: String, vararg path: String) : HTTranslation {
     // Constants
-    RAGIUM("constants", "mod_name"),
     ERROR("constants", "error"),
     INFINITE("constants", "infinite"),
     NONE("constants", "none"),

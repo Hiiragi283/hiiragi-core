@@ -53,6 +53,8 @@ object HCCreativeTabs {
                     .toList()
             }.forEach(output::accept)
         }
+        // Buckets
+        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCFluids.REGISTER.itemEntries)
     }
 
     @JvmField

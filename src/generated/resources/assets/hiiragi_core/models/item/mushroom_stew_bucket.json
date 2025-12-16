@@ -1,0 +1,6 @@
+{
+  "parent": "neoforge:item/bucket_drip",
+  "flip_gas": false,
+  "fluid": "hiiragi_core:mushroom_stew",
+  "loader": "neoforge:fluid_container"
+}

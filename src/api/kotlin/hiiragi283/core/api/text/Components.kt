@@ -40,8 +40,8 @@ fun doubleText(value: Double): MutableComponent = literalText(NumberFormat.getNu
  * フォーマットされた[Boolean]の[Component]を返します。
  */
 fun boolText(value: Boolean): MutableComponent = when (value) {
-    true -> RagiumTranslation.TRUE
-    false -> RagiumTranslation.FALSE
+    true -> HTCommonTranslation.TRUE
+    false -> HTCommonTranslation.FALSE
 }.translate()
 
 /**

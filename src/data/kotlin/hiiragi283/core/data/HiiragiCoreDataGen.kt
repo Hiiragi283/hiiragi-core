@@ -10,6 +10,7 @@ import hiiragi283.core.data.client.model.HCItemModelProvider
 import hiiragi283.core.data.server.HCDataMapProvider
 import hiiragi283.core.data.server.HCRecipeProvider
 import hiiragi283.core.data.server.tag.HCBlockTagsProvider
+import hiiragi283.core.data.server.tag.HCFluidTagsProvider
 import hiiragi283.core.data.server.tag.HCItemTagsProvider
 import net.minecraft.data.tags.TagsProvider
 import net.minecraft.world.level.block.Block
@@ -26,6 +27,7 @@ data object HiiragiCoreDataGen {
         // Server
         server.addProvider(::HCRecipeProvider)
 
+        server.addProvider(::HCFluidTagsProvider)
         val blockTags: CompletableFuture<TagsProvider.TagLookup<Block>> =
             server.addProvider(::HCBlockTagsProvider).contentsGetter()
         server.addProvider(::HCItemTagsProvider.partially1(blockTags))
