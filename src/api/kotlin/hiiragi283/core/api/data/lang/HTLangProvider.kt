@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.enchantment.Enchantment
 import net.neoforged.neoforge.common.data.LanguageProvider
 
-sealed class HTLangProvider(output: PackOutput, modid: String, langType: HTLanguageType) :
+sealed class HTLangProvider(output: PackOutput, modid: String, protected val langType: HTLanguageType) :
     LanguageProvider(output, modid, langType.name.lowercase()) {
     // HTHasTranslationKey
     protected fun add(translatable: HTHasTranslationKey, value: String) {

@@ -38,6 +38,10 @@ interface HTTable<R : Any, C : Any, V : Any> {
 
         fun put(row: R, column: C, value: V): V?
 
+        operator fun set(row: R, column: C, value: V) {
+            put(row, column, value)
+        }
+
         fun put(triple: Triple<R, C, V>): V? {
             val (row: R, column: C, value: V) = triple
             return put(row, column, value)

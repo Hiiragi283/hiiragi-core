@@ -9,8 +9,6 @@ import net.minecraft.tags.TagKey
 
 /**
  * タグのプレフィックスを表すクラス
- *
- * [HTRegisterPrefixEvent]を通して登録する必要があります。
  */
 @JvmRecord
 data class HTMaterialPrefix(

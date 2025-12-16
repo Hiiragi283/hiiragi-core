@@ -123,7 +123,7 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         },
 
         // Hiiragi Series
-        ELDRITCH("Eldritch", "異質な"),
+        ELDRITCH("Eldritch", "エルドリッチ"),
         ;
 
         override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.PEARL
@@ -271,11 +271,6 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
                 HCMaterialPrefixes.DUST,
                 HCMaterialPrefixes.PLATE,
             )
-
-            override fun createPath(prefix: HTMaterialPrefix): String = when (prefix) {
-                HCMaterialPrefixes.DUST -> "sawdust"
-                else -> super.createPath(prefix)
-            }
         },
         ;
 
@@ -303,11 +298,6 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.PLATE
 
         override fun getSupportedItemPrefixes(): List<HTMaterialPrefix> = listOf(HCMaterialPrefixes.PLATE)
-
-        override fun createPath(prefix: HTMaterialPrefix): String = when (this) {
-            PLASTIC -> "plastic_plate"
-            else -> "${asMaterialName()}_sheet"
-        }
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
             HTLanguageType.EN_US -> usName
