@@ -288,13 +288,15 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
     enum class Plates(private val usName: String, private val jpName: String) : HCMaterial {
         // Common
         PLASTIC("Plastic", "プラスチック"),
-        RAW_RUBBER("Raw Rubber", "生ゴム"),
         RUBBER("Rubber", "ゴム"),
         ;
 
         override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.PLATE
 
-        override fun getSupportedItemPrefixes(): List<HTMaterialPrefix> = listOf(HCMaterialPrefixes.PLATE)
+        override fun getSupportedItemPrefixes(): List<HTMaterialPrefix> = listOf(
+            HCMaterialPrefixes.RAW_MATERIAL,
+            HCMaterialPrefixes.PLATE,
+        )
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
             HTLanguageType.EN_US -> usName

@@ -11,6 +11,8 @@ import net.neoforged.neoforge.client.model.generators.ItemModelProvider
 
 abstract class HTItemModelProvider(context: HTDataGenContext) :
     ItemModelProvider(context.output, HiiragiCoreAPI.MOD_ID, context.fileHelper) {
+    //    Extensions    //
+
     protected fun existTexture(id: ResourceLocation): Boolean = existingFileHelper.exists(id, TEXTURE)
 
     protected fun basicItemAlt(item: HTIdLike, layer0: ResourceLocation): ItemModelBuilder =

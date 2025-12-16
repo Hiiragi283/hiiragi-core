@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "hiiragi_core:block/night_metal_block"
+    }
+  }
+}

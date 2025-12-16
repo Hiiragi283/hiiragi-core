@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "hiiragi_core:block/coal_coke_block"
+    }
+  }
+}

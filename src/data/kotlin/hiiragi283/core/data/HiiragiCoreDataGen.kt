@@ -5,6 +5,7 @@ import hiiragi283.core.api.data.HTRootDataGenerator
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.data.client.lang.HCEnglishLangProvider
 import hiiragi283.core.data.client.lang.HCJapaneseLangProvider
+import hiiragi283.core.data.client.model.HCBlockStateProvider
 import hiiragi283.core.data.client.model.HCItemModelProvider
 import hiiragi283.core.data.server.HCDataMapProvider
 import hiiragi283.core.data.server.HCRecipeProvider
@@ -34,6 +35,7 @@ data object HiiragiCoreDataGen {
         client.addProvider(::HCEnglishLangProvider)
         client.addProvider(::HCJapaneseLangProvider)
 
+        client.addProvider(::HCBlockStateProvider)
         client.addProvider(::HCItemModelProvider)
     }
 }

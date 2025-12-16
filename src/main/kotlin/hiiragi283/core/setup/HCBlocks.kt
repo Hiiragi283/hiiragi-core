@@ -110,7 +110,6 @@ object HCBlocks {
                     .mapColor(
                         when (material) {
                             HCMaterial.Plates.PLASTIC -> MapColor.TERRACOTTA_WHITE
-                            HCMaterial.Plates.RAW_RUBBER -> MapColor.SAND
                             HCMaterial.Plates.RUBBER -> MapColor.TERRACOTTA_BLACK
                         },
                     )
