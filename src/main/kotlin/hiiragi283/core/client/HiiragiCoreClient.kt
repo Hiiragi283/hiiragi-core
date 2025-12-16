@@ -1,5 +1,6 @@
 package hiiragi283.core.client
 
+import hiiragi283.core.HiiragiCore
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.HTFluidContent
@@ -8,10 +9,13 @@ import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.common.material.HCMoltenCrystalData
 import hiiragi283.core.setup.HCFluids
+import net.minecraft.world.level.ItemLike
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.common.Mod
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent
+import net.neoforged.neoforge.client.model.DynamicFluidContainerModel
 import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
 import java.awt.Color
 
@@ -20,7 +24,19 @@ object HiiragiCoreClient {
     init {
         val eventBus: IEventBus = MOD_BUS
 
+        eventBus.addListener(::registerItemColors)
         eventBus.addListener(::registerClientExtensions)
+
+        HiiragiCore.LOGGER.info("Hiiragi-Core loaded on client side!")
+    }
+
+    @JvmStatic
+    private fun registerItemColors(event: RegisterColorHandlersEvent.Item) {
+        val bucketColor = DynamicFluidContainerModel.Colors()
+        for (item: ItemLike in HCFluids.REGISTER.itemEntries) {
+            event.register(bucketColor, item)
+        }
+        HiiragiCore.LOGGER.info("Registered item colors!")
     }
 
     @JvmStatic
@@ -42,6 +58,8 @@ object HiiragiCoreClient {
             val sap: HTSimpleFluidContent = data.sap ?: continue
             event.dull(sap, color)
         }
+
+        HiiragiCore.LOGGER.info("Registered client extensions!")
     }
 
     //    Extensions    //

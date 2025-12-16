@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "minecraft:warped_stems"
+    },
+    {
+      "tag": "minecraft:warped_stems"
+    },
+    {
+      "tag": "minecraft:warped_stems"
+    },
+    {
+      "tag": "minecraft:warped_stems"
+    },
+    {
+      "tag": "c:buckets/empty"
+    },
+    {
+      "tag": "c:tools/hammer"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:warped_sap_bucket"
+  }
+}

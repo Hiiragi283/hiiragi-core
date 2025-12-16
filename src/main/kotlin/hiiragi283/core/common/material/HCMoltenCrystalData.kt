@@ -37,14 +37,16 @@ enum class HCMoltenCrystalData(val color: Color, private val enName: String, pri
             ELDRITCH -> HCFluids.ELDRITCH_FLUX
         }
 
+    val material: HCMaterial get() = when (this) {
+        CRIMSON -> HCMaterial.Gems.CRIMSON_CRYSTAL
+        WARPED -> HCMaterial.Gems.WARPED_CRYSTAL
+        ELDRITCH -> HCMaterial.Pearls.ELDRITCH
+    }
+
     override fun getTranslatedName(type: HTLanguageType): String = when (type) {
         HTLanguageType.EN_US -> enName
         HTLanguageType.JA_JP -> jaName
     }
 
-    override fun asMaterialKey(): HTMaterialKey = when (this) {
-        CRIMSON -> HCMaterial.Gems.CRIMSON_CRYSTAL
-        WARPED -> HCMaterial.Gems.WARPED_CRYSTAL
-        ELDRITCH -> HCMaterial.Pearls.ELDRITCH
-    }.asMaterialKey()
+    override fun asMaterialKey(): HTMaterialKey = material.asMaterialKey()
 }

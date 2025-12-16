@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:buckets/crimson_blood"
+    },
+    {
+      "item": "hiiragi_core:cryogen_powder"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:crimson_crystal"
+  }
+}

@@ -18,6 +18,9 @@ interface HTIngredientRecipeBuilder<BUILDER : HTIngredientRecipeBuilder<BUILDER>
     fun addIngredient(material: HTMaterialLike, vararg prefixes: HTPrefixLike): BUILDER =
         addIngredient(prefixes.map { it.itemTagKey(material) }.map(Ingredient::TagValue).stream())
 
+    fun addIngredient(prefix: HTPrefixLike, vararg materials: HTMaterialLike): BUILDER =
+        addIngredient(materials.map(prefix::itemTagKey).map(Ingredient::TagValue).stream())
+
     fun addIngredient(prefix: HTPrefixLike, material: HTMaterialLike): BUILDER = addIngredient(prefix.itemTagKey(material))
 
     fun addIngredient(tagKey: TagKey<Item>): BUILDER = addIngredient(Ingredient.of(tagKey))

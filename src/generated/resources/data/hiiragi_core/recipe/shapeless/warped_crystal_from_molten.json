@@ -3,17 +3,14 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "c:buckets/crimson_blood"
-    },
-    {
       "tag": "c:buckets/dew_of_the_warp"
     },
     {
-      "tag": "hiiragi_core:eldritch_pearl_binder"
+      "item": "hiiragi_core:cryogen_powder"
     }
   ],
   "result": {
-    "count": 2,
-    "id": "hiiragi_core:eldritch_dust"
+    "count": 1,
+    "id": "hiiragi_core:warped_crystal"
   }
 }

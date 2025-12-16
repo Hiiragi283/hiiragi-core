@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:buckets/warped_sap"
+    },
+    {
+      "tag": "c:buckets/warped_sap"
+    },
+    {
+      "tag": "c:buckets/empty"
+    },
+    {
+      "item": "hiiragi_core:magma_shard"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:dew_of_the_warp_bucket"
+  }
+}

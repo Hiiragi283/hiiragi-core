@@ -35,7 +35,7 @@ data object HiiragiCore {
         HCRecipeSerializers.REGISTER.register(eventBus)
         HCRecipeTypes.REGISTER.register(eventBus)
 
-        LOGGER.info("Hiiragi-Core Loaded!")
+        LOGGER.info("Hiiragi-Core loaded!")
     }
 
     @JvmStatic

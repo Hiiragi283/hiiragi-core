@@ -59,8 +59,11 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(conte
             withExistingParent(content.bucket.getPath(), parent)
                 .customLoader(DynamicFluidContainerModelBuilder<ItemModelBuilder>::begin)
                 .fluid(content.get())
-                .applyTint(true)
-                .flipGas(content.getFluidType().isLighterThanAir)
+                .apply {
+                    if (content.getFluidType().isLighterThanAir) {
+                        flipGas(true)
+                    }
+                }
         }
     }
 }

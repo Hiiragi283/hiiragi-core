@@ -57,12 +57,15 @@ object HCCreativeTabs {
         output.accept(HCItems.COAL_CHUNK)
         output.accept(HCItems.SYNTHETIC_LEATHER)
         output.accept(HCItems.TAR)
+
+        output.accept(HCItems.CRYOGEN_POWDER)
         output.accept(HCItems.LUMINOUS_PASTE)
         output.accept(HCItems.MAGMA_SHARD)
         output.accept(HCItems.ELDER_HEART)
         output.accept(HCItems.WITHER_STAR)
+
         output.accept(HCItems.IRIDESCENT_POWDER)
-        
+
         // Buckets
         HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCFluids.REGISTER.itemEntries)
     }

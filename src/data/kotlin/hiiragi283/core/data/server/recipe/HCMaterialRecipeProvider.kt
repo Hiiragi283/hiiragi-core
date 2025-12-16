@@ -5,37 +5,68 @@ import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.getOrThrow
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
+import hiiragi283.core.api.registry.HTSimpleFluidContent
 import hiiragi283.core.common.data.recipe.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.HTShapelessRecipeBuilder
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
+import hiiragi283.core.common.material.HCMoltenCrystalData
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import hiiragi283.core.common.tag.HCCommonTags
 import hiiragi283.core.common.tag.HCModTags
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
+import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.ItemLike
+import net.neoforged.neoforge.common.Tags
 
 object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipeInternal() {
+        // Cryogen Powder
+        HTShapelessRecipeBuilder
+            .create(HCItems.CRYOGEN_POWDER, 2)
+            .addIngredient(Items.SNOWBALL)
+            .addIngredient(Items.WIND_CHARGE)
+            .addIngredient(Items.PACKED_ICE)
+            .addIngredient(HCCommonTags.Items.TOOLS_HAMMER)
+            .save(output)
+        // Luminous Paste
+        HTShapelessRecipeBuilder
+            .create(HCItems.LUMINOUS_PASTE)
+            .addIngredient(Items.GLOW_INK_SAC)
+            .addIngredient(HCCommonTags.Items.TOOLS_HAMMER)
+            .save(output)
+        // Magma Shard
+        HTShapelessRecipeBuilder
+            .create(HCItems.MAGMA_SHARD)
+            .addIngredient(Items.MAGMA_BLOCK)
+            .addIngredient(HCCommonTags.Items.TOOLS_HAMMER)
+            .save(output)
+
+        manual()
+        buckets()
+
+        baseToDust()
+        baseToBlock()
+
+        dustOrRawToBase()
+
+        ingotToGear()
+        ingotToNugget()
+    }
+
+    @JvmStatic
+    private fun manual() {
         // Amethyst + Lapis -> Azure Shard
         HTShapelessRecipeBuilder
             .create(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.DUST, HCMaterial.Gems.AZURE), 4)
             .addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Gems.AMETHYST, 2)
             .addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Gems.LAPIS, 2)
             .saveSuffixed(output, "_from_mix")
-
-        // Eldritch
-        HTShapelessRecipeBuilder
-            .create(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.DUST, HCMaterial.Pearls.ELDRITCH), 2)
-            .addIngredient(HCFluids.CRIMSON_BLOOD.bucketTag)
-            .addIngredient(HCFluids.DEW_OF_THE_WARP.bucketTag)
-            .addIngredient(HCModTags.Items.ELDRITCH_PEARL_BINDER)
-            .saveSuffixed(output, "_from_mix")
-
         // Netherite Scrap + Azure Steel -> Deep Steel
         HTShapelessRecipeBuilder
             .create(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.DUST, HCMaterial.Alloys.NETHERITE))
@@ -61,14 +92,96 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             .addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Dusts.OBSIDIAN)
             .addIngredients(Items.BLACKSTONE, count = 4)
             .saveSuffixed(output, "_from_mix")
+    }
 
-        baseToDust()
-        baseToBlock()
+    @JvmStatic
+    private fun buckets() {
+        // Honey Bottle <-> Honey Bucket
+        HTShapelessRecipeBuilder
+            .create(HCFluids.HONEY.bucket)
+            .addIngredients(Tags.Items.DRINKS_HONEY, 4)
+            .addIngredient(Tags.Items.BUCKETS_EMPTY)
+            .saveSuffixed(output, "_from_bottles")
+        HTShapelessRecipeBuilder
+            .create(HCFluids.HONEY.bucket)
+            .addIngredient(Items.HONEY_BLOCK)
+            .addIngredient(Tags.Items.BUCKETS_EMPTY)
+            .saveSuffixed(output, "_from_block")
 
-        dustOrRawToBase()
+        HTShapelessRecipeBuilder
+            .create(Items.HONEY_BOTTLE, 4)
+            .addIngredient(HCFluids.HONEY.bucketTag)
+            .addIngredients(Items.GLASS_BOTTLE, count = 4)
+            .saveSuffixed(output, "_from_bucket")
+        HTShapelessRecipeBuilder
+            .create(Items.HONEY_BLOCK)
+            .addIngredient(HCFluids.HONEY.bucketTag)
+            .saveSuffixed(output, "_from_bucket")
+        // Mushroom Stew
+        HTShapelessRecipeBuilder
+            .create(HCFluids.MUSHROOM_STEW.bucket)
+            .addIngredients(Items.MUSHROOM_STEW, count = 4)
+            .addIngredient(Tags.Items.BUCKETS_EMPTY)
+            .saveSuffixed(output, "_from_bowls")
 
-        ingotToGear()
-        ingotToNugget()
+        // Latex
+        HTShapedRecipeBuilder
+            .create(HCFluids.LATEX.bucket)
+            .hollow8()
+            .define('A', Items.DANDELION)
+            .define('B', Tags.Items.BUCKETS_EMPTY)
+            .saveSuffixed(output, "_from_flower")
+        // Latex -> Raw Rubber
+        HTCookingRecipeBuilder
+            .smelting(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Plates.RUBBER))
+            .addIngredient(HCFluids.LATEX.bucketTag)
+            .setExp(0.3f)
+            .saveSuffixed(output, "_from_bucket")
+        // Raw Rubber + Sulfur + Coal -> Rubber
+        HTShapelessRecipeBuilder
+            .create(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.PLATE, HCMaterial.Plates.RUBBER), 3)
+            .addIngredient(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Plates.RUBBER)
+            .addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Gems.SULFUR)
+            .addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Fuels.COAL, HCMaterial.Fuels.CHARCOAL)
+            .addIngredient(HCItems.MAGMA_SHARD)
+            .savePrefixed(output, "black_")
+
+        // Molten
+        for (data: HCMoltenCrystalData in HCMoltenCrystalData.entries) {
+            // Molten -> Gem
+            val molten: HTSimpleFluidContent = data.molten
+            val material: HCMaterial = data.material
+            HTShapelessRecipeBuilder
+                .create(HCItems.MATERIALS.getOrThrow(material.basePrefix, material))
+                .addIngredient(molten.bucketTag)
+                .addIngredient(HCItems.CRYOGEN_POWDER)
+                .saveSuffixed(output, "_from_molten")
+            // Sap -> Molten
+            val sap: HTSimpleFluidContent = data.sap ?: continue
+            HTShapelessRecipeBuilder
+                .create(molten.bucket)
+                .addIngredients(sap.bucketTag, 2)
+                .addIngredient(Tags.Items.BUCKETS_EMPTY)
+                .addIngredient(HCItems.MAGMA_SHARD)
+                .saveSuffixed(output, "_from_sap")
+            // Log -> Sap
+            val log: TagKey<Item> = data.base ?: continue
+            HTShapelessRecipeBuilder
+                .create(sap.bucket)
+                .addIngredients(log, 4)
+                .addIngredient(Tags.Items.BUCKETS_EMPTY)
+                .addIngredient(HCCommonTags.Items.TOOLS_HAMMER)
+                .saveSuffixed(output, "_from_log")
+        }
+
+        // Eldritch
+        HTShapelessRecipeBuilder
+            .create(HCFluids.ELDRITCH_FLUX.bucket)
+            .addIngredient(HCFluids.CRIMSON_BLOOD.bucketTag)
+            .addIngredient(HCFluids.DEW_OF_THE_WARP.bucketTag)
+            .addIngredient(HCModTags.Items.ELDRITCH_PEARL_BINDER)
+            .addIngredient(Tags.Items.BUCKETS_EMPTY)
+            .saveSuffixed(output, "_from_mix")
     }
 
     @JvmStatic

@@ -26,6 +26,7 @@ class HCEnglishLangProvider(output: PackOutput) : HTLangProvider.English(output,
         add(HCItems.SYNTHETIC_LEATHER, "Synthetic Leather")
         add(HCItems.TAR, "Tar")
 
+        add(HCItems.CRYOGEN_POWDER, "Cryogen Powder")
         add(HCItems.LUMINOUS_PASTE, "Luminous Paste")
         add(HCItems.MAGMA_SHARD, "Magma Shard")
         add(HCItems.ELDER_HEART, "Elder Heart")

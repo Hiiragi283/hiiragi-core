@@ -55,6 +55,9 @@ object HCItems {
 
     // Mob
     @JvmField
+    val CRYOGEN_POWDER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("cryogen_powder")
+
+    @JvmField
     val LUMINOUS_PASTE: HTSimpleDeferredItem = REGISTER.registerSimpleItem("luminous_paste")
 
     @JvmField

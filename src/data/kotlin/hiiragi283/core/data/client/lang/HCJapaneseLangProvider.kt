@@ -30,7 +30,8 @@ class HCJapaneseLangProvider(output: PackOutput) : HTLangProvider.Japanese(outpu
         add(HCItems.SYNTHETIC_LEATHER, "合成牛皮")
         add(HCItems.TAR, "タール")
 
-        add(HCItems.LUMINOUS_PASTE, "傾向ペースト")
+        add(HCItems.CRYOGEN_POWDER, "クライオジェンパウダー")
+        add(HCItems.LUMINOUS_PASTE, "蛍光ペースト")
         add(HCItems.MAGMA_SHARD, "マグマシャード")
         add(HCItems.ELDER_HEART, "エルダーの心臓")
         add(HCItems.WITHER_STAR, "ウィザースター")
