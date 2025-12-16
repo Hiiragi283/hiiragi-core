@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "minecraft:stone_crafting_materials"
+    },
+    "B": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "ABA",
+    " B "
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:stone_hammer"
+  }
+}

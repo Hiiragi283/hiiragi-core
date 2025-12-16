@@ -12,6 +12,7 @@ import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.registry.toHolderLike
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.common.item.HTToolType
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.setup.HCBlocks
@@ -33,6 +34,7 @@ class HCItemTagsProvider(private val blockTags: CompletableFuture<TagLookup<Bloc
         copyTags()
 
         material(factory)
+        tool(factory)
     }
 
     //    Copy    //
@@ -80,6 +82,16 @@ class HCItemTagsProvider(private val blockTags: CompletableFuture<TagLookup<Bloc
 
     private fun addBaseMaterial(factory: BuilderFactory<Item>, material: HCMaterial, item: ItemLike) {
         addMaterial(factory, material.basePrefix, material).addItem(item)
+    }
+
+    //    Tool    //
+
+    private fun tool(factory: BuilderFactory<Item>) {
+        HCItems.TOOLS.forEach { (toolType: HTToolType<*>, _, item: HTIdLike) ->
+            for (tagKey: TagKey<Item> in toolType.getToolTags()) {
+                factory.apply(tagKey).add(item)
+            }
+        }
     }
 
     //    Extensions    //

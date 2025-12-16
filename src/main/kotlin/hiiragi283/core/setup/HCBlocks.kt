@@ -2,8 +2,8 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.buildTable
+import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
-import hiiragi283.core.api.material.prefix.HTMaterialTable
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.registry.HTSimpleDeferredBlock
@@ -23,7 +23,7 @@ object HCBlocks {
     }
 
     @JvmStatic
-    val MATERIALS: HTMaterialTable<HTSimpleDeferredBlock> = buildTable {
+    val MATERIALS: HTMaterialTable<HTMaterialPrefix, HTSimpleDeferredBlock> = buildTable {
         // Storage Blocks
         for (material: HCMaterial in HCMaterial.entries) {
             val properties: BlockBehaviour.Properties = getStorageProp(material) ?: continue

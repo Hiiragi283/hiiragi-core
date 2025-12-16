@@ -2,7 +2,7 @@
   "type": "minecraft:smelting",
   "category": "misc",
   "cookingtime": 200,
-  "experience": 0.15,
+  "experience": 0.5,
   "ingredient": {
     "item": "hiiragi_core:raw_plastic"
   },

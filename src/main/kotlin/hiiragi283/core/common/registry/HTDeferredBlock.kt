@@ -1,10 +1,10 @@
 package hiiragi283.core.common.registry
 
+import hiiragi283.core.api.item.HTBlockItem
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTDoubleDeferredHolder
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.HTHasTranslationKey
-import hiiragi283.core.common.item.HTBlockItem
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.ItemLike

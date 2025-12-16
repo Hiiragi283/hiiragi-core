@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:ingots/azure_steel"
+    },
+    {
+      "tag": "c:tools/hammer"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:azure_steel_dust"
+  }
+}

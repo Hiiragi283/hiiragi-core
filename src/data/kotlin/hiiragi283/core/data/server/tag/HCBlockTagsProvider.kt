@@ -11,8 +11,10 @@ import hiiragi283.core.api.registry.toHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
+import hiiragi283.core.common.tag.HCModTags
 import hiiragi283.core.setup.HCBlocks
 import net.minecraft.core.registries.Registries
+import net.minecraft.tags.BlockTags
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 
@@ -28,6 +30,7 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
 
     override fun addTagsInternal(factory: BuilderFactory<Block>) {
         material(factory)
+        tool(factory)
     }
 
     //    Material    //
@@ -40,5 +43,14 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
         for ((material: HCMaterial, block: HTIdLike) in VANILLA_STORAGE_BLOCKS) {
             addMaterial(factory, HCMaterialPrefixes.STORAGE_BLOCK, material).add(block)
         }
+    }
+
+    //    Tool    //
+
+    private fun tool(factory: BuilderFactory<Block>) {
+        factory
+            .apply(HCModTags.Blocks.MINEABLE_WITH_HAMMER)
+            .addTag(BlockTags.MINEABLE_WITH_PICKAXE)
+            .addTag(BlockTags.MINEABLE_WITH_SHOVEL)
     }
 }

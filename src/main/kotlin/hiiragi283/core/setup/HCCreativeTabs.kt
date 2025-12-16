@@ -54,4 +54,13 @@ object HCCreativeTabs {
             }.forEach(output::accept)
         }
     }
+
+    @JvmField
+    val TOOL: HTDeferredHolder<CreativeModeTab, CreativeModeTab> = REGISTER.registerSimpleTab(
+        "tool",
+        HCTranslation.CREATIVE_TAB_TOOL,
+        Items.DIAMOND_PICKAXE.builtInRegistryHolder(),
+    ) { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
+        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCItems.TOOLS.values)
+    }
 }

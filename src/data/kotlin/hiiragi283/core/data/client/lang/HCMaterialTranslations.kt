@@ -11,6 +11,7 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.text.HTHasTranslationKey
+import hiiragi283.core.common.item.HTToolType
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.setup.HCBlocks
@@ -70,16 +71,22 @@ object HCMaterialTranslations {
 
     @JvmStatic
     fun addTranslations(provider: HTLangProvider) {
+        val langType: HTLanguageType = provider.langType
         for (material: HCMaterial in HCMaterial.entries) {
             // Block
             for ((prefix: HTMaterialPrefix, block: HTHasTranslationKey) in HCBlocks.MATERIALS.column(material)) {
-                val name: String = translate(provider.langType, prefix, material) ?: continue
+                val name: String = translate(langType, prefix, material) ?: continue
                 provider.add(block, name)
             }
             // Item
             for ((prefix: HTMaterialPrefix, item: HTHasTranslationKey) in HCItems.MATERIALS.column(material)) {
-                val name: String = translate(provider.langType, prefix, material) ?: continue
+                val name: String = translate(langType, prefix, material) ?: continue
                 provider.add(item, name)
+            }
+            // Tool
+            for ((toolType: HTToolType<*>, tool: HTHasTranslationKey) in HCItems.TOOLS.column(material)) {
+                val name: String = toolType.translate(langType, material)
+                provider.add(tool, name)
             }
         }
     }

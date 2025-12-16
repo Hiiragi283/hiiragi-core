@@ -4,6 +4,10 @@ import hiiragi283.core.api.data.lang.HTLanguageType
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
+import net.minecraft.tags.ItemTags
+import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
+import net.neoforged.neoforge.common.Tags
 
 sealed interface HCMaterial : HTMaterialLike.Translatable {
     companion object {
@@ -20,6 +24,9 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
             }
         }
 
+        @JvmStatic
+        fun getPrefixedEntries(): List<Pair<HTMaterialPrefix, HCMaterial>> = entries.map { it.basePrefix to it }
+
         private val dustList: List<HTMaterialPrefix> = listOf(HCMaterialPrefixes.DUST)
     }
 
@@ -30,6 +37,8 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
     fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = getSupportedItemPrefixes()
 
     fun createPath(prefix: HTMaterialPrefix): String = prefix.createPath(this)
+
+    fun getBaseIngredient(): TagKey<Item> = basePrefix.itemTagKey(this)
 
     //    Fuels    //
 
@@ -75,7 +84,7 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         AMETHYST("Amethyst", "アメジスト") {
             override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = dustList
         },
-        DIAMOND("Diamond", "ダイアモンド") {
+        DIAMOND("Diamond", "ダイヤモンド") {
             override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = dustList
         },
         EMERALD("Emerald", "エメラルド") {
@@ -261,18 +270,27 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
 
     enum class Dusts(private val usName: String, private val jpName: String) : HCMaterial {
         // Vanilla
+        WOOD("Wood", "木") {
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = listOf(
+                HCMaterialPrefixes.DUST,
+                HCMaterialPrefixes.PLATE,
+            )
+
+            override fun getBaseIngredient(): TagKey<Item> = ItemTags.PLANKS
+        },
+        STONE("Stone", "石") {
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = listOf()
+
+            override fun getBaseIngredient(): TagKey<Item> = ItemTags.STONE_CRAFTING_MATERIALS
+        },
         REDSTONE("Redstone", "赤石") {
             override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = listOf()
         },
         GLOWSTONE("Glowstone", "グロウストーン") {
             override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = listOf()
         },
-        OBSIDIAN("Obsidian", "黒曜石"),
-        WOOD("Wood", "木") {
-            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = listOf(
-                HCMaterialPrefixes.DUST,
-                HCMaterialPrefixes.PLATE,
-            )
+        OBSIDIAN("Obsidian", "黒曜石") {
+            override fun getBaseIngredient(): TagKey<Item> = Tags.Items.OBSIDIANS
         },
         ;
 

@@ -10,6 +10,7 @@ import hiiragi283.core.common.data.recipe.HTShapelessRecipeBuilder
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
+import hiiragi283.core.common.tag.HCCommonTags
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import net.minecraft.world.item.Items
@@ -29,26 +30,19 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
     @JvmStatic
     private fun baseToDust() {
         for (material: HCMaterial in HCMaterial.entries) {
-            val basePrefix: HTMaterialPrefix = material.basePrefix
-            if (basePrefix == HCMaterialPrefixes.DUST) continue
             val dust: HTSimpleDeferredItem = HCItems.MATERIALS[HCMaterialPrefixes.DUST, material] ?: continue
             // Shaped
-            HTShapedRecipeBuilder
-                .create(dust, 2)
-                .pattern(
-                    "AB",
-                    "CB",
-                ).define('A', Items.FLINT)
-                .define('B', basePrefix, material)
-                .define('C', Items.BOWL)
+            HTShapelessRecipeBuilder
+                .create(dust)
+                .addIngredient(material.getBaseIngredient())
+                .addIngredient(HCCommonTags.Items.TOOLS_HAMMER)
                 .saveSuffixed(output, "_with_manual")
         }
     }
 
     @JvmStatic
     private fun baseToBlock() {
-        for (material: HCMaterial in HCMaterial.entries) {
-            val basePrefix: HTMaterialPrefix = material.basePrefix
+        for ((basePrefix: HTMaterialPrefix, material: HCMaterial) in HCMaterial.getPrefixedEntries()) {
             val block: ItemLike = HCBlocks.MATERIALS[HCMaterialPrefixes.STORAGE_BLOCK, material] ?: continue
             val base: ItemLike = when (material) {
                 HCMaterial.Fuels.CHARCOAL -> Items.CHARCOAL
@@ -73,13 +67,15 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
 
     @JvmStatic
     private fun dustOrRawToBase() {
-        for (material: HCMaterial in HCMaterial.entries) {
-            val basePrefix: HTMaterialPrefix = material.basePrefix
+        for ((basePrefix: HTMaterialPrefix, material: HCMaterial) in HCMaterial.getPrefixedEntries()) {
             if (basePrefix == HCMaterialPrefixes.DUST) continue
             val prefixMap: Map<HTMaterialPrefix, HTSimpleDeferredItem> = HCItems.MATERIALS.column(material)
-            
+
             val base: HTSimpleDeferredItem = prefixMap[basePrefix] ?: continue
-            val items: List<HTSimpleDeferredItem> = arrayOf(HCMaterialPrefixes.DUST, HCMaterialPrefixes.RAW_MATERIAL).mapNotNull(prefixMap::get)
+            val items: List<HTSimpleDeferredItem> = arrayOf(
+                HCMaterialPrefixes.DUST,
+                HCMaterialPrefixes.RAW_MATERIAL,
+            ).mapNotNull(prefixMap::get)
             if (items.isEmpty()) continue
 
             // Smelting & Blasting

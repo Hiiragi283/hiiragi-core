@@ -12,5 +12,6 @@ class HCJapaneseLangProvider(output: PackOutput) : HTLangProvider.Japanese(outpu
 
         // Translation
         add(HCTranslation.CREATIVE_TAB_MATERIAL, "Hiiragi Core - 素材")
+        add(HCTranslation.CREATIVE_TAB_TOOL, "Hiiragi Core - 道具")
     }
 }
