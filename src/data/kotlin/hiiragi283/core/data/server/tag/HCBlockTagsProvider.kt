@@ -33,7 +33,7 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
     //    Material    //
 
     private fun material(factory: BuilderFactory<Block>) {
-        HCBlocks.MATERIAL.forEach { (prefix: HTMaterialPrefix, key: HTMaterialKey, block: HTIdLike) ->
+        HCBlocks.MATERIALS.forEach { (prefix: HTMaterialPrefix, key: HTMaterialKey, block: HTIdLike) ->
             addMaterial(factory, prefix, key).add(block)
         }
 

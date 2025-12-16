@@ -18,7 +18,7 @@ class HCDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.out
 
         fun addFuels(material: HTMaterialLike, time: Int) {
             // Block
-            for ((prefix: HTMaterialPrefix, _) in HCBlocks.MATERIAL.column(material)) {
+            for ((prefix: HTMaterialPrefix, _) in HCBlocks.MATERIALS.column(material)) {
                 furnace.add(prefix.itemTagKey(material), FurnaceFuel(time * 10), false)
             }
             // Item

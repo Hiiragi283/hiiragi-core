@@ -39,7 +39,7 @@ class HCItemTagsProvider(private val blockTags: CompletableFuture<TagLookup<Bloc
 
     private fun copyTags() {
         // Material
-        HCBlocks.MATERIAL.forEach { (prefix: HTMaterialPrefix, key: HTMaterialKey, _) ->
+        HCBlocks.MATERIALS.forEach { (prefix: HTMaterialPrefix, key: HTMaterialKey, _) ->
             copy(prefix, key)
         }
         for ((material: HCMaterial, _) in HCBlockTagsProvider.VANILLA_STORAGE_BLOCKS) {

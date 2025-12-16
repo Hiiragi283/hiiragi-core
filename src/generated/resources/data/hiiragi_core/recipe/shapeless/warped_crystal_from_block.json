@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "c:storage_blocks/sulfur"
+      "tag": "c:storage_blocks/warped_crystal"
     }
   ],
   "result": {
     "count": 9,
-    "id": "hiiragi_core:sulfur_gem"
+    "id": "hiiragi_core:warped_crystal"
   }
 }

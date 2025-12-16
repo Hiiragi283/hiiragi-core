@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "c:storage_blocks/azure"
+      "tag": "c:storage_blocks/cinnabar"
     }
   ],
   "result": {
     "count": 9,
-    "id": "hiiragi_core:azure_gem"
+    "id": "hiiragi_core:cinnabar"
   }
 }

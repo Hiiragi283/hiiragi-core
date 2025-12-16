@@ -44,13 +44,13 @@ class HTCookingRecipeBuilder(
         )
 
         @JvmStatic
-        fun smeltingAndBlasting(item: ItemLike, count: Int = 1, builderAction: HTCookingRecipeBuilder.() -> Unit) {
+        inline fun smeltingAndBlasting(item: ItemLike, count: Int = 1, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             smelting(item, count).apply(builderAction)
             blasting(item, count).apply(builderAction)
         }
 
         @JvmStatic
-        fun smeltingAndSmoking(item: ItemLike, count: Int = 1, builderAction: HTCookingRecipeBuilder.() -> Unit) {
+        inline fun smeltingAndSmoking(item: ItemLike, count: Int = 1, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             smelting(item, count).apply(builderAction)
             smoking(item, count).apply(builderAction)
         }

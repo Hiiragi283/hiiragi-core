@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
+import hiiragi283.core.common.data.recipe.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.HTShapelessRecipeBuilder
 import hiiragi283.core.common.material.HCMaterial
@@ -18,6 +19,8 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
     override fun buildRecipeInternal() {
         baseToDust()
         baseToBlock()
+
+        dustOrRawToBase()
 
         ingotToGear()
         ingotToNugget()
@@ -46,7 +49,7 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
     private fun baseToBlock() {
         for (material: HCMaterial in HCMaterial.entries) {
             val basePrefix: HTMaterialPrefix = material.basePrefix
-            val block: ItemLike = HCBlocks.MATERIAL[HCMaterialPrefixes.STORAGE_BLOCK, material] ?: continue
+            val block: ItemLike = HCBlocks.MATERIALS[HCMaterialPrefixes.STORAGE_BLOCK, material] ?: continue
             val base: ItemLike = when (material) {
                 HCMaterial.Fuels.CHARCOAL -> Items.CHARCOAL
                 HCMaterial.Gems.ECHO -> Items.ECHO_SHARD
@@ -65,6 +68,26 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
                 .define('A', basePrefix, material)
                 .define('B', base)
                 .saveSuffixed(output, "_from_${basePrefix.name}")
+        }
+    }
+
+    @JvmStatic
+    private fun dustOrRawToBase() {
+        for (material: HCMaterial in HCMaterial.entries) {
+            val basePrefix: HTMaterialPrefix = material.basePrefix
+            if (basePrefix == HCMaterialPrefixes.DUST) continue
+            val prefixMap: Map<HTMaterialPrefix, HTSimpleDeferredItem> = HCItems.MATERIALS.column(material)
+            
+            val base: HTSimpleDeferredItem = prefixMap[basePrefix] ?: continue
+            val items: List<HTSimpleDeferredItem> = arrayOf(HCMaterialPrefixes.DUST, HCMaterialPrefixes.RAW_MATERIAL).mapNotNull(prefixMap::get)
+            if (items.isEmpty()) continue
+
+            // Smelting & Blasting
+            HTCookingRecipeBuilder.smeltingAndBlasting(base) {
+                addIngredient(items)
+                setExp(0.5f)
+                save(output)
+            }
         }
     }
 

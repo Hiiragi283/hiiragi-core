@@ -91,7 +91,12 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         SULFUR("Sulfur", "硫黄"),
 
         // Hiiragi Series
-        AZURE("Azure Shard", "紺碧の欠片"),
+        AZURE("Azure Shard", "紺碧の欠片") {
+            override fun createPath(prefix: HTMaterialPrefix): String = when (prefix) {
+                HCMaterialPrefixes.GEM -> "azure_shard"
+                else -> super.createPath(prefix)
+            }
+        },
         CRIMSON_CRYSTAL("Crimson Crystal", "深紅のクリスタリル"),
         WARPED_CRYSTAL("Warped Crystal", "歪んだクリスタリル"),
         ;

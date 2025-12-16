@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.15,
+  "ingredient": {
+    "item": "hiiragi_core:warped_crystal_dust"
+  },
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:warped_crystal"
+  }
+}

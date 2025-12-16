@@ -30,7 +30,7 @@ object HCMaterialPrefixes {
     val GEAR = HTMaterialPrefix("gear")
 
     @JvmField
-    val GEM = HTMaterialPrefix("gem")
+    val GEM = HTMaterialPrefix("gem", "%s")
 
     @JvmField
     val INGOT = HTMaterialPrefix("ingot")

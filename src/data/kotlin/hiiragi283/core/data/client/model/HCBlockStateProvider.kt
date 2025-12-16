@@ -17,7 +17,7 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(con
         // Material
         val storageBlock: HTMaterialPrefix = HCMaterialPrefixes.STORAGE_BLOCK
         for (material: HCMaterial in HCMaterial.entries) {
-            val block: HTHolderLike<Block, Block> = HCBlocks.MATERIAL[storageBlock, material] ?: continue
+            val block: HTHolderLike<Block, Block> = HCBlocks.MATERIALS[storageBlock, material] ?: continue
             val textureId: ResourceLocation = HiiragiCoreAPI.id("block", storageBlock.name, material.asMaterialName())
             if (existTexture(textureId)) {
                 altTextureBlock(block, textureId)

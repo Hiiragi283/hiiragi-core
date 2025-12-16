@@ -23,7 +23,7 @@ object HCBlocks {
     }
 
     @JvmStatic
-    val MATERIAL: HTMaterialTable<HTSimpleDeferredBlock> = buildTable {
+    val MATERIALS: HTMaterialTable<HTSimpleDeferredBlock> = buildTable {
         // Storage Blocks
         for (material: HCMaterial in HCMaterial.entries) {
             val properties: BlockBehaviour.Properties = getStorageProp(material) ?: continue

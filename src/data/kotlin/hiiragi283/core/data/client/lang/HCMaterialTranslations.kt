@@ -72,7 +72,7 @@ object HCMaterialTranslations {
     fun addTranslations(provider: HTLangProvider) {
         for (material: HCMaterial in HCMaterial.entries) {
             // Block
-            for ((prefix: HTMaterialPrefix, block: HTHasTranslationKey) in HCBlocks.MATERIAL.column(material)) {
+            for ((prefix: HTMaterialPrefix, block: HTHasTranslationKey) in HCBlocks.MATERIALS.column(material)) {
                 val name: String = translate(provider.langType, prefix, material) ?: continue
                 provider.add(block, name)
             }
