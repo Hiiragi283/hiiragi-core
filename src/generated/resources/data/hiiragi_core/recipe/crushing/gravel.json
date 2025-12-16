@@ -1,0 +1,10 @@
+{
+  "type": "hiiragi_core:crushing",
+  "exp": "1/10",
+  "ingredient": "#c:cobblestones",
+  "results": {
+    "count": 1,
+    "id": "minecraft:gravel"
+  },
+  "time": 200
+}

@@ -62,9 +62,9 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
     /**
      * [HTStackSlot]の基本的な実装
      */
-    abstract class Basic<STACK : ImmutableStack<*, STACK>> :
-        HTStackSlot<STACK>,
-        HTStackSetter<STACK> {
+    abstract class Basic<STACK : ImmutableStack<*, STACK>> : HTStackSlot<STACK> {
+        abstract fun setStack(stack: STACK?)
+
         /**
          * 指定された引数をもとに，現在保持しているスタックの個数を変更します。
          * @param stack 現在のスタック

@@ -1,0 +1,10 @@
+{
+  "type": "hiiragi_core:crushing",
+  "exp": "2/5",
+  "ingredient": "#c:sandstone/red_blocks",
+  "results": {
+    "count": 4,
+    "id": "minecraft:red_sand"
+  },
+  "time": 200
+}

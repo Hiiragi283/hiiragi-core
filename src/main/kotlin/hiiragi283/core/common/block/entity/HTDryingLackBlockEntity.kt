@@ -1,12 +1,16 @@
 package hiiragi283.core.common.block.entity
 
+import hiiragi283.core.api.math.plus
 import hiiragi283.core.api.recipe.HTRecipeCache
 import hiiragi283.core.api.recipe.input.HTRecipeInput
 import hiiragi283.core.api.stack.toImmutable
 import hiiragi283.core.api.storage.HTHandlerProvider
+import hiiragi283.core.api.storage.HTStorageAction
+import hiiragi283.core.api.storage.item.HTItemHandler
+import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.common.recipe.HTDryingRecipe
 import hiiragi283.core.common.recipe.HTFinderRecipeCache
-import hiiragi283.core.common.storage.item.HTSingleItemHandler
+import hiiragi283.core.common.storage.item.HTBasicItemSlot
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.core.BlockPos
@@ -17,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.energy.IEnergyStorage
 import net.neoforged.neoforge.fluids.capability.IFluidHandler
 import net.neoforged.neoforge.items.IItemHandler
+import org.apache.commons.lang3.math.Fraction
 
 class HTDryingLackBlockEntity(pos: BlockPos, state: BlockState) :
     HTExtendedBlockEntity(HCBlockEntityTypes.DRYING_LACK, pos, state),
@@ -41,17 +46,19 @@ class HTDryingLackBlockEntity(pos: BlockPos, state: BlockState) :
     private var maxProgress: Int = 0
     private var isDrying = false
     private var isComplete = false
-    private var stack: ItemStack = ItemStack.EMPTY
+    val slot: HTBasicItemSlot = HTBasicItemSlot.create(::setOnlySave, 0, 0, 1)
+    var storedExp: Fraction = Fraction.ZERO
+        private set
     private val recipeCache: HTRecipeCache<HTRecipeInput, HTDryingRecipe> = HTFinderRecipeCache(HCRecipeTypes.DRYING)
 
     private fun tick(level: Level, pos: BlockPos): Boolean {
         if (isComplete) {
-            if (stack.isEmpty) {
+            if (slot.getStack() == null) {
                 return false
             }
             isComplete = false
         }
-        val input: HTRecipeInput = HTRecipeInput.create(pos) { items += stack.toImmutable() } ?: run {
+        val input: HTRecipeInput = HTRecipeInput.create(pos) { items += slot.getStack() } ?: run {
             isComplete = true
             return false
         }
@@ -68,7 +75,8 @@ class HTDryingLackBlockEntity(pos: BlockPos, state: BlockState) :
             return true
         } else {
             val result: ItemStack = recipe.assembleItem(input, level.registryAccess())?.unwrap() ?: return false
-            stack = result
+            slot.setStack(result.toImmutable())
+            storedExp += recipe.exp
             isDrying = false
             isComplete = true
             progress = 0
@@ -84,24 +92,32 @@ class HTDryingLackBlockEntity(pos: BlockPos, state: BlockState) :
 
     override fun getEnergyStorage(direction: Direction?): IEnergyStorage? = null
 
-    private inner class LackItemHandler(private val side: Direction?) : HTSingleItemHandler(this::stack) {
-        override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack = when {
-            side == Direction.UP -> super.insertItem(slot, stack, simulate)
+    private inner class LackItemHandler(private val side: Direction?) : HTItemHandler {
+        override fun getItemSlots(side: Direction?): List<HTItemSlot> = listOf(slot)
+
+        override fun insertItem(
+            slot: Int,
+            stack: ItemStack,
+            action: HTStorageAction,
+            side: Direction?,
+        ): ItemStack = when {
+            this.side == Direction.UP -> super.insertItem(slot, stack, action, side)
             else -> stack
         }
 
-        override fun extractItem(slot: Int, amount: Int, simulate: Boolean): ItemStack = when {
-            side == Direction.DOWN && !isDrying && isComplete -> super.extractItem(slot, amount, simulate)
+        override fun extractItem(
+            slot: Int,
+            amount: Int,
+            action: HTStorageAction,
+            side: Direction?,
+        ): ItemStack = when {
+            this.side == Direction.DOWN && !isDrying && isComplete -> super.extractItem(slot, amount, action, side)
             else -> ItemStack.EMPTY
         }
 
-        override fun getSlotLimit(slot: Int): Int = when {
-            side == Direction.UP -> 1
-            else -> super.getSlotLimit(slot)
-        }
-
-        override fun onContentsChanged() {
-            setOnlySave()
+        override fun getSlotLimit(slot: Int, side: Direction?): Int = when {
+            this.side == Direction.UP -> 1
+            else -> super.getSlotLimit(slot, side)
         }
     }
 }

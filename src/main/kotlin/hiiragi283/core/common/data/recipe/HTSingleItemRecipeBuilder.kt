@@ -4,8 +4,8 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.HTStackRecipeBuilder
 import hiiragi283.core.api.math.toFraction
 import hiiragi283.core.api.stack.ImmutableItemStack
+import hiiragi283.core.common.recipe.HTCrushingRecipe
 import hiiragi283.core.common.recipe.HTDryingRecipe
-import hiiragi283.core.common.recipe.HTFrostingRecipe
 import hiiragi283.core.common.recipe.HTSingleItemRecipe
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
@@ -17,20 +17,20 @@ class HTSingleItemRecipeBuilder(prefix: String, private val factory: Factory<*>,
     HTStackRecipeBuilder.Single<HTSingleItemRecipeBuilder>(prefix, stack) {
     companion object {
         @JvmStatic
+        fun crushing(stack: ImmutableItemStack): HTSingleItemRecipeBuilder =
+            HTSingleItemRecipeBuilder(HTConst.CRUSHING, ::HTCrushingRecipe, stack)
+
+        @JvmStatic
         fun drying(stack: ImmutableItemStack): HTSingleItemRecipeBuilder =
             HTSingleItemRecipeBuilder(HTConst.DRYING, ::HTDryingRecipe, stack)
 
         @JvmStatic
-        fun frosting(stack: ImmutableItemStack): HTSingleItemRecipeBuilder =
-            HTSingleItemRecipeBuilder(HTConst.FROSTING, ::HTFrostingRecipe, stack)
+        fun crushing(item: ItemLike, count: Int = 1): HTSingleItemRecipeBuilder =
+            HTSingleItemRecipeBuilder(HTConst.CRUSHING, ::HTCrushingRecipe, item, count)
 
         @JvmStatic
         fun drying(item: ItemLike, count: Int = 1): HTSingleItemRecipeBuilder =
             HTSingleItemRecipeBuilder(HTConst.DRYING, ::HTDryingRecipe, item, count)
-
-        @JvmStatic
-        fun frosting(item: ItemLike, count: Int = 1): HTSingleItemRecipeBuilder =
-            HTSingleItemRecipeBuilder(HTConst.FROSTING, ::HTFrostingRecipe, item, count)
     }
 
     constructor(prefix: String, factory: Factory<*>, item: ItemLike, count: Int) : this(prefix, factory, ImmutableItemStack.of(item, count))

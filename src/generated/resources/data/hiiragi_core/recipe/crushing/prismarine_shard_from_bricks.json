@@ -1,0 +1,10 @@
+{
+  "type": "hiiragi_core:crushing",
+  "exp": "9/10",
+  "ingredient": "minecraft:prismarine_bricks",
+  "results": {
+    "count": 9,
+    "id": "minecraft:prismarine_shard"
+  },
+  "time": 200
+}

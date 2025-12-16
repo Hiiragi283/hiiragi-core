@@ -91,7 +91,16 @@ object BiCodecs {
      */
     @JvmField
     val NON_NEGATIVE_FRACTION: BiCodec<ByteBuf, Fraction> = FRACTION.validate { fraction: Fraction ->
-        check(fraction > Fraction.ZERO) { "Value must be non-negative: $fraction" }
+        check(fraction >= Fraction.ZERO) { "Value must be non-negative: $fraction" }
+        fraction
+    }
+
+    /**
+     * `0`より大きい値を対象とする[Fraction]の[BiCodec]
+     */
+    @JvmField
+    val POSITIVE_FRACTION: BiCodec<ByteBuf, Fraction> = FRACTION.validate { fraction: Fraction ->
+        check(fraction > Fraction.ZERO) { "Value must be positive: $fraction" }
         fraction
     }
 

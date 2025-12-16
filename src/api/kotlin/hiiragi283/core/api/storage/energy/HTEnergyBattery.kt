@@ -20,7 +20,7 @@ interface HTEnergyBattery :
         /**
          * 指定された電気量を代入します。
          */
-        protected abstract fun setAmount(amount: Int)
+        abstract fun setAmount(amount: Int)
 
         override fun insert(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int {
             if (amount <= 0 || !canInsert(access)) return 0

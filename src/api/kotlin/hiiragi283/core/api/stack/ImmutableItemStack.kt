@@ -72,9 +72,7 @@ value class ImmutableItemStack private constructor(private val stack: ItemStack)
 
     override fun getAmount(): Int = stack.count
 
-    override fun copyWithAmount(amount: Int): ImmutableItemStack? {
-        TODO("Not yet implemented")
-    }
+    override fun copyWithAmount(amount: Int): ImmutableItemStack? = unwrap().copyWithCount(amount).toImmutable()
 
     override fun getText(): Component = stack.hoverName
 

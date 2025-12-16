@@ -1,0 +1,10 @@
+{
+  "type": "hiiragi_core:crushing",
+  "exp": 0,
+  "ingredient": "#c:gems/diamond",
+  "results": {
+    "count": 1,
+    "id": "hiiragi_core:diamond_dust"
+  },
+  "time": 200
+}

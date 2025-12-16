@@ -8,11 +8,11 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.text.HTHasTranslationKey
 import net.minecraft.world.level.ItemLike
 
-class HCEmiRecipeCategory(path: String, val icon: EmiStack) :
+class HCEmiRecipeCategory(path: String, val iconStack: EmiStack) :
     EmiRecipeCategory(
         HiiragiCoreAPI.id(path),
-        icon,
-        icon,
+        iconStack,
+        iconStack,
         EmiRecipeSorting.compareOutputThenInput(),
     ),
     HTHasTranslationKey {

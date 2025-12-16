@@ -1,0 +1,10 @@
+{
+  "type": "hiiragi_core:crushing",
+  "exp": "2/5",
+  "ingredient": "minecraft:snow_block",
+  "results": {
+    "count": 4,
+    "id": "minecraft:snowball"
+  },
+  "time": 200
+}

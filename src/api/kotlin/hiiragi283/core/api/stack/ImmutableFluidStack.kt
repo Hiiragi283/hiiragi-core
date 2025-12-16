@@ -36,9 +36,7 @@ value class ImmutableFluidStack private constructor(private val stack: FluidStac
 
     override fun getAmount(): Int = stack.amount
 
-    override fun copyWithAmount(amount: Int): ImmutableFluidStack? {
-        TODO("Not yet implemented")
-    }
+    override fun copyWithAmount(amount: Int): ImmutableFluidStack? = unwrap().copyWithAmount(amount).toImmutable()
 
     override fun getText(): Component = stack.hoverName
 

@@ -47,7 +47,7 @@ class HCJapaneseLangProvider(output: PackOutput) : HTLangProvider.Japanese(outpu
         add(HCTranslation.HIIRAGI_CORE, "Hiiragi Core")
 
         // EMI
+        add(HCEmiRecipeCategories.CRUSHING, "粉砕")
         add(HCEmiRecipeCategories.DRYING, "乾燥")
-        add(HCEmiRecipeCategories.FROSTING, "凍結")
     }
 }

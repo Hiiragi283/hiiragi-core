@@ -2,8 +2,8 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.common.recipe.HTCrushingRecipe
 import hiiragi283.core.common.recipe.HTDryingRecipe
-import hiiragi283.core.common.recipe.HTFrostingRecipe
 import hiiragi283.core.common.recipe.HTSingleItemRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
 import net.minecraft.world.item.crafting.RecipeSerializer
@@ -13,11 +13,14 @@ object HCRecipeSerializers {
     val REGISTER = HTDeferredRecipeSerializerRegister(HiiragiCoreAPI.MOD_ID)
 
     @JvmField
-    val DRYING: RecipeSerializer<HTDryingRecipe> = REGISTER.registerSerializer(HTConst.DRYING, HTSingleItemRecipe.codec(::HTDryingRecipe))
+    val CRUSHING: RecipeSerializer<HTCrushingRecipe> = REGISTER.registerSerializer(
+        HTConst.CRUSHING,
+        HTSingleItemRecipe.codec(::HTCrushingRecipe),
+    )
 
     @JvmField
-    val FROSTING: RecipeSerializer<HTFrostingRecipe> = REGISTER.registerSerializer(
-        HTConst.FROSTING,
-        HTSingleItemRecipe.codec(::HTFrostingRecipe),
+    val DRYING: RecipeSerializer<HTDryingRecipe> = REGISTER.registerSerializer(
+        HTConst.DRYING,
+        HTSingleItemRecipe.codec(::HTDryingRecipe),
     )
 }

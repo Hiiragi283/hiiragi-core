@@ -43,7 +43,7 @@ class HCEnglishLangProvider(output: PackOutput) : HTLangProvider.English(output,
         add(HCTranslation.HIIRAGI_CORE, "Hiiragi Core")
 
         // EMI
+        add(HCEmiRecipeCategories.CRUSHING, "Crushing")
         add(HCEmiRecipeCategories.DRYING, "Drying")
-        add(HCEmiRecipeCategories.FROSTING, "Frosting")
     }
 }

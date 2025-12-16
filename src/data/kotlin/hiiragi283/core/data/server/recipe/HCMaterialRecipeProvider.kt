@@ -9,6 +9,7 @@ import hiiragi283.core.api.registry.HTSimpleFluidContent
 import hiiragi283.core.common.data.recipe.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.HTShapelessRecipeBuilder
+import hiiragi283.core.common.data.recipe.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.HCMoltenCrystalData
@@ -32,19 +33,6 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             .addIngredient(Items.SNOWBALL)
             .addIngredient(Items.WIND_CHARGE)
             .addIngredient(Items.PACKED_ICE)
-            .addIngredient(HCCommonTags.Items.TOOLS_HAMMER)
-            .save(output)
-        // Luminous Paste
-        HTShapelessRecipeBuilder
-            .create(HCItems.LUMINOUS_PASTE)
-            .addIngredient(Items.GLOW_INK_SAC)
-            .addIngredient(HCCommonTags.Items.TOOLS_HAMMER)
-            .save(output)
-        // Magma Shard
-        HTShapelessRecipeBuilder
-            .create(HCItems.MAGMA_SHARD)
-            .addIngredient(Items.MAGMA_BLOCK)
-            .addIngredient(HCCommonTags.Items.TOOLS_HAMMER)
             .save(output)
 
         manual()
@@ -57,6 +45,8 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
 
         ingotToGear()
         ingotToNugget()
+
+        rawToDust()
     }
 
     @JvmStatic
@@ -187,12 +177,11 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
     private fun baseToDust() {
         for (material: HCMaterial in HCMaterial.entries) {
             val dust: HTSimpleDeferredItem = HCItems.MATERIALS[HCMaterialPrefixes.DUST, material] ?: continue
-            // Shaped
-            HTShapelessRecipeBuilder
-                .create(dust)
+            // Crushing
+            HTSingleItemRecipeBuilder
+                .crushing(dust)
                 .addIngredient(material.getBaseIngredient())
-                .addIngredient(HCCommonTags.Items.TOOLS_HAMMER)
-                .saveSuffixed(output, "_with_manual")
+                .saveSuffixed(output, "_from_base")
         }
     }
 
@@ -276,6 +265,20 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
                 .define('A', HCMaterialPrefixes.NUGGET, key)
                 .define('B', nugget)
                 .saveSuffixed(output, "_from_nugget")
+        }
+    }
+
+    @JvmStatic
+    fun rawToDust() {
+        for (material: HCMaterial in HCMaterial.entries) {
+            if (HCMaterialPrefixes.RAW_MATERIAL !in material.getSupportedItemPrefixes()) continue
+            val dust: HTSimpleDeferredItem = HCItems.MATERIALS[HCMaterialPrefixes.DUST, material] ?: continue
+            // Crushing
+            HTSingleItemRecipeBuilder
+                .crushing(dust, 12)
+                .addIngredient(HCMaterialPrefixes.RAW_MATERIAL, material)
+                .setExp(1.2f)
+                .saveSuffixed(output, "_from_raw_block")
         }
     }
 }
