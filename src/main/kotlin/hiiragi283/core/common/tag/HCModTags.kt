@@ -28,6 +28,9 @@ object HCModTags {
     //    Items    //
 
     object Items {
+        @JvmField
+        val ELDRITCH_PEARL_BINDER: TagKey<Item> = create("eldritch_pearl_binder")
+
         @JvmStatic
         private fun create(path: String): TagKey<Item> = create(HiiragiCoreAPI.id(path))
 

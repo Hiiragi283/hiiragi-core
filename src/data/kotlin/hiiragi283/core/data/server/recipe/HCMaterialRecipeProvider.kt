@@ -3,6 +3,7 @@ package hiiragi283.core.data.server.recipe
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.getOrThrow
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.common.data.recipe.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.HTShapedRecipeBuilder
@@ -11,13 +12,56 @@ import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import hiiragi283.core.common.tag.HCCommonTags
+import hiiragi283.core.common.tag.HCModTags
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.ItemLike
 
 object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipeInternal() {
+        // Amethyst + Lapis -> Azure Shard
+        HTShapelessRecipeBuilder
+            .create(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.DUST, HCMaterial.Gems.AZURE), 4)
+            .addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Gems.AMETHYST, 2)
+            .addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Gems.LAPIS, 2)
+            .saveSuffixed(output, "_from_mix")
+
+        // Eldritch
+        HTShapelessRecipeBuilder
+            .create(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.DUST, HCMaterial.Pearls.ELDRITCH), 2)
+            .addIngredient(HCFluids.CRIMSON_BLOOD.bucketTag)
+            .addIngredient(HCFluids.DEW_OF_THE_WARP.bucketTag)
+            .addIngredient(HCModTags.Items.ELDRITCH_PEARL_BINDER)
+            .saveSuffixed(output, "_from_mix")
+
+        // Netherite Scrap + Azure Steel -> Deep Steel
+        HTShapelessRecipeBuilder
+            .create(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.DUST, HCMaterial.Alloys.NETHERITE))
+            .addIngredients(HCMaterialPrefixes.SCRAP, HCMaterial.Alloys.NETHERITE, 4)
+            .addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Metals.GOLD, 4)
+            .saveSuffixed(output, "_from_mix")
+        // Azure Shard + Iron -> Azure Steel
+        HTShapelessRecipeBuilder
+            .create(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.DUST, HCMaterial.Alloys.AZURE_STEEL))
+            .addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Gems.AZURE, 2)
+            .addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Metals.IRON)
+            .saveSuffixed(output, "_from_mix")
+        // Deep Scrap + Azure Steel -> Deep Steel
+        HTShapelessRecipeBuilder
+            .create(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.DUST, HCMaterial.Alloys.DEEP_STEEL))
+            .addIngredients(HCMaterialPrefixes.SCRAP, HCMaterial.Alloys.DEEP_STEEL, 4)
+            .addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Alloys.AZURE_STEEL, 4)
+            .saveSuffixed(output, "_from_mix")
+        // Gold + Obsidian + Blackstone -> Night Metal
+        HTShapelessRecipeBuilder
+            .create(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.DUST, HCMaterial.Alloys.NIGHT_METAL))
+            .addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Metals.GOLD)
+            .addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Dusts.OBSIDIAN)
+            .addIngredients(Items.BLACKSTONE, count = 4)
+            .saveSuffixed(output, "_from_mix")
+
         baseToDust()
         baseToBlock()
 

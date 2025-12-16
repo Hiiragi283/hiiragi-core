@@ -16,6 +16,7 @@ import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.common.item.HTToolType
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
+import hiiragi283.core.common.tag.HCModTags
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
@@ -40,6 +41,8 @@ class HCItemTagsProvider(private val blockTags: CompletableFuture<TagLookup<Bloc
 
         tool(factory)
         bucket(factory)
+
+        misc(factory)
     }
 
     //    Copy    //
@@ -105,6 +108,16 @@ class HCItemTagsProvider(private val blockTags: CompletableFuture<TagLookup<Bloc
         for (content: HTFluidContent<*, *, *> in HCFluids.REGISTER.entries) {
             addTags(factory, Tags.Items.BUCKETS, content.bucketTag).add(content.bucket)
         }
+    }
+
+    //    Misc    //
+
+    private fun misc(factory: BuilderFactory<Item>) {
+        factory
+            .apply(HCModTags.Items.ELDRITCH_PEARL_BINDER)
+            .addItem(Items.GHAST_TEAR)
+            .addItem(Items.PHANTOM_MEMBRANE)
+            .addItem(Items.WIND_CHARGE)
     }
 
     //    Extensions    //

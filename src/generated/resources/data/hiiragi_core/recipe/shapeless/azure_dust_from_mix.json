@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:dusts/amethyst"
+    },
+    {
+      "tag": "c:dusts/amethyst"
+    },
+    {
+      "tag": "c:dusts/lapis"
+    },
+    {
+      "tag": "c:dusts/lapis"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "hiiragi_core:azure_dust"
+  }
+}

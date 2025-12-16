@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:scraps/netherite"
+    },
+    {
+      "tag": "c:scraps/netherite"
+    },
+    {
+      "tag": "c:scraps/netherite"
+    },
+    {
+      "tag": "c:scraps/netherite"
+    },
+    {
+      "tag": "c:dusts/gold"
+    },
+    {
+      "tag": "c:dusts/gold"
+    },
+    {
+      "tag": "c:dusts/gold"
+    },
+    {
+      "tag": "c:dusts/gold"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:netherite_dust"
+  }
+}

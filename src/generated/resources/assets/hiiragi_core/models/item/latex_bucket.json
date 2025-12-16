@@ -1,0 +1,6 @@
+{
+  "parent": "neoforge:item/bucket_drip",
+  "flip_gas": false,
+  "fluid": "hiiragi_core:latex",
+  "loader": "neoforge:fluid_container"
+}

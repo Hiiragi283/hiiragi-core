@@ -15,6 +15,12 @@ class HCEnglishLangProvider(output: PackOutput) : HTLangProvider.English(output,
         addFluid(HCFluids.HONEY, "Honey")
         addFluid(HCFluids.MUSHROOM_STEW, "Mushroom Stew")
 
+        addFluid(HCFluids.LATEX, "Latex")
+        addFluid(HCFluids.CRIMSON_SAP, "Crimson Sap")
+        addFluid(HCFluids.WARPED_SAP, "Warped Sap")
+
+        // Item
+
         // Translation
         add(HCTranslation.CREATIVE_TAB_MATERIAL, "Hiiragi Core - Material")
         add(HCTranslation.CREATIVE_TAB_TOOL, "Hiiragi Core - Tool")

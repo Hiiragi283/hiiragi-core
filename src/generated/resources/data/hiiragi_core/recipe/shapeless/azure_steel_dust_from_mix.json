@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:dusts/azure"
+    },
+    {
+      "tag": "c:dusts/azure"
+    },
+    {
+      "tag": "c:dusts/iron"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:azure_steel_dust"
+  }
+}

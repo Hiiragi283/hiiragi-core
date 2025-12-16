@@ -12,6 +12,7 @@ import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTSimpleFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.common.material.HCMoltenCrystalData
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.resources.ResourceLocation
@@ -36,11 +37,18 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(conte
     }
 
     private fun registerBuckets() {
-        val dripFluids: List<HTSimpleFluidContent> = listOf(
-            HCFluids.HONEY,
-            HCFluids.MUSHROOM_STEW,
-        )
+        val dripFluids: List<HTSimpleFluidContent> = buildList {
+            // Vanilla
+            add(HCFluids.HONEY)
+            add(HCFluids.MUSHROOM_STEW)
+            // Saps
+            add(HCFluids.LATEX)
 
+            for (data: HCMoltenCrystalData in HCMoltenCrystalData.entries) {
+                data.sap?.let(::add)
+                add(data.molten)
+            }
+        }
         for (content: HTFluidContent<*, *, *> in HCFluids.REGISTER.entries) {
             val parent: ResourceLocation = when (content) {
                 in dripFluids -> "bucket_drip"
