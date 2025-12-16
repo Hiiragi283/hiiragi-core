@@ -1,6 +1,7 @@
 package hiiragi283.core.api.data
 
 import net.minecraft.data.DataProvider
+import net.neoforged.neoforge.data.event.GatherDataEvent
 
 /**
  * [DataProvider]を登録するインターフェース
@@ -9,6 +10,8 @@ import net.minecraft.data.DataProvider
  */
 interface HTDataGenerator {
     fun <DATA : DataProvider> addProvider(factory: DataProvider.Factory<DATA>): DATA
+
+    fun <DATA : DataProvider> addProvider(factory: GatherDataEvent.DataProviderFromOutputLookup<DATA>): DATA
 
     fun <DATA : DataProvider> addProvider(factory: Factory<DATA>): DATA
 

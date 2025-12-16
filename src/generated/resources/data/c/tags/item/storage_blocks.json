@@ -1,0 +1,26 @@
+{
+  "values": [
+    "#c:storage_blocks/amethyst",
+    "#c:storage_blocks/azure",
+    "#c:storage_blocks/azure_steel",
+    "#c:storage_blocks/carbide",
+    "#c:storage_blocks/charcoal",
+    "#c:storage_blocks/cinnabar",
+    "#c:storage_blocks/coal_coke",
+    "#c:storage_blocks/crimson_crystal",
+    "#c:storage_blocks/deep_steel",
+    "#c:storage_blocks/echo",
+    "#c:storage_blocks/eldritch",
+    "#c:storage_blocks/ender",
+    "#c:storage_blocks/glowstone",
+    "#c:storage_blocks/night_metal",
+    "#c:storage_blocks/plastic",
+    "#c:storage_blocks/quartz",
+    "#c:storage_blocks/raw_rubber",
+    "#c:storage_blocks/rubber",
+    "#c:storage_blocks/saltpeter",
+    "#c:storage_blocks/steel",
+    "#c:storage_blocks/sulfur",
+    "#c:storage_blocks/warped_crystal"
+  ]
+}

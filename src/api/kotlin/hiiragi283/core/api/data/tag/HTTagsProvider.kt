@@ -6,22 +6,34 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.registry.RegistryKey
 import net.minecraft.core.HolderLookup
+import net.minecraft.core.Registry
+import net.minecraft.data.PackOutput
 import net.minecraft.data.tags.TagsProvider
+import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagEntry
 import net.minecraft.tags.TagKey
+import net.neoforged.neoforge.common.data.ExistingFileHelper
+import java.util.concurrent.CompletableFuture
 import java.util.function.Function
 
 /**
  * [HTTagBuilder]に基づいた[TagsProvider]の拡張クラス
  */
-abstract class HTTagsProvider<T : Any>(modId: String, registryKey: RegistryKey<T>, context: HTDataGenContext) :
-    TagsProvider<T>(
+abstract class HTTagsProvider<T : Any>(
+    output: PackOutput,
+    registryKey: ResourceKey<out Registry<T>>,
+    lookupProvider: CompletableFuture<HolderLookup.Provider>,
+    modId: String,
+    existingFileHelper: ExistingFileHelper?,
+) : TagsProvider<T>(output, registryKey, lookupProvider, modId, existingFileHelper) {
+    constructor(modId: String, registryKey: RegistryKey<T>, context: HTDataGenContext) : this(
         context.output,
         registryKey,
         context.registries,
         modId,
         context.fileHelper,
-    ) {
+    )
+
     companion object {
         @JvmField
         val COMPARATOR: Comparator<TagEntry> = Comparator

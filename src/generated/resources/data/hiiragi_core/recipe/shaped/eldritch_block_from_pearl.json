@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "c:pearls/eldritch"
+    },
+    "B": {
+      "item": "hiiragi_core:eldritch_pearl"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "ABA",
+    "AAA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:eldritch_block"
+  }
+}

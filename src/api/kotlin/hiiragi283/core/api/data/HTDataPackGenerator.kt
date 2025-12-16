@@ -5,6 +5,7 @@ import net.minecraft.data.DataGenerator
 import net.minecraft.data.DataProvider
 import net.minecraft.data.PackOutput
 import net.neoforged.neoforge.common.data.ExistingFileHelper
+import net.neoforged.neoforge.data.event.GatherDataEvent
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -16,6 +17,9 @@ data class HTDataPackGenerator(
     val fileHelper: ExistingFileHelper,
 ) : HTDataGenerator {
     override fun <DATA : DataProvider> addProvider(factory: DataProvider.Factory<DATA>): DATA = generator.addProvider(factory)
+
+    override fun <DATA : DataProvider> addProvider(factory: GatherDataEvent.DataProviderFromOutputLookup<DATA>): DATA =
+        addProvider { output: PackOutput -> factory.create(output, registries) }
 
     override fun <DATA : DataProvider> addProvider(factory: HTDataGenerator.Factory<DATA>): DATA =
         addProvider { output: PackOutput -> factory.create(HTDataGenContext(output, registries, fileHelper)) }

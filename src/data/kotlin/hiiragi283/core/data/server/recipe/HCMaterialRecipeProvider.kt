@@ -9,6 +9,7 @@ import hiiragi283.core.common.data.recipe.HTShapelessRecipeBuilder
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
+import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.ItemLike
@@ -16,6 +17,7 @@ import net.minecraft.world.level.ItemLike
 object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipeInternal() {
         baseToDust()
+        baseToBlock()
 
         ingotToGear()
         ingotToNugget()
@@ -37,6 +39,32 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
                 .define('B', basePrefix, material)
                 .define('C', Items.BOWL)
                 .saveSuffixed(output, "_with_manual")
+        }
+    }
+
+    @JvmStatic
+    private fun baseToBlock() {
+        for (material: HCMaterial in HCMaterial.entries) {
+            val basePrefix: HTMaterialPrefix = material.basePrefix
+            val block: ItemLike = HCBlocks.MATERIAL[HCMaterialPrefixes.STORAGE_BLOCK, material] ?: continue
+            val base: ItemLike = when (material) {
+                HCMaterial.Fuels.CHARCOAL -> Items.CHARCOAL
+                HCMaterial.Gems.ECHO -> Items.ECHO_SHARD
+                HCMaterial.Pearls.ENDER -> Items.ENDER_PEARL
+                else -> HCItems.MATERIALS[basePrefix, material]
+            } ?: continue
+            // Shapeless
+            HTShapelessRecipeBuilder
+                .create(base, 9)
+                .addIngredient(HCMaterialPrefixes.STORAGE_BLOCK, material)
+                .saveSuffixed(output, "_from_block")
+            // Shaped
+            HTShapedRecipeBuilder
+                .create(block)
+                .hollow8()
+                .define('A', basePrefix, material)
+                .define('B', base)
+                .saveSuffixed(output, "_from_${basePrefix.name}")
         }
     }
 

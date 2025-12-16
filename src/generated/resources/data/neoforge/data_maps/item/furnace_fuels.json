@@ -1,10 +1,46 @@
 {
   "values": {
+    "#c:dusts/carbide": {
+      "burn_time": 4800
+    },
+    "#c:dusts/charcoal": {
+      "burn_time": 1600
+    },
+    "#c:dusts/coal": {
+      "burn_time": 1600
+    },
+    "#c:dusts/coal_coke": {
+      "burn_time": 3200
+    },
     "#c:dusts/crimson_crystal": {
       "burn_time": 4800
     },
+    "#c:dusts/wood": {
+      "burn_time": 300
+    },
+    "#c:fuels/carbide": {
+      "burn_time": 4800
+    },
+    "#c:fuels/coal_coke": {
+      "burn_time": 3200
+    },
     "#c:gems/crimson_crystal": {
       "burn_time": 4800
+    },
+    "#c:plates/wood": {
+      "burn_time": 300
+    },
+    "#c:storage_blocks/carbide": {
+      "burn_time": 48000
+    },
+    "#c:storage_blocks/charcoal": {
+      "burn_time": 16000
+    },
+    "#c:storage_blocks/coal_coke": {
+      "burn_time": 32000
+    },
+    "#c:storage_blocks/crimson_crystal": {
+      "burn_time": 48000
     }
   }
 }

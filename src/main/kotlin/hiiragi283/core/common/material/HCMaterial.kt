@@ -4,7 +4,6 @@ import hiiragi283.core.api.data.lang.HTLanguageType
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
-import net.minecraft.world.level.block.state.BlockBehaviour
 
 sealed interface HCMaterial : HTMaterialLike.Translatable {
     companion object {
@@ -27,8 +26,6 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
     val basePrefix: HTMaterialPrefix
 
     fun getSupportedItemPrefixes(): List<HTMaterialPrefix>
-
-    fun getStorageBlockProp(): BlockBehaviour.Properties? = null
 
     fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = getSupportedItemPrefixes()
 

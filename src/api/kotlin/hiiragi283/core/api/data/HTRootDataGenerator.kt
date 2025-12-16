@@ -72,6 +72,9 @@ data class HTRootDataGenerator private constructor(
     override fun <DATA : DataProvider> addProvider(factory: DataProvider.Factory<DATA>): DATA =
         generator.addProvider(doRun.asBoolean, factory)
 
+    override fun <DATA : DataProvider> addProvider(factory: GatherDataEvent.DataProviderFromOutputLookup<DATA>): DATA =
+        addProvider { output: PackOutput -> factory.create(output, registries) }
+
     override fun <DATA : DataProvider> addProvider(factory: HTDataGenerator.Factory<DATA>): DATA =
         addProvider { output: PackOutput -> factory.create(HTDataGenContext(output, registries, fileHelper)) }
 }

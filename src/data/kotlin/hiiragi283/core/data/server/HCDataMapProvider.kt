@@ -1,8 +1,10 @@
 package hiiragi283.core.data.server
 
 import hiiragi283.core.api.data.HTDataGenContext
+import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.common.material.HCMaterial
+import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.Item
@@ -14,9 +16,22 @@ class HCDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.out
     override fun gather(provider: HolderLookup.Provider) {
         val furnace: Builder<FurnaceFuel, Item> = builder(NeoForgeDataMaps.FURNACE_FUELS)
 
-        val crimson = HCMaterial.Gems.CRIMSON_CRYSTAL
-        for ((prefix: HTMaterialPrefix, _) in HCItems.MATERIALS.column(crimson)) {
-            furnace.add(prefix.itemTagKey(crimson), FurnaceFuel(20 * 10 * 24), false)
+        fun addFuels(material: HTMaterialLike, time: Int) {
+            // Block
+            for ((prefix: HTMaterialPrefix, _) in HCBlocks.MATERIAL.column(material)) {
+                furnace.add(prefix.itemTagKey(material), FurnaceFuel(time * 10), false)
+            }
+            // Item
+            for ((prefix: HTMaterialPrefix, _) in HCItems.MATERIALS.column(material)) {
+                furnace.add(prefix.itemTagKey(material), FurnaceFuel(time), false)
+            }
         }
+
+        addFuels(HCMaterial.Fuels.COAL, 20 * 10 * 8)
+        addFuels(HCMaterial.Fuels.CHARCOAL, 20 * 10 * 8)
+        addFuels(HCMaterial.Fuels.COAL_COKE, 20 * 10 * 16)
+        addFuels(HCMaterial.Fuels.CARBIDE, 20 * 10 * 24)
+        addFuels(HCMaterial.Gems.CRIMSON_CRYSTAL, 20 * 10 * 24)
+        addFuels(HCMaterial.Dusts.WOOD, 20 * 15)
     }
 }

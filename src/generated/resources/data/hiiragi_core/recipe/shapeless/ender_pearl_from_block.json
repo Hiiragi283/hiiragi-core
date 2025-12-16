@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:storage_blocks/ender"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "minecraft:ender_pearl"
+  }
+}
