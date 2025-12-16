@@ -23,8 +23,8 @@ class HTDeferredBlockEntityTypeRegister(namespace: String) :
     fun <BE : BlockEntity> registerType(
         name: String,
         factory: BlockEntityType.BlockEntitySupplier<BE>,
-        clientTicker: BlockEntityTicker<in BE>,
-        serverTicker: BlockEntityTicker<in BE>,
+        serverTicker: BlockEntityTicker<in BE>?,
+        clientTicker: BlockEntityTicker<in BE>? = null,
     ): HTDeferredBlockEntityType<BE> {
         val holder: HTDeferredBlockEntityType<BE> = registerType(name, factory)
         holder.clientTicker = clientTicker

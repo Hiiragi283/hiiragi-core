@@ -2,7 +2,9 @@ package hiiragi283.core.data.client.lang
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
+import hiiragi283.core.client.emi.category.HCEmiRecipeCategories
 import hiiragi283.core.common.text.HCTranslation
+import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.data.PackOutput
@@ -11,6 +13,9 @@ class HCEnglishLangProvider(output: PackOutput) : HTLangProvider.English(output,
     override fun addTranslations() {
         // Material
         HCMaterialTranslations.addTranslations(this)
+
+        // Block
+        add(HCBlocks.DRYING_LACK, "Drying Lack")
 
         // Fluid
         addFluid(HCFluids.HONEY, "Honey")
@@ -35,7 +40,10 @@ class HCEnglishLangProvider(output: PackOutput) : HTLangProvider.English(output,
         add(HCItems.IRIDESCENT_POWDER, "Iridescent Powder")
 
         // Translation
-        add(HCTranslation.CREATIVE_TAB_MATERIAL, "Hiiragi Core - Material")
-        add(HCTranslation.CREATIVE_TAB_TOOL, "Hiiragi Core - Tool")
+        add(HCTranslation.HIIRAGI_CORE, "Hiiragi Core")
+
+        // EMI
+        add(HCEmiRecipeCategories.DRYING, "Drying")
+        add(HCEmiRecipeCategories.FROSTING, "Frosting")
     }
 }

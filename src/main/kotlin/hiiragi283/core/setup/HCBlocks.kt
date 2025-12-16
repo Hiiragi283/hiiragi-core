@@ -4,10 +4,14 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.buildTable
 import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
+import hiiragi283.core.common.block.HTDryingLackBlock
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
+import hiiragi283.core.common.registry.HTBasicDeferredBlock
 import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import hiiragi283.core.common.registry.register.HTDeferredBlockRegister
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.MapColor
@@ -22,6 +26,8 @@ object HCBlocks {
         REGISTER.register(eventBus)
     }
 
+    //    Materials    //
+
     @JvmStatic
     val MATERIALS: HTMaterialTable<HTMaterialPrefix, HTSimpleDeferredBlock> = buildTable {
         // Storage Blocks
@@ -35,6 +41,20 @@ object HCBlocks {
             )
         }
     }.let(::HTMaterialTable)
+
+    //    Utilities    //
+
+    @JvmField
+    val DRYING_LACK: HTBasicDeferredBlock<HTDryingLackBlock> = REGISTER.registerSimple(
+        "drying_lack",
+        copyOf(Blocks.OAK_PLANKS),
+        ::HTDryingLackBlock,
+    )
+
+    //    Extensions    //
+
+    @JvmStatic
+    private fun copyOf(block: Block): BlockBehaviour.Properties = BlockBehaviour.Properties.ofFullCopy(block)
 
     /**
      * @see mekanism.common.resource.BlockResourceInfo.modifyProperties

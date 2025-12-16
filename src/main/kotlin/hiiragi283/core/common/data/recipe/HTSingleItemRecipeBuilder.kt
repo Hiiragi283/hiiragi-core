@@ -5,6 +5,7 @@ import hiiragi283.core.api.data.recipe.HTStackRecipeBuilder
 import hiiragi283.core.api.math.toFraction
 import hiiragi283.core.api.stack.ImmutableItemStack
 import hiiragi283.core.common.recipe.HTDryingRecipe
+import hiiragi283.core.common.recipe.HTFrostingRecipe
 import hiiragi283.core.common.recipe.HTSingleItemRecipe
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
@@ -20,8 +21,16 @@ class HTSingleItemRecipeBuilder(prefix: String, private val factory: Factory<*>,
             HTSingleItemRecipeBuilder(HTConst.DRYING, ::HTDryingRecipe, stack)
 
         @JvmStatic
+        fun frosting(stack: ImmutableItemStack): HTSingleItemRecipeBuilder =
+            HTSingleItemRecipeBuilder(HTConst.FROSTING, ::HTFrostingRecipe, stack)
+
+        @JvmStatic
         fun drying(item: ItemLike, count: Int = 1): HTSingleItemRecipeBuilder =
             HTSingleItemRecipeBuilder(HTConst.DRYING, ::HTDryingRecipe, item, count)
+
+        @JvmStatic
+        fun frosting(item: ItemLike, count: Int = 1): HTSingleItemRecipeBuilder =
+            HTSingleItemRecipeBuilder(HTConst.FROSTING, ::HTFrostingRecipe, item, count)
     }
 
     constructor(prefix: String, factory: Factory<*>, item: ItemLike, count: Int) : this(prefix, factory, ImmutableItemStack.of(item, count))

@@ -132,10 +132,9 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             .define('B', Tags.Items.BUCKETS_EMPTY)
             .saveSuffixed(output, "_from_flower")
         // Latex -> Raw Rubber
-        HTCookingRecipeBuilder
-            .smelting(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Plates.RUBBER))
+        HTShapelessRecipeBuilder
+            .create(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Plates.RUBBER))
             .addIngredient(HCFluids.LATEX.bucketTag)
-            .setExp(0.3f)
             .saveSuffixed(output, "_from_bucket")
         // Raw Rubber + Sulfur + Coal -> Rubber
         HTShapelessRecipeBuilder

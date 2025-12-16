@@ -57,6 +57,7 @@ data object HTConst {
     //    Recipes    //
 
     const val DRYING = "drying"
+    const val FROSTING = "frosting"
 
     const val GROUP = "group"
     const val TIME = "time"

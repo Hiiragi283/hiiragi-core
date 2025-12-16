@@ -1,0 +1,10 @@
+{
+  "type": "hiiragi_core:drying",
+  "exp": "1/10",
+  "ingredient": "minecraft:sea_pickle",
+  "results": {
+    "count": 2,
+    "id": "minecraft:lime_dye"
+  },
+  "time": 200
+}

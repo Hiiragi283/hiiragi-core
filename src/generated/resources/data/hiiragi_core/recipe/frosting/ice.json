@@ -1,0 +1,10 @@
+{
+  "type": "hiiragi_core:frosting",
+  "exp": "3/10",
+  "ingredient": "#c:buckets/water",
+  "results": {
+    "count": 1,
+    "id": "minecraft:ice"
+  },
+  "time": 200
+}

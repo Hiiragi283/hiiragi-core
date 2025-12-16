@@ -3,6 +3,7 @@ package hiiragi283.core.data.server.tag
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.HTDataGenContext
+import hiiragi283.core.api.data.tag.HTTagBuilder
 import hiiragi283.core.api.data.tag.HTTagsProvider
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
@@ -48,6 +49,9 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
     //    Tool    //
 
     private fun tool(factory: BuilderFactory<Block>) {
+        val axe: HTTagBuilder<Block> = factory.apply(BlockTags.MINEABLE_WITH_AXE)
+        sequence { yield(HCBlocks.DRYING_LACK) }.forEach(axe::add)
+
         factory
             .apply(HCModTags.Blocks.MINEABLE_WITH_HAMMER)
             .addTag(BlockTags.MINEABLE_WITH_PICKAXE)

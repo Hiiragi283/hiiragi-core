@@ -1,0 +1,10 @@
+{
+  "type": "hiiragi_core:frosting",
+  "exp": "1/2",
+  "ingredient": "#c:buckets/crimson_blood",
+  "results": {
+    "count": 1,
+    "id": "hiiragi_core:crimson_crystal"
+  },
+  "time": 200
+}

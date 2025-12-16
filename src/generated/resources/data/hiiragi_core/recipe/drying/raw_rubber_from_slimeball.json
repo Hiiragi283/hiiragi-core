@@ -1,0 +1,10 @@
+{
+  "type": "hiiragi_core:drying",
+  "exp": "1/10",
+  "ingredient": "#c:slime_balls",
+  "results": {
+    "count": 1,
+    "id": "hiiragi_core:raw_rubber"
+  },
+  "time": 200
+}

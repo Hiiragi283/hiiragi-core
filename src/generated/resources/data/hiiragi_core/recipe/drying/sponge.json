@@ -1,0 +1,10 @@
+{
+  "type": "hiiragi_core:drying",
+  "exp": "1/10",
+  "ingredient": "minecraft:wet_sponge",
+  "results": {
+    "count": 1,
+    "id": "minecraft:sponge"
+  },
+  "time": 200
+}

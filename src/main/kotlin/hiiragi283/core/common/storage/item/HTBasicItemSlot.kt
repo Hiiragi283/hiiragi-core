@@ -1,0 +1,156 @@
+package hiiragi283.core.common.storage.item
+
+import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HTContentListener
+import hiiragi283.core.api.serialization.value.HTValueInput
+import hiiragi283.core.api.serialization.value.HTValueOutput
+import hiiragi283.core.api.stack.ImmutableItemStack
+import hiiragi283.core.api.stack.toImmutable
+import hiiragi283.core.api.storage.HTStorageAccess
+import hiiragi283.core.api.storage.HTStoragePredicates
+import hiiragi283.core.api.storage.item.HTItemSlot
+import hiiragi283.core.common.inventory.HTContainerItemSlot
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.inventory.Slot
+import net.minecraft.world.item.ItemStack
+import java.util.function.BiPredicate
+import java.util.function.Predicate
+
+/**
+ * @see mekanism.common.inventory.slot.BasicInventorySlot
+ */
+open class HTBasicItemSlot protected constructor(
+    private val limit: Int,
+    private val canExtract: BiPredicate<ImmutableItemStack, HTStorageAccess>,
+    private val canInsert: BiPredicate<ImmutableItemStack, HTStorageAccess>,
+    private val filter: Predicate<ImmutableItemStack>,
+    private val listener: HTContentListener?,
+    private val x: Int,
+    private val y: Int,
+    private val slotType: HTContainerItemSlot.Type,
+) : HTItemSlot.Basic() {
+    companion object {
+        @JvmStatic
+        private fun validateLimit(limit: Int): Int {
+            check(limit >= 0) { "Limit must be non negative" }
+            return limit
+        }
+
+        @JvmStatic
+        fun create(
+            listener: HTContentListener?,
+            x: Int,
+            y: Int,
+            limit: Int = HTConst.ABSOLUTE_MAX_STACK_SIZE,
+            canExtract: BiPredicate<ImmutableItemStack, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
+            canInsert: BiPredicate<ImmutableItemStack, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
+            filter: Predicate<ImmutableItemStack> = HTStoragePredicates.alwaysTrue(),
+        ): HTBasicItemSlot = create(listener, x, y, limit, canExtract, canInsert, filter, HTContainerItemSlot.Type.BOTH)
+
+        @JvmStatic
+        private fun create(
+            listener: HTContentListener?,
+            x: Int,
+            y: Int,
+            limit: Int = HTConst.ABSOLUTE_MAX_STACK_SIZE,
+            canExtract: BiPredicate<ImmutableItemStack, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
+            canInsert: BiPredicate<ImmutableItemStack, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
+            filter: Predicate<ImmutableItemStack> = HTStoragePredicates.alwaysTrue(),
+            slotType: HTContainerItemSlot.Type,
+        ): HTBasicItemSlot = HTBasicItemSlot(validateLimit(limit), canExtract, canInsert, filter, listener, x, y, slotType)
+
+        @JvmStatic
+        fun input(
+            listener: HTContentListener?,
+            x: Int,
+            y: Int,
+            limit: Int = HTConst.ABSOLUTE_MAX_STACK_SIZE,
+            canInsert: Predicate<ImmutableItemStack> = HTStoragePredicates.alwaysTrue(),
+            filter: Predicate<ImmutableItemStack> = canInsert,
+        ): HTBasicItemSlot = create(
+            listener,
+            x,
+            y,
+            limit,
+            HTStoragePredicates.notExternal(),
+            { stack: ImmutableItemStack, _ -> canInsert.test(stack) },
+            filter,
+            HTContainerItemSlot.Type.INPUT,
+        )
+    }
+
+    protected constructor(
+        limit: Int,
+        canExtract: Predicate<ImmutableItemStack>,
+        canInsert: Predicate<ImmutableItemStack>,
+        filter: Predicate<ImmutableItemStack>,
+        listener: HTContentListener?,
+        x: Int,
+        y: Int,
+        slotType: HTContainerItemSlot.Type,
+    ) : this(
+        limit,
+        { stack: ImmutableItemStack, access: HTStorageAccess -> access == HTStorageAccess.MANUAL || canExtract.test(stack) },
+        { stack: ImmutableItemStack, _: HTStorageAccess -> canInsert.test(stack) },
+        filter,
+        listener,
+        x,
+        y,
+        slotType,
+    )
+
+    @JvmField
+    protected var stack: ItemStack = ItemStack.EMPTY
+    private var slotBackground: Pair<ResourceLocation, ResourceLocation>? = null
+
+    fun setSlotBackground(atlas: ResourceLocation, texture: ResourceLocation): HTBasicItemSlot = apply {
+        this.slotBackground = atlas to texture
+    }
+
+    override fun getStack(): ImmutableItemStack? = this.stack.toImmutable()
+
+    override fun getCapacity(stack: ImmutableItemStack?): Int = HTItemSlot.getMaxStackSize(stack, this.limit)
+
+    final override fun isValid(stack: ImmutableItemStack): Boolean = this.filter.test(stack)
+
+    final override fun isStackValidForInsert(stack: ImmutableItemStack, access: HTStorageAccess): Boolean =
+        super.isStackValidForInsert(stack, access) && this.canInsert.test(stack, access)
+
+    final override fun canStackExtract(stack: ImmutableItemStack, access: HTStorageAccess): Boolean =
+        super.canStackExtract(stack, access) && this.canExtract.test(stack, access)
+
+    override fun createContainerSlot(): Slot? =
+        HTContainerItemSlot(this, x, y, ::setStackUnchecked, ::isStackValidForInsert, this.slotType, this.slotBackground)
+
+    override fun serialize(output: HTValueOutput) {
+        output.store(HTConst.ITEM, ImmutableItemStack.CODEC, getStack())
+    }
+
+    override fun deserialize(input: HTValueInput) {
+        input.readAndSet(HTConst.ITEM, ImmutableItemStack.CODEC, ::setStackUnchecked)
+    }
+
+    final override fun onContentsChanged() {
+        this.listener?.onContentsChanged()
+    }
+
+    override fun setStack(stack: ImmutableItemStack?) {
+        setStackUnchecked(stack, true)
+    }
+
+    fun setStackUnchecked(stack: ImmutableItemStack?, validate: Boolean = false) {
+        if (stack == null) {
+            if (this.getStack() == null) return
+            this.stack = ItemStack.EMPTY
+        } else if (!validate || isValid(stack)) {
+            this.stack = stack.unwrap()
+        } else {
+            error("Invalid stack for slot: $stack ${stack.componentsPatch()}")
+        }
+        onContentsChanged()
+    }
+
+    override fun updateAmount(stack: ImmutableItemStack, amount: Int) {
+        this.stack.count = amount
+    }
+}
