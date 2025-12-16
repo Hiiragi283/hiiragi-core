@@ -3,6 +3,7 @@ package hiiragi283.core
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.material.HTMaterialManager
+import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCCreativeTabs
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeSerializers
@@ -23,6 +24,7 @@ data object HiiragiCore {
 
         eventBus.addListener(::commonSetup)
 
+        HCBlocks.register(eventBus)
         HCItems.register(eventBus)
 
         HCCreativeTabs.REGISTER.register(eventBus)

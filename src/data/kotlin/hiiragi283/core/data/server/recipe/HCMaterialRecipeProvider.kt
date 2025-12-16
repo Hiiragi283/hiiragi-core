@@ -3,11 +3,11 @@ package hiiragi283.core.data.server.recipe
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.prefix.HTPrefixLike
+import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.common.data.recipe.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.HTShapelessRecipeBuilder
-import hiiragi283.core.common.material.CommonMaterialPrefixes
 import hiiragi283.core.common.material.HCMaterial
+import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import hiiragi283.core.setup.HCItems
 import net.minecraft.world.item.Items
@@ -24,9 +24,9 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
     @JvmStatic
     private fun baseToDust() {
         for (material: HCMaterial in HCMaterial.entries) {
-            val basePrefix: HTPrefixLike = material.basePrefix
-            if (basePrefix.isOf(CommonMaterialPrefixes.DUST)) continue
-            val dust: HTSimpleDeferredItem = HCItems.MATERIALS[CommonMaterialPrefixes.DUST, material] ?: continue
+            val basePrefix: HTMaterialPrefix = material.basePrefix
+            if (basePrefix == HCMaterialPrefixes.DUST) continue
+            val dust: HTSimpleDeferredItem = HCItems.MATERIALS[HCMaterialPrefixes.DUST, material] ?: continue
             // Shaped
             HTShapedRecipeBuilder
                 .create(dust, 2)
@@ -42,35 +42,35 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
 
     @JvmStatic
     private fun ingotToGear() {
-        for ((key: HTMaterialKey, gear: HTSimpleDeferredItem) in HCItems.MATERIALS.row(CommonMaterialPrefixes.GEAR)) {
+        for ((key: HTMaterialKey, gear: HTSimpleDeferredItem) in HCItems.MATERIALS.row(HCMaterialPrefixes.GEAR)) {
             // Shaped
             HTShapedRecipeBuilder
                 .create(gear)
                 .hollow4()
-                .define('A', CommonMaterialPrefixes.INGOT, key)
-                .define('B', CommonMaterialPrefixes.NUGGET, HCMaterial.Metals.IRON)
+                .define('A', HCMaterialPrefixes.INGOT, key)
+                .define('B', HCMaterialPrefixes.NUGGET, HCMaterial.Metals.IRON)
                 .save(output)
         }
     }
 
     @JvmStatic
     fun ingotToNugget() {
-        for ((key: HTMaterialKey, nugget: HTSimpleDeferredItem) in HCItems.MATERIALS.row(CommonMaterialPrefixes.NUGGET)) {
+        for ((key: HTMaterialKey, nugget: HTSimpleDeferredItem) in HCItems.MATERIALS.row(HCMaterialPrefixes.NUGGET)) {
             // Shapeless
             HTShapelessRecipeBuilder
                 .create(nugget, 9)
-                .addIngredient(CommonMaterialPrefixes.INGOT, key)
+                .addIngredient(HCMaterialPrefixes.INGOT, key)
                 .saveSuffixed(output, "_from_ingot")
             // Shaped
             val ingot: ItemLike = when {
                 HCMaterial.Metals.COPPER.isOf(key) -> Items.COPPER_INGOT
                 HCMaterial.Alloys.NETHERITE.isOf(key) -> Items.NETHERITE_INGOT
-                else -> HCItems.MATERIALS[CommonMaterialPrefixes.INGOT, key]
+                else -> HCItems.MATERIALS[HCMaterialPrefixes.INGOT, key]
             } ?: continue
             HTShapedRecipeBuilder
                 .create(ingot)
                 .hollow8()
-                .define('A', CommonMaterialPrefixes.NUGGET, key)
+                .define('A', HCMaterialPrefixes.NUGGET, key)
                 .define('B', nugget)
                 .saveSuffixed(output, "_from_nugget")
         }

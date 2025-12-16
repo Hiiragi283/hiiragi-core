@@ -2,9 +2,10 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.buildTable
+import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTMaterialTable
-import hiiragi283.core.common.material.CommonMaterialPrefixes
 import hiiragi283.core.common.material.HCMaterial
+import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import hiiragi283.core.common.registry.register.HTDeferredBlockRegister
 import net.minecraft.world.level.block.state.BlockBehaviour
@@ -24,10 +25,11 @@ object HCBlocks {
         // Storage Blocks
         for (material: HCMaterial in HCMaterial.entries) {
             val properties: BlockBehaviour.Properties = material.getStorageBlockProp() ?: continue
+            val prefix: HTMaterialPrefix = HCMaterialPrefixes.STORAGE_BLOCK
             this.put(
-                CommonMaterialPrefixes.STORAGE_BLOCK.asMaterialPrefix(),
+                prefix,
                 material.asMaterialKey(),
-                REGISTER.registerSimple("${material.asMaterialName()}_block", properties),
+                REGISTER.registerSimple(prefix.createPath(material), properties),
             )
         }
     }.let(::HTMaterialTable)

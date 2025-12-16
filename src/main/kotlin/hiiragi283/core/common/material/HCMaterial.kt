@@ -3,7 +3,7 @@ package hiiragi283.core.common.material
 import hiiragi283.core.api.data.lang.HTLanguageType
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.prefix.HTPrefixLike
+import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import net.minecraft.world.level.block.state.BlockBehaviour
 
 sealed interface HCMaterial : HTMaterialLike.Translatable {
@@ -21,28 +21,28 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
             }
         }
 
-        private val dustList: List<CommonMaterialPrefixes> = listOf(CommonMaterialPrefixes.DUST)
+        private val dustList: List<HTMaterialPrefix> = listOf(HCMaterialPrefixes.DUST)
     }
 
-    val basePrefix: HTPrefixLike
+    val basePrefix: HTMaterialPrefix
 
-    fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes>
+    fun getSupportedItemPrefixes(): List<HTMaterialPrefix>
 
     fun getStorageBlockProp(): BlockBehaviour.Properties? = null
 
-    fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = getSupportedItemPrefixes()
+    fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = getSupportedItemPrefixes()
 
-    fun createPath(prefix: CommonMaterialPrefixes): String = prefix.idPattern.replace("%s", asMaterialName())
+    fun createPath(prefix: HTMaterialPrefix): String = prefix.createPath(this)
 
     //    Fuels    //
 
     enum class Fuels(private val usName: String, private val jpName: String) : HCMaterial {
         // Vanilla
         COAL("Coal", "石炭") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = dustList
         },
         CHARCOAL("Charcoal", "木炭") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = dustList
         },
 
         // Common
@@ -50,11 +50,11 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         CARBIDE("Carbide", "カーバイド"),
         ;
 
-        override val basePrefix: HTPrefixLike = CommonMaterialPrefixes.FUEL
+        override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.FUEL
 
-        override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = listOf(
-            CommonMaterialPrefixes.FUEL,
-            CommonMaterialPrefixes.DUST,
+        override fun getSupportedItemPrefixes(): List<HTMaterialPrefix> = listOf(
+            HCMaterialPrefixes.FUEL,
+            HCMaterialPrefixes.DUST,
         )
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
@@ -70,22 +70,22 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
     enum class Gems(private val usName: String, private val jpName: String) : HCMaterial {
         // Vanilla
         LAPIS("Lapis", "ラピス") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = dustList
         },
         QUARTZ("Quartz", "水晶") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = dustList
         },
         AMETHYST("Amethyst", "アメジスト") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = dustList
         },
         DIAMOND("Diamond", "ダイアモンド") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = dustList
         },
         EMERALD("Emerald", "エメラルド") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = dustList
         },
         ECHO("Echo", "残響") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = dustList
         },
 
         // Common
@@ -99,11 +99,11 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         WARPED_CRYSTAL("Warped Crystal", "歪んだクリスタリル"),
         ;
 
-        override val basePrefix: HTPrefixLike = CommonMaterialPrefixes.GEM
+        override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.GEM
 
-        override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = listOf(
-            CommonMaterialPrefixes.GEM,
-            CommonMaterialPrefixes.DUST,
+        override fun getSupportedItemPrefixes(): List<HTMaterialPrefix> = listOf(
+            HCMaterialPrefixes.GEM,
+            HCMaterialPrefixes.DUST,
         )
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
@@ -119,18 +119,18 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
     enum class Pearls(private val usName: String, private val jpName: String) : HCMaterial {
         // Vanilla
         ENDER("Ender", "エンダー") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = dustList
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = dustList
         },
 
         // Hiiragi Series
         ELDRITCH("Eldritch", "異質な"),
         ;
 
-        override val basePrefix: HTPrefixLike = CommonMaterialPrefixes.PEARL
+        override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.PEARL
 
-        override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = listOf(
-            CommonMaterialPrefixes.PEARL,
-            CommonMaterialPrefixes.DUST,
+        override fun getSupportedItemPrefixes(): List<HTMaterialPrefix> = listOf(
+            HCMaterialPrefixes.PEARL,
+            HCMaterialPrefixes.DUST,
         )
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
@@ -146,26 +146,26 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
     enum class Metals(private val usName: String, private val jpName: String) : HCMaterial {
         // Vanilla
         COPPER("Copper", "銅") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = buildList {
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = buildList {
                 addAll(super.getSupportedItemPrefixes())
-                remove(CommonMaterialPrefixes.RAW_MATERIAL)
-                remove(CommonMaterialPrefixes.INGOT)
+                remove(HCMaterialPrefixes.RAW_MATERIAL)
+                remove(HCMaterialPrefixes.INGOT)
             }
         },
         IRON("Iron", "鉄") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = buildList {
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = buildList {
                 addAll(super.getSupportedItemPrefixes())
-                remove(CommonMaterialPrefixes.RAW_MATERIAL)
-                remove(CommonMaterialPrefixes.INGOT)
-                remove(CommonMaterialPrefixes.NUGGET)
+                remove(HCMaterialPrefixes.RAW_MATERIAL)
+                remove(HCMaterialPrefixes.INGOT)
+                remove(HCMaterialPrefixes.NUGGET)
             }
         },
         GOLD("Gold", "金") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = buildList {
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = buildList {
                 addAll(super.getSupportedItemPrefixes())
-                remove(CommonMaterialPrefixes.RAW_MATERIAL)
-                remove(CommonMaterialPrefixes.INGOT)
-                remove(CommonMaterialPrefixes.NUGGET)
+                remove(HCMaterialPrefixes.RAW_MATERIAL)
+                remove(HCMaterialPrefixes.INGOT)
+                remove(HCMaterialPrefixes.NUGGET)
             }
         },
 
@@ -179,16 +179,17 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         // LEAD("Lead", "鉛"),
         ;
 
-        override val basePrefix: HTPrefixLike = CommonMaterialPrefixes.INGOT
+        override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.INGOT
 
-        override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = listOf(
-            CommonMaterialPrefixes.RAW_MATERIAL,
-            CommonMaterialPrefixes.INGOT,
-            CommonMaterialPrefixes.DUST,
-            CommonMaterialPrefixes.GEAR,
-            CommonMaterialPrefixes.NUGGET,
-            CommonMaterialPrefixes.PLATE,
-            CommonMaterialPrefixes.ROD,
+        override fun getSupportedItemPrefixes(): List<HTMaterialPrefix> = listOf(
+            HCMaterialPrefixes.RAW_MATERIAL,
+            HCMaterialPrefixes.INGOT,
+            HCMaterialPrefixes.DUST,
+            HCMaterialPrefixes.GEAR,
+            HCMaterialPrefixes.NUGGET,
+            HCMaterialPrefixes.PLATE,
+            HCMaterialPrefixes.ROD,
+            HCMaterialPrefixes.WIRE,
         )
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
@@ -204,14 +205,14 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
     enum class Alloys(private val usName: String, private val jpName: String) : HCMaterial {
         // Vanilla
         NETHERITE("Netherite", "ネザライト") {
-            override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = buildList {
-                add(CommonMaterialPrefixes.SCRAP)
+            override fun getSupportedItemPrefixes(): List<HTMaterialPrefix> = buildList {
+                add(HCMaterialPrefixes.SCRAP)
                 addAll(super.getSupportedItemPrefixes())
             }
 
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = buildList {
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = buildList {
                 addAll(super.getSupportedItemPrefixes())
-                remove(CommonMaterialPrefixes.INGOT)
+                remove(HCMaterialPrefixes.INGOT)
             }
         },
 
@@ -221,28 +222,29 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         // Hiiragi Series
         AZURE_STEEL("Azure Steel", "紺鉄"),
         DEEP_STEEL("Deep Steel", "深層鋼") {
-            override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = buildList {
-                add(CommonMaterialPrefixes.SCRAP)
+            override fun getSupportedItemPrefixes(): List<HTMaterialPrefix> = buildList {
+                add(HCMaterialPrefixes.SCRAP)
                 addAll(super.getSupportedItemPrefixes())
             }
 
-            override fun createPath(prefix: CommonMaterialPrefixes): String = when (prefix) {
-                CommonMaterialPrefixes.SCRAP -> "deep_scrap"
+            override fun createPath(prefix: HTMaterialPrefix): String = when (prefix) {
+                HCMaterialPrefixes.SCRAP -> "deep_scrap"
                 else -> super.createPath(prefix)
             }
         },
         NIGHT_METAL("Night Metal", "夜金"),
         ;
 
-        override val basePrefix: HTPrefixLike = CommonMaterialPrefixes.INGOT
+        override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.INGOT
 
-        override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = listOf(
-            CommonMaterialPrefixes.INGOT,
-            CommonMaterialPrefixes.DUST,
-            CommonMaterialPrefixes.GEAR,
-            CommonMaterialPrefixes.NUGGET,
-            CommonMaterialPrefixes.PLATE,
-            CommonMaterialPrefixes.ROD,
+        override fun getSupportedItemPrefixes(): List<HTMaterialPrefix> = listOf(
+            HCMaterialPrefixes.INGOT,
+            HCMaterialPrefixes.DUST,
+            HCMaterialPrefixes.GEAR,
+            HCMaterialPrefixes.NUGGET,
+            HCMaterialPrefixes.PLATE,
+            HCMaterialPrefixes.ROD,
+            HCMaterialPrefixes.WIRE,
         )
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
@@ -258,28 +260,28 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
     enum class Dusts(private val usName: String, private val jpName: String) : HCMaterial {
         // Vanilla
         REDSTONE("Redstone", "赤石") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf()
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = listOf()
         },
         GLOWSTONE("Glowstone", "グロウストーン") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf()
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = listOf()
         },
         OBSIDIAN("Obsidian", "黒曜石"),
         WOOD("Wood", "木") {
-            override fun getItemPrefixesToGenerate(): List<CommonMaterialPrefixes> = listOf(
-                CommonMaterialPrefixes.DUST,
-                CommonMaterialPrefixes.PLATE,
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = listOf(
+                HCMaterialPrefixes.DUST,
+                HCMaterialPrefixes.PLATE,
             )
 
-            override fun createPath(prefix: CommonMaterialPrefixes): String = when (prefix) {
-                CommonMaterialPrefixes.DUST -> "sawdust"
+            override fun createPath(prefix: HTMaterialPrefix): String = when (prefix) {
+                HCMaterialPrefixes.DUST -> "sawdust"
                 else -> super.createPath(prefix)
             }
         },
         ;
 
-        override val basePrefix: HTPrefixLike = CommonMaterialPrefixes.DUST
+        override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.DUST
 
-        override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = dustList
+        override fun getSupportedItemPrefixes(): List<HTMaterialPrefix> = dustList
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
             HTLanguageType.EN_US -> usName
@@ -298,11 +300,11 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         RUBBER("Rubber", "ゴム"),
         ;
 
-        override val basePrefix: HTPrefixLike = CommonMaterialPrefixes.PLATE
+        override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.PLATE
 
-        override fun getSupportedItemPrefixes(): List<CommonMaterialPrefixes> = listOf(CommonMaterialPrefixes.PLATE)
+        override fun getSupportedItemPrefixes(): List<HTMaterialPrefix> = listOf(HCMaterialPrefixes.PLATE)
 
-        override fun createPath(prefix: CommonMaterialPrefixes): String = when (this) {
+        override fun createPath(prefix: HTMaterialPrefix): String = when (this) {
             PLASTIC -> "plastic_plate"
             else -> "${asMaterialName()}_sheet"
         }
