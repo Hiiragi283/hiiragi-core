@@ -31,7 +31,6 @@ object HCCreativeTabs {
     ) { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
         val lookup: HolderLookup.RegistryLookup<Item> = parameters.holders
             .lookupOrThrow(Registries.ITEM)
-            .filterFeatures(parameters.enabledFeatures())
         val modIds: Array<String> = arrayOf(HTConst.MINECRAFT, HiiragiCoreAPI.MOD_ID)
 
         for (material: HCMaterial in HCMaterial.entries) {
@@ -53,6 +52,17 @@ object HCCreativeTabs {
                     .toList()
             }.forEach(output::accept)
         }
+
+        output.accept(HCItems.COAL_CHIP)
+        output.accept(HCItems.COAL_CHUNK)
+        output.accept(HCItems.SYNTHETIC_LEATHER)
+        output.accept(HCItems.TAR)
+        output.accept(HCItems.LUMINOUS_PASTE)
+        output.accept(HCItems.MAGMA_SHARD)
+        output.accept(HCItems.ELDER_HEART)
+        output.accept(HCItems.WITHER_STAR)
+        output.accept(HCItems.IRIDESCENT_POWDER)
+        
         // Buckets
         HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCFluids.REGISTER.itemEntries)
     }

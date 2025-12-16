@@ -6,6 +6,7 @@ import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.item.HTEquipmentMaterial
 import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
+import hiiragi283.core.common.item.HTCreativeItem
 import hiiragi283.core.common.item.HTHammerItem
 import hiiragi283.core.common.item.HTToolType
 import hiiragi283.core.common.item.VanillaEquipmentMaterial
@@ -39,6 +40,35 @@ object HCItems {
             }
         }
     }.let(::HTMaterialTable)
+
+    @JvmField
+    val COAL_CHIP: HTSimpleDeferredItem = REGISTER.registerSimpleItem("coal_chip")
+
+    @JvmField
+    val COAL_CHUNK: HTSimpleDeferredItem = REGISTER.registerSimpleItem("coal_chunk")
+
+    @JvmField
+    val SYNTHETIC_LEATHER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_leather")
+
+    @JvmField
+    val TAR: HTSimpleDeferredItem = REGISTER.registerSimpleItem("tar")
+
+    // Mob
+    @JvmField
+    val LUMINOUS_PASTE: HTSimpleDeferredItem = REGISTER.registerSimpleItem("luminous_paste")
+
+    @JvmField
+    val MAGMA_SHARD: HTSimpleDeferredItem = REGISTER.registerSimpleItem("magma_shard")
+
+    @JvmField
+    val ELDER_HEART: HTSimpleDeferredItem = REGISTER.registerSimpleItem("elder_heart")
+
+    @JvmField
+    val WITHER_STAR: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wither_star")
+
+    // End Game
+    @JvmField
+    val IRIDESCENT_POWDER: HTSimpleDeferredItem = REGISTER.registerItem("iridescent_powder", ::HTCreativeItem)
 
     //    Tools   //
 

@@ -1,6 +1,5 @@
 package hiiragi283.core.data.client.model
 
-import hiiragi283.core.HiiragiCore
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.model.HTBlockStateProvider
@@ -27,11 +26,7 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(con
         for (material: HCMaterial in HCMaterial.entries) {
             val block: HTHolderLike<Block, Block> = HCBlocks.MATERIALS[storageBlock, material] ?: continue
             val textureId: ResourceLocation = HiiragiCoreAPI.id("block", storageBlock.name, material.asMaterialName())
-            if (existTexture(textureId)) {
-                altTextureBlock(block, textureId)
-            } else {
-                HiiragiCore.LOGGER.debug("Missing texture {} for {}", textureId, block.getId())
-            }
+            existTexture(block, textureId, ::altTextureBlock)
         }
     }
 

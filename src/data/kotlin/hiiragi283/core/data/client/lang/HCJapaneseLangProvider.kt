@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCFluids
+import hiiragi283.core.setup.HCItems
 import net.minecraft.data.PackOutput
 
 class HCJapaneseLangProvider(output: PackOutput) : HTLangProvider.Japanese(output, HiiragiCoreAPI.MOD_ID) {
@@ -24,6 +25,17 @@ class HCJapaneseLangProvider(output: PackOutput) : HTLangProvider.Japanese(outpu
         addFluid(HCFluids.ELDRITCH_FLUX, "エルドリッチフラックス")
 
         // Item
+        add(HCItems.COAL_CHIP, "石炭チップ")
+        add(HCItems.COAL_CHUNK, "石炭塊")
+        add(HCItems.SYNTHETIC_LEATHER, "合成牛皮")
+        add(HCItems.TAR, "タール")
+
+        add(HCItems.LUMINOUS_PASTE, "傾向ペースト")
+        add(HCItems.MAGMA_SHARD, "マグマシャード")
+        add(HCItems.ELDER_HEART, "エルダーの心臓")
+        add(HCItems.WITHER_STAR, "ウィザースター")
+
+        add(HCItems.IRIDESCENT_POWDER, "虹色の粉")
 
         // Translation
         add(HCTranslation.CREATIVE_TAB_MATERIAL, "Hiiragi Core - 素材")

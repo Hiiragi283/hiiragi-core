@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCFluids
+import hiiragi283.core.setup.HCItems
 import net.minecraft.data.PackOutput
 
 class HCEnglishLangProvider(output: PackOutput) : HTLangProvider.English(output, HiiragiCoreAPI.MOD_ID) {
@@ -20,6 +21,17 @@ class HCEnglishLangProvider(output: PackOutput) : HTLangProvider.English(output,
         addFluid(HCFluids.WARPED_SAP, "Warped Sap")
 
         // Item
+        add(HCItems.COAL_CHIP, "Coal Chip")
+        add(HCItems.COAL_CHUNK, "Coal Chunk")
+        add(HCItems.SYNTHETIC_LEATHER, "Synthetic Leather")
+        add(HCItems.TAR, "Tar")
+
+        add(HCItems.LUMINOUS_PASTE, "Luminous Paste")
+        add(HCItems.MAGMA_SHARD, "Magma Shard")
+        add(HCItems.ELDER_HEART, "Elder Heart")
+        add(HCItems.WITHER_STAR, "Wither Star")
+
+        add(HCItems.IRIDESCENT_POWDER, "Iridescent Powder")
 
         // Translation
         add(HCTranslation.CREATIVE_TAB_MATERIAL, "Hiiragi Core - Material")

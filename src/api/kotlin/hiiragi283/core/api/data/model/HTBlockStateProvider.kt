@@ -1,5 +1,6 @@
 package hiiragi283.core.api.data.model
 
+import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.registry.HTHolderLike
@@ -17,9 +18,15 @@ import net.neoforged.neoforge.client.model.generators.ModelFile
 import net.neoforged.neoforge.client.model.generators.ModelProvider
 import net.neoforged.neoforge.client.model.generators.ModelProvider.TEXTURE
 import net.neoforged.neoforge.common.data.ExistingFileHelper
+import org.slf4j.Logger
 
 abstract class HTBlockStateProvider(context: HTDataGenContext, modid: String) :
     BlockStateProvider(context.output, modid, context.fileHelper) {
+    companion object {
+        @JvmField
+        val LOGGER: Logger = LogUtils.getLogger()
+    }
+
     protected val fileHelper: ExistingFileHelper = context.fileHelper
 
     //    Extensions    //
@@ -30,7 +37,21 @@ abstract class HTBlockStateProvider(context: HTDataGenContext, modid: String) :
     protected fun <BUILDER : ModelBuilder<BUILDER>, PROVIDER : ModelProvider<BUILDER>> PROVIDER.getBuilder(like: HTIdLike): BUILDER =
         this.getBuilder(like.getId())
 
-    protected fun existTexture(id: ResourceLocation): Boolean = fileHelper.exists(id, TEXTURE)
+    protected inline fun existTexture(block: HTHolderLike<Block, *>, action: (HTHolderLike<Block, *>) -> Unit) {
+        existTexture(block, block.blockId) { blockIn: HTHolderLike<Block, *>, _: ResourceLocation -> action(blockIn) }
+    }
+
+    protected inline fun existTexture(
+        block: HTHolderLike<Block, *>,
+        id: ResourceLocation,
+        action: (HTHolderLike<Block, *>, ResourceLocation) -> Unit,
+    ) {
+        if (fileHelper.exists(id, TEXTURE)) {
+            action(block, id)
+        } else {
+            LOGGER.debug("Missing texture {} for {}", id, block.getId())
+        }
+    }
 
     protected fun Direction.getRotationY(): Int = ((this.toYRot() + 180) % 360).toInt()
 
