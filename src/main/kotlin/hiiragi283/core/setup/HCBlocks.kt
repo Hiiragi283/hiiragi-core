@@ -113,6 +113,7 @@ object HCBlocks {
                     .sound(SoundType.COPPER)
                     .mapColor(
                         when (material) {
+                            HCMaterial.Metals.SILVER -> MapColor.TERRACOTTA_LIGHT_BLUE
                             HCMaterial.Metals.NIGHT_METAL -> MapColor.TERRACOTTA_BLACK
                             else -> return null
                         },

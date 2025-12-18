@@ -25,10 +25,13 @@
     },
     {
       "tag": "c:dusts/azure_steel"
+    },
+    {
+      "item": "minecraft:fire_charge"
     }
   ],
   "result": {
     "count": 1,
-    "id": "hiiragi_core:deep_steel_dust"
+    "id": "hiiragi_core:deep_steel_ingot"
   }
 }

@@ -25,10 +25,13 @@
     },
     {
       "tag": "c:dusts/gold"
+    },
+    {
+      "item": "minecraft:fire_charge"
     }
   ],
   "result": {
     "count": 1,
-    "id": "hiiragi_core:netherite_dust"
+    "id": "minecraft:netherite_ingot"
   }
 }

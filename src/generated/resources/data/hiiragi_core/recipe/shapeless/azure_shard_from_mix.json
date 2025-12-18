@@ -13,10 +13,13 @@
     },
     {
       "tag": "c:dusts/lapis"
+    },
+    {
+      "item": "minecraft:fire_charge"
     }
   ],
   "result": {
     "count": 4,
-    "id": "hiiragi_core:azure_dust"
+    "id": "hiiragi_core:azure_shard"
   }
 }

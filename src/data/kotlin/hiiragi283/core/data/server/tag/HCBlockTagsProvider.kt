@@ -39,6 +39,14 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
     private fun material(factory: BuilderFactory<Block>) {
         HCBlocks.MATERIALS.forEach { (prefix: HTMaterialPrefix, key: HTMaterialKey, block: HTIdLike) ->
             addMaterial(factory, prefix, key).add(block)
+
+            if (HCMaterial.Fuels.COAL_COKE.isOf(key)) {
+                factory.apply(BlockTags.INFINIBURN_OVERWORLD).add(block)
+            }
+            if (HCMaterial.Fuels.CARBIDE.isOf(key)) {
+                factory.apply(BlockTags.INFINIBURN_OVERWORLD).add(block)
+                factory.apply(BlockTags.INFINIBURN_END).add(block)
+            }
         }
 
         for ((material: HCMaterial, block: HTIdLike) in VANILLA_STORAGE_BLOCKS) {

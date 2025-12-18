@@ -10,10 +10,13 @@
     },
     {
       "tag": "c:dusts/iron"
+    },
+    {
+      "item": "minecraft:fire_charge"
     }
   ],
   "result": {
     "count": 1,
-    "id": "hiiragi_core:azure_steel_dust"
+    "id": "hiiragi_core:azure_steel_ingot"
   }
 }

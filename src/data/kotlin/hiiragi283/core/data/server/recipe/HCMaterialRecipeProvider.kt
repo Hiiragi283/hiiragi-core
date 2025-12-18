@@ -49,28 +49,41 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
     @JvmStatic
     private fun manual() {
         // Amethyst + Lapis -> Azure Shard
-        HTShapelessRecipeBuilder
-            .create(getItemOrThrow(HCMaterialPrefixes.DUST, HCMaterial.Gems.AZURE), 4)
-            .addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Gems.AMETHYST, 2)
-            .addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Gems.LAPIS, 2)
-            .saveSuffixed(output, "_from_mix")
+        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.GEM, HCMaterial.Gems.AZURE), 4) {
+            addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Gems.AMETHYST, 2)
+            addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Gems.LAPIS, 2)
+        }
+
+        // Gold + Obsidian + Blackstone -> Night Metal
+        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, HCMaterial.Metals.NIGHT_METAL)) {
+            addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Metals.GOLD)
+            addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Dusts.OBSIDIAN)
+            addIngredients(Items.BLACKSTONE, count = 4)
+        }
+
         // Netherite Scrap + Azure Steel -> Deep Steel
-        HTShapelessRecipeBuilder
-            .create(getItemOrThrow(HCMaterialPrefixes.DUST, HCMaterial.Alloys.NETHERITE))
-            .addIngredients(HCMaterialPrefixes.SCRAP, HCMaterial.Alloys.NETHERITE, 4)
-            .addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Metals.GOLD, 4)
-            .saveSuffixed(output, "_from_mix")
+        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, HCMaterial.Alloys.NETHERITE)) {
+            addIngredients(HCMaterialPrefixes.SCRAP, HCMaterial.Alloys.NETHERITE, 4)
+            addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Metals.GOLD, 4)
+        }
         // Azure Shard + Iron -> Azure Steel
-        HTShapelessRecipeBuilder
-            .create(getItemOrThrow(HCMaterialPrefixes.DUST, HCMaterial.Alloys.AZURE_STEEL))
-            .addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Gems.AZURE, 2)
-            .addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Metals.IRON)
-            .saveSuffixed(output, "_from_mix")
+        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, HCMaterial.Alloys.AZURE_STEEL)) {
+            addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Gems.AZURE, 2)
+            addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Metals.IRON)
+        }
         // Deep Scrap + Azure Steel -> Deep Steel
+        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, HCMaterial.Alloys.DEEP_STEEL)) {
+            addIngredients(HCMaterialPrefixes.SCRAP, HCMaterial.Alloys.DEEP_STEEL, 4)
+            addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Alloys.AZURE_STEEL, 4)
+        }
+    }
+
+    @JvmStatic
+    private inline fun addManualSmelting(result: ItemLike, count: Int = 1, builderAction: HTShapelessRecipeBuilder.() -> Unit) {
         HTShapelessRecipeBuilder
-            .create(getItemOrThrow(HCMaterialPrefixes.DUST, HCMaterial.Alloys.DEEP_STEEL))
-            .addIngredients(HCMaterialPrefixes.SCRAP, HCMaterial.Alloys.DEEP_STEEL, 4)
-            .addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Alloys.AZURE_STEEL, 4)
+            .create(result, count)
+            .apply(builderAction)
+            .addIngredient(Items.FIRE_CHARGE)
             .saveSuffixed(output, "_from_mix")
     }
 

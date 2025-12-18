@@ -9,6 +9,9 @@ object HCMaterialPrefixes {
     val ORE = HTMaterialPrefix("ore")
 
     @JvmField
+    val DEEPSLATE_ORE = HTMaterialPrefix("deepslate_ore", "deepslate_%s_ore", "c:ores")
+
+    @JvmField
     val GLASS_BLOCK = HTMaterialPrefix("glass_block")
 
     @JvmField
