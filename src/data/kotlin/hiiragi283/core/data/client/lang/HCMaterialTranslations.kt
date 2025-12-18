@@ -39,7 +39,7 @@ object HCMaterialTranslations {
         register(HCMaterialPrefixes.GEM, "%s", "%s")
         register(HCMaterialPrefixes.INGOT, "%s Ingot", "%sインゴット")
         register(HCMaterialPrefixes.NUGGET, "%s Nugget", "%sナゲット")
-        register(HCMaterialPrefixes.PEARL, "%s Pearl", "%sパール")
+        register(HCMaterialPrefixes.PEARL, "%s", "%s")
         register(HCMaterialPrefixes.PLATE, "%s Plate", "%sの板")
         register(HCMaterialPrefixes.RAW_MATERIAL, "Raw %s", "%sの原石")
         register(HCMaterialPrefixes.ROD, "%s Rod", "%sの棒")

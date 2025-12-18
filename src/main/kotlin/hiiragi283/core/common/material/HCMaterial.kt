@@ -129,12 +129,12 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
 
     enum class Pearls(private val usName: String, private val jpName: String) : HCMaterial {
         // Vanilla
-        ENDER("Ender", "エンダー") {
+        ENDER("Ender Pearl", "エンダーパール") {
             override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = dustList
         },
 
         // Hiiragi Series
-        ELDRITCH("Eldritch", "エルドリッチ"),
+        ELDRITCH("Eldritch Pearl", "異質な真珠"),
         ;
 
         override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.PEARL
@@ -188,6 +188,8 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         // TIN("Tin", "錫"),
         // PLATINUM("Platinum", "プラチナ"),
         // LEAD("Lead", "鉛"),
+        // Hiiragi Series
+        NIGHT_METAL("Night Metal", "夜金"),
         ;
 
         override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.INGOT
@@ -243,7 +245,6 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
                 else -> super.createPath(prefix)
             }
         },
-        NIGHT_METAL("Night Metal", "夜金"),
         ;
 
         override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.INGOT

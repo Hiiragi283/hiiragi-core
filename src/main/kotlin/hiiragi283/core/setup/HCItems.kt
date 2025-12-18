@@ -48,15 +48,15 @@ object HCItems {
     val COAL_CHUNK: HTSimpleDeferredItem = REGISTER.registerSimpleItem("coal_chunk")
 
     @JvmField
+    val COMPRESSED_SAWDUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("compressed_sawdust")
+
+    @JvmField
     val SYNTHETIC_LEATHER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_leather")
 
     @JvmField
     val TAR: HTSimpleDeferredItem = REGISTER.registerSimpleItem("tar")
 
     // Mob
-    @JvmField
-    val CRYOGEN_POWDER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("cryogen_powder")
-
     @JvmField
     val LUMINOUS_PASTE: HTSimpleDeferredItem = REGISTER.registerSimpleItem("luminous_paste")
 

@@ -106,7 +106,18 @@ object HCBlocks {
                         },
                     )
             }
-            is HCMaterial.Metals -> return null
+            is HCMaterial.Metals -> {
+                return BlockBehaviour.Properties
+                    .of()
+                    .strength(5f, 9f)
+                    .sound(SoundType.COPPER)
+                    .mapColor(
+                        when (material) {
+                            HCMaterial.Metals.NIGHT_METAL -> MapColor.TERRACOTTA_BLACK
+                            else -> return null
+                        },
+                    )
+            }
             is HCMaterial.Alloys -> {
                 return BlockBehaviour.Properties
                     .of()
@@ -118,7 +129,6 @@ object HCBlocks {
                             HCMaterial.Alloys.STEEL -> MapColor.COLOR_GRAY
                             HCMaterial.Alloys.AZURE_STEEL -> MapColor.COLOR_BLUE
                             HCMaterial.Alloys.DEEP_STEEL -> MapColor.TERRACOTTA_LIGHT_GREEN
-                            HCMaterial.Alloys.NIGHT_METAL -> MapColor.TERRACOTTA_BLACK
                         },
                     )
             }

@@ -27,15 +27,15 @@ class HCJapaneseLangProvider(output: PackOutput) : HTLangProvider.Japanese(outpu
 
         addFluid(HCFluids.CRIMSON_BLOOD, "深紅の血液")
         addFluid(HCFluids.DEW_OF_THE_WARP, "歪みの雫")
-        addFluid(HCFluids.ELDRITCH_FLUX, "エルドリッチフラックス")
+        addFluid(HCFluids.ELDRITCH_FLUX, "異質な流動体")
 
         // Item
         add(HCItems.COAL_CHIP, "石炭チップ")
         add(HCItems.COAL_CHUNK, "石炭塊")
+        add(HCItems.COMPRESSED_SAWDUST, "圧縮されたおがくず")
         add(HCItems.SYNTHETIC_LEATHER, "合成牛皮")
         add(HCItems.TAR, "タール")
 
-        add(HCItems.CRYOGEN_POWDER, "クライオジェンパウダー")
         add(HCItems.LUMINOUS_PASTE, "蛍光ペースト")
         add(HCItems.MAGMA_SHARD, "マグマシャード")
         add(HCItems.ELDER_HEART, "エルダーの心臓")

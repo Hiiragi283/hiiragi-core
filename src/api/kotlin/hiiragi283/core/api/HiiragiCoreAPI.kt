@@ -1,7 +1,10 @@
 package hiiragi283.core.api
 
 import hiiragi283.core.api.resource.toId
+import net.minecraft.core.RegistryAccess
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.server.MinecraftServer
+import net.neoforged.neoforge.server.ServerLifecycleHooks
 import java.util.ServiceLoader
 
 data object HiiragiCoreAPI {
@@ -20,6 +23,14 @@ data object HiiragiCoreAPI {
      */
     @JvmStatic
     fun id(vararg path: String): ResourceLocation = MOD_ID.toId(*path)
+
+    //    Server    //
+
+    @JvmStatic
+    fun getActiveServer(): MinecraftServer? = ServerLifecycleHooks.getCurrentServer()
+
+    @JvmStatic
+    fun getActiveAccess(): RegistryAccess? = getActiveServer()?.registryAccess()
 
     //    Service    //
 

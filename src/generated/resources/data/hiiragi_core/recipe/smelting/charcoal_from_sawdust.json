@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 600,
+  "experience": 0.5,
+  "ingredient": {
+    "item": "hiiragi_core:compressed_sawdust"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:charcoal"
+  }
+}

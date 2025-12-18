@@ -25,13 +25,17 @@ class HCEnglishLangProvider(output: PackOutput) : HTLangProvider.English(output,
         addFluid(HCFluids.CRIMSON_SAP, "Crimson Sap")
         addFluid(HCFluids.WARPED_SAP, "Warped Sap")
 
+        addFluid(HCFluids.CRIMSON_BLOOD, "Crimson Blood")
+        addFluid(HCFluids.DEW_OF_THE_WARP, "Dew of the Warp")
+        addFluid(HCFluids.ELDRITCH_FLUX, "Eldritch Flux")
+
         // Item
         add(HCItems.COAL_CHIP, "Coal Chip")
         add(HCItems.COAL_CHUNK, "Coal Chunk")
+        add(HCItems.COMPRESSED_SAWDUST, "Compressed Sawdust")
         add(HCItems.SYNTHETIC_LEATHER, "Synthetic Leather")
         add(HCItems.TAR, "Tar")
 
-        add(HCItems.CRYOGEN_POWDER, "Cryogen Powder")
         add(HCItems.LUMINOUS_PASTE, "Luminous Paste")
         add(HCItems.MAGMA_SHARD, "Magma Shard")
         add(HCItems.ELDER_HEART, "Elder Heart")

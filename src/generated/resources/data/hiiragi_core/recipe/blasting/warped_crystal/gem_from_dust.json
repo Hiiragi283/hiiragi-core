@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.35,
+  "ingredient": {
+    "item": "hiiragi_core:warped_crystal_dust"
+  },
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:warped_crystal"
+  }
+}
