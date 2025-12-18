@@ -184,7 +184,7 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         // ALUMINUM("Aluminum", "アルミニウム"),
         // NICKEL("Nickel", "ニッケル"),
         // ZINC("Zinc", "亜鉛"),
-        SILVER("silver", "銀"),
+        SILVER("Silver", "銀"),
 
         // TIN("Tin", "錫"),
         // PLATINUM("Platinum", "プラチナ"),

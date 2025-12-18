@@ -9,11 +9,13 @@ import hiiragi283.core.data.client.model.HCBlockStateProvider
 import hiiragi283.core.data.client.model.HCItemModelProvider
 import hiiragi283.core.data.server.HCDataMapProvider
 import hiiragi283.core.data.server.HCRecipeProvider
+import hiiragi283.core.data.server.loot.HCBlockLootTableProvider
 import hiiragi283.core.data.server.tag.HCBlockTagsProvider
 import hiiragi283.core.data.server.tag.HCFluidTagsProvider
 import hiiragi283.core.data.server.tag.HCItemTagsProvider
 import net.minecraft.data.tags.TagsProvider
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.data.event.GatherDataEvent
@@ -25,6 +27,8 @@ data object HiiragiCoreDataGen {
     fun gatherData(event: GatherDataEvent) {
         val (server: HTRootDataGenerator, client: HTRootDataGenerator) = HTRootDataGenerator.withDataPack(event)
         // Server
+        server.addLootTables(::HCBlockLootTableProvider to LootContextParamSets.BLOCK)
+
         server.addProvider(::HCRecipeProvider)
 
         server.addProvider(::HCFluidTagsProvider)

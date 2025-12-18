@@ -9,7 +9,13 @@ object HCMaterialPrefixes {
     val ORE = HTMaterialPrefix("ore")
 
     @JvmField
-    val DEEPSLATE_ORE = HTMaterialPrefix("deepslate_ore", "deepslate_%s_ore", "c:ores")
+    val ORE_DEEPSLATE = HTMaterialPrefix("ore/deepslate", "deepslate_%s_ore", "c:ores")
+
+    @JvmField
+    val ORE_NETHER = HTMaterialPrefix("ore/nether", "nether_%s_ore", "c:ores")
+
+    @JvmField
+    val ORE_END = HTMaterialPrefix("ore/end", "end_%s_ore", "c:ores")
 
     @JvmField
     val GLASS_BLOCK = HTMaterialPrefix("glass_block")
@@ -18,8 +24,8 @@ object HCMaterialPrefixes {
     val STORAGE_BLOCK = HTMaterialPrefix("storage_block", "%s_block")
 
     @JvmField
-    val RAW_STORAGE_BLOCK =
-        HTMaterialPrefix("raw_storage_block", "raw_%s_block", "c:storage_blocks", "c:storage_blocks/raw_%s")
+    val STORAGE_BLOCK_RAW =
+        HTMaterialPrefix("storage_block/raw", "raw_%s_block", "c:storage_blocks", "c:storage_blocks/raw_%s")
 
     //    Item    //
 

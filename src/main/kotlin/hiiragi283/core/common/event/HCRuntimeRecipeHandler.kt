@@ -33,13 +33,13 @@ object HCRuntimeRecipeHandler {
     @JvmStatic
     fun rawToDust(event: HTRegisterRuntimeRecipeEvent) {
         for (material: HCMaterial in HCMaterial.entries) {
-            if (!event.isPresentTag(HCMaterialPrefixes.RAW_STORAGE_BLOCK, material)) continue
+            if (!event.isPresentTag(HCMaterialPrefixes.STORAGE_BLOCK_RAW, material)) continue
 
             val dust: Item = event.getFirstHolder(HCMaterialPrefixes.DUST, material)?.value() ?: continue
             // Crushing
             HTSingleItemRecipeBuilder
                 .crushing(dust, 12)
-                .addIngredient(HCMaterialPrefixes.RAW_STORAGE_BLOCK, material)
+                .addIngredient(HCMaterialPrefixes.STORAGE_BLOCK_RAW, material)
                 .setExp(1.2f)
                 .saveSuffixed(event.output, "_from_raw_block")
         }

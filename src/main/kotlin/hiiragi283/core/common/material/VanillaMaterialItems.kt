@@ -43,20 +43,20 @@ object VanillaMaterialItems {
         add(HCMaterialPrefixes.PEARL, HCMaterial.Pearls.ENDER, Items.ENDER_PEARL)
         // Metals
         add(HCMaterialPrefixes.ORE, HCMaterial.Metals.COPPER, Items.COPPER_ORE)
-        add(HCMaterialPrefixes.RAW_STORAGE_BLOCK, HCMaterial.Metals.COPPER, Items.RAW_COPPER_BLOCK)
+        add(HCMaterialPrefixes.STORAGE_BLOCK_RAW, HCMaterial.Metals.COPPER, Items.RAW_COPPER_BLOCK)
         add(HCMaterialPrefixes.STORAGE_BLOCK, HCMaterial.Metals.COPPER, Items.COPPER_BLOCK)
         add(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Metals.COPPER, Items.RAW_COPPER)
         add(HCMaterialPrefixes.INGOT, HCMaterial.Metals.COPPER, Items.COPPER_INGOT)
 
         add(HCMaterialPrefixes.ORE, HCMaterial.Metals.IRON, Items.IRON_ORE)
-        add(HCMaterialPrefixes.RAW_STORAGE_BLOCK, HCMaterial.Metals.IRON, Items.RAW_IRON_BLOCK)
+        add(HCMaterialPrefixes.STORAGE_BLOCK_RAW, HCMaterial.Metals.IRON, Items.RAW_IRON_BLOCK)
         add(HCMaterialPrefixes.STORAGE_BLOCK, HCMaterial.Metals.IRON, Items.IRON_BLOCK)
         add(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Metals.IRON, Items.RAW_IRON)
         add(HCMaterialPrefixes.INGOT, HCMaterial.Metals.IRON, Items.IRON_INGOT)
         add(HCMaterialPrefixes.NUGGET, HCMaterial.Metals.IRON, Items.IRON_NUGGET)
 
         add(HCMaterialPrefixes.ORE, HCMaterial.Metals.GOLD, Items.GOLD_ORE)
-        add(HCMaterialPrefixes.RAW_STORAGE_BLOCK, HCMaterial.Metals.GOLD, Items.RAW_GOLD_BLOCK)
+        add(HCMaterialPrefixes.STORAGE_BLOCK_RAW, HCMaterial.Metals.GOLD, Items.RAW_GOLD_BLOCK)
         add(HCMaterialPrefixes.STORAGE_BLOCK, HCMaterial.Metals.GOLD, Items.GOLD_BLOCK)
         add(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Metals.GOLD, Items.RAW_GOLD)
         add(HCMaterialPrefixes.INGOT, HCMaterial.Metals.GOLD, Items.GOLD_INGOT)

@@ -1,19 +1,18 @@
 package hiiragi283.core.data.client.model
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.model.HTBlockStateProvider
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.vanillaId
-import hiiragi283.core.common.material.HCMaterial
-import hiiragi283.core.common.material.HCMaterialPrefixes
+import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.level.block.Block
 
 class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(context, HiiragiCoreAPI.MOD_ID) {
     override fun registerStatesAndModels() {
@@ -22,10 +21,8 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(con
     }
 
     private fun registerMaterials() {
-        val storageBlock: HTMaterialPrefix = HCMaterialPrefixes.STORAGE_BLOCK
-        for (material: HCMaterial in HCMaterial.entries) {
-            val block: HTHolderLike<Block, Block> = HCBlocks.MATERIALS[storageBlock, material] ?: continue
-            val textureId: ResourceLocation = HiiragiCoreAPI.id("block", storageBlock.name, material.asMaterialName())
+        HCBlocks.MATERIALS.forEach { (prefix: HTMaterialPrefix, material: HTMaterialKey, block: HTSimpleDeferredBlock) ->
+            val textureId: ResourceLocation = HiiragiCoreAPI.id("block", prefix.name, material.name)
             existTexture(block, textureId, ::altTextureBlock)
         }
     }

@@ -30,8 +30,13 @@ object HCMaterialTranslations {
         }
 
         // Block
+        register(HCMaterialPrefixes.ORE, "%s Ore", "%s鉱石")
+        register(HCMaterialPrefixes.ORE_DEEPSLATE, "Deepslate %s Ore", "深層%s鉱石")
+        register(HCMaterialPrefixes.ORE_NETHER, "Nether %s Ore", "ネザー%s鉱石")
+        register(HCMaterialPrefixes.ORE_END, "End %s Ore", "エンド%s鉱石")
+
         register(HCMaterialPrefixes.STORAGE_BLOCK, "Block of %s", "%sブロック")
-        register(HCMaterialPrefixes.RAW_STORAGE_BLOCK, "Block of Raw %s", "%sの原石ブロック")
+        register(HCMaterialPrefixes.STORAGE_BLOCK_RAW, "Block of Raw %s", "%sの原石ブロック")
         // Item
         register(HCMaterialPrefixes.DUST, "%s Dust", "%sの粉")
         register(HCMaterialPrefixes.FUEL, "%s", "%s")

@@ -60,6 +60,11 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
         val axe: HTTagBuilder<Block> = factory.apply(BlockTags.MINEABLE_WITH_AXE)
         sequence { yield(HCBlocks.DRYING_LACK) }.forEach(axe::add)
 
+        val pickaxe: HTTagBuilder<Block> = factory.apply(BlockTags.MINEABLE_WITH_PICKAXE)
+        sequence {
+            yieldAll(HCBlocks.MATERIALS.values)
+        }.forEach(pickaxe::add)
+
         factory
             .apply(HCModTags.Blocks.MINEABLE_WITH_HAMMER)
             .addTag(BlockTags.MINEABLE_WITH_PICKAXE)

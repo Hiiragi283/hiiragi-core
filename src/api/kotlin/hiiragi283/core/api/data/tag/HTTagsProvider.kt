@@ -49,7 +49,7 @@ abstract class HTTagsProvider<T : Any>(
         }.map.forEach { (tagKey: TagKey<T>, entries: Collection<TagEntry>) ->
             entries
                 .sortedWith(COMPARATOR)
-                .toSet()
+                .distinctBy(TagEntry::toString)
                 .forEach { entry: TagEntry -> tag(tagKey).add(entry) }
         }
     }

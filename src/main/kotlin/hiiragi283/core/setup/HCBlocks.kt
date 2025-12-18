@@ -2,8 +2,10 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.buildTable
+import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
+import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.common.block.HTDryingLackBlock
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
@@ -30,15 +32,23 @@ object HCBlocks {
 
     @JvmStatic
     val MATERIALS: HTMaterialTable<HTMaterialPrefix, HTSimpleDeferredBlock> = buildTable {
+        fun register(prefix: HTPrefixLike, material: HTMaterialLike, properties: BlockBehaviour.Properties) {
+            this.put(prefix.asMaterialPrefix(), material.asMaterialKey(), REGISTER.registerSimple(prefix.createPath(material), properties))
+        }
+
+        // Ores
+        register(HCMaterialPrefixes.ORE_NETHER, HCMaterial.Gems.CINNABAR, copyOf(Blocks.NETHER_QUARTZ_ORE))
+
+        register(HCMaterialPrefixes.ORE_DEEPSLATE, HCMaterial.Gems.SULFUR, copyOf(Blocks.DEEPSLATE_LAPIS_ORE))
+        register(HCMaterialPrefixes.ORE_NETHER, HCMaterial.Gems.SULFUR, copyOf(Blocks.NETHER_QUARTZ_ORE))
+
+        register(HCMaterialPrefixes.ORE, HCMaterial.Metals.SILVER, copyOf(Blocks.GOLD_ORE))
+        register(HCMaterialPrefixes.ORE_DEEPSLATE, HCMaterial.Metals.SILVER, copyOf(Blocks.DEEPSLATE_GOLD_ORE))
         // Storage Blocks
         for (material: HCMaterial in HCMaterial.entries) {
             val properties: BlockBehaviour.Properties = getStorageProp(material) ?: continue
             val prefix: HTMaterialPrefix = HCMaterialPrefixes.STORAGE_BLOCK
-            this.put(
-                prefix,
-                material.asMaterialKey(),
-                REGISTER.registerSimple(prefix.createPath(material), properties),
-            )
+            register(prefix, material, properties)
         }
     }.let(::HTMaterialTable)
 
