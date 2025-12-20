@@ -24,6 +24,10 @@ interface HTMultiMap<K : Any, V : Any> {
     interface Mutable<K : Any, V : Any> : HTMultiMap<K, V> {
         fun put(key: K, value: V): Boolean
 
+        operator fun set(key: K, value: V) {
+            put(key, value)
+        }
+
         fun putAll(key: K, values: Iterable<V>): Boolean
 
         fun putAll(other: Multimap<K, V>): Boolean
