@@ -10,9 +10,9 @@ import hiiragi283.core.api.material.getOrThrow
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.registry.HTItemHolderLike
-import hiiragi283.core.common.data.recipe.HTCookingRecipeBuilder
-import hiiragi283.core.common.data.recipe.HTShapedRecipeBuilder
-import hiiragi283.core.common.data.recipe.HTShapelessRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialItems

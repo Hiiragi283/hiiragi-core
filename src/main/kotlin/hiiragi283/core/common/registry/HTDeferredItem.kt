@@ -2,6 +2,7 @@ package hiiragi283.core.common.registry
 
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTItemHolderLike
+import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
@@ -15,4 +16,6 @@ class HTDeferredItem<ITEM : Item> :
     constructor(key: ResourceKey<Item>) : super(key)
 
     constructor(id: ResourceLocation) : super(Registries.ITEM, id)
+
+    override fun getHolder(): Holder<Item> = super<HTItemHolderLike>.getHolder()
 }

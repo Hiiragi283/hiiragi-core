@@ -1,4 +1,4 @@
-package hiiragi283.core.api.data.recipe
+package hiiragi283.core.api.data.recipe.builder
 
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTPrefixLike

@@ -4,11 +4,12 @@ import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.registry.HTHolderCollection
 import hiiragi283.core.api.tuple.unwrapEither
-import net.minecraft.core.Holder
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
-import net.minecraft.tags.TagKey
+import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
@@ -33,33 +34,30 @@ data object HTIngredientCodec {
         .dispatch(ICustomIngredient::getType, IngredientType<*>::codec)
 
     @JvmStatic
-    private val VALUE_CODEC: Codec<Ingredient.Value> =
-        Codec
-            .either(TagKey.hashedCodec(Registries.ITEM), BuiltInRegistries.ITEM.holderByNameCodec().listOrElement())
+    private val VALUE_CODEC: BiCodec<RegistryFriendlyByteBuf, Ingredient.Value> =
+        HTHolderCollection
+            .codec(Registries.ITEM)
             .xmap(
-                { either: Either<TagKey<Item>, List<Holder<Item>>> ->
-                    either.map(
-                        { tagKey: TagKey<Item> -> Ingredient.TagValue(tagKey) },
-                        { holders: List<Holder<Item>> ->
-                            if (holders.size == 1) {
-                                holders[0].let(::ItemStack).let(Ingredient::ItemValue)
-                            } else {
-                                holders.map(::ItemStack).let(::StacksValue)
-                            }
-                        },
-                    )
+                { holders: HTHolderCollection<Item> ->
+                    holders.unwrap().map(Ingredient::TagValue) { keys: List<ResourceKey<Item>> ->
+                        val items: List<Item> = keys.mapNotNull(BuiltInRegistries.ITEM::get)
+                        when {
+                            items.size == 1 -> items[0].let(::ItemStack).let(Ingredient::ItemValue)
+                            else -> items.map(::ItemStack).let(::StacksValue)
+                        }
+                    }
                 },
                 { value: Ingredient.Value ->
                     when (value) {
-                        is Ingredient.TagValue -> Either.left(value.tag())
-                        else -> Either.right(value.items.map(ItemStack::getItemHolder))
+                        is Ingredient.TagValue -> HTHolderCollection.reference(value.tag)
+                        else -> value.items.map(ItemStack::getItemHolder).let(HTHolderCollection.Companion::direct)
                     }
                 },
             )
 
     @JvmField
     val ITEM: Codec<Ingredient> = Codec
-        .either(VALUE_CODEC.listOrElement(), CUSTOM_ITEM_CODEC)
+        .either(VALUE_CODEC.listOrElement().codec, CUSTOM_ITEM_CODEC)
         .xmap(
             { either: Either<List<Ingredient.Value>, ICustomIngredient> ->
                 either.map(
@@ -85,26 +83,24 @@ data object HTIngredientCodec {
     //    Fluid    //
 
     @JvmStatic
-    private val FLUID_HOLDER_CODEC: Codec<FluidIngredient> =
-        Codec
-            .either(TagKey.hashedCodec(Registries.FLUID), BuiltInRegistries.FLUID.holderByNameCodec().listOrElement())
+    private val FLUID_HOLDER_CODEC: BiCodec<RegistryFriendlyByteBuf, FluidIngredient> =
+        HTHolderCollection
+            .codec(Registries.FLUID)
             .xmap(
-                { either: Either<TagKey<Fluid>, List<Holder<Fluid>>> ->
-                    either.map(
-                        FluidIngredient::tag,
-                        { holders: List<Holder<Fluid>> ->
-                            when (holders.size) {
-                                0 -> FluidIngredient.empty()
-                                1 -> FluidIngredient.single(holders[0])
-                                else -> CompoundFluidIngredient(holders.map(FluidIngredient::single))
-                            }
-                        },
-                    )
+                { holders: HTHolderCollection<Fluid> ->
+                    holders.unwrap().map(FluidIngredient::tag) { keys: List<ResourceKey<Fluid>> ->
+                        val fluids: List<Fluid> = keys.mapNotNull(BuiltInRegistries.FLUID::get)
+                        when (fluids.size) {
+                            0 -> FluidIngredient.empty()
+                            1 -> FluidIngredient.single(fluids[0])
+                            else -> CompoundFluidIngredient(fluids.map(FluidIngredient::single))
+                        }
+                    }
                 },
                 { ingredient: FluidIngredient ->
                     when (ingredient) {
-                        is TagFluidIngredient -> Either.left(ingredient.tag())
-                        else -> Either.right(ingredient.stacks.map(FluidStack::getFluidHolder))
+                        is TagFluidIngredient -> HTHolderCollection.reference(ingredient.tag())
+                        else -> HTHolderCollection.direct(ingredient.stacks.map(FluidStack::getFluidHolder))
                     }
                 },
             )
@@ -115,7 +111,7 @@ data object HTIngredientCodec {
             NeoForgeRegistries.FLUID_INGREDIENT_TYPES.byNameCodec(),
             FluidIngredient::getType,
             FluidIngredientType<*>::codec,
-            FLUID_HOLDER_CODEC.fieldOf(HTConst.FLUIDS),
+            FLUID_HOLDER_CODEC.codec.fieldOf(HTConst.FLUIDS),
         ).xmap(::unwrapEither) { ingredient: FluidIngredient ->
             when (ingredient) {
                 is TagFluidIngredient -> Either.right(ingredient)

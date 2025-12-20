@@ -1,0 +1,10 @@
+{
+  "type": "hiiragi_core:drying",
+  "exp": "1/10",
+  "ingredient": "minecraft:slime_ball",
+  "result": {
+    "id": "hiiragi_core:raw_rubber",
+    "tag": "#c:raw_materials/rubber"
+  },
+  "time": 200
+}

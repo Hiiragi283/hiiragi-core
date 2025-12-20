@@ -2,8 +2,7 @@
   "type": "hiiragi_core:drying",
   "exp": "1/10",
   "ingredient": "minecraft:kelp",
-  "results": {
-    "count": 1,
+  "result": {
     "id": "minecraft:dried_kelp"
   },
   "time": 200

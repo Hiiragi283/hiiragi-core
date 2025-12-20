@@ -1,5 +1,7 @@
 package hiiragi283.core.api.function
 
+fun generateHash(vararg obj: Any?): Int = arrayOf(*obj).fold(0) { result: Int, obj: Any? -> 31 * result + (obj?.hashCode() ?: 0) }
+
 fun <T> identity(): (T) -> T = { it }
 
 fun <IP, R> (() -> IP).andThen(f: (IP) -> R): () -> R = { this().let(f) }

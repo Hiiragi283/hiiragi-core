@@ -46,7 +46,10 @@ sealed interface HTHolderCollection<T : Any> : Collection<Holder<T>> {
 
     override fun containsAll(elements: Collection<Holder<T>>): Boolean = elements.all { contains(it) }
 
-    private class Direct<T : Any>(private val holderSet: HolderSet<T>) : HTHolderCollection<T> {
+    fun unwrap(): Either<TagKey<T>, List<ResourceKey<T>>>
+
+    @JvmInline
+    private value class Direct<T : Any>(private val holderSet: HolderSet<T>) : HTHolderCollection<T> {
         companion object {
             @JvmStatic
             fun <T : Any> codec(registryKey: RegistryKey<T>): BiCodec<RegistryFriendlyByteBuf, Direct<T>> =
@@ -60,9 +63,14 @@ sealed interface HTHolderCollection<T : Any> : Collection<Holder<T>> {
         override fun contains(element: Holder<T>): Boolean = holderSet.contains(element)
 
         override fun iterator(): Iterator<Holder<T>> = holderSet.iterator()
+
+        override fun unwrap(): Either<TagKey<T>, List<ResourceKey<T>>> = holderSet.unwrap().mapRight { holders: List<Holder<T>> ->
+            holders.map(Holder<T>::toLike).map(HTHolderLike<T, *>::getResourceKey)
+        }
     }
 
-    private class Reference<T : Any>(private val either: Either<TagKey<T>, List<ResourceKey<T>>>) : HTHolderCollection<T> {
+    @JvmInline
+    private value class Reference<T : Any>(private val either: Either<TagKey<T>, List<ResourceKey<T>>>) : HTHolderCollection<T> {
         companion object {
             @JvmStatic
             fun <T : Any> codec(registryKey: RegistryKey<T>): BiCodec<ByteBuf, Reference<T>> = BiCodecs
@@ -85,5 +93,7 @@ sealed interface HTHolderCollection<T : Any> : Collection<Holder<T>> {
         override fun contains(element: Holder<T>): Boolean = getDelegate().contains(element)
 
         override fun iterator(): Iterator<Holder<T>> = getDelegate().iterator()
+
+        override fun unwrap(): Either<TagKey<T>, List<ResourceKey<T>>> = either
     }
 }

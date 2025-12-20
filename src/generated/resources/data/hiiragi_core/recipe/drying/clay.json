@@ -2,8 +2,7 @@
   "type": "hiiragi_core:drying",
   "exp": "1/10",
   "ingredient": "minecraft:mud",
-  "results": {
-    "count": 1,
+  "result": {
     "id": "minecraft:clay"
   },
   "time": 200

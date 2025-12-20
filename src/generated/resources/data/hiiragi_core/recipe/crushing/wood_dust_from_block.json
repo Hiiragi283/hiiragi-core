@@ -2,7 +2,7 @@
   "type": "hiiragi_core:crushing",
   "exp": "2/5",
   "ingredient": "#minecraft:logs",
-  "results": {
+  "result": {
     "count": 4,
     "id": "hiiragi_core:wood_dust"
   },

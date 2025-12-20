@@ -2,8 +2,7 @@
   "type": "hiiragi_core:drying",
   "exp": "1/10",
   "ingredient": "minecraft:rotten_flesh",
-  "results": {
-    "count": 1,
+  "result": {
     "id": "minecraft:leather"
   },
   "time": 200

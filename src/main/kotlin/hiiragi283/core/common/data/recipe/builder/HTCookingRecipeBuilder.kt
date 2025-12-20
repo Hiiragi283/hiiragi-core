@@ -1,6 +1,6 @@
-package hiiragi283.core.common.data.recipe
+package hiiragi283.core.common.data.recipe.builder
 
-import hiiragi283.core.api.data.recipe.HTStackRecipeBuilder
+import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
 import hiiragi283.core.api.stack.ImmutableItemStack
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.AbstractCookingRecipe

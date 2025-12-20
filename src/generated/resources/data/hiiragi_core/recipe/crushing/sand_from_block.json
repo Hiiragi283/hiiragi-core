@@ -2,7 +2,7 @@
   "type": "hiiragi_core:crushing",
   "exp": "2/5",
   "ingredient": "#c:sandstone/uncolored_blocks",
-  "results": {
+  "result": {
     "count": 4,
     "id": "minecraft:sand"
   },

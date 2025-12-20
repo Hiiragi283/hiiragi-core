@@ -3,19 +3,18 @@ package hiiragi283.core.client.emi.recipe
 import dev.emi.emi.api.recipe.BasicEmiRecipe
 import dev.emi.emi.api.recipe.EmiRecipeCategory
 import dev.emi.emi.api.render.EmiTexture
-import dev.emi.emi.api.stack.EmiIngredient
-import dev.emi.emi.api.stack.EmiStack
 import dev.emi.emi.api.widget.WidgetHolder
 import hiiragi283.core.api.text.translatableText
+import hiiragi283.core.client.emi.toEmi
 import hiiragi283.core.common.recipe.HTSingleItemRecipe
 import net.minecraft.resources.ResourceLocation
 
 class HTSingleItemEmiRecipe(category: EmiRecipeCategory, private val recipe: HTSingleItemRecipe, id: ResourceLocation) :
     BasicEmiRecipe(category, id, 82, 38) {
     init {
-        inputs.add(EmiIngredient.of(recipe.ingredient))
+        inputs.add(recipe.ingredient.toEmi())
 
-        outputs.add(EmiStack.of(recipe.result))
+        outputs.add(recipe.result.toEmi())
     }
 
     override fun addWidgets(widgets: WidgetHolder) {

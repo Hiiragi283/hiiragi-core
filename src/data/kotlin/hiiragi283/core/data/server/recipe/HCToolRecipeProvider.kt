@@ -2,7 +2,7 @@ package hiiragi283.core.data.server.recipe
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.common.data.recipe.HTShapedRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.item.HTHammerItem
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.setup.HCItems

@@ -18,6 +18,7 @@ import net.neoforged.neoforge.fluids.crafting.TagFluidIngredient
 /**
  * [ImmutableFluidStack]向けの[HTIngredient]の実装クラス
  */
+@JvmRecord
 data class HTFluidIngredient(private val ingredient: FluidIngredient, private val amount: Int) : HTIngredient<Fluid, ImmutableFluidStack> {
     companion object {
         @JvmField

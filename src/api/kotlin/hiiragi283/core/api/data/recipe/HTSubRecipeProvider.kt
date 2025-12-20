@@ -2,6 +2,9 @@ package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.data.recipe.ingredient.HTFluidIngredientCreator
+import hiiragi283.core.api.data.recipe.ingredient.HTIngredientAccess
+import hiiragi283.core.api.data.recipe.ingredient.HTItemIngredientCreator
 import hiiragi283.core.api.resource.toId
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementHolder
@@ -17,6 +20,10 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
         private set
     protected lateinit var output: RecipeOutput
         private set
+
+    protected val fluidCreator: HTFluidIngredientCreator by lazy { HTIngredientAccess.INSTANCE.fluidCreator() }
+    protected val itemCreator: HTItemIngredientCreator by lazy { HTIngredientAccess.INSTANCE.itemCreator() }
+    protected val resultHelper: HTResultHelper = HTResultHelper
 
     fun buildRecipes(output: RecipeOutput, holderLookup: HolderLookup.Provider) {
         provider = holderLookup

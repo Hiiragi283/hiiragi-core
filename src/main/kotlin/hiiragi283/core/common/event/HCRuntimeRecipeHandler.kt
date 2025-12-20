@@ -1,8 +1,11 @@
 package hiiragi283.core.common.event
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.data.recipe.HTResultHelper
+import hiiragi283.core.api.data.recipe.ingredient.HTIngredientAccess
+import hiiragi283.core.api.data.recipe.ingredient.HTItemIngredientCreator
 import hiiragi283.core.api.recipe.HTRegisterRuntimeRecipeEvent
-import hiiragi283.core.common.data.recipe.HTSingleItemRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import net.minecraft.world.item.Item
@@ -11,6 +14,9 @@ import net.neoforged.fml.common.EventBusSubscriber
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 object HCRuntimeRecipeHandler {
+    private val itemCreator: HTItemIngredientCreator by lazy { HTIngredientAccess.INSTANCE.itemCreator() }
+    private val resultHelper: HTResultHelper = HTResultHelper
+
     @SubscribeEvent
     fun registerRuntimeRecipe(event: HTRegisterRuntimeRecipeEvent) {
         baseToDust(event)
@@ -23,9 +29,10 @@ object HCRuntimeRecipeHandler {
             val dust: Item = event.getFirstHolder(HCMaterialPrefixes.DUST, material)?.value() ?: continue
             // Crushing
             HTSingleItemRecipeBuilder
-                .crushing(dust)
-                .addIngredient(material.getBaseIngredient())
-                .setExp(0.1f)
+                .crushing(
+                    itemCreator.fromTagKey(material.getBaseIngredient()),
+                    resultHelper.item(dust),
+                ).setExp(0.1f)
                 .saveSuffixed(event.output, "_from_base")
         }
     }
@@ -38,9 +45,10 @@ object HCRuntimeRecipeHandler {
             val dust: Item = event.getFirstHolder(HCMaterialPrefixes.DUST, material)?.value() ?: continue
             // Crushing
             HTSingleItemRecipeBuilder
-                .crushing(dust, 12)
-                .addIngredient(HCMaterialPrefixes.STORAGE_BLOCK_RAW, material)
-                .setExp(1.2f)
+                .crushing(
+                    itemCreator.fromTagKey(HCMaterialPrefixes.STORAGE_BLOCK_RAW, material),
+                    resultHelper.item(dust, 12),
+                ).setExp(1.2f)
                 .saveSuffixed(event.output, "_from_raw_block")
         }
     }

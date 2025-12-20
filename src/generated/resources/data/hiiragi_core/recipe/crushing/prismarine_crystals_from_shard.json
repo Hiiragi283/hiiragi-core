@@ -2,8 +2,7 @@
   "type": "hiiragi_core:crushing",
   "exp": "1/10",
   "ingredient": "minecraft:prismarine_shard",
-  "results": {
-    "count": 1,
+  "result": {
     "id": "minecraft:prismarine_crystals"
   },
   "time": 200

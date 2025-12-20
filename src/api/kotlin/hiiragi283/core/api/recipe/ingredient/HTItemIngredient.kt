@@ -19,7 +19,8 @@ import java.util.function.IntUnaryOperator
 /**
  * [ImmutableItemStack]向けの[HTIngredient]の実装クラス
  */
-class HTItemIngredient(private val ingredient: Ingredient, private val count: Int) : HTIngredient<Item, ImmutableItemStack> {
+@JvmRecord
+data class HTItemIngredient(private val ingredient: Ingredient, private val count: Int) : HTIngredient<Item, ImmutableItemStack> {
     companion object {
         @JvmField
         val UNSIZED_CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> =

@@ -165,4 +165,9 @@ data class MapBiCodec<B : ByteBuf, V : Any> private constructor(val codec: MapCo
     fun validate(validator: UnaryOperator<V>): MapBiCodec<B, V> = flatXmap(validator::apply, validator::apply)
 
     fun <C : Any> forGetter(getter: Function<C, V>): ParameterCodec<B, C, V> = ParameterCodec.of(this, getter)
+
+    inline fun <R : Any> toSerializer(factory: (MapCodec<V>, StreamCodec<B, V>) -> R): R {
+        val (mapCodec: MapCodec<V>, streamCodec: StreamCodec<B, V>) = this
+        return factory(mapCodec, streamCodec)
+    }
 }

@@ -2,7 +2,7 @@
   "type": "hiiragi_core:drying",
   "exp": "1/10",
   "ingredient": "#c:drinks/honey",
-  "results": {
+  "result": {
     "count": 4,
     "id": "minecraft:sugar"
   },
