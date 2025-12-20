@@ -49,6 +49,7 @@ object HCMaterialTranslations {
         register(HCMaterialPrefixes.RAW_MATERIAL, "Raw %s", "%sの原石")
         register(HCMaterialPrefixes.ROD, "%s Rod", "%sの棒")
         register(HCMaterialPrefixes.SCRAP, "%s Scrap", "%sの欠片")
+        register(HCMaterialPrefixes.TINY_DUST, "Tiny %s Dust", "小さな%sの粉")
         register(HCMaterialPrefixes.WIRE, "%s Wire", "%sのワイヤ")
     }
 

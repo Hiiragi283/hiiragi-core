@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "c:tiny_dusts/warped_crystal"
+    },
+    "B": {
+      "item": "hiiragi_core:tiny_warped_crystal_dust"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "ABA",
+    "AAA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:warped_crystal_dust"
+  }
+}

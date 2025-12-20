@@ -63,5 +63,8 @@ object HCMaterialPrefixes {
     val SCRAP = HTMaterialPrefix("scrap")
 
     @JvmField
+    val TINY_DUST = HTMaterialPrefix("tiny_dust", "tiny_%s_dust")
+
+    @JvmField
     val WIRE = HTMaterialPrefix("wire")
 }

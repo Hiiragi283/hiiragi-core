@@ -3,7 +3,10 @@ package hiiragi283.core.data.server
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
+import hiiragi283.core.api.math.fraction
+import hiiragi283.core.api.math.times
 import hiiragi283.core.common.material.HCMaterial
+import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import net.minecraft.core.HolderLookup
@@ -11,6 +14,7 @@ import net.minecraft.world.item.Item
 import net.neoforged.neoforge.common.data.DataMapProvider
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps
+import org.apache.commons.lang3.math.Fraction
 
 class HCDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.output, context.registries) {
     override fun gather(provider: HolderLookup.Provider) {
@@ -23,7 +27,12 @@ class HCDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.out
             }
             // Item
             for ((prefix: HTMaterialPrefix, _) in HCItems.MATERIALS.column(material)) {
-                furnace.add(prefix.itemTagKey(material), FurnaceFuel(time), false)
+                val modifier: Fraction = when (prefix) {
+                    HCMaterialPrefixes.NUGGET -> fraction(1, 10)
+                    HCMaterialPrefixes.TINY_DUST -> fraction(1, 10)
+                    else -> Fraction.ONE
+                }
+                furnace.add(prefix.itemTagKey(material), FurnaceFuel((time * modifier).toInt()), false)
             }
         }
 

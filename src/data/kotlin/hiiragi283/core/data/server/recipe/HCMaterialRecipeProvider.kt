@@ -44,6 +44,9 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
 
         ingotToGear()
         ingotToNugget()
+
+        tinyToDust()
+        tinyToNugget()
     }
 
     @JvmStatic
@@ -221,6 +224,34 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
                 .define('A', HCMaterialPrefixes.NUGGET, key)
                 .define('B', nugget)
                 .save(output, HiiragiCoreAPI.id(key.name, "ingot_from_nugget"))
+        }
+    }
+
+    @JvmStatic
+    private fun tinyToDust() {
+        for ((key: HTMaterialKey, tinyDust: HTItemHolderLike<*>) in HCItems.MATERIALS.row(HCMaterialPrefixes.TINY_DUST)) {
+            val dust: HTItemHolderLike<*> = getItem(HCMaterialPrefixes.DUST, key) ?: continue
+            // Shaped
+            HTShapedRecipeBuilder
+                .create(dust)
+                .hollow8()
+                .define('A', HCMaterialPrefixes.TINY_DUST, key)
+                .define('B', tinyDust)
+                .save(output, HiiragiCoreAPI.id(key.name, "dust_from_tiny_dust"))
+        }
+    }
+
+    @JvmStatic
+    private fun tinyToNugget() {
+        for ((key: HTMaterialKey, tinyDust: HTItemHolderLike<*>) in HCItems.MATERIALS.row(HCMaterialPrefixes.TINY_DUST)) {
+            val nugget: HTItemHolderLike<*> = getItem(HCMaterialPrefixes.NUGGET, key) ?: continue
+            // Smelting & Blasting
+            HTCookingRecipeBuilder.smeltingAndBlasting(nugget) {
+                addIngredient(tinyDust)
+                setTime(20)
+                setExp(0.1f)
+                save(output, HiiragiCoreAPI.id(key.name, "nugget_from_tiny_dust"))
+            }
         }
     }
 

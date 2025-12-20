@@ -31,7 +31,7 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         @JvmStatic
         fun getPrefixedEntries(): List<Pair<HTMaterialPrefix, HCMaterial>> = entries.map { it.basePrefix to it }
 
-        private val dustList: List<HTMaterialPrefix> = listOf(HCMaterialPrefixes.DUST)
+        private val dustList: List<HTMaterialPrefix> = listOf(HCMaterialPrefixes.DUST, HCMaterialPrefixes.TINY_DUST)
     }
 
     val basePrefix: HTMaterialPrefix
@@ -69,6 +69,7 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         override fun getSupportedItemPrefixes(): List<HTMaterialPrefix> = listOf(
             HCMaterialPrefixes.FUEL,
             HCMaterialPrefixes.DUST,
+            HCMaterialPrefixes.TINY_DUST,
         )
 
         override fun getTemplateId(prefix: HTMaterialPrefix): ResourceLocation? = when (prefix) {
@@ -129,6 +130,7 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         override fun getSupportedItemPrefixes(): List<HTMaterialPrefix> = listOf(
             HCMaterialPrefixes.GEM,
             HCMaterialPrefixes.DUST,
+            HCMaterialPrefixes.TINY_DUST,
         )
 
         override fun getTemplateId(prefix: HTMaterialPrefix): ResourceLocation? = when (prefix) {
@@ -162,6 +164,7 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         override fun getSupportedItemPrefixes(): List<HTMaterialPrefix> = listOf(
             HCMaterialPrefixes.PEARL,
             HCMaterialPrefixes.DUST,
+            HCMaterialPrefixes.TINY_DUST,
         )
 
         override fun getTemplateId(prefix: HTMaterialPrefix): ResourceLocation? = when (prefix) {
@@ -225,6 +228,7 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
             HCMaterialPrefixes.RAW_MATERIAL,
             HCMaterialPrefixes.INGOT,
             HCMaterialPrefixes.DUST,
+            HCMaterialPrefixes.TINY_DUST,
             HCMaterialPrefixes.GEAR,
             HCMaterialPrefixes.NUGGET,
             HCMaterialPrefixes.PLATE,
@@ -285,6 +289,7 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         override fun getSupportedItemPrefixes(): List<HTMaterialPrefix> = listOf(
             HCMaterialPrefixes.INGOT,
             HCMaterialPrefixes.DUST,
+            HCMaterialPrefixes.TINY_DUST,
             HCMaterialPrefixes.GEAR,
             HCMaterialPrefixes.NUGGET,
             HCMaterialPrefixes.PLATE,
@@ -308,6 +313,7 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
         WOOD("Wood", "木", HCMaterialPalette.WOOD) {
             override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = listOf(
                 HCMaterialPrefixes.DUST,
+                HCMaterialPrefixes.TINY_DUST,
                 HCMaterialPrefixes.PLATE,
             )
 
@@ -327,10 +333,10 @@ sealed interface HCMaterial : HTMaterialLike.Translatable {
             }
         },
         REDSTONE("Redstone", "赤石") {
-            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = listOf()
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = listOf(HCMaterialPrefixes.TINY_DUST)
         },
         GLOWSTONE("Glowstone", "グロウストーン") {
-            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = listOf()
+            override fun getItemPrefixesToGenerate(): List<HTMaterialPrefix> = listOf(HCMaterialPrefixes.TINY_DUST)
         },
         OBSIDIAN("Obsidian", "黒曜石", HCMaterialPalette.OBSIDIAN) {
             override fun getBaseIngredient(): TagKey<Item> = Tags.Items.OBSIDIANS

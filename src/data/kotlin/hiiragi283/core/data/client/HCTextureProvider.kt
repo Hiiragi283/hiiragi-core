@@ -7,20 +7,21 @@ import hiiragi283.core.api.collection.HTMultiMap
 import hiiragi283.core.api.collection.buildMultiMap
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.texture.HTColorPalette
-import hiiragi283.core.api.data.texture.HTTextureOutput
 import hiiragi283.core.api.data.texture.HTTextureProvider
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.common.data.texture.HCMaterialPalette
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.setup.HCItems
+import net.minecraft.resources.ResourceLocation
 import java.awt.Color
+import java.util.function.BiConsumer
 
 class HCTextureProvider(context: HTDataGenContext) : HTTextureProvider(context) {
-    override fun gather(output: HTTextureOutput) {
+    override fun gather(output: BiConsumer<ResourceLocation, NativeImage>) {
         material(output)
     }
 
-    private fun material(output: HTTextureOutput) {
+    private fun material(output: BiConsumer<ResourceLocation, NativeImage>) {
         for (material: HCMaterial in HCMaterial.entries) {
             val palette: HTColorPalette = material.colorPalette ?: continue
             for (prefix: HTMaterialPrefix in material.getItemPrefixesToGenerate()) {

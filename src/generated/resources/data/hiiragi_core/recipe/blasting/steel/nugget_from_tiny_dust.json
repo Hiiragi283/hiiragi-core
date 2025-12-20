@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 10,
+  "experience": 0.1,
+  "ingredient": {
+    "item": "hiiragi_core:tiny_steel_dust"
+  },
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:steel_nugget"
+  }
+}

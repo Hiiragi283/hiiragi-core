@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "hiiragi_core:item/tiny_dust/gold"
+  }
+}

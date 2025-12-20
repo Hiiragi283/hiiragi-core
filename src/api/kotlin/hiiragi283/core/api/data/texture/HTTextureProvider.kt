@@ -13,6 +13,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper
 import java.io.IOException
 import java.nio.file.Path
 import java.util.concurrent.CompletableFuture
+import java.util.function.BiConsumer
 import kotlin.io.path.inputStream
 
 abstract class HTTextureProvider(private val packOutput: PackOutput, private val fileHelper: ExistingFileHelper) : DataProvider {
@@ -32,7 +33,7 @@ abstract class HTTextureProvider(private val packOutput: PackOutput, private val
         return CompletableFuture.allOf(*list.toTypedArray())
     }
 
-    protected abstract fun gather(output: HTTextureOutput)
+    protected abstract fun gather(output: BiConsumer<ResourceLocation, NativeImage>)
 
     private fun writeImage(output: CachedOutput, image: NativeImage, path: Path): CompletableFuture<*> = CompletableFuture.runAsync(
         {
