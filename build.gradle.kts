@@ -287,11 +287,11 @@ tasks {
 
     jar {
         from("LICENSE") {
-            rename { "${it}_$modId" }
+            rename { "${it}_hiiragi_core" }
         }
         from(apiModule.output)
         from(dataModule.output)
-        // exclude("**/core/data/**")
+        exclude("**/core/data/**")
     }
 
     /*wrapper {

@@ -58,8 +58,10 @@ object HCCrushingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             .saveSuffixed(output, "_from_shard")
 
         HTSingleItemRecipeBuilder
-            .crushing(itemCreator.fromTagKey(HCMaterialPrefixes.STORAGE_BLOCK, HCMaterial.Gems.AMETHYST), resultHelper.item(Items.AMETHYST_SHARD, 4))
-            .setExp(0.4f)
+            .crushing(
+                itemCreator.fromTagKey(HCMaterialPrefixes.STORAGE_BLOCK, HCMaterial.Gems.AMETHYST),
+                resultHelper.item(Items.AMETHYST_SHARD, 4),
+            ).setExp(0.4f)
             .save(output)
 
         HTSingleItemRecipeBuilder

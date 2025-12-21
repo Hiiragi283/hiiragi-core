@@ -33,7 +33,11 @@ abstract class HTItemModelProvider(context: HTDataGenContext) :
         }
     }
 
-    protected fun basicItemAlt(item: HTIdLike, layer0: ResourceLocation): ItemModelBuilder =
-        withExistingParent(item.getPath(), vanillaId(HTConst.ITEM, "generated"))
-            .texture("layer0", layer0)
+    protected fun layeredItem(item: HTIdLike, vararg layers: ResourceLocation): ItemModelBuilder {
+        val builder: ItemModelBuilder = withExistingParent(item.getPath(), vanillaId(HTConst.ITEM, "generated"))
+        layers.forEachIndexed { index: Int, layer: ResourceLocation ->
+            builder.texture("layer$index", layer)
+        }
+        return builder
+    }
 }
