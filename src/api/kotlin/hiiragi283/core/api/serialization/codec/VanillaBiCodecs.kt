@@ -103,8 +103,11 @@ object VanillaBiCodecs {
      * @param T レジストリの要素のクラス
      */
     @JvmStatic
-    fun <T : Any> tagKey(registryKey: RegistryKey<T>): BiCodec<ByteBuf, TagKey<T>> = BiCodec.of(
-        TagKey.hashedCodec(registryKey),
+    fun <T : Any> tagKey(registryKey: RegistryKey<T>, withHash: Boolean): BiCodec<ByteBuf, TagKey<T>> = BiCodec.of(
+        when (withHash) {
+            true -> TagKey.hashedCodec(registryKey)
+            false -> TagKey.codec(registryKey)
+        },
         ResourceLocation.STREAM_CODEC.map(registryKey::createTagKey, TagKey<T>::location),
     )
 

@@ -22,6 +22,12 @@ object VanillaMaterialItems {
         add(HCMaterialPrefixes.FUEL, HCMaterial.Fuels.COAL, Items.COAL)
 
         add(HCMaterialPrefixes.FUEL, HCMaterial.Fuels.CHARCOAL, Items.CHARCOAL)
+        // Minerals
+        add(HCMaterialPrefixes.STORAGE_BLOCK, HCMaterial.Minerals.REDSTONE, Items.REDSTONE_BLOCK)
+        add(HCMaterialPrefixes.DUST, HCMaterial.Minerals.REDSTONE, Items.REDSTONE)
+
+        add(HCMaterialPrefixes.STORAGE_BLOCK, HCMaterial.Minerals.GLOWSTONE, Items.GLOWSTONE)
+        add(HCMaterialPrefixes.DUST, HCMaterial.Minerals.GLOWSTONE, Items.GLOWSTONE_DUST)
         // Gem
         add(HCMaterialPrefixes.STORAGE_BLOCK, HCMaterial.Gems.LAPIS, Items.LAPIS_BLOCK)
         add(HCMaterialPrefixes.GEM, HCMaterial.Gems.LAPIS, Items.LAPIS_LAZULI)
@@ -65,11 +71,5 @@ object VanillaMaterialItems {
         add(HCMaterialPrefixes.STORAGE_BLOCK, HCMaterial.Alloys.NETHERITE, Items.NETHERITE_BLOCK)
         add(HCMaterialPrefixes.SCRAP, HCMaterial.Alloys.NETHERITE, Items.NETHERITE_SCRAP)
         add(HCMaterialPrefixes.INGOT, HCMaterial.Alloys.NETHERITE, Items.NETHERITE_INGOT)
-        // Dusts
-        add(HCMaterialPrefixes.STORAGE_BLOCK, HCMaterial.Dusts.REDSTONE, Items.REDSTONE_BLOCK)
-        add(HCMaterialPrefixes.DUST, HCMaterial.Dusts.REDSTONE, Items.REDSTONE)
-
-        add(HCMaterialPrefixes.STORAGE_BLOCK, HCMaterial.Dusts.GLOWSTONE, Items.GLOWSTONE)
-        add(HCMaterialPrefixes.DUST, HCMaterial.Dusts.GLOWSTONE, Items.GLOWSTONE_DUST)
     }.let(::HTMaterialTable)
 }

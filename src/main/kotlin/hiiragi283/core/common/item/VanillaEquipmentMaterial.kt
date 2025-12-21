@@ -23,8 +23,8 @@ enum class VanillaEquipmentMaterial(
     private val armorMultiplier: Int,
 ) : HTEquipmentMaterial,
     HTMaterialLike by material {
-    WOOD(HCMaterial.Dusts.WOOD, Tiers.WOOD, 6f, -3.2f, ArmorMaterials.LEATHER, 5),
-    STONE(HCMaterial.Dusts.STONE, Tiers.STONE, 7f, -3.2f, ArmorMaterials.CHAIN, 15),
+    WOOD(HCMaterial.Wood, Tiers.WOOD, 6f, -3.2f, ArmorMaterials.LEATHER, 5),
+    STONE(HCMaterial.Stone, Tiers.STONE, 7f, -3.2f, ArmorMaterials.CHAIN, 15),
     IRON(HCMaterial.Metals.IRON, Tiers.IRON, 6f, -3.1f, ArmorMaterials.IRON, 15),
     GOLD(HCMaterial.Metals.GOLD, Tiers.GOLD, 6f, -3f, ArmorMaterials.GOLD, 7),
     DIAMOND(HCMaterial.Gems.DIAMOND, Tiers.DIAMOND, 5f, -3f, ArmorMaterials.DIAMOND, 33),

@@ -49,7 +49,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "hiiragi_core:sulfur"
+              "name": "hiiragi_core:sulfur_dust"
             }
           ]
         }

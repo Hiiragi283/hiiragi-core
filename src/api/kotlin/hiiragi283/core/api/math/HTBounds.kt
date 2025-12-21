@@ -8,6 +8,7 @@ package hiiragi283.core.api.math
  * @param height y軸方向の範囲
  * @see dev.emi.emi.api.widget.Bounds
  */
+@JvmRecord
 data class HTBounds(
     val x: Int,
     val y: Int,
@@ -25,32 +26,32 @@ data class HTBounds(
     /**
      * x軸方向の範囲の最小値
      */
-    val left: Int = x
+    val left: Int get() = x
 
     /**
      * x軸方向の範囲の最大値
      */
-    val right: Int = x + width
+    val right: Int get() = x + width
 
     /**
      * y軸方向の範囲の最小値
      */
-    val top: Int = y
+    val top: Int get() = y
 
     /**
      * y軸方向の範囲の最大値
      */
-    val bottom: Int = y + height
+    val bottom: Int get() = y + height
 
     /**
      * [left]を起点とするx軸方向の範囲
      */
-    val widthRange: IntRange = (left..<right)
+    val widthRange: IntRange get() = (left..<right)
 
     /**
      * [top]を起点とするy軸方向の範囲
      */
-    val heightRange: IntRange = (top..<bottom)
+    val heightRange: IntRange get() = (top..<bottom)
 
     /**
      * 指定した[x], [y]がこの範囲に含まれているかどうか判定します。

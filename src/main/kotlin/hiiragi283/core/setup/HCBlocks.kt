@@ -37,10 +37,9 @@ object HCBlocks {
         }
 
         // Ores
-        register(HCMaterialPrefixes.ORE_NETHER, HCMaterial.Gems.CINNABAR, copyOf(Blocks.NETHER_QUARTZ_ORE))
-
-        register(HCMaterialPrefixes.ORE_DEEPSLATE, HCMaterial.Gems.SULFUR, copyOf(Blocks.DEEPSLATE_LAPIS_ORE))
-        register(HCMaterialPrefixes.ORE_NETHER, HCMaterial.Gems.SULFUR, copyOf(Blocks.NETHER_QUARTZ_ORE))
+        register(HCMaterialPrefixes.ORE_NETHER, HCMaterial.Minerals.CINNABAR, copyOf(Blocks.NETHER_QUARTZ_ORE))
+        register(HCMaterialPrefixes.ORE_DEEPSLATE, HCMaterial.Minerals.SULFUR, copyOf(Blocks.DEEPSLATE_LAPIS_ORE))
+        register(HCMaterialPrefixes.ORE_NETHER, HCMaterial.Minerals.SULFUR, copyOf(Blocks.NETHER_QUARTZ_ORE))
 
         register(HCMaterialPrefixes.ORE, HCMaterial.Metals.SILVER, copyOf(Blocks.GOLD_ORE))
         register(HCMaterialPrefixes.ORE_DEEPSLATE, HCMaterial.Metals.SILVER, copyOf(Blocks.DEEPSLATE_GOLD_ORE))
@@ -86,6 +85,21 @@ object HCBlocks {
                         },
                     )
             }
+            is HCMaterial.Minerals -> {
+                return BlockBehaviour.Properties
+                    .of()
+                    .strength(5f, 9f)
+                    .sound(SoundType.AMETHYST)
+                    .mapColor(
+                        when (material) {
+                            HCMaterial.Minerals.REDSTONE -> return null
+                            HCMaterial.Minerals.GLOWSTONE -> return null
+                            HCMaterial.Minerals.CINNABAR -> MapColor.TERRACOTTA_RED
+                            HCMaterial.Minerals.SALTPETER -> MapColor.TERRACOTTA_WHITE
+                            HCMaterial.Minerals.SULFUR -> MapColor.TERRACOTTA_YELLOW
+                        },
+                    )
+            }
             is HCMaterial.Gems -> {
                 return BlockBehaviour.Properties
                     .of()
@@ -94,9 +108,6 @@ object HCBlocks {
                     .mapColor(
                         when (material) {
                             HCMaterial.Gems.ECHO -> MapColor.COLOR_BLACK
-                            HCMaterial.Gems.CINNABAR -> MapColor.TERRACOTTA_RED
-                            HCMaterial.Gems.SALTPETER -> MapColor.TERRACOTTA_WHITE
-                            HCMaterial.Gems.SULFUR -> MapColor.TERRACOTTA_YELLOW
                             HCMaterial.Gems.AZURE -> MapColor.TERRACOTTA_BLUE
                             HCMaterial.Gems.CRIMSON_CRYSTAL -> MapColor.CRIMSON_STEM
                             HCMaterial.Gems.WARPED_CRYSTAL -> MapColor.WARPED_STEM
@@ -143,7 +154,6 @@ object HCBlocks {
                         },
                     )
             }
-            is HCMaterial.Dusts -> return null
             is HCMaterial.Plates -> {
                 return BlockBehaviour.Properties
                     .of()
@@ -155,6 +165,7 @@ object HCBlocks {
                         },
                     )
             }
+            else -> return null
         }
     }
 }

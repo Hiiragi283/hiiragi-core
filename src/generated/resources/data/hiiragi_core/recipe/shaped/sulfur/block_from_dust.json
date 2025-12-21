@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "A": {
-      "tag": "c:gems/sulfur"
+      "tag": "c:dusts/sulfur"
     },
     "B": {
-      "item": "hiiragi_core:sulfur"
+      "item": "hiiragi_core:sulfur_dust"
     }
   },
   "pattern": [

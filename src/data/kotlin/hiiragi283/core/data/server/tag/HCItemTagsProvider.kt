@@ -76,7 +76,7 @@ class HCItemTagsProvider(private val blockTags: CompletableFuture<TagLookup<Bloc
             if (prefix == HCMaterialPrefixes.GEM || prefix == HCMaterialPrefixes.INGOT) {
                 factory.apply(ItemTags.BEACON_PAYMENT_ITEMS).addTag(prefix, key)
             }
-            if (prefix == HCMaterialPrefixes.PLATE && HCMaterial.Dusts.WOOD.isOf(key)) {
+            if (prefix == HCMaterialPrefixes.PLATE && HCMaterial.Wood.isOf(key)) {
                 factory.apply(ItemTags.PLANKS).add(item)
             }
             if (prefix == HCMaterialPrefixes.RAW_MATERIAL && HCMaterial.Plates.RUBBER.isOf(key)) {

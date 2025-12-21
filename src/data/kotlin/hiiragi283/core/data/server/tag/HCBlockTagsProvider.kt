@@ -23,7 +23,7 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
     companion object {
         @JvmField
         val VANILLA_STORAGE_BLOCKS: Map<HCMaterial, HTItemHolderLike<*>> = mapOf(
-            HCMaterial.Dusts.GLOWSTONE to Blocks.GLOWSTONE.toHolderLike(),
+            HCMaterial.Minerals.GLOWSTONE to Blocks.GLOWSTONE.toHolderLike(),
             HCMaterial.Gems.AMETHYST to Blocks.AMETHYST_BLOCK.toHolderLike(),
             HCMaterial.Gems.QUARTZ to Blocks.QUARTZ_BLOCK.toHolderLike(),
         )

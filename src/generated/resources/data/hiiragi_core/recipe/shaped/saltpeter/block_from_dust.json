@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "A": {
-      "tag": "c:gems/saltpeter"
+      "tag": "c:dusts/saltpeter"
     },
     "B": {
-      "item": "hiiragi_core:saltpeter"
+      "item": "hiiragi_core:saltpeter_dust"
     }
   },
   "pattern": [

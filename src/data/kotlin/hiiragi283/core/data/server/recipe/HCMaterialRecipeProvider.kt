@@ -60,7 +60,7 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
         // Gold + Obsidian + Blackstone -> Night Metal
         addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, HCMaterial.Metals.NIGHT_METAL)) {
             addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Metals.GOLD)
-            addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Dusts.OBSIDIAN)
+            addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Obsidian)
             addIngredients(Items.BLACKSTONE, count = 4)
         }
 
@@ -136,7 +136,7 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
         HTShapelessRecipeBuilder
             .create(getItemOrThrow(HCMaterialPrefixes.PLATE, HCMaterial.Plates.RUBBER), 3)
             .addIngredient(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Plates.RUBBER)
-            .addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Gems.SULFUR)
+            .addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Minerals.SULFUR)
             .addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Fuels.COAL, HCMaterial.Fuels.CHARCOAL)
             .addIngredient(HCItems.MAGMA_SHARD)
             .savePrefixed(output, "black_")
@@ -173,7 +173,7 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
     @JvmStatic
     private fun prefixToBase(prefix: HTPrefixLike, exp: Float) {
         for ((basePrefix: HTMaterialPrefix, material: HCMaterial) in HCMaterial.getPrefixedEntries()) {
-            if (material is HCMaterial.Fuels || material is HCMaterial.Dusts) continue
+            if (material is HCMaterial.Fuels || material.basePrefix == HCMaterialPrefixes.DUST) continue
             val prefixMap: Map<HTMaterialPrefix, HTItemHolderLike<*>> = getPrefixMap(material)
 
             val base: HTItemHolderLike<*> = prefixMap[basePrefix] ?: continue

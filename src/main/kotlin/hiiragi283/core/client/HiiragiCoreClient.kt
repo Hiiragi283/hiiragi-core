@@ -4,10 +4,8 @@ import hiiragi283.core.HiiragiCore
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.HTSimpleFluidContent
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.resource.vanillaId
-import hiiragi283.core.common.material.HCMoltenCrystalData
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.world.level.ItemLike
 import net.neoforged.api.distmarker.Dist
@@ -49,15 +47,12 @@ object HiiragiCoreClient {
         event.dull(HCFluids.MUSHROOM_STEW, Color(0xcc9966))
         // Saps
         event.dull(HCFluids.LATEX, Color(0xcccccc))
+        event.dull(HCFluids.CRIMSON_SAP, Color(0x660000))
+        event.dull(HCFluids.WARPED_SAP, Color(0x006666))
 
-        for (data: HCMoltenCrystalData in HCMoltenCrystalData.entries) {
-            val color: Color = data.color
-            // molten
-            event.molten(data.molten, color)
-            // sap
-            val sap: HTSimpleFluidContent = data.sap ?: continue
-            event.dull(sap, color)
-        }
+        event.molten(HCFluids.CRIMSON_BLOOD, Color(0x990000))
+        event.molten(HCFluids.DEW_OF_THE_WARP, Color(0x009999))
+        event.molten(HCFluids.ELDRITCH_FLUX, Color(0x990099))
 
         HiiragiCore.LOGGER.info("Registered client extensions!")
     }

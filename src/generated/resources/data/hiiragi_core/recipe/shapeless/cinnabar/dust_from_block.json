@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "c:storage_blocks/sulfur"
+      "tag": "c:storage_blocks/cinnabar"
     }
   ],
   "result": {
     "count": 9,
-    "id": "hiiragi_core:sulfur"
+    "id": "hiiragi_core:cinnabar_dust"
   }
 }

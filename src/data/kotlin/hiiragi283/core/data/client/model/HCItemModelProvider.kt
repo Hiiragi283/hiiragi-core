@@ -11,7 +11,6 @@ import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTSimpleFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.toId
-import hiiragi283.core.common.material.HCMoltenCrystalData
 import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
@@ -42,13 +41,10 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(conte
             // Vanilla
             add(HCFluids.HONEY)
             add(HCFluids.MUSHROOM_STEW)
-            // Saps
-            add(HCFluids.LATEX)
-
-            for (data: HCMoltenCrystalData in HCMoltenCrystalData.entries) {
-                data.sap?.let(::add)
-                add(data.molten)
-            }
+            // Molten
+            add(HCFluids.CRIMSON_BLOOD)
+            add(HCFluids.DEW_OF_THE_WARP)
+            add(HCFluids.ELDRITCH_FLUX)
         }
         for (content: HTFluidContent<*, *, *> in HCFluids.REGISTER.entries) {
             val parent: ResourceLocation = when (content) {

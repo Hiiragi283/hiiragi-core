@@ -75,7 +75,7 @@ sealed interface HTHolderCollection<T : Any> : Collection<Holder<T>> {
             @JvmStatic
             fun <T : Any> codec(registryKey: RegistryKey<T>): BiCodec<ByteBuf, Reference<T>> = BiCodecs
                 .either(
-                    VanillaBiCodecs.tagKey(registryKey),
+                    VanillaBiCodecs.tagKey(registryKey, true),
                     VanillaBiCodecs.resourceKey(registryKey).listOrElement(),
                 ).xmap(::Reference, Reference<T>::either)
         }

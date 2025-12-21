@@ -27,7 +27,7 @@ value class HTHolderOrTagKey<T : Any> private constructor(private val entry: Ior
         fun <T : Any> codec(registryKey: RegistryKey<T>): MapBiCodec<RegistryFriendlyByteBuf, HTHolderOrTagKey<T>> = MapBiCodecs
             .ior(
                 VanillaBiCodecs.holder(registryKey).optionalFieldOf(HTConst.ID),
-                VanillaBiCodecs.tagKey(registryKey).optionalFieldOf(HTConst.TAG),
+                VanillaBiCodecs.tagKey(registryKey, false).optionalFieldOf(HTConst.TAG),
             ).xmap(::HTHolderOrTagKey, HTHolderOrTagKey<T>::entry)
     }
 
@@ -39,19 +39,21 @@ value class HTHolderOrTagKey<T : Any> private constructor(private val entry: Ior
             else -> Ior.Both(holder.delegate, tagKey)
         },
     )
-    
+
     fun getHolder(provider: HolderLookup.Provider?): HTTextResult<Holder<T>> {
         val provider1: HolderLookup.Provider = (provider ?: HiiragiCoreAPI.getActiveAccess())
             ?: return HTTextResult.failure(HTCommonTranslation.MISSING_SERVER)
-        return entry.getRight()
+        return entry
+            .getRight()
             ?.let(provider1::holderSetOrNull)
             ?.firstOrNull()
             ?.let(HTTextResult.Companion::success)
-            ?: entry.getLeft()
+            ?: entry
+                .getLeft()
                 ?.let(HTTextResult.Companion::success)
-                ?: HTTextResult.failure(HTCommonTranslation.EMPTY_TAG_KEY)
+            ?: HTTextResult.failure(HTCommonTranslation.EMPTY_TAG_KEY)
     }
-    
+
     override fun getId(): ResourceLocation = entry.map(
         Holder<T>::toLike.andThen(HTHolderLike<*, *>::getId),
         TagKey<T>::location,

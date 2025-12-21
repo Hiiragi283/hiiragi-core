@@ -24,8 +24,8 @@ class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootT
             HCMaterialPrefixes.ORE_END,
         )
         val materials: Map<HCMaterial, UniformGenerator?> = mapOf(
-            HCMaterial.Gems.CINNABAR to UniformGenerator.between(2f, 5f),
-            HCMaterial.Gems.SULFUR to UniformGenerator.between(4f, 5f),
+            HCMaterial.Minerals.CINNABAR to UniformGenerator.between(2f, 5f),
+            HCMaterial.Minerals.SULFUR to UniformGenerator.between(4f, 5f),
             HCMaterial.Metals.SILVER to null,
         )
 

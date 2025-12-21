@@ -69,7 +69,7 @@ object HCMaterialTranslations {
             }
         }
 
-        register(HCMaterialPrefixes.DUST, HCMaterial.Dusts.WOOD, "Sawdust", "おがくず")
+        register(HCMaterialPrefixes.DUST, HCMaterial.Wood, "Sawdust", "おがくず")
         register(HCMaterialPrefixes.PLATE, HCMaterial.Plates.RUBBER, "Rubber Sheet", "ゴムシート")
         register(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Plates.PLASTIC, "Polymer Resin", "高分子樹脂")
         register(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Plates.RUBBER, "Raw Rubber", "生ゴム")

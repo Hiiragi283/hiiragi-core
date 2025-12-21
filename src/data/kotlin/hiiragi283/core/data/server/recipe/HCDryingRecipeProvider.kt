@@ -26,38 +26,28 @@ object HCDryingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             Items.DRIED_KELP to Items.KELP,
         ).forEach { (output: Item, input: Item) ->
             HTSingleItemRecipeBuilder
-                .drying(
-                    itemCreator.fromItem(input),
-                    resultHelper.item(output),
-                ).setExp(0.1f)
+                .drying(itemCreator.fromItem(input), resultHelper.item(output))
+                .setExp(0.1f)
                 .save(this.output)
         }
 
         HTSingleItemRecipeBuilder
-            .drying(
-                itemCreator.fromItem(Items.SEA_PICKLE),
-                resultHelper.item(Items.LIME_DYE, 2),
-            ).setExp(0.1f)
+            .drying(itemCreator.fromItem(Items.SEA_PICKLE), resultHelper.item(Items.LIME_DYE, 2))
+            .setExp(0.1f)
             .save(this.output)
 
         HTSingleItemRecipeBuilder
-            .drying(
-                itemCreator.fromTagKey(Tags.Items.DRINKS_HONEY),
-                resultHelper.item(Items.SUGAR, 4),
-            ).setExp(0.1f)
+            .drying(itemCreator.fromTagKey(Tags.Items.DRINKS_HONEY), resultHelper.item(Items.SUGAR, 4))
+            .setExp(0.1f)
             .saveSuffixed(this.output, "_from_honey_bottle")
         HTSingleItemRecipeBuilder
-            .drying(
-                itemCreator.fromItem(Items.HONEY_BLOCK),
-                resultHelper.item(Items.SUGAR, 16),
-            ).setExp(0.4f)
+            .drying(itemCreator.fromItem(Items.HONEY_BLOCK), resultHelper.item(Items.SUGAR, 16))
+            .setExp(0.4f)
             .saveSuffixed(this.output, "_from_honey_block")
 
         HTSingleItemRecipeBuilder
-            .drying(
-                itemCreator.fromItem(Items.SLIME_BALL),
-                materialResult(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Plates.RUBBER),
-            ).setExp(0.1f)
+            .drying(itemCreator.fromItem(Items.SLIME_BALL), materialResult(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Plates.RUBBER))
+            .setExp(0.1f)
             .saveSuffixed(this.output, "_from_slimeball")
     }
 

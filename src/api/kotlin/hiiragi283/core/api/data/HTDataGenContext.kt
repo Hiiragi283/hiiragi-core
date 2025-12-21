@@ -8,6 +8,7 @@ import java.util.concurrent.CompletableFuture
 /**
  * データ生成でよく使うインスタンスを束ねたデータクラス
  */
+@JvmRecord
 data class HTDataGenContext(
     val output: PackOutput,
     val registries: CompletableFuture<HolderLookup.Provider>,

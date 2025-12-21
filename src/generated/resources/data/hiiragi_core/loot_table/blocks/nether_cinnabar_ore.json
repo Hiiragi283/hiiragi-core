@@ -49,7 +49,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "hiiragi_core:cinnabar"
+              "name": "hiiragi_core:cinnabar_dust"
             }
           ]
         }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "hiiragi_core:item/gem/cinnabar"
+    "layer0": "hiiragi_core:item/plate/stone"
   }
 }
