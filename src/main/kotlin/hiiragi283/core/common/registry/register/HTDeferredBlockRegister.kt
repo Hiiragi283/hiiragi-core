@@ -94,6 +94,7 @@ class HTDeferredBlockRegister(
         ::HTDeferredBlock,
     )
 
-    val blockEntries: Collection<HTDeferredOnlyBlock<*>> get() = firstRegister.entries
-    val itemEntries: Collection<HTDeferredItem<*>> get() = secondRegister.entries
+    fun asBlockSequence(): Sequence<HTDeferredOnlyBlock<*>> = firstRegister.asSequence()
+
+    fun asItemSequence(): Sequence<HTDeferredItem<*>> = secondRegister.asSequence()
 }

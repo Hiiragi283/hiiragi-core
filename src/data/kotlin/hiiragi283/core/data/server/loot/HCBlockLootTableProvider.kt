@@ -14,7 +14,7 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 
 class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootTableProvider(registries) {
     override fun generate() {
-        HCBlocks.REGISTER.blockEntries.forEach(::dropSelf)
+        HCBlocks.REGISTER.asBlockSequence().forEach(::dropSelf)
 
         // Ores
         val ores: Array<HTMaterialPrefix> = arrayOf(

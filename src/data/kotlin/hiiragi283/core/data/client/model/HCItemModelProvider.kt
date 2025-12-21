@@ -22,7 +22,7 @@ import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContai
 class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(context) {
     override fun registerModels() {
         buildList {
-            addAll(HCItems.REGISTER.entries)
+            addAll(HCItems.REGISTER.asSequence())
 
             removeAll(HCItems.MATERIALS.values)
         }.forEach { item: HTDeferredItem<*> -> existTexture(item, ::basicItem) }

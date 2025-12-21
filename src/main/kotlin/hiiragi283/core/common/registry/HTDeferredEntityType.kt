@@ -1,8 +1,10 @@
 package hiiragi283.core.common.registry
 
-import hiiragi283.core.api.registry.HTDeferredHolder
+import hiiragi283.core.api.registry.HTHolderLike
+import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.HTHasTranslationKey
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceKey
@@ -10,13 +12,19 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.EntityType
 
-class HTDeferredEntityType<ENTITY : Entity> :
-    HTDeferredHolder<EntityType<*>, EntityType<ENTITY>>,
+data class HTDeferredEntityType<ENTITY : Entity>(private val key: ResourceKey<EntityType<*>>) :
+    HTHolderLike<EntityType<*>, EntityType<ENTITY>>,
     HTHasTranslationKey,
     HTHasText {
-    constructor(key: ResourceKey<EntityType<*>>) : super(key)
+    constructor(id: ResourceLocation) : this(Registries.ENTITY_TYPE.createKey(id))
 
-    constructor(id: ResourceLocation) : super(Registries.ENTITY_TYPE, id)
+    override fun getResourceKey(): ResourceKey<EntityType<*>> = key
+
+    @Suppress("UNCHECKED_CAST")
+    override fun get(): EntityType<ENTITY> {
+        val rawType: EntityType<*> = BuiltInRegistries.ENTITY_TYPE.get(key) ?: error("Trying to access unbound value: $key")
+        return rawType as EntityType<ENTITY>
+    }
 
     override val translationKey: String get() = get().descriptionId
 

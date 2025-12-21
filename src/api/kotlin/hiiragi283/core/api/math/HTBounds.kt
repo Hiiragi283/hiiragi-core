@@ -18,6 +18,9 @@ data class HTBounds(
     val height: Int,
 ) {
     companion object {
+        /**
+         * 空の範囲を表す[HTBounds]のインスタンス
+         */
         @JvmField
         val EMPTY = HTBounds(0, 0, 0, 0)
 

@@ -35,11 +35,9 @@ open class HTDeferredRegister<T : Any>(registryKey: RegistryKey<T>, namespace: S
      * 登録された[HTDeferredHolder]の一覧を返します。
      * @return [HTDeferredHolder]の[Sequence]
      */
-    open fun asSequence(): Sequence<HTDeferredHolder<T, out T>> = entries.asSequence()
+    open fun asSequence(): Sequence<HTDeferredHolder<T, out T>> = entries.asSequence().filterIsInstance<HTDeferredHolder<T, out T>>()
 
     //    DeferredRegister    //
-
-    override fun getEntries(): Collection<HTDeferredHolder<T, out T>> = super.getEntries().filterIsInstance<HTDeferredHolder<T, out T>>()
 
     override fun <I : T> register(name: String, func: IdToFunction<out I>): HTDeferredHolder<T, I> =
         super.register(name, func) as HTDeferredHolder<T, I>

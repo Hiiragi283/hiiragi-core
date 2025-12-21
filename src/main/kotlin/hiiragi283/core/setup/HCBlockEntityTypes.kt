@@ -39,7 +39,7 @@ object HCBlockEntityTypes {
     // Supported Blocks
     @JvmStatic
     private fun addSupportedBlocks(event: BlockEntityTypeAddBlocksEvent) {
-        for (holder: HTDeferredOnlyBlock<*> in HCBlocks.REGISTER.blockEntries) {
+        for (holder: HTDeferredOnlyBlock<*> in HCBlocks.REGISTER.asBlockSequence()) {
             val block: Block = holder.get()
             if (block is HTBlockWithEntity) {
                 event.modify(block.getBlockEntityType().get(), block)

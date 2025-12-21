@@ -1,10 +1,12 @@
 package hiiragi283.core.common.registry
 
 import hiiragi283.core.api.recipe.HTRecipeFinder
-import hiiragi283.core.api.registry.HTDeferredHolder
+import hiiragi283.core.api.registry.HTHolderLike
+import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.HTHasTranslationKey
 import hiiragi283.core.api.text.translatableText
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceKey
@@ -16,21 +18,27 @@ import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.level.Level
 import kotlin.jvm.optionals.getOrNull
 
-class HTDeferredRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>> :
-    HTDeferredHolder<RecipeType<*>, RecipeType<RECIPE>>,
+data class HTDeferredRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(private val key: ResourceKey<RecipeType<*>>) :
+    HTHolderLike<RecipeType<*>, RecipeType<RECIPE>>,
     HTRecipeFinder.Vanilla<INPUT, RECIPE>,
     HTHasTranslationKey,
     HTHasText {
-    constructor(key: ResourceKey<RecipeType<*>>) : super(key)
+    constructor(id: ResourceLocation) : this(Registries.RECIPE_TYPE.createKey(id))
 
-    constructor(id: ResourceLocation) : super(Registries.RECIPE_TYPE, id)
+    override fun getResourceKey(): ResourceKey<RecipeType<*>> = key
 
-    override val translationKey: String = id.toLanguageKey("recipe_type")
-
-    override fun getText(): Component = translatableText(translationKey)
+    @Suppress("UNCHECKED_CAST")
+    override fun get(): RecipeType<RECIPE> {
+        val rawType: RecipeType<*> = BuiltInRegistries.RECIPE_TYPE.get(key) ?: error("Trying to access unbound value: $key")
+        return rawType as RecipeType<RECIPE>
+    }
 
     override fun getVanillaRecipeFor(input: INPUT, level: Level, lastRecipe: RecipeHolder<RECIPE>?): RecipeHolder<RECIPE>? =
         level.recipeManager
             .getRecipeFor(get(), input, level, lastRecipe)
             .getOrNull()
+
+    override val translationKey: String = getId().toLanguageKey("recipe_type")
+
+    override fun getText(): Component = translatableText(translationKey)
 }

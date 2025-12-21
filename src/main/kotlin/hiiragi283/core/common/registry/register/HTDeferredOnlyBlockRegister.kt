@@ -26,8 +26,6 @@ class HTDeferredOnlyBlockRegister(namespace: String) : HTDeferredRegister<Block>
 
     override fun asSequence(): Sequence<HTDeferredOnlyBlock<*>> = super.asSequence().filterIsInstance<HTDeferredOnlyBlock<*>>()
 
-    override fun getEntries(): Collection<HTDeferredOnlyBlock<*>> = super.getEntries().filterIsInstance<HTDeferredOnlyBlock<*>>()
-
     override fun <I : Block> register(name: String, func: IdToFunction<out I>): HTDeferredOnlyBlock<I> =
         super.register(name, func) as HTDeferredOnlyBlock<I>
 
