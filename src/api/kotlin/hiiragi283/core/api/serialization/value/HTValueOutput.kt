@@ -140,7 +140,7 @@ interface HTValueOutput {
      */
     interface TypedOutputList<T : Any> {
         /**
-         * この一覧が空かどうか判定します。
+         * この一覧が空か判定します。
          */
         val isEmpty: Boolean
 
@@ -155,7 +155,7 @@ interface HTValueOutput {
      */
     interface ValueOutputList {
         /**
-         * この一覧が空かどうか判定します。
+         * この一覧が空か判定します。
          */
         val isEmpty: Boolean
 

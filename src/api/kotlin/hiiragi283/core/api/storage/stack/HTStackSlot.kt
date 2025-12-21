@@ -16,7 +16,7 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
     HTValueSerializable,
     HTContentListener {
     /**
-     * 指定した[stack]がスロットに有効かどうか判定します。
+     * 指定した[stack]がスロットに有効か判定します。
      * @return 有効な場合は`true`
      */
     fun isValid(stack: STACK): Boolean

@@ -11,6 +11,16 @@ import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponentPatch
 
+/**
+ * [HTRecipeResult]を実装する抽象クラスです。
+ * @param TYPE 完成品の種類のクラス
+ * @param STACK 完成品のクラス
+ * @param entry 完成品の種類
+ * @param amount 完成品の量
+ * @param components 完成品のコンポーネント
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 abstract class HTBasicRecipeResult<TYPE : Any, STACK : ImmutableStack<TYPE, STACK>>(
     val entry: HTHolderOrTagKey<TYPE>,
     val amount: Int,
@@ -26,6 +36,10 @@ abstract class HTBasicRecipeResult<TYPE : Any, STACK : ImmutableStack<TYPE, STAC
             }
         }
 
+    /**
+     * 指定した引数から完成品を返します。
+     * @return 完成品がない場合は`null`
+     */
     protected abstract fun createStack(holder: Holder<TYPE>, amount: Int, components: DataComponentPatch): STACK?
 
     override fun equals(other: Any?): Boolean {

@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker
 import net.minecraft.world.level.block.entity.BlockEntityType
 
 /**
- * Ragiumで使用する[BlockEntityType]向けの[HTDeferredRegister]
+ * Ragiumで使用される[BlockEntityType]向けの[HTDeferredRegister]
  */
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class HTDeferredBlockEntityTypeRegister(namespace: String) :

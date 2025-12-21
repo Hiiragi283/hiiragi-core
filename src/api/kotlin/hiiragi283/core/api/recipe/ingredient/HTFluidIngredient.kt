@@ -15,11 +15,16 @@ import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import net.neoforged.neoforge.fluids.crafting.TagFluidIngredient
 
 /**
- * [ImmutableFluidStack]向けの[HTIngredient]の実装クラス
+ * [ImmutableFluidStack]向けに[HTIngredient]を実装したクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 @JvmRecord
 data class HTFluidIngredient(private val ingredient: FluidIngredient, private val amount: Int) : HTIngredient<Fluid, ImmutableFluidStack> {
     companion object {
+        /**
+         * [HTFluidIngredient]の[BiCodec]
+         */
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTFluidIngredient> = BiCodec.composite(
             VanillaBiCodecs.FLUID_INGREDIENT.forGetter(HTFluidIngredient::ingredient),

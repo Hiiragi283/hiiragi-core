@@ -4,23 +4,25 @@ import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.function.identity
 
 /**
- * [A]と[B]の両方の値または片方だけを保持するクラス。
+ * [A]と[B]の両方の値または片方だけを保持するクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 sealed class Ior<A, B> {
     /**
-     * このインスタンスが[Left]であるかどうか判定します。
+     * このインスタンスが[Left]であるか判定します。
      * @return [Left]の場合は`true`，それ以外の場合は`false`
      */
     fun isLeft(): Boolean = this is Left<A, B>
 
     /**
-     * このインスタンスが[Right]であるかどうか判定します。
+     * このインスタンスが[Right]であるか判定します。
      * @return [Right]の場合は`true`，それ以外の場合は`false`
      */
     fun isRight(): Boolean = this is Right<A, B>
 
     /**
-     * このインスタンスが[Both]であるかどうか判定します。
+     * このインスタンスが[Both]であるか判定します。
      * @return [Both]の場合は`true`，それ以外の場合は`false`
      */
     fun isBoth(): Boolean = this is Both<A, B>
@@ -127,17 +129,17 @@ sealed class Ior<A, B> {
     )
 
     /**
-     * [A]だけを保持する[Ior]の実装クラス。
+     * [A]だけを保持する[Ior]の実装クラスです。
      */
     data class Left<A, B>(val value: A) : Ior<A, B>()
 
     /**
-     * [B]だけを保持する[Ior]の実装クラス。
+     * [B]だけを保持する[Ior]の実装クラスです。
      */
     data class Right<A, B>(val value: B) : Ior<A, B>()
 
     /**
-     * [A]と[B]の両方を保持する[Ior]の実装クラス。
+     * [A]と[B]の両方を保持する[Ior]の実装クラスです。
      */
     data class Both<A, B>(val leftValue: A, val rightValue: B) : Ior<A, B>()
 }

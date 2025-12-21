@@ -27,7 +27,7 @@ import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import java.util.UUID
 
 /**
- * バニラのクラスに関連する[BiCodec]や[VanillaBiCodecs]を集めたクラス。
+ * バニラのクラスに関連する[BiCodec]や[VanillaBiCodecs]を集めたクラスです。
  */
 object VanillaBiCodecs {
     /**

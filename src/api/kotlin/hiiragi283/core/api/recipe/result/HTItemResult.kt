@@ -15,6 +15,11 @@ import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 
+/**
+ * [アイテム][ImmutableItemStack]の[完成品][HTRecipeResult]を表すクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 class HTItemResult(entry: HTHolderOrTagKey<Item>, amount: Int, components: DataComponentPatch) :
     HTBasicRecipeResult<Item, ImmutableItemStack>(entry, amount, components) {
     companion object {
@@ -26,6 +31,9 @@ class HTItemResult(entry: HTHolderOrTagKey<Item>, amount: Int, components: DataC
                 entry
             }
 
+        /**
+         * [HTItemResult]の[BiCodec]
+         */
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemResult> = BiCodec.composite(
             ENTRY_CODEC.forGetter(HTItemResult::entry),

@@ -8,7 +8,13 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 
 /**
- * タグのプレフィックスを表すクラス
+ * 素材タグのプレフィックスを表すクラスです。
+ * @param name プレフィックスのID
+ * @param idPath 素材アイテムなどのIDのパターン
+ * @param commonTagPath 共通タグのIDのパターン
+ * @param tagPath 素材の共通タグのIDのパターン
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 @JvmRecord
 data class HTMaterialPrefix(

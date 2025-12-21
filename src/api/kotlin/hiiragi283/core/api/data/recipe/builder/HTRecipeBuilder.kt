@@ -13,7 +13,7 @@ import net.neoforged.neoforge.common.conditions.TagEmptyCondition
 import java.util.function.UnaryOperator
 
 /**
- * Ragiumで使用する[Recipe]のビルダー
+ * Ragiumで使用される[Recipe]のビルダー
  * @see mekanism.api.datagen.recipe.MekanismRecipeBuilder
  */
 abstract class HTRecipeBuilder<BUILDER : HTRecipeBuilder<BUILDER>>(private val prefix: String) {

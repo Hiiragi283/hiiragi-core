@@ -17,11 +17,16 @@ import net.neoforged.neoforge.common.crafting.ICustomIngredient
 import java.util.function.IntUnaryOperator
 
 /**
- * [ImmutableItemStack]向けの[HTIngredient]の実装クラス
+ * [ImmutableItemStack]向けに[HTIngredient]を実装したクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 @JvmRecord
 data class HTItemIngredient(private val ingredient: Ingredient, private val count: Int) : HTIngredient<Item, ImmutableItemStack> {
     companion object {
+        /**
+         * 個数を無視した[HTItemIngredient]の[BiCodec]
+         */
         @JvmField
         val UNSIZED_CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> =
             VanillaBiCodecs.INGREDIENT.xmap(::HTItemIngredient, HTItemIngredient::ingredient)
@@ -33,6 +38,9 @@ data class HTItemIngredient(private val ingredient: Ingredient, private val coun
             ::HTItemIngredient,
         )
 
+        /**
+         * [HTItemIngredient]の[BiCodec]
+         */
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> = BiCodecs
             .xor(UNSIZED_CODEC, NESTED_CODEC)

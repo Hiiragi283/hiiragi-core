@@ -13,7 +13,13 @@ import java.util.concurrent.CompletableFuture
 import java.util.function.BooleanSupplier
 
 /**
- * 基本の[HTDataGenerator]の実装クラス
+ * [HTDataGenerator]を実装したクラスです。
+ * @param generator [DataProvider]の登録先
+ * @param doRun 登録を実行するかどうか判定するブロック
+ * @param registries レジストリを保持するインスタンス
+ * @param fileHelper 指定したリソースが存在するかを判定するインスタンス
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 @ConsistentCopyVisibility
 @JvmRecord
@@ -24,6 +30,10 @@ data class HTRootDataGenerator private constructor(
     val fileHelper: ExistingFileHelper,
 ) : HTDataGenerator {
     companion object {
+        /**
+         * 指定した[イベント][event]から[HTRootDataGenerator]を作成します。
+         * @return サーバー向けとクライアント向けの[HTRootDataGenerator]
+         */
         @JvmStatic
         fun withDataPack(event: GatherDataEvent): Pair<HTRootDataGenerator, HTRootDataGenerator> {
             val generator: DataGenerator = event.generator
@@ -35,6 +45,11 @@ data class HTRootDataGenerator private constructor(
             )
         }
 
+        /**
+         * 指定した[イベント][event]から[HTRootDataGenerator]を作成します。
+         * @param builderAction 動的レジストリに要素を追加するブロック
+         * @return サーバー向けとクライアント向けの[HTRootDataGenerator]
+         */
         @JvmStatic
         fun withDataPack(
             event: GatherDataEvent,
@@ -60,7 +75,7 @@ data class HTRootDataGenerator private constructor(
 
     /**
      * 指定した[id]でデータパックを作成します。
-     * @return 指定した[id]に基づいた[HTDataPackGenerator]
+     * @return データパック向けの[HTDataPackGenerator]
      */
     fun createDataPackGenerator(id: ResourceLocation): HTDataPackGenerator = HTDataPackGenerator(
         generator.getBuiltinDatapack(doRun.asBoolean, id.namespace, id.path),

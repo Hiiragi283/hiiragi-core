@@ -20,7 +20,7 @@ open class HTBlockType(val description: HTTranslation, private val attributeMap:
     }
 
     /**
-     * 指定した[clazz]の属性が，このタイプに含まれているかどうか判定します。
+     * 指定した[clazz]の属性が，このタイプに含まれているか判定します。
      * @return 含まれている場合は`true`
      */
     operator fun contains(clazz: Class<out HTBlockAttribute>): Boolean = clazz in attributeMap

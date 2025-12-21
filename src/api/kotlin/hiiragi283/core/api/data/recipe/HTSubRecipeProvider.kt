@@ -63,7 +63,7 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
     //    Direct    //
 
     /**
-     * Ragium単体で使用するレシピ向けの拡張クラス
+     * Ragium単体で使用されるレシピ向けの拡張クラス
      */
     abstract class Direct(modId: String) : HTSubRecipeProvider(modId) {
         final override fun modifyId(id: ResourceLocation): ResourceLocation = modId.toId(id.path)

@@ -12,7 +12,7 @@ import java.util.function.Function
 import java.util.function.UnaryOperator
 
 /**
- * [MapCodec]と[StreamCodec]を束ねたクラス。
+ * [MapCodec]と[StreamCodec]を束ねたクラスです。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
