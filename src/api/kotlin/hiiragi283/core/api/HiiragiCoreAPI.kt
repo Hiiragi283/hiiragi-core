@@ -19,8 +19,8 @@ data object HiiragiCoreAPI {
     //    ResourceLocation    //
 
     /**
-     * [名前空間][ResourceLocation.getNamespace]が["hiiragi_core"][MOD_ID]となる[ResourceLocation]を返します。
-     * @param path [ResourceLocation]の[パス][ResourceLocation.getPath]
+     * [名前空間][ResourceLocation.getNamespace]が["hiiragi_core"][MOD_ID]となる[ID][ResourceLocation]を返します。
+     * @param path IDの[パス][ResourceLocation.getPath]
      * @return 新しい[ResourceLocation]のインスタンス
      * @author Hiiragi Tsubasa
      * @since 0.1.0
@@ -29,8 +29,8 @@ data object HiiragiCoreAPI {
     fun id(path: String): ResourceLocation = MOD_ID.toId(path)
 
     /**
-     * [名前空間][ResourceLocation.getNamespace]が["hiiragi_core"][MOD_ID]となる[ResourceLocation]を返します。
-     * @param path [ResourceLocation]の[パス][ResourceLocation.getPath]
+     * [名前空間][ResourceLocation.getNamespace]が["hiiragi_core"][MOD_ID]となる[ID][ResourceLocation]を返します。
+     * @param path IDの[パス][ResourceLocation.getPath]
      * @return [path]が`/`で区切られた新しい[ResourceLocation]のインスタンス
      * @author Hiiragi Tsubasa
      * @since 0.1.0

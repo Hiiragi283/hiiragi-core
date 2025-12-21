@@ -47,12 +47,12 @@ fun Fluid.toEmi(amount: Int = 0): EmiStack = EmiStack.of(this, amount.toLong())
 // Immutable Stack
 fun ImmutableItemStack?.toEmi(): EmiStack = when (this) {
     null -> EmiStack.EMPTY
-    else -> EmiStack.of(this.getType(), this.componentsPatch(), this.getAmount().toLong())
+    else -> EmiStack.of(this.type(), this.componentsPatch(), this.amount().toLong())
 }
 
 fun ImmutableFluidStack?.toEmi(): EmiStack = when (this) {
     null -> EmiStack.EMPTY
-    else -> EmiStack.of(this.getType(), this.componentsPatch(), this.getAmount().toLong())
+    else -> EmiStack.of(this.type(), this.componentsPatch(), this.amount().toLong())
 }
 
 // TagKey

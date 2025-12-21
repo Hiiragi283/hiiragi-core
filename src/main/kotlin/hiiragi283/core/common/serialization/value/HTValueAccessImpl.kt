@@ -7,6 +7,9 @@ import hiiragi283.core.api.serialization.value.HTValueOutput
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
 
+/**
+ * @suppress
+ */
 class HTValueAccessImpl : HTValueAccess {
     override fun createInput(provider: HolderLookup.Provider, jsonObject: JsonObject): HTValueInput =
         HTJsonValueInput.create(provider, jsonObject)

@@ -5,8 +5,10 @@ import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
 
 /**
- * エラーを[テキスト][Component]で保持するモナド
+ * エラーを[テキスト][Component]で保持するモナドです。
  * @param T 成功時の結果のクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 typealias HTTextResult<T> = Either<T, Component>
 

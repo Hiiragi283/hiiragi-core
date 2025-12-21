@@ -41,7 +41,7 @@ object HTTooltipHelper {
         if (isCreative) {
             HTCommonTranslation.STORED.translate(stack, HTCommonTranslation.INFINITE)
         } else {
-            HTCommonTranslation.STORED_MB.translate(stack, stack.getAmount())
+            HTCommonTranslation.STORED_MB.translate(stack, stack.amount())
         }.let(consumer::accept)
         // Fluid id if advanced
         if (flag.isAdvanced) {

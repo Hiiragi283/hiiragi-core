@@ -25,7 +25,10 @@ import net.neoforged.neoforge.fluids.crafting.SingleFluidIngredient
 import net.neoforged.neoforge.fluids.crafting.TagFluidIngredient
 import net.neoforged.neoforge.registries.NeoForgeRegistries
 
-data object HTIngredientCodec {
+/**
+ * @suppress
+ */
+internal object HTIngredientCodec {
     //    Item    //
 
     @JvmStatic

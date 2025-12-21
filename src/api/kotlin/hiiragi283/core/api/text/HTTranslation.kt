@@ -5,7 +5,9 @@ import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
 
 /**
- * 翻訳を保持するインターフェース
+ * 翻訳を保持するインターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.api.text.ILangEntry
  */
 interface HTTranslation : HTHasTranslationKey {

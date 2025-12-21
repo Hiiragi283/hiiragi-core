@@ -4,11 +4,13 @@ import com.mojang.serialization.Codec
 import hiiragi283.core.api.serialization.codec.BiCodec
 
 /**
- * NBTやJSONの読み取り専用のラッパー
+ * NBTやJSONから値を読み取るインターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 interface HTValueInput {
     /**
-     * 指定した[key]に紐づいた値を返します。
+     * 指定した[key]に対応する値を返します。
      * @param T 戻り値のクラス
      * @param key 保存先のキー
      * @param codec [T]のコーデック
@@ -17,7 +19,7 @@ interface HTValueInput {
     fun <T : Any> read(key: String, codec: Codec<T>): T?
 
     /**
-     * 指定した[key]に紐づいた値を返します。
+     * 指定した[key]に対応する値を返します。
      * @param T 戻り値のクラス
      * @param key 保存先のキー
      * @param codec [T]のコーデック

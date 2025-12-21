@@ -4,8 +4,7 @@ import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
-import hiiragi283.core.api.serialization.codec.HTIngredientCodec
-import hiiragi283.core.api.serialization.codec.MapBiCodec
+import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.api.stack.ImmutableFluidStack
 import hiiragi283.core.api.stack.toImmutable
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -23,7 +22,7 @@ data class HTFluidIngredient(private val ingredient: FluidIngredient, private va
     companion object {
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTFluidIngredient> = BiCodec.composite(
-            MapBiCodec.of(HTIngredientCodec.FLUID, FluidIngredient.STREAM_CODEC).forGetter(HTFluidIngredient::ingredient),
+            VanillaBiCodecs.FLUID_INGREDIENT.forGetter(HTFluidIngredient::ingredient),
             BiCodecs.POSITIVE_INT.fieldOf(HTConst.AMOUNT).forGetter(HTFluidIngredient::amount),
             ::HTFluidIngredient,
         )

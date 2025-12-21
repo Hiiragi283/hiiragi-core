@@ -57,14 +57,14 @@ abstract class HTRecipeBuilder<BUILDER : HTRecipeBuilder<BUILDER>>(private val p
     }
 
     /**
-     * IDを[getPrimalId]に基づいて，レシピを生成します。
+     * IDを[getPrimalId]から，レシピを生成します。
      */
     fun save(recipeOutput: RecipeOutput) {
         save(recipeOutput, getPrimalId())
     }
 
     /**
-     * IDを[id]に基づいて，レシピを生成します。
+     * IDを[id]から，レシピを生成します。
      */
     fun save(recipeOutput: RecipeOutput, id: ResourceLocation) {
         recipeOutput.accept(

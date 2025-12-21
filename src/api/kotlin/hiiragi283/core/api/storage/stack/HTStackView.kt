@@ -34,7 +34,7 @@ interface HTStackView<STACK : ImmutableStack<*, STACK>> : HTAmountView.IntSized 
      */
     fun getStoredLevel(stack: STACK?): Fraction = fixedFraction(getAmount(), getCapacity(stack))
 
-    override fun getAmount(): Int = getStack()?.getAmount() ?: 0
+    override fun getAmount(): Int = getStack()?.amount() ?: 0
 
     override fun getCapacity(): Int = getCapacity(null)
 }

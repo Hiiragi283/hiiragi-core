@@ -12,6 +12,8 @@ import net.neoforged.neoforge.common.Tags
 /**
  * 指定した[レジストリキー][RegistryKey]と[ID][ResourceLocation]から[TagKey]を作成します。
  * @param T レジストリの要素のクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 fun <T : Any> RegistryKey<T>.createTagKey(id: ResourceLocation): TagKey<T> = TagKey.create(this, id)
 
@@ -19,6 +21,8 @@ fun <T : Any> RegistryKey<T>.createTagKey(id: ResourceLocation): TagKey<T> = Tag
  * 指定した[レジストリキー][RegistryKey]と[path]から[TagKey]を作成します。
  * @param T レジストリの要素のクラス
  * @return 名前空間が["c"][HTConst.COMMON]となる[TagKey]のインスタンス
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 fun <T : Any> RegistryKey<T>.createCommonTag(path: String): TagKey<T> = createTagKey(HTConst.COMMON.toId(path))
 
@@ -26,11 +30,15 @@ fun <T : Any> RegistryKey<T>.createCommonTag(path: String): TagKey<T> = createTa
  * 指定した[レジストリキー][RegistryKey]と[path]から[TagKey]を作成します。
  * @param T レジストリの要素のクラス
  * @return 名前空間が["c"][HTConst.COMMON]となる[TagKey]のインスタンス
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 fun <T : Any> RegistryKey<T>.createCommonTag(vararg path: String): TagKey<T> = createTagKey(HTConst.COMMON.toId(*path))
 
 /**
  * この[TagKey]の名前を取得します。
  * @return 翻訳がない場合は`#`を先頭につけた[ID][TagKey.location]
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 fun TagKey<*>.getName(): MutableComponent = Component.translatableWithFallback(Tags.getTagTranslationKey(this), "#${this.location}")

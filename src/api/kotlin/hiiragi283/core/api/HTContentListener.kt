@@ -12,12 +12,15 @@ fun interface HTContentListener : Runnable {
      */
     fun onContentsChanged()
 
+    /**
+     * @suppress
+     */
     override fun run() {
         onContentsChanged()
     }
 
     /**
-     * 変更をマークする時，何もしない処理を表すインターフェースです。
+     * 何も変更をマークしないことを表すインターフェースです。
      */
     interface Empty : HTContentListener {
         override fun onContentsChanged() {}

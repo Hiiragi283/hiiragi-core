@@ -39,7 +39,7 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
      */
     fun extract(stack: STACK?, action: HTStorageAction, access: HTStorageAccess): STACK? = when {
         stack == null -> null
-        isSameStack(stack) -> extract(stack.getAmount(), action, access)
+        isSameStack(stack) -> extract(stack.amount(), action, access)
         else -> null
     }
 
@@ -73,11 +73,11 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
         protected abstract fun updateAmount(stack: STACK, amount: Int)
 
         protected fun growAmount(stack: STACK, amount: Int) {
-            updateAmount(stack, stack.getAmount() + amount)
+            updateAmount(stack, stack.amount() + amount)
         }
 
         protected fun shrinkAmount(stack: STACK, amount: Int) {
-            updateAmount(stack, stack.getAmount() - amount)
+            updateAmount(stack, stack.amount() - amount)
         }
 
         /**
@@ -92,7 +92,7 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
             val stackIn: STACK? = this.getStack()
             val sameType: Boolean = isSameStack(stack)
             if (stackIn == null || sameType) {
-                val toAdd: Int = min(stack.getAmount(), needed)
+                val toAdd: Int = min(stack.amount(), needed)
                 if (action.execute()) {
                     if (sameType && stackIn != null) {
                         growAmount(stackIn, toAdd)
@@ -101,7 +101,7 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
                         setStack(stack.copyWithAmount(toAdd))
                     }
                 }
-                return stack.copyWithAmount(stack.getAmount() - toAdd)
+                return stack.copyWithAmount(stack.amount() - toAdd)
             }
             return stack
         }

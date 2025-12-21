@@ -5,7 +5,9 @@ import hiiragi283.core.api.serialization.codec.BiCodec
 import java.util.Optional
 
 /**
- * NBTやJSONの書き込み専用のラッパー
+ * NBTやJSONに値を書き込むインターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 interface HTValueOutput {
     /**

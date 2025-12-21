@@ -22,7 +22,7 @@ interface HTIngredient<TYPE : Any, STACK : ImmutableStack<TYPE, STACK>> :
     /**
      * 指定した[stack]が条件を満たしているか判定します。
      */
-    override fun test(stack: STACK): Boolean = testOnlyType(stack) && stack.getAmount() >= getRequiredAmount()
+    override fun test(stack: STACK): Boolean = testOnlyType(stack) && stack.amount() >= getRequiredAmount()
 
     /**
      * 指定した[stack]が数量を除いて条件を満たしているか判定します。

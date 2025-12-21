@@ -4,30 +4,32 @@ import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.text.HTHasText
 
 /**
- * 種類と量を保持する不変なインターフェース
+ * 種類と量を保持する不変なオブジェクトを表すインターフェースです。
  *
  * EMPTYなんか大っ嫌い！
  * @param TYPE 保持する種類のクラス
  * @param STACK [ImmutableStack]を実装したクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 interface ImmutableStack<TYPE : Any, STACK : ImmutableStack<TYPE, STACK>> :
     HTHasText,
     HTIdLike {
     /**
-     * スタックの種類を返します。
-     * @return スタックの種類
+     * 保持している種類を返します。
+     * @return [TYPE]型の値
      */
-    fun getType(): TYPE
+    fun type(): TYPE
 
     /**
-     * スタックの量を返します。
-     * @return [Int]での量
+     * 保持している量を返します。
+     * @return [Int]型での量
      */
-    fun getAmount(): Int
+    fun amount(): Int
 
     /**
-     * このスタックのコピーを指定した個数で返します。
-     * @param amount コピー後の個数
+     * このスタックを指定した量でコピーします。
+     * @param amount コピー後の量
      * @return 新しいスタックが無効の場合は`null`
      */
     fun copyWithAmount(amount: Int): STACK?

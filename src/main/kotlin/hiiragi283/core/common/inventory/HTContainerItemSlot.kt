@@ -47,7 +47,7 @@ open class HTContainerItemSlot(
 
     private fun insertItem(stack: ItemStack, action: HTStorageAction): ItemStack {
         val remainder: ImmutableItemStack? = slot.insert(stack.toImmutable(), action, HTStorageAccess.MANUAL)
-        if (action.execute() && stack.count != remainder?.getAmount()) {
+        if (action.execute() && stack.count != remainder?.amount()) {
             setChanged()
         }
         return remainder?.unwrap() ?: ItemStack.EMPTY

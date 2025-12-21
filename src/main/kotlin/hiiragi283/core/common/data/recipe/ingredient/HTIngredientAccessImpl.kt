@@ -4,6 +4,9 @@ import hiiragi283.core.api.data.recipe.ingredient.HTFluidIngredientCreator
 import hiiragi283.core.api.data.recipe.ingredient.HTIngredientAccess
 import hiiragi283.core.api.data.recipe.ingredient.HTItemIngredientCreator
 
+/**
+ * @suppress
+ */
 class HTIngredientAccessImpl : HTIngredientAccess {
     override fun fluidCreator(): HTFluidIngredientCreator = HTFluidIngredientCreatorImpl
 

@@ -16,6 +16,12 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.capabilities.ItemCapability
 
+/**
+ * [ImmutableComponentStack]を[アイテム][Item]向けに実装したクラスです。
+ * @param stack 内部で保持しているスタック
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 @JvmInline
 value class ImmutableItemStack private constructor(private val stack: ItemStack) : ImmutableComponentStack<Item, ImmutableItemStack> {
     companion object {
@@ -28,16 +34,31 @@ value class ImmutableItemStack private constructor(private val stack: ItemStack)
                 ::ItemStack,
             )
 
+        /**
+         * [ImmutableItemStack]の[BiCodec]
+         */
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, ImmutableItemStack> =
             ITEM_STACK_CODEC.flatXmap(ItemStack::toImmutableOrThrow, ImmutableItemStack::stack)
 
+        /**
+         * 指定した[アイテム][item]と[個数][count]を[ImmutableItemStack]に変換します。
+         * @return [ItemStack.isEmpty]が`true`の場合は`null`
+         */
         @JvmStatic
         fun ofNullable(item: ItemLike, count: Int = 1): ImmutableItemStack? = ItemStack(item, count).toImmutable()
 
+        /**
+         * 指定した[アイテム][item]と[個数][count]を[ImmutableItemStack]に変換します。
+         * @throws [ItemStack.isEmpty]が`true`の場合
+         */
         @JvmStatic
         fun of(item: ItemLike, count: Int = 1): ImmutableItemStack = ItemStack(item, count).toImmutableOrThrow()
 
+        /**
+         * 指定した[stack]を[ImmutableItemStack]に変換します。
+         * @return [ItemStack.isEmpty]が`true`の場合は`null`
+         */
         @JvmStatic
         fun of(stack: ItemStack): ImmutableItemStack? = when (stack.isEmpty) {
             true -> null
@@ -45,14 +66,29 @@ value class ImmutableItemStack private constructor(private val stack: ItemStack)
         }
     }
 
+    /**
+     * 保持している[ItemStack][stack]のコピーを返します。
+     */
     fun unwrap(): ItemStack = stack.copy()
 
+    /**
+     * 指定した[コンポーネント][value]を追加します。
+     * @param T コンポーネントのクラス
+     * @param type コンポーネントの[種類][DataComponentType]
+     * @return 指定した[コンポーネント][value]を加えた[ImmutableItemStack]のコピー
+     */
     fun <T : Any> plus(type: DataComponentType<T>, value: T?): ImmutableItemStack {
         val mutable: ItemStack = unwrap()
         mutable.set(type, value)
         return ImmutableItemStack(mutable)
     }
 
+    /**
+     * 指定したコンポーネントを削除します。
+     * @param T コンポーネントのクラス
+     * @param type コンポーネントの[種類][DataComponentType]
+     * @return 指定したコンポーネントを消した[ImmutableItemStack]のコピー
+     */
     fun <T : Any> minus(type: DataComponentType<T>): ImmutableItemStack {
         val mutable: ItemStack = unwrap()
         mutable.remove(type)
@@ -68,9 +104,9 @@ value class ImmutableItemStack private constructor(private val stack: ItemStack)
 
     override fun componentsPatch(): DataComponentPatch = stack.componentsPatch
 
-    override fun getType(): Item = stack.item
+    override fun type(): Item = stack.item
 
-    override fun getAmount(): Int = stack.count
+    override fun amount(): Int = stack.count
 
     override fun copyWithAmount(amount: Int): ImmutableItemStack? = unwrap().copyWithCount(amount).toImmutable()
 
