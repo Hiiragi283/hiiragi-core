@@ -42,7 +42,7 @@ sealed interface HCMaterial :
     }
 
     val basePrefix: HTMaterialPrefix
-    val colorPalette: HTColorPalette?
+    val colorPalette: HTColorPalette
 
     fun getItemPrefixesToGenerate(): Set<HTMaterialPrefix>
 
@@ -50,7 +50,13 @@ sealed interface HCMaterial :
 
     fun getBaseIngredient(): TagKey<Item> = basePrefix.itemTagKey(this)
 
-    fun getTemplateId(prefix: HTMaterialPrefix): ResourceLocation? = HiiragiCoreAPI.id("template", prefix.name)
+    fun getTemplateId(prefix: HTMaterialPrefix): ResourceLocation? = HiiragiCoreAPI.id(
+        "template",
+        when (prefix) {
+            HCMaterialPrefixes.STORAGE_BLOCK -> "block_${basePrefix.name}"
+            else -> prefix.name
+        },
+    )
 
     //    Fuels    //
 
@@ -96,12 +102,12 @@ sealed interface HCMaterial :
     enum class Minerals(
         private val usName: String,
         private val jpName: String,
-        override val colorPalette: HTColorPalette?,
+        override val colorPalette: HTColorPalette,
         private val isVanilla: Boolean = false,
     ) : HCMaterial {
         // Vanilla
-        REDSTONE("Redstone", "赤石", null, true),
-        GLOWSTONE("Glowstone", "グロウストーン", null, true),
+        REDSTONE("Redstone", "赤石", HCMaterialPalette.REDSTONE, true),
+        GLOWSTONE("Glowstone", "グロウストーン", HCMaterialPalette.GLOWSTONE, true),
 
         // Common
         CINNABAR("Cinnabar", "辰砂", HCMaterialPalette.CINNABAR),

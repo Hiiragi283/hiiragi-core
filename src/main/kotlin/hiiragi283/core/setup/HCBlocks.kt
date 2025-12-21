@@ -75,7 +75,6 @@ object HCBlocks {
                 return BlockBehaviour.Properties
                     .of()
                     .strength(5f, 6f)
-                    .sound(SoundType.TUFF)
                     .mapColor(
                         when (material) {
                             HCMaterial.Fuels.COAL -> return null
@@ -89,7 +88,6 @@ object HCBlocks {
                 return BlockBehaviour.Properties
                     .of()
                     .strength(5f, 9f)
-                    .sound(SoundType.AMETHYST)
                     .mapColor(
                         when (material) {
                             HCMaterial.Minerals.REDSTONE -> return null
@@ -144,7 +142,7 @@ object HCBlocks {
                 return BlockBehaviour.Properties
                     .of()
                     .strength(5f, 9f)
-                    .sound(SoundType.COPPER)
+                    .sound(SoundType.METAL)
                     .mapColor(
                         when (material) {
                             HCMaterial.Alloys.NETHERITE -> return null
@@ -158,6 +156,7 @@ object HCBlocks {
                 return BlockBehaviour.Properties
                     .of()
                     .strength(5f, 6f)
+                    .sound(SoundType.WOOD)
                     .mapColor(
                         when (material) {
                             HCMaterial.Plates.PLASTIC -> MapColor.TERRACOTTA_WHITE

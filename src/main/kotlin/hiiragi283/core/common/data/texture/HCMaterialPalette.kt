@@ -64,6 +64,68 @@ object HCMaterialPalette {
         ),
     )
 
+    //    Minerals    //
+
+    @JvmStatic
+    val REDSTONE: HTColorPalette = HTColorPalette(
+        arrayOf(
+            Color(0xff0000),
+            Color(0xaa0f01),
+            Color(0x720000),
+            Color(0x5c0700),
+            Color(0x410500),
+            Color(0x2d0000),
+        ),
+    )
+
+    @JvmStatic
+    val GLOWSTONE: HTColorPalette = HTColorPalette(
+        arrayOf(
+            Color(0xf9d49c),
+            Color(0xebaa4e),
+            Color(0xb47140),
+            Color(0x8e562e),
+            Color(0x7e4821),
+            Color(0x5a391c),
+        ),
+    )
+
+    @JvmStatic
+    val CINNABAR: HTColorPalette = HTColorPalette(
+        arrayOf(
+            Color(0xf4dfc4),
+            Color(0xe9ab8a),
+            Color(0xdf634f),
+            Color(0xc42430),
+            Color(0x831837),
+            Color(0x410c27),
+        ),
+    )
+
+    @JvmStatic
+    val SALTPETER: HTColorPalette = HTColorPalette(
+        arrayOf(
+            Color(0xe0dbd8),
+            Color(0xc1b4b2),
+            Color(0xa28b8d),
+            Color(0x81676e),
+            Color(0x5a4851),
+            Color(0x2d242a),
+        ),
+    )
+
+    @JvmStatic
+    val SULFUR: HTColorPalette = HTColorPalette(
+        arrayOf(
+            Color(0xe5ebc9),
+            Color(0xd8d794),
+            Color(0xc4ad5e),
+            Color(0x9f723a),
+            Color(0x6a3e27),
+            Color(0x351813),
+        ),
+    )
+
     //    Gems    //
 
     @JvmStatic
@@ -139,42 +201,6 @@ object HCMaterialPalette {
     )
 
     @JvmStatic
-    val CINNABAR: HTColorPalette = HTColorPalette(
-        arrayOf(
-            Color(0xf4dfc4),
-            Color(0xe9ab8a),
-            Color(0xdf634f),
-            Color(0xc42430),
-            Color(0x831837),
-            Color(0x410c27),
-        ),
-    )
-
-    @JvmStatic
-    val SALTPETER: HTColorPalette = HTColorPalette(
-        arrayOf(
-            Color(0xe0dbd8),
-            Color(0xc1b4b2),
-            Color(0xa28b8d),
-            Color(0x81676e),
-            Color(0x5a4851),
-            Color(0x2d242a),
-        ),
-    )
-
-    @JvmStatic
-    val SULFUR: HTColorPalette = HTColorPalette(
-        arrayOf(
-            Color(0xe5ebc9),
-            Color(0xd8d794),
-            Color(0xc4ad5e),
-            Color(0x9f723a),
-            Color(0x6a3e27),
-            Color(0x351813),
-        ),
-    )
-
-    @JvmStatic
     val CRIMSON_CRYSTAL: HTColorPalette = HTColorPalette(
         arrayOf(
             Color(0xeec6bb),
@@ -203,12 +229,12 @@ object HCMaterialPalette {
     @JvmStatic
     val ENDER: HTColorPalette = HTColorPalette(
         arrayOf(
-            Color(0xbcf3bb),
-            Color(0x76e88c),
-            Color(0x32dc77),
-            Color(0x1ca26f),
-            Color(0x105e51),
-            Color(0x082d2f),
+            Color(0xc0eebb),
+            Color(0x77dd83),
+            Color(0x33cc66),
+            Color(0x269965),
+            Color(0x196654),
+            Color(0x0d3332),
         ),
     )
 
@@ -336,7 +362,33 @@ object HCMaterialPalette {
         ),
     )
 
-    //    Dusts    //
+    //    Plates    //
+
+    @JvmStatic
+    val PLASTIC: HTColorPalette = HTColorPalette(
+        arrayOf(
+            Color(0xe0ebe5),
+            Color(0xc2d6ce),
+            Color(0xa3c2ba),
+            Color(0x85ada8),
+            Color(0x85ada8),
+            Color(0x5e898c),
+        ),
+    )
+
+    @JvmStatic
+    val RUBBER: HTColorPalette = HTColorPalette(
+        arrayOf(
+            Color(0x463e43),
+            Color(0x3e373d),
+            Color(0x2e262e),
+            Color(0x241e26),
+            Color(0x17131b),
+            Color(0x0f0c13),
+        ),
+    )
+
+    //    Others    //
 
     @JvmStatic
     val WOOD: HTColorPalette = HTColorPalette(
@@ -371,32 +423,6 @@ object HCMaterialPalette {
             Color(0x291d3f),
             Color(0x19132a),
             Color(0x0b0a15),
-        ),
-    )
-
-    //    Plates    //
-
-    @JvmStatic
-    val PLASTIC: HTColorPalette = HTColorPalette(
-        arrayOf(
-            Color(0xe0ebe5),
-            Color(0xc2d6ce),
-            Color(0xa3c2ba),
-            Color(0x85ada8),
-            Color(0x85ada8),
-            Color(0x5e898c),
-        ),
-    )
-
-    @JvmStatic
-    val RUBBER: HTColorPalette = HTColorPalette(
-        arrayOf(
-            Color(0x463e43),
-            Color(0x3e373d),
-            Color(0x2e262e),
-            Color(0x241e26),
-            Color(0x17131b),
-            Color(0x0f0c13),
         ),
     )
 }
