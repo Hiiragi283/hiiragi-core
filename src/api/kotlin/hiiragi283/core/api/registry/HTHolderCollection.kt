@@ -2,10 +2,10 @@ package hiiragi283.core.api.registry
 
 import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.monad.unwrapEither
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
-import hiiragi283.core.api.tuple.unwrapEither
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet

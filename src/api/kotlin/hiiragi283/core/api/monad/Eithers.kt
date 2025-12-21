@@ -1,4 +1,4 @@
-package hiiragi283.core.api.tuple
+package hiiragi283.core.api.monad
 
 import com.mojang.datafixers.util.Either
 

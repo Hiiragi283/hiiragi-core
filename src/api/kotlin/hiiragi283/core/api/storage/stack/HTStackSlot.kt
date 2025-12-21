@@ -22,7 +22,7 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
     fun isValid(stack: STACK): Boolean
 
     /**
-     * 指定された引数から[STACK]を搬入します。
+     * 指定した引数から[STACK]を搬入します。
      * @param stack 搬入される[STACK]
      * @param action [hiiragi283.core.api.storage.HTStorageAction.EXECUTE]の場合のみ実際に搬入を行います。
      * @param access このスロットへのアクセスの種類
@@ -31,7 +31,7 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
     fun insert(stack: STACK?, action: HTStorageAction, access: HTStorageAccess): STACK?
 
     /**
-     * 指定された引数から[STACK]を搬出します。
+     * 指定した引数から[STACK]を搬出します。
      * @param stack 搬出される[STACK]
      * @param action [HTStorageAction.EXECUTE]の場合のみ実際に搬出を行います。
      * @param access このスロットへのアクセスの種類
@@ -44,7 +44,7 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
     }
 
     /**
-     * 指定された引数から[STACK]を搬出します。
+     * 指定した引数から[STACK]を搬出します。
      * @param amount 搬出する個数の最大値
      * @param action [HTStorageAction.EXECUTE]の場合のみ実際に搬出を行います。
      * @param access このスロットへのアクセスの種類
@@ -53,7 +53,7 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
     fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): STACK?
 
     /**
-     * 指定された[other]と[getStack]が等価か判定します。
+     * 指定した[other]と[getStack]が等価か判定します。
      */
     fun isSameStack(other: STACK?): Boolean
 
@@ -66,7 +66,7 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
         abstract fun setStack(stack: STACK?)
 
         /**
-         * 指定された引数をもとに，現在保持しているスタックの個数を変更します。
+         * 指定した引数をもとに，現在保持しているスタックの個数を変更します。
          * @param stack 現在のスタック
          * @param amount 新しい数量
          */
@@ -123,7 +123,7 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
         }
 
         /**
-         * 指定された[stack]をこのスロットに搬入できるか判定します。
+         * 指定した[stack]をこのスロットに搬入できるか判定します。
          * @param stack 搬入される[STACK]
          * @param access このスロットへのアクセスの種類
          * @return 搬入できる場合は`true`
@@ -131,7 +131,7 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
         protected open fun isStackValidForInsert(stack: STACK, access: HTStorageAccess): Boolean = isValid(stack)
 
         /**
-         * 指定された[stack]をこのスロットに搬出できるか判定します。
+         * 指定した[stack]をこのスロットに搬出できるか判定します。
          * @param stack 搬出される[STACK]
          * @param access このスロットへのアクセスの種類
          * @return 搬出できる場合は`true`

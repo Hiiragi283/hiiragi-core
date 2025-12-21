@@ -1,10 +1,12 @@
 package hiiragi283.core.api.recipe.result
 
+import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.function.generateHash
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.stack.ImmutableStack
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextResult
+import hiiragi283.core.api.text.toTextResult
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponentPatch
@@ -19,8 +21,8 @@ abstract class HTBasicRecipeResult<TYPE : Any, STACK : ImmutableStack<TYPE, STAC
         .getHolder(provider)
         .flatMap { holder: Holder<TYPE> ->
             when (val stack: STACK? = createStack(holder, amount, components)) {
-                null -> HTTextResult.failure(HTCommonTranslation.EMPTY)
-                else -> HTTextResult.success(stack)
+                null -> HTCommonTranslation.EMPTY.toTextResult()
+                else -> Either.left(stack)
             }
         }
 

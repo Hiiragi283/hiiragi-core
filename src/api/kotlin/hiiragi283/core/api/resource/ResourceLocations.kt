@@ -1,6 +1,5 @@
 package hiiragi283.core.api.resource
 
-import hiiragi283.core.api.HTConst
 import net.minecraft.Util
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
@@ -26,16 +25,6 @@ fun vanillaId(path: String): ResourceLocation = ResourceLocation.withDefaultName
  * 名前空間が`minecraft`となる[ResourceLocation]を返します。
  */
 fun vanillaId(vararg path: String): ResourceLocation = ResourceLocation.withDefaultNamespace(path.joinToString(separator = "/"))
-
-/**
- * 名前空間が`c`となる[ResourceLocation]を返します。
- */
-fun commonId(path: String): ResourceLocation = HTConst.COMMON.toId(path)
-
-/**
- * 名前空間が`c`となる[ResourceLocation]を返します。
- */
-fun commonId(vararg path: String): ResourceLocation = HTConst.COMMON.toId(*path)
 
 /**
  * この[ResourceKey]から翻訳キーに変換します。

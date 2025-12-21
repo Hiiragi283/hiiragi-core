@@ -1,6 +1,6 @@
 package hiiragi283.core.common.tag
 
-import hiiragi283.core.api.resource.commonId
+import hiiragi283.core.api.tag.createCommonTag
 import hiiragi283.core.api.tag.createTagKey
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceLocation
@@ -13,10 +13,10 @@ object HCCommonTags {
 
     object Blocks {
         @JvmStatic
-        private fun create(path: String): TagKey<Block> = create(commonId(path))
+        private fun create(path: String): TagKey<Block> = Registries.BLOCK.createCommonTag(path)
 
         @JvmStatic
-        private fun create(vararg path: String): TagKey<Block> = create(commonId(*path))
+        private fun create(vararg path: String): TagKey<Block> = Registries.BLOCK.createCommonTag(*path)
 
         @JvmStatic
         private fun create(id: ResourceLocation): TagKey<Block> = Registries.BLOCK.createTagKey(id)
@@ -29,10 +29,10 @@ object HCCommonTags {
         val TOOLS_HAMMER: TagKey<Item> = create("tools", "hammer")
 
         @JvmStatic
-        private fun create(path: String): TagKey<Item> = create(commonId(path))
+        private fun create(path: String): TagKey<Item> = Registries.ITEM.createCommonTag(path)
 
         @JvmStatic
-        private fun create(vararg path: String): TagKey<Item> = create(commonId(*path))
+        private fun create(vararg path: String): TagKey<Item> = Registries.ITEM.createCommonTag(*path)
 
         @JvmStatic
         private fun create(id: ResourceLocation): TagKey<Item> = Registries.ITEM.createTagKey(id)

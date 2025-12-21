@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data
 
-import hiiragi283.core.api.HTConst
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.RegistrySetBuilder
 import net.minecraft.data.DataGenerator
@@ -48,7 +47,7 @@ data class HTRootDataGenerator private constructor(
                         output,
                         event.lookupProvider,
                         RegistrySetBuilder().apply(builderAction),
-                        HTConst.BUILTIN_IDS,
+                        event.mods,
                     )
                 }.registryProvider
             val fileHelper: ExistingFileHelper = event.existingFileHelper
@@ -60,8 +59,8 @@ data class HTRootDataGenerator private constructor(
     }
 
     /**
-     * 指定された[id]でデータパックを作成します。
-     * @return 指定された[id]に基づいた[HTDataPackGenerator]
+     * 指定した[id]でデータパックを作成します。
+     * @return 指定した[id]に基づいた[HTDataPackGenerator]
      */
     fun createDataPackGenerator(id: ResourceLocation): HTDataPackGenerator = HTDataPackGenerator(
         generator.getBuiltinDatapack(doRun.asBoolean, id.namespace, id.path),

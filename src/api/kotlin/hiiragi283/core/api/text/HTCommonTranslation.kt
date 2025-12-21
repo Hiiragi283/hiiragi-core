@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import net.minecraft.Util
 
 /**
+ * Hiiragi Coreとそれを前提とするmodで使用される[翻訳][HTTranslation]を集めたクラスです。
  * @see mekanism.api.text.APILang
  * @see mekanism.common.MekanismLang
  */

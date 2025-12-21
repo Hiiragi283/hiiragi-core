@@ -142,7 +142,7 @@ data class MapBiCodec<B : ByteBuf, V : Any> private constructor(val codec: MapCo
     fun toCodec(): BiCodec<B, V> = BiCodec.of(codec.codec(), streamCodec)
 
     /**
-     * 指定された[to]と[from]に基づいて，別の[MapBiCodec]に変換します。
+     * 指定した[to]と[from]に基づいて，別の[MapBiCodec]に変換します。
      * @param S 変換後のコーデックの対象となるクラス
      * @param to [V]から[S]に変換するブロック
      * @param from [S]から[V]に変換するブロック
@@ -151,7 +151,7 @@ data class MapBiCodec<B : ByteBuf, V : Any> private constructor(val codec: MapCo
     fun <S : Any> xmap(to: Function<V, S>, from: Function<S, V>): MapBiCodec<B, S> = of(codec.xmap(to, from), streamCodec.map(to, from))
 
     /**
-     * 指定された[to]と[from]に基づいて，別の[MapBiCodec]に変換します。
+     * 指定した[to]と[from]に基づいて，別の[MapBiCodec]に変換します。
      * @param S 変換後のコーデックの対象となるクラス
      * @param to [V]から[S]の[Result]に変換するブロック
      * @param from [S]から[V]の[Result]にに変換するブロック

@@ -26,7 +26,7 @@ fun <E : Any, MAP : MapCodec<out E>> Codec<MAP>.dispatchSelf(type: Function<E, M
 //    BiCodec    //
 
 /**
- * 指定された[BiCodec]を，別の[BiCodec]に変換します。
+ * 指定した[BiCodec]を，別の[BiCodec]に変換します。
  * @param X 変換後のコーデックの対象となるクラス
  * @param V [X]を継承したクラス
  * @return [X]を対象とした[BiCodec]

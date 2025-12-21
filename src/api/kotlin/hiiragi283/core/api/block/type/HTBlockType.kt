@@ -20,7 +20,7 @@ open class HTBlockType(val description: HTTranslation, private val attributeMap:
     }
 
     /**
-     * 指定された[clazz]の属性が，このタイプに含まれているかどうか判定します。
+     * 指定した[clazz]の属性が，このタイプに含まれているかどうか判定します。
      * @return 含まれている場合は`true`
      */
     operator fun contains(clazz: Class<out HTBlockAttribute>): Boolean = clazz in attributeMap
@@ -61,7 +61,7 @@ open class HTBlockType(val description: HTTranslation, private val attributeMap:
         protected fun self(): BUILDER = this as BUILDER
 
         /**
-         * 指定された[attributes]を追加します。
+         * 指定した[attributes]を追加します。
          * @throws IllegalStateException すでに同じクラスの属性が登録されている場合
          */
         fun add(vararg attributes: HTBlockAttribute): BUILDER {
@@ -78,7 +78,7 @@ open class HTBlockType(val description: HTTranslation, private val attributeMap:
         fun addShape(shape: VoxelShape): BUILDER = add(HTShapeBlockAttribute(shape))
 
         /**
-         * 指定された[attributes]を追加します。
+         * 指定した[attributes]を追加します。
          *
          * [add]と異なり，同じクラスの属性が登録されていても上書きします。
          */
@@ -91,7 +91,7 @@ open class HTBlockType(val description: HTTranslation, private val attributeMap:
         }
 
         /**
-         * 指定された[classes]に対応する各属性を削除します。
+         * 指定した[classes]に対応する各属性を削除します。
          */
         fun remove(vararg classes: Class<out HTBlockAttribute>): BUILDER {
             checkHasBuilt()

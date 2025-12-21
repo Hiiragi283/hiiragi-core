@@ -93,9 +93,9 @@ private fun ingredient(stacks: List<EmiStack>): EmiIngredient = when {
 }
 
 // Result
-fun HTItemResult.toEmi(): EmiStack = this.getStackResult(null).fold(ImmutableItemStack::toEmi, ::createErrorStack)
+fun HTItemResult.toEmi(): EmiStack = this.getStackResult(null).map(ImmutableItemStack::toEmi, ::createErrorStack)
 
-fun HTFluidResult.toEmi(): EmiStack = this.getStackResult(null).fold(ImmutableFluidStack::toEmi, ::createErrorStack)
+fun HTFluidResult.toEmi(): EmiStack = this.getStackResult(null).map(ImmutableFluidStack::toEmi, ::createErrorStack)
 
 // Fluid Content
 fun HTFluidWithTag<*>.toFluidEmi(amount: Int = 0): EmiStack = this.get().toEmi(amount)

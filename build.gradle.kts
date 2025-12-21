@@ -6,6 +6,9 @@ plugins {
     idea
     kotlin("jvm") version "2.2.20"
     alias(libs.plugins.neo.moddev)
+
+    alias(libs.plugins.dokka.asProvider())
+    alias(libs.plugins.dokka.javadoc)
     alias(libs.plugins.ktlint)
 }
 
@@ -322,4 +325,26 @@ ktlint {
         exclude("**/generated/**")
         include("**/kotlin/**")
     }
+}
+
+dokka {
+    dokkaSourceSets {
+        configureEach {
+            sourceRoots.from(apiModule.kotlin.srcDirs)
+        }
+    }
+}
+
+// To generate documentation in HTML
+val dokkaHtmlJar by tasks.registering(Jar::class) {
+    description = "A HTML Documentation JAR containing Dokka HTML"
+    from(tasks.dokkaGeneratePublicationHtml.flatMap { it.outputDirectory })
+    archiveClassifier.set("html-doc")
+}
+
+// To generate documentation in Javadoc
+val dokkaJavadocJar by tasks.registering(Jar::class) {
+    description = "A Javadoc JAR containing Dokka Javadoc"
+    from(tasks.dokkaGeneratePublicationJavadoc.flatMap { it.outputDirectory })
+    archiveClassifier.set("javadoc")
 }

@@ -6,38 +6,26 @@ import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.Level
 import net.neoforged.neoforge.common.extensions.ILevelExtension
-import java.text.NumberFormat
 
 //    Text    //
 
-fun literalText(value: String): MutableComponent = Component.literal(value)
+/**
+ * 指定した[文字列][this]を[テキスト][MutableComponent]に変換します。
+ */
+fun String.toText(): MutableComponent = Component.literal(this)
 
+/**
+ * 指定した[文字列][value]を翻訳された[テキスト][MutableComponent]に変換します。
+ */
 fun translatableText(value: String): MutableComponent = Component.translatable(value)
 
+/**
+ * 指定した[文字列][value]と[引数][args]を翻訳された[テキスト][MutableComponent]に変換します。
+ */
 fun translatableText(value: String, vararg args: Any): MutableComponent = Component.translatable(value, *args)
 
 /**
- * フォーマットされた[Int]の[Component]を返します。
- */
-fun intText(value: Int): MutableComponent = longText(value.toLong())
-
-/**
- * フォーマットされた[Long]の[Component]を返します。
- */
-fun longText(value: Long): MutableComponent = literalText(NumberFormat.getIntegerInstance().format(value))
-
-/**
- * フォーマットされた[Float]の[Component]を返します。
- */
-fun floatText(value: Float): MutableComponent = doubleText(value.toDouble())
-
-/**
- * フォーマットされた[Double]の[Component]を返します。
- */
-fun doubleText(value: Double): MutableComponent = literalText(NumberFormat.getNumberInstance().format(value))
-
-/**
- * フォーマットされた[Boolean]の[Component]を返します。
+ * 指定した[Boolean]を翻訳された[テキスト][MutableComponent]に変換します。
  */
 fun boolText(value: Boolean): MutableComponent = when (value) {
     true -> HTCommonTranslation.TRUE

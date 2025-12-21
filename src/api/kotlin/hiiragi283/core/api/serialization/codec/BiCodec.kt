@@ -26,7 +26,7 @@ import java.util.function.UnaryOperator
 data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>, val streamCodec: StreamCodec<B, V>) {
     companion object {
         /**
-         * 指定された[codec]と[streamCodec]から[BiCodec]を返します。
+         * 指定した[codec]と[streamCodec]から[BiCodec]を返します。
          * @param B [StreamCodec]で使われるパケットのクラス
          * @param V コーデック対象のクラス
          */
@@ -55,7 +55,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
         val STRING: BiCodec<ByteBuf, String> = of(Codec.STRING, ByteBufCodecs.STRING_UTF8)
 
         /**
-         * 指定された[codec]に基づいて，別の[BiCodec]を生成します。
+         * 指定した[codec]に基づいて，別の[BiCodec]を生成します。
          * @param T1 [factory]の第1引数に使われるクラス
          * @param C 変換後のコーデックの対象となるクラス
          */
@@ -68,7 +68,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
         )
 
         /**
-         * 指定された[codec1], [codec2]に基づいて，別の[BiCodec]を生成します。
+         * 指定した[codec1], [codec2]に基づいて，別の[BiCodec]を生成します。
          * @param T1 [factory]の第1引数に使われるクラス
          * @param T2 [factory]の第2引数に使われるクラス
          * @param C 変換後のコーデックの対象となるクラス
@@ -96,7 +96,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
         )
 
         /**
-         * 指定された[codec1], [codec2], [codec3]に基づいて，別の[BiCodec]を生成します。
+         * 指定した[codec1], [codec2], [codec3]に基づいて，別の[BiCodec]を生成します。
          * @param T1 [factory]の第1引数に使われるクラス
          * @param T2 [factory]の第2引数に使われるクラス
          * @param T3 [factory]の第3引数に使われるクラス
@@ -129,7 +129,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
         )
 
         /**
-         * 指定された[codec1], [codec2], [codec3], [codec4]に基づいて，別の[BiCodec]を生成します。
+         * 指定した[codec1], [codec2], [codec3], [codec4]に基づいて，別の[BiCodec]を生成します。
          * @param T1 [factory]の第1引数に使われるクラス
          * @param T2 [factory]の第2引数に使われるクラス
          * @param T3 [factory]の第3引数に使われるクラス
@@ -167,7 +167,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
         )
 
         /**
-         * 指定された[codec1], [codec2], [codec3], [codec4], [codec5]に基づいて，別の[BiCodec]を生成します。
+         * 指定した[codec1], [codec2], [codec3], [codec4], [codec5]に基づいて，別の[BiCodec]を生成します。
          * @param T1 [factory]の第1引数に使われるクラス
          * @param T2 [factory]の第2引数に使われるクラス
          * @param T3 [factory]の第3引数に使われるクラス
@@ -210,7 +210,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
         )
 
         /**
-         * 指定された[codec1], [codec2], [codec3], [codec4], [codec5], [codec6]に基づいて，別の[BiCodec]を生成します。
+         * 指定した[codec1], [codec2], [codec3], [codec4], [codec5], [codec6]に基づいて，別の[BiCodec]を生成します。
          * @param T1 [factory]の第1引数に使われるクラス
          * @param T2 [factory]の第2引数に使われるクラス
          * @param T3 [factory]の第3引数に使われるクラス
@@ -270,7 +270,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
     // Convert
 
     /**
-     * 指定された[to]と[from]に基づいて，別の[BiCodec]に変換します。
+     * 指定した[to]と[from]に基づいて，別の[BiCodec]に変換します。
      * @param S 変換後のコーデックの対象となるクラス
      * @param to [V]から[S]に変換するブロック
      * @param from [S]から[V]に変換するブロック
@@ -279,7 +279,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
     fun <S : Any> xmap(to: Function<V, S>, from: Function<S, V>): BiCodec<B, S> = of(codec.xmap(to, from), streamCodec.map(to, from))
 
     /**
-     * 指定された[to]と[from]に基づいて，別の[BiCodec]に変換します。
+     * 指定した[to]と[from]に基づいて，別の[BiCodec]に変換します。
      * @param S 変換後のコーデックの対象となるクラス
      * @param to [V]から[S]に変換するブロック
      * @param from [S]から[V]に変換するブロック

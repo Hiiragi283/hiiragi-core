@@ -20,12 +20,12 @@ interface HTIngredient<TYPE : Any, STACK : ImmutableStack<TYPE, STACK>> :
     Predicate<STACK>,
     HTHasText {
     /**
-     * 指定された[stack]が条件を満たしているか判定します。
+     * 指定した[stack]が条件を満たしているか判定します。
      */
     override fun test(stack: STACK): Boolean = testOnlyType(stack) && stack.getAmount() >= getRequiredAmount()
 
     /**
-     * 指定された[stack]が数量を除いて条件を満たしているか判定します。
+     * 指定した[stack]が数量を除いて条件を満たしているか判定します。
      */
     fun testOnlyType(stack: STACK): Boolean
 

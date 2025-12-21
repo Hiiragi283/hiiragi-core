@@ -20,7 +20,7 @@ object BiCodecs {
         Codec.checkRange(min, max).andThen(DataResult<N>::getOrThrow)::apply
 
     /**
-     * 指定された[min]と[max]から[BiCodec]を返します。
+     * 指定した[min]と[max]から[BiCodec]を返します。
      * @param min 範囲の最小値
      * @param max 範囲の最大値
      * @return [min]と[max]を含む範囲の値のみを通す[BiCodec]
@@ -29,7 +29,7 @@ object BiCodecs {
     fun intRange(min: Int, max: Int): BiCodec<ByteBuf, Int> = BiCodec.INT.validate(checkRange(min, max))
 
     /**
-     * 指定された[min]と[max]から[BiCodec]を返します。
+     * 指定した[min]と[max]から[BiCodec]を返します。
      * @param min 範囲の最小値
      * @param max 範囲の最大値
      * @return [min]と[max]を含む範囲の値のみを通す[BiCodec]
@@ -38,7 +38,7 @@ object BiCodecs {
     fun longRange(min: Long, max: Long): BiCodec<ByteBuf, Long> = BiCodec.LONG.validate(checkRange(min, max))
 
     /**
-     * 指定された[min]と[max]から[BiCodec]を返します。
+     * 指定した[min]と[max]から[BiCodec]を返します。
      * @param min 範囲の最小値
      * @param max 範囲の最大値
      * @return [min]と[max]を含む範囲の値のみを通す[BiCodec]
@@ -105,7 +105,7 @@ object BiCodecs {
     }
 
     /**
-     * 指定された[keyCodec], [valueCodec]に基づいて，[Map]の[BiCodec]を返します。
+     * 指定した[keyCodec], [valueCodec]に基づいて，[Map]の[BiCodec]を返します。
      * @param K [Map]のキーとなるクラス
      * @param V [Map]の値となるクラス
      * @param keyCodec [K]を対象とする[BiCodec]
@@ -119,7 +119,7 @@ object BiCodecs {
     )
 
     /**
-     * 指定された[first], [second]に基づいて，[Either]の[BiCodec]を返します。
+     * 指定した[first], [second]に基づいて，[Either]の[BiCodec]を返します。
      * @param first [F]を対象とする[BiCodec]
      * @param second [S]を対象とする[BiCodec]
      * @return [Either]の[BiCodec]
@@ -131,7 +131,7 @@ object BiCodecs {
     )
 
     /**
-     * 指定された[first], [second]に基づいて，[Either]の[BiCodec]を返します。
+     * 指定した[first], [second]に基づいて，[Either]の[BiCodec]を返します。
      * @param first [F]を対象とする[BiCodec]
      * @param second [S]を対象とする[BiCodec]
      * @return [Either]の[BiCodec]
@@ -159,7 +159,7 @@ object BiCodecs {
     )
 
     /**
-     * 指定された[instance]を常に返す[BiCodec]を返します。
+     * 指定した[instance]を常に返す[BiCodec]を返します。
      */
     @JvmStatic
     fun <B : ByteBuf, V : Any> unit(instance: V): BiCodec<B, V> = BiCodec.of(Codec.unit(instance), StreamCodec.unit(instance))

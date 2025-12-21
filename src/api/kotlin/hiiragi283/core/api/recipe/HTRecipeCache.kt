@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level
  */
 fun interface HTRecipeCache<INPUT : RecipeInput, RECIPE : Any> {
     /**
-     * 指定された[input], [level]から最初に一致するレシピを返します。
+     * 指定した[input], [level]から最初に一致するレシピを返します。
      * @param input レシピの入力
      * @param level レシピを取得するレベル
      * @return 見つからなかった場合は`null`

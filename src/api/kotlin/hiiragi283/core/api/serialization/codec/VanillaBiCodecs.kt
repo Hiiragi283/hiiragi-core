@@ -91,7 +91,7 @@ object VanillaBiCodecs {
     // Registry
 
     /**
-     * 指定された[registryKey]から[ResourceKey]の[BiCodec]を返します。
+     * 指定した[registryKey]から[ResourceKey]の[BiCodec]を返します。
      * @param T レジストリの要素のクラス
      */
     @JvmStatic
@@ -99,7 +99,7 @@ object VanillaBiCodecs {
         BiCodec.of(ResourceKey.codec(registryKey), ResourceKey.streamCodec(registryKey))
 
     /**
-     * 指定された[registryKey]から[TagKey]の[BiCodec]を返します。
+     * 指定した[registryKey]から[TagKey]の[BiCodec]を返します。
      * @param T レジストリの要素のクラス
      */
     @JvmStatic
@@ -112,7 +112,7 @@ object VanillaBiCodecs {
     )
 
     /**
-     * 指定された[registryKey]から[Holder]の[BiCodec]を返します。
+     * 指定した[registryKey]から[Holder]の[BiCodec]を返します。
      * @param T レジストリの要素のクラス
      */
     @JvmStatic
@@ -120,7 +120,7 @@ object VanillaBiCodecs {
         BiCodec.of(RegistryFixedCodec.create(registryKey), ByteBufCodecs.holderRegistry(registryKey))
 
     /**
-     * 指定された[registryKey]から[HolderSet]の[BiCodec]を返します。
+     * 指定した[registryKey]から[HolderSet]の[BiCodec]を返します。
      * @param T レジストリの要素のクラス
      */
     @JvmStatic

@@ -4,8 +4,8 @@ import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.monad.unwrapEither
 import hiiragi283.core.api.registry.HTHolderCollection
-import hiiragi283.core.api.tuple.unwrapEither
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
