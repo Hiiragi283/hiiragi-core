@@ -4,6 +4,5 @@
   "ingredient": "minecraft:kelp",
   "result": {
     "id": "minecraft:dried_kelp"
-  },
-  "time": 200
+  }
 }

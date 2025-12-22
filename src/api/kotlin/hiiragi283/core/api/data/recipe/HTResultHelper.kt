@@ -40,6 +40,14 @@ object HTResultHelper {
         prefix: HTPrefixLike,
         material: HTMaterialLike,
         count: Int = 1,
+        item: ItemLike? = null,
+    ): HTItemResult = item(prefix, material, count, item?.toHolderLike()?.getHolder())
+
+    @JvmStatic
+    fun item(
+        prefix: HTPrefixLike,
+        material: HTMaterialLike,
+        count: Int = 1,
         holder: Holder<Item>? = null,
     ): HTItemResult = item(prefix.itemTagKey(material), count, holder)
 

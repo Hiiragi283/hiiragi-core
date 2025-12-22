@@ -4,6 +4,5 @@
   "ingredient": "minecraft:magma_block",
   "result": {
     "id": "hiiragi_core:magma_shard"
-  },
-  "time": 200
+  }
 }

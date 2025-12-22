@@ -81,6 +81,7 @@ data object HTConst {
 
     const val CRUSHING = "crushing"
     const val DRYING = "drying"
+    const val EXPLODING = "exploding"
 
     const val GROUP = "group"
     const val TIME = "time"

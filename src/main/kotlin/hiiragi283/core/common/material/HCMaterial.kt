@@ -19,24 +19,19 @@ sealed interface HCMaterial :
     HTLangName {
     companion object {
         @JvmStatic
-        val entries: Sequence<HCMaterial> by lazy {
-            sequence {
-                yieldAll(Fuels.entries)
-                yieldAll(Minerals.entries)
-                yieldAll(Gems.entries)
-                yieldAll(Pearls.entries)
-                yieldAll(Metals.entries)
-                yieldAll(Alloys.entries)
-                yieldAll(Plates.entries)
+        val entries: Set<HCMaterial> get() = buildSet {
+            addAll(Fuels.entries)
+            addAll(Minerals.entries)
+            addAll(Gems.entries)
+            addAll(Pearls.entries)
+            addAll(Metals.entries)
+            addAll(Alloys.entries)
+            addAll(Plates.entries)
 
-                yield(Wood)
-                yield(Stone)
-                yield(Obsidian)
-            }
+            add(Wood)
+            add(Stone)
+            add(Obsidian)
         }
-
-        @JvmStatic
-        fun getPrefixedEntries(): Sequence<Pair<HTMaterialPrefix, HCMaterial>> = entries.map { it.basePrefix to it }
 
         private val dustSet: Set<HTMaterialPrefix> = setOf(HCMaterialPrefixes.DUST, HCMaterialPrefixes.TINY_DUST)
     }

@@ -8,13 +8,13 @@ import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
 import org.apache.commons.lang3.math.Fraction
 
-class HTCrushingRecipe(
+class HTExplodingRecipe(
     ingredient: HTItemIngredient,
     result: HTItemResult,
     time: Int,
     exp: Fraction,
 ) : HTSingleItemRecipe(ingredient, result, time, exp) {
-    override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.CRUSHING
+    override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.EXPLODING
 
-    override fun getType(): RecipeType<*> = HCRecipeTypes.CRUSHING.get()
+    override fun getType(): RecipeType<*> = HCRecipeTypes.EXPLODING.get()
 }

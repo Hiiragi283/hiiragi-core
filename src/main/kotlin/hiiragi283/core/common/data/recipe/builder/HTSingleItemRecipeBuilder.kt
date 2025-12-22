@@ -7,6 +7,7 @@ import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.common.recipe.HTCrushingRecipe
 import hiiragi283.core.common.recipe.HTDryingRecipe
+import hiiragi283.core.common.recipe.HTExplodingRecipe
 import hiiragi283.core.common.recipe.HTSingleItemRecipe
 import net.minecraft.resources.ResourceLocation
 import org.apache.commons.lang3.math.Fraction
@@ -26,15 +27,14 @@ class HTSingleItemRecipeBuilder(
         @JvmStatic
         fun drying(ingredient: HTItemIngredient, result: HTItemResult): HTSingleItemRecipeBuilder =
             HTSingleItemRecipeBuilder(HTConst.DRYING, ::HTDryingRecipe, ingredient, result)
+
+        @JvmStatic
+        fun exploding(ingredient: HTItemIngredient, result: HTItemResult): HTSingleItemRecipeBuilder =
+            HTSingleItemRecipeBuilder(HTConst.EXPLODING, ::HTExplodingRecipe, ingredient, result)
     }
 
-    private var group: String? = null
     private var time: Int = 20 * 10
     private var exp: Fraction = Fraction.ZERO
-
-    fun setGroup(group: String?): HTSingleItemRecipeBuilder = apply {
-        this.group = group
-    }
 
     fun setTime(time: Int): HTSingleItemRecipeBuilder = apply {
         this.time = max(0, time)
@@ -48,11 +48,10 @@ class HTSingleItemRecipeBuilder(
 
     override fun getPrimalId(): ResourceLocation = result.getId()
 
-    override fun createRecipe(): HTSingleItemRecipe = factory.create(group ?: "", ingredient, result, time, exp)
+    override fun createRecipe(): HTSingleItemRecipe = factory.create(ingredient, result, time, exp)
 
     fun interface Factory<RECIPE : HTSingleItemRecipe> {
         fun create(
-            group: String,
             ingredient: HTItemIngredient,
             result: HTItemResult,
             time: Int,

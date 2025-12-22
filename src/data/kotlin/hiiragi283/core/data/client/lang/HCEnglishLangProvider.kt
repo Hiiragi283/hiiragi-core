@@ -30,8 +30,6 @@ class HCEnglishLangProvider(output: PackOutput) : HTLangProvider.English(output,
         addFluid(HCFluids.ELDRITCH_FLUX, "Eldritch Flux")
 
         // Item
-        add(HCItems.COAL_CHIP, "Coal Chip")
-        add(HCItems.COAL_CHUNK, "Coal Chunk")
         add(HCItems.COMPRESSED_SAWDUST, "Compressed Sawdust")
         add(HCItems.SYNTHETIC_LEATHER, "Synthetic Leather")
         add(HCItems.TAR, "Tar")
@@ -49,5 +47,6 @@ class HCEnglishLangProvider(output: PackOutput) : HTLangProvider.English(output,
         // EMI
         add(HCEmiRecipeCategories.CRUSHING, "Crushing")
         add(HCEmiRecipeCategories.DRYING, "Drying")
+        add(HCEmiRecipeCategories.EXPLODING, "Exploding")
     }
 }

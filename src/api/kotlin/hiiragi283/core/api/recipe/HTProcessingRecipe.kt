@@ -19,12 +19,12 @@ abstract class HTProcessingRecipe(val time: Int, val exp: Fraction) : HTRecipe {
          * 処理時間の[MapBiCodec]
          */
         @JvmField
-        val TIME_CODEC: MapBiCodec<ByteBuf, Int> = BiCodecs.NON_NEGATIVE_INT.fieldOf(HTConst.TIME)
+        val TIME_CODEC: MapBiCodec<ByteBuf, Int> = BiCodecs.NON_NEGATIVE_INT.optionalFieldOf(HTConst.TIME, 200)
 
         /**
          * 経験値量の[MapBiCodec]
          */
         @JvmField
-        val EXP_CODEC: MapBiCodec<ByteBuf, Fraction> = BiCodecs.NON_NEGATIVE_FRACTION.fieldOf(HTConst.EXP)
+        val EXP_CODEC: MapBiCodec<ByteBuf, Fraction> = BiCodecs.NON_NEGATIVE_FRACTION.optionalFieldOf(HTConst.EXP, Fraction.ZERO)
     }
 }

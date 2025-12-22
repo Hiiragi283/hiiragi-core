@@ -152,7 +152,8 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
 
     @JvmStatic
     private fun baseToBlock() {
-        for ((basePrefix: HTMaterialPrefix, material: HCMaterial) in HCMaterial.getPrefixedEntries()) {
+        for (material: HCMaterial in HCMaterial.entries) {
+            val basePrefix: HTMaterialPrefix = material.basePrefix
             val block: ItemLike = HCBlocks.MATERIALS[HCMaterialPrefixes.STORAGE_BLOCK, material] ?: continue
             val base: ItemLike = getItem(basePrefix, material) ?: continue
             // Shapeless
@@ -172,7 +173,8 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
 
     @JvmStatic
     private fun prefixToBase(prefix: HTPrefixLike, exp: Float) {
-        for ((basePrefix: HTMaterialPrefix, material: HCMaterial) in HCMaterial.getPrefixedEntries()) {
+        for (material: HCMaterial in HCMaterial.entries) {
+            val basePrefix: HTMaterialPrefix = material.basePrefix
             if (material is HCMaterial.Fuels || material.basePrefix == HCMaterialPrefixes.DUST) continue
             val prefixMap: Map<HTMaterialPrefix, HTItemHolderLike<*>> = getPrefixMap(material)
 

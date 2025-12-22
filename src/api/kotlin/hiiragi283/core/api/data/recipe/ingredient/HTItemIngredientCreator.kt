@@ -32,6 +32,8 @@ interface HTItemIngredientCreator : HTIngredientCreator<Item, HTItemIngredient> 
     fun fromTagKey(prefix: HTPrefixLike, material: HTMaterialLike, count: Int = 1): HTItemIngredient =
         fromTagKey(prefix.itemTagKey(material), count)
 
-    fun multiPrefixes(material: HTMaterialLike, vararg prefix: HTPrefixLike, count: Int = 1): HTItemIngredient =
-        fromTagKeys(prefix.map { it.itemTagKey(material) }, count)
+    fun fromTagKeys(prefixes: Iterable<HTPrefixLike>, materials: Iterable<HTMaterialLike>, count: Int = 1): HTItemIngredient = fromTagKeys(
+        prefixes.flatMap { prefix: HTPrefixLike -> materials.map(prefix::itemTagKey) },
+        count,
+    )
 }

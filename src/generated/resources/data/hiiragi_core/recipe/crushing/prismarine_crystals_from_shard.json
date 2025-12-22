@@ -4,6 +4,5 @@
   "ingredient": "minecraft:prismarine_shard",
   "result": {
     "id": "minecraft:prismarine_crystals"
-  },
-  "time": 200
+  }
 }

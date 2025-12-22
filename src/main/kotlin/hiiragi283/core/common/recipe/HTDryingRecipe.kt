@@ -9,12 +9,11 @@ import net.minecraft.world.item.crafting.RecipeType
 import org.apache.commons.lang3.math.Fraction
 
 class HTDryingRecipe(
-    group: String,
     ingredient: HTItemIngredient,
     result: HTItemResult,
     time: Int,
     exp: Fraction,
-) : HTSingleItemRecipe(group, ingredient, result, time, exp) {
+) : HTSingleItemRecipe(ingredient, result, time, exp) {
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.DRYING
 
     override fun getType(): RecipeType<*> = HCRecipeTypes.DRYING.get()

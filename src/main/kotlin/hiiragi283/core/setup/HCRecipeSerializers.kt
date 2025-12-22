@@ -4,6 +4,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.recipe.HTCrushingRecipe
 import hiiragi283.core.common.recipe.HTDryingRecipe
+import hiiragi283.core.common.recipe.HTExplodingRecipe
 import hiiragi283.core.common.recipe.HTSingleItemRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
 import net.minecraft.world.item.crafting.RecipeSerializer
@@ -22,5 +23,11 @@ object HCRecipeSerializers {
     val DRYING: RecipeSerializer<HTDryingRecipe> = REGISTER.registerSerializer(
         HTConst.DRYING,
         HTSingleItemRecipe.codec(::HTDryingRecipe),
+    )
+
+    @JvmField
+    val EXPLODING: RecipeSerializer<HTExplodingRecipe> = REGISTER.registerSerializer(
+        HTConst.EXPLODING,
+        HTSingleItemRecipe.codec(::HTExplodingRecipe),
     )
 }

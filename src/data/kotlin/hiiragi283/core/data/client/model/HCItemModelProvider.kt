@@ -12,7 +12,6 @@ import hiiragi283.core.api.registry.HTSimpleFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.material.HCMaterialPrefixes
-import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.resources.ResourceLocation
@@ -25,7 +24,7 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(conte
             addAll(HCItems.REGISTER.asSequence())
 
             removeAll(HCItems.MATERIALS.values)
-        }.forEach { item: HTDeferredItem<*> -> existTexture(item, ::basicItem) }
+        }.forEach { item: HTIdLike -> existTexture(item, ::basicItem) }
 
         registerMaterials()
         registerBuckets()

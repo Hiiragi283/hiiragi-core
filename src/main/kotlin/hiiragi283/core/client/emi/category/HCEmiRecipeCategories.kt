@@ -5,6 +5,7 @@ import hiiragi283.core.common.item.HTHammerItem
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
+import net.minecraft.world.item.Items
 
 object HCEmiRecipeCategories {
     @JvmField
@@ -12,4 +13,7 @@ object HCEmiRecipeCategories {
 
     @JvmField
     val DRYING = HCEmiRecipeCategory(HTConst.DRYING, HCBlocks.DRYING_LACK)
+
+    @JvmField
+    val EXPLODING = HCEmiRecipeCategory(HTConst.EXPLODING, Items.TNT)
 }

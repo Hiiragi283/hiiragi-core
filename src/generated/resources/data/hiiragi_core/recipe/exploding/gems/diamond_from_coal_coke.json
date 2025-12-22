@@ -1,0 +1,15 @@
+{
+  "type": "hiiragi_core:exploding",
+  "exp": "1/2",
+  "ingredient": {
+    "amount": 32,
+    "items": [
+      "#c:dusts/coal_coke",
+      "#c:fuels/coal_coke"
+    ]
+  },
+  "result": {
+    "id": "minecraft:diamond",
+    "tag": "c:gems/diamond"
+  }
+}

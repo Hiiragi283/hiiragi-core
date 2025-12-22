@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:exploding",
+  "exp": "1/2",
+  "ingredient": {
+    "amount": 3,
+    "items": "#c:gunpowders"
+  },
+  "result": {
+    "id": "minecraft:blaze_powder"
+  }
+}

@@ -30,8 +30,6 @@ class HCJapaneseLangProvider(output: PackOutput) : HTLangProvider.Japanese(outpu
         addFluid(HCFluids.ELDRITCH_FLUX, "異質な流動体")
 
         // Item
-        add(HCItems.COAL_CHIP, "石炭チップ")
-        add(HCItems.COAL_CHUNK, "石炭塊")
         add(HCItems.COMPRESSED_SAWDUST, "圧縮されたおがくず")
         add(HCItems.SYNTHETIC_LEATHER, "合成牛皮")
         add(HCItems.TAR, "タール")
@@ -49,5 +47,6 @@ class HCJapaneseLangProvider(output: PackOutput) : HTLangProvider.Japanese(outpu
         // EMI
         add(HCEmiRecipeCategories.CRUSHING, "粉砕")
         add(HCEmiRecipeCategories.DRYING, "乾燥")
+        add(HCEmiRecipeCategories.EXPLODING, "爆破")
     }
 }
