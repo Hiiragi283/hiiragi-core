@@ -1,0 +1,8 @@
+{
+  "type": "hiiragi_core:charging",
+  "energy": 1000000,
+  "ingredient": "#c:pearls/ender",
+  "result": {
+    "id": "minecraft:ender_eye"
+  }
+}

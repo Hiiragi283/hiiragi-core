@@ -76,16 +76,18 @@ data object HTConst {
     const val COMPONENTS = "components"
 
     const val PREVENT_ITEM_MAGNET = "PreventRemoteMovement"
+    const val PREVENT_LIGHTNING_STRIKE = "PreventLightningStrike"
 
     //    Recipes    //
 
+    const val CHARGING = "charging"
     const val CRUSHING = "crushing"
     const val DRYING = "drying"
     const val EXPLODING = "exploding"
 
-    const val GROUP = "group"
-    const val TIME = "time"
+    const val ENERGY = "energy"
     const val EXP = "exp"
+    const val TIME = "time"
 
     const val INGREDIENT = "ingredient"
 

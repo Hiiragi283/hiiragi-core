@@ -5,6 +5,7 @@ import hiiragi283.core.api.recipe.HTProcessingRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.input.HTRecipeInput
 import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.serialization.codec.HTRecipeBiCodecs
 import hiiragi283.core.api.serialization.codec.MapBiCodec
 import hiiragi283.core.api.stack.ImmutableItemStack
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
@@ -26,8 +27,8 @@ abstract class HTSingleItemRecipe(
         ): MapBiCodec<RegistryFriendlyByteBuf, RECIPE> = MapBiCodec.composite(
             HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTSingleItemRecipe::ingredient),
             HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HTSingleItemRecipe::result),
-            TIME_CODEC.forGetter(HTSingleItemRecipe::time),
-            EXP_CODEC.forGetter(HTSingleItemRecipe::exp),
+            HTRecipeBiCodecs.TIME.forGetter(HTSingleItemRecipe::time),
+            HTRecipeBiCodecs.EXP.forGetter(HTSingleItemRecipe::exp),
             factory::create,
         )
     }

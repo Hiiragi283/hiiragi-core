@@ -1,4 +1,4 @@
-package hiiragi283.core.client.emi
+package hiiragi283.core.api.integration.emi
 
 import dev.emi.emi.api.render.EmiTexture
 import dev.emi.emi.api.stack.EmiIngredient

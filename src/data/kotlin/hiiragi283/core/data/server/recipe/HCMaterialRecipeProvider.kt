@@ -138,7 +138,7 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             .addIngredient(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Plates.RUBBER)
             .addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Minerals.SULFUR)
             .addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Fuels.COAL, HCMaterial.Fuels.CHARCOAL)
-            .addIngredient(HCItems.MAGMA_SHARD)
+            .addIngredient(Items.FIRE_CHARGE)
             .savePrefixed(output, "black_")
         // Eldritch
         HTShapelessRecipeBuilder

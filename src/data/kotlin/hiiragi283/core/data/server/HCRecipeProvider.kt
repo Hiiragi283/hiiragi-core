@@ -3,6 +3,7 @@ package hiiragi283.core.data.server
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.recipe.HTRecipeProvider
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
+import hiiragi283.core.data.server.recipe.HCChargingRecipeProvider
 import hiiragi283.core.data.server.recipe.HCCrushingRecipeProvider
 import hiiragi283.core.data.server.recipe.HCDryingRecipeProvider
 import hiiragi283.core.data.server.recipe.HCExplodingRecipeProvider
@@ -15,6 +16,7 @@ class HCRecipeProvider(context: HTDataGenContext) : HTRecipeProvider(context) {
         consumer.accept(HCMaterialRecipeProvider)
         consumer.accept(HCToolRecipeProvider)
 
+        consumer.accept(HCChargingRecipeProvider)
         consumer.accept(HCCrushingRecipeProvider)
         consumer.accept(HCDryingRecipeProvider)
         consumer.accept(HCExplodingRecipeProvider)

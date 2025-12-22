@@ -40,9 +40,11 @@ enum class HTCommonTranslation(type: String, vararg path: String) : HTTranslatio
     STORED("gui", "stored"),
     STORED_MB("gui", "stored", "mb"),
     STORED_FE("gui", "stored", "fe"),
+    STORED_EXP("gui", "stored", "exp"),
 
     FRACTION("gui", "fraction"),
     TICK("gui", "tick"),
+    SECONDS("gui", "seconds"),
 
     // Item Description
     TOOLTIP_BLOCK_POS("tooltip", "block_pos"),

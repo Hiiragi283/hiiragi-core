@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:charging",
+  "energy": 1000000,
+  "exp": 10,
+  "ingredient": "hiiragi_core:elder_heart",
+  "result": {
+    "id": "minecraft:heart_of_the_sea"
+  }
+}

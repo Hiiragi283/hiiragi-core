@@ -3,6 +3,7 @@ package hiiragi283.core.setup
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.recipe.input.HTRecipeInput
+import hiiragi283.core.common.recipe.HTChargingRecipe
 import hiiragi283.core.common.recipe.HTCrushingRecipe
 import hiiragi283.core.common.recipe.HTDryingRecipe
 import hiiragi283.core.common.recipe.HTExplodingRecipe
@@ -12,6 +13,9 @@ import hiiragi283.core.common.registry.register.HTDeferredRecipeTypeRegister
 object HCRecipeTypes {
     @JvmField
     val REGISTER = HTDeferredRecipeTypeRegister(HiiragiCoreAPI.MOD_ID)
+
+    @JvmField
+    val CHARGING: HTDeferredRecipeType<HTRecipeInput, HTChargingRecipe> = REGISTER.registerType(HTConst.CHARGING)
 
     @JvmField
     val CRUSHING: HTDeferredRecipeType<HTRecipeInput, HTCrushingRecipe> = REGISTER.registerType(HTConst.CRUSHING)

@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:charging",
+  "energy": 1000000,
+  "ingredient": "#c:dusts/redstone",
+  "result": {
+    "id": "minecraft:glowstone_dust",
+    "tag": "c:dusts/glowstone"
+  }
+}
