@@ -22,7 +22,6 @@ import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
 import hiiragi283.core.api.storage.item.HTItemHandler
 import hiiragi283.core.api.storage.item.HTItemSlot
-import hiiragi283.core.common.block.HTBlockWithEntity
 import hiiragi283.core.common.inventory.HTMenuCallback
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import hiiragi283.core.common.storage.HTCapabilityCodec
@@ -34,7 +33,6 @@ import hiiragi283.core.common.storage.resolver.HTFluidHandlerManager
 import hiiragi283.core.common.storage.resolver.HTItemHandlerManager
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
-import net.minecraft.core.Holder
 import net.minecraft.core.UUIDUtil
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponentType
@@ -45,7 +43,6 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.Nameable
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.Level
-import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.energy.IEnergyStorage
 import net.neoforged.neoforge.fluids.capability.IFluidHandler
@@ -56,9 +53,9 @@ import java.util.UUID
  * キャパビリティやオーナーを保持する[HTExtendedBlockEntity]の拡張クラス
  * @see mekanism.common.tile.base.TileEntityMekanism
  */
-abstract class HTBlockEntity(val blockHolder: Holder<Block>, pos: BlockPos, state: BlockState) :
+abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, state: BlockState) :
     HTExtendedBlockEntity(
-        getBlockEntityType(blockHolder),
+        type,
         pos,
         state,
     ),
@@ -103,10 +100,6 @@ abstract class HTBlockEntity(val blockHolder: Holder<Block>, pos: BlockPos, stat
                 blockEntity.sendUpdatePacket(serverLevel)
             }
         }
-
-        @JvmStatic
-        fun getBlockEntityType(blockHolder: Holder<Block>): HTDeferredBlockEntityType<*> =
-            (blockHolder.value() as HTBlockWithEntity).getBlockEntityType()
     }
 
     var ticks: Int = 0

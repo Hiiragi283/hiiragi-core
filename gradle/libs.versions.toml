@@ -12,6 +12,9 @@ dokka = "2.1.0"
 kff-version = "5.10.0"
 ktlint = "14.0.1"
 
+axion-release = "1.21.1"
+maven-publish = "0.35.0"
+
 almost = "1.21.1-1.3.0"
 emi = "1.1.22+1.21.1"
 jade = "15.10.3+neoforge"
@@ -34,7 +37,7 @@ mi = { group = "aztech", name = "Modern-Industrialization", version.ref = "mi" }
 arch = { group = "dev.architectury", name = "architectury-neoforge", version.ref = "arch" }
 guide = { group = "org.appliedenergistics", name = "guideme", version.ref = "guide" }
 
-kpan = { group = "net.k-pan", name = "ssdeep4j", version = "1.0.0" }
+maven-gpg-plugin = { group = "org.apache.maven.plugins", name = "maven-gpg-plugin", version = "3.2.4" }
 
 [bundles]
 
@@ -46,11 +49,11 @@ mods-impl = [
     "arch",
     "guide",
     "mi",
+    # maven
+    "maven-gpg-plugin",
 ]
 
-mods-transitive = [
-    "kpan"
-]
+mods-transitive = []
 
 mods-compile = []
 
@@ -63,3 +66,6 @@ neo-moddev = { id = "net.neoforged.moddev", version.ref = "neo-moddev" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 dokka-javadoc = { id = "org.jetbrains.dokka-javadoc", version.ref = "dokka" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+
+axion-release = { id = "pl.allegro.tech.build.axion-release", version.ref = "axion-release" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }

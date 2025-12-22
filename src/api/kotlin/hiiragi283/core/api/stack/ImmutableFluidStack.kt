@@ -41,7 +41,7 @@ value class ImmutableFluidStack private constructor(private val stack: FluidStac
 
         /**
          * 指定した[液体][Fluid]と[量][amount]を[ImmutableFluidStack]に変換します。
-         * @throws [FluidStack.isEmpty]が`true`の場合
+         * @throws IllegalStateException [FluidStack.isEmpty]が`true`の場合
          */
         @JvmStatic
         fun of(fluid: Fluid, amount: Int): ImmutableFluidStack = FluidStack(fluid, amount).toImmutableOrThrow()

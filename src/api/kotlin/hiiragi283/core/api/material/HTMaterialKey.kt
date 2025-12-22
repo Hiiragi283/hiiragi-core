@@ -21,7 +21,7 @@ value class HTMaterialKey private constructor(val name: String) : HTMaterialLike
         /**
          * 指定した[name]から[HTMaterialKey]のインスタンスを返します。
          * @return キャッシュから取得した[HTMaterialKey]のインスタンス
-         * @throws [name]が[IDに適切な文字列でない][ResourceLocation.isValidPath]場合
+         * @throws IllegalStateException [name]が[IDに適切な文字列でない][ResourceLocation.isValidPath]場合
          */
         @JvmStatic
         fun of(name: String): HTMaterialKey {

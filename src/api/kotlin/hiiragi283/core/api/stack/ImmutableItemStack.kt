@@ -50,7 +50,7 @@ value class ImmutableItemStack private constructor(private val stack: ItemStack)
 
         /**
          * 指定した[アイテム][item]と[個数][count]を[ImmutableItemStack]に変換します。
-         * @throws [ItemStack.isEmpty]が`true`の場合
+         * @throws IllegalStateException [ItemStack.isEmpty]が`true`の場合
          */
         @JvmStatic
         fun of(item: ItemLike, count: Int = 1): ImmutableItemStack = ItemStack(item, count).toImmutableOrThrow()

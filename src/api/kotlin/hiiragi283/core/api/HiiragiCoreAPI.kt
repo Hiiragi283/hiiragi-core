@@ -41,8 +41,8 @@ data object HiiragiCoreAPI {
     //    Server    //
 
     /**
-     * 稼働中の[MinecraftServer]を取得します。
-     * @return 稼働中の[MinecraftServer]がない場合は`null`
+     * 現在の[サーバー][MinecraftServer]を取得します。
+     * @return サーバーがない場合は`null`
      * @author Hiiragi Tsubasa
      * @since 0.1.0
      */
@@ -50,8 +50,8 @@ data object HiiragiCoreAPI {
     fun getActiveServer(): MinecraftServer? = ServerLifecycleHooks.getCurrentServer()
 
     /**
-     * 稼働中の[RegistryAccess]を取得します。
-     * @return 稼働中の[RegistryAccess]がない場合は`null`
+     * 現在の[レジストリへのアクセス][RegistryAccess]を取得します。
+     * @return レジストリへのアクセスがない場合は`null`
      * @author Hiiragi Tsubasa
      * @since 0.1.0
      */

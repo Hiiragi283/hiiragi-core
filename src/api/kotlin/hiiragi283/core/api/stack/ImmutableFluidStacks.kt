@@ -16,7 +16,7 @@ fun FluidStack.toImmutable(): ImmutableFluidStack? = ImmutableFluidStack.of(this
 
 /**
  * この[スタック][this]を[ImmutableFluidStack]に変換します。
- * @throws [FluidStack.isEmpty]が`true`の場合
+ * @throws IllegalStateException [FluidStack.isEmpty]が`true`の場合
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */

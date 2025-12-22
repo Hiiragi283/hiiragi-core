@@ -12,7 +12,7 @@ fun ItemStack.toImmutable(): ImmutableItemStack? = ImmutableItemStack.of(this)
 
 /**
  * この[スタック][this]を[ImmutableItemStack]に変換します。
- * @throws [ItemStack.isEmpty]が`true`の場合
+ * @throws IllegalStateException [ItemStack.isEmpty]が`true`の場合
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */

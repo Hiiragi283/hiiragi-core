@@ -1,7 +1,6 @@
 package hiiragi283.core.data.client.model
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.model.HTBlockStateProvider
 import hiiragi283.core.api.material.HTMaterialKey

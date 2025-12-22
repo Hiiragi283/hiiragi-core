@@ -2,6 +2,10 @@ package hiiragi283.core.api.data.texture
 
 import java.awt.Color
 
+/**
+ * カラーパレットを表すクラスです。
+ * @param colors 色の配列
+ */
 @JvmInline
 value class HTColorPalette(val colors: Array<Color>) : Collection<Color> {
     operator fun get(index: Int): Color = colors[index]

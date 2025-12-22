@@ -14,7 +14,7 @@ object VanillaMaterialItems {
     @JvmStatic
     val MATERIALS: HTMaterialTable<HTMaterialPrefix, HTItemHolderLike<*>> = buildTable {
         fun add(prefix: HTPrefixLike, material: HTMaterialLike, item: ItemLike) {
-            put(prefix.asMaterialPrefix(), material.asMaterialKey(), item.toHolderLike())
+            this.add(prefix.asMaterialPrefix(), material.asMaterialKey(), item.toHolderLike())
         }
 
         // Fuel

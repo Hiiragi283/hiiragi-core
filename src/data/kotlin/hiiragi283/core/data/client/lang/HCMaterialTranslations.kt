@@ -61,12 +61,16 @@ object HCMaterialTranslations {
             enName: String,
             jaName: String,
         ) {
-            this[prefix.asMaterialPrefix(), material.asMaterialKey()] = HTLangName { type ->
-                when (type) {
-                    HTLanguageType.EN_US -> enName
-                    HTLanguageType.JA_JP -> jaName
-                }
-            }
+            this.add(
+                prefix.asMaterialPrefix(),
+                material.asMaterialKey(),
+                HTLangName { type: HTLanguageType ->
+                    when (type) {
+                        HTLanguageType.EN_US -> enName
+                        HTLanguageType.JA_JP -> jaName
+                    }
+                },
+            )
         }
 
         register(HCMaterialPrefixes.DUST, HCMaterial.Wood, "Sawdust", "おがくず")

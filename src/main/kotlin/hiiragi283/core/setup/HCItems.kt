@@ -28,7 +28,7 @@ object HCItems {
     val MATERIALS: HTMaterialTable<HTMaterialPrefix, HTSimpleDeferredItem> = buildTable {
         for (material: HCMaterial in HCMaterial.entries) {
             for (prefix: HTMaterialPrefix in material.getItemPrefixesToGenerate()) {
-                this.put(
+                add(
                     prefix.asMaterialPrefix(),
                     material.asMaterialKey(),
                     REGISTER.registerSimpleItem(material.createPath(prefix)),
@@ -68,7 +68,7 @@ object HCItems {
     @JvmStatic
     val TOOLS: HTMaterialTable<HTToolType<*>, HTDeferredItem<*>> = buildTable {
         fun register(toolType: HTToolType<*>, material: HTEquipmentMaterial) {
-            this.put(toolType, material.asMaterialKey(), toolType.createItem(REGISTER, material))
+            add(toolType, material.asMaterialKey(), toolType.createItem(REGISTER, material))
         }
     }.let(::HTMaterialTable)
 }

@@ -54,7 +54,7 @@ value class HTHolderOrTagKey<T : Any> private constructor(private val entry: Ior
 
     /**
      * 指定した[レジストリ][provider]から[Holder]を取得します。
-     * @return [TagKey]に一致する[Holder]が見つからない場合はエラー
+     * @return [TagKey]に一致する[Holder]がない場合はエラー
      */
     fun getHolder(provider: HolderLookup.Provider?): HTTextResult<Holder<T>> {
         val provider1: HolderLookup.Provider = (provider ?: HiiragiCoreAPI.getActiveAccess())
