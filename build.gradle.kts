@@ -5,6 +5,7 @@ import org.slf4j.event.Level
 
 plugins {
     idea
+    id("signing")
     kotlin("jvm") version "2.2.20"
     alias(libs.plugins.neo.moddev)
 
@@ -286,6 +287,7 @@ pluginManager.withPlugin("com.vanniktech.maven.publish") {
         pom {
             name = "Hiiragi-Core"
             description = "Library mod for Hiiragi Series"
+            inceptionYear = "2025"
             url = "https://github.com/Hiiragi283/hiiragi-core"
             scm {
                 connection = "scm:git:git://github.com/Hiiragi283/hiiragi-core.git"

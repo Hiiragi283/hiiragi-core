@@ -37,8 +37,6 @@ mi = { group = "aztech", name = "Modern-Industrialization", version.ref = "mi" }
 arch = { group = "dev.architectury", name = "architectury-neoforge", version.ref = "arch" }
 guide = { group = "org.appliedenergistics", name = "guideme", version.ref = "guide" }
 
-maven-gpg-plugin = { group = "org.apache.maven.plugins", name = "maven-gpg-plugin", version = "3.2.4" }
-
 [bundles]
 
 mods-impl = [
@@ -49,8 +47,6 @@ mods-impl = [
     "arch",
     "guide",
     "mi",
-    # maven
-    "maven-gpg-plugin",
 ]
 
 mods-transitive = []
