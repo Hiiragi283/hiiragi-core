@@ -23,14 +23,14 @@ import java.util.Map;
 @Mixin(ReloadableServerResources.class)
 public abstract class ReloadableServerResourcesMixin {
     @Unique
-    private ReloadableServerResources ragium$self() {
+    private ReloadableServerResources hiiragiCore$self() {
         return (ReloadableServerResources) (Object) this;
     }
     
     @Inject(method = "updateRegistryTags()V", at = @At("TAIL"))
-    private void ragium$addRuntimeRecipes(CallbackInfo ci) {
-        RegistryAccess.Frozen registryAccess = ragium$self().fullRegistries().get();
-        RecipeManager recipes = ragium$self().getRecipeManager();
+    private void hiiragiCore$addRuntimeRecipes(CallbackInfo ci) {
+        RegistryAccess.Frozen registryAccess = hiiragiCore$self().fullRegistries().get();
+        RecipeManager recipes = hiiragiCore$self().getRecipeManager();
         RecipeManagerAccessor accessor = (RecipeManagerAccessor) recipes;
         
         Multimap<RecipeType<?>, RecipeHolder<?>> byType = HashMultimap.create(accessor.getByType());

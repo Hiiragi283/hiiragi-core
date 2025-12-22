@@ -75,8 +75,9 @@ data object HTConst {
     const val COUNT = "count"
     const val COMPONENTS = "components"
 
+    const val DRYING_TICKS = "DryingTicks"
+    const val COMPLETED_RECIPE = "CompletedRecipe"
     const val PREVENT_ITEM_MAGNET = "PreventRemoteMovement"
-    const val PREVENT_LIGHTNING_STRIKE = "PreventLightningStrike"
 
     //    Recipes    //
 

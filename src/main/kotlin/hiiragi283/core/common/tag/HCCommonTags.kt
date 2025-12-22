@@ -25,9 +25,6 @@ object HCCommonTags {
     //    Items    //
 
     object Items {
-        @JvmField
-        val TOOLS_HAMMER: TagKey<Item> = create("tools", "hammer")
-
         @JvmStatic
         private fun create(path: String): TagKey<Item> = Registries.ITEM.createCommonTag(path)
 

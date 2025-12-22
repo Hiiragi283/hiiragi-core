@@ -40,7 +40,7 @@ class HTAdvancementBuilder private constructor(private val parent: HTAdvancement
     var strategy: AdvancementRequirements.Strategy = AdvancementRequirements.Strategy.AND
 
     inline fun display(builderAction: HTDisplayInfoBuilder.() -> Unit): HTAdvancementBuilder = apply {
-        this.display = HTDisplayInfoBuilder.Companion.create(builderAction)
+        this.display = HTDisplayInfoBuilder.create(builderAction)
     }
 
     //    Criteria    //

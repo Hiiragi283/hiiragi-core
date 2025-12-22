@@ -6,10 +6,8 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
-import hiiragi283.core.common.block.HTDryingLackBlock
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
-import hiiragi283.core.common.registry.HTBasicDeferredBlock
 import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import hiiragi283.core.common.registry.register.HTDeferredBlockRegister
 import net.minecraft.world.level.block.Block
@@ -50,15 +48,6 @@ object HCBlocks {
             register(prefix, material, properties)
         }
     }.let(::HTMaterialTable)
-
-    //    Utilities    //
-
-    @JvmField
-    val DRYING_LACK: HTBasicDeferredBlock<HTDryingLackBlock> = REGISTER.registerSimple(
-        "drying_lack",
-        copyOf(Blocks.OAK_PLANKS),
-        ::HTDryingLackBlock,
-    )
 
     //    Extensions    //
 

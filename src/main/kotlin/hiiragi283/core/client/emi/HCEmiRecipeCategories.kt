@@ -4,10 +4,6 @@ import hiiragi283.core.api.integration.emi.HTEmiRecipeCategory
 import hiiragi283.core.api.math.HTBounds
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.text.HTHasText
-import hiiragi283.core.common.item.HTHammerItem
-import hiiragi283.core.common.material.HCMaterial
-import hiiragi283.core.setup.HCBlocks
-import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Items
@@ -19,7 +15,7 @@ object HCEmiRecipeCategories {
 
     @JvmStatic
     private fun create(hasText: HTHasText, id: ResourceLocation, vararg workStations: ItemLike): HTEmiRecipeCategory =
-        HTEmiRecipeCategory.Companion.create(MACHINE_BOUNDS, hasText, id, *workStations)
+        HTEmiRecipeCategory.create(MACHINE_BOUNDS, hasText, id, *workStations)
 
     @JvmStatic
     private fun <T> create(recipeType: T, vararg workStations: ItemLike): HTEmiRecipeCategory where T : HTHasText, T : HTIdLike =
@@ -29,10 +25,10 @@ object HCEmiRecipeCategories {
     val CHARGING: HTEmiRecipeCategory = create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD)
 
     @JvmField
-    val CRUSHING: HTEmiRecipeCategory = create(HCRecipeTypes.CRUSHING, HCItems.TOOLS[HTHammerItem.ToolType, HCMaterial.Metals.IRON]!!)
+    val CRUSHING: HTEmiRecipeCategory = create(HCRecipeTypes.CRUSHING, Items.ANVIL)
 
     @JvmField
-    val DRYING: HTEmiRecipeCategory = create(HCRecipeTypes.DRYING, HCBlocks.DRYING_LACK)
+    val DRYING: HTEmiRecipeCategory = create(HCRecipeTypes.DRYING, Items.MAGMA_BLOCK)
 
     @JvmField
     val EXPLODING: HTEmiRecipeCategory = create(HCRecipeTypes.EXPLODING, Items.TNT)

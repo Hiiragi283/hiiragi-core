@@ -3,7 +3,6 @@ package hiiragi283.core.data.client.lang
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.text.HTCommonTranslation
-import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
@@ -15,9 +14,6 @@ class HCEnglishLangProvider(output: PackOutput) :
     override fun addTranslations() {
         // Material
         HCMaterialTranslations.addTranslations(this)
-
-        // Block
-        add(HCBlocks.DRYING_LACK, "Drying Lack")
 
         // Fluid
         addFluid(HCFluids.HONEY, "Honey")

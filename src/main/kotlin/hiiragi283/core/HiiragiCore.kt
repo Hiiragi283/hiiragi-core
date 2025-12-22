@@ -2,7 +2,6 @@ package hiiragi283.core
 
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCCreativeTabs
 import hiiragi283.core.setup.HCFluids
@@ -32,7 +31,6 @@ class HiiragiCore(eventBus: IEventBus, container: ModContainer) {
         HCItems.register(eventBus)
         HCFluids.register(eventBus)
 
-        HCBlockEntityTypes.register(eventBus)
         HCCreativeTabs.REGISTER.register(eventBus)
         HCRecipeSerializers.REGISTER.register(eventBus)
         HCRecipeTypes.REGISTER.register(eventBus)

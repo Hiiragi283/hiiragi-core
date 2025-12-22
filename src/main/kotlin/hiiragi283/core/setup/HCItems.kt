@@ -2,14 +2,11 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.buildTable
-import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.item.HTEquipmentMaterial
 import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.common.item.HTCreativeItem
-import hiiragi283.core.common.item.HTHammerItem
 import hiiragi283.core.common.item.HTToolType
-import hiiragi283.core.common.item.VanillaEquipmentMaterial
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
@@ -73,8 +70,5 @@ object HCItems {
         fun register(toolType: HTToolType<*>, material: HTEquipmentMaterial) {
             this.put(toolType, material.asMaterialKey(), toolType.createItem(REGISTER, material))
         }
-
-        // Hammer
-        VanillaEquipmentMaterial.entries.forEach(::register.partially1(HTHammerItem.ToolType))
     }.let(::HTMaterialTable)
 }
