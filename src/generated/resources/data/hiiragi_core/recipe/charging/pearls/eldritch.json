@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:charging",
+  "energy": 1000000,
+  "ingredient": "minecraft:end_crystal",
+  "result": {
+    "id": "hiiragi_core:eldritch_pearl",
+    "tag": "c:pearls/eldritch"
+  }
+}

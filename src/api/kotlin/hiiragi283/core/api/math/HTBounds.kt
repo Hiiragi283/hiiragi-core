@@ -1,11 +1,13 @@
 package hiiragi283.core.api.math
 
 /**
- * 二次元平面上の範囲を表現するクラス
- * @param x x座標
- * @param y y座標
- * @param width x軸方向の範囲
- * @param height y軸方向の範囲
+ * 二次元平面上の範囲を表現するクラスです。
+ * @param x x軸方向の始点
+ * @param y y軸方向の始点
+ * @param width x軸方向の長さ
+ * @param height y軸方向の長さ
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see dev.emi.emi.api.widget.Bounds
  */
 @JvmRecord
@@ -16,6 +18,9 @@ data class HTBounds(
     val height: Int,
 ) {
     companion object {
+        /**
+         * 空の範囲を表す[HTBounds]のインスタンス
+         */
         @JvmField
         val EMPTY = HTBounds(0, 0, 0, 0)
 
@@ -54,7 +59,7 @@ data class HTBounds(
     val heightRange: IntRange get() = (top..<bottom)
 
     /**
-     * 指定した[x], [y]がこの範囲に含まれているかどうか判定します。
+     * 指定した[x], [y]がこの範囲に含まれているか判定します。
      */
     fun contains(x: Int, y: Int): Boolean = x in widthRange && y in heightRange
 }

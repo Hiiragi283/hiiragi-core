@@ -1,3 +1,4 @@
+import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import org.slf4j.event.Level
@@ -6,15 +7,38 @@ plugins {
     idea
     kotlin("jvm") version "2.2.20"
     alias(libs.plugins.neo.moddev)
+
+    alias(libs.plugins.dokka.asProvider())
+    alias(libs.plugins.dokka.javadoc)
     alias(libs.plugins.ktlint)
+
+    alias(libs.plugins.axion.release)
+    alias(libs.plugins.maven.publish)
 }
 
 val modId = "hiiragi_core"
 val modVersion: String = libs.versions.hiiragi.core
     .get()
 
-version = modVersion
-group = "hiiragi283.core"
+group = "io.github.hiiragi283"
+
+scmVersion {
+    useHighestVersion = true
+    tag {
+        prefix = "v"
+        versionSeparator = ""
+    }
+    versionCreator("simple")
+    repository {
+        pushTagsOnly = true
+    }
+    checks {
+        uncommittedChanges = false
+        aheadOfRemote = false
+    }
+}
+
+version = scmVersion.version
 base.archivesName = modId
 
 val apiModule: SourceSet = sourceSets.create("api")
@@ -255,18 +279,36 @@ sourceSets.main
 neoForge.ideSyncTask(generateModMetadata)
 
 // Example configuration to allow publishing using the maven-publish plugin
-/*publishing {
-    publications {
-        register("mavenJava", MavenPublication) {
-            from(components.java)
+pluginManager.withPlugin("com.vanniktech.maven.publish") {
+    extensions.configure<MavenPublishBaseExtension> {
+        publishToMavenCentral()
+        signAllPublications()
+        pom {
+            name = "Hiiragi-Core"
+            description = "Library mod for Hiiragi Series"
+            url = "https://github.com/Hiiragi283/hiiragi-core"
+            scm {
+                connection = "scm:git:git://github.com/Hiiragi283/hiiragi-core.git"
+                developerConnection = "scm:git:git://github.com/Hiiragi283/hiiragi-core.git"
+                url = "https://github.com/Hiiragi283/hiiragi-core"
+            }
+            licenses {
+                license {
+                    name = "MPL-2.0"
+                    url = "https://www.mozilla.org/en-US/MPL/2.0/"
+                }
+            }
+            developers {
+                developer {
+                    id = "hiiragi283"
+                    name = "Hiiragi Tsubasa"
+                    email = "silvengater@gmail.com"
+                    url = "https://github.com/Hiiragi283/"
+                }
+            }
         }
     }
-    repositories {
-        maven {
-            url("file://${project.projectDir}/repo")
-        }
-    }
-}*/
+}
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
 idea {
@@ -321,5 +363,13 @@ ktlint {
     filter {
         exclude("**/generated/**")
         include("**/kotlin/**")
+    }
+}
+
+dokka {
+    dokkaSourceSets {
+        configureEach {
+            sourceRoots.from(apiModule.kotlin.srcDirs)
+        }
     }
 }

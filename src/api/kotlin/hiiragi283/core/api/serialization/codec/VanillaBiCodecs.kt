@@ -23,8 +23,12 @@ import net.minecraft.world.item.DyeColor
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.crafting.Ingredient
 import net.neoforged.neoforge.fluids.FluidStack
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import java.util.UUID
 
+/**
+ * バニラのクラスに関連する[BiCodec]や[VanillaBiCodecs]を集めたクラスです。
+ */
 object VanillaBiCodecs {
     /**
      * [ResourceLocation]の[BiCodec]
@@ -57,7 +61,7 @@ object VanillaBiCodecs {
      * [InteractionHand]の[BiCodec]
      */
     @JvmField
-    val HAND: BiCodec<ByteBuf, InteractionHand> = BiCodecs.enum(InteractionHand::values)
+    val HAND: BiCodec<ByteBuf, InteractionHand> = BiCodecs.enum()
 
     /**
      * [PotionContents]の[BiCodec]
@@ -85,13 +89,25 @@ object VanillaBiCodecs {
     @JvmField
     val FLUID_STACK: BiCodec<RegistryFriendlyByteBuf, FluidStack> = BiCodec.of(FluidStack.OPTIONAL_CODEC, FluidStack.OPTIONAL_STREAM_CODEC)
 
+    /**
+     * [Ingredient]の[BiCodec]
+     */
     @JvmField
     val INGREDIENT: BiCodec<RegistryFriendlyByteBuf, Ingredient> = BiCodec.of(HTIngredientCodec.ITEM, Ingredient.CONTENTS_STREAM_CODEC)
+
+    /**
+     * [FluidIngredient]の[MapBiCodec]
+     */
+    @JvmField
+    val FLUID_INGREDIENT: MapBiCodec<RegistryFriendlyByteBuf, FluidIngredient> = MapBiCodec.of(
+        HTIngredientCodec.FLUID,
+        FluidIngredient.STREAM_CODEC,
+    )
 
     // Registry
 
     /**
-     * 指定された[registryKey]から[ResourceKey]の[BiCodec]を返します。
+     * 指定した[registryKey]から[ResourceKey]の[BiCodec]を返します。
      * @param T レジストリの要素のクラス
      */
     @JvmStatic
@@ -99,8 +115,9 @@ object VanillaBiCodecs {
         BiCodec.of(ResourceKey.codec(registryKey), ResourceKey.streamCodec(registryKey))
 
     /**
-     * 指定された[registryKey]から[TagKey]の[BiCodec]を返します。
+     * 指定した[registryKey]から[TagKey]の[BiCodec]を返します。
      * @param T レジストリの要素のクラス
+     * @param withHash 変換後の文字列の先頭に'#'をつけるかどうか
      */
     @JvmStatic
     fun <T : Any> tagKey(registryKey: RegistryKey<T>, withHash: Boolean): BiCodec<ByteBuf, TagKey<T>> = BiCodec.of(
@@ -112,7 +129,7 @@ object VanillaBiCodecs {
     )
 
     /**
-     * 指定された[registryKey]から[Holder]の[BiCodec]を返します。
+     * 指定した[registryKey]から[Holder]の[BiCodec]を返します。
      * @param T レジストリの要素のクラス
      */
     @JvmStatic
@@ -120,7 +137,7 @@ object VanillaBiCodecs {
         BiCodec.of(RegistryFixedCodec.create(registryKey), ByteBufCodecs.holderRegistry(registryKey))
 
     /**
-     * 指定された[registryKey]から[HolderSet]の[BiCodec]を返します。
+     * 指定した[registryKey]から[HolderSet]の[BiCodec]を返します。
      * @param T レジストリの要素のクラス
      */
     @JvmStatic

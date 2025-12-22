@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data.recipe.builder
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import net.minecraft.data.recipes.RecipeOutput
@@ -9,13 +8,12 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.crafting.Recipe
 import net.neoforged.neoforge.common.conditions.ICondition
-import net.neoforged.neoforge.common.conditions.ModLoadedCondition
 import net.neoforged.neoforge.common.conditions.NotCondition
 import net.neoforged.neoforge.common.conditions.TagEmptyCondition
 import java.util.function.UnaryOperator
 
 /**
- * Ragiumで使用する[Recipe]のビルダー
+ * Ragiumで使用される[Recipe]のビルダー
  * @see mekanism.api.datagen.recipe.MekanismRecipeBuilder
  */
 abstract class HTRecipeBuilder<BUILDER : HTRecipeBuilder<BUILDER>>(private val prefix: String) {
@@ -25,13 +23,6 @@ abstract class HTRecipeBuilder<BUILDER : HTRecipeBuilder<BUILDER>>(private val p
     //    ICondition    //
 
     private val conditions: MutableList<ICondition> = mutableListOf()
-
-    fun modCondition(modId: String): BUILDER {
-        if (modId !in HTConst.BUILTIN_IDS) {
-            addCondition(ModLoadedCondition(modId))
-        }
-        return self()
-    }
 
     fun tagCondition(prefix: HTPrefixLike, material: HTMaterialLike): BUILDER = tagCondition(prefix.itemTagKey(material))
 
@@ -66,14 +57,14 @@ abstract class HTRecipeBuilder<BUILDER : HTRecipeBuilder<BUILDER>>(private val p
     }
 
     /**
-     * IDを[getPrimalId]に基づいて，レシピを生成します。
+     * IDを[getPrimalId]から，レシピを生成します。
      */
     fun save(recipeOutput: RecipeOutput) {
         save(recipeOutput, getPrimalId())
     }
 
     /**
-     * IDを[id]に基づいて，レシピを生成します。
+     * IDを[id]から，レシピを生成します。
      */
     fun save(recipeOutput: RecipeOutput, id: ResourceLocation) {
         recipeOutput.accept(

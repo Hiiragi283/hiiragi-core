@@ -12,15 +12,27 @@ import java.util.function.Function
 import java.util.function.UnaryOperator
 
 /**
- * [MapCodec]と[StreamCodec]を束ねたデータクラス
+ * [MapCodec]と[StreamCodec]を束ねたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 @ConsistentCopyVisibility
 @JvmRecord
 data class MapBiCodec<B : ByteBuf, V : Any> private constructor(val codec: MapCodec<V>, val streamCodec: StreamCodec<B, V>) {
     companion object {
+        /**
+         * 指定した[codec]と[streamCodec]から[MapBiCodec]を作成します。
+         * @param B [StreamCodec]で使われるパケットのクラス
+         * @param V コーデック対象のクラス
+         */
         @JvmStatic
         fun <B : ByteBuf, V : Any> of(codec: MapCodec<V>, streamCodec: StreamCodec<B, V>): MapBiCodec<B, V> = MapBiCodec(codec, streamCodec)
 
+        /**
+         * 指定した[codec]から，別の[MapBiCodec]を生成します。
+         * @param T1 [factory]の第1引数に使われるクラス
+         * @param C 変換後のコーデックの対象となるクラス
+         */
         @JvmStatic
         fun <B : ByteBuf, C : Any, T1 : Any> composite(codec: ParameterCodec<in B, C, T1>, factory: Function<T1, C>): MapBiCodec<B, C> = of(
             RecordCodecBuilder.mapCodec { instance ->
@@ -29,6 +41,12 @@ data class MapBiCodec<B : ByteBuf, V : Any> private constructor(val codec: MapCo
             StreamCodec.composite(codec.streamCodec, codec.getter, factory),
         )
 
+        /**
+         * 指定した[codec1], [codec2]から，別の[MapBiCodec]を生成します。
+         * @param T1 [factory]の第1引数に使われるクラス
+         * @param T2 [factory]の第2引数に使われるクラス
+         * @param C 変換後のコーデックの対象となるクラス
+         */
         @JvmStatic
         fun <B : ByteBuf, C : Any, T1 : Any, T2 : Any> composite(
             codec1: ParameterCodec<in B, C, T1>,
@@ -45,6 +63,13 @@ data class MapBiCodec<B : ByteBuf, V : Any> private constructor(val codec: MapCo
             StreamCodec.composite(codec1.streamCodec, codec1.getter, codec2.streamCodec, codec2.getter, factory),
         )
 
+        /**
+         * 指定した[codec1], [codec2], [codec3]から，別の[MapBiCodec]を生成します。
+         * @param T1 [factory]の第1引数に使われるクラス
+         * @param T2 [factory]の第2引数に使われるクラス
+         * @param T3 [factory]の第3引数に使われるクラス
+         * @param C 変換後のコーデックの対象となるクラス
+         */
         @JvmStatic
         fun <B : ByteBuf, C : Any, T1 : Any, T2 : Any, T3 : Any> composite(
             codec1: ParameterCodec<in B, C, T1>,
@@ -71,6 +96,14 @@ data class MapBiCodec<B : ByteBuf, V : Any> private constructor(val codec: MapCo
             ),
         )
 
+        /**
+         * 指定した[codec1], [codec2], [codec3], [codec4]から，別の[MapBiCodec]を生成します。
+         * @param T1 [factory]の第1引数に使われるクラス
+         * @param T2 [factory]の第2引数に使われるクラス
+         * @param T3 [factory]の第3引数に使われるクラス
+         * @param T4 [factory]の第4引数に使われるクラス
+         * @param C 変換後のコーデックの対象となるクラス
+         */
         @JvmStatic
         fun <B : ByteBuf, C : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any> composite(
             codec1: ParameterCodec<in B, C, T1>,
@@ -101,6 +134,15 @@ data class MapBiCodec<B : ByteBuf, V : Any> private constructor(val codec: MapCo
             ),
         )
 
+        /**
+         * 指定した[codec1], [codec2], [codec3], [codec4], [codec5]から，別の[MapBiCodec]を生成します。
+         * @param T1 [factory]の第1引数に使われるクラス
+         * @param T2 [factory]の第2引数に使われるクラス
+         * @param T3 [factory]の第3引数に使われるクラス
+         * @param T4 [factory]の第4引数に使われるクラス
+         * @param T5 [factory]の第5引数に使われるクラス
+         * @param C 変換後のコーデックの対象となるクラス
+         */
         @JvmStatic
         fun <B : ByteBuf, C : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any> composite(
             codec1: ParameterCodec<in B, C, T1>,
@@ -134,15 +176,15 @@ data class MapBiCodec<B : ByteBuf, V : Any> private constructor(val codec: MapCo
                 factory,
             ),
         )
-
-        @JvmStatic
-        fun <B : ByteBuf, V : Any> unit(instance: V): MapBiCodec<B, V> = of(MapCodec.unit(instance), StreamCodec.unit(instance))
     }
 
+    /**
+     * [BiCodec]に変換します。
+     */
     fun toCodec(): BiCodec<B, V> = BiCodec.of(codec.codec(), streamCodec)
 
     /**
-     * 指定された[to]と[from]に基づいて，別の[MapBiCodec]に変換します。
+     * 指定した[to]と[from]から，別の[MapBiCodec]に変換します。
      * @param S 変換後のコーデックの対象となるクラス
      * @param to [V]から[S]に変換するブロック
      * @param from [S]から[V]に変換するブロック
@@ -151,7 +193,7 @@ data class MapBiCodec<B : ByteBuf, V : Any> private constructor(val codec: MapCo
     fun <S : Any> xmap(to: Function<V, S>, from: Function<S, V>): MapBiCodec<B, S> = of(codec.xmap(to, from), streamCodec.map(to, from))
 
     /**
-     * 指定された[to]と[from]に基づいて，別の[MapBiCodec]に変換します。
+     * 指定した[to]と[from]から，別の[MapBiCodec]に変換します。
      * @param S 変換後のコーデックの対象となるクラス
      * @param to [V]から[S]の[Result]に変換するブロック
      * @param from [S]から[V]の[Result]にに変換するブロック
@@ -164,6 +206,9 @@ data class MapBiCodec<B : ByteBuf, V : Any> private constructor(val codec: MapCo
 
     fun validate(validator: UnaryOperator<V>): MapBiCodec<B, V> = flatXmap(validator::apply, validator::apply)
 
+    /**
+     * 指定した[getter]から[ParameterCodec]に変換します。
+     */
     fun <C : Any> forGetter(getter: Function<C, V>): ParameterCodec<B, C, V> = ParameterCodec.of(this, getter)
 
     inline fun <R : Any> toSerializer(factory: (MapCodec<V>, StreamCodec<B, V>) -> R): R {

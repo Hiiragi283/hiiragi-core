@@ -1,7 +1,6 @@
 package hiiragi283.core.data.server.tag
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.tag.HTTagBuilder
 import hiiragi283.core.api.data.tag.HTTagsProvider
@@ -12,7 +11,6 @@ import hiiragi283.core.api.registry.toHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
-import hiiragi283.core.common.tag.HCModTags
 import hiiragi283.core.setup.HCBlocks
 import net.minecraft.core.registries.Registries
 import net.minecraft.tags.BlockTags
@@ -57,17 +55,9 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
     //    Tool    //
 
     private fun tool(factory: BuilderFactory<Block>) {
-        val axe: HTTagBuilder<Block> = factory.apply(BlockTags.MINEABLE_WITH_AXE)
-        sequence { yield(HCBlocks.DRYING_LACK) }.forEach(axe::add)
-
         val pickaxe: HTTagBuilder<Block> = factory.apply(BlockTags.MINEABLE_WITH_PICKAXE)
         sequence {
             yieldAll(HCBlocks.MATERIALS.values)
         }.forEach(pickaxe::add)
-
-        factory
-            .apply(HCModTags.Blocks.MINEABLE_WITH_HAMMER)
-            .addTag(BlockTags.MINEABLE_WITH_PICKAXE)
-            .addTag(BlockTags.MINEABLE_WITH_SHOVEL)
     }
 }

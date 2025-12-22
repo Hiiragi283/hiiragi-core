@@ -4,6 +4,5 @@
   "ingredient": "#c:cobblestones",
   "result": {
     "id": "minecraft:gravel"
-  },
-  "time": 200
+  }
 }

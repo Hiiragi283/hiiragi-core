@@ -15,6 +15,11 @@ import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 
+/**
+ * [液体][ImmutableFluidStack]の[完成品][HTRecipeResult]を表すクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 class HTFluidResult(entry: HTHolderOrTagKey<Fluid>, amount: Int, components: DataComponentPatch) :
     HTBasicRecipeResult<Fluid, ImmutableFluidStack>(entry, amount, components) {
     companion object {
@@ -26,6 +31,9 @@ class HTFluidResult(entry: HTHolderOrTagKey<Fluid>, amount: Int, components: Dat
                 entry
             }
 
+        /**
+         * [HTFluidResult]の[BiCodec]
+         */
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTFluidResult> = BiCodec.composite(
             ENTRY_CODEC.forGetter(HTFluidResult::entry),

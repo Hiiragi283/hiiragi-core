@@ -12,9 +12,6 @@ object HCModTags {
     //    Blocks    //
 
     object Blocks {
-        @JvmField
-        val MINEABLE_WITH_HAMMER: TagKey<Block> = create("mineable", "hammer")
-
         @JvmStatic
         private fun create(path: String): TagKey<Block> = create(HiiragiCoreAPI.id(path))
 

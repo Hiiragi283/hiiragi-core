@@ -1,88 +1,38 @@
 package hiiragi283.core.api.text
 
+import com.mojang.datafixers.util.Either
+import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
 
 /**
- * @see com.mojang.serialization.DataResult
- * @see Result
+ * エラーを[テキスト][Component]で保持するモナドです。
+ * @param T 成功時の結果のクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
-sealed interface HTTextResult<T> {
-    companion object {
-        @JvmStatic
-        fun <T> success(value: T): HTTextResult<T> = Success(value)
+typealias HTTextResult<T> = Either<T, Component>
 
-        @JvmStatic
-        fun <T> failure(message: Component): HTTextResult<T> = Failure(message)
+/**
+ * この[HTTranslation]を[HTTextResult]に変換します。
+ */
+fun <T> HTTranslation.toTextResult(): HTTextResult<T> = Either.right<T, Component>(this.translate())
 
-        @JvmStatic
-        fun <T> failure(translation: HTTranslation): HTTextResult<T> = failure(translation.translate())
+/**
+ * この[HTTranslation]を[HTTextResult]に変換します。
+ * @param args テキストの引数
+ */
+fun <T> HTTranslation.toTextResult(vararg args: Any?): HTTextResult<T> = Either.right<T, Component>(this.translate(*args))
 
-        @JvmStatic
-        fun <T> failure(hasText: HTHasText): HTTextResult<T> = failure(hasText.getText())
-    }
+/**
+ * この[HTTranslation]を[HTTextResult]に変換します。
+ * @param color [Component]の色
+ */
+fun <T> HTTranslation.toTextResult(color: ChatFormatting): HTTextResult<T> = Either.right<T, Component>(this.translateColored(color))
 
-    val isSuccess: Boolean get() = this is Success<*>
-    val isFailure: Boolean get() = this is Failure<*>
-
-    fun result(): T?
-
-    fun error(): Component?
-
-    fun getOrThrow(): T = getOrThrow(::error)
-
-    fun <E : Throwable> getOrThrow(exception: (String) -> E): T
-
-    fun <R> map(transform: (T) -> R): HTTextResult<R>
-
-    fun <R> flatMap(transform: (T) -> HTTextResult<R>): HTTextResult<R>
-
-    fun <R> fold(onSuccess: (T) -> R, onFailure: (Component) -> R): R
-
-    fun onSuccess(action: (T) -> Unit): HTTextResult<T>
-
-    fun onFailure(action: (Component) -> Unit): HTTextResult<T>
-
-    @JvmInline
-    private value class Success<T>(private val value: T) : HTTextResult<T> {
-        override fun result(): T = value
-
-        override fun error(): Component? = null
-
-        override fun <E : Throwable> getOrThrow(exception: (String) -> E): T = value
-
-        override fun <R> map(transform: (T) -> R): HTTextResult<R> = Success(transform(value))
-
-        override fun <R> flatMap(transform: (T) -> HTTextResult<R>): HTTextResult<R> = transform(value)
-
-        override fun <R> fold(onSuccess: (T) -> R, onFailure: (Component) -> R): R = onSuccess(value)
-
-        override fun onSuccess(action: (T) -> Unit): HTTextResult<T> {
-            action(value)
-            return this
-        }
-
-        override fun onFailure(action: (Component) -> Unit): HTTextResult<T> = this
-    }
-
-    @JvmInline
-    private value class Failure<T>(private val message: Component) : HTTextResult<T> {
-        override fun result(): T? = null
-
-        override fun error(): Component = message
-
-        override fun <E : Throwable> getOrThrow(exception: (String) -> E): T = throw exception(message.string)
-
-        override fun <R> map(transform: (T) -> R): HTTextResult<R> = Failure(message)
-
-        override fun <R> flatMap(transform: (T) -> HTTextResult<R>): HTTextResult<R> = Failure(message)
-
-        override fun <R> fold(onSuccess: (T) -> R, onFailure: (Component) -> R): R = onFailure(message)
-
-        override fun onSuccess(action: (T) -> Unit): HTTextResult<T> = this
-
-        override fun onFailure(action: (Component) -> Unit): HTTextResult<T> {
-            action(message)
-            return this
-        }
-    }
-}
+/**
+ * この[HTTranslation]を[HTTextResult]に変換します。
+ * @param color [Component]の色
+ * @param args テキストの引数
+ */
+fun <T> HTTranslation.toTextResult(color: ChatFormatting, vararg args: Any?): HTTextResult<T> =
+    Either.right<T, Component>(this.translateColored(color, *args))

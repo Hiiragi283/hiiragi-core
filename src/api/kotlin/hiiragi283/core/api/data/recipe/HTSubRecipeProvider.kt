@@ -1,7 +1,6 @@
 package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.ingredient.HTFluidIngredientCreator
 import hiiragi283.core.api.data.recipe.ingredient.HTIngredientAccess
 import hiiragi283.core.api.data.recipe.ingredient.HTItemIngredientCreator
@@ -44,13 +43,15 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
 
     protected fun id(path: String): ResourceLocation = modId.toId(path)
 
+    protected fun id(vararg path: String): ResourceLocation = modId.toId(*path)
+
     /**
-     * 指定された[ResourceLocation]を改変します。
+     * 指定した[ResourceLocation]を改変します。
      */
     protected abstract fun modifyId(id: ResourceLocation): ResourceLocation
 
     /**
-     * 指定された[RecipeOutput]を改変します。
+     * 指定した[RecipeOutput]を改変します。
      */
     protected abstract fun modifyOutput(output: RecipeOutput): RecipeOutput
 
@@ -62,12 +63,12 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
     //    Direct    //
 
     /**
-     * Ragium単体で使用するレシピ向けの拡張クラス
+     * Ragium単体で使用されるレシピ向けの拡張クラス
      */
     abstract class Direct(modId: String) : HTSubRecipeProvider(modId) {
-        override fun modifyId(id: ResourceLocation): ResourceLocation = modId.toId(id.path)
+        final override fun modifyId(id: ResourceLocation): ResourceLocation = modId.toId(id.path)
 
-        override fun modifyOutput(output: RecipeOutput): RecipeOutput = output
+        final override fun modifyOutput(output: RecipeOutput): RecipeOutput = output
     }
 
     //    Integration    //
@@ -75,19 +76,21 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
     /**
      * 他Modとの連携レシピ向けの拡張クラス
      */
-    abstract class Integration(modId: String) : HTSubRecipeProvider(modId) {
-        override fun modifyId(id: ResourceLocation): ResourceLocation {
+    abstract class Integration(mainModId: String, private val integrationModId: String) : HTSubRecipeProvider(mainModId) {
+        private val builtInIds: Set<String> = HTConst.getBuiltInIdSet(mainModId)
+
+        final override fun modifyId(id: ResourceLocation): ResourceLocation {
             val namespace: String = id.namespace
-            return if (namespace in HTConst.BUILTIN_IDS) {
+            return if (namespace in builtInIds) {
                 val path: List<String> = id.path.split("/", limit = 2)
-                HiiragiCoreAPI.id(path[0], modId, path[1])
+                id(path[0], modId, path[1])
             } else {
                 val path: List<String> = id.path.split("/", limit = 2)
-                HiiragiCoreAPI.id(path[0], namespace, path[1])
+                id(path[0], namespace, path[1])
             }
         }
 
-        override fun modifyOutput(output: RecipeOutput): RecipeOutput = output.withConditions(ModLoadedCondition(modId))
+        final override fun modifyOutput(output: RecipeOutput): RecipeOutput = output.withConditions(ModLoadedCondition(integrationModId))
     }
 
     //    Extensions    //

@@ -1,0 +1,12 @@
+{
+  "type": "hiiragi_core:exploding",
+  "exp": 1,
+  "ingredient": {
+    "amount": 8,
+    "items": "minecraft:sculk"
+  },
+  "result": {
+    "id": "minecraft:echo_shard",
+    "tag": "c:gems/echo"
+  }
+}

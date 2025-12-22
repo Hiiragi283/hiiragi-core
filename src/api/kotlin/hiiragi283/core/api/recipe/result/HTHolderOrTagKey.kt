@@ -1,8 +1,10 @@
 package hiiragi283.core.api.recipe.result
 
+import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.function.andThen
+import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.registry.holderSetOrNull
@@ -13,16 +15,26 @@ import hiiragi283.core.api.serialization.codec.MapBiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextResult
-import hiiragi283.core.api.tuple.Ior
+import hiiragi283.core.api.text.toTextResult
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 
+/**
+ * [Holder]と[TagKey]の両方または片方だけを保持するクラスです。
+ * @param T レジストリの要素のクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ * @see HTBasicRecipeResult
+ */
 @JvmInline
 value class HTHolderOrTagKey<T : Any> private constructor(private val entry: Ior<Holder<T>, TagKey<T>>) : HTIdLike {
     companion object {
+        /**
+         * 指定した[レジストリキー][registryKey]から[MapBiCodec]を作成します。
+         */
         @JvmStatic
         fun <T : Any> codec(registryKey: RegistryKey<T>): MapBiCodec<RegistryFriendlyByteBuf, HTHolderOrTagKey<T>> = MapBiCodecs
             .ior(
@@ -40,18 +52,22 @@ value class HTHolderOrTagKey<T : Any> private constructor(private val entry: Ior
         },
     )
 
+    /**
+     * 指定した[レジストリ][provider]から[Holder]を取得します。
+     * @return [TagKey]に一致する[Holder]がない場合はエラー
+     */
     fun getHolder(provider: HolderLookup.Provider?): HTTextResult<Holder<T>> {
         val provider1: HolderLookup.Provider = (provider ?: HiiragiCoreAPI.getActiveAccess())
-            ?: return HTTextResult.failure(HTCommonTranslation.MISSING_SERVER)
+            ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()
         return entry
             .getRight()
             ?.let(provider1::holderSetOrNull)
             ?.firstOrNull()
-            ?.let(HTTextResult.Companion::success)
+            ?.let { Either.left(it) }
             ?: entry
                 .getLeft()
-                ?.let(HTTextResult.Companion::success)
-            ?: HTTextResult.failure(HTCommonTranslation.EMPTY_TAG_KEY)
+                ?.let { Either.left(it) }
+            ?: HTCommonTranslation.EMPTY_TAG_KEY.toTextResult()
     }
 
     override fun getId(): ResourceLocation = entry.map(

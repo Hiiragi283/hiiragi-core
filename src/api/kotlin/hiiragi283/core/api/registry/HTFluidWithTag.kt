@@ -10,10 +10,20 @@ import net.neoforged.neoforge.common.NeoForgeMod
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.fluids.FluidType
 
+/**
+ * [液体][Fluid]のインスタンスと[TagKey]を保持する[HTHolderLike]の拡張インターフェースです。
+ * @param FLUID 液体のクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ * @see HTFluidContent
+ */
 interface HTFluidWithTag<FLUID : Fluid> :
     HTHolderLike<Fluid, FLUID>,
     HTKeyLike.HolderDelegate<Fluid> {
     companion object {
+        /**
+         * 「水」の[HTFluidWithTag]のインスタンス
+         */
         @Suppress("DEPRECATION")
         @JvmField
         val WATER: HTFluidWithTag<FlowingFluid> = object : HTFluidWithTag<FlowingFluid> {
@@ -26,6 +36,9 @@ interface HTFluidWithTag<FLUID : Fluid> :
             override fun getHolder(): Holder<Fluid> = get().builtInRegistryHolder()
         }
 
+        /**
+         * 「溶岩」の[HTFluidWithTag]のインスタンス
+         */
         @Suppress("DEPRECATION")
         @JvmField
         val LAVA: HTFluidWithTag<FlowingFluid> = object : HTFluidWithTag<FlowingFluid> {
@@ -38,6 +51,9 @@ interface HTFluidWithTag<FLUID : Fluid> :
             override fun getHolder(): Holder<Fluid> = get().builtInRegistryHolder()
         }
 
+        /**
+         * 「牛乳」の[HTFluidWithTag]のインスタンス
+         */
         @JvmField
         val MILK: HTFluidWithTag<Fluid> = object : HTFluidWithTag<Fluid> {
             override fun getFluidTag(): TagKey<Fluid> = Tags.Fluids.MILK
@@ -50,7 +66,13 @@ interface HTFluidWithTag<FLUID : Fluid> :
         }
     }
 
+    /**
+     * 保持している液体の[TagKey]を返します。
+     */
     fun getFluidTag(): TagKey<Fluid>
 
+    /**
+     * 保持している液体の[FluidType]を返します。
+     */
     fun getFluidType(): FluidType
 }

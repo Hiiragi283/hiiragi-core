@@ -59,6 +59,9 @@
     },
     "#c:tiny_dusts/wood": {
       "burn_time": 30
+    },
+    "hiiragi_core:tar": {
+      "burn_time": 800
     }
   }
 }

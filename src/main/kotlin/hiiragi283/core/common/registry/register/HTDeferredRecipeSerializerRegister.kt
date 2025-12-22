@@ -1,7 +1,7 @@
 package hiiragi283.core.common.registry.register
 
 import com.mojang.serialization.MapCodec
-import hiiragi283.core.api.registry.register.HTDeferredRegister
+import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.serialization.codec.MapBiCodec
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf

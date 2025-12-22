@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.network.PacketDistributor
 
 /**
- * Ragiumで使用する[BlockEntity]の拡張クラス
+ * Ragiumで使用される[BlockEntity]の拡張クラス
  * @see mekanism.common.tile.base.TileEntityUpdateable
  */
 abstract class HTExtendedBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, state: BlockState) :

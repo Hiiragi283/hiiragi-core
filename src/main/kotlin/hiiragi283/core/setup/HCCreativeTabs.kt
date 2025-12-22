@@ -19,10 +19,10 @@ object HCCreativeTabs {
         Items.DIAMOND_PICKAXE.builtInRegistryHolder(),
     ) { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
         // Items
-        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCItems.REGISTER.entries)
+        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCItems.REGISTER.asSequence())
         // Blocks
-        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCBlocks.REGISTER.itemEntries)
+        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCBlocks.REGISTER.asItemSequence())
         // Fluids
-        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCFluids.REGISTER.itemEntries)
+        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCFluids.REGISTER.asItemSequence())
     }
 }

@@ -1,0 +1,8 @@
+{
+  "type": "hiiragi_core:charging",
+  "energy": 1000000,
+  "ingredient": "minecraft:golden_apple",
+  "result": {
+    "id": "minecraft:enchanted_golden_apple"
+  }
+}

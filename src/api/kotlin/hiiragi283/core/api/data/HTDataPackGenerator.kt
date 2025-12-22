@@ -9,7 +9,12 @@ import net.neoforged.neoforge.data.event.GatherDataEvent
 import java.util.concurrent.CompletableFuture
 
 /**
- * データパック向けの[HTDataGenerator]の実装クラス
+ * データパック向けに[HTDataGenerator]を実装したクラスです。
+ * @param generator [DataProvider]の登録先
+ * @param registries レジストリを保持するインスタンス
+ * @param fileHelper 指定したリソースが存在するかを判定するインスタンス
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 data class HTDataPackGenerator(
     private val generator: DataGenerator.PackGenerator,

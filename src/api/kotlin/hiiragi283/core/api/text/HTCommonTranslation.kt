@@ -4,6 +4,9 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import net.minecraft.Util
 
 /**
+ * Hiiragi Coreとそれを前提とするmodで使用される[翻訳][HTTranslation]を集めたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.api.text.APILang
  * @see mekanism.common.MekanismLang
  */
@@ -37,9 +40,11 @@ enum class HTCommonTranslation(type: String, vararg path: String) : HTTranslatio
     STORED("gui", "stored"),
     STORED_MB("gui", "stored", "mb"),
     STORED_FE("gui", "stored", "fe"),
+    STORED_EXP("gui", "stored", "exp"),
 
     FRACTION("gui", "fraction"),
     TICK("gui", "tick"),
+    SECONDS("gui", "seconds"),
 
     // Item Description
     TOOLTIP_BLOCK_POS("tooltip", "block_pos"),

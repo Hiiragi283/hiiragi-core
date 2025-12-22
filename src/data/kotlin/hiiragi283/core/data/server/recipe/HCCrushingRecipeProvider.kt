@@ -60,7 +60,7 @@ object HCCrushingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
         HTSingleItemRecipeBuilder
             .crushing(
                 itemCreator.fromTagKey(HCMaterialPrefixes.STORAGE_BLOCK, HCMaterial.Gems.AMETHYST),
-                resultHelper.item(Items.AMETHYST_SHARD, 4),
+                HCMaterialResultHelper.item(HCMaterialPrefixes.GEM, HCMaterial.Gems.AMETHYST, 4),
             ).setExp(0.4f)
             .save(output)
 

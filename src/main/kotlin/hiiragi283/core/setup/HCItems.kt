@@ -2,19 +2,15 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.buildTable
-import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.item.HTEquipmentMaterial
 import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.common.item.HTCreativeItem
-import hiiragi283.core.common.item.HTHammerItem
 import hiiragi283.core.common.item.HTToolType
-import hiiragi283.core.common.item.VanillaEquipmentMaterial
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import hiiragi283.core.common.registry.register.HTDeferredItemRegister
-import net.minecraft.world.item.Item
 import net.neoforged.bus.api.IEventBus
 
 object HCItems {
@@ -32,7 +28,7 @@ object HCItems {
     val MATERIALS: HTMaterialTable<HTMaterialPrefix, HTSimpleDeferredItem> = buildTable {
         for (material: HCMaterial in HCMaterial.entries) {
             for (prefix: HTMaterialPrefix in material.getItemPrefixesToGenerate()) {
-                this.put(
+                add(
                     prefix.asMaterialPrefix(),
                     material.asMaterialKey(),
                     REGISTER.registerSimpleItem(material.createPath(prefix)),
@@ -40,12 +36,6 @@ object HCItems {
             }
         }
     }.let(::HTMaterialTable)
-
-    @JvmField
-    val COAL_CHIP: HTSimpleDeferredItem = REGISTER.registerSimpleItem("coal_chip")
-
-    @JvmField
-    val COAL_CHUNK: HTSimpleDeferredItem = REGISTER.registerSimpleItem("coal_chunk")
 
     @JvmField
     val COMPRESSED_SAWDUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("compressed_sawdust")
@@ -76,12 +66,9 @@ object HCItems {
     //    Tools   //
 
     @JvmStatic
-    val TOOLS: HTMaterialTable<HTToolType<*>, HTDeferredItem<out Item>> = buildTable {
+    val TOOLS: HTMaterialTable<HTToolType<*>, HTDeferredItem<*>> = buildTable {
         fun register(toolType: HTToolType<*>, material: HTEquipmentMaterial) {
-            this.put(toolType, material.asMaterialKey(), toolType.createItem(REGISTER, material))
+            add(toolType, material.asMaterialKey(), toolType.createItem(REGISTER, material))
         }
-
-        // Hammer
-        VanillaEquipmentMaterial.entries.forEach(::register.partially1(HTHammerItem.ToolType))
     }.let(::HTMaterialTable)
 }

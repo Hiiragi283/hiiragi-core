@@ -18,7 +18,7 @@ interface HTEnergyBattery :
 
     abstract class Basic : HTEnergyBattery {
         /**
-         * 指定された電気量を代入します。
+         * 指定した電気量を代入します。
          */
         abstract fun setAmount(amount: Int)
 

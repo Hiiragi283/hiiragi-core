@@ -9,9 +9,6 @@ import hiiragi283.core.api.stack.toImmutable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.item.HTItemSlot
-import hiiragi283.core.common.inventory.HTContainerItemSlot
-import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 import java.util.function.BiPredicate
 import java.util.function.Predicate
@@ -25,9 +22,6 @@ open class HTBasicItemSlot protected constructor(
     private val canInsert: BiPredicate<ImmutableItemStack, HTStorageAccess>,
     private val filter: Predicate<ImmutableItemStack>,
     private val listener: HTContentListener?,
-    private val x: Int,
-    private val y: Int,
-    private val slotType: HTContainerItemSlot.Type,
 ) : HTItemSlot.Basic() {
     companion object {
         @JvmStatic
@@ -37,45 +31,26 @@ open class HTBasicItemSlot protected constructor(
         }
 
         @JvmStatic
-        fun create(
-            listener: HTContentListener?,
-            x: Int,
-            y: Int,
-            limit: Int = HTConst.ABSOLUTE_MAX_STACK_SIZE,
-            canExtract: BiPredicate<ImmutableItemStack, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
-            canInsert: BiPredicate<ImmutableItemStack, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
-            filter: Predicate<ImmutableItemStack> = HTStoragePredicates.alwaysTrue(),
-        ): HTBasicItemSlot = create(listener, x, y, limit, canExtract, canInsert, filter, HTContainerItemSlot.Type.BOTH)
-
-        @JvmStatic
         private fun create(
             listener: HTContentListener?,
-            x: Int,
-            y: Int,
             limit: Int = HTConst.ABSOLUTE_MAX_STACK_SIZE,
             canExtract: BiPredicate<ImmutableItemStack, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
             canInsert: BiPredicate<ImmutableItemStack, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
             filter: Predicate<ImmutableItemStack> = HTStoragePredicates.alwaysTrue(),
-            slotType: HTContainerItemSlot.Type,
-        ): HTBasicItemSlot = HTBasicItemSlot(validateLimit(limit), canExtract, canInsert, filter, listener, x, y, slotType)
+        ): HTBasicItemSlot = HTBasicItemSlot(validateLimit(limit), canExtract, canInsert, filter, listener)
 
         @JvmStatic
         fun input(
             listener: HTContentListener?,
-            x: Int,
-            y: Int,
             limit: Int = HTConst.ABSOLUTE_MAX_STACK_SIZE,
             canInsert: Predicate<ImmutableItemStack> = HTStoragePredicates.alwaysTrue(),
             filter: Predicate<ImmutableItemStack> = canInsert,
         ): HTBasicItemSlot = create(
             listener,
-            x,
-            y,
             limit,
             HTStoragePredicates.notExternal(),
             { stack: ImmutableItemStack, _ -> canInsert.test(stack) },
             filter,
-            HTContainerItemSlot.Type.INPUT,
         )
     }
 
@@ -85,27 +60,16 @@ open class HTBasicItemSlot protected constructor(
         canInsert: Predicate<ImmutableItemStack>,
         filter: Predicate<ImmutableItemStack>,
         listener: HTContentListener?,
-        x: Int,
-        y: Int,
-        slotType: HTContainerItemSlot.Type,
     ) : this(
         limit,
         { stack: ImmutableItemStack, access: HTStorageAccess -> access == HTStorageAccess.MANUAL || canExtract.test(stack) },
         { stack: ImmutableItemStack, _: HTStorageAccess -> canInsert.test(stack) },
         filter,
         listener,
-        x,
-        y,
-        slotType,
     )
 
     @JvmField
     protected var stack: ItemStack = ItemStack.EMPTY
-    private var slotBackground: Pair<ResourceLocation, ResourceLocation>? = null
-
-    fun setSlotBackground(atlas: ResourceLocation, texture: ResourceLocation): HTBasicItemSlot = apply {
-        this.slotBackground = atlas to texture
-    }
 
     override fun getStack(): ImmutableItemStack? = this.stack.toImmutable()
 
@@ -118,9 +82,6 @@ open class HTBasicItemSlot protected constructor(
 
     final override fun canStackExtract(stack: ImmutableItemStack, access: HTStorageAccess): Boolean =
         super.canStackExtract(stack, access) && this.canExtract.test(stack, access)
-
-    override fun createContainerSlot(): Slot? =
-        HTContainerItemSlot(this, x, y, ::setStackUnchecked, ::isStackValidForInsert, this.slotType, this.slotBackground)
 
     override fun serialize(output: HTValueOutput) {
         output.store(HTConst.ITEM, ImmutableItemStack.CODEC, getStack())

@@ -1,7 +1,7 @@
 package hiiragi283.core.api.collection
 
 fun <K : Any, V : Any> Iterable<Pair<K, Iterable<V>>>.toMultiMap(): HTMultiMap<K, V> {
-    val multimap: HTMultiMap.Mutable<K, V> = HTWrappedMultiMap.Mutable()
+    val multimap: HTMultiMap.Mutable<K, V> = HTSetMultiMap.Mutable(mutableMapOf())
     for ((key: K, values: Iterable<V>) in this) {
         multimap.putAll(key, values)
     }
@@ -15,6 +15,6 @@ inline fun <K : Any, V : Any> Iterable<K>.associateMultiWith(transform: (K) -> I
     this.map { key: K -> key to transform(key) }.toMultiMap()
 
 inline fun <K : Any, V : Any> buildMultiMap(builderAction: HTMultiMap.Mutable<K, V>.() -> Unit): HTMultiMap<K, V> =
-    HTWrappedMultiMap.Mutable<K, V>().apply(builderAction)
+    HTSetMultiMap.Mutable<K, V>(mutableMapOf()).apply(builderAction)
 
 fun <K : Any, V : Any> HTMultiMap<K, V>.asSequence(): Sequence<Pair<K, V>> = this.entries.asSequence()

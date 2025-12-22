@@ -1,0 +1,10 @@
+{
+  "type": "hiiragi_core:exploding",
+  "exp": 1,
+  "ingredient": "#c:ores/netherite_scrap",
+  "result": {
+    "count": 2,
+    "id": "minecraft:netherite_scrap",
+    "tag": "c:scraps/netherite"
+  }
+}

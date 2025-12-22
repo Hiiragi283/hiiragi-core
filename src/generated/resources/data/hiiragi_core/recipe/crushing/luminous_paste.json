@@ -4,6 +4,5 @@
   "ingredient": "minecraft:glow_ink_sac",
   "result": {
     "id": "hiiragi_core:luminous_paste"
-  },
-  "time": 200
+  }
 }

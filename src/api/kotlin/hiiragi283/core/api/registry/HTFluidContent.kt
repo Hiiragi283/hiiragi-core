@@ -11,6 +11,15 @@ import net.neoforged.neoforge.fluids.FluidType
 
 typealias HTSimpleFluidContent = HTFluidContent<FluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing>
 
+/**
+ * 登録した液体とそれに関する要素を束ねるクラスです。
+ * @param TYPE [FluidType]のクラス
+ * @param STILL 液体源のクラス
+ * @param FLOWING 液体流のクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ * @see mekanism.common.registration.impl.FluidRegistryObject
+ */
 @JvmRecord
 data class HTFluidContent<TYPE : FluidType, STILL : Fluid, FLOWING : Fluid>(
     val typeHolder: HTDeferredHolder<FluidType, TYPE>,

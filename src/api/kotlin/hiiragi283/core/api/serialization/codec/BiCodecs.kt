@@ -11,37 +11,44 @@ import net.minecraft.network.codec.StreamCodec
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs
 import org.apache.commons.lang3.math.Fraction
 import java.util.function.Function
-import java.util.function.Supplier
 import kotlin.enums.enumEntries
 
+/**
+ * [BiCodec]に関するメソッドを集めたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 object BiCodecs {
+    /**
+     * 範囲をチェックするブロックを作成します。
+     * @param N [Number]と[Comparable]を継承したクラス
+     * @param min 範囲の最小値
+     * @param max 範囲の最大値
+     */
     @JvmStatic
     fun <N> checkRange(min: N, max: N): (N) -> N where N : Number, N : Comparable<N> =
         Codec.checkRange(min, max).andThen(DataResult<N>::getOrThrow)::apply
 
     /**
-     * 指定された[min]と[max]から[BiCodec]を返します。
+     * 範囲が制限された[Int]の[BiCodec]を返します。
      * @param min 範囲の最小値
      * @param max 範囲の最大値
-     * @return [min]と[max]を含む範囲の値のみを通す[BiCodec]
      */
     @JvmStatic
     fun intRange(min: Int, max: Int): BiCodec<ByteBuf, Int> = BiCodec.INT.validate(checkRange(min, max))
 
     /**
-     * 指定された[min]と[max]から[BiCodec]を返します。
+     * 範囲が制限された[Long]の[BiCodec]を返します。
      * @param min 範囲の最小値
      * @param max 範囲の最大値
-     * @return [min]と[max]を含む範囲の値のみを通す[BiCodec]
      */
     @JvmStatic
     fun longRange(min: Long, max: Long): BiCodec<ByteBuf, Long> = BiCodec.LONG.validate(checkRange(min, max))
 
     /**
-     * 指定された[min]と[max]から[BiCodec]を返します。
+     * 範囲が制限された[Fraction]の[BiCodec]を返します。
      * @param min 範囲の最小値
      * @param max 範囲の最大値
-     * @return [min]と[max]を含む範囲の値のみを通す[BiCodec]
      */
     @JvmStatic
     fun fractionRange(min: Fraction, max: Fraction): BiCodec<ByteBuf, Fraction> = FRACTION.validate(checkRange(min, max))
@@ -74,6 +81,9 @@ object BiCodecs {
     @JvmField
     val POSITIVE_LONG: BiCodec<ByteBuf, Long> = longRange(1, Long.MAX_VALUE)
 
+    /**
+     * [Fraction]の[BiCodec]
+     */
     @JvmField
     val FRACTION: BiCodec<ByteBuf, Fraction> = either(BiCodec.STRING, BiCodec.INT).xmap(
         { either: Either<String, Int> -> either.map(Fraction::getFraction, ::fraction) },
@@ -105,7 +115,7 @@ object BiCodecs {
     }
 
     /**
-     * 指定された[keyCodec], [valueCodec]に基づいて，[Map]の[BiCodec]を返します。
+     * 指定した[keyCodec], [valueCodec]から，[Map]の[BiCodec]を返します。
      * @param K [Map]のキーとなるクラス
      * @param V [Map]の値となるクラス
      * @param keyCodec [K]を対象とする[BiCodec]
@@ -119,7 +129,7 @@ object BiCodecs {
     )
 
     /**
-     * 指定された[first], [second]に基づいて，[Either]の[BiCodec]を返します。
+     * 指定した[first], [second]から，[Either]の[BiCodec]を返します。
      * @param first [F]を対象とする[BiCodec]
      * @param second [S]を対象とする[BiCodec]
      * @return [Either]の[BiCodec]
@@ -131,7 +141,7 @@ object BiCodecs {
     )
 
     /**
-     * 指定された[first], [second]に基づいて，[Either]の[BiCodec]を返します。
+     * 指定した[first], [second]から，[Either]の[BiCodec]を返します。
      * @param first [F]を対象とする[BiCodec]
      * @param second [S]を対象とする[BiCodec]
      * @return [Either]の[BiCodec]
@@ -142,16 +152,31 @@ object BiCodecs {
         ByteBufCodecs.either(first.streamCodec, second.streamCodec),
     )
 
+    /**
+     * [Enum]の[BiCodec]を返します。
+     * @param V [Enum]を継承したクラス
+     * @return [Enum.ordinal]に基づいた[BiCodec]
+     */
     @JvmStatic
-    inline fun <reified V : Enum<V>> enum(values: Supplier<Array<V>>): BiCodec<ByteBuf, V> =
-        NON_NEGATIVE_INT.flatXmap({ value: Int -> values.get()[value] }, Enum<V>::ordinal)
+    inline fun <reified V : Enum<V>> enum(): BiCodec<ByteBuf, V> =
+        NON_NEGATIVE_INT.flatXmap({ value: Int -> enumEntries<V>()[value] }, Enum<V>::ordinal)
 
+    /**
+     * [Enum]の[BiCodec]を返します。
+     * @param V [Enum]を継承したクラス
+     * @param factory [V]を[String]に変換するブロック
+     * @return [factory]に基づいた[BiCodec]
+     */
     @JvmStatic
     inline fun <reified V : Enum<V>> stringEnum(factory: Function<V, String>): BiCodec<ByteBuf, V> = BiCodec.STRING.flatXmap(
         { name: String -> enumEntries<V>().first { factory.apply(it) == name } },
         factory,
     )
 
+    /**
+     * 遅延評価された[BiCodec]を返します。
+     * @param delegate 遅延評価される[BiCodec]を返すブロック
+     */
     @JvmStatic
     fun <B : ByteBuf, V : Any> lazy(delegate: () -> BiCodec<B, V>): BiCodec<B, V> = BiCodec.of(
         Codec.lazyInitialized(delegate.andThen(BiCodec<B, V>::codec)),
@@ -159,7 +184,7 @@ object BiCodecs {
     )
 
     /**
-     * 指定された[instance]を常に返す[BiCodec]を返します。
+     * 指定した[instance]を常に返す[BiCodec]を返します。
      */
     @JvmStatic
     fun <B : ByteBuf, V : Any> unit(instance: V): BiCodec<B, V> = BiCodec.of(Codec.unit(instance), StreamCodec.unit(instance))

@@ -2,10 +2,10 @@ package hiiragi283.core.common.registry.register
 
 import hiiragi283.core.api.registry.BlockWithContextFactory
 import hiiragi283.core.api.registry.HTDeferredHolder
+import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTSimpleFluidContent
 import hiiragi283.core.api.registry.ItemWithContextFactory
-import hiiragi283.core.api.registry.register.HTDeferredRegister
 import hiiragi283.core.api.tag.createCommonTag
 import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.common.registry.HTDeferredOnlyBlock
@@ -33,10 +33,13 @@ class HTFluidContentRegister(modId: String) {
     private val blockRegister = HTDeferredOnlyBlockRegister(modId)
     private val itemRegister = HTDeferredItemRegister(modId)
 
-    val fluidEntries: Collection<HTDeferredHolder<Fluid, *>> get() = fluidRegister.entries
-    val typeEntries: Collection<HTDeferredHolder<FluidType, *>> get() = typeRegister.entries
-    val blockEntries: Collection<HTDeferredOnlyBlock<*>> get() = blockRegister.entries
-    val itemEntries: Collection<HTDeferredItem<*>> get() = itemRegister.entries
+    fun asFluidSequence(): Sequence<HTDeferredHolder<Fluid, *>> = fluidRegister.asSequence()
+
+    fun asTypeSequence(): Sequence<HTDeferredHolder<FluidType, *>> = typeRegister.asSequence()
+
+    fun asBlockSequence(): Sequence<HTDeferredOnlyBlock<*>> = blockRegister.asSequence()
+
+    fun asItemSequence(): Sequence<HTDeferredItem<*>> = itemRegister.asSequence()
 
     private val contentsCache: MutableMap<ResourceKey<Fluid>, HTFluidContent<*, *, *>> = mutableMapOf()
     val keys: Set<ResourceKey<Fluid>> get() = contentsCache.keys
@@ -63,7 +66,7 @@ class HTFluidContentRegister(modId: String) {
 
         eventBus.addListener { event: FMLCommonSetupEvent ->
             event.enqueueWork {
-                for (item: HTDeferredItem<*> in itemEntries) {
+                for (item: HTDeferredItem<*> in asItemSequence()) {
                     DispenserBlock.registerBehavior(item, DispenseFluidContainer.getInstance())
                 }
             }

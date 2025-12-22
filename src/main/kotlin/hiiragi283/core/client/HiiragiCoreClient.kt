@@ -31,7 +31,7 @@ object HiiragiCoreClient {
     @JvmStatic
     private fun registerItemColors(event: RegisterColorHandlersEvent.Item) {
         val bucketColor = DynamicFluidContainerModel.Colors()
-        for (item: ItemLike in HCFluids.REGISTER.itemEntries) {
+        for (item: ItemLike in HCFluids.REGISTER.asItemSequence()) {
             event.register(bucketColor, item)
         }
         HiiragiCore.LOGGER.info("Registered item colors!")

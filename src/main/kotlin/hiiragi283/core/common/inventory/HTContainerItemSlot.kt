@@ -6,7 +6,6 @@ import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.getItemStack
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.SimpleContainer
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.Slot
@@ -26,19 +25,20 @@ open class HTContainerItemSlot(
     private val stackSetter: Consumer<ImmutableItemStack?>,
     private val manualFilter: (ImmutableItemStack, HTStorageAccess) -> Boolean,
     val slotType: Type,
-    slotBackground: Pair<ResourceLocation, ResourceLocation>?,
 ) : Slot(emptyContainer, 0, x, y) {
     companion object {
         @JvmStatic
         private val emptyContainer = SimpleContainer(0)
     }
 
-    init {
-        if (slotBackground != null) {
-            val (atlas: ResourceLocation, texture: ResourceLocation) = slotBackground
-            this.setBackground(atlas, texture)
-        }
-    }
+    constructor(slot: HTItemSlot.Basic, x: Int, y: Int, slotType: Type) : this(
+        slot,
+        x,
+        y,
+        slot::setStack,
+        slot::isStackValidForInsert,
+        slotType,
+    )
 
     fun updateCount(count: Int) {
         stackSetter.accept(slot.getStack()?.copyWithAmount(count))
@@ -47,7 +47,7 @@ open class HTContainerItemSlot(
 
     private fun insertItem(stack: ItemStack, action: HTStorageAction): ItemStack {
         val remainder: ImmutableItemStack? = slot.insert(stack.toImmutable(), action, HTStorageAccess.MANUAL)
-        if (action.execute() && stack.count != remainder?.getAmount()) {
+        if (action.execute() && stack.count != remainder?.amount()) {
             setChanged()
         }
         return remainder?.unwrap() ?: ItemStack.EMPTY

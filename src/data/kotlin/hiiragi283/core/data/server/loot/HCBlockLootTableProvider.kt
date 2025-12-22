@@ -6,15 +6,15 @@ import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.registry.HTSimpleDeferredBlock
-import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import net.minecraft.core.HolderLookup
+import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 
 class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootTableProvider(registries) {
     override fun generate() {
-        HCBlocks.REGISTER.blockEntries.forEach(::dropSelf)
+        HCBlocks.REGISTER.asBlockSequence().forEach(::dropSelf)
 
         // Ores
         val ores: Array<HTMaterialPrefix> = arrayOf(
@@ -33,7 +33,7 @@ class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootT
             val basePrefix: HTMaterialPrefix = material.basePrefix
             for (prefix: HTMaterialPrefix in ores) {
                 val ore: HTSimpleDeferredBlock = HCBlocks.MATERIALS[prefix, material] ?: continue
-                val drop: HTSimpleDeferredItem = HCItems.MATERIALS[basePrefix, material] ?: continue
+                val drop: ItemLike = HCItems.MATERIALS[basePrefix, material] ?: continue
                 add(ore, ::createOreDrops.partially2(drop, range))
             }
         }

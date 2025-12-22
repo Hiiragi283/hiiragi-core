@@ -6,12 +6,21 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.neoforged.neoforge.internal.versions.neoforge.NeoForgeVersion
 
+/**
+ * Hiiragi Coreとそれを前提とするmodで使用される定数を集めたクラスです。
+ */
 data object HTConst {
     //    GUI    //
 
+    /**
+     * ブロックやアイテムのテクスチャアトラスの[ResourceLocation]
+     */
     @JvmField
     val BLOCK_ATLAS: ResourceLocation = vanillaId("textures/atlas/blocks.png")
 
+    /**
+     * GUI上のスプライトのテクスチャアトラスの[ResourceLocation]
+     */
     @JvmField
     val GUI_ATLAS: ResourceLocation = vanillaId("textures/atlas/gui.png")
 
@@ -19,16 +28,30 @@ data object HTConst {
 
     //    Item    //
 
+    /**
+     * [Item]におけるデフォルトの最大個数
+     */
     const val ABSOLUTE_MAX_STACK_SIZE: Int = Item.ABSOLUTE_MAX_STACK_SIZE
 
     //    Mod ID    //
 
+    /**
+     * MinecraftのMOD ID
+     */
     const val MINECRAFT = "minecraft"
+
+    /**
+     * NeoForgeのMOD ID
+     */
     const val NEOFORGE: String = NeoForgeVersion.MOD_ID
+
+    /**
+     * 共通タグで使用されるID
+     */
     const val COMMON = "c"
 
-    @JvmField
-    val BUILTIN_IDS: Set<String> = setOf(MINECRAFT, NEOFORGE, COMMON, HiiragiCoreAPI.MOD_ID)
+    @JvmStatic
+    fun getBuiltInIdSet(modId: String): Set<String> = setOf(MINECRAFT, NEOFORGE, COMMON, modId)
 
     //    Serialization    //
 
@@ -52,16 +75,20 @@ data object HTConst {
     const val COUNT = "count"
     const val COMPONENTS = "components"
 
+    const val DRYING_TICKS = "DryingTicks"
+    const val COMPLETED_RECIPE = "CompletedRecipe"
     const val PREVENT_ITEM_MAGNET = "PreventRemoteMovement"
 
     //    Recipes    //
 
+    const val CHARGING = "charging"
     const val CRUSHING = "crushing"
     const val DRYING = "drying"
+    const val EXPLODING = "exploding"
 
-    const val GROUP = "group"
-    const val TIME = "time"
+    const val ENERGY = "energy"
     const val EXP = "exp"
+    const val TIME = "time"
 
     const val INGREDIENT = "ingredient"
 

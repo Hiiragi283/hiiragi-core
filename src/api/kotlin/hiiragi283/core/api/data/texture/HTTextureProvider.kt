@@ -16,6 +16,9 @@ import java.util.concurrent.CompletableFuture
 import java.util.function.BiConsumer
 import kotlin.io.path.inputStream
 
+/**
+ * テクスチャを生成する[DataProvider]の抽象クラスです。
+ */
 abstract class HTTextureProvider(private val packOutput: PackOutput, private val fileHelper: ExistingFileHelper) : DataProvider {
     constructor(context: HTDataGenContext) : this(context.output, context.fileHelper)
 
@@ -33,6 +36,10 @@ abstract class HTTextureProvider(private val packOutput: PackOutput, private val
         return CompletableFuture.allOf(*list.toTypedArray())
     }
 
+    /**
+     * 生成するテクスチャを集めます。
+     * @param output 生成するテクスチャとそのIDの出力先
+     */
     protected abstract fun gather(output: BiConsumer<ResourceLocation, NativeImage>)
 
     private fun writeImage(output: CachedOutput, image: NativeImage, path: Path): CompletableFuture<*> = CompletableFuture.runAsync(
@@ -51,6 +58,10 @@ abstract class HTTextureProvider(private val packOutput: PackOutput, private val
 
     //    Extensions    //
 
+    /**
+     * 指定した[id]から既存のテクスチャを取得します。
+     * @return [id]からテクスチャを取得できない場合は`null`
+     */
     protected fun getTexture(id: ResourceLocation): NativeImage? {
         val filePath: Path = packOutput.outputFolder.resolve("../../main/resources/assets/${id.namespace}/textures/${id.path}.png")
         try {
@@ -61,6 +72,10 @@ abstract class HTTextureProvider(private val packOutput: PackOutput, private val
         return null
     }
 
+    /**
+     * 指定した[テクスチャ][other]をコピーします。
+     * @return コピーされたテクスチャ
+     */
     protected fun copyFrom(other: NativeImage): NativeImage {
         val image = NativeImage(other.width, other.height, true)
         image.copyFrom(other)

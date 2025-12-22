@@ -1,0 +1,12 @@
+{
+  "type": "hiiragi_core:exploding",
+  "exp": 1,
+  "ingredient": {
+    "amount": 12,
+    "items": "#minecraft:crimson_stems"
+  },
+  "result": {
+    "id": "hiiragi_core:crimson_crystal",
+    "tag": "c:gems/crimson_crystal"
+  }
+}

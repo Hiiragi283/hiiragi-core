@@ -7,20 +7,25 @@ import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.level.Level
 
 /**
- * 指定したインプットに一致する最初のレシピを取得する関数型インターフェース
+ * 指定したインプットに一致する最初のレシピを取得する処理を表すインターフェース
  * @param INPUT レシピの入力となるクラス
  * @param RECIPE レシピのクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 fun interface HTRecipeFinder<INPUT : RecipeInput, RECIPE : Any> {
     /**
-     * 指定した引数から最初に一致するレシピを返します。
-     * @param input レシピの入力
-     * @param level この処理を行っている[Level]
+     * 指定した[入力][input]と[レベル][level]から最初に一致するレシピを返します。
      * @param lastRecipe 最後に一致したレシピのキャッシュ
      * @return 一致するレシピがない場合は`null`
      */
     fun getRecipeFor(input: INPUT, level: Level, lastRecipe: Pair<ResourceLocation, RECIPE>?): Pair<ResourceLocation, RECIPE>?
 
+    /**
+     * [Recipe]クラスに基づいた[HTRecipeFinder]の拡張インターフェースです。
+     * @author Hiiragi Tsubasa
+     * @since 0.1.0
+     */
     fun interface Vanilla<INPUT : RecipeInput, RECIPE : Recipe<INPUT>> : HTRecipeFinder<INPUT, RECIPE> {
         override fun getRecipeFor(
             input: INPUT,
@@ -31,6 +36,11 @@ fun interface HTRecipeFinder<INPUT : RecipeInput, RECIPE : Any> {
             return getVanillaRecipeFor(input, level, holder)?.let { it.id to it.value }
         }
 
+        /**
+         * 指定した[入力][input]と[レベル][level]から最初に一致するレシピを返します。
+         * @param lastRecipe 最後に一致したレシピのキャッシュ
+         * @return 一致するレシピがない場合は`null`
+         */
         fun getVanillaRecipeFor(input: INPUT, level: Level, lastRecipe: RecipeHolder<RECIPE>?): RecipeHolder<RECIPE>?
     }
 }

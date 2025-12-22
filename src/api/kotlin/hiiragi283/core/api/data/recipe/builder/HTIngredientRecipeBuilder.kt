@@ -10,7 +10,7 @@ import net.minecraft.world.level.ItemLike
 import java.util.stream.Stream
 
 /**
- * バニラの[Ingredient]を使用するレシピ向けのビルダー
+ * バニラの[Ingredient]を使用されるレシピ向けのビルダー
  * @param BUILDER [HTIngredientRecipeBuilder]を継承したクラス
  */
 interface HTIngredientRecipeBuilder<BUILDER : HTIngredientRecipeBuilder<BUILDER>> {

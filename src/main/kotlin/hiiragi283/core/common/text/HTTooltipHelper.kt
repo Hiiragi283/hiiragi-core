@@ -2,8 +2,8 @@ package hiiragi283.core.common.text
 
 import hiiragi283.core.api.stack.ImmutableFluidStack
 import hiiragi283.core.api.text.HTCommonTranslation
-import hiiragi283.core.api.text.HTTextUtil.getModName
-import hiiragi283.core.api.text.literalText
+import hiiragi283.core.api.text.HTTextUtil
+import hiiragi283.core.api.text.toText
 import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.TooltipFlag
@@ -41,13 +41,23 @@ object HTTooltipHelper {
         if (isCreative) {
             HTCommonTranslation.STORED.translate(stack, HTCommonTranslation.INFINITE)
         } else {
-            HTCommonTranslation.STORED_MB.translate(stack, stack.getAmount())
+            HTCommonTranslation.STORED_MB.translate(stack, stack.amount())
         }.let(consumer::accept)
         // Fluid id if advanced
         if (flag.isAdvanced) {
-            consumer.accept(literalText(stack.getHolder().registeredName).withStyle(ChatFormatting.DARK_GRAY))
+            stack
+                .getHolder()
+                .registeredName
+                .toText()
+                .withStyle(ChatFormatting.DARK_GRAY)
+                .let(consumer::accept)
         }
         // Mod Name
-        consumer.accept(literalText(getModName(stack.getId().namespace)).withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC))
+        stack
+            .getId()
+            .namespace
+            .let(HTTextUtil::getModNameText)
+            .withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC)
+            .let(consumer::accept)
     }
 }

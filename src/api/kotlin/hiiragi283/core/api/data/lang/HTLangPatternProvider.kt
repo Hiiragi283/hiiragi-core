@@ -1,7 +1,7 @@
 package hiiragi283.core.api.data.lang
 
 /**
- * 受け取った文字列で`%s`を置換した文字列を返す関数型インターフェース
+ * 受け取った文字列で`%s`を置換した文字列を返す処理を表すインターフェース
  */
 fun interface HTLangPatternProvider {
     /**

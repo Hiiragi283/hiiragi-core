@@ -1,12 +1,10 @@
 package hiiragi283.core.common.registry.register
 
-import hiiragi283.core.api.block.type.HTBlockType
 import hiiragi283.core.api.item.HTBlockItem
 import hiiragi283.core.api.registry.BlockFactory
-import hiiragi283.core.api.registry.BlockWithContextFactory
 import hiiragi283.core.api.registry.HTDeferredHolder
+import hiiragi283.core.api.registry.HTDoubleDeferredRegister
 import hiiragi283.core.api.registry.ItemWithContextFactory
-import hiiragi283.core.api.registry.register.HTDoubleDeferredRegister
 import hiiragi283.core.common.registry.HTBasicDeferredBlock
 import hiiragi283.core.common.registry.HTDeferredBlock
 import hiiragi283.core.common.registry.HTDeferredItem
@@ -46,28 +44,6 @@ class HTDeferredBlockRegister(
         itemProp: Item.Properties = Item.Properties(),
     ): HTBasicDeferredBlock<BLOCK> = register(name, blockFactory, ::HTBlockItem, itemProp)
 
-    // Type
-    fun <TYPE : HTBlockType, BLOCK : Block> registerSimpleTyped(
-        name: String,
-        blockType: TYPE,
-        blockProp: BlockBehaviour.Properties,
-        blockFactory: BlockWithContextFactory<TYPE, BLOCK>,
-    ): HTBasicDeferredBlock<BLOCK> = registerTyped(name, blockType, blockProp, blockFactory, ::HTBlockItem)
-
-    fun <TYPE : HTBlockType, BLOCK : Block, ITEM : Item> registerTyped(
-        name: String,
-        blockType: TYPE,
-        blockProp: BlockBehaviour.Properties,
-        blockFactory: BlockWithContextFactory<TYPE, BLOCK>,
-        itemFactory: ItemWithContextFactory<BLOCK, ITEM>,
-        itemProp: Item.Properties = Item.Properties(),
-    ): HTDeferredBlock<BLOCK, ITEM> = register(
-        name,
-        { blockFactory(blockType, blockProp) },
-        itemFactory,
-        itemProp,
-    )
-
     // Basic
     fun <BLOCK : Block, ITEM : Item> register(
         name: String,
@@ -94,6 +70,7 @@ class HTDeferredBlockRegister(
         ::HTDeferredBlock,
     )
 
-    val blockEntries: Collection<HTDeferredOnlyBlock<*>> get() = firstRegister.entries
-    val itemEntries: Collection<HTDeferredItem<*>> get() = secondRegister.entries
+    fun asBlockSequence(): Sequence<HTDeferredOnlyBlock<*>> = firstRegister.asSequence()
+
+    fun asItemSequence(): Sequence<HTDeferredItem<*>> = secondRegister.asSequence()
 }

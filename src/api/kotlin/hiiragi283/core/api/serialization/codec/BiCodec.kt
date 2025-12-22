@@ -19,43 +19,66 @@ import java.util.function.Function
 import java.util.function.UnaryOperator
 
 /**
- * [Codec]と[StreamCodec]を束ねたデータクラス
+ * [Codec]と[StreamCodec]を束ねたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 @ConsistentCopyVisibility
 @JvmRecord
 data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>, val streamCodec: StreamCodec<B, V>) {
     companion object {
         /**
-         * 指定された[codec]と[streamCodec]から[BiCodec]を返します。
+         * 指定した[codec]と[streamCodec]から[BiCodec]を作成します。
          * @param B [StreamCodec]で使われるパケットのクラス
          * @param V コーデック対象のクラス
          */
         @JvmStatic
         fun <B : ByteBuf, V : Any> of(codec: Codec<V>, streamCodec: StreamCodec<B, V>): BiCodec<B, V> = BiCodec(codec, streamCodec)
 
+        /**
+         * [Boolean]の[BiCodec]
+         */
         @JvmField
         val BOOL: BiCodec<ByteBuf, Boolean> = of(Codec.BOOL, ByteBufCodecs.BOOL)
 
+        /**
+         * [Short]の[BiCodec]
+         */
         @JvmField
         val SHORT: BiCodec<ByteBuf, Short> = of(Codec.SHORT, ByteBufCodecs.SHORT)
 
+        /**
+         * [Int]の[BiCodec]
+         */
         @JvmField
         val INT: BiCodec<ByteBuf, Int> = of(Codec.INT, ByteBufCodecs.VAR_INT)
 
+        /**
+         * [Long]の[BiCodec]
+         */
         @JvmField
         val LONG: BiCodec<ByteBuf, Long> = of(Codec.LONG, ByteBufCodecs.VAR_LONG)
 
+        /**
+         * [Float]の[BiCodec]
+         */
         @JvmField
         val FLOAT: BiCodec<ByteBuf, Float> = of(Codec.FLOAT, ByteBufCodecs.FLOAT)
 
+        /**
+         * [Double]の[BiCodec]
+         */
         @JvmField
         val DOUBLE: BiCodec<ByteBuf, Double> = of(Codec.DOUBLE, ByteBufCodecs.DOUBLE)
 
+        /**
+         * [String]の[BiCodec]
+         */
         @JvmField
         val STRING: BiCodec<ByteBuf, String> = of(Codec.STRING, ByteBufCodecs.STRING_UTF8)
 
         /**
-         * 指定された[codec]に基づいて，別の[BiCodec]を生成します。
+         * 指定した[codec]から，別の[BiCodec]を生成します。
          * @param T1 [factory]の第1引数に使われるクラス
          * @param C 変換後のコーデックの対象となるクラス
          */
@@ -68,7 +91,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
         )
 
         /**
-         * 指定された[codec1], [codec2]に基づいて，別の[BiCodec]を生成します。
+         * 指定した[codec1], [codec2]から，別の[BiCodec]を生成します。
          * @param T1 [factory]の第1引数に使われるクラス
          * @param T2 [factory]の第2引数に使われるクラス
          * @param C 変換後のコーデックの対象となるクラス
@@ -96,7 +119,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
         )
 
         /**
-         * 指定された[codec1], [codec2], [codec3]に基づいて，別の[BiCodec]を生成します。
+         * 指定した[codec1], [codec2], [codec3]から，別の[BiCodec]を生成します。
          * @param T1 [factory]の第1引数に使われるクラス
          * @param T2 [factory]の第2引数に使われるクラス
          * @param T3 [factory]の第3引数に使われるクラス
@@ -129,7 +152,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
         )
 
         /**
-         * 指定された[codec1], [codec2], [codec3], [codec4]に基づいて，別の[BiCodec]を生成します。
+         * 指定した[codec1], [codec2], [codec3], [codec4]から，別の[BiCodec]を生成します。
          * @param T1 [factory]の第1引数に使われるクラス
          * @param T2 [factory]の第2引数に使われるクラス
          * @param T3 [factory]の第3引数に使われるクラス
@@ -167,7 +190,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
         )
 
         /**
-         * 指定された[codec1], [codec2], [codec3], [codec4], [codec5]に基づいて，別の[BiCodec]を生成します。
+         * 指定した[codec1], [codec2], [codec3], [codec4], [codec5]から，別の[BiCodec]を生成します。
          * @param T1 [factory]の第1引数に使われるクラス
          * @param T2 [factory]の第2引数に使われるクラス
          * @param T3 [factory]の第3引数に使われるクラス
@@ -210,7 +233,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
         )
 
         /**
-         * 指定された[codec1], [codec2], [codec3], [codec4], [codec5], [codec6]に基づいて，別の[BiCodec]を生成します。
+         * 指定した[codec1], [codec2], [codec3], [codec4], [codec5], [codec6]から，別の[BiCodec]を生成します。
          * @param T1 [factory]の第1引数に使われるクラス
          * @param T2 [factory]の第2引数に使われるクラス
          * @param T3 [factory]の第3引数に使われるクラス
@@ -270,7 +293,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
     // Convert
 
     /**
-     * 指定された[to]と[from]に基づいて，別の[BiCodec]に変換します。
+     * 指定した[to]と[from]から，別の[BiCodec]に変換します。
      * @param S 変換後のコーデックの対象となるクラス
      * @param to [V]から[S]に変換するブロック
      * @param from [S]から[V]に変換するブロック
@@ -279,7 +302,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
     fun <S : Any> xmap(to: Function<V, S>, from: Function<S, V>): BiCodec<B, S> = of(codec.xmap(to, from), streamCodec.map(to, from))
 
     /**
-     * 指定された[to]と[from]に基づいて，別の[BiCodec]に変換します。
+     * 指定した[to]と[from]から，別の[BiCodec]に変換します。
      * @param S 変換後のコーデックの対象となるクラス
      * @param to [V]から[S]に変換するブロック
      * @param from [S]から[V]に変換するブロック
@@ -309,7 +332,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
     ): BiCodec<B, E> = dispatch("type", type, codec, streamCodec)
 
     /**
-     * 現在の[BiCodec]を[MapBiCodec]に変換します。
+     * [MapBiCodec]に変換します。
      */
     fun toMap(): MapBiCodec<B, V> = MapBiCodec.of(MapCodec.assumeMapUnsafe(codec), streamCodec)
 
@@ -320,53 +343,61 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
     fun <S : B> cast(): BiCodec<S, V> = of(codec, streamCodec.cast())
 
     // MapBiCodec
+
+    /**
+     * 指定した[フィールド名][name]から[MapBiCodec]に変換します。
+     */
     fun fieldOf(name: String): MapBiCodec<B, V> = MapBiCodec.of(codec.fieldOf(name), streamCodec)
 
+    /**
+     * 指定した[フィールド名][name]から[Optional]の[MapBiCodec]に変換します。
+     */
     fun optionalFieldOf(name: String): MapBiCodec<B, Optional<V>> = MapBiCodec.of(codec.optionalFieldOf(name), streamCodec.toOptional())
 
+    /**
+     * 指定した[フィールド名][name]と[デフォルト値][defaultValue]から[MapBiCodec]に変換します。
+     */
     fun optionalFieldOf(name: String, defaultValue: V): MapBiCodec<B, V> =
         MapBiCodec.of(codec.optionalFieldOf(name, defaultValue), streamCodec)
 
+    /**
+     * 指定した[フィールド名][name]と[デフォルト値][defaultValue]から[MapBiCodec]に変換します。
+     */
     fun optionalOrElseField(name: String, defaultValue: V): MapBiCodec<B, V> =
         MapBiCodec.of(codec.fieldOf(name).orElse(defaultValue), streamCodec)
 
     // List
 
     /**
-     * 現在の[BiCodec]を[List]の[BiCodec]に変換します。
+     * [List]の[BiCodec]に変換します。
      */
     fun listOf(): BiCodec<B, List<V>> = of(codec.listOf(), streamCodec.listOf())
 
     /**
-     * 現在の[BiCodec]を[List]の[BiCodec]に変換します。
-     * @param min [List.size]の最小値
-     * @param max [List.size]の最大値
-     * @return [List.size]が制限された[List]の[BiCodec]
+     * [List]の[BiCodec]に変換します。
+     * @param min リストの[長さ][List.size]の最小値
+     * @param max リストの[長さ][List.size]の最大値
+     * @return リストの[長さ][List.size]が制限された[List]の[BiCodec]
      */
     fun listOf(min: Int, max: Int): BiCodec<B, List<V>> = of(codec.listOf(min, max), streamCodec.listOf())
 
     /**
-     * 現在の[BiCodec]を，要素が一つの場合はそのままコーデックする[List]の[BiCodec]を返します。
-     * @return [List.size]が制限された[List]の[BiCodec]
+     * 要素が一つの場合はそのままコーデックする[List]の[BiCodec]に変換します。
      */
     fun listOrElement(): BiCodec<B, List<V>> = of(codec.listOrElement(), streamCodec.listOf())
 
     /**
-     * 現在の[BiCodec]を，要素が一つの場合はそのままコーデックする[List]の[BiCodec]を返します。
-     * @param min [List.size]の最小値
-     * @param max [List.size]の最大値
-     * @return [List.size]が制限された[List]の[BiCodec]
+     * 要素が一つの場合はそのままコーデックする[List]の[BiCodec]に変換します。
+     * @param min リストの[長さ][List.size]の最小値
+     * @param max リストの[長さ][List.size]の最大値
+     * @return リストの[長さ][List.size]が制限された[List]の[BiCodec]
      */
     fun listOrElement(min: Int, max: Int): BiCodec<B, List<V>> = of(codec.listOrElement(min, max), streamCodec.listOf())
-
-    fun nonEmptyListOf(): BiCodec<B, List<V>> = nonEmptyListOf(Int.MAX_VALUE)
-
-    fun nonEmptyListOf(max: Int): BiCodec<B, List<V>> = listOrElement(1, max)
 
     // Optional
 
     /**
-     * 現在の[BiCodec]を[Optional]の[BiCodec]に変換します。
+     * [Optional]の[BiCodec]に変換します。
      */
     fun toOptional(): BiCodec<B, Optional<V>> = of(ExtraCodecs.optionalEmptyMap(codec), streamCodec.toOptional())
 }

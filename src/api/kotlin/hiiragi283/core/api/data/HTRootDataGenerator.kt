@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data
 
-import hiiragi283.core.api.HTConst
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.RegistrySetBuilder
 import net.minecraft.data.DataGenerator
@@ -14,7 +13,13 @@ import java.util.concurrent.CompletableFuture
 import java.util.function.BooleanSupplier
 
 /**
- * 基本の[HTDataGenerator]の実装クラス
+ * [HTDataGenerator]を実装したクラスです。
+ * @param generator [DataProvider]の登録先
+ * @param doRun 登録を実行するかどうか判定するブロック
+ * @param registries レジストリを保持するインスタンス
+ * @param fileHelper 指定したリソースが存在するかを判定するインスタンス
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 @ConsistentCopyVisibility
 @JvmRecord
@@ -25,6 +30,10 @@ data class HTRootDataGenerator private constructor(
     val fileHelper: ExistingFileHelper,
 ) : HTDataGenerator {
     companion object {
+        /**
+         * 指定した[イベント][event]から[HTRootDataGenerator]を作成します。
+         * @return サーバー向けとクライアント向けの[HTRootDataGenerator]
+         */
         @JvmStatic
         fun withDataPack(event: GatherDataEvent): Pair<HTRootDataGenerator, HTRootDataGenerator> {
             val generator: DataGenerator = event.generator
@@ -36,6 +45,11 @@ data class HTRootDataGenerator private constructor(
             )
         }
 
+        /**
+         * 指定した[イベント][event]から[HTRootDataGenerator]を作成します。
+         * @param builderAction 動的レジストリに要素を追加するブロック
+         * @return サーバー向けとクライアント向けの[HTRootDataGenerator]
+         */
         @JvmStatic
         fun withDataPack(
             event: GatherDataEvent,
@@ -48,7 +62,7 @@ data class HTRootDataGenerator private constructor(
                         output,
                         event.lookupProvider,
                         RegistrySetBuilder().apply(builderAction),
-                        HTConst.BUILTIN_IDS,
+                        event.mods,
                     )
                 }.registryProvider
             val fileHelper: ExistingFileHelper = event.existingFileHelper
@@ -60,8 +74,8 @@ data class HTRootDataGenerator private constructor(
     }
 
     /**
-     * 指定された[id]でデータパックを作成します。
-     * @return 指定された[id]に基づいた[HTDataPackGenerator]
+     * 指定した[id]でデータパックを作成します。
+     * @return データパック向けの[HTDataPackGenerator]
      */
     fun createDataPackGenerator(id: ResourceLocation): HTDataPackGenerator = HTDataPackGenerator(
         generator.getBuiltinDatapack(doRun.asBoolean, id.namespace, id.path),

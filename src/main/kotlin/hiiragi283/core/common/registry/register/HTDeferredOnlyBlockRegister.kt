@@ -1,10 +1,10 @@
 package hiiragi283.core.common.registry.register
 
 import hiiragi283.core.api.registry.BlockFactory
+import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.IdToFunction
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.registry.createKey
-import hiiragi283.core.api.registry.register.HTDeferredRegister
 import hiiragi283.core.common.registry.HTDeferredOnlyBlock
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceLocation
@@ -25,8 +25,6 @@ class HTDeferredOnlyBlockRegister(namespace: String) : HTDeferredRegister<Block>
     //    HTDeferredRegister    //
 
     override fun asSequence(): Sequence<HTDeferredOnlyBlock<*>> = super.asSequence().filterIsInstance<HTDeferredOnlyBlock<*>>()
-
-    override fun getEntries(): Collection<HTDeferredOnlyBlock<*>> = super.getEntries().filterIsInstance<HTDeferredOnlyBlock<*>>()
 
     override fun <I : Block> register(name: String, func: IdToFunction<out I>): HTDeferredOnlyBlock<I> =
         super.register(name, func) as HTDeferredOnlyBlock<I>

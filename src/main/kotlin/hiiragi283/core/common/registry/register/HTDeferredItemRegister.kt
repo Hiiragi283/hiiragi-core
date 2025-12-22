@@ -1,12 +1,12 @@
 package hiiragi283.core.common.registry.register
 
 import hiiragi283.core.api.function.partially1
+import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.IdToFunction
 import hiiragi283.core.api.registry.ItemFactory
 import hiiragi283.core.api.registry.ItemWithContextFactory
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.registry.createKey
-import hiiragi283.core.api.registry.register.HTDeferredRegister
 import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import net.minecraft.core.registries.Registries
@@ -38,8 +38,6 @@ class HTDeferredItemRegister(namespace: String) : HTDeferredRegister<Item>(Regis
     //    HTDeferredRegister    //
 
     override fun asSequence(): Sequence<HTDeferredItem<*>> = super.asSequence().filterIsInstance<HTDeferredItem<*>>()
-
-    override fun getEntries(): Collection<HTDeferredItem<*>> = super.getEntries().filterIsInstance<HTDeferredItem<*>>()
 
     override fun <I : Item> register(name: String, func: IdToFunction<out I>): HTDeferredItem<I> =
         super.register(name, func) as HTDeferredItem<I>

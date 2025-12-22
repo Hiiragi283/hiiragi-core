@@ -46,11 +46,11 @@ fun interface HTFluidHandler : HTSidedFluidHandler {
             }
         }
         if (existing != null) {
-            val remainder: Int = existing.insert(remaining.toImmutable(), action1, access)?.getAmount() ?: 0
+            val remainder: Int = existing.insert(remaining.toImmutable(), action1, access)?.amount() ?: 0
             remaining.amount = remainder
         } else {
             for (tank: HTFluidTank in getFluidTanks(side)) {
-                val remainder: Int = tank.insert(remaining.toImmutable(), action1, access)?.getAmount() ?: 0
+                val remainder: Int = tank.insert(remaining.toImmutable(), action1, access)?.amount() ?: 0
                 if (remainder < remaining.amount) {
                     remaining.amount = remainder
                     break

@@ -9,12 +9,11 @@ import net.minecraft.world.item.crafting.RecipeType
 import org.apache.commons.lang3.math.Fraction
 
 class HTCrushingRecipe(
-    group: String,
     ingredient: HTItemIngredient,
     result: HTItemResult,
     time: Int,
     exp: Fraction,
-) : HTSingleItemRecipe(group, ingredient, result, time, exp) {
+) : HTSingleItemRecipe(ingredient, result, time, exp) {
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.CRUSHING
 
     override fun getType(): RecipeType<*> = HCRecipeTypes.CRUSHING.get()

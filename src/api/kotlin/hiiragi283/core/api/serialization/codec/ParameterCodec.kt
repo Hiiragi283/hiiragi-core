@@ -6,6 +6,11 @@ import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.StreamCodec
 import java.util.function.Function
 
+/**
+ * [BiCodec.composite]や[MapBiCodec.composite]で引数を表すクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 @ConsistentCopyVisibility
 @JvmRecord
 data class ParameterCodec<B : ByteBuf, C : Any, V : Any> private constructor(

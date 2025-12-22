@@ -6,6 +6,11 @@ import net.minecraft.client.player.AbstractClientPlayer
 import net.minecraft.server.level.ServerPlayer
 import net.neoforged.neoforge.network.handling.IPayloadContext
 
+/**
+ * [HTCustomPayload]の処理をまとめたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 object HTPayloadHandlers {
     fun <T : HTCustomPayload.S2C> handleS2C(payload: T, context: IPayloadContext) {
         context

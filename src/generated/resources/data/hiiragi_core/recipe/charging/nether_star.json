@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:charging",
+  "energy": 1000000,
+  "exp": 10,
+  "ingredient": "hiiragi_core:wither_star",
+  "result": {
+    "id": "minecraft:nether_star"
+  }
+}

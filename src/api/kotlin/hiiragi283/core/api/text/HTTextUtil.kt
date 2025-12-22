@@ -26,12 +26,18 @@ import org.apache.commons.lang3.text.WordUtils
 import java.text.NumberFormat
 
 /**
+ * [テキスト][Component]に関するメソッドを集めたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.api.text.TextComponentUtil
  * @see mekanism.common.util.text.TextUtils
  */
 object HTTextUtil {
+    /**
+     * 引数が`null`の時に置き換えられる[テキスト][Component]
+     */
     @JvmStatic
-    private val TEXT_NULL: Component = literalText("null")
+    private val TEXT_NULL: Component = "null".toText()
 
     @JvmStatic
     private val INT_FORMAT: NumberFormat = NumberFormat.getIntegerInstance()
@@ -40,6 +46,8 @@ object HTTextUtil {
     private val DOUBLE_FORMAT: NumberFormat = NumberFormat.getNumberInstance()
 
     /**
+     * 指定した[MOD ID][modId]からMOD名を取得します。
+     * @return [MOD ID][modId]が["common"][HTConst.COMMON]の場合は`Common`，それ以外の場合は登録されたMODから取得した値
      * @see dev.emi.emi.platform.neoforge.EmiAgnosNeoForge.getModNameAgnos
      */
     @JvmStatic
@@ -54,7 +62,12 @@ object HTTextUtil {
                 .orElse(WordUtils.capitalizeFully(modId.replace(oldChar = '_', newChar = ' ')))
     }
 
+    @JvmStatic
+    fun getModNameText(modId: String): MutableComponent = getModName(modId).toText()
+
     /**
+     * 指定した[翻訳キー][key]と[引数][args]をいい感じにして[テキスト][MutableComponent]に変換します。
+     * @return いい感じになった[テキスト][MutableComponent]
      * @see mekanism.api.text.TextComponentUtil.smartTranslate
      */
     @JvmStatic
@@ -85,12 +98,12 @@ object HTTextUtil {
                     is ItemStack -> current = arg.hoverName.copy()
                     is Level -> current = arg.description.copy()
                     // Primitive
-                    is Int -> current = literalText(INT_FORMAT.format(arg.toLong()))
-                    is Long -> current = literalText(INT_FORMAT.format(arg))
-                    is Float -> current = literalText(DOUBLE_FORMAT.format(arg.toDouble()))
-                    is Double -> current = literalText(DOUBLE_FORMAT.format(arg))
+                    is Int -> current = INT_FORMAT.format(arg.toLong()).toText()
+                    is Long -> current = INT_FORMAT.format(arg).toText()
+                    is Float -> current = DOUBLE_FORMAT.format(arg.toDouble()).toText()
+                    is Double -> current = DOUBLE_FORMAT.format(arg).toText()
                     is Boolean -> current = boolText(arg)
-                    is Fraction -> current = literalText(DOUBLE_FORMAT.format(arg.toDouble()))
+                    is Fraction -> current = DOUBLE_FORMAT.format(arg.toDouble()).toText()
                     // Formatting
                     is TextColor -> {
                         if (cachedStyle.color == null) {
@@ -120,15 +133,15 @@ object HTTextUtil {
                         }
                     }
                     // Other
-                    is String -> current = literalText(arg)
+                    is String -> current = arg.toText()
                     else -> if (!TranslatableContents.isAllowedPrimitiveArgument(arg)) {
-                        current = literalText(arg.toString())
+                        current = arg.toString().toText()
                     }
                 }
 
                 if (!cachedStyle.isEmpty) {
                     if (current == null) {
-                        current = literalText(arg.toString())
+                        current = arg.toString().toText()
                     }
                     formattedArgs += current.setStyle(cachedStyle)
                     cachedStyle = Style.EMPTY

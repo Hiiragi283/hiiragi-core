@@ -2,8 +2,8 @@ package hiiragi283.core.common.registry.register
 
 import hiiragi283.core.api.item.HTSubCreativeTabContents
 import hiiragi283.core.api.registry.HTDeferredHolder
+import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.HTItemHolderLike
-import hiiragi283.core.api.registry.register.HTDeferredRegister
 import hiiragi283.core.api.text.HTTranslation
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries

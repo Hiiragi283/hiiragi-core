@@ -29,11 +29,19 @@ object HTResultHelper {
     fun item(stack: ItemStack): HTItemResult = item(stack.itemHolder, stack.count, stack.componentsPatch)
 
     @JvmStatic
-    fun item(stack: ImmutableItemStack): HTItemResult = item(stack.getHolder(), stack.getAmount(), stack.componentsPatch())
+    fun item(stack: ImmutableItemStack): HTItemResult = item(stack.getHolder(), stack.amount(), stack.componentsPatch())
 
     @JvmStatic
     fun item(holder: Holder<Item>, count: Int = 1, components: DataComponentPatch = DataComponentPatch.EMPTY): HTItemResult =
         item(HTHolderOrTagKey(holder), count, components)
+
+    @JvmStatic
+    fun item(
+        prefix: HTPrefixLike,
+        material: HTMaterialLike,
+        count: Int = 1,
+        item: ItemLike? = null,
+    ): HTItemResult = item(prefix, material, count, item?.toHolderLike()?.getHolder())
 
     @JvmStatic
     fun item(
@@ -64,7 +72,7 @@ object HTResultHelper {
     fun fluid(stack: FluidStack): HTFluidResult = fluid(stack.fluidHolder, stack.amount, stack.componentsPatch)
 
     @JvmStatic
-    fun fluid(stack: ImmutableFluidStack): HTFluidResult = fluid(stack.getHolder(), stack.getAmount(), stack.componentsPatch())
+    fun fluid(stack: ImmutableFluidStack): HTFluidResult = fluid(stack.getHolder(), stack.amount(), stack.componentsPatch())
 
     @JvmStatic
     fun fluid(holder: Holder<Fluid>, amount: Int, components: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResult =

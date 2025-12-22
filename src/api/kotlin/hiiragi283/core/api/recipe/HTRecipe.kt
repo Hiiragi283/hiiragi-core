@@ -8,13 +8,16 @@ import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.Recipe
 
 /**
- * Ragiumで使用する[Recipe]の拡張インターフェース
+ * [Recipe]を継承した[HTAbstractRecipe]の拡張インターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ * @see HTProcessingRecipe
  * @see mekanism.api.recipes.MekanismRecipe
  */
 interface HTRecipe :
     Recipe<HTRecipeInput>,
     HTAbstractRecipe {
-    @Deprecated("Not used in Ragium", level = DeprecationLevel.ERROR)
+    @Deprecated("Not used in Hiiragi Series", level = DeprecationLevel.ERROR)
     override fun canCraftInDimensions(width: Int, height: Int): Boolean = true
 
     @Deprecated(
@@ -28,10 +31,10 @@ interface HTRecipe :
     @Deprecated("Use `assemble(HTRecipeInput, HolderLookup.Provider) `instead", level = DeprecationLevel.ERROR)
     override fun getResultItem(registries: HolderLookup.Provider): ItemStack = ItemStack.EMPTY
 
-    @Deprecated("Not used in Ragium", level = DeprecationLevel.ERROR)
+    @Deprecated("Not used in Hiiragi Series", level = DeprecationLevel.ERROR)
     override fun getRemainingItems(input: HTRecipeInput): NonNullList<ItemStack> = super.getRemainingItems(input)
 
-    @Deprecated("Not used in Ragium", level = DeprecationLevel.ERROR)
+    @Deprecated("Not used in Hiiragi Series", level = DeprecationLevel.ERROR)
     override fun getIngredients(): NonNullList<Ingredient> = super.getIngredients()
 
     override fun isSpecial(): Boolean = true

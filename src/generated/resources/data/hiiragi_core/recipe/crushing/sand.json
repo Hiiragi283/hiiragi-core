@@ -4,6 +4,5 @@
   "ingredient": "#c:gravels",
   "result": {
     "id": "minecraft:sand"
-  },
-  "time": 200
+  }
 }

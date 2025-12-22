@@ -4,6 +4,5 @@
   "ingredient": "minecraft:dirt",
   "result": {
     "id": "minecraft:coarse_dirt"
-  },
-  "time": 200
+  }
 }
