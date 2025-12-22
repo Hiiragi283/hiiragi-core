@@ -128,7 +128,7 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
          * @param access このスロットへのアクセスの種類
          * @return 搬入できる場合は`true`
          */
-        protected open fun isStackValidForInsert(stack: STACK, access: HTStorageAccess): Boolean = isValid(stack)
+        open fun isStackValidForInsert(stack: STACK, access: HTStorageAccess): Boolean = isValid(stack)
 
         /**
          * 指定した[stack]をこのスロットに搬出できるか判定します。
@@ -136,7 +136,7 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
          * @param access このスロットへのアクセスの種類
          * @return 搬出できる場合は`true`
          */
-        protected open fun canStackExtract(stack: STACK, access: HTStorageAccess): Boolean = true
+        open fun canStackExtract(stack: STACK, access: HTStorageAccess): Boolean = true
 
         /**
          * 一度に搬入される数量の上限を返します。

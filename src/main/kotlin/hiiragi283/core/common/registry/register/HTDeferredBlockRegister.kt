@@ -5,8 +5,8 @@ import hiiragi283.core.api.item.HTBlockItem
 import hiiragi283.core.api.registry.BlockFactory
 import hiiragi283.core.api.registry.BlockWithContextFactory
 import hiiragi283.core.api.registry.HTDeferredHolder
+import hiiragi283.core.api.registry.HTDoubleDeferredRegister
 import hiiragi283.core.api.registry.ItemWithContextFactory
-import hiiragi283.core.api.registry.register.HTDoubleDeferredRegister
 import hiiragi283.core.common.registry.HTBasicDeferredBlock
 import hiiragi283.core.common.registry.HTDeferredBlock
 import hiiragi283.core.common.registry.HTDeferredItem

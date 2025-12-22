@@ -1,8 +1,8 @@
 package hiiragi283.core.common.registry.register
 
 import com.mojang.serialization.Codec
+import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.RegistryKey
-import hiiragi283.core.api.registry.register.HTDeferredRegister
 import hiiragi283.core.api.serialization.codec.BiCodec
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.network.RegistryFriendlyByteBuf

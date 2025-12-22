@@ -1,0 +1,23 @@
+package hiiragi283.core.common.storage.proxy
+
+import hiiragi283.core.api.storage.holder.HTCapabilityHolder
+import net.minecraft.core.Direction
+
+/**
+ * 任意のCapabilityのラッパーとなる抽象クラス
+ * @param side 現在の向き
+ * @param holder 搬入出の制御
+ * @see mekanism.common.capabilities.proxy.ProxyHandler
+ */
+abstract class HTProxyHandler(protected val side: Direction?, protected val holder: HTCapabilityHolder?) {
+    /**
+     * このCapabilityが読み取り専用かどうか判定します。
+     */
+    protected val readOnly: Boolean = side == null
+
+    protected val readOnlyInsert: Boolean
+        get() = readOnly || holder != null && !holder.canInsert(side)
+
+    protected val readOnlyExtract: Boolean
+        get() = readOnly || holder != null && !holder.canExtract(side)
+}

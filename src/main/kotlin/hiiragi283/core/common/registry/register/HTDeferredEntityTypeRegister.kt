@@ -1,6 +1,6 @@
 package hiiragi283.core.common.registry.register
 
-import hiiragi283.core.api.registry.register.HTDeferredRegister
+import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.common.registry.HTDeferredEntityType
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceLocation

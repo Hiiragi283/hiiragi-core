@@ -1,8 +1,5 @@
-package hiiragi283.core.api.registry.register
+package hiiragi283.core.api.registry
 
-import hiiragi283.core.api.registry.HTDeferredHolder
-import hiiragi283.core.api.registry.IdToFunction
-import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.resource.toId
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.neoforge.registries.DeferredRegister

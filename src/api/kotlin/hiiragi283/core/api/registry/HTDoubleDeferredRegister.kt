@@ -1,10 +1,6 @@
-package hiiragi283.core.api.registry.register
+package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.function.andThen
-import hiiragi283.core.api.registry.HTDeferredHolder
-import hiiragi283.core.api.registry.HTDoubleDeferredHolder
-import hiiragi283.core.api.registry.IdToFunction
-import net.minecraft.resources.ResourceLocation
 import net.neoforged.bus.api.IEventBus
 import java.util.function.Supplier
 
@@ -98,8 +94,8 @@ open class HTDoubleDeferredRegister<FIRST : Any, SECOND : Any> protected constru
 
     /**
      * IDのエイリアスを登録します。
-     * @param from 変更前のIDの[パス][ResourceLocation.getPath]
-     * @param to 変更後のIDの[パス][ResourceLocation.getPath]
+     * @param from 変更前のIDの[パス][net.minecraft.resources.ResourceLocation.getPath]
+     * @param to 変更後のIDの[パス][net.minecraft.resources.ResourceLocation.getPath]
      */
     fun addAlias(from: String, to: String) {
         firstRegister.addAlias(from, to)

@@ -2,10 +2,10 @@ package hiiragi283.core.common.registry.register
 
 import hiiragi283.core.api.registry.BlockWithContextFactory
 import hiiragi283.core.api.registry.HTDeferredHolder
+import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTSimpleFluidContent
 import hiiragi283.core.api.registry.ItemWithContextFactory
-import hiiragi283.core.api.registry.register.HTDeferredRegister
 import hiiragi283.core.api.tag.createCommonTag
 import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.common.registry.HTDeferredOnlyBlock
