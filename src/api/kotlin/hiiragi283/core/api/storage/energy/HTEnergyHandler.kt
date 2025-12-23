@@ -6,12 +6,21 @@ import net.minecraft.core.Direction
 import net.neoforged.neoforge.energy.IEnergyStorage
 
 /**
- * [IEnergyStorage]に基づいた[HTSidedEnergyStorage]の拡張インターフェース
+ * [IEnergyStorage]に基づいた[HTSidedEnergyStorage]の拡張インターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.api.energy.IMekanismStrictEnergyHandler
  */
 fun interface HTEnergyHandler : HTSidedEnergyStorage {
+    /**
+     * このハンドラが有効か判定します。
+     */
     fun hasEnergyStorage(): Boolean = true
 
+    /**
+     * 指定した[面][side]から[HTEnergyBattery]を取得します。
+     * @return 取得できない場合は`null`
+     */
     fun getEnergyBattery(side: Direction?): HTEnergyBattery?
 
     override fun receiveEnergy(toReceive: Int, action: HTStorageAction, side: Direction?): Int =

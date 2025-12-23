@@ -12,6 +12,12 @@ import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeType
 import org.slf4j.Logger
 
+/**
+ * Hiiragi Coreとそれを前提とするmodで使用される[EmiPlugin]の抽象クラスです。
+ * @param modId 対象のMOD ID
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 abstract class HTEmiPlugin(protected val modId: String) : EmiPlugin {
     companion object {
         @JvmField
@@ -20,15 +26,24 @@ abstract class HTEmiPlugin(protected val modId: String) : EmiPlugin {
 
     //    Extensions    //
 
+    /**
+     * 指定した[カテゴリ][category]を[レジストリ][registry]に登録します。
+     */
     protected fun addCategory(registry: EmiRegistry, category: HTEmiRecipeCategory) {
         registry.addCategory(category)
         category.workStations.forEach(registry::addWorkstation.partially1(category))
     }
 
+    /**
+     * レシピが登録されなかったときにログを出力します。
+     */
     protected fun skipRecipe(id: ResourceLocation) {
         LOGGER.warn("Skipped recipe for EMI registration: $id")
     }
 
+    /**
+     * [レシピID][id]に基づいてレシピを追加します。
+     */
     protected inline fun addRecipeSafe(registry: EmiRegistry, id: ResourceLocation, factory: (ResourceLocation) -> EmiRecipe) {
         runCatching {
             registry.addRecipe(factory(id))
@@ -47,6 +62,12 @@ abstract class HTEmiPlugin(protected val modId: String) : EmiPlugin {
     }
 
     /**
+     * [EmiRegistry.getRecipeManager]に基づいてレシピを追加します。
+     * @param BASE [RecipeType]のレシピのクラス
+     * @param RECIPE [BASE]を継承したクラス
+     * @param EMI_RECIPE EMIに登録するレシピのクラス
+     * @param recipeType レシピのタイプ
+     * @param factory [RECIPE]を[EMI_RECIPE]に変換するブロック
      * @see mekanism.client.recipe_viewer.emi.MekanismEmi.addCategoryAndRecipes
      */
     protected inline fun <BASE : HTRecipe, reified RECIPE : BASE, EMI_RECIPE : EmiRecipe> addRegistryRecipes(
@@ -71,9 +92,11 @@ abstract class HTEmiPlugin(protected val modId: String) : EmiPlugin {
     }
 
     /**
-     * 指定された引数からレシピを生成し，登録します。
-     * @param RECIPE [recipes]で渡す一覧のクラス
-     * @param EMI_RECIPE [factory]で返すレシピのクラス
+     * レシピの一覧を登録します。
+     * @param RECIPE 元となるレシピのクラス
+     * @param EMI_RECIPE EMIに登録するレシピのクラス
+     * @param recipes [ResourceLocation]と[RECIPE]のペアの一覧
+     * @param factory [ResourceLocation]と[RECIPE]を[EMI_RECIPE]に変換するブロック
      */
     private fun <RECIPE : Any, EMI_RECIPE : EmiRecipe> addRecipes(
         registry: EmiRegistry,

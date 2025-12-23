@@ -13,7 +13,11 @@ import net.neoforged.neoforge.common.conditions.TagEmptyCondition
 import java.util.function.UnaryOperator
 
 /**
- * Ragiumで使用される[Recipe]のビルダー
+ * Hiiragi Coreとそれを前提とするmodで使用される[Recipe]のビルダークラスです。
+ * @param BUILDER [HTRecipeBuilder]を継承したクラス
+ * @param prefix レシピIDに使われる前置詞
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.api.datagen.recipe.MekanismRecipeBuilder
  */
 abstract class HTRecipeBuilder<BUILDER : HTRecipeBuilder<BUILDER>>(private val prefix: String) {
@@ -26,8 +30,16 @@ abstract class HTRecipeBuilder<BUILDER : HTRecipeBuilder<BUILDER>>(private val p
 
     fun tagCondition(prefix: HTPrefixLike, material: HTMaterialLike): BUILDER = tagCondition(prefix.itemTagKey(material))
 
+    /**
+     * 指定した[tagKey]が存在する時に読み込むよう，条件を指定します。
+     * @return このビルダーのインスタンス
+     */
     fun tagCondition(tagKey: TagKey<Item>): BUILDER = addCondition(NotCondition(TagEmptyCondition(tagKey)))
 
+    /**
+     * [読み込みの条件][condition]を追加します。
+     * @return このビルダーのインスタンス
+     */
     fun addCondition(condition: ICondition): BUILDER {
         this.conditions.add(condition)
         return self()
@@ -36,35 +48,35 @@ abstract class HTRecipeBuilder<BUILDER : HTRecipeBuilder<BUILDER>>(private val p
     //    Save    //
 
     /**
-     * [getPrimalId]を[prefix]で前置したIDで登録します。
+     * [ID][getPrimalId]を[prefix]で前置した値でレシピを生成します。
      */
     fun savePrefixed(recipeOutput: RecipeOutput, prefix: String) {
         save(recipeOutput, getPrimalId().withPrefix(prefix))
     }
 
     /**
-     * [getPrimalId]を[suffix]で後置したIDで登録します。
+     * [ID][getPrimalId]を[suffix]で後置した値でレシピを生成します。
      */
     fun saveSuffixed(recipeOutput: RecipeOutput, suffix: String) {
         save(recipeOutput, getPrimalId().withSuffix(suffix))
     }
 
     /**
-     * [getPrimalId]を[operator]で修飾したIDで登録します。
+     * [ID][getPrimalId]を[operator]で修飾した値でレシピを生成します。
      */
     fun saveModified(recipeOutput: RecipeOutput, operator: UnaryOperator<String>) {
         save(recipeOutput, getPrimalId().withPath(operator))
     }
 
     /**
-     * IDを[getPrimalId]から，レシピを生成します。
+     * [ID][getPrimalId]でレシピを生成します。
      */
     fun save(recipeOutput: RecipeOutput) {
         save(recipeOutput, getPrimalId())
     }
 
     /**
-     * IDを[id]から，レシピを生成します。
+     * [ID][id]でレシピを生成します。
      */
     fun save(recipeOutput: RecipeOutput, id: ResourceLocation) {
         recipeOutput.accept(
@@ -76,9 +88,12 @@ abstract class HTRecipeBuilder<BUILDER : HTRecipeBuilder<BUILDER>>(private val p
     }
 
     /**
-     * 自動生成したレシピIDを返します。
+     * デフォルトのIDを取得します。
      */
     protected abstract fun getPrimalId(): ResourceLocation
 
+    /**
+     * 生成されるレシピを作成します。
+     */
     protected abstract fun createRecipe(): Recipe<*>
 }

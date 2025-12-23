@@ -36,20 +36,57 @@ import net.minecraft.world.level.material.Fluid
 fun EmiStack.copyAsCatalyst(): EmiStack = copy().setRemainder(this)
 
 // Mutable Stack
+
+/**
+ * この[アイテム][this]を[EmiStack]に変換します。
+ * @param amount スタックの個数
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun ItemLike.toEmi(amount: Int = 1): EmiStack = EmiStack.of(this, amount.toLong())
 
+/**
+ * この[Holder][this]をアイテムの[EmiStack]に変換します。
+ * @param amount スタックの個数
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun Holder<out ItemLike>.toItemEmi(amount: Int = 1): EmiStack = this.value().toEmi(amount)
 
+/**
+ * この[ItemStack][this]を[EmiStack]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun ItemStack.toEmi(): EmiStack = EmiStack.of(this)
 
+/**
+ * この[液体][this]を[EmiStack]に変換します。
+ * @param amount スタックの量
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun Fluid.toEmi(amount: Int = 0): EmiStack = EmiStack.of(this, amount.toLong())
 
 // Immutable Stack
+
+/**
+ * この[ImmutableItemStack][this]を[EmiStack]に変換します。
+ * @return このスタックが空の場合は[EmiStack.EMPTY]
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun ImmutableItemStack?.toEmi(): EmiStack = when (this) {
     null -> EmiStack.EMPTY
     else -> EmiStack.of(this.type(), this.componentsPatch(), this.amount().toLong())
 }
 
+/**
+ * この[ImmutableFluidStack][this]を[EmiStack]に変換します。
+ * @return このスタックが空の場合は[EmiStack.EMPTY]
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun ImmutableFluidStack?.toEmi(): EmiStack = when (this) {
     null -> EmiStack.EMPTY
     else -> EmiStack.of(this.type(), this.componentsPatch(), this.amount().toLong())
@@ -57,21 +94,63 @@ fun ImmutableFluidStack?.toEmi(): EmiStack = when (this) {
 
 // TagKey
 
+/**
+ * この[タグ][this]を[EmiIngredient]に変換します。
+ * @param amount 材料の量
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun TagKey<*>.toEmi(amount: Int = 1): EmiIngredient = EmiIngredient
     .of(this, amount.toLong())
     .takeUnless(EmiIngredient::isEmpty)
     ?: createErrorStack(HTCommonTranslation.EMPTY_TAG_KEY.translate(this))
 
+/**
+ * この[プレフィックス][this]を[HTPrefixLike.createCommonTagKey]に基づいて[EmiIngredient]に変換します。
+ * @param T レジストリの要素のクラス
+ * @param key レジストリのキー
+ * @param amount 材料の量
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun <T : Any> HTPrefixLike.toEmi(key: RegistryKey<T>, amount: Int = 1): EmiIngredient = this.createCommonTagKey(key).toEmi(amount)
 
+/**
+ * この[プレフィックス][this]を[HTPrefixLike.createTagKey]に基づいて[EmiIngredient]に変換します。
+ * @param T レジストリの要素のクラス
+ * @param key レジストリのキー
+ * @param material 対象の素材
+ * @param amount 材料の量
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun <T : Any> HTPrefixLike.toEmi(key: RegistryKey<T>, material: HTMaterialLike, amount: Int = 1): EmiIngredient =
     this.createTagKey(key, material).toEmi(amount)
 
+/**
+ * この[プレフィックス][this]をアイテムの[EmiIngredient]に変換します。
+ * @param amount 材料の量
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun HTPrefixLike.toItemEmi(amount: Int = 1): EmiIngredient = toEmi(Registries.ITEM, amount)
 
+/**
+ * この[プレフィックス][this]をアイテムの[EmiIngredient]に変換します。
+ * @param material 対象の素材
+ * @param amount 材料の量
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun HTPrefixLike.toItemEmi(material: HTMaterialLike, amount: Int = 1): EmiIngredient = toEmi(Registries.ITEM, material, amount)
 
 // Ingredient
+
+/**
+ * この[材料][this]を[EmiIngredient]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun HTItemIngredient.toEmi(): EmiIngredient = this
     .unwrap()
     .map(
@@ -79,6 +158,11 @@ fun HTItemIngredient.toEmi(): EmiIngredient = this
         { stacks: List<ImmutableItemStack> -> stacks.map(ImmutableItemStack::toEmi).let(::ingredient) },
     )
 
+/**
+ * この[材料][this]を[EmiIngredient]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun HTFluidIngredient.toEmi(): EmiIngredient = this
     .unwrap()
     .map(
@@ -93,15 +177,42 @@ private fun ingredient(stacks: List<EmiStack>): EmiIngredient = when {
 }
 
 // Result
+
+/**
+ * この[完成品][this]を[EmiStack]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun HTItemResult.toEmi(): EmiStack = this.getStackResult(null).map(ImmutableItemStack::toEmi, ::createErrorStack)
 
+/**
+ * この[完成品][this]を[EmiStack]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun HTFluidResult.toEmi(): EmiStack = this.getStackResult(null).map(ImmutableFluidStack::toEmi, ::createErrorStack)
 
 // Fluid Content
+
+/**
+ * この[液体][this]を液体の[EmiStack]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun HTFluidWithTag<*>.toFluidEmi(amount: Int = 0): EmiStack = this.get().toEmi(amount)
 
+/**
+ * 指定した[翻訳][translation]からエラーを表す[EmiStack]を作成します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun createErrorStack(translation: HTTranslation): EmiStack = createErrorStack(translation.translate())
 
+/**
+ * 指定した[テキスト][message]からエラーを表す[EmiStack]を作成します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun createErrorStack(message: Component): EmiStack {
     val stack = ItemStack(Items.BARRIER)
     stack.set(DataComponents.CUSTOM_NAME, message)
@@ -110,6 +221,11 @@ fun createErrorStack(message: Component): EmiStack {
 
 //    Widget    //
 
+/**
+ * この[範囲][this]をEMIの[範囲][Bounds]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 fun HTBounds.toEmi(): Bounds = Bounds(this.x, this.y, this.width, this.height)
 
 fun WidgetHolder.addArrow(x: Int, y: Int): FillingArrowWidget = addFillingArrow(x, y, 2000)

@@ -13,11 +13,13 @@ import net.neoforged.neoforge.common.conditions.ICondition
 import net.neoforged.neoforge.common.conditions.WithConditions
 import net.neoforged.neoforge.common.data.AdvancementProvider
 import net.neoforged.neoforge.common.data.ExistingFileHelper
-import java.nio.file.Path
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
 
 /**
+ * [HTAdvancementGenerator]に基づいて進捗を生成する[DataProvider]の抽象クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see AdvancementProvider
  */
 open class HTAdvancementProvider(
@@ -27,10 +29,16 @@ open class HTAdvancementProvider(
     private val subProviders: List<HTAdvancementGenerator>,
 ) : DataProvider {
     companion object {
+        /**
+         * 指定した[subProviders]から[HTAdvancementProvider]を作成するブロックを返します。
+         */
         @JvmStatic
         fun create(vararg subProviders: HTAdvancementGenerator): HTDataGenerator.Factory<HTAdvancementProvider> =
             create(subProviders.toList())
 
+        /**
+         * 指定した[subProviders]から[HTAdvancementProvider]を作成するブロックを返します。
+         */
         @JvmStatic
         fun create(subProviders: List<HTAdvancementGenerator>): HTDataGenerator.Factory<HTAdvancementProvider> =
             HTDataGenerator.Factory { context: HTDataGenContext ->
@@ -46,14 +54,13 @@ open class HTAdvancementProvider(
         val list: MutableList<CompletableFuture<*>> = mutableListOf()
         val output = HTAdvancementOutput { id: ResourceLocation, adv: Advancement, conditions: List<ICondition> ->
             check(set.add(id)) { "Duplicate advancement $id" }
-            val path: Path = pathProvider.json(id)
             list.add(
                 DataProvider.saveStable(
                     output,
                     provider,
                     Advancement.CONDITIONAL_CODEC,
                     Optional.of(WithConditions(conditions, adv)),
-                    path,
+                    pathProvider.json(id),
                 ),
             )
         }

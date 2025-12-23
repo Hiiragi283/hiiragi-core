@@ -5,10 +5,15 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.capability.IFluidHandler
 
 /**
- * 向きに応じて制御された[IFluidHandler]の拡張インターフェース
+ * 向きに応じて制御された[IFluidHandler]の拡張インターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.api.fluid.ISidedFluidHandler
  */
 interface HTSidedFluidHandler : IFluidHandler {
+    /**
+     * デフォルトの向きを取得します。
+     */
     fun getFluidSideFor(): Direction? = null
 
     fun getTanks(side: Direction?): Int

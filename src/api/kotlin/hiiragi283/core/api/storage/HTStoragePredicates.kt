@@ -4,6 +4,9 @@ import java.util.function.BiPredicate
 import java.util.function.Predicate
 
 /**
+ * ストレージ周りで使用する条件をまとめたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.api.functions.ConstantPredicates
  */
 @Suppress("UNCHECKED_CAST")

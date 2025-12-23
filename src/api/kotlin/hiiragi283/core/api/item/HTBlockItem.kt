@@ -9,12 +9,20 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.Block
 
 /**
+ * ブロックのクラスを指定できる[BlockItem]の拡張クラスです。
+ * @param BLOCK [block]のクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.common.item.block.ItemBlockMekanism
  */
 open class HTBlockItem<BLOCK : Block>(block: BLOCK, properties: Properties) : BlockItem(block, properties) {
     @Suppress("UNCHECKED_CAST")
     override fun getBlock(): BLOCK = super.getBlock() as BLOCK
 
+    /**
+     * 表示名の色を取得します。
+     * @return 色を付けない場合は`null`
+     */
     protected open fun getNameColor(stack: ItemStack): ChatFormatting? = null
 
     override fun getName(stack: ItemStack): Component {

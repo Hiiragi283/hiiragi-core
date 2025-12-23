@@ -112,7 +112,7 @@ open class HTBasicFluidTank protected constructor(
         onContentsChanged()
     }
 
-    override fun updateAmount(stack: ImmutableFluidStack, amount: Int) {
+    override fun updateAmount(amount: Int) {
         this.stack.amount = amount
     }
 }

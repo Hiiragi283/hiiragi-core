@@ -262,8 +262,7 @@ val generateModMetadata: TaskProvider<ProcessResources> = tasks.register("genera
         "mod_license" to "MPL-2.0",
         "mod_version" to modVersion,
         "mod_authors" to "Hiiragi283",
-        "mod_description" to
-            "Ragium is a tech mod based on vanilla materials. This mod aims to expand vanilla features and automate many work.",
+        "mod_description" to "Library mod for Hiiragi Series",
     )
     inputs.properties(replaceProperties)
     expand(replaceProperties)

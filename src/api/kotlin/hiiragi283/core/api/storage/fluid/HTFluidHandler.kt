@@ -9,14 +9,26 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.capability.IFluidHandler
 
 /**
- * [HTFluidTank]に基づいた[HTSidedFluidHandler]の拡張インターフェース
+ * [HTFluidTank]に基づいた[HTSidedFluidHandler]の拡張インターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.api.fluid.IMekanismFluidHandler
  */
 fun interface HTFluidHandler : HTSidedFluidHandler {
+    /**
+     * このハンドラが有効か判定します。
+     */
     fun hasFluidHandler(): Boolean = true
 
+    /**
+     * 指定した[面][side]から[HTFluidTank]の一覧を取得します。
+     */
     fun getFluidTanks(side: Direction?): List<HTFluidTank>
 
+    /**
+     * 指定した[面][side]と[インデックス][tank]から[HTFluidTank]を取得します。
+     * @return 指定した[インデックス][tank]が範囲外の場合は`null`
+     */
     fun getFluidTank(tank: Int, side: Direction?): HTFluidTank? = getFluidTanks(side).getOrNull(tank)
 
     override fun getFluidInTank(tank: Int, side: Direction?): FluidStack = getFluidTank(tank, side)?.getFluidStack() ?: FluidStack.EMPTY

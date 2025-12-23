@@ -7,30 +7,33 @@ import org.apache.commons.lang3.math.Fraction
 import kotlin.math.max
 
 /**
- * 単一の[STACK]を保持するインターフェース
+ * 単一の不変のスタックを保持するインターフェースです。
  * @param STACK 保持するスタックのクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ * @see HTStackSlot
  */
 interface HTStackView<STACK : ImmutableStack<*, STACK>> : HTAmountView.IntSized {
     /**
-     * 保持している[STACK]を返します。
+     * 保持しているスタックを取得します。
      */
     fun getStack(): STACK?
 
     /**
-     * このスロットの容量を返します。
-     * @return [Int]値での容量
+     * 指定した[stack]から容量を取得します。
+     * @return [Int]型での容量
      */
     fun getCapacity(stack: STACK?): Int
 
     /**
-     * このスロットの空き容量を返します。
-     * @return [Int]値での空き容量
+     * 指定した[stack]から空き容量を取得します。
+     * @return [Int]型での空き容量
      */
     fun getNeeded(stack: STACK?): Int = max(0, getCapacity(stack) - getAmount())
 
     /**
-     * このスロットの占有率を返します。
-     * @return [Fraction]値での占有率
+     * 指定した[stack]から占有率を取得します。
+     * @return [Fraction]型での占有率
      */
     fun getStoredLevel(stack: STACK?): Fraction = fixedFraction(getAmount(), getCapacity(stack))
 

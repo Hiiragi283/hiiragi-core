@@ -7,14 +7,26 @@ import net.minecraft.core.Direction
 import net.minecraft.world.item.ItemStack
 
 /**
- * [HTItemSlot]に基づいた[HTSidedItemHandler]の拡張インターフェース
+ * [HTItemSlot]に基づいた[HTSidedItemHandler]の拡張インターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.api.inventory.IMekanismInventory
  */
 fun interface HTItemHandler : HTSidedItemHandler {
+    /**
+     * このハンドラが有効か判定します。
+     */
     fun hasItemHandler(): Boolean = true
 
+    /**
+     * 指定した[面][side]から[HTItemSlot]の一覧を取得します。
+     */
     fun getItemSlots(side: Direction?): List<HTItemSlot>
 
+    /**
+     * 指定した[面][side]と[インデックス][slot]から[HTItemSlot]を取得します。
+     * @return 指定した[インデックス][slot]が範囲外の場合は`null`
+     */
     fun getItemSlot(slot: Int, side: Direction?): HTItemSlot? = getItemSlots(side).getOrNull(slot)
 
     override fun getStackInSlot(slot: Int, side: Direction?): ItemStack = getItemSlot(slot, side)?.getItemStack() ?: ItemStack.EMPTY

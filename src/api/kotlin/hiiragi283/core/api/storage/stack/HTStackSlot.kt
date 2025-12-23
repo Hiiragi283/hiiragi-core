@@ -8,34 +8,36 @@ import hiiragi283.core.api.storage.HTStorageAction
 import kotlin.math.min
 
 /**
- * 単一の[STACK]を保持し，出し入れが可能な[HTStackView]の拡張インターフェース
+ * スタックを搬入/搬出できることを表すインターフェースです。
  * @param STACK 保持するスタックのクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
     HTStackView<STACK>,
     HTValueSerializable,
     HTContentListener {
     /**
-     * 指定した[stack]がスロットに有効か判定します。
+     * 指定した[stack]が有効か判定します。
      * @return 有効な場合は`true`
      */
     fun isValid(stack: STACK): Boolean
 
     /**
-     * 指定した引数から[STACK]を搬入します。
-     * @param stack 搬入される[STACK]
-     * @param action [hiiragi283.core.api.storage.HTStorageAction.EXECUTE]の場合のみ実際に搬入を行います。
+     * このスロットにスタックを搬入します。
+     * @param stack 搬入するスタック
+     * @param action 処理のフラグ
      * @param access このスロットへのアクセスの種類
-     * @return 搬入されなかった[STACK]
+     * @return 搬入されないスタック
      */
     fun insert(stack: STACK?, action: HTStorageAction, access: HTStorageAccess): STACK?
 
     /**
-     * 指定した引数から[STACK]を搬出します。
-     * @param stack 搬出される[STACK]
-     * @param action [HTStorageAction.EXECUTE]の場合のみ実際に搬出を行います。
+     * このスロットからスタックを搬出します。
+     * @param stack 搬出するスタック
+     * @param action 処理のフラグ
      * @param access このスロットへのアクセスの種類
-     * @return 搬出された[STACK]
+     * @return 搬出されるスタック
      */
     fun extract(stack: STACK?, action: HTStorageAction, access: HTStorageAccess): STACK? = when {
         stack == null -> null
@@ -44,40 +46,53 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
     }
 
     /**
-     * 指定した引数から[STACK]を搬出します。
-     * @param amount 搬出する個数の最大値
-     * @param action [HTStorageAction.EXECUTE]の場合のみ実際に搬出を行います。
+     * このスロットからスタックを搬出します。
+     * @param amount 搬出する量
+     * @param action 処理のフラグ
      * @param access このスロットへのアクセスの種類
-     * @return 搬出された[STACK]
+     * @return 搬出されるスタック
      */
     fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): STACK?
 
     /**
-     * 指定した[other]と[getStack]が等価か判定します。
+     * 指定した[other]が現在の[スタック][getStack]と等価か判定します。
      */
     fun isSameStack(other: STACK?): Boolean
 
     //    Basic    //
 
     /**
-     * [HTStackSlot]の基本的な実装
+     * [HTStackSlot]の基本的な実装クラスです。
+     * @param STACK 保持するスタックのクラス
+     * @author Hiiragi Tsubasa
+     * @since 0.1.0
      */
     abstract class Basic<STACK : ImmutableStack<*, STACK>> : HTStackSlot<STACK> {
+        /**
+         * 指定した[stack]で中身を置換します。
+         */
         abstract fun setStack(stack: STACK?)
 
         /**
-         * 指定した引数をもとに，現在保持しているスタックの個数を変更します。
-         * @param stack 現在のスタック
-         * @param amount 新しい数量
+         * 保持しているスタックの量を変更します。
+         * @param amount 新しい量
          */
-        protected abstract fun updateAmount(stack: STACK, amount: Int)
+        protected abstract fun updateAmount(amount: Int)
 
+        /**
+         * 保持しているスタックの量を追加します。
+         * @param amount 追加する量
+         */
         protected fun growAmount(stack: STACK, amount: Int) {
-            updateAmount(stack, stack.amount() + amount)
+            updateAmount(stack.amount() + amount)
         }
 
+        /**
+         * 保持しているスタックの量を減少します。
+         * @param amount 減少する量
+         */
         protected fun shrinkAmount(stack: STACK, amount: Int) {
-            updateAmount(stack, stack.amount() - amount)
+            updateAmount(stack.amount() - amount)
         }
 
         /**
@@ -123,29 +138,29 @@ interface HTStackSlot<STACK : ImmutableStack<*, STACK>> :
         }
 
         /**
-         * 指定した[stack]をこのスロットに搬入できるか判定します。
-         * @param stack 搬入される[STACK]
+         * 指定した[stack]がこのスロットに搬入できるか判定します。
+         * @param stack 搬入されるスタック
          * @param access このスロットへのアクセスの種類
          * @return 搬入できる場合は`true`
          */
         open fun isStackValidForInsert(stack: STACK, access: HTStorageAccess): Boolean = isValid(stack)
 
         /**
-         * 指定した[stack]をこのスロットに搬出できるか判定します。
-         * @param stack 搬出される[STACK]
+         * 指定した[stack]をこのスロットから搬出できるか判定します。
+         * @param stack 搬出されるスタック
          * @param access このスロットへのアクセスの種類
          * @return 搬出できる場合は`true`
          */
         open fun canStackExtract(stack: STACK, access: HTStorageAccess): Boolean = true
 
         /**
-         * 一度に搬入される数量の上限を返します。
+         * 一度に搬入される量の上限を返します。
          * @param access このスロットへのアクセスの種類
          */
         protected open fun inputRate(access: HTStorageAccess): Int = Int.MAX_VALUE
 
         /**
-         * 一度に搬出される数量の上限を返します。
+         * 一度に搬出される量の上限を返します。
          * @param access このスロットへのアクセスの種類
          */
         protected open fun outputRate(access: HTStorageAccess): Int = Int.MAX_VALUE

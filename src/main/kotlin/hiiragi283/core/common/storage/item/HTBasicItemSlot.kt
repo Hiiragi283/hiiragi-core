@@ -111,7 +111,7 @@ open class HTBasicItemSlot protected constructor(
         onContentsChanged()
     }
 
-    override fun updateAmount(stack: ImmutableItemStack, amount: Int) {
+    override fun updateAmount(amount: Int) {
         this.stack.count = amount
     }
 }

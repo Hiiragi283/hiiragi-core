@@ -80,8 +80,8 @@ object HTRecipeEventHandler {
         val level: Level = event.level
         if (level.isClientSide) return
         if (!event.state.`is`(Blocks.MAGMA_BLOCK)) return
-        val entity: Entity = event.entity
-        if (entity is ItemEntity && entity.isAlive && !isCompleted(entity)) {
+        val entity: ItemEntity = event.entity
+        if (entity.isAlive && !isCompleted(entity)) {
             val input: HTRecipeInput = createInput(entity) ?: return
             val (_, recipe: HTDryingRecipe) = HCRecipeTypes.DRYING.getRecipeFor(input, level, null) ?: return
             val tag: CompoundTag = entity.persistentData

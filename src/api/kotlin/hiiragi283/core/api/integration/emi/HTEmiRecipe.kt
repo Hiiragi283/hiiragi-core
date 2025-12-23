@@ -22,7 +22,16 @@ import java.util.Random
 import java.util.function.Function
 
 /**
+ * Hiiragi Coreとそれを前提とするmodで使用される[EmiRecipe]の抽象クラスです。
+ * @param RECIPE 元となるレシピのクラス
+ * @param category レシピの[カテゴリ][EmiRecipeCategory]
+ * @param id このレシピの[ID][ResourceLocation]
+ * @param recipe [RECIPE]のインスタンス
+ * @param bounds このレシピが表示される範囲
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.client.recipe_viewer.emi.recipe.MekanismEmiRecipe
+ * @see HTEmiHolderRecipe
  */
 abstract class HTEmiRecipe<RECIPE : Any>(
     private val category: EmiRecipeCategory,
@@ -42,53 +51,98 @@ abstract class HTEmiRecipe<RECIPE : Any>(
     private val outputs: MutableList<EmiStack> = mutableListOf()
     private val renderOutputs: MutableList<EmiIngredient> = mutableListOf()
 
+    /**
+     * 指定した[インデックス][index]に対応する[材料][EmiIngredient]を取得します。
+     * @return 指定した[インデックス][index]が範囲外の場合は[EmiStack.EMPTY]
+     */
     protected fun input(index: Int): EmiIngredient = inputs.getOrNull(index) ?: EmiStack.EMPTY
 
+    /**
+     * 指定した[インデックス][index]に対応する[触媒][EmiIngredient]を取得します。
+     * @return 指定した[インデックス][index]が範囲外の場合は[EmiStack.EMPTY]
+     */
     protected fun catalyst(index: Int): EmiIngredient = catalysts.getOrNull(index) ?: EmiStack.EMPTY
 
+    /**
+     * 指定した[インデックス][index]に対応する[完成品のプレビュー][EmiIngredient]を取得します。
+     * @return 指定した[インデックス][index]が範囲外の場合は[EmiStack.EMPTY]
+     */
     protected fun output(index: Int): EmiIngredient = renderOutputs.getOrNull(index) ?: EmiStack.EMPTY
 
+    /**
+     * アイテムの材料を追加します。
+     */
     protected fun addInput(ingredient: HTItemIngredient?) {
         addInput(ingredient?.let(HTItemIngredient::toEmi))
     }
 
+    /**
+     * 液体の材料を追加します。
+     */
     protected fun addInput(ingredient: HTFluidIngredient?) {
         addInput(ingredient?.let(HTFluidIngredient::toEmi))
     }
 
+    /**
+     * 材料を追加します。
+     */
     protected fun addInput(ingredient: EmiIngredient?) {
         inputs.add(ingredient ?: EmiStack.EMPTY)
     }
 
+    /**
+     * 空の材料を追加します。
+     */
     protected fun addEmptyInput() {
         inputs.add(EmiStack.EMPTY)
     }
 
+    /**
+     * アイテムの触媒を追加します。
+     */
     protected fun addCatalyst(ingredient: HTItemIngredient?) {
         addCatalyst(ingredient?.let(HTItemIngredient::toEmi))
     }
 
+    /**
+     * 触媒を追加します。
+     */
     protected fun addCatalyst(ingredient: EmiIngredient?) {
         catalysts.add(ingredient ?: EmiStack.EMPTY)
     }
 
+    /**
+     * アイテムの完成品を追加します。
+     */
     protected fun addOutputs(result: HTItemResult?) {
         addOutputs(result?.let(::result))
     }
 
+    /**
+     * 液体の完成品を追加します。
+     */
     protected fun addOutputs(result: HTFluidResult?) {
         addOutputs(result?.let(::result))
     }
 
+    /**
+     * アイテムと液体の完成品を追加します。
+     */
     protected fun addOutputs(results: Ior<HTItemResult, HTFluidResult>) {
         addOutputs(results.getLeft())
         addOutputs(results.getRight())
     }
 
+    /**
+     * 完成品を追加します。
+     */
     protected fun addOutputs(stacks: EmiStack?) {
         addOutputs(listOfNotNull(stacks))
     }
 
+    /**
+     * 完成品を追加します。
+     */
     protected fun addOutputs(stacks: List<EmiStack>) {
         if (stacks.isEmpty()) {
             outputs.add(EmiStack.EMPTY)
@@ -127,17 +181,40 @@ abstract class HTEmiRecipe<RECIPE : Any>(
 
     //    Extensions    //
 
+    /**
+     * 指定した[インデックス][index]から座標を返します。
+     */
     fun getPosition(index: Int): Int = index * 18
 
+    /**
+     * 指定した[インデックス][index]から座標を返します。
+     */
     fun getPosition(index: Double): Int = (index * 18).toInt()
 
+    /**
+     * このレシピが不定形判定をサポートしていることを示します。
+     */
     fun WidgetHolder.setShapeless(): TextureWidget = addTexture(EmiTexture.SHAPELESS, getPosition(6) + 1, getPosition(0) + 3)
 
+    /**
+     * このレシピに触媒スロットを追加します。
+     * @param index 触媒のインデックス
+     * @param x x軸方向の座標
+     * @param y y軸方向の座標
+     */
     fun WidgetHolder.addCatalyst(index: Int, x: Int, y: Int): SlotWidget {
         val catalyst: EmiIngredient = catalyst(index)
         return addSlot(catalyst, x, y).catalyst(!catalyst.isEmpty)
     }
 
+    /**
+     * このレシピに完成品スロットを追加します。
+     * @param index 触媒のインデックス
+     * @param x x軸方向の座標
+     * @param y y軸方向の座標
+     * @param large スロットを大型で表示するかどうか
+     * @param drawBack スロットの背景を描画するかどうか
+     */
     fun WidgetHolder.addOutput(
         index: Int,
         x: Int,
@@ -149,6 +226,15 @@ abstract class HTEmiRecipe<RECIPE : Any>(
         else -> addSlot(output(index), x, y)
     }.recipeContext(this@HTEmiRecipe).drawBack(drawBack)
 
+    /**
+     * このレシピに動的な完成品スロットを追加します。
+     * @param factory 乱数からプレビューを生成するブロック
+     * @param unique 多分識別用のユニークなIDな気がする
+     * @param x x軸方向の座標
+     * @param y y軸方向の座標
+     * @param large スロットを大型で表示するかどうか
+     * @param drawBack スロットの背景を描画するかどうか
+     */
     fun WidgetHolder.addGeneratedOutput(
         factory: Function<Random, EmiIngredient>,
         unique: Int,

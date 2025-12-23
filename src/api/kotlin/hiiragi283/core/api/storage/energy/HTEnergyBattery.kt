@@ -8,6 +8,9 @@ import hiiragi283.core.api.storage.amount.HTAmountSlot
 import kotlin.math.min
 
 /**
+ * エネルギーを保持する[HTAmountSlot.IntSized]の拡張インターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.api.energy.IEnergyContainer
  */
 interface HTEnergyBattery :
@@ -16,9 +19,14 @@ interface HTEnergyBattery :
     HTContentListener {
     //    Basic    //
 
+    /**
+     * [HTEnergyBattery]の基本的な実装クラスです。
+     * @author Hiiragi Tsubasa
+     * @since 0.1.0
+     */
     abstract class Basic : HTEnergyBattery {
         /**
-         * 指定した電気量を代入します。
+         * 指定した[amount]で中身を置換します。
          */
         abstract fun setAmount(amount: Int)
 
@@ -44,12 +52,30 @@ interface HTEnergyBattery :
             return toRemove
         }
 
+        /**
+         * このスロットに搬入できるか判定します。
+         * @param access このスロットへのアクセスの種類
+         * @return 搬入できる場合は`true`
+         */
         protected open fun canInsert(access: HTStorageAccess): Boolean = true
 
+        /**
+         * このスロットから搬出できるか判定します。
+         * @param access このスロットへのアクセスの種類
+         * @return 搬出できる場合は`true`
+         */
         protected open fun canExtract(access: HTStorageAccess): Boolean = true
 
+        /**
+         * 一度に搬入される量の上限を返します。
+         * @param access このスロットへのアクセスの種類
+         */
         protected open fun inputRate(access: HTStorageAccess): Int = Int.MAX_VALUE
 
+        /**
+         * 一度に搬出される量の上限を返します。
+         * @param access このスロットへのアクセスの種類
+         */
         protected open fun outputRate(access: HTStorageAccess): Int = Int.MAX_VALUE
 
         override fun toString(): String = "HTEnergyBattery(amount=${getAmount()}, capacity=${getCapacity()})"

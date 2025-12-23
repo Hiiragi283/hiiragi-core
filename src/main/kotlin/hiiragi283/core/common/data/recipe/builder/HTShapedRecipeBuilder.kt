@@ -4,7 +4,6 @@ import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.stack.ImmutableItemStack
-import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -15,96 +14,116 @@ import net.minecraft.world.item.crafting.ShapedRecipePattern
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.crafting.ICustomIngredient
 
+/**
+ * [ShapedRecipe]向けの[HTStackRecipeBuilder]の実装クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 class HTShapedRecipeBuilder(stack: ImmutableItemStack) : HTStackRecipeBuilder<HTShapedRecipeBuilder>("shaped", stack) {
     companion object {
+        /**
+         * [ShapedRecipe]のビルダーを作成します。
+         */
         @JvmStatic
         fun create(item: ItemLike, count: Int = 1): HTShapedRecipeBuilder = HTShapedRecipeBuilder(ImmutableItemStack.of(item, count))
-
-        @JvmStatic
-        fun cross8Mirrored(
-            recipeOutput: RecipeOutput,
-            item: ItemLike,
-            count: Int = 1,
-            suffix: String = "",
-            builderAction: HTShapedRecipeBuilder.() -> Unit,
-        ) {
-            create(item, count)
-                .pattern("ABA", "BCB", "ABA")
-                .apply(builderAction)
-                .setGroup()
-                .saveSuffixed(recipeOutput, suffix)
-            create(item, count)
-                .pattern("BAB", "ACA", "BAB")
-                .apply(builderAction)
-                .setGroup()
-                .saveSuffixed(recipeOutput, "_alt$suffix")
-        }
-
-        @JvmStatic
-        fun crossLayeredMirrored(
-            recipeOutput: RecipeOutput,
-            item: ItemLike,
-            count: Int = 1,
-            suffix: String = "",
-            builderAction: HTShapedRecipeBuilder.() -> Unit,
-        ) {
-            create(item, count)
-                .pattern("ABA", "CDC", "ABA")
-                .apply(builderAction)
-                .setGroup()
-                .saveSuffixed(recipeOutput, suffix)
-            create(item, count)
-                .pattern("ACA", "BDB", "ACA")
-                .apply(builderAction)
-                .setGroup()
-                .saveSuffixed(recipeOutput, "_alt$suffix")
-        }
     }
 
     private val symbols: MutableMap<Char, Ingredient> = mutableMapOf()
 
+    /**
+     * 指定した[文字][symbol]に[プレフィックス][prefix]と[素材][material]を指定します。
+     */
     fun define(symbol: Char, prefix: HTPrefixLike, material: HTMaterialLike): HTShapedRecipeBuilder =
         define(symbol, prefix.itemTagKey(material))
 
+    /**
+     * 指定した[文字][symbol]に[タグ][tagKey]を指定します。
+     */
     fun define(symbol: Char, tagKey: TagKey<Item>): HTShapedRecipeBuilder = define(symbol, Ingredient.of(tagKey))
 
+    /**
+     * 指定した[文字][symbol]に[アイテム][item]を指定します。
+     */
     fun define(symbol: Char, item: ItemLike): HTShapedRecipeBuilder = define(symbol, Ingredient.of(item))
 
+    /**
+     * 指定した[文字][symbol]に[材料][ingredient]を指定します。
+     */
     fun define(symbol: Char, ingredient: ICustomIngredient): HTShapedRecipeBuilder = define(symbol, ingredient.toVanilla())
 
+    /**
+     * 指定した[文字][symbol]に[材料][ingredient]を指定します。
+     * @throws IllegalStateException 指定した文字に材料が既に登録されている場合
+     * @throws IllegalStateException 指定した文字が空白の場合
+     */
     fun define(symbol: Char, ingredient: Ingredient): HTShapedRecipeBuilder = apply {
         check(symbol !in symbols) { "Symbol '$symbol' is already used!" }
         check(symbol != ' ') { "Symbol ' ' is not allowed!" }
         symbols[symbol] = ingredient
     }
 
-    private val patterns: MutableList<String> = mutableListOf()
+    private lateinit var patterns: List<String>
 
+    /**
+     * 材料のパターンを指定します。
+     */
     fun pattern(vararg pattern: String): HTShapedRecipeBuilder = pattern(pattern.toList())
 
-    fun pattern(pattern: Iterable<String>): HTShapedRecipeBuilder = apply {
-        check(pattern.map(String::length).toSet().size == 1) { "Each pattern must be the same length!" }
-        patterns.addAll(pattern)
+    /**
+     * 材料のパターンを指定します。
+     * @throws IllegalStateException 各行のパターンの長さが同じでない場合
+     */
+    fun pattern(patterns: Iterable<String>): HTShapedRecipeBuilder = apply {
+        check(!this::patterns.isInitialized) { "Patterns has already been initialized!" }
+        check(patterns.map(String::length).toSet().size == 1) { "Each pattern must be the same length!" }
+        this.patterns = patterns.toList()
     }
 
+    /**
+     * 2x2のパターンを指定します。
+     */
     fun storage4(): HTShapedRecipeBuilder = pattern("AA", "AA")
 
+    /**
+     * 3x3のパターンを指定します。
+     */
     fun storage9(): HTShapedRecipeBuilder = pattern("AAA", "AAA", "AAA")
 
+    /**
+     * 中央が空の3x3のパターンを指定します。
+     */
     fun hollow(): HTShapedRecipeBuilder = pattern("AAA", "A A", "AAA")
 
+    /**
+     * 中央の材料を，一種類の4つの材料で取り囲むパターンを指定します。
+     */
     fun hollow4(): HTShapedRecipeBuilder = pattern(" A ", "ABA", " A ")
 
+    /**
+     * 中央の材料を，一種類の8つの材料で取り囲むパターンを指定します。
+     */
     fun hollow8(): HTShapedRecipeBuilder = pattern("AAA", "ABA", "AAA")
 
+    /**
+     * 中央の材料を，二種類の2つずつの材料で取り囲むパターンを指定します。
+     */
     fun cross4(): HTShapedRecipeBuilder = pattern(" A ", "BCB", " A ")
 
+    /**
+     * 中央の材料を，二種類の4つずつの材料で取り囲むパターンを指定します。
+     */
     fun cross8(): HTShapedRecipeBuilder = pattern("ABA", "BCB", "ABA")
 
     fun crossLayered(): HTShapedRecipeBuilder = pattern("ABA", "CDC", "ABA")
 
+    /**
+     * 二種類の材料を交互に配置する2x2のパターンを指定します。
+     */
     fun mosaic4(): HTShapedRecipeBuilder = pattern("AB", "BA")
 
+    /**
+     * 二種類の材料を交互に配置する3x3のパターンを指定します。
+     */
     fun mosaic9(): HTShapedRecipeBuilder = pattern("ABA", "BAB", "ABA")
 
     //    RecipeBuilder    //
@@ -112,12 +131,21 @@ class HTShapedRecipeBuilder(stack: ImmutableItemStack) : HTStackRecipeBuilder<HT
     private var group: String? = null
     private var category: CraftingBookCategory = CraftingBookCategory.MISC
 
+    /**
+     * レシピのグループを[getPrimalId]から指定します。
+     */
     fun setGroup(): HTShapedRecipeBuilder = setGroup(getPrimalId().toDebugFileName())
 
+    /**
+     * レシピのグループを指定します。
+     */
     fun setGroup(group: String?): HTShapedRecipeBuilder = apply {
         this.group = group
     }
 
+    /**
+     * レシピのカテゴリを指定します。
+     */
     fun setCategory(category: CraftingBookCategory): HTShapedRecipeBuilder = apply {
         this.category = category
     }

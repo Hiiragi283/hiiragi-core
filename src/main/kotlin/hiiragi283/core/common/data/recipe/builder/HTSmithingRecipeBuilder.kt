@@ -8,10 +8,18 @@ import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.SmithingTransformRecipe
 import net.minecraft.world.level.ItemLike
 
+/**
+ * [SmithingTransformRecipe]向けの[HTStackRecipeBuilder]の実装クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 class HTSmithingRecipeBuilder(stack: ImmutableItemStack) :
     HTStackRecipeBuilder<HTSmithingRecipeBuilder>("smithing", stack),
     HTIngredientRecipeBuilder<HTSmithingRecipeBuilder> {
     companion object {
+        /**
+         * [SmithingTransformRecipe]のビルダーを作成します。
+         */
         @JvmStatic
         fun create(item: ItemLike, count: Int = 1): HTSmithingRecipeBuilder = HTSmithingRecipeBuilder(ImmutableItemStack.of(item, count))
     }

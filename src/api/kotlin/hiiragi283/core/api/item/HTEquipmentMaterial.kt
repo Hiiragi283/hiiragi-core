@@ -4,9 +4,13 @@ import hiiragi283.core.api.material.HTMaterialLike
 import net.minecraft.core.Holder
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.world.item.ArmorItem
+import net.minecraft.world.item.ArmorMaterial
 import net.minecraft.world.item.Tier
 
 /**
+ * [道具の素材][Tier]と[防具の素材][ArmorMaterial]をまとめたインターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.tools.common.material.BaseMekanismMaterial
  */
 interface HTEquipmentMaterial :
@@ -34,13 +38,28 @@ interface HTEquipmentMaterial :
 
     //    Armor    //
 
+    /**
+     * 防具強度の値を取得します。
+     */
     fun getToughness(): Float
 
+    /**
+     * ノックバック耐性の値を取得します。
+     */
     fun getKnockbackResistance(): Float
 
+    /**
+     * 装備時のSEを取得します。
+     */
     fun getEquipSound(): Holder<SoundEvent>
 
+    /**
+     * [各部位][type]から防御力の値を取得します。
+     */
     fun getArmorDefence(type: ArmorItem.Type): Int
 
+    /**
+     * 防具の耐久値の倍率を取得します。
+     */
     fun getArmorMultiplier(): Int
 }

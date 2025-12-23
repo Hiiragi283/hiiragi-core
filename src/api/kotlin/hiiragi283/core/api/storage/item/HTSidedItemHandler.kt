@@ -6,10 +6,15 @@ import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.items.IItemHandler
 
 /**
- * 向きに応じて制御された[IItemHandler]の拡張インターフェース
+ * 向きに応じて制御された[IItemHandler]の拡張インターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.api.inventory.ISidedItemHandler
  */
 interface HTSidedItemHandler : IItemHandler {
+    /**
+     * デフォルトの向きを取得します。
+     */
     fun getItemSideFor(): Direction? = null
 
     fun getSlots(side: Direction?): Int

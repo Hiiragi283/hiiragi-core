@@ -5,10 +5,15 @@ import net.minecraft.core.Direction
 import net.neoforged.neoforge.energy.IEnergyStorage
 
 /**
- * 向きに応じて制御された[IEnergyStorage]の拡張インターフェース
+ * 向きに応じて制御された[IEnergyStorage]の拡張インターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.api.energy.ISidedStrictEnergyHandler
  */
 interface HTSidedEnergyStorage : IEnergyStorage {
+    /**
+     * デフォルトの向きを取得します。
+     */
     fun getEnergySideFor(): Direction? = null
 
     fun receiveEnergy(toReceive: Int, action: HTStorageAction, side: Direction?): Int

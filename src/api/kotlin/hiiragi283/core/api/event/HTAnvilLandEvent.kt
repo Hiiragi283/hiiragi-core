@@ -6,6 +6,11 @@ import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.bus.api.Event
 
+/**
+ * 金床が着地した時に呼び出されるイベントクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 data class HTAnvilLandEvent(
     val level: Level,
     val pos: BlockPos,

@@ -3,17 +3,26 @@ package hiiragi283.core.api.storage
 import net.neoforged.neoforge.fluids.capability.IFluidHandler
 
 /**
- * [hiiragi283.core.api.storage.stack.HTStackSlot]へのIOを識別するフラグ
+ * スロットへの搬入/搬出の処理を区別するフラグを表すクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.api.Action
  */
 enum class HTStorageAction {
+    /**
+     * 実際に処理を行う
+     */
     EXECUTE,
+
+    /**
+     * 仮想的に処理を行う
+     */
     SIMULATE,
     ;
 
     companion object {
         /**
-         * [Boolean]から[HTStorageAction]に変換します。
+         * [Boolean]から[HTStorageAction]を取得します。
          */
         @JvmStatic
         fun of(simulate: Boolean): HTStorageAction = when (simulate) {
@@ -22,7 +31,7 @@ enum class HTStorageAction {
         }
 
         /**
-         * [IFluidHandler.FluidAction]から[HTStorageAction]に変換します。
+         * [IFluidHandler.FluidAction]から[HTStorageAction]を取得します。
          */
         @JvmStatic
         fun of(action: IFluidHandler.FluidAction): HTStorageAction = when (action) {
@@ -32,17 +41,20 @@ enum class HTStorageAction {
     }
 
     /**
-     * 処理を仮想で行うかどうか
+     * 処理を仮想で行うか判定します。
      */
     fun execute(): Boolean = this == EXECUTE
 
     /**
-     * 処理を仮想で行うかどうか
+     * 処理を仮想で行うか判定します。
      */
     fun simulate(): Boolean = this == SIMULATE
 
     fun combine(execute: Boolean): HTStorageAction = of(!(this.execute() && execute))
 
+    /**
+     * [IFluidHandler.FluidAction]に変換します。
+     */
     fun toFluid(): IFluidHandler.FluidAction = when (this) {
         EXECUTE -> IFluidHandler.FluidAction.EXECUTE
         SIMULATE -> IFluidHandler.FluidAction.SIMULATE

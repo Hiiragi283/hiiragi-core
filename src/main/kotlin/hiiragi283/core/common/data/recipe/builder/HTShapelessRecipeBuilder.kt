@@ -14,10 +14,18 @@ import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.ShapelessRecipe
 import net.minecraft.world.level.ItemLike
 
+/**
+ * [ShapelessRecipe]向けの[HTStackRecipeBuilder]の実装クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 class HTShapelessRecipeBuilder(stack: ImmutableItemStack) :
     HTStackRecipeBuilder<HTShapelessRecipeBuilder>("shapeless", stack),
     HTIngredientRecipeBuilder<HTShapelessRecipeBuilder> {
     companion object {
+        /**
+         * [ShapelessRecipe]のビルダーを作成します。
+         */
         @JvmStatic
         fun create(item: ItemLike, count: Int = 1): HTShapelessRecipeBuilder = HTShapelessRecipeBuilder(ImmutableItemStack.of(item, count))
     }
@@ -46,10 +54,16 @@ class HTShapelessRecipeBuilder(stack: ImmutableItemStack) :
     private var group: String? = null
     private var category: CraftingBookCategory = CraftingBookCategory.MISC
 
+    /**
+     * レシピのグループを指定します。
+     */
     fun setGroup(group: String?): HTShapelessRecipeBuilder = apply {
         this.group = group
     }
 
+    /**
+     * レシピのカテゴリを指定します。
+     */
     fun setCategory(category: CraftingBookCategory): HTShapelessRecipeBuilder = apply {
         this.category = category
     }

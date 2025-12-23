@@ -19,7 +19,7 @@ interface HTCapabilityManager<CONTAINER : Any> {
     fun <T : Any> resolve(side: Direction?): T?
 
     /**
-     * このCapabilityが運用可能か判定します。
+     * このCapabilityが運用できるか判定します。
      */
     fun canHandle(): Boolean
 

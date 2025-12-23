@@ -21,6 +21,11 @@ import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.conditions.ICondition
 import java.util.Optional
 
+/**
+ * [HTAdvancementGenerator]で使用される進捗のビルダークラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 class HTAdvancementBuilder private constructor(private val parent: HTAdvancementKey?) {
     companion object {
         @JvmStatic

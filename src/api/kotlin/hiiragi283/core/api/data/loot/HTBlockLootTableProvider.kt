@@ -15,6 +15,11 @@ import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider
 
+/**
+ * Hiiragi Coreとそれを前提とするmodで使用される[BlockLootSubProvider]の拡張クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 abstract class HTBlockLootTableProvider(registries: HolderLookup.Provider) :
     BlockLootSubProvider(setOf(), FeatureFlags.REGISTRY.allFlags(), registries) {
     private val blockCache: MutableSet<Block> = hashSetOf()
@@ -28,13 +33,23 @@ abstract class HTBlockLootTableProvider(registries: HolderLookup.Provider) :
 
     //    Extensions    //
 
+    /**
+     * 幸運エンチャントのインスタンス
+     */
     protected val fortune: Holder<Enchantment> by lazy { registries.holderOrThrow(Enchantments.FORTUNE) }
 
+    /**
+     * ブロックをそのままドロップするルートテーブルを指定します。
+     */
     protected fun dropSelf(like: HTHolderLike<Block, *>) {
         dropSelf(like.get())
     }
 
     /**
+     * 鉱石向けのルートテーブルを指定します。
+     * @param item 採掘後にドロップするアイテム
+     * @param range ドロップするアイテムの個数の範囲
+     * @param block 対象となるブロック
      * @see BlockLootSubProvider.createOreDrop
      */
     protected fun createOreDrops(item: ItemLike, range: NumberProvider?, block: Block): LootTable.Builder = createSilkTouchDispatchTable(

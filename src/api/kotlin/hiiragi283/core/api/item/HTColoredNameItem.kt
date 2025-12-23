@@ -7,7 +7,16 @@ import net.minecraft.network.chat.MutableComponent
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 
+/**
+ * 表示名に色をつける[Item]の拡張クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 abstract class HTColoredNameItem(properties: Properties) : Item(properties) {
+    /**
+     * 表示名の色を取得します。
+     * @return 色を付けない場合は`null`
+     */
     protected abstract fun getNameColor(stack: ItemStack): ChatFormatting?
 
     override fun getName(stack: ItemStack): Component {
