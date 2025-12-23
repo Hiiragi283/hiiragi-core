@@ -17,7 +17,7 @@ import net.minecraft.resources.ResourceLocation
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder
 
-class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(context) {
+class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(HiiragiCoreAPI.MOD_ID, context) {
     override fun registerModels() {
         buildList {
             addAll(HCItems.REGISTER.asSequence())

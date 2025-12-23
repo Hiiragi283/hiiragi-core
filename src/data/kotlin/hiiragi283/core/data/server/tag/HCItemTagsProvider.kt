@@ -2,15 +2,10 @@ package hiiragi283.core.data.server.tag
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
-import hiiragi283.core.api.data.tag.HTTagBuilder
-import hiiragi283.core.api.data.tag.HTTagDependType
-import hiiragi283.core.api.data.tag.HTTagsProvider
+import hiiragi283.core.api.data.tag.HTItemTagsProvider
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
-import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.toHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.common.item.HTToolType
 import hiiragi283.core.common.material.HCMaterial
@@ -19,10 +14,7 @@ import hiiragi283.core.common.tag.HCModTags
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
-import net.minecraft.core.HolderLookup
-import net.minecraft.core.registries.Registries
 import net.minecraft.tags.ItemTags
-import net.minecraft.tags.TagBuilder
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
@@ -31,8 +23,8 @@ import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.common.Tags
 import java.util.concurrent.CompletableFuture
 
-class HCItemTagsProvider(private val blockTags: CompletableFuture<TagLookup<Block>>, context: HTDataGenContext) :
-    HTTagsProvider<Item>(HiiragiCoreAPI.MOD_ID, Registries.ITEM, context) {
+class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context: HTDataGenContext) :
+    HTItemTagsProvider(HiiragiCoreAPI.MOD_ID, blockTags, context) {
     override fun addTagsInternal(factory: BuilderFactory<Item>) {
         copyTags()
 
@@ -54,17 +46,6 @@ class HCItemTagsProvider(private val blockTags: CompletableFuture<TagLookup<Bloc
         for ((material: HCMaterial, _) in HCBlockTagsProvider.VANILLA_STORAGE_BLOCKS) {
             copy(HCMaterialPrefixes.STORAGE_BLOCK, material)
         }
-    }
-
-    private val tagsToCopy: MutableMap<TagKey<Block>, TagKey<Item>> = mutableMapOf()
-
-    private fun copy(prefix: HTPrefixLike, material: HTMaterialLike) {
-        copy(prefix.createCommonTagKey(Registries.BLOCK), prefix.createCommonTagKey(Registries.ITEM))
-        copy(prefix.createTagKey(Registries.BLOCK, material), prefix.itemTagKey(material))
-    }
-
-    private fun copy(blockTag: TagKey<Block>, itemTag: TagKey<Item>) {
-        tagsToCopy[blockTag] = itemTag
     }
 
     //    Material    //
@@ -122,23 +103,4 @@ class HCItemTagsProvider(private val blockTags: CompletableFuture<TagLookup<Bloc
             .addItem(Items.PHANTOM_MEMBRANE)
             .addItem(Items.WIND_CHARGE)
     }
-
-    //    Extensions    //
-
-    fun HTTagBuilder<Item>.addItem(item: ItemLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<Item> =
-        this.add(item.toHolderLike(), type)
-
-    override fun createContentsProvider(): CompletableFuture<HolderLookup.Provider> = super
-        .createContentsProvider()
-        .thenCombine(blockTags) { provider: HolderLookup.Provider, lookup: TagLookup<Block> ->
-            for ((blockTag: TagKey<Block>, itemTag: TagKey<Item>) in tagsToCopy) {
-                val builder: TagBuilder = getOrCreateRawBuilder(itemTag)
-                lookup
-                    .apply(blockTag)
-                    .orElseThrow { error("Missing block tag ${itemTag.location}") }
-                    .build()
-                    .forEach(builder::add)
-            }
-            provider
-        }
 }

@@ -2,7 +2,6 @@ package hiiragi283.core.api.data.model
 
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
@@ -17,8 +16,8 @@ import org.slf4j.Logger
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-abstract class HTItemModelProvider(context: HTDataGenContext) :
-    ItemModelProvider(context.output, HiiragiCoreAPI.MOD_ID, context.fileHelper) {
+abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
+    ItemModelProvider(context.output, modId, context.fileHelper) {
     companion object {
         @JvmField
         val LOGGER: Logger = LogUtils.getLogger()

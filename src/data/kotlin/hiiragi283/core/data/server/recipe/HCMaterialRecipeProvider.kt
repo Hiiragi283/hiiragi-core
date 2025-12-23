@@ -1,13 +1,10 @@
 package hiiragi283.core.data.server.recipe
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.get
 import hiiragi283.core.api.material.getOrThrow
-import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
@@ -17,7 +14,6 @@ import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialItems
 import hiiragi283.core.common.tag.HCModTags
-import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.world.item.Items
@@ -36,17 +32,6 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
 
         manual()
         buckets()
-
-        baseToBlock()
-
-        prefixToBase(HCMaterialPrefixes.DUST, 0.35f)
-        prefixToBase(HCMaterialPrefixes.RAW_MATERIAL, 0.7f)
-
-        ingotToGear()
-        ingotToNugget()
-
-        tinyToDust()
-        tinyToNugget()
     }
 
     @JvmStatic
@@ -151,129 +136,6 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
     }
 
     @JvmStatic
-    private fun baseToBlock() {
-        for (material: HCMaterial in HCMaterial.entries) {
-            val basePrefix: HTMaterialPrefix = material.basePrefix
-            val block: ItemLike = HCBlocks.MATERIALS[HCMaterialPrefixes.STORAGE_BLOCK, material] ?: continue
-            val base: ItemLike = getItem(basePrefix, material) ?: continue
-            // Shapeless
-            HTShapelessRecipeBuilder
-                .create(base, 9)
-                .addIngredient(HCMaterialPrefixes.STORAGE_BLOCK, material)
-                .save(output, HiiragiCoreAPI.id(material.asMaterialName(), "${basePrefix.name}_from_block"))
-            // Shaped
-            HTShapedRecipeBuilder
-                .create(block)
-                .hollow8()
-                .define('A', basePrefix, material)
-                .define('B', base)
-                .save(output, HiiragiCoreAPI.id(material.asMaterialName(), "block_from_${basePrefix.name}"))
-        }
-    }
-
-    @JvmStatic
-    private fun prefixToBase(prefix: HTPrefixLike, exp: Float) {
-        for (material: HCMaterial in HCMaterial.entries) {
-            val basePrefix: HTMaterialPrefix = material.basePrefix
-            if (material is HCMaterial.Fuels || material.basePrefix == HCMaterialPrefixes.DUST) continue
-            val prefixMap: Map<HTMaterialPrefix, HTItemHolderLike<*>> = getPrefixMap(material)
-
-            val base: HTItemHolderLike<*> = prefixMap[basePrefix] ?: continue
-            val input: HTItemHolderLike<*> = prefixMap[prefix] ?: continue
-            if (base.getNamespace() == HTConst.MINECRAFT && input.getNamespace() == HTConst.MINECRAFT) continue
-
-            // Smelting & Blasting
-            HTCookingRecipeBuilder.smeltingAndBlasting(base) {
-                addIngredient(input)
-                setExp(exp)
-                save(
-                    output,
-                    HiiragiCoreAPI.id(
-                        material.asMaterialName(),
-                        "${basePrefix.asPrefixName()}_from_${prefix.asPrefixName()}",
-                    ),
-                )
-            }
-        }
-    }
-
-    @JvmStatic
-    private fun ingotToGear() {
-        for ((key: HTMaterialKey, gear: HTItemHolderLike<*>) in HCItems.MATERIALS.row(HCMaterialPrefixes.GEAR)) {
-            // Shaped
-            HTShapedRecipeBuilder
-                .create(gear)
-                .hollow4()
-                .define('A', HCMaterialPrefixes.INGOT, key)
-                .define('B', HCMaterialPrefixes.NUGGET, HCMaterial.Metals.IRON)
-                .save(output, HiiragiCoreAPI.id(key.name, "gear"))
-        }
-    }
-
-    @JvmStatic
-    fun ingotToNugget() {
-        for ((key: HTMaterialKey, nugget: HTItemHolderLike<*>) in HCItems.MATERIALS.row(HCMaterialPrefixes.NUGGET)) {
-            // Shapeless
-            HTShapelessRecipeBuilder
-                .create(nugget, 9)
-                .addIngredient(HCMaterialPrefixes.INGOT, key)
-                .save(output, HiiragiCoreAPI.id(key.name, "nugget_from_ingot"))
-            // Shaped
-            val ingot: HTItemHolderLike<*> = getItem(HCMaterialPrefixes.INGOT, key) ?: continue
-            HTShapedRecipeBuilder
-                .create(ingot)
-                .hollow8()
-                .define('A', HCMaterialPrefixes.NUGGET, key)
-                .define('B', nugget)
-                .save(output, HiiragiCoreAPI.id(key.name, "ingot_from_nugget"))
-        }
-    }
-
-    @JvmStatic
-    private fun tinyToDust() {
-        for ((key: HTMaterialKey, tinyDust: HTItemHolderLike<*>) in HCItems.MATERIALS.row(HCMaterialPrefixes.TINY_DUST)) {
-            val dust: HTItemHolderLike<*> = getItem(HCMaterialPrefixes.DUST, key) ?: continue
-            // Shaped
-            HTShapedRecipeBuilder
-                .create(dust)
-                .hollow8()
-                .define('A', HCMaterialPrefixes.TINY_DUST, key)
-                .define('B', tinyDust)
-                .save(output, HiiragiCoreAPI.id(key.name, "dust_from_tiny_dust"))
-        }
-    }
-
-    @JvmStatic
-    private fun tinyToNugget() {
-        for ((key: HTMaterialKey, tinyDust: HTItemHolderLike<*>) in HCItems.MATERIALS.row(HCMaterialPrefixes.TINY_DUST)) {
-            val nugget: HTItemHolderLike<*> = getItem(HCMaterialPrefixes.NUGGET, key) ?: continue
-            // Smelting & Blasting
-            HTCookingRecipeBuilder.smeltingAndBlasting(nugget) {
-                addIngredient(tinyDust)
-                setTime(20)
-                setExp(0.1f)
-                save(output, HiiragiCoreAPI.id(key.name, "nugget_from_tiny_dust"))
-            }
-        }
-    }
-
-    @JvmStatic
-    private fun getItem(prefix: HTPrefixLike, material: HTMaterialLike): HTItemHolderLike<*>? =
-        HCItems.MATERIALS[prefix, material] ?: VanillaMaterialItems.MATERIALS[prefix, material]
-
-    @JvmStatic
     private fun getItemOrThrow(prefix: HTPrefixLike, material: HTMaterialLike): HTItemHolderLike<*> =
         HCItems.MATERIALS[prefix, material] ?: VanillaMaterialItems.MATERIALS.getOrThrow(prefix, material)
-
-    @JvmStatic
-    private fun getPrefixMap(material: HTMaterialLike): Map<HTMaterialPrefix, HTItemHolderLike<*>> = buildMap {
-        // Hiiragi Core
-        for ((prefix: HTMaterialPrefix, item: HTItemHolderLike<*>) in HCItems.MATERIALS.column(material)) {
-            put(prefix, item)
-        }
-        // Vanilla
-        for ((prefix: HTMaterialPrefix, item: HTItemHolderLike<*>) in VanillaMaterialItems.MATERIALS.column(material)) {
-            put(prefix, item)
-        }
-    }
 }

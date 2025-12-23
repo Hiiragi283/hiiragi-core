@@ -25,7 +25,7 @@ import org.slf4j.Logger
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-abstract class HTBlockStateProvider(context: HTDataGenContext, modid: String) :
+abstract class HTBlockStateProvider(modid: String, context: HTDataGenContext) :
     BlockStateProvider(context.output, modid, context.fileHelper) {
     companion object {
         @JvmField

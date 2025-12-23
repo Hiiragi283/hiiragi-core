@@ -13,7 +13,7 @@ import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.resources.ResourceLocation
 
-class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(context, HiiragiCoreAPI.MOD_ID) {
+class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(HiiragiCoreAPI.MOD_ID, context) {
     override fun registerStatesAndModels() {
         registerMaterials()
         registerFluids()

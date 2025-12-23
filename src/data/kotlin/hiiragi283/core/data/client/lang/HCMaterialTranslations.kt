@@ -1,16 +1,15 @@
 package hiiragi283.core.data.client.lang
 
-import hiiragi283.core.api.collection.ImmutableTable
 import hiiragi283.core.api.collection.buildTable
 import hiiragi283.core.api.data.lang.HTLangName
-import hiiragi283.core.api.data.lang.HTLangPatternProvider
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.data.lang.HTLanguageType
-import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.text.HTHasTranslationKey
+import hiiragi283.core.common.data.lang.HTMaterialTranslationHelper
 import hiiragi283.core.common.item.HTToolType
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
@@ -18,43 +17,8 @@ import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 
 object HCMaterialTranslations {
-    @JvmField
-    val PREFIX_MAP: Map<HTMaterialPrefix, HTLangPatternProvider> = buildMap {
-        fun register(prefix: HTPrefixLike, enPattern: String, jaPattern: String) {
-            this[prefix.asMaterialPrefix()] = HTLangPatternProvider { type: HTLanguageType, value: String ->
-                when (type) {
-                    HTLanguageType.EN_US -> enPattern
-                    HTLanguageType.JA_JP -> jaPattern
-                }.replace("%s", value)
-            }
-        }
-
-        // Block
-        register(HCMaterialPrefixes.ORE, "%s Ore", "%s鉱石")
-        register(HCMaterialPrefixes.ORE_DEEPSLATE, "Deepslate %s Ore", "深層%s鉱石")
-        register(HCMaterialPrefixes.ORE_NETHER, "Nether %s Ore", "ネザー%s鉱石")
-        register(HCMaterialPrefixes.ORE_END, "End %s Ore", "エンド%s鉱石")
-
-        register(HCMaterialPrefixes.STORAGE_BLOCK, "Block of %s", "%sブロック")
-        register(HCMaterialPrefixes.STORAGE_BLOCK_RAW, "Block of Raw %s", "%sの原石ブロック")
-        // Item
-        register(HCMaterialPrefixes.DUST, "%s Dust", "%sの粉")
-        register(HCMaterialPrefixes.FUEL, "%s", "%s")
-        register(HCMaterialPrefixes.GEAR, "%s Gear", "%sの歯車")
-        register(HCMaterialPrefixes.GEM, "%s", "%s")
-        register(HCMaterialPrefixes.INGOT, "%s Ingot", "%sインゴット")
-        register(HCMaterialPrefixes.NUGGET, "%s Nugget", "%sナゲット")
-        register(HCMaterialPrefixes.PEARL, "%s", "%s")
-        register(HCMaterialPrefixes.PLATE, "%s Plate", "%sの板")
-        register(HCMaterialPrefixes.RAW_MATERIAL, "Raw %s", "%sの原石")
-        register(HCMaterialPrefixes.ROD, "%s Rod", "%sの棒")
-        register(HCMaterialPrefixes.SCRAP, "%s Scrap", "%sの欠片")
-        register(HCMaterialPrefixes.TINY_DUST, "Tiny %s Dust", "小さな%sの粉")
-        register(HCMaterialPrefixes.WIRE, "%s Wire", "%sのワイヤ")
-    }
-
     @JvmStatic
-    val MATERIAL_MAP: ImmutableTable<HTMaterialPrefix, HTMaterialKey, HTLangName> = buildTable {
+    val MATERIAL_MAP: HTMaterialTable<HTMaterialPrefix, HTLangName> = buildTable {
         fun register(
             prefix: HTPrefixLike,
             material: HTMaterialLike,
@@ -73,7 +37,7 @@ object HCMaterialTranslations {
         register(HCMaterialPrefixes.PLATE, HCMaterial.Plates.RUBBER, "Rubber Sheet", "ゴムシート")
         register(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Plates.PLASTIC, "Polymer Resin", "高分子樹脂")
         register(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Plates.RUBBER, "Raw Rubber", "生ゴム")
-    }
+    }.let(::HTMaterialTable)
 
     @JvmStatic
     fun addTranslations(provider: HTLangProvider) {
@@ -81,12 +45,16 @@ object HCMaterialTranslations {
         for (material: HCMaterial in HCMaterial.entries) {
             // Block
             for ((prefix: HTMaterialPrefix, block: HTHasTranslationKey) in HCBlocks.MATERIALS.column(material)) {
-                val name: String = translate(langType, prefix, material) ?: continue
+                val name: String = MATERIAL_MAP[prefix, material]?.getTranslatedName(langType)
+                    ?: HTMaterialTranslationHelper.translate(langType, prefix, material)
+                    ?: continue
                 provider.add(block, name)
             }
             // Item
             for ((prefix: HTMaterialPrefix, item: HTHasTranslationKey) in HCItems.MATERIALS.column(material)) {
-                val name: String = translate(langType, prefix, material) ?: continue
+                val name: String = MATERIAL_MAP[prefix, material]?.getTranslatedName(langType)
+                    ?: HTMaterialTranslationHelper.translate(langType, prefix, material)
+                    ?: continue
                 provider.add(item, name)
             }
             // Tool
@@ -94,18 +62,6 @@ object HCMaterialTranslations {
                 val name: String = toolType.translate(langType, material)
                 provider.add(tool, name)
             }
-        }
-    }
-
-    @JvmStatic
-    fun translate(type: HTLanguageType, prefix: HTPrefixLike, material: HTMaterialLike): String? {
-        val customName: HTLangName? = MATERIAL_MAP[prefix.asMaterialPrefix(), material.asMaterialKey()]
-        if (customName != null) {
-            return customName.getTranslatedName(type)
-        } else {
-            val translation: HTLangPatternProvider = PREFIX_MAP[prefix] ?: return null
-            val translatedName: HTLangName = material as? HTLangName ?: return null
-            return translation.translate(type, translatedName)
         }
     }
 }

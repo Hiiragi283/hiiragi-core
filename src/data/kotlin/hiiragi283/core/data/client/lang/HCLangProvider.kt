@@ -2,7 +2,6 @@ package hiiragi283.core.data.client.lang
 
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTranslation
-import hiiragi283.core.common.text.HCTranslation
 import java.util.function.BiConsumer
 
 interface HCLangProvider {
@@ -24,7 +23,5 @@ interface HCLangProvider {
 
         consumer.accept(HTCommonTranslation.FRACTION, $$"%1$s / %2$s")
         consumer.accept(HTCommonTranslation.TICK, $$"%1$s ticks")
-        // Hiiragi Core
-        consumer.accept(HCTranslation.HIIRAGI_CORE, "Hiiragi Core")
     }
 }

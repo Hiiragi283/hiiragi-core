@@ -3,6 +3,7 @@ package hiiragi283.core.data.client.lang
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.text.HTCommonTranslation
+import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
@@ -53,6 +54,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         addCommonTranslations(::add)
 
         // API - Constants
+        add(HCTranslation.HIIRAGI_CORE, "Hiiragi Core")
         add(HTCommonTranslation.ERROR, "Error")
         add(HTCommonTranslation.INFINITE, "Infinite")
         add(HTCommonTranslation.NONE, "None")

@@ -1,11 +1,10 @@
 package hiiragi283.core.common.material
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.data.lang.HTLanguageType
 import hiiragi283.core.api.data.texture.HTColorPalette
+import hiiragi283.core.api.material.HTAbstractMaterial
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.common.data.texture.HCMaterialPalette
 import net.minecraft.resources.ResourceLocation
@@ -14,9 +13,7 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.neoforged.neoforge.common.Tags
 
-sealed interface HCMaterial :
-    HTMaterialLike,
-    HTLangName {
+sealed interface HCMaterial : HTAbstractMaterial {
     companion object {
         @JvmStatic
         val entries: Set<HCMaterial> get() = buildSet {
@@ -36,16 +33,7 @@ sealed interface HCMaterial :
         private val dustSet: Set<HTMaterialPrefix> = setOf(HCMaterialPrefixes.DUST, HCMaterialPrefixes.TINY_DUST)
     }
 
-    val basePrefix: HTMaterialPrefix
-    val colorPalette: HTColorPalette
-
-    fun getItemPrefixesToGenerate(): Set<HTMaterialPrefix>
-
-    fun createPath(prefix: HTMaterialPrefix): String = prefix.createPath(this)
-
-    fun getBaseIngredient(): TagKey<Item> = basePrefix.itemTagKey(this)
-
-    fun getTemplateId(prefix: HTMaterialPrefix): ResourceLocation? = HiiragiCoreAPI.id(
+    override fun getTemplateId(prefix: HTMaterialPrefix): ResourceLocation? = HiiragiCoreAPI.id(
         "template",
         when (prefix) {
             HCMaterialPrefixes.STORAGE_BLOCK -> "block_${basePrefix.name}"

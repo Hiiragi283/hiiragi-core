@@ -2,17 +2,18 @@ package hiiragi283.core.api.data.texture
 
 import com.google.common.hash.HashCode
 import com.mojang.blaze3d.platform.NativeImage
-import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.ImmutableMultiMap
 import hiiragi283.core.api.collection.buildMultiMap
 import hiiragi283.core.api.data.HTDataGenContext
-import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTAbstractMaterial
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
+import hiiragi283.core.api.resource.toId
 import net.minecraft.Util
 import net.minecraft.data.CachedOutput
 import net.minecraft.data.DataProvider
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceLocation
+import net.neoforged.fml.ModList
 import net.neoforged.neoforge.client.model.generators.ModelProvider
 import net.neoforged.neoforge.common.data.ExistingFileHelper
 import java.awt.Color
@@ -20,15 +21,12 @@ import java.io.IOException
 import java.nio.file.Path
 import java.util.concurrent.CompletableFuture
 import java.util.function.BiConsumer
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.iterator
 import kotlin.io.path.inputStream
 
 /**
  * テクスチャを生成する[DataProvider]の抽象クラスです。
  */
-abstract class HTTextureProvider(private val packOutput: PackOutput, private val fileHelper: ExistingFileHelper) : DataProvider {
+abstract class HTTextureProvider(packOutput: PackOutput, private val fileHelper: ExistingFileHelper) : DataProvider {
     constructor(context: HTDataGenContext) : this(context.output, context.fileHelper)
 
     private val pathProvider: PackOutput.PathProvider =
@@ -72,13 +70,17 @@ abstract class HTTextureProvider(private val packOutput: PackOutput, private val
      * @return [id]からテクスチャを取得できない場合は`null`
      */
     protected fun getTexture(id: ResourceLocation): NativeImage? {
-        val filePath: Path = packOutput.outputFolder.resolve("../../main/resources/assets/${id.namespace}/textures/${id.path}.png")
-        try {
-            return NativeImage.read(filePath.inputStream())
-        } catch (_: IOException) {
-            DataProvider.LOGGER.error("Failed to load image to {}", filePath)
-        }
-        return null
+        val path: Path = ModList
+            .get()
+            .getModFileById(id.namespace)
+            .file
+            .secureJar
+            .rootPath
+            .resolve("assets/${id.namespace}/textures/${id.path}.png")
+        return runCatching(path::inputStream)
+            .mapCatching(NativeImage::read)
+            .onFailure { DataProvider.LOGGER.error("Failed to load image to {}", path) }
+            .getOrNull()
     }
 
     /**
@@ -90,26 +92,25 @@ abstract class HTTextureProvider(private val packOutput: PackOutput, private val
         image.copyFrom(other)
         return image
     }
-    
-    protected fun <T : HTMaterialLike> material(
+
+    protected fun material(
         output: BiConsumer<ResourceLocation, NativeImage>,
+        modId: String,
         pathPrefix: String,
-        materials: Iterable<T>,
-        supportedPrefixes: (T) -> Set<HTMaterialPrefix>,
-        templateFactory: (T, HTMaterialPrefix) -> ResourceLocation?,
-        paletteGetter: (T) -> HTColorPalette,
+        materials: Iterable<HTAbstractMaterial>,
+        transform: (HTAbstractMaterial) -> Set<HTMaterialPrefix>,
     ) {
-        for (material: T in materials) {
-            for (prefix: HTMaterialPrefix in supportedPrefixes(material)) {
-                val templateImage: NativeImage = templateFactory(material, prefix)?.let(::getTexture) ?: continue
+        for (material: HTAbstractMaterial in materials) {
+            for (prefix: HTMaterialPrefix in transform(material)) {
+                val templateImage: NativeImage = material.getTemplateId(prefix)?.let(::getTexture) ?: continue
                 val image: NativeImage = copyFrom(templateImage)
 
                 for ((index: Int, pixels: Collection<Pair<Int, Int>>) in createTemplate(templateImage).map) {
                     for ((x: Int, y: Int) in pixels) {
-                        image.setPixelRGBA(x, y, argbToFromABGR(paletteGetter(material)[index].rgb))
+                        image.setPixelRGBA(x, y, argbToFromABGR(material.colorPalette[index].rgb))
                     }
                 }
-                output.accept(HiiragiCoreAPI.id(pathPrefix, prefix.asPrefixName(), material.asMaterialName()), image)
+                output.accept(modId.toId(pathPrefix, prefix.asPrefixName(), material.asMaterialName()), image)
             }
         }
     }
