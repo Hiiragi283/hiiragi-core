@@ -1,6 +1,7 @@
 package hiiragi283.core.api.data.model
 
 import com.mojang.logging.LogUtils
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.registry.HTFluidContent
@@ -89,7 +90,7 @@ abstract class HTBlockStateProvider(modid: String, context: HTDataGenContext) :
         simpleBlockAndItem(
             block,
             models()
-                .withExistingParent(block.getPath(), HiiragiCoreAPI.id("block", "layered"))
+                .withExistingParent(block.getPath(), HiiragiCoreAPI.id(HTConst.BLOCK, "layered"))
                 .texture("layer0", layer0)
                 .texture("layer1", layer1)
                 .renderType("cutout"),
@@ -180,7 +181,7 @@ abstract class HTBlockStateProvider(modid: String, context: HTDataGenContext) :
             content.block.get(),
             models()
                 .getBuilder(content.blockId)
-                .texture("particle", vanillaId("block", "water_still")),
+                .texture("particle", vanillaId(HTConst.BLOCK, "water_still")),
         )
     }
 }

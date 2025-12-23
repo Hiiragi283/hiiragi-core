@@ -1,5 +1,6 @@
 package hiiragi283.core.setup
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.storage.attachments.HTAttachedEnergy
 import hiiragi283.core.api.storage.attachments.HTAttachedFluids
@@ -20,11 +21,11 @@ object HCDataComponents {
     //    Storage    //
 
     @JvmField
-    val ENERGY: DataComponentType<HTAttachedEnergy> = REGISTER.registerType("energy", HTAttachedEnergy.CODEC)
+    val ENERGY: DataComponentType<HTAttachedEnergy> = REGISTER.registerType(HTConst.ENERGY, HTAttachedEnergy.CODEC)
 
     @JvmField
-    val FLUID: DataComponentType<HTAttachedFluids> = REGISTER.registerType("fluid", HTAttachedFluids.CODEC)
+    val FLUID: DataComponentType<HTAttachedFluids> = REGISTER.registerType(HTConst.FLUID, HTAttachedFluids.CODEC)
 
     @JvmField
-    val ITEM: DataComponentType<HTAttachedItems> = REGISTER.registerType("item", HTAttachedItems.CODEC)
+    val ITEM: DataComponentType<HTAttachedItems> = REGISTER.registerType(HTConst.ITEM, HTAttachedItems.CODEC)
 }

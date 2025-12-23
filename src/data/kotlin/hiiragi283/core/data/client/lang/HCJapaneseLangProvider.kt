@@ -76,11 +76,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         // API - GUI
         add(HTCommonTranslation.SECONDS, $$"%1$s 秒 (%2$s ticks)")
         // API - Item
-        add(HTCommonTranslation.TOOLTIP_BLOCK_POS, $$"座標: [%1$s, %2$s, %3$s]")
-        add(HTCommonTranslation.TOOLTIP_CHARGE_POWER, $$"威力: %1$s")
-        add(HTCommonTranslation.TOOLTIP_DIMENSION, $$"次元: %1$s")
         add(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT, $$"常に少なくとも%1$sがあります")
-        add(HTCommonTranslation.TOOLTIP_LOOT_TABLE_ID, $$"ルートテーブル: %1$s")
         add(HTCommonTranslation.TOOLTIP_UPGRADE_TARGET, $$"アップグレードの対象: %1$s")
         add(HTCommonTranslation.TOOLTIP_UPGRADE_EXCLUSIVE, $$"競合するアップグレード: %1$s")
 

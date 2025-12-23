@@ -1,6 +1,7 @@
 package hiiragi283.core.client
 
 import com.mojang.logging.LogUtils
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.vanillaId
@@ -44,7 +45,7 @@ object HiiragiCoreClient {
         // Vanilla
         event.clear(HCFluids.EXPERIENCE, Color(0x66ff33))
         event.registerFluidType(
-            HTSimpleFluidExtensions(vanillaId("block", "honey_block_top")),
+            HTSimpleFluidExtensions(vanillaId(HTConst.BLOCK, "honey_block_top")),
             HCFluids.HONEY.getFluidType(),
         )
         event.dull(HCFluids.MUSHROOM_STEW, Color(0xcc9966))

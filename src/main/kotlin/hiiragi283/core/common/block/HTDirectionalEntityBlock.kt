@@ -1,27 +1,33 @@
 package hiiragi283.core.common.block
 
-import com.mojang.serialization.MapCodec
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
-import net.minecraft.core.BlockPos
-import net.minecraft.world.level.Level
+import net.minecraft.world.item.context.BlockPlaceContext
+import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.DirectionalBlock
+import net.minecraft.world.level.block.Mirror
+import net.minecraft.world.level.block.Rotation
 import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.state.StateDefinition
+import net.minecraft.world.level.block.state.properties.DirectionProperty
 
-open class HTDirectionalEntityBlock(private val type: HTDeferredBlockEntityType<*>, properties: Properties) :
-    DirectionalBlock(properties),
-    HTBlockWithEntity {
-    override fun codec(): MapCodec<out DirectionalBlock> = throw UnsupportedOperationException()
-
-    final override fun triggerEvent(
-        state: BlockState,
-        level: Level,
-        pos: BlockPos,
-        id: Int,
-        param: Int,
-    ): Boolean {
-        super.triggerEvent(state, level, pos, id, param)
-        return level.getBlockEntity(pos)?.triggerEvent(id, param) ?: false
+/**
+ * @see DirectionalBlock
+ */
+open class HTDirectionalEntityBlock(type: HTDeferredBlockEntityType<*>, properties: Properties) : HTBasicEntityBlock(type, properties) {
+    companion object {
+        @JvmField
+        val FACING: DirectionProperty = DirectionalBlock.FACING
     }
 
-    final override fun getBlockEntityType(): HTDeferredBlockEntityType<*> = type
+    override fun getStateForPlacement(context: BlockPlaceContext): BlockState? =
+        defaultBlockState().setValue(FACING, context.nearestLookingDirection.opposite)
+
+    override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block?, BlockState?>) {
+        builder.add(FACING)
+    }
+
+    override fun rotate(state: BlockState, rotation: Rotation): BlockState = state.setValue(FACING, rotation.rotate(state.getValue(FACING)))
+
+    @Suppress("DEPRECATION")
+    override fun mirror(state: BlockState, mirror: Mirror): BlockState = state.rotate(mirror.getRotation(state.getValue(FACING)))
 }

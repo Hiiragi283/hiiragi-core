@@ -16,23 +16,23 @@ class HTSimpleFluidExtensions(val stillTex: ResourceLocation, val color: Color? 
     companion object {
         @JvmStatic
         fun clear(color: Color): HTSimpleFluidExtensions = HTSimpleFluidExtensions(
-            vanillaId("block", "water_still"),
+            vanillaId(HTConst.BLOCK, "water_still"),
             color,
-            vanillaId("block", "water_flow"),
+            vanillaId(HTConst.BLOCK, "water_flow"),
         )
 
         @JvmStatic
         fun dull(color: Color): HTSimpleFluidExtensions = HTSimpleFluidExtensions(
-            HTConst.NEOFORGE.toId("block", "milk_still"),
+            HTConst.NEOFORGE.toId(HTConst.BLOCK, "milk_still"),
             color,
-            HTConst.NEOFORGE.toId("block", "milk_flowing"),
+            HTConst.NEOFORGE.toId(HTConst.BLOCK, "milk_flowing"),
         )
 
         @JvmStatic
         fun molten(color: Color): HTSimpleFluidExtensions = HTSimpleFluidExtensions(
-            HiiragiCoreAPI.id("block", "molten_still"),
+            HiiragiCoreAPI.id(HTConst.BLOCK, "molten_still"),
             color,
-            HiiragiCoreAPI.id("block", "molten_flow"),
+            HiiragiCoreAPI.id(HTConst.BLOCK, "molten_flow"),
         )
     }
 

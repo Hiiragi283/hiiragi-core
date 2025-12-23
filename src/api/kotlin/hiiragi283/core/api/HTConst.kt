@@ -57,6 +57,7 @@ data object HTConst {
 
     const val ACCESS_CONFIG = "access_config"
     const val OWNER = "owner"
+    const val BLOCK = "block"
 
     const val ITEM = "item"
     const val SLOT = "slot"

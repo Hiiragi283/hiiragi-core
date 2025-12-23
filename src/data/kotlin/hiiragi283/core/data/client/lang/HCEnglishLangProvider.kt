@@ -76,11 +76,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         // API - GUI
         add(HTCommonTranslation.SECONDS, $$"%1$s sec (%2$s ticks)")
         // API - Item
-        add(HTCommonTranslation.TOOLTIP_BLOCK_POS, $$"Position: [%1$s, %2$s, %3$s]")
-        add(HTCommonTranslation.TOOLTIP_CHARGE_POWER, $$"Power: %1$s")
-        add(HTCommonTranslation.TOOLTIP_DIMENSION, $$"Dimension: %1$s")
         add(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT, $$"Always has at least %1$s")
-        add(HTCommonTranslation.TOOLTIP_LOOT_TABLE_ID, $$"Loot Table: %1$s")
         add(HTCommonTranslation.TOOLTIP_UPGRADE_TARGET, $$"Upgrade Targets: %1$s")
         add(HTCommonTranslation.TOOLTIP_UPGRADE_EXCLUSIVE, $$"Conflicting Upgrades: %1$s")
 

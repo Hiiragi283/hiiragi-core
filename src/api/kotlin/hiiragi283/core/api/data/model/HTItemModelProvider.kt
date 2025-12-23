@@ -72,7 +72,7 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
         val parent: ResourceLocation = when {
             isDrip -> "bucket_drip"
             else -> "bucket"
-        }.let { HTConst.NEOFORGE.toId("item", it) }
+        }.let { HTConst.NEOFORGE.toId(HTConst.ITEM, it) }
 
         val builder: DynamicFluidContainerModelBuilder<ItemModelBuilder> = withExistingParent(content.bucket.getPath(), parent)
             .customLoader(DynamicFluidContainerModelBuilder<ItemModelBuilder>::begin)

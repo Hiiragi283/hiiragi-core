@@ -1,5 +1,6 @@
 package hiiragi283.core.data.client.model
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.model.HTBlockStateProvider
@@ -24,7 +25,7 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(Hii
 
     private fun registerMaterials() {
         HCBlocks.MATERIALS.forEach { (prefix: HTMaterialPrefix, material: HTMaterialKey, block: HTSimpleDeferredBlock) ->
-            val textureId: ResourceLocation = HiiragiCoreAPI.id("block", prefix.name, material.name)
+            val textureId: ResourceLocation = HiiragiCoreAPI.id(HTConst.BLOCK, prefix.name, material.name)
             existTexture(block, textureId, ::altTextureBlock)
         }
     }
