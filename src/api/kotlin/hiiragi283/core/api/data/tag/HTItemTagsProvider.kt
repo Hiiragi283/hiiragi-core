@@ -39,7 +39,7 @@ abstract class HTItemTagsProvider(modId: String, private val blockTags: Completa
     }
 
     fun HTTagBuilder<Item>.addItem(item: ItemLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<Item> =
-        this.add(item.toHolderLike(), type)
+        this.add(item.asItem().toHolderLike(), type)
 
     override fun createContentsProvider(): CompletableFuture<HolderLookup.Provider> = super
         .createContentsProvider()

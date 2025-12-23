@@ -30,9 +30,9 @@ data object HiiragiCore {
 
         HCDataComponents.REGISTER.register(eventBus)
 
+        HCFluids.register(eventBus)
         HCBlocks.register(eventBus)
         HCItems.register(eventBus)
-        HCFluids.register(eventBus)
 
         HCCreativeTabs.REGISTER.register(eventBus)
         HCRecipeSerializers.REGISTER.register(eventBus)

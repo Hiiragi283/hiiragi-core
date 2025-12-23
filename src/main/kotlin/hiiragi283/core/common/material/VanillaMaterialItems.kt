@@ -7,13 +7,13 @@ import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.toHolderLike
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
-import net.minecraft.world.level.ItemLike
 
 object VanillaMaterialItems {
     @JvmStatic
-    val MATERIALS: HTMaterialTable<HTMaterialPrefix, HTItemHolderLike<*>> = buildTable {
-        fun add(prefix: HTPrefixLike, material: HTMaterialLike, item: ItemLike) {
+    val MATERIALS: HTMaterialTable<HTMaterialPrefix, HTItemHolderLike<Item>> = buildTable {
+        fun add(prefix: HTPrefixLike, material: HTMaterialLike, item: Item) {
             this[prefix.asMaterialPrefix(), material.asMaterialKey()] = item.toHolderLike()
         }
 

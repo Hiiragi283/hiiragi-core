@@ -3,9 +3,11 @@ package hiiragi283.core.api.data.model
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
+import hiiragi283.core.api.resource.vanillaId
 import net.minecraft.core.Direction
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.Block
@@ -167,5 +169,18 @@ abstract class HTBlockStateProvider(modid: String, context: HTDataGenContext) :
     protected fun wallBlock(block: HTHolderLike<Block, WallBlock>, texture: ResourceLocation) {
         wallBlock(block.get(), texture)
         itemModels().wallInventory(block.getPath(), texture)
+    }
+
+    /**
+     * 液体ブロックのモデルを追加します。
+     * @since 0.3.0
+     */
+    protected fun liquidBlock(content: HTFluidContent<*, *, *>) {
+        simpleBlock(
+            content.block.get(),
+            models()
+                .getBuilder(content.blockId)
+                .texture("particle", vanillaId("block", "water_still")),
+        )
     }
 }

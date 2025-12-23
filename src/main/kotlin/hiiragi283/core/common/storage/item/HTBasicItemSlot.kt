@@ -31,7 +31,7 @@ open class HTBasicItemSlot protected constructor(
         }
 
         @JvmStatic
-        private fun create(
+        fun create(
             listener: HTContentListener?,
             limit: Int = HTConst.ABSOLUTE_MAX_STACK_SIZE,
             canExtract: BiPredicate<ImmutableItemStack, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),

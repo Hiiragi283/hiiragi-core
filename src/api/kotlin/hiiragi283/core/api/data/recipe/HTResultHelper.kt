@@ -1,12 +1,12 @@
 package hiiragi283.core.api.data.recipe
 
+import hiiragi283.core.api.item.builtInRegistryHolder
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTHolderOrTagKey
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.HTFluidWithTag
-import hiiragi283.core.api.registry.toHolderLike
 import hiiragi283.core.api.stack.ImmutableFluidStack
 import hiiragi283.core.api.stack.ImmutableItemStack
 import net.minecraft.core.Holder
@@ -23,7 +23,7 @@ object HTResultHelper {
 
     @JvmStatic
     fun item(item: ItemLike, count: Int = 1, components: DataComponentPatch = DataComponentPatch.EMPTY): HTItemResult =
-        item(item.toHolderLike().getHolder(), count, components)
+        item(item.builtInRegistryHolder(), count, components)
 
     @JvmStatic
     fun item(stack: ItemStack): HTItemResult = item(stack.itemHolder, stack.count, stack.componentsPatch)
@@ -41,7 +41,7 @@ object HTResultHelper {
         material: HTMaterialLike,
         count: Int = 1,
         item: ItemLike? = null,
-    ): HTItemResult = item(prefix, material, count, item?.toHolderLike()?.getHolder())
+    ): HTItemResult = item(prefix, material, count, item?.builtInRegistryHolder())
 
     @JvmStatic
     fun item(

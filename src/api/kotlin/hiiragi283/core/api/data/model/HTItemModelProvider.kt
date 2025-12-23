@@ -3,12 +3,15 @@ package hiiragi283.core.api.data.model
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.HTDataGenContext
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
+import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.resource.vanillaId
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider
+import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder
 import org.slf4j.Logger
 
 /**
@@ -57,6 +60,25 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
         val builder: ItemModelBuilder = withExistingParent(item.getPath(), vanillaId(HTConst.ITEM, "generated"))
         layers.forEachIndexed { index: Int, layer: ResourceLocation ->
             builder.texture("layer$index", layer)
+        }
+        return builder
+    }
+
+    /**
+     * 液体バケツのアイテムモデルを登録します。
+     * @since 0.1.0
+     */
+    protected fun bucketItem(content: HTFluidContent<*, *, *>, isDrip: Boolean): DynamicFluidContainerModelBuilder<ItemModelBuilder> {
+        val parent: ResourceLocation = when {
+            isDrip -> "bucket_drip"
+            else -> "bucket"
+        }.let { HTConst.NEOFORGE.toId("item", it) }
+
+        val builder: DynamicFluidContainerModelBuilder<ItemModelBuilder> = withExistingParent(content.bucket.getPath(), parent)
+            .customLoader(DynamicFluidContainerModelBuilder<ItemModelBuilder>::begin)
+            .fluid(content.get())
+        if (content.getFluidType().isLighterThanAir) {
+            builder.flipGas(true)
         }
         return builder
     }

@@ -9,13 +9,10 @@ import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTSimpleFluidContent
 import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.resources.ResourceLocation
-import net.neoforged.neoforge.client.model.generators.ItemModelBuilder
-import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder
 
 class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(HiiragiCoreAPI.MOD_ID, context) {
     override fun registerModels() {
@@ -54,19 +51,7 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
             add(HCFluids.ELDRITCH_FLUX)
         }
         for (content: HTFluidContent<*, *, *> in HCFluids.REGISTER.entries) {
-            val parent: ResourceLocation = when (content) {
-                in dripFluids -> "bucket_drip"
-                else -> "bucket"
-            }.let { HTConst.NEOFORGE.toId("item", it) }
-
-            withExistingParent(content.bucket.getPath(), parent)
-                .customLoader(DynamicFluidContainerModelBuilder<ItemModelBuilder>::begin)
-                .fluid(content.get())
-                .apply {
-                    if (content.getFluidType().isLighterThanAir) {
-                        flipGas(true)
-                    }
-                }
+            bucketItem(content, content in dripFluids)
         }
     }
 }

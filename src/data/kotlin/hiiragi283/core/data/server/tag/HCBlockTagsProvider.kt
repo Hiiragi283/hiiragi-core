@@ -6,7 +6,6 @@ import hiiragi283.core.api.data.tag.HTTagBuilder
 import hiiragi283.core.api.data.tag.HTTagsProvider
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
-import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.toHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.common.material.HCMaterial
@@ -20,7 +19,7 @@ import net.minecraft.world.level.block.Blocks
 class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(HiiragiCoreAPI.MOD_ID, Registries.BLOCK, context) {
     companion object {
         @JvmField
-        val VANILLA_STORAGE_BLOCKS: Map<HCMaterial, HTItemHolderLike<*>> = mapOf(
+        val VANILLA_STORAGE_BLOCKS: Map<HCMaterial, HTIdLike> = mapOf(
             HCMaterial.Minerals.GLOWSTONE to Blocks.GLOWSTONE.toHolderLike(),
             HCMaterial.Gems.AMETHYST to Blocks.AMETHYST_BLOCK.toHolderLike(),
             HCMaterial.Gems.QUARTZ to Blocks.QUARTZ_BLOCK.toHolderLike(),
