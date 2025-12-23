@@ -10,21 +10,21 @@ import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
 import net.neoforged.bus.api.IEventBus
-import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.neoforge.common.NeoForgeMod
 import org.slf4j.Logger
+import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
 
 @Mod(HiiragiCoreAPI.MOD_ID)
-class HiiragiCore(eventBus: IEventBus, container: ModContainer) {
-    companion object {
-        @JvmField
-        val LOGGER: Logger = LogUtils.getLogger()
-    }
+data object HiiragiCore {
+    @JvmStatic
+    private val LOGGER: Logger = LogUtils.getLogger()
 
     init {
         NeoForgeMod.enableMilkFluid()
+
+        val eventBus: IEventBus = MOD_BUS
 
         eventBus.addListener(::commonSetup)
 

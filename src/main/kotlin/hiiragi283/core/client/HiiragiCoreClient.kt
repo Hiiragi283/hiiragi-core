@@ -1,6 +1,6 @@
 package hiiragi283.core.client
 
-import hiiragi283.core.HiiragiCore
+import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.HTFluidContent
@@ -14,18 +14,22 @@ import net.neoforged.fml.common.Mod
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent
 import net.neoforged.neoforge.client.model.DynamicFluidContainerModel
+import org.slf4j.Logger
 import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
 import java.awt.Color
 
 @Mod(value = HiiragiCoreAPI.MOD_ID, dist = [Dist.CLIENT])
 object HiiragiCoreClient {
+    @JvmStatic
+    private val LOGGER: Logger = LogUtils.getLogger()
+
     init {
         val eventBus: IEventBus = MOD_BUS
 
         eventBus.addListener(::registerItemColors)
         eventBus.addListener(::registerClientExtensions)
 
-        HiiragiCore.LOGGER.info("Hiiragi-Core loaded on client side!")
+        LOGGER.info("Hiiragi-Core loaded on client side!")
     }
 
     @JvmStatic
@@ -34,7 +38,7 @@ object HiiragiCoreClient {
         for (item: ItemLike in HCFluids.REGISTER.asItemSequence()) {
             event.register(bucketColor, item)
         }
-        HiiragiCore.LOGGER.info("Registered item colors!")
+        LOGGER.info("Registered item colors!")
     }
 
     @JvmStatic
@@ -54,7 +58,7 @@ object HiiragiCoreClient {
         event.molten(HCFluids.DEW_OF_THE_WARP, Color(0x009999))
         event.molten(HCFluids.ELDRITCH_FLUX, Color(0x990099))
 
-        HiiragiCore.LOGGER.info("Registered client extensions!")
+        LOGGER.info("Registered client extensions!")
     }
 
     //    Extensions    //

@@ -2,7 +2,7 @@ package hiiragi283.core.data.client
 
 import com.mojang.blaze3d.platform.NativeImage
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.collection.HTMultiMap
+import hiiragi283.core.api.collection.ImmutableMultiMap
 import hiiragi283.core.api.collection.buildMultiMap
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.texture.HTTextureProvider
@@ -41,7 +41,7 @@ class HCTextureProvider(context: HTDataGenContext) : HTTextureProvider(context) 
         }
     }
 
-    private fun createTemplate(image: NativeImage): HTMultiMap<Int, Pair<Int, Int>> = buildMultiMap {
+    private fun createTemplate(image: NativeImage): ImmutableMultiMap<Int, Pair<Int, Int>> = buildMultiMap {
         for (x: Int in (0..<image.width)) {
             for (y: Int in (0..<image.height)) {
                 val color = Color(argbToFromABGR(image.getPixelRGBA(x, y)))

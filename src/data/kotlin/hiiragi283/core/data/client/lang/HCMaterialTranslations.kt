@@ -1,6 +1,6 @@
 package hiiragi283.core.data.client.lang
 
-import hiiragi283.core.api.collection.HTTable
+import hiiragi283.core.api.collection.ImmutableTable
 import hiiragi283.core.api.collection.buildTable
 import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.data.lang.HTLangPatternProvider
@@ -53,24 +53,20 @@ object HCMaterialTranslations {
         register(HCMaterialPrefixes.WIRE, "%s Wire", "%sのワイヤ")
     }
 
-    @JvmField
-    val MATERIAL_MAP: HTTable<HTMaterialPrefix, HTMaterialKey, HTLangName> = buildTable {
+    @JvmStatic
+    val MATERIAL_MAP: ImmutableTable<HTMaterialPrefix, HTMaterialKey, HTLangName> = buildTable {
         fun register(
             prefix: HTPrefixLike,
             material: HTMaterialLike,
             enName: String,
             jaName: String,
         ) {
-            this.add(
-                prefix.asMaterialPrefix(),
-                material.asMaterialKey(),
-                HTLangName { type: HTLanguageType ->
-                    when (type) {
-                        HTLanguageType.EN_US -> enName
-                        HTLanguageType.JA_JP -> jaName
-                    }
-                },
-            )
+            this[prefix.asMaterialPrefix(), material.asMaterialKey()] = HTLangName { type: HTLanguageType ->
+                when (type) {
+                    HTLanguageType.EN_US -> enName
+                    HTLanguageType.JA_JP -> jaName
+                }
+            }
         }
 
         register(HCMaterialPrefixes.DUST, HCMaterial.Wood, "Sawdust", "おがくず")

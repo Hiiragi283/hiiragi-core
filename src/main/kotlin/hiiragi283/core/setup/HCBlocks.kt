@@ -31,11 +31,7 @@ object HCBlocks {
     @JvmStatic
     val MATERIALS: HTMaterialTable<HTMaterialPrefix, HTSimpleDeferredBlock> = buildTable {
         fun register(prefix: HTPrefixLike, material: HTMaterialLike, properties: BlockBehaviour.Properties) {
-            this.add(
-                prefix.asMaterialPrefix(),
-                material.asMaterialKey(),
-                REGISTER.registerSimple(prefix.createPath(material), properties),
-            )
+            this[prefix.asMaterialPrefix(), material.asMaterialKey()] = REGISTER.registerSimple(prefix.createPath(material), properties)
         }
 
         // Ores

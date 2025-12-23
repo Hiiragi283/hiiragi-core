@@ -68,7 +68,7 @@ abstract class HTTagsProvider<T : Any>(
      * @return 最後の[children]に対する[HTTagBuilder]
      */
     protected fun addTags(factory: BuilderFactory<T>, parent: TagKey<T>, vararg children: TagKey<T>): HTTagBuilder<T> {
-        check(children.size > 1) { "Empty tag key children" }
+        check(!children.isEmpty()) { "Empty tag key children" }
         return children.fold(factory.apply(parent)) { current: HTTagBuilder<T>, child: TagKey<T> ->
             current.addTag(child)
             factory.apply(child)
