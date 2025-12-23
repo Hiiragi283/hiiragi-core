@@ -7,6 +7,7 @@ import dev.emi.emi.api.widget.Bounds
 import dev.emi.emi.api.widget.FillingArrowWidget
 import dev.emi.emi.api.widget.TextureWidget
 import dev.emi.emi.api.widget.WidgetHolder
+import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.math.HTBounds
@@ -213,11 +214,7 @@ fun createErrorStack(translation: HTTranslation): EmiStack = createErrorStack(tr
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun createErrorStack(message: Component): EmiStack {
-    val stack = ItemStack(Items.BARRIER)
-    stack.set(DataComponents.CUSTOM_NAME, message)
-    return stack.toEmi()
-}
+fun createErrorStack(message: Component): EmiStack = createItemStack(Items.BARRIER, DataComponents.CUSTOM_NAME, message).toEmi()
 
 //    Widget    //
 

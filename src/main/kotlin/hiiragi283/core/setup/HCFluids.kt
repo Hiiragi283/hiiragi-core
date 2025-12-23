@@ -23,6 +23,9 @@ object HCFluids {
     //    Vanilla    //
 
     @JvmField
+    val EXPERIENCE: HTSimpleFluidContent = REGISTER.registerSimple("experience", liquid())
+
+    @JvmField
     val HONEY: HTSimpleFluidContent = REGISTER.registerSimple(
         "honey",
         create(SoundEvents.HONEY_BLOCK_PLACE, SoundEvents.HONEY_BLOCK_BREAK),

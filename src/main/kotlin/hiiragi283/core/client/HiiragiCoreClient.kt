@@ -1,10 +1,8 @@
 package hiiragi283.core.client
 
 import com.mojang.logging.LogUtils
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.world.level.ItemLike
@@ -44,6 +42,7 @@ object HiiragiCoreClient {
     @JvmStatic
     private fun registerClientExtensions(event: RegisterClientExtensionsEvent) {
         // Vanilla
+        event.clear(HCFluids.EXPERIENCE, Color(0x66ff33))
         event.registerFluidType(
             HTSimpleFluidExtensions(vanillaId("block", "honey_block_top")),
             HCFluids.HONEY.getFluidType(),
@@ -64,35 +63,14 @@ object HiiragiCoreClient {
     //    Extensions    //
 
     private fun RegisterClientExtensionsEvent.clear(content: HTFluidContent<*, *, *>, color: Color) {
-        this.registerFluidType(
-            HTSimpleFluidExtensions(
-                vanillaId("block", "water_still"),
-                color,
-                vanillaId("block", "water_flow"),
-            ),
-            content.getFluidType(),
-        )
+        this.registerFluidType(HTSimpleFluidExtensions.clear(color), content.getFluidType())
     }
 
     private fun RegisterClientExtensionsEvent.dull(content: HTFluidContent<*, *, *>, color: Color) {
-        this.registerFluidType(
-            HTSimpleFluidExtensions(
-                HTConst.NEOFORGE.toId("block", "milk_still"),
-                color,
-                HTConst.NEOFORGE.toId("block", "milk_flowing"),
-            ),
-            content.getFluidType(),
-        )
+        this.registerFluidType(HTSimpleFluidExtensions.dull(color), content.getFluidType())
     }
 
     private fun RegisterClientExtensionsEvent.molten(content: HTFluidContent<*, *, *>, color: Color) {
-        this.registerFluidType(
-            HTSimpleFluidExtensions(
-                HiiragiCoreAPI.id("block", "molten_still"),
-                color,
-                HiiragiCoreAPI.id("block", "molten_flow"),
-            ),
-            content.getFluidType(),
-        )
+        this.registerFluidType(HTSimpleFluidExtensions.molten(color), content.getFluidType())
     }
 }

@@ -17,6 +17,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         HCMaterialTranslations.addTranslations(this)
 
         // Fluid
+        addFluid(HCFluids.EXPERIENCE, "Liquid Experience")
         addFluid(HCFluids.HONEY, "Honey")
         addFluid(HCFluids.MUSHROOM_STEW, "Mushroom Stew")
 

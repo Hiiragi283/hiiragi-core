@@ -77,6 +77,18 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
 
     @JvmStatic
     private fun buckets() {
+        // Exp Bottle <-> Exp Bucket
+        HTShapelessRecipeBuilder
+            .create(HCFluids.EXPERIENCE.bucket)
+            .addIngredients(Items.EXPERIENCE_BOTTLE, count = 4)
+            .addIngredient(Tags.Items.BUCKETS_EMPTY)
+            .saveSuffixed(output, "_from_bottles")
+        HTShapelessRecipeBuilder
+            .create(Items.EXPERIENCE_BOTTLE, 4)
+            .addIngredient(HCFluids.EXPERIENCE.bucketTag)
+            .addIngredients(Items.GLASS_BOTTLE, count = 4)
+            .saveSuffixed(output, "_from_bucket")
+
         // Honey Bottle <-> Honey Bucket
         HTShapelessRecipeBuilder
             .create(HCFluids.HONEY.bucket)
@@ -84,16 +96,16 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             .addIngredient(Tags.Items.BUCKETS_EMPTY)
             .saveSuffixed(output, "_from_bottles")
         HTShapelessRecipeBuilder
-            .create(HCFluids.HONEY.bucket)
-            .addIngredient(Items.HONEY_BLOCK)
-            .addIngredient(Tags.Items.BUCKETS_EMPTY)
-            .saveSuffixed(output, "_from_block")
-
-        HTShapelessRecipeBuilder
             .create(Items.HONEY_BOTTLE, 4)
             .addIngredient(HCFluids.HONEY.bucketTag)
             .addIngredients(Items.GLASS_BOTTLE, count = 4)
             .saveSuffixed(output, "_from_bucket")
+        // Honey Block <-> Honey Bucket
+        HTShapelessRecipeBuilder
+            .create(HCFluids.HONEY.bucket)
+            .addIngredient(Items.HONEY_BLOCK)
+            .addIngredient(Tags.Items.BUCKETS_EMPTY)
+            .saveSuffixed(output, "_from_block")
         HTShapelessRecipeBuilder
             .create(Items.HONEY_BLOCK)
             .addIngredient(HCFluids.HONEY.bucketTag)

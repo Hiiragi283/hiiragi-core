@@ -17,6 +17,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         HCMaterialTranslations.addTranslations(this)
 
         // Fluid
+        addFluid(HCFluids.EXPERIENCE, "液体経験値")
         addFluid(HCFluids.HONEY, "ハチミツ")
         addFluid(HCFluids.MUSHROOM_STEW, "キノコシチュー")
 
