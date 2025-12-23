@@ -15,9 +15,6 @@ import net.minecraft.resources.ResourceLocation
 @JvmInline
 value class HTMaterialKey private constructor(val name: String) : HTMaterialLike {
     companion object {
-        @JvmStatic
-        private val instances: MutableMap<String, HTMaterialKey> = hashMapOf()
-
         /**
          * 指定した[name]から[HTMaterialKey]のインスタンスを返します。
          * @return キャッシュから取得した[HTMaterialKey]のインスタンス
@@ -26,7 +23,7 @@ value class HTMaterialKey private constructor(val name: String) : HTMaterialLike
         @JvmStatic
         fun of(name: String): HTMaterialKey {
             check(ResourceLocation.isValidPath(name)) { "Material name $name is not valid" }
-            return instances.computeIfAbsent(name, ::HTMaterialKey)
+            return HTMaterialKey(name)
         }
 
         /**

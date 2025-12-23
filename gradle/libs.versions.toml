@@ -45,7 +45,6 @@ mods-impl = [
     # non-direct dependencies
     "arch",
     "guide",
-    "mi",
 ]
 
 mods-transitive = []

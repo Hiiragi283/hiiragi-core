@@ -2,7 +2,7 @@ package hiiragi283.core.mixin;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import hiiragi283.core.api.recipe.HTRegisterRuntimeRecipeEvent;
+import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.ReloadableServerResources;

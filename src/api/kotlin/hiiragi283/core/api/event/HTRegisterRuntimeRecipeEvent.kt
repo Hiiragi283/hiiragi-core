@@ -1,4 +1,4 @@
-package hiiragi283.core.api.recipe
+package hiiragi283.core.api.event
 
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.material.HTMaterialLike

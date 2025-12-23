@@ -194,7 +194,7 @@ abstract class HTEmiRecipe<RECIPE : Any>(
     /**
      * このレシピが不定形判定をサポートしていることを示します。
      */
-    fun WidgetHolder.setShapeless(): TextureWidget = addTexture(EmiTexture.SHAPELESS, getPosition(6) + 1, getPosition(0) + 3)
+    fun WidgetHolder.setShapeless(x: Int = getPosition(6)): TextureWidget = addTexture(EmiTexture.SHAPELESS, x + 1, getPosition(0))
 
     /**
      * このレシピに触媒スロットを追加します。
