@@ -255,11 +255,11 @@ object HCMaterialPalette {
     @JvmStatic
     val COPPER: HTColorPalette = HTColorPalette(
         arrayOf(
-            Color(0xffffff),
-            Color(0xfbc3b6),
+            Color(0xfc9982),
             Color(0xe77c56),
             Color(0xc15a36),
-            Color(0x9c4529),
+            Color(0x9c4e31),
+            Color(0x8a4129),
             Color(0x6d3421),
         ),
     )

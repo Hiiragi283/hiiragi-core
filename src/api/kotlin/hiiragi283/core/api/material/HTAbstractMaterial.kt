@@ -3,7 +3,7 @@ package hiiragi283.core.api.material
 import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.data.texture.HTColorPalette
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
-import net.minecraft.resources.ResourceLocation
+import hiiragi283.core.api.material.prefix.HTPrefixTemplateMap
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 
@@ -31,6 +31,11 @@ interface HTAbstractMaterial :
     fun getItemPrefixesToGenerate(): Set<HTMaterialPrefix>
 
     /**
+     * テクスチャの生成に使用するテンプレートを取得します。
+     */
+    fun getItemPrefixMap(): HTPrefixTemplateMap
+
+    /**
      * 指定した[プレフィックス][HTMaterialPrefix]からブロックやアイテムのIDのパスを取得します。
      */
     fun createPath(prefix: HTMaterialPrefix): String = prefix.createPath(this)
@@ -39,9 +44,4 @@ interface HTAbstractMaterial :
      * レシピで使用される基本のタグを取得します。
      */
     fun getBaseIngredient(): TagKey<Item> = basePrefix.itemTagKey(this)
-
-    /**
-     * テクスチャの生成に使用するテンプレートを取得します。
-     */
-    fun getTemplateId(prefix: HTMaterialPrefix): ResourceLocation?
 }

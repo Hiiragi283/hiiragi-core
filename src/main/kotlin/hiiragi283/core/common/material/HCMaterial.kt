@@ -1,13 +1,13 @@
 package hiiragi283.core.common.material
 
-import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLanguageType
 import hiiragi283.core.api.data.texture.HTColorPalette
 import hiiragi283.core.api.material.HTAbstractMaterial
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
+import hiiragi283.core.api.material.prefix.HTPrefixTemplateMap
 import hiiragi283.core.common.data.texture.HCMaterialPalette
-import net.minecraft.resources.ResourceLocation
+import hiiragi283.core.common.data.texture.HCMaterialPrefixMaps
 import net.minecraft.tags.ItemTags
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -32,14 +32,6 @@ sealed interface HCMaterial : HTAbstractMaterial {
 
         private val dustSet: Set<HTMaterialPrefix> = setOf(HCMaterialPrefixes.DUST, HCMaterialPrefixes.TINY_DUST)
     }
-
-    override fun getTemplateId(prefix: HTMaterialPrefix): ResourceLocation? = HiiragiCoreAPI.id(
-        "template",
-        when (prefix) {
-            HCMaterialPrefixes.STORAGE_BLOCK -> "block_${basePrefix.name}"
-            else -> prefix.name
-        },
-    )
 
     //    Fuels    //
 
@@ -67,10 +59,7 @@ sealed interface HCMaterial : HTAbstractMaterial {
             addAll(dustSet)
         }
 
-        override fun getTemplateId(prefix: HTMaterialPrefix): ResourceLocation? = when (prefix) {
-            HCMaterialPrefixes.DUST -> HiiragiCoreAPI.id("template", "dust_dull")
-            else -> super.getTemplateId(prefix)
-        }
+        override fun getItemPrefixMap(): HTPrefixTemplateMap = HCMaterialPrefixMaps.FUEL
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
             HTLanguageType.EN_US -> usName
@@ -98,6 +87,8 @@ sealed interface HCMaterial : HTAbstractMaterial {
         SULFUR("Sulfur", "硫黄", HCMaterialPalette.SULFUR),
         ;
 
+        override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.DUST
+
         override fun getItemPrefixesToGenerate(): Set<HTMaterialPrefix> = buildSet {
             if (!isVanilla) {
                 add(HCMaterialPrefixes.DUST)
@@ -105,7 +96,10 @@ sealed interface HCMaterial : HTAbstractMaterial {
             add(HCMaterialPrefixes.TINY_DUST)
         }
 
-        override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.DUST
+        override fun getItemPrefixMap(): HTPrefixTemplateMap = when (isVanilla) {
+            true -> HCMaterialPrefixMaps.DUST_SHINE
+            false -> HCMaterialPrefixMaps.DUST
+        }
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
             HTLanguageType.EN_US -> usName
@@ -121,25 +115,26 @@ sealed interface HCMaterial : HTAbstractMaterial {
         private val usName: String,
         private val jpName: String,
         override val colorPalette: HTColorPalette,
+        private val prefixMap: HTPrefixTemplateMap,
         private val isVanilla: Boolean = false,
     ) : HCMaterial {
         // Vanilla
-        LAPIS("Lapis", "ラピス", HCMaterialPalette.LAPIS, true),
-        QUARTZ("Quartz", "水晶", HCMaterialPalette.QUARTZ, true),
-        AMETHYST("Amethyst", "アメジスト", HCMaterialPalette.AMETHYST, true),
-        DIAMOND("Diamond", "ダイヤモンド", HCMaterialPalette.DIAMOND, true),
-        EMERALD("Emerald", "エメラルド", HCMaterialPalette.EMERALD, true),
-        ECHO("Echo", "残響", HCMaterialPalette.ECHO, true),
+        LAPIS("Lapis", "ラピス", HCMaterialPalette.LAPIS, HCMaterialPrefixMaps.GEM_LAPIS, true),
+        QUARTZ("Quartz", "水晶", HCMaterialPalette.QUARTZ, HCMaterialPrefixMaps.GEM_QUARTZ, true),
+        AMETHYST("Amethyst", "アメジスト", HCMaterialPalette.AMETHYST, HCMaterialPrefixMaps.GEM_AMETHYST, true),
+        DIAMOND("Diamond", "ダイヤモンド", HCMaterialPalette.DIAMOND, HCMaterialPrefixMaps.GEM_DIAMOND, true),
+        EMERALD("Emerald", "エメラルド", HCMaterialPalette.EMERALD, HCMaterialPrefixMaps.GEM_EMERALD, true),
+        ECHO("Echo", "残響", HCMaterialPalette.ECHO, HCMaterialPrefixMaps.GEM_ECHO, true),
 
         // Hiiragi Series
-        AZURE("Azure Shard", "紺碧の欠片", HCMaterialPalette.AZURE_STEEL) {
+        AZURE("Azure Shard", "紺碧の欠片", HCMaterialPalette.AZURE_STEEL, HCMaterialPrefixMaps.GEM_AMETHYST) {
             override fun createPath(prefix: HTMaterialPrefix): String = when (prefix) {
                 HCMaterialPrefixes.GEM -> "azure_shard"
                 else -> super.createPath(prefix)
             }
         },
-        CRIMSON_CRYSTAL("Crimson Crystal", "深紅のクリスタリル", HCMaterialPalette.CRIMSON_CRYSTAL),
-        WARPED_CRYSTAL("Warped Crystal", "歪んだクリスタリル", HCMaterialPalette.WARPED_CRYSTAL),
+        CRIMSON_CRYSTAL("Crimson Crystal", "深紅のクリスタリル", HCMaterialPalette.CRIMSON_CRYSTAL, HCMaterialPrefixMaps.GEM_EMERALD),
+        WARPED_CRYSTAL("Warped Crystal", "歪んだクリスタリル", HCMaterialPalette.WARPED_CRYSTAL, HCMaterialPrefixMaps.GEM_EMERALD),
         ;
 
         override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.GEM
@@ -151,10 +146,7 @@ sealed interface HCMaterial : HTAbstractMaterial {
             addAll(dustSet)
         }
 
-        override fun getTemplateId(prefix: HTMaterialPrefix): ResourceLocation? = when (prefix) {
-            HCMaterialPrefixes.GEM -> null
-            else -> super.getTemplateId(prefix)
-        }
+        override fun getItemPrefixMap(): HTPrefixTemplateMap = prefixMap
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
             HTLanguageType.EN_US -> usName
@@ -185,10 +177,7 @@ sealed interface HCMaterial : HTAbstractMaterial {
             }
         }
 
-        override fun getTemplateId(prefix: HTMaterialPrefix): ResourceLocation? = when (prefix) {
-            HCMaterialPrefixes.PEARL -> null
-            else -> super.getTemplateId(prefix)
-        }
+        override fun getItemPrefixMap(): HTPrefixTemplateMap = HCMaterialPrefixMaps.PEARL
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
             HTLanguageType.EN_US -> usName
@@ -204,24 +193,25 @@ sealed interface HCMaterial : HTAbstractMaterial {
         private val usName: String,
         private val jpName: String,
         override val colorPalette: HTColorPalette,
+        private val prefixMap: HTPrefixTemplateMap,
         private val isVanilla: Boolean = false,
     ) : HCMaterial {
         // Vanilla
-        COPPER("Copper", "銅", HCMaterialPalette.COPPER, true),
-        IRON("Iron", "鉄", HCMaterialPalette.IRON, true),
-        GOLD("Gold", "金", HCMaterialPalette.GOLD, true),
+        COPPER("Copper", "銅", HCMaterialPalette.COPPER, HCMaterialPrefixMaps.METAL_SHINE, true),
+        IRON("Iron", "鉄", HCMaterialPalette.IRON, HCMaterialPrefixMaps.METAL, true),
+        GOLD("Gold", "金", HCMaterialPalette.GOLD, HCMaterialPrefixMaps.METAL_SHINE, true),
 
         // Common
         // ALUMINUM("Aluminum", "アルミニウム"),
         // NICKEL("Nickel", "ニッケル"),
         // ZINC("Zinc", "亜鉛"),
-        SILVER("Silver", "銀", HCMaterialPalette.SILVER),
+        SILVER("Silver", "銀", HCMaterialPalette.SILVER, HCMaterialPrefixMaps.METAL_SHINE),
 
         // TIN("Tin", "錫"),
         // PLATINUM("Platinum", "プラチナ"),
         // LEAD("Lead", "鉛"),
         // Hiiragi Series
-        NIGHT_METAL("Night Metal", "夜金", HCMaterialPalette.NIGHT_METAL),
+        NIGHT_METAL("Night Metal", "夜金", HCMaterialPalette.NIGHT_METAL, HCMaterialPrefixMaps.METAL_SHINE),
         ;
 
         override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.INGOT
@@ -245,6 +235,8 @@ sealed interface HCMaterial : HTAbstractMaterial {
             add(HCMaterialPrefixes.WIRE)
         }
 
+        override fun getItemPrefixMap(): HTPrefixTemplateMap = prefixMap
+
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
             HTLanguageType.EN_US -> usName
             HTLanguageType.JA_JP -> jpName
@@ -263,27 +255,19 @@ sealed interface HCMaterial : HTAbstractMaterial {
                 addAll(super.getItemPrefixesToGenerate())
                 remove(HCMaterialPrefixes.INGOT)
             }
+
+            override fun getItemPrefixMap(): HTPrefixTemplateMap = HCMaterialPrefixMaps.METAL_SHINE
         },
 
         // Common
         STEEL("Steel", "鋼鉄", HCMaterialPalette.STEEL),
 
         // Hiiragi Series
-        AZURE_STEEL("Azure Steel", "紺鉄", HCMaterialPalette.AZURE_STEEL) {
-            override fun getTemplateId(prefix: HTMaterialPrefix): ResourceLocation? = when (prefix) {
-                HCMaterialPrefixes.DUST -> HiiragiCoreAPI.id("template", "dust_dull")
-                else -> super.getTemplateId(prefix)
-            }
-        },
+        AZURE_STEEL("Azure Steel", "紺鉄", HCMaterialPalette.AZURE_STEEL),
         DEEP_STEEL("Deep Steel", "深層鋼", HCMaterialPalette.DEEP_STEEL) {
             override fun getItemPrefixesToGenerate(): Set<HTMaterialPrefix> = buildSet {
                 add(HCMaterialPrefixes.SCRAP)
                 addAll(super.getItemPrefixesToGenerate())
-            }
-
-            override fun createPath(prefix: HTMaterialPrefix): String = when (prefix) {
-                HCMaterialPrefixes.SCRAP -> "deep_scrap"
-                else -> super.createPath(prefix)
             }
         },
         ;
@@ -301,6 +285,8 @@ sealed interface HCMaterial : HTAbstractMaterial {
             HCMaterialPrefixes.WIRE,
         )
 
+        override fun getItemPrefixMap(): HTPrefixTemplateMap = HCMaterialPrefixMaps.METAL
+
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
             HTLanguageType.EN_US -> usName
             HTLanguageType.JA_JP -> jpName
@@ -315,12 +301,7 @@ sealed interface HCMaterial : HTAbstractMaterial {
         HCMaterial {
         // Common
         PLASTIC("Plastic", "プラスチック", HCMaterialPalette.PLASTIC),
-        RUBBER("Rubber", "ゴム", HCMaterialPalette.RUBBER) {
-            override fun getTemplateId(prefix: HTMaterialPrefix): ResourceLocation? = when (prefix) {
-                HCMaterialPrefixes.RAW_MATERIAL -> null
-                else -> super.getTemplateId(prefix)
-            }
-        },
+        RUBBER("Rubber", "ゴム", HCMaterialPalette.RUBBER),
         ;
 
         override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.PLATE
@@ -329,6 +310,15 @@ sealed interface HCMaterial : HTAbstractMaterial {
             HCMaterialPrefixes.RAW_MATERIAL,
             HCMaterialPrefixes.PLATE,
         )
+
+        override fun getItemPrefixMap(): HTPrefixTemplateMap = HTPrefixTemplateMap.create {
+            addCustom(HCMaterialPrefixes.STORAGE_BLOCK, "block_plate")
+
+            if (this@Plates == PLASTIC) {
+                add(HCMaterialPrefixes.RAW_MATERIAL)
+            }
+            add(HCMaterialPrefixes.PLATE)
+        }
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
             HTLanguageType.EN_US -> usName
@@ -350,12 +340,13 @@ sealed interface HCMaterial : HTAbstractMaterial {
             HCMaterialPrefixes.PLATE,
         )
 
-        override fun getBaseIngredient(): TagKey<Item> = ItemTags.PLANKS
-
-        override fun getTemplateId(prefix: HTMaterialPrefix): ResourceLocation? = when (prefix) {
-            HCMaterialPrefixes.PLATE -> null
-            else -> super.getTemplateId(prefix)
+        override fun getItemPrefixMap(): HTPrefixTemplateMap = HTPrefixTemplateMap.create {
+            add(HCMaterialPrefixes.DUST)
+            add(HCMaterialPrefixes.TINY_DUST)
+            addCustom(HCMaterialPrefixes.PLATE, "plate_wooden")
         }
+
+        override fun getBaseIngredient(): TagKey<Item> = ItemTags.PLANKS
 
         override fun asMaterialKey(): HTMaterialKey = HTMaterialKey.of("wood")
 
@@ -376,12 +367,14 @@ sealed interface HCMaterial : HTAbstractMaterial {
             HCMaterialPrefixes.ROD,
         )
 
-        override fun getBaseIngredient(): TagKey<Item> = ItemTags.STONE_CRAFTING_MATERIALS
-
-        override fun getTemplateId(prefix: HTMaterialPrefix): ResourceLocation? = when (prefix) {
-            HCMaterialPrefixes.DUST -> HiiragiCoreAPI.id("template", "dust_dull")
-            else -> super.getTemplateId(prefix)
+        override fun getItemPrefixMap(): HTPrefixTemplateMap = HTPrefixTemplateMap.create {
+            addCustom(HCMaterialPrefixes.DUST, "dust_dull")
+            add(HCMaterialPrefixes.TINY_DUST)
+            addCustom(HCMaterialPrefixes.PLATE, "plate_wooden")
+            add(HCMaterialPrefixes.ROD)
         }
+
+        override fun getBaseIngredient(): TagKey<Item> = ItemTags.STONE_CRAFTING_MATERIALS
 
         override fun asMaterialKey(): HTMaterialKey = HTMaterialKey.of("stone")
 
@@ -396,6 +389,11 @@ sealed interface HCMaterial : HTAbstractMaterial {
         override val colorPalette: HTColorPalette = HCMaterialPalette.OBSIDIAN
 
         override fun getItemPrefixesToGenerate(): Set<HTMaterialPrefix> = dustSet
+
+        override fun getItemPrefixMap(): HTPrefixTemplateMap = HTPrefixTemplateMap.create {
+            add(HCMaterialPrefixes.DUST)
+            add(HCMaterialPrefixes.TINY_DUST)
+        }
 
         override fun getBaseIngredient(): TagKey<Item> = Tags.Items.OBSIDIANS
 

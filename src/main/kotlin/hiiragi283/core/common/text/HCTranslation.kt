@@ -10,7 +10,7 @@ enum class HCTranslation(type: String, vararg path: String) : HTTranslation {
 
     // Block
     WARPED_WART("description", "warped_wart"),
-    
+
     // Item
     AMBROSIA("description", "ambrosia"),
     ELDER_HEART("description", "elder_heart"),

@@ -2,6 +2,7 @@ package hiiragi283.core.api.data.texture
 
 import com.google.common.hash.HashCode
 import com.mojang.blaze3d.platform.NativeImage
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.ImmutableMultiMap
 import hiiragi283.core.api.collection.buildMultiMap
 import hiiragi283.core.api.data.HTDataGenContext
@@ -102,7 +103,11 @@ abstract class HTTextureProvider(packOutput: PackOutput, private val fileHelper:
     ) {
         for (material: HTAbstractMaterial in materials) {
             for (prefix: HTMaterialPrefix in transform(material)) {
-                val templateImage: NativeImage = material.getTemplateId(prefix)?.let(::getTexture) ?: continue
+                val templateImage: NativeImage = material
+                    .getItemPrefixMap()[prefix]
+                    ?.let { HiiragiCoreAPI.id("template", it) }
+                    ?.let(::getTexture)
+                    ?: continue
                 val image: NativeImage = copyFrom(templateImage)
 
                 for ((index: Int, pixels: Collection<Pair<Int, Int>>) in createTemplate(templateImage).map) {
