@@ -2,7 +2,6 @@ package hiiragi283.core.api.recipe.input
 
 import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
-import hiiragi283.core.api.recipe.ingredient.HTIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.stack.ImmutableFluidStack
 import hiiragi283.core.api.stack.ImmutableItemStack
@@ -35,42 +34,6 @@ data class HTRecipeInput private constructor(
          */
         @JvmStatic
         inline fun create(pos: BlockPos?, builderAction: Builder.() -> Unit): HTRecipeInput? = Builder().apply(builderAction).build(pos)
-
-        @JvmStatic
-        fun <STACK : ImmutableStack<*, STACK>> getMatchingSlots(
-            ingredients: List<HTIngredient<*, STACK>>,
-            stacks: List<STACK?>,
-        ): IntArray {
-            if (ingredients.isEmpty() || isEmpty(stacks)) return intArrayOf()
-            if (ingredients.size > stacks.size) return intArrayOf()
-
-            val stacks1: MutableList<STACK?> = stacks.toMutableList()
-            val result: MutableList<Int> = MutableList(ingredients.size) { -1 }
-
-            ingredients.forEachIndexed { index: Int, ingredient: HTIngredient<*, STACK> ->
-                stacks1.forEachIndexed stack@{ index1: Int, stack: STACK? ->
-                    if (stack != null) {
-                        if (ingredient.test(stack)) {
-                            result[index] = index1
-                            val count: Int = ingredient.getRequiredAmount()
-                            stacks1[index1] = stack.copyWithAmount(stack.amount() - count)
-                            return@stack
-                        }
-                    }
-                }
-            }
-            result.removeIf { it < 0 }
-            return when {
-                result.size != ingredients.size -> intArrayOf()
-                else -> result.toIntArray()
-            }
-        }
-
-        @JvmStatic
-        fun <STACK : ImmutableStack<*, STACK>> hasMatchingSlots(ingredients: List<HTIngredient<*, STACK>>, stacks: List<STACK?>): Boolean {
-            val slots: IntArray = getMatchingSlots(ingredients, stacks)
-            return slots.isNotEmpty() && slots.size == ingredients.size
-        }
 
         /**
          * 指定した[stacks]が空か判定します。

@@ -346,6 +346,12 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
+tasks.named("sourcesJar", Jar::class.java) {
+    dependsOn("apiClasses")
+    duplicatesStrategy = DuplicatesStrategy.FAIL
+    from(apiModule.kotlin.srcDirs)
+}
+
 kotlin {
     jvmToolchain(21)
     compilerOptions {
