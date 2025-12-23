@@ -54,9 +54,17 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
     //    Tool    //
 
     private fun tool(factory: BuilderFactory<Block>) {
+        factory
+            .apply(BlockTags.MINEABLE_WITH_AXE)
+            .add(HCBlocks.WARPED_WART)
+
         val pickaxe: HTTagBuilder<Block> = factory.apply(BlockTags.MINEABLE_WITH_PICKAXE)
         sequence {
             yieldAll(HCBlocks.MATERIALS.values)
         }.forEach(pickaxe::add)
+
+        factory
+            .apply(BlockTags.SWORD_EFFICIENT)
+            .add(HCBlocks.WARPED_WART)
     }
 }

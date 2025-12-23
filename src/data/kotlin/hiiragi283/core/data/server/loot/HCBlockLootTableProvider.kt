@@ -8,15 +8,29 @@ import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
+import net.minecraft.advancements.critereon.StatePropertiesPredicate
 import net.minecraft.core.HolderLookup
 import net.minecraft.world.level.ItemLike
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.NetherWartBlock
+import net.minecraft.world.level.storage.loot.LootPool
+import net.minecraft.world.level.storage.loot.LootTable
+import net.minecraft.world.level.storage.loot.entries.LootItem
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 
 class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootTableProvider(registries) {
     override fun generate() {
         HCBlocks.REGISTER.asBlockSequence().forEach(::dropSelf)
 
-        // Ores
+        registerOres()
+        registerCrops()
+    }
+
+    private fun registerOres() {
         val ores: Array<HTMaterialPrefix> = arrayOf(
             HCMaterialPrefixes.ORE,
             HCMaterialPrefixes.ORE_DEEPSLATE,
@@ -36,6 +50,33 @@ class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootT
                 val drop: ItemLike = HCItems.MATERIALS[basePrefix, material] ?: continue
                 add(ore, ::createOreDrops.partially2(drop, range))
             }
+        }
+    }
+
+    private fun registerCrops() {
+        add(HCBlocks.WARPED_WART) { block: Block ->
+            val stateCondition: LootItemBlockStatePropertyCondition.Builder = LootItemBlockStatePropertyCondition
+                .hasBlockStateProperties(block)
+                .setProperties(
+                    StatePropertiesPredicate.Builder.properties().hasProperty(NetherWartBlock.AGE, 3),
+                )
+
+            LootTable
+                .lootTable()
+                .withPool(
+                    applyExplosionDecay(
+                        block,
+                        LootPool
+                            .lootPool()
+                            .setRolls(ConstantValue.exactly(1f))
+                            .add(
+                                LootItem
+                                    .lootTableItem(HCBlocks.WARPED_WART)
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(2f, 4f)).`when`(stateCondition))
+                                    .apply(ApplyBonusCount.addUniformBonusCount(fortune).`when`(stateCondition)),
+                            ),
+                    ),
+                )
         }
     }
 }

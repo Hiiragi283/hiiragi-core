@@ -102,5 +102,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
             .addItem(Items.GHAST_TEAR)
             .addItem(Items.PHANTOM_MEMBRANE)
             .addItem(Items.WIND_CHARGE)
+
+        factory.apply(Tags.Items.FOODS_GOLDEN).add(HCItems.AMBROSIA)
     }
 }

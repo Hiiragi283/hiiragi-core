@@ -6,8 +6,11 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
+import hiiragi283.core.common.block.HTWarpedWartBlock
+import hiiragi283.core.common.item.block.HTWarpedWartItem
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
+import hiiragi283.core.common.registry.HTDeferredBlock
 import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import hiiragi283.core.common.registry.register.HTDeferredBlockRegister
 import net.minecraft.world.level.block.Block
@@ -48,6 +51,16 @@ object HCBlocks {
             register(prefix, material, properties)
         }
     }.let(::HTMaterialTable)
+
+    //    Crops    //
+
+    @JvmField
+    val WARPED_WART: HTDeferredBlock<HTWarpedWartBlock, HTWarpedWartItem> = REGISTER.register(
+        "warped_wart",
+        copyOf(Blocks.NETHER_WART),
+        ::HTWarpedWartBlock,
+        ::HTWarpedWartItem,
+    )
 
     //    Extensions    //
 

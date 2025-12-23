@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.common.text.HCTranslation
+import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
@@ -15,6 +16,9 @@ class HCJapaneseLangProvider(output: PackOutput) :
     override fun addTranslations() {
         // Material
         HCMaterialTranslations.addTranslations(this)
+
+        // Block
+        add(HCBlocks.WARPED_WART, "歪んだウォート")
 
         // Fluid
         addFluid(HCFluids.EXPERIENCE, "液体経験値")
@@ -37,9 +41,11 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.LUMINOUS_PASTE, "蛍光ペースト")
         add(HCItems.MAGMA_SHARD, "マグマシャード")
         add(HCItems.ELDER_HEART, "エルダーの心臓")
+        add(HCItems.WITHER_DOLL, "ウィザー人形")
         add(HCItems.WITHER_STAR, "ウィザースター")
 
         add(HCItems.IRIDESCENT_POWDER, "虹色の粉")
+        add(HCItems.AMBROSIA, "アンブロシア")
 
         // Recipe
         add(HCRecipeTypes.CHARGING, "充電")
@@ -55,7 +61,6 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addCommonTranslations(::add)
 
         // API - Constants
-        add(HCTranslation.HIIRAGI_CORE, "ヒイラギコア")
         add(HTCommonTranslation.ERROR, "エラー")
         add(HTCommonTranslation.INFINITE, "無限")
         add(HTCommonTranslation.NONE, "なし")
@@ -83,5 +88,13 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HTCommonTranslation.TOOLTIP_SHOW_DETAILS, "シフトキーを押して詳細を表示")
 
         add(HTCommonTranslation.DATAPACK_WIP, "開発中の要素を有効にします")
+        // Mod
+        add(HCTranslation.HIIRAGI_CORE, "ヒイラギコア")
+
+        add(HCTranslation.WARPED_WART, "食べるとランダムにデバフを一つだけ消します。")
+
+        add(HCTranslation.AMBROSIA, "いつでも食べられる上，いくら食べてもなくなりません！")
+        add(HCTranslation.ELDER_HEART, "エルダーガーディアンからドロップします。")
+        add(HCTranslation.IRIDESCENT_POWDER, "時間経過やダメージで消滅しません。")
     }
 }

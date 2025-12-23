@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.common.text.HCTranslation
+import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
@@ -15,6 +16,9 @@ class HCEnglishLangProvider(output: PackOutput) :
     override fun addTranslations() {
         // Material
         HCMaterialTranslations.addTranslations(this)
+
+        // Block
+        add(HCBlocks.WARPED_WART, "Warped Wart")
 
         // Fluid
         addFluid(HCFluids.EXPERIENCE, "Liquid Experience")
@@ -37,9 +41,11 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.LUMINOUS_PASTE, "Luminous Paste")
         add(HCItems.MAGMA_SHARD, "Magma Shard")
         add(HCItems.ELDER_HEART, "Elder Heart")
+        add(HCItems.WITHER_DOLL, "Wither Doll")
         add(HCItems.WITHER_STAR, "Wither Star")
 
         add(HCItems.IRIDESCENT_POWDER, "Iridescent Powder")
+        add(HCItems.AMBROSIA, "Ambrosia")
 
         // Recipe
         add(HCRecipeTypes.CHARGING, "Charging")
@@ -55,7 +61,6 @@ class HCEnglishLangProvider(output: PackOutput) :
         addCommonTranslations(::add)
 
         // API - Constants
-        add(HCTranslation.HIIRAGI_CORE, "Hiiragi Core")
         add(HTCommonTranslation.ERROR, "Error")
         add(HTCommonTranslation.INFINITE, "Infinite")
         add(HTCommonTranslation.NONE, "None")
@@ -83,5 +88,14 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HTCommonTranslation.TOOLTIP_SHOW_DETAILS, "Press Ctrl to show details")
 
         add(HTCommonTranslation.DATAPACK_WIP, "Enables work in progress contents")
+
+        // Mod
+        add(HCTranslation.HIIRAGI_CORE, "Hiiragi Core")
+
+        add(HCTranslation.WARPED_WART, "Clears one bad effect randomly when eaten.")
+
+        add(HCTranslation.AMBROSIA, "ALWAYS EDIBLE and NOT CONSUMED!")
+        add(HCTranslation.ELDER_HEART, "Dropped from Elder Guardian.")
+        add(HCTranslation.IRIDESCENT_POWDER, "Do not expire by time over or any damage.")
     }
 }

@@ -16,6 +16,7 @@ import hiiragi283.core.common.material.VanillaMaterialItems
 import hiiragi283.core.common.tag.HCModTags
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
+import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
@@ -29,6 +30,17 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             .setTime(20 * 30)
             .setExp(0.5f)
             .saveSuffixed(output, "_from_sawdust")
+
+        // Wither Doll
+        HTShapedRecipeBuilder
+            .create(HCItems.WITHER_DOLL)
+            .pattern(
+                "AAA",
+                "BBB",
+                " B ",
+            ).define('A', Items.WITHER_SKELETON_SKULL)
+            .define('B', ItemTags.SOUL_FIRE_BASE_BLOCKS)
+            .save(output)
 
         manual()
         buckets()
