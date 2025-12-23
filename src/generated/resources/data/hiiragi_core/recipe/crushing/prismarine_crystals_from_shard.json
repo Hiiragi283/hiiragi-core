@@ -1,6 +1,5 @@
 {
   "type": "hiiragi_core:crushing",
-  "exp": "1/10",
   "ingredient": "minecraft:prismarine_shard",
   "result": {
     "id": "minecraft:prismarine_crystals"

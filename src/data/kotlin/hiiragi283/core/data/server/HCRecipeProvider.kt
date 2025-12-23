@@ -12,7 +12,6 @@ import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.VanillaMaterialItems
 import hiiragi283.core.data.server.recipe.HCChargingRecipeProvider
 import hiiragi283.core.data.server.recipe.HCCrushingRecipeProvider
-import hiiragi283.core.data.server.recipe.HCDryingRecipeProvider
 import hiiragi283.core.data.server.recipe.HCExplodingRecipeProvider
 import hiiragi283.core.data.server.recipe.HCMaterialRecipeProvider
 import hiiragi283.core.setup.HCBlocks
@@ -35,7 +34,6 @@ class HCRecipeProvider(context: HTDataGenContext) : HTRecipeProvider(context) {
 
         consumer.accept(HCChargingRecipeProvider)
         consumer.accept(HCCrushingRecipeProvider)
-        consumer.accept(HCDryingRecipeProvider)
         consumer.accept(HCExplodingRecipeProvider)
     }
 }

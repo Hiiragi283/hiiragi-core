@@ -55,7 +55,6 @@ data object HTConst {
 
     //    Serialization    //
 
-    const val ACCESS_CONFIG = "access_config"
     const val OWNER = "owner"
     const val BLOCK = "block"
 
@@ -76,7 +75,6 @@ data object HTConst {
     const val COUNT = "count"
     const val COMPONENTS = "components"
 
-    const val DRYING_TICKS = "DryingTicks"
     const val COMPLETED_RECIPE = "CompletedRecipe"
     const val PREVENT_ITEM_MAGNET = "PreventRemoteMovement"
 
@@ -84,7 +82,6 @@ data object HTConst {
 
     const val CHARGING = "charging"
     const val CRUSHING = "crushing"
-    const val DRYING = "drying"
     const val EXPLODING = "exploding"
 
     const val ENERGY = "energy"

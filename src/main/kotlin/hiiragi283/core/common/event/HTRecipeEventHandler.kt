@@ -3,23 +3,19 @@ package hiiragi283.core.common.event
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
-import hiiragi283.core.api.event.HTStepOnBlockEvent
 import hiiragi283.core.api.recipe.input.HTRecipeInput
 import hiiragi283.core.api.stack.ImmutableItemStack
 import hiiragi283.core.api.stack.toImmutable
-import hiiragi283.core.common.recipe.HTChargingRecipe
-import hiiragi283.core.common.recipe.HTCrushingRecipe
-import hiiragi283.core.common.recipe.HTDryingRecipe
-import hiiragi283.core.common.recipe.HTExplodingRecipe
-import hiiragi283.core.common.recipe.HTSingleItemRecipe
+import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
+import hiiragi283.core.common.recipe.HCExplodingRecipe
+import hiiragi283.core.common.recipe.HCLightningChargingRecipe
+import hiiragi283.core.common.recipe.HCSingleItemRecipe
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.core.BlockPos
-import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.level.Level
-import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.phys.AABB
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
@@ -29,7 +25,7 @@ import net.neoforged.neoforge.event.level.ExplosionEvent
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 object HTRecipeEventHandler {
     /**
-     * [HTChargingRecipe]を処理するイベント
+     * [HCLightningChargingRecipe]を処理するイベント
      */
     @SubscribeEvent
     fun onStruck(event: EntityStruckByLightningEvent) {
@@ -42,13 +38,13 @@ object HTRecipeEventHandler {
         if (level.isClientSide) return
         if (entity is ItemEntity && entity.isAlive) {
             val input: HTRecipeInput = createInput(entity) ?: return
-            val recipe: HTChargingRecipe = level.recipeManager
+            val recipe: HCLightningChargingRecipe = level.recipeManager
                 .getRecipesFor(
                     HCRecipeTypes.CHARGING.get(),
                     input,
                     level,
-                ).map(RecipeHolder<HTChargingRecipe>::value)
-                .firstOrNull { it.energy >= HTChargingRecipe.DEFAULT_ENERGY } ?: return
+                ).map(RecipeHolder<HCLightningChargingRecipe>::value)
+                .firstOrNull { it.energy >= HCLightningChargingRecipe.DEFAULT_ENERGY } ?: return
             popResult(recipe.assembleItem(input, level.registryAccess()), recipe.ingredient.getRequiredAmount(), entity)
             if (entity.item.isEmpty) {
                 entity.discard()
@@ -58,7 +54,7 @@ object HTRecipeEventHandler {
     }
 
     /**
-     * [HTCrushingRecipe]を処理するイベント
+     * [HCAnvilCrushingRecipe]を処理するイベント
      */
     @SubscribeEvent
     fun onAnvilLand(event: HTAnvilLandEvent) {
@@ -67,7 +63,7 @@ object HTRecipeEventHandler {
         for (entity: ItemEntity in level.getEntitiesOfClass(ItemEntity::class.java, AABB(pos))) {
             if (isCompleted(entity)) continue
             val input: HTRecipeInput = createInput(entity) ?: continue
-            val (_, recipe: HTCrushingRecipe) = HCRecipeTypes.CRUSHING.getRecipeFor(input, level, null) ?: continue
+            val (_, recipe: HCAnvilCrushingRecipe) = HCRecipeTypes.CRUSHING.getRecipeFor(input, level, null) ?: continue
             popResult(input, recipe, level, entity)
             if (entity.item.isEmpty) {
                 entity.discard()
@@ -75,8 +71,7 @@ object HTRecipeEventHandler {
         }
     }
 
-    @SubscribeEvent
-    fun onStepOnBlock(event: HTStepOnBlockEvent) {
+    /*fun onStepOnBlock(event: HTStepOnBlockEvent) {
         val level: Level = event.level
         if (level.isClientSide) return
         if (!event.state.`is`(Blocks.MAGMA_BLOCK)) return
@@ -98,10 +93,10 @@ object HTRecipeEventHandler {
                 }
             }
         }
-    }
+    }*/
 
     /**
-     * [HTExplodingRecipe]を処理するイベント
+     * [HCExplodingRecipe]を処理するイベント
      */
     @SubscribeEvent
     fun onExploded(event: ExplosionEvent.Detonate) {
@@ -112,7 +107,7 @@ object HTRecipeEventHandler {
             val entity: Entity = iterator.next()
             if (entity is ItemEntity && entity.isAlive && !isCompleted(entity)) {
                 val input: HTRecipeInput = createInput(entity) ?: continue
-                val (_, recipe: HTExplodingRecipe) = HCRecipeTypes.EXPLODING.getRecipeFor(input, level, null) ?: continue
+                val (_, recipe: HCExplodingRecipe) = HCRecipeTypes.EXPLODING.getRecipeFor(input, level, null) ?: continue
                 popResult(input, recipe, level, entity)
                 if (entity.item.isEmpty) {
                     iterator.remove()
@@ -135,7 +130,7 @@ object HTRecipeEventHandler {
     @JvmStatic
     private fun popResult(
         input: HTRecipeInput,
-        recipe: HTSingleItemRecipe,
+        recipe: HCSingleItemRecipe,
         level: Level,
         entity: ItemEntity,
     ): ItemEntity? = popResult(recipe.assembleItem(input, level.registryAccess()), recipe.ingredient.getRequiredAmount(), entity)

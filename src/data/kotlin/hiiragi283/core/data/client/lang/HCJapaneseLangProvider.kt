@@ -48,9 +48,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.AMBROSIA, "アンブロシア")
 
         // Recipe
-        add(HCRecipeTypes.CHARGING, "充電")
-        add(HCRecipeTypes.CRUSHING, "粉砕")
-        add(HCRecipeTypes.DRYING, "乾燥")
+        add(HCRecipeTypes.CHARGING, "落雷によるチャージ")
+        add(HCRecipeTypes.CRUSHING, "金床による粉砕")
         add(HCRecipeTypes.EXPLODING, "爆破")
 
         // Translation
@@ -85,7 +84,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HTCommonTranslation.DATAPACK_WIP, "開発中の要素を有効にします")
         // Mod
-        add(HCTranslation.HIIRAGI_CORE, "ヒイラギコア")
+        add(HCTranslation.HIIRAGI_CORE, "Hiiragi Core")
 
         add(HCTranslation.WARPED_WART, "食べるとランダムにデバフを一つだけ消します。")
 

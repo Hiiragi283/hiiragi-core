@@ -1,6 +1,5 @@
 {
   "type": "hiiragi_core:exploding",
-  "exp": 1,
   "ingredient": "#c:ores/netherite_scrap",
   "result": {
     "count": 2,

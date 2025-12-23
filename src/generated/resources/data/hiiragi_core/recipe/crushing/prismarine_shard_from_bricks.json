@@ -1,6 +1,5 @@
 {
   "type": "hiiragi_core:crushing",
-  "exp": "9/10",
   "ingredient": "minecraft:prismarine_bricks",
   "result": {
     "count": 9,

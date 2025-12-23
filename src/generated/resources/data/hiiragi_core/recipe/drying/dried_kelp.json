@@ -1,8 +1,0 @@
-{
-  "type": "hiiragi_core:drying",
-  "exp": "1/10",
-  "ingredient": "minecraft:kelp",
-  "result": {
-    "id": "minecraft:dried_kelp"
-  }
-}

@@ -33,7 +33,6 @@ object HCRuntimeRecipeHandler {
             // Crushing
             HTSingleItemRecipeBuilder
                 .crushing(itemCreator.fromTagKey(ingredient), resultHelper.item(dust))
-                .setExp(0.1f)
                 .saveSuffixed(event.output, "_from_base")
         }
     }
@@ -49,8 +48,7 @@ object HCRuntimeRecipeHandler {
                 .crushing(
                     itemCreator.fromTagKey(HCMaterialPrefixes.STORAGE_BLOCK_RAW, material),
                     resultHelper.item(dust, 12),
-                ).setExp(1.2f)
-                .saveSuffixed(event.output, "_from_raw_block")
+                ).saveSuffixed(event.output, "_from_raw_block")
         }
     }
 }

@@ -1,8 +1,0 @@
-{
-  "type": "hiiragi_core:drying",
-  "exp": "1/10",
-  "ingredient": "minecraft:mud",
-  "result": {
-    "id": "minecraft:clay"
-  }
-}

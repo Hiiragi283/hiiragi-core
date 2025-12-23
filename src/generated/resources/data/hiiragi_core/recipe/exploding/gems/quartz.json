@@ -1,6 +1,5 @@
 {
   "type": "hiiragi_core:exploding",
-  "exp": "1/2",
   "ingredient": {
     "amount": 4,
     "items": "#c:glass_blocks"

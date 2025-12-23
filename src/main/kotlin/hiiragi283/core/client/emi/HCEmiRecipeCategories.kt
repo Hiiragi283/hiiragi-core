@@ -28,8 +28,5 @@ object HCEmiRecipeCategories {
     val CRUSHING: HTEmiRecipeCategory = create(HCRecipeTypes.CRUSHING, Items.ANVIL)
 
     @JvmField
-    val DRYING: HTEmiRecipeCategory = create(HCRecipeTypes.DRYING, Items.MAGMA_BLOCK)
-
-    @JvmField
     val EXPLODING: HTEmiRecipeCategory = create(HCRecipeTypes.EXPLODING, Items.TNT)
 }

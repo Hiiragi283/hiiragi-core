@@ -16,14 +16,12 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
         listOf(
             HCEmiRecipeCategories.CHARGING,
             HCEmiRecipeCategories.CRUSHING,
-            HCEmiRecipeCategories.DRYING,
             HCEmiRecipeCategories.EXPLODING,
         ).forEach(::addCategory.partially1(registry))
 
         // Recipes
         addRegistryRecipes(registry, HCRecipeTypes.CHARGING, ::HTChargingEmiRecipe)
         addRegistryRecipes(registry, HCRecipeTypes.CRUSHING, HTSingleItemEmiRecipe.Companion::crushing)
-        addRegistryRecipes(registry, HCRecipeTypes.DRYING, HTSingleItemEmiRecipe.Companion::drying)
         addRegistryRecipes(registry, HCRecipeTypes.EXPLODING, HTSingleItemEmiRecipe.Companion::exploding)
     }
 }

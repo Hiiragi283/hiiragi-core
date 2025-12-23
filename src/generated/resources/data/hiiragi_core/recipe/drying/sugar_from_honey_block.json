@@ -1,9 +1,0 @@
-{
-  "type": "hiiragi_core:drying",
-  "exp": "2/5",
-  "ingredient": "minecraft:honey_block",
-  "result": {
-    "count": 16,
-    "id": "minecraft:sugar"
-  }
-}

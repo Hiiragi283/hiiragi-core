@@ -13,7 +13,7 @@ import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.level.Level
 import org.apache.commons.lang3.math.Fraction
 
-class HTChargingRecipe(
+class HCLightningChargingRecipe(
     val ingredient: HTItemIngredient,
     val result: HTItemResult,
     val energy: Int,

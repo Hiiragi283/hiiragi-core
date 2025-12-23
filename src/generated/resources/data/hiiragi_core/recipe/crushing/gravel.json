@@ -1,6 +1,5 @@
 {
   "type": "hiiragi_core:crushing",
-  "exp": "1/10",
   "ingredient": "#c:cobblestones",
   "result": {
     "id": "minecraft:gravel"

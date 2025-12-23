@@ -5,11 +5,11 @@ import hiiragi283.core.api.integration.emi.HTEmiHolderRecipe
 import hiiragi283.core.api.integration.emi.addArrow
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.client.emi.HCEmiRecipeCategories
-import hiiragi283.core.common.recipe.HTChargingRecipe
+import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import net.minecraft.world.item.crafting.RecipeHolder
 
-class HTChargingEmiRecipe(holder: RecipeHolder<HTChargingRecipe>) :
-    HTEmiHolderRecipe<HTChargingRecipe>(HCEmiRecipeCategories.CHARGING, holder) {
+class HTChargingEmiRecipe(holder: RecipeHolder<HCLightningChargingRecipe>) :
+    HTEmiHolderRecipe<HCLightningChargingRecipe>(HCEmiRecipeCategories.CHARGING, holder) {
     init {
         addInput(recipe.ingredient)
 

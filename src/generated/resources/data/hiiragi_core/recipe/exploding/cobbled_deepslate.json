@@ -1,6 +1,5 @@
 {
   "type": "hiiragi_core:exploding",
-  "exp": "1/10",
   "ingredient": {
     "amount": 2,
     "items": [

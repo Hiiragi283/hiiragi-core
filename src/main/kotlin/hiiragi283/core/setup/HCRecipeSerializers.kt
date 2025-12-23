@@ -6,11 +6,10 @@ import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTRecipeBiCodecs
 import hiiragi283.core.api.serialization.codec.MapBiCodec
-import hiiragi283.core.common.recipe.HTChargingRecipe
-import hiiragi283.core.common.recipe.HTCrushingRecipe
-import hiiragi283.core.common.recipe.HTDryingRecipe
-import hiiragi283.core.common.recipe.HTExplodingRecipe
-import hiiragi283.core.common.recipe.HTSingleItemRecipe
+import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
+import hiiragi283.core.common.recipe.HCExplodingRecipe
+import hiiragi283.core.common.recipe.HCLightningChargingRecipe
+import hiiragi283.core.common.recipe.HCSingleItemRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
 import net.minecraft.world.item.crafting.RecipeSerializer
 
@@ -19,32 +18,26 @@ object HCRecipeSerializers {
     val REGISTER = HTDeferredRecipeSerializerRegister(HiiragiCoreAPI.MOD_ID)
 
     @JvmField
-    val CHARGING: RecipeSerializer<HTChargingRecipe> = REGISTER.registerSerializer(
+    val CHARGING: RecipeSerializer<HCLightningChargingRecipe> = REGISTER.registerSerializer(
         HTConst.CHARGING,
         MapBiCodec.composite(
-            HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTChargingRecipe::ingredient),
-            HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HTChargingRecipe::result),
-            HTRecipeBiCodecs.ENERGY.forGetter(HTChargingRecipe::energy),
-            HTRecipeBiCodecs.EXP.forGetter(HTChargingRecipe::exp),
-            ::HTChargingRecipe,
+            HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HCLightningChargingRecipe::ingredient),
+            HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCLightningChargingRecipe::result),
+            HTRecipeBiCodecs.ENERGY.forGetter(HCLightningChargingRecipe::energy),
+            HTRecipeBiCodecs.EXP.forGetter(HCLightningChargingRecipe::exp),
+            ::HCLightningChargingRecipe,
         ),
     )
 
     @JvmField
-    val CRUSHING: RecipeSerializer<HTCrushingRecipe> = REGISTER.registerSerializer(
+    val CRUSHING: RecipeSerializer<HCAnvilCrushingRecipe> = REGISTER.registerSerializer(
         HTConst.CRUSHING,
-        HTSingleItemRecipe.codec(::HTCrushingRecipe),
+        HCSingleItemRecipe.codec(::HCAnvilCrushingRecipe),
     )
 
     @JvmField
-    val DRYING: RecipeSerializer<HTDryingRecipe> = REGISTER.registerSerializer(
-        HTConst.DRYING,
-        HTSingleItemRecipe.codec(::HTDryingRecipe),
-    )
-
-    @JvmField
-    val EXPLODING: RecipeSerializer<HTExplodingRecipe> = REGISTER.registerSerializer(
+    val EXPLODING: RecipeSerializer<HCExplodingRecipe> = REGISTER.registerSerializer(
         HTConst.EXPLODING,
-        HTSingleItemRecipe.codec(::HTExplodingRecipe),
+        HCSingleItemRecipe.codec(::HCExplodingRecipe),
     )
 }

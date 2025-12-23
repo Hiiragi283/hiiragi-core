@@ -4,27 +4,21 @@ import dev.emi.emi.api.widget.WidgetHolder
 import hiiragi283.core.api.integration.emi.HTEmiHolderRecipe
 import hiiragi283.core.api.integration.emi.HTEmiRecipeCategory
 import hiiragi283.core.api.integration.emi.addArrow
-import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.client.emi.HCEmiRecipeCategories
-import hiiragi283.core.common.recipe.HTCrushingRecipe
-import hiiragi283.core.common.recipe.HTDryingRecipe
-import hiiragi283.core.common.recipe.HTExplodingRecipe
-import hiiragi283.core.common.recipe.HTSingleItemRecipe
+import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
+import hiiragi283.core.common.recipe.HCExplodingRecipe
+import hiiragi283.core.common.recipe.HCSingleItemRecipe
 import net.minecraft.world.item.crafting.RecipeHolder
 
-class HTSingleItemEmiRecipe<RECIPE : HTSingleItemRecipe>(category: HTEmiRecipeCategory, holder: RecipeHolder<RECIPE>) :
+class HTSingleItemEmiRecipe<RECIPE : HCSingleItemRecipe>(category: HTEmiRecipeCategory, holder: RecipeHolder<RECIPE>) :
     HTEmiHolderRecipe<RECIPE>(category, holder) {
     companion object {
         @JvmStatic
-        fun crushing(holder: RecipeHolder<HTCrushingRecipe>): HTSingleItemEmiRecipe<HTCrushingRecipe> =
+        fun crushing(holder: RecipeHolder<HCAnvilCrushingRecipe>): HTSingleItemEmiRecipe<HCAnvilCrushingRecipe> =
             HTSingleItemEmiRecipe(HCEmiRecipeCategories.CRUSHING, holder)
 
         @JvmStatic
-        fun drying(holder: RecipeHolder<HTDryingRecipe>): HTSingleItemEmiRecipe<HTDryingRecipe> =
-            HTSingleItemEmiRecipe(HCEmiRecipeCategories.DRYING, holder)
-
-        @JvmStatic
-        fun exploding(holder: RecipeHolder<HTExplodingRecipe>): HTSingleItemEmiRecipe<HTExplodingRecipe> =
+        fun exploding(holder: RecipeHolder<HCExplodingRecipe>): HTSingleItemEmiRecipe<HCExplodingRecipe> =
             HTSingleItemEmiRecipe(HCEmiRecipeCategories.EXPLODING, holder)
     }
 
@@ -35,16 +29,7 @@ class HTSingleItemEmiRecipe<RECIPE : HTSingleItemRecipe>(category: HTEmiRecipeCa
     }
 
     override fun addWidgets(widgets: WidgetHolder) {
-        widgets
-            .addArrow(getPosition(2.5), getPosition(1))
-            .tooltipText(listOf(HTCommonTranslation.SECONDS.translate(recipe.time / 20f, recipe.time)))
-        widgets.addText(
-            HTCommonTranslation.STORED_EXP.translate(recipe.exp),
-            getPosition(2.5),
-            getPosition(2.5),
-            -1,
-            true,
-        )
+        widgets.addArrow(getPosition(2.5), getPosition(1))
 
         // input
         widgets.addSlot(input(0), getPosition(1), getPosition(0.5))

@@ -1,6 +1,5 @@
 {
   "type": "hiiragi_core:crushing",
-  "exp": "1/10",
   "ingredient": "minecraft:bricks",
   "result": {
     "count": 4,

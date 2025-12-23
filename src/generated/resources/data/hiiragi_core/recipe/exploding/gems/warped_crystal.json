@@ -1,6 +1,5 @@
 {
   "type": "hiiragi_core:exploding",
-  "exp": 1,
   "ingredient": {
     "amount": 12,
     "items": "#minecraft:warped_stems"

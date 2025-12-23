@@ -1,6 +1,5 @@
 {
   "type": "hiiragi_core:crushing",
-  "exp": "2/5",
   "ingredient": "minecraft:snow_block",
   "result": {
     "count": 4,

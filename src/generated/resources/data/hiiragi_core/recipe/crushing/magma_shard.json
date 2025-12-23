@@ -1,6 +1,5 @@
 {
   "type": "hiiragi_core:crushing",
-  "exp": "1/10",
   "ingredient": "minecraft:magma_block",
   "result": {
     "id": "hiiragi_core:magma_shard"

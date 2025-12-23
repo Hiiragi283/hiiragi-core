@@ -48,9 +48,8 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.AMBROSIA, "Ambrosia")
 
         // Recipe
-        add(HCRecipeTypes.CHARGING, "Charging")
-        add(HCRecipeTypes.CRUSHING, "Crushing")
-        add(HCRecipeTypes.DRYING, "Drying")
+        add(HCRecipeTypes.CHARGING, "Lightning Charging")
+        add(HCRecipeTypes.CRUSHING, "Anvil Crushing")
         add(HCRecipeTypes.EXPLODING, "Exploding")
 
         // Translation

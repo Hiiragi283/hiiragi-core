@@ -1,6 +1,5 @@
 {
   "type": "hiiragi_core:crushing",
-  "exp": "2/5",
   "ingredient": "#c:storage_blocks/amethyst",
   "result": {
     "count": 4,

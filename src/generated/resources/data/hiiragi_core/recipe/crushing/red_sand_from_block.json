@@ -1,6 +1,5 @@
 {
   "type": "hiiragi_core:crushing",
-  "exp": "2/5",
   "ingredient": "#c:sandstone/red_blocks",
   "result": {
     "count": 4,

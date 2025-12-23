@@ -16,36 +16,31 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
             .exploding(
                 itemCreator.fromTagKeys(listOf(Tags.Items.STONES, Tags.Items.COBBLESTONES_NORMAL), amount = 2),
                 resultHelper.item(Items.COBBLED_DEEPSLATE),
-            ).setExp(0.1f)
-            .save(output)
+            ).save(output)
         // Ancient Debris -> Netherite Scrap
         HTSingleItemRecipeBuilder
             .exploding(
                 itemCreator.fromTagKey(Tags.Items.ORES_NETHERITE_SCRAP),
                 HCMaterialResultHelper.item(HCMaterialPrefixes.SCRAP, HCMaterial.Alloys.NETHERITE, 2),
-            ).setExp(1f)
-            .save(output)
+            ).save(output)
         // Gunpowder -> Blaze Powder
         HTSingleItemRecipeBuilder
             .exploding(
                 itemCreator.fromTagKey(Tags.Items.GUNPOWDERS, 3),
                 resultHelper.item(Items.BLAZE_POWDER),
-            ).setExp(0.5f)
-            .save(output)
+            ).save(output)
         // Glass -> Quartz
         HTSingleItemRecipeBuilder
             .exploding(
                 itemCreator.fromTagKey(Tags.Items.GLASS_BLOCKS, 4),
                 HCMaterialResultHelper.item(HCMaterialPrefixes.GEM, HCMaterial.Gems.QUARTZ),
-            ).setExp(0.5f)
-            .save(output)
+            ).save(output)
         // Quartz Block -> Ghast Tear
         HTSingleItemRecipeBuilder
             .exploding(
                 itemCreator.fromTagKey(HCMaterialPrefixes.STORAGE_BLOCK, HCMaterial.Gems.QUARTZ, 4),
                 resultHelper.item(Items.GHAST_TEAR),
-            ).setExp(0.5f)
-            .save(output)
+            ).save(output)
 
         gems()
     }
@@ -66,8 +61,7 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
                         count,
                     ),
                     HCMaterialResultHelper.item(HCMaterialPrefixes.GEM, HCMaterial.Gems.DIAMOND),
-                ).setExp(0.5f)
-                .saveSuffixed(output, "_from_${fuels.joinToString(separator = "_or_", transform = HCMaterial::asMaterialName)}")
+                ).saveSuffixed(output, "_from_${fuels.joinToString(separator = "_or_", transform = HCMaterial::asMaterialName)}")
         }
 
         // Echo Shard
@@ -75,21 +69,18 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
             .exploding(
                 itemCreator.fromItem(Items.SCULK, 8),
                 HCMaterialResultHelper.item(HCMaterialPrefixes.GEM, HCMaterial.Gems.ECHO),
-            ).setExp(1f)
-            .save(output)
+            ).save(output)
         // Crimson Crystal
         HTSingleItemRecipeBuilder
             .exploding(
                 itemCreator.fromTagKey(ItemTags.CRIMSON_STEMS, 12),
                 HCMaterialResultHelper.item(HCMaterialPrefixes.GEM, HCMaterial.Gems.CRIMSON_CRYSTAL),
-            ).setExp(1f)
-            .save(output)
+            ).save(output)
         // Warped Crystal
         HTSingleItemRecipeBuilder
             .exploding(
                 itemCreator.fromTagKey(ItemTags.WARPED_STEMS, 12),
                 HCMaterialResultHelper.item(HCMaterialPrefixes.GEM, HCMaterial.Gems.WARPED_CRYSTAL),
-            ).setExp(1f)
-            .save(output)
+            ).save(output)
     }
 }

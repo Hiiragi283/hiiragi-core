@@ -5,7 +5,7 @@ import hiiragi283.core.api.data.recipe.builder.HTRecipeBuilder
 import hiiragi283.core.api.math.toFraction
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
-import hiiragi283.core.common.recipe.HTChargingRecipe
+import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import net.minecraft.resources.ResourceLocation
 import org.apache.commons.lang3.math.Fraction
 
@@ -16,7 +16,7 @@ class HTChargingRecipeBuilder(private val ingredient: HTItemIngredient, private 
         fun create(
             ingredient: HTItemIngredient,
             result: HTItemResult,
-            energy: Int = HTChargingRecipe.DEFAULT_ENERGY,
+            energy: Int = HCLightningChargingRecipe.DEFAULT_ENERGY,
         ): HTChargingRecipeBuilder = HTChargingRecipeBuilder(ingredient, result, energy)
     }
 
@@ -30,5 +30,5 @@ class HTChargingRecipeBuilder(private val ingredient: HTItemIngredient, private 
 
     override fun getPrimalId(): ResourceLocation = result.getId()
 
-    override fun createRecipe(): HTChargingRecipe = HTChargingRecipe(ingredient, result, energy, exp)
+    override fun createRecipe(): HCLightningChargingRecipe = HCLightningChargingRecipe(ingredient, result, energy, exp)
 }
