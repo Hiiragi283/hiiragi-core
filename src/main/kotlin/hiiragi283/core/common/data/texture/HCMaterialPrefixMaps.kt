@@ -20,7 +20,7 @@ object HCMaterialPrefixMaps {
         add(HCMaterialPrefixes.DUST)
         add(HCMaterialPrefixes.TINY_DUST)
     }
-    
+
     @JvmField
     val DUST_DULL: HTPrefixTemplateMap = HTPrefixTemplateMap.create {
         addCustom(HCMaterialPrefixes.STORAGE_BLOCK, "block_dust")

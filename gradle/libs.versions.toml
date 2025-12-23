@@ -1,6 +1,5 @@
 [versions]
 minecraft = "1.21.1"
-hiiragi-core = "0.2.1"
 
 parchment-mc = "1.21.1"
 parchment-map = "2024.11.17"

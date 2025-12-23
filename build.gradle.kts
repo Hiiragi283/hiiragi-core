@@ -18,8 +18,6 @@ plugins {
 }
 
 val modId = "hiiragi_core"
-val modVersion: String = libs.versions.hiiragi.core
-    .get()
 
 group = "io.github.hiiragi283"
 
@@ -260,7 +258,7 @@ val generateModMetadata: TaskProvider<ProcessResources> = tasks.register("genera
         "mod_id" to modId,
         "mod_name" to "Hiiragi Core",
         "mod_license" to "MPL-2.0",
-        "mod_version" to modVersion,
+        "mod_version" to version.toString(),
         "mod_authors" to "Hiiragi283",
         "mod_description" to "Library mod for Hiiragi Series",
     )
