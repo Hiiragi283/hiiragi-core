@@ -41,16 +41,16 @@ object HCMaterialPrefixMaps {
     val GEM_LAPIS: HTPrefixTemplateMap = gem("lapis")
 
     @JvmField
-    val GEM_QUARTZ: HTPrefixTemplateMap = gem("quartz")
+    val GEM_QUARTZ: HTPrefixTemplateMap = gem("quartz", true)
 
     @JvmField
     val GEM_AMETHYST: HTPrefixTemplateMap = gem("amethyst")
 
     @JvmField
-    val GEM_DIAMOND: HTPrefixTemplateMap = gem("diamond")
+    val GEM_DIAMOND: HTPrefixTemplateMap = gem("diamond", true)
 
     @JvmField
-    val GEM_EMERALD: HTPrefixTemplateMap = gem("emerald")
+    val GEM_EMERALD: HTPrefixTemplateMap = gem("emerald", true)
 
     @JvmField
     val GEM_ECHO: HTPrefixTemplateMap = gem("echo")
@@ -99,8 +99,12 @@ object HCMaterialPrefixMaps {
     }
 
     @JvmStatic
-    private fun gem(suffix: String): HTPrefixTemplateMap = HTPrefixTemplateMap.create {
-        addCustom(HCMaterialPrefixes.STORAGE_BLOCK, "block_gem")
+    private fun gem(suffix: String, altBlock: Boolean = false): HTPrefixTemplateMap = HTPrefixTemplateMap.create {
+        if (altBlock) {
+            addCustom(HCMaterialPrefixes.STORAGE_BLOCK, "block_gem_$suffix")
+        } else {
+            addCustom(HCMaterialPrefixes.STORAGE_BLOCK, "block_gem")
+        }
 
         addCustom(HCMaterialPrefixes.GEM, "gem_$suffix")
         addCustom(HCMaterialPrefixes.DUST, "dust_shine")
