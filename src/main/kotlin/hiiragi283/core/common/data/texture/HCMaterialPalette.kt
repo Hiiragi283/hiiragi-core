@@ -153,24 +153,24 @@ object HCMaterialPalette {
     @JvmStatic
     val CRIMSON_CRYSTAL: HTColorPalette = HTArrayColorPalette(
         arrayOf(
-            Color(0xeec6bb),
-            Color(0xdd8277),
-            Color(0xcc3333),
-            Color(0x992633),
-            Color(0x66192a),
-            Color(0x330d19),
+            Color(0xc9795d),
+            Color(0xbb4e3e),
+            Color(0x993333),
+            Color(0x732633),
+            Color(0x4c1a2a),
+            Color(0x260d19),
         ),
     )
 
     @JvmStatic
     val WARPED_CRYSTAL: HTColorPalette = HTArrayColorPalette(
         arrayOf(
-            Color(0xbbeee3),
-            Color(0x77ddd2),
-            Color(0x33cccc),
-            Color(0x268d99),
-            Color(0x195666),
-            Color(0x0d2733),
+            Color(0x5dc9ae),
+            Color(0x3ebbab),
+            Color(0x339999),
+            Color(0x266673),
+            Color(0x1a3c4c),
+            Color(0x0d1a26),
         ),
     )
 

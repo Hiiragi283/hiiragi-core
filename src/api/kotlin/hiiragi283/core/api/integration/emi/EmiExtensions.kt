@@ -4,7 +4,6 @@ import dev.emi.emi.api.render.EmiTexture
 import dev.emi.emi.api.stack.EmiIngredient
 import dev.emi.emi.api.stack.EmiStack
 import dev.emi.emi.api.widget.Bounds
-import dev.emi.emi.api.widget.FillingArrowWidget
 import dev.emi.emi.api.widget.TextureWidget
 import dev.emi.emi.api.widget.WidgetHolder
 import hiiragi283.core.api.item.createItemStack
@@ -225,9 +224,10 @@ fun createErrorStack(message: Component): EmiStack = createItemStack(Items.BARRI
  */
 fun HTBounds.toEmi(): Bounds = Bounds(this.x, this.y, this.width, this.height)
 
-fun WidgetHolder.addArrow(x: Int, y: Int): FillingArrowWidget = addFillingArrow(x, y, 2000)
+fun WidgetHolder.addArrow(x: Int, y: Int): TextureWidget = addFillingArrow(x, y, 2000)
 
-fun WidgetHolder.addArrow(x: Int, y: Int, time: Int): FillingArrowWidget = addFillingArrow(x, y, 50 * time)
+fun WidgetHolder.addArrow(x: Int, y: Int, time: Int): TextureWidget = addFillingArrow(x, y, 50 * time)
+    .tooltipText(listOf(HTCommonTranslation.SECONDS.translate(time / 20.0f, time)))
 
 fun WidgetHolder.addPlus(x: Int, y: Int): TextureWidget = addTexture(EmiTexture.PLUS, x + 3, y + 3)
 
