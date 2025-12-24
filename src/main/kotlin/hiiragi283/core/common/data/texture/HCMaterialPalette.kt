@@ -33,36 +33,36 @@ object HCMaterialPalette {
     )
 
     @JvmStatic
-    val COAL_COKE: HTColorPalette = HTArrayColorPalette(
-        arrayOf(
-            Color(0x787878),
-            Color(0x656565),
-            Color(0x525252),
-            Color(0x3e3e3e),
-            Color(0x2b2b2b),
-            Color(0x181818),
-        ),
-    )
+    val COAL_COKE: HTColorPalette = HTGradientColorPalette(Color(0x5a6869), Color(0x1a1a1c))
 
     @JvmStatic
-    val CARBIDE: HTColorPalette = HTArrayColorPalette(
-        arrayOf(
-            Color(0x669999),
-            Color(0x55797f),
-            Color(0x445c66),
-            Color(0x33424c),
-            Color(0x222933),
-            Color(0x111319),
-        ),
-    )
+    val CARBIDE: HTColorPalette = HTGradientColorPalette(Color(0xd0ad90), Color(0x2c363a))
 
     //    Minerals    //
 
     @JvmStatic
-    val REDSTONE: HTColorPalette = HTGradientColorPalette(Color(0xff0000), Color(0x330000))
+    val REDSTONE: HTColorPalette = HTArrayColorPalette(
+        arrayOf(
+            Color(0xff0000),
+            Color(0xaa0f01),
+            Color(0x720000),
+            Color(0x5c0700),
+            Color(0x410500),
+            Color(0x2d0000),
+        ),
+    )
 
     @JvmStatic
-    val GLOWSTONE: HTColorPalette = HTGradientColorPalette(Color(0xffcc99), Color(0x663300))
+    val GLOWSTONE: HTColorPalette = HTArrayColorPalette(
+        arrayOf(
+            Color(0xf9d49c),
+            Color(0xebaa4e),
+            Color(0xb47140),
+            Color(0x8e562e),
+            Color(0x7e4821),
+            Color(0x5a391c),
+        ),
+    )
 
     @JvmStatic
     val CINNABAR: HTColorPalette = HTGradientColorPalette(Color(0xcc3333), Color(0x330000))
@@ -177,16 +177,7 @@ object HCMaterialPalette {
     //    Pearls    //
 
     @JvmStatic
-    val ENDER: HTColorPalette = HTArrayColorPalette(
-        arrayOf(
-            Color(0xc0eebb),
-            Color(0x77dd83),
-            Color(0x33cc66),
-            Color(0x269965),
-            Color(0x196654),
-            Color(0x0d3332),
-        ),
-    )
+    val ENDER: HTColorPalette = HTGradientColorPalette(Color(0x009999), Color(0x003333))
 
     @JvmStatic
     val ELDRITCH: HTColorPalette = HTArrayColorPalette(
@@ -353,16 +344,7 @@ object HCMaterialPalette {
     )
 
     @JvmStatic
-    val STONE: HTColorPalette = HTArrayColorPalette(
-        arrayOf(
-            Color(0xd8d8d8),
-            Color(0xb2b2b2),
-            Color(0x8b8b8b),
-            Color(0x656565),
-            Color(0x3e3e3e),
-            Color(0x181818),
-        ),
-    )
+    val STONE: HTColorPalette = HTGradientColorPalette(Color(0x999999), Color(0x333333))
 
     @JvmStatic
     val OBSIDIAN: HTColorPalette = HTArrayColorPalette(
