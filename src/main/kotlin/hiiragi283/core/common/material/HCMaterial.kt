@@ -83,6 +83,7 @@ sealed interface HCMaterial : HTAbstractMaterial {
 
         // Common
         CINNABAR("Cinnabar", "辰砂", HCMaterialPalette.CINNABAR),
+        SALT("Salt", "塩", HCMaterialPalette.SALT),
         SALTPETER("Saltpeter", "硝石", HCMaterialPalette.SALTPETER),
         SULFUR("Sulfur", "硫黄", HCMaterialPalette.SULFUR),
         ;
@@ -96,9 +97,10 @@ sealed interface HCMaterial : HTAbstractMaterial {
             add(HCMaterialPrefixes.TINY_DUST)
         }
 
-        override fun getItemPrefixMap(): HTPrefixTemplateMap = when (isVanilla) {
-            true -> HCMaterialPrefixMaps.DUST_SHINE
-            false -> HCMaterialPrefixMaps.DUST
+        override fun getItemPrefixMap(): HTPrefixTemplateMap = when {
+            isVanilla -> HCMaterialPrefixMaps.DUST_SHINE
+            this == SALT -> HCMaterialPrefixMaps.DUST_SHINE
+            else -> HCMaterialPrefixMaps.DUST
         }
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {

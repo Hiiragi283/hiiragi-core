@@ -95,6 +95,7 @@ object HCBlocks {
                             HCMaterial.Minerals.REDSTONE -> return null
                             HCMaterial.Minerals.GLOWSTONE -> return null
                             HCMaterial.Minerals.CINNABAR -> MapColor.TERRACOTTA_RED
+                            HCMaterial.Minerals.SALT -> MapColor.TERRACOTTA_WHITE
                             HCMaterial.Minerals.SALTPETER -> MapColor.TERRACOTTA_WHITE
                             HCMaterial.Minerals.SULFUR -> MapColor.TERRACOTTA_YELLOW
                         },

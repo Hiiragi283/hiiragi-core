@@ -2,11 +2,9 @@ package hiiragi283.core.api.integration.emi
 
 import dev.emi.emi.api.recipe.EmiRecipe
 import dev.emi.emi.api.recipe.EmiRecipeCategory
-import dev.emi.emi.api.render.EmiTexture
 import dev.emi.emi.api.stack.EmiIngredient
 import dev.emi.emi.api.stack.EmiStack
 import dev.emi.emi.api.widget.SlotWidget
-import dev.emi.emi.api.widget.TextureWidget
 import dev.emi.emi.api.widget.WidgetHolder
 import hiiragi283.core.api.math.HTBounds
 import hiiragi283.core.api.monad.Ior
@@ -190,11 +188,6 @@ abstract class HTEmiRecipe<RECIPE : Any>(
      * 指定した[インデックス][index]から座標を返します。
      */
     fun getPosition(index: Double): Int = (index * 18).toInt()
-
-    /**
-     * このレシピが不定形判定をサポートしていることを示します。
-     */
-    fun WidgetHolder.setShapeless(x: Int = getPosition(6)): TextureWidget = addTexture(EmiTexture.SHAPELESS, x + 1, getPosition(0))
 
     /**
      * このレシピに触媒スロットを追加します。

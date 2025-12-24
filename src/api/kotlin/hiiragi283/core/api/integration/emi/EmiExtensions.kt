@@ -227,4 +227,8 @@ fun HTBounds.toEmi(): Bounds = Bounds(this.x, this.y, this.width, this.height)
 
 fun WidgetHolder.addArrow(x: Int, y: Int): FillingArrowWidget = addFillingArrow(x, y, 2000)
 
+fun WidgetHolder.addArrow(x: Int, y: Int, time: Int): FillingArrowWidget = addFillingArrow(x, y, 50 * time)
+
 fun WidgetHolder.addPlus(x: Int, y: Int): TextureWidget = addTexture(EmiTexture.PLUS, x + 3, y + 3)
+
+fun WidgetHolder.setShapeless(x: Int, y: Int): TextureWidget = addTexture(EmiTexture.SHAPELESS, x + 1, y)
