@@ -14,19 +14,19 @@ object HCChargingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
         HTChargingRecipeBuilder
             .create(
                 itemCreator.fromTagKey(HCMaterialPrefixes.PEARL, HCMaterial.Pearls.ENDER),
-                resultHelper.item(Items.ENDER_EYE),
+                itemResult.create(Items.ENDER_EYE),
             ).save(output)
         // Golden Apple
         HTChargingRecipeBuilder
             .create(
                 itemCreator.fromItem(Items.GOLDEN_APPLE),
-                resultHelper.item(Items.ENCHANTED_GOLDEN_APPLE),
+                itemResult.create(Items.ENCHANTED_GOLDEN_APPLE),
             ).save(output)
         // Quartz -> Prismarine
         HTChargingRecipeBuilder
             .create(
                 itemCreator.fromTagKey(HCMaterialPrefixes.GEM, HCMaterial.Gems.QUARTZ),
-                resultHelper.item(Items.PRISMARINE_SHARD),
+                itemResult.create(Items.PRISMARINE_SHARD),
             ).save(output)
         // Redstone Dust -> Glowstone Dust
         HTChargingRecipeBuilder
@@ -45,14 +45,14 @@ object HCChargingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
         HTChargingRecipeBuilder
             .create(
                 itemCreator.fromItem(HCItems.ELDER_HEART),
-                resultHelper.item(Items.HEART_OF_THE_SEA),
+                itemResult.create(Items.HEART_OF_THE_SEA),
             ).setExp(10f)
             .save(output)
         // Nether Star
         HTChargingRecipeBuilder
             .create(
                 itemCreator.fromItem(HCItems.WITHER_STAR),
-                resultHelper.item(Items.NETHER_STAR),
+                itemResult.create(Items.NETHER_STAR),
             ).setExp(10f)
             .save(output)
     }

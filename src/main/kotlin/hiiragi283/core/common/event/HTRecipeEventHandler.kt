@@ -4,7 +4,6 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.recipe.input.HTRecipeInput
-import hiiragi283.core.api.stack.ImmutableItemStack
 import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
@@ -13,6 +12,7 @@ import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.core.BlockPos
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.item.ItemEntity
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.AABB
@@ -44,7 +44,7 @@ object HTRecipeEventHandler {
                     level,
                 ).map(RecipeHolder<HCLightningChargingRecipe>::value)
                 .firstOrNull { it.energy >= HCLightningChargingRecipe.DEFAULT_ENERGY } ?: return
-            popResult(recipe.assembleItem(input, level.registryAccess()), recipe.ingredient.getRequiredAmount(), entity)
+            popResult(recipe.assemble(input, level.registryAccess()), recipe.ingredient.getRequiredAmount(), entity)
             if (entity.item.isEmpty) {
                 entity.discard()
                 event.isCanceled = true
@@ -132,16 +132,15 @@ object HTRecipeEventHandler {
         recipe: HCSingleItemRecipe,
         level: Level,
         entity: ItemEntity,
-    ): ItemEntity? = popResult(recipe.assembleItem(input, level.registryAccess()), recipe.ingredient.getRequiredAmount(), entity)
+    ): ItemEntity? = popResult(recipe.assemble(input, level.registryAccess()), recipe.ingredient.getRequiredAmount(), entity)
 
     @JvmStatic
-    private fun popResult(result: ImmutableItemStack?, recipeAmount: Int, entity: ItemEntity): ItemEntity? {
-        if (result == null) return null
+    private fun popResult(result: ItemStack, recipeAmount: Int, entity: ItemEntity): ItemEntity? {
+        if (result.isEmpty) return null
         val multiplier: Int = entity.item.count / recipeAmount
         return result
-            .copyWithAmount(result.amount() * multiplier)
-            ?.unwrap()
-            ?.let(entity::spawnAtLocation)
+            .copyWithCount(result.count * multiplier)
+            .let(entity::spawnAtLocation)
             ?.also { itemEntity: ItemEntity ->
                 entity.item.count -= multiplier * recipeAmount
                 itemEntity.persistentData.putBoolean(HTConst.COMPLETED_RECIPE, true)

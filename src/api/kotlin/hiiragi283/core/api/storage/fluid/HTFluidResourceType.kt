@@ -1,5 +1,6 @@
 package hiiragi283.core.api.storage.fluid
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.storage.resource.HTResourceType
 import net.minecraft.core.Holder
@@ -24,8 +25,14 @@ data class HTFluidResourceType private constructor(private val stack: FluidStack
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTFluidResourceType> =
             BiCodec
-                .of(FluidStack.fixedAmountCodec(FluidType.BUCKET_VOLUME), FluidStack.STREAM_CODEC)
+                .of(FluidStack.fixedAmountCodec(HTConst.DEFAULT_FLUID_AMOUNT), FluidStack.STREAM_CODEC)
                 .xmap(::HTFluidResourceType, HTFluidResourceType::stack)
+
+        @JvmStatic
+        fun ofNullable(fluid: Fluid): HTFluidResourceType? = FluidStack(fluid, 1).let(::of)
+
+        @JvmStatic
+        fun of(fluid: Fluid): HTFluidResourceType = ofNullable(fluid) ?: error("Fluid must not be empty")
 
         @JvmStatic
         fun of(stack: FluidStack): HTFluidResourceType? = when {

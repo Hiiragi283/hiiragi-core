@@ -4,6 +4,7 @@ import hiiragi283.core.api.resource.vanillaId
 import net.minecraft.client.renderer.LightTexture
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
+import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.internal.versions.neoforge.NeoForgeVersion
 
 /**
@@ -25,6 +26,10 @@ data object HTConst {
     val GUI_ATLAS: ResourceLocation = vanillaId("textures/atlas/gui.png")
 
     const val FULL_BRIGHT: Int = LightTexture.FULL_BRIGHT
+
+    //    Fluid    //
+
+    const val DEFAULT_FLUID_AMOUNT: Int = FluidType.BUCKET_VOLUME
 
     //    Item    //
 

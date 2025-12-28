@@ -9,6 +9,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.ItemLike
 
 /**
  * [HTResourceType.DataComponent]を[アイテム][Item]向けに実装したクラスです。
@@ -25,6 +26,12 @@ data class HTItemResourceType private constructor(private val stack: ItemStack) 
             BiCodec
                 .of(ItemStack.SINGLE_ITEM_CODEC, ItemStack.STREAM_CODEC)
                 .xmap(::HTItemResourceType, HTItemResourceType::stack)
+
+        @JvmStatic
+        fun ofNullable(item: ItemLike): HTItemResourceType? = ItemStack(item).let(::of)
+
+        @JvmStatic
+        fun of(item: ItemLike): HTItemResourceType = ofNullable(item) ?: error("Item must not be empty")
 
         @JvmStatic
         fun of(stack: ItemStack): HTItemResourceType? = when {

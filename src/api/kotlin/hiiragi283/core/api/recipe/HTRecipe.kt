@@ -8,25 +8,15 @@ import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.Recipe
 
 /**
- * [Recipe]を継承した[HTAbstractRecipe]の拡張インターフェースです。
+ * [Recipe]の拡張インターフェースです。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  * @see HTProcessingRecipe
  * @see mekanism.api.recipes.MekanismRecipe
  */
-interface HTRecipe :
-    Recipe<HTRecipeInput>,
-    HTAbstractRecipe {
+interface HTRecipe : Recipe<HTRecipeInput> {
     @Deprecated("Not used in Hiiragi Series", level = DeprecationLevel.ERROR)
     override fun canCraftInDimensions(width: Int, height: Int): Boolean = true
-
-    @Deprecated(
-        "Use `assembleItem(HTRecipeInput, HolderLookup.Provider) `instead",
-        ReplaceWith("this.assembleItem(input, registries)"),
-        DeprecationLevel.ERROR,
-    )
-    override fun assemble(input: HTRecipeInput, registries: HolderLookup.Provider): ItemStack =
-        assembleItem(input, registries)?.unwrap() ?: ItemStack.EMPTY
 
     @Deprecated("Use `assemble(HTRecipeInput, HolderLookup.Provider) `instead", level = DeprecationLevel.ERROR)
     override fun getResultItem(registries: HolderLookup.Provider): ItemStack = ItemStack.EMPTY
