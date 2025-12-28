@@ -1,6 +1,5 @@
 package hiiragi283.core.api.recipe.result
 
-import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.function.andThen
@@ -63,10 +62,10 @@ value class HTHolderOrTagKey<T : Any> private constructor(private val entry: Ior
             .getRight()
             ?.let(provider1::holderSetOrNull)
             ?.firstOrNull()
-            ?.let { Either.left(it) }
+            ?.let(HTTextResult.Companion::success)
             ?: entry
                 .getLeft()
-                ?.let { Either.left(it) }
+                ?.let(HTTextResult.Companion::success)
             ?: HTCommonTranslation.EMPTY_TAG_KEY.toTextResult()
     }
 

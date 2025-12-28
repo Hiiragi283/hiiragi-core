@@ -25,7 +25,7 @@ interface HTRecipeResult<STACK : ImmutableStack<*, STACK>> : HTIdLike {
      * 指定した[レジストリ][provider]から完成品の[結果][HTTextResult]を返します。
      * @return 完成品がない場合は[Optional.empty]
      */
-    fun getOptionalResult(provider: HolderLookup.Provider?): Optional<STACK> = getStackResult(provider).left()
+    fun getOptionalResult(provider: HolderLookup.Provider?): Optional<STACK> = getStackResult(provider).value()
 
     /**
      * 指定した[レジストリ][provider]から完成品を返します。

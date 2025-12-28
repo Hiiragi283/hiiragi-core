@@ -184,14 +184,14 @@ private fun ingredient(stacks: List<EmiStack>): EmiIngredient = when {
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun HTItemResult.toEmi(): EmiStack = this.getStackResult(null).map(ImmutableItemStack::toEmi, ::createErrorStack)
+fun HTItemResult.toEmi(): EmiStack = this.getStackResult(null).mapOrElse(ImmutableItemStack::toEmi, ::createErrorStack)
 
 /**
  * この[完成品][this]を[EmiStack]に変換します。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun HTFluidResult.toEmi(): EmiStack = this.getStackResult(null).map(ImmutableFluidStack::toEmi, ::createErrorStack)
+fun HTFluidResult.toEmi(): EmiStack = this.getStackResult(null).mapOrElse(ImmutableFluidStack::toEmi, ::createErrorStack)
 
 // Fluid Content
 

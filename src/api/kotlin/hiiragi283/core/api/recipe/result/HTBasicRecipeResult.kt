@@ -1,6 +1,5 @@
 package hiiragi283.core.api.recipe.result
 
-import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.function.generateHash
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.stack.ImmutableStack
@@ -32,7 +31,7 @@ abstract class HTBasicRecipeResult<TYPE : Any, STACK : ImmutableStack<TYPE, STAC
         .flatMap { holder: Holder<TYPE> ->
             when (val stack: STACK? = createStack(holder, amount, components)) {
                 null -> HTCommonTranslation.EMPTY.toTextResult()
-                else -> Either.left(stack)
+                else -> HTTextResult.success(stack)
             }
         }
 

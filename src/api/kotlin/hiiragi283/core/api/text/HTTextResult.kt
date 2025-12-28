@@ -1,38 +1,40 @@
 package hiiragi283.core.api.text
 
 import com.mojang.datafixers.util.Either
-import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
+import java.util.Optional
 
 /**
- * エラーを[テキスト][Component]で保持するモナドです。
+ * エラーを[テキスト][Component]で保持するクラスです。
  * @param T 成功時の結果のクラス
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 0.4.0
  */
-typealias HTTextResult<T> = Either<T, Component>
+@JvmInline
+value class HTTextResult<T> private constructor(val contents: Either<Component, T>) {
+    companion object {
+        @JvmStatic
+        fun <T> success(value: T): HTTextResult<T> = HTTextResult(Either.right(value))
 
-/**
- * この[HTTranslation]を[HTTextResult]に変換します。
- */
-fun <T> HTTranslation.toTextResult(): HTTextResult<T> = Either.right<T, Component>(this.translate())
+        @JvmStatic
+        fun <T> error(message: Component): HTTextResult<T> = HTTextResult(Either.left(message))
+    }
 
-/**
- * この[HTTranslation]を[HTTextResult]に変換します。
- * @param args テキストの引数
- */
-fun <T> HTTranslation.toTextResult(vararg args: Any?): HTTextResult<T> = Either.right<T, Component>(this.translate(*args))
+    fun value(): Optional<T> = contents.right()
 
-/**
- * この[HTTranslation]を[HTTextResult]に変換します。
- * @param color [Component]の色
- */
-fun <T> HTTranslation.toTextResult(color: ChatFormatting): HTTextResult<T> = Either.right<T, Component>(this.translateColored(color))
+    fun message(): Optional<Component> = contents.left()
 
-/**
- * この[HTTranslation]を[HTTextResult]に変換します。
- * @param color [Component]の色
- * @param args テキストの引数
- */
-fun <T> HTTranslation.toTextResult(color: ChatFormatting, vararg args: Any?): HTTextResult<T> =
-    Either.right<T, Component>(this.translateColored(color, *args))
+    fun <R> map(transform: (T) -> R): HTTextResult<R> = HTTextResult(contents.mapRight(transform))
+
+    fun <R> mapOrElse(success: (T) -> R, error: (Component) -> R): R = contents.map(error, success)
+
+    fun <R> flatMap(transform: (T) -> HTTextResult<R>): HTTextResult<R> = contents.map({ HTTextResult(Either.left(it)) }, { transform(it) })
+
+    fun ifPresent(action: (T) -> Unit) {
+        contents.ifRight(action)
+    }
+
+    fun ifPresentOrElse(success: (T) -> Unit, error: (Component) -> Unit) {
+        contents.ifRight(success).ifLeft(error)
+    }
+}
