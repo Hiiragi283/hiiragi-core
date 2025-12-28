@@ -4,9 +4,11 @@ import hiiragi283.core.api.recipe.ingredient.HTIngredient
 import net.minecraft.tags.TagKey
 
 /**
- * [HTIngredient]を作成するヘルパーのインターフェース
+ * [HTIngredient]を作成するインターフェースです。
  * @param TYPE タイプのクラス
  * @param INGREDIENT [HTIngredient]の実装
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  * @see mekanism.api.recipes.ingredients.creator.IIngredientCreator
  */
 interface HTIngredientCreator<TYPE : Any, INGREDIENT : HTIngredient<TYPE, *>> {

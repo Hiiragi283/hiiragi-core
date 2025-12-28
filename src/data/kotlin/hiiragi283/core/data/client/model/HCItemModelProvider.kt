@@ -9,7 +9,6 @@ import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTSimpleFluidContent
 import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.resources.ResourceLocation
@@ -29,12 +28,13 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
     private fun registerMaterials() {
         HCItems.MATERIALS.forEach { (prefix: HTMaterialPrefix, key: HTMaterialKey, item: HTIdLike) ->
             val textureId: ResourceLocation = HiiragiCoreAPI.id(HTConst.ITEM, prefix.asPrefixName(), key.asMaterialName())
-            if (prefix == HCMaterialPrefixes.WIRE) {
-                existTexture(item, textureId) { itemIn: HTIdLike, layer: ResourceLocation ->
-                    layeredItem(itemIn, layer, HiiragiCoreAPI.id(HTConst.ITEM, "wire_overlay"))
+            existTexture(item, textureId) { itemIn: HTIdLike, layer: ResourceLocation ->
+                val overlay: ResourceLocation = HiiragiCoreAPI.id(HTConst.ITEM, "${prefix.name}_overlay")
+                if (existingFileHelper.exists(overlay, TEXTURE)) {
+                    layeredItem(itemIn, layer, overlay)
+                } else {
+                    layeredItem(itemIn, layer)
                 }
-            } else {
-                existTexture(item, textureId, ::layeredItem)
             }
         }
     }

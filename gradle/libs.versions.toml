@@ -39,12 +39,8 @@ guide = { group = "org.appliedenergistics", name = "guideme", version.ref = "gui
 [bundles]
 
 mods-impl = [
-    "almost",
     "emi",
     "jade",
-    # non-direct dependencies
-    "arch",
-    "guide",
 ]
 
 mods-transitive = []

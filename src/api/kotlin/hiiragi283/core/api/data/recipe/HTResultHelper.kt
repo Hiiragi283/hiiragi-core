@@ -23,16 +23,16 @@ object HTResultHelper {
 
     @JvmStatic
     fun item(item: ItemLike, count: Int = 1, components: DataComponentPatch = DataComponentPatch.EMPTY): HTItemResult =
-        item(item.builtInRegistryHolder(), count, components)
+        itemHolder(item.builtInRegistryHolder(), count, components)
 
     @JvmStatic
-    fun item(stack: ItemStack): HTItemResult = item(stack.itemHolder, stack.count, stack.componentsPatch)
+    fun stack(stack: ItemStack): HTItemResult = itemHolder(stack.itemHolder, stack.count, stack.componentsPatch)
 
     @JvmStatic
-    fun item(stack: ImmutableItemStack): HTItemResult = item(stack.getHolder(), stack.amount(), stack.componentsPatch())
+    fun stack(stack: ImmutableItemStack): HTItemResult = itemHolder(stack.getHolder(), stack.amount(), stack.componentsPatch())
 
     @JvmStatic
-    fun item(holder: Holder<Item>, count: Int = 1, components: DataComponentPatch = DataComponentPatch.EMPTY): HTItemResult =
+    fun itemHolder(holder: Holder<Item>, count: Int = 1, components: DataComponentPatch = DataComponentPatch.EMPTY): HTItemResult =
         item(HTHolderOrTagKey(holder), count, components)
 
     @JvmStatic
@@ -65,17 +65,17 @@ object HTResultHelper {
     fun fluid(fluid: Fluid, amount: Int, components: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResult {
         val stack = FluidStack(fluid, amount)
         stack.applyComponents(components)
-        return fluid(stack)
+        return stack(stack)
     }
 
     @JvmStatic
-    fun fluid(stack: FluidStack): HTFluidResult = fluid(stack.fluidHolder, stack.amount, stack.componentsPatch)
+    fun stack(stack: FluidStack): HTFluidResult = fluidHolder(stack.fluidHolder, stack.amount, stack.componentsPatch)
 
     @JvmStatic
-    fun fluid(stack: ImmutableFluidStack): HTFluidResult = fluid(stack.getHolder(), stack.amount(), stack.componentsPatch())
+    fun stack(stack: ImmutableFluidStack): HTFluidResult = fluidHolder(stack.getHolder(), stack.amount(), stack.componentsPatch())
 
     @JvmStatic
-    fun fluid(holder: Holder<Fluid>, amount: Int, components: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResult =
+    fun fluidHolder(holder: Holder<Fluid>, amount: Int, components: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResult =
         fluid(HTHolderOrTagKey(holder), amount, components)
 
     @JvmStatic

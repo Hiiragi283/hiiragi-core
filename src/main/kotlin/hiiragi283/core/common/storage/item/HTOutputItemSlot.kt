@@ -7,7 +7,7 @@ import hiiragi283.core.api.storage.HTStoragePredicates
 /**
  * @see mekanism.common.inventory.slot.OutputInventorySlot
  */
-class HTOutputItemSlot private constructor(listener: HTContentListener?, x: Int, y: Int) :
+class HTOutputItemSlot private constructor(listener: HTContentListener?) :
     HTBasicItemSlot(
         HTConst.ABSOLUTE_MAX_STACK_SIZE,
         HTStoragePredicates.alwaysTrueBi(),
@@ -17,6 +17,6 @@ class HTOutputItemSlot private constructor(listener: HTContentListener?, x: Int,
     ) {
         companion object {
             @JvmStatic
-            fun create(listener: HTContentListener?, x: Int, y: Int): HTOutputItemSlot = HTOutputItemSlot(listener, x, y)
+            fun create(listener: HTContentListener?): HTOutputItemSlot = HTOutputItemSlot(listener)
         }
     }
