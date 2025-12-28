@@ -4,7 +4,6 @@ import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.capability.HTFluidCapabilities
 import hiiragi283.core.api.serialization.value.HTValueSerializable
-import hiiragi283.core.api.stack.ImmutableItemStack
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.amount.HTAmountView
@@ -129,21 +128,25 @@ object HTStackSlotHelper {
     @JvmStatic
     fun insertStacks(
         slots: Iterable<HTItemSlot>,
-        stack: ImmutableItemStack?,
+        stack: ItemStack,
         action: HTStorageAction,
         filter: (HTItemSlot, HTItemResourceType) -> Boolean = HTItemSlot::isValid,
         onBreak: () -> Unit = {},
-    ): ImmutableItemStack? {
-        var remainder: ImmutableItemStack? = stack
-        /*for (slot: HTItemSlot in slots) {
-            if (remainder != null && filter(slot, remainder)) {
-                remainder = slot.insert(remainder, action, HTStorageAccess.INTERNAL)
-                if (remainder == null) {
+    ): ItemStack {
+        val remainder: ItemStack = stack.copy()
+        for (slot: HTItemSlot in slots) {
+            val remainderResource: HTItemResourceType = remainder.toResource() ?: break
+            if (filter(slot, remainderResource)) {
+                val remainderCount: Int = slot.insert(remainderResource, remainder.count, action, HTStorageAccess.INTERNAL)
+                if (action.execute()) {
+                    remainder.count = remainderCount
+                }
+                if (remainder.count <= 0) {
                     onBreak()
                     break
                 }
             }
-        }*/
+        }
         return remainder
     }
 

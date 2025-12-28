@@ -3,7 +3,6 @@ package hiiragi283.core.common.data.recipe.builder
 import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTPrefixLike
-import hiiragi283.core.api.stack.ImmutableItemStack
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -19,13 +18,13 @@ import net.neoforged.neoforge.common.crafting.ICustomIngredient
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-class HTShapedRecipeBuilder(stack: ImmutableItemStack) : HTStackRecipeBuilder<HTShapedRecipeBuilder>("shaped", stack) {
+class HTShapedRecipeBuilder(stack: ItemStack) : HTStackRecipeBuilder<HTShapedRecipeBuilder>("shaped", stack) {
     companion object {
         /**
          * [ShapedRecipe]のビルダーを作成します。
          */
         @JvmStatic
-        fun create(item: ItemLike, count: Int = 1): HTShapedRecipeBuilder = HTShapedRecipeBuilder(ImmutableItemStack.of(item, count))
+        fun create(item: ItemLike, count: Int = 1): HTShapedRecipeBuilder = HTShapedRecipeBuilder(ItemStack(item, count))
     }
 
     private val symbols: MutableMap<Char, Ingredient> = mutableMapOf()

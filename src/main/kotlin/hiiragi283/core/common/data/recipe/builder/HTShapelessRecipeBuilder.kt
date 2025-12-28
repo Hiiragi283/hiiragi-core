@@ -4,7 +4,6 @@ import hiiragi283.core.api.data.recipe.builder.HTIngredientRecipeBuilder
 import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTPrefixLike
-import hiiragi283.core.api.stack.ImmutableItemStack
 import net.minecraft.core.NonNullList
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -19,7 +18,7 @@ import net.minecraft.world.level.ItemLike
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-class HTShapelessRecipeBuilder(stack: ImmutableItemStack) :
+class HTShapelessRecipeBuilder(stack: ItemStack) :
     HTStackRecipeBuilder<HTShapelessRecipeBuilder>("shapeless", stack),
     HTIngredientRecipeBuilder<HTShapelessRecipeBuilder> {
     companion object {
@@ -27,7 +26,7 @@ class HTShapelessRecipeBuilder(stack: ImmutableItemStack) :
          * [ShapelessRecipe]のビルダーを作成します。
          */
         @JvmStatic
-        fun create(item: ItemLike, count: Int = 1): HTShapelessRecipeBuilder = HTShapelessRecipeBuilder(ImmutableItemStack.of(item, count))
+        fun create(item: ItemLike, count: Int = 1): HTShapelessRecipeBuilder = HTShapelessRecipeBuilder(ItemStack(item, count))
     }
 
     private val ingredients: NonNullList<Ingredient> = NonNullList.create()

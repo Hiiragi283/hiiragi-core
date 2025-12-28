@@ -1,7 +1,6 @@
 package hiiragi283.core.common.data.recipe.builder
 
 import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
-import hiiragi283.core.api.stack.ImmutableItemStack
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.AbstractCookingRecipe
 import net.minecraft.world.item.crafting.BlastingRecipe
@@ -22,7 +21,7 @@ import kotlin.math.max
 class HTCookingRecipeBuilder(
     prefix: String,
     private val factory: AbstractCookingRecipe.Factory<*>,
-    stack: ImmutableItemStack,
+    stack: ItemStack,
     private val timeOperator: IntUnaryOperator = IntUnaryOperator.identity(),
 ) : HTStackRecipeBuilder.Single<HTCookingRecipeBuilder>(prefix, stack) {
     companion object {
@@ -33,7 +32,7 @@ class HTCookingRecipeBuilder(
         fun smelting(item: ItemLike, count: Int = 1): HTCookingRecipeBuilder = HTCookingRecipeBuilder(
             "smelting",
             ::SmeltingRecipe,
-            ImmutableItemStack.of(item, count),
+            ItemStack(item, count),
         )
 
         /**
@@ -43,7 +42,7 @@ class HTCookingRecipeBuilder(
         fun blasting(item: ItemLike, count: Int = 1): HTCookingRecipeBuilder = HTCookingRecipeBuilder(
             "blasting",
             ::BlastingRecipe,
-            ImmutableItemStack.of(item, count),
+            ItemStack(item, count),
         )
 
         /**
@@ -53,7 +52,7 @@ class HTCookingRecipeBuilder(
         fun smoking(item: ItemLike, count: Int = 1): HTCookingRecipeBuilder = HTCookingRecipeBuilder(
             "smoking",
             ::SmokingRecipe,
-            ImmutableItemStack.of(item, count),
+            ItemStack(item, count),
         )
 
         /**
@@ -64,7 +63,7 @@ class HTCookingRecipeBuilder(
         @JvmStatic
         inline fun smeltingAndBlasting(item: ItemLike, count: Int = 1, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             smelting(item, count).apply(builderAction)
-            HTCookingRecipeBuilder("blasting", ::BlastingRecipe, ImmutableItemStack.of(item, count)) { it / 2 }.apply(builderAction)
+            HTCookingRecipeBuilder("blasting", ::BlastingRecipe, ItemStack(item, count)) { it / 2 }.apply(builderAction)
         }
 
         /**
@@ -75,7 +74,7 @@ class HTCookingRecipeBuilder(
         @JvmStatic
         inline fun smeltingAndSmoking(item: ItemLike, count: Int = 1, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             smelting(item, count).apply(builderAction)
-            HTCookingRecipeBuilder("smoking", ::SmokingRecipe, ImmutableItemStack.of(item, count)) { it / 2 }.apply(builderAction)
+            HTCookingRecipeBuilder("smoking", ::SmokingRecipe, ItemStack(item, count)) { it / 2 }.apply(builderAction)
         }
     }
 

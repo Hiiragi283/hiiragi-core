@@ -3,7 +3,6 @@ package hiiragi283.core.api.recipe.input
 import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
-import hiiragi283.core.api.stack.ImmutableFluidStack
 import net.minecraft.core.BlockPos
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeInput
@@ -47,7 +46,7 @@ data class HTRecipeInput private constructor(val pos: BlockPos?, val items: List
     fun item(index: Int): ItemStack = validateItem(index)
 
     /**
-     * 指定した[インデックス][index]から[液体][ImmutableFluidStack]を取得します。
+     * 指定した[インデックス][index]から[液体][FluidStack]を取得します。
      * @return 指定した[インデックス][index]が範囲外の場合，または液体がない場合は[FluidStack.EMPTY]
      */
     fun fluid(index: Int): FluidStack = fluids.getOrNull(index) ?: FluidStack.EMPTY

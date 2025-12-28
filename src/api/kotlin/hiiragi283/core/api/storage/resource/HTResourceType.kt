@@ -2,7 +2,6 @@ package hiiragi283.core.api.storage.resource
 
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.HTKeyLike
-import hiiragi283.core.api.stack.ImmutableStack
 import hiiragi283.core.api.text.HTHasText
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
@@ -37,7 +36,7 @@ interface HTResourceType<TYPE : Any> :
         HTKeyLike.HolderDelegate<TYPE>,
         IWithData<TYPE> {
         /**
-         * 指定した[種類][type]が，このスタックが保持している[種類][ImmutableStack.type]と一致するか判定します。
+         * 指定した[種類][type]が，このスタックが保持している[種類][HTResourceType.type]と一致するか判定します。
          */
         fun isOf(type: TYPE): Boolean = type() == type
 

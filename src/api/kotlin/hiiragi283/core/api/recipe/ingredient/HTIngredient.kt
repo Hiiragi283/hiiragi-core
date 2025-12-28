@@ -1,7 +1,6 @@
 package hiiragi283.core.api.recipe.ingredient
 
 import com.mojang.datafixers.util.Either
-import hiiragi283.core.api.stack.ImmutableStack
 import hiiragi283.core.api.storage.resource.HTResourceType
 import hiiragi283.core.api.tag.getName
 import hiiragi283.core.api.text.HTHasText
@@ -25,7 +24,7 @@ interface HTIngredient<TYPE : Any, RESOURCE : HTResourceType<TYPE>> :
     HTHasText {
     /**
      * 指定した[resource]と[amount]が条件を満たしているか判定します。
-     * @return [testOnlyType]が`true`，かつ[ImmutableStack.amount]が[getRequiredAmount]以上の場合は`true`
+     * @return [testOnlyType]が`true`，かつ[amount]が[getRequiredAmount]以上の場合は`true`
      */
     override fun test(resource: RESOURCE, amount: Int): Boolean = testOnlyType(resource) && amount >= getRequiredAmount()
 

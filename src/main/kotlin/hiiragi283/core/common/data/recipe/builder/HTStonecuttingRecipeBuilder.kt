@@ -1,7 +1,6 @@
 package hiiragi283.core.common.data.recipe.builder
 
 import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
-import hiiragi283.core.api.stack.ImmutableItemStack
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.StonecutterRecipe
 import net.minecraft.world.level.ItemLike
@@ -11,15 +10,13 @@ import net.minecraft.world.level.ItemLike
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-class HTStonecuttingRecipeBuilder(stack: ImmutableItemStack) :
-    HTStackRecipeBuilder.Single<HTStonecuttingRecipeBuilder>("stonecutting", stack) {
+class HTStonecuttingRecipeBuilder(stack: ItemStack) : HTStackRecipeBuilder.Single<HTStonecuttingRecipeBuilder>("stonecutting", stack) {
     companion object {
         /**
          * [StonecutterRecipe]のビルダーを作成します。
          */
         @JvmStatic
-        fun create(item: ItemLike, count: Int = 1): HTStonecuttingRecipeBuilder =
-            HTStonecuttingRecipeBuilder(ImmutableItemStack.of(item, count))
+        fun create(item: ItemLike, count: Int = 1): HTStonecuttingRecipeBuilder = HTStonecuttingRecipeBuilder(ItemStack(item, count))
     }
 
     private var group: String? = null
