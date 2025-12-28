@@ -31,6 +31,11 @@ interface HTItemSlot : HTResourceSlot<HTItemResourceType> {
     abstract class Basic :
         HTResourceSlot.Basic<HTItemResourceType>(),
         HTItemSlot {
+        fun setStack(stack: ItemStack) {
+            setResource(stack.toResource())
+            setAmount(stack.count)
+        }
+
         override fun toString(): String = "HTItemSlot(resource=${getResource()}, amount=${getAmount()}, capacity=${getCapacity()})"
     }
 }

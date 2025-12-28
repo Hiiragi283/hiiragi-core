@@ -5,7 +5,6 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.recipe.input.HTRecipeInput
 import hiiragi283.core.api.stack.ImmutableItemStack
-import hiiragi283.core.api.stack.toImmutable
 import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
@@ -124,7 +123,7 @@ object HTRecipeEventHandler {
 
     @JvmStatic
     private fun createInput(entity: ItemEntity): HTRecipeInput? = HTRecipeInput.create(null) {
-        items += entity.item.toImmutable()
+        items += entity.item
     }
 
     @JvmStatic

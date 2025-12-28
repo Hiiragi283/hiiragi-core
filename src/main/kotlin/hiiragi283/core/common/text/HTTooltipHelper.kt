@@ -1,12 +1,15 @@
 package hiiragi283.core.common.text
 
-import hiiragi283.core.api.stack.ImmutableFluidStack
+import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextUtil
 import hiiragi283.core.api.text.toText
 import net.minecraft.ChatFormatting
+import net.minecraft.core.Holder
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.TooltipFlag
+import net.minecraft.world.level.material.Fluid
+import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.Consumer
 
 object HTTooltipHelper {
@@ -27,7 +30,7 @@ object HTTooltipHelper {
 
     @JvmStatic
     fun addFluidTooltip(
-        stack: ImmutableFluidStack?,
+        stack: FluidStack?,
         consumer: Consumer<Component>,
         flag: TooltipFlag,
         isCreative: Boolean,
@@ -41,19 +44,20 @@ object HTTooltipHelper {
         if (isCreative) {
             HTCommonTranslation.STORED.translate(stack, HTCommonTranslation.INFINITE)
         } else {
-            HTCommonTranslation.STORED_MB.translate(stack, stack.amount())
+            HTCommonTranslation.STORED_MB.translate(stack, stack.amount)
         }.let(consumer::accept)
         // Fluid id if advanced
+        val holder: Holder<Fluid> = stack.fluidHolder
         if (flag.isAdvanced) {
-            stack
-                .getHolder()
+            holder
                 .registeredName
                 .toText()
                 .withStyle(ChatFormatting.DARK_GRAY)
                 .let(consumer::accept)
         }
         // Mod Name
-        stack
+        holder
+            .toLike()
             .getId()
             .namespace
             .let(HTTextUtil::getModNameText)

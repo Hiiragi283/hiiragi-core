@@ -1,5 +1,6 @@
 package hiiragi283.core.api.integration.emi
 
+import dev.emi.emi.api.neoforge.NeoForgeEmiStack
 import dev.emi.emi.api.render.EmiTexture
 import dev.emi.emi.api.stack.EmiIngredient
 import dev.emi.emi.api.stack.EmiStack
@@ -19,6 +20,8 @@ import hiiragi283.core.api.registry.HTFluidWithTag
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.stack.ImmutableFluidStack
 import hiiragi283.core.api.stack.ImmutableItemStack
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTranslation
 import net.minecraft.core.Holder
@@ -152,24 +155,30 @@ fun HTPrefixLike.toItemEmi(material: HTMaterialLike, amount: Int = 1): EmiIngred
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun HTItemIngredient.toEmi(): EmiIngredient = this
-    .unwrap()
-    .map(
-        { (tagKey: TagKey<Item>, count: Int) -> tagKey.toEmi(count) },
-        { stacks: List<ImmutableItemStack> -> stacks.map(ImmutableItemStack::toEmi).let(::ingredient) },
+fun HTItemIngredient.toEmi(): EmiIngredient {
+    val count: Int = this.getRequiredAmount()
+    return this.unwrap().map(
+        { tagKey: TagKey<Item> -> tagKey.toEmi(count) },
+        { resources: List<HTItemResourceType> ->
+            resources.map { it.toStack(count) }.map(ItemStack::toEmi).let(::ingredient)
+        },
     )
+}
 
 /**
  * この[材料][this]を[EmiIngredient]に変換します。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun HTFluidIngredient.toEmi(): EmiIngredient = this
-    .unwrap()
-    .map(
-        { (tagKey: TagKey<Fluid>, count: Int) -> tagKey.toEmi(count) },
-        { stacks: List<ImmutableFluidStack> -> stacks.map(ImmutableFluidStack::toEmi).let(::ingredient) },
+fun HTFluidIngredient.toEmi(): EmiIngredient {
+    val count: Int = this.getRequiredAmount()
+    return this.unwrap().map(
+        { tagKey: TagKey<Fluid> -> tagKey.toEmi(count) },
+        { resources: List<HTFluidResourceType> ->
+            resources.map { it.toStack(count) }.map(NeoForgeEmiStack::of).let(::ingredient)
+        },
     )
+}
 
 private fun ingredient(stacks: List<EmiStack>): EmiIngredient = when {
     stacks.isEmpty() -> createErrorStack(HTCommonTranslation.EMPTY)

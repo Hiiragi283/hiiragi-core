@@ -6,23 +6,24 @@ import hiiragi283.core.api.monad.unwrapEither
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
-import hiiragi283.core.api.stack.ImmutableItemStack
-import hiiragi283.core.api.stack.toImmutable
+import hiiragi283.core.api.storage.item.HTItemResourceType
+import hiiragi283.core.api.storage.item.toResource
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.neoforged.neoforge.common.crafting.ICustomIngredient
+import net.neoforged.neoforge.common.crafting.SizedIngredient
 import java.util.function.IntUnaryOperator
 
 /**
- * [ImmutableItemStack]向けに[HTIngredient]を実装したクラスです。
+ * [HTItemResourceType]向けに[HTIngredient]を実装したクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 0.4.0
  */
-@JvmRecord
-data class HTItemIngredient(private val ingredient: Ingredient, private val count: Int) : HTIngredient<Item, ImmutableItemStack> {
+@JvmInline
+value class HTItemIngredient(val delegate: SizedIngredient) : HTIngredient<Item, HTItemResourceType> {
     companion object {
         /**
          * 個数を無視した[HTItemIngredient]の[BiCodec]
@@ -34,7 +35,7 @@ data class HTItemIngredient(private val ingredient: Ingredient, private val coun
         @JvmStatic
         private val NESTED_CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> = BiCodec.composite(
             VanillaBiCodecs.INGREDIENT.fieldOf(HTConst.ITEMS).forGetter(HTItemIngredient::ingredient),
-            BiCodecs.POSITIVE_INT.fieldOf(HTConst.AMOUNT).forGetter(HTItemIngredient::count),
+            BiCodecs.POSITIVE_INT.fieldOf(HTConst.AMOUNT).forGetter(HTItemIngredient::getRequiredAmount),
             ::HTItemIngredient,
         )
 
@@ -45,49 +46,47 @@ data class HTItemIngredient(private val ingredient: Ingredient, private val coun
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> = BiCodecs
             .xor(UNSIZED_CODEC, NESTED_CODEC)
             .xmap(::unwrapEither) { ingredient: HTItemIngredient ->
-                when (ingredient.count) {
+                when (ingredient.getRequiredAmount()) {
                     1 -> Either.left(ingredient)
                     else -> Either.right(ingredient)
                 }
             }
     }
 
-    private constructor(ingredient: Ingredient) : this(ingredient, 1)
+    constructor(ingredient: Ingredient, count: Int = 1) : this(SizedIngredient(ingredient, count))
 
-    fun test(stack: ItemStack): Boolean = stack.toImmutable()?.let(this::test) ?: false
+    val ingredient: Ingredient get() = delegate.ingredient()
 
-    fun testOnlyType(stack: ItemStack): Boolean = stack.toImmutable()?.let(this::testOnlyType) ?: false
+    fun test(stack: ItemStack): Boolean {
+        val resource: HTItemResourceType = stack.toResource() ?: return false
+        return test(resource, stack.count)
+    }
 
-    fun copyWithCount(operator: IntUnaryOperator): HTItemIngredient = HTItemIngredient(this.ingredient, operator.applyAsInt(this.count))
+    fun testOnlyType(stack: ItemStack): Boolean = stack.toResource()?.let(::testOnlyType) ?: false
 
-    override fun testOnlyType(stack: ImmutableItemStack): Boolean = ingredient.test(stack.unwrap())
+    fun copyWithCount(operator: IntUnaryOperator): HTItemIngredient =
+        HTItemIngredient(this.ingredient, operator.applyAsInt(getRequiredAmount()))
 
-    override fun getRequiredAmount(): Int = this.count
+    override fun testOnlyType(resource: HTItemResourceType): Boolean = ingredient.test(resource.toStack())
 
-    override fun unwrap(): Either<Pair<TagKey<Item>, Int>, List<ImmutableItemStack>> {
+    override fun getRequiredAmount(): Int = delegate.count()
+
+    override fun unwrap(): Either<TagKey<Item>, List<HTItemResourceType>> {
         val custom: ICustomIngredient? = ingredient.customIngredient
         if (custom != null) {
-            return Either.right(
-                custom.items
-                    .toList()
-                    .let(::toImmutableList),
-            )
+            return Either.right(custom.items.toList().mapNotNull(ItemStack::toResource))
         } else {
             val values: Array<Ingredient.Value> = ingredient.values
             return when (values.size) {
                 0 -> Either.right(listOf())
                 1 -> {
                     when (val value: Ingredient.Value = values[0]) {
-                        is Ingredient.TagValue -> Either.left(value.tag() to count)
-                        else -> Either.right(toImmutableList(value.items))
+                        is Ingredient.TagValue -> Either.left(value.tag())
+                        else -> Either.right(value.items.mapNotNull(ItemStack::toResource))
                     }
                 }
-                else -> Either.right(toImmutableList(values.flatMap(Ingredient.Value::getItems)))
+                else -> Either.right(values.flatMap(Ingredient.Value::getItems).mapNotNull(ItemStack::toResource))
             }
         }
     }
-
-    private fun toImmutableList(stacks: Collection<ItemStack>): List<ImmutableItemStack> = stacks
-        .map { it.copyWithCount(count) }
-        .mapNotNull(ItemStack::toImmutable)
 }

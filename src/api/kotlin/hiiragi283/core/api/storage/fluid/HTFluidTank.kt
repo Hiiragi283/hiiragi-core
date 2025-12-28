@@ -1,6 +1,7 @@
 package hiiragi283.core.api.storage.fluid
 
 import hiiragi283.core.api.storage.resource.HTResourceSlot
+import net.neoforged.neoforge.fluids.FluidStack
 
 /**
  * [HTFluidResourceType]向けの[HTResourceSlot]の拡張インターフェースです。
@@ -18,6 +19,11 @@ interface HTFluidTank : HTResourceSlot<HTFluidResourceType> {
     abstract class Basic :
         HTResourceSlot.Basic<HTFluidResourceType>(),
         HTFluidTank {
+        fun setStack(stack: FluidStack) {
+            setResource(stack.toResource())
+            setAmount(stack.amount)
+        }
+
         override fun toString(): String = "HTFluidTank(resource=${getResource()}, amount=${getAmount()}, capacity=${getCapacity()})"
     }
 }
