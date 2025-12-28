@@ -1,31 +1,23 @@
 package hiiragi283.core.api.storage.fluid
 
-import hiiragi283.core.api.stack.ImmutableFluidStack
-import hiiragi283.core.api.storage.stack.HTStackSlot
-import net.neoforged.neoforge.fluids.FluidStack
+import hiiragi283.core.api.storage.resource.HTResourceSlot
 
 /**
- * [ImmutableFluidStack]向けの[HTStackSlot]の拡張インターフェースです。
+ * [HTFluidResourceType]向けの[HTResourceSlot]の拡張インターフェースです。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
- * @see mekanism.api.fluid.IExtendedFluidTank
+ * @since 0.4.0
  */
-interface HTFluidTank : HTStackSlot<ImmutableFluidStack> {
-    override fun isSameStack(other: ImmutableFluidStack?): Boolean = FluidStack.isSameFluidSameComponents(
-        this.getFluidStack(),
-        other?.unwrap() ?: FluidStack.EMPTY,
-    )
-
+interface HTFluidTank : HTResourceSlot<HTFluidResourceType> {
     //    Basic    //
 
     /**
-     * [ImmutableFluidStack]向けの[HTStackSlot.Basic]の拡張クラスです。
+     * [HTFluidResourceType]向けの[HTResourceSlot.Basic]の拡張クラスです。
      * @author Hiiragi Tsubasa
-     * @since 0.1.0
+     * @since 0.4.0
      */
     abstract class Basic :
-        HTStackSlot.Basic<ImmutableFluidStack>(),
+        HTResourceSlot.Basic<HTFluidResourceType>(),
         HTFluidTank {
-        override fun toString(): String = "HTFluidTank(stack=${getStack()}, capacity=${getCapacity()})"
+        override fun toString(): String = "HTFluidTank(resource=${getResource()}, amount=${getAmount()}, capacity=${getCapacity()})"
     }
 }

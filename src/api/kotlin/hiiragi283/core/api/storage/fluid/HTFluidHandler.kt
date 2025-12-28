@@ -1,7 +1,5 @@
 package hiiragi283.core.api.storage.fluid
 
-import hiiragi283.core.api.stack.ImmutableFluidStack
-import hiiragi283.core.api.stack.toImmutable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import net.minecraft.core.Direction
@@ -40,7 +38,10 @@ fun interface HTFluidHandler : HTSidedFluidHandler {
         return tank.getCapacity()
     }
 
-    override fun isFluidValid(tank: Int, stack: FluidStack, side: Direction?): Boolean = getFluidTank(tank, side)?.isValid(stack) ?: false
+    override fun isFluidValid(tank: Int, stack: FluidStack, side: Direction?): Boolean {
+        val tank: HTFluidTank = getFluidTank(tank, side) ?: return false
+        return stack.toResource()?.let(tank::isValid) ?: false
+    }
 
     /**
      * @see blusunrize.immersiveengineering.common.fluids.ArrayFluidHandler.fill
@@ -52,17 +53,17 @@ fun interface HTFluidHandler : HTSidedFluidHandler {
         val remaining: FluidStack = resource.copy()
         var existing: HTFluidTank? = null
         for (tank: HTFluidTank in getFluidTanks(side)) {
-            if (tank.isSameStack(remaining.toImmutable())) {
+            if (tank.getResource() == remaining.toResource()) {
                 existing = tank
                 break
             }
         }
         if (existing != null) {
-            val remainder: Int = existing.insert(remaining.toImmutable(), action1, access)?.amount() ?: 0
+            val remainder: Int = existing.insert(remaining, action1, access).amount
             remaining.amount = remainder
         } else {
             for (tank: HTFluidTank in getFluidTanks(side)) {
-                val remainder: Int = tank.insert(remaining.toImmutable(), action1, access)?.amount() ?: 0
+                val remainder: Int = tank.insert(remaining, action1, access).amount
                 if (remainder < remaining.amount) {
                     remaining.amount = remainder
                     break
@@ -79,9 +80,9 @@ fun interface HTFluidHandler : HTSidedFluidHandler {
         val action1: HTStorageAction = HTStorageAction.of(action)
         val access: HTStorageAccess = HTStorageAccess.forHandler(side)
         for (tank: HTFluidTank in getFluidTanks(side)) {
-            val drained: ImmutableFluidStack? = tank.extract(resource.toImmutable(), action1, access)
-            if (drained != null) {
-                return drained.unwrap()
+            val drained: FluidStack = tank.extractFluid(resource, action1, access)
+            if (!drained.isEmpty) {
+                return drained
             }
         }
         return FluidStack.EMPTY
@@ -94,9 +95,9 @@ fun interface HTFluidHandler : HTSidedFluidHandler {
         val action1: HTStorageAction = HTStorageAction.of(action)
         val access: HTStorageAccess = HTStorageAccess.forHandler(side)
         for (tank: HTFluidTank in getFluidTanks(side)) {
-            val drained: ImmutableFluidStack? = tank.extract(maxDrain, action1, access)
-            if (drained != null) {
-                return drained.unwrap()
+            val drained: FluidStack = tank.extractFluid(maxDrain, action1, access)
+            if (!drained.isEmpty) {
+                return drained
             }
         }
         return FluidStack.EMPTY

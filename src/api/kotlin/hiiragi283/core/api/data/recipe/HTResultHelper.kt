@@ -7,8 +7,6 @@ import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTHolderOrTagKey
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.HTFluidWithTag
-import hiiragi283.core.api.stack.ImmutableFluidStack
-import hiiragi283.core.api.stack.ImmutableItemStack
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.tags.TagKey
@@ -27,9 +25,6 @@ object HTResultHelper {
 
     @JvmStatic
     fun stack(stack: ItemStack): HTItemResult = itemHolder(stack.itemHolder, stack.count, stack.componentsPatch)
-
-    @JvmStatic
-    fun stack(stack: ImmutableItemStack): HTItemResult = itemHolder(stack.getHolder(), stack.amount(), stack.componentsPatch())
 
     @JvmStatic
     fun itemHolder(holder: Holder<Item>, count: Int = 1, components: DataComponentPatch = DataComponentPatch.EMPTY): HTItemResult =
@@ -70,9 +65,6 @@ object HTResultHelper {
 
     @JvmStatic
     fun stack(stack: FluidStack): HTFluidResult = fluidHolder(stack.fluidHolder, stack.amount, stack.componentsPatch)
-
-    @JvmStatic
-    fun stack(stack: ImmutableFluidStack): HTFluidResult = fluidHolder(stack.getHolder(), stack.amount(), stack.componentsPatch())
 
     @JvmStatic
     fun fluidHolder(holder: Holder<Fluid>, amount: Int, components: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResult =

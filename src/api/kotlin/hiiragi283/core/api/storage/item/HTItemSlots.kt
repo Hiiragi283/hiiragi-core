@@ -1,12 +1,20 @@
 package hiiragi283.core.api.storage.item
 
-import hiiragi283.core.api.stack.ImmutableItemStack
-import hiiragi283.core.api.stack.toImmutable
-import hiiragi283.core.api.storage.stack.HTStackView
+import hiiragi283.core.api.storage.HTStorageAccess
+import hiiragi283.core.api.storage.HTStorageAction
+import hiiragi283.core.api.storage.resource.HTResourceView
 import net.minecraft.world.item.ItemStack
 
-typealias HTItemView = HTStackView<ImmutableItemStack>
+typealias HTItemViewNew = HTResourceView<HTItemResourceType>
 
-fun HTItemView.getItemStack(): ItemStack = this.getStack()?.unwrap() ?: ItemStack.EMPTY
+fun HTItemViewNew.getItemStack(): ItemStack = this.getResource()?.toStack(this.getAmount()) ?: ItemStack.EMPTY
 
-fun HTItemSlot.isValid(stack: ItemStack): Boolean = stack.toImmutable()?.let(this::isValid) ?: false
+fun HTItemSlot.insert(stack: ItemStack, action: HTStorageAction, access: HTStorageAccess): ItemStack {
+    val remainder: Int = this.insert(stack.toResource(), stack.count, action, access)
+    return stack.copyWithCount(remainder)
+}
+
+fun HTItemSlot.extractItem(amount: Int, action: HTStorageAction, access: HTStorageAccess): ItemStack {
+    val resourceIn: HTItemResourceType = this.getResource() ?: return ItemStack.EMPTY
+    return this.extract(amount, action, access).let(resourceIn::toStack)
+}

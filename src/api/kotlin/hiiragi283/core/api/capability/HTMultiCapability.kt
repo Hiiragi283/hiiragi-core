@@ -1,7 +1,7 @@
 package hiiragi283.core.api.capability
 
 import com.google.common.util.concurrent.Runnables
-import hiiragi283.core.api.stack.ImmutableItemStack
+import hiiragi283.core.api.storage.item.HTItemResourceType
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
@@ -71,10 +71,10 @@ interface HTMultiCapability<HANDLER : Any, ITEM_HANDLER : HANDLER> {
 
     fun hasCapability(stack: ItemStack): Boolean = getCapability(stack) != null
 
-    // HTItemStorageStack
-    fun getCapability(stack: ImmutableItemStack?): ITEM_HANDLER? = stack?.getCapability(item)
+    // HTItemResourceType
+    fun getCapability(resource: HTItemResourceType?): ITEM_HANDLER? = resource?.toStack()?.getCapability(item)
 
-    fun hasCapability(stack: ImmutableItemStack): Boolean = getCapability(stack) != null
+    fun hasCapability(resource: HTItemResourceType?): Boolean = resource?.toStack()?.let(::hasCapability) != null
 
     interface Simple<HANDLER : Any> : HTMultiCapability<HANDLER, HANDLER>
 }

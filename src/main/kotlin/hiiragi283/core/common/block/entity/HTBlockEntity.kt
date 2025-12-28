@@ -26,8 +26,6 @@ import hiiragi283.core.common.inventory.HTMenuCallback
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import hiiragi283.core.common.storage.HTCapabilityCodec
 import hiiragi283.core.common.storage.energy.HTBasicEnergyBattery
-import hiiragi283.core.common.storage.fluid.HTBasicFluidTank
-import hiiragi283.core.common.storage.item.HTBasicItemSlot
 import hiiragi283.core.common.storage.resolver.HTEnergyStorageManager
 import hiiragi283.core.common.storage.resolver.HTFluidHandlerManager
 import hiiragi283.core.common.storage.resolver.HTItemHandlerManager
@@ -285,7 +283,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     fun applyFluidTanks(containers: List<HTFluidTank>, contents: HTAttachedFluids) {
         for (i: Int in contents.indices) {
             val stack: ImmutableFluidStack? = contents[i]
-            (containers.getOrNull(i) as? HTBasicFluidTank)?.setStackUnchecked(stack, true)
+            // (containers.getOrNull(i) as? HTBasicFluidTank)?.setStackUnchecked(stack, true)
         }
     }
 
@@ -293,7 +291,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
      * @see mekanism.common.tile.base.TileEntityMekanism.collectFluidTanks
      */
     fun collectFluidTanks(containers: List<HTFluidTank>): HTAttachedFluids? = containers
-        .map(HTFluidTank::getStack)
+        .map { null } // TODO
         .let(::HTAttachedFluids)
         .takeUnless(HTAttachedFluids::isEmpty)
 
@@ -353,7 +351,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     fun applyItemSlots(containers: List<HTItemSlot>, contents: HTAttachedItems) {
         for (i: Int in contents.indices) {
             val stack: ImmutableItemStack? = contents[i]
-            (containers.getOrNull(i) as? HTBasicItemSlot)?.setStackUnchecked(stack, true)
+            // (containers.getOrNull(i) as? HTBasicItemSlot)?.setStackUnchecked(stack, true)
         }
     }
 
@@ -361,7 +359,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
      * @see mekanism.common.tile.base.TileEntityMekanism.collectInventorySlots
      */
     fun collectItemSlots(containers: List<HTItemSlot>): HTAttachedItems? = containers
-        .map(HTItemSlot::getStack)
+        .map { null } // TODO
         .let(::HTAttachedItems)
         .takeUnless(HTAttachedItems::isEmpty)
 }

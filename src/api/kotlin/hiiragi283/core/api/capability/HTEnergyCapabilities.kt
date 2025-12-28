@@ -2,11 +2,11 @@ package hiiragi283.core.api.capability
 
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.serialization.value.HTValueSerializable
-import hiiragi283.core.api.stack.ImmutableItemStack
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.energy.HTEnergyBattery
 import hiiragi283.core.api.storage.energy.HTEnergyHandler
+import hiiragi283.core.api.storage.item.HTItemResourceType
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.entity.Entity
@@ -30,7 +30,7 @@ object HTEnergyCapabilities : HTMultiCapability.Simple<IEnergyStorage> {
 
     fun getBattery(stack: ItemStack): HTEnergyBattery? = this.getCapability(stack)?.let { wrapStorage(it, null) }
 
-    fun getBattery(stack: ImmutableItemStack?): HTEnergyBattery? = this.getCapability(stack)?.let { wrapStorage(it, null) }
+    fun getBattery(resource: HTItemResourceType?): HTEnergyBattery? = this.getCapability(resource)?.let { wrapStorage(it, null) }
 
     fun wrapStorage(storage: IEnergyStorage, context: Direction?): HTEnergyBattery? = when (storage) {
         is HTEnergyHandler -> storage.getEnergyBattery(context)

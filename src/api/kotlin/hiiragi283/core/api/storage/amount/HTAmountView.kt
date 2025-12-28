@@ -2,7 +2,7 @@ package hiiragi283.core.api.storage.amount
 
 import com.google.common.primitives.Ints
 import hiiragi283.core.api.math.fixedFraction
-import hiiragi283.core.api.storage.stack.HTStackView
+import hiiragi283.core.api.storage.resource.HTResourceView
 import org.apache.commons.lang3.math.Fraction
 import kotlin.math.max
 
@@ -12,7 +12,7 @@ import kotlin.math.max
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  * @see HTAmountSlot
- * @see HTStackView
+ * @see HTResourceView
  */
 sealed interface HTAmountView<N> where N : Number, N : Comparable<N> {
     /**

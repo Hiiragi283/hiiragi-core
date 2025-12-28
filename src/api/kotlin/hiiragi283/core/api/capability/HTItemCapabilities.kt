@@ -2,12 +2,12 @@ package hiiragi283.core.api.capability
 
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.serialization.value.HTValueSerializable
-import hiiragi283.core.api.stack.ImmutableItemStack
-import hiiragi283.core.api.stack.toImmutable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.item.HTItemHandler
+import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
+import hiiragi283.core.api.storage.item.toResource
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.entity.Entity
@@ -39,20 +39,23 @@ object HTItemCapabilities : HTMultiCapability.Simple<IItemHandler> {
         else -> HTItemHandler {
             handler.slotRange.map { slot: Int ->
                 object : HTItemSlot, HTContentListener.Empty, HTValueSerializable.Empty {
-                    override fun isValid(stack: ImmutableItemStack): Boolean = handler.isItemValid(slot, stack.unwrap())
+                    override fun isValid(resource: HTItemResourceType): Boolean = handler.isItemValid(slot, resource.toStack())
 
                     override fun insert(
-                        stack: ImmutableItemStack?,
+                        resource: HTItemResourceType?,
+                        amount: Int,
                         action: HTStorageAction,
                         access: HTStorageAccess,
-                    ): ImmutableItemStack? = handler.insertItem(slot, stack?.unwrap() ?: ItemStack.EMPTY, action.simulate()).toImmutable()
+                    ): Int = handler.insertItem(slot, resource?.toStack(amount) ?: ItemStack.EMPTY, action.simulate()).count
 
-                    override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): ImmutableItemStack? =
-                        handler.extractItem(slot, amount, action.simulate()).toImmutable()
+                    override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int =
+                        handler.extractItem(slot, amount, action.simulate()).count
 
-                    override fun getStack(): ImmutableItemStack? = handler.getStackInSlot(slot).toImmutable()
+                    override fun getResource(): HTItemResourceType? = handler.getStackInSlot(slot).toResource()
 
-                    override fun getCapacity(stack: ImmutableItemStack?): Int = handler.getSlotLimit(slot)
+                    override fun getCapacity(resource: HTItemResourceType?): Int = handler.getSlotLimit(slot)
+
+                    override fun getAmount(): Int = handler.getStackInSlot(slot).count
                 }
             }
         }
@@ -100,11 +103,10 @@ object HTItemCapabilities : HTMultiCapability.Simple<IItemHandler> {
      */
     fun getItemSlot(stack: ItemStack, index: Int): HTItemSlot? = getItemSlots(stack).getOrNull(index)
 
-    // HTItemStorageStack
+    // HTItemResourceType
+    fun getItemHandler(resource: HTItemResourceType?): HTItemHandler? = getCapability(resource)?.let(::wrapHandler)
 
-    fun getItemHandler(stack: ImmutableItemStack?): HTItemHandler? = getCapability(stack)?.let(::wrapHandler)
+    fun getItemSlots(resource: HTItemResourceType?): List<HTItemSlot> = getItemHandler(resource)?.getItemSlots(null) ?: listOf()
 
-    fun getItemSlots(stack: ImmutableItemStack?): List<HTItemSlot> = getItemHandler(stack)?.getItemSlots(null) ?: listOf()
-
-    fun getItemSlot(stack: ImmutableItemStack?, index: Int): HTItemSlot? = getItemSlots(stack).getOrNull(index)
+    fun getItemSlot(resource: HTItemResourceType?, index: Int): HTItemSlot? = getItemSlots(resource).getOrNull(index)
 }
