@@ -1,10 +1,10 @@
 package hiiragi283.core.api.capability
 
-import hiiragi283.core.api.stack.ImmutableFluidStack
-import hiiragi283.core.api.stack.ImmutableItemStack
-import hiiragi283.core.api.stack.toImmutable
 import hiiragi283.core.api.storage.fluid.HTFluidHandler
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.HTFluidView
+import hiiragi283.core.api.storage.fluid.toResource
+import hiiragi283.core.api.storage.item.HTItemResourceType
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.entity.Entity
@@ -28,9 +28,11 @@ object HTFluidCapabilities : HTMultiCapability<IFluidHandler, IFluidHandlerItem>
 
         else -> handler.tankRange.map { tank: Int ->
             object : HTFluidView {
-                override fun getStack(): ImmutableFluidStack? = handler.getFluidInTank(tank).toImmutable()
+                override fun getResource(): HTFluidResourceType? = handler.getFluidInTank(tank).toResource()
 
-                override fun getCapacity(stack: ImmutableFluidStack?): Int = handler.getTankCapacity(tank)
+                override fun getCapacity(resource: HTFluidResourceType?): Int = handler.getTankCapacity(tank)
+
+                override fun getAmount(): Int = handler.getFluidInTank(tank).amount
             }
         }
     }
@@ -60,9 +62,9 @@ object HTFluidCapabilities : HTMultiCapability<IFluidHandler, IFluidHandlerItem>
 
     fun getFluidView(stack: ItemStack, tank: Int): HTFluidView? = getFluidViews(stack).getOrNull(tank)
 
-    // HTItemStorageStack
+    // HTItemResourceType
 
-    fun getFluidViews(stack: ImmutableItemStack?): List<HTFluidView> = getCapability(stack)?.let { wrapHandler(it, null) } ?: listOf()
+    fun getFluidViews(resource: HTItemResourceType?): List<HTFluidView> = getCapability(resource)?.let { wrapHandler(it, null) } ?: listOf()
 
-    fun getFluidView(stack: ImmutableItemStack?, tank: Int): HTFluidView? = getFluidViews(stack).getOrNull(tank)
+    fun getFluidView(resource: HTItemResourceType?, tank: Int): HTFluidView? = getFluidViews(resource).getOrNull(tank)
 }

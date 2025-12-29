@@ -4,90 +4,56 @@ import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.capability.HTFluidCapabilities
 import hiiragi283.core.api.serialization.value.HTValueSerializable
-import hiiragi283.core.api.stack.ImmutableFluidStack
-import hiiragi283.core.api.stack.ImmutableItemStack
-import hiiragi283.core.api.stack.ImmutableStack
-import hiiragi283.core.api.stack.toImmutable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.amount.HTAmountView
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.HTFluidTank
+import hiiragi283.core.api.storage.fluid.getFluidStack
+import hiiragi283.core.api.storage.fluid.insert
+import hiiragi283.core.api.storage.fluid.toResource
+import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
-import hiiragi283.core.api.storage.stack.HTStackSlot
-import hiiragi283.core.api.storage.stack.HTStackView
-import net.minecraft.core.HolderLookup
+import hiiragi283.core.api.storage.item.toResource
+import hiiragi283.core.api.storage.resource.HTResourceSlot
+import hiiragi283.core.api.storage.resource.HTResourceType
+import hiiragi283.core.api.storage.resource.HTResourceView
 import net.minecraft.util.Mth
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.crafting.RecipeInput
-import net.minecraft.world.level.Level
 import net.minecraft.world.level.redstone.Redstone
+import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem
 import org.slf4j.Logger
 import java.util.function.Consumer
-import java.util.function.ToIntFunction
+import java.util.function.ToIntBiFunction
 
 object HTStackSlotHelper {
     @JvmField
     val LOGGER: Logger = LogUtils.getLogger()
 
     @JvmStatic
-    fun <STACK : ImmutableStack<*, STACK>, SLOT : HTStackSlot<STACK>> moveStack(
+    fun <RESOURCE : HTResourceType<*>, SLOT : HTResourceSlot<RESOURCE>> moveResource(
         from: SLOT?,
         to: SLOT?,
         amount: Int = from?.getAmount() ?: 0,
         access: HTStorageAccess = HTStorageAccess.INTERNAL,
-    ): HTStackMoveResult<STACK> {
-        if (from == null || to == null || amount <= 0) return HTStackMoveResult.failed()
-        val simulatedExtract: STACK = from.extract(amount, HTStorageAction.SIMULATE, access) ?: return HTStackMoveResult.failed()
-        val simulatedRemain: STACK? = to.insert(simulatedExtract, HTStorageAction.SIMULATE, access)
-        val simulatedAccepted: Int = amount - (simulatedRemain?.amount() ?: 0)
-        if (simulatedAccepted == 0) return HTStackMoveResult.failed()
-        val extracted: STACK = from.extract(simulatedAccepted, HTStorageAction.EXECUTE, access) ?: return HTStackMoveResult.failed()
-        val remainder: STACK? = to.insert(extracted, HTStorageAction.EXECUTE, access)
-        if (remainder != null) {
-            val leftover: STACK? = from.insert(remainder, HTStorageAction.EXECUTE, access)
-            if (leftover != null) {
-                LOGGER.error("Stack slot $from did not accept leftover stack from $to! Voiding it.")
-            }
-        }
-        return HTStackMoveResult.succeeded(remainder)
-    }
+    ): HTResourceMoveResult<RESOURCE> = TODO()
 
     @JvmStatic
-    fun <STACK : ImmutableStack<*, STACK>> canInsertStack(slot: HTStackSlot<STACK>, stack: STACK, exactMatch: Boolean): Boolean {
-        val remainder: STACK? = slot.insert(stack, HTStorageAction.SIMULATE, HTStorageAccess.INTERNAL)
-        return when (exactMatch) {
-            true -> remainder == null
-            false -> remainder == null || remainder.amount() < stack.amount()
-        }
-    }
-
-    @JvmStatic
-    fun <STACK : ImmutableStack<*, STACK>, INPUT : RecipeInput> canInsertStack(
-        slot: HTStackSlot<STACK>,
-        input: INPUT,
-        level: Level,
-        transform: (INPUT, HolderLookup.Provider) -> STACK?,
-    ): Boolean {
-        val stack: STACK = transform(input, level.registryAccess()) ?: return true
-        return canInsertStack(slot, stack, true)
-    }
-
-    @JvmStatic
-    fun <STACK : ImmutableStack<*, STACK>> shrinkStack(
-        slot: HTStackSlot<STACK>,
-        ingredient: ToIntFunction<STACK>,
+    fun <RESOURCE : HTResourceType<*>> shrinkStack(
+        slot: HTResourceSlot<RESOURCE>,
+        ingredient: ToIntBiFunction<RESOURCE, Int>,
         action: HTStorageAction,
     ): Int {
-        val stackIn: STACK = slot.getStack() ?: return 0
-        return slot.extract(ingredient.applyAsInt(stackIn), action, HTStorageAccess.INTERNAL)?.amount() ?: 0
+        val stackIn: RESOURCE = slot.getResource() ?: return 0
+        return slot.extract(ingredient.applyAsInt(stackIn, slot.getAmount()), action, HTStorageAccess.INTERNAL)
     }
 
     @JvmStatic
-    fun <STACK : ImmutableStack<*, STACK>> canShrinkStack(slot: HTStackSlot<STACK>, amount: Int, exactMatch: Boolean): Boolean {
-        val extracted: Int = slot.extract(amount, HTStorageAction.SIMULATE, HTStorageAccess.INTERNAL)?.amount() ?: return false
+    fun <RESOURCE : HTResourceType<*>> canShrinkStack(slot: HTResourceSlot<RESOURCE>, amount: Int, exactMatch: Boolean): Boolean {
+        val extracted: Int = slot.extract(amount, HTStorageAction.SIMULATE, HTStorageAccess.INTERNAL)
         return when (exactMatch) {
             true -> extracted == amount
             false -> extracted > 0
@@ -95,13 +61,13 @@ object HTStackSlotHelper {
     }
 
     @JvmStatic
-    fun <STACK : ImmutableStack<*, STACK>> canShrinkStack(
-        slot: HTStackSlot<STACK>,
-        ingredient: ToIntFunction<STACK>,
+    fun <RESOURCE : HTResourceType<*>> canShrinkStack(
+        slot: HTResourceSlot<RESOURCE>,
+        ingredient: ToIntBiFunction<RESOURCE, Int>,
         exactMatch: Boolean,
     ): Boolean {
-        val amount: Int = slot.getStack()?.let(ingredient::applyAsInt) ?: return false
-        val extracted: Int = slot.extract(amount, HTStorageAction.SIMULATE, HTStorageAccess.INTERNAL)?.amount() ?: return false
+        val amount: Int = slot.getResource()?.let { ingredient.applyAsInt(it, slot.getAmount()) } ?: return false
+        val extracted: Int = slot.extract(amount, HTStorageAction.SIMULATE, HTStorageAccess.INTERNAL)
         return when (exactMatch) {
             true -> extracted == amount
             false -> extracted > 0
@@ -113,12 +79,12 @@ object HTStackSlotHelper {
      * @see mekanism.common.util.MekanismUtils.redstoneLevelFromContents
      */
     @JvmStatic
-    fun <STACK : ImmutableStack<*, STACK>> calculateRedstoneLevel(views: Iterable<HTStackView<STACK>>): Int {
+    fun <RESOURCE : HTResourceType<*>> calculateRedstoneLevel(views: Iterable<HTResourceView<RESOURCE>>): Int {
         var amountSum = 0
         var capacitySum = 0
-        for (view: HTStackView<STACK> in views) {
+        for (view: HTResourceView<RESOURCE> in views) {
             amountSum += view.getAmount()
-            capacitySum += view.getCapacity(view.getStack())
+            capacitySum += view.getCapacity(view.getResource())
         }
         return calculateRedstoneLevel(amountSum, capacitySum)
     }
@@ -144,34 +110,38 @@ object HTStackSlotHelper {
     @JvmStatic
     inline fun shrinkItemStack(
         slot: HTItemSlot,
-        remainderGetter: (ImmutableItemStack) -> ItemStack,
-        stackSetter: (ImmutableItemStack) -> Unit,
+        remainderGetter: (HTItemResourceType) -> ItemStack,
+        stackSetter: (HTItemResourceType) -> Unit,
         amount: Int,
         action: HTStorageAction,
     ): Int {
-        val stackIn: ImmutableItemStack = slot.getStack() ?: return 0
+        val stackIn: HTItemResourceType = slot.getResource() ?: return 0
         if (action.execute()) {
             stackIn
                 .let(remainderGetter)
-                .let(ItemStack::toImmutable)
+                .let(ItemStack::toResource)
                 ?.let(stackSetter)
         }
-        return slot.extract(amount, action, HTStorageAccess.INTERNAL)?.amount() ?: 0
+        return slot.extract(amount, action, HTStorageAccess.INTERNAL)
     }
 
     @JvmStatic
     fun insertStacks(
         slots: Iterable<HTItemSlot>,
-        stack: ImmutableItemStack?,
+        stack: ItemStack,
         action: HTStorageAction,
-        filter: (HTItemSlot, ImmutableItemStack) -> Boolean = HTItemSlot::isValid,
+        filter: (HTItemSlot, HTItemResourceType) -> Boolean = HTItemSlot::isValid,
         onBreak: () -> Unit = {},
-    ): ImmutableItemStack? {
-        var remainder: ImmutableItemStack? = stack
+    ): ItemStack {
+        val remainder: ItemStack = stack.copy()
         for (slot: HTItemSlot in slots) {
-            if (remainder != null && filter(slot, remainder)) {
-                remainder = slot.insert(remainder, action, HTStorageAccess.INTERNAL)
-                if (remainder == null) {
+            val remainderResource: HTItemResourceType = remainder.toResource() ?: break
+            if (filter(slot, remainderResource)) {
+                val remainderCount: Int = slot.insert(remainderResource, remainder.count, action, HTStorageAccess.INTERNAL)
+                if (action.execute()) {
+                    remainder.count = remainderCount
+                }
+                if (remainder.count <= 0) {
                     onBreak()
                     break
                 }
@@ -195,14 +165,14 @@ object HTStackSlotHelper {
     ): Boolean {
         if (!HTFluidCapabilities.hasCapability(stack)) return false
         val handler: IFluidHandlerItem = HTFluidCapabilities.getCapability(stack.copyWithCount(1)) ?: return false
-        val stackIn: ImmutableFluidStack? = tank.getStack()
-        val firstFluid: ImmutableFluidStack? = when (stackIn == null) {
+        val resourceIn: HTFluidResourceType? = tank.getResource()
+        val firstFluid: FluidStack = when (resourceIn == null) {
             true -> handler.drain(Int.MAX_VALUE, HTStorageAction.SIMULATE.toFluid())
-            false -> handler.drain(stackIn.unwrap().copyWithAmount(Int.MAX_VALUE), HTStorageAction.SIMULATE.toFluid())
-        }.toImmutable()
-        if (firstFluid == null) {
-            if (stackIn != null) {
-                val filled: Int = handler.fill(stackIn.unwrap(), HTStorageAction.of(player.isCreative).toFluid())
+            false -> handler.drain(resourceIn.toStack(Int.MAX_VALUE), HTStorageAction.SIMULATE.toFluid())
+        }
+        if (!firstFluid.isEmpty) {
+            if (resourceIn != null) {
+                val filled: Int = handler.fill(tank.getFluidStack(), HTStorageAction.of(player.isCreative).toFluid())
                 val container: ItemStack = handler.container
                 if (filled > 0) {
                     if (stack.count == 1) {
@@ -218,17 +188,16 @@ object HTStackSlotHelper {
                 }
             }
         } else {
-            val remainder: ImmutableFluidStack? = tank.insert(firstFluid, HTStorageAction.SIMULATE, HTStorageAccess.MANUAL)
-            val remainderAmount: Int = remainder?.amount() ?: 0
-            val storedAmount: Int = firstFluid.amount()
+            val remainder: FluidStack = tank.insert(firstFluid, HTStorageAction.SIMULATE, HTStorageAccess.MANUAL)
+            val remainderAmount: Int = remainder.amount
+            val storedAmount: Int = firstFluid.amount
             if (remainderAmount < storedAmount) {
                 var filled = false
-                val drained: ImmutableFluidStack? = handler
-                    .drain(
-                        firstFluid.unwrap().copyWithAmount(storedAmount - remainderAmount),
-                        HTStorageAction.of(player.isCreative).toFluid(),
-                    ).toImmutable()
-                if (drained != null) {
+                val drained: FluidStack = handler.drain(
+                    firstFluid.copyWithAmount(storedAmount - remainderAmount),
+                    HTStorageAction.of(player.isCreative).toFluid(),
+                )
+                if (!drained.isEmpty) {
                     val container: ItemStack = handler.container
                     if (player.isCreative) {
                         filled = true
@@ -258,25 +227,25 @@ object HTStackSlotHelper {
     }
 
     @JvmStatic
-    fun moveFluid(from: HTItemSlot, containerSetter: Consumer<ImmutableItemStack?>, to: HTFluidTank): Boolean {
-        val stack: ImmutableItemStack = from.getStack() ?: return false
-        if (!HTFluidCapabilities.hasCapability(stack)) return false
-        val wrapper: HTFluidHandlerItemWrapper = HTFluidHandlerItemWrapper.create(stack.copyWithAmount(1)) ?: return false
+    fun moveFluid(from: HTItemSlot, containerSetter: Consumer<ItemStack>, to: HTFluidTank): Boolean {
+        val resourceType: HTItemResourceType = from.getResource() ?: return false
+        if (!HTFluidCapabilities.hasCapability(resourceType)) return false
+        val wrapper: HTFluidHandlerItemWrapper = HTFluidHandlerItemWrapper.create(resourceType) ?: return false
         return moveFluid(from, containerSetter, wrapper, to)
     }
 
     @JvmStatic
     fun moveFluid(
         slot: HTItemSlot,
-        containerSetter: Consumer<ImmutableItemStack?>,
+        containerSetter: Consumer<ItemStack>,
         from: HTFluidHandlerItemWrapper,
         to: HTFluidTank,
     ): Boolean {
-        val result: HTStackMoveResult<ImmutableFluidStack> = moveStack(from, to)
+        val result: HTResourceMoveResult<HTFluidResourceType> = moveResource(from, to)
         if (result.succeeded) {
-            val container: ImmutableItemStack? = from.container
-            if (container != null) {
-                if (container.amount() == 1) {
+            val container: ItemStack = from.container
+            if (!container.isEmpty) {
+                if (container.count == 1) {
                     containerSetter.accept(container)
                 } else {
                     slot.extract(1, HTStorageAction.EXECUTE, HTStorageAccess.MANUAL)
@@ -292,10 +261,8 @@ object HTStackSlotHelper {
         HTValueSerializable.Empty {
             companion object {
                 @JvmStatic
-                fun create(stack: ItemStack): HTFluidHandlerItemWrapper? = HTFluidCapabilities.getCapability(stack)?.let(::create)
-
-                @JvmStatic
-                fun create(stack: ImmutableItemStack?): HTFluidHandlerItemWrapper? = HTFluidCapabilities.getCapability(stack)?.let(::create)
+                fun create(resourceType: HTItemResourceType): HTFluidHandlerItemWrapper? =
+                    HTFluidCapabilities.getCapability(resourceType)?.let(::create)
 
                 @JvmStatic
                 fun create(handler: IFluidHandlerItem): HTFluidHandlerItemWrapper? = when (handler.tanks) {
@@ -304,21 +271,28 @@ object HTStackSlotHelper {
                 }
             }
 
-            val container: ImmutableItemStack? get() = handler.container.toImmutable()
+            val container: ItemStack get() = handler.container
 
-            override fun getStack(): ImmutableFluidStack? = handler.getFluidInTank(0).toImmutable()
+            override fun isValid(resource: HTFluidResourceType): Boolean = handler.isFluidValid(0, resource.toStack(1))
 
-            override fun getCapacity(stack: ImmutableFluidStack?): Int = handler.getTankCapacity(0)
-
-            override fun isValid(stack: ImmutableFluidStack): Boolean = handler.isFluidValid(0, stack.unwrap())
-
-            override fun insert(stack: ImmutableFluidStack?, action: HTStorageAction, access: HTStorageAccess): ImmutableFluidStack? {
-                if (stack == null) return null
-                val filled: Int = handler.fill(stack.unwrap(), action.toFluid())
-                return stack.copyWithAmount(stack.amount() - filled)
+            override fun insert(
+                resource: HTFluidResourceType?,
+                amount: Int,
+                action: HTStorageAction,
+                access: HTStorageAccess,
+            ): Int {
+                if (resource == null || amount <= 0) return 0
+                val filled: Int = handler.fill(resource.toStack(amount), action.toFluid())
+                return amount - filled
             }
 
-            override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): ImmutableFluidStack? =
-                handler.drain(amount, action.toFluid()).toImmutable()
+            override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int =
+                handler.drain(amount, action.toFluid()).amount
+
+            override fun getResource(): HTFluidResourceType? = handler.getFluidInTank(0).toResource()
+
+            override fun getCapacity(resource: HTFluidResourceType?): Int = handler.getTankCapacity(0)
+
+            override fun getAmount(): Int = handler.getFluidInTank(0).amount
         }
 }

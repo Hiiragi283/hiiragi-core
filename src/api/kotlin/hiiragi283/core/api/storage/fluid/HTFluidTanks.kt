@@ -1,12 +1,23 @@
 package hiiragi283.core.api.storage.fluid
 
-import hiiragi283.core.api.stack.ImmutableFluidStack
-import hiiragi283.core.api.stack.toImmutable
-import hiiragi283.core.api.storage.stack.HTStackView
+import hiiragi283.core.api.storage.HTStorageAccess
+import hiiragi283.core.api.storage.HTStorageAction
+import hiiragi283.core.api.storage.resource.HTResourceView
 import net.neoforged.neoforge.fluids.FluidStack
 
-typealias HTFluidView = HTStackView<ImmutableFluidStack>
+typealias HTFluidView = HTResourceView<HTFluidResourceType>
 
-fun HTFluidView.getFluidStack(): FluidStack = this.getStack()?.unwrap() ?: FluidStack.EMPTY
+fun HTFluidView.getFluidStack(): FluidStack = this.getResource()?.toStack(this.getAmount()) ?: FluidStack.EMPTY
 
-fun HTFluidTank.isValid(stack: FluidStack): Boolean = stack.toImmutable()?.let(this::isValid) ?: false
+fun HTFluidTank.insert(stack: FluidStack, action: HTStorageAction, access: HTStorageAccess): FluidStack {
+    val remainder: Int = this.insert(stack.toResource(), stack.amount, action, access)
+    return stack.copyWithAmount(remainder)
+}
+
+fun HTFluidTank.extractFluid(stack: FluidStack, action: HTStorageAction, access: HTStorageAccess): FluidStack =
+    this.extract(stack.toResource(), stack.amount, action, access).let(stack::copyWithAmount)
+
+fun HTFluidTank.extractFluid(amount: Int, action: HTStorageAction, access: HTStorageAccess): FluidStack {
+    val resourceIn: HTFluidResourceType = this.getResource() ?: return FluidStack.EMPTY
+    return this.extract(amount, action, access).let(resourceIn::toStack)
+}

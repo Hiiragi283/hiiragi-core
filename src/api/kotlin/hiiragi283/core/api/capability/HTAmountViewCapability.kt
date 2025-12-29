@@ -1,7 +1,7 @@
 package hiiragi283.core.api.capability
 
-import hiiragi283.core.api.stack.ImmutableItemStack
 import hiiragi283.core.api.storage.amount.HTAmountView
+import hiiragi283.core.api.storage.item.HTItemResourceType
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.entity.Entity
@@ -65,15 +65,16 @@ interface HTAmountViewCapability<HANDLER : Any, ITEM_HANDLER : HANDLER, N> :
 
     fun getCapabilityAmount(stack: ItemStack, index: Int): N? = getCapabilityView(stack, index)?.getAmount()
 
-    // HTItemStorageStack
+    // HTItemResourceType
 
-    fun getCapabilityViews(stack: ImmutableItemStack?): List<HTAmountView<N>> = getCapability(stack)?.let { apply(it, null) } ?: listOf()
+    fun getCapabilityViews(resource: HTItemResourceType?): List<HTAmountView<N>> =
+        getCapability(resource)?.let { apply(it, null) } ?: listOf()
 
-    fun getCapabilityView(stack: ImmutableItemStack?, index: Int): HTAmountView<N>? = getCapabilityViews(stack).getOrNull(index)
+    fun getCapabilityView(resource: HTItemResourceType?, index: Int): HTAmountView<N>? = getCapabilityViews(resource).getOrNull(index)
 
-    fun getCapabilityAmounts(stack: ImmutableItemStack?): List<N> = getCapabilityViews(stack).map(HTAmountView<N>::getAmount)
+    fun getCapabilityAmounts(resource: HTItemResourceType?): List<N> = getCapabilityViews(resource).map(HTAmountView<N>::getAmount)
 
-    fun getCapabilityAmount(stack: ImmutableItemStack?, index: Int): N? = getCapabilityView(stack, index)?.getAmount()
+    fun getCapabilityAmount(resource: HTItemResourceType?, index: Int): N? = getCapabilityView(resource, index)?.getAmount()
 
     interface Simple<HANDLER : Any, N> : HTAmountViewCapability<HANDLER, HANDLER, N> where N : Number, N : Comparable<N>
 }

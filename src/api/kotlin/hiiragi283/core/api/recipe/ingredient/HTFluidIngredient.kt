@@ -5,22 +5,23 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
-import hiiragi283.core.api.stack.ImmutableFluidStack
-import hiiragi283.core.api.stack.toImmutable
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.api.storage.fluid.toResource
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.tags.TagKey
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient
 import net.neoforged.neoforge.fluids.crafting.TagFluidIngredient
 
 /**
- * [ImmutableFluidStack]向けに[HTIngredient]を実装したクラスです。
+ * [HTFluidResourceType]向けに[HTIngredient]を実装したクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 0.4.0
  */
-@JvmRecord
-data class HTFluidIngredient(private val ingredient: FluidIngredient, private val amount: Int) : HTIngredient<Fluid, ImmutableFluidStack> {
+@JvmInline
+value class HTFluidIngredient(val delegate: SizedFluidIngredient) : HTIngredient<Fluid, HTFluidResourceType> {
     companion object {
         /**
          * [HTFluidIngredient]の[BiCodec]
@@ -28,23 +29,30 @@ data class HTFluidIngredient(private val ingredient: FluidIngredient, private va
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTFluidIngredient> = BiCodec.composite(
             VanillaBiCodecs.FLUID_INGREDIENT.forGetter(HTFluidIngredient::ingredient),
-            BiCodecs.POSITIVE_INT.fieldOf(HTConst.AMOUNT).forGetter(HTFluidIngredient::amount),
+            BiCodecs.POSITIVE_INT.fieldOf(HTConst.AMOUNT).forGetter(HTFluidIngredient::getRequiredAmount),
             ::HTFluidIngredient,
         )
     }
 
-    fun test(stack: FluidStack): Boolean = stack.toImmutable()?.let(this::test) ?: false
+    constructor(ingredient: FluidIngredient, amount: Int) : this(SizedFluidIngredient(ingredient, amount))
 
-    fun testOnlyType(stack: FluidStack): Boolean = stack.toImmutable()?.let(this::testOnlyType) ?: false
+    val ingredient: FluidIngredient get() = delegate.ingredient()
+
+    fun test(stack: FluidStack): Boolean {
+        val resource: HTFluidResourceType = stack.toResource() ?: return false
+        return test(resource, stack.amount)
+    }
+
+    fun testOnlyType(stack: FluidStack): Boolean = stack.toResource()?.let(::testOnlyType) ?: false
 
     fun copyWithAmount(amount: Int): HTFluidIngredient = HTFluidIngredient(ingredient, amount)
 
-    override fun testOnlyType(stack: ImmutableFluidStack): Boolean = ingredient.test(stack.unwrap())
+    override fun testOnlyType(resource: HTFluidResourceType): Boolean = ingredient.test(resource.toStack(1))
 
-    override fun getRequiredAmount(): Int = this.amount
+    override fun getRequiredAmount(): Int = delegate.amount()
 
-    override fun unwrap(): Either<Pair<TagKey<Fluid>, Int>, List<ImmutableFluidStack>> = when (ingredient) {
-        is TagFluidIngredient -> Either.left(ingredient.tag() to amount)
-        else -> Either.right(ingredient.stacks.map { it.copyWithAmount(amount) }.mapNotNull(FluidStack::toImmutable))
+    override fun unwrap(): Either<TagKey<Fluid>, List<HTFluidResourceType>> = when (ingredient) {
+        is TagFluidIngredient -> Either.left((ingredient as TagFluidIngredient).tag())
+        else -> Either.right(ingredient.stacks.mapNotNull(FluidStack::toResource))
     }
 }

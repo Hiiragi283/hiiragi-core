@@ -1,50 +1,42 @@
 package hiiragi283.core.api.recipe.result
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.resource.vanillaId
+import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
-import hiiragi283.core.api.serialization.codec.MapBiCodec
+import hiiragi283.core.api.serialization.codec.MapBiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
-import hiiragi283.core.api.stack.ImmutableFluidStack
-import hiiragi283.core.api.stack.toImmutable
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import net.minecraft.core.Holder
-import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.tags.TagKey
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 
 /**
- * [液体][ImmutableFluidStack]の[完成品][HTRecipeResult]を表すクラスです。
+ * [液体][FluidStack]の[完成品][HTRecipeResult]を表すクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 0.4.0
  */
-class HTFluidResult(entry: HTHolderOrTagKey<Fluid>, amount: Int, components: DataComponentPatch) :
-    HTBasicRecipeResult<Fluid, ImmutableFluidStack>(entry, amount, components) {
+class HTFluidResult(contents: Ior<HTFluidResourceType, TagKey<Fluid>>, amount: Int) :
+    HTResourceRecipeResult<Fluid, HTFluidResourceType, FluidStack>(contents, amount) {
     companion object {
-        @JvmStatic
-        private val ENTRY_CODEC: MapBiCodec<RegistryFriendlyByteBuf, HTHolderOrTagKey<Fluid>> = HTHolderOrTagKey
-            .codec(Registries.FLUID)
-            .validate { entry: HTHolderOrTagKey<Fluid> ->
-                check(entry.getId() != vanillaId("empty")) { "Fluid must not be minecraft:empty" }
-                entry
-            }
-
-        /**
-         * [HTFluidResult]の[BiCodec]
-         */
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTFluidResult> = BiCodec.composite(
-            ENTRY_CODEC.forGetter(HTFluidResult::entry),
-            BiCodecs.POSITIVE_INT.fieldOf(HTConst.AMOUNT).forGetter(HTFluidResult::amount),
-            VanillaBiCodecs.COMPONENT_PATCH.forGetter(HTFluidResult::components),
+            MapBiCodecs
+                .ior(
+                    HTFluidResourceType.CODEC.optionalFieldOf(HTConst.FLUID),
+                    VanillaBiCodecs.tagKey(Registries.FLUID, false).optionalFieldOf(HTConst.TAG),
+                ).forGetter(HTFluidResult::contents),
+            BiCodecs.POSITIVE_INT.optionalFieldOf(HTConst.AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT).forGetter(HTFluidResult::amount),
             ::HTFluidResult,
         )
     }
 
-    override fun createStack(holder: Holder<Fluid>, amount: Int, components: DataComponentPatch): ImmutableFluidStack? =
-        FluidStack(holder, amount, components).toImmutable()
+    override fun getEmptyStack(): FluidStack = FluidStack.EMPTY
 
-    override fun toString(): String = "HTFluidResult(entry=$entry, amount=$amount, components=$components)"
+    override fun createStack(resource: HTFluidResourceType, amount: Int): FluidStack = resource.toStack(amount)
+
+    override fun createStack(holder: Holder<Fluid>, amount: Int): FluidStack = FluidStack(holder, amount)
 }

@@ -1,54 +1,43 @@
 package hiiragi283.core.api.storage.attachments
 
 import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.stack.ImmutableItemStack
+import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.world.item.ItemStack
-import java.util.Optional
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * @see mekanism.common.attachments.containers.item.AttachedItems
  */
 @JvmRecord
-data class HTAttachedItems(override val containers: List<ImmutableItemStack?>) :
-    HTAttachedContainers<ImmutableItemStack?, HTAttachedItems> {
+data class HTAttachedItems(override val containers: List<ItemStack>) : HTAttachedContainers<ItemStack, HTAttachedItems> {
     companion object {
         @JvmField
-        val CODEC: BiCodec<RegistryFriendlyByteBuf, HTAttachedItems> = ImmutableItemStack.CODEC
-            .toOptional()
+        val CODEC: BiCodec<RegistryFriendlyByteBuf, HTAttachedItems> = VanillaBiCodecs.ITEM_STACK
             .listOf()
-            .xmap(
-                { stacks: List<Optional<ImmutableItemStack>> -> HTAttachedItems(stacks.map(Optional<ImmutableItemStack>::getOrNull)) },
-                { attached: HTAttachedItems -> attached.containers.map(Optional<ImmutableItemStack>::ofNullable) },
-            )
+            .xmap(::HTAttachedItems, HTAttachedItems::containers)
 
         @JvmField
         val EMPTY = HTAttachedItems(listOf())
 
         @JvmStatic
-        fun create(size: Int): HTAttachedItems = HTAttachedItems(List(size) { null })
+        fun create(size: Int): HTAttachedItems = HTAttachedItems(List(size) { ItemStack.EMPTY })
     }
 
-    override fun create(containers: List<ImmutableItemStack?>): HTAttachedItems = HTAttachedItems(containers)
+    override fun create(containers: List<ItemStack>): HTAttachedItems = HTAttachedItems(containers)
 
     override fun equals(other: Any?): Boolean {
         when {
             this === other -> return true
             other !is HTAttachedItems -> return false
             else -> {
-                val otherContainers: List<ImmutableItemStack?> = other.containers
+                val otherContainers: List<ItemStack> = other.containers
                 return when {
                     containers.size != otherContainers.size -> {
                         false
                     }
                     else -> {
                         for (i: Int in containers.indices) {
-                            val matches: Boolean = ItemStack.matches(
-                                containers[i]?.unwrap() ?: ItemStack.EMPTY,
-                                otherContainers[i]?.unwrap() ?: ItemStack.EMPTY,
-                            )
-                            if (!matches) return false
+                            if (!ItemStack.matches(containers[i], otherContainers[i])) return false
                         }
                         true
                     }
@@ -59,8 +48,8 @@ data class HTAttachedItems(override val containers: List<ImmutableItemStack?>) :
 
     override fun hashCode(): Int {
         var hash = 0
-        for (stack: ImmutableItemStack? in containers) {
-            hash = hash * 31 + (stack?.hashCode() ?: 0)
+        for (stack: ItemStack in containers) {
+            hash = hash * 31 + stack.hashCode()
         }
         return hash
     }

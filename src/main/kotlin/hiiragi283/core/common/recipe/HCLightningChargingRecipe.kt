@@ -4,10 +4,10 @@ import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.input.HTRecipeInput
 import hiiragi283.core.api.recipe.result.HTItemResult
-import hiiragi283.core.api.stack.ImmutableItemStack
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.core.HolderLookup
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.level.Level
@@ -25,9 +25,9 @@ class HCLightningChargingRecipe(
 
     override fun matches(input: HTRecipeInput, level: Level): Boolean = input.testItem(0, ingredient)
 
+    override fun assemble(input: HTRecipeInput, registries: HolderLookup.Provider): ItemStack = result.getStackOrEmpty(registries)
+
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.CHARGING
 
     override fun getType(): RecipeType<*> = HCRecipeTypes.CHARGING.get()
-
-    override fun assembleItem(input: HTRecipeInput, provider: HolderLookup.Provider): ImmutableItemStack? = result.getStackOrNull(provider)
 }

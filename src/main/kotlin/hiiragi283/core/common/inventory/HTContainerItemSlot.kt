@@ -1,17 +1,19 @@
 package hiiragi283.core.common.inventory
 
-import hiiragi283.core.api.stack.ImmutableItemStack
-import hiiragi283.core.api.stack.toImmutable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
+import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
+import hiiragi283.core.api.storage.item.extractItem
 import hiiragi283.core.api.storage.item.getItemStack
+import hiiragi283.core.api.storage.item.insert
+import hiiragi283.core.api.storage.item.toResource
 import net.minecraft.world.SimpleContainer
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 import java.util.Optional
-import java.util.function.Consumer
+import java.util.function.BiConsumer
 import kotlin.math.min
 
 /**
@@ -22,8 +24,8 @@ open class HTContainerItemSlot(
     val slot: HTItemSlot,
     x: Int,
     y: Int,
-    private val stackSetter: Consumer<ImmutableItemStack?>,
-    private val manualFilter: (ImmutableItemStack, HTStorageAccess) -> Boolean,
+    private val stackSetter: BiConsumer<HTItemResourceType?, Int>,
+    private val manualFilter: (HTItemResourceType, HTStorageAccess) -> Boolean,
     val slotType: Type,
 ) : Slot(emptyContainer, 0, x, y) {
     companion object {
@@ -35,39 +37,42 @@ open class HTContainerItemSlot(
         slot,
         x,
         y,
-        slot::setStack,
+        { resource: HTItemResourceType?, count: Int ->
+            slot.setResource(resource)
+            slot.setAmount(count)
+        },
         slot::isStackValidForInsert,
         slotType,
     )
 
     fun updateCount(count: Int) {
-        stackSetter.accept(slot.getStack()?.copyWithAmount(count))
+        stackSetter.accept(slot.getResource(), count)
         setChanged()
     }
 
     private fun insertItem(stack: ItemStack, action: HTStorageAction): ItemStack {
-        val remainder: ImmutableItemStack? = slot.insert(stack.toImmutable(), action, HTStorageAccess.MANUAL)
-        if (action.execute() && stack.count != remainder?.amount()) {
+        val remainder: ItemStack = slot.insert(stack, action, HTStorageAccess.MANUAL)
+        if (action.execute() && stack.count != remainder.count) {
             setChanged()
         }
-        return remainder?.unwrap() ?: ItemStack.EMPTY
+        return remainder
     }
 
     override fun mayPlace(stack: ItemStack): Boolean {
-        val immutable: ImmutableItemStack = stack.toImmutable() ?: return false
-        if (slot.getStack() == null) {
+        val resourceType: HTItemResourceType = stack.toResource() ?: return false
+        if (slot.getResource() == null) {
             return insertItem(stack, HTStorageAction.SIMULATE).count < stack.count
         }
-        if (slot.extract(1, HTStorageAction.SIMULATE, HTStorageAccess.MANUAL) == null) return false
-        return manualFilter(immutable, HTStorageAccess.MANUAL)
+        if (slot.extract(1, HTStorageAction.SIMULATE, HTStorageAccess.MANUAL) == 0) return false
+        return manualFilter(resourceType, HTStorageAccess.MANUAL)
     }
 
     override fun getItem(): ItemStack = slot.getItemStack()
 
-    override fun hasItem(): Boolean = slot.getStack() != null
+    override fun hasItem(): Boolean = slot.getResource() != null
 
     override fun set(stack: ItemStack) {
-        stackSetter.accept(stack.toImmutable())
+        stackSetter.accept(stack.toResource(), stack.count)
         setChanged()
     }
 
@@ -78,12 +83,11 @@ open class HTContainerItemSlot(
 
     override fun getMaxStackSize(): Int = slot.getCapacity()
 
-    override fun getMaxStackSize(stack: ItemStack): Int = slot.getCapacity(stack.toImmutable())
+    override fun getMaxStackSize(stack: ItemStack): Int = slot.getCapacity(stack.toResource())
 
-    override fun mayPickup(player: Player): Boolean = slot.extract(1, HTStorageAction.SIMULATE, HTStorageAccess.MANUAL) != null
+    override fun mayPickup(player: Player): Boolean = slot.extract(1, HTStorageAction.SIMULATE, HTStorageAccess.MANUAL) > 0
 
-    override fun remove(amount: Int): ItemStack =
-        slot.extract(amount, HTStorageAction.EXECUTE, HTStorageAccess.MANUAL)?.unwrap() ?: ItemStack.EMPTY
+    override fun remove(amount: Int): ItemStack = slot.extractItem(amount, HTStorageAction.EXECUTE, HTStorageAccess.MANUAL)
 
     override fun tryRemove(count: Int, decrement: Int, player: Player): Optional<ItemStack> {
         if (allowPartialRemoval()) {

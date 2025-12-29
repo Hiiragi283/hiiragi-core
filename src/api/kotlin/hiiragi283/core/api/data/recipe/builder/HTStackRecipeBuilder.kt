@@ -1,6 +1,6 @@
 package hiiragi283.core.api.data.recipe.builder
 
-import hiiragi283.core.api.stack.ImmutableItemStack
+import hiiragi283.core.api.registry.toLike
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
@@ -14,16 +14,16 @@ import net.minecraft.world.item.crafting.Recipe
  * @since 0.1.0
  * @see HTStackRecipeBuilder.Single
  */
-abstract class HTStackRecipeBuilder<BUILDER : HTStackRecipeBuilder<BUILDER>>(prefix: String, protected val stack: ImmutableItemStack) :
+abstract class HTStackRecipeBuilder<BUILDER : HTStackRecipeBuilder<BUILDER>>(prefix: String, protected val stack: ItemStack) :
     HTRecipeBuilder<BUILDER>(prefix) {
     /**
      * 指定した[完成品][output]からレシピを作成します。
      */
     protected abstract fun createRecipe(output: ItemStack): Recipe<*>
 
-    final override fun getPrimalId(): ResourceLocation = stack.getId()
+    final override fun getPrimalId(): ResourceLocation = stack.itemHolder.toLike().getId()
 
-    final override fun createRecipe(): Recipe<*> = createRecipe(stack.unwrap())
+    final override fun createRecipe(): Recipe<*> = createRecipe(stack)
 
     //    Single    //
 
@@ -33,7 +33,7 @@ abstract class HTStackRecipeBuilder<BUILDER : HTStackRecipeBuilder<BUILDER>>(pre
      * @author Hiiragi Tsubasa
      * @since 0.1.0
      */
-    abstract class Single<BUILDER : Single<BUILDER>>(prefix: String, stack: ImmutableItemStack) :
+    abstract class Single<BUILDER : Single<BUILDER>>(prefix: String, stack: ItemStack) :
         HTStackRecipeBuilder<BUILDER>(prefix, stack),
         HTIngredientRecipeBuilder<BUILDER> {
         protected lateinit var ingredient: Ingredient

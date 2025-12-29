@@ -1,7 +1,6 @@
 package hiiragi283.core.util
 
 import hiiragi283.core.api.capability.HTItemCapabilities
-import hiiragi283.core.api.stack.ImmutableItemStack
 import net.minecraft.core.BlockPos
 import net.minecraft.world.Containers
 import net.minecraft.world.entity.Entity
@@ -42,31 +41,5 @@ object HTItemDropHelper {
      */
     fun dropStackAt(level: Level, pos: BlockPos, stack: ItemStack) {
         Containers.dropItemStack(level, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), stack)
-    }
-
-    // ImmutableItemStack
-
-    /**
-     * 指定した[stack]を[entity]のインベントリに入れるか，足元にドロップします
-     */
-    fun giveOrDropStack(entity: Entity, stack: ImmutableItemStack?, offset: Float = 0f) {
-        if (stack == null) return
-        giveOrDropStack(entity, stack.unwrap(), offset)
-    }
-
-    /**
-     * 指定した[stack]を[player]のインベントリに入れます。
-     */
-    fun giveStackTo(player: Player, stack: ImmutableItemStack?) {
-        if (stack == null) return
-        giveStackTo(player, stack.unwrap())
-    }
-
-    /**
-     * 指定した[stack]を[pos]にドロップします。
-     */
-    fun dropStackAt(level: Level, pos: BlockPos, stack: ImmutableItemStack?) {
-        if (stack == null) return
-        dropStackAt(level, pos, stack.unwrap())
     }
 }

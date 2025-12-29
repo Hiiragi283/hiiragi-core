@@ -4,6 +4,8 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.ingredient.HTFluidIngredientCreator
 import hiiragi283.core.api.data.recipe.ingredient.HTIngredientAccess
 import hiiragi283.core.api.data.recipe.ingredient.HTItemIngredientCreator
+import hiiragi283.core.api.data.recipe.result.HTFluidResultCreator
+import hiiragi283.core.api.data.recipe.result.HTItemResultCreator
 import hiiragi283.core.api.resource.toId
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementHolder
@@ -44,9 +46,14 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
     protected val itemCreator: HTItemIngredientCreator by lazy { HTIngredientAccess.INSTANCE.itemCreator() }
 
     /**
-     * 完成品を作成するヘルパーのインスタンス
+     * 液体の完成品を作成するヘルパーのインスタンス
      */
-    protected val resultHelper: HTResultHelper = HTResultHelper
+    protected val fluidResult: HTFluidResultCreator = HTFluidResultCreator
+
+    /**
+     * アイテムの完成品を作成するヘルパーのインスタンス
+     */
+    protected val itemResult: HTItemResultCreator = HTItemResultCreator
 
     /**
      * [HTRecipeProvider.buildRecipes]内で呼び出されるメソッドです。

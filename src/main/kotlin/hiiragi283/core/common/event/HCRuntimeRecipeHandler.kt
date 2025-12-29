@@ -1,9 +1,9 @@
 package hiiragi283.core.common.event
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.recipe.HTResultHelper
 import hiiragi283.core.api.data.recipe.ingredient.HTIngredientAccess
 import hiiragi283.core.api.data.recipe.ingredient.HTItemIngredientCreator
+import hiiragi283.core.api.data.recipe.result.HTItemResultCreator
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.material.HCMaterial
@@ -16,7 +16,7 @@ import net.neoforged.fml.common.EventBusSubscriber
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 object HCRuntimeRecipeHandler {
     private val itemCreator: HTItemIngredientCreator by lazy { HTIngredientAccess.INSTANCE.itemCreator() }
-    private val resultHelper: HTResultHelper = HTResultHelper
+    private val itemResult: HTItemResultCreator = HTItemResultCreator
 
     @SubscribeEvent
     fun registerRuntimeRecipe(event: HTRegisterRuntimeRecipeEvent) {
@@ -32,7 +32,7 @@ object HCRuntimeRecipeHandler {
             if (ingredient == HCMaterialPrefixes.DUST.itemTagKey(material)) continue
             // Crushing
             HTSingleItemRecipeBuilder
-                .crushing(itemCreator.fromTagKey(ingredient), resultHelper.item(dust))
+                .crushing(itemCreator.fromTagKey(ingredient), itemResult.create(dust))
                 .saveSuffixed(event.output, "_from_base")
         }
     }
@@ -47,7 +47,7 @@ object HCRuntimeRecipeHandler {
             HTSingleItemRecipeBuilder
                 .crushing(
                     itemCreator.fromTagKey(HCMaterialPrefixes.STORAGE_BLOCK_RAW, material),
-                    resultHelper.item(dust, 12),
+                    itemResult.create(dust, 12),
                 ).saveSuffixed(event.output, "_from_raw_block")
         }
     }

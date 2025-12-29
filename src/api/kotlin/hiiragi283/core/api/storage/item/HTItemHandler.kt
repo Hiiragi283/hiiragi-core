@@ -1,6 +1,5 @@
 package hiiragi283.core.api.storage.item
 
-import hiiragi283.core.api.stack.toImmutable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import net.minecraft.core.Direction
@@ -38,10 +37,7 @@ fun interface HTItemHandler : HTSidedItemHandler {
         stack: ItemStack,
         action: HTStorageAction,
         side: Direction?,
-    ): ItemStack {
-        val slot: HTItemSlot = getItemSlot(slot, side) ?: return stack
-        return slot.insert(stack.toImmutable(), action, HTStorageAccess.forHandler(side))?.unwrap() ?: ItemStack.EMPTY
-    }
+    ): ItemStack = getItemSlot(slot, side)?.insert(stack, action, HTStorageAccess.forHandler(side)) ?: stack
 
     override fun extractItem(
         slot: Int,
@@ -50,10 +46,13 @@ fun interface HTItemHandler : HTSidedItemHandler {
         side: Direction?,
     ): ItemStack {
         val slot: HTItemSlot = getItemSlot(slot, side) ?: return ItemStack.EMPTY
-        return slot.extract(amount, action, HTStorageAccess.forHandler(side))?.unwrap() ?: ItemStack.EMPTY
+        return slot.extractItem(amount, action, HTStorageAccess.forHandler(side))
     }
 
     override fun getSlotLimit(slot: Int, side: Direction?): Int = getItemSlot(slot, side)?.getCapacity() ?: 0
 
-    override fun isItemValid(slot: Int, stack: ItemStack, side: Direction?): Boolean = getItemSlot(slot, side)?.isValid(stack) ?: false
+    override fun isItemValid(slot: Int, stack: ItemStack, side: Direction?): Boolean {
+        val slot: HTItemSlot = getItemSlot(slot, side) ?: return false
+        return stack.toResource()?.let(slot::isValid) ?: false
+    }
 }

@@ -1,5 +1,6 @@
 package hiiragi283.core.api.integration.emi
 
+import dev.emi.emi.api.neoforge.NeoForgeEmiStack
 import dev.emi.emi.api.render.EmiTexture
 import dev.emi.emi.api.stack.EmiIngredient
 import dev.emi.emi.api.stack.EmiStack
@@ -17,8 +18,8 @@ import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.HTFluidWithTag
 import hiiragi283.core.api.registry.RegistryKey
-import hiiragi283.core.api.stack.ImmutableFluidStack
-import hiiragi283.core.api.stack.ImmutableItemStack
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTranslation
 import net.minecraft.core.Holder
@@ -31,6 +32,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.material.Fluid
+import net.neoforged.neoforge.fluids.FluidStack
 
 //    EmiStack    //
 
@@ -69,29 +71,12 @@ fun ItemStack.toEmi(): EmiStack = EmiStack.of(this)
  */
 fun Fluid.toEmi(amount: Int = 0): EmiStack = EmiStack.of(this, amount.toLong())
 
-// Immutable Stack
-
 /**
- * この[ImmutableItemStack][this]を[EmiStack]に変換します。
- * @return このスタックが空の場合は[EmiStack.EMPTY]
+ * この[FluidStack][this]を[EmiStack]に変換します。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 0.4.0
  */
-fun ImmutableItemStack?.toEmi(): EmiStack = when (this) {
-    null -> EmiStack.EMPTY
-    else -> EmiStack.of(this.type(), this.componentsPatch(), this.amount().toLong())
-}
-
-/**
- * この[ImmutableFluidStack][this]を[EmiStack]に変換します。
- * @return このスタックが空の場合は[EmiStack.EMPTY]
- * @author Hiiragi Tsubasa
- * @since 0.1.0
- */
-fun ImmutableFluidStack?.toEmi(): EmiStack = when (this) {
-    null -> EmiStack.EMPTY
-    else -> EmiStack.of(this.type(), this.componentsPatch(), this.amount().toLong())
-}
+fun FluidStack.toEmi(): EmiStack = NeoForgeEmiStack.of(this)
 
 // TagKey
 
@@ -152,24 +137,30 @@ fun HTPrefixLike.toItemEmi(material: HTMaterialLike, amount: Int = 1): EmiIngred
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun HTItemIngredient.toEmi(): EmiIngredient = this
-    .unwrap()
-    .map(
-        { (tagKey: TagKey<Item>, count: Int) -> tagKey.toEmi(count) },
-        { stacks: List<ImmutableItemStack> -> stacks.map(ImmutableItemStack::toEmi).let(::ingredient) },
+fun HTItemIngredient.toEmi(): EmiIngredient {
+    val count: Int = this.getRequiredAmount()
+    return this.unwrap().map(
+        { tagKey: TagKey<Item> -> tagKey.toEmi(count) },
+        { resources: List<HTItemResourceType> ->
+            resources.map { it.toStack(count) }.map(ItemStack::toEmi).let(::ingredient)
+        },
     )
+}
 
 /**
  * この[材料][this]を[EmiIngredient]に変換します。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun HTFluidIngredient.toEmi(): EmiIngredient = this
-    .unwrap()
-    .map(
-        { (tagKey: TagKey<Fluid>, count: Int) -> tagKey.toEmi(count) },
-        { stacks: List<ImmutableFluidStack> -> stacks.map(ImmutableFluidStack::toEmi).let(::ingredient) },
+fun HTFluidIngredient.toEmi(): EmiIngredient {
+    val count: Int = this.getRequiredAmount()
+    return this.unwrap().map(
+        { tagKey: TagKey<Fluid> -> tagKey.toEmi(count) },
+        { resources: List<HTFluidResourceType> ->
+            resources.map { it.toStack(count) }.map(FluidStack::toEmi).let(::ingredient)
+        },
     )
+}
 
 private fun ingredient(stacks: List<EmiStack>): EmiIngredient = when {
     stacks.isEmpty() -> createErrorStack(HTCommonTranslation.EMPTY)
@@ -184,14 +175,14 @@ private fun ingredient(stacks: List<EmiStack>): EmiIngredient = when {
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun HTItemResult.toEmi(): EmiStack = this.getStackResult(null).mapOrElse(ImmutableItemStack::toEmi, ::createErrorStack)
+fun HTItemResult.toEmi(): EmiStack = this.getStackResult(null).mapOrElse(ItemStack::toEmi, ::createErrorStack)
 
 /**
  * この[完成品][this]を[EmiStack]に変換します。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun HTFluidResult.toEmi(): EmiStack = this.getStackResult(null).mapOrElse(ImmutableFluidStack::toEmi, ::createErrorStack)
+fun HTFluidResult.toEmi(): EmiStack = this.getStackResult(null).mapOrElse(FluidStack::toEmi, ::createErrorStack)
 
 // Fluid Content
 

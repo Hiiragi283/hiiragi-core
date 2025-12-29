@@ -6,10 +6,10 @@ import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.input.HTRecipeInput
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.MapBiCodec
-import hiiragi283.core.api.stack.ImmutableItemStack
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import net.minecraft.core.HolderLookup
 import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 
 abstract class HCSingleItemRecipe(val ingredient: HTItemIngredient, val result: HTItemResult) : HTRecipe {
@@ -26,6 +26,5 @@ abstract class HCSingleItemRecipe(val ingredient: HTItemIngredient, val result: 
 
     final override fun matches(input: HTRecipeInput, level: Level): Boolean = input.testItem(0, ingredient)
 
-    final override fun assembleItem(input: HTRecipeInput, provider: HolderLookup.Provider): ImmutableItemStack? =
-        result.getStackOrNull(provider)
+    final override fun assemble(input: HTRecipeInput, registries: HolderLookup.Provider): ItemStack = result.getStackOrEmpty(registries)
 }

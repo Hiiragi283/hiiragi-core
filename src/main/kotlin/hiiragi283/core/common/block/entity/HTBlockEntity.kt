@@ -7,8 +7,6 @@ import hiiragi283.core.api.block.entity.HTOwnedBlockEntity
 import hiiragi283.core.api.serialization.component.HTComponentInput
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
-import hiiragi283.core.api.stack.ImmutableFluidStack
-import hiiragi283.core.api.stack.ImmutableItemStack
 import hiiragi283.core.api.storage.HTHandlerProvider
 import hiiragi283.core.api.storage.attachments.HTAttachedEnergy
 import hiiragi283.core.api.storage.attachments.HTAttachedFluids
@@ -17,17 +15,17 @@ import hiiragi283.core.api.storage.energy.HTEnergyBattery
 import hiiragi283.core.api.storage.energy.HTEnergyHandler
 import hiiragi283.core.api.storage.fluid.HTFluidHandler
 import hiiragi283.core.api.storage.fluid.HTFluidTank
+import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.api.storage.holder.HTEnergyBatteryHolder
 import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
 import hiiragi283.core.api.storage.item.HTItemHandler
 import hiiragi283.core.api.storage.item.HTItemSlot
+import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.common.inventory.HTMenuCallback
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import hiiragi283.core.common.storage.HTCapabilityCodec
 import hiiragi283.core.common.storage.energy.HTBasicEnergyBattery
-import hiiragi283.core.common.storage.fluid.HTBasicFluidTank
-import hiiragi283.core.common.storage.item.HTBasicItemSlot
 import hiiragi283.core.common.storage.resolver.HTEnergyStorageManager
 import hiiragi283.core.common.storage.resolver.HTFluidHandlerManager
 import hiiragi283.core.common.storage.resolver.HTItemHandlerManager
@@ -284,8 +282,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
      */
     fun applyFluidTanks(containers: List<HTFluidTank>, contents: HTAttachedFluids) {
         for (i: Int in contents.indices) {
-            val stack: ImmutableFluidStack? = contents[i]
-            (containers.getOrNull(i) as? HTBasicFluidTank)?.setStackUnchecked(stack, true)
+            (containers.getOrNull(i) as? HTFluidTank.Basic)?.setStack(contents[i])
         }
     }
 
@@ -293,7 +290,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
      * @see mekanism.common.tile.base.TileEntityMekanism.collectFluidTanks
      */
     fun collectFluidTanks(containers: List<HTFluidTank>): HTAttachedFluids? = containers
-        .map(HTFluidTank::getStack)
+        .map(HTFluidTank::getFluidStack)
         .let(::HTAttachedFluids)
         .takeUnless(HTAttachedFluids::isEmpty)
 
@@ -352,8 +349,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
      */
     fun applyItemSlots(containers: List<HTItemSlot>, contents: HTAttachedItems) {
         for (i: Int in contents.indices) {
-            val stack: ImmutableItemStack? = contents[i]
-            (containers.getOrNull(i) as? HTBasicItemSlot)?.setStackUnchecked(stack, true)
+            (containers.getOrNull(i) as? HTItemSlot.Basic)?.setStack(contents[i])
         }
     }
 
@@ -361,7 +357,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
      * @see mekanism.common.tile.base.TileEntityMekanism.collectInventorySlots
      */
     fun collectItemSlots(containers: List<HTItemSlot>): HTAttachedItems? = containers
-        .map(HTItemSlot::getStack)
+        .map(HTItemSlot::getItemStack)
         .let(::HTAttachedItems)
         .takeUnless(HTAttachedItems::isEmpty)
 }
