@@ -29,12 +29,15 @@ data object HTConst {
 
     //    Fluid    //
 
+    /**
+     * 液体におけるデフォルトの数量
+     */
     const val DEFAULT_FLUID_AMOUNT: Int = FluidType.BUCKET_VOLUME
 
     //    Item    //
 
     /**
-     * [Item]におけるデフォルトの最大個数
+     * アイテムにおけるデフォルトの最大個数
      */
     const val ABSOLUTE_MAX_STACK_SIZE: Int = Item.ABSOLUTE_MAX_STACK_SIZE
 

@@ -28,10 +28,7 @@ data class HTDeferredRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(pri
     override fun getResourceKey(): ResourceKey<RecipeType<*>> = key
 
     @Suppress("UNCHECKED_CAST")
-    override fun get(): RecipeType<RECIPE> {
-        val rawType: RecipeType<*> = BuiltInRegistries.RECIPE_TYPE.get(key) ?: error("Trying to access unbound value: $key")
-        return rawType as RecipeType<RECIPE>
-    }
+    override fun get(): RecipeType<RECIPE> = BuiltInRegistries.RECIPE_TYPE.getOrThrow(key) as RecipeType<RECIPE>
 
     override fun getVanillaRecipeFor(input: INPUT, level: Level, lastRecipe: RecipeHolder<RECIPE>?): RecipeHolder<RECIPE>? =
         level.recipeManager

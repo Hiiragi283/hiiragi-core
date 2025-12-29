@@ -26,7 +26,7 @@ class HTFluidResult(contents: Ior<HTFluidResourceType, TagKey<Fluid>>, amount: I
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTFluidResult> = BiCodec.composite(
             MapBiCodecs
                 .ior(
-                    HTFluidResourceType.CODEC.optionalFieldOf(HTConst.FLUID),
+                    HTFluidResourceType.CODEC.toOptional().toMap(),
                     VanillaBiCodecs.tagKey(Registries.FLUID, false).optionalFieldOf(HTConst.TAG),
                 ).forGetter(HTFluidResult::contents),
             BiCodecs.POSITIVE_INT.optionalFieldOf(HTConst.AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT).forGetter(HTFluidResult::amount),

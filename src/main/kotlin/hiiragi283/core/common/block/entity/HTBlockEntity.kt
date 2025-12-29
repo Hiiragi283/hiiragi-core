@@ -4,6 +4,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.block.entity.HTBlockEntityComponent
 import hiiragi283.core.api.block.entity.HTOwnedBlockEntity
+import hiiragi283.core.api.block.entity.HTSoundPlayerBlockEntity
 import hiiragi283.core.api.serialization.component.HTComponentInput
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
@@ -63,7 +64,8 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     HTHandlerProvider,
     HTItemHandler,
     HTMenuCallback,
-    HTOwnedBlockEntity {
+    HTOwnedBlockEntity,
+    HTSoundPlayerBlockEntity {
     //    Ticking    //
 
     companion object {

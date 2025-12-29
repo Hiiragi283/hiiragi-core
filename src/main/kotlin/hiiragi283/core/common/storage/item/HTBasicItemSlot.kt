@@ -2,12 +2,14 @@ package hiiragi283.core.common.storage.item
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTContentListener
+import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
+import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.storage.item.toResource
 import net.minecraft.world.item.ItemStack
 import java.util.function.BiPredicate
@@ -49,6 +51,12 @@ open class HTBasicItemSlot protected constructor(
             { stack: HTItemResourceType, _ -> canInsert.test(stack) },
             filter,
         )
+
+        @JvmStatic
+        fun output(listener: HTContentListener?): HTBasicItemSlot = create(
+            listener,
+            canInsert = HTStoragePredicates.internalOnly(),
+        )
     }
 
     @JvmField
@@ -86,16 +94,14 @@ open class HTBasicItemSlot protected constructor(
 
     override fun getCapacity(resource: HTItemResourceType?): Int = HTItemSlot.getMaxStackSize(resource, limit)
 
-    final override fun getAmount(): Int = stack.count
+    override fun getAmount(): Int = stack.count
 
     override fun serialize(output: HTValueOutput) {
-        output.store(HTConst.ITEM, HTItemResourceType.CODEC, getResource())
-        output.putInt(HTConst.COUNT, getAmount())
+        output.store(HTConst.ITEM, VanillaBiCodecs.ITEM_STACK, getItemStack())
     }
 
     override fun deserialize(input: HTValueInput) {
-        input.readAndSet(HTConst.ITEM, HTItemResourceType.CODEC, ::setResource)
-        input.getInt(HTConst.COUNT)?.let(::setAmount)
+        (input.read(HTConst.ITEM, VanillaBiCodecs.ITEM_STACK) ?: ItemStack.EMPTY).let(::setStack)
     }
 
     final override fun onContentsChanged() {

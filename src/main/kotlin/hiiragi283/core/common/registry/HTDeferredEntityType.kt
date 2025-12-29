@@ -21,10 +21,7 @@ data class HTDeferredEntityType<ENTITY : Entity>(private val key: ResourceKey<En
     override fun getResourceKey(): ResourceKey<EntityType<*>> = key
 
     @Suppress("UNCHECKED_CAST")
-    override fun get(): EntityType<ENTITY> {
-        val rawType: EntityType<*> = BuiltInRegistries.ENTITY_TYPE.get(key) ?: error("Trying to access unbound value: $key")
-        return rawType as EntityType<ENTITY>
-    }
+    override fun get(): EntityType<ENTITY> = BuiltInRegistries.ENTITY_TYPE.getOrThrow(key) as EntityType<ENTITY>
 
     override val translationKey: String get() = get().descriptionId
 

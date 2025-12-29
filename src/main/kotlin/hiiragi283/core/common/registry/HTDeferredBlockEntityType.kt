@@ -19,10 +19,7 @@ data class HTDeferredBlockEntityType<BE : BlockEntity>(private val key: Resource
     override fun getResourceKey(): ResourceKey<BlockEntityType<*>> = key
 
     @Suppress("UNCHECKED_CAST")
-    override fun get(): BlockEntityType<BE> {
-        val rawType: BlockEntityType<*> = BuiltInRegistries.BLOCK_ENTITY_TYPE.get(key) ?: error("Trying to access unbound value: $key")
-        return rawType as BlockEntityType<BE>
-    }
+    override fun get(): BlockEntityType<BE> = BuiltInRegistries.BLOCK_ENTITY_TYPE.getOrThrow(key) as BlockEntityType<BE>
 
     fun create(pos: BlockPos, state: BlockState): BE = get().create(pos, state) ?: error("Failed to create Block Entity at $pos")
 

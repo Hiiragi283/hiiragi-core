@@ -111,7 +111,7 @@ object HTStackSlotHelper {
     inline fun shrinkItemStack(
         slot: HTItemSlot,
         remainderGetter: (HTItemResourceType) -> ItemStack,
-        stackSetter: (HTItemResourceType) -> Unit,
+        stackSetter: (ItemStack) -> Unit,
         amount: Int,
         action: HTStorageAction,
     ): Int {
@@ -119,8 +119,7 @@ object HTStackSlotHelper {
         if (action.execute()) {
             stackIn
                 .let(remainderGetter)
-                .let(ItemStack::toResource)
-                ?.let(stackSetter)
+                .let(stackSetter)
         }
         return slot.extract(amount, action, HTStorageAccess.INTERNAL)
     }
