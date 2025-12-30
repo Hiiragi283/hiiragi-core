@@ -6,6 +6,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf
 import net.neoforged.neoforge.fluids.FluidStack
 
 /**
+ * [液体][FluidStack]向けの[HTAttachedContainers]の実装クラスです。
  * @see mekanism.common.attachments.containers.fluid.AttachedFluids
  */
 @JvmRecord

@@ -6,6 +6,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.world.item.ItemStack
 
 /**
+ * [アイテム][ItemStack]向けの[HTAttachedContainers]の実装クラスです。
  * @see mekanism.common.attachments.containers.item.AttachedItems
  */
 @JvmRecord

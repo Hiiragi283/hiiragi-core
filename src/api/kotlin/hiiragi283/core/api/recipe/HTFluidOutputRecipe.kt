@@ -5,14 +5,14 @@ import net.minecraft.core.HolderLookup
 import net.neoforged.neoforge.fluids.FluidStack
 
 /**
- * 完成品に液体を扱える[HTRecipe]の拡張インターフェースです。
+ * 液体の完成品をもつ[HTRecipe]の拡張インターフェースです。
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
 interface HTFluidOutputRecipe : HTRecipe {
     /**
      * 指定した[入力][input]と[レジストリ][provider]から完成品を返します。
-     * @return 完成品がない場合は`null`
+     * @return 完成品がない場合は[FluidStack.EMPTY]
      */
     fun assembleFluid(input: HTRecipeInput, provider: HolderLookup.Provider): FluidStack
 }

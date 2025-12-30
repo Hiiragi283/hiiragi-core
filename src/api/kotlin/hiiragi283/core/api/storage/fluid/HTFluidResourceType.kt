@@ -13,7 +13,7 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidType
 
 /**
- * [HTResourceType.DataComponent]を[液体][Fluid]向けに実装したクラスです。
+ * [液体][Fluid]向けの[HTResourceType.DataComponent]の実装クラスです。
  * @param stack 内部で保持しているスタック
  * @author Hiiragi Tsubasa
  * @since 0.4.0
@@ -28,12 +28,24 @@ data class HTFluidResourceType private constructor(private val stack: FluidStack
                 .of(FluidStack.fixedAmountCodec(HTConst.DEFAULT_FLUID_AMOUNT), FluidStack.STREAM_CODEC)
                 .xmap(::HTFluidResourceType, HTFluidResourceType::stack)
 
+        /**
+         * 指定した[fluid]を[HTFluidResourceType]に変換します。
+         * @return [FluidStack.isEmpty]が`true`の場合は`null`
+         */
         @JvmStatic
         fun ofNullable(fluid: Fluid): HTFluidResourceType? = FluidStack(fluid, 1).let(::of)
 
+        /**
+         * 指定した[fluid]を[HTFluidResourceType]に変換します。
+         * @throws IllegalStateException [FluidStack.isEmpty]が`true`の場合
+         */
         @JvmStatic
         fun of(fluid: Fluid): HTFluidResourceType = ofNullable(fluid) ?: error("Fluid must not be empty")
 
+        /**
+         * 指定した[stack]を[HTFluidResourceType]に変換します。
+         * @return [FluidStack.isEmpty]が`true`の場合は`null`
+         */
         @JvmStatic
         fun of(stack: FluidStack): HTFluidResourceType? = when {
             stack.isEmpty -> null

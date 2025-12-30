@@ -10,5 +10,9 @@ import net.minecraft.world.item.ItemStack
  * @since 0.4.0
  */
 interface HTExtraOutputRecipe : HTRecipe {
+    /**
+     * 指定した[入力][input]と[レジストリ][provider]から完成品を返します。
+     * @return 完成品がない場合は[ItemStack.EMPTY]
+     */
     fun assembleExtra(input: HTRecipeInput, provider: HolderLookup.Provider): ItemStack
 }

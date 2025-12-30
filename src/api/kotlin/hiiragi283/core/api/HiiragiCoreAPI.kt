@@ -74,9 +74,19 @@ data object HiiragiCoreAPI {
         .sync(true)
         .create()
 
+    /**
+     * [HTSyncablePayload]の[レジストリキー][ResourceKey]
+     * @author Hiiragi Tsubasa
+     * @since 0.4.0
+     */
     @JvmField
     val SLOT_TYPE_KEY: ResourceKey<Registry<StreamCodec<RegistryFriendlyByteBuf, out HTSyncablePayload>>> = createKey("syncable_slot_type")
 
+    /**
+     * [HTSyncablePayload]の[レジストリ][Registry]
+     * @author Hiiragi Tsubasa
+     * @since 0.4.0
+     */
     @JvmField
     val SLOT_TYPE_REGISTRY: Registry<StreamCodec<RegistryFriendlyByteBuf, out HTSyncablePayload>> = createRegistry(SLOT_TYPE_KEY)
 

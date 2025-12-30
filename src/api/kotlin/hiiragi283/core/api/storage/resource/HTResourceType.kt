@@ -36,28 +36,28 @@ interface HTResourceType<TYPE : Any> :
         HTKeyLike.HolderDelegate<TYPE>,
         IWithData<TYPE> {
         /**
-         * 指定した[種類][type]が，このスタックが保持している[種類][HTResourceType.type]と一致するか判定します。
+         * 指定した[種類][type]が，このリソースが保持している[種類][HTResourceType.type]と一致するか判定します。
          */
         fun isOf(type: TYPE): Boolean = type() == type
 
         /**
-         * 指定した[ID][key]が，このスタックが保持しているIDと一致するか判定します。
+         * 指定した[ID][key]が，このリソースが保持しているIDと一致するか判定します。
          */
         fun isOf(key: ResourceKey<TYPE>): Boolean = getHolder().`is`(key)
 
         /**
-         * 指定した[TagKey]に，このスタックの[種類][type]が含まれているか判定します。
+         * 指定した[TagKey]に，このリソースの保持している[種類][type]が含まれているか判定します。
          */
         fun isOf(tagKey: TagKey<TYPE>): Boolean = getHolder().`is`(tagKey)
 
         /**
-         * 指定した[Holder]が，このスタックが保持している[Holder][getHolder]と一致するか判定します。
+         * 指定した[Holder]が，このリソースが保持している[Holder][getHolder]と一致するか判定します。
          */
         @Suppress("DEPRECATION")
         fun isOf(holder: Holder<TYPE>): Boolean = getHolder().`is`(holder)
 
         /**
-         * 指定した[HolderSet]に，このスタックの[Holder][getHolder]が含まれているか判定します。
+         * 指定した[HolderSet]に，このリソースの保持している[Holder][getHolder]が含まれているか判定します。
          */
         fun isOf(holderSet: HolderSet<TYPE>): Boolean = holderSet.contains(getHolder())
 
@@ -74,7 +74,7 @@ interface HTResourceType<TYPE : Any> :
         Registered<TYPE>,
         DataComponentHolder {
         /**
-         * このスタックの[DataComponentPatch]を返します。
+         * このリソースの[DataComponentPatch]を返します。
          */
         fun componentsPatch(): DataComponentPatch
     }

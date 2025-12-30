@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 
 /**
- * [HTResourceType.DataComponent]を[アイテム][Item]向けに実装したクラスです。
+ * [アイテム][Item]向けの[HTResourceType.DataComponent]の実装クラスです。
  * @param stack 内部で保持しているスタック
  * @author Hiiragi Tsubasa
  * @since 0.4.0
@@ -27,12 +27,24 @@ data class HTItemResourceType private constructor(private val stack: ItemStack) 
                 .of(ItemStack.SINGLE_ITEM_CODEC, ItemStack.STREAM_CODEC)
                 .xmap(::HTItemResourceType, HTItemResourceType::stack)
 
+        /**
+         * 指定した[item]を[HTItemResourceType]に変換します。
+         * @return [ItemStack.isEmpty]が`true`の場合は`null`
+         */
         @JvmStatic
         fun ofNullable(item: ItemLike): HTItemResourceType? = ItemStack(item).let(::of)
 
+        /**
+         * 指定した[item]を[HTItemResourceType]に変換します。
+         * @throws IllegalStateException [ItemStack.isEmpty]が`true`の場合
+         */
         @JvmStatic
         fun of(item: ItemLike): HTItemResourceType = ofNullable(item) ?: error("Item must not be empty")
 
+        /**
+         * 指定した[stack]を[HTItemResourceType]に変換します。
+         * @return [ItemStack.isEmpty]が`true`の場合は`null`
+         */
         @JvmStatic
         fun of(stack: ItemStack): HTItemResourceType? = when {
             stack.isEmpty -> null
@@ -40,6 +52,9 @@ data class HTItemResourceType private constructor(private val stack: ItemStack) 
         }
     }
 
+    /**
+     * 指定した[count]から[ItemStack]に変換します。
+     */
     fun toStack(count: Int = 1): ItemStack = stack.copyWithCount(count)
 
     override fun equals(other: Any?): Boolean = when (other) {

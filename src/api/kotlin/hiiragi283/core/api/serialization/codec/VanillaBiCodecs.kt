@@ -84,15 +84,27 @@ object VanillaBiCodecs {
     @JvmField
     val UUID: BiCodec<ByteBuf, UUID> = BiCodec.of(UUIDUtil.CODEC, UUIDUtil.STREAM_CODEC)
 
+    /**
+     * [ItemStack.EMPTY]を受け付けない[ItemStack]の[BiCodec]
+     */
     @JvmField
     val ITEM_STACK_NON_EMPTY: BiCodec<RegistryFriendlyByteBuf, ItemStack> = BiCodec.of(ItemStack.CODEC, ItemStack.STREAM_CODEC)
 
+    /**
+     * [ItemStack]の[BiCodec]
+     */
     @JvmField
     val ITEM_STACK: BiCodec<RegistryFriendlyByteBuf, ItemStack> = BiCodec.of(ItemStack.OPTIONAL_CODEC, ItemStack.OPTIONAL_STREAM_CODEC)
 
+    /**
+     * [FluidStack.EMPTY]を受け付けない[FluidStack]の[BiCodec]
+     */
     @JvmField
     val FLUID_STACK_NON_EMPTY: BiCodec<RegistryFriendlyByteBuf, FluidStack> = BiCodec.of(FluidStack.CODEC, FluidStack.STREAM_CODEC)
 
+    /**
+     * [FluidStack]の[BiCodec]
+     */
     @JvmField
     val FLUID_STACK: BiCodec<RegistryFriendlyByteBuf, FluidStack> = BiCodec.of(FluidStack.OPTIONAL_CODEC, FluidStack.OPTIONAL_STREAM_CODEC)
 

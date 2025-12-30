@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 
 /**
+ * [HTItemResult]向けの[HTResultCreator]の実装クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */

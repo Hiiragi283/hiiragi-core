@@ -10,6 +10,7 @@ import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 
 /**
+ * [HTFluidResult]向けの[HTResultCreator]の実装クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */

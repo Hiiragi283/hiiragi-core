@@ -66,7 +66,7 @@ data class HTRecipeInput private constructor(val pos: BlockPos?, val items: List
 
     /**
      * 指定した[インデックス][index]にあるアイテムが[ingredient]に一致するか判定します。
-     * - [item]の戻り値が`null`の場合は[Optional.isEmpty]に基づいて判定。
+     * - [item]の戻り値が[ItemStack.isEmpty]の場合は[Optional.isEmpty]に基づいて判定。
      * - [item]の戻り値が存在し，かつ[ingredient]が存在する場合は[HTItemIngredient.test]に基づいて判定。
      * - [item]の戻り値が存在し，かつ[ingredient]が存在しない場合は`false`
      */
@@ -90,17 +90,17 @@ data class HTRecipeInput private constructor(val pos: BlockPos?, val items: List
      * 指定した[インデックス][index]にある液体が[predicate]に一致するか判定します。
      * @return 指定した[インデックス][index]が範囲外の場合，または液体がない場合は`false`
      */
-    inline fun testFluid(index: Int, predicate: (FluidStack) -> Boolean): Boolean = fluid(index).let(predicate) ?: false
+    inline fun testFluid(index: Int, predicate: (FluidStack) -> Boolean): Boolean = fluid(index).let(predicate)
 
     /**
      * 指定した[インデックス][index]にあるアイテムが[ingredient]に一致するか，種類のみで判定します。
      * @return 指定した[インデックス][index]が範囲外の場合，またはアイテムがない場合は`false`
      */
-    fun testCatalyst(index: Int, ingredient: HTItemIngredient): Boolean = item(index)?.let(ingredient::testOnlyType) ?: false
+    fun testCatalyst(index: Int, ingredient: HTItemIngredient): Boolean = item(index).let(ingredient::testOnlyType)
 
     /**
      * 指定した[インデックス][index]にあるアイテムが[ingredient]に一致するか，種類のみで判定します。
-     * - [item]の戻り値が`null`の場合は[Optional.isEmpty]に基づいて判定。
+     * - [item]の戻り値が[FluidStack.isEmpty]の場合は[Optional.isEmpty]に基づいて判定。
      * - [item]の戻り値が存在し，かつ[ingredient]が存在する場合は[HTItemIngredient.test]に基づいて判定。
      * - [item]の戻り値が存在し，かつ[ingredient]が存在しない場合は`false`
      */

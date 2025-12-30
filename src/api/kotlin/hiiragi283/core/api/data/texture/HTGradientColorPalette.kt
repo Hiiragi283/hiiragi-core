@@ -7,6 +7,9 @@ import org.apache.commons.lang3.math.Fraction
 import java.awt.Color
 
 /**
+ * RGBによるグラデーションに基づいた[HTColorPalette]の実装クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.4.0
  * @see mekanism.common.lib.Color.ColorFunction.scale
  */
 class HTGradientColorPalette(val from: Color, val to: Color) : HTColorPalette {

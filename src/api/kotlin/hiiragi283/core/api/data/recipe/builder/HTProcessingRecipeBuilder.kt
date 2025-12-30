@@ -1,8 +1,14 @@
 package hiiragi283.core.api.data.recipe.builder
 
 import hiiragi283.core.api.math.toFraction
+import hiiragi283.core.api.recipe.HTProcessingRecipe
 import org.apache.commons.lang3.math.Fraction
 
+/**
+ * [HTProcessingRecipe]向けの[HTRecipeBuilder]の拡張クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.4.0
+ */
 abstract class HTProcessingRecipeBuilder<BUILDER : HTProcessingRecipeBuilder<BUILDER>>(prefix: String) : HTRecipeBuilder<BUILDER>(prefix) {
     protected var time: Int = 200
         private set
