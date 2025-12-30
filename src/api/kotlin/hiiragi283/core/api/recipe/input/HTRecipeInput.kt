@@ -3,6 +3,7 @@ package hiiragi283.core.api.recipe.input
 import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.tag.HiiragiCoreTags
 import net.minecraft.core.BlockPos
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeInput
@@ -31,8 +32,9 @@ data class HTRecipeInput private constructor(val pos: BlockPos?, val items: List
     }
 
     private fun validateItem(index: Int): ItemStack = items
-        .getOrNull(index) ?: ItemStack.EMPTY
-    // ?.takeUnless { stack: ImmutableItemStack -> stack.isOf(RagiumModTags.Items.IGNORED_IN_RECIPES) }
+        .getOrNull(index)
+        ?.takeUnless { stack: ItemStack -> stack.`is`(HiiragiCoreTags.IGNORED_IN_RECIPE_INPUT) }
+        ?: ItemStack.EMPTY
 
     /**
      * [SingleRecipeInput]に変換します。

@@ -24,6 +24,9 @@ import hiiragi283.core.api.storage.item.HTItemHandler
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.common.inventory.HTMenuCallback
+import hiiragi283.core.common.inventory.container.HTContainerMenu
+import hiiragi283.core.common.inventory.slot.HTFluidSyncSlot
+import hiiragi283.core.common.inventory.slot.HTIntSyncSlot
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import hiiragi283.core.common.storage.HTCapabilityCodec
 import hiiragi283.core.common.storage.energy.HTBasicEnergyBattery
@@ -209,11 +212,11 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     /**
      * @see mekanism.common.tile.base.TileEntityMekanism.addContainerTrackers
      */
-    /*open fun addMenuTrackers(menu: HTContainerMenu) {
+    open fun addMenuTrackers(menu: HTContainerMenu) {
         // Fluid Tanks
         if (hasFluidHandler()) {
             for (tank: HTFluidTank in this.getFluidTanks(this.getFluidSideFor())) {
-                if (tank is HTBasicFluidTank) {
+                if (tank is HTFluidTank.Basic) {
                     menu.track(HTFluidSyncSlot(tank))
                 }
             }
@@ -221,11 +224,11 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
         // Energy Battery
         if (hasEnergyStorage()) {
             val battery: HTEnergyBattery? = this.getEnergyBattery(this.getEnergySideFor())
-            if (battery is HTBasicEnergyBattery) {
-                menu.track(HTIntSyncSlot.create(battery::getAmount, battery::setAmountUnchecked))
+            if (battery is HTEnergyBattery.Basic) {
+                menu.track(HTIntSyncSlot.create(battery::getAmount, battery::setAmount))
             }
         }
-    }*/
+    }
 
     //    Nameable    //
 

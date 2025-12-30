@@ -1,0 +1,32 @@
+package hiiragi283.core.common.inventory.container
+
+import hiiragi283.core.common.inventory.HTMenuCallback
+import hiiragi283.core.common.registry.HTDeferredMenuType
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.entity.player.Player
+
+/**
+ * [C]を受け取る[HTContainerMenu]の拡張クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.4.0
+ * @see mekanism.common.inventory.container.tile.MekanismTileContainer
+ */
+abstract class HTContainerWithContextMenu<C : Any>(
+    override val menuType: HTDeferredMenuType.WithContext<*, C>,
+    containerId: Int,
+    inventory: Inventory,
+    val context: C,
+) : HTContainerMenu(
+        menuType,
+        containerId,
+        inventory,
+    ) {
+    init {
+        (context as? HTMenuCallback)?.openMenu(inventory.player)
+    }
+
+    override fun removed(player: Player) {
+        super.removed(player)
+        (context as? HTMenuCallback)?.closeMenu(player)
+    }
+}

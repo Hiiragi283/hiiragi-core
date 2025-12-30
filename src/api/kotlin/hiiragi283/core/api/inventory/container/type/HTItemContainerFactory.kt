@@ -1,0 +1,33 @@
+package hiiragi283.core.api.inventory.container.type
+
+import hiiragi283.core.api.inventory.container.HTItemContainerContext
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.world.inventory.MenuConstructor
+import net.minecraft.world.item.ItemStack
+import net.neoforged.api.distmarker.Dist
+
+/**
+ * [InteractionHand]と[ItemStack]を引数にとる，[MenuConstructor]の代替インターフェースです。
+ * @param MENU [AbstractContainerMenu]を継承したクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.4.0
+ * @see mekanism.common.inventory.container.type.MekanismItemContainerType.IMekanismItemContainerFactory
+ */
+fun interface HTItemContainerFactory<MENU : AbstractContainerMenu> {
+    fun create(
+        containerId: Int,
+        inventory: Inventory,
+        context: HTItemContainerContext,
+        isClientSide: Dist,
+    ): MENU
+
+    fun create(
+        containerId: Int,
+        inventory: Inventory,
+        hand: InteractionHand?,
+        stack: ItemStack,
+        isClientSide: Dist,
+    ): MENU = create(containerId, inventory, HTItemContainerContext(hand, stack), isClientSide)
+}

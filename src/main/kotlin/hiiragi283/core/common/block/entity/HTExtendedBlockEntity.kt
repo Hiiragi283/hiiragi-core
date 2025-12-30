@@ -24,9 +24,11 @@ import net.neoforged.neoforge.network.PacketDistributor
  * Ragiumで使用される[BlockEntity]の拡張クラス
  * @see mekanism.common.tile.base.TileEntityUpdateable
  */
-abstract class HTExtendedBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, state: BlockState) :
+abstract class HTExtendedBlockEntity(private val type: HTDeferredBlockEntityType<*>, pos: BlockPos, state: BlockState) :
     BlockEntity(type.get(), pos, state),
     HTAbstractBlockEntity {
+    fun getDeferredType(): HTDeferredBlockEntityType<*> = type
+
     //    Save & Read    //
 
     final override fun saveAdditional(tag: CompoundTag, registries: HolderLookup.Provider) {

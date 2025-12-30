@@ -3,6 +3,7 @@ package hiiragi283.core.util
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.capability.HTFluidCapabilities
+import hiiragi283.core.api.math.fixedFraction
 import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
@@ -28,6 +29,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem
 import org.slf4j.Logger
 import java.util.function.Consumer
 import java.util.function.ToIntBiFunction
+import kotlin.text.insert
 
 object HTStackSlotHelper {
     @JvmField
@@ -39,7 +41,25 @@ object HTStackSlotHelper {
         to: SLOT?,
         amount: Int = from?.getAmount() ?: 0,
         access: HTStorageAccess = HTStorageAccess.INTERNAL,
-    ): HTResourceMoveResult<RESOURCE> = TODO()
+    ): HTResourceMoveResult<RESOURCE> {
+        if (from == null || to == null || amount <= 0) return HTResourceMoveResult.failed()
+        val resource: RESOURCE? = from.getResource()
+        val simulatedExtract: Int = from.extract(amount, HTStorageAction.SIMULATE, access)
+        val simulatedRemain: Int = to.insert(resource, simulatedExtract, HTStorageAction.SIMULATE, access)
+        val simulatedAccepted: Int = amount - simulatedRemain
+        if (simulatedAccepted == 0) return HTResourceMoveResult.failed()
+        val extracted: Int = from.extract(simulatedAccepted, HTStorageAction.EXECUTE, access)
+        val remainder: Int = to.insert(resource, extracted, HTStorageAction.EXECUTE, access)
+        if (remainder > 0) {
+            val leftover: Int = from.insert(resource, remainder, HTStorageAction.EXECUTE, access)
+            if (leftover > 0) {
+                LOGGER.error("Stack slot $from did not accept leftover stack from $to! Voiding it.")
+            }
+            return HTResourceMoveResult.succeeded(resource, remainder)
+        } else {
+            return HTResourceMoveResult.succeeded(null, 0)
+        }
+    }
 
     @JvmStatic
     fun <RESOURCE : HTResourceType<*>> shrinkStack(
@@ -75,6 +95,51 @@ object HTStackSlotHelper {
     }
 
     /**
+     * 指定した[resource]をすべてのスロットへ搬入します。
+     * @return 搬入されない量
+     */
+    @JvmStatic
+    fun <RESOURCE : HTResourceType<*>> insert(
+        slots: List<HTResourceSlot<RESOURCE>>,
+        resource: RESOURCE?,
+        amount: Int,
+        action: HTStorageAction,
+        access: HTStorageAccess,
+    ): Int {
+        if (resource == null || amount <= 0) return amount
+        var remainder: Int = amount
+        for (slot: HTResourceSlot<RESOURCE> in slots) {
+            remainder = slot.insert(resource, remainder, action, access)
+            if (remainder <= 0) break
+        }
+        return remainder
+    }
+
+    /**
+     * 指定した[resource]をすべてのスロットから搬出します。
+     * @return 搬出される量
+     */
+    @JvmStatic
+    fun <RESOURCE : HTResourceType<*>> extract(
+        slots: List<HTResourceSlot<RESOURCE>>,
+        resource: RESOURCE?,
+        amount: Int,
+        action: HTStorageAction,
+        access: HTStorageAccess,
+    ): Int {
+        if (resource == null || amount <= 0) return 0
+
+        var extracted = 0
+        for (slot: HTResourceSlot<RESOURCE> in slots) {
+            extracted += slot.extract(resource, amount - extracted, action, access)
+            if (extracted == amount) break
+        }
+        return extracted
+    }
+
+    //    Amount    //
+
+    /**
      * @see net.neoforged.neoforge.items.ItemHandlerHelper.calcRedstoneFromInventory
      * @see mekanism.common.util.MekanismUtils.redstoneLevelFromContents
      */
@@ -93,13 +158,8 @@ object HTStackSlotHelper {
      * @see mekanism.common.util.MekanismUtils.redstoneLevelFromContents
      */
     @JvmStatic
-    fun calculateRedstoneLevel(amount: Int, capacity: Int): Int {
-        val level: Float = when (capacity) {
-            0 -> 0f
-            else -> amount / capacity.toFloat()
-        }
-        return Mth.lerpDiscrete(level, Redstone.SIGNAL_NONE, Redstone.SIGNAL_MAX)
-    }
+    fun calculateRedstoneLevel(amount: Int, capacity: Int): Int =
+        Mth.lerpDiscrete(fixedFraction(amount, capacity).toFloat(), Redstone.SIGNAL_NONE, Redstone.SIGNAL_MAX)
 
     @JvmStatic
     fun calculateRedstoneLevel(view: HTAmountView<*>): Int =

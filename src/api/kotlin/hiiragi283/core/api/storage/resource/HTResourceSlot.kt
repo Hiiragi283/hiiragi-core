@@ -25,6 +25,7 @@ interface HTResourceSlot<RESOURCE : HTResourceType<*>> :
     /**
      * このスロットにリソースを搬入します。
      * @param resource 搬入するリソース
+     * @param amount 搬入する量
      * @param action 処理のフラグ
      * @param access このスロットへのアクセスの種類
      * @return 搬入されない数量
@@ -39,6 +40,7 @@ interface HTResourceSlot<RESOURCE : HTResourceType<*>> :
     /**
      * このスロットからリソースを搬出します。
      * @param resource 搬出するリソース
+     * @param amount 搬出する量
      * @param action 処理のフラグ
      * @param access このスロットへのアクセスの種類
      * @return 搬出される数量
@@ -48,9 +50,9 @@ interface HTResourceSlot<RESOURCE : HTResourceType<*>> :
         amount: Int,
         action: HTStorageAction,
         access: HTStorageAccess,
-    ): Int = when {
-        resource == null -> 0
-        resource == getResource() -> extract(amount, action, access)
+    ): Int = when (resource) {
+        null -> 0
+        getResource() -> extract(amount, action, access)
         else -> 0
     }
 
