@@ -221,6 +221,19 @@ fun WidgetHolder.addArrow(x: Int, y: Int): TextureWidget = addFillingArrow(x, y,
 fun WidgetHolder.addArrow(x: Int, y: Int, time: Int): TextureWidget = addFillingArrow(x, y, 50 * time)
     .tooltipText(listOf(HTCommonTranslation.SECONDS.translate(time / 20.0f, time)))
 
+fun WidgetHolder.addBurning(x: Int, y: Int, time: Int) {
+    addTexture(EmiTexture.EMPTY_FLAME, x + 2, y + 2)
+    addAnimatedTexture(
+        EmiTexture.FULL_FLAME,
+        x + 2,
+        y + 2,
+        1000 * time / 20,
+        false,
+        true,
+        true,
+    )
+}
+
 fun WidgetHolder.addPlus(x: Int, y: Int): TextureWidget = addTexture(EmiTexture.PLUS, x + 3, y + 3)
 
 fun WidgetHolder.setShapeless(x: Int, y: Int): TextureWidget = addTexture(EmiTexture.SHAPELESS, x + 1, y)

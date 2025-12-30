@@ -1,4 +1,4 @@
-package hiiragi283.ragium.common.inventory.slot
+package hiiragi283.core.common.inventory.slot
 
 import hiiragi283.core.api.inventory.slot.HTChangeType
 import hiiragi283.core.api.inventory.slot.HTSyncableSlot

@@ -3,7 +3,7 @@ package hiiragi283.core.common.inventory.slot.payload
 import hiiragi283.core.api.inventory.container.HTSyncableMenu
 import hiiragi283.core.api.inventory.slot.HTSyncableSlot
 import hiiragi283.core.api.inventory.slot.payload.HTSyncablePayload
-import hiiragi283.ragium.common.inventory.slot.HTLongSyncSlot
+import hiiragi283.core.common.inventory.slot.HTLongSyncSlot
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec

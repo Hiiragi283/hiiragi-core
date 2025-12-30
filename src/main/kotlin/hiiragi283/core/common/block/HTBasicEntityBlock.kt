@@ -5,10 +5,14 @@ import hiiragi283.core.api.world.getTypedBlockEntity
 import hiiragi283.core.common.block.entity.HTBlockEntity
 import hiiragi283.core.common.block.entity.HTExtendedBlockEntity
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
+import hiiragi283.core.common.registry.HTDeferredMenuType
 import hiiragi283.core.util.HTStackSlotHelper
 import net.minecraft.core.BlockPos
+import net.minecraft.network.chat.Component
 import net.minecraft.world.InteractionHand
+import net.minecraft.world.InteractionResult
 import net.minecraft.world.ItemInteractionResult
+import net.minecraft.world.Nameable
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
@@ -44,6 +48,32 @@ open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, pr
         }
         return result
     }
+
+    override fun useWithoutItem(
+        state: BlockState,
+        level: Level,
+        pos: BlockPos,
+        player: Player,
+        hitResult: BlockHitResult,
+    ): InteractionResult {
+        val blockEntity: HTExtendedBlockEntity = level.getTypedBlockEntity(pos) ?: return InteractionResult.PASS
+        val menuType: HTDeferredMenuType.WithContext<*, *>? = getMenuType()
+        if (level.isClientSide) {
+            return when {
+                menuType == null -> InteractionResult.PASS
+                else -> InteractionResult.SUCCESS
+            }
+        }
+        val name: Component = when (blockEntity) {
+            is Nameable -> blockEntity.name
+            else -> state.block.name
+        }
+        return menuType
+            ?.openMenu(player, name, blockEntity, blockEntity::writeExtraContainerData)
+            ?: InteractionResult.PASS
+    }
+
+    protected open fun getMenuType(): HTDeferredMenuType.WithContext<*, *>? = null
 
     override fun setPlacedBy(
         level: Level,

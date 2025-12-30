@@ -22,7 +22,7 @@ open class HTHorizontalEntityBlock(type: HTDeferredBlockEntityType<*>, propertie
     override fun getStateForPlacement(context: BlockPlaceContext): BlockState? =
         defaultBlockState().setValue(FACING, context.horizontalDirection.opposite)
 
-    override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block?, BlockState?>) {
+    override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
         builder.add(FACING)
     }
 
