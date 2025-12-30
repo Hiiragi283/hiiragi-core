@@ -23,5 +23,8 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
         addRegistryRecipes(registry, HCRecipeTypes.CHARGING, ::HTChargingEmiRecipe)
         addRegistryRecipes(registry, HCRecipeTypes.CRUSHING, HTSingleItemEmiRecipe.Companion::crushing)
         addRegistryRecipes(registry, HCRecipeTypes.EXPLODING, HTSingleItemEmiRecipe.Companion::exploding)
+
+        // Misc
+        registry.addGenericStackProvider(HCEmiStackProvider)
     }
 }

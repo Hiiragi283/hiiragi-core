@@ -12,7 +12,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
-import net.minecraft.util.ExtraCodecs
 import java.util.*
 import java.util.function.BiFunction
 import java.util.function.Function
@@ -399,7 +398,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
     /**
      * [Optional]の[BiCodec]に変換します。
      */
-    fun toOptional(): BiCodec<B, Optional<V>> = of(ExtraCodecs.optionalEmptyMap(codec), streamCodec.toOptional())
+    fun toOptional(): BiCodec<B, Optional<V>> = of(HTOptionalCodec(codec), streamCodec.toOptional())
 }
 
 private fun <B : ByteBuf, V : Any> StreamCodec<B, V>.listOf(): StreamCodec<B, List<V>> = apply(ByteBufCodecs.list())

@@ -31,14 +31,26 @@ object MapBiCodecs {
         )
 
     /**
-     * 指定した[left], [right]から，[Pair]の[BiCodec]を返します。
-     * @param left [F]を対象とする[MapBiCodec]
-     * @param right [S]を対象とする[MapBiCodec]
+     * 指定した[first], [second]から，[Pair]の[BiCodec]を返します。
+     * @param first [F]を対象とする[MapBiCodec]
+     * @param second [S]を対象とする[MapBiCodec]
      * @return [Pair]の[MapBiCodec]
      */
     @JvmStatic
-    fun <B : ByteBuf, F : Any, S : Any> pair(left: MapBiCodec<in B, F>, right: MapBiCodec<in B, S>): MapBiCodec<B, Pair<F, S>> =
-        MapBiCodec.composite(left.forGetter(Pair<F, S>::first), right.forGetter(Pair<F, S>::second), ::Pair)
+    fun <B : ByteBuf, F : Any, S : Any> pair(first: MapBiCodec<in B, F>, second: MapBiCodec<in B, S>): MapBiCodec<B, Pair<F, S>> =
+        MapBiCodec.composite(first.forGetter(Pair<F, S>::first), second.forGetter(Pair<F, S>::second), ::Pair)
+
+    @JvmStatic
+    fun <B : ByteBuf, F : Any, S : Any, T : Any> triple(
+        first: MapBiCodec<in B, F>,
+        second: MapBiCodec<in B, S>,
+        third: MapBiCodec<in B, T>,
+    ): MapBiCodec<B, Triple<F, S, T>> = MapBiCodec.composite(
+        first.forGetter(Triple<F, S, T>::first),
+        second.forGetter(Triple<F, S, T>::second),
+        third.forGetter(Triple<F, S, T>::third),
+        ::Triple,
+    )
 
     /**
      * 指定した[left], [right]から，[Ior]の[BiCodec]を返します。

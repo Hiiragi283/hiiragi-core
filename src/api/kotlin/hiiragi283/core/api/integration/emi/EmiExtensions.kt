@@ -5,7 +5,7 @@ import dev.emi.emi.api.render.EmiTexture
 import dev.emi.emi.api.stack.EmiIngredient
 import dev.emi.emi.api.stack.EmiStack
 import dev.emi.emi.api.widget.Bounds
-import dev.emi.emi.api.widget.TankWidget
+import dev.emi.emi.api.widget.SlotWidget
 import dev.emi.emi.api.widget.TextureWidget
 import dev.emi.emi.api.widget.WidgetHolder
 import hiiragi283.core.api.item.createItemStack
@@ -243,4 +243,4 @@ fun WidgetHolder.addTank(
     x: Int,
     y: Int,
     capacity: Int = ingredient.amount.toInt(),
-): TankWidget = addTank(ingredient, x, y, 18, 18 * 3, capacity)
+): SlotWidget = addTank(ingredient, x, y, 18, 18 * 3, capacity).drawBack(false)

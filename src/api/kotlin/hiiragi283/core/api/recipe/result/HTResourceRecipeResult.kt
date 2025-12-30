@@ -68,7 +68,7 @@ abstract class HTResourceRecipeResult<TYPE : Any, RESOURCE : HTResourceType<TYPE
             .holderSetOrNull(tagKey)
             ?.firstOrNull()
             ?.let { HTTextResult.success(it) }
-            ?: HTCommonTranslation.EMPTY_TAG_KEY.toTextResult()
+            ?: HTCommonTranslation.EMPTY_TAG_KEY.toTextResult(tagKey)
     }
 
     override fun getId(): ResourceLocation = contents.map(HTResourceType<TYPE>::getId, TagKey<TYPE>::location)
