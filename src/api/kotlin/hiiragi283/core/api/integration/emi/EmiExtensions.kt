@@ -222,7 +222,6 @@ fun WidgetHolder.addArrow(x: Int, y: Int, time: Int): TextureWidget = addFilling
     .tooltipText(listOf(HTCommonTranslation.SECONDS.translate(time / 20.0f, time)))
 
 fun WidgetHolder.addBurning(x: Int, y: Int, time: Int) {
-    addTexture(EmiTexture.EMPTY_FLAME, x + 2, y + 2)
     addAnimatedTexture(
         EmiTexture.FULL_FLAME,
         x + 2,

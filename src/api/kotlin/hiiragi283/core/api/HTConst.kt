@@ -19,12 +19,6 @@ data object HTConst {
     @JvmField
     val BLOCK_ATLAS: ResourceLocation = vanillaId("textures/atlas/blocks.png")
 
-    /**
-     * GUI上のスプライトのテクスチャアトラスの[ResourceLocation]
-     */
-    @JvmField
-    val GUI_ATLAS: ResourceLocation = vanillaId("textures/atlas/gui.png")
-
     const val FULL_BRIGHT: Int = LightTexture.FULL_BRIGHT
 
     //    Fluid    //
@@ -104,4 +98,6 @@ data object HTConst {
     const val RESULTS = "results"
     const val ITEM_RESULT = "item_result"
     const val FLUID_RESULT = "fluid_result"
+
+    const val CHANCE = "chance"
 }

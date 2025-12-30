@@ -190,6 +190,17 @@ abstract class HTEmiRecipe<RECIPE : Any>(
     fun getPosition(index: Double): Int = (index * 18).toInt()
 
     /**
+     * このレシピに材料スロットを追加します。
+     * @param index 材料のインデックス
+     * @param x x軸方向の座標
+     * @param y y軸方向の座標
+     */
+    fun WidgetHolder.addInput(index: Int, x: Int, y: Int): SlotWidget {
+        val input: EmiIngredient = input(index)
+        return addSlot(input, x, y).drawBack(false)
+    }
+
+    /**
      * このレシピに触媒スロットを追加します。
      * @param index 触媒のインデックス
      * @param x x軸方向の座標
@@ -197,7 +208,7 @@ abstract class HTEmiRecipe<RECIPE : Any>(
      */
     fun WidgetHolder.addCatalyst(index: Int, x: Int, y: Int): SlotWidget {
         val catalyst: EmiIngredient = catalyst(index)
-        return addSlot(catalyst, x, y).catalyst(!catalyst.isEmpty)
+        return addSlot(catalyst, x, y).catalyst(!catalyst.isEmpty).drawBack(false)
     }
 
     /**
@@ -213,7 +224,7 @@ abstract class HTEmiRecipe<RECIPE : Any>(
         x: Int,
         y: Int,
         large: Boolean = false,
-        drawBack: Boolean = true,
+        drawBack: Boolean = false,
     ): SlotWidget = when {
         large -> addSlot(output(index), x - 4, y - 4).large(true)
         else -> addSlot(output(index), x, y)

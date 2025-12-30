@@ -31,6 +31,6 @@ class HTChargingEmiRecipe(holder: RecipeHolder<HCLightningChargingRecipe>) :
         // input
         widgets.addSlot(input(0), getPosition(1), getPosition(0.5))
         // outputs
-        widgets.addOutput(0, getPosition(4.5), getPosition(1), true)
+        widgets.addOutput(0, getPosition(4.5), getPosition(1), large = true, drawBack = true)
     }
 }

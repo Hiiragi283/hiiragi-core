@@ -1,4 +1,4 @@
-package hiiragi283.core.common.text
+package hiiragi283.core.util
 
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.text.HTCommonTranslation
@@ -30,13 +30,13 @@ object HTTooltipHelper {
 
     @JvmStatic
     fun addFluidTooltip(
-        stack: FluidStack?,
+        stack: FluidStack,
         consumer: Consumer<Component>,
         flag: TooltipFlag,
         isCreative: Boolean,
     ) {
         // Empty name if stack is empty
-        if (stack == null) {
+        if (stack.isEmpty) {
             consumer.accept(HTCommonTranslation.EMPTY.translate())
             return
         }

@@ -5,7 +5,7 @@ import hiiragi283.core.api.gui.component.HTFluidWidget
 import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.api.storage.fluid.getStillTexture
 import hiiragi283.core.api.storage.fluid.getTintColor
-import hiiragi283.core.common.text.HTTooltipHelper
+import hiiragi283.core.util.HTTooltipHelper
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.TooltipFlag
