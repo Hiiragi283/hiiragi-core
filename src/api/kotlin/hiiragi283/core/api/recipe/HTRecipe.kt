@@ -18,8 +18,7 @@ interface HTRecipe : Recipe<HTRecipeInput> {
     @Deprecated("Not used in Hiiragi Series", level = DeprecationLevel.ERROR)
     override fun canCraftInDimensions(width: Int, height: Int): Boolean = true
 
-    @Deprecated("Use `assemble(HTRecipeInput, HolderLookup.Provider) `instead", level = DeprecationLevel.ERROR)
-    override fun getResultItem(registries: HolderLookup.Provider): ItemStack = ItemStack.EMPTY
+    override fun assemble(input: HTRecipeInput, registries: HolderLookup.Provider): ItemStack = ItemStack.EMPTY
 
     @Deprecated("Not used in Hiiragi Series", level = DeprecationLevel.ERROR)
     override fun getRemainingItems(input: HTRecipeInput): NonNullList<ItemStack> = super.getRemainingItems(input)

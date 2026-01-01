@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockBehaviour
+import java.util.function.UnaryOperator
 
 /**
  * @see mekanism.common.registration.impl.BlockDeferredRegister
@@ -28,20 +29,20 @@ class HTDeferredBlockRegister(
     fun registerSimple(
         name: String,
         blockProp: BlockBehaviour.Properties,
-        itemProp: Item.Properties = Item.Properties(),
+        itemProp: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
     ): HTSimpleDeferredBlock = register(name, blockProp, ::Block, ::HTBlockItem, itemProp)
 
     fun <BLOCK : Block> registerSimple(
         name: String,
         blockProp: BlockBehaviour.Properties,
         blockGetter: BlockFactory<BLOCK>,
-        itemProp: Item.Properties = Item.Properties(),
+        itemProp: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
     ): HTBasicDeferredBlock<BLOCK> = register(name, blockProp, blockGetter, ::HTBlockItem, itemProp)
 
     fun <BLOCK : Block> registerSimple(
         name: String,
         blockFactory: () -> BLOCK,
-        itemProp: Item.Properties = Item.Properties(),
+        itemProp: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
     ): HTBasicDeferredBlock<BLOCK> = register(name, blockFactory, ::HTBlockItem, itemProp)
 
     // Basic
@@ -50,7 +51,7 @@ class HTDeferredBlockRegister(
         blockProp: BlockBehaviour.Properties,
         blockFactory: BlockFactory<BLOCK>,
         itemFactory: ItemWithContextFactory<BLOCK, ITEM>,
-        itemProp: Item.Properties = Item.Properties(),
+        itemProp: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
     ): HTDeferredBlock<BLOCK, ITEM> = register(
         name,
         { blockFactory(blockProp) },
@@ -62,11 +63,11 @@ class HTDeferredBlockRegister(
         name: String,
         blockGetter: () -> BLOCK,
         itemFactory: ItemWithContextFactory<BLOCK, ITEM>,
-        itemProp: Item.Properties = Item.Properties(),
+        itemProp: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
     ): HTDeferredBlock<BLOCK, ITEM> = registerAdvanced(
         name,
         { _: ResourceLocation -> blockGetter() },
-        { block: HTDeferredHolder<Block, BLOCK> -> itemFactory(block.get(), itemProp) },
+        { block: HTDeferredHolder<Block, BLOCK> -> itemFactory(block.get(), itemProp.apply(Item.Properties())) },
         ::HTDeferredBlock,
     )
 

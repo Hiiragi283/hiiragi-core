@@ -26,5 +26,5 @@ abstract class HCSingleItemRecipe(val ingredient: HTItemIngredient, val result: 
 
     final override fun matches(input: HTRecipeInput, level: Level): Boolean = input.testItem(0, ingredient)
 
-    final override fun assemble(input: HTRecipeInput, registries: HolderLookup.Provider): ItemStack = result.getStackOrEmpty(registries)
+    override fun getResultItem(registries: HolderLookup.Provider): ItemStack = result.getStackOrEmpty(registries)
 }

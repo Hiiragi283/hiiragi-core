@@ -18,6 +18,9 @@ import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.level.Level
 import kotlin.jvm.optionals.getOrNull
 
+/**
+ * @see mekanism.common.registration.impl.RecipeTypeRegistryObject
+ */
 data class HTDeferredRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(private val key: ResourceKey<RecipeType<*>>) :
     HTHolderLike<RecipeType<*>, RecipeType<RECIPE>>,
     HTRecipeFinder.Vanilla<INPUT, RECIPE>,

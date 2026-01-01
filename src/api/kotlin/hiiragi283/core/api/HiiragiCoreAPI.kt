@@ -2,6 +2,7 @@ package hiiragi283.core.api
 
 import hiiragi283.core.api.inventory.slot.payload.HTSyncablePayload
 import hiiragi283.core.api.resource.toId
+import net.minecraft.client.Minecraft
 import net.minecraft.core.Registry
 import net.minecraft.core.RegistryAccess
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -9,8 +10,10 @@ import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.MinecraftServer
+import net.neoforged.api.distmarker.Dist
 import net.neoforged.neoforge.registries.RegistryBuilder
 import net.neoforged.neoforge.server.ServerLifecycleHooks
+import thedarkcolour.kotlinforforge.neoforge.forge.callWhenOn
 import java.util.ServiceLoader
 
 /**
@@ -62,7 +65,8 @@ data object HiiragiCoreAPI {
      * @since 0.1.0
      */
     @JvmStatic
-    fun getActiveAccess(): RegistryAccess? = getActiveServer()?.registryAccess()
+    fun getActiveAccess(): RegistryAccess? =
+        callWhenOn(Dist.CLIENT) { Minecraft.getInstance().level?.registryAccess() } ?: getActiveServer()?.registryAccess()
 
     //    Registry    //
 
