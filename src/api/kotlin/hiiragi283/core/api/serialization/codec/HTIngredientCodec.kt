@@ -4,7 +4,6 @@ import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.monad.unwrapEither
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTKeyLike
@@ -133,7 +132,7 @@ internal object HTIngredientCodec {
             FluidIngredient::getType,
             FluidIngredientType<*>::codec,
             FLUID_HOLDER_CODEC.fieldOf(HTConst.FLUIDS),
-        ).xmap(::unwrapEither) { ingredient: FluidIngredient ->
+        ).xmap({ Either.unwrap(it) }) { ingredient: FluidIngredient ->
             when (ingredient) {
                 is TagFluidIngredient -> Either.right(ingredient)
                 is SingleFluidIngredient -> Either.right(ingredient)

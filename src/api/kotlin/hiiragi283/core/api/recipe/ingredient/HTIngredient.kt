@@ -1,6 +1,6 @@
 package hiiragi283.core.api.recipe.ingredient
 
-import com.mojang.datafixers.util.Either
+import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.storage.resource.HTResourceType
 import hiiragi283.core.api.tag.getName
 import hiiragi283.core.api.text.HTHasText

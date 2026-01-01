@@ -1,7 +1,7 @@
 package hiiragi283.core.api.recipe.ingredient
 
-import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
@@ -54,7 +54,7 @@ value class HTFluidIngredient(val delegate: SizedFluidIngredient) : HTIngredient
     override fun getRequiredAmount(): Int = delegate.amount()
 
     override fun unwrap(): Either<TagKey<Fluid>, List<HTFluidResourceType>> = when (ingredient) {
-        is TagFluidIngredient -> Either.left((ingredient as TagFluidIngredient).tag())
-        else -> Either.right(ingredient.stacks.mapNotNull(FluidStack::toResource))
+        is TagFluidIngredient -> Either.Left((ingredient as TagFluidIngredient).tag())
+        else -> Either.Right(ingredient.stacks.mapNotNull(FluidStack::toResource))
     }
 }

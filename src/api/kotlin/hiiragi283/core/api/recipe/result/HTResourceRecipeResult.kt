@@ -31,7 +31,7 @@ abstract class HTResourceRecipeResult<TYPE : Any, RESOURCE : HTResourceType<TYPE
      * 指定した[レジストリ][provider]から完成品を取得します。
      * @return 完成品を取得できなかった場合は[getEmptyStack]
      */
-    fun getStackOrEmpty(provider: HolderLookup.Provider?): STACK = getStackResult(provider).value().orElseGet(::getEmptyStack)
+    fun getStackOrEmpty(provider: HolderLookup.Provider?): STACK = getStackResult(provider).value() ?: getEmptyStack()
 
     /**
      * 空の完成品のインスタンスを取得します。
@@ -49,7 +49,7 @@ abstract class HTResourceRecipeResult<TYPE : Any, RESOURCE : HTResourceType<TYPE
             getFirstHolder(provider, tagKey)
                 .map { createStack(it, amount) }
                 .let { either: HTTextResult<STACK> ->
-                    HTTextResult.success(either.value().orElse(createStack(resource, amount)))
+                    HTTextResult.success(either.value() ?: createStack(resource, amount))
                 }
         },
     )

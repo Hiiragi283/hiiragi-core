@@ -1,6 +1,6 @@
 package hiiragi283.core.api.text
 
-import com.mojang.datafixers.util.Either
+import hiiragi283.core.api.monad.unwrap
 import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
 import java.util.Optional
@@ -59,4 +59,4 @@ fun <T : Any> Optional<T>.toTextResult(error: HTTranslation): HTTextResult<T> = 
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-fun HTTextResult<out Component>.unwrap(): Component = Either.unwrap(this.contents)
+fun HTTextResult<out Component>.unwrap(): Component = this.contents.unwrap()

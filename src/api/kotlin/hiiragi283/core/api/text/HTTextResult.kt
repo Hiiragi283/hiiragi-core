@@ -1,8 +1,7 @@
 package hiiragi283.core.api.text
 
-import com.mojang.datafixers.util.Either
+import hiiragi283.core.api.monad.Either
 import net.minecraft.network.chat.Component
-import java.util.Optional
 
 /**
  * エラーを[テキスト][Component]で保持するクラスです。
@@ -17,26 +16,26 @@ value class HTTextResult<T> private constructor(val contents: Either<Component, 
          * 指定した[value]から[HTTextResult]のインスタンスを作成します。
          */
         @JvmStatic
-        fun <T> success(value: T): HTTextResult<T> = HTTextResult(Either.right(value))
+        fun <T> success(value: T): HTTextResult<T> = HTTextResult(Either.Right(value))
 
         /**
          * 指定した[message]から[HTTextResult]のインスタンスを作成します。
          */
         @JvmStatic
-        fun <T> error(message: Component): HTTextResult<T> = HTTextResult(Either.left(message))
+        fun <T> error(message: Component): HTTextResult<T> = HTTextResult(Either.Left(message))
     }
 
     /**
      * 保持している値を返します。
-     * @return [Optional]に包まれた値
+     * @return 値がない場合は`null`
      */
-    fun value(): Optional<T> = contents.right()
+    fun value(): T? = contents.getRight()
 
     /**
      * 保持しているエラーを返します。
-     * @return [Optional]に包まれた値
+     * @return 値がある場合は`null`
      */
-    fun message(): Optional<Component> = contents.left()
+    fun message(): Component? = contents.getLeft()
 
     /**
      * 保持している値を変換します。
@@ -61,5 +60,5 @@ value class HTTextResult<T> private constructor(val contents: Either<Component, 
      * @param transform 値を[R]の[HTTextResult]に変換するブロック
      * @return 新しい[HTTextResult]のインスタンス
      */
-    fun <R> flatMap(transform: (T) -> HTTextResult<R>): HTTextResult<R> = contents.map({ HTTextResult(Either.left(it)) }, { transform(it) })
+    fun <R> flatMap(transform: (T) -> HTTextResult<R>): HTTextResult<R> = contents.map({ HTTextResult(Either.Left(it)) }, { transform(it) })
 }

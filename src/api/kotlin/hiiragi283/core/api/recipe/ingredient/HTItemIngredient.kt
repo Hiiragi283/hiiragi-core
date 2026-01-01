@@ -1,8 +1,8 @@
 package hiiragi283.core.api.recipe.ingredient
 
-import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.monad.unwrapEither
+import hiiragi283.core.api.monad.Either
+import hiiragi283.core.api.monad.unwrap
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
@@ -45,12 +45,12 @@ value class HTItemIngredient(val delegate: SizedIngredient) : HTIngredient<Item,
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> = BiCodecs
             .xor(UNSIZED_CODEC, NESTED_CODEC)
-            .xmap(::unwrapEither) { ingredient: HTItemIngredient ->
+            .xmap({ it.unwrap() }, { ingredient: HTItemIngredient ->
                 when (ingredient.getRequiredAmount()) {
-                    1 -> Either.left(ingredient)
-                    else -> Either.right(ingredient)
+                    1 -> Either.Left(ingredient)
+                    else -> Either.Right(ingredient)
                 }
-            }
+            })
     }
 
     constructor(ingredient: Ingredient, count: Int = 1) : this(SizedIngredient(ingredient, count))
@@ -74,18 +74,18 @@ value class HTItemIngredient(val delegate: SizedIngredient) : HTIngredient<Item,
     override fun unwrap(): Either<TagKey<Item>, List<HTItemResourceType>> {
         val custom: ICustomIngredient? = ingredient.customIngredient
         if (custom != null) {
-            return Either.right(custom.items.toList().mapNotNull(ItemStack::toResource))
+            return Either.Right(custom.items.toList().mapNotNull(ItemStack::toResource))
         } else {
             val values: Array<Ingredient.Value> = ingredient.values
             return when (values.size) {
-                0 -> Either.right(listOf())
+                0 -> Either.Right(listOf())
                 1 -> {
                     when (val value: Ingredient.Value = values[0]) {
-                        is Ingredient.TagValue -> Either.left(value.tag())
-                        else -> Either.right(value.items.mapNotNull(ItemStack::toResource))
+                        is Ingredient.TagValue -> Either.Left(value.tag())
+                        else -> Either.Right(value.items.mapNotNull(ItemStack::toResource))
                     }
                 }
-                else -> Either.right(values.flatMap(Ingredient.Value::getItems).mapNotNull(ItemStack::toResource))
+                else -> Either.Right(values.flatMap(Ingredient.Value::getItems).mapNotNull(ItemStack::toResource))
             }
         }
     }

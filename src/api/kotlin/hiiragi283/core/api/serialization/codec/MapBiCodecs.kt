@@ -1,10 +1,12 @@
 package hiiragi283.core.api.serialization.codec
 
-import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
+import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.monad.Ior
+import hiiragi283.core.api.monad.toHt
 import hiiragi283.core.api.monad.toIor
+import hiiragi283.core.api.monad.toMoj
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
@@ -25,10 +27,11 @@ object MapBiCodecs {
      */
     @JvmStatic
     fun <B : ByteBuf, F : Any, S : Any> either(first: MapBiCodec<in B, F>, second: MapBiCodec<in B, S>): MapBiCodec<B, Either<F, S>> =
-        MapBiCodec.of(
-            Codec.mapEither(first.codec, second.codec),
-            ByteBufCodecs.either(first.streamCodec, second.streamCodec),
-        )
+        MapBiCodec
+            .of(
+                Codec.mapEither(first.codec, second.codec),
+                ByteBufCodecs.either(first.streamCodec, second.streamCodec),
+            ).xmap({ it.toHt() }, { it.toMoj() })
 
     /**
      * 指定した[first], [second]から，[Pair]の[BiCodec]を返します。

@@ -1,5 +1,10 @@
 package hiiragi283.core.api.monad
 
-import com.mojang.datafixers.util.Either
+import hiiragi283.core.api.function.identity
+import com.mojang.datafixers.util.Either as MojEither
 
-fun <U> unwrapEither(either: Either<out U, out U>): U = Either.unwrap(either)
+fun <U> Either<out U, out U>.unwrap(): U = map(identity(), identity())
+
+fun <A, B> MojEither<A, B>.toHt(): Either<A, B> = this.map({ Either.Left(it) }, { Either.Right(it) })
+
+fun <A, B> Either<A, B>.toMoj(): MojEither<A, B> = this.map({ MojEither.left(it) }, { MojEither.right(it) })

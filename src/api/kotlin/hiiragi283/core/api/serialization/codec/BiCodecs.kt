@@ -1,10 +1,12 @@
 package hiiragi283.core.api.serialization.codec
 
-import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
 import hiiragi283.core.api.function.andThen
 import hiiragi283.core.api.math.fraction
+import hiiragi283.core.api.monad.Either
+import hiiragi283.core.api.monad.toHt
+import hiiragi283.core.api.monad.toMoj
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
@@ -89,9 +91,9 @@ object BiCodecs {
         { either: Either<String, Int> -> either.map(Fraction::getFraction, ::fraction) },
         { fraction: Fraction ->
             if (fraction.denominator == 1) {
-                Either.right(fraction.numerator)
+                Either.Right(fraction.numerator)
             } else {
-                Either.left(fraction.toString())
+                Either.Left(fraction.toString())
             }
         },
     )
@@ -135,10 +137,11 @@ object BiCodecs {
      * @return [Either]の[BiCodec]
      */
     @JvmStatic
-    fun <B : ByteBuf, F : Any, S : Any> either(first: BiCodec<in B, F>, second: BiCodec<in B, S>): BiCodec<B, Either<F, S>> = BiCodec.of(
-        Codec.either(first.codec, second.codec),
-        ByteBufCodecs.either(first.streamCodec, second.streamCodec),
-    )
+    fun <B : ByteBuf, F : Any, S : Any> either(first: BiCodec<in B, F>, second: BiCodec<in B, S>): BiCodec<B, Either<F, S>> = BiCodec
+        .of(
+            Codec.either(first.codec, second.codec),
+            ByteBufCodecs.either(first.streamCodec, second.streamCodec),
+        ).xmap({ it.toHt() }, { it.toMoj() })
 
     /**
      * 指定した[first], [second]から，[Either]の[BiCodec]を返します。
@@ -147,10 +150,11 @@ object BiCodecs {
      * @return [Either]の[BiCodec]
      */
     @JvmStatic
-    fun <B : ByteBuf, F : Any, S : Any> xor(first: BiCodec<in B, F>, second: BiCodec<in B, S>): BiCodec<B, Either<F, S>> = BiCodec.of(
-        Codec.xor(first.codec, second.codec),
-        ByteBufCodecs.either(first.streamCodec, second.streamCodec),
-    )
+    fun <B : ByteBuf, F : Any, S : Any> xor(first: BiCodec<in B, F>, second: BiCodec<in B, S>): BiCodec<B, Either<F, S>> = BiCodec
+        .of(
+            Codec.xor(first.codec, second.codec),
+            ByteBufCodecs.either(first.streamCodec, second.streamCodec),
+        ).xmap({ it.toHt() }, { it.toMoj() })
 
     /**
      * [Enum]の[BiCodec]を返します。

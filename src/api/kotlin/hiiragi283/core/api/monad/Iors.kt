@@ -1,7 +1,5 @@
 package hiiragi283.core.api.monad
 
-import com.mojang.datafixers.util.Either
-
 /**
  * この[Either]を[Ior]に変換します。
  * @author Hiiragi Tsubasa
