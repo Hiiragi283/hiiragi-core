@@ -1,5 +1,6 @@
 package hiiragi283.core.api.recipe
 
+import net.minecraft.world.item.crafting.RecipeInput
 import org.apache.commons.lang3.math.Fraction
 
 /**
@@ -9,4 +10,4 @@ import org.apache.commons.lang3.math.Fraction
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-abstract class HTProcessingRecipe(val time: Int, val exp: Fraction) : HTRecipe
+abstract class HTProcessingRecipe<INPUT : RecipeInput>(val time: Int, val exp: Fraction) : HTRecipe<INPUT>

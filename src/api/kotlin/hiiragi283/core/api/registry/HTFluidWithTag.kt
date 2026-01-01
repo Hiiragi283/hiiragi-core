@@ -1,6 +1,7 @@
 package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.resource.HTKeyLike
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import net.minecraft.core.Holder
 import net.minecraft.tags.TagKey
 import net.minecraft.world.level.material.FlowingFluid
@@ -75,4 +76,10 @@ interface HTFluidWithTag<FLUID : Fluid> :
      * 保持している液体の[FluidType]を返します。
      */
     fun getFluidType(): FluidType
+
+    fun isOf(fluid: Fluid): Boolean = get() == fluid
+
+    fun isOf(tagKey: TagKey<Fluid>): Boolean = getFluidTag() == tagKey && getHolder().`is`(tagKey)
+
+    fun isOf(resource: HTFluidResourceType): Boolean = resource.isOf(get())
 }

@@ -3,7 +3,6 @@ package hiiragi283.core.common.event
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
-import hiiragi283.core.api.recipe.input.HTRecipeInput
 import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
@@ -14,6 +13,7 @@ import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeHolder
+import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.AABB
 import net.neoforged.bus.api.SubscribeEvent
@@ -36,7 +36,7 @@ object HTRecipeEventHandler {
         val level: Level = entity.level()
         if (level.isClientSide) return
         if (entity is ItemEntity && entity.isAlive) {
-            val input: HTRecipeInput = createInput(entity) ?: return
+            val input: SingleRecipeInput = createInput(entity)
             val recipe: HCLightningChargingRecipe = level.recipeManager
                 .getRecipesFor(
                     HCRecipeTypes.CHARGING.get(),
@@ -61,7 +61,7 @@ object HTRecipeEventHandler {
         val pos: BlockPos = event.pos
         for (entity: ItemEntity in level.getEntitiesOfClass(ItemEntity::class.java, AABB(pos))) {
             if (isCompleted(entity)) continue
-            val input: HTRecipeInput = createInput(entity) ?: continue
+            val input: SingleRecipeInput = createInput(entity)
             val (_, recipe: HCAnvilCrushingRecipe) = HCRecipeTypes.CRUSHING.getRecipeFor(input, level, null) ?: continue
             popResult(input, recipe, level, entity)
             if (entity.item.isEmpty) {
@@ -76,7 +76,7 @@ object HTRecipeEventHandler {
         if (!event.state.`is`(Blocks.MAGMA_BLOCK)) return
         val entity: ItemEntity = event.entity
         if (entity.isAlive && !isCompleted(entity)) {
-            val input: HTRecipeInput = createInput(entity) ?: return
+            val input = createInput(entity) ?: return
             val (_, recipe: HTDryingRecipe) = HCRecipeTypes.DRYING.getRecipeFor(input, level, null) ?: return
             val tag: CompoundTag = entity.persistentData
             val dryingTicks: Int = tag.getInt(HTConst.DRYING_TICKS)
@@ -105,7 +105,7 @@ object HTRecipeEventHandler {
         while (iterator.hasNext()) {
             val entity: Entity = iterator.next()
             if (entity is ItemEntity && entity.isAlive && !isCompleted(entity)) {
-                val input: HTRecipeInput = createInput(entity) ?: continue
+                val input: SingleRecipeInput = createInput(entity)
                 val (_, recipe: HCExplodingRecipe) = HCRecipeTypes.EXPLODING.getRecipeFor(input, level, null) ?: continue
                 popResult(input, recipe, level, entity)
                 if (entity.item.isEmpty) {
@@ -122,13 +122,11 @@ object HTRecipeEventHandler {
     private fun isCompleted(entity: Entity): Boolean = entity.persistentData.getBoolean(HTConst.COMPLETED_RECIPE)
 
     @JvmStatic
-    private fun createInput(entity: ItemEntity): HTRecipeInput? = HTRecipeInput.create(null) {
-        items += entity.item
-    }
+    private fun createInput(entity: ItemEntity): SingleRecipeInput = SingleRecipeInput(entity.item)
 
     @JvmStatic
     private fun popResult(
-        input: HTRecipeInput,
+        input: SingleRecipeInput,
         recipe: HCSingleItemRecipe,
         level: Level,
         entity: ItemEntity,

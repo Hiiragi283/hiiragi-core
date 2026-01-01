@@ -42,10 +42,9 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
     private fun registerBuckets() {
         val dripFluids: List<HTSimpleFluidContent> = buildList {
             // Vanilla
-            add(HCFluids.EXPERIENCE)
             add(HCFluids.HONEY)
-            add(HCFluids.MUSHROOM_STEW)
             // Molten
+            add(HCFluids.MOLTEN_GLASS)
             add(HCFluids.CRIMSON_BLOOD)
             add(HCFluids.DEW_OF_THE_WARP)
             add(HCFluids.ELDRITCH_FLUX)

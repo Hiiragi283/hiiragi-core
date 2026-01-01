@@ -34,18 +34,15 @@ object HCFluids {
     @JvmField
     val MUSHROOM_STEW: HTSimpleFluidContent = REGISTER.registerSimple("mushroom_stew", liquid())
 
-    //    Saps    //
+    //    Organic    //
 
     @JvmField
     val LATEX: HTSimpleFluidContent = REGISTER.registerSimple("latex", liquid())
 
-    @JvmField
-    val CRIMSON_SAP: HTSimpleFluidContent = REGISTER.registerSimple("crimson_sap", liquid())
-
-    @JvmField
-    val WARPED_SAP: HTSimpleFluidContent = REGISTER.registerSimple("warped_sap", liquid())
-
     //    Molten    //
+
+    @JvmField
+    val MOLTEN_GLASS: HTSimpleFluidContent = REGISTER.registerSimple("molten_glass", molten())
 
     @JvmField
     val CRIMSON_BLOOD: HTSimpleFluidContent =

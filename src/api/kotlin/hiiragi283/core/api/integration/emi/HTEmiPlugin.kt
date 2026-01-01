@@ -9,6 +9,7 @@ import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.registry.HTHolderLike
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.RecipeHolder
+import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeType
 import org.slf4j.Logger
 
@@ -70,7 +71,7 @@ abstract class HTEmiPlugin(protected val modId: String) : EmiPlugin {
      * @param factory [RECIPE]を[EMI_RECIPE]に変換するブロック
      * @see mekanism.client.recipe_viewer.emi.MekanismEmi.addCategoryAndRecipes
      */
-    protected inline fun <BASE : HTRecipe, reified RECIPE : BASE, EMI_RECIPE : EmiRecipe> addRegistryRecipes(
+    protected inline fun <INPUT : RecipeInput, BASE : HTRecipe<INPUT>, reified RECIPE : BASE, EMI_RECIPE : EmiRecipe> addRegistryRecipes(
         registry: EmiRegistry,
         recipeType: HTHolderLike<RecipeType<*>, RecipeType<BASE>>,
         noinline factory: (RecipeHolder<RECIPE>) -> EMI_RECIPE?,

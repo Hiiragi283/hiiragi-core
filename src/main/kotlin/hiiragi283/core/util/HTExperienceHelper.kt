@@ -4,9 +4,14 @@ import com.google.common.primitives.Ints
 import hiiragi283.core.config.HCConfig
 import it.unimi.dsi.fastutil.longs.Long2LongArrayMap
 import net.minecraft.core.Holder
+import net.minecraft.core.Vec3i
+import net.minecraft.server.level.ServerLevel
+import net.minecraft.world.entity.ExperienceOrb
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.enchantment.Enchantment
 import net.minecraft.world.item.enchantment.ItemEnchantments
+import net.minecraft.world.level.Level
+import net.minecraft.world.phys.Vec3
 import kotlin.math.max
 
 /**
@@ -16,6 +21,16 @@ object HTExperienceHelper {
     fun fluidAmountFromExp(value: Int): Int = value * HCConfig.COMMON.expConversionRatio.asInt
 
     fun expAmountFromFluid(value: Int): Int = value / HCConfig.COMMON.expConversionRatio.asInt
+
+    fun popExperienceOrb(level: Level, pos: Vec3i, amount: Int) {
+        popExperienceOrb(level, Vec3.atCenterOf(pos), amount)
+    }
+
+    fun popExperienceOrb(level: Level, pos: Vec3, amount: Int) {
+        if (level is ServerLevel) {
+            ExperienceOrb.award(level, pos, amount)
+        }
+    }
 
     //    Player    //
 

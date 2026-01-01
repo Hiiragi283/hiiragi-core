@@ -26,9 +26,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.MUSHROOM_STEW, "キノコシチュー")
 
         addFluid(HCFluids.LATEX, "ラテックス")
-        addFluid(HCFluids.CRIMSON_SAP, "深紅の樹液")
-        addFluid(HCFluids.WARPED_SAP, "歪んだ樹液")
 
+        addFluid(HCFluids.MOLTEN_GLASS, "溶融ガラス")
         addFluid(HCFluids.CRIMSON_BLOOD, "深紅の血液")
         addFluid(HCFluids.DEW_OF_THE_WARP, "歪みの雫")
         addFluid(HCFluids.ELDRITCH_FLUX, "異質な流動体")

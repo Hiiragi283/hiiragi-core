@@ -26,9 +26,8 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.MUSHROOM_STEW, "Mushroom Stew")
 
         addFluid(HCFluids.LATEX, "Latex")
-        addFluid(HCFluids.CRIMSON_SAP, "Crimson Sap")
-        addFluid(HCFluids.WARPED_SAP, "Warped Sap")
 
+        addFluid(HCFluids.MOLTEN_GLASS, "Molten Glass")
         addFluid(HCFluids.CRIMSON_BLOOD, "Crimson Blood")
         addFluid(HCFluids.DEW_OF_THE_WARP, "Dew of the Warp")
         addFluid(HCFluids.ELDRITCH_FLUX, "Eldritch Flux")

@@ -1,5 +1,5 @@
 {
-  "parent": "neoforge:item/bucket_drip",
+  "parent": "neoforge:item/bucket",
   "fluid": "hiiragi_core:experience",
   "loader": "neoforge:fluid_container"
 }

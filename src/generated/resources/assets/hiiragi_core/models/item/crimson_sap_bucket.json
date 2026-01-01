@@ -1,5 +1,0 @@
-{
-  "parent": "neoforge:item/bucket",
-  "fluid": "hiiragi_core:crimson_sap",
-  "loader": "neoforge:fluid_container"
-}

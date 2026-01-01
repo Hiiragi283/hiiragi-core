@@ -57,9 +57,8 @@ object HiiragiCoreClient {
         event.dull(HCFluids.MUSHROOM_STEW, Color(0xcc9966))
         // Saps
         event.dull(HCFluids.LATEX, Color(0xcccccc))
-        event.dull(HCFluids.CRIMSON_SAP, Color(0x660000))
-        event.dull(HCFluids.WARPED_SAP, Color(0x006666))
 
+        event.molten(HCFluids.MOLTEN_GLASS, Color(0xccccff))
         event.molten(HCFluids.CRIMSON_BLOOD, Color(0x990000))
         event.molten(HCFluids.DEW_OF_THE_WARP, Color(0x009999))
         event.molten(HCFluids.ELDRITCH_FLUX, Color(0x990099))
