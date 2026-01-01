@@ -27,7 +27,7 @@ data class HTChancedItemResult(val result: HTItemResult, val chance: Fraction) {
     }
 
     fun getStackOrEmpty(level: LevelAccessor): ItemStack = getStackOrEmpty(level.registryAccess(), level.random)
-    
+
     fun getStackOrEmpty(provider: HolderLookup.Provider, random: RandomSource): ItemStack = when {
         random.nextFloat() <= this.chance.toFloat() -> result.getStackOrEmpty(provider)
         else -> ItemStack.EMPTY

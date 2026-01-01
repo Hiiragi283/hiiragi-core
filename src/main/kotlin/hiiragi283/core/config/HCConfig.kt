@@ -1,5 +1,7 @@
 package hiiragi283.core.config
 
+import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.config.definePositiveInt
 import net.neoforged.neoforge.common.ModConfigSpec
 import org.apache.commons.lang3.tuple.Pair
@@ -23,5 +25,21 @@ object HCConfig {
 
         @JvmField
         val expConversionRatio: ModConfigSpec.IntValue = builder.definePositiveInt("expConversionRatio", 20)
+
+        @JvmField
+        val tagOutputPriority: ModConfigSpec.ConfigValue<List<String>> =
+            builder
+                .worldRestart()
+                .defineList(
+                    "tagOutputModIds",
+                    listOf(
+                        HiiragiCoreAPI.MOD_ID,
+                        HTConst.MINECRAFT,
+                        "alltheores",
+                        "mekanism",
+                    ),
+                    { "" },
+                    { obj: Any -> obj is String },
+                )
     }
 }

@@ -15,7 +15,7 @@ import hiiragi283.core.api.storage.fluid.insert
 import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
-import hiiragi283.core.api.storage.item.toResource
+import hiiragi283.core.api.storage.item.toResourcePair
 import hiiragi283.core.api.storage.resource.HTResourceSlot
 import hiiragi283.core.api.storage.resource.HTResourceType
 import hiiragi283.core.api.storage.resource.HTResourceView
@@ -29,7 +29,6 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem
 import org.slf4j.Logger
 import java.util.function.Consumer
 import java.util.function.ToIntBiFunction
-import kotlin.text.insert
 
 object HTStackSlotHelper {
     @JvmField
@@ -100,7 +99,7 @@ object HTStackSlotHelper {
      */
     @JvmStatic
     fun <RESOURCE : HTResourceType<*>> insert(
-        slots: List<HTResourceSlot<RESOURCE>>,
+        slots: Iterable<HTResourceSlot<RESOURCE>>,
         resource: RESOURCE?,
         amount: Int,
         action: HTStorageAction,
@@ -186,27 +185,13 @@ object HTStackSlotHelper {
 
     @JvmStatic
     fun insertStacks(
-        slots: Iterable<HTItemSlot>,
+        slot: Iterable<HTItemSlot>,
         stack: ItemStack,
         action: HTStorageAction,
-        filter: (HTItemSlot, HTItemResourceType) -> Boolean = HTItemSlot::isValid,
-        onBreak: () -> Unit = {},
-    ): ItemStack {
-        val remainder: ItemStack = stack.copy()
-        for (slot: HTItemSlot in slots) {
-            val remainderResource: HTItemResourceType = remainder.toResource() ?: break
-            if (filter(slot, remainderResource)) {
-                val remainderCount: Int = slot.insert(remainderResource, remainder.count, action, HTStorageAccess.INTERNAL)
-                if (action.execute()) {
-                    remainder.count = remainderCount
-                }
-                if (remainder.count <= 0) {
-                    onBreak()
-                    break
-                }
-            }
-        }
-        return remainder
+        access: HTStorageAccess,
+    ): Int {
+        val (resource: HTItemResourceType, amount: Int) = stack.toResourcePair() ?: return 0
+        return insert(slot, resource, amount, action, access)
     }
 
     //    Fluid    //

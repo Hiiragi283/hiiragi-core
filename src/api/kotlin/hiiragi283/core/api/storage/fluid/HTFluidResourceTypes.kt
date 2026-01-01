@@ -14,6 +14,11 @@ import net.neoforged.neoforge.fluids.FluidStack
  */
 fun FluidStack.toResource(): HTFluidResourceType? = HTFluidResourceType.of(this)
 
+fun FluidStack.toResourcePair(): Pair<HTFluidResourceType, Int>? {
+    val resource: HTFluidResourceType = this.toResource() ?: return null
+    return resource to this.amount
+}
+
 @OnlyIn(Dist.CLIENT)
 fun HTFluidResourceType.getClientExtensions(): IClientFluidTypeExtensions = IClientFluidTypeExtensions.of(this.fluidType())
 

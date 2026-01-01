@@ -9,3 +9,8 @@ import net.minecraft.world.item.ItemStack
  * @since 0.4.0
  */
 fun ItemStack.toResource(): HTItemResourceType? = HTItemResourceType.of(this)
+
+fun ItemStack.toResourcePair(): Pair<HTItemResourceType, Int>? {
+    val resource: HTItemResourceType = this.toResource() ?: return null
+    return resource to this.count
+}

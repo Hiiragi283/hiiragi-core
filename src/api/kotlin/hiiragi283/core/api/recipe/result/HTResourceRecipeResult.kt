@@ -1,14 +1,17 @@
 package hiiragi283.core.api.recipe.result
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.registry.holderSetOrNull
+import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.storage.resource.HTResourceType
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.toTextResult
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
+import net.minecraft.core.HolderSet
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 
@@ -64,10 +67,15 @@ abstract class HTResourceRecipeResult<TYPE : Any, RESOURCE : HTResourceType<TYPE
     private fun getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<TYPE>): HTTextResult<Holder<TYPE>> {
         val provider1: HolderLookup.Provider = (provider ?: HiiragiCoreAPI.getActiveAccess())
             ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()
-        return provider1
-            .holderSetOrNull(tagKey)
-            ?.firstOrNull()
-            ?.let { HTTextResult.success(it) }
+        val holders: HolderSet<TYPE> = provider1.holderSetOrNull(tagKey)
+            ?: return HTCommonTranslation.EMPTY_TAG_KEY.toTextResult(tagKey)
+        for (modId: String in HiiragiCoreAccess.INSTANCE.getModIdPriorityList()) {
+            val first: Holder<TYPE>? = holders.firstOrNull { holder: Holder<TYPE> -> holder.toLike().getNamespace() == modId }
+            if (first != null) return HTTextResult.success(first)
+        }
+        return holders
+            .firstOrNull()
+            ?.let(HTTextResult.Companion::success)
             ?: HTCommonTranslation.EMPTY_TAG_KEY.toTextResult(tagKey)
     }
 
