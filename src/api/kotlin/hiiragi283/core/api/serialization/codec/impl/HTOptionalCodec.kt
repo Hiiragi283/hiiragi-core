@@ -1,4 +1,4 @@
-package hiiragi283.core.api.serialization.codec
+package hiiragi283.core.api.serialization.codec.impl
 
 import com.mojang.datafixers.util.Pair
 import com.mojang.serialization.Codec

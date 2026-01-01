@@ -44,7 +44,7 @@ value class HTItemIngredient(val delegate: SizedIngredient) : HTIngredient<Item,
          */
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> = BiCodecs
-            .xor(UNSIZED_CODEC, NESTED_CODEC)
+            .either(UNSIZED_CODEC, NESTED_CODEC, true)
             .xmap({ it.unwrap() }, { ingredient: HTItemIngredient ->
                 when (ingredient.getRequiredAmount()) {
                     1 -> Either.Left(ingredient)

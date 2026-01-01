@@ -1,4 +1,4 @@
-package hiiragi283.core.api.serialization.codec
+package hiiragi283.core.api.serialization.codec.impl
 
 import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
@@ -7,6 +7,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTKeyLike
+import hiiragi283.core.api.serialization.codec.listOrElement
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries

@@ -5,8 +5,8 @@ import com.mojang.serialization.DataResult
 import hiiragi283.core.api.function.andThen
 import hiiragi283.core.api.math.fraction
 import hiiragi283.core.api.monad.Either
-import hiiragi283.core.api.monad.toHt
-import hiiragi283.core.api.monad.toMoj
+import hiiragi283.core.api.serialization.codec.impl.HTEitherCodec
+import hiiragi283.core.api.serialization.codec.impl.HTEitherStreamCodec
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
@@ -87,7 +87,7 @@ object BiCodecs {
      * [Fraction]の[BiCodec]
      */
     @JvmField
-    val FRACTION: BiCodec<ByteBuf, Fraction> = either(BiCodec.STRING, BiCodec.INT).xmap(
+    val FRACTION: BiCodec<ByteBuf, Fraction> = either(BiCodec.STRING, BiCodec.INT, false).xmap(
         { either: Either<String, Int> -> either.map(Fraction::getFraction, ::fraction) },
         { fraction: Fraction ->
             if (fraction.denominator == 1) {
@@ -131,30 +131,22 @@ object BiCodecs {
     )
 
     /**
-     * 指定した[first], [second]から，[Either]の[BiCodec]を返します。
-     * @param first [F]を対象とする[BiCodec]
-     * @param second [S]を対象とする[BiCodec]
+     * 指定した[left], [right]から，[Either]の[BiCodec]を返します。
+     * @param left [A]を対象とする[BiCodec]
+     * @param right [B1]を対象とする[BiCodec]
+     * @param strict 両方の値を読み取れた場合にエラーとするかどうか
      * @return [Either]の[BiCodec]
      */
     @JvmStatic
-    fun <B : ByteBuf, F : Any, S : Any> either(first: BiCodec<in B, F>, second: BiCodec<in B, S>): BiCodec<B, Either<F, S>> = BiCodec
+    fun <B : ByteBuf, A : Any, B1 : Any> either(
+        left: BiCodec<in B, A>,
+        right: BiCodec<in B, B1>,
+        strict: Boolean,
+    ): BiCodec<B, Either<A, B1>> = BiCodec
         .of(
-            Codec.either(first.codec, second.codec),
-            ByteBufCodecs.either(first.streamCodec, second.streamCodec),
-        ).xmap({ it.toHt() }, { it.toMoj() })
-
-    /**
-     * 指定した[first], [second]から，[Either]の[BiCodec]を返します。
-     * @param first [F]を対象とする[BiCodec]
-     * @param second [S]を対象とする[BiCodec]
-     * @return [Either]の[BiCodec]
-     */
-    @JvmStatic
-    fun <B : ByteBuf, F : Any, S : Any> xor(first: BiCodec<in B, F>, second: BiCodec<in B, S>): BiCodec<B, Either<F, S>> = BiCodec
-        .of(
-            Codec.xor(first.codec, second.codec),
-            ByteBufCodecs.either(first.streamCodec, second.streamCodec),
-        ).xmap({ it.toHt() }, { it.toMoj() })
+            HTEitherCodec(left.codec, right.codec, strict),
+            HTEitherStreamCodec(left.streamCodec, right.streamCodec),
+        )
 
     /**
      * [Enum]の[BiCodec]を返します。

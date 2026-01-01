@@ -1,14 +1,12 @@
 package hiiragi283.core.api.serialization.codec
 
-import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.monad.Ior
-import hiiragi283.core.api.monad.toHt
 import hiiragi283.core.api.monad.toIor
-import hiiragi283.core.api.monad.toMoj
+import hiiragi283.core.api.serialization.codec.impl.HTEitherMapCodec
+import hiiragi283.core.api.serialization.codec.impl.HTEitherStreamCodec
 import io.netty.buffer.ByteBuf
-import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -20,18 +18,18 @@ import kotlin.jvm.optionals.getOrNull
  */
 object MapBiCodecs {
     /**
-     * 指定した[first], [second]から，[Either]の[BiCodec]を返します。
-     * @param first [F]を対象とする[MapBiCodec]
-     * @param second [S]を対象とする[MapBiCodec]
+     * 指定した[left], [right]から，[Either]の[BiCodec]を返します。
+     * @param left [A]を対象とする[BiCodec]
+     * @param right [B1]を対象とする[BiCodec]
      * @return [Either]の[MapBiCodec]
      */
     @JvmStatic
-    fun <B : ByteBuf, F : Any, S : Any> either(first: MapBiCodec<in B, F>, second: MapBiCodec<in B, S>): MapBiCodec<B, Either<F, S>> =
+    fun <B : ByteBuf, A : Any, B1 : Any> either(left: MapBiCodec<in B, A>, right: MapBiCodec<in B, B1>): MapBiCodec<B, Either<A, B1>> =
         MapBiCodec
             .of(
-                Codec.mapEither(first.codec, second.codec),
-                ByteBufCodecs.either(first.streamCodec, second.streamCodec),
-            ).xmap({ it.toHt() }, { it.toMoj() })
+                HTEitherMapCodec(left.codec, right.codec),
+                HTEitherStreamCodec(left.streamCodec, right.streamCodec),
+            )
 
     /**
      * 指定した[first], [second]から，[Pair]の[BiCodec]を返します。
