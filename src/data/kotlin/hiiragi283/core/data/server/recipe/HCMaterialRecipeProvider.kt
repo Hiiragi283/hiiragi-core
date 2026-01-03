@@ -13,7 +13,6 @@ import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialItems
-import hiiragi283.core.common.tag.HCModTags
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.tags.ItemTags
@@ -49,9 +48,9 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
     @JvmStatic
     private fun manual() {
         // Amethyst + Lapis -> Azure Shard
-        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.GEM, HCMaterial.Gems.AZURE), 4) {
-            addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Gems.AMETHYST, 2)
-            addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Gems.LAPIS, 2)
+        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.GEM, HCMaterial.Gems.AZURE), 2) {
+            addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Gems.AMETHYST)
+            addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Gems.LAPIS)
         }
 
         // Gold + Obsidian + Blackstone -> Night Metal
@@ -141,22 +140,6 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             .create(getItemOrThrow(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Plates.RUBBER))
             .addIngredient(HCFluids.LATEX.bucketTag)
             .saveSuffixed(output, "_from_bucket")
-        // Raw Rubber + Sulfur + Coal -> Rubber
-        HTShapelessRecipeBuilder
-            .create(getItemOrThrow(HCMaterialPrefixes.PLATE, HCMaterial.Plates.RUBBER), 3)
-            .addIngredient(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Plates.RUBBER)
-            .addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Minerals.SULFUR)
-            .addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Fuels.COAL, HCMaterial.Fuels.CHARCOAL)
-            .addIngredient(Items.FIRE_CHARGE)
-            .savePrefixed(output, "black_")
-        // Eldritch
-        HTShapelessRecipeBuilder
-            .create(HCFluids.ELDRITCH_FLUX.bucket)
-            .addIngredient(HCFluids.CRIMSON_BLOOD.bucketTag)
-            .addIngredient(HCFluids.DEW_OF_THE_WARP.bucketTag)
-            .addIngredient(HCModTags.Items.ELDRITCH_PEARL_BINDER)
-            .addIngredient(Tags.Items.BUCKETS_EMPTY)
-            .saveSuffixed(output, "_from_mix")
     }
 
     @JvmStatic

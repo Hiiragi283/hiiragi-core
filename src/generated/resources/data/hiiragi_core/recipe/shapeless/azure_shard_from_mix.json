@@ -6,12 +6,6 @@
       "tag": "c:dusts/amethyst"
     },
     {
-      "tag": "c:dusts/amethyst"
-    },
-    {
-      "tag": "c:dusts/lapis"
-    },
-    {
       "tag": "c:dusts/lapis"
     },
     {
@@ -19,7 +13,7 @@
     }
   ],
   "result": {
-    "count": 4,
+    "count": 2,
     "id": "hiiragi_core:azure_shard"
   }
 }

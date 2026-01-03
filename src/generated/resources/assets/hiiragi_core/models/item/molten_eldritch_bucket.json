@@ -1,5 +1,5 @@
 {
   "parent": "neoforge:item/bucket_drip",
-  "fluid": "hiiragi_core:dew_of_the_warp",
+  "fluid": "hiiragi_core:molten_eldritch",
   "loader": "neoforge:fluid_container"
 }

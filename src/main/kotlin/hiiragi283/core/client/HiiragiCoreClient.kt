@@ -57,11 +57,13 @@ object HiiragiCoreClient {
         event.dull(HCFluids.MUSHROOM_STEW, Color(0xcc9966))
         // Saps
         event.dull(HCFluids.LATEX, Color(0xcccccc))
+        event.dull(HCFluids.BLOOD, Color(0x990000))
+        event.dull(HCFluids.MEAT, Color(0xcc6666))
 
         event.molten(HCFluids.MOLTEN_GLASS, Color(0xccccff))
-        event.molten(HCFluids.CRIMSON_BLOOD, Color(0x990000))
-        event.molten(HCFluids.DEW_OF_THE_WARP, Color(0x009999))
-        event.molten(HCFluids.ELDRITCH_FLUX, Color(0x990099))
+        event.molten(HCFluids.MOLTEN_CRIMSON_CRYSTAL, Color(0x990000))
+        event.molten(HCFluids.MOLTEN_WARPED_CRYSTAL, Color(0x009999))
+        event.molten(HCFluids.MOLTEN_ELDRITCH, Color(0x990099))
 
         LOGGER.info("Registered client extensions!")
     }

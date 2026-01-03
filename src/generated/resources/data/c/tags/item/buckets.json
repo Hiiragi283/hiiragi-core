@@ -1,12 +1,14 @@
 {
   "values": [
-    "#c:buckets/crimson_blood",
-    "#c:buckets/dew_of_the_warp",
-    "#c:buckets/eldritch_flux",
+    "#c:buckets/blood",
     "#c:buckets/experience",
     "#c:buckets/honey",
     "#c:buckets/latex",
+    "#c:buckets/meat",
+    "#c:buckets/molten_crimson_crystal",
+    "#c:buckets/molten_eldritch",
     "#c:buckets/molten_glass",
+    "#c:buckets/molten_warped_crystal",
     "#c:buckets/mushroom_stew"
   ]
 }

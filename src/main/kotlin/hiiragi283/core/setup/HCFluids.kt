@@ -39,22 +39,28 @@ object HCFluids {
     @JvmField
     val LATEX: HTSimpleFluidContent = REGISTER.registerSimple("latex", liquid())
 
+    @JvmField
+    val BLOOD: HTSimpleFluidContent = REGISTER.registerSimple("blood", liquid())
+
+    @JvmField
+    val MEAT: HTSimpleFluidContent = REGISTER.registerSimple("meat", liquid())
+
     //    Molten    //
 
     @JvmField
     val MOLTEN_GLASS: HTSimpleFluidContent = REGISTER.registerSimple("molten_glass", molten())
 
     @JvmField
-    val CRIMSON_BLOOD: HTSimpleFluidContent =
-        REGISTER.register("crimson_blood", molten().temperature(2300), ::HTNetherFluidType)
+    val MOLTEN_CRIMSON_CRYSTAL: HTSimpleFluidContent =
+        REGISTER.register("molten_crimson_crystal", molten().temperature(2300), ::HTNetherFluidType)
 
     @JvmField
-    val DEW_OF_THE_WARP: HTSimpleFluidContent =
-        REGISTER.register("dew_of_the_warp", molten().temperature(1300), ::HTNetherFluidType)
+    val MOLTEN_WARPED_CRYSTAL: HTSimpleFluidContent =
+        REGISTER.register("molten_warped_crystal", molten().temperature(1300), ::HTNetherFluidType)
 
     @JvmField
-    val ELDRITCH_FLUX: HTSimpleFluidContent =
-        REGISTER.register("eldritch_flux", molten().temperature(1300), ::HTEndFluidType)
+    val MOLTEN_ELDRITCH: HTSimpleFluidContent =
+        REGISTER.register("molten_eldritch", molten().temperature(1300), ::HTEndFluidType)
 
     //    Extensions    //
 

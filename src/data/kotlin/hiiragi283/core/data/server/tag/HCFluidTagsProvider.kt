@@ -2,6 +2,7 @@ package hiiragi283.core.data.server.tag
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
+import hiiragi283.core.api.data.tag.HTTagBuilder
 import hiiragi283.core.api.data.tag.HTTagsProvider
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.setup.HCFluids
@@ -13,8 +14,10 @@ class HCFluidTagsProvider(context: HTDataGenContext) : HTTagsProvider<Fluid>(Hii
         for (content: HTFluidContent<*, *, *> in HCFluids.REGISTER.entries) {
             factory
                 .apply(content.getFluidTag())
-                .add(content.stillHolder)
-                .add(content.flowingHolder)
+                .addContent(content)
         }
     }
+
+    fun HTTagBuilder<Fluid>.addContent(content: HTFluidContent<*, *, *>): HTTagBuilder<Fluid> =
+        this.add(content.stillHolder).add(content.flowingHolder)
 }
