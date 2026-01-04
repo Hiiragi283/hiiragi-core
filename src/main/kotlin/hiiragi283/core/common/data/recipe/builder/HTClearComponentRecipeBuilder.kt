@@ -17,7 +17,7 @@ class HTClearComponentRecipeBuilder(private val item: HTItemHolderLike<*>) :
         @JvmStatic
         fun create(item: ItemLike): HTClearComponentRecipeBuilder = HTClearComponentRecipeBuilder(item.asItem().toHolderLike())
     }
-    
+
     private lateinit var holderSet: HolderSet<DataComponentType<*>>
 
     fun setTargets(vararg types: DataComponentType<*>): HTClearComponentRecipeBuilder =

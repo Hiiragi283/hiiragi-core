@@ -47,6 +47,9 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.WHEAT_FLOUR, "Wheat Flour")
         add(HCItems.WHEAT_DOUGH, "Wheat Dough")
 
+        add(HCItems.SLOT_COVER, "Slot Cover")
+        add(HCItems.TRADER_CATALOG, "Trader's Catalog")
+
         add(HCItems.IRIDESCENT_POWDER, "Iridescent Powder")
         add(HCItems.AMBROSIA, "Ambrosia")
         add(HCItems.ETERNAL_TICKET, "Eternal Ticket")
@@ -96,5 +99,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCTranslation.AMBROSIA, "ALWAYS EDIBLE and NOT CONSUMED!")
         add(HCTranslation.ELDER_HEART, "Dropped from Elder Guardian.")
         add(HCTranslation.IRIDESCENT_POWDER, "Do not expire by time over or any damage.")
+        add(HCTranslation.SLOT_COVER, "Ignored by recipes when placed in machine slot.")
+        add(HCTranslation.TRADER_CATALOG, "Dropped from Wandering Trader. Right-click to trade with merchant.")
     }
 }

@@ -12,6 +12,7 @@ import hiiragi283.core.common.crafting.HTEternalUpgradeRecipe
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTStonecuttingRecipeBuilder
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialItems
@@ -37,6 +38,17 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             .setTime(20 * 30)
             .setExp(0.5f)
             .saveSuffixed(output, "_from_sawdust")
+        // Wither Doll
+        HTShapedRecipeBuilder
+            .create(HCItems.WITHER_DOLL)
+            .pattern(
+                "AAA",
+                "BBB",
+                " B ",
+            ).define('A', Items.WITHER_SKELETON_SKULL)
+            .define('B', ItemTags.SOUL_FIRE_BASE_BLOCKS)
+            .save(output)
+
         // Wheat Dough
         HTShapelessRecipeBuilder
             .create(HCItems.WHEAT_DOUGH)
@@ -63,15 +75,18 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             setExp(0.3f)
             saveSuffixed(output, "_from_dough")
         }
-        // Wither Doll
-        HTShapedRecipeBuilder
-            .create(HCItems.WITHER_DOLL)
-            .pattern(
-                "AAA",
-                "BBB",
-                " B ",
-            ).define('A', Items.WITHER_SKELETON_SKULL)
-            .define('B', ItemTags.SOUL_FIRE_BASE_BLOCKS)
+
+        // Slot Cover
+        HTStonecuttingRecipeBuilder
+            .create(HCItems.SLOT_COVER, 3)
+            .addIngredient(Items.SMOOTH_STONE_SLAB)
+            .save(output)
+        // Trader Catalog
+        HTShapelessRecipeBuilder
+            .create(HCItems.TRADER_CATALOG)
+            .addIngredient(Items.BOOK)
+            .addIngredient(HCMaterialPrefixes.GEM, HCMaterial.Gems.EMERALD)
+            .setCategory(CraftingBookCategory.EQUIPMENT)
             .save(output)
 
         // Eternal Ticket

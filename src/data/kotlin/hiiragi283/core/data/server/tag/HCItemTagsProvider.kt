@@ -11,7 +11,6 @@ import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.item.HTToolType
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
-import hiiragi283.core.common.tag.HCModTags
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
@@ -107,9 +106,12 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
             .add(HCItems.WHEAT_FLOUR)
         // Others
         factory
-            .apply(HCModTags.Items.ELDRITCH_PEARL_BINDER)
+            .apply(HiiragiCoreTags.Items.ELDRITCH_PEARL_BINDER)
             .addItem(Items.GHAST_TEAR)
             .addItem(Items.PHANTOM_MEMBRANE)
             .addItem(Items.WIND_CHARGE)
+        factory
+            .apply(HiiragiCoreTags.Items.IGNORED_IN_RECIPE_INPUT)
+            .add(HCItems.SLOT_COVER)
     }
 }

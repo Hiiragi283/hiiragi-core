@@ -24,8 +24,12 @@ object HiiragiCoreTags {
         @JvmField
         val FLOURS_WHEAT: TagKey<Item> = common("flours", "wheat")
 
+        // Mod
         @JvmField
         val BYPASS_MENU_VALIDATION: TagKey<Item> = mod("bypass_menu_validation")
+
+        @JvmField
+        val ELDRITCH_PEARL_BINDER: TagKey<Item> = mod("eldritch_pearl_binder")
 
         @JvmField
         val IGNORED_IN_RECIPE_INPUT: TagKey<Item> = mod("ignored_in_recipe_inputs")

@@ -47,6 +47,9 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.WHEAT_FLOUR, "小麦粉")
         add(HCItems.WHEAT_DOUGH, "小麦の生地")
 
+        add(HCItems.SLOT_COVER, "スロットカバー")
+        add(HCItems.TRADER_CATALOG, "行商人のカタログ")
+
         add(HCItems.IRIDESCENT_POWDER, "虹色の粉")
         add(HCItems.AMBROSIA, "アンブロシア")
         add(HCItems.ETERNAL_TICKET, "永遠のチケット")
@@ -95,5 +98,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCTranslation.AMBROSIA, "いつでも食べられる上，いくら食べてもなくなりません！")
         add(HCTranslation.ELDER_HEART, "エルダーガーディアンからドロップします。")
         add(HCTranslation.IRIDESCENT_POWDER, "時間経過やダメージで消滅しません。")
+        add(HCTranslation.SLOT_COVER, "機械のスロットに入れることでレシピ判定から無視されます。")
+        add(HCTranslation.TRADER_CATALOG, "行商人からドロップします。右クリックで行商人との取引を行えます。")
     }
 }

@@ -9,6 +9,7 @@ import hiiragi283.core.api.text.HTTranslation
 import hiiragi283.core.common.item.HTAmbrosiaItem
 import hiiragi283.core.common.item.HTCreativeItem
 import hiiragi283.core.common.item.HTToolType
+import hiiragi283.core.common.item.HTTraderCatalogItem
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
@@ -70,6 +71,14 @@ object HCItems {
     @JvmField
     val WITHER_STAR: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wither_star")
 
+    //    Foods   //
+
+    @JvmField
+    val WHEAT_FLOUR: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wheat_flour")
+
+    @JvmField
+    val WHEAT_DOUGH: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wheat_dough")
+
     //    Tools   //
 
     @JvmStatic
@@ -79,13 +88,17 @@ object HCItems {
         }
     }.let(::HTMaterialTable)
 
-    //    Foods   //
+    //    Utilities    //
 
     @JvmField
-    val WHEAT_FLOUR: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wheat_flour")
+    val SLOT_COVER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("slot_cover") {
+        it.description(HCTranslation.SLOT_COVER)
+    }
 
     @JvmField
-    val WHEAT_DOUGH: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wheat_dough")
+    val TRADER_CATALOG: HTSimpleDeferredItem = REGISTER.registerItem("trader_catalog", ::HTTraderCatalogItem) {
+        it.description(HCTranslation.TRADER_CATALOG)
+    }
 
     //    End Game    //
 
