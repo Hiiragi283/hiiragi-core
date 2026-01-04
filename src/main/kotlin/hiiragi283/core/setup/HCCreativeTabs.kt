@@ -5,9 +5,7 @@ import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.common.registry.register.HTDeferredCreativeTabRegister
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.world.item.CreativeModeTab
-import net.minecraft.world.item.Items
 
-@Suppress("DEPRECATION")
 object HCCreativeTabs {
     @JvmField
     val REGISTER = HTDeferredCreativeTabRegister(HiiragiCoreAPI.MOD_ID)
@@ -16,7 +14,7 @@ object HCCreativeTabs {
     val COMMON: HTDeferredHolder<CreativeModeTab, CreativeModeTab> = REGISTER.registerSimpleTab(
         "common",
         HCTranslation.HIIRAGI_CORE,
-        Items.DIAMOND_PICKAXE.builtInRegistryHolder(),
+        HCItems.IRIDESCENT_POWDER,
     ) { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
         // Items
         HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCItems.REGISTER.asSequence())
