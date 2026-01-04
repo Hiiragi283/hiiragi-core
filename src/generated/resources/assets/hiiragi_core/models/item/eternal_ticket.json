@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "hiiragi_core:item/tar"
+    "layer0": "hiiragi_core:item/eternal_ticket"
   }
 }

@@ -230,6 +230,13 @@ abstract class HTEmiRecipe<RECIPE : Any>(
         else -> addSlot(output(index), x, y)
     }.recipeContext(this@HTEmiRecipe).drawBack(drawBack)
 
+    fun WidgetHolder.addTank(
+        ingredient: EmiIngredient,
+        x: Int,
+        capacity: Int,
+        y: Int = getPosition(0),
+    ): SlotWidget = addTank(ingredient, x, y, 18, 18 * 3, capacity).drawBack(false)
+
     /**
      * このレシピに動的な完成品スロットを追加します。
      * @param factory 乱数からプレビューを生成するブロック

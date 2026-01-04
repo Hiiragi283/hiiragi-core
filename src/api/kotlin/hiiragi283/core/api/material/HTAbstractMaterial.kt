@@ -44,4 +44,9 @@ interface HTAbstractMaterial :
      * レシピで使用される基本のタグを取得します。
      */
     fun getBaseIngredient(): TagKey<Item> = basePrefix.itemTagKey(this)
+
+    /**
+     * 製錬後の素材を取得します。
+     */
+    fun getSmeltedMaterial(): HTAbstractMaterial? = this
 }

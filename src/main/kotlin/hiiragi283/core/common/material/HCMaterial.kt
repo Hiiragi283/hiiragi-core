@@ -61,6 +61,8 @@ sealed interface HCMaterial : HTAbstractMaterial {
 
         override fun getItemPrefixMap(): HTPrefixTemplateMap = HCMaterialPrefixMaps.FUEL
 
+        override fun getSmeltedMaterial(): HTAbstractMaterial? = null
+
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
             HTLanguageType.EN_US -> usName
             HTLanguageType.JA_JP -> jpName
@@ -350,6 +352,8 @@ sealed interface HCMaterial : HTAbstractMaterial {
 
         override fun getBaseIngredient(): TagKey<Item> = ItemTags.PLANKS
 
+        override fun getSmeltedMaterial(): HTAbstractMaterial? = null
+
         override fun asMaterialKey(): HTMaterialKey = HTMaterialKey.of("wood")
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
@@ -378,6 +382,8 @@ sealed interface HCMaterial : HTAbstractMaterial {
 
         override fun getBaseIngredient(): TagKey<Item> = ItemTags.STONE_CRAFTING_MATERIALS
 
+        override fun getSmeltedMaterial(): HTAbstractMaterial? = null
+
         override fun asMaterialKey(): HTMaterialKey = HTMaterialKey.of("stone")
 
         override fun getTranslatedName(type: HTLanguageType): String = when (type) {
@@ -398,6 +404,8 @@ sealed interface HCMaterial : HTAbstractMaterial {
         }
 
         override fun getBaseIngredient(): TagKey<Item> = Tags.Items.OBSIDIANS
+
+        override fun getSmeltedMaterial(): HTAbstractMaterial? = null
 
         override fun asMaterialKey(): HTMaterialKey = HTMaterialKey.of("obsidian")
 

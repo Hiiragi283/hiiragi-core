@@ -32,6 +32,6 @@ abstract class HTItemContainerMenu(
         .map { interactionHand: InteractionHand ->
             stack.`is`(player.getItemInHand(interactionHand).item)
         }.orElseGet {
-            stack.`is`(HiiragiCoreTags.BYPASS_MENU_VALIDATION)
+            stack.`is`(HiiragiCoreTags.Items.BYPASS_MENU_VALIDATION)
         }
 }

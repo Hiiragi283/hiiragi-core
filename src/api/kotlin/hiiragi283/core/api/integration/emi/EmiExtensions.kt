@@ -5,7 +5,6 @@ import dev.emi.emi.api.render.EmiTexture
 import dev.emi.emi.api.stack.EmiIngredient
 import dev.emi.emi.api.stack.EmiStack
 import dev.emi.emi.api.widget.Bounds
-import dev.emi.emi.api.widget.SlotWidget
 import dev.emi.emi.api.widget.TextureWidget
 import dev.emi.emi.api.widget.WidgetHolder
 import hiiragi283.core.api.item.createItemStack
@@ -236,10 +235,3 @@ fun WidgetHolder.addBurning(x: Int, y: Int, time: Int) {
 fun WidgetHolder.addPlus(x: Int, y: Int): TextureWidget = addTexture(EmiTexture.PLUS, x + 3, y + 3)
 
 fun WidgetHolder.setShapeless(x: Int, y: Int): TextureWidget = addTexture(EmiTexture.SHAPELESS, x + 1, y)
-
-fun WidgetHolder.addTank(
-    ingredient: EmiIngredient,
-    x: Int,
-    y: Int,
-    capacity: Int = ingredient.amount.toInt(),
-): SlotWidget = addTank(ingredient, x, y, 18, 18 * 3, capacity).drawBack(false)

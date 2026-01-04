@@ -52,9 +52,6 @@ object HCItems {
     @JvmField
     val SYNTHETIC_LEATHER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_leather")
 
-    @JvmField
-    val TAR: HTSimpleDeferredItem = REGISTER.registerSimpleItem("tar")
-
     // Mob
     @JvmField
     val LUMINOUS_PASTE: HTSimpleDeferredItem = REGISTER.registerSimpleItem("luminous_paste")
@@ -82,6 +79,14 @@ object HCItems {
         }
     }.let(::HTMaterialTable)
 
+    //    Foods   //
+
+    @JvmField
+    val WHEAT_FLOUR: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wheat_flour")
+
+    @JvmField
+    val WHEAT_DOUGH: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wheat_dough")
+
     //    End Game    //
 
     @JvmField
@@ -92,6 +97,11 @@ object HCItems {
     @JvmField
     val AMBROSIA: HTSimpleDeferredItem = REGISTER.registerItem("ambrosia", ::HTAmbrosiaItem) {
         it.description(HCTranslation.AMBROSIA)
+    }
+
+    @JvmField
+    val ETERNAL_TICKET: HTSimpleDeferredItem = REGISTER.registerItem("eternal_ticket", ::HTCreativeItem) {
+        it.description(HCTranslation.ETERNAL_TICKET)
     }
 
     //    Event    //

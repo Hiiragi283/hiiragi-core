@@ -11,22 +11,26 @@ import net.minecraft.world.item.crafting.RecipeSerializer
 
 class HTDeferredRecipeSerializerRegister(namespace: String) :
     HTDeferredRegister<RecipeSerializer<*>>(Registries.RECIPE_SERIALIZER, namespace) {
-    fun <RECIPE : Recipe<*>> registerSerializer(
-        name: String,
-        codec: MapBiCodec<RegistryFriendlyByteBuf, RECIPE>,
-    ): RecipeSerializer<RECIPE> = registerSerializer(name, codec.codec, codec.streamCodec)
+    fun <SERIALIZER : RecipeSerializer<*>> registerSerializer(name: String, serializer: SERIALIZER): SERIALIZER {
+        register(name) { _ -> serializer }
+        return serializer
+    }
 
     fun <RECIPE : Recipe<*>> registerSerializer(
         name: String,
         codec: MapCodec<RECIPE>,
         streamCodec: StreamCodec<RegistryFriendlyByteBuf, RECIPE>,
-    ): RecipeSerializer<RECIPE> {
-        val serializer: RecipeSerializer<RECIPE> = object : RecipeSerializer<RECIPE> {
+    ): RecipeSerializer<RECIPE> = registerSerializer(
+        name,
+        object : RecipeSerializer<RECIPE> {
             override fun codec(): MapCodec<RECIPE> = codec
 
             override fun streamCodec(): StreamCodec<RegistryFriendlyByteBuf, RECIPE> = streamCodec
-        }
-        register(name) { _ -> serializer }
-        return serializer
-    }
+        },
+    )
+
+    fun <RECIPE : Recipe<*>> registerSerializer(
+        name: String,
+        codec: MapBiCodec<RegistryFriendlyByteBuf, RECIPE>,
+    ): RecipeSerializer<RECIPE> = registerSerializer(name, codec.codec, codec.streamCodec)
 }

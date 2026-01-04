@@ -10,21 +10,24 @@ import net.neoforged.neoforge.common.util.INBTSerializable
 import net.neoforged.neoforge.registries.NeoForgeRegistries
 import java.util.function.Function
 import java.util.function.Supplier
+import java.util.function.UnaryOperator
 
 class HTDeferredAttachmentRegister(namespace: String) :
     HTDeferredRegister<AttachmentType<*>>(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, namespace) {
-    fun <TYPE : Any> registerType(name: String, supplier: Supplier<AttachmentType.Builder<TYPE>>): HTDeferredAttachmentType<TYPE> {
-        register(name) { _: ResourceLocation -> supplier.get().build() }
+    fun <TYPE : Any> registerType(name: String, builder: AttachmentType.Builder<TYPE>): HTDeferredAttachmentType<TYPE> {
+        register(name) { _: ResourceLocation -> builder.build() }
         return HTDeferredAttachmentType(createId(name))
     }
 
     fun <TYPE : INBTSerializable<CompoundTag>> registerSerializable(
         name: String,
         factory: Function<IAttachmentHolder, TYPE>,
-    ): HTDeferredAttachmentType<TYPE> = registerType(name) { AttachmentType.serializable(factory) }
+        operator: UnaryOperator<AttachmentType.Builder<TYPE>> = UnaryOperator.identity(),
+    ): HTDeferredAttachmentType<TYPE> = registerType(name, AttachmentType.serializable(factory).let(operator::apply))
 
     fun <TYPE : INBTSerializable<CompoundTag>> registerSerializable(
         name: String,
         supplier: Supplier<TYPE>,
-    ): HTDeferredAttachmentType<TYPE> = registerType(name) { AttachmentType.serializable(supplier) }
+        operator: UnaryOperator<AttachmentType.Builder<TYPE>> = UnaryOperator.identity(),
+    ): HTDeferredAttachmentType<TYPE> = registerType(name, AttachmentType.serializable(supplier).let(operator::apply))
 }

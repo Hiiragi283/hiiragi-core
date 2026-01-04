@@ -7,6 +7,8 @@ import hiiragi283.core.api.material.get
 import hiiragi283.core.api.material.getOrThrow
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.tag.HiiragiCoreTags
+import hiiragi283.core.common.crafting.HTEternalUpgradeRecipe
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
@@ -15,10 +17,16 @@ import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialItems
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
+import net.minecraft.core.component.DataComponentPredicate
+import net.minecraft.core.component.DataComponents
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
+import net.minecraft.world.item.alchemy.PotionContents
+import net.minecraft.world.item.alchemy.Potions
+import net.minecraft.world.item.crafting.CraftingBookCategory
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
+import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 
 object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipeInternal() {
@@ -29,7 +37,32 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             .setTime(20 * 30)
             .setExp(0.5f)
             .saveSuffixed(output, "_from_sawdust")
+        // Wheat Dough
+        HTShapelessRecipeBuilder
+            .create(HCItems.WHEAT_DOUGH)
+            .addIngredient(HiiragiCoreTags.Items.FLOURS_WHEAT)
+            .addIngredient(
+                DataComponentIngredient.of(
+                    false,
+                    DataComponentPredicate
+                        .builder()
+                        .expect(DataComponents.POTION_CONTENTS, PotionContents(Potions.WATER))
+                        .build(),
+                    Items.POTION,
+                ),
+            ).saveSuffixed(output, "_with_bottle")
 
+        HTShapelessRecipeBuilder
+            .create(HCItems.WHEAT_DOUGH, 3)
+            .addIngredients(HiiragiCoreTags.Items.FLOURS_WHEAT, 3)
+            .addIngredient(Tags.Items.BUCKETS_WATER)
+            .saveSuffixed(output, "_with_bucket")
+        // Bread
+        HTCookingRecipeBuilder.smeltingAndSmoking(Items.BREAD) {
+            addIngredient(HCItems.WHEAT_DOUGH)
+            setExp(0.3f)
+            saveSuffixed(output, "_from_dough")
+        }
         // Wither Doll
         HTShapedRecipeBuilder
             .create(HCItems.WITHER_DOLL)
@@ -40,6 +73,9 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             ).define('A', Items.WITHER_SKELETON_SKULL)
             .define('B', ItemTags.SOUL_FIRE_BASE_BLOCKS)
             .save(output)
+
+        // Eternal Ticket
+        save(id("shapeless", "eternal_upgrade"), HTEternalUpgradeRecipe(CraftingBookCategory.EQUIPMENT))
 
         manual()
         buckets()

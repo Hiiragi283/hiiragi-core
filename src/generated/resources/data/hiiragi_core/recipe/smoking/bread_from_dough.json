@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smoking",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.3,
+  "ingredient": {
+    "item": "hiiragi_core:wheat_dough"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:bread"
+  }
+}

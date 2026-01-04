@@ -12,7 +12,7 @@ import net.minecraft.world.item.crafting.RecipeInput
 class HTListItemRecipeInput(private val items: List<ItemStack>) : RecipeInput {
     private fun validateItem(index: Int): ItemStack = items
         .getOrNull(index)
-        ?.takeUnless { stack: ItemStack -> stack.`is`(HiiragiCoreTags.IGNORED_IN_RECIPE_INPUT) }
+        ?.takeUnless { stack: ItemStack -> stack.`is`(HiiragiCoreTags.Items.IGNORED_IN_RECIPE_INPUT) }
         ?: ItemStack.EMPTY
 
     override fun getItem(index: Int): ItemStack = validateItem(index)

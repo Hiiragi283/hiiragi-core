@@ -14,6 +14,7 @@ enum class HCTranslation(type: String, vararg path: String) : HTTranslation {
     // Item
     AMBROSIA("description", "ambrosia"),
     ELDER_HEART("description", "elder_heart"),
+    ETERNAL_TICKET("description", "eternal_ticket"),
     IRIDESCENT_POWDER("description", "iridescent_powder"),
     ;
 

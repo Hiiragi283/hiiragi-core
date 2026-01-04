@@ -66,7 +66,8 @@ class HTMaterialRecipeProvider(
             val basePrefix: HTMaterialPrefix = material.basePrefix
             if (material.basePrefix == HCMaterialPrefixes.FUEL || material.basePrefix == HCMaterialPrefixes.DUST) continue
 
-            val base: HTItemHolderLike<*> = itemGetter(basePrefix, material) ?: continue
+            val smelted: HTAbstractMaterial = material.getSmeltedMaterial() ?: continue
+            val base: HTItemHolderLike<*> = itemGetter(basePrefix, smelted) ?: continue
             val input: HTItemHolderLike<*> = itemGetter(prefix, material) ?: continue
             if (base.getNamespace() == HTConst.MINECRAFT && input.getNamespace() == HTConst.MINECRAFT) continue
 
@@ -77,7 +78,7 @@ class HTMaterialRecipeProvider(
                 save(
                     output,
                     HiiragiCoreAPI.id(
-                        material.asMaterialName(),
+                        smelted.asMaterialName(),
                         "${basePrefix.asPrefixName()}_from_${prefix.asPrefixName()}",
                     ),
                 )
@@ -129,14 +130,16 @@ class HTMaterialRecipeProvider(
     }
 
     private fun tinyToNugget() {
-        for ((key: HTMaterialKey, tinyDust: HTItemHolderLike<*>) in items.row(HCMaterialPrefixes.TINY_DUST)) {
-            val nugget: HTItemHolderLike<*> = itemGetter(HCMaterialPrefixes.NUGGET, key) ?: continue
+        for (material: HTAbstractMaterial in materials) {
+            val tinyDust: HTItemHolderLike<*> = items[HCMaterialPrefixes.TINY_DUST, material] ?: continue
+            val smelted: HTAbstractMaterial = material.getSmeltedMaterial() ?: continue
+            val nugget: HTItemHolderLike<*> = itemGetter(HCMaterialPrefixes.NUGGET, smelted) ?: continue
             // Smelting & Blasting
             HTCookingRecipeBuilder.smeltingAndBlasting(nugget) {
                 addIngredient(tinyDust)
                 setTime(20)
                 setExp(0.1f)
-                save(output, HiiragiCoreAPI.id(key.name, "nugget_from_tiny_dust"))
+                save(output, HiiragiCoreAPI.id(smelted.asMaterialName(), "nugget_from_tiny_dust"))
             }
         }
     }

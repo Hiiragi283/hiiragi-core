@@ -11,12 +11,12 @@ import kotlin.streams.asSequence
 
 //    HolderLookup    //
 
-fun <R : Any, T : Any> HolderLookup.RegistryLookup<R>.getHolderDataMap(type: DataMapType<R, T>): Map<Holder.Reference<R>, T> = this
+fun <R : Any, T : Any> HolderLookup.RegistryLookup<R>.getHolderDataMap(type: DataMapType<R, T>): Map<HTHolderLike<R, R>, T> = this
     .listElementIds()
     .asSequence()
     .mapNotNull { key: ResourceKey<R> ->
         val data: T = this.getData(type, key) ?: return@mapNotNull null
-        getOrThrow(key) to data
+        getOrThrow(key).toLike() to data
     }.toMap()
 
 fun <T : Any> HolderLookup.Provider.holderOrNull(key: ResourceKey<T>): Holder<T>? = this.holder(key).getOrNull()

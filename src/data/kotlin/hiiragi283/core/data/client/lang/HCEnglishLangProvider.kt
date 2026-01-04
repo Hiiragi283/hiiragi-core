@@ -37,7 +37,6 @@ class HCEnglishLangProvider(output: PackOutput) :
         // Item
         add(HCItems.COMPRESSED_SAWDUST, "Compressed Sawdust")
         add(HCItems.SYNTHETIC_LEATHER, "Synthetic Leather")
-        add(HCItems.TAR, "Tar")
 
         add(HCItems.LUMINOUS_PASTE, "Luminous Paste")
         add(HCItems.MAGMA_SHARD, "Magma Shard")
@@ -45,8 +44,12 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.WITHER_DOLL, "Wither Doll")
         add(HCItems.WITHER_STAR, "Wither Star")
 
+        add(HCItems.WHEAT_FLOUR, "Wheat Flour")
+        add(HCItems.WHEAT_DOUGH, "Wheat Dough")
+
         add(HCItems.IRIDESCENT_POWDER, "Iridescent Powder")
         add(HCItems.AMBROSIA, "Ambrosia")
+        add(HCItems.ETERNAL_TICKET, "Eternal Ticket")
 
         // Recipe
         add(HCRecipeTypes.CHARGING, "Lightning Charging")

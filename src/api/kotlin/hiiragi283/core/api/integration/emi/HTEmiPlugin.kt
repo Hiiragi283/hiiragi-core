@@ -99,7 +99,7 @@ abstract class HTEmiPlugin(protected val modId: String) : EmiPlugin {
      * @param recipes [ResourceLocation]と[RECIPE]のペアの一覧
      * @param factory [ResourceLocation]と[RECIPE]を[EMI_RECIPE]に変換するブロック
      */
-    private fun <RECIPE : Any, EMI_RECIPE : EmiRecipe> addRecipes(
+    protected fun <RECIPE : Any, EMI_RECIPE : EmiRecipe> addRecipes(
         registry: EmiRegistry,
         recipes: Sequence<Pair<ResourceLocation, RECIPE>>,
         factory: Factory<RECIPE, EMI_RECIPE>,

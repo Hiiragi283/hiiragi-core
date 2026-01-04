@@ -53,7 +53,5 @@ class HCDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.out
         addFuels(HCMaterial.Fuels.CARBIDE, 20 * 10 * 24)
         addFuels(HCMaterial.Gems.CRIMSON_CRYSTAL, 20 * 10 * 24)
         addFuels(HCMaterial.Wood, 20 * 15)
-
-        furnace.add(HCItems.TAR, FurnaceFuel(20 * 10 * 4), false)
     }
 }

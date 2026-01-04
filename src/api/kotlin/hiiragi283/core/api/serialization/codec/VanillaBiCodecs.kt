@@ -5,7 +5,9 @@ import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.serialization.codec.impl.HTIngredientCodec
 import hiiragi283.core.api.tag.createTagKey
 import io.netty.buffer.ByteBuf
+import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
+import net.minecraft.core.GlobalPos
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.core.RegistryCodecs
@@ -39,6 +41,13 @@ object VanillaBiCodecs {
     val ID: BiCodec<ByteBuf, ResourceLocation> = BiCodec.of(ResourceLocation.CODEC, ResourceLocation.STREAM_CODEC)
 
     /**
+     * [BlockPos]の[BiCodec]
+     * @since 0.5.0
+     */
+    @JvmField
+    val BLOCK_POS: BiCodec<ByteBuf, BlockPos> = BiCodec.of(BlockPos.CODEC, BlockPos.STREAM_CODEC)
+
+    /**
      * [DyeColor]の[BiCodec]
      */
     @JvmField
@@ -58,6 +67,13 @@ object VanillaBiCodecs {
      */
     @JvmField
     val DIRECTION: BiCodec<ByteBuf, Direction> = BiCodec.of(Direction.CODEC, Direction.STREAM_CODEC)
+
+    /**
+     * [GlobalPos]の[BiCodec]
+     * @since 0.5.0
+     */
+    @JvmField
+    val GLOBAL_POS: BiCodec<ByteBuf, GlobalPos> = BiCodec.of(GlobalPos.CODEC, GlobalPos.STREAM_CODEC)
 
     /**
      * [InteractionHand]の[BiCodec]

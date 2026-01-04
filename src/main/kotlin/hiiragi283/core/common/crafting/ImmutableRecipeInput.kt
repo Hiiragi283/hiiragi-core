@@ -1,4 +1,4 @@
-package hiiragi283.core.api.recipe.input
+package hiiragi283.core.common.crafting
 
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeInput

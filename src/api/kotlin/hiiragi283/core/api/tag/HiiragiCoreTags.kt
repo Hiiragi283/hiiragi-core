@@ -11,10 +11,29 @@ import net.minecraft.world.item.Item
  * @since 0.4.0
  */
 object HiiragiCoreTags {
-    // Item
-    @JvmField
-    val BYPASS_MENU_VALIDATION: TagKey<Item> = Registries.ITEM.createTagKey(HiiragiCoreAPI.id("bypass_menu_validation"))
+    object Items {
+        @JvmField
+        val DOUGHS: TagKey<Item> = common("doughs")
 
-    @JvmField
-    val IGNORED_IN_RECIPE_INPUT: TagKey<Item> = Registries.ITEM.createTagKey(HiiragiCoreAPI.id("ignored_in_recipe_inputs"))
+        @JvmField
+        val DOUGHS_WHEAT: TagKey<Item> = common("doughs", "wheat")
+
+        @JvmField
+        val FLOURS: TagKey<Item> = common("flours")
+
+        @JvmField
+        val FLOURS_WHEAT: TagKey<Item> = common("flours", "wheat")
+
+        @JvmField
+        val BYPASS_MENU_VALIDATION: TagKey<Item> = mod("bypass_menu_validation")
+
+        @JvmField
+        val IGNORED_IN_RECIPE_INPUT: TagKey<Item> = mod("ignored_in_recipe_inputs")
+
+        @JvmStatic
+        private fun common(vararg path: String): TagKey<Item> = Registries.ITEM.createCommonTag(*path)
+
+        @JvmStatic
+        private fun mod(vararg path: String): TagKey<Item> = Registries.ITEM.createTagKey(HiiragiCoreAPI.id(*path))
+    }
 }

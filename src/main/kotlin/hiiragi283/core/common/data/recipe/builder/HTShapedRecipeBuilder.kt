@@ -11,7 +11,7 @@ import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.ShapedRecipe
 import net.minecraft.world.item.crafting.ShapedRecipePattern
 import net.minecraft.world.level.ItemLike
-import net.neoforged.neoforge.common.crafting.ICustomIngredient
+import java.util.stream.Stream
 
 /**
  * [ShapedRecipe]向けの[HTStackRecipeBuilder]の実装クラスです。
@@ -46,9 +46,10 @@ class HTShapedRecipeBuilder(stack: ItemStack) : HTStackRecipeBuilder<HTShapedRec
     fun define(symbol: Char, item: ItemLike): HTShapedRecipeBuilder = define(symbol, Ingredient.of(item))
 
     /**
-     * 指定した[文字][symbol]に[材料][ingredient]を指定します。
+     * 指定した[文字][symbol]に[材料][values]を指定します。
      */
-    fun define(symbol: Char, ingredient: ICustomIngredient): HTShapedRecipeBuilder = define(symbol, ingredient.toVanilla())
+    fun define(symbol: Char, vararg values: Ingredient.Value): HTShapedRecipeBuilder =
+        define(symbol, Ingredient.fromValues(Stream.of(*values)))
 
     /**
      * 指定した[文字][symbol]に[材料][ingredient]を指定します。

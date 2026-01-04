@@ -37,7 +37,6 @@ class HCJapaneseLangProvider(output: PackOutput) :
         // Item
         add(HCItems.COMPRESSED_SAWDUST, "圧縮されたおがくず")
         add(HCItems.SYNTHETIC_LEATHER, "合成牛皮")
-        add(HCItems.TAR, "タール")
 
         add(HCItems.LUMINOUS_PASTE, "蛍光ペースト")
         add(HCItems.MAGMA_SHARD, "マグマシャード")
@@ -45,8 +44,12 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.WITHER_DOLL, "ウィザー人形")
         add(HCItems.WITHER_STAR, "ウィザースター")
 
+        add(HCItems.WHEAT_FLOUR, "小麦粉")
+        add(HCItems.WHEAT_DOUGH, "小麦の生地")
+
         add(HCItems.IRIDESCENT_POWDER, "虹色の粉")
         add(HCItems.AMBROSIA, "アンブロシア")
+        add(HCItems.ETERNAL_TICKET, "永遠のチケット")
 
         // Recipe
         add(HCRecipeTypes.CHARGING, "落雷によるチャージ")

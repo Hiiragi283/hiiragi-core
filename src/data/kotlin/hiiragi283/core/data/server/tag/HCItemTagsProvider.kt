@@ -7,6 +7,7 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.item.HTToolType
 import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
@@ -97,12 +98,18 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
     //    Misc    //
 
     private fun misc(factory: BuilderFactory<Item>) {
+        // Foods
+        factory.apply(Tags.Items.FOODS_GOLDEN).add(HCItems.AMBROSIA)
+
+        addTags(factory, HiiragiCoreTags.Items.DOUGHS, HiiragiCoreTags.Items.DOUGHS_WHEAT)
+            .add(HCItems.WHEAT_DOUGH)
+        addTags(factory, HiiragiCoreTags.Items.FLOURS, HiiragiCoreTags.Items.FLOURS_WHEAT)
+            .add(HCItems.WHEAT_FLOUR)
+        // Others
         factory
             .apply(HCModTags.Items.ELDRITCH_PEARL_BINDER)
             .addItem(Items.GHAST_TEAR)
             .addItem(Items.PHANTOM_MEMBRANE)
             .addItem(Items.WIND_CHARGE)
-
-        factory.apply(Tags.Items.FOODS_GOLDEN).add(HCItems.AMBROSIA)
     }
 }
