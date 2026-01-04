@@ -36,9 +36,6 @@ class HTMaterialRecipeProvider(
 
         ingotToGear()
         ingotToNugget()
-
-        tinyToDust()
-        tinyToNugget()
     }
 
     private fun baseToBlock() {
@@ -113,34 +110,6 @@ class HTMaterialRecipeProvider(
                 .define('A', HCMaterialPrefixes.NUGGET, key)
                 .define('B', nugget)
                 .save(output, HiiragiCoreAPI.id(key.name, "ingot_from_nugget"))
-        }
-    }
-
-    private fun tinyToDust() {
-        for ((key: HTMaterialKey, tinyDust: HTItemHolderLike<*>) in items.row(HCMaterialPrefixes.TINY_DUST)) {
-            val dust: HTItemHolderLike<*> = itemGetter(HCMaterialPrefixes.DUST, key) ?: continue
-            // Shaped
-            HTShapedRecipeBuilder
-                .create(dust)
-                .hollow8()
-                .define('A', HCMaterialPrefixes.TINY_DUST, key)
-                .define('B', tinyDust)
-                .save(output, HiiragiCoreAPI.id(key.name, "dust_from_tiny_dust"))
-        }
-    }
-
-    private fun tinyToNugget() {
-        for (material: HTAbstractMaterial in materials) {
-            val tinyDust: HTItemHolderLike<*> = items[HCMaterialPrefixes.TINY_DUST, material] ?: continue
-            val smelted: HTAbstractMaterial = material.getSmeltedMaterial() ?: continue
-            val nugget: HTItemHolderLike<*> = itemGetter(HCMaterialPrefixes.NUGGET, smelted) ?: continue
-            // Smelting & Blasting
-            HTCookingRecipeBuilder.smeltingAndBlasting(nugget) {
-                addIngredient(tinyDust)
-                setTime(20)
-                setExp(0.1f)
-                save(output, HiiragiCoreAPI.id(smelted.asMaterialName(), "nugget_from_tiny_dust"))
-            }
         }
     }
 }

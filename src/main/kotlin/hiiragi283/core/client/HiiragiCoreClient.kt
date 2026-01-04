@@ -58,7 +58,7 @@ object HiiragiCoreClient {
         // Saps
         event.dull(HCFluids.LATEX, Color(0xcccccc))
         event.dull(HCFluids.BLOOD, Color(0x990000))
-        event.dull(HCFluids.MEAT, Color(0xcc6666))
+        event.dull(HCFluids.MEAT, Color(0x993333))
 
         event.molten(HCFluids.MOLTEN_GLASS, Color(0xccccff))
         event.molten(HCFluids.MOLTEN_CRIMSON_CRYSTAL, Color(0x990000))

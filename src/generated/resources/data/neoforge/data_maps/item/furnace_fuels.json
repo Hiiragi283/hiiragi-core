@@ -41,24 +41,6 @@
     },
     "#c:storage_blocks/crimson_crystal": {
       "burn_time": 48000
-    },
-    "#c:tiny_dusts/carbide": {
-      "burn_time": 480
-    },
-    "#c:tiny_dusts/charcoal": {
-      "burn_time": 160
-    },
-    "#c:tiny_dusts/coal": {
-      "burn_time": 160
-    },
-    "#c:tiny_dusts/coal_coke": {
-      "burn_time": 320
-    },
-    "#c:tiny_dusts/crimson_crystal": {
-      "burn_time": 480
-    },
-    "#c:tiny_dusts/wood": {
-      "burn_time": 30
     }
   }
 }

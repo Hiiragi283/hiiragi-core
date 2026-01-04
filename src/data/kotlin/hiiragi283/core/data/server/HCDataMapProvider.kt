@@ -40,7 +40,6 @@ class HCDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.out
             for ((prefix: HTMaterialPrefix, _) in HCItems.MATERIALS.column(material)) {
                 val modifier: Fraction = when (prefix) {
                     HCMaterialPrefixes.NUGGET -> fraction(1, 10)
-                    HCMaterialPrefixes.TINY_DUST -> fraction(1, 10)
                     else -> Fraction.ONE
                 }
                 furnace.add(prefix.itemTagKey(material), FurnaceFuel((time * modifier).toInt()), false)

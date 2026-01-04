@@ -66,9 +66,6 @@ object HCMaterialPrefixes {
     val SCRAP = HTMaterialPrefix("scrap")
 
     @JvmField
-    val TINY_DUST = HTMaterialPrefix("tiny_dust", "tiny_%s_dust")
-
-    @JvmField
     val WIRE = HTMaterialPrefix("wire")
 
     @JvmField
@@ -102,7 +99,6 @@ object HCMaterialPrefixes {
         register(RAW_MATERIAL, "Raw %s", "%sの原石")
         register(ROD, "%s Rod", "%sの棒")
         register(SCRAP, "%s Scrap", "%sの欠片")
-        register(TINY_DUST, "Tiny %s Dust", "小さな%sの粉")
         register(WIRE, "%s Wire", "%sのワイヤ")
     }
 }

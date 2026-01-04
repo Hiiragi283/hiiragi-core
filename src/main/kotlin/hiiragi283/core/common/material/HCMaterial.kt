@@ -28,8 +28,6 @@ sealed interface HCMaterial : HTAbstractMaterial {
             add(Wood)
             add(Obsidian)
         }
-
-        private val dustSet: Set<HTMaterialPrefix> = setOf(HCMaterialPrefixes.DUST, HCMaterialPrefixes.TINY_DUST)
     }
 
     //    Fuels    //
@@ -55,7 +53,7 @@ sealed interface HCMaterial : HTAbstractMaterial {
             if (!isVanilla) {
                 add(HCMaterialPrefixes.FUEL)
             }
-            addAll(dustSet)
+            add(HCMaterialPrefixes.DUST)
         }
 
         override fun getItemPrefixMap(): HTPrefixTemplateMap = HCMaterialPrefixMaps.FUEL
@@ -91,11 +89,9 @@ sealed interface HCMaterial : HTAbstractMaterial {
 
         override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.DUST
 
-        override fun getItemPrefixesToGenerate(): Set<HTMaterialPrefix> = buildSet {
-            if (!isVanilla) {
-                add(HCMaterialPrefixes.DUST)
-            }
-            add(HCMaterialPrefixes.TINY_DUST)
+        override fun getItemPrefixesToGenerate(): Set<HTMaterialPrefix> = when (isVanilla) {
+            true -> setOf()
+            false -> setOf(HCMaterialPrefixes.DUST)
         }
 
         override fun getItemPrefixMap(): HTPrefixTemplateMap = when {
@@ -146,7 +142,7 @@ sealed interface HCMaterial : HTAbstractMaterial {
             if (!isVanilla) {
                 add(HCMaterialPrefixes.GEM)
             }
-            addAll(dustSet)
+            add(HCMaterialPrefixes.DUST)
         }
 
         override fun getItemPrefixMap(): HTPrefixTemplateMap = prefixMap
@@ -172,13 +168,13 @@ sealed interface HCMaterial : HTAbstractMaterial {
 
         override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.PEARL
 
-        override fun getItemPrefixesToGenerate(): Set<HTMaterialPrefix> = when (this) {
-            ENDER -> dustSet
-            ELDRITCH -> buildSet {
-                add(HCMaterialPrefixes.PEARL)
-                addAll(dustSet)
-            }
-        }
+        override fun getItemPrefixesToGenerate(): Set<HTMaterialPrefix> = setOfNotNull(
+            when (this@Pearls) {
+                ENDER -> null
+                ELDRITCH -> HCMaterialPrefixes.PEARL
+            },
+            HCMaterialPrefixes.DUST,
+        )
 
         override fun getItemPrefixMap(): HTPrefixTemplateMap = HCMaterialPrefixMaps.PEARL
 
@@ -225,7 +221,6 @@ sealed interface HCMaterial : HTAbstractMaterial {
                 add(HCMaterialPrefixes.INGOT)
             }
             add(HCMaterialPrefixes.DUST)
-            add(HCMaterialPrefixes.TINY_DUST)
             add(HCMaterialPrefixes.GEAR)
             if (this@Metals == COPPER) {
                 add(HCMaterialPrefixes.NUGGET)
@@ -280,7 +275,6 @@ sealed interface HCMaterial : HTAbstractMaterial {
         override fun getItemPrefixesToGenerate(): Set<HTMaterialPrefix> = setOf(
             HCMaterialPrefixes.INGOT,
             HCMaterialPrefixes.DUST,
-            HCMaterialPrefixes.TINY_DUST,
             HCMaterialPrefixes.GEAR,
             HCMaterialPrefixes.NUGGET,
             HCMaterialPrefixes.PLATE,
@@ -339,13 +333,11 @@ sealed interface HCMaterial : HTAbstractMaterial {
 
         override fun getItemPrefixesToGenerate(): Set<HTMaterialPrefix> = setOf(
             HCMaterialPrefixes.DUST,
-            HCMaterialPrefixes.TINY_DUST,
             HCMaterialPrefixes.PLATE,
         )
 
         override fun getItemPrefixMap(): HTPrefixTemplateMap = HTPrefixTemplateMap.create {
             add(HCMaterialPrefixes.DUST)
-            add(HCMaterialPrefixes.TINY_DUST)
             addCustom(HCMaterialPrefixes.PLATE, "plate_wooden")
         }
 
@@ -360,16 +352,15 @@ sealed interface HCMaterial : HTAbstractMaterial {
             HTLanguageType.JA_JP -> "木"
         }
     }
-    
+
     data object Obsidian : HCMaterial {
         override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.DUST
         override val colorPalette: HTColorPalette = HCMaterialPalette.OBSIDIAN
 
-        override fun getItemPrefixesToGenerate(): Set<HTMaterialPrefix> = dustSet
+        override fun getItemPrefixesToGenerate(): Set<HTMaterialPrefix> = setOf(HCMaterialPrefixes.DUST)
 
         override fun getItemPrefixMap(): HTPrefixTemplateMap = HTPrefixTemplateMap.create {
             add(HCMaterialPrefixes.DUST)
-            add(HCMaterialPrefixes.TINY_DUST)
         }
 
         override fun getBaseIngredient(): TagKey<Item> = Tags.Items.OBSIDIANS

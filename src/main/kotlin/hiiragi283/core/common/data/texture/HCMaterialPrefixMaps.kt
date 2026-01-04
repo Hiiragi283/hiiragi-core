@@ -10,7 +10,6 @@ object HCMaterialPrefixMaps {
 
         add(HCMaterialPrefixes.FUEL)
         addCustom(HCMaterialPrefixes.DUST, "dust_dull")
-        addCustom(HCMaterialPrefixes.TINY_DUST, "tiny_dust_dull")
     }
 
     @JvmField
@@ -18,7 +17,6 @@ object HCMaterialPrefixMaps {
         addCustom(HCMaterialPrefixes.STORAGE_BLOCK, "block_dust")
 
         add(HCMaterialPrefixes.DUST)
-        add(HCMaterialPrefixes.TINY_DUST)
     }
 
     @JvmField
@@ -26,7 +24,6 @@ object HCMaterialPrefixMaps {
         addCustom(HCMaterialPrefixes.STORAGE_BLOCK, "block_dust")
 
         addCustom(HCMaterialPrefixes.DUST, "dust_dull")
-        addCustom(HCMaterialPrefixes.TINY_DUST, "tiny_dust_dull")
     }
 
     @JvmField
@@ -34,7 +31,6 @@ object HCMaterialPrefixMaps {
         addCustom(HCMaterialPrefixes.STORAGE_BLOCK, "block_dust")
 
         addCustom(HCMaterialPrefixes.DUST, "dust_shine")
-        addCustom(HCMaterialPrefixes.TINY_DUST, "tiny_dust_shine")
     }
 
     @JvmField
@@ -61,7 +57,6 @@ object HCMaterialPrefixMaps {
 
         add(HCMaterialPrefixes.PEARL)
         add(HCMaterialPrefixes.DUST)
-        add(HCMaterialPrefixes.TINY_DUST)
     }
 
     @JvmField
@@ -73,7 +68,6 @@ object HCMaterialPrefixMaps {
         add(HCMaterialPrefixes.SCRAP)
         add(HCMaterialPrefixes.INGOT)
         add(HCMaterialPrefixes.DUST)
-        add(HCMaterialPrefixes.TINY_DUST)
         add(HCMaterialPrefixes.GEAR)
         add(HCMaterialPrefixes.NUGGET)
         add(HCMaterialPrefixes.PLATE)
@@ -90,7 +84,6 @@ object HCMaterialPrefixMaps {
         add(HCMaterialPrefixes.SCRAP)
         addCustom(HCMaterialPrefixes.INGOT, "ingot_shine")
         addCustom(HCMaterialPrefixes.DUST, "dust_shine")
-        addCustom(HCMaterialPrefixes.TINY_DUST, "tiny_dust_shine")
         add(HCMaterialPrefixes.GEAR)
         addCustom(HCMaterialPrefixes.NUGGET, "nugget_shine")
         addCustom(HCMaterialPrefixes.PLATE, "plate_shine")
@@ -108,6 +101,5 @@ object HCMaterialPrefixMaps {
 
         addCustom(HCMaterialPrefixes.GEM, "gem_$suffix")
         addCustom(HCMaterialPrefixes.DUST, "dust_shine")
-        addCustom(HCMaterialPrefixes.TINY_DUST, "tiny_dust_shine")
     }
 }
