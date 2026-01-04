@@ -11,6 +11,8 @@ import hiiragi283.core.data.client.model.HCItemModelProvider
 import hiiragi283.core.data.server.HCDataMapProvider
 import hiiragi283.core.data.server.HCRecipeProvider
 import hiiragi283.core.data.server.loot.HCBlockLootTableProvider
+import hiiragi283.core.data.server.loot.HCGlobalLootModifierProvider
+import hiiragi283.core.data.server.loot.HCGlobalLootProvider
 import hiiragi283.core.data.server.tag.HCBlockTagsProvider
 import hiiragi283.core.data.server.tag.HCFluidTagsProvider
 import hiiragi283.core.data.server.tag.HCItemTagsProvider
@@ -28,7 +30,11 @@ data object HiiragiCoreDataGen {
     fun gatherData(event: GatherDataEvent) {
         val (server: HTRootDataGenerator, client: HTRootDataGenerator) = HTRootDataGenerator.withDataPack(event)
         // Server
-        server.addLootTables(::HCBlockLootTableProvider to LootContextParamSets.BLOCK)
+        server.addLootTables(
+            ::HCBlockLootTableProvider to LootContextParamSets.BLOCK,
+            HCGlobalLootProvider::Entity to LootContextParamSets.ENTITY,
+        )
+        server.addProvider(::HCGlobalLootModifierProvider)
 
         server.addProvider(::HCRecipeProvider)
 

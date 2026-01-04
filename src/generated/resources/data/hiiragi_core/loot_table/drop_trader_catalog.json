@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hiiragi_core:trader_catalog"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hiiragi_core:drop_trader_catalog"
+}
