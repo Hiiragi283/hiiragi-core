@@ -196,7 +196,7 @@ sealed interface HCMaterial : HTAbstractMaterial {
         private val isVanilla: Boolean = false,
     ) : HCMaterial {
         // Vanilla
-        COPPER("Copper", "銅", HCMaterialPalette.COPPER, HCMaterialPrefixMaps.METAL_SHINE, true),
+        COPPER("Copper", "銅", HCMaterialPalette.COPPER, HCMaterialPrefixMaps.METAL, true),
         IRON("Iron", "鉄", HCMaterialPalette.IRON, HCMaterialPrefixMaps.METAL, true),
         GOLD("Gold", "金", HCMaterialPalette.GOLD, HCMaterialPrefixMaps.METAL_SHINE, true),
 

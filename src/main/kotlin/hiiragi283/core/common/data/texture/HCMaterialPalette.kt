@@ -117,24 +117,24 @@ object HCMaterialPalette {
     @JvmStatic
     val DIAMOND: HTColorPalette = HTArrayColorPalette(
         arrayOf(
-            Color(0xadffb9),
-            Color(0x5cff96),
-            Color(0x0aff96),
-            Color(0x00b890),
-            Color(0x006666),
-            Color(0x002833),
+            Color(0xffffff),
+            Color(0xa1fbe8),
+            Color(0x43dec9),
+            Color(0x1eb7ab),
+            Color(0x199b91),
+            Color(0x147e7a),
         ),
     )
 
     @JvmStatic
     val EMERALD: HTColorPalette = HTArrayColorPalette(
         arrayOf(
-            Color(0xe4ffb3),
-            Color(0xa8ff66),
-            Color(0x4bff1a),
-            Color(0x00cc00),
-            Color(0x00881d),
-            Color(0x00441d),
+            Color(0xaffdcd),
+            Color(0x82f6ad),
+            Color(0x41f384),
+            Color(0x00aa2c),
+            Color(0x007b18),
+            Color(0x002d00),
         ),
     )
 
@@ -196,36 +196,36 @@ object HCMaterialPalette {
     @JvmStatic
     val COPPER: HTColorPalette = HTArrayColorPalette(
         arrayOf(
+            Color(0xfdd4cb),
             Color(0xfc9982),
             Color(0xe77c56),
-            Color(0xc15a36),
-            Color(0x9c4e31),
-            Color(0x8a4129),
-            Color(0x6d3421),
+            Color(0xd66d48),
+            Color(0xb65c3d),
+            Color(0x844229),
         ),
     )
 
     @JvmStatic
     val IRON: HTColorPalette = HTArrayColorPalette(
         arrayOf(
-            Color(0xd8d8d8),
-            Color(0xb2b2b2),
-            Color(0x8b8b8b),
-            Color(0x656565),
-            Color(0x3e3e3e),
-            Color(0x181818),
+            Color(0xd9d9d9),
+            Color(0xaaaaaa),
+            Color(0x838383),
+            Color(0x696969),
+            Color(0x565656),
+            Color(0x353535),
         ),
     )
 
     @JvmStatic
     val GOLD: HTColorPalette = HTArrayColorPalette(
         arrayOf(
-            Color(0xffffff),
-            Color(0xfdf55f),
-            Color(0xfad64a),
-            Color(0xe9b115),
-            Color(0xb26411),
-            Color(0x752802),
+            Color(0xfdff76),
+            Color(0xeee057),
+            Color(0xeccb45),
+            Color(0xd49713),
+            Color(0xbd7e11),
+            Color(0x97550e),
         ),
     )
 
@@ -258,12 +258,12 @@ object HCMaterialPalette {
     @JvmStatic
     val NETHERITE: HTColorPalette = HTArrayColorPalette(
         arrayOf(
-            Color(0x737173),
-            Color(0x5a575a),
+            Color(0x706770),
+            Color(0x51444e),
             Color(0x3b393b),
-            Color(0x31292a),
-            Color(0x271c1d),
-            Color(0x111111),
+            Color(0x342c2e),
+            Color(0x2e1e20),
+            Color(0x1d0d0f),
         ),
     )
 
