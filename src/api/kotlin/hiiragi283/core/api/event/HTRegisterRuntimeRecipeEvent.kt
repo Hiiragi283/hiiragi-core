@@ -1,9 +1,14 @@
 package hiiragi283.core.api.event
 
 import com.mojang.logging.LogUtils
+import hiiragi283.core.api.data.recipe.ingredient.HTFluidIngredientCreator
+import hiiragi283.core.api.data.recipe.ingredient.HTIngredientAccess
+import hiiragi283.core.api.data.recipe.ingredient.HTItemIngredientCreator
+import hiiragi283.core.api.data.recipe.result.HTFluidResultCreator
+import hiiragi283.core.api.data.recipe.result.HTItemResultCreator
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTPrefixLike
-import hiiragi283.core.api.registry.holderSetOrNull
+import hiiragi283.core.api.tag.HTTagUtil
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementHolder
 import net.minecraft.core.Holder
@@ -48,13 +53,19 @@ class HTRegisterRuntimeRecipeEvent(
         override fun advancement(): Advancement.Builder = Advancement.Builder.recipeAdvancement()
     }
 
+    val itemCreator: HTItemIngredientCreator = HTIngredientAccess.INSTANCE.itemCreator()
+    val fluidCreator: HTFluidIngredientCreator = HTIngredientAccess.INSTANCE.fluidCreator()
+
+    val itemResult: HTItemResultCreator = HTItemResultCreator
+    val fluidResult: HTFluidResultCreator = HTFluidResultCreator
+
     fun isPresentTag(prefix: HTPrefixLike, material: HTMaterialLike): Boolean = isPresentTag(prefix.itemTagKey(material))
 
     fun getFirstHolder(prefix: HTPrefixLike, material: HTMaterialLike): Holder<Item>? = getFirstHolder(prefix.itemTagKey(material))
 
     fun <T : Any> isPresentTag(tagKey: TagKey<T>): Boolean = getFirstHolder(tagKey) != null
 
-    fun <T : Any> getFirstHolder(tagKey: TagKey<T>): Holder<T>? = registryAccess.holderSetOrNull(tagKey)?.firstOrNull()
+    fun <T : Any> getFirstHolder(tagKey: TagKey<T>): Holder<T>? = HTTagUtil.INSTANCE.getFirstHolder(registryAccess, tagKey).value()
 
     fun save(id: ResourceLocation, recipe: Recipe<*>) {
         output.accept(id, recipe, null)

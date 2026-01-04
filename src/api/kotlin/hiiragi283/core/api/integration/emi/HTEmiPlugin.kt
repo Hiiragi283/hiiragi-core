@@ -1,16 +1,22 @@
 package hiiragi283.core.api.integration.emi
 
 import com.mojang.logging.LogUtils
+import dev.emi.emi.EmiPort
 import dev.emi.emi.api.EmiPlugin
 import dev.emi.emi.api.EmiRegistry
 import dev.emi.emi.api.recipe.EmiRecipe
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.registry.HTHolderLike
+import net.minecraft.core.HolderLookup
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeType
+import net.minecraft.world.level.material.Fluid
+import net.minecraft.world.level.material.Fluids
 import org.slf4j.Logger
 
 /**
@@ -23,6 +29,16 @@ abstract class HTEmiPlugin(protected val modId: String) : EmiPlugin {
     companion object {
         @JvmField
         val LOGGER: Logger = LogUtils.getLogger()
+
+        @JvmStatic
+        protected val ITEM_LOOKUP: HolderLookup.RegistryLookup<Item> by lazy(EmiPort.getItemRegistry()::asLookup)
+
+        @JvmStatic
+        protected val FLUID_LOOKUP: HolderLookup.RegistryLookup<Fluid> by lazy {
+            EmiPort.getFluidRegistry().asLookup().filterElements { fluid: Fluid ->
+                fluid != Fluids.EMPTY && fluid.isSource(fluid.defaultFluidState())
+            }
+        }
     }
 
     //    Extensions    //
@@ -59,7 +75,7 @@ abstract class HTEmiPlugin(protected val modId: String) : EmiPlugin {
         prefix: String,
         factory: (ResourceLocation) -> EmiRecipe,
     ) {
-        addRecipeSafe(registry, id.withPrefix("/shapeless/$modId/$prefix"), factory)
+        addRecipeSafe(registry, id.withPrefix("/${HTConst.SHAPELESS}/$modId/$prefix"), factory)
     }
 
     /**

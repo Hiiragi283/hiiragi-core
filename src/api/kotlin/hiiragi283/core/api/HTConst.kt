@@ -84,6 +84,8 @@ data object HTConst {
 
     //    Recipes    //
 
+    const val SHAPELESS = "shapeless"
+
     const val CHARGING = "charging"
     const val CRUSHING = "crushing"
     const val EXPLODING = "exploding"

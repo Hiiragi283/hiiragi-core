@@ -1,5 +1,6 @@
 package hiiragi283.core.common.data.recipe.builder
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.builder.HTRecipeBuilder
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.toHolderLike
@@ -12,7 +13,7 @@ import net.minecraft.world.item.crafting.CraftingBookCategory
 import net.minecraft.world.level.ItemLike
 
 class HTClearComponentRecipeBuilder(private val item: HTItemHolderLike<*>) :
-    HTRecipeBuilder<HTClearComponentRecipeBuilder>("shapeless/clear") {
+    HTRecipeBuilder<HTClearComponentRecipeBuilder>("${HTConst.SHAPELESS}/clear") {
     companion object {
         @JvmStatic
         fun create(item: ItemLike): HTClearComponentRecipeBuilder = HTClearComponentRecipeBuilder(item.asItem().toHolderLike())

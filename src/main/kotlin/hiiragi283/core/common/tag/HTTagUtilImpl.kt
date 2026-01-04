@@ -1,8 +1,8 @@
-package hiiragi283.core.common
+package hiiragi283.core.common.tag
 
-import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.tag.HTTagUtil
 import hiiragi283.core.config.HCConfig
 
-class HiiragiCoreAccessImpl : HiiragiCoreAccess {
+class HTTagUtilImpl : HTTagUtil {
     override fun getModIdPriorityList(): List<String> = HCConfig.COMMON.tagOutputPriority.get()
 }

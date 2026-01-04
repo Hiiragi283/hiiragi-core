@@ -1,5 +1,6 @@
 package hiiragi283.core.data.server.recipe
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.material.HTMaterialLike
@@ -90,7 +91,7 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             .save(output)
 
         // Eternal Ticket
-        save(id("shapeless", "eternal_upgrade"), HTEternalUpgradeRecipe(CraftingBookCategory.EQUIPMENT))
+        save(id(HTConst.SHAPELESS, "eternal_upgrade"), HTEternalUpgradeRecipe(CraftingBookCategory.EQUIPMENT))
 
         manual()
         buckets()

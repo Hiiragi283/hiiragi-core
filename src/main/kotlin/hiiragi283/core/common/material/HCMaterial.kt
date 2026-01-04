@@ -26,7 +26,6 @@ sealed interface HCMaterial : HTAbstractMaterial {
             addAll(Plates.entries)
 
             add(Wood)
-            add(Stone)
             add(Obsidian)
         }
 
@@ -361,37 +360,7 @@ sealed interface HCMaterial : HTAbstractMaterial {
             HTLanguageType.JA_JP -> "木"
         }
     }
-
-    data object Stone : HCMaterial {
-        override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.DUST
-        override val colorPalette: HTColorPalette = HCMaterialPalette.STONE
-
-        override fun getItemPrefixesToGenerate(): Set<HTMaterialPrefix> = setOf(
-            HCMaterialPrefixes.DUST,
-            HCMaterialPrefixes.TINY_DUST,
-            HCMaterialPrefixes.PLATE,
-            HCMaterialPrefixes.ROD,
-        )
-
-        override fun getItemPrefixMap(): HTPrefixTemplateMap = HTPrefixTemplateMap.create {
-            addCustom(HCMaterialPrefixes.DUST, "dust_dull")
-            add(HCMaterialPrefixes.TINY_DUST)
-            addCustom(HCMaterialPrefixes.PLATE, "plate_wooden")
-            add(HCMaterialPrefixes.ROD)
-        }
-
-        override fun getBaseIngredient(): TagKey<Item> = ItemTags.STONE_CRAFTING_MATERIALS
-
-        override fun getSmeltedMaterial(): HTAbstractMaterial? = null
-
-        override fun asMaterialKey(): HTMaterialKey = HTMaterialKey.of("stone")
-
-        override fun getTranslatedName(type: HTLanguageType): String = when (type) {
-            HTLanguageType.EN_US -> "Stone"
-            HTLanguageType.JA_JP -> "石"
-        }
-    }
-
+    
     data object Obsidian : HCMaterial {
         override val basePrefix: HTMaterialPrefix = HCMaterialPrefixes.DUST
         override val colorPalette: HTColorPalette = HCMaterialPalette.OBSIDIAN

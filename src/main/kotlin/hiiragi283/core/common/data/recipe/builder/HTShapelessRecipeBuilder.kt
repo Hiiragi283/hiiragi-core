@@ -1,5 +1,6 @@
 package hiiragi283.core.common.data.recipe.builder
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.builder.HTIngredientRecipeBuilder
 import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
 import hiiragi283.core.api.material.HTMaterialLike
@@ -19,7 +20,7 @@ import net.minecraft.world.level.ItemLike
  * @since 0.1.0
  */
 class HTShapelessRecipeBuilder(stack: ItemStack) :
-    HTStackRecipeBuilder<HTShapelessRecipeBuilder>("shapeless", stack),
+    HTStackRecipeBuilder<HTShapelessRecipeBuilder>(HTConst.SHAPELESS, stack),
     HTIngredientRecipeBuilder<HTShapelessRecipeBuilder> {
     companion object {
         /**
