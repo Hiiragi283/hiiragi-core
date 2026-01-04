@@ -8,13 +8,28 @@ import net.minecraft.world.item.crafting.RecipeInput
 import org.apache.commons.lang3.math.Fraction
 
 /**
+ * レシピの処理を行う抽象クラスです。
+ * @param INPUT レシピの入力となるクラス
+ * @param RECIPE レシピのクラス
  * @author Hiiragi Tsubasa
  * @since 0.5.0
  */
 abstract class HTRecipeHandler<INPUT : RecipeInput, RECIPE : Recipe<INPUT>> {
+    /**
+     * 現在の進捗量
+     */
     var progress: Int = 0
+
+    /**
+     * 現在の最大進捗量
+     */
     var maxProgress: Int = 0
 
+    /**
+     * 進捗率を取得します。
+     * @param isActive 稼働中かどうかの判定
+     * @return `0..1`の範囲に制限された[Fraction]型の値
+     */
     fun getProgress(isActive: Boolean): Fraction = when (isActive) {
         true -> fixedFraction(progress, maxProgress)
         false -> Fraction.ZERO

@@ -8,7 +8,7 @@ import net.minecraft.world.item.crafting.RecipeHolder
 
 /**
  * バニラの[Recipe]に基づいた[HTEmiRecipe]の拡張クラスです。
- * @param RECIPE [Recipe]を継承したクラス
+ * @param RECIPE レシピのクラス
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  * @see mekanism.client.recipe_viewer.emi.recipe.MekanismEmiHolderRecipe

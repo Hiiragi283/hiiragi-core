@@ -5,6 +5,7 @@ import org.apache.commons.lang3.math.Fraction
 
 /**
  * 処理時間と獲得経験値を保持する[HTRecipe]の拡張クラスです。
+ * @param INPUT レシピの入力となるクラス
  * @param time レシピの処理時間
  * @param exp レシピの実行時にもらえる経験値量
  * @author Hiiragi Tsubasa

@@ -136,6 +136,7 @@ object BiCodecs {
      * @param right [B1]を対象とする[BiCodec]
      * @param strict 両方の値を読み取れた場合にエラーとするかどうか
      * @return [Either]の[BiCodec]
+     * @since 0.5.0
      */
     @JvmStatic
     fun <B : ByteBuf, A : Any, B1 : Any> either(

@@ -10,6 +10,12 @@ import net.minecraft.world.item.ItemStack
  */
 fun ItemStack.toResource(): HTItemResourceType? = HTItemResourceType.of(this)
 
+/**
+ * この[ItemStack][this]を[HTItemResourceType]と数量に展開します。
+ * @return [ItemStack.isEmpty]の場合は`null`
+ * @author Hiiragi Tsubasa
+ * @since 0.5.0
+ */
 fun ItemStack.toResourcePair(): Pair<HTItemResourceType, Int>? {
     val resource: HTItemResourceType = this.toResource() ?: return null
     return resource to this.count

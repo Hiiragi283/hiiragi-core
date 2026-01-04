@@ -7,6 +7,9 @@ import com.mojang.serialization.DynamicOps
 import hiiragi283.core.api.monad.Either
 
 /**
+ * [Either]向けの[Codec]の実装クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.5.0
  * @see com.mojang.serialization.codecs.EitherCodec
  * @see com.mojang.serialization.codecs.XorCodec
  */

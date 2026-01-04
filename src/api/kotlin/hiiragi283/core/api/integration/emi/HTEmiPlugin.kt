@@ -30,9 +30,15 @@ abstract class HTEmiPlugin(protected val modId: String) : EmiPlugin {
         @JvmField
         val LOGGER: Logger = LogUtils.getLogger()
 
+        /**
+         * [アイテム][Item]のレジストリです。
+         */
         @JvmStatic
         protected val ITEM_LOOKUP: HolderLookup.RegistryLookup<Item> by lazy(EmiPort.getItemRegistry()::asLookup)
 
+        /**
+         * 液体源のみを含む[液体][Fluid]のレジストリです。
+         */
         @JvmStatic
         protected val FLUID_LOOKUP: HolderLookup.RegistryLookup<Fluid> by lazy {
             EmiPort.getFluidRegistry().asLookup().filterElements { fluid: Fluid ->
@@ -80,7 +86,8 @@ abstract class HTEmiPlugin(protected val modId: String) : EmiPlugin {
 
     /**
      * [EmiRegistry.getRecipeManager]に基づいてレシピを追加します。
-     * @param BASE [RecipeType]のレシピのクラス
+     * @param INPUT レシピの入力となるクラス
+     * @param BASE [HTRecipe]を継承したクラス
      * @param RECIPE [BASE]を継承したクラス
      * @param EMI_RECIPE EMIに登録するレシピのクラス
      * @param recipeType レシピのタイプ

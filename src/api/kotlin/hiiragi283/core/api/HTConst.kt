@@ -28,6 +28,9 @@ data object HTConst {
      */
     const val DEFAULT_FLUID_AMOUNT: Int = FluidType.BUCKET_VOLUME
 
+    /**
+     * 1インゴットあたりの液体量
+     */
     const val INGOT_AMOUNT = 90
 
     //    Item    //

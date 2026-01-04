@@ -13,6 +13,7 @@ import net.minecraft.tags.TagKey
 import kotlin.collections.firstOrNull
 
 /**
+ * [TagKey]と[Holder]に関連するヘルパーをまとめたインターフェースです。
  * @author Hiiragi Tsubasa
  * @since 0.5.0
  */
@@ -22,6 +23,11 @@ interface HTTagUtil {
         val INSTANCE: HTTagUtil = HiiragiCoreAPI.getService()
     }
 
+    /**
+     * 指定した[provider]から，[tagKey]に紐づいた[Holder]を取得します。
+     * @param T レジストリの種類のクラス
+     * @return [getModIdPriorityList]に基づいて選出された[Holder]の[結果][HTTextResult]
+     */
     fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<Holder<T>> {
         val provider1: HolderLookup.Provider = (provider ?: HiiragiCoreAPI.getActiveAccess())
             ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()

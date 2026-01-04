@@ -81,5 +81,5 @@ interface HTFluidWithTag<FLUID : Fluid> :
 
     fun isOf(tagKey: TagKey<Fluid>): Boolean = getFluidTag() == tagKey && getHolder().`is`(tagKey)
 
-    fun isOf(resource: HTFluidResourceType): Boolean = resource.isOf(get())
+    fun isOf(resource: HTFluidResourceType): Boolean = resource.isOf(getFluidTag())
 }

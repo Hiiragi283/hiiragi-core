@@ -194,6 +194,7 @@ abstract class HTEmiRecipe<RECIPE : Any>(
      * @param index 材料のインデックス
      * @param x x軸方向の座標
      * @param y y軸方向の座標
+     * @since 0.5.0
      */
     fun WidgetHolder.addInput(index: Int, x: Int, y: Int): SlotWidget {
         val input: EmiIngredient = input(index)
@@ -230,6 +231,14 @@ abstract class HTEmiRecipe<RECIPE : Any>(
         else -> addSlot(output(index), x, y)
     }.recipeContext(this@HTEmiRecipe).drawBack(drawBack)
 
+    /**
+     * このレシピに液体タンクを追加します。
+     * @param ingredient 表示する材料
+     * @param x x軸方向の座標
+     * @param capacity このタンクの容量
+     * @param y y軸方向の座標
+     * @since 0.5.0
+     */
     fun WidgetHolder.addTank(
         ingredient: EmiIngredient,
         x: Int,

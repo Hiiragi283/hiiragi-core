@@ -47,6 +47,8 @@ interface HTAbstractMaterial :
 
     /**
      * 製錬後の素材を取得します。
+     * @return 製錬に対応しない素材の場合は`null`
+     * @since 0.5.0
      */
     fun getSmeltedMaterial(): HTAbstractMaterial? = this
 }

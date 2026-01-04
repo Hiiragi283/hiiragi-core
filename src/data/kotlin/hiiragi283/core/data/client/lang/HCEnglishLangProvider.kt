@@ -98,6 +98,7 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         add(HCTranslation.AMBROSIA, "ALWAYS EDIBLE and NOT CONSUMED!")
         add(HCTranslation.ELDER_HEART, "Dropped from Elder Guardian.")
+        add(HCTranslation.ETERNAL_TICKET, "Make any tool UNBREAKABLE!")
         add(HCTranslation.IRIDESCENT_POWDER, "Do not expire by time over or any damage.")
         add(HCTranslation.SLOT_COVER, "Ignored by recipes when placed in machine slot.")
         add(HCTranslation.TRADER_CATALOG, "Dropped from Wandering Trader. Right-click to trade with merchant.")

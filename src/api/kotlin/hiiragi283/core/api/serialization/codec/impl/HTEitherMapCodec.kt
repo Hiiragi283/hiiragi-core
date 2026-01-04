@@ -9,6 +9,9 @@ import hiiragi283.core.api.monad.Either
 import java.util.stream.Stream
 
 /**
+ * [Either]向けの[MapCodec]の実装クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.5.0
  * @see com.mojang.serialization.codecs.EitherMapCodec
  */
 class HTEitherMapCodec<A, B>(val left: MapCodec<A>, val right: MapCodec<B>) : MapCodec<Either<A, B>>() {

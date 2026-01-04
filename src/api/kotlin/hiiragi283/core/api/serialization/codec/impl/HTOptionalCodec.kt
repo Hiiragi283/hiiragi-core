@@ -7,6 +7,9 @@ import com.mojang.serialization.DynamicOps
 import java.util.Optional
 
 /**
+ * [Optional]向けの[Codec]の実装クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.5.0
  * @see net.minecraft.util.ExtraCodecs.optionalEmptyMap
  */
 class HTOptionalCodec<A : Any>(val codec: Codec<A>) : Codec<Optional<A>> {

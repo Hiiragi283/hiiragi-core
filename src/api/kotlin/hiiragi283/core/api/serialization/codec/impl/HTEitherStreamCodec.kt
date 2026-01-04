@@ -5,6 +5,9 @@ import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.StreamCodec
 
 /**
+ * [Either]向けの[StreamCodec]の実装クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.5.0
  * @see net.minecraft.network.codec.ByteBufCodecs.either
  */
 class HTEitherStreamCodec<B : ByteBuf, A : Any, B1 : Any>(

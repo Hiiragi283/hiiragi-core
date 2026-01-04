@@ -24,7 +24,7 @@ group = "io.github.hiiragi283"
 scmVersion {
     useHighestVersion = true
     tag {
-        prefix = "21.1-"
+        prefix = "v"
         versionSeparator = ""
     }
     versionCreator("simple")
