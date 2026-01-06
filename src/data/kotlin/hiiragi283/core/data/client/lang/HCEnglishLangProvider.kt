@@ -35,6 +35,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.MOLTEN_ELDRITCH, "Eldritch Flux")
 
         // Item
+        add(HCItems.BAMBOO_CHARCOAL, "Bamboo Charcoal")
         add(HCItems.COMPRESSED_SAWDUST, "Compressed Sawdust")
         add(HCItems.SYNTHETIC_LEATHER, "Synthetic Leather")
 
@@ -46,6 +47,9 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         add(HCItems.WHEAT_FLOUR, "Wheat Flour")
         add(HCItems.WHEAT_DOUGH, "Wheat Dough")
+        add(HCItems.ANIMAL_FAT, "Animal Fat")
+        add(HCItems.PULPED_FISH, "Pulped Fish")
+        add(HCItems.PULPED_SEED, "Pulped Seed")
 
         add(HCItems.SLOT_COVER, "Slot Cover")
         add(HCItems.TRADER_CATALOG, "Trader's Catalog")

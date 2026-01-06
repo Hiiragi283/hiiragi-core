@@ -70,6 +70,8 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
         addBaseMaterial(factory, HCMaterial.Pearls.ENDER, Items.ENDER_PEARL)
 
         addMaterial(factory, HCMaterialPrefixes.SCRAP, HCMaterial.Alloys.NETHERITE).addItem(Items.NETHERITE_SCRAP)
+
+        factory.apply(ItemTags.COALS).add(HCItems.BAMBOO_CHARCOAL)
     }
 
     private fun addBaseMaterial(factory: BuilderFactory<Item>, material: HCMaterial, item: ItemLike) {
@@ -111,7 +113,12 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
             .addItem(Items.PHANTOM_MEMBRANE)
             .addItem(Items.WIND_CHARGE)
         factory
-            .apply(HiiragiCoreTags.Items.IGNORED_IN_RECIPE_INPUT)
+            .apply(HiiragiCoreTags.Items.IGNORED_IN_RECIPE_INPUTS)
             .add(HCItems.SLOT_COVER)
+        factory
+            .apply(HiiragiCoreTags.Items.ORGANIC_OILS)
+            .add(HCItems.ANIMAL_FAT)
+            .add(HCItems.PULPED_FISH)
+            .add(HCItems.PULPED_SEED)
     }
 }

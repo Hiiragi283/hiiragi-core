@@ -35,6 +35,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.MOLTEN_ELDRITCH, "異質な流動体")
 
         // Item
+        add(HCItems.BAMBOO_CHARCOAL, "竹炭")
         add(HCItems.COMPRESSED_SAWDUST, "圧縮されたおがくず")
         add(HCItems.SYNTHETIC_LEATHER, "合成牛皮")
 
@@ -46,6 +47,9 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HCItems.WHEAT_FLOUR, "小麦粉")
         add(HCItems.WHEAT_DOUGH, "小麦の生地")
+        add(HCItems.ANIMAL_FAT, "獣脂")
+        add(HCItems.PULPED_FISH, "魚のパルプ")
+        add(HCItems.PULPED_SEED, "種のパルプ")
 
         add(HCItems.SLOT_COVER, "スロットカバー")
         add(HCItems.TRADER_CATALOG, "行商人のカタログ")

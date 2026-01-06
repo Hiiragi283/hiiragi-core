@@ -17,9 +17,6 @@ import hiiragi283.core.common.registry.register.HTDeferredItemRegister
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
-import net.minecraft.core.component.DataComponents
-import net.minecraft.world.food.FoodConstants
-import net.minecraft.world.food.FoodProperties
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.ItemLike
 import net.neoforged.bus.api.IEventBus
@@ -46,6 +43,9 @@ object HCItems {
             }
         }
     }.let(::HTMaterialTable)
+
+    @JvmField
+    val BAMBOO_CHARCOAL: HTSimpleDeferredItem = REGISTER.registerSimpleItem("bamboo_charcoal")
 
     @JvmField
     val COMPRESSED_SAWDUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("compressed_sawdust")
@@ -78,6 +78,15 @@ object HCItems {
 
     @JvmField
     val WHEAT_DOUGH: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wheat_dough")
+
+    @JvmField
+    val ANIMAL_FAT: HTSimpleDeferredItem = REGISTER.registerSimpleItem("animal_fat")
+
+    @JvmField
+    val PULPED_FISH: HTSimpleDeferredItem = REGISTER.registerSimpleItem("pulped_fish")
+
+    @JvmField
+    val PULPED_SEED: HTSimpleDeferredItem = REGISTER.registerSimpleItem("pulped_seed")
 
     //    Tools   //
 
@@ -124,18 +133,6 @@ object HCItems {
         fun <T : Any> modify(item: ItemLike, type: DataComponentType<T>, value: T) {
             event.modify(item) { builder: DataComponentPatch.Builder -> builder.set(type, value) }
         }
-
-        modify(
-            AMBROSIA,
-            DataComponents.FOOD,
-            FoodProperties
-                .Builder()
-                .nutrition(FoodConstants.MAX_FOOD)
-                .saturationModifier(0.5f)
-                .alwaysEdible()
-                .usingConvertsTo(AMBROSIA)
-                .build(),
-        )
     }
 
     //    Extensions    //

@@ -32,6 +32,12 @@ import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 
 object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipeInternal() {
+        // Bamboo -> Bamboo Charcoal
+        HTCookingRecipeBuilder
+            .smelting(HCItems.BAMBOO_CHARCOAL)
+            .addIngredient(Items.BAMBOO)
+            .setExp(0.5f)
+            .save(output)
         // Compressed Sawdust -> Charcoal
         HTCookingRecipeBuilder
             .smelting(Items.CHARCOAL)

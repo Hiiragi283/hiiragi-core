@@ -41,6 +41,9 @@
     },
     "#c:storage_blocks/crimson_crystal": {
       "burn_time": 48000
+    },
+    "hiiragi_core:bamboo_charcoal": {
+      "burn_time": 1200
     }
   }
 }
