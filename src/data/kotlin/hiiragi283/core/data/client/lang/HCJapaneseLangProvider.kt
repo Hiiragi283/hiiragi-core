@@ -5,6 +5,7 @@ import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
@@ -19,6 +20,9 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         // Block
         add(HCBlocks.WARPED_WART, "歪んだウォート")
+
+        // Entity
+        add(HCEntityTypes.ELDRITCH_EGG, "異質な卵")
 
         // Fluid
         addFluid(HCFluids.EXPERIENCE, "液体経験値")
@@ -51,6 +55,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.PULPED_FISH, "魚のパルプ")
         add(HCItems.PULPED_SEED, "種のパルプ")
 
+        add(HCItems.ELDRITCH_EGG, "異質な卵")
         add(HCItems.SLOT_COVER, "スロットカバー")
         add(HCItems.TRADER_CATALOG, "行商人のカタログ")
 
@@ -101,6 +106,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HCTranslation.AMBROSIA, "いつでも食べられる上，いくら食べてもなくなりません！")
         add(HCTranslation.ELDER_HEART, "エルダーガーディアンからドロップします。")
+        add(HCTranslation.ELDRITCH_EGG, "右クリックで投げることができ，モブに当たるとスポーンエッグになります。")
         add(HCTranslation.ETERNAL_TICKET, "あらゆる道具を不可壊にします！")
         add(HCTranslation.IRIDESCENT_POWDER, "時間経過やダメージで消滅しません。")
         add(HCTranslation.SLOT_COVER, "機械のスロットに入れることでレシピ判定から無視されます。")

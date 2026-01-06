@@ -30,7 +30,7 @@ import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 
-object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID) {
+object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipeInternal() {
         // Bamboo -> Bamboo Charcoal
         HTCookingRecipeBuilder
@@ -93,6 +93,14 @@ object HCMaterialRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             .create(HCItems.TRADER_CATALOG)
             .addIngredient(Items.BOOK)
             .addIngredient(HCMaterialPrefixes.GEM, HCMaterial.Gems.EMERALD)
+            .setCategory(CraftingBookCategory.EQUIPMENT)
+            .save(output)
+        // Eldritch Egg
+        HTShapedRecipeBuilder
+            .create(HCItems.ELDRITCH_EGG, 4)
+            .hollow4()
+            .define('A', Tags.Items.EGGS)
+            .define('B', HCMaterialPrefixes.PEARL, HCMaterial.Pearls.ELDRITCH)
             .setCategory(CraftingBookCategory.EQUIPMENT)
             .save(output)
 

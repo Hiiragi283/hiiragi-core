@@ -5,6 +5,7 @@ import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
@@ -19,6 +20,9 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         // Block
         add(HCBlocks.WARPED_WART, "Warped Wart")
+
+        // Entity
+        add(HCEntityTypes.ELDRITCH_EGG, "Thrown Eldritch Egg")
 
         // Fluid
         addFluid(HCFluids.EXPERIENCE, "Liquid Experience")
@@ -51,6 +55,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.PULPED_FISH, "Pulped Fish")
         add(HCItems.PULPED_SEED, "Pulped Seed")
 
+        add(HCItems.ELDRITCH_EGG, "Eldritch Egg")
         add(HCItems.SLOT_COVER, "Slot Cover")
         add(HCItems.TRADER_CATALOG, "Trader's Catalog")
 
@@ -102,6 +107,7 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         add(HCTranslation.AMBROSIA, "ALWAYS EDIBLE and NOT CONSUMED!")
         add(HCTranslation.ELDER_HEART, "Dropped from Elder Guardian.")
+        add(HCTranslation.ELDRITCH_EGG, "Can be throwable by right-click，and capture mobs when hit.")
         add(HCTranslation.ETERNAL_TICKET, "Make any tool UNBREAKABLE!")
         add(HCTranslation.IRIDESCENT_POWDER, "Do not expire by time over or any damage.")
         add(HCTranslation.SLOT_COVER, "Ignored by recipes when placed in machine slot.")

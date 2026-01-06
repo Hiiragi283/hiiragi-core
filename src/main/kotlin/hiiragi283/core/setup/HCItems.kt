@@ -7,6 +7,7 @@ import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.text.HTTranslation
 import hiiragi283.core.common.item.HTAmbrosiaItem
+import hiiragi283.core.common.item.HTCaptureEggItem
 import hiiragi283.core.common.item.HTCreativeItem
 import hiiragi283.core.common.item.HTToolType
 import hiiragi283.core.common.item.HTTraderCatalogItem
@@ -98,6 +99,11 @@ object HCItems {
     }.let(::HTMaterialTable)
 
     //    Utilities    //
+
+    @JvmField
+    val ELDRITCH_EGG: HTSimpleDeferredItem = REGISTER.registerItem("eldritch_egg", ::HTCaptureEggItem) {
+        it.description(HCTranslation.ELDRITCH_EGG)
+    }
 
     @JvmField
     val SLOT_COVER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("slot_cover") {
