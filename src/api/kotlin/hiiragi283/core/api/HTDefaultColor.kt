@@ -21,8 +21,7 @@ enum class HTDefaultColor(
     val dyeColor: DyeColor,
     val textColor: TextColor,
     val mapColor: MapColor = dyeColor.mapColor,
-) :
-    StringRepresentable,
+) : StringRepresentable,
     HTMaterialLike {
     WHITE(intArrayOf(255, 255, 255), DyeColor.WHITE),
     ORANGE(intArrayOf(255, 161, 96), DyeColor.ORANGE),
