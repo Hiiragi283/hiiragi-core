@@ -1,7 +1,7 @@
 package hiiragi283.core.api.text
 
+import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.monad.unwrap
-import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
 import java.util.Optional
 
@@ -26,7 +26,7 @@ fun <T> HTTranslation.toTextResult(vararg args: Any?): HTTextResult<T> = HTTextR
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-fun <T> HTTranslation.toTextResult(color: ChatFormatting): HTTextResult<T> = HTTextResult.error(this.translateColored(color))
+fun <T> HTTranslation.toTextResult(color: HTDefaultColor): HTTextResult<T> = HTTextResult.error(this.translateColored(color))
 
 /**
  * この[HTTranslation]を[HTTextResult]に変換します。
@@ -35,7 +35,7 @@ fun <T> HTTranslation.toTextResult(color: ChatFormatting): HTTextResult<T> = HTT
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-fun <T> HTTranslation.toTextResult(color: ChatFormatting, vararg args: Any?): HTTextResult<T> =
+fun <T> HTTranslation.toTextResult(color: HTDefaultColor, vararg args: Any?): HTTextResult<T> =
     HTTextResult.error(this.translateColored(color, *args))
 
 /**

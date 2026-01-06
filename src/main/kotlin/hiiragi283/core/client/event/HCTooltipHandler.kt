@@ -1,10 +1,10 @@
 package hiiragi283.core.client.event
 
+import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTranslation
 import hiiragi283.core.setup.HCDataComponents
-import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.TooltipFlag
@@ -31,7 +31,7 @@ object HCTooltipHandler {
         if (flag.hasShiftDown()) {
             consumer.accept(translation.translate())
         } else {
-            consumer.accept(HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION.translateColored(ChatFormatting.YELLOW))
+            consumer.accept(HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION.translateColored(HTDefaultColor.YELLOW))
         }
     }
 }

@@ -1,5 +1,6 @@
 package hiiragi283.core.api.item.component
 
+import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
@@ -8,7 +9,6 @@ import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.toTextResult
 import hiiragi283.core.api.text.unwrap
 import io.netty.buffer.ByteBuf
-import net.minecraft.ChatFormatting
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderGetter
 import net.minecraft.core.HolderLookup
@@ -51,7 +51,7 @@ data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: 
             tooltipFlag.hasShiftDown() -> getFullName(context.registries())
                 .map(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT::translate)
                 .unwrap()
-            else -> HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION.translateColored(ChatFormatting.YELLOW)
+            else -> HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION.translateColored(HTDefaultColor.YELLOW)
         }.let(tooltipAdder::accept)
     }
 }

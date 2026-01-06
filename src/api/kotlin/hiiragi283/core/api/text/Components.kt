@@ -1,7 +1,9 @@
 package hiiragi283.core.api.text
 
+import hiiragi283.core.api.HTDefaultColor
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
+import net.minecraft.network.chat.Style
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.Level
@@ -49,3 +51,6 @@ fun levelText(key: ResourceKey<Level>): MutableComponent {
     val location: ResourceLocation = key.location()
     return translatableText(location.toLanguageKey(ILevelExtension.TRANSLATION_PREFIX), location.toString())
 }
+
+fun MutableComponent.withStyle(color: HTDefaultColor): MutableComponent =
+    this.withStyle { style: Style -> style.withColor(color.textColor) }

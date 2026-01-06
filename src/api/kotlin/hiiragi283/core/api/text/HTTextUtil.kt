@@ -3,6 +3,7 @@
 package hiiragi283.core.api.text
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HTDefaultColor
 import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.ClickEvent
 import net.minecraft.network.chat.Component
@@ -105,6 +106,13 @@ object HTTextUtil {
                     is Boolean -> current = boolText(arg)
                     is Fraction -> current = DOUBLE_FORMAT.format(arg.toDouble()).toText()
                     // Formatting
+                    is HTDefaultColor -> {
+                        if (cachedStyle.color == null) {
+                            cachedStyle = cachedStyle.withColor(arg.textColor)
+                            continue
+                        }
+                    }
+
                     is TextColor -> {
                         if (cachedStyle.color == null) {
                             cachedStyle = cachedStyle.withColor(arg)
