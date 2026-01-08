@@ -28,25 +28,28 @@ object HCMaterialEventHandler {
         hiiragiCore(event)
     }
 
+    private val smeltingToAsh: HTSmeltingMaterialAttribute =
+        HTSmeltingMaterialAttribute.smeltingOnly(HCMaterialPrefixes.DUST, CommonMaterialKeys.ASH)
+
     @JvmStatic
     private fun vanilla(event: HTMaterialDefinitionEvent) {
         val isDataGen: Boolean = event.isDataGen
         // Fuels
         event.modify(VanillaMaterialKeys.COAL) {
             addDefaultPrefix(HCMaterialPrefixes.FUEL)
-            add(HTSmeltingMaterialAttribute.disable())
             if (isDataGen) {
                 addName("Coal", "石炭")
                 addColor(HCMaterialPalette.COAL)
+                add(smeltingToAsh)
                 add(HCTextureTemplates.FUEL)
             }
         }
         event.modify(VanillaMaterialKeys.CHARCOAL) {
             addDefaultPrefix(HCMaterialPrefixes.FUEL)
-            add(HTSmeltingMaterialAttribute.disable())
             if (isDataGen) {
                 addName("Charcoal", "木炭")
                 addColor(HCMaterialPalette.CHARCOAL)
+                add(smeltingToAsh)
                 add(HCTextureTemplates.FUEL)
             }
         }
@@ -61,6 +64,7 @@ object HCMaterialEventHandler {
         }
         event.modify(VanillaMaterialKeys.GLOWSTONE) {
             addDefaultPrefix(HCMaterialPrefixes.DUST)
+            add(HTStorageBlockMaterialAttribute.TWO_BY_TWO)
             if (isDataGen) {
                 addName("Glowstone", "グロウストーン")
                 addColor(HCMaterialPalette.GLOWSTONE)
@@ -141,7 +145,7 @@ object HCMaterialEventHandler {
             if (isDataGen) {
                 addName("Iron", "鉄")
                 addColor(HCMaterialPalette.IRON)
-                add(HCTextureTemplates.METAL)
+                add(HCTextureTemplates.METAL_SHINE)
             }
         }
         event.modify(VanillaMaterialKeys.GOLD) {
@@ -163,10 +167,10 @@ object HCMaterialEventHandler {
         }
         // Others
         event.modify(VanillaMaterialKeys.WOOD) {
-            add(HTSmeltingMaterialAttribute.disable())
             if (isDataGen) {
                 addName("Wood", "木")
                 addColor(HCMaterialPalette.WOOD)
+                add(smeltingToAsh)
                 add(
                     HTTextureTemplateMaterialAttribute.create {
                         add(HCMaterialPrefixes.DUST)
@@ -211,19 +215,19 @@ object HCMaterialEventHandler {
         // Fuels
         event.modify(CommonMaterialKeys.COAL_COKE) {
             addDefaultPrefix(HCMaterialPrefixes.FUEL)
-            add(HTSmeltingMaterialAttribute.disable())
             if (isDataGen) {
                 addName("Coal Coke", "石炭コークス")
                 addColor(HCMaterialPalette.COAL_COKE)
+                add(smeltingToAsh)
                 add(HCTextureTemplates.FUEL)
             }
         }
         event.modify(CommonMaterialKeys.CARBIDE) {
             addDefaultPrefix(HCMaterialPrefixes.FUEL)
-            add(HTSmeltingMaterialAttribute.disable())
             if (isDataGen) {
                 addName("Carbide", "カーバイド")
                 addColor(HCMaterialPalette.CARBIDE)
+                add(smeltingToAsh)
                 add(HCTextureTemplates.FUEL)
             }
         }
@@ -294,7 +298,7 @@ object HCMaterialEventHandler {
             if (isDataGen) {
                 addName("Steel", "鋼鉄")
                 addColor(HCMaterialPalette.STEEL)
-                add(HCTextureTemplates.METAL)
+                add(HCTextureTemplates.METAL_SHINE)
             }
         }
         register(CommonMaterialKeys.INVAR, HCMaterialPrefixes.INGOT, "Invar", "不変鋼")
@@ -332,6 +336,16 @@ object HCMaterialEventHandler {
                         add(HCMaterialPrefixes.PLATE)
                     },
                 )
+            }
+        }
+        // Others
+        event.modify(CommonMaterialKeys.ASH) {
+            addDefaultPrefix(HCMaterialPrefixes.DUST)
+            if (isDataGen) {
+                addName("Ash", "灰")
+                addColor(HCMaterialPalette.STEEL)
+                add(HTSmeltingMaterialAttribute.disable())
+                add(HCTextureTemplates.DUST_DULL)
             }
         }
     }

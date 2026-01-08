@@ -74,6 +74,7 @@ object HCItems {
             CommonMaterialKeys.SALTPETER,
             CommonMaterialKeys.SULFUR,
             CommonMaterialKeys.STEEL,
+            CommonMaterialKeys.ASH,
             // Hiiragi Core
             HCMaterialKeys.AZURE,
             HCMaterialKeys.CRIMSON_CRYSTAL,

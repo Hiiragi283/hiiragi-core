@@ -67,30 +67,31 @@ class HTMaterialRecipeProvider(
 
     private fun prefixToBase(prefix: HTPrefixLike, exp: Float) {
         for ((key: HTMaterialKey, definition: HTMaterialDefinition) in manager.entries) {
-            val basePrefix: HTMaterialPrefix = definition.getDefaultPrefix() ?: continue
-            if (basePrefix == prefix) continue
-
-            val smeltingAttribute: HTSmeltingMaterialAttribute =
-                definition.get<HTSmeltingMaterialAttribute>() ?: HTSmeltingMaterialAttribute.withBlasting(key)
-            val smelted: HTMaterialKey = smeltingAttribute.key ?: continue
-            val base: HTItemHolderLike<*> = itemGetter(basePrefix, smelted) ?: continue
+            val smeltingAttribute: HTSmeltingMaterialAttribute = definition.get<HTSmeltingMaterialAttribute>()
+                ?: definition.getDefaultPrefix()?.let { HTSmeltingMaterialAttribute.withBlasting(it, key) } ?: continue
+            val smeltedPrefix: HTMaterialPrefix = smeltingAttribute.prefix ?: continue
+            val smeltedKey: HTMaterialKey = smeltingAttribute.key ?: continue
+            // 精錬の前後で同じプレフィックスと素材になる場合はパス
+            if (prefix.isOf(smeltedPrefix) && key == smeltedKey) continue
+            val result: HTItemHolderLike<*> = itemGetter(smeltedPrefix, smeltedKey) ?: continue
             val input: HTItemHolderLike<*> = itemGetter(prefix, key) ?: continue
-            if (base.getNamespace() == HTConst.MINECRAFT && input.getNamespace() == HTConst.MINECRAFT) continue
-
+            // 精錬の前後がどちらもバニラ由来の場合はパス
+            if (result.getNamespace() == HTConst.MINECRAFT && input.getNamespace() == HTConst.MINECRAFT) continue
             // Smelting
-            val id: ResourceLocation = HiiragiCoreAPI.id(
-                smelted.name,
-                "${basePrefix.asPrefixName()}_from_${prefix.asPrefixName()}",
-            )
+            val path: String = when {
+                key == smeltedKey -> "${smeltedPrefix.name}_from_${prefix.asPrefixName()}"
+                else -> "${smeltedPrefix.name}_from_${prefix.createPath(key)}"
+            }
+            val id: ResourceLocation = HiiragiCoreAPI.id(smeltedKey.name, path)
             HTCookingRecipeBuilder
-                .smelting(base)
+                .smelting(result)
                 .addIngredient(input)
                 .setExp(exp)
                 .save(output, id)
             // Blasting
             if (smeltingAttribute.isBlasting) {
                 HTCookingRecipeBuilder
-                    .blasting(base)
+                    .blasting(result)
                     .addIngredient(input)
                     .setTime(100)
                     .setExp(exp)
@@ -99,7 +100,7 @@ class HTMaterialRecipeProvider(
             // Smoking
             if (smeltingAttribute.isSmoking) {
                 HTCookingRecipeBuilder
-                    .smoking(base)
+                    .smoking(result)
                     .addIngredient(input)
                     .setTime(100)
                     .setExp(exp)

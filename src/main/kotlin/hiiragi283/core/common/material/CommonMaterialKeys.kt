@@ -138,4 +138,7 @@ object CommonMaterialKeys {
     val RUBBER: HTMaterialKey = HTMaterialKey.of("rubber")
 
     //    Others    //
+
+    @JvmStatic
+    val ASH: HTMaterialKey = HTMaterialKey.of("ash")
 }
