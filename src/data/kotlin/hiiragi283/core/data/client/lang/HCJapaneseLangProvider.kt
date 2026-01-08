@@ -58,6 +58,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.IRIDESCENT_POWDER, "虹色の粉")
         add(HCItems.AMBROSIA, "アンブロシア")
         add(HCItems.ETERNAL_TICKET, "永遠のチケット")
+        add(HCItems.ALMIGHTY_PICKAXE, "全能なるツルハシ")
 
         // Recipe
         add(HCRecipeTypes.ANVIL_CRUSHING, "金床による粉砕")

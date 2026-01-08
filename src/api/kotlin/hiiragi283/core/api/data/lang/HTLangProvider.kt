@@ -54,7 +54,7 @@ sealed class HTLangProvider(output: PackOutput, modid: String, val langType: HTL
     fun addFluid(content: HTFluidContent<*, *, *>, value: String) {
         add(content.typeHolder.get().descriptionId, value)
         addFluidBucket(content, value)
-        add(content.getFluidTag(), value)
+        add(content.fluidTag, value)
     }
 
     protected abstract fun addFluidBucket(content: HTFluidContent<*, *, *>, value: String)

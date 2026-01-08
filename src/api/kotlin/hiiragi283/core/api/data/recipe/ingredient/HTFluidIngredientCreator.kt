@@ -3,8 +3,9 @@ package hiiragi283.core.api.data.recipe.ingredient
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
-import hiiragi283.core.api.registry.HTFluidWithTag
+import hiiragi283.core.api.registry.HTFluidContent
 import net.minecraft.world.level.material.Fluid
+import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 
 /**
@@ -14,16 +15,16 @@ import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 interface HTFluidIngredientCreator : HTIngredientCreator<Fluid, HTFluidIngredient> {
     fun from(ingredient: FluidIngredient, amount: Int): HTFluidIngredient = HTFluidIngredient(ingredient, amount)
 
-    fun fromTagKey(fluid: HTFluidWithTag<*>, amount: Int): HTFluidIngredient = fromTagKey(fluid.getFluidTag(), amount)
+    fun fromTagKey(content: HTFluidContent<*, *, *>, amount: Int): HTFluidIngredient = fromTagKey(content.fluidTag, amount)
 
-    fun fromTagKeys(vararg fluids: HTFluidWithTag<*>, amount: Int): HTFluidIngredient =
-        fromTagKeys(fluids.map(HTFluidWithTag<*>::getFluidTag), amount)
+    fun fromTagKeys(vararg contents: HTFluidContent<*, *, *>, amount: Int): HTFluidIngredient =
+        fromTagKeys(contents.map(HTFluidContent<*, *, *>::fluidTag), amount)
 
-    fun water(amount: Int): HTFluidIngredient = fromTagKey(HTFluidWithTag.WATER, amount)
+    fun water(amount: Int): HTFluidIngredient = fromTagKey(Tags.Fluids.WATER, amount)
 
-    fun lava(amount: Int): HTFluidIngredient = fromTagKey(HTFluidWithTag.LAVA, amount)
+    fun lava(amount: Int): HTFluidIngredient = fromTagKey(Tags.Fluids.LAVA, amount)
 
-    fun milk(amount: Int): HTFluidIngredient = fromTagKey(HTFluidWithTag.MILK, amount)
+    fun milk(amount: Int): HTFluidIngredient = fromTagKey(Tags.Fluids.MILK, amount)
 
     // Material
     fun fromTagKey(prefix: HTPrefixLike, material: HTMaterialLike, count: Int = 1): HTFluidIngredient =

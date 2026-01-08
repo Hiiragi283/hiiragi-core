@@ -1,5 +1,7 @@
 package hiiragi283.core.api.registry
 
+import hiiragi283.core.api.resource.HTKeyLike
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import net.minecraft.core.Holder
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -25,14 +27,19 @@ data class HTFluidContent<TYPE : FluidType, STILL : Fluid, FLOWING : Fluid>(
     val typeHolder: HTDeferredHolder<FluidType, TYPE>,
     val stillHolder: HTDeferredHolder<Fluid, STILL>,
     val flowingHolder: HTDeferredHolder<Fluid, FLOWING>,
-    private val fluidTag: TagKey<Fluid>,
+    val fluidTag: TagKey<Fluid>,
     val block: HTDeferredHolder<Block, out LiquidBlock>,
     val bucket: HTItemHolderLike<*>,
     val bucketTag: TagKey<Item>,
-) : HTFluidWithTag<STILL> {
-    override fun getFluidTag(): TagKey<Fluid> = fluidTag
+) : HTHolderLike<Fluid, STILL>,
+    HTKeyLike.HolderDelegate<Fluid> {
+    fun getFluidType(): TYPE = typeHolder.get()
 
-    override fun getFluidType(): TYPE = typeHolder.get()
+    fun isOf(fluid: Fluid): Boolean = get() == fluid
+
+    fun isOf(tagKey: TagKey<Fluid>): Boolean = fluidTag == tagKey && getHolder().`is`(tagKey)
+
+    fun isOf(resource: HTFluidResourceType): Boolean = resource.isOf(fluidTag)
 
     override fun get(): STILL = stillHolder.get()
 

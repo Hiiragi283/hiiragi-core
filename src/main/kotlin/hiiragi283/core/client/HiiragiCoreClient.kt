@@ -83,6 +83,9 @@ object HiiragiCoreClient {
 
         molten(CommonMaterialKeys.STEEL, Color(0x525252))
 
+        molten(CommonMaterialKeys.PLASTIC, Color(0x9abeba))
+        molten(CommonMaterialKeys.RUBBER, Color(0x2e262e))
+
         molten(HCMaterialKeys.CRIMSON_CRYSTAL, Color(0x993333))
         molten(HCMaterialKeys.WARPED_CRYSTAL, Color(0x339999))
         molten(HCMaterialKeys.ELDRITCH, Color(0x6633cc))

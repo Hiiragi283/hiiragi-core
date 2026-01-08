@@ -70,6 +70,9 @@ object HCFluids {
         register(VanillaMaterialKeys.GLASS, molten().temperature(1300))
         // Common
         register(CommonMaterialKeys.STEEL, molten().temperature(1800))
+
+        register(CommonMaterialKeys.PLASTIC, molten().temperature(1300))
+        register(CommonMaterialKeys.RUBBER, molten().temperature(600))
         // Hiiragi Core
         register(HCMaterialKeys.CRIMSON_CRYSTAL, molten().temperature(2300), ::HTNetherFluidType)
         register(HCMaterialKeys.WARPED_CRYSTAL, molten().temperature(1300), ::HTNetherFluidType)

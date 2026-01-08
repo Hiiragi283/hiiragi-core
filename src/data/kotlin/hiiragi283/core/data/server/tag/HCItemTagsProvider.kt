@@ -82,6 +82,14 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
                 factory.apply(tagKey).add(item)
             }
         }
+
+        listOf(
+            ItemTags.AXES,
+            ItemTags.HOES,
+            ItemTags.PICKAXES,
+            ItemTags.SHOVELS,
+            Tags.Items.MINING_TOOL_TOOLS,
+        ).map(factory::apply).forEach { it.add(HCItems.ALMIGHTY_PICKAXE) }
     }
 
     //    Bucket    //

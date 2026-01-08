@@ -309,11 +309,11 @@ object HCMaterialPalette {
     val PLASTIC: HTColorPalette = HTArrayColorPalette(
         arrayOf(
             Color(0xe0ebe5),
-            Color(0xc2d6ce),
-            Color(0xa3c2ba),
-            Color(0x85ada8),
-            Color(0x85ada8),
-            Color(0x5e898c),
+            Color(0xbdd4cd),
+            Color(0x9abeba),
+            Color(0x77a3a7),
+            Color(0x5a7c8b),
+            Color(0x435569),
         ),
     )
 

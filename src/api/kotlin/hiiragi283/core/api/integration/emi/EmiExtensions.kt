@@ -15,7 +15,7 @@ import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
-import hiiragi283.core.api.registry.HTFluidWithTag
+import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.item.HTItemResourceType
@@ -190,7 +190,7 @@ fun HTFluidResult.toEmi(): EmiStack = this.getStackResult(null).mapOrElse(FluidS
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun HTFluidWithTag<*>.toFluidEmi(amount: Int = 0): EmiStack = this.get().toEmi(amount)
+fun HTHolderLike<Fluid, *>.toFluidEmi(amount: Int = 0): EmiStack = this.get().toEmi(amount)
 
 /**
  * 指定した[翻訳][translation]からエラーを表す[EmiStack]を作成します。

@@ -9,7 +9,7 @@ import java.util.function.Supplier
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  * @see HTDeferredHolder
- * @see HTFluidWithTag
+ * @see HTFluidContent
  * @see HTItemHolderLike
  */
 @Suppress("CAST_NEVER_SUCCEEDS")

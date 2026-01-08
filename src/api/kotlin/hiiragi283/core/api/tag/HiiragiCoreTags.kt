@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import net.minecraft.core.registries.Registries
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
+import net.minecraft.world.level.block.Block
 
 /**
  * Hiiragi Coreで使用されるタグをまとめたクラスです。
@@ -11,6 +12,17 @@ import net.minecraft.world.item.Item
  * @since 0.4.0
  */
 object HiiragiCoreTags {
+    object Blocks {
+        @JvmField
+        val INCORRECT_FOR_ALMIGHTY_PICKAXE: TagKey<Block> = mod("incorrect_for_almighty_pickaxe")
+
+        @JvmStatic
+        private fun common(vararg path: String): TagKey<Block> = Registries.BLOCK.createCommonTag(*path)
+
+        @JvmStatic
+        private fun mod(vararg path: String): TagKey<Block> = Registries.BLOCK.createTagKey(HiiragiCoreAPI.id(*path))
+    }
+
     object Items {
         @JvmField
         val DOUGHS: TagKey<Item> = common("doughs")

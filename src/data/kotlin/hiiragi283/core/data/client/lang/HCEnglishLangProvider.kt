@@ -58,6 +58,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.IRIDESCENT_POWDER, "Iridescent Powder")
         add(HCItems.AMBROSIA, "Ambrosia")
         add(HCItems.ETERNAL_TICKET, "Eternal Ticket")
+        add(HCItems.ALMIGHTY_PICKAXE, "Almighty Pickaxe")
 
         // Recipe
         add(HCRecipeTypes.ANVIL_CRUSHING, "Anvil Crushing")

@@ -13,7 +13,7 @@ class HCFluidTagsProvider(context: HTDataGenContext) : HTTagsProvider<Fluid>(Hii
     override fun addTagsInternal(factory: BuilderFactory<Fluid>) {
         for (content: HTFluidContent<*, *, *> in HCFluids.REGISTER.entries) {
             factory
-                .apply(content.getFluidTag())
+                .apply(content.fluidTag)
                 .addContent(content)
         }
     }
