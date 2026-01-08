@@ -5,6 +5,7 @@ import hiiragi283.core.api.registry.RegistryKey
 import net.minecraft.core.registries.Registries
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
+import net.minecraft.world.level.material.Fluid
 
 /**
  * [HTMaterialPrefix]を保持するインターフェースです。
@@ -49,6 +50,11 @@ fun interface HTPrefixLike {
      * @param T レジストリの要素のクラス
      */
     fun <T : Any> createTagKey(key: RegistryKey<T>, name: String): TagKey<T> = asMaterialPrefix().createTagKey(key, name)
+
+    /**
+     * 指定した[素材][material]から，[液体][Fluid]の素材の共通タグを生成します。
+     */
+    fun fluidTagKey(material: HTMaterialLike): TagKey<Fluid> = createTagKey(Registries.FLUID, material)
 
     /**
      * 指定した[素材][material]から，[アイテム][Item]の素材の共通タグを生成します。

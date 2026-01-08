@@ -78,6 +78,9 @@ object VanillaMaterialKeys {
     val STONE: HTMaterialKey = HTMaterialKey.of("stone")
 
     @JvmStatic
+    val GLASS: HTMaterialKey = HTMaterialKey.of("glass")
+
+    @JvmStatic
     val OBSIDIAN: HTMaterialKey = HTMaterialKey.of("obsidian")
 
     //    Item    //

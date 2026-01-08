@@ -31,9 +31,9 @@ object HCRuntimeRecipeHandler {
     private fun crushToDust(event: HTRegisterRuntimeRecipeEvent, prefix: HTPrefixLike, outputCountGetter: (HTMaterialDefinition) -> Int?) {
         for ((key: HTMaterialKey, definition: HTMaterialDefinition) in event.materialManager.entries) {
             val outputCount: Int = outputCountGetter(definition) ?: continue
-            val dust: Item = event.getFirstHolder(HCMaterialPrefixes.DUST, key)?.value() ?: continue
+            val dust: Item = event.getFirstItemHolder(HCMaterialPrefixes.DUST, key)?.value() ?: continue
 
-            if (!event.isPresentTag(prefix, key)) continue
+            if (!event.isPresentItemTag(prefix, key)) continue
             // Crushing
             HTSingleItemRecipeBuilder
                 .crushing(event.itemCreator.fromTagKey(prefix, key), event.itemResult.create(dust, outputCount))

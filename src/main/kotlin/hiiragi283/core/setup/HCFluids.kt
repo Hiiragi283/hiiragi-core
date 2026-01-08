@@ -1,9 +1,17 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.collection.buildTable
+import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.HTMaterialTable
+import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.registry.HTSimpleFluidContent
 import hiiragi283.core.common.fluid.HTEndFluidType
 import hiiragi283.core.common.fluid.HTNetherFluidType
+import hiiragi283.core.common.material.CommonMaterialKeys
+import hiiragi283.core.common.material.HCMaterialKeys
+import hiiragi283.core.common.material.HCMaterialPrefixes
+import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.common.registry.register.HTFluidContentRegister
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
@@ -45,22 +53,31 @@ object HCFluids {
     @JvmField
     val MEAT: HTSimpleFluidContent = REGISTER.registerSimple("meat", liquid())
 
-    //    Molten    //
+    //    Material    //
 
-    @JvmField
-    val MOLTEN_GLASS: HTSimpleFluidContent = REGISTER.registerSimple("molten_glass", molten())
+    @JvmStatic
+    val MATERIALS: HTMaterialTable<HTMaterialPrefix, HTSimpleFluidContent> = buildTable {
+        fun register(key: HTMaterialKey, properties: FluidType.Properties, typeFactory: (FluidType.Properties) -> FluidType = ::FluidType) {
+            this[HCMaterialPrefixes.MOLTEN, key] = REGISTER.register("molten_${key.name}", properties, typeFactory)
+        }
 
-    @JvmField
-    val MOLTEN_CRIMSON_CRYSTAL: HTSimpleFluidContent =
-        REGISTER.register("molten_crimson_crystal", molten().temperature(2300), ::HTNetherFluidType)
+        // Vanilla
+        register(VanillaMaterialKeys.COPPER, molten().temperature(1100))
+        register(VanillaMaterialKeys.IRON, molten().temperature(1800))
+        register(VanillaMaterialKeys.GOLD, molten().temperature(1300))
+        register(VanillaMaterialKeys.NETHERITE, molten().temperature(2300))
 
-    @JvmField
-    val MOLTEN_WARPED_CRYSTAL: HTSimpleFluidContent =
-        REGISTER.register("molten_warped_crystal", molten().temperature(1300), ::HTNetherFluidType)
+        register(VanillaMaterialKeys.GLASS, molten().temperature(1300))
+        // Common
+        register(CommonMaterialKeys.STEEL, molten().temperature(1800))
+        // Hiiragi Core
+        register(HCMaterialKeys.CRIMSON_CRYSTAL, molten().temperature(2300), ::HTNetherFluidType)
+        register(HCMaterialKeys.WARPED_CRYSTAL, molten().temperature(1300), ::HTNetherFluidType)
+        register(HCMaterialKeys.ELDRITCH, molten().temperature(1300), ::HTEndFluidType)
 
-    @JvmField
-    val MOLTEN_ELDRITCH: HTSimpleFluidContent =
-        REGISTER.register("molten_eldritch", molten().temperature(1300), ::HTEndFluidType)
+        register(HCMaterialKeys.AZURE_STEEL, molten().temperature(1800))
+        register(HCMaterialKeys.DEEP_STEEL, molten().temperature(2300))
+    }.let(::HTMaterialTable)
 
     //    Extensions    //
 

@@ -54,10 +54,7 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
             // Vanilla
             add(HCFluids.HONEY)
             // Molten
-            add(HCFluids.MOLTEN_GLASS)
-            add(HCFluids.MOLTEN_CRIMSON_CRYSTAL)
-            add(HCFluids.MOLTEN_WARPED_CRYSTAL)
-            add(HCFluids.MOLTEN_ELDRITCH)
+            addAll(HCFluids.MATERIALS.values)
         }
         for (content: HTFluidContent<*, *, *> in HCFluids.REGISTER.entries) {
             bucketItem(content, content in dripFluids)

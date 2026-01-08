@@ -188,6 +188,13 @@ object HCMaterialEventHandler {
                 add(HCTextureTemplates.DUST)
             }
         }
+        event.modify(VanillaMaterialKeys.GLASS) {
+            addDefaultPrefix(HCMaterialPrefixes.DUST)
+            if (isDataGen) {
+                addName("Glass", "ガラス")
+                add(HTSmeltingMaterialAttribute.disable())
+            }
+        }
         event.modify(VanillaMaterialKeys.OBSIDIAN) {
             addDefaultPrefix(HCMaterialPrefixes.DUST)
             if (isDataGen) {

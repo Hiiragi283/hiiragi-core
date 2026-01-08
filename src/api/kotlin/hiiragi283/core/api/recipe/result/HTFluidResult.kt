@@ -8,9 +8,11 @@ import hiiragi283.core.api.serialization.codec.MapBiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import net.minecraft.core.Holder
+import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.tags.TagKey
+import net.minecraft.world.level.material.FlowingFluid
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 
@@ -20,7 +22,7 @@ import net.neoforged.neoforge.fluids.FluidStack
  * @since 0.4.0
  */
 class HTFluidResult(contents: Ior<HTFluidResourceType, TagKey<Fluid>>, amount: Int) :
-    HTResourceRecipeResult<Fluid, HTFluidResourceType, FluidStack>(contents, amount) {
+    HTResourceRecipeResult<Fluid, HTFluidResourceType, FluidStack>(validate(contents), amount) {
     companion object {
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTFluidResult> = BiCodec.composite(
@@ -32,6 +34,21 @@ class HTFluidResult(contents: Ior<HTFluidResourceType, TagKey<Fluid>>, amount: I
             BiCodecs.POSITIVE_INT.optionalFieldOf(HTConst.AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT).forGetter(HTFluidResult::amount),
             ::HTFluidResult,
         )
+
+        /**
+         * 液体流が指定されている場合，液体源に置き換える
+         */
+        @JvmStatic
+        private fun validate(contents: Ior<HTFluidResourceType, TagKey<Fluid>>): Ior<HTFluidResourceType, TagKey<Fluid>> =
+            contents.mapLeft { resource: HTFluidResourceType ->
+                val (holder: Holder<Fluid>, patch: DataComponentPatch) = resource
+                val fluid: Fluid = holder.value()
+                if (!fluid.isSource(fluid.defaultFluidState()) && fluid is FlowingFluid) {
+                    HTFluidResourceType.of(fluid.source, patch)
+                } else {
+                    resource
+                }
+            }
     }
 
     override fun getEmptyStack(): FluidStack = FluidStack.EMPTY

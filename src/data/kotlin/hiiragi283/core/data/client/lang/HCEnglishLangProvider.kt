@@ -33,11 +33,6 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.BLOOD, "Blood")
         addFluid(HCFluids.MEAT, "Meat")
 
-        addFluid(HCFluids.MOLTEN_GLASS, "Molten Glass")
-        addFluid(HCFluids.MOLTEN_CRIMSON_CRYSTAL, "Crimson Blood")
-        addFluid(HCFluids.MOLTEN_WARPED_CRYSTAL, "Dew of the Warp")
-        addFluid(HCFluids.MOLTEN_ELDRITCH, "Eldritch Flux")
-
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "Bamboo Charcoal")
         add(HCItems.COMPRESSED_SAWDUST, "Compressed Sawdust")

@@ -31,14 +31,19 @@ class HTFluidResourceType private constructor(private val stack: FluidStack) : H
          * @return [FluidStack.isEmpty]が`true`の場合は`null`
          */
         @JvmStatic
-        fun ofNullable(fluid: Fluid): HTFluidResourceType? = FluidStack(fluid, 1).let(::of)
+        fun ofNullable(fluid: Fluid, patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType? {
+            val stack = FluidStack(fluid, 1)
+            stack.applyComponents(patch)
+            return stack.let(::of)
+        }
 
         /**
          * 指定した[fluid]を[HTFluidResourceType]に変換します。
          * @throws IllegalStateException [FluidStack.isEmpty]が`true`の場合
          */
         @JvmStatic
-        fun of(fluid: Fluid): HTFluidResourceType = ofNullable(fluid) ?: error("Fluid must not be empty")
+        fun of(fluid: Fluid, patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType =
+            ofNullable(fluid, patch) ?: error("Fluid must not be empty")
 
         /**
          * 指定した[stack]を[HTFluidResourceType]に変換します。
