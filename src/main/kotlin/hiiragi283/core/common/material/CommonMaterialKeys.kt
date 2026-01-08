@@ -3,7 +3,7 @@ package hiiragi283.core.common.material
 import hiiragi283.core.api.material.HTMaterialKey
 
 object CommonMaterialKeys {
-    //    Plates    //
+    //    Fuels    //
 
     @JvmStatic
     val COAL_COKE: HTMaterialKey = HTMaterialKey.of("coal_coke")
@@ -129,16 +129,14 @@ object CommonMaterialKeys {
     @JvmStatic
     val ENDERIUM: HTMaterialKey = HTMaterialKey.of("enderium")
 
-    //    Plates    //
+    //    Others    //
+
+    @JvmStatic
+    val ASH: HTMaterialKey = HTMaterialKey.of("ash")
 
     @JvmStatic
     val PLASTIC: HTMaterialKey = HTMaterialKey.of("plastic")
 
     @JvmStatic
     val RUBBER: HTMaterialKey = HTMaterialKey.of("rubber")
-
-    //    Others    //
-
-    @JvmStatic
-    val ASH: HTMaterialKey = HTMaterialKey.of("ash")
 }

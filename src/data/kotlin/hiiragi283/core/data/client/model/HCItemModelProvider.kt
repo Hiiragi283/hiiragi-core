@@ -9,6 +9,7 @@ import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTSimpleFluidContent
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.resources.ResourceLocation
@@ -19,9 +20,18 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
             addAll(HCItems.REGISTER.asSequence())
 
             removeAll(HCItems.MATERIALS.values)
+            remove(HCItems.STEEL_COMPOUND)
         }.forEach { item: HTIdLike -> existTexture(item, ::basicItem) }
 
         registerMaterials()
+        existTexture(HCItems.STEEL_COMPOUND) { itemId: ResourceLocation ->
+            layeredItem(
+                HCItems.STEEL_COMPOUND,
+                vanillaId(HTConst.ITEM, "iron_ingot"),
+                itemId.withPrefix("item/"),
+            )
+        }
+
         registerBuckets()
     }
 

@@ -46,6 +46,24 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .setTime(20 * 30)
             .setExp(0.5f)
             .saveSuffixed(output, "_from_sawdust")
+        // Steel Compound
+        HTShapelessRecipeBuilder
+            .create(HCItems.STEEL_COMPOUND)
+            .addIngredient(HCMaterialPrefixes.INGOT, VanillaMaterialKeys.IRON)
+            .addIngredients(HCMaterialPrefixes.DUST, VanillaMaterialKeys.CHARCOAL, 2)
+            .saveSuffixed(output, "_with_charcoal")
+
+        HTShapelessRecipeBuilder
+            .create(HCItems.STEEL_COMPOUND)
+            .addIngredient(HCMaterialPrefixes.INGOT, VanillaMaterialKeys.IRON)
+            .addIngredients(HCMaterialPrefixes.DUST, VanillaMaterialKeys.COAL, 4)
+            .saveSuffixed(output, "_with_coal")
+
+        HTCookingRecipeBuilder
+            .blasting(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.INGOT, CommonMaterialKeys.STEEL))
+            .addIngredient(HCItems.STEEL_COMPOUND)
+            .setExp(0.7f)
+            .saveSuffixed(output, "_from_compound")
         // Wither Doll
         HTShapedRecipeBuilder
             .create(HCItems.WITHER_DOLL)

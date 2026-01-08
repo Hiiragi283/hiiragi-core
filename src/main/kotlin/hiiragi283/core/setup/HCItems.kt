@@ -64,7 +64,6 @@ object HCItems {
             VanillaMaterialKeys.GOLD,
             VanillaMaterialKeys.NETHERITE,
             VanillaMaterialKeys.WOOD,
-            VanillaMaterialKeys.STONE,
             VanillaMaterialKeys.OBSIDIAN,
             // Common
             CommonMaterialKeys.COAL_COKE,
@@ -187,6 +186,9 @@ object HCItems {
 
     @JvmField
     val COMPRESSED_SAWDUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("compressed_sawdust")
+
+    @JvmField
+    val STEEL_COMPOUND: HTSimpleDeferredItem = REGISTER.registerSimpleItem("steel_compound")
 
     @JvmField
     val SYNTHETIC_LEATHER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_leather")

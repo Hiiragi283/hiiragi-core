@@ -41,6 +41,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "Bamboo Charcoal")
         add(HCItems.COMPRESSED_SAWDUST, "Compressed Sawdust")
+        add(HCItems.STEEL_COMPOUND, "Steel Compound")
         add(HCItems.SYNTHETIC_LEATHER, "Synthetic Leather")
 
         add(HCItems.LUMINOUS_PASTE, "Luminous Paste")

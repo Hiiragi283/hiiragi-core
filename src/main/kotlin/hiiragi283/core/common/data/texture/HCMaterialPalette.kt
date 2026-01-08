@@ -303,7 +303,7 @@ object HCMaterialPalette {
         ),
     )
 
-    //    Plates    //
+    //    Others    //
 
     @JvmStatic
     val PLASTIC: HTColorPalette = HTArrayColorPalette(
@@ -328,8 +328,6 @@ object HCMaterialPalette {
             Color(0x0f0c13),
         ),
     )
-
-    //    Others    //
 
     @JvmStatic
     val WOOD: HTColorPalette = HTArrayColorPalette(

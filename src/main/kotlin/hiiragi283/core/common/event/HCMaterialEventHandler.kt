@@ -183,6 +183,9 @@ object HCMaterialEventHandler {
             addDefaultPrefix(HCMaterialPrefixes.DUST)
             if (isDataGen) {
                 addName("Stone", "石")
+                addColor(HCMaterialPalette.STONE)
+                add(HTSmeltingMaterialAttribute.disable())
+                add(HCTextureTemplates.DUST)
             }
         }
         event.modify(VanillaMaterialKeys.OBSIDIAN) {
@@ -190,6 +193,7 @@ object HCMaterialEventHandler {
             if (isDataGen) {
                 addName("Obsidian", "黒曜石")
                 addColor(HCMaterialPalette.OBSIDIAN)
+                add(HTSmeltingMaterialAttribute.disable())
                 add(HCTextureTemplates.DUST)
             }
         }
@@ -310,7 +314,16 @@ object HCMaterialEventHandler {
         register(CommonMaterialKeys.SIGNALUM, HCMaterialPrefixes.INGOT, "Signalum", "シグナルム")
         register(CommonMaterialKeys.LUMIUM, HCMaterialPrefixes.INGOT, "Lumium", "ルミウム")
         register(CommonMaterialKeys.ENDERIUM, HCMaterialPrefixes.INGOT, "Enderium", "エンダリウム")
-        // Plates
+        // Others
+        event.modify(CommonMaterialKeys.ASH) {
+            addDefaultPrefix(HCMaterialPrefixes.DUST)
+            if (isDataGen) {
+                addName("Ash", "灰")
+                addColor(HCMaterialPalette.STEEL)
+                add(HTSmeltingMaterialAttribute.disable())
+                add(HCTextureTemplates.DUST_DULL)
+            }
+        }
         event.modify(CommonMaterialKeys.PLASTIC) {
             addDefaultPrefix(HCMaterialPrefixes.PLATE)
             if (isDataGen) {
@@ -336,16 +349,6 @@ object HCMaterialEventHandler {
                         add(HCMaterialPrefixes.PLATE)
                     },
                 )
-            }
-        }
-        // Others
-        event.modify(CommonMaterialKeys.ASH) {
-            addDefaultPrefix(HCMaterialPrefixes.DUST)
-            if (isDataGen) {
-                addName("Ash", "灰")
-                addColor(HCMaterialPalette.STEEL)
-                add(HTSmeltingMaterialAttribute.disable())
-                add(HCTextureTemplates.DUST_DULL)
             }
         }
     }
