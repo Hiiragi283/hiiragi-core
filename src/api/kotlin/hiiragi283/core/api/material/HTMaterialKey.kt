@@ -37,4 +37,6 @@ value class HTMaterialKey private constructor(val name: String) : HTMaterialLike
     }
 
     override fun asMaterialKey(): HTMaterialKey = this
+
+    override fun toString(): String = name
 }

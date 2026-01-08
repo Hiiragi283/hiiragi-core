@@ -9,8 +9,9 @@ import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.item.HTToolType
-import hiiragi283.core.common.material.HCMaterial
+import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialPrefixes
+import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
@@ -18,7 +19,6 @@ import net.minecraft.tags.ItemTags
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
-import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.common.Tags
 import java.util.concurrent.CompletableFuture
@@ -43,8 +43,8 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
         HCBlocks.MATERIALS.forEach { (prefix: HTMaterialPrefix, key: HTMaterialKey, _) ->
             copy(prefix, key)
         }
-        for ((material: HCMaterial, _) in HCBlockTagsProvider.VANILLA_STORAGE_BLOCKS) {
-            copy(HCMaterialPrefixes.STORAGE_BLOCK, material)
+        for (key: HTMaterialKey in HCBlockTagsProvider.VANILLA_STORAGE_BLOCKS.keys) {
+            copy(HCMaterialPrefixes.STORAGE_BLOCK, key)
         }
     }
 
@@ -56,26 +56,22 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
             if (prefix == HCMaterialPrefixes.GEM || prefix == HCMaterialPrefixes.INGOT) {
                 factory.apply(ItemTags.BEACON_PAYMENT_ITEMS).addTag(prefix, key)
             }
-            if (prefix == HCMaterialPrefixes.PLATE && HCMaterial.Wood.isOf(key)) {
+            if (prefix == HCMaterialPrefixes.PLATE && key == VanillaMaterialKeys.WOOD) {
                 factory.apply(ItemTags.PLANKS).add(item)
             }
-            if (prefix == HCMaterialPrefixes.RAW_MATERIAL && HCMaterial.Plates.RUBBER.isOf(key)) {
+            if (prefix == HCMaterialPrefixes.RAW_MATERIAL && key == CommonMaterialKeys.RUBBER) {
                 factory.apply(Tags.Items.SLIME_BALLS).add(item)
             }
         }
 
-        addBaseMaterial(factory, HCMaterial.Fuels.COAL, Items.COAL)
-        addBaseMaterial(factory, HCMaterial.Fuels.CHARCOAL, Items.CHARCOAL)
-        addBaseMaterial(factory, HCMaterial.Gems.ECHO, Items.ECHO_SHARD)
-        addBaseMaterial(factory, HCMaterial.Pearls.ENDER, Items.ENDER_PEARL)
+        addMaterial(factory, HCMaterialPrefixes.FUEL, VanillaMaterialKeys.COAL).addItem(Items.COAL)
+        addMaterial(factory, HCMaterialPrefixes.FUEL, VanillaMaterialKeys.CHARCOAL).addItem(Items.CHARCOAL)
+        addMaterial(factory, HCMaterialPrefixes.GEM, VanillaMaterialKeys.ECHO).addItem(Items.ECHO_SHARD)
+        addMaterial(factory, HCMaterialPrefixes.PEARL, VanillaMaterialKeys.ENDER).addItem(Items.ENDER_PEARL)
 
-        addMaterial(factory, HCMaterialPrefixes.SCRAP, HCMaterial.Alloys.NETHERITE).addItem(Items.NETHERITE_SCRAP)
+        addMaterial(factory, HCMaterialPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE).addItem(Items.NETHERITE_SCRAP)
 
         factory.apply(ItemTags.COALS).add(HCItems.BAMBOO_CHARCOAL)
-    }
-
-    private fun addBaseMaterial(factory: BuilderFactory<Item>, material: HCMaterial, item: ItemLike) {
-        addMaterial(factory, material.basePrefix, material).addItem(item)
     }
 
     //    Tool    //

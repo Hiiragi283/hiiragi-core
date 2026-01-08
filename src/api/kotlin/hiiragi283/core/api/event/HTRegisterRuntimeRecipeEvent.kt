@@ -7,6 +7,7 @@ import hiiragi283.core.api.data.recipe.ingredient.HTItemIngredientCreator
 import hiiragi283.core.api.data.recipe.result.HTFluidResultCreator
 import hiiragi283.core.api.data.recipe.result.HTItemResultCreator
 import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.tag.HTTagUtil
 import net.minecraft.advancements.Advancement
@@ -31,6 +32,7 @@ import java.util.function.Consumer
 class HTRegisterRuntimeRecipeEvent(
     val registryAccess: RegistryAccess,
     val recipeManager: RecipeManager,
+    val materialManager: HTMaterialManager,
     private val consumer: Consumer<RecipeHolder<*>>,
 ) : Event() {
     companion object {

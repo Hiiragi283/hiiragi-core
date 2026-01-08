@@ -2,8 +2,9 @@ package hiiragi283.core.data.server.loot
 
 import hiiragi283.core.api.data.loot.HTBlockLootTableProvider
 import hiiragi283.core.api.function.partially2
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
-import hiiragi283.core.common.material.HCMaterial
+import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import hiiragi283.core.setup.HCBlocks
@@ -31,25 +32,21 @@ class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootT
     }
 
     private fun registerOres() {
+        registerOre(HCMaterialPrefixes.DUST, CommonMaterialKeys.CINNABAR, UniformGenerator.between(2f, 5f))
+        registerOre(HCMaterialPrefixes.DUST, CommonMaterialKeys.SULFUR, UniformGenerator.between(4f, 5f))
+    }
+
+    private fun registerOre(basePrefix: HTMaterialPrefix, key: HTMaterialKey, range: UniformGenerator?) {
         val ores: Array<HTMaterialPrefix> = arrayOf(
             HCMaterialPrefixes.ORE,
             HCMaterialPrefixes.ORE_DEEPSLATE,
             HCMaterialPrefixes.ORE_NETHER,
             HCMaterialPrefixes.ORE_END,
         )
-        val materials: Map<HCMaterial, UniformGenerator?> = mapOf(
-            HCMaterial.Minerals.CINNABAR to UniformGenerator.between(2f, 5f),
-            HCMaterial.Minerals.SULFUR to UniformGenerator.between(4f, 5f),
-            HCMaterial.Metals.SILVER to null,
-        )
-
-        for ((material: HCMaterial, range: UniformGenerator?) in materials) {
-            val basePrefix: HTMaterialPrefix = material.basePrefix
-            for (prefix: HTMaterialPrefix in ores) {
-                val ore: HTSimpleDeferredBlock = HCBlocks.MATERIALS[prefix, material] ?: continue
-                val drop: ItemLike = HCItems.MATERIALS[basePrefix, material] ?: continue
-                add(ore, ::createOreDrops.partially2(drop, range))
-            }
+        for (prefix: HTMaterialPrefix in ores) {
+            val ore: HTSimpleDeferredBlock = HCBlocks.MATERIALS[prefix, key] ?: continue
+            val drop: ItemLike = HCItems.MATERIALS[basePrefix, key] ?: continue
+            add(ore, ::createOreDrops.partially2(drop, range))
         }
     }
 

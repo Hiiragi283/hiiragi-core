@@ -8,8 +8,9 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.registry.toHolderLike
 import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.common.material.HCMaterial
+import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialPrefixes
+import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCBlocks
 import net.minecraft.core.registries.Registries
 import net.minecraft.tags.BlockTags
@@ -19,10 +20,10 @@ import net.minecraft.world.level.block.Blocks
 class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(HiiragiCoreAPI.MOD_ID, Registries.BLOCK, context) {
     companion object {
         @JvmField
-        val VANILLA_STORAGE_BLOCKS: Map<HCMaterial, HTIdLike> = mapOf(
-            HCMaterial.Minerals.GLOWSTONE to Blocks.GLOWSTONE.toHolderLike(),
-            HCMaterial.Gems.AMETHYST to Blocks.AMETHYST_BLOCK.toHolderLike(),
-            HCMaterial.Gems.QUARTZ to Blocks.QUARTZ_BLOCK.toHolderLike(),
+        val VANILLA_STORAGE_BLOCKS: Map<HTMaterialKey, HTIdLike> = mapOf(
+            VanillaMaterialKeys.GLOWSTONE to Blocks.GLOWSTONE.toHolderLike(),
+            VanillaMaterialKeys.AMETHYST to Blocks.AMETHYST_BLOCK.toHolderLike(),
+            VanillaMaterialKeys.QUARTZ to Blocks.QUARTZ_BLOCK.toHolderLike(),
         )
     }
 
@@ -37,17 +38,17 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
         HCBlocks.MATERIALS.forEach { (prefix: HTMaterialPrefix, key: HTMaterialKey, block: HTIdLike) ->
             addMaterial(factory, prefix, key).add(block)
 
-            if (HCMaterial.Fuels.COAL_COKE.isOf(key)) {
+            if (key == CommonMaterialKeys.COAL_COKE) {
                 factory.apply(BlockTags.INFINIBURN_OVERWORLD).add(block)
             }
-            if (HCMaterial.Fuels.CARBIDE.isOf(key)) {
+            if (key == CommonMaterialKeys.CARBIDE) {
                 factory.apply(BlockTags.INFINIBURN_OVERWORLD).add(block)
                 factory.apply(BlockTags.INFINIBURN_END).add(block)
             }
         }
 
-        for ((material: HCMaterial, block: HTIdLike) in VANILLA_STORAGE_BLOCKS) {
-            addMaterial(factory, HCMaterialPrefixes.STORAGE_BLOCK, material).add(block)
+        for ((key: HTMaterialKey, block: HTIdLike) in VANILLA_STORAGE_BLOCKS) {
+            addMaterial(factory, HCMaterialPrefixes.STORAGE_BLOCK, key).add(block)
         }
     }
 

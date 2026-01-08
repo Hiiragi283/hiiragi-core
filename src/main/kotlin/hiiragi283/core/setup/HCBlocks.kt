@@ -8,8 +8,10 @@ import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.item.block.HTWarpedWartItem
-import hiiragi283.core.common.material.HCMaterial
+import hiiragi283.core.common.material.CommonMaterialKeys
+import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.HCMaterialPrefixes
+import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.common.registry.HTDeferredBlock
 import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import hiiragi283.core.common.registry.register.HTDeferredBlockRegister
@@ -38,18 +40,55 @@ object HCBlocks {
         }
 
         // Ores
-        register(HCMaterialPrefixes.ORE_NETHER, HCMaterial.Minerals.CINNABAR, copyOf(Blocks.NETHER_QUARTZ_ORE))
-        register(HCMaterialPrefixes.ORE_DEEPSLATE, HCMaterial.Minerals.SULFUR, copyOf(Blocks.DEEPSLATE_LAPIS_ORE))
-        register(HCMaterialPrefixes.ORE_NETHER, HCMaterial.Minerals.SULFUR, copyOf(Blocks.NETHER_QUARTZ_ORE))
+        register(HCMaterialPrefixes.ORE_NETHER, CommonMaterialKeys.CINNABAR, copyOf(Blocks.NETHER_QUARTZ_ORE))
+        register(HCMaterialPrefixes.ORE_DEEPSLATE, CommonMaterialKeys.SULFUR, copyOf(Blocks.DEEPSLATE_LAPIS_ORE))
+        register(HCMaterialPrefixes.ORE_NETHER, CommonMaterialKeys.SULFUR, copyOf(Blocks.NETHER_QUARTZ_ORE))
 
-        register(HCMaterialPrefixes.ORE, HCMaterial.Metals.SILVER, copyOf(Blocks.GOLD_ORE))
-        register(HCMaterialPrefixes.ORE_DEEPSLATE, HCMaterial.Metals.SILVER, copyOf(Blocks.DEEPSLATE_GOLD_ORE))
         // Storage Blocks
-        for (material: HCMaterial in HCMaterial.entries) {
-            val properties: BlockBehaviour.Properties = getStorageProp(material) ?: continue
-            val prefix: HTMaterialPrefix = HCMaterialPrefixes.STORAGE_BLOCK
-            register(prefix, material, properties)
+        fun registerBlock(
+            material: HTMaterialLike,
+            hardness: Float,
+            resistance: Float,
+            color: MapColor,
+        ) {
+            register(HCMaterialPrefixes.STORAGE_BLOCK, material, properties(hardness, resistance).mapColor(color))
         }
+
+        fun registerBlock(
+            material: HTMaterialLike,
+            hardness: Float,
+            resistance: Float,
+            color: MapColor,
+            soundType: SoundType,
+        ) {
+            register(HCMaterialPrefixes.STORAGE_BLOCK, material, properties(hardness, resistance).mapColor(color).sound(soundType))
+        }
+
+        registerBlock(VanillaMaterialKeys.CHARCOAL, 5f, 6f, MapColor.COLOR_BLACK)
+        registerBlock(CommonMaterialKeys.COAL_COKE, 5f, 6f, MapColor.COLOR_GRAY)
+        registerBlock(CommonMaterialKeys.CARBIDE, 5f, 6f, MapColor.DEEPSLATE)
+
+        registerBlock(CommonMaterialKeys.CINNABAR, 5f, 9f, MapColor.TERRACOTTA_RED)
+        registerBlock(CommonMaterialKeys.SALT, 5f, 9f, MapColor.TERRACOTTA_WHITE)
+        registerBlock(CommonMaterialKeys.SALTPETER, 5f, 9f, MapColor.TERRACOTTA_WHITE)
+        registerBlock(CommonMaterialKeys.SULFUR, 5f, 9f, MapColor.TERRACOTTA_YELLOW)
+
+        registerBlock(VanillaMaterialKeys.ECHO, 5f, 9f, MapColor.COLOR_BLACK, SoundType.AMETHYST)
+        registerBlock(HCMaterialKeys.AZURE, 5f, 9f, MapColor.TERRACOTTA_BLUE, SoundType.AMETHYST)
+        registerBlock(HCMaterialKeys.CRIMSON_CRYSTAL, 5f, 9f, MapColor.CRIMSON_STEM, SoundType.AMETHYST)
+        registerBlock(HCMaterialKeys.WARPED_CRYSTAL, 5f, 9f, MapColor.WARPED_STEM, SoundType.AMETHYST)
+
+        registerBlock(VanillaMaterialKeys.ENDER, 5f, 9f, MapColor.TERRACOTTA_GREEN, SoundType.SHROOMLIGHT)
+        registerBlock(HCMaterialKeys.ELDRITCH, 5f, 9f, MapColor.TERRACOTTA_PURPLE, SoundType.SHROOMLIGHT)
+
+        registerBlock(HCMaterialKeys.NIGHT_METAL, 5f, 9f, MapColor.TERRACOTTA_BLACK, SoundType.METAL)
+
+        registerBlock(CommonMaterialKeys.STEEL, 5f, 9f, MapColor.COLOR_GRAY, SoundType.METAL)
+        registerBlock(HCMaterialKeys.AZURE_STEEL, 5f, 9f, MapColor.COLOR_BLUE, SoundType.METAL)
+        registerBlock(HCMaterialKeys.DEEP_STEEL, 5f, 9f, MapColor.TERRACOTTA_LIGHT_GREEN, SoundType.METAL)
+
+        registerBlock(CommonMaterialKeys.PLASTIC, 5f, 6f, MapColor.TERRACOTTA_WHITE, SoundType.WOOD)
+        registerBlock(CommonMaterialKeys.RUBBER, 5f, 6f, MapColor.TERRACOTTA_BLACK, SoundType.WOOD)
     }.let(::HTMaterialTable)
 
     //    Crops    //
@@ -67,107 +106,7 @@ object HCBlocks {
     @JvmStatic
     private fun copyOf(block: Block): BlockBehaviour.Properties = BlockBehaviour.Properties.ofFullCopy(block)
 
-    /**
-     * @see mekanism.common.resource.BlockResourceInfo.modifyProperties
-     */
     @JvmStatic
-    private fun getStorageProp(material: HCMaterial): BlockBehaviour.Properties? {
-        when (material) {
-            is HCMaterial.Fuels -> {
-                return BlockBehaviour.Properties
-                    .of()
-                    .strength(5f, 6f)
-                    .mapColor(
-                        when (material) {
-                            HCMaterial.Fuels.COAL -> return null
-                            HCMaterial.Fuels.CHARCOAL -> MapColor.COLOR_BLACK
-                            HCMaterial.Fuels.COAL_COKE -> MapColor.COLOR_GRAY
-                            HCMaterial.Fuels.CARBIDE -> MapColor.DEEPSLATE
-                        },
-                    )
-            }
-            is HCMaterial.Minerals -> {
-                return BlockBehaviour.Properties
-                    .of()
-                    .strength(5f, 9f)
-                    .mapColor(
-                        when (material) {
-                            HCMaterial.Minerals.REDSTONE -> return null
-                            HCMaterial.Minerals.GLOWSTONE -> return null
-                            HCMaterial.Minerals.CINNABAR -> MapColor.TERRACOTTA_RED
-                            HCMaterial.Minerals.SALT -> MapColor.TERRACOTTA_WHITE
-                            HCMaterial.Minerals.SALTPETER -> MapColor.TERRACOTTA_WHITE
-                            HCMaterial.Minerals.SULFUR -> MapColor.TERRACOTTA_YELLOW
-                        },
-                    )
-            }
-            is HCMaterial.Gems -> {
-                return BlockBehaviour.Properties
-                    .of()
-                    .strength(5f, 9f)
-                    .sound(SoundType.AMETHYST)
-                    .mapColor(
-                        when (material) {
-                            HCMaterial.Gems.ECHO -> MapColor.COLOR_BLACK
-                            HCMaterial.Gems.AZURE -> MapColor.TERRACOTTA_BLUE
-                            HCMaterial.Gems.CRIMSON_CRYSTAL -> MapColor.CRIMSON_STEM
-                            HCMaterial.Gems.WARPED_CRYSTAL -> MapColor.WARPED_STEM
-                            else -> return null
-                        },
-                    )
-            }
-            is HCMaterial.Pearls -> {
-                return BlockBehaviour.Properties
-                    .of()
-                    .strength(5f, 9f)
-                    .sound(SoundType.SHROOMLIGHT)
-                    .mapColor(
-                        when (material) {
-                            HCMaterial.Pearls.ENDER -> MapColor.TERRACOTTA_GREEN
-                            HCMaterial.Pearls.ELDRITCH -> MapColor.TERRACOTTA_PURPLE
-                        },
-                    )
-            }
-            is HCMaterial.Metals -> {
-                return BlockBehaviour.Properties
-                    .of()
-                    .strength(5f, 9f)
-                    .sound(SoundType.COPPER)
-                    .mapColor(
-                        when (material) {
-                            HCMaterial.Metals.SILVER -> MapColor.TERRACOTTA_LIGHT_BLUE
-                            HCMaterial.Metals.NIGHT_METAL -> MapColor.TERRACOTTA_BLACK
-                            else -> return null
-                        },
-                    )
-            }
-            is HCMaterial.Alloys -> {
-                return BlockBehaviour.Properties
-                    .of()
-                    .strength(5f, 9f)
-                    .sound(SoundType.METAL)
-                    .mapColor(
-                        when (material) {
-                            HCMaterial.Alloys.NETHERITE -> return null
-                            HCMaterial.Alloys.STEEL -> MapColor.COLOR_GRAY
-                            HCMaterial.Alloys.AZURE_STEEL -> MapColor.COLOR_BLUE
-                            HCMaterial.Alloys.DEEP_STEEL -> MapColor.TERRACOTTA_LIGHT_GREEN
-                        },
-                    )
-            }
-            is HCMaterial.Plates -> {
-                return BlockBehaviour.Properties
-                    .of()
-                    .strength(5f, 6f)
-                    .sound(SoundType.WOOD)
-                    .mapColor(
-                        when (material) {
-                            HCMaterial.Plates.PLASTIC -> MapColor.TERRACOTTA_WHITE
-                            HCMaterial.Plates.RUBBER -> MapColor.TERRACOTTA_BLACK
-                        },
-                    )
-            }
-            else -> return null
-        }
-    }
+    private fun properties(hardness: Float, resistance: Float = hardness): BlockBehaviour.Properties =
+        BlockBehaviour.Properties.of().strength(hardness, resistance)
 }

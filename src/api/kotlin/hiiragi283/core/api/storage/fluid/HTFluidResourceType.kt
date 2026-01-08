@@ -18,9 +18,7 @@ import net.neoforged.neoforge.fluids.FluidType
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-@ConsistentCopyVisibility
-@JvmRecord
-data class HTFluidResourceType private constructor(private val stack: FluidStack) : HTResourceType.DataComponent<Fluid> {
+class HTFluidResourceType private constructor(private val stack: FluidStack) : HTResourceType.DataComponent<Fluid> {
     companion object {
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTFluidResourceType> =
@@ -66,6 +64,12 @@ data class HTFluidResourceType private constructor(private val stack: FluidStack
     }
 
     override fun hashCode(): Int = FluidStack.hashFluidAndComponents(stack)
+
+    override fun toString(): String = stack.toString()
+
+    operator fun component1(): Holder<Fluid> = getHolder()
+
+    operator fun component2(): DataComponentPatch = componentsPatch()
 
     //    HTResourceType    //
 

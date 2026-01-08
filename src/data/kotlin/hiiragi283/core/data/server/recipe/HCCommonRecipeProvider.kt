@@ -14,9 +14,10 @@ import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTStonecuttingRecipeBuilder
-import hiiragi283.core.common.material.HCMaterial
+import hiiragi283.core.common.material.CommonMaterialKeys
+import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.HCMaterialPrefixes
-import hiiragi283.core.common.material.VanillaMaterialItems
+import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.core.component.DataComponentPredicate
@@ -92,7 +93,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         HTShapelessRecipeBuilder
             .create(HCItems.TRADER_CATALOG)
             .addIngredient(Items.BOOK)
-            .addIngredient(HCMaterialPrefixes.GEM, HCMaterial.Gems.EMERALD)
+            .addIngredient(HCMaterialPrefixes.GEM, VanillaMaterialKeys.EMERALD)
             .setCategory(CraftingBookCategory.EQUIPMENT)
             .save(output)
         // Eldritch Egg
@@ -100,7 +101,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .create(HCItems.ELDRITCH_EGG, 4)
             .hollow4()
             .define('A', Tags.Items.EGGS)
-            .define('B', HCMaterialPrefixes.PEARL, HCMaterial.Pearls.ELDRITCH)
+            .define('B', HCMaterialPrefixes.PEARL, HCMaterialKeys.ELDRITCH)
             .setCategory(CraftingBookCategory.EQUIPMENT)
             .save(output)
 
@@ -114,32 +115,32 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
     @JvmStatic
     private fun manual() {
         // Amethyst + Lapis -> Azure Shard
-        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.GEM, HCMaterial.Gems.AZURE), 2) {
-            addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Gems.AMETHYST)
-            addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Gems.LAPIS)
+        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.GEM, HCMaterialKeys.AZURE), 2) {
+            addIngredient(HCMaterialPrefixes.DUST, VanillaMaterialKeys.AMETHYST)
+            addIngredient(HCMaterialPrefixes.DUST, VanillaMaterialKeys.LAPIS)
         }
 
         // Gold + Obsidian + Blackstone -> Night Metal
-        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, HCMaterial.Metals.NIGHT_METAL)) {
-            addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Metals.GOLD)
-            addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Obsidian)
+        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, HCMaterialKeys.NIGHT_METAL)) {
+            addIngredient(HCMaterialPrefixes.DUST, VanillaMaterialKeys.GOLD)
+            addIngredient(HCMaterialPrefixes.DUST, VanillaMaterialKeys.OBSIDIAN)
             addIngredients(Items.BLACKSTONE, count = 4)
         }
 
         // Netherite Scrap + Azure Steel -> Deep Steel
-        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, HCMaterial.Alloys.NETHERITE)) {
-            addIngredients(HCMaterialPrefixes.SCRAP, HCMaterial.Alloys.NETHERITE, 4)
-            addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Metals.GOLD, 4)
+        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, VanillaMaterialKeys.NETHERITE)) {
+            addIngredients(HCMaterialPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE, 4)
+            addIngredients(HCMaterialPrefixes.DUST, VanillaMaterialKeys.GOLD, 4)
         }
         // Azure Shard + Iron -> Azure Steel
-        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, HCMaterial.Alloys.AZURE_STEEL)) {
-            addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Gems.AZURE, 2)
-            addIngredient(HCMaterialPrefixes.DUST, HCMaterial.Metals.IRON)
+        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, HCMaterialKeys.AZURE_STEEL)) {
+            addIngredients(HCMaterialPrefixes.DUST, HCMaterialKeys.AZURE, 2)
+            addIngredient(HCMaterialPrefixes.DUST, VanillaMaterialKeys.IRON)
         }
         // Deep Scrap + Azure Steel -> Deep Steel
-        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, HCMaterial.Alloys.DEEP_STEEL)) {
-            addIngredients(HCMaterialPrefixes.SCRAP, HCMaterial.Alloys.DEEP_STEEL, 4)
-            addIngredients(HCMaterialPrefixes.DUST, HCMaterial.Alloys.AZURE_STEEL, 4)
+        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, HCMaterialKeys.DEEP_STEEL)) {
+            addIngredients(HCMaterialPrefixes.SCRAP, HCMaterialKeys.DEEP_STEEL, 4)
+            addIngredients(HCMaterialPrefixes.DUST, HCMaterialKeys.AZURE_STEEL, 4)
         }
     }
 
@@ -203,12 +204,12 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .saveSuffixed(output, "_from_flower")
         // Latex -> Raw Rubber
         HTShapelessRecipeBuilder
-            .create(getItemOrThrow(HCMaterialPrefixes.RAW_MATERIAL, HCMaterial.Plates.RUBBER))
+            .create(getItemOrThrow(HCMaterialPrefixes.RAW_MATERIAL, CommonMaterialKeys.RUBBER))
             .addIngredient(HCFluids.LATEX.bucketTag)
             .saveSuffixed(output, "_from_bucket")
     }
 
     @JvmStatic
     private fun getItemOrThrow(prefix: HTPrefixLike, material: HTMaterialLike): HTItemHolderLike<*> =
-        HCItems.MATERIALS[prefix, material] ?: VanillaMaterialItems.MATERIALS.getOrThrow(prefix, material)
+        HCItems.MATERIALS[prefix, material] ?: VanillaMaterialKeys.INGREDIENTS.getOrThrow(prefix, material)
 }

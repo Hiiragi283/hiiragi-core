@@ -3,6 +3,7 @@ package hiiragi283.core.mixin;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent;
+import hiiragi283.core.api.material.HTMaterialManager;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.ReloadableServerResources;
@@ -36,7 +37,7 @@ public abstract class ReloadableServerResourcesMixin {
         Multimap<RecipeType<?>, RecipeHolder<?>> byType = HashMultimap.create(accessor.getByType());
         Map<ResourceLocation, RecipeHolder<?>> byName = new HashMap<>(accessor.getByName());
         
-        var event = new HTRegisterRuntimeRecipeEvent(registryAccess, recipes, (@NotNull RecipeHolder<?> holder) -> {
+        var event = new HTRegisterRuntimeRecipeEvent(registryAccess, recipes, HTMaterialManager.INSTANCE, (@NotNull RecipeHolder<?> holder) -> {
             byType.put(holder.value().getType(), holder);
             byName.put(holder.id(), holder);
         });

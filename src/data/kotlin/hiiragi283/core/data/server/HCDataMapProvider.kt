@@ -5,8 +5,10 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.math.fraction
 import hiiragi283.core.api.math.times
-import hiiragi283.core.common.material.HCMaterial
+import hiiragi283.core.common.material.CommonMaterialKeys
+import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.HCMaterialPrefixes
+import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import net.minecraft.core.HolderLookup
@@ -46,12 +48,12 @@ class HCDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.out
             }
         }
 
-        addFuels(HCMaterial.Fuels.COAL, 20 * 10 * 8)
-        addFuels(HCMaterial.Fuels.CHARCOAL, 20 * 10 * 8)
-        addFuels(HCMaterial.Fuels.COAL_COKE, 20 * 10 * 16)
-        addFuels(HCMaterial.Fuels.CARBIDE, 20 * 10 * 24)
-        addFuels(HCMaterial.Gems.CRIMSON_CRYSTAL, 20 * 10 * 24)
-        addFuels(HCMaterial.Wood, 20 * 15)
+        addFuels(CommonMaterialKeys.CARBIDE, 20 * 10 * 24)
+        addFuels(CommonMaterialKeys.COAL_COKE, 20 * 10 * 16)
+        addFuels(HCMaterialKeys.CRIMSON_CRYSTAL, 20 * 10 * 24)
+        addFuels(VanillaMaterialKeys.CHARCOAL, 20 * 10 * 8)
+        addFuels(VanillaMaterialKeys.COAL, 20 * 10 * 8)
+        addFuels(VanillaMaterialKeys.WOOD, 20 * 15)
 
         furnace.add(HCItems.BAMBOO_CHARCOAL, FurnaceFuel(20 * 10 * 6), false)
     }

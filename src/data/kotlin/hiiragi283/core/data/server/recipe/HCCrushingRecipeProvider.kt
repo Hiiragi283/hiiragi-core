@@ -5,8 +5,8 @@ import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.material.getOrThrow
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
-import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
+import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCItems
 import net.minecraft.tags.ItemTags
 import net.minecraft.tags.TagKey
@@ -27,7 +27,7 @@ object HCCrushingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
         }
 
         mapOf(
-            HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.DUST, HCMaterial.Wood) to ItemTags.LOGS,
+            HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.DUST, VanillaMaterialKeys.WOOD) to ItemTags.LOGS,
             Items.SAND to Tags.Items.SANDSTONE_UNCOLORED_BLOCKS,
             Items.RED_SAND to Tags.Items.SANDSTONE_RED_BLOCKS,
         ).forEach { (output: ItemLike, input: TagKey<Item>) ->
@@ -54,8 +54,8 @@ object HCCrushingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
 
         HTSingleItemRecipeBuilder
             .crushing(
-                itemCreator.fromTagKey(HCMaterialPrefixes.STORAGE_BLOCK, HCMaterial.Gems.AMETHYST),
-                HCMaterialResultHelper.item(HCMaterialPrefixes.GEM, HCMaterial.Gems.AMETHYST, 4),
+                itemCreator.fromTagKey(HCMaterialPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.AMETHYST),
+                HCMaterialResultHelper.item(HCMaterialPrefixes.GEM, VanillaMaterialKeys.AMETHYST, 4),
             ).save(output)
 
         HTSingleItemRecipeBuilder

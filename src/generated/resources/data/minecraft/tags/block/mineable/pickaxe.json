@@ -8,7 +8,6 @@
     "hiiragi_core:coal_coke_block",
     "hiiragi_core:crimson_crystal_block",
     "hiiragi_core:deep_steel_block",
-    "hiiragi_core:deepslate_silver_ore",
     "hiiragi_core:deepslate_sulfur_ore",
     "hiiragi_core:echo_block",
     "hiiragi_core:eldritch_block",
@@ -20,8 +19,6 @@
     "hiiragi_core:rubber_block",
     "hiiragi_core:salt_block",
     "hiiragi_core:saltpeter_block",
-    "hiiragi_core:silver_block",
-    "hiiragi_core:silver_ore",
     "hiiragi_core:steel_block",
     "hiiragi_core:sulfur_block",
     "hiiragi_core:warped_crystal_block"

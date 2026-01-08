@@ -17,9 +17,7 @@ import net.minecraft.world.level.ItemLike
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-@ConsistentCopyVisibility
-@JvmRecord
-data class HTItemResourceType private constructor(private val stack: ItemStack) : HTResourceType.DataComponent<Item> {
+class HTItemResourceType private constructor(private val stack: ItemStack) : HTResourceType.DataComponent<Item> {
     companion object {
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemResourceType> =
@@ -63,6 +61,12 @@ data class HTItemResourceType private constructor(private val stack: ItemStack) 
     }
 
     override fun hashCode(): Int = ItemStack.hashItemAndComponents(stack)
+
+    override fun toString(): String = stack.toString()
+
+    operator fun component1(): Holder<Item> = getHolder()
+
+    operator fun component2(): DataComponentPatch = componentsPatch()
 
     //    HTResourceType    //
 

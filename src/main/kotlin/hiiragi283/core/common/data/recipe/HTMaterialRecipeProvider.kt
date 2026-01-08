@@ -3,10 +3,15 @@ package hiiragi283.core.common.data.recipe
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.api.material.HTAbstractMaterial
+import hiiragi283.core.api.material.HTMaterialDefinition
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.HTMaterialTable
+import hiiragi283.core.api.material.attribute.HTSmeltingMaterialAttribute
+import hiiragi283.core.api.material.attribute.HTStorageBlockMaterialAttribute
+import hiiragi283.core.api.material.get
+import hiiragi283.core.api.material.getDefaultPrefix
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.registry.HTItemHolderLike
@@ -15,19 +20,18 @@ import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.registry.HTDeferredBlock
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.iterator
 
 class HTMaterialRecipeProvider(
     modId: String,
-    private val materials: Iterable<HTAbstractMaterial>,
     private val blocks: HTMaterialTable<HTMaterialPrefix, out HTDeferredBlock<*, *>>,
     private val items: HTMaterialTable<HTMaterialPrefix, out HTItemHolderLike<*>>,
     private val itemGetter: (HTPrefixLike, HTMaterialLike) -> HTItemHolderLike<*>?,
 ) : HTSubRecipeProvider.Direct(modId) {
+    private val manager: HTMaterialManager = HTMaterialManager.INSTANCE
+
     override fun buildRecipeInternal() {
         baseToBlock()
 
@@ -39,46 +43,67 @@ class HTMaterialRecipeProvider(
     }
 
     private fun baseToBlock() {
-        for (material: HTAbstractMaterial in materials) {
-            val basePrefix: HTMaterialPrefix = material.basePrefix
-            val block: ItemLike = blocks[HCMaterialPrefixes.STORAGE_BLOCK, material] ?: continue
-            val base: ItemLike = itemGetter(basePrefix, material) ?: continue
+        for ((key: HTMaterialKey, definition: HTMaterialDefinition) in manager.entries) {
+            val basePrefix: HTMaterialPrefix = definition.getDefaultPrefix() ?: continue
+            val storageSize: HTStorageBlockMaterialAttribute = 
+                definition.get<HTStorageBlockMaterialAttribute>() ?: HTStorageBlockMaterialAttribute.THREE_BY_THREE
+            
+            val block: ItemLike = blocks[HCMaterialPrefixes.STORAGE_BLOCK, key] ?: continue
+            val base: ItemLike = itemGetter(basePrefix, key) ?: continue
             // Shapeless
             HTShapelessRecipeBuilder
-                .create(base, 9)
-                .addIngredient(HCMaterialPrefixes.STORAGE_BLOCK, material)
-                .save(output, HiiragiCoreAPI.id(material.asMaterialName(), "${basePrefix.name}_from_block"))
+                .create(base, storageSize.baseCount)
+                .addIngredient(HCMaterialPrefixes.STORAGE_BLOCK, key)
+                .save(output, HiiragiCoreAPI.id(key.name, "${basePrefix.name}_from_block"))
             // Shaped
             HTShapedRecipeBuilder
                 .create(block)
-                .hollow8()
-                .define('A', basePrefix, material)
+                .pattern(storageSize.pattern)
+                .define('A', basePrefix, key)
                 .define('B', base)
-                .save(output, HiiragiCoreAPI.id(material.asMaterialName(), "block_from_${basePrefix.name}"))
+                .save(output, HiiragiCoreAPI.id(key.name, "block_from_${basePrefix.name}"))
         }
     }
 
     private fun prefixToBase(prefix: HTPrefixLike, exp: Float) {
-        for (material: HTAbstractMaterial in materials) {
-            val basePrefix: HTMaterialPrefix = material.basePrefix
-            if (material.basePrefix == HCMaterialPrefixes.FUEL || material.basePrefix == HCMaterialPrefixes.DUST) continue
+        for ((key: HTMaterialKey, definition: HTMaterialDefinition) in manager.entries) {
+            val basePrefix: HTMaterialPrefix = definition.getDefaultPrefix() ?: continue
+            if (basePrefix == prefix) continue
 
-            val smelted: HTAbstractMaterial = material.getSmeltedMaterial() ?: continue
+            val smeltingAttribute: HTSmeltingMaterialAttribute =
+                definition.get<HTSmeltingMaterialAttribute>() ?: HTSmeltingMaterialAttribute.withBlasting(key)
+            val smelted: HTMaterialKey = smeltingAttribute.key ?: continue
             val base: HTItemHolderLike<*> = itemGetter(basePrefix, smelted) ?: continue
-            val input: HTItemHolderLike<*> = itemGetter(prefix, material) ?: continue
+            val input: HTItemHolderLike<*> = itemGetter(prefix, key) ?: continue
             if (base.getNamespace() == HTConst.MINECRAFT && input.getNamespace() == HTConst.MINECRAFT) continue
 
-            // Smelting & Blasting
-            HTCookingRecipeBuilder.smeltingAndBlasting(base) {
-                addIngredient(input)
-                setExp(exp)
-                save(
-                    output,
-                    HiiragiCoreAPI.id(
-                        smelted.asMaterialName(),
-                        "${basePrefix.asPrefixName()}_from_${prefix.asPrefixName()}",
-                    ),
-                )
+            // Smelting
+            val id: ResourceLocation = HiiragiCoreAPI.id(
+                smelted.name,
+                "${basePrefix.asPrefixName()}_from_${prefix.asPrefixName()}",
+            )
+            HTCookingRecipeBuilder
+                .smelting(base)
+                .addIngredient(input)
+                .setExp(exp)
+                .save(output, id)
+            // Blasting
+            if (smeltingAttribute.isBlasting) {
+                HTCookingRecipeBuilder
+                    .blasting(base)
+                    .addIngredient(input)
+                    .setTime(100)
+                    .setExp(exp)
+                    .save(output, id)
+            }
+            // Smoking
+            if (smeltingAttribute.isSmoking) {
+                HTCookingRecipeBuilder
+                    .smoking(base)
+                    .addIngredient(input)
+                    .setTime(100)
+                    .setExp(exp)
+                    .save(output, id)
             }
         }
     }
