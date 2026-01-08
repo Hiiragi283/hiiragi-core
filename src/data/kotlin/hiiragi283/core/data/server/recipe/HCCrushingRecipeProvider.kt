@@ -53,12 +53,6 @@ object HCCrushingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             .saveSuffixed(output, "_from_shard")
 
         HTSingleItemRecipeBuilder
-            .crushing(
-                itemCreator.fromTagKey(HCMaterialPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.AMETHYST),
-                HCMaterialResultHelper.item(HCMaterialPrefixes.GEM, VanillaMaterialKeys.AMETHYST, 4),
-            ).save(output)
-
-        HTSingleItemRecipeBuilder
             .crushing(itemCreator.fromTagKey(Tags.Items.COBBLESTONES), itemResult.create(Items.GRAVEL))
             .save(output)
 

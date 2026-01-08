@@ -8,6 +8,7 @@ import hiiragi283.core.api.material.attribute.HTColorPaletteMaterialAttribute
 import hiiragi283.core.api.material.attribute.HTDefaultPrefixMaterialAttribute
 import hiiragi283.core.api.material.attribute.HTLangNameMaterialAttribute
 import hiiragi283.core.api.material.attribute.HTMaterialAttribute
+import hiiragi283.core.api.material.attribute.HTStorageBlockMaterialAttribute
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import java.awt.Color
@@ -15,6 +16,9 @@ import java.awt.Color
 inline fun <reified T : HTMaterialAttribute> HTMaterialDefinition.get(): T? = get(T::class.java)
 
 fun HTMaterialDefinition.getDefaultPrefix(): HTMaterialPrefix? = get<HTDefaultPrefixMaterialAttribute>()?.prefix
+
+fun HTMaterialDefinition.getStorageAttribute(): HTStorageBlockMaterialAttribute =
+    get<HTStorageBlockMaterialAttribute>() ?: HTStorageBlockMaterialAttribute.THREE_BY_THREE
 
 // Builder
 fun HTMaterialDefinition.Builder.addDefaultPrefix(prefix: HTPrefixLike) {

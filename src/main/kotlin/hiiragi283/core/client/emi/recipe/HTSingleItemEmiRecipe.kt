@@ -15,7 +15,7 @@ class HTSingleItemEmiRecipe<RECIPE : HCSingleItemRecipe>(category: HTEmiRecipeCa
     companion object {
         @JvmStatic
         fun crushing(holder: RecipeHolder<HCAnvilCrushingRecipe>): HTSingleItemEmiRecipe<HCAnvilCrushingRecipe> =
-            HTSingleItemEmiRecipe(HCEmiRecipeCategories.CRUSHING, holder)
+            HTSingleItemEmiRecipe(HCEmiRecipeCategories.ANVIL_CRUSHING, holder)
 
         @JvmStatic
         fun exploding(holder: RecipeHolder<HCExplodingRecipe>): HTSingleItemEmiRecipe<HCExplodingRecipe> =

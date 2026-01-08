@@ -1,5 +1,5 @@
 {
-  "type": "hiiragi_core:crushing",
+  "type": "hiiragi_core:anvil_crushing",
   "ingredient": "minecraft:snow_block",
   "result": {
     "count": 4,

@@ -64,8 +64,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.ETERNAL_TICKET, "永遠のチケット")
 
         // Recipe
+        add(HCRecipeTypes.ANVIL_CRUSHING, "金床による粉砕")
         add(HCRecipeTypes.CHARGING, "落雷によるチャージ")
-        add(HCRecipeTypes.CRUSHING, "金床による粉砕")
         add(HCRecipeTypes.EXPLODING, "爆破")
 
         // Translation

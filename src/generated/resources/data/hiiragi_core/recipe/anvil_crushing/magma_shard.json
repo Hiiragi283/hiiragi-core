@@ -1,5 +1,5 @@
 {
-  "type": "hiiragi_core:crushing",
+  "type": "hiiragi_core:anvil_crushing",
   "ingredient": "minecraft:magma_block",
   "result": {
     "id": "hiiragi_core:magma_shard"

@@ -64,8 +64,8 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.ETERNAL_TICKET, "Eternal Ticket")
 
         // Recipe
+        add(HCRecipeTypes.ANVIL_CRUSHING, "Anvil Crushing")
         add(HCRecipeTypes.CHARGING, "Lightning Charging")
-        add(HCRecipeTypes.CRUSHING, "Anvil Crushing")
         add(HCRecipeTypes.EXPLODING, "Exploding")
 
         // Translation

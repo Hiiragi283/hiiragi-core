@@ -1,5 +1,5 @@
 {
-  "type": "hiiragi_core:crushing",
+  "type": "hiiragi_core:anvil_crushing",
   "ingredient": "minecraft:prismarine",
   "result": {
     "count": 4,

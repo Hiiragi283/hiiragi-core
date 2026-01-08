@@ -14,10 +14,10 @@ object HCRecipeTypes {
     val REGISTER = HTDeferredRecipeTypeRegister(HiiragiCoreAPI.MOD_ID)
 
     @JvmField
-    val CHARGING: HTDeferredRecipeType<SingleRecipeInput, HCLightningChargingRecipe> = REGISTER.registerType(HTConst.CHARGING)
+    val ANVIL_CRUSHING: HTDeferredRecipeType<SingleRecipeInput, HCAnvilCrushingRecipe> = REGISTER.registerType(HTConst.ANVIL_CRUSHING)
 
     @JvmField
-    val CRUSHING: HTDeferredRecipeType<SingleRecipeInput, HCAnvilCrushingRecipe> = REGISTER.registerType(HTConst.CRUSHING)
+    val CHARGING: HTDeferredRecipeType<SingleRecipeInput, HCLightningChargingRecipe> = REGISTER.registerType(HTConst.CHARGING)
 
     @JvmField
     val EXPLODING: HTDeferredRecipeType<SingleRecipeInput, HCExplodingRecipe> = REGISTER.registerType(HTConst.EXPLODING)
