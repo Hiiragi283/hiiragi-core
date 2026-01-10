@@ -1,7 +1,7 @@
 package hiiragi283.core.common.block
 
 import hiiragi283.core.api.block.HTBlockWithDescription
-import hiiragi283.core.api.item.toStack
+import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.text.HTTranslation
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
@@ -19,5 +19,5 @@ class HTWarpedWartBlock(properties: Properties) :
     HTBlockWithDescription {
     override fun getDescription(): HTTranslation = HCTranslation.WARPED_WART
 
-    override fun getCloneItemStack(level: LevelReader, pos: BlockPos, state: BlockState): ItemStack = HCBlocks.WARPED_WART.toStack()
+    override fun getCloneItemStack(level: LevelReader, pos: BlockPos, state: BlockState): ItemStack = createItemStack(HCBlocks.WARPED_WART)
 }

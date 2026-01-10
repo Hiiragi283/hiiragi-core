@@ -74,7 +74,7 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
             else -> "bucket"
         }.let { HTConst.NEOFORGE.toId(HTConst.ITEM, it) }
 
-        val builder: DynamicFluidContainerModelBuilder<ItemModelBuilder> = withExistingParent(content.bucket.getPath(), parent)
+        val builder: DynamicFluidContainerModelBuilder<ItemModelBuilder> = withExistingParent(content.bucketHolder.getPath(), parent)
             .customLoader(DynamicFluidContainerModelBuilder<ItemModelBuilder>::begin)
             .fluid(content.get())
         if (content.getFluidType().isLighterThanAir) {

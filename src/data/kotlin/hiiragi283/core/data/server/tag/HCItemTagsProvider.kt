@@ -96,7 +96,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
 
     private fun bucket(factory: BuilderFactory<Item>) {
         for (content: HTFluidContent<*, *, *> in HCFluids.REGISTER.entries) {
-            addTags(factory, Tags.Items.BUCKETS, content.bucketTag).add(content.bucket)
+            addTags(factory, Tags.Items.BUCKETS, content.bucketTag).add(content.bucketHolder)
         }
     }
 

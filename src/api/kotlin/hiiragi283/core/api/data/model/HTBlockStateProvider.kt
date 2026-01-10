@@ -176,9 +176,9 @@ abstract class HTBlockStateProvider(modid: String, context: HTDataGenContext) :
      * 液体ブロックのモデルを追加します。
      * @since 0.3.0
      */
-    protected fun liquidBlock(content: HTFluidContent<*, *, *>) {
+    protected fun liquidBlock(content: HTFluidContent.Flowing<*, *, *, *>) {
         simpleBlock(
-            content.block.get(),
+            content.blockHolder.get(),
             models()
                 .getBuilder(content.blockId)
                 .texture("particle", vanillaId(HTConst.BLOCK, "water_still")),

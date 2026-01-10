@@ -9,8 +9,7 @@ import net.minecraft.network.chat.Component
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-@JvmInline
-value class HTTextResult<T> private constructor(val contents: Either<Component, T>) {
+class HTTextResult<T> private constructor(val contents: Either<Component, T>) {
     companion object {
         /**
          * 指定した[value]から[HTTextResult]のインスタンスを作成します。

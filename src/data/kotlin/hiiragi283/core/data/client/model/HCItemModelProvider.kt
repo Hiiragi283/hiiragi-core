@@ -7,7 +7,6 @@ import hiiragi283.core.api.data.model.HTItemModelProvider
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.HTSimpleFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.setup.HCFluids
@@ -50,11 +49,15 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
     }
 
     private fun registerBuckets() {
-        val dripFluids: List<HTSimpleFluidContent> = buildList {
+        val dripFluids: List<HTFluidContent<*, *, *>> = buildList {
             // Vanilla
             add(HCFluids.HONEY)
             // Molten
-            addAll(HCFluids.MATERIALS.values)
+            add(HCFluids.MOLTEN_METAL)
+            add(HCFluids.MOLTEN_GLASS)
+            add(HCFluids.MOLTEN_CRIMSON_CRYSTAL)
+            add(HCFluids.MOLTEN_WARPED_CRYSTAL)
+            add(HCFluids.MOLTEN_ELDRITCH)
         }
         for (content: HTFluidContent<*, *, *> in HCFluids.REGISTER.entries) {
             bucketItem(content, content in dripFluids)

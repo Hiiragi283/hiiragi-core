@@ -33,6 +33,11 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.BLOOD, "Blood")
         addFluid(HCFluids.MEAT, "Meat")
 
+        addFluid(HCFluids.MOLTEN_GLASS, "Molten Glass")
+        addFluid(HCFluids.MOLTEN_CRIMSON_CRYSTAL, "Crimson Blood")
+        addFluid(HCFluids.MOLTEN_WARPED_CRYSTAL, "Dew of the Warp")
+        addFluid(HCFluids.MOLTEN_ELDRITCH, "Eldritch Flux")
+
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "Bamboo Charcoal")
         add(HCItems.COMPRESSED_SAWDUST, "Compressed Sawdust")
@@ -101,6 +106,9 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCTranslation.HIIRAGI_CORE, "Hiiragi Core")
 
         add(HCTranslation.WARPED_WART, "Clears one bad effect randomly when eaten.")
+
+        add(HCTranslation.MOLTEN_METAL, "Molten %s")
+        add(HCTranslation.MOLTEN_METAL_BUCKET, "Molten %s Bucket")
 
         add(HCTranslation.AMBROSIA, "ALWAYS EDIBLE and NOT CONSUMED!")
         add(HCTranslation.ELDER_HEART, "Dropped from Elder Guardian.")

@@ -1,8 +1,8 @@
 package hiiragi283.core.common.text
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.resource.toDescriptionKey
 import hiiragi283.core.api.text.HTTranslation
-import net.minecraft.Util
 
 enum class HCTranslation(type: String, vararg path: String) : HTTranslation {
     // Constants
@@ -10,6 +10,10 @@ enum class HCTranslation(type: String, vararg path: String) : HTTranslation {
 
     // Block
     WARPED_WART("description", "warped_wart"),
+
+    // Fluid
+    MOLTEN_METAL("fluid", "molten_metal"),
+    MOLTEN_METAL_BUCKET("fluid", "molten_metal_bucket"),
 
     // Item
     AMBROSIA("description", "ambrosia"),
@@ -21,5 +25,5 @@ enum class HCTranslation(type: String, vararg path: String) : HTTranslation {
     TRADER_CATALOG("description", "trader_catalog"),
     ;
 
-    override val translationKey: String = Util.makeDescriptionId(type, HiiragiCoreAPI.id(path.joinToString(separator = ".")))
+    override val translationKey: String = HiiragiCoreAPI.id(path.joinToString(separator = ".")).toDescriptionKey(type)
 }

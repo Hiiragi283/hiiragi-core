@@ -6,6 +6,7 @@ import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.model.HTBlockStateProvider
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
@@ -20,7 +21,10 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(Hii
         registerCrops()
 
         // Fluids
-        HCFluids.REGISTER.entries.forEach(::liquidBlock)
+        HCFluids.REGISTER
+            .asSequence()
+            .filterIsInstance<HTFluidContent.Flowing<*, *, *, *>>()
+            .forEach(::liquidBlock)
     }
 
     private fun registerMaterials() {

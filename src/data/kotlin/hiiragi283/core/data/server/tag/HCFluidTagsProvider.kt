@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.tag.HTTagBuilder
 import hiiragi283.core.api.data.tag.HTTagsProvider
+import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.core.registries.Registries
@@ -11,13 +12,15 @@ import net.minecraft.world.level.material.Fluid
 
 class HCFluidTagsProvider(context: HTDataGenContext) : HTTagsProvider<Fluid>(HiiragiCoreAPI.MOD_ID, Registries.FLUID, context) {
     override fun addTagsInternal(factory: BuilderFactory<Fluid>) {
-        for (content: HTFluidContent<*, *, *> in HCFluids.REGISTER.entries) {
-            factory
-                .apply(content.fluidTag)
-                .addContent(content)
-        }
+        HCFluids.REGISTER
+            .entries
+            .forEach(::addContent.partially1(factory))
     }
 
-    fun HTTagBuilder<Fluid>.addContent(content: HTFluidContent<*, *, *>): HTTagBuilder<Fluid> =
-        this.add(content.stillHolder).add(content.flowingHolder)
+    fun addContent(factory: BuilderFactory<Fluid>, content: HTFluidContent<*, *, *>) {
+        val builder: HTTagBuilder<Fluid> = factory.apply(content.fluidTag).add(content.fluidHolder)
+        if (content is HTFluidContent.Flowing<*, *, *, *>) {
+            builder.add(content.flowingHolder)
+        }
+    }
 }

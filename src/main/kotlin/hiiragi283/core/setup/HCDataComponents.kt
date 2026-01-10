@@ -2,6 +2,7 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.storage.attachments.HTAttachedEnergy
 import hiiragi283.core.api.storage.attachments.HTAttachedFluids
 import hiiragi283.core.api.storage.attachments.HTAttachedItems
@@ -17,6 +18,9 @@ object HCDataComponents {
 
     @JvmField
     val DESCRIPTION: DataComponentType<HTTranslation> = REGISTER.registerType("description", HTSimpleTranslation.CODEC)
+
+    @JvmField
+    val MATERIAL: DataComponentType<HTMaterialKey> = REGISTER.registerType("material", HTMaterialKey.CODEC)
 
     //    Storage    //
 

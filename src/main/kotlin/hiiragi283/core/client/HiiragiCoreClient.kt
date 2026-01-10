@@ -3,14 +3,8 @@ package hiiragi283.core.client
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.HTSimpleFluidContent
 import hiiragi283.core.api.resource.vanillaId
-import hiiragi283.core.common.material.CommonMaterialKeys
-import hiiragi283.core.common.material.HCMaterialKeys
-import hiiragi283.core.common.material.HCMaterialPrefixes
-import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.client.renderer.entity.ThrownItemRenderer
@@ -70,28 +64,15 @@ object HiiragiCoreClient {
         event.dull(HCFluids.BLOOD, Color(0x990000))
         event.dull(HCFluids.MEAT, Color(0x993333))
 
-        fun molten(key: HTMaterialKey, color: Color) {
-            val content: HTSimpleFluidContent = HCFluids.MATERIALS[HCMaterialPrefixes.MOLTEN, key] ?: return
-            event.molten(content, color)
-        }
+        event.registerFluidType(
+            HTSimpleFluidExtensions(vanillaId(HTConst.BLOCK, "lava_still"), null, vanillaId(HTConst.BLOCK, "lava_flow")),
+            HCFluids.MOLTEN_METAL.getFluidType(),
+        )
 
-        molten(VanillaMaterialKeys.COPPER, Color(0xe77c56))
-        molten(VanillaMaterialKeys.IRON, Color(0x838383))
-        molten(VanillaMaterialKeys.GOLD, Color(0xeccb45))
-        molten(VanillaMaterialKeys.NETHERITE, Color(0x3b393b))
-        molten(VanillaMaterialKeys.GLASS, Color(0xccccff))
-
-        molten(CommonMaterialKeys.STEEL, Color(0x525252))
-
-        molten(CommonMaterialKeys.PLASTIC, Color(0x9abeba))
-        molten(CommonMaterialKeys.RUBBER, Color(0x2e262e))
-
-        molten(HCMaterialKeys.CRIMSON_CRYSTAL, Color(0x993333))
-        molten(HCMaterialKeys.WARPED_CRYSTAL, Color(0x339999))
-        molten(HCMaterialKeys.ELDRITCH, Color(0x6633cc))
-
-        molten(HCMaterialKeys.AZURE_STEEL, Color(0x6666cc))
-        molten(HCMaterialKeys.DEEP_STEEL, Color(0x669999))
+        event.molten(HCFluids.MOLTEN_GLASS, Color(0xccccff))
+        event.molten(HCFluids.MOLTEN_CRIMSON_CRYSTAL, Color(0x993333))
+        event.molten(HCFluids.MOLTEN_WARPED_CRYSTAL, Color(0x339999))
+        event.molten(HCFluids.MOLTEN_ELDRITCH, Color(0x6633cc))
 
         LOGGER.info("Registered client extensions!")
     }

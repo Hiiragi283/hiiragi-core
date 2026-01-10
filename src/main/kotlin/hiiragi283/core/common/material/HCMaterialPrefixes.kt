@@ -30,11 +30,6 @@ object HCMaterialPrefixes {
     val STORAGE_BLOCK_RAW =
         HTMaterialPrefix("storage_block/raw", "raw_%s_block", "c:storage_blocks", "c:storage_blocks/raw_%s")
 
-    //    Fluid    //
-
-    @JvmField
-    val MOLTEN = HTMaterialPrefix("molten", "molten_%s", "c:molten_%s", "c:molten_%s")
-
     //    Item    //
 
     @JvmField
@@ -92,8 +87,6 @@ object HCMaterialPrefixes {
 
         register(STORAGE_BLOCK, "Block of %s", "%sブロック")
         register(STORAGE_BLOCK_RAW, "Block of Raw %s", "%sの原石ブロック")
-        // Fluid
-        register(MOLTEN, "Molten %s", "溶融%s")
         // Item
         register(DUST, "%s Dust", "%sの粉")
         register(FUEL, "%s", "%s")

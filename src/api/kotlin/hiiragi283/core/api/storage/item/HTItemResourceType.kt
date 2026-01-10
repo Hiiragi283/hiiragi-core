@@ -30,14 +30,19 @@ class HTItemResourceType private constructor(private val stack: ItemStack) : HTR
          * @return [ItemStack.isEmpty]が`true`の場合は`null`
          */
         @JvmStatic
-        fun ofNullable(item: ItemLike): HTItemResourceType? = ItemStack(item).let(::of)
+        fun ofNullable(item: ItemLike, patch: DataComponentPatch = DataComponentPatch.EMPTY): HTItemResourceType? {
+            val stack = ItemStack(item)
+            stack.applyComponents(patch)
+            return stack.let(::of)
+        }
 
         /**
          * 指定した[item]を[HTItemResourceType]に変換します。
          * @throws IllegalStateException [ItemStack.isEmpty]が`true`の場合
          */
         @JvmStatic
-        fun of(item: ItemLike): HTItemResourceType = ofNullable(item) ?: error("Item must not be empty")
+        fun of(item: ItemLike, patch: DataComponentPatch = DataComponentPatch.EMPTY): HTItemResourceType =
+            ofNullable(item, patch) ?: error("Item must not be empty")
 
         /**
          * 指定した[stack]を[HTItemResourceType]に変換します。

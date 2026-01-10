@@ -2,6 +2,7 @@ package hiiragi283.core.data.server.recipe
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.data.buildDataPredicate
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.get
@@ -20,7 +21,6 @@ import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
-import net.minecraft.core.component.DataComponentPredicate
 import net.minecraft.core.component.DataComponents
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
@@ -76,16 +76,16 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .save(output)
 
         // Wheat Dough
+
         HTShapelessRecipeBuilder
             .create(HCItems.WHEAT_DOUGH)
             .addIngredient(HiiragiCoreTags.Items.FLOURS_WHEAT)
             .addIngredient(
                 DataComponentIngredient.of(
                     false,
-                    DataComponentPredicate
-                        .builder()
-                        .expect(DataComponents.POTION_CONTENTS, PotionContents(Potions.WATER))
-                        .build(),
+                    buildDataPredicate {
+                        expect(DataComponents.POTION_CONTENTS, PotionContents(Potions.WATER))
+                    },
                     Items.POTION,
                 ),
             ).saveSuffixed(output, "_with_bottle")
@@ -175,7 +175,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
     private fun buckets() {
         // Exp Bottle <-> Exp Bucket
         HTShapelessRecipeBuilder
-            .create(HCFluids.EXPERIENCE.bucket)
+            .create(HCFluids.EXPERIENCE.getBucket())
             .addIngredients(Items.EXPERIENCE_BOTTLE, count = 4)
             .addIngredient(Tags.Items.BUCKETS_EMPTY)
             .saveSuffixed(output, "_from_bottles")
@@ -187,7 +187,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
 
         // Honey Bottle <-> Honey Bucket
         HTShapelessRecipeBuilder
-            .create(HCFluids.HONEY.bucket)
+            .create(HCFluids.HONEY.getBucket())
             .addIngredients(Tags.Items.DRINKS_HONEY, 4)
             .addIngredient(Tags.Items.BUCKETS_EMPTY)
             .saveSuffixed(output, "_from_bottles")
@@ -198,7 +198,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .saveSuffixed(output, "_from_bucket")
         // Honey Block <-> Honey Bucket
         HTShapelessRecipeBuilder
-            .create(HCFluids.HONEY.bucket)
+            .create(HCFluids.HONEY.getBucket())
             .addIngredient(Items.HONEY_BLOCK)
             .addIngredient(Tags.Items.BUCKETS_EMPTY)
             .saveSuffixed(output, "_from_block")
@@ -208,14 +208,14 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .saveSuffixed(output, "_from_bucket")
         // Mushroom Stew
         HTShapelessRecipeBuilder
-            .create(HCFluids.MUSHROOM_STEW.bucket)
+            .create(HCFluids.MUSHROOM_STEW.getBucket())
             .addIngredients(Items.MUSHROOM_STEW, count = 4)
             .addIngredient(Tags.Items.BUCKETS_EMPTY)
             .saveSuffixed(output, "_from_bowls")
 
         // Latex
         HTShapedRecipeBuilder
-            .create(HCFluids.LATEX.bucket)
+            .create(HCFluids.LATEX.getBucket())
             .hollow8()
             .define('A', Items.DANDELION)
             .define('B', Tags.Items.BUCKETS_EMPTY)

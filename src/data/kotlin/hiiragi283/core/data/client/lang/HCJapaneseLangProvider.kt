@@ -33,6 +33,11 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.BLOOD, "血液")
         addFluid(HCFluids.MEAT, "肉")
 
+        addFluid(HCFluids.MOLTEN_GLASS, "溶融ガラス")
+        addFluid(HCFluids.MOLTEN_CRIMSON_CRYSTAL, "深紅の血液")
+        addFluid(HCFluids.MOLTEN_WARPED_CRYSTAL, "歪みの雫")
+        addFluid(HCFluids.MOLTEN_ELDRITCH, "異質な流動体")
+
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "竹炭")
         add(HCItems.COMPRESSED_SAWDUST, "圧縮されたおがくず")
@@ -100,6 +105,9 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCTranslation.HIIRAGI_CORE, "Hiiragi Core")
 
         add(HCTranslation.WARPED_WART, "食べるとランダムにデバフを一つだけ消します。")
+
+        add(HCTranslation.MOLTEN_METAL, "溶融%s")
+        add(HCTranslation.MOLTEN_METAL_BUCKET, "溶融%s入りバケツ")
 
         add(HCTranslation.AMBROSIA, "いつでも食べられる上，いくら食べてもなくなりません！")
         add(HCTranslation.ELDER_HEART, "エルダーガーディアンからドロップします。")

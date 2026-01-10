@@ -16,11 +16,11 @@ import net.minecraft.core.Holder
 import net.minecraft.core.RegistryAccess
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeManager
-import net.minecraft.world.level.material.Fluid
 import net.neoforged.bus.api.Event
 import net.neoforged.neoforge.common.conditions.ICondition
 import org.slf4j.Logger
@@ -61,15 +61,13 @@ class HTRegisterRuntimeRecipeEvent(
     val itemResult: HTItemResultCreator = HTItemResultCreator
     val fluidResult: HTFluidResultCreator = HTFluidResultCreator
 
-    fun isPresentFluidTag(prefix: HTPrefixLike, material: HTMaterialLike): Boolean = getFirstFluidHolder(prefix, material) != null
+    fun isPresentTag(prefix: HTPrefixLike, material: HTMaterialLike): Boolean = isPresentTag(prefix.itemTagKey(material))
 
-    fun getFirstFluidHolder(prefix: HTPrefixLike, material: HTMaterialLike): Holder<Fluid>? =
-        HTTagUtil.INSTANCE.getFirstHolder(registryAccess, prefix.fluidTagKey(material)).value()
+    fun getFirstHolder(prefix: HTPrefixLike, material: HTMaterialLike): Holder<Item>? = getFirstHolder(prefix.itemTagKey(material))
 
-    fun isPresentItemTag(prefix: HTPrefixLike, material: HTMaterialLike): Boolean = getFirstItemHolder(prefix, material) != null
+    fun <T : Any> isPresentTag(tagKey: TagKey<T>): Boolean = getFirstHolder(tagKey) != null
 
-    fun getFirstItemHolder(prefix: HTPrefixLike, material: HTMaterialLike): Holder<Item>? =
-        HTTagUtil.INSTANCE.getFirstHolder(registryAccess, prefix.itemTagKey(material)).value()
+    fun <T : Any> getFirstHolder(tagKey: TagKey<T>): Holder<T>? = HTTagUtil.INSTANCE.getFirstHolder(registryAccess, tagKey).value()
 
     fun save(id: ResourceLocation, recipe: Recipe<*>) {
         output.accept(id, recipe, null)

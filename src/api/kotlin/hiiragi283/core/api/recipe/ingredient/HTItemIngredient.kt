@@ -22,8 +22,7 @@ import java.util.function.IntUnaryOperator
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-@JvmInline
-value class HTItemIngredient(val delegate: SizedIngredient) : HTIngredient<Item, HTItemResourceType> {
+class HTItemIngredient(val delegate: SizedIngredient) : HTIngredient<Item, HTItemResourceType> {
     companion object {
         /**
          * 個数を無視した[HTItemIngredient]の[BiCodec]

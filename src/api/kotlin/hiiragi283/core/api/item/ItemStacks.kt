@@ -1,6 +1,8 @@
 package hiiragi283.core.api.item
 
+import hiiragi283.core.api.data.buildDataPatch
 import net.minecraft.core.Holder
+import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
@@ -14,9 +16,11 @@ fun <T : Any> createItemStack(
     type: DataComponentType<T>,
     value: T,
     count: Int = 1,
-): ItemStack {
+): ItemStack = createItemStack(item, count, buildDataPatch { set(type, value) })
+
+fun createItemStack(item: ItemLike, count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStack {
     val stack = ItemStack(item, count)
-    stack.set(type, value)
+    stack.applyComponents(patch)
     return stack
 }
 

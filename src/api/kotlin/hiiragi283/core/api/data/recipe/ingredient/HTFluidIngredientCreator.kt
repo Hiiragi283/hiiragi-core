@@ -1,7 +1,5 @@
 package hiiragi283.core.api.data.recipe.ingredient
 
-import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.registry.HTFluidContent
 import net.minecraft.world.level.material.Fluid
@@ -25,13 +23,4 @@ interface HTFluidIngredientCreator : HTIngredientCreator<Fluid, HTFluidIngredien
     fun lava(amount: Int): HTFluidIngredient = fromTagKey(Tags.Fluids.LAVA, amount)
 
     fun milk(amount: Int): HTFluidIngredient = fromTagKey(Tags.Fluids.MILK, amount)
-
-    // Material
-    fun fromTagKey(prefix: HTPrefixLike, material: HTMaterialLike, count: Int = 1): HTFluidIngredient =
-        fromTagKey(prefix.fluidTagKey(material), count)
-
-    fun fromTagKeys(prefixes: Iterable<HTPrefixLike>, materials: Iterable<HTMaterialLike>, count: Int = 1): HTFluidIngredient = fromTagKeys(
-        prefixes.flatMap { prefix: HTPrefixLike -> materials.map(prefix::fluidTagKey) },
-        count,
-    )
 }
