@@ -6,7 +6,7 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.addColor
 import hiiragi283.core.api.material.addDefaultPrefix
 import hiiragi283.core.api.material.addName
-import hiiragi283.core.api.material.attribute.HTEnableMoltenMetalMaterialAttribute
+import hiiragi283.core.api.material.attribute.HTMoltenMetalMaterialAttribute
 import hiiragi283.core.api.material.attribute.HTSmeltingMaterialAttribute
 import hiiragi283.core.api.material.attribute.HTStorageBlockMaterialAttribute
 import hiiragi283.core.api.material.attribute.HTTextureTemplateMaterialAttribute
@@ -17,6 +17,7 @@ import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialKeys
+import hiiragi283.core.setup.HCFluids
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 
@@ -57,7 +58,7 @@ object HCMaterialEventHandler {
         // Minerals
         event.modify(VanillaMaterialKeys.REDSTONE) {
             addDefaultPrefix(HCMaterialPrefixes.DUST)
-            add(HTEnableMoltenMetalMaterialAttribute)
+            add(HTMoltenMetalMaterialAttribute.enable())
             if (isDataGen) {
                 addName("Redstone", "赤石")
                 addColor(HCMaterialPalette.REDSTONE)
@@ -66,7 +67,7 @@ object HCMaterialEventHandler {
         }
         event.modify(VanillaMaterialKeys.GLOWSTONE) {
             addDefaultPrefix(HCMaterialPrefixes.DUST)
-            add(HTEnableMoltenMetalMaterialAttribute)
+            add(HTMoltenMetalMaterialAttribute.enable())
             add(HTStorageBlockMaterialAttribute.TWO_BY_TWO)
             if (isDataGen) {
                 addName("Glowstone", "グロウストーン")
@@ -128,7 +129,7 @@ object HCMaterialEventHandler {
         // Pearls
         event.modify(VanillaMaterialKeys.ENDER) {
             addDefaultPrefix(HCMaterialPrefixes.PEARL)
-            add(HTEnableMoltenMetalMaterialAttribute)
+            add(HTMoltenMetalMaterialAttribute.enable())
             if (isDataGen) {
                 addName("Ender Pearl", "エンダーパール")
                 addColor(HCMaterialPalette.ENDER)
@@ -138,7 +139,7 @@ object HCMaterialEventHandler {
         // Metals
         event.modify(VanillaMaterialKeys.COPPER) {
             addDefaultPrefix(HCMaterialPrefixes.INGOT)
-            add(HTEnableMoltenMetalMaterialAttribute)
+            add(HTMoltenMetalMaterialAttribute.enable())
             if (isDataGen) {
                 addName("Copper", "銅")
                 addColor(HCMaterialPalette.COPPER)
@@ -147,7 +148,7 @@ object HCMaterialEventHandler {
         }
         event.modify(VanillaMaterialKeys.IRON) {
             addDefaultPrefix(HCMaterialPrefixes.INGOT)
-            add(HTEnableMoltenMetalMaterialAttribute)
+            add(HTMoltenMetalMaterialAttribute.enable())
             if (isDataGen) {
                 addName("Iron", "鉄")
                 addColor(HCMaterialPalette.IRON)
@@ -156,7 +157,7 @@ object HCMaterialEventHandler {
         }
         event.modify(VanillaMaterialKeys.GOLD) {
             addDefaultPrefix(HCMaterialPrefixes.INGOT)
-            add(HTEnableMoltenMetalMaterialAttribute)
+            add(HTMoltenMetalMaterialAttribute.enable())
             if (isDataGen) {
                 addName("Gold", "金")
                 addColor(HCMaterialPalette.GOLD)
@@ -166,7 +167,7 @@ object HCMaterialEventHandler {
         // Alloys
         event.modify(VanillaMaterialKeys.NETHERITE) {
             addDefaultPrefix(HCMaterialPrefixes.INGOT)
-            add(HTEnableMoltenMetalMaterialAttribute)
+            add(HTMoltenMetalMaterialAttribute.enable())
             if (isDataGen) {
                 addName("Netherite", "ネザライト")
                 addColor(HCMaterialPalette.NETHERITE)
@@ -227,7 +228,7 @@ object HCMaterialEventHandler {
             event.modify(key) {
                 addDefaultPrefix(prefix)
                 if (prefix == HCMaterialPrefixes.INGOT) {
-                    add(HTEnableMoltenMetalMaterialAttribute)
+                    add(HTMoltenMetalMaterialAttribute.enable())
                 }
                 if (isDataGen) {
                     addName(enName, jaName)
@@ -317,7 +318,7 @@ object HCMaterialEventHandler {
         // Alloys
         event.modify(CommonMaterialKeys.STEEL) {
             addDefaultPrefix(HCMaterialPrefixes.INGOT)
-            add(HTEnableMoltenMetalMaterialAttribute)
+            add(HTMoltenMetalMaterialAttribute.enable())
             if (isDataGen) {
                 addName("Steel", "鋼鉄")
                 addColor(HCMaterialPalette.STEEL)
@@ -345,7 +346,7 @@ object HCMaterialEventHandler {
         }
         event.modify(CommonMaterialKeys.PLASTIC) {
             addDefaultPrefix(HCMaterialPrefixes.PLATE)
-            add(HTEnableMoltenMetalMaterialAttribute)
+            add(HTMoltenMetalMaterialAttribute.enable())
             if (isDataGen) {
                 addName("Plastic", "プラスチック")
                 addColor(HCMaterialPalette.PLASTIC)
@@ -360,7 +361,7 @@ object HCMaterialEventHandler {
         }
         event.modify(CommonMaterialKeys.RUBBER) {
             addDefaultPrefix(HCMaterialPrefixes.PLATE)
-            add(HTEnableMoltenMetalMaterialAttribute)
+            add(HTMoltenMetalMaterialAttribute.enable())
             if (isDataGen) {
                 addName("Rubber", "ゴム")
                 addColor(HCMaterialPalette.RUBBER)
@@ -389,6 +390,7 @@ object HCMaterialEventHandler {
         }
         event.modify(HCMaterialKeys.CRIMSON_CRYSTAL) {
             addDefaultPrefix(HCMaterialPrefixes.GEM)
+            add(HTMoltenMetalMaterialAttribute.custom(HCFluids.MOLTEN_CRIMSON_CRYSTAL))
             if (isDataGen) {
                 addName("Crimson Crystal", "深紅のクリスタリル")
                 addColor(HCMaterialPalette.CRIMSON_CRYSTAL)
@@ -397,6 +399,7 @@ object HCMaterialEventHandler {
         }
         event.modify(HCMaterialKeys.WARPED_CRYSTAL) {
             addDefaultPrefix(HCMaterialPrefixes.GEM)
+            add(HTMoltenMetalMaterialAttribute.custom(HCFluids.MOLTEN_WARPED_CRYSTAL))
             if (isDataGen) {
                 addName("Warped Crystal", "歪んだクリスタリル")
                 addColor(HCMaterialPalette.WARPED_CRYSTAL)
@@ -406,6 +409,7 @@ object HCMaterialEventHandler {
         // Pearls
         event.modify(HCMaterialKeys.ELDRITCH) {
             addDefaultPrefix(HCMaterialPrefixes.PEARL)
+            add(HTMoltenMetalMaterialAttribute.custom(HCFluids.MOLTEN_ELDRITCH))
             if (isDataGen) {
                 addName("Eldritch Pearl", "異質な真珠")
                 addColor(HCMaterialPalette.ELDRITCH)
@@ -415,7 +419,7 @@ object HCMaterialEventHandler {
         // Metals
         event.modify(HCMaterialKeys.NIGHT_METAL) {
             addDefaultPrefix(HCMaterialPrefixes.INGOT)
-            add(HTEnableMoltenMetalMaterialAttribute)
+            add(HTMoltenMetalMaterialAttribute.enable())
             if (isDataGen) {
                 addName("Night Metal", "夜金")
                 addColor(HCMaterialPalette.NIGHT_METAL)
@@ -425,7 +429,7 @@ object HCMaterialEventHandler {
         // Alloys
         event.modify(HCMaterialKeys.AZURE_STEEL) {
             addDefaultPrefix(HCMaterialPrefixes.INGOT)
-            add(HTEnableMoltenMetalMaterialAttribute)
+            add(HTMoltenMetalMaterialAttribute.enable())
             if (isDataGen) {
                 addName("Azure Steel", "紺鉄")
                 addColor(HCMaterialPalette.AZURE_STEEL)
@@ -434,7 +438,7 @@ object HCMaterialEventHandler {
         }
         event.modify(HCMaterialKeys.DEEP_STEEL) {
             addDefaultPrefix(HCMaterialPrefixes.INGOT)
-            add(HTEnableMoltenMetalMaterialAttribute)
+            add(HTMoltenMetalMaterialAttribute.enable())
             if (isDataGen) {
                 addName("Deep Steel", "深層鋼")
                 addColor(HCMaterialPalette.DEEP_STEEL)

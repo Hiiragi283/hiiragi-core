@@ -9,7 +9,6 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.HTMaterialTable
-import hiiragi283.core.api.material.attribute.HTEnableMoltenMetalMaterialAttribute
 import hiiragi283.core.api.material.attribute.HTLangNameMaterialAttribute
 import hiiragi283.core.api.material.get
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
@@ -21,6 +20,7 @@ import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
+import hiiragi283.core.util.HTMoltenMetalHelper
 
 object HCMaterialTranslations {
     @JvmStatic
@@ -55,7 +55,7 @@ object HCMaterialTranslations {
                 provider.add(block, name)
             }
             // Fluid
-            if (HTEnableMoltenMetalMaterialAttribute::class.java in definition) {
+            if (HTMoltenMetalHelper.isEnabled(definition, false)) {
                 definition
                     .get<HTLangNameMaterialAttribute>()
                     ?.getTranslatedName(langType)

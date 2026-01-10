@@ -4,7 +4,6 @@ import hiiragi283.core.api.item.HTSubCreativeTabContents
 import hiiragi283.core.api.material.HTMaterialDefinition
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
-import hiiragi283.core.api.material.attribute.HTEnableMoltenMetalMaterialAttribute
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.common.fluid.HTMoltenMetalFluid
 import hiiragi283.core.common.text.HCTranslation
@@ -31,7 +30,7 @@ class HTMoltenMetalBucketItem(private val fluid: HTMoltenMetalFluid, properties:
         consumer: Consumer<ItemStack>,
     ) {
         for ((key: HTMaterialKey, definition: HTMaterialDefinition) in HTMaterialManager.INSTANCE.entries) {
-            if (HTEnableMoltenMetalMaterialAttribute::class.java !in definition) continue
+            if (!HTMoltenMetalHelper.isEnabled(definition, false)) continue
             consumer.accept(HTMoltenMetalHelper.createBucket(key))
         }
     }

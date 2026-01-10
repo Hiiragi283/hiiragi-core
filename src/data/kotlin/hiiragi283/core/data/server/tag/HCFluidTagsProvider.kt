@@ -13,7 +13,7 @@ import net.minecraft.world.level.material.Fluid
 class HCFluidTagsProvider(context: HTDataGenContext) : HTTagsProvider<Fluid>(HiiragiCoreAPI.MOD_ID, Registries.FLUID, context) {
     override fun addTagsInternal(factory: BuilderFactory<Fluid>) {
         HCFluids.REGISTER
-            .entries
+            .asSequence()
             .forEach(::addContent.partially1(factory))
     }
 
