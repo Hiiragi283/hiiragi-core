@@ -12,7 +12,7 @@ import kotlin.math.max
  * @since 0.1.0
  * @see HTResourceSlot
  */
-interface HTResourceView<RESOURCE : HTResourceType<*>> : HTAmountView.IntSized {
+interface HTResourceView<RESOURCE : HTResourceType<*>> : HTAmountView {
     /**
      * 保持しているリソースを取得します。
      */
@@ -20,13 +20,11 @@ interface HTResourceView<RESOURCE : HTResourceType<*>> : HTAmountView.IntSized {
 
     /**
      * 指定した[resource]から容量を取得します。
-     * @return [Int]型での容量
      */
     fun getCapacity(resource: RESOURCE?): Int
 
     /**
      * 指定した[resource]から空き容量を取得します。
-     * @return [Int]型での空き容量
      */
     fun getNeeded(resource: RESOURCE?): Int = max(0, getCapacity(resource) - getAmount())
 

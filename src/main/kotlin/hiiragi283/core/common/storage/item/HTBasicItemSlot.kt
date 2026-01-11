@@ -1,18 +1,19 @@
 package hiiragi283.core.common.storage.item
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HTDataSerializable
+import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.toResource
-import net.minecraft.core.HolderLookup
-import net.minecraft.nbt.CompoundTag
-import net.minecraft.nbt.NbtOps
 import net.minecraft.nbt.Tag
 import net.minecraft.resources.RegistryOps
 import net.minecraft.world.item.ItemStack
+import java.util.function.BiConsumer
 import java.util.function.BiPredicate
+import java.util.function.Function
 import java.util.function.Predicate
 
 open class HTBasicItemSlot protected constructor(
@@ -20,7 +21,8 @@ open class HTBasicItemSlot protected constructor(
     private val canExtract: BiPredicate<HTItemResourceType, HTStorageAccess>,
     private val canInsert: BiPredicate<HTItemResourceType, HTStorageAccess>,
     private val filter: Predicate<HTItemResourceType>,
-) : HTItemSlot.Basic() {
+) : HTItemSlot.Basic(),
+    HTDataSerializable.CodecBased {
     companion object {
         @JvmStatic
         private fun validateLimit(limit: Int): Int {
@@ -88,20 +90,18 @@ open class HTBasicItemSlot protected constructor(
 
     override fun getAmount(): Int = stack.count
 
-    override fun serializeNBT(provider: HolderLookup.Provider, nbt: CompoundTag) {
+    override fun serialize(ops: RegistryOps<Tag>, consumer: BiConsumer<String, Tag>) {
         val resource: HTItemResourceType = getResource() ?: return
-        val ops: RegistryOps<Tag> = provider.createSerializationContext(NbtOps.INSTANCE)
         HTItemResourceType.CODEC
             .encode(ops, resource)
-            .ifSuccess { nbt.put(HTConst.ITEM, it) }
-        nbt.putInt(HTConst.AMOUNT, getAmount())
+            .ifSuccess { consumer.accept(HTConst.ITEM, it) }
+        BiCodecs.NON_NEGATIVE_INT.encode(ops, getAmount()).ifSuccess { consumer.accept(HTConst.AMOUNT, it) }
     }
 
-    override fun deserializeNBT(provider: HolderLookup.Provider, nbt: CompoundTag) {
-        val ops: RegistryOps<Tag> = provider.createSerializationContext(NbtOps.INSTANCE)
+    override fun deserialize(ops: RegistryOps<Tag>, function: Function<String, Tag>) {
         HTItemResourceType.CODEC
-            .decode(ops, nbt.getCompound(HTConst.ITEM))
+            .decode(ops, function.apply(HTConst.ITEM))
             .ifSuccess(::setResource)
-        nbt.getInt(HTConst.AMOUNT).let(::setAmount)
+        BiCodecs.NON_NEGATIVE_INT.decode(ops, function.apply(HTConst.AMOUNT)).ifSuccess(::setAmount)
     }
 }

@@ -5,6 +5,7 @@ import com.lowdragmc.lowdraglib2.syncdata.annotation.Persisted
 import hiiragi283.core.api.block.entity.HTOwnedBlockEntity
 import hiiragi283.core.api.block.entity.HTSoundPlayerBlockEntity
 import hiiragi283.core.api.storage.HTHandlerProvider
+import hiiragi283.core.api.storage.amount.HTAmountView
 import hiiragi283.core.api.storage.attachments.HTAttachedEnergy
 import hiiragi283.core.api.storage.attachments.HTAttachedFluids
 import hiiragi283.core.api.storage.attachments.HTAttachedItems
@@ -198,7 +199,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     fun applyEnergyBattery(containers: List<HTEnergyBattery>, contents: HTAttachedEnergy) {
         for (i: Int in contents.indices) {
             val amount: Int = contents[i]
-            (containers.getOrNull(i) as? HTEnergyBattery.Basic)?.setAmount(amount)
+            (containers.getOrNull(i) as? HTAmountView.Mutable)?.setAmount(amount)
         }
     }
 

@@ -1,18 +1,19 @@
 package hiiragi283.core.common.storage.fluid
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HTDataSerializable
+import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.fluid.toResource
-import net.minecraft.core.HolderLookup
-import net.minecraft.nbt.CompoundTag
-import net.minecraft.nbt.NbtOps
 import net.minecraft.nbt.Tag
 import net.minecraft.resources.RegistryOps
 import net.neoforged.neoforge.fluids.FluidStack
+import java.util.function.BiConsumer
 import java.util.function.BiPredicate
+import java.util.function.Function
 import java.util.function.Predicate
 
 open class HTBasicFluidTank protected constructor(
@@ -20,7 +21,8 @@ open class HTBasicFluidTank protected constructor(
     private val canExtract: BiPredicate<HTFluidResourceType, HTStorageAccess>,
     private val canInsert: BiPredicate<HTFluidResourceType, HTStorageAccess>,
     private val filter: Predicate<HTFluidResourceType>,
-) : HTFluidTank.Basic() {
+) : HTFluidTank.Basic(),
+    HTDataSerializable.CodecBased {
     companion object {
         @JvmStatic
         private fun validateCapacity(capacity: Int): Int {
@@ -88,20 +90,18 @@ open class HTBasicFluidTank protected constructor(
 
     override fun getAmount(): Int = stack.amount
 
-    override fun serializeNBT(provider: HolderLookup.Provider, nbt: CompoundTag) {
+    override fun serialize(ops: RegistryOps<Tag>, consumer: BiConsumer<String, Tag>) {
         val resource: HTFluidResourceType = getResource() ?: return
-        val ops: RegistryOps<Tag> = provider.createSerializationContext(NbtOps.INSTANCE)
         HTFluidResourceType.CODEC
             .encode(ops, resource)
-            .ifSuccess { nbt.put(HTConst.FLUID, it) }
-        nbt.putInt(HTConst.AMOUNT, getAmount())
+            .ifSuccess { consumer.accept(HTConst.FLUID, it) }
+        BiCodecs.NON_NEGATIVE_INT.encode(ops, getAmount()).ifSuccess { consumer.accept(HTConst.AMOUNT, it) }
     }
 
-    override fun deserializeNBT(provider: HolderLookup.Provider, nbt: CompoundTag) {
-        val ops: RegistryOps<Tag> = provider.createSerializationContext(NbtOps.INSTANCE)
+    override fun deserialize(ops: RegistryOps<Tag>, function: Function<String, Tag>) {
         HTFluidResourceType.CODEC
-            .decode(ops, nbt.getCompound(HTConst.FLUID))
+            .decode(ops, function.apply(HTConst.FLUID))
             .ifSuccess(::setResource)
-        nbt.getInt(HTConst.AMOUNT).let(::setAmount)
+        BiCodecs.NON_NEGATIVE_INT.decode(ops, function.apply(HTConst.AMOUNT)).ifSuccess(::setAmount)
     }
 }

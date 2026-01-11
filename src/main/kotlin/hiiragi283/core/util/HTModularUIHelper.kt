@@ -39,7 +39,6 @@ object HTModularUIHelper {
             Label()
                 .setText(title)
                 .textStyle { style: TextElement.TextStyle -> style.textColor(HTDefaultColor.GRAY.color) }
-                .layout { style: LayoutStyle -> style.setMargin(YogaEdge.END, 2f) },
         )
         root.action()
 
