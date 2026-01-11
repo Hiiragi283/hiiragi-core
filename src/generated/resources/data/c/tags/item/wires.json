@@ -1,13 +1,6 @@
 {
   "values": [
-    "#c:wires/azure_steel",
     "#c:wires/copper",
-    "#c:wires/deep_steel",
-    "#c:wires/gold",
-    "#c:wires/iron",
-    "#c:wires/netherite",
-    "#c:wires/night_metal",
-    "#c:wires/silver",
-    "#c:wires/steel"
+    "#c:wires/gold"
   ]
 }

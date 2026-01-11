@@ -5,6 +5,7 @@ import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
@@ -19,6 +20,9 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         // Block
         add(HCBlocks.WARPED_WART, "Warped Wart")
+
+        // Entity
+        add(HCEntityTypes.ELDRITCH_EGG, "Thrown Eldritch Egg")
 
         // Fluid
         addFluid(HCFluids.EXPERIENCE, "Liquid Experience")
@@ -35,7 +39,9 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.MOLTEN_ELDRITCH, "Eldritch Flux")
 
         // Item
+        add(HCItems.BAMBOO_CHARCOAL, "Bamboo Charcoal")
         add(HCItems.COMPRESSED_SAWDUST, "Compressed Sawdust")
+        add(HCItems.STEEL_COMPOUND, "Steel Compound")
         add(HCItems.SYNTHETIC_LEATHER, "Synthetic Leather")
 
         add(HCItems.LUMINOUS_PASTE, "Luminous Paste")
@@ -46,17 +52,22 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         add(HCItems.WHEAT_FLOUR, "Wheat Flour")
         add(HCItems.WHEAT_DOUGH, "Wheat Dough")
+        add(HCItems.ANIMAL_FAT, "Animal Fat")
+        add(HCItems.PULPED_FISH, "Pulped Fish")
+        add(HCItems.PULPED_SEED, "Pulped Seed")
 
+        add(HCItems.ELDRITCH_EGG, "Eldritch Egg")
         add(HCItems.SLOT_COVER, "Slot Cover")
         add(HCItems.TRADER_CATALOG, "Trader's Catalog")
 
         add(HCItems.IRIDESCENT_POWDER, "Iridescent Powder")
         add(HCItems.AMBROSIA, "Ambrosia")
         add(HCItems.ETERNAL_TICKET, "Eternal Ticket")
+        add(HCItems.ALMIGHTY_PICKAXE, "Almighty Pickaxe")
 
         // Recipe
+        add(HCRecipeTypes.ANVIL_CRUSHING, "Anvil Crushing")
         add(HCRecipeTypes.CHARGING, "Lightning Charging")
-        add(HCRecipeTypes.CRUSHING, "Anvil Crushing")
         add(HCRecipeTypes.EXPLODING, "Exploding")
 
         // Translation
@@ -96,8 +107,12 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         add(HCTranslation.WARPED_WART, "Clears one bad effect randomly when eaten.")
 
+        add(HCTranslation.MOLTEN_METAL, "Molten %s")
+        add(HCTranslation.MOLTEN_METAL_BUCKET, "Molten %s Bucket")
+
         add(HCTranslation.AMBROSIA, "ALWAYS EDIBLE and NOT CONSUMED!")
         add(HCTranslation.ELDER_HEART, "Dropped from Elder Guardian.")
+        add(HCTranslation.ELDRITCH_EGG, "Can be throwable by right-click，and capture mobs when hit.")
         add(HCTranslation.ETERNAL_TICKET, "Make any tool UNBREAKABLE!")
         add(HCTranslation.IRIDESCENT_POWDER, "Do not expire by time over or any damage.")
         add(HCTranslation.SLOT_COVER, "Ignored by recipes when placed in machine slot.")

@@ -1,17 +1,13 @@
 package hiiragi283.core.common.block
 
-import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.world.getTypedBlockEntity
 import hiiragi283.core.common.block.entity.HTBlockEntity
 import hiiragi283.core.common.block.entity.HTExtendedBlockEntity
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import hiiragi283.core.common.registry.HTDeferredMenuType
-import hiiragi283.core.util.HTStackSlotHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.network.chat.Component
-import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
-import net.minecraft.world.ItemInteractionResult
 import net.minecraft.world.Nameable
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
@@ -24,7 +20,7 @@ import net.minecraft.world.phys.BlockHitResult
 open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, properties: Properties) :
     Block(properties),
     HTBlockWithEntity {
-    override fun useItemOn(
+    /*override fun useItemOn(
         stack: ItemStack,
         state: BlockState,
         level: Level,
@@ -47,7 +43,7 @@ open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, pr
             }
         }
         return result
-    }
+    }*/
 
     override fun useWithoutItem(
         state: BlockState,

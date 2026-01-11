@@ -3,31 +3,36 @@ package hiiragi283.core.common.data.recipe
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.api.material.HTAbstractMaterial
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
+import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
+import hiiragi283.core.api.material.property.HTSmeltingMaterialProperty
+import hiiragi283.core.api.material.property.HTStorageBlockProperty
+import hiiragi283.core.api.material.property.getDefaultPart
+import hiiragi283.core.api.material.property.getStorageBlock
+import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.registry.HTDeferredBlock
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.iterator
 
 class HTMaterialRecipeProvider(
     modId: String,
-    private val materials: Iterable<HTAbstractMaterial>,
     private val blocks: HTMaterialTable<HTMaterialPrefix, out HTDeferredBlock<*, *>>,
     private val items: HTMaterialTable<HTMaterialPrefix, out HTItemHolderLike<*>>,
     private val itemGetter: (HTPrefixLike, HTMaterialLike) -> HTItemHolderLike<*>?,
 ) : HTSubRecipeProvider.Direct(modId) {
+    private val manager: HTMaterialManager = HTMaterialManager.INSTANCE
+
     override fun buildRecipeInternal() {
         baseToBlock()
 
@@ -39,46 +44,67 @@ class HTMaterialRecipeProvider(
     }
 
     private fun baseToBlock() {
-        for (material: HTAbstractMaterial in materials) {
-            val basePrefix: HTMaterialPrefix = material.basePrefix
-            val block: ItemLike = blocks[HCMaterialPrefixes.STORAGE_BLOCK, material] ?: continue
-            val base: ItemLike = itemGetter(basePrefix, material) ?: continue
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in manager.entries) {
+            val basePrefix: HTMaterialPrefix = propertyMap.getDefaultPart() ?: continue
+            val blockProperty: HTStorageBlockProperty = propertyMap.getStorageBlock()
+
+            val block: ItemLike = blocks[HCMaterialPrefixes.STORAGE_BLOCK, key] ?: continue
+            val base: ItemLike = itemGetter(basePrefix, key) ?: continue
             // Shapeless
             HTShapelessRecipeBuilder
-                .create(base, 9)
-                .addIngredient(HCMaterialPrefixes.STORAGE_BLOCK, material)
-                .save(output, HiiragiCoreAPI.id(material.asMaterialName(), "${basePrefix.name}_from_block"))
+                .create(base, blockProperty.baseCount)
+                .addIngredient(HCMaterialPrefixes.STORAGE_BLOCK, key)
+                .save(output, HiiragiCoreAPI.id(key.name, "${basePrefix.name}_from_block"))
             // Shaped
             HTShapedRecipeBuilder
                 .create(block)
-                .hollow8()
-                .define('A', basePrefix, material)
+                .pattern(blockProperty.pattern)
+                .define('A', basePrefix, key)
                 .define('B', base)
-                .save(output, HiiragiCoreAPI.id(material.asMaterialName(), "block_from_${basePrefix.name}"))
+                .save(output, HiiragiCoreAPI.id(key.name, "block_from_${basePrefix.name}"))
         }
     }
 
     private fun prefixToBase(prefix: HTPrefixLike, exp: Float) {
-        for (material: HTAbstractMaterial in materials) {
-            val basePrefix: HTMaterialPrefix = material.basePrefix
-            if (material.basePrefix == HCMaterialPrefixes.FUEL || material.basePrefix == HCMaterialPrefixes.DUST) continue
-
-            val smelted: HTAbstractMaterial = material.getSmeltedMaterial() ?: continue
-            val base: HTItemHolderLike<*> = itemGetter(basePrefix, smelted) ?: continue
-            val input: HTItemHolderLike<*> = itemGetter(prefix, material) ?: continue
-            if (base.getNamespace() == HTConst.MINECRAFT && input.getNamespace() == HTConst.MINECRAFT) continue
-
-            // Smelting & Blasting
-            HTCookingRecipeBuilder.smeltingAndBlasting(base) {
-                addIngredient(input)
-                setExp(exp)
-                save(
-                    output,
-                    HiiragiCoreAPI.id(
-                        smelted.asMaterialName(),
-                        "${basePrefix.asPrefixName()}_from_${prefix.asPrefixName()}",
-                    ),
-                )
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in manager.entries) {
+            val smeltingAttribute: HTSmeltingMaterialProperty = propertyMap[HTMaterialPropertyKeys.SMELTING]
+                ?: propertyMap.getDefaultPart()?.let { HTSmeltingMaterialProperty.withBlasting(it, key) } ?: continue
+            val smeltedPrefix: HTMaterialPrefix = smeltingAttribute.prefix ?: continue
+            val smeltedKey: HTMaterialKey = smeltingAttribute.key ?: continue
+            // 精錬の前後で同じプレフィックスと素材になる場合はパス
+            if (prefix.isOf(smeltedPrefix) && key == smeltedKey) continue
+            val result: HTItemHolderLike<*> = itemGetter(smeltedPrefix, smeltedKey) ?: continue
+            val input: HTItemHolderLike<*> = itemGetter(prefix, key) ?: continue
+            // 精錬の前後がどちらもバニラ由来の場合はパス
+            if (result.getNamespace() == HTConst.MINECRAFT && input.getNamespace() == HTConst.MINECRAFT) continue
+            // Smelting
+            val path: String = when {
+                key == smeltedKey -> "${smeltedPrefix.name}_from_${prefix.asPrefixName()}"
+                else -> "${smeltedPrefix.name}_from_${prefix.createPath(key)}"
+            }
+            val id: ResourceLocation = HiiragiCoreAPI.id(smeltedKey.name, path)
+            HTCookingRecipeBuilder
+                .smelting(result)
+                .addIngredient(input)
+                .setExp(exp)
+                .save(output, id)
+            // Blasting
+            if (smeltingAttribute.isBlasting) {
+                HTCookingRecipeBuilder
+                    .blasting(result)
+                    .addIngredient(input)
+                    .setTime(100)
+                    .setExp(exp)
+                    .save(output, id)
+            }
+            // Smoking
+            if (smeltingAttribute.isSmoking) {
+                HTCookingRecipeBuilder
+                    .smoking(result)
+                    .addIngredient(input)
+                    .setTime(100)
+                    .setExp(exp)
+                    .save(output, id)
             }
         }
     }

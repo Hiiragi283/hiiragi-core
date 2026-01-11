@@ -45,8 +45,8 @@ object HCRecipeSerializers {
     )
 
     @JvmField
-    val CRUSHING: RecipeSerializer<HCAnvilCrushingRecipe> = REGISTER.registerSerializer(
-        HTConst.CRUSHING,
+    val ANVIL_CRUSHING: RecipeSerializer<HCAnvilCrushingRecipe> = REGISTER.registerSerializer(
+        HTConst.ANVIL_CRUSHING,
         HCSingleItemRecipe.codec(::HCAnvilCrushingRecipe),
     )
 

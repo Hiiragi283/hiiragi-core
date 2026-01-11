@@ -1,9 +1,11 @@
 package hiiragi283.core.util
 
+import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextUtil
 import hiiragi283.core.api.text.toText
+import hiiragi283.core.api.text.withStyle
 import net.minecraft.ChatFormatting
 import net.minecraft.core.Holder
 import net.minecraft.network.chat.Component
@@ -52,7 +54,7 @@ object HTTooltipHelper {
             holder
                 .registeredName
                 .toText()
-                .withStyle(ChatFormatting.DARK_GRAY)
+                .withStyle(HTDefaultColor.GRAY)
                 .let(consumer::accept)
         }
         // Mod Name
@@ -61,7 +63,8 @@ object HTTooltipHelper {
             .getId()
             .namespace
             .let(HTTextUtil::getModNameText)
-            .withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC)
+            .withStyle(HTDefaultColor.BLUE)
+            .withStyle(ChatFormatting.ITALIC)
             .let(consumer::accept)
     }
 }

@@ -5,11 +5,14 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.vanillaId
+import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
+import net.minecraft.client.renderer.entity.ThrownItemRenderer
 import net.minecraft.world.level.ItemLike
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.common.Mod
+import net.neoforged.neoforge.client.event.EntityRenderersEvent
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent
 import net.neoforged.neoforge.client.gui.ConfigurationScreen
@@ -30,6 +33,7 @@ object HiiragiCoreClient {
 
         eventBus.addListener(::registerItemColors)
         eventBus.addListener(::registerClientExtensions)
+        eventBus.addListener(::registerEntityRenderer)
 
         LOADING_CONTEXT.activeContainer
             .registerExtensionPoint(IConfigScreenFactory::class.java, IConfigScreenFactory(::ConfigurationScreen))
@@ -61,11 +65,16 @@ object HiiragiCoreClient {
         event.dull(HCFluids.MEAT, Color(0x993333))
 
         event.molten(HCFluids.MOLTEN_GLASS, Color(0xccccff))
-        event.molten(HCFluids.MOLTEN_CRIMSON_CRYSTAL, Color(0x990000))
-        event.molten(HCFluids.MOLTEN_WARPED_CRYSTAL, Color(0x009999))
-        event.molten(HCFluids.MOLTEN_ELDRITCH, Color(0x990099))
+        event.molten(HCFluids.MOLTEN_CRIMSON_CRYSTAL, Color(0x993333))
+        event.molten(HCFluids.MOLTEN_WARPED_CRYSTAL, Color(0x339999))
+        event.molten(HCFluids.MOLTEN_ELDRITCH, Color(0x6633cc))
 
         LOGGER.info("Registered client extensions!")
+    }
+
+    private fun registerEntityRenderer(event: EntityRenderersEvent.RegisterRenderers) {
+        // Entity
+        event.registerEntityRenderer(HCEntityTypes.ELDRITCH_EGG.get(), ::ThrownItemRenderer)
     }
 
     //    Extensions    //

@@ -20,8 +20,7 @@ import net.neoforged.neoforge.fluids.crafting.TagFluidIngredient
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-@JvmInline
-value class HTFluidIngredient(val delegate: SizedFluidIngredient) : HTIngredient<Fluid, HTFluidResourceType> {
+class HTFluidIngredient(val delegate: SizedFluidIngredient) : HTIngredient<Fluid, HTFluidResourceType> {
     companion object {
         /**
          * [HTFluidIngredient]の[BiCodec]

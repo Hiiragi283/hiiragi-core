@@ -89,8 +89,8 @@ data object HTConst {
 
     const val SHAPELESS = "shapeless"
 
+    const val ANVIL_CRUSHING = "anvil_crushing"
     const val CHARGING = "charging"
-    const val CRUSHING = "crushing"
     const val EXPLODING = "exploding"
 
     const val ENERGY = "energy"

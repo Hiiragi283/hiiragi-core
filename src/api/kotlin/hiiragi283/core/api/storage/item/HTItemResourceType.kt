@@ -1,5 +1,6 @@
 package hiiragi283.core.api.storage.item
 
+import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.storage.resource.HTResourceType
 import net.minecraft.core.Holder
@@ -17,9 +18,7 @@ import net.minecraft.world.level.ItemLike
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-@ConsistentCopyVisibility
-@JvmRecord
-data class HTItemResourceType private constructor(private val stack: ItemStack) : HTResourceType.DataComponent<Item> {
+class HTItemResourceType private constructor(private val stack: ItemStack) : HTResourceType.DataComponent<Item> {
     companion object {
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemResourceType> =
@@ -32,14 +31,16 @@ data class HTItemResourceType private constructor(private val stack: ItemStack) 
          * @return [ItemStack.isEmpty]が`true`の場合は`null`
          */
         @JvmStatic
-        fun ofNullable(item: ItemLike): HTItemResourceType? = ItemStack(item).let(::of)
+        fun ofNullable(item: ItemLike?, patch: DataComponentPatch = DataComponentPatch.EMPTY): HTItemResourceType? =
+            createItemStack(item, patch = patch).let(::of)
 
         /**
          * 指定した[item]を[HTItemResourceType]に変換します。
          * @throws IllegalStateException [ItemStack.isEmpty]が`true`の場合
          */
         @JvmStatic
-        fun of(item: ItemLike): HTItemResourceType = ofNullable(item) ?: error("Item must not be empty")
+        fun of(item: ItemLike?, patch: DataComponentPatch = DataComponentPatch.EMPTY): HTItemResourceType =
+            ofNullable(item, patch) ?: error("Item must not be empty")
 
         /**
          * 指定した[stack]を[HTItemResourceType]に変換します。
@@ -63,6 +64,12 @@ data class HTItemResourceType private constructor(private val stack: ItemStack) 
     }
 
     override fun hashCode(): Int = ItemStack.hashItemAndComponents(stack)
+
+    override fun toString(): String = stack.toString()
+
+    operator fun component1(): Holder<Item> = getHolder()
+
+    operator fun component2(): DataComponentPatch = componentsPatch()
 
     //    HTResourceType    //
 

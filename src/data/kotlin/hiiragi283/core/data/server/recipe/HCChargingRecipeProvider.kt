@@ -3,8 +3,9 @@ package hiiragi283.core.data.server.recipe
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.common.data.recipe.builder.HTChargingRecipeBuilder
-import hiiragi283.core.common.material.HCMaterial
+import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.HCMaterialPrefixes
+import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCItems
 import net.minecraft.world.item.Items
 
@@ -13,7 +14,7 @@ object HCChargingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
         // Ender Pearl -> Ender Eye
         HTChargingRecipeBuilder
             .create(
-                itemCreator.fromTagKey(HCMaterialPrefixes.PEARL, HCMaterial.Pearls.ENDER),
+                itemCreator.fromTagKey(HCMaterialPrefixes.PEARL, VanillaMaterialKeys.ENDER),
                 itemResult.create(Items.ENDER_EYE),
             ).save(output)
         // Golden Apple
@@ -25,21 +26,21 @@ object HCChargingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
         // Quartz -> Prismarine
         HTChargingRecipeBuilder
             .create(
-                itemCreator.fromTagKey(HCMaterialPrefixes.GEM, HCMaterial.Gems.QUARTZ),
+                itemCreator.fromTagKey(HCMaterialPrefixes.GEM, VanillaMaterialKeys.QUARTZ),
                 itemResult.create(Items.PRISMARINE_SHARD),
             ).save(output)
         // Redstone Dust -> Glowstone Dust
         HTChargingRecipeBuilder
             .create(
-                itemCreator.fromTagKey(HCMaterialPrefixes.DUST, HCMaterial.Minerals.REDSTONE),
-                HCMaterialResultHelper.item(HCMaterialPrefixes.DUST, HCMaterial.Minerals.GLOWSTONE),
+                itemCreator.fromTagKey(HCMaterialPrefixes.DUST, VanillaMaterialKeys.REDSTONE),
+                HCMaterialResultHelper.item(HCMaterialPrefixes.DUST, VanillaMaterialKeys.GLOWSTONE),
             ).save(output)
 
         // End Crystal -> Eldritch Pearl
         HTChargingRecipeBuilder
             .create(
                 itemCreator.fromItem(Items.END_CRYSTAL),
-                HCMaterialResultHelper.item(HCMaterialPrefixes.PEARL, HCMaterial.Pearls.ELDRITCH),
+                HCMaterialResultHelper.item(HCMaterialPrefixes.PEARL, HCMaterialKeys.ELDRITCH),
             ).save(output)
         // Heart of the Sea
         HTChargingRecipeBuilder

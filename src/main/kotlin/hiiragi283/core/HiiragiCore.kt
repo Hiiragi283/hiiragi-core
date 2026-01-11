@@ -9,6 +9,7 @@ import hiiragi283.core.config.HCConfig
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCCreativeTabs
 import hiiragi283.core.setup.HCDataComponents
+import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCMiscRegister
@@ -50,6 +51,7 @@ data object HiiragiCore {
 
         HCDataComponents.REGISTER.register(eventBus)
 
+        HCEntityTypes.register(eventBus)
         HCFluids.register(eventBus)
         HCBlocks.register(eventBus)
         HCItems.register(eventBus)

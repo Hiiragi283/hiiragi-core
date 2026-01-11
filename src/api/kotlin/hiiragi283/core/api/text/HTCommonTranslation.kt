@@ -1,7 +1,7 @@
 package hiiragi283.core.api.text
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import net.minecraft.Util
+import hiiragi283.core.api.resource.toDescriptionKey
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[翻訳][HTTranslation]を集めたクラスです。
@@ -57,5 +57,5 @@ enum class HTCommonTranslation(type: String, vararg path: String) : HTTranslatio
     DATAPACK_WIP("datapack", "work_in_progress"),
     ;
 
-    override val translationKey: String = Util.makeDescriptionId(type, HiiragiCoreAPI.id(path.joinToString(separator = ".")))
+    override val translationKey: String = HiiragiCoreAPI.id(path.joinToString(separator = ".")).toDescriptionKey(type)
 }

@@ -1,8 +1,0 @@
-{
-  "type": "hiiragi_core:crushing",
-  "ingredient": "minecraft:snow_block",
-  "result": {
-    "count": 4,
-    "id": "minecraft:snowball"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "type": "hiiragi_core:crushing",
-  "ingredient": "#c:sandstone/red_blocks",
-  "result": {
-    "count": 4,
-    "id": "minecraft:red_sand"
-  }
-}

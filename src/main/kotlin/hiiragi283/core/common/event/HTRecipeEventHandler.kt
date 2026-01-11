@@ -62,7 +62,7 @@ object HTRecipeEventHandler {
         for (entity: ItemEntity in level.getEntitiesOfClass(ItemEntity::class.java, AABB(pos))) {
             if (isCompleted(entity)) continue
             val input: SingleRecipeInput = createInput(entity)
-            val (_, recipe: HCAnvilCrushingRecipe) = HCRecipeTypes.CRUSHING.getRecipeFor(input, level, null) ?: continue
+            val (_, recipe: HCAnvilCrushingRecipe) = HCRecipeTypes.ANVIL_CRUSHING.getRecipeFor(input, level, null) ?: continue
             popResult(input, recipe, level, entity)
             if (entity.item.isEmpty) {
                 entity.discard()

@@ -1,7 +1,0 @@
-{
-  "type": "hiiragi_core:crushing",
-  "ingredient": "minecraft:magma_block",
-  "result": {
-    "id": "hiiragi_core:magma_shard"
-  }
-}

@@ -22,10 +22,10 @@ object HCEmiRecipeCategories {
         create(recipeType, recipeType.getId(), *workStations)
 
     @JvmField
-    val CHARGING: HTEmiRecipeCategory = create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD)
+    val ANVIL_CRUSHING: HTEmiRecipeCategory = create(HCRecipeTypes.ANVIL_CRUSHING, Items.ANVIL)
 
     @JvmField
-    val CRUSHING: HTEmiRecipeCategory = create(HCRecipeTypes.CRUSHING, Items.ANVIL)
+    val CHARGING: HTEmiRecipeCategory = create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD)
 
     @JvmField
     val EXPLODING: HTEmiRecipeCategory = create(HCRecipeTypes.EXPLODING, Items.TNT)

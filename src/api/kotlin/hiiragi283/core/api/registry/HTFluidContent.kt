@@ -1,40 +1,42 @@
 package hiiragi283.core.api.registry
 
-import net.minecraft.core.Holder
+import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.LiquidBlock
 import net.minecraft.world.level.material.Fluid
-import net.neoforged.neoforge.fluids.BaseFlowingFluid
+import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidType
 
-typealias HTSimpleFluidContent = HTFluidContent<FluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing>
+interface HTFluidContent<TYPE : FluidType, FLUID : Fluid, ITEM : Item> : HTHolderLike.HolderDelegate<Fluid, FLUID> {
+    val typeHolder: HTHolderLike<FluidType, TYPE>
+    val fluidTag: TagKey<Fluid>
+    val bucketHolder: HTItemHolderLike<ITEM>
+    val bucketTag: TagKey<Item>
 
-/**
- * 登録した液体とそれに関する要素を束ねるクラスです。
- * @param TYPE [FluidType]のクラス
- * @param STILL 液体源のクラス
- * @param FLOWING 液体流のクラス
- * @author Hiiragi Tsubasa
- * @since 0.1.0
- * @see mekanism.common.registration.impl.FluidRegistryObject
- */
-@JvmRecord
-data class HTFluidContent<TYPE : FluidType, STILL : Fluid, FLOWING : Fluid>(
-    val typeHolder: HTDeferredHolder<FluidType, TYPE>,
-    val stillHolder: HTDeferredHolder<Fluid, STILL>,
-    val flowingHolder: HTDeferredHolder<Fluid, FLOWING>,
-    private val fluidTag: TagKey<Fluid>,
-    val block: HTDeferredHolder<Block, out LiquidBlock>,
-    val bucket: HTItemHolderLike<*>,
-    val bucketTag: TagKey<Item>,
-) : HTFluidWithTag<STILL> {
-    override fun getFluidTag(): TagKey<Fluid> = fluidTag
+    fun getFluidType(): TYPE = typeHolder.get()
 
-    override fun getFluidType(): TYPE = typeHolder.get()
+    fun getBucket(): ITEM = bucketHolder.asItem()
 
-    override fun get(): STILL = stillHolder.get()
+    fun isOf(fluid: Fluid): Boolean = get() == fluid
 
-    override fun getHolder(): Holder<Fluid> = stillHolder.delegate
+    fun isOf(tagKey: TagKey<Fluid>): Boolean = getHolder().`is`(tagKey) || tagKey == fluidTag
+
+    fun isOf(stack: FluidStack): Boolean = stack.`is`(get()) || stack.`is`(fluidTag)
+
+    fun isOf(resource: HTFluidResourceType): Boolean = resource.isOf(get()) || resource.isOf(fluidTag)
+
+    fun toStack(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): FluidStack = FluidStack(get(), amount)
+
+    fun toResource(patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType = HTFluidResourceType.of(get(), patch)
+
+    //    Flowing    //
+
+    interface Flowing<TYPE : FluidType, STILL : Fluid, FLOWING : Fluid, ITEM : Item> : HTFluidContent<TYPE, STILL, ITEM> {
+        val flowingHolder: HTHolderLike<Fluid, FLOWING>
+        val blockHolder: HTHolderLike<Block, out LiquidBlock>
+    }
 }

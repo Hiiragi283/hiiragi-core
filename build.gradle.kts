@@ -79,7 +79,6 @@ repositories {
     }
     maven(url = "https://cursemaven.com")
     maven(url = "https://maven.parchmentmc.org")
-    maven(url = "https://modmaven.dev/") // AU, Mekanism, MI, PnC, Oritech
 
     maven(url = "https://maven4.bai.lol/") // WTHIT
     maven(url = "https://maven.architectury.dev/") // Arch
@@ -95,6 +94,7 @@ repositories {
     maven(url = "https://maven.terraformersmc.com/") // EMI
     maven(url = "https://maven.theillusivec4.top/") // Curios
     maven(url = "https://maven.wispforest.io/releases") // Accessories
+    maven(url = "https://modmaven.dev/") // AU, Mekanism, MI, PnC, Oritech
     maven(url = "https://mvn.devos.one/snapshots") // Registrate
     maven(url = "https://thedarkcolour.github.io/KotlinForForge/") // KFF
 

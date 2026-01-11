@@ -3,26 +3,32 @@ package hiiragi283.core.setup
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.buildTable
 import hiiragi283.core.api.item.HTEquipmentMaterial
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
+import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.text.HTTranslation
+import hiiragi283.core.common.item.HTAlmightyPickaxe
 import hiiragi283.core.common.item.HTAmbrosiaItem
+import hiiragi283.core.common.item.HTCaptureEggItem
 import hiiragi283.core.common.item.HTCreativeItem
 import hiiragi283.core.common.item.HTToolType
 import hiiragi283.core.common.item.HTTraderCatalogItem
-import hiiragi283.core.common.material.HCMaterial
+import hiiragi283.core.common.item.VanillaEquipmentMaterial
+import hiiragi283.core.common.material.CommonMaterialKeys
+import hiiragi283.core.common.material.HCMaterialKeys
+import hiiragi283.core.common.material.HCMaterialPrefixes
+import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import hiiragi283.core.common.registry.register.HTDeferredItemRegister
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
-import net.minecraft.core.component.DataComponents
-import net.minecraft.world.food.FoodConstants
-import net.minecraft.world.food.FoodProperties
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.ItemLike
 import net.neoforged.bus.api.IEventBus
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent
 
 object HCItems {
@@ -34,21 +40,159 @@ object HCItems {
         REGISTER.register(eventBus)
 
         eventBus.addListener(::modifyComponents)
+        eventBus.addListener(::registerCapabilities)
     }
 
     //    Materials   //
 
     @JvmStatic
     val MATERIALS: HTMaterialTable<HTMaterialPrefix, HTSimpleDeferredItem> = buildTable {
-        for (material: HCMaterial in HCMaterial.entries) {
-            for (prefix: HTMaterialPrefix in material.getItemPrefixesToGenerate()) {
-                this[prefix.asMaterialPrefix(), material.asMaterialKey()] = REGISTER.registerSimpleItem(material.createPath(prefix))
-            }
+        fun register(prefix: HTPrefixLike, key: HTMaterialKey, path: String = prefix.createPath(key)) {
+            this[prefix.asMaterialPrefix(), key] = REGISTER.registerSimpleItem(path)
         }
+
+        // Dusts
+        arrayOf(
+            // Vanilla
+            VanillaMaterialKeys.COAL,
+            VanillaMaterialKeys.CHARCOAL,
+            VanillaMaterialKeys.LAPIS,
+            VanillaMaterialKeys.QUARTZ,
+            VanillaMaterialKeys.AMETHYST,
+            VanillaMaterialKeys.DIAMOND,
+            VanillaMaterialKeys.EMERALD,
+            VanillaMaterialKeys.ECHO,
+            VanillaMaterialKeys.ENDER,
+            VanillaMaterialKeys.COPPER,
+            VanillaMaterialKeys.IRON,
+            VanillaMaterialKeys.GOLD,
+            VanillaMaterialKeys.NETHERITE,
+            VanillaMaterialKeys.WOOD,
+            VanillaMaterialKeys.OBSIDIAN,
+            // Common
+            CommonMaterialKeys.COAL_COKE,
+            CommonMaterialKeys.CARBIDE,
+            CommonMaterialKeys.CINNABAR,
+            CommonMaterialKeys.SALT,
+            CommonMaterialKeys.SALTPETER,
+            CommonMaterialKeys.SULFUR,
+            CommonMaterialKeys.STEEL,
+            CommonMaterialKeys.ASH,
+            // Hiiragi Core
+            HCMaterialKeys.AZURE,
+            HCMaterialKeys.CRIMSON_CRYSTAL,
+            HCMaterialKeys.WARPED_CRYSTAL,
+            HCMaterialKeys.ELDRITCH,
+            HCMaterialKeys.NIGHT_METAL,
+            HCMaterialKeys.AZURE_STEEL,
+            HCMaterialKeys.DEEP_STEEL,
+        ).forEach { register(HCMaterialPrefixes.DUST, it) }
+        // Raws
+        arrayOf(
+            // Common
+            CommonMaterialKeys.PLASTIC,
+            CommonMaterialKeys.RUBBER,
+            // Hiiragi Core
+            HCMaterialKeys.NIGHT_METAL,
+        ).forEach { register(HCMaterialPrefixes.RAW_MATERIAL, it) }
+        // Fuels
+        arrayOf(
+            // Common
+            CommonMaterialKeys.COAL_COKE,
+            CommonMaterialKeys.CARBIDE,
+        ).forEach { register(HCMaterialPrefixes.FUEL, it) }
+        // Gems
+        register(HCMaterialPrefixes.GEM, HCMaterialKeys.AZURE, "azure_shard")
+        arrayOf(
+            // Hiiragi Core
+            HCMaterialKeys.CRIMSON_CRYSTAL,
+            HCMaterialKeys.WARPED_CRYSTAL,
+        ).forEach { register(HCMaterialPrefixes.GEM, it) }
+        // Pearls
+        register(HCMaterialPrefixes.PEARL, HCMaterialKeys.ELDRITCH)
+        // Ingots
+        arrayOf(
+            // Common
+            CommonMaterialKeys.STEEL,
+            // Hiiragi Core
+            HCMaterialKeys.NIGHT_METAL,
+            HCMaterialKeys.AZURE_STEEL,
+            HCMaterialKeys.DEEP_STEEL,
+        ).forEach { register(HCMaterialPrefixes.INGOT, it) }
+        // Nuggets
+        arrayOf(
+            // Vanilla
+            VanillaMaterialKeys.COPPER,
+            VanillaMaterialKeys.NETHERITE,
+            // Common
+            CommonMaterialKeys.STEEL,
+            // Hiiragi Core
+            HCMaterialKeys.NIGHT_METAL,
+            HCMaterialKeys.AZURE_STEEL,
+            HCMaterialKeys.DEEP_STEEL,
+        ).forEach { register(HCMaterialPrefixes.NUGGET, it) }
+        // Gears
+        arrayOf(
+            // Vanilla
+            VanillaMaterialKeys.COPPER,
+            VanillaMaterialKeys.GOLD,
+            VanillaMaterialKeys.IRON,
+            VanillaMaterialKeys.NETHERITE,
+            // Common
+            CommonMaterialKeys.STEEL,
+            // Hiiragi Core
+            HCMaterialKeys.NIGHT_METAL,
+            HCMaterialKeys.AZURE_STEEL,
+            HCMaterialKeys.DEEP_STEEL,
+        ).forEach { register(HCMaterialPrefixes.GEAR, it) }
+        // Plates
+        arrayOf(
+            // Vanilla
+            VanillaMaterialKeys.WOOD,
+            VanillaMaterialKeys.COPPER,
+            VanillaMaterialKeys.IRON,
+            VanillaMaterialKeys.GOLD,
+            VanillaMaterialKeys.NETHERITE,
+            // Common
+            CommonMaterialKeys.STEEL,
+            CommonMaterialKeys.PLASTIC,
+            CommonMaterialKeys.RUBBER,
+            // Hiiragi Core
+            HCMaterialKeys.NIGHT_METAL,
+            HCMaterialKeys.AZURE_STEEL,
+            HCMaterialKeys.DEEP_STEEL,
+        ).forEach { register(HCMaterialPrefixes.PLATE, it) }
+        // Rods
+        arrayOf(
+            // Metals
+            VanillaMaterialKeys.COPPER,
+            VanillaMaterialKeys.IRON,
+            VanillaMaterialKeys.GOLD,
+            HCMaterialKeys.NIGHT_METAL,
+            // Alloys
+            VanillaMaterialKeys.NETHERITE,
+            CommonMaterialKeys.STEEL,
+            HCMaterialKeys.AZURE_STEEL,
+            HCMaterialKeys.DEEP_STEEL,
+        ).forEach { register(HCMaterialPrefixes.ROD, it) }
+        // Scrap
+        register(HCMaterialPrefixes.SCRAP, HCMaterialKeys.DEEP_STEEL)
+        // Wire
+        arrayOf(
+            // Metals
+            VanillaMaterialKeys.COPPER,
+            VanillaMaterialKeys.GOLD,
+        ).forEach { register(HCMaterialPrefixes.WIRE, it) }
     }.let(::HTMaterialTable)
 
     @JvmField
+    val BAMBOO_CHARCOAL: HTSimpleDeferredItem = REGISTER.registerSimpleItem("bamboo_charcoal")
+
+    @JvmField
     val COMPRESSED_SAWDUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("compressed_sawdust")
+
+    @JvmField
+    val STEEL_COMPOUND: HTSimpleDeferredItem = REGISTER.registerSimpleItem("steel_compound")
 
     @JvmField
     val SYNTHETIC_LEATHER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_leather")
@@ -79,6 +223,15 @@ object HCItems {
     @JvmField
     val WHEAT_DOUGH: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wheat_dough")
 
+    @JvmField
+    val ANIMAL_FAT: HTSimpleDeferredItem = REGISTER.registerSimpleItem("animal_fat")
+
+    @JvmField
+    val PULPED_FISH: HTSimpleDeferredItem = REGISTER.registerSimpleItem("pulped_fish")
+
+    @JvmField
+    val PULPED_SEED: HTSimpleDeferredItem = REGISTER.registerSimpleItem("pulped_seed")
+
     //    Tools   //
 
     @JvmStatic
@@ -89,6 +242,11 @@ object HCItems {
     }.let(::HTMaterialTable)
 
     //    Utilities    //
+
+    @JvmField
+    val ELDRITCH_EGG: HTSimpleDeferredItem = REGISTER.registerItem("eldritch_egg", ::HTCaptureEggItem) {
+        it.description(HCTranslation.ELDRITCH_EGG)
+    }
 
     @JvmField
     val SLOT_COVER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("slot_cover") {
@@ -117,6 +275,10 @@ object HCItems {
         it.description(HCTranslation.ETERNAL_TICKET)
     }
 
+    @JvmField
+    val ALMIGHTY_PICKAXE: HTSimpleDeferredItem =
+        REGISTER.registerItemWith("almighty_pickaxe", VanillaEquipmentMaterial.NETHERITE, HTAlmightyPickaxe::create)
+
     //    Event    //
 
     @JvmStatic
@@ -124,19 +286,10 @@ object HCItems {
         fun <T : Any> modify(item: ItemLike, type: DataComponentType<T>, value: T) {
             event.modify(item) { builder: DataComponentPatch.Builder -> builder.set(type, value) }
         }
-
-        modify(
-            AMBROSIA,
-            DataComponents.FOOD,
-            FoodProperties
-                .Builder()
-                .nutrition(FoodConstants.MAX_FOOD)
-                .saturationModifier(0.5f)
-                .alwaysEdible()
-                .usingConvertsTo(AMBROSIA)
-                .build(),
-        )
     }
+
+    @JvmStatic
+    private fun registerCapabilities(event: RegisterCapabilitiesEvent) {}
 
     //    Extensions    //
 

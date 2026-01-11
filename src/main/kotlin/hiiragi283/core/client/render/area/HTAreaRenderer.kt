@@ -19,8 +19,7 @@ import java.util.OptionalDouble
  * @since 0.5.0
  * @see appeng.client.render.overlay.OverlayRenderer
  */
-@JvmInline
-value class HTAreaRenderer(val definition: HTAreaDefinition) {
+class HTAreaRenderer(val definition: HTAreaDefinition) {
     companion object {
         @Suppress("INFERRED_INVISIBLE_RETURN_TYPE_WARNING")
         @JvmField

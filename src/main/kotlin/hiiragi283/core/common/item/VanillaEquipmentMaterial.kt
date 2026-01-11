@@ -1,9 +1,8 @@
 package hiiragi283.core.common.item
 
 import hiiragi283.core.api.item.HTEquipmentMaterial
-import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.common.material.HCMaterial
+import hiiragi283.core.common.material.VanillaMaterialKeys
 import net.minecraft.core.Holder
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.tags.TagKey
@@ -24,12 +23,12 @@ enum class VanillaEquipmentMaterial(
     private val armorMultiplier: Int,
 ) : HTEquipmentMaterial,
     HTMaterialLike by material {
-    WOOD(HCMaterial.Wood, Tiers.WOOD, 6f, -3.2f, ArmorMaterials.LEATHER, 5),
-    STONE(HTMaterialKey.of("stone"), Tiers.STONE, 7f, -3.2f, ArmorMaterials.CHAIN, 15),
-    IRON(HCMaterial.Metals.IRON, Tiers.IRON, 6f, -3.1f, ArmorMaterials.IRON, 15),
-    GOLD(HCMaterial.Metals.GOLD, Tiers.GOLD, 6f, -3f, ArmorMaterials.GOLD, 7),
-    DIAMOND(HCMaterial.Gems.DIAMOND, Tiers.DIAMOND, 5f, -3f, ArmorMaterials.DIAMOND, 33),
-    NETHERITE(HCMaterial.Alloys.NETHERITE, Tiers.NETHERITE, 5f, -3f, ArmorMaterials.NETHERITE, 37),
+    WOOD(VanillaMaterialKeys.WOOD, Tiers.WOOD, 6f, -3.2f, ArmorMaterials.LEATHER, 5),
+    STONE(VanillaMaterialKeys.STONE, Tiers.STONE, 7f, -3.2f, ArmorMaterials.CHAIN, 15),
+    IRON(VanillaMaterialKeys.IRON, Tiers.IRON, 6f, -3.1f, ArmorMaterials.IRON, 15),
+    GOLD(VanillaMaterialKeys.GOLD, Tiers.GOLD, 6f, -3f, ArmorMaterials.GOLD, 7),
+    DIAMOND(VanillaMaterialKeys.DIAMOND, Tiers.DIAMOND, 5f, -3f, ArmorMaterials.DIAMOND, 33),
+    NETHERITE(VanillaMaterialKeys.NETHERITE, Tiers.NETHERITE, 5f, -3f, ArmorMaterials.NETHERITE, 37),
     ;
 
     override fun getAxeDamage(): Float = axeDamage

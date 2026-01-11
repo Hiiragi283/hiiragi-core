@@ -2,10 +2,12 @@ package hiiragi283.core.common.event
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
+import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.prefix.HTPrefixLike
+import hiiragi283.core.api.material.property.getStorageBlock
+import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
-import hiiragi283.core.common.material.HCMaterial
 import hiiragi283.core.common.material.HCMaterialPrefixes
-import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
@@ -14,35 +16,28 @@ import net.neoforged.fml.common.EventBusSubscriber
 object HCRuntimeRecipeHandler {
     @SubscribeEvent
     fun registerRuntimeRecipe(event: HTRegisterRuntimeRecipeEvent) {
-        baseToDust(event)
-        rawToDust(event)
+        crushToDust(event, HCMaterialPrefixes.ORE) { 2 }
+        crushToDust(event, HCMaterialPrefixes.STORAGE_BLOCK) { it.getStorageBlock().baseCount }
+        crushToDust(event, HCMaterialPrefixes.STORAGE_BLOCK_RAW) { 12 }
+
+        crushToDust(event, HCMaterialPrefixes.FUEL) { 1 }
+        crushToDust(event, HCMaterialPrefixes.GEAR) { 4 }
+        crushToDust(event, HCMaterialPrefixes.GEM) { 1 }
+        crushToDust(event, HCMaterialPrefixes.INGOT) { 1 }
+        crushToDust(event, HCMaterialPrefixes.PLATE) { 1 }
     }
 
     @JvmStatic
-    private fun baseToDust(event: HTRegisterRuntimeRecipeEvent) {
-        for (material: HCMaterial in HCMaterial.entries) {
-            val dust: Item = event.getFirstHolder(HCMaterialPrefixes.DUST, material)?.value() ?: continue
-            val ingredient: TagKey<Item> = material.getBaseIngredient()
-            if (ingredient == HCMaterialPrefixes.DUST.itemTagKey(material)) continue
+    private fun crushToDust(event: HTRegisterRuntimeRecipeEvent, prefix: HTPrefixLike, outputCountGetter: (HTPropertyMap) -> Int?) {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in event.getAllMaterials()) {
+            val outputCount: Int = outputCountGetter(propertyMap) ?: continue
+            val dust: Item = event.getFirstHolder(HCMaterialPrefixes.DUST, key)?.value() ?: continue
+
+            if (!event.isPresentTag(prefix, key)) continue
             // Crushing
             HTSingleItemRecipeBuilder
-                .crushing(event.itemCreator.fromTagKey(ingredient), event.itemResult.create(dust))
-                .saveSuffixed(event.output, "_from_base")
-        }
-    }
-
-    @JvmStatic
-    fun rawToDust(event: HTRegisterRuntimeRecipeEvent) {
-        for (material: HCMaterial in HCMaterial.entries) {
-            if (!event.isPresentTag(HCMaterialPrefixes.STORAGE_BLOCK_RAW, material)) continue
-
-            val dust: Item = event.getFirstHolder(HCMaterialPrefixes.DUST, material)?.value() ?: continue
-            // Crushing
-            HTSingleItemRecipeBuilder
-                .crushing(
-                    event.itemCreator.fromTagKey(HCMaterialPrefixes.STORAGE_BLOCK_RAW, material),
-                    event.itemResult.create(dust, 12),
-                ).saveSuffixed(event.output, "_from_raw_block")
+                .crushing(event.itemCreator.fromTagKey(prefix, key), event.itemResult.create(dust, outputCount))
+                .saveSuffixed(event.output, "_from_${prefix.asPrefixName()}")
         }
     }
 }

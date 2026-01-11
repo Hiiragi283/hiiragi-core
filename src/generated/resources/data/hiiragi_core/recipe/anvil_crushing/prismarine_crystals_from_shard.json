@@ -1,0 +1,7 @@
+{
+  "type": "hiiragi_core:anvil_crushing",
+  "ingredient": "minecraft:prismarine_shard",
+  "result": {
+    "id": "minecraft:prismarine_crystals"
+  }
+}

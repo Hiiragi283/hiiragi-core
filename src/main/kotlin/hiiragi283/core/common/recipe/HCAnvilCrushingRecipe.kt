@@ -8,7 +8,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
 
 class HCAnvilCrushingRecipe(ingredient: HTItemIngredient, result: HTItemResult) : HCSingleItemRecipe(ingredient, result) {
-    override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.CRUSHING
+    override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.ANVIL_CRUSHING
 
-    override fun getType(): RecipeType<*> = HCRecipeTypes.CRUSHING.get()
+    override fun getType(): RecipeType<*> = HCRecipeTypes.ANVIL_CRUSHING.get()
 }

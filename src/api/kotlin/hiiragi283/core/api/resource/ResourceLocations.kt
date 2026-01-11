@@ -39,21 +39,30 @@ fun vanillaId(path: String): ResourceLocation = ResourceLocation.withDefaultName
 fun vanillaId(vararg path: String): ResourceLocation = ResourceLocation.withDefaultNamespace(path.joinToString(separator = "/"))
 
 /**
- * この[ResourceKey]を翻訳キーに変換します。
+ * この[ID][ResourceLocation]を翻訳キーに変換します。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 0.6.0
  */
-fun ResourceKey<*>.toDescriptionKey(prefix: String, suffix: String? = null): String = location().toDescriptionKey(prefix, suffix)
+fun ResourceLocation.toDescriptionKey(prefix: String): String = Util.makeDescriptionId(prefix, this)
 
 /**
  * この[ID][ResourceLocation]を翻訳キーに変換します。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun ResourceLocation.toDescriptionKey(prefix: String, suffix: String? = null): String = buildString {
-    append(Util.makeDescriptionId(prefix, this@toDescriptionKey))
-    if (suffix != null) {
-        append('.')
-        append(suffix)
-    }
-}
+fun ResourceLocation.toDescriptionKey(prefix: String, suffix: String): String =
+    "${Util.makeDescriptionId(prefix, this@toDescriptionKey)}.$suffix"
+
+/**
+ * この[ResourceKey]を翻訳キーに変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.6.0
+ */
+fun ResourceKey<*>.toDescriptionKey(prefix: String): String = location().toDescriptionKey(prefix)
+
+/**
+ * この[ResourceKey]を翻訳キーに変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
+fun ResourceKey<*>.toDescriptionKey(prefix: String, suffix: String): String = location().toDescriptionKey(prefix, suffix)

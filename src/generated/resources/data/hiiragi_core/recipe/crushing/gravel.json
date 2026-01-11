@@ -1,7 +1,0 @@
-{
-  "type": "hiiragi_core:crushing",
-  "ingredient": "#c:cobblestones",
-  "result": {
-    "id": "minecraft:gravel"
-  }
-}

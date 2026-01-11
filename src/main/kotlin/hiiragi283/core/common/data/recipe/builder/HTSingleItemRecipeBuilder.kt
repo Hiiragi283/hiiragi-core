@@ -18,7 +18,7 @@ class HTSingleItemRecipeBuilder(
     companion object {
         @JvmStatic
         fun crushing(ingredient: HTItemIngredient, result: HTItemResult): HTSingleItemRecipeBuilder =
-            HTSingleItemRecipeBuilder(HTConst.CRUSHING, ::HCAnvilCrushingRecipe, ingredient, result)
+            HTSingleItemRecipeBuilder(HTConst.ANVIL_CRUSHING, ::HCAnvilCrushingRecipe, ingredient, result)
 
         @JvmStatic
         fun exploding(ingredient: HTItemIngredient, result: HTItemResult): HTSingleItemRecipeBuilder =

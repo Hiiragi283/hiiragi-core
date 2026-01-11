@@ -6,8 +6,12 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.ImmutableMultiMap
 import hiiragi283.core.api.collection.buildMultiMap
 import hiiragi283.core.api.data.HTDataGenContext
-import hiiragi283.core.api.material.HTAbstractMaterial
+import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
+import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
+import hiiragi283.core.api.material.property.HTTextureTemplate
+import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.resource.toId
 import net.minecraft.Util
 import net.minecraft.data.CachedOutput
@@ -94,17 +98,18 @@ abstract class HTTextureProvider(packOutput: PackOutput, private val fileHelper:
         return image
     }
 
-    protected fun material(
+    protected inline fun material(
         output: BiConsumer<ResourceLocation, NativeImage>,
         modId: String,
         pathPrefix: String,
-        materials: Iterable<HTAbstractMaterial>,
-        transform: (HTAbstractMaterial) -> Set<HTMaterialPrefix>,
+        transform: (HTMaterialKey) -> Set<HTMaterialPrefix>,
     ) {
-        for (material: HTAbstractMaterial in materials) {
-            for (prefix: HTMaterialPrefix in transform(material)) {
-                val templateImage: NativeImage = material
-                    .getItemPrefixMap()[prefix]
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE.entries) {
+            val templateMap: HTTextureTemplate = propertyMap[HTMaterialPropertyKeys.TEXTURE_TEMPLATE] ?: continue
+            val colorPalette: HTColorPalette = propertyMap[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: continue
+
+            for (prefix: HTMaterialPrefix in transform(key)) {
+                val templateImage: NativeImage = templateMap[prefix]
                     ?.let { HiiragiCoreAPI.id("template", it) }
                     ?.let(::getTexture)
                     ?: continue
@@ -112,10 +117,10 @@ abstract class HTTextureProvider(packOutput: PackOutput, private val fileHelper:
 
                 for ((index: Int, pixels: Collection<Pair<Int, Int>>) in createTemplate(templateImage).map) {
                     for ((x: Int, y: Int) in pixels) {
-                        image.setPixelRGBA(x, y, argbToFromABGR(material.colorPalette[index].rgb))
+                        image.setPixelRGBA(x, y, argbToFromABGR(colorPalette[index].rgb))
                     }
                 }
-                output.accept(modId.toId(pathPrefix, prefix.asPrefixName(), material.asMaterialName()), image)
+                output.accept(modId.toId(pathPrefix, prefix.asPrefixName(), key.name), image)
             }
         }
     }

@@ -5,6 +5,7 @@ import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
@@ -19,6 +20,9 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         // Block
         add(HCBlocks.WARPED_WART, "歪んだウォート")
+
+        // Entity
+        add(HCEntityTypes.ELDRITCH_EGG, "異質な卵")
 
         // Fluid
         addFluid(HCFluids.EXPERIENCE, "液体経験値")
@@ -35,7 +39,9 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.MOLTEN_ELDRITCH, "異質な流動体")
 
         // Item
+        add(HCItems.BAMBOO_CHARCOAL, "竹炭")
         add(HCItems.COMPRESSED_SAWDUST, "圧縮されたおがくず")
+        add(HCItems.STEEL_COMPOUND, "鋼鉄混合物")
         add(HCItems.SYNTHETIC_LEATHER, "合成牛皮")
 
         add(HCItems.LUMINOUS_PASTE, "蛍光ペースト")
@@ -46,17 +52,22 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HCItems.WHEAT_FLOUR, "小麦粉")
         add(HCItems.WHEAT_DOUGH, "小麦の生地")
+        add(HCItems.ANIMAL_FAT, "獣脂")
+        add(HCItems.PULPED_FISH, "魚のパルプ")
+        add(HCItems.PULPED_SEED, "種のパルプ")
 
+        add(HCItems.ELDRITCH_EGG, "異質な卵")
         add(HCItems.SLOT_COVER, "スロットカバー")
         add(HCItems.TRADER_CATALOG, "行商人のカタログ")
 
         add(HCItems.IRIDESCENT_POWDER, "虹色の粉")
         add(HCItems.AMBROSIA, "アンブロシア")
         add(HCItems.ETERNAL_TICKET, "永遠のチケット")
+        add(HCItems.ALMIGHTY_PICKAXE, "全能なるツルハシ")
 
         // Recipe
+        add(HCRecipeTypes.ANVIL_CRUSHING, "金床による粉砕")
         add(HCRecipeTypes.CHARGING, "落雷によるチャージ")
-        add(HCRecipeTypes.CRUSHING, "金床による粉砕")
         add(HCRecipeTypes.EXPLODING, "爆破")
 
         // Translation
@@ -95,8 +106,12 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HCTranslation.WARPED_WART, "食べるとランダムにデバフを一つだけ消します。")
 
+        add(HCTranslation.MOLTEN_METAL, "溶融%s")
+        add(HCTranslation.MOLTEN_METAL_BUCKET, "溶融%s入りバケツ")
+
         add(HCTranslation.AMBROSIA, "いつでも食べられる上，いくら食べてもなくなりません！")
         add(HCTranslation.ELDER_HEART, "エルダーガーディアンからドロップします。")
+        add(HCTranslation.ELDRITCH_EGG, "右クリックで投げることができ，モブに当たるとスポーンエッグになります。")
         add(HCTranslation.ETERNAL_TICKET, "あらゆる道具を不可壊にします！")
         add(HCTranslation.IRIDESCENT_POWDER, "時間経過やダメージで消滅しません。")
         add(HCTranslation.SLOT_COVER, "機械のスロットに入れることでレシピ判定から無視されます。")

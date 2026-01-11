@@ -2,7 +2,10 @@ package hiiragi283.core.mixin;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.mojang.logging.LogUtils;
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent;
+import hiiragi283.core.api.material.HTMaterialManager;
+import hiiragi283.core.common.material.HTMaterialManagerImpl;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.ReloadableServerResources;
@@ -11,6 +14,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,6 +26,9 @@ import java.util.Map;
 
 @Mixin(ReloadableServerResources.class)
 public abstract class ReloadableServerResourcesMixin {
+    @Unique
+    private static final Logger hiiragiCore$LOGGER = LogUtils.getLogger();
+    
     @Unique
     private ReloadableServerResources hiiragiCore$self() {
         return (ReloadableServerResources) (Object) this;
@@ -36,9 +43,13 @@ public abstract class ReloadableServerResourcesMixin {
         Multimap<RecipeType<?>, RecipeHolder<?>> byType = HashMultimap.create(accessor.getByType());
         Map<ResourceLocation, RecipeHolder<?>> byName = new HashMap<>(accessor.getByName());
         
-        var event = new HTRegisterRuntimeRecipeEvent(registryAccess, recipes, (@NotNull RecipeHolder<?> holder) -> {
-            byType.put(holder.value().getType(), holder);
-            byName.put(holder.id(), holder);
+        HTMaterialManagerImpl.gatherAttributes(false);
+        var event = new HTRegisterRuntimeRecipeEvent(registryAccess, recipes, HTMaterialManager.INSTANCE, (@NotNull RecipeHolder<?> holder) -> {
+            boolean bool1 = byType.put(holder.value().getType(), holder);
+            boolean bool2 = byName.put(holder.id(), holder) != null;
+            if (bool1 || bool2) {
+                hiiragiCore$LOGGER.debug("Recipe: {} was overrided!", holder.id());
+            }
         });
         NeoForge.EVENT_BUS.post(event);
 

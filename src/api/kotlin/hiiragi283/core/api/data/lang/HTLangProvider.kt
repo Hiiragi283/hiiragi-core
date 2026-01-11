@@ -54,7 +54,7 @@ sealed class HTLangProvider(output: PackOutput, modid: String, val langType: HTL
     fun addFluid(content: HTFluidContent<*, *, *>, value: String) {
         add(content.typeHolder.get().descriptionId, value)
         addFluidBucket(content, value)
-        add(content.getFluidTag(), value)
+        add(content.fluidTag, value)
     }
 
     protected abstract fun addFluidBucket(content: HTFluidContent<*, *, *>, value: String)
@@ -66,7 +66,7 @@ sealed class HTLangProvider(output: PackOutput, modid: String, val langType: HTL
      */
     abstract class English(output: PackOutput, modid: String) : HTLangProvider(output, modid, HTLanguageType.EN_US) {
         final override fun addFluidBucket(content: HTFluidContent<*, *, *>, value: String) {
-            add(content.bucket, "$value Bucket")
+            add(content.bucketHolder, "$value Bucket")
         }
     }
 
@@ -77,7 +77,7 @@ sealed class HTLangProvider(output: PackOutput, modid: String, val langType: HTL
      */
     abstract class Japanese(output: PackOutput, modid: String) : HTLangProvider(output, modid, HTLanguageType.JA_JP) {
         final override fun addFluidBucket(content: HTFluidContent<*, *, *>, value: String) {
-            add(content.bucket, "${value}入りバケツ")
+            add(content.bucketHolder, "${value}入りバケツ")
         }
     }
 }

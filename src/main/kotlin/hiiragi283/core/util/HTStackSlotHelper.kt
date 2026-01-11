@@ -291,9 +291,8 @@ object HTStackSlotHelper {
             if (!container.isEmpty) {
                 if (container.count == 1) {
                     containerSetter.accept(container)
-                } else {
-                    slot.extract(1, HTStorageAction.EXECUTE, HTStorageAccess.MANUAL)
                 }
+                slot.extract(1, HTStorageAction.EXECUTE, HTStorageAccess.MANUAL)
             }
         }
         return result.succeeded

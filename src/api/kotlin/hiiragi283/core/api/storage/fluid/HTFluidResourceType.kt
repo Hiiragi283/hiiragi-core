@@ -1,6 +1,7 @@
 package hiiragi283.core.api.storage.fluid
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.fluid.createFluidStack
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.storage.resource.HTResourceType
 import net.minecraft.core.Holder
@@ -18,9 +19,7 @@ import net.neoforged.neoforge.fluids.FluidType
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-@ConsistentCopyVisibility
-@JvmRecord
-data class HTFluidResourceType private constructor(private val stack: FluidStack) : HTResourceType.DataComponent<Fluid> {
+class HTFluidResourceType private constructor(private val stack: FluidStack) : HTResourceType.DataComponent<Fluid> {
     companion object {
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTFluidResourceType> =
@@ -33,14 +32,16 @@ data class HTFluidResourceType private constructor(private val stack: FluidStack
          * @return [FluidStack.isEmpty]が`true`の場合は`null`
          */
         @JvmStatic
-        fun ofNullable(fluid: Fluid): HTFluidResourceType? = FluidStack(fluid, 1).let(::of)
+        fun ofNullable(fluid: Fluid?, patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType? =
+            createFluidStack(fluid, patch = patch).let(::of)
 
         /**
          * 指定した[fluid]を[HTFluidResourceType]に変換します。
          * @throws IllegalStateException [FluidStack.isEmpty]が`true`の場合
          */
         @JvmStatic
-        fun of(fluid: Fluid): HTFluidResourceType = ofNullable(fluid) ?: error("Fluid must not be empty")
+        fun of(fluid: Fluid?, patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType =
+            ofNullable(fluid, patch) ?: error("Fluid must not be empty")
 
         /**
          * 指定した[stack]を[HTFluidResourceType]に変換します。
@@ -66,6 +67,12 @@ data class HTFluidResourceType private constructor(private val stack: FluidStack
     }
 
     override fun hashCode(): Int = FluidStack.hashFluidAndComponents(stack)
+
+    override fun toString(): String = stack.toString()
+
+    operator fun component1(): Holder<Fluid> = getHolder()
+
+    operator fun component2(): DataComponentPatch = componentsPatch()
 
     //    HTResourceType    //
 

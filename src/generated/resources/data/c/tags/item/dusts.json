@@ -1,6 +1,7 @@
 {
   "values": [
     "#c:dusts/amethyst",
+    "#c:dusts/ash",
     "#c:dusts/azure",
     "#c:dusts/azure_steel",
     "#c:dusts/carbide",
@@ -25,7 +26,6 @@
     "#c:dusts/quartz",
     "#c:dusts/salt",
     "#c:dusts/saltpeter",
-    "#c:dusts/silver",
     "#c:dusts/steel",
     "#c:dusts/sulfur",
     "#c:dusts/warped_crystal",
