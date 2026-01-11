@@ -13,6 +13,7 @@ import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTSmeltingMaterialProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
 import hiiragi283.core.api.material.property.getDefaultPart
+import hiiragi283.core.api.material.property.getStorageBlock
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
@@ -45,7 +46,7 @@ class HTMaterialRecipeProvider(
     private fun baseToBlock() {
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in manager.entries) {
             val basePrefix: HTMaterialPrefix = propertyMap.getDefaultPart() ?: continue
-            val blockProperty: HTStorageBlockProperty = propertyMap.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK)
+            val blockProperty: HTStorageBlockProperty = propertyMap.getStorageBlock()
 
             val block: ItemLike = blocks[HCMaterialPrefixes.STORAGE_BLOCK, key] ?: continue
             val base: ItemLike = itemGetter(basePrefix, key) ?: continue

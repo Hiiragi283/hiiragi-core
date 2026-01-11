@@ -53,7 +53,7 @@ class HTClearComponentRecipeBuilder(private val item: HTItemHolderLike<*>) :
     override fun createRecipe(): HTClearComponentRecipe = HTClearComponentRecipe(
         group ?: "",
         category,
-        item.getHolder(),
+        item.getItemHolder(),
         holderSet,
     )
 }

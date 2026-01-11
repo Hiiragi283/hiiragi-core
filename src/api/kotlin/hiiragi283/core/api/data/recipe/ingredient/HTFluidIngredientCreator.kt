@@ -2,8 +2,8 @@ package hiiragi283.core.api.data.recipe.ingredient
 
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.VanillaFluidContents
 import net.minecraft.world.level.material.Fluid
-import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 
 /**
@@ -18,9 +18,9 @@ interface HTFluidIngredientCreator : HTIngredientCreator<Fluid, HTFluidIngredien
     fun fromTagKeys(vararg contents: HTFluidContent<*, *, *>, amount: Int): HTFluidIngredient =
         fromTagKeys(contents.map(HTFluidContent<*, *, *>::fluidTag), amount)
 
-    fun water(amount: Int): HTFluidIngredient = fromTagKey(Tags.Fluids.WATER, amount)
+    fun water(amount: Int): HTFluidIngredient = fromTagKey(VanillaFluidContents.WATER, amount)
 
-    fun lava(amount: Int): HTFluidIngredient = fromTagKey(Tags.Fluids.LAVA, amount)
+    fun lava(amount: Int): HTFluidIngredient = fromTagKey(VanillaFluidContents.LAVA, amount)
 
-    fun milk(amount: Int): HTFluidIngredient = fromTagKey(Tags.Fluids.MILK, amount)
+    fun milk(amount: Int): HTFluidIngredient = fromTagKey(VanillaFluidContents.MILK, amount)
 }

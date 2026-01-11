@@ -4,6 +4,7 @@ import hiiragi283.core.api.registry.BlockWithContextFactory
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.ItemWithContextFactory
 import hiiragi283.core.api.tag.createCommonTag
@@ -112,14 +113,14 @@ class HTFluidContentRegister(modId: String) {
         return content
     }
 
-    @JvmRecord
-    private data class ContentImpl<TYPE : FluidType, FLUID : Fluid, ITEM : Item>(
+    private class ContentImpl<TYPE : FluidType, FLUID : Fluid, ITEM : Item>(
         override val typeHolder: HTDeferredHolder<FluidType, TYPE>,
-        override val fluidHolder: HTDeferredHolder<Fluid, FLUID>,
+        fluidHolder: HTDeferredHolder<Fluid, FLUID>,
         override val fluidTag: TagKey<Fluid>,
         override val bucketHolder: HTItemHolderLike<ITEM>,
         override val bucketTag: TagKey<Item>,
-    ) : HTFluidContent<TYPE, FLUID, ITEM>
+    ) : HTFluidContent<TYPE, FLUID, ITEM>,
+        HTHolderLike.HolderDelegate<Fluid, FLUID> by fluidHolder
 
     //    Flowing    //
 
@@ -207,14 +208,14 @@ class HTFluidContentRegister(modId: String) {
         return content
     }
 
-    @JvmRecord
-    private data class FlowingImpl<TYPE : FluidType, STILL : Fluid, FLOWING : Fluid, ITEM : Item>(
+    private class FlowingImpl<TYPE : FluidType, STILL : Fluid, FLOWING : Fluid, ITEM : Item>(
         override val typeHolder: HTDeferredHolder<FluidType, TYPE>,
-        override val fluidHolder: HTDeferredHolder<Fluid, STILL>,
+        fluidHolder: HTDeferredHolder<Fluid, STILL>,
         override val flowingHolder: HTDeferredHolder<Fluid, FLOWING>,
         override val fluidTag: TagKey<Fluid>,
         override val blockHolder: HTDeferredHolder<Block, out LiquidBlock>,
         override val bucketHolder: HTItemHolderLike<ITEM>,
         override val bucketTag: TagKey<Item>,
-    ) : HTFluidContent.Flowing<TYPE, STILL, FLOWING, ITEM>
+    ) : HTFluidContent.Flowing<TYPE, STILL, FLOWING, ITEM>,
+        HTHolderLike.HolderDelegate<Fluid, STILL> by fluidHolder
 }

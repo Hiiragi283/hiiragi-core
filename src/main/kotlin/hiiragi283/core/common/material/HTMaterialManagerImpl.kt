@@ -10,8 +10,6 @@ import hiiragi283.core.api.property.HTPropertyMap
 import net.neoforged.fml.ModLoader
 import org.slf4j.Logger
 
-private typealias RawPropertyMap = MutableMap<HTPropertyKey<*>, Any?>
-
 class HTMaterialManagerImpl : HTMaterialManager {
     companion object {
         @JvmField
@@ -22,11 +20,11 @@ class HTMaterialManagerImpl : HTMaterialManager {
 
         @JvmStatic
         fun gatherAttributes(isDataGen: Boolean) {
-            val builderMap: MutableMap<HTMaterialKey, HTPropertyMap.Mutable> = hashMapOf()
+            val builderMap: MutableMap<HTMaterialKey, HTPropertyMap.Mutable> = mutableMapOf()
             ModLoader.postEvent(
                 HTMaterialPropertyEvent(isDataGen) { key: HTMaterialKey -> builderMap.computeIfAbsent(key) { PropertyMapImpl() } },
             )
-            propertyMapMap = builderMap.filterValues(HTPropertyMap::isEmpty)
+            propertyMapMap = builderMap.filterValues(HTPropertyMap::isNotEmpty)
             LOGGER.info("Gathered Material Attributes!")
         }
     }
@@ -46,7 +44,7 @@ class HTMaterialManagerImpl : HTMaterialManager {
 
     @Suppress("UNCHECKED_CAST")
     private class PropertyMapImpl : HTPropertyMap.Mutable {
-        private val map: RawPropertyMap = hashMapOf()
+        private val map: MutableMap<HTPropertyKey<*>, Any?> = hashMapOf()
 
         override fun <T> put(key: HTPropertyKey<T>, value: T): T? {
             if (value == null) return remove(key)

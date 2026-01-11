@@ -14,9 +14,9 @@ class HTMaterialPropertyEvent(val isDataGen: Boolean, val factory: (HTMaterialKe
     Event(),
     IModBusEvent {
     /**
-     * 指定された[key]に紐づく属性を改変します。
+     * 指定された[key]に紐づくプロパティを改変します。
      * @param key 対象となる素材のキー
-     * @param builderAction 属性の改変を行うブロック
+     * @param builderAction プロパティの改変を行うブロック
      */
     inline fun modify(key: HTMaterialKey, builderAction: HTPropertyMap.Mutable.() -> Unit) {
         factory(key).apply(builderAction)

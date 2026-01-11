@@ -9,11 +9,9 @@ import net.minecraft.world.item.Item
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun <ITEM : Item> ITEM.toHolderLike(): HTItemHolderLike<ITEM> = HTItemHolderLike { this@toHolderLike }
+@Suppress("DEPRECATION")
+fun <ITEM : Item> ITEM.toHolderLike(): HTItemHolderLike<ITEM> = object : HTItemHolderLike<ITEM> {
+    override fun getItemHolder(): Holder<Item> = asItem().builtInRegistryHolder()
 
-/**
- * この[Holder][this]を[HTItemHolderLike]に変換します。
- * @author Hiiragi Tsubasa
- * @since 0.1.0
- */
-fun Holder<Item>.toItemLike(): HTItemHolderLike<*> = (this as? HTItemHolderLike<*>) ?: HTItemHolderLike(this@toItemLike::value)
+    override fun asItem(): ITEM = this@toHolderLike
+}

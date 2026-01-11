@@ -18,7 +18,7 @@ class HCFluidTagsProvider(context: HTDataGenContext) : HTTagsProvider<Fluid>(Hii
     }
 
     fun addContent(factory: BuilderFactory<Fluid>, content: HTFluidContent<*, *, *>) {
-        val builder: HTTagBuilder<Fluid> = factory.apply(content.fluidTag).add(content.fluidHolder)
+        val builder: HTTagBuilder<Fluid> = factory.apply(content.fluidTag).add(content)
         if (content is HTFluidContent.Flowing<*, *, *, *>) {
             builder.add(content.flowingHolder)
         }

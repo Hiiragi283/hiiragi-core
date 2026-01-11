@@ -12,6 +12,8 @@ import java.awt.Color
 
 fun HTPropertyMap.getDefaultPart(): HTMaterialPrefix? = this[HTMaterialPropertyKeys.DEFAULT_PART]
 
+fun HTPropertyMap.getStorageBlock(): HTStorageBlockProperty = this.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK)
+
 // Mutable
 
 fun HTPropertyMap.Mutable.addDefaultPart(prefix: HTPrefixLike) {

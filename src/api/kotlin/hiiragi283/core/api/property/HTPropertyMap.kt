@@ -3,6 +3,8 @@ package hiiragi283.core.api.property
 interface HTPropertyMap {
     fun isEmpty(): Boolean
 
+    fun isNotEmpty(): Boolean = !isEmpty()
+
     operator fun contains(key: HTPropertyKey<*>): Boolean
 
     operator fun <T> get(key: HTPropertyKey<T>): T?

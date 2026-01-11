@@ -4,12 +4,10 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.VanillaFluidContents
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import net.minecraft.tags.TagKey
 import net.minecraft.world.level.material.Fluid
-import net.minecraft.world.level.material.Fluids
-import net.neoforged.neoforge.common.NeoForgeMod
-import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.fluids.FluidStack
 
 /**
@@ -21,11 +19,20 @@ data object HTFluidResultCreator : HTResultCreator<Fluid, HTFluidResourceType, F
     fun create(content: HTFluidContent<*, *, *>, amount: Int = defaultAmount()): HTFluidResult =
         create(content.get(), content.fluidTag, amount)
 
-    fun water(amount: Int = defaultAmount()): HTFluidResult = create(Fluids.WATER, Tags.Fluids.WATER, amount)
+    /**
+     * @since 0.6.0
+     */
+    fun water(amount: Int = defaultAmount()): HTFluidResult = create(VanillaFluidContents.WATER, amount)
 
-    fun lava(amount: Int = defaultAmount()): HTFluidResult = create(Fluids.LAVA, Tags.Fluids.LAVA, amount)
+    /**
+     * @since 0.6.0
+     */
+    fun lava(amount: Int = defaultAmount()): HTFluidResult = create(VanillaFluidContents.LAVA, amount)
 
-    fun milk(amount: Int = defaultAmount()): HTFluidResult = create(NeoForgeMod.MILK.value(), Tags.Fluids.MILK, amount)
+    /**
+     * @since 0.6.0
+     */
+    fun milk(amount: Int = defaultAmount()): HTFluidResult = create(VanillaFluidContents.MILK, amount)
 
     //    HTResultCreator    //
 

@@ -11,7 +11,7 @@ object HTMaterialPropertyKeys {
     val DEFAULT_PART: HTPropertyKey<HTMaterialPrefix?> = createNullable("default_part")
 
     @JvmField
-    val MOLTEN_METAL: HTPropertyKey<HTFluidMaterialProperty?> = createNullable("molten_metal")
+    val MOLTEN_FLUID: HTPropertyKey<HTFluidMaterialProperty?> = createNullable("molten_fluid")
 
     @JvmField
     val SMELTING: HTPropertyKey<HTSmeltingMaterialProperty?> = createNullable("smelting")

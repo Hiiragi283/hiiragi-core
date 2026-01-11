@@ -1,6 +1,5 @@
 package hiiragi283.core.api.resource
 
-import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTHolderLike
 import net.minecraft.core.Holder
 import net.minecraft.resources.ResourceKey
@@ -24,7 +23,7 @@ fun interface HTKeyLike<T : Any> : HTIdLike {
      * [Holder]を保持する[HTKeyLike]の拡張インターフェースです。
      * @author Hiiragi Tsubasa
      * @since 0.1.0
-     * @see HTDeferredHolder
+     * @see HTHolderLike.HolderDelegate
      */
     fun interface HolderDelegate<T : Any> : HTKeyLike<T> {
         /**

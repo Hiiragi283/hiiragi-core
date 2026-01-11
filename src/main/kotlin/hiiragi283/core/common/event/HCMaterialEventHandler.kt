@@ -374,7 +374,7 @@ object HCMaterialEventHandler {
         }
         event.modify(HCMaterialKeys.CRIMSON_CRYSTAL) {
             addDefaultPart(HCMaterialPrefixes.GEM)
-            put(HTMaterialPropertyKeys.MOLTEN_METAL, HTFluidMaterialProperty(HCFluids.MOLTEN_CRIMSON_CRYSTAL))
+            put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_CRIMSON_CRYSTAL))
             if (isDataGen) {
                 addName("Crimson Crystal", "深紅のクリスタリル")
                 addColor(HCMaterialPalette.CRIMSON_CRYSTAL)
@@ -383,7 +383,7 @@ object HCMaterialEventHandler {
         }
         event.modify(HCMaterialKeys.WARPED_CRYSTAL) {
             addDefaultPart(HCMaterialPrefixes.GEM)
-            put(HTMaterialPropertyKeys.MOLTEN_METAL, HTFluidMaterialProperty(HCFluids.MOLTEN_WARPED_CRYSTAL))
+            put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_WARPED_CRYSTAL))
             if (isDataGen) {
                 addName("Warped Crystal", "歪んだクリスタリル")
                 addColor(HCMaterialPalette.WARPED_CRYSTAL)
@@ -393,7 +393,7 @@ object HCMaterialEventHandler {
         // Pearls
         event.modify(HCMaterialKeys.ELDRITCH) {
             addDefaultPart(HCMaterialPrefixes.PEARL)
-            put(HTMaterialPropertyKeys.MOLTEN_METAL, HTFluidMaterialProperty(HCFluids.MOLTEN_ELDRITCH))
+            put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_ELDRITCH))
             if (isDataGen) {
                 addName("Eldritch Pearl", "異質な真珠")
                 addColor(HCMaterialPalette.ELDRITCH)

@@ -19,7 +19,7 @@ interface HTFluidContent<TYPE : FluidType, FLUID : Fluid, ITEM : Item> : HTHolde
 
     fun getFluidType(): TYPE = typeHolder.get()
 
-    fun getBucket(): ITEM = bucketHolder.get()
+    fun getBucket(): ITEM = bucketHolder.asItem()
 
     fun isOf(fluid: Fluid): Boolean = get() == fluid
 

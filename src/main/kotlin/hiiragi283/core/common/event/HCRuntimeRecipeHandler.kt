@@ -4,7 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.prefix.HTPrefixLike
-import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
+import hiiragi283.core.api.material.property.getStorageBlock
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.material.HCMaterialPrefixes
@@ -17,7 +17,7 @@ object HCRuntimeRecipeHandler {
     @SubscribeEvent
     fun registerRuntimeRecipe(event: HTRegisterRuntimeRecipeEvent) {
         crushToDust(event, HCMaterialPrefixes.ORE) { 2 }
-        crushToDust(event, HCMaterialPrefixes.STORAGE_BLOCK) { it.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK).baseCount }
+        crushToDust(event, HCMaterialPrefixes.STORAGE_BLOCK) { it.getStorageBlock().baseCount }
         crushToDust(event, HCMaterialPrefixes.STORAGE_BLOCK_RAW) { 12 }
 
         crushToDust(event, HCMaterialPrefixes.FUEL) { 1 }
@@ -29,7 +29,7 @@ object HCRuntimeRecipeHandler {
 
     @JvmStatic
     private fun crushToDust(event: HTRegisterRuntimeRecipeEvent, prefix: HTPrefixLike, outputCountGetter: (HTPropertyMap) -> Int?) {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in event.materialManager.entries) {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in event.getAllMaterials()) {
             val outputCount: Int = outputCountGetter(propertyMap) ?: continue
             val dust: Item = event.getFirstHolder(HCMaterialPrefixes.DUST, key)?.value() ?: continue
 
