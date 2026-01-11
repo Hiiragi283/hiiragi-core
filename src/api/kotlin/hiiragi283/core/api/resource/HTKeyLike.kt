@@ -2,8 +2,10 @@ package hiiragi283.core.api.resource
 
 import hiiragi283.core.api.registry.HTHolderLike
 import net.minecraft.core.Holder
+import net.minecraft.core.HolderSet
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.tags.TagKey
 
 /**
  * [ResourceKey]を保持する[HTIdLike]の拡張インターフェースです。
@@ -16,6 +18,12 @@ fun interface HTKeyLike<T : Any> : HTIdLike {
      * 保持している[ResourceKey]を返します。
      */
     fun getResourceKey(): ResourceKey<T>
+
+    /**
+     * 指定した[key]が保持している[ResourceKey]と一致するか判定します。
+     * @since 0.6.0
+     */
+    fun isOf(key: ResourceKey<T>): Boolean = key == getResourceKey()
 
     override fun getId(): ResourceLocation = getResourceKey().location()
 
@@ -30,6 +38,31 @@ fun interface HTKeyLike<T : Any> : HTIdLike {
          * 保持している[Holder]を返します。
          */
         fun getHolder(): Holder<T>
+
+        /**
+         * 指定した[value]が保持している[Holder]の値と一致するか判定します。
+         * @since 0.6.0
+         */
+        fun isOf(value: T): Boolean = getHolder().value() == value
+
+        /**
+         * 指定した[tagKey]が保持している[Holder]に含まれるか判定します。
+         * @since 0.6.0
+         */
+        fun isOf(tagKey: TagKey<T>): Boolean = getHolder().`is`(tagKey)
+
+        /**
+         * 指定した[holder]が保持している[Holder]と一致するか判定します。
+         * @since 0.6.0
+         */
+        @Suppress("DEPRECATION")
+        fun isOf(holder: Holder<T>): Boolean = getHolder().`is`(holder)
+
+        /**
+         * 指定した[holderSet]に保持している[Holder]が含まれるか判定します。
+         * @since 0.6.0
+         */
+        fun isOf(holderSet: HolderSet<T>): Boolean = holderSet.contains(getHolder())
 
         override fun getResourceKey(): ResourceKey<T> = getHolder().unwrapKey().orElseThrow()
     }

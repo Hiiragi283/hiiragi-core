@@ -1,6 +1,5 @@
 package hiiragi283.core.common.crafting
 
-import hiiragi283.core.api.item.builtInRegistryHolder
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.MapBiCodec
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
@@ -50,10 +49,11 @@ class HTClearComponentRecipe(
         )
     }
 
+    @Suppress("DEPRECATION")
     constructor(group: String, category: CraftingBookCategory, item: ItemLike, targetTypes: List<DataComponentType<*>>) : this(
         group,
         category,
-        item.builtInRegistryHolder(),
+        item.asItem().builtInRegistryHolder(),
         HolderSet.direct(BuiltInRegistries.DATA_COMPONENT_TYPE::wrapAsHolder, targetTypes),
     )
 

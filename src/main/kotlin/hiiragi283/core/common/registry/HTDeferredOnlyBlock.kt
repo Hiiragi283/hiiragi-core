@@ -10,7 +10,6 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.state.BlockState
 
 class HTDeferredOnlyBlock<BLOCK : Block> :
     HTDeferredHolder<Block, BLOCK>,
@@ -26,6 +25,4 @@ class HTDeferredOnlyBlock<BLOCK : Block> :
     override fun getText(): Component = get().name
 
     override fun asItem(): Item = get().asItem()
-
-    fun isOf(state: BlockState): Boolean = state.`is`(this)
 }

@@ -2,14 +2,30 @@ package hiiragi283.core.api.property
 
 import net.minecraft.resources.ResourceLocation
 
+/**
+ * [HTPropertyMap]のキーとして使用されるクラスです。
+ * @param T 対応する値のクラス
+ * @param id ユニークな[ID][ResourceLocation]
+ * @param defaultValue 対応する値がない場合のデフォルト値
+ * @author Hiiragi Tsubasa
+ * @since 0.6.0
+ */
 class HTPropertyKey<T> private constructor(val id: ResourceLocation, val defaultValue: T) {
     companion object {
         @JvmStatic
         private val instance: MutableMap<ResourceLocation, HTPropertyKey<*>> = hashMapOf()
 
+        /**
+         * 指定した[id]から，デフォルト値が`null`となる新しい[HTPropertyKey]のインスタンスを作成します。
+         * @throws IllegalStateException 指定した[ID][id]がすでに使用されていた場合
+         */
         @JvmStatic
         fun <T : Any> createNullable(id: ResourceLocation): HTPropertyKey<T?> = create(id, null)
 
+        /**
+         * 指定した[id]と[defaultValue]から新しい[HTPropertyKey]のインスタンスを作成します。
+         * @throws IllegalStateException 指定した[ID][id]がすでに使用されていた場合
+         */
         @JvmStatic
         fun <T> create(id: ResourceLocation, defaultValue: T): HTPropertyKey<T> {
             val key: HTPropertyKey<T> = HTPropertyKey(id, defaultValue)
@@ -17,4 +33,6 @@ class HTPropertyKey<T> private constructor(val id: ResourceLocation, val default
             return key
         }
     }
+
+    override fun toString(): String = "HTPropertyKey(id=$id, defaultValue=$defaultValue)"
 }

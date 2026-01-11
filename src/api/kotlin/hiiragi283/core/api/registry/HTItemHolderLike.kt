@@ -10,6 +10,11 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.ItemLike
 
+/**
+ * [HTIdLike]と[ItemLike]とその他諸々を継承した[HTIdLike]の拡張インターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 interface HTItemHolderLike<ITEM : Item> :
     HTIdLike,
     HTHasTranslationKey,

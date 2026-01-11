@@ -6,8 +6,19 @@ package hiiragi283.core.api.material.property
  * @since 0.6.0
  */
 enum class HTStorageBlockProperty(val baseCount: Int, val pattern: List<String>) {
+    /**
+     * ブロックの作成に基本部品が1つ必要
+     */
     SINGLE(1, "A"),
+
+    /**
+     * ブロックの作成に基本部品が4つ必要
+     */
     TWO_BY_TWO(4, "AA", "AB"),
+
+    /**
+     * ブロックの作成に基本部品が9つ必要
+     */
     THREE_BY_THREE(9, "AAA", "ABA", "AAA"),
     ;
 

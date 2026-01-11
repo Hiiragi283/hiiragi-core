@@ -52,5 +52,10 @@ fun levelText(key: ResourceKey<Level>): MutableComponent {
     return translatableText(location.toLanguageKey(ILevelExtension.TRANSLATION_PREFIX), location.toString())
 }
 
+/**
+ * 指定した[色][color]を適応します。
+ * @author Hiiragi Tsubasa
+ * @since 0.6.0
+ */
 fun MutableComponent.withStyle(color: HTDefaultColor): MutableComponent =
     this.withStyle { style: Style -> style.withColor(color.textColor) }

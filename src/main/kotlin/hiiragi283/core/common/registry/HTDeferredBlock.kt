@@ -9,7 +9,6 @@ import net.minecraft.network.chat.Component
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.state.BlockState
 
 typealias HTBasicDeferredBlock<BLOCK> = HTDeferredBlock<BLOCK, HTBlockItem<BLOCK>>
 
@@ -34,6 +33,4 @@ class HTDeferredBlock<BLOCK : Block, ITEM : Item>(first: HTDeferredOnlyBlock<BLO
     override fun getText(): Component = get().name
 
     override fun asItem(): ITEM = getSecond()
-
-    fun isOf(state: BlockState): Boolean = state.`is`(this)
 }

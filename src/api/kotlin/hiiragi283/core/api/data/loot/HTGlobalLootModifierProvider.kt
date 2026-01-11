@@ -11,7 +11,9 @@ import net.neoforged.neoforge.common.loot.AddTableLootModifier
 import net.neoforged.neoforge.common.loot.LootTableIdCondition
 
 /**
- * @since 0.6.0
+ * Hiiragi Coreとそれを前提とするmodで使用される[GlobalLootModifierProvider]の拡張クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 abstract class HTGlobalLootModifierProvider(modId: String, context: HTDataGenContext) :
     GlobalLootModifierProvider(context.output, context.registries, modId) {

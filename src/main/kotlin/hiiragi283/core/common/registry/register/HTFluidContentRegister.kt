@@ -4,19 +4,15 @@ import hiiragi283.core.api.registry.BlockWithContextFactory
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.HTHolderLike
-import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.ItemWithContextFactory
 import hiiragi283.core.api.tag.createCommonTag
 import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.common.registry.HTDeferredOnlyBlock
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey
-import net.minecraft.tags.TagKey
 import net.minecraft.world.item.BucketItem
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
-import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.DispenserBlock
 import net.minecraft.world.level.block.LiquidBlock
 import net.minecraft.world.level.block.state.BlockBehaviour
@@ -102,7 +98,7 @@ class HTFluidContentRegister(modId: String) {
             { it.stacksTo(1).craftRemainder(Items.BUCKET) },
         )
         // Contents
-        val content: ContentImpl<TYPE, FLUID, ITEM> = ContentImpl(
+        val content: HTFluidContent<TYPE, FLUID, ITEM> = HTFluidContent(
             typeHolder,
             fluidHolder,
             Registries.FLUID.createCommonTag(name),
@@ -112,15 +108,6 @@ class HTFluidContentRegister(modId: String) {
         contentsCache[fluidHolder.key] = content
         return content
     }
-
-    private class ContentImpl<TYPE : FluidType, FLUID : Fluid, ITEM : Item>(
-        override val typeHolder: HTDeferredHolder<FluidType, TYPE>,
-        fluidHolder: HTDeferredHolder<Fluid, FLUID>,
-        override val fluidTag: TagKey<Fluid>,
-        override val bucketHolder: HTItemHolderLike<ITEM>,
-        override val bucketTag: TagKey<Item>,
-    ) : HTFluidContent<TYPE, FLUID, ITEM>,
-        HTHolderLike.HolderDelegate<Fluid, FLUID> by fluidHolder
 
     //    Flowing    //
 
@@ -195,7 +182,7 @@ class HTFluidContentRegister(modId: String) {
         fluidRegister.register(stillPath) { _ -> BaseFlowingFluid.Source(fluidProperties) }
         fluidRegister.register(flowingHolder.getPath()) { _ -> BaseFlowingFluid.Flowing(fluidProperties) }
         // Contents
-        val content: FlowingImpl<TYPE, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, ITEM> = FlowingImpl(
+        val content: HTFluidContent.Flowing<TYPE, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, ITEM> = HTFluidContent.Flowing(
             typeHolder,
             stillHolder,
             flowingHolder,
@@ -207,15 +194,4 @@ class HTFluidContentRegister(modId: String) {
         contentsCache[stillHolder.key] = content
         return content
     }
-
-    private class FlowingImpl<TYPE : FluidType, STILL : Fluid, FLOWING : Fluid, ITEM : Item>(
-        override val typeHolder: HTDeferredHolder<FluidType, TYPE>,
-        fluidHolder: HTDeferredHolder<Fluid, STILL>,
-        override val flowingHolder: HTDeferredHolder<Fluid, FLOWING>,
-        override val fluidTag: TagKey<Fluid>,
-        override val blockHolder: HTDeferredHolder<Block, out LiquidBlock>,
-        override val bucketHolder: HTItemHolderLike<ITEM>,
-        override val bucketTag: TagKey<Item>,
-    ) : HTFluidContent.Flowing<TYPE, STILL, FLOWING, ITEM>,
-        HTHolderLike.HolderDelegate<Fluid, STILL> by fluidHolder
 }

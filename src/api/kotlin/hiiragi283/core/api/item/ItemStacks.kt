@@ -18,6 +18,14 @@ fun <T : Any> createItemStack(
     count: Int = 1,
 ): ItemStack = createItemStack(item, count, buildDataPatch { set(type, value) })
 
+/**
+ * 指定した引数から新しい[ItemStack]のインスタンスを作成します。
+ * @param item アイテムの種類
+ * @param count アイテムの量
+ * @param patch 適応するコンポーネントの差分
+ * @author Hiiragi Tsubasa
+ * @since 0.6.0
+ */
 fun createItemStack(item: ItemLike?, count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStack {
     if (item == null) return ItemStack.EMPTY
     val stack = ItemStack(item, count)

@@ -6,7 +6,7 @@ import hiiragi283.core.api.material.prefix.HTPrefixLike
 /**
  * テクスチャの生成で使用されるテンプレートを提供するクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.6.0
+ * @since 0.3.0
  */
 @ConsistentCopyVisibility
 @JvmRecord

@@ -12,6 +12,7 @@ import net.minecraft.world.item.DyeColor
 import net.minecraft.world.level.material.MapColor
 
 /**
+ * Minecraftで使用される様々な「色」をまとめたクラスです。
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  * @see mekanism.api.text.EnumColor
