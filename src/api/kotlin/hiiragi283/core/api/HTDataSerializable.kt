@@ -1,4 +1,4 @@
-package hiiragi283.core.api.serialization.nbt
+package hiiragi283.core.api
 
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag

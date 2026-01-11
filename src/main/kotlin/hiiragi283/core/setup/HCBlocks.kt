@@ -6,12 +6,14 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
+import hiiragi283.core.common.block.HTBasicEntityBlock
 import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.item.block.HTWarpedWartItem
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialKeys
+import hiiragi283.core.common.registry.HTBasicDeferredBlock
 import hiiragi283.core.common.registry.HTDeferredBlock
 import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import hiiragi283.core.common.registry.register.HTDeferredBlockRegister
@@ -99,6 +101,15 @@ object HCBlocks {
         copyOf(Blocks.NETHER_WART),
         ::HTWarpedWartBlock,
         ::HTWarpedWartItem,
+    )
+
+    //    Misc    //
+
+    @JvmField
+    val TEST: HTBasicDeferredBlock<HTBasicEntityBlock> = REGISTER.registerSimple(
+        "test",
+        properties(5f, 6f),
+        { prop: BlockBehaviour.Properties -> HTBasicEntityBlock(HCBlockEntityTypes.TEST, prop) },
     )
 
     //    Extensions    //

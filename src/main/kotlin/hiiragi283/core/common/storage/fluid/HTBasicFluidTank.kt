@@ -1,15 +1,16 @@
 package hiiragi283.core.common.storage.fluid
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HTContentListener
-import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
-import hiiragi283.core.api.serialization.value.HTValueInput
-import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.HTStorageAccess
+import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.HTFluidTank
-import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.api.storage.fluid.toResource
+import net.minecraft.core.HolderLookup
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.nbt.NbtOps
+import net.minecraft.nbt.Tag
+import net.minecraft.resources.RegistryOps
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.BiPredicate
 import java.util.function.Predicate
@@ -19,8 +20,38 @@ open class HTBasicFluidTank protected constructor(
     private val canExtract: BiPredicate<HTFluidResourceType, HTStorageAccess>,
     private val canInsert: BiPredicate<HTFluidResourceType, HTStorageAccess>,
     private val filter: Predicate<HTFluidResourceType>,
-    private val listener: HTContentListener?,
 ) : HTFluidTank.Basic() {
+    companion object {
+        @JvmStatic
+        private fun validateCapacity(capacity: Int): Int {
+            check(capacity >= 0) { "Capacity must be non negative" }
+            return capacity
+        }
+
+        @JvmStatic
+        fun create(
+            capacity: Int,
+            canExtract: BiPredicate<HTFluidResourceType, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
+            canInsert: BiPredicate<HTFluidResourceType, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
+            filter: Predicate<HTFluidResourceType> = HTStoragePredicates.alwaysTrue(),
+        ): HTBasicFluidTank = HTBasicFluidTank(validateCapacity(capacity), canExtract, canInsert, filter)
+
+        @JvmStatic
+        fun input(
+            capacity: Int,
+            canInsert: Predicate<HTFluidResourceType> = HTStoragePredicates.alwaysTrue(),
+            filter: Predicate<HTFluidResourceType> = canInsert,
+        ): HTBasicFluidTank = create(
+            capacity,
+            HTStoragePredicates.notExternal(),
+            { resource: HTFluidResourceType, _ -> canInsert.test(resource) },
+            filter,
+        )
+
+        @JvmStatic
+        fun output(capacity: Int): HTBasicFluidTank = create(capacity, canInsert = HTStoragePredicates.internalOnly())
+    }
+
     @JvmField
     protected var stack: FluidStack = FluidStack.EMPTY
 
@@ -37,7 +68,6 @@ open class HTBasicFluidTank protected constructor(
         } else {
             error("Invalid stack for slot: $resource")
         }
-        onContentsChanged()
     }
 
     final override fun setAmount(amount: Int) {
@@ -58,15 +88,20 @@ open class HTBasicFluidTank protected constructor(
 
     override fun getAmount(): Int = stack.amount
 
-    override fun serialize(output: HTValueOutput) {
-        output.store(HTConst.FLUID, VanillaBiCodecs.FLUID_STACK, getFluidStack())
+    override fun serializeNBT(provider: HolderLookup.Provider, nbt: CompoundTag) {
+        val resource: HTFluidResourceType = getResource() ?: return
+        val ops: RegistryOps<Tag> = provider.createSerializationContext(NbtOps.INSTANCE)
+        HTFluidResourceType.CODEC
+            .encode(ops, resource)
+            .ifSuccess { nbt.put(HTConst.FLUID, it) }
+        nbt.putInt(HTConst.AMOUNT, getAmount())
     }
 
-    override fun deserialize(input: HTValueInput) {
-        (input.read(HTConst.FLUID, VanillaBiCodecs.FLUID_STACK) ?: FluidStack.EMPTY).let(::setStack)
-    }
-
-    final override fun onContentsChanged() {
-        listener?.onContentsChanged()
+    override fun deserializeNBT(provider: HolderLookup.Provider, nbt: CompoundTag) {
+        val ops: RegistryOps<Tag> = provider.createSerializationContext(NbtOps.INSTANCE)
+        HTFluidResourceType.CODEC
+            .decode(ops, nbt.getCompound(HTConst.FLUID))
+            .ifSuccess(::setResource)
+        nbt.getInt(HTConst.AMOUNT).let(::setAmount)
     }
 }

@@ -62,25 +62,19 @@ data object HTConst {
 
     //    Serialization    //
 
-    const val OWNER = "owner"
     const val BLOCK = "block"
 
     const val ITEM = "item"
-    const val SLOT = "slot"
     const val ITEMS = "items"
 
     const val FLUID = "fluid"
-    const val TANK = "tank"
     const val FLUIDS = "fluids"
 
     const val AMOUNT = "amount"
-    const val CAPACITY = "capacity"
-    const val BATTERIES = "batteries"
-
+    const val COMPONENTS = "components"
+    const val COUNT = "count"
     const val ID = "id"
     const val TAG = "tag"
-    const val COUNT = "count"
-    const val COMPONENTS = "components"
 
     const val COMPLETED_RECIPE = "CompletedRecipe"
     const val PREVENT_ITEM_MAGNET = "PreventRemoteMovement"

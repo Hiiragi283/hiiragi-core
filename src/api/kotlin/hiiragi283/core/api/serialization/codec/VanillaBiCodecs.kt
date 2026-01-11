@@ -3,6 +3,10 @@ package hiiragi283.core.api.serialization.codec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.serialization.codec.impl.HTIngredientCodec
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.api.storage.fluid.toResource
+import hiiragi283.core.api.storage.item.HTItemResourceType
+import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.tag.createTagKey
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.BlockPos
@@ -12,7 +16,6 @@ import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.core.RegistryCodecs
 import net.minecraft.core.UUIDUtil
-import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.ComponentSerialization
@@ -21,13 +24,13 @@ import net.minecraft.resources.RegistryFixedCodec
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
-import net.minecraft.world.InteractionHand
 import net.minecraft.world.item.DyeColor
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.crafting.Ingredient
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
+import java.util.Optional
 import java.util.UUID
 
 /**
@@ -54,15 +57,6 @@ object VanillaBiCodecs {
     val COLOR: BiCodec<ByteBuf, DyeColor> = BiCodec.of(DyeColor.CODEC, DyeColor.STREAM_CODEC)
 
     /**
-     * [DataComponentPatch]の[MapBiCodec]
-     */
-    @JvmField
-    val COMPONENT_PATCH: MapBiCodec<RegistryFriendlyByteBuf, DataComponentPatch> =
-        BiCodec
-            .of(DataComponentPatch.CODEC, DataComponentPatch.STREAM_CODEC)
-            .optionalFieldOf(HTConst.COMPONENTS, DataComponentPatch.EMPTY)
-
-    /**
      * [Direction]の[BiCodec]
      */
     @JvmField
@@ -74,12 +68,6 @@ object VanillaBiCodecs {
      */
     @JvmField
     val GLOBAL_POS: BiCodec<ByteBuf, GlobalPos> = BiCodec.of(GlobalPos.CODEC, GlobalPos.STREAM_CODEC)
-
-    /**
-     * [InteractionHand]の[BiCodec]
-     */
-    @JvmField
-    val HAND: BiCodec<ByteBuf, InteractionHand> = BiCodecs.enum()
 
     /**
      * [PotionContents]の[BiCodec]
@@ -102,28 +90,32 @@ object VanillaBiCodecs {
     val UUID: BiCodec<ByteBuf, UUID> = BiCodec.of(UUIDUtil.CODEC, UUIDUtil.STREAM_CODEC)
 
     /**
-     * [ItemStack.EMPTY]を受け付けない[ItemStack]の[BiCodec]
-     */
-    @JvmField
-    val ITEM_STACK_NON_EMPTY: BiCodec<RegistryFriendlyByteBuf, ItemStack> = BiCodec.of(ItemStack.CODEC, ItemStack.STREAM_CODEC)
-
-    /**
      * [ItemStack]の[BiCodec]
      */
     @JvmField
-    val ITEM_STACK: BiCodec<RegistryFriendlyByteBuf, ItemStack> = BiCodec.of(ItemStack.OPTIONAL_CODEC, ItemStack.OPTIONAL_STREAM_CODEC)
-
-    /**
-     * [FluidStack.EMPTY]を受け付けない[FluidStack]の[BiCodec]
-     */
-    @JvmField
-    val FLUID_STACK_NON_EMPTY: BiCodec<RegistryFriendlyByteBuf, FluidStack> = BiCodec.of(FluidStack.CODEC, FluidStack.STREAM_CODEC)
+    val ITEM_STACK: BiCodec<RegistryFriendlyByteBuf, ItemStack> = BiCodec.composite(
+        HTItemResourceType.CODEC
+            .toOptional()
+            .toMap()
+            .forGetter { stack: ItemStack -> Optional.ofNullable(stack.toResource()) },
+        BiCodecs.NON_NEGATIVE_INT.optionalFieldOf(HTConst.COUNT, 0).forGetter(ItemStack::getCount),
+    ) { optional: Optional<HTItemResourceType>, count: Int ->
+        optional.map { it.toStack(count) }.orElse(ItemStack.EMPTY)
+    }
 
     /**
      * [FluidStack]の[BiCodec]
      */
     @JvmField
-    val FLUID_STACK: BiCodec<RegistryFriendlyByteBuf, FluidStack> = BiCodec.of(FluidStack.OPTIONAL_CODEC, FluidStack.OPTIONAL_STREAM_CODEC)
+    val FLUID_STACK: BiCodec<RegistryFriendlyByteBuf, FluidStack> = BiCodec.composite(
+        HTFluidResourceType.CODEC
+            .toOptional()
+            .toMap()
+            .forGetter { stack: FluidStack -> Optional.ofNullable(stack.toResource()) },
+        BiCodecs.NON_NEGATIVE_INT.optionalFieldOf(HTConst.AMOUNT, 0).forGetter(FluidStack::getAmount),
+    ) { optional: Optional<HTFluidResourceType>, count: Int ->
+        optional.map { it.toStack(count) }.orElse(FluidStack.EMPTY)
+    }
 
     /**
      * [Ingredient]の[BiCodec]

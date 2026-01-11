@@ -4,6 +4,7 @@ import com.lowdragmc.lowdraglib2.gui.factory.BlockUIMenuType
 import com.lowdragmc.lowdraglib2.gui.ui.ModularUI
 import com.lowdragmc.lowdraglib2.syncdata.holder.blockentity.ISyncPersistRPCBlockEntity
 import com.lowdragmc.lowdraglib2.syncdata.storage.FieldManagedStorage
+import com.lowdragmc.lowdraglib2.syncdata.storage.IManagedStorage
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.Level
@@ -21,7 +22,9 @@ abstract class HTExtendedBlockEntity(type: HTDeferredBlockEntityType<*>, pos: Bl
 
     //    Save & Read    //
 
-    val syncStorage = FieldManagedStorage(this)
+    private val syncStorage = FieldManagedStorage(this)
+
+    final override fun getSyncStorage(): IManagedStorage = syncStorage
 
     @Deprecated("Deprecated in Java")
     @Suppress("DEPRECATION")

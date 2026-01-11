@@ -1,7 +1,6 @@
 package hiiragi283.core.api.storage.resource
 
-import hiiragi283.core.api.HTContentListener
-import hiiragi283.core.api.serialization.value.HTValueSerializable
+import hiiragi283.core.api.HTDataSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import kotlin.math.min
@@ -14,8 +13,7 @@ import kotlin.math.min
  */
 interface HTResourceSlot<RESOURCE : HTResourceType<*>> :
     HTResourceView<RESOURCE>,
-    HTValueSerializable,
-    HTContentListener {
+    HTDataSerializable {
     /**
      * 指定した[resource]が有効か判定します。
      * @return 有効な場合は`true`
@@ -112,7 +110,6 @@ interface HTResourceSlot<RESOURCE : HTResourceType<*>> :
                 if (action.execute()) {
                     if (sameType) {
                         growAmount(toAdd)
-                        onContentsChanged()
                     } else {
                         setResource(resource)
                         setAmount(toAdd)
@@ -129,7 +126,6 @@ interface HTResourceSlot<RESOURCE : HTResourceType<*>> :
             val fixedAmount: Int = min(min(outputRate(access), getAmount()), amount)
             if (fixedAmount > 0 && action.execute()) {
                 shrinkAmount(fixedAmount)
-                onContentsChanged()
             }
             return fixedAmount
         }

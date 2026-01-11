@@ -1,6 +1,5 @@
 package hiiragi283.core.util
 
-import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.energy.HTEnergyBattery
@@ -10,7 +9,7 @@ object HTEnergyHelper {
     fun moveEnergy(
         from: HTEnergyBattery?,
         to: HTEnergyBattery?,
-        listener: HTContentListener?,
+        onUpdate: Runnable?,
         amount: Int = from?.getAmount() ?: 0,
         access: HTStorageAccess = HTStorageAccess.INTERNAL,
     ): Int? {
@@ -19,7 +18,7 @@ object HTEnergyHelper {
         val simulatedInserted: Int = to.insert(simulatedExtracted, HTStorageAction.EXECUTE, access)
         val extracted: Int = from.extract(simulatedInserted, HTStorageAction.EXECUTE, access)
         if (extracted > 0) {
-            listener?.onContentsChanged()
+            onUpdate?.run()
         }
         return extracted
     }

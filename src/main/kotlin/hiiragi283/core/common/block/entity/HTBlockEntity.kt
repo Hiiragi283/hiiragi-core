@@ -2,7 +2,6 @@ package hiiragi283.core.common.block.entity
 
 import com.lowdragmc.lowdraglib2.syncdata.annotation.DescSynced
 import com.lowdragmc.lowdraglib2.syncdata.annotation.Persisted
-import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.block.entity.HTOwnedBlockEntity
 import hiiragi283.core.api.block.entity.HTSoundPlayerBlockEntity
 import hiiragi283.core.api.storage.HTHandlerProvider
@@ -83,7 +82,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
 
     protected open fun onUpdateClient(level: Level, pos: BlockPos, state: BlockState) {}
 
-    protected abstract fun onUpdateServer(level: ServerLevel, pos: BlockPos, state: BlockState)
+    protected open fun onUpdateServer(level: ServerLevel, pos: BlockPos, state: BlockState) {}
 
     open fun onBlockRemoved(state: BlockState, level: Level, pos: BlockPos) {}
 
@@ -115,25 +114,16 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
 
     //    Capability    //
 
-    protected val fluidHandlerManager: HTFluidHandlerManager?
-    protected val energyHandlerManager: HTEnergyStorageManager?
-    protected val itemHandlerManager: HTItemHandlerManager?
-
-    init {
-        initializeVariables()
-        fluidHandlerManager = initializeFluidHandler(::setOnlySave)?.let { HTFluidHandlerManager(it, this) }
-        energyHandlerManager = initializeEnergyHandler(::setOnlySave)?.let { HTEnergyStorageManager(it, this) }
-        itemHandlerManager = initializeItemHandler(::setOnlySave)?.let { HTItemHandlerManager(it, this) }
-    }
-
-    protected open fun initializeVariables() {}
+    protected val fluidHandlerManager: HTFluidHandlerManager? by lazy { createFluidHandler()?.let { HTFluidHandlerManager(it, this) } }
+    protected val energyHandlerManager: HTEnergyStorageManager? by lazy { createEnergyHandler()?.let { HTEnergyStorageManager(it, this) } }
+    protected val itemHandlerManager: HTItemHandlerManager? by lazy { createItemHandler()?.let { HTItemHandlerManager(it, this) } }
 
     // Fluid
 
     /**
      * @see mekanism.common.tile.base.TileEntityMekanism.getInitialFluidTanks
      */
-    protected open fun initializeFluidHandler(listener: HTContentListener): HTFluidTankHolder? = null
+    protected open fun createFluidHandler(): HTFluidTankHolder? = null
 
     /**
      * @see mekanism.common.tile.base.TileEntityMekanism.canHandleFluid
@@ -149,7 +139,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     /**
      * @see mekanism.common.tile.base.TileEntityMekanism.getInitialEnergyContainers
      */
-    protected open fun initializeEnergyHandler(listener: HTContentListener): HTEnergyBatteryHolder? = null
+    protected open fun createEnergyHandler(): HTEnergyBatteryHolder? = null
 
     /**
      * @see mekanism.common.tile.base.TileEntityMekanism.canHandleEnergy
@@ -165,7 +155,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     /**
      * @see mekanism.common.tile.base.TileEntityMekanism.getInitialInventory
      */
-    protected open fun initializeItemHandler(listener: HTContentListener): HTItemSlotHolder? = null
+    protected open fun createItemHandler(): HTItemSlotHolder? = null
 
     /**
      * @see mekanism.common.tile.base.TileEntityMekanism.hasInventory

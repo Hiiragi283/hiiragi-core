@@ -1,7 +1,6 @@
 package hiiragi283.core.common.storage.energy
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.energy.HTEnergyBattery
@@ -17,24 +16,20 @@ open class HTBasicEnergyBattery(
     private val capacity: Int,
     protected val canExtract: Predicate<HTStorageAccess>,
     protected val canInsert: Predicate<HTStorageAccess>,
-    private val listener: HTContentListener?,
 ) : HTEnergyBattery.Basic() {
     companion object {
         @JvmStatic
-        fun input(listener: HTContentListener?, capacity: Int): HTBasicEnergyBattery =
-            create(listener, capacity, HTStorageAccess.NOT_EXTERNAL, HTStoragePredicates.alwaysTrue())
+        fun input(capacity: Int): HTBasicEnergyBattery = create(capacity, HTStorageAccess.NOT_EXTERNAL, HTStoragePredicates.alwaysTrue())
 
         @JvmStatic
-        fun output(listener: HTContentListener?, capacity: Int): HTBasicEnergyBattery =
-            create(listener, capacity, HTStoragePredicates.alwaysTrue(), HTStorageAccess.INTERNAL_ONLY)
+        fun output(capacity: Int): HTBasicEnergyBattery = create(capacity, HTStoragePredicates.alwaysTrue(), HTStorageAccess.INTERNAL_ONLY)
 
         @JvmStatic
         fun create(
-            listener: HTContentListener?,
             capacity: Int,
             canExtract: Predicate<HTStorageAccess> = HTStoragePredicates.alwaysTrue(),
             canInsert: Predicate<HTStorageAccess> = HTStoragePredicates.alwaysTrue(),
-        ): HTBasicEnergyBattery = HTBasicEnergyBattery(capacity, canExtract, canInsert, listener)
+        ): HTBasicEnergyBattery = HTBasicEnergyBattery(capacity, canExtract, canInsert)
     }
 
     @JvmField

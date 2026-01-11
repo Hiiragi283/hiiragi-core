@@ -1,6 +1,6 @@
 package hiiragi283.core.api.storage.energy
 
-import hiiragi283.core.api.serialization.nbt.HTDataSerializable
+import hiiragi283.core.api.HTDataSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.amount.HTAmountSlot
