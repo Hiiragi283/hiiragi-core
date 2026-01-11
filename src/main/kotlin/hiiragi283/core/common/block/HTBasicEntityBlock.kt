@@ -1,8 +1,6 @@
 package hiiragi283.core.common.block
 
 import com.lowdragmc.lowdraglib2.gui.factory.BlockUIMenuType
-import com.lowdragmc.lowdraglib2.gui.ui.ModularUI
-import com.lowdragmc.lowdraglib2.gui.ui.UI
 import hiiragi283.core.api.world.getTypedBlockEntity
 import hiiragi283.core.common.block.entity.HTBlockEntity
 import hiiragi283.core.common.block.entity.HTExtendedBlockEntity
@@ -15,14 +13,12 @@ import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.BlockHitResult
 
 open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, properties: Properties) :
     Block(properties),
-    HTBlockWithEntity,
-    BlockUIMenuType.BlockUI {
+    HTBlockWithEntity {
     override fun useWithoutItem(
         state: BlockState,
         level: Level,
@@ -88,15 +84,4 @@ open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, pr
     }
 
     final override fun getBlockEntityType(): HTDeferredBlockEntityType<*> = type
-
-    //    BlockUIMenuType.BlockUI    //
-
-    final override fun createUI(holder: BlockUIMenuType.BlockUIHolder): ModularUI? {
-        val player: Player = holder.player
-        val blockEntity: BlockEntity? = player.level().getBlockEntity(holder.pos)
-        if (blockEntity is HTExtendedBlockEntity) {
-            return blockEntity.createUI(holder)
-        }
-        return ModularUI(UI.of(), player)
-    }
 }

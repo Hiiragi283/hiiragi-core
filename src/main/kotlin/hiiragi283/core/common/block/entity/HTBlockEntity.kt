@@ -5,21 +5,28 @@ import com.lowdragmc.lowdraglib2.syncdata.annotation.Persisted
 import hiiragi283.core.api.block.entity.HTOwnedBlockEntity
 import hiiragi283.core.api.block.entity.HTSoundPlayerBlockEntity
 import hiiragi283.core.api.storage.HTHandlerProvider
+import hiiragi283.core.api.storage.attachments.HTAttachedEnergy
+import hiiragi283.core.api.storage.attachments.HTAttachedFluids
+import hiiragi283.core.api.storage.attachments.HTAttachedItems
 import hiiragi283.core.api.storage.energy.HTEnergyBattery
 import hiiragi283.core.api.storage.energy.HTEnergyHandler
 import hiiragi283.core.api.storage.fluid.HTFluidHandler
 import hiiragi283.core.api.storage.fluid.HTFluidTank
+import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.api.storage.holder.HTEnergyBatteryHolder
 import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
 import hiiragi283.core.api.storage.item.HTItemHandler
 import hiiragi283.core.api.storage.item.HTItemSlot
+import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
+import hiiragi283.core.common.storage.HTCapabilityCodec
 import hiiragi283.core.common.storage.resolver.HTEnergyStorageManager
 import hiiragi283.core.common.storage.resolver.HTFluidHandlerManager
 import hiiragi283.core.common.storage.resolver.HTItemHandlerManager
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
+import net.minecraft.core.component.DataComponentMap
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.sounds.SoundEvent
@@ -86,6 +93,24 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
 
     open fun onBlockRemoved(state: BlockState, level: Level, pos: BlockPos) {}
 
+    override fun applyImplicitComponents(componentInput: DataComponentInput) {
+        // Capability
+        for (type: HTCapabilityCodec<*, *> in HTCapabilityCodec.TYPES) {
+            if (type.canHandle(this)) {
+                type.copyTo(this, componentInput::get)
+            }
+        }
+    }
+
+    override fun collectImplicitComponents(components: DataComponentMap.Builder) {
+        // Capability
+        for (type: HTCapabilityCodec<*, *> in HTCapabilityCodec.TYPES) {
+            if (type.canHandle(this)) {
+                type.copyFrom(this, components)
+            }
+        }
+    }
+
     //    Nameable    //
 
     @DescSynced
@@ -134,6 +159,23 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
 
     final override fun getFluidHandler(direction: Direction?): IFluidHandler? = fluidHandlerManager?.resolve(direction)
 
+    /**
+     * @see mekanism.common.tile.base.TileEntityMekanism.applyFluidTanks
+     */
+    fun applyFluidTanks(containers: List<HTFluidTank>, contents: HTAttachedFluids) {
+        for (i: Int in contents.indices) {
+            (containers.getOrNull(i) as? HTFluidTank.Basic)?.setStack(contents[i])
+        }
+    }
+
+    /**
+     * @see mekanism.common.tile.base.TileEntityMekanism.collectFluidTanks
+     */
+    fun collectFluidTanks(containers: List<HTFluidTank>): HTAttachedFluids? = containers
+        .map(HTFluidTank::getFluidStack)
+        .let(::HTAttachedFluids)
+        .takeUnless(HTAttachedFluids::isEmpty)
+
     // Energy
 
     /**
@@ -150,6 +192,24 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
 
     final override fun getEnergyStorage(direction: Direction?): IEnergyStorage? = energyHandlerManager?.resolve(direction)
 
+    /**
+     * @see mekanism.common.tile.base.TileEntityMekanism.applyEnergyContainers
+     */
+    fun applyEnergyBattery(containers: List<HTEnergyBattery>, contents: HTAttachedEnergy) {
+        for (i: Int in contents.indices) {
+            val amount: Int = contents[i]
+            (containers.getOrNull(i) as? HTEnergyBattery.Basic)?.setAmount(amount)
+        }
+    }
+
+    /**
+     * @see mekanism.common.tile.base.TileEntityMekanism.collectEnergyContainers
+     */
+    fun collectEnergyBattery(containers: List<HTEnergyBattery>): HTAttachedEnergy? = containers
+        .map(HTEnergyBattery::getAmount)
+        .let(::HTAttachedEnergy)
+        .takeUnless(HTAttachedEnergy::isEmpty)
+
     // Item
 
     /**
@@ -165,4 +225,21 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     final override fun getItemSlots(side: Direction?): List<HTItemSlot> = itemHandlerManager?.getContainers(side) ?: listOf()
 
     final override fun getItemHandler(direction: Direction?): IItemHandler? = itemHandlerManager?.resolve(direction)
+
+    /**
+     * @see mekanism.common.tile.base.TileEntityMekanism.applyInventorySlots
+     */
+    fun applyItemSlots(containers: List<HTItemSlot>, contents: HTAttachedItems) {
+        for (i: Int in contents.indices) {
+            (containers.getOrNull(i) as? HTItemSlot.Basic)?.setStack(contents[i])
+        }
+    }
+
+    /**
+     * @see mekanism.common.tile.base.TileEntityMekanism.collectInventorySlots
+     */
+    fun collectItemSlots(containers: List<HTItemSlot>): HTAttachedItems? = containers
+        .map(HTItemSlot::getItemStack)
+        .let(::HTAttachedItems)
+        .takeUnless(HTAttachedItems::isEmpty)
 }

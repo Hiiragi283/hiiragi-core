@@ -6,7 +6,7 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
-import hiiragi283.core.common.block.HTBasicEntityBlock
+import hiiragi283.core.common.block.HTTestBlock
 import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.item.block.HTWarpedWartItem
 import hiiragi283.core.common.material.CommonMaterialKeys
@@ -106,10 +106,10 @@ object HCBlocks {
     //    Misc    //
 
     @JvmField
-    val TEST: HTBasicDeferredBlock<HTBasicEntityBlock> = REGISTER.registerSimple(
+    val TEST: HTBasicDeferredBlock<HTTestBlock> = REGISTER.registerSimple(
         "test",
         properties(5f, 6f),
-        { prop: BlockBehaviour.Properties -> HTBasicEntityBlock(HCBlockEntityTypes.TEST, prop) },
+        ::HTTestBlock,
     )
 
     //    Extensions    //

@@ -1,7 +1,5 @@
 package hiiragi283.core.common.block.entity
 
-import com.lowdragmc.lowdraglib2.gui.factory.BlockUIMenuType
-import com.lowdragmc.lowdraglib2.gui.ui.ModularUI
 import com.lowdragmc.lowdraglib2.syncdata.holder.blockentity.ISyncPersistRPCBlockEntity
 import com.lowdragmc.lowdraglib2.syncdata.storage.FieldManagedStorage
 import com.lowdragmc.lowdraglib2.syncdata.storage.IManagedStorage
@@ -18,8 +16,6 @@ import net.minecraft.world.level.block.state.BlockState
 abstract class HTExtendedBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, state: BlockState) :
     BlockEntity(type.get(), pos, state),
     ISyncPersistRPCBlockEntity {
-    abstract fun createUI(holder: BlockUIMenuType.BlockUIHolder): ModularUI
-
     //    Save & Read    //
 
     private val syncStorage = FieldManagedStorage(this)
