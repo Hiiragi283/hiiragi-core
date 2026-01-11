@@ -64,11 +64,6 @@ object HiiragiCoreClient {
         event.dull(HCFluids.BLOOD, Color(0x990000))
         event.dull(HCFluids.MEAT, Color(0x993333))
 
-        event.registerFluidType(
-            HTSimpleFluidExtensions(vanillaId(HTConst.BLOCK, "lava_still"), null, vanillaId(HTConst.BLOCK, "lava_flow")),
-            HCFluids.MOLTEN_METAL.getFluidType(),
-        )
-
         event.molten(HCFluids.MOLTEN_GLASS, Color(0xccccff))
         event.molten(HCFluids.MOLTEN_CRIMSON_CRYSTAL, Color(0x993333))
         event.molten(HCFluids.MOLTEN_WARPED_CRYSTAL, Color(0x339999))

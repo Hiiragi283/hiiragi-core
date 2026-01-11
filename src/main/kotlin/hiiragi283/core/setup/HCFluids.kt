@@ -1,12 +1,8 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.common.fluid.HTEndFluidType
-import hiiragi283.core.common.fluid.HTMoltenMetalFluid
-import hiiragi283.core.common.fluid.HTMoltenMetalFluidType
 import hiiragi283.core.common.fluid.HTNetherFluidType
-import hiiragi283.core.common.item.HTMoltenMetalBucketItem
 import hiiragi283.core.common.registry.register.HTFluidContentRegister
 import hiiragi283.core.common.registry.register.HTSimpleFluidContent
 import net.minecraft.sounds.SoundEvent
@@ -50,15 +46,6 @@ object HCFluids {
     val MEAT: HTSimpleFluidContent = REGISTER.registerSimpleFlowing("meat", liquid())
 
     //    Material    //
-
-    @JvmField
-    val MOLTEN_METAL: HTFluidContent<HTMoltenMetalFluidType, HTMoltenMetalFluid, HTMoltenMetalBucketItem> = REGISTER.register(
-        "molten_metal",
-        molten(),
-        ::HTMoltenMetalFluidType,
-        ::HTMoltenMetalFluid,
-        ::HTMoltenMetalBucketItem,
-    )
 
     @JvmField
     val MOLTEN_GLASS: HTSimpleFluidContent = REGISTER.registerSimpleFlowing("molten_glass", molten())

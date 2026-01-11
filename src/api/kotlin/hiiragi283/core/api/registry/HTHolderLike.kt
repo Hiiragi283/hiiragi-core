@@ -15,4 +15,8 @@ import java.util.function.Supplier
 @Suppress("CAST_NEVER_SUCCEEDS")
 interface HTHolderLike<R : Any, T : R> :
     HTKeyLike<R>,
-    Supplier<T>
+    Supplier<T> {
+    interface HolderDelegate<R : Any, T : R> :
+        HTHolderLike<R, T>,
+        HTKeyLike.HolderDelegate<R>
+}

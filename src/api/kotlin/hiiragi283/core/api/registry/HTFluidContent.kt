@@ -1,9 +1,7 @@
 package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
-import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -13,11 +11,8 @@ import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidType
 
-interface HTFluidContent<TYPE : FluidType, FLUID : Fluid, ITEM : Item> :
-    HTHolderLike<Fluid, FLUID>,
-    HTKeyLike.HolderDelegate<Fluid> {
-    val typeHolder: HTDeferredHolder<FluidType, TYPE>
-    val fluidHolder: HTDeferredHolder<Fluid, FLUID>
+interface HTFluidContent<TYPE : FluidType, FLUID : Fluid, ITEM : Item> : HTHolderLike.HolderDelegate<Fluid, FLUID> {
+    val typeHolder: HTHolderLike<FluidType, TYPE>
     val fluidTag: TagKey<Fluid>
     val bucketHolder: HTItemHolderLike<ITEM>
     val bucketTag: TagKey<Item>
@@ -38,14 +33,10 @@ interface HTFluidContent<TYPE : FluidType, FLUID : Fluid, ITEM : Item> :
 
     fun toResource(patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType = HTFluidResourceType.of(get(), patch)
 
-    override fun get(): FLUID = fluidHolder.get()
-
-    override fun getHolder(): Holder<Fluid> = fluidHolder.delegate
-
     //    Flowing    //
 
     interface Flowing<TYPE : FluidType, STILL : Fluid, FLOWING : Fluid, ITEM : Item> : HTFluidContent<TYPE, STILL, ITEM> {
-        val flowingHolder: HTDeferredHolder<Fluid, FLOWING>
-        val blockHolder: HTDeferredHolder<Block, out LiquidBlock>
+        val flowingHolder: HTHolderLike<Fluid, FLOWING>
+        val blockHolder: HTHolderLike<Block, out LiquidBlock>
     }
 }

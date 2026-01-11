@@ -3,18 +3,17 @@ package hiiragi283.core.common.data.recipe
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.api.material.HTMaterialDefinition
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.HTMaterialTable
-import hiiragi283.core.api.material.attribute.HTSmeltingMaterialAttribute
-import hiiragi283.core.api.material.attribute.HTStorageBlockMaterialAttribute
-import hiiragi283.core.api.material.get
-import hiiragi283.core.api.material.getDefaultPrefix
-import hiiragi283.core.api.material.getStorageAttribute
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
+import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
+import hiiragi283.core.api.material.property.HTSmeltingMaterialProperty
+import hiiragi283.core.api.material.property.HTStorageBlockProperty
+import hiiragi283.core.api.material.property.getDefaultPart
+import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
@@ -44,21 +43,21 @@ class HTMaterialRecipeProvider(
     }
 
     private fun baseToBlock() {
-        for ((key: HTMaterialKey, definition: HTMaterialDefinition) in manager.entries) {
-            val basePrefix: HTMaterialPrefix = definition.getDefaultPrefix() ?: continue
-            val storageAttribute: HTStorageBlockMaterialAttribute = definition.getStorageAttribute()
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in manager.entries) {
+            val basePrefix: HTMaterialPrefix = propertyMap.getDefaultPart() ?: continue
+            val blockProperty: HTStorageBlockProperty = propertyMap.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK)
 
             val block: ItemLike = blocks[HCMaterialPrefixes.STORAGE_BLOCK, key] ?: continue
             val base: ItemLike = itemGetter(basePrefix, key) ?: continue
             // Shapeless
             HTShapelessRecipeBuilder
-                .create(base, storageAttribute.baseCount)
+                .create(base, blockProperty.baseCount)
                 .addIngredient(HCMaterialPrefixes.STORAGE_BLOCK, key)
                 .save(output, HiiragiCoreAPI.id(key.name, "${basePrefix.name}_from_block"))
             // Shaped
             HTShapedRecipeBuilder
                 .create(block)
-                .pattern(storageAttribute.pattern)
+                .pattern(blockProperty.pattern)
                 .define('A', basePrefix, key)
                 .define('B', base)
                 .save(output, HiiragiCoreAPI.id(key.name, "block_from_${basePrefix.name}"))
@@ -66,9 +65,9 @@ class HTMaterialRecipeProvider(
     }
 
     private fun prefixToBase(prefix: HTPrefixLike, exp: Float) {
-        for ((key: HTMaterialKey, definition: HTMaterialDefinition) in manager.entries) {
-            val smeltingAttribute: HTSmeltingMaterialAttribute = definition.get<HTSmeltingMaterialAttribute>()
-                ?: definition.getDefaultPrefix()?.let { HTSmeltingMaterialAttribute.withBlasting(it, key) } ?: continue
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in manager.entries) {
+            val smeltingAttribute: HTSmeltingMaterialProperty = propertyMap[HTMaterialPropertyKeys.SMELTING]
+                ?: propertyMap.getDefaultPart()?.let { HTSmeltingMaterialProperty.withBlasting(it, key) } ?: continue
             val smeltedPrefix: HTMaterialPrefix = smeltingAttribute.prefix ?: continue
             val smeltedKey: HTMaterialKey = smeltingAttribute.key ?: continue
             // 精錬の前後で同じプレフィックスと素材になる場合はパス

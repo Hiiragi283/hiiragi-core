@@ -4,13 +4,10 @@ import hiiragi283.core.api.collection.buildTable
 import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.data.lang.HTLanguageType
-import hiiragi283.core.api.material.HTMaterialDefinition
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.HTMaterialTable
-import hiiragi283.core.api.material.attribute.HTLangNameMaterialAttribute
-import hiiragi283.core.api.material.get
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.text.HTHasTranslationKey
@@ -20,7 +17,6 @@ import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
-import hiiragi283.core.util.HTMoltenMetalHelper
 
 object HCMaterialTranslations {
     @JvmStatic
@@ -48,22 +44,15 @@ object HCMaterialTranslations {
     @JvmStatic
     fun addTranslations(provider: HTLangProvider) {
         val langType: HTLanguageType = provider.langType
-        for ((key: HTMaterialKey, definition: HTMaterialDefinition) in HTMaterialManager.INSTANCE.entries) {
+        for ((key: HTMaterialKey, propertyMap) in HTMaterialManager.INSTANCE.entries) {
             // Block
             for ((prefix: HTMaterialPrefix, block: HTHasTranslationKey) in HCBlocks.MATERIALS.column(key)) {
-                val name: String = HTMaterialTranslationHelper.translate(langType, prefix, key, definition, MATERIAL_MAP::get) ?: continue
+                val name: String = HTMaterialTranslationHelper.translate(langType, prefix, key, propertyMap, MATERIAL_MAP::get) ?: continue
                 provider.add(block, name)
-            }
-            // Fluid
-            if (HTMoltenMetalHelper.isEnabled(definition, false)) {
-                definition
-                    .get<HTLangNameMaterialAttribute>()
-                    ?.getTranslatedName(langType)
-                    ?.let { provider.add(key, it) }
             }
             // Item
             for ((prefix: HTMaterialPrefix, item: HTHasTranslationKey) in HCItems.MATERIALS.column(key)) {
-                val name: String = HTMaterialTranslationHelper.translate(langType, prefix, key, definition, MATERIAL_MAP::get) ?: continue
+                val name: String = HTMaterialTranslationHelper.translate(langType, prefix, key, propertyMap, MATERIAL_MAP::get) ?: continue
                 provider.add(item, name)
             }
         }

@@ -3,8 +3,6 @@ package hiiragi283.core.client.emi
 import dev.emi.emi.api.EmiEntrypoint
 import dev.emi.emi.api.EmiRegistry
 import dev.emi.emi.api.recipe.EmiCraftingRecipe
-import dev.emi.emi.api.stack.Comparison
-import dev.emi.emi.api.stack.EmiStack
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.function.partially1
@@ -15,8 +13,6 @@ import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.client.emi.recipe.HTChargingEmiRecipe
 import hiiragi283.core.client.emi.recipe.HTSingleItemEmiRecipe
-import hiiragi283.core.setup.HCDataComponents
-import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.core.Holder
@@ -44,11 +40,6 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
 
         // Misc
         registry.addGenericStackProvider(HCEmiStackProvider)
-
-        val materialComparison: Comparison = Comparison.compareData { stack: EmiStack -> stack.get(HCDataComponents.MATERIAL) }
-
-        registry.setDefaultComparison(HCFluids.MOLTEN_METAL.get(), materialComparison)
-        registry.setDefaultComparison(HCFluids.MOLTEN_METAL.getBucket(), materialComparison)
     }
 
     private fun addCustomRecipes(registry: EmiRegistry) {

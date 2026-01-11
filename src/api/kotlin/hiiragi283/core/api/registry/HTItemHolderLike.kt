@@ -1,6 +1,5 @@
 package hiiragi283.core.api.registry
 
-import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.HTHasTranslationKey
 import net.minecraft.core.Holder
@@ -14,8 +13,7 @@ import net.minecraft.world.level.ItemLike
  * @since 0.1.0
  */
 fun interface HTItemHolderLike<ITEM : Item> :
-    HTHolderLike<Item, ITEM>,
-    HTKeyLike.HolderDelegate<Item>,
+    HTHolderLike.HolderDelegate<Item, ITEM>,
     HTHasTranslationKey,
     HTHasText,
     ItemLike {

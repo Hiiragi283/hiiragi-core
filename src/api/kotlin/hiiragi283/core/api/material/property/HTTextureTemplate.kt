@@ -1,4 +1,4 @@
-package hiiragi283.core.api.material.attribute
+package hiiragi283.core.api.material.property
 
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
@@ -10,13 +10,13 @@ import hiiragi283.core.api.material.prefix.HTPrefixLike
  */
 @ConsistentCopyVisibility
 @JvmRecord
-data class HTTextureTemplateMaterialAttribute private constructor(
+data class HTTextureTemplate private constructor(
     val prefixes: Set<HTMaterialPrefix>,
     private val customMap: Map<HTMaterialPrefix, String>,
-) : HTMaterialAttribute {
+) {
     companion object {
         @JvmStatic
-        inline fun create(builderAction: Builder.() -> Unit): HTTextureTemplateMaterialAttribute = Builder().apply(builderAction).build()
+        inline fun create(builderAction: Builder.() -> Unit): HTTextureTemplate = Builder().apply(builderAction).build()
     }
 
     operator fun get(prefix: HTPrefixLike): String? {
@@ -40,6 +40,6 @@ data class HTTextureTemplateMaterialAttribute private constructor(
             customMap[prefix.asMaterialPrefix()] = name
         }
 
-        fun build(): HTTextureTemplateMaterialAttribute = HTTextureTemplateMaterialAttribute(prefixes, customMap)
+        fun build(): HTTextureTemplate = HTTextureTemplate(prefixes, customMap)
     }
 }

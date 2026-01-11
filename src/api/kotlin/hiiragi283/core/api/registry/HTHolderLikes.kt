@@ -2,7 +2,6 @@
 
 package hiiragi283.core.api.registry
 
-import hiiragi283.core.api.resource.HTKeyLike
 import net.minecraft.core.Holder
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.level.block.Block
@@ -15,11 +14,14 @@ import net.neoforged.neoforge.registries.DeferredHolder
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun <R : Any> Holder<R>.toLike(): HTHolderLike<R, R> = (this as? HTHolderLike<R, R>) ?: object : HTHolderLike<R, R> {
-    override fun getResourceKey(): ResourceKey<R> = this@toLike.unwrapKey().orElseThrow()
+fun <R : Any> Holder<R>.toLike(): HTHolderLike.HolderDelegate<R, R> =
+    (this as? HTHolderLike.HolderDelegate<R, R>) ?: object : HTHolderLike.HolderDelegate<R, R> {
+        override fun get(): R = this@toLike.value()
 
-    override fun get(): R = this@toLike.value()
-}
+        override fun getHolder(): Holder<R> = this@toLike
+
+        override fun getResourceKey(): ResourceKey<R> = this@toLike.unwrapKey().orElseThrow()
+    }
 
 /**
  * この[DeferredHolder][this]を[HTHolderLike]に変換します。
@@ -28,11 +30,14 @@ fun <R : Any> Holder<R>.toLike(): HTHolderLike<R, R> = (this as? HTHolderLike<R,
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun <R : Any, T : R> DeferredHolder<R, T>.toLike(): HTHolderLike<R, T> = (this as? HTHolderLike<R, T>) ?: object : HTHolderLike<R, T> {
-    override fun getResourceKey(): ResourceKey<R> = this@toLike.key!!
+fun <R : Any, T : R> DeferredHolder<R, T>.toLike(): HTHolderLike.HolderDelegate<R, T> =
+    (this as? HTHolderLike.HolderDelegate<R, T>) ?: object : HTHolderLike.HolderDelegate<R, T> {
+        override fun get(): T = this@toLike.get()
 
-    override fun get(): T = this@toLike.get()
-}
+        override fun getHolder(): Holder<R> = this@toLike.delegate
+
+        override fun getResourceKey(): ResourceKey<R> = this@toLike.key!!
+    }
 
 /**
  * この[ブロック][this]を[HTHolderLike]に変換します。
@@ -40,12 +45,11 @@ fun <R : Any, T : R> DeferredHolder<R, T>.toLike(): HTHolderLike<R, T> = (this a
  * @author Hiiragi Tsubasa
  * @since 0.3.0
  */
-fun <BLOCK : Block> BLOCK.toHolderLike(): HTHolderLike<Block, BLOCK> =
-    object : HTHolderLike<Block, BLOCK>, HTKeyLike.HolderDelegate<Block> {
-        override fun get(): BLOCK = this@toHolderLike
+fun <BLOCK : Block> BLOCK.toHolderLike(): HTHolderLike.HolderDelegate<Block, BLOCK> = object : HTHolderLike.HolderDelegate<Block, BLOCK> {
+    override fun get(): BLOCK = this@toHolderLike
 
-        override fun getHolder(): Holder<Block> = get().builtInRegistryHolder()
-    }
+    override fun getHolder(): Holder<Block> = get().builtInRegistryHolder()
+}
 
 /**
  * この[液体][this]を[HTHolderLike]に変換します。
@@ -53,9 +57,8 @@ fun <BLOCK : Block> BLOCK.toHolderLike(): HTHolderLike<Block, BLOCK> =
  * @author Hiiragi Tsubasa
  * @since 0.3.0
  */
-fun <FLUID : Fluid> FLUID.toHolderLike(): HTHolderLike<Fluid, FLUID> =
-    object : HTHolderLike<Fluid, FLUID>, HTKeyLike.HolderDelegate<Fluid> {
-        override fun get(): FLUID = this@toHolderLike
+fun <FLUID : Fluid> FLUID.toHolderLike(): HTHolderLike.HolderDelegate<Fluid, FLUID> = object : HTHolderLike.HolderDelegate<Fluid, FLUID> {
+    override fun get(): FLUID = this@toHolderLike
 
-        override fun getHolder(): Holder<Fluid> = get().builtInRegistryHolder()
-    }
+    override fun getHolder(): Holder<Fluid> = get().builtInRegistryHolder()
+}

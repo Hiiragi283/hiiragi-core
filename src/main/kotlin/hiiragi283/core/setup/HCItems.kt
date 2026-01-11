@@ -1,7 +1,6 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.capability.HTFluidCapabilities
 import hiiragi283.core.api.collection.buildTable
 import hiiragi283.core.api.item.HTEquipmentMaterial
 import hiiragi283.core.api.material.HTMaterialKey
@@ -23,12 +22,10 @@ import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import hiiragi283.core.common.registry.register.HTDeferredItemRegister
-import hiiragi283.core.common.storage.fluid.HTMoltenMetalBucketHandler
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.world.item.Item
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
@@ -292,13 +289,7 @@ object HCItems {
     }
 
     @JvmStatic
-    private fun registerCapabilities(event: RegisterCapabilitiesEvent) {
-        event.registerItem(
-            HTFluidCapabilities.item,
-            { stack: ItemStack, _ -> HTMoltenMetalBucketHandler(stack) },
-            HCFluids.MOLTEN_METAL.getBucket(),
-        )
-    }
+    private fun registerCapabilities(event: RegisterCapabilitiesEvent) {}
 
     //    Extensions    //
 

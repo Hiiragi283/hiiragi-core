@@ -2,11 +2,10 @@ package hiiragi283.core.common.data.lang
 
 import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.data.lang.HTLanguageType
-import hiiragi283.core.api.material.HTMaterialDefinition
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.attribute.HTLangNameMaterialAttribute
-import hiiragi283.core.api.material.get
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
+import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
+import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.common.material.HCMaterialPrefixes
 
 object HTMaterialTranslationHelper {
@@ -15,10 +14,10 @@ object HTMaterialTranslationHelper {
         type: HTLanguageType,
         prefix: HTMaterialPrefix,
         key: HTMaterialKey,
-        definition: HTMaterialDefinition,
+        propertyMap: HTPropertyMap,
         customName: (HTMaterialPrefix, HTMaterialKey) -> HTLangName?,
     ): String? = customName(prefix, key)?.getTranslatedName(type) ?: run {
-        val materialName: HTLangName = definition.get<HTLangNameMaterialAttribute>() ?: return@run null
+        val materialName: HTLangName = propertyMap[HTMaterialPropertyKeys.LANG_NAME] ?: return@run null
         HCMaterialPrefixes.TRANSLATION_MAP[prefix]?.translate(type, materialName)
     }
 }

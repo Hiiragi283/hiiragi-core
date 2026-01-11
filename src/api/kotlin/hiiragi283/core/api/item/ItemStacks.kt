@@ -12,13 +12,14 @@ import net.minecraft.world.level.ItemLike
 //    ItemStack    //
 
 fun <T : Any> createItemStack(
-    item: ItemLike,
+    item: ItemLike?,
     type: DataComponentType<T>,
     value: T,
     count: Int = 1,
 ): ItemStack = createItemStack(item, count, buildDataPatch { set(type, value) })
 
-fun createItemStack(item: ItemLike, count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStack {
+fun createItemStack(item: ItemLike?, count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStack {
+    if (item == null) return ItemStack.EMPTY
     val stack = ItemStack(item, count)
     stack.applyComponents(patch)
     return stack
