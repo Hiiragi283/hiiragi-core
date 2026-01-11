@@ -1,7 +1,7 @@
 package hiiragi283.core.api.capability
 
 import hiiragi283.core.api.HTContentListener
-import hiiragi283.core.api.serialization.value.HTValueSerializable
+import hiiragi283.core.api.serialization.nbt.HTDataSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.energy.HTEnergyBattery
@@ -34,7 +34,7 @@ object HTEnergyCapabilities : HTMultiCapability.Simple<IEnergyStorage> {
 
     fun wrapStorage(storage: IEnergyStorage, context: Direction?): HTEnergyBattery? = when (storage) {
         is HTEnergyHandler -> storage.getEnergyBattery(context)
-        else -> object : HTEnergyBattery, HTContentListener.Empty, HTValueSerializable.Empty {
+        else -> object : HTEnergyBattery, HTContentListener.Empty, HTDataSerializable.Empty {
             override fun getAmount(): Int = storage.energyStored
 
             override fun getCapacity(): Int = storage.maxEnergyStored

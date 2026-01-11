@@ -1,75 +1,42 @@
 package hiiragi283.core.common.block
 
+import com.lowdragmc.lowdraglib2.gui.factory.BlockUIMenuType
+import com.lowdragmc.lowdraglib2.gui.ui.ModularUI
+import com.lowdragmc.lowdraglib2.gui.ui.UI
 import hiiragi283.core.api.world.getTypedBlockEntity
 import hiiragi283.core.common.block.entity.HTBlockEntity
 import hiiragi283.core.common.block.entity.HTExtendedBlockEntity
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
-import hiiragi283.core.common.registry.HTDeferredMenuType
 import net.minecraft.core.BlockPos
-import net.minecraft.network.chat.Component
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.InteractionResult
-import net.minecraft.world.Nameable
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.BlockHitResult
 
 open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, properties: Properties) :
     Block(properties),
-    HTBlockWithEntity {
-    /*override fun useItemOn(
-        stack: ItemStack,
-        state: BlockState,
-        level: Level,
-        pos: BlockPos,
-        player: Player,
-        hand: InteractionHand,
-        hitResult: BlockHitResult,
-    ): ItemInteractionResult {
-        val result: ItemInteractionResult = super.useItemOn(stack, state, level, pos, player, hand, hitResult)
-        if (stack.isEmpty) return result
-        if (!player.isShiftKeyDown) {
-            val blockEntity: HTBlockEntity = level.getTypedBlockEntity(pos) ?: return result
-            if (!level.isClientSide) {
-                for (tank: HTFluidTank in blockEntity.getFluidTanks(blockEntity.getFluidSideFor()).reversed()) {
-                    if (HTStackSlotHelper.interact(player, hand, stack, tank)) {
-                        player.inventory.setChanged()
-                        return ItemInteractionResult.sidedSuccess(false)
-                    }
-                }
-            }
-        }
-        return result
-    }*/
-
+    HTBlockWithEntity,
+    BlockUIMenuType.BlockUI {
     override fun useWithoutItem(
         state: BlockState,
         level: Level,
         pos: BlockPos,
         player: Player,
         hitResult: BlockHitResult,
-    ): InteractionResult {
-        val blockEntity: HTExtendedBlockEntity = level.getTypedBlockEntity(pos) ?: return InteractionResult.PASS
-        val menuType: HTDeferredMenuType.WithContext<*, *>? = getMenuType()
-        if (level.isClientSide) {
-            return when {
-                menuType == null -> InteractionResult.PASS
-                else -> InteractionResult.SUCCESS
-            }
+    ): InteractionResult = when {
+        level.isClientSide -> InteractionResult.SUCCESS
+        player is ServerPlayer -> {
+            BlockUIMenuType.openUI(player, pos)
+            InteractionResult.CONSUME
         }
-        val name: Component = when (blockEntity) {
-            is Nameable -> blockEntity.name
-            else -> state.block.name
-        }
-        return menuType
-            ?.openMenu(player, name, blockEntity, blockEntity::writeExtraContainerData)
-            ?: InteractionResult.PASS
+        else -> InteractionResult.PASS
     }
-
-    protected open fun getMenuType(): HTDeferredMenuType.WithContext<*, *>? = null
 
     override fun setPlacedBy(
         level: Level,
@@ -121,4 +88,15 @@ open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, pr
     }
 
     final override fun getBlockEntityType(): HTDeferredBlockEntityType<*> = type
+
+    //    BlockUIMenuType.BlockUI    //
+
+    final override fun createUI(holder: BlockUIMenuType.BlockUIHolder): ModularUI? {
+        val player: Player = holder.player
+        val blockEntity: BlockEntity? = player.level().getBlockEntity(holder.pos)
+        if (blockEntity is HTExtendedBlockEntity) {
+            return blockEntity.createUI(holder)
+        }
+        return ModularUI(UI.of(), player)
+    }
 }

@@ -1,17 +1,11 @@
 package hiiragi283.core.api
 
-import hiiragi283.core.api.inventory.slot.payload.HTSyncablePayload
 import hiiragi283.core.api.resource.toId
 import net.minecraft.client.Minecraft
-import net.minecraft.core.Registry
 import net.minecraft.core.RegistryAccess
-import net.minecraft.network.RegistryFriendlyByteBuf
-import net.minecraft.network.codec.StreamCodec
-import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.MinecraftServer
 import net.neoforged.api.distmarker.Dist
-import net.neoforged.neoforge.registries.RegistryBuilder
 import net.neoforged.neoforge.server.ServerLifecycleHooks
 import thedarkcolour.kotlinforforge.neoforge.forge.callWhenOn
 import java.util.ServiceLoader
@@ -67,32 +61,6 @@ data object HiiragiCoreAPI {
     @JvmStatic
     fun getActiveAccess(): RegistryAccess? =
         callWhenOn(Dist.CLIENT) { Minecraft.getInstance().level?.registryAccess() } ?: getActiveServer()?.registryAccess()
-
-    //    Registry    //
-
-    @JvmStatic
-    private fun <T : Any> createKey(path: String): ResourceKey<Registry<T>> = ResourceKey.createRegistryKey(id(path))
-
-    @JvmStatic
-    private fun <T : Any> createRegistry(key: ResourceKey<Registry<T>>): Registry<T> = RegistryBuilder<T>(key)
-        .sync(true)
-        .create()
-
-    /**
-     * [HTSyncablePayload]の[レジストリキー][ResourceKey]
-     * @author Hiiragi Tsubasa
-     * @since 0.4.0
-     */
-    @JvmField
-    val SLOT_TYPE_KEY: ResourceKey<Registry<StreamCodec<RegistryFriendlyByteBuf, out HTSyncablePayload>>> = createKey("syncable_slot_type")
-
-    /**
-     * [HTSyncablePayload]の[レジストリ][Registry]
-     * @author Hiiragi Tsubasa
-     * @since 0.4.0
-     */
-    @JvmField
-    val SLOT_TYPE_REGISTRY: Registry<StreamCodec<RegistryFriendlyByteBuf, out HTSyncablePayload>> = createRegistry(SLOT_TYPE_KEY)
 
     //    Service    //
 

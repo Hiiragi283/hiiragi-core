@@ -1,7 +1,6 @@
 package hiiragi283.core.api.storage.energy
 
-import hiiragi283.core.api.HTContentListener
-import hiiragi283.core.api.serialization.value.HTValueSerializable
+import hiiragi283.core.api.serialization.nbt.HTDataSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.amount.HTAmountSlot
@@ -15,8 +14,7 @@ import kotlin.math.min
  */
 interface HTEnergyBattery :
     HTAmountSlot.IntSized,
-    HTValueSerializable,
-    HTContentListener {
+    HTDataSerializable {
     //    Basic    //
 
     /**
@@ -37,7 +35,6 @@ interface HTEnergyBattery :
             val toAdd: Int = min(amount, needed)
             if (action.execute()) {
                 setAmount(getAmount() + toAdd)
-                onContentsChanged()
             }
             return toAdd
         }
@@ -47,7 +44,6 @@ interface HTEnergyBattery :
             val toRemove: Int = min(min(outputRate(access), getAmount()), amount)
             if (toRemove > 0 && action.execute()) {
                 setAmount(getAmount() - toRemove)
-                onContentsChanged()
             }
             return toRemove
         }

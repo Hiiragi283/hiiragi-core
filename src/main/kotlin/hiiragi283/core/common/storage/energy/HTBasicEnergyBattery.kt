@@ -2,11 +2,11 @@ package hiiragi283.core.common.storage.energy
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTContentListener
-import hiiragi283.core.api.serialization.value.HTValueInput
-import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.energy.HTEnergyBattery
+import net.minecraft.core.HolderLookup
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.util.Mth
 import java.util.function.Predicate
 
@@ -53,7 +53,6 @@ open class HTBasicEnergyBattery(
         } else {
             error("Invalid amount for storage: $amount")
         }
-        onContentsChanged()
     }
 
     final override fun canInsert(access: HTStorageAccess): Boolean = this.canInsert.test(access)
@@ -64,15 +63,11 @@ open class HTBasicEnergyBattery(
 
     override fun getCapacity(): Int = capacity
 
-    override fun serialize(output: HTValueOutput) {
-        output.putInt(HTConst.AMOUNT, getAmount())
+    override fun serializeNBT(provider: HolderLookup.Provider, nbt: CompoundTag) {
+        nbt.putInt(HTConst.AMOUNT, getAmount())
     }
 
-    override fun deserialize(input: HTValueInput) {
-        input.getInt(HTConst.AMOUNT, 0).let(::setAmountUnchecked)
-    }
-
-    final override fun onContentsChanged() {
-        listener?.onContentsChanged()
+    override fun deserializeNBT(provider: HolderLookup.Provider, nbt: CompoundTag) {
+        nbt.getInt(HTConst.AMOUNT).let(::setAmountUnchecked)
     }
 }
