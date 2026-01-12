@@ -2,8 +2,8 @@ package hiiragi283.core.common.block
 
 import com.lowdragmc.lowdraglib2.gui.factory.BlockUIMenuType
 import com.lowdragmc.lowdraglib2.gui.ui.ModularUI
+import hiiragi283.core.api.gui.HTModularUIHelper
 import hiiragi283.core.common.block.entity.HTModularBlockEntity
-import hiiragi283.core.util.HTModularUIHelper
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.block.entity.BlockEntity
 

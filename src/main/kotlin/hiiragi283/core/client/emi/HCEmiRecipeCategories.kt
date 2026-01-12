@@ -28,11 +28,11 @@ object HCEmiRecipeCategories {
     ): HTEmiRecipeCategory where T : HTHasText, T : HTIdLike = create(recipeType, recipeType.getId(), width, height, *workStations)
 
     @JvmField
-    val ANVIL_CRUSHING: HTEmiRecipeCategory = create(HCRecipeTypes.ANVIL_CRUSHING, 18 * 5, 18, Items.ANVIL)
+    val ANVIL_CRUSHING: HTEmiRecipeCategory = create(HCRecipeTypes.ANVIL_CRUSHING, 18 * 4, 18, Items.ANVIL)
 
     @JvmField
-    val CHARGING: HTEmiRecipeCategory = create(HCRecipeTypes.CHARGING, 18 * 5, 18, Items.LIGHTNING_ROD)
+    val CHARGING: HTEmiRecipeCategory = create(HCRecipeTypes.CHARGING, 18 * 4, 18, Items.LIGHTNING_ROD)
 
     @JvmField
-    val EXPLODING: HTEmiRecipeCategory = create(HCRecipeTypes.EXPLODING, 18 * 5, 18, Items.TNT)
+    val EXPLODING: HTEmiRecipeCategory = create(HCRecipeTypes.EXPLODING, 18 * 4, 18, Items.TNT)
 }

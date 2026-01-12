@@ -1,7 +1,6 @@
-package hiiragi283.core.util
+package hiiragi283.core.api.gui
 
 import com.lowdragmc.lowdraglib2.LDLib2
-import com.lowdragmc.lowdraglib2.gui.texture.Icons
 import com.lowdragmc.lowdraglib2.gui.texture.SpriteTexture
 import com.lowdragmc.lowdraglib2.gui.ui.ModularUI
 import com.lowdragmc.lowdraglib2.gui.ui.UI
@@ -20,7 +19,7 @@ object HTModularUIHelper {
     //    Element    //
 
     /**
-     * @see Icons
+     * @see com.lowdragmc.lowdraglib2.gui.texture.Icons
      */
     @JvmStatic
     fun createIcon(

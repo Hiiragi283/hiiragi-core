@@ -1,6 +1,6 @@
 package hiiragi283.core.api.integration.emi
 
-import com.lowdragmc.lowdraglib2.gui.ui.utils.IModularUIProvider
+import com.lowdragmc.lowdraglib2.gui.ui.UIElement
 import dev.emi.emi.api.recipe.EmiRecipeCategory
 import hiiragi283.core.api.math.HTBounds
 import net.minecraft.resources.ResourceLocation
@@ -20,12 +20,12 @@ abstract class HTHolderModularEmiRecipe<RECIPE : Recipe<*>> : HTModularEmiRecipe
     private val holder: RecipeHolder<RECIPE>
 
     constructor(
-        provider: IModularUIProvider<RECIPE>,
+        factory: (RECIPE, UIElement) -> Unit,
         category: EmiRecipeCategory,
         holder: RecipeHolder<RECIPE>,
         bounds: HTBounds,
     ) : super(
-        provider,
+        factory,
         category,
         holder.id,
         holder.value,
@@ -35,19 +35,19 @@ abstract class HTHolderModularEmiRecipe<RECIPE : Recipe<*>> : HTModularEmiRecipe
     }
 
     constructor(
-        provider: IModularUIProvider<RECIPE>,
+        factory: (RECIPE, UIElement) -> Unit,
         category: HTEmiRecipeCategory,
         id: ResourceLocation,
         recipe: RECIPE,
-    ) : super(provider, category, id, recipe) {
+    ) : super(factory, category, id, recipe) {
         this.holder = RecipeHolder(id, recipe)
     }
 
     constructor(
-        provider: IModularUIProvider<RECIPE>,
+        factory: (RECIPE, UIElement) -> Unit,
         category: HTEmiRecipeCategory,
         holder: RecipeHolder<RECIPE>,
-    ) : this(provider, category, holder, category.bounds)
+    ) : this(factory, category, holder, category.bounds)
 
     /**
      * EMIがレシピのIDを取得するために必要

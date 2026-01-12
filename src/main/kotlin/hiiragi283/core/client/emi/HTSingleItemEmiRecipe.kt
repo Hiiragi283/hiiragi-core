@@ -1,18 +1,13 @@
-package hiiragi283.core.client.emi.recipe
+package hiiragi283.core.client.emi
 
-import com.lowdragmc.lowdraglib2.gui.sync.bindings.impl.SupplierDataSource
-import com.lowdragmc.lowdraglib2.gui.ui.ModularUI
 import com.lowdragmc.lowdraglib2.gui.ui.UIElement
+import hiiragi283.core.api.gui.HTModularUIHelper
 import hiiragi283.core.api.gui.element.addRowChild
-import hiiragi283.core.api.integration.emi.HTEmiIngredientSlot
 import hiiragi283.core.api.integration.emi.HTEmiRecipeCategory
 import hiiragi283.core.api.integration.emi.HTHolderModularEmiRecipe
-import hiiragi283.core.api.integration.emi.toEmi
-import hiiragi283.core.client.emi.HCEmiRecipeCategories
 import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCSingleItemRecipe
-import hiiragi283.core.util.HTModularUIHelper
 import net.minecraft.world.item.crafting.RecipeHolder
 
 class HTSingleItemEmiRecipe<RECIPE : HCSingleItemRecipe>(category: HTEmiRecipeCategory, holder: RecipeHolder<RECIPE>) :
@@ -27,22 +22,13 @@ class HTSingleItemEmiRecipe<RECIPE : HCSingleItemRecipe>(category: HTEmiRecipeCa
             HTSingleItemEmiRecipe(HCEmiRecipeCategories.EXPLODING, holder)
 
         @JvmStatic
-        fun createUI(recipe: HCSingleItemRecipe): ModularUI = HTModularUIHelper.createVanillaUI(
-            UIElement()
-                .layout { it.widthPercent(100f).heightPercent(100f) }
+        fun createUI(recipe: HCSingleItemRecipe, root: UIElement) {
+            root
                 .addRowChild {
-                    addChild(
-                        HTEmiIngredientSlot
-                            .input()
-                            .bindDataSource(SupplierDataSource.of(recipe.ingredient::toEmi)),
-                    )
+                    addChild(inputSlot(recipe.ingredient))
                     addChild(HTModularUIHelper.rightArrowIcon().layout { it.marginHorizontalPercent(10f) })
-                    addChild(
-                        HTEmiIngredientSlot
-                            .output()
-                            .bindDataSource(SupplierDataSource.of(recipe.result::toEmi)),
-                    )
-                },
-        )
+                    addChild(outputSlot(recipe.result))
+                }
+        }
     }
 }
