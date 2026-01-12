@@ -32,7 +32,13 @@ interface HTResourceView<RESOURCE : HTResourceType<*>> : HTAmountView {
      * 指定した[resource]から占有率を取得します。
      * @return [Fraction]型での占有率
      */
-    fun getStoredLevel(resource: RESOURCE?): Fraction = fixedFraction(getAmount(), getCapacity(resource))
+    fun getLevelAsFraction(resource: RESOURCE?): Fraction = fixedFraction(getAmount(), getCapacity(resource))
+
+    /**
+     * 占有率を返します。
+     * @return [Float]型での占有率
+     */
+    fun getLevelAsFloat(resource: RESOURCE?): Float = getLevelAsFraction(resource).toFloat()
 
     override fun getCapacity(): Int = getCapacity(null)
 }

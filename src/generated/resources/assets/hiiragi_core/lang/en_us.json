@@ -62,6 +62,8 @@
   "gui.hiiragi_core.capacity.fe": "Capacity: %1$s FE",
   "gui.hiiragi_core.capacity.mb": "Capacity: %1$s mB",
   "gui.hiiragi_core.fraction": "%1$s / %2$s",
+  "gui.hiiragi_core.percentage": "%1$s %%",
+  "gui.hiiragi_core.progress": "Progress: %1$s %%",
   "gui.hiiragi_core.seconds": "%1$s sec (%2$s ticks)",
   "gui.hiiragi_core.stored": "%1$s: %2$s",
   "gui.hiiragi_core.stored.exp": "%1$s Exp",
@@ -193,7 +195,5 @@
   "tag.fluid.c.mushroom_stew": "Mushroom Stew",
   "tooltip.hiiragi_core.intrinsic_enchantment": "Always has at least %1$s",
   "tooltip.hiiragi_core.show_description": "Press Shift to show description",
-  "tooltip.hiiragi_core.show_details": "Press Ctrl to show details",
-  "tooltip.hiiragi_core.upgrade.exclusive": "Conflicting Upgrades: %1$s",
-  "tooltip.hiiragi_core.upgrade.target": "Upgrade Targets: %1$s"
+  "tooltip.hiiragi_core.show_details": "Press Ctrl to show details"
 }

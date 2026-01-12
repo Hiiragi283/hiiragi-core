@@ -91,12 +91,10 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HTCommonTranslation.MISSING_REGISTRY, $$"不明なレジストリ: %1$s")
         add(HTCommonTranslation.MISSING_KEY, $$"不明なキー: %1$s")
         // API - GUI
+        add(HTCommonTranslation.PROGRESS, $$"進捗率: %1$s %%")
         add(HTCommonTranslation.SECONDS, $$"%1$s 秒 (%2$s ticks)")
         // API - Item
         add(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT, $$"常に少なくとも%1$sがあります")
-        add(HTCommonTranslation.TOOLTIP_UPGRADE_TARGET, $$"アップグレードの対象: %1$s")
-        add(HTCommonTranslation.TOOLTIP_UPGRADE_EXCLUSIVE, $$"競合するアップグレード: %1$s")
-
         add(HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION, "シフトキーを押して説明を表示")
         add(HTCommonTranslation.TOOLTIP_SHOW_DETAILS, "シフトキーを押して詳細を表示")
 

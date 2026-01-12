@@ -1,26 +1,51 @@
 package hiiragi283.core.util
 
+import com.lowdragmc.lowdraglib2.LDLib2
+import com.lowdragmc.lowdraglib2.gui.texture.Icons
+import com.lowdragmc.lowdraglib2.gui.texture.SpriteTexture
 import com.lowdragmc.lowdraglib2.gui.ui.ModularUI
 import com.lowdragmc.lowdraglib2.gui.ui.UI
 import com.lowdragmc.lowdraglib2.gui.ui.UIElement
-import com.lowdragmc.lowdraglib2.gui.ui.elements.Label
-import com.lowdragmc.lowdraglib2.gui.ui.elements.TextElement
-import com.lowdragmc.lowdraglib2.gui.ui.elements.inventory.InventorySlots
-import com.lowdragmc.lowdraglib2.gui.ui.style.LayoutStyle
 import com.lowdragmc.lowdraglib2.gui.ui.style.StylesheetManager
-import hiiragi283.core.api.HTDefaultColor
+import hiiragi283.core.api.gui.element.addCenterLabel
+import hiiragi283.core.api.gui.element.addInventory
+import hiiragi283.core.api.gui.element.alineCenter
 import net.minecraft.network.chat.Component
 import net.minecraft.world.entity.player.Player
-import org.appliedenergistics.yoga.YogaEdge
-import org.appliedenergistics.yoga.YogaFlexDirection
-import org.appliedenergistics.yoga.YogaJustify
 
 /**
  * @see com.lowdragmc.lowdraglib2.test.TestBlockEntity.createUI
  */
 object HTModularUIHelper {
+    //    Element    //
+
+    /**
+     * @see Icons
+     */
     @JvmStatic
-    fun createRow(): UIElement = UIElement().layout { style: LayoutStyle -> style.setFlexDirection(YogaFlexDirection.ROW) }
+    fun createIcon(
+        x: Int,
+        y: Int,
+        width: Int,
+        height: Int,
+    ): UIElement = UIElement()
+        .layout { it.height(18f).aspectRatio(1f) }
+        .style { it.backgroundTexture(SpriteTexture.of(LDLib2.id("textures/gui/icon/gdp_icons.png")).setSprite(x, y, width, height)) }
+
+    @JvmStatic
+    fun rightArrowIcon(): UIElement = createIcon(12 * 4, 12 * 5, 12, 12)
+
+    @JvmStatic
+    fun plusIcon(): UIElement = createIcon(12 * 12 + 10 * 4, 0, 10, 10)
+
+    @JvmStatic
+    inline fun createRootWithInv(title: Component, action: UIElement.() -> Unit): UIElement {
+        val root: UIElement = UIElement().layout { it.paddingAll(4f) }.alineCenter().addClass("panel_bg")
+        root.addCenterLabel(title)
+        root.action()
+        root.addInventory()
+        return root
+    }
 
     //    UI    //
 
@@ -28,30 +53,15 @@ object HTModularUIHelper {
     fun createEmptyUI(player: Player? = null): ModularUI = ModularUI(UI.of(), player)
 
     @JvmStatic
-    inline fun createUIWithInv(player: Player, title: Component, action: UIElement.() -> Unit): ModularUI {
-        val root: UIElement = UIElement()
-            .layout { style: LayoutStyle ->
-                style
-                    .setPadding(YogaEdge.ALL, 4f)
-                    .setJustifyContent(YogaJustify.CENTER)
-            }.addClass("panel_bg")
-        root.addChild(
-            Label()
-                .setText(title)
-                .textStyle { style: TextElement.TextStyle -> style.textColor(HTDefaultColor.GRAY.color) }
-        )
-        root.action()
+    fun createVanillaUI(root: UIElement, player: Player? = null): ModularUI = ModularUI(
+        UI.of(
+            root,
+            StylesheetManager.INSTANCE.getStylesheetSafe(StylesheetManager.MC),
+        ),
+        player,
+    )
 
-        val inventory = InventorySlots()
-        inventory.layout.setMargin(YogaEdge.TOP, 5f)
-        root.addChild(inventory)
-
-        return ModularUI(
-            UI.of(
-                root,
-                StylesheetManager.INSTANCE.getStylesheetSafe(StylesheetManager.MC),
-            ),
-            player,
-        )
-    }
+    @JvmStatic
+    inline fun createVanillaUI(player: Player, title: Component, action: UIElement.() -> Unit): ModularUI =
+        createVanillaUI(createRootWithInv(title, action), player)
 }

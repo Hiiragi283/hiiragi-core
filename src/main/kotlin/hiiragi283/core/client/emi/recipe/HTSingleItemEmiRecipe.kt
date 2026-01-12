@@ -1,17 +1,22 @@
 package hiiragi283.core.client.emi.recipe
 
-import dev.emi.emi.api.widget.WidgetHolder
-import hiiragi283.core.api.integration.emi.HTEmiHolderRecipe
+import com.lowdragmc.lowdraglib2.gui.sync.bindings.impl.SupplierDataSource
+import com.lowdragmc.lowdraglib2.gui.ui.ModularUI
+import com.lowdragmc.lowdraglib2.gui.ui.UIElement
+import hiiragi283.core.api.gui.element.addRowChild
+import hiiragi283.core.api.integration.emi.HTEmiIngredientSlot
 import hiiragi283.core.api.integration.emi.HTEmiRecipeCategory
-import hiiragi283.core.api.integration.emi.addArrow
+import hiiragi283.core.api.integration.emi.HTHolderModularEmiRecipe
+import hiiragi283.core.api.integration.emi.toEmi
 import hiiragi283.core.client.emi.HCEmiRecipeCategories
 import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCSingleItemRecipe
+import hiiragi283.core.util.HTModularUIHelper
 import net.minecraft.world.item.crafting.RecipeHolder
 
 class HTSingleItemEmiRecipe<RECIPE : HCSingleItemRecipe>(category: HTEmiRecipeCategory, holder: RecipeHolder<RECIPE>) :
-    HTEmiHolderRecipe<RECIPE>(category, holder) {
+    HTHolderModularEmiRecipe<RECIPE>(::createUI, category, holder) {
     companion object {
         @JvmStatic
         fun crushing(holder: RecipeHolder<HCAnvilCrushingRecipe>): HTSingleItemEmiRecipe<HCAnvilCrushingRecipe> =
@@ -20,20 +25,24 @@ class HTSingleItemEmiRecipe<RECIPE : HCSingleItemRecipe>(category: HTEmiRecipeCa
         @JvmStatic
         fun exploding(holder: RecipeHolder<HCExplodingRecipe>): HTSingleItemEmiRecipe<HCExplodingRecipe> =
             HTSingleItemEmiRecipe(HCEmiRecipeCategories.EXPLODING, holder)
-    }
 
-    init {
-        addInput(recipe.ingredient)
-
-        addOutputs(recipe.result)
-    }
-
-    override fun addWidgets(widgets: WidgetHolder) {
-        widgets.addArrow(getPosition(2.5), getPosition(1))
-
-        // input
-        widgets.addSlot(input(0), getPosition(1), getPosition(0.5))
-        // outputs
-        widgets.addOutput(0, getPosition(4.5), getPosition(1), large = true, drawBack = true)
+        @JvmStatic
+        fun createUI(recipe: HCSingleItemRecipe): ModularUI = HTModularUIHelper.createVanillaUI(
+            UIElement()
+                .layout { it.widthPercent(100f).heightPercent(100f) }
+                .addRowChild {
+                    addChild(
+                        HTEmiIngredientSlot
+                            .input()
+                            .bindDataSource(SupplierDataSource.of(recipe.ingredient::toEmi)),
+                    )
+                    addChild(HTModularUIHelper.rightArrowIcon().layout { it.marginHorizontalPercent(10f) })
+                    addChild(
+                        HTEmiIngredientSlot
+                            .output()
+                            .bindDataSource(SupplierDataSource.of(recipe.result::toEmi)),
+                    )
+                },
+        )
     }
 }

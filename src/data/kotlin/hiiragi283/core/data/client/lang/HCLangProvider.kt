@@ -22,6 +22,8 @@ interface HCLangProvider {
         consumer.accept(HTCommonTranslation.STORED_EXP, $$"%1$s Exp")
 
         consumer.accept(HTCommonTranslation.FRACTION, $$"%1$s / %2$s")
+        consumer.accept(HTCommonTranslation.PERCENTAGE, $$"%1$s %%")
+
         consumer.accept(HTCommonTranslation.TICK, $$"%1$s ticks")
     }
 }

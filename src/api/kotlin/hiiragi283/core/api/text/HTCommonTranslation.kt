@@ -43,14 +43,14 @@ enum class HTCommonTranslation(type: String, vararg path: String) : HTTranslatio
     STORED_EXP("gui", "stored", "exp"),
 
     FRACTION("gui", "fraction"),
+    PERCENTAGE("gui", "percentage"),
+    PROGRESS("gui", "progress"),
+
     TICK("gui", "tick"),
     SECONDS("gui", "seconds"),
 
     // Item Description
     TOOLTIP_INTRINSIC_ENCHANTMENT("tooltip", "intrinsic_enchantment"),
-    TOOLTIP_UPGRADE_TARGET("tooltip", "upgrade", "target"),
-    TOOLTIP_UPGRADE_EXCLUSIVE("tooltip", "upgrade", "exclusive"),
-
     TOOLTIP_SHOW_DESCRIPTION("tooltip", "show_description"),
     TOOLTIP_SHOW_DETAILS("tooltip", "show_details"),
 

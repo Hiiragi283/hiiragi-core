@@ -29,7 +29,6 @@ import java.util.function.Function
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  * @see mekanism.client.recipe_viewer.emi.recipe.MekanismEmiRecipe
- * @see HTEmiHolderRecipe
  */
 abstract class HTEmiRecipe<RECIPE : Any>(
     private val category: EmiRecipeCategory,

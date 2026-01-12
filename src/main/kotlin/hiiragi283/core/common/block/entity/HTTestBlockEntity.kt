@@ -1,9 +1,13 @@
 package hiiragi283.core.common.block.entity
 
-import com.lowdragmc.lowdraglib2.gui.ui.UIElement
+import com.lowdragmc.lowdraglib2.gui.factory.BlockUIMenuType
+import com.lowdragmc.lowdraglib2.gui.ui.ModularUI
+import com.lowdragmc.lowdraglib2.gui.ui.style.LayoutStyle
 import com.lowdragmc.lowdraglib2.syncdata.annotation.DescSynced
 import com.lowdragmc.lowdraglib2.syncdata.annotation.Persisted
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.gui.element.addRowChild
+import hiiragi283.core.api.gui.element.alineCenter
 import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
@@ -44,12 +48,10 @@ class HTTestBlockEntity(pos: BlockPos, state: BlockState) : HTModularBlockEntity
 
     //    UI    //
 
-    override fun setupElements(root: UIElement) {
-        root.addChild(
-            HTModularUIHelper
-                .createRow()
-                .addChild(slot.toSlot())
-                .addChild(createFluidTank(0)),
-        )
+    override fun createUI(holder: BlockUIMenuType.BlockUIHolder): ModularUI = HTModularUIHelper.createVanillaUI(holder.player, name) {
+        addRowChild { alineCenter() }
+            .addChild(slot.toSlot())
+            .addChild(HTModularUIHelper.rightArrowIcon().layout { style: LayoutStyle -> style.marginHorizontalPercent(5f) })
+            .addChild(createFluidSlot(0))
     }
 }

@@ -76,7 +76,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .save(output)
 
         // Wheat Dough
-
         HTShapelessRecipeBuilder
             .create(HCItems.WHEAT_DOUGH)
             .addIngredient(HiiragiCoreTags.Items.FLOURS_WHEAT)
@@ -125,6 +124,15 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
 
         // Eternal Ticket
         save(id(HTConst.SHAPELESS, "eternal_upgrade"), HTEternalUpgradeRecipe(CraftingBookCategory.EQUIPMENT))
+
+        // Iron Rod -> Iron Bar
+        HTShapedRecipeBuilder
+            .create(Items.IRON_BARS, 8)
+            .pattern(
+                "AAA",
+                "AAA",
+            ).define('A', HCMaterialPrefixes.ROD, VanillaMaterialKeys.IRON)
+            .saveSuffixed(output, "_from_rod")
 
         manual()
         buckets()

@@ -91,12 +91,10 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HTCommonTranslation.MISSING_REGISTRY, $$"Missing registry: %1$s")
         add(HTCommonTranslation.MISSING_KEY, $$"Missing key: %1$s")
         // API - GUI
+        add(HTCommonTranslation.PROGRESS, $$"Progress: %1$s %%")
         add(HTCommonTranslation.SECONDS, $$"%1$s sec (%2$s ticks)")
         // API - Item
         add(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT, $$"Always has at least %1$s")
-        add(HTCommonTranslation.TOOLTIP_UPGRADE_TARGET, $$"Upgrade Targets: %1$s")
-        add(HTCommonTranslation.TOOLTIP_UPGRADE_EXCLUSIVE, $$"Conflicting Upgrades: %1$s")
-
         add(HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION, "Press Shift to show description")
         add(HTCommonTranslation.TOOLTIP_SHOW_DETAILS, "Press Ctrl to show details")
 

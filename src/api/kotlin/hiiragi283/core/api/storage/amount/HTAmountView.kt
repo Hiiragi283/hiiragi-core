@@ -32,7 +32,13 @@ interface HTAmountView {
      * 占有率を返します。
      * @return [Fraction]型での占有率
      */
-    fun getStoredLevel(): Fraction = fixedFraction(getAmount(), getCapacity())
+    fun getLevelAsFraction(): Fraction = fixedFraction(getAmount(), getCapacity())
+
+    /**
+     * 占有率を返します。
+     * @return [Float]型での占有率
+     */
+    fun getLevelAsFloat(): Float = getLevelAsFraction().toFloat()
 
     //    Mutable    //
 
