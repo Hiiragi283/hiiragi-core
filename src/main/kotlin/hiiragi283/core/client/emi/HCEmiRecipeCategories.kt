@@ -1,7 +1,7 @@
 package hiiragi283.core.client.emi
 
+import dev.emi.emi.api.widget.Bounds
 import hiiragi283.core.api.integration.emi.HTEmiRecipeCategory
-import hiiragi283.core.api.math.HTBounds
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.setup.HCRecipeTypes
@@ -17,7 +17,7 @@ object HCEmiRecipeCategories {
         width: Int,
         height: Int,
         vararg workStations: ItemLike,
-    ): HTEmiRecipeCategory = HTEmiRecipeCategory.create(HTBounds(0, 0, width, height), hasText, id, *workStations)
+    ): HTEmiRecipeCategory = HTEmiRecipeCategory.create(Bounds(0, 0, width, height), hasText, id, *workStations)
 
     @JvmStatic
     private fun <T> create(

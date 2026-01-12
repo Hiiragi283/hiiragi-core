@@ -82,6 +82,13 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HTCommonTranslation.INFINITE, "無限")
         add(HTCommonTranslation.NONE, "なし")
         add(HTCommonTranslation.EMPTY, "空")
+
+        add(HTCommonTranslation.DOWN, "下")
+        add(HTCommonTranslation.UP, "上")
+        add(HTCommonTranslation.NORTH, "北")
+        add(HTCommonTranslation.SOUTH, "南")
+        add(HTCommonTranslation.WEST, "西")
+        add(HTCommonTranslation.EAST, "東")
         // API - Error
         add(HTCommonTranslation.EMPTY_TAG_KEY, $$"空のタグ: %1$s")
         add(HTCommonTranslation.INVALID_PACKET_S2C, $$"サーバー側からの不正なパケットを受信しました: %1$s")

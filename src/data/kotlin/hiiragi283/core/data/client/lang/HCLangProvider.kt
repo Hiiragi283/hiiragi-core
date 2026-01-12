@@ -9,8 +9,6 @@ interface HCLangProvider {
         // API - Constants
         consumer.accept(HTCommonTranslation.TRUE, "True")
         consumer.accept(HTCommonTranslation.FALSE, "False")
-
-        consumer.accept(HTCommonTranslation.EMPTY_ENTRY, "Not Yet Translated")
         // API - GUI
         consumer.accept(HTCommonTranslation.CAPACITY, $$"Capacity: %1$s")
         consumer.accept(HTCommonTranslation.CAPACITY_MB, $$"Capacity: %1$s mB")

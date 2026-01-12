@@ -7,6 +7,7 @@ import com.lowdragmc.lowdraglib2.integration.xei.IngredientIO
 import com.lowdragmc.lowdraglib2.integration.xei.emi.ModularUIEMIRecipe
 import dev.emi.emi.api.recipe.EmiRecipe
 import dev.emi.emi.api.recipe.EmiRecipeCategory
+import dev.emi.emi.api.widget.Bounds
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.gui.HTModularUIHelper
@@ -16,7 +17,6 @@ import hiiragi283.core.api.gui.element.alineCenter
 import hiiragi283.core.api.integration.emi.slot.HTListFluidTank
 import hiiragi283.core.api.integration.emi.slot.HTListItemSlot
 import hiiragi283.core.api.item.createItemStack
-import hiiragi283.core.api.math.HTBounds
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
@@ -25,8 +25,10 @@ import hiiragi283.core.api.recipe.result.HTItemResult
 import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.crafting.RecipeHolder
+import net.neoforged.neoforge.fluids.FluidStack
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[EmiRecipe]の抽象クラスです。
@@ -45,7 +47,7 @@ abstract class HTModularEmiRecipe<RECIPE : Any>(
     private val category: EmiRecipeCategory,
     private val id: ResourceLocation,
     protected val recipe: RECIPE,
-    private val bounds: HTBounds,
+    private val bounds: Bounds,
 ) : ModularUIEMIRecipe({
         HTModularUIHelper.createVanillaUI(
             UIElement()
@@ -113,11 +115,11 @@ abstract class HTModularEmiRecipe<RECIPE : Any>(
         }
 
         @JvmStatic
-        fun outputSlot(result: HTItemResult, chance: Float = 1f): ItemSlot = ItemSlot()
+        fun outputSlot(result: HTItemResult?, chance: Float = 1f): ItemSlot = ItemSlot()
             .setItem(
-                result.getStackResult(null).mapOrElse(identity()) { message: Component ->
+                result?.getStackResult(null)?.mapOrElse(identity()) { message: Component ->
                     createItemStack(Items.BARRIER, DataComponents.CUSTOM_NAME, message)
-                },
+                } ?: ItemStack.EMPTY,
             ).xeiRecipeIngredient(IngredientIO.OUTPUT)
             .xeiRecipeSlot(IngredientIO.OUTPUT, chance)
 
@@ -125,8 +127,8 @@ abstract class HTModularEmiRecipe<RECIPE : Any>(
         fun outputSlot(result: HTChancedItemResult): ItemSlot = outputSlot(result.result, result.chance.toFloat())
 
         @JvmStatic
-        fun outputSlot(result: HTFluidResult): FluidSlot = FluidSlot()
-            .setFluid(result.getStackOrEmpty(null))
+        fun outputSlot(result: HTFluidResult?): FluidSlot = FluidSlot()
+            .setFluid(result?.getStackResult(null)?.value() ?: FluidStack.EMPTY)
             .xeiRecipeIngredient(IngredientIO.OUTPUT)
             .xeiRecipeSlot()
     }

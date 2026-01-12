@@ -82,6 +82,13 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HTCommonTranslation.INFINITE, "Infinite")
         add(HTCommonTranslation.NONE, "None")
         add(HTCommonTranslation.EMPTY, "Empty")
+
+        add(HTCommonTranslation.DOWN, "Down")
+        add(HTCommonTranslation.UP, "Up")
+        add(HTCommonTranslation.NORTH, "North")
+        add(HTCommonTranslation.SOUTH, "South")
+        add(HTCommonTranslation.WEST, "West")
+        add(HTCommonTranslation.EAST, "East")
         // API - Error
         add(HTCommonTranslation.EMPTY_TAG_KEY, $$"Empty tag key: %1$s")
         add(HTCommonTranslation.INVALID_PACKET_S2C, $$"Invalid packet received from server side: %1$s")

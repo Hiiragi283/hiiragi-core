@@ -1,5 +1,6 @@
 package hiiragi283.core.api.gui.element
 
+import com.lowdragmc.lowdraglib2.gui.sync.bindings.impl.SupplierDataSource
 import com.lowdragmc.lowdraglib2.gui.ui.elements.FluidSlot
 import com.lowdragmc.lowdraglib2.gui.ui.styletemplate.MCSprites
 import com.lowdragmc.lowdraglib2.integration.xei.IngredientIO
@@ -10,6 +11,7 @@ import hiiragi283.core.api.integration.emi.slot.HTListFluidTank
 import hiiragi283.core.api.integration.emi.toEmi
 import hiiragi283.core.api.storage.fluid.HTFluidHandler
 import hiiragi283.core.api.storage.fluid.HTFluidTank
+import hiiragi283.core.api.storage.fluid.getFluidStack
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.Consumer
 
@@ -23,6 +25,7 @@ class HTFluidSlotElement : FluidSlot {
 
     constructor(tank: HTFluidTank) : super() {
         this.tank = tank
+        bindDataSource(SupplierDataSource.of(tank::getFluidStack))
     }
 
     constructor(handler: HTFluidHandler, index: Int) : super() {

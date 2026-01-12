@@ -20,8 +20,12 @@ enum class HTCommonTranslation(type: String, vararg path: String) : HTTranslatio
     TRUE("constants", "true"),
     FALSE("constants", "false"),
 
-    // Block Type
-    EMPTY_ENTRY("description", "empty"),
+    DOWN("direction", "down"),
+    UP("direction", "up"),
+    NORTH("direction", "north"),
+    SOUTH("direction", "south"),
+    WEST("direction", "west"),
+    EAST("direction", "east"),
 
     // Error
     EMPTY_TAG_KEY("error", "empty.tag_key"),

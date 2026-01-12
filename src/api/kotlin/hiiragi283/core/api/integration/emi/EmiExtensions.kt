@@ -23,8 +23,6 @@ import net.neoforged.neoforge.fluids.FluidStack
 
 //    EmiStack    //
 
-fun EmiStack.copyAsCatalyst(): EmiStack = copy().setRemainder(this)
-
 // Mutable Stack
 
 /**
