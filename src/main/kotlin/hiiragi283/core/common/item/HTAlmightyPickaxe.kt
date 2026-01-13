@@ -34,7 +34,7 @@ class HTAlmightyPickaxe(tier: Tier, properties: Properties) :
                 Tool.Rule.deniesDrops(HiiragiCoreTags.Blocks.INCORRECT_FOR_ALMIGHTY_PICKAXE),
                 Tool.Rule(
                     AnyHolderSet(BuiltInRegistries.BLOCK.asLookup()),
-                    Optional.of(20f),
+                    Optional.of(40f),
                     Optional.of(true),
                 ),
             ),

@@ -1,6 +1,6 @@
 package hiiragi283.core.api.storage.resource
 
-import hiiragi283.core.api.math.fixedFraction
+import hiiragi283.core.api.fixedFraction
 import hiiragi283.core.api.storage.amount.HTAmountView
 import org.apache.commons.lang3.math.Fraction
 import kotlin.math.max
@@ -37,6 +37,7 @@ interface HTResourceView<RESOURCE : HTResourceType<*>> : HTAmountView {
     /**
      * 占有率を返します。
      * @return [Float]型での占有率
+     * @since v0.7.0
      */
     fun getLevelAsFloat(resource: RESOURCE?): Float = getLevelAsFraction(resource).toFloat()
 

@@ -1,4 +1,4 @@
-package hiiragi283.core.api.math
+package hiiragi283.core.api
 
 import org.apache.commons.lang3.math.Fraction
 import kotlin.math.min

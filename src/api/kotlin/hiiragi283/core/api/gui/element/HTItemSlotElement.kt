@@ -24,6 +24,11 @@ import java.util.Optional
 import java.util.function.Consumer
 import kotlin.math.min
 
+/**
+ * Hiiragi Coreとそれを前提とするmodで使用される[ItemSlot]の拡張クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.7.0
+ */
 @LDLRegister(name = "hiiragi-item-slot", group = "inventory", registry = "ldlib2:ui_element")
 class HTItemSlotElement : ItemSlot {
     private val slot: HTItemSlot?
@@ -154,23 +159,17 @@ class HTItemSlotElement : ItemSlot {
         override fun remove(amount: Int): ItemStack = slot.extractItem(amount, HTStorageAction.EXECUTE, HTStorageAccess.MANUAL)
 
         override fun tryRemove(count: Int, decrement: Int, player: Player): Optional<ItemStack> {
-            if (allowPartialRemoval()) {
-                if (!mayPickup(player)) {
-                    return Optional.empty()
-                }
-                val count: Int = min(count, decrement)
-                val stack: ItemStack = remove(count)
-                if (stack.isEmpty) {
-                    return Optional.empty()
-                } else if (item.isEmpty) {
-                    setByPlayer(ItemStack.EMPTY, stack)
-                }
-                return Optional.of(stack)
+            if (!mayPickup(player)) {
+                return Optional.empty()
             }
-
-            return super.tryRemove(count, decrement, player)
+            val count: Int = min(count, decrement)
+            val stack: ItemStack = remove(count)
+            if (stack.isEmpty) {
+                return Optional.empty()
+            } else if (item.isEmpty) {
+                setByPlayer(ItemStack.EMPTY, stack)
+            }
+            return Optional.of(stack)
         }
-
-        protected open fun allowPartialRemoval(): Boolean = true
     }
 }

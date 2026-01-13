@@ -3,7 +3,7 @@ package hiiragi283.core.util
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTDataSerializable
 import hiiragi283.core.api.capability.HTFluidCapabilities
-import hiiragi283.core.api.math.fixedFraction
+import hiiragi283.core.api.fixedFraction
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.amount.HTAmountView

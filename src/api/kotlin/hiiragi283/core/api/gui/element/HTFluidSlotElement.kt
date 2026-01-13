@@ -15,6 +15,11 @@ import hiiragi283.core.api.storage.fluid.getFluidStack
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.Consumer
 
+/**
+ * Hiiragi Coreとそれを前提とするmodで使用される[FluidSlot]の拡張クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.7.0
+ */
 @LDLRegister(name = "hiiragi-fluid-slot", group = "inventory", registry = "ldlib2:ui_element")
 class HTFluidSlotElement : FluidSlot {
     private val tank: HTFluidTank?

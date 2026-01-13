@@ -8,7 +8,7 @@ import net.minecraft.tags.TagKey
 /**
  * [HTResourceRecipeResult]を作成するインターフェースです。
  * @param TYPE 種類のクラス
- * @param RESOURCE [HTResourceType]を継承したクラス
+ * @param RESOURCE [HTResourceType.Registered]を継承したクラス
  * @param STACK [HTResourceRecipeResult]の完成品のクラス
  * @param RESULT [HTResourceRecipeResult]を継承したクラス
  * @author Hiiragi Tsubasa
@@ -16,7 +16,7 @@ import net.minecraft.tags.TagKey
  */
 abstract class HTResultCreator<
     TYPE : Any,
-    RESOURCE : HTResourceType<TYPE>,
+    RESOURCE : HTResourceType.Registered<TYPE>,
     STACK : Any,
     RESULT : HTResourceRecipeResult<TYPE, RESOURCE, STACK>,
 > {

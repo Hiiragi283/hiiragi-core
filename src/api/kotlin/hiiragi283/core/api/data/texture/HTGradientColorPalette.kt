@@ -1,8 +1,8 @@
 package hiiragi283.core.api.data.texture
 
-import hiiragi283.core.api.math.fraction
-import hiiragi283.core.api.math.plus
-import hiiragi283.core.api.math.times
+import hiiragi283.core.api.fraction
+import hiiragi283.core.api.plus
+import hiiragi283.core.api.times
 import org.apache.commons.lang3.math.Fraction
 import java.awt.Color
 

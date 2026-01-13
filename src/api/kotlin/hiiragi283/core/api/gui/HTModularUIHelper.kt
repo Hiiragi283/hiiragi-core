@@ -13,7 +13,8 @@ import net.minecraft.network.chat.Component
 import net.minecraft.world.entity.player.Player
 
 /**
- * @see com.lowdragmc.lowdraglib2.test.TestBlockEntity.createUI
+ * @author Hiiragi Tsubasa
+ * @since 0.7.0
  */
 object HTModularUIHelper {
     //    Element    //

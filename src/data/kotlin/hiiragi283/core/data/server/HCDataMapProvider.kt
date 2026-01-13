@@ -1,10 +1,10 @@
 package hiiragi283.core.data.server
 
 import hiiragi283.core.api.data.HTDataGenContext
+import hiiragi283.core.api.fraction
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
-import hiiragi283.core.api.math.fraction
-import hiiragi283.core.api.math.times
+import hiiragi283.core.api.times
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.HCMaterialPrefixes

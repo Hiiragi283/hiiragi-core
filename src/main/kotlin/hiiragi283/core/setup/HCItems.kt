@@ -25,6 +25,8 @@ import hiiragi283.core.common.registry.register.HTDeferredItemRegister
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
+import net.minecraft.world.food.FoodConstants
+import net.minecraft.world.food.FoodProperties
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.ItemLike
 import net.neoforged.bus.api.IEventBus
@@ -267,7 +269,15 @@ object HCItems {
 
     @JvmField
     val AMBROSIA: HTSimpleDeferredItem = REGISTER.registerItem("ambrosia", ::HTAmbrosiaItem) {
-        it.description(HCTranslation.AMBROSIA)
+        it
+            .food(
+                FoodProperties
+                    .Builder()
+                    .nutrition(FoodConstants.MAX_FOOD)
+                    .saturationModifier(0.5f)
+                    .alwaysEdible()
+                    .build(),
+            ).description(HCTranslation.AMBROSIA)
     }
 
     @JvmField

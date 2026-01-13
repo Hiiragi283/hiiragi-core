@@ -1,6 +1,6 @@
 package hiiragi283.core.api.storage.amount
 
-import hiiragi283.core.api.math.fixedFraction
+import hiiragi283.core.api.fixedFraction
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.resource.HTResourceView
 import org.apache.commons.lang3.math.Fraction

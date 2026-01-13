@@ -2,8 +2,8 @@ package hiiragi283.core.api.serialization.codec
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
+import hiiragi283.core.api.fraction
 import hiiragi283.core.api.function.andThen
-import hiiragi283.core.api.math.fraction
 import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.serialization.codec.impl.HTEitherCodec
 import hiiragi283.core.api.serialization.codec.impl.HTEitherStreamCodec

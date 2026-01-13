@@ -10,14 +10,14 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 
 /**
- * [HTResourceType]の基づいた[HTRecipeResult]の抽象クラスです。
+ * [HTResourceType]に基づいた[HTRecipeResult]の抽象クラスです。
  * @param TYPE 種類のクラス
- * @param RESOURCE [HTResourceType]を継承したクラス
+ * @param RESOURCE [HTResourceType.Registered]を継承したクラス
  * @param STACK 完成品のクラス
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-abstract class HTResourceRecipeResult<TYPE : Any, RESOURCE : HTResourceType<TYPE>, STACK : Any>(
+abstract class HTResourceRecipeResult<TYPE : Any, RESOURCE : HTResourceType.Registered<TYPE>, STACK : Any>(
     protected val contents: Ior<RESOURCE, TagKey<TYPE>>,
     protected val amount: Int,
 ) : HTRecipeResult<STACK> {
@@ -61,5 +61,5 @@ abstract class HTResourceRecipeResult<TYPE : Any, RESOURCE : HTResourceType<TYPE
      */
     protected abstract fun createStack(holder: Holder<TYPE>, amount: Int): STACK
 
-    override fun getId(): ResourceLocation = contents.map(HTResourceType<TYPE>::getId, TagKey<TYPE>::location)
+    override fun getId(): ResourceLocation = contents.map(HTResourceType.Registered<TYPE>::getId, TagKey<TYPE>::location)
 }

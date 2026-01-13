@@ -1,7 +1,7 @@
 package hiiragi283.core.api.data.recipe.builder
 
-import hiiragi283.core.api.math.toFraction
 import hiiragi283.core.api.recipe.HTProcessingRecipe
+import hiiragi283.core.api.toFraction
 import org.apache.commons.lang3.math.Fraction
 import java.util.function.IntUnaryOperator
 import java.util.function.UnaryOperator
