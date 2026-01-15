@@ -79,23 +79,21 @@ object HCItems {
             CommonMaterialKeys.SALTPETER,
             CommonMaterialKeys.SULFUR,
             CommonMaterialKeys.STEEL,
+            CommonMaterialKeys.PLASTIC,
+            CommonMaterialKeys.RUBBER,
             CommonMaterialKeys.ASH,
             // Hiiragi Core
             HCMaterialKeys.AZURE,
             HCMaterialKeys.CRIMSON_CRYSTAL,
             HCMaterialKeys.WARPED_CRYSTAL,
             HCMaterialKeys.ELDRITCH,
-            HCMaterialKeys.NIGHT_METAL,
             HCMaterialKeys.AZURE_STEEL,
             HCMaterialKeys.DEEP_STEEL,
         ).forEach { register(HCMaterialPrefixes.DUST, it) }
         // Raws
-        arrayOf(
+        arrayOf<HTMaterialKey>(
             // Common
-            CommonMaterialKeys.PLASTIC,
-            CommonMaterialKeys.RUBBER,
             // Hiiragi Core
-            HCMaterialKeys.NIGHT_METAL,
         ).forEach { register(HCMaterialPrefixes.RAW_MATERIAL, it) }
         // Fuels
         arrayOf(
@@ -117,7 +115,6 @@ object HCItems {
             // Common
             CommonMaterialKeys.STEEL,
             // Hiiragi Core
-            HCMaterialKeys.NIGHT_METAL,
             HCMaterialKeys.AZURE_STEEL,
             HCMaterialKeys.DEEP_STEEL,
         ).forEach { register(HCMaterialPrefixes.INGOT, it) }
@@ -129,7 +126,6 @@ object HCItems {
             // Common
             CommonMaterialKeys.STEEL,
             // Hiiragi Core
-            HCMaterialKeys.NIGHT_METAL,
             HCMaterialKeys.AZURE_STEEL,
             HCMaterialKeys.DEEP_STEEL,
         ).forEach { register(HCMaterialPrefixes.NUGGET, it) }
@@ -143,7 +139,6 @@ object HCItems {
             // Common
             CommonMaterialKeys.STEEL,
             // Hiiragi Core
-            HCMaterialKeys.NIGHT_METAL,
             HCMaterialKeys.AZURE_STEEL,
             HCMaterialKeys.DEEP_STEEL,
         ).forEach { register(HCMaterialPrefixes.GEAR, it) }
@@ -160,20 +155,21 @@ object HCItems {
             CommonMaterialKeys.PLASTIC,
             CommonMaterialKeys.RUBBER,
             // Hiiragi Core
-            HCMaterialKeys.NIGHT_METAL,
             HCMaterialKeys.AZURE_STEEL,
             HCMaterialKeys.DEEP_STEEL,
         ).forEach { register(HCMaterialPrefixes.PLATE, it) }
         // Rods
         arrayOf(
-            // Metals
+            // Vanilla
             VanillaMaterialKeys.COPPER,
             VanillaMaterialKeys.IRON,
             VanillaMaterialKeys.GOLD,
-            HCMaterialKeys.NIGHT_METAL,
-            // Alloys
             VanillaMaterialKeys.NETHERITE,
+            // Common
             CommonMaterialKeys.STEEL,
+            CommonMaterialKeys.PLASTIC,
+            CommonMaterialKeys.RUBBER,
+            // Hiiragi core
             HCMaterialKeys.AZURE_STEEL,
             HCMaterialKeys.DEEP_STEEL,
         ).forEach { register(HCMaterialPrefixes.ROD, it) }
@@ -192,6 +188,12 @@ object HCItems {
 
     @JvmField
     val COMPRESSED_SAWDUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("compressed_sawdust")
+
+    @JvmField
+    val POLYMER_RESIN: HTSimpleDeferredItem = REGISTER.registerSimpleItem("polymer_resin")
+
+    @JvmField
+    val RAW_RUBBER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("raw_rubber")
 
     @JvmField
     val STEEL_COMPOUND: HTSimpleDeferredItem = REGISTER.registerSimpleItem("steel_compound")

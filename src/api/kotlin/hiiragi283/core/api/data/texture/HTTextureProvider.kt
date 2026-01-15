@@ -18,7 +18,6 @@ import net.minecraft.data.CachedOutput
 import net.minecraft.data.DataProvider
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceLocation
-import net.neoforged.fml.ModList
 import net.neoforged.neoforge.client.model.generators.ModelProvider
 import net.neoforged.neoforge.common.data.ExistingFileHelper
 import java.awt.Color
@@ -26,7 +25,6 @@ import java.io.IOException
 import java.nio.file.Path
 import java.util.concurrent.CompletableFuture
 import java.util.function.BiConsumer
-import kotlin.io.path.inputStream
 
 /**
  * テクスチャを生成する[DataProvider]の抽象クラスです。
@@ -38,6 +36,10 @@ abstract class HTTextureProvider(packOutput: PackOutput, private val fileHelper:
         packOutput.createPathProvider(PackOutput.Target.RESOURCE_PACK, "textures")
 
     override fun run(output: CachedOutput): CompletableFuture<*> {
+        HTTextureUtil.TEMPLATE_PALETTE.forEachIndexed { index: Int, color: Color ->
+            DataProvider.LOGGER.info("Template color at {} is {}", index, color.rgb)
+        }
+
         val set: MutableSet<ResourceLocation> = mutableSetOf()
         val list: MutableList<CompletableFuture<*>> = mutableListOf()
         gather { id: ResourceLocation, image: NativeImage ->
@@ -70,34 +72,6 @@ abstract class HTTextureProvider(packOutput: PackOutput, private val fileHelper:
 
     //    Extensions    //
 
-    /**
-     * 指定した[id]から既存のテクスチャを取得します。
-     * @return [id]からテクスチャを取得できない場合は`null`
-     */
-    protected fun getTexture(id: ResourceLocation): NativeImage? {
-        val path: Path = ModList
-            .get()
-            .getModFileById(id.namespace)
-            .file
-            .secureJar
-            .rootPath
-            .resolve("assets/${id.namespace}/textures/${id.path}.png")
-        return runCatching(path::inputStream)
-            .mapCatching(NativeImage::read)
-            .onFailure { DataProvider.LOGGER.error("Failed to load image to {}", path) }
-            .getOrNull()
-    }
-
-    /**
-     * 指定した[テクスチャ][other]をコピーします。
-     * @return コピーされたテクスチャ
-     */
-    protected fun copyFrom(other: NativeImage): NativeImage {
-        val image = NativeImage(other.width, other.height, true)
-        image.copyFrom(other)
-        return image
-    }
-
     protected inline fun material(
         output: BiConsumer<ResourceLocation, NativeImage>,
         modId: String,
@@ -106,18 +80,19 @@ abstract class HTTextureProvider(packOutput: PackOutput, private val fileHelper:
     ) {
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE.entries) {
             val templateMap: HTTextureTemplate = propertyMap[HTMaterialPropertyKeys.TEXTURE_TEMPLATE] ?: continue
-            val colorPalette: HTColorPalette = propertyMap[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: continue
+            val colorPalette: List<Color> = (propertyMap[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: modId.toId(key.name))
+                .let(HTTextureUtil::getPalette)
+                ?: continue
 
             for (prefix: HTMaterialPrefix in transform(key)) {
-                val templateImage: NativeImage = templateMap[prefix]
-                    ?.let { HiiragiCoreAPI.id("template", it) }
-                    ?.let(::getTexture)
-                    ?: continue
-                val image: NativeImage = copyFrom(templateImage)
+                val templateImage: NativeImage = HiiragiCoreAPI
+                    .id("template", templateMap[prefix])
+                    .let(HTTextureUtil::getTexture) ?: continue
+                val image: NativeImage = HTTextureUtil.copyFrom(templateImage)
 
                 for ((index: Int, pixels: Collection<Pair<Int, Int>>) in createTemplate(templateImage).map) {
                     for ((x: Int, y: Int) in pixels) {
-                        image.setPixelRGBA(x, y, argbToFromABGR(colorPalette[index].rgb))
+                        image.setPixelRGBA(x, y, HTTextureUtil.argbToFromABGR(colorPalette[index].rgb))
                     }
                 }
                 output.accept(modId.toId(pathPrefix, prefix.asPrefixName(), key.name), image)
@@ -128,29 +103,12 @@ abstract class HTTextureProvider(packOutput: PackOutput, private val fileHelper:
     protected fun createTemplate(image: NativeImage): ImmutableMultiMap<Int, Pair<Int, Int>> = buildMultiMap {
         for (x: Int in (0..<image.width)) {
             for (y: Int in (0..<image.height)) {
-                val color = Color(argbToFromABGR(image.getPixelRGBA(x, y)))
-                val index: Int = getColorIndex(color) ?: continue
-                put(index, x to y)
+                val color = Color(HTTextureUtil.argbToFromABGR(image.getPixelRGBA(x, y)))
+                val index: Int = HTTextureUtil.TEMPLATE_PALETTE.indexOf(color)
+                if (index >= 0) {
+                    put(index, x to y)
+                }
             }
         }
-    }
-
-    private fun getColorIndex(color: Color): Int? = when (color) {
-        Color(0xd8d8d8) -> 0
-        Color(0xb2b2b2) -> 1
-        Color(0x8b8b8b) -> 2
-        Color(0x656565) -> 3
-        Color(0x3e3e3e) -> 4
-        Color(0x181818) -> 5
-        else -> null
-    }
-
-    /**
-     * @see mekanism.common.lib.Color.argbToFromABGR
-     */
-    protected fun argbToFromABGR(argb: Int): Int {
-        val red: Int = argb shr 16 and 0xFF
-        val blue: Int = argb and 0xFF
-        return argb and -0xff0100 or (blue shl 16) or red
     }
 }

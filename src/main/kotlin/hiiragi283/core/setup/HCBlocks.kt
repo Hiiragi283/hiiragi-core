@@ -83,8 +83,6 @@ object HCBlocks {
         registerBlock(VanillaMaterialKeys.ENDER, 5f, 9f, MapColor.TERRACOTTA_GREEN, SoundType.SHROOMLIGHT)
         registerBlock(HCMaterialKeys.ELDRITCH, 5f, 9f, MapColor.TERRACOTTA_PURPLE, SoundType.SHROOMLIGHT)
 
-        registerBlock(HCMaterialKeys.NIGHT_METAL, 5f, 9f, MapColor.TERRACOTTA_BLACK, SoundType.METAL)
-
         registerBlock(CommonMaterialKeys.STEEL, 5f, 9f, MapColor.COLOR_GRAY, SoundType.METAL)
         registerBlock(HCMaterialKeys.AZURE_STEEL, 5f, 9f, MapColor.COLOR_BLUE, SoundType.METAL)
         registerBlock(HCMaterialKeys.DEEP_STEEL, 5f, 9f, MapColor.TERRACOTTA_LIGHT_GREEN, SoundType.METAL)

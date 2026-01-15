@@ -88,7 +88,7 @@ config="${mod_id}.mixins.json"
 [[dependencies.${mod_id}]]
     modId="ldlib2"
     type="required"
-    versionRange="2.1.7"
+    versionRange="${ldlib2_version_range}"
     ordering="NONE"
     side="BOTH"
 

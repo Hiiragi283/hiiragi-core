@@ -2,9 +2,9 @@ package hiiragi283.core.api.material.property
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangName
-import hiiragi283.core.api.data.texture.HTColorPalette
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.property.HTPropertyKey
+import net.minecraft.resources.ResourceLocation
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[HTPropertyKey]の一覧をまとめたクラスです。
@@ -46,10 +46,10 @@ object HTMaterialPropertyKeys {
     val SMELTING: HTPropertyKey<HTSmeltingMaterialProperty?> = createNullable("smelting")
 
     /**
-     * テクスチャを生成する際のカラーパレットに対応する[プロパティキー][HTPropertyKey]
+     * テクスチャを生成する際のカラーパレットの[ID][ResourceLocation]に対応する[プロパティキー][HTPropertyKey]
      */
     @JvmField
-    val TEXTURE_COLOR: HTPropertyKey<HTColorPalette?> = createNullable("texture_color")
+    val TEXTURE_COLOR: HTPropertyKey<ResourceLocation?> = createNullable("texture_color")
 
     /**
      * テクスチャを生成する際のテンプレートに対応する[プロパティキー][HTPropertyKey]

@@ -3,43 +3,27 @@ package hiiragi283.core.api.material.property
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 
-/**
- * テクスチャの生成で使用されるテンプレートを提供するクラスです。
- * @author Hiiragi Tsubasa
- * @since 0.3.0
- */
-@ConsistentCopyVisibility
 @JvmRecord
-data class HTTextureTemplate private constructor(
-    val prefixes: Set<HTMaterialPrefix>,
-    private val customMap: Map<HTMaterialPrefix, String>,
-) {
+data class HTTextureTemplate(private val baseType: BaseType, private val overrideMap: Map<HTMaterialPrefix, String> = mapOf()) {
     companion object {
         @JvmStatic
-        inline fun create(builderAction: Builder.() -> Unit): HTTextureTemplate = Builder().apply(builderAction).build()
+        fun dull(vararg pairs: Pair<HTMaterialPrefix, String>): HTTextureTemplate = HTTextureTemplate(BaseType.DULL, mapOf(*pairs))
+
+        @JvmStatic
+        fun default(vararg pairs: Pair<HTMaterialPrefix, String>): HTTextureTemplate = HTTextureTemplate(BaseType.DEFAULT, mapOf(*pairs))
+
+        @JvmStatic
+        fun shine(vararg pairs: Pair<HTMaterialPrefix, String>): HTTextureTemplate = HTTextureTemplate(BaseType.SHINE, mapOf(*pairs))
     }
 
-    operator fun get(prefix: HTPrefixLike): String? {
+    operator fun get(prefix: HTPrefixLike): String {
         val prefix1: HTMaterialPrefix = prefix.asMaterialPrefix()
-        if (prefix1 !in prefixes) return null
-        return customMap[prefix1] ?: prefix1.name
+        return overrideMap[prefix1] ?: "${prefix.asPrefixName()}${baseType.suffix}"
     }
 
-    //    Builder    //
-
-    class Builder {
-        private val prefixes: MutableSet<HTMaterialPrefix> = mutableSetOf()
-        private val customMap: MutableMap<HTMaterialPrefix, String> = hashMapOf()
-
-        fun add(prefix: HTPrefixLike): Builder = apply {
-            prefixes += prefix.asMaterialPrefix()
-        }
-
-        fun addCustom(prefix: HTPrefixLike, name: String): Builder = apply {
-            add(prefix)
-            customMap[prefix.asMaterialPrefix()] = name
-        }
-
-        fun build(): HTTextureTemplate = HTTextureTemplate(prefixes, customMap)
+    enum class BaseType(val suffix: String) {
+        DULL("_dull"),
+        DEFAULT(""),
+        SHINE("_shine"),
     }
 }

@@ -19,11 +19,6 @@ object HCMaterialKeys {
     @JvmStatic
     val ELDRITCH: HTMaterialKey = HTMaterialKey.of("eldritch")
 
-    //    Metals    //
-
-    @JvmStatic
-    val NIGHT_METAL: HTMaterialKey = HTMaterialKey.of("night_metal")
-
     //    Alloys    //
 
     @JvmStatic

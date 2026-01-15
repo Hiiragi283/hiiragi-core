@@ -41,6 +41,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "竹炭")
         add(HCItems.COMPRESSED_SAWDUST, "圧縮されたおがくず")
+        add(HCItems.POLYMER_RESIN, "高分子樹脂")
+        add(HCItems.RAW_RUBBER, "生ゴム")
         add(HCItems.STEEL_COMPOUND, "鋼鉄混合物")
         add(HCItems.SYNTHETIC_LEATHER, "合成牛皮")
 
