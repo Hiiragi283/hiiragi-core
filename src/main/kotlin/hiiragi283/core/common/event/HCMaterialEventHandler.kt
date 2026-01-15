@@ -311,6 +311,7 @@ object HCMaterialEventHandler {
         }
         event.modify(CommonMaterialKeys.PLASTIC) {
             addDefaultPart(HCMaterialPrefixes.PLATE)
+            put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_PLASTIC))
             if (isDataGen) {
                 addName("Plastic", "プラスチック")
                 addTextureSet("plate", HTMaterialTextureSet.SHINE)
@@ -319,6 +320,7 @@ object HCMaterialEventHandler {
         }
         event.modify(CommonMaterialKeys.RUBBER) {
             addDefaultPart(HCMaterialPrefixes.PLATE)
+            put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_RUBBER))
             if (isDataGen) {
                 addName("Rubber", "ゴム")
                 addTextureSet("plate")

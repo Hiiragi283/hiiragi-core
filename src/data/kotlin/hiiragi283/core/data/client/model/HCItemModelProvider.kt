@@ -54,6 +54,8 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
             add(HCFluids.HONEY)
             // Molten
             add(HCFluids.MOLTEN_GLASS)
+            add(HCFluids.MOLTEN_PLASTIC)
+            add(HCFluids.MOLTEN_RUBBER)
             add(HCFluids.MOLTEN_CRIMSON_CRYSTAL)
             add(HCFluids.MOLTEN_WARPED_CRYSTAL)
             add(HCFluids.MOLTEN_ELDRITCH)

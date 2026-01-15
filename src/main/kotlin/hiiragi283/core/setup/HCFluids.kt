@@ -47,9 +47,18 @@ object HCFluids {
 
     //    Material    //
 
+    // Vanilla
     @JvmField
     val MOLTEN_GLASS: HTSimpleFluidContent = REGISTER.registerSimpleFlowing("molten_glass", molten())
 
+    // Common
+    @JvmField
+    val MOLTEN_PLASTIC: HTSimpleFluidContent = REGISTER.registerSimpleFlowing("molten_plastic", molten())
+
+    @JvmField
+    val MOLTEN_RUBBER: HTSimpleFluidContent = REGISTER.registerSimpleFlowing("molten_rubber", molten())
+
+    // Hiiragi Core
     @JvmField
     val MOLTEN_CRIMSON_CRYSTAL: HTSimpleFluidContent =
         REGISTER.registerFlowing("molten_crimson_crystal", molten().temperature(2300), ::HTNetherFluidType)

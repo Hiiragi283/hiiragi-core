@@ -64,7 +64,9 @@ object HiiragiCoreClient {
         event.dull(HCFluids.BLOOD, Color(0x990000))
         event.dull(HCFluids.MEAT, Color(0x993333))
 
-        event.molten(HCFluids.MOLTEN_GLASS, Color(0xccccff))
+        event.molten(HCFluids.MOLTEN_GLASS, Color(0xe6e6e6))
+        event.molten(HCFluids.MOLTEN_PLASTIC, Color(0xa0cfb5))
+        event.molten(HCFluids.MOLTEN_RUBBER, Color(0x453945))
         event.molten(HCFluids.MOLTEN_CRIMSON_CRYSTAL, Color(0x993333))
         event.molten(HCFluids.MOLTEN_WARPED_CRYSTAL, Color(0x339999))
         event.molten(HCFluids.MOLTEN_ELDRITCH, Color(0x6633cc))
