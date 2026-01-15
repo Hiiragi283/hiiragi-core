@@ -29,6 +29,10 @@ fun HTPropertyMap.Mutable.addName(value: HTLangName) {
     this[HTMaterialPropertyKeys.LANG_NAME] = value
 }
 
-fun HTPropertyMap.Mutable.addTemplate(value: HTTextureTemplate) {
-    this[HTMaterialPropertyKeys.TEXTURE_TEMPLATE] = value
+fun HTPropertyMap.Mutable.addTextureSet(name: String, parent: HTMaterialTextureSet = HTMaterialTextureSet.DEFAULT) {
+    this.addTextureSet(HTMaterialTextureSet(name, parent))
+}
+
+fun HTPropertyMap.Mutable.addTextureSet(textureSet: HTMaterialTextureSet) {
+    this[HTMaterialPropertyKeys.TEXTURE_SET] = textureSet
 }

@@ -55,7 +55,8 @@ object HTMaterialPropertyKeys {
      * テクスチャを生成する際のテンプレートに対応する[プロパティキー][HTPropertyKey]
      */
     @JvmField
-    val TEXTURE_TEMPLATE: HTPropertyKey<HTTextureTemplate?> = createNullable("texture_template")
+    val TEXTURE_SET: HTPropertyKey<HTMaterialTextureSet> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("texture_set"), HTMaterialTextureSet.DEFAULT)
 
     @JvmStatic
     fun <T : Any> createNullable(path: String): HTPropertyKey<T?> = HTPropertyKey.createNullable(HiiragiCoreAPI.id(path))

@@ -6,12 +6,12 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.property.HTFluidMaterialProperty
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
+import hiiragi283.core.api.material.property.HTMaterialTextureSet
 import hiiragi283.core.api.material.property.HTSmeltingMaterialProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
-import hiiragi283.core.api.material.property.HTTextureTemplate
 import hiiragi283.core.api.material.property.addDefaultPart
 import hiiragi283.core.api.material.property.addName
-import hiiragi283.core.api.material.property.addTemplate
+import hiiragi283.core.api.material.property.addTextureSet
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.HCMaterialPrefixes
@@ -40,7 +40,7 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.FUEL)
             if (isDataGen) {
                 addName("Coal", "石炭")
-                addTemplate(HTTextureTemplate.default())
+                addTextureSet("fuel")
                 put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
             }
         }
@@ -48,7 +48,7 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.FUEL)
             if (isDataGen) {
                 addName("Charcoal", "木炭")
-                addTemplate(HTTextureTemplate.default(HCMaterialPrefixes.STORAGE_BLOCK to "block_fuel"))
+                addTextureSet("fuel")
                 put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
             }
         }
@@ -71,7 +71,7 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.GEM)
             if (isDataGen) {
                 addName("Lapis", "ラピス")
-                addTemplate(HTTextureTemplate.default())
+                addTextureSet("lapis")
             }
         }
         event.modify(VanillaMaterialKeys.QUARTZ) {
@@ -79,7 +79,7 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
             if (isDataGen) {
                 addName("Quartz", "水晶")
-                addTemplate(HTTextureTemplate.default())
+                addTextureSet("quartz")
             }
         }
         event.modify(VanillaMaterialKeys.AMETHYST) {
@@ -87,28 +87,28 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
             if (isDataGen) {
                 addName("Amethyst", "アメジスト")
-                addTemplate(HTTextureTemplate.default())
+                addTextureSet("amethyst")
             }
         }
         event.modify(VanillaMaterialKeys.DIAMOND) {
             addDefaultPart(HCMaterialPrefixes.GEM)
             if (isDataGen) {
                 addName("Diamond", "ダイヤモンド")
-                addTemplate(HTTextureTemplate.default())
+                addTextureSet("diamond")
             }
         }
         event.modify(VanillaMaterialKeys.EMERALD) {
             addDefaultPart(HCMaterialPrefixes.GEM)
             if (isDataGen) {
                 addName("Emerald", "エメラルド")
-                addTemplate(HTTextureTemplate.default())
+                addTextureSet("emerald")
             }
         }
         event.modify(VanillaMaterialKeys.ECHO) {
             addDefaultPart(HCMaterialPrefixes.GEM)
             if (isDataGen) {
                 addName("Echo Shard", "残響の欠片")
-                addTemplate(HTTextureTemplate.default(HCMaterialPrefixes.STORAGE_BLOCK to "block_gem"))
+                addTextureSet("echo")
             }
         }
         // Pearls
@@ -116,7 +116,7 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.PEARL)
             if (isDataGen) {
                 addName("Ender Pearl", "エンダーパール")
-                addTemplate(HTTextureTemplate.default(HCMaterialPrefixes.STORAGE_BLOCK to "block_pearl"))
+                addTextureSet("pearl")
             }
         }
         // Metals
@@ -124,21 +124,19 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.INGOT)
             if (isDataGen) {
                 addName("Copper", "銅")
-                addTemplate(HTTextureTemplate.shine())
+                addTextureSet("shine")
             }
         }
         event.modify(VanillaMaterialKeys.IRON) {
             addDefaultPart(HCMaterialPrefixes.INGOT)
             if (isDataGen) {
                 addName("Iron", "鉄")
-                addTemplate(HTTextureTemplate.default())
             }
         }
         event.modify(VanillaMaterialKeys.GOLD) {
             addDefaultPart(HCMaterialPrefixes.INGOT)
             if (isDataGen) {
                 addName("Gold", "金")
-                addTemplate(HTTextureTemplate.default())
             }
         }
         // Alloys
@@ -146,14 +144,14 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.INGOT)
             if (isDataGen) {
                 addName("Netherite", "ネザライト")
-                addTemplate(HTTextureTemplate.dull())
+                addTextureSet("dull")
             }
         }
         // Others
         event.modify(VanillaMaterialKeys.WOOD) {
             if (isDataGen) {
                 addName("Wood", "木")
-                addTemplate(HTTextureTemplate.default(HCMaterialPrefixes.PLATE to "plate_wood"))
+                addTextureSet("wood")
                 put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
             }
         }
@@ -161,7 +159,7 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.DUST)
             if (isDataGen) {
                 addName("Stone", "石")
-                addTemplate(HTTextureTemplate.dull())
+                addTextureSet("dull")
                 put(HTMaterialPropertyKeys.SMELTING, HTSmeltingMaterialProperty.disable())
                 put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("steel"))
             }
@@ -177,7 +175,7 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.DUST)
             if (isDataGen) {
                 addName("Obsidian", "黒曜石")
-                addTemplate(HTTextureTemplate.dull())
+                addTextureSet("dull")
                 put(HTMaterialPropertyKeys.SMELTING, HTSmeltingMaterialProperty.disable())
             }
         }
@@ -205,7 +203,7 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.FUEL)
             if (isDataGen) {
                 addName("Coal Coke", "石炭コークス")
-                addTemplate(HTTextureTemplate.default(HCMaterialPrefixes.STORAGE_BLOCK to "block_fuel"))
+                addTextureSet("fuel")
                 put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
             }
         }
@@ -213,7 +211,7 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.FUEL)
             if (isDataGen) {
                 addName("Carbide", "カーバイド")
-                addTemplate(HTTextureTemplate.default(HCMaterialPrefixes.STORAGE_BLOCK to "block_fuel"))
+                addTextureSet("fuel")
                 put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
             }
         }
@@ -222,7 +220,7 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.DUST)
             if (isDataGen) {
                 addName("Cinnabar", "辰砂")
-                addTemplate(HTTextureTemplate.dull(HCMaterialPrefixes.STORAGE_BLOCK to "block_dust"))
+                addTextureSet("mineral", HTMaterialTextureSet.DULL)
                 put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("crimson_crystal"))
             }
         }
@@ -230,21 +228,21 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.DUST)
             if (isDataGen) {
                 addName("Salt", "塩")
-                addTemplate(HTTextureTemplate.shine(HCMaterialPrefixes.STORAGE_BLOCK to "block_dust"))
+                addTextureSet("mineral", HTMaterialTextureSet.SHINE)
             }
         }
         event.modify(CommonMaterialKeys.SALTPETER) {
             addDefaultPart(HCMaterialPrefixes.DUST)
             if (isDataGen) {
                 addName("Saltpeter", "硝石")
-                addTemplate(HTTextureTemplate.default(HCMaterialPrefixes.STORAGE_BLOCK to "block_dust"))
+                addTextureSet("mineral")
             }
         }
         event.modify(CommonMaterialKeys.SULFUR) {
             addDefaultPart(HCMaterialPrefixes.DUST)
             if (isDataGen) {
                 addName("Sulfur", "硫黄")
-                addTemplate(HTTextureTemplate.dull(HCMaterialPrefixes.STORAGE_BLOCK to "block_dust"))
+                addTextureSet("mineral", HTMaterialTextureSet.DULL)
                 put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("gold"))
             }
         }
@@ -281,9 +279,7 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.INGOT)
             if (isDataGen) {
                 addName("Steel", "鋼鉄")
-                addTemplate(
-                    HTTextureTemplate.shine(HCMaterialPrefixes.STORAGE_BLOCK to "block_ingot"),
-                )
+                addTextureSet("shine")
             }
         }
         register(CommonMaterialKeys.INVAR, HCMaterialPrefixes.INGOT, "Invar", "不変鋼")
@@ -300,7 +296,7 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.DUST)
             if (isDataGen) {
                 addName("Ash", "灰")
-                addTemplate(HTTextureTemplate.dull())
+                addTextureSet("dull")
                 put(HTMaterialPropertyKeys.SMELTING, HTSmeltingMaterialProperty.disable())
                 put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("steel"))
             }
@@ -309,7 +305,7 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.PLATE)
             if (isDataGen) {
                 addName("Plastic", "プラスチック")
-                addTemplate(HTTextureTemplate.shine(HCMaterialPrefixes.STORAGE_BLOCK to "block_plate"))
+                addTextureSet("plate", HTMaterialTextureSet.SHINE)
                 put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
             }
         }
@@ -317,7 +313,7 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.PLATE)
             if (isDataGen) {
                 addName("Rubber", "ゴム")
-                addTemplate(HTTextureTemplate.default(HCMaterialPrefixes.STORAGE_BLOCK to "block_plate"))
+                addTextureSet("plate")
                 put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
             }
         }
@@ -332,12 +328,7 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
             if (isDataGen) {
                 addName("Azure Shard", "紺碧の欠片")
-                addTemplate(
-                    HTTextureTemplate.shine(
-                        HCMaterialPrefixes.STORAGE_BLOCK to "block_gem",
-                        HCMaterialPrefixes.GEM to "gem_amethyst",
-                    ),
-                )
+                addTextureSet("amethyst", HTMaterialTextureSet.SHINE)
             }
         }
         event.modify(HCMaterialKeys.CRIMSON_CRYSTAL) {
@@ -345,12 +336,7 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_CRIMSON_CRYSTAL))
             if (isDataGen) {
                 addName("Crimson Crystal", "深紅のクリスタリル")
-                addTemplate(
-                    HTTextureTemplate.default(
-                        HCMaterialPrefixes.STORAGE_BLOCK to "block_gem_emerald",
-                        HCMaterialPrefixes.GEM to "gem_emerald",
-                    ),
-                )
+                addTextureSet("emerald")
             }
         }
         event.modify(HCMaterialKeys.WARPED_CRYSTAL) {
@@ -358,12 +344,7 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_WARPED_CRYSTAL))
             if (isDataGen) {
                 addName("Warped Crystal", "歪んだクリスタリル")
-                addTemplate(
-                    HTTextureTemplate.default(
-                        HCMaterialPrefixes.STORAGE_BLOCK to "block_gem_emerald",
-                        HCMaterialPrefixes.GEM to "gem_emerald",
-                    ),
-                )
+                addTextureSet("emerald")
             }
         }
         // Pearls
@@ -372,7 +353,7 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_ELDRITCH))
             if (isDataGen) {
                 addName("Eldritch Pearl", "異質な真珠")
-                addTemplate(HTTextureTemplate.default(HCMaterialPrefixes.STORAGE_BLOCK to "block_pearl"))
+                addTextureSet("pearl")
             }
         }
         // Alloys
@@ -380,7 +361,6 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.INGOT)
             if (isDataGen) {
                 addName("Azure Steel", "紺鉄")
-                addTemplate(HTTextureTemplate.default(HCMaterialPrefixes.STORAGE_BLOCK to "block_ingot"))
                 put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("azure"))
             }
         }
@@ -388,7 +368,7 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.INGOT)
             if (isDataGen) {
                 addName("Deep Steel", "深層鋼")
-                addTemplate(HTTextureTemplate.dull(HCMaterialPrefixes.STORAGE_BLOCK to "block_ingot"))
+                addTextureSet("dull")
             }
         }
     }

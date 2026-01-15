@@ -1,11 +1,9 @@
 package hiiragi283.core.api.data.texture
 
 import com.mojang.blaze3d.platform.NativeImage
-import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HiiragiCoreAPI
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.fml.ModList
-import org.slf4j.Logger
 import java.awt.Color
 import java.io.BufferedReader
 import java.io.InputStream
@@ -15,13 +13,10 @@ import kotlin.io.path.inputStream
 
 object HTTextureUtil {
     @JvmStatic
-    private val LOGGER: Logger = LogUtils.getLogger()
-
-    @JvmStatic
     private val PALETTE_REGEX = Regex("\\s+")
 
     @JvmStatic
-    val TEMPLATE_PALETTE: List<Color> = getPalette(HiiragiCoreAPI.id("template")) ?: listOf()
+    val TEMPLATE_PALETTE: List<Color> = getPalette(HiiragiCoreAPI.id("template")).getOrThrow()
 
     @JvmStatic
     private fun getResourcePath(id: ResourceLocation, prefix: String, extension: String): Path = ModList
@@ -35,7 +30,7 @@ object HTTextureUtil {
     //    Color    //
 
     @JvmStatic
-    fun getPalette(id: ResourceLocation): List<Color>? = runCatching(getResourcePath(id, "palettes", "gpl")::inputStream)
+    fun getPalette(id: ResourceLocation): Result<List<Color>> = runCatching(getResourcePath(id, "palettes", "gpl")::inputStream)
         .mapCatching(InputStream::bufferedReader)
         .mapCatching(BufferedReader::lines)
         .map(Stream<String>::toList)
@@ -45,8 +40,7 @@ object HTTextureUtil {
                 .filterNot { it == "GIMP Palette" || it.startsWith("Name") || it.startsWith("Columns") }
                 .map { it.split(PALETTE_REGEX, limit = 4).take(3).map(String::toInt) }
                 .map { (red: Int, green: Int, blue: Int) -> Color(red, green, blue) }
-        }.onFailure { LOGGER.error("Failed to load palette", it) }
-        .getOrNull()
+        }
 
     /**
      * @see mekanism.common.lib.Color.argbToFromABGR
@@ -65,10 +59,8 @@ object HTTextureUtil {
      * @return [id]からテクスチャを取得できない場合は`null`
      */
     @JvmStatic
-    fun getTexture(id: ResourceLocation): NativeImage? = runCatching(getResourcePath(id, "textures", "png")::inputStream)
-        .mapCatching(NativeImage::read)
-        .onFailure { LOGGER.error("Failed to load image", it) }
-        .getOrNull()
+    fun getTexture(id: ResourceLocation): Result<NativeImage> =
+        runCatching(getResourcePath(id, "textures", "png")::inputStream).mapCatching(NativeImage::read)
 
     /**
      * 指定した[テクスチャ][other]をコピーします。
