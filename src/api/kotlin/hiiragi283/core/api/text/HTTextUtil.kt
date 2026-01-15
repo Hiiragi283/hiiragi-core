@@ -5,6 +5,7 @@ package hiiragi283.core.api.text
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTDefaultColor
 import net.minecraft.ChatFormatting
+import net.minecraft.core.Direction
 import net.minecraft.network.chat.ClickEvent
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.HoverEvent
@@ -95,6 +96,7 @@ object HTTextUtil {
                     is EntityType<*> -> current = arg.description.copy()
                     is Fluid -> current = arg.fluidType.description.copy()
                     is FluidStack -> current = arg.hoverName.copy()
+                    is Direction -> current = directionText(arg)
                     is Item -> current = arg.description.copy()
                     is ItemStack -> current = arg.hoverName.copy()
                     is Level -> current = arg.description.copy()

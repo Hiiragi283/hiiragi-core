@@ -1,6 +1,6 @@
 package hiiragi283.core.api.recipe.handler
 
-import hiiragi283.core.api.math.fixedFraction
+import hiiragi283.core.api.fixedFraction
 import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.item.crafting.Recipe

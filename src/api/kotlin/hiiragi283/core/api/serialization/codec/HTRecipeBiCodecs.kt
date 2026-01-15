@@ -18,5 +18,5 @@ object HTRecipeBiCodecs {
      * 処理時間の[MapBiCodec]
      */
     @JvmField
-    val TIME: MapBiCodec<ByteBuf, Int> = BiCodecs.NON_NEGATIVE_INT.optionalFieldOf(HTConst.TIME, 200)
+    val TIME: MapBiCodec<ByteBuf, Int> = BiCodecs.NON_NEGATIVE_INT.fieldOf(HTConst.TIME)
 }

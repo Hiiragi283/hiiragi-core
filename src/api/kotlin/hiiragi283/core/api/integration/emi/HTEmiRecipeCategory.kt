@@ -5,7 +5,7 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory
 import dev.emi.emi.api.recipe.EmiRecipeSorting
 import dev.emi.emi.api.render.EmiRenderable
 import dev.emi.emi.api.stack.EmiStack
-import hiiragi283.core.api.math.HTBounds
+import dev.emi.emi.api.widget.Bounds
 import hiiragi283.core.api.text.HTHasText
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
@@ -23,7 +23,7 @@ import java.util.Comparator
  * @param sorter レシピの表示順を定める[Comparator]
  */
 open class HTEmiRecipeCategory(
-    val bounds: HTBounds,
+    val bounds: Bounds,
     private val hasText: HTHasText,
     val workStations: List<EmiStack>,
     id: ResourceLocation,
@@ -43,7 +43,7 @@ open class HTEmiRecipeCategory(
          */
         @JvmStatic
         fun create(
-            bounds: HTBounds,
+            bounds: Bounds,
             hasText: HTHasText,
             id: ResourceLocation,
             vararg workStations: ItemLike,

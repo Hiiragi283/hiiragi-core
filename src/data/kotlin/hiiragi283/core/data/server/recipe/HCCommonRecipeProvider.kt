@@ -46,6 +46,12 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .setTime(20 * 30)
             .setExp(0.5f)
             .saveSuffixed(output, "_from_sawdust")
+        // Polymer Resin -> Plastic Plate
+        HTCookingRecipeBuilder
+            .smelting(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.PLATE, CommonMaterialKeys.PLASTIC))
+            .addIngredient(HCItems.POLYMER_RESIN)
+            .setExp(0.7f)
+            .saveSuffixed(output, "_from_resin")
         // Steel Compound
         HTShapelessRecipeBuilder
             .create(HCItems.STEEL_COMPOUND)
@@ -76,7 +82,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .save(output)
 
         // Wheat Dough
-
         HTShapelessRecipeBuilder
             .create(HCItems.WHEAT_DOUGH)
             .addIngredient(HiiragiCoreTags.Items.FLOURS_WHEAT)
@@ -126,6 +131,15 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         // Eternal Ticket
         save(id(HTConst.SHAPELESS, "eternal_upgrade"), HTEternalUpgradeRecipe(CraftingBookCategory.EQUIPMENT))
 
+        // Iron Rod -> Iron Bar
+        HTShapedRecipeBuilder
+            .create(Items.IRON_BARS, 8)
+            .pattern(
+                "AAA",
+                "AAA",
+            ).define('A', HCMaterialPrefixes.ROD, VanillaMaterialKeys.IRON)
+            .saveSuffixed(output, "_from_rod")
+
         manual()
         buckets()
     }
@@ -136,13 +150,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         addManualSmelting(getItemOrThrow(HCMaterialPrefixes.GEM, HCMaterialKeys.AZURE), 2) {
             addIngredient(HCMaterialPrefixes.DUST, VanillaMaterialKeys.AMETHYST)
             addIngredient(HCMaterialPrefixes.DUST, VanillaMaterialKeys.LAPIS)
-        }
-
-        // Gold + Obsidian + Blackstone -> Night Metal
-        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, HCMaterialKeys.NIGHT_METAL)) {
-            addIngredient(HCMaterialPrefixes.DUST, VanillaMaterialKeys.GOLD)
-            addIngredient(HCMaterialPrefixes.DUST, VanillaMaterialKeys.OBSIDIAN)
-            addIngredients(Items.BLACKSTONE, count = 4)
         }
 
         // Netherite Scrap + Azure Steel -> Deep Steel
@@ -222,9 +229,15 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .saveSuffixed(output, "_from_flower")
         // Latex -> Raw Rubber
         HTShapelessRecipeBuilder
-            .create(getItemOrThrow(HCMaterialPrefixes.RAW_MATERIAL, CommonMaterialKeys.RUBBER))
+            .create(HCItems.RAW_RUBBER)
             .addIngredient(HCFluids.LATEX.bucketTag)
             .saveSuffixed(output, "_from_bucket")
+        // Raw Rubber -> Rubber Plate
+        HTCookingRecipeBuilder
+            .smelting(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.PLATE, CommonMaterialKeys.RUBBER))
+            .addIngredient(HCItems.RAW_RUBBER)
+            .setExp(0.7f)
+            .saveSuffixed(output, "_from_raw")
     }
 
     @JvmStatic

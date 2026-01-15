@@ -1,9 +1,9 @@
 package hiiragi283.core.api.storage.resource
 
-import hiiragi283.core.api.HTContentListener
-import hiiragi283.core.api.serialization.value.HTValueSerializable
+import hiiragi283.core.api.HTDataSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
+import hiiragi283.core.api.storage.amount.HTAmountView
 import kotlin.math.min
 
 /**
@@ -14,8 +14,7 @@ import kotlin.math.min
  */
 interface HTResourceSlot<RESOURCE : HTResourceType<*>> :
     HTResourceView<RESOURCE>,
-    HTValueSerializable,
-    HTContentListener {
+    HTDataSerializable {
     /**
      * 指定した[resource]が有効か判定します。
      * @return 有効な場合は`true`
@@ -67,33 +66,13 @@ interface HTResourceSlot<RESOURCE : HTResourceType<*>> :
 
     //    Basic    //
 
-    abstract class Basic<RESOURCE : HTResourceType<*>> : HTResourceSlot<RESOURCE> {
+    abstract class Basic<RESOURCE : HTResourceType<*>> :
+        HTAmountView.Mutable(),
+        HTResourceSlot<RESOURCE> {
         /**
          * 指定した[resource]で中身を置換します。
          */
         abstract fun setResource(resource: RESOURCE?)
-
-        /**
-         * 保持しているリソースの量を変更します。
-         * @param amount 新しい量
-         */
-        abstract fun setAmount(amount: Int)
-
-        /**
-         * 保持しているリソースの量を追加します。
-         * @param amount 追加する量
-         */
-        protected fun growAmount(amount: Int) {
-            setAmount(this.getAmount() + amount)
-        }
-
-        /**
-         * 保持しているリソースの量を減少します。
-         * @param amount 減少する量
-         */
-        protected fun shrinkAmount(amount: Int) {
-            setAmount(this.getAmount() - amount)
-        }
 
         override fun insert(
             resource: RESOURCE?,
@@ -112,7 +91,6 @@ interface HTResourceSlot<RESOURCE : HTResourceType<*>> :
                 if (action.execute()) {
                     if (sameType) {
                         growAmount(toAdd)
-                        onContentsChanged()
                     } else {
                         setResource(resource)
                         setAmount(toAdd)
@@ -129,7 +107,6 @@ interface HTResourceSlot<RESOURCE : HTResourceType<*>> :
             val fixedAmount: Int = min(min(outputRate(access), getAmount()), amount)
             if (fixedAmount > 0 && action.execute()) {
                 shrinkAmount(fixedAmount)
-                onContentsChanged()
             }
             return fixedAmount
         }
@@ -149,17 +126,5 @@ interface HTResourceSlot<RESOURCE : HTResourceType<*>> :
          * @return 搬出できる場合は`true`
          */
         open fun canStackExtract(resource: RESOURCE, access: HTStorageAccess): Boolean = true
-
-        /**
-         * 一度に搬入される量の上限を返します。
-         * @param access このスロットへのアクセスの種類
-         */
-        protected open fun inputRate(access: HTStorageAccess): Int = Int.MAX_VALUE
-
-        /**
-         * 一度に搬出される量の上限を返します。
-         * @param access このスロットへのアクセスの種類
-         */
-        protected open fun outputRate(access: HTStorageAccess): Int = Int.MAX_VALUE
     }
 }

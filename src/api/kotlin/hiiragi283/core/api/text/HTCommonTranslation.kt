@@ -20,8 +20,12 @@ enum class HTCommonTranslation(type: String, vararg path: String) : HTTranslatio
     TRUE("constants", "true"),
     FALSE("constants", "false"),
 
-    // Block Type
-    EMPTY_ENTRY("description", "empty"),
+    DOWN("direction", "down"),
+    UP("direction", "up"),
+    NORTH("direction", "north"),
+    SOUTH("direction", "south"),
+    WEST("direction", "west"),
+    EAST("direction", "east"),
 
     // Error
     EMPTY_TAG_KEY("error", "empty.tag_key"),
@@ -43,14 +47,14 @@ enum class HTCommonTranslation(type: String, vararg path: String) : HTTranslatio
     STORED_EXP("gui", "stored", "exp"),
 
     FRACTION("gui", "fraction"),
+    PERCENTAGE("gui", "percentage"),
+    PROGRESS("gui", "progress"),
+
     TICK("gui", "tick"),
     SECONDS("gui", "seconds"),
 
     // Item Description
     TOOLTIP_INTRINSIC_ENCHANTMENT("tooltip", "intrinsic_enchantment"),
-    TOOLTIP_UPGRADE_TARGET("tooltip", "upgrade", "target"),
-    TOOLTIP_UPGRADE_EXCLUSIVE("tooltip", "upgrade", "exclusive"),
-
     TOOLTIP_SHOW_DESCRIPTION("tooltip", "show_description"),
     TOOLTIP_SHOW_DETAILS("tooltip", "show_details"),
 

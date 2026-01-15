@@ -1,5 +1,6 @@
 package hiiragi283.core.api.data
 
+import hiiragi283.core.api.HTConst
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.RegistrySetBuilder
 import net.minecraft.data.DataGenerator
@@ -62,7 +63,7 @@ data class HTRootDataGenerator private constructor(
                         output,
                         event.lookupProvider,
                         RegistrySetBuilder().apply(builderAction),
-                        event.mods,
+                        event.mods.plus(HTConst.MINECRAFT),
                     )
                 }.registryProvider
             val fileHelper: ExistingFileHelper = event.existingFileHelper

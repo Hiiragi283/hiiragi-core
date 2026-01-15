@@ -37,8 +37,6 @@ object HCMaterialTranslations {
 
         register(HCMaterialPrefixes.DUST, VanillaMaterialKeys.WOOD, "Sawdust", "おがくず")
         register(HCMaterialPrefixes.PLATE, CommonMaterialKeys.RUBBER, "Rubber Sheet", "ゴムシート")
-        register(HCMaterialPrefixes.RAW_MATERIAL, CommonMaterialKeys.PLASTIC, "Polymer Resin", "高分子樹脂")
-        register(HCMaterialPrefixes.RAW_MATERIAL, CommonMaterialKeys.RUBBER, "Raw Rubber", "生ゴム")
     }.let(::HTMaterialTable)
 
     @JvmStatic

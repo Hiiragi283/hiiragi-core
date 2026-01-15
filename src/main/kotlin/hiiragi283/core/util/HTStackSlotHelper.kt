@@ -1,10 +1,9 @@
 package hiiragi283.core.util
 
 import com.mojang.logging.LogUtils
-import hiiragi283.core.api.HTContentListener
+import hiiragi283.core.api.HTDataSerializable
 import hiiragi283.core.api.capability.HTFluidCapabilities
-import hiiragi283.core.api.math.fixedFraction
-import hiiragi283.core.api.serialization.value.HTValueSerializable
+import hiiragi283.core.api.fixedFraction
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.amount.HTAmountView
@@ -161,8 +160,8 @@ object HTStackSlotHelper {
         Mth.lerpDiscrete(fixedFraction(amount, capacity).toFloat(), Redstone.SIGNAL_NONE, Redstone.SIGNAL_MAX)
 
     @JvmStatic
-    fun calculateRedstoneLevel(view: HTAmountView<*>): Int =
-        Mth.lerpDiscrete(view.getStoredLevel().toFloat(), Redstone.SIGNAL_NONE, Redstone.SIGNAL_MAX)
+    fun calculateRedstoneLevel(view: HTAmountView): Int =
+        Mth.lerpDiscrete(view.getLevelAsFraction().toFloat(), Redstone.SIGNAL_NONE, Redstone.SIGNAL_MAX)
 
     //    Item    //
 
@@ -300,8 +299,7 @@ object HTStackSlotHelper {
 
     class HTFluidHandlerItemWrapper private constructor(private val handler: IFluidHandlerItem) :
         HTFluidTank,
-        HTContentListener.Empty,
-        HTValueSerializable.Empty {
+        HTDataSerializable.Empty {
             companion object {
                 @JvmStatic
                 fun create(resourceType: HTItemResourceType): HTFluidHandlerItemWrapper? =

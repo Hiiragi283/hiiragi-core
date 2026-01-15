@@ -9,7 +9,6 @@ import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.item.HTToolType
-import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCBlocks
@@ -58,9 +57,6 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
             }
             if (prefix == HCMaterialPrefixes.PLATE && key == VanillaMaterialKeys.WOOD) {
                 factory.apply(ItemTags.PLANKS).add(item)
-            }
-            if (prefix == HCMaterialPrefixes.RAW_MATERIAL && key == CommonMaterialKeys.RUBBER) {
-                factory.apply(Tags.Items.SLIME_BALLS).add(item)
             }
         }
 
@@ -111,6 +107,10 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
         addTags(factory, HiiragiCoreTags.Items.FLOURS, HiiragiCoreTags.Items.FLOURS_WHEAT)
             .add(HCItems.WHEAT_FLOUR)
         // Others
+        factory
+            .apply(Tags.Items.SLIME_BALLS)
+            .add(HCItems.RAW_RUBBER)
+
         factory
             .apply(HiiragiCoreTags.Items.ELDRITCH_PEARL_BINDER)
             .addItem(Items.GHAST_TEAR)

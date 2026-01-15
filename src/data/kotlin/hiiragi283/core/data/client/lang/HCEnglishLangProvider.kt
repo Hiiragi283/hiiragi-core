@@ -41,6 +41,8 @@ class HCEnglishLangProvider(output: PackOutput) :
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "Bamboo Charcoal")
         add(HCItems.COMPRESSED_SAWDUST, "Compressed Sawdust")
+        add(HCItems.POLYMER_RESIN, "Polymer Resin")
+        add(HCItems.RAW_RUBBER, "Raw Rubber")
         add(HCItems.STEEL_COMPOUND, "Steel Compound")
         add(HCItems.SYNTHETIC_LEATHER, "Synthetic Leather")
 
@@ -82,6 +84,13 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HTCommonTranslation.INFINITE, "Infinite")
         add(HTCommonTranslation.NONE, "None")
         add(HTCommonTranslation.EMPTY, "Empty")
+
+        add(HTCommonTranslation.DOWN, "Down")
+        add(HTCommonTranslation.UP, "Up")
+        add(HTCommonTranslation.NORTH, "North")
+        add(HTCommonTranslation.SOUTH, "South")
+        add(HTCommonTranslation.WEST, "West")
+        add(HTCommonTranslation.EAST, "East")
         // API - Error
         add(HTCommonTranslation.EMPTY_TAG_KEY, $$"Empty tag key: %1$s")
         add(HTCommonTranslation.INVALID_PACKET_S2C, $$"Invalid packet received from server side: %1$s")
@@ -91,12 +100,10 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HTCommonTranslation.MISSING_REGISTRY, $$"Missing registry: %1$s")
         add(HTCommonTranslation.MISSING_KEY, $$"Missing key: %1$s")
         // API - GUI
+        add(HTCommonTranslation.PROGRESS, $$"Progress: %1$s %%")
         add(HTCommonTranslation.SECONDS, $$"%1$s sec (%2$s ticks)")
         // API - Item
         add(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT, $$"Always has at least %1$s")
-        add(HTCommonTranslation.TOOLTIP_UPGRADE_TARGET, $$"Upgrade Targets: %1$s")
-        add(HTCommonTranslation.TOOLTIP_UPGRADE_EXCLUSIVE, $$"Conflicting Upgrades: %1$s")
-
         add(HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION, "Press Shift to show description")
         add(HTCommonTranslation.TOOLTIP_SHOW_DETAILS, "Press Ctrl to show details")
 

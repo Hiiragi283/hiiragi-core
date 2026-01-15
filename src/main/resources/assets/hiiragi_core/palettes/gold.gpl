@@ -1,0 +1,10 @@
+GIMP Palette
+Name: Blockbench palette
+Columns: 10
+64	33	0	#402100
+128	78	0	#804e00
+191	135	0	#bf8700
+255	204	0	#ffcc00
+255	235	64	#ffeb40
+255	253	128	#fffd80
+250	255	191	#faffbf

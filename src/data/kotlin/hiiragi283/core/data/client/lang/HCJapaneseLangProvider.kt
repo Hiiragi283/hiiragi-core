@@ -41,6 +41,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "竹炭")
         add(HCItems.COMPRESSED_SAWDUST, "圧縮されたおがくず")
+        add(HCItems.POLYMER_RESIN, "高分子樹脂")
+        add(HCItems.RAW_RUBBER, "生ゴム")
         add(HCItems.STEEL_COMPOUND, "鋼鉄混合物")
         add(HCItems.SYNTHETIC_LEATHER, "合成牛皮")
 
@@ -82,6 +84,13 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HTCommonTranslation.INFINITE, "無限")
         add(HTCommonTranslation.NONE, "なし")
         add(HTCommonTranslation.EMPTY, "空")
+
+        add(HTCommonTranslation.DOWN, "下")
+        add(HTCommonTranslation.UP, "上")
+        add(HTCommonTranslation.NORTH, "北")
+        add(HTCommonTranslation.SOUTH, "南")
+        add(HTCommonTranslation.WEST, "西")
+        add(HTCommonTranslation.EAST, "東")
         // API - Error
         add(HTCommonTranslation.EMPTY_TAG_KEY, $$"空のタグ: %1$s")
         add(HTCommonTranslation.INVALID_PACKET_S2C, $$"サーバー側からの不正なパケットを受信しました: %1$s")
@@ -91,12 +100,10 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HTCommonTranslation.MISSING_REGISTRY, $$"不明なレジストリ: %1$s")
         add(HTCommonTranslation.MISSING_KEY, $$"不明なキー: %1$s")
         // API - GUI
+        add(HTCommonTranslation.PROGRESS, $$"進捗率: %1$s %%")
         add(HTCommonTranslation.SECONDS, $$"%1$s 秒 (%2$s ticks)")
         // API - Item
         add(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT, $$"常に少なくとも%1$sがあります")
-        add(HTCommonTranslation.TOOLTIP_UPGRADE_TARGET, $$"アップグレードの対象: %1$s")
-        add(HTCommonTranslation.TOOLTIP_UPGRADE_EXCLUSIVE, $$"競合するアップグレード: %1$s")
-
         add(HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION, "シフトキーを押して説明を表示")
         add(HTCommonTranslation.TOOLTIP_SHOW_DETAILS, "シフトキーを押して詳細を表示")
 

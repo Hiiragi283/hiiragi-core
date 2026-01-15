@@ -2,9 +2,9 @@ package hiiragi283.core.common.data.recipe.builder
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.builder.HTRecipeBuilder
-import hiiragi283.core.api.math.toFraction
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.toFraction
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import net.minecraft.resources.ResourceLocation
 import org.apache.commons.lang3.math.Fraction

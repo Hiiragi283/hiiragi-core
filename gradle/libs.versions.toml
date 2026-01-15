@@ -23,6 +23,7 @@ mi = "2.4.1"
 
 arch = "13.0.8"
 guide = "21.1.15"
+yoga = "1.0.0"
 
 [libraries]
 
@@ -37,6 +38,7 @@ mi = { group = "aztech", name = "Modern-Industrialization", version.ref = "mi" }
 
 arch = { group = "dev.architectury", name = "architectury-neoforge", version.ref = "arch" }
 guide = { group = "org.appliedenergistics", name = "guideme", version.ref = "guide" }
+yoga = { group = "org.appliedenergistics.yoga", name = "yoga", version.ref = "yoga" }
 
 [bundles]
 
@@ -49,7 +51,9 @@ mods-transitive = [
     "ldlib"
 ]
 
-mods-compile = []
+mods-compile = [
+    "yoga"
+]
 
 mods-runtime = []
 

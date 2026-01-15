@@ -11,8 +11,6 @@ import hiiragi283.core.api.integration.emi.toEmi
 import hiiragi283.core.api.integration.emi.toItemEmi
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.client.emi.recipe.HTChargingEmiRecipe
-import hiiragi283.core.client.emi.recipe.HTSingleItemEmiRecipe
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.core.Holder
@@ -37,9 +35,6 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
         addRegistryRecipes(registry, HCRecipeTypes.ANVIL_CRUSHING, HTSingleItemEmiRecipe.Companion::crushing)
         addRegistryRecipes(registry, HCRecipeTypes.CHARGING, ::HTChargingEmiRecipe)
         addRegistryRecipes(registry, HCRecipeTypes.EXPLODING, HTSingleItemEmiRecipe.Companion::exploding)
-
-        // Misc
-        registry.addGenericStackProvider(HCEmiStackProvider)
     }
 
     private fun addCustomRecipes(registry: EmiRegistry) {

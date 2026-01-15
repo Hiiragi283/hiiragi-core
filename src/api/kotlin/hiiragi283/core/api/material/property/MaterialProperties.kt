@@ -2,13 +2,9 @@ package hiiragi283.core.api.material.property
 
 import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.data.lang.HTLanguageType
-import hiiragi283.core.api.data.texture.HTArrayColorPalette
-import hiiragi283.core.api.data.texture.HTColorPalette
-import hiiragi283.core.api.data.texture.HTGradientColorPalette
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.property.HTPropertyMap
-import java.awt.Color
 
 fun HTPropertyMap.getDefaultPart(): HTMaterialPrefix? = this[HTMaterialPropertyKeys.DEFAULT_PART]
 
@@ -33,22 +29,10 @@ fun HTPropertyMap.Mutable.addName(value: HTLangName) {
     this[HTMaterialPropertyKeys.LANG_NAME] = value
 }
 
-fun HTPropertyMap.Mutable.addGradientColor(vararg colors: Color) {
-    this.addColor(HTArrayColorPalette(arrayOf(*colors)))
+fun HTPropertyMap.Mutable.addTextureSet(name: String, parent: HTMaterialTextureSet = HTMaterialTextureSet.DEFAULT) {
+    this.addTextureSet(HTMaterialTextureSet(name, parent))
 }
 
-fun HTPropertyMap.Mutable.addGradientColor(from: Color, to: Color) {
-    this.addColor(HTGradientColorPalette(from, to))
-}
-
-fun HTPropertyMap.Mutable.addColor(value: HTColorPalette) {
-    this[HTMaterialPropertyKeys.TEXTURE_COLOR] = value
-}
-
-inline fun HTPropertyMap.Mutable.addTemplate(builderAction: HTTextureTemplate.Builder.() -> Unit) {
-    this.addTemplate(HTTextureTemplate.create(builderAction))
-}
-
-fun HTPropertyMap.Mutable.addTemplate(value: HTTextureTemplate) {
-    this[HTMaterialPropertyKeys.TEXTURE_TEMPLATE] = value
+fun HTPropertyMap.Mutable.addTextureSet(textureSet: HTMaterialTextureSet) {
+    this[HTMaterialPropertyKeys.TEXTURE_SET] = textureSet
 }

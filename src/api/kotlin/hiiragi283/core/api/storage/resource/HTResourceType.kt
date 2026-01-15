@@ -1,6 +1,5 @@
 package hiiragi283.core.api.storage.resource
 
-import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.text.HTHasText
 import net.minecraft.core.Holder
@@ -17,9 +16,7 @@ import net.neoforged.neoforge.registries.datamaps.IWithData
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-interface HTResourceType<TYPE : Any> :
-    HTHasText,
-    HTIdLike {
+interface HTResourceType<TYPE : Any> : HTHasText {
     fun type(): TYPE
 
     /**

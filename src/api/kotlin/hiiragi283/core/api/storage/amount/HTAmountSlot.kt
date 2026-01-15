@@ -2,18 +2,18 @@ package hiiragi283.core.api.storage.amount
 
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
+import kotlin.math.min
 
 /**
  * 量を搬入/搬出できることを表すインターフェースです。
- * @param N 保持する数値のクラス
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 0.7.0
  */
-sealed interface HTAmountSlot<N> where N : Number, N : Comparable<N> {
+interface HTAmountSlot : HTAmountView {
     /**
      * このスロットが空かどうか判定します。
      */
-    fun isEmpty(): Boolean
+    fun isEmpty(): Boolean = getAmount() <= 0
 
     /**
      * このスロットに量を搬入します。
@@ -22,7 +22,7 @@ sealed interface HTAmountSlot<N> where N : Number, N : Comparable<N> {
      * @param access このスロットへのアクセスの種類
      * @return 搬入される量
      */
-    fun insert(amount: N, action: HTStorageAction, access: HTStorageAccess): N
+    fun insert(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int
 
     /**
      * このスロットから量を搬出します。
@@ -31,27 +31,45 @@ sealed interface HTAmountSlot<N> where N : Number, N : Comparable<N> {
      * @param access このスロットへのアクセスの種類
      * @return 搬出される量
      */
-    fun extract(amount: N, action: HTStorageAction, access: HTStorageAccess): N
+    fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int
 
-    /**
-     * [Int]値を扱う[HTAmountSlot]の拡張インターフェース
-     * @author Hiiragi Tsubasa
-     * @since 0.1.0
-     */
-    interface IntSized :
-        HTAmountSlot<Int>,
-        HTAmountView.IntSized {
-        override fun isEmpty(): Boolean = getAmount() <= 0
-    }
+    //    Basic    //
 
-    /**
-     * [Long]値を扱う[HTAmountSlot]の拡張インターフェース
-     * @author Hiiragi Tsubasa
-     * @since 0.1.0
-     */
-    interface LongSized :
-        HTAmountSlot<Long>,
-        HTAmountView.LongSized {
-        override fun isEmpty(): Boolean = getAmount() <= 0
+    abstract class Basic :
+        HTAmountView.Mutable(),
+        HTAmountSlot {
+        override fun insert(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int {
+            if (amount <= 0 || !canInsert(access)) return 0
+            val needed: Int = min(inputRate(access), getNeeded())
+            if (needed <= 0) return 0
+            val toAdd: Int = min(amount, needed)
+            if (action.execute()) {
+                setAmount(getAmount() + toAdd)
+            }
+            return toAdd
+        }
+
+        override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int {
+            if (isEmpty() || amount <= 0 || !canExtract(access)) return 0
+            val toRemove: Int = min(min(outputRate(access), getAmount()), amount)
+            if (toRemove > 0 && action.execute()) {
+                setAmount(getAmount() - toRemove)
+            }
+            return toRemove
+        }
+
+        /**
+         * このスロットに搬入できるか判定します。
+         * @param access このスロットへのアクセスの種類
+         * @return 搬入できる場合は`true`
+         */
+        protected open fun canInsert(access: HTStorageAccess): Boolean = true
+
+        /**
+         * このスロットから搬出できるか判定します。
+         * @param access このスロットへのアクセスの種類
+         * @return 搬出できる場合は`true`
+         */
+        protected open fun canExtract(access: HTStorageAccess): Boolean = true
     }
 }

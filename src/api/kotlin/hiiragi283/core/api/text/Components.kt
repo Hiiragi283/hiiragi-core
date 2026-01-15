@@ -1,6 +1,7 @@
 package hiiragi283.core.api.text
 
 import hiiragi283.core.api.HTDefaultColor
+import net.minecraft.core.Direction
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
 import net.minecraft.network.chat.Style
@@ -40,6 +41,20 @@ fun translatableText(value: String, vararg args: Any): MutableComponent = Compon
 fun boolText(value: Boolean): MutableComponent = when (value) {
     true -> HTCommonTranslation.TRUE
     false -> HTCommonTranslation.FALSE
+}.translate()
+
+/**
+ * 指定した[Direction]を翻訳された[テキスト][MutableComponent]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.7.0
+ */
+fun directionText(direction: Direction): MutableComponent = when (direction) {
+    Direction.DOWN -> HTCommonTranslation.DOWN
+    Direction.UP -> HTCommonTranslation.UP
+    Direction.NORTH -> HTCommonTranslation.NORTH
+    Direction.SOUTH -> HTCommonTranslation.SOUTH
+    Direction.WEST -> HTCommonTranslation.WEST
+    Direction.EAST -> HTCommonTranslation.EAST
 }.translate()
 
 /**
