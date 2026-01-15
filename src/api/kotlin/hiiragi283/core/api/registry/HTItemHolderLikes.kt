@@ -10,7 +10,7 @@ import net.minecraft.world.item.Item
  * @since 0.1.0
  */
 @Suppress("DEPRECATION")
-fun <ITEM : Item> ITEM.toHolderLike(): HTItemHolderLike<ITEM> = object : HTItemHolderLike<ITEM> {
+fun <ITEM : Item> ITEM.toHolderLike(): HTItemHolderLike<ITEM> = object : HTItemHolderLike.Delegated<ITEM> {
     override fun getItemHolder(): Holder<Item> = asItem().builtInRegistryHolder()
 
     override fun asItem(): ITEM = this@toHolderLike

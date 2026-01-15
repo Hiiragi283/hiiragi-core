@@ -5,11 +5,11 @@ package hiiragi283.core.api.material.property
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
-enum class HTStorageBlockProperty(val baseCount: Int, val pattern: List<String>) {
+enum class HTStorageBlockProperty(val baseCount: Int, val pattern: List<String>?) {
     /**
      * ブロックの作成に基本部品が1つ必要
      */
-    SINGLE(1, "A"),
+    SINGLE(1, null),
 
     /**
      * ブロックの作成に基本部品が4つ必要

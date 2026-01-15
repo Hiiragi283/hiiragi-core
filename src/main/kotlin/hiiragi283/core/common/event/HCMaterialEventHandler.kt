@@ -1,9 +1,9 @@
 package hiiragi283.core.common.event
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTMaterialPropertyEvent
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.property.HTFluidMaterialProperty
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialTextureSet
@@ -67,6 +67,16 @@ object HCMaterialEventHandler {
             }
         }
         // Gems
+        event.modify(VanillaMaterialKeys.GLASS) {
+            addDefaultPart(HCMaterialPrefixes.GEM)
+            put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
+            put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_GLASS))
+            if (isDataGen) {
+                addName("Glass", "ガラス")
+                addTextureSet("amethyst", HTMaterialTextureSet.SHINE)
+                put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("salt"))
+            }
+        }
         event.modify(VanillaMaterialKeys.LAPIS) {
             addDefaultPart(HCMaterialPrefixes.GEM)
             if (isDataGen) {
@@ -164,15 +174,9 @@ object HCMaterialEventHandler {
                 put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("steel"))
             }
         }
-        event.modify(VanillaMaterialKeys.GLASS) {
-            addDefaultPart(HCMaterialPrefixes.DUST)
-            if (isDataGen) {
-                addName("Glass", "ガラス")
-                put(HTMaterialPropertyKeys.SMELTING, HTSmeltingMaterialProperty.disable())
-            }
-        }
         event.modify(VanillaMaterialKeys.OBSIDIAN) {
             addDefaultPart(HCMaterialPrefixes.DUST)
+            put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
             if (isDataGen) {
                 addName("Obsidian", "黒曜石")
                 addTextureSet("dull")
@@ -185,14 +189,18 @@ object HCMaterialEventHandler {
     private fun common(event: HTMaterialPropertyEvent) {
         val isDataGen: Boolean = event.isDataGen
 
-        fun register(
-            key: HTMaterialKey,
-            prefix: HTMaterialPrefix,
-            enName: String,
-            jaName: String,
-        ) {
+        fun registerGem(key: HTMaterialKey, enName: String, jaName: String) {
             event.modify(key) {
-                addDefaultPart(prefix)
+                addDefaultPart(HCMaterialPrefixes.GEM)
+                if (isDataGen) {
+                    addName(enName, jaName)
+                }
+            }
+        }
+
+        fun registerMetal(key: HTMaterialKey, enName: String, jaName: String) {
+            event.modify(key) {
+                addDefaultPart(HCMaterialPrefixes.INGOT)
                 if (isDataGen) {
                     addName(enName, jaName)
                 }
@@ -228,7 +236,7 @@ object HCMaterialEventHandler {
             addDefaultPart(HCMaterialPrefixes.DUST)
             if (isDataGen) {
                 addName("Salt", "塩")
-                addTextureSet("mineral", HTMaterialTextureSet.SHINE)
+                addTextureSet("mineral")
             }
         }
         event.modify(CommonMaterialKeys.SALTPETER) {
@@ -247,33 +255,33 @@ object HCMaterialEventHandler {
             }
         }
         // Gems
-        register(CommonMaterialKeys.FLUORITE, HCMaterialPrefixes.GEM, "Fluorite", "蛍石")
-        register(CommonMaterialKeys.PERIDOT, HCMaterialPrefixes.GEM, "Peridot", "ペリドット")
-        register(CommonMaterialKeys.RUBY, HCMaterialPrefixes.GEM, "Ruby", "ルビー")
-        register(CommonMaterialKeys.SAPPHIRE, HCMaterialPrefixes.GEM, "Sapphire", "サファイア")
+        registerGem(CommonMaterialKeys.FLUORITE, "Fluorite", "蛍石")
+        registerGem(CommonMaterialKeys.PERIDOT, "Peridot", "ペリドット")
+        registerGem(CommonMaterialKeys.RUBY, "Ruby", "ルビー")
+        registerGem(CommonMaterialKeys.SAPPHIRE, "Sapphire", "サファイア")
         // Metals
-        register(CommonMaterialKeys.ALUMINUM, HCMaterialPrefixes.INGOT, "Aluminum", "アルミニウム")
+        registerMetal(CommonMaterialKeys.ALUMINUM, "Aluminum", "アルミニウム")
 
-        register(CommonMaterialKeys.TITANIUM, HCMaterialPrefixes.INGOT, "Titanium", "チタン")
-        register(CommonMaterialKeys.CHROME, HCMaterialPrefixes.INGOT, "Chrome", "クロム")
-        register(CommonMaterialKeys.CHROMIUM, HCMaterialPrefixes.INGOT, "Chromium", "クロム")
-        register(CommonMaterialKeys.MANGANESE, HCMaterialPrefixes.INGOT, "Manganese", "マンガン")
-        register(CommonMaterialKeys.COBALT, HCMaterialPrefixes.INGOT, "Cobalt", "コバルト")
-        register(CommonMaterialKeys.NICKEL, HCMaterialPrefixes.INGOT, "Nickel", "ニッケル")
-        register(CommonMaterialKeys.ZINC, HCMaterialPrefixes.INGOT, "Zinc", "亜鉛")
+        registerMetal(CommonMaterialKeys.TITANIUM, "Titanium", "チタン")
+        registerMetal(CommonMaterialKeys.CHROME, "Chrome", "クロム")
+        registerMetal(CommonMaterialKeys.CHROMIUM, "Chromium", "クロム")
+        registerMetal(CommonMaterialKeys.MANGANESE, "Manganese", "マンガン")
+        registerMetal(CommonMaterialKeys.COBALT, "Cobalt", "コバルト")
+        registerMetal(CommonMaterialKeys.NICKEL, "Nickel", "ニッケル")
+        registerMetal(CommonMaterialKeys.ZINC, "Zinc", "亜鉛")
 
-        register(CommonMaterialKeys.PALLADIUM, HCMaterialPrefixes.INGOT, "Palladium", "パラジウム")
-        register(CommonMaterialKeys.SILVER, HCMaterialPrefixes.INGOT, "Silver", "銀")
-        register(CommonMaterialKeys.TIN, HCMaterialPrefixes.INGOT, "Tin", "錫")
-        register(CommonMaterialKeys.ANTIMONY, HCMaterialPrefixes.INGOT, "Antimony", "アンチモン")
+        registerMetal(CommonMaterialKeys.PALLADIUM, "Palladium", "パラジウム")
+        registerMetal(CommonMaterialKeys.SILVER, "Silver", "銀")
+        registerMetal(CommonMaterialKeys.TIN, "Tin", "錫")
+        registerMetal(CommonMaterialKeys.ANTIMONY, "Antimony", "アンチモン")
 
-        register(CommonMaterialKeys.TUNGSTEN, HCMaterialPrefixes.INGOT, "Tungsten", "パラジウム")
-        register(CommonMaterialKeys.OSMIUM, HCMaterialPrefixes.INGOT, "Osmium", "オスミウム")
-        register(CommonMaterialKeys.IRIDIUM, HCMaterialPrefixes.INGOT, "Iridium", "イリジウム")
-        register(CommonMaterialKeys.PLATINUM, HCMaterialPrefixes.INGOT, "Platinum", "白金")
-        register(CommonMaterialKeys.LEAD, HCMaterialPrefixes.INGOT, "Lead", "鉛")
+        registerMetal(CommonMaterialKeys.TUNGSTEN, "Tungsten", "パラジウム")
+        registerMetal(CommonMaterialKeys.OSMIUM, "Osmium", "オスミウム")
+        registerMetal(CommonMaterialKeys.IRIDIUM, "Iridium", "イリジウム")
+        registerMetal(CommonMaterialKeys.PLATINUM, "Platinum", "白金")
+        registerMetal(CommonMaterialKeys.LEAD, "Lead", "鉛")
 
-        register(CommonMaterialKeys.URANIUM, HCMaterialPrefixes.INGOT, "Uranium", "ウラン")
+        registerMetal(CommonMaterialKeys.URANIUM, "Uranium", "ウラン")
         // Alloys
         event.modify(CommonMaterialKeys.STEEL) {
             addDefaultPart(HCMaterialPrefixes.INGOT)
@@ -282,15 +290,15 @@ object HCMaterialEventHandler {
                 addTextureSet("shine")
             }
         }
-        register(CommonMaterialKeys.INVAR, HCMaterialPrefixes.INGOT, "Invar", "不変鋼")
-        register(CommonMaterialKeys.CONSTANTAN, HCMaterialPrefixes.INGOT, "Constantan", "コンスタンタン")
-        register(CommonMaterialKeys.BRASS, HCMaterialPrefixes.INGOT, "Brass", "真鍮")
-        register(CommonMaterialKeys.BRONZE, HCMaterialPrefixes.INGOT, "Bronze", "青銅")
-        register(CommonMaterialKeys.ELECTRUM, HCMaterialPrefixes.INGOT, "Electrum", "琥珀金")
+        registerMetal(CommonMaterialKeys.INVAR, "Invar", "不変鋼")
+        registerMetal(CommonMaterialKeys.CONSTANTAN, "Constantan", "コンスタンタン")
+        registerMetal(CommonMaterialKeys.BRASS, "Brass", "真鍮")
+        registerMetal(CommonMaterialKeys.BRONZE, "Bronze", "青銅")
+        registerMetal(CommonMaterialKeys.ELECTRUM, "Electrum", "琥珀金")
 
-        register(CommonMaterialKeys.SIGNALUM, HCMaterialPrefixes.INGOT, "Signalum", "シグナルム")
-        register(CommonMaterialKeys.LUMIUM, HCMaterialPrefixes.INGOT, "Lumium", "ルミウム")
-        register(CommonMaterialKeys.ENDERIUM, HCMaterialPrefixes.INGOT, "Enderium", "エンダリウム")
+        registerMetal(CommonMaterialKeys.SIGNALUM, "Signalum", "シグナルム")
+        registerMetal(CommonMaterialKeys.LUMIUM, "Lumium", "ルミウム")
+        registerMetal(CommonMaterialKeys.ENDERIUM, "Enderium", "エンダリウム")
         // Others
         event.modify(CommonMaterialKeys.ASH) {
             addDefaultPart(HCMaterialPrefixes.DUST)

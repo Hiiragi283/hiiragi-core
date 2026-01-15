@@ -5,7 +5,7 @@
     "items": "#minecraft:warped_stems"
   },
   "result": {
-    "id": "hiiragi_core:warped_crystal",
+    "id": "hiiragi_core:warped_crystal_gem",
     "tag": "c:gems/warped_crystal"
   }
 }

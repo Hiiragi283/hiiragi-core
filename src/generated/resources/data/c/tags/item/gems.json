@@ -3,6 +3,7 @@
     "#c:gems/azure",
     "#c:gems/crimson_crystal",
     "#c:gems/echo",
+    "#c:gems/glass",
     "#c:gems/warped_crystal"
   ]
 }

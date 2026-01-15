@@ -6,7 +6,6 @@ import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
-import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
@@ -20,15 +19,12 @@ import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.material.HCMaterialPrefixes
-import hiiragi283.core.common.registry.HTDeferredBlock
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
 
 class HTMaterialRecipeProvider(
     modId: String,
-    private val blocks: HTMaterialTable<HTMaterialPrefix, out HTDeferredBlock<*, *>>,
-    private val items: HTMaterialTable<HTMaterialPrefix, out HTItemHolderLike<*>>,
+    private val blockGetter: (HTPrefixLike, HTMaterialLike) -> HTItemHolderLike<*>?,
     private val itemGetter: (HTPrefixLike, HTMaterialLike) -> HTItemHolderLike<*>?,
 ) : HTSubRecipeProvider.Direct(modId) {
     private val manager: HTMaterialManager = HTMaterialManager.INSTANCE
@@ -48,17 +44,19 @@ class HTMaterialRecipeProvider(
             val basePrefix: HTMaterialPrefix = propertyMap.getDefaultPart() ?: continue
             val blockProperty: HTStorageBlockProperty = propertyMap.getStorageBlock()
 
-            val block: ItemLike = blocks[HCMaterialPrefixes.STORAGE_BLOCK, key] ?: continue
-            val base: ItemLike = itemGetter(basePrefix, key) ?: continue
+            val block: HTItemHolderLike<*> = blockGetter(HCMaterialPrefixes.STORAGE_BLOCK, key) ?: continue
+            val base: HTItemHolderLike<*> = itemGetter(basePrefix, key) ?: continue
+            if (block.getNamespace() == HTConst.MINECRAFT && base.getNamespace() == HTConst.MINECRAFT) continue
             // Shapeless
             HTShapelessRecipeBuilder
                 .create(base, blockProperty.baseCount)
                 .addIngredient(HCMaterialPrefixes.STORAGE_BLOCK, key)
                 .save(output, HiiragiCoreAPI.id(key.name, "${basePrefix.name}_from_block"))
             // Shaped
+            val pattern: List<String> = blockProperty.pattern ?: continue
             HTShapedRecipeBuilder
                 .create(block)
-                .pattern(blockProperty.pattern)
+                .pattern(pattern)
                 .define('A', basePrefix, key)
                 .define('B', base)
                 .save(output, HiiragiCoreAPI.id(key.name, "block_from_${basePrefix.name}"))
@@ -110,7 +108,8 @@ class HTMaterialRecipeProvider(
     }
 
     private fun ingotToGear() {
-        for ((key: HTMaterialKey, gear: HTItemHolderLike<*>) in items.row(HCMaterialPrefixes.GEAR)) {
+        for (key: HTMaterialKey in HTMaterialManager.INSTANCE.keys) {
+            val gear: HTItemHolderLike<*> = itemGetter(HCMaterialPrefixes.GEAR, key) ?: continue
             // Shaped
             HTShapedRecipeBuilder
                 .create(gear)
@@ -122,7 +121,8 @@ class HTMaterialRecipeProvider(
     }
 
     fun ingotToNugget() {
-        for ((key: HTMaterialKey, nugget: HTItemHolderLike<*>) in items.row(HCMaterialPrefixes.NUGGET)) {
+        for (key: HTMaterialKey in HTMaterialManager.INSTANCE.keys) {
+            val nugget: HTItemHolderLike<*> = itemGetter(HCMaterialPrefixes.NUGGET, key) ?: continue
             // Shapeless
             HTShapelessRecipeBuilder
                 .create(nugget, 9)

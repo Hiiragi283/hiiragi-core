@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "c:storage_blocks/azure"
+      "tag": "c:ingots/iron"
     }
   ],
   "result": {
-    "count": 4,
-    "id": "hiiragi_core:azure_gem"
+    "count": 9,
+    "id": "minecraft:iron_nugget"
   }
 }

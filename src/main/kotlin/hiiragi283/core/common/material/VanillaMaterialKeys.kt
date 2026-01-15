@@ -31,6 +31,9 @@ object VanillaMaterialKeys {
     //    Gems    //
 
     @JvmStatic
+    val GLASS: HTMaterialKey = HTMaterialKey.of("glass")
+
+    @JvmStatic
     val LAPIS: HTMaterialKey = HTMaterialKey.of("lapis")
 
     @JvmStatic
@@ -76,9 +79,6 @@ object VanillaMaterialKeys {
 
     @JvmStatic
     val STONE: HTMaterialKey = HTMaterialKey.of("stone")
-
-    @JvmStatic
-    val GLASS: HTMaterialKey = HTMaterialKey.of("glass")
 
     @JvmStatic
     val OBSIDIAN: HTMaterialKey = HTMaterialKey.of("obsidian")

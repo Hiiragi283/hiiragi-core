@@ -4,10 +4,10 @@
   "cookingtime": 200,
   "experience": 0.35,
   "ingredient": {
-    "item": "hiiragi_core:azure_dust"
+    "item": "hiiragi_core:glass_dust"
   },
   "result": {
     "count": 1,
-    "id": "hiiragi_core:azure_gem"
+    "id": "hiiragi_core:glass_gem"
   }
 }

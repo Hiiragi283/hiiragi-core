@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "A": {
-      "tag": "c:gems/warped_crystal"
+      "tag": "c:nuggets/gold"
     },
     "B": {
-      "item": "hiiragi_core:warped_crystal_gem"
+      "item": "minecraft:gold_nugget"
     }
   },
   "pattern": [
@@ -16,6 +16,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "hiiragi_core:warped_crystal_block"
+    "id": "minecraft:gold_ingot"
   }
 }

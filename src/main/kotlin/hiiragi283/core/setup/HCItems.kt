@@ -58,6 +58,7 @@ object HCItems {
             // Vanilla
             VanillaMaterialKeys.COAL,
             VanillaMaterialKeys.CHARCOAL,
+            VanillaMaterialKeys.GLASS,
             VanillaMaterialKeys.LAPIS,
             VanillaMaterialKeys.QUARTZ,
             VanillaMaterialKeys.AMETHYST,
@@ -102,9 +103,11 @@ object HCItems {
             CommonMaterialKeys.CARBIDE,
         ).forEach { register(HCMaterialPrefixes.FUEL, it) }
         // Gems
-        register(HCMaterialPrefixes.GEM, HCMaterialKeys.AZURE, "azure_shard")
         arrayOf(
+            // Vanilla
+            VanillaMaterialKeys.GLASS,
             // Hiiragi Core
+            HCMaterialKeys.AZURE,
             HCMaterialKeys.CRIMSON_CRYSTAL,
             HCMaterialKeys.WARPED_CRYSTAL,
         ).forEach { register(HCMaterialPrefixes.GEM, it) }
@@ -146,6 +149,7 @@ object HCItems {
         arrayOf(
             // Vanilla
             VanillaMaterialKeys.WOOD,
+            VanillaMaterialKeys.GLASS,
             VanillaMaterialKeys.COPPER,
             VanillaMaterialKeys.IRON,
             VanillaMaterialKeys.GOLD,
@@ -161,6 +165,7 @@ object HCItems {
         // Rods
         arrayOf(
             // Vanilla
+            VanillaMaterialKeys.GLASS,
             VanillaMaterialKeys.COPPER,
             VanillaMaterialKeys.IRON,
             VanillaMaterialKeys.GOLD,

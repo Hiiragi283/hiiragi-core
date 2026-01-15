@@ -1,5 +1,6 @@
 package hiiragi283.core.api.material.property
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
@@ -17,6 +18,13 @@ object HTMaterialPropertyKeys {
      */
     @JvmField
     val DEFAULT_PART: HTPropertyKey<HTMaterialPrefix?> = createNullable("default_part")
+
+    /**
+     * デフォルトの[部品][HTMaterialPrefix]あたりの液体量に対応する[プロパティキー][HTPropertyKey]
+     */
+    @JvmField
+    val DEFAULT_FLUID_AMOUNT: HTPropertyKey<Int> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("default_fluid_amount"), HTConst.INGOT_AMOUNT)
 
     /**
      * 溶融状態の[液体][HTFluidMaterialProperty]に対応する[プロパティキー][HTPropertyKey]

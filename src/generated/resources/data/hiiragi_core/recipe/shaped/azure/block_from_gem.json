@@ -6,7 +6,7 @@
       "tag": "c:gems/azure"
     },
     "B": {
-      "item": "hiiragi_core:azure_shard"
+      "item": "hiiragi_core:azure_gem"
     }
   },
   "pattern": [

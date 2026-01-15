@@ -24,11 +24,13 @@ interface HTItemHolderLike<ITEM : Item> :
 
     fun getItemKey(): ResourceKey<Item> = getItemHolder().unwrapKey().orElseThrow()
 
-    override fun getId(): ResourceLocation = getItemKey().location()
-
     override fun asItem(): ITEM
 
-    override val translationKey: String get() = asItem().descriptionId
+    interface Delegated<ITEM : Item> : HTItemHolderLike<ITEM> {
+        override fun getId(): ResourceLocation = getItemKey().location()
 
-    override fun getText(): Component = asItem().description
+        override val translationKey: String get() = asItem().descriptionId
+
+        override fun getText(): Component = asItem().description
+    }
 }

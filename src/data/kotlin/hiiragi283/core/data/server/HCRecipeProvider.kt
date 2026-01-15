@@ -22,11 +22,13 @@ class HCRecipeProvider(context: HTDataGenContext) : HTRecipeProvider(context) {
         consumer.accept(
             HTMaterialRecipeProvider(
                 HiiragiCoreAPI.MOD_ID,
-                HCBlocks.MATERIALS,
-                HCItems.MATERIALS,
-            ) { prefix: HTPrefixLike, material: HTMaterialLike ->
-                HCItems.MATERIALS[prefix, material] ?: VanillaMaterialKeys.INGREDIENTS[prefix, material]
-            },
+                { prefix: HTPrefixLike, material: HTMaterialLike ->
+                    HCBlocks.MATERIALS[prefix, material] ?: VanillaMaterialKeys.INGREDIENTS[prefix, material]
+                },
+                { prefix: HTPrefixLike, material: HTMaterialLike ->
+                    HCItems.MATERIALS[prefix, material] ?: VanillaMaterialKeys.INGREDIENTS[prefix, material]
+                },
+            ),
         )
         consumer.accept(HCCommonRecipeProvider)
 

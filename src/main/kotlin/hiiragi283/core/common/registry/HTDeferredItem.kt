@@ -4,6 +4,7 @@ import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTItemHolderLike
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries
+import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
@@ -19,7 +20,9 @@ class HTDeferredItem<ITEM : Item> :
 
     override fun getItemHolder(): Holder<Item> = getHolder()
 
-    override fun getId(): ResourceLocation = super<HTDeferredHolder>.getId()
-
     override fun asItem(): ITEM = get()
+
+    override val translationKey: String get() = asItem().descriptionId
+
+    override fun getText(): Component = asItem().description
 }
