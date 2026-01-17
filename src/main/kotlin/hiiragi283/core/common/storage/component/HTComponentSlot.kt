@@ -49,7 +49,7 @@ abstract class HTComponentSlot<RESOURCE : HTResourceType<*>, STACK : Any, ATTACH
     final override fun canStackExtract(resource: RESOURCE, access: HTStorageAccess): Boolean =
         super.canStackExtract(resource, access) && this.canExtract.test(resource, access)
 
-    override fun getResource(): RESOURCE? = getAttached().getOrNull(slot)?.let(resourceFactory()::create)
+    override fun getResource(): RESOURCE? = getAttached().getOrNull(slot)?.let(resourceFactory()::fromStack)
 
     override fun getCapacity(resource: RESOURCE?): Int = capacity
 

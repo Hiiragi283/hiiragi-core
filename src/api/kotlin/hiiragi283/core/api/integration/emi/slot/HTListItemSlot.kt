@@ -47,7 +47,7 @@ class HTListItemSlot private constructor(private val content: Either<TagKey<Item
         override fun getResource(): HTItemResourceType? {
             val resources: List<HTItemResourceType> = content
                 .mapLeft { tagKey: TagKey<Item> ->
-                    BuiltInRegistries.ITEM.getTagOrEmpty(tagKey).mapNotNull(HTItemResourceFactory::create)
+                    BuiltInRegistries.ITEM.getTagOrEmpty(tagKey).mapNotNull(HTItemResourceFactory::fromHolder)
                 }.unwrap()
             if (resources.isEmpty()) return null
             val index: Int = ((System.currentTimeMillis() / 1000) % resources.size).toInt()

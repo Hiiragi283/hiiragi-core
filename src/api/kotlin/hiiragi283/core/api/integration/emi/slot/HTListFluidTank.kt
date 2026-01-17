@@ -50,7 +50,7 @@ class HTListFluidTank private constructor(val content: Either<TagKey<Fluid>, Lis
         override fun getResource(): HTFluidResourceType? {
             val resources: List<HTFluidResourceType> = content
                 .mapLeft { tagKey: TagKey<Fluid> ->
-                    BuiltInRegistries.FLUID.getTagOrEmpty(tagKey).mapNotNull(HTFluidResourceFactory::create)
+                    BuiltInRegistries.FLUID.getTagOrEmpty(tagKey).mapNotNull(HTFluidResourceFactory::fromHolder)
                 }.unwrap()
             if (resources.isEmpty()) return null
             val index: Int = ((System.currentTimeMillis() / 1000) % resources.size).toInt()

@@ -16,13 +16,13 @@ abstract class HTResourceFactory<TYPE : Any, STACK : Any, RESOURCE : HTResourceT
      * 指定した[type]から[RESOURCE]を作成します。
      * @return [type]が空の値の場合は`null`
      */
-    abstract fun create(type: TYPE): RESOURCE?
+    abstract fun fromType(type: TYPE): RESOURCE?
 
     /**
      * 指定した[stack]から[RESOURCE]を作成します。
      * @return [stack]が空の場合は`null`
      */
-    abstract fun create(stack: STACK): RESOURCE?
+    abstract fun fromStack(stack: STACK): RESOURCE?
 
     /**
      * 指定した[resource]と[amount]から[STACK]を作成します。
@@ -38,25 +38,25 @@ abstract class HTResourceFactory<TYPE : Any, STACK : Any, RESOURCE : HTResourceT
      * 指定した[holder]から[RESOURCE]を作成します。
      * @return [holder]の値が空の場合は`null`
      */
-    fun create(holder: Holder<TYPE>): RESOURCE? = create(holder.value())
+    fun fromHolder(holder: Holder<TYPE>): RESOURCE? = fromType(holder.value())
 
     /**
      * 指定した[type]から[RESOURCE]を作成します。
      * @throws IllegalStateException [type]が空の値の場合
      */
-    fun createOrThrow(type: TYPE): RESOURCE = create(type) ?: error("Empty Type: $type")
+    fun fromTypeOrThrow(type: TYPE): RESOURCE = fromType(type) ?: error("Empty Type: $type")
 
     /**
      * 指定した[holder]から[RESOURCE]を作成します。
      * @throws IllegalStateException [holder]の値が空の場合
      */
-    fun createOrThrow(holder: Holder<TYPE>): RESOURCE = create(holder) ?: error("Empty Holder: $holder")
+    fun fromHolderOrThrow(holder: Holder<TYPE>): RESOURCE = fromHolder(holder) ?: error("Empty Holder: $holder")
 
     /**
      * 指定した[stack]から[RESOURCE]を作成します。
      * @throws IllegalStateException [stack]が空の場合
      */
-    fun createOrThrow(stack: STACK): RESOURCE = create(stack) ?: error("Empty Stack: $stack")
+    fun fromStackOrThrow(stack: STACK): RESOURCE = fromStack(stack) ?: error("Empty Stack: $stack")
 
     //    DataComponent    //
 
@@ -86,6 +86,6 @@ abstract class HTResourceFactory<TYPE : Any, STACK : Any, RESOURCE : HTResourceT
         fun createOrThrow(type: TYPE, patch: DataComponentPatch): RESOURCE =
             create(type, patch) ?: error("Empty Type: $type and Patch: $patch")
 
-        override fun create(type: TYPE): RESOURCE? = create(type, DataComponentPatch.EMPTY)
+        override fun fromType(type: TYPE): RESOURCE? = create(type, DataComponentPatch.EMPTY)
     }
 }

@@ -37,7 +37,7 @@ abstract class HTResultCreator<
     protected abstract fun create(contents: Ior<RESOURCE, TagKey<TYPE>>, amount: Int): RESULT
 
     // Type
-    fun create(type: TYPE, amount: Int = defaultAmount()): RESULT = create(resourceFactory().createOrThrow(type), amount)
+    fun create(type: TYPE, amount: Int = defaultAmount()): RESULT = create(resourceFactory().fromTypeOrThrow(type), amount)
 
     // Resource
     fun create(resource: RESOURCE, amount: Int = defaultAmount()): RESULT = create(Ior.Left(resource), amount)
@@ -47,7 +47,7 @@ abstract class HTResultCreator<
 
     // Both
     fun create(type: TYPE, tagKey: TagKey<TYPE>, amount: Int = defaultAmount()): RESULT =
-        create(resourceFactory().createOrThrow(type), tagKey, amount)
+        create(resourceFactory().fromTypeOrThrow(type), tagKey, amount)
 
     fun create(resource: RESOURCE, tagKey: TagKey<TYPE>, amount: Int = defaultAmount()): RESULT = create(Ior.Both(resource, tagKey), amount)
 }

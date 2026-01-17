@@ -13,9 +13,9 @@ import net.neoforged.neoforge.fluids.FluidStack
  * @since 0.7.0
  */
 object HTFluidResourceFactory : HTResourceFactory.DataComponent<Fluid, FluidStack, HTFluidResourceType>() {
-    override fun create(type: Fluid, patch: DataComponentPatch): HTFluidResourceType? = create(createFluidStack(type, patch = patch))
+    override fun create(type: Fluid, patch: DataComponentPatch): HTFluidResourceType? = fromStack(createFluidStack(type, patch = patch))
 
-    override fun create(stack: FluidStack): HTFluidResourceType? = HTFluidResourceType.of(stack)
+    override fun fromStack(stack: FluidStack): HTFluidResourceType? = HTFluidResourceType.of(stack)
 
     override fun createStack(resource: HTFluidResourceType?, amount: Int): FluidStack = resource?.toStack(amount) ?: FluidStack.EMPTY
 

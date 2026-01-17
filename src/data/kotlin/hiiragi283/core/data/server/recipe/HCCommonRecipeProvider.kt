@@ -33,12 +33,34 @@ import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 
 object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipeInternal() {
-        // Bamboo -> Bamboo Charcoal
+        materials()
+        utilities()
+        manual()
+        buckets()
+    }
+
+    @JvmStatic
+    private fun materials() {
+        // Sand + Ash -> Glass
+        HTShapelessRecipeBuilder
+            .create(getItemOrThrow(HCMaterialPrefixes.DUST, VanillaMaterialKeys.GLASS), 4)
+            .addIngredients(Tags.Items.SANDS, 3)
+            .addIngredient(HCMaterialPrefixes.DUST, CommonMaterialKeys.ASH)
+            .saveSuffixed(output, "_from_sand_and_ash")
+
         HTCookingRecipeBuilder
-            .smelting(HCItems.BAMBOO_CHARCOAL)
-            .addIngredient(Items.BAMBOO)
-            .setExp(0.5f)
-            .save(output)
+            .smelting(Items.GLASS)
+            .addIngredient(HCMaterialPrefixes.DUST, VanillaMaterialKeys.GLASS)
+            .setExp(0.1f)
+            .saveSuffixed(output, "_from_dust")
+        // Iron Rod -> Iron Bar
+        HTShapedRecipeBuilder
+            .create(Items.IRON_BARS, 8)
+            .pattern(
+                "AAA",
+                "AAA",
+            ).define('A', HCMaterialPrefixes.ROD, VanillaMaterialKeys.IRON)
+            .saveSuffixed(output, "_from_rod")
         // Compressed Sawdust -> Charcoal
         HTCookingRecipeBuilder
             .smelting(Items.CHARCOAL)
@@ -46,6 +68,19 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .setTime(20 * 30)
             .setExp(0.5f)
             .saveSuffixed(output, "_from_sawdust")
+        // Dough -> Bread
+        HTCookingRecipeBuilder.smeltingAndSmoking(Items.BREAD) {
+            addIngredient(HCItems.WHEAT_DOUGH)
+            setExp(0.3f)
+            saveSuffixed(output, "_from_dough")
+        }
+
+        // Bamboo -> Bamboo Charcoal
+        HTCookingRecipeBuilder
+            .smelting(HCItems.BAMBOO_CHARCOAL)
+            .addIngredient(Items.BAMBOO)
+            .setExp(0.5f)
+            .save(output)
         // Polymer Resin -> Plastic Plate
         HTCookingRecipeBuilder
             .smelting(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.PLATE, CommonMaterialKeys.PLASTIC))
@@ -70,17 +105,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .addIngredient(HCItems.STEEL_COMPOUND)
             .setExp(0.7f)
             .saveSuffixed(output, "_from_compound")
-        // Wither Doll
-        HTShapedRecipeBuilder
-            .create(HCItems.WITHER_DOLL)
-            .pattern(
-                "AAA",
-                "BBB",
-                " B ",
-            ).define('A', Items.WITHER_SKELETON_SKULL)
-            .define('B', ItemTags.SOUL_FIRE_BASE_BLOCKS)
-            .save(output)
-
         // Wheat Dough
         HTShapelessRecipeBuilder
             .create(HCItems.WHEAT_DOUGH)
@@ -100,13 +124,20 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .addIngredients(HiiragiCoreTags.Items.FLOURS_WHEAT, 3)
             .addIngredient(Tags.Items.BUCKETS_WATER)
             .saveSuffixed(output, "_with_bucket")
-        // Bread
-        HTCookingRecipeBuilder.smeltingAndSmoking(Items.BREAD) {
-            addIngredient(HCItems.WHEAT_DOUGH)
-            setExp(0.3f)
-            saveSuffixed(output, "_from_dough")
-        }
+        // Wither Doll
+        HTShapedRecipeBuilder
+            .create(HCItems.WITHER_DOLL)
+            .pattern(
+                "AAA",
+                "BBB",
+                " B ",
+            ).define('A', Items.WITHER_SKELETON_SKULL)
+            .define('B', ItemTags.SOUL_FIRE_BASE_BLOCKS)
+            .save(output)
+    }
 
+    @JvmStatic
+    private fun utilities() {
         // Slot Cover
         HTStonecuttingRecipeBuilder
             .create(HCItems.SLOT_COVER, 3)
@@ -130,18 +161,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
 
         // Eternal Ticket
         save(id(HTConst.SHAPELESS, "eternal_upgrade"), HTEternalUpgradeRecipe(CraftingBookCategory.EQUIPMENT))
-
-        // Iron Rod -> Iron Bar
-        HTShapedRecipeBuilder
-            .create(Items.IRON_BARS, 8)
-            .pattern(
-                "AAA",
-                "AAA",
-            ).define('A', HCMaterialPrefixes.ROD, VanillaMaterialKeys.IRON)
-            .saveSuffixed(output, "_from_rod")
-
-        manual()
-        buckets()
     }
 
     @JvmStatic

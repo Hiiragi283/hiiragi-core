@@ -12,9 +12,9 @@ import net.minecraft.world.item.ItemStack
  * @since 0.7.0
  */
 object HTItemResourceFactory : HTResourceFactory.DataComponent<Item, ItemStack, HTItemResourceType>() {
-    override fun create(type: Item, patch: DataComponentPatch): HTItemResourceType? = create(createItemStack(type, patch = patch))
+    override fun create(type: Item, patch: DataComponentPatch): HTItemResourceType? = fromStack(createItemStack(type, patch = patch))
 
-    override fun create(stack: ItemStack): HTItemResourceType? = HTItemResourceType.of(stack)
+    override fun fromStack(stack: ItemStack): HTItemResourceType? = HTItemResourceType.of(stack)
 
     override fun createStack(resource: HTItemResourceType?, amount: Int): ItemStack = resource?.toStack(amount) ?: ItemStack.EMPTY
 
