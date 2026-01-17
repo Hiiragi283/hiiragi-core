@@ -185,9 +185,13 @@ object HCItems {
         register(HCMaterialPrefixes.SCRAP, HCMaterialKeys.DEEP_STEEL)
         // Wire
         arrayOf(
-            // Metals
+            // Vanilla
             VanillaMaterialKeys.COPPER,
+            VanillaMaterialKeys.IRON,
             VanillaMaterialKeys.GOLD,
+            // Common
+            CommonMaterialKeys.STEEL,
+            CommonMaterialKeys.PLASTIC,
         ).forEach { register(HCMaterialPrefixes.WIRE, it) }
     }.let(::HTMaterialTable)
 

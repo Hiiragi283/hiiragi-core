@@ -1,6 +1,9 @@
 {
   "values": [
     "#c:wires/copper",
-    "#c:wires/gold"
+    "#c:wires/gold",
+    "#c:wires/iron",
+    "#c:wires/plastic",
+    "#c:wires/steel"
   ]
 }

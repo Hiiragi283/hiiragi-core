@@ -9,6 +9,7 @@ import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.item.HTToolType
+import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCBlocks
@@ -57,6 +58,9 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
             }
             if (prefix == HCMaterialPrefixes.PLATE && key == VanillaMaterialKeys.WOOD) {
                 factory.apply(ItemTags.PLANKS).add(item)
+            }
+            if (prefix == HCMaterialPrefixes.WIRE && key == CommonMaterialKeys.PLASTIC) {
+                factory.apply(Tags.Items.STRINGS).add(item)
             }
         }
 
