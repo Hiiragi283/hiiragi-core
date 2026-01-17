@@ -41,18 +41,12 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
 
     @JvmStatic
     private fun materials() {
-        // Sand + Ash -> Glass
+        // Sand + Ash -> Glass Dust
         HTShapelessRecipeBuilder
             .create(getItemOrThrow(HCMaterialPrefixes.DUST, VanillaMaterialKeys.GLASS), 4)
             .addIngredients(Tags.Items.SANDS, 3)
             .addIngredient(HCMaterialPrefixes.DUST, CommonMaterialKeys.ASH)
             .saveSuffixed(output, "_from_sand_and_ash")
-
-        HTCookingRecipeBuilder
-            .smelting(Items.GLASS)
-            .addIngredient(HCMaterialPrefixes.DUST, VanillaMaterialKeys.GLASS)
-            .setExp(0.1f)
-            .saveSuffixed(output, "_from_dust")
         // Iron Rod -> Iron Bar
         HTShapedRecipeBuilder
             .create(Items.IRON_BARS, 8)

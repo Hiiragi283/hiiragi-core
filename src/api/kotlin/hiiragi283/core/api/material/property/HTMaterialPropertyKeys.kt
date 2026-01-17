@@ -48,6 +48,12 @@ object HTMaterialPropertyKeys {
     val LANG_NAME: HTPropertyKey<HTLangName?> = createNullable("lang_name")
 
     /**
+     * [プレフィックス][HTMaterialPrefix]に依存する[翻訳名][HTLangName]を保持する[プロパティキー][HTPropertyKey]
+     */
+    @JvmField
+    val CUSTOM_LANG_NAME: HTPropertyKey<Map<HTMaterialPrefix, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_lang_name"))
+
+    /**
      * 製錬レシピの管理に使用される[プロパティキー][HTPropertyKey]
      */
     @JvmField

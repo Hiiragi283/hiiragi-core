@@ -3,6 +3,7 @@ package hiiragi283.core.data.client.lang
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.text.HTCommonTranslation
+import hiiragi283.core.common.data.lang.HTMaterialTranslationHelper
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCEntityTypes
@@ -15,10 +16,8 @@ class HCEnglishLangProvider(output: PackOutput) :
     HTLangProvider.English(output, HiiragiCoreAPI.MOD_ID),
     HCLangProvider {
     override fun addTranslations() {
-        // Material
-        HCMaterialTranslations.addTranslations(this)
-
         // Block
+        HTMaterialTranslationHelper.translateAll(this, HCBlocks.MATERIALS::column)
         add(HCBlocks.WARPED_WART, "Warped Wart")
 
         // Entity
@@ -41,6 +40,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.MOLTEN_ELDRITCH, "Eldritch Flux")
 
         // Item
+        HTMaterialTranslationHelper.translateAll(this, HCItems.MATERIALS::column)
         add(HCItems.BAMBOO_CHARCOAL, "Bamboo Charcoal")
         add(HCItems.COMPRESSED_SAWDUST, "Compressed Sawdust")
         add(HCItems.POLYMER_RESIN, "Polymer Resin")

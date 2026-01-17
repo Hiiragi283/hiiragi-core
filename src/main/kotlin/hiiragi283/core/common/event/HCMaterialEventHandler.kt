@@ -4,19 +4,24 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTMaterialPropertyEvent
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.getOrThrow
 import hiiragi283.core.api.material.property.HTFluidMaterialProperty
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialTextureSet
 import hiiragi283.core.api.material.property.HTSmeltingMaterialProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
+import hiiragi283.core.api.material.property.addCustomName
 import hiiragi283.core.api.material.property.addDefaultPart
 import hiiragi283.core.api.material.property.addName
 import hiiragi283.core.api.material.property.addTextureSet
+import hiiragi283.core.api.registry.toHolderLike
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCFluids
+import hiiragi283.core.setup.HCItems
+import net.minecraft.world.item.Items
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 
@@ -29,8 +34,9 @@ object HCMaterialEventHandler {
         hiiragiCore(event)
     }
 
-    private val smeltingToAsh: HTSmeltingMaterialProperty =
-        HTSmeltingMaterialProperty.smeltingOnly(HCMaterialPrefixes.DUST, CommonMaterialKeys.ASH)
+    private val smeltingToAsh: HTSmeltingMaterialProperty by lazy {
+        HTSmeltingMaterialProperty.smeltingOnly(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.DUST, CommonMaterialKeys.ASH))
+    }
 
     @JvmStatic
     private fun vanilla(event: HTMaterialPropertyEvent) {
@@ -151,6 +157,7 @@ object HCMaterialEventHandler {
         event.modify(VanillaMaterialKeys.WOOD) {
             if (isDataGen) {
                 addName("Wood", "木")
+                addCustomName(HCMaterialPrefixes.DUST, "Sawdust", "おがくず")
                 addTextureSet("wood")
                 put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
             }
@@ -162,6 +169,7 @@ object HCMaterialEventHandler {
             if (isDataGen) {
                 addName("Glass", "ガラス")
                 addTextureSet("shine")
+                put(HTMaterialPropertyKeys.SMELTING, HTSmeltingMaterialProperty.smeltingOnly(Items.GLASS.toHolderLike()))
                 put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("salt"))
             }
         }
@@ -323,6 +331,7 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_RUBBER))
             if (isDataGen) {
                 addName("Rubber", "ゴム")
+                addCustomName(HCMaterialPrefixes.PLATE, "Rubber Sheet", "ゴムシート")
                 addTextureSet("plate")
                 put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
             }

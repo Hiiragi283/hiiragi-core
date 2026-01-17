@@ -3,6 +3,7 @@ package hiiragi283.core.data.client.lang
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.text.HTCommonTranslation
+import hiiragi283.core.common.data.lang.HTMaterialTranslationHelper
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCEntityTypes
@@ -15,10 +16,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
     HTLangProvider.Japanese(output, HiiragiCoreAPI.MOD_ID),
     HCLangProvider {
     override fun addTranslations() {
-        // Material
-        HCMaterialTranslations.addTranslations(this)
-
         // Block
+        HTMaterialTranslationHelper.translateAll(this, HCBlocks.MATERIALS::column)
         add(HCBlocks.WARPED_WART, "歪んだウォート")
 
         // Entity
@@ -41,6 +40,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.MOLTEN_ELDRITCH, "異質な流動体")
 
         // Item
+        HTMaterialTranslationHelper.translateAll(this, HCItems.MATERIALS::column)
         add(HCItems.BAMBOO_CHARCOAL, "竹炭")
         add(HCItems.COMPRESSED_SAWDUST, "圧縮されたおがくず")
         add(HCItems.POLYMER_RESIN, "高分子樹脂")

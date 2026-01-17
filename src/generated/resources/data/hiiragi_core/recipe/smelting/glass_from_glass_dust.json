@@ -2,9 +2,9 @@
   "type": "minecraft:smelting",
   "category": "misc",
   "cookingtime": 200,
-  "experience": 0.1,
+  "experience": 0.35,
   "ingredient": {
-    "tag": "c:dusts/glass"
+    "item": "hiiragi_core:glass_dust"
   },
   "result": {
     "count": 1,
