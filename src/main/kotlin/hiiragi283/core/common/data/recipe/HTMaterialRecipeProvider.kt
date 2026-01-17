@@ -30,6 +30,7 @@ class HTMaterialRecipeProvider(
 
     override fun buildRecipeInternal() {
         baseToBlock()
+        rawToBlock()
 
         prefixToBase(HCMaterialPrefixes.DUST, 0.35f)
         prefixToBase(HCMaterialPrefixes.RAW_MATERIAL, 0.7f)
@@ -61,6 +62,26 @@ class HTMaterialRecipeProvider(
                 .define('A', basePrefix, key)
                 .define('B', base)
                 .save(output, HiiragiCoreAPI.id(key.name, "block_from_${basePrefix.name}"))
+        }
+    }
+
+    private fun rawToBlock() {
+        for (key: HTMaterialKey in HTMaterialManager.INSTANCE.keys) {
+            val raw: HTItemHolderLike<*> = itemGetter(HCMaterialPrefixes.RAW_MATERIAL, key) ?: continue
+            if (raw.getNamespace() == HTConst.MINECRAFT) continue
+            // Shapeless
+            HTShapelessRecipeBuilder
+                .create(raw, 9)
+                .addIngredient(HCMaterialPrefixes.STORAGE_BLOCK_RAW, key)
+                .save(output, HiiragiCoreAPI.id(key.name, "raw_from_block"))
+            // Shaped
+            val rawBlock: HTItemHolderLike<*> = blockGetter(HCMaterialPrefixes.STORAGE_BLOCK_RAW, key) ?: continue
+            HTShapedRecipeBuilder
+                .create(rawBlock)
+                .hollow8()
+                .define('A', HCMaterialPrefixes.RAW_MATERIAL, key)
+                .define('B', raw)
+                .save(output, HiiragiCoreAPI.id(key.name))
         }
     }
 
@@ -126,6 +147,7 @@ class HTMaterialRecipeProvider(
     fun ingotToNugget() {
         for (key: HTMaterialKey in HTMaterialManager.INSTANCE.keys) {
             val nugget: HTItemHolderLike<*> = itemGetter(HCMaterialPrefixes.NUGGET, key) ?: continue
+            if (nugget.getNamespace() == HTConst.MINECRAFT) continue
             // Shapeless
             HTShapelessRecipeBuilder
                 .create(nugget, 9)

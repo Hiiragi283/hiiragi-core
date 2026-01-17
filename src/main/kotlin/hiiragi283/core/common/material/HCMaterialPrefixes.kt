@@ -28,7 +28,7 @@ object HCMaterialPrefixes {
 
     @JvmField
     val STORAGE_BLOCK_RAW =
-        HTMaterialPrefix("storage_block/raw", "raw_%s_block", "c:storage_blocks", "c:storage_blocks/raw_%s")
+        HTMaterialPrefix("raw_storage_block", "raw_%s_block", "c:storage_blocks", "c:storage_blocks/raw_%s")
 
     //    Item    //
 

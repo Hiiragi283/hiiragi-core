@@ -3,11 +3,11 @@
   "category": "misc",
   "ingredients": [
     {
-      "tag": "c:ingots/gold"
+      "tag": "c:storage_blocks/raw_zinc"
     }
   ],
   "result": {
     "count": 9,
-    "id": "minecraft:gold_nugget"
+    "id": "hiiragi_core:raw_zinc"
   }
 }

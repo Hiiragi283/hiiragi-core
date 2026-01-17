@@ -79,6 +79,11 @@ object HCBlocks {
         registerBlock(CommonMaterialKeys.SALTPETER, 5f, 9f, MapColor.TERRACOTTA_WHITE)
         registerBlock(CommonMaterialKeys.SULFUR, 5f, 9f, MapColor.TERRACOTTA_YELLOW)
 
+        register(
+            HCMaterialPrefixes.STORAGE_BLOCK_RAW,
+            CommonMaterialKeys.ZINC,
+            properties(5f, 6f).mapColor(MapColor.TERRACOTTA_LIGHT_GREEN),
+        )
         registerBlock(CommonMaterialKeys.ZINC, 5f, 9f, MapColor.TERRACOTTA_LIGHT_GREEN, SoundType.METAL)
 
         registerBlock(CommonMaterialKeys.STEEL, 5f, 9f, MapColor.COLOR_GRAY, SoundType.METAL)
