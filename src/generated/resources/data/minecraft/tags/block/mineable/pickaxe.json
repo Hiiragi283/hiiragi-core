@@ -2,6 +2,7 @@
   "values": [
     "hiiragi_core:azure_block",
     "hiiragi_core:azure_steel_block",
+    "hiiragi_core:brass_block",
     "hiiragi_core:carbide_block",
     "hiiragi_core:charcoal_block",
     "hiiragi_core:cinnabar_block",
@@ -20,6 +21,7 @@
     "hiiragi_core:saltpeter_block",
     "hiiragi_core:steel_block",
     "hiiragi_core:sulfur_block",
-    "hiiragi_core:warped_crystal_block"
+    "hiiragi_core:warped_crystal_block",
+    "hiiragi_core:zinc_block"
   ]
 }

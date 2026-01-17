@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "c:nuggets/zinc"
+    },
+    "B": {
+      "item": "hiiragi_core:zinc_nugget"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "ABA",
+    "AAA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:zinc_ingot"
+  }
+}

@@ -24,6 +24,9 @@
     "#c:fuels/coal_coke": {
       "burn_time": 3200
     },
+    "#c:gears/wood": {
+      "burn_time": 300
+    },
     "#c:gems/crimson_crystal": {
       "burn_time": 4800
     },

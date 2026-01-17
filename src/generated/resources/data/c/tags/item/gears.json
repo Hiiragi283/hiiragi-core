@@ -1,11 +1,14 @@
 {
   "values": [
     "#c:gears/azure_steel",
+    "#c:gears/brass",
     "#c:gears/copper",
     "#c:gears/deep_steel",
     "#c:gears/gold",
     "#c:gears/iron",
     "#c:gears/netherite",
-    "#c:gears/steel"
+    "#c:gears/steel",
+    "#c:gears/wood",
+    "#c:gears/zinc"
   ]
 }

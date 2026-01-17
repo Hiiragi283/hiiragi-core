@@ -27,7 +27,6 @@ import net.minecraft.world.item.Items
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.item.crafting.CraftingBookCategory
-import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 
@@ -35,7 +34,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
     override fun buildRecipeInternal() {
         materials()
         utilities()
-        manual()
         buckets()
     }
 
@@ -47,6 +45,14 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .addIngredients(Tags.Items.SANDS, 3)
             .addIngredient(HCMaterialPrefixes.DUST, CommonMaterialKeys.ASH)
             .saveSuffixed(output, "_from_sand_and_ash")
+        // Wood Gear
+        HTShapedRecipeBuilder
+            .create(getItemOrThrow(HCMaterialPrefixes.GEAR, VanillaMaterialKeys.WOOD))
+            .hollow4()
+            .define('A', ItemTags.PLANKS)
+            .define('B', ItemTags.WOODEN_BUTTONS)
+            .save(output)
+
         // Iron Rod -> Iron Bar
         HTShapedRecipeBuilder
             .create(Items.IRON_BARS, 8)
@@ -155,40 +161,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
 
         // Eternal Ticket
         save(id(HTConst.SHAPELESS, "eternal_upgrade"), HTEternalUpgradeRecipe(CraftingBookCategory.EQUIPMENT))
-    }
-
-    @JvmStatic
-    private fun manual() {
-        // Amethyst + Lapis -> Azure Shard
-        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.GEM, HCMaterialKeys.AZURE), 2) {
-            addIngredient(HCMaterialPrefixes.DUST, VanillaMaterialKeys.AMETHYST)
-            addIngredient(HCMaterialPrefixes.DUST, VanillaMaterialKeys.LAPIS)
-        }
-
-        // Netherite Scrap + Azure Steel -> Deep Steel
-        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, VanillaMaterialKeys.NETHERITE)) {
-            addIngredients(HCMaterialPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE, 4)
-            addIngredients(HCMaterialPrefixes.DUST, VanillaMaterialKeys.GOLD, 4)
-        }
-        // Azure Shard + Iron -> Azure Steel
-        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, HCMaterialKeys.AZURE_STEEL)) {
-            addIngredients(HCMaterialPrefixes.DUST, HCMaterialKeys.AZURE, 2)
-            addIngredient(HCMaterialPrefixes.DUST, VanillaMaterialKeys.IRON)
-        }
-        // Deep Scrap + Azure Steel -> Deep Steel
-        addManualSmelting(getItemOrThrow(HCMaterialPrefixes.INGOT, HCMaterialKeys.DEEP_STEEL)) {
-            addIngredients(HCMaterialPrefixes.SCRAP, HCMaterialKeys.DEEP_STEEL, 4)
-            addIngredients(HCMaterialPrefixes.DUST, HCMaterialKeys.AZURE_STEEL, 4)
-        }
-    }
-
-    @JvmStatic
-    private inline fun addManualSmelting(result: ItemLike, count: Int = 1, builderAction: HTShapelessRecipeBuilder.() -> Unit) {
-        HTShapelessRecipeBuilder
-            .create(result, count)
-            .apply(builderAction)
-            .addIngredient(Items.FIRE_CHARGE)
-            .saveSuffixed(output, "_from_mix")
     }
 
     @JvmStatic

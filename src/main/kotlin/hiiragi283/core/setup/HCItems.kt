@@ -1,12 +1,13 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.collection.buildMultiMap
 import hiiragi283.core.api.collection.buildTable
+import hiiragi283.core.api.collection.toFlatTable
 import hiiragi283.core.api.item.HTEquipmentMaterial
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
-import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.text.HTTranslation
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.capability.HTItemCapabilities
@@ -54,145 +55,114 @@ object HCItems {
     //    Materials   //
 
     @JvmStatic
-    val MATERIALS: HTMaterialTable<HTMaterialPrefix, HTSimpleDeferredItem> = buildTable {
-        fun register(prefix: HTPrefixLike, key: HTMaterialKey, path: String = prefix.createPath(key)) {
-            this[prefix.asMaterialPrefix(), key] = REGISTER.registerSimpleItem(path)
-        }
+    val MATERIALS: HTMaterialTable<HTMaterialPrefix, HTSimpleDeferredItem> = buildMultiMap {
+        // Vanilla
+        putAll(VanillaMaterialKeys.COAL, HCMaterialPrefixes.DUST)
+        putAll(VanillaMaterialKeys.CHARCOAL, HCMaterialPrefixes.DUST)
 
-        // Dusts
-        arrayOf(
-            // Vanilla
-            VanillaMaterialKeys.COAL,
-            VanillaMaterialKeys.CHARCOAL,
-            VanillaMaterialKeys.GLASS,
-            VanillaMaterialKeys.LAPIS,
-            VanillaMaterialKeys.QUARTZ,
-            VanillaMaterialKeys.AMETHYST,
-            VanillaMaterialKeys.DIAMOND,
-            VanillaMaterialKeys.EMERALD,
-            VanillaMaterialKeys.ECHO,
-            VanillaMaterialKeys.ENDER,
+        putAll(VanillaMaterialKeys.LAPIS, HCMaterialPrefixes.DUST)
+        putAll(VanillaMaterialKeys.QUARTZ, HCMaterialPrefixes.DUST)
+        putAll(VanillaMaterialKeys.AMETHYST, HCMaterialPrefixes.DUST)
+        putAll(VanillaMaterialKeys.DIAMOND, HCMaterialPrefixes.DUST)
+        putAll(VanillaMaterialKeys.EMERALD, HCMaterialPrefixes.DUST)
+        putAll(VanillaMaterialKeys.ECHO, HCMaterialPrefixes.DUST)
+
+        putAll(VanillaMaterialKeys.ENDER, HCMaterialPrefixes.DUST)
+
+        putAll(
             VanillaMaterialKeys.COPPER,
+            HCMaterialPrefixes.DUST,
+            HCMaterialPrefixes.GEAR,
+            HCMaterialPrefixes.NUGGET,
+            HCMaterialPrefixes.PLATE,
+            HCMaterialPrefixes.ROD,
+            HCMaterialPrefixes.WIRE,
+        )
+        putAll(
             VanillaMaterialKeys.IRON,
+            HCMaterialPrefixes.DUST,
+            HCMaterialPrefixes.GEAR,
+            HCMaterialPrefixes.PLATE,
+            HCMaterialPrefixes.ROD,
+        )
+        putAll(
             VanillaMaterialKeys.GOLD,
+            HCMaterialPrefixes.DUST,
+            HCMaterialPrefixes.GEAR,
+            HCMaterialPrefixes.PLATE,
+            HCMaterialPrefixes.ROD,
+            HCMaterialPrefixes.WIRE,
+        )
+
+        putAll(
             VanillaMaterialKeys.NETHERITE,
-            VanillaMaterialKeys.WOOD,
-            VanillaMaterialKeys.OBSIDIAN,
-            // Common
-            CommonMaterialKeys.COAL_COKE,
-            CommonMaterialKeys.CARBIDE,
-            CommonMaterialKeys.CINNABAR,
-            CommonMaterialKeys.SALT,
-            CommonMaterialKeys.SALTPETER,
-            CommonMaterialKeys.SULFUR,
-            CommonMaterialKeys.STEEL,
+            HCMaterialPrefixes.DUST,
+            HCMaterialPrefixes.GEAR,
+            HCMaterialPrefixes.NUGGET,
+            HCMaterialPrefixes.PLATE,
+            HCMaterialPrefixes.ROD,
+        )
+
+        putAll(VanillaMaterialKeys.WOOD, HCMaterialPrefixes.DUST, HCMaterialPrefixes.GEAR, HCMaterialPrefixes.PLATE)
+        putAll(VanillaMaterialKeys.GLASS, HCMaterialPrefixes.DUST, HCMaterialPrefixes.ROD)
+        put(VanillaMaterialKeys.OBSIDIAN, HCMaterialPrefixes.DUST)
+        // Common
+
+        putAll(CommonMaterialKeys.COAL_COKE, HCMaterialPrefixes.DUST, HCMaterialPrefixes.FUEL)
+        putAll(CommonMaterialKeys.CARBIDE, HCMaterialPrefixes.DUST, HCMaterialPrefixes.FUEL)
+
+        putAll(CommonMaterialKeys.CINNABAR, HCMaterialPrefixes.DUST)
+        putAll(CommonMaterialKeys.SALT, HCMaterialPrefixes.DUST)
+        putAll(CommonMaterialKeys.SALTPETER, HCMaterialPrefixes.DUST)
+        putAll(CommonMaterialKeys.SULFUR, HCMaterialPrefixes.DUST)
+
+        val metalSet: Set<HTMaterialPrefix> = setOf(
+            HCMaterialPrefixes.DUST,
+            HCMaterialPrefixes.RAW_MATERIAL,
+            HCMaterialPrefixes.INGOT,
+            HCMaterialPrefixes.NUGGET,
+            HCMaterialPrefixes.GEAR,
+            HCMaterialPrefixes.PLATE,
+            HCMaterialPrefixes.ROD,
+        )
+        val alloySet: Set<HTMaterialPrefix> = metalSet.minus(HCMaterialPrefixes.RAW_MATERIAL)
+
+        putAll(CommonMaterialKeys.ZINC, metalSet)
+
+        putAll(CommonMaterialKeys.STEEL, alloySet.plus(HCMaterialPrefixes.WIRE))
+        putAll(CommonMaterialKeys.BRASS, alloySet)
+
+        put(CommonMaterialKeys.ASH, HCMaterialPrefixes.DUST)
+        putAll(
             CommonMaterialKeys.PLASTIC,
-            CommonMaterialKeys.RUBBER,
-            CommonMaterialKeys.ASH,
-            // Hiiragi Core
-            HCMaterialKeys.AZURE,
-            HCMaterialKeys.CRIMSON_CRYSTAL,
-            HCMaterialKeys.WARPED_CRYSTAL,
-            HCMaterialKeys.ELDRITCH,
-            HCMaterialKeys.AZURE_STEEL,
+            HCMaterialPrefixes.DUST,
+            HCMaterialPrefixes.PLATE,
+            HCMaterialPrefixes.ROD,
+            HCMaterialPrefixes.WIRE,
+        )
+        put(CommonMaterialKeys.RUBBER, HCMaterialPrefixes.PLATE)
+        // Hiiragi Core
+        putAll(HCMaterialKeys.AZURE, HCMaterialPrefixes.DUST, HCMaterialPrefixes.GEM)
+        putAll(HCMaterialKeys.CRIMSON_CRYSTAL, HCMaterialPrefixes.DUST, HCMaterialPrefixes.GEM)
+        putAll(HCMaterialKeys.WARPED_CRYSTAL, HCMaterialPrefixes.DUST, HCMaterialPrefixes.GEM)
+
+        putAll(HCMaterialKeys.ELDRITCH, HCMaterialPrefixes.DUST, HCMaterialPrefixes.PEARL)
+
+        putAll(HCMaterialKeys.AZURE_STEEL, alloySet)
+        putAll(
             HCMaterialKeys.DEEP_STEEL,
-        ).forEach { register(HCMaterialPrefixes.DUST, it) }
-        // Raws
-        arrayOf<HTMaterialKey>(
-            // Common
-            // Hiiragi Core
-        ).forEach { register(HCMaterialPrefixes.RAW_MATERIAL, it) }
-        // Fuels
-        arrayOf(
-            // Common
-            CommonMaterialKeys.COAL_COKE,
-            CommonMaterialKeys.CARBIDE,
-        ).forEach { register(HCMaterialPrefixes.FUEL, it) }
-        // Gems
-        arrayOf(
-            // Hiiragi Core
-            HCMaterialKeys.AZURE,
-            HCMaterialKeys.CRIMSON_CRYSTAL,
-            HCMaterialKeys.WARPED_CRYSTAL,
-        ).forEach { register(HCMaterialPrefixes.GEM, it) }
-        // Pearls
-        register(HCMaterialPrefixes.PEARL, HCMaterialKeys.ELDRITCH)
-        // Ingots
-        arrayOf(
-            // Common
-            CommonMaterialKeys.STEEL,
-            // Hiiragi Core
-            HCMaterialKeys.AZURE_STEEL,
-            HCMaterialKeys.DEEP_STEEL,
-        ).forEach { register(HCMaterialPrefixes.INGOT, it) }
-        // Nuggets
-        arrayOf(
-            // Vanilla
-            VanillaMaterialKeys.COPPER,
-            VanillaMaterialKeys.NETHERITE,
-            // Common
-            CommonMaterialKeys.STEEL,
-            // Hiiragi Core
-            HCMaterialKeys.AZURE_STEEL,
-            HCMaterialKeys.DEEP_STEEL,
-        ).forEach { register(HCMaterialPrefixes.NUGGET, it) }
-        // Gears
-        arrayOf(
-            // Vanilla
-            VanillaMaterialKeys.COPPER,
-            VanillaMaterialKeys.GOLD,
-            VanillaMaterialKeys.IRON,
-            VanillaMaterialKeys.NETHERITE,
-            // Common
-            CommonMaterialKeys.STEEL,
-            // Hiiragi Core
-            HCMaterialKeys.AZURE_STEEL,
-            HCMaterialKeys.DEEP_STEEL,
-        ).forEach { register(HCMaterialPrefixes.GEAR, it) }
-        // Plates
-        arrayOf(
-            // Vanilla
-            VanillaMaterialKeys.WOOD,
-            VanillaMaterialKeys.COPPER,
-            VanillaMaterialKeys.IRON,
-            VanillaMaterialKeys.GOLD,
-            VanillaMaterialKeys.NETHERITE,
-            // Common
-            CommonMaterialKeys.STEEL,
-            CommonMaterialKeys.PLASTIC,
-            CommonMaterialKeys.RUBBER,
-            // Hiiragi Core
-            HCMaterialKeys.AZURE_STEEL,
-            HCMaterialKeys.DEEP_STEEL,
-        ).forEach { register(HCMaterialPrefixes.PLATE, it) }
-        // Rods
-        arrayOf(
-            // Vanilla
-            VanillaMaterialKeys.GLASS,
-            VanillaMaterialKeys.COPPER,
-            VanillaMaterialKeys.IRON,
-            VanillaMaterialKeys.GOLD,
-            VanillaMaterialKeys.NETHERITE,
-            // Common
-            CommonMaterialKeys.STEEL,
-            CommonMaterialKeys.PLASTIC,
-            CommonMaterialKeys.RUBBER,
-            // Hiiragi core
-            HCMaterialKeys.AZURE_STEEL,
-            HCMaterialKeys.DEEP_STEEL,
-        ).forEach { register(HCMaterialPrefixes.ROD, it) }
-        // Scrap
-        register(HCMaterialPrefixes.SCRAP, HCMaterialKeys.DEEP_STEEL)
-        // Wire
-        arrayOf(
-            // Vanilla
-            VanillaMaterialKeys.COPPER,
-            VanillaMaterialKeys.IRON,
-            VanillaMaterialKeys.GOLD,
-            // Common
-            CommonMaterialKeys.STEEL,
-            CommonMaterialKeys.PLASTIC,
-        ).forEach { register(HCMaterialPrefixes.WIRE, it) }
+            HCMaterialPrefixes.DUST,
+            HCMaterialPrefixes.SCRAP,
+            HCMaterialPrefixes.INGOT,
+            HCMaterialPrefixes.NUGGET,
+            HCMaterialPrefixes.GEAR,
+            HCMaterialPrefixes.PLATE,
+            HCMaterialPrefixes.ROD,
+        )
+    }.toFlatTable { (key: HTMaterialKey, prefixes: Collection<HTMaterialPrefix>) ->
+        prefixes.map { prefix: HTMaterialPrefix ->
+            Triple(prefix, key, REGISTER.registerSimpleItem(prefix.createPath(key)))
+        }
     }.let(::HTMaterialTable)
 
     @JvmField

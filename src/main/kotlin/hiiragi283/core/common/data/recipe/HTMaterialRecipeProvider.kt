@@ -34,7 +34,9 @@ class HTMaterialRecipeProvider(
         prefixToBase(HCMaterialPrefixes.DUST, 0.35f)
         prefixToBase(HCMaterialPrefixes.RAW_MATERIAL, 0.7f)
 
-        ingotToGear()
+        prefixToGear(HCMaterialPrefixes.GEM)
+        prefixToGear(HCMaterialPrefixes.INGOT)
+
         ingotToNugget()
     }
 
@@ -106,16 +108,18 @@ class HTMaterialRecipeProvider(
         }
     }
 
-    private fun ingotToGear() {
-        for (key: HTMaterialKey in HTMaterialManager.INSTANCE.keys) {
-            val gear: HTItemHolderLike<*> = itemGetter(HCMaterialPrefixes.GEAR, key) ?: continue
-            // Shaped
-            HTShapedRecipeBuilder
-                .create(gear)
-                .hollow4()
-                .define('A', HCMaterialPrefixes.INGOT, key)
-                .define('B', Tags.Items.NUGGETS_IRON)
-                .save(output, HiiragiCoreAPI.id(key.name, "gear"))
+    private fun prefixToGear(prefix: HTPrefixLike) {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE.entries) {
+            if (propertyMap.getDefaultPart()?.isOf(prefix) ?: false) {
+                val gear: HTItemHolderLike<*> = itemGetter(HCMaterialPrefixes.GEAR, key) ?: continue
+                // Shaped
+                HTShapedRecipeBuilder
+                    .create(gear)
+                    .hollow4()
+                    .define('A', prefix, key)
+                    .define('B', Tags.Items.NUGGETS_IRON)
+                    .save(output, HiiragiCoreAPI.id(key.name, "gear"))
+            }
         }
     }
 

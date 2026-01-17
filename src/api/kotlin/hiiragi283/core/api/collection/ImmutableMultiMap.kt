@@ -1,6 +1,6 @@
 package hiiragi283.core.api.collection
 
-import com.google.common.collect.HashMultimap
+import com.google.common.collect.LinkedHashMultimap
 import com.google.common.collect.Multimap
 
 /**
@@ -74,7 +74,7 @@ value class ImmutableMultiMap<K : Any, V : Any>(private val multimap: Multimap<K
      * @since 0.2.1
      */
     class Builder<K : Any, V : Any>(initialCapacity: Int = 10, perKey: Int = 2) {
-        private val values: Multimap<K, V> = HashMultimap.create<K, V>(initialCapacity, perKey)
+        private val values: Multimap<K, V> = LinkedHashMultimap.create<K, V>(initialCapacity, perKey)
 
         /**
          * 指定した[key]と[value]を追加します。

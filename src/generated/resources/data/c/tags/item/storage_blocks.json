@@ -3,6 +3,7 @@
     "#c:storage_blocks/amethyst",
     "#c:storage_blocks/azure",
     "#c:storage_blocks/azure_steel",
+    "#c:storage_blocks/brass",
     "#c:storage_blocks/carbide",
     "#c:storage_blocks/charcoal",
     "#c:storage_blocks/cinnabar",
@@ -20,6 +21,7 @@
     "#c:storage_blocks/saltpeter",
     "#c:storage_blocks/steel",
     "#c:storage_blocks/sulfur",
-    "#c:storage_blocks/warped_crystal"
+    "#c:storage_blocks/warped_crystal",
+    "#c:storage_blocks/zinc"
   ]
 }

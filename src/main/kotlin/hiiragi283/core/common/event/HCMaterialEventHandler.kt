@@ -14,6 +14,7 @@ import hiiragi283.core.api.material.property.addCustomName
 import hiiragi283.core.api.material.property.addDefaultPart
 import hiiragi283.core.api.material.property.addName
 import hiiragi283.core.api.material.property.addTextureSet
+import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.registry.toHolderLike
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
@@ -214,6 +215,23 @@ object HCMaterialEventHandler {
                 }
             }
         }
+
+        fun registerMetal(
+            key: HTMaterialKey,
+            enName: String,
+            jaName: String,
+            textureSet: HTMaterialTextureSet,
+            builderAction: HTPropertyMap.Mutable.() -> Unit = {},
+        ) {
+            event.modify(key) {
+                addDefaultPart(HCMaterialPrefixes.INGOT)
+                if (isDataGen) {
+                    addName(enName, jaName)
+                    addTextureSet(textureSet)
+                }
+                builderAction()
+            }
+        }
         // Fuels
         event.modify(CommonMaterialKeys.COAL_COKE) {
             addDefaultPart(HCMaterialPrefixes.FUEL)
@@ -276,31 +294,25 @@ object HCMaterialEventHandler {
         registerMetal(CommonMaterialKeys.MANGANESE, "Manganese", "マンガン")
         registerMetal(CommonMaterialKeys.COBALT, "Cobalt", "コバルト")
         registerMetal(CommonMaterialKeys.NICKEL, "Nickel", "ニッケル")
-        registerMetal(CommonMaterialKeys.ZINC, "Zinc", "亜鉛")
+        registerMetal(CommonMaterialKeys.ZINC, "Zinc", "亜鉛", HTMaterialTextureSet.DULL)
 
         registerMetal(CommonMaterialKeys.PALLADIUM, "Palladium", "パラジウム")
-        registerMetal(CommonMaterialKeys.SILVER, "Silver", "銀")
+        registerMetal(CommonMaterialKeys.SILVER, "Silver", "銀", HTMaterialTextureSet.SHINE)
         registerMetal(CommonMaterialKeys.TIN, "Tin", "錫")
         registerMetal(CommonMaterialKeys.ANTIMONY, "Antimony", "アンチモン")
 
         registerMetal(CommonMaterialKeys.TUNGSTEN, "Tungsten", "パラジウム")
         registerMetal(CommonMaterialKeys.OSMIUM, "Osmium", "オスミウム")
         registerMetal(CommonMaterialKeys.IRIDIUM, "Iridium", "イリジウム")
-        registerMetal(CommonMaterialKeys.PLATINUM, "Platinum", "白金")
-        registerMetal(CommonMaterialKeys.LEAD, "Lead", "鉛")
+        registerMetal(CommonMaterialKeys.PLATINUM, "Platinum", "白金", HTMaterialTextureSet.SHINE)
+        registerMetal(CommonMaterialKeys.LEAD, "Lead", "鉛", HTMaterialTextureSet.DULL)
 
         registerMetal(CommonMaterialKeys.URANIUM, "Uranium", "ウラン")
         // Alloys
-        event.modify(CommonMaterialKeys.STEEL) {
-            addDefaultPart(HCMaterialPrefixes.INGOT)
-            if (isDataGen) {
-                addName("Steel", "鋼鉄")
-                addTextureSet("shine")
-            }
-        }
+        registerMetal(CommonMaterialKeys.STEEL, "Steel", "鋼鉄", HTMaterialTextureSet.SHINE)
         registerMetal(CommonMaterialKeys.INVAR, "Invar", "不変鋼")
         registerMetal(CommonMaterialKeys.CONSTANTAN, "Constantan", "コンスタンタン")
-        registerMetal(CommonMaterialKeys.BRASS, "Brass", "真鍮")
+        registerMetal(CommonMaterialKeys.BRASS, "Brass", "真鍮", HTMaterialTextureSet.DULL)
         registerMetal(CommonMaterialKeys.BRONZE, "Bronze", "青銅")
         registerMetal(CommonMaterialKeys.ELECTRUM, "Electrum", "琥珀金")
 

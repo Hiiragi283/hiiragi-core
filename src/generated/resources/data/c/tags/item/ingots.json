@@ -1,7 +1,9 @@
 {
   "values": [
     "#c:ingots/azure_steel",
+    "#c:ingots/brass",
     "#c:ingots/deep_steel",
-    "#c:ingots/steel"
+    "#c:ingots/steel",
+    "#c:ingots/zinc"
   ]
 }

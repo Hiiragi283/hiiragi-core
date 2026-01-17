@@ -1,6 +1,7 @@
 {
   "values": [
     "#c:rods/azure_steel",
+    "#c:rods/brass",
     "#c:rods/copper",
     "#c:rods/deep_steel",
     "#c:rods/glass",
@@ -8,7 +9,7 @@
     "#c:rods/iron",
     "#c:rods/netherite",
     "#c:rods/plastic",
-    "#c:rods/rubber",
-    "#c:rods/steel"
+    "#c:rods/steel",
+    "#c:rods/zinc"
   ]
 }

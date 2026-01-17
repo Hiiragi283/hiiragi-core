@@ -103,6 +103,8 @@ value class ImmutableTable<R : Any, C : Any, V : Any>(private val table: Table<R
          */
         fun put(row: R, column: C, value: V): V? = values.put(row, column, value)
 
+        fun put(triple: Triple<R, C, V>): V? = put(triple.first, triple.second, triple.third)
+
         /**
          * 指定した値を追加します。
          */
