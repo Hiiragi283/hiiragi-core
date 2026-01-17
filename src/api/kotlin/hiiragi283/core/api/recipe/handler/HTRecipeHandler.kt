@@ -3,8 +3,6 @@ package hiiragi283.core.api.recipe.handler
 import hiiragi283.core.api.fixedFraction
 import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
-import net.minecraft.world.item.crafting.Recipe
-import net.minecraft.world.item.crafting.RecipeInput
 import org.apache.commons.lang3.math.Fraction
 
 /**
@@ -14,7 +12,7 @@ import org.apache.commons.lang3.math.Fraction
  * @author Hiiragi Tsubasa
  * @since 0.5.0
  */
-abstract class HTRecipeHandler<INPUT : RecipeInput, RECIPE : Recipe<INPUT>> {
+abstract class HTRecipeHandler<INPUT : Any, RECIPE : Any> {
     /**
      * 現在の進捗量
      */

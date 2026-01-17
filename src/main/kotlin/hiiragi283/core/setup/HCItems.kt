@@ -8,10 +8,14 @@ import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.text.HTTranslation
+import hiiragi283.core.common.capability.HTFluidCapabilities
+import hiiragi283.core.common.capability.HTItemCapabilities
 import hiiragi283.core.common.item.HTAlmightyPickaxe
 import hiiragi283.core.common.item.HTAmbrosiaItem
 import hiiragi283.core.common.item.HTCaptureEggItem
 import hiiragi283.core.common.item.HTCreativeItem
+import hiiragi283.core.common.item.HTFluidFilterItem
+import hiiragi283.core.common.item.HTItemFilterItem
 import hiiragi283.core.common.item.HTToolType
 import hiiragi283.core.common.item.HTTraderCatalogItem
 import hiiragi283.core.common.item.VanillaEquipmentMaterial
@@ -22,6 +26,8 @@ import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import hiiragi283.core.common.registry.register.HTDeferredItemRegister
+import hiiragi283.core.common.storage.fluid.HTComponentFluidTank
+import hiiragi283.core.common.storage.item.HTComponentItemSlot
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
@@ -258,6 +264,12 @@ object HCItems {
     }
 
     @JvmField
+    val FLUID_FILTER: HTSimpleDeferredItem = REGISTER.registerItem("fluid_filter", ::HTFluidFilterItem)
+
+    @JvmField
+    val ITEM_FILTER: HTSimpleDeferredItem = REGISTER.registerItem("item_filter", ::HTItemFilterItem)
+
+    @JvmField
     val SLOT_COVER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("slot_cover") {
         it.description(HCTranslation.SLOT_COVER)
     }
@@ -306,7 +318,11 @@ object HCItems {
     }
 
     @JvmStatic
-    private fun registerCapabilities(event: RegisterCapabilitiesEvent) {}
+    private fun registerCapabilities(event: RegisterCapabilitiesEvent) {
+        HTFluidCapabilities.registerItem(event, 9, { HTComponentFluidTank.create(1000, it) }, FLUID_FILTER)
+
+        HTItemCapabilities.registerItem(event, 9, HTComponentItemSlot::create, ITEM_FILTER)
+    }
 
     //    Extensions    //
 

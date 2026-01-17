@@ -10,7 +10,7 @@ import net.minecraft.network.codec.StreamCodec
  * @since 0.5.0
  * @see net.minecraft.network.codec.ByteBufCodecs.either
  */
-class HTEitherStreamCodec<B : ByteBuf, A : Any, B1 : Any>(
+internal class HTEitherStreamCodec<B : ByteBuf, A : Any, B1 : Any>(
     private val left: StreamCodec<in B, A>,
     private val right: StreamCodec<in B, B1>,
 ) : StreamCodec<B, Either<A, B1>> {

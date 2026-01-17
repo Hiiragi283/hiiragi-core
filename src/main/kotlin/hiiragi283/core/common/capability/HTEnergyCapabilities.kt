@@ -1,20 +1,25 @@
-package hiiragi283.core.api.capability
+package hiiragi283.core.common.capability
 
 import hiiragi283.core.api.HTDataSerializable
+import hiiragi283.core.api.capability.HTMultiCapability
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.energy.HTEnergyBattery
 import hiiragi283.core.api.storage.energy.HTEnergyHandler
 import hiiragi283.core.api.storage.item.HTItemResourceType
+import hiiragi283.core.common.storage.component.HTComponentHandler
+import hiiragi283.core.common.storage.energy.HTComponentEnergyHandler
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.Level
 import net.neoforged.neoforge.capabilities.BlockCapability
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.capabilities.EntityCapability
 import net.neoforged.neoforge.capabilities.ItemCapability
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
 import net.neoforged.neoforge.energy.IEnergyStorage
 
 object HTEnergyCapabilities : HTMultiCapability.Simple<IEnergyStorage> {
@@ -44,5 +49,33 @@ object HTEnergyCapabilities : HTMultiCapability.Simple<IEnergyStorage> {
             override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int =
                 storage.extractEnergy(amount, action.simulate())
         }
+    }
+
+    //    Register    //
+
+    fun registerItem(
+        event: RegisterCapabilitiesEvent,
+        size: Int,
+        factory: HTComponentHandler.ContainerFactory<HTEnergyBattery>,
+        vararg items: ItemLike,
+    ) {
+        registerItem(
+            event,
+            { stack: ItemStack -> HTComponentEnergyHandler(stack, size, factory) },
+            *items,
+        )
+    }
+
+    fun registerItem(
+        event: RegisterCapabilitiesEvent,
+        factory: HTComponentHandler.ContainerFactory<HTEnergyBattery>,
+        vararg items: ItemLike,
+    ) {
+        registerItem(
+            event,
+            1,
+            factory,
+            *items,
+        )
     }
 }

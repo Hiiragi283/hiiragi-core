@@ -14,7 +14,7 @@ import java.util.stream.Stream
  * @since 0.5.0
  * @see com.mojang.serialization.codecs.EitherMapCodec
  */
-class HTEitherMapCodec<A, B>(val left: MapCodec<A>, val right: MapCodec<B>) : MapCodec<Either<A, B>>() {
+internal class HTEitherMapCodec<A, B>(val left: MapCodec<A>, val right: MapCodec<B>) : MapCodec<Either<A, B>>() {
     override fun <T : Any> keys(ops: DynamicOps<T>): Stream<T> = Stream.concat(left.keys(ops), right.keys(ops))
 
     override fun <T : Any> decode(ops: DynamicOps<T>, input: MapLike<T>): DataResult<Either<A, B>> {

@@ -12,7 +12,7 @@ import java.util.Optional
  * @since 0.5.0
  * @see net.minecraft.util.ExtraCodecs.optionalEmptyMap
  */
-class HTOptionalCodec<A : Any>(val codec: Codec<A>) : Codec<Optional<A>> {
+internal class HTOptionalCodec<A : Any>(val codec: Codec<A>) : Codec<Optional<A>> {
     override fun <T : Any> encode(input: Optional<A>, ops: DynamicOps<T>, prefix: T): DataResult<T> = when {
         input.isEmpty -> DataResult.success(ops.emptyMap())
         else -> codec.encode(input.get(), ops, prefix)

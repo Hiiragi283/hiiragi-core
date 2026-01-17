@@ -10,6 +10,8 @@ import net.minecraft.world.level.Level
 
 /**
  * [HTAmountView]を取得する[HTMultiCapability]の拡張インターフェース
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 interface HTAmountViewCapability<HANDLER : Any, ITEM_HANDLER : HANDLER> : HTMultiCapability<HANDLER, ITEM_HANDLER> {
     fun apply(handler: HANDLER, context: Direction?): List<HTAmountView>

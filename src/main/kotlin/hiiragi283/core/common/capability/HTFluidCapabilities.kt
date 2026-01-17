@@ -1,22 +1,28 @@
-package hiiragi283.core.api.capability
+package hiiragi283.core.common.capability
 
+import hiiragi283.core.api.capability.HTMultiCapability
+import hiiragi283.core.api.capability.tankRange
 import hiiragi283.core.api.storage.fluid.HTFluidHandler
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.fluid.HTFluidView
 import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.storage.item.HTItemResourceType
+import hiiragi283.core.common.storage.component.HTComponentHandler
+import hiiragi283.core.common.storage.fluid.HTComponentFluidHandler
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.Level
 import net.neoforged.neoforge.capabilities.BlockCapability
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.capabilities.EntityCapability
 import net.neoforged.neoforge.capabilities.ItemCapability
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
 import net.neoforged.neoforge.fluids.capability.IFluidHandler
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem
-import kotlin.collections.getOrNull
 
 object HTFluidCapabilities : HTMultiCapability<IFluidHandler, IFluidHandlerItem> {
     override val block: BlockCapability<IFluidHandler, Direction?> = Capabilities.FluidHandler.BLOCK
@@ -67,4 +73,28 @@ object HTFluidCapabilities : HTMultiCapability<IFluidHandler, IFluidHandlerItem>
     fun getFluidViews(resource: HTItemResourceType?): List<HTFluidView> = getCapability(resource)?.let { wrapHandler(it, null) } ?: listOf()
 
     fun getFluidView(resource: HTItemResourceType?, tank: Int): HTFluidView? = getFluidViews(resource).getOrNull(tank)
+
+    //    Register    //
+
+    fun registerItem(
+        event: RegisterCapabilitiesEvent,
+        size: Int,
+        factory: HTComponentHandler.ContainerFactory<HTFluidTank>,
+        vararg items: ItemLike,
+    ) {
+        registerItem(
+            event,
+            { stack: ItemStack -> HTComponentFluidHandler(stack, size, factory) },
+            *items,
+        )
+    }
+
+    fun registerItem(event: RegisterCapabilitiesEvent, factory: HTComponentHandler.ContainerFactory<HTFluidTank>, vararg items: ItemLike) {
+        registerItem(
+            event,
+            1,
+            factory,
+            *items,
+        )
+    }
 }

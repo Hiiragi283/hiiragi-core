@@ -31,11 +31,15 @@ abstract class HTComponentSlot<RESOURCE : HTResourceType<*>, STACK : Any, ATTACH
     protected abstract fun getAmount(stack: STACK): Int
 
     override fun setResource(resource: RESOURCE?) {
-        capabilityCodec().updateAttached(attachedTo, getAttached().with(slot, createStack(resource, getAmount())))
+        setStack(createStack(resource, getAmount()))
     }
 
     override fun setAmount(amount: Int) {
-        capabilityCodec().updateAttached(attachedTo, getAttached().with(slot, createStack(getResource(), amount)))
+        setStack(createStack(getResource(), amount))
+    }
+
+    fun setStack(stack: STACK) {
+        capabilityCodec().updateAttached(attachedTo, getAttached().with(slot, stack))
     }
 
     final override fun isValid(resource: RESOURCE): Boolean = this.filter.test(resource)

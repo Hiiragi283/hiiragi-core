@@ -2,7 +2,6 @@ package hiiragi283.core.util
 
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTDataSerializable
-import hiiragi283.core.api.capability.HTFluidCapabilities
 import hiiragi283.core.api.fixedFraction
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
@@ -18,6 +17,7 @@ import hiiragi283.core.api.storage.item.toResourcePair
 import hiiragi283.core.api.storage.resource.HTResourceSlot
 import hiiragi283.core.api.storage.resource.HTResourceType
 import hiiragi283.core.api.storage.resource.HTResourceView
+import hiiragi283.core.common.capability.HTFluidCapabilities
 import net.minecraft.util.Mth
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.entity.player.Player

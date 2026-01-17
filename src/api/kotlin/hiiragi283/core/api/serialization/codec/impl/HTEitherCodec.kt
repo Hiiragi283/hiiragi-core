@@ -13,7 +13,7 @@ import hiiragi283.core.api.monad.Either
  * @see com.mojang.serialization.codecs.EitherCodec
  * @see com.mojang.serialization.codecs.XorCodec
  */
-class HTEitherCodec<A, B>(val left: Codec<A>, val right: Codec<B>, val strict: Boolean) : Codec<Either<A, B>> {
+internal class HTEitherCodec<A, B>(val left: Codec<A>, val right: Codec<B>, val strict: Boolean) : Codec<Either<A, B>> {
     override fun <T : Any> encode(input: Either<A, B>, ops: DynamicOps<T>, prefix: T): DataResult<T> =
         input.map({ left.encode(it, ops, prefix) }, { right.encode(it, ops, prefix) })
 

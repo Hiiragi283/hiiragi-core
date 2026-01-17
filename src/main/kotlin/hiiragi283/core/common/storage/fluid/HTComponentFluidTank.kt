@@ -30,8 +30,8 @@ class HTComponentFluidTank(
     companion object {
         @JvmStatic
         fun create(
-            context: HTComponentHandler.ContainerContext,
             capacity: Int,
+            context: HTComponentHandler.ContainerContext,
             canExtract: BiPredicate<HTFluidResourceType, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
             canInsert: BiPredicate<HTFluidResourceType, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
             filter: Predicate<HTFluidResourceType> = HTStoragePredicates.alwaysTrue(),
@@ -39,7 +39,7 @@ class HTComponentFluidTank(
             HTComponentFluidTank(context.attachedTo, context.size, context.index, capacity, canExtract, canInsert, filter)
     }
 
-    override fun capabilityCodec(): HTCapabilityCodec<*, HTAttachedFluids> = HTCapabilityCodec.FLUID
+    override fun capabilityCodec(): HTCapabilityCodec<HTFluidTank, HTAttachedFluids> = HTCapabilityCodec.FLUID
 
     override fun createResource(stack: FluidStack): HTFluidResourceType? = stack.toResource()
 

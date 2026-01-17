@@ -2,12 +2,12 @@ package hiiragi283.core.setup
 
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.capability.HTEnergyCapabilities
-import hiiragi283.core.api.capability.HTFluidCapabilities
-import hiiragi283.core.api.capability.HTItemCapabilities
 import hiiragi283.core.api.storage.HTHandlerProvider
 import hiiragi283.core.common.block.HTBlockWithEntity
 import hiiragi283.core.common.block.entity.HTTestBlockEntity
+import hiiragi283.core.common.capability.HTEnergyCapabilities
+import hiiragi283.core.common.capability.HTFluidCapabilities
+import hiiragi283.core.common.capability.HTItemCapabilities
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import hiiragi283.core.common.registry.HTDeferredOnlyBlock
 import hiiragi283.core.common.registry.register.HTDeferredBlockEntityTypeRegister

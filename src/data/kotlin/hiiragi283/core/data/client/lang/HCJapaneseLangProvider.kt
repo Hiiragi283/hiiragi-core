@@ -61,6 +61,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.PULPED_SEED, "種のパルプ")
 
         add(HCItems.ELDRITCH_EGG, "異質な卵")
+        add(HCItems.FLUID_FILTER, "液体フィルター")
+        add(HCItems.ITEM_FILTER, "アイテムフィルター")
         add(HCItems.SLOT_COVER, "スロットカバー")
         add(HCItems.TRADER_CATALOG, "行商人のカタログ")
 
