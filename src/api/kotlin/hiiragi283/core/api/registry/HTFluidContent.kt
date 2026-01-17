@@ -1,6 +1,7 @@
 package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.storage.fluid.HTFluidResourceFactory
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.tags.TagKey
@@ -39,7 +40,8 @@ open class HTFluidContent<TYPE : FluidType, FLUID : Fluid, ITEM : Item>(
 
     fun toStack(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): FluidStack = FluidStack(get(), amount)
 
-    fun toResource(patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType = HTFluidResourceType.of(get(), patch)
+    fun toResource(patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType =
+        HTFluidResourceFactory.createOrThrow(get(), patch)
 
     //    Flowing    //
 

@@ -1,6 +1,5 @@
 package hiiragi283.core.api.storage.item
 
-import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.storage.resource.HTResourceType
 import net.minecraft.core.Holder
@@ -10,7 +9,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.level.ItemLike
 
 /**
  * [アイテム][Item]向けの[HTResourceType.DataComponent]の実装クラスです。
@@ -25,22 +23,6 @@ class HTItemResourceType private constructor(private val stack: ItemStack) : HTR
             BiCodec
                 .of(ItemStack.SINGLE_ITEM_CODEC, ItemStack.STREAM_CODEC)
                 .xmap(::HTItemResourceType, HTItemResourceType::stack)
-
-        /**
-         * 指定した[item]を[HTItemResourceType]に変換します。
-         * @return [ItemStack.isEmpty]が`true`の場合は`null`
-         */
-        @JvmStatic
-        fun ofNullable(item: ItemLike?, patch: DataComponentPatch = DataComponentPatch.EMPTY): HTItemResourceType? =
-            createItemStack(item, patch = patch).let(::of)
-
-        /**
-         * 指定した[item]を[HTItemResourceType]に変換します。
-         * @throws IllegalStateException [ItemStack.isEmpty]が`true`の場合
-         */
-        @JvmStatic
-        fun of(item: ItemLike?, patch: DataComponentPatch = DataComponentPatch.EMPTY): HTItemResourceType =
-            ofNullable(item, patch) ?: error("Item must not be empty")
 
         /**
          * 指定した[stack]を[HTItemResourceType]に変換します。

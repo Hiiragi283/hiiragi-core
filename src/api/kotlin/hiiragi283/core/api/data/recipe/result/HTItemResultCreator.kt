@@ -4,6 +4,7 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.storage.item.HTItemResourceFactory
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -32,9 +33,7 @@ data object HTItemResultCreator : HTResultCreator<Item, HTItemResourceType, Item
 
     //    HTResultCreator    //
 
-    override fun defaultAmount(): Int = 1
-
-    override fun createResource(type: Item): HTItemResourceType = HTItemResourceType.of(type)
+    override fun resourceFactory(): HTItemResourceFactory = HTItemResourceFactory
 
     override fun create(contents: Ior<HTItemResourceType, TagKey<Item>>, amount: Int): HTItemResult = HTItemResult(contents, amount)
 }

@@ -67,16 +67,6 @@ object HCMaterialEventHandler {
             }
         }
         // Gems
-        event.modify(VanillaMaterialKeys.GLASS) {
-            addDefaultPart(HCMaterialPrefixes.GEM)
-            put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
-            put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_GLASS))
-            if (isDataGen) {
-                addName("Glass", "ガラス")
-                addTextureSet("amethyst", HTMaterialTextureSet.SHINE)
-                put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("salt"))
-            }
-        }
         event.modify(VanillaMaterialKeys.LAPIS) {
             addDefaultPart(HCMaterialPrefixes.GEM)
             if (isDataGen) {
@@ -163,6 +153,16 @@ object HCMaterialEventHandler {
                 addName("Wood", "木")
                 addTextureSet("wood")
                 put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
+            }
+        }
+        event.modify(VanillaMaterialKeys.GLASS) {
+            addDefaultPart(HCMaterialPrefixes.DUST)
+            put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
+            put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_GLASS))
+            if (isDataGen) {
+                addName("Glass", "ガラス")
+                addTextureSet("shine")
+                put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("salt"))
             }
         }
         event.modify(VanillaMaterialKeys.STONE) {

@@ -1,7 +1,6 @@
 package hiiragi283.core.api.storage.fluid
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.fluid.createFluidStack
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.storage.resource.HTResourceType
 import net.minecraft.core.Holder
@@ -26,22 +25,6 @@ class HTFluidResourceType private constructor(private val stack: FluidStack) : H
             BiCodec
                 .of(FluidStack.fixedAmountCodec(HTConst.DEFAULT_FLUID_AMOUNT), FluidStack.STREAM_CODEC)
                 .xmap(::HTFluidResourceType, HTFluidResourceType::stack)
-
-        /**
-         * 指定した[fluid]を[HTFluidResourceType]に変換します。
-         * @return [FluidStack.isEmpty]が`true`の場合は`null`
-         */
-        @JvmStatic
-        fun ofNullable(fluid: Fluid?, patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType? =
-            createFluidStack(fluid, patch = patch).let(::of)
-
-        /**
-         * 指定した[fluid]を[HTFluidResourceType]に変換します。
-         * @throws IllegalStateException [FluidStack.isEmpty]が`true`の場合
-         */
-        @JvmStatic
-        fun of(fluid: Fluid?, patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType =
-            ofNullable(fluid, patch) ?: error("Fluid must not be empty")
 
         /**
          * 指定した[stack]を[HTFluidResourceType]に変換します。

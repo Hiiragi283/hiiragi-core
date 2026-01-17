@@ -6,6 +6,7 @@ import hiiragi283.core.api.integration.emi.toEmi
 import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.monad.unwrap
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.storage.item.HTItemResourceFactory
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.toResource
@@ -46,7 +47,7 @@ class HTListItemSlot private constructor(private val content: Either<TagKey<Item
         override fun getResource(): HTItemResourceType? {
             val resources: List<HTItemResourceType> = content
                 .mapLeft { tagKey: TagKey<Item> ->
-                    BuiltInRegistries.ITEM.getTagOrEmpty(tagKey).mapNotNull { HTItemResourceType.ofNullable(it.value()) }
+                    BuiltInRegistries.ITEM.getTagOrEmpty(tagKey).mapNotNull(HTItemResourceFactory::create)
                 }.unwrap()
             if (resources.isEmpty()) return null
             val index: Int = ((System.currentTimeMillis() / 1000) % resources.size).toInt()

@@ -3,9 +3,9 @@ package hiiragi283.core.common.storage.fluid
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.attachments.HTAttachedFluids
+import hiiragi283.core.api.storage.fluid.HTFluidResourceFactory
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.HTFluidTank
-import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.common.storage.HTCapabilityCodec
 import hiiragi283.core.common.storage.component.HTComponentHandler
 import hiiragi283.core.common.storage.component.HTComponentSlot
@@ -41,9 +41,7 @@ class HTComponentFluidTank(
 
     override fun capabilityCodec(): HTCapabilityCodec<HTFluidTank, HTAttachedFluids> = HTCapabilityCodec.FLUID
 
-    override fun createResource(stack: FluidStack): HTFluidResourceType? = stack.toResource()
-
-    override fun createStack(resource: HTFluidResourceType?, amount: Int): FluidStack = resource?.toStack(amount) ?: FluidStack.EMPTY
+    override fun resourceFactory(): HTFluidResourceFactory = HTFluidResourceFactory
 
     override fun getAmount(stack: FluidStack): Int = stack.amount
 }

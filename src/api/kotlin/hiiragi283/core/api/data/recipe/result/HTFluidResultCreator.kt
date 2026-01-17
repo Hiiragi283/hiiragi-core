@@ -1,10 +1,10 @@
 package hiiragi283.core.api.data.recipe.result
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.VanillaFluidContents
+import hiiragi283.core.api.storage.fluid.HTFluidResourceFactory
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import net.minecraft.tags.TagKey
 import net.minecraft.world.level.material.Fluid
@@ -36,9 +36,7 @@ data object HTFluidResultCreator : HTResultCreator<Fluid, HTFluidResourceType, F
 
     //    HTResultCreator    //
 
-    override fun defaultAmount(): Int = HTConst.DEFAULT_FLUID_AMOUNT
-
-    override fun createResource(type: Fluid): HTFluidResourceType = HTFluidResourceType.of(type)
+    override fun resourceFactory(): HTFluidResourceFactory = HTFluidResourceFactory
 
     override fun create(contents: Ior<HTFluidResourceType, TagKey<Fluid>>, amount: Int): HTFluidResult = HTFluidResult(contents, amount)
 }

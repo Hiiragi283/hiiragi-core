@@ -2,6 +2,7 @@ package hiiragi283.core.api.data.recipe.result
 
 import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.recipe.result.HTResourceRecipeResult
+import hiiragi283.core.api.storage.resource.HTResourceFactory
 import hiiragi283.core.api.storage.resource.HTResourceType
 import net.minecraft.tags.TagKey
 
@@ -21,14 +22,14 @@ abstract class HTResultCreator<
     RESULT : HTResourceRecipeResult<TYPE, RESOURCE, STACK>,
 > {
     /**
-     * デフォルトの数量を取得します。
+     * @since 0.7.0
      */
-    protected abstract fun defaultAmount(): Int
+    protected abstract fun resourceFactory(): HTResourceFactory<TYPE, STACK, RESOURCE>
 
     /**
-     * 指定した[type]から[RESOURCE]を作成します。
+     * デフォルトの数量を取得します。
      */
-    protected abstract fun createResource(type: TYPE): RESOURCE
+    protected fun defaultAmount(): Int = resourceFactory().getDefaultAmount()
 
     /**
      * 指定した[contents]と[amount]から[RESULT]を作成します。
@@ -36,7 +37,7 @@ abstract class HTResultCreator<
     protected abstract fun create(contents: Ior<RESOURCE, TagKey<TYPE>>, amount: Int): RESULT
 
     // Type
-    fun create(type: TYPE, amount: Int = defaultAmount()): RESULT = create(createResource(type), amount)
+    fun create(type: TYPE, amount: Int = defaultAmount()): RESULT = create(resourceFactory().createOrThrow(type), amount)
 
     // Resource
     fun create(resource: RESOURCE, amount: Int = defaultAmount()): RESULT = create(Ior.Left(resource), amount)
@@ -45,7 +46,8 @@ abstract class HTResultCreator<
     fun create(tagKey: TagKey<TYPE>, amount: Int = defaultAmount()): RESULT = create(Ior.Right(tagKey), amount)
 
     // Both
-    fun create(type: TYPE, tagKey: TagKey<TYPE>, amount: Int = defaultAmount()): RESULT = create(createResource(type), tagKey, amount)
+    fun create(type: TYPE, tagKey: TagKey<TYPE>, amount: Int = defaultAmount()): RESULT =
+        create(resourceFactory().createOrThrow(type), tagKey, amount)
 
     fun create(resource: RESOURCE, tagKey: TagKey<TYPE>, amount: Int = defaultAmount()): RESULT = create(Ior.Both(resource, tagKey), amount)
 }

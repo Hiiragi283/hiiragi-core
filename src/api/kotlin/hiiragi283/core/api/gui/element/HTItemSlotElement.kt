@@ -10,6 +10,7 @@ import hiiragi283.core.api.integration.emi.slot.HTListItemSlot
 import hiiragi283.core.api.integration.emi.toEmi
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
+import hiiragi283.core.api.storage.item.HTItemResourceFactory
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.extractItem
@@ -120,7 +121,7 @@ class HTItemSlotElement : ItemSlot {
         }
 
         fun updateCount(count: Int) {
-            stackSetter.accept(slot.getResource()?.toStack(count) ?: ItemStack.EMPTY)
+            stackSetter.accept(HTItemResourceFactory.createStack(slot.getResource(), count))
             setChanged()
         }
 

@@ -6,6 +6,7 @@ import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.MapBiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
+import hiiragi283.core.api.storage.fluid.HTFluidResourceFactory
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentPatch
@@ -44,7 +45,7 @@ class HTFluidResult(contents: Ior<HTFluidResourceType, TagKey<Fluid>>, amount: I
                 val (holder: Holder<Fluid>, patch: DataComponentPatch) = resource
                 val fluid: Fluid = holder.value()
                 if (!fluid.isSource(fluid.defaultFluidState()) && fluid is FlowingFluid) {
-                    HTFluidResourceType.of(fluid.source, patch)
+                    HTFluidResourceFactory.createOrThrow(fluid.source, patch)
                 } else {
                     resource
                 }

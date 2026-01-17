@@ -12,7 +12,7 @@ typealias HTItemView = HTResourceView<HTItemResourceType>
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-fun HTItemView.getItemStack(): ItemStack = this.getResource()?.toStack(this.getAmount()) ?: ItemStack.EMPTY
+fun HTItemView.getItemStack(): ItemStack = HTItemResourceFactory.createStack(this.getResource(), this.getAmount())
 
 /**
  * この[HTItemSlot][this]に指定した[stack]を搬入します。

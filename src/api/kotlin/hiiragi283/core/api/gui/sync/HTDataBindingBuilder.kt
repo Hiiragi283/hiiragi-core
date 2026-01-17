@@ -1,11 +1,12 @@
 package hiiragi283.core.api.gui.sync
 
 import com.lowdragmc.lowdraglib2.gui.sync.bindings.impl.DataBindingBuilder
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.function.andThen
 import hiiragi283.core.api.function.compose
+import hiiragi283.core.api.storage.fluid.HTFluidResourceFactory
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.toResource
+import hiiragi283.core.api.storage.item.HTItemResourceFactory
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.toResource
 import net.minecraft.world.item.ItemStack
@@ -20,7 +21,7 @@ object HTDataBindingBuilder {
 
     @JvmStatic
     private fun fluidSupplier(getter: () -> HTFluidResourceType?): Supplier<FluidStack> = Supplier(
-        getter.andThen { it?.toStack(HTConst.DEFAULT_FLUID_AMOUNT) ?: FluidStack.EMPTY },
+        getter.andThen(HTFluidResourceFactory::createStack),
     )
 
     @JvmStatic
@@ -52,7 +53,7 @@ object HTDataBindingBuilder {
 
     @JvmStatic
     private fun itemSupplier(getter: () -> HTItemResourceType?): Supplier<ItemStack> =
-        Supplier(getter.andThen { it?.toStack() ?: ItemStack.EMPTY })
+        Supplier(getter.andThen(HTItemResourceFactory::createStack))
 
     @JvmStatic
     private fun itemConsumer(setter: (HTItemResourceType?) -> Unit): Consumer<ItemStack> = Consumer(setter.compose(ItemStack::toResource))

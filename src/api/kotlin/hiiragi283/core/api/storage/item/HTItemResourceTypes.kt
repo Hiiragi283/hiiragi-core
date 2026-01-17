@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-fun ItemStack.toResource(): HTItemResourceType? = HTItemResourceType.of(this)
+fun ItemStack.toResource(): HTItemResourceType? = HTItemResourceFactory.create(this)
 
 /**
  * この[ItemStack][this]を[HTItemResourceType]と数量に展開します。

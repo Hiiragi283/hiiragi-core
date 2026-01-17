@@ -6,6 +6,7 @@ import hiiragi283.core.api.integration.emi.toEmi
 import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.monad.unwrap
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
+import hiiragi283.core.api.storage.fluid.HTFluidResourceFactory
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.fluid.toResource
@@ -49,7 +50,7 @@ class HTListFluidTank private constructor(val content: Either<TagKey<Fluid>, Lis
         override fun getResource(): HTFluidResourceType? {
             val resources: List<HTFluidResourceType> = content
                 .mapLeft { tagKey: TagKey<Fluid> ->
-                    BuiltInRegistries.FLUID.getTagOrEmpty(tagKey).mapNotNull { HTFluidResourceType.ofNullable(it.value()) }
+                    BuiltInRegistries.FLUID.getTagOrEmpty(tagKey).mapNotNull(HTFluidResourceFactory::create)
                 }.unwrap()
             if (resources.isEmpty()) return null
             val index: Int = ((System.currentTimeMillis() / 1000) % resources.size).toInt()

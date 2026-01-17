@@ -12,7 +12,7 @@ import net.neoforged.neoforge.fluids.FluidStack
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-fun FluidStack.toResource(): HTFluidResourceType? = HTFluidResourceType.of(this)
+fun FluidStack.toResource(): HTFluidResourceType? = HTFluidResourceFactory.create(this)
 
 /**
  * この[FluidStack][this]を[HTFluidResourceType]と数量に展開します。

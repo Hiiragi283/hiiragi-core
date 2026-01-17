@@ -110,8 +110,6 @@ object HCItems {
         ).forEach { register(HCMaterialPrefixes.FUEL, it) }
         // Gems
         arrayOf(
-            // Vanilla
-            VanillaMaterialKeys.GLASS,
             // Hiiragi Core
             HCMaterialKeys.AZURE,
             HCMaterialKeys.CRIMSON_CRYSTAL,
@@ -155,7 +153,6 @@ object HCItems {
         arrayOf(
             // Vanilla
             VanillaMaterialKeys.WOOD,
-            VanillaMaterialKeys.GLASS,
             VanillaMaterialKeys.COPPER,
             VanillaMaterialKeys.IRON,
             VanillaMaterialKeys.GOLD,
