@@ -6,6 +6,7 @@ import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTSmeltingMaterialProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
@@ -18,7 +19,6 @@ import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
-import hiiragi283.core.common.material.VanillaMaterialKeys
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.neoforged.neoforge.common.Tags
@@ -29,12 +29,12 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     private fun getBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? = HTMaterialContentsAccess.INSTANCE
         .getBlock(prefix, material)
         ?.takeIf { it.getNamespace() == modId }
-        ?: VanillaMaterialKeys.INGREDIENTS[prefix, material.asMaterialKey()]
+        ?: HTMaterialContentsAccess.INSTANCE.getVanillaTable()[prefix, material.asMaterialKey()]
 
     private fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? = HTMaterialContentsAccess.INSTANCE
         .getItem(prefix, material)
         ?.takeIf { it.getNamespace() == modId }
-        ?: VanillaMaterialKeys.INGREDIENTS[prefix, material.asMaterialKey()]
+        ?: HTMaterialContentsAccess.INSTANCE.getVanillaTable()[prefix, material.asMaterialKey()]
 
     override fun buildRecipeInternal() {
         baseToBlock()
@@ -49,25 +49,26 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
 
     private fun baseToBlock() {
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in manager.entries) {
-            val basePrefix: HTTagPrefix = propertyMap.getDefaultPart()?.getLeft() ?: continue
             val blockProperty: HTStorageBlockProperty = propertyMap.getStorageBlock()
-
             val block: HTItemHolderLike<*> = getBlock(CommonTagPrefixes.BLOCK, key) ?: continue
-            val base: HTItemHolderLike<*> = getItem(basePrefix, key) ?: continue
+
+            val defaultPart: HTDefaultPart = propertyMap.getDefaultPart() ?: continue
+            val suffix: String = defaultPart.getSuffix()
+            val base: HTItemHolderLike<*> = defaultPart.getItem(key) ?: continue
             if (block.getNamespace() == HTConst.MINECRAFT && base.getNamespace() == HTConst.MINECRAFT) continue
             // Shapeless
             HTShapelessRecipeBuilder
                 .create(base, blockProperty.baseCount)
                 .addIngredient(CommonTagPrefixes.BLOCK, key)
-                .save(output, key.getId().withSuffix("/${basePrefix.name}_from_block"))
+                .save(output, key.getId().withSuffix("/${suffix}_from_block"))
             // Shaped
             val pattern: List<String> = blockProperty.pattern ?: continue
             HTShapedRecipeBuilder
                 .create(block)
                 .pattern(pattern)
-                .define('A', basePrefix, key)
+                .define('A', defaultPart.getTag(key))
                 .define('B', base)
-                .save(output, key.getId().withSuffix("/block_from_${basePrefix.name}"))
+                .save(output, key.getId().withSuffix("/block_from_$suffix"))
         }
     }
 
@@ -94,16 +95,10 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     private fun prefixToBase(prefix: HTTagPrefix, exp: Float) {
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in manager.entries) {
             val smeltingAttribute: HTSmeltingMaterialProperty = propertyMap[HTMaterialPropertyKeys.SMELTING]
-                ?: propertyMap
-                    .getDefaultPart()
-                    ?.getLeft()
-                    ?.let {
-                        // 精錬の前後で同じプレフィックスになる場合はパス
-                        if (prefix == it) return@let null
-                        val result: HTItemHolderLike<*> = getItem(it, key) ?: return@let null
-                        HTSmeltingMaterialProperty.withBlasting(result)
-                    }
-                ?: continue
+                ?: propertyMap.getDefaultPart()?.let { part: HTDefaultPart ->
+                    if (part is HTDefaultPart.Material && part.prefix == prefix) return@let null
+                    part.getItem(key)?.let(HTSmeltingMaterialProperty::withBlasting)
+                } ?: continue
             // 精錬の前後で同じプレフィックスと素材になる場合はパス
             val result: HTItemHolderLike<*> = smeltingAttribute.result ?: continue
             val input: HTItemHolderLike<*> = getItem(prefix, key) ?: continue

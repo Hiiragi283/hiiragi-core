@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "A": {
-      "tag": "c:fuels/coal_coke"
+      "tag": "c:coal_coke"
     },
     "B": {
       "item": "hiiragi_core:coal_coke_fuel"

@@ -18,13 +18,13 @@ import hiiragi283.core.api.material.property.setItemPrefixes
 import hiiragi283.core.api.registry.toHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.tags.ItemTags
-import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
@@ -40,7 +40,7 @@ object HCMaterialEventHandler {
     }
 
     private val smeltingToAsh: HTSmeltingMaterialProperty by lazy {
-        HTSmeltingMaterialProperty.smeltingOnly(HTDeferredItem<Item>(CommonTagPrefixes.DUST.createId(CommonMaterialKeys.ASH)))
+        HTSmeltingMaterialProperty.smeltingOnly(HTDeferredItem.simple(CommonTagPrefixes.DUST.createId(CommonMaterialKeys.ASH)))
     }
 
     private val metalSet: Set<HTTagPrefix> = setOf(
@@ -134,7 +134,7 @@ object HCMaterialEventHandler {
         }
         // Pearls
         event.modify(VanillaMaterialKeys.ENDER) {
-            addDefaultPart(CommonTagPrefixes.PEARL)
+            addDefaultPart(Tags.Items.ENDER_PEARLS, Items.ENDER_PEARL.toHolderLike())
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.DUST)
 
@@ -195,7 +195,7 @@ object HCMaterialEventHandler {
         }
         // Others
         event.modify(VanillaMaterialKeys.WOOD) {
-            addDefaultPart(ItemTags.PLANKS)
+            addDefaultPart(ItemTags.PLANKS, Items.OAK_PLANKS.toHolderLike())
             setItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEAR, CommonTagPrefixes.PLATE)
 
             addName("Wood", "木")
@@ -205,7 +205,7 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
         }
         event.modify(VanillaMaterialKeys.GLASS) {
-            addDefaultPart(Tags.Items.GLASS_BLOCKS)
+            addDefaultPart(Tags.Items.GLASS_BLOCKS, Items.GLASS.toHolderLike())
             setItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.ROD)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_GLASS))
@@ -222,7 +222,7 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("steel"))
         }
         event.modify(VanillaMaterialKeys.OBSIDIAN) {
-            addDefaultPart(Tags.Items.OBSIDIANS_NORMAL)
+            addDefaultPart(Tags.Items.OBSIDIANS_NORMAL, Items.OBSIDIAN.toHolderLike())
             setItemPrefixes(CommonTagPrefixes.DUST)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
 
@@ -251,7 +251,10 @@ object HCMaterialEventHandler {
         }
         // Fuels
         event.modify(CommonMaterialKeys.COAL_COKE) {
-            addDefaultPart(CommonTagPrefixes.FUEL)
+            addDefaultPart(
+                HiiragiCoreTags.Items.COAL_COKE,
+                HTDeferredItem.simple(CommonTagPrefixes.FUEL.createId(CommonMaterialKeys.COAL_COKE)),
+            )
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.FUEL)
 

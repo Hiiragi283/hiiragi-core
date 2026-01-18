@@ -73,7 +73,7 @@ object HCMiscRegister {
                         .map { prefix: HTTagPrefix ->
                             val id: ResourceLocation = prefix.createId(key)
                             helper.register(id, Item(Item.Properties()))
-                            Triple(prefix, key, HTDeferredItem<Item>(id))
+                            Triple(prefix, key, HTDeferredItem.simple(id))
                         }
                 }
         }

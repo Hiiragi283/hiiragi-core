@@ -18,6 +18,8 @@ interface HTMaterialContentsAccess {
             compareBy<Triple<HTTagPrefix, HTMaterialKey, *>> { it.first }.thenComparing { it.second }
     }
 
+    fun getVanillaTable(): ImmutableTable<HTTagPrefix, HTMaterialKey, out HTItemHolderLike<*>>
+
     //    Block    //
 
     fun getBlockTable(): ImmutableTable<HTTagPrefix, HTMaterialKey, out HTBlockHolderLike<*, *>>

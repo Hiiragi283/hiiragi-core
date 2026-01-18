@@ -3,12 +3,9 @@ package hiiragi283.core.api.material.property
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangName
-import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.tags.TagKey
-import net.minecraft.world.item.Item
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[HTPropertyKey]の一覧をまとめたクラスです。
@@ -20,7 +17,7 @@ object HTMaterialPropertyKeys {
      * デフォルトの部品に対応する[プロパティキー][HTPropertyKey]
      */
     @JvmField
-    val DEFAULT_PART: HTPropertyKey<Either<HTTagPrefix, TagKey<Item>>?> = createNullable("default_part")
+    val DEFAULT_PART: HTPropertyKey<HTDefaultPart?> = createNullable("default_part")
 
     /**
      * デフォルトの[部品][HTTagPrefix]あたりの液体量に対応する[プロパティキー][HTPropertyKey]

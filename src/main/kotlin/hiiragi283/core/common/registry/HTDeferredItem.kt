@@ -14,6 +14,11 @@ typealias HTSimpleDeferredItem = HTDeferredItem<Item>
 class HTDeferredItem<ITEM : Item> :
     HTDeferredHolder<Item, ITEM>,
     HTItemHolderLike<ITEM> {
+    companion object {
+        @JvmStatic
+        fun simple(id: ResourceLocation): HTSimpleDeferredItem = HTDeferredItem(id)
+    }
+
     constructor(key: ResourceKey<Item>) : super(key)
 
     constructor(id: ResourceLocation) : super(Registries.ITEM, id)

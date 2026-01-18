@@ -2,18 +2,16 @@ package hiiragi283.core.api.material.property
 
 import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.monad.Either
-import hiiragi283.core.api.monad.unwrap
 import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 
-fun HTPropertyMap.getDefaultPart(): Either<HTTagPrefix, TagKey<Item>>? = this[HTMaterialPropertyKeys.DEFAULT_PART]
+fun HTPropertyMap.getDefaultPart(): HTDefaultPart? = this[HTMaterialPropertyKeys.DEFAULT_PART]
 
-fun HTPropertyMap.getDefaultPart(material: HTMaterialLike): TagKey<Item>? =
-    this.getDefaultPart()?.mapLeft { it.itemTagKey(material) }?.unwrap()
+fun HTPropertyMap.getDefaultPart(material: HTMaterialLike): TagKey<Item>? = this.getDefaultPart()?.getTag(material.asMaterialKey())
 
 fun HTPropertyMap.getDefaultFluidAmount(): Int = this.getOrDefault(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT)
 
@@ -31,12 +29,12 @@ fun <K : Any, V : Any> HTPropertyMap.Mutable.computeMap(propertyKey: HTPropertyK
     this[propertyKey] = newMap
 }
 
-fun HTPropertyMap.Mutable.addDefaultPart(tagKey: TagKey<Item>) {
-    this[HTMaterialPropertyKeys.DEFAULT_PART] = Either.Right(tagKey)
+fun HTPropertyMap.Mutable.addDefaultPart(tagKey: TagKey<Item>, altItem: HTItemHolderLike<*>) {
+    this[HTMaterialPropertyKeys.DEFAULT_PART] = HTDefaultPart.Tag(tagKey, altItem)
 }
 
 fun HTPropertyMap.Mutable.addDefaultPart(prefix: HTTagPrefix) {
-    this[HTMaterialPropertyKeys.DEFAULT_PART] = Either.Left(prefix)
+    this[HTMaterialPropertyKeys.DEFAULT_PART] = HTDefaultPart.Material(prefix)
 }
 
 fun HTPropertyMap.Mutable.setBlockPrefixes(vararg tagPrefixes: HTTagPrefix) {
