@@ -24,6 +24,7 @@ object HTMaterialPropertyKeys {
 
     /**
      * デフォルトの[部品][HTTagPrefix]あたりの液体量に対応する[プロパティキー][HTPropertyKey]
+     * @since 0.7.0
      */
     @JvmField
     val DEFAULT_FLUID_AMOUNT: HTPropertyKey<Int> =
@@ -44,6 +45,7 @@ object HTMaterialPropertyKeys {
 
     /**
      * 登録する素材ブロックに使われる[プロパティキー][HTPropertyKey]
+     * @since 0.7.0
      */
     @JvmField
     val BLOCK_PREFIXES: HTPropertyKey<Set<HTTagPrefix>> =
@@ -51,6 +53,7 @@ object HTMaterialPropertyKeys {
 
     /**
      * 登録する素材アイテムに使われる[プロパティキー][HTPropertyKey]
+     * @since 0.7.0
      */
     @JvmField
     val ITEM_PREFIXES: HTPropertyKey<Set<HTTagPrefix>> =
@@ -66,6 +69,7 @@ object HTMaterialPropertyKeys {
 
     /**
      * [プレフィックス][HTTagPrefix]に依存する[翻訳名][HTLangName]を保持する[プロパティキー][HTPropertyKey]
+     * @since 0.7.0
      */
     @JvmField
     val CUSTOM_LANG_NAME: HTPropertyKey<Map<HTTagPrefix, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_lang_name"))

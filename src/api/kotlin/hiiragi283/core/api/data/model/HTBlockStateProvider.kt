@@ -27,9 +27,6 @@ import net.neoforged.neoforge.client.model.generators.ModelProvider
 import net.neoforged.neoforge.client.model.generators.ModelProvider.TEXTURE
 import net.neoforged.neoforge.common.data.ExistingFileHelper
 import org.slf4j.Logger
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.iterator
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[BlockStateProvider]の拡張クラスです。

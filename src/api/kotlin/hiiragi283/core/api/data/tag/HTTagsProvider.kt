@@ -18,6 +18,8 @@ import java.util.function.Function
  * [HTTagBuilder]を使用する[TagsProvider]の拡張クラスです。
  * @param T レジストリの要素のクラス
  * @param registryKey レジストリを表すキー
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 abstract class HTTagsProvider<T : Any>(
     output: PackOutput,

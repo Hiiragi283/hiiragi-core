@@ -50,6 +50,9 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
         }
     }
 
+    /**
+     * @since 0.7.0
+     */
     protected fun basicItem(id: HTIdLike) {
         basicItem(id.getId())
     }

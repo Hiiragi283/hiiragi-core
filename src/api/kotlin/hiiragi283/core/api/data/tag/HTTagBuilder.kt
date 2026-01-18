@@ -15,6 +15,8 @@ import java.util.function.Consumer
  * @param T レジストリの要素のクラス
  * @param registryKey レジストリを表すキー
  * @param consumer [TagEntry]を渡すブロック
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 class HTTagBuilder<T : Any>(private val registryKey: RegistryKey<T>, private val consumer: Consumer<TagEntry>) {
     /**

@@ -13,6 +13,11 @@ import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument
 import net.minecraft.world.level.material.MapColor
 
+/**
+ * Hiiragi Coreとそれを前提とするmodで使用される[HTTagPrefix]の一覧をまとめたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.7.0
+ */
 object CommonTagPrefixes {
     //    Block    //
 

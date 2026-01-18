@@ -22,6 +22,7 @@ fun interface HTLangPatternProvider {
 
     companion object {
         /**
+         * 指定した[enPattern]と[jaPattern]から[HTLangPatternProvider]の新しいインスタンスを作成します。
          * @since 0.7.0
          */
         @JvmStatic

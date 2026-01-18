@@ -26,6 +26,9 @@ interface HTItemHolderLike<ITEM : Item> :
 
     override fun asItem(): ITEM
 
+    /**
+     * @since 0.7.0
+     */
     interface Delegated<ITEM : Item> : HTItemHolderLike<ITEM> {
         override fun getId(): ResourceLocation = getItemKey().location()
 

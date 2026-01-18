@@ -22,6 +22,7 @@ abstract class HTResultCreator<
     RESULT : HTResourceRecipeResult<TYPE, RESOURCE, STACK>,
 > {
     /**
+     * [HTResourceFactory]のインスタンスを返します。
      * @since 0.7.0
      */
     protected abstract fun resourceFactory(): HTResourceFactory<TYPE, STACK, RESOURCE>

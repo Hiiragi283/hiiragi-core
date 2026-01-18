@@ -11,6 +11,10 @@ import java.nio.file.Path
 import java.util.stream.Stream
 import kotlin.io.path.inputStream
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.7.0
+ */
 object HTTextureUtil {
     @JvmStatic
     private val PALETTE_REGEX = Regex("\\s+")

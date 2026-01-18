@@ -13,6 +13,7 @@ fun interface HTLangName {
 
     companion object {
         /**
+         * 指定した[enName]と[jaName]から新しい[HTLangName]のインスタンスを作成します。
          * @since 0.7.0
          */
         @JvmStatic

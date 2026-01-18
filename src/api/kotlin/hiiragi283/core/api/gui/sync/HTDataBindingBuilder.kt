@@ -16,6 +16,10 @@ import java.util.function.Supplier
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty0
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.7.0
+ */
 object HTDataBindingBuilder {
     //    Fluid    //
 

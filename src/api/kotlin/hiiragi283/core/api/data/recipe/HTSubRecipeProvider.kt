@@ -67,6 +67,7 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
 
     /**
      * 素材を管理するマネージャのインスタンス
+     * @since 0.7.0
      */
     protected val materialManager: HTMaterialManager by lazy { HTMaterialManager.INSTANCE }
 
@@ -160,6 +161,13 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
         output.accept(recipeId, recipe, null, *conditions)
     }
 
+    /**
+     * 指定した値から[HTFluidIngredient]を作成します。
+     * @param material 素材のキー
+     * @param propertyKey 液体のプロパティを保持する[HTPropertyKey]
+     * @param operator 液体量を改変するブロック
+     * @since 0.7.0
+     */
     protected fun createFluidIng(
         material: HTMaterialLike,
         propertyKey: HTPropertyKey<HTFluidMaterialProperty?>,
@@ -170,6 +178,13 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
         return fluidCreator.fromTagKey(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
     }
 
+    /**
+     * 指定した値から[HTFluidResult]を作成します。
+     * @param material 素材のキー
+     * @param propertyKey 液体のプロパティを保持する[HTPropertyKey]
+     * @param operator 液体量を改変するブロック
+     * @since 0.7.0
+     */
     protected fun createFluidResult(
         material: HTMaterialLike,
         propertyKey: HTPropertyKey<HTFluidMaterialProperty?>,

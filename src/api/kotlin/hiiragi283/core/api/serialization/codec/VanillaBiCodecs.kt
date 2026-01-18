@@ -53,9 +53,14 @@ object VanillaBiCodecs {
     @JvmField
     val COLOR: BiCodec<ByteBuf, DyeColor> = BiCodec.of(DyeColor.CODEC, DyeColor.STREAM_CODEC)
 
+    /**
+     * [DataComponentPatch]の[MapBiCodec]
+     */
     @JvmField
-    val COMPONENT: BiCodec<RegistryFriendlyByteBuf, DataComponentPatch> =
-        BiCodec.of(DataComponentPatch.CODEC, DataComponentPatch.STREAM_CODEC)
+    val COMPONENT_PATCH: MapBiCodec<RegistryFriendlyByteBuf, DataComponentPatch> =
+        BiCodec
+            .of(DataComponentPatch.CODEC, DataComponentPatch.STREAM_CODEC)
+            .optionalFieldOf(HTConst.COMPONENTS, DataComponentPatch.EMPTY)
 
     /**
      * [Direction]の[BiCodec]
@@ -97,7 +102,7 @@ object VanillaBiCodecs {
     val ITEM_STACK: BiCodec<RegistryFriendlyByteBuf, ItemStack> = BiCodec.composite(
         holder(Registries.ITEM).fieldOf(HTConst.ITEM).forGetter(ItemStack::getItemHolder),
         BiCodecs.NON_NEGATIVE_INT.optionalFieldOf(HTConst.COUNT, 0).forGetter(ItemStack::getCount),
-        COMPONENT.optionalFieldOf("components", DataComponentPatch.EMPTY).forGetter(ItemStack::getComponentsPatch),
+        COMPONENT_PATCH.forGetter(ItemStack::getComponentsPatch),
         ::ItemStack,
     )
 
@@ -108,7 +113,7 @@ object VanillaBiCodecs {
     val FLUID_STACK: BiCodec<RegistryFriendlyByteBuf, FluidStack> = BiCodec.composite(
         holder(Registries.FLUID).fieldOf(HTConst.FLUID).forGetter(FluidStack::getFluidHolder),
         BiCodecs.NON_NEGATIVE_INT.fieldOf(HTConst.AMOUNT).forGetter(FluidStack::getAmount),
-        COMPONENT.optionalFieldOf("components", DataComponentPatch.EMPTY).forGetter(FluidStack::getComponentsPatch),
+        COMPONENT_PATCH.forGetter(FluidStack::getComponentsPatch),
         ::FluidStack,
     )
 

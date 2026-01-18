@@ -22,6 +22,12 @@ class HTPropertyKey<T> private constructor(val id: ResourceLocation, val default
         @JvmStatic
         fun <T : Any> createNullable(id: ResourceLocation): HTPropertyKey<T?> = create(id, null)
 
+        /**
+         * 指定した[id]から，[Map]向けの新しい[HTPropertyKey]のインスタンスを作成します。
+         * @param K キーのクラス
+         * @param V 値のクラス
+         * @throws IllegalStateException 指定した[ID][id]がすでに使用されていた場合
+         */
         @JvmStatic
         fun <K : Any, V : Any> createMap(id: ResourceLocation): HTPropertyKey<Map<K, V>> = create(id, mapOf())
 

@@ -16,6 +16,8 @@ import java.util.concurrent.CompletableFuture
 /**
  * [アイテム][Item]向けの[HTTagsProvider]の拡張クラスです。
  * @param blockTags 生成された[ブロック][Block]のタグの一覧
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
  */
 abstract class HTItemTagsProvider(modId: String, private val blockTags: CompletableFuture<TagLookup<Block>>, context: HTDataGenContext) :
     HTTagsProvider<Item>(modId, Registries.ITEM, context) {
