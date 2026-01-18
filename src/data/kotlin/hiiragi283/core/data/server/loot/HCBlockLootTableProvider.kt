@@ -3,9 +3,9 @@ package hiiragi283.core.data.server.loot
 import hiiragi283.core.api.data.loot.HTBlockLootTableProvider
 import hiiragi283.core.api.function.partially2
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.prefix.HTMaterialPrefix
+import hiiragi283.core.api.tag.CommonTagPrefixes
+import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.common.material.CommonMaterialKeys
-import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
@@ -32,19 +32,11 @@ class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootT
     }
 
     private fun registerOres() {
-        registerOre(HCMaterialPrefixes.DUST, CommonMaterialKeys.CINNABAR, UniformGenerator.between(2f, 5f))
-        registerOre(HCMaterialPrefixes.DUST, CommonMaterialKeys.SULFUR, UniformGenerator.between(4f, 5f))
+        registerOre(CommonTagPrefixes.RAW, CommonMaterialKeys.ZINC, UniformGenerator.between(2f, 5f))
     }
 
-    private fun registerOre(basePrefix: HTMaterialPrefix, key: HTMaterialKey, range: UniformGenerator?) {
-        val ores: Array<HTMaterialPrefix> = arrayOf(
-            HCMaterialPrefixes.ORE,
-            HCMaterialPrefixes.ORE_DEEPSLATE,
-            HCMaterialPrefixes.ORE_NETHER,
-            HCMaterialPrefixes.ORE_END,
-        )
-        for (prefix: HTMaterialPrefix in ores) {
-            val ore: HTSimpleDeferredBlock = HCBlocks.MATERIALS[prefix, key] ?: continue
+    private fun registerOre(basePrefix: HTTagPrefix, key: HTMaterialKey, range: UniformGenerator?) {
+        for ((_, ore: HTSimpleDeferredBlock) in HCBlocks.ORES.column(key)) {
             val drop: ItemLike = HCItems.MATERIALS[basePrefix, key] ?: continue
             add(ore, ::createOreDrops.partially2(drop, range))
         }

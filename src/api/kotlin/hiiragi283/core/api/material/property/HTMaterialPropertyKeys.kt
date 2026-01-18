@@ -3,8 +3,8 @@ package hiiragi283.core.api.material.property
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangName
-import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.property.HTPropertyKey
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.resources.ResourceLocation
 
 /**
@@ -14,13 +14,13 @@ import net.minecraft.resources.ResourceLocation
  */
 object HTMaterialPropertyKeys {
     /**
-     * デフォルトの[部品][HTMaterialPrefix]に対応する[プロパティキー][HTPropertyKey]
+     * デフォルトの[部品][HTTagPrefix]に対応する[プロパティキー][HTPropertyKey]
      */
     @JvmField
-    val DEFAULT_PART: HTPropertyKey<HTMaterialPrefix?> = createNullable("default_part")
+    val DEFAULT_PART: HTPropertyKey<HTTagPrefix?> = createNullable("default_part")
 
     /**
-     * デフォルトの[部品][HTMaterialPrefix]あたりの液体量に対応する[プロパティキー][HTPropertyKey]
+     * デフォルトの[部品][HTTagPrefix]あたりの液体量に対応する[プロパティキー][HTPropertyKey]
      */
     @JvmField
     val DEFAULT_FLUID_AMOUNT: HTPropertyKey<Int> =
@@ -48,10 +48,10 @@ object HTMaterialPropertyKeys {
     val LANG_NAME: HTPropertyKey<HTLangName?> = createNullable("lang_name")
 
     /**
-     * [プレフィックス][HTMaterialPrefix]に依存する[翻訳名][HTLangName]を保持する[プロパティキー][HTPropertyKey]
+     * [プレフィックス][HTTagPrefix]に依存する[翻訳名][HTLangName]を保持する[プロパティキー][HTPropertyKey]
      */
     @JvmField
-    val CUSTOM_LANG_NAME: HTPropertyKey<Map<HTMaterialPrefix, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_lang_name"))
+    val CUSTOM_LANG_NAME: HTPropertyKey<Map<HTTagPrefix, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_lang_name"))
 
     /**
      * 製錬レシピの管理に使用される[プロパティキー][HTPropertyKey]

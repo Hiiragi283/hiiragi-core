@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "hiiragi_core:block/storage_block/warped_crystal"
+    "all": "hiiragi_core:block/warped_crystal_block"
   }
 }

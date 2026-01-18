@@ -2,8 +2,8 @@ package hiiragi283.core.api.data.tag
 
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.registry.toHolderLike
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
 import net.minecraft.tags.TagBuilder
@@ -24,9 +24,9 @@ abstract class HTItemTagsProvider(modId: String, private val blockTags: Completa
     private val tagsToCopy: MutableMap<TagKey<Block>, TagKey<Item>> = mutableMapOf()
 
     /**
-     * [HTPrefixLike.createCommonTagKey]と[HTPrefixLike.createTagKey]に基づいて，ブロックのタグの値をアイテムのタグにコピーします。
+     * [HTTagPrefix.createCommonTagKey]と[HTTagPrefix.createTagKey]に基づいて，ブロックのタグの値をアイテムのタグにコピーします。
      */
-    protected fun copy(prefix: HTPrefixLike, material: HTMaterialLike) {
+    protected fun copy(prefix: HTTagPrefix, material: HTMaterialLike) {
         copy(prefix.createCommonTagKey(Registries.BLOCK), prefix.createCommonTagKey(Registries.ITEM))
         copy(prefix.createTagKey(Registries.BLOCK, material), prefix.itemTagKey(material))
     }

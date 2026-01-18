@@ -4,7 +4,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.builder.HTIngredientRecipeBuilder
 import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.prefix.HTPrefixLike
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.core.NonNullList
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -36,7 +36,7 @@ class HTShapelessRecipeBuilder(stack: ItemStack) :
         ingredients.add(ingredient)
     }
 
-    fun addIngredients(prefix: HTPrefixLike, key: HTMaterialLike, count: Int): HTShapelessRecipeBuilder =
+    fun addIngredients(prefix: HTTagPrefix, key: HTMaterialLike, count: Int): HTShapelessRecipeBuilder =
         addIngredients(prefix.itemTagKey(key), count)
 
     fun addIngredients(tagKey: TagKey<Item>, count: Int): HTShapelessRecipeBuilder = addIngredients(Ingredient.of(tagKey), count)

@@ -1,8 +1,8 @@
 package hiiragi283.core.api.data.recipe.ingredient
 
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.crafting.Ingredient
@@ -29,11 +29,11 @@ interface HTItemIngredientCreator : HTIngredientCreator<Item, HTItemIngredient> 
     fun fromTagKeys(tagKeys: List<TagKey<Item>>): HTItemIngredient = fromTagKeys(tagKeys, 1)
 
     // Material
-    fun fromTagKey(prefix: HTPrefixLike, material: HTMaterialLike, count: Int = 1): HTItemIngredient =
+    fun fromTagKey(prefix: HTTagPrefix, material: HTMaterialLike, count: Int = 1): HTItemIngredient =
         fromTagKey(prefix.itemTagKey(material), count)
 
-    fun fromTagKeys(prefixes: Iterable<HTPrefixLike>, materials: Iterable<HTMaterialLike>, count: Int = 1): HTItemIngredient = fromTagKeys(
-        prefixes.flatMap { prefix: HTPrefixLike -> materials.map(prefix::itemTagKey) },
+    fun fromTagKeys(prefixes: Iterable<HTTagPrefix>, materials: Iterable<HTMaterialLike>, count: Int = 1): HTItemIngredient = fromTagKeys(
+        prefixes.flatMap { prefix: HTTagPrefix -> materials.map(prefix::itemTagKey) },
         count,
     )
 }

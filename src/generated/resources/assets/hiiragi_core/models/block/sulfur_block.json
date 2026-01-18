@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "hiiragi_core:block/storage_block/sulfur"
+    "all": "hiiragi_core:block/sulfur_block"
   }
 }

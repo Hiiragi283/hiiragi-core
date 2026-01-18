@@ -5,8 +5,7 @@ import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.recipe.HTRecipeProvider
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.get
-import hiiragi283.core.api.material.prefix.HTPrefixLike
+import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.common.data.recipe.HTMaterialRecipeProvider
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.data.server.recipe.HCChargingRecipeProvider
@@ -22,10 +21,10 @@ class HCRecipeProvider(context: HTDataGenContext) : HTRecipeProvider(context) {
         consumer.accept(
             HTMaterialRecipeProvider(
                 HiiragiCoreAPI.MOD_ID,
-                { prefix: HTPrefixLike, material: HTMaterialLike ->
+                { prefix: HTTagPrefix, material: HTMaterialLike ->
                     HCBlocks.MATERIALS[prefix, material] ?: VanillaMaterialKeys.INGREDIENTS[prefix, material]
                 },
-                { prefix: HTPrefixLike, material: HTMaterialLike ->
+                { prefix: HTTagPrefix, material: HTMaterialLike ->
                     HCItems.MATERIALS[prefix, material] ?: VanillaMaterialKeys.INGREDIENTS[prefix, material]
                 },
             ),

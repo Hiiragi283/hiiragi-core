@@ -4,14 +4,14 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.buildTable
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialTable
-import hiiragi283.core.api.material.prefix.HTMaterialPrefix
-import hiiragi283.core.api.material.prefix.HTPrefixLike
+import hiiragi283.core.api.material.prefix.HTOreVariant
+import hiiragi283.core.api.tag.CommonTagPrefixes
+import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.common.block.HTTestBlock
 import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.item.block.HTWarpedWartItem
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
-import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.common.registry.HTBasicDeferredBlock
 import hiiragi283.core.common.registry.HTDeferredBlock
@@ -36,24 +36,28 @@ object HCBlocks {
     //    Materials    //
 
     @JvmStatic
-    val MATERIALS: HTMaterialTable<HTMaterialPrefix, HTSimpleDeferredBlock> = buildTable {
-        fun register(prefix: HTPrefixLike, material: HTMaterialLike, properties: BlockBehaviour.Properties) {
-            this[prefix.asMaterialPrefix(), material.asMaterialKey()] = REGISTER.registerSimple(prefix.createPath(material), properties)
+    val ORES: HTMaterialTable<HTOreVariant, HTSimpleDeferredBlock> = buildTable {
+        fun register(variant: HTOreVariant, material: HTMaterialLike, properties: BlockBehaviour.Properties) {
+            this[variant, material.asMaterialKey()] = REGISTER.registerSimple(variant.createPath(material), properties)
         }
 
-        // Ores
-        register(HCMaterialPrefixes.ORE_NETHER, CommonMaterialKeys.CINNABAR, copyOf(Blocks.NETHER_QUARTZ_ORE))
-        register(HCMaterialPrefixes.ORE_DEEPSLATE, CommonMaterialKeys.SULFUR, copyOf(Blocks.DEEPSLATE_LAPIS_ORE))
-        register(HCMaterialPrefixes.ORE_NETHER, CommonMaterialKeys.SULFUR, copyOf(Blocks.NETHER_QUARTZ_ORE))
+        register(HTOreVariant.STONE, CommonMaterialKeys.ZINC, copyOf(Blocks.IRON_ORE))
+        register(HTOreVariant.DEEPSLATE, CommonMaterialKeys.ZINC, copyOf(Blocks.DEEPSLATE_IRON_ORE))
+    }.let(::HTMaterialTable)
 
-        // Storage Blocks
+    @JvmStatic
+    val MATERIALS: HTMaterialTable<HTTagPrefix, HTSimpleDeferredBlock> = buildTable {
+        fun register(prefix: HTTagPrefix, material: HTMaterialLike, properties: BlockBehaviour.Properties) {
+            this[prefix, material.asMaterialKey()] = REGISTER.registerSimple(prefix.createPath(material), properties)
+        }
+
         fun registerBlock(
             material: HTMaterialLike,
             hardness: Float,
             resistance: Float,
             color: MapColor,
         ) {
-            register(HCMaterialPrefixes.STORAGE_BLOCK, material, properties(hardness, resistance).mapColor(color))
+            register(CommonTagPrefixes.BLOCK, material, properties(hardness, resistance).mapColor(color))
         }
 
         fun registerBlock(
@@ -63,7 +67,7 @@ object HCBlocks {
             color: MapColor,
             soundType: SoundType,
         ) {
-            register(HCMaterialPrefixes.STORAGE_BLOCK, material, properties(hardness, resistance).mapColor(color).sound(soundType))
+            register(CommonTagPrefixes.BLOCK, material, properties(hardness, resistance).mapColor(color).sound(soundType))
         }
 
         registerBlock(VanillaMaterialKeys.CHARCOAL, 5f, 6f, MapColor.COLOR_BLACK)
@@ -80,7 +84,7 @@ object HCBlocks {
         registerBlock(CommonMaterialKeys.SULFUR, 5f, 9f, MapColor.TERRACOTTA_YELLOW)
 
         register(
-            HCMaterialPrefixes.STORAGE_BLOCK_RAW,
+            CommonTagPrefixes.RAW_BLOCK,
             CommonMaterialKeys.ZINC,
             properties(5f, 6f).mapColor(MapColor.TERRACOTTA_LIGHT_GREEN),
         )

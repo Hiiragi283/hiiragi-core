@@ -1,11 +1,11 @@
 package hiiragi283.core.api.data.recipe.result
 
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.storage.item.HTItemResourceFactory
 import hiiragi283.core.api.storage.item.HTItemResourceType
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -21,12 +21,12 @@ data object HTItemResultCreator : HTResultCreator<Item, HTItemResourceType, Item
 
     fun create(item: ItemLike, tagKey: TagKey<Item>, amount: Int = defaultAmount()): HTItemResult = create(item.asItem(), tagKey, amount)
 
-    fun create(prefix: HTPrefixLike, material: HTMaterialLike, amount: Int = defaultAmount()): HTItemResult =
+    fun create(prefix: HTTagPrefix, material: HTMaterialLike, amount: Int = defaultAmount()): HTItemResult =
         create(prefix.itemTagKey(material), amount)
 
     fun create(
         item: ItemLike,
-        prefix: HTPrefixLike,
+        prefix: HTTagPrefix,
         material: HTMaterialLike,
         amount: Int = defaultAmount(),
     ): HTItemResult = create(item, prefix.itemTagKey(material), amount)

@@ -1,7 +1,7 @@
 package hiiragi283.core.api.data.recipe.builder
 
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.prefix.HTPrefixLike
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
@@ -28,7 +28,7 @@ abstract class HTRecipeBuilder<BUILDER : HTRecipeBuilder<BUILDER>>(private val p
 
     private val conditions: MutableList<ICondition> = mutableListOf()
 
-    fun tagCondition(prefix: HTPrefixLike, material: HTMaterialLike): BUILDER = tagCondition(prefix.itemTagKey(material))
+    fun tagCondition(prefix: HTTagPrefix, material: HTMaterialLike): BUILDER = tagCondition(prefix.itemTagKey(material))
 
     /**
      * 指定した[tagKey]が存在する時に読み込むよう，条件を指定します。

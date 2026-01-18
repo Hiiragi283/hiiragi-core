@@ -4,11 +4,10 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.model.HTItemModelProvider
-import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.vanillaId
+import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.resources.ResourceLocation
@@ -35,14 +34,13 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
     }
 
     private fun registerMaterials() {
-        HCItems.MATERIALS.forEach { (prefix: HTMaterialPrefix, key: HTMaterialKey, item: HTIdLike) ->
-            val textureId: ResourceLocation = HiiragiCoreAPI.id(HTConst.ITEM, prefix.asPrefixName(), key.asMaterialName())
-            existTexture(item, textureId) { itemIn: HTIdLike, layer: ResourceLocation ->
+        HCItems.MATERIALS.forEach { (prefix: HTTagPrefix, _, item: HTIdLike) ->
+            existTexture(item) { itemId: ResourceLocation ->
                 val overlay: ResourceLocation = HiiragiCoreAPI.id(HTConst.ITEM, "${prefix.name}_overlay")
                 if (existingFileHelper.exists(overlay, TEXTURE)) {
-                    layeredItem(itemIn, layer, overlay)
+                    layeredItem(item, itemId.withPrefix("item/"), overlay)
                 } else {
-                    layeredItem(itemIn, layer)
+                    layeredItem(item, itemId.withPrefix("item/"))
                 }
             }
         }

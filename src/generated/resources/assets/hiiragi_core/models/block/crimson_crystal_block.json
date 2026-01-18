@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "hiiragi_core:block/storage_block/crimson_crystal"
+    "all": "hiiragi_core:block/crimson_crystal_block"
   }
 }

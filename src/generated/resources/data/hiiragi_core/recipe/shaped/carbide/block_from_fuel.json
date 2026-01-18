@@ -6,7 +6,7 @@
       "tag": "c:fuels/carbide"
     },
     "B": {
-      "item": "hiiragi_core:carbide"
+      "item": "hiiragi_core:carbide_fuel"
     }
   },
   "pattern": [

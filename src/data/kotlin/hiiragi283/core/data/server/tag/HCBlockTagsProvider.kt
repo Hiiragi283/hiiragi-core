@@ -5,11 +5,11 @@ import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.tag.HTTagBuilder
 import hiiragi283.core.api.data.tag.HTTagsProvider
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.registry.toHolderLike
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.tag.CommonTagPrefixes
+import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.common.material.CommonMaterialKeys
-import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCBlocks
 import net.minecraft.core.registries.Registries
@@ -35,7 +35,13 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
     //    Material    //
 
     private fun material(factory: BuilderFactory<Block>) {
-        HCBlocks.MATERIALS.forEach { (prefix: HTMaterialPrefix, key: HTMaterialKey, block: HTIdLike) ->
+        for (map in HCBlocks.ORES.rowMap.values) {
+            for ((key: HTMaterialKey, ore: HTIdLike) in map) {
+                addMaterial(factory, CommonTagPrefixes.ORE, key).add(ore)
+            }
+        }
+
+        HCBlocks.MATERIALS.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
             addMaterial(factory, prefix, key).add(block)
 
             if (key == CommonMaterialKeys.COAL_COKE) {
@@ -48,7 +54,7 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
         }
 
         for ((key: HTMaterialKey, block: HTIdLike) in VANILLA_STORAGE_BLOCKS) {
-            addMaterial(factory, HCMaterialPrefixes.STORAGE_BLOCK, key).add(block)
+            addMaterial(factory, CommonTagPrefixes.BLOCK, key).add(block)
         }
     }
 
@@ -61,6 +67,7 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
 
         val pickaxe: HTTagBuilder<Block> = factory.apply(BlockTags.MINEABLE_WITH_PICKAXE)
         sequence {
+            yieldAll(HCBlocks.ORES.values)
             yieldAll(HCBlocks.MATERIALS.values)
         }.forEach(pickaxe::add)
 

@@ -6,7 +6,7 @@
       "tag": "c:fuels/coal_coke"
     },
     "B": {
-      "item": "hiiragi_core:coal_coke"
+      "item": "hiiragi_core:coal_coke_fuel"
     }
   },
   "pattern": [

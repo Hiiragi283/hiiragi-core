@@ -1,9 +1,9 @@
 package hiiragi283.core.api.data.advancement
 
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.createKey
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementHolder
 import net.minecraft.advancements.AdvancementRequirements
@@ -52,7 +52,7 @@ class HTAdvancementBuilder private constructor(private val parent: HTAdvancement
 
     fun itemPredicate(vararg items: ItemLike): ItemPredicate.Builder = ItemPredicate.Builder.item().of(*items)
 
-    fun itemPredicate(prefix: HTPrefixLike, material: HTMaterialLike): ItemPredicate.Builder = itemPredicate(prefix.itemTagKey(material))
+    fun itemPredicate(prefix: HTTagPrefix, material: HTMaterialLike): ItemPredicate.Builder = itemPredicate(prefix.itemTagKey(material))
 
     fun itemPredicate(tagKey: TagKey<Item>): ItemPredicate.Builder = ItemPredicate.Builder.item().of(tagKey)
 

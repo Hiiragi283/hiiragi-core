@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "hiiragi_core:block/storage_block/cinnabar"
+    "all": "hiiragi_core:block/cinnabar_block"
   }
 }

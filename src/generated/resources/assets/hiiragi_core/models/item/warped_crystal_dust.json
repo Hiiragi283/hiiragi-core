@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "hiiragi_core:item/dust/warped_crystal"
+    "layer0": "hiiragi_core:item/warped_crystal_dust"
   }
 }

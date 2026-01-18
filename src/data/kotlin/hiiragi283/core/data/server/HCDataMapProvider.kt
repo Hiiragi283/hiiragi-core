@@ -3,11 +3,11 @@ package hiiragi283.core.data.server
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.prefix.HTMaterialPrefix
+import hiiragi283.core.api.tag.CommonTagPrefixes
+import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.times
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
-import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
@@ -35,13 +35,13 @@ class HCDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.out
 
         fun addFuels(material: HTMaterialLike, time: Int) {
             // Block
-            for ((prefix: HTMaterialPrefix, _) in HCBlocks.MATERIALS.column(material)) {
+            for ((prefix: HTTagPrefix, _) in HCBlocks.MATERIALS.column(material)) {
                 furnace.add(prefix.itemTagKey(material), FurnaceFuel(time * 10), false)
             }
             // Item
-            for ((prefix: HTMaterialPrefix, _) in HCItems.MATERIALS.column(material)) {
+            for ((prefix: HTTagPrefix, _) in HCItems.MATERIALS.column(material)) {
                 val modifier: Fraction = when (prefix) {
-                    HCMaterialPrefixes.NUGGET -> fraction(1, 10)
+                    CommonTagPrefixes.NUGGET -> fraction(1, 10)
                     else -> Fraction.ONE
                 }
                 furnace.add(prefix.itemTagKey(material), FurnaceFuel((time * modifier).toInt()), false)

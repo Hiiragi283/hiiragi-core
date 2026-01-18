@@ -1,7 +1,7 @@
 package hiiragi283.core.api.material.property
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.material.prefix.HTPrefixLike
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.resources.ResourceLocation
 
 class HTMaterialTextureSet(val name: String, val parent: HTMaterialTextureSet?) {
@@ -16,5 +16,5 @@ class HTMaterialTextureSet(val name: String, val parent: HTMaterialTextureSet?) 
         val SHINE = HTMaterialTextureSet("shine", DEFAULT)
     }
 
-    operator fun get(prefix: HTPrefixLike): ResourceLocation = parent?.get(prefix) ?: HiiragiCoreAPI.id(name, prefix.asPrefixName())
+    operator fun get(prefix: HTTagPrefix): ResourceLocation = parent?.get(prefix) ?: HiiragiCoreAPI.id(name, prefix.name)
 }

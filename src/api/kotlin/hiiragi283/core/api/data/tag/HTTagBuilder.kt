@@ -1,9 +1,9 @@
 package hiiragi283.core.api.data.tag
 
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagEntry
@@ -44,7 +44,7 @@ class HTTagBuilder<T : Any>(private val registryKey: RegistryKey<T>, private val
      * 指定した[プレフィックス][prefix]と[素材][material]を追加します。
      * @param type このエントリの依存関係
      */
-    fun addTag(prefix: HTPrefixLike, material: HTMaterialLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<T> =
+    fun addTag(prefix: HTTagPrefix, material: HTMaterialLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<T> =
         addTag(prefix.createTagKey(registryKey, material), type)
 
     /**

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "hiiragi_core:item/nugget/copper"
+    "layer0": "hiiragi_core:item/copper_nugget"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "hiiragi_core:item/ingot/zinc"
+    "layer0": "hiiragi_core:item/zinc_ingot"
   }
 }

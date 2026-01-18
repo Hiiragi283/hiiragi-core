@@ -7,7 +7,8 @@ import hiiragi283.core.api.collection.toFlatTable
 import hiiragi283.core.api.item.HTEquipmentMaterial
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialTable
-import hiiragi283.core.api.material.prefix.HTMaterialPrefix
+import hiiragi283.core.api.tag.CommonTagPrefixes
+import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.text.HTTranslation
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.capability.HTItemCapabilities
@@ -22,7 +23,6 @@ import hiiragi283.core.common.item.HTTraderCatalogItem
 import hiiragi283.core.common.item.VanillaEquipmentMaterial
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
-import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
@@ -55,112 +55,112 @@ object HCItems {
     //    Materials   //
 
     @JvmStatic
-    val MATERIALS: HTMaterialTable<HTMaterialPrefix, HTSimpleDeferredItem> = buildMultiMap {
+    val MATERIALS: HTMaterialTable<HTTagPrefix, HTSimpleDeferredItem> = buildMultiMap {
         // Vanilla
-        putAll(VanillaMaterialKeys.COAL, HCMaterialPrefixes.DUST)
-        putAll(VanillaMaterialKeys.CHARCOAL, HCMaterialPrefixes.DUST)
+        putAll(VanillaMaterialKeys.COAL, CommonTagPrefixes.DUST)
+        putAll(VanillaMaterialKeys.CHARCOAL, CommonTagPrefixes.DUST)
 
-        putAll(VanillaMaterialKeys.LAPIS, HCMaterialPrefixes.DUST)
-        putAll(VanillaMaterialKeys.QUARTZ, HCMaterialPrefixes.DUST)
-        putAll(VanillaMaterialKeys.AMETHYST, HCMaterialPrefixes.DUST)
-        putAll(VanillaMaterialKeys.DIAMOND, HCMaterialPrefixes.DUST)
-        putAll(VanillaMaterialKeys.EMERALD, HCMaterialPrefixes.DUST)
-        putAll(VanillaMaterialKeys.ECHO, HCMaterialPrefixes.DUST)
+        putAll(VanillaMaterialKeys.LAPIS, CommonTagPrefixes.DUST)
+        putAll(VanillaMaterialKeys.QUARTZ, CommonTagPrefixes.DUST)
+        putAll(VanillaMaterialKeys.AMETHYST, CommonTagPrefixes.DUST)
+        putAll(VanillaMaterialKeys.DIAMOND, CommonTagPrefixes.DUST)
+        putAll(VanillaMaterialKeys.EMERALD, CommonTagPrefixes.DUST)
+        putAll(VanillaMaterialKeys.ECHO, CommonTagPrefixes.DUST)
 
-        putAll(VanillaMaterialKeys.ENDER, HCMaterialPrefixes.DUST)
+        putAll(VanillaMaterialKeys.ENDER, CommonTagPrefixes.DUST)
 
         putAll(
             VanillaMaterialKeys.COPPER,
-            HCMaterialPrefixes.DUST,
-            HCMaterialPrefixes.GEAR,
-            HCMaterialPrefixes.NUGGET,
-            HCMaterialPrefixes.PLATE,
-            HCMaterialPrefixes.ROD,
-            HCMaterialPrefixes.WIRE,
+            CommonTagPrefixes.DUST,
+            CommonTagPrefixes.GEAR,
+            CommonTagPrefixes.NUGGET,
+            CommonTagPrefixes.PLATE,
+            CommonTagPrefixes.ROD,
+            CommonTagPrefixes.WIRE,
         )
         putAll(
             VanillaMaterialKeys.IRON,
-            HCMaterialPrefixes.DUST,
-            HCMaterialPrefixes.GEAR,
-            HCMaterialPrefixes.PLATE,
-            HCMaterialPrefixes.ROD,
+            CommonTagPrefixes.DUST,
+            CommonTagPrefixes.GEAR,
+            CommonTagPrefixes.PLATE,
+            CommonTagPrefixes.ROD,
         )
         putAll(
             VanillaMaterialKeys.GOLD,
-            HCMaterialPrefixes.DUST,
-            HCMaterialPrefixes.GEAR,
-            HCMaterialPrefixes.PLATE,
-            HCMaterialPrefixes.ROD,
-            HCMaterialPrefixes.WIRE,
+            CommonTagPrefixes.DUST,
+            CommonTagPrefixes.GEAR,
+            CommonTagPrefixes.PLATE,
+            CommonTagPrefixes.ROD,
+            CommonTagPrefixes.WIRE,
         )
 
         putAll(
             VanillaMaterialKeys.NETHERITE,
-            HCMaterialPrefixes.DUST,
-            HCMaterialPrefixes.GEAR,
-            HCMaterialPrefixes.NUGGET,
-            HCMaterialPrefixes.PLATE,
-            HCMaterialPrefixes.ROD,
+            CommonTagPrefixes.DUST,
+            CommonTagPrefixes.GEAR,
+            CommonTagPrefixes.NUGGET,
+            CommonTagPrefixes.PLATE,
+            CommonTagPrefixes.ROD,
         )
 
-        putAll(VanillaMaterialKeys.WOOD, HCMaterialPrefixes.DUST, HCMaterialPrefixes.GEAR, HCMaterialPrefixes.PLATE)
-        putAll(VanillaMaterialKeys.GLASS, HCMaterialPrefixes.DUST, HCMaterialPrefixes.ROD)
-        put(VanillaMaterialKeys.OBSIDIAN, HCMaterialPrefixes.DUST)
+        putAll(VanillaMaterialKeys.WOOD, CommonTagPrefixes.DUST, CommonTagPrefixes.GEAR, CommonTagPrefixes.PLATE)
+        putAll(VanillaMaterialKeys.GLASS, CommonTagPrefixes.DUST, CommonTagPrefixes.ROD)
+        put(VanillaMaterialKeys.OBSIDIAN, CommonTagPrefixes.DUST)
         // Common
 
-        putAll(CommonMaterialKeys.COAL_COKE, HCMaterialPrefixes.DUST, HCMaterialPrefixes.FUEL)
-        putAll(CommonMaterialKeys.CARBIDE, HCMaterialPrefixes.DUST, HCMaterialPrefixes.FUEL)
+        putAll(CommonMaterialKeys.COAL_COKE, CommonTagPrefixes.DUST, CommonTagPrefixes.FUEL)
+        putAll(CommonMaterialKeys.CARBIDE, CommonTagPrefixes.DUST, CommonTagPrefixes.FUEL)
 
-        putAll(CommonMaterialKeys.CINNABAR, HCMaterialPrefixes.DUST)
-        putAll(CommonMaterialKeys.SALT, HCMaterialPrefixes.DUST)
-        putAll(CommonMaterialKeys.SALTPETER, HCMaterialPrefixes.DUST)
-        putAll(CommonMaterialKeys.SULFUR, HCMaterialPrefixes.DUST)
+        putAll(CommonMaterialKeys.CINNABAR, CommonTagPrefixes.DUST)
+        putAll(CommonMaterialKeys.SALT, CommonTagPrefixes.DUST)
+        putAll(CommonMaterialKeys.SALTPETER, CommonTagPrefixes.DUST)
+        putAll(CommonMaterialKeys.SULFUR, CommonTagPrefixes.DUST)
 
-        val metalSet: Set<HTMaterialPrefix> = setOf(
-            HCMaterialPrefixes.DUST,
-            HCMaterialPrefixes.RAW_MATERIAL,
-            HCMaterialPrefixes.INGOT,
-            HCMaterialPrefixes.NUGGET,
-            HCMaterialPrefixes.GEAR,
-            HCMaterialPrefixes.PLATE,
-            HCMaterialPrefixes.ROD,
+        val metalSet: Set<HTTagPrefix> = setOf(
+            CommonTagPrefixes.DUST,
+            CommonTagPrefixes.RAW,
+            CommonTagPrefixes.INGOT,
+            CommonTagPrefixes.NUGGET,
+            CommonTagPrefixes.GEAR,
+            CommonTagPrefixes.PLATE,
+            CommonTagPrefixes.ROD,
         )
-        val alloySet: Set<HTMaterialPrefix> = metalSet.minus(HCMaterialPrefixes.RAW_MATERIAL)
+        val alloySet: Set<HTTagPrefix> = metalSet.minus(CommonTagPrefixes.RAW)
 
         putAll(CommonMaterialKeys.ZINC, metalSet)
 
-        putAll(CommonMaterialKeys.STEEL, alloySet.plus(HCMaterialPrefixes.WIRE))
+        putAll(CommonMaterialKeys.STEEL, alloySet.plus(CommonTagPrefixes.WIRE))
         putAll(CommonMaterialKeys.BRASS, alloySet)
 
-        put(CommonMaterialKeys.ASH, HCMaterialPrefixes.DUST)
+        put(CommonMaterialKeys.ASH, CommonTagPrefixes.DUST)
         putAll(
             CommonMaterialKeys.PLASTIC,
-            HCMaterialPrefixes.DUST,
-            HCMaterialPrefixes.PLATE,
-            HCMaterialPrefixes.ROD,
-            HCMaterialPrefixes.WIRE,
+            CommonTagPrefixes.DUST,
+            CommonTagPrefixes.PLATE,
+            CommonTagPrefixes.ROD,
+            CommonTagPrefixes.WIRE,
         )
-        put(CommonMaterialKeys.RUBBER, HCMaterialPrefixes.PLATE)
+        put(CommonMaterialKeys.RUBBER, CommonTagPrefixes.PLATE)
         // Hiiragi Core
-        putAll(HCMaterialKeys.AZURE, HCMaterialPrefixes.DUST, HCMaterialPrefixes.GEM)
-        putAll(HCMaterialKeys.CRIMSON_CRYSTAL, HCMaterialPrefixes.DUST, HCMaterialPrefixes.GEM)
-        putAll(HCMaterialKeys.WARPED_CRYSTAL, HCMaterialPrefixes.DUST, HCMaterialPrefixes.GEM)
+        putAll(HCMaterialKeys.AZURE, CommonTagPrefixes.DUST, CommonTagPrefixes.GEM)
+        putAll(HCMaterialKeys.CRIMSON_CRYSTAL, CommonTagPrefixes.DUST, CommonTagPrefixes.GEM)
+        putAll(HCMaterialKeys.WARPED_CRYSTAL, CommonTagPrefixes.DUST, CommonTagPrefixes.GEM)
 
-        putAll(HCMaterialKeys.ELDRITCH, HCMaterialPrefixes.DUST, HCMaterialPrefixes.PEARL)
+        putAll(HCMaterialKeys.ELDRITCH, CommonTagPrefixes.DUST, CommonTagPrefixes.PEARL)
 
         putAll(HCMaterialKeys.AZURE_STEEL, alloySet)
         putAll(
             HCMaterialKeys.DEEP_STEEL,
-            HCMaterialPrefixes.DUST,
-            HCMaterialPrefixes.SCRAP,
-            HCMaterialPrefixes.INGOT,
-            HCMaterialPrefixes.NUGGET,
-            HCMaterialPrefixes.GEAR,
-            HCMaterialPrefixes.PLATE,
-            HCMaterialPrefixes.ROD,
+            CommonTagPrefixes.DUST,
+            CommonTagPrefixes.SCRAP,
+            CommonTagPrefixes.INGOT,
+            CommonTagPrefixes.NUGGET,
+            CommonTagPrefixes.GEAR,
+            CommonTagPrefixes.PLATE,
+            CommonTagPrefixes.ROD,
         )
-    }.toFlatTable { (key: HTMaterialKey, prefixes: Collection<HTMaterialPrefix>) ->
-        prefixes.map { prefix: HTMaterialPrefix ->
+    }.toFlatTable { (key: HTMaterialKey, prefixes: Collection<HTTagPrefix>) ->
+        prefixes.map { prefix: HTTagPrefix ->
             Triple(prefix, key, REGISTER.registerSimpleItem(prefix.createPath(key)))
         }
     }.let(::HTMaterialTable)

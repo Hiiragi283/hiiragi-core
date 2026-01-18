@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "hiiragi_core:item/plate/rubber"
+    "layer0": "hiiragi_core:item/rubber_plate"
   }
 }

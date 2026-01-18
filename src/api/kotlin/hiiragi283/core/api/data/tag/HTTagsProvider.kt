@@ -3,8 +3,8 @@ package hiiragi283.core.api.data.tag
 import hiiragi283.core.api.collection.buildMultiMap
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.registry.RegistryKey
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.data.tags.TagsProvider
@@ -77,9 +77,9 @@ abstract class HTTagsProvider<T : Any>(
 
     /**
      * タグをチェインして登録します。
-     * @return [HTPrefixLike.createTagKey]に対する[HTTagBuilder]
+     * @return [HTTagPrefix.createTagKey]に対する[HTTagBuilder]
      */
-    protected fun addMaterial(factory: BuilderFactory<T>, prefix: HTPrefixLike, material: HTMaterialLike): HTTagBuilder<T> =
+    protected fun addMaterial(factory: BuilderFactory<T>, prefix: HTTagPrefix, material: HTMaterialLike): HTTagBuilder<T> =
         addTags(factory, prefix.createCommonTagKey(registryKey), prefix.createTagKey(registryKey, material))
 
     @Deprecated("Use `addTagsInternal(HolderLookup.Provider, TagKey<T>)` instead")

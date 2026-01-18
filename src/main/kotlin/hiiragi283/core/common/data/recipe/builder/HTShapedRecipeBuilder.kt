@@ -2,7 +2,7 @@ package hiiragi283.core.common.data.recipe.builder
 
 import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.prefix.HTPrefixLike
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -32,7 +32,7 @@ class HTShapedRecipeBuilder(stack: ItemStack) : HTStackRecipeBuilder<HTShapedRec
     /**
      * 指定した[文字][symbol]に[プレフィックス][prefix]と[素材][material]を指定します。
      */
-    fun define(symbol: Char, prefix: HTPrefixLike, material: HTMaterialLike): HTShapedRecipeBuilder =
+    fun define(symbol: Char, prefix: HTTagPrefix, material: HTMaterialLike): HTShapedRecipeBuilder =
         define(symbol, prefix.itemTagKey(material))
 
     /**

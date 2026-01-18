@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "hiiragi_core:item/dust/amethyst"
+    "layer0": "hiiragi_core:item/amethyst_dust"
   }
 }

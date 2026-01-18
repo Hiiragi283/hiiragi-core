@@ -10,9 +10,9 @@ import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
-import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.registry.holderSetOrNull
+import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HTTagUtil
 import hiiragi283.core.api.text.HTTextResult
 import net.minecraft.advancements.Advancement
@@ -83,9 +83,9 @@ class HTRegisterRuntimeRecipeEvent(
     fun <T : Any> isPresentTag(tagKey: TagKey<T>): Boolean = registryAccess.holderSetOrNull(tagKey) != null
 
     // Material
-    fun getFirstHolder(prefix: HTPrefixLike, material: HTMaterialLike): Holder<Item>? = getFirstHolder(prefix.itemTagKey(material), true)
+    fun getFirstHolder(prefix: HTTagPrefix, material: HTMaterialLike): Holder<Item>? = getFirstHolder(prefix.itemTagKey(material), true)
 
-    fun isPresentTag(prefix: HTPrefixLike, material: HTMaterialLike): Boolean = isPresentTag(prefix.itemTagKey(material))
+    fun isPresentTag(prefix: HTTagPrefix, material: HTMaterialLike): Boolean = isPresentTag(prefix.itemTagKey(material))
 
     fun getAllMaterials(): Sequence<Map.Entry<HTMaterialKey, HTPropertyMap>> = materialManager.asSequence()
 }

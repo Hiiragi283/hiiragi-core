@@ -8,11 +8,11 @@ import hiiragi283.core.api.collection.buildMultiMap
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
-import hiiragi283.core.api.material.prefix.HTMaterialPrefix
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialTextureSet
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.Util
 import net.minecraft.data.CachedOutput
 import net.minecraft.data.DataProvider
@@ -76,7 +76,7 @@ abstract class HTTextureProvider(packOutput: PackOutput, private val fileHelper:
         output: BiConsumer<ResourceLocation, NativeImage>,
         modId: String,
         pathPrefix: String,
-        transform: (HTMaterialKey) -> Set<HTMaterialPrefix>,
+        transform: (HTMaterialKey) -> Set<HTTagPrefix>,
     ) {
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE.entries) {
             val paletteId: ResourceLocation = (propertyMap[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: modId.toId(key.name))
@@ -87,7 +87,7 @@ abstract class HTTextureProvider(packOutput: PackOutput, private val fileHelper:
                 ?: continue
 
             val textureSet: HTMaterialTextureSet = propertyMap.getOrDefault(HTMaterialPropertyKeys.TEXTURE_SET)
-            for (prefix: HTMaterialPrefix in transform(key)) {
+            for (prefix: HTTagPrefix in transform(key)) {
                 val templateImage: NativeImage = getTexture(textureSet, prefix) ?: continue
                 val image: NativeImage = HTTextureUtil.copyFrom(templateImage)
 
@@ -96,18 +96,17 @@ abstract class HTTextureProvider(packOutput: PackOutput, private val fileHelper:
                         image.setPixelRGBA(x, y, HTTextureUtil.argbToFromABGR(colorPalette[index].rgb))
                     }
                 }
-                output.accept(modId.toId(pathPrefix, prefix.asPrefixName(), key.name), image)
+                output.accept(modId.toId(pathPrefix, prefix.createPath(key)), image)
             }
         }
     }
 
-    protected fun getTexture(textureSet: HTMaterialTextureSet, prefix: HTMaterialPrefix): NativeImage? =
-        getTextureResult(textureSet, prefix)
-            .onFailure { DataProvider.LOGGER.error("Failed to load image", it) }
-            .getOrNull()
+    protected fun getTexture(textureSet: HTMaterialTextureSet, prefix: HTTagPrefix): NativeImage? = getTextureResult(textureSet, prefix)
+        .onFailure { DataProvider.LOGGER.error("Failed to load image", it) }
+        .getOrNull()
 
-    protected fun getTextureResult(textureSet: HTMaterialTextureSet, prefix: HTMaterialPrefix): Result<NativeImage> = HiiragiCoreAPI
-        .id("material_set", textureSet.name, prefix.asPrefixName())
+    protected fun getTextureResult(textureSet: HTMaterialTextureSet, prefix: HTTagPrefix): Result<NativeImage> = HiiragiCoreAPI
+        .id("material_set", textureSet.name, prefix.name)
         .let(HTTextureUtil::getTexture)
         .recoverCatching { throwable: Throwable ->
             val parentSet: HTMaterialTextureSet = textureSet.parent ?: throw throwable

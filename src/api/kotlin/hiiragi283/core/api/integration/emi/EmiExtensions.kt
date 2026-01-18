@@ -5,9 +5,9 @@ import dev.emi.emi.api.stack.EmiIngredient
 import dev.emi.emi.api.stack.EmiStack
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.RegistryKey
+import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTranslation
 import net.minecraft.core.Holder
@@ -77,17 +77,17 @@ fun TagKey<*>.toEmi(amount: Int = 1): EmiIngredient = EmiIngredient
     ?: createErrorStack(HTCommonTranslation.EMPTY_TAG_KEY.translate(this))
 
 /**
- * この[プレフィックス][this]を[HTPrefixLike.createCommonTagKey]に基づいて[EmiIngredient]に変換します。
+ * この[プレフィックス][this]を[HTTagPrefix.createCommonTagKey]に基づいて[EmiIngredient]に変換します。
  * @param T レジストリの要素のクラス
  * @param key レジストリのキー
  * @param amount 材料の量
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun <T : Any> HTPrefixLike.toEmi(key: RegistryKey<T>, amount: Int = 1): EmiIngredient = this.createCommonTagKey(key).toEmi(amount)
+fun <T : Any> HTTagPrefix.toEmi(key: RegistryKey<T>, amount: Int = 1): EmiIngredient = this.createCommonTagKey(key).toEmi(amount)
 
 /**
- * この[プレフィックス][this]を[HTPrefixLike.createTagKey]に基づいて[EmiIngredient]に変換します。
+ * この[プレフィックス][this]を[HTTagPrefix.createTagKey]に基づいて[EmiIngredient]に変換します。
  * @param T レジストリの要素のクラス
  * @param key レジストリのキー
  * @param material 対象の素材
@@ -95,7 +95,7 @@ fun <T : Any> HTPrefixLike.toEmi(key: RegistryKey<T>, amount: Int = 1): EmiIngre
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun <T : Any> HTPrefixLike.toEmi(key: RegistryKey<T>, material: HTMaterialLike, amount: Int = 1): EmiIngredient =
+fun <T : Any> HTTagPrefix.toEmi(key: RegistryKey<T>, material: HTMaterialLike, amount: Int = 1): EmiIngredient =
     this.createTagKey(key, material).toEmi(amount)
 
 /**
@@ -104,7 +104,7 @@ fun <T : Any> HTPrefixLike.toEmi(key: RegistryKey<T>, material: HTMaterialLike, 
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun HTPrefixLike.toItemEmi(amount: Int = 1): EmiIngredient = toEmi(Registries.ITEM, amount)
+fun HTTagPrefix.toItemEmi(amount: Int = 1): EmiIngredient = toEmi(Registries.ITEM, amount)
 
 /**
  * この[プレフィックス][this]をアイテムの[EmiIngredient]に変換します。
@@ -113,7 +113,7 @@ fun HTPrefixLike.toItemEmi(amount: Int = 1): EmiIngredient = toEmi(Registries.IT
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun HTPrefixLike.toItemEmi(material: HTMaterialLike, amount: Int = 1): EmiIngredient = toEmi(Registries.ITEM, material, amount)
+fun HTTagPrefix.toItemEmi(material: HTMaterialLike, amount: Int = 1): EmiIngredient = toEmi(Registries.ITEM, material, amount)
 
 // Fluid Content
 

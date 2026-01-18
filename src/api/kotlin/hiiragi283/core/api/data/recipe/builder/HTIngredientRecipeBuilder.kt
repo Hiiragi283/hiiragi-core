@@ -1,7 +1,7 @@
 package hiiragi283.core.api.data.recipe.builder
 
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.prefix.HTPrefixLike
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -20,19 +20,19 @@ interface HTIngredientRecipeBuilder<BUILDER : HTIngredientRecipeBuilder<BUILDER>
     /**
      * 指定した[プレフィックス][prefixes]と[素材][material]から材料を追加します。
      */
-    fun addIngredient(material: HTMaterialLike, vararg prefixes: HTPrefixLike): BUILDER =
+    fun addIngredient(material: HTMaterialLike, vararg prefixes: HTTagPrefix): BUILDER =
         addIngredient(prefixes.map { it.itemTagKey(material) }.map(Ingredient::TagValue).stream())
 
     /**
      * 指定した[プレフィックス][prefix]と[素材][materials]から材料を追加します。
      */
-    fun addIngredient(prefix: HTPrefixLike, vararg materials: HTMaterialLike): BUILDER =
+    fun addIngredient(prefix: HTTagPrefix, vararg materials: HTMaterialLike): BUILDER =
         addIngredient(materials.map(prefix::itemTagKey).map(Ingredient::TagValue).stream())
 
     /**
      * 指定した[プレフィックス][prefix]と[素材][material]から材料を追加します。
      */
-    fun addIngredient(prefix: HTPrefixLike, material: HTMaterialLike): BUILDER = addIngredient(prefix.itemTagKey(material))
+    fun addIngredient(prefix: HTTagPrefix, material: HTMaterialLike): BUILDER = addIngredient(prefix.itemTagKey(material))
 
     /**
      * 指定した[タグ][tagKey]から材料を追加します。

@@ -4,10 +4,10 @@ import hiiragi283.core.api.collection.buildTable
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialTable
-import hiiragi283.core.api.material.prefix.HTMaterialPrefix
-import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.toHolderLike
+import hiiragi283.core.api.tag.CommonTagPrefixes
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 
@@ -86,65 +86,65 @@ object VanillaMaterialKeys {
     //    Item    //
 
     @JvmStatic
-    val INGREDIENTS: HTMaterialTable<HTMaterialPrefix, HTItemHolderLike<Item>> = buildTable {
-        fun add(prefix: HTPrefixLike, material: HTMaterialLike, item: Item) {
-            this[prefix.asMaterialPrefix(), material.asMaterialKey()] = item.toHolderLike()
+    val INGREDIENTS: HTMaterialTable<HTTagPrefix, HTItemHolderLike<Item>> = buildTable {
+        fun add(prefix: HTTagPrefix, material: HTMaterialLike, item: Item) {
+            this[prefix, material.asMaterialKey()] = item.toHolderLike()
         }
 
         // Fuel
-        add(HCMaterialPrefixes.STORAGE_BLOCK, COAL, Items.COAL_BLOCK)
-        add(HCMaterialPrefixes.FUEL, COAL, Items.COAL)
+        add(CommonTagPrefixes.BLOCK, COAL, Items.COAL_BLOCK)
+        add(CommonTagPrefixes.FUEL, COAL, Items.COAL)
 
-        add(HCMaterialPrefixes.FUEL, CHARCOAL, Items.CHARCOAL)
+        add(CommonTagPrefixes.FUEL, CHARCOAL, Items.CHARCOAL)
         // Minerals
-        add(HCMaterialPrefixes.STORAGE_BLOCK, REDSTONE, Items.REDSTONE_BLOCK)
-        add(HCMaterialPrefixes.DUST, REDSTONE, Items.REDSTONE)
+        add(CommonTagPrefixes.BLOCK, REDSTONE, Items.REDSTONE_BLOCK)
+        add(CommonTagPrefixes.DUST, REDSTONE, Items.REDSTONE)
 
-        add(HCMaterialPrefixes.STORAGE_BLOCK, GLOWSTONE, Items.GLOWSTONE)
-        add(HCMaterialPrefixes.DUST, GLOWSTONE, Items.GLOWSTONE_DUST)
+        add(CommonTagPrefixes.BLOCK, GLOWSTONE, Items.GLOWSTONE)
+        add(CommonTagPrefixes.DUST, GLOWSTONE, Items.GLOWSTONE_DUST)
         // Gem
-        add(HCMaterialPrefixes.STORAGE_BLOCK, LAPIS, Items.LAPIS_BLOCK)
-        add(HCMaterialPrefixes.GEM, LAPIS, Items.LAPIS_LAZULI)
+        add(CommonTagPrefixes.BLOCK, LAPIS, Items.LAPIS_BLOCK)
+        add(CommonTagPrefixes.GEM, LAPIS, Items.LAPIS_LAZULI)
 
-        add(HCMaterialPrefixes.STORAGE_BLOCK, QUARTZ, Items.QUARTZ_BLOCK)
-        add(HCMaterialPrefixes.GEM, QUARTZ, Items.QUARTZ)
+        add(CommonTagPrefixes.BLOCK, QUARTZ, Items.QUARTZ_BLOCK)
+        add(CommonTagPrefixes.GEM, QUARTZ, Items.QUARTZ)
 
-        add(HCMaterialPrefixes.STORAGE_BLOCK, AMETHYST, Items.AMETHYST_BLOCK)
-        add(HCMaterialPrefixes.GEM, AMETHYST, Items.AMETHYST_SHARD)
+        add(CommonTagPrefixes.BLOCK, AMETHYST, Items.AMETHYST_BLOCK)
+        add(CommonTagPrefixes.GEM, AMETHYST, Items.AMETHYST_SHARD)
 
-        add(HCMaterialPrefixes.STORAGE_BLOCK, DIAMOND, Items.DIAMOND_BLOCK)
-        add(HCMaterialPrefixes.GEM, DIAMOND, Items.DIAMOND)
+        add(CommonTagPrefixes.BLOCK, DIAMOND, Items.DIAMOND_BLOCK)
+        add(CommonTagPrefixes.GEM, DIAMOND, Items.DIAMOND)
 
-        add(HCMaterialPrefixes.STORAGE_BLOCK, EMERALD, Items.EMERALD_BLOCK)
-        add(HCMaterialPrefixes.GEM, EMERALD, Items.EMERALD)
+        add(CommonTagPrefixes.BLOCK, EMERALD, Items.EMERALD_BLOCK)
+        add(CommonTagPrefixes.GEM, EMERALD, Items.EMERALD)
 
-        add(HCMaterialPrefixes.GEM, ECHO, Items.ECHO_SHARD)
+        add(CommonTagPrefixes.GEM, ECHO, Items.ECHO_SHARD)
         // Pearl
-        add(HCMaterialPrefixes.PEARL, ENDER, Items.ENDER_PEARL)
+        add(CommonTagPrefixes.PEARL, ENDER, Items.ENDER_PEARL)
         // Metals
-        add(HCMaterialPrefixes.ORE, COPPER, Items.COPPER_ORE)
-        add(HCMaterialPrefixes.STORAGE_BLOCK_RAW, COPPER, Items.RAW_COPPER_BLOCK)
-        add(HCMaterialPrefixes.STORAGE_BLOCK, COPPER, Items.COPPER_BLOCK)
-        add(HCMaterialPrefixes.RAW_MATERIAL, COPPER, Items.RAW_COPPER)
-        add(HCMaterialPrefixes.INGOT, COPPER, Items.COPPER_INGOT)
+        add(CommonTagPrefixes.ORE, COPPER, Items.COPPER_ORE)
+        add(CommonTagPrefixes.RAW_BLOCK, COPPER, Items.RAW_COPPER_BLOCK)
+        add(CommonTagPrefixes.BLOCK, COPPER, Items.COPPER_BLOCK)
+        add(CommonTagPrefixes.RAW, COPPER, Items.RAW_COPPER)
+        add(CommonTagPrefixes.INGOT, COPPER, Items.COPPER_INGOT)
 
-        add(HCMaterialPrefixes.ORE, IRON, Items.IRON_ORE)
-        add(HCMaterialPrefixes.STORAGE_BLOCK_RAW, IRON, Items.RAW_IRON_BLOCK)
-        add(HCMaterialPrefixes.STORAGE_BLOCK, IRON, Items.IRON_BLOCK)
-        add(HCMaterialPrefixes.RAW_MATERIAL, IRON, Items.RAW_IRON)
-        add(HCMaterialPrefixes.INGOT, IRON, Items.IRON_INGOT)
-        add(HCMaterialPrefixes.NUGGET, IRON, Items.IRON_NUGGET)
+        add(CommonTagPrefixes.ORE, IRON, Items.IRON_ORE)
+        add(CommonTagPrefixes.RAW_BLOCK, IRON, Items.RAW_IRON_BLOCK)
+        add(CommonTagPrefixes.BLOCK, IRON, Items.IRON_BLOCK)
+        add(CommonTagPrefixes.RAW, IRON, Items.RAW_IRON)
+        add(CommonTagPrefixes.INGOT, IRON, Items.IRON_INGOT)
+        add(CommonTagPrefixes.NUGGET, IRON, Items.IRON_NUGGET)
 
-        add(HCMaterialPrefixes.ORE, GOLD, Items.GOLD_ORE)
-        add(HCMaterialPrefixes.STORAGE_BLOCK_RAW, GOLD, Items.RAW_GOLD_BLOCK)
-        add(HCMaterialPrefixes.STORAGE_BLOCK, GOLD, Items.GOLD_BLOCK)
-        add(HCMaterialPrefixes.RAW_MATERIAL, GOLD, Items.RAW_GOLD)
-        add(HCMaterialPrefixes.INGOT, GOLD, Items.GOLD_INGOT)
-        add(HCMaterialPrefixes.NUGGET, GOLD, Items.GOLD_NUGGET)
+        add(CommonTagPrefixes.ORE, GOLD, Items.GOLD_ORE)
+        add(CommonTagPrefixes.RAW_BLOCK, GOLD, Items.RAW_GOLD_BLOCK)
+        add(CommonTagPrefixes.BLOCK, GOLD, Items.GOLD_BLOCK)
+        add(CommonTagPrefixes.RAW, GOLD, Items.RAW_GOLD)
+        add(CommonTagPrefixes.INGOT, GOLD, Items.GOLD_INGOT)
+        add(CommonTagPrefixes.NUGGET, GOLD, Items.GOLD_NUGGET)
         // Alloys
-        add(HCMaterialPrefixes.STORAGE_BLOCK, NETHERITE, Items.NETHERITE_BLOCK)
-        add(HCMaterialPrefixes.SCRAP, NETHERITE, Items.NETHERITE_SCRAP)
-        add(HCMaterialPrefixes.INGOT, NETHERITE, Items.NETHERITE_INGOT)
+        add(CommonTagPrefixes.BLOCK, NETHERITE, Items.NETHERITE_BLOCK)
+        add(CommonTagPrefixes.SCRAP, NETHERITE, Items.NETHERITE_SCRAP)
+        add(CommonTagPrefixes.INGOT, NETHERITE, Items.NETHERITE_INGOT)
     }.let(::HTMaterialTable)
 
     /*val ARMOR_TABLE: ImmutableTable<HTArmorVariant, HTMaterialKey, Item> = buildTable {

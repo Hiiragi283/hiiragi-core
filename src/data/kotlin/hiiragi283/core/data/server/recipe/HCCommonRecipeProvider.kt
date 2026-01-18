@@ -5,10 +5,10 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.buildDataPredicate
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.get
 import hiiragi283.core.api.material.getOrThrow
-import hiiragi283.core.api.material.prefix.HTPrefixLike
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.tag.CommonTagPrefixes
+import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.crafting.HTEternalUpgradeRecipe
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
@@ -17,7 +17,6 @@ import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTStonecuttingRecipeBuilder
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
-import hiiragi283.core.common.material.HCMaterialPrefixes
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
@@ -41,13 +40,13 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
     private fun materials() {
         // Sand + Ash -> Glass Dust
         HTShapelessRecipeBuilder
-            .create(getItemOrThrow(HCMaterialPrefixes.DUST, VanillaMaterialKeys.GLASS), 4)
+            .create(getItemOrThrow(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLASS), 4)
             .addIngredients(Tags.Items.SANDS, 3)
-            .addIngredient(HCMaterialPrefixes.DUST, CommonMaterialKeys.ASH)
+            .addIngredient(CommonTagPrefixes.DUST, CommonMaterialKeys.ASH)
             .saveSuffixed(output, "_from_sand_and_ash")
         // Wood Gear
         HTShapedRecipeBuilder
-            .create(getItemOrThrow(HCMaterialPrefixes.GEAR, VanillaMaterialKeys.WOOD))
+            .create(getItemOrThrow(CommonTagPrefixes.GEAR, VanillaMaterialKeys.WOOD))
             .hollow4()
             .define('A', ItemTags.PLANKS)
             .define('B', ItemTags.WOODEN_BUTTONS)
@@ -59,7 +58,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .pattern(
                 "AAA",
                 "AAA",
-            ).define('A', HCMaterialPrefixes.ROD, VanillaMaterialKeys.IRON)
+            ).define('A', CommonTagPrefixes.ROD, VanillaMaterialKeys.IRON)
             .saveSuffixed(output, "_from_rod")
         // Compressed Sawdust -> Charcoal
         HTCookingRecipeBuilder
@@ -83,25 +82,25 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .save(output)
         // Polymer Resin -> Plastic Plate
         HTCookingRecipeBuilder
-            .smelting(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.PLATE, CommonMaterialKeys.PLASTIC))
+            .smelting(HCItems.MATERIALS.getOrThrow(CommonTagPrefixes.PLATE, CommonMaterialKeys.PLASTIC))
             .addIngredient(HCItems.POLYMER_RESIN)
             .setExp(0.7f)
             .saveSuffixed(output, "_from_resin")
         // Steel Compound
         HTShapelessRecipeBuilder
             .create(HCItems.STEEL_COMPOUND)
-            .addIngredient(HCMaterialPrefixes.INGOT, VanillaMaterialKeys.IRON)
-            .addIngredients(HCMaterialPrefixes.DUST, VanillaMaterialKeys.CHARCOAL, 2)
+            .addIngredient(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON)
+            .addIngredients(CommonTagPrefixes.DUST, VanillaMaterialKeys.CHARCOAL, 2)
             .saveSuffixed(output, "_with_charcoal")
 
         HTShapelessRecipeBuilder
             .create(HCItems.STEEL_COMPOUND)
-            .addIngredient(HCMaterialPrefixes.INGOT, VanillaMaterialKeys.IRON)
-            .addIngredients(HCMaterialPrefixes.DUST, VanillaMaterialKeys.COAL, 4)
+            .addIngredient(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON)
+            .addIngredients(CommonTagPrefixes.DUST, VanillaMaterialKeys.COAL, 4)
             .saveSuffixed(output, "_with_coal")
 
         HTCookingRecipeBuilder
-            .blasting(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.INGOT, CommonMaterialKeys.STEEL))
+            .blasting(HCItems.MATERIALS.getOrThrow(CommonTagPrefixes.INGOT, CommonMaterialKeys.STEEL))
             .addIngredient(HCItems.STEEL_COMPOUND)
             .setExp(0.7f)
             .saveSuffixed(output, "_from_compound")
@@ -147,7 +146,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         HTShapelessRecipeBuilder
             .create(HCItems.TRADER_CATALOG)
             .addIngredient(Items.BOOK)
-            .addIngredient(HCMaterialPrefixes.GEM, VanillaMaterialKeys.EMERALD)
+            .addIngredient(CommonTagPrefixes.GEM, VanillaMaterialKeys.EMERALD)
             .setCategory(CraftingBookCategory.EQUIPMENT)
             .save(output)
         // Eldritch Egg
@@ -155,7 +154,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .create(HCItems.ELDRITCH_EGG, 4)
             .hollow4()
             .define('A', Tags.Items.EGGS)
-            .define('B', HCMaterialPrefixes.PEARL, HCMaterialKeys.ELDRITCH)
+            .define('B', CommonTagPrefixes.PEARL, HCMaterialKeys.ELDRITCH)
             .setCategory(CraftingBookCategory.EQUIPMENT)
             .save(output)
 
@@ -219,13 +218,13 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .saveSuffixed(output, "_from_bucket")
         // Raw Rubber -> Rubber Plate
         HTCookingRecipeBuilder
-            .smelting(HCItems.MATERIALS.getOrThrow(HCMaterialPrefixes.PLATE, CommonMaterialKeys.RUBBER))
+            .smelting(HCItems.MATERIALS.getOrThrow(CommonTagPrefixes.PLATE, CommonMaterialKeys.RUBBER))
             .addIngredient(HCItems.RAW_RUBBER)
             .setExp(0.7f)
             .saveSuffixed(output, "_from_raw")
     }
 
     @JvmStatic
-    private fun getItemOrThrow(prefix: HTPrefixLike, material: HTMaterialLike): HTItemHolderLike<*> =
+    private fun getItemOrThrow(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*> =
         HCItems.MATERIALS[prefix, material] ?: VanillaMaterialKeys.INGREDIENTS.getOrThrow(prefix, material)
 }
