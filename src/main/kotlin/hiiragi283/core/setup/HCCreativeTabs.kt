@@ -36,6 +36,6 @@ object HCCreativeTabs {
         // Items
         HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HTMaterialContentsAccess.INSTANCE.getAllItems())
         // Blocks
-        // HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HTMaterialContentsAccess.INSTANCE.getAllBlocks())
+        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HTMaterialContentsAccess.INSTANCE.getAllBlocks())
     }
 }

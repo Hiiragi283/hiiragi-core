@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
-class HTPropertyKey<T> private constructor(val id: ResourceLocation, val defaultValue: T) {
+class HTPropertyKey<T> private constructor(val id: ResourceLocation, val defaultValue: T) : Comparable<HTPropertyKey<*>> {
     companion object {
         @JvmStatic
         private val instance: MutableMap<ResourceLocation, HTPropertyKey<*>> = hashMapOf()
@@ -42,6 +42,8 @@ class HTPropertyKey<T> private constructor(val id: ResourceLocation, val default
             return key
         }
     }
+
+    override fun compareTo(other: HTPropertyKey<*>): Int = this.id.compareNamespaced(other.id)
 
     override fun toString(): String = "HTPropertyKey(id=$id, defaultValue=$defaultValue)"
 }

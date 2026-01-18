@@ -38,5 +38,5 @@ value class HTMaterialKey private constructor(private val id: ResourceLocation) 
 
         override fun asMaterialKey(): HTMaterialKey = this
 
-        override fun compareTo(other: HTMaterialKey): Int = this.id.compareTo(other.id)
+        override fun compareTo(other: HTMaterialKey): Int = this.id.compareNamespaced(other.id)
     }

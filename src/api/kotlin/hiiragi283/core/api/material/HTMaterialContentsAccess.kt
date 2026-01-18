@@ -15,7 +15,7 @@ interface HTMaterialContentsAccess {
         val INSTANCE: HTMaterialContentsAccess = HiiragiCoreAPI.getService()
 
         private val COMPARATOR: Comparator<Triple<HTTagPrefix, HTMaterialKey, *>> =
-            compareBy<Triple<HTTagPrefix, HTMaterialKey, *>> { it.first.name }.thenComparing { it.second }
+            compareBy<Triple<HTTagPrefix, HTMaterialKey, *>> { it.first }.thenComparing { it.second }
     }
 
     //    Block    //
