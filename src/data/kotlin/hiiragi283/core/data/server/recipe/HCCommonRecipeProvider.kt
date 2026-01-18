@@ -4,8 +4,11 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.buildDataPredicate
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.api.material.getOrThrow
+import hiiragi283.core.api.material.HTMaterialContentsAccess
+import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
+import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.crafting.HTEternalUpgradeRecipe
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
@@ -17,7 +20,6 @@ import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
-import hiiragi283.core.setup.HCMiscRegister
 import net.minecraft.core.component.DataComponents
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
@@ -38,7 +40,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
     private fun materials() {
         // Sand + Ash -> Glass Dust
         HTShapelessRecipeBuilder
-            .create(HCMiscRegister.materialItems.getOrThrow(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLASS), 4)
+            .create(getOrThrow(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLASS), 4)
             .addIngredients(Tags.Items.SANDS, 3)
             .addIngredient(CommonTagPrefixes.DUST, CommonMaterialKeys.ASH)
             .saveSuffixed(output, "_from_sand_and_ash")
@@ -72,7 +74,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .save(output)
         // Polymer Resin -> Plastic Plate
         HTCookingRecipeBuilder
-            .smelting(HCMiscRegister.materialItems.getOrThrow(CommonTagPrefixes.PLATE, CommonMaterialKeys.PLASTIC))
+            .smelting(getOrThrow(CommonTagPrefixes.PLATE, CommonMaterialKeys.PLASTIC))
             .addIngredient(HCItems.POLYMER_RESIN)
             .setExp(0.7f)
             .saveSuffixed(output, "_from_resin")
@@ -90,7 +92,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .saveSuffixed(output, "_with_coal")
 
         HTCookingRecipeBuilder
-            .blasting(HCMiscRegister.materialItems.getOrThrow(CommonTagPrefixes.INGOT, CommonMaterialKeys.STEEL))
+            .blasting(getOrThrow(CommonTagPrefixes.INGOT, CommonMaterialKeys.STEEL))
             .addIngredient(HCItems.STEEL_COMPOUND)
             .setExp(0.7f)
             .saveSuffixed(output, "_from_compound")
@@ -208,9 +210,13 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .saveSuffixed(output, "_from_bucket")
         // Raw Rubber -> Rubber Plate
         HTCookingRecipeBuilder
-            .smelting(HCMiscRegister.materialItems.getOrThrow(CommonTagPrefixes.PLATE, CommonMaterialKeys.RUBBER))
+            .smelting(getOrThrow(CommonTagPrefixes.PLATE, CommonMaterialKeys.RUBBER))
             .addIngredient(HCItems.RAW_RUBBER)
             .setExp(0.7f)
             .saveSuffixed(output, "_from_raw")
     }
+
+    @JvmStatic
+    private fun getOrThrow(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*> =
+        HTMaterialContentsAccess.INSTANCE.getItemOrThrow(prefix, material)
 }

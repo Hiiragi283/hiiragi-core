@@ -6,7 +6,6 @@ import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
-import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.LiquidBlock
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
@@ -57,7 +56,7 @@ open class HTFluidContent<TYPE : FluidType, FLUID : Fluid, ITEM : Item>(
         fluidHolder: HTHolderLike.HolderDelegate<Fluid, STILL>,
         val flowingHolder: HTHolderLike<Fluid, FLOWING>,
         fluidTag: TagKey<Fluid>,
-        val blockHolder: HTHolderLike<Block, out LiquidBlock>,
+        val blockHolder: HTBlockHolderLike<out LiquidBlock, *>,
         bucketHolder: HTItemHolderLike<ITEM>,
         bucketTag: TagKey<Item>,
     ) : HTFluidContent<TYPE, STILL, ITEM>(typeHolder, fluidHolder, fluidTag, bucketHolder, bucketTag)

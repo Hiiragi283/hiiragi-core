@@ -3,11 +3,11 @@ package hiiragi283.core.api.data.model
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.collection.ImmutableTable
 import hiiragi283.core.api.data.HTDataGenContext
+import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
@@ -16,7 +16,6 @@ import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import net.minecraft.core.Direction
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.SlabBlock
 import net.minecraft.world.level.block.StairBlock
 import net.minecraft.world.level.block.WallBlock
@@ -61,14 +60,14 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      * @param block モデルを登録させるブロック
      * @param action モデルを登録するブロック
      */
-    protected inline fun existTexture(block: HTHolderLike<Block, *>, action: (HTHolderLike<Block, *>) -> Unit) {
-        existTexture(block, block.blockId) { blockIn: HTHolderLike<Block, *>, _: ResourceLocation -> action(blockIn) }
+    protected inline fun existTexture(block: HTBlockHolderLike<*, *>, action: (HTBlockHolderLike<*, *>) -> Unit) {
+        existTexture(block, block.blockId) { blockIn: HTBlockHolderLike<*, *>, _: ResourceLocation -> action(blockIn) }
     }
 
     protected inline fun existTexture(
-        block: HTHolderLike<Block, *>,
+        block: HTBlockHolderLike<*, *>,
         id: ResourceLocation,
-        action: (HTHolderLike<Block, *>, ResourceLocation) -> Unit,
+        action: (HTBlockHolderLike<*, *>, ResourceLocation) -> Unit,
     ) {
         if (fileHelper.exists(id, TEXTURE)) {
             action(block, id)
@@ -84,14 +83,14 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
     /**
      * フルブロックのモデルを登録します。
      */
-    protected fun simpleBlockAndItem(block: HTHolderLike<Block, *>, model: ModelFile = cubeAll(block.get())) {
-        simpleBlockWithItem(block.get(), model)
+    protected fun simpleBlockAndItem(block: HTBlockHolderLike<*, *>, model: ModelFile = cubeAll(block.asBlock())) {
+        simpleBlockWithItem(block.asBlock(), model)
     }
 
     /**
      * レイヤーを持ったフルブロックのモデルを登録します。
      */
-    protected fun layeredBlock(block: HTHolderLike<Block, *>, layer0: ResourceLocation, layer1: ResourceLocation) {
+    protected fun layeredBlock(block: HTBlockHolderLike<*, *>, layer0: ResourceLocation, layer1: ResourceLocation) {
         simpleBlockAndItem(
             block,
             models()
@@ -105,16 +104,16 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
     /**
      * 水平方向に回転できるモデルを登録します。
      */
-    protected fun horizontalBlock(block: HTHolderLike<Block, *>, model: ModelFile) {
-        horizontalBlock(block.get(), model)
-        itemModels().simpleBlockItem(block.get())
+    protected fun horizontalBlock(block: HTBlockHolderLike<*, *>, model: ModelFile) {
+        horizontalBlock(block.asBlock(), model)
+        itemModels().simpleBlockItem(block.asBlock())
     }
 
     /**
      * 柱状のモデルを登録します。
      */
     protected fun cubeColumn(
-        block: HTHolderLike<Block, *>,
+        block: HTBlockHolderLike<*, *>,
         side: ResourceLocation = block.blockId.withSuffix("_side"),
         end: ResourceLocation = block.blockId.withSuffix("_top"),
     ) {
@@ -125,9 +124,9 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      * 既存のモデルを使用して登録します。
      */
     protected fun altModelBlock(
-        block: HTHolderLike<Block, *>,
+        block: HTBlockHolderLike<*, *>,
         id: ResourceLocation = block.blockId,
-        factory: (HTHolderLike<Block, *>, ModelFile) -> Unit = ::simpleBlockAndItem,
+        factory: (HTBlockHolderLike<*, *>, ModelFile) -> Unit = ::simpleBlockAndItem,
     ) {
         factory(block, ModelFile.ExistingModelFile(id, fileHelper))
     }
@@ -135,45 +134,45 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
     /**
      * テクスチャに[all]を使用するフルブロックのモデルを登録します。
      */
-    protected fun altTextureBlock(block: HTHolderLike<Block, *>, all: ResourceLocation) {
+    protected fun altTextureBlock(block: HTBlockHolderLike<*, *>, all: ResourceLocation) {
         simpleBlockAndItem(block, models().cubeAll(block.getPath(), all))
     }
 
     /**
      * 描画タイプが`cutout`となるフルブロックのモデルを登録します。
      */
-    protected fun cutoutSimpleBlock(block: HTHolderLike<Block, *>, texId: ResourceLocation = block.blockId) {
+    protected fun cutoutSimpleBlock(block: HTBlockHolderLike<*, *>, texId: ResourceLocation = block.blockId) {
         simpleBlockAndItem(block, models().cubeAll(block.getPath(), texId).renderType("cutout"))
     }
 
     /**
      * 描画タイプが`translucent`となるフルブロックのモデルを登録します。
      */
-    protected fun translucentSimpleBlock(block: HTHolderLike<Block, *>, texId: ResourceLocation = block.blockId) {
+    protected fun translucentSimpleBlock(block: HTBlockHolderLike<*, *>, texId: ResourceLocation = block.blockId) {
         simpleBlockAndItem(block, models().cubeAll(block.getPath(), texId).renderType("translucent"))
     }
 
     /**
      * ハーフブロックのモデルを登録します。
      */
-    protected fun slabBlock(block: HTHolderLike<Block, SlabBlock>, texture: ResourceLocation) {
-        slabBlock(block.get(), texture, texture)
+    protected fun slabBlock(block: HTBlockHolderLike<SlabBlock, *>, texture: ResourceLocation) {
+        slabBlock(block.asBlock(), texture, texture)
         itemModels().simpleBlockItem(block.getId())
     }
 
     /**
      * 階段ブロックのモデルを登録します。
      */
-    protected fun stairsBlock(block: HTHolderLike<Block, StairBlock>, texture: ResourceLocation) {
-        stairsBlock(block.get(), texture)
+    protected fun stairsBlock(block: HTBlockHolderLike<StairBlock, *>, texture: ResourceLocation) {
+        stairsBlock(block.asBlock(), texture)
         itemModels().simpleBlockItem(block.getId())
     }
 
     /**
      * 壁ブロックのモデルを登録します。
      */
-    protected fun wallBlock(block: HTHolderLike<Block, WallBlock>, texture: ResourceLocation) {
-        wallBlock(block.get(), texture)
+    protected fun wallBlock(block: HTBlockHolderLike<WallBlock, *>, texture: ResourceLocation) {
+        wallBlock(block.asBlock(), texture)
         itemModels().wallInventory(block.getPath(), texture)
     }
 
@@ -183,7 +182,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      */
     protected fun liquidBlock(content: HTFluidContent.Flowing<*, *, *, *>) {
         simpleBlock(
-            content.blockHolder.get(),
+            content.blockHolder.asBlock(),
             models()
                 .getBuilder(content.blockId)
                 .texture("particle", HTConst.MINECRAFT.toId(HTConst.BLOCK, "water_still")),
@@ -194,14 +193,25 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      * 鉱石ブロックのモデルを追加します。
      * @since 0.7.0
      */
-    protected fun registerOres(table: ImmutableTable<HTTagPrefix, HTMaterialKey, out HTHolderLike<Block, *>>) {
+    protected fun registerOres() {
         for (prefix: HTTagPrefix in CommonTagPrefixes.ORES) {
             val stoneTexture: ResourceLocation = prefix[HTTagPropertyKeys.ORE_STONE_TEX] ?: continue
-            for ((key: HTMaterialKey, ore: HTHolderLike<Block, *>) in table.row(prefix)) {
+            for ((key: HTMaterialKey, ore: HTBlockHolderLike<*, *>) in HTMaterialContentsAccess.INSTANCE.getBlockMap(prefix)) {
                 if (ore.getNamespace() == modId) {
                     layeredBlock(ore, stoneTexture, prefix.createId(key).withPrefix("block/"))
                 }
             }
         }
+    }
+
+    /**
+     * @since 0.8.0
+     */
+    protected fun registerMaterials(prefix: HTTagPrefix) {
+        HTMaterialContentsAccess.INSTANCE
+            .getBlockMap(prefix)
+            .values
+            .filter { it.getNamespace() == modId }
+            .forEach { existTexture(it, ::simpleBlockAndItem) }
     }
 }

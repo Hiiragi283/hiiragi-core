@@ -2,11 +2,13 @@ package hiiragi283.core.api.data.texture
 
 import com.google.common.hash.HashCode
 import com.mojang.blaze3d.platform.NativeImage
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.ImmutableMultiMap
 import hiiragi283.core.api.collection.ImmutableTable
 import hiiragi283.core.api.collection.buildMultiMap
 import hiiragi283.core.api.data.HTDataGenContext
+import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
@@ -73,6 +75,14 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
     override fun getName(): String = "Texture"
 
     //    Extensions    //
+
+    /**
+     * @since 0.8.0
+     */
+    protected fun material(output: BiConsumer<ResourceLocation, NativeImage>) {
+        material(output, HTConst.BLOCK, HTMaterialContentsAccess.INSTANCE.getBlockTable())
+        material(output, HTConst.ITEM, HTMaterialContentsAccess.INSTANCE.getItemTable())
+    }
 
     protected fun material(
         output: BiConsumer<ResourceLocation, NativeImage>,

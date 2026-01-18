@@ -5,11 +5,8 @@ import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.model.HTBlockStateProvider
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.tag.CommonTagPrefixes
-import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
-import hiiragi283.core.setup.HCMiscRegister
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.NetherWartBlock
 import net.minecraft.world.level.block.state.BlockState
@@ -28,18 +25,10 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(Hii
     }
 
     private fun registerMaterials() {
-        // Ore
-        registerOres(HCMiscRegister.materialBlocks)
+        registerOres()
 
-        // Storage Block
-        fun register(prefix: HTTagPrefix) {
-            for (block: HTSimpleDeferredBlock in HCMiscRegister.materialBlocks.row(prefix).values) {
-                existTexture(block, ::simpleBlockAndItem)
-            }
-        }
-
-        register(CommonTagPrefixes.BLOCK)
-        register(CommonTagPrefixes.RAW_BLOCK)
+        registerMaterials(CommonTagPrefixes.BLOCK)
+        registerMaterials(CommonTagPrefixes.RAW_BLOCK)
     }
 
     private fun registerCrops() {

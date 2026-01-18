@@ -29,11 +29,11 @@ object HCMiscRegister {
     private var hasInit: Boolean = false
 
     @JvmStatic
-    var materialBlocks: ImmutableTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredBlock> = immutableTableOf()
+    internal var materialBlocks: ImmutableTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredBlock> = immutableTableOf()
         private set
 
     @JvmStatic
-    var materialItems: ImmutableTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredItem> = immutableTableOf()
+    internal var materialItems: ImmutableTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredItem> = immutableTableOf()
         private set
 
     @JvmStatic

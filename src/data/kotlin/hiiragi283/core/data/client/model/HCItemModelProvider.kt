@@ -8,12 +8,8 @@ import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
-import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
-import hiiragi283.core.setup.HCMiscRegister
-import net.minecraft.resources.ResourceLocation
 
 class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(HiiragiCoreAPI.MOD_ID, context) {
     override fun registerModels() {
@@ -29,21 +25,6 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
         }
 
         registerBuckets()
-    }
-
-    private fun registerMaterials() {
-        HCMiscRegister.materialItems.forEach { (prefix: HTTagPrefix, _, item: HTIdLike) ->
-            if (item.getNamespace() != modid) return@forEach
-            existTexture(item) { itemIn: HTIdLike ->
-                val textureIcon: String = prefix[HTTagPropertyKeys.TEXTURE_ICON] ?: prefix.name
-                val overlay: ResourceLocation = HiiragiCoreAPI.id(HTConst.ITEM, "${textureIcon}_overlay")
-                if (existingFileHelper.exists(overlay, TEXTURE)) {
-                    layeredItem(itemIn, itemIn.itemId, overlay)
-                } else {
-                    layeredItem(itemIn, itemIn.itemId)
-                }
-            }
-        }
     }
 
     private fun registerBuckets() {

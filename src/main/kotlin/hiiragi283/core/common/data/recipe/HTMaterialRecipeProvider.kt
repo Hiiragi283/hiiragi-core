@@ -2,6 +2,7 @@ package hiiragi283.core.common.data.recipe
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
+import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
@@ -18,7 +19,6 @@ import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.material.VanillaMaterialKeys
-import hiiragi283.core.setup.HCMiscRegister
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.neoforged.neoforge.common.Tags
@@ -26,15 +26,15 @@ import net.neoforged.neoforge.common.Tags
 class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId) {
     private val manager: HTMaterialManager = HTMaterialManager.INSTANCE
 
-    private fun getBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
-        HCMiscRegister.materialBlocks[prefix, material.asMaterialKey()]
-            ?.takeIf { it.getNamespace() == modId }
-            ?: VanillaMaterialKeys.INGREDIENTS[prefix, material.asMaterialKey()]
+    private fun getBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? = HTMaterialContentsAccess.INSTANCE
+        .getBlock(prefix, material)
+        ?.takeIf { it.getNamespace() == modId }
+        ?: VanillaMaterialKeys.INGREDIENTS[prefix, material.asMaterialKey()]
 
-    private fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
-        HCMiscRegister.materialItems[prefix, material.asMaterialKey()]
-            ?.takeIf { it.getNamespace() == modId }
-            ?: VanillaMaterialKeys.INGREDIENTS[prefix, material.asMaterialKey()]
+    private fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? = HTMaterialContentsAccess.INSTANCE
+        .getItem(prefix, material)
+        ?.takeIf { it.getNamespace() == modId }
+        ?: VanillaMaterialKeys.INGREDIENTS[prefix, material.asMaterialKey()]
 
     override fun buildRecipeInternal() {
         baseToBlock()

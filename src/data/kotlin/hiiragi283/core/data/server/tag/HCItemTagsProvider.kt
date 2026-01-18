@@ -3,6 +3,7 @@ package hiiragi283.core.data.server.tag
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.tag.HTItemTagsProvider
+import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
@@ -13,7 +14,6 @@ import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
-import hiiragi283.core.setup.HCMiscRegister
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
@@ -38,7 +38,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
 
     private fun copyTags() {
         // Material
-        HCMiscRegister.materialBlocks.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, _) ->
+        HTMaterialContentsAccess.INSTANCE.getBlockTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, _) ->
             if (key.getNamespace() != modId) return@forEach
             copy(prefix, key)
         }
@@ -50,7 +50,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
     //    Material    //
 
     private fun material(factory: BuilderFactory<Item>) {
-        HCMiscRegister.materialItems.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
+        HTMaterialContentsAccess.INSTANCE.getItemTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
             if (key.getNamespace() != modId) return@forEach
             addMaterial(factory, prefix, key).add(item)
             if (prefix == CommonTagPrefixes.GEM || prefix == CommonTagPrefixes.INGOT) {

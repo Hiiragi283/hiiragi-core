@@ -17,7 +17,8 @@ import net.minecraft.resources.ResourceLocation
 @JvmInline
 value class HTMaterialKey private constructor(private val id: ResourceLocation) :
     HTIdLike,
-    HTMaterialLike {
+    HTMaterialLike,
+    Comparable<HTMaterialKey> {
         companion object {
             /**
              * 指定した[id]から[HTMaterialKey]のインスタンスを返します。
@@ -36,4 +37,6 @@ value class HTMaterialKey private constructor(private val id: ResourceLocation) 
         override fun getId(): ResourceLocation = id
 
         override fun asMaterialKey(): HTMaterialKey = this
+
+        override fun compareTo(other: HTMaterialKey): Int = this.id.compareTo(other.id)
     }

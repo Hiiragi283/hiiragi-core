@@ -1,6 +1,12 @@
 package hiiragi283.core.api.data.loot
 
-import hiiragi283.core.api.registry.HTHolderLike
+import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.function.partially2
+import hiiragi283.core.api.material.HTMaterialContentsAccess
+import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.tag.CommonTagPrefixes
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.loot.BlockLootSubProvider
@@ -14,6 +20,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[BlockLootSubProvider]の拡張クラスです。
@@ -41,8 +48,8 @@ abstract class HTBlockLootTableProvider(registries: HolderLookup.Provider) :
     /**
      * ブロックをそのままドロップするルートテーブルを指定します。
      */
-    protected fun dropSelf(like: HTHolderLike<Block, *>) {
-        dropSelf(like.get())
+    protected fun dropSelf(like: HTBlockHolderLike<*, *>) {
+        dropSelf(like.asBlock())
     }
 
     /**
@@ -63,12 +70,33 @@ abstract class HTBlockLootTableProvider(registries: HolderLookup.Provider) :
         ),
     )
 
-    protected fun <BLOCK : Block> add(like: HTHolderLike<Block, BLOCK>, table: LootTable.Builder) {
-        add(like.get(), table)
+    protected fun add(like: HTBlockHolderLike<*, *>, table: LootTable.Builder) {
+        add(like.asBlock(), table)
     }
 
-    protected inline fun <BLOCK : Block> add(like: HTHolderLike<Block, BLOCK>, factory: (BLOCK) -> LootTable.Builder) {
-        val block: BLOCK = like.get()
+    protected inline fun <BLOCK : Block> add(like: HTBlockHolderLike<BLOCK, *>, factory: (BLOCK) -> LootTable.Builder) {
+        val block: BLOCK = like.asBlock()
         add(block, factory(block))
+    }
+
+    /**
+     * @since 0.8.0
+     */
+    protected fun registerMaterials() {
+        HTMaterialContentsAccess.INSTANCE
+            .getAllBlocks()
+            .filter { it.getNamespace() == HiiragiCoreAPI.MOD_ID }
+            .forEach(::dropSelf)
+    }
+
+    /**
+     * @since 0.8.0
+     */
+    protected fun registerOre(basePrefix: HTTagPrefix, key: HTMaterialKey, range: UniformGenerator?) {
+        for (prefix: HTTagPrefix in CommonTagPrefixes.ORES) {
+            val ore: HTBlockHolderLike<*, *> = HTMaterialContentsAccess.INSTANCE.getBlock(prefix, key) ?: continue
+            val drop: ItemLike = HTMaterialContentsAccess.INSTANCE.getItem(basePrefix, key) ?: continue
+            add(ore, ::createOreDrops.partially2(drop, range))
+        }
     }
 }

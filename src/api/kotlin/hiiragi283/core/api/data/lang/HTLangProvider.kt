@@ -3,13 +3,23 @@ package hiiragi283.core.api.data.lang
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
 import hiiragi283.core.api.data.advancement.descKey
 import hiiragi283.core.api.data.advancement.titleKey
+import hiiragi283.core.api.material.HTMaterialContentsAccess
+import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
+import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toDescriptionKey
+import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.api.text.HTHasTranslationKey
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.enchantment.Enchantment
 import net.neoforged.neoforge.common.data.LanguageProvider
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.iterator
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[LanguageProvider]の拡張クラスです。
@@ -18,7 +28,37 @@ import net.neoforged.neoforge.common.data.LanguageProvider
  */
 sealed class HTLangProvider(output: PackOutput, val modId: String, val langType: HTLanguageType) :
     LanguageProvider(output, modId, langType.name.lowercase()) {
+    // Material
+    /**
+     * @since 0.8.0
+     */
+    fun addMaterials() {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE.entries) {
+            if (key.getNamespace() != modId) continue
+            // Block
+            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in HTMaterialContentsAccess.INSTANCE.getBlockMap(key)) {
+                val name: String = translate(langType, prefix, propertyMap) ?: continue
+                add(item, name)
+            }
+            // Item
+            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in HTMaterialContentsAccess.INSTANCE.getItemMap(key)) {
+                val name: String = translate(langType, prefix, propertyMap) ?: continue
+                add(item, name)
+            }
+        }
+    }
+
+    /**
+     * @since 0.8.0
+     */
+    fun translate(type: HTLanguageType, prefix: HTTagPrefix, propertyMap: HTPropertyMap): String? =
+        propertyMap.getOrDefault(HTMaterialPropertyKeys.CUSTOM_LANG_NAME)[prefix]?.getTranslatedName(type) ?: run {
+            val materialName: HTLangName = propertyMap[HTMaterialPropertyKeys.LANG_NAME] ?: return@run null
+            prefix.getOrDefault(HTTagPropertyKeys.LANG_PATTERN).translate(type, materialName)
+        }
+
     // HTHasTranslationKey
+
     /**
      * [HTHasTranslationKey.translationKey]に基づいて翻訳名を追加します。
      */

@@ -3,7 +3,6 @@
 package hiiragi283.core.api.registry
 
 import net.minecraft.core.Holder
-import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.material.Fluid
 
 /**
@@ -18,18 +17,6 @@ fun <R : Any> Holder<R>.toLike(): HTHolderLike.HolderDelegate<R, R> =
 
         override fun getHolder(): Holder<R> = this@toLike
     }
-
-/**
- * この[ブロック][this]を[HTHolderLike]に変換します。
- * @param BLOCK [Block]を継承したクラス
- * @author Hiiragi Tsubasa
- * @since 0.3.0
- */
-fun <BLOCK : Block> BLOCK.toHolderLike(): HTHolderLike.HolderDelegate<Block, BLOCK> = object : HTHolderLike.HolderDelegate<Block, BLOCK> {
-    override fun get(): BLOCK = this@toHolderLike
-
-    override fun getHolder(): Holder<Block> = get().builtInRegistryHolder()
-}
 
 /**
  * この[液体][this]を[HTHolderLike]に変換します。

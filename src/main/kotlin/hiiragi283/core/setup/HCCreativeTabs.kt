@@ -1,6 +1,7 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.common.registry.register.HTDeferredCreativeTabRegister
 import hiiragi283.core.common.text.HCTranslation
@@ -33,8 +34,8 @@ object HCCreativeTabs {
         Items.IRON_INGOT.builtInRegistryHolder(),
     ) { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
         // Items
-        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCMiscRegister.materialItems.values.asSequence())
+        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HTMaterialContentsAccess.INSTANCE.getAllItems())
         // Blocks
-        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCMiscRegister.materialBlocks.values.asSequence())
+        // HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HTMaterialContentsAccess.INSTANCE.getAllBlocks())
     }
 }

@@ -12,6 +12,7 @@ import net.minecraft.world.level.ItemLike
 
 /**
  * [HTIdLike]と[ItemLike]とその他諸々を継承した[HTIdLike]の拡張インターフェースです。
+ * @param ITEM アイテムのクラス
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */

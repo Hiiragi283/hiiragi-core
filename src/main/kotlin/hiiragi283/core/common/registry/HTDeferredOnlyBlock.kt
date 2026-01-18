@@ -1,7 +1,7 @@
 package hiiragi283.core.common.registry
 
+import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTDeferredHolder
-import hiiragi283.core.api.registry.HTItemHolderLike
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
@@ -12,10 +12,14 @@ import net.minecraft.world.level.block.Block
 
 class HTDeferredOnlyBlock<BLOCK : Block> :
     HTDeferredHolder<Block, BLOCK>,
-    HTItemHolderLike<Item> {
+    HTBlockHolderLike<BLOCK, Item> {
     constructor(key: ResourceKey<Block>) : super(key)
 
     constructor(id: ResourceLocation) : super(Registries.BLOCK, id)
+
+    override fun getBlockHolder(): Holder<Block> = delegate
+
+    override fun asBlock(): BLOCK = get()
 
     @Suppress("DEPRECATION")
     override fun getItemHolder(): Holder<Item> = asItem().builtInRegistryHolder()

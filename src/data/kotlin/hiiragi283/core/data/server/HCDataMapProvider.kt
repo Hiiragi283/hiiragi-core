@@ -3,6 +3,7 @@ package hiiragi283.core.data.server
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.fraction
+import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -12,7 +13,6 @@ import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
-import hiiragi283.core.setup.HCMiscRegister
 import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.Item
 import net.neoforged.neoforge.common.data.DataMapProvider
@@ -38,11 +38,11 @@ class HCDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.out
         fun addFuels(material: HTMaterialLike, time: Int) {
             if (material.asMaterialId().namespace != HiiragiCoreAPI.MOD_ID) return
             // Block
-            for ((prefix: HTTagPrefix, _) in HCMiscRegister.materialBlocks.column(material.asMaterialKey())) {
+            for ((prefix: HTTagPrefix, _) in HTMaterialContentsAccess.INSTANCE.getBlockMap(material.asMaterialKey())) {
                 furnace.add(prefix.itemTagKey(material), FurnaceFuel(time * 10), false)
             }
             // Item
-            for ((prefix: HTTagPrefix, _) in HCMiscRegister.materialItems.column(material.asMaterialKey())) {
+            for ((prefix: HTTagPrefix, _) in HTMaterialContentsAccess.INSTANCE.getItemMap(material.asMaterialKey())) {
                 val modifier: Fraction = when (prefix) {
                     CommonTagPrefixes.NUGGET -> fraction(1, 10)
                     else -> Fraction.ONE
