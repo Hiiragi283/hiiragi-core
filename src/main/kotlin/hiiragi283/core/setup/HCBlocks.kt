@@ -4,9 +4,10 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.buildTable
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialTable
-import hiiragi283.core.api.material.prefix.HTOreVariant
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.property.HTOreProperty
+import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.common.block.HTTestBlock
 import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.item.block.HTWarpedWartItem
@@ -36,21 +37,21 @@ object HCBlocks {
     //    Materials    //
 
     @JvmStatic
-    val ORES: HTMaterialTable<HTOreVariant, HTSimpleDeferredBlock> = buildTable {
-        fun register(variant: HTOreVariant, material: HTMaterialLike, properties: BlockBehaviour.Properties) {
-            this[variant, material.asMaterialKey()] = REGISTER.registerSimple(variant.createPath(material), properties)
-        }
-
-        register(HTOreVariant.STONE, CommonMaterialKeys.ZINC, copyOf(Blocks.IRON_ORE))
-        register(HTOreVariant.DEEPSLATE, CommonMaterialKeys.ZINC, copyOf(Blocks.DEEPSLATE_IRON_ORE))
-    }.let(::HTMaterialTable)
-
-    @JvmStatic
     val MATERIALS: HTMaterialTable<HTTagPrefix, HTSimpleDeferredBlock> = buildTable {
         fun register(prefix: HTTagPrefix, material: HTMaterialLike, properties: BlockBehaviour.Properties) {
             this[prefix, material.asMaterialKey()] = REGISTER.registerSimple(prefix.createPath(material), properties)
         }
 
+        // Ores
+        fun registerOre(prefix: HTTagPrefix, material: HTMaterialLike) {
+            val oreProperty: HTOreProperty = prefix[HTTagPropertyKeys.ORE] ?: return
+            register(prefix, material, oreProperty.property)
+        }
+
+        registerOre(CommonTagPrefixes.ORE, CommonMaterialKeys.ZINC)
+        registerOre(CommonTagPrefixes.ORE_DEEPSLATE, CommonMaterialKeys.ZINC)
+
+        // Storage Blocks
         fun registerBlock(
             material: HTMaterialLike,
             hardness: Float,

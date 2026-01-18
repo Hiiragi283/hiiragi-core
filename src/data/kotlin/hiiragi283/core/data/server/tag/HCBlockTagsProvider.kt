@@ -35,12 +35,6 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
     //    Material    //
 
     private fun material(factory: BuilderFactory<Block>) {
-        for (map in HCBlocks.ORES.rowMap.values) {
-            for ((key: HTMaterialKey, ore: HTIdLike) in map) {
-                addMaterial(factory, CommonTagPrefixes.ORE, key).add(ore)
-            }
-        }
-
         HCBlocks.MATERIALS.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
             addMaterial(factory, prefix, key).add(block)
 
@@ -67,7 +61,6 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
 
         val pickaxe: HTTagBuilder<Block> = factory.apply(BlockTags.MINEABLE_WITH_PICKAXE)
         sequence {
-            yieldAll(HCBlocks.ORES.values)
             yieldAll(HCBlocks.MATERIALS.values)
         }.forEach(pickaxe::add)
 

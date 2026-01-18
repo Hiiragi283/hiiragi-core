@@ -19,6 +19,9 @@ object HTTagPropertyKeys {
     val ITEM_SCALE: HTPropertyKey<(Int, HTPropertyMap) -> Int> =
         HTPropertyKey.create(HiiragiCoreAPI.id("item_scale")) { base: Int, _ -> base }
 
+    @JvmField
+    val ORE: HTPropertyKey<HTOreProperty?> = createNullable("ore")
+
     //    Data Gen    //
 
     @JvmField

@@ -36,7 +36,8 @@ class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootT
     }
 
     private fun registerOre(basePrefix: HTTagPrefix, key: HTMaterialKey, range: UniformGenerator?) {
-        for ((_, ore: HTSimpleDeferredBlock) in HCBlocks.ORES.column(key)) {
+        for (prefix: HTTagPrefix in CommonTagPrefixes.ORES) {
+            val ore: HTSimpleDeferredBlock = HCBlocks.MATERIALS[prefix, key] ?: continue
             val drop: ItemLike = HCItems.MATERIALS[basePrefix, key] ?: continue
             add(ore, ::createOreDrops.partially2(drop, range))
         }

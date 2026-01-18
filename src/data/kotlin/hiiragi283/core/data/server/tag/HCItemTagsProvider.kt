@@ -40,9 +40,6 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
 
     private fun copyTags() {
         // Material
-        for (key: HTMaterialKey in HCBlocks.ORES.columnKeys) {
-            copy(CommonTagPrefixes.ORE, key)
-        }
         HCBlocks.MATERIALS.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, _) ->
             copy(prefix, key)
         }

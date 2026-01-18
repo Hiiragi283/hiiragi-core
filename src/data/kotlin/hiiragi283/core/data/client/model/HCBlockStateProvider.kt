@@ -6,12 +6,16 @@ import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.model.HTBlockStateProvider
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.property.HTOreProperty
+import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.NetherWartBlock
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel
@@ -30,19 +34,12 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(Hii
 
     private fun registerMaterials() {
         // Ore
-        fun registerOre(prefix: HTTagPrefix, base: ResourceLocation) {
-            for ((key: HTMaterialKey, block: HTSimpleDeferredBlock) in HCBlocks.MATERIALS.row(prefix)) {
-                val textureId: ResourceLocation = HiiragiCoreAPI.id(HTConst.BLOCK, prefix.name, key.name)
-                existTexture(block, textureId) { blockIn, textureIn ->
-                    layeredBlock(blockIn, base, textureIn)
-                }
+        for (prefix: HTTagPrefix in CommonTagPrefixes.ORES) {
+            val oreProperty: HTOreProperty = prefix[HTTagPropertyKeys.ORE] ?: continue
+            for ((key: HTMaterialKey, ore: HTSimpleDeferredBlock) in HCBlocks.MATERIALS.row(prefix)) {
+                layeredBlock(ore, oreProperty.stoneTex, HiiragiCoreAPI.id(HTConst.BLOCK, CommonTagPrefixes.ORE.createPath(key)))
             }
         }
-
-        // registerOre(HCMaterialPrefixes.ORE, vanillaId(HTConst.BLOCK, "stone"))
-        // registerOre(HCMaterialPrefixes.ORE_DEEPSLATE, vanillaId(HTConst.BLOCK, "deepslate"))
-        // registerOre(HCMaterialPrefixes.ORE_NETHER, vanillaId(HTConst.BLOCK, "netherrack"))
-        // registerOre(HCMaterialPrefixes.ORE_END, vanillaId(HTConst.BLOCK, "end_stone"))
 
         // Storage Block
         fun register(prefix: HTTagPrefix) {
