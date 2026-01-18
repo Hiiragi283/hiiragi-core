@@ -10,7 +10,7 @@ import net.neoforged.fml.event.IModBusEvent
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
-class HTMaterialPropertyEvent(val isDataGen: Boolean, val factory: (HTMaterialKey) -> HTPropertyMap.Mutable) :
+class HTMaterialPropertyEvent(val factory: (HTMaterialKey) -> HTPropertyMap.Mutable) :
     Event(),
     IModBusEvent {
     /**

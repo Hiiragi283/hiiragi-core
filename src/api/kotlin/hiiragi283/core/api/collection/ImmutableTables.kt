@@ -105,3 +105,34 @@ inline fun <K : Any, V : Any, R : Any, C : Any, V1 : Any> ImmutableMultiMap<K, V
     }
     return destination.build()
 }
+
+// filter
+inline fun <R : Any, C : Any, V : Any> ImmutableTable<R, C, V>.filter(predicate: (Triple<R, C, V>) -> Boolean): ImmutableTable<R, C, V> =
+    this.filterTo(ImmutableTable.Builder(), predicate)
+
+inline fun <R : Any, C : Any, V : Any> ImmutableTable<R, C, V>.filterTo(
+    destination: ImmutableTable.Builder<R, C, V>,
+    predicate: (Triple<R, C, V>) -> Boolean,
+): ImmutableTable<R, C, V> {
+    this.forEach { triple: Triple<R, C, V> ->
+        if (predicate(triple)) {
+            destination.put(triple)
+        }
+    }
+    return destination.build()
+}
+
+inline fun <R : Any, C : Any, V : Any> ImmutableTable<R, C, V>.filterNot(predicate: (Triple<R, C, V>) -> Boolean): ImmutableTable<R, C, V> =
+    this.filterNotTo(ImmutableTable.Builder(), predicate)
+
+inline fun <R : Any, C : Any, V : Any> ImmutableTable<R, C, V>.filterNotTo(
+    destination: ImmutableTable.Builder<R, C, V>,
+    predicate: (Triple<R, C, V>) -> Boolean,
+): ImmutableTable<R, C, V> {
+    this.forEach { triple: Triple<R, C, V> ->
+        if (!predicate(triple)) {
+            destination.put(triple)
+        }
+    }
+    return destination.build()
+}

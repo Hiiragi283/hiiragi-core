@@ -3,6 +3,7 @@ package hiiragi283.core.data.server.recipe
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.tag.CommonTagPrefixes
+import hiiragi283.core.common.data.recipe.HTMaterialResultHelper
 import hiiragi283.core.common.data.recipe.builder.HTChargingRecipeBuilder
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
@@ -33,14 +34,14 @@ object HCChargingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
         HTChargingRecipeBuilder
             .create(
                 itemCreator.fromTagKey(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE),
-                HCMaterialResultHelper.item(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLOWSTONE),
+                HTMaterialResultHelper.item(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLOWSTONE),
             ).save(output)
 
         // End Crystal -> Eldritch Pearl
         HTChargingRecipeBuilder
             .create(
                 itemCreator.fromItem(Items.END_CRYSTAL),
-                HCMaterialResultHelper.item(CommonTagPrefixes.PEARL, HCMaterialKeys.ELDRITCH),
+                HTMaterialResultHelper.item(CommonTagPrefixes.PEARL, HCMaterialKeys.ELDRITCH),
             ).save(output)
         // Heart of the Sea
         HTChargingRecipeBuilder

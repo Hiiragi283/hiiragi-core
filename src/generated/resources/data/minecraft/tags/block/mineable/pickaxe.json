@@ -1,5 +1,6 @@
 {
   "values": [
+    "hiiragi_core:ash_block",
     "hiiragi_core:azure_block",
     "hiiragi_core:azure_steel_block",
     "hiiragi_core:brass_block",
@@ -12,7 +13,9 @@
     "hiiragi_core:deepslate_zinc_ore",
     "hiiragi_core:echo_block",
     "hiiragi_core:eldritch_block",
+    "hiiragi_core:end_zinc_ore",
     "hiiragi_core:ender_block",
+    "hiiragi_core:nether_zinc_ore",
     "hiiragi_core:plastic_block",
     "hiiragi_core:raw_zinc_block",
     "hiiragi_core:rubber_block",

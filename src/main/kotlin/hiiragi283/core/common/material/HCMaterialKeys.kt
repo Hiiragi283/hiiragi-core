@@ -1,29 +1,33 @@
 package hiiragi283.core.common.material
 
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.material.HTMaterialKey
 
 object HCMaterialKeys {
+    @JvmStatic
+    private fun create(path: String): HTMaterialKey = HTMaterialKey.of((HiiragiCoreAPI.id(path)))
+
     //    Gems    //
 
     @JvmStatic
-    val AZURE: HTMaterialKey = HTMaterialKey.of("azure")
+    val AZURE: HTMaterialKey = create("azure")
 
     @JvmStatic
-    val CRIMSON_CRYSTAL: HTMaterialKey = HTMaterialKey.of("crimson_crystal")
+    val CRIMSON_CRYSTAL: HTMaterialKey = create("crimson_crystal")
 
     @JvmStatic
-    val WARPED_CRYSTAL: HTMaterialKey = HTMaterialKey.of("warped_crystal")
+    val WARPED_CRYSTAL: HTMaterialKey = create("warped_crystal")
 
     //    Pearls    //
 
     @JvmStatic
-    val ELDRITCH: HTMaterialKey = HTMaterialKey.of("eldritch")
+    val ELDRITCH: HTMaterialKey = create("eldritch")
 
     //    Alloys    //
 
     @JvmStatic
-    val AZURE_STEEL: HTMaterialKey = HTMaterialKey.of("azure_steel")
+    val AZURE_STEEL: HTMaterialKey = create("azure_steel")
 
     @JvmStatic
-    val DEEP_STEEL: HTMaterialKey = HTMaterialKey.of("deep_steel")
+    val DEEP_STEEL: HTMaterialKey = create("deep_steel")
 }

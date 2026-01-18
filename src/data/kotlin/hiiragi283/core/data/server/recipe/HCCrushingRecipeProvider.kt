@@ -8,6 +8,7 @@ import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCItems
+import hiiragi283.core.setup.HCMiscRegister
 import net.minecraft.tags.ItemTags
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -27,7 +28,7 @@ object HCCrushingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
         }
 
         mapOf(
-            HCItems.MATERIALS.getOrThrow(CommonTagPrefixes.DUST, VanillaMaterialKeys.WOOD) to ItemTags.LOGS,
+            HCMiscRegister.materialItems.getOrThrow(CommonTagPrefixes.DUST, VanillaMaterialKeys.WOOD) to ItemTags.LOGS,
             Items.SAND to Tags.Items.SANDSTONE_UNCOLORED_BLOCKS,
             Items.RED_SAND to Tags.Items.SANDSTONE_RED_BLOCKS,
         ).forEach { (output: ItemLike, input: TagKey<Item>) ->

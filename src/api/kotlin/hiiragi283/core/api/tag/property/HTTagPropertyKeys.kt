@@ -4,6 +4,8 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangPatternProvider
 import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.property.HTPropertyMap
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.level.block.state.BlockBehaviour
 
 object HTTagPropertyKeys {
     @JvmField
@@ -20,7 +22,10 @@ object HTTagPropertyKeys {
         HTPropertyKey.create(HiiragiCoreAPI.id("item_scale")) { base: Int, _ -> base }
 
     @JvmField
-    val ORE: HTPropertyKey<HTOreProperty?> = createNullable("ore")
+    val BLOCK_PROP: HTPropertyKey<BlockBehaviour.Properties?> = createNullable("block_properties")
+
+    @JvmField
+    val ORE_STONE_TEX: HTPropertyKey<ResourceLocation?> = createNullable("ore_stone_tex")
 
     //    Data Gen    //
 

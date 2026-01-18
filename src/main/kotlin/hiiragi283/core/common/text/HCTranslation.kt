@@ -11,6 +11,9 @@ enum class HCTranslation(type: String, vararg path: String) : HTTranslation {
     // Block
     WARPED_WART("description", "warped_wart"),
 
+    // Creative Mode Tab
+    CREATIVE_TAB_MATERIAL("itemGroup", "material"),
+
     // Fluid
     MOLTEN_METAL("fluid", "molten_metal"),
     MOLTEN_METAL_BUCKET("fluid", "molten_metal_bucket"),

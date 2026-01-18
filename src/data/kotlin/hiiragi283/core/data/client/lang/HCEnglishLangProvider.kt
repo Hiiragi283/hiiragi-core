@@ -16,8 +16,8 @@ class HCEnglishLangProvider(output: PackOutput) :
     HTLangProvider.English(output, HiiragiCoreAPI.MOD_ID),
     HCLangProvider {
     override fun addTranslations() {
+        HTMaterialTranslationHelper.translateAll(this)
         // Block
-        HTMaterialTranslationHelper.translateAll(this, HCBlocks.MATERIALS::column)
         add(HCBlocks.WARPED_WART, "Warped Wart")
 
         // Entity
@@ -40,7 +40,6 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.MOLTEN_ELDRITCH, "Eldritch Flux")
 
         // Item
-        HTMaterialTranslationHelper.translateAll(this, HCItems.MATERIALS::column)
         add(HCItems.BAMBOO_CHARCOAL, "Bamboo Charcoal")
         add(HCItems.COMPRESSED_SAWDUST, "Compressed Sawdust")
         add(HCItems.POLYMER_RESIN, "Polymer Resin")
@@ -117,6 +116,8 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCTranslation.HIIRAGI_CORE, "Hiiragi Core")
 
         add(HCTranslation.WARPED_WART, "Clears one bad effect randomly when eaten.")
+
+        add(HCTranslation.CREATIVE_TAB_MATERIAL, "Hiiragi Core - Material")
 
         add(HCTranslation.MOLTEN_METAL, "Molten %s")
         add(HCTranslation.MOLTEN_METAL_BUCKET, "Molten %s Bucket")

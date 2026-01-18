@@ -42,6 +42,20 @@ object HTMaterialPropertyKeys {
     val STORAGE_BLOCK: HTPropertyKey<HTStorageBlockProperty> =
         HTPropertyKey.create(HiiragiCoreAPI.id("storage_block"), HTStorageBlockProperty.THREE_BY_THREE)
 
+    /**
+     * 登録する素材ブロックに使われる[プロパティキー][HTPropertyKey]
+     */
+    @JvmField
+    val BLOCK_PREFIXES: HTPropertyKey<Set<HTTagPrefix>> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("block_prefixes"), setOf())
+
+    /**
+     * 登録する素材アイテムに使われる[プロパティキー][HTPropertyKey]
+     */
+    @JvmField
+    val ITEM_PREFIXES: HTPropertyKey<Set<HTTagPrefix>> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("item_prefixes"), setOf())
+
     //    Data Gen    //
 
     /**

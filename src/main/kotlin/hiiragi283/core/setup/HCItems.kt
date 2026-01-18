@@ -1,14 +1,6 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.collection.buildMultiMap
-import hiiragi283.core.api.collection.buildTable
-import hiiragi283.core.api.collection.toFlatTable
-import hiiragi283.core.api.item.HTEquipmentMaterial
-import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialTable
-import hiiragi283.core.api.tag.CommonTagPrefixes
-import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.text.HTTranslation
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.capability.HTItemCapabilities
@@ -18,13 +10,8 @@ import hiiragi283.core.common.item.HTCaptureEggItem
 import hiiragi283.core.common.item.HTCreativeItem
 import hiiragi283.core.common.item.HTFluidFilterItem
 import hiiragi283.core.common.item.HTItemFilterItem
-import hiiragi283.core.common.item.HTToolType
 import hiiragi283.core.common.item.HTTraderCatalogItem
 import hiiragi283.core.common.item.VanillaEquipmentMaterial
-import hiiragi283.core.common.material.CommonMaterialKeys
-import hiiragi283.core.common.material.HCMaterialKeys
-import hiiragi283.core.common.material.VanillaMaterialKeys
-import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import hiiragi283.core.common.registry.register.HTDeferredItemRegister
 import hiiragi283.core.common.storage.fluid.HTComponentFluidTank
@@ -53,117 +40,6 @@ object HCItems {
     }
 
     //    Materials   //
-
-    @JvmStatic
-    val MATERIALS: HTMaterialTable<HTTagPrefix, HTSimpleDeferredItem> = buildMultiMap {
-        // Vanilla
-        putAll(VanillaMaterialKeys.COAL, CommonTagPrefixes.DUST)
-        putAll(VanillaMaterialKeys.CHARCOAL, CommonTagPrefixes.DUST)
-
-        putAll(VanillaMaterialKeys.LAPIS, CommonTagPrefixes.DUST)
-        putAll(VanillaMaterialKeys.QUARTZ, CommonTagPrefixes.DUST)
-        putAll(VanillaMaterialKeys.AMETHYST, CommonTagPrefixes.DUST)
-        putAll(VanillaMaterialKeys.DIAMOND, CommonTagPrefixes.DUST)
-        putAll(VanillaMaterialKeys.EMERALD, CommonTagPrefixes.DUST)
-        putAll(VanillaMaterialKeys.ECHO, CommonTagPrefixes.DUST)
-
-        putAll(VanillaMaterialKeys.ENDER, CommonTagPrefixes.DUST)
-
-        putAll(
-            VanillaMaterialKeys.COPPER,
-            CommonTagPrefixes.DUST,
-            CommonTagPrefixes.GEAR,
-            CommonTagPrefixes.NUGGET,
-            CommonTagPrefixes.PLATE,
-            CommonTagPrefixes.ROD,
-            CommonTagPrefixes.WIRE,
-        )
-        putAll(
-            VanillaMaterialKeys.IRON,
-            CommonTagPrefixes.DUST,
-            CommonTagPrefixes.GEAR,
-            CommonTagPrefixes.PLATE,
-            CommonTagPrefixes.ROD,
-        )
-        putAll(
-            VanillaMaterialKeys.GOLD,
-            CommonTagPrefixes.DUST,
-            CommonTagPrefixes.GEAR,
-            CommonTagPrefixes.PLATE,
-            CommonTagPrefixes.ROD,
-            CommonTagPrefixes.WIRE,
-        )
-
-        putAll(
-            VanillaMaterialKeys.NETHERITE,
-            CommonTagPrefixes.DUST,
-            CommonTagPrefixes.GEAR,
-            CommonTagPrefixes.NUGGET,
-            CommonTagPrefixes.PLATE,
-            CommonTagPrefixes.ROD,
-        )
-
-        putAll(VanillaMaterialKeys.WOOD, CommonTagPrefixes.DUST, CommonTagPrefixes.GEAR, CommonTagPrefixes.PLATE)
-        putAll(VanillaMaterialKeys.GLASS, CommonTagPrefixes.DUST, CommonTagPrefixes.ROD)
-        put(VanillaMaterialKeys.OBSIDIAN, CommonTagPrefixes.DUST)
-        // Common
-
-        putAll(CommonMaterialKeys.COAL_COKE, CommonTagPrefixes.DUST, CommonTagPrefixes.FUEL)
-        putAll(CommonMaterialKeys.CARBIDE, CommonTagPrefixes.DUST, CommonTagPrefixes.FUEL)
-
-        putAll(CommonMaterialKeys.CINNABAR, CommonTagPrefixes.DUST)
-        putAll(CommonMaterialKeys.SALT, CommonTagPrefixes.DUST)
-        putAll(CommonMaterialKeys.SALTPETER, CommonTagPrefixes.DUST)
-        putAll(CommonMaterialKeys.SULFUR, CommonTagPrefixes.DUST)
-
-        val metalSet: Set<HTTagPrefix> = setOf(
-            CommonTagPrefixes.DUST,
-            CommonTagPrefixes.RAW,
-            CommonTagPrefixes.INGOT,
-            CommonTagPrefixes.NUGGET,
-            CommonTagPrefixes.GEAR,
-            CommonTagPrefixes.PLATE,
-            CommonTagPrefixes.ROD,
-        )
-        val alloySet: Set<HTTagPrefix> = metalSet.minus(CommonTagPrefixes.RAW)
-
-        putAll(CommonMaterialKeys.ZINC, metalSet)
-
-        putAll(CommonMaterialKeys.STEEL, alloySet.plus(CommonTagPrefixes.WIRE))
-        putAll(CommonMaterialKeys.BRASS, alloySet)
-
-        put(CommonMaterialKeys.ASH, CommonTagPrefixes.DUST)
-        putAll(
-            CommonMaterialKeys.PLASTIC,
-            CommonTagPrefixes.DUST,
-            CommonTagPrefixes.PLATE,
-            CommonTagPrefixes.ROD,
-            CommonTagPrefixes.WIRE,
-        )
-        put(CommonMaterialKeys.RUBBER, CommonTagPrefixes.PLATE)
-        // Hiiragi Core
-        putAll(HCMaterialKeys.AZURE, CommonTagPrefixes.DUST, CommonTagPrefixes.GEM)
-        putAll(HCMaterialKeys.CRIMSON_CRYSTAL, CommonTagPrefixes.DUST, CommonTagPrefixes.GEM)
-        putAll(HCMaterialKeys.WARPED_CRYSTAL, CommonTagPrefixes.DUST, CommonTagPrefixes.GEM)
-
-        putAll(HCMaterialKeys.ELDRITCH, CommonTagPrefixes.DUST, CommonTagPrefixes.PEARL)
-
-        putAll(HCMaterialKeys.AZURE_STEEL, alloySet)
-        putAll(
-            HCMaterialKeys.DEEP_STEEL,
-            CommonTagPrefixes.DUST,
-            CommonTagPrefixes.SCRAP,
-            CommonTagPrefixes.INGOT,
-            CommonTagPrefixes.NUGGET,
-            CommonTagPrefixes.GEAR,
-            CommonTagPrefixes.PLATE,
-            CommonTagPrefixes.ROD,
-        )
-    }.toFlatTable { (key: HTMaterialKey, prefixes: Collection<HTTagPrefix>) ->
-        prefixes.map { prefix: HTTagPrefix ->
-            Triple(prefix, key, REGISTER.registerSimpleItem(prefix.createPath(key)))
-        }
-    }.let(::HTMaterialTable)
 
     @JvmField
     val BAMBOO_CHARCOAL: HTSimpleDeferredItem = REGISTER.registerSimpleItem("bamboo_charcoal")
@@ -219,13 +95,6 @@ object HCItems {
     val PULPED_SEED: HTSimpleDeferredItem = REGISTER.registerSimpleItem("pulped_seed")
 
     //    Tools   //
-
-    @JvmStatic
-    val TOOLS: HTMaterialTable<HTToolType<*>, HTDeferredItem<*>> = buildTable {
-        fun register(toolType: HTToolType<*>, material: HTEquipmentMaterial) {
-            this[toolType, material.asMaterialKey()] = toolType.createItem(REGISTER, material)
-        }
-    }.let(::HTMaterialTable)
 
     //    Utilities    //
 

@@ -3,7 +3,6 @@ package hiiragi283.core.client
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.resource.toId
-import hiiragi283.core.api.resource.vanillaId
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
@@ -16,9 +15,9 @@ class HTSimpleFluidExtensions(val stillTex: ResourceLocation, val color: Color? 
     companion object {
         @JvmStatic
         fun clear(color: Color): HTSimpleFluidExtensions = HTSimpleFluidExtensions(
-            vanillaId(HTConst.BLOCK, "water_still"),
+            HTConst.MINECRAFT.toId(HTConst.BLOCK, "water_still"),
             color,
-            vanillaId(HTConst.BLOCK, "water_flow"),
+            HTConst.MINECRAFT.toId(HTConst.BLOCK, "water_flow"),
         )
 
         @JvmStatic

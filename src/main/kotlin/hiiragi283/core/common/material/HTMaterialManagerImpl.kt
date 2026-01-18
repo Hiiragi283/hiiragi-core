@@ -19,12 +19,10 @@ class HTMaterialManagerImpl : HTMaterialManager {
         private var propertyMapMap: Map<HTMaterialKey, HTPropertyMap> = mapOf()
 
         @JvmStatic
-        fun gatherAttributes(isDataGen: Boolean) {
+        internal fun gatherAttributes() {
             val builderMap: MutableMap<HTMaterialKey, HTPropertyMap.Mutable> = mutableMapOf()
             ModLoader.postEvent(
-                HTMaterialPropertyEvent(
-                    isDataGen,
-                ) { key: HTMaterialKey -> builderMap.computeIfAbsent(key) { HTBasicPropertyMap.Mutable() } },
+                HTMaterialPropertyEvent { key: HTMaterialKey -> builderMap.computeIfAbsent(key) { HTBasicPropertyMap.Mutable() } },
             )
             propertyMapMap = builderMap.filterValues(HTPropertyMap::isNotEmpty)
             LOGGER.info("Gathered Material Attributes!")

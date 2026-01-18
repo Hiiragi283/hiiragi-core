@@ -39,6 +39,22 @@ fun HTPropertyMap.Mutable.addDefaultPart(prefix: HTTagPrefix) {
     this[HTMaterialPropertyKeys.DEFAULT_PART] = Either.Left(prefix)
 }
 
+fun HTPropertyMap.Mutable.setBlockPrefixes(vararg tagPrefixes: HTTagPrefix) {
+    this.setBlockPrefixes(setOf(*tagPrefixes))
+}
+
+fun HTPropertyMap.Mutable.setBlockPrefixes(tagPrefixes: Set<HTTagPrefix>) {
+    this[HTMaterialPropertyKeys.BLOCK_PREFIXES] = tagPrefixes
+}
+
+fun HTPropertyMap.Mutable.setItemPrefixes(vararg tagPrefixes: HTTagPrefix) {
+    this.setItemPrefixes(setOf(*tagPrefixes))
+}
+
+fun HTPropertyMap.Mutable.setItemPrefixes(tagPrefixes: Set<HTTagPrefix>) {
+    this[HTMaterialPropertyKeys.ITEM_PREFIXES] = tagPrefixes
+}
+
 fun HTPropertyMap.Mutable.addName(enName: String, jaName: String) {
     this.addName(HTLangName.create(enName, jaName))
 }

@@ -1,9 +1,10 @@
 package hiiragi283.core.common.material
 
+import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.collection.ImmutableTable
 import hiiragi283.core.api.collection.buildTable
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.toHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -12,81 +13,84 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 
 object VanillaMaterialKeys {
+    @JvmStatic
+    private fun create(path: String): HTMaterialKey = HTMaterialKey.of((HiiragiCoreAPI.id(path)))
+
     //    Fuels    //
 
     @JvmStatic
-    val COAL: HTMaterialKey = HTMaterialKey.of("coal")
+    val COAL: HTMaterialKey = create("coal")
 
     @JvmStatic
-    val CHARCOAL: HTMaterialKey = HTMaterialKey.of("charcoal")
+    val CHARCOAL: HTMaterialKey = create("charcoal")
 
     //    Minerals    //
 
     @JvmStatic
-    val REDSTONE: HTMaterialKey = HTMaterialKey.of("redstone")
+    val REDSTONE: HTMaterialKey = create("redstone")
 
     @JvmStatic
-    val GLOWSTONE: HTMaterialKey = HTMaterialKey.of("glowstone")
+    val GLOWSTONE: HTMaterialKey = create("glowstone")
 
     //    Gems    //
 
     @JvmStatic
-    val LAPIS: HTMaterialKey = HTMaterialKey.of("lapis")
+    val LAPIS: HTMaterialKey = create("lapis")
 
     @JvmStatic
-    val QUARTZ: HTMaterialKey = HTMaterialKey.of("quartz")
+    val QUARTZ: HTMaterialKey = create("quartz")
 
     @JvmStatic
-    val AMETHYST: HTMaterialKey = HTMaterialKey.of("amethyst")
+    val AMETHYST: HTMaterialKey = create("amethyst")
 
     @JvmStatic
-    val DIAMOND: HTMaterialKey = HTMaterialKey.of("diamond")
+    val DIAMOND: HTMaterialKey = create("diamond")
 
     @JvmStatic
-    val EMERALD: HTMaterialKey = HTMaterialKey.of("emerald")
+    val EMERALD: HTMaterialKey = create("emerald")
 
     @JvmStatic
-    val ECHO: HTMaterialKey = HTMaterialKey.of("echo")
+    val ECHO: HTMaterialKey = create("echo")
 
     //    Pearls    //
 
     @JvmStatic
-    val ENDER: HTMaterialKey = HTMaterialKey.of("ender")
+    val ENDER: HTMaterialKey = create("ender")
 
     //    Metals    //
 
     @JvmStatic
-    val COPPER: HTMaterialKey = HTMaterialKey.of("copper")
+    val COPPER: HTMaterialKey = create("copper")
 
     @JvmStatic
-    val IRON: HTMaterialKey = HTMaterialKey.of("iron")
+    val IRON: HTMaterialKey = create("iron")
 
     @JvmStatic
-    val GOLD: HTMaterialKey = HTMaterialKey.of("gold")
+    val GOLD: HTMaterialKey = create("gold")
 
     //    Alloys    //
 
     @JvmStatic
-    val NETHERITE: HTMaterialKey = HTMaterialKey.of("netherite")
+    val NETHERITE: HTMaterialKey = create("netherite")
 
     //    Others    //
 
     @JvmStatic
-    val WOOD: HTMaterialKey = HTMaterialKey.of("wood")
+    val WOOD: HTMaterialKey = create("wood")
 
     @JvmStatic
-    val GLASS: HTMaterialKey = HTMaterialKey.of("glass")
+    val GLASS: HTMaterialKey = create("glass")
 
     @JvmStatic
-    val STONE: HTMaterialKey = HTMaterialKey.of("stone")
+    val STONE: HTMaterialKey = create("stone")
 
     @JvmStatic
-    val OBSIDIAN: HTMaterialKey = HTMaterialKey.of("obsidian")
+    val OBSIDIAN: HTMaterialKey = create("obsidian")
 
     //    Item    //
 
     @JvmStatic
-    val INGREDIENTS: HTMaterialTable<HTTagPrefix, HTItemHolderLike<Item>> = buildTable {
+    val INGREDIENTS: ImmutableTable<HTTagPrefix, HTMaterialKey, HTItemHolderLike<*>> = buildTable {
         fun add(prefix: HTTagPrefix, material: HTMaterialLike, item: Item) {
             this[prefix, material.asMaterialKey()] = item.toHolderLike()
         }
@@ -145,7 +149,7 @@ object VanillaMaterialKeys {
         add(CommonTagPrefixes.BLOCK, NETHERITE, Items.NETHERITE_BLOCK)
         add(CommonTagPrefixes.SCRAP, NETHERITE, Items.NETHERITE_SCRAP)
         add(CommonTagPrefixes.INGOT, NETHERITE, Items.NETHERITE_INGOT)
-    }.let(::HTMaterialTable)
+    }
 
     /*val ARMOR_TABLE: ImmutableTable<HTArmorVariant, HTMaterialKey, Item> = buildTable {
         // Iron

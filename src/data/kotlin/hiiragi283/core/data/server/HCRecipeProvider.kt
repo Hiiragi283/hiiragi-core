@@ -4,31 +4,16 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.recipe.HTRecipeProvider
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.common.data.recipe.HTMaterialRecipeProvider
-import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.data.server.recipe.HCChargingRecipeProvider
 import hiiragi283.core.data.server.recipe.HCCommonRecipeProvider
 import hiiragi283.core.data.server.recipe.HCCrushingRecipeProvider
 import hiiragi283.core.data.server.recipe.HCExplodingRecipeProvider
-import hiiragi283.core.setup.HCBlocks
-import hiiragi283.core.setup.HCItems
 import java.util.function.Consumer
 
 class HCRecipeProvider(context: HTDataGenContext) : HTRecipeProvider(context) {
     override fun collectProviders(consumer: Consumer<HTSubRecipeProvider>) {
-        consumer.accept(
-            HTMaterialRecipeProvider(
-                HiiragiCoreAPI.MOD_ID,
-                { prefix: HTTagPrefix, material: HTMaterialLike ->
-                    HCBlocks.MATERIALS[prefix, material] ?: VanillaMaterialKeys.INGREDIENTS[prefix, material]
-                },
-                { prefix: HTTagPrefix, material: HTMaterialLike ->
-                    HCItems.MATERIALS[prefix, material] ?: VanillaMaterialKeys.INGREDIENTS[prefix, material]
-                },
-            ),
-        )
+        consumer.accept(HTMaterialRecipeProvider(HiiragiCoreAPI.MOD_ID))
         consumer.accept(HCCommonRecipeProvider)
 
         consumer.accept(HCChargingRecipeProvider)

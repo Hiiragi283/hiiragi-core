@@ -4,7 +4,7 @@ import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.resource.vanillaId
+import hiiragi283.core.api.resource.toId
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.client.renderer.entity.ThrownItemRenderer
@@ -55,7 +55,7 @@ object HiiragiCoreClient {
         // Vanilla
         event.clear(HCFluids.EXPERIENCE, Color(0x66ff33))
         event.registerFluidType(
-            HTSimpleFluidExtensions(vanillaId(HTConst.BLOCK, "honey_block_top")),
+            HTSimpleFluidExtensions(HTConst.MINECRAFT.toId(HTConst.BLOCK, "honey_block_top")),
             HCFluids.HONEY.getFluidType(),
         )
         event.dull(HCFluids.MUSHROOM_STEW, Color(0xcc9966))

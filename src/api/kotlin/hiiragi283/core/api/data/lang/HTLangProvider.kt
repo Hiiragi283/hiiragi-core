@@ -16,8 +16,8 @@ import net.neoforged.neoforge.common.data.LanguageProvider
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-sealed class HTLangProvider(output: PackOutput, modid: String, val langType: HTLanguageType) :
-    LanguageProvider(output, modid, langType.name.lowercase()) {
+sealed class HTLangProvider(output: PackOutput, val modId: String, val langType: HTLanguageType) :
+    LanguageProvider(output, modId, langType.name.lowercase()) {
     // HTHasTranslationKey
     /**
      * [HTHasTranslationKey.translationKey]に基づいて翻訳名を追加します。

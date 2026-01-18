@@ -1,142 +1,146 @@
 package hiiragi283.core.common.material
 
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.material.HTMaterialKey
 
 object CommonMaterialKeys {
+    @JvmStatic
+    private fun create(path: String): HTMaterialKey = HTMaterialKey.of((HiiragiCoreAPI.id(path)))
+
     //    Fuels    //
 
     @JvmStatic
-    val COAL_COKE: HTMaterialKey = HTMaterialKey.of("coal_coke")
+    val COAL_COKE: HTMaterialKey = create("coal_coke")
 
     @JvmStatic
-    val CARBIDE: HTMaterialKey = HTMaterialKey.of("carbide")
+    val CARBIDE: HTMaterialKey = create("carbide")
 
     //    Minerals    //
 
     @JvmStatic
-    val CINNABAR: HTMaterialKey = HTMaterialKey.of("cinnabar")
+    val CINNABAR: HTMaterialKey = create("cinnabar")
 
     @JvmStatic
-    val SALT: HTMaterialKey = HTMaterialKey.of("salt")
+    val SALT: HTMaterialKey = create("salt")
 
     @JvmStatic
-    val SALTPETER: HTMaterialKey = HTMaterialKey.of("saltpeter")
+    val SALTPETER: HTMaterialKey = create("saltpeter")
 
     @JvmStatic
-    val SULFUR: HTMaterialKey = HTMaterialKey.of("sulfur")
+    val SULFUR: HTMaterialKey = create("sulfur")
 
     //    Gems    //
 
     @JvmStatic
-    val FLUORITE: HTMaterialKey = HTMaterialKey.of("fluorite")
+    val FLUORITE: HTMaterialKey = create("fluorite")
 
     @JvmStatic
-    val PERIDOT: HTMaterialKey = HTMaterialKey.of("peridot")
+    val PERIDOT: HTMaterialKey = create("peridot")
 
     @JvmStatic
-    val RUBY: HTMaterialKey = HTMaterialKey.of("ruby")
+    val RUBY: HTMaterialKey = create("ruby")
 
     @JvmStatic
-    val SAPPHIRE: HTMaterialKey = HTMaterialKey.of("sapphire")
+    val SAPPHIRE: HTMaterialKey = create("sapphire")
 
     //    Metals    //
 
     // 3rd
     @JvmStatic
-    val ALUMINUM: HTMaterialKey = HTMaterialKey.of("aluminum")
+    val ALUMINUM: HTMaterialKey = create("aluminum")
 
     // 4th
     @JvmStatic
-    val TITANIUM: HTMaterialKey = HTMaterialKey.of("titanium")
+    val TITANIUM: HTMaterialKey = create("titanium")
 
     @JvmStatic
-    val CHROME: HTMaterialKey = HTMaterialKey.of("chrome")
+    val CHROME: HTMaterialKey = create("chrome")
 
     @JvmStatic
-    val CHROMIUM: HTMaterialKey = HTMaterialKey.of("chromium")
+    val CHROMIUM: HTMaterialKey = create("chromium")
 
     @JvmStatic
-    val MANGANESE: HTMaterialKey = HTMaterialKey.of("manganese")
+    val MANGANESE: HTMaterialKey = create("manganese")
 
     @JvmStatic
-    val COBALT: HTMaterialKey = HTMaterialKey.of("cobalt")
+    val COBALT: HTMaterialKey = create("cobalt")
 
     @JvmStatic
-    val NICKEL: HTMaterialKey = HTMaterialKey.of("nickel")
+    val NICKEL: HTMaterialKey = create("nickel")
 
     @JvmStatic
-    val ZINC: HTMaterialKey = HTMaterialKey.of("zinc")
+    val ZINC: HTMaterialKey = create("zinc")
 
     // 5th
     @JvmStatic
-    val PALLADIUM: HTMaterialKey = HTMaterialKey.of("palladium")
+    val PALLADIUM: HTMaterialKey = create("palladium")
 
     @JvmStatic
-    val SILVER: HTMaterialKey = HTMaterialKey.of("silver")
+    val SILVER: HTMaterialKey = create("silver")
 
     @JvmStatic
-    val TIN: HTMaterialKey = HTMaterialKey.of("tin")
+    val TIN: HTMaterialKey = create("tin")
 
     @JvmStatic
-    val ANTIMONY: HTMaterialKey = HTMaterialKey.of("antimony")
+    val ANTIMONY: HTMaterialKey = create("antimony")
 
     // 6th
     @JvmStatic
-    val TUNGSTEN: HTMaterialKey = HTMaterialKey.of("tungsten")
+    val TUNGSTEN: HTMaterialKey = create("tungsten")
 
     @JvmStatic
-    val OSMIUM: HTMaterialKey = HTMaterialKey.of("osmium")
+    val OSMIUM: HTMaterialKey = create("osmium")
 
     @JvmStatic
-    val IRIDIUM: HTMaterialKey = HTMaterialKey.of("iridium")
+    val IRIDIUM: HTMaterialKey = create("iridium")
 
     @JvmStatic
-    val PLATINUM: HTMaterialKey = HTMaterialKey.of("platinum")
+    val PLATINUM: HTMaterialKey = create("platinum")
 
     @JvmStatic
-    val LEAD: HTMaterialKey = HTMaterialKey.of("lead")
+    val LEAD: HTMaterialKey = create("lead")
 
     // 7th
     @JvmStatic
-    val URANIUM: HTMaterialKey = HTMaterialKey.of("uranium")
+    val URANIUM: HTMaterialKey = create("uranium")
 
     //    Alloys    //
 
     @JvmStatic
-    val STEEL: HTMaterialKey = HTMaterialKey.of("steel")
+    val STEEL: HTMaterialKey = create("steel")
 
     @JvmStatic
-    val INVAR: HTMaterialKey = HTMaterialKey.of("invar")
+    val INVAR: HTMaterialKey = create("invar")
 
     @JvmStatic
-    val ELECTRUM: HTMaterialKey = HTMaterialKey.of("electrum")
+    val ELECTRUM: HTMaterialKey = create("electrum")
 
     @JvmStatic
-    val BRASS: HTMaterialKey = HTMaterialKey.of("brass")
+    val BRASS: HTMaterialKey = create("brass")
 
     @JvmStatic
-    val CONSTANTAN: HTMaterialKey = HTMaterialKey.of("constantan")
+    val CONSTANTAN: HTMaterialKey = create("constantan")
 
     @JvmStatic
-    val BRONZE: HTMaterialKey = HTMaterialKey.of("bronze")
+    val BRONZE: HTMaterialKey = create("bronze")
 
     @JvmStatic
-    val SIGNALUM: HTMaterialKey = HTMaterialKey.of("signalum")
+    val SIGNALUM: HTMaterialKey = create("signalum")
 
     @JvmStatic
-    val LUMIUM: HTMaterialKey = HTMaterialKey.of("lumium")
+    val LUMIUM: HTMaterialKey = create("lumium")
 
     @JvmStatic
-    val ENDERIUM: HTMaterialKey = HTMaterialKey.of("enderium")
+    val ENDERIUM: HTMaterialKey = create("enderium")
 
     //    Others    //
 
     @JvmStatic
-    val ASH: HTMaterialKey = HTMaterialKey.of("ash")
+    val ASH: HTMaterialKey = create("ash")
 
     @JvmStatic
-    val PLASTIC: HTMaterialKey = HTMaterialKey.of("plastic")
+    val PLASTIC: HTMaterialKey = create("plastic")
 
     @JvmStatic
-    val RUBBER: HTMaterialKey = HTMaterialKey.of("rubber")
+    val RUBBER: HTMaterialKey = create("rubber")
 }

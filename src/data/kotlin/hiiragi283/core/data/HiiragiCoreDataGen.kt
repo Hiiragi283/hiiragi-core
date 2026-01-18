@@ -3,7 +3,6 @@ package hiiragi283.core.data
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTRootDataGenerator
 import hiiragi283.core.api.function.partially1
-import hiiragi283.core.common.material.HTMaterialManagerImpl
 import hiiragi283.core.data.client.HCTextureProvider
 import hiiragi283.core.data.client.lang.HCEnglishLangProvider
 import hiiragi283.core.data.client.lang.HCJapaneseLangProvider
@@ -29,8 +28,6 @@ import java.util.concurrent.CompletableFuture
 data object HiiragiCoreDataGen {
     @SubscribeEvent
     fun gatherData(event: GatherDataEvent) {
-        HTMaterialManagerImpl.gatherAttributes(true)
-
         val (server: HTRootDataGenerator, client: HTRootDataGenerator) = HTRootDataGenerator.withDataPack(event)
         // Server
         server.addLootTables(

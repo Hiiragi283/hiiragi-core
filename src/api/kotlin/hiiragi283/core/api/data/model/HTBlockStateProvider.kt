@@ -3,17 +3,16 @@ package hiiragi283.core.api.data.model
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.collection.ImmutableTable
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
-import hiiragi283.core.api.resource.vanillaId
+import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.property.HTOreProperty
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import net.minecraft.core.Direction
 import net.minecraft.resources.ResourceLocation
@@ -37,8 +36,8 @@ import kotlin.collections.iterator
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-abstract class HTBlockStateProvider(modid: String, context: HTDataGenContext) :
-    BlockStateProvider(context.output, modid, context.fileHelper) {
+abstract class HTBlockStateProvider(protected val modId: String, context: HTDataGenContext) :
+    BlockStateProvider(context.output, modId, context.fileHelper) {
     companion object {
         @JvmField
         val LOGGER: Logger = LogUtils.getLogger()
@@ -190,7 +189,7 @@ abstract class HTBlockStateProvider(modid: String, context: HTDataGenContext) :
             content.blockHolder.get(),
             models()
                 .getBuilder(content.blockId)
-                .texture("particle", vanillaId(HTConst.BLOCK, "water_still")),
+                .texture("particle", HTConst.MINECRAFT.toId(HTConst.BLOCK, "water_still")),
         )
     }
 
@@ -198,11 +197,13 @@ abstract class HTBlockStateProvider(modid: String, context: HTDataGenContext) :
      * 鉱石ブロックのモデルを追加します。
      * @since 0.7.0
      */
-    protected fun registerOres(table: HTMaterialTable<HTTagPrefix, out HTHolderLike<Block, *>>) {
+    protected fun registerOres(table: ImmutableTable<HTTagPrefix, HTMaterialKey, out HTHolderLike<Block, *>>) {
         for (prefix: HTTagPrefix in CommonTagPrefixes.ORES) {
-            val oreProperty: HTOreProperty = prefix[HTTagPropertyKeys.ORE] ?: continue
+            val stoneTexture: ResourceLocation = prefix[HTTagPropertyKeys.ORE_STONE_TEX] ?: continue
             for ((key: HTMaterialKey, ore: HTHolderLike<Block, *>) in table.row(prefix)) {
-                layeredBlock(ore, oreProperty.stoneTex, modLoc("${HTConst.BLOCK}/${CommonTagPrefixes.ORE.createPath(key)}"))
+                if (ore.getNamespace() == modId) {
+                    layeredBlock(ore, stoneTexture, prefix.createId(key).withPrefix("block/"))
+                }
             }
         }
     }

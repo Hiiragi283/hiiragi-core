@@ -23,22 +23,6 @@ fun String.toId(path: String): ResourceLocation = ResourceLocation.fromNamespace
 fun String.toId(vararg path: String): ResourceLocation = this.toId(path.joinToString(separator = "/"))
 
 /**
- * [名前空間][ResourceLocation.getNamespace]が`minecraft`となる[ID][ResourceLocation]を作成します。
- * @param path IDの[パス][ResourceLocation.getPath]
- * @author Hiiragi Tsubasa
- * @since 0.1.0
- */
-fun vanillaId(path: String): ResourceLocation = ResourceLocation.withDefaultNamespace(path)
-
-/**
- * [名前空間][ResourceLocation.getNamespace]が`minecraft`となる[ID][ResourceLocation]を作成します。
- * @param path IDの[パス][ResourceLocation.getPath]
- * @author Hiiragi Tsubasa
- * @since 0.1.0
- */
-fun vanillaId(vararg path: String): ResourceLocation = ResourceLocation.withDefaultNamespace(path.joinToString(separator = "/"))
-
-/**
  * この[ID][ResourceLocation]を翻訳キーに変換します。
  * @author Hiiragi Tsubasa
  * @since 0.6.0

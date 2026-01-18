@@ -7,7 +7,6 @@ import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
-import hiiragi283.core.api.resource.vanillaId
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider
@@ -61,7 +60,7 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
      * @param layers 各レイヤーのテクスチャID
      */
     protected fun layeredItem(item: HTIdLike, vararg layers: ResourceLocation): ItemModelBuilder {
-        val builder: ItemModelBuilder = withExistingParent(item.getPath(), vanillaId(HTConst.ITEM, "generated"))
+        val builder: ItemModelBuilder = withExistingParent(item.getPath(), HTConst.MINECRAFT.toId(HTConst.ITEM, "generated"))
         layers.forEachIndexed { index: Int, layer: ResourceLocation ->
             builder.texture("layer$index", layer)
         }

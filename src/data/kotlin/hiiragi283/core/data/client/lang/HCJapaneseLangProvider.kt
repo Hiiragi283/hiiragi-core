@@ -16,8 +16,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
     HTLangProvider.Japanese(output, HiiragiCoreAPI.MOD_ID),
     HCLangProvider {
     override fun addTranslations() {
+        HTMaterialTranslationHelper.translateAll(this)
         // Block
-        HTMaterialTranslationHelper.translateAll(this, HCBlocks.MATERIALS::column)
         add(HCBlocks.WARPED_WART, "歪んだウォート")
 
         // Entity
@@ -40,7 +40,6 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.MOLTEN_ELDRITCH, "異質な流動体")
 
         // Item
-        HTMaterialTranslationHelper.translateAll(this, HCItems.MATERIALS::column)
         add(HCItems.BAMBOO_CHARCOAL, "竹炭")
         add(HCItems.COMPRESSED_SAWDUST, "圧縮されたおがくず")
         add(HCItems.POLYMER_RESIN, "高分子樹脂")
@@ -116,6 +115,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCTranslation.HIIRAGI_CORE, "Hiiragi Core")
 
         add(HCTranslation.WARPED_WART, "食べるとランダムにデバフを一つだけ消します。")
+
+        add(HCTranslation.CREATIVE_TAB_MATERIAL, "Hiiragi Core - 素材")
 
         add(HCTranslation.MOLTEN_METAL, "溶融%s")
         add(HCTranslation.MOLTEN_METAL_BUCKET, "溶融%s入りバケツ")

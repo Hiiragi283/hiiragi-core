@@ -10,7 +10,6 @@
     "#c:plates/plastic",
     "#c:plates/rubber",
     "#c:plates/steel",
-    "#c:plates/wood",
-    "#c:plates/zinc"
+    "#c:plates/wood"
   ]
 }

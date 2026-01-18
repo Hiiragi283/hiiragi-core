@@ -19,9 +19,10 @@ class HTTagPrefix private constructor(val name: String, properties: HTPropertyMa
             Builder(name).apply(builderAction).build()
     }
 
-    fun createPath(material: HTMaterialLike): String {
+    fun createId(material: HTMaterialLike): ResourceLocation {
         val pathPattern: String = this[HTTagPropertyKeys.ID_PATTERN] ?: "%s_$name"
-        return pathPattern.replace("%s", material.asMaterialName())
+        val materialId: ResourceLocation = material.asMaterialId()
+        return materialId.namespace.toId(pathPattern.replace("%s", materialId.path))
     }
 
     fun <T : Any> createCommonTagKey(key: RegistryKey<T>): TagKey<T> {
@@ -32,7 +33,7 @@ class HTTagPrefix private constructor(val name: String, properties: HTPropertyMa
 
     fun <T : Any> createTagKey(key: RegistryKey<T>, material: HTMaterialLike): TagKey<T> {
         val tagPathPattern: String = this[HTTagPropertyKeys.TAG_PATTERN] ?: "${name}s/%s"
-        val id: ResourceLocation = HTConst.COMMON.toId(tagPathPattern.replace("%s", material.asMaterialName()))
+        val id: ResourceLocation = HTConst.COMMON.toId(tagPathPattern.replace("%s", material.asMaterialId().path))
         return key.createTagKey(id)
     }
 

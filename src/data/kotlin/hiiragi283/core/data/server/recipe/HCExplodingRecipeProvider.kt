@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.tag.CommonTagPrefixes
+import hiiragi283.core.common.data.recipe.HTMaterialResultHelper
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
@@ -24,7 +25,7 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
         HTSingleItemRecipeBuilder
             .exploding(
                 itemCreator.fromTagKey(Tags.Items.ORES_NETHERITE_SCRAP),
-                HCMaterialResultHelper.item(CommonTagPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE, 2),
+                HTMaterialResultHelper.item(CommonTagPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE, 2),
             ).save(output)
         // Gunpowder -> Blaze Powder
         HTSingleItemRecipeBuilder
@@ -36,7 +37,7 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
         HTSingleItemRecipeBuilder
             .exploding(
                 itemCreator.fromTagKey(Tags.Items.GLASS_BLOCKS, 4),
-                HCMaterialResultHelper.item(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ),
+                HTMaterialResultHelper.item(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ),
             ).save(output)
         // Quartz Block -> Ghast Tear
         HTSingleItemRecipeBuilder
@@ -63,27 +64,27 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
                         fuels,
                         count,
                     ),
-                    HCMaterialResultHelper.item(CommonTagPrefixes.GEM, VanillaMaterialKeys.DIAMOND),
-                ).saveSuffixed(output, "_from_${fuels.joinToString(separator = "_or_", transform = HTMaterialKey::name)}")
+                    HTMaterialResultHelper.item(CommonTagPrefixes.GEM, VanillaMaterialKeys.DIAMOND),
+                ).saveSuffixed(output, "_from_${fuels.joinToString(separator = "_or_", transform = HTMaterialKey::getPath)}")
         }
 
         // Echo Shard
         HTSingleItemRecipeBuilder
             .exploding(
                 itemCreator.fromItem(Items.SCULK, 8),
-                HCMaterialResultHelper.item(CommonTagPrefixes.GEM, VanillaMaterialKeys.ECHO),
+                HTMaterialResultHelper.item(CommonTagPrefixes.GEM, VanillaMaterialKeys.ECHO),
             ).save(output)
         // Crimson Crystal
         HTSingleItemRecipeBuilder
             .exploding(
                 itemCreator.fromTagKey(ItemTags.CRIMSON_STEMS, 12),
-                HCMaterialResultHelper.item(CommonTagPrefixes.GEM, HCMaterialKeys.CRIMSON_CRYSTAL),
+                HTMaterialResultHelper.item(CommonTagPrefixes.GEM, HCMaterialKeys.CRIMSON_CRYSTAL),
             ).save(output)
         // Warped Crystal
         HTSingleItemRecipeBuilder
             .exploding(
                 itemCreator.fromTagKey(ItemTags.WARPED_STEMS, 12),
-                HCMaterialResultHelper.item(CommonTagPrefixes.GEM, HCMaterialKeys.WARPED_CRYSTAL),
+                HTMaterialResultHelper.item(CommonTagPrefixes.GEM, HCMaterialKeys.WARPED_CRYSTAL),
             ).save(output)
     }
 }

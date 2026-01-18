@@ -7,10 +7,12 @@ import hiiragi283.core.api.data.model.HTItemModelProvider
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
-import hiiragi283.core.api.resource.vanillaId
+import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
+import hiiragi283.core.setup.HCMiscRegister
 import net.minecraft.resources.ResourceLocation
 
 class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(HiiragiCoreAPI.MOD_ID, context) {
@@ -18,22 +20,23 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
         buildList {
             addAll(HCItems.REGISTER.asSequence())
 
-            removeAll(HCItems.MATERIALS.values)
             remove(HCItems.STEEL_COMPOUND)
         }.forEach { item: HTIdLike -> existTexture(item, ::basicItem) }
 
         registerMaterials()
         existTexture(HCItems.STEEL_COMPOUND) { item: HTIdLike ->
-            layeredItem(item, vanillaId(HTConst.ITEM, "iron_ingot"), item.itemId)
+            layeredItem(item, HTConst.MINECRAFT.toId(HTConst.ITEM, "iron_ingot"), item.itemId)
         }
 
         registerBuckets()
     }
 
     private fun registerMaterials() {
-        HCItems.MATERIALS.forEach { (prefix: HTTagPrefix, _, item: HTIdLike) ->
+        HCMiscRegister.materialItems.forEach { (prefix: HTTagPrefix, _, item: HTIdLike) ->
+            if (item.getNamespace() != modid) return@forEach
             existTexture(item) { itemIn: HTIdLike ->
-                val overlay: ResourceLocation = HiiragiCoreAPI.id(HTConst.ITEM, "${prefix.name}_overlay")
+                val textureIcon: String = prefix[HTTagPropertyKeys.TEXTURE_ICON] ?: prefix.name
+                val overlay: ResourceLocation = HiiragiCoreAPI.id(HTConst.ITEM, "${textureIcon}_overlay")
                 if (existingFileHelper.exists(overlay, TEXTURE)) {
                     layeredItem(itemIn, itemIn.itemId, overlay)
                 } else {

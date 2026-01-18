@@ -3,19 +3,19 @@
   "category": "misc",
   "key": {
     "A": {
-      "tag": "c:ingots/zinc"
+      "tag": "c:dusts/ash"
     },
     "B": {
-      "tag": "c:nuggets/iron"
+      "item": "hiiragi_core:ash_dust"
     }
   },
   "pattern": [
-    " A ",
+    "AAA",
     "ABA",
-    " A "
+    "AAA"
   ],
   "result": {
     "count": 1,
-    "id": "hiiragi_core:zinc_gear"
+    "id": "hiiragi_core:ash_block"
   }
 }

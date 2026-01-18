@@ -9,7 +9,6 @@
     "#c:rods/iron",
     "#c:rods/netherite",
     "#c:rods/plastic",
-    "#c:rods/steel",
-    "#c:rods/zinc"
+    "#c:rods/steel"
   ]
 }

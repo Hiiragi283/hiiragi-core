@@ -9,14 +9,12 @@ import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HiiragiCoreTags
-import hiiragi283.core.common.item.HTToolType
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
-import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
+import hiiragi283.core.setup.HCMiscRegister
 import net.minecraft.tags.ItemTags
-import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Block
@@ -40,7 +38,8 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
 
     private fun copyTags() {
         // Material
-        HCBlocks.MATERIALS.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, _) ->
+        HCMiscRegister.materialBlocks.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, _) ->
+            if (key.getNamespace() != modId) return@forEach
             copy(prefix, key)
         }
         for (key: HTMaterialKey in HCBlockTagsProvider.VANILLA_STORAGE_BLOCKS.keys) {
@@ -51,7 +50,8 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
     //    Material    //
 
     private fun material(factory: BuilderFactory<Item>) {
-        HCItems.MATERIALS.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
+        HCMiscRegister.materialItems.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
+            if (key.getNamespace() != modId) return@forEach
             addMaterial(factory, prefix, key).add(item)
             if (prefix == CommonTagPrefixes.GEM || prefix == CommonTagPrefixes.INGOT) {
                 factory.apply(ItemTags.BEACON_PAYMENT_ITEMS).addTag(prefix, key)
@@ -77,12 +77,6 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
     //    Tool    //
 
     private fun tool(factory: BuilderFactory<Item>) {
-        HCItems.TOOLS.forEach { (toolType: HTToolType<*>, _, item: HTIdLike) ->
-            for (tagKey: TagKey<Item> in toolType.getToolTags()) {
-                factory.apply(tagKey).add(item)
-            }
-        }
-
         listOf(
             ItemTags.AXES,
             ItemTags.HOES,

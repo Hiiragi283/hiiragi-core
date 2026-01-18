@@ -12,6 +12,7 @@ import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCMiscRegister
 import net.minecraft.core.registries.Registries
 import net.minecraft.tags.BlockTags
 import net.minecraft.world.level.block.Block
@@ -35,7 +36,8 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
     //    Material    //
 
     private fun material(factory: BuilderFactory<Block>) {
-        HCBlocks.MATERIALS.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
+        HCMiscRegister.materialBlocks.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
+            if (key.getNamespace() != modId) return@forEach
             addMaterial(factory, prefix, key).add(block)
 
             if (key == CommonMaterialKeys.COAL_COKE) {
@@ -61,7 +63,7 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
 
         val pickaxe: HTTagBuilder<Block> = factory.apply(BlockTags.MINEABLE_WITH_PICKAXE)
         sequence {
-            yieldAll(HCBlocks.MATERIALS.values)
+            yieldAll(HCMiscRegister.materialBlocks.values.filter { it.getNamespace() == modId })
         }.forEach(pickaxe::add)
 
         factory

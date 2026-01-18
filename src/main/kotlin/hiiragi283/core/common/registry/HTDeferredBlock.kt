@@ -6,6 +6,7 @@ import hiiragi283.core.api.registry.HTDoubleDeferredHolder
 import hiiragi283.core.api.registry.HTItemHolderLike
 import net.minecraft.core.Holder
 import net.minecraft.network.chat.Component
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 
@@ -23,6 +24,8 @@ class HTDeferredBlock<BLOCK : Block, ITEM : Item>(first: HTDeferredOnlyBlock<BLO
         HTDeferredOnlyBlock(first.id),
         HTDeferredItem(second.id),
     )
+
+    constructor(id: ResourceLocation) : this(HTDeferredOnlyBlock(id), HTDeferredItem(id))
 
     val itemHolder: HTDeferredItem<ITEM> = second
 

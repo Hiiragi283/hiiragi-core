@@ -10,17 +10,24 @@ import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.api.text.HTHasTranslationKey
-import kotlin.collections.component1
-import kotlin.collections.component2
+import hiiragi283.core.setup.HCMiscRegister
 
 object HTMaterialTranslationHelper {
     @JvmStatic
-    fun translateAll(provider: HTLangProvider, entryProvider: (HTMaterialKey) -> Map<HTTagPrefix, HTHasTranslationKey>) {
+    fun translateAll(provider: HTLangProvider) {
+        val modId: String = provider.modId
         val langType: HTLanguageType = provider.langType
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE.entries) {
-            for ((prefix: HTTagPrefix, translation: HTHasTranslationKey) in entryProvider(key)) {
+            if (key.getNamespace() != modId) continue
+            // Block
+            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in HCMiscRegister.materialBlocks.column(key)) {
                 val name: String = translate(langType, prefix, propertyMap) ?: continue
-                provider.add(translation, name)
+                provider.add(item, name)
+            }
+            // Item
+            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in HCMiscRegister.materialItems.column(key)) {
+                val name: String = translate(langType, prefix, propertyMap) ?: continue
+                provider.add(item, name)
             }
         }
     }

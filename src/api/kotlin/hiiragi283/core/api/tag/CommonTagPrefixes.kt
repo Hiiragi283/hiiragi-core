@@ -1,11 +1,12 @@
 package hiiragi283.core.api.tag
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.material.property.getStorageBlock
 import hiiragi283.core.api.property.HTPropertyMap
-import hiiragi283.core.api.registry.toHolderLike
-import hiiragi283.core.api.tag.property.HTOreProperty
+import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.api.tag.property.addNamePattern
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour
@@ -21,16 +22,14 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "ores")
         put(HTTagPropertyKeys.TAG_PATTERN, "ores/%s")
         put(
-            HTTagPropertyKeys.ORE,
-            HTOreProperty(
-                Blocks.STONE.toHolderLike(),
-                BlockBehaviour.Properties
-                    .of()
-                    .mapColor(MapColor.STONE)
-                    .requiresCorrectToolForDrops()
-                    .strength(3f, 3f),
-            ),
+            HTTagPropertyKeys.BLOCK_PROP,
+            BlockBehaviour.Properties
+                .of()
+                .mapColor(MapColor.STONE)
+                .requiresCorrectToolForDrops()
+                .strength(3f, 3f),
         )
+        put(HTTagPropertyKeys.ORE_STONE_TEX, HTConst.MINECRAFT.toId(HTConst.BLOCK, "stone"))
 
         addNamePattern("%s Ore", "%s鉱石")
     }
@@ -40,15 +39,13 @@ object CommonTagPrefixes {
         "deepslate",
         "Deepslate",
         "深層",
-        HTOreProperty(
-            Blocks.DEEPSLATE.toHolderLike(),
-            BlockBehaviour.Properties
-                .of()
-                .mapColor(MapColor.DEEPSLATE)
-                .requiresCorrectToolForDrops()
-                .strength(4.5f, 3f)
-                .sound(SoundType.DEEPSLATE),
-        ),
+        BlockBehaviour.Properties
+            .of()
+            .mapColor(MapColor.DEEPSLATE)
+            .requiresCorrectToolForDrops()
+            .strength(4.5f, 3f)
+            .sound(SoundType.DEEPSLATE),
+        HTConst.MINECRAFT.toId(HTConst.BLOCK, "deepslate"),
     )
 
     @JvmField
@@ -56,16 +53,14 @@ object CommonTagPrefixes {
         "nether",
         "Nether",
         "ネザー",
-        HTOreProperty(
-            Blocks.NETHERRACK.toHolderLike(),
-            BlockBehaviour.Properties
-                .of()
-                .mapColor(MapColor.NETHER)
-                .instrument(NoteBlockInstrument.BASEDRUM)
-                .requiresCorrectToolForDrops()
-                .strength(3f, 3f)
-                .sound(SoundType.NETHER_ORE),
-        ),
+        BlockBehaviour.Properties
+            .of()
+            .mapColor(MapColor.NETHER)
+            .instrument(NoteBlockInstrument.BASEDRUM)
+            .requiresCorrectToolForDrops()
+            .strength(3f, 3f)
+            .sound(SoundType.NETHER_ORE),
+        HTConst.MINECRAFT.toId(HTConst.BLOCK, "netherrack"),
     )
 
     @JvmField
@@ -73,19 +68,17 @@ object CommonTagPrefixes {
         "end",
         "End",
         "エンド",
-        HTOreProperty(
-            Blocks.END_STONE.toHolderLike(),
-            BlockBehaviour.Properties
-                .of()
-                .mapColor(MapColor.SAND)
-                .instrument(NoteBlockInstrument.BASEDRUM)
-                .requiresCorrectToolForDrops()
-                .strength(4.5f, 9f),
-        ),
+        BlockBehaviour.Properties
+            .of()
+            .mapColor(MapColor.SAND)
+            .instrument(NoteBlockInstrument.BASEDRUM)
+            .requiresCorrectToolForDrops()
+            .strength(4.5f, 9f),
+        HTConst.MINECRAFT.toId(HTConst.BLOCK, "end_stone"),
     )
 
     @JvmField
-    val ORES: List<HTTagPrefix> = listOf(ORE, ORE_DEEPSLATE, ORE_NETHER, ORE_END)
+    val ORES: Set<HTTagPrefix> = setOf(ORE, ORE_DEEPSLATE, ORE_NETHER, ORE_END)
 
     @JvmField
     val BLOCK: HTTagPrefix = HTTagPrefix.create("block") {
@@ -93,6 +86,8 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "storage_blocks")
         put(HTTagPropertyKeys.TAG_PATTERN, "storage_blocks/%s")
         put(HTTagPropertyKeys.ITEM_SCALE) { base: Int, properties: HTPropertyMap -> base * properties.getStorageBlock().baseCount }
+
+        put(HTTagPropertyKeys.BLOCK_PROP, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK))
 
         addNamePattern("Block of %s", "%sブロック")
     }
@@ -103,6 +98,8 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "storage_blocks")
         put(HTTagPropertyKeys.TAG_PATTERN, "storage_blocks/raw_%s")
         put(HTTagPropertyKeys.ITEM_SCALE) { base: Int, _ -> base * 9 }
+
+        put(HTTagPropertyKeys.BLOCK_PROP, BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK))
 
         addNamePattern("Block of Raw %s", "%sの原石ブロック")
     }
@@ -219,12 +216,15 @@ object CommonTagPrefixes {
         name: String,
         enPrefix: String,
         jaPrefix: String,
-        oreProperty: HTOreProperty,
+        properties: BlockBehaviour.Properties,
+        stoneTexture: ResourceLocation,
     ): HTTagPrefix = HTTagPrefix.create("${name}_ore") {
         put(HTTagPropertyKeys.ID_PATTERN, "${name}_%s_ore")
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "ores")
         put(HTTagPropertyKeys.TAG_PATTERN, "ores/%s")
-        put(HTTagPropertyKeys.ORE, oreProperty)
+
+        put(HTTagPropertyKeys.BLOCK_PROP, properties)
+        put(HTTagPropertyKeys.ORE_STONE_TEX, stoneTexture)
 
         addNamePattern("$enPrefix %s Ore", "$jaPrefix%s鉱石")
         put(HTTagPropertyKeys.TEXTURE_ICON, "ore")
