@@ -262,6 +262,14 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("steel"))
         }
         // Minerals
+        event.modify(CommonMaterialKeys.BAUXITE) {
+            addDefaultPart(CommonTagPrefixes.DUST)
+            setBlockPrefixes(CommonTagPrefixes.ORES.plus(CommonTagPrefixes.BLOCK))
+            setItemPrefixes(CommonTagPrefixes.DUST)
+
+            addName("Bauxite", "ボーキサイト")
+            addTextureSet("mineral", HTMaterialTextureSet.DULL)
+        }
         event.modify(CommonMaterialKeys.CINNABAR) {
             addDefaultPart(CommonTagPrefixes.DUST)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
@@ -302,7 +310,14 @@ object HCMaterialEventHandler {
         registerGem(CommonMaterialKeys.RUBY, "Ruby", "ルビー")
         registerGem(CommonMaterialKeys.SAPPHIRE, "Sapphire", "サファイア")
         // Metals
-        registerMetal(CommonMaterialKeys.ALUMINUM, "Aluminum", "アルミニウム")
+        event.modify(CommonMaterialKeys.ALUMINUM) {
+            addDefaultPart(CommonTagPrefixes.INGOT)
+            setBlockPrefixes(CommonTagPrefixes.BLOCK)
+            setItemPrefixes(alloySet)
+
+            addName("Aluminum", "アルミニウム")
+            addTextureSet(HTMaterialTextureSet.SHINE)
+        }
 
         registerMetal(CommonMaterialKeys.TITANIUM, "Titanium", "チタン")
         registerMetal(CommonMaterialKeys.CHROME, "Chrome", "クロム")
@@ -337,6 +352,7 @@ object HCMaterialEventHandler {
         registerMetal(CommonMaterialKeys.LEAD, "Lead", "鉛")
 
         registerMetal(CommonMaterialKeys.URANIUM, "Uranium", "ウラン")
+        registerMetal(CommonMaterialKeys.PLUTONIUM, "Plutonium", "プルトニウム")
         // Alloys
         event.modify(CommonMaterialKeys.STEEL) {
             addDefaultPart(CommonTagPrefixes.INGOT)

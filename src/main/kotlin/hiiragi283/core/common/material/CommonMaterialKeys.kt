@@ -15,6 +15,9 @@ object CommonMaterialKeys {
     //    Minerals    //
 
     @JvmStatic
+    val BAUXITE: HTMaterialKey = create("bauxite")
+
+    @JvmStatic
     val CINNABAR: HTMaterialKey = create("cinnabar")
 
     @JvmStatic
@@ -100,6 +103,9 @@ object CommonMaterialKeys {
     // 7th
     @JvmStatic
     val URANIUM: HTMaterialKey = create("uranium")
+
+    @JvmStatic
+    val PLUTONIUM: HTMaterialKey = create("plutonium")
 
     //    Alloys    //
 
