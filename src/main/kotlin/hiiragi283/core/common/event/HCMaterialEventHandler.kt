@@ -255,6 +255,7 @@ object HCMaterialEventHandler {
             addName("Coal Coke", "石炭コークス")
             addTextureSet("fuel")
             put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
+            put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("steel"))
         }
         event.modify(CommonMaterialKeys.CARBIDE) {
             addDefaultPart(CommonTagPrefixes.FUEL)
@@ -264,6 +265,7 @@ object HCMaterialEventHandler {
             addName("Carbide", "カーバイド")
             addTextureSet("fuel")
             put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
+            put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("deep_steel"))
         }
         // Minerals
         event.modify(CommonMaterialKeys.CINNABAR) {
@@ -475,7 +477,6 @@ object HCMaterialEventHandler {
             )
 
             addName("Deep Steel", "深層鋼")
-            addTextureSet("dull")
         }
     }
 }
