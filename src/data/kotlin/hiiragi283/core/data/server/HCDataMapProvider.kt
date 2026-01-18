@@ -2,15 +2,14 @@ package hiiragi283.core.data.server
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
-import hiiragi283.core.api.fraction
 import hiiragi283.core.api.material.HTMaterialContentsAccess
-import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
+import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.times
-import hiiragi283.core.common.material.CommonMaterialKeys
-import hiiragi283.core.common.material.HCMaterialKeys
-import hiiragi283.core.common.material.VanillaMaterialKeys
+import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import net.minecraft.core.HolderLookup
@@ -19,7 +18,6 @@ import net.neoforged.neoforge.common.data.DataMapProvider
 import net.neoforged.neoforge.registries.datamaps.builtin.Compostable
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps
-import org.apache.commons.lang3.math.Fraction
 
 class HCDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.output, context.registries) {
     override fun gather(provider: HolderLookup.Provider) {
@@ -35,28 +33,22 @@ class HCDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.out
     private fun furnaceFuels() {
         val furnace: Builder<FurnaceFuel, Item> = builder(NeoForgeDataMaps.FURNACE_FUELS)
 
-        fun addFuels(material: HTMaterialLike, time: Int) {
-            if (material.asMaterialId().namespace != HiiragiCoreAPI.MOD_ID) return
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE.entries) {
+            if (key.getNamespace() != HiiragiCoreAPI.MOD_ID) continue
+            val fuelTime: Int = propertyMap[HTMaterialPropertyKeys.FUEL_TIME] ?: continue
             // Block
-            for ((prefix: HTTagPrefix, _) in HTMaterialContentsAccess.INSTANCE.getBlockMap(material.asMaterialKey())) {
-                furnace.add(prefix.itemTagKey(material), FurnaceFuel(time * 10), false)
+            if (HTMaterialContentsAccess.INSTANCE.getBlock(CommonTagPrefixes.BLOCK, key) != null) {
+                furnace.add(CommonTagPrefixes.BLOCK.itemTagKey(key), FurnaceFuel(fuelTime * 10), false)
             }
             // Item
-            for ((prefix: HTTagPrefix, _) in HTMaterialContentsAccess.INSTANCE.getItemMap(material.asMaterialKey())) {
-                val modifier: Fraction = when (prefix) {
-                    CommonTagPrefixes.NUGGET -> fraction(1, 10)
-                    else -> Fraction.ONE
+            for ((prefix: HTTagPrefix, _) in HTMaterialContentsAccess.INSTANCE.getItemMap(key)) {
+                val fuelTime1: Int = when (prefix) {
+                    CommonTagPrefixes.NUGGET -> fuelTime / 10
+                    else -> prefix.getOrDefault(HTTagPropertyKeys.ITEM_SCALE)(fuelTime, propertyMap)
                 }
-                furnace.add(prefix.itemTagKey(material), FurnaceFuel((time * modifier).toInt()), false)
+                furnace.add(prefix.itemTagKey(key), FurnaceFuel(fuelTime1), false)
             }
         }
-
-        addFuels(CommonMaterialKeys.CARBIDE, 20 * 10 * 24)
-        addFuels(CommonMaterialKeys.COAL_COKE, 20 * 10 * 16)
-        addFuels(HCMaterialKeys.CRIMSON_CRYSTAL, 20 * 10 * 24)
-        addFuels(VanillaMaterialKeys.CHARCOAL, 20 * 10 * 8)
-        addFuels(VanillaMaterialKeys.COAL, 20 * 10 * 8)
-        addFuels(VanillaMaterialKeys.WOOD, 20 * 15)
 
         furnace.add(HCItems.BAMBOO_CHARCOAL, FurnaceFuel(20 * 10 * 6), false)
     }

@@ -61,6 +61,7 @@ object HCMaterialEventHandler {
 
             addName("Coal", "石炭")
             addTextureSet("fuel")
+            put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 10 * 8)
             put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
         }
         event.modify(VanillaMaterialKeys.CHARCOAL) {
@@ -70,6 +71,7 @@ object HCMaterialEventHandler {
 
             addName("Charcoal", "木炭")
             addTextureSet("fuel")
+            put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 10 * 8)
             put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
         }
         // Minerals
@@ -199,6 +201,7 @@ object HCMaterialEventHandler {
             addName("Wood", "木")
             addCustomName(CommonTagPrefixes.DUST, "Sawdust", "おがくず")
             addTextureSet("wood")
+            put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 15)
             put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
         }
         event.modify(VanillaMaterialKeys.GLASS) {
@@ -254,18 +257,9 @@ object HCMaterialEventHandler {
 
             addName("Coal Coke", "石炭コークス")
             addTextureSet("fuel")
+            put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 10 * 16)
             put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("steel"))
-        }
-        event.modify(CommonMaterialKeys.CARBIDE) {
-            addDefaultPart(CommonTagPrefixes.FUEL)
-            setBlockPrefixes(CommonTagPrefixes.BLOCK)
-            setItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.FUEL)
-
-            addName("Carbide", "カーバイド")
-            addTextureSet("fuel")
-            put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("deep_steel"))
         }
         // Minerals
         event.modify(CommonMaterialKeys.CINNABAR) {
@@ -332,7 +326,7 @@ object HCMaterialEventHandler {
             setBlockPrefixes(CommonTagPrefixes.ORES.plus(CommonTagPrefixes.RAW_BLOCK).plus(CommonTagPrefixes.BLOCK))
             setItemPrefixes(metalSet)
 
-            addName( "Tin", "錫")
+            addName("Tin", "錫")
         }
         registerMetal(CommonMaterialKeys.ANTIMONY, "Antimony", "アンチモン")
 
@@ -434,6 +428,7 @@ object HCMaterialEventHandler {
 
             addName("Crimson Crystal", "深紅のクリスタリル")
             addTextureSet("emerald")
+            put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 10 * 24)
         }
         event.modify(HCMaterialKeys.WARPED_CRYSTAL) {
             addDefaultPart(CommonTagPrefixes.GEM)

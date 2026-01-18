@@ -55,7 +55,6 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
         mapOf(
             listOf(VanillaMaterialKeys.COAL, VanillaMaterialKeys.CHARCOAL) to 64,
             listOf(CommonMaterialKeys.COAL_COKE) to 32,
-            listOf(CommonMaterialKeys.CARBIDE) to 16,
         ).forEach { (fuels: List<HTMaterialKey>, count: Int) ->
             HTSingleItemRecipeBuilder
                 .exploding(

@@ -43,10 +43,6 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
             if (key == CommonMaterialKeys.COAL_COKE) {
                 factory.apply(BlockTags.INFINIBURN_OVERWORLD).add(block)
             }
-            if (key == CommonMaterialKeys.CARBIDE) {
-                factory.apply(BlockTags.INFINIBURN_OVERWORLD).add(block)
-                factory.apply(BlockTags.INFINIBURN_END).add(block)
-            }
         }
 
         for ((key: HTMaterialKey, block: HTIdLike) in VANILLA_STORAGE_BLOCKS) {

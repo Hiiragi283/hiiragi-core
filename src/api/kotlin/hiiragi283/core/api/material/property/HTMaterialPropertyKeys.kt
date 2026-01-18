@@ -75,6 +75,12 @@ object HTMaterialPropertyKeys {
     val CUSTOM_LANG_NAME: HTPropertyKey<Map<HTTagPrefix, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_lang_name"))
 
     /**
+     * @since 0.8.0
+     */
+    @JvmField
+    val FUEL_TIME: HTPropertyKey<Int?> = createNullable("fuel_time")
+
+    /**
      * 製錬レシピの管理に使用される[プロパティキー][HTPropertyKey]
      */
     @JvmField

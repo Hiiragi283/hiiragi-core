@@ -12,9 +12,6 @@ object CommonMaterialKeys {
     @JvmStatic
     val COAL_COKE: HTMaterialKey = create("coal_coke")
 
-    @JvmStatic
-    val CARBIDE: HTMaterialKey = create("carbide")
-
     //    Minerals    //
 
     @JvmStatic
