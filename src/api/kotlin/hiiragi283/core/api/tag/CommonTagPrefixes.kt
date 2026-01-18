@@ -94,7 +94,7 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.TAG_PATTERN, "storage_blocks/%s")
         put(HTTagPropertyKeys.ITEM_SCALE) { base: Int, properties: HTPropertyMap -> base * properties.getStorageBlock().baseCount }
 
-        addNamePattern("Block of %s", "%sのブロック")
+        addNamePattern("Block of %s", "%sブロック")
     }
 
     @JvmField

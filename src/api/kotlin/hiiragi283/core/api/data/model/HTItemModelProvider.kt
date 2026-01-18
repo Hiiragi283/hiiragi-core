@@ -33,8 +33,8 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
      * @param item モデルを登録させるアイテム
      * @param action モデルを登録するブロック
      */
-    protected inline fun existTexture(item: HTIdLike, action: (ResourceLocation) -> Unit) {
-        existTexture(item, item.itemId) { itemIn: HTIdLike, _: ResourceLocation -> action(itemIn.getId()) }
+    protected inline fun existTexture(item: HTIdLike, action: (HTIdLike) -> Unit) {
+        existTexture(item, item.itemId) { itemIn: HTIdLike, _: ResourceLocation -> action(itemIn) }
     }
 
     /**
@@ -49,6 +49,10 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
         } else {
             LOGGER.debug("Missing texture {} for {}", id, item.getId())
         }
+    }
+
+    protected fun basicItem(id: HTIdLike) {
+        basicItem(id.getId())
     }
 
     /**

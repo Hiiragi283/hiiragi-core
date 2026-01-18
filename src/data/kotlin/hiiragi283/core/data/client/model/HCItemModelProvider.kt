@@ -6,6 +6,7 @@ import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.model.HTItemModelProvider
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.setup.HCFluids
@@ -22,12 +23,8 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
         }.forEach { item: HTIdLike -> existTexture(item, ::basicItem) }
 
         registerMaterials()
-        existTexture(HCItems.STEEL_COMPOUND) { itemId: ResourceLocation ->
-            layeredItem(
-                HCItems.STEEL_COMPOUND,
-                vanillaId(HTConst.ITEM, "iron_ingot"),
-                itemId.withPrefix("item/"),
-            )
+        existTexture(HCItems.STEEL_COMPOUND) { item: HTIdLike ->
+            layeredItem(item, vanillaId(HTConst.ITEM, "iron_ingot"), item.itemId)
         }
 
         registerBuckets()
@@ -35,12 +32,12 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
 
     private fun registerMaterials() {
         HCItems.MATERIALS.forEach { (prefix: HTTagPrefix, _, item: HTIdLike) ->
-            existTexture(item) { itemId: ResourceLocation ->
+            existTexture(item) { itemIn: HTIdLike ->
                 val overlay: ResourceLocation = HiiragiCoreAPI.id(HTConst.ITEM, "${prefix.name}_overlay")
                 if (existingFileHelper.exists(overlay, TEXTURE)) {
-                    layeredItem(item, itemId.withPrefix("item/"), overlay)
+                    layeredItem(itemIn, itemIn.itemId, overlay)
                 } else {
-                    layeredItem(item, itemId.withPrefix("item/"))
+                    layeredItem(itemIn, itemIn.itemId)
                 }
             }
         }

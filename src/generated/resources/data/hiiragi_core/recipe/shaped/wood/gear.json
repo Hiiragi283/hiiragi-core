@@ -6,7 +6,7 @@
       "tag": "minecraft:planks"
     },
     "B": {
-      "tag": "minecraft:wooden_buttons"
+      "tag": "c:nuggets/iron"
     }
   },
   "pattern": [

@@ -22,9 +22,11 @@ import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
+import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
+import net.neoforged.neoforge.common.Tags
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 object HCMaterialEventHandler {
@@ -156,6 +158,7 @@ object HCMaterialEventHandler {
         }
         // Others
         event.modify(VanillaMaterialKeys.WOOD) {
+            addDefaultPart(ItemTags.PLANKS)
             if (isDataGen) {
                 addName("Wood", "木")
                 addCustomName(CommonTagPrefixes.DUST, "Sawdust", "おがくず")
@@ -164,7 +167,7 @@ object HCMaterialEventHandler {
             }
         }
         event.modify(VanillaMaterialKeys.GLASS) {
-            addDefaultPart(CommonTagPrefixes.DUST)
+            addDefaultPart(Tags.Items.GLASS_BLOCKS)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_GLASS))
             if (isDataGen) {
@@ -175,7 +178,6 @@ object HCMaterialEventHandler {
             }
         }
         event.modify(VanillaMaterialKeys.STONE) {
-            addDefaultPart(CommonTagPrefixes.DUST)
             if (isDataGen) {
                 addName("Stone", "石")
                 addTextureSet("dull")
@@ -184,7 +186,7 @@ object HCMaterialEventHandler {
             }
         }
         event.modify(VanillaMaterialKeys.OBSIDIAN) {
-            addDefaultPart(CommonTagPrefixes.DUST)
+            addDefaultPart(Tags.Items.OBSIDIANS_NORMAL)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
             if (isDataGen) {
                 addName("Obsidian", "黒曜石")

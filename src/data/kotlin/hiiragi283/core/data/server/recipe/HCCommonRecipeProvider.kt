@@ -4,11 +4,8 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.buildDataPredicate
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.getOrThrow
-import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
-import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.crafting.HTEternalUpgradeRecipe
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
@@ -40,18 +37,10 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
     private fun materials() {
         // Sand + Ash -> Glass Dust
         HTShapelessRecipeBuilder
-            .create(getItemOrThrow(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLASS), 4)
+            .create(HCItems.MATERIALS.getOrThrow(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLASS), 4)
             .addIngredients(Tags.Items.SANDS, 3)
             .addIngredient(CommonTagPrefixes.DUST, CommonMaterialKeys.ASH)
             .saveSuffixed(output, "_from_sand_and_ash")
-        // Wood Gear
-        HTShapedRecipeBuilder
-            .create(getItemOrThrow(CommonTagPrefixes.GEAR, VanillaMaterialKeys.WOOD))
-            .hollow4()
-            .define('A', ItemTags.PLANKS)
-            .define('B', ItemTags.WOODEN_BUTTONS)
-            .save(output)
-
         // Iron Rod -> Iron Bar
         HTShapedRecipeBuilder
             .create(Items.IRON_BARS, 8)
@@ -223,8 +212,4 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .setExp(0.7f)
             .saveSuffixed(output, "_from_raw")
     }
-
-    @JvmStatic
-    private fun getItemOrThrow(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*> =
-        HCItems.MATERIALS[prefix, material] ?: VanillaMaterialKeys.INGREDIENTS.getOrThrow(prefix, material)
 }

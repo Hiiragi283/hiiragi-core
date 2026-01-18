@@ -4,11 +4,17 @@ import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
+import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.HTMaterialTable
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.vanillaId
+import hiiragi283.core.api.tag.CommonTagPrefixes
+import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.property.HTOreProperty
+import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import net.minecraft.core.Direction
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.Block
@@ -22,6 +28,9 @@ import net.neoforged.neoforge.client.model.generators.ModelProvider
 import net.neoforged.neoforge.client.model.generators.ModelProvider.TEXTURE
 import net.neoforged.neoforge.common.data.ExistingFileHelper
 import org.slf4j.Logger
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.iterator
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[BlockStateProvider]の拡張クラスです。
@@ -183,5 +192,18 @@ abstract class HTBlockStateProvider(modid: String, context: HTDataGenContext) :
                 .getBuilder(content.blockId)
                 .texture("particle", vanillaId(HTConst.BLOCK, "water_still")),
         )
+    }
+
+    /**
+     * 鉱石ブロックのモデルを追加します。
+     * @since 0.7.0
+     */
+    protected fun registerOres(table: HTMaterialTable<HTTagPrefix, out HTHolderLike<Block, *>>) {
+        for (prefix: HTTagPrefix in CommonTagPrefixes.ORES) {
+            val oreProperty: HTOreProperty = prefix[HTTagPropertyKeys.ORE] ?: continue
+            for ((key: HTMaterialKey, ore: HTHolderLike<Block, *>) in table.row(prefix)) {
+                layeredBlock(ore, oreProperty.stoneTex, modLoc("${HTConst.BLOCK}/${CommonTagPrefixes.ORE.createPath(key)}"))
+            }
+        }
     }
 }

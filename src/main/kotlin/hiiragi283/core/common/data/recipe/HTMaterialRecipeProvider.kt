@@ -18,6 +18,8 @@ import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
+import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
 import net.neoforged.neoforge.common.Tags
 
 class HTMaterialRecipeProvider(
@@ -34,15 +36,13 @@ class HTMaterialRecipeProvider(
         prefixToBase(CommonTagPrefixes.DUST, 0.35f)
         prefixToBase(CommonTagPrefixes.RAW, 0.7f)
 
-        prefixToGear(CommonTagPrefixes.GEM)
-        prefixToGear(CommonTagPrefixes.INGOT)
-
+        baseToGear()
         ingotToNugget()
     }
 
     private fun baseToBlock() {
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in manager.entries) {
-            val basePrefix: HTTagPrefix = propertyMap.getDefaultPart() ?: continue
+            val basePrefix: HTTagPrefix = propertyMap.getDefaultPart()?.getLeft() ?: continue
             val blockProperty: HTStorageBlockProperty = propertyMap.getStorageBlock()
 
             val block: HTItemHolderLike<*> = blockGetter(CommonTagPrefixes.BLOCK, key) ?: continue
@@ -89,6 +89,7 @@ class HTMaterialRecipeProvider(
             val smeltingAttribute: HTSmeltingMaterialProperty = propertyMap[HTMaterialPropertyKeys.SMELTING]
                 ?: propertyMap
                     .getDefaultPart()
+                    ?.getLeft()
                     ?.let {
                         // 精錬の前後で同じプレフィックスになる場合はパス
                         if (prefix == it) return@let null
@@ -128,15 +129,15 @@ class HTMaterialRecipeProvider(
         }
     }
 
-    private fun prefixToGear(prefix: HTTagPrefix) {
+    private fun baseToGear() {
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE.entries) {
-            if (propertyMap.getDefaultPart() != prefix) continue
+            val inputTag: TagKey<Item> = propertyMap.getDefaultPart(key) ?: continue
             val gear: HTItemHolderLike<*> = itemGetter(CommonTagPrefixes.GEAR, key) ?: continue
             // Shaped
             HTShapedRecipeBuilder
                 .create(gear)
                 .hollow4()
-                .define('A', prefix, key)
+                .define('A', inputTag)
                 .define('B', Tags.Items.NUGGETS_IRON)
                 .save(output, HiiragiCoreAPI.id(key.name, "gear"))
         }

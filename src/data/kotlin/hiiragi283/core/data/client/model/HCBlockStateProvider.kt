@@ -1,21 +1,15 @@
 package hiiragi283.core.data.client.model
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.model.HTBlockStateProvider
-import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.property.HTOreProperty
-import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.NetherWartBlock
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel
@@ -34,12 +28,7 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(Hii
 
     private fun registerMaterials() {
         // Ore
-        for (prefix: HTTagPrefix in CommonTagPrefixes.ORES) {
-            val oreProperty: HTOreProperty = prefix[HTTagPropertyKeys.ORE] ?: continue
-            for ((key: HTMaterialKey, ore: HTSimpleDeferredBlock) in HCBlocks.MATERIALS.row(prefix)) {
-                layeredBlock(ore, oreProperty.stoneTex, HiiragiCoreAPI.id(HTConst.BLOCK, CommonTagPrefixes.ORE.createPath(key)))
-            }
-        }
+        registerOres(HCBlocks.MATERIALS)
 
         // Storage Block
         fun register(prefix: HTTagPrefix) {
