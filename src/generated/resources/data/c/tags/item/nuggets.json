@@ -2,10 +2,12 @@
   "values": [
     "#c:nuggets/azure_steel",
     "#c:nuggets/brass",
+    "#c:nuggets/bronze",
     "#c:nuggets/copper",
     "#c:nuggets/deep_steel",
     "#c:nuggets/netherite",
     "#c:nuggets/steel",
+    "#c:nuggets/tin",
     "#c:nuggets/zinc"
   ]
 }

@@ -5,6 +5,7 @@
     "#c:dusts/azure",
     "#c:dusts/azure_steel",
     "#c:dusts/brass",
+    "#c:dusts/bronze",
     "#c:dusts/carbide",
     "#c:dusts/charcoal",
     "#c:dusts/cinnabar",
@@ -30,6 +31,7 @@
     "#c:dusts/saltpeter",
     "#c:dusts/steel",
     "#c:dusts/sulfur",
+    "#c:dusts/tin",
     "#c:dusts/warped_crystal",
     "#c:dusts/wood",
     "#c:dusts/zinc"

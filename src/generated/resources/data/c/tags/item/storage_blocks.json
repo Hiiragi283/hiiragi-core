@@ -5,6 +5,7 @@
     "#c:storage_blocks/azure",
     "#c:storage_blocks/azure_steel",
     "#c:storage_blocks/brass",
+    "#c:storage_blocks/bronze",
     "#c:storage_blocks/carbide",
     "#c:storage_blocks/charcoal",
     "#c:storage_blocks/cinnabar",
@@ -17,12 +18,14 @@
     "#c:storage_blocks/glowstone",
     "#c:storage_blocks/plastic",
     "#c:storage_blocks/quartz",
+    "#c:storage_blocks/raw_tin",
     "#c:storage_blocks/raw_zinc",
     "#c:storage_blocks/rubber",
     "#c:storage_blocks/salt",
     "#c:storage_blocks/saltpeter",
     "#c:storage_blocks/steel",
     "#c:storage_blocks/sulfur",
+    "#c:storage_blocks/tin",
     "#c:storage_blocks/warped_crystal",
     "#c:storage_blocks/zinc"
   ]

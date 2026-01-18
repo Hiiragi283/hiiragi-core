@@ -29,6 +29,8 @@ class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootT
 
     private fun registerOres() {
         registerOre(CommonTagPrefixes.RAW, CommonMaterialKeys.ZINC, UniformGenerator.between(2f, 5f))
+
+        registerOre(CommonTagPrefixes.RAW, CommonMaterialKeys.TIN, null)
     }
 
     private fun registerCrops() {

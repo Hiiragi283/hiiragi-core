@@ -325,7 +325,13 @@ object HCMaterialEventHandler {
 
         registerMetal(CommonMaterialKeys.PALLADIUM, "Palladium", "パラジウム")
         registerMetal(CommonMaterialKeys.SILVER, "Silver", "銀")
-        registerMetal(CommonMaterialKeys.TIN, "Tin", "錫")
+        event.modify(CommonMaterialKeys.TIN) {
+            addDefaultPart(CommonTagPrefixes.INGOT)
+            setBlockPrefixes(CommonTagPrefixes.ORES.plus(CommonTagPrefixes.RAW_BLOCK).plus(CommonTagPrefixes.BLOCK))
+            setItemPrefixes(metalSet)
+
+            addName( "Tin", "錫")
+        }
         registerMetal(CommonMaterialKeys.ANTIMONY, "Antimony", "アンチモン")
 
         registerMetal(CommonMaterialKeys.TUNGSTEN, "Tungsten", "パラジウム")
@@ -355,7 +361,13 @@ object HCMaterialEventHandler {
             addName("Brass", "真鍮")
             addTextureSet(HTMaterialTextureSet.DULL)
         }
-        registerMetal(CommonMaterialKeys.BRONZE, "Bronze", "青銅")
+        event.modify(CommonMaterialKeys.BRONZE) {
+            addDefaultPart(CommonTagPrefixes.INGOT)
+            setBlockPrefixes(CommonTagPrefixes.BLOCK)
+            setItemPrefixes(alloySet.plus(partSet))
+
+            addName("Bronze", "青銅")
+        }
         registerMetal(CommonMaterialKeys.ELECTRUM, "Electrum", "琥珀金")
 
         registerMetal(CommonMaterialKeys.SIGNALUM, "Signalum", "シグナルム")

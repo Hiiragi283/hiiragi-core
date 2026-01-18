@@ -2,8 +2,10 @@
   "values": [
     "#c:ingots/azure_steel",
     "#c:ingots/brass",
+    "#c:ingots/bronze",
     "#c:ingots/deep_steel",
     "#c:ingots/steel",
+    "#c:ingots/tin",
     "#c:ingots/zinc"
   ]
 }
