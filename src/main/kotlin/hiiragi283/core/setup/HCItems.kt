@@ -80,12 +80,6 @@ object HCItems {
     //    Foods   //
 
     @JvmField
-    val WHEAT_FLOUR: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wheat_flour")
-
-    @JvmField
-    val WHEAT_DOUGH: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wheat_dough")
-
-    @JvmField
     val ANIMAL_FAT: HTSimpleDeferredItem = REGISTER.registerSimpleItem("animal_fat")
 
     @JvmField

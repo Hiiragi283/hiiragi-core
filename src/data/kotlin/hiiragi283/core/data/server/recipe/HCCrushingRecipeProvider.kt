@@ -4,7 +4,6 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.tag.CommonTagPrefixes
-import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCItems
@@ -63,11 +62,5 @@ object HCCrushingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
         HTSingleItemRecipeBuilder
             .crushing(itemCreator.fromItem(Items.SNOW_BLOCK), itemResult.create(Items.SNOWBALL, 4))
             .save(output)
-
-        HTSingleItemRecipeBuilder
-            .crushing(
-                itemCreator.fromTagKey(Tags.Items.CROPS_WHEAT),
-                itemResult.create(HCItems.WHEAT_FLOUR, HiiragiCoreTags.Items.FLOURS_WHEAT),
-            ).save(output)
     }
 }

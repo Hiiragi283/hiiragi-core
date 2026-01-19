@@ -100,11 +100,6 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
     private fun misc(factory: BuilderFactory<Item>) {
         // Foods
         factory.apply(Tags.Items.FOODS_GOLDEN).add(HCItems.AMBROSIA)
-
-        addTags(factory, HiiragiCoreTags.Items.DOUGHS, HiiragiCoreTags.Items.DOUGHS_WHEAT)
-            .add(HCItems.WHEAT_DOUGH)
-        addTags(factory, HiiragiCoreTags.Items.FLOURS, HiiragiCoreTags.Items.FLOURS_WHEAT)
-            .add(HCItems.WHEAT_FLOUR)
         // Others
         factory
             .apply(Tags.Items.SLIME_BALLS)

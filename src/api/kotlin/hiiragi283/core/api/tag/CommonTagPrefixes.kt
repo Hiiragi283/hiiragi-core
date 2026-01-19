@@ -112,12 +112,37 @@ object CommonTagPrefixes {
     //    Item    //
 
     @JvmField
+    val CROP: HTTagPrefix = HTTagPrefix.create("crop") {
+        put(HTTagPropertyKeys.ID_PATTERN, "%s")
+        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "crops")
+        put(HTTagPropertyKeys.TAG_PATTERN, "crops/%s")
+    }
+
+    @JvmField
+    val DOUGH: HTTagPrefix = HTTagPrefix.create("dough") {
+        put(HTTagPropertyKeys.ID_PATTERN, "%s_dough")
+        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "doughs")
+        put(HTTagPropertyKeys.TAG_PATTERN, "doughs/%s")
+
+        addNamePattern("%s Dough", "%s粉の生地")
+    }
+
+    @JvmField
     val DUST: HTTagPrefix = HTTagPrefix.create("dust") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_dust")
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "dusts")
         put(HTTagPropertyKeys.TAG_PATTERN, "dusts/%s")
 
         addNamePattern("%s Dust", "%sの粉")
+    }
+
+    @JvmField
+    val FLOUR: HTTagPrefix = HTTagPrefix.create("flour") {
+        put(HTTagPropertyKeys.ID_PATTERN, "%s_flour")
+        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "flours")
+        put(HTTagPropertyKeys.TAG_PATTERN, "flours/%s")
+
+        addNamePattern("%s Flour", "%s粉")
     }
 
     @JvmField
@@ -205,6 +230,15 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.TAG_PATTERN, "scraps/%s")
 
         addNamePattern("%s Scrap", "%sの欠片")
+    }
+
+    @JvmField
+    val SEED: HTTagPrefix = HTTagPrefix.create("seed") {
+        put(HTTagPropertyKeys.ID_PATTERN, "%s_seed")
+        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "seeds")
+        put(HTTagPropertyKeys.TAG_PATTERN, "seeds/%s")
+
+        addNamePattern("%s Seed", "%sの種")
     }
 
     @JvmField

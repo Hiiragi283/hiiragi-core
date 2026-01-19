@@ -75,6 +75,11 @@ object VanillaMaterialKeys {
     @JvmStatic
     val NETHERITE: HTMaterialKey = create("netherite")
 
+    //    Crops    //
+
+    @JvmStatic
+    val WHEAT: HTMaterialKey = create("wheat")
+
     //    Others    //
 
     @JvmStatic
@@ -153,6 +158,10 @@ object VanillaMaterialKeys {
         add(CommonTagPrefixes.BLOCK, NETHERITE, Items.NETHERITE_BLOCK)
         add(CommonTagPrefixes.SCRAP, NETHERITE, Items.NETHERITE_SCRAP)
         add(CommonTagPrefixes.INGOT, NETHERITE, Items.NETHERITE_INGOT)
+        // Crops
+        add(CommonTagPrefixes.BLOCK, WHEAT, Items.HAY_BLOCK)
+        add(CommonTagPrefixes.CROP, WHEAT, Items.WHEAT)
+        add(CommonTagPrefixes.SEED, WHEAT, Items.WHEAT_SEEDS)
     }
 
     /*val ARMOR_TABLE: ImmutableTable<HTArmorVariant, HTMaterialKey, Item> = buildTable {

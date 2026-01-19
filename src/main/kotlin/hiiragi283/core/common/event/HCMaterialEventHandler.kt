@@ -4,17 +4,18 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTMaterialPropertyEvent
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTFluidMaterialProperty
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialTextureSet
 import hiiragi283.core.api.material.property.HTSmeltingMaterialProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
 import hiiragi283.core.api.material.property.addCustomName
-import hiiragi283.core.api.material.property.addDefaultPart
-import hiiragi283.core.api.material.property.addName
-import hiiragi283.core.api.material.property.addTextureSet
 import hiiragi283.core.api.material.property.setBlockPrefixes
+import hiiragi283.core.api.material.property.setDefaultPart
 import hiiragi283.core.api.material.property.setItemPrefixes
+import hiiragi283.core.api.material.property.setName
+import hiiragi283.core.api.material.property.setTextureSet
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -56,100 +57,100 @@ object HCMaterialEventHandler {
     private fun vanilla(event: HTMaterialPropertyEvent) {
         // Fuels
         event.modify(VanillaMaterialKeys.COAL) {
-            addDefaultPart(CommonTagPrefixes.FUEL)
+            setDefaultPart(HTDefaultPart.Prefixed.FUEL)
             setItemPrefixes(CommonTagPrefixes.DUST)
 
-            addName("Coal", "石炭")
-            addTextureSet("fuel")
+            setName("Coal", "石炭")
+            setTextureSet("fuel")
             put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 10 * 8)
             put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
         }
         event.modify(VanillaMaterialKeys.CHARCOAL) {
-            addDefaultPart(CommonTagPrefixes.FUEL)
+            setDefaultPart(HTDefaultPart.Prefixed.FUEL)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.DUST)
 
-            addName("Charcoal", "木炭")
-            addTextureSet("fuel")
+            setName("Charcoal", "木炭")
+            setTextureSet("fuel")
             put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 10 * 8)
             put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
         }
         // Minerals
         event.modify(VanillaMaterialKeys.REDSTONE) {
-            addDefaultPart(CommonTagPrefixes.DUST)
+            setDefaultPart(HTDefaultPart.Prefixed.DUST)
 
-            addName("Redstone", "赤石")
+            setName("Redstone", "赤石")
         }
         event.modify(VanillaMaterialKeys.GLOWSTONE) {
-            addDefaultPart(CommonTagPrefixes.DUST)
+            setDefaultPart(HTDefaultPart.Prefixed.DUST)
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
 
-            addName("Glowstone", "グロウストーン")
+            setName("Glowstone", "グロウストーン")
         }
         // Gems
         event.modify(VanillaMaterialKeys.LAPIS) {
-            addDefaultPart(CommonTagPrefixes.GEM)
+            setDefaultPart(HTDefaultPart.Prefixed.GEM)
             setItemPrefixes(CommonTagPrefixes.DUST)
 
-            addName("Lapis", "ラピス")
-            addTextureSet("lapis")
+            setName("Lapis", "ラピス")
+            setTextureSet("lapis")
         }
         event.modify(VanillaMaterialKeys.QUARTZ) {
-            addDefaultPart(CommonTagPrefixes.GEM)
+            setDefaultPart(HTDefaultPart.Prefixed.GEM)
             setItemPrefixes(CommonTagPrefixes.DUST)
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
 
-            addName("Quartz", "水晶")
-            addTextureSet("quartz")
+            setName("Quartz", "水晶")
+            setTextureSet("quartz")
         }
         event.modify(VanillaMaterialKeys.AMETHYST) {
-            addDefaultPart(CommonTagPrefixes.GEM)
+            setDefaultPart(HTDefaultPart.Prefixed.GEM)
             setItemPrefixes(CommonTagPrefixes.DUST)
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
 
-            addName("Amethyst", "アメジスト")
-            addTextureSet("amethyst")
+            setName("Amethyst", "アメジスト")
+            setTextureSet("amethyst")
         }
         event.modify(VanillaMaterialKeys.DIAMOND) {
-            addDefaultPart(CommonTagPrefixes.GEM)
+            setDefaultPart(HTDefaultPart.Prefixed.GEM)
             setItemPrefixes(CommonTagPrefixes.DUST)
 
-            addName("Diamond", "ダイヤモンド")
-            addTextureSet("diamond")
+            setName("Diamond", "ダイヤモンド")
+            setTextureSet("diamond")
         }
         event.modify(VanillaMaterialKeys.EMERALD) {
-            addDefaultPart(CommonTagPrefixes.GEM)
+            setDefaultPart(HTDefaultPart.Prefixed.GEM)
             setItemPrefixes(CommonTagPrefixes.DUST)
 
-            addName("Emerald", "エメラルド")
-            addTextureSet("emerald")
+            setName("Emerald", "エメラルド")
+            setTextureSet("emerald")
         }
         event.modify(VanillaMaterialKeys.ECHO) {
-            addDefaultPart(CommonTagPrefixes.GEM)
+            setDefaultPart(HTDefaultPart.Prefixed.GEM)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.DUST)
 
-            addName("Echo Shard", "残響の欠片")
-            addTextureSet("echo")
+            setName("Echo Shard", "残響の欠片")
+            setTextureSet("echo")
         }
         event.modify(VanillaMaterialKeys.PRISMARINE) {
-            addDefaultPart(CommonTagPrefixes.GEM)
+            setDefaultPart(HTDefaultPart.Prefixed.GEM)
             setItemPrefixes(CommonTagPrefixes.DUST)
 
-            addName("Prismarine", "プリズマリン")
+            setName("Prismarine", "プリズマリン")
         }
         // Pearls
         event.modify(VanillaMaterialKeys.ENDER) {
-            addDefaultPart(Tags.Items.ENDER_PEARLS, HTItemHolderLike.Simple(Items.ENDER_PEARL))
+            setDefaultPart(Tags.Items.ENDER_PEARLS, HTItemHolderLike.Simple(Items.ENDER_PEARL))
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.DUST)
 
-            addName("Ender Pearl", "エンダーパール")
-            addTextureSet("pearl")
+            setName("Ender Pearl", "エンダーパール")
+            setTextureSet("pearl")
         }
         // Metals
         event.modify(VanillaMaterialKeys.COPPER) {
-            addDefaultPart(CommonTagPrefixes.INGOT)
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             setItemPrefixes(
                 CommonTagPrefixes.DUST,
                 CommonTagPrefixes.GEAR,
@@ -159,11 +160,11 @@ object HCMaterialEventHandler {
                 CommonTagPrefixes.WIRE,
             )
 
-            addName("Copper", "銅")
-            addTextureSet("shine")
+            setName("Copper", "銅")
+            setTextureSet("shine")
         }
         event.modify(VanillaMaterialKeys.IRON) {
-            addDefaultPart(CommonTagPrefixes.INGOT)
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             setItemPrefixes(
                 CommonTagPrefixes.DUST,
                 CommonTagPrefixes.GEAR,
@@ -171,10 +172,10 @@ object HCMaterialEventHandler {
                 CommonTagPrefixes.ROD,
             )
 
-            addName("Iron", "鉄")
+            setName("Iron", "鉄")
         }
         event.modify(VanillaMaterialKeys.GOLD) {
-            addDefaultPart(CommonTagPrefixes.INGOT)
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             setItemPrefixes(
                 CommonTagPrefixes.DUST,
                 CommonTagPrefixes.GEAR,
@@ -183,11 +184,11 @@ object HCMaterialEventHandler {
                 CommonTagPrefixes.WIRE,
             )
 
-            addName("Gold", "金")
+            setName("Gold", "金")
         }
         // Alloys
         event.modify(VanillaMaterialKeys.NETHERITE) {
-            addDefaultPart(CommonTagPrefixes.INGOT)
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             setItemPrefixes(
                 CommonTagPrefixes.DUST,
                 CommonTagPrefixes.GEAR,
@@ -196,44 +197,53 @@ object HCMaterialEventHandler {
                 CommonTagPrefixes.ROD,
             )
 
-            addName("Netherite", "ネザライト")
-            addTextureSet("dull")
+            setName("Netherite", "ネザライト")
+            setTextureSet("dull")
+        }
+        // Crops
+        event.modify(VanillaMaterialKeys.WHEAT) {
+            setDefaultPart(HTDefaultPart.Prefixed.CROP)
+            setItemPrefixes(CommonTagPrefixes.FLOUR, CommonTagPrefixes.DOUGH)
+            put(HTMaterialPropertyKeys.CRUSHED_PREFIX, CommonTagPrefixes.FLOUR)
+
+            setName("Wheat", "小麦")
+            setTextureSet("crop")
         }
         // Others
         event.modify(VanillaMaterialKeys.WOOD) {
-            addDefaultPart(ItemTags.PLANKS, HTItemHolderLike.Simple(Items.OAK_PLANKS))
+            setDefaultPart(ItemTags.PLANKS, HTItemHolderLike.Simple(Items.OAK_PLANKS))
             setItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEAR, CommonTagPrefixes.PLATE)
 
-            addName("Wood", "木")
+            setName("Wood", "木")
             addCustomName(CommonTagPrefixes.DUST, "Sawdust", "おがくず")
-            addTextureSet("wood")
+            setTextureSet("wood")
             put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 15)
             put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
         }
         event.modify(VanillaMaterialKeys.GLASS) {
-            addDefaultPart(Tags.Items.GLASS_BLOCKS, HTItemHolderLike.Simple(Items.GLASS))
+            setDefaultPart(Tags.Items.GLASS_BLOCKS, HTItemHolderLike.Simple(Items.GLASS))
             setItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.ROD)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_GLASS))
 
-            addName("Glass", "ガラス")
-            addTextureSet("shine")
+            setName("Glass", "ガラス")
+            setTextureSet("shine")
             put(HTMaterialPropertyKeys.SMELTING, HTSmeltingMaterialProperty.smeltingOnly(HTItemHolderLike.Simple(Items.GLASS)))
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("salt"))
         }
         event.modify(VanillaMaterialKeys.STONE) {
-            addName("Stone", "石")
-            addTextureSet("dull")
+            setName("Stone", "石")
+            setTextureSet("dull")
             put(HTMaterialPropertyKeys.SMELTING, HTSmeltingMaterialProperty.disable())
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("steel"))
         }
         event.modify(VanillaMaterialKeys.OBSIDIAN) {
-            addDefaultPart(Tags.Items.OBSIDIANS_NORMAL, HTItemHolderLike.Simple(Items.OBSIDIAN))
+            setDefaultPart(Tags.Items.OBSIDIANS_NORMAL, HTItemHolderLike.Simple(Items.OBSIDIAN))
             setItemPrefixes(CommonTagPrefixes.DUST)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
 
-            addName("Obsidian", "黒曜石")
-            addTextureSet("dull")
+            setName("Obsidian", "黒曜石")
+            setTextureSet("dull")
             put(HTMaterialPropertyKeys.SMELTING, HTSmeltingMaterialProperty.disable())
         }
     }
@@ -242,75 +252,75 @@ object HCMaterialEventHandler {
     private fun common(event: HTMaterialPropertyEvent) {
         fun registerGem(key: HTMaterialKey, enName: String, jaName: String) {
             event.modify(key) {
-                addDefaultPart(CommonTagPrefixes.GEM)
+                setDefaultPart(HTDefaultPart.Prefixed.GEM)
 
-                addName(enName, jaName)
+                setName(enName, jaName)
             }
         }
 
         fun registerMetal(key: HTMaterialKey, enName: String, jaName: String) {
             event.modify(key) {
-                addDefaultPart(CommonTagPrefixes.INGOT)
+                setDefaultPart(HTDefaultPart.Prefixed.INGOT)
 
-                addName(enName, jaName)
+                setName(enName, jaName)
             }
         }
         // Fuels
         event.modify(CommonMaterialKeys.COAL_COKE) {
-            addDefaultPart(
+            setDefaultPart(
                 HiiragiCoreTags.Items.COAL_COKE,
                 HTDeferredItem.simple(CommonTagPrefixes.FUEL.createId(CommonMaterialKeys.COAL_COKE)),
             )
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.FUEL)
 
-            addName("Coal Coke", "石炭コークス")
-            addTextureSet("fuel")
+            setName("Coal Coke", "石炭コークス")
+            setTextureSet("fuel")
             put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 10 * 16)
             put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("steel"))
         }
         // Minerals
         event.modify(CommonMaterialKeys.BAUXITE) {
-            addDefaultPart(CommonTagPrefixes.DUST)
+            setDefaultPart(HTDefaultPart.Prefixed.DUST)
             setBlockPrefixes(CommonTagPrefixes.ORES.plus(CommonTagPrefixes.BLOCK))
             setItemPrefixes(CommonTagPrefixes.DUST)
 
-            addName("Bauxite", "ボーキサイト")
-            addTextureSet("mineral", HTMaterialTextureSet.DULL)
+            setName("Bauxite", "ボーキサイト")
+            setTextureSet("mineral", HTMaterialTextureSet.DULL)
         }
         event.modify(CommonMaterialKeys.CINNABAR) {
-            addDefaultPart(CommonTagPrefixes.DUST)
+            setDefaultPart(HTDefaultPart.Prefixed.DUST)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.DUST)
 
-            addName("Cinnabar", "辰砂")
-            addTextureSet("mineral", HTMaterialTextureSet.DULL)
+            setName("Cinnabar", "辰砂")
+            setTextureSet("mineral", HTMaterialTextureSet.DULL)
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("crimson_crystal"))
         }
         event.modify(CommonMaterialKeys.SALT) {
-            addDefaultPart(CommonTagPrefixes.DUST)
+            setDefaultPart(HTDefaultPart.Prefixed.DUST)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.DUST)
 
-            addName("Salt", "塩")
-            addTextureSet("mineral")
+            setName("Salt", "塩")
+            setTextureSet("mineral")
         }
         event.modify(CommonMaterialKeys.SALTPETER) {
-            addDefaultPart(CommonTagPrefixes.DUST)
+            setDefaultPart(HTDefaultPart.Prefixed.DUST)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.DUST)
 
-            addName("Saltpeter", "硝石")
-            addTextureSet("mineral")
+            setName("Saltpeter", "硝石")
+            setTextureSet("mineral")
         }
         event.modify(CommonMaterialKeys.SULFUR) {
-            addDefaultPart(CommonTagPrefixes.DUST)
+            setDefaultPart(HTDefaultPart.Prefixed.DUST)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.DUST)
 
-            addName("Sulfur", "硫黄")
-            addTextureSet("mineral", HTMaterialTextureSet.DULL)
+            setName("Sulfur", "硫黄")
+            setTextureSet("mineral", HTMaterialTextureSet.DULL)
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("gold"))
         }
         // Gems
@@ -320,12 +330,12 @@ object HCMaterialEventHandler {
         registerGem(CommonMaterialKeys.SAPPHIRE, "Sapphire", "サファイア")
         // Metals
         event.modify(CommonMaterialKeys.ALUMINUM) {
-            addDefaultPart(CommonTagPrefixes.INGOT)
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(alloySet)
 
-            addName("Aluminum", "アルミニウム")
-            addTextureSet(HTMaterialTextureSet.SHINE)
+            setName("Aluminum", "アルミニウム")
+            setTextureSet(HTMaterialTextureSet.SHINE)
         }
 
         registerMetal(CommonMaterialKeys.TITANIUM, "Titanium", "チタン")
@@ -335,22 +345,22 @@ object HCMaterialEventHandler {
         registerMetal(CommonMaterialKeys.COBALT, "Cobalt", "コバルト")
         registerMetal(CommonMaterialKeys.NICKEL, "Nickel", "ニッケル")
         event.modify(CommonMaterialKeys.ZINC) {
-            addDefaultPart(CommonTagPrefixes.INGOT)
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             setBlockPrefixes(CommonTagPrefixes.ORES.plus(CommonTagPrefixes.RAW_BLOCK).plus(CommonTagPrefixes.BLOCK))
             setItemPrefixes(metalSet)
 
-            addName("Zinc", "亜鉛")
-            addTextureSet(HTMaterialTextureSet.DULL)
+            setName("Zinc", "亜鉛")
+            setTextureSet(HTMaterialTextureSet.DULL)
         }
 
         registerMetal(CommonMaterialKeys.PALLADIUM, "Palladium", "パラジウム")
         registerMetal(CommonMaterialKeys.SILVER, "Silver", "銀")
         event.modify(CommonMaterialKeys.TIN) {
-            addDefaultPart(CommonTagPrefixes.INGOT)
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             setBlockPrefixes(CommonTagPrefixes.ORES.plus(CommonTagPrefixes.RAW_BLOCK).plus(CommonTagPrefixes.BLOCK))
             setItemPrefixes(metalSet)
 
-            addName("Tin", "錫")
+            setName("Tin", "錫")
         }
         registerMetal(CommonMaterialKeys.ANTIMONY, "Antimony", "アンチモン")
 
@@ -364,30 +374,30 @@ object HCMaterialEventHandler {
         registerMetal(CommonMaterialKeys.PLUTONIUM, "Plutonium", "プルトニウム")
         // Alloys
         event.modify(CommonMaterialKeys.STEEL) {
-            addDefaultPart(CommonTagPrefixes.INGOT)
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(alloySet.plus(partSet).plus(CommonTagPrefixes.WIRE))
 
-            addName("Steel", "鋼鉄")
-            addTextureSet(HTMaterialTextureSet.SHINE)
+            setName("Steel", "鋼鉄")
+            setTextureSet(HTMaterialTextureSet.SHINE)
         }
 
         registerMetal(CommonMaterialKeys.INVAR, "Invar", "不変鋼")
         registerMetal(CommonMaterialKeys.CONSTANTAN, "Constantan", "コンスタンタン")
         event.modify(CommonMaterialKeys.BRASS) {
-            addDefaultPart(CommonTagPrefixes.INGOT)
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(alloySet.plus(partSet))
 
-            addName("Brass", "真鍮")
-            addTextureSet(HTMaterialTextureSet.DULL)
+            setName("Brass", "真鍮")
+            setTextureSet(HTMaterialTextureSet.DULL)
         }
         event.modify(CommonMaterialKeys.BRONZE) {
-            addDefaultPart(CommonTagPrefixes.INGOT)
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(alloySet.plus(partSet))
 
-            addName("Bronze", "青銅")
+            setName("Bronze", "青銅")
         }
         registerMetal(CommonMaterialKeys.ELECTRUM, "Electrum", "琥珀金")
 
@@ -396,17 +406,17 @@ object HCMaterialEventHandler {
         registerMetal(CommonMaterialKeys.ENDERIUM, "Enderium", "エンダリウム")
         // Others
         event.modify(CommonMaterialKeys.ASH) {
-            addDefaultPart(CommonTagPrefixes.DUST)
+            setDefaultPart(HTDefaultPart.Prefixed.DUST)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.DUST)
 
-            addName("Ash", "灰")
-            addTextureSet("mineral", HTMaterialTextureSet.DULL)
+            setName("Ash", "灰")
+            setTextureSet("mineral", HTMaterialTextureSet.DULL)
             put(HTMaterialPropertyKeys.SMELTING, HTSmeltingMaterialProperty.disable())
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("steel"))
         }
         event.modify(CommonMaterialKeys.PLASTIC) {
-            addDefaultPart(CommonTagPrefixes.PLATE)
+            setDefaultPart(HTDefaultPart.Prefixed.PLATE)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(
                 CommonTagPrefixes.DUST,
@@ -416,19 +426,19 @@ object HCMaterialEventHandler {
             )
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_PLASTIC))
 
-            addName("Plastic", "プラスチック")
-            addTextureSet("plate", HTMaterialTextureSet.SHINE)
+            setName("Plastic", "プラスチック")
+            setTextureSet("plate", HTMaterialTextureSet.SHINE)
             put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
         }
         event.modify(CommonMaterialKeys.RUBBER) {
-            addDefaultPart(CommonTagPrefixes.PLATE)
+            setDefaultPart(HTDefaultPart.Prefixed.PLATE)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.PLATE)
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_RUBBER))
 
-            addName("Rubber", "ゴム")
+            setName("Rubber", "ゴム")
             addCustomName(CommonTagPrefixes.PLATE, "Rubber Sheet", "ゴムシート")
-            addTextureSet("plate")
+            setTextureSet("plate")
             put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
         }
     }
@@ -437,54 +447,54 @@ object HCMaterialEventHandler {
     private fun hiiragiCore(event: HTMaterialPropertyEvent) {
         // Gems
         event.modify(HCMaterialKeys.AZURE) {
-            addDefaultPart(CommonTagPrefixes.GEM)
+            setDefaultPart(HTDefaultPart.Prefixed.GEM)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEM)
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
 
-            addName("Azure Shard", "紺碧の欠片")
-            addTextureSet("amethyst", HTMaterialTextureSet.SHINE)
+            setName("Azure Shard", "紺碧の欠片")
+            setTextureSet("amethyst", HTMaterialTextureSet.SHINE)
         }
         event.modify(HCMaterialKeys.CRIMSON_CRYSTAL) {
-            addDefaultPart(CommonTagPrefixes.GEM)
+            setDefaultPart(HTDefaultPart.Prefixed.GEM)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEM)
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_CRIMSON_CRYSTAL))
 
-            addName("Crimson Crystal", "深紅のクリスタリル")
-            addTextureSet("emerald")
+            setName("Crimson Crystal", "深紅のクリスタリル")
+            setTextureSet("emerald")
             put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 10 * 24)
         }
         event.modify(HCMaterialKeys.WARPED_CRYSTAL) {
-            addDefaultPart(CommonTagPrefixes.GEM)
+            setDefaultPart(HTDefaultPart.Prefixed.GEM)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEM)
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_WARPED_CRYSTAL))
 
-            addName("Warped Crystal", "歪んだクリスタリル")
-            addTextureSet("emerald")
+            setName("Warped Crystal", "歪んだクリスタリル")
+            setTextureSet("emerald")
         }
         // Pearls
         event.modify(HCMaterialKeys.ELDRITCH) {
-            addDefaultPart(CommonTagPrefixes.PEARL)
+            setDefaultPart(HTDefaultPart.Prefixed.PEARL)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.PEARL)
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_ELDRITCH))
 
-            addName("Eldritch Pearl", "異質な真珠")
-            addTextureSet("pearl")
+            setName("Eldritch Pearl", "異質な真珠")
+            setTextureSet("pearl")
         }
         // Alloys
         event.modify(HCMaterialKeys.AZURE_STEEL) {
-            addDefaultPart(CommonTagPrefixes.INGOT)
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(alloySet.plus(partSet))
 
-            addName("Azure Steel", "紺鉄")
+            setName("Azure Steel", "紺鉄")
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("azure"))
         }
         event.modify(HCMaterialKeys.DEEP_STEEL) {
-            addDefaultPart(CommonTagPrefixes.INGOT)
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(
                 CommonTagPrefixes.DUST,
@@ -496,7 +506,7 @@ object HCMaterialEventHandler {
                 CommonTagPrefixes.ROD,
             )
 
-            addName("Deep Steel", "深層鋼")
+            setName("Deep Steel", "深層鋼")
         }
     }
 }

@@ -27,22 +27,7 @@ object HiiragiCoreTags {
         @JvmField
         val COAL_COKE: TagKey<Item> = common("coal_coke")
 
-        @JvmField
-        val DOUGHS: TagKey<Item> = common("doughs")
-
-        @JvmField
-        val DOUGHS_WHEAT: TagKey<Item> = common("doughs", "wheat")
-
-        @JvmField
-        val FLOURS: TagKey<Item> = common("flours")
-
-        @JvmField
-        val FLOURS_WHEAT: TagKey<Item> = common("flours", "wheat")
-
         // Mod
-        @JvmField
-        val BYPASS_MENU_VALIDATION: TagKey<Item> = mod("bypass_menu_validation")
-
         @JvmField
         val ELDRITCH_PEARL_BINDER: TagKey<Item> = mod("eldritch_pearl_binder")
 

@@ -96,7 +96,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in manager.entries) {
             val smeltingAttribute: HTSmeltingMaterialProperty = propertyMap[HTMaterialPropertyKeys.SMELTING]
                 ?: propertyMap.getDefaultPart()?.let { part: HTDefaultPart ->
-                    if (part is HTDefaultPart.Material && part.prefix == prefix) return@let null
+                    if (part is HTDefaultPart.Prefixed && part.prefix == prefix) return@let null
                     part.getItem(key)?.let(HTSmeltingMaterialProperty::withBlasting)
                 } ?: continue
             // 精錬の前後で同じプレフィックスと素材になる場合はパス

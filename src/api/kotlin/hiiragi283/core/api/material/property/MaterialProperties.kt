@@ -29,12 +29,12 @@ fun <K : Any, V : Any> HTPropertyMap.Mutable.computeMap(propertyKey: HTPropertyK
     this[propertyKey] = newMap
 }
 
-fun HTPropertyMap.Mutable.addDefaultPart(tagKey: TagKey<Item>, altItem: HTItemHolderLike<*>) {
+fun HTPropertyMap.Mutable.setDefaultPart(tagKey: TagKey<Item>, altItem: HTItemHolderLike<*>) {
     this[HTMaterialPropertyKeys.DEFAULT_PART] = HTDefaultPart.Tag(tagKey, altItem)
 }
 
-fun HTPropertyMap.Mutable.addDefaultPart(prefix: HTTagPrefix) {
-    this[HTMaterialPropertyKeys.DEFAULT_PART] = HTDefaultPart.Material(prefix)
+fun HTPropertyMap.Mutable.setDefaultPart(prefixed: HTDefaultPart.Prefixed) {
+    this[HTMaterialPropertyKeys.DEFAULT_PART] = prefixed
 }
 
 fun HTPropertyMap.Mutable.setBlockPrefixes(vararg tagPrefixes: HTTagPrefix) {
@@ -53,11 +53,11 @@ fun HTPropertyMap.Mutable.setItemPrefixes(tagPrefixes: Set<HTTagPrefix>) {
     this[HTMaterialPropertyKeys.ITEM_PREFIXES] = tagPrefixes
 }
 
-fun HTPropertyMap.Mutable.addName(enName: String, jaName: String) {
-    this.addName(HTLangName.create(enName, jaName))
+fun HTPropertyMap.Mutable.setName(enName: String, jaName: String) {
+    this.setName(HTLangName.create(enName, jaName))
 }
 
-fun HTPropertyMap.Mutable.addName(value: HTLangName) {
+fun HTPropertyMap.Mutable.setName(value: HTLangName) {
     this[HTMaterialPropertyKeys.LANG_NAME] = value
 }
 
@@ -69,10 +69,10 @@ fun HTPropertyMap.Mutable.addCustomName(prefix: HTTagPrefix, value: HTLangName) 
     this.computeMap(HTMaterialPropertyKeys.CUSTOM_LANG_NAME, prefix to value)
 }
 
-fun HTPropertyMap.Mutable.addTextureSet(name: String, parent: HTMaterialTextureSet = HTMaterialTextureSet.DEFAULT) {
-    this.addTextureSet(HTMaterialTextureSet(name, parent))
+fun HTPropertyMap.Mutable.setTextureSet(name: String, parent: HTMaterialTextureSet = HTMaterialTextureSet.DEFAULT) {
+    this.setTextureSet(HTMaterialTextureSet(name, parent))
 }
 
-fun HTPropertyMap.Mutable.addTextureSet(textureSet: HTMaterialTextureSet) {
+fun HTPropertyMap.Mutable.setTextureSet(textureSet: HTMaterialTextureSet) {
     this[HTMaterialPropertyKeys.TEXTURE_SET] = textureSet
 }

@@ -2,14 +2,12 @@ package hiiragi283.core.data.server.recipe
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.buildDataPredicate
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.crafting.HTEternalUpgradeRecipe
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
@@ -20,14 +18,10 @@ import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
-import net.minecraft.core.component.DataComponents
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
-import net.minecraft.world.item.alchemy.PotionContents
-import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.item.crafting.CraftingBookCategory
 import net.neoforged.neoforge.common.Tags
-import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 
 object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipeInternal() {
@@ -61,7 +55,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .saveSuffixed(output, "_from_sawdust")
         // Dough -> Bread
         HTCookingRecipeBuilder.smeltingAndSmoking(Items.BREAD) {
-            addIngredient(HCItems.WHEAT_DOUGH)
+            addIngredient(getOrThrow(CommonTagPrefixes.DOUGH, VanillaMaterialKeys.WHEAT))
             setExp(0.3f)
             saveSuffixed(output, "_from_dough")
         }
@@ -96,25 +90,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .addIngredient(HCItems.STEEL_COMPOUND)
             .setExp(0.7f)
             .saveSuffixed(output, "_from_compound")
-        // Wheat Dough
-        HTShapelessRecipeBuilder
-            .create(HCItems.WHEAT_DOUGH)
-            .addIngredient(HiiragiCoreTags.Items.FLOURS_WHEAT)
-            .addIngredient(
-                DataComponentIngredient.of(
-                    false,
-                    buildDataPredicate {
-                        expect(DataComponents.POTION_CONTENTS, PotionContents(Potions.WATER))
-                    },
-                    Items.POTION,
-                ),
-            ).saveSuffixed(output, "_with_bottle")
-
-        HTShapelessRecipeBuilder
-            .create(HCItems.WHEAT_DOUGH, 3)
-            .addIngredients(HiiragiCoreTags.Items.FLOURS_WHEAT, 3)
-            .addIngredient(Tags.Items.BUCKETS_WATER)
-            .saveSuffixed(output, "_with_bucket")
         // Wither Doll
         HTShapedRecipeBuilder
             .create(HCItems.WITHER_DOLL)

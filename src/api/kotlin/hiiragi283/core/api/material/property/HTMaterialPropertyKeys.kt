@@ -4,6 +4,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.property.HTPropertyKey
+import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.resources.ResourceLocation
 
@@ -28,6 +29,13 @@ object HTMaterialPropertyKeys {
         HTPropertyKey.create(HiiragiCoreAPI.id("default_fluid_amount"), HTConst.INGOT_AMOUNT)
 
     /**
+     * @since 0.8.0
+     */
+    @JvmField
+    val CRUSHED_PREFIX: HTPropertyKey<HTTagPrefix> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("crushed_prefix"), CommonTagPrefixes.DUST)
+
+    /**
      * 溶融状態の[液体][HTFluidMaterialProperty]に対応する[プロパティキー][HTPropertyKey]
      */
     @JvmField
@@ -39,6 +47,8 @@ object HTMaterialPropertyKeys {
     @JvmField
     val STORAGE_BLOCK: HTPropertyKey<HTStorageBlockProperty> =
         HTPropertyKey.create(HiiragiCoreAPI.id("storage_block"), HTStorageBlockProperty.THREE_BY_THREE)
+
+    //    Registration    //
 
     /**
      * 登録する素材ブロックに使われる[プロパティキー][HTPropertyKey]
