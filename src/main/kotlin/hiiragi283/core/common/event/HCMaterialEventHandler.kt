@@ -15,7 +15,7 @@ import hiiragi283.core.api.material.property.addName
 import hiiragi283.core.api.material.property.addTextureSet
 import hiiragi283.core.api.material.property.setBlockPrefixes
 import hiiragi283.core.api.material.property.setItemPrefixes
-import hiiragi283.core.api.registry.toHolderLike
+import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HiiragiCoreTags
@@ -134,7 +134,7 @@ object HCMaterialEventHandler {
         }
         // Pearls
         event.modify(VanillaMaterialKeys.ENDER) {
-            addDefaultPart(Tags.Items.ENDER_PEARLS, Items.ENDER_PEARL.toHolderLike())
+            addDefaultPart(Tags.Items.ENDER_PEARLS, HTItemHolderLike.Simple(Items.ENDER_PEARL))
             setBlockPrefixes(CommonTagPrefixes.BLOCK)
             setItemPrefixes(CommonTagPrefixes.DUST)
 
@@ -195,7 +195,7 @@ object HCMaterialEventHandler {
         }
         // Others
         event.modify(VanillaMaterialKeys.WOOD) {
-            addDefaultPart(ItemTags.PLANKS, Items.OAK_PLANKS.toHolderLike())
+            addDefaultPart(ItemTags.PLANKS, HTItemHolderLike.Simple(Items.OAK_PLANKS))
             setItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEAR, CommonTagPrefixes.PLATE)
 
             addName("Wood", "木")
@@ -205,14 +205,14 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
         }
         event.modify(VanillaMaterialKeys.GLASS) {
-            addDefaultPart(Tags.Items.GLASS_BLOCKS, Items.GLASS.toHolderLike())
+            addDefaultPart(Tags.Items.GLASS_BLOCKS, HTItemHolderLike.Simple(Items.GLASS))
             setItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.ROD)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_GLASS))
 
             addName("Glass", "ガラス")
             addTextureSet("shine")
-            put(HTMaterialPropertyKeys.SMELTING, HTSmeltingMaterialProperty.smeltingOnly(Items.GLASS.toHolderLike()))
+            put(HTMaterialPropertyKeys.SMELTING, HTSmeltingMaterialProperty.smeltingOnly(HTItemHolderLike.Simple(Items.GLASS)))
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("salt"))
         }
         event.modify(VanillaMaterialKeys.STONE) {
@@ -222,7 +222,7 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("steel"))
         }
         event.modify(VanillaMaterialKeys.OBSIDIAN) {
-            addDefaultPart(Tags.Items.OBSIDIANS_NORMAL, Items.OBSIDIAN.toHolderLike())
+            addDefaultPart(Tags.Items.OBSIDIANS_NORMAL, HTItemHolderLike.Simple(Items.OBSIDIAN))
             setItemPrefixes(CommonTagPrefixes.DUST)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
 

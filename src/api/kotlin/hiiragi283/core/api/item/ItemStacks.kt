@@ -4,9 +4,11 @@ import hiiragi283.core.api.data.buildDataPatch
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
+import net.minecraft.core.component.DataComponents
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.enchantment.Enchantment
+import net.minecraft.world.item.enchantment.ItemEnchantments
 import net.minecraft.world.level.ItemLike
 
 //    ItemStack    //
@@ -38,3 +40,6 @@ fun createEnchantedBook(enchantment: Holder<Enchantment>, level: Int = enchantme
     stack.enchant(enchantment, level)
     return stack
 }
+
+fun createEnchantedBook(enchantments: ItemEnchantments): ItemStack =
+    createItemStack(Items.ENCHANTED_BOOK, DataComponents.ENCHANTMENTS, enchantments)

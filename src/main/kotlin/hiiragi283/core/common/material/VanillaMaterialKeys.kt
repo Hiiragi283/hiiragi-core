@@ -6,7 +6,6 @@ import hiiragi283.core.api.collection.buildTable
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.HTItemHolderLike
-import hiiragi283.core.api.registry.toHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.world.item.Item
@@ -92,7 +91,7 @@ object VanillaMaterialKeys {
     @JvmStatic
     val INGREDIENTS: ImmutableTable<HTTagPrefix, HTMaterialKey, HTItemHolderLike<*>> = buildTable {
         fun add(prefix: HTTagPrefix, material: HTMaterialLike, item: Item) {
-            this[prefix, material.asMaterialKey()] = item.toHolderLike()
+            this[prefix, material.asMaterialKey()] = HTItemHolderLike.Simple(item)
         }
 
         // Fuel

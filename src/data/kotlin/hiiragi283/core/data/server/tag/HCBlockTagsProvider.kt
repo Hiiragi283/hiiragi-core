@@ -6,7 +6,7 @@ import hiiragi283.core.api.data.tag.HTTagBuilder
 import hiiragi283.core.api.data.tag.HTTagsProvider
 import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.registry.toHolderLike
+import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -22,9 +22,9 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
     companion object {
         @JvmField
         val VANILLA_STORAGE_BLOCKS: Map<HTMaterialKey, HTIdLike> = mapOf(
-            VanillaMaterialKeys.GLOWSTONE to Blocks.GLOWSTONE.toHolderLike(),
-            VanillaMaterialKeys.AMETHYST to Blocks.AMETHYST_BLOCK.toHolderLike(),
-            VanillaMaterialKeys.QUARTZ to Blocks.QUARTZ_BLOCK.toHolderLike(),
+            VanillaMaterialKeys.GLOWSTONE to HTBlockHolderLike.Simple(Blocks.GLOWSTONE),
+            VanillaMaterialKeys.AMETHYST to HTBlockHolderLike.Simple(Blocks.AMETHYST_BLOCK),
+            VanillaMaterialKeys.QUARTZ to HTBlockHolderLike.Simple(Blocks.QUARTZ_BLOCK),
         )
     }
 
