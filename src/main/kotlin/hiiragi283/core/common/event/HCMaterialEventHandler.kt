@@ -132,6 +132,12 @@ object HCMaterialEventHandler {
             addName("Echo Shard", "残響の欠片")
             addTextureSet("echo")
         }
+        event.modify(VanillaMaterialKeys.PRISMARINE) {
+            addDefaultPart(CommonTagPrefixes.GEM)
+            setItemPrefixes(CommonTagPrefixes.DUST)
+
+            addName("Prismarine", "プリズマリン")
+        }
         // Pearls
         event.modify(VanillaMaterialKeys.ENDER) {
             addDefaultPart(Tags.Items.ENDER_PEARLS, HTItemHolderLike.Simple(Items.ENDER_PEARL))

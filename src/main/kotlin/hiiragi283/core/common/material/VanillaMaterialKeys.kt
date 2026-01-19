@@ -51,6 +51,9 @@ object VanillaMaterialKeys {
     @JvmStatic
     val ECHO: HTMaterialKey = create("echo")
 
+    @JvmStatic
+    val PRISMARINE: HTMaterialKey = create("prismarine")
+
     //    Pearls    //
 
     @JvmStatic
@@ -122,6 +125,8 @@ object VanillaMaterialKeys {
         add(CommonTagPrefixes.GEM, EMERALD, Items.EMERALD)
 
         add(CommonTagPrefixes.GEM, ECHO, Items.ECHO_SHARD)
+
+        add(CommonTagPrefixes.GEM, PRISMARINE, Items.PRISMARINE_CRYSTALS)
         // Pearl
         add(CommonTagPrefixes.PEARL, ENDER, Items.ENDER_PEARL)
         // Metals
