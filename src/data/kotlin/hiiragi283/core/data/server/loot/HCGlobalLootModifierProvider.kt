@@ -9,6 +9,8 @@ class HCGlobalLootModifierProvider(context: HTDataGenContext) : HTGlobalLootModi
     override fun start() {
         // Drops Elder Heart from Elder Guardian
         add(HCGlobalLootProvider.DROP_ELDER_HEART, builder(EntityType.ELDER_GUARDIAN).build())
+        // Drops Eternal Upgrade from Ender Dragon
+        add(HCGlobalLootProvider.DROP_ETERNAL_UPGRADE, builder(EntityType.ENDER_DRAGON).build())
         // Drops Trader Catalog from Wandering Trader
         add(HCGlobalLootProvider.DROP_TRADER_CATALOG, builder(EntityType.WANDERING_TRADER).build())
     }

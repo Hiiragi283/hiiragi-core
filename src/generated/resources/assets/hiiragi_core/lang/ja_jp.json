@@ -67,7 +67,6 @@
   "description.hiiragi_core.ambrosia": "いつでも食べられる上，いくら食べてもなくなりません！",
   "description.hiiragi_core.elder_heart": "エルダーガーディアンからドロップします。",
   "description.hiiragi_core.eldritch_heart": "右クリックで投げることができ，モブに当たるとスポーンエッグになります。",
-  "description.hiiragi_core.eternal_ticket": "あらゆる道具を不可壊にします！",
   "description.hiiragi_core.iridescent_powder": "時間経過やダメージで消滅しません。",
   "description.hiiragi_core.slot_cover": "機械のスロットに入れることでレシピ判定から無視されます。",
   "description.hiiragi_core.trader_catalog": "行商人からドロップします。右クリックで行商人との取引を行えます。",
@@ -158,7 +157,8 @@
   "item.hiiragi_core.eldritch_pearl": "異質な真珠",
   "item.hiiragi_core.emerald_dust": "エメラルドの粉",
   "item.hiiragi_core.ender_dust": "エンダーパールの粉",
-  "item.hiiragi_core.eternal_ticket": "永遠のチケット",
+  "item.hiiragi_core.eternal_pickaxe": "永遠のツルハシ",
+  "item.hiiragi_core.eternal_upgrade": "永遠の鍛冶型",
   "item.hiiragi_core.experience_bucket": "液体経験値入りバケツ",
   "item.hiiragi_core.fluid_filter": "液体フィルター",
   "item.hiiragi_core.glass_dust": "ガラスの粉",
@@ -258,5 +258,10 @@
   "tag.fluid.c.mushroom_stew": "キノコシチュー",
   "tooltip.hiiragi_core.intrinsic_enchantment": "常に少なくとも%1$sがあります",
   "tooltip.hiiragi_core.show_description": "シフトキーを押して説明を表示",
-  "tooltip.hiiragi_core.show_details": "シフトキーを押して詳細を表示"
+  "tooltip.hiiragi_core.show_details": "シフトキーを押して詳細を表示",
+  "upgrade.hiiragi_core.eternal_upgrade": "不可壊強化",
+  "upgrade.hiiragi_core.eternal_upgrade.additions_slot_description": "イリジウムインゴットを置いてください",
+  "upgrade.hiiragi_core.eternal_upgrade.applies_to": "任意の装備品",
+  "upgrade.hiiragi_core.eternal_upgrade.base_slot_description": "任意の防具，武器，道具を置いてください",
+  "upgrade.hiiragi_core.eternal_upgrade.ingredients": "イリジウムインゴット"
 }

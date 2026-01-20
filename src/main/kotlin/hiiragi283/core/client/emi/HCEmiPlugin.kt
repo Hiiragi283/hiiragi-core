@@ -2,7 +2,10 @@ package hiiragi283.core.client.emi
 
 import dev.emi.emi.api.EmiEntrypoint
 import dev.emi.emi.api.EmiRegistry
-import dev.emi.emi.api.recipe.EmiCraftingRecipe
+import dev.emi.emi.api.stack.Comparison
+import dev.emi.emi.api.stack.EmiIngredient
+import dev.emi.emi.api.stack.EmiStack
+import dev.emi.emi.recipe.EmiSmithingRecipe
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.function.partially1
@@ -11,6 +14,7 @@ import hiiragi283.core.api.integration.emi.toEmi
 import hiiragi283.core.api.integration.emi.toItemEmi
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.core.Holder
@@ -35,6 +39,12 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
         addRegistryRecipes(registry, HCRecipeTypes.ANVIL_CRUSHING, HTSingleItemEmiRecipe.Companion::crushing)
         addRegistryRecipes(registry, HCRecipeTypes.CHARGING, ::HTChargingEmiRecipe)
         addRegistryRecipes(registry, HCRecipeTypes.EXPLODING, HTSingleItemEmiRecipe.Companion::exploding)
+
+        // Misc
+        registry.setDefaultComparison(
+            HCItems.ALMIGHTY_PICKAXE.asItem(),
+            Comparison.compareData { stack: EmiStack -> stack.get(DataComponents.UNBREAKABLE) },
+        )
     }
 
     private fun addCustomRecipes(registry: EmiRegistry) {
@@ -45,16 +55,14 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
             .forEach { holder: Holder<Item> ->
                 addRecipeSafe(
                     registry,
-                    holder.toLike().getId().withPrefix("/${HTConst.SHAPELESS}/${HiiragiCoreAPI.MOD_ID}/eternal_upgrade/"),
+                    holder.toLike().getId().withPrefix("/${HTConst.SMITHING}/${HiiragiCoreAPI.MOD_ID}/eternal_upgrade/"),
                 ) { id: ResourceLocation ->
-                    EmiCraftingRecipe(
-                        listOf(
-                            holder.toItemEmi(),
-                            HCItems.ETERNAL_TICKET.toEmi(),
-                        ),
+                    EmiSmithingRecipe(
+                        HCItems.ETERNAL_UPGRADE.toEmi(),
+                        holder.toItemEmi(),
+                        EmiIngredient.of(HTEternalSmithingRecipe.ADDITIONAL_TAG),
                         createItemStack(holder.value(), DataComponents.UNBREAKABLE, Unbreakable(true)).toEmi(),
                         id,
-                        true,
                     )
                 }
             }

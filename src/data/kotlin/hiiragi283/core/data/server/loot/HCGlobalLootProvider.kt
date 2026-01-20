@@ -21,6 +21,9 @@ sealed class HCGlobalLootProvider(protected val provider: HolderLookup.Provider)
         val DROP_ELDER_HEART: ResourceKey<LootTable> = create("drop_elder_heart")
 
         @JvmField
+        val DROP_ETERNAL_UPGRADE: ResourceKey<LootTable> = create("drop_eternal_upgrade")
+
+        @JvmField
         val DROP_TRADER_CATALOG: ResourceKey<LootTable> = create("drop_trader_catalog")
 
         @JvmStatic
@@ -50,6 +53,18 @@ sealed class HCGlobalLootProvider(protected val provider: HolderLookup.Provider)
                                         ),
                                     ),
                             ),
+                    ),
+            )
+            // Drops Eternal Upgrade from Ender Dragon
+            output.accept(
+                DROP_ETERNAL_UPGRADE,
+                LootTable
+                    .lootTable()
+                    .withPool(
+                        LootPool
+                            .lootPool()
+                            .setRolls(ConstantValue.exactly(1f))
+                            .add(LootItem.lootTableItem(HCItems.ETERNAL_UPGRADE)),
                     ),
             )
             // Drops Trader Catalog from Wandering Trader

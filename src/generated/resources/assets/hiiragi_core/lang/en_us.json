@@ -67,7 +67,6 @@
   "description.hiiragi_core.ambrosia": "ALWAYS EDIBLE and NOT CONSUMED!",
   "description.hiiragi_core.elder_heart": "Dropped from Elder Guardian.",
   "description.hiiragi_core.eldritch_heart": "Can be throwable by right-click，and capture mobs when hit.",
-  "description.hiiragi_core.eternal_ticket": "Make any tool UNBREAKABLE!",
   "description.hiiragi_core.iridescent_powder": "Do not expire by time over or any damage.",
   "description.hiiragi_core.slot_cover": "Ignored by recipes when placed in machine slot.",
   "description.hiiragi_core.trader_catalog": "Dropped from Wandering Trader. Right-click to trade with merchant.",
@@ -158,7 +157,8 @@
   "item.hiiragi_core.eldritch_pearl": "Eldritch Pearl",
   "item.hiiragi_core.emerald_dust": "Emerald Dust",
   "item.hiiragi_core.ender_dust": "Ender Pearl Dust",
-  "item.hiiragi_core.eternal_ticket": "Eternal Ticket",
+  "item.hiiragi_core.eternal_pickaxe": "Eternal Pickaxe",
+  "item.hiiragi_core.eternal_upgrade": "Eternal Smithing Template",
   "item.hiiragi_core.experience_bucket": "Liquid Experience Bucket",
   "item.hiiragi_core.fluid_filter": "Fluid Filter",
   "item.hiiragi_core.glass_dust": "Glass Dust",
@@ -258,5 +258,10 @@
   "tag.fluid.c.mushroom_stew": "Mushroom Stew",
   "tooltip.hiiragi_core.intrinsic_enchantment": "Always has at least %1$s",
   "tooltip.hiiragi_core.show_description": "Press Shift to show description",
-  "tooltip.hiiragi_core.show_details": "Press Ctrl to show details"
+  "tooltip.hiiragi_core.show_details": "Press Ctrl to show details",
+  "upgrade.hiiragi_core.eternal_upgrade": "Unbreakable Upgrade",
+  "upgrade.hiiragi_core.eternal_upgrade.additions_slot_description": "Add Iridium Ingot",
+  "upgrade.hiiragi_core.eternal_upgrade.applies_to": "Any Equipment",
+  "upgrade.hiiragi_core.eternal_upgrade.base_slot_description": "Add any armor, weapon, or tool",
+  "upgrade.hiiragi_core.eternal_upgrade.ingredients": "Iridium Ingot"
 }

@@ -6,15 +6,15 @@ import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTRecipeBiCodecs
 import hiiragi283.core.api.serialization.codec.MapBiCodec
+import hiiragi283.core.api.serialization.codec.MapBiCodecs
 import hiiragi283.core.common.crafting.HTClearComponentRecipe
-import hiiragi283.core.common.crafting.HTEternalUpgradeRecipe
+import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
 import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import hiiragi283.core.common.recipe.HCSingleItemRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
 import net.minecraft.world.item.crafting.RecipeSerializer
-import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer
 
 object HCRecipeSerializers {
     @JvmField
@@ -27,8 +27,8 @@ object HCRecipeSerializers {
         REGISTER.registerSerializer("clear_component", HTClearComponentRecipe.CODEC)
 
     @JvmField
-    val ETERNAL_UPGRADE: SimpleCraftingRecipeSerializer<HTEternalUpgradeRecipe> =
-        REGISTER.registerSerializer("eternal_upgrade", SimpleCraftingRecipeSerializer(::HTEternalUpgradeRecipe))
+    val ETERNAL_UPGRADE: RecipeSerializer<HTEternalSmithingRecipe> =
+        REGISTER.registerSerializer("eternal_upgrade", MapBiCodecs.unit(HTEternalSmithingRecipe))
 
     //    Misc    //
 

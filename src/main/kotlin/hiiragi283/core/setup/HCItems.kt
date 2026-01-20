@@ -8,10 +8,10 @@ import hiiragi283.core.common.item.HTAlmightyPickaxe
 import hiiragi283.core.common.item.HTAmbrosiaItem
 import hiiragi283.core.common.item.HTCaptureEggItem
 import hiiragi283.core.common.item.HTCreativeItem
+import hiiragi283.core.common.item.HTEternalUpgradeItem
 import hiiragi283.core.common.item.HTFluidFilterItem
 import hiiragi283.core.common.item.HTItemFilterItem
 import hiiragi283.core.common.item.HTTraderCatalogItem
-import hiiragi283.core.common.item.VanillaEquipmentMaterial
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import hiiragi283.core.common.registry.register.HTDeferredItemRegister
 import hiiragi283.core.common.storage.fluid.HTComponentFluidTank
@@ -123,13 +123,10 @@ object HCItems {
     }
 
     @JvmField
-    val ETERNAL_TICKET: HTSimpleDeferredItem = REGISTER.registerItem("eternal_ticket", ::HTCreativeItem) {
-        it.description(HCTranslation.ETERNAL_TICKET)
-    }
+    val ETERNAL_UPGRADE: HTSimpleDeferredItem = REGISTER.register("eternal_upgrade", ::HTEternalUpgradeItem)
 
     @JvmField
-    val ALMIGHTY_PICKAXE: HTSimpleDeferredItem =
-        REGISTER.registerItemWith("almighty_pickaxe", VanillaEquipmentMaterial.NETHERITE, HTAlmightyPickaxe::create)
+    val ALMIGHTY_PICKAXE: HTSimpleDeferredItem = REGISTER.registerItem("almighty_pickaxe", ::HTAlmightyPickaxe)
 
     //    Event    //
 

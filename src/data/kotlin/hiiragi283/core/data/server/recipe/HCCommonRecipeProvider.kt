@@ -8,7 +8,7 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.common.crafting.HTEternalUpgradeRecipe
+import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
@@ -125,8 +125,28 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .setCategory(CraftingBookCategory.EQUIPMENT)
             .save(output)
 
-        // Eternal Ticket
-        save(id(HTConst.SHAPELESS, "eternal_upgrade"), HTEternalUpgradeRecipe(CraftingBookCategory.EQUIPMENT))
+        // Eternal Upgrade
+        HTShapedRecipeBuilder
+            .create(HCItems.ETERNAL_UPGRADE)
+            .pattern(
+                "ABA",
+                "ACA",
+                "AAA",
+            ).define('A', CommonTagPrefixes.GEM, VanillaMaterialKeys.DIAMOND)
+            .define('B', HCItems.ETERNAL_UPGRADE)
+            .define('C', HCItems.IRIDESCENT_POWDER)
+            .save(output)
+        save(id(HTConst.SMITHING, "eternal_upgrade"), HTEternalSmithingRecipe)
+        // Almighty Pickaxe
+        HTShapedRecipeBuilder
+            .create(HCItems.ALMIGHTY_PICKAXE)
+            .pattern(
+                "AAA",
+                " B ",
+                " B ",
+            ).define('A', CommonTagPrefixes.INGOT, CommonMaterialKeys.IRIDIUM)
+            .define('B', CommonTagPrefixes.INGOT, CommonMaterialKeys.STEEL)
+            .save(output)
     }
 
     @JvmStatic

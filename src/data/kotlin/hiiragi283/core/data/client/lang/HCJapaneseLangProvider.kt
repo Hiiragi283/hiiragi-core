@@ -60,7 +60,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HCItems.IRIDESCENT_POWDER, "虹色の粉")
         add(HCItems.AMBROSIA, "アンブロシア")
-        add(HCItems.ETERNAL_TICKET, "永遠のチケット")
+        add(HCItems.ETERNAL_UPGRADE, "永遠の鍛冶型")
         add(HCItems.ALMIGHTY_PICKAXE, "全能なるツルハシ")
 
         // Recipe
@@ -117,9 +117,16 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCTranslation.AMBROSIA, "いつでも食べられる上，いくら食べてもなくなりません！")
         add(HCTranslation.ELDER_HEART, "エルダーガーディアンからドロップします。")
         add(HCTranslation.ELDRITCH_EGG, "右クリックで投げることができ，モブに当たるとスポーンエッグになります。")
-        add(HCTranslation.ETERNAL_TICKET, "あらゆる道具を不可壊にします！")
         add(HCTranslation.IRIDESCENT_POWDER, "時間経過やダメージで消滅しません。")
         add(HCTranslation.SLOT_COVER, "機械のスロットに入れることでレシピ判定から無視されます。")
         add(HCTranslation.TRADER_CATALOG, "行商人からドロップします。右クリックで行商人との取引を行えます。")
+
+        add(HCTranslation.ETERNAL_PICKAXE, "永遠のツルハシ")
+
+        add(HCTranslation.ETERNAL_UPGRADE_APPLIES_TO, "任意の装備品")
+        add(HCTranslation.ETERNAL_UPGRADE_INGREDIENTS, "イリジウムインゴット")
+        add(HCTranslation.ETERNAL_UPGRADE, "不可壊強化")
+        add(HCTranslation.ETERNAL_UPGRADE_BASE_SLOT_DESCRIPTION, "任意の防具，武器，道具を置いてください")
+        add(HCTranslation.ETERNAL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION, "イリジウムインゴットを置いてください")
     }
 }

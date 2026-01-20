@@ -1,5 +1,6 @@
 package hiiragi283.core.common.data.recipe.builder
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -18,7 +19,7 @@ import java.util.stream.Stream
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-class HTShapedRecipeBuilder(stack: ItemStack) : HTStackRecipeBuilder<HTShapedRecipeBuilder>("shaped", stack) {
+class HTShapedRecipeBuilder(stack: ItemStack) : HTStackRecipeBuilder<HTShapedRecipeBuilder>(HTConst.SHAPED, stack) {
     companion object {
         /**
          * [ShapedRecipe]のビルダーを作成します。

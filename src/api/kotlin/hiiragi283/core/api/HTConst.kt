@@ -81,7 +81,9 @@ data object HTConst {
 
     //    Recipes    //
 
+    const val SHAPED = "shaped"
     const val SHAPELESS = "shapeless"
+    const val SMITHING = "smithing"
 
     const val ANVIL_CRUSHING = "anvil_crushing"
     const val CHARGING = "charging"
