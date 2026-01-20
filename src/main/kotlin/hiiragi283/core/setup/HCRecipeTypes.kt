@@ -20,5 +20,5 @@ object HCRecipeTypes {
     val CHARGING: HTDeferredRecipeType<SingleRecipeInput, HCLightningChargingRecipe> = REGISTER.registerType(HTConst.CHARGING)
 
     @JvmField
-    val EXPLODING: HTDeferredRecipeType<SingleRecipeInput, HCExplodingRecipe> = REGISTER.registerType(HTConst.EXPLODING)
+    val EXPLODING: HTDeferredRecipeType<HCExplodingRecipe.Input, HCExplodingRecipe> = REGISTER.registerType(HTConst.EXPLODING)
 }

@@ -115,6 +115,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCTranslation.MOLTEN_METAL, "溶融%s")
         add(HCTranslation.MOLTEN_METAL_BUCKET, "溶融%s入りバケツ")
 
+        add(HCTranslation.MIN_POWER, "最小の爆発力: %s")
+
         add(HCTranslation.AMBROSIA, "いつでも食べられる上，いくら食べてもなくなりません！")
         add(HCTranslation.ELDER_HEART, "エルダーガーディアンからドロップします。")
         add(HCTranslation.ELDRITCH_EGG, "右クリックで投げることができ，モブに当たるとスポーンエッグになります。")

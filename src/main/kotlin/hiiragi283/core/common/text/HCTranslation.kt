@@ -18,6 +18,9 @@ enum class HCTranslation(type: String, vararg path: String) : HTTranslation {
     MOLTEN_METAL("fluid", "molten_metal"),
     MOLTEN_METAL_BUCKET("fluid", "molten_metal_bucket"),
 
+    // GUI
+    MIN_POWER("gui", "min_power"),
+
     // Item
     AMBROSIA("description", "ambrosia"),
     ELDER_HEART("description", "elder_heart"),

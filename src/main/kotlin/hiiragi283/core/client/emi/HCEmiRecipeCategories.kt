@@ -34,5 +34,5 @@ object HCEmiRecipeCategories {
     val CHARGING: HTEmiRecipeCategory = create(HCRecipeTypes.CHARGING, 18 * 4, 18, Items.LIGHTNING_ROD)
 
     @JvmField
-    val EXPLODING: HTEmiRecipeCategory = create(HCRecipeTypes.EXPLODING, 18 * 4, 18, Items.TNT)
+    val EXPLODING: HTEmiRecipeCategory = create(HCRecipeTypes.EXPLODING, 18 * 7, 18, Items.TNT)
 }

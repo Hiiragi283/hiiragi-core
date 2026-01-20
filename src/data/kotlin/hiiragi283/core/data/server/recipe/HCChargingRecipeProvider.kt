@@ -4,7 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.data.recipe.HTMaterialResultHelper
-import hiiragi283.core.common.data.recipe.builder.HTChargingRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCItems
@@ -13,49 +13,47 @@ import net.minecraft.world.item.Items
 object HCChargingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipeInternal() {
         // Ender Pearl -> Ender Eye
-        HTChargingRecipeBuilder
-            .create(
+        HTSingleItemRecipeBuilder
+            .charging(
                 itemCreator.fromTagKey(CommonTagPrefixes.PEARL, VanillaMaterialKeys.ENDER),
                 itemResult.create(Items.ENDER_EYE),
             ).save(output)
         // Golden Apple
-        HTChargingRecipeBuilder
-            .create(
+        HTSingleItemRecipeBuilder
+            .charging(
                 itemCreator.fromItem(Items.GOLDEN_APPLE),
                 itemResult.create(Items.ENCHANTED_GOLDEN_APPLE),
             ).save(output)
         // Quartz -> Prismarine
-        HTChargingRecipeBuilder
-            .create(
+        HTSingleItemRecipeBuilder
+            .charging(
                 itemCreator.fromTagKey(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ),
                 itemResult.create(Items.PRISMARINE_SHARD),
             ).save(output)
         // Redstone Dust -> Glowstone Dust
-        HTChargingRecipeBuilder
-            .create(
+        HTSingleItemRecipeBuilder
+            .charging(
                 itemCreator.fromTagKey(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE),
                 HTMaterialResultHelper.item(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLOWSTONE),
             ).save(output)
 
         // End Crystal -> Eldritch Pearl
-        HTChargingRecipeBuilder
-            .create(
+        HTSingleItemRecipeBuilder
+            .charging(
                 itemCreator.fromItem(Items.END_CRYSTAL),
                 HTMaterialResultHelper.item(CommonTagPrefixes.PEARL, HCMaterialKeys.ELDRITCH),
             ).save(output)
         // Heart of the Sea
-        HTChargingRecipeBuilder
-            .create(
+        HTSingleItemRecipeBuilder
+            .charging(
                 itemCreator.fromItem(HCItems.ELDER_HEART),
                 itemResult.create(Items.HEART_OF_THE_SEA),
-            ).setExp(10f)
-            .save(output)
+            ).save(output)
         // Nether Star
-        HTChargingRecipeBuilder
-            .create(
+        HTSingleItemRecipeBuilder
+            .charging(
                 itemCreator.fromItem(HCItems.WITHER_STAR),
                 itemResult.create(Items.NETHER_STAR),
-            ).setExp(10f)
-            .save(output)
+            ).save(output)
     }
 }

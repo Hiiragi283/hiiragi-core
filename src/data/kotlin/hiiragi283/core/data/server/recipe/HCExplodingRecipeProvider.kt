@@ -20,12 +20,14 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
             .exploding(
                 itemCreator.fromTagKeys(listOf(Tags.Items.STONES, Tags.Items.COBBLESTONES_NORMAL), amount = 2),
                 itemResult.create(Items.COBBLED_DEEPSLATE),
+                3f
             ).save(output)
         // Ancient Debris -> Netherite Scrap
         HTSingleItemRecipeBuilder
             .exploding(
                 itemCreator.fromTagKey(Tags.Items.ORES_NETHERITE_SCRAP),
                 HTMaterialResultHelper.item(CommonTagPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE, 2),
+                6f,
             ).save(output)
         // Gunpowder -> Blaze Powder
         HTSingleItemRecipeBuilder
@@ -44,6 +46,7 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
             .exploding(
                 itemCreator.fromTagKey(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.QUARTZ, 4),
                 itemResult.create(Items.GHAST_TEAR),
+                3f
             ).save(output)
 
         gems()
@@ -72,6 +75,7 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
             .exploding(
                 itemCreator.fromItem(Items.SCULK, 8),
                 HTMaterialResultHelper.item(CommonTagPrefixes.GEM, VanillaMaterialKeys.ECHO),
+                6f,
             ).save(output)
         // Crimson Crystal
         HTSingleItemRecipeBuilder

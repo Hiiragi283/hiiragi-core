@@ -7,6 +7,7 @@
       "#c:cobblestones/normal"
     ]
   },
+  "min_power": 3,
   "result": {
     "id": "minecraft:cobbled_deepslate"
   }

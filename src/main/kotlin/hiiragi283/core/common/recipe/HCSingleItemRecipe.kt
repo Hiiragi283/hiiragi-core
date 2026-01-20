@@ -5,26 +5,22 @@ import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.MapBiCodec
-import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import net.minecraft.core.HolderLookup
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.crafting.SingleRecipeInput
-import net.minecraft.world.level.Level
+import net.minecraft.world.item.crafting.RecipeInput
 
-abstract class HCSingleItemRecipe(val ingredient: HTItemIngredient, val result: HTItemResult) : HTRecipe<SingleRecipeInput> {
+abstract class HCSingleItemRecipe<INPUT : RecipeInput>(val ingredient: HTItemIngredient, val result: HTItemResult) : HTRecipe<INPUT> {
     companion object {
         @JvmStatic
-        fun <RECIPE : HCSingleItemRecipe> codec(
-            factory: HTSingleItemRecipeBuilder.Factory<RECIPE>,
+        fun <RECIPE : HCSingleItemRecipe<*>> codec(
+            factory: (HTItemIngredient, HTItemResult) -> RECIPE,
         ): MapBiCodec<RegistryFriendlyByteBuf, RECIPE> = MapBiCodec.composite(
-            HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HCSingleItemRecipe::ingredient),
-            HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCSingleItemRecipe::result),
-            factory::create,
+            HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HCSingleItemRecipe<*>::ingredient),
+            HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCSingleItemRecipe<*>::result),
+            factory,
         )
     }
 
-    final override fun matches(input: SingleRecipeInput, level: Level): Boolean = ingredient.test(input.item())
-
-    override fun getResultItem(registries: HolderLookup.Provider): ItemStack = result.getStackOrEmpty(registries)
+    final override fun getResultItem(registries: HolderLookup.Provider): ItemStack = result.getStackOrEmpty(registries)
 }

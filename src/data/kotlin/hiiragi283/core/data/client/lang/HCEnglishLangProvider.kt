@@ -116,6 +116,8 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCTranslation.MOLTEN_METAL, "Molten %s")
         add(HCTranslation.MOLTEN_METAL_BUCKET, "Molten %s Bucket")
 
+        add(HCTranslation.MIN_POWER, "Minimum Explosion Power: %s")
+
         add(HCTranslation.AMBROSIA, "ALWAYS EDIBLE and NOT CONSUMED!")
         add(HCTranslation.ELDER_HEART, "Dropped from Elder Guardian.")
         add(HCTranslation.ELDRITCH_EGG, "Can be throwable by right-click，and capture mobs when hit.")

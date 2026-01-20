@@ -4,6 +4,7 @@
     "amount": 8,
     "items": "minecraft:sculk"
   },
+  "min_power": 6,
   "result": {
     "id": "minecraft:echo_shard",
     "tag": "c:gems/echo"

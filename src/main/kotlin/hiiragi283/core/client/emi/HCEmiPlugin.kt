@@ -37,8 +37,8 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
         addCustomRecipes(registry)
 
         addRegistryRecipes(registry, HCRecipeTypes.ANVIL_CRUSHING, HTSingleItemEmiRecipe.Companion::crushing)
-        addRegistryRecipes(registry, HCRecipeTypes.CHARGING, ::HTChargingEmiRecipe)
-        addRegistryRecipes(registry, HCRecipeTypes.EXPLODING, HTSingleItemEmiRecipe.Companion::exploding)
+        addRegistryRecipes(registry, HCRecipeTypes.CHARGING, HTSingleItemEmiRecipe.Companion::charging)
+        addRegistryRecipes(registry, HCRecipeTypes.EXPLODING, ::HCExplodingEmiRecipe)
 
         // Misc
         registry.setDefaultComparison(

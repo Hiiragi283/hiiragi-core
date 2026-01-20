@@ -3,6 +3,7 @@ package hiiragi283.core.common.event
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
+import hiiragi283.core.api.toFraction
 import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeHolder
+import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.AABB
@@ -43,7 +45,7 @@ object HTRecipeEventHandler {
                     input,
                     level,
                 ).map(RecipeHolder<HCLightningChargingRecipe>::value)
-                .firstOrNull { it.energy >= HCLightningChargingRecipe.DEFAULT_ENERGY } ?: return
+                .firstOrNull() ?: return
             popResult(recipe.assemble(input, level.registryAccess()), recipe.ingredient.getRequiredAmount(), entity)
             if (entity.item.isEmpty) {
                 entity.discard()
@@ -105,7 +107,7 @@ object HTRecipeEventHandler {
         while (iterator.hasNext()) {
             val entity: Entity = iterator.next()
             if (entity is ItemEntity && entity.isAlive && !isCompleted(entity)) {
-                val input: SingleRecipeInput = createInput(entity)
+                val input = HCExplodingRecipe.Input(entity.item, event.explosion.radius().toFraction())
                 val (_, recipe: HCExplodingRecipe) = HCRecipeTypes.EXPLODING.getRecipeFor(input, level, null) ?: continue
                 popResult(input, recipe, level, entity)
                 if (entity.item.isEmpty) {
@@ -125,9 +127,9 @@ object HTRecipeEventHandler {
     private fun createInput(entity: ItemEntity): SingleRecipeInput = SingleRecipeInput(entity.item)
 
     @JvmStatic
-    private fun popResult(
-        input: SingleRecipeInput,
-        recipe: HCSingleItemRecipe,
+    private fun <INPUT : RecipeInput> popResult(
+        input: INPUT,
+        recipe: HCSingleItemRecipe<INPUT>,
         level: Level,
         entity: ItemEntity,
     ): ItemEntity? = popResult(recipe.assemble(input, level.registryAccess()), recipe.ingredient.getRequiredAmount(), entity)
