@@ -5,9 +5,12 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.common.item.HTChromaticPowderItem
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
+import hiiragi283.core.setup.HCItems
 import net.minecraft.client.renderer.entity.ThrownItemRenderer
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
@@ -43,6 +46,17 @@ object HiiragiCoreClient {
 
     @JvmStatic
     private fun registerItemColors(event: RegisterColorHandlersEvent.Item) {
+        // Achromatic Powder
+        event.register(
+            { stack: ItemStack, tint: Int ->
+                when (tint) {
+                    0 -> HTChromaticPowderItem.getColor(stack)
+                    else -> -1
+                }
+            },
+            HCItems.CHROMATIC_POWDER,
+        )
+        // Bucket
         val bucketColor = DynamicFluidContainerModel.Colors()
         for (item: ItemLike in HCFluids.REGISTER.asItemSequence()) {
             event.register(bucketColor, item)

@@ -3,6 +3,7 @@ package hiiragi283.core.setup
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.storage.attachments.HTAttachedEnergy
 import hiiragi283.core.api.storage.attachments.HTAttachedFluids
 import hiiragi283.core.api.storage.attachments.HTAttachedItems
@@ -15,6 +16,9 @@ import net.minecraft.core.registries.Registries
 object HCDataComponents {
     @JvmField
     val REGISTER = HTDeferredDataComponentRegister(Registries.DATA_COMPONENT_TYPE, HiiragiCoreAPI.MOD_ID)
+
+    @JvmField
+    val COMPLETE_PROGRESS: DataComponentType<Int> = REGISTER.registerType("complete_progress", BiCodecs.NON_NEGATIVE_INT)
 
     @JvmField
     val DESCRIPTION: DataComponentType<HTTranslation> = REGISTER.registerType("description", HTSimpleTranslation.CODEC)

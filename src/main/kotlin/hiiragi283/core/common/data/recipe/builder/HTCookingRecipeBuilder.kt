@@ -1,5 +1,6 @@
 package hiiragi283.core.common.data.recipe.builder
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.AbstractCookingRecipe
@@ -29,30 +30,48 @@ class HTCookingRecipeBuilder(
          * [かまどレシピ][SmeltingRecipe]のみを登録するビルダーを作成します。
          */
         @JvmStatic
-        fun smelting(item: ItemLike, count: Int = 1): HTCookingRecipeBuilder = HTCookingRecipeBuilder(
-            "smelting",
+        fun smelting(item: ItemLike, count: Int = 1): HTCookingRecipeBuilder = smelting(ItemStack(item, count))
+
+        /**
+         * [かまどレシピ][SmeltingRecipe]のみを登録するビルダーを作成します。
+         */
+        @JvmStatic
+        fun smelting(stack: ItemStack): HTCookingRecipeBuilder = HTCookingRecipeBuilder(
+            HTConst.SMELTING,
             ::SmeltingRecipe,
-            ItemStack(item, count),
+            stack,
         )
 
         /**
          * [溶鉱炉レシピ][BlastingRecipe]のみを登録するビルダーを作成します。
          */
         @JvmStatic
-        fun blasting(item: ItemLike, count: Int = 1): HTCookingRecipeBuilder = HTCookingRecipeBuilder(
-            "blasting",
+        fun blasting(item: ItemLike, count: Int = 1): HTCookingRecipeBuilder = blasting(ItemStack(item, count))
+
+        /**
+         * [溶鉱炉レシピ][BlastingRecipe]のみを登録するビルダーを作成します。
+         */
+        @JvmStatic
+        fun blasting(stack: ItemStack): HTCookingRecipeBuilder = HTCookingRecipeBuilder(
+            HTConst.BLASTING,
             ::BlastingRecipe,
-            ItemStack(item, count),
+            stack,
         )
 
         /**
          * [燻製器レシピ][SmokingRecipe]のみを登録するビルダーを作成します。
          */
         @JvmStatic
-        fun smoking(item: ItemLike, count: Int = 1): HTCookingRecipeBuilder = HTCookingRecipeBuilder(
-            "smoking",
+        fun smoking(item: ItemLike, count: Int = 1): HTCookingRecipeBuilder = smoking(ItemStack(item, count))
+
+        /**
+         * [燻製器レシピ][SmokingRecipe]のみを登録するビルダーを作成します。
+         */
+        @JvmStatic
+        fun smoking(stack: ItemStack): HTCookingRecipeBuilder = HTCookingRecipeBuilder(
+            HTConst.SMOKING,
             ::SmokingRecipe,
-            ItemStack(item, count),
+            stack,
         )
 
         /**
@@ -63,7 +82,7 @@ class HTCookingRecipeBuilder(
         @JvmStatic
         inline fun smeltingAndBlasting(item: ItemLike, count: Int = 1, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             smelting(item, count).apply(builderAction)
-            HTCookingRecipeBuilder("blasting", ::BlastingRecipe, ItemStack(item, count)) { it / 2 }.apply(builderAction)
+            HTCookingRecipeBuilder(HTConst.BLASTING, ::BlastingRecipe, ItemStack(item, count)) { it / 2 }.apply(builderAction)
         }
 
         /**
@@ -74,7 +93,7 @@ class HTCookingRecipeBuilder(
         @JvmStatic
         inline fun smeltingAndSmoking(item: ItemLike, count: Int = 1, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             smelting(item, count).apply(builderAction)
-            HTCookingRecipeBuilder("smoking", ::SmokingRecipe, ItemStack(item, count)) { it / 2 }.apply(builderAction)
+            HTCookingRecipeBuilder(HTConst.SMOKING, ::SmokingRecipe, ItemStack(item, count)) { it / 2 }.apply(builderAction)
         }
     }
 

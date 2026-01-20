@@ -6,6 +6,7 @@ import hiiragi283.core.common.capability.HTItemCapabilities
 import hiiragi283.core.common.item.HTAlmightyPickaxe
 import hiiragi283.core.common.item.HTAmbrosiaItem
 import hiiragi283.core.common.item.HTCaptureEggItem
+import hiiragi283.core.common.item.HTChromaticPowderItem
 import hiiragi283.core.common.item.HTCreativeItem
 import hiiragi283.core.common.item.HTEternalUpgradeItem
 import hiiragi283.core.common.item.HTFluidFilterItem
@@ -95,6 +96,9 @@ object HCItems {
     //    End Game    //
 
     @JvmField
+    val CHROMATIC_POWDER: HTSimpleDeferredItem = REGISTER.registerItem("chromatic_powder", ::HTChromaticPowderItem)
+
+    @JvmField
     val IRIDESCENT_POWDER: HTSimpleDeferredItem = REGISTER.registerItem("iridescent_powder", ::HTCreativeItem)
 
     @JvmField
@@ -124,13 +128,13 @@ object HCItems {
             event.modify(item) { builder: DataComponentPatch.Builder -> builder.set(type, value) }
         }
 
+        modify(AMBROSIA, HCDataComponents.DESCRIPTION, HCTranslation.AMBROSIA)
         modify(ELDER_HEART, HCDataComponents.DESCRIPTION, HCTranslation.ELDER_HEART)
         modify(ELDRITCH_EGG, HCDataComponents.DESCRIPTION, HCTranslation.ELDRITCH_EGG)
+        modify(ETERNAL_UPGRADE, HCDataComponents.DESCRIPTION, HCTranslation.ETERNAL_UPGRADE)
+        modify(IRIDESCENT_POWDER, HCDataComponents.DESCRIPTION, HCTranslation.IRIDESCENT_POWDER)
         modify(SLOT_COVER, HCDataComponents.DESCRIPTION, HCTranslation.SLOT_COVER)
         modify(TRADER_CATALOG, HCDataComponents.DESCRIPTION, HCTranslation.TRADER_CATALOG)
-        modify(IRIDESCENT_POWDER, HCDataComponents.DESCRIPTION, HCTranslation.IRIDESCENT_POWDER)
-        modify(ALMIGHTY_PICKAXE, HCDataComponents.DESCRIPTION, HCTranslation.ETERNAL_UPGRADE)
-        modify(AMBROSIA, HCDataComponents.DESCRIPTION, HCTranslation.AMBROSIA)
     }
 
     @JvmStatic

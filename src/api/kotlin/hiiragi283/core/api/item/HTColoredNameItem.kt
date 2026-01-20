@@ -1,10 +1,9 @@
 package hiiragi283.core.api.item
 
-import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.text.translatableText
-import hiiragi283.core.api.text.withStyle
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
+import net.minecraft.network.chat.TextColor
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 
@@ -18,13 +17,13 @@ abstract class HTColoredNameItem(properties: Properties) : Item(properties) {
      * 表示名の色を取得します。
      * @return 色を付けない場合は`null`
      */
-    protected abstract fun getNameColor(stack: ItemStack): HTDefaultColor?
+    protected abstract fun getNameColor(stack: ItemStack): TextColor?
 
     override fun getName(stack: ItemStack): Component {
         var name: MutableComponent = translatableText(getDescriptionId(stack))
-        val color: HTDefaultColor? = getNameColor(stack)
+        val color: TextColor? = getNameColor(stack)
         if (color != null) {
-            name = name.withStyle(color)
+            name = name.withColor(color.value)
         }
         return name
     }

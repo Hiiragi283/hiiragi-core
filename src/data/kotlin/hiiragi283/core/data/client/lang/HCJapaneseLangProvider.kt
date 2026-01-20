@@ -58,7 +58,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.SLOT_COVER, "スロットカバー")
         add(HCItems.TRADER_CATALOG, "行商人のカタログ")
 
-        add(HCItems.IRIDESCENT_POWDER, "虹色の粉")
+        add(HCItems.CHROMATIC_POWDER, "　色の粉")
+        add(HCItems.IRIDESCENT_POWDER, "七色の粉")
         add(HCItems.AMBROSIA, "アンブロシア")
         add(HCItems.ETERNAL_UPGRADE, "永遠の鍛冶型")
         add(HCItems.ALMIGHTY_PICKAXE, "全能なるツルハシ")

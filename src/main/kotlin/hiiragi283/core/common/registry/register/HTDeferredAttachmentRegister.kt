@@ -1,8 +1,10 @@
 package hiiragi283.core.common.registry.register
 
 import hiiragi283.core.api.registry.HTDeferredRegister
+import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.common.registry.HTDeferredAttachmentType
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.neoforge.attachment.AttachmentType
 import net.neoforged.neoforge.attachment.IAttachmentHolder
@@ -18,6 +20,34 @@ class HTDeferredAttachmentRegister(namespace: String) :
         register(name) { _: ResourceLocation -> builder.build() }
         return HTDeferredAttachmentType(createId(name))
     }
+
+    fun <TYPE : Any> registerSerializable(
+        name: String,
+        factory: Function<IAttachmentHolder, TYPE>,
+        codec: BiCodec<in RegistryFriendlyByteBuf, TYPE>,
+        operator: UnaryOperator<AttachmentType.Builder<TYPE>> = UnaryOperator.identity(),
+    ): HTDeferredAttachmentType<TYPE> = registerType(
+        name,
+        AttachmentType
+            .builder(factory)
+            .serialize(codec.codec)
+            .sync(codec.streamCodec)
+            .let(operator::apply),
+    )
+
+    fun <TYPE : Any> registerSerializable(
+        name: String,
+        supplier: Supplier<TYPE>,
+        codec: BiCodec<in RegistryFriendlyByteBuf, TYPE>,
+        operator: UnaryOperator<AttachmentType.Builder<TYPE>> = UnaryOperator.identity(),
+    ): HTDeferredAttachmentType<TYPE> = registerType(
+        name,
+        AttachmentType
+            .builder(supplier)
+            .serialize(codec.codec)
+            .sync(codec.streamCodec)
+            .let(operator::apply),
+    )
 
     fun <TYPE : INBTSerializable<CompoundTag>> registerSerializable(
         name: String,

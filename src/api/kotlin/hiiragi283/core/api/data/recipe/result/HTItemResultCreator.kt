@@ -31,6 +31,8 @@ data object HTItemResultCreator : HTResultCreator<Item, HTItemResourceType, Item
         amount: Int = defaultAmount(),
     ): HTItemResult = create(item, prefix.itemTagKey(material), amount)
 
+    fun create(stack: ItemStack): HTItemResult = create(resourceFactory().fromStackOrThrow(stack), stack.count)
+
     //    HTResultCreator    //
 
     override fun resourceFactory(): HTItemResourceFactory = HTItemResourceFactory
