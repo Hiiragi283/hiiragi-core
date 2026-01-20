@@ -366,7 +366,14 @@ object HCMaterialEventHandler {
 
         registerMetal(CommonMaterialKeys.TUNGSTEN, "Tungsten", "パラジウム")
         registerMetal(CommonMaterialKeys.OSMIUM, "Osmium", "オスミウム")
-        registerMetal(CommonMaterialKeys.IRIDIUM, "Iridium", "イリジウム")
+        event.modify(CommonMaterialKeys.IRIDIUM) {
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
+            setBlockPrefixes(CommonTagPrefixes.ORES.plus(CommonTagPrefixes.RAW_BLOCK).plus(CommonTagPrefixes.BLOCK))
+            setItemPrefixes(metalSet.plus(partSet))
+
+            setName("Iridium", "イリジウム")
+            setTextureSet(HTMaterialTextureSet.SHINE)
+        }
         registerMetal(CommonMaterialKeys.PLATINUM, "Platinum", "白金")
         registerMetal(CommonMaterialKeys.LEAD, "Lead", "鉛")
 

@@ -7,6 +7,7 @@ import com.lowdragmc.lowdraglib2.integration.xei.IngredientIO
 import com.lowdragmc.lowdraglib2.integration.xei.emi.ModularUIEMIRecipe
 import dev.emi.emi.api.recipe.EmiRecipe
 import dev.emi.emi.api.recipe.EmiRecipeCategory
+import dev.emi.emi.api.stack.EmiStack
 import dev.emi.emi.api.widget.Bounds
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.function.partially1
@@ -68,6 +69,8 @@ abstract class HTModularEmiRecipe<RECIPE : Any>(
     final override fun getCategory(): EmiRecipeCategory = category
 
     final override fun getId(): ResourceLocation = id
+
+    final override fun getOutputs(): List<EmiStack> = super.outputs.filterNot(EmiStack::isEmpty)
 
     final override fun getDisplayWidth(): Int = bounds.width
 

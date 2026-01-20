@@ -77,17 +77,6 @@ object HCItems {
     @JvmField
     val WITHER_STAR: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wither_star")
 
-    //    Foods   //
-
-    @JvmField
-    val ANIMAL_FAT: HTSimpleDeferredItem = REGISTER.registerSimpleItem("animal_fat")
-
-    @JvmField
-    val PULPED_FISH: HTSimpleDeferredItem = REGISTER.registerSimpleItem("pulped_fish")
-
-    @JvmField
-    val PULPED_SEED: HTSimpleDeferredItem = REGISTER.registerSimpleItem("pulped_seed")
-
     //    Tools   //
 
     //    Utilities    //

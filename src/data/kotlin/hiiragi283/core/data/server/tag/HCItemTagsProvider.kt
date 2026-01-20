@@ -113,10 +113,5 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
         factory
             .apply(HiiragiCoreTags.Items.IGNORED_IN_RECIPE_INPUTS)
             .add(HCItems.SLOT_COVER)
-        factory
-            .apply(HiiragiCoreTags.Items.ORGANIC_OILS)
-            .add(HCItems.ANIMAL_FAT)
-            .add(HCItems.PULPED_FISH)
-            .add(HCItems.PULPED_SEED)
     }
 }

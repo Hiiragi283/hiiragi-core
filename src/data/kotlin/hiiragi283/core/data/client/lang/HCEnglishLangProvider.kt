@@ -52,10 +52,6 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.WITHER_DOLL, "Wither Doll")
         add(HCItems.WITHER_STAR, "Wither Star")
 
-        add(HCItems.ANIMAL_FAT, "Animal Fat")
-        add(HCItems.PULPED_FISH, "Pulped Fish")
-        add(HCItems.PULPED_SEED, "Pulped Seed")
-
         add(HCItems.ELDRITCH_EGG, "Eldritch Egg")
         add(HCItems.FLUID_FILTER, "Fluid Filter")
         add(HCItems.ITEM_FILTER, "Item Filter")

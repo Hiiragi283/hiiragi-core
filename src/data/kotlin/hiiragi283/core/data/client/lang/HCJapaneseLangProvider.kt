@@ -52,10 +52,6 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.WITHER_DOLL, "ウィザー人形")
         add(HCItems.WITHER_STAR, "ウィザースター")
 
-        add(HCItems.ANIMAL_FAT, "獣脂")
-        add(HCItems.PULPED_FISH, "魚のパルプ")
-        add(HCItems.PULPED_SEED, "種のパルプ")
-
         add(HCItems.ELDRITCH_EGG, "異質な卵")
         add(HCItems.FLUID_FILTER, "液体フィルター")
         add(HCItems.ITEM_FILTER, "アイテムフィルター")
