@@ -117,6 +117,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCTranslation.AMBROSIA, "いつでも食べられる上，いくら食べてもなくなりません！")
         add(HCTranslation.ELDER_HEART, "エルダーガーディアンからドロップします。")
         add(HCTranslation.ELDRITCH_EGG, "右クリックで投げることができ，モブに当たるとスポーンエッグになります。")
+        add(HCTranslation.ETERNAL_UPGRADE, "エンダードラゴンからドロップします。")
         add(HCTranslation.IRIDESCENT_POWDER, "時間経過やダメージで消滅しません。")
         add(HCTranslation.SLOT_COVER, "機械のスロットに入れることでレシピ判定から無視されます。")
         add(HCTranslation.TRADER_CATALOG, "行商人からドロップします。右クリックで行商人との取引を行えます。")
@@ -125,7 +126,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HCTranslation.ETERNAL_UPGRADE_APPLIES_TO, "任意の装備品")
         add(HCTranslation.ETERNAL_UPGRADE_INGREDIENTS, "イリジウムインゴット")
-        add(HCTranslation.ETERNAL_UPGRADE, "不可壊強化")
+        add(HCTranslation.ETERNAL_UPGRADE_DESC, "不可壊強化")
         add(HCTranslation.ETERNAL_UPGRADE_BASE_SLOT_DESCRIPTION, "任意の防具，武器，道具を置いてください")
         add(HCTranslation.ETERNAL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION, "イリジウムインゴットを置いてください")
     }

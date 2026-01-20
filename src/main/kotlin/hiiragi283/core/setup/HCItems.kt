@@ -1,7 +1,6 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.text.HTTranslation
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.capability.HTItemCapabilities
 import hiiragi283.core.common.item.HTAlmightyPickaxe
@@ -21,7 +20,6 @@ import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.world.food.FoodConstants
 import net.minecraft.world.food.FoodProperties
-import net.minecraft.world.item.Item
 import net.minecraft.world.level.ItemLike
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
@@ -67,9 +65,7 @@ object HCItems {
     val MAGMA_SHARD: HTSimpleDeferredItem = REGISTER.registerSimpleItem("magma_shard")
 
     @JvmField
-    val ELDER_HEART: HTSimpleDeferredItem = REGISTER.registerSimpleItem("elder_heart") {
-        it.description(HCTranslation.ELDER_HEART)
-    }
+    val ELDER_HEART: HTSimpleDeferredItem = REGISTER.registerSimpleItem("elder_heart")
 
     @JvmField
     val WITHER_DOLL: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wither_doll")
@@ -82,9 +78,7 @@ object HCItems {
     //    Utilities    //
 
     @JvmField
-    val ELDRITCH_EGG: HTSimpleDeferredItem = REGISTER.registerItem("eldritch_egg", ::HTCaptureEggItem) {
-        it.description(HCTranslation.ELDRITCH_EGG)
-    }
+    val ELDRITCH_EGG: HTSimpleDeferredItem = REGISTER.registerItem("eldritch_egg", ::HTCaptureEggItem)
 
     @JvmField
     val FLUID_FILTER: HTSimpleDeferredItem = REGISTER.registerItem("fluid_filter", ::HTFluidFilterItem)
@@ -93,21 +87,15 @@ object HCItems {
     val ITEM_FILTER: HTSimpleDeferredItem = REGISTER.registerItem("item_filter", ::HTItemFilterItem)
 
     @JvmField
-    val SLOT_COVER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("slot_cover") {
-        it.description(HCTranslation.SLOT_COVER)
-    }
+    val SLOT_COVER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("slot_cover")
 
     @JvmField
-    val TRADER_CATALOG: HTSimpleDeferredItem = REGISTER.registerItem("trader_catalog", ::HTTraderCatalogItem) {
-        it.description(HCTranslation.TRADER_CATALOG)
-    }
+    val TRADER_CATALOG: HTSimpleDeferredItem = REGISTER.registerItem("trader_catalog", ::HTTraderCatalogItem)
 
     //    End Game    //
 
     @JvmField
-    val IRIDESCENT_POWDER: HTSimpleDeferredItem = REGISTER.registerItem("iridescent_powder", ::HTCreativeItem) {
-        it.description(HCTranslation.IRIDESCENT_POWDER)
-    }
+    val IRIDESCENT_POWDER: HTSimpleDeferredItem = REGISTER.registerItem("iridescent_powder", ::HTCreativeItem)
 
     @JvmField
     val AMBROSIA: HTSimpleDeferredItem = REGISTER.registerItem("ambrosia", ::HTAmbrosiaItem) {
@@ -119,7 +107,7 @@ object HCItems {
                     .saturationModifier(0.5f)
                     .alwaysEdible()
                     .build(),
-            ).description(HCTranslation.AMBROSIA)
+            )
     }
 
     @JvmField
@@ -135,6 +123,14 @@ object HCItems {
         fun <T : Any> modify(item: ItemLike, type: DataComponentType<T>, value: T) {
             event.modify(item) { builder: DataComponentPatch.Builder -> builder.set(type, value) }
         }
+
+        modify(ELDER_HEART, HCDataComponents.DESCRIPTION, HCTranslation.ELDER_HEART)
+        modify(ELDRITCH_EGG, HCDataComponents.DESCRIPTION, HCTranslation.ELDRITCH_EGG)
+        modify(SLOT_COVER, HCDataComponents.DESCRIPTION, HCTranslation.SLOT_COVER)
+        modify(TRADER_CATALOG, HCDataComponents.DESCRIPTION, HCTranslation.TRADER_CATALOG)
+        modify(IRIDESCENT_POWDER, HCDataComponents.DESCRIPTION, HCTranslation.IRIDESCENT_POWDER)
+        modify(ALMIGHTY_PICKAXE, HCDataComponents.DESCRIPTION, HCTranslation.ETERNAL_UPGRADE)
+        modify(AMBROSIA, HCDataComponents.DESCRIPTION, HCTranslation.AMBROSIA)
     }
 
     @JvmStatic
@@ -143,9 +139,4 @@ object HCItems {
 
         HTItemCapabilities.registerItem(event, 9, HTComponentItemSlot::create, ITEM_FILTER)
     }
-
-    //    Extensions    //
-
-    private fun Item.Properties.description(translation: HTTranslation): Item.Properties =
-        this.component(HCDataComponents.DESCRIPTION, translation)
 }

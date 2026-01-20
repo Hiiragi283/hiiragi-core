@@ -118,6 +118,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCTranslation.AMBROSIA, "ALWAYS EDIBLE and NOT CONSUMED!")
         add(HCTranslation.ELDER_HEART, "Dropped from Elder Guardian.")
         add(HCTranslation.ELDRITCH_EGG, "Can be throwable by right-click，and capture mobs when hit.")
+        add(HCTranslation.ETERNAL_UPGRADE, "Dropped from Ender Dragon.")
         add(HCTranslation.IRIDESCENT_POWDER, "Do not expire by time over or any damage.")
         add(HCTranslation.SLOT_COVER, "Ignored by recipes when placed in machine slot.")
         add(HCTranslation.TRADER_CATALOG, "Dropped from Wandering Trader. Right-click to trade with merchant.")
@@ -126,7 +127,7 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         add(HCTranslation.ETERNAL_UPGRADE_APPLIES_TO, "Any Equipment")
         add(HCTranslation.ETERNAL_UPGRADE_INGREDIENTS, "Iridium Ingot")
-        add(HCTranslation.ETERNAL_UPGRADE, "Unbreakable Upgrade")
+        add(HCTranslation.ETERNAL_UPGRADE_DESC, "Unbreakable Upgrade")
         add(HCTranslation.ETERNAL_UPGRADE_BASE_SLOT_DESCRIPTION, "Add any armor, weapon, or tool")
         add(HCTranslation.ETERNAL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION, "Add Iridium Ingot")
     }

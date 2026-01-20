@@ -15,7 +15,7 @@ class HTEternalUpgradeItem :
     SmithingTemplateItem(
         HCTranslation.ETERNAL_UPGRADE_APPLIES_TO.translateColored(HTDefaultColor.BLUE),
         HCTranslation.ETERNAL_UPGRADE_INGREDIENTS.translateColored(HTDefaultColor.BLUE),
-        HCTranslation.ETERNAL_UPGRADE.translateColored(HTDefaultColor.GRAY),
+        HCTranslation.ETERNAL_UPGRADE_DESC.translateColored(HTDefaultColor.GRAY),
         HCTranslation.ETERNAL_UPGRADE_BASE_SLOT_DESCRIPTION.translate(),
         HCTranslation.ETERNAL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION.translate(),
         listOf(

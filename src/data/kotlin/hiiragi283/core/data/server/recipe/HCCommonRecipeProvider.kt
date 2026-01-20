@@ -138,14 +138,13 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             .save(output)
         save(id(HTConst.SMITHING, "eternal_upgrade"), HTEternalSmithingRecipe)
         // Almighty Pickaxe
-        HTShapedRecipeBuilder
+        HTShapelessRecipeBuilder
             .create(HCItems.ALMIGHTY_PICKAXE)
-            .pattern(
-                "AAA",
-                " B ",
-                " B ",
-            ).define('A', CommonTagPrefixes.INGOT, CommonMaterialKeys.IRIDIUM)
-            .define('B', CommonTagPrefixes.INGOT, CommonMaterialKeys.STEEL)
+            .addIngredient(Items.NETHERITE_SHOVEL)
+            .addIngredient(Items.NETHERITE_PICKAXE)
+            .addIngredient(Items.NETHERITE_AXE)
+            .addIngredient(Items.NETHERITE_HOE)
+            .addIngredients(CommonTagPrefixes.INGOT, CommonMaterialKeys.IRIDIUM, 4)
             .save(output)
     }
 
