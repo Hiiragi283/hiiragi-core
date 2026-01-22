@@ -27,6 +27,9 @@ object HiiragiCoreTags {
         @JvmField
         val COAL_COKE: TagKey<Item> = common("coal_coke")
 
+        @JvmField
+        val TOOLS_HAMMER: TagKey<Item> = common("tools", "hammer")
+
         // Mod
         @JvmField
         val ELDRITCH_PEARL_BINDER: TagKey<Item> = mod("eldritch_pearl_binder")

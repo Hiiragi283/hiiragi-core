@@ -20,7 +20,7 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
             .exploding(
                 itemCreator.fromTagKeys(listOf(Tags.Items.STONES, Tags.Items.COBBLESTONES_NORMAL), amount = 2),
                 itemResult.create(Items.COBBLED_DEEPSLATE),
-                3f
+                3f,
             ).save(output)
         // Ancient Debris -> Netherite Scrap
         HTSingleItemRecipeBuilder
@@ -46,7 +46,7 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
             .exploding(
                 itemCreator.fromTagKey(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.QUARTZ, 4),
                 itemResult.create(Items.GHAST_TEAR),
-                3f
+                3f,
             ).save(output)
 
         gems()

@@ -111,6 +111,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCTranslation.WARPED_WART, "食べるとランダムにデバフを一つだけ消します。")
 
         add(HCTranslation.CREATIVE_TAB_MATERIAL, "Hiiragi Core - 素材")
+        add(HCTranslation.CREATIVE_TAB_EQUIPMENT, "Hiiragi Core - 装備品")
 
         add(HCTranslation.MOLTEN_METAL, "溶融%s")
         add(HCTranslation.MOLTEN_METAL_BUCKET, "溶融%s入りバケツ")

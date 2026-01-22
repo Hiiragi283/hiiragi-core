@@ -8,11 +8,14 @@ import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTStonecuttingRecipeBuilder
 import net.minecraft.core.component.DataComponents
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -38,6 +41,8 @@ object HCRuntimeRecipeHandler {
         crushToDust(event, CommonTagPrefixes.PLATE)
 
         flourToDough(event)
+        ingotToPlate(event)
+        plateToWire(event)
     }
 
     @JvmStatic
@@ -98,6 +103,33 @@ object HCRuntimeRecipeHandler {
                 .addIngredients(crushedPrefix, key, 3)
                 .addIngredient(Tags.Items.BUCKETS_WATER)
                 .saveSuffixed(event.output, "_with_bucket")
+        }
+    }
+
+    @JvmStatic
+    private fun ingotToPlate(event: HTRegisterRuntimeRecipeEvent) {
+        for ((key: HTMaterialKey, _) in event.getAllMaterials()) {
+            if (!event.isPresentTag(CommonTagPrefixes.INGOT, key)) continue
+            val plate: Item = event.getFirstHolder(CommonTagPrefixes.PLATE, key)?.value() ?: continue
+            // Crafting
+            HTShapelessRecipeBuilder
+                .create(plate)
+                .addIngredient(CommonTagPrefixes.INGOT, key)
+                .addIngredient(HiiragiCoreTags.Items.TOOLS_HAMMER)
+                .saveSuffixed(event.output, "_from_ingot")
+        }
+    }
+
+    @JvmStatic
+    private fun plateToWire(event: HTRegisterRuntimeRecipeEvent) {
+        for ((key: HTMaterialKey, _) in event.getAllMaterials()) {
+            if (!event.isPresentTag(CommonTagPrefixes.PLATE, key)) continue
+            val wire: Item = event.getFirstHolder(CommonTagPrefixes.WIRE, key)?.value() ?: continue
+            // Stonecutting
+            HTStonecuttingRecipeBuilder
+                .create(wire)
+                .addIngredient(CommonTagPrefixes.PLATE, key)
+                .saveSuffixed(event.output, "_from_plate")
         }
     }
 }

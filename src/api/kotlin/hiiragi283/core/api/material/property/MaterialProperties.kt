@@ -1,9 +1,12 @@
 package hiiragi283.core.api.material.property
 
 import hiiragi283.core.api.data.lang.HTLangName
+import hiiragi283.core.api.item.tool.HTToolMaterial
+import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.property.computeIfAbsent
+import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.tags.TagKey
@@ -19,16 +22,6 @@ fun HTPropertyMap.getStorageBlock(): HTStorageBlockProperty = this.getOrDefault(
 
 // Mutable
 
-fun <K : Any, V : Any> HTPropertyMap.Mutable.computeMap(propertyKey: HTPropertyKey<Map<K, V>>, pair: Pair<K, V>) {
-    val newMap: Map<K, V> = this[propertyKey]?.plus(pair) ?: mapOf(pair)
-    this[propertyKey] = newMap
-}
-
-fun <K : Any, V : Any> HTPropertyMap.Mutable.computeMap(propertyKey: HTPropertyKey<Map<K, V>>, vararg pairs: Pair<K, V>) {
-    val newMap: Map<K, V> = this[propertyKey]?.plus(pairs) ?: mapOf(*pairs)
-    this[propertyKey] = newMap
-}
-
 fun HTPropertyMap.Mutable.setDefaultPart(tagKey: TagKey<Item>, altItem: HTItemHolderLike<*>) {
     this[HTMaterialPropertyKeys.DEFAULT_PART] = HTDefaultPart.Tag(tagKey, altItem)
 }
@@ -37,20 +30,30 @@ fun HTPropertyMap.Mutable.setDefaultPart(prefixed: HTDefaultPart.Prefixed) {
     this[HTMaterialPropertyKeys.DEFAULT_PART] = prefixed
 }
 
-fun HTPropertyMap.Mutable.setBlockPrefixes(vararg tagPrefixes: HTTagPrefix) {
-    this.setBlockPrefixes(setOf(*tagPrefixes))
+fun HTPropertyMap.Mutable.addBlockPrefixes(vararg tagPrefixes: HTTagPrefix) {
+    this.computeIfAbsent(HTMaterialPropertyKeys.BLOCK_PREFIXES) { it.plus(tagPrefixes) }
 }
 
-fun HTPropertyMap.Mutable.setBlockPrefixes(tagPrefixes: Set<HTTagPrefix>) {
-    this[HTMaterialPropertyKeys.BLOCK_PREFIXES] = tagPrefixes
+fun HTPropertyMap.Mutable.addBlockPrefixes(tagPrefixes: Set<HTTagPrefix>) {
+    this.computeIfAbsent(HTMaterialPropertyKeys.BLOCK_PREFIXES) { it.plus(tagPrefixes) }
 }
 
-fun HTPropertyMap.Mutable.setItemPrefixes(vararg tagPrefixes: HTTagPrefix) {
-    this.setItemPrefixes(setOf(*tagPrefixes))
+fun HTPropertyMap.Mutable.addItemPrefixes(vararg tagPrefixes: HTTagPrefix) {
+    this.computeIfAbsent(HTMaterialPropertyKeys.ITEM_PREFIXES) { it.plus(tagPrefixes) }
 }
 
-fun HTPropertyMap.Mutable.setItemPrefixes(tagPrefixes: Set<HTTagPrefix>) {
-    this[HTMaterialPropertyKeys.ITEM_PREFIXES] = tagPrefixes
+fun HTPropertyMap.Mutable.addItemPrefixes(tagPrefixes: Set<HTTagPrefix>) {
+    this.computeIfAbsent(HTMaterialPropertyKeys.ITEM_PREFIXES) { it.plus(tagPrefixes) }
+}
+
+fun HTPropertyMap.Mutable.addToolPrefixes(material: HTToolMaterial, vararg toolTypes: HTToolType) {
+    this[HTMaterialPropertyKeys.TOOL_MATERIAL] = material
+    this.computeIfAbsent(HTMaterialPropertyKeys.TOOL_PREFIXES) { it.plus(toolTypes) }
+}
+
+fun HTPropertyMap.Mutable.addToolPrefixes(material: HTToolMaterial, toolTypes: Set<HTToolType>) {
+    this[HTMaterialPropertyKeys.TOOL_MATERIAL] = material
+    this.computeIfAbsent(HTMaterialPropertyKeys.TOOL_PREFIXES) { it.plus(toolTypes) }
 }
 
 fun HTPropertyMap.Mutable.setName(enName: String, jaName: String) {
@@ -66,7 +69,7 @@ fun HTPropertyMap.Mutable.addCustomName(prefix: HTTagPrefix, enName: String, jaN
 }
 
 fun HTPropertyMap.Mutable.addCustomName(prefix: HTTagPrefix, value: HTLangName) {
-    this.computeMap(HTMaterialPropertyKeys.CUSTOM_LANG_NAME, prefix to value)
+    this.computeIfAbsent(HTMaterialPropertyKeys.CUSTOM_LANG_NAME) { it.plus(prefix to value) }
 }
 
 fun HTPropertyMap.Mutable.setTextureSet(name: String, parent: HTMaterialTextureSet = HTMaterialTextureSet.DEFAULT) {

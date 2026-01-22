@@ -13,6 +13,7 @@ enum class HCTranslation(type: String, vararg path: String) : HTTranslation {
 
     // Creative Mode Tab
     CREATIVE_TAB_MATERIAL("itemGroup", "material"),
+    CREATIVE_TAB_EQUIPMENT("itemGroup", "equipment"),
 
     // Fluid
     MOLTEN_METAL("fluid", "molten_metal"),

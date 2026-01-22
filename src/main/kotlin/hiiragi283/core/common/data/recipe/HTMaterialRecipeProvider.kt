@@ -2,6 +2,8 @@ package hiiragi283.core.common.data.recipe
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
+import hiiragi283.core.api.item.tool.CommonToolTypes
+import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
@@ -36,7 +38,18 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
         ?.takeIf { it.getNamespace() == modId }
         ?: HTMaterialContentsAccess.INSTANCE.getVanillaTable()[prefix, material.asMaterialKey()]
 
+    private fun getTool(toolType: HTToolType, material: HTMaterialLike): HTItemHolderLike<*>? = HTMaterialContentsAccess.INSTANCE
+        .getTool(toolType, material)
+        ?.takeIf { it.getNamespace() == modId }
+
     override fun buildRecipeInternal() {
+        material()
+        tool()
+    }
+
+    //    Material    //
+
+    private fun material() {
         baseToBlock()
         rawToBlock()
 
@@ -145,7 +158,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
         }
     }
 
-    fun ingotToNugget() {
+    private fun ingotToNugget() {
         for (key: HTMaterialKey in HTMaterialManager.INSTANCE.keys) {
             val nugget: HTItemHolderLike<*> = getItem(CommonTagPrefixes.NUGGET, key) ?: continue
             if (nugget.getNamespace() == HTConst.MINECRAFT) continue
@@ -162,6 +175,86 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
                 .define('A', CommonTagPrefixes.NUGGET, key)
                 .define('B', nugget)
                 .save(output, key.getId().withSuffix("/ingot_from_nugget"))
+        }
+    }
+
+    //    Tool    //
+
+    private fun tool() {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE.entries) {
+            val defaultPart: HTDefaultPart = propertyMap.getDefaultPart() ?: continue
+            // Sword
+            getTool(CommonToolTypes.SWORD, key)?.let { sword ->
+                HTShapedRecipeBuilder
+                    .create(sword)
+                    .pattern(
+                        "A",
+                        "A",
+                        "B",
+                    ).define('A', defaultPart.getTag(key))
+                    .define('B', Tags.Items.RODS_WOODEN)
+                    .save(output)
+            }
+            // Shovel
+            getTool(CommonToolTypes.SHOVEL, key)?.let { shovel ->
+                HTShapedRecipeBuilder
+                    .create(shovel)
+                    .pattern(
+                        "A",
+                        "B",
+                        "B",
+                    ).define('A', defaultPart.getTag(key))
+                    .define('B', Tags.Items.RODS_WOODEN)
+                    .save(output)
+            }
+            // Pickaxe
+            getTool(CommonToolTypes.PICKAXE, key)?.let { pickaxe ->
+                HTShapedRecipeBuilder
+                    .create(pickaxe)
+                    .pattern(
+                        "AAA",
+                        " B ",
+                        " B ",
+                    ).define('A', defaultPart.getTag(key))
+                    .define('B', Tags.Items.RODS_WOODEN)
+                    .save(output)
+            }
+            // Axe
+            getTool(CommonToolTypes.PICKAXE, key)?.let { axe ->
+                HTShapedRecipeBuilder
+                    .create(axe)
+                    .pattern(
+                        "AA",
+                        "AB",
+                        " B",
+                    ).define('A', defaultPart.getTag(key))
+                    .define('B', Tags.Items.RODS_WOODEN)
+                    .save(output)
+            }
+            // Hoe
+            getTool(CommonToolTypes.HOE, key)?.let { hoe ->
+                HTShapedRecipeBuilder
+                    .create(hoe)
+                    .pattern(
+                        "AA",
+                        " B",
+                        " B",
+                    ).define('A', defaultPart.getTag(key))
+                    .define('B', Tags.Items.RODS_WOODEN)
+                    .save(output)
+            }
+            // Hammer
+            getTool(CommonToolTypes.HAMMER, key)?.let { hammer ->
+                HTShapedRecipeBuilder
+                    .create(hammer)
+                    .pattern(
+                        "  B",
+                        "AB ",
+                        "BA ",
+                    ).define('A', defaultPart.getTag(key))
+                    .define('B', Tags.Items.RODS_WOODEN)
+                    .save(output)
+            }
         }
     }
 }

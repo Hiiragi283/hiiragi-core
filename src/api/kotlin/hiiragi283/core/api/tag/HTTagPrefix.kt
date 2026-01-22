@@ -31,8 +31,7 @@ class HTTagPrefix private constructor(val name: String, properties: HTPropertyMa
          */
         fun createId(material: HTMaterialLike): ResourceLocation {
             val pathPattern: String = this[HTTagPropertyKeys.ID_PATTERN] ?: "%s_$name"
-            val materialId: ResourceLocation = material.asMaterialId()
-            return materialId.namespace.toId(pathPattern.replace("%s", materialId.path))
+            return material.asMaterialId().withPath { pathPattern.replace("%s", it) }
         }
 
         /**

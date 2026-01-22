@@ -4,10 +4,13 @@ import hiiragi283.core.api.collection.ImmutableTable
 import hiiragi283.core.api.collection.immutableTableOf
 import hiiragi283.core.api.collection.toFlatTable
 import hiiragi283.core.api.item.HTBlockItem
+import hiiragi283.core.api.item.tool.HTToolMaterial
+import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.common.material.HTMaterialManagerImpl
@@ -37,6 +40,10 @@ object HCMiscRegister {
         private set
 
     @JvmStatic
+    internal var toolItems: ImmutableTable<HTToolType, HTMaterialKey, HTSimpleDeferredItem> = immutableTableOf()
+        private set
+
+    @JvmStatic
     fun register(event: RegisterEvent) {
         // 素材のプロパティを定義する
         if (!hasInit) {
@@ -44,13 +51,13 @@ object HCMiscRegister {
             hasInit = true
         }
         val manager: HTMaterialManager = HTMaterialManager.INSTANCE
-        // 素材ブロックを生成する
         event.register(Registries.BLOCK) { helper ->
+            // 素材ブロックを生成する
             materialBlocks = manager.entries
                 .toFlatTable { (key: HTMaterialKey, propertyMap: HTPropertyMap) ->
                     propertyMap
                         .getOrDefault(HTMaterialPropertyKeys.BLOCK_PREFIXES)
-                        .mapNotNull { prefix ->
+                        .mapNotNull { prefix: HTTagPrefix ->
                             val properties: BlockBehaviour.Properties = prefix[HTTagPropertyKeys.BLOCK_PROP] ?: return@mapNotNull null
                             val id: ResourceLocation = prefix.createId(key)
                             val block = Block(properties)
@@ -60,12 +67,13 @@ object HCMiscRegister {
                                 id,
                                 HTBlockItem(block, Item.Properties()),
                             )
-                            Triple(prefix, key, HTDeferredBlock<Block, HTBlockItem<Block>>(id))
+                            Triple(prefix, key, HTDeferredBlock(id))
                         }
                 }
         }
-        // 素材アイテムを生成する
+
         event.register(Registries.ITEM) { helper ->
+            // 素材アイテムを生成する
             materialItems = manager.entries
                 .toFlatTable { (key: HTMaterialKey, propertyMap: HTPropertyMap) ->
                     propertyMap
@@ -74,6 +82,19 @@ object HCMiscRegister {
                             val id: ResourceLocation = prefix.createId(key)
                             helper.register(id, Item(Item.Properties()))
                             Triple(prefix, key, HTDeferredItem.simple(id))
+                        }
+                }
+            // 素材ツールを生成する
+            toolItems = manager.entries
+                .toFlatTable { (key: HTMaterialKey, propertyMap: HTPropertyMap) ->
+                    val material: HTToolMaterial =
+                        propertyMap[HTMaterialPropertyKeys.TOOL_MATERIAL] ?: return@toFlatTable setOf()
+                    propertyMap
+                        .getOrDefault(HTMaterialPropertyKeys.TOOL_PREFIXES)
+                        .map { toolType: HTToolType ->
+                            val id: ResourceLocation = toolType.createId(key)
+                            helper.register(id, toolType.toolFactory.createTool(material, Item.Properties()))
+                            Triple(toolType, key, HTDeferredItem.simple(id))
                         }
                 }
         }

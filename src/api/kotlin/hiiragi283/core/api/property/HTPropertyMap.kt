@@ -28,18 +28,6 @@ interface HTPropertyMap {
     operator fun <T> get(key: HTPropertyKey<T>): T?
 
     /**
-     * 指定した[key]に紐づいた値を返します。
-     * @return 値がない場合は[デフォルト値][HTPropertyKey.defaultValue]
-     */
-    fun <T> getOrDefault(key: HTPropertyKey<T>): T = get(key) ?: key.defaultValue
-
-    /**
-     * 指定した[key]に紐づいた値を返します。
-     * @throws IllegalStateException 値がない場合
-     */
-    fun <T> getOrThrow(key: HTPropertyKey<T>): T & Any = get(key) ?: error("Unbounded property: ${key.id}")
-
-    /**
      * 可変な[HTPropertyMap]の拡張インターフェースです。
      * @author Hiiragi Tsubasa
      * @since 0.6.0

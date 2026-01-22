@@ -112,6 +112,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCTranslation.WARPED_WART, "Clears one bad effect randomly when eaten.")
 
         add(HCTranslation.CREATIVE_TAB_MATERIAL, "Hiiragi Core - Material")
+        add(HCTranslation.CREATIVE_TAB_EQUIPMENT, "Hiiragi Core - Equipment")
 
         add(HCTranslation.MOLTEN_METAL, "Molten %s")
         add(HCTranslation.MOLTEN_METAL_BUCKET, "Molten %s Bucket")

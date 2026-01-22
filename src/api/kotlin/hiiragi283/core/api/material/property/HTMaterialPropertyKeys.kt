@@ -3,6 +3,8 @@ package hiiragi283.core.api.material.property
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangName
+import hiiragi283.core.api.item.tool.HTToolMaterial
+import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -55,16 +57,24 @@ object HTMaterialPropertyKeys {
      * @since 0.7.0
      */
     @JvmField
-    val BLOCK_PREFIXES: HTPropertyKey<Set<HTTagPrefix>> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("block_prefixes"), setOf())
+    val BLOCK_PREFIXES: HTPropertyKey<Set<HTTagPrefix>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("block_prefixes"))
 
     /**
      * 登録する素材アイテムに使われる[プロパティキー][HTPropertyKey]
      * @since 0.7.0
      */
     @JvmField
-    val ITEM_PREFIXES: HTPropertyKey<Set<HTTagPrefix>> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("item_prefixes"), setOf())
+    val ITEM_PREFIXES: HTPropertyKey<Set<HTTagPrefix>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("item_prefixes"))
+
+    /**
+     * 登録する素材ツールに使われる[プロパティキー][HTPropertyKey]
+     * @since 0.8.0
+     */
+    @JvmField
+    val TOOL_PREFIXES: HTPropertyKey<Set<HTToolType>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("tool_prefixes"))
+
+    @JvmField
+    val TOOL_MATERIAL: HTPropertyKey<HTToolMaterial?> = createNullable("tool_material")
 
     //    Data Gen    //
 

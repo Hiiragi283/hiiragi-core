@@ -3,11 +3,13 @@ package hiiragi283.core.api.data.lang
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
 import hiiragi283.core.api.data.advancement.descKey
 import hiiragi283.core.api.data.advancement.titleKey
+import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toDescriptionKey
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -44,6 +46,11 @@ sealed class HTLangProvider(output: PackOutput, val modId: String, val langType:
             for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in HTMaterialContentsAccess.INSTANCE.getItemMap(key)) {
                 val name: String = translate(langType, prefix, propertyMap) ?: continue
                 add(item, name)
+            }
+            // Tool
+            for ((toolType: HTToolType, item: HTHasTranslationKey) in HTMaterialContentsAccess.INSTANCE.getToolMap(key)) {
+                val materialName: HTLangName = propertyMap[HTMaterialPropertyKeys.LANG_NAME] ?: continue
+                add(item, toolType.langPattern.translate(langType, materialName))
             }
         }
     }

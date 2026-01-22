@@ -26,16 +26,43 @@ object HCCreativeTabs {
         HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCFluids.REGISTER.asItemSequence())
     }
 
-    @Suppress("DEPRECATION")
     @JvmField
-    val MATERIAL: HTDeferredHolder<CreativeModeTab, CreativeModeTab> = REGISTER.registerSimpleTab(
+    val MATERIAL: HTDeferredHolder<CreativeModeTab, CreativeModeTab> = REGISTER.registerTab(
         "material",
         HCTranslation.CREATIVE_TAB_MATERIAL,
-        Items.IRON_INGOT.builtInRegistryHolder(),
-    ) { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
-        // Items
-        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HTMaterialContentsAccess.INSTANCE.getAllItems())
-        // Blocks
-        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HTMaterialContentsAccess.INSTANCE.getAllBlocks())
+        Items.IRON_INGOT,
+    ) {
+        withTabsBefore(COMMON.key)
+        displayItems { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
+            // Items
+            HTDeferredCreativeTabRegister.addToDisplay(
+                parameters,
+                output,
+                HTMaterialContentsAccess.INSTANCE.getAllItems(),
+            )
+            // Blocks
+            HTDeferredCreativeTabRegister.addToDisplay(
+                parameters,
+                output,
+                HTMaterialContentsAccess.INSTANCE.getAllBlocks(),
+            )
+        }
+    }
+
+    @JvmField
+    val EQUIPMENT: HTDeferredHolder<CreativeModeTab, CreativeModeTab> = REGISTER.registerTab(
+        "equipment",
+        HCTranslation.CREATIVE_TAB_EQUIPMENT,
+        Items.IRON_PICKAXE,
+    ) {
+        withTabsBefore(MATERIAL.key)
+        displayItems { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
+            // Items
+            HTDeferredCreativeTabRegister.addToDisplay(
+                parameters,
+                output,
+                HTMaterialContentsAccess.INSTANCE.getAllTools(),
+            )
+        }
     }
 }

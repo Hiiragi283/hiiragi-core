@@ -3,6 +3,7 @@ package hiiragi283.core.data.server.tag
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.tag.HTItemTagsProvider
+import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTFluidContent
@@ -78,6 +79,11 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
     //    Tool    //
 
     private fun tool(factory: BuilderFactory<Item>) {
+        HTMaterialContentsAccess.INSTANCE.getToolTable().forEach { (toolType: HTToolType, key: HTMaterialKey, item: HTIdLike) ->
+            if (key.getNamespace() != modId) return@forEach
+            toolType.toolTags.map(factory::apply).forEach { it.add(item) }
+        }
+
         listOf(
             ItemTags.AXES,
             ItemTags.HOES,

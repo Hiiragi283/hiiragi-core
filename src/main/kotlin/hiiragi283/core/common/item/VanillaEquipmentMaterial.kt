@@ -1,59 +1,40 @@
 package hiiragi283.core.common.item
 
-import hiiragi283.core.api.item.HTEquipmentMaterial
-import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.common.material.VanillaMaterialKeys
+import hiiragi283.core.api.item.armor.HTArmorMaterial
+import hiiragi283.core.api.item.tool.HTToolMaterial
 import net.minecraft.core.Holder
-import net.minecraft.sounds.SoundEvent
-import net.minecraft.tags.TagKey
-import net.minecraft.world.item.ArmorItem
 import net.minecraft.world.item.ArmorMaterial
 import net.minecraft.world.item.ArmorMaterials
 import net.minecraft.world.item.Tier
 import net.minecraft.world.item.Tiers
-import net.minecraft.world.item.crafting.Ingredient
-import net.minecraft.world.level.block.Block
 
 enum class VanillaEquipmentMaterial(
-    private val material: HTMaterialLike,
     private val tier: Tier,
     private val axeDamage: Float,
     private val axeAttackSpeed: Float,
     private val armor: Holder<ArmorMaterial>,
     private val armorMultiplier: Int,
-) : HTEquipmentMaterial,
-    HTMaterialLike by material {
-    WOOD(VanillaMaterialKeys.WOOD, Tiers.WOOD, 6f, -3.2f, ArmorMaterials.LEATHER, 5),
-    STONE(VanillaMaterialKeys.STONE, Tiers.STONE, 7f, -3.2f, ArmorMaterials.CHAIN, 15),
-    IRON(VanillaMaterialKeys.IRON, Tiers.IRON, 6f, -3.1f, ArmorMaterials.IRON, 15),
-    GOLD(VanillaMaterialKeys.GOLD, Tiers.GOLD, 6f, -3f, ArmorMaterials.GOLD, 7),
-    DIAMOND(VanillaMaterialKeys.DIAMOND, Tiers.DIAMOND, 5f, -3f, ArmorMaterials.DIAMOND, 33),
-    NETHERITE(VanillaMaterialKeys.NETHERITE, Tiers.NETHERITE, 5f, -3f, ArmorMaterials.NETHERITE, 37),
+) : HTArmorMaterial.Delegated,
+    HTToolMaterial.Delegated {
+    WOOD(Tiers.WOOD, 6f, -3.2f, ArmorMaterials.LEATHER, 5),
+    STONE(Tiers.STONE, 7f, -3.2f, ArmorMaterials.CHAIN, 15),
+    IRON(Tiers.IRON, 6f, -3.1f, ArmorMaterials.IRON, 15),
+    GOLD(Tiers.GOLD, 6f, -3f, ArmorMaterials.GOLD, 7),
+    DIAMOND(Tiers.DIAMOND, 5f, -3f, ArmorMaterials.DIAMOND, 33),
+    NETHERITE(Tiers.NETHERITE, 5f, -3f, ArmorMaterials.NETHERITE, 37),
     ;
+
+    //    HTArmorMaterial    //
+
+    override fun getHolder(): Holder<ArmorMaterial> = armor
+
+    override fun getArmorMultiplier(): Int = armorMultiplier
+
+    //    HTToolMaterial    //
+
+    override fun getTier(): Tier = tier
 
     override fun getAxeDamage(): Float = axeDamage
 
     override fun getAxeAttackSpeed(): Float = axeAttackSpeed
-
-    override fun getToughness(): Float = armor.value().toughness
-
-    override fun getKnockbackResistance(): Float = armor.value().knockbackResistance
-
-    override fun getEquipSound(): Holder<SoundEvent> = armor.value().equipSound
-
-    override fun getArmorDefence(type: ArmorItem.Type): Int = armor.value().getDefense(type)
-
-    override fun getArmorMultiplier(): Int = armorMultiplier
-
-    override fun getUses(): Int = tier.uses
-
-    override fun getSpeed(): Float = tier.speed
-
-    override fun getAttackDamageBonus(): Float = tier.attackDamageBonus
-
-    override fun getIncorrectBlocksForDrops(): TagKey<Block> = tier.incorrectBlocksForDrops
-
-    override fun getEnchantmentValue(): Int = tier.enchantmentValue
-
-    override fun getRepairIngredient(): Ingredient = tier.repairIngredient
 }

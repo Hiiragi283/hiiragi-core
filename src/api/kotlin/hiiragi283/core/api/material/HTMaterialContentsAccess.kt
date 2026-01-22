@@ -2,6 +2,7 @@ package hiiragi283.core.api.material
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.ImmutableTable
+import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -14,8 +15,8 @@ interface HTMaterialContentsAccess {
          */
         val INSTANCE: HTMaterialContentsAccess = HiiragiCoreAPI.getService()
 
-        private val COMPARATOR: Comparator<Triple<HTTagPrefix, HTMaterialKey, *>> =
-            compareBy<Triple<HTTagPrefix, HTMaterialKey, *>> { it.first }.thenComparing { it.second }
+        private val COMPARATOR: Comparator<Triple<Comparable<*>, HTMaterialKey, *>> =
+            compareBy<Triple<Comparable<*>, HTMaterialKey, *>> { it.first }.thenComparing { it.second }
     }
 
     fun getVanillaTable(): ImmutableTable<HTTagPrefix, HTMaterialKey, out HTItemHolderLike<*>>
@@ -56,4 +57,22 @@ interface HTMaterialContentsAccess {
         getItemTable().entries.asSequence().sortedWith(COMPARATOR)
 
     fun getAllItems(): Sequence<HTItemHolderLike<*>> = getItemEntries().map { it.third }
+
+    //    Tool    //
+
+    fun getToolTable(): ImmutableTable<HTToolType, HTMaterialKey, out HTItemHolderLike<*>>
+
+    fun getTool(toolType: HTToolType, material: HTMaterialLike): HTItemHolderLike<*>? = getToolTable()[toolType, material.asMaterialKey()]
+
+    fun getToolOrThrow(toolType: HTToolType, material: HTMaterialLike): HTItemHolderLike<*> =
+        getTool(toolType, material) ?: error("Unknown ${toolType.name} for ${material.asMaterialId()}")
+
+    fun getToolMap(toolType: HTToolType): Map<HTMaterialKey, HTItemHolderLike<*>> = getToolTable().row(toolType)
+
+    fun getToolMap(material: HTMaterialLike): Map<HTToolType, HTItemHolderLike<*>> = getToolTable().column(material.asMaterialKey())
+
+    fun getToolEntries(): Sequence<Triple<HTToolType, HTMaterialKey, HTItemHolderLike<*>>> =
+        getToolTable().entries.asSequence().sortedWith(COMPARATOR)
+
+    fun getAllTools(): Sequence<HTItemHolderLike<*>> = getToolEntries().map { it.third }
 }

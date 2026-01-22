@@ -5,11 +5,11 @@ import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.text.HTTranslation
-import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent
 
 class HTDeferredCreativeTabRegister(namespace: String) :
@@ -71,7 +71,7 @@ class HTDeferredCreativeTabRegister(namespace: String) :
     fun registerSimpleTab(
         name: String,
         title: HTTranslation,
-        icon: Holder<Item>,
+        icon: ItemLike,
         builder: CreativeModeTab.DisplayItemsGenerator,
     ): HTDeferredHolder<CreativeModeTab, CreativeModeTab> = register(name) { _ ->
         CreativeModeTab
@@ -79,6 +79,20 @@ class HTDeferredCreativeTabRegister(namespace: String) :
             .title(title.translate())
             .icon { ItemStack(icon) }
             .displayItems(builder)
+            .build()
+    }
+
+    fun registerTab(
+        name: String,
+        title: HTTranslation,
+        icon: ItemLike,
+        builderAction: CreativeModeTab.Builder.() -> Unit,
+    ): HTDeferredHolder<CreativeModeTab, CreativeModeTab> = register(name) { _ ->
+        CreativeModeTab
+            .builder()
+            .title(title.translate())
+            .icon { ItemStack(icon) }
+            .apply(builderAction)
             .build()
     }
 }
