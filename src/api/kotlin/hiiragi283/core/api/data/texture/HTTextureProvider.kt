@@ -4,8 +4,8 @@ import com.google.common.hash.HashCode
 import com.mojang.blaze3d.platform.NativeImage
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.collection.ImmutableMultiMap
-import hiiragi283.core.api.collection.ImmutableTable
 import hiiragi283.core.api.collection.buildMultiMap
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.material.HTMaterialContentsAccess
@@ -88,7 +88,7 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
     protected fun material(
         output: BiConsumer<ResourceLocation, NativeImage>,
         pathPrefix: String,
-        table: ImmutableTable<HTTagPrefix, HTMaterialKey, *>,
+        table: HTTable<HTTagPrefix, HTMaterialKey, *>,
     ) {
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE.entries) {
             if (key.getNamespace() != modId) continue

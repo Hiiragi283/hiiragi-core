@@ -17,7 +17,7 @@ fun <T : Any> HTPropertyMap.getOrDefault(key: HTPropertyKey<T>): T = get(key) ?:
 /**
  * @see MutableMap.computeIfAbsent
  */
-inline fun <T: Any> HTPropertyMap.Mutable.computeIfAbsent(key: HTPropertyKey<T?>, mapping: () -> T): T {
+inline fun <T : Any> HTPropertyMap.Mutable.computeIfAbsent(key: HTPropertyKey<T?>, mapping: () -> T): T {
     val oldValue: T? = get(key) ?: key.defaultValue
     if (oldValue == null) {
         val newValue: T = mapping()
@@ -31,9 +31,8 @@ inline fun <T: Any> HTPropertyMap.Mutable.computeIfAbsent(key: HTPropertyKey<T?>
 /**
  * @see MutableMap.computeIfAbsent
  */
-inline fun <T: Any> HTPropertyMap.Mutable.computeIfAbsent(key: HTPropertyKey<T>, mapping: (T) -> T): T {
+inline fun <T : Any> HTPropertyMap.Mutable.computeIfAbsent(key: HTPropertyKey<T>, mapping: (T) -> T): T {
     val newValue: T = (get(key) ?: key.defaultValue).let(mapping)
     put(key, newValue)
     return newValue
 }
-

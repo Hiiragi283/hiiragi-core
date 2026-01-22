@@ -1,7 +1,7 @@
 package hiiragi283.core.api.material
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.collection.ImmutableTable
+import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
@@ -19,11 +19,11 @@ interface HTMaterialContentsAccess {
             compareBy<Triple<Comparable<*>, HTMaterialKey, *>> { it.first }.thenComparing { it.second }
     }
 
-    fun getVanillaTable(): ImmutableTable<HTTagPrefix, HTMaterialKey, out HTItemHolderLike<*>>
+    fun getVanillaTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTItemHolderLike<*>>
 
     //    Block    //
 
-    fun getBlockTable(): ImmutableTable<HTTagPrefix, HTMaterialKey, out HTBlockHolderLike<*, *>>
+    fun getBlockTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTBlockHolderLike<*, *>>
 
     fun getBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTBlockHolderLike<*, *>? =
         getBlockTable()[prefix, material.asMaterialKey()]
@@ -42,7 +42,7 @@ interface HTMaterialContentsAccess {
 
     //    Item    //
 
-    fun getItemTable(): ImmutableTable<HTTagPrefix, HTMaterialKey, out HTItemHolderLike<*>>
+    fun getItemTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTItemHolderLike<*>>
 
     fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? = getItemTable()[prefix, material.asMaterialKey()]
 
@@ -60,7 +60,7 @@ interface HTMaterialContentsAccess {
 
     //    Tool    //
 
-    fun getToolTable(): ImmutableTable<HTToolType, HTMaterialKey, out HTItemHolderLike<*>>
+    fun getToolTable(): HTTable<HTToolType, HTMaterialKey, out HTItemHolderLike<*>>
 
     fun getTool(toolType: HTToolType, material: HTMaterialLike): HTItemHolderLike<*>? = getToolTable()[toolType, material.asMaterialKey()]
 

@@ -1,7 +1,6 @@
 package hiiragi283.core.setup
 
-import hiiragi283.core.api.collection.ImmutableTable
-import hiiragi283.core.api.collection.immutableTableOf
+import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.collection.toFlatTable
 import hiiragi283.core.api.item.HTBlockItem
 import hiiragi283.core.api.item.tool.HTToolMaterial
@@ -32,16 +31,13 @@ object HCMiscRegister {
     private var hasInit: Boolean = false
 
     @JvmStatic
-    internal var materialBlocks: ImmutableTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredBlock> = immutableTableOf()
-        private set
+    internal lateinit var materialBlocks: HTTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredBlock>
 
     @JvmStatic
-    internal var materialItems: ImmutableTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredItem> = immutableTableOf()
-        private set
+    internal lateinit var materialItems: HTTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredItem>
 
     @JvmStatic
-    internal var toolItems: ImmutableTable<HTToolType, HTMaterialKey, HTSimpleDeferredItem> = immutableTableOf()
-        private set
+    internal lateinit var toolItems: HTTable<HTToolType, HTMaterialKey, HTSimpleDeferredItem>
 
     @JvmStatic
     fun register(event: RegisterEvent) {

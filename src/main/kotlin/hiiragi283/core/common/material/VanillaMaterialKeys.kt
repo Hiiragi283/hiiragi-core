@@ -1,7 +1,7 @@
 package hiiragi283.core.common.material
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.collection.ImmutableTable
+import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.collection.buildTable
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
@@ -97,7 +97,7 @@ object VanillaMaterialKeys {
     //    Item    //
 
     @JvmStatic
-    val INGREDIENTS: ImmutableTable<HTTagPrefix, HTMaterialKey, HTItemHolderLike<*>> = buildTable {
+    val INGREDIENTS: HTTable<HTTagPrefix, HTMaterialKey, HTItemHolderLike<*>> = buildTable {
         fun add(prefix: HTTagPrefix, material: HTMaterialLike, item: Item) {
             this[prefix, material.asMaterialKey()] = HTItemHolderLike.Simple(item)
         }
