@@ -1,11 +1,9 @@
 package hiiragi283.core.api.event
 
 import com.mojang.logging.LogUtils
-import hiiragi283.core.api.data.recipe.ingredient.HTFluidIngredientCreator
-import hiiragi283.core.api.data.recipe.ingredient.HTIngredientAccess
-import hiiragi283.core.api.data.recipe.ingredient.HTItemIngredientCreator
-import hiiragi283.core.api.data.recipe.result.HTFluidResultCreator
-import hiiragi283.core.api.data.recipe.result.HTItemResultCreator
+import hiiragi283.core.api.data.recipe.creator.HTFluidResultCreator
+import hiiragi283.core.api.data.recipe.creator.HTIngredientCreator
+import hiiragi283.core.api.data.recipe.creator.HTItemResultCreator
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
@@ -38,7 +36,6 @@ import java.util.function.Consumer
 class HTRegisterRuntimeRecipeEvent(
     val registryAccess: RegistryAccess,
     val recipeManager: RecipeManager,
-    private val materialManager: HTMaterialManager,
     private val consumer: Consumer<RecipeHolder<*>>,
 ) : Event() {
     companion object {
@@ -61,11 +58,11 @@ class HTRegisterRuntimeRecipeEvent(
         override fun advancement(): Advancement.Builder = Advancement.Builder.recipeAdvancement()
     }
 
-    val itemCreator: HTItemIngredientCreator = HTIngredientAccess.INSTANCE.itemCreator()
-    val fluidCreator: HTFluidIngredientCreator = HTIngredientAccess.INSTANCE.fluidCreator()
-
+    val inputCreator: HTIngredientCreator = HTIngredientCreator
     val itemResult: HTItemResultCreator = HTItemResultCreator
     val fluidResult: HTFluidResultCreator = HTFluidResultCreator
+
+    val materialManager: HTMaterialManager by lazy(HTMaterialManager::INSTANCE)
 
     fun save(id: ResourceLocation, recipe: Recipe<*>) {
         output.accept(id, recipe, null)

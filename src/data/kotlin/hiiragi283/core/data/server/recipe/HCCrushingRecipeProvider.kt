@@ -21,7 +21,7 @@ object HCCrushingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             HCItems.MAGMA_SHARD to Items.MAGMA_BLOCK,
         ).forEach { (output: ItemLike, input: ItemLike) ->
             HTSingleItemRecipeBuilder
-                .crushing(itemCreator.fromItem(input), itemResult.create(output))
+                .crushing(inputCreator.create(input), itemResult.create(output))
                 .save(this.output)
         }
 
@@ -31,36 +31,36 @@ object HCCrushingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             Items.RED_SAND to Tags.Items.SANDSTONE_RED_BLOCKS,
         ).forEach { (output: ItemLike, input: TagKey<Item>) ->
             HTSingleItemRecipeBuilder
-                .crushing(itemCreator.fromTagKey(input), itemResult.create(output, 4))
+                .crushing(inputCreator.create(input), itemResult.create(output, 4))
                 .saveSuffixed(this.output, "_from_block")
         }
 
         HTSingleItemRecipeBuilder
-            .crushing(itemCreator.fromItem(Items.BRICKS), itemResult.create(Items.BRICK, 4))
+            .crushing(inputCreator.create(Items.BRICKS), itemResult.create(Items.BRICK, 4))
             .saveSuffixed(output, "_from_bricks")
 
         HTSingleItemRecipeBuilder
-            .crushing(itemCreator.fromItem(Items.PRISMARINE), itemResult.create(Items.PRISMARINE_SHARD, 4))
+            .crushing(inputCreator.create(Items.PRISMARINE), itemResult.create(Items.PRISMARINE_SHARD, 4))
             .save(output)
 
         HTSingleItemRecipeBuilder
-            .crushing(itemCreator.fromItem(Items.PRISMARINE_BRICKS), itemResult.create(Items.PRISMARINE_SHARD, 9))
+            .crushing(inputCreator.create(Items.PRISMARINE_BRICKS), itemResult.create(Items.PRISMARINE_SHARD, 9))
             .saveSuffixed(output, "_from_bricks")
 
         HTSingleItemRecipeBuilder
-            .crushing(itemCreator.fromItem(Items.PRISMARINE_SHARD), itemResult.create(Items.PRISMARINE_CRYSTALS))
+            .crushing(inputCreator.create(Items.PRISMARINE_SHARD), itemResult.create(Items.PRISMARINE_CRYSTALS))
             .saveSuffixed(output, "_from_shard")
 
         HTSingleItemRecipeBuilder
-            .crushing(itemCreator.fromTagKey(Tags.Items.COBBLESTONES), itemResult.create(Items.GRAVEL))
+            .crushing(inputCreator.create(Tags.Items.COBBLESTONES), itemResult.create(Items.GRAVEL))
             .save(output)
 
         HTSingleItemRecipeBuilder
-            .crushing(itemCreator.fromTagKey(Tags.Items.GRAVELS), itemResult.create(Items.SAND))
+            .crushing(inputCreator.create(Tags.Items.GRAVELS), itemResult.create(Items.SAND))
             .save(output)
 
         HTSingleItemRecipeBuilder
-            .crushing(itemCreator.fromItem(Items.SNOW_BLOCK), itemResult.create(Items.SNOWBALL, 4))
+            .crushing(inputCreator.create(Items.SNOW_BLOCK), itemResult.create(Items.SNOWBALL, 4))
             .save(output)
     }
 }

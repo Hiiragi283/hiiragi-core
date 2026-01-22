@@ -4,7 +4,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.logging.LogUtils;
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent;
-import hiiragi283.core.api.material.HTMaterialManager;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.ReloadableServerResources;
@@ -42,7 +41,7 @@ public abstract class ReloadableServerResourcesMixin {
         Multimap<RecipeType<?>, RecipeHolder<?>> byType = HashMultimap.create(accessor.getByType());
         Map<ResourceLocation, RecipeHolder<?>> byName = new HashMap<>(accessor.getByName());
         
-        var event = new HTRegisterRuntimeRecipeEvent(registryAccess, recipes, HTMaterialManager.INSTANCE, (@NotNull RecipeHolder<?> holder) -> {
+        var event = new HTRegisterRuntimeRecipeEvent(registryAccess, recipes, (@NotNull RecipeHolder<?> holder) -> {
             boolean bool1 = byType.put(holder.value().getType(), holder);
             boolean bool2 = byName.put(holder.id(), holder) != null;
             if (bool1 || bool2) {

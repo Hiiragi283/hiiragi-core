@@ -55,7 +55,7 @@ object HCRuntimeRecipeHandler {
             val dust: Item = event.getFirstHolder(crushedPrefix, key)?.value() ?: continue
             // Crushing
             HTSingleItemRecipeBuilder
-                .crushing(event.itemCreator.fromTagKey(prefix, key), event.itemResult.create(dust, outputCount))
+                .crushing(event.inputCreator.create(prefix, key), event.itemResult.create(dust, outputCount))
                 .saveSuffixed(event.output, "_from_${prefix.name}")
         }
     }
@@ -73,7 +73,7 @@ object HCRuntimeRecipeHandler {
             val dust: Item = event.getFirstHolder(crushedPrefix, key)?.value() ?: continue
             // Crushing
             HTSingleItemRecipeBuilder
-                .crushing(event.itemCreator.fromTagKey(inputTag), event.itemResult.create(dust))
+                .crushing(event.inputCreator.create(inputTag), event.itemResult.create(dust))
                 .saveSuffixed(event.output, "_from_${defaultPart.getSuffix()}")
         }
     }

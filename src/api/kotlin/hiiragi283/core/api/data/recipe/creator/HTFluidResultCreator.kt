@@ -1,4 +1,4 @@
-package hiiragi283.core.api.data.recipe.result
+package hiiragi283.core.api.data.recipe.creator
 
 import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.recipe.result.HTFluidResult

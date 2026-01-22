@@ -1,11 +1,9 @@
 package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.data.recipe.ingredient.HTFluidIngredientCreator
-import hiiragi283.core.api.data.recipe.ingredient.HTIngredientAccess
-import hiiragi283.core.api.data.recipe.ingredient.HTItemIngredientCreator
-import hiiragi283.core.api.data.recipe.result.HTFluidResultCreator
-import hiiragi283.core.api.data.recipe.result.HTItemResultCreator
+import hiiragi283.core.api.data.recipe.creator.HTFluidResultCreator
+import hiiragi283.core.api.data.recipe.creator.HTIngredientCreator
+import hiiragi283.core.api.data.recipe.creator.HTItemResultCreator
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTFluidMaterialProperty
@@ -47,14 +45,9 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
         private set
 
     /**
-     * 液体の材料を作成するヘルパーのインスタンス
+     * 材料を作成するヘルパーのインスタンス
      */
-    protected val fluidCreator: HTFluidIngredientCreator by lazy { HTIngredientAccess.INSTANCE.fluidCreator() }
-
-    /**
-     * アイテムの材料を作成するヘルパーのインスタンス
-     */
-    protected val itemCreator: HTItemIngredientCreator by lazy { HTIngredientAccess.INSTANCE.itemCreator() }
+    protected val inputCreator: HTIngredientCreator = HTIngredientCreator
 
     /**
      * 液体の完成品を作成するヘルパーのインスタンス
@@ -176,7 +169,7 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
     ): HTFluidIngredient {
         val propertyMap: HTPropertyMap = materialManager.getOrEmpty(material)
         val fluid: HTFluidContent<*, *, *> = propertyMap.getOrThrow(propertyKey).fluid
-        return fluidCreator.fromTagKey(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
+        return inputCreator.create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
     }
 
     /**
