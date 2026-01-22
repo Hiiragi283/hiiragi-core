@@ -22,7 +22,7 @@ fun <R, C, V> mutableTableOf(): HTTable.Mutable<R, C, V> = HTHashTable()
 /**
  * @see mutableMapOf
  */
-fun <R, C, V> mutableMapOf(vararg triples: Triple<R, C, V>): HTTable.Mutable<R, C, V> =
+fun <R, C, V> mutableTableOf(vararg triples: Triple<R, C, V>): HTTable.Mutable<R, C, V> =
     HTHashTable<R, C, V>(triples.size, triples.size).apply { putAll(triples) }
 
 /**
@@ -158,20 +158,6 @@ inline fun <K, V, R, C, V1, T : HTTable.Mutable<R, C, V1>> Map<K, V>.toFlatTable
     transform: (Map.Entry<K, V>) -> Iterable<Triple<R, C, V1>>,
 ): T {
     for (triple: Triple<R, C, V1> in this.flatMap(transform)) {
-        destination.put(triple)
-    }
-    return destination
-}
-
-inline fun <K : Any, V : Any, R, C, V1> ImmutableMultiMap<K, V>.toFlatTable(
-    transform: (Map.Entry<K, Collection<V>>) -> Iterable<Triple<R, C, V1>>,
-): HTTable<R, C, V1> = this.toFlatTable(HTHashTable(), transform)
-
-inline fun <K : Any, V : Any, R, C, V1, T : HTTable.Mutable<R, C, V1>> ImmutableMultiMap<K, V>.toFlatTable(
-    destination: T,
-    transform: (Map.Entry<K, Collection<V>>) -> Iterable<Triple<R, C, V1>>,
-): T {
-    for (triple: Triple<R, C, V1> in this.map.flatMap(transform)) {
         destination.put(triple)
     }
     return destination

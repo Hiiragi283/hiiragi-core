@@ -5,8 +5,6 @@ import com.mojang.blaze3d.platform.NativeImage
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.HTTable
-import hiiragi283.core.api.collection.ImmutableMultiMap
-import hiiragi283.core.api.collection.buildMultiMap
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialKey
@@ -104,7 +102,7 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
                 val templateImage: NativeImage = getTexture(textureSet, prefix) ?: continue
                 val image: NativeImage = HTTextureUtil.copyFrom(templateImage)
 
-                for ((index: Int, pixels: Collection<Pair<Int, Int>>) in createTemplate(templateImage).map) {
+                for ((index: Int, pixels: Set<Pair<Int, Int>>) in createTemplate(templateImage)) {
                     for ((x: Int, y: Int) in pixels) {
                         image.setPixelRGBA(x, y, HTTextureUtil.argbToFromABGR(colorPalette[index].rgb))
                     }
@@ -126,13 +124,13 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
             getTextureResult(parentSet, prefix).getOrThrow()
         }
 
-    protected fun createTemplate(image: NativeImage): ImmutableMultiMap<Int, Pair<Int, Int>> = buildMultiMap {
+    protected fun createTemplate(image: NativeImage): Map<Int, Set<Pair<Int, Int>>> = buildMap {
         for (x: Int in (0..<image.width)) {
             for (y: Int in (0..<image.height)) {
                 val color = Color(HTTextureUtil.argbToFromABGR(image.getPixelRGBA(x, y)))
                 val index: Int = HTTextureUtil.TEMPLATE_PALETTE.indexOf(color)
                 if (index >= 0) {
-                    put(index, x to y)
+                    this[index] = (this[index]?.plus(x to y) ?: setOf(x to y))
                 }
             }
         }

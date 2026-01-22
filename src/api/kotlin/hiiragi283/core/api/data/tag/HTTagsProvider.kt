@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data.tag
 
-import hiiragi283.core.api.collection.buildMultiMap
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.RegistryKey
@@ -49,15 +48,19 @@ abstract class HTTagsProvider<T : Any>(
 
     @Suppress("DEPRECATION")
     final override fun addTags(provider: HolderLookup.Provider) {
-        buildMultiMap {
-            addTagsInternal { tagKey: TagKey<T> -> HTTagBuilder(registryKey) { this.put(tagKey, it) } }
-        }.map.forEach { (tagKey: TagKey<T>, entries: Collection<TagEntry>) ->
-            entries
-                .sortedWith(COMPARATOR)
-                .distinctBy(TagEntry::toString)
-                .forEach { entry: TagEntry -> tag(tagKey).add(entry) }
-        }
+        buildMap { addTagsInternal { tagKey: TagKey<T> -> createBuilder(this, tagKey) } }
+            .forEach { (tagKey: TagKey<T>, entries: List<TagEntry>) ->
+                entries
+                    .sortedWith(COMPARATOR)
+                    .distinctBy(TagEntry::toString)
+                    .forEach { entry: TagEntry -> tag(tagKey).add(entry) }
+            }
     }
+
+    private fun createBuilder(map: MutableMap<TagKey<T>, List<TagEntry>>, tagKey: TagKey<T>): HTTagBuilder<T> =
+        HTTagBuilder(registryKey) { entry: TagEntry ->
+            map[tagKey] = (map[tagKey]?.plus(entry) ?: listOf(entry))
+        }
 
     /**
      * 生成するタグを登録します。
