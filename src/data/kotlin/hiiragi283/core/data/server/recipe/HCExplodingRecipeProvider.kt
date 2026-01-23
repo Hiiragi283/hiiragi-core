@@ -66,7 +66,7 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
                         count,
                     ),
                     itemResult.create(CommonTagPrefixes.GEM, VanillaMaterialKeys.DIAMOND),
-                ).saveSuffixed(output, "_from_${fuels.joinToString(separator = "_or_", transform = HTMaterialKey::getPath)}")
+                ).saveSuffixed(output, "_from_${fuels.joinToString(separator = "_or_", transform = HTMaterialKey::path)}")
         }
 
         // Echo Shard

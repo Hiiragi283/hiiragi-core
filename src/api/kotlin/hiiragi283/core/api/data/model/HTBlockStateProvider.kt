@@ -96,7 +96,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
         simpleBlockAndItem(
             block,
             models()
-                .withExistingParent(block.getPath(), HiiragiCoreAPI.id(HTConst.BLOCK, "layered"))
+                .withExistingParent(block.path, HiiragiCoreAPI.id(HTConst.BLOCK, "layered"))
                 .texture("layer0", layer0)
                 .texture("layer1", layer1)
                 .renderType("cutout"),
@@ -137,21 +137,21 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      * テクスチャに[all]を使用するフルブロックのモデルを登録します。
      */
     protected fun altTextureBlock(block: HTBlockHolderLike<*, *>, all: ResourceLocation) {
-        simpleBlockAndItem(block, models().cubeAll(block.getPath(), all))
+        simpleBlockAndItem(block, models().cubeAll(block.path, all))
     }
 
     /**
      * 描画タイプが`cutout`となるフルブロックのモデルを登録します。
      */
     protected fun cutoutSimpleBlock(block: HTBlockHolderLike<*, *>, texId: ResourceLocation = block.blockId) {
-        simpleBlockAndItem(block, models().cubeAll(block.getPath(), texId).renderType("cutout"))
+        simpleBlockAndItem(block, models().cubeAll(block.path, texId).renderType("cutout"))
     }
 
     /**
      * 描画タイプが`translucent`となるフルブロックのモデルを登録します。
      */
     protected fun translucentSimpleBlock(block: HTBlockHolderLike<*, *>, texId: ResourceLocation = block.blockId) {
-        simpleBlockAndItem(block, models().cubeAll(block.getPath(), texId).renderType("translucent"))
+        simpleBlockAndItem(block, models().cubeAll(block.path, texId).renderType("translucent"))
     }
 
     /**
@@ -175,7 +175,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      */
     protected fun wallBlock(block: HTBlockHolderLike<WallBlock, *>, texture: ResourceLocation) {
         wallBlock(block.asBlock(), texture)
-        itemModels().wallInventory(block.getPath(), texture)
+        itemModels().wallInventory(block.path, texture)
     }
 
     /**
@@ -199,7 +199,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
         for (prefix: HTTagPrefix in CommonTagPrefixes.ORES) {
             val stoneTexture: ResourceLocation = prefix[HTTagPropertyKeys.ORE_STONE_TEX] ?: continue
             for ((key: HTMaterialKey, ore: HTBlockHolderLike<*, *>) in contents.getBlockMap(prefix)) {
-                if (ore.getNamespace() == modId) {
+                if (ore.namespace == modId) {
                     layeredBlock(ore, stoneTexture, prefix.createId(key).withPrefix("block/"))
                 }
             }
@@ -213,7 +213,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
         contents
             .getBlockMap(prefix)
             .values
-            .filter { it.getNamespace() == modId }
+            .filter { it.namespace == modId }
             .forEach { existTexture(it, ::simpleBlockAndItem) }
     }
 }

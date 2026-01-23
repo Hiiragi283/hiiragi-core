@@ -2,11 +2,15 @@ package hiiragi283.core.api
 
 import com.google.gson.JsonObject
 import hiiragi283.core.api.material.HTMaterialContents
+import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.holderSetOrNull
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
+import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.toTextResult
@@ -32,6 +36,14 @@ interface HiiragiCoreAccess {
     val materialManager: HTMaterialManager
     val materialContents: HTMaterialContents
 
+    val vanillaContents: HTMaterialContents
+
+    fun getBlockOrVanilla(prefix: HTTagPrefix, material: HTMaterialLike): HTBlockHolderLike<*, *>? =
+        materialContents.getBlock(prefix, material) ?: vanillaContents.getBlock(prefix, material)
+
+    fun getItemOrVanilla(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
+        materialContents.getItem(prefix, material) ?: vanillaContents.getItem(prefix, material)
+
     //    Tag    //
 
     /**
@@ -45,7 +57,7 @@ interface HiiragiCoreAccess {
         val holders: HolderSet<T> = provider1.holderSetOrNull(tagKey)
             ?: return HTCommonTranslation.EMPTY_TAG_KEY.toTextResult(tagKey)
         for (modId: String in getModIdPriorityList()) {
-            val first: Holder<T>? = holders.firstOrNull { holder: Holder<T> -> holder.toLike().getNamespace() == modId }
+            val first: Holder<T>? = holders.firstOrNull { holder: Holder<T> -> holder.toLike().namespace == modId }
             if (first != null) return HTTextResult.success(first)
         }
         return holders

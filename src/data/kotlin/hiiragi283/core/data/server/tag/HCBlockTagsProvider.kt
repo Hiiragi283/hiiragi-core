@@ -41,7 +41,7 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
 
     private fun material(factory: BuilderFactory<Block>) {
         contents.getBlockTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
-            if (key.getNamespace() != modId) return@forEach
+            if (key.namespace != modId) return@forEach
             addMaterial(factory, prefix, key).add(block)
 
             if (key == CommonMaterialKeys.COAL_COKE) {
@@ -63,7 +63,7 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
 
         val pickaxe: HTTagBuilder<Block> = factory.apply(BlockTags.MINEABLE_WITH_PICKAXE)
         sequence {
-            yieldAll(contents.getAllBlocks().filter { it.getNamespace() == modId })
+            yieldAll(contents.getAllBlocks().filter { it.namespace == modId })
         }.forEach(pickaxe::add)
 
         factory

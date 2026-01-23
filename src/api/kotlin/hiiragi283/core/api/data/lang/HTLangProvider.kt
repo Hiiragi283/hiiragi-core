@@ -37,7 +37,7 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
     fun addMaterials() {
         val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HiiragiCoreAccess.INSTANCE.materialManager) {
-            if (key.getNamespace() != modId) continue
+            if (key.namespace != modId) continue
             // Block
             for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in contents.getBlockMap(key)) {
                 val name: String = translate(langType, prefix, propertyMap) ?: continue

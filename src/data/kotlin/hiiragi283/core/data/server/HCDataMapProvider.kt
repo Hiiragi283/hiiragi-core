@@ -34,7 +34,7 @@ class HCDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.out
         val furnace: Builder<FurnaceFuel, Item> = builder(NeoForgeDataMaps.FURNACE_FUELS)
 
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HiiragiCoreAccess.INSTANCE.materialManager) {
-            if (key.getNamespace() != HiiragiCoreAPI.MOD_ID) continue
+            if (key.namespace != HiiragiCoreAPI.MOD_ID) continue
             val fuelTime: Int = propertyMap[HTMaterialPropertyKeys.FUEL_TIME] ?: continue
             // Block
             if (HiiragiCoreAccess.INSTANCE.materialContents.getBlock(CommonTagPrefixes.BLOCK, key) != null) {

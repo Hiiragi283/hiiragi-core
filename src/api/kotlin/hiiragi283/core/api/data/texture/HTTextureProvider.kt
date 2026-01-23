@@ -90,7 +90,7 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
         table: HTTable<HTTagPrefix, HTMaterialKey, *>,
     ) {
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HiiragiCoreAccess.INSTANCE.materialManager) {
-            if (key.getNamespace() != modId) continue
+            if (key.namespace != modId) continue
             val paletteId: ResourceLocation = (propertyMap[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId())
             val colorPalette: List<Color> = paletteId
                 .let(HTTextureUtil::getPalette)

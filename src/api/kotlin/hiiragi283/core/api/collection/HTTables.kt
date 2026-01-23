@@ -167,9 +167,15 @@ inline fun <K, V, R, C, V1, T : HTTable.Mutable<R, C, V1>> Map<K, V>.toFlatTable
 }
 
 // filter
-inline fun <R, C, V> HTTable<R, C, V>.filter(predicate: (Triple<R, C, V>) -> Boolean): HTTable<R, C, V> =
-    this.filterTo(HTHashTable(), predicate)
 
+/**
+ * @see Sequence.filter
+ */
+fun <R, C, V> HTTable<R, C, V>.filter(predicate: (Triple<R, C, V>) -> Boolean): HTTable<R, C, V> = this.filterTo(HTHashTable(), predicate)
+
+/**
+ * @see Sequence.filterTo
+ */
 inline fun <R, C, V, T : HTTable.Mutable<R, C, V>> HTTable<R, C, V>.filterTo(destination: T, predicate: (Triple<R, C, V>) -> Boolean): T {
     this.forEach { triple: Triple<R, C, V> ->
         if (predicate(triple)) {
@@ -179,9 +185,15 @@ inline fun <R, C, V, T : HTTable.Mutable<R, C, V>> HTTable<R, C, V>.filterTo(des
     return destination
 }
 
-inline fun <R, C, V> HTTable<R, C, V>.filterNot(predicate: (Triple<R, C, V>) -> Boolean): HTTable<R, C, V> =
+/**
+ * @see Sequence.filterNot
+ */
+fun <R, C, V> HTTable<R, C, V>.filterNot(predicate: (Triple<R, C, V>) -> Boolean): HTTable<R, C, V> =
     this.filterNotTo(HTHashTable(), predicate)
 
+/**
+ * @see Sequence.filterNotTo
+ */
 inline fun <R, C, V, T : HTTable.Mutable<R, C, V>> HTTable<R, C, V>.filterNotTo(
     destination: T,
     predicate: (Triple<R, C, V>) -> Boolean,
@@ -190,6 +202,30 @@ inline fun <R, C, V, T : HTTable.Mutable<R, C, V>> HTTable<R, C, V>.filterNotTo(
         if (!predicate(triple)) {
             destination.put(triple)
         }
+    }
+    return destination
+}
+
+// associate
+inline fun <R, C, V, K, V1> HTTable<R, C, V>.associate(transform: (Triple<R, C, V>) -> Pair<K, V1>): Map<K, V1> =
+    this.associateTo(linkedMapOf(), transform)
+
+inline fun <R, C, V, K, V1, M : MutableMap<in K, in V1>> HTTable<R, C, V>.associateTo(
+    destination: M,
+    transform: (Triple<R, C, V>) -> Pair<K, V1>,
+): M {
+    this.forEach { triple: Triple<R, C, V> ->
+        destination += transform(triple)
+    }
+    return destination
+}
+
+inline fun <R, C, V, K> HTTable<R, C, V>.associateBy(transform: (Triple<R, C, V>) -> K): Map<K, V> =
+    this.associateByTo(linkedMapOf(), transform)
+
+inline fun <R, C, V, K, M : MutableMap<in K, in V>> HTTable<R, C, V>.associateByTo(destination: M, transform: (Triple<R, C, V>) -> K): M {
+    this.forEach { triple: Triple<R, C, V> ->
+        destination[transform(triple)] = triple.third
     }
     return destination
 }

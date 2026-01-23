@@ -44,7 +44,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
     private fun copyTags() {
         // Material
         contents.getBlockTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, _) ->
-            if (key.getNamespace() != modId) return@forEach
+            if (key.namespace != modId) return@forEach
             copy(prefix, key)
         }
         for (key: HTMaterialKey in HCBlockTagsProvider.VANILLA_STORAGE_BLOCKS.keys) {
@@ -56,7 +56,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
 
     private fun material(factory: BuilderFactory<Item>) {
         contents.getItemTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
-            if (key.getNamespace() != modId) return@forEach
+            if (key.namespace != modId) return@forEach
             addMaterial(factory, prefix, key).add(item)
             if (prefix == CommonTagPrefixes.GEM || prefix == CommonTagPrefixes.INGOT) {
                 factory.apply(ItemTags.BEACON_PAYMENT_ITEMS).addTag(prefix, key)
@@ -77,14 +77,13 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
         addMaterial(factory, CommonTagPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE).addItem(Items.NETHERITE_SCRAP)
 
         factory.apply(ItemTags.COALS).add(HCItems.BAMBOO_CHARCOAL)
-        factory.apply(HiiragiCoreTags.Items.COAL_COKE).addTag(CommonTagPrefixes.FUEL, CommonMaterialKeys.COAL_COKE)
     }
 
     //    Tool    //
 
     private fun tool(factory: BuilderFactory<Item>) {
         contents.getToolTable().forEach { (toolType: HTToolType, key: HTMaterialKey, item: HTIdLike) ->
-            if (key.getNamespace() != modId) return@forEach
+            if (key.namespace != modId) return@forEach
             toolType.toolTags.map(factory::apply).forEach { it.add(item) }
         }
 

@@ -178,9 +178,9 @@ class HTFluidContentRegister(modId: String) {
             .Properties(typeHolder, stillHolder, flowingHolder)
             .block(blockHolder)
             .bucket(bucketHolder)
-        val stillPath: String = stillHolder.getPath()
+        val stillPath: String = stillHolder.path
         fluidRegister.register(stillPath) { _ -> BaseFlowingFluid.Source(fluidProperties) }
-        fluidRegister.register(flowingHolder.getPath()) { _ -> BaseFlowingFluid.Flowing(fluidProperties) }
+        fluidRegister.register(flowingHolder.path) { _ -> BaseFlowingFluid.Flowing(fluidProperties) }
         // Contents
         val content: HTFluidContent.Flowing<TYPE, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, ITEM> = HTFluidContent.Flowing(
             typeHolder,

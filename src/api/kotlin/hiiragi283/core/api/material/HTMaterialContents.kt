@@ -13,8 +13,6 @@ interface HTMaterialContents {
             compareBy<Triple<Comparable<*>, HTMaterialKey, *>> { it.first }.thenComparing { it.second }
     }
 
-    fun getVanillaTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTItemHolderLike<*>>
-
     //    Block    //
 
     fun getBlockTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTBlockHolderLike<*, *>>

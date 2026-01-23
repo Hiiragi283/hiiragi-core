@@ -23,12 +23,23 @@ import hiiragi283.core.setup.HCMiscRegister
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
 
-class HiiragiCoreAccessImpl :
-    HiiragiCoreAccess,
-    HTMaterialContents {
+class HiiragiCoreAccessImpl : HiiragiCoreAccess {
     override lateinit var materialManager: HTMaterialManager
+    override val materialContents: HTMaterialContents = object : HTMaterialContents {
+        override fun getBlockTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTBlockHolderLike<*, *>> = HCMiscRegister.materialBlocks
 
-    override val materialContents: HTMaterialContents = this
+        override fun getItemTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTItemHolderLike<*>> = HCMiscRegister.materialItems
+
+        override fun getToolTable(): HTTable<HTToolType, HTMaterialKey, out HTItemHolderLike<*>> = HCMiscRegister.toolItems
+    }
+
+    override val vanillaContents: HTMaterialContents = object : HTMaterialContents {
+        override fun getBlockTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTBlockHolderLike<*, *>> = VanillaMaterialKeys.BLOCKS
+
+        override fun getItemTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTItemHolderLike<*>> = VanillaMaterialKeys.ITEMS
+
+        override fun getToolTable(): HTTable<HTToolType, HTMaterialKey, out HTItemHolderLike<*>> = VanillaMaterialKeys.TOOLS
+    }
 
     override fun getModIdPriorityList(): List<String> = HCConfig.COMMON.tagOutputPriority.get()
 
@@ -47,14 +58,4 @@ class HiiragiCoreAccessImpl :
 
     override fun createOutput(provider: HolderLookup.Provider, compoundTag: CompoundTag): HTValueOutput =
         HTTagValueOutput(provider, compoundTag)
-
-    //    HTMaterialContents    //
-
-    override fun getVanillaTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTItemHolderLike<*>> = VanillaMaterialKeys.INGREDIENTS
-
-    override fun getBlockTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTBlockHolderLike<*, *>> = HCMiscRegister.materialBlocks
-
-    override fun getItemTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTItemHolderLike<*>> = HCMiscRegister.materialItems
-
-    override fun getToolTable(): HTTable<HTToolType, HTMaterialKey, out HTItemHolderLike<*>> = HCMiscRegister.toolItems
 }

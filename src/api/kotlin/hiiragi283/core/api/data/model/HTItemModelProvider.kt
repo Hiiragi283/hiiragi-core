@@ -71,7 +71,7 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
      * @param layers 各レイヤーのテクスチャID
      */
     protected fun layeredItem(item: HTIdLike, vararg layers: ResourceLocation): ItemModelBuilder {
-        val builder: ItemModelBuilder = withExistingParent(item.getPath(), HTConst.MINECRAFT.toId(HTConst.ITEM, "generated"))
+        val builder: ItemModelBuilder = withExistingParent(item.path, HTConst.MINECRAFT.toId(HTConst.ITEM, "generated"))
         layers.forEachIndexed { index: Int, layer: ResourceLocation ->
             builder.texture("layer$index", layer)
         }
@@ -88,7 +88,7 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
             else -> "bucket"
         }.let { HTConst.NEOFORGE.toId(HTConst.ITEM, it) }
 
-        val builder: DynamicFluidContainerModelBuilder<ItemModelBuilder> = withExistingParent(content.bucketHolder.getPath(), parent)
+        val builder: DynamicFluidContainerModelBuilder<ItemModelBuilder> = withExistingParent(content.bucketHolder.path, parent)
             .customLoader(DynamicFluidContainerModelBuilder<ItemModelBuilder>::begin)
             .fluid(content.get())
         if (content.getFluidType().isLighterThanAir) {
@@ -102,7 +102,7 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
      */
     protected fun registerMaterials() {
         contents.getItemTable().forEach { (prefix: HTTagPrefix, _, item: HTIdLike) ->
-            if (item.getNamespace() != modid) return@forEach
+            if (item.namespace != modid) return@forEach
             existTexture(item) { itemIn: HTIdLike ->
                 val textureIcon: String = prefix[HTTagPropertyKeys.TEXTURE_ICON] ?: prefix.name
                 val overlay: ResourceLocation = HiiragiCoreAPI.id(HTConst.ITEM, "${textureIcon}_overlay")

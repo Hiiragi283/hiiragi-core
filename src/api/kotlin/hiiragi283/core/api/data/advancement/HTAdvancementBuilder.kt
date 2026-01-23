@@ -65,7 +65,7 @@ class HTAdvancementBuilder private constructor(private val parent: HTAdvancement
     fun hasItem(key: String, predicate: ItemPredicate.Builder): HTAdvancementBuilder =
         addCriterion(key, InventoryChangeTrigger.TriggerInstance.hasItems(predicate))
 
-    fun hasAnyItem(item: HTItemHolderLike<*>): HTAdvancementBuilder = hasAnyItem("has_${item.getPath()}", item)
+    fun hasAnyItem(item: HTItemHolderLike<*>): HTAdvancementBuilder = hasAnyItem("has_${item.path}", item)
 
     fun hasAnyItem(key: String, items: Collection<ItemLike>): HTAdvancementBuilder = hasAnyItem(key, *items.toTypedArray())
 
@@ -78,7 +78,7 @@ class HTAdvancementBuilder private constructor(private val parent: HTAdvancement
         addCriterion(key, InventoryChangeTrigger.TriggerInstance.hasItems(*items))
 
     fun useItem(item: HTItemHolderLike<*>): HTAdvancementBuilder =
-        addCriterion("use_${item.getPath()}", ConsumeItemTrigger.TriggerInstance.usedItem(itemPredicate(item)))
+        addCriterion("use_${item.path}", ConsumeItemTrigger.TriggerInstance.usedItem(itemPredicate(item)))
 
     //    Conditions    //
 

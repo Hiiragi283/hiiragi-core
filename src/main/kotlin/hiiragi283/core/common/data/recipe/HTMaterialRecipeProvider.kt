@@ -5,7 +5,6 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.item.tool.HTToolType
-import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.property.HTDefaultPart
@@ -26,21 +25,17 @@ import net.minecraft.world.item.Item
 import net.neoforged.neoforge.common.Tags
 
 class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId) {
-    private val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
+    private fun getBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? = HiiragiCoreAccess.INSTANCE
+        .getBlockOrVanilla(prefix, material)
+        ?.takeIf { it.namespace == HTConst.MINECRAFT || it.namespace == modId }
 
-    private fun getBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? = contents
-        .getBlock(prefix, material)
-        ?.takeIf { it.getNamespace() == modId }
-        ?: contents.getVanillaTable()[prefix, material.asMaterialKey()]
+    private fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? = HiiragiCoreAccess.INSTANCE
+        .getItemOrVanilla(prefix, material)
+        ?.takeIf { it.namespace == HTConst.MINECRAFT || it.namespace == modId }
 
-    private fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? = contents
-        .getItem(prefix, material)
-        ?.takeIf { it.getNamespace() == modId }
-        ?: contents.getVanillaTable()[prefix, material.asMaterialKey()]
-
-    private fun getTool(toolType: HTToolType, material: HTMaterialLike): HTItemHolderLike<*>? = contents
+    private fun getTool(toolType: HTToolType, material: HTMaterialLike): HTItemHolderLike<*>? = HiiragiCoreAccess.INSTANCE.materialContents
         .getTool(toolType, material)
-        ?.takeIf { it.getNamespace() == modId }
+        ?.takeIf { it.namespace == modId }
 
     override fun buildRecipeInternal() {
         material()
@@ -68,7 +63,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
             val defaultPart: HTDefaultPart = propertyMap.getDefaultPart() ?: continue
             val suffix: String = defaultPart.getSuffix()
             val base: HTItemHolderLike<*> = defaultPart.getItem(key) ?: continue
-            if (block.getNamespace() == HTConst.MINECRAFT && base.getNamespace() == HTConst.MINECRAFT) continue
+            if (block.namespace == HTConst.MINECRAFT && base.namespace == HTConst.MINECRAFT) continue
             // Shapeless
             HTShapelessRecipeBuilder
                 .create(base, blockProperty.baseCount)
@@ -88,7 +83,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     private fun rawToBlock() {
         for (key: HTMaterialKey in materialManager.keys) {
             val raw: HTItemHolderLike<*> = getItem(CommonTagPrefixes.RAW, key) ?: continue
-            if (raw.getNamespace() == HTConst.MINECRAFT) continue
+            if (raw.namespace == HTConst.MINECRAFT) continue
             // Shapeless
             HTShapelessRecipeBuilder
                 .create(raw, 9)
@@ -116,13 +111,13 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
             val result: HTItemHolderLike<*> = smeltingAttribute.result ?: continue
             val input: HTItemHolderLike<*> = getItem(prefix, key) ?: continue
             // 精錬の前後がどちらもバニラ由来の場合はパス
-            if (result.getNamespace() == HTConst.MINECRAFT && input.getNamespace() == HTConst.MINECRAFT) continue
+            if (result.namespace == HTConst.MINECRAFT && input.namespace == HTConst.MINECRAFT) continue
             // Smelting
             HTCookingRecipeBuilder
                 .smelting(result)
                 .addIngredient(input)
                 .setExp(exp)
-                .saveSuffixed(output, "_from_${input.getPath()}")
+                .saveSuffixed(output, "_from_${input.path}")
             // Blasting
             if (smeltingAttribute.isBlasting) {
                 HTCookingRecipeBuilder
@@ -130,7 +125,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
                     .addIngredient(input)
                     .setTime(100)
                     .setExp(exp)
-                    .saveSuffixed(output, "_from_${input.getPath()}")
+                    .saveSuffixed(output, "_from_${input.path}")
             }
             // Smoking
             if (smeltingAttribute.isSmoking) {
@@ -139,7 +134,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
                     .addIngredient(input)
                     .setTime(100)
                     .setExp(exp)
-                    .saveSuffixed(output, "_from_${input.getPath()}")
+                    .saveSuffixed(output, "_from_${input.path}")
             }
         }
     }
@@ -161,7 +156,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     private fun ingotToNugget() {
         for (key: HTMaterialKey in materialManager.keys) {
             val nugget: HTItemHolderLike<*> = getItem(CommonTagPrefixes.NUGGET, key) ?: continue
-            if (nugget.getNamespace() == HTConst.MINECRAFT) continue
+            if (nugget.namespace == HTConst.MINECRAFT) continue
             // Shapeless
             HTShapelessRecipeBuilder
                 .create(nugget, 9)
@@ -220,7 +215,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
                     .save(output)
             }
             // Axe
-            getTool(CommonToolTypes.PICKAXE, key)?.let { axe ->
+            getTool(CommonToolTypes.AXE, key)?.let { axe ->
                 HTShapedRecipeBuilder
                     .create(axe)
                     .pattern(

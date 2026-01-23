@@ -88,7 +88,7 @@ abstract class HTBlockLootTableProvider(registries: HolderLookup.Provider) :
     protected fun registerMaterials() {
         contents
             .getAllBlocks()
-            .filter { it.getNamespace() == HiiragiCoreAPI.MOD_ID }
+            .filter { it.namespace == HiiragiCoreAPI.MOD_ID }
             .forEach(::dropSelf)
     }
 
