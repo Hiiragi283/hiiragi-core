@@ -3,20 +3,21 @@ package hiiragi283.core.common.material
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.event.HTMaterialPropertyEvent
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.property.HTBasicPropertyMap
 import hiiragi283.core.api.property.HTPropertyMap
 import net.neoforged.fml.ModLoader
 import org.slf4j.Logger
 
-class HTMaterialManagerImpl : HTMaterialManager {
+class HTMaterialManagerImpl :
+    HTMaterialManager,
+    Map<HTMaterialKey, HTPropertyMap> by propertyMapMap {
     companion object {
         @JvmField
         val LOGGER: Logger = LogUtils.getLogger()
 
         @JvmStatic
-        private var propertyMapMap: Map<HTMaterialKey, HTPropertyMap> = mapOf()
+        private lateinit var propertyMapMap: Map<HTMaterialKey, HTPropertyMap>
 
         @JvmStatic
         internal fun gatherAttributes() {
@@ -28,15 +29,4 @@ class HTMaterialManagerImpl : HTMaterialManager {
             LOGGER.info("Gathered Material Attributes!")
         }
     }
-
-    //    HTMaterialManager    //
-
-    override fun contains(material: HTMaterialLike): Boolean = propertyMapMap.contains(material.asMaterialKey())
-
-    override fun get(material: HTMaterialLike): HTPropertyMap? = propertyMapMap[material.asMaterialKey()]
-
-    override val keys: Set<HTMaterialKey>
-        get() = propertyMapMap.keys
-    override val entries: Set<Map.Entry<HTMaterialKey, HTPropertyMap>>
-        get() = propertyMapMap.entries
 }

@@ -4,6 +4,7 @@ import hiiragi283.core.api.world.getTypedBlockEntity
 import hiiragi283.core.common.block.entity.HTBlockEntity
 import hiiragi283.core.common.block.entity.HTExtendedBlockEntity
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
+import hiiragi283.core.common.registry.HTDeferredMenuType
 import net.minecraft.core.BlockPos
 import net.minecraft.network.chat.Component
 import net.minecraft.world.InteractionResult

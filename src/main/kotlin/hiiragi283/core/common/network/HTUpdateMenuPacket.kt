@@ -15,7 +15,7 @@ import net.minecraft.server.level.ServerPlayer
 /**
  * @see mekanism.common.network.to_client.container.PacketUpdateContainer
  */
-data class HTUpdateMenuPacket(val containerId: Int, val index: Int, val payload: HTSyncablePayload) :
+data class HTUpdateMenuPacket(val containerId: Int, val map: Map<Int, HTSyncablePayload>) :
     HTCustomPayload.S2C,
     HTCustomPayload.C2S {
     companion object {
@@ -26,10 +26,8 @@ data class HTUpdateMenuPacket(val containerId: Int, val index: Int, val payload:
         val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTUpdateMenuPacket> = StreamCodec.composite(
             ByteBufCodecs.VAR_INT,
             HTUpdateMenuPacket::containerId,
-            ByteBufCodecs.VAR_INT,
-            HTUpdateMenuPacket::index,
-            HTSyncablePayload.STREAM_CODEC,
-            HTUpdateMenuPacket::payload,
+            ByteBufCodecs.map(::HashMap, ByteBufCodecs.VAR_INT, HTSyncablePayload.STREAM_CODEC),
+            HTUpdateMenuPacket::map,
             ::HTUpdateMenuPacket,
         )
     }

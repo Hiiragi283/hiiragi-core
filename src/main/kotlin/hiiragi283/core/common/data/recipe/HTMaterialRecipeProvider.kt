@@ -58,7 +58,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     }
 
     private fun baseToBlock() {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager.entries) {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager) {
             val blockProperty: HTStorageBlockProperty = propertyMap.getStorageBlock()
             val block: HTItemHolderLike<*> = getBlock(CommonTagPrefixes.BLOCK, key) ?: continue
 
@@ -103,7 +103,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     }
 
     private fun prefixToBase(prefix: HTTagPrefix, exp: Float) {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager.entries) {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager) {
             val smeltingAttribute: HTSmeltingMaterialProperty = propertyMap[HTMaterialPropertyKeys.SMELTING]
                 ?: propertyMap.getDefaultPart()?.let { part: HTDefaultPart ->
                     if (part is HTDefaultPart.Prefixed && part.prefix == prefix) return@let null
@@ -142,7 +142,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     }
 
     private fun baseToGear() {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager.entries) {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager) {
             val inputTag: TagKey<Item> = propertyMap.getDefaultPart(key) ?: continue
             val gear: HTItemHolderLike<*> = getItem(CommonTagPrefixes.GEAR, key) ?: continue
             // Shaped
@@ -178,7 +178,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     //    Tool    //
 
     private fun tool() {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager.entries) {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager) {
             val defaultPart: HTDefaultPart = propertyMap.getDefaultPart() ?: continue
             // Sword
             getTool(CommonToolTypes.SWORD, key)?.let { sword ->

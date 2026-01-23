@@ -57,7 +57,7 @@ object HCMiscRegister {
         val manager: HTMaterialManager = HTMaterialManager.INSTANCE
         event.register(Registries.BLOCK) { helper ->
             // 素材ブロックを生成する
-            materialBlocks = manager.entries
+            materialBlocks = manager
                 .toFlatTable { (key: HTMaterialKey, propertyMap: HTPropertyMap) ->
                     propertyMap
                         .getOrDefault(HTMaterialPropertyKeys.BLOCK_PREFIXES)
@@ -78,7 +78,7 @@ object HCMiscRegister {
 
         event.register(Registries.ITEM) { helper ->
             // 素材アイテムを生成する
-            materialItems = manager.entries
+            materialItems = manager
                 .toFlatTable { (key: HTMaterialKey, propertyMap: HTPropertyMap) ->
                     propertyMap
                         .getOrDefault(HTMaterialPropertyKeys.ITEM_PREFIXES)
@@ -89,7 +89,7 @@ object HCMiscRegister {
                         }
                 }
             // 素材ツールを生成する
-            toolItems = manager.entries
+            toolItems = manager
                 .toFlatTable { (key: HTMaterialKey, propertyMap: HTPropertyMap) ->
                     val material: HTToolMaterial =
                         propertyMap[HTMaterialPropertyKeys.TOOL_MATERIAL] ?: return@toFlatTable setOf()

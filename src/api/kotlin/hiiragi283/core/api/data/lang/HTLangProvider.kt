@@ -35,7 +35,7 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
      * @since 0.8.0
      */
     fun addMaterials() {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE.entries) {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE) {
             if (key.getNamespace() != modId) continue
             // Block
             for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in HTMaterialContentsAccess.INSTANCE.getBlockMap(key)) {
