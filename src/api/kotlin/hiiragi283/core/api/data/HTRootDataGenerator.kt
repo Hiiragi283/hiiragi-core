@@ -1,5 +1,6 @@
 package hiiragi283.core.api.data
 
+import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.RegistrySetBuilder
@@ -51,6 +52,7 @@ data class HTRootDataGenerator private constructor(
          * @param builderAction 動的レジストリに要素を追加するブロック
          * @return サーバー向けとクライアント向けの[HTRootDataGenerator]
          */
+        @HTBuilderMarker
         @JvmStatic
         fun withDataPack(
             event: GatherDataEvent,

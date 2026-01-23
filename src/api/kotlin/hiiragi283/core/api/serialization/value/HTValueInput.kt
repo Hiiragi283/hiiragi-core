@@ -55,7 +55,7 @@ interface HTValueInput {
      * @return 指定した[key]に値がない，[codec]での変換に失敗した場合は`null`
      */
     fun <T : Any> list(key: String, codec: Codec<T>): Iterable<T>?
-    
+
     /**
      * 指定した[key]から[Iterable]を返します。
      * @param T [Iterable]の要素のクラス

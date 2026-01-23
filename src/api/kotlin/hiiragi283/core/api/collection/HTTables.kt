@@ -1,5 +1,7 @@
 package hiiragi283.core.api.collection
 
+import hiiragi283.core.api.HTBuilderMarker
+
 /**
  * @see emptyMap
  */
@@ -57,6 +59,7 @@ private data object EmptyTable : HTTable<Nothing, Nothing, Nothing> {
 /**
  * @see buildMap
  */
+@HTBuilderMarker
 inline fun <R, C, V> buildTable(
     initialRow: Int = 10,
     initialColumn: Int = 10,

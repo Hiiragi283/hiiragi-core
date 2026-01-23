@@ -1,5 +1,6 @@
 package hiiragi283.core.api.tag
 
+import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.property.HTBasicPropertyMap
@@ -21,6 +22,7 @@ class HTTagPrefix private constructor(val name: String, properties: HTPropertyMa
     Comparable<HTTagPrefix>,
     HTPropertyMap by properties {
         companion object {
+            @HTBuilderMarker
             @JvmStatic
             inline fun create(name: String, builderAction: HTPropertyMap.Mutable.() -> Unit): HTTagPrefix =
                 Builder(name).apply(builderAction).build()

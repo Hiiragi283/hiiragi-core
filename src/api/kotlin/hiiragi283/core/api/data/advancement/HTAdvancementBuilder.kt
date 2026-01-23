@@ -1,5 +1,6 @@
 package hiiragi283.core.api.data.advancement
 
+import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.createKey
@@ -44,8 +45,9 @@ class HTAdvancementBuilder private constructor(private val parent: HTAdvancement
     var requirements: AdvancementRequirements? = null
     var strategy: AdvancementRequirements.Strategy = AdvancementRequirements.Strategy.AND
 
+    @HTBuilderMarker
     inline fun display(builderAction: HTDisplayInfoBuilder.() -> Unit): HTAdvancementBuilder = apply {
-        this.display = HTDisplayInfoBuilder.create(builderAction)
+        this.display = HTDisplayInfoBuilder().apply(builderAction).build()
     }
 
     //    Criteria    //

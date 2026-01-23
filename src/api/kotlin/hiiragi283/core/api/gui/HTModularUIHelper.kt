@@ -6,6 +6,7 @@ import com.lowdragmc.lowdraglib2.gui.ui.ModularUI
 import com.lowdragmc.lowdraglib2.gui.ui.UI
 import com.lowdragmc.lowdraglib2.gui.ui.UIElement
 import com.lowdragmc.lowdraglib2.gui.ui.style.StylesheetManager
+import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.gui.element.addCenterLabel
 import hiiragi283.core.api.gui.element.addInventory
 import hiiragi283.core.api.gui.element.alineCenter
@@ -38,6 +39,7 @@ object HTModularUIHelper {
     @JvmStatic
     fun plusIcon(): UIElement = createIcon(12 * 12 + 10 * 4, 0, 10, 10)
 
+    @HTBuilderMarker
     @JvmStatic
     inline fun createRootWithInv(title: Component, action: UIElement.() -> Unit): UIElement {
         val root: UIElement = UIElement().layout { it.paddingAll(4f) }.alineCenter().addClass("panel_bg")
@@ -61,6 +63,7 @@ object HTModularUIHelper {
         player,
     )
 
+    @HTBuilderMarker
     @JvmStatic
     inline fun createVanillaUI(player: Player, title: Component, action: UIElement.() -> Unit): ModularUI =
         createVanillaUI(createRootWithInv(title, action), player)

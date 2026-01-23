@@ -1,5 +1,6 @@
 package hiiragi283.core.api.data.advancement
 
+import hiiragi283.core.api.HTBuilderMarker
 import net.minecraft.core.HolderLookup
 import net.neoforged.neoforge.common.data.ExistingFileHelper
 
@@ -30,10 +31,12 @@ abstract class HTAdvancementGenerator {
 
     //    Extension    //
 
+    @HTBuilderMarker
     protected inline fun root(key: HTAdvancementKey, builderAction: HTAdvancementBuilder.() -> Unit) {
         HTAdvancementBuilder.root().apply(builderAction).save(output, key)
     }
 
+    @HTBuilderMarker
     protected inline fun child(key: HTAdvancementKey, parent: HTAdvancementKey, builderAction: HTAdvancementBuilder.() -> Unit) {
         HTAdvancementBuilder.child(parent).apply(builderAction).save(output, key)
     }

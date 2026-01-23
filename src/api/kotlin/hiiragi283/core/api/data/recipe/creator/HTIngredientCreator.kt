@@ -1,5 +1,6 @@
 package hiiragi283.core.api.data.recipe.creator
 
+import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.buildDataPredicate
 import hiiragi283.core.api.material.HTMaterialLike
@@ -61,6 +62,7 @@ data object HTIngredientCreator {
     fun create(values: Iterable<Ingredient.Value>, amount: Int = 1): HTItemIngredient =
         create(Ingredient.fromValues(values.toList().stream()), amount)
 
+    @HTBuilderMarker
     inline fun create(
         strict: Boolean,
         vararg items: ItemLike,

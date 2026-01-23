@@ -10,11 +10,6 @@ import net.minecraft.world.level.ItemLike
 import java.util.Optional
 
 class HTDisplayInfoBuilder {
-    companion object {
-        @JvmStatic
-        inline fun create(builderAction: HTDisplayInfoBuilder.() -> Unit): DisplayInfo = HTDisplayInfoBuilder().apply(builderAction).build()
-    }
-
     lateinit var icon: ItemStack
     lateinit var title: Component
     var description: Component = Component.empty()

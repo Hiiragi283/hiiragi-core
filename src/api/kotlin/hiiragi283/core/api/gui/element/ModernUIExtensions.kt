@@ -8,6 +8,7 @@ import com.lowdragmc.lowdraglib2.gui.ui.elements.Label
 import com.lowdragmc.lowdraglib2.gui.ui.elements.TextElement
 import com.lowdragmc.lowdraglib2.gui.ui.elements.inventory.InventorySlots
 import com.lowdragmc.lowdraglib2.gui.ui.style.LayoutStyle
+import hiiragi283.core.api.HTBuilderMarker
 import net.minecraft.network.chat.Component
 import org.appliedenergistics.yoga.YogaFlexDirection
 import org.appliedenergistics.yoga.YogaJustify
@@ -46,6 +47,7 @@ fun UIElement.addChildren(children: Sequence<UIElement?>): UIElement = apply {
  * @author Hiiragi Tsubasa
  * @since 0.7.0
  */
+@HTBuilderMarker
 inline fun UIElement.addCenterLabel(text: Component, builderAction: Label.() -> Unit = {}): UIElement = apply {
     val label = Label()
     label.setText(text)
@@ -65,6 +67,7 @@ inline fun UIElement.addCenterLabel(text: Component, builderAction: Label.() -> 
  * @author Hiiragi Tsubasa
  * @since 0.7.0
  */
+@HTBuilderMarker
 inline fun UIElement.addInventory(builderAction: InventorySlots.() -> Unit = {}): UIElement = apply {
     val inventory = InventorySlots()
     addChild(inventory.layout { style: LayoutStyle -> style.marginTop(5f) })
@@ -76,6 +79,7 @@ inline fun UIElement.addInventory(builderAction: InventorySlots.() -> Unit = {})
  * @author Hiiragi Tsubasa
  * @since 0.7.0
  */
+@HTBuilderMarker
 inline fun UIElement.addRowChild(builderAction: UIElement.() -> Unit = {}): UIElement = apply {
     val row = UIElement()
     addChild(row.layout { style: LayoutStyle -> style.setFlexDirection(YogaFlexDirection.ROW) })

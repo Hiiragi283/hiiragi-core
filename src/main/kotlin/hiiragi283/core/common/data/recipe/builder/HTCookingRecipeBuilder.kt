@@ -1,5 +1,6 @@
 package hiiragi283.core.common.data.recipe.builder
 
+import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
 import net.minecraft.world.item.ItemStack
@@ -79,6 +80,7 @@ class HTCookingRecipeBuilder(
          *
          * [溶鉱炉レシピ][BlastingRecipe]の処理時間は，[かまどレシピ][SmeltingRecipe]の半分に自動的に置き換えられます。
          */
+        @HTBuilderMarker
         @JvmStatic
         inline fun smeltingAndBlasting(item: ItemLike, count: Int = 1, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             smelting(item, count).apply(builderAction)
@@ -90,6 +92,7 @@ class HTCookingRecipeBuilder(
          *
          * [燻製器レシピ][SmokingRecipe]の処理時間は，[かまどレシピ][SmeltingRecipe]の半分に自動的に置き換えられます。
          */
+        @HTBuilderMarker
         @JvmStatic
         inline fun smeltingAndSmoking(item: ItemLike, count: Int = 1, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             smelting(item, count).apply(builderAction)
