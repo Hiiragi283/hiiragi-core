@@ -7,7 +7,6 @@ import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTSmeltingMaterialProperty
@@ -26,8 +25,6 @@ import net.minecraft.world.item.Item
 import net.neoforged.neoforge.common.Tags
 
 class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId) {
-    private val manager: HTMaterialManager = HTMaterialManager.INSTANCE
-
     private fun getBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? = HTMaterialContentsAccess.INSTANCE
         .getBlock(prefix, material)
         ?.takeIf { it.getNamespace() == modId }
@@ -61,7 +58,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     }
 
     private fun baseToBlock() {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in manager.entries) {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager.entries) {
             val blockProperty: HTStorageBlockProperty = propertyMap.getStorageBlock()
             val block: HTItemHolderLike<*> = getBlock(CommonTagPrefixes.BLOCK, key) ?: continue
 
@@ -86,7 +83,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     }
 
     private fun rawToBlock() {
-        for (key: HTMaterialKey in HTMaterialManager.INSTANCE.keys) {
+        for (key: HTMaterialKey in materialManager.keys) {
             val raw: HTItemHolderLike<*> = getItem(CommonTagPrefixes.RAW, key) ?: continue
             if (raw.getNamespace() == HTConst.MINECRAFT) continue
             // Shapeless
@@ -106,7 +103,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     }
 
     private fun prefixToBase(prefix: HTTagPrefix, exp: Float) {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in manager.entries) {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager.entries) {
             val smeltingAttribute: HTSmeltingMaterialProperty = propertyMap[HTMaterialPropertyKeys.SMELTING]
                 ?: propertyMap.getDefaultPart()?.let { part: HTDefaultPart ->
                     if (part is HTDefaultPart.Prefixed && part.prefix == prefix) return@let null
@@ -145,7 +142,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     }
 
     private fun baseToGear() {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE.entries) {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager.entries) {
             val inputTag: TagKey<Item> = propertyMap.getDefaultPart(key) ?: continue
             val gear: HTItemHolderLike<*> = getItem(CommonTagPrefixes.GEAR, key) ?: continue
             // Shaped
@@ -159,7 +156,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     }
 
     private fun ingotToNugget() {
-        for (key: HTMaterialKey in HTMaterialManager.INSTANCE.keys) {
+        for (key: HTMaterialKey in materialManager.keys) {
             val nugget: HTItemHolderLike<*> = getItem(CommonTagPrefixes.NUGGET, key) ?: continue
             if (nugget.getNamespace() == HTConst.MINECRAFT) continue
             // Shapeless
@@ -181,7 +178,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     //    Tool    //
 
     private fun tool() {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE.entries) {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager.entries) {
             val defaultPart: HTDefaultPart = propertyMap.getDefaultPart() ?: continue
             // Sword
             getTool(CommonToolTypes.SWORD, key)?.let { sword ->

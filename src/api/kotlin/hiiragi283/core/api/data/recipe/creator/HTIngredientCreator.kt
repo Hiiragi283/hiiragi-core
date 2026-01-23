@@ -86,7 +86,7 @@ data object HTIngredientCreator {
     fun lava(amount: Int): HTFluidIngredient = create(VanillaFluidContents.LAVA, amount)
 
     fun milk(amount: Int): HTFluidIngredient = create(VanillaFluidContents.MILK, amount)
-    
+
     // Ingredient
     fun create(ingredient: FluidIngredient, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient =
         create(SizedFluidIngredient(ingredient, amount))

@@ -1,7 +1,9 @@
 package hiiragi283.core.common.event
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.buildDataPredicate
+import hiiragi283.core.api.data.recipe.creator.HTFluidResultCreator
+import hiiragi283.core.api.data.recipe.creator.HTIngredientCreator
+import hiiragi283.core.api.data.recipe.creator.HTItemResultCreator
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.property.HTDefaultPart
@@ -17,6 +19,7 @@ import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTStonecuttingRecipeBuilder
 import net.minecraft.core.component.DataComponents
+import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
@@ -25,12 +28,21 @@ import net.minecraft.world.item.alchemy.Potions
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.common.Tags
-import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 object HCRuntimeRecipeHandler {
+    private lateinit var output: RecipeOutput
+    private lateinit var inputCreator: HTIngredientCreator
+    private lateinit var fluidResult: HTFluidResultCreator
+    private lateinit var itemResult: HTItemResultCreator
+
     @SubscribeEvent
     fun registerRuntimeRecipe(event: HTRegisterRuntimeRecipeEvent) {
+        output = event.output
+        inputCreator = event.inputCreator
+        fluidResult = event.fluidResult
+        itemResult = event.itemResult
+
         crushBaseToDust(event)
 
         crushToDust(event, CommonTagPrefixes.ORE)
@@ -55,8 +67,8 @@ object HCRuntimeRecipeHandler {
             val dust: Item = event.getFirstHolder(crushedPrefix, key)?.value() ?: continue
             // Crushing
             HTSingleItemRecipeBuilder
-                .crushing(event.inputCreator.create(prefix, key), event.itemResult.create(dust, outputCount))
-                .saveSuffixed(event.output, "_from_${prefix.name}")
+                .crushing(inputCreator.create(prefix, key), event.itemResult.create(dust, outputCount))
+                .saveSuffixed(output, "_from_${prefix.name}")
         }
     }
 
@@ -73,8 +85,8 @@ object HCRuntimeRecipeHandler {
             val dust: Item = event.getFirstHolder(crushedPrefix, key)?.value() ?: continue
             // Crushing
             HTSingleItemRecipeBuilder
-                .crushing(event.inputCreator.create(inputTag), event.itemResult.create(dust))
-                .saveSuffixed(event.output, "_from_${defaultPart.getSuffix()}")
+                .crushing(inputCreator.create(inputTag), event.itemResult.create(dust))
+                .saveSuffixed(output, "_from_${defaultPart.getSuffix()}")
         }
     }
 
@@ -89,20 +101,19 @@ object HCRuntimeRecipeHandler {
                 .create(dough)
                 .addIngredient(crushedPrefix, key)
                 .addIngredient(
-                    DataComponentIngredient.of(
-                        false,
-                        buildDataPredicate {
-                            expect(DataComponents.POTION_CONTENTS, PotionContents(Potions.WATER))
-                        },
-                        Items.POTION,
-                    ),
-                ).saveSuffixed(event.output, "_with_bottle")
+                    inputCreator
+                        .create(
+                            false,
+                            Items.POTION,
+                        ) { expect(DataComponents.POTION_CONTENTS, PotionContents(Potions.WATER)) }
+                        .ingredient,
+                ).saveSuffixed(output, "_with_bottle")
 
             HTShapelessRecipeBuilder
                 .create(dough, 3)
                 .addIngredients(crushedPrefix, key, 3)
                 .addIngredient(Tags.Items.BUCKETS_WATER)
-                .saveSuffixed(event.output, "_with_bucket")
+                .saveSuffixed(output, "_with_bucket")
         }
     }
 
@@ -116,7 +127,7 @@ object HCRuntimeRecipeHandler {
                 .create(plate)
                 .addIngredient(CommonTagPrefixes.INGOT, key)
                 .addIngredient(HiiragiCoreTags.Items.TOOLS_HAMMER)
-                .saveSuffixed(event.output, "_from_ingot")
+                .saveSuffixed(output, "_from_ingot")
         }
     }
 
@@ -129,7 +140,7 @@ object HCRuntimeRecipeHandler {
             HTStonecuttingRecipeBuilder
                 .create(wire)
                 .addIngredient(CommonTagPrefixes.PLATE, key)
-                .saveSuffixed(event.output, "_from_plate")
+                .saveSuffixed(output, "_from_plate")
         }
     }
 }

@@ -28,7 +28,7 @@ import kotlin.collections.iterator
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-sealed class HTLangProvider(output: PackOutput, val modId: String, val langType: HTLanguageType) :
+abstract class HTLangProvider(output: PackOutput, val modId: String, val langType: HTLangType) :
     LanguageProvider(output, modId, langType.name.lowercase()) {
     // Material
     /**
@@ -58,7 +58,7 @@ sealed class HTLangProvider(output: PackOutput, val modId: String, val langType:
     /**
      * @since 0.8.0
      */
-    fun translate(type: HTLanguageType, prefix: HTTagPrefix, propertyMap: HTPropertyMap): String? =
+    fun translate(type: HTLangType, prefix: HTTagPrefix, propertyMap: HTPropertyMap): String? =
         propertyMap.getOrDefault(HTMaterialPropertyKeys.CUSTOM_LANG_NAME)[prefix]?.getTranslatedName(type) ?: run {
             val materialName: HTLangName = propertyMap[HTMaterialPropertyKeys.LANG_NAME] ?: return@run null
             prefix.getOrDefault(HTTagPropertyKeys.LANG_PATTERN).translate(type, materialName)
@@ -111,7 +111,7 @@ sealed class HTLangProvider(output: PackOutput, val modId: String, val langType:
     /**
      * 英語向けの[HTLangProvider]の抽象クラスです。
      */
-    abstract class English(output: PackOutput, modid: String) : HTLangProvider(output, modid, HTLanguageType.EN_US) {
+    abstract class English(output: PackOutput, modid: String) : HTLangProvider(output, modid, HTLangTypes.EN_US) {
         final override fun addFluidBucket(content: HTFluidContent<*, *, *>, value: String) {
             add(content.bucketHolder, "$value Bucket")
         }
@@ -122,7 +122,7 @@ sealed class HTLangProvider(output: PackOutput, val modId: String, val langType:
     /**
      * 日本語向けの[HTLangProvider]の抽象クラスです。
      */
-    abstract class Japanese(output: PackOutput, modid: String) : HTLangProvider(output, modid, HTLanguageType.JA_JP) {
+    abstract class Japanese(output: PackOutput, modid: String) : HTLangProvider(output, modid, HTLangTypes.JA_JP) {
         final override fun addFluidBucket(content: HTFluidContent<*, *, *>, value: String) {
             add(content.bucketHolder, "${value}入りバケツ")
         }

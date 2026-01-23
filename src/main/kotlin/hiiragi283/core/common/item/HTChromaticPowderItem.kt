@@ -1,16 +1,16 @@
 package hiiragi283.core.common.item
 
+import hiiragi283.core.api.data.recipe.creator.HTIngredientCreator
 import hiiragi283.core.api.item.HTColoredNameItem
 import hiiragi283.core.api.item.HTSubCreativeTabContents
 import hiiragi283.core.api.item.createItemStack
+import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCItems
 import net.minecraft.network.chat.TextColor
 import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.crafting.Ingredient
-import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 import java.awt.Color
 import java.util.function.Consumer
 
@@ -24,12 +24,10 @@ class HTChromaticPowderItem(properties: Properties) :
         fun createStack(complete: Int): ItemStack = createItemStack(HCItems.CHROMATIC_POWDER, HCDataComponents.COMPLETE_PROGRESS, complete)
 
         @JvmStatic
-        fun createIngredient(complete: Int): Ingredient = DataComponentIngredient.of(
+        fun createIngredient(complete: Int): HTItemIngredient = HTIngredientCreator.create(
             false,
-            HCDataComponents.COMPLETE_PROGRESS,
-            complete,
             HCItems.CHROMATIC_POWDER,
-        )
+        ) { expect(HCDataComponents.COMPLETE_PROGRESS, complete) }
 
         @JvmStatic
         fun getColor(stack: ItemStack): Int {
