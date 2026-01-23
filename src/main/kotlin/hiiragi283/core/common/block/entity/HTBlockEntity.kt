@@ -40,11 +40,11 @@ import net.neoforged.neoforge.items.IItemHandler
 import java.util.UUID
 
 /**
- * キャパビリティやオーナーを保持する[HTExtendedBlockEntity]の拡張クラス
+ * キャパビリティやオーナーを保持する[HTExtendedBlockEntityNew]の拡張クラス
  * @see mekanism.common.tile.base.TileEntityMekanism
  */
 abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, state: BlockState) :
-    HTExtendedBlockEntity(type, pos, state),
+    HTExtendedBlockEntityNew(type, pos, state),
     Nameable,
     HTEnergyHandler,
     HTFluidHandler,

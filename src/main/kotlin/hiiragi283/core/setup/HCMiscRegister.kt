@@ -1,5 +1,7 @@
 package hiiragi283.core.setup
 
+import hiiragi283.core.api.HCRegistries
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.collection.toFlatTable
 import hiiragi283.core.api.item.HTBlockItem
@@ -10,8 +12,14 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
+import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
+import hiiragi283.core.common.gui.sync.HTBoolSyncPayload
+import hiiragi283.core.common.gui.sync.HTFluidSyncPayload
+import hiiragi283.core.common.gui.sync.HTFractionSyncPayload
+import hiiragi283.core.common.gui.sync.HTIntSyncPayload
+import hiiragi283.core.common.gui.sync.HTLongSyncPayload
 import hiiragi283.core.common.material.HTMaterialManagerImpl
 import hiiragi283.core.common.registry.HTDeferredBlock
 import hiiragi283.core.common.registry.HTDeferredItem
@@ -93,6 +101,16 @@ object HCMiscRegister {
                             Triple(toolType, key, HTDeferredItem.simple(id))
                         }
                 }
+        }
+
+        // Slot Sync Type
+        event.register(HCRegistries.Keys.SLOT_TYPE) { helper ->
+            helper.register(HTConst.COMMON.toId("boolean"), HTBoolSyncPayload.TYPE)
+            helper.register(HTConst.COMMON.toId("fraction"), HTFractionSyncPayload.TYPE)
+            helper.register(HTConst.COMMON.toId("integer"), HTIntSyncPayload.TYPE)
+            helper.register(HTConst.COMMON.toId("long"), HTLongSyncPayload.TYPE)
+
+            helper.register(HTConst.MINECRAFT.toId("fluid"), HTFluidSyncPayload.TYPE)
         }
     }
 }
