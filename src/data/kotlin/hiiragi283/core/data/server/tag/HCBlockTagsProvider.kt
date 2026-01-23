@@ -1,11 +1,12 @@
 package hiiragi283.core.data.server.tag
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.tag.HTTagBuilder
 import hiiragi283.core.api.data.tag.HTTagsProvider
-import hiiragi283.core.api.material.HTMaterialContentsAccess
+import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.resource.HTIdLike
@@ -29,6 +30,8 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
         )
     }
 
+    private val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
+
     override fun addTagsInternal(factory: BuilderFactory<Block>) {
         material(factory)
         tool(factory)
@@ -37,7 +40,7 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
     //    Material    //
 
     private fun material(factory: BuilderFactory<Block>) {
-        HTMaterialContentsAccess.INSTANCE.getBlockTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
+        contents.getBlockTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
             if (key.getNamespace() != modId) return@forEach
             addMaterial(factory, prefix, key).add(block)
 
@@ -60,7 +63,7 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider<Block>(Hii
 
         val pickaxe: HTTagBuilder<Block> = factory.apply(BlockTags.MINEABLE_WITH_PICKAXE)
         sequence {
-            yieldAll(HTMaterialContentsAccess.INSTANCE.getAllBlocks().filter { it.getNamespace() == modId })
+            yieldAll(contents.getAllBlocks().filter { it.getNamespace() == modId })
         }.forEach(pickaxe::add)
 
         factory

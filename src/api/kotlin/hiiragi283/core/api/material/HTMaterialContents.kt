@@ -1,6 +1,5 @@
 package hiiragi283.core.api.material
 
-import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.registry.HTBlockHolderLike
@@ -8,13 +7,8 @@ import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import java.util.Comparator
 
-interface HTMaterialContentsAccess {
+interface HTMaterialContents {
     companion object {
-        /**
-         * [HTMaterialContentsAccess]のインスタンス
-         */
-        val INSTANCE: HTMaterialContentsAccess = HiiragiCoreAPI.getService()
-
         private val COMPARATOR: Comparator<Triple<Comparable<*>, HTMaterialKey, *>> =
             compareBy<Triple<Comparable<*>, HTMaterialKey, *>> { it.first }.thenComparing { it.second }
     }

@@ -3,8 +3,9 @@ package hiiragi283.core.api.data.model
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.HTDataGenContext
-import hiiragi283.core.api.material.HTMaterialContentsAccess
+import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
@@ -40,6 +41,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
     }
 
     protected val fileHelper: ExistingFileHelper = context.fileHelper
+    protected val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
 
     //    Extensions    //
 
@@ -196,7 +198,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
     protected fun registerOres() {
         for (prefix: HTTagPrefix in CommonTagPrefixes.ORES) {
             val stoneTexture: ResourceLocation = prefix[HTTagPropertyKeys.ORE_STONE_TEX] ?: continue
-            for ((key: HTMaterialKey, ore: HTBlockHolderLike<*, *>) in HTMaterialContentsAccess.INSTANCE.getBlockMap(prefix)) {
+            for ((key: HTMaterialKey, ore: HTBlockHolderLike<*, *>) in contents.getBlockMap(prefix)) {
                 if (ore.getNamespace() == modId) {
                     layeredBlock(ore, stoneTexture, prefix.createId(key).withPrefix("block/"))
                 }
@@ -208,7 +210,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      * @since 0.8.0
      */
     protected fun registerMaterials(prefix: HTTagPrefix) {
-        HTMaterialContentsAccess.INSTANCE
+        contents
             .getBlockMap(prefix)
             .values
             .filter { it.getNamespace() == modId }

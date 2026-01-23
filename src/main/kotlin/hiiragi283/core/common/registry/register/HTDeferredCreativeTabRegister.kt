@@ -61,7 +61,7 @@ class HTDeferredCreativeTabRegister(namespace: String) :
                     if (item.shouldAddDefault()) {
                         output.accept(item, visibility)
                     }
-                    item.addItems(like, parameters) { output.accept(it, visibility) }
+                    item.addItems(like, HTSubCreativeTabContents.Context(parameters, output))
                 } else {
                     output.accept(item, visibility)
                 }

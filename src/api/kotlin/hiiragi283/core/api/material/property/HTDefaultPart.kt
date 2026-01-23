@@ -1,6 +1,6 @@
 package hiiragi283.core.api.material.property
 
-import hiiragi283.core.api.material.HTMaterialContentsAccess
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -45,9 +45,9 @@ sealed interface HTDefaultPart {
 
         override fun getTag(key: HTMaterialKey): TagKey<Item> = prefix.itemTagKey(key)
 
-        override fun getItem(key: HTMaterialKey): HTItemHolderLike<*>? = HTMaterialContentsAccess.INSTANCE.getBlock(prefix, key)
-            ?: HTMaterialContentsAccess.INSTANCE.getItem(prefix, key)
-            ?: HTMaterialContentsAccess.INSTANCE.getVanillaTable()[prefix, key]
+        override fun getItem(key: HTMaterialKey): HTItemHolderLike<*>? = with(HiiragiCoreAccess.INSTANCE.materialContents) {
+            getBlock(prefix, key) ?: getItem(prefix, key) ?: getVanillaTable()[prefix, key]
+        }
 
         override fun getSuffix(): String = prefix.name
     }

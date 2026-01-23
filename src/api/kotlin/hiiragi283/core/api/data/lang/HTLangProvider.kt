@@ -1,12 +1,12 @@
 package hiiragi283.core.api.data.lang
 
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
 import hiiragi283.core.api.data.advancement.descKey
 import hiiragi283.core.api.data.advancement.titleKey
 import hiiragi283.core.api.item.tool.HTToolType
-import hiiragi283.core.api.material.HTMaterialContentsAccess
+import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
@@ -35,20 +35,21 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
      * @since 0.8.0
      */
     fun addMaterials() {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE) {
+        val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HiiragiCoreAccess.INSTANCE.materialManager) {
             if (key.getNamespace() != modId) continue
             // Block
-            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in HTMaterialContentsAccess.INSTANCE.getBlockMap(key)) {
+            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in contents.getBlockMap(key)) {
                 val name: String = translate(langType, prefix, propertyMap) ?: continue
                 add(item, name)
             }
             // Item
-            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in HTMaterialContentsAccess.INSTANCE.getItemMap(key)) {
+            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in contents.getItemMap(key)) {
                 val name: String = translate(langType, prefix, propertyMap) ?: continue
                 add(item, name)
             }
             // Tool
-            for ((toolType: HTToolType, item: HTHasTranslationKey) in HTMaterialContentsAccess.INSTANCE.getToolMap(key)) {
+            for ((toolType: HTToolType, item: HTHasTranslationKey) in contents.getToolMap(key)) {
                 val materialName: HTLangName = propertyMap[HTMaterialPropertyKeys.LANG_NAME] ?: continue
                 add(item, toolType.langPattern.translate(langType, materialName))
             }

@@ -1,10 +1,11 @@
 package hiiragi283.core.common.data.recipe
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.item.tool.HTToolType
-import hiiragi283.core.api.material.HTMaterialContentsAccess
+import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.property.HTDefaultPart
@@ -25,17 +26,19 @@ import net.minecraft.world.item.Item
 import net.neoforged.neoforge.common.Tags
 
 class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId) {
-    private fun getBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? = HTMaterialContentsAccess.INSTANCE
+    private val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
+
+    private fun getBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? = contents
         .getBlock(prefix, material)
         ?.takeIf { it.getNamespace() == modId }
-        ?: HTMaterialContentsAccess.INSTANCE.getVanillaTable()[prefix, material.asMaterialKey()]
+        ?: contents.getVanillaTable()[prefix, material.asMaterialKey()]
 
-    private fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? = HTMaterialContentsAccess.INSTANCE
+    private fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? = contents
         .getItem(prefix, material)
         ?.takeIf { it.getNamespace() == modId }
-        ?: HTMaterialContentsAccess.INSTANCE.getVanillaTable()[prefix, material.asMaterialKey()]
+        ?: contents.getVanillaTable()[prefix, material.asMaterialKey()]
 
-    private fun getTool(toolType: HTToolType, material: HTMaterialLike): HTItemHolderLike<*>? = HTMaterialContentsAccess.INSTANCE
+    private fun getTool(toolType: HTToolType, material: HTMaterialLike): HTItemHolderLike<*>? = contents
         .getTool(toolType, material)
         ?.takeIf { it.getNamespace() == modId }
 

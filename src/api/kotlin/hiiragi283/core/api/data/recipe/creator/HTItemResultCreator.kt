@@ -1,6 +1,6 @@
 package hiiragi283.core.api.data.recipe.creator
 
-import hiiragi283.core.api.material.HTMaterialContentsAccess
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.recipe.result.HTItemResult
@@ -23,8 +23,9 @@ data object HTItemResultCreator : HTResultCreator<Item, HTItemResourceType, Item
     fun create(item: ItemLike, tagKey: TagKey<Item>, amount: Int = defaultAmount()): HTItemResult = create(item.asItem(), tagKey, amount)
 
     fun create(prefix: HTTagPrefix, material: HTMaterialLike, amount: Int = defaultAmount()): HTItemResult {
-        val holder: ItemLike? = HTMaterialContentsAccess.INSTANCE.getItem(prefix, material)
-            ?: HTMaterialContentsAccess.INSTANCE.getVanillaTable()[prefix, material.asMaterialKey()]
+        val holder: ItemLike? = with(HiiragiCoreAccess.INSTANCE.materialContents) {
+            getItem(prefix, material) ?: getVanillaTable()[prefix, material.asMaterialKey()]
+        }
         return when (holder) {
             null -> create(prefix.itemTagKey(material), amount)
             else -> create(holder, prefix, material, amount)

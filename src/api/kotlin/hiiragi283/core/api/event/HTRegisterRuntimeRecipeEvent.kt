@@ -1,6 +1,7 @@
 package hiiragi283.core.api.event
 
 import com.mojang.logging.LogUtils
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.creator.HTFluidResultCreator
 import hiiragi283.core.api.data.recipe.creator.HTIngredientCreator
 import hiiragi283.core.api.data.recipe.creator.HTItemResultCreator
@@ -11,7 +12,6 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.registry.holderSetOrNull
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.HTTagUtil
 import hiiragi283.core.api.text.HTTextResult
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementHolder
@@ -62,14 +62,15 @@ class HTRegisterRuntimeRecipeEvent(
     val itemResult: HTItemResultCreator = HTItemResultCreator
     val fluidResult: HTFluidResultCreator = HTFluidResultCreator
 
-    val materialManager: HTMaterialManager by lazy(HTMaterialManager::INSTANCE)
+    val materialManager: HTMaterialManager by lazy(HiiragiCoreAccess.INSTANCE::materialManager)
 
     fun save(id: ResourceLocation, recipe: Recipe<*>) {
         output.accept(id, recipe, null)
     }
 
     // TagKey
-    fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<Holder<T>> = HTTagUtil.INSTANCE.getFirstHolder(registryAccess, tagKey)
+    fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<Holder<T>> =
+        HiiragiCoreAccess.INSTANCE.getFirstHolder(registryAccess, tagKey)
 
     fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): Holder<T>? = getHolderResult(tagKey)
         .mapOrElse(identity()) { message: Component ->

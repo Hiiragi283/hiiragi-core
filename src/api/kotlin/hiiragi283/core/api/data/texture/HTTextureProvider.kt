@@ -4,11 +4,10 @@ import com.google.common.hash.HashCode
 import com.mojang.blaze3d.platform.NativeImage
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.data.HTDataGenContext
-import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialTextureSet
 import hiiragi283.core.api.property.HTPropertyMap
@@ -79,8 +78,10 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
      * @since 0.8.0
      */
     protected fun material(output: BiConsumer<ResourceLocation, NativeImage>) {
-        material(output, HTConst.BLOCK, HTMaterialContentsAccess.INSTANCE.getBlockTable())
-        material(output, HTConst.ITEM, HTMaterialContentsAccess.INSTANCE.getItemTable())
+        with(HiiragiCoreAccess.INSTANCE.materialContents) {
+            material(output, HTConst.BLOCK, getBlockTable())
+            material(output, HTConst.ITEM, getItemTable())
+        }
     }
 
     protected fun material(
@@ -88,7 +89,7 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
         pathPrefix: String,
         table: HTTable<HTTagPrefix, HTMaterialKey, *>,
     ) {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE) {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HiiragiCoreAccess.INSTANCE.materialManager) {
             if (key.getNamespace() != modId) continue
             val paletteId: ResourceLocation = (propertyMap[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId())
             val colorPalette: List<Color> = paletteId

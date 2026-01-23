@@ -3,9 +3,10 @@ package hiiragi283.core.api.data.model
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.HTDataGenContext
-import hiiragi283.core.api.material.HTMaterialContentsAccess
+import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
@@ -29,6 +30,8 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
         @JvmField
         val LOGGER: Logger = LogUtils.getLogger()
     }
+
+    protected val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
 
     //    Extensions    //
 
@@ -98,7 +101,7 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
      * @since 0.8.0
      */
     protected fun registerMaterials() {
-        HTMaterialContentsAccess.INSTANCE.getItemTable().forEach { (prefix: HTTagPrefix, _, item: HTIdLike) ->
+        contents.getItemTable().forEach { (prefix: HTTagPrefix, _, item: HTIdLike) ->
             if (item.getNamespace() != modid) return@forEach
             existTexture(item) { itemIn: HTIdLike ->
                 val textureIcon: String = prefix[HTTagPropertyKeys.TEXTURE_ICON] ?: prefix.name

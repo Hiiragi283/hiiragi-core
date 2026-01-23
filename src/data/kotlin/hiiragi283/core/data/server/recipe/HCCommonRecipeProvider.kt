@@ -2,8 +2,8 @@ package hiiragi283.core.data.server.recipe
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -212,5 +212,5 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
 
     @JvmStatic
     private fun getOrThrow(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*> =
-        HTMaterialContentsAccess.INSTANCE.getItemOrThrow(prefix, material)
+        HiiragiCoreAccess.INSTANCE.materialContents.getItemOrThrow(prefix, material)
 }

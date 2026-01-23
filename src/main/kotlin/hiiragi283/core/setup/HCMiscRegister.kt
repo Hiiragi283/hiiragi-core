@@ -2,6 +2,7 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HCRegistries
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.collection.toFlatTable
 import hiiragi283.core.api.item.HTBlockItem
@@ -34,18 +35,21 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.neoforged.neoforge.registries.RegisterEvent
 
-object HCMiscRegister {
+internal object HCMiscRegister {
     @JvmStatic
     private var hasInit: Boolean = false
 
     @JvmStatic
-    internal lateinit var materialBlocks: HTTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredBlock>
+    lateinit var materialBlocks: HTTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredBlock>
+        private set
 
     @JvmStatic
-    internal lateinit var materialItems: HTTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredItem>
+    lateinit var materialItems: HTTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredItem>
+        private set
 
     @JvmStatic
-    internal lateinit var toolItems: HTTable<HTToolType, HTMaterialKey, HTSimpleDeferredItem>
+    lateinit var toolItems: HTTable<HTToolType, HTMaterialKey, HTSimpleDeferredItem>
+        private set
 
     @JvmStatic
     fun register(event: RegisterEvent) {
@@ -54,7 +58,7 @@ object HCMiscRegister {
             HTMaterialManagerImpl.gatherAttributes()
             hasInit = true
         }
-        val manager: HTMaterialManager = HTMaterialManager.INSTANCE
+        val manager: HTMaterialManager = HiiragiCoreAccess.INSTANCE.materialManager
         event.register(Registries.BLOCK) { helper ->
             // 素材ブロックを生成する
             materialBlocks = manager

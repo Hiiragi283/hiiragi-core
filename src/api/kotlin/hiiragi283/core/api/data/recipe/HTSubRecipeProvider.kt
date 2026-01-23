@@ -1,6 +1,7 @@
 package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.creator.HTFluidResultCreator
 import hiiragi283.core.api.data.recipe.creator.HTIngredientCreator
 import hiiragi283.core.api.data.recipe.creator.HTItemResultCreator
@@ -53,7 +54,7 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
      * 素材を管理するマネージャのインスタンス
      * @since 0.7.0
      */
-    protected val materialManager: HTMaterialManager by lazy(HTMaterialManager::INSTANCE)
+    protected val materialManager: HTMaterialManager by lazy(HiiragiCoreAccess.INSTANCE::materialManager)
 
     /**
      * [HTRecipeProvider.buildRecipes]内で呼び出されるメソッドです。

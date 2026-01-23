@@ -1,8 +1,8 @@
 package hiiragi283.core.data.server.recipe
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.material.VanillaMaterialKeys
@@ -26,7 +26,7 @@ object HCCrushingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
         }
 
         mapOf(
-            HTMaterialContentsAccess.INSTANCE.getItemOrThrow(CommonTagPrefixes.DUST, VanillaMaterialKeys.WOOD) to ItemTags.LOGS,
+            HiiragiCoreAccess.INSTANCE.materialContents.getItemOrThrow(CommonTagPrefixes.DUST, VanillaMaterialKeys.WOOD) to ItemTags.LOGS,
             Items.SAND to Tags.Items.SANDSTONE_UNCOLORED_BLOCKS,
             Items.RED_SAND to Tags.Items.SANDSTONE_RED_BLOCKS,
         ).forEach { (output: ItemLike, input: TagKey<Item>) ->

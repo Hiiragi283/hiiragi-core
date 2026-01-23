@@ -1,11 +1,12 @@
 package hiiragi283.core.data.server.tag
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.tag.HTItemTagsProvider
 import hiiragi283.core.api.item.tool.HTToolType
-import hiiragi283.core.api.material.HTMaterialContentsAccess
+import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
@@ -25,6 +26,8 @@ import java.util.concurrent.CompletableFuture
 
 class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context: HTDataGenContext) :
     HTItemTagsProvider(HiiragiCoreAPI.MOD_ID, blockTags, context) {
+    private val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
+
     override fun addTagsInternal(factory: BuilderFactory<Item>) {
         copyTags()
 
@@ -40,7 +43,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
 
     private fun copyTags() {
         // Material
-        HTMaterialContentsAccess.INSTANCE.getBlockTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, _) ->
+        contents.getBlockTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, _) ->
             if (key.getNamespace() != modId) return@forEach
             copy(prefix, key)
         }
@@ -52,7 +55,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
     //    Material    //
 
     private fun material(factory: BuilderFactory<Item>) {
-        HTMaterialContentsAccess.INSTANCE.getItemTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
+        contents.getItemTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
             if (key.getNamespace() != modId) return@forEach
             addMaterial(factory, prefix, key).add(item)
             if (prefix == CommonTagPrefixes.GEM || prefix == CommonTagPrefixes.INGOT) {
@@ -80,7 +83,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
     //    Tool    //
 
     private fun tool(factory: BuilderFactory<Item>) {
-        HTMaterialContentsAccess.INSTANCE.getToolTable().forEach { (toolType: HTToolType, key: HTMaterialKey, item: HTIdLike) ->
+        contents.getToolTable().forEach { (toolType: HTToolType, key: HTMaterialKey, item: HTIdLike) ->
             if (key.getNamespace() != modId) return@forEach
             toolType.toolTags.map(factory::apply).forEach { it.add(item) }
         }

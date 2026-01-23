@@ -1,8 +1,8 @@
 package hiiragi283.core.api.recipe.result
 
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.storage.resource.HTResourceType
-import hiiragi283.core.api.tag.HTTagUtil
 import hiiragi283.core.api.text.HTTextResult
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
@@ -37,12 +37,12 @@ abstract class HTResourceRecipeResult<TYPE : Any, RESOURCE : HTResourceType.Regi
     final override fun getStackResult(provider: HolderLookup.Provider?): HTTextResult<STACK> = contents.fold(
         { resource: RESOURCE -> HTTextResult.success(createStack(resource, amount)) },
         { tagKey: TagKey<TYPE> ->
-            HTTagUtil.INSTANCE
+            HiiragiCoreAccess.INSTANCE
                 .getFirstHolder(provider, tagKey)
                 .map { createStack(it, amount) }
         },
         { resource: RESOURCE, tagKey: TagKey<TYPE> ->
-            HTTagUtil.INSTANCE
+            HiiragiCoreAccess.INSTANCE
                 .getFirstHolder(provider, tagKey)
                 .map { createStack(it, amount) }
                 .let { either: HTTextResult<STACK> ->

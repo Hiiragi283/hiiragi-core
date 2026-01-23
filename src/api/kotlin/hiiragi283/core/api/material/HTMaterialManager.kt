@@ -1,6 +1,5 @@
 package hiiragi283.core.api.material
 
-import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.property.HTEmptyPropertyMap
 import hiiragi283.core.api.property.HTPropertyMap
 
@@ -10,14 +9,6 @@ import hiiragi283.core.api.property.HTPropertyMap
  * @since 0.6.0
  */
 interface HTMaterialManager : Map<HTMaterialKey, HTPropertyMap> {
-    companion object {
-        /**
-         * [HTMaterialManager]のインスタンス
-         */
-        @JvmField
-        val INSTANCE: HTMaterialManager = HiiragiCoreAPI.getService()
-    }
-
     /**
      * 指定した[素材][material]がプロパティを保持しているか判定します。
      */

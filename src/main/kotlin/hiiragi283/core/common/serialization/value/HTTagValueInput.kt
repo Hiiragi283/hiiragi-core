@@ -1,7 +1,7 @@
 package hiiragi283.core.common.serialization.value
 
 import com.mojang.serialization.Codec
-import hiiragi283.core.api.serialization.value.HTValueAccess
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.serialization.value.HTValueInput
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
@@ -37,7 +37,7 @@ internal class HTTagValueInput(private val provider: HolderLookup.Provider, priv
 
     override fun child(key: String): HTValueInput? {
         val tagIn: CompoundTag = getTypedTag(key, CompoundTag.TYPE) ?: return null
-        return HTValueAccess.INSTANCE.createInput(provider, tagIn)
+        return HiiragiCoreAccess.INSTANCE.createInput(provider, tagIn)
     }
 
     override fun childOrEmpty(key: String): HTValueInput = child(key) ?: HTEmptyValueInput
@@ -46,7 +46,7 @@ internal class HTTagValueInput(private val provider: HolderLookup.Provider, priv
         val tagIn: ListTag = getTypedTag(key, ListTag.TYPE) ?: return null
         return when {
             tagIn.isEmpty() -> null
-            else -> tagIn.filterIsInstance<CompoundTag>().map { HTValueAccess.INSTANCE.createInput(provider, it) }
+            else -> tagIn.filterIsInstance<CompoundTag>().map { HiiragiCoreAccess.INSTANCE.createInput(provider, it) }
         }
     }
 

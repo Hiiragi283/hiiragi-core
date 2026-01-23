@@ -1,7 +1,7 @@
 package hiiragi283.core.api.data.recipe.creator
 
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTFluidMaterialProperty
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.getDefaultFluidAmount
@@ -57,7 +57,7 @@ data object HTFluidResultCreator : HTResultCreator<Fluid, HTFluidResourceType, F
         propertyKey: HTPropertyKey<HTFluidMaterialProperty?>,
         operator: IntUnaryOperator = IntUnaryOperator.identity(),
     ): HTFluidResult {
-        val propertyMap: HTPropertyMap = HTMaterialManager.INSTANCE.getOrEmpty(material)
+        val propertyMap: HTPropertyMap = HiiragiCoreAccess.INSTANCE.materialManager.getOrEmpty(material)
         val fluid: HTFluidContent<*, *, *> = propertyMap.getOrThrow(propertyKey).fluid
         return create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
     }
