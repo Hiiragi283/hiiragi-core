@@ -3,57 +3,52 @@ package hiiragi283.core.client
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.event.HTRegisterWidgetRendererEvent
+import hiiragi283.core.api.mod.HTClientMod
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.client.gui.widget.HTFluidTankWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.common.item.HTChromaticPowderItem
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
+import hiiragi283.core.setup.HCWidgetTypes
 import net.minecraft.client.renderer.entity.ThrownItemRenderer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
+import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.neoforge.client.event.EntityRenderersEvent
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent
-import net.neoforged.neoforge.client.gui.ConfigurationScreen
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory
 import net.neoforged.neoforge.client.model.DynamicFluidContainerModel
 import org.slf4j.Logger
-import thedarkcolour.kotlinforforge.neoforge.forge.LOADING_CONTEXT
-import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
 import java.awt.Color
 
 @Mod(value = HiiragiCoreAPI.MOD_ID, dist = [Dist.CLIENT])
-object HiiragiCoreClient {
+data object HiiragiCoreClient : HTClientMod() {
     @JvmStatic
     private val LOGGER: Logger = LogUtils.getLogger()
 
-    init {
-        val eventBus: IEventBus = MOD_BUS
-        eventBus.addListener(::clientSetup)
-        eventBus.addListener(::registerItemColors)
-        eventBus.addListener(::registerClientExtensions)
-        eventBus.addListener(::registerEntityRenderer)
-
-        LOADING_CONTEXT.activeContainer
-            .registerExtensionPoint(IConfigScreenFactory::class.java, IConfigScreenFactory(::ConfigurationScreen))
-
-        LOGGER.info("Hiiragi-Core loaded on client side!")
+    override fun initialize(eventBus: IEventBus, container: ModContainer) {
+        configScreen(container)
+        LOGGER.info("Hiiragi-Core loaded on client side")
     }
 
-    @JvmStatic
-    private fun clientSetup(event: FMLClientSetupEvent) {
+    override fun clientSetup(event: FMLClientSetupEvent) {
         HTWidgetRendererManager.init()
     }
 
-    @JvmStatic
-    private fun registerItemColors(event: RegisterColorHandlersEvent.Item) {
-        // Achromatic Powder
+    override fun registerWidgetRenderer(event: HTRegisterWidgetRendererEvent) {
+        event.register(HCWidgetTypes.FLUID_TANK.get(), ::HTFluidTankWidgetRenderer)
+    }
+
+    override fun registerItemColors(event: RegisterColorHandlersEvent.Item) {
+        // Chromatic Powder
         event.register(
             { stack: ItemStack, tint: Int ->
                 when (tint) {
@@ -68,11 +63,9 @@ object HiiragiCoreClient {
         for (item: ItemLike in HCFluids.REGISTER.asItemSequence()) {
             event.register(bucketColor, item)
         }
-        LOGGER.info("Registered item colors!")
     }
 
-    @JvmStatic
-    private fun registerClientExtensions(event: RegisterClientExtensionsEvent) {
+    override fun registerClientExtensions(event: RegisterClientExtensionsEvent) {
         // Vanilla
         event.clear(HCFluids.EXPERIENCE, Color(0x66ff33))
         event.registerFluidType(
@@ -95,7 +88,7 @@ object HiiragiCoreClient {
         LOGGER.info("Registered client extensions!")
     }
 
-    private fun registerEntityRenderer(event: EntityRenderersEvent.RegisterRenderers) {
+    override fun registerEntityRenderer(event: EntityRenderersEvent.RegisterRenderers) {
         // Entity
         event.registerEntityRenderer(HCEntityTypes.ELDRITCH_EGG.get(), ::ThrownItemRenderer)
     }

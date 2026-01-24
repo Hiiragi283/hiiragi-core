@@ -3,6 +3,7 @@ package hiiragi283.core
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HCRegistries
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.mod.HTCommonMod
 import hiiragi283.core.api.network.HTPayloadHandlers
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
 import hiiragi283.core.common.network.HTUpdateMenuPacket
@@ -23,35 +24,17 @@ import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.config.ModConfig
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
-import net.neoforged.neoforge.common.NeoForgeMod
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.neoforged.neoforge.network.registration.PayloadRegistrar
 import net.neoforged.neoforge.registries.NewRegistryEvent
 import org.slf4j.Logger
-import thedarkcolour.kotlinforforge.neoforge.forge.LOADING_CONTEXT
-import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
 
 @Mod(HiiragiCoreAPI.MOD_ID)
-data object HiiragiCore {
+data object HiiragiCore : HTCommonMod() {
     @JvmStatic
     private val LOGGER: Logger = LogUtils.getLogger()
 
-    init {
-        NeoForgeMod.enableMilkFluid()
-
-        val eventBus: IEventBus = MOD_BUS
-        val container: ModContainer = LOADING_CONTEXT.activeContainer
-
-        eventBus.addListener(::registerRegistries)
+    override fun initialize(eventBus: IEventBus, container: ModContainer) {
         eventBus.addListener(HCMiscRegister::register)
-        eventBus.addListener(::commonSetup)
-        eventBus.addListener { event: RegisterPayloadHandlersEvent ->
-            container.modInfo.version
-                .toString()
-                .let(event::registrar)
-                .let(::registerPayload)
-        }
 
         HCDataComponents.REGISTER.register(eventBus)
 
@@ -69,21 +52,20 @@ data object HiiragiCore {
 
         container.registerConfig(ModConfig.Type.COMMON, HCConfig.COMMON_SPEC)
 
-        LOGGER.info("Hiiragi-Core loaded!")
+        LOGGER.info("Hiiragi-Core loaded")
     }
 
-    private fun registerRegistries(event: NewRegistryEvent) {
+    override fun registerRegistries(event: NewRegistryEvent) {
         event.register(HCRegistries.SLOT_TYPE)
         event.register(HCRegistries.WIDGET_TYPE)
 
-        LOGGER.info("Registered new registries!")
+        LOGGER.info("Registered new registries")
     }
 
-    private fun commonSetup(event: FMLCommonSetupEvent) {
-    }
-
-    private fun registerPayload(registrar: PayloadRegistrar) {
+    override fun registerPayload(registrar: PayloadRegistrar) {
         registrar.playToClient(HTUpdateBlockEntityPacket.TYPE, HTUpdateBlockEntityPacket.STREAM_CODEC, HTPayloadHandlers::handleS2C)
         registrar.playBidirectional(HTUpdateMenuPacket.TYPE, HTUpdateMenuPacket.STREAM_CODEC, HTPayloadHandlers::handleBoth)
+
+        LOGGER.info("Registered payload handlers")
     }
 }

@@ -10,4 +10,6 @@ interface HTWidget<WIDGET : HTWidget<WIDGET>> {
     fun getType(): HTWidgetType<WIDGET>
 
     fun getBound(): HTBounds
+
+    fun isHovered(mouseX: Int, mouseY: Int): Boolean = getBound().contains(mouseX, mouseY)
 }
