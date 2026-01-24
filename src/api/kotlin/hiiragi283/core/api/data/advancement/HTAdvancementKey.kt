@@ -1,21 +1,31 @@
 package hiiragi283.core.api.data.advancement
 
+import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.toDescriptionKey
-import net.minecraft.advancements.Advancement
-import net.minecraft.resources.ResourceKey
-
-typealias HTAdvancementKey = ResourceKey<Advancement>
+import net.minecraft.advancements.AdvancementHolder
+import net.minecraft.resources.ResourceLocation
 
 /**
- * 進捗のタイトルの翻訳キーを取得します。
+ * 進捗の[ID][ResourceLocation]を保持するクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 0.8.0
  */
-val HTAdvancementKey.titleKey: String get() = this.toDescriptionKey("advancements", "title")
+@JvmInline
+value class HTAdvancementKey private constructor(private val id: ResourceLocation) :
+    HTIdLike,
+    Comparable<HTAdvancementKey> {
+        companion object {
+            @JvmStatic
+            fun of(holder: AdvancementHolder): HTAdvancementKey = of(holder.id())
 
-/**
- * 進捗の説明の翻訳キーを取得します。
- * @author Hiiragi Tsubasa
- * @since 0.1.0
- */
-val HTAdvancementKey.descKey: String get() = this.toDescriptionKey("advancements", "desc")
+            @JvmStatic
+            fun of(id: ResourceLocation): HTAdvancementKey = HTAdvancementKey(id)
+        }
+
+        val titleKey: String get() = getId().toDescriptionKey("advancements", "title")
+        val descKey: String get() = getId().toDescriptionKey("advancements", "desc")
+
+        override fun getId(): ResourceLocation = this.id
+
+        override fun compareTo(other: HTAdvancementKey): Int = this.id.compareNamespaced(other.id)
+    }

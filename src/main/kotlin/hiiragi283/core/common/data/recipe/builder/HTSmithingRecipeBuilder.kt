@@ -2,6 +2,7 @@ package hiiragi283.core.common.data.recipe.builder
 
 import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.data.recipe.builder.HTIngredientHolder
 import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.world.item.crafting.SmithingTransformRecipe
@@ -15,9 +16,9 @@ class HTSmithingRecipeBuilder : HTStackRecipeBuilder(HTConst.SMITHING) {
         }
     }
 
-    val template: SingleIngredientHolder = SingleIngredientHolder()
-    val base: SingleIngredientHolder = SingleIngredientHolder()
-    val addition: SingleIngredientHolder = SingleIngredientHolder()
+    val template = HTIngredientHolder.Single()
+    val base = HTIngredientHolder.Single()
+    val addition = HTIngredientHolder.Single()
 
     override fun createRecipe(): SmithingTransformRecipe = SmithingTransformRecipe(
         template.ingredient,

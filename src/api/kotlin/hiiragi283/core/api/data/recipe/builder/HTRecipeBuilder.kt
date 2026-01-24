@@ -1,16 +1,9 @@
 package hiiragi283.core.api.data.recipe.builder
 
-import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.data.holder.HTConditionHolder
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.tags.TagKey
-import net.minecraft.world.item.Item
 import net.minecraft.world.item.crafting.Recipe
-import net.neoforged.neoforge.common.conditions.ICondition
-import net.neoforged.neoforge.common.conditions.ModLoadedCondition
-import net.neoforged.neoforge.common.conditions.NotCondition
-import net.neoforged.neoforge.common.conditions.TagEmptyCondition
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[Recipe]のビルダークラスです。
@@ -21,34 +14,7 @@ import net.neoforged.neoforge.common.conditions.TagEmptyCondition
 abstract class HTRecipeBuilder(private val prefix: String) {
     //    Conditions    //
 
-    val conditions: Conditions = Conditions()
-
-    inner class Conditions {
-        private val conditions: MutableList<ICondition> = mutableListOf()
-
-        @JvmName("addModCondition")
-        operator fun plusAssign(modId: String) {
-            this.plusAssign(ModLoadedCondition(modId))
-        }
-
-        @JvmName("addTagCondition")
-        operator fun plusAssign(pair: Pair<HTTagPrefix, HTMaterialLike>) {
-            val (prefix: HTTagPrefix, material: HTMaterialLike) = pair
-            this.plusAssign(prefix.itemTagKey(material))
-        }
-
-        @JvmName("addTagCondition")
-        operator fun plusAssign(tagKey: TagKey<Item>) {
-            this.plusAssign(NotCondition(TagEmptyCondition(tagKey)))
-        }
-
-        @JvmName("addCondition")
-        operator fun plusAssign(condition: ICondition) {
-            conditions += condition
-        }
-
-        fun toArray(): Array<ICondition> = conditions.toTypedArray()
-    }
+    val conditions = HTConditionHolder()
 
     //    Save    //
 

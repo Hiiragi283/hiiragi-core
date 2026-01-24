@@ -2,6 +2,7 @@ package hiiragi283.core.common.data.recipe.builder
 
 import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.data.recipe.builder.HTIngredientHolder
 import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.world.item.crafting.AbstractCookingRecipe
@@ -62,7 +63,7 @@ class HTCookingRecipeBuilder(
 
     var group: String? = null
     var category: CookingBookCategory = CookingBookCategory.MISC
-    val ingredient: SingleIngredientHolder = SingleIngredientHolder()
+    val ingredient = HTIngredientHolder.Single()
     var exp: Float = 0f
     var time: Int = 20 * 10
 

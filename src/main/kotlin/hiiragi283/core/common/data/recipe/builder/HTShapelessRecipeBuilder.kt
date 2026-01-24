@@ -2,6 +2,7 @@ package hiiragi283.core.common.data.recipe.builder
 
 import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.data.recipe.builder.HTIngredientHolder
 import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.world.item.crafting.CraftingBookCategory
@@ -18,7 +19,7 @@ class HTShapelessRecipeBuilder : HTStackRecipeBuilder(HTConst.SHAPELESS) {
 
     var group: String? = null
     var category: CraftingBookCategory = CraftingBookCategory.MISC
-    var ingredients: ListIngredientHolder = ListIngredientHolder()
+    var ingredients = HTIngredientHolder.Multiple()
 
     override fun createRecipe(): ShapelessRecipe = ShapelessRecipe(
         group ?: "",

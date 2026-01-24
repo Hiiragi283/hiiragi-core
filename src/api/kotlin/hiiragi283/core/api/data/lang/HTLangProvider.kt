@@ -2,8 +2,6 @@ package hiiragi283.core.api.data.lang
 
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
-import hiiragi283.core.api.data.advancement.descKey
-import hiiragi283.core.api.data.advancement.titleKey
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey

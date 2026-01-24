@@ -2,6 +2,7 @@ package hiiragi283.core.common.data.recipe.builder
 
 import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.data.recipe.builder.HTIngredientHolder
 import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.world.item.crafting.CraftingBookCategory
@@ -20,19 +21,19 @@ class HTShapedRecipeBuilder : HTStackRecipeBuilder(HTConst.SHAPED) {
 
     var group: String? = null
     var category: CraftingBookCategory = CraftingBookCategory.MISC
-    private val symbols: MutableMap<Char, SingleIngredientHolder> = mutableMapOf()
+    private val symbols: MutableMap<Char, HTIngredientHolder.Single> = mutableMapOf()
     private lateinit var patterns: List<String>
 
-    fun define(symbol: Char): SingleIngredientHolder {
+    fun define(symbol: Char): HTIngredientHolder.Single {
         check(symbol !in symbols) { "Symbol '$symbol' is already used!" }
         check(symbol != ' ') { "Symbol ' ' is not allowed!" }
-        return symbols.computeIfAbsent(symbol) { SingleIngredientHolder() }
+        return symbols.computeIfAbsent(symbol) { HTIngredientHolder.Single() }
     }
 
     override fun createRecipe(): ShapedRecipe = ShapedRecipe(
         group ?: "",
         category,
-        ShapedRecipePattern.of(symbols.mapValues { (_, value: SingleIngredientHolder) -> value.ingredient }, patterns),
+        ShapedRecipePattern.of(symbols.mapValues { (_, value: HTIngredientHolder.Single) -> value.ingredient }, patterns),
         resultStack.stack,
         true,
     )
