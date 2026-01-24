@@ -1,7 +1,6 @@
 package hiiragi283.core.api
 
 import org.apache.commons.lang3.math.Fraction
-import kotlin.math.min
 
 fun fraction(value: Double): Fraction = Fraction.getFraction(value)
 
@@ -20,7 +19,7 @@ fun fraction(numerator: Int, denominator: Int): Fraction = Fraction.getFraction(
 
 fun fixedFraction(amount: Int, capacity: Int): Fraction {
     if (capacity <= 0) return Fraction.ZERO
-    val fixedAmount: Int = min(amount, capacity)
+    val fixedAmount: Int = minOf(amount, capacity)
     return fraction(fixedAmount, capacity)
 }
 
@@ -47,7 +46,7 @@ operator fun Int.div(other: Fraction): Fraction = this.toFraction(1).divideBy(ot
 // Long
 fun fixedFraction(amount: Long, capacity: Long): Fraction {
     if (capacity <= 0) return Fraction.ZERO
-    val fixedAmount: Long = min(amount, capacity)
+    val fixedAmount: Long = minOf(amount, capacity)
     return fraction(fixedAmount / capacity.toDouble())
 }
 

@@ -1,6 +1,7 @@
 package hiiragi283.core.common.storage.energy
 
-import hiiragi283.core.api.HTDataSerializable
+import hiiragi283.core.api.HTContentListener
+import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.attachments.HTAttachedEnergy
@@ -21,7 +22,8 @@ open class HTComponentEnergyBattery(
     protected val canExtract: Predicate<HTStorageAccess>,
     protected val canInsert: Predicate<HTStorageAccess>,
 ) : HTEnergyBattery.Basic(),
-    HTDataSerializable.Empty {
+    HTContentListener.Empty,
+    HTValueSerializable.Empty {
     companion object {
         @JvmStatic
         fun create(

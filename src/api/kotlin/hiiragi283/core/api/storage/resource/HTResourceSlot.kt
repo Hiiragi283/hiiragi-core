@@ -1,10 +1,10 @@
 package hiiragi283.core.api.storage.resource
 
-import hiiragi283.core.api.HTDataSerializable
+import hiiragi283.core.api.HTContentListener
+import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.amount.HTAmountView
-import kotlin.math.min
 
 /**
  * リソースを搬入/搬出できることを表すインターフェースです。
@@ -14,7 +14,8 @@ import kotlin.math.min
  */
 interface HTResourceSlot<RESOURCE : HTResourceType<*>> :
     HTResourceView<RESOURCE>,
-    HTDataSerializable {
+    HTValueSerializable,
+    HTContentListener {
     /**
      * 指定した[resource]が有効か判定します。
      * @return 有効な場合は`true`
@@ -81,16 +82,17 @@ interface HTResourceSlot<RESOURCE : HTResourceType<*>> :
             access: HTStorageAccess,
         ): Int {
             if (resource == null || amount <= 0) return 0
-            val needed: Int = min(inputRate(access), getNeeded(resource))
+            val needed: Int = minOf(inputRate(access), getNeeded(resource))
             if (needed <= 0 || !isStackValidForInsert(resource, access)) return amount
 
             val resourceIn: RESOURCE? = this.getResource()
             val sameType: Boolean = resource == resourceIn
             if (resourceIn == null || sameType) {
-                val toAdd: Int = min(amount, needed)
+                val toAdd: Int = minOf(amount, needed)
                 if (action.execute()) {
                     if (sameType) {
                         growAmount(toAdd)
+                        onContentsChanged()
                     } else {
                         setResource(resource)
                         setAmount(toAdd)
@@ -104,9 +106,10 @@ interface HTResourceSlot<RESOURCE : HTResourceType<*>> :
         override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int {
             val resourceIn: RESOURCE? = this.getResource()
             if (resourceIn == null || amount < 1 || !canStackExtract(resourceIn, access)) return 0
-            val fixedAmount: Int = min(min(outputRate(access), getAmount()), amount)
+            val fixedAmount: Int = minOf(minOf(outputRate(access), getAmount()), amount)
             if (fixedAmount > 0 && action.execute()) {
                 shrinkAmount(fixedAmount)
+                onContentsChanged()
             }
             return fixedAmount
         }

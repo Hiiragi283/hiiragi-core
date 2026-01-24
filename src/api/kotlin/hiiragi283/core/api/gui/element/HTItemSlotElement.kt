@@ -23,7 +23,6 @@ import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 import java.util.Optional
 import java.util.function.Consumer
-import kotlin.math.min
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[ItemSlot]の拡張クラスです。
@@ -163,7 +162,7 @@ class HTItemSlotElement : ItemSlot {
             if (!mayPickup(player)) {
                 return Optional.empty()
             }
-            val count: Int = min(count, decrement)
+            val count: Int = minOf(count, decrement)
             val stack: ItemStack = remove(count)
             if (stack.isEmpty) {
                 return Optional.empty()

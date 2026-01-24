@@ -32,6 +32,9 @@ object HiiragiCoreTags {
 
         // Mod
         @JvmField
+        val BYPASS_MENU_VALIDATION: TagKey<Item> = mod("bypass_menu_validation")
+
+        @JvmField
         val ELDRITCH_PEARL_BINDER: TagKey<Item> = mod("eldritch_pearl_binder")
 
         @JvmField

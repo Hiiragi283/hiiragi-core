@@ -1,8 +1,8 @@
 package hiiragi283.core.api.storage.amount
 
+import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
-import kotlin.math.min
 
 /**
  * 量を搬入/搬出できることを表すインターフェースです。
@@ -37,23 +37,26 @@ interface HTAmountSlot : HTAmountView {
 
     abstract class Basic :
         HTAmountView.Mutable(),
-        HTAmountSlot {
+        HTAmountSlot,
+        HTContentListener {
         override fun insert(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int {
             if (amount <= 0 || !canInsert(access)) return 0
-            val needed: Int = min(inputRate(access), getNeeded())
+            val needed: Int = minOf(inputRate(access), getNeeded())
             if (needed <= 0) return 0
-            val toAdd: Int = min(amount, needed)
+            val toAdd: Int = minOf(amount, needed)
             if (action.execute()) {
                 setAmount(getAmount() + toAdd)
+                onContentsChanged()
             }
             return toAdd
         }
 
         override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int {
             if (isEmpty() || amount <= 0 || !canExtract(access)) return 0
-            val toRemove: Int = min(min(outputRate(access), getAmount()), amount)
+            val toRemove: Int = minOf(minOf(outputRate(access), getAmount()), amount)
             if (toRemove > 0 && action.execute()) {
                 setAmount(getAmount() - toRemove)
+                onContentsChanged()
             }
             return toRemove
         }

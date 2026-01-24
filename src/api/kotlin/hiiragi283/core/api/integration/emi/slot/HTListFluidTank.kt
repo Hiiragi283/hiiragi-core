@@ -1,11 +1,12 @@
 package hiiragi283.core.api.integration.emi.slot
 
 import dev.emi.emi.api.stack.EmiIngredient
-import hiiragi283.core.api.HTDataSerializable
+import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.integration.emi.toEmi
 import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.monad.unwrap
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
+import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.fluid.HTFluidResourceFactory
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.HTFluidTank
@@ -24,7 +25,8 @@ import net.neoforged.neoforge.fluids.FluidStack
  */
 class HTListFluidTank private constructor(val content: Either<TagKey<Fluid>, List<HTFluidResourceType>>, private val amount: Int) :
     HTFluidTank.Basic(),
-    HTDataSerializable.Empty {
+    HTContentListener.Empty,
+    HTValueSerializable.Empty {
         constructor(ingredient: HTFluidIngredient) : this(ingredient.unwrap(), ingredient.getRequiredAmount())
 
         constructor(tagKey: TagKey<Fluid>, amount: Int) : this(Either.Left(tagKey), amount)

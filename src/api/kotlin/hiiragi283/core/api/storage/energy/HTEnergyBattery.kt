@@ -1,6 +1,7 @@
 package hiiragi283.core.api.storage.energy
 
-import hiiragi283.core.api.HTDataSerializable
+import hiiragi283.core.api.HTContentListener
+import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.amount.HTAmountSlot
 
 /**
@@ -11,7 +12,8 @@ import hiiragi283.core.api.storage.amount.HTAmountSlot
  */
 interface HTEnergyBattery :
     HTAmountSlot,
-    HTDataSerializable {
+    HTContentListener,
+    HTValueSerializable {
     //    Basic    //
 
     /**

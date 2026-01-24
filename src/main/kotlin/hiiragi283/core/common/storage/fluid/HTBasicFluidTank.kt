@@ -1,19 +1,18 @@
 package hiiragi283.core.common.storage.fluid
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HTDataSerializable
-import hiiragi283.core.api.serialization.codec.BiCodecs
+import hiiragi283.core.api.HTContentListener
+import hiiragi283.core.api.serialization.value.HTValueInput
+import hiiragi283.core.api.serialization.value.HTValueOutput
+import hiiragi283.core.api.serialization.value.read
+import hiiragi283.core.api.serialization.value.write
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.fluid.toResource
-import net.minecraft.nbt.Tag
-import net.minecraft.resources.RegistryOps
 import net.neoforged.neoforge.fluids.FluidStack
-import java.util.function.BiConsumer
 import java.util.function.BiPredicate
-import java.util.function.Function
 import java.util.function.Predicate
 
 open class HTBasicFluidTank protected constructor(
@@ -21,8 +20,8 @@ open class HTBasicFluidTank protected constructor(
     private val canExtract: BiPredicate<HTFluidResourceType, HTStorageAccess>,
     private val canInsert: BiPredicate<HTFluidResourceType, HTStorageAccess>,
     private val filter: Predicate<HTFluidResourceType>,
-) : HTFluidTank.Basic(),
-    HTDataSerializable.CodecBased {
+    private val listener: HTContentListener?,
+) : HTFluidTank.Basic() {
     companion object {
         @JvmStatic
         private fun validateCapacity(capacity: Int): Int {
@@ -32,18 +31,21 @@ open class HTBasicFluidTank protected constructor(
 
         @JvmStatic
         fun create(
+            listener: HTContentListener?,
             capacity: Int,
             canExtract: BiPredicate<HTFluidResourceType, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
             canInsert: BiPredicate<HTFluidResourceType, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
             filter: Predicate<HTFluidResourceType> = HTStoragePredicates.alwaysTrue(),
-        ): HTBasicFluidTank = HTBasicFluidTank(validateCapacity(capacity), canExtract, canInsert, filter)
+        ): HTBasicFluidTank = HTBasicFluidTank(validateCapacity(capacity), canExtract, canInsert, filter, listener)
 
         @JvmStatic
         fun input(
+            listener: HTContentListener?,
             capacity: Int,
             canInsert: Predicate<HTFluidResourceType> = HTStoragePredicates.alwaysTrue(),
             filter: Predicate<HTFluidResourceType> = canInsert,
         ): HTBasicFluidTank = create(
+            listener,
             capacity,
             HTStoragePredicates.notExternal(),
             { resource: HTFluidResourceType, _ -> canInsert.test(resource) },
@@ -51,7 +53,8 @@ open class HTBasicFluidTank protected constructor(
         )
 
         @JvmStatic
-        fun output(capacity: Int): HTBasicFluidTank = create(capacity, canInsert = HTStoragePredicates.internalOnly())
+        fun output(listener: HTContentListener?, capacity: Int): HTBasicFluidTank =
+            create(listener, capacity, canInsert = HTStoragePredicates.internalOnly())
     }
 
     @JvmField
@@ -70,6 +73,7 @@ open class HTBasicFluidTank protected constructor(
         } else {
             error("Invalid stack for slot: $resource")
         }
+        onContentsChanged()
     }
 
     final override fun setAmount(amount: Int) {
@@ -90,18 +94,18 @@ open class HTBasicFluidTank protected constructor(
 
     override fun getAmount(): Int = stack.amount
 
-    override fun serialize(ops: RegistryOps<Tag>, consumer: BiConsumer<String, Tag>) {
-        val resource: HTFluidResourceType = getResource() ?: return
-        HTFluidResourceType.CODEC
-            .encode(ops, resource)
-            .ifSuccess { consumer.accept(HTConst.FLUID, it) }
-        BiCodecs.NON_NEGATIVE_INT.encode(ops, getAmount()).ifSuccess { consumer.accept(HTConst.AMOUNT, it) }
+    override fun serialize(output: HTValueOutput) {
+        output.write(HTConst.FLUID, HTFluidResourceType.CODEC, getResource())
+        output.putInt(HTConst.AMOUNT, getAmount())
     }
 
-    override fun deserialize(ops: RegistryOps<Tag>, function: Function<String, Tag>) {
-        HTFluidResourceType.CODEC
-            .decode(ops, function.apply(HTConst.FLUID))
-            .ifSuccess(::setResource)
-        BiCodecs.NON_NEGATIVE_INT.decode(ops, function.apply(HTConst.AMOUNT)).ifSuccess(::setAmount)
+    override fun deserialize(input: HTValueInput) {
+        val resource: HTFluidResourceType = input.read(HTConst.FLUID, HTFluidResourceType.CODEC) ?: return
+        val amount: Int = input.getInt(HTConst.AMOUNT) ?: return
+        resource.toStack(amount).let(::setStack)
+    }
+
+    final override fun onContentsChanged() {
+        listener?.onContentsChanged()
     }
 }

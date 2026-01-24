@@ -1,8 +1,9 @@
 package hiiragi283.core.util
 
 import com.mojang.logging.LogUtils
-import hiiragi283.core.api.HTDataSerializable
+import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.fixedFraction
+import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.amount.HTAmountView
@@ -299,7 +300,8 @@ object HTStackSlotHelper {
 
     class HTFluidHandlerItemWrapper private constructor(private val handler: IFluidHandlerItem) :
         HTFluidTank,
-        HTDataSerializable.Empty {
+        HTContentListener.Empty,
+        HTValueSerializable.Empty {
             companion object {
                 @JvmStatic
                 fun create(resourceType: HTItemResourceType): HTFluidHandlerItemWrapper? =

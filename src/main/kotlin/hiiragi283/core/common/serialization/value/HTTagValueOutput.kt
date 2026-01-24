@@ -14,7 +14,7 @@ internal class HTTagValueOutput(private val provider: HolderLookup.Provider, pri
 
     //    HTValueOutput    //
 
-    override fun <T : Any> store(key: String, codec: Codec<T>, value: T?) {
+    override fun <T : Any> write(key: String, codec: Codec<T>, value: T?) {
         if (value == null) return
         codec
             .encodeStart(registryOps, value)

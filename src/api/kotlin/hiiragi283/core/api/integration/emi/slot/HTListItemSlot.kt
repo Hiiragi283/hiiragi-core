@@ -1,11 +1,12 @@
 package hiiragi283.core.api.integration.emi.slot
 
 import dev.emi.emi.api.stack.EmiIngredient
-import hiiragi283.core.api.HTDataSerializable
+import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.integration.emi.toEmi
 import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.monad.unwrap
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.item.HTItemResourceFactory
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
@@ -24,7 +25,8 @@ import net.minecraft.world.item.ItemStack
  */
 class HTListItemSlot private constructor(private val content: Either<TagKey<Item>, List<HTItemResourceType>>, private val count: Int) :
     HTItemSlot.Basic(),
-    HTDataSerializable.Empty {
+    HTContentListener.Empty,
+    HTValueSerializable.Empty {
         constructor(ingredient: HTItemIngredient) : this(ingredient.unwrap(), ingredient.getRequiredAmount())
 
         constructor(tagKey: TagKey<Item>, count: Int) : this(Either.Left(tagKey), count)

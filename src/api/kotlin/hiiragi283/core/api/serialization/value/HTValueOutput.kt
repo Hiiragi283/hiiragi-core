@@ -1,7 +1,6 @@
 package hiiragi283.core.api.serialization.value
 
 import com.mojang.serialization.Codec
-import hiiragi283.core.api.serialization.codec.BiCodec
 import java.util.Optional
 
 /**
@@ -17,10 +16,10 @@ interface HTValueOutput {
      * @param codec [T]のコーデック
      * @param value 書き込む値
      */
-    fun <T : Any> store(key: String, codec: Codec<T>, value: T?)
+    fun <T : Any> write(key: String, codec: Codec<T>, value: T?)
 
-    fun <T : Any> storeOptional(key: String, codec: Codec<Optional<T>>, value: T?) {
-        store(key, codec, Optional.ofNullable(value))
+    fun <T : Any> writeOptional(key: String, codec: Codec<Optional<T>>, value: T?) {
+        write(key, codec, Optional.ofNullable(value))
     }
 
     fun isEmpty(): Boolean
@@ -51,15 +50,6 @@ interface HTValueOutput {
      * @return [key]に紐づけられた[TypedOutputList]
      */
     fun <T : Any> list(key: String, codec: Codec<T>): TypedOutputList<T>
-
-    /**
-     * 指定した[key]に[TypedOutputList]を作ります。
-     * @param T [TypedOutputList]の要素のクラス
-     * @param key 保存先のキー
-     * @param codec [T]のコーデック
-     * @return [key]に紐づけられた[TypedOutputList]
-     */
-    fun <T : Any> list(key: String, codec: BiCodec<*, T>): TypedOutputList<T> = list(key, codec.codec)
 
     // Primitives
 
