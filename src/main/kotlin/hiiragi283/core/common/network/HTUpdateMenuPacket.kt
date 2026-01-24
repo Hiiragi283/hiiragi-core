@@ -13,6 +13,7 @@ import net.minecraft.network.codec.StreamCodec
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload
 import net.minecraft.server.MinecraftServer
 import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.entity.player.Player
 
 /**
  * @see mekanism.common.network.to_client.container.PacketUpdateContainer
@@ -42,16 +43,15 @@ class HTUpdateMenuPacket private constructor(val containerId: Int, val map: Map<
         override fun type(): CustomPacketPayload.Type<HTUpdateMenuPacket> = TYPE
 
         override fun handle(player: AbstractClientPlayer, minecraft: Minecraft) {
-            val container: HTContainerMenu = player.containerMenu as? HTContainerMenu ?: return
-            if (container.containerId == this.containerId) {
-                for ((index: Int, payload: HTSyncablePayload) in map) {
-                    payload.setValue(container, index)
-                }
-            }
+            handle(player)
         }
 
         override fun handle(player: ServerPlayer, server: MinecraftServer) {
-            val container: HTContainerMenu = player.containerMenu as? HTContainerMenu ?: return
+            handle(player)
+        }
+
+        private fun handle(player: Player) {
+            val container: HTContainerMenu<*> = player.containerMenu as? HTContainerMenu<*> ?: return
             if (container.containerId == this.containerId) {
                 for ((index: Int, payload: HTSyncablePayload) in map) {
                     payload.setValue(container, index)

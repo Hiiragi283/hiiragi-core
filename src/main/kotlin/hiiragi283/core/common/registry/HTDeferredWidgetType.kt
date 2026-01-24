@@ -8,7 +8,7 @@ import hiiragi283.core.api.registry.createKey
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 
-class HTDeferredWidgetType<WIDGET : HTWidget<WIDGET>>(private val key: ResourceKey<HTWidgetType<*>>) :
+class HTDeferredWidgetType<WIDGET : HTWidget>(private val key: ResourceKey<HTWidgetType<*>>) :
     HTHolderLike<HTWidgetType<*>, HTWidgetType<WIDGET>> {
     constructor(id: ResourceLocation) : this(HCRegistries.Keys.WIDGET_TYPE.createKey(id))
 

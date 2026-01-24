@@ -21,7 +21,7 @@ import org.apache.commons.lang3.math.Fraction
 import java.util.function.Consumer
 
 @OnlyIn(Dist.CLIENT)
-abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget<WIDGET>>(protected val widget: WIDGET) : HTWidgetRenderer<WIDGET> {
+abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget>(protected val widget: WIDGET) : HTWidgetRenderer<WIDGET> {
     protected val font: Font = Minecraft.getInstance().font
 
     final override fun render(

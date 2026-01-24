@@ -6,7 +6,9 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.neoforge.common.NeoForgeMod
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.neoforged.neoforge.network.registration.PayloadRegistrar
+import net.neoforged.neoforge.registries.DataPackRegistryEvent
 import net.neoforged.neoforge.registries.NewRegistryEvent
+import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent
 import thedarkcolour.kotlinforforge.neoforge.forge.LOADING_CONTEXT
 import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
 
@@ -22,6 +24,9 @@ abstract class HTCommonMod {
         val container: ModContainer = LOADING_CONTEXT.activeContainer
 
         eventBus.addListener(::registerRegistries)
+        eventBus.addListener(::registerDynamicRegistries)
+        eventBus.addListener(::registerDataMapTypes)
+
         eventBus.addListener(::commonSetup)
         eventBus.addListener { event: RegisterPayloadHandlersEvent ->
             container.modInfo.version
@@ -36,6 +41,10 @@ abstract class HTCommonMod {
     protected abstract fun initialize(eventBus: IEventBus, container: ModContainer)
 
     protected open fun registerRegistries(event: NewRegistryEvent) {}
+
+    protected open fun registerDynamicRegistries(event: DataPackRegistryEvent.NewRegistry) {}
+
+    protected open fun registerDataMapTypes(event: RegisterDataMapTypesEvent) {}
 
     protected open fun commonSetup(event: FMLCommonSetupEvent) {}
 

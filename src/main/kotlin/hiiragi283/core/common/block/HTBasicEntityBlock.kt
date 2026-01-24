@@ -4,23 +4,17 @@ import hiiragi283.core.api.world.getTypedBlockEntity
 import hiiragi283.core.common.block.entity.HTBlockEntity
 import hiiragi283.core.common.block.entity.HTExtendedBlockEntity
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
-import hiiragi283.core.common.registry.HTDeferredMenuType
 import net.minecraft.core.BlockPos
-import net.minecraft.network.chat.Component
-import net.minecraft.world.InteractionResult
-import net.minecraft.world.Nameable
 import net.minecraft.world.entity.LivingEntity
-import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.phys.BlockHitResult
 
 open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, properties: Properties) :
     Block(properties),
     HTBlockWithEntity {
-    override fun useWithoutItem(
+    /*override fun useWithoutItem(
         state: BlockState,
         level: Level,
         pos: BlockPos,
@@ -28,7 +22,7 @@ open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, pr
         hitResult: BlockHitResult,
     ): InteractionResult {
         val blockEntity: HTExtendedBlockEntity = level.getTypedBlockEntity(pos) ?: return InteractionResult.PASS
-        val menuType: HTDeferredMenuType.WithContext<*, *>? = getMenuType()
+        val menuType: HTDeferredMenuType.WithContext<*, *>? = null
         if (level.isClientSide) {
             return when {
                 menuType == null -> InteractionResult.PASS
@@ -42,9 +36,7 @@ open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, pr
         return menuType
             ?.openMenu(player, name, blockEntity, blockEntity::writeExtraContainerData)
             ?: InteractionResult.PASS
-    }
-
-    protected open fun getMenuType(): HTDeferredMenuType.WithContext<*, *>? = null
+    }*/
 
     override fun setPlacedBy(
         level: Level,

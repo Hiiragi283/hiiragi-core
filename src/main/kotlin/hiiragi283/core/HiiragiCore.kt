@@ -16,6 +16,7 @@ import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
+import hiiragi283.core.setup.HCMenuTypes
 import hiiragi283.core.setup.HCMiscRegister
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
@@ -46,6 +47,7 @@ data object HiiragiCore : HTCommonMod() {
         HCAttachmentTypes.REGISTER.register(eventBus)
         HCBlockEntityTypes.register(eventBus)
         HCCreativeTabs.REGISTER.register(eventBus)
+        HCMenuTypes.REGISTER.register(eventBus)
         HCRecipeSerializers.REGISTER.register(eventBus)
         HCRecipeTypes.REGISTER.register(eventBus)
         HCWidgetTypes.REGISTER.register(eventBus)

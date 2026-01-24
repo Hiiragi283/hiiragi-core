@@ -16,7 +16,7 @@ class HTRegisterWidgetRendererEvent(
     private val registerer: (HTWidgetType<*>, HTWidgetRenderer.Factory<*, *>) -> HTWidgetRenderer.Factory<*, *>?,
 ) : Event(),
     IModBusEvent {
-    fun <WIDGET : HTWidget<WIDGET>, RENDERER : HTWidgetRenderer<WIDGET>> register(
+    fun <WIDGET : HTWidget, RENDERER : HTWidgetRenderer<WIDGET>> register(
         type: HTWidgetType<WIDGET>,
         factory: HTWidgetRenderer.Factory<WIDGET, RENDERER>,
     ) {

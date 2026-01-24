@@ -10,12 +10,12 @@ import hiiragi283.core.api.gui.sync.HTSyncableMenu
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
 import hiiragi283.core.common.network.HTUpdateMenuPacket
-import hiiragi283.core.common.registry.HTDeferredMenuType
 import net.minecraft.core.RegistryAccess
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.world.inventory.MenuType
 import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.network.PacketDistributor
@@ -30,11 +30,11 @@ import kotlin.math.min
  * @see mekanism.common.inventory.container.MekanismContainer
  */
 abstract class HTContainerMenu<C>(
-    val menuType: HTDeferredMenuType<*, *>,
+    menuType: MenuType<*>,
     containerId: Int,
     val inventory: Inventory,
     val context: C,
-) : AbstractContainerMenu(menuType.get(), containerId),
+) : AbstractContainerMenu(menuType, containerId),
     HTSyncableMenu {
     companion object {
         @JvmField
@@ -199,14 +199,7 @@ abstract class HTContainerMenu<C>(
 
     //    Slot Sync    //
 
-    private val trackedSlots: MutableList<HTSyncableSlot> = mutableListOf()
-
-    /**
-     * @see mekanism.common.inventory.container.MekanismContainer.track
-     */
-    fun track(slot: HTSyncableSlot) {
-        trackedSlots.add(slot)
-    }
+    protected val trackedSlots: MutableList<HTSyncableSlot> = mutableListOf()
 
     override fun getTrackedSlot(index: Int): HTSyncableSlot? = trackedSlots.getOrNull(index)
 

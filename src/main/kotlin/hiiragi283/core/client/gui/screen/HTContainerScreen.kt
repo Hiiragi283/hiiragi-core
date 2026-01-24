@@ -11,7 +11,7 @@ import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 
 @OnlyIn(Dist.CLIENT)
-abstract class HTContainerScreen<MENU : HTContainerMenu>(menu: MENU, inventory: Inventory, title: Component) :
+abstract class HTContainerScreen<MENU : HTContainerMenu<*>>(menu: MENU, inventory: Inventory, title: Component) :
     AbstractContainerScreen<MENU>(menu, inventory, title) {
     override fun render(
         guiGraphics: GuiGraphics,
@@ -25,17 +25,6 @@ abstract class HTContainerScreen<MENU : HTContainerMenu>(menu: MENU, inventory: 
     }
 
     protected open fun updateVisibility() {}
-
-    override fun renderBg(
-        guiGraphics: GuiGraphics,
-        partialTick: Float,
-        mouseX: Int,
-        mouseY: Int,
-    ) {
-        /*texture?.let {
-            guiGraphics.blit(it, startX, startY, 0, 0, imageWidth, imageHeight)
-        }*/
-    }
 
     fun getBounds(): HTBounds = HTBounds(this.leftPos, this.topPos, this.imageWidth, this.imageHeight)
 

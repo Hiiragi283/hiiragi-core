@@ -8,7 +8,7 @@ import hiiragi283.core.common.registry.HTDeferredWidgetType
 import net.minecraft.resources.ResourceLocation
 
 class HTDeferredWidgetTypeRegister(namespace: String) : HTDeferredRegister<HTWidgetType<*>>(HCRegistries.Keys.WIDGET_TYPE, namespace) {
-    fun <WIDGET : HTWidget<WIDGET>> registerType(name: String): HTDeferredWidgetType<WIDGET> {
+    fun <WIDGET : HTWidget> registerType(name: String): HTDeferredWidgetType<WIDGET> {
         val recipeType = HTDeferredWidgetType<WIDGET>(createId(name))
         register(name) { id: ResourceLocation -> HTWidgetType.Simple<WIDGET>(id) }
         return recipeType

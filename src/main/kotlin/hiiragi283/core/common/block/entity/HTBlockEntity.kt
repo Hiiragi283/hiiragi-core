@@ -5,7 +5,7 @@ import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.block.entity.HTBlockEntityComponent
 import hiiragi283.core.api.block.entity.HTOwnedBlockEntity
 import hiiragi283.core.api.block.entity.HTSoundPlayerBlockEntity
-import hiiragi283.core.api.gui.menu.HTMenuCallback
+import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.serialization.component.HTComponentInput
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
@@ -24,7 +24,6 @@ import hiiragi283.core.api.storage.holder.HTItemSlotHolder
 import hiiragi283.core.api.storage.item.HTItemHandler
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.getItemStack
-import hiiragi283.core.common.gui.menu.HTContainerMenu
 import hiiragi283.core.common.gui.sync.HTFluidSyncSlot
 import hiiragi283.core.common.gui.sync.HTIntSyncSlot
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
@@ -62,7 +61,6 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     HTFluidHandler,
     HTHandlerProvider,
     HTItemHandler,
-    HTMenuCallback,
     HTOwnedBlockEntity,
     HTSoundPlayerBlockEntity {
     //    Ticking    //
@@ -112,11 +110,11 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
 
     //    Save & Read    //
 
-    val components: List<HTBlockEntityComponent> get() = components1
-    private val components1: MutableList<HTBlockEntityComponent> = mutableListOf()
+    val components: List<HTBlockEntityComponent> get() = _components
+    private val _components: MutableList<HTBlockEntityComponent> = mutableListOf()
 
     fun addComponent(component: HTBlockEntityComponent) {
-        components1 += component
+        _components += component
     }
 
     override fun initReducedUpdateTag(output: HTValueOutput) {
@@ -208,12 +206,12 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     /**
      * @see mekanism.common.tile.base.TileEntityMekanism.addContainerTrackers
      */
-    open fun addMenuTrackers(menu: HTContainerMenu) {
+    open fun addMenuTrackers(holder: HTWidgetHolder) {
         // Fluid Tanks
         if (hasFluidHandler()) {
             for (tank: HTFluidTank in this.getFluidTanks(this.getFluidSideFor())) {
                 if (tank is HTFluidTank.Basic) {
-                    menu.track(HTFluidSyncSlot(tank))
+                    holder.track(HTFluidSyncSlot(tank))
                 }
             }
         }
@@ -221,7 +219,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
         if (hasEnergyStorage()) {
             val battery: HTEnergyBattery? = this.getEnergyBattery(this.getEnergySideFor())
             if (battery is HTEnergyBattery.Basic) {
-                menu.track(HTIntSyncSlot.create(battery::getAmount, battery::setAmount))
+                holder.track(HTIntSyncSlot.create(battery::getAmount, battery::setAmount))
             }
         }
     }
@@ -236,8 +234,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
 
     //    HTMenuCallback    //
 
-    override fun openMenu(player: Player) {
-        super.openMenu(player)
+    fun openMenu(player: Player) {
         this.getServerLevel()?.let(::sendUpdatePacket)
     }
 

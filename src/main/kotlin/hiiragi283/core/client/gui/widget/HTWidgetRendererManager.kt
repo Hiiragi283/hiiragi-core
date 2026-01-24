@@ -30,8 +30,10 @@ object HTWidgetRendererManager {
 
     @Suppress("UNCHECKED_CAST")
     @JvmStatic
-    fun <WIDGET : HTWidget<WIDGET>> getFactory(type: HTWidgetType<WIDGET>): HTWidgetRenderer.Factory<WIDGET, *>? =
+    fun <WIDGET : HTWidget> getFactory(type: HTWidgetType<WIDGET>): HTWidgetRenderer.Factory<WIDGET, *>? =
         factories[type] as? HTWidgetRenderer.Factory<WIDGET, *>
 
-    fun <WIDGET : HTWidget<WIDGET>> create(widget: WIDGET): HTWidgetRenderer<WIDGET>? = getFactory(widget.getType())?.createRenderer(widget)
+    @Suppress("UNCHECKED_CAST")
+    fun <WIDGET : HTWidget> create(widget: WIDGET): HTWidgetRenderer<WIDGET>? =
+        getFactory(widget.getType() as HTWidgetType<WIDGET>)?.createRenderer(widget)
 }
