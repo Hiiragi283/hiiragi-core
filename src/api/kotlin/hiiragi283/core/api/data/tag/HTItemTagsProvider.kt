@@ -1,8 +1,13 @@
 package hiiragi283.core.api.data.tag
 
+import hiiragi283.core.api.HTBuilderMarker
+import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.HTDataGenContext
+import hiiragi283.core.api.item.tool.HTToolType
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
@@ -41,7 +46,34 @@ abstract class HTItemTagsProvider(modId: String, private val blockTags: Completa
     }
 
     fun HTTagBuilder<Item>.addItem(item: ItemLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<Item> =
-        this.add(HTItemHolderLike.Simple(item), type)
+        this.add(HTItemHolderLike.of(item), type)
+
+    fun copyMaterials() {
+        contents.getBlockTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, _) ->
+            if (key.namespace != modId) return@forEach
+            copy(prefix, key)
+        }
+    }
+
+    @HTBuilderMarker
+    fun addMaterials(factory: BuilderFactory<Item>, builderAction: (Triple<HTTagPrefix, HTMaterialKey, HTIdLike>) -> Unit) {
+        contents.getItemTable().forEach { triple ->
+            val (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) = triple
+            if (key.namespace != modId) return@forEach
+            addMaterial(factory, prefix, key).add(item)
+            builderAction(triple)
+        }
+    }
+
+    @HTBuilderMarker
+    fun addTools(factory: BuilderFactory<Item>) {
+        contents.getToolTable().forEach { (toolType: HTToolType, key: HTMaterialKey, item: HTIdLike) ->
+            if (key.namespace != modId) return@forEach
+            toolType.toolTags.map(factory::apply).forEach { it.add(item) }
+        }
+    }
+
+    //    HTTagsProvider    //
 
     override fun createContentsProvider(): CompletableFuture<HolderLookup.Provider> = super
         .createContentsProvider()

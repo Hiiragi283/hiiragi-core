@@ -65,18 +65,20 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
             val base: HTItemHolderLike<*> = defaultPart.getItem(key) ?: continue
             if (block.namespace == HTConst.MINECRAFT && base.namespace == HTConst.MINECRAFT) continue
             // Shapeless
-            HTShapelessRecipeBuilder
-                .create(base, blockProperty.baseCount)
-                .addIngredient(CommonTagPrefixes.BLOCK, key)
-                .save(output, key.getId().withSuffix("/${suffix}_from_block"))
+            HTShapelessRecipeBuilder.create(output) {
+                ingredients += CommonTagPrefixes.BLOCK to key
+                resultStack += base to blockProperty.baseCount
+                recipeId replace key.getId().withSuffix("/${suffix}_from_block")
+            }
             // Shaped
             val pattern: List<String> = blockProperty.pattern ?: continue
-            HTShapedRecipeBuilder
-                .create(block)
-                .pattern(pattern)
-                .define('A', defaultPart.getTag(key))
-                .define('B', base)
-                .save(output, key.getId().withSuffix("/block_from_$suffix"))
+            HTShapedRecipeBuilder.create(output) {
+                pattern(pattern)
+                define('A') += defaultPart.getTag(key)
+                define('B') += base
+                resultStack += block
+                recipeId replace key.getId().withSuffix("/block_from_$suffix")
+            }
         }
     }
 
@@ -85,18 +87,20 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
             val raw: HTItemHolderLike<*> = getItem(CommonTagPrefixes.RAW, key) ?: continue
             if (raw.namespace == HTConst.MINECRAFT) continue
             // Shapeless
-            HTShapelessRecipeBuilder
-                .create(raw, 9)
-                .addIngredient(CommonTagPrefixes.RAW_BLOCK, key)
-                .save(output, key.getId().withSuffix("/raw_from_block"))
+            HTShapelessRecipeBuilder.create(output) {
+                ingredients += CommonTagPrefixes.RAW_BLOCK to key
+                resultStack += raw to 9
+                recipeId replace key.getId().withSuffix("/raw_from_block")
+            }
             // Shaped
             val rawBlock: HTItemHolderLike<*> = getBlock(CommonTagPrefixes.RAW_BLOCK, key) ?: continue
-            HTShapedRecipeBuilder
-                .create(rawBlock)
-                .hollow8()
-                .define('A', CommonTagPrefixes.RAW, key)
-                .define('B', raw)
-                .save(output, key.getId())
+            HTShapedRecipeBuilder.create(output) {
+                hollow8()
+                define('A') += CommonTagPrefixes.RAW to key
+                define('B') += raw
+                resultStack += rawBlock
+                recipeId replace key.getId()
+            }
         }
     }
 
@@ -113,28 +117,31 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
             // 精錬の前後がどちらもバニラ由来の場合はパス
             if (result.namespace == HTConst.MINECRAFT && input.namespace == HTConst.MINECRAFT) continue
             // Smelting
-            HTCookingRecipeBuilder
-                .smelting(result)
-                .addIngredient(input)
-                .setExp(exp)
-                .saveSuffixed(output, "_from_${input.path}")
+            HTCookingRecipeBuilder.smelting(output) {
+                ingredient += input
+                resultStack += result
+                this.exp = exp
+                recipeId suffix "_from_${input.path}"
+            }
             // Blasting
             if (smeltingAttribute.isBlasting) {
-                HTCookingRecipeBuilder
-                    .blasting(result)
-                    .addIngredient(input)
-                    .setTime(100)
-                    .setExp(exp)
-                    .saveSuffixed(output, "_from_${input.path}")
+                HTCookingRecipeBuilder.blasting(output) {
+                    ingredient += input
+                    resultStack += result
+                    this.exp = exp
+                    time = 100
+                    recipeId suffix "_from_${input.path}"
+                }
             }
             // Smoking
             if (smeltingAttribute.isSmoking) {
-                HTCookingRecipeBuilder
-                    .smoking(result)
-                    .addIngredient(input)
-                    .setTime(100)
-                    .setExp(exp)
-                    .saveSuffixed(output, "_from_${input.path}")
+                HTCookingRecipeBuilder.smoking(output) {
+                    ingredient += input
+                    resultStack += result
+                    this.exp = exp
+                    time = 100
+                    recipeId suffix "_from_${input.path}"
+                }
             }
         }
     }
@@ -144,12 +151,13 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
             val inputTag: TagKey<Item> = propertyMap.getDefaultPart(key) ?: continue
             val gear: HTItemHolderLike<*> = getItem(CommonTagPrefixes.GEAR, key) ?: continue
             // Shaped
-            HTShapedRecipeBuilder
-                .create(gear)
-                .hollow4()
-                .define('A', inputTag)
-                .define('B', Tags.Items.NUGGETS_IRON)
-                .save(output, key.getId().withSuffix("/gear"))
+            HTShapedRecipeBuilder.create(output) {
+                hollow4()
+                define('A') += inputTag
+                define('B') += Tags.Items.NUGGETS_IRON
+                resultStack += gear
+                recipeId replace key.getId().withSuffix("/gear")
+            }
         }
     }
 
@@ -158,18 +166,20 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
             val nugget: HTItemHolderLike<*> = getItem(CommonTagPrefixes.NUGGET, key) ?: continue
             if (nugget.namespace == HTConst.MINECRAFT) continue
             // Shapeless
-            HTShapelessRecipeBuilder
-                .create(nugget, 9)
-                .addIngredient(CommonTagPrefixes.INGOT, key)
-                .save(output, key.getId().withSuffix("/nugget_from_ingot"))
+            HTShapelessRecipeBuilder.create(output) {
+                ingredients += CommonTagPrefixes.INGOT to key
+                resultStack += nugget to 9
+                recipeId replace key.getId().withSuffix("/nugget_from_ingot")
+            }
             // Shaped
             val ingot: HTItemHolderLike<*> = getItem(CommonTagPrefixes.INGOT, key) ?: continue
-            HTShapedRecipeBuilder
-                .create(ingot)
-                .hollow8()
-                .define('A', CommonTagPrefixes.NUGGET, key)
-                .define('B', nugget)
-                .save(output, key.getId().withSuffix("/ingot_from_nugget"))
+            HTShapedRecipeBuilder.create(output) {
+                hollow8()
+                define('A') += CommonTagPrefixes.NUGGET to key
+                define('B') += nugget
+                resultStack += ingot
+                recipeId replace key.getId().withSuffix("/ingot_from_nugget")
+            }
         }
     }
 
@@ -180,75 +190,81 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
             val defaultPart: HTDefaultPart = propertyMap.getDefaultPart() ?: continue
             // Sword
             getTool(CommonToolTypes.SWORD, key)?.let { sword ->
-                HTShapedRecipeBuilder
-                    .create(sword)
-                    .pattern(
+                HTShapedRecipeBuilder.create(output) {
+                    pattern(
                         "A",
                         "A",
                         "B",
-                    ).define('A', defaultPart.getTag(key))
-                    .define('B', Tags.Items.RODS_WOODEN)
-                    .save(output)
+                    )
+                    define('A') += defaultPart.getTag(key)
+                    define('B') += Tags.Items.RODS_WOODEN
+                    resultStack += sword
+                }
             }
             // Shovel
             getTool(CommonToolTypes.SHOVEL, key)?.let { shovel ->
-                HTShapedRecipeBuilder
-                    .create(shovel)
-                    .pattern(
+                HTShapedRecipeBuilder.create(output) {
+                    pattern(
                         "A",
                         "B",
                         "B",
-                    ).define('A', defaultPart.getTag(key))
-                    .define('B', Tags.Items.RODS_WOODEN)
-                    .save(output)
+                    )
+                    define('A') += defaultPart.getTag(key)
+                    define('B') += Tags.Items.RODS_WOODEN
+                    resultStack += shovel
+                }
             }
             // Pickaxe
             getTool(CommonToolTypes.PICKAXE, key)?.let { pickaxe ->
-                HTShapedRecipeBuilder
-                    .create(pickaxe)
-                    .pattern(
+                HTShapedRecipeBuilder.create(output) {
+                    pattern(
                         "AAA",
                         " B ",
                         " B ",
-                    ).define('A', defaultPart.getTag(key))
-                    .define('B', Tags.Items.RODS_WOODEN)
-                    .save(output)
+                    )
+                    define('A') += defaultPart.getTag(key)
+                    define('B') += Tags.Items.RODS_WOODEN
+                    resultStack += pickaxe
+                }
             }
             // Axe
             getTool(CommonToolTypes.AXE, key)?.let { axe ->
-                HTShapedRecipeBuilder
-                    .create(axe)
-                    .pattern(
+                HTShapedRecipeBuilder.create(output) {
+                    pattern(
                         "AA",
                         "AB",
                         " B",
-                    ).define('A', defaultPart.getTag(key))
-                    .define('B', Tags.Items.RODS_WOODEN)
-                    .save(output)
+                    )
+                    define('A') += defaultPart.getTag(key)
+                    define('B') += Tags.Items.RODS_WOODEN
+                    resultStack += axe
+                }
             }
             // Hoe
             getTool(CommonToolTypes.HOE, key)?.let { hoe ->
-                HTShapedRecipeBuilder
-                    .create(hoe)
-                    .pattern(
+                HTShapedRecipeBuilder.create(output) {
+                    pattern(
                         "AA",
                         " B",
                         " B",
-                    ).define('A', defaultPart.getTag(key))
-                    .define('B', Tags.Items.RODS_WOODEN)
-                    .save(output)
+                    )
+                    define('A') += defaultPart.getTag(key)
+                    define('B') += Tags.Items.RODS_WOODEN
+                    resultStack += hoe
+                }
             }
             // Hammer
             getTool(CommonToolTypes.HAMMER, key)?.let { hammer ->
-                HTShapedRecipeBuilder
-                    .create(hammer)
-                    .pattern(
-                        "  B",
-                        "AB ",
-                        "BA ",
-                    ).define('A', defaultPart.getTag(key))
-                    .define('B', Tags.Items.RODS_WOODEN)
-                    .save(output)
+                HTShapedRecipeBuilder.create(output) {
+                    pattern(
+                        " B ",
+                        " B ",
+                        "ABA",
+                    )
+                    define('A') += defaultPart.getTag(key)
+                    define('B') += Tags.Items.RODS_WOODEN
+                    resultStack += hammer
+                }
             }
         }
     }

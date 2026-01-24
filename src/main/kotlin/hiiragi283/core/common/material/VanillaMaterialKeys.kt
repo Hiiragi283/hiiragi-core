@@ -104,7 +104,7 @@ object VanillaMaterialKeys {
     @JvmField
     val BLOCKS: HTTable<HTTagPrefix, HTMaterialKey, HTBlockHolderLike<*, *>> = buildTable {
         fun add(prefix: HTTagPrefix, material: HTMaterialLike, block: Block) {
-            this[prefix, material.asMaterialKey()] = HTBlockHolderLike.Simple(block)
+            this[prefix, material.asMaterialKey()] = HTBlockHolderLike.of(block)
         }
 
         // Fuel
@@ -139,7 +139,7 @@ object VanillaMaterialKeys {
     @JvmField
     val ITEMS: HTTable<HTTagPrefix, HTMaterialKey, HTItemHolderLike<*>> = buildTable {
         fun add(prefix: HTTagPrefix, material: HTMaterialLike, item: Item) {
-            this[prefix, material.asMaterialKey()] = HTItemHolderLike.Simple(item)
+            this[prefix, material.asMaterialKey()] = HTItemHolderLike.of(item)
         }
 
         // Fuel
@@ -203,7 +203,7 @@ object VanillaMaterialKeys {
     @JvmField
     val TOOLS: HTTable<HTToolType, HTMaterialKey, HTItemHolderLike<*>> = buildTable {
         fun add(toolType: HTToolType, material: HTMaterialLike, item: Item) {
-            this[toolType, material.asMaterialKey()] = HTItemHolderLike.Simple(item)
+            this[toolType, material.asMaterialKey()] = HTItemHolderLike.of(item)
         }
 
         // Wooden

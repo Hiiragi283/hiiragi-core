@@ -33,12 +33,21 @@ interface HTItemHolderLike<ITEM : Item> :
         @JvmField
         val KEY_CODEC: BiCodec<ByteBuf, HTItemHolderLike<*>> = VanillaBiCodecs
             .resourceKey(Registries.ITEM)
-            .xmap(::Simple, HTItemHolderLike<*>::getItemKey)
+            .xmap(::of, HTItemHolderLike<*>::getItemKey)
 
         @JvmField
         val HOLDER_CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemHolderLike<*>> = VanillaBiCodecs
             .holder(Registries.ITEM)
-            .xmap(Holder<Item>::value.andThen(::Simple), HTItemHolderLike<*>::getItemHolder)
+            .xmap(Holder<Item>::value.andThen(::of), HTItemHolderLike<*>::getItemHolder)
+
+        @JvmStatic
+        fun of(id: ResourceLocation): HTItemHolderLike<*> = of(Registries.ITEM.createKey(id))
+
+        @JvmStatic
+        fun of(key: ResourceKey<Item>): HTItemHolderLike<*> = Simple(Either.Left(key))
+
+        @JvmStatic
+        fun of(item: ItemLike): HTItemHolderLike<*> = Simple(Either.Right(item.asItem()))
     }
 
     fun getItemHolder(): Holder<Item>
@@ -59,15 +68,10 @@ interface HTItemHolderLike<ITEM : Item> :
     }
 
     /**
-     * @since 0.8.0
+     * @suppress
      */
-    class Simple(private val contents: Either<ResourceKey<Item>, Item>) : Delegated<Item> {
-        constructor(key: ResourceKey<Item>) : this(Either.Left(key))
-
-        constructor(id: ResourceLocation) : this(Registries.ITEM.createKey(id))
-
-        constructor(item: ItemLike) : this(Either.Right(item.asItem()))
-
+    @JvmInline
+    private value class Simple(private val contents: Either<ResourceKey<Item>, Item>) : Delegated<Item> {
         @Suppress("DEPRECATION")
         override fun getItemHolder(): Holder<Item> = contents.map(BuiltInRegistries.ITEM::getHolderOrThrow, Item::builtInRegistryHolder)
 

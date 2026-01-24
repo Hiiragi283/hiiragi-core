@@ -15,8 +15,8 @@ import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
+import hiiragi283.core.common.data.recipe.builder.HCSingleItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
-import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTStonecuttingRecipeBuilder
 import net.minecraft.core.component.DataComponents
 import net.minecraft.data.recipes.RecipeOutput
@@ -66,9 +66,11 @@ object HCRuntimeRecipeHandler {
             val crushedPrefix: HTTagPrefix = propertyMap.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
             val dust: Item = event.getFirstHolder(crushedPrefix, key)?.value() ?: continue
             // Crushing
-            HTSingleItemRecipeBuilder
-                .crushing(inputCreator.create(prefix, key), event.itemResult.create(dust, outputCount))
-                .saveSuffixed(output, "_from_${prefix.name}")
+            HCSingleItemRecipeBuilder.crushing(output) {
+                ingredient = inputCreator.create(prefix, key)
+                result = event.itemResult.create(dust, outputCount)
+                recipeId suffix "_from_${prefix.name}"
+            }
         }
     }
 
@@ -84,9 +86,11 @@ object HCRuntimeRecipeHandler {
             if (!event.isPresentTag(inputTag)) continue
             val dust: Item = event.getFirstHolder(crushedPrefix, key)?.value() ?: continue
             // Crushing
-            HTSingleItemRecipeBuilder
-                .crushing(inputCreator.create(inputTag), event.itemResult.create(dust))
-                .saveSuffixed(output, "_from_${defaultPart.getSuffix()}")
+            HCSingleItemRecipeBuilder.crushing(output) {
+                ingredient = inputCreator.create(inputTag)
+                result = event.itemResult.create(dust)
+                recipeId suffix "_from_${defaultPart.getSuffix()}"
+            }
         }
     }
 
@@ -97,23 +101,26 @@ object HCRuntimeRecipeHandler {
             if (!event.isPresentTag(crushedPrefix, key)) continue
             val dough: Item = event.getFirstHolder(CommonTagPrefixes.DOUGH, key)?.value() ?: continue
             // Shapeless
-            HTShapelessRecipeBuilder
-                .create(dough)
-                .addIngredient(crushedPrefix, key)
-                .addIngredient(
-                    inputCreator
-                        .create(
-                            false,
-                            Items.POTION,
-                        ) { expect(DataComponents.POTION_CONTENTS, PotionContents(Potions.WATER)) }
-                        .ingredient,
-                ).saveSuffixed(output, "_with_bottle")
+            HTShapelessRecipeBuilder.create(output) {
+                ingredients += crushedPrefix to key
+                ingredients += inputCreator
+                    .create(
+                        false,
+                        Items.POTION,
+                    ) { expect(DataComponents.POTION_CONTENTS, PotionContents(Potions.WATER)) }
+                    .ingredient
+                resultStack += dough
+                recipeId suffix "_with_bottle"
+            }
 
-            HTShapelessRecipeBuilder
-                .create(dough, 3)
-                .addIngredients(crushedPrefix, key, 3)
-                .addIngredient(Tags.Items.BUCKETS_WATER)
-                .saveSuffixed(output, "_with_bucket")
+            HTShapelessRecipeBuilder.create(output) {
+                repeat(3) {
+                    ingredients += crushedPrefix to key
+                }
+                ingredients += Tags.Items.BUCKETS_WATER
+                resultStack += dough to 3
+                recipeId suffix "_with_bucket"
+            }
         }
     }
 
@@ -123,11 +130,11 @@ object HCRuntimeRecipeHandler {
             if (!event.isPresentTag(CommonTagPrefixes.INGOT, key)) continue
             val plate: Item = event.getFirstHolder(CommonTagPrefixes.PLATE, key)?.value() ?: continue
             // Crafting
-            HTShapelessRecipeBuilder
-                .create(plate)
-                .addIngredient(CommonTagPrefixes.INGOT, key)
-                .addIngredient(HiiragiCoreTags.Items.TOOLS_HAMMER)
-                .saveSuffixed(output, "_from_ingot")
+            HTShapelessRecipeBuilder.create(output) {
+                ingredients += CommonTagPrefixes.INGOT to key
+                ingredients += HiiragiCoreTags.Items.TOOLS_HAMMER
+                recipeId suffix "_from_ingot"
+            }
         }
     }
 
@@ -137,10 +144,11 @@ object HCRuntimeRecipeHandler {
             if (!event.isPresentTag(CommonTagPrefixes.PLATE, key)) continue
             val wire: Item = event.getFirstHolder(CommonTagPrefixes.WIRE, key)?.value() ?: continue
             // Stonecutting
-            HTStonecuttingRecipeBuilder
-                .create(wire)
-                .addIngredient(CommonTagPrefixes.PLATE, key)
-                .saveSuffixed(output, "_from_plate")
+            HTStonecuttingRecipeBuilder.create(output) {
+                ingredient += CommonTagPrefixes.PLATE to key
+                resultStack += wire
+                recipeId suffix "_from_plate"
+            }
         }
     }
 }

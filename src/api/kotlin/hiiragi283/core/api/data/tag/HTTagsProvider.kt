@@ -1,6 +1,8 @@
 package hiiragi283.core.api.data.tag
 
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.HTDataGenContext
+import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -45,6 +47,8 @@ abstract class HTTagsProvider<T : Any>(
             .thenComparing(TagEntry::isRequired)
             .thenComparing(TagEntry::getId)
     }
+
+    protected val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
 
     @Suppress("DEPRECATION")
     final override fun addTags(provider: HolderLookup.Provider) {

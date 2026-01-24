@@ -8,83 +8,74 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.crafting.Recipe
 import net.neoforged.neoforge.common.conditions.ICondition
+import net.neoforged.neoforge.common.conditions.ModLoadedCondition
 import net.neoforged.neoforge.common.conditions.NotCondition
 import net.neoforged.neoforge.common.conditions.TagEmptyCondition
-import java.util.function.UnaryOperator
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[Recipe]のビルダークラスです。
- * @param BUILDER [HTRecipeBuilder]を継承したクラス
  * @param prefix レシピIDに使われる前置詞
  * @author Hiiragi Tsubasa
- * @since 0.1.0
- * @see mekanism.api.datagen.recipe.MekanismRecipeBuilder
+ * @since 0.8.0
  */
-abstract class HTRecipeBuilder<BUILDER : HTRecipeBuilder<BUILDER>>(private val prefix: String) {
-    @Suppress("UNCHECKED_CAST")
-    protected fun self(): BUILDER = this as BUILDER
+abstract class HTRecipeBuilder(private val prefix: String) {
+    //    Conditions    //
 
-    //    ICondition    //
+    val conditions: Conditions = Conditions()
 
-    private val conditions: MutableList<ICondition> = mutableListOf()
+    inner class Conditions {
+        private val conditions: MutableList<ICondition> = mutableListOf()
 
-    fun tagCondition(prefix: HTTagPrefix, material: HTMaterialLike): BUILDER = tagCondition(prefix.itemTagKey(material))
+        @JvmName("addModCondition")
+        operator fun plusAssign(modId: String) {
+            this.plusAssign(ModLoadedCondition(modId))
+        }
 
-    /**
-     * 指定した[tagKey]が存在する時に読み込むよう，条件を指定します。
-     * @return このビルダーのインスタンス
-     */
-    fun tagCondition(tagKey: TagKey<Item>): BUILDER = addCondition(NotCondition(TagEmptyCondition(tagKey)))
+        @JvmName("addTagCondition")
+        operator fun plusAssign(pair: Pair<HTTagPrefix, HTMaterialLike>) {
+            val (prefix: HTTagPrefix, material: HTMaterialLike) = pair
+            this.plusAssign(prefix.itemTagKey(material))
+        }
 
-    /**
-     * [読み込みの条件][condition]を追加します。
-     * @return このビルダーのインスタンス
-     */
-    fun addCondition(condition: ICondition): BUILDER {
-        this.conditions.add(condition)
-        return self()
+        @JvmName("addTagCondition")
+        operator fun plusAssign(tagKey: TagKey<Item>) {
+            this.plusAssign(NotCondition(TagEmptyCondition(tagKey)))
+        }
+
+        @JvmName("addCondition")
+        operator fun plusAssign(condition: ICondition) {
+            conditions += condition
+        }
+
+        fun toArray(): Array<ICondition> = conditions.toTypedArray()
     }
 
     //    Save    //
 
-    /**
-     * [ID][getPrimalId]を[prefix]で前置した値でレシピを生成します。
-     */
-    fun savePrefixed(recipeOutput: RecipeOutput, prefix: String) {
-        save(recipeOutput, getPrimalId().withPrefix(prefix))
+    val recipeId: RecipeId by lazy(::RecipeId)
+
+    inner class RecipeId {
+        var id: ResourceLocation = getPrimalId()
+            private set
+
+        infix fun prefix(prefix: String) {
+            id = id.withPrefix(prefix)
+        }
+
+        infix fun suffix(suffix: String) {
+            id = id.withSuffix(suffix)
+        }
+
+        infix fun replace(newId: ResourceLocation) {
+            id = newId
+        }
     }
 
     /**
-     * [ID][getPrimalId]を[suffix]で後置した値でレシピを生成します。
-     */
-    fun saveSuffixed(recipeOutput: RecipeOutput, suffix: String) {
-        save(recipeOutput, getPrimalId().withSuffix(suffix))
-    }
-
-    /**
-     * [ID][getPrimalId]を[operator]で修飾した値でレシピを生成します。
-     */
-    fun saveModified(recipeOutput: RecipeOutput, operator: UnaryOperator<String>) {
-        save(recipeOutput, getPrimalId().withPath(operator))
-    }
-
-    /**
-     * [ID][getPrimalId]でレシピを生成します。
+     * レシピを生成します。
      */
     fun save(recipeOutput: RecipeOutput) {
-        save(recipeOutput, getPrimalId())
-    }
-
-    /**
-     * [ID][id]でレシピを生成します。
-     */
-    fun save(recipeOutput: RecipeOutput, id: ResourceLocation) {
-        recipeOutput.accept(
-            id.withPrefix("$prefix/"),
-            createRecipe(),
-            null,
-            *conditions.toTypedArray(),
-        )
+        recipeOutput.accept(recipeId.id.withPrefix("$prefix/"), createRecipe(), null, *conditions.toArray())
     }
 
     /**

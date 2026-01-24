@@ -1,12 +1,8 @@
 package hiiragi283.core.data.server.tag
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.tag.HTItemTagsProvider
-import hiiragi283.core.api.item.tool.HTToolType
-import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
@@ -26,8 +22,6 @@ import java.util.concurrent.CompletableFuture
 
 class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context: HTDataGenContext) :
     HTItemTagsProvider(HiiragiCoreAPI.MOD_ID, blockTags, context) {
-    private val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
-
     override fun addTagsInternal(factory: BuilderFactory<Item>) {
         copyTags()
 
@@ -43,10 +37,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
 
     private fun copyTags() {
         // Material
-        contents.getBlockTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, _) ->
-            if (key.namespace != modId) return@forEach
-            copy(prefix, key)
-        }
+        copyMaterials()
         for (key: HTMaterialKey in HCBlockTagsProvider.VANILLA_STORAGE_BLOCKS.keys) {
             copy(CommonTagPrefixes.BLOCK, key)
         }
@@ -55,9 +46,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
     //    Material    //
 
     private fun material(factory: BuilderFactory<Item>) {
-        contents.getItemTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
-            if (key.namespace != modId) return@forEach
-            addMaterial(factory, prefix, key).add(item)
+        addMaterials(factory) { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
             if (prefix == CommonTagPrefixes.GEM || prefix == CommonTagPrefixes.INGOT) {
                 factory.apply(ItemTags.BEACON_PAYMENT_ITEMS).addTag(prefix, key)
             }
@@ -82,10 +71,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
     //    Tool    //
 
     private fun tool(factory: BuilderFactory<Item>) {
-        contents.getToolTable().forEach { (toolType: HTToolType, key: HTMaterialKey, item: HTIdLike) ->
-            if (key.namespace != modId) return@forEach
-            toolType.toolTags.map(factory::apply).forEach { it.add(item) }
-        }
+        addTools(factory)
 
         listOf(
             ItemTags.AXES,

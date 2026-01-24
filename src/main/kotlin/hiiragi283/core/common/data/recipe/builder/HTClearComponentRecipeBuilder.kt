@@ -9,43 +9,12 @@ import net.minecraft.core.component.DataComponentType
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.CraftingBookCategory
-import net.minecraft.world.level.ItemLike
 
-class HTClearComponentRecipeBuilder(private val item: HTItemHolderLike<*>) :
-    HTRecipeBuilder<HTClearComponentRecipeBuilder>("${HTConst.SHAPELESS}/clear") {
-    companion object {
-        @JvmStatic
-        fun create(item: ItemLike): HTClearComponentRecipeBuilder = HTClearComponentRecipeBuilder(HTItemHolderLike.Simple(item))
-    }
-
-    private lateinit var holderSet: HolderSet<DataComponentType<*>>
-
-    fun setTargets(vararg types: DataComponentType<*>): HTClearComponentRecipeBuilder =
-        setTargets(HolderSet.direct(BuiltInRegistries.DATA_COMPONENT_TYPE::wrapAsHolder, *types))
-
-    fun setTargets(holderSet: HolderSet<DataComponentType<*>>): HTClearComponentRecipeBuilder = apply {
-        check(!::holderSet.isInitialized) { "Component types have been already initialized" }
-        this.holderSet = holderSet
-    }
-
-    //    RecipeBuilder    //
-
-    private var group: String? = null
-    private var category: CraftingBookCategory = CraftingBookCategory.MISC
-
-    /**
-     * レシピのグループを指定します。
-     */
-    fun setGroup(group: String?): HTClearComponentRecipeBuilder = apply {
-        this.group = group
-    }
-
-    /**
-     * レシピのカテゴリを指定します。
-     */
-    fun setCategory(category: CraftingBookCategory): HTClearComponentRecipeBuilder = apply {
-        this.category = category
-    }
+class HTClearComponentRecipeBuilder : HTRecipeBuilder("${HTConst.SHAPELESS}/clear") {
+    var group: String? = null
+    var category: CraftingBookCategory = CraftingBookCategory.MISC
+    lateinit var item: HTItemHolderLike<*>
+    val targets: ComponentTargets = ComponentTargets()
 
     override fun getPrimalId(): ResourceLocation = item.getId()
 
@@ -53,6 +22,22 @@ class HTClearComponentRecipeBuilder(private val item: HTItemHolderLike<*>) :
         group ?: "",
         category,
         item.getItemHolder(),
-        holderSet,
+        targets.holderSet,
     )
+
+    //    HolderSetHolder    //
+
+    inner class ComponentTargets {
+        lateinit var holderSet: HolderSet<DataComponentType<*>>
+            private set
+
+        operator fun plusAssign(types: Collection<DataComponentType<*>>) {
+            this.plusAssign(HolderSet.direct(BuiltInRegistries.DATA_COMPONENT_TYPE::wrapAsHolder, types))
+        }
+
+        operator fun plusAssign(holderSet: HolderSet<DataComponentType<*>>) {
+            check(!::holderSet.isInitialized) { "Component types have been already initialized" }
+            this.holderSet = holderSet
+        }
+    }
 }

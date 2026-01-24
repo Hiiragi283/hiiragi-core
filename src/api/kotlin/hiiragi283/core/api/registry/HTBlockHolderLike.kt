@@ -26,12 +26,21 @@ interface HTBlockHolderLike<BLOCK : Block, ITEM : Item> : HTItemHolderLike<ITEM>
         @JvmField
         val KEY_CODEC: BiCodec<ByteBuf, HTBlockHolderLike<*, *>> = VanillaBiCodecs
             .resourceKey(Registries.BLOCK)
-            .xmap(::Simple, HTBlockHolderLike<*, *>::getBlockKey)
+            .xmap(::of, HTBlockHolderLike<*, *>::getBlockKey)
 
         @JvmField
         val HOLDER_CODEC: BiCodec<RegistryFriendlyByteBuf, HTBlockHolderLike<*, *>> = VanillaBiCodecs
             .holder(Registries.BLOCK)
-            .xmap(Holder<Block>::value.andThen(::Simple), HTBlockHolderLike<*, *>::getBlockHolder)
+            .xmap(Holder<Block>::value.andThen(::of), HTBlockHolderLike<*, *>::getBlockHolder)
+
+        @JvmStatic
+        fun of(id: ResourceLocation): HTBlockHolderLike<*, *> = of(Registries.BLOCK.createKey(id))
+
+        @JvmStatic
+        fun of(key: ResourceKey<Block>): HTBlockHolderLike<*, *> = Simple(Either.Left(key))
+
+        @JvmStatic
+        fun of(block: Block): HTBlockHolderLike<*, *> = Simple(Either.Right(block))
     }
 
     fun getBlockHolder(): Holder<Block>
@@ -52,15 +61,10 @@ interface HTBlockHolderLike<BLOCK : Block, ITEM : Item> : HTItemHolderLike<ITEM>
     }
 
     /**
-     * @since 0.8.0
+     * @suppress
      */
-    class Simple(private val contents: Either<ResourceKey<Block>, Block>) : Delegated<Block, Item> {
-        constructor(key: ResourceKey<Block>) : this(Either.Left(key))
-
-        constructor(id: ResourceLocation) : this(Registries.BLOCK.createKey(id))
-
-        constructor(block: Block) : this(Either.Right(block))
-
+    @JvmInline
+    private value class Simple(private val contents: Either<ResourceKey<Block>, Block>) : Delegated<Block, Item> {
         @Suppress("DEPRECATION")
         override fun getBlockHolder(): Holder<Block> = contents.map(BuiltInRegistries.BLOCK::getHolderOrThrow, Block::builtInRegistryHolder)
 
