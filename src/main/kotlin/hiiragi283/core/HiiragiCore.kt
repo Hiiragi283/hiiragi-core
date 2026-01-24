@@ -18,6 +18,7 @@ import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCMiscRegister
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
+import hiiragi283.core.setup.HCWidgetTypes
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
@@ -64,6 +65,7 @@ data object HiiragiCore {
         HCCreativeTabs.REGISTER.register(eventBus)
         HCRecipeSerializers.REGISTER.register(eventBus)
         HCRecipeTypes.REGISTER.register(eventBus)
+        HCWidgetTypes.REGISTER.register(eventBus)
 
         container.registerConfig(ModConfig.Type.COMMON, HCConfig.COMMON_SPEC)
 
@@ -72,6 +74,7 @@ data object HiiragiCore {
 
     private fun registerRegistries(event: NewRegistryEvent) {
         event.register(HCRegistries.SLOT_TYPE)
+        event.register(HCRegistries.WIDGET_TYPE)
 
         LOGGER.info("Registered new registries!")
     }

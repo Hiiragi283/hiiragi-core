@@ -5,6 +5,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.client.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.common.item.HTChromaticPowderItem
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
@@ -15,6 +16,7 @@ import net.minecraft.world.level.ItemLike
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.common.Mod
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.neoforge.client.event.EntityRenderersEvent
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent
@@ -33,7 +35,7 @@ object HiiragiCoreClient {
 
     init {
         val eventBus: IEventBus = MOD_BUS
-
+        eventBus.addListener(::clientSetup)
         eventBus.addListener(::registerItemColors)
         eventBus.addListener(::registerClientExtensions)
         eventBus.addListener(::registerEntityRenderer)
@@ -42,6 +44,11 @@ object HiiragiCoreClient {
             .registerExtensionPoint(IConfigScreenFactory::class.java, IConfigScreenFactory(::ConfigurationScreen))
 
         LOGGER.info("Hiiragi-Core loaded on client side!")
+    }
+
+    @JvmStatic
+    private fun clientSetup(event: FMLClientSetupEvent) {
+        HTWidgetRendererManager.init()
     }
 
     @JvmStatic

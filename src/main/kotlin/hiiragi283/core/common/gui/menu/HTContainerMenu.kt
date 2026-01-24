@@ -29,8 +29,12 @@ import kotlin.math.min
  * @since 0.4.0
  * @see mekanism.common.inventory.container.MekanismContainer
  */
-abstract class HTContainerMenu(open val menuType: HTDeferredMenuType<*, *>, containerId: Int, val inventory: Inventory) :
-    AbstractContainerMenu(menuType.get(), containerId),
+abstract class HTContainerMenu<C>(
+    val menuType: HTDeferredMenuType<*, *>,
+    containerId: Int,
+    val inventory: Inventory,
+    val context: C,
+) : AbstractContainerMenu(menuType.get(), containerId),
     HTSyncableMenu {
     companion object {
         @JvmField
