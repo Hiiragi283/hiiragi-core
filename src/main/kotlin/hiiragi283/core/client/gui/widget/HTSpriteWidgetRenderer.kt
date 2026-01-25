@@ -32,6 +32,8 @@ abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget>(widget: WIDGET) : HTAbs
         mouseY: Int,
         partialTick: Float,
     ) {
+        // Render background
+        renderBackground(bounds, guiGraphics)
         // Render sprite
         renderSprite(bounds, guiGraphics)
         // Render tooltip
@@ -92,6 +94,8 @@ abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget>(widget: WIDGET) : HTAbs
         null -> null
         else -> Minecraft.getInstance().getTextureAtlas(atlas).apply(id)
     }
+
+    protected abstract fun renderBackground(bounds: HTBounds, guiGraphics: GuiGraphics)
 
     protected abstract fun shouldRender(): Boolean
 

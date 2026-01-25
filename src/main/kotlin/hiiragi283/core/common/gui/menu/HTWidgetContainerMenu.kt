@@ -2,10 +2,10 @@ package hiiragi283.core.common.gui.menu
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
-import hiiragi283.core.api.gui.widget.HTSlotWidget
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.common.gui.factory.HTWidgetHolderContext
+import hiiragi283.core.common.gui.widget.HTItemWidget
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.MenuType
@@ -40,7 +40,7 @@ class HTWidgetContainerMenu(
             _widgets += widget
             HiiragiCoreAPI.LOGGER.debug("Added widget: {}", widget)
             widget.setupHolder(this)
-            if (widget is HTSlotWidget) {
+            if (widget is HTItemWidget.SlotWidget) {
                 this@HTWidgetContainerMenu.addSlot(widget.slot)
             }
             return widget

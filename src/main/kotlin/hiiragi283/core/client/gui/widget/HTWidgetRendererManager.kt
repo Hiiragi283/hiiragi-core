@@ -13,7 +13,7 @@ import net.neoforged.fml.ModLoader
  * @see net.minecraft.client.gui.screens.MenuScreens
  */
 @OnlyIn(Dist.CLIENT)
-object HTWidgetRendererManager {
+internal object HTWidgetRendererManager {
     @JvmStatic
     private lateinit var factories: Map<HTWidgetType<*>, HTWidgetRenderer.Factory<*, *>>
 

@@ -5,7 +5,7 @@ import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.gui.factory.HTItemWidgetHolderContext
 import hiiragi283.core.common.gui.tooltip.HTFluidFilterTooltip
-import hiiragi283.core.common.gui.widget.HTFluidStackWidget
+import hiiragi283.core.common.gui.widget.HTFluidWidget
 import hiiragi283.core.common.storage.fluid.HTComponentFluidTank
 import hiiragi283.core.setup.HCDataComponents
 import net.minecraft.core.component.DataComponents
@@ -40,7 +40,7 @@ class HTFluidFilterItem(properties: Properties) :
             .getFluidViews(context.stack)
             .filterIsInstance<HTComponentFluidTank>()
             .mapIndexed { index: Int, tank: HTComponentFluidTank ->
-                HTFluidStackWidget(
+                HTFluidWidget.StackWidget(
                     tank,
                     tank::setStack,
                     HTSlotHelper.getSlotPosX(index),

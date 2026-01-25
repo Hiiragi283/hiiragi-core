@@ -7,9 +7,7 @@ import com.mojang.blaze3d.vertex.Tesselator
 import com.mojang.blaze3d.vertex.VertexConsumer
 import com.mojang.blaze3d.vertex.VertexFormat
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.storage.fluid.HTFluidResourceType
-import hiiragi283.core.api.storage.fluid.getStillTexture
-import net.minecraft.client.Minecraft
+import hiiragi283.core.api.gui.HTBounds
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.RenderType
@@ -35,16 +33,30 @@ object HTSpriteRenderHelper {
         guiGraphics.setColor(1f, 1f, 1f, 1f)
     }
 
-    @JvmStatic
-    fun getFluidSprite(resource: HTFluidResourceType): TextureAtlasSprite? {
-        val texture: ResourceLocation = resource.getStillTexture() ?: return null
-        return Minecraft
-            .getInstance()
-            .getTextureAtlas(HTConst.BLOCK_ATLAS)
-            .apply(texture)
-    }
-
     //    Renderer    //
+
+    fun blit(
+        guiGraphics: GuiGraphics,
+        texture: ResourceLocation,
+        bounds: HTBounds,
+        uOffset: Float = 0f,
+        vOffset: Float = 0f,
+        textureWidth: Int = bounds.width,
+        textureHeight: Int = bounds.height,
+    ) {
+        val (x: Int, y: Int, width: Int, height: Int) = bounds
+        guiGraphics.blit(
+            texture,
+            x,
+            y,
+            uOffset,
+            vOffset,
+            width,
+            height,
+            textureWidth,
+            textureHeight,
+        )
+    }
 
     /**
      * @see me.desht.pneumaticcraft.client.util.GuiUtils.drawFluidTexture

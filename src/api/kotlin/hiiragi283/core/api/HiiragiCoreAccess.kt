@@ -1,6 +1,8 @@
 package hiiragi283.core.api
 
 import com.google.gson.JsonObject
+import hiiragi283.core.api.gui.widget.HTWidget
+import hiiragi283.core.api.gui.widget.HTWidgetRenderer
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
@@ -19,6 +21,8 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.core.HolderSet
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.TagKey
+import net.neoforged.api.distmarker.Dist
+import net.neoforged.api.distmarker.OnlyIn
 
 /**
  * @author Hiiragi Tsubasa
@@ -32,6 +36,8 @@ interface HiiragiCoreAccess {
         @JvmField
         val INSTANCE: HiiragiCoreAccess = HiiragiCoreAPI.getService()
     }
+
+    //    Material    //
 
     val materialManager: HTMaterialManager
     val materialContents: HTMaterialContents
@@ -89,4 +95,9 @@ interface HiiragiCoreAccess {
      * 指定した[レジストリ][provider]と[NBT][compoundTag]から[HTValueOutput]を作成します。
      */
     fun createOutput(provider: HolderLookup.Provider, compoundTag: CompoundTag): HTValueOutput
+
+    //    Widget    //
+
+    @OnlyIn(Dist.CLIENT)
+    fun <WIDGET : HTWidget> createRenderer(widget: WIDGET): HTWidgetRenderer<WIDGET>?
 }

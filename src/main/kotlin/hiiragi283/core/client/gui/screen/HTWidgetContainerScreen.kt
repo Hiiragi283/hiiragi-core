@@ -1,10 +1,10 @@
 package hiiragi283.core.client.gui.screen
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetRenderer
-import hiiragi283.core.client.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.common.gui.menu.HTWidgetContainerMenu
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.components.AbstractWidget
@@ -51,7 +51,7 @@ class HTWidgetContainerScreen(menu: HTWidgetContainerMenu, inventory: Inventory,
         ) {
         val bounds: HTBounds get() = HTBounds(this.x, this.y, this.width, this.height)
 
-        private val renderer: HTWidgetRenderer<WIDGET>? by lazy { HTWidgetRendererManager.create(widget) }
+        private val renderer: HTWidgetRenderer<WIDGET>? by lazy { HiiragiCoreAccess.INSTANCE.createRenderer(widget) }
 
         override fun renderWidget(
             guiGraphics: GuiGraphics,

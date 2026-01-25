@@ -9,9 +9,8 @@ import hiiragi283.core.api.resource.toId
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.gui.tooltip.HTClientFluidFilterTooltip
 import hiiragi283.core.client.gui.tooltip.HTClientItemFilterTooltip
-import hiiragi283.core.client.gui.widget.HTEmptyWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTFluidWidgetRenderer
-import hiiragi283.core.client.gui.widget.HTItemStackWidgetRenderer
+import hiiragi283.core.client.gui.widget.HTItemWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.common.gui.tooltip.HTFluidFilterTooltip
 import hiiragi283.core.common.gui.tooltip.HTItemFilterTooltip
@@ -56,10 +55,10 @@ data object HiiragiCoreClient : HTClientMod() {
     }
 
     override fun registerWidgetRenderer(event: HTRegisterWidgetRendererEvent) {
-        event.register(HCWidgetTypes.FLUID_STACK.get(), ::HTFluidWidgetRenderer)
-        event.register(HCWidgetTypes.FLUID_TANK.get(), ::HTFluidWidgetRenderer)
-        event.register(HCWidgetTypes.ITEM_SLOT.get(), HTEmptyWidgetRenderer::create)
-        event.register(HCWidgetTypes.ITEM_STACK.get(), ::HTItemStackWidgetRenderer)
+        event.register(HCWidgetTypes.FLUID_STACK.get(), HTFluidWidgetRenderer<*>::Slot)
+        event.register(HCWidgetTypes.FLUID_TANK.get(), HTFluidWidgetRenderer<*>::Tank)
+        event.register(HCWidgetTypes.ITEM_SLOT.get(), HTItemWidgetRenderer<*>::SlotRenderer)
+        event.register(HCWidgetTypes.ITEM_STACK.get(), HTItemWidgetRenderer<*>::StackRenderer)
     }
 
     override fun registerItemColors(event: RegisterColorHandlersEvent.Item) {
