@@ -75,6 +75,7 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
     //    Extensions    //
 
     /**
+     * 素材ブロックとアイテムのテクスチャを生成します。
      * @since 0.8.0
      */
     protected fun material(output: BiConsumer<ResourceLocation, NativeImage>) {

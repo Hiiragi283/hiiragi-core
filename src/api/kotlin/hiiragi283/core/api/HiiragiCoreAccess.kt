@@ -25,6 +25,7 @@ import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 
 /**
+ * モジュールをまたいで実装する要素をまとめたインターフェースです。
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
@@ -39,9 +40,19 @@ interface HiiragiCoreAccess {
 
     //    Material    //
 
+    /**
+     * 素材マネージャを取得します。
+     */
     val materialManager: HTMaterialManager
+
+    /**
+     * 登録された素材コンテンツを取得します。
+     */
     val materialContents: HTMaterialContents
 
+    /**
+     * バニラ由来の素材コンテンツを取得します。
+     */
     val vanillaContents: HTMaterialContents
 
     fun getBlockOrVanilla(prefix: HTTagPrefix, material: HTMaterialLike): HTBlockHolderLike<*, *>? =
@@ -98,6 +109,10 @@ interface HiiragiCoreAccess {
 
     //    Client    //
 
+    /**
+     * @author Hiiragi Tsubasa
+     * @since 0.8.0
+     */
     @OnlyIn(Dist.CLIENT)
     interface Client {
         companion object {
@@ -108,6 +123,11 @@ interface HiiragiCoreAccess {
             val INSTANCE: Client = HiiragiCoreAPI.getService()
         }
 
+        /**
+         * 指定した[widget]から[HTWidgetRenderer]を作成します。
+         * @param WIDGET [HTWidget]を実装したクラス
+         * @return 対応する[HTWidgetRenderer]がない場合は`null`
+         */
         fun <WIDGET : HTWidget> createRenderer(widget: WIDGET): HTWidgetRenderer<WIDGET>?
     }
 }

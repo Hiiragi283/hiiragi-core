@@ -4,6 +4,7 @@ import hiiragi283.core.api.data.holder.HTConditionHolder
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.Recipe
+import net.neoforged.neoforge.common.conditions.ICondition
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[Recipe]のビルダークラスです。
@@ -14,24 +15,42 @@ import net.minecraft.world.item.crafting.Recipe
 abstract class HTRecipeBuilder(private val prefix: String) {
     //    Conditions    //
 
+    /**
+     * [ICondition]を保持するインスタンス
+     */
     val conditions = HTConditionHolder()
 
     //    Save    //
 
+    /**
+     * レシピ[ID][ResourceLocation]を保持するインスタンス
+     */
     val recipeId: RecipeId by lazy(::RecipeId)
 
     inner class RecipeId {
+        /**
+         * 保持している[ID][ResourceLocation]
+         */
         var id: ResourceLocation = getPrimalId()
             private set
 
+        /**
+         * 現在の[ID][ResourceLocation]にプレフィックスを追加します。
+         */
         infix fun prefix(prefix: String) {
             id = id.withPrefix(prefix)
         }
 
+        /**
+         * 現在の[ID][ResourceLocation]にサフィックスを追加します。
+         */
         infix fun suffix(suffix: String) {
             id = id.withSuffix(suffix)
         }
 
+        /**
+         * 現在の[ID][ResourceLocation]を[newId]で置換します。
+         */
         infix fun replace(newId: ResourceLocation) {
             id = newId
         }

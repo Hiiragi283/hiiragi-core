@@ -7,6 +7,11 @@ import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import java.util.Comparator
 
+/**
+ * 素材に紐づいたコンテンツを管理するインターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.8.0
+ */
 interface HTMaterialContents {
     companion object {
         private val COMPARATOR: Comparator<Triple<Comparable<*>, HTMaterialKey, *>> =
@@ -15,6 +20,9 @@ interface HTMaterialContents {
 
     //    Block    //
 
+    /**
+     * 素材ブロックの[HTTable]を取得します。
+     */
     fun getBlockTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTBlockHolderLike<*, *>>
 
     fun getBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTBlockHolderLike<*, *>? =
@@ -34,6 +42,9 @@ interface HTMaterialContents {
 
     //    Item    //
 
+    /**
+     * 素材アイテムの[HTTable]を取得します。
+     */
     fun getItemTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTItemHolderLike<*>>
 
     fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? = getItemTable()[prefix, material.asMaterialKey()]
@@ -52,6 +63,9 @@ interface HTMaterialContents {
 
     //    Tool    //
 
+    /**
+     * 素材ツールの[HTTable]を取得します。
+     */
     fun getToolTable(): HTTable<HTToolType, HTMaterialKey, out HTItemHolderLike<*>>
 
     fun getTool(toolType: HTToolType, material: HTMaterialLike): HTItemHolderLike<*>? = getToolTable()[toolType, material.asMaterialKey()]

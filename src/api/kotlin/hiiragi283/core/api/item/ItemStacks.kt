@@ -41,5 +41,9 @@ fun createEnchantedBook(enchantment: Holder<Enchantment>, level: Int = enchantme
     return stack
 }
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.8.0
+ */
 fun createEnchantedBook(enchantments: ItemEnchantments): ItemStack =
     createItemStack(Items.ENCHANTED_BOOK, DataComponents.ENCHANTMENTS, enchantments)

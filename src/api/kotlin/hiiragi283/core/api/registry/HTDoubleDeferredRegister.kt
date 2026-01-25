@@ -20,7 +20,7 @@ open class HTDoubleDeferredRegister<FIRST : Any, SECOND : Any> protected constru
      * 二つの値をそれぞれ独立して登録します。
      * @param F [FIRST]を継承した一番目の値のクラス
      * @param S [SECOND]を継承した一番目の値のクラス
-     * @param H [HTDoubleDeferredHolder]を継承したクラス
+     * @param H [HTDoubleDeferredHolder]を実装したクラス
      * @param name 登録する値のIDのパス
      * @param first 一番目の値を渡すブロック
      * @param second 一番目の値を渡すブロック
@@ -37,7 +37,7 @@ open class HTDoubleDeferredRegister<FIRST : Any, SECOND : Any> protected constru
      * 二つの値をそれぞれ独立して登録します。
      * @param F [FIRST]を継承した一番目の値のクラス
      * @param S [SECOND]を継承した一番目の値のクラス
-     * @param H [HTDoubleDeferredHolder]を継承したクラス
+     * @param H [HTDoubleDeferredHolder]を実装したクラス
      * @param name 登録する値のIDのパス
      * @param first 一番目の値を渡すブロック
      * @param second 一番目の値を渡すブロック
@@ -54,7 +54,7 @@ open class HTDoubleDeferredRegister<FIRST : Any, SECOND : Any> protected constru
      * 一番目の値に基づいて，二番目の値を登録します。
      * @param F [FIRST]を継承した一番目の値のクラス
      * @param S [SECOND]を継承した一番目の値のクラス
-     * @param H [HTDoubleDeferredHolder]を継承したクラス
+     * @param H [HTDoubleDeferredHolder]を実装したクラス
      * @param name 登録する値のIDのパス
      * @param first 一番目の値を渡すブロック
      * @param second [F]から[S]に変換するブロック
@@ -71,7 +71,7 @@ open class HTDoubleDeferredRegister<FIRST : Any, SECOND : Any> protected constru
      * 一番目の値に基づいて，二番目の値を登録します。
      * @param F [FIRST]を継承した一番目の値のクラス
      * @param S [SECOND]を継承した一番目の値のクラス
-     * @param H [HTDoubleDeferredHolder]を継承したクラス
+     * @param H [HTDoubleDeferredHolder]を実装したクラス
      * @param name 登録する値のIDのパス
      * @param first 一番目の値を渡すブロック
      * @param second [F]の[HTDeferredHolder]から[S]に変換するブロック
@@ -108,7 +108,7 @@ open class HTDoubleDeferredRegister<FIRST : Any, SECOND : Any> protected constru
      * @param F [FIRST]を継承した一番目の値のクラス
      * @param SECOND 二番目のレジストリの要素のクラス
      * @param S [SECOND]を継承した二番目の値のクラス
-     * @param H [HTDoubleDeferredHolder]を継承したクラス
+     * @param H [HTDoubleDeferredHolder]を実装したクラス
      */
     fun interface HolderCombiner<FIRST : Any, SECOND : Any, F : FIRST, S : SECOND, H : HTDoubleDeferredHolder<FIRST, F, SECOND, S>> {
         /**

@@ -11,6 +11,7 @@ import net.minecraft.core.RegistryAccess
 interface HTSyncableSlot {
     /**
      * 現在の同期のフラグを取得します。
+     * @return 同期を行わない場合は`null`
      */
     fun getChange(): HTChangeType?
 

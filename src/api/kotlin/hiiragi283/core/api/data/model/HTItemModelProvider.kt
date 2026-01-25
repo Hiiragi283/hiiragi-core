@@ -91,6 +91,7 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
     }
 
     /**
+     * 素材アイテムのモデルを追加します。
      * @since 0.8.0
      */
     protected fun registerMaterials() {

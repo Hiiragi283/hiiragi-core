@@ -31,6 +31,7 @@ object HTMaterialPropertyKeys {
         HTPropertyKey.create(HiiragiCoreAPI.id("default_fluid_amount"), HTConst.INGOT_AMOUNT)
 
     /**
+     * 粉砕後の[HTTagPrefix]に対応する[プロパティキー][HTPropertyKey]
      * @since 0.8.0
      */
     @JvmField
@@ -73,6 +74,10 @@ object HTMaterialPropertyKeys {
     @JvmField
     val TOOL_PREFIXES: HTPropertyKey<Set<HTToolType>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("tool_prefixes"))
 
+    /**
+     * ツールの素材に対応する[プロパティキー][HTPropertyKey]
+     * @since 0.8.0
+     */
     @JvmField
     val TOOL_MATERIAL: HTPropertyKey<HTToolMaterial?> = createNullable("tool_material")
 
@@ -92,6 +97,7 @@ object HTMaterialPropertyKeys {
     val CUSTOM_LANG_NAME: HTPropertyKey<Map<HTTagPrefix, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_lang_name"))
 
     /**
+     * かまど燃料としての時間に対応する[プロパティキー][HTPropertyKey]
      * @since 0.8.0
      */
     @JvmField

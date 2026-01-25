@@ -22,6 +22,9 @@ data object HTItemResultCreator : HTResultCreator<Item, HTItemResourceType, Item
 
     fun create(item: ItemLike, tagKey: TagKey<Item>, amount: Int = defaultAmount()): HTItemResult = create(item.asItem(), tagKey, amount)
 
+    /**
+     * @since 0.8.0
+     */
     fun create(prefix: HTTagPrefix, material: HTMaterialLike, amount: Int = defaultAmount()): HTItemResult {
         val holder: ItemLike? = with(HiiragiCoreAccess.INSTANCE) {
             getBlockOrVanilla(prefix, material) ?: getItemOrVanilla(prefix, material)
@@ -39,6 +42,9 @@ data object HTItemResultCreator : HTResultCreator<Item, HTItemResourceType, Item
         amount: Int = defaultAmount(),
     ): HTItemResult = create(item, prefix.itemTagKey(material), amount)
 
+    /**
+     * @since 0.8.0
+     */
     fun create(stack: ItemStack): HTItemResult = create(resourceFactory().fromStackOrThrow(stack), stack.count)
 
     //    HTResultCreator    //

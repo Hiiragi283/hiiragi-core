@@ -21,6 +21,9 @@ abstract class HTBlockTagsProvider(modId: String, context: HTDataGenContext) : H
     fun HTTagBuilder<Block>.addBlock(block: Block, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<Block> =
         this.add(HTBlockHolderLike.of(block), type)
 
+    /**
+     * 素材ブロックのタグを追加します。
+     */
     @HTBuilderMarker
     protected fun addMaterials(factory: BuilderFactory<Block>, builderAction: (Triple<HTTagPrefix, HTMaterialKey, HTIdLike>) -> Unit) {
         contents.getBlockTable().forEach { triple ->

@@ -23,21 +23,21 @@ import java.util.concurrent.CompletableFuture
 interface HTDataGenerator {
     /**
      * 指定した[factory]を登録します。
-     * @param DATA [DataProvider]を継承したクラス
+     * @param DATA [DataProvider]を実装したクラス
      * @return [factory]から生成された[DataProvider]のインスタンス
      */
     fun <DATA : DataProvider> addProvider(factory: DataProvider.Factory<DATA>): DATA
 
     /**
      * 指定した[factory]を登録します。
-     * @param DATA [DataProvider]を継承したクラス
+     * @param DATA [DataProvider]を実装したクラス
      * @return [factory]から生成された[DataProvider]のインスタンス
      */
     fun <DATA : DataProvider> addProvider(factory: GatherDataEvent.DataProviderFromOutputLookup<DATA>): DATA
 
     /**
      * 指定した[factory]を登録します。
-     * @param DATA [DataProvider]を継承したクラス
+     * @param DATA [DataProvider]を実装したクラス
      * @return [factory]から生成された[DataProvider]のインスタンス
      */
     fun <DATA : DataProvider> addProvider(factory: Factory<DATA>): DATA
@@ -57,6 +57,10 @@ interface HTDataGenerator {
             )
         }
 
+    /**
+     * [Block]と[Item]向けの[TagsProvider]をまとめて登録します。
+     * @since 0.8.0
+     */
     fun addBlockAndItemTags(
         blockTags: Factory<out TagsProvider<Block>>,
         itemTags: (CompletableFuture<TagsProvider.TagLookup<Block>>, HTDataGenContext) -> TagsProvider<Item>,
@@ -66,7 +70,7 @@ interface HTDataGenerator {
 
     /**
      * [HTDataGenContext]を受けるとって[DataProvider]に変換する処理を表すインターフェースです。
-     * @param DATA [DataProvider]を継承したクラス
+     * @param DATA [DataProvider]を実装したクラス
      * @author Hiiragi Tsubasa
      * @since 0.1.0
      * @see DataProvider.Factory

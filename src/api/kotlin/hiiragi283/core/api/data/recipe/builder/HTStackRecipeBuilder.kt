@@ -12,5 +12,8 @@ import net.minecraft.world.item.ItemStack
 abstract class HTStackRecipeBuilder(prefix: String) : HTRecipeBuilder(prefix) {
     final override fun getPrimalId(): ResourceLocation = resultStack.getId()
 
+    /**
+     * 完成品の[ItemStack]を保持するインスタンス
+     */
     val resultStack = HTItemStackHolder()
 }

@@ -10,6 +10,7 @@ import net.neoforged.bus.api.Event
 import net.neoforged.fml.event.IModBusEvent
 
 /**
+ * [HTWidgetType]と[HTWidgetRenderer]を紐づけるイベントクラスです。
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  * @see net.neoforged.neoforge.client.event.RegisterMenuScreensEvent
@@ -19,6 +20,11 @@ class HTRegisterWidgetRendererEvent(
     private val registerer: (HTWidgetType<*>, HTWidgetRenderer.Factory<*, *>) -> HTWidgetRenderer.Factory<*, *>?,
 ) : Event(),
     IModBusEvent {
+    /**
+     * 指定した[type]と[factory]を紐づけます。
+     * @param WIDGET [HTWidget]を実装したクラス
+     * @throws IllegalStateException すでに[type]に[HTWidgetRenderer.Factory]が登録されている場合
+     */
     fun <WIDGET : HTWidget, RENDERER : HTWidgetRenderer<WIDGET>> register(
         type: HTWidgetType<WIDGET>,
         factory: HTWidgetRenderer.Factory<WIDGET, RENDERER>,

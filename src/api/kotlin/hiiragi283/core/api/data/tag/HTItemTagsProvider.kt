@@ -48,6 +48,10 @@ abstract class HTItemTagsProvider(modId: String, private val blockTags: Completa
     fun HTTagBuilder<Item>.addItem(item: ItemLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<Item> =
         this.add(HTItemHolderLike.of(item), type)
 
+    /**
+     * 素材ブロックのタグをコピーします。
+     * @since 0.8.0
+     */
     fun copyMaterials() {
         contents.getBlockTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, _) ->
             if (key.namespace != modId) return@forEach
@@ -55,6 +59,10 @@ abstract class HTItemTagsProvider(modId: String, private val blockTags: Completa
         }
     }
 
+    /**
+     * 素材アイテムのタグを登録します。
+     * @since 0.8.0
+     */
     @HTBuilderMarker
     fun addMaterials(factory: BuilderFactory<Item>, builderAction: (Triple<HTTagPrefix, HTMaterialKey, HTIdLike>) -> Unit) {
         contents.getItemTable().forEach { triple ->
@@ -65,6 +73,10 @@ abstract class HTItemTagsProvider(modId: String, private val blockTags: Completa
         }
     }
 
+    /**
+     * 素材ツールのタグを登録します。
+     * @since 0.8.0
+     */
     @HTBuilderMarker
     fun addTools(factory: BuilderFactory<Item>) {
         contents.getToolTable().forEach { (toolType: HTToolType, key: HTMaterialKey, item: HTIdLike) ->

@@ -31,6 +31,7 @@ import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient
 import java.util.function.IntUnaryOperator
 
 /**
+ * [HTItemIngredient]と[HTFluidIngredient]を作成するクラスです。
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
@@ -97,15 +98,9 @@ data object HTIngredientCreator {
 
     fun milk(amount: Int): HTFluidIngredient = create(VanillaFluidContents.MILK, amount)
 
-    /**
-     * @since 0.8.0
-     */
     fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidIngredient =
         create(material, HTMaterialPropertyKeys.MOLTEN_FLUID, operator)
 
-    /**
-     * @since 0.8.0
-     */
     fun create(
         material: HTMaterialLike,
         propertyKey: HTPropertyKey<HTFluidMaterialProperty?>,

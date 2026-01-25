@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceKey
 import net.neoforged.neoforge.registries.RegistryBuilder
 
 /**
+ * Hiiragi Coreで追加される[レジストリ][Registry]を保持するクラスです。
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
@@ -25,6 +26,11 @@ object HCRegistries {
 
     //    Keys    //
 
+    /**
+     * Hiiragi Coreで追加される[レジストリ][Registry]の[キー][ResourceKey]を保持するクラスです。
+     * @author Hiiragi Tsubasa
+     * @since 0.8.0
+     */
     object Keys {
         @JvmField
         val SLOT_TYPE: ResourceKey<Registry<HTSyncablePayload.Type<*>>> = createKey("syncable_slot_type")

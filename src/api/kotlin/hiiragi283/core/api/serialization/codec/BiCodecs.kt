@@ -23,7 +23,7 @@ import kotlin.enums.enumEntries
 object BiCodecs {
     /**
      * 範囲をチェックするブロックを作成します。
-     * @param N [Number]と[Comparable]を継承したクラス
+     * @param N [Number]と[Comparable]を実装したクラス
      * @param min 範囲の最小値
      * @param max 範囲の最大値
      */
@@ -147,7 +147,7 @@ object BiCodecs {
 
     /**
      * [Enum]の[BiCodec]を返します。
-     * @param V [Enum]を継承したクラス
+     * @param V [Enum]を実装したクラス
      * @return [Enum.ordinal]に基づいた[BiCodec]
      */
     @JvmStatic
@@ -156,7 +156,7 @@ object BiCodecs {
 
     /**
      * [Enum]の[BiCodec]を返します。
-     * @param V [Enum]を継承したクラス
+     * @param V [Enum]を実装したクラス
      * @param factory [V]を[String]に変換するブロック
      * @return [factory]に基づいた[BiCodec]
      */

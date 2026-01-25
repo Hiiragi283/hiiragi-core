@@ -12,7 +12,7 @@ import net.minecraft.tags.TagKey
 /**
  * [HTResourceType]に基づいた[HTRecipeResult]の抽象クラスです。
  * @param TYPE 種類のクラス
- * @param RESOURCE [HTResourceType.Registered]を継承したクラス
+ * @param RESOURCE [HTResourceType.Registered]を実装したクラス
  * @param STACK 完成品のクラス
  * @author Hiiragi Tsubasa
  * @since 0.4.0

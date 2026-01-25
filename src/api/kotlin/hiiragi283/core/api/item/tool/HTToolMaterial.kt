@@ -36,6 +36,11 @@ interface HTToolMaterial :
 
     fun getHoeAttackSpeed(): Float = attackDamageBonus - 3f
 
+    /**
+     * 既存の[Tier]に実装を委譲した[HTToolMaterial]の拡張インターフェースです。
+     * @author Hiiragi Tsubasa
+     * @since 0.8.0
+     */
     interface Delegated : HTToolMaterial {
         fun getTier(): Tier
 

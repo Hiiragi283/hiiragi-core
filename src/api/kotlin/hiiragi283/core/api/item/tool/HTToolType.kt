@@ -8,6 +8,11 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.TieredItem
 
+/**
+ * 素材ツールの定義を担うクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.8.0
+ */
 class HTToolType(
     val name: String,
     private val idPattern: String,
@@ -39,6 +44,11 @@ class HTToolType(
 
     //    Builder    //
 
+    /**
+     * [HTToolType]のビルダークラスです。
+     * @author Hiiragi Tsubasa
+     * @since 0.8.0
+     */
     class Builder(private val name: String) {
         var idPattern = "%s_$name"
         lateinit var factory: (HTToolMaterial, Item.Properties) -> TieredItem

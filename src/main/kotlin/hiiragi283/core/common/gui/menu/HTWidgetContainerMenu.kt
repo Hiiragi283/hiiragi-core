@@ -33,9 +33,6 @@ class HTWidgetContainerMenu(
     override fun stillValid(player: Player): Boolean = context.stillValid(player)
 
     private inner class WidgetHolderImpl : HTWidgetHolder {
-        override val width: Int get() = 0
-        override val height: Int get() = 0
-
         override fun <WIDGET : HTWidget> addWidget(widget: WIDGET): WIDGET {
             _widgets += widget
             HiiragiCoreAPI.LOGGER.debug("Added widget: {}", widget)

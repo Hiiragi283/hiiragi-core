@@ -7,7 +7,7 @@ import net.minecraft.core.component.DataComponentPatch
  * [HTResourceType]を作成するメソッドをまとめたインターフェースです。
  * @param TYPE [HTResourceType]が保持する種類のクラス
  * @param STACK スタックのクラス
- * @param RESOURCE [HTResourceType]を継承したクラス
+ * @param RESOURCE [HTResourceType]を実装したクラス
  * @author Hiiragi Tsubasa
  * @since 0.7.0
  */

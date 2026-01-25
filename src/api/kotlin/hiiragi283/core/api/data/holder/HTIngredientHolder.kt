@@ -1,4 +1,4 @@
-package hiiragi283.core.api.data.recipe.builder
+package hiiragi283.core.api.data.holder
 
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -15,11 +15,17 @@ import net.minecraft.world.level.ItemLike
  * @since 0.8.0
  */
 abstract class HTIngredientHolder {
+    /**
+     * 指定した[item]を追加します。
+     */
     @JvmName("addItem")
     operator fun plusAssign(item: ItemLike) {
         this.plusAssign(Ingredient.of(item))
     }
 
+    /**
+     * 指定した[items]を単一の材料として追加します。
+     */
     @JvmName("addItems")
     operator fun plusAssign(items: Iterable<ItemLike>) {
         items
@@ -30,11 +36,17 @@ abstract class HTIngredientHolder {
             .let(this::plusAssign)
     }
 
+    /**
+     * 指定した[tagKey]を追加します。
+     */
     @JvmName("addTag")
     operator fun plusAssign(tagKey: TagKey<Item>) {
         this.plusAssign(Ingredient.of(tagKey))
     }
 
+    /**
+     * 指定した[tagKeys]を単一の材料として追加します。
+     */
     @JvmName("addTags")
     operator fun plusAssign(tagKeys: Iterable<TagKey<Item>>) {
         tagKeys
@@ -44,12 +56,18 @@ abstract class HTIngredientHolder {
             .let(this::plusAssign)
     }
 
+    /**
+     * 指定した[pair]から，材料を追加します。
+     */
     @JvmName("addMaterialTag")
     operator fun plusAssign(pair: Pair<HTTagPrefix, HTMaterialLike>) {
         val (tagPrefix: HTTagPrefix, material: HTMaterialLike) = pair
         this.plusAssign(tagPrefix.itemTagKey(material))
     }
 
+    /**
+     * 指定した[pair]から，複数の[TagKey]を単一の材料として追加します。
+     */
     @JvmName("addMaterialTags")
     operator fun plusAssign(pair: Pair<Iterable<HTTagPrefix>, Iterable<HTMaterialLike>>) {
         val (prefixes: Iterable<HTTagPrefix>, materials: Iterable<HTMaterialLike>) = pair
@@ -58,6 +76,9 @@ abstract class HTIngredientHolder {
             .let(this::plusAssign)
     }
 
+    /**
+     * 指定した[ingredient]を追加します。
+     */
     abstract operator fun plusAssign(ingredient: Ingredient)
 
     /**
@@ -66,9 +87,16 @@ abstract class HTIngredientHolder {
      * @since 0.8.0
      */
     class Single : HTIngredientHolder() {
+        /**
+         * 保持している単一の[材料][Ingredient]
+         */
         lateinit var ingredient: Ingredient
             private set
 
+        /**
+         * 保持している[Ingredient]を返します。
+         * @return 値が初期化されていない場合は[Ingredient.EMPTY]
+         */
         fun orEmpty(): Ingredient = when {
             ::ingredient.isInitialized -> ingredient
             else -> Ingredient.EMPTY
@@ -92,8 +120,14 @@ abstract class HTIngredientHolder {
             ingredients += ingredient
         }
 
+        /**
+         * [List]に変換します。
+         */
         fun toList(): List<Ingredient> = ingredients
 
+        /**
+         * [NonNullList]に変換します。
+         */
         fun toNonNull(): NonNullList<Ingredient> = NonNullList.copyOf(ingredients)
     }
 }

@@ -314,8 +314,17 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
         streamCodec.map({ it.let(to::apply) }, { it.let(from::apply) }),
     )
 
+    /**
+     * 指定した[validator]で値のフィルタリングを追加します。
+     */
     fun validate(validator: UnaryOperator<V>): BiCodec<B, V> = flatXmap(validator::apply, validator::apply)
 
+    /**
+     * 値がフィルタリングされた[BiCodec]を返します。
+     * @param predicate 値のフィルタ
+     * @param message エラーメッセージを返すブロック
+     * @since 0.8.0
+     */
     fun filter(predicate: Predicate<V>, message: Function<V, String>): BiCodec<B, V> = validate { value: V ->
         when {
             predicate.test(value) -> value
@@ -323,6 +332,12 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
         }
     }
 
+    /**
+     * 値がフィルタリングされた[BiCodec]を返します。
+     * @param predicate 値のフィルタ
+     * @param defaultValue デフォルトの値
+     * @since 0.8.0
+     */
     fun filterOrElse(predicate: Predicate<V>, defaultValue: V): BiCodec<B, V> = validate { value: V ->
         when {
             predicate.test(value) -> value
@@ -330,6 +345,12 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
         }
     }
 
+    /**
+     * 値がフィルタリングされた[BiCodec]を返します。
+     * @param predicate 値のフィルタ
+     * @param recover デフォルトの値を返すブロック
+     * @since 0.8.0
+     */
     fun filterOrElse(predicate: Predicate<V>, recover: UnaryOperator<V>): BiCodec<B, V> = validate { value: V ->
         when {
             predicate.test(value) -> value
@@ -360,7 +381,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
 
     /**
      * [B]を[S]に置換した[BiCodec]を返します。
-     * @param S [B]を継承したクラス
+     * @param S [B]を実装したクラス
      */
     fun <S : B> cast(): BiCodec<S, V> = of(codec, streamCodec.cast())
 

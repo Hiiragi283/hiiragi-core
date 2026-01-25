@@ -37,6 +37,7 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
 
     /**
      * 材料を作成するヘルパーのインスタンス
+     * @since 0.8.0
      */
     protected val inputCreator: HTIngredientCreator = HTIngredientCreator
 

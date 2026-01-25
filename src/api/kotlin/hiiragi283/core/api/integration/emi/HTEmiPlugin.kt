@@ -83,8 +83,8 @@ abstract class HTEmiPlugin(protected val modId: String) : EmiPlugin {
     /**
      * [EmiRegistry.getRecipeManager]に基づいてレシピを追加します。
      * @param INPUT レシピの入力となるクラス
-     * @param BASE [HTRecipe]を継承したクラス
-     * @param RECIPE [BASE]を継承したクラス
+     * @param BASE [HTRecipe]を実装したクラス
+     * @param RECIPE [BASE]を実装したクラス
      * @param EMI_RECIPE EMIに登録するレシピのクラス
      * @param recipeType レシピのタイプ
      * @param factory [RECIPE]を[EMI_RECIPE]に変換するブロック

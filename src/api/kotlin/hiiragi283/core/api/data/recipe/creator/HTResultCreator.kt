@@ -9,9 +9,9 @@ import net.minecraft.tags.TagKey
 /**
  * [HTResourceRecipeResult]を作成するインターフェースです。
  * @param TYPE 種類のクラス
- * @param RESOURCE [HTResourceType.Registered]を継承したクラス
+ * @param RESOURCE [HTResourceType.Registered]を実装したクラス
  * @param STACK [HTResourceRecipeResult]の完成品のクラス
- * @param RESULT [HTResourceRecipeResult]を継承したクラス
+ * @param RESULT [HTResourceRecipeResult]を実装したクラス
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */

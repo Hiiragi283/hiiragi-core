@@ -30,6 +30,7 @@ import net.neoforged.neoforge.common.conditions.ICondition
 import java.util.function.Consumer
 
 /**
+ * 動的にレシピを追加するイベントクラスです。
  * @see plus.dragons.createdragonsplus.common.recipe.UpdateRecipesEvent
  */
 class HTRegisterRuntimeRecipeEvent(

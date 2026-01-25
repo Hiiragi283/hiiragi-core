@@ -200,6 +200,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
     }
 
     /**
+     * [prefix]に対応する素材ブロックのモデルを追加します。
      * @since 0.8.0
      */
     protected fun registerMaterials(prefix: HTTagPrefix) {

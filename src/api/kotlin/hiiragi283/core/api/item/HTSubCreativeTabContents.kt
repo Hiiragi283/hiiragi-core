@@ -27,6 +27,10 @@ fun interface HTSubCreativeTabContents {
 
     //    Context    //
 
+    /**
+     * @author Hiiragi Tsubasa
+     * @since 0.8.0
+     */
     class Context(
         val enabledFeatures: FeatureFlagSet,
         val hasPermissions: Boolean,

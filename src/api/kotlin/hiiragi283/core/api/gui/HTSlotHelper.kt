@@ -1,5 +1,10 @@
 package hiiragi283.core.api.gui
 
+/**
+ * GUI上での座標に関するクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.8.0
+ */
 object HTSlotHelper {
     @JvmStatic
     fun getSlotPosX(index: Int): Int = 8 + index * 18
