@@ -3,8 +3,8 @@ package hiiragi283.core.client.gui.widget
 import com.mojang.blaze3d.systems.RenderSystem
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.gui.HTBounds
+import hiiragi283.core.api.gui.widget.HTAbstractWidgetRenderer
 import hiiragi283.core.api.gui.widget.HTWidget
-import hiiragi283.core.api.gui.widget.HTWidgetRenderer
 import hiiragi283.core.api.times
 import hiiragi283.core.util.HTSpriteRenderHelper
 import net.minecraft.client.Minecraft
@@ -22,7 +22,7 @@ import org.apache.commons.lang3.math.Fraction
 import java.util.function.Consumer
 
 @OnlyIn(Dist.CLIENT)
-abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget>(protected val widget: WIDGET) : HTWidgetRenderer<WIDGET> {
+abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget>(widget: WIDGET) : HTAbstractWidgetRenderer<WIDGET>(widget) {
     protected val font: Font = Minecraft.getInstance().font
 
     override fun render(

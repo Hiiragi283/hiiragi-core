@@ -4,7 +4,10 @@ import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetRenderer
 import net.minecraft.client.gui.GuiGraphics
+import net.neoforged.api.distmarker.Dist
+import net.neoforged.api.distmarker.OnlyIn
 
+@OnlyIn(Dist.CLIENT)
 data object HTEmptyWidgetRenderer : HTWidgetRenderer<Nothing> {
     @Suppress("UNCHECKED_CAST")
     @JvmStatic

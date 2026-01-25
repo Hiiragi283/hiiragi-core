@@ -47,7 +47,7 @@ class HTWidgetContainerMenu(
         }
 
         override fun track(slot: HTSyncableSlot) {
-            this@HTWidgetContainerMenu.trackedSlots += slot
+            this@HTWidgetContainerMenu.addTrackedSlot(slot)
             HiiragiCoreAPI.LOGGER.debug("Added syncable slot: {}", slot)
         }
     }

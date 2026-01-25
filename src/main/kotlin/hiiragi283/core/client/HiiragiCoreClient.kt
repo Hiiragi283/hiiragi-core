@@ -7,9 +7,12 @@ import hiiragi283.core.api.mod.HTClientMod
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
+import hiiragi283.core.client.gui.tooltip.HTClientItemFilterTooltip
 import hiiragi283.core.client.gui.widget.HTEmptyWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTFluidTankWidgetRenderer
+import hiiragi283.core.client.gui.widget.HTItemStackWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTWidgetRendererManager
+import hiiragi283.core.common.gui.tooltip.HTItemFilterTooltip
 import hiiragi283.core.common.item.HTChromaticPowderItem
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
@@ -25,6 +28,7 @@ import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.neoforge.client.event.EntityRenderersEvent
+import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent
@@ -34,8 +38,14 @@ import java.awt.Color
 @Mod(value = HiiragiCoreAPI.MOD_ID, dist = [Dist.CLIENT])
 data object HiiragiCoreClient : HTClientMod() {
     override fun initialize(eventBus: IEventBus, container: ModContainer) {
+        eventBus.addListener(::registerClientTooltips)
+
         configScreen(container)
         HiiragiCoreAPI.LOGGER.info("Hiiragi-Core loaded on client side")
+    }
+
+    private fun registerClientTooltips(event: RegisterClientTooltipComponentFactoriesEvent) {
+        event.register(HTItemFilterTooltip::class.java, ::HTClientItemFilterTooltip)
     }
 
     override fun clientSetup(event: FMLClientSetupEvent) {
@@ -45,6 +55,7 @@ data object HiiragiCoreClient : HTClientMod() {
     override fun registerWidgetRenderer(event: HTRegisterWidgetRendererEvent) {
         event.register(HCWidgetTypes.FLUID_TANK.get(), ::HTFluidTankWidgetRenderer)
         event.register(HCWidgetTypes.ITEM_SLOT.get(), HTEmptyWidgetRenderer::create)
+        event.register(HCWidgetTypes.ITEM_STACK.get(), ::HTItemStackWidgetRenderer)
     }
 
     override fun registerItemColors(event: RegisterColorHandlersEvent.Item) {

@@ -193,7 +193,12 @@ abstract class HTContainerMenu<C>(
 
     //    Slot Sync    //
 
-    protected val trackedSlots: MutableList<HTSyncableSlot> = mutableListOf()
+    val trackedSlots: List<HTSyncableSlot> get() = _trackedSlots
+    private val _trackedSlots: MutableList<HTSyncableSlot> = mutableListOf()
+
+    fun addTrackedSlot(slot: HTSyncableSlot) {
+        _trackedSlots += slot
+    }
 
     override fun getTrackedSlot(index: Int): HTSyncableSlot? = trackedSlots.getOrNull(index)
 
