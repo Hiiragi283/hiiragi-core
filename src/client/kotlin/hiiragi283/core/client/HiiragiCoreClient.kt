@@ -66,7 +66,7 @@ data object HiiragiCoreClient : HTClientMod() {
         event.register(
             { stack: ItemStack, tint: Int ->
                 when (tint) {
-                    0 -> HTChromaticPowderItem.getColor(stack)
+                    0 -> HTChromaticPowderItem.Companion.getColor(stack)
                     else -> -1
                 }
             },

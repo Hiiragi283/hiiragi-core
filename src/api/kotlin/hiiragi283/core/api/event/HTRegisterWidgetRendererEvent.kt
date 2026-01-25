@@ -4,6 +4,8 @@ import hiiragi283.core.api.HCRegistries
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetRenderer
 import hiiragi283.core.api.gui.widget.HTWidgetType
+import net.neoforged.api.distmarker.Dist
+import net.neoforged.api.distmarker.OnlyIn
 import net.neoforged.bus.api.Event
 import net.neoforged.fml.event.IModBusEvent
 
@@ -12,6 +14,7 @@ import net.neoforged.fml.event.IModBusEvent
  * @since 0.8.0
  * @see net.neoforged.neoforge.client.event.RegisterMenuScreensEvent
  */
+@OnlyIn(Dist.CLIENT)
 class HTRegisterWidgetRendererEvent(
     private val registerer: (HTWidgetType<*>, HTWidgetRenderer.Factory<*, *>) -> HTWidgetRenderer.Factory<*, *>?,
 ) : Event(),

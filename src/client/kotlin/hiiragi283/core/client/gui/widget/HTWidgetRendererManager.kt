@@ -18,7 +18,7 @@ internal object HTWidgetRendererManager {
     private lateinit var factories: Map<HTWidgetType<*>, HTWidgetRenderer.Factory<*, *>>
 
     @JvmStatic
-    internal fun init() {
+    fun init() {
         val map: MutableMap<HTWidgetType<*>, HTWidgetRenderer.Factory<*, *>> = hashMapOf()
         HTRegisterWidgetRendererEvent(map::put).let(ModLoader::postEvent)
         this.factories = map

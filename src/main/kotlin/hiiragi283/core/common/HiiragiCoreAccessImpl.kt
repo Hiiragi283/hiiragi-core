@@ -3,8 +3,6 @@ package hiiragi283.core.common
 import com.google.gson.JsonObject
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.HTTable
-import hiiragi283.core.api.gui.widget.HTWidget
-import hiiragi283.core.api.gui.widget.HTWidgetRenderer
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
@@ -14,7 +12,6 @@ import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.client.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.common.serialization.value.HTEmptyValueInput
 import hiiragi283.core.common.serialization.value.HTJsonValueInput
@@ -61,6 +58,4 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess {
 
     override fun createOutput(provider: HolderLookup.Provider, compoundTag: CompoundTag): HTValueOutput =
         HTTagValueOutput(provider, compoundTag)
-
-    override fun <WIDGET : HTWidget> createRenderer(widget: WIDGET): HTWidgetRenderer<WIDGET>? = HTWidgetRendererManager.create(widget)
 }

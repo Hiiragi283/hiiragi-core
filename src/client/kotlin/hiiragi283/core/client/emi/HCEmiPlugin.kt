@@ -117,7 +117,7 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
             }
             return false
         }
-        
+
         /**
          * @see mekanism.client.recipe_viewer.emi.EmiGhostIngredientHandler.getFirstSupportedStack
          */

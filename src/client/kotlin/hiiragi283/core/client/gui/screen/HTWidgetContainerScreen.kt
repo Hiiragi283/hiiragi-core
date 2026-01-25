@@ -51,7 +51,7 @@ class HTWidgetContainerScreen(menu: HTWidgetContainerMenu, inventory: Inventory,
         ) {
         val bounds: HTBounds get() = HTBounds(this.x, this.y, this.width, this.height)
 
-        private val renderer: HTWidgetRenderer<WIDGET>? by lazy { HiiragiCoreAccess.INSTANCE.createRenderer(widget) }
+        private val renderer: HTWidgetRenderer<WIDGET>? by lazy { HiiragiCoreAccess.Client.INSTANCE.createRenderer(widget) }
 
         override fun renderWidget(
             guiGraphics: GuiGraphics,

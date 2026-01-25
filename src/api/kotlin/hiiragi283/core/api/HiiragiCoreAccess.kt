@@ -96,8 +96,18 @@ interface HiiragiCoreAccess {
      */
     fun createOutput(provider: HolderLookup.Provider, compoundTag: CompoundTag): HTValueOutput
 
-    //    Widget    //
+    //    Client    //
 
     @OnlyIn(Dist.CLIENT)
-    fun <WIDGET : HTWidget> createRenderer(widget: WIDGET): HTWidgetRenderer<WIDGET>?
+    interface Client {
+        companion object {
+            /**
+             * [Client]のインスタンス
+             */
+            @JvmField
+            val INSTANCE: Client = HiiragiCoreAPI.getService()
+        }
+
+        fun <WIDGET : HTWidget> createRenderer(widget: WIDGET): HTWidgetRenderer<WIDGET>?
+    }
 }

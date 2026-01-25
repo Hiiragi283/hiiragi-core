@@ -86,14 +86,14 @@ abstract class HTIngredientHolder {
      * @since 0.8.0
      */
     class Multiple : HTIngredientHolder() {
-        private val _ingredients: MutableList<Ingredient> = mutableListOf()
+        private val ingredients: MutableList<Ingredient> = mutableListOf()
 
         override operator fun plusAssign(ingredient: Ingredient) {
-            _ingredients += ingredient
+            ingredients += ingredient
         }
 
-        fun toList(): List<Ingredient> = _ingredients
+        fun toList(): List<Ingredient> = ingredients
 
-        fun toNonNull(): NonNullList<Ingredient> = NonNullList.copyOf(_ingredients)
+        fun toNonNull(): NonNullList<Ingredient> = NonNullList.copyOf(ingredients)
     }
 }
