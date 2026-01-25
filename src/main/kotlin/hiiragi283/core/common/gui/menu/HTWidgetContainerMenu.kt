@@ -1,15 +1,17 @@
 package hiiragi283.core.common.gui.menu
 
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
+import hiiragi283.core.api.gui.widget.HTSlotWidget
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.common.gui.factory.HTWidgetHolderContext
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.MenuType
-import net.minecraft.world.inventory.Slot
 
 /**
+ * [HTWidgetHolder]に基づいた[HTContainerMenu]の拡張クラスです。
  * @see com.lowdragmc.lowdraglib2.gui.holder.ModularUIContainerMenu
  */
 class HTWidgetContainerMenu(
@@ -24,29 +26,29 @@ class HTWidgetContainerMenu(
 
     init {
         context.setup(inventory.player, widgetHolder)
+        // Player Inventory
+        addPlayerInv(inventory)
     }
 
     override fun stillValid(player: Player): Boolean = context.stillValid(player)
 
     private inner class WidgetHolderImpl : HTWidgetHolder {
-        override val width: Int
-            get() = TODO("Not yet implemented")
-        override val height: Int
-            get() = TODO("Not yet implemented")
+        override val width: Int get() = 0
+        override val height: Int get() = 0
 
         override fun <WIDGET : HTWidget> addWidget(widget: WIDGET): WIDGET {
             _widgets += widget
+            HiiragiCoreAPI.LOGGER.debug("Added widget: {}", widget)
             widget.setupHolder(this)
+            if (widget is HTSlotWidget) {
+                this@HTWidgetContainerMenu.addSlot(widget.slot)
+            }
             return widget
-        }
-
-        override fun <SLOT : Slot> addSlot(slot: SLOT): SLOT {
-            this@HTWidgetContainerMenu.addSlot(slot)
-            return slot
         }
 
         override fun track(slot: HTSyncableSlot) {
             this@HTWidgetContainerMenu.trackedSlots += slot
+            HiiragiCoreAPI.LOGGER.debug("Added syncable slot: {}", slot)
         }
     }
 }

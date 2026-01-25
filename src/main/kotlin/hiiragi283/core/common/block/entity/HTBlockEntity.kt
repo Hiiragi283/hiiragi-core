@@ -18,12 +18,14 @@ import hiiragi283.core.api.storage.energy.HTEnergyHandler
 import hiiragi283.core.api.storage.fluid.HTFluidHandler
 import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.fluid.getFluidStack
+import hiiragi283.core.api.storage.fluid.setStack
 import hiiragi283.core.api.storage.holder.HTEnergyBatteryHolder
 import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
 import hiiragi283.core.api.storage.item.HTItemHandler
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.getItemStack
+import hiiragi283.core.api.storage.item.setStack
 import hiiragi283.core.common.gui.sync.HTFluidSyncSlot
 import hiiragi283.core.common.gui.sync.HTIntSyncSlot
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
@@ -43,9 +45,11 @@ import net.minecraft.network.chat.ComponentSerialization
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.Nameable
 import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.energy.IEnergyStorage
+import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.capability.IFluidHandler
 import net.neoforged.neoforge.items.IItemHandler
 import java.util.UUID
@@ -290,7 +294,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     fun collectFluidTanks(containers: List<HTFluidTank>): HTAttachedFluids? = containers
         .map(HTFluidTank::getFluidStack)
         .let(::HTAttachedFluids)
-        .takeUnless(HTAttachedFluids::isEmpty)
+        .takeUnless { it.isEmpty() || it.all(FluidStack::isEmpty) }
 
     // Energy
 
@@ -324,7 +328,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     fun collectEnergyBattery(containers: List<HTEnergyBattery>): HTAttachedEnergy? = containers
         .map(HTEnergyBattery::getAmount)
         .let(::HTAttachedEnergy)
-        .takeUnless(HTAttachedEnergy::isEmpty)
+        .takeUnless { it.isEmpty() || it.all { amount: Int -> amount <= 0 } }
 
     // Item
 
@@ -357,5 +361,5 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     fun collectItemSlots(containers: List<HTItemSlot>): HTAttachedItems? = containers
         .map(HTItemSlot::getItemStack)
         .let(::HTAttachedItems)
-        .takeUnless(HTAttachedItems::isEmpty)
+        .takeUnless { it.isEmpty() || it.all(ItemStack::isEmpty) }
 }

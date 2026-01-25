@@ -16,6 +16,7 @@ import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.extractItem
 import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.storage.item.insert
+import hiiragi283.core.api.storage.item.setStack
 import hiiragi283.core.api.storage.item.toResource
 import net.minecraft.world.SimpleContainer
 import net.minecraft.world.entity.player.Player

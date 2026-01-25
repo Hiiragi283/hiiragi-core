@@ -16,6 +16,7 @@ data class HTAttachedItems(override val containers: List<ItemStack>) : HTAttache
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTAttachedItems> = VanillaBiCodecs.ITEM_STACK
             .listOf()
             .xmap(::HTAttachedItems, HTAttachedItems::containers)
+            .filterOrElse(HTAttachedItems::isNotEmpty) { create(it.size) }
 
         @JvmField
         val EMPTY = HTAttachedItems(listOf())
@@ -25,6 +26,8 @@ data class HTAttachedItems(override val containers: List<ItemStack>) : HTAttache
     }
 
     override fun create(containers: List<ItemStack>): HTAttachedItems = HTAttachedItems(containers)
+
+    override fun isEmpty(): Boolean = super.isEmpty() || containers.all(ItemStack::isEmpty)
 
     override fun equals(other: Any?): Boolean {
         when {

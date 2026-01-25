@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.network.Connection
-import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.level.ChunkPos
@@ -140,14 +139,6 @@ abstract class HTExtendedBlockEntity(private val type: HTDeferredBlockEntityType
      * [BlockEntity.setRemoved]の後で呼び出されます。
      */
     open fun onRemove(level: Level, pos: BlockPos) {}
-
-    /**
-     * [Block.useWithoutItem]でGUIを開くときに，クライアント側へ送るデータを書き込みます。
-     * @see mekanism.common.tile.base.TileEntityMekanism.encodeExtraContainerData
-     */
-    open fun writeExtraContainerData(buf: RegistryFriendlyByteBuf) {
-        buf.writeBlockPos(getBlockPos())
-    }
 
     /**
      * ブロックのコンパレータ出力を返します。

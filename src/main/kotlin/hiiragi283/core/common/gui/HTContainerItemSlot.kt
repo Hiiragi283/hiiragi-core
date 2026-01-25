@@ -1,4 +1,4 @@
-package hiiragi283.core.api.gui
+package hiiragi283.core.common.gui
 
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
@@ -7,12 +7,15 @@ import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.extractItem
 import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.storage.item.insert
+import hiiragi283.core.api.storage.item.setStack
 import hiiragi283.core.api.storage.item.toResource
+import hiiragi283.core.api.storage.resource.HTResourceSlot
 import net.minecraft.world.SimpleContainer
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 import java.util.Optional
+import java.util.function.BiPredicate
 import java.util.function.Consumer
 import kotlin.math.min
 
@@ -25,7 +28,7 @@ open class HTContainerItemSlot(
     x: Int,
     y: Int,
     private val stackSetter: Consumer<ItemStack>,
-    private val manualFilter: (HTItemResourceType, HTStorageAccess) -> Boolean,
+    private val manualFilter: BiPredicate<HTItemResourceType, HTStorageAccess>,
     val slotType: Type,
 ) : Slot(emptyContainer, 0, x, y) {
     companion object {
@@ -33,23 +36,20 @@ open class HTContainerItemSlot(
         private val emptyContainer = SimpleContainer(0)
 
         @JvmStatic
-        fun input(slot: HTItemSlot.Basic, x: Int, y: Int): HTContainerItemSlot = HTContainerItemSlot(slot, x, y, Type.INPUT)
-
-        @JvmStatic
-        fun output(slot: HTItemSlot.Basic, x: Int, y: Int): HTContainerItemSlot = HTContainerItemSlot(slot, x, y, Type.OUTPUT)
-
-        @JvmStatic
-        fun both(slot: HTItemSlot.Basic, x: Int, y: Int): HTContainerItemSlot = HTContainerItemSlot(slot, x, y, Type.BOTH)
+        fun <SLOT> create(
+            slot: SLOT,
+            x: Int,
+            y: Int,
+            slotType: Type,
+        ): HTContainerItemSlot where SLOT : HTItemSlot, SLOT : HTResourceSlot.Basic<HTItemResourceType> = HTContainerItemSlot(
+            slot,
+            x,
+            y,
+            slot::setStack,
+            slot::isStackValidForInsert,
+            slotType,
+        )
     }
-
-    constructor(slot: HTItemSlot.Basic, x: Int, y: Int, slotType: Type) : this(
-        slot,
-        x,
-        y,
-        slot::setStack,
-        slot::isStackValidForInsert,
-        slotType,
-    )
 
     fun updateCount(count: Int) {
         stackSetter.accept(slot.getResource()?.toStack(count) ?: ItemStack.EMPTY)
@@ -70,7 +70,7 @@ open class HTContainerItemSlot(
             return insertItem(stack, HTStorageAction.SIMULATE).count < stack.count
         }
         if (slot.extract(1, HTStorageAction.SIMULATE, HTStorageAccess.MANUAL) == 0) return false
-        return manualFilter(resourceType, HTStorageAccess.MANUAL)
+        return manualFilter.test(resourceType, HTStorageAccess.MANUAL)
     }
 
     override fun getItem(): ItemStack = slot.getItemStack()

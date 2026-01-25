@@ -10,6 +10,7 @@ import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.HTFluidTank
+import hiiragi283.core.api.storage.fluid.setStack
 import hiiragi283.core.api.storage.fluid.toResource
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.BiPredicate

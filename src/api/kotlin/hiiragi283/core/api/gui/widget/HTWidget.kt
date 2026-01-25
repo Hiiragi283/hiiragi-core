@@ -14,14 +14,11 @@ interface HTWidget {
     fun getType(): HTWidgetType<*>
 
     /**
-     * このウィジェットの[範囲][HTBounds]を取得します。
+     * このウィジェット自体の[範囲][HTBounds]
+     *
+     * GUI上での範囲ではありません
      */
-    fun getBound(): HTBounds
-
-    /**
-     * カーソルがこのウィジェットの範囲内にあるか判定します。
-     */
-    fun isHovered(mouseX: Int, mouseY: Int): Boolean = getBound().contains(mouseX, mouseY)
+    val bounds: HTBounds
 
     fun setupHolder(widgetHolder: HTWidgetHolder) {}
 

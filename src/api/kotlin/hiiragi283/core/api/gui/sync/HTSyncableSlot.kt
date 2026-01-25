@@ -3,7 +3,7 @@ package hiiragi283.core.api.gui.sync
 import net.minecraft.core.RegistryAccess
 
 /**
- * 任意の値を同期可能なスロットを表すインターフェースです。
+ * 任意の値をサーバーからクライアントへ同期可能なオブジェクトを表すインターフェースです。
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  * @see mekanism.common.inventory.container.sync.ISyncableData

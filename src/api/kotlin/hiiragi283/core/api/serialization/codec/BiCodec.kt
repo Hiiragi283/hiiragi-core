@@ -16,6 +16,7 @@ import net.minecraft.network.codec.StreamCodec
 import java.util.*
 import java.util.function.BiFunction
 import java.util.function.Function
+import java.util.function.Predicate
 import java.util.function.UnaryOperator
 
 /**
@@ -314,6 +315,27 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
     )
 
     fun validate(validator: UnaryOperator<V>): BiCodec<B, V> = flatXmap(validator::apply, validator::apply)
+
+    fun filter(predicate: Predicate<V>, message: Function<V, String>): BiCodec<B, V> = validate { value: V ->
+        when {
+            predicate.test(value) -> value
+            else -> error(message.apply(value))
+        }
+    }
+
+    fun filterOrElse(predicate: Predicate<V>, defaultValue: V): BiCodec<B, V> = validate { value: V ->
+        when {
+            predicate.test(value) -> value
+            else -> defaultValue
+        }
+    }
+
+    fun filterOrElse(predicate: Predicate<V>, recover: UnaryOperator<V>): BiCodec<B, V> = validate { value: V ->
+        when {
+            predicate.test(value) -> value
+            else -> recover.apply(value)
+        }
+    }
 
     fun <E : Any> dispatch(
         typeKey: String,

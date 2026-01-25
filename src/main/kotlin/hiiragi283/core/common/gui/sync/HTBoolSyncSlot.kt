@@ -11,7 +11,7 @@ import kotlin.reflect.KMutableProperty0
  * [Boolean]向けの[HTSyncableSlot]の拡張インターフェースです。
  * @author Hiiragi Tsubasa
  * @since 0.8.0
- * @see mekanism.common.inventory.container.sync.SyncableInt
+ * @see mekanism.common.inventory.container.sync.SyncableBoolean
  */
 interface HTBoolSyncSlot : HTSyncableSlot {
     companion object {

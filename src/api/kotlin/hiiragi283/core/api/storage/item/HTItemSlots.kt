@@ -2,6 +2,7 @@ package hiiragi283.core.api.storage.item
 
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
+import hiiragi283.core.api.storage.resource.HTResourceSlot
 import hiiragi283.core.api.storage.resource.HTResourceView
 import net.minecraft.world.item.ItemStack
 
@@ -34,4 +35,9 @@ fun HTItemSlot.insert(stack: ItemStack, action: HTStorageAction, access: HTStora
 fun HTItemSlot.extractItem(amount: Int, action: HTStorageAction, access: HTStorageAccess): ItemStack {
     val resourceIn: HTItemResourceType = this.getResource() ?: return ItemStack.EMPTY
     return this.extract(amount, action, access).let(resourceIn::toStack)
+}
+
+fun HTResourceSlot.Basic<HTItemResourceType>.setStack(stack: ItemStack) {
+    setResource(stack.toResource())
+    setAmount(stack.count)
 }

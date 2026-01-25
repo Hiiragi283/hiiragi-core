@@ -20,6 +20,7 @@ import hiiragi283.core.common.gui.sync.HTBoolSyncPayload
 import hiiragi283.core.common.gui.sync.HTFluidSyncPayload
 import hiiragi283.core.common.gui.sync.HTFractionSyncPayload
 import hiiragi283.core.common.gui.sync.HTIntSyncPayload
+import hiiragi283.core.common.gui.sync.HTItemSyncPayload
 import hiiragi283.core.common.gui.sync.HTLongSyncPayload
 import hiiragi283.core.common.material.HTMaterialManagerImpl
 import hiiragi283.core.common.registry.HTDeferredBlock
@@ -115,6 +116,7 @@ internal object HCMiscRegister {
             helper.register(HTConst.COMMON.toId("long"), HTLongSyncPayload.TYPE)
 
             helper.register(HTConst.MINECRAFT.toId("fluid"), HTFluidSyncPayload.TYPE)
+            helper.register(HTConst.MINECRAFT.toId("item"), HTItemSyncPayload.TYPE)
         }
     }
 }

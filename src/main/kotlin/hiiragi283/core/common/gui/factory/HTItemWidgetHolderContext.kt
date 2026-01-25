@@ -62,7 +62,7 @@ data class HTItemWidgetHolderContext(
         fun create(containerId: Int, inventory: Inventory, buffer: RegistryFriendlyByteBuf): HTWidgetContainerMenu {
             val player: Player = inventory.player
             val hand: InteractionHand? = buffer.readOptional(HAND_CODEC).getOrNull()
-            val stack: ItemStack = VanillaBiCodecs.ITEM_STACK.decode(buffer).getOrThrow()
+            val stack: ItemStack = VanillaBiCodecs.ITEM_STACK_NON_EMPTY.decode(buffer).getOrThrow()
             val item: Item = stack.item
             if (item is Factory) {
                 val context: HTItemWidgetHolderContext = item.createContext(player, hand, stack)
@@ -88,7 +88,7 @@ data class HTItemWidgetHolderContext(
 
     override fun writeClientSideData(menu: AbstractContainerMenu, buffer: RegistryFriendlyByteBuf) {
         buffer.writeOptional(Optional.ofNullable(hand), HAND_CODEC)
-        VanillaBiCodecs.ITEM_STACK.encode(buffer, stack)
+        VanillaBiCodecs.ITEM_STACK_NON_EMPTY.encode(buffer, stack)
     }
 
     //    Factory    //

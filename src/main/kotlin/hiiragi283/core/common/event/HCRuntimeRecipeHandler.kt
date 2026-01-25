@@ -133,6 +133,7 @@ object HCRuntimeRecipeHandler {
             HTShapelessRecipeBuilder.create(output) {
                 ingredients += CommonTagPrefixes.INGOT to key
                 ingredients += HiiragiCoreTags.Items.TOOLS_HAMMER
+                resultStack += plate
                 recipeId suffix "_from_ingot"
             }
         }

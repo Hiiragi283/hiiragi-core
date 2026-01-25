@@ -3,12 +3,12 @@ package hiiragi283.core.common.gui.menu
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.gui.HTContainerItemSlot
 import hiiragi283.core.api.gui.HTSlotHelper
 import hiiragi283.core.api.gui.sync.HTChangeType
 import hiiragi283.core.api.gui.sync.HTSyncableMenu
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
+import hiiragi283.core.common.gui.HTContainerItemSlot
 import hiiragi283.core.common.network.HTUpdateMenuPacket
 import net.minecraft.core.RegistryAccess
 import net.minecraft.server.level.ServerPlayer
@@ -213,8 +213,9 @@ abstract class HTContainerMenu<C>(
                         val changeType: HTChangeType = slot.getChange() ?: continue
                         val payload: HTSyncablePayload = slot.createPayload(access, changeType) ?: continue
                         this[i] = payload
+                        HiiragiCoreAPI.LOGGER.debug("Index: {}, Payload: {}", i, payload)
                     }
-                }.let { PacketDistributor.sendToPlayer(player, it) }
+                }?.let { PacketDistributor.sendToPlayer(player, it) }
         }
     }
 
@@ -238,7 +239,7 @@ abstract class HTContainerMenu<C>(
                         val payload: HTSyncablePayload = slot.createPayload(access, HTChangeType.FULL) ?: continue
                         this[operator.applyAsInt(i)] = payload
                     }
-                }.let { PacketDistributor.sendToPlayer(player, it) }
+                }?.let { PacketDistributor.sendToPlayer(player, it) }
         }
     }
 }

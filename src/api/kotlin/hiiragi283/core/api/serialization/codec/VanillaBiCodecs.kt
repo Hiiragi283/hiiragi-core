@@ -13,7 +13,6 @@ import net.minecraft.core.HolderSet
 import net.minecraft.core.RegistryCodecs
 import net.minecraft.core.UUIDUtil
 import net.minecraft.core.component.DataComponentPatch
-import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.ComponentSerialization
@@ -96,26 +95,28 @@ object VanillaBiCodecs {
     val UUID: BiCodec<ByteBuf, UUID> = BiCodec.of(UUIDUtil.CODEC, UUIDUtil.STREAM_CODEC)
 
     /**
+     * [ItemStack.EMPTY]を受け付けない[ItemStack]の[BiCodec]
+     */
+    @JvmField
+    val ITEM_STACK_NON_EMPTY: BiCodec<RegistryFriendlyByteBuf, ItemStack> = BiCodec.of(ItemStack.CODEC, ItemStack.STREAM_CODEC)
+
+    /**
      * [ItemStack]の[BiCodec]
      */
     @JvmField
-    val ITEM_STACK: BiCodec<RegistryFriendlyByteBuf, ItemStack> = BiCodec.composite(
-        holder(Registries.ITEM).fieldOf(HTConst.ITEM).forGetter(ItemStack::getItemHolder),
-        BiCodecs.NON_NEGATIVE_INT.optionalFieldOf(HTConst.COUNT, 0).forGetter(ItemStack::getCount),
-        COMPONENT_PATCH.forGetter(ItemStack::getComponentsPatch),
-        ::ItemStack,
-    )
+    val ITEM_STACK: BiCodec<RegistryFriendlyByteBuf, ItemStack> = BiCodec.of(ItemStack.OPTIONAL_CODEC, ItemStack.OPTIONAL_STREAM_CODEC)
+
+    /**
+     * [FluidStack.EMPTY]を受け付けない[FluidStack]の[BiCodec]
+     */
+    @JvmField
+    val FLUID_STACK_NON_EMPTY: BiCodec<RegistryFriendlyByteBuf, FluidStack> = BiCodec.of(FluidStack.CODEC, FluidStack.STREAM_CODEC)
 
     /**
      * [FluidStack]の[BiCodec]
      */
     @JvmField
-    val FLUID_STACK: BiCodec<RegistryFriendlyByteBuf, FluidStack> = BiCodec.composite(
-        holder(Registries.FLUID).fieldOf(HTConst.FLUID).forGetter(FluidStack::getFluidHolder),
-        BiCodecs.NON_NEGATIVE_INT.fieldOf(HTConst.AMOUNT).forGetter(FluidStack::getAmount),
-        COMPONENT_PATCH.forGetter(FluidStack::getComponentsPatch),
-        ::FluidStack,
-    )
+    val FLUID_STACK: BiCodec<RegistryFriendlyByteBuf, FluidStack> = BiCodec.of(FluidStack.OPTIONAL_CODEC, FluidStack.OPTIONAL_STREAM_CODEC)
 
     /**
      * [Ingredient]の[BiCodec]

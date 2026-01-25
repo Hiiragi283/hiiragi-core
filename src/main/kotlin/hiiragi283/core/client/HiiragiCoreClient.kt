@@ -7,6 +7,7 @@ import hiiragi283.core.api.mod.HTClientMod
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
+import hiiragi283.core.client.gui.widget.HTEmptyWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTFluidTankWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.common.item.HTChromaticPowderItem
@@ -43,6 +44,7 @@ data object HiiragiCoreClient : HTClientMod() {
 
     override fun registerWidgetRenderer(event: HTRegisterWidgetRendererEvent) {
         event.register(HCWidgetTypes.FLUID_TANK.get(), ::HTFluidTankWidgetRenderer)
+        event.register(HCWidgetTypes.ITEM_SLOT.get(), HTEmptyWidgetRenderer::create)
     }
 
     override fun registerItemColors(event: RegisterColorHandlersEvent.Item) {

@@ -2,6 +2,7 @@ package hiiragi283.core.client.gui.widget
 
 import com.mojang.blaze3d.systems.RenderSystem
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetRenderer
 import hiiragi283.core.api.times
@@ -24,16 +25,17 @@ import java.util.function.Consumer
 abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget>(protected val widget: WIDGET) : HTWidgetRenderer<WIDGET> {
     protected val font: Font = Minecraft.getInstance().font
 
-    final override fun render(
+    override fun render(
+        bounds: HTBounds,
         guiGraphics: GuiGraphics,
         mouseX: Int,
         mouseY: Int,
         partialTick: Float,
     ) {
         // Render sprite
-        renderSprite(guiGraphics)
+        renderSprite(bounds, guiGraphics)
         // Render tooltip
-        if (widget.isHovered(mouseX, mouseY)) {
+        if (bounds.contains(mouseX, mouseY)) {
             guiGraphics.renderComponentTooltip(
                 font,
                 buildList { collectTooltips(this::add, getTooltipFlag()) },
@@ -43,7 +45,7 @@ abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget>(protected val widget: W
         }
     }
 
-    private fun renderSprite(guiGraphics: GuiGraphics) {
+    private fun renderSprite(bounds: HTBounds, guiGraphics: GuiGraphics) {
         if (!shouldRender()) return
         val sprite: TextureAtlasSprite = getSprite() ?: return
         val color: Int = getColor()
@@ -59,7 +61,7 @@ abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget>(protected val widget: W
         RenderSystem.defaultBlendFunc()
         HTSpriteRenderHelper.setShaderColor(guiGraphics, color) {
             RenderSystem.enableBlend()
-            val (x: Int, y: Int, width: Int, height: Int) = widget.getBound()
+            val (x: Int, y: Int, width: Int, height: Int) = bounds
             for (i: Int in (0..(Mth.ceil(fillLevel) / width))) {
                 val subHeight: Float = minOf(width.toFloat(), fillLevel - (width * i))
                 val offsetY: Float = height - width * i - subHeight
@@ -97,7 +99,7 @@ abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget>(protected val widget: W
 
     protected abstract fun getColor(): Int
 
-    protected open fun getScaledLevel(): Fraction = getLevel() * widget.getBound().height
+    protected open fun getScaledLevel(): Fraction = getLevel() * widget.bounds.height
 
     protected abstract fun getLevel(): Fraction
 

@@ -1,6 +1,7 @@
 package hiiragi283.core.api.gui.widget
 
-import net.minecraft.client.gui.components.Renderable
+import hiiragi283.core.api.gui.HTBounds
+import net.minecraft.client.gui.GuiGraphics
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 
@@ -11,7 +12,15 @@ import net.neoforged.api.distmarker.OnlyIn
  * @since 0.8.0
  */
 @OnlyIn(Dist.CLIENT)
-fun interface HTWidgetRenderer<WIDGET : HTWidget> : Renderable {
+fun interface HTWidgetRenderer<WIDGET : HTWidget> {
+    fun render(
+        bounds: HTBounds,
+        guiGraphics: GuiGraphics,
+        mouseX: Int,
+        mouseY: Int,
+        partialTick: Float,
+    )
+
     /**
      * [HTWidget]から[HTWidgetRenderer]を作成するインターフェースです。
      * @author Hiiragi Tsubasa

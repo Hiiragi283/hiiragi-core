@@ -7,11 +7,6 @@ import hiiragi283.core.api.gui.HTBounds
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
-abstract class HTAbstractWidget(
-    val x: Int,
-    val y: Int,
-    val width: Int,
-    val height: Int,
-) : HTWidget {
-    final override fun getBound(): HTBounds = HTBounds(x, y, width, height)
+abstract class HTAbstractWidget(final override val bounds: HTBounds) : HTWidget {
+    constructor(x: Int, y: Int, width: Int, height: Int) : this(HTBounds(x, y, width, height))
 }

@@ -10,6 +10,7 @@ import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
+import hiiragi283.core.api.storage.item.setStack
 import hiiragi283.core.api.storage.item.toResource
 import net.minecraft.world.item.ItemStack
 import java.util.function.BiPredicate

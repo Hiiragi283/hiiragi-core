@@ -1,5 +1,6 @@
 package hiiragi283.core.client.emi
 
+import dev.emi.emi.api.EmiDragDropHandler
 import dev.emi.emi.api.EmiEntrypoint
 import dev.emi.emi.api.EmiRegistry
 import dev.emi.emi.api.stack.Comparison
@@ -8,21 +9,29 @@ import dev.emi.emi.api.stack.EmiStack
 import dev.emi.emi.recipe.EmiSmithingRecipe
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.fluid.createFluidStack
 import hiiragi283.core.api.function.partially1
+import hiiragi283.core.api.gui.HTBounds
+import hiiragi283.core.api.gui.widget.HTGhostWidget
+import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.integration.emi.HTEmiPlugin
 import hiiragi283.core.api.integration.emi.toEmi
 import hiiragi283.core.api.integration.emi.toItemEmi
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
+import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.screens.Screen
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponents
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.component.Unbreakable
+import net.minecraft.world.level.material.Fluid
 
 @EmiEntrypoint
 class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
@@ -50,6 +59,8 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
             HCItems.ALMIGHTY_PICKAXE.asItem(),
             Comparison.compareData { stack: EmiStack -> stack.get(DataComponents.UNBREAKABLE) },
         )
+
+        registry.addGenericDragDropHandler(DragDropHandler)
     }
 
     private fun addCustomRecipes(registry: EmiRegistry) {
@@ -71,5 +82,69 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
                     )
                 }
             }
+    }
+
+    //    Handlers    //
+
+    data object DragDropHandler : EmiDragDropHandler<Screen> {
+        override fun dropStack(
+            screen: Screen,
+            stack: EmiIngredient,
+            x: Int,
+            y: Int,
+        ): Boolean {
+            for ((widget: HTGhostWidget, _) in getWidgets(screen, x, y)) {
+                val ghostConsumer: HTGhostWidget.GhostIngredientConsumer = widget.getGhostConsumer() ?: continue
+                val stack: Any = getFirstStack(ghostConsumer, stack) ?: continue
+                ghostConsumer.accept(stack)
+                return true
+            }
+            return false
+        }
+
+        @JvmStatic
+        private fun getWidgets(screen: Screen, x: Int, y: Int): List<Pair<HTGhostWidget, HTBounds>> = screen
+            .children()
+            .filterIsInstance<HTWidgetContainerScreen.WidgetWrapper<*>>()
+            .mapNotNull { wrapper: HTWidgetContainerScreen.WidgetWrapper<*> ->
+                val widget: HTWidget = wrapper.widget
+                val ghost: HTGhostWidget = widget as? HTGhostWidget ?: return@mapNotNull null
+                val bounds: HTBounds = wrapper.bounds
+                if (!bounds.contains(x, y)) return@mapNotNull null
+                ghost to bounds
+            }
+
+        /**
+         * @see mekanism.client.recipe_viewer.emi.EmiGhostIngredientHandler.getFirstSupportedStack
+         */
+        @JvmStatic
+        private fun getFirstStack(ghostConsumer: HTGhostWidget.GhostIngredientConsumer, ingredient: EmiIngredient): Any? {
+            for (stack: EmiStack in ingredient.emiStacks) {
+                val key: Any = stack.key
+                val rawStack: Any = if (key is Item) {
+                    stack.itemStack
+                } else if (key is Fluid) {
+                    createFluidStack(key, HTConst.DEFAULT_FLUID_AMOUNT, stack.componentChanges)
+                } else {
+                    continue
+                }
+                val stack: Any? = ghostConsumer.supportedTarget(rawStack)
+                if (stack != null) return stack
+            }
+            return null
+        }
+
+        override fun render(
+            screen: Screen,
+            dragged: EmiIngredient,
+            draw: GuiGraphics,
+            mouseX: Int,
+            mouseY: Int,
+            delta: Float,
+        ) {
+            for ((_, bounds: HTBounds) in getWidgets(screen, mouseX, mouseY)) {
+                draw.fill(bounds.left, bounds.top, bounds.right, bounds.bottom, -0x77dd44cd)
+            }
+        }
     }
 }
