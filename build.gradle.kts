@@ -237,6 +237,8 @@ dependencies {
     runtimeOnly(libs.bundles.mods.runtime)
 
     implementation(libs.mek.get().toString() + ":all")
+
+    compileOnly(libs.ldlib) { isTransitive = false }
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -256,7 +258,6 @@ val generateModMetadata: TaskProvider<ProcessResources> = tasks.register("genera
         "kff_version" to kffVersion,
         "kff_version_range" to "[$kffVersion,)",
         "loader_version_range" to "[1,)",
-        "ldlib2_version_range" to "[${libs.versions.ldlib.get()},)",
         "mod_id" to modId,
         "mod_name" to "Hiiragi Core",
         "mod_license" to "MPL-2.0",

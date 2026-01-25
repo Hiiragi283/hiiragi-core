@@ -1,9 +1,11 @@
 package hiiragi283.core.common.gui.widget
 
+import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.gui.widget.HTAbstractWidget
-import hiiragi283.core.api.gui.widget.HTGhostWidget
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.gui.widget.HTWidgetType
+import hiiragi283.core.api.integration.emi.widget.HTGhostWidget
+import hiiragi283.core.api.integration.emi.widget.HTIngredientWidget
 import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.fluid.HTFluidView
 import hiiragi283.core.api.storage.fluid.getFluidStack
@@ -19,8 +21,11 @@ abstract class HTFluidWidget(
     width: Int,
     height: Int,
 ) : HTAbstractWidget(x, y, width, height),
+    HTIngredientWidget,
     HTFluidView by tank {
     var backgroundType: HTBackgroundType = HTBackgroundType.NONE
+
+    override fun getIngredient(): FluidStack = this.getFluidStack()
 
     class TankWidget(tank: HTFluidTank, x: Int, y: Int) : HTFluidWidget(tank, x, y, 16, 18 * 3 - 2) {
         override fun getType(): HTWidgetType<*> = HCWidgetTypes.FLUID_TANK.get()

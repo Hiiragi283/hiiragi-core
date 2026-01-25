@@ -3,8 +3,6 @@ package hiiragi283.core.api.integration.emi
 import dev.emi.emi.api.neoforge.NeoForgeEmiStack
 import dev.emi.emi.api.stack.EmiIngredient
 import dev.emi.emi.api.stack.EmiStack
-import dev.emi.emi.api.widget.Bounds
-import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
@@ -29,10 +27,6 @@ import net.minecraft.world.item.Items
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
-
-fun HTBounds.toEmi(): Bounds = Bounds(this.x, this.y, this.width, this.height)
-
-fun Bounds.toHC(): HTBounds = HTBounds(this.x, this.y, this.width, this.height)
 
 //    EmiStack    //
 

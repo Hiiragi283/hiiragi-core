@@ -20,19 +20,15 @@ object HCEmiRecipeCategories {
     ): HTEmiRecipeCategory = HTEmiRecipeCategory.create(Bounds(0, 0, width, height), hasText, id, *workStations)
 
     @JvmStatic
-    private fun <T> create(
-        recipeType: T,
-        width: Int,
-        height: Int,
-        vararg workStations: ItemLike,
-    ): HTEmiRecipeCategory where T : HTHasText, T : HTIdLike = create(recipeType, recipeType.getId(), width, height, *workStations)
+    private fun <T> create(recipeType: T, vararg workStations: ItemLike): HTEmiRecipeCategory where T : HTHasText, T : HTIdLike =
+        create(recipeType, recipeType.getId(), 18 * 4 + 9, 18 * 2, *workStations)
 
     @JvmField
-    val ANVIL_CRUSHING: HTEmiRecipeCategory = create(HCRecipeTypes.ANVIL_CRUSHING, 18 * 4, 18, Items.ANVIL)
+    val ANVIL_CRUSHING: HTEmiRecipeCategory = create(HCRecipeTypes.ANVIL_CRUSHING, Items.ANVIL)
 
     @JvmField
-    val CHARGING: HTEmiRecipeCategory = create(HCRecipeTypes.CHARGING, 18 * 4, 18, Items.LIGHTNING_ROD)
+    val CHARGING: HTEmiRecipeCategory = create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD)
 
     @JvmField
-    val EXPLODING: HTEmiRecipeCategory = create(HCRecipeTypes.EXPLODING, 18 * 7, 18, Items.TNT)
+    val EXPLODING: HTEmiRecipeCategory = create(HCRecipeTypes.EXPLODING, Items.TNT)
 }

@@ -3,20 +3,23 @@ package hiiragi283.core.client.emi
 import dev.emi.emi.api.EmiDragDropHandler
 import dev.emi.emi.api.EmiEntrypoint
 import dev.emi.emi.api.EmiRegistry
+import dev.emi.emi.api.EmiStackProvider
 import dev.emi.emi.api.stack.Comparison
 import dev.emi.emi.api.stack.EmiIngredient
 import dev.emi.emi.api.stack.EmiStack
+import dev.emi.emi.api.stack.EmiStackInteraction
 import dev.emi.emi.recipe.EmiSmithingRecipe
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.fluid.createFluidStack
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.gui.HTBounds
-import hiiragi283.core.api.gui.widget.HTGhostWidget
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.integration.emi.HTEmiPlugin
 import hiiragi283.core.api.integration.emi.toEmi
 import hiiragi283.core.api.integration.emi.toItemEmi
+import hiiragi283.core.api.integration.emi.widget.HTGhostWidget
+import hiiragi283.core.api.integration.emi.widget.HTIngredientWidget
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
@@ -30,8 +33,10 @@ import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponents
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.component.Unbreakable
 import net.minecraft.world.level.material.Fluid
+import net.neoforged.neoforge.fluids.FluidStack
 
 @EmiEntrypoint
 class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
@@ -46,9 +51,9 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
         // Recipes
         addCustomRecipes(registry)
 
-        addRegistryRecipes(registry, HCRecipeTypes.ANVIL_CRUSHING, HTSingleItemEmiRecipe.Companion::crushing)
-        addRegistryRecipes(registry, HCRecipeTypes.CHARGING, HTSingleItemEmiRecipe.Companion::charging)
-        addRegistryRecipes(registry, HCRecipeTypes.EXPLODING, ::HCExplodingEmiRecipe)
+        addRegistryRecipes(registry, HCRecipeTypes.ANVIL_CRUSHING, HCSingleItemEmiRecipe.Companion::crushing)
+        addRegistryRecipes(registry, HCRecipeTypes.CHARGING, HCSingleItemEmiRecipe.Companion::charging)
+        addRegistryRecipes(registry, HCRecipeTypes.EXPLODING, HCSingleItemEmiRecipe.Companion::exploding)
 
         // Misc
         registry.setDefaultComparison(
@@ -61,6 +66,7 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
         )
 
         registry.addGenericDragDropHandler(DragDropHandler)
+        registry.addGenericStackProvider(StackProvider)
     }
 
     private fun addCustomRecipes(registry: EmiRegistry) {
@@ -86,6 +92,13 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
 
     //    Handlers    //
 
+    companion object {
+        @JvmStatic
+        private fun getWidgets(screen: Screen): List<HTWidgetContainerScreen.WidgetWrapper<*>> = screen
+            .children()
+            .filterIsInstance<HTWidgetContainerScreen.WidgetWrapper<*>>()
+    }
+
     data object DragDropHandler : EmiDragDropHandler<Screen> {
         override fun dropStack(
             screen: Screen,
@@ -93,27 +106,18 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
             x: Int,
             y: Int,
         ): Boolean {
-            for ((widget: HTGhostWidget, _) in getWidgets(screen, x, y)) {
-                val ghostConsumer: HTGhostWidget.GhostIngredientConsumer = widget.getGhostConsumer() ?: continue
-                val stack: Any = getFirstStack(ghostConsumer, stack) ?: continue
-                ghostConsumer.accept(stack)
-                return true
+            for (wrapper: HTWidgetContainerScreen.WidgetWrapper<*> in getWidgets(screen)) {
+                val widget: HTWidget = wrapper.widget
+                if (wrapper.bounds.contains(x, y) && widget is HTGhostWidget) {
+                    val ghostConsumer: HTGhostWidget.GhostIngredientConsumer = widget.getGhostConsumer() ?: continue
+                    val stack: Any = getFirstStack(ghostConsumer, stack) ?: continue
+                    ghostConsumer.accept(stack)
+                    return true
+                }
             }
             return false
         }
-
-        @JvmStatic
-        private fun getWidgets(screen: Screen, x: Int, y: Int): List<Pair<HTGhostWidget, HTBounds>> = screen
-            .children()
-            .filterIsInstance<HTWidgetContainerScreen.WidgetWrapper<*>>()
-            .mapNotNull { wrapper: HTWidgetContainerScreen.WidgetWrapper<*> ->
-                val widget: HTWidget = wrapper.widget
-                val ghost: HTGhostWidget = widget as? HTGhostWidget ?: return@mapNotNull null
-                val bounds: HTBounds = wrapper.bounds
-                if (!bounds.contains(x, y)) return@mapNotNull null
-                ghost to bounds
-            }
-
+        
         /**
          * @see mekanism.client.recipe_viewer.emi.EmiGhostIngredientHandler.getFirstSupportedStack
          */
@@ -142,9 +146,34 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
             mouseY: Int,
             delta: Float,
         ) {
-            for ((_, bounds: HTBounds) in getWidgets(screen, mouseX, mouseY)) {
-                draw.fill(bounds.left, bounds.top, bounds.right, bounds.bottom, -0x77dd44cd)
+            for (wrapper: HTWidgetContainerScreen.WidgetWrapper<*> in getWidgets(screen)) {
+                val widget: HTWidget = wrapper.widget
+                val bounds: HTBounds = wrapper.bounds
+                if (bounds.contains(mouseX, mouseY) && widget is HTGhostWidget) {
+                    draw.fill(bounds.left, bounds.top, bounds.right, bounds.bottom, -0x77dd44cd)
+                }
             }
+        }
+    }
+
+    data object StackProvider : EmiStackProvider<Screen> {
+        override fun getStackAt(screen: Screen, x: Int, y: Int): EmiStackInteraction {
+            for (wrapper: HTWidgetContainerScreen.WidgetWrapper<*> in getWidgets(screen)) {
+                if (wrapper.bounds.contains(x, y)) {
+                    val widget: HTWidget = wrapper.widget
+                    if (widget is HTIngredientWidget) {
+                        val ingredient: Any = widget.getIngredient() ?: continue
+                        val stack: EmiStack = when (ingredient) {
+                            is ItemStack -> ingredient.toEmi()
+                            is FluidStack -> ingredient.toEmi()
+                            else -> continue
+                        }
+                        return EmiStackInteraction(stack, null, false)
+                    }
+                }
+            }
+
+            return EmiStackInteraction.EMPTY
         }
     }
 }

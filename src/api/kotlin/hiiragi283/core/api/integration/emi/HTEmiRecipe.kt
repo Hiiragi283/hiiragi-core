@@ -2,22 +2,24 @@ package hiiragi283.core.api.integration.emi
 
 import dev.emi.emi.api.recipe.EmiRecipe
 import dev.emi.emi.api.recipe.EmiRecipeCategory
+import dev.emi.emi.api.render.EmiTexture
 import dev.emi.emi.api.stack.EmiIngredient
 import dev.emi.emi.api.stack.EmiStack
 import dev.emi.emi.api.widget.Bounds
 import dev.emi.emi.api.widget.SlotWidget
+import dev.emi.emi.api.widget.TextureWidget
 import dev.emi.emi.api.widget.WidgetHolder
+import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.text.HTCommonTranslation
 import net.minecraft.client.gui.components.events.AbstractContainerEventHandler
 import net.minecraft.client.gui.components.events.GuiEventListener
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.RecipeHolder
-import java.util.Random
-import java.util.function.Function
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[EmiRecipe]の抽象クラスです。
@@ -189,47 +191,51 @@ abstract class HTEmiRecipe<RECIPE : Any>(
      */
     fun getPosition(index: Double): Int = (index * 18).toInt()
 
+    fun WidgetHolder.addArrow(x: Int, y: Int): TextureWidget = addFillingArrow(x, y, 2000)
+
+    fun WidgetHolder.addArrow(x: Int, y: Int, time: Int): TextureWidget = addFillingArrow(x, y, 50 * time)
+        .tooltipText(listOf(HTCommonTranslation.SECONDS.translate(time / 20.0f, time)))
+
+    fun WidgetHolder.addBurning(x: Int, y: Int, time: Int) {
+        addAnimatedTexture(
+            EmiTexture.FULL_FLAME,
+            x + 2,
+            y + 2,
+            1000 * time / 20,
+            false,
+            true,
+            true,
+        )
+    }
+
+    fun WidgetHolder.addPlus(x: Int, y: Int): TextureWidget = addTexture(EmiTexture.PLUS, x + 3, y + 3)
+
+    fun WidgetHolder.setShapeless(x: Int, y: Int): TextureWidget = addTexture(EmiTexture.SHAPELESS, x + 1, y)
+
     /**
      * このレシピに材料スロットを追加します。
-     * @param index 材料のインデックス
+     * @param ingredient 材料のインスタンス
      * @param x x軸方向の座標
      * @param y y軸方向の座標
-     * @since 0.5.0
+     * @param type スロットの種類
+     * @since 0.8.0
      */
-    fun WidgetHolder.addInput(index: Int, x: Int, y: Int): SlotWidget {
-        val input: EmiIngredient = input(index)
-        return addSlot(input, x, y).drawBack(false)
-    }
-
-    /**
-     * このレシピに触媒スロットを追加します。
-     * @param index 触媒のインデックス
-     * @param x x軸方向の座標
-     * @param y y軸方向の座標
-     */
-    fun WidgetHolder.addCatalyst(index: Int, x: Int, y: Int): SlotWidget {
-        val catalyst: EmiIngredient = catalyst(index)
-        return addSlot(catalyst, x, y).catalyst(!catalyst.isEmpty).drawBack(false)
-    }
-
-    /**
-     * このレシピに完成品スロットを追加します。
-     * @param index 触媒のインデックス
-     * @param x x軸方向の座標
-     * @param y y軸方向の座標
-     * @param large スロットを大型で表示するかどうか
-     * @param drawBack スロットの背景を描画するかどうか
-     */
-    fun WidgetHolder.addOutput(
-        index: Int,
+    fun WidgetHolder.addSlot(
+        ingredient: EmiIngredient,
         x: Int,
         y: Int,
-        large: Boolean = false,
-        drawBack: Boolean = false,
-    ): SlotWidget = when {
-        large -> addSlot(output(index), x - 4, y - 4).large(true)
-        else -> addSlot(output(index), x, y)
-    }.recipeContext(this@HTEmiRecipe).drawBack(drawBack)
+        type: HTBackgroundType,
+    ): SlotWidget {
+        addTexture(HTEmiTextures.SLOT_TEXTURES[type]!!, x, y)
+        val slot: SlotWidget = addSlot(ingredient, x, y).drawBack(false)
+        if (type == HTBackgroundType.NONE) {
+            slot.catalyst(true)
+        }
+        if (type.isOutput) {
+            slot.recipeContext(this@HTEmiRecipe)
+        }
+        return slot
+    }
 
     /**
      * このレシピに液体タンクを追加します。
@@ -243,27 +249,19 @@ abstract class HTEmiRecipe<RECIPE : Any>(
         ingredient: EmiIngredient,
         x: Int,
         capacity: Int,
+        type: HTBackgroundType,
         y: Int = getPosition(0),
-    ): SlotWidget = addTank(ingredient, x, y, 18, 18 * 3, capacity).drawBack(false)
-
-    /**
-     * このレシピに動的な完成品スロットを追加します。
-     * @param factory 乱数からプレビューを生成するブロック
-     * @param unique 多分識別用のユニークなIDな気がする
-     * @param x x軸方向の座標
-     * @param y y軸方向の座標
-     * @param large スロットを大型で表示するかどうか
-     * @param drawBack スロットの背景を描画するかどうか
-     */
-    fun WidgetHolder.addGeneratedOutput(
-        factory: Function<Random, EmiIngredient>,
-        unique: Int,
-        x: Int,
-        y: Int,
-        large: Boolean = false,
-        drawBack: Boolean = true,
-    ): SlotWidget = when {
-        large -> addGeneratedSlot(factory, unique, x - 4, y - 4).large(true)
-        else -> addGeneratedSlot(factory, unique, x, y)
-    }.recipeContext(this@HTEmiRecipe).drawBack(drawBack)
+    ): SlotWidget {
+        val width = 16
+        val height: Int = 18 * 3 - 2
+        addTexture(HTEmiTextures.TANK_TEXTURES[type]!!, x, y)
+        val slot: SlotWidget = addTank(ingredient, x, y, 18, 18 * 3, capacity).drawBack(false)
+        if (type == HTBackgroundType.NONE) {
+            slot.catalyst(true)
+        }
+        if (type.isOutput) {
+            slot.recipeContext(this@HTEmiRecipe)
+        }
+        return slot
+    }
 }

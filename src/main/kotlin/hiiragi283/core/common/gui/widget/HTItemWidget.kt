@@ -1,10 +1,12 @@
 package hiiragi283.core.common.gui.widget
 
+import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTAbstractWidget
-import hiiragi283.core.api.gui.widget.HTGhostWidget
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.gui.widget.HTWidgetType
+import hiiragi283.core.api.integration.emi.widget.HTGhostWidget
+import hiiragi283.core.api.integration.emi.widget.HTIngredientWidget
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.HTItemView
 import hiiragi283.core.api.storage.item.getItemStack
@@ -14,11 +16,15 @@ import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 import java.util.function.Consumer
 
-abstract class HTItemWidget(bounds: HTBounds) : HTAbstractWidget(bounds) {
+abstract class HTItemWidget(bounds: HTBounds) :
+    HTAbstractWidget(bounds),
+    HTIngredientWidget {
     var backgroundType: HTBackgroundType = HTBackgroundType.NONE
 
     class SlotWidget(val slot: Slot) : HTItemWidget(HTBounds.createSlot(slot.x, slot.y)) {
         override fun getType(): HTWidgetType<*> = HCWidgetTypes.ITEM_SLOT.get()
+
+        override fun getIngredient(): ItemStack = slot.item
     }
 
     class StackWidget(
@@ -42,6 +48,8 @@ abstract class HTItemWidget(bounds: HTBounds) : HTAbstractWidget(bounds) {
         override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int) {
             syncableSlot?.asItemStack = ItemStack.EMPTY
         }
+
+        override fun getIngredient(): ItemStack = this.getItemStack()
 
         //    HTGhostWidget    //
 
