@@ -1,6 +1,6 @@
 package hiiragi283.core.common.material
 
-import com.mojang.logging.LogUtils
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.event.HTMaterialPropertyEvent
 import hiiragi283.core.api.material.HTMaterialKey
@@ -9,15 +9,11 @@ import hiiragi283.core.api.property.HTBasicPropertyMap
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.common.HiiragiCoreAccessImpl
 import net.neoforged.fml.ModLoader
-import org.slf4j.Logger
 
 internal class HTMaterialManagerImpl(propertyMapMap: Map<HTMaterialKey, HTPropertyMap>) :
     HTMaterialManager,
     Map<HTMaterialKey, HTPropertyMap> by propertyMapMap {
     companion object {
-        @JvmField
-        val LOGGER: Logger = LogUtils.getLogger()
-
         @JvmStatic
         internal fun gatherAttributes() {
             val builderMap: MutableMap<HTMaterialKey, HTPropertyMap.Mutable> = mutableMapOf()
@@ -26,7 +22,7 @@ internal class HTMaterialManagerImpl(propertyMapMap: Map<HTMaterialKey, HTProper
             )
             (HiiragiCoreAccess.INSTANCE as HiiragiCoreAccessImpl).materialManager =
                 builderMap.filterValues(HTPropertyMap::isNotEmpty).let(::HTMaterialManagerImpl)
-            LOGGER.info("Gathered Material Attributes!")
+            HiiragiCoreAPI.LOGGER.info("Gathered Material Attributes!")
         }
     }
 }

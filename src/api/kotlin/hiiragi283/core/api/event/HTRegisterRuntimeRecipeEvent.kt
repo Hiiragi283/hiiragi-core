@@ -1,6 +1,6 @@
 package hiiragi283.core.api.event
 
-import com.mojang.logging.LogUtils
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.creator.HTFluidResultCreator
 import hiiragi283.core.api.data.recipe.creator.HTIngredientCreator
@@ -27,7 +27,6 @@ import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeManager
 import net.neoforged.bus.api.Event
 import net.neoforged.neoforge.common.conditions.ICondition
-import org.slf4j.Logger
 import java.util.function.Consumer
 
 /**
@@ -38,11 +37,6 @@ class HTRegisterRuntimeRecipeEvent(
     val recipeManager: RecipeManager,
     private val consumer: Consumer<RecipeHolder<*>>,
 ) : Event() {
-    companion object {
-        @JvmField
-        val LOGGER: Logger = LogUtils.getLogger()
-    }
-
     val output: RecipeOutput = object : RecipeOutput {
         override fun accept(
             id: ResourceLocation,
@@ -52,7 +46,7 @@ class HTRegisterRuntimeRecipeEvent(
         ) {
             val id1: ResourceLocation = id.withPrefix("runtime/")
             consumer.accept(RecipeHolder(id1, recipe))
-            LOGGER.debug("Added runtime recipe {}", id1)
+            HiiragiCoreAPI.LOGGER.debug("Added runtime recipe {}", id1)
         }
 
         override fun advancement(): Advancement.Builder = Advancement.Builder.recipeAdvancement()
@@ -74,7 +68,7 @@ class HTRegisterRuntimeRecipeEvent(
 
     fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): Holder<T>? = getHolderResult(tagKey)
         .mapOrElse(identity()) { message: Component ->
-            if (printLog) LOGGER.warn(message.string)
+            if (printLog) HiiragiCoreAPI.LOGGER.warn(message.string)
             null
         }
 

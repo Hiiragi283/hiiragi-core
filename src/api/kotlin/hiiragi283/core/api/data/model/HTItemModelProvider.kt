@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data.model
 
-import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
@@ -17,7 +16,6 @@ import net.minecraft.resources.ResourceLocation
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder
-import org.slf4j.Logger
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[ItemModelBuilder]の拡張クラスです。
@@ -26,11 +24,6 @@ import org.slf4j.Logger
  */
 abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
     ItemModelProvider(context.output, modId, context.fileHelper) {
-    companion object {
-        @JvmField
-        val LOGGER: Logger = LogUtils.getLogger()
-    }
-
     protected val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
 
     //    Extensions    //
@@ -54,7 +47,7 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
         if (existingFileHelper.exists(id, TEXTURE)) {
             action(item, id)
         } else {
-            LOGGER.debug("Missing texture {} for {}", id, item.getId())
+            HiiragiCoreAPI.LOGGER.debug("Missing texture {} for {}", id, item.getId())
         }
     }
 

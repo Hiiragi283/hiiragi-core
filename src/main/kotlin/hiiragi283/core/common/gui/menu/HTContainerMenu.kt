@@ -2,7 +2,7 @@ package hiiragi283.core.common.gui.menu
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
-import com.mojang.logging.LogUtils
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTContainerItemSlot
 import hiiragi283.core.api.gui.HTSlotHelper
 import hiiragi283.core.api.gui.sync.HTChangeType
@@ -19,7 +19,6 @@ import net.minecraft.world.inventory.MenuType
 import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.network.PacketDistributor
-import org.slf4j.Logger
 import java.util.function.IntUnaryOperator
 import kotlin.math.min
 
@@ -36,11 +35,6 @@ abstract class HTContainerMenu<C>(
     val context: C,
 ) : AbstractContainerMenu(menuType, containerId),
     HTSyncableMenu {
-    companion object {
-        @JvmField
-        val LOGGER: Logger = LogUtils.getLogger()
-    }
-
     final override fun quickMoveStack(player: Player, index: Int): ItemStack {
         var result: ItemStack = ItemStack.EMPTY
         val slotIn: Slot = slots.getOrNull(index) ?: return result
@@ -101,7 +95,7 @@ abstract class HTContainerMenu<C>(
     override fun addSlot(slot: Slot): Slot {
         if (slot is HTContainerItemSlot) {
             slotMap.put(slot.slotType, slotCount)
-            LOGGER.info("${slot.slotType} slot: $slotCount")
+            HiiragiCoreAPI.LOGGER.info("${slot.slotType} slot: $slotCount")
         }
         slotCount++
         return super.addSlot(slot)
@@ -111,13 +105,13 @@ abstract class HTContainerMenu<C>(
         // hotbar
         for (index: Int in 0..8) {
             hotBarSlots.add(slotCount)
-            LOGGER.debug("Hotbar slot: $slotCount")
+            HiiragiCoreAPI.LOGGER.debug("Hotbar slot: $slotCount")
             addSlot(Slot(inventory, index, HTSlotHelper.getSlotPosX(index), HTSlotHelper.getSlotPosY(7) - 2 + yOffset))
         }
         // inventory
         for (index: Int in 0..26) {
             inventorySlots.add(slotCount)
-            LOGGER.debug("Inventory slot: $slotCount")
+            HiiragiCoreAPI.LOGGER.debug("Inventory slot: $slotCount")
             addSlot(
                 Slot(
                     inventory,

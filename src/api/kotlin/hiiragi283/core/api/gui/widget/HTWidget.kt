@@ -23,6 +23,8 @@ interface HTWidget {
      */
     fun isHovered(mouseX: Int, mouseY: Int): Boolean = getBound().contains(mouseX, mouseY)
 
+    fun setupHolder(widgetHolder: HTWidgetHolder) {}
+
     /**
      * このウィジェットをクリックした時に呼び出されます。
      */

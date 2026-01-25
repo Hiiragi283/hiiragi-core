@@ -1,11 +1,11 @@
 package hiiragi283.core.api.integration.emi
 
-import com.mojang.logging.LogUtils
 import dev.emi.emi.EmiPort
 import dev.emi.emi.api.EmiPlugin
 import dev.emi.emi.api.EmiRegistry
 import dev.emi.emi.api.recipe.EmiRecipe
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.registry.HTHolderLike
@@ -17,7 +17,6 @@ import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.level.material.Fluid
 import net.minecraft.world.level.material.Fluids
-import org.slf4j.Logger
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[EmiPlugin]の抽象クラスです。
@@ -27,9 +26,6 @@ import org.slf4j.Logger
  */
 abstract class HTEmiPlugin(protected val modId: String) : EmiPlugin {
     companion object {
-        @JvmField
-        val LOGGER: Logger = LogUtils.getLogger()
-
         /**
          * [アイテム][Item]のレジストリです。
          */
@@ -61,7 +57,7 @@ abstract class HTEmiPlugin(protected val modId: String) : EmiPlugin {
      * レシピが登録されなかったときにログを出力します。
      */
     protected fun skipRecipe(id: ResourceLocation) {
-        LOGGER.warn("Skipped recipe for EMI registration: $id")
+        HiiragiCoreAPI.LOGGER.warn("Skipped recipe for EMI registration: $id")
     }
 
     /**
@@ -71,7 +67,7 @@ abstract class HTEmiPlugin(protected val modId: String) : EmiPlugin {
         runCatching {
             registry.addRecipe(factory(id))
         }.onFailure { throwable: Throwable ->
-            LOGGER.warn("Exception thrown when parsing vanilla recipe: $id", throwable)
+            HiiragiCoreAPI.LOGGER.warn("Exception thrown when parsing vanilla recipe: $id", throwable)
         }
     }
 

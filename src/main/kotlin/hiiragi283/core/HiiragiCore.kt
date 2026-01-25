@@ -1,6 +1,5 @@
 package hiiragi283.core
 
-import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HCRegistries
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.mod.HTCommonMod
@@ -27,13 +26,9 @@ import net.neoforged.fml.common.Mod
 import net.neoforged.fml.config.ModConfig
 import net.neoforged.neoforge.network.registration.PayloadRegistrar
 import net.neoforged.neoforge.registries.NewRegistryEvent
-import org.slf4j.Logger
 
 @Mod(HiiragiCoreAPI.MOD_ID)
 data object HiiragiCore : HTCommonMod() {
-    @JvmStatic
-    private val LOGGER: Logger = LogUtils.getLogger()
-
     override fun initialize(eventBus: IEventBus, container: ModContainer) {
         eventBus.addListener(HCMiscRegister::register)
 
@@ -54,20 +49,16 @@ data object HiiragiCore : HTCommonMod() {
 
         container.registerConfig(ModConfig.Type.COMMON, HCConfig.COMMON_SPEC)
 
-        LOGGER.info("Hiiragi-Core loaded")
+        HiiragiCoreAPI.LOGGER.info("Hiiragi-Core loaded")
     }
 
     override fun registerRegistries(event: NewRegistryEvent) {
         event.register(HCRegistries.SLOT_TYPE)
         event.register(HCRegistries.WIDGET_TYPE)
-
-        LOGGER.info("Registered new registries")
     }
 
     override fun registerPayload(registrar: PayloadRegistrar) {
         registrar.playToClient(HTUpdateBlockEntityPacket.TYPE, HTUpdateBlockEntityPacket.STREAM_CODEC, HTPayloadHandlers::handleS2C)
         registrar.playBidirectional(HTUpdateMenuPacket.TYPE, HTUpdateMenuPacket.STREAM_CODEC, HTPayloadHandlers::handleBoth)
-
-        LOGGER.info("Registered payload handlers")
     }
 }

@@ -1,6 +1,7 @@
 package hiiragi283.core.api.gui.widget
 
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
+import net.minecraft.world.inventory.Slot
 
 /**
  * [HTWidget]を管理するインターフェースです。
@@ -17,6 +18,8 @@ interface HTWidgetHolder {
     operator fun <WIDGET : HTWidget> plusAssign(widget: WIDGET) {
         this.addWidget(widget)
     }
+
+    fun <SLOT : Slot> addSlot(slot: SLOT): SLOT
 
     /**
      * @see mekanism.common.inventory.container.MekanismContainer.track

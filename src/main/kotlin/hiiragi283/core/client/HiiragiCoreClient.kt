@@ -1,18 +1,19 @@
 package hiiragi283.core.client
 
-import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTRegisterWidgetRendererEvent
 import hiiragi283.core.api.mod.HTClientMod
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.gui.widget.HTFluidTankWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.common.item.HTChromaticPowderItem
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
+import hiiragi283.core.setup.HCMenuTypes
 import hiiragi283.core.setup.HCWidgetTypes
 import net.minecraft.client.renderer.entity.ThrownItemRenderer
 import net.minecraft.world.item.ItemStack
@@ -24,19 +25,16 @@ import net.neoforged.fml.common.Mod
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.neoforge.client.event.EntityRenderersEvent
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent
 import net.neoforged.neoforge.client.model.DynamicFluidContainerModel
-import org.slf4j.Logger
 import java.awt.Color
 
 @Mod(value = HiiragiCoreAPI.MOD_ID, dist = [Dist.CLIENT])
 data object HiiragiCoreClient : HTClientMod() {
-    @JvmStatic
-    private val LOGGER: Logger = LogUtils.getLogger()
-
     override fun initialize(eventBus: IEventBus, container: ModContainer) {
         configScreen(container)
-        LOGGER.info("Hiiragi-Core loaded on client side")
+        HiiragiCoreAPI.LOGGER.info("Hiiragi-Core loaded on client side")
     }
 
     override fun clientSetup(event: FMLClientSetupEvent) {
@@ -84,8 +82,11 @@ data object HiiragiCoreClient : HTClientMod() {
         event.molten(HCFluids.MOLTEN_CRIMSON_CRYSTAL, Color(0x993333))
         event.molten(HCFluids.MOLTEN_WARPED_CRYSTAL, Color(0x339999))
         event.molten(HCFluids.MOLTEN_ELDRITCH, Color(0x6633cc))
+    }
 
-        LOGGER.info("Registered client extensions!")
+    override fun registerScreens(event: RegisterMenuScreensEvent) {
+        event.register(HCMenuTypes.BLOCK.get(), ::HTWidgetContainerScreen)
+        event.register(HCMenuTypes.ITEM.get(), ::HTWidgetContainerScreen)
     }
 
     override fun registerEntityRenderer(event: EntityRenderersEvent.RegisterRenderers) {

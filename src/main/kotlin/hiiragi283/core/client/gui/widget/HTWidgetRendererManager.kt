@@ -1,6 +1,6 @@
 package hiiragi283.core.client.gui.widget
 
-import com.mojang.logging.LogUtils
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTRegisterWidgetRendererEvent
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetRenderer
@@ -15,9 +15,6 @@ import net.neoforged.fml.ModLoader
 @OnlyIn(Dist.CLIENT)
 object HTWidgetRendererManager {
     @JvmStatic
-    private val LOGGER = LogUtils.getLogger()
-
-    @JvmStatic
     private lateinit var factories: Map<HTWidgetType<*>, HTWidgetRenderer.Factory<*, *>>
 
     @JvmStatic
@@ -25,7 +22,7 @@ object HTWidgetRendererManager {
         val map: MutableMap<HTWidgetType<*>, HTWidgetRenderer.Factory<*, *>> = hashMapOf()
         HTRegisterWidgetRendererEvent(map::put).let(ModLoader::postEvent)
         this.factories = map
-        LOGGER.info("Initialized Widget Renderer Manager")
+        HiiragiCoreAPI.LOGGER.info("Initialized Widget Renderer Manager")
     }
 
     @Suppress("UNCHECKED_CAST")

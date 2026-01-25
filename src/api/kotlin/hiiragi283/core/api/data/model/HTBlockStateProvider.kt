@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data.model
 
-import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
@@ -26,7 +25,6 @@ import net.neoforged.neoforge.client.model.generators.ModelFile
 import net.neoforged.neoforge.client.model.generators.ModelProvider
 import net.neoforged.neoforge.client.model.generators.ModelProvider.TEXTURE
 import net.neoforged.neoforge.common.data.ExistingFileHelper
-import org.slf4j.Logger
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[BlockStateProvider]の拡張クラスです。
@@ -35,11 +33,6 @@ import org.slf4j.Logger
  */
 abstract class HTBlockStateProvider(protected val modId: String, context: HTDataGenContext) :
     BlockStateProvider(context.output, modId, context.fileHelper) {
-    companion object {
-        @JvmField
-        val LOGGER: Logger = LogUtils.getLogger()
-    }
-
     protected val fileHelper: ExistingFileHelper = context.fileHelper
     protected val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
 
@@ -74,7 +67,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
         if (fileHelper.exists(id, TEXTURE)) {
             action(block, id)
         } else {
-            LOGGER.debug("Missing texture {} for {}", id, block.getId())
+            HiiragiCoreAPI.LOGGER.debug("Missing texture {} for {}", id, block.getId())
         }
     }
 

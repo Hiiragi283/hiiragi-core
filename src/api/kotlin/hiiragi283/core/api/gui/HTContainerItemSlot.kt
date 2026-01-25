@@ -17,7 +17,7 @@ import java.util.function.Consumer
 import kotlin.math.min
 
 /**
- * [hiiragi283.core.api.storage.item.HTItemSlot]に基づいた[net.minecraft.world.inventory.Slot]の実装
+ * [HTItemSlot]に基づいた[Slot]の実装
  * @see mekanism.common.inventory.container.slot.InventoryContainerSlot
  */
 open class HTContainerItemSlot(

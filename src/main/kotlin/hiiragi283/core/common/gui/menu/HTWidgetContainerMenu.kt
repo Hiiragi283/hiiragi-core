@@ -7,6 +7,7 @@ import hiiragi283.core.common.gui.factory.HTWidgetHolderContext
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.MenuType
+import net.minecraft.world.inventory.Slot
 
 /**
  * @see com.lowdragmc.lowdraglib2.gui.holder.ModularUIContainerMenu
@@ -35,11 +36,17 @@ class HTWidgetContainerMenu(
 
         override fun <WIDGET : HTWidget> addWidget(widget: WIDGET): WIDGET {
             _widgets += widget
+            widget.setupHolder(this)
             return widget
         }
 
+        override fun <SLOT : Slot> addSlot(slot: SLOT): SLOT {
+            this@HTWidgetContainerMenu.addSlot(slot)
+            return slot
+        }
+
         override fun track(slot: HTSyncableSlot) {
-            trackedSlots += slot
+            this@HTWidgetContainerMenu.trackedSlots += slot
         }
     }
 }
