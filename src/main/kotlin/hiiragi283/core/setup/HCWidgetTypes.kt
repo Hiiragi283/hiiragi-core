@@ -1,6 +1,7 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.common.gui.widget.HTFluidStackWidget
 import hiiragi283.core.common.gui.widget.HTFluidTankWidget
 import hiiragi283.core.common.gui.widget.HTItemSlotWidget
 import hiiragi283.core.common.gui.widget.HTItemStackWidget
@@ -10,6 +11,9 @@ import hiiragi283.core.common.registry.register.HTDeferredWidgetTypeRegister
 object HCWidgetTypes {
     @JvmField
     val REGISTER = HTDeferredWidgetTypeRegister(HiiragiCoreAPI.MOD_ID)
+
+    @JvmField
+    val FLUID_STACK: HTDeferredWidgetType<HTFluidStackWidget> = REGISTER.registerType("fluid_stack")
 
     @JvmField
     val FLUID_TANK: HTDeferredWidgetType<HTFluidTankWidget> = REGISTER.registerType("fluid_tank")

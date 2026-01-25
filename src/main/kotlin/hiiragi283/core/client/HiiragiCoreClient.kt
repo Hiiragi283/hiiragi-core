@@ -7,11 +7,13 @@ import hiiragi283.core.api.mod.HTClientMod
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
+import hiiragi283.core.client.gui.tooltip.HTClientFluidFilterTooltip
 import hiiragi283.core.client.gui.tooltip.HTClientItemFilterTooltip
 import hiiragi283.core.client.gui.widget.HTEmptyWidgetRenderer
-import hiiragi283.core.client.gui.widget.HTFluidTankWidgetRenderer
+import hiiragi283.core.client.gui.widget.HTFluidWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTItemStackWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTWidgetRendererManager
+import hiiragi283.core.common.gui.tooltip.HTFluidFilterTooltip
 import hiiragi283.core.common.gui.tooltip.HTItemFilterTooltip
 import hiiragi283.core.common.item.HTChromaticPowderItem
 import hiiragi283.core.setup.HCEntityTypes
@@ -45,6 +47,7 @@ data object HiiragiCoreClient : HTClientMod() {
     }
 
     private fun registerClientTooltips(event: RegisterClientTooltipComponentFactoriesEvent) {
+        event.register(HTFluidFilterTooltip::class.java, ::HTClientFluidFilterTooltip)
         event.register(HTItemFilterTooltip::class.java, ::HTClientItemFilterTooltip)
     }
 
@@ -53,7 +56,8 @@ data object HiiragiCoreClient : HTClientMod() {
     }
 
     override fun registerWidgetRenderer(event: HTRegisterWidgetRendererEvent) {
-        event.register(HCWidgetTypes.FLUID_TANK.get(), ::HTFluidTankWidgetRenderer)
+        event.register(HCWidgetTypes.FLUID_STACK.get(), ::HTFluidWidgetRenderer)
+        event.register(HCWidgetTypes.FLUID_TANK.get(), ::HTFluidWidgetRenderer)
         event.register(HCWidgetTypes.ITEM_SLOT.get(), HTEmptyWidgetRenderer::create)
         event.register(HCWidgetTypes.ITEM_STACK.get(), ::HTItemStackWidgetRenderer)
     }
