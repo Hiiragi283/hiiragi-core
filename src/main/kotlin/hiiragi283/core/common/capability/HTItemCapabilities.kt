@@ -10,6 +10,7 @@ import hiiragi283.core.api.storage.item.HTItemHandler
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.toResource
+import hiiragi283.core.api.storage.item.toStackOrEmpty
 import hiiragi283.core.common.storage.component.HTComponentHandler
 import hiiragi283.core.common.storage.item.HTComponentItemHandler
 import net.minecraft.core.BlockPos
@@ -52,7 +53,7 @@ object HTItemCapabilities : HTMultiCapability.Simple<IItemHandler> {
                         amount: Int,
                         action: HTStorageAction,
                         access: HTStorageAccess,
-                    ): Int = handler.insertItem(slot, resource?.toStack(amount) ?: ItemStack.EMPTY, action.simulate()).count
+                    ): Int = handler.insertItem(slot, resource.toStackOrEmpty(amount), action.simulate()).count
 
                     override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int =
                         handler.extractItem(slot, amount, action.simulate()).count

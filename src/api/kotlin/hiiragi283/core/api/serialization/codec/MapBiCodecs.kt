@@ -3,7 +3,7 @@ package hiiragi283.core.api.serialization.codec
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.monad.Ior
-import hiiragi283.core.api.monad.toIor
+import hiiragi283.core.api.monad.toIorOrThrow
 import hiiragi283.core.api.serialization.codec.impl.HTEitherMapCodec
 import hiiragi283.core.api.serialization.codec.impl.HTEitherStreamCodec
 import io.netty.buffer.ByteBuf
@@ -53,7 +53,7 @@ object MapBiCodecs {
         right: MapBiCodec<in B, Optional<R>>,
     ): MapBiCodec<B, Ior<L, R>> = pair(left, right).flatXmap(
         { pair: Pair<Optional<L>, Optional<R>> ->
-            (pair.first.getOrNull() to pair.second.getOrNull()).toIor() ?: error("Cannot serialize empty ior")
+            (pair.first.getOrNull() to pair.second.getOrNull()).toIorOrThrow("Cannot serialize empty ior")
         },
         { ior: Ior<L, R> ->
             ior.fold(

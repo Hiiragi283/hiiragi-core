@@ -1,7 +1,9 @@
 package hiiragi283.core.api.recipe.result
 
+import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.monad.Ior
+import hiiragi283.core.api.monad.toIorOrThrow
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.MapBiCodecs
@@ -32,6 +34,10 @@ class HTItemResult(contents: Ior<HTItemResourceType, TagKey<Item>>, amount: Int)
             BiCodecs.POSITIVE_INT.optionalFieldOf(HTConst.COUNT, 1).forGetter(HTItemResult::amount),
             ::HTItemResult,
         )
+
+        @HTBuilderMarker
+        @JvmStatic
+        fun create(builderAction: Builder.() -> Unit): HTItemResult = Builder().apply(builderAction).build()
     }
 
     override fun getEmptyStack(): ItemStack = ItemStack.EMPTY
@@ -39,4 +45,14 @@ class HTItemResult(contents: Ior<HTItemResourceType, TagKey<Item>>, amount: Int)
     override fun createStack(resource: HTItemResourceType, amount: Int): ItemStack = resource.toStack(amount)
 
     override fun createStack(holder: Holder<Item>, amount: Int): ItemStack = ItemStack(holder, amount)
+
+    //    Builder    //
+
+    class Builder {
+        var item: HTItemResourceType? = null
+        var tagKey: TagKey<Item>? = null
+        var amount: Int = 1
+
+        fun build(): HTItemResult = HTItemResult((item to tagKey).toIorOrThrow("Either item or tag required for result"), amount)
+    }
 }

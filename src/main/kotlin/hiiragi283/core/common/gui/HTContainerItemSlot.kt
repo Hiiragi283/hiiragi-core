@@ -9,6 +9,7 @@ import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.storage.item.insert
 import hiiragi283.core.api.storage.item.setStack
 import hiiragi283.core.api.storage.item.toResource
+import hiiragi283.core.api.storage.item.toStackOrEmpty
 import hiiragi283.core.api.storage.resource.HTResourceSlot
 import net.minecraft.world.SimpleContainer
 import net.minecraft.world.entity.player.Player
@@ -52,7 +53,7 @@ open class HTContainerItemSlot(
     }
 
     fun updateCount(count: Int) {
-        stackSetter.accept(slot.getResource()?.toStack(count) ?: ItemStack.EMPTY)
+        stackSetter.accept(slot.getResource().toStackOrEmpty(count))
         setChanged()
     }
 

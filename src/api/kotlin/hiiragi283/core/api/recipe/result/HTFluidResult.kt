@@ -1,13 +1,15 @@
 package hiiragi283.core.api.recipe.result
 
+import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.monad.Ior
+import hiiragi283.core.api.monad.toIorOrThrow
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.MapBiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
-import hiiragi283.core.api.storage.fluid.HTFluidResourceFactory
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.api.storage.fluid.toResource
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.registries.Registries
@@ -36,6 +38,10 @@ class HTFluidResult(contents: Ior<HTFluidResourceType, TagKey<Fluid>>, amount: I
             ::HTFluidResult,
         )
 
+        @HTBuilderMarker
+        @JvmStatic
+        fun create(builderAction: Builder.() -> Unit): HTFluidResult = Builder().apply(builderAction).build()
+
         /**
          * 液体流が指定されている場合，液体源に置き換える
          */
@@ -45,7 +51,7 @@ class HTFluidResult(contents: Ior<HTFluidResourceType, TagKey<Fluid>>, amount: I
                 val (holder: Holder<Fluid>, patch: DataComponentPatch) = resource
                 val fluid: Fluid = holder.value()
                 if (!fluid.isSource(fluid.defaultFluidState()) && fluid is FlowingFluid) {
-                    HTFluidResourceFactory.createOrThrow(fluid.source, patch)
+                    fluid.source.toResource(patch) ?: resource
                 } else {
                     resource
                 }
@@ -57,4 +63,14 @@ class HTFluidResult(contents: Ior<HTFluidResourceType, TagKey<Fluid>>, amount: I
     override fun createStack(resource: HTFluidResourceType, amount: Int): FluidStack = resource.toStack(amount)
 
     override fun createStack(holder: Holder<Fluid>, amount: Int): FluidStack = FluidStack(holder, amount)
+
+    //    Builder    //
+
+    class Builder {
+        var fluid: HTFluidResourceType? = null
+        var tagKey: TagKey<Fluid>? = null
+        var amount: Int = HTConst.DEFAULT_FLUID_AMOUNT
+
+        fun build(): HTFluidResult = HTFluidResult((fluid to tagKey).toIorOrThrow("Either fluid or tag required for result"), amount)
+    }
 }

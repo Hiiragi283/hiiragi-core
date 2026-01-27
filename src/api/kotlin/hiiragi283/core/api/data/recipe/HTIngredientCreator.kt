@@ -1,4 +1,4 @@
-package hiiragi283.core.api.data.recipe.creator
+package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
@@ -106,7 +106,8 @@ data object HTIngredientCreator {
         propertyKey: HTPropertyKey<HTFluidMaterialProperty?>,
         operator: IntUnaryOperator = IntUnaryOperator.identity(),
     ): HTFluidIngredient {
-        val propertyMap: HTPropertyMap = HiiragiCoreAccess.INSTANCE.materialManager.getOrEmpty(material)
+        val propertyMap: HTPropertyMap = HiiragiCoreAccess.Companion.INSTANCE.materialManager
+            .getOrEmpty(material)
         val fluid: HTFluidContent<*, *, *> = propertyMap.getOrThrow(propertyKey).fluid
         return create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
     }

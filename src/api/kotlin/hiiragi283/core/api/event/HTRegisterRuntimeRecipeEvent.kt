@@ -2,9 +2,8 @@ package hiiragi283.core.api.event
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.data.recipe.creator.HTFluidResultCreator
-import hiiragi283.core.api.data.recipe.creator.HTIngredientCreator
-import hiiragi283.core.api.data.recipe.creator.HTItemResultCreator
+import hiiragi283.core.api.data.recipe.HTIngredientCreator
+import hiiragi283.core.api.data.recipe.HTResultCreator
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
@@ -54,8 +53,7 @@ class HTRegisterRuntimeRecipeEvent(
     }
 
     val inputCreator: HTIngredientCreator = HTIngredientCreator
-    val itemResult: HTItemResultCreator = HTItemResultCreator
-    val fluidResult: HTFluidResultCreator = HTFluidResultCreator
+    val resultCreator: HTResultCreator = HTResultCreator
 
     val materialManager: HTMaterialManager by lazy(HiiragiCoreAccess.INSTANCE::materialManager)
 

@@ -1,8 +1,8 @@
 package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.storage.fluid.HTFluidResourceFactory
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.api.storage.fluid.toResource
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -28,7 +28,7 @@ open class HTFluidContent<TYPE : FluidType, FLUID : Fluid, ITEM : Item>(
     val bucketTag: TagKey<Item>,
 ) : HTHolderLike.HolderDelegate<Fluid, FLUID> by fluidHolder {
     /**
-     * 保持している液体の[net.neoforged.neoforge.fluids.FluidType]を取得します。
+     * 保持している液体の[FluidType]を取得します。
      */
     fun getFluidType(): TYPE = typeHolder.get()
 
@@ -39,8 +39,7 @@ open class HTFluidContent<TYPE : FluidType, FLUID : Fluid, ITEM : Item>(
 
     fun toStack(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): FluidStack = FluidStack(get(), amount)
 
-    fun toResource(patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType =
-        HTFluidResourceFactory.createOrThrow(get(), patch)
+    fun toResource(patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType? = this.get().toResource(patch)
 
     //    Flowing    //
 

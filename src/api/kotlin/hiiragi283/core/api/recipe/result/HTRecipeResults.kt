@@ -1,8 +1,8 @@
 package hiiragi283.core.api.recipe.result
 
 import hiiragi283.core.api.monad.Ior
-import hiiragi283.core.api.monad.toIor
+import hiiragi283.core.api.monad.toIorOrThrow
 
 typealias HTComplexResult = Ior<HTItemResult, HTFluidResult>
 
-fun Pair<HTItemResult?, HTFluidResult?>.toComplex(): HTComplexResult = this.toIor() ?: error("Either item or fluid result required")
+fun Pair<HTItemResult?, HTFluidResult?>.toComplex(): HTComplexResult = this.toIorOrThrow("Either item or fluid result required")

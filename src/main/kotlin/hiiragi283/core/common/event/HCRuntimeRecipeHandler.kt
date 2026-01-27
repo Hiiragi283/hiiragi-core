@@ -1,9 +1,8 @@
 package hiiragi283.core.common.event
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.recipe.creator.HTFluidResultCreator
-import hiiragi283.core.api.data.recipe.creator.HTIngredientCreator
-import hiiragi283.core.api.data.recipe.creator.HTItemResultCreator
+import hiiragi283.core.api.data.recipe.HTIngredientCreator
+import hiiragi283.core.api.data.recipe.HTResultCreator
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.property.HTDefaultPart
@@ -33,15 +32,13 @@ import net.neoforged.neoforge.common.Tags
 object HCRuntimeRecipeHandler {
     private lateinit var output: RecipeOutput
     private lateinit var inputCreator: HTIngredientCreator
-    private lateinit var fluidResult: HTFluidResultCreator
-    private lateinit var itemResult: HTItemResultCreator
+    private lateinit var resultCreator: HTResultCreator
 
     @SubscribeEvent
     fun registerRuntimeRecipe(event: HTRegisterRuntimeRecipeEvent) {
         output = event.output
         inputCreator = event.inputCreator
-        fluidResult = event.fluidResult
-        itemResult = event.itemResult
+        resultCreator = event.resultCreator
 
         crushBaseToDust(event)
 
@@ -68,7 +65,7 @@ object HCRuntimeRecipeHandler {
             // Crushing
             HCSingleItemRecipeBuilder.crushing(output) {
                 ingredient = inputCreator.create(prefix, key)
-                result = event.itemResult.create(dust, outputCount)
+                result = resultCreator.create(dust, outputCount)
                 recipeId suffix "_from_${prefix.name}"
             }
         }
@@ -88,7 +85,7 @@ object HCRuntimeRecipeHandler {
             // Crushing
             HCSingleItemRecipeBuilder.crushing(output) {
                 ingredient = inputCreator.create(inputTag)
-                result = event.itemResult.create(dust)
+                result = resultCreator.create(dust)
                 recipeId suffix "_from_${defaultPart.getSuffix()}"
             }
         }

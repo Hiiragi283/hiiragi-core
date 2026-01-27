@@ -2,9 +2,6 @@ package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.data.recipe.creator.HTFluidResultCreator
-import hiiragi283.core.api.data.recipe.creator.HTIngredientCreator
-import hiiragi283.core.api.data.recipe.creator.HTItemResultCreator
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.resource.toId
 import net.minecraft.advancements.Advancement
@@ -42,14 +39,10 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
     protected val inputCreator: HTIngredientCreator = HTIngredientCreator
 
     /**
-     * 液体の完成品を作成するヘルパーのインスタンス
+     * 完成品を作成するヘルパーのインスタンス
+     * @since 0.8.0
      */
-    protected val fluidResult: HTFluidResultCreator = HTFluidResultCreator
-
-    /**
-     * アイテムの完成品を作成するヘルパーのインスタンス
-     */
-    protected val itemResult: HTItemResultCreator = HTItemResultCreator
+    protected val resultCreator: HTResultCreator = HTResultCreator
 
     /**
      * 素材を管理するマネージャのインスタンス

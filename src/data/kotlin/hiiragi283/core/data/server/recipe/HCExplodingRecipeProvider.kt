@@ -18,29 +18,29 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
         // Cobblestone -> Cobbled Deepslate
         HCExplodingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(listOf(Tags.Items.STONES, Tags.Items.COBBLESTONES_NORMAL), amount = 2)
-            result = itemResult.create(Items.COBBLED_DEEPSLATE)
+            result = resultCreator.create(Items.COBBLED_DEEPSLATE)
             minPower = fraction(3f)
         }
         // Ancient Debris -> Netherite Scrap
         HCExplodingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(Tags.Items.ORES_NETHERITE_SCRAP)
-            result = itemResult.create(CommonTagPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE, 2)
+            result = resultCreator.material(CommonTagPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE, 2)
             minPower = fraction(6f)
         }
         // Gunpowder -> Blaze Powder
         HCExplodingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(Tags.Items.GUNPOWDERS, 3)
-            result = itemResult.create(Items.BLAZE_POWDER)
+            result = resultCreator.create(Items.BLAZE_POWDER)
         }
         // Glass -> Quartz
         HCExplodingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(Tags.Items.GLASS_BLOCKS, 4)
-            result = itemResult.create(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ)
+            result = resultCreator.material(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ)
         }
         // Quartz Block -> Ghast Tear
         HCExplodingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.QUARTZ, 4)
-            result = itemResult.create(Items.GHAST_TEAR)
+            result = resultCreator.create(Items.GHAST_TEAR)
             minPower = fraction(3f)
         }
 
@@ -60,7 +60,7 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
                     fuels,
                     count,
                 )
-                result = itemResult.create(CommonTagPrefixes.GEM, VanillaMaterialKeys.DIAMOND)
+                result = resultCreator.material(CommonTagPrefixes.GEM, VanillaMaterialKeys.DIAMOND)
                 recipeId suffix "_from_${fuels.joinToString(separator = "_or_", transform = HTMaterialKey::path)}"
             }
         }
@@ -68,19 +68,19 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
         // Echo Shard
         HCExplodingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(Items.SCULK, 8)
-            result = itemResult.create(CommonTagPrefixes.GEM, VanillaMaterialKeys.ECHO)
+            result = resultCreator.material(CommonTagPrefixes.GEM, VanillaMaterialKeys.ECHO)
             minPower = fraction(6f)
         }
 
         // Crimson Crystal
         HCExplodingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(ItemTags.CRIMSON_STEMS, 12)
-            result = itemResult.create(CommonTagPrefixes.GEM, HCMaterialKeys.CRIMSON_CRYSTAL)
+            result = resultCreator.material(CommonTagPrefixes.GEM, HCMaterialKeys.CRIMSON_CRYSTAL)
         }
         // Warped Crystal
         HCExplodingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(ItemTags.WARPED_STEMS, 12)
-            result = itemResult.create(CommonTagPrefixes.GEM, HCMaterialKeys.WARPED_CRYSTAL)
+            result = resultCreator.material(CommonTagPrefixes.GEM, HCMaterialKeys.WARPED_CRYSTAL)
         }
     }
 }

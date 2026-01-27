@@ -1,6 +1,6 @@
 package hiiragi283.core.common.item
 
-import hiiragi283.core.api.data.recipe.creator.HTIngredientCreator
+import hiiragi283.core.api.data.recipe.HTIngredientCreator
 import hiiragi283.core.api.item.HTColoredNameItem
 import hiiragi283.core.api.item.HTSubCreativeTabContents
 import hiiragi283.core.api.item.createItemStack

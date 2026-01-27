@@ -22,6 +22,7 @@ fun createFluidStack(
 ): FluidStack {
     if (fluid == null) return FluidStack.EMPTY
     val stack = FluidStack(fluid, amount)
+    if (stack.isEmpty) return FluidStack.EMPTY
     stack.applyComponents(patch)
     return stack
 }

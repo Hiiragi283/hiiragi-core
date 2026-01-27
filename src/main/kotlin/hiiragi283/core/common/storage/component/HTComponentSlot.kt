@@ -4,7 +4,6 @@ import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.attachments.HTAttachedContainers
-import hiiragi283.core.api.storage.resource.HTResourceFactory
 import hiiragi283.core.api.storage.resource.HTResourceSlot
 import hiiragi283.core.api.storage.resource.HTResourceType
 import hiiragi283.core.common.storage.HTCapabilityCodec
@@ -27,18 +26,20 @@ abstract class HTComponentSlot<RESOURCE : HTResourceType<*>, STACK : Any, ATTACH
 
     protected abstract fun capabilityCodec(): HTCapabilityCodec<*, ATTACHED>
 
-    protected abstract fun resourceFactory(): HTResourceFactory<*, STACK, RESOURCE>
-
     protected abstract fun getAmount(stack: STACK): Int
+    
+    protected abstract fun fromStack(stack: STACK): RESOURCE?
+
+    protected abstract fun createStack(resource: RESOURCE?, amount: Int): STACK
 
     override fun setResource(resource: RESOURCE?) {
-        setStack(resourceFactory().createStack(resource, getAmount()))
+        setStack(createStack(resource, getAmount()))
     }
 
     override fun setAmount(amount: Int) {
-        setStack(resourceFactory().createStack(getResource(), amount))
+        setStack(createStack(getResource(), amount))
     }
-
+    
     fun setStack(stack: STACK) {
         capabilityCodec().updateAttached(attachedTo, getAttached().with(slot, stack))
     }
@@ -51,7 +52,7 @@ abstract class HTComponentSlot<RESOURCE : HTResourceType<*>, STACK : Any, ATTACH
     final override fun canStackExtract(resource: RESOURCE, access: HTStorageAccess): Boolean =
         super.canStackExtract(resource, access) && this.canExtract.test(resource, access)
 
-    override fun getResource(): RESOURCE? = getAttached().getOrNull(slot)?.let(resourceFactory()::fromStack)
+    override fun getResource(): RESOURCE? = getAttached().getOrNull(slot)?.let(::fromStack)
 
     override fun getCapacity(resource: RESOURCE?): Int = capacity
 

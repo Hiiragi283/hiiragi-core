@@ -22,7 +22,7 @@ object HCCrushingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
         ).forEach { (output: ItemLike, input: ItemLike) ->
             HCSingleItemRecipeBuilder.crushing(this.output) {
                 ingredient = inputCreator.create(input)
-                result = itemResult.create(output)
+                result = resultCreator.create(output)
             }
         }
 
@@ -33,47 +33,47 @@ object HCCrushingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
         ).forEach { (output: ItemLike, input: TagKey<Item>) ->
             HCSingleItemRecipeBuilder.crushing(this.output) {
                 ingredient = inputCreator.create(input)
-                result = itemResult.create(output, 4)
+                result = resultCreator.create(output, 4)
                 recipeId suffix "_from_block"
             }
         }
 
         HCSingleItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Items.BRICKS)
-            result = itemResult.create(Items.BRICK, 4)
+            result = resultCreator.create(Items.BRICK, 4)
             recipeId suffix "_from_bricks"
         }
 
         HCSingleItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Items.PRISMARINE)
-            result = itemResult.create(Items.PRISMARINE_SHARD, 4)
+            result = resultCreator.create(Items.PRISMARINE_SHARD, 4)
         }
 
         HCSingleItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Items.PRISMARINE_BRICKS)
-            result = itemResult.create(Items.PRISMARINE_SHARD, 9)
+            result = resultCreator.create(Items.PRISMARINE_SHARD, 9)
             recipeId suffix "_from_bricks"
         }
 
         HCSingleItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Items.PRISMARINE_SHARD)
-            result = itemResult.create(Items.PRISMARINE_CRYSTALS)
+            result = resultCreator.create(Items.PRISMARINE_CRYSTALS)
             recipeId suffix "_from_shard"
         }
 
         HCSingleItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.COBBLESTONES)
-            result = itemResult.create(Items.GRAVEL)
+            result = resultCreator.create(Items.GRAVEL)
         }
 
         HCSingleItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.GRAVELS)
-            result = itemResult.create(Items.SAND)
+            result = resultCreator.create(Items.SAND)
         }
 
         HCSingleItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Items.SNOW_BLOCK)
-            result = itemResult.create(Items.SNOWBALL, 4)
+            result = resultCreator.create(Items.SNOWBALL, 4)
         }
     }
 }

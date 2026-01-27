@@ -13,7 +13,7 @@ typealias HTFluidView = HTResourceView<HTFluidResourceType>
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-fun HTFluidView.getFluidStack(): FluidStack = HTFluidResourceFactory.createStack(this.getResource(), this.getAmount())
+fun HTFluidView.getFluidStack(): FluidStack = this.getResource().toStackOrEmpty(this.getAmount())
 
 /**
  * この[HTFluidTank][this]に指定した[stack]を搬入します。

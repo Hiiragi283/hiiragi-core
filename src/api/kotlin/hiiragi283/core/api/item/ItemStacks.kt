@@ -31,6 +31,7 @@ fun <T : Any> createItemStack(
 fun createItemStack(item: ItemLike?, count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStack {
     if (item == null) return ItemStack.EMPTY
     val stack = ItemStack(item, count)
+    if (stack.isEmpty) return ItemStack.EMPTY
     stack.applyComponents(patch)
     return stack
 }

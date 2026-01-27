@@ -4,9 +4,10 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.attachments.HTAttachedItems
-import hiiragi283.core.api.storage.item.HTItemResourceFactory
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
+import hiiragi283.core.api.storage.item.toResource
+import hiiragi283.core.api.storage.item.toStackOrEmpty
 import hiiragi283.core.common.storage.HTCapabilityCodec
 import hiiragi283.core.common.storage.component.HTComponentHandler
 import hiiragi283.core.common.storage.component.HTComponentSlot
@@ -40,7 +41,9 @@ class HTComponentItemSlot(
 
     override fun capabilityCodec(): HTCapabilityCodec<HTItemSlot, HTAttachedItems> = HTCapabilityCodec.ITEM
 
-    override fun resourceFactory(): HTItemResourceFactory = HTItemResourceFactory
-
     override fun getAmount(stack: ItemStack): Int = stack.count
+
+    override fun fromStack(stack: ItemStack): HTItemResourceType? = stack.toResource()
+
+    override fun createStack(resource: HTItemResourceType?, amount: Int): ItemStack = resource.toStackOrEmpty(amount)
 }
