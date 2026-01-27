@@ -13,7 +13,6 @@ import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.tags.TagKey
 import net.minecraft.world.damagesource.DamageSource
-import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.DiggerItem
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Rarity
@@ -26,7 +25,6 @@ import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.common.ItemAbility
 import net.neoforged.neoforge.registries.holdersets.AnyHolderSet
 import java.util.Optional
-import java.util.function.Consumer
 
 class HTAlmightyPickaxe(properties: Properties) :
     DiggerItem(Tiers.NETHERITE, HiiragiCoreTags.Blocks.INCORRECT_FOR_ALMIGHTY_PICKAXE, properties.rarity(Rarity.RARE)),
@@ -71,11 +69,7 @@ class HTAlmightyPickaxe(properties: Properties) :
 
     //    HTSubCreativeTabContents    //
 
-    override fun addItems(
-        baseItem: HTItemHolderLike<*>,
-        parameters: CreativeModeTab.ItemDisplayParameters,
-        consumer: Consumer<ItemStack>,
-    ) {
-        createItemStack(baseItem, DataComponents.UNBREAKABLE, Unbreakable(true)).let(consumer::accept)
+    override fun addItems(baseItem: HTItemHolderLike<*>, context: HTSubCreativeTabContents.Context) {
+        createItemStack(baseItem, DataComponents.UNBREAKABLE, Unbreakable(true)).let(context)
     }
 }

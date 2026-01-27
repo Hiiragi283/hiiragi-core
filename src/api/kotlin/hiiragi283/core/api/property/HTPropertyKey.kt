@@ -25,6 +25,7 @@ class HTPropertyKey<T> private constructor(val id: ResourceLocation, val default
         /**
          * 指定した[id]から，[Set]向けの新しい[HTPropertyKey]のインスタンスを作成します。
          * @throws IllegalStateException 指定した[ID][id]がすでに使用されていた場合
+         * @since 0.8.0
          */
         @JvmStatic
         fun <T : Any> createSet(id: ResourceLocation): HTPropertyKey<Set<T>> = create(id, setOf())

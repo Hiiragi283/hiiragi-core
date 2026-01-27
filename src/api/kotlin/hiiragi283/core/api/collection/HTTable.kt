@@ -82,54 +82,6 @@ interface HTTable<R, C, V> {
      * @author Hiiragi Tsubasa
      * @since 0.8.0
      */
-    interface Builder<R, C, V> {
-        /**
-         * 指定した値を追加します。
-         */
-        fun put(row: R, column: C, value: V): V?
-
-        /**
-         * 指定した値を追加します。
-         */
-        fun put(triple: Triple<R, C, V>): V? = put(triple.first, triple.second, triple.third)
-
-        /**
-         * 指定した値を追加します。
-         */
-        operator fun set(row: R, column: C, value: V) {
-            put(row, column, value)
-        }
-
-        fun putAll(triples: Iterable<Triple<R, C, V>>) {
-            triples.forEach(::put)
-        }
-
-        fun putAll(triples: Sequence<Triple<R, C, V>>) {
-            triples.forEach(::put)
-        }
-
-        fun putAll(triples: Array<Triple<R, C, V>>) {
-            triples.forEach(::put)
-        }
-
-        fun putAll(table: HTTable<out R, out C, out V>) {
-            table.forEach { (r: R, c: C, v: V) -> this.put(r, c, v) }
-        }
-
-        fun remove(row: R, column: C): V?
-
-        fun clear()
-
-        /**
-         * 新しい[HTTable]のインスタンスを返します。
-         */
-        fun build(): HTTable<R, C, V>
-    }
-
-    /**
-     * @author Hiiragi Tsubasa
-     * @since 0.8.0
-     */
     interface Mutable<R, C, V> : HTTable<R, C, V> {
         /**
          * 指定した値を追加します。

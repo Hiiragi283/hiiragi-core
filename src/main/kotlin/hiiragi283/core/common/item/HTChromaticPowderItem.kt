@@ -9,10 +9,8 @@ import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCItems
 import net.minecraft.network.chat.TextColor
-import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.ItemStack
 import java.awt.Color
-import java.util.function.Consumer
 
 class HTChromaticPowderItem(properties: Properties) :
     HTColoredNameItem(properties.component(HCDataComponents.COMPLETE_PROGRESS, 0)),
@@ -47,12 +45,8 @@ class HTChromaticPowderItem(properties: Properties) :
 
     //    HTSubCreativeTabContents    //
 
-    override fun addItems(
-        baseItem: HTItemHolderLike<*>,
-        parameters: CreativeModeTab.ItemDisplayParameters,
-        consumer: Consumer<ItemStack>,
-    ) {
-        (0..MAX_COMPLETE).map(::createStack).forEach(consumer)
+    override fun addItems(baseItem: HTItemHolderLike<*>, context: HTSubCreativeTabContents.Context) {
+        (0..MAX_COMPLETE).map(::createStack).forEach(context)
     }
 
     override fun shouldAddDefault(): Boolean = false

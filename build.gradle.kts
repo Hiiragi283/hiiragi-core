@@ -41,6 +41,7 @@ version = scmVersion.version
 base.archivesName = modId
 
 val apiModule: SourceSet = sourceSets.create("api")
+val clientModule: SourceSet = sourceSets.create("client")
 val dataModule: SourceSet = sourceSets.create("data")
 
 sourceSets {
@@ -51,12 +52,18 @@ sourceSets {
             srcDir("src/generated/resources")
         }
     }
-    getByName("data") {
+    getByName("client") {
         val main: SourceSet by main
         compileClasspath += main.compileClasspath
         compileClasspath += main.output
         runtimeClasspath += main.runtimeClasspath
         runtimeClasspath += main.output
+    }
+    getByName("data") {
+        compileClasspath += clientModule.compileClasspath
+        compileClasspath += clientModule.output
+        runtimeClasspath += clientModule.runtimeClasspath
+        runtimeClasspath += clientModule.output
     }
 }
 
@@ -68,7 +75,8 @@ configurations.apply {
     runtimeClasspath.get().extendsFrom(create("localRuntime"))
 
     getByName("apiCompileClasspath").extendsFrom(getByName("compileClasspath"))
-    getByName("compileClasspath").extendsFrom(getByName("dataCompileClasspath"))
+    getByName("compileClasspath").extendsFrom(getByName("clientCompileClasspath"))
+    getByName("clientCompileClasspath").extendsFrom(getByName("dataCompileClasspath"))
 }
 
 repositories {
@@ -138,6 +146,7 @@ neoForge {
     runs {
         create("client").apply {
             client()
+            sourceSet = clientModule
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
@@ -164,7 +173,7 @@ neoForge {
             sourceSet = dataModule
 
             // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
-            // gameDirectory = project.file("run-data")
+            gameDirectory = project.file("run-data")
 
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             programArguments.addAll(
@@ -201,6 +210,7 @@ neoForge {
         create(modId) {
             sourceSet(sourceSets.main.get())
             sourceSet(apiModule)
+            sourceSet(clientModule)
             sourceSet(dataModule)
         }
     }
@@ -237,6 +247,8 @@ dependencies {
     runtimeOnly(libs.bundles.mods.runtime)
 
     implementation(libs.mek.get().toString() + ":all")
+
+    compileOnly(libs.ldlib) { isTransitive = false }
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -256,7 +268,6 @@ val generateModMetadata: TaskProvider<ProcessResources> = tasks.register("genera
         "kff_version" to kffVersion,
         "kff_version_range" to "[$kffVersion,)",
         "loader_version_range" to "[1,)",
-        "ldlib2_version_range" to "[${libs.versions.ldlib.get()},)",
         "mod_id" to modId,
         "mod_name" to "Hiiragi Core",
         "mod_license" to "MPL-2.0",
@@ -333,6 +344,7 @@ tasks {
             rename { "${it}_hiiragi_core" }
         }
         from(apiModule.output)
+        from(clientModule.output)
         from(dataModule.output)
         exclude("**/core/data/**")
     }
@@ -349,9 +361,9 @@ java {
 }
 
 tasks.named("sourcesJar", Jar::class.java) {
-    dependsOn("apiClasses")
+    dependsOn("apiClasses", "clientClasses")
     duplicatesStrategy = DuplicatesStrategy.FAIL
-    from(apiModule.kotlin.srcDirs)
+    from(apiModule.kotlin.srcDirs, clientModule.kotlin.srcDirs)
 }
 
 kotlin {
@@ -376,7 +388,7 @@ ktlint {
 dokka {
     dokkaSourceSets {
         configureEach {
-            sourceRoots.from(apiModule.kotlin.srcDirs)
+            sourceRoots.from(apiModule.kotlin.srcDirs, clientModule.kotlin.srcDirs)
         }
     }
 }

@@ -16,15 +16,5 @@ fun interface HTAdvancementOutput {
      * @param advancement 進捗のインスタンス
      * @param conditions 進捗を読み込む条件の一覧
      */
-    fun accept(id: ResourceLocation, advancement: Advancement, vararg conditions: ICondition) {
-        accept(id, advancement, conditions.toList())
-    }
-
-    /**
-     * 進捗を出力します。
-     * @param id 進捗のID
-     * @param advancement 進捗のインスタンス
-     * @param conditions 進捗を読み込む条件の一覧
-     */
     fun accept(id: ResourceLocation, advancement: Advancement, conditions: List<ICondition>)
 }

@@ -1,8 +1,16 @@
 package hiiragi283.core.api.data.recipe.creator
 
+import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.buildDataPredicate
 import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.property.HTFluidMaterialProperty
+import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
+import hiiragi283.core.api.material.property.getDefaultFluidAmount
+import hiiragi283.core.api.property.HTPropertyKey
+import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.property.getOrThrow
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.registry.HTFluidContent
@@ -20,8 +28,10 @@ import net.neoforged.neoforge.common.crafting.SizedIngredient
 import net.neoforged.neoforge.fluids.crafting.CompoundFluidIngredient
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient
+import java.util.function.IntUnaryOperator
 
 /**
+ * [HTItemIngredient]と[HTFluidIngredient]を作成するクラスです。
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
@@ -53,6 +63,7 @@ data object HTIngredientCreator {
     fun create(values: Iterable<Ingredient.Value>, amount: Int = 1): HTItemIngredient =
         create(Ingredient.fromValues(values.toList().stream()), amount)
 
+    @HTBuilderMarker
     inline fun create(
         strict: Boolean,
         vararg items: ItemLike,
@@ -86,6 +97,19 @@ data object HTIngredientCreator {
     fun lava(amount: Int): HTFluidIngredient = create(VanillaFluidContents.LAVA, amount)
 
     fun milk(amount: Int): HTFluidIngredient = create(VanillaFluidContents.MILK, amount)
+
+    fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidIngredient =
+        create(material, HTMaterialPropertyKeys.MOLTEN_FLUID, operator)
+
+    fun create(
+        material: HTMaterialLike,
+        propertyKey: HTPropertyKey<HTFluidMaterialProperty?>,
+        operator: IntUnaryOperator = IntUnaryOperator.identity(),
+    ): HTFluidIngredient {
+        val propertyMap: HTPropertyMap = HiiragiCoreAccess.INSTANCE.materialManager.getOrEmpty(material)
+        val fluid: HTFluidContent<*, *, *> = propertyMap.getOrThrow(propertyKey).fluid
+        return create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
+    }
 
     // Ingredient
     fun create(ingredient: FluidIngredient, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient =

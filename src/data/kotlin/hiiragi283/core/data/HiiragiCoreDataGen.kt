@@ -2,7 +2,6 @@ package hiiragi283.core.data
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTRootDataGenerator
-import hiiragi283.core.api.function.partially1
 import hiiragi283.core.data.client.HCTextureProvider
 import hiiragi283.core.data.client.lang.HCEnglishLangProvider
 import hiiragi283.core.data.client.lang.HCJapaneseLangProvider
@@ -16,13 +15,10 @@ import hiiragi283.core.data.server.loot.HCGlobalLootProvider
 import hiiragi283.core.data.server.tag.HCBlockTagsProvider
 import hiiragi283.core.data.server.tag.HCFluidTagsProvider
 import hiiragi283.core.data.server.tag.HCItemTagsProvider
-import net.minecraft.data.tags.TagsProvider
-import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.data.event.GatherDataEvent
-import java.util.concurrent.CompletableFuture
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 data object HiiragiCoreDataGen {
@@ -39,9 +35,7 @@ data object HiiragiCoreDataGen {
         server.addProvider(::HCRecipeProvider)
 
         server.addProvider(::HCFluidTagsProvider)
-        val blockTags: CompletableFuture<TagsProvider.TagLookup<Block>> =
-            server.addProvider(::HCBlockTagsProvider).contentsGetter()
-        server.addProvider(::HCItemTagsProvider.partially1(blockTags))
+        server.addBlockAndItemTags(::HCBlockTagsProvider, ::HCItemTagsProvider)
 
         server.addProvider(::HCDataMapProvider)
         // Client

@@ -1,19 +1,11 @@
 package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.creator.HTFluidResultCreator
 import hiiragi283.core.api.data.recipe.creator.HTIngredientCreator
 import hiiragi283.core.api.data.recipe.creator.HTItemResultCreator
-import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
-import hiiragi283.core.api.material.property.HTFluidMaterialProperty
-import hiiragi283.core.api.material.property.getDefaultFluidAmount
-import hiiragi283.core.api.property.HTPropertyKey
-import hiiragi283.core.api.property.HTPropertyMap
-import hiiragi283.core.api.property.getOrThrow
-import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
-import hiiragi283.core.api.recipe.result.HTFluidResult
-import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toId
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementHolder
@@ -23,7 +15,6 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.Recipe
 import net.neoforged.neoforge.common.conditions.ICondition
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition
-import java.util.function.IntUnaryOperator
 
 /**
  * レシピを登録するクラスです。
@@ -46,6 +37,7 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
 
     /**
      * 材料を作成するヘルパーのインスタンス
+     * @since 0.8.0
      */
     protected val inputCreator: HTIngredientCreator = HTIngredientCreator
 
@@ -63,7 +55,7 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
      * 素材を管理するマネージャのインスタンス
      * @since 0.7.0
      */
-    protected val materialManager: HTMaterialManager by lazy { HTMaterialManager.INSTANCE }
+    protected val materialManager: HTMaterialManager by lazy(HiiragiCoreAccess.INSTANCE::materialManager)
 
     /**
      * [HTRecipeProvider.buildRecipes]内で呼び出されるメソッドです。
@@ -153,39 +145,5 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
 
     protected fun save(recipeId: ResourceLocation, recipe: Recipe<*>, vararg conditions: ICondition) {
         output.accept(recipeId, recipe, null, *conditions)
-    }
-
-    /**
-     * 指定した値から[HTFluidIngredient]を作成します。
-     * @param material 素材のキー
-     * @param propertyKey 液体のプロパティを保持する[HTPropertyKey]
-     * @param operator 液体量を改変するブロック
-     * @since 0.7.0
-     */
-    protected fun createFluidIng(
-        material: HTMaterialLike,
-        propertyKey: HTPropertyKey<HTFluidMaterialProperty?>,
-        operator: IntUnaryOperator = IntUnaryOperator.identity(),
-    ): HTFluidIngredient {
-        val propertyMap: HTPropertyMap = materialManager.getOrEmpty(material)
-        val fluid: HTFluidContent<*, *, *> = propertyMap.getOrThrow(propertyKey).fluid
-        return inputCreator.create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
-    }
-
-    /**
-     * 指定した値から[HTFluidResult]を作成します。
-     * @param material 素材のキー
-     * @param propertyKey 液体のプロパティを保持する[HTPropertyKey]
-     * @param operator 液体量を改変するブロック
-     * @since 0.7.0
-     */
-    protected fun createFluidResult(
-        material: HTMaterialLike,
-        propertyKey: HTPropertyKey<HTFluidMaterialProperty?>,
-        operator: IntUnaryOperator = IntUnaryOperator.identity(),
-    ): HTFluidResult {
-        val propertyMap: HTPropertyMap = materialManager.getOrEmpty(material)
-        val fluid: HTFluidContent<*, *, *> = propertyMap.getOrThrow(propertyKey).fluid
-        return fluidResult.create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
     }
 }

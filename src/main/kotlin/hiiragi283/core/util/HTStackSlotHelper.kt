@@ -1,8 +1,9 @@
 package hiiragi283.core.util
 
-import com.mojang.logging.LogUtils
-import hiiragi283.core.api.HTDataSerializable
+import hiiragi283.core.api.HTContentListener
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.fixedFraction
+import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.amount.HTAmountView
@@ -25,14 +26,10 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.redstone.Redstone
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem
-import org.slf4j.Logger
 import java.util.function.Consumer
 import java.util.function.ToIntBiFunction
 
 object HTStackSlotHelper {
-    @JvmField
-    val LOGGER: Logger = LogUtils.getLogger()
-
     @JvmStatic
     fun <RESOURCE : HTResourceType<*>, SLOT : HTResourceSlot<RESOURCE>> moveResource(
         from: SLOT?,
@@ -51,7 +48,7 @@ object HTStackSlotHelper {
         if (remainder > 0) {
             val leftover: Int = from.insert(resource, remainder, HTStorageAction.EXECUTE, access)
             if (leftover > 0) {
-                LOGGER.error("Stack slot $from did not accept leftover stack from $to! Voiding it.")
+                HiiragiCoreAPI.LOGGER.error("Stack slot $from did not accept leftover stack from $to! Voiding it.")
             }
             return HTResourceMoveResult.succeeded(resource, remainder)
         } else {
@@ -299,7 +296,8 @@ object HTStackSlotHelper {
 
     class HTFluidHandlerItemWrapper private constructor(private val handler: IFluidHandlerItem) :
         HTFluidTank,
-        HTDataSerializable.Empty {
+        HTContentListener.Empty,
+        HTValueSerializable.Empty {
             companion object {
                 @JvmStatic
                 fun create(resourceType: HTItemResourceType): HTFluidHandlerItemWrapper? =

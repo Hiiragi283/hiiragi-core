@@ -1,8 +1,9 @@
 package hiiragi283.core.api.data.loot
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.function.partially2
-import hiiragi283.core.api.material.HTMaterialContentsAccess
+import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -39,6 +40,8 @@ abstract class HTBlockLootTableProvider(registries: HolderLookup.Provider) :
     final override fun getKnownBlocks(): Iterable<Block> = blockCache
 
     //    Extensions    //
+
+    protected val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
 
     /**
      * 幸運エンチャントのインスタンス
@@ -83,9 +86,9 @@ abstract class HTBlockLootTableProvider(registries: HolderLookup.Provider) :
      * @since 0.8.0
      */
     protected fun registerMaterials() {
-        HTMaterialContentsAccess.INSTANCE
+        contents
             .getAllBlocks()
-            .filter { it.getNamespace() == HiiragiCoreAPI.MOD_ID }
+            .filter { it.namespace == HiiragiCoreAPI.MOD_ID }
             .forEach(::dropSelf)
     }
 
@@ -94,8 +97,8 @@ abstract class HTBlockLootTableProvider(registries: HolderLookup.Provider) :
      */
     protected fun registerOre(basePrefix: HTTagPrefix, key: HTMaterialKey, range: UniformGenerator?) {
         for (prefix: HTTagPrefix in CommonTagPrefixes.ORES) {
-            val ore: HTBlockHolderLike<*, *> = HTMaterialContentsAccess.INSTANCE.getBlock(prefix, key) ?: continue
-            val drop: ItemLike = HTMaterialContentsAccess.INSTANCE.getItem(basePrefix, key) ?: continue
+            val ore: HTBlockHolderLike<*, *> = contents.getBlock(prefix, key) ?: continue
+            val drop: ItemLike = contents.getItem(basePrefix, key) ?: continue
             add(ore, ::createOreDrops.partially2(drop, range))
         }
     }

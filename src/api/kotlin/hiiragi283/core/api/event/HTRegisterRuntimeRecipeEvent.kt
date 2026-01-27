@@ -1,6 +1,7 @@
 package hiiragi283.core.api.event
 
-import com.mojang.logging.LogUtils
+import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.creator.HTFluidResultCreator
 import hiiragi283.core.api.data.recipe.creator.HTIngredientCreator
 import hiiragi283.core.api.data.recipe.creator.HTItemResultCreator
@@ -11,7 +12,6 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.registry.holderSetOrNull
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.HTTagUtil
 import hiiragi283.core.api.text.HTTextResult
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementHolder
@@ -27,10 +27,10 @@ import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeManager
 import net.neoforged.bus.api.Event
 import net.neoforged.neoforge.common.conditions.ICondition
-import org.slf4j.Logger
 import java.util.function.Consumer
 
 /**
+ * 動的にレシピを追加するイベントクラスです。
  * @see plus.dragons.createdragonsplus.common.recipe.UpdateRecipesEvent
  */
 class HTRegisterRuntimeRecipeEvent(
@@ -38,11 +38,6 @@ class HTRegisterRuntimeRecipeEvent(
     val recipeManager: RecipeManager,
     private val consumer: Consumer<RecipeHolder<*>>,
 ) : Event() {
-    companion object {
-        @JvmField
-        val LOGGER: Logger = LogUtils.getLogger()
-    }
-
     val output: RecipeOutput = object : RecipeOutput {
         override fun accept(
             id: ResourceLocation,
@@ -52,7 +47,7 @@ class HTRegisterRuntimeRecipeEvent(
         ) {
             val id1: ResourceLocation = id.withPrefix("runtime/")
             consumer.accept(RecipeHolder(id1, recipe))
-            LOGGER.debug("Added runtime recipe {}", id1)
+            HiiragiCoreAPI.LOGGER.debug("Added runtime recipe {}", id1)
         }
 
         override fun advancement(): Advancement.Builder = Advancement.Builder.recipeAdvancement()
@@ -62,18 +57,19 @@ class HTRegisterRuntimeRecipeEvent(
     val itemResult: HTItemResultCreator = HTItemResultCreator
     val fluidResult: HTFluidResultCreator = HTFluidResultCreator
 
-    val materialManager: HTMaterialManager by lazy(HTMaterialManager::INSTANCE)
+    val materialManager: HTMaterialManager by lazy(HiiragiCoreAccess.INSTANCE::materialManager)
 
     fun save(id: ResourceLocation, recipe: Recipe<*>) {
         output.accept(id, recipe, null)
     }
 
     // TagKey
-    fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<Holder<T>> = HTTagUtil.INSTANCE.getFirstHolder(registryAccess, tagKey)
+    fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<Holder<T>> =
+        HiiragiCoreAccess.INSTANCE.getFirstHolder(registryAccess, tagKey)
 
     fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): Holder<T>? = getHolderResult(tagKey)
         .mapOrElse(identity()) { message: Component ->
-            if (printLog) LOGGER.warn(message.string)
+            if (printLog) HiiragiCoreAPI.LOGGER.warn(message.string)
             null
         }
 

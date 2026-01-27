@@ -1,42 +1,51 @@
 package hiiragi283.core.common.item
 
-import com.lowdragmc.lowdraglib2.gui.factory.HeldItemUIMenuType
-import com.lowdragmc.lowdraglib2.gui.sync.bindings.impl.DataBindingBuilder
-import com.lowdragmc.lowdraglib2.gui.ui.ModularUI
-import hiiragi283.core.api.gui.HTModularUIHelper
-import hiiragi283.core.api.gui.element.HTFluidSlotElement
-import hiiragi283.core.api.gui.element.addRowChild
-import hiiragi283.core.api.storage.fluid.getFluidStack
+import hiiragi283.core.api.gui.HTSlotHelper
+import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.common.capability.HTFluidCapabilities
+import hiiragi283.core.common.gui.factory.HTItemWidgetHolderContext
+import hiiragi283.core.common.gui.tooltip.HTFluidFilterTooltip
+import hiiragi283.core.common.gui.widget.HTFluidWidget
 import hiiragi283.core.common.storage.fluid.HTComponentFluidTank
+import hiiragi283.core.setup.HCDataComponents
+import net.minecraft.core.component.DataComponents
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResultHolder
 import net.minecraft.world.entity.player.Player
+import net.minecraft.world.inventory.tooltip.TooltipComponent
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
+import java.util.Optional
 
 class HTFluidFilterItem(properties: Properties) :
     Item(properties),
-    HeldItemUIMenuType.HeldItemUI {
+    HTItemWidgetHolderContext.Factory {
     override fun use(level: Level, player: Player, usedHand: InteractionHand): InteractionResultHolder<ItemStack?> {
         if (player is ServerPlayer) {
-            HeldItemUIMenuType.openUI(player, usedHand)
+            HTItemWidgetHolderContext.openMenu(player, usedHand)
         }
         return InteractionResultHolder.sidedSuccess(player.getItemInHand(usedHand), level.isClientSide)
     }
 
-    override fun createUI(holder: HeldItemUIMenuType.HeldItemUIHolder): ModularUI = HTModularUIHelper.createVanillaUI(
-        holder.player,
-        holder.itemStack.hoverName,
-    ) {
-        this.addRowChild {
-            HTFluidCapabilities
-                .getFluidViews(holder.itemStack)
-                .filterIsInstance<HTComponentFluidTank>()
-                .map { HTFluidSlotElement().xeiPhantom().bind(DataBindingBuilder.fluidStack(it::getFluidStack, it::setStack).build()) }
-                .forEach(this@addRowChild::addChild)
-        }
+    override fun getTooltipImage(stack: ItemStack): Optional<TooltipComponent> = stack
+        .get(HCDataComponents.FLUID)
+        ?.let(::HTFluidFilterTooltip)
+        ?.takeUnless { stack.has(DataComponents.HIDE_ADDITIONAL_TOOLTIP) }
+        .let { Optional.ofNullable(it) }
+
+    override fun setup(context: HTItemWidgetHolderContext, widgetHolder: HTWidgetHolder) {
+        HTFluidCapabilities
+            .getFluidViews(context.stack)
+            .filterIsInstance<HTComponentFluidTank>()
+            .mapIndexed { index: Int, tank: HTComponentFluidTank ->
+                HTFluidWidget.StackWidget(
+                    tank,
+                    tank::setStack,
+                    HTSlotHelper.getSlotPosX(index),
+                    HTSlotHelper.getSlotPosY(1),
+                )
+            }.forEach(widgetHolder::addWidget)
     }
 }

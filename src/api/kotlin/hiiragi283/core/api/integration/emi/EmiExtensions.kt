@@ -5,8 +5,14 @@ import dev.emi.emi.api.stack.EmiIngredient
 import dev.emi.emi.api.stack.EmiStack
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
+import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.recipe.result.HTFluidResult
+import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.RegistryKey
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTranslation
@@ -15,6 +21,7 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
 import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.ItemLike
@@ -114,6 +121,60 @@ fun HTTagPrefix.toItemEmi(amount: Int = 1): EmiIngredient = toEmi(Registries.ITE
  * @since 0.1.0
  */
 fun HTTagPrefix.toItemEmi(material: HTMaterialLike, amount: Int = 1): EmiIngredient = toEmi(Registries.ITEM, material, amount)
+
+// Ingredient
+
+/**
+ * この[材料][this]を[EmiIngredient]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
+fun HTItemIngredient.toEmi(): EmiIngredient {
+    val count: Int = this.getRequiredAmount()
+    return this.unwrap().map(
+        { tagKey: TagKey<Item> -> tagKey.toEmi(count) },
+        { resources: List<HTItemResourceType> ->
+            resources.map { it.toStack(count) }.map(ItemStack::toEmi).let(::ingredient)
+        },
+    )
+}
+
+/**
+ * この[材料][this]を[EmiIngredient]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
+fun HTFluidIngredient.toEmi(): EmiIngredient {
+    val count: Int = this.getRequiredAmount()
+    return this.unwrap().map(
+        { tagKey: TagKey<Fluid> -> tagKey.toEmi(count) },
+        { resources: List<HTFluidResourceType> ->
+            resources.map { it.toStack(count) }.map(FluidStack::toEmi).let(::ingredient)
+        },
+    )
+}
+
+private fun ingredient(stacks: List<EmiStack>): EmiIngredient = when {
+    stacks.isEmpty() -> createErrorStack(HTCommonTranslation.EMPTY)
+    stacks.size == 1 -> stacks[0]
+    else -> EmiIngredient.of(stacks)
+}
+
+// Result
+
+/**
+ * この[完成品][this]を[EmiStack]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
+fun HTItemResult.toEmi(): EmiStack = this.getStackResult(null).mapOrElse(ItemStack::toEmi, ::createErrorStack)
+
+/**
+ * この[完成品][this]を[EmiStack]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
+fun HTFluidResult.toEmi(): EmiStack = this.getStackResult(null).mapOrElse(FluidStack::toEmi, ::createErrorStack)
 
 // Fluid Content
 

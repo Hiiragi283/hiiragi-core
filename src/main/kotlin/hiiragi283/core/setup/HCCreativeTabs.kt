@@ -1,7 +1,7 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.material.HTMaterialContentsAccess
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.common.registry.register.HTDeferredCreativeTabRegister
 import hiiragi283.core.common.text.HCTranslation
@@ -38,13 +38,13 @@ object HCCreativeTabs {
             HTDeferredCreativeTabRegister.addToDisplay(
                 parameters,
                 output,
-                HTMaterialContentsAccess.INSTANCE.getAllItems(),
+                HiiragiCoreAccess.INSTANCE.materialContents.getAllItems(),
             )
             // Blocks
             HTDeferredCreativeTabRegister.addToDisplay(
                 parameters,
                 output,
-                HTMaterialContentsAccess.INSTANCE.getAllBlocks(),
+                HiiragiCoreAccess.INSTANCE.materialContents.getAllBlocks(),
             )
         }
     }
@@ -61,7 +61,7 @@ object HCCreativeTabs {
             HTDeferredCreativeTabRegister.addToDisplay(
                 parameters,
                 output,
-                HTMaterialContentsAccess.INSTANCE.getAllTools(),
+                HiiragiCoreAccess.INSTANCE.materialContents.getAllTools(),
             )
         }
     }

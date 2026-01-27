@@ -1,5 +1,6 @@
 package hiiragi283.core.api.item.tool
 
+import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.data.lang.HTLangPatternProvider
 import hiiragi283.core.api.material.HTMaterialLike
 import net.minecraft.resources.ResourceLocation
@@ -7,6 +8,11 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.TieredItem
 
+/**
+ * 素材ツールの定義を担うクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.8.0
+ */
 class HTToolType(
     val name: String,
     private val idPattern: String,
@@ -21,6 +27,7 @@ class HTToolType(
         @JvmStatic
         fun getAllTypes(): Map<String, HTToolType> = instances
 
+        @HTBuilderMarker
         @JvmStatic
         inline fun create(name: String, builderAction: Builder.() -> Unit): HTToolType = Builder(name).apply(builderAction).build()
     }
@@ -37,6 +44,11 @@ class HTToolType(
 
     //    Builder    //
 
+    /**
+     * [HTToolType]のビルダークラスです。
+     * @author Hiiragi Tsubasa
+     * @since 0.8.0
+     */
     class Builder(private val name: String) {
         var idPattern = "%s_$name"
         lateinit var factory: (HTToolMaterial, Item.Properties) -> TieredItem

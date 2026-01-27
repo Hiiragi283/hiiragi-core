@@ -1,6 +1,6 @@
 package hiiragi283.core.common.storage.component
 
-import hiiragi283.core.api.HTDataSerializable
+import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.attachments.HTAttachedContainers
 import hiiragi283.core.common.storage.HTCapabilityCodec
 import net.minecraft.world.item.ItemStack
@@ -8,12 +8,12 @@ import net.minecraft.world.item.ItemStack
 /**
  * @see mekanism.common.attachments.containers.ComponentBackedHandler
  */
-abstract class HTComponentHandler<TYPE, CONTAINER : HTDataSerializable, ATTACHED : HTAttachedContainers<TYPE, ATTACHED>>(
+abstract class HTComponentHandler<TYPE, CONTAINER : HTValueSerializable, ATTACHED : HTAttachedContainers<TYPE, ATTACHED>>(
     protected val attachedTo: ItemStack,
     override val size: Int,
     private val containerFactory: ContainerFactory<CONTAINER>,
 ) : AbstractList<CONTAINER>() {
-    fun interface ContainerFactory<CONTAINER : HTDataSerializable> {
+    fun interface ContainerFactory<CONTAINER : HTValueSerializable> {
         fun create(context: ContainerContext): CONTAINER
 
         fun create(attachedTo: ItemStack, size: Int, index: Int): CONTAINER = create(ContainerContext(attachedTo, size, index))

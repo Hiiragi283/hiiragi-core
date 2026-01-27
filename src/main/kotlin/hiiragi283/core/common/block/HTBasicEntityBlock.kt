@@ -1,38 +1,42 @@
 package hiiragi283.core.common.block
 
-import com.lowdragmc.lowdraglib2.gui.factory.BlockUIMenuType
 import hiiragi283.core.api.world.getTypedBlockEntity
 import hiiragi283.core.common.block.entity.HTBlockEntity
 import hiiragi283.core.common.block.entity.HTExtendedBlockEntity
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import net.minecraft.core.BlockPos
-import net.minecraft.server.level.ServerPlayer
-import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.LivingEntity
-import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.phys.BlockHitResult
 
 open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, properties: Properties) :
     Block(properties),
     HTBlockWithEntity {
-    override fun useWithoutItem(
+    /*override fun useWithoutItem(
         state: BlockState,
         level: Level,
         pos: BlockPos,
         player: Player,
         hitResult: BlockHitResult,
-    ): InteractionResult = when {
-        level.isClientSide -> InteractionResult.SUCCESS
-        player is ServerPlayer -> {
-            BlockUIMenuType.openUI(player, pos)
-            InteractionResult.CONSUME
+    ): InteractionResult {
+        val blockEntity: HTExtendedBlockEntity = level.getTypedBlockEntity(pos) ?: return InteractionResult.PASS
+        val menuType: HTDeferredMenuType.WithContext<*, *>? = null
+        if (level.isClientSide) {
+            return when {
+                menuType == null -> InteractionResult.PASS
+                else -> InteractionResult.SUCCESS
+            }
         }
-        else -> InteractionResult.PASS
-    }
+        val name: Component = when (blockEntity) {
+            is Nameable -> blockEntity.name
+            else -> state.block.name
+        }
+        return menuType
+            ?.openMenu(player, name, blockEntity, blockEntity::writeExtraContainerData)
+            ?: InteractionResult.PASS
+    }*/
 
     override fun setPlacedBy(
         level: Level,

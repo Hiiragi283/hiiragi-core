@@ -1,10 +1,9 @@
 package hiiragi283.core.data.server
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.HTDataGenContext
-import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
@@ -34,15 +33,15 @@ class HCDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.out
     private fun furnaceFuels() {
         val furnace: Builder<FurnaceFuel, Item> = builder(NeoForgeDataMaps.FURNACE_FUELS)
 
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HTMaterialManager.INSTANCE.entries) {
-            if (key.getNamespace() != HiiragiCoreAPI.MOD_ID) continue
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HiiragiCoreAccess.INSTANCE.materialManager) {
+            if (key.namespace != HiiragiCoreAPI.MOD_ID) continue
             val fuelTime: Int = propertyMap[HTMaterialPropertyKeys.FUEL_TIME] ?: continue
             // Block
-            if (HTMaterialContentsAccess.INSTANCE.getBlock(CommonTagPrefixes.BLOCK, key) != null) {
+            if (HiiragiCoreAccess.INSTANCE.materialContents.getBlock(CommonTagPrefixes.BLOCK, key) != null) {
                 furnace.add(CommonTagPrefixes.BLOCK.itemTagKey(key), FurnaceFuel(fuelTime * 10), false)
             }
             // Item
-            for ((prefix: HTTagPrefix, _) in HTMaterialContentsAccess.INSTANCE.getItemMap(key)) {
+            for ((prefix: HTTagPrefix, _) in HiiragiCoreAccess.INSTANCE.materialContents.getItemMap(key)) {
                 val fuelTime1: Int = when (prefix) {
                     CommonTagPrefixes.NUGGET -> fuelTime / 10
                     else -> prefix.getOrDefault(HTTagPropertyKeys.ITEM_SCALE)(fuelTime, propertyMap)

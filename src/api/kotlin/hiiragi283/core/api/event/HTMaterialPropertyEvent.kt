@@ -1,5 +1,6 @@
 package hiiragi283.core.api.event
 
+import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.property.HTPropertyMap
 import net.neoforged.bus.api.Event
@@ -18,6 +19,7 @@ class HTMaterialPropertyEvent(val factory: (HTMaterialKey) -> HTPropertyMap.Muta
      * @param key 対象となる素材のキー
      * @param builderAction プロパティの改変を行うブロック
      */
+    @HTBuilderMarker
     inline fun modify(key: HTMaterialKey, builderAction: HTPropertyMap.Mutable.() -> Unit) {
         factory(key).apply(builderAction)
     }

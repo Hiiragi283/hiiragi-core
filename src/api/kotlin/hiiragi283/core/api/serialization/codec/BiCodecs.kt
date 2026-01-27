@@ -23,7 +23,7 @@ import kotlin.enums.enumEntries
 object BiCodecs {
     /**
      * 範囲をチェックするブロックを作成します。
-     * @param N [Number]と[Comparable]を継承したクラス
+     * @param N [Number]と[Comparable]を実装したクラス
      * @param min 範囲の最小値
      * @param max 範囲の最大値
      */
@@ -102,19 +102,15 @@ object BiCodecs {
      * `0`以上の値を対象とする[Fraction]の[BiCodec]
      */
     @JvmField
-    val NON_NEGATIVE_FRACTION: BiCodec<ByteBuf, Fraction> = FRACTION.validate { fraction: Fraction ->
-        check(fraction >= Fraction.ZERO) { "Value must be non-negative: $fraction" }
-        fraction
-    }
+    val NON_NEGATIVE_FRACTION: BiCodec<ByteBuf, Fraction> =
+        FRACTION.filter({ it >= Fraction.ZERO }, { "Value must be non-negative: $it" })
 
     /**
      * `0`より大きい値を対象とする[Fraction]の[BiCodec]
      */
     @JvmField
-    val POSITIVE_FRACTION: BiCodec<ByteBuf, Fraction> = FRACTION.validate { fraction: Fraction ->
-        check(fraction > Fraction.ZERO) { "Value must be positive: $fraction" }
-        fraction
-    }
+    val POSITIVE_FRACTION: BiCodec<ByteBuf, Fraction> =
+        FRACTION.filter({ it > Fraction.ZERO }, { "Value must be positive: $it" })
 
     /**
      * 指定した[keyCodec], [valueCodec]から，[Map]の[BiCodec]を返します。
@@ -151,7 +147,7 @@ object BiCodecs {
 
     /**
      * [Enum]の[BiCodec]を返します。
-     * @param V [Enum]を継承したクラス
+     * @param V [Enum]を実装したクラス
      * @return [Enum.ordinal]に基づいた[BiCodec]
      */
     @JvmStatic
@@ -160,7 +156,7 @@ object BiCodecs {
 
     /**
      * [Enum]の[BiCodec]を返します。
-     * @param V [Enum]を継承したクラス
+     * @param V [Enum]を実装したクラス
      * @param factory [V]を[String]に変換するブロック
      * @return [factory]に基づいた[BiCodec]
      */

@@ -1,5 +1,6 @@
 package hiiragi283.core.common.registry.register
 
+import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.item.HTSubCreativeTabContents
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTDeferredRegister
@@ -60,7 +61,7 @@ class HTDeferredCreativeTabRegister(namespace: String) :
                     if (item.shouldAddDefault()) {
                         output.accept(item, visibility)
                     }
-                    item.addItems(like, parameters) { output.accept(it, visibility) }
+                    item.addItems(like, HTSubCreativeTabContents.Context(parameters, output))
                 } else {
                     output.accept(item, visibility)
                 }
@@ -82,6 +83,7 @@ class HTDeferredCreativeTabRegister(namespace: String) :
             .build()
     }
 
+    @HTBuilderMarker
     fun registerTab(
         name: String,
         title: HTTranslation,

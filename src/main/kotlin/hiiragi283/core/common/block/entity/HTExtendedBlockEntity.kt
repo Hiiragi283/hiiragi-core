@@ -1,26 +1,65 @@
 package hiiragi283.core.common.block.entity
 
-import com.lowdragmc.lowdraglib2.syncdata.holder.blockentity.ISyncPersistRPCBlockEntity
-import com.lowdragmc.lowdraglib2.syncdata.storage.FieldManagedStorage
-import com.lowdragmc.lowdraglib2.syncdata.storage.IManagedStorage
+import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.block.entity.HTAbstractBlockEntity
+import hiiragi283.core.api.serialization.value.HTValueInput
+import hiiragi283.core.api.serialization.value.HTValueOutput
+import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import net.minecraft.core.BlockPos
+import net.minecraft.core.HolderLookup
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.network.Connection
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket
+import net.minecraft.server.level.ServerLevel
+import net.minecraft.world.level.ChunkPos
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
+import net.neoforged.neoforge.network.PacketDistributor
 
 /**
  * Ragiumで使用される[BlockEntity]の拡張クラス
+ * @see mekanism.common.tile.base.TileEntityUpdateable
  */
-abstract class HTExtendedBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, state: BlockState) :
+abstract class HTExtendedBlockEntity(private val type: HTDeferredBlockEntityType<*>, pos: BlockPos, state: BlockState) :
     BlockEntity(type.get(), pos, state),
-    ISyncPersistRPCBlockEntity {
+    HTAbstractBlockEntity {
+    fun getDeferredType(): HTDeferredBlockEntityType<*> = type
+
     //    Save & Read    //
 
-    private val syncStorage = FieldManagedStorage(this)
+    final override fun saveAdditional(tag: CompoundTag, registries: HolderLookup.Provider) {
+        super.saveAdditional(tag, registries)
+        HiiragiCoreAccess.INSTANCE.createOutput(registries, tag).let(::writeValue)
+    }
 
-    final override fun getSyncStorage(): IManagedStorage = syncStorage
+    final override fun loadAdditional(tag: CompoundTag, registries: HolderLookup.Provider) {
+        super.loadAdditional(tag, registries)
+        HiiragiCoreAccess.INSTANCE.createInput(registries, tag).let(::readValue)
+    }
+
+    final override fun getUpdatePacket(): ClientboundBlockEntityDataPacket = ClientboundBlockEntityDataPacket.create(this)
+
+    final override fun getUpdateTag(registries: HolderLookup.Provider): CompoundTag = getReducedUpdateTag(registries)
+
+    final override fun handleUpdateTag(tag: CompoundTag, provider: HolderLookup.Provider) {
+        super.loadAdditional(tag, provider)
+        handleUpdateTag(HiiragiCoreAccess.INSTANCE.createInput(provider, tag))
+        requestModelDataUpdate()
+    }
+
+    final override fun onDataPacket(net: Connection, pkt: ClientboundBlockEntityDataPacket, provider: HolderLookup.Provider) {
+        val tag: CompoundTag = pkt.tag
+        if (!tag.isEmpty) handleUpdateTag(tag, provider)
+    }
+
+    fun sendUpdatePacket(level: ServerLevel) {
+        if (isRemoved) return
+        val payload: HTUpdateBlockEntityPacket = HTUpdateBlockEntityPacket.create(this) ?: return
+        PacketDistributor.sendToPlayersTrackingChunk(level, ChunkPos(blockPos), payload)
+    }
 
     @Deprecated("Deprecated in Java")
     @Suppress("DEPRECATION")
@@ -68,6 +107,23 @@ abstract class HTExtendedBlockEntity(type: HTDeferredBlockEntityType<*>, pos: Bl
     protected open fun markDirtyComparator() {}
 
     //    Extensions    //
+
+    protected open fun writeValue(output: HTValueOutput) {}
+
+    protected open fun readValue(input: HTValueInput) {}
+
+    /**
+     * @see mekanism.common.tile.base.TileEntityUpdateable.getReducedUpdateTag
+     */
+    fun getReducedUpdateTag(provider: HolderLookup.Provider): CompoundTag {
+        val tag: CompoundTag = super.getUpdateTag(provider)
+        initReducedUpdateTag(HiiragiCoreAccess.INSTANCE.createOutput(provider, tag))
+        return tag
+    }
+
+    open fun initReducedUpdateTag(output: HTValueOutput) {}
+
+    open fun handleUpdateTag(input: HTValueInput) {}
 
     /**
      * [BlockEntity.setBlockState]の後で呼び出されます。

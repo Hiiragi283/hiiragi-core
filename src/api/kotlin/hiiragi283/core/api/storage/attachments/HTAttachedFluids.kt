@@ -16,6 +16,7 @@ data class HTAttachedFluids(override val containers: List<FluidStack>) : HTAttac
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTAttachedFluids> = VanillaBiCodecs.FLUID_STACK
             .listOf()
             .xmap(::HTAttachedFluids, HTAttachedFluids::containers)
+            .filterOrElse(HTAttachedFluids::isNotEmpty) { create(it.size) }
 
         @JvmField
         val EMPTY = HTAttachedFluids(listOf())
@@ -25,6 +26,8 @@ data class HTAttachedFluids(override val containers: List<FluidStack>) : HTAttac
     }
 
     override fun create(containers: List<FluidStack>): HTAttachedFluids = HTAttachedFluids(containers)
+
+    override fun isEmpty(): Boolean = super.isEmpty() || containers.all(FluidStack::isEmpty)
 
     override fun equals(other: Any?): Boolean {
         when {

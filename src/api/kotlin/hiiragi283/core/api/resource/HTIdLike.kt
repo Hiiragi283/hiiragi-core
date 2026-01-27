@@ -17,10 +17,10 @@ fun interface HTIdLike {
     /**
      * 保持している[ID][ResourceLocation]の[名前空間][ResourceLocation.getNamespace]を返します。
      */
-    fun getNamespace(): String = getId().namespace
+    val namespace: String get() = getId().namespace
 
     /**
      * 保持している[ID][ResourceLocation]の[パス][ResourceLocation.getPath]を返します。
      */
-    fun getPath(): String = getId().path
+    val path: String get() = getId().path
 }

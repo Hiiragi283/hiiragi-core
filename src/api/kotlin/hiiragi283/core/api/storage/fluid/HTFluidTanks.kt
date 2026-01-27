@@ -2,6 +2,7 @@ package hiiragi283.core.api.storage.fluid
 
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
+import hiiragi283.core.api.storage.resource.HTResourceSlot
 import hiiragi283.core.api.storage.resource.HTResourceView
 import net.neoforged.neoforge.fluids.FluidStack
 
@@ -43,4 +44,9 @@ fun HTFluidTank.extractFluid(stack: FluidStack, action: HTStorageAction, access:
 fun HTFluidTank.extractFluid(amount: Int, action: HTStorageAction, access: HTStorageAccess): FluidStack {
     val resourceIn: HTFluidResourceType = this.getResource() ?: return FluidStack.EMPTY
     return this.extract(amount, action, access).let(resourceIn::toStack)
+}
+
+fun HTResourceSlot.Basic<HTFluidResourceType>.setStack(stack: FluidStack) {
+    setResource(stack.toResource())
+    setAmount(stack.amount)
 }

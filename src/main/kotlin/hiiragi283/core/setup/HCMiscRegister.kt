@@ -1,5 +1,8 @@
 package hiiragi283.core.setup
 
+import hiiragi283.core.api.HCRegistries
+import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.collection.toFlatTable
 import hiiragi283.core.api.item.HTBlockItem
@@ -10,8 +13,15 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
+import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
+import hiiragi283.core.common.gui.sync.HTBoolSyncPayload
+import hiiragi283.core.common.gui.sync.HTFluidSyncPayload
+import hiiragi283.core.common.gui.sync.HTFractionSyncPayload
+import hiiragi283.core.common.gui.sync.HTIntSyncPayload
+import hiiragi283.core.common.gui.sync.HTItemSyncPayload
+import hiiragi283.core.common.gui.sync.HTLongSyncPayload
 import hiiragi283.core.common.material.HTMaterialManagerImpl
 import hiiragi283.core.common.registry.HTDeferredBlock
 import hiiragi283.core.common.registry.HTDeferredItem
@@ -26,18 +36,21 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.neoforged.neoforge.registries.RegisterEvent
 
-object HCMiscRegister {
+internal object HCMiscRegister {
     @JvmStatic
     private var hasInit: Boolean = false
 
     @JvmStatic
-    internal lateinit var materialBlocks: HTTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredBlock>
+    lateinit var materialBlocks: HTTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredBlock>
+        private set
 
     @JvmStatic
-    internal lateinit var materialItems: HTTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredItem>
+    lateinit var materialItems: HTTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredItem>
+        private set
 
     @JvmStatic
-    internal lateinit var toolItems: HTTable<HTToolType, HTMaterialKey, HTSimpleDeferredItem>
+    lateinit var toolItems: HTTable<HTToolType, HTMaterialKey, HTSimpleDeferredItem>
+        private set
 
     @JvmStatic
     fun register(event: RegisterEvent) {
@@ -46,10 +59,10 @@ object HCMiscRegister {
             HTMaterialManagerImpl.gatherAttributes()
             hasInit = true
         }
-        val manager: HTMaterialManager = HTMaterialManager.INSTANCE
+        val manager: HTMaterialManager = HiiragiCoreAccess.INSTANCE.materialManager
         event.register(Registries.BLOCK) { helper ->
             // 素材ブロックを生成する
-            materialBlocks = manager.entries
+            materialBlocks = manager
                 .toFlatTable { (key: HTMaterialKey, propertyMap: HTPropertyMap) ->
                     propertyMap
                         .getOrDefault(HTMaterialPropertyKeys.BLOCK_PREFIXES)
@@ -70,7 +83,7 @@ object HCMiscRegister {
 
         event.register(Registries.ITEM) { helper ->
             // 素材アイテムを生成する
-            materialItems = manager.entries
+            materialItems = manager
                 .toFlatTable { (key: HTMaterialKey, propertyMap: HTPropertyMap) ->
                     propertyMap
                         .getOrDefault(HTMaterialPropertyKeys.ITEM_PREFIXES)
@@ -81,7 +94,7 @@ object HCMiscRegister {
                         }
                 }
             // 素材ツールを生成する
-            toolItems = manager.entries
+            toolItems = manager
                 .toFlatTable { (key: HTMaterialKey, propertyMap: HTPropertyMap) ->
                     val material: HTToolMaterial =
                         propertyMap[HTMaterialPropertyKeys.TOOL_MATERIAL] ?: return@toFlatTable setOf()
@@ -93,6 +106,17 @@ object HCMiscRegister {
                             Triple(toolType, key, HTDeferredItem.simple(id))
                         }
                 }
+        }
+
+        // Slot Sync Type
+        event.register(HCRegistries.Keys.SLOT_TYPE) { helper ->
+            helper.register(HTConst.COMMON.toId("boolean"), HTBoolSyncPayload.TYPE)
+            helper.register(HTConst.COMMON.toId("fraction"), HTFractionSyncPayload.TYPE)
+            helper.register(HTConst.COMMON.toId("integer"), HTIntSyncPayload.TYPE)
+            helper.register(HTConst.COMMON.toId("long"), HTLongSyncPayload.TYPE)
+
+            helper.register(HTConst.MINECRAFT.toId("fluid"), HTFluidSyncPayload.TYPE)
+            helper.register(HTConst.MINECRAFT.toId("item"), HTItemSyncPayload.TYPE)
         }
     }
 }

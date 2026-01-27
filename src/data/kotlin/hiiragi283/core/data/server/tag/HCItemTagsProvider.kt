@@ -1,11 +1,8 @@
 package hiiragi283.core.data.server.tag
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.tag.HTItemTagsProvider
-import hiiragi283.core.api.item.tool.HTToolType
-import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
@@ -40,10 +37,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
 
     private fun copyTags() {
         // Material
-        HTMaterialContentsAccess.INSTANCE.getBlockTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, _) ->
-            if (key.getNamespace() != modId) return@forEach
-            copy(prefix, key)
-        }
+        copyMaterials()
         for (key: HTMaterialKey in HCBlockTagsProvider.VANILLA_STORAGE_BLOCKS.keys) {
             copy(CommonTagPrefixes.BLOCK, key)
         }
@@ -52,9 +46,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
     //    Material    //
 
     private fun material(factory: BuilderFactory<Item>) {
-        HTMaterialContentsAccess.INSTANCE.getItemTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
-            if (key.getNamespace() != modId) return@forEach
-            addMaterial(factory, prefix, key).add(item)
+        addMaterials(factory) { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
             if (prefix == CommonTagPrefixes.GEM || prefix == CommonTagPrefixes.INGOT) {
                 factory.apply(ItemTags.BEACON_PAYMENT_ITEMS).addTag(prefix, key)
             }
@@ -74,16 +66,12 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
         addMaterial(factory, CommonTagPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE).addItem(Items.NETHERITE_SCRAP)
 
         factory.apply(ItemTags.COALS).add(HCItems.BAMBOO_CHARCOAL)
-        factory.apply(HiiragiCoreTags.Items.COAL_COKE).addTag(CommonTagPrefixes.FUEL, CommonMaterialKeys.COAL_COKE)
     }
 
     //    Tool    //
 
     private fun tool(factory: BuilderFactory<Item>) {
-        HTMaterialContentsAccess.INSTANCE.getToolTable().forEach { (toolType: HTToolType, key: HTMaterialKey, item: HTIdLike) ->
-            if (key.getNamespace() != modId) return@forEach
-            toolType.toolTags.map(factory::apply).forEach { it.add(item) }
-        }
+        addTools(factory)
 
         listOf(
             ItemTags.AXES,

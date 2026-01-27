@@ -1,7 +1,10 @@
 package hiiragi283.core.common.storage
 
-import hiiragi283.core.api.HTDataSerializable
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.function.andThen
+import hiiragi283.core.api.serialization.value.HTValueInput
+import hiiragi283.core.api.serialization.value.HTValueOutput
+import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.attachments.HTAttachedContainers
 import hiiragi283.core.api.storage.attachments.HTAttachedEnergy
 import hiiragi283.core.api.storage.attachments.HTAttachedFluids
@@ -19,9 +22,11 @@ import net.minecraft.world.item.ItemStack
 /**
  * @see mekanism.common.attachments.containers.ContainerType
  */
-class HTCapabilityCodec<CONTAINER : HTDataSerializable, ATTACHED : HTAttachedContainers<*, ATTACHED>>(
+class HTCapabilityCodec<CONTAINER : HTValueSerializable, ATTACHED : HTAttachedContainers<*, ATTACHED>>(
     private val component: DataComponentType<ATTACHED>,
     private val attachedFactory: (Int) -> ATTACHED,
+    private val containerTag: String,
+    private val containerKey: String,
     private val blockEntityGetter: (HTBlockEntity, Direction?) -> List<CONTAINER>,
     private val canHandle: (HTBlockEntity) -> Boolean,
     private val copyTo: (HTBlockEntity, List<CONTAINER>, ATTACHED) -> Unit,
@@ -32,6 +37,8 @@ class HTCapabilityCodec<CONTAINER : HTDataSerializable, ATTACHED : HTAttachedCon
         val ITEM: HTCapabilityCodec<HTItemSlot, HTAttachedItems> = HTCapabilityCodec(
             HCDataComponents.ITEM,
             HTAttachedItems::create,
+            HTConst.ITEMS,
+            HTConst.SLOT,
             HTBlockEntity::getItemSlots,
             HTBlockEntity::hasItemHandler,
             HTBlockEntity::applyItemSlots,
@@ -42,6 +49,8 @@ class HTCapabilityCodec<CONTAINER : HTDataSerializable, ATTACHED : HTAttachedCon
         val ENERGY: HTCapabilityCodec<HTEnergyBattery, HTAttachedEnergy> = HTCapabilityCodec(
             HCDataComponents.ENERGY,
             HTAttachedEnergy::create,
+            HTConst.BATTERIES,
+            HTConst.SLOT,
             HTBlockEntity::getEnergyBattery.andThen(::listOfNotNull),
             HTBlockEntity::hasEnergyStorage,
             HTBlockEntity::applyEnergyBattery,
@@ -52,6 +61,8 @@ class HTCapabilityCodec<CONTAINER : HTDataSerializable, ATTACHED : HTAttachedCon
         val FLUID: HTCapabilityCodec<HTFluidTank, HTAttachedFluids> = HTCapabilityCodec(
             HCDataComponents.FLUID,
             HTAttachedFluids::create,
+            HTConst.FLUIDS,
+            HTConst.TANK,
             HTBlockEntity::getFluidTanks,
             HTBlockEntity::hasFluidHandler,
             HTBlockEntity::applyFluidTanks,
@@ -62,7 +73,7 @@ class HTCapabilityCodec<CONTAINER : HTDataSerializable, ATTACHED : HTAttachedCon
         val TYPES: List<HTCapabilityCodec<*, *>> = listOf(ITEM, ENERGY, FLUID)
     }
 
-    //    Data Component    //
+    //    Component    //
 
     fun getOrCreate(stack: ItemStack, size: Int): ATTACHED = stack.getOrDefault(component, attachedFactory(size))
 
@@ -71,6 +82,46 @@ class HTCapabilityCodec<CONTAINER : HTDataSerializable, ATTACHED : HTAttachedCon
             stack.remove(component)
         } else {
             stack.set(component, attached)
+        }
+    }
+
+    //    Save & Read    //
+
+    fun saveTo(output: HTValueOutput, blockEntity: HTBlockEntity) {
+        saveTo(output, getContainers(blockEntity))
+    }
+
+    fun saveTo(output: HTValueOutput, containers: List<CONTAINER>) {
+        save(output.childrenList(containerTag), containers)
+    }
+
+    private fun save(list: HTValueOutput.ValueOutputList, containers: List<CONTAINER>) {
+        containers.forEachIndexed { slot: Int, container: CONTAINER ->
+            val output: HTValueOutput = list.addChild()
+            container.serialize(output)
+            if (output.isEmpty()) {
+                list.discardLast()
+                return@forEachIndexed
+            }
+            output.putInt(containerKey, slot)
+        }
+    }
+
+    fun loadFrom(input: HTValueInput, blockEntity: HTBlockEntity) {
+        loadFrom(input, getContainers(blockEntity))
+    }
+
+    fun loadFrom(input: HTValueInput, containers: List<CONTAINER>) {
+        load(input.childrenListOrEmpty(containerTag), containers)
+    }
+
+    private fun load(list: Iterable<HTValueInput>, containers: List<CONTAINER>) {
+        if (list.none()) return
+        for (input: HTValueInput in list) {
+            val slot: Int = input.getInt(containerKey) ?: continue
+            if (slot in containers.indices) {
+                containers[slot].deserialize(input)
+            }
         }
     }
 

@@ -1,19 +1,19 @@
 package hiiragi283.core.common.storage.item
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HTDataSerializable
-import hiiragi283.core.api.serialization.codec.BiCodecs
+import hiiragi283.core.api.HTContentListener
+import hiiragi283.core.api.serialization.value.HTValueInput
+import hiiragi283.core.api.serialization.value.HTValueOutput
+import hiiragi283.core.api.serialization.value.read
+import hiiragi283.core.api.serialization.value.write
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
+import hiiragi283.core.api.storage.item.setStack
 import hiiragi283.core.api.storage.item.toResource
-import net.minecraft.nbt.Tag
-import net.minecraft.resources.RegistryOps
 import net.minecraft.world.item.ItemStack
-import java.util.function.BiConsumer
 import java.util.function.BiPredicate
-import java.util.function.Function
 import java.util.function.Predicate
 
 open class HTBasicItemSlot protected constructor(
@@ -21,8 +21,8 @@ open class HTBasicItemSlot protected constructor(
     private val canExtract: BiPredicate<HTItemResourceType, HTStorageAccess>,
     private val canInsert: BiPredicate<HTItemResourceType, HTStorageAccess>,
     private val filter: Predicate<HTItemResourceType>,
-) : HTItemSlot.Basic(),
-    HTDataSerializable.CodecBased {
+    private val listener: HTContentListener?,
+) : HTItemSlot.Basic() {
     companion object {
         @JvmStatic
         private fun validateLimit(limit: Int): Int {
@@ -32,26 +32,32 @@ open class HTBasicItemSlot protected constructor(
 
         @JvmStatic
         fun create(
+            listener: HTContentListener?,
             limit: Int = HTConst.ABSOLUTE_MAX_STACK_SIZE,
             canExtract: BiPredicate<HTItemResourceType, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
             canInsert: BiPredicate<HTItemResourceType, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
             filter: Predicate<HTItemResourceType> = HTStoragePredicates.alwaysTrue(),
-        ): HTBasicItemSlot = HTBasicItemSlot(validateLimit(limit), canExtract, canInsert, filter)
+        ): HTBasicItemSlot = HTBasicItemSlot(validateLimit(limit), canExtract, canInsert, filter, listener)
 
         @JvmStatic
         fun input(
+            listener: HTContentListener?,
             limit: Int = HTConst.ABSOLUTE_MAX_STACK_SIZE,
             canInsert: Predicate<HTItemResourceType> = HTStoragePredicates.alwaysTrue(),
             filter: Predicate<HTItemResourceType> = canInsert,
         ): HTBasicItemSlot = create(
+            listener,
             limit,
             HTStoragePredicates.notExternal(),
-            { resource: HTItemResourceType, _ -> canInsert.test(resource) },
+            { stack: HTItemResourceType, _ -> canInsert.test(stack) },
             filter,
         )
 
         @JvmStatic
-        fun output(): HTBasicItemSlot = create(canInsert = HTStoragePredicates.internalOnly())
+        fun output(listener: HTContentListener?): HTBasicItemSlot = create(
+            listener,
+            canInsert = HTStoragePredicates.internalOnly(),
+        )
     }
 
     @JvmField
@@ -70,6 +76,7 @@ open class HTBasicItemSlot protected constructor(
         } else {
             error("Invalid stack for slot: $resource")
         }
+        onContentsChanged()
     }
 
     final override fun setAmount(amount: Int) {
@@ -90,18 +97,18 @@ open class HTBasicItemSlot protected constructor(
 
     override fun getAmount(): Int = stack.count
 
-    override fun serialize(ops: RegistryOps<Tag>, consumer: BiConsumer<String, Tag>) {
-        val resource: HTItemResourceType = getResource() ?: return
-        HTItemResourceType.CODEC
-            .encode(ops, resource)
-            .ifSuccess { consumer.accept(HTConst.ITEM, it) }
-        BiCodecs.NON_NEGATIVE_INT.encode(ops, getAmount()).ifSuccess { consumer.accept(HTConst.AMOUNT, it) }
+    override fun serialize(output: HTValueOutput) {
+        output.write(HTConst.ITEM, HTItemResourceType.CODEC, getResource())
+        output.putInt(HTConst.COUNT, getAmount())
     }
 
-    override fun deserialize(ops: RegistryOps<Tag>, function: Function<String, Tag>) {
-        HTItemResourceType.CODEC
-            .decode(ops, function.apply(HTConst.ITEM))
-            .ifSuccess(::setResource)
-        BiCodecs.NON_NEGATIVE_INT.decode(ops, function.apply(HTConst.AMOUNT)).ifSuccess(::setAmount)
+    override fun deserialize(input: HTValueInput) {
+        val resource: HTItemResourceType = input.read(HTConst.ITEM, HTItemResourceType.CODEC) ?: return
+        val count: Int = input.getInt(HTConst.COUNT) ?: return
+        resource.toStack(count).let(::setStack)
+    }
+
+    final override fun onContentsChanged() {
+        this.listener?.onContentsChanged()
     }
 }

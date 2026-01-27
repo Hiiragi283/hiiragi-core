@@ -1,9 +1,10 @@
 package hiiragi283.core.api.item
 
 import hiiragi283.core.api.registry.HTItemHolderLike
+import net.minecraft.core.HolderLookup
+import net.minecraft.world.flag.FeatureFlagSet
 import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.ItemStack
-import java.util.function.Consumer
 
 /**
  * クリエイティブタブに複数の[ItemStack]を追加するためのインターフェースです。
@@ -15,13 +16,30 @@ fun interface HTSubCreativeTabContents {
     /**
      * 複数の[ItemStack]を追加します。
      * @param baseItem 対象のアイテム
-     * @param parameters 登録時のコンテキスト
-     * @param consumer [ItemStack]の登録先
+     * @param context 登録時のコンテキスト
      */
-    fun addItems(baseItem: HTItemHolderLike<*>, parameters: CreativeModeTab.ItemDisplayParameters, consumer: Consumer<ItemStack>)
+    fun addItems(baseItem: HTItemHolderLike<*>, context: Context)
 
     /**
      * デフォルトの[ItemStack]を追加するか判定します。
      */
     fun shouldAddDefault(): Boolean = true
+
+    //    Context    //
+
+    /**
+     * @author Hiiragi Tsubasa
+     * @since 0.8.0
+     */
+    class Context(
+        val enabledFeatures: FeatureFlagSet,
+        val hasPermissions: Boolean,
+        val provider: HolderLookup.Provider,
+        output: CreativeModeTab.Output,
+    ) : (ItemStack) -> Unit by output::accept {
+        constructor(
+            parameters: CreativeModeTab.ItemDisplayParameters,
+            output: CreativeModeTab.Output,
+        ) : this(parameters.enabledFeatures(), parameters.hasPermissions(), parameters.holders(), output)
+    }
 }

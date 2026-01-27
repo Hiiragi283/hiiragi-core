@@ -1,8 +1,9 @@
 package hiiragi283.core.common.capability
 
-import hiiragi283.core.api.HTDataSerializable
+import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.capability.HTMultiCapability
 import hiiragi283.core.api.capability.slotRange
+import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.item.HTItemHandler
@@ -43,7 +44,7 @@ object HTItemCapabilities : HTMultiCapability.Simple<IItemHandler> {
         is HTItemHandler -> handler
         else -> HTItemHandler {
             handler.slotRange.map { slot: Int ->
-                object : HTItemSlot, HTDataSerializable.Empty {
+                object : HTItemSlot, HTContentListener.Empty, HTValueSerializable.Empty {
                     override fun isValid(resource: HTItemResourceType): Boolean = handler.isItemValid(slot, resource.toStack())
 
                     override fun insert(

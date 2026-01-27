@@ -1,11 +1,17 @@
 package hiiragi283.core.api.data
 
+import hiiragi283.core.api.function.partially1
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.DataProvider
+import net.minecraft.data.PackOutput
 import net.minecraft.data.loot.LootTableProvider
 import net.minecraft.data.loot.LootTableSubProvider
+import net.minecraft.data.tags.TagsProvider
+import net.minecraft.world.item.Item
+import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet
 import net.neoforged.neoforge.data.event.GatherDataEvent
+import java.util.concurrent.CompletableFuture
 
 /**
  * [DataProvider]を登録する処理を表すインターフェースです。
@@ -17,21 +23,21 @@ import net.neoforged.neoforge.data.event.GatherDataEvent
 interface HTDataGenerator {
     /**
      * 指定した[factory]を登録します。
-     * @param DATA [DataProvider]を継承したクラス
+     * @param DATA [DataProvider]を実装したクラス
      * @return [factory]から生成された[DataProvider]のインスタンス
      */
     fun <DATA : DataProvider> addProvider(factory: DataProvider.Factory<DATA>): DATA
 
     /**
      * 指定した[factory]を登録します。
-     * @param DATA [DataProvider]を継承したクラス
+     * @param DATA [DataProvider]を実装したクラス
      * @return [factory]から生成された[DataProvider]のインスタンス
      */
     fun <DATA : DataProvider> addProvider(factory: GatherDataEvent.DataProviderFromOutputLookup<DATA>): DATA
 
     /**
      * 指定した[factory]を登録します。
-     * @param DATA [DataProvider]を継承したクラス
+     * @param DATA [DataProvider]を実装したクラス
      * @return [factory]から生成された[DataProvider]のインスタンス
      */
     fun <DATA : DataProvider> addProvider(factory: Factory<DATA>): DATA
@@ -42,7 +48,7 @@ interface HTDataGenerator {
      * @return [LootTableProvider]のインスタンス
      */
     fun addLootTables(vararg pairs: Pair<(HolderLookup.Provider) -> LootTableSubProvider, LootContextParamSet>): LootTableProvider =
-        addProvider { output, lookupProvider ->
+        addProvider { output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider> ->
             LootTableProvider(
                 output,
                 setOf(),
@@ -52,8 +58,19 @@ interface HTDataGenerator {
         }
 
     /**
+     * [Block]と[Item]向けの[TagsProvider]をまとめて登録します。
+     * @since 0.8.0
+     */
+    fun addBlockAndItemTags(
+        blockTags: Factory<out TagsProvider<Block>>,
+        itemTags: (CompletableFuture<TagsProvider.TagLookup<Block>>, HTDataGenContext) -> TagsProvider<Item>,
+    ) {
+        addProvider(blockTags).contentsGetter().let(itemTags::partially1).let { addProvider(it) }
+    }
+
+    /**
      * [HTDataGenContext]を受けるとって[DataProvider]に変換する処理を表すインターフェースです。
-     * @param DATA [DataProvider]を継承したクラス
+     * @param DATA [DataProvider]を実装したクラス
      * @author Hiiragi Tsubasa
      * @since 0.1.0
      * @see DataProvider.Factory

@@ -41,6 +41,7 @@ interface HTArmorMaterial : HTEquipmentMaterial {
     fun getArmorMultiplier(): Int
 
     /**
+     * 既存の[ArmorMaterial]に実装を委譲した[HTArmorMaterial]の拡張インターフェースです。
      * @author Hiiragi Tsubasa
      * @since 0.8.0
      */

@@ -2,8 +2,8 @@ package hiiragi283.core.data.server.recipe
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.api.material.HTMaterialContentsAccess
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -33,184 +33,223 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
     @JvmStatic
     private fun materials() {
         // Sand + Ash -> Glass Dust
-        HTShapelessRecipeBuilder
-            .create(getOrThrow(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLASS), 4)
-            .addIngredients(Tags.Items.SANDS, 3)
-            .addIngredient(CommonTagPrefixes.DUST, CommonMaterialKeys.ASH)
-            .saveSuffixed(output, "_from_sand_and_ash")
+        HTShapelessRecipeBuilder.create(output) {
+            repeat(3) {
+                ingredients += Tags.Items.SANDS
+            }
+            ingredients += CommonTagPrefixes.DUST to CommonMaterialKeys.ASH
+            resultStack += getOrThrow(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLASS) to 4
+            recipeId suffix "_from_sand_and_ash"
+        }
         // Iron Rod -> Iron Bar
-        HTShapedRecipeBuilder
-            .create(Items.IRON_BARS, 8)
-            .pattern(
+        HTShapedRecipeBuilder.create(output) {
+            pattern(
                 "AAA",
                 "AAA",
-            ).define('A', CommonTagPrefixes.ROD, VanillaMaterialKeys.IRON)
-            .saveSuffixed(output, "_from_rod")
+            )
+            define('A') += CommonTagPrefixes.ROD to VanillaMaterialKeys.IRON
+            resultStack += Items.IRON_BARS to 8
+            recipeId suffix "_from_rod"
+        }
         // Compressed Sawdust -> Charcoal
-        HTCookingRecipeBuilder
-            .smelting(Items.CHARCOAL)
-            .addIngredient(HCItems.COMPRESSED_SAWDUST)
-            .setTime(20 * 30)
-            .setExp(0.5f)
-            .saveSuffixed(output, "_from_sawdust")
+        HTCookingRecipeBuilder.smelting(output) {
+            ingredient += HCItems.COMPRESSED_SAWDUST
+            resultStack += Items.CHARCOAL
+            exp = 0.5f
+            time = 20 * 30
+            recipeId suffix "_from_sawdust"
+        }
         // Dough -> Bread
-        HTCookingRecipeBuilder.smeltingAndSmoking(Items.BREAD) {
-            addIngredient(getOrThrow(CommonTagPrefixes.DOUGH, VanillaMaterialKeys.WHEAT))
-            setExp(0.3f)
-            saveSuffixed(output, "_from_dough")
+        HTCookingRecipeBuilder.smeltingAndSmoking(output) {
+            ingredient += getOrThrow(CommonTagPrefixes.DOUGH, VanillaMaterialKeys.WHEAT)
+            resultStack += Items.BREAD
+            exp = 0.3f
+            recipeId suffix "_from_dough"
         }
 
         // Bamboo -> Bamboo Charcoal
-        HTCookingRecipeBuilder
-            .smelting(HCItems.BAMBOO_CHARCOAL)
-            .addIngredient(Items.BAMBOO)
-            .setExp(0.5f)
-            .save(output)
+        HTCookingRecipeBuilder.smelting(output) {
+            ingredient += Items.BAMBOO
+            resultStack += HCItems.BAMBOO_CHARCOAL
+            exp = 0.5f
+        }
         // Polymer Resin -> Plastic Plate
-        HTCookingRecipeBuilder
-            .smelting(getOrThrow(CommonTagPrefixes.PLATE, CommonMaterialKeys.PLASTIC))
-            .addIngredient(HCItems.POLYMER_RESIN)
-            .setExp(0.7f)
-            .saveSuffixed(output, "_from_resin")
+        HTCookingRecipeBuilder.smelting(output) {
+            ingredient += HCItems.POLYMER_RESIN
+            resultStack += getOrThrow(CommonTagPrefixes.PLATE, CommonMaterialKeys.PLASTIC)
+            exp = 0.7f
+            recipeId suffix "_from_resin"
+        }
         // Steel Compound
-        HTShapelessRecipeBuilder
-            .create(HCItems.STEEL_COMPOUND)
-            .addIngredient(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON)
-            .addIngredients(CommonTagPrefixes.DUST, VanillaMaterialKeys.CHARCOAL, 2)
-            .saveSuffixed(output, "_with_charcoal")
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += CommonTagPrefixes.INGOT to VanillaMaterialKeys.IRON
+            repeat(2) {
+                ingredients += CommonTagPrefixes.DUST to VanillaMaterialKeys.CHARCOAL
+            }
+            resultStack += HCItems.STEEL_COMPOUND
+            recipeId suffix "_with_charcoal"
+        }
 
-        HTShapelessRecipeBuilder
-            .create(HCItems.STEEL_COMPOUND)
-            .addIngredient(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON)
-            .addIngredients(CommonTagPrefixes.DUST, VanillaMaterialKeys.COAL, 4)
-            .saveSuffixed(output, "_with_coal")
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += CommonTagPrefixes.INGOT to VanillaMaterialKeys.IRON
+            repeat(4) {
+                ingredients += CommonTagPrefixes.DUST to VanillaMaterialKeys.COAL
+            }
+            resultStack += HCItems.STEEL_COMPOUND
+            recipeId suffix "_with_coal"
+        }
 
-        HTCookingRecipeBuilder
-            .blasting(getOrThrow(CommonTagPrefixes.INGOT, CommonMaterialKeys.STEEL))
-            .addIngredient(HCItems.STEEL_COMPOUND)
-            .setExp(0.7f)
-            .saveSuffixed(output, "_from_compound")
+        HTCookingRecipeBuilder.blasting(output) {
+            ingredient += HCItems.STEEL_COMPOUND
+            resultStack += getOrThrow(CommonTagPrefixes.INGOT, CommonMaterialKeys.STEEL)
+            exp = 0.7f
+            recipeId suffix "_from_compound"
+        }
         // Wither Doll
-        HTShapedRecipeBuilder
-            .create(HCItems.WITHER_DOLL)
-            .pattern(
+        HTShapedRecipeBuilder.create(output) {
+            pattern(
                 "AAA",
                 "BBB",
                 " B ",
-            ).define('A', Items.WITHER_SKELETON_SKULL)
-            .define('B', ItemTags.SOUL_FIRE_BASE_BLOCKS)
-            .save(output)
+            )
+            define('A') += Items.WITHER_SKELETON_SKULL
+            define('B') += ItemTags.SOUL_FIRE_BASE_BLOCKS
+            resultStack += HCItems.WITHER_DOLL
+        }
     }
 
     @JvmStatic
     private fun utilities() {
         // Slot Cover
-        HTStonecuttingRecipeBuilder
-            .create(HCItems.SLOT_COVER, 3)
-            .addIngredient(Items.SMOOTH_STONE_SLAB)
-            .save(output)
+        HTStonecuttingRecipeBuilder.create(output) {
+            ingredient += Items.SMOOTH_STONE_SLAB
+            resultStack += HCItems.SLOT_COVER to 3
+        }
         // Trader Catalog
-        HTShapelessRecipeBuilder
-            .create(HCItems.TRADER_CATALOG)
-            .addIngredient(Items.BOOK)
-            .addIngredient(CommonTagPrefixes.GEM, VanillaMaterialKeys.EMERALD)
-            .setCategory(CraftingBookCategory.EQUIPMENT)
-            .save(output)
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += Items.BOOK
+            ingredients += CommonTagPrefixes.GEM to VanillaMaterialKeys.EMERALD
+            resultStack += HCItems.TRADER_CATALOG
+            category = CraftingBookCategory.EQUIPMENT
+        }
         // Eldritch Egg
-        HTShapedRecipeBuilder
-            .create(HCItems.ELDRITCH_EGG, 4)
-            .hollow4()
-            .define('A', Tags.Items.EGGS)
-            .define('B', CommonTagPrefixes.PEARL, HCMaterialKeys.ELDRITCH)
-            .setCategory(CraftingBookCategory.EQUIPMENT)
-            .save(output)
+        HTShapedRecipeBuilder.create(output) {
+            hollow4()
+            define('A') += Tags.Items.EGGS
+            define('B') += CommonTagPrefixes.PEARL to HCMaterialKeys.ELDRITCH
+            resultStack += HCItems.ELDRITCH_EGG to 4
+            category = CraftingBookCategory.EQUIPMENT
+        }
 
         // Eternal Upgrade
-        HTShapedRecipeBuilder
-            .create(HCItems.ETERNAL_UPGRADE)
-            .pattern(
+        HTShapedRecipeBuilder.create(output) {
+            pattern(
                 "ABA",
                 "ACA",
                 "AAA",
-            ).define('A', CommonTagPrefixes.GEM, VanillaMaterialKeys.DIAMOND)
-            .define('B', HCItems.ETERNAL_UPGRADE)
-            .define('C', HCItems.IRIDESCENT_POWDER)
-            .save(output)
+            )
+            define('A') += CommonTagPrefixes.GEM to VanillaMaterialKeys.DIAMOND
+            define('B') += HCItems.ETERNAL_UPGRADE
+            define('C') += HCItems.IRIDESCENT_POWDER
+            resultStack += HCItems.ETERNAL_UPGRADE
+        }
         save(id(HTConst.SMITHING, "eternal_upgrade"), HTEternalSmithingRecipe)
         // Almighty Pickaxe
-        HTShapelessRecipeBuilder
-            .create(HCItems.ALMIGHTY_PICKAXE)
-            .addIngredient(Items.NETHERITE_SHOVEL)
-            .addIngredient(Items.NETHERITE_PICKAXE)
-            .addIngredient(Items.NETHERITE_AXE)
-            .addIngredient(Items.NETHERITE_HOE)
-            .addIngredients(CommonTagPrefixes.INGOT, CommonMaterialKeys.IRIDIUM, 4)
-            .save(output)
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += Items.NETHERITE_SHOVEL
+            ingredients += Items.NETHERITE_PICKAXE
+            ingredients += Items.NETHERITE_AXE
+            ingredients += Items.NETHERITE_HOE
+            repeat(4) {
+                ingredients += CommonTagPrefixes.INGOT to CommonMaterialKeys.IRIDIUM
+            }
+            resultStack += HCItems.ALMIGHTY_PICKAXE
+        }
     }
 
     @JvmStatic
     private fun buckets() {
         // Exp Bottle <-> Exp Bucket
-        HTShapelessRecipeBuilder
-            .create(HCFluids.EXPERIENCE.getBucket())
-            .addIngredients(Items.EXPERIENCE_BOTTLE, count = 4)
-            .addIngredient(Tags.Items.BUCKETS_EMPTY)
-            .saveSuffixed(output, "_from_bottles")
-        HTShapelessRecipeBuilder
-            .create(Items.EXPERIENCE_BOTTLE, 4)
-            .addIngredient(HCFluids.EXPERIENCE.bucketTag)
-            .addIngredients(Items.GLASS_BOTTLE, count = 4)
-            .saveSuffixed(output, "_from_bucket")
+        HTShapelessRecipeBuilder.create(output) {
+            repeat(4) {
+                ingredients += Items.EXPERIENCE_BOTTLE
+            }
+            ingredients += Tags.Items.BUCKETS_EMPTY
+            resultStack += HCFluids.EXPERIENCE.getBucket()
+            recipeId suffix "_from_bottles"
+        }
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += HCFluids.EXPERIENCE.bucketTag
+            repeat(4) {
+                ingredients += Items.GLASS_BOTTLE
+            }
+            resultStack += Items.EXPERIENCE_BOTTLE to 4
+            recipeId suffix "_from_bucket"
+        }
 
         // Honey Bottle <-> Honey Bucket
-        HTShapelessRecipeBuilder
-            .create(HCFluids.HONEY.getBucket())
-            .addIngredients(Tags.Items.DRINKS_HONEY, 4)
-            .addIngredient(Tags.Items.BUCKETS_EMPTY)
-            .saveSuffixed(output, "_from_bottles")
-        HTShapelessRecipeBuilder
-            .create(Items.HONEY_BOTTLE, 4)
-            .addIngredient(HCFluids.HONEY.bucketTag)
-            .addIngredients(Items.GLASS_BOTTLE, count = 4)
-            .saveSuffixed(output, "_from_bucket")
+        HTShapelessRecipeBuilder.create(output) {
+            repeat(4) {
+                ingredients += Tags.Items.DRINKS_HONEY
+            }
+            ingredients += Tags.Items.BUCKETS_EMPTY
+            resultStack += HCFluids.HONEY.getBucket()
+            recipeId suffix "_from_bottles"
+        }
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += HCFluids.HONEY.bucketTag
+            repeat(4) {
+                ingredients += Items.GLASS_BOTTLE
+            }
+            resultStack += Items.HONEY_BOTTLE to 4
+            recipeId suffix "_from_bucket"
+        }
         // Honey Block <-> Honey Bucket
-        HTShapelessRecipeBuilder
-            .create(HCFluids.HONEY.getBucket())
-            .addIngredient(Items.HONEY_BLOCK)
-            .addIngredient(Tags.Items.BUCKETS_EMPTY)
-            .saveSuffixed(output, "_from_block")
-        HTShapelessRecipeBuilder
-            .create(Items.HONEY_BLOCK)
-            .addIngredient(HCFluids.HONEY.bucketTag)
-            .saveSuffixed(output, "_from_bucket")
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += Items.HONEY_BLOCK
+            ingredients += Tags.Items.BUCKETS_EMPTY
+            resultStack += HCFluids.HONEY.getBucket()
+            recipeId suffix "_from_block"
+        }
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += HCFluids.HONEY.bucketTag
+            resultStack += Items.HONEY_BLOCK
+            recipeId suffix "_from_bucket"
+        }
         // Mushroom Stew
-        HTShapelessRecipeBuilder
-            .create(HCFluids.MUSHROOM_STEW.getBucket())
-            .addIngredients(Items.MUSHROOM_STEW, count = 4)
-            .addIngredient(Tags.Items.BUCKETS_EMPTY)
-            .saveSuffixed(output, "_from_bowls")
+        HTShapelessRecipeBuilder.create(output) {
+            repeat(4) {
+                ingredients += Items.MUSHROOM_STEW
+            }
+            ingredients += Tags.Items.BUCKETS_EMPTY
+            resultStack += HCFluids.MUSHROOM_STEW.getBucket()
+            recipeId suffix "_from_bowls"
+        }
 
         // Latex
-        HTShapedRecipeBuilder
-            .create(HCFluids.LATEX.getBucket())
-            .hollow8()
-            .define('A', Items.DANDELION)
-            .define('B', Tags.Items.BUCKETS_EMPTY)
-            .saveSuffixed(output, "_from_flower")
+        HTShapedRecipeBuilder.create(output) {
+            hollow8()
+            define('A') += Items.DANDELION
+            define('B') += Tags.Items.BUCKETS_EMPTY
+            resultStack += HCFluids.LATEX.getBucket()
+            recipeId suffix "_from_flower"
+        }
         // Latex -> Raw Rubber
-        HTShapelessRecipeBuilder
-            .create(HCItems.RAW_RUBBER)
-            .addIngredient(HCFluids.LATEX.bucketTag)
-            .saveSuffixed(output, "_from_bucket")
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += HCFluids.LATEX.bucketTag
+            resultStack += HCItems.RAW_RUBBER
+            recipeId suffix "_from_bucket"
+        }
         // Raw Rubber -> Rubber Plate
-        HTCookingRecipeBuilder
-            .smelting(getOrThrow(CommonTagPrefixes.PLATE, CommonMaterialKeys.RUBBER))
-            .addIngredient(HCItems.RAW_RUBBER)
-            .setExp(0.7f)
-            .saveSuffixed(output, "_from_raw")
+        HTCookingRecipeBuilder.smelting(output) {
+            ingredient += HCItems.RAW_RUBBER
+            resultStack += getOrThrow(CommonTagPrefixes.PLATE, CommonMaterialKeys.RUBBER)
+            exp = 0.7f
+            recipeId suffix "_from_raw"
+        }
     }
 
     @JvmStatic
     private fun getOrThrow(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*> =
-        HTMaterialContentsAccess.INSTANCE.getItemOrThrow(prefix, material)
+        HiiragiCoreAccess.INSTANCE.materialContents.getItemOrThrow(prefix, material)
 }

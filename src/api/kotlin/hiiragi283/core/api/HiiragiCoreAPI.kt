@@ -1,5 +1,6 @@
 package hiiragi283.core.api
 
+import com.mojang.logging.LogUtils
 import hiiragi283.core.api.resource.toId
 import net.minecraft.client.Minecraft
 import net.minecraft.core.RegistryAccess
@@ -7,6 +8,7 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.MinecraftServer
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.neoforge.server.ServerLifecycleHooks
+import org.slf4j.Logger
 import thedarkcolour.kotlinforforge.neoforge.forge.callWhenOn
 import java.util.ServiceLoader
 
@@ -18,6 +20,9 @@ data object HiiragiCoreAPI {
      * Hiiragi CoreのMod ID
      */
     const val MOD_ID = "hiiragi_core"
+
+    @JvmField
+    val LOGGER: Logger = LogUtils.getLogger()
 
     //    ResourceLocation    //
 

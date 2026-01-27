@@ -1,7 +1,6 @@
 package hiiragi283.core.api.data.advancement
 
 import hiiragi283.core.api.data.HTDataGenContext
-import hiiragi283.core.api.data.HTDataGenerator
 import net.minecraft.advancements.Advancement
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
@@ -17,34 +16,19 @@ import java.util.Optional
 import java.util.concurrent.CompletableFuture
 
 /**
- * [HTAdvancementGenerator]に基づいて進捗を生成する[DataProvider]の抽象クラスです。
+ * [HTSubAdvancementProvider]に基づいて進捗を生成する[DataProvider]の抽象クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  * @see AdvancementProvider
  */
-open class HTAdvancementProvider(
+abstract class HTAdvancementProvider(
     output: PackOutput,
     private val registries: CompletableFuture<HolderLookup.Provider>,
     private val fileHelper: ExistingFileHelper,
-    private val subProviders: List<HTAdvancementGenerator>,
+    private val subProviders: List<HTSubAdvancementProvider>,
 ) : DataProvider {
-    companion object {
-        /**
-         * 指定した[subProviders]から[HTAdvancementProvider]を作成するブロックを返します。
-         */
-        @JvmStatic
-        fun create(vararg subProviders: HTAdvancementGenerator): HTDataGenerator.Factory<HTAdvancementProvider> =
-            create(subProviders.toList())
-
-        /**
-         * 指定した[subProviders]から[HTAdvancementProvider]を作成するブロックを返します。
-         */
-        @JvmStatic
-        fun create(subProviders: List<HTAdvancementGenerator>): HTDataGenerator.Factory<HTAdvancementProvider> =
-            HTDataGenerator.Factory { context: HTDataGenContext ->
-                HTAdvancementProvider(context.output, context.registries, context.fileHelper, subProviders)
-            }
-    }
+    constructor(context: HTDataGenContext, subProviders: List<HTSubAdvancementProvider>) :
+        this(context.output, context.registries, context.fileHelper, subProviders)
 
     private val pathProvider: PackOutput.PathProvider =
         output.createRegistryElementsPathProvider(Registries.ADVANCEMENT)
@@ -64,7 +48,7 @@ open class HTAdvancementProvider(
                 ),
             )
         }
-        for (subProvider: HTAdvancementGenerator in subProviders) {
+        for (subProvider: HTSubAdvancementProvider in subProviders) {
             subProvider.generate(provider, output, fileHelper)
         }
 

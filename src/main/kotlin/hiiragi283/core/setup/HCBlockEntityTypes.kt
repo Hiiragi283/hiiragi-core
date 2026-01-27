@@ -1,14 +1,11 @@
 package hiiragi283.core.setup
 
-import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.storage.HTHandlerProvider
 import hiiragi283.core.common.block.HTBlockWithEntity
-import hiiragi283.core.common.block.entity.HTTestBlockEntity
 import hiiragi283.core.common.capability.HTEnergyCapabilities
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.capability.HTItemCapabilities
-import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import hiiragi283.core.common.registry.HTDeferredOnlyBlock
 import hiiragi283.core.common.registry.register.HTDeferredBlockEntityTypeRegister
 import net.minecraft.world.level.block.Block
@@ -17,12 +14,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent
-import org.slf4j.Logger
 
 object HCBlockEntityTypes {
-    @JvmField
-    val LOGGER: Logger = LogUtils.getLogger()
-
     @JvmField
     val REGISTER = HTDeferredBlockEntityTypeRegister(HiiragiCoreAPI.MOD_ID)
 
@@ -33,9 +26,6 @@ object HCBlockEntityTypes {
 
         REGISTER.register(eventBus)
     }
-
-    @JvmField
-    val TEST: HTDeferredBlockEntityType<HTTestBlockEntity> = REGISTER.registerType("test", ::HTTestBlockEntity)
 
     //    Event    //
 
@@ -48,15 +38,13 @@ object HCBlockEntityTypes {
                 event.modify(block.getBlockEntityType().get(), block)
             }
         }
-        LOGGER.info("Added supported blocks to BlockEntityType!")
+        HiiragiCoreAPI.LOGGER.info("Added supported blocks to BlockEntityType!")
     }
 
     // Capabilities
     @JvmStatic
     private fun registerBlockCapabilities(event: RegisterCapabilitiesEvent) {
-        registerHandler(event, TEST.get())
-
-        LOGGER.info("Registered Block Capabilities!")
+        HiiragiCoreAPI.LOGGER.info("Registered Block Capabilities!")
     }
 
     @JvmStatic

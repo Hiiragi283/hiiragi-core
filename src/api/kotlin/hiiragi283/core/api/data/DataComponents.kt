@@ -1,5 +1,6 @@
 package hiiragi283.core.api.data
 
+import hiiragi283.core.api.HTBuilderMarker
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentPredicate
@@ -10,6 +11,7 @@ import net.minecraft.core.component.DataComponentPredicate
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
+@HTBuilderMarker
 inline fun buildDataMap(builderAction: DataComponentMap.Builder.() -> Unit): DataComponentMap =
     DataComponentMap.builder().apply(builderAction).build()
 
@@ -19,6 +21,7 @@ inline fun buildDataMap(builderAction: DataComponentMap.Builder.() -> Unit): Dat
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
+@HTBuilderMarker
 inline fun buildDataPatch(builderAction: DataComponentPatch.Builder.() -> Unit): DataComponentPatch =
     DataComponentPatch.builder().apply(builderAction).build()
 
@@ -28,5 +31,6 @@ inline fun buildDataPatch(builderAction: DataComponentPatch.Builder.() -> Unit):
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
+@HTBuilderMarker
 inline fun buildDataPredicate(builderAction: DataComponentPredicate.Builder.() -> Unit): DataComponentPredicate =
     DataComponentPredicate.builder().apply(builderAction).build()

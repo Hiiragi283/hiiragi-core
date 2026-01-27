@@ -1,6 +1,7 @@
 package hiiragi283.core.common.storage.component
 
-import hiiragi283.core.api.HTDataSerializable
+import hiiragi283.core.api.HTContentListener
+import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.attachments.HTAttachedContainers
 import hiiragi283.core.api.storage.resource.HTResourceFactory
@@ -20,7 +21,8 @@ abstract class HTComponentSlot<RESOURCE : HTResourceType<*>, STACK : Any, ATTACH
     private val canInsert: BiPredicate<RESOURCE, HTStorageAccess>,
     private val filter: Predicate<RESOURCE>,
 ) : HTResourceSlot.Basic<RESOURCE>(),
-    HTDataSerializable.Empty {
+    HTContentListener.Empty,
+    HTValueSerializable.Empty {
     protected fun getAttached(): ATTACHED = capabilityCodec().getOrCreate(attachedTo, size)
 
     protected abstract fun capabilityCodec(): HTCapabilityCodec<*, ATTACHED>
