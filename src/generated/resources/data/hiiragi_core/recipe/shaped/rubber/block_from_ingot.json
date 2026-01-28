@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "A": {
-      "tag": "c:plates/plastic"
+      "tag": "c:ingots/rubber"
     },
     "B": {
-      "item": "hiiragi_core:plastic_plate"
+      "item": "hiiragi_core:rubber_ingot"
     }
   },
   "pattern": [
@@ -16,6 +16,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "hiiragi_core:plastic_block"
+    "id": "hiiragi_core:rubber_block"
   }
 }

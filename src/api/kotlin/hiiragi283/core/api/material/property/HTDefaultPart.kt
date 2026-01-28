@@ -56,7 +56,6 @@ sealed interface HTDefaultPart {
         GEM,
         INGOT,
         PEARL,
-        PLATE,
         ;
 
         val prefix: HTTagPrefix get() = when (this) {
@@ -66,7 +65,6 @@ sealed interface HTDefaultPart {
             GEM -> CommonTagPrefixes.GEM
             INGOT -> CommonTagPrefixes.INGOT
             PEARL -> CommonTagPrefixes.PEARL
-            PLATE -> CommonTagPrefixes.PLATE
         }
 
         override fun getTag(key: HTMaterialKey): TagKey<Item> = prefix.itemTagKey(key)

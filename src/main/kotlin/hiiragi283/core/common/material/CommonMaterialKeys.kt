@@ -49,6 +49,9 @@ object CommonMaterialKeys {
     @JvmStatic
     val ALUMINUM: HTMaterialKey = create("aluminum")
 
+    @JvmStatic
+    val SILICON: HTMaterialKey = create("silicon")
+
     // 4th
     @JvmStatic
     val TITANIUM: HTMaterialKey = create("titanium")

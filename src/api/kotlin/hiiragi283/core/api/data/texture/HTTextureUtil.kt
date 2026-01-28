@@ -2,6 +2,7 @@ package hiiragi283.core.api.data.texture
 
 import com.mojang.blaze3d.platform.NativeImage
 import hiiragi283.core.api.HiiragiCoreAPI
+import net.minecraft.data.DataProvider
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.fml.ModList
 import java.awt.Color
@@ -44,7 +45,7 @@ object HTTextureUtil {
                 .filterNot { it == "GIMP Palette" || it.startsWith("Name") || it.startsWith("Columns") }
                 .map { it.split(PALETTE_REGEX, limit = 4).take(3).map(String::toInt) }
                 .map { (red: Int, green: Int, blue: Int) -> Color(red, green, blue) }
-        }
+        }.onFailure { DataProvider.LOGGER.warn("Failed to load palette: $id") }
 
     /**
      * @see mekanism.common.lib.Color.argbToFromABGR
@@ -60,11 +61,11 @@ object HTTextureUtil {
 
     /**
      * 指定した[id]から既存のテクスチャを取得します。
-     * @return [id]からテクスチャを取得できない場合は`null`
      */
     @JvmStatic
-    fun getTexture(id: ResourceLocation): Result<NativeImage> =
-        runCatching(getResourcePath(id, "textures", "png")::inputStream).mapCatching(NativeImage::read)
+    fun getTexture(id: ResourceLocation): Result<NativeImage> = runCatching(getResourcePath(id, "textures", "png")::inputStream)
+        .mapCatching(NativeImage::read)
+        .onFailure { DataProvider.LOGGER.warn("Failed to load image: $id") }
 
     /**
      * 指定した[テクスチャ][other]をコピーします。
@@ -75,5 +76,19 @@ object HTTextureUtil {
         val image = NativeImage(other.width, other.height, true)
         image.copyFrom(other)
         return image
+    }
+
+    @JvmStatic
+    fun merge(base: NativeImage, overlay: NativeImage, replace: Boolean) {
+        check(base.width == overlay.width) { "Require same width" }
+        check(base.height == overlay.height) { "Require same height" }
+        for (x: Int in (0..<base.width)) {
+            for (y: Int in (0..<base.height)) {
+                val baseColor: Color = base.getPixelRGBA(x, y).let(::argbToFromABGR).let(::Color)
+                if (baseColor.alpha == 0 || replace) {
+                    base.setPixelRGBA(x, y, overlay.getPixelRGBA(x, y))
+                }
+            }
+        }
     }
 }

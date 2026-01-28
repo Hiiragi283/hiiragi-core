@@ -2,7 +2,6 @@ package hiiragi283.core.common.event
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.recipe.HTResultCreator
 import hiiragi283.core.api.event.HTMaterialPropertyEvent
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.tool.CommonToolTypes
@@ -58,8 +57,6 @@ object HCMaterialEventHandler {
     )
     private val alloySet: Set<HTTagPrefix> = metalSet.minus(CommonTagPrefixes.RAW)
     private val partSet: Set<HTTagPrefix> = setOf(CommonTagPrefixes.GEAR, CommonTagPrefixes.PLATE, CommonTagPrefixes.ROD)
-
-    private val resultCreator: HTResultCreator = HTResultCreator
 
     @JvmStatic
     private fun vanilla(event: HTMaterialPropertyEvent) {
@@ -392,6 +389,7 @@ object HCMaterialEventHandler {
             setName("Aluminum", "アルミニウム")
             setTextureSet(HTMaterialTextureSet.SHINE)
         }
+        registerMetal(CommonMaterialKeys.SILICON, "Silicon", "シリコン")
 
         registerMetal(CommonMaterialKeys.TITANIUM, "Titanium", "チタン")
         registerMetal(CommonMaterialKeys.CHROME, "Chrome", "クロム")
@@ -479,10 +477,11 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("steel"))
         }
         event.modify(CommonMaterialKeys.PLASTIC) {
-            setDefaultPart(HTDefaultPart.Prefixed.PLATE)
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(
                 CommonTagPrefixes.DUST,
+                CommonTagPrefixes.INGOT,
                 CommonTagPrefixes.PLATE,
                 CommonTagPrefixes.ROD,
                 CommonTagPrefixes.WIRE,
@@ -490,18 +489,24 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_PLASTIC))
 
             setName("Plastic", "プラスチック")
-            setTextureSet("plate", HTMaterialTextureSet.SHINE)
+            addCustomName(CommonTagPrefixes.DUST, "Plastic Pulp", "プラスチックパルプ")
+            addCustomName(CommonTagPrefixes.INGOT, "Plastic Bar", "プラスチックバー")
+            addCustomName(CommonTagPrefixes.PLATE, "Plastic Sheet", "プラスチックシート")
+            addCustomName(CommonTagPrefixes.WIRE, "Synthetic Fiber", "合成繊維")
+            setTextureSet("polymer")
             put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
         }
         event.modify(CommonMaterialKeys.RUBBER) {
-            setDefaultPart(HTDefaultPart.Prefixed.PLATE)
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(CommonTagPrefixes.PLATE)
+            addItemPrefixes(alloySet.minus(CommonTagPrefixes.NUGGET).plus(CommonTagPrefixes.PLATE))
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_RUBBER))
 
             setName("Rubber", "ゴム")
+            addCustomName(CommonTagPrefixes.DUST, "Rubber Pulp", "ゴムパルプ")
+            addCustomName(CommonTagPrefixes.INGOT, "Rubber Bar", "ゴムバー")
             addCustomName(CommonTagPrefixes.PLATE, "Rubber Sheet", "ゴムシート")
-            setTextureSet("plate")
+            setTextureSet("polymer")
             put(HTMaterialPropertyKeys.SMELTING, smeltingToAsh)
         }
     }

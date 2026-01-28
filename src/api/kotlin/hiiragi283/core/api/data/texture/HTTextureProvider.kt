@@ -93,30 +93,19 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HiiragiCoreAccess.INSTANCE.materialManager) {
             if (key.namespace != modId) continue
             val paletteId: ResourceLocation = (propertyMap[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId())
-            val colorPalette: List<Color> = paletteId
-                .let(HTTextureUtil::getPalette)
-                .onFailure { DataProvider.LOGGER.warn("Failed to load palette: $paletteId") }
-                .getOrNull()
-                ?: continue
-
+            val palette: List<Color> = HTTextureUtil.getPalette(paletteId).getOrNull() ?: continue
             val textureSet: HTMaterialTextureSet = propertyMap.getOrDefault(HTMaterialPropertyKeys.TEXTURE_SET)
             for (prefix: HTTagPrefix in table.column(key).keys) {
-                val templateImage: NativeImage = getTexture(textureSet, prefix) ?: continue
-                val image: NativeImage = HTTextureUtil.copyFrom(templateImage)
-
-                for ((index: Int, pixels: Set<Pair<Int, Int>>) in createTemplate(templateImage)) {
-                    for ((x: Int, y: Int) in pixels) {
-                        image.setPixelRGBA(x, y, HTTextureUtil.argbToFromABGR(colorPalette[index].rgb))
-                    }
-                }
-                output.accept(prefix.createId(key).withPrefix("$pathPrefix/"), image)
+                val template: NativeImage = getTextureResult(textureSet, prefix).getOrNull() ?: continue
+                copyAndApplyColor(
+                    output,
+                    prefix.createId(key).withPrefix("$pathPrefix/"),
+                    palette,
+                    template,
+                )
             }
         }
     }
-
-    protected fun getTexture(textureSet: HTMaterialTextureSet, prefix: HTTagPrefix): NativeImage? = getTextureResult(textureSet, prefix)
-        .onFailure { DataProvider.LOGGER.error("Failed to load image", it) }
-        .getOrNull()
 
     protected fun getTextureResult(textureSet: HTMaterialTextureSet, prefix: HTTagPrefix): Result<NativeImage> = HiiragiCoreAPI
         .id("material_set", textureSet.name, prefix[HTTagPropertyKeys.TEXTURE_ICON] ?: prefix.name)
@@ -126,10 +115,36 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
             getTextureResult(parentSet, prefix).getOrThrow()
         }
 
+    protected fun copyAndApplyColor(
+        output: BiConsumer<ResourceLocation, NativeImage>,
+        id: ResourceLocation,
+        paletteId: ResourceLocation,
+        templateId: ResourceLocation,
+    ) {
+        val palette: List<Color> = HTTextureUtil.getPalette(paletteId).getOrNull() ?: return
+        val template: NativeImage = HTTextureUtil.getTexture(templateId).getOrNull() ?: return
+        copyAndApplyColor(output, id, palette, template)
+    }
+
+    protected fun copyAndApplyColor(
+        output: BiConsumer<ResourceLocation, NativeImage>,
+        id: ResourceLocation,
+        palette: List<Color>,
+        template: NativeImage,
+    ) {
+        val image: NativeImage = HTTextureUtil.copyFrom(template)
+        for ((index: Int, pixels: Set<Pair<Int, Int>>) in createTemplate(template)) {
+            for ((x: Int, y: Int) in pixels) {
+                image.setPixelRGBA(x, y, HTTextureUtil.argbToFromABGR(palette[index].rgb))
+            }
+        }
+        output.accept(id, image)
+    }
+
     protected fun createTemplate(image: NativeImage): Map<Int, Set<Pair<Int, Int>>> = buildMap {
         for (x: Int in (0..<image.width)) {
             for (y: Int in (0..<image.height)) {
-                val color = Color(HTTextureUtil.argbToFromABGR(image.getPixelRGBA(x, y)))
+                val color: Color = image.getPixelRGBA(x, y).let(HTTextureUtil::argbToFromABGR).let(::Color)
                 val index: Int = HTTextureUtil.TEMPLATE_PALETTE.indexOf(color)
                 if (index >= 0) {
                     this[index] = (this[index]?.plus(x to y) ?: setOf(x to y))
