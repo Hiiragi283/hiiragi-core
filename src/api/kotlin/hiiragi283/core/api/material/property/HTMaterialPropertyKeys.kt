@@ -9,6 +9,7 @@ import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.resources.ResourceLocation
+import org.apache.commons.lang3.math.Fraction
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[HTPropertyKey]の一覧をまとめたクラスです。
@@ -43,6 +44,14 @@ object HTMaterialPropertyKeys {
      */
     @JvmField
     val MOLTEN_FLUID: HTPropertyKey<HTFluidMaterialProperty?> = createNullable("molten_fluid")
+
+    @JvmField
+    val ORE_EXTRA_RESULTS: HTPropertyKey<Set<HTChancedOreResult>> =
+        HTPropertyKey.createSet(HiiragiCoreAPI.id("ore_extra_results"))
+
+    @JvmField
+    val ORE_RESULT_MULTIPLIER: HTPropertyKey<Fraction> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("ore_result_multiplier"), Fraction.ONE)
 
     /**
      * ブロックの管理に使用される[プロパティキー][HTPropertyKey]

@@ -1,17 +1,21 @@
 package hiiragi283.core.api.tag
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.div
+import hiiragi283.core.api.material.property.applyOreMultiplier
 import hiiragi283.core.api.material.property.getStorageBlock
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.api.tag.property.addNamePattern
+import hiiragi283.core.api.times
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument
 import net.minecraft.world.level.material.MapColor
+import org.apache.commons.lang3.math.Fraction
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[HTTagPrefix]の一覧をまとめたクラスです。
@@ -26,6 +30,8 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_ore")
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "ores")
         put(HTTagPropertyKeys.TAG_PATTERN, "ores/%s")
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap -> properties.applyOreMultiplier(base * 2) }
+
         put(
             HTTagPropertyKeys.BLOCK_PROP,
             BlockBehaviour.Properties
@@ -90,7 +96,7 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_block")
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "storage_blocks")
         put(HTTagPropertyKeys.TAG_PATTERN, "storage_blocks/%s")
-        put(HTTagPropertyKeys.ITEM_SCALE) { base: Int, properties: HTPropertyMap -> base * properties.getStorageBlock().baseCount }
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap -> base * properties.getStorageBlock().baseCount }
 
         put(HTTagPropertyKeys.BLOCK_PROP, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK))
 
@@ -102,7 +108,7 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.ID_PATTERN, "raw_%s_block")
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "storage_blocks")
         put(HTTagPropertyKeys.TAG_PATTERN, "storage_blocks/raw_%s")
-        put(HTTagPropertyKeys.ITEM_SCALE) { base: Int, _ -> base * 9 }
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap -> properties.applyOreMultiplier(base * 9) }
 
         put(HTTagPropertyKeys.BLOCK_PROP, BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK))
 
@@ -157,7 +163,7 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_gear")
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "gears")
         put(HTTagPropertyKeys.TAG_PATTERN, "gears/%s")
-        put(HTTagPropertyKeys.ITEM_SCALE) { base: Int, _ -> base * 4 }
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base * 4 }
 
         addNamePattern("%s Gear", "%sの歯車")
     }
@@ -183,7 +189,7 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_nugget")
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "nuggets")
         put(HTTagPropertyKeys.TAG_PATTERN, "nuggets/%s")
-        put(HTTagPropertyKeys.ITEM_SCALE) { base: Int, _ -> base / 9 }
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base / 9 }
 
         addNamePattern("%s Nugget", "%sナゲット")
     }
@@ -209,6 +215,7 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.ID_PATTERN, "raw_%s")
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "raw_materials")
         put(HTTagPropertyKeys.TAG_PATTERN, "raw_materials/%s")
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap -> properties.applyOreMultiplier(base) }
 
         addNamePattern("Raw %s", "%sの原石")
     }
@@ -218,7 +225,7 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_rod")
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "rods")
         put(HTTagPropertyKeys.TAG_PATTERN, "rods/%s")
-        put(HTTagPropertyKeys.ITEM_SCALE) { base: Int, _ -> base / 2 }
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base / 2 }
 
         addNamePattern("%s Rod", "%sの棒")
     }
@@ -261,6 +268,7 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.ID_PATTERN, "${name}_%s_ore")
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "ores")
         put(HTTagPropertyKeys.TAG_PATTERN, "ores/%s")
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap -> properties.applyOreMultiplier(base * 2) }
 
         put(HTTagPropertyKeys.BLOCK_PROP, properties)
         put(HTTagPropertyKeys.ORE_STONE_TEX, stoneTexture)

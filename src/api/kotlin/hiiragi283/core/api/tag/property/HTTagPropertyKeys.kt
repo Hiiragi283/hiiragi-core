@@ -6,6 +6,7 @@ import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.property.HTPropertyMap
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.state.BlockBehaviour
+import org.apache.commons.lang3.math.Fraction
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[HTPropertyKey]の一覧をまとめたクラスです。
@@ -35,8 +36,8 @@ object HTTagPropertyKeys {
      * 基準値に対する数量を取得する[プロパティキー][HTPropertyKey]
      */
     @JvmField
-    val ITEM_SCALE: HTPropertyKey<(Int, HTPropertyMap) -> Int> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("item_scale")) { base: Int, _ -> base }
+    val ITEM_SCALE: HTPropertyKey<(Fraction, HTPropertyMap) -> Fraction> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("item_scale")) { base: Fraction, _ -> base }
 
     /**
      * ブロックの[プロパティ][BlockBehaviour.Properties]に対応する[プロパティキー][HTPropertyKey]

@@ -14,6 +14,11 @@ operator fun Fraction.times(other: Fraction): Fraction = this.multiplyBy(other)
 
 operator fun Fraction.div(other: Fraction): Fraction = this.divideBy(other)
 
+fun Fraction.split(): Pair<Int, Fraction> {
+    val whole: Int = this.properWhole
+    return whole to (this - whole)
+}
+
 // Int
 fun fraction(numerator: Int, denominator: Int): Fraction = Fraction.getFraction(numerator, denominator)
 

@@ -2,6 +2,17 @@ package hiiragi283.core.api.tag.property
 
 import hiiragi283.core.api.data.lang.HTLangPatternProvider
 import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.property.getOrDefault
+import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.toFraction
+import org.apache.commons.lang3.math.Fraction
+
+fun HTTagPrefix.getScaledAmount(base: Int, propertyMap: HTPropertyMap): Fraction = this.getScaledAmount(base.toFraction(1), propertyMap)
+
+fun HTTagPrefix.getScaledAmount(base: Float, propertyMap: HTPropertyMap): Fraction = this.getScaledAmount(base.toFraction(), propertyMap)
+
+fun HTTagPrefix.getScaledAmount(base: Fraction, propertyMap: HTPropertyMap): Fraction =
+    this.getOrDefault(HTTagPropertyKeys.ITEM_SCALE)(base, propertyMap)
 
 // Mutable
 

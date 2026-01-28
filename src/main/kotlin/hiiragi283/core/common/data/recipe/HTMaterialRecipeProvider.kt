@@ -17,6 +17,7 @@ import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.property.getScaledAmount
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
@@ -108,18 +109,20 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager) {
             val smeltingAttribute: HTSmeltingMaterialProperty = propertyMap[HTMaterialPropertyKeys.SMELTING]
                 ?: propertyMap.getDefaultPart()?.let { part: HTDefaultPart ->
+                    // 精錬の前後で同じプレフィックスと素材になる場合はパス
                     if (part is HTDefaultPart.Prefixed && part.prefix == prefix) return@let null
                     part.getItem(key)?.let(HTSmeltingMaterialProperty::withBlasting)
                 } ?: continue
-            // 精錬の前後で同じプレフィックスと素材になる場合はパス
             val result: HTItemHolderLike<*> = smeltingAttribute.result ?: continue
+            val resultCount: Int = prefix.getScaledAmount(1, propertyMap).toInt()
+            if (resultCount <= 0) continue
             val input: HTItemHolderLike<*> = getItem(prefix, key) ?: continue
             // 精錬の前後がどちらもバニラ由来の場合はパス
             if (result.namespace == HTConst.MINECRAFT && input.namespace == HTConst.MINECRAFT) continue
             // Smelting
             HTCookingRecipeBuilder.smelting(output) {
                 ingredient += input
-                resultStack += result
+                resultStack += result to resultCount
                 this.exp = exp
                 recipeId suffix "_from_${input.path}"
             }
@@ -127,7 +130,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
             if (smeltingAttribute.isBlasting) {
                 HTCookingRecipeBuilder.blasting(output) {
                     ingredient += input
-                    resultStack += result
+                    resultStack += result to resultCount
                     this.exp = exp
                     time = 100
                     recipeId suffix "_from_${input.path}"
@@ -137,7 +140,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
             if (smeltingAttribute.isSmoking) {
                 HTCookingRecipeBuilder.smoking(output) {
                     ingredient += input
-                    resultStack += result
+                    resultStack += result to resultCount
                     this.exp = exp
                     time = 100
                     recipeId suffix "_from_${input.path}"

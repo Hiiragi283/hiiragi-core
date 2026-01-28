@@ -13,7 +13,7 @@ import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HiiragiCoreTags
-import hiiragi283.core.api.tag.property.HTTagPropertyKeys
+import hiiragi283.core.api.tag.property.getScaledAmount
 import hiiragi283.core.common.data.recipe.builder.HCSingleItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTStonecuttingRecipeBuilder
@@ -48,6 +48,7 @@ object HCRuntimeRecipeHandler {
 
         crushToDust(event, CommonTagPrefixes.GEAR)
         crushToDust(event, CommonTagPrefixes.PLATE)
+        crushToDust(event, CommonTagPrefixes.RAW)
 
         flourToDough(event)
         ingotToPlate(event)
@@ -57,7 +58,7 @@ object HCRuntimeRecipeHandler {
     @JvmStatic
     private fun crushToDust(event: HTRegisterRuntimeRecipeEvent, prefix: HTTagPrefix) {
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in event.getAllMaterials()) {
-            val outputCount: Int = prefix.getOrDefault(HTTagPropertyKeys.ITEM_SCALE)(1, propertyMap)
+            val outputCount: Int = prefix.getScaledAmount(1, propertyMap).toInt()
 
             if (!event.isPresentTag(prefix, key)) continue
             val crushedPrefix: HTTagPrefix = propertyMap.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)

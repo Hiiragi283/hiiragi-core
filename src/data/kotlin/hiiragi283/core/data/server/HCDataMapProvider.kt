@@ -6,10 +6,9 @@ import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
-import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.property.HTTagPropertyKeys
+import hiiragi283.core.api.tag.property.getScaledAmount
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import net.minecraft.core.HolderLookup
@@ -44,8 +43,8 @@ class HCDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.out
             for ((prefix: HTTagPrefix, _) in HiiragiCoreAccess.INSTANCE.materialContents.getItemMap(key)) {
                 val fuelTime1: Int = when (prefix) {
                     CommonTagPrefixes.NUGGET -> fuelTime / 10
-                    else -> prefix.getOrDefault(HTTagPropertyKeys.ITEM_SCALE)(fuelTime, propertyMap)
-                }
+                    else -> prefix.getScaledAmount(fuelTime, propertyMap)
+                }.toInt()
                 furnace.add(prefix.itemTagKey(key), FurnaceFuel(fuelTime1), false)
             }
         }

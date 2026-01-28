@@ -75,5 +75,10 @@ object HCCrushingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             ingredient = inputCreator.create(Items.SNOW_BLOCK)
             result = resultCreator.create(Items.SNOWBALL, 4)
         }
+
+        HCSingleItemRecipeBuilder.crushing(output) {
+            ingredient = inputCreator.create(Items.CALCITE)
+            result = resultCreator.material(CommonTagPrefixes.DUST, VanillaMaterialKeys.CALCITE)
+        }
     }
 }
