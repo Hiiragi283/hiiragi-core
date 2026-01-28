@@ -124,7 +124,8 @@ object HCRuntimeRecipeHandler {
 
     @JvmStatic
     private fun ingotToPlate(event: HTRegisterRuntimeRecipeEvent) {
-        for ((key: HTMaterialKey, _) in event.getAllMaterials()) {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in event.getAllMaterials()) {
+            if (!propertyMap.getOrDefault(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG).mechanical) continue
             if (!event.isPresentTag(CommonTagPrefixes.INGOT, key)) continue
             val plate: Item = event.getFirstHolder(CommonTagPrefixes.PLATE, key)?.value() ?: continue
             // Crafting
@@ -139,7 +140,8 @@ object HCRuntimeRecipeHandler {
 
     @JvmStatic
     private fun plateToWire(event: HTRegisterRuntimeRecipeEvent) {
-        for ((key: HTMaterialKey, _) in event.getAllMaterials()) {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in event.getAllMaterials()) {
+            if (!propertyMap.getOrDefault(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG).mechanical) continue
             if (!event.isPresentTag(CommonTagPrefixes.PLATE, key)) continue
             val wire: Item = event.getFirstHolder(CommonTagPrefixes.WIRE, key)?.value() ?: continue
             // Stonecutting

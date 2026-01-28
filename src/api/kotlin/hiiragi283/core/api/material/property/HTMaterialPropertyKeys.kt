@@ -39,6 +39,10 @@ object HTMaterialPropertyKeys {
     val CRUSHED_PREFIX: HTPropertyKey<HTTagPrefix> =
         HTPropertyKey.create(HiiragiCoreAPI.id("crushed_prefix"), CommonTagPrefixes.DUST)
 
+    @JvmField
+    val FORMING_RECIPE_FLAG: HTPropertyKey<HTFormingRecipeFlag> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("forming_recipe_flag"), HTFormingRecipeFlag.enableAll())
+
     /**
      * 溶融状態の[液体][HTFluidMaterialProperty]に対応する[プロパティキー][HTPropertyKey]
      */

@@ -8,6 +8,7 @@ import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTFluidMaterialProperty
+import hiiragi283.core.api.material.property.HTFormingRecipeFlag
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialTextureSet
 import hiiragi283.core.api.material.property.HTSmeltingMaterialProperty
@@ -256,6 +257,7 @@ object HCMaterialEventHandler {
             setDefaultPart(Tags.Items.GLASS_BLOCKS, HTItemHolderLike.of(Items.GLASS))
             addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.ROD)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
+            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.solidifyOnly())
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_GLASS))
 
             setName("Glass", "ガラス")
@@ -266,6 +268,7 @@ object HCMaterialEventHandler {
         event.modify(VanillaMaterialKeys.STONE) {
             setDefaultPart(ItemTags.STONE_CRAFTING_MATERIALS, HTItemHolderLike.of(Items.COBBLESTONE))
             addToolPrefixes(VanillaEquipmentMaterial.STONE, CommonToolTypes.HAMMER)
+            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.solidifyOnly())
 
             setName("Stone", "石")
             setTextureSet("dull")
@@ -276,6 +279,7 @@ object HCMaterialEventHandler {
             setDefaultPart(Tags.Items.OBSIDIANS_NORMAL, HTItemHolderLike.of(Items.OBSIDIAN))
             addItemPrefixes(CommonTagPrefixes.DUST)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
+            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.solidifyOnly())
 
             setName("Obsidian", "黒曜石")
             setTextureSet("dull")
@@ -486,6 +490,7 @@ object HCMaterialEventHandler {
                 CommonTagPrefixes.ROD,
                 CommonTagPrefixes.WIRE,
             )
+            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.solidifyOnly())
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_PLASTIC))
 
             setName("Plastic", "プラスチック")
@@ -500,6 +505,7 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(alloySet.minus(CommonTagPrefixes.NUGGET).plus(CommonTagPrefixes.PLATE))
+            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.solidifyOnly())
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_RUBBER))
 
             setName("Rubber", "ゴム")

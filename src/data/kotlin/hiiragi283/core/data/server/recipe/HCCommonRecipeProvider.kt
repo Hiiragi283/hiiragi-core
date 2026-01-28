@@ -73,10 +73,10 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             resultStack += HCItems.BAMBOO_CHARCOAL
             exp = 0.5f
         }
-        // Polymer Resin -> Plastic Plate
+        // Polymer Resin -> Plastic Bar
         HTCookingRecipeBuilder.smelting(output) {
             ingredient += HCItems.POLYMER_RESIN
-            resultStack += getOrThrow(CommonTagPrefixes.PLATE, CommonMaterialKeys.PLASTIC)
+            resultStack += getOrThrow(CommonTagPrefixes.INGOT, CommonMaterialKeys.PLASTIC)
             exp = 0.7f
             recipeId suffix "_from_resin"
         }
@@ -240,10 +240,10 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             resultStack += HCItems.RAW_RUBBER
             recipeId suffix "_from_bucket"
         }
-        // Raw Rubber -> Rubber Plate
+        // Raw Rubber -> Rubber Bar
         HTCookingRecipeBuilder.smelting(output) {
             ingredient += HCItems.RAW_RUBBER
-            resultStack += getOrThrow(CommonTagPrefixes.PLATE, CommonMaterialKeys.RUBBER)
+            resultStack += getOrThrow(CommonTagPrefixes.INGOT, CommonMaterialKeys.RUBBER)
             exp = 0.7f
             recipeId suffix "_from_raw"
         }

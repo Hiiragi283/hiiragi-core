@@ -4,10 +4,10 @@
   "cookingtime": 200,
   "experience": 0.7,
   "ingredient": {
-    "item": "hiiragi_core:polymer_resin"
+    "item": "hiiragi_core:raw_rubber"
   },
   "result": {
     "count": 1,
-    "id": "hiiragi_core:plastic_plate"
+    "id": "hiiragi_core:rubber_ingot"
   }
 }
