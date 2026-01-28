@@ -14,14 +14,11 @@ import hiiragi283.core.client.gui.widget.HTItemWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.common.gui.tooltip.HTFluidFilterTooltip
 import hiiragi283.core.common.gui.tooltip.HTItemFilterTooltip
-import hiiragi283.core.common.item.HTChromaticPowderItem
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
-import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCMenuTypes
 import hiiragi283.core.setup.HCWidgetTypes
 import net.minecraft.client.renderer.entity.ThrownItemRenderer
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
@@ -62,16 +59,6 @@ data object HiiragiCoreClient : HTClientMod() {
     }
 
     override fun registerItemColors(event: RegisterColorHandlersEvent.Item) {
-        // Chromatic Powder
-        event.register(
-            { stack: ItemStack, tint: Int ->
-                when (tint) {
-                    0 -> HTChromaticPowderItem.Companion.getColor(stack)
-                    else -> -1
-                }
-            },
-            HCItems.CHROMATIC_POWDER,
-        )
         // Bucket
         val bucketColor = DynamicFluidContainerModel.Colors()
         for (item: ItemLike in HCFluids.REGISTER.asItemSequence()) {

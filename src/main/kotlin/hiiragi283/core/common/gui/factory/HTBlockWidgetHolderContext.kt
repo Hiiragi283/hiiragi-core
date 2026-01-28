@@ -16,9 +16,6 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 
-/**
- * @see com.lowdragmc.lowdraglib2.gui.factory.BlockUIMenuType
- */
 @JvmRecord
 data class HTBlockWidgetHolderContext(val factory: Factory, val player: Player, val pos: BlockPos) :
     HTWidgetHolderContext,

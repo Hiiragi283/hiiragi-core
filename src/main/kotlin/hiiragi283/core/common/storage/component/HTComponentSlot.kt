@@ -27,7 +27,7 @@ abstract class HTComponentSlot<RESOURCE : HTResourceType<*>, STACK : Any, ATTACH
     protected abstract fun capabilityCodec(): HTCapabilityCodec<*, ATTACHED>
 
     protected abstract fun getAmount(stack: STACK): Int
-    
+
     protected abstract fun fromStack(stack: STACK): RESOURCE?
 
     protected abstract fun createStack(resource: RESOURCE?, amount: Int): STACK
@@ -39,7 +39,7 @@ abstract class HTComponentSlot<RESOURCE : HTResourceType<*>, STACK : Any, ATTACH
     override fun setAmount(amount: Int) {
         setStack(createStack(getResource(), amount))
     }
-    
+
     fun setStack(stack: STACK) {
         capabilityCodec().updateAttached(attachedTo, getAttached().with(slot, stack))
     }

@@ -22,9 +22,6 @@ import net.minecraft.world.level.Level
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * @see com.lowdragmc.lowdraglib2.gui.factory.HeldItemUIMenuType
- */
 @JvmRecord
 data class HTItemWidgetHolderContext(
     val factory: Factory,

@@ -9,6 +9,7 @@ import dev.emi.emi.api.widget.Bounds
 import dev.emi.emi.api.widget.SlotWidget
 import dev.emi.emi.api.widget.TextureWidget
 import dev.emi.emi.api.widget.WidgetHolder
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
@@ -191,10 +192,10 @@ abstract class HTEmiRecipe<RECIPE : Any>(
      */
     fun getPosition(index: Double): Int = (index * 18).toInt()
 
-    fun WidgetHolder.addArrow(x: Int, y: Int): TextureWidget = addFillingArrow(x, y, 2000)
+    fun WidgetHolder.addArrow(x: Int = getPosition(3.5), y: Int = getPosition(1)): TextureWidget = addFillingArrow(x, y, 2000)
 
-    fun WidgetHolder.addArrow(x: Int, y: Int, time: Int): TextureWidget = addFillingArrow(x, y, 50 * time)
-        .tooltipText(listOf(HTCommonTranslation.SECONDS.translate(time / 20.0f, time)))
+    fun WidgetHolder.addArrow(time: Int, x: Int = getPosition(3.5), y: Int = getPosition(1)): TextureWidget =
+        addFillingArrow(x, y, 50 * time).tooltipText(listOf(HTCommonTranslation.SECONDS.translate(time / 20.0f, time)))
 
     fun WidgetHolder.addBurning(x: Int, y: Int, time: Int) {
         addAnimatedTexture(
@@ -248,14 +249,12 @@ abstract class HTEmiRecipe<RECIPE : Any>(
     fun WidgetHolder.addTank(
         ingredient: EmiIngredient,
         x: Int,
-        capacity: Int,
         type: HTBackgroundType,
         y: Int = getPosition(0),
+        capacity: Int = validateCapacity(ingredient.amount),
     ): SlotWidget {
-        val width = 16
-        val height: Int = 18 * 3 - 2
         addTexture(HTEmiTextures.TANK_TEXTURES[type]!!, x, y)
-        val slot: SlotWidget = addTank(ingredient, x, y, 18, 18 * 3, capacity).drawBack(false)
+        val slot: SlotWidget = addTank(ingredient, x - 1, y - 1, 18, 18 * 3, capacity).drawBack(false)
         if (type == HTBackgroundType.NONE) {
             slot.catalyst(true)
         }
@@ -263,5 +262,13 @@ abstract class HTEmiRecipe<RECIPE : Any>(
             slot.recipeContext(this@HTEmiRecipe)
         }
         return slot
+    }
+
+    private fun validateCapacity(value: Long): Int {
+        val value1: Int = value.toInt()
+        return when {
+            value1 <= 0 -> HTConst.DEFAULT_FLUID_AMOUNT
+            else -> value1
+        }
     }
 }

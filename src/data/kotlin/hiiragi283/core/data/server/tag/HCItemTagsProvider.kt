@@ -96,9 +96,8 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
         // Foods
         factory.apply(Tags.Items.FOODS_GOLDEN).add(HCItems.AMBROSIA)
         // Others
-        factory
-            .apply(Tags.Items.SLIME_BALLS)
-            .add(HCItems.RAW_RUBBER)
+        factory.apply(Tags.Items.LEATHERS).add(HCItems.SYNTHETIC_LEATHER)
+        factory.apply(Tags.Items.SLIME_BALLS).add(HCItems.RAW_RUBBER)
 
         factory
             .apply(HiiragiCoreTags.Items.ELDRITCH_PEARL_BINDER)

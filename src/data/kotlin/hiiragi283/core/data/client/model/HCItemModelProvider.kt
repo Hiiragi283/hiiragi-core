@@ -17,16 +17,12 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
             addAll(HCItems.REGISTER.asSequence())
 
             remove(HCItems.STEEL_COMPOUND)
-
-            remove(HCItems.CHROMATIC_POWDER)
         }.forEach { item: HTIdLike -> existTexture(item, ::basicItem) }
 
         registerMaterials()
         existTexture(HCItems.STEEL_COMPOUND) { item: HTIdLike ->
             layeredItem(item, HTConst.MINECRAFT.toId(HTConst.ITEM, "iron_ingot"), item.itemId)
         }
-
-        layeredItem(HCItems.CHROMATIC_POWDER, HCItems.IRIDESCENT_POWDER.itemId)
 
         registerBuckets()
     }

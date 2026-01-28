@@ -24,7 +24,6 @@ import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
-import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.client.gui.GuiGraphics
@@ -56,10 +55,6 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
         addRegistryRecipes(registry, HCRecipeTypes.EXPLODING, HCSingleItemEmiRecipe.Companion::exploding)
 
         // Misc
-        registry.setDefaultComparison(
-            HCItems.CHROMATIC_POWDER.asItem(),
-            Comparison.compareData { stack: EmiStack -> stack.get(HCDataComponents.COMPLETE_PROGRESS) },
-        )
         registry.setDefaultComparison(
             HCItems.ALMIGHTY_PICKAXE.asItem(),
             Comparison.compareData { stack: EmiStack -> stack.get(DataComponents.UNBREAKABLE) },

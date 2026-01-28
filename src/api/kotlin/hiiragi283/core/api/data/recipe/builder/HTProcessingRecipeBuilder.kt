@@ -10,7 +10,5 @@ import org.apache.commons.lang3.math.Fraction
  */
 abstract class HTProcessingRecipeBuilder(prefix: String) : HTRecipeBuilder(prefix) {
     var time: Int = 20 * 10
-        protected set
     var exp: Fraction = Fraction.ZERO
-        protected set
 }

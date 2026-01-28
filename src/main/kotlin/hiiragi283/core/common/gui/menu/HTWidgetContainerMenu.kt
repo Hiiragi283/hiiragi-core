@@ -12,7 +12,6 @@ import net.minecraft.world.inventory.MenuType
 
 /**
  * [HTWidgetHolder]に基づいた[HTContainerMenu]の拡張クラスです。
- * @see com.lowdragmc.lowdraglib2.gui.holder.ModularUIContainerMenu
  */
 class HTWidgetContainerMenu(
     menuType: MenuType<*>,

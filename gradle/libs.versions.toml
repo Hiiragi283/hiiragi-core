@@ -18,13 +18,11 @@ ae2 = "19.2.17"
 almost = "1.21.1-1.3.0"
 emi = "1.1.22+1.21.1"
 jade = "15.10.3+neoforge"
-ldlib = "2.1.9"
 mek = "1.21.1-10.7.17.83"
 mi = "2.4.1"
 
 arch = "13.0.8"
 guide = "21.1.15"
-yoga = "1.0.0"
 
 [libraries]
 
@@ -34,13 +32,11 @@ ae2 = { group = "org.appliedenergistics", name = "appliedenergistics2", version.
 almost = { group = "com.almostreliable.mods", name = "almostunified-neoforge", version.ref = "almost" }
 emi = { group = "dev.emi", name = "emi-neoforge", version.ref = "emi" }
 jade = { group = "maven.modrinth", name = "jade", version.ref = "jade" }
-ldlib = { group = "com.lowdragmc.ldlib2", name = "ldlib2-neoforge-1.21.1", version.ref = "ldlib" }
 mek = { group = "mekanism", name = "Mekanism", version.ref = "mek" }
 mi = { group = "aztech", name = "Modern-Industrialization", version.ref = "mi" }
 
 arch = { group = "dev.architectury", name = "architectury-neoforge", version.ref = "arch" }
 guide = { group = "org.appliedenergistics", name = "guideme", version.ref = "guide" }
-yoga = { group = "org.appliedenergistics.yoga", name = "yoga", version.ref = "yoga" }
 
 [bundles]
 
@@ -52,9 +48,7 @@ mods-impl = [
 
 mods-transitive = []
 
-mods-compile = [
-    "yoga"
-]
+mods-compile = []
 
 mods-runtime = []
 

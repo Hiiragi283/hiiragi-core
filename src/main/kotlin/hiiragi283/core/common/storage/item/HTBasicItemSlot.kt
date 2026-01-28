@@ -63,7 +63,7 @@ open class HTBasicItemSlot protected constructor(
     @JvmField
     protected var stack: ItemStack = ItemStack.EMPTY
 
-    override fun setResource(resource: HTItemResourceType?) {
+    final override fun setResource(resource: HTItemResourceType?) {
         setResourceUnchecked(resource, true)
     }
 
@@ -72,14 +72,18 @@ open class HTBasicItemSlot protected constructor(
             if (this.getResource() == null) return
             this.stack = ItemStack.EMPTY
         } else if (!validate || isValid(resource)) {
-            this.stack = resource.toStack(stack.count)
+            setStackInternal(resource.toStack(stack.count))
         } else {
             error("Invalid stack for slot: $resource")
         }
         onContentsChanged()
     }
 
-    final override fun setAmount(amount: Int) {
+    protected open fun setStackInternal(stack: ItemStack) {
+        this.stack = stack
+    }
+
+    override fun setAmount(amount: Int) {
         stack.count = amount
     }
 

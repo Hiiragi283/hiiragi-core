@@ -58,7 +58,6 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.SLOT_COVER, "Slot Cover")
         add(HCItems.TRADER_CATALOG, "Trader's Catalog")
 
-        add(HCItems.CHROMATIC_POWDER, "Chromatic Powder")
         add(HCItems.IRIDESCENT_POWDER, "Iridescent Powder")
         add(HCItems.AMBROSIA, "Ambrosia")
         add(HCItems.ETERNAL_UPGRADE, "Eternal Smithing Template")
