@@ -4,10 +4,10 @@
   "cookingtime": 200,
   "experience": 0.35,
   "ingredient": {
-    "item": "hiiragi_core:diamond_dust"
+    "item": "hiiragi_core:rubber_dust"
   },
   "result": {
     "count": 1,
-    "id": "minecraft:diamond"
+    "id": "hiiragi_core:rubber_ingot"
   }
 }

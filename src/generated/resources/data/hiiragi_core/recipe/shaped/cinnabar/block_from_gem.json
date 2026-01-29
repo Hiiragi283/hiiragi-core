@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "A": {
-      "tag": "c:dusts/cinnabar"
+      "tag": "c:gems/cinnabar"
     },
     "B": {
-      "item": "hiiragi_core:cinnabar_dust"
+      "item": "hiiragi_core:cinnabar_gem"
     }
   },
   "pattern": [

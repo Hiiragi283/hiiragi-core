@@ -4,10 +4,10 @@
   "cookingtime": 100,
   "experience": 0.35,
   "ingredient": {
-    "item": "hiiragi_core:quartz_dust"
+    "item": "hiiragi_core:plastic_dust"
   },
   "result": {
     "count": 1,
-    "id": "minecraft:quartz"
+    "id": "hiiragi_core:plastic_ingot"
   }
 }

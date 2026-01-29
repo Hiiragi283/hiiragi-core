@@ -131,12 +131,6 @@ object HTMaterialPropertyKeys {
     val FUEL_TIME: HTPropertyKey<Int?> = createNullable("fuel_time")
 
     /**
-     * 製錬レシピの管理に使用される[プロパティキー][HTPropertyKey]
-     */
-    @JvmField
-    val SMELTING: HTPropertyKey<HTSmeltingMaterialProperty?> = createNullable("smelting")
-
-    /**
      * テクスチャを生成する際のカラーパレットの[ID][ResourceLocation]に対応する[プロパティキー][HTPropertyKey]
      */
     @JvmField

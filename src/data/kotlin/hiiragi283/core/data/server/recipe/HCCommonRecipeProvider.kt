@@ -41,6 +41,13 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             resultStack += getOrThrow(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLASS) to 4
             recipeId suffix "_from_sand_and_ash"
         }
+        // Glass Dust -> Glass
+        HTCookingRecipeBuilder.smelting(output) {
+            ingredient += getOrThrow(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLASS)
+            resultStack += Items.GLASS
+            recipeId suffix "_from_dust"
+        }
+        
         // Iron Rod -> Iron Bar
         HTShapedRecipeBuilder.create(output) {
             pattern(

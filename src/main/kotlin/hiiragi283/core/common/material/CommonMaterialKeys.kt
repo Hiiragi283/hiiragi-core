@@ -18,9 +18,6 @@ object CommonMaterialKeys {
     val BAUXITE: HTMaterialKey = create("bauxite")
 
     @JvmStatic
-    val CINNABAR: HTMaterialKey = create("cinnabar")
-
-    @JvmStatic
     val SALT: HTMaterialKey = create("salt")
 
     @JvmStatic
@@ -30,6 +27,9 @@ object CommonMaterialKeys {
     val SULFUR: HTMaterialKey = create("sulfur")
 
     //    Gems    //
+
+    @JvmStatic
+    val CINNABAR: HTMaterialKey = create("cinnabar")
 
     @JvmStatic
     val FLUORITE: HTMaterialKey = create("fluorite")
@@ -55,7 +55,7 @@ object CommonMaterialKeys {
     // 4th
     @JvmStatic
     val TITANIUM: HTMaterialKey = create("titanium")
-    
+
     @JvmStatic
     val CHROMIUM: HTMaterialKey = create("chromium")
 

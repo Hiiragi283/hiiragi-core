@@ -9,7 +9,6 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
-import hiiragi283.core.api.material.property.HTSmeltingMaterialProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
 import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.api.property.HTPropertyMap
@@ -17,7 +16,6 @@ import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.property.getScaledAmount
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
@@ -50,8 +48,8 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
             baseToBlock(key, propertyMap)
             rawToBlock(key, propertyMap)
 
-            prefixToBase(key, propertyMap, CommonTagPrefixes.DUST, 0.35f)
-            prefixToBase(key, propertyMap, CommonTagPrefixes.RAW, 0.7f)
+            smeltDustToIngot(key, propertyMap)
+            smeltRawToIngot(key, propertyMap)
 
             baseToGear(key, propertyMap)
             ingotToNugget(key, propertyMap)
@@ -103,50 +101,31 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
         }
     }
 
-    private fun prefixToBase(
-        key: HTMaterialKey,
-        propertyMap: HTPropertyMap,
-        prefix: HTTagPrefix,
-        exp: Float,
-    ) {
-        val smeltingAttribute: HTSmeltingMaterialProperty = propertyMap[HTMaterialPropertyKeys.SMELTING]
-            ?: propertyMap.getDefaultPart()?.let { part: HTDefaultPart ->
-                // 精錬の前後で同じプレフィックスと素材になる場合はパス
-                if (part is HTDefaultPart.Prefixed && part.prefix == prefix) return@let null
-                part.getItem(key)?.let(HTSmeltingMaterialProperty::withBlasting)
-            } ?: return
-        val result: HTItemHolderLike<*> = smeltingAttribute.result ?: return
-        val resultCount: Int = prefix.getScaledAmount(1, propertyMap).toInt()
-        if (resultCount <= 0) return
-        val input: HTItemHolderLike<*> = getItem(prefix, key) ?: return
+    private fun smeltDustToIngot(key: HTMaterialKey, propertyMap: HTPropertyMap) {
+        val dust: HTItemHolderLike<*> = getItem(CommonTagPrefixes.DUST, key) ?: return
+        val ingot: HTItemHolderLike<*> = getItem(CommonTagPrefixes.INGOT, key) ?: return
         // 精錬の前後がどちらもバニラ由来の場合はパス
-        if (result.namespace == HTConst.MINECRAFT && input.namespace == HTConst.MINECRAFT) return
-        // Smelting
-        HTCookingRecipeBuilder.smelting(output) {
-            ingredient += input
-            resultStack += result to resultCount
-            this.exp = exp
-            recipeId suffix "_from_${input.path}"
+        if (dust.namespace == HTConst.MINECRAFT && ingot.namespace == HTConst.MINECRAFT) return
+        // Smelting & Blasting
+        HTCookingRecipeBuilder.smeltingAndBlasting(output) {
+            ingredient += dust
+            resultStack += ingot
+            exp = 0.35f
+            recipeId suffix "_from_dust"
         }
-        // Blasting
-        if (smeltingAttribute.isBlasting) {
-            HTCookingRecipeBuilder.blasting(output) {
-                ingredient += input
-                resultStack += result to resultCount
-                this.exp = exp
-                time = 100
-                recipeId suffix "_from_${input.path}"
-            }
-        }
-        // Smoking
-        if (smeltingAttribute.isSmoking) {
-            HTCookingRecipeBuilder.smoking(output) {
-                ingredient += input
-                resultStack += result to resultCount
-                this.exp = exp
-                time = 100
-                recipeId suffix "_from_${input.path}"
-            }
+    }
+
+    private fun smeltRawToIngot(key: HTMaterialKey, propertyMap: HTPropertyMap) {
+        val raw: HTItemHolderLike<*> = getItem(CommonTagPrefixes.RAW, key) ?: return
+        val ingot: HTItemHolderLike<*> = getItem(CommonTagPrefixes.INGOT, key) ?: return
+        // 精錬の前後がどちらもバニラ由来の場合はパス
+        if (raw.namespace == HTConst.MINECRAFT && ingot.namespace == HTConst.MINECRAFT) return
+        // Smelting & Blasting
+        HTCookingRecipeBuilder.smeltingAndBlasting(output) {
+            ingredient += raw
+            resultStack += ingot
+            exp = 0.7f
+            recipeId suffix "_from_raw"
         }
     }
 
