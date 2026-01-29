@@ -1,7 +1,7 @@
 # Hiiragi Core
 
 [![GitHub License](https://img.shields.io/github/license/hiiragi283/hiiragi-core?style=for-the-badge&color=333333&logo=github)](https://github.com/Hiiragi283/hiiragi-core)
-![CurseForge Downloads](https://img.shields.io/curseforge/dt/0?style=flat-square&color=cc6600&logo=curseforge)
+[![CurseForge Downloads](https://img.shields.io/curseforge/dt/1432470?style=flat-square&color=cc6600&logo=curseforge)](https://www.curseforge.com/minecraft/mc-mods/hiiragi-core)
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/hiiragi-core?style=flat-square&color=339966&logo=modrinth)](https://modrinth.com/mod/hiiragi-core)
 
 ## About

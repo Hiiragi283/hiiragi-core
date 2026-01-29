@@ -3,6 +3,7 @@ package hiiragi283.core.api.serialization.codec
 import com.mojang.datafixers.util.Function3
 import com.mojang.datafixers.util.Function4
 import com.mojang.datafixers.util.Function5
+import com.mojang.datafixers.util.Function6
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import io.netty.buffer.ByteBuf
@@ -173,6 +174,54 @@ data class MapBiCodec<B : ByteBuf, V : Any> private constructor(val codec: MapCo
                 codec4.getter,
                 codec5.streamCodec,
                 codec5.getter,
+                factory,
+            ),
+        )
+
+        /**
+         * 指定した[codec1], [codec2], [codec3], [codec4], [codec5], [codec6]から，別の[MapBiCodec]を生成します。
+         * @param T1 [factory]の第1引数に使われるクラス
+         * @param T2 [factory]の第2引数に使われるクラス
+         * @param T3 [factory]の第3引数に使われるクラス
+         * @param T4 [factory]の第4引数に使われるクラス
+         * @param T5 [factory]の第5引数に使われるクラス
+         * @param T6 [factory]の第6引数に使われるクラス
+         * @param C 変換後のコーデックの対象となるクラス
+         */
+        @JvmStatic
+        fun <B : ByteBuf, C : Any, T1 : Any, T2 : Any, T3 : Any, T4 : Any, T5 : Any, T6 : Any> composite(
+            codec1: ParameterCodec<in B, C, T1>,
+            codec2: ParameterCodec<in B, C, T2>,
+            codec3: ParameterCodec<in B, C, T3>,
+            codec4: ParameterCodec<in B, C, T4>,
+            codec5: ParameterCodec<in B, C, T5>,
+            codec6: ParameterCodec<in B, C, T6>,
+            factory: Function6<T1, T2, T3, T4, T5, T6, C>,
+        ): MapBiCodec<B, C> = of(
+            RecordCodecBuilder.mapCodec { instance ->
+                instance
+                    .group(
+                        codec1.toRecordParam(),
+                        codec2.toRecordParam(),
+                        codec3.toRecordParam(),
+                        codec4.toRecordParam(),
+                        codec5.toRecordParam(),
+                        codec6.toRecordParam(),
+                    ).apply(instance, factory)
+            },
+            StreamCodec.composite(
+                codec1.streamCodec,
+                codec1.getter,
+                codec2.streamCodec,
+                codec2.getter,
+                codec3.streamCodec,
+                codec3.getter,
+                codec4.streamCodec,
+                codec4.getter,
+                codec5.streamCodec,
+                codec5.getter,
+                codec6.streamCodec,
+                codec6.getter,
                 factory,
             ),
         )

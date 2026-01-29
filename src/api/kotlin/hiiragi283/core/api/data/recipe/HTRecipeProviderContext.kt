@@ -2,10 +2,16 @@ package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
+import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.property.getDefaultPart
+import hiiragi283.core.api.tag.CommonTagPrefixes
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.crafting.Recipe
 import net.neoforged.neoforge.common.conditions.ICondition
 
@@ -48,6 +54,13 @@ abstract class HTRecipeProviderContext {
      * 素材を管理するマネージャを取得します。
      */
     protected val materialManager: HTMaterialManager by lazy(HiiragiCoreAccess.INSTANCE::materialManager)
+
+    fun baseOrPrefix(material: HTMaterialLike, prefix: HTTagPrefix): Set<TagKey<Item>> =
+        setOfNotNull(prefix.itemTagKey(material), materialManager.getOrEmpty(material).getDefaultPart(material))
+
+    fun baseOrDust(material: HTMaterialLike): Set<TagKey<Item>> = baseOrPrefix(material, CommonTagPrefixes.DUST)
+
+    //    Delegated    //
 
     /**
      * ほかの[HTRecipeProviderContext]に実装を依存した[HTRecipeProviderContext]の拡張クラスです。

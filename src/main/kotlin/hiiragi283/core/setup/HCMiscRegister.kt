@@ -13,6 +13,7 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
+import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
@@ -24,9 +25,7 @@ import hiiragi283.core.common.gui.sync.HTItemSyncPayload
 import hiiragi283.core.common.gui.sync.HTLongSyncPayload
 import hiiragi283.core.common.material.HTMaterialManagerImpl
 import hiiragi283.core.common.registry.HTDeferredBlock
-import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.common.registry.HTSimpleDeferredBlock
-import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
@@ -45,11 +44,11 @@ internal object HCMiscRegister {
         private set
 
     @JvmStatic
-    lateinit var materialItems: HTTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredItem>
+    lateinit var materialItems: HTTable<HTTagPrefix, HTMaterialKey, HTItemHolderLike<*>>
         private set
 
     @JvmStatic
-    lateinit var toolItems: HTTable<HTToolType, HTMaterialKey, HTSimpleDeferredItem>
+    lateinit var toolItems: HTTable<HTToolType, HTMaterialKey, HTItemHolderLike<*>>
         private set
 
     @JvmStatic
@@ -90,7 +89,7 @@ internal object HCMiscRegister {
                         .map { prefix: HTTagPrefix ->
                             val id: ResourceLocation = prefix.createId(key)
                             helper.register(id, Item(Item.Properties()))
-                            Triple(prefix, key, HTDeferredItem.simple(id))
+                            Triple(prefix, key, HTItemHolderLike.of(id))
                         }
                 }
             // 素材ツールを生成する
@@ -103,7 +102,7 @@ internal object HCMiscRegister {
                         .map { toolType: HTToolType ->
                             val id: ResourceLocation = toolType.createId(key)
                             helper.register(id, toolType.toolFactory.createTool(material, Item.Properties()))
-                            Triple(toolType, key, HTDeferredItem.simple(id))
+                            Triple(toolType, key, HTItemHolderLike.of(id))
                         }
                 }
         }

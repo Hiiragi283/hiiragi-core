@@ -28,7 +28,6 @@ import hiiragi283.core.common.item.VanillaEquipmentMaterial
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
-import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
@@ -50,7 +49,7 @@ object HCMaterialEventHandler {
         add(CommonTagPrefixes.RAW_BLOCK)
         add(CommonTagPrefixes.BLOCK)
     }
-    
+
     private val metalSet: Set<HTTagPrefix> = setOf(
         CommonTagPrefixes.DUST,
         CommonTagPrefixes.RAW,
@@ -67,6 +66,7 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.FUEL)
             addItemPrefixes(CommonTagPrefixes.DUST)
             addExtraOreResult(CommonTagPrefixes.DUST, CommonMaterialKeys.SULFUR, 1 / 4f)
+            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
             put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.disableAll())
 
             setName("Coal", "石炭")
@@ -77,6 +77,7 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.FUEL)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(CommonTagPrefixes.DUST)
+            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
             put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.disableAll())
 
             setName("Charcoal", "木炭")
@@ -237,6 +238,7 @@ object HCMaterialEventHandler {
         event.modify(VanillaMaterialKeys.WHEAT) {
             setDefaultPart(HTDefaultPart.Prefixed.CROP)
             addItemPrefixes(CommonTagPrefixes.FLOUR, CommonTagPrefixes.DOUGH)
+            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
             put(HTMaterialPropertyKeys.CRUSHED_PREFIX, CommonTagPrefixes.FLOUR)
 
             setName("Wheat", "小麦")
@@ -246,6 +248,7 @@ object HCMaterialEventHandler {
         event.modify(VanillaMaterialKeys.WOOD) {
             setDefaultPart(ItemTags.PLANKS, HTItemHolderLike.of(Items.OAK_PLANKS))
             addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEAR, CommonTagPrefixes.PLATE)
+            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
             put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.pressOnly())
 
             setName("Wood", "木")
@@ -282,6 +285,7 @@ object HCMaterialEventHandler {
         }
         event.modify(VanillaMaterialKeys.GUNPOWDER) {
             setDefaultPart(Tags.Items.GUNPOWDERS, HTItemHolderLike.of(Items.GUNPOWDER))
+            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
 
             setName("Gunpowder", "火薬")
         }
@@ -308,10 +312,11 @@ object HCMaterialEventHandler {
         event.modify(CommonMaterialKeys.COAL_COKE) {
             setDefaultPart(
                 HiiragiCoreTags.Items.COAL_COKE,
-                HTDeferredItem.simple(CommonTagPrefixes.FUEL.createId(CommonMaterialKeys.COAL_COKE)),
+                HTItemHolderLike.of(CommonTagPrefixes.FUEL.createId(CommonMaterialKeys.COAL_COKE)),
             )
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.FUEL)
+            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
             put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.disableAll())
 
             setName("Coal Coke", "石炭コークス")
@@ -410,6 +415,7 @@ object HCMaterialEventHandler {
             addExtraOreResult(CommonTagPrefixes.DUST, VanillaMaterialKeys.IRON, 1 / 4f)
 
             setName("Tin", "錫")
+            put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("white"))
         }
         registerMetal(CommonMaterialKeys.ANTIMONY, "Antimony", "アンチモン")
 
@@ -465,10 +471,27 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.DUST)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(CommonTagPrefixes.DUST)
+            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
 
             setName("Ash", "灰")
             setTextureSet("mineral", HTMaterialTextureSet.DULL)
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("steel"))
+        }
+        event.modify(CommonMaterialKeys.CARBON) {
+            setDefaultPart(HTDefaultPart.Prefixed.DUST)
+            addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addItemPrefixes(
+                CommonTagPrefixes.DUST,
+                CommonTagPrefixes.PLATE,
+                CommonTagPrefixes.ROD,
+                CommonTagPrefixes.WIRE,
+            )
+            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
+            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.pressOnly())
+
+            setName("Carbon", "炭素")
+            setTextureSet("mineral", HTMaterialTextureSet.DULL)
+            put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("coal"))
         }
         event.modify(CommonMaterialKeys.PLASTIC) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
@@ -480,6 +503,7 @@ object HCMaterialEventHandler {
                 CommonTagPrefixes.ROD,
                 CommonTagPrefixes.WIRE,
             )
+            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
             put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.solidifyOnly())
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_PLASTIC))
 
@@ -493,7 +517,12 @@ object HCMaterialEventHandler {
         event.modify(CommonMaterialKeys.RUBBER) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(alloySet.minus(CommonTagPrefixes.NUGGET).plus(CommonTagPrefixes.PLATE))
+            addItemPrefixes(
+                CommonTagPrefixes.DUST,
+                CommonTagPrefixes.INGOT,
+                CommonTagPrefixes.PLATE,
+            )
+            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
             put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.solidifyOnly())
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_RUBBER))
 

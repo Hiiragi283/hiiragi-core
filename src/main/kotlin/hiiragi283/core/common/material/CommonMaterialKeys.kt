@@ -142,6 +142,9 @@ object CommonMaterialKeys {
     val ASH: HTMaterialKey = create("ash")
 
     @JvmStatic
+    val CARBON: HTMaterialKey = create("carbon")
+
+    @JvmStatic
     val PLASTIC: HTMaterialKey = create("plastic")
 
     @JvmStatic

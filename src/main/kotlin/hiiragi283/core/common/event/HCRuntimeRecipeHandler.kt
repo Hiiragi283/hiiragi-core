@@ -3,6 +3,7 @@ package hiiragi283.core.common.event
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
+import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
@@ -11,7 +12,6 @@ import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.tag.property.getScaledAmount
 import hiiragi283.core.common.data.recipe.builder.HCSingleItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
@@ -127,7 +127,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // Crafting
         HTShapelessRecipeBuilder.create(output) {
             ingredients += CommonTagPrefixes.INGOT to key
-            ingredients += HiiragiCoreTags.Items.TOOLS_HAMMER
+            ingredients += CommonToolTypes.HAMMER.toolTags
             resultStack += plate
             recipeId suffix "_from_ingot"
         }

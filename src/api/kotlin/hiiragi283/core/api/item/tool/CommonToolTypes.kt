@@ -93,6 +93,7 @@ object CommonToolTypes {
     val HAMMER: HTToolType = HTToolType.create("hammer") {
         factory = ::HTCraftingToolItem
         langPattern = HTLangPatternProvider.create("%s Hammer", "%sのハンマー")
+        toolTags += HiiragiCoreTags.Items.HAMMERS
         toolTags += HiiragiCoreTags.Items.TOOLS_HAMMER
     }
 }

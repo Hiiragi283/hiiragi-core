@@ -36,6 +36,9 @@ import java.util.function.IntUnaryOperator
  * @since 0.8.0
  */
 data object HTIngredientCreator {
+    @JvmStatic
+    private val TAG_COMPARATOR: Comparator<TagKey<*>> = compareBy(TagKey<*>::location)
+
     //    Item    //
 
     // Item
@@ -52,11 +55,9 @@ data object HTIngredientCreator {
     @JvmName("createItem")
     fun create(tagKey: TagKey<Item>, amount: Int = 1): HTItemIngredient = create(Ingredient.of(tagKey), amount)
 
-    fun create(prefixes: Iterable<HTTagPrefix>, materials: Iterable<HTMaterialLike>, amount: Int = 1): HTItemIngredient =
-        create(prefixes.flatMap { prefix: HTTagPrefix -> materials.map(prefix::itemTagKey) }, amount)
-
     @JvmName("createItem")
-    fun create(tagKeys: Iterable<TagKey<Item>>, amount: Int = 1): HTItemIngredient = create(tagKeys.map(Ingredient::TagValue), amount)
+    fun create(tagKeys: Iterable<TagKey<Item>>, amount: Int = 1): HTItemIngredient =
+        create(tagKeys.sortedWith(TAG_COMPARATOR).map(Ingredient::TagValue), amount)
 
     // Ingredient
     @JvmName("createValues")
@@ -87,7 +88,7 @@ data object HTIngredientCreator {
 
     @JvmName("createFluid")
     fun create(tagKeys: Iterable<TagKey<Fluid>>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient =
-        create(CompoundFluidIngredient.of(tagKeys.map(FluidIngredient::tag)), amount)
+        create(CompoundFluidIngredient.of(tagKeys.sortedWith(TAG_COMPARATOR).map(FluidIngredient::tag)), amount)
 
     fun create(content: HTFluidContent<*, *, *>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient =
         create(content.fluidTag, amount)

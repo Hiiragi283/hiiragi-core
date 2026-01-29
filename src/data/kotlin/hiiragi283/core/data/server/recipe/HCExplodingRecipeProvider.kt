@@ -55,11 +55,7 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
             listOf(CommonMaterialKeys.COAL_COKE) to 32,
         ).forEach { (fuels: List<HTMaterialKey>, count: Int) ->
             HCExplodingRecipeBuilder.create(output) {
-                ingredient = inputCreator.create(
-                    listOf(CommonTagPrefixes.DUST, CommonTagPrefixes.FUEL),
-                    fuels,
-                    count,
-                )
+                ingredient = inputCreator.create(fuels.flatMap(::baseOrDust), count)
                 result = resultCreator.material(CommonTagPrefixes.GEM, VanillaMaterialKeys.DIAMOND)
                 recipeId suffix "_from_${fuels.joinToString(separator = "_or_", transform = HTMaterialKey::path)}"
             }

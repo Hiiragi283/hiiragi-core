@@ -47,7 +47,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             resultStack += Items.GLASS
             recipeId suffix "_from_dust"
         }
-        
+
         // Iron Rod -> Iron Bar
         HTShapedRecipeBuilder.create(output) {
             pattern(

@@ -3,8 +3,8 @@
   "ingredient": {
     "amount": 2,
     "items": [
-      "#c:stones",
-      "#c:cobblestones/normal"
+      "#c:cobblestones/normal",
+      "#c:stones"
     ]
   },
   "min_power": 3,

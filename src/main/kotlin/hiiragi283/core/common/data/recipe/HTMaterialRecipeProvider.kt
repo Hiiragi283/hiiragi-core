@@ -102,6 +102,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     }
 
     private fun smeltDustToIngot(key: HTMaterialKey, propertyMap: HTPropertyMap) {
+        if (!propertyMap.getOrDefault(HTMaterialPropertyKeys.CAN_BE_SMELTED)) return
         val dust: HTItemHolderLike<*> = getItem(CommonTagPrefixes.DUST, key) ?: return
         val ingot: HTItemHolderLike<*> = getItem(CommonTagPrefixes.INGOT, key) ?: return
         // 精錬の前後がどちらもバニラ由来の場合はパス
@@ -116,6 +117,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     }
 
     private fun smeltRawToIngot(key: HTMaterialKey, propertyMap: HTPropertyMap) {
+        if (!propertyMap.getOrDefault(HTMaterialPropertyKeys.CAN_BE_SMELTED)) return
         val raw: HTItemHolderLike<*> = getItem(CommonTagPrefixes.RAW, key) ?: return
         val ingot: HTItemHolderLike<*> = getItem(CommonTagPrefixes.INGOT, key) ?: return
         // 精錬の前後がどちらもバニラ由来の場合はパス

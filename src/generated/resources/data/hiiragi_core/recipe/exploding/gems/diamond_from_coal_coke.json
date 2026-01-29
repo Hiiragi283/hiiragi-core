@@ -3,8 +3,8 @@
   "ingredient": {
     "amount": 32,
     "items": [
-      "#c:dusts/coal_coke",
-      "#c:fuels/coal_coke"
+      "#c:coal_coke",
+      "#c:dusts/coal_coke"
     ]
   },
   "result": {

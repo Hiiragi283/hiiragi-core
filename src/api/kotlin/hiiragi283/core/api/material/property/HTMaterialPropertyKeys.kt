@@ -63,6 +63,9 @@ object HTMaterialPropertyKeys {
 
     //    Runtime Recipe    //
 
+    @JvmField
+    val CAN_BE_SMELTED: HTPropertyKey<Boolean> = HTPropertyKey.create(HiiragiCoreAPI.id("can_be_smelted"), true)
+
     /**
      * 粉砕後の[HTTagPrefix]に対応する[プロパティキー][HTPropertyKey]
      * @since 0.8.0
@@ -110,6 +113,7 @@ object HTMaterialPropertyKeys {
 
     //    Data Gen    //
 
+    // Lang
     /**
      * 素材の[翻訳名][HTLangName]を保持する[プロパティキー][HTPropertyKey]
      */
@@ -123,6 +127,7 @@ object HTMaterialPropertyKeys {
     @JvmField
     val CUSTOM_LANG_NAME: HTPropertyKey<Map<HTTagPrefix, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_lang_name"))
 
+    // Data Map
     /**
      * かまど燃料としての時間に対応する[プロパティキー][HTPropertyKey]
      * @since 0.8.0
@@ -130,6 +135,7 @@ object HTMaterialPropertyKeys {
     @JvmField
     val FUEL_TIME: HTPropertyKey<Int?> = createNullable("fuel_time")
 
+    // Texture
     /**
      * テクスチャを生成する際のカラーパレットの[ID][ResourceLocation]に対応する[プロパティキー][HTPropertyKey]
      */
