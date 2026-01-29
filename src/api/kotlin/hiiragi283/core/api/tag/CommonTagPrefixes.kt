@@ -27,10 +27,8 @@ object CommonTagPrefixes {
     //    Block    //
 
     @JvmField
-    val ORE: HTTagPrefix = HTTagPrefix.create("ore") {
+    val ORE: HTTagPrefix = HTTagPrefix.create("ore", "ores", "ores/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_ore")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "ores")
-        put(HTTagPropertyKeys.TAG_PATTERN, "ores/%s")
         put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
             base * 2 * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
         }
@@ -95,10 +93,8 @@ object CommonTagPrefixes {
     val ORES: Set<HTTagPrefix> = setOf(ORE, ORE_DEEPSLATE, ORE_NETHER, ORE_END)
 
     @JvmField
-    val BLOCK: HTTagPrefix = HTTagPrefix.create("block") {
+    val BLOCK: HTTagPrefix = HTTagPrefix.create("block", "storage_blocks", "storage_blocks/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_block")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "storage_blocks")
-        put(HTTagPropertyKeys.TAG_PATTERN, "storage_blocks/%s")
         put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
             base * properties.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK).baseCount
         }
@@ -109,10 +105,8 @@ object CommonTagPrefixes {
     }
 
     @JvmField
-    val RAW_BLOCK: HTTagPrefix = HTTagPrefix.create("raw_block") {
+    val RAW_BLOCK: HTTagPrefix = HTTagPrefix.create("raw_block", "storage_blocks", "storage_blocks/raw_%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "raw_%s_block")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "storage_blocks")
-        put(HTTagPropertyKeys.TAG_PATTERN, "storage_blocks/raw_%s")
         put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base * 12 }
 
         put(HTTagPropertyKeys.BLOCK_PROP, BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK))
@@ -126,29 +120,23 @@ object CommonTagPrefixes {
      * @since 0.8.0
      */
     @JvmField
-    val CROP: HTTagPrefix = HTTagPrefix.create("crop") {
+    val CROP: HTTagPrefix = HTTagPrefix.create("crop", "crops", "crops/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "crops")
-        put(HTTagPropertyKeys.TAG_PATTERN, "crops/%s")
     }
 
     /**
      * @since 0.8.0
      */
     @JvmField
-    val DOUGH: HTTagPrefix = HTTagPrefix.create("dough") {
+    val DOUGH: HTTagPrefix = HTTagPrefix.create("dough", "doughs", "doughs/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_dough")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "doughs")
-        put(HTTagPropertyKeys.TAG_PATTERN, "doughs/%s")
 
         addNamePattern("%s Dough", "%s粉の生地")
     }
 
     @JvmField
-    val DUST: HTTagPrefix = HTTagPrefix.create("dust") {
+    val DUST: HTTagPrefix = HTTagPrefix.create("dust", "dusts", "dusts/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_dust")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "dusts")
-        put(HTTagPropertyKeys.TAG_PATTERN, "dusts/%s")
 
         addNamePattern("%s Dust", "%sの粉")
     }
@@ -157,98 +145,76 @@ object CommonTagPrefixes {
      * @since 0.8.0
      */
     @JvmField
-    val FLOUR: HTTagPrefix = HTTagPrefix.create("flour") {
+    val FLOUR: HTTagPrefix = HTTagPrefix.create("flour", "flours", "flours/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_flour")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "flours")
-        put(HTTagPropertyKeys.TAG_PATTERN, "flours/%s")
 
         addNamePattern("%s Flour", "%s粉")
     }
 
     @JvmField
-    val FUEL: HTTagPrefix = HTTagPrefix.create("fuel") {
+    val FUEL: HTTagPrefix = HTTagPrefix.create("fuel", "fuels", "fuels/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_fuel")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "fuels")
-        put(HTTagPropertyKeys.TAG_PATTERN, "fuels/%s")
     }
 
     @JvmField
-    val GEAR: HTTagPrefix = HTTagPrefix.create("gear") {
+    val GEAR: HTTagPrefix = HTTagPrefix.create("gear", "gears", "gears/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_gear")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "gears")
-        put(HTTagPropertyKeys.TAG_PATTERN, "gears/%s")
         put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base * 4 }
 
         addNamePattern("%s Gear", "%sの歯車")
     }
 
     @JvmField
-    val GEM: HTTagPrefix = HTTagPrefix.create("gem") {
+    val GEM: HTTagPrefix = HTTagPrefix.create("gem", "gems", "gems/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_gem")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "gems")
-        put(HTTagPropertyKeys.TAG_PATTERN, "gems/%s")
     }
 
     @JvmField
-    val INGOT: HTTagPrefix = HTTagPrefix.create("ingot") {
+    val INGOT: HTTagPrefix = HTTagPrefix.create("ingot", "ingots", "ingots/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_ingot")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "ingots")
-        put(HTTagPropertyKeys.TAG_PATTERN, "ingots/%s")
 
         addNamePattern("%s Ingot", "%sインゴット")
     }
 
     @JvmField
-    val NUGGET: HTTagPrefix = HTTagPrefix.create("nugget") {
+    val NUGGET: HTTagPrefix = HTTagPrefix.create("nugget", "nuggets", "nuggets/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_nugget")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "nuggets")
-        put(HTTagPropertyKeys.TAG_PATTERN, "nuggets/%s")
         put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base / 9 }
 
         addNamePattern("%s Nugget", "%sナゲット")
     }
 
     @JvmField
-    val PEARL: HTTagPrefix = HTTagPrefix.create("pearl") {
+    val PEARL: HTTagPrefix = HTTagPrefix.create("pearl", "pearls", "pearls/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_pearl")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "pearls")
-        put(HTTagPropertyKeys.TAG_PATTERN, "pearls/%s")
     }
 
     @JvmField
-    val PLATE: HTTagPrefix = HTTagPrefix.create("plate") {
+    val PLATE: HTTagPrefix = HTTagPrefix.create("plate", "plates", "plates/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_plate")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "plates")
-        put(HTTagPropertyKeys.TAG_PATTERN, "plates/%s")
 
         addNamePattern("%s Plate", "%sの板")
     }
 
     @JvmField
-    val RAW: HTTagPrefix = HTTagPrefix.create("raw") {
+    val RAW: HTTagPrefix = HTTagPrefix.create("raw", "raw_materials", "raw_materials/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "raw_%s")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "raw_materials")
-        put(HTTagPropertyKeys.TAG_PATTERN, "raw_materials/%s")
         put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base * fraction(4, 3) }
 
         addNamePattern("Raw %s", "%sの原石")
     }
 
     @JvmField
-    val ROD: HTTagPrefix = HTTagPrefix.create("rod") {
+    val ROD: HTTagPrefix = HTTagPrefix.create("rod", "rods", "rods/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_rod")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "rods")
-        put(HTTagPropertyKeys.TAG_PATTERN, "rods/%s")
         put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base / 2 }
 
         addNamePattern("%s Rod", "%sの棒")
     }
 
     @JvmField
-    val SCRAP: HTTagPrefix = HTTagPrefix.create("scrap") {
+    val SCRAP: HTTagPrefix = HTTagPrefix.create("scrap", "scraps", "scraps/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_scrap")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "scraps")
-        put(HTTagPropertyKeys.TAG_PATTERN, "scraps/%s")
 
         addNamePattern("%s Scrap", "%sの欠片")
     }
@@ -257,19 +223,15 @@ object CommonTagPrefixes {
      * @since 0.8.0
      */
     @JvmField
-    val SEED: HTTagPrefix = HTTagPrefix.create("seed") {
+    val SEED: HTTagPrefix = HTTagPrefix.create("seed", "seeds", "seeds/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_seed")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "seeds")
-        put(HTTagPropertyKeys.TAG_PATTERN, "seeds/%s")
 
         addNamePattern("%s Seed", "%sの種")
     }
 
     @JvmField
-    val WIRE: HTTagPrefix = HTTagPrefix.create("wire") {
+    val WIRE: HTTagPrefix = HTTagPrefix.create("wire", "wires", "wires/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_wire")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "wires")
-        put(HTTagPropertyKeys.TAG_PATTERN, "wires/%s")
 
         addNamePattern("%s Wire", "%sのワイヤ")
     }
@@ -281,10 +243,8 @@ object CommonTagPrefixes {
         jaPrefix: String,
         properties: BlockBehaviour.Properties,
         stoneTexture: ResourceLocation,
-    ): HTTagPrefix = HTTagPrefix.create("${name}_ore") {
+    ): HTTagPrefix = HTTagPrefix.create("${name}_ore", "ores", "ores/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "${name}_%s_ore")
-        put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "ores")
-        put(HTTagPropertyKeys.TAG_PATTERN, "ores/%s")
         put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
             base * 2 * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
         }

@@ -12,23 +12,42 @@
 
 ## Feature
 
-- Common Material Blocks/Items
-  - Fuels: Coal, Charcoal, Coal Coke, Carbide,
-  - Minerals: Redstone, Glowstone, Cinnabar, Salt, Saltpeter, Sulfur
-  - Gems: Lapis, Quartz, Amethyst, Diamond, Emerald, Echo Shard
-  - Pearls: Ender Pearl
-  - Metals: Copper, Iron, Gold, Silver
-  - Alloys: Netherite, Steel
-  - Plates: Plastic, Rubber
-  - Misc: Wood, Obsidian
+- Material Blocks/Items
+  - Vanilla
+    - Fuels: Coal, Charcoal
+    - Minerals: (Redstone), (Glowstone), Calcite
+    - Gems: Lapis, Quartz, Amethyst, Diamond, Emerald, Echo, Prismarine
+    - Pearls: Ender
+    - Metals: Iron, Copper, Gold
+    - Alloys: Netherite
+    - Crops: Wheat,
+    - Others: Wood, Glass, Stone, Obsidian, Gunpowder
+  - Common
+    - Fuels: Coal Coke
+    - Minerals: Bauxite, Cinnabar, Salt, Saltpeter, Sulfur
+    - Gems: (Fluorite), (Peridot), (Ruby), (Sapphire)
+    - Metals
+      - 3rd Period: Aluminum, (Silicon)
+      - 4th Period: (Titanium),  (Chromium), (Manganese), (Cobalt), (Nickel), Zinc
+      - 5th Period: (palladium), (Silver), Tin, (Antimony)
+      - 6th Period: (Tungsten), (Osmium), Iridium, (Platinum), (Lead)
+      - 7th Period: (Uranium), (Plutonium)
+    - Alloys: Steel, (Invar), (Electrum), Brass, (Constantan), Bronze, (Signalum), (Lumium), (Enderium)
+    - Others: Ash, Plastic, Rubber
+  - Original
+    - Gems: Azure, Crimson Crystal, Warped Crystal
+    - Pearls: Eldritch
+    - Alloys: Azure Steel, Deep Steel
 
 - Blocks
   - Warped Wart: Clears one bad effect randomly when eaten.
 - Items
   - Compressed Sawdust: Recycles Sawdust into Charcoal
   - Trader's Catalog: Opens trading menu of Wandering Trader
+- End-Game Items
+  - Almighty Pickaxe: A mining tool suitable for all blocks
   - Ambrosia: NON-CONSUMABLE FOOD
-  - Eternal Ticket: Make any tool UNBREAKABLE
+  - Eternal Smithing Template: Make any equipment UNBREAKABLE
 - Recipe Types
   - Charging: Fired when Lightning Strike hit on item entity
   - Anvil Crushing: Fired when Anvil fallen on item entity

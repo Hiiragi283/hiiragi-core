@@ -55,10 +55,7 @@ object CommonMaterialKeys {
     // 4th
     @JvmStatic
     val TITANIUM: HTMaterialKey = create("titanium")
-
-    @JvmStatic
-    val CHROME: HTMaterialKey = create("chrome")
-
+    
     @JvmStatic
     val CHROMIUM: HTMaterialKey = create("chromium")
 

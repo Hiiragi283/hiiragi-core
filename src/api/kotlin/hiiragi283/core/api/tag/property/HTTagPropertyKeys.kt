@@ -21,18 +21,6 @@ object HTTagPropertyKeys {
     val ID_PATTERN: HTPropertyKey<String?> = createNullable("id_pattern")
 
     /**
-     * 共通タグの[ID][ResourceLocation]のパターンに対応する[プロパティキー][HTPropertyKey]
-     */
-    @JvmField
-    val COMMON_TAG_PATTERN: HTPropertyKey<String?> = createNullable("common_tag_pattern")
-
-    /**
-     * 素材付き共通タグの[ID][ResourceLocation]のパターンに対応する[プロパティキー][HTPropertyKey]
-     */
-    @JvmField
-    val TAG_PATTERN: HTPropertyKey<String?> = createNullable("tag_pattern")
-
-    /**
      * 基準値に対する数量を取得する[プロパティキー][HTPropertyKey]
      */
     @JvmField

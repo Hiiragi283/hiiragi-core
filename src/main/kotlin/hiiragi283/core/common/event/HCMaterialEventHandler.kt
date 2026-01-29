@@ -103,7 +103,6 @@ object HCMaterialEventHandler {
             addItemPrefixes(CommonTagPrefixes.DUST)
 
             setName("Calcite", "方解石")
-            setTextureSet("mineral")
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("white"))
         }
         // Gems
@@ -345,7 +344,6 @@ object HCMaterialEventHandler {
 
             setName("Cinnabar", "辰砂")
             setTextureSet("mineral", HTMaterialTextureSet.DULL)
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("crimson_crystal"))
         }
         event.modify(CommonMaterialKeys.SALT) {
             setDefaultPart(HTDefaultPart.Prefixed.DUST)
@@ -374,7 +372,6 @@ object HCMaterialEventHandler {
 
             setName("Sulfur", "硫黄")
             setTextureSet("mineral", HTMaterialTextureSet.DULL)
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("gold"))
         }
         // Gems
         event.modify(CommonMaterialKeys.FLUORITE) {
@@ -393,12 +390,10 @@ object HCMaterialEventHandler {
             addItemPrefixes(alloySet)
 
             setName("Aluminum", "アルミニウム")
-            setTextureSet(HTMaterialTextureSet.SHINE)
         }
         registerMetal(CommonMaterialKeys.SILICON, "Silicon", "シリコン")
 
         registerMetal(CommonMaterialKeys.TITANIUM, "Titanium", "チタン")
-        registerMetal(CommonMaterialKeys.CHROME, "Chrome", "クロム")
         registerMetal(CommonMaterialKeys.CHROMIUM, "Chromium", "クロム")
         registerMetal(CommonMaterialKeys.MANGANESE, "Manganese", "マンガン")
         registerMetal(CommonMaterialKeys.COBALT, "Cobalt", "コバルト")
@@ -567,7 +562,6 @@ object HCMaterialEventHandler {
             addItemPrefixes(alloySet.plus(partSet))
 
             setName("Azure Steel", "紺鉄")
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("azure"))
         }
         event.modify(HCMaterialKeys.DEEP_STEEL) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
