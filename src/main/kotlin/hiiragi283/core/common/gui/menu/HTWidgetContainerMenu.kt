@@ -1,6 +1,7 @@
 package hiiragi283.core.common.gui.menu
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
@@ -42,9 +43,9 @@ class HTWidgetContainerMenu(
             return widget
         }
 
-        override fun track(slot: HTSyncableSlot) {
-            this@HTWidgetContainerMenu.addTrackedSlot(slot)
-            HiiragiCoreAPI.LOGGER.debug("Added syncable slot: {}", slot)
+        override fun track(slot: HTSyncableSlot, type: HTSyncType) {
+            this@HTWidgetContainerMenu.addTrackedSlot(slot, type)
+            HiiragiCoreAPI.LOGGER.debug("Added syncable slot: {} for {}", slot, type)
         }
     }
 }

@@ -12,8 +12,8 @@ import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTSmeltingMaterialProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
 import hiiragi283.core.api.material.property.getDefaultPart
-import hiiragi283.core.api.material.property.getStorageBlock
 import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -46,143 +46,140 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     //    Material    //
 
     private fun material() {
-        baseToBlock()
-        rawToBlock()
-
-        prefixToBase(CommonTagPrefixes.DUST, 0.35f)
-        prefixToBase(CommonTagPrefixes.RAW, 0.7f)
-
-        baseToGear()
-        ingotToNugget()
-    }
-
-    private fun baseToBlock() {
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager) {
-            val blockProperty: HTStorageBlockProperty = propertyMap.getStorageBlock()
-            val block: HTItemHolderLike<*> = getBlock(CommonTagPrefixes.BLOCK, key) ?: continue
+            baseToBlock(key, propertyMap)
+            rawToBlock(key, propertyMap)
 
-            val defaultPart: HTDefaultPart = propertyMap.getDefaultPart() ?: continue
-            val suffix: String = defaultPart.getSuffix()
-            val base: HTItemHolderLike<*> = defaultPart.getItem(key) ?: continue
-            if (block.namespace == HTConst.MINECRAFT && base.namespace == HTConst.MINECRAFT) continue
-            // Shapeless
-            HTShapelessRecipeBuilder.create(output) {
-                ingredients += CommonTagPrefixes.BLOCK to key
-                resultStack += base to blockProperty.baseCount
-                recipeId replace key.getId().withSuffix("/${suffix}_from_block")
-            }
-            // Shaped
-            val pattern: List<String> = blockProperty.pattern ?: continue
-            HTShapedRecipeBuilder.create(output) {
-                pattern(pattern)
-                define('A') += defaultPart.getTag(key)
-                define('B') += base
-                resultStack += block
-                recipeId replace key.getId().withSuffix("/block_from_$suffix")
-            }
+            prefixToBase(key, propertyMap, CommonTagPrefixes.DUST, 0.35f)
+            prefixToBase(key, propertyMap, CommonTagPrefixes.RAW, 0.7f)
+
+            baseToGear(key, propertyMap)
+            ingotToNugget(key, propertyMap)
         }
     }
 
-    private fun rawToBlock() {
-        for (key: HTMaterialKey in materialManager.keys) {
-            val raw: HTItemHolderLike<*> = getItem(CommonTagPrefixes.RAW, key) ?: continue
-            if (raw.namespace == HTConst.MINECRAFT) continue
-            // Shapeless
-            HTShapelessRecipeBuilder.create(output) {
-                ingredients += CommonTagPrefixes.RAW_BLOCK to key
-                resultStack += raw to 9
-                recipeId replace key.getId().withSuffix("/raw_from_block")
-            }
-            // Shaped
-            val rawBlock: HTItemHolderLike<*> = getBlock(CommonTagPrefixes.RAW_BLOCK, key) ?: continue
-            HTShapedRecipeBuilder.create(output) {
-                hollow8()
-                define('A') += CommonTagPrefixes.RAW to key
-                define('B') += raw
-                resultStack += rawBlock
-                recipeId replace key.getId()
-            }
+    private fun baseToBlock(key: HTMaterialKey, propertyMap: HTPropertyMap) {
+        val blockProperty: HTStorageBlockProperty = propertyMap.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK)
+        val block: HTItemHolderLike<*> = getBlock(CommonTagPrefixes.BLOCK, key) ?: return
+
+        val defaultPart: HTDefaultPart = propertyMap.getDefaultPart() ?: return
+        val suffix: String = defaultPart.getSuffix()
+        val base: HTItemHolderLike<*> = defaultPart.getItem(key) ?: return
+        if (block.namespace == HTConst.MINECRAFT && base.namespace == HTConst.MINECRAFT) return
+        // Shapeless
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += CommonTagPrefixes.BLOCK to key
+            resultStack += base to blockProperty.baseCount
+            recipeId replace key.getId().withSuffix("/${suffix}_from_block")
+        }
+        // Shaped
+        val pattern: List<String> = blockProperty.pattern ?: return
+        HTShapedRecipeBuilder.create(output) {
+            pattern(pattern)
+            define('A') += defaultPart.getTag(key)
+            define('B') += base
+            resultStack += block
+            recipeId replace key.getId().withSuffix("/block_from_$suffix")
         }
     }
 
-    private fun prefixToBase(prefix: HTTagPrefix, exp: Float) {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager) {
-            val smeltingAttribute: HTSmeltingMaterialProperty = propertyMap[HTMaterialPropertyKeys.SMELTING]
-                ?: propertyMap.getDefaultPart()?.let { part: HTDefaultPart ->
-                    // 精錬の前後で同じプレフィックスと素材になる場合はパス
-                    if (part is HTDefaultPart.Prefixed && part.prefix == prefix) return@let null
-                    part.getItem(key)?.let(HTSmeltingMaterialProperty::withBlasting)
-                } ?: continue
-            val result: HTItemHolderLike<*> = smeltingAttribute.result ?: continue
-            val resultCount: Int = prefix.getScaledAmount(1, propertyMap).toInt()
-            if (resultCount <= 0) continue
-            val input: HTItemHolderLike<*> = getItem(prefix, key) ?: continue
-            // 精錬の前後がどちらもバニラ由来の場合はパス
-            if (result.namespace == HTConst.MINECRAFT && input.namespace == HTConst.MINECRAFT) continue
-            // Smelting
-            HTCookingRecipeBuilder.smelting(output) {
+    private fun rawToBlock(key: HTMaterialKey, propertyMap: HTPropertyMap) {
+        val raw: HTItemHolderLike<*> = getItem(CommonTagPrefixes.RAW, key) ?: return
+        if (raw.namespace == HTConst.MINECRAFT) return
+        // Shapeless
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += CommonTagPrefixes.RAW_BLOCK to key
+            resultStack += raw to 9
+            recipeId replace key.getId().withSuffix("/raw_from_block")
+        }
+        // Shaped
+        val rawBlock: HTItemHolderLike<*> = getBlock(CommonTagPrefixes.RAW_BLOCK, key) ?: return
+        HTShapedRecipeBuilder.create(output) {
+            hollow8()
+            define('A') += CommonTagPrefixes.RAW to key
+            define('B') += raw
+            resultStack += rawBlock
+            recipeId replace key.getId()
+        }
+    }
+
+    private fun prefixToBase(
+        key: HTMaterialKey,
+        propertyMap: HTPropertyMap,
+        prefix: HTTagPrefix,
+        exp: Float,
+    ) {
+        val smeltingAttribute: HTSmeltingMaterialProperty = propertyMap[HTMaterialPropertyKeys.SMELTING]
+            ?: propertyMap.getDefaultPart()?.let { part: HTDefaultPart ->
+                // 精錬の前後で同じプレフィックスと素材になる場合はパス
+                if (part is HTDefaultPart.Prefixed && part.prefix == prefix) return@let null
+                part.getItem(key)?.let(HTSmeltingMaterialProperty::withBlasting)
+            } ?: return
+        val result: HTItemHolderLike<*> = smeltingAttribute.result ?: return
+        val resultCount: Int = prefix.getScaledAmount(1, propertyMap).toInt()
+        if (resultCount <= 0) return
+        val input: HTItemHolderLike<*> = getItem(prefix, key) ?: return
+        // 精錬の前後がどちらもバニラ由来の場合はパス
+        if (result.namespace == HTConst.MINECRAFT && input.namespace == HTConst.MINECRAFT) return
+        // Smelting
+        HTCookingRecipeBuilder.smelting(output) {
+            ingredient += input
+            resultStack += result to resultCount
+            this.exp = exp
+            recipeId suffix "_from_${input.path}"
+        }
+        // Blasting
+        if (smeltingAttribute.isBlasting) {
+            HTCookingRecipeBuilder.blasting(output) {
                 ingredient += input
                 resultStack += result to resultCount
                 this.exp = exp
+                time = 100
                 recipeId suffix "_from_${input.path}"
             }
-            // Blasting
-            if (smeltingAttribute.isBlasting) {
-                HTCookingRecipeBuilder.blasting(output) {
-                    ingredient += input
-                    resultStack += result to resultCount
-                    this.exp = exp
-                    time = 100
-                    recipeId suffix "_from_${input.path}"
-                }
-            }
-            // Smoking
-            if (smeltingAttribute.isSmoking) {
-                HTCookingRecipeBuilder.smoking(output) {
-                    ingredient += input
-                    resultStack += result to resultCount
-                    this.exp = exp
-                    time = 100
-                    recipeId suffix "_from_${input.path}"
-                }
+        }
+        // Smoking
+        if (smeltingAttribute.isSmoking) {
+            HTCookingRecipeBuilder.smoking(output) {
+                ingredient += input
+                resultStack += result to resultCount
+                this.exp = exp
+                time = 100
+                recipeId suffix "_from_${input.path}"
             }
         }
     }
 
-    private fun baseToGear() {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager) {
-            val inputTag: TagKey<Item> = propertyMap.getDefaultPart(key) ?: continue
-            val gear: HTItemHolderLike<*> = getItem(CommonTagPrefixes.GEAR, key) ?: continue
-            // Shaped
-            HTShapedRecipeBuilder.create(output) {
-                hollow4()
-                define('A') += inputTag
-                define('B') += Tags.Items.NUGGETS_IRON
-                resultStack += gear
-                recipeId replace key.getId().withSuffix("/gear")
-            }
+    private fun baseToGear(key: HTMaterialKey, propertyMap: HTPropertyMap) {
+        val inputTag: TagKey<Item> = propertyMap.getDefaultPart(key) ?: return
+        val gear: HTItemHolderLike<*> = getItem(CommonTagPrefixes.GEAR, key) ?: return
+        // Shaped
+        HTShapedRecipeBuilder.create(output) {
+            hollow4()
+            define('A') += inputTag
+            define('B') += Tags.Items.NUGGETS_IRON
+            resultStack += gear
+            recipeId replace key.getId().withSuffix("/gear")
         }
     }
 
-    private fun ingotToNugget() {
-        for (key: HTMaterialKey in materialManager.keys) {
-            val nugget: HTItemHolderLike<*> = getItem(CommonTagPrefixes.NUGGET, key) ?: continue
-            if (nugget.namespace == HTConst.MINECRAFT) continue
-            // Shapeless
-            HTShapelessRecipeBuilder.create(output) {
-                ingredients += CommonTagPrefixes.INGOT to key
-                resultStack += nugget to 9
-                recipeId replace key.getId().withSuffix("/nugget_from_ingot")
-            }
-            // Shaped
-            val ingot: HTItemHolderLike<*> = getItem(CommonTagPrefixes.INGOT, key) ?: continue
-            HTShapedRecipeBuilder.create(output) {
-                hollow8()
-                define('A') += CommonTagPrefixes.NUGGET to key
-                define('B') += nugget
-                resultStack += ingot
-                recipeId replace key.getId().withSuffix("/ingot_from_nugget")
-            }
+    private fun ingotToNugget(key: HTMaterialKey, propertyMap: HTPropertyMap) {
+        val nugget: HTItemHolderLike<*> = getItem(CommonTagPrefixes.NUGGET, key) ?: return
+        if (nugget.namespace == HTConst.MINECRAFT) return
+        // Shapeless
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += CommonTagPrefixes.INGOT to key
+            resultStack += nugget to 9
+            recipeId replace key.getId().withSuffix("/nugget_from_ingot")
+        }
+        // Shaped
+        val ingot: HTItemHolderLike<*> = getItem(CommonTagPrefixes.INGOT, key) ?: return
+        HTShapedRecipeBuilder.create(output) {
+            hollow8()
+            define('A') += CommonTagPrefixes.NUGGET to key
+            define('B') += nugget
+            resultStack += ingot
+            recipeId replace key.getId().withSuffix("/ingot_from_nugget")
         }
     }
 

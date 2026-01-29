@@ -1,5 +1,6 @@
 package hiiragi283.core.api.gui.widget
 
+import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
 
 /**
@@ -25,14 +26,13 @@ interface HTWidgetHolder {
 
     /**
      * 指定した[slot]を追加します。
+     * @param type 同期の方向
      * @see mekanism.common.inventory.container.MekanismContainer.track
      */
-    fun track(slot: HTSyncableSlot)
+    fun track(slot: HTSyncableSlot, type: HTSyncType)
 
-    /**
-     * 指定した[slot]を追加します。
-     */
-    operator fun plusAssign(slot: HTSyncableSlot) {
-        this.track(slot)
+    operator fun plusAssign(pair: Pair<HTSyncableSlot, HTSyncType>) {
+        val (slot: HTSyncableSlot, type: HTSyncType) = pair
+        this.track(slot, type)
     }
 }

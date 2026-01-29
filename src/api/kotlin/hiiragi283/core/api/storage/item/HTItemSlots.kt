@@ -37,6 +37,11 @@ fun HTItemSlot.extractItem(amount: Int, action: HTStorageAction, access: HTStora
     return this.extract(amount, action, access).let(resourceIn::toStack)
 }
 
+/**
+ * この[スロット][this]に[stack]を代入します。
+ * @author Hiiragi Tsubasa
+ * @since 0.8.0
+ */
 fun HTResourceSlot.Basic<HTItemResourceType>.setStack(stack: ItemStack) {
     setResource(stack.toResource())
     setAmount(stack.count)

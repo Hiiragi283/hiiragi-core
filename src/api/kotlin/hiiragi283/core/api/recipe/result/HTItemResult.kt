@@ -35,6 +35,10 @@ class HTItemResult(contents: Ior<HTItemResourceType, TagKey<Item>>, amount: Int)
             ::HTItemResult,
         )
 
+        /**
+         * [HTItemResult]の新しいインスタンスを作成します。
+         * @since 0.8.0
+         */
         @HTBuilderMarker
         @JvmStatic
         fun create(builderAction: Builder.() -> Unit): HTItemResult = Builder().apply(builderAction).build()
@@ -48,6 +52,11 @@ class HTItemResult(contents: Ior<HTItemResourceType, TagKey<Item>>, amount: Int)
 
     //    Builder    //
 
+    /**
+     * [HTItemResult]向けのビルダークラスです。
+     * @author Hiiragi Tsubasa
+     * @since 0.8.0
+     */
     class Builder {
         var item: HTItemResourceType? = null
         var tagKey: TagKey<Item>? = null

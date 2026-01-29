@@ -33,12 +33,21 @@ interface HTBlockHolderLike<BLOCK : Block, ITEM : Item> : HTItemHolderLike<ITEM>
             .holder(Registries.BLOCK)
             .xmap(Holder<Block>::value.andThen(::of), HTBlockHolderLike<*, *>::getBlockHolder)
 
+        /**
+         * 指定した[id]から[HTBlockHolderLike]の新しいインスタンスを作成します。
+         */
         @JvmStatic
         fun of(id: ResourceLocation): HTBlockHolderLike<*, *> = of(Registries.BLOCK.createKey(id))
 
+        /**
+         * 指定した[key]から[HTBlockHolderLike]の新しいインスタンスを作成します。
+         */
         @JvmStatic
         fun of(key: ResourceKey<Block>): HTBlockHolderLike<*, *> = Simple(Either.Left(key))
 
+        /**
+         * 指定した[block]から[HTBlockHolderLike]の新しいインスタンスを作成します。
+         */
         @JvmStatic
         fun of(block: Block): HTBlockHolderLike<*, *> = Simple(Either.Right(block))
     }

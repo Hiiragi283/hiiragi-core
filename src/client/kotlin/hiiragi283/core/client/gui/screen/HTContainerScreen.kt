@@ -2,6 +2,7 @@ package hiiragi283.core.client.gui.screen
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.sync.HTChangeType
+import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
 import hiiragi283.core.common.gui.menu.HTContainerMenu
@@ -38,9 +39,10 @@ abstract class HTContainerScreen<MENU : HTContainerMenu<*>>(menu: MENU, inventor
         val access: RegistryAccess = player.registryAccess()
         HTUpdateMenuPacket
             .create(menu.containerId) {
-                val trackedSlots: List<HTSyncableSlot> = menu.trackedSlots
+                val trackedSlots: MutableList<Pair<HTSyncableSlot, HTSyncType>> = menu.trackedSlots
                 for (i: Int in trackedSlots.indices) {
-                    val slot: HTSyncableSlot = trackedSlots[i]
+                    val (slot: HTSyncableSlot, syncType: HTSyncType) = trackedSlots[i]
+                    if (!syncType.allowC2S) continue
                     val changeType: HTChangeType = slot.getChange() ?: continue
                     val payload: HTSyncablePayload = slot.createPayload(access, changeType) ?: continue
                     this[i] = payload

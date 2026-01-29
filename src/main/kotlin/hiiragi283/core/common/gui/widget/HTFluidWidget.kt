@@ -1,6 +1,7 @@
 package hiiragi283.core.common.gui.widget
 
 import hiiragi283.core.api.gui.HTBackgroundType
+import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.widget.HTAbstractWidget
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.gui.widget.HTWidgetType
@@ -45,7 +46,8 @@ abstract class HTFluidWidget(
         override fun getType(): HTWidgetType<*> = HCWidgetTypes.FLUID_STACK.get()
 
         override fun setupHolder(widgetHolder: HTWidgetHolder) {
-            syncableSlot?.let(widgetHolder::track)
+            val slot: HTFluidSyncSlot = syncableSlot ?: return
+            widgetHolder.track(slot, HTSyncType.BOTH)
         }
 
         override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int) {

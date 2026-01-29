@@ -10,7 +10,6 @@ import hiiragi283.core.api.property.computeIfAbsent
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.times
 import hiiragi283.core.api.toFraction
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -21,10 +20,6 @@ fun HTPropertyMap.getDefaultPart(): HTDefaultPart? = this[HTMaterialPropertyKeys
 fun HTPropertyMap.getDefaultPart(material: HTMaterialLike): TagKey<Item>? = this.getDefaultPart()?.getTag(material.asMaterialKey())
 
 fun HTPropertyMap.getDefaultFluidAmount(): Int = this.getOrDefault(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT)
-
-fun HTPropertyMap.getStorageBlock(): HTStorageBlockProperty = this.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK)
-
-fun HTPropertyMap.applyOreMultiplier(base: Fraction): Fraction = this.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER) * base
 
 // Mutable
 

@@ -3,9 +3,9 @@ package hiiragi283.core.api.tag
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.div
 import hiiragi283.core.api.fraction
-import hiiragi283.core.api.material.property.applyOreMultiplier
-import hiiragi283.core.api.material.property.getStorageBlock
+import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.api.tag.property.addNamePattern
@@ -31,7 +31,9 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_ore")
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "ores")
         put(HTTagPropertyKeys.TAG_PATTERN, "ores/%s")
-        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap -> properties.applyOreMultiplier(base * 2) }
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
+            base * 2 * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
+        }
 
         put(
             HTTagPropertyKeys.BLOCK_PROP,
@@ -97,7 +99,9 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_block")
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "storage_blocks")
         put(HTTagPropertyKeys.TAG_PATTERN, "storage_blocks/%s")
-        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap -> base * properties.getStorageBlock().baseCount }
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
+            base * properties.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK).baseCount
+        }
 
         put(HTTagPropertyKeys.BLOCK_PROP, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK))
 
@@ -118,6 +122,9 @@ object CommonTagPrefixes {
 
     //    Item    //
 
+    /**
+     * @since 0.8.0
+     */
     @JvmField
     val CROP: HTTagPrefix = HTTagPrefix.create("crop") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s")
@@ -125,6 +132,9 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.TAG_PATTERN, "crops/%s")
     }
 
+    /**
+     * @since 0.8.0
+     */
     @JvmField
     val DOUGH: HTTagPrefix = HTTagPrefix.create("dough") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_dough")
@@ -143,6 +153,9 @@ object CommonTagPrefixes {
         addNamePattern("%s Dust", "%sの粉")
     }
 
+    /**
+     * @since 0.8.0
+     */
     @JvmField
     val FLOUR: HTTagPrefix = HTTagPrefix.create("flour") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_flour")
@@ -240,6 +253,9 @@ object CommonTagPrefixes {
         addNamePattern("%s Scrap", "%sの欠片")
     }
 
+    /**
+     * @since 0.8.0
+     */
     @JvmField
     val SEED: HTTagPrefix = HTTagPrefix.create("seed") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_seed")
@@ -269,7 +285,9 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.ID_PATTERN, "${name}_%s_ore")
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "ores")
         put(HTTagPropertyKeys.TAG_PATTERN, "ores/%s")
-        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap -> properties.applyOreMultiplier(base * 2) }
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
+            base * 2 * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
+        }
 
         put(HTTagPropertyKeys.BLOCK_PROP, properties)
         put(HTTagPropertyKeys.ORE_STONE_TEX, stoneTexture)

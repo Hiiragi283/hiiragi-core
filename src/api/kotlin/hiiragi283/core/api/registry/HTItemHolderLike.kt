@@ -40,12 +40,24 @@ interface HTItemHolderLike<ITEM : Item> :
             .holder(Registries.ITEM)
             .xmap(Holder<Item>::value.andThen(::of), HTItemHolderLike<*>::getItemHolder)
 
+        /**
+         * 指定した[id]から[HTItemHolderLike]の新しいインスタンスを作成します。
+         * @since 0.8.0
+         */
         @JvmStatic
         fun of(id: ResourceLocation): HTItemHolderLike<*> = of(Registries.ITEM.createKey(id))
 
+        /**
+         * 指定した[key]から[HTItemHolderLike]の新しいインスタンスを作成します。
+         * @since 0.8.0
+         */
         @JvmStatic
         fun of(key: ResourceKey<Item>): HTItemHolderLike<*> = Simple(Either.Left(key))
 
+        /**
+         * 指定した[item]から[HTItemHolderLike]の新しいインスタンスを作成します。
+         * @since 0.8.0
+         */
         @JvmStatic
         fun of(item: ItemLike): HTItemHolderLike<*> = Simple(Either.Right(item.asItem()))
     }

@@ -31,39 +31,6 @@ object HTMaterialPropertyKeys {
     val DEFAULT_FLUID_AMOUNT: HTPropertyKey<Int> =
         HTPropertyKey.create(HiiragiCoreAPI.id("default_fluid_amount"), HTConst.INGOT_AMOUNT)
 
-    /**
-     * 粉砕後の[HTTagPrefix]に対応する[プロパティキー][HTPropertyKey]
-     * @since 0.8.0
-     */
-    @JvmField
-    val CRUSHED_PREFIX: HTPropertyKey<HTTagPrefix> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("crushed_prefix"), CommonTagPrefixes.DUST)
-
-    @JvmField
-    val FORMING_RECIPE_FLAG: HTPropertyKey<HTFormingRecipeFlag> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("forming_recipe_flag"), HTFormingRecipeFlag.enableAll())
-
-    /**
-     * 溶融状態の[液体][HTFluidMaterialProperty]に対応する[プロパティキー][HTPropertyKey]
-     */
-    @JvmField
-    val MOLTEN_FLUID: HTPropertyKey<HTFluidMaterialProperty?> = createNullable("molten_fluid")
-
-    @JvmField
-    val ORE_EXTRA_RESULTS: HTPropertyKey<Set<HTChancedOreResult>> =
-        HTPropertyKey.createSet(HiiragiCoreAPI.id("ore_extra_results"))
-
-    @JvmField
-    val ORE_RESULT_MULTIPLIER: HTPropertyKey<Fraction> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("ore_result_multiplier"), Fraction.ONE)
-
-    /**
-     * ブロックの管理に使用される[プロパティキー][HTPropertyKey]
-     */
-    @JvmField
-    val STORAGE_BLOCK: HTPropertyKey<HTStorageBlockProperty> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("storage_block"), HTStorageBlockProperty.THREE_BY_THREE)
-
     //    Registration    //
 
     /**
@@ -93,6 +60,53 @@ object HTMaterialPropertyKeys {
      */
     @JvmField
     val TOOL_MATERIAL: HTPropertyKey<HTToolMaterial?> = createNullable("tool_material")
+
+    //    Runtime Recipe    //
+
+    /**
+     * 粉砕後の[HTTagPrefix]に対応する[プロパティキー][HTPropertyKey]
+     * @since 0.8.0
+     */
+    @JvmField
+    val CRUSHED_PREFIX: HTPropertyKey<HTTagPrefix> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("crushed_prefix"), CommonTagPrefixes.DUST)
+
+    /**
+     * 加工レシピのフラグを管理する[プロパティキー][HTPropertyKey]
+     * @since 0.8.0
+     */
+    @JvmField
+    val FORMING_RECIPE_FLAG: HTPropertyKey<HTFormingRecipeFlag> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("forming_recipe_flag"), HTFormingRecipeFlag.enableAll())
+
+    /**
+     * 溶融状態の[液体][HTFluidMaterialProperty]に対応する[プロパティキー][HTPropertyKey]
+     */
+    @JvmField
+    val MOLTEN_FLUID: HTPropertyKey<HTFluidMaterialProperty?> = createNullable("molten_fluid")
+
+    /**
+     * 鉱石粉砕の副産物に対応する[プロパティキー][HTPropertyKey]
+     * @since 0.8.0
+     */
+    @JvmField
+    val ORE_EXTRA_RESULTS: HTPropertyKey<Set<HTChancedOreResult>> =
+        HTPropertyKey.createSet(HiiragiCoreAPI.id("ore_extra_results"))
+
+    /**
+     * 鉱石粉砕の主産物の個数の倍率に対応する[プロパティキー][HTPropertyKey]
+     * @since 0.8.0
+     */
+    @JvmField
+    val ORE_RESULT_MULTIPLIER: HTPropertyKey<Fraction> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("ore_result_multiplier"), Fraction.ONE)
+
+    /**
+     * ブロックの必要素材数を管理する[プロパティキー][HTPropertyKey]
+     */
+    @JvmField
+    val STORAGE_BLOCK: HTPropertyKey<HTStorageBlockProperty> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("storage_block"), HTStorageBlockProperty.THREE_BY_THREE)
 
     //    Data Gen    //
 

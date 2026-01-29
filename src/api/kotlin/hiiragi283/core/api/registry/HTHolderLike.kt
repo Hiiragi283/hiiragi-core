@@ -19,10 +19,16 @@ interface HTHolderLike<R : Any, T : R> :
     HTKeyLike<R>,
     Supplier<T> {
     companion object {
+        /**
+         * @since 0.8.0
+         */
         @JvmStatic
         fun <R : Any, H : HTHolderLike<R, *>> keyCodec(registryKey: RegistryKey<R>, factory: (ResourceKey<R>) -> H): BiCodec<ByteBuf, H> =
             VanillaBiCodecs.resourceKey(registryKey).xmap(factory, HTHolderLike<R, *>::getResourceKey)
 
+        /**
+         * @since 0.8.0
+         */
         @JvmStatic
         fun <R : Any, H : HolderDelegate<R, *>> holderCodec(
             registryKey: RegistryKey<R>,

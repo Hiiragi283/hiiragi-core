@@ -38,6 +38,10 @@ class HTFluidResult(contents: Ior<HTFluidResourceType, TagKey<Fluid>>, amount: I
             ::HTFluidResult,
         )
 
+        /**
+         * [HTFluidResult]の新しいインスタンスを作成します。
+         * @since 0.8.0
+         */
         @HTBuilderMarker
         @JvmStatic
         fun create(builderAction: Builder.() -> Unit): HTFluidResult = Builder().apply(builderAction).build()
@@ -66,6 +70,11 @@ class HTFluidResult(contents: Ior<HTFluidResourceType, TagKey<Fluid>>, amount: I
 
     //    Builder    //
 
+    /**
+     * [HTFluidResult]向けのビルダークラスです。
+     * @author Hiiragi Tsubasa
+     * @since 0.8.0
+     */
     class Builder {
         var fluid: HTFluidResourceType? = null
         var tagKey: TagKey<Fluid>? = null

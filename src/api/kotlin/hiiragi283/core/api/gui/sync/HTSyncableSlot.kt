@@ -5,7 +5,7 @@ import net.minecraft.core.RegistryAccess
 /**
  * 任意の値をサーバーからクライアントへ同期可能なオブジェクトを表すインターフェースです。
  * @author Hiiragi Tsubasa
- * @since 0.4.0
+ * @since 0.8.0
  * @see mekanism.common.inventory.container.sync.ISyncableData
  */
 interface HTSyncableSlot {
@@ -16,7 +16,7 @@ interface HTSyncableSlot {
     fun getChange(): HTChangeType?
 
     /**
-     * 指定した[access]と[changeType]から同期用のパケットを作成します。
+     * 指定した[access]と[changeType]から[HTSyncablePayload]を作成します。
      * @return 同期を行わない場合は`null`
      */
     fun createPayload(access: RegistryAccess, changeType: HTChangeType): HTSyncablePayload?

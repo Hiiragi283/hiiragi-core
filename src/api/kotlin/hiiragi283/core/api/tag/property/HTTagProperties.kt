@@ -7,10 +7,19 @@ import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.toFraction
 import org.apache.commons.lang3.math.Fraction
 
+/**
+ * @since 0.8.0
+ */
 fun HTTagPrefix.getScaledAmount(base: Int, propertyMap: HTPropertyMap): Fraction = this.getScaledAmount(base.toFraction(1), propertyMap)
 
+/**
+ * @since 0.8.0
+ */
 fun HTTagPrefix.getScaledAmount(base: Float, propertyMap: HTPropertyMap): Fraction = this.getScaledAmount(base.toFraction(), propertyMap)
 
+/**
+ * @since 0.8.0
+ */
 fun HTTagPrefix.getScaledAmount(base: Fraction, propertyMap: HTPropertyMap): Fraction =
     this.getOrDefault(HTTagPropertyKeys.ITEM_SCALE)(base, propertyMap)
 

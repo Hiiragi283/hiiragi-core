@@ -5,6 +5,7 @@ import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.block.entity.HTBlockEntityComponent
 import hiiragi283.core.api.block.entity.HTOwnedBlockEntity
 import hiiragi283.core.api.block.entity.HTSoundPlayerBlockEntity
+import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.serialization.component.HTComponentInput
 import hiiragi283.core.api.serialization.value.HTValueInput
@@ -215,7 +216,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
         if (hasFluidHandler()) {
             for (tank: HTFluidTank in this.getFluidTanks(this.getFluidSideFor())) {
                 if (tank is HTFluidTank.Basic) {
-                    holder.track(HTFluidSyncSlot(tank))
+                    holder.track(HTFluidSyncSlot(tank), HTSyncType.S2C)
                 }
             }
         }
@@ -223,7 +224,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
         if (hasEnergyStorage()) {
             val battery: HTEnergyBattery? = this.getEnergyBattery(this.getEnergySideFor())
             if (battery is HTEnergyBattery.Basic) {
-                holder.track(HTIntSyncSlot.create(battery::getAmount, battery::setAmount))
+                holder.track(HTIntSyncSlot.create(battery::getAmount, battery::setAmount), HTSyncType.S2C)
             }
         }
     }

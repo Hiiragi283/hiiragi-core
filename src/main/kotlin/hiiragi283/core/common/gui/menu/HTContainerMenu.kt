@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTSlotHelper
 import hiiragi283.core.api.gui.sync.HTChangeType
+import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.sync.HTSyncableMenu
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
@@ -19,7 +20,6 @@ import net.minecraft.world.inventory.MenuType
 import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.network.PacketDistributor
-import java.util.function.IntUnaryOperator
 import kotlin.math.min
 
 /**
@@ -193,14 +193,14 @@ abstract class HTContainerMenu<C>(
 
     //    Slot Sync    //
 
-    val trackedSlots: List<HTSyncableSlot> get() = _trackedSlots
-    private val _trackedSlots: MutableList<HTSyncableSlot> = mutableListOf()
+    val trackedSlots: MutableList<Pair<HTSyncableSlot, HTSyncType>> get() = _trackedSlots
+    private val _trackedSlots: MutableList<Pair<HTSyncableSlot, HTSyncType>> = mutableListOf()
 
-    fun addTrackedSlot(slot: HTSyncableSlot) {
-        _trackedSlots += slot
+    fun addTrackedSlot(slot: HTSyncableSlot, type: HTSyncType) {
+        _trackedSlots += slot to type
     }
 
-    override fun getTrackedSlot(index: Int): HTSyncableSlot? = trackedSlots.getOrNull(index)
+    override fun getTrackedSlot(index: Int): HTSyncableSlot? = trackedSlots.getOrNull(index)?.first
 
     /**
      * @see mekanism.common.inventory.container.MekanismContainer.broadcastChanges
@@ -212,9 +212,10 @@ abstract class HTContainerMenu<C>(
         if (player is ServerPlayer) {
             HTUpdateMenuPacket
                 .create(containerId) {
-                    val trackedSlots: List<HTSyncableSlot> = this@HTContainerMenu.trackedSlots
+                    val trackedSlots: MutableList<Pair<HTSyncableSlot, HTSyncType>> = this@HTContainerMenu.trackedSlots
                     for (i: Int in trackedSlots.indices) {
-                        val slot: HTSyncableSlot = trackedSlots[i]
+                        val (slot: HTSyncableSlot, syncType: HTSyncType) = trackedSlots[i]
+                        if (!syncType.allowS2C) continue
                         val changeType: HTChangeType = slot.getChange() ?: continue
                         val payload: HTSyncablePayload = slot.createPayload(access, changeType) ?: continue
                         this[i] = payload
@@ -229,20 +230,16 @@ abstract class HTContainerMenu<C>(
      */
     override fun sendAllDataToRemote() {
         super.sendAllDataToRemote()
-        sendInitialDataToClient(this.trackedSlots, IntUnaryOperator.identity())
-    }
-
-    private fun sendInitialDataToClient(trackedSlots: List<HTSyncableSlot>, operator: IntUnaryOperator) {
         val player: Player = inventory.player
         val access: RegistryAccess = player.registryAccess()
         if (player is ServerPlayer) {
             HTUpdateMenuPacket
                 .create(containerId) {
                     for (i: Int in trackedSlots.indices) {
-                        val slot: HTSyncableSlot = trackedSlots[i]
+                        val (slot: HTSyncableSlot, _) = trackedSlots[i]
                         slot.getChange()
                         val payload: HTSyncablePayload = slot.createPayload(access, HTChangeType.FULL) ?: continue
-                        this[operator.applyAsInt(i)] = payload
+                        this[i] = payload
                     }
                 }?.let { PacketDistributor.sendToPlayer(player, it) }
         }

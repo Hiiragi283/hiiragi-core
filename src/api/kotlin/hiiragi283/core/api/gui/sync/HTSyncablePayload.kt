@@ -8,7 +8,7 @@ import net.minecraft.network.codec.StreamCodec
 /**
  * [HTSyncableSlot]の同期に使用されるパケットを表すインターフェースです。
  * @author Hiiragi Tsubasa
- * @since 0.4.0
+ * @since 0.8.0
  * @see mekanism.common.network.to_client.container.property.PropertyData
  */
 interface HTSyncablePayload {
@@ -30,6 +30,11 @@ interface HTSyncablePayload {
      */
     fun setValue(menu: HTSyncableMenu, index: Int)
 
+    /**
+     * [StreamCodec]のラッパークラスです。
+     * @author Hiiragi Tsubasa
+     * @since 0.8.0
+     */
     @ConsistentCopyVisibility
     @JvmRecord
     data class Type<PAYLOAD : HTSyncablePayload> private constructor(val streamCodec: StreamCodec<RegistryFriendlyByteBuf, PAYLOAD>) {

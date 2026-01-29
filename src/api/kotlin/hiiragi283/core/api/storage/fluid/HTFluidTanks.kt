@@ -46,6 +46,11 @@ fun HTFluidTank.extractFluid(amount: Int, action: HTStorageAction, access: HTSto
     return this.extract(amount, action, access).let(resourceIn::toStack)
 }
 
+/**
+ * この[スロット][this]に[stack]を代入します。
+ * @author Hiiragi Tsubasa
+ * @since 0.8.0
+ */
 fun HTResourceSlot.Basic<HTFluidResourceType>.setStack(stack: FluidStack) {
     setResource(stack.toResource())
     setAmount(stack.amount)
