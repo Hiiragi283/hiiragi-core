@@ -1,8 +1,6 @@
 package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.resource.toId
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementHolder
@@ -19,36 +17,9 @@ import net.neoforged.neoforge.common.conditions.ModLoadedCondition
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-sealed class HTSubRecipeProvider(protected val modId: String) {
-    /**
-     * [レジストリ][HolderLookup.Provider]のインスタンス
-     */
-    protected lateinit var provider: HolderLookup.Provider
-        private set
-
-    /**
-     * [レシピの出力先][RecipeOutput]のインスタンス
-     */
-    protected lateinit var output: RecipeOutput
-        private set
-
-    /**
-     * 材料を作成するヘルパーのインスタンス
-     * @since 0.8.0
-     */
-    protected val inputCreator: HTIngredientCreator = HTIngredientCreator
-
-    /**
-     * 完成品を作成するヘルパーのインスタンス
-     * @since 0.8.0
-     */
-    protected val resultCreator: HTResultCreator = HTResultCreator
-
-    /**
-     * 素材を管理するマネージャのインスタンス
-     * @since 0.7.0
-     */
-    protected val materialManager: HTMaterialManager by lazy(HiiragiCoreAccess.INSTANCE::materialManager)
+sealed class HTSubRecipeProvider(protected val modId: String) : HTRecipeProviderContext() {
+    override lateinit var provider: HolderLookup.Provider
+    override lateinit var output: RecipeOutput
 
     /**
      * [HTRecipeProvider.buildRecipes]内で呼び出されるメソッドです。
@@ -132,11 +103,5 @@ sealed class HTSubRecipeProvider(protected val modId: String) {
         }
 
         final override fun modifyOutput(output: RecipeOutput): RecipeOutput = output.withConditions(ModLoadedCondition(integrationModId))
-    }
-
-    //    Extensions    //
-
-    protected fun save(recipeId: ResourceLocation, recipe: Recipe<*>, vararg conditions: ICondition) {
-        output.accept(recipeId, recipe, null, *conditions)
     }
 }

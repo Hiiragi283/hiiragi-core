@@ -19,6 +19,10 @@ fun Fraction.split(): Pair<Int, Fraction> {
     return whole to (this - whole)
 }
 
+operator fun Fraction.component1(): Int = this.numerator
+
+operator fun Fraction.component2(): Int = this.denominator
+
 // Int
 fun fraction(numerator: Int, denominator: Int): Fraction = Fraction.getFraction(numerator, denominator)
 

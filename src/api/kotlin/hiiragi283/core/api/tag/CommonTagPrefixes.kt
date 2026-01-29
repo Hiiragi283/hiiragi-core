@@ -2,6 +2,7 @@ package hiiragi283.core.api.tag
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.div
+import hiiragi283.core.api.fraction
 import hiiragi283.core.api.material.property.applyOreMultiplier
 import hiiragi283.core.api.material.property.getStorageBlock
 import hiiragi283.core.api.property.HTPropertyMap
@@ -108,7 +109,7 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.ID_PATTERN, "raw_%s_block")
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "storage_blocks")
         put(HTTagPropertyKeys.TAG_PATTERN, "storage_blocks/raw_%s")
-        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap -> properties.applyOreMultiplier(base * 9) }
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base * 12 }
 
         put(HTTagPropertyKeys.BLOCK_PROP, BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK))
 
@@ -215,7 +216,7 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.ID_PATTERN, "raw_%s")
         put(HTTagPropertyKeys.COMMON_TAG_PATTERN, "raw_materials")
         put(HTTagPropertyKeys.TAG_PATTERN, "raw_materials/%s")
-        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap -> properties.applyOreMultiplier(base) }
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base * fraction(4, 3) }
 
         addNamePattern("Raw %s", "%sの原石")
     }

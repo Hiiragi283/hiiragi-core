@@ -1,8 +1,7 @@
 package hiiragi283.core.common.event
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.recipe.HTIngredientCreator
-import hiiragi283.core.api.data.recipe.HTResultCreator
+import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.property.HTDefaultPart
@@ -18,7 +17,6 @@ import hiiragi283.core.common.data.recipe.builder.HCSingleItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTStonecuttingRecipeBuilder
 import net.minecraft.core.component.DataComponents
-import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
@@ -29,127 +27,121 @@ import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.common.Tags
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
-object HCRuntimeRecipeHandler {
-    private lateinit var output: RecipeOutput
-    private lateinit var inputCreator: HTIngredientCreator
-    private lateinit var resultCreator: HTResultCreator
+object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
+    override lateinit var delegated: HTRecipeProviderContext
 
     @SubscribeEvent
     fun registerRuntimeRecipe(event: HTRegisterRuntimeRecipeEvent) {
-        output = event.output
-        inputCreator = event.inputCreator
-        resultCreator = event.resultCreator
+        this.delegated = event.context
 
-        crushBaseToDust(event)
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager) {
+            crushBaseToDust(event, key, propertyMap)
 
-        crushToDust(event, CommonTagPrefixes.ORE)
-        crushToDust(event, CommonTagPrefixes.BLOCK)
-        crushToDust(event, CommonTagPrefixes.RAW_BLOCK)
+            crushToDust(event, key, propertyMap, CommonTagPrefixes.ORE)
+            crushToDust(event, key, propertyMap, CommonTagPrefixes.BLOCK)
+            crushToDust(event, key, propertyMap, CommonTagPrefixes.RAW_BLOCK)
 
-        crushToDust(event, CommonTagPrefixes.GEAR)
-        crushToDust(event, CommonTagPrefixes.PLATE)
-        crushToDust(event, CommonTagPrefixes.RAW)
+            crushToDust(event, key, propertyMap, CommonTagPrefixes.GEAR)
+            crushToDust(event, key, propertyMap, CommonTagPrefixes.PLATE)
+            crushToDust(event, key, propertyMap, CommonTagPrefixes.RAW)
 
-        flourToDough(event)
-        ingotToPlate(event)
-        plateToWire(event)
-    }
+            flourToDough(event, key, propertyMap)
 
-    @JvmStatic
-    private fun crushToDust(event: HTRegisterRuntimeRecipeEvent, prefix: HTTagPrefix) {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in event.getAllMaterials()) {
-            val outputCount: Int = prefix.getScaledAmount(1, propertyMap).toInt()
-
-            if (!event.isPresentTag(prefix, key)) continue
-            val crushedPrefix: HTTagPrefix = propertyMap.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
-            val dust: Item = event.getFirstHolder(crushedPrefix, key)?.value() ?: continue
-            // Crushing
-            HCSingleItemRecipeBuilder.crushing(output) {
-                ingredient = inputCreator.create(prefix, key)
-                result = resultCreator.create(dust, outputCount)
-                recipeId suffix "_from_${prefix.name}"
+            if (propertyMap.getOrDefault(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG).mechanical) {
+                ingotToPlate(event, key, propertyMap)
+                plateToWire(event, key, propertyMap)
             }
         }
     }
 
     @JvmStatic
-    private fun crushBaseToDust(event: HTRegisterRuntimeRecipeEvent) {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in event.getAllMaterials()) {
-            val crushedPrefix: HTTagPrefix = propertyMap.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
+    private fun crushBaseToDust(event: HTRegisterRuntimeRecipeEvent, key: HTMaterialKey, propertyMap: HTPropertyMap) {
+        val crushedPrefix: HTTagPrefix = propertyMap.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
 
-            val defaultPart: HTDefaultPart = propertyMap.getDefaultPart() ?: continue
-            val inputTag: TagKey<Item> = defaultPart.getTag(key)
-            if (inputTag == crushedPrefix.itemTagKey(key)) continue
+        val defaultPart: HTDefaultPart = propertyMap.getDefaultPart() ?: return
+        val inputTag: TagKey<Item> = defaultPart.getTag(key)
+        if (inputTag == crushedPrefix.itemTagKey(key)) return
 
-            if (!event.isPresentTag(inputTag)) continue
-            val dust: Item = event.getFirstHolder(crushedPrefix, key)?.value() ?: continue
-            // Crushing
-            HCSingleItemRecipeBuilder.crushing(output) {
-                ingredient = inputCreator.create(inputTag)
-                result = resultCreator.create(dust)
-                recipeId suffix "_from_${defaultPart.getSuffix()}"
-            }
+        if (!event.isPresentTag(inputTag)) return
+        val dust: Item = event.getFirstHolder(crushedPrefix, key)?.value() ?: return
+        // Crushing
+        HCSingleItemRecipeBuilder.crushing(output) {
+            ingredient = inputCreator.create(inputTag)
+            result = resultCreator.create(dust)
+            recipeId suffix "_from_${defaultPart.getSuffix()}"
         }
     }
 
     @JvmStatic
-    private fun flourToDough(event: HTRegisterRuntimeRecipeEvent) {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in event.getAllMaterials()) {
-            val crushedPrefix: HTTagPrefix = propertyMap.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
-            if (!event.isPresentTag(crushedPrefix, key)) continue
-            val dough: Item = event.getFirstHolder(CommonTagPrefixes.DOUGH, key)?.value() ?: continue
-            // Shapeless
-            HTShapelessRecipeBuilder.create(output) {
+    private fun crushToDust(
+        event: HTRegisterRuntimeRecipeEvent,
+        key: HTMaterialKey,
+        propertyMap: HTPropertyMap,
+        prefix: HTTagPrefix,
+    ) {
+        val outputCount: Int = prefix.getScaledAmount(1, propertyMap).toInt()
+
+        if (!event.isPresentTag(prefix, key)) return
+        val crushedPrefix: HTTagPrefix = propertyMap.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
+        val dust: Item = event.getFirstHolder(crushedPrefix, key)?.value() ?: return
+        // Crushing
+        HCSingleItemRecipeBuilder.crushing(output) {
+            ingredient = inputCreator.create(prefix, key)
+            result = resultCreator.create(dust, outputCount)
+            recipeId suffix "_from_${prefix.name}"
+        }
+    }
+
+    @JvmStatic
+    private fun flourToDough(event: HTRegisterRuntimeRecipeEvent, key: HTMaterialKey, propertyMap: HTPropertyMap) {
+        val crushedPrefix: HTTagPrefix = propertyMap.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
+        if (!event.isPresentTag(crushedPrefix, key)) return
+        val dough: Item = event.getFirstHolder(CommonTagPrefixes.DOUGH, key)?.value() ?: return
+        // Shapeless
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += crushedPrefix to key
+            ingredients += inputCreator
+                .create(
+                    false,
+                    Items.POTION,
+                ) { expect(DataComponents.POTION_CONTENTS, PotionContents(Potions.WATER)) }
+                .ingredient
+            resultStack += dough
+            recipeId suffix "_with_bottle"
+        }
+
+        HTShapelessRecipeBuilder.create(output) {
+            repeat(3) {
                 ingredients += crushedPrefix to key
-                ingredients += inputCreator
-                    .create(
-                        false,
-                        Items.POTION,
-                    ) { expect(DataComponents.POTION_CONTENTS, PotionContents(Potions.WATER)) }
-                    .ingredient
-                resultStack += dough
-                recipeId suffix "_with_bottle"
             }
-
-            HTShapelessRecipeBuilder.create(output) {
-                repeat(3) {
-                    ingredients += crushedPrefix to key
-                }
-                ingredients += Tags.Items.BUCKETS_WATER
-                resultStack += dough to 3
-                recipeId suffix "_with_bucket"
-            }
+            ingredients += Tags.Items.BUCKETS_WATER
+            resultStack += dough to 3
+            recipeId suffix "_with_bucket"
         }
     }
 
     @JvmStatic
-    private fun ingotToPlate(event: HTRegisterRuntimeRecipeEvent) {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in event.getAllMaterials()) {
-            if (!propertyMap.getOrDefault(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG).mechanical) continue
-            if (!event.isPresentTag(CommonTagPrefixes.INGOT, key)) continue
-            val plate: Item = event.getFirstHolder(CommonTagPrefixes.PLATE, key)?.value() ?: continue
-            // Crafting
-            HTShapelessRecipeBuilder.create(output) {
-                ingredients += CommonTagPrefixes.INGOT to key
-                ingredients += HiiragiCoreTags.Items.TOOLS_HAMMER
-                resultStack += plate
-                recipeId suffix "_from_ingot"
-            }
+    private fun ingotToPlate(event: HTRegisterRuntimeRecipeEvent, key: HTMaterialKey, propertyMap: HTPropertyMap) {
+        if (!event.isPresentTag(CommonTagPrefixes.INGOT, key)) return
+        val plate: Item = event.getFirstHolder(CommonTagPrefixes.PLATE, key)?.value() ?: return
+        // Crafting
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += CommonTagPrefixes.INGOT to key
+            ingredients += HiiragiCoreTags.Items.TOOLS_HAMMER
+            resultStack += plate
+            recipeId suffix "_from_ingot"
         }
     }
 
     @JvmStatic
-    private fun plateToWire(event: HTRegisterRuntimeRecipeEvent) {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in event.getAllMaterials()) {
-            if (!propertyMap.getOrDefault(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG).mechanical) continue
-            if (!event.isPresentTag(CommonTagPrefixes.PLATE, key)) continue
-            val wire: Item = event.getFirstHolder(CommonTagPrefixes.WIRE, key)?.value() ?: continue
-            // Stonecutting
-            HTStonecuttingRecipeBuilder.create(output) {
-                ingredient += CommonTagPrefixes.PLATE to key
-                resultStack += wire
-                recipeId suffix "_from_plate"
-            }
+    private fun plateToWire(event: HTRegisterRuntimeRecipeEvent, key: HTMaterialKey, propertyMap: HTPropertyMap) {
+        if (!event.isPresentTag(CommonTagPrefixes.PLATE, key)) return
+        val wire: Item = event.getFirstHolder(CommonTagPrefixes.WIRE, key)?.value() ?: return
+        // Stonecutting
+        HTStonecuttingRecipeBuilder.create(output) {
+            ingredient += CommonTagPrefixes.PLATE to key
+            resultStack += wire
+            recipeId suffix "_from_plate"
         }
     }
 }

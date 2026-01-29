@@ -66,6 +66,7 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.FUEL)
             addItemPrefixes(CommonTagPrefixes.DUST)
             addExtraOreResult(CommonTagPrefixes.DUST, CommonMaterialKeys.SULFUR, 1 / 4f)
+            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.disableAll())
 
             setName("Coal", "石炭")
             setTextureSet("fuel")
@@ -76,6 +77,7 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.FUEL)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(CommonTagPrefixes.DUST)
+            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.disableAll())
 
             setName("Charcoal", "木炭")
             setTextureSet("fuel")
@@ -246,6 +248,7 @@ object HCMaterialEventHandler {
         event.modify(VanillaMaterialKeys.WOOD) {
             setDefaultPart(ItemTags.PLANKS, HTItemHolderLike.of(Items.OAK_PLANKS))
             addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEAR, CommonTagPrefixes.PLATE)
+            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.pressOnly())
 
             setName("Wood", "木")
             addCustomName(CommonTagPrefixes.DUST, "Sawdust", "おがくず")
@@ -268,7 +271,6 @@ object HCMaterialEventHandler {
         event.modify(VanillaMaterialKeys.STONE) {
             setDefaultPart(ItemTags.STONE_CRAFTING_MATERIALS, HTItemHolderLike.of(Items.COBBLESTONE))
             addToolPrefixes(VanillaEquipmentMaterial.STONE, CommonToolTypes.HAMMER)
-            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.solidifyOnly())
 
             setName("Stone", "石")
             setTextureSet("dull")
@@ -279,7 +281,6 @@ object HCMaterialEventHandler {
             setDefaultPart(Tags.Items.OBSIDIANS_NORMAL, HTItemHolderLike.of(Items.OBSIDIAN))
             addItemPrefixes(CommonTagPrefixes.DUST)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
-            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.solidifyOnly())
 
             setName("Obsidian", "黒曜石")
             setTextureSet("dull")
@@ -318,6 +319,7 @@ object HCMaterialEventHandler {
             )
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.FUEL)
+            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.disableAll())
 
             setName("Coal Coke", "石炭コークス")
             setTextureSet("fuel")

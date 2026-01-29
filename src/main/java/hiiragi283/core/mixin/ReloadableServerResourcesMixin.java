@@ -2,7 +2,6 @@ package hiiragi283.core.mixin;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import hiiragi283.core.api.HiiragiCoreAPI;
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
@@ -37,12 +36,10 @@ public abstract class ReloadableServerResourcesMixin {
         Multimap<RecipeType<?>, RecipeHolder<?>> byType = HashMultimap.create(accessor.getByType());
         Map<ResourceLocation, RecipeHolder<?>> byName = new HashMap<>(accessor.getByName());
         
-        var event = new HTRegisterRuntimeRecipeEvent(registryAccess, recipes, (@NotNull RecipeHolder<?> holder) -> {
+        var event = new HTRegisterRuntimeRecipeEvent(recipes, registryAccess, (@NotNull RecipeHolder<?> holder) -> {
             boolean bool1 = byType.put(holder.value().getType(), holder);
             boolean bool2 = byName.put(holder.id(), holder) != null;
-            if (bool1 || bool2) {
-                HiiragiCoreAPI.LOGGER.debug("Recipe: {} was overrided!", holder.id());
-            }
+            return bool1 || bool2;
         });
         NeoForge.EVENT_BUS.post(event);
 
