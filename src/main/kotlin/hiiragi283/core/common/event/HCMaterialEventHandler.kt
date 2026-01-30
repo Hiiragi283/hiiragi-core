@@ -425,6 +425,7 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(metalBlockSet)
             addItemPrefixes(metalSet.plus(partSet))
+            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
 
             setName("Iridium", "イリジウム")
             setTextureSet(HTMaterialTextureSet.SHINE)
@@ -597,6 +598,7 @@ object HCMaterialEventHandler {
             )
 
             setName("Deep Steel", "深層鋼")
+            setTextureSet("dull")
         }
     }
 }

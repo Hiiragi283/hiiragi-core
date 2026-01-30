@@ -14,6 +14,10 @@ import net.minecraft.world.level.block.Block
 object HiiragiCoreTags {
     object Blocks {
         @JvmField
+        val ORES_DEEP_STEEL_SCRAP: TagKey<Block> = common("ores", "deep_steel_scrap")
+
+        // Mod
+        @JvmField
         val INCORRECT_FOR_ALMIGHTY_PICKAXE: TagKey<Block> = mod("incorrect_for_almighty_pickaxe")
 
         @JvmStatic
@@ -29,6 +33,9 @@ object HiiragiCoreTags {
 
         @JvmField
         val HAMMERS: TagKey<Item> = common("hammers")
+
+        @JvmField
+        val ORES_DEEP_STEEL_SCRAP: TagKey<Item> = common("ores", "deep_steel_scrap")
 
         @JvmField
         val TOOLS_HAMMER: TagKey<Item> = common("tools", "hammer")

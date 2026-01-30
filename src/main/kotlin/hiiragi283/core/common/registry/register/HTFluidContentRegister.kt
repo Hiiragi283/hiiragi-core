@@ -1,5 +1,7 @@
 package hiiragi283.core.common.registry.register
 
+import hiiragi283.core.api.fluid.HTVirtualFluid
+import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.registry.BlockWithContextFactory
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTDeferredRegister
@@ -25,6 +27,8 @@ import net.neoforged.neoforge.fluids.DispenseFluidContainer
 import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.registries.NeoForgeRegistries
 import java.util.function.UnaryOperator
+
+typealias HTVirtualFluidContent = HTFluidContent<FluidType, HTVirtualFluid, BucketItem>
 
 typealias HTSimpleFluidContent = HTFluidContent.Flowing<FluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem>
 
@@ -78,11 +82,27 @@ class HTFluidContentRegister(modId: String) {
 
     //    Content    //
 
+    fun registerVirtual(name: String, properties: FluidType.Properties): HTVirtualFluidContent =
+        registerVirtual(name, properties, ::FluidType)
+
+    fun <TYPE : FluidType> registerVirtual(
+        name: String,
+        properties: FluidType.Properties,
+        typeFactory: (FluidType.Properties) -> TYPE,
+    ): HTFluidContent<TYPE, HTVirtualFluid, BucketItem> = registerVirtual(name, properties, typeFactory, ::BucketItem)
+
+    fun <TYPE : FluidType, ITEM : Item> registerVirtual(
+        name: String,
+        properties: FluidType.Properties,
+        typeFactory: (FluidType.Properties) -> TYPE,
+        bucketFactory: ItemWithContextFactory<HTVirtualFluid, ITEM>,
+    ): HTFluidContent<TYPE, HTVirtualFluid, ITEM> = register(name, properties, typeFactory, ::HTVirtualFluid, bucketFactory)
+
     fun <TYPE : FluidType, FLUID : Fluid, ITEM : Item> register(
         name: String,
         properties: FluidType.Properties,
         typeFactory: (FluidType.Properties) -> TYPE,
-        fluidFactory: () -> FLUID,
+        fluidFactory: (HTFluidContent<*, *, *>) -> FLUID,
         bucketFactory: ItemWithContextFactory<FLUID, ITEM>,
     ): HTFluidContent<TYPE, FLUID, ITEM> {
         // Fluid Type
@@ -90,7 +110,7 @@ class HTFluidContentRegister(modId: String) {
             typeFactory(properties.descriptionId("block.${typeRegister.namespace}.$name"))
         }
         // Fluid
-        val fluidHolder: HTDeferredHolder<Fluid, FLUID> = fluidRegister.register(name, fluidFactory)
+        val fluidHolder: HTDeferredHolder<Fluid, FLUID> = HTDeferredHolder(Registries.FLUID, typeRegister.createId(name))
         // Bucket Item
         val bucketHolder: HTDeferredItem<ITEM> = itemRegister.registerItem(
             "${name}_bucket",
@@ -105,6 +125,8 @@ class HTFluidContentRegister(modId: String) {
             bucketHolder,
             Registries.ITEM.createCommonTag("buckets", name),
         )
+        // Fluid
+        fluidRegister.register(name, fluidFactory.partially1(content))
         contentsCache[fluidHolder.key] = content
         return content
     }

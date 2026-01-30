@@ -47,7 +47,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             resultStack += Items.GLASS
             recipeId suffix "_from_dust"
         }
-
         // Iron Rod -> Iron Bar
         HTShapedRecipeBuilder.create(output) {
             pattern(
@@ -58,6 +57,14 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             resultStack += Items.IRON_BARS to 8
             recipeId suffix "_from_rod"
         }
+        // Reinforced Deepslate
+        HTShapedRecipeBuilder.create(output) {
+            pattern("ABA")
+            define('A') += CommonTagPrefixes.PLATE to HCMaterialKeys.DEEP_STEEL
+            define('B') += Items.DEEPSLATE
+            resultStack += Items.REINFORCED_DEEPSLATE
+        }
+
         // Compressed Sawdust -> Charcoal
         HTCookingRecipeBuilder.smelting(output) {
             ingredient += HCItems.COMPRESSED_SAWDUST

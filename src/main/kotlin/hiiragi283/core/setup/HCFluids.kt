@@ -5,6 +5,7 @@ import hiiragi283.core.common.fluid.HTEndFluidType
 import hiiragi283.core.common.fluid.HTNetherFluidType
 import hiiragi283.core.common.registry.register.HTFluidContentRegister
 import hiiragi283.core.common.registry.register.HTSimpleFluidContent
+import hiiragi283.core.common.registry.register.HTVirtualFluidContent
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
 import net.neoforged.bus.api.IEventBus
@@ -23,7 +24,7 @@ object HCFluids {
     //    Vanilla    //
 
     @JvmField
-    val EXPERIENCE: HTSimpleFluidContent = REGISTER.registerSimpleFlowing("experience", liquid())
+    val EXPERIENCE: HTVirtualFluidContent = REGISTER.registerVirtual("experience", liquid(), ::FluidType)
 
     @JvmField
     val HONEY: HTSimpleFluidContent = REGISTER.registerSimpleFlowing(

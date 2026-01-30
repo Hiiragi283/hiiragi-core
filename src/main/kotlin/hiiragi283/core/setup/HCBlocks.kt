@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.item.block.HTWarpedWartItem
 import hiiragi283.core.common.registry.HTDeferredBlock
+import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import hiiragi283.core.common.registry.register.HTDeferredBlockRegister
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
@@ -20,6 +21,12 @@ object HCBlocks {
     }
 
     //    Materials    //
+
+    @JvmField
+    val RESONANT_DEBRIS: HTSimpleDeferredBlock = REGISTER.registerSimple(
+        "resonant_debris",
+        copyOf(Blocks.ANCIENT_DEBRIS),
+    )
 
     //    Crops    //
 

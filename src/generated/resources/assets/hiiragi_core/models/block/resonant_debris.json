@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "hiiragi_core:block/resonant_debris_top",
+    "side": "hiiragi_core:block/resonant_debris_side"
+  }
+}

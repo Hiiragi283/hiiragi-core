@@ -5,6 +5,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.item.tool.HTToolMaterial
 import hiiragi283.core.api.item.tool.HTToolType
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -65,6 +66,9 @@ object HTMaterialPropertyKeys {
 
     @JvmField
     val CAN_BE_SMELTED: HTPropertyKey<Boolean> = HTPropertyKey.create(HiiragiCoreAPI.id("can_be_smelted"), true)
+
+    @JvmField
+    val SMELTED_TO: HTPropertyKey<HTMaterialKey?> = createNullable("smelted_to")
 
     /**
      * 粉砕後の[HTTagPrefix]に対応する[プロパティキー][HTPropertyKey]

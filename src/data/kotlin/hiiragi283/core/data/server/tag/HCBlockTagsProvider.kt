@@ -7,6 +7,7 @@ import hiiragi283.core.api.data.tag.HTTagBuilder
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
+import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCBlocks
@@ -41,6 +42,8 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTBlockTagsProvider(Hiira
         for ((key: HTMaterialKey, block: Block) in VANILLA_STORAGE_BLOCKS) {
             addMaterial(factory, CommonTagPrefixes.BLOCK, key).addBlock(block)
         }
+
+        factory.apply(HiiragiCoreTags.Blocks.ORES_DEEP_STEEL_SCRAP).add(HCBlocks.RESONANT_DEBRIS)
     }
 
     //    Tool    //
@@ -52,6 +55,8 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTBlockTagsProvider(Hiira
 
         val pickaxe: HTTagBuilder<Block> = factory.apply(BlockTags.MINEABLE_WITH_PICKAXE)
         sequence {
+            yield(HCBlocks.RESONANT_DEBRIS)
+
             yieldAll(contents.getAllBlocks().filter { it.namespace == modId })
         }.forEach(pickaxe::add)
 
