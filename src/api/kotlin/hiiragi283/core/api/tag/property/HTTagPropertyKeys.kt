@@ -27,6 +27,8 @@ object HTTagPropertyKeys {
     val ITEM_SCALE: HTPropertyKey<(Fraction, HTPropertyMap) -> Fraction> =
         HTPropertyKey.create(HiiragiCoreAPI.id("item_scale")) { base: Fraction, _ -> base }
 
+    //    Block    //
+
     /**
      * ブロックの[プロパティ][BlockBehaviour.Properties]に対応する[プロパティキー][HTPropertyKey]
      */

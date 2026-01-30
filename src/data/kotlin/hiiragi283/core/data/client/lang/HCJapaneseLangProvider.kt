@@ -17,8 +17,6 @@ class HCJapaneseLangProvider(output: PackOutput) :
     override fun addTranslations() {
         addMaterials()
         // Block
-        add(HCBlocks.RESONANT_DEBRIS, "共振の残骸")
-
         add(HCBlocks.WARPED_WART, "歪んだウォート")
 
         // Entity

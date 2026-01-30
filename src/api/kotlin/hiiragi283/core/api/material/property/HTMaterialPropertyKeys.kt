@@ -117,6 +117,14 @@ object HTMaterialPropertyKeys {
 
     //    Data Gen    //
 
+    // Data Map
+    /**
+     * かまど燃料としての時間に対応する[プロパティキー][HTPropertyKey]
+     * @since 0.8.0
+     */
+    @JvmField
+    val FUEL_TIME: HTPropertyKey<Int?> = createNullable("fuel_time")
+
     // Lang
     /**
      * 素材の[翻訳名][HTLangName]を保持する[プロパティキー][HTPropertyKey]
@@ -131,13 +139,11 @@ object HTMaterialPropertyKeys {
     @JvmField
     val CUSTOM_LANG_NAME: HTPropertyKey<Map<HTTagPrefix, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_lang_name"))
 
-    // Data Map
-    /**
-     * かまど燃料としての時間に対応する[プロパティキー][HTPropertyKey]
-     * @since 0.8.0
-     */
+    // Loot Table
     @JvmField
-    val FUEL_TIME: HTPropertyKey<Int?> = createNullable("fuel_time")
+    val BLOCK_LOOT: HTPropertyKey<Map<HTTagPrefix, HTBlockLootFactory>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("block_loot"))
+
+    // Tag
 
     // Texture
     /**

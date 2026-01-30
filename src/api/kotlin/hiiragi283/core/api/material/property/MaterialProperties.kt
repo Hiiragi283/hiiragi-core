@@ -9,6 +9,7 @@ import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.computeIfAbsent
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.toFraction
 import net.minecraft.tags.TagKey
@@ -83,6 +84,16 @@ fun HTPropertyMap.Mutable.addCustomName(prefix: HTTagPrefix, enName: String, jaN
 
 fun HTPropertyMap.Mutable.addCustomName(prefix: HTTagPrefix, value: HTLangName) {
     this.computeIfAbsent(HTMaterialPropertyKeys.CUSTOM_LANG_NAME) { it.plus(prefix to value) }
+}
+
+fun HTPropertyMap.Mutable.addCustomOreLoot(factory: HTBlockLootFactory) {
+    this.computeIfAbsent(HTMaterialPropertyKeys.BLOCK_LOOT) { map: Map<HTTagPrefix, HTBlockLootFactory> ->
+        map.plus(CommonTagPrefixes.ORES.map { prefix: HTTagPrefix -> prefix to factory })
+    }
+}
+
+fun HTPropertyMap.Mutable.addCustomLoot(prefix: HTTagPrefix, factory: HTBlockLootFactory) {
+    this.computeIfAbsent(HTMaterialPropertyKeys.BLOCK_LOOT) { it.plus(prefix to factory) }
 }
 
 fun HTPropertyMap.Mutable.setTextureSet(name: String, parent: HTMaterialTextureSet = HTMaterialTextureSet.DEFAULT) {

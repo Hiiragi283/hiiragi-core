@@ -28,7 +28,8 @@ data object HiiragiCoreDataGen {
         // Server
         server.addLootTables(
             ::HCBlockLootTableProvider to LootContextParamSets.BLOCK,
-            HCGlobalLootProvider::Entity to LootContextParamSets.ENTITY,
+            HCGlobalLootProvider::BlockProvider to LootContextParamSets.BLOCK,
+            HCGlobalLootProvider::EntityProvider to LootContextParamSets.ENTITY,
         )
         server.addProvider(::HCGlobalLootModifierProvider)
 

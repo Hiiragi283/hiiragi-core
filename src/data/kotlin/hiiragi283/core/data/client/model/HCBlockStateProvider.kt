@@ -14,8 +14,6 @@ import net.neoforged.neoforge.client.model.generators.ConfiguredModel
 
 class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(HiiragiCoreAPI.MOD_ID, context) {
     override fun registerStatesAndModels() {
-        cubeColumn(HCBlocks.RESONANT_DEBRIS)
-
         registerMaterials()
         registerCrops()
 

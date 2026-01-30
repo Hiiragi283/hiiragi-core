@@ -42,7 +42,6 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
             copy(CommonTagPrefixes.BLOCK, key)
         }
         // Others
-        copy(HiiragiCoreTags.Blocks.ORES_DEEP_STEEL_SCRAP, HiiragiCoreTags.Items.ORES_DEEP_STEEL_SCRAP)
     }
 
     //    Material    //

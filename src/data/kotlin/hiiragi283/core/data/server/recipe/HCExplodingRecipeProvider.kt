@@ -5,7 +5,6 @@ import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.tag.CommonTagPrefixes
-import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.data.recipe.builder.HCExplodingRecipeBuilder
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
@@ -43,13 +42,6 @@ object HCExplodingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD
             ingredient = inputCreator.create(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.QUARTZ, 4)
             result = resultCreator.create(Items.GHAST_TEAR)
             minPower = fraction(3f)
-        }
-
-        // Resonant Debris -> Deep Steel Scrap
-        HCExplodingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(HiiragiCoreTags.Items.ORES_DEEP_STEEL_SCRAP)
-            result = resultCreator.material(CommonTagPrefixes.SCRAP, HCMaterialKeys.DEEP_STEEL, 2)
-            minPower = fraction(6f)
         }
 
         gems()

@@ -254,7 +254,7 @@ abstract class HTEmiRecipe<RECIPE : Any>(
         capacity: Int = validateCapacity(ingredient.amount),
     ): SlotWidget {
         addTexture(HTEmiTextures.TANK_TEXTURES[type]!!, x, y)
-        val slot: SlotWidget = addTank(ingredient, x - 1, y - 1, 18, 18 * 3, capacity).drawBack(false)
+        val slot: SlotWidget = addTank(ingredient, x, y, 16, 18 * 3 - 2, capacity).drawBack(false)
         if (type == HTBackgroundType.NONE) {
             slot.catalyst(true)
         }

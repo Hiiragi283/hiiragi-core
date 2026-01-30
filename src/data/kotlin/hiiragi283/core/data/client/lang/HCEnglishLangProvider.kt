@@ -17,8 +17,6 @@ class HCEnglishLangProvider(output: PackOutput) :
     override fun addTranslations() {
         addMaterials()
         // Block
-        add(HCBlocks.RESONANT_DEBRIS, "Resonant Debris")
-
         add(HCBlocks.WARPED_WART, "Warped Wart")
 
         // Entity

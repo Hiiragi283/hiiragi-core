@@ -44,7 +44,7 @@ class HTAlmightyPickaxe(properties: Properties) :
 
         override fun createToolProperties(block: TagKey<Block>): Tool = Tool(
             listOf(
-                Tool.Rule.deniesDrops(block),
+                Tool.Rule.deniesDrops(incorrectBlocksForDrops),
                 Tool.Rule(
                     AnyHolderSet(BuiltInRegistries.BLOCK.asLookup()),
                     Optional.of(40f),

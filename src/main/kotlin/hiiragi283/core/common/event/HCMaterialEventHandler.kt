@@ -6,6 +6,7 @@ import hiiragi283.core.api.event.HTMaterialPropertyEvent
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.property.HTBlockLootFactory
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTFluidMaterialProperty
 import hiiragi283.core.api.material.property.HTFormingRecipeFlag
@@ -14,6 +15,7 @@ import hiiragi283.core.api.material.property.HTMaterialTextureSet
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
 import hiiragi283.core.api.material.property.addBlockPrefixes
 import hiiragi283.core.api.material.property.addCustomName
+import hiiragi283.core.api.material.property.addCustomOreLoot
 import hiiragi283.core.api.material.property.addExtraOreResult
 import hiiragi283.core.api.material.property.addItemPrefixes
 import hiiragi283.core.api.material.property.addToolPrefixes
@@ -31,6 +33,7 @@ import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.common.Tags
@@ -308,6 +311,21 @@ object HCMaterialEventHandler {
                 setName(enName, jaName)
             }
         }
+
+        val oresAndBlock: Set<HTTagPrefix> = metalBlockSet.minus(CommonTagPrefixes.RAW_BLOCK)
+
+        fun registerMineral(key: HTMaterialKey, enName: String, jaName: String) {
+            event.modify(key) {
+                setDefaultPart(HTDefaultPart.Prefixed.DUST)
+                addBlockPrefixes(oresAndBlock)
+                addItemPrefixes(CommonTagPrefixes.DUST)
+                put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(3))
+
+                setName(enName, jaName)
+                setTextureSet("mineral", HTMaterialTextureSet.DULL)
+                addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.DUST, UniformGenerator.between(4f, 5f)))
+            }
+        }
         // Fuels
         event.modify(CommonMaterialKeys.COAL_COKE) {
             setDefaultPart(
@@ -325,52 +343,20 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("steel"))
         }
         // Minerals
-        event.modify(CommonMaterialKeys.BAUXITE) {
-            setDefaultPart(HTDefaultPart.Prefixed.DUST)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(CommonTagPrefixes.DUST)
-            put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(3))
-
-            setName("Bauxite", "ボーキサイト")
-            setTextureSet("mineral")
-        }
-        event.modify(CommonMaterialKeys.SALT) {
-            setDefaultPart(HTDefaultPart.Prefixed.DUST)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(CommonTagPrefixes.DUST)
-            put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(3))
-
-            setName("Salt", "塩")
-            setTextureSet("mineral")
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("white"))
-        }
-        event.modify(CommonMaterialKeys.SALTPETER) {
-            setDefaultPart(HTDefaultPart.Prefixed.DUST)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(CommonTagPrefixes.DUST)
-            put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(3))
-
-            setName("Saltpeter", "硝石")
-            setTextureSet("mineral")
-        }
-        event.modify(CommonMaterialKeys.SULFUR) {
-            setDefaultPart(HTDefaultPart.Prefixed.DUST)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(CommonTagPrefixes.DUST)
-            put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(3))
-
-            setName("Sulfur", "硫黄")
-            setTextureSet("mineral")
-        }
+        registerMineral(CommonMaterialKeys.BAUXITE, "Bauxite", "ボーキサイト")
+        registerMineral(CommonMaterialKeys.SALT, "Salt", "塩")
+        registerMineral(CommonMaterialKeys.SALTPETER, "Saltpeter", "硝石")
+        registerMineral(CommonMaterialKeys.SULFUR, "Sulfur", "硫黄")
         // Gems
         event.modify(CommonMaterialKeys.CINNABAR) {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addBlockPrefixes(oresAndBlock)
             addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEM)
             put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(3))
 
             setName("Cinnabar", "辰砂")
             setTextureSet("lapis")
+            addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.GEM, null))
         }
 
         event.modify(CommonMaterialKeys.FLUORITE) {
@@ -404,6 +390,7 @@ object HCMaterialEventHandler {
 
             setName("Zinc", "亜鉛")
             setTextureSet(HTMaterialTextureSet.DULL)
+            addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.RAW, null))
         }
 
         registerMetal(CommonMaterialKeys.PALLADIUM, "Palladium", "パラジウム")
@@ -415,6 +402,7 @@ object HCMaterialEventHandler {
             addExtraOreResult(CommonTagPrefixes.DUST, VanillaMaterialKeys.IRON, 1 / 4f)
 
             setName("Tin", "錫")
+            addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.RAW, null))
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("white"))
         }
         registerMetal(CommonMaterialKeys.ANTIMONY, "Antimony", "アンチモン")
@@ -423,7 +411,7 @@ object HCMaterialEventHandler {
         registerMetal(CommonMaterialKeys.OSMIUM, "Osmium", "オスミウム")
         event.modify(CommonMaterialKeys.IRIDIUM) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
-            addBlockPrefixes(metalBlockSet)
+            addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(metalSet.plus(partSet))
             put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
 

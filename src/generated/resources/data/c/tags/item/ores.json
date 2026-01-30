@@ -1,6 +1,10 @@
 {
   "values": [
-    "#c:ores/iridium",
+    "#c:ores/bauxite",
+    "#c:ores/cinnabar",
+    "#c:ores/salt",
+    "#c:ores/saltpeter",
+    "#c:ores/sulfur",
     "#c:ores/tin",
     "#c:ores/zinc"
   ]

@@ -34,6 +34,8 @@ fun <P1, P2, R> ((P1, P2) -> R).partially2(p1: P1, p2: P2): () -> R = { this(p1,
 
 fun <P1, P2, P3, R> ((P1, P2, P3) -> R).partially2(p1: P1, p2: P2): (P3) -> R = { p3: P3 -> this(p1, p2, p3) }
 
+fun <P1, P2, P3, P4, R> ((P1, P2, P3, P4) -> R).partially3(p1: P1, p2: P2, p3: P3): (P4) -> R = { p4: P4 -> this(p1, p2, p3, p4) }
+
 // Predicate
 fun (() -> Boolean).and(other: () -> Boolean): () -> Boolean = { this() && other() }
 
