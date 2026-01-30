@@ -5,12 +5,14 @@ import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.block.entity.HTBlockEntityComponent
 import hiiragi283.core.api.block.entity.HTOwnedBlockEntity
 import hiiragi283.core.api.block.entity.HTSoundPlayerBlockEntity
+import hiiragi283.core.api.collection.isEmpty
 import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.serialization.component.HTComponentInput
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.HTHandlerProvider
+import hiiragi283.core.api.storage.amount.HTAmountView
 import hiiragi283.core.api.storage.attachments.HTAttachedEnergy
 import hiiragi283.core.api.storage.attachments.HTAttachedFluids
 import hiiragi283.core.api.storage.attachments.HTAttachedItems
@@ -18,6 +20,7 @@ import hiiragi283.core.api.storage.energy.HTEnergyBattery
 import hiiragi283.core.api.storage.energy.HTEnergyHandler
 import hiiragi283.core.api.storage.fluid.HTFluidHandler
 import hiiragi283.core.api.storage.fluid.HTFluidTank
+import hiiragi283.core.api.storage.fluid.HTMutableFluidView
 import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.api.storage.fluid.setStack
 import hiiragi283.core.api.storage.holder.HTEnergyBatteryHolder
@@ -25,6 +28,7 @@ import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
 import hiiragi283.core.api.storage.item.HTItemHandler
 import hiiragi283.core.api.storage.item.HTItemSlot
+import hiiragi283.core.api.storage.item.HTMutableItemView
 import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.storage.item.setStack
 import hiiragi283.core.common.gui.sync.HTFluidSyncSlot
@@ -211,20 +215,21 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     /**
      * @see mekanism.common.tile.base.TileEntityMekanism.addContainerTrackers
      */
+    @Suppress("UNCHECKED_CAST")
     open fun addMenuTrackers(holder: HTWidgetHolder) {
         // Fluid Tanks
         if (hasFluidHandler()) {
             for (tank: HTFluidTank in this.getFluidTanks(this.getFluidSideFor())) {
-                if (tank is HTFluidTank.Basic) {
-                    holder.track(HTFluidSyncSlot(tank), HTSyncType.S2C)
+                (tank as? HTMutableFluidView)?.let {
+                    holder.track(HTFluidSyncSlot(it), HTSyncType.S2C)
                 }
             }
         }
         // Energy Battery
         if (hasEnergyStorage()) {
             val battery: HTEnergyBattery? = this.getEnergyBattery(this.getEnergySideFor())
-            if (battery is HTEnergyBattery.Basic) {
-                holder.track(HTIntSyncSlot.create(battery::getAmount, battery::setAmount), HTSyncType.S2C)
+            if (battery is HTAmountView.Mutable) {
+                holder.track(HTIntSyncSlot.create(battery), HTSyncType.S2C)
             }
         }
     }
@@ -283,9 +288,10 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     /**
      * @see mekanism.common.tile.base.TileEntityMekanism.applyFluidTanks
      */
+    @Suppress("UNCHECKED_CAST")
     fun applyFluidTanks(containers: List<HTFluidTank>, contents: HTAttachedFluids) {
         for (i: Int in contents.indices) {
-            (containers.getOrNull(i) as? HTFluidTank.Basic)?.setStack(contents[i])
+            (containers.getOrNull(i) as? HTMutableFluidView)?.setStack(contents[i])
         }
     }
 
@@ -295,7 +301,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     fun collectFluidTanks(containers: List<HTFluidTank>): HTAttachedFluids? = containers
         .map(HTFluidTank::getFluidStack)
         .let(::HTAttachedFluids)
-        .takeUnless { it.isEmpty() || it.all(FluidStack::isEmpty) }
+        .takeUnless { it.isEmpty(FluidStack::isEmpty) }
 
     // Energy
 
@@ -350,9 +356,10 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     /**
      * @see mekanism.common.tile.base.TileEntityMekanism.applyInventorySlots
      */
+    @Suppress("UNCHECKED_CAST")
     fun applyItemSlots(containers: List<HTItemSlot>, contents: HTAttachedItems) {
         for (i: Int in contents.indices) {
-            (containers.getOrNull(i) as? HTItemSlot.Basic)?.setStack(contents[i])
+            (containers.getOrNull(i) as? HTMutableItemView)?.setStack(contents[i])
         }
     }
 
@@ -362,5 +369,5 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     fun collectItemSlots(containers: List<HTItemSlot>): HTAttachedItems? = containers
         .map(HTItemSlot::getItemStack)
         .let(::HTAttachedItems)
-        .takeUnless { it.isEmpty() || it.all(ItemStack::isEmpty) }
+        .takeUnless { it.isEmpty(ItemStack::isEmpty) }
 }

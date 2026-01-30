@@ -40,6 +40,12 @@ interface HTAmountView {
      */
     fun getLevelAsFloat(): Float = getLevelAsFraction().toFloat()
 
+    /**
+     * このビューが空かどうか判定します。
+     * @since 0.9.0
+     */
+    fun isEmpty(): Boolean = getAmount() <= 0
+
     //    Mutable    //
 
     abstract class Mutable : HTAmountView {

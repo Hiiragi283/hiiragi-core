@@ -3,6 +3,8 @@ package hiiragi283.core.api.recipe
 import net.minecraft.world.item.crafting.RecipeInput
 import org.apache.commons.lang3.math.Fraction
 
+typealias HTViewProcessingRecipe = HTProcessingRecipe<HTViewRecipeInput>
+
 /**
  * 処理時間と獲得経験値を保持する[HTRecipe]の拡張クラスです。
  * @param INPUT レシピの入力となるクラス

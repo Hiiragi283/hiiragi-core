@@ -11,6 +11,7 @@ import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.toResourcePair
 import hiiragi283.core.api.storage.resource.HTResourceSlot
 import hiiragi283.core.api.storage.resource.HTResourceType
+import hiiragi283.core.api.storage.resource.HTResourceView
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
 
@@ -53,12 +54,12 @@ object HTShapelessRecipeHelper {
     @JvmStatic
     fun <T : HTResourceType<*>, I : HTIngredient<*, T>> shapelessMatch(
         ingredients: List<I>,
-        slots: Iterable<HTResourceSlot<T>>,
+        views: Iterable<HTResourceView<T>>,
     ): Map<T, Int> {
-        val stackMap: Map<T, Int> = slots
-            .fold(hashMapOf()) { map: HashMap<T, Int>, slot: HTResourceSlot<T> ->
-                val resource: T = slot.getResource() ?: return@fold map
-                map[resource] = (map[resource] ?: 0) + slot.getAmount()
+        val stackMap: Map<T, Int> = views
+            .fold(hashMapOf()) { map: HashMap<T, Int>, view: HTResourceView<T> ->
+                val resource: T = view.getResource() ?: return@fold map
+                map[resource] = (map[resource] ?: 0) + view.getAmount()
                 map
             }
         return shapelessMatch(ingredients, stackMap)
@@ -67,6 +68,7 @@ object HTShapelessRecipeHelper {
     /**
      * [HTItemResourceType]向けのメソッドです。
      */
+    @JvmName("shapelessMatchItem")
     @JvmStatic
     fun shapelessMatch(ingredients: List<HTItemIngredient>, stacks: Iterable<ItemStack>): Map<HTItemResourceType, Int> {
         val stackMap: Map<HTItemResourceType, Int> = stacks
@@ -81,6 +83,7 @@ object HTShapelessRecipeHelper {
     /**
      * [HTFluidResourceType]向けのメソッドです。
      */
+    @JvmName("shapelessMatchFluid")
     @JvmStatic
     fun shapelessMatch(ingredients: List<HTFluidIngredient>, stacks: Iterable<FluidStack>): Map<HTFluidResourceType, Int> {
         val stackMap: Map<HTFluidResourceType, Int> = stacks
@@ -107,10 +110,10 @@ object HTShapelessRecipeHelper {
     ): Boolean {
         val resultMap: Map<T, Int> = shapelessMatch(ingredients, slots)
         if (resultMap.isEmpty()) return false
-        
+
         val slots1: MutableList<HTResourceSlot<T>> = slots.toMutableList()
         val resultMap1: MutableMap<T, Int> = resultMap.toMutableMap()
-        
+
         val iterator: MutableIterator<MutableMap.MutableEntry<T, Int>> = resultMap1.iterator()
         while (iterator.hasNext()) {
             val entry: MutableMap.MutableEntry<T, Int> = iterator.next()

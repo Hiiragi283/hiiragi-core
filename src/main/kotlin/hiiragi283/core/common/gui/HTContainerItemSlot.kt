@@ -4,13 +4,13 @@ import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
+import hiiragi283.core.api.storage.item.HTMutableItemSlot
 import hiiragi283.core.api.storage.item.extractItem
 import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.storage.item.insert
 import hiiragi283.core.api.storage.item.setStack
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.storage.item.toStackOrEmpty
-import hiiragi283.core.api.storage.resource.HTResourceSlot
 import net.minecraft.world.SimpleContainer
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.Slot
@@ -37,12 +37,12 @@ open class HTContainerItemSlot(
         private val emptyContainer = SimpleContainer(0)
 
         @JvmStatic
-        fun <SLOT> create(
+        fun <SLOT : HTMutableItemSlot> create(
             slot: SLOT,
             x: Int,
             y: Int,
             slotType: Type,
-        ): HTContainerItemSlot where SLOT : HTItemSlot, SLOT : HTResourceSlot.Basic<HTItemResourceType> = HTContainerItemSlot(
+        ): HTContainerItemSlot = HTContainerItemSlot(
             slot,
             x,
             y,

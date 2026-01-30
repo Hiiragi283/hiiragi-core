@@ -9,7 +9,7 @@ import hiiragi283.core.api.serialization.value.write
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.item.HTItemResourceType
-import hiiragi283.core.api.storage.item.HTItemSlot
+import hiiragi283.core.api.storage.item.HTMutableItemSlot
 import hiiragi283.core.api.storage.item.setStack
 import hiiragi283.core.api.storage.item.toResource
 import net.minecraft.world.item.ItemStack
@@ -22,7 +22,7 @@ open class HTBasicItemSlot protected constructor(
     private val canInsert: BiPredicate<HTItemResourceType, HTStorageAccess>,
     private val filter: Predicate<HTItemResourceType>,
     private val listener: HTContentListener?,
-) : HTItemSlot.Basic() {
+) : HTMutableItemSlot() {
     companion object {
         @JvmStatic
         private fun validateLimit(limit: Int): Int {
@@ -97,7 +97,8 @@ open class HTBasicItemSlot protected constructor(
 
     override fun getResource(): HTItemResourceType? = stack.toResource()
 
-    override fun getCapacity(resource: HTItemResourceType?): Int = HTItemSlot.getMaxStackSize(resource, limit)
+    override fun getCapacity(resource: HTItemResourceType?): Int =
+        if (resource == null) limit else minOf(limit, resource.toStack().maxStackSize)
 
     override fun getAmount(): Int = stack.count
 

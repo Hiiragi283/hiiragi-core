@@ -1,5 +1,6 @@
 package hiiragi283.core.api.storage.attachments
 
+import hiiragi283.core.api.collection.isEmpty
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -27,7 +28,7 @@ data class HTAttachedItems(override val containers: List<ItemStack>) : HTAttache
 
     override fun create(containers: List<ItemStack>): HTAttachedItems = HTAttachedItems(containers)
 
-    override fun isEmpty(): Boolean = super.isEmpty() || containers.all(ItemStack::isEmpty)
+    override fun isEmpty(): Boolean = containers.isEmpty(ItemStack::isEmpty)
 
     override fun equals(other: Any?): Boolean {
         when {

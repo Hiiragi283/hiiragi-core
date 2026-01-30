@@ -2,6 +2,7 @@ package hiiragi283.core.common.gui.sync
 
 import hiiragi283.core.api.gui.sync.HTChangeType
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
+import hiiragi283.core.api.storage.amount.HTAmountView
 import net.minecraft.core.RegistryAccess
 import java.util.function.IntConsumer
 import java.util.function.IntSupplier
@@ -20,6 +21,12 @@ interface HTIntSyncSlot : HTSyncableSlot {
 
         @JvmStatic
         fun create(property: KMutableProperty0<Int>): HTIntSyncSlot = create(property::get, property::set)
+
+        /**
+         * @since 0.9.0
+         */
+        @JvmStatic
+        fun create(view: HTAmountView.Mutable): HTIntSyncSlot = create(view::getAmount, view::setAmount)
 
         @JvmStatic
         fun create(getter: IntSupplier, setter: IntConsumer): HTIntSyncSlot = Impl(getter, setter)

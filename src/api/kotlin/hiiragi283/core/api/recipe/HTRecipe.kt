@@ -7,6 +7,8 @@ import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeInput
 
+typealias HTViewRecipe = HTRecipe<HTViewRecipeInput>
+
 /**
  * [Recipe]の拡張インターフェースです。
  * @param INPUT レシピの入力となるクラス

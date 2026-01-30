@@ -19,7 +19,7 @@ abstract class HTComponentSlot<RESOURCE : HTResourceType<*>, STACK : Any, ATTACH
     private val canExtract: BiPredicate<RESOURCE, HTStorageAccess>,
     private val canInsert: BiPredicate<RESOURCE, HTStorageAccess>,
     private val filter: Predicate<RESOURCE>,
-) : HTResourceSlot.Basic<RESOURCE>(),
+) : HTResourceSlot.Mutable<RESOURCE>(),
     HTContentListener.Empty,
     HTValueSerializable.Empty {
     protected fun getAttached(): ATTACHED = capabilityCodec().getOrCreate(attachedTo, size)

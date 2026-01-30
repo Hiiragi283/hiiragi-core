@@ -1,23 +1,78 @@
 package hiiragi283.core.api.storage.fluid
 
+import hiiragi283.core.api.storage.HTStorageAccess
+import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.resource.HTResourceSlot
+import hiiragi283.core.api.storage.resource.HTResourceView
+import net.neoforged.neoforge.fluids.FluidStack
 
 /**
- * [HTFluidResourceType]向けの[HTResourceSlot]の拡張インターフェースです。
+ * [HTFluidResourceType]向けの[HTResourceView]のエイリアス
+ */
+typealias HTFluidView = HTResourceView<HTFluidResourceType>
+
+/**
+ * [HTFluidResourceType]向けの[HTResourceView.Mutable]のエイリアス
+ * @since 0.9.0
+ */
+typealias HTMutableFluidView = HTResourceView.Mutable<HTFluidResourceType>
+
+/**
+ * [HTFluidResourceType]向けの[HTResourceSlot]のエイリアス
+ * @since 0.9.0
+ */
+typealias HTFluidTank = HTResourceSlot<HTFluidResourceType>
+
+/**
+ * [HTFluidResourceType]向けの[HTResourceSlot.Mutable]のエイリアス
+ * @since 0.9.0
+ */
+typealias HTMutableFluidTank = HTResourceSlot.Mutable<HTFluidResourceType>
+
+/**
+ * この[HTFluidView][this]から[FluidStack]を取得します。
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-interface HTFluidTank : HTResourceSlot<HTFluidResourceType> {
-    //    Basic    //
+fun HTFluidView.getFluidStack(): FluidStack = this.getResource().toStackOrEmpty(this.getAmount())
 
-    /**
-     * [HTFluidResourceType]向けの[HTResourceSlot.Basic]の拡張クラスです。
-     * @author Hiiragi Tsubasa
-     * @since 0.4.0
-     */
-    abstract class Basic :
-        HTResourceSlot.Basic<HTFluidResourceType>(),
-        HTFluidTank {
-        override fun toString(): String = "HTFluidTank(resource=${getResource()}, amount=${getAmount()}, capacity=${getCapacity()})"
-    }
+/**
+ * この[スロット][this]に[stack]を代入します。
+ * @author Hiiragi Tsubasa
+ * @since 0.8.0
+ */
+fun HTMutableFluidView.setStack(stack: FluidStack) {
+    setResource(stack.toResource())
+    setAmount(stack.amount)
+}
+
+/**
+ * この[HTFluidTank][this]に指定した[stack]を搬入します。
+ * @return 搬入されない[FluidStack]
+ * @author Hiiragi Tsubasa
+ * @since 0.4.0
+ */
+fun HTFluidTank.insert(stack: FluidStack, action: HTStorageAction, access: HTStorageAccess): FluidStack {
+    val remainder: Int = this.insert(stack.toResource(), stack.amount, action, access)
+    return stack.copyWithAmount(remainder)
+}
+
+/**
+ * この[HTFluidTank][this]から指定した[stack]を搬出します。
+ * @return 搬出される[FluidStack]
+ * @author Hiiragi Tsubasa
+ * @since 0.4.0
+ */
+fun HTFluidTank.extractFluid(stack: FluidStack, action: HTStorageAction, access: HTStorageAccess): FluidStack =
+    this.extract(stack.toResource(), stack.amount, action, access).let(stack::copyWithAmount)
+
+/**
+ * この[HTFluidTank][this]から指定した[amount]だけ搬出します。
+ * @return 搬出される[FluidStack]
+ * @author Hiiragi Tsubasa
+ * @since 0.4.0
+ */
+fun HTFluidTank.extractFluid(amount: Int, action: HTStorageAction, access: HTStorageAccess): FluidStack {
+    val resourceIn: HTFluidResourceType = this.getResource() ?: return FluidStack.EMPTY
+    return this.extract(amount, action, access).let(resourceIn::toStack)
 }

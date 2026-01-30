@@ -4,7 +4,6 @@ import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
-import hiiragi283.core.api.storage.amount.HTAmountView
 
 /**
  * リソースを搬入/搬出できることを表すインターフェースです。
@@ -65,16 +64,11 @@ interface HTResourceSlot<RESOURCE : HTResourceType<*>> :
      */
     fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int
 
-    //    Basic    //
+    //    Mutable    //
 
-    abstract class Basic<RESOURCE : HTResourceType<*>> :
-        HTAmountView.Mutable(),
+    abstract class Mutable<RESOURCE : HTResourceType<*>> :
+        HTResourceView.Mutable<RESOURCE>(),
         HTResourceSlot<RESOURCE> {
-        /**
-         * 指定した[resource]で中身を置換します。
-         */
-        abstract fun setResource(resource: RESOURCE?)
-
         override fun insert(
             resource: RESOURCE?,
             amount: Int,

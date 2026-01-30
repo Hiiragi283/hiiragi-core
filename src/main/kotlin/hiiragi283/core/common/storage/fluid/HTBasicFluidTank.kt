@@ -9,7 +9,7 @@ import hiiragi283.core.api.serialization.value.write
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
-import hiiragi283.core.api.storage.fluid.HTFluidTank
+import hiiragi283.core.api.storage.fluid.HTMutableFluidTank
 import hiiragi283.core.api.storage.fluid.setStack
 import hiiragi283.core.api.storage.fluid.toResource
 import net.neoforged.neoforge.fluids.FluidStack
@@ -22,7 +22,7 @@ open class HTBasicFluidTank protected constructor(
     private val canInsert: BiPredicate<HTFluidResourceType, HTStorageAccess>,
     private val filter: Predicate<HTFluidResourceType>,
     private val listener: HTContentListener?,
-) : HTFluidTank.Basic() {
+) : HTMutableFluidTank() {
     companion object {
         @JvmStatic
         private fun validateCapacity(capacity: Int): Int {

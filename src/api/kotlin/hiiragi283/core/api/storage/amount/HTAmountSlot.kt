@@ -11,11 +11,6 @@ import hiiragi283.core.api.storage.HTStorageAction
  */
 interface HTAmountSlot : HTAmountView {
     /**
-     * このスロットが空かどうか判定します。
-     */
-    fun isEmpty(): Boolean = getAmount() <= 0
-
-    /**
      * このスロットに量を搬入します。
      * @param amount 搬入する量
      * @param action 処理のフラグ
