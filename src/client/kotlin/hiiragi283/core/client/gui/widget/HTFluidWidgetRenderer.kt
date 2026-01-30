@@ -35,6 +35,8 @@ abstract class HTFluidWidgetRenderer<WIDGET : HTFluidWidget>(widget: WIDGET) : H
         override fun renderBackground(bounds: HTBounds, guiGraphics: GuiGraphics) {
             HTSpriteRenderHelper.blit(guiGraphics, widget.backgroundType.slotTexture, bounds)
         }
+
+        override fun getLevel(): Fraction = Fraction.ONE
     }
 
     @OnlyIn(Dist.CLIENT)

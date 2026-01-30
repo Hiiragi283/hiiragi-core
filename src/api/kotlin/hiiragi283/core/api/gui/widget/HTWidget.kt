@@ -1,6 +1,7 @@
 package hiiragi283.core.api.gui.widget
 
 import hiiragi283.core.api.gui.HTBounds
+import net.minecraft.world.inventory.AbstractContainerMenu
 
 /**
  * GUI上の要素を表すインターフェースです。
@@ -25,7 +26,12 @@ interface HTWidget {
     /**
      * このウィジェットをクリックした時に呼び出されます。
      */
-    fun mouseClicked(mouseX: Double, mouseY: Double, button: Int) {}
+    fun mouseClicked(
+        menu: AbstractContainerMenu,
+        mouseX: Double,
+        mouseY: Double,
+        button: Int,
+    ) {}
 
     /**
      * このウィジェットの上でクリックを解放した時に呼び出されます。

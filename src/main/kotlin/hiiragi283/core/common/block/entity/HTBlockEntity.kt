@@ -6,13 +6,10 @@ import hiiragi283.core.api.block.entity.HTBlockEntityComponent
 import hiiragi283.core.api.block.entity.HTOwnedBlockEntity
 import hiiragi283.core.api.block.entity.HTSoundPlayerBlockEntity
 import hiiragi283.core.api.collection.isEmpty
-import hiiragi283.core.api.gui.sync.HTSyncType
-import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.serialization.component.HTComponentInput
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.HTHandlerProvider
-import hiiragi283.core.api.storage.amount.HTAmountView
 import hiiragi283.core.api.storage.attachments.HTAttachedEnergy
 import hiiragi283.core.api.storage.attachments.HTAttachedFluids
 import hiiragi283.core.api.storage.attachments.HTAttachedItems
@@ -31,8 +28,6 @@ import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.HTMutableItemView
 import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.storage.item.setStack
-import hiiragi283.core.common.gui.sync.HTFluidSyncSlot
-import hiiragi283.core.common.gui.sync.HTIntSyncSlot
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import hiiragi283.core.common.storage.HTCapabilityCodec
 import hiiragi283.core.common.storage.energy.HTBasicEnergyBattery
@@ -215,8 +210,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     /**
      * @see mekanism.common.tile.base.TileEntityMekanism.addContainerTrackers
      */
-    @Suppress("UNCHECKED_CAST")
-    open fun addMenuTrackers(holder: HTWidgetHolder) {
+    /*open fun addMenuTrackers(holder: HTWidgetHolder) {
         // Fluid Tanks
         if (hasFluidHandler()) {
             for (tank: HTFluidTank in this.getFluidTanks(this.getFluidSideFor())) {
@@ -232,7 +226,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
                 holder.track(HTIntSyncSlot.create(battery), HTSyncType.S2C)
             }
         }
-    }
+    }*/
 
     //    Nameable    //
 

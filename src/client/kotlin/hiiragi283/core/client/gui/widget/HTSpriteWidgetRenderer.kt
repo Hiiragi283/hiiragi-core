@@ -63,7 +63,11 @@ abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget>(widget: WIDGET) : HTAbs
         RenderSystem.defaultBlendFunc()
         HTSpriteRenderHelper.setShaderColor(guiGraphics, color) {
             RenderSystem.enableBlend()
-            val (x: Int, y: Int, width: Int, height: Int) = bounds
+            var (x: Int, y: Int, width: Int, height: Int) = bounds
+            x++
+            y++
+            width -= 2
+            height -= 2
             for (i: Int in (0..(Mth.ceil(fillLevel) / width))) {
                 val subHeight: Float = minOf(width.toFloat(), fillLevel - (width * i))
                 val offsetY: Float = height - width * i - subHeight
@@ -103,7 +107,7 @@ abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget>(widget: WIDGET) : HTAbs
 
     protected abstract fun getColor(): Int
 
-    protected open fun getScaledLevel(): Fraction = getLevel() * widget.bounds.height
+    protected open fun getScaledLevel(): Fraction = getLevel() * (widget.bounds.height - 2)
 
     protected abstract fun getLevel(): Fraction
 

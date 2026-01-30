@@ -22,6 +22,16 @@ data class HTBlockWidgetHolderContext(val factory: Factory, val player: Player, 
     MenuProvider {
     companion object {
         @JvmStatic
+        fun openMenu(player: Player, pos: BlockPos): Boolean {
+            val block: Block = player.level().getBlockState(pos).block
+            if (block is Factory) {
+                val context: HTBlockWidgetHolderContext = block.createContext(player, pos)
+                return player.openMenu(context).isPresent
+            }
+            return false
+        }
+
+        @JvmStatic
         fun create(containerId: Int, inventory: Inventory, buffer: RegistryFriendlyByteBuf): HTWidgetContainerMenu {
             val player: Player = inventory.player
             val pos: BlockPos = buffer.readBlockPos()

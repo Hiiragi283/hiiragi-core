@@ -42,7 +42,7 @@ fun interface HTBlockLootFactory {
         fun createOre(
             dropPrefix: HTTagPrefix?,
             range: NumberProvider?,
-            bonusFactory: (Holder<Enchantment>) -> LootItemConditionalFunction.Builder<*> = ApplyBonusCount::addOreBonusCount
+            bonusFactory: (Holder<Enchantment>) -> LootItemConditionalFunction.Builder<*> = ApplyBonusCount::addOreBonusCount,
         ): HTBlockLootFactory = HTBlockLootFactory { context: Context ->
             val (key: HTMaterialKey, _, helper: HTLootBuilderHelper, block: Block) = context
             val dropItem: ItemLike = dropPrefix?.let { HiiragiCoreAccess.INSTANCE.getItemOrVanilla(it, key) } ?: block

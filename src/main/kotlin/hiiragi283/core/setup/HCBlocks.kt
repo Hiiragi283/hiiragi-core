@@ -1,8 +1,10 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.common.block.HTTestBlock
 import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.item.block.HTWarpedWartItem
+import hiiragi283.core.common.registry.HTBasicDeferredBlock
 import hiiragi283.core.common.registry.HTDeferredBlock
 import hiiragi283.core.common.registry.register.HTDeferredBlockRegister
 import net.minecraft.world.level.block.Block
@@ -32,6 +34,10 @@ object HCBlocks {
     )
 
     //    Misc    //
+
+    @JvmField
+    val TEST: HTBasicDeferredBlock<HTTestBlock> =
+        REGISTER.registerSimple("test", copyOf(Blocks.COMMAND_BLOCK), ::HTTestBlock)
 
     //    Extensions    //
 

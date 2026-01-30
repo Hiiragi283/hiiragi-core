@@ -13,6 +13,7 @@ import hiiragi283.core.api.storage.item.HTItemView
 import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.common.gui.sync.HTItemSyncSlot
 import hiiragi283.core.setup.HCWidgetTypes
+import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 import java.util.function.Consumer
@@ -20,9 +21,13 @@ import java.util.function.Consumer
 abstract class HTItemWidget(bounds: HTBounds) :
     HTAbstractWidget(bounds),
     HTIngredientWidget {
-    var backgroundType: HTBackgroundType = HTBackgroundType.NONE
+    open var backgroundType: HTBackgroundType = HTBackgroundType.NONE
 
-    class SlotWidget(val slot: Slot) : HTItemWidget(HTBounds.createSlot(slot.x, slot.y)) {
+    fun setBackground(background: HTBackgroundType): HTItemWidget = apply {
+        this.backgroundType = background
+    }
+
+    class SlotWidget(val slot: Slot) : HTItemWidget(HTBounds.createSlot(slot.x - 1, slot.y - 1)) {
         override fun getType(): HTWidgetType<*> = HCWidgetTypes.ITEM_SLOT.get()
 
         override fun getIngredient(): ItemStack = slot.item
@@ -33,7 +38,7 @@ abstract class HTItemWidget(bounds: HTBounds) :
         stackSetter: Consumer<ItemStack>?,
         x: Int,
         y: Int,
-    ) : HTItemWidget(HTBounds.createSlot(x, y)),
+    ) : HTItemWidget(HTBounds.createSlot(x - 1, y - 1)),
         HTGhostWidget,
         HTItemView by slot {
         constructor(slot: HTItemSlot, x: Int, y: Int) : this(slot, null, x, y)
@@ -47,8 +52,13 @@ abstract class HTItemWidget(bounds: HTBounds) :
             widgetHolder.track(slot, HTSyncType.BOTH)
         }
 
-        override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int) {
-            syncableSlot?.asItemStack = ItemStack.EMPTY
+        override fun mouseClicked(
+            menu: AbstractContainerMenu,
+            mouseX: Double,
+            mouseY: Double,
+            button: Int,
+        ) {
+            syncableSlot?.asItemStack = menu.carried.copy()
         }
 
         override fun getIngredient(): ItemStack = this.getItemStack()

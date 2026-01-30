@@ -328,8 +328,8 @@ object HCMaterialEventHandler {
                     HTBlockLootFactory.createOre(
                         CommonTagPrefixes.DUST,
                         UniformGenerator.between(4f, 5f),
-                        ApplyBonusCount::addUniformBonusCount
-                    )
+                        ApplyBonusCount::addUniformBonusCount,
+                    ),
                 )
             }
         }

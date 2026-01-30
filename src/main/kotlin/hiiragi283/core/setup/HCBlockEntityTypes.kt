@@ -3,9 +3,11 @@ package hiiragi283.core.setup
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.storage.HTHandlerProvider
 import hiiragi283.core.common.block.HTBlockWithEntity
+import hiiragi283.core.common.block.entity.HTTestBlockEntity
 import hiiragi283.core.common.capability.HTEnergyCapabilities
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.capability.HTItemCapabilities
+import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import hiiragi283.core.common.registry.HTDeferredOnlyBlock
 import hiiragi283.core.common.registry.register.HTDeferredBlockEntityTypeRegister
 import net.minecraft.world.level.block.Block
@@ -27,6 +29,9 @@ object HCBlockEntityTypes {
         REGISTER.register(eventBus)
     }
 
+    @JvmField
+    val TEST: HTDeferredBlockEntityType<HTTestBlockEntity> = REGISTER.registerTick("test", ::HTTestBlockEntity)
+
     //    Event    //
 
     // Supported Blocks
@@ -44,6 +49,8 @@ object HCBlockEntityTypes {
     // Capabilities
     @JvmStatic
     private fun registerBlockCapabilities(event: RegisterCapabilitiesEvent) {
+        registerHandler(event, TEST.get())
+
         HiiragiCoreAPI.LOGGER.info("Registered Block Capabilities!")
     }
 
