@@ -230,6 +230,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             resultStack += Items.HONEY_BLOCK
             recipeId suffix "_from_bucket"
         }
+        
         // Mushroom Stew
         HTShapelessRecipeBuilder.create(output) {
             repeat(4) {
@@ -238,6 +239,24 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             ingredients += Tags.Items.BUCKETS_EMPTY
             resultStack += HCFluids.MUSHROOM_STEW.getBucket()
             recipeId suffix "_from_bowls"
+        }
+
+        // Dragon Breath
+        HTShapelessRecipeBuilder.create(output) {
+            repeat(4) {
+                ingredients += Items.DRAGON_BREATH
+            }
+            ingredients += Tags.Items.BUCKETS_EMPTY
+            resultStack += HCFluids.DRAGON_BREATH.getBucket()
+            recipeId suffix "_from_bottles"
+        }
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += HCFluids.DRAGON_BREATH.bucketTag
+            repeat(4) {
+                ingredients += Items.GLASS_BOTTLE
+            }
+            resultStack += Items.DRAGON_BREATH to 4
+            recipeId suffix "_from_bucket"
         }
 
         // Latex

@@ -26,6 +26,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.EXPERIENCE, "液体経験値")
         addFluid(HCFluids.HONEY, "ハチミツ")
         addFluid(HCFluids.MUSHROOM_STEW, "キノコシチュー")
+        addFluid(HCFluids.DRAGON_BREATH, "ドラゴンブレス")
 
         addFluid(HCFluids.LATEX, "ラテックス")
         addFluid(HCFluids.BLOOD, "血液")

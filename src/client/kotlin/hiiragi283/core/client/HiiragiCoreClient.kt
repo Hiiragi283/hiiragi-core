@@ -74,6 +74,10 @@ data object HiiragiCoreClient : HTClientMod() {
             HCFluids.HONEY.getFluidType(),
         )
         event.dull(HCFluids.MUSHROOM_STEW, Color(0xcc9966))
+        event.registerFluidType(
+            HTSimpleFluidExtensions(HiiragiCoreAPI.id(HTConst.BLOCK, "dragon_breath")),
+            HCFluids.DRAGON_BREATH.getFluidType(),
+        )
 
         event.dull(HCFluids.LATEX, Color(0xcccccc))
         event.dull(HCFluids.BLOOD, Color(0x990000))

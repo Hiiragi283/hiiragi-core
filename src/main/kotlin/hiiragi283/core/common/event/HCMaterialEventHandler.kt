@@ -589,7 +589,6 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
             
             setName("Ominous Metal", "不吉な金属")
-            setTextureSet("shine")
         }
         // Alloys
         event.modify(HCMaterialKeys.AZURE_STEEL) {

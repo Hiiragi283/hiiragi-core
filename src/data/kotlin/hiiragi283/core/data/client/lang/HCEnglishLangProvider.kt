@@ -26,6 +26,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.EXPERIENCE, "Liquid Experience")
         addFluid(HCFluids.HONEY, "Honey")
         addFluid(HCFluids.MUSHROOM_STEW, "Mushroom Stew")
+        addFluid(HCFluids.DRAGON_BREATH, "Dragon Breath")
 
         addFluid(HCFluids.LATEX, "Latex")
         addFluid(HCFluids.BLOOD, "Blood")
