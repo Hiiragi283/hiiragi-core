@@ -230,7 +230,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             resultStack += Items.HONEY_BLOCK
             recipeId suffix "_from_bucket"
         }
-        
+
         // Mushroom Stew
         HTShapelessRecipeBuilder.create(output) {
             repeat(4) {

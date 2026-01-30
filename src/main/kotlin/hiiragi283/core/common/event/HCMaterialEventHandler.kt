@@ -33,6 +33,7 @@ import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
@@ -138,7 +139,7 @@ object HCMaterialEventHandler {
         }
         event.modify(VanillaMaterialKeys.DIAMOND) {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
-            addItemPrefixes(CommonTagPrefixes.DUST)
+            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEAR)
             addToolPrefixes(VanillaEquipmentMaterial.DIAMOND, CommonToolTypes.HAMMER)
             addExtraOreResult(CommonTagPrefixes.DUST, VanillaMaterialKeys.COAL, 1 / 4f)
 
@@ -147,7 +148,7 @@ object HCMaterialEventHandler {
         }
         event.modify(VanillaMaterialKeys.EMERALD) {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
-            addItemPrefixes(CommonTagPrefixes.DUST)
+            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEAR)
             addExtraOreResult(CommonTagPrefixes.DUST, VanillaMaterialKeys.PRISMARINE, 1 / 4f)
 
             setName("Emerald", "エメラルド")
@@ -323,7 +324,13 @@ object HCMaterialEventHandler {
 
                 setName(enName, jaName)
                 setTextureSet("mineral", HTMaterialTextureSet.DULL)
-                addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.DUST, UniformGenerator.between(4f, 5f)))
+                addCustomOreLoot(
+                    HTBlockLootFactory.createOre(
+                        CommonTagPrefixes.DUST,
+                        UniformGenerator.between(4f, 5f),
+                        ApplyBonusCount::addUniformBonusCount
+                    )
+                )
             }
         }
         // Fuels
@@ -587,7 +594,7 @@ object HCMaterialEventHandler {
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(alloySet.plus(partSet))
             put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
-            
+
             setName("Ominous Metal", "不吉な金属")
         }
         // Alloys

@@ -11,12 +11,12 @@ import java.util.function.BiConsumer
 class HCTextureProvider(context: HTDataGenContext) : HTTextureProvider(HiiragiCoreAPI.MOD_ID, context) {
     override fun gather(output: BiConsumer<ResourceLocation, NativeImage>) {
         material(output)
-        
+
         copyAndApplyColor(
             output,
             HiiragiCoreAPI.id(HTConst.BLOCK, "dragon_breath"),
             HiiragiCoreAPI.id("dragon_breath"),
-            HiiragiCoreAPI.id("material_set", "mineral", "block")
+            HiiragiCoreAPI.id("material_set", "mineral", "block"),
         )
     }
 }

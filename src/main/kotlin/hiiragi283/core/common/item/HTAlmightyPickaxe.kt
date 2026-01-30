@@ -45,9 +45,9 @@ class HTAlmightyPickaxe(properties: Properties) :
     override fun addItems(baseItem: HTItemHolderLike<*>, context: HTSubCreativeTabContents.Context) {
         createItemStack(baseItem, DataComponents.UNBREAKABLE, Unbreakable(true)).let(context)
     }
-    
+
     //    Tier    //
-    
+
     data object AlmightyTier : Tier {
         override fun getUses(): Int = Tiers.NETHERITE.uses
 

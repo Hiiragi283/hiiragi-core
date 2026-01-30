@@ -34,7 +34,7 @@ object HCFluids {
 
     @JvmField
     val MUSHROOM_STEW: HTSimpleFluidContent = REGISTER.registerSimpleFlowing("mushroom_stew", liquid())
-    
+
     @JvmField
     val DRAGON_BREATH: HTVirtualFluidContent = REGISTER.registerVirtual("dragon_breath", liquid().density(-1000))
 
