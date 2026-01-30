@@ -7,6 +7,9 @@ import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeInput
 
+/**
+ * @since 0.9.0
+ */
 typealias HTViewRecipe = HTRecipe<HTViewRecipeInput>
 
 /**

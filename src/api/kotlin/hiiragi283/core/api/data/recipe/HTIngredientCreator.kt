@@ -36,6 +36,9 @@ import java.util.function.IntUnaryOperator
  * @since 0.8.0
  */
 data object HTIngredientCreator {
+    /**
+     * @since 0.9.0
+     */
     @JvmStatic
     private val TAG_COMPARATOR: Comparator<TagKey<*>> = compareBy(TagKey<*>::location)
 

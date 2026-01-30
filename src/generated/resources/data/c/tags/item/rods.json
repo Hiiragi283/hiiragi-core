@@ -1,16 +1,17 @@
 {
   "values": [
+    "#c:rods/ancient_metal",
     "#c:rods/azure_steel",
     "#c:rods/brass",
     "#c:rods/bronze",
     "#c:rods/carbon",
     "#c:rods/copper",
-    "#c:rods/deep_steel",
     "#c:rods/glass",
     "#c:rods/gold",
     "#c:rods/iridium",
     "#c:rods/iron",
     "#c:rods/netherite",
+    "#c:rods/ominous_metal",
     "#c:rods/plastic",
     "#c:rods/steel"
   ]

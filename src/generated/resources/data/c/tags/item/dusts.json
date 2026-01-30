@@ -2,6 +2,7 @@
   "values": [
     "#c:dusts/aluminum",
     "#c:dusts/amethyst",
+    "#c:dusts/ancient_metal",
     "#c:dusts/ash",
     "#c:dusts/azure",
     "#c:dusts/azure_steel",
@@ -16,7 +17,6 @@
     "#c:dusts/coal_coke",
     "#c:dusts/copper",
     "#c:dusts/crimson_crystal",
-    "#c:dusts/deep_steel",
     "#c:dusts/diamond",
     "#c:dusts/echo",
     "#c:dusts/eldritch",
@@ -29,6 +29,7 @@
     "#c:dusts/lapis",
     "#c:dusts/netherite",
     "#c:dusts/obsidian",
+    "#c:dusts/ominous_metal",
     "#c:dusts/plastic",
     "#c:dusts/prismarine",
     "#c:dusts/quartz",

@@ -17,6 +17,10 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.9.0
+ */
 fun interface HTBlockLootFactory {
     companion object {
         @JvmField

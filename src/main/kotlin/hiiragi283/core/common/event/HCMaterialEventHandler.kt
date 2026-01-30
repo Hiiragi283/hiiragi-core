@@ -564,15 +564,8 @@ object HCMaterialEventHandler {
             setName("Eldritch Pearl", "異質な真珠")
             setTextureSet("pearl")
         }
-        // Alloys
-        event.modify(HCMaterialKeys.AZURE_STEEL) {
-            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(alloySet.plus(partSet))
-
-            setName("Azure Steel", "紺鉄")
-        }
-        event.modify(HCMaterialKeys.DEEP_STEEL) {
+        // Metals
+        event.modify(HCMaterialKeys.ANCIENT_METAL) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(
@@ -584,9 +577,27 @@ object HCMaterialEventHandler {
                 CommonTagPrefixes.PLATE,
                 CommonTagPrefixes.ROD,
             )
+            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
 
-            setName("Deep Steel", "深層鋼")
+            setName("Ancient Metal", "古代の金属")
             setTextureSet("dull")
+        }
+        event.modify(HCMaterialKeys.OMINOUS_METAL) {
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
+            addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addItemPrefixes(alloySet.plus(partSet))
+            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
+            
+            setName("Ominous Metal", "不吉な金属")
+            setTextureSet("shine")
+        }
+        // Alloys
+        event.modify(HCMaterialKeys.AZURE_STEEL) {
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
+            addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addItemPrefixes(alloySet.plus(partSet))
+
+            setName("Azure Steel", "紺鉄")
         }
     }
 }

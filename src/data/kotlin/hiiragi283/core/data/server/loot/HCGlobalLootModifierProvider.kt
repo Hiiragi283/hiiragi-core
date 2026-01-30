@@ -5,10 +5,21 @@ import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.loot.HTGlobalLootModifierProvider
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition
 
 class HCGlobalLootModifierProvider(context: HTDataGenContext) : HTGlobalLootModifierProvider(HiiragiCoreAPI.MOD_ID, context) {
     override fun start() {
-        // Drops Deep Steel Scrap from Reinforced Deepslate
+        // Drops Ominous Metal rod from Spawners
+        add(
+            HCGlobalLootProvider.OMINOUS_METAL_ROD,
+            AnyOfCondition
+                .anyOf(
+                    builder(Blocks.SPAWNER),
+                    builder(Blocks.TRIAL_SPAWNER),
+                    builder(Blocks.VAULT),
+                ).build(),
+        )
+        // Drops Ancient Metal Scrap from Reinforced Deepslate
         add(HCGlobalLootProvider.DEEP_STEEL_SCRAP, builder(Blocks.REINFORCED_DEEPSLATE).build())
 
         // Drops Elder Heart from Elder Guardian

@@ -15,6 +15,10 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeInput
 import net.neoforged.neoforge.fluids.FluidStack
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.9.0
+ */
 class HTViewRecipeInput(val items: List<HTItemView>, val fluids: List<HTFluidView>, val propertyMap: HTPropertyMap) : RecipeInput {
     companion object {
         @HTBuilderMarker

@@ -23,11 +23,16 @@ object HCMaterialKeys {
     @JvmStatic
     val ELDRITCH: HTMaterialKey = create("eldritch")
 
+    //    Metals    //
+
+    @JvmStatic
+    val ANCIENT_METAL: HTMaterialKey = create("ancient_metal")
+
+    @JvmStatic
+    val OMINOUS_METAL: HTMaterialKey = create("ominous_metal")
+
     //    Alloys    //
 
     @JvmStatic
     val AZURE_STEEL: HTMaterialKey = create("azure_steel")
-
-    @JvmStatic
-    val DEEP_STEEL: HTMaterialKey = create("deep_steel")
 }

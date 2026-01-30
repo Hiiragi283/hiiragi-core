@@ -3,14 +3,16 @@
   "category": "misc",
   "key": {
     "A": {
-      "tag": "c:plates/deep_steel"
+      "tag": "c:plates/ancient_metal"
     },
     "B": {
       "item": "minecraft:deepslate"
     }
   },
   "pattern": [
-    "ABA"
+    " A ",
+    "ABA",
+    " A "
   ],
   "result": {
     "count": 1,

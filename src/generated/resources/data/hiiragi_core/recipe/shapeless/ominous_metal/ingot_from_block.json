@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:storage_blocks/ominous_metal"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "hiiragi_core:ominous_metal_ingot"
+  }
+}

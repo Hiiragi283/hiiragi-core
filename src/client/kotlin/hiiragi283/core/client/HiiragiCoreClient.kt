@@ -74,7 +74,7 @@ data object HiiragiCoreClient : HTClientMod() {
             HCFluids.HONEY.getFluidType(),
         )
         event.dull(HCFluids.MUSHROOM_STEW, Color(0xcc9966))
-        // Saps
+
         event.dull(HCFluids.LATEX, Color(0xcccccc))
         event.dull(HCFluids.BLOOD, Color(0x990000))
         event.dull(HCFluids.MEAT, Color(0x993333))
@@ -85,6 +85,7 @@ data object HiiragiCoreClient : HTClientMod() {
         event.molten(HCFluids.MOLTEN_CRIMSON_CRYSTAL, Color(0x993333))
         event.molten(HCFluids.MOLTEN_WARPED_CRYSTAL, Color(0x339999))
         event.molten(HCFluids.MOLTEN_ELDRITCH, Color(0x6633cc))
+        event.molten(HCFluids.MOLTEN_OMINOUS_METAL, Color(0x333366))
     }
 
     override fun registerScreens(event: RegisterMenuScreensEvent) {

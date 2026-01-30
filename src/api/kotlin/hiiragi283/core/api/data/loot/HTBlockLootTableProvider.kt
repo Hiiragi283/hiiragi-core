@@ -35,6 +35,9 @@ abstract class HTBlockLootTableProvider(protected val modId: String, registries:
 
     //    Extensions    //
 
+    /**
+     * @since 0.9.0
+     */
     protected val helper = HTLootBuilderHelper(registries)
 
     protected val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents

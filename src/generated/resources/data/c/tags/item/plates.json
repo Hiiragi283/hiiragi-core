@@ -1,15 +1,16 @@
 {
   "values": [
+    "#c:plates/ancient_metal",
     "#c:plates/azure_steel",
     "#c:plates/brass",
     "#c:plates/bronze",
     "#c:plates/carbon",
     "#c:plates/copper",
-    "#c:plates/deep_steel",
     "#c:plates/gold",
     "#c:plates/iridium",
     "#c:plates/iron",
     "#c:plates/netherite",
+    "#c:plates/ominous_metal",
     "#c:plates/plastic",
     "#c:plates/rubber",
     "#c:plates/steel",

@@ -64,9 +64,15 @@ object HTMaterialPropertyKeys {
 
     //    Runtime Recipe    //
 
+    /**
+     * @since 0.9.0
+     */
     @JvmField
     val CAN_BE_SMELTED: HTPropertyKey<Boolean> = HTPropertyKey.create(HiiragiCoreAPI.id("can_be_smelted"), true)
 
+    /**
+     * @since 0.9.0
+     */
     @JvmField
     val SMELTED_TO: HTPropertyKey<HTMaterialKey?> = createNullable("smelted_to")
 
@@ -140,6 +146,9 @@ object HTMaterialPropertyKeys {
     val CUSTOM_LANG_NAME: HTPropertyKey<Map<HTTagPrefix, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_lang_name"))
 
     // Loot Table
+    /**
+     * @since 0.9.0
+     */
     @JvmField
     val BLOCK_LOOT: HTPropertyKey<Map<HTTagPrefix, HTBlockLootFactory>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("block_loot"))
 

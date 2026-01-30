@@ -72,6 +72,10 @@ object HCFluids {
     val MOLTEN_ELDRITCH: HTSimpleFluidContent =
         REGISTER.registerFlowing("molten_eldritch", molten().temperature(1300), ::HTEndFluidType)
 
+    @JvmField
+    val MOLTEN_OMINOUS_METAL: HTSimpleFluidContent =
+        REGISTER.registerSimpleFlowing("molten_ominous_metal", molten().temperature(1300))
+
     //    Extensions    //
 
     @JvmStatic

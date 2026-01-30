@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_table",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:blocks/reinforced_deepslate"
+    }
+  ],
+  "table": "hiiragi_core:drop_ancient_metal_scrap"
+}

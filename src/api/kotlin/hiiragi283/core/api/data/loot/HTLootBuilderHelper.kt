@@ -18,6 +18,8 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition
 import net.minecraft.world.level.storage.loot.predicates.MatchTool
 
 /**
+ * @author Hiiragi Tsubasa
+ * @since 0.9.0
  * @see net.minecraft.data.loot.BlockLootSubProvider
  */
 class HTLootBuilderHelper(provider: HolderLookup.Provider) {

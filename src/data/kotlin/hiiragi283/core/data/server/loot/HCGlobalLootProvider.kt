@@ -12,15 +12,18 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
 import net.minecraft.data.loot.LootTableSubProvider
 import net.minecraft.resources.ResourceKey
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.enchantment.Enchantment
 import net.minecraft.world.item.enchantment.Enchantments
 import net.minecraft.world.level.ItemLike
+import net.minecraft.world.level.storage.loot.IntRange
 import net.minecraft.world.level.storage.loot.LootPool
 import net.minecraft.world.level.storage.loot.LootTable
 import net.minecraft.world.level.storage.loot.entries.LootItem
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount
 import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue
+import net.minecraft.world.level.storage.loot.functions.LimitCount
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 import java.util.function.BiConsumer
 
@@ -28,7 +31,10 @@ sealed class HCGlobalLootProvider(protected val provider: HolderLookup.Provider)
     companion object {
         // Block
         @JvmField
-        val DEEP_STEEL_SCRAP: ResourceKey<LootTable> = create("deep_steel_scrap")
+        val OMINOUS_METAL_ROD: ResourceKey<LootTable> = create(CommonTagPrefixes.SCRAP.createId(HCMaterialKeys.OMINOUS_METAL))
+
+        @JvmField
+        val DEEP_STEEL_SCRAP: ResourceKey<LootTable> = create(CommonTagPrefixes.SCRAP.createId(HCMaterialKeys.ANCIENT_METAL))
 
         // entity
         @JvmField
@@ -41,7 +47,10 @@ sealed class HCGlobalLootProvider(protected val provider: HolderLookup.Provider)
         val TRADER_CATALOG: ResourceKey<LootTable> = create("trader_catalog")
 
         @JvmStatic
-        private fun create(path: String): ResourceKey<LootTable> = Registries.LOOT_TABLE.createKey(HiiragiCoreAPI.id("drop_$path"))
+        private fun create(path: String): ResourceKey<LootTable> = create(HiiragiCoreAPI.id(path))
+
+        @JvmStatic
+        private fun create(id: ResourceLocation): ResourceKey<LootTable> = Registries.LOOT_TABLE.createKey(id.withPath { "drop_$it" })
     }
 
     protected val fortune: Holder<Enchantment> by lazy { provider.holderOrThrow(Enchantments.FORTUNE) }
@@ -51,8 +60,26 @@ sealed class HCGlobalLootProvider(protected val provider: HolderLookup.Provider)
     class BlockProvider(provider: HolderLookup.Provider) : HCGlobalLootProvider(provider) {
         override fun generate(output: BiConsumer<ResourceKey<LootTable>, LootTable.Builder>) {
             val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
-            // Drops Deep Steel Scrap from Reinforced Deepslate
-            val deepSteelScrap: ItemLike = contents.getItemOrThrow(CommonTagPrefixes.SCRAP, HCMaterialKeys.DEEP_STEEL)
+            // Drops Ominous Metal Rod from Spawners
+            val ominousMetalRod: ItemLike = contents.getItemOrThrow(CommonTagPrefixes.ROD, HCMaterialKeys.OMINOUS_METAL)
+            output.accept(
+                OMINOUS_METAL_ROD,
+                LootTable
+                    .lootTable()
+                    .withPool(
+                        LootPool
+                            .lootPool()
+                            .add(
+                                LootItem
+                                    .lootTableItem(ominousMetalRod)
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(2f, 6f)))
+                                    .apply(ApplyBonusCount.addUniformBonusCount(fortune))
+                                    .apply(LimitCount.limitCount(IntRange.range(2, 6))),
+                            ),
+                    ),
+            )
+            // Drops Ancient Metal Scrap from Reinforced Deepslate
+            val ancientMetalScrap: ItemLike = contents.getItemOrThrow(CommonTagPrefixes.SCRAP, HCMaterialKeys.ANCIENT_METAL)
             output.accept(
                 DEEP_STEEL_SCRAP,
                 LootTable
@@ -60,11 +87,11 @@ sealed class HCGlobalLootProvider(protected val provider: HolderLookup.Provider)
                     .withPool(
                         LootPool
                             .lootPool()
-                            .setRolls(ConstantValue.exactly(1f))
                             .add(
                                 LootItem
-                                    .lootTableItem(deepSteelScrap)
-                                    .apply(ApplyBonusCount.addOreBonusCount(fortune)),
+                                    .lootTableItem(ancientMetalScrap)
+                                    .apply(ApplyBonusCount.addUniformBonusCount(fortune))
+                                    .apply(LimitCount.limitCount(IntRange.range(1, 4))),
                             ),
                     ),
             )
@@ -83,7 +110,6 @@ sealed class HCGlobalLootProvider(protected val provider: HolderLookup.Provider)
                     .withPool(
                         LootPool
                             .lootPool()
-                            .setRolls(ConstantValue.exactly(1f))
                             .add(
                                 LootItem
                                     .lootTableItem(HCItems.ELDER_HEART)
@@ -104,7 +130,6 @@ sealed class HCGlobalLootProvider(protected val provider: HolderLookup.Provider)
                     .withPool(
                         LootPool
                             .lootPool()
-                            .setRolls(ConstantValue.exactly(1f))
                             .add(LootItem.lootTableItem(HCItems.ETERNAL_UPGRADE)),
                     ),
             )
@@ -116,7 +141,6 @@ sealed class HCGlobalLootProvider(protected val provider: HolderLookup.Provider)
                     .withPool(
                         LootPool
                             .lootPool()
-                            .setRolls(ConstantValue.exactly(1f))
                             .add(LootItem.lootTableItem(HCItems.TRADER_CATALOG)),
                     ),
             )

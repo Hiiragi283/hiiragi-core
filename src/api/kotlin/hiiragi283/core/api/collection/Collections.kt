@@ -23,4 +23,7 @@ fun <T> Collection<T>.randomOrNull(random: RandomSource): T? {
     return this.elementAt(random.nextInt(this.size))
 }
 
+/**
+ * @since 0.9.0
+ */
 inline fun <T> Collection<T>.isEmpty(predicate: (T) -> Boolean): Boolean = this.isEmpty() || this.all(predicate)

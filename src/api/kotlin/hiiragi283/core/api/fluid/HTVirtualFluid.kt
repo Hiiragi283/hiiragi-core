@@ -18,6 +18,10 @@ import net.neoforged.neoforge.common.SoundActions
 import net.neoforged.neoforge.fluids.FluidType
 import java.util.Optional
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.9.0
+ */
 class HTVirtualFluid(private val content: HTFluidContent<*, *, *>) : Fluid() {
     override fun getBucket(): Item = content.getBucket()
 

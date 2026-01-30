@@ -3,6 +3,9 @@ package hiiragi283.core.api.recipe
 import net.minecraft.world.item.crafting.RecipeInput
 import org.apache.commons.lang3.math.Fraction
 
+/**
+ * @since 0.9.0
+ */
 typealias HTViewProcessingRecipe = HTProcessingRecipe<HTViewRecipeInput>
 
 /**

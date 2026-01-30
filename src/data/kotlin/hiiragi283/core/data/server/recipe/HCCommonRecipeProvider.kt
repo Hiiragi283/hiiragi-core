@@ -59,8 +59,8 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         }
         // Reinforced Deepslate
         HTShapedRecipeBuilder.create(output) {
-            pattern("ABA")
-            define('A') += CommonTagPrefixes.PLATE to HCMaterialKeys.DEEP_STEEL
+            hollow4()
+            define('A') += CommonTagPrefixes.PLATE to HCMaterialKeys.ANCIENT_METAL
             define('B') += Items.DEEPSLATE
             resultStack += Items.REINFORCED_DEEPSLATE
         }
