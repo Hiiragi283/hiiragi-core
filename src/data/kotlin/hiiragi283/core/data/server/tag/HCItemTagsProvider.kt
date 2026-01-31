@@ -105,8 +105,5 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
             .addItem(Items.GHAST_TEAR)
             .addItem(Items.PHANTOM_MEMBRANE)
             .addItem(Items.WIND_CHARGE)
-        factory
-            .apply(HiiragiCoreTags.Items.IGNORED_IN_RECIPE_INPUTS)
-            .add(HCItems.SLOT_COVER)
     }
 }

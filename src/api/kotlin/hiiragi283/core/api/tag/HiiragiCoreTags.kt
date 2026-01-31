@@ -41,9 +41,6 @@ object HiiragiCoreTags {
         @JvmField
         val ELDRITCH_PEARL_BINDER: TagKey<Item> = mod("eldritch_pearl_binder")
 
-        @JvmField
-        val IGNORED_IN_RECIPE_INPUTS: TagKey<Item> = mod("ignored_in_recipe_inputs")
-
         @JvmStatic
         private fun common(vararg path: String): TagKey<Item> = Registries.ITEM.createCommonTag(*path)
 

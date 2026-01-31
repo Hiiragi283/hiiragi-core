@@ -30,24 +30,23 @@ object HTShapelessRecipeHelper {
      */
     @JvmStatic
     fun <T : HTResourceType<*>, I : HTIngredient<*, T>> shapelessMatch(ingredients: List<I>, stacks: Map<T, Int>): Map<T, Int> {
-        val ingredients1: MutableList<I> = ingredients.toMutableList()
         val stacks1: MutableMap<T, Int> = stacks.toMutableMap()
+
+        var count = 0
         val resultMap: MutableMap<T, Int> = hashMapOf()
 
-        val iterator: MutableIterator<I> = ingredients1.iterator()
-        while (iterator.hasNext()) {
-            val ingredient: I = iterator.next()
+        ing@for (ingredient: I in ingredients) {
             stack@for ((resource: T, amount: Int) in stacks1) {
                 if (ingredient.test(resource, amount)) {
                     resultMap[resource] = (resultMap[resource] ?: 0) + ingredient.getRequiredAmount()
-                    iterator.remove()
                     stacks1.remove(resource)
-                    break@stack
+                    count++
+                    continue@ing
                 }
-                return mapOf()
             }
+            return mapOf()
         }
-        if (!ingredients1.isEmpty()) return mapOf()
+        if (count != ingredients.size) return mapOf()
         return resultMap
     }
 
