@@ -25,7 +25,6 @@ import hiiragi283.core.api.material.property.setTextureSet
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.item.VanillaEquipmentMaterial
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
@@ -172,7 +171,7 @@ object HCMaterialEventHandler {
         }
         // Pearls
         event.modify(VanillaMaterialKeys.ENDER) {
-            setDefaultPart(Tags.Items.ENDER_PEARLS, HTItemHolderLike.of(Items.ENDER_PEARL))
+            setDefaultPart(HTDefaultPart.Prefixed.PEARL)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(CommonTagPrefixes.DUST)
 
@@ -335,10 +334,7 @@ object HCMaterialEventHandler {
         }
         // Fuels
         event.modify(CommonMaterialKeys.COAL_COKE) {
-            setDefaultPart(
-                HiiragiCoreTags.Items.COAL_COKE,
-                HTItemHolderLike.of(CommonTagPrefixes.FUEL.createId(CommonMaterialKeys.COAL_COKE)),
-            )
+            setDefaultPart(HTDefaultPart.Prefixed.FUEL)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.FUEL)
             put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)

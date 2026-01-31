@@ -1,6 +1,6 @@
 {
   "type": "hiiragi_core:charging",
-  "ingredient": "#c:pearls/ender",
+  "ingredient": "#c:ender_pearls",
   "result": {
     "id": "minecraft:ender_eye"
   }

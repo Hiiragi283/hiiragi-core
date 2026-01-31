@@ -3,6 +3,6 @@
   "ingredient": "minecraft:end_crystal",
   "result": {
     "id": "hiiragi_core:eldritch_pearl",
-    "tag": "c:pearls/eldritch"
+    "tag": "c:eldritch_pearls"
   }
 }

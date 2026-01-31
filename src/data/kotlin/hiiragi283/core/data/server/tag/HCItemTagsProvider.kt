@@ -67,7 +67,6 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
         addMaterial(factory, CommonTagPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE).addItem(Items.NETHERITE_SCRAP)
 
         factory.apply(ItemTags.COALS).add(HCItems.BAMBOO_CHARCOAL)
-        factory.apply(HiiragiCoreTags.Items.COAL_COKE).addTag(CommonTagPrefixes.FUEL, CommonMaterialKeys.COAL_COKE)
     }
 
     //    Tool    //

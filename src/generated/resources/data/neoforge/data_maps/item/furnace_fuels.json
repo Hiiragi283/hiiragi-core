@@ -1,5 +1,8 @@
 {
   "values": {
+    "#c:coal_coke": {
+      "burn_time": 3200
+    },
     "#c:dusts/charcoal": {
       "burn_time": 1600
     },
@@ -14,9 +17,6 @@
     },
     "#c:dusts/wood": {
       "burn_time": 300
-    },
-    "#c:fuels/coal_coke": {
-      "burn_time": 3200
     },
     "#c:gears/wood": {
       "burn_time": 1200

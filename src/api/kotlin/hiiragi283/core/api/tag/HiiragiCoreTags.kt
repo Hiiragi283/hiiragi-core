@@ -25,9 +25,6 @@ object HiiragiCoreTags {
     }
 
     object Items {
-        @JvmField
-        val COAL_COKE: TagKey<Item> = common("coal_coke")
-
         /**
          * @since 0.9.0
          */

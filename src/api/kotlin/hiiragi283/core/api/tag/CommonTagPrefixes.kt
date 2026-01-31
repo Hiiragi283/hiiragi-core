@@ -152,7 +152,7 @@ object CommonTagPrefixes {
     }
 
     @JvmField
-    val FUEL: HTTagPrefix = HTTagPrefix.create("fuel", "fuels", "fuels/%s") {
+    val FUEL: HTTagPrefix = HTTagPrefix.create("fuel", "fuels", "%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_fuel")
     }
 
@@ -185,7 +185,7 @@ object CommonTagPrefixes {
     }
 
     @JvmField
-    val PEARL: HTTagPrefix = HTTagPrefix.create("pearl", "pearls", "pearls/%s") {
+    val PEARL: HTTagPrefix = HTTagPrefix.create("pearl", "pearls", "%s_pearls") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_pearl")
     }
 

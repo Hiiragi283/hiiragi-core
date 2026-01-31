@@ -36,8 +36,7 @@ object HCBlocks {
     //    Misc    //
 
     @JvmField
-    val TEST: HTBasicDeferredBlock<HTTestBlock> =
-        REGISTER.registerSimple("test", copyOf(Blocks.COMMAND_BLOCK), ::HTTestBlock)
+    val TEST: HTBasicDeferredBlock<HTTestBlock> = REGISTER.registerSimple("test", unbreakable(), ::HTTestBlock)
 
     //    Extensions    //
 
@@ -47,4 +46,7 @@ object HCBlocks {
     @JvmStatic
     private fun properties(hardness: Float, resistance: Float = hardness): BlockBehaviour.Properties =
         BlockBehaviour.Properties.of().strength(hardness, resistance)
+
+    @JvmStatic
+    private fun unbreakable(): BlockBehaviour.Properties = properties(-1f, 3600000f)
 }

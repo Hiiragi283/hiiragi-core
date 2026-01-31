@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "A": {
-      "tag": "c:fuels/charcoal"
+      "tag": "c:charcoal"
     },
     "B": {
       "item": "minecraft:charcoal"

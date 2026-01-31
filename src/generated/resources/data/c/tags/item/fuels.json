@@ -1,7 +1,7 @@
 {
   "values": [
-    "#c:fuels/charcoal",
-    "#c:fuels/coal",
-    "#c:fuels/coal_coke"
+    "#c:charcoal",
+    "#c:coal",
+    "#c:coal_coke"
   ]
 }
