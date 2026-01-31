@@ -11,6 +11,7 @@ import hiiragi283.core.client.gui.tooltip.HTClientFluidFilterTooltip
 import hiiragi283.core.client.gui.tooltip.HTClientItemFilterTooltip
 import hiiragi283.core.client.gui.widget.HTFluidWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTItemWidgetRenderer
+import hiiragi283.core.client.gui.widget.HTProgressWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.common.gui.tooltip.HTFluidFilterTooltip
 import hiiragi283.core.common.gui.tooltip.HTItemFilterTooltip
@@ -56,6 +57,7 @@ data object HiiragiCoreClient : HTClientMod() {
         event.register(HCWidgetTypes.FLUID_TANK.get(), HTFluidWidgetRenderer<*>::Tank)
         event.register(HCWidgetTypes.ITEM_SLOT.get(), HTItemWidgetRenderer<*>::SlotRenderer)
         event.register(HCWidgetTypes.ITEM_STACK.get(), HTItemWidgetRenderer<*>::StackRenderer)
+        event.register(HCWidgetTypes.PROGRESS.get(), ::HTProgressWidgetRenderer)
     }
 
     override fun registerItemColors(event: RegisterColorHandlersEvent.Item) {
@@ -84,8 +86,10 @@ data object HiiragiCoreClient : HTClientMod() {
         event.dull(HCFluids.MEAT, Color(0x993333))
 
         event.molten(HCFluids.MOLTEN_GLASS, Color(0xe6e6e6))
+
         event.molten(HCFluids.MOLTEN_PLASTIC, Color(0xa0cfb5))
         event.molten(HCFluids.MOLTEN_RUBBER, Color(0x453945))
+
         event.molten(HCFluids.MOLTEN_CRIMSON_CRYSTAL, Color(0x993333))
         event.molten(HCFluids.MOLTEN_WARPED_CRYSTAL, Color(0x339999))
         event.molten(HCFluids.MOLTEN_ELDRITCH, Color(0x6633cc))

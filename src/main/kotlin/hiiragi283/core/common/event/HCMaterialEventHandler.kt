@@ -126,7 +126,7 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
 
             setName("Quartz", "水晶")
-            setTextureSet("quartz")
+            setTextureSet("quartz", HTMaterialTextureSet.SHINE)
         }
         event.modify(VanillaMaterialKeys.AMETHYST) {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
@@ -193,7 +193,7 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(3, 2))
 
             setName("Copper", "銅")
-            setTextureSet("shine")
+            setTextureSet(HTMaterialTextureSet.SHINE)
         }
         event.modify(VanillaMaterialKeys.IRON) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
@@ -235,7 +235,7 @@ object HCMaterialEventHandler {
             addToolPrefixes(VanillaEquipmentMaterial.NETHERITE, CommonToolTypes.HAMMER)
 
             setName("Netherite", "ネザライト")
-            setTextureSet("dull")
+            setTextureSet(HTMaterialTextureSet.DULL)
         }
         // Crops
         event.modify(VanillaMaterialKeys.WHEAT) {
@@ -267,7 +267,7 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_GLASS))
 
             setName("Glass", "ガラス")
-            setTextureSet("shine")
+            setTextureSet(HTMaterialTextureSet.SHINE)
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("white"))
         }
         event.modify(VanillaMaterialKeys.STONE) {
@@ -275,7 +275,7 @@ object HCMaterialEventHandler {
             addToolPrefixes(VanillaEquipmentMaterial.STONE, CommonToolTypes.HAMMER)
 
             setName("Stone", "石")
-            setTextureSet("dull")
+            setTextureSet(HTMaterialTextureSet.DULL)
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("steel"))
         }
         event.modify(VanillaMaterialKeys.OBSIDIAN) {
@@ -284,7 +284,7 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
 
             setName("Obsidian", "黒曜石")
-            setTextureSet("dull")
+            setTextureSet(HTMaterialTextureSet.DULL)
         }
         event.modify(VanillaMaterialKeys.GUNPOWDER) {
             setDefaultPart(Tags.Items.GUNPOWDERS, HTItemHolderLike.of(Items.GUNPOWDER))
@@ -405,6 +405,7 @@ object HCMaterialEventHandler {
             addExtraOreResult(CommonTagPrefixes.DUST, VanillaMaterialKeys.IRON, 1 / 4f)
 
             setName("Tin", "錫")
+            setTextureSet(HTMaterialTextureSet.DULL)
             addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.RAW, null))
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("white"))
         }
@@ -422,7 +423,16 @@ object HCMaterialEventHandler {
             setTextureSet(HTMaterialTextureSet.SHINE)
         }
         registerMetal(CommonMaterialKeys.PLATINUM, "Platinum", "白金")
-        registerMetal(CommonMaterialKeys.LEAD, "Lead", "鉛")
+        event.modify(CommonMaterialKeys.LEAD) {
+            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
+            addBlockPrefixes(metalBlockSet)
+            addItemPrefixes(metalSet)
+            addExtraOreResult(CommonTagPrefixes.DUST, CommonMaterialKeys.SILVER, 1 / 4f)
+
+            setName("Lead", "鉛")
+            setTextureSet(HTMaterialTextureSet.DULL)
+            addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.RAW, null))
+        }
 
         registerMetal(CommonMaterialKeys.URANIUM, "Uranium", "ウラン")
         registerMetal(CommonMaterialKeys.PLUTONIUM, "Plutonium", "プルトニウム")
@@ -583,7 +593,7 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
 
             setName("Ancient Metal", "古代の金属")
-            setTextureSet("dull")
+            setTextureSet(HTMaterialTextureSet.DULL)
         }
         event.modify(HCMaterialKeys.OMINOUS_METAL) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)

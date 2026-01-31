@@ -109,15 +109,14 @@ object CommonMaterialKeys {
 
     //    Alloys    //
 
+    // Iron
     @JvmStatic
     val STEEL: HTMaterialKey = create("steel")
 
     @JvmStatic
     val INVAR: HTMaterialKey = create("invar")
 
-    @JvmStatic
-    val ELECTRUM: HTMaterialKey = create("electrum")
-
+    // Copper
     @JvmStatic
     val BRASS: HTMaterialKey = create("brass")
 
@@ -127,6 +126,11 @@ object CommonMaterialKeys {
     @JvmStatic
     val BRONZE: HTMaterialKey = create("bronze")
 
+    // Silver
+    @JvmStatic
+    val ELECTRUM: HTMaterialKey = create("electrum")
+
+    // Thermal
     @JvmStatic
     val SIGNALUM: HTMaterialKey = create("signalum")
 

@@ -59,7 +59,7 @@ class HTRegisterRuntimeRecipeEvent(val recipeManager: RecipeManager, val context
 
     fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): Holder<T>? = getHolderResult(tagKey)
         .mapOrElse(identity()) { message: Component ->
-            if (printLog) HiiragiCoreAPI.LOGGER.warn(message.string)
+            if (printLog) HiiragiCoreAPI.LOGGER.debug(message.string)
             null
         }
 

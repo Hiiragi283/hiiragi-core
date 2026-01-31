@@ -96,7 +96,11 @@ fun HTPropertyMap.Mutable.addCustomLoot(prefix: HTTagPrefix, factory: HTBlockLoo
     this.computeIfAbsent(HTMaterialPropertyKeys.BLOCK_LOOT) { it.plus(prefix to factory) }
 }
 
-fun HTPropertyMap.Mutable.setTextureSet(name: String, parent: HTMaterialTextureSet = HTMaterialTextureSet.DEFAULT) {
+fun HTPropertyMap.Mutable.setTextureSet(name: String) {
+    this.setTextureSet(HTMaterialTextureSet(name, HTMaterialTextureSet.DEFAULT))
+}
+
+fun HTPropertyMap.Mutable.setTextureSet(name: String, parent: HTMaterialTextureSet) {
     this.setTextureSet(HTMaterialTextureSet(name, parent))
 }
 

@@ -1,8 +1,12 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.common.fluid.HTEndFluidType
 import hiiragi283.core.common.fluid.HTNetherFluidType
+import hiiragi283.core.common.material.CommonMaterialKeys
+import hiiragi283.core.common.material.HCMaterialKeys
+import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.common.registry.register.HTFluidContentRegister
 import hiiragi283.core.common.registry.register.HTSimpleFluidContent
 import hiiragi283.core.common.registry.register.HTVirtualFluidContent
@@ -51,33 +55,36 @@ object HCFluids {
 
     //    Material    //
 
+    @JvmStatic
+    private fun molten(
+        key: HTMaterialKey,
+        temp: Int = 1300,
+        typeFactory: (FluidType.Properties) -> FluidType = ::FluidType,
+    ): HTSimpleFluidContent = REGISTER.registerFlowing("molten_${key.asMaterialId().path}", molten().temperature(temp), typeFactory)
+
     // Vanilla
     @JvmField
-    val MOLTEN_GLASS: HTSimpleFluidContent = REGISTER.registerSimpleFlowing("molten_glass", molten())
+    val MOLTEN_GLASS: HTSimpleFluidContent = molten(VanillaMaterialKeys.GLASS)
 
     // Common
     @JvmField
-    val MOLTEN_PLASTIC: HTSimpleFluidContent = REGISTER.registerSimpleFlowing("molten_plastic", molten())
+    val MOLTEN_PLASTIC: HTSimpleFluidContent = molten(CommonMaterialKeys.PLASTIC)
 
     @JvmField
-    val MOLTEN_RUBBER: HTSimpleFluidContent = REGISTER.registerSimpleFlowing("molten_rubber", molten())
+    val MOLTEN_RUBBER: HTSimpleFluidContent = molten(CommonMaterialKeys.RUBBER)
 
     // Hiiragi Core
     @JvmField
-    val MOLTEN_CRIMSON_CRYSTAL: HTSimpleFluidContent =
-        REGISTER.registerFlowing("molten_crimson_crystal", molten().temperature(2300), ::HTNetherFluidType)
+    val MOLTEN_CRIMSON_CRYSTAL: HTSimpleFluidContent = molten(HCMaterialKeys.CRIMSON_CRYSTAL, 2300, ::HTNetherFluidType)
 
     @JvmField
-    val MOLTEN_WARPED_CRYSTAL: HTSimpleFluidContent =
-        REGISTER.registerFlowing("molten_warped_crystal", molten().temperature(1300), ::HTNetherFluidType)
+    val MOLTEN_WARPED_CRYSTAL: HTSimpleFluidContent = molten(HCMaterialKeys.WARPED_CRYSTAL, typeFactory = ::HTNetherFluidType)
 
     @JvmField
-    val MOLTEN_ELDRITCH: HTSimpleFluidContent =
-        REGISTER.registerFlowing("molten_eldritch", molten().temperature(1300), ::HTEndFluidType)
+    val MOLTEN_ELDRITCH: HTSimpleFluidContent = molten(HCMaterialKeys.ELDRITCH, typeFactory = ::HTEndFluidType)
 
     @JvmField
-    val MOLTEN_OMINOUS_METAL: HTSimpleFluidContent =
-        REGISTER.registerSimpleFlowing("molten_ominous_metal", molten().temperature(1300))
+    val MOLTEN_OMINOUS_METAL: HTSimpleFluidContent = molten(HCMaterialKeys.OMINOUS_METAL)
 
     //    Extensions    //
 
