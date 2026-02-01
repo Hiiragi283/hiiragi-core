@@ -30,6 +30,7 @@ import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCFluids
+import hiiragi283.core.setup.HCToolMaterials
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount
@@ -441,6 +442,7 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(alloySet.plus(partSet).plus(CommonTagPrefixes.WIRE))
+            addToolPrefixes(HCToolMaterials.STEEL, CommonToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER))
 
             setName("Steel", "鋼鉄")
             setTextureSet(HTMaterialTextureSet.SHINE)
@@ -460,6 +462,7 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(alloySet.plus(partSet))
+            addToolPrefixes(HCToolMaterials.BRONZE, CommonToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER))
 
             setName("Bronze", "青銅")
         }
@@ -590,6 +593,7 @@ object HCMaterialEventHandler {
                 CommonTagPrefixes.PLATE,
                 CommonTagPrefixes.ROD,
             )
+            addToolPrefixes(HCToolMaterials.ANCIENT_METAL, CommonToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER))
             put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
 
             setName("Ancient Metal", "古代の金属")
@@ -608,6 +612,7 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(alloySet.plus(partSet))
+            addToolPrefixes(HCToolMaterials.AZURE_STEEL, CommonToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER))
 
             setName("Azure Steel", "紺鉄")
         }

@@ -7,11 +7,14 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.data.HTDataGenContext
+import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialTextureSet
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
+import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import net.minecraft.Util
@@ -88,18 +91,18 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
     protected fun material(
         output: BiConsumer<ResourceLocation, NativeImage>,
         pathPrefix: String,
-        table: HTTable<HTTagPrefix, HTMaterialKey, *>,
+        table: HTTable<HTTagPrefix, HTMaterialKey, out HTIdLike>,
     ) {
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HiiragiCoreAccess.INSTANCE.materialManager) {
             if (key.namespace != modId) continue
             val paletteId: ResourceLocation = (propertyMap[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId())
             val palette: List<Color> = HTTextureUtil.getPalette(paletteId).getOrNull() ?: continue
             val textureSet: HTMaterialTextureSet = propertyMap.getOrDefault(HTMaterialPropertyKeys.TEXTURE_SET)
-            for (prefix: HTTagPrefix in table.column(key).keys) {
+            for ((prefix: HTTagPrefix, element: HTIdLike) in table.column(key)) {
                 val template: NativeImage = getTextureResult(textureSet, prefix).getOrNull() ?: continue
                 copyAndApplyColor(
                     output,
-                    prefix.createId(key).withPrefix("$pathPrefix/"),
+                    element.getId().withPrefix("$pathPrefix/"),
                     palette,
                     template,
                 )
@@ -114,6 +117,22 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
             val parentSet: HTMaterialTextureSet = textureSet.parent ?: throw throwable
             getTextureResult(parentSet, prefix).getOrThrow()
         }
+
+    /**
+     * @since 0.9.0
+     */
+    protected fun tool(output: BiConsumer<ResourceLocation, NativeImage>) {
+        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HiiragiCoreAccess.INSTANCE.materialManager) {
+            if (key.namespace != modId) continue
+            val paletteId: ResourceLocation = (propertyMap[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId())
+            val palette: List<Color> = HTTextureUtil.getPalette(paletteId).getOrNull() ?: continue
+            for ((toolType: HTToolType, item: HTIdLike) in HiiragiCoreAccess.INSTANCE.materialContents.getToolMap(key)) {
+                val templateId: ResourceLocation = HiiragiCoreAPI.id("tool_set", toolType.name)
+                val template: NativeImage = HTTextureUtil.getTexture(templateId).getOrNull() ?: continue
+                copyAndApplyColor(output, item.itemId, palette, template)
+            }
+        }
+    }
 
     protected fun copyAndApplyColor(
         output: BiConsumer<ResourceLocation, NativeImage>,

@@ -164,11 +164,11 @@ abstract class HTEmiRecipe<RECIPE : Any>(
 
     final override fun getId(): ResourceLocation = id
 
-    final override fun getInputs(): List<EmiIngredient> = inputs
+    final override fun getInputs(): List<EmiIngredient> = inputs.filterNot(EmiIngredient::isEmpty)
 
-    final override fun getCatalysts(): List<EmiIngredient> = catalysts
+    final override fun getCatalysts(): List<EmiIngredient> = catalysts.filterNot(EmiIngredient::isEmpty)
 
-    final override fun getOutputs(): List<EmiStack> = outputs
+    final override fun getOutputs(): List<EmiStack> = outputs.filterNot(EmiStack::isEmpty)
 
     final override fun getDisplayWidth(): Int = bounds.width
 
@@ -254,7 +254,7 @@ abstract class HTEmiRecipe<RECIPE : Any>(
         capacity: Int = validateCapacity(ingredient.amount),
     ): SlotWidget {
         addTexture(HTEmiTextures.TANK_TEXTURES[type]!!, x, y)
-        val slot: SlotWidget = addTank(ingredient, x, y, 16, 18 * 3 - 2, capacity).drawBack(false)
+        val slot: SlotWidget = addTank(ingredient, x, y, 18, 18 * 3, capacity).drawBack(false)
         if (type == HTBackgroundType.NONE) {
             slot.catalyst(true)
         }

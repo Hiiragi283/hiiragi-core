@@ -24,6 +24,8 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
             layeredItem(item, HTConst.MINECRAFT.toId(HTConst.ITEM, "iron_ingot"), item.itemId)
         }
 
+        registerTools()
+
         registerBuckets()
     }
 

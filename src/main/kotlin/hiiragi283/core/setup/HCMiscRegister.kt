@@ -101,7 +101,7 @@ internal object HCMiscRegister {
                         .getOrDefault(HTMaterialPropertyKeys.TOOL_PREFIXES)
                         .map { toolType: HTToolType ->
                             val id: ResourceLocation = toolType.createId(key)
-                            helper.register(id, toolType.toolFactory.createTool(material, Item.Properties()))
+                            helper.register(id, toolType.createTool(material))
                             Triple(toolType, key, HTItemHolderLike.of(id))
                         }
                 }

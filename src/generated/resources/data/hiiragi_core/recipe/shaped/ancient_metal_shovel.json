@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "c:ingots/ancient_metal"
+    },
+    "B": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "A",
+    "B",
+    "B"
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:ancient_metal_shovel"
+  }
+}

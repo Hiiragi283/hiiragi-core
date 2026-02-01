@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.TieredItem
+import net.minecraft.world.item.component.ItemAttributeModifiers
 
 /**
  * 素材ツールの定義を担うクラスです。
@@ -16,7 +17,8 @@ import net.minecraft.world.item.TieredItem
 class HTToolType(
     val name: String,
     private val idPattern: String,
-    val toolFactory: ToolFactory,
+    private val toolFactory: (HTToolMaterial, Item.Properties) -> TieredItem,
+    private val attributeFactory: (HTToolMaterial) -> ItemAttributeModifiers?,
     val langPattern: HTLangPatternProvider,
     val toolTags: List<TagKey<Item>>,
 ) : Comparable<HTToolType> {
@@ -34,13 +36,16 @@ class HTToolType(
 
     fun createId(material: HTMaterialLike): ResourceLocation = material.asMaterialId().withPath { idPattern.replace("%s", it) }
 
-    override fun compareTo(other: HTToolType): Int = this.name.compareTo(other.name)
-
-    //    ToolFactory    //
-
-    fun interface ToolFactory {
-        fun createTool(material: HTToolMaterial, properties: Item.Properties): TieredItem
+    fun createTool(material: HTToolMaterial): TieredItem {
+        val properties = Item.Properties()
+        val attribute: ItemAttributeModifiers? = attributeFactory(material)
+        if (attribute != null) {
+            properties.attributes(attribute)
+        }
+        return toolFactory(material, properties)
     }
+
+    override fun compareTo(other: HTToolType): Int = this.name.compareTo(other.name)
 
     //    Builder    //
 
@@ -52,11 +57,12 @@ class HTToolType(
     class Builder(private val name: String) {
         var idPattern = "%s_$name"
         lateinit var factory: (HTToolMaterial, Item.Properties) -> TieredItem
+        var attribute: (HTToolMaterial) -> ItemAttributeModifiers? =  { null }
         lateinit var langPattern: HTLangPatternProvider
         val toolTags: MutableList<TagKey<Item>> = mutableListOf()
 
         fun build(): HTToolType {
-            val toolType = HTToolType(name, idPattern, factory, langPattern, toolTags)
+            val toolType = HTToolType(name, idPattern, factory, attribute, langPattern, toolTags)
             check(instances.put(name, toolType) == null) { "Duplicated tool type: $name" }
             return toolType
         }

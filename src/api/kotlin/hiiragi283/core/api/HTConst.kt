@@ -103,6 +103,8 @@ data object HTConst {
     const val TIME = "time"
 
     const val INGREDIENT = "ingredient"
+    const val ITEM_INGREDIENT = "item_ingredient"
+    const val FLUID_INGREDIENT = "fluid_ingredient"
 
     const val CATALYST = "catalyst"
 
@@ -112,4 +114,5 @@ data object HTConst {
     const val FLUID_RESULT = "fluid_result"
 
     const val CHANCE = "chance"
+    const val EXTRA_RESULT = "extra_result"
 }

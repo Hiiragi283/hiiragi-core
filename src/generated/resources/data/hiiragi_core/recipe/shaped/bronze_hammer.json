@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "c:ingots/bronze"
+    },
+    "B": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    " B ",
+    " B ",
+    "ABA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:bronze_hammer"
+  }
+}

@@ -11,4 +11,9 @@ import org.apache.commons.lang3.math.Fraction
 abstract class HTProcessingRecipeBuilder(prefix: String) : HTRecipeBuilder(prefix) {
     var time: Int = 20 * 10
     var exp: Fraction = Fraction.ZERO
+
+    /**
+     * @since 0.9.0
+     */
+    fun subParameters(): HTProcessingRecipe.SubParameters = HTProcessingRecipe.SubParameters(time, exp)
 }

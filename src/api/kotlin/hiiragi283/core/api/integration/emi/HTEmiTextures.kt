@@ -11,8 +11,8 @@ object HTEmiTextures {
 
     @JvmField
     val TANK_TEXTURES: Map<HTBackgroundType, EmiTexture> = HTBackgroundType.entries.associateWith { type: HTBackgroundType ->
-        val width = 16
-        val height: Int = 18 * 3 - 2
+        val width = 18
+        val height: Int = 18 * 3
         EmiTexture(type.tankTexture, 0, 0, width, height, width, height, width, height)
     }
 }

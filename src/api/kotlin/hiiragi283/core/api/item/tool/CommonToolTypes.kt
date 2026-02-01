@@ -6,7 +6,6 @@ import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.AxeItem
 import net.minecraft.world.item.DiggerItem
 import net.minecraft.world.item.HoeItem
-import net.minecraft.world.item.Item
 import net.minecraft.world.item.PickaxeItem
 import net.minecraft.world.item.ShovelItem
 import net.minecraft.world.item.SwordItem
@@ -16,13 +15,9 @@ object CommonToolTypes {
 
     @JvmField
     val SWORD: HTToolType = HTToolType.create("sword") {
-        factory = { material: HTToolMaterial, properties: Item.Properties ->
-            SwordItem(
-                material,
-                properties.attributes(
-                    SwordItem.createAttributes(material, material.getSwordDamage(), material.getSwordAttackSpeed()),
-                ),
-            )
+        factory = ::SwordItem
+        attribute = { material: HTToolMaterial ->
+            SwordItem.createAttributes(material, material.getSwordDamage(), material.getSwordAttackSpeed())
         }
         langPattern = HTLangPatternProvider.create("%s Sword", "%sの剣")
         toolTags += ItemTags.SWORDS
@@ -30,13 +25,9 @@ object CommonToolTypes {
 
     @JvmField
     val SHOVEL: HTToolType = HTToolType.create("shovel") {
-        factory = { material: HTToolMaterial, properties: Item.Properties ->
-            ShovelItem(
-                material,
-                properties.attributes(
-                    DiggerItem.createAttributes(material, material.getShovelDamage(), material.getShovelAttackSpeed()),
-                ),
-            )
+        factory = ::ShovelItem
+        attribute = { material: HTToolMaterial ->
+            DiggerItem.createAttributes(material, material.getShovelDamage(), material.getShovelAttackSpeed())
         }
         langPattern = HTLangPatternProvider.create("%s Shovel", "%sのシャベル")
         toolTags += ItemTags.SHOVELS
@@ -44,13 +35,9 @@ object CommonToolTypes {
 
     @JvmField
     val PICKAXE: HTToolType = HTToolType.create("pickaxe") {
-        factory = { material: HTToolMaterial, properties: Item.Properties ->
-            PickaxeItem(
-                material,
-                properties.attributes(
-                    DiggerItem.createAttributes(material, material.getPickaxeDamage(), material.getPickaxeAttackSpeed()),
-                ),
-            )
+        factory = ::PickaxeItem
+        attribute = { material: HTToolMaterial ->
+            DiggerItem.createAttributes(material, material.getPickaxeDamage(), material.getPickaxeAttackSpeed())
         }
         langPattern = HTLangPatternProvider.create("%s Pickaxe", "%sのツルハシ")
         toolTags += ItemTags.PICKAXES
@@ -58,13 +45,9 @@ object CommonToolTypes {
 
     @JvmField
     val AXE: HTToolType = HTToolType.create("axe") {
-        factory = { material: HTToolMaterial, properties: Item.Properties ->
-            AxeItem(
-                material,
-                properties.attributes(
-                    DiggerItem.createAttributes(material, material.getAxeDamage(), material.getAxeAttackSpeed()),
-                ),
-            )
+        factory = ::AxeItem
+        attribute = { material: HTToolMaterial ->
+            DiggerItem.createAttributes(material, material.getAxeDamage(), material.getAxeAttackSpeed())
         }
         langPattern = HTLangPatternProvider.create("%s Axe", "%sの斧")
         toolTags += ItemTags.AXES
@@ -72,13 +55,9 @@ object CommonToolTypes {
 
     @JvmField
     val HOE: HTToolType = HTToolType.create("hoe") {
-        factory = { material: HTToolMaterial, properties: Item.Properties ->
-            HoeItem(
-                material,
-                properties.attributes(
-                    DiggerItem.createAttributes(material, material.getHoeDamage(), material.getHoeAttackSpeed()),
-                ),
-            )
+        factory = ::HoeItem
+        attribute = { material: HTToolMaterial ->
+            DiggerItem.createAttributes(material, material.getHoeDamage(), material.getHoeAttackSpeed())
         }
         langPattern = HTLangPatternProvider.create("%s Hoe", "%sのクワ")
         toolTags += ItemTags.HOES

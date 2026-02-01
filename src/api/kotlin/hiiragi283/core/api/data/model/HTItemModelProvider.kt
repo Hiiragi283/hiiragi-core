@@ -108,4 +108,15 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
             }
         }
     }
+
+    /**
+     * 素材ツールのモデルを追加します。
+     * @since 0.9.0
+     */
+    protected fun registerTools() {
+        for (item: HTIdLike in contents.getAllTools()) {
+            if (item.namespace != modid) continue
+            existTexture(item, ::basicItem)
+        }
+    }
 }

@@ -1,9 +1,13 @@
 {
   "values": [
+    "hiiragi_core:ancient_metal_hammer",
+    "hiiragi_core:azure_steel_hammer",
+    "hiiragi_core:bronze_hammer",
     "hiiragi_core:diamond_hammer",
     "hiiragi_core:gold_hammer",
     "hiiragi_core:iron_hammer",
     "hiiragi_core:netherite_hammer",
+    "hiiragi_core:steel_hammer",
     "hiiragi_core:stone_hammer"
   ]
 }
