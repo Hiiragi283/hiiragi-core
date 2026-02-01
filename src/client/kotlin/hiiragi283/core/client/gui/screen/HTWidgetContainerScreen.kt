@@ -1,5 +1,6 @@
 package hiiragi283.core.client.gui.screen
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.gui.HTBounds
@@ -21,7 +22,7 @@ class HTWidgetContainerScreen(menu: HTWidgetContainerMenu, inventory: Inventory,
     HTContainerScreen<HTWidgetContainerMenu>(menu, inventory, title) {
     companion object {
         @JvmField
-        val BACKGROUND: ResourceLocation = HiiragiCoreAPI.id("textures", "gui", "background.png")
+        val BACKGROUND: ResourceLocation = HiiragiCoreAPI.id(HTConst.TEXTURES, HTConst.GUI, "background.png")
     }
 
     override fun init() {

@@ -1,7 +1,5 @@
 package hiiragi283.core.common.gui.menu
 
-import com.google.common.collect.HashMultimap
-import com.google.common.collect.Multimap
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTSlotHelper
 import hiiragi283.core.api.gui.sync.HTChangeType
@@ -42,7 +40,7 @@ abstract class HTContainerMenu<C>(
             val stackIn: ItemStack = slotIn.item
             result = stackIn.copy()
             when (index) {
-                in slotMap.values() -> {
+                in widgetSlots -> {
                     if (!moveItemStackTo(stackIn, hotBarSlots.min(), inventorySlots.max() + 1, false)) {
                         return ItemStack.EMPTY
                     }
@@ -73,13 +71,9 @@ abstract class HTContainerMenu<C>(
     }
 
     private fun moveToInventory(stack: ItemStack, inventorySlots: Iterable<Int>): Boolean {
-        val inputSlots: Collection<Int> = slotMap[HTContainerItemSlot.Type.INPUT]
-        val bothSlots: Collection<Int> = slotMap[HTContainerItemSlot.Type.BOTH]
         if (!moveItemStackTo(stack, inputSlots, false)) {
-            if (!moveItemStackTo(stack, bothSlots, false)) {
-                if (!moveItemStackTo(stack, inventorySlots, false)) {
-                    return false
-                }
+            if (!moveItemStackTo(stack, inventorySlots, false)) {
+                return false
             }
         }
         return true
@@ -88,13 +82,17 @@ abstract class HTContainerMenu<C>(
     //    Extensions    //
 
     private var slotCount: Int = 0
-    private val slotMap: Multimap<HTContainerItemSlot.Type, Int> = HashMultimap.create()
+    private val widgetSlots: MutableList<Int> = mutableListOf()
+    private val inputSlots: MutableList<Int> = mutableListOf()
     private val hotBarSlots: MutableList<Int> = mutableListOf()
     private val inventorySlots: MutableList<Int> = mutableListOf()
 
     override fun addSlot(slot: Slot): Slot {
         if (slot is HTContainerItemSlot) {
-            slotMap.put(slot.slotType, slotCount)
+            widgetSlots += slotCount
+            if (slot.slotType.isInput) {
+                inputSlots += slotCount
+            }
             HiiragiCoreAPI.LOGGER.info("${slot.slotType} slot: $slotCount")
         }
         slotCount++

@@ -1,7 +1,12 @@
 {
   "values": [
+    "#c:raw_materials/bauxite",
+    "#c:raw_materials/cinnabar",
     "#c:raw_materials/iridium",
     "#c:raw_materials/lead",
+    "#c:raw_materials/salt",
+    "#c:raw_materials/saltpeter",
+    "#c:raw_materials/sulfur",
     "#c:raw_materials/tin",
     "#c:raw_materials/zinc"
   ]

@@ -29,7 +29,7 @@ abstract class HTRecipeHandler<INPUT : Any, RECIPE : Any> {
      * @return `0..1`の範囲に制限された[Fraction]型の値
      */
     fun getProgress(isActive: Boolean): Fraction = when (isActive) {
-        true -> fixedFraction(progress, maxProgress)
+        true -> fixedFraction(progress, maxProgress, true)
         false -> Fraction.ZERO
     }
 

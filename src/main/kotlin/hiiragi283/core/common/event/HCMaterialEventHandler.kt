@@ -35,8 +35,6 @@ import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCToolMaterials
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
-import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.common.Tags
@@ -50,7 +48,7 @@ object HCMaterialEventHandler {
         hiiragiCore(event)
     }
 
-    private val metalBlockSet: Set<HTTagPrefix> = buildSet {
+    private val materialBlockSet: Set<HTTagPrefix> = buildSet {
         addAll(CommonTagPrefixes.ORES)
         add(CommonTagPrefixes.RAW_BLOCK)
         add(CommonTagPrefixes.BLOCK)
@@ -323,24 +321,17 @@ object HCMaterialEventHandler {
             }
         }
 
-        val oresAndBlock: Set<HTTagPrefix> = metalBlockSet.minus(CommonTagPrefixes.RAW_BLOCK)
-
         fun registerMineral(key: HTMaterialKey, enName: String, jaName: String) {
             event.modify(key) {
                 setDefaultPart(HTDefaultPart.Prefixed.DUST)
-                addBlockPrefixes(oresAndBlock)
-                addItemPrefixes(CommonTagPrefixes.DUST)
+                addBlockPrefixes(CommonTagPrefixes.ORES.plus(CommonTagPrefixes.RAW_BLOCK))
+                addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.RAW)
+                put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
                 put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(3))
 
                 setName(enName, jaName)
                 setTextureSet("mineral", HTMaterialTextureSet.DULL)
-                addCustomOreLoot(
-                    HTBlockLootFactory.createOre(
-                        CommonTagPrefixes.DUST,
-                        UniformGenerator.between(4f, 5f),
-                        ApplyBonusCount::addUniformBonusCount,
-                    ),
-                )
+                addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.RAW))
             }
         }
         // Fuels
@@ -364,13 +355,13 @@ object HCMaterialEventHandler {
         // Gems
         event.modify(CommonMaterialKeys.CINNABAR) {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
-            addBlockPrefixes(oresAndBlock)
-            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEM)
+            addBlockPrefixes(materialBlockSet)
+            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.RAW, CommonTagPrefixes.GEM)
             put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(3))
 
             setName("Cinnabar", "辰砂")
             setTextureSet("lapis")
-            addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.GEM, null))
+            addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.RAW))
         }
 
         event.modify(CommonMaterialKeys.FLUORITE) {
@@ -399,25 +390,25 @@ object HCMaterialEventHandler {
         registerMetal(CommonMaterialKeys.NICKEL, "Nickel", "ニッケル")
         event.modify(CommonMaterialKeys.ZINC) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
-            addBlockPrefixes(metalBlockSet)
+            addBlockPrefixes(materialBlockSet)
             addItemPrefixes(metalSet)
 
             setName("Zinc", "亜鉛")
             setTextureSet(HTMaterialTextureSet.DULL)
-            addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.RAW, null))
+            addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.RAW))
         }
 
         registerMetal(CommonMaterialKeys.PALLADIUM, "Palladium", "パラジウム")
         registerMetal(CommonMaterialKeys.SILVER, "Silver", "銀")
         event.modify(CommonMaterialKeys.TIN) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
-            addBlockPrefixes(metalBlockSet)
+            addBlockPrefixes(materialBlockSet)
             addItemPrefixes(metalSet)
             addExtraOreResult(CommonTagPrefixes.DUST, VanillaMaterialKeys.IRON, 1 / 4f)
 
             setName("Tin", "錫")
             setTextureSet(HTMaterialTextureSet.DULL)
-            addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.RAW, null))
+            addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.RAW))
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("white"))
         }
         registerMetal(CommonMaterialKeys.ANTIMONY, "Antimony", "アンチモン")
@@ -436,13 +427,13 @@ object HCMaterialEventHandler {
         registerMetal(CommonMaterialKeys.PLATINUM, "Platinum", "白金")
         event.modify(CommonMaterialKeys.LEAD) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
-            addBlockPrefixes(metalBlockSet)
+            addBlockPrefixes(materialBlockSet)
             addItemPrefixes(metalSet)
             addExtraOreResult(CommonTagPrefixes.DUST, CommonMaterialKeys.SILVER, 1 / 4f)
 
             setName("Lead", "鉛")
             setTextureSet(HTMaterialTextureSet.DULL)
-            addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.RAW, null))
+            addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.RAW))
         }
 
         registerMetal(CommonMaterialKeys.URANIUM, "Uranium", "ウラン")

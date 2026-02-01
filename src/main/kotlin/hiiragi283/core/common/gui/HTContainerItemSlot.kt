@@ -1,5 +1,6 @@
 package hiiragi283.core.common.gui
 
+import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.item.HTItemResourceType
@@ -30,7 +31,7 @@ open class HTContainerItemSlot(
     y: Int,
     private val stackSetter: Consumer<ItemStack>,
     private val manualFilter: BiPredicate<HTItemResourceType, HTStorageAccess>,
-    val slotType: Type,
+    val slotType: HTBackgroundType,
 ) : Slot(emptyContainer, 0, x, y) {
     companion object {
         @JvmStatic
@@ -41,7 +42,7 @@ open class HTContainerItemSlot(
             slot: SLOT,
             x: Int,
             y: Int,
-            slotType: Type,
+            slotType: HTBackgroundType,
         ): HTContainerItemSlot = HTContainerItemSlot(
             slot,
             x,
@@ -115,10 +116,4 @@ open class HTContainerItemSlot(
     }
 
     protected open fun allowPartialRemoval(): Boolean = true
-
-    enum class Type {
-        INPUT,
-        OUTPUT,
-        BOTH,
-    }
 }

@@ -10,6 +10,7 @@ import dev.emi.emi.api.widget.SlotWidget
 import dev.emi.emi.api.widget.TextureWidget
 import dev.emi.emi.api.widget.WidgetHolder
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.fraction
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
@@ -17,10 +18,12 @@ import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.text.HTCommonTranslation
+import hiiragi283.core.api.times
 import net.minecraft.client.gui.components.events.AbstractContainerEventHandler
 import net.minecraft.client.gui.components.events.GuiEventListener
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.RecipeHolder
+import org.apache.commons.lang3.math.Fraction
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[EmiRecipe]の抽象クラスです。
@@ -190,11 +193,21 @@ abstract class HTEmiRecipe<RECIPE : Any>(
     /**
      * 指定した[インデックス][index]から座標を返します。
      */
-    fun getPosition(index: Double): Int = (index * 18).toInt()
+    fun getPosition(index: Float): Int = getPosition(fraction(index))
 
-    fun WidgetHolder.addArrow(x: Int = getPosition(3.5), y: Int = getPosition(1)): TextureWidget = addFillingArrow(x, y, 2000)
+    /**
+     * 指定した[インデックス][index]から座標を返します。
+     */
+    fun getPosition(index: Double): Int = getPosition(fraction(index))
 
-    fun WidgetHolder.addArrow(time: Int, x: Int = getPosition(3.5), y: Int = getPosition(1)): TextureWidget =
+    /**
+     * 指定した[インデックス][index]から座標を返します。
+     */
+    fun getPosition(index: Fraction): Int = (index * 18).toInt()
+
+    fun WidgetHolder.addArrow(x: Int = getPosition(3), y: Int = getPosition(1)): TextureWidget = addFillingArrow(x, y, 2000)
+
+    fun WidgetHolder.addArrow(time: Int, x: Int = getPosition(3), y: Int = getPosition(1)): TextureWidget =
         addFillingArrow(x, y, 50 * time).tooltipText(listOf(HTCommonTranslation.SECONDS.translate(time / 20.0f, time)))
 
     fun WidgetHolder.addBurning(x: Int, y: Int, time: Int) {

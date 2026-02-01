@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "c:raw_materials/saltpeter"
+    },
+    "B": {
+      "item": "hiiragi_core:raw_saltpeter"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "ABA",
+    "AAA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:raw_saltpeter_block"
+  }
+}

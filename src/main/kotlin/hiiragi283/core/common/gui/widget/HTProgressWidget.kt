@@ -1,10 +1,12 @@
 package hiiragi283.core.common.gui.widget
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTBounds
+import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.widget.HTAbstractWidget
+import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.gui.widget.HTWidgetType
-import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.gui.sync.HTFractionSyncSlot
 import hiiragi283.core.setup.HCWidgetTypes
 import net.minecraft.resources.ResourceLocation
@@ -19,20 +21,21 @@ class HTProgressWidget : HTAbstractWidget {
             y,
             24,
             16,
-        ).setTexture(HTConst.MINECRAFT.toId("textures", "gui", "sprites", "container", "furnace", "burn_progress.png"))
+        ).setTexture(HiiragiCoreAPI.id(HTConst.TEXTURES, HTConst.GUI, "arrow"))
     }
 
-    private val syncSlot: HTFractionSyncSlot
+    private val fractionSlot: HTFractionSyncSlot
 
     constructor(syncSlot: HTFractionSyncSlot, bounds: HTBounds) : super(bounds) {
-        this.syncSlot = syncSlot
+        this.fractionSlot = syncSlot
     }
 
     constructor(syncSlot: HTFractionSyncSlot, x: Int, y: Int, width: Int, height: Int) : super(x, y, width, height) {
-        this.syncSlot = syncSlot
+        this.fractionSlot = syncSlot
     }
 
     var texture: ResourceLocation? = null
+    val backgroundTexture: ResourceLocation? get() = texture?.withSuffix("_background")
 
     fun setTexture(texture: ResourceLocation): HTProgressWidget = apply { this.texture = texture }
 
@@ -40,7 +43,11 @@ class HTProgressWidget : HTAbstractWidget {
 
     fun setDirection(direction: HTFillDirection): HTProgressWidget = apply { this.fillDirection = direction }
 
-    fun getProgress(): Fraction = syncSlot.amountAsFraction
+    fun getProgress(): Fraction = fractionSlot.amountAsFraction
 
     override fun getType(): HTWidgetType<HTProgressWidget> = HCWidgetTypes.PROGRESS.get()
+
+    override fun setupHolder(widgetHolder: HTWidgetHolder) {
+        widgetHolder.track(fractionSlot, HTSyncType.S2C)
+    }
 }

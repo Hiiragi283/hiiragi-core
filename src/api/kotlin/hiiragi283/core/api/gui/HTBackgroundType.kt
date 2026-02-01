@@ -1,5 +1,6 @@
 package hiiragi283.core.api.gui
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import net.minecraft.resources.ResourceLocation
 
@@ -17,6 +18,6 @@ enum class HTBackgroundType(val isInput: Boolean, val isOutput: Boolean) {
     NONE(false, false),
     ;
 
-    val slotTexture: ResourceLocation = HiiragiCoreAPI.id("textures", "gui", "slot", "${name.lowercase()}.png")
-    val tankTexture: ResourceLocation = HiiragiCoreAPI.id("textures", "gui", "tank", "${name.lowercase()}.png")
+    val slotTexture: ResourceLocation = HiiragiCoreAPI.id(HTConst.TEXTURES, HTConst.GUI, HTConst.SLOT, "${name.lowercase()}.png")
+    val tankTexture: ResourceLocation = HiiragiCoreAPI.id(HTConst.TEXTURES, HTConst.GUI, HTConst.TANK, "${name.lowercase()}.png")
 }

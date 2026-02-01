@@ -38,7 +38,7 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
     constructor(modid: String, context: HTDataGenContext) : this(modid, context.output, context.fileHelper)
 
     private val pathProvider: PackOutput.PathProvider =
-        packOutput.createPathProvider(PackOutput.Target.RESOURCE_PACK, "textures")
+        packOutput.createPathProvider(PackOutput.Target.RESOURCE_PACK, HTConst.TEXTURES)
 
     override fun run(output: CachedOutput): CompletableFuture<*> {
         HTTextureUtil.TEMPLATE_PALETTE.forEachIndexed { index: Int, color: Color ->

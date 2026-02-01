@@ -23,6 +23,14 @@ import org.joml.Vector3f
 @OnlyIn(Dist.CLIENT)
 object HTSpriteRenderHelper {
     @JvmStatic
+    fun fixTextureId(id: ResourceLocation): ResourceLocation = id.withPath { path: String ->
+        when {
+            path.endsWith(".png") -> path
+            else -> "$path.png"
+        }
+    }
+
+    @JvmStatic
     inline fun setShaderColor(guiGraphics: GuiGraphics, color: Int, action: () -> Unit) {
         val red: Float = FastColor.ARGB32.red(color) / 255f
         val green: Float = FastColor.ARGB32.green(color) / 255f
@@ -35,6 +43,7 @@ object HTSpriteRenderHelper {
 
     //    Renderer    //
 
+    @JvmStatic
     fun blit(
         guiGraphics: GuiGraphics,
         texture: ResourceLocation,
@@ -45,8 +54,35 @@ object HTSpriteRenderHelper {
         textureHeight: Int = bounds.height,
     ) {
         val (x: Int, y: Int, width: Int, height: Int) = bounds
-        guiGraphics.blit(
+        blit(
+            guiGraphics,
             texture,
+            x,
+            y,
+            width,
+            height,
+            uOffset,
+            vOffset,
+            textureWidth,
+            textureHeight,
+        )
+    }
+
+    @JvmStatic
+    fun blit(
+        guiGraphics: GuiGraphics,
+        texture: ResourceLocation,
+        x: Int,
+        y: Int,
+        width: Int,
+        height: Int,
+        uOffset: Float = 0f,
+        vOffset: Float = 0f,
+        textureWidth: Int = width,
+        textureHeight: Int = height,
+    ) {
+        guiGraphics.blit(
+            fixTextureId(texture),
             x,
             y,
             uOffset,

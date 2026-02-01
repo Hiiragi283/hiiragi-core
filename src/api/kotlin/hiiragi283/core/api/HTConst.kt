@@ -21,6 +21,9 @@ data object HTConst {
 
     const val FULL_BRIGHT: Int = LightTexture.FULL_BRIGHT
 
+    const val TEXTURES = "textures"
+    const val GUI = "gui"
+
     //    Fluid    //
 
     /**

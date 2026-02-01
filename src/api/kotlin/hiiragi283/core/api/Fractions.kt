@@ -35,9 +35,18 @@ operator fun Fraction.component2(): Int = this.denominator
 // Int
 fun fraction(numerator: Int, denominator: Int): Fraction = Fraction.getFraction(numerator, denominator)
 
-fun fixedFraction(amount: Int, capacity: Int): Fraction {
+/**
+ * 指定した引数から[分数][Fraction]の新しいインスタンスを作成します。
+ * @param amount 分子となる値
+ * @param capacity 分母となる値
+ * @param loop `true`の場合は[amount]を[capacity]で割った剰余を，`false`の場合は[capacity]以下の値を分子に使用します
+ */
+fun fixedFraction(amount: Int, capacity: Int, loop: Boolean = false): Fraction {
     if (capacity <= 0) return Fraction.ZERO
-    val fixedAmount: Int = minOf(amount, capacity)
+    val fixedAmount: Int = when (loop) {
+        true -> amount % capacity
+        false -> minOf(amount, capacity)
+    }
     return fraction(fixedAmount, capacity)
 }
 

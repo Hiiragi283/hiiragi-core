@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "c:raw_materials/sulfur"
+    },
+    "B": {
+      "item": "hiiragi_core:raw_sulfur"
+    }
+  },
+  "pattern": [
+    "AAA",
+    "ABA",
+    "AAA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:raw_sulfur_block"
+  }
+}

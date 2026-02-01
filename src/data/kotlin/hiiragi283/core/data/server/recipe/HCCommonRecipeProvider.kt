@@ -134,6 +134,19 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
 
     @JvmStatic
     private fun utilities() {
+        // Ancient Upgrade
+        HTShapedRecipeBuilder.create(output) {
+            pattern(
+                "ABA",
+                "ACA",
+                "AAA",
+            )
+            define('A') += CommonTagPrefixes.GEM to VanillaMaterialKeys.DIAMOND
+            define('B') += HCItems.ANCIENT_UPGRADE
+            define('C') += Items.DEEPSLATE
+            resultStack += HCItems.ANCIENT_UPGRADE
+        }
+
         // Slot Cover
         HTStonecuttingRecipeBuilder.create(output) {
             ingredient += Items.SMOOTH_STONE_SLAB

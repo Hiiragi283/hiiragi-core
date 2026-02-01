@@ -3,6 +3,7 @@ package hiiragi283.core.common.data.recipe
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
+import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
@@ -16,6 +17,7 @@ import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.property.getScaledAmount
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
@@ -51,7 +53,11 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
             rawToBlock(key, propertyMap)
 
             smeltDustToIngot(key, propertyMap)
-            smeltRawToIngot(key, propertyMap)
+
+            for (prefix: HTTagPrefix in CommonTagPrefixes.ORES) {
+                smeltOreToBase(prefix, key, propertyMap)
+            }
+            smeltOreToBase(CommonTagPrefixes.RAW, key, propertyMap)
 
             baseToGear(key, propertyMap)
             ingotToNugget(key, propertyMap)
@@ -119,19 +125,27 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
         }
     }
 
-    private fun smeltRawToIngot(key: HTMaterialKey, propertyMap: HTPropertyMap) {
+    private fun smeltOreToBase(prefix: HTTagPrefix, key: HTMaterialKey, propertyMap: HTPropertyMap) {
         if (!propertyMap.getOrDefault(HTMaterialPropertyKeys.CAN_BE_SMELTED)) return
-        val raw: HTItemHolderLike<*> = getItem(CommonTagPrefixes.RAW, key) ?: return
+        val ore: HTItemHolderLike<*> = getBlock(prefix, key) ?: getItem(prefix, key) ?: return
         val smeltedMaterial: HTMaterialKey = propertyMap[HTMaterialPropertyKeys.SMELTED_TO] ?: key
-        val ingot: HTItemHolderLike<*> = getItem(CommonTagPrefixes.INGOT, smeltedMaterial) ?: return
+        val smeltedPropertyMap: HTPropertyMap = materialManager[smeltedMaterial] ?: return
+        val base: HTItemHolderLike<*> = smeltedPropertyMap
+            .getDefaultPart()
+            ?.getItem(smeltedMaterial)
+            ?: return
         // 精錬の前後がどちらもバニラ由来の場合はパス
-        if (raw.namespace == HTConst.MINECRAFT && ingot.namespace == HTConst.MINECRAFT) return
+        if (ore.namespace == HTConst.MINECRAFT && base.namespace == HTConst.MINECRAFT) return
         // Smelting & Blasting
+        val resultCount: Int = maxOf(
+            1,
+            prefix.getScaledAmount(fraction(1, 2), smeltedPropertyMap).toInt(),
+        )
         HTCookingRecipeBuilder.smeltingAndBlasting(output) {
-            ingredient += raw
-            resultStack += ingot
+            ingredient += ore
+            resultStack += base to resultCount
             exp = 0.7f
-            recipeId suffix "_from_raw"
+            recipeId suffix "_from_${prefix.name}"
         }
     }
 

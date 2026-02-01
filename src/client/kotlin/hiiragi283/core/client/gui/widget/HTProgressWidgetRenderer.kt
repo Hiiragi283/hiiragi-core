@@ -6,6 +6,7 @@ import hiiragi283.core.api.minus
 import hiiragi283.core.api.times
 import hiiragi283.core.common.gui.widget.HTFillDirection
 import hiiragi283.core.common.gui.widget.HTProgressWidget
+import hiiragi283.core.util.HTSpriteRenderHelper
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.api.distmarker.Dist
@@ -21,6 +22,9 @@ class HTProgressWidgetRenderer(widget: HTProgressWidget) : HTAbstractWidgetRende
         mouseY: Int,
         partialTick: Float,
     ) {
+        val background: ResourceLocation = widget.backgroundTexture ?: return
+        HTSpriteRenderHelper.blit(guiGraphics, background, bounds)
+
         val texture: ResourceLocation = widget.texture ?: return
 
         val progress: Fraction = widget.getProgress()
@@ -49,16 +53,15 @@ class HTProgressWidgetRenderer(widget: HTProgressWidget) : HTAbstractWidgetRende
             HTFillDirection.RIGHT_TO_LEFT -> height
         }.toInt()
 
-        guiGraphics.blit(
+        HTSpriteRenderHelper.blit(
+            guiGraphics,
             texture,
             startX,
             startY,
-            0f,
-            0f,
             widthFixed,
             heightFixed,
-            width,
-            height,
+            textureWidth = width,
+            textureHeight = height,
         )
     }
 }

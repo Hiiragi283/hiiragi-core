@@ -6,12 +6,10 @@ import hiiragi283.core.api.fixedFraction
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.gui.HTSlotHelper
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
-import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
 import hiiragi283.core.api.storage.item.HTItemSlot
-import hiiragi283.core.common.gui.HTContainerItemSlot
 import hiiragi283.core.common.gui.sync.HTFractionSyncSlot
 import hiiragi283.core.common.gui.sync.HTItemSyncSlot
 import hiiragi283.core.common.gui.widget.HTFillDirection
@@ -74,27 +72,26 @@ class HTTestBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HCBloc
                 slot1,
                 HTSlotHelper.getSlotPosX(3),
                 HTSlotHelper.getSlotPosY(i),
-                HTContainerItemSlot.Type.INPUT,
-            ).setBackground(HTBackgroundType.INPUT)
+                HTBackgroundType.INPUT,
+            )
         }
         widgetHolder += HTItemSlotWidget(
             HTItemSyncSlot(slot2),
             HTSlotHelper.getSlotPosX(2),
             HTSlotHelper.getSlotPosY(2),
-        ).setBackground(HTBackgroundType.OUTPUT)
+            HTBackgroundType.OUTPUT,
+        )
 
         // progress
-        widgetHolder += HTProgressWidget(
-            HTFractionSyncSlot.create(
-                { fixedFraction(ticks % 20 * 5, 20 * 5) },
-                { fraction: Fraction -> ticks },
-            ),
-            HTSlotHelper.getSlotPosX(4),
-            HTSlotHelper.getSlotPosY(1),
-            24,
-            16,
-        ).setTexture(HTConst.MINECRAFT.toId("textures", "gui", "sprites", "container", "furnace", "burn_progress.png"))
-            .setDirection(HTFillDirection.END_TO_TOP)
+        widgetHolder += HTProgressWidget
+            .createArrow(
+                HTFractionSyncSlot.create(
+                    { fixedFraction(ticks, 20 * 5, true) },
+                    { fraction: Fraction -> ticks },
+                ),
+                HTSlotHelper.getSlotPosX(4),
+                HTSlotHelper.getSlotPosY(1),
+            ).setDirection(HTFillDirection.END_TO_TOP)
     }
 
     override fun onUpdateServer(level: ServerLevel, pos: BlockPos, state: BlockState): Boolean = true

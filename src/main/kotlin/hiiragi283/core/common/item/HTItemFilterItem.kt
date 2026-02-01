@@ -1,5 +1,6 @@
 package hiiragi283.core.common.item
 
+import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.gui.HTSlotHelper
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.common.capability.HTItemCapabilities
@@ -45,6 +46,7 @@ class HTItemFilterItem(properties: Properties) :
                     HTItemSyncSlot(slot),
                     HTSlotHelper.getSlotPosX(index),
                     HTSlotHelper.getSlotPosY(1),
+                    HTBackgroundType.NONE,
                 ).setGhost()
             }.forEach(widgetHolder::addWidget)
     }

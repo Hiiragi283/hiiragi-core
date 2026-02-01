@@ -1,6 +1,7 @@
 package hiiragi283.core.api.data.texture
 
 import com.mojang.blaze3d.platform.NativeImage
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import net.minecraft.data.DataProvider
 import net.minecraft.resources.ResourceLocation
@@ -63,7 +64,7 @@ object HTTextureUtil {
      * 指定した[id]から既存のテクスチャを取得します。
      */
     @JvmStatic
-    fun getTexture(id: ResourceLocation): Result<NativeImage> = runCatching(getResourcePath(id, "textures", "png")::inputStream)
+    fun getTexture(id: ResourceLocation): Result<NativeImage> = runCatching(getResourcePath(id, HTConst.TEXTURES, "png")::inputStream)
         .mapCatching(NativeImage::read)
         .onFailure { DataProvider.LOGGER.warn("Failed to load image: $id") }
 
