@@ -62,6 +62,9 @@ interface HiiragiCoreAccess {
     fun getItemOrVanilla(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
         materialContents.getItem(prefix, material) ?: vanillaContents.getItem(prefix, material)
 
+    /**
+     * @since 0.9.0
+     */
     fun getToolOrVanilla(toolType: HTToolType, material: HTMaterialLike): HTItemHolderLike<*>? =
         materialContents.getTool(toolType, material) ?: vanillaContents.getTool(toolType, material)
 

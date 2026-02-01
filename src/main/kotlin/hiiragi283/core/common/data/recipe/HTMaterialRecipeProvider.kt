@@ -189,6 +189,7 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager) {
             val inputTag: TagKey<Item> = propertyMap.getDefaultPart(key) ?: continue
             for ((toolType: HTToolType, tool: HTItemHolderLike<*>) in HiiragiCoreAccess.INSTANCE.materialContents.getToolMap(key)) {
+                if (tool.namespace != modId) continue
                 val smithingProperty: HTSmithingRecipeProperty? = propertyMap[HTMaterialPropertyKeys.SMITHING_RECIPE]
                 if (smithingProperty != null) {
                     // Smithing

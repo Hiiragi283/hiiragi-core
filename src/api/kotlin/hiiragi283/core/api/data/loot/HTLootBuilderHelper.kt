@@ -23,6 +23,12 @@ import net.minecraft.world.level.storage.loot.predicates.MatchTool
  * @see net.minecraft.data.loot.BlockLootSubProvider
  */
 class HTLootBuilderHelper(provider: HolderLookup.Provider) {
+    /**
+     * 指定した[conditionBuilder]に基づいて分岐する[ルートテーブル][LootTable.Builder]を作成します。
+     * @param block [conditionBuilder]の条件を満たす時にドロップするブロック
+     * @param conditionBuilder ルートテーブルの分岐の定義
+     * @param alternativeBuilder [conditionBuilder]の条件を満たさない時に適応されるドロップ
+     */
     fun createSelfDropDispatchTable(
         block: Block,
         conditionBuilder: LootItemCondition.Builder,
@@ -42,10 +48,16 @@ class HTLootBuilderHelper(provider: HolderLookup.Provider) {
 
     //    Fortune    //
 
+    /**
+     * 幸運エンチャントのインスタンス
+     */
     val fortune: Holder<Enchantment> by lazy { provider.holderOrThrow(Enchantments.FORTUNE) }
 
     //    Silk Touch    //
 
+    /**
+     * ツールにシルクタッチが付与されているかの判定
+     */
     val hasSilkTouch: LootItemCondition.Builder = MatchTool.toolMatches(
         ItemPredicate.Builder
             .item()
@@ -62,8 +74,16 @@ class HTLootBuilderHelper(provider: HolderLookup.Provider) {
             ),
     )
 
+    /**
+     * ツールにシルクタッチが付与されていないかの判定
+     */
     val doesNotHaveSilkTouch: LootItemCondition.Builder = hasSilkTouch.invert()
 
+    /**
+     * シルクタッチの有無で分岐する[ルートテーブル][LootTable.Builder]を作成します。
+     * @param block シルクタッチ時にドロップするブロック
+     * @param alternativeBuilder 非シルクタッチ時に適応されるドロップ
+     */
     fun createSilkTouchDispatchTable(block: Block, alternativeBuilder: LootPoolEntryContainer.Builder<*>): LootTable.Builder =
         createSelfDropDispatchTable(block, hasSilkTouch, alternativeBuilder)
 }

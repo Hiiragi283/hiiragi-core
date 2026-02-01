@@ -17,6 +17,7 @@ import net.minecraft.core.registries.Registries
 import net.minecraft.data.loot.BlockLootSubProvider
 import net.minecraft.world.flag.FeatureFlags
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.storage.loot.BuiltInLootTables
 import net.minecraft.world.level.storage.loot.LootTable
 
 /**
@@ -31,6 +32,7 @@ abstract class HTBlockLootTableProvider(protected val modId: String, registries:
         .listElements()
         .filter { holder: Holder.Reference<Block> -> holder.toLike().namespace == modId }
         .map(Holder<Block>::value)
+        .filter { block: Block -> block.lootTable != BuiltInLootTables.EMPTY }
         .toList()
 
     //    Extensions    //

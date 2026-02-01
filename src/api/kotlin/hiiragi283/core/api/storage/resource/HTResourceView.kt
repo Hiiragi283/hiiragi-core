@@ -47,6 +47,9 @@ interface HTResourceView<RESOURCE : HTResourceType<*>> : HTAmountView {
 
     //    Mutable    //
 
+    /**
+     * @since 0.9.0
+     */
     abstract class Mutable<RESOURCE : HTResourceType<*>> :
         HTAmountView.Mutable(),
         HTResourceView<RESOURCE> {
