@@ -20,6 +20,7 @@ object CommonToolTypes {
             SwordItem.createAttributes(material, material.getSwordDamage(), material.getSwordAttackSpeed())
         }
         langPattern = HTLangPatternProvider.create("%s Sword", "%sの剣")
+        recipePattern = listOf("A", "A", "B")
         toolTags += ItemTags.SWORDS
     }
 
@@ -30,6 +31,7 @@ object CommonToolTypes {
             DiggerItem.createAttributes(material, material.getShovelDamage(), material.getShovelAttackSpeed())
         }
         langPattern = HTLangPatternProvider.create("%s Shovel", "%sのシャベル")
+        recipePattern = listOf("A", "B", "B")
         toolTags += ItemTags.SHOVELS
     }
 
@@ -40,6 +42,7 @@ object CommonToolTypes {
             DiggerItem.createAttributes(material, material.getPickaxeDamage(), material.getPickaxeAttackSpeed())
         }
         langPattern = HTLangPatternProvider.create("%s Pickaxe", "%sのツルハシ")
+        recipePattern = listOf("AAA", " B ", " B ")
         toolTags += ItemTags.PICKAXES
     }
 
@@ -50,6 +53,7 @@ object CommonToolTypes {
             DiggerItem.createAttributes(material, material.getAxeDamage(), material.getAxeAttackSpeed())
         }
         langPattern = HTLangPatternProvider.create("%s Axe", "%sの斧")
+        recipePattern = listOf("AA", "AB", " B")
         toolTags += ItemTags.AXES
     }
 
@@ -60,6 +64,7 @@ object CommonToolTypes {
             DiggerItem.createAttributes(material, material.getHoeDamage(), material.getHoeAttackSpeed())
         }
         langPattern = HTLangPatternProvider.create("%s Hoe", "%sのクワ")
+        recipePattern = listOf("AA", " B", " B")
         toolTags += ItemTags.HOES
     }
 
@@ -72,6 +77,7 @@ object CommonToolTypes {
     val HAMMER: HTToolType = HTToolType.create("hammer") {
         factory = ::HTCraftingToolItem
         langPattern = HTLangPatternProvider.create("%s Hammer", "%sのハンマー")
+        recipePattern = listOf(" B ", " B ", "ABA")
         toolTags += HiiragiCoreTags.Items.HAMMERS
         toolTags += HiiragiCoreTags.Items.TOOLS_HAMMER
     }

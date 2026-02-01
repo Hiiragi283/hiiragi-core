@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "tag": "c:ingots/ancient_metal"
+  },
+  "base": {
+    "item": "minecraft:diamond_pickaxe"
+  },
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:ancient_metal_pickaxe"
+  },
+  "template": {
+    "item": "hiiragi_core:ancient_upgrade"
+  }
+}

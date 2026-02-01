@@ -12,6 +12,7 @@ import hiiragi283.core.api.material.property.HTFluidMaterialProperty
 import hiiragi283.core.api.material.property.HTFormingRecipeFlag
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialTextureSet
+import hiiragi283.core.api.material.property.HTSmithingRecipeProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
 import hiiragi283.core.api.material.property.addBlockPrefixes
 import hiiragi283.core.api.material.property.addCustomName
@@ -30,6 +31,7 @@ import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCFluids
+import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCToolMaterials
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
@@ -237,6 +239,14 @@ object HCMaterialEventHandler {
 
             setName("Netherite", "ネザライト")
             setTextureSet(HTMaterialTextureSet.DULL)
+            put(
+                HTMaterialPropertyKeys.SMITHING_RECIPE,
+                HTSmithingRecipeProperty(
+                    HTItemHolderLike.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
+                    VanillaMaterialKeys.DIAMOND,
+                    false,
+                ),
+            )
         }
         // Crops
         event.modify(VanillaMaterialKeys.WHEAT) {
@@ -598,6 +608,14 @@ object HCMaterialEventHandler {
 
             setName("Ancient Metal", "古代の金属")
             setTextureSet(HTMaterialTextureSet.DULL)
+            put(
+                HTMaterialPropertyKeys.SMITHING_RECIPE,
+                HTSmithingRecipeProperty(
+                    HCItems.ANCIENT_UPGRADE,
+                    VanillaMaterialKeys.DIAMOND,
+                    false,
+                ),
+            )
         }
         event.modify(HCMaterialKeys.OMINOUS_METAL) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)

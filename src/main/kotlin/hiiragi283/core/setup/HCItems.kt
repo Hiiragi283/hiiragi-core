@@ -1,6 +1,7 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.item.HTSmithingTemplateItem
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.capability.HTItemCapabilities
 import hiiragi283.core.common.item.HTAlmightyPickaxe
@@ -18,6 +19,7 @@ import hiiragi283.core.common.storage.item.HTComponentItemSlot
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.food.FoodConstants
 import net.minecraft.world.food.FoodProperties
 import net.minecraft.world.level.ItemLike
@@ -75,6 +77,17 @@ object HCItems {
 
     //    Tools   //
 
+    @JvmField
+    val ANCIENT_UPGRADE: HTSimpleDeferredItem = REGISTER.register("ancient_upgrade") { _: ResourceLocation ->
+        HTSmithingTemplateItem(
+            HCTranslation.ANCIENT_UPGRADE_APPLIES_TO,
+            HCTranslation.ANCIENT_UPGRADE_INGREDIENTS,
+            HCTranslation.ANCIENT_UPGRADE_DESC,
+            HCTranslation.ANCIENT_UPGRADE_BASE_SLOT_DESCRIPTION,
+            HCTranslation.ANCIENT_UPGRADE_ADDITIONS_SLOT_DESCRIPTION,
+        )
+    }
+
     //    Utilities    //
 
     @JvmField
@@ -125,6 +138,7 @@ object HCItems {
         }
 
         modify(AMBROSIA, HCDataComponents.DESCRIPTION, HCTranslation.AMBROSIA)
+        modify(ANCIENT_UPGRADE, HCDataComponents.DESCRIPTION, HCTranslation.ANCIENT_UPGRADE)
         modify(ELDER_HEART, HCDataComponents.DESCRIPTION, HCTranslation.ELDER_HEART)
         modify(ELDRITCH_EGG, HCDataComponents.DESCRIPTION, HCTranslation.ELDRITCH_EGG)
         modify(ETERNAL_UPGRADE, HCDataComponents.DESCRIPTION, HCTranslation.ETERNAL_UPGRADE)

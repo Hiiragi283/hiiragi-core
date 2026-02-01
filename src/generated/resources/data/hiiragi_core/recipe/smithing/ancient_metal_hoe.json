@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "tag": "c:ingots/ancient_metal"
+  },
+  "base": {
+    "item": "minecraft:diamond_hoe"
+  },
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:ancient_metal_hoe"
+  },
+  "template": {
+    "item": "hiiragi_core:ancient_upgrade"
+  }
+}

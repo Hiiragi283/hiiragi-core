@@ -1,0 +1,33 @@
+package hiiragi283.core.api.item
+
+import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HTDefaultColor
+import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.text.HTTranslation
+import net.minecraft.world.item.SmithingTemplateItem
+
+open class HTSmithingTemplateItem(
+    appliesTo: HTTranslation,
+    ingredients: HTTranslation,
+    description: HTTranslation,
+    baseSlot: HTTranslation,
+    additionsSlot: HTTranslation,
+) : SmithingTemplateItem(
+        appliesTo.translateColored(HTDefaultColor.BLUE),
+        ingredients.translateColored(HTDefaultColor.BLUE),
+        description.translateColored(HTDefaultColor.GRAY),
+        baseSlot.translate(),
+        additionsSlot.translate(),
+        listOf(
+            "item/empty_armor_slot_helmet",
+            "item/empty_armor_slot_chestplate",
+            "item/empty_armor_slot_leggings",
+            "item/empty_armor_slot_boots",
+            "item/empty_slot_hoe",
+            "item/empty_slot_axe",
+            "item/empty_slot_sword",
+            "item/empty_slot_shovel",
+            "item/empty_slot_pickaxe",
+        ).map(HTConst.MINECRAFT::toId),
+        listOf(HTConst.MINECRAFT.toId("item", "empty_slot_ingot")),
+    )

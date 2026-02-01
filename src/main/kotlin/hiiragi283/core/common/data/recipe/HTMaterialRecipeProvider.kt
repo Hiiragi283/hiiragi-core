@@ -3,12 +3,12 @@ package hiiragi283.core.common.data.recipe
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
+import hiiragi283.core.api.material.property.HTSmithingRecipeProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
 import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.api.property.HTPropertyMap
@@ -19,8 +19,10 @@ import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTSmithingRecipeBuilder
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
+import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
 
 class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId) {
@@ -136,13 +138,28 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
     private fun baseToGear(key: HTMaterialKey, propertyMap: HTPropertyMap) {
         val inputTag: TagKey<Item> = propertyMap.getDefaultPart(key) ?: return
         val gear: HTItemHolderLike<*> = getItem(CommonTagPrefixes.GEAR, key) ?: return
-        // Shaped
-        HTShapedRecipeBuilder.create(output) {
-            hollow4()
-            define('A') += inputTag
-            define('B') += Tags.Items.NUGGETS_IRON
-            resultStack += gear
-            recipeId replace key.getId().withSuffix("/gear")
+
+        val smithingProperty: HTSmithingRecipeProperty? = propertyMap[HTMaterialPropertyKeys.SMITHING_RECIPE]
+        if (smithingProperty != null) {
+            // Smithing
+            val (template: HTItemHolderLike<*>, base: HTMaterialKey) = smithingProperty
+            HTSmithingRecipeBuilder.create(output) {
+                this.template += template
+                this.base += CommonTagPrefixes.GEAR.itemTagKey(base)
+                this.addition += inputTag
+                this.resultStack += gear
+                recipeId replace key.getId().withSuffix("/gear")
+            }
+        }
+        if (smithingProperty?.allowCrafting ?: true) {
+            // Shaped
+            HTShapedRecipeBuilder.create(output) {
+                hollow4()
+                define('A') += inputTag
+                define('B') += Tags.Items.NUGGETS_IRON
+                resultStack += gear
+                recipeId replace key.getId().withSuffix("/gear")
+            }
         }
     }
 
@@ -170,83 +187,28 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
 
     private fun tool() {
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager) {
-            val defaultPart: HTDefaultPart = propertyMap.getDefaultPart() ?: continue
-            // Sword
-            getTool(CommonToolTypes.SWORD, key)?.let { sword ->
-                HTShapedRecipeBuilder.create(output) {
-                    pattern(
-                        "A",
-                        "A",
-                        "B",
-                    )
-                    define('A') += defaultPart.getTag(key)
-                    define('B') += Tags.Items.RODS_WOODEN
-                    resultStack += sword
+            val inputTag: TagKey<Item> = propertyMap.getDefaultPart(key) ?: continue
+            for ((toolType: HTToolType, tool: HTItemHolderLike<*>) in HiiragiCoreAccess.INSTANCE.materialContents.getToolMap(key)) {
+                val smithingProperty: HTSmithingRecipeProperty? = propertyMap[HTMaterialPropertyKeys.SMITHING_RECIPE]
+                if (smithingProperty != null) {
+                    // Smithing
+                    val (template: HTItemHolderLike<*>, base: HTMaterialKey) = smithingProperty
+                    val baseTool: ItemLike = HiiragiCoreAccess.INSTANCE.getToolOrVanilla(toolType, base) ?: continue
+                    HTSmithingRecipeBuilder.create(output) {
+                        this.template += template
+                        this.base += baseTool
+                        this.addition += inputTag
+                        this.resultStack += tool
+                    }
                 }
-            }
-            // Shovel
-            getTool(CommonToolTypes.SHOVEL, key)?.let { shovel ->
-                HTShapedRecipeBuilder.create(output) {
-                    pattern(
-                        "A",
-                        "B",
-                        "B",
-                    )
-                    define('A') += defaultPart.getTag(key)
-                    define('B') += Tags.Items.RODS_WOODEN
-                    resultStack += shovel
-                }
-            }
-            // Pickaxe
-            getTool(CommonToolTypes.PICKAXE, key)?.let { pickaxe ->
-                HTShapedRecipeBuilder.create(output) {
-                    pattern(
-                        "AAA",
-                        " B ",
-                        " B ",
-                    )
-                    define('A') += defaultPart.getTag(key)
-                    define('B') += Tags.Items.RODS_WOODEN
-                    resultStack += pickaxe
-                }
-            }
-            // Axe
-            getTool(CommonToolTypes.AXE, key)?.let { axe ->
-                HTShapedRecipeBuilder.create(output) {
-                    pattern(
-                        "AA",
-                        "AB",
-                        " B",
-                    )
-                    define('A') += defaultPart.getTag(key)
-                    define('B') += Tags.Items.RODS_WOODEN
-                    resultStack += axe
-                }
-            }
-            // Hoe
-            getTool(CommonToolTypes.HOE, key)?.let { hoe ->
-                HTShapedRecipeBuilder.create(output) {
-                    pattern(
-                        "AA",
-                        " B",
-                        " B",
-                    )
-                    define('A') += defaultPart.getTag(key)
-                    define('B') += Tags.Items.RODS_WOODEN
-                    resultStack += hoe
-                }
-            }
-            // Hammer
-            getTool(CommonToolTypes.HAMMER, key)?.let { hammer ->
-                HTShapedRecipeBuilder.create(output) {
-                    pattern(
-                        " B ",
-                        " B ",
-                        "ABA",
-                    )
-                    define('A') += defaultPart.getTag(key)
-                    define('B') += Tags.Items.RODS_WOODEN
-                    resultStack += hammer
+                if (smithingProperty?.allowCrafting ?: true) {
+                    // Shaped
+                    HTShapedRecipeBuilder.create(output) {
+                        pattern(toolType.recipePattern)
+                        define('A') += inputTag
+                        define('B') += Tags.Items.RODS_WOODEN
+                        resultStack += tool
+                    }
                 }
             }
         }

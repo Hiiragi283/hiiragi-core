@@ -22,6 +22,8 @@ class HCGlobalLootModifierProvider(context: HTDataGenContext) : HTGlobalLootModi
         // Drops Ancient Metal Scrap from Reinforced Deepslate
         add(HCGlobalLootProvider.DEEP_STEEL_SCRAP, builder(Blocks.REINFORCED_DEEPSLATE).build())
 
+        // Drops Ancient Upgrade from Warden
+        add(HCGlobalLootProvider.ANCIENT_UPGRADE, builder(EntityType.WARDEN).build())
         // Drops Elder Heart from Elder Guardian
         add(HCGlobalLootProvider.ELDER_HEART, builder(EntityType.ELDER_GUARDIAN).build())
         // Drops Eternal Upgrade from Ender Dragon

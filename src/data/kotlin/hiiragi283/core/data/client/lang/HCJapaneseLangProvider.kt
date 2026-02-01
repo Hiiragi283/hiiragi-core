@@ -54,6 +54,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.WITHER_DOLL, "ウィザー人形")
         add(HCItems.WITHER_STAR, "ウィザースター")
 
+        add(HCItems.ANCIENT_UPGRADE, "古代の鍛冶型")
+
         add(HCItems.ELDRITCH_EGG, "異質な卵")
         add(HCItems.FLUID_FILTER, "液体フィルター")
         add(HCItems.ITEM_FILTER, "アイテムフィルター")
@@ -120,6 +122,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCTranslation.MIN_POWER, "最小の爆発力: %s")
 
         add(HCTranslation.AMBROSIA, "いつでも食べられる上，いくら食べてもなくなりません！")
+        add(HCTranslation.ANCIENT_UPGRADE, "ウォーデンからドロップします。")
         add(HCTranslation.ELDER_HEART, "エルダーガーディアンからドロップします。")
         add(HCTranslation.ELDRITCH_EGG, "右クリックで投げることができ，モブに当たるとスポーンエッグになります。")
         add(HCTranslation.ETERNAL_UPGRADE, "エンダードラゴンからドロップします。")
@@ -128,6 +131,12 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCTranslation.TRADER_CATALOG, "行商人からドロップします。右クリックで行商人との取引を行えます。")
 
         add(HCTranslation.ETERNAL_PICKAXE, "永遠のツルハシ")
+
+        add(HCTranslation.ANCIENT_UPGRADE_APPLIES_TO, "ダイヤモンドの装備品")
+        add(HCTranslation.ANCIENT_UPGRADE_INGREDIENTS, "古代の金属インゴット")
+        add(HCTranslation.ANCIENT_UPGRADE_DESC, "古代強化")
+        add(HCTranslation.ANCIENT_UPGRADE_BASE_SLOT_DESCRIPTION, "ダイヤモンド製の防具，武器，道具を置いてください")
+        add(HCTranslation.ANCIENT_UPGRADE_ADDITIONS_SLOT_DESCRIPTION, "古代の金属インゴットを置いてください")
 
         add(HCTranslation.ETERNAL_UPGRADE_APPLIES_TO, "任意の装備品")
         add(HCTranslation.ETERNAL_UPGRADE_INGREDIENTS, "イリジウムインゴット")

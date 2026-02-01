@@ -54,6 +54,8 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.WITHER_DOLL, "Wither Doll")
         add(HCItems.WITHER_STAR, "Wither Star")
 
+        add(HCItems.ANCIENT_UPGRADE, "Ancient Smithing Template")
+
         add(HCItems.ELDRITCH_EGG, "Eldritch Egg")
         add(HCItems.FLUID_FILTER, "Fluid Filter")
         add(HCItems.ITEM_FILTER, "Item Filter")
@@ -121,6 +123,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCTranslation.MIN_POWER, "Minimum Explosion Power: %s")
 
         add(HCTranslation.AMBROSIA, "ALWAYS EDIBLE and NOT CONSUMED!")
+        add(HCTranslation.ANCIENT_UPGRADE, "Dropped from Warden.")
         add(HCTranslation.ELDER_HEART, "Dropped from Elder Guardian.")
         add(HCTranslation.ELDRITCH_EGG, "Can be throwable by right-click，and capture mobs when hit.")
         add(HCTranslation.ETERNAL_UPGRADE, "Dropped from Ender Dragon.")
@@ -129,6 +132,12 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCTranslation.TRADER_CATALOG, "Dropped from Wandering Trader. Right-click to trade with merchant.")
 
         add(HCTranslation.ETERNAL_PICKAXE, "Eternal Pickaxe")
+
+        add(HCTranslation.ANCIENT_UPGRADE_APPLIES_TO, "Diamond Equipment")
+        add(HCTranslation.ANCIENT_UPGRADE_INGREDIENTS, "Ancient Metal Ingot")
+        add(HCTranslation.ANCIENT_UPGRADE_DESC, "Ancient Upgrade")
+        add(HCTranslation.ANCIENT_UPGRADE_BASE_SLOT_DESCRIPTION, "Add ancient metal armor, weapon, or tool")
+        add(HCTranslation.ANCIENT_UPGRADE_ADDITIONS_SLOT_DESCRIPTION, "Add Ancient Metal Ingot")
 
         add(HCTranslation.ETERNAL_UPGRADE_APPLIES_TO, "Any Equipment")
         add(HCTranslation.ETERNAL_UPGRADE_INGREDIENTS, "Iridium Ingot")

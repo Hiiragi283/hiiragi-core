@@ -62,8 +62,16 @@ object HTMaterialPropertyKeys {
     @JvmField
     val TOOL_MATERIAL: HTPropertyKey<HTToolMaterial?> = createNullable("tool_material")
 
-    //    Runtime Recipe    //
+    //    Recipe    //
 
+    /**
+     * ブロックの必要素材数を管理する[プロパティキー][HTPropertyKey]
+     */
+    @JvmField
+    val STORAGE_BLOCK: HTPropertyKey<HTStorageBlockProperty> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("storage_block"), HTStorageBlockProperty.THREE_BY_THREE)
+
+    // Smelting
     /**
      * @since 0.9.0
      */
@@ -76,6 +84,14 @@ object HTMaterialPropertyKeys {
     @JvmField
     val SMELTED_TO: HTPropertyKey<HTMaterialKey?> = createNullable("smelted_to")
 
+    // Smithing
+    /**
+     * @since 0.9.0
+     */
+    @JvmField
+    val SMITHING_RECIPE: HTPropertyKey<HTSmithingRecipeProperty?> = createNullable("smithing_recipe")
+
+    // Processing
     /**
      * 粉砕後の[HTTagPrefix]に対応する[プロパティキー][HTPropertyKey]
      * @since 0.8.0
@@ -113,13 +129,6 @@ object HTMaterialPropertyKeys {
     @JvmField
     val ORE_RESULT_MULTIPLIER: HTPropertyKey<Fraction> =
         HTPropertyKey.create(HiiragiCoreAPI.id("ore_result_multiplier"), Fraction.ONE)
-
-    /**
-     * ブロックの必要素材数を管理する[プロパティキー][HTPropertyKey]
-     */
-    @JvmField
-    val STORAGE_BLOCK: HTPropertyKey<HTStorageBlockProperty> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("storage_block"), HTStorageBlockProperty.THREE_BY_THREE)
 
     //    Data Gen    //
 

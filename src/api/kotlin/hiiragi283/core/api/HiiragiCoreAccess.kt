@@ -3,6 +3,7 @@ package hiiragi283.core.api
 import com.google.gson.JsonObject
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetRenderer
+import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
@@ -60,6 +61,9 @@ interface HiiragiCoreAccess {
 
     fun getItemOrVanilla(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
         materialContents.getItem(prefix, material) ?: vanillaContents.getItem(prefix, material)
+
+    fun getToolOrVanilla(toolType: HTToolType, material: HTMaterialLike): HTItemHolderLike<*>? =
+        materialContents.getTool(toolType, material) ?: vanillaContents.getTool(toolType, material)
 
     //    Tag    //
 

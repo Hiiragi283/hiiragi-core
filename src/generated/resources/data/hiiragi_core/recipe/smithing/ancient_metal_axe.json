@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "tag": "c:ingots/ancient_metal"
+  },
+  "base": {
+    "item": "minecraft:diamond_axe"
+  },
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:ancient_metal_axe"
+  },
+  "template": {
+    "item": "hiiragi_core:ancient_upgrade"
+  }
+}

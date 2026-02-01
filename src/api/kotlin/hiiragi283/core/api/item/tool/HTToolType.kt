@@ -20,6 +20,7 @@ class HTToolType(
     private val toolFactory: (HTToolMaterial, Item.Properties) -> TieredItem,
     private val attributeFactory: (HTToolMaterial) -> ItemAttributeModifiers?,
     val langPattern: HTLangPatternProvider,
+    val recipePattern: List<String>,
     val toolTags: List<TagKey<Item>>,
 ) : Comparable<HTToolType> {
     companion object {
@@ -57,12 +58,13 @@ class HTToolType(
     class Builder(private val name: String) {
         var idPattern = "%s_$name"
         lateinit var factory: (HTToolMaterial, Item.Properties) -> TieredItem
-        var attribute: (HTToolMaterial) -> ItemAttributeModifiers? =  { null }
+        var attribute: (HTToolMaterial) -> ItemAttributeModifiers? = { null }
         lateinit var langPattern: HTLangPatternProvider
+        lateinit var recipePattern: List<String>
         val toolTags: MutableList<TagKey<Item>> = mutableListOf()
 
         fun build(): HTToolType {
-            val toolType = HTToolType(name, idPattern, factory, attribute, langPattern, toolTags)
+            val toolType = HTToolType(name, idPattern, factory, attribute, langPattern, recipePattern, toolTags)
             check(instances.put(name, toolType) == null) { "Duplicated tool type: $name" }
             return toolType
         }

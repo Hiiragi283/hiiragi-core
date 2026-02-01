@@ -38,6 +38,9 @@ sealed class HCGlobalLootProvider(protected val provider: HolderLookup.Provider)
 
         // entity
         @JvmField
+        val ANCIENT_UPGRADE: ResourceKey<LootTable> = create("ancient_upgrade")
+
+        @JvmField
         val ELDER_HEART: ResourceKey<LootTable> = create("elder_heart")
 
         @JvmField
@@ -102,6 +105,17 @@ sealed class HCGlobalLootProvider(protected val provider: HolderLookup.Provider)
 
     class EntityProvider(provider: HolderLookup.Provider) : HCGlobalLootProvider(provider) {
         override fun generate(output: BiConsumer<ResourceKey<LootTable>, LootTable.Builder>) {
+            // Drops Ancient Upgrade from Warden
+            output.accept(
+                ANCIENT_UPGRADE,
+                LootTable
+                    .lootTable()
+                    .withPool(
+                        LootPool
+                            .lootPool()
+                            .add(LootItem.lootTableItem(HCItems.ANCIENT_UPGRADE)),
+                    ),
+            )
             // Drops Elder Heart from Elder Guardian
             output.accept(
                 ELDER_HEART,
