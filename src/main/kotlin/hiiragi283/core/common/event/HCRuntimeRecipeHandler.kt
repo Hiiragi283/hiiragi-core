@@ -37,13 +37,13 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in materialManager) {
             crushBaseToDust(event, key, propertyMap)
 
-            crushToDust(event, key, propertyMap, CommonTagPrefixes.ORE)
+            crushToDust(event, key, propertyMap, CommonTagPrefixes.ORE, 2)
             crushToDust(event, key, propertyMap, CommonTagPrefixes.BLOCK)
             crushToDust(event, key, propertyMap, CommonTagPrefixes.RAW_BLOCK)
 
             crushToDust(event, key, propertyMap, CommonTagPrefixes.GEAR)
             crushToDust(event, key, propertyMap, CommonTagPrefixes.PLATE)
-            crushToDust(event, key, propertyMap, CommonTagPrefixes.RAW)
+            crushToDust(event, key, propertyMap, CommonTagPrefixes.RAW, 2)
 
             flourToDough(event, key, propertyMap)
 
@@ -78,8 +78,9 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         key: HTMaterialKey,
         propertyMap: HTPropertyMap,
         prefix: HTTagPrefix,
+        baseScale: Int = 1,
     ) {
-        val outputCount: Int = prefix.getScaledAmount(1, propertyMap).toInt()
+        val outputCount: Int = prefix.getScaledAmount(baseScale, propertyMap).toInt()
 
         if (!event.isPresentTag(prefix, key)) return
         val crushedPrefix: HTTagPrefix = propertyMap.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)

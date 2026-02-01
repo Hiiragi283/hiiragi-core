@@ -37,7 +37,7 @@ public abstract class ReloadableServerResourcesMixin {
         Map<ResourceLocation, RecipeHolder<?>> byName = new HashMap<>(accessor.getByName());
         
         var event = new HTRegisterRuntimeRecipeEvent(recipes, registryAccess, (@NotNull RecipeHolder<?> holder) -> {
-            boolean bool1 = byType.put(holder.value().getType(), holder);
+            boolean bool1 = !byType.put(holder.value().getType(), holder);
             boolean bool2 = byName.put(holder.id(), holder) != null;
             return bool1 || bool2;
         });

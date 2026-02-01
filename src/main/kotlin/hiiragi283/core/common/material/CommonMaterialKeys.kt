@@ -45,7 +45,20 @@ object CommonMaterialKeys {
 
     //    Metals    //
 
+    // 2nd
+    @JvmStatic
+    val LITHIUM: HTMaterialKey = create("lithium")
+
+    @JvmStatic
+    val BERYLLIUM: HTMaterialKey = create("beryllium")
+
     // 3rd
+    @JvmStatic
+    val SODIUM: HTMaterialKey = create("sodium")
+
+    @JvmStatic
+    val MAGNESIUM: HTMaterialKey = create("magnesium")
+
     @JvmStatic
     val ALUMINUM: HTMaterialKey = create("aluminum")
 
@@ -55,6 +68,9 @@ object CommonMaterialKeys {
     // 4th
     @JvmStatic
     val TITANIUM: HTMaterialKey = create("titanium")
+
+    @JvmStatic
+    val VANADIUM: HTMaterialKey = create("vanadium")
 
     @JvmStatic
     val CHROMIUM: HTMaterialKey = create("chromium")
@@ -72,6 +88,9 @@ object CommonMaterialKeys {
     val ZINC: HTMaterialKey = create("zinc")
 
     // 5th
+    @JvmStatic
+    val MOLYBDENUM: HTMaterialKey = create("molybdenum")
+
     @JvmStatic
     val PALLADIUM: HTMaterialKey = create("palladium")
 

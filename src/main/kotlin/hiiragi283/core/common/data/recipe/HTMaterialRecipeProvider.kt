@@ -3,7 +3,6 @@ package hiiragi283.core.common.data.recipe
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
@@ -137,13 +136,9 @@ class HTMaterialRecipeProvider(modId: String) : HTSubRecipeProvider.Direct(modId
         // 精錬の前後がどちらもバニラ由来の場合はパス
         if (ore.namespace == HTConst.MINECRAFT && base.namespace == HTConst.MINECRAFT) return
         // Smelting & Blasting
-        val resultCount: Int = maxOf(
-            1,
-            prefix.getScaledAmount(fraction(1, 2), smeltedPropertyMap).toInt(),
-        )
         HTCookingRecipeBuilder.smeltingAndBlasting(output) {
             ingredient += ore
-            resultStack += base to resultCount
+            resultStack += base to prefix.getScaledAmount(1, smeltedPropertyMap).toInt()
             exp = 0.7f
             recipeId suffix "_from_${prefix.name}"
         }

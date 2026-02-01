@@ -2,7 +2,6 @@ package hiiragi283.core.api.tag
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.div
-import hiiragi283.core.api.fraction
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
@@ -30,7 +29,7 @@ object CommonTagPrefixes {
     val ORE: HTTagPrefix = HTTagPrefix.create("ore", "ores", "ores/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_ore")
         put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
-            base * 2 * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
+            base * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
         }
 
         put(
@@ -107,7 +106,9 @@ object CommonTagPrefixes {
     @JvmField
     val RAW_BLOCK: HTTagPrefix = HTTagPrefix.create("raw_block", "storage_blocks", "storage_blocks/raw_%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "raw_%s_block")
-        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base * 12 }
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
+            base * 9 * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
+        }
 
         put(HTTagPropertyKeys.BLOCK_PROP, BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK))
 
@@ -199,7 +200,9 @@ object CommonTagPrefixes {
     @JvmField
     val RAW: HTTagPrefix = HTTagPrefix.create("raw", "raw_materials", "raw_materials/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "raw_%s")
-        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base * fraction(4, 3) }
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
+            base * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
+        }
 
         addNamePattern("Raw %s", "%sの原石")
     }
@@ -246,7 +249,7 @@ object CommonTagPrefixes {
     ): HTTagPrefix = HTTagPrefix.create("${name}_ore", "ores", "ores/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "${name}_%s_ore")
         put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
-            base * 2 * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
+            base * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
         }
 
         put(HTTagPropertyKeys.BLOCK_PROP, properties)

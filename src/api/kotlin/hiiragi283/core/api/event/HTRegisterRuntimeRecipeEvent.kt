@@ -43,7 +43,7 @@ class HTRegisterRuntimeRecipeEvent(val recipeManager: RecipeManager, val context
                     val id1: ResourceLocation = id.withPrefix("runtime/")
                     val holder: RecipeHolder<Recipe<*>> = RecipeHolder(id1, recipe)
                     if (consumer.apply(holder)) {
-                        HiiragiCoreAPI.LOGGER.debug("Recipe: {} was overrided!", holder.id())
+                        HiiragiCoreAPI.LOGGER.warn("Recipe: {} was overrided!", holder.id())
                     }
                     HiiragiCoreAPI.LOGGER.debug("Added runtime recipe {}", id1)
                 }

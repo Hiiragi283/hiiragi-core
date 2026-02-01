@@ -374,6 +374,12 @@ object HCMaterialEventHandler {
         registerGem(CommonMaterialKeys.RUBY, "Ruby", "ルビー")
         registerGem(CommonMaterialKeys.SAPPHIRE, "Sapphire", "サファイア")
         // Metals
+        registerMetal(CommonMaterialKeys.LITHIUM, "Lithium", "リチウム")
+        registerMetal(CommonMaterialKeys.BERYLLIUM, "Beryllium", "ベリリウム")
+
+        registerMetal(CommonMaterialKeys.SODIUM, "Sodium", "ナトリウム")
+        registerMetal(CommonMaterialKeys.MAGNESIUM, "Magnesium", "マグネシウム")
+
         event.modify(CommonMaterialKeys.ALUMINUM) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
@@ -384,6 +390,7 @@ object HCMaterialEventHandler {
         registerMetal(CommonMaterialKeys.SILICON, "Silicon", "シリコン")
 
         registerMetal(CommonMaterialKeys.TITANIUM, "Titanium", "チタン")
+        registerMetal(CommonMaterialKeys.VANADIUM, "Vanadium", "バナジウム")
         registerMetal(CommonMaterialKeys.CHROMIUM, "Chromium", "クロム")
         registerMetal(CommonMaterialKeys.MANGANESE, "Manganese", "マンガン")
         registerMetal(CommonMaterialKeys.COBALT, "Cobalt", "コバルト")
@@ -398,6 +405,7 @@ object HCMaterialEventHandler {
             addCustomOreLoot(HTBlockLootFactory.createOre(CommonTagPrefixes.RAW))
         }
 
+        registerMetal(CommonMaterialKeys.MOLYBDENUM, "Molybdenum", "モリブデン")
         registerMetal(CommonMaterialKeys.PALLADIUM, "Palladium", "パラジウム")
         registerMetal(CommonMaterialKeys.SILVER, "Silver", "銀")
         event.modify(CommonMaterialKeys.TIN) {
