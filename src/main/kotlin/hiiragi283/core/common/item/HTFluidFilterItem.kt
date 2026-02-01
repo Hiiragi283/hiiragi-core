@@ -40,12 +40,12 @@ class HTFluidFilterItem(properties: Properties) :
             .getFluidViews(context.stack)
             .filterIsInstance<HTComponentFluidTank>()
             .mapIndexed { index: Int, tank: HTComponentFluidTank ->
-                HTFluidWidget.StackWidget(
-                    tank,
-                    tank::setStack,
-                    HTSlotHelper.getSlotPosX(index),
-                    HTSlotHelper.getSlotPosY(1),
-                )
+                HTFluidWidget
+                    .createSlot(
+                        tank,
+                        HTSlotHelper.getSlotPosX(index),
+                        HTSlotHelper.getSlotPosY(1),
+                    ).setGhost()
             }.forEach(widgetHolder::addWidget)
     }
 }

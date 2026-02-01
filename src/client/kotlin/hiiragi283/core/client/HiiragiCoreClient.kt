@@ -10,7 +10,7 @@ import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.gui.tooltip.HTClientFluidFilterTooltip
 import hiiragi283.core.client.gui.tooltip.HTClientItemFilterTooltip
 import hiiragi283.core.client.gui.widget.HTFluidWidgetRenderer
-import hiiragi283.core.client.gui.widget.HTItemWidgetRenderer
+import hiiragi283.core.client.gui.widget.HTItemSlotWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTProgressWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.common.gui.tooltip.HTFluidFilterTooltip
@@ -53,10 +53,8 @@ data object HiiragiCoreClient : HTClientMod() {
     }
 
     override fun registerWidgetRenderer(event: HTRegisterWidgetRendererEvent) {
-        event.register(HCWidgetTypes.FLUID_STACK.get(), HTFluidWidgetRenderer<*>::Slot)
-        event.register(HCWidgetTypes.FLUID_TANK.get(), HTFluidWidgetRenderer<*>::Tank)
-        event.register(HCWidgetTypes.ITEM_SLOT.get(), HTItemWidgetRenderer<*>::SlotRenderer)
-        event.register(HCWidgetTypes.ITEM_STACK.get(), HTItemWidgetRenderer<*>::StackRenderer)
+        event.register(HCWidgetTypes.FLUID.get(), ::HTFluidWidgetRenderer)
+        event.register(HCWidgetTypes.ITEM_SLOT.get(), ::HTItemSlotWidgetRenderer)
         event.register(HCWidgetTypes.PROGRESS.get(), ::HTProgressWidgetRenderer)
     }
 

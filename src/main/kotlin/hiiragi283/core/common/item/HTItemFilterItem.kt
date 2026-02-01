@@ -4,8 +4,9 @@ import hiiragi283.core.api.gui.HTSlotHelper
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.common.capability.HTItemCapabilities
 import hiiragi283.core.common.gui.factory.HTItemWidgetHolderContext
+import hiiragi283.core.common.gui.sync.HTItemSyncSlot
 import hiiragi283.core.common.gui.tooltip.HTItemFilterTooltip
-import hiiragi283.core.common.gui.widget.HTItemWidget
+import hiiragi283.core.common.gui.widget.HTItemSlotWidget
 import hiiragi283.core.common.storage.item.HTComponentItemSlot
 import hiiragi283.core.setup.HCDataComponents
 import net.minecraft.core.component.DataComponents
@@ -40,12 +41,11 @@ class HTItemFilterItem(properties: Properties) :
             .getItemSlots(context.stack)
             .filterIsInstance<HTComponentItemSlot>()
             .mapIndexed { index: Int, slot: HTComponentItemSlot ->
-                HTItemWidget.StackWidget(
-                    slot,
-                    slot::setStack,
+                HTItemSlotWidget(
+                    HTItemSyncSlot(slot),
                     HTSlotHelper.getSlotPosX(index),
                     HTSlotHelper.getSlotPosY(1),
-                )
+                ).setGhost()
             }.forEach(widgetHolder::addWidget)
     }
 }

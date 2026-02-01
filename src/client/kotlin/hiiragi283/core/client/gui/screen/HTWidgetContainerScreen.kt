@@ -6,7 +6,7 @@ import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetRenderer
 import hiiragi283.core.common.gui.menu.HTWidgetContainerMenu
-import hiiragi283.core.common.gui.widget.HTItemWidget
+import hiiragi283.core.common.gui.widget.HTItemSlotWidget
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.components.AbstractWidget
 import net.minecraft.client.gui.narration.NarrationElementOutput
@@ -55,7 +55,9 @@ class HTWidgetContainerScreen(menu: HTWidgetContainerMenu, inventory: Inventory,
         private val renderer: HTWidgetRenderer<WIDGET>? by lazy { HiiragiCoreAccess.Client.INSTANCE.createRenderer(widget) }
 
         init {
-            active = widget !is HTItemWidget.SlotWidget
+            if (widget is HTItemSlotWidget && widget.containerSlot != null) {
+                active = false
+            }
         }
 
         override fun renderWidget(

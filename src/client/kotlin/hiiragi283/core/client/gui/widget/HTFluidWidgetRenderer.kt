@@ -10,6 +10,7 @@ import hiiragi283.core.util.HTTooltipHelper
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.network.chat.Component
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.TooltipFlag
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
@@ -17,32 +18,27 @@ import org.apache.commons.lang3.math.Fraction
 import java.util.function.Consumer
 
 @OnlyIn(Dist.CLIENT)
-abstract class HTFluidWidgetRenderer<WIDGET : HTFluidWidget>(widget: WIDGET) : HTSpriteWidgetRenderer<WIDGET>(widget) {
+class HTFluidWidgetRenderer(widget: HTFluidWidget) : HTSpriteWidgetRenderer<HTFluidWidget>(widget) {
+    override fun renderBackground(bounds: HTBounds, guiGraphics: GuiGraphics) {
+        val texture: ResourceLocation = when (widget.isTank) {
+            true -> widget.backgroundType.tankTexture
+            false -> widget.backgroundType.slotTexture
+        }
+        HTSpriteRenderHelper.blit(guiGraphics, texture, bounds)
+    }
+
     override fun shouldRender(): Boolean = widget.getResource() != null
 
     override fun getSprite(): TextureAtlasSprite? = getSprite(widget.getResource()?.getStillTexture())
 
     override fun getColor(): Int = widget.getResource()?.getTintColor() ?: -1
 
-    override fun getLevel(): Fraction = widget.getLevelAsFraction()
+    override fun getLevel(): Fraction = when (widget.isTank) {
+        true -> widget.getLevelAsFraction()
+        false -> Fraction.ONE
+    }
 
     override fun collectTooltips(consumer: Consumer<Component>, flag: TooltipFlag) {
         HTTooltipHelper.addFluidTooltip(widget.getFluidStack(), consumer, flag, false)
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    class Slot(widget: HTFluidWidget.StackWidget) : HTFluidWidgetRenderer<HTFluidWidget.StackWidget>(widget) {
-        override fun renderBackground(bounds: HTBounds, guiGraphics: GuiGraphics) {
-            HTSpriteRenderHelper.blit(guiGraphics, widget.backgroundType.slotTexture, bounds)
-        }
-
-        override fun getLevel(): Fraction = Fraction.ONE
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    class Tank(widget: HTFluidWidget.TankWidget) : HTFluidWidgetRenderer<HTFluidWidget.TankWidget>(widget) {
-        override fun renderBackground(bounds: HTBounds, guiGraphics: GuiGraphics) {
-            HTSpriteRenderHelper.blit(guiGraphics, widget.backgroundType.tankTexture, bounds)
-        }
     }
 }

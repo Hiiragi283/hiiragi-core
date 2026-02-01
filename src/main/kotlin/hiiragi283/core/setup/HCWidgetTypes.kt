@@ -2,7 +2,7 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.gui.widget.HTFluidWidget
-import hiiragi283.core.common.gui.widget.HTItemWidget
+import hiiragi283.core.common.gui.widget.HTItemSlotWidget
 import hiiragi283.core.common.gui.widget.HTProgressWidget
 import hiiragi283.core.common.registry.HTDeferredWidgetType
 import hiiragi283.core.common.registry.register.HTDeferredWidgetTypeRegister
@@ -12,16 +12,10 @@ object HCWidgetTypes {
     val REGISTER = HTDeferredWidgetTypeRegister(HiiragiCoreAPI.MOD_ID)
 
     @JvmField
-    val FLUID_STACK: HTDeferredWidgetType<HTFluidWidget.StackWidget> = REGISTER.registerType("fluid_stack")
+    val FLUID: HTDeferredWidgetType<HTFluidWidget> = REGISTER.registerType("fluid")
 
     @JvmField
-    val FLUID_TANK: HTDeferredWidgetType<HTFluidWidget.TankWidget> = REGISTER.registerType("fluid_tank")
-
-    @JvmField
-    val ITEM_SLOT: HTDeferredWidgetType<HTItemWidget.SlotWidget> = REGISTER.registerType("item_slot")
-
-    @JvmField
-    val ITEM_STACK: HTDeferredWidgetType<HTItemWidget.StackWidget> = REGISTER.registerType("item_stack")
+    val ITEM_SLOT: HTDeferredWidgetType<HTItemSlotWidget> = REGISTER.registerType("item_slot")
 
     @JvmField
     val PROGRESS: HTDeferredWidgetType<HTProgressWidget> = REGISTER.registerType("progress")
