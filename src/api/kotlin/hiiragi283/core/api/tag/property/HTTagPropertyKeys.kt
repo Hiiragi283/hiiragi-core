@@ -15,13 +15,13 @@ import org.apache.commons.lang3.math.Fraction
  */
 object HTTagPropertyKeys {
     /**
-     * [ID][ResourceLocation]のパターンに対応する[プロパティキー][HTPropertyKey]
+     * [ID][ResourceLocation]のパターンを管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField
     val ID_PATTERN: HTPropertyKey<String?> = createNullable("id_pattern")
 
     /**
-     * 基準値に対する数量を取得する[プロパティキー][HTPropertyKey]
+     * 基準値に対する数量を管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField
     val ITEM_SCALE: HTPropertyKey<(Fraction, HTPropertyMap) -> Fraction> =
@@ -30,13 +30,13 @@ object HTTagPropertyKeys {
     //    Block    //
 
     /**
-     * ブロックの[プロパティ][BlockBehaviour.Properties]に対応する[プロパティキー][HTPropertyKey]
+     * ブロックの[プロパティ][BlockBehaviour.Properties]を管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField
     val BLOCK_PROP: HTPropertyKey<BlockBehaviour.Properties?> = createNullable("block_properties")
 
     /**
-     * 鉱石ブロックの母岩部分のテクスチャに対応する[プロパティキー][HTPropertyKey]
+     * 鉱石ブロックの母岩部分のテクスチャを管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField
     val ORE_STONE_TEX: HTPropertyKey<ResourceLocation?> = createNullable("ore_stone_tex")
@@ -44,14 +44,14 @@ object HTTagPropertyKeys {
     //    Data Gen    //
 
     /**
-     * 翻訳のパターンに対応する[プロパティキー][HTPropertyKey]
+     * 翻訳のパターンを管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField
     val LANG_PATTERN: HTPropertyKey<HTLangPatternProvider> =
         HTPropertyKey.create(HiiragiCoreAPI.id("lang_pattern"), HTLangPatternProvider.create("%s", "%s"))
 
     /**
-     * テクスチャを生成する際のテクスチャの名前に対応する[プロパティキー][HTPropertyKey]
+     * テクスチャを生成する際のテクスチャの名前を管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField
     val TEXTURE_ICON: HTPropertyKey<String?> = createNullable("texture_icon")

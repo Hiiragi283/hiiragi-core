@@ -19,13 +19,13 @@ import org.apache.commons.lang3.math.Fraction
  */
 object HTMaterialPropertyKeys {
     /**
-     * デフォルトの部品に対応する[プロパティキー][HTPropertyKey]
+     * デフォルトの部品を管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField
     val DEFAULT_PART: HTPropertyKey<HTDefaultPart?> = createNullable("default_part")
 
     /**
-     * デフォルトの[部品][HTTagPrefix]あたりの液体量に対応する[プロパティキー][HTPropertyKey]
+     * デフォルトの[部品][HTTagPrefix]あたりの液体量を管理する[プロパティキー][HTPropertyKey]
      * @since 0.7.0
      */
     @JvmField
@@ -35,28 +35,28 @@ object HTMaterialPropertyKeys {
     //    Registration    //
 
     /**
-     * 登録する素材ブロックに使われる[プロパティキー][HTPropertyKey]
+     * 登録する素材ブロックを管理する[プロパティキー][HTPropertyKey]
      * @since 0.7.0
      */
     @JvmField
     val BLOCK_PREFIXES: HTPropertyKey<Set<HTTagPrefix>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("block_prefixes"))
 
     /**
-     * 登録する素材アイテムに使われる[プロパティキー][HTPropertyKey]
+     * 登録する素材アイテムを管理する[プロパティキー][HTPropertyKey]
      * @since 0.7.0
      */
     @JvmField
     val ITEM_PREFIXES: HTPropertyKey<Set<HTTagPrefix>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("item_prefixes"))
 
     /**
-     * 登録する素材ツールに使われる[プロパティキー][HTPropertyKey]
+     * 登録する素材ツールを管理する[プロパティキー][HTPropertyKey]
      * @since 0.8.0
      */
     @JvmField
     val TOOL_PREFIXES: HTPropertyKey<Set<HTToolType>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("tool_prefixes"))
 
     /**
-     * ツールの素材に対応する[プロパティキー][HTPropertyKey]
+     * ツールの素材を管理する[プロパティキー][HTPropertyKey]
      * @since 0.8.0
      */
     @JvmField
@@ -73,12 +73,14 @@ object HTMaterialPropertyKeys {
 
     // Smelting
     /**
+     * 精錬レシピを無効化する[プロパティキー][HTPropertyKey]
      * @since 0.9.0
      */
     @JvmField
     val DISABLE_SMELTING: HTPropertyKey<Unit?> = HTPropertyKey.createFlag(HiiragiCoreAPI.id("disable_smelting"))
 
     /**
+     * 精錬後の素材を管理する[プロパティキー][HTPropertyKey]
      * @since 0.9.0
      */
     @JvmField
@@ -86,6 +88,7 @@ object HTMaterialPropertyKeys {
 
     // Smithing
     /**
+     * 鍛冶台レシピを管理する[プロパティキー][HTPropertyKey]
      * @since 0.9.0
      */
     @JvmField
@@ -93,7 +96,7 @@ object HTMaterialPropertyKeys {
 
     // Processing
     /**
-     * 粉砕後の[HTTagPrefix]に対応する[プロパティキー][HTPropertyKey]
+     * 粉砕後の[HTTagPrefix]を管理する[プロパティキー][HTPropertyKey]
      * @since 0.8.0
      */
     @JvmField
@@ -101,25 +104,27 @@ object HTMaterialPropertyKeys {
         HTPropertyKey.create(HiiragiCoreAPI.id("crushed_prefix"), CommonTagPrefixes.DUST)
 
     /**
+     * プレス加工などのレシピを無効化する[プロパティキー][HTPropertyKey]
      * @since 0.9.0
      */
     @JvmField
     val DISABLE_MECHANICAL: HTPropertyKey<Unit?> = HTPropertyKey.createFlag(HiiragiCoreAPI.id("disable_mechanical"))
 
     /**
+     * 溶融などのレシピを無効化する[プロパティキー][HTPropertyKey]
      * @since 0.9.0
      */
     @JvmField
     val DISABLE_MELTING: HTPropertyKey<Unit?> = HTPropertyKey.createFlag(HiiragiCoreAPI.id("disable_melting"))
 
     /**
-     * 溶融状態の[液体][HTFluidMaterialProperty]に対応する[プロパティキー][HTPropertyKey]
+     * 溶融状態の[液体][HTFluidMaterialProperty]を管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField
     val MOLTEN_FLUID: HTPropertyKey<HTFluidMaterialProperty?> = createNullable("molten_fluid")
 
     /**
-     * 鉱石粉砕の副産物に対応する[プロパティキー][HTPropertyKey]
+     * 鉱石粉砕の副産物を管理する[プロパティキー][HTPropertyKey]
      * @since 0.8.0
      */
     @JvmField
@@ -127,7 +132,7 @@ object HTMaterialPropertyKeys {
         HTPropertyKey.createSet(HiiragiCoreAPI.id("ore_extra_results"))
 
     /**
-     * 鉱石粉砕の主産物の個数の倍率に対応する[プロパティキー][HTPropertyKey]
+     * 鉱石粉砕の主産物の個数の倍率を管理する[プロパティキー][HTPropertyKey]
      * @since 0.8.0
      */
     @JvmField
@@ -138,7 +143,7 @@ object HTMaterialPropertyKeys {
 
     // Data Map
     /**
-     * かまど燃料としての時間に対応する[プロパティキー][HTPropertyKey]
+     * かまど燃料としての時間を管理する[プロパティキー][HTPropertyKey]
      * @since 0.8.0
      */
     @JvmField
@@ -146,13 +151,13 @@ object HTMaterialPropertyKeys {
 
     // Lang
     /**
-     * 素材の[翻訳名][HTLangName]を保持する[プロパティキー][HTPropertyKey]
+     * 素材の[翻訳名][HTLangName]を管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField
     val LANG_NAME: HTPropertyKey<HTLangName?> = createNullable("lang_name")
 
     /**
-     * [プレフィックス][HTTagPrefix]に依存する[翻訳名][HTLangName]を保持する[プロパティキー][HTPropertyKey]
+     * [プレフィックス][HTTagPrefix]に依存する[翻訳名][HTLangName]を管理する[プロパティキー][HTPropertyKey]
      * @since 0.7.0
      */
     @JvmField
@@ -160,6 +165,7 @@ object HTMaterialPropertyKeys {
 
     // Loot Table
     /**
+     * ブロックのルートテーブルを管理する[プロパティキー][HTPropertyKey]
      * @since 0.9.0
      */
     @JvmField
@@ -169,13 +175,13 @@ object HTMaterialPropertyKeys {
 
     // Texture
     /**
-     * テクスチャを生成する際のカラーパレットの[ID][ResourceLocation]に対応する[プロパティキー][HTPropertyKey]
+     * テクスチャを生成する際のカラーパレットの[ID][ResourceLocation]を管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField
     val TEXTURE_COLOR: HTPropertyKey<ResourceLocation?> = createNullable("texture_color")
 
     /**
-     * テクスチャを生成する際のテンプレートに対応する[プロパティキー][HTPropertyKey]
+     * テクスチャを生成する際のテンプレートを管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField
     val TEXTURE_SET: HTPropertyKey<HTMaterialTextureSet> =

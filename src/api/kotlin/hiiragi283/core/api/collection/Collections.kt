@@ -5,8 +5,8 @@ import kotlin.NoSuchElementException
 
 /**
  * この[コレクション][this]から，[乱数][random]に基づいてランダムな要素を返します。
- * @see kotlin.collections.random
  * @throws NoSuchElementException コレクションが空の場合
+ * @see kotlin.collections.random
  */
 fun <T> Collection<T>.random(random: RandomSource): T {
     if (isEmpty()) throw NoSuchElementException("Collection is empty.")
@@ -15,8 +15,8 @@ fun <T> Collection<T>.random(random: RandomSource): T {
 
 /**
  * この[コレクション][this]から，[乱数][randomOrNull]に基づいてランダムな要素を返します。
- * @see kotlin.collections.random
  * @return コレクションが空の場合は`null`
+ * @see kotlin.collections.random
  */
 fun <T> Collection<T>.randomOrNull(random: RandomSource): T? {
     if (isEmpty()) return null
@@ -24,6 +24,9 @@ fun <T> Collection<T>.randomOrNull(random: RandomSource): T? {
 }
 
 /**
+ * この[コレクション][this]が空か判定します。
+ * @param predicate 要素が空か判定するブロック
+ * @return 空の場合は`true`
  * @since 0.9.0
  */
 inline fun <T> Collection<T>.isEmpty(predicate: (T) -> Boolean): Boolean = this.isEmpty() || this.all(predicate)

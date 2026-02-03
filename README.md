@@ -21,23 +21,24 @@
     - Metals: Iron, Copper, Gold
     - Alloys: Netherite
     - Crops: Wheat,
-    - Others: Wood, Glass, Stone, Obsidian, Gunpowder
+    - Others: Wood, Glass, Stone, Obsidian
   - Common
     - Fuels: Coal Coke
-    - Minerals: Bauxite, Cinnabar, Salt, Saltpeter, Sulfur
-    - Gems: (Fluorite), (Peridot), (Ruby), (Sapphire)
+    - Minerals: Bauxite, Salt, Saltpeter, Sulfur
+    - Gems: Cinnabar, (Fluorite), (Peridot), (Ruby), (Sapphire)
     - Metals
-      - 3rd Period: Aluminum, (Silicon)
-      - 4th Period: (Titanium),  (Chromium), (Manganese), (Cobalt), (Nickel), Zinc
-      - 5th Period: (palladium), (Silver), Tin, (Antimony)
+      - 2nd Period: (Lithium), (Beryllium)
+      - 3rd Period: (Sodium), (Magnesium), Aluminum, (Silicon)
+      - 4th Period: (Titanium), (Vanadium), (Chromium), (Manganese), (Cobalt), (Nickel), Zinc
+      - 5th Period: (Molybdenum), (Palladium), (Silver), Tin, (Antimony)
       - 6th Period: (Tungsten), (Osmium), Iridium, (Platinum), (Lead)
       - 7th Period: (Uranium), (Plutonium)
     - Alloys: Steel, (Invar), (Electrum), Brass, (Constantan), Bronze, (Signalum), (Lumium), (Enderium)
-    - Others: Ash, Plastic, Rubber
+    - Others: Ash, Carbon, Plastic, Rubber
   - Original
     - Gems: Azure, Crimson Crystal, Warped Crystal
     - Pearls: Eldritch
-    - Alloys: Azure Steel, Deep Steel
+    - Alloys: Azure Steel
 
 - Blocks
   - Warped Wart: Clears one bad effect randomly when eaten.

@@ -100,24 +100,43 @@ interface HTTable<R, C, V> {
             put(row, column, value)
         }
 
+        /**
+         * 指定した値を追加します。
+         */
         fun putAll(triples: Iterable<Triple<R, C, V>>) {
             triples.forEach(::put)
         }
 
+        /**
+         * 指定した値を追加します。
+         */
         fun putAll(triples: Sequence<Triple<R, C, V>>) {
             triples.forEach(::put)
         }
 
+        /**
+         * 指定した値を追加します。
+         */
         fun putAll(triples: Array<out Triple<R, C, V>>) {
             triples.forEach(::put)
         }
 
+        /**
+         * ほかのテーブルから値を追加します。
+         */
         fun putAll(table: HTTable<out R, out C, out V>) {
             table.forEach { (r: R, c: C, v: V) -> this.put(r, c, v) }
         }
 
+        /**
+         * 指定した[row]と[column]に紐づいた値を削除します。
+         * @return 以前に結びついていた値
+         */
         fun remove(row: R, column: C): V?
 
+        /**
+         * すべての値を消去します。
+         */
         fun clear()
     }
 }

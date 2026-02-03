@@ -118,6 +118,7 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
         }
 
     /**
+     * 素材ツールのテクスチャを生成します。
      * @since 0.9.0
      */
     protected fun tool(output: BiConsumer<ResourceLocation, NativeImage>) {

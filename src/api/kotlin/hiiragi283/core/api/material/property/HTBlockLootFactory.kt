@@ -46,6 +46,9 @@ fun interface HTBlockLootFactory {
         }
     }
 
+    /**
+     * [context]から[ルートテーブル][LootTable.Builder]を作成します。
+     */
     fun fromContext(context: Context): LootTable.Builder
 
     fun create(entry: HTMaterialManager.Entry, provider: HolderLookup.Provider, block: Block): LootTable.Builder =

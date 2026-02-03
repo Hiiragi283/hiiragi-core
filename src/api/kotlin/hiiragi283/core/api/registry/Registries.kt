@@ -12,16 +12,25 @@ import kotlin.streams.asSequence
 
 //    HolderLookup    //
 
+/**
+ * @since 0.9.0
+ */
 fun <R : Any> HolderLookup<R>.asSequence(): Sequence<HTHolderLike.HolderDelegate<R, R>> = this
     .listElements()
     .map(Holder<R>::toLike)
     .asSequence()
 
+/**
+ * @since 0.9.0
+ */
 fun HolderLookup<Block>.asBlockSequence(): Sequence<HTBlockHolderLike<*, *>> = this
     .listElementIds()
     .map(HTBlockHolderLike.Companion::of)
     .asSequence()
 
+/**
+ * @since 0.9.0
+ */
 fun HolderLookup<Item>.asItemSequence(): Sequence<HTItemHolderLike<*>> = this
     .listElementIds()
     .map(HTItemHolderLike.Companion::of)

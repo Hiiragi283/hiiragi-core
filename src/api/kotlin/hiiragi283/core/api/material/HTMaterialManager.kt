@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation
 /**
  * 素材のプロパティを管理するインターフェースです。
  * @author Hiiragi Tsubasa
- * @since 0.6.0
+ * @since 0.9.0
  */
 interface HTMaterialManager : Iterable<HTMaterialManager.Entry> {
     /**
