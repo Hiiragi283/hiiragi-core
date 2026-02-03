@@ -91,7 +91,7 @@ data object HiiragiCoreClient : HTClientMod() {
         event.molten(HCFluids.MOLTEN_CRIMSON_CRYSTAL, Color(0x993333))
         event.molten(HCFluids.MOLTEN_WARPED_CRYSTAL, Color(0x339999))
         event.molten(HCFluids.MOLTEN_ELDRITCH, Color(0x6633cc))
-        event.molten(HCFluids.MOLTEN_OMINOUS_METAL, Color(0x333366))
+        // event.molten(HCFluids.MOLTEN_OMINOUS_METAL, Color(0x333366))
     }
 
     override fun registerScreens(event: RegisterMenuScreensEvent) {

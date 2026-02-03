@@ -1,11 +1,7 @@
 package hiiragi283.core.data.server.loot
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.registry.createKey
-import hiiragi283.core.api.tag.CommonTagPrefixes
-import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.setup.HCItems
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
@@ -15,27 +11,15 @@ import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.enchantment.Enchantment
 import net.minecraft.world.item.enchantment.Enchantments
-import net.minecraft.world.level.ItemLike
-import net.minecraft.world.level.storage.loot.IntRange
 import net.minecraft.world.level.storage.loot.LootPool
 import net.minecraft.world.level.storage.loot.LootTable
 import net.minecraft.world.level.storage.loot.entries.LootItem
-import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount
 import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction
-import net.minecraft.world.level.storage.loot.functions.LimitCount
-import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 import java.util.function.BiConsumer
 
 sealed class HCGlobalLootProvider(protected val provider: HolderLookup.Provider) : LootTableSubProvider {
     companion object {
-        // Block
-        @JvmField
-        val OMINOUS_METAL_ROD: ResourceKey<LootTable> = create(CommonTagPrefixes.SCRAP.createId(HCMaterialKeys.OMINOUS_METAL))
-
-        @JvmField
-        val DEEP_STEEL_SCRAP: ResourceKey<LootTable> = create(CommonTagPrefixes.SCRAP.createId(HCMaterialKeys.ANCIENT_METAL))
-
         // entity
         @JvmField
         val ANCIENT_UPGRADE: ResourceKey<LootTable> = create("ancient_upgrade")
@@ -60,7 +44,7 @@ sealed class HCGlobalLootProvider(protected val provider: HolderLookup.Provider)
 
     //    Block    //
 
-    class BlockProvider(provider: HolderLookup.Provider) : HCGlobalLootProvider(provider) {
+    /*class BlockProvider(provider: HolderLookup.Provider) : HCGlobalLootProvider(provider) {
         override fun generate(output: BiConsumer<ResourceKey<LootTable>, LootTable.Builder>) {
             val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
             // Drops Ominous Metal Rod from Spawners
@@ -99,7 +83,7 @@ sealed class HCGlobalLootProvider(protected val provider: HolderLookup.Provider)
                     ),
             )
         }
-    }
+    }*/
 
     //    EntityProvider    //
 

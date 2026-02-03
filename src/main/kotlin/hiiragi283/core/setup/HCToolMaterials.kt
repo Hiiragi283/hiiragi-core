@@ -51,17 +51,6 @@ enum class HCToolMaterials(
     ),
 
     // Hiiragi Core
-    ANCIENT_METAL(
-        7f,
-        -2.9f,
-        18,
-        CommonTagPrefixes.INGOT,
-        HCMaterialKeys.ANCIENT_METAL,
-        2048,
-        12f,
-        8f,
-        BlockTags.INCORRECT_FOR_NETHERITE_TOOL,
-    ),
     AZURE_STEEL(
         7f,
         -3f,

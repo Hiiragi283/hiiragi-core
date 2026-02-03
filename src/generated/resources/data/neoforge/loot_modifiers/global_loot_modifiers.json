@@ -1,7 +1,5 @@
 {
   "entries": [
-    "hiiragi_core:drop_ominous_metal_scrap",
-    "hiiragi_core:drop_ancient_metal_scrap",
     "hiiragi_core:drop_ancient_upgrade",
     "hiiragi_core:drop_elder_heart",
     "hiiragi_core:drop_eternal_upgrade",

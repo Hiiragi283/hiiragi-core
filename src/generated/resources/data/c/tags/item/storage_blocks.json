@@ -2,7 +2,6 @@
   "values": [
     "#c:storage_blocks/aluminum",
     "#c:storage_blocks/amethyst",
-    "#c:storage_blocks/ancient_metal",
     "#c:storage_blocks/ash",
     "#c:storage_blocks/azure",
     "#c:storage_blocks/azure_steel",
@@ -19,7 +18,6 @@
     "#c:storage_blocks/glowstone",
     "#c:storage_blocks/iridium",
     "#c:storage_blocks/lead",
-    "#c:storage_blocks/ominous_metal",
     "#c:storage_blocks/plastic",
     "#c:storage_blocks/quartz",
     "#c:storage_blocks/raw_bauxite",

@@ -31,7 +31,6 @@ import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCFluids
-import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCToolMaterials
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
@@ -600,7 +599,7 @@ object HCMaterialEventHandler {
             setTextureSet("pearl")
         }
         // Metals
-        event.modify(HCMaterialKeys.ANCIENT_METAL) {
+        /*event.modify(HCMaterialKeys.ANCIENT_METAL) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(
@@ -633,7 +632,7 @@ object HCMaterialEventHandler {
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
             setName("Ominous Metal", "不吉な金属")
-        }
+        }*/
         // Alloys
         event.modify(HCMaterialKeys.AZURE_STEEL) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
@@ -641,7 +640,7 @@ object HCMaterialEventHandler {
             addItemPrefixes(alloySet.plus(partSet))
             addToolPrefixes(HCToolMaterials.AZURE_STEEL, CommonToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER))
 
-            setName("Azure Steel", "紺鉄")
+            setName("Azure Steel", "紺碧鋼")
         }
     }
 }

@@ -1,6 +1,5 @@
 {
   "values": [
-    "#c:gears/ancient_metal",
     "#c:gears/azure_steel",
     "#c:gears/brass",
     "#c:gears/bronze",
@@ -11,7 +10,6 @@
     "#c:gears/iridium",
     "#c:gears/iron",
     "#c:gears/netherite",
-    "#c:gears/ominous_metal",
     "#c:gears/steel",
     "#c:gears/wood"
   ]

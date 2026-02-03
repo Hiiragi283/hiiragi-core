@@ -1,7 +1,6 @@
 {
   "values": [
     "#c:nuggets/aluminum",
-    "#c:nuggets/ancient_metal",
     "#c:nuggets/azure_steel",
     "#c:nuggets/brass",
     "#c:nuggets/bronze",
@@ -9,7 +8,6 @@
     "#c:nuggets/iridium",
     "#c:nuggets/lead",
     "#c:nuggets/netherite",
-    "#c:nuggets/ominous_metal",
     "#c:nuggets/steel",
     "#c:nuggets/tin",
     "#c:nuggets/zinc"

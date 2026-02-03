@@ -1,7 +1,6 @@
 {
   "values": [
     "hiiragi_core:aluminum_block",
-    "hiiragi_core:ancient_metal_block",
     "hiiragi_core:ash_block",
     "hiiragi_core:azure_block",
     "hiiragi_core:azure_steel_block",
@@ -48,7 +47,6 @@
     "hiiragi_core:nether_sulfur_ore",
     "hiiragi_core:nether_tin_ore",
     "hiiragi_core:nether_zinc_ore",
-    "hiiragi_core:ominous_metal_block",
     "hiiragi_core:plastic_block",
     "hiiragi_core:raw_bauxite_block",
     "hiiragi_core:raw_cinnabar_block",

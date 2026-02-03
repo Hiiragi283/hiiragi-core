@@ -38,7 +38,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.MOLTEN_CRIMSON_CRYSTAL, "Crimson Blood")
         addFluid(HCFluids.MOLTEN_WARPED_CRYSTAL, "Dew of the Warp")
         addFluid(HCFluids.MOLTEN_ELDRITCH, "Eldritch Flux")
-        addFluid(HCFluids.MOLTEN_OMINOUS_METAL, "Ominous Flux")
+        // addFluid(HCFluids.MOLTEN_OMINOUS_METAL, "Ominous Flux")
 
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "Bamboo Charcoal")

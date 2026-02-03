@@ -58,12 +58,12 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             recipeId suffix "_from_rod"
         }
         // Reinforced Deepslate
-        HTShapedRecipeBuilder.create(output) {
+        /*HTShapedRecipeBuilder.create(output) {
             hollow4()
             define('A') += CommonTagPrefixes.PLATE to HCMaterialKeys.ANCIENT_METAL
             define('B') += Items.DEEPSLATE
             resultStack += Items.REINFORCED_DEEPSLATE
-        }
+        }*/
 
         // Compressed Sawdust -> Charcoal
         HTCookingRecipeBuilder.smelting(output) {

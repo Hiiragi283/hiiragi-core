@@ -83,9 +83,6 @@ object HCFluids {
     @JvmField
     val MOLTEN_ELDRITCH: HTSimpleFluidContent = molten(HCMaterialKeys.ELDRITCH, typeFactory = ::HTEndFluidType)
 
-    @JvmField
-    val MOLTEN_OMINOUS_METAL: HTSimpleFluidContent = molten(HCMaterialKeys.OMINOUS_METAL)
-
     //    Extensions    //
 
     @JvmStatic
