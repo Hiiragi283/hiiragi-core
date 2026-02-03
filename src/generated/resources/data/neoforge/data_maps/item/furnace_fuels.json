@@ -3,6 +3,9 @@
     "#c:coal_coke": {
       "burn_time": 3200
     },
+    "#c:crushed_ores/coal": {
+      "burn_time": 1600
+    },
     "#c:dusts/charcoal": {
       "burn_time": 1600
     },
@@ -26,6 +29,9 @@
     },
     "#c:plates/wood": {
       "burn_time": 300
+    },
+    "#c:raw_materials/coal": {
+      "burn_time": 1600
     },
     "#c:storage_blocks/charcoal": {
       "burn_time": 16000

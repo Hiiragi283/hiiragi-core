@@ -3,9 +3,8 @@ package hiiragi283.core.data.server
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.HTDataGenContext
-import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
-import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.property.getScaledAmount
@@ -32,20 +31,20 @@ class HCDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.out
     private fun furnaceFuels() {
         val furnace: Builder<FurnaceFuel, Item> = builder(NeoForgeDataMaps.FURNACE_FUELS)
 
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HiiragiCoreAccess.INSTANCE.materialManager) {
-            if (key.namespace != HiiragiCoreAPI.MOD_ID) continue
-            val fuelTime: Int = propertyMap[HTMaterialPropertyKeys.FUEL_TIME] ?: continue
+        for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
+            if (entry.namespace != HiiragiCoreAPI.MOD_ID) continue
+            val fuelTime: Int = entry[HTMaterialPropertyKeys.FUEL_TIME] ?: continue
             // Block
-            if (HiiragiCoreAccess.INSTANCE.materialContents.getBlock(CommonTagPrefixes.BLOCK, key) != null) {
-                furnace.add(CommonTagPrefixes.BLOCK.itemTagKey(key), FurnaceFuel(fuelTime * 10), false)
+            if (HiiragiCoreAccess.INSTANCE.materialContents.getBlock(CommonTagPrefixes.BLOCK, entry) != null) {
+                furnace.add(CommonTagPrefixes.BLOCK.itemTagKey(entry), FurnaceFuel(fuelTime * 10), false)
             }
             // Item
-            for ((prefix: HTTagPrefix, _) in HiiragiCoreAccess.INSTANCE.materialContents.getItemMap(key)) {
+            for ((prefix: HTTagPrefix, _) in HiiragiCoreAccess.INSTANCE.materialContents.getItemMap(entry)) {
                 val fuelTime1: Int = when (prefix) {
                     CommonTagPrefixes.NUGGET -> fuelTime / 10
-                    else -> prefix.getScaledAmount(fuelTime, propertyMap)
+                    else -> prefix.getScaledAmount(fuelTime, entry)
                 }.toInt()
-                furnace.add(prefix.itemTagKey(key), FurnaceFuel(fuelTime1), false)
+                furnace.add(prefix.itemTagKey(entry), FurnaceFuel(fuelTime1), false)
             }
         }
 

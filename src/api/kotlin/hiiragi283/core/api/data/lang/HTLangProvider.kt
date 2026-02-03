@@ -4,7 +4,6 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialContents
-import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
@@ -17,9 +16,6 @@ import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.enchantment.Enchantment
 import net.neoforged.neoforge.common.data.LanguageProvider
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.iterator
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[LanguageProvider]の拡張クラスです。
@@ -34,21 +30,21 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
      */
     fun addMaterials() {
         val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HiiragiCoreAccess.INSTANCE.materialManager) {
-            if (key.namespace != modId) continue
+        for (entry in HiiragiCoreAccess.INSTANCE.materialManager) {
+            if (entry.namespace != modId) continue
             // Block
-            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in contents.getBlockMap(key)) {
-                val name: String = translate(langType, prefix, propertyMap) ?: continue
+            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in contents.getBlockMap(entry)) {
+                val name: String = translate(langType, prefix, entry) ?: continue
                 add(item, name)
             }
             // Item
-            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in contents.getItemMap(key)) {
-                val name: String = translate(langType, prefix, propertyMap) ?: continue
+            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in contents.getItemMap(entry)) {
+                val name: String = translate(langType, prefix, entry) ?: continue
                 add(item, name)
             }
             // Tool
-            for ((toolType: HTToolType, item: HTHasTranslationKey) in contents.getToolMap(key)) {
-                val materialName: HTLangName = propertyMap[HTMaterialPropertyKeys.LANG_NAME] ?: continue
+            for ((toolType: HTToolType, item: HTHasTranslationKey) in contents.getToolMap(entry)) {
+                val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
                 add(item, toolType.langPattern.translate(langType, materialName))
             }
         }

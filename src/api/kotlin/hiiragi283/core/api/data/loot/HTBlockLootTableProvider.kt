@@ -1,12 +1,11 @@
 package hiiragi283.core.api.data.loot
 
 import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.function.partially3
+import hiiragi283.core.api.function.partially2
 import hiiragi283.core.api.material.HTMaterialContents
-import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTBlockLootFactory
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
-import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.toLike
@@ -64,12 +63,12 @@ abstract class HTBlockLootTableProvider(protected val modId: String, registries:
      * @since 0.8.0
      */
     protected fun registerMaterials() {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HiiragiCoreAccess.INSTANCE.materialManager) {
-            for ((prefix: HTTagPrefix, block: HTBlockHolderLike<*, *>) in contents.getBlockMap(key)) {
+        for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
+            for ((prefix: HTTagPrefix, block: HTBlockHolderLike<*, *>) in contents.getBlockMap(entry)) {
                 if (block.namespace != modId) continue
                 val lootFactory: HTBlockLootFactory =
-                    propertyMap.getOrDefault(HTMaterialPropertyKeys.BLOCK_LOOT)[prefix] ?: HTBlockLootFactory.DEFAULT
-                add(block, lootFactory::create.partially3(key, propertyMap, registries))
+                    entry.getOrDefault(HTMaterialPropertyKeys.BLOCK_LOOT)[prefix] ?: HTBlockLootFactory.DEFAULT
+                add(block, lootFactory::create.partially2(entry, registries))
             }
         }
     }

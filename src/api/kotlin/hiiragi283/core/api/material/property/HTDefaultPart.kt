@@ -2,6 +2,7 @@ package hiiragi283.core.api.material.property
 
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -16,15 +17,15 @@ import net.minecraft.world.item.Item
  */
 sealed interface HTDefaultPart {
     /**
-     * 指定した[key]から素材アイテムのタグを取得します。
+     * 指定した[素材][material]から素材アイテムのタグを取得します。
      */
-    fun getTag(key: HTMaterialKey): TagKey<Item>
+    fun getTag(material: HTMaterialLike): TagKey<Item>
 
     /**
-     * 指定した[key]から素材アイテムを取得します。
+     * 指定した[素材][material]から素材アイテムを取得します。
      * @return 対応するアイテムがない場合は`null`
      */
-    fun getItem(key: HTMaterialKey): HTItemHolderLike<*>?
+    fun getItem(material: HTMaterialLike): HTItemHolderLike<*>?
 
     /**
      * レシピの生成時に使用されるサフィックスを取得します。
@@ -37,9 +38,9 @@ sealed interface HTDefaultPart {
      * @since 0.8.0
      */
     data class Tag(val tagKey: TagKey<Item>, val item: HTItemHolderLike<*>) : HTDefaultPart {
-        override fun getTag(key: HTMaterialKey): TagKey<Item> = tagKey
+        override fun getTag(material: HTMaterialLike): TagKey<Item> = tagKey
 
-        override fun getItem(key: HTMaterialKey): HTItemHolderLike<*> = item
+        override fun getItem(material: HTMaterialLike): HTItemHolderLike<*> = item
 
         override fun getSuffix(): String = tagKey.location().path
     }
@@ -67,9 +68,10 @@ sealed interface HTDefaultPart {
             PEARL -> CommonTagPrefixes.PEARL
         }
 
-        override fun getTag(key: HTMaterialKey): TagKey<Item> = prefix.itemTagKey(key)
+        override fun getTag(material: HTMaterialLike): TagKey<Item> = prefix.itemTagKey(material)
 
-        override fun getItem(key: HTMaterialKey): HTItemHolderLike<*>? = with(HiiragiCoreAccess.INSTANCE) {
+        override fun getItem(material: HTMaterialLike): HTItemHolderLike<*>? = with(HiiragiCoreAccess.INSTANCE) {
+            val key: HTMaterialKey = material.asMaterialKey()
             when {
                 prefix.contains(HTTagPropertyKeys.BLOCK_PROP) -> getBlockOrVanilla(prefix, key)
                 else -> getItemOrVanilla(prefix, key)

@@ -1,9 +1,17 @@
 {
   "values": [
+    "#c:raw_materials/amethyst",
     "#c:raw_materials/bauxite",
     "#c:raw_materials/cinnabar",
+    "#c:raw_materials/coal",
+    "#c:raw_materials/diamond",
+    "#c:raw_materials/echo",
+    "#c:raw_materials/emerald",
     "#c:raw_materials/iridium",
+    "#c:raw_materials/lapis",
     "#c:raw_materials/lead",
+    "#c:raw_materials/quartz",
+    "#c:raw_materials/redstone",
     "#c:raw_materials/salt",
     "#c:raw_materials/saltpeter",
     "#c:raw_materials/sulfur",

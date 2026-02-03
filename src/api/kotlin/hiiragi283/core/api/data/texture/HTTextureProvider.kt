@@ -5,13 +5,12 @@ import com.mojang.blaze3d.platform.NativeImage
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.item.tool.HTToolType
-import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialTextureSet
-import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
@@ -83,22 +82,22 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
      */
     protected fun material(output: BiConsumer<ResourceLocation, NativeImage>) {
         with(HiiragiCoreAccess.INSTANCE.materialContents) {
-            material(output, HTConst.BLOCK, getBlockTable())
-            material(output, HTConst.ITEM, getItemTable())
+            material(output, HTConst.BLOCK, ::getBlockMap)
+            material(output, HTConst.ITEM, ::getItemMap)
         }
     }
 
     protected fun material(
         output: BiConsumer<ResourceLocation, NativeImage>,
         pathPrefix: String,
-        table: HTTable<HTTagPrefix, HTMaterialKey, out HTIdLike>,
+        factory: (HTMaterialLike) -> Map<HTTagPrefix, HTIdLike>,
     ) {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HiiragiCoreAccess.INSTANCE.materialManager) {
-            if (key.namespace != modId) continue
-            val paletteId: ResourceLocation = (propertyMap[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId())
+        for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
+            if (entry.namespace != modId) continue
+            val paletteId: ResourceLocation = (entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId())
             val palette: List<Color> = HTTextureUtil.getPalette(paletteId).getOrNull() ?: continue
-            val textureSet: HTMaterialTextureSet = propertyMap.getOrDefault(HTMaterialPropertyKeys.TEXTURE_SET)
-            for ((prefix: HTTagPrefix, element: HTIdLike) in table.column(key)) {
+            val textureSet: HTMaterialTextureSet = entry.getOrDefault(HTMaterialPropertyKeys.TEXTURE_SET)
+            for ((prefix: HTTagPrefix, element: HTIdLike) in factory(entry)) {
                 val template: NativeImage = getTextureResult(textureSet, prefix).getOrNull() ?: continue
                 copyAndApplyColor(
                     output,
@@ -122,11 +121,11 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
      * @since 0.9.0
      */
     protected fun tool(output: BiConsumer<ResourceLocation, NativeImage>) {
-        for ((key: HTMaterialKey, propertyMap: HTPropertyMap) in HiiragiCoreAccess.INSTANCE.materialManager) {
-            if (key.namespace != modId) continue
-            val paletteId: ResourceLocation = (propertyMap[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId())
+        for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
+            if (entry.namespace != modId) continue
+            val paletteId: ResourceLocation = (entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId())
             val palette: List<Color> = HTTextureUtil.getPalette(paletteId).getOrNull() ?: continue
-            for ((toolType: HTToolType, item: HTIdLike) in HiiragiCoreAccess.INSTANCE.materialContents.getToolMap(key)) {
+            for ((toolType: HTToolType, item: HTIdLike) in HiiragiCoreAccess.INSTANCE.materialContents.getToolMap(entry)) {
                 val templateId: ResourceLocation = HiiragiCoreAPI.id("tool_set", toolType.name)
                 val template: NativeImage = HTTextureUtil.getTexture(templateId).getOrNull() ?: continue
                 copyAndApplyColor(output, item.itemId, palette, template)

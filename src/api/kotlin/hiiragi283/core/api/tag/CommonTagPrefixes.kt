@@ -126,6 +126,16 @@ object CommonTagPrefixes {
     }
 
     /**
+     * @since 0.9.0
+     */
+    @JvmField
+    val CRUSHED_ORE: HTTagPrefix = HTTagPrefix.create("crushed_ore", "crushed_ores", "crushed_ores/%s") {
+        put(HTTagPropertyKeys.ID_PATTERN, "crushed_%s_ore")
+
+        addNamePattern("Crushed %s Ore", "砕かれた%s鉱石")
+    }
+
+    /**
      * @since 0.8.0
      */
     @JvmField

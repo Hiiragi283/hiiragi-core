@@ -11,7 +11,6 @@ import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
-import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.resource.toId
@@ -62,12 +61,12 @@ internal object HCMiscRegister {
         event.register(Registries.BLOCK) { helper ->
             // 素材ブロックを生成する
             materialBlocks = manager
-                .toFlatTable { (key: HTMaterialKey, propertyMap: HTPropertyMap) ->
-                    propertyMap
+                .toFlatTable { entry: HTMaterialManager.Entry ->
+                    entry
                         .getOrDefault(HTMaterialPropertyKeys.BLOCK_PREFIXES)
                         .mapNotNull { prefix: HTTagPrefix ->
                             val properties: BlockBehaviour.Properties = prefix[HTTagPropertyKeys.BLOCK_PROP] ?: return@mapNotNull null
-                            val id: ResourceLocation = prefix.createId(key)
+                            val id: ResourceLocation = prefix.createId(entry)
                             val block = Block(properties)
                             helper.register(id, block)
                             Registry.register(
@@ -75,7 +74,7 @@ internal object HCMiscRegister {
                                 id,
                                 HTBlockItem(block, Item.Properties()),
                             )
-                            Triple(prefix, key, HTDeferredBlock(id))
+                            Triple(prefix, entry.asMaterialKey(), HTDeferredBlock(id))
                         }
                 }
         }
@@ -83,26 +82,26 @@ internal object HCMiscRegister {
         event.register(Registries.ITEM) { helper ->
             // 素材アイテムを生成する
             materialItems = manager
-                .toFlatTable { (key: HTMaterialKey, propertyMap: HTPropertyMap) ->
-                    propertyMap
+                .toFlatTable { entry: HTMaterialManager.Entry ->
+                    entry
                         .getOrDefault(HTMaterialPropertyKeys.ITEM_PREFIXES)
                         .map { prefix: HTTagPrefix ->
-                            val id: ResourceLocation = prefix.createId(key)
+                            val id: ResourceLocation = prefix.createId(entry)
                             helper.register(id, Item(Item.Properties()))
-                            Triple(prefix, key, HTItemHolderLike.of(id))
+                            Triple(prefix, entry.asMaterialKey(), HTItemHolderLike.of(id))
                         }
                 }
             // 素材ツールを生成する
             toolItems = manager
-                .toFlatTable { (key: HTMaterialKey, propertyMap: HTPropertyMap) ->
+                .toFlatTable { entry: HTMaterialManager.Entry ->
                     val material: HTToolMaterial =
-                        propertyMap[HTMaterialPropertyKeys.TOOL_MATERIAL] ?: return@toFlatTable setOf()
-                    propertyMap
+                        entry[HTMaterialPropertyKeys.TOOL_MATERIAL] ?: return@toFlatTable setOf()
+                    entry
                         .getOrDefault(HTMaterialPropertyKeys.TOOL_PREFIXES)
                         .map { toolType: HTToolType ->
-                            val id: ResourceLocation = toolType.createId(key)
+                            val id: ResourceLocation = toolType.createId(entry)
                             helper.register(id, toolType.createTool(material))
-                            Triple(toolType, key, HTItemHolderLike.of(id))
+                            Triple(toolType, entry.asMaterialKey(), HTItemHolderLike.of(id))
                         }
                 }
         }
