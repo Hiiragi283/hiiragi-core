@@ -28,9 +28,6 @@ object CommonTagPrefixes {
     @JvmField
     val ORE: HTTagPrefix = HTTagPrefix.create("ore", "ores", "ores/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_ore")
-        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
-            base * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
-        }
 
         put(
             HTTagPropertyKeys.BLOCK_PROP,
@@ -106,9 +103,7 @@ object CommonTagPrefixes {
     @JvmField
     val RAW_BLOCK: HTTagPrefix = HTTagPrefix.create("raw_block", "storage_blocks", "storage_blocks/raw_%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "raw_%s_block")
-        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
-            base * 9 * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
-        }
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base * 9 }
 
         put(HTTagPropertyKeys.BLOCK_PROP, BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK))
 
@@ -131,6 +126,9 @@ object CommonTagPrefixes {
     @JvmField
     val CRUSHED_ORE: HTTagPrefix = HTTagPrefix.create("crushed_ore", "crushed_ores", "crushed_ores/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "crushed_%s_ore")
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
+            base * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
+        }
 
         addNamePattern("Crushed %s Ore", "砕かれた%s鉱石")
     }
@@ -210,9 +208,6 @@ object CommonTagPrefixes {
     @JvmField
     val RAW: HTTagPrefix = HTTagPrefix.create("raw", "raw_materials", "raw_materials/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "raw_%s")
-        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
-            base * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
-        }
 
         addNamePattern("Raw %s", "%sの原石")
     }
@@ -258,9 +253,6 @@ object CommonTagPrefixes {
         stoneTexture: ResourceLocation,
     ): HTTagPrefix = HTTagPrefix.create("${name}_ore", "ores", "ores/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "${name}_%s_ore")
-        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
-            base * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
-        }
 
         put(HTTagPropertyKeys.BLOCK_PROP, properties)
         put(HTTagPropertyKeys.ORE_STONE_TEX, stoneTexture)
