@@ -54,14 +54,14 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
             flourToDough(event, entry)
 
-            if (entry.getOrDefault(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG).mechanical) {
+            if (HTMaterialPropertyKeys.DISABLE_MECHANICAL !in entry) {
                 baseToGear(event, entry)
                 ingotToNugget(entry)
                 ingotToPlate(event, entry)
 
                 plateToWire(event, entry)
             }
-            if (entry.getOrDefault(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG).melting) {
+            if (HTMaterialPropertyKeys.DISABLE_MELTING !in entry) {
                 smeltDustToIngot(entry)
                 for (prefix: HTTagPrefix in CommonTagPrefixes.ORES) {
                     smeltOreToBase(prefix, entry)
@@ -264,7 +264,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     @JvmStatic
     private fun smeltDustToIngot(entry: HTMaterialManager.Entry) {
-        if (!entry.getOrDefault(HTMaterialPropertyKeys.CAN_BE_SMELTED)) return
+        if (HTMaterialPropertyKeys.DISABLE_SMELTING in entry) return
         val dust: HTItemHolderLike<*> = getItem(CommonTagPrefixes.DUST, entry) ?: return
         val smeltedMaterial: HTMaterialLike = entry[HTMaterialPropertyKeys.SMELTED_TO] ?: entry
         val ingot: HTItemHolderLike<*> = getItem(CommonTagPrefixes.INGOT, smeltedMaterial) ?: return
@@ -281,7 +281,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     @JvmStatic
     private fun smeltOreToBase(prefix: HTTagPrefix, entry: HTMaterialManager.Entry) {
-        if (!entry.getOrDefault(HTMaterialPropertyKeys.CAN_BE_SMELTED)) return
+        if (HTMaterialPropertyKeys.DISABLE_SMELTING in entry) return
         val ore: HTItemHolderLike<*> = getBlock(prefix, entry) ?: getItem(prefix, entry) ?: return
         val smeltedMaterial: HTMaterialLike = entry[HTMaterialPropertyKeys.SMELTED_TO] ?: entry
         val smeltedPropertyMap: HTPropertyMap = materialManager[smeltedMaterial] ?: return

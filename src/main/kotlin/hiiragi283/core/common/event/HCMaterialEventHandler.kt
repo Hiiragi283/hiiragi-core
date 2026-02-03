@@ -9,7 +9,6 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.property.HTBlockLootFactory
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTFluidMaterialProperty
-import hiiragi283.core.api.material.property.HTFormingRecipeFlag
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialTextureSet
 import hiiragi283.core.api.material.property.HTSmithingRecipeProperty
@@ -23,6 +22,7 @@ import hiiragi283.core.api.material.property.addToolPrefixes
 import hiiragi283.core.api.material.property.setDefaultPart
 import hiiragi283.core.api.material.property.setName
 import hiiragi283.core.api.material.property.setTextureSet
+import hiiragi283.core.api.property.plusAssign
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -71,8 +71,9 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.FUEL)
             addItemPrefixes(oreSet)
             addExtraOreResult(CommonTagPrefixes.DUST, CommonMaterialKeys.SULFUR, 1 / 4f)
-            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
-            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.disableAll())
+            this += HTMaterialPropertyKeys.DISABLE_SMELTING
+            this += HTMaterialPropertyKeys.DISABLE_MECHANICAL
+            this += HTMaterialPropertyKeys.DISABLE_MELTING
 
             setName("Coal", "石炭")
             setTextureSet("fuel")
@@ -82,8 +83,9 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.FUEL)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(CommonTagPrefixes.DUST)
-            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
-            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.disableAll())
+            this += HTMaterialPropertyKeys.DISABLE_SMELTING
+            this += HTMaterialPropertyKeys.DISABLE_MECHANICAL
+            this += HTMaterialPropertyKeys.DISABLE_MELTING
 
             setName("Charcoal", "木炭")
             setTextureSet("fuel")
@@ -169,7 +171,7 @@ object HCMaterialEventHandler {
         event.modify(VanillaMaterialKeys.ECHO) {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(oreSet)
+            addItemPrefixes(CommonTagPrefixes.DUST)
             addExtraOreResult(CommonTagPrefixes.DUST, VanillaMaterialKeys.ENDER, 1 / 4f)
 
             setName("Echo Shard", "残響の欠片")
@@ -265,8 +267,8 @@ object HCMaterialEventHandler {
         event.modify(VanillaMaterialKeys.WHEAT) {
             setDefaultPart(HTDefaultPart.Prefixed.CROP)
             addItemPrefixes(CommonTagPrefixes.FLOUR, CommonTagPrefixes.DOUGH)
-            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
             put(HTMaterialPropertyKeys.CRUSHED_PREFIX, CommonTagPrefixes.FLOUR)
+            this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
             setName("Wheat", "小麦")
             setTextureSet("crop")
@@ -275,8 +277,8 @@ object HCMaterialEventHandler {
         event.modify(VanillaMaterialKeys.WOOD) {
             setDefaultPart(ItemTags.PLANKS, HTItemHolderLike.of(Items.OAK_PLANKS))
             addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEAR, CommonTagPrefixes.PLATE)
-            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
-            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.pressOnly())
+            this += HTMaterialPropertyKeys.DISABLE_SMELTING
+            this += HTMaterialPropertyKeys.DISABLE_MELTING
 
             setName("Wood", "木")
             addCustomName(CommonTagPrefixes.DUST, "Sawdust", "おがくず")
@@ -287,8 +289,8 @@ object HCMaterialEventHandler {
             setDefaultPart(Tags.Items.GLASS_BLOCKS, HTItemHolderLike.of(Items.GLASS))
             addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.ROD)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
-            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.solidifyOnly())
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_GLASS))
+            this += HTMaterialPropertyKeys.DISABLE_MECHANICAL
 
             setName("Glass", "ガラス")
             setTextureSet(HTMaterialTextureSet.SHINE)
@@ -309,12 +311,6 @@ object HCMaterialEventHandler {
 
             setName("Obsidian", "黒曜石")
             setTextureSet(HTMaterialTextureSet.DULL)
-        }
-        event.modify(VanillaMaterialKeys.GUNPOWDER) {
-            setDefaultPart(Tags.Items.GUNPOWDERS, HTItemHolderLike.of(Items.GUNPOWDER))
-            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
-
-            setName("Gunpowder", "火薬")
         }
     }
 
@@ -341,7 +337,6 @@ object HCMaterialEventHandler {
                 setDefaultPart(HTDefaultPart.Prefixed.DUST)
                 addBlockPrefixes(CommonTagPrefixes.ORES.plus(CommonTagPrefixes.RAW_BLOCK))
                 addItemPrefixes(oreSet)
-                put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
                 put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(3))
 
                 setName(enName, jaName)
@@ -354,8 +349,9 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.FUEL)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.FUEL)
-            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
-            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.disableAll())
+            this += HTMaterialPropertyKeys.DISABLE_SMELTING
+            this += HTMaterialPropertyKeys.DISABLE_MECHANICAL
+            this += HTMaterialPropertyKeys.DISABLE_MELTING
 
             setName("Coal Coke", "石炭コークス")
             setTextureSet("fuel")
@@ -440,9 +436,8 @@ object HCMaterialEventHandler {
         registerMetal(CommonMaterialKeys.OSMIUM, "Osmium", "オスミウム")
         event.modify(CommonMaterialKeys.IRIDIUM) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addBlockPrefixes(materialBlockSet)
             addItemPrefixes(metalSet.plus(partSet))
-            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
 
             setName("Iridium", "イリジウム")
             setTextureSet(HTMaterialTextureSet.SHINE)
@@ -500,7 +495,7 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.DUST)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(CommonTagPrefixes.DUST)
-            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
+            this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
             setName("Ash", "灰")
             setTextureSet("mineral", HTMaterialTextureSet.DULL)
@@ -515,8 +510,8 @@ object HCMaterialEventHandler {
                 CommonTagPrefixes.ROD,
                 CommonTagPrefixes.WIRE,
             )
-            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
-            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.pressOnly())
+            this += HTMaterialPropertyKeys.DISABLE_SMELTING
+            this += HTMaterialPropertyKeys.DISABLE_MELTING
 
             setName("Carbon", "炭素")
             setTextureSet("mineral", HTMaterialTextureSet.DULL)
@@ -532,9 +527,9 @@ object HCMaterialEventHandler {
                 CommonTagPrefixes.ROD,
                 CommonTagPrefixes.WIRE,
             )
-            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
-            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.solidifyOnly())
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_PLASTIC))
+            this += HTMaterialPropertyKeys.DISABLE_SMELTING
+            this += HTMaterialPropertyKeys.DISABLE_MECHANICAL
 
             setName("Plastic", "プラスチック")
             addCustomName(CommonTagPrefixes.DUST, "Plastic Pulp", "プラスチックパルプ")
@@ -551,9 +546,9 @@ object HCMaterialEventHandler {
                 CommonTagPrefixes.INGOT,
                 CommonTagPrefixes.PLATE,
             )
-            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
-            put(HTMaterialPropertyKeys.FORMING_RECIPE_FLAG, HTFormingRecipeFlag.solidifyOnly())
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_RUBBER))
+            this += HTMaterialPropertyKeys.DISABLE_SMELTING
+            this += HTMaterialPropertyKeys.DISABLE_MECHANICAL
 
             setName("Rubber", "ゴム")
             addCustomName(CommonTagPrefixes.DUST, "Rubber Pulp", "ゴムパルプ")
@@ -618,7 +613,7 @@ object HCMaterialEventHandler {
                 CommonTagPrefixes.ROD,
             )
             addToolPrefixes(HCToolMaterials.ANCIENT_METAL, CommonToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER))
-            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
+            this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
             setName("Ancient Metal", "古代の金属")
             setTextureSet(HTMaterialTextureSet.DULL)
@@ -635,7 +630,7 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(alloySet.plus(partSet))
-            put(HTMaterialPropertyKeys.CAN_BE_SMELTED, false)
+            this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
             setName("Ominous Metal", "不吉な金属")
         }

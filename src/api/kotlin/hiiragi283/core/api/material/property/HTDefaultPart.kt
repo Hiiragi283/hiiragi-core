@@ -37,7 +37,7 @@ sealed interface HTDefaultPart {
      * @author Hiiragi Tsubasa
      * @since 0.8.0
      */
-    data class Tag(val tagKey: TagKey<Item>, val item: HTItemHolderLike<*>) : HTDefaultPart {
+    data class BuiltIn(val tagKey: TagKey<Item>, val item: HTItemHolderLike<*>) : HTDefaultPart {
         override fun getTag(material: HTMaterialLike): TagKey<Item> = tagKey
 
         override fun getItem(material: HTMaterialLike): HTItemHolderLike<*> = item

@@ -76,7 +76,7 @@ object HTMaterialPropertyKeys {
      * @since 0.9.0
      */
     @JvmField
-    val CAN_BE_SMELTED: HTPropertyKey<Boolean> = HTPropertyKey.create(HiiragiCoreAPI.id("can_be_smelted"), true)
+    val DISABLE_SMELTING: HTPropertyKey<Unit?> = HTPropertyKey.createFlag(HiiragiCoreAPI.id("disable_smelting"))
 
     /**
      * @since 0.9.0
@@ -101,12 +101,16 @@ object HTMaterialPropertyKeys {
         HTPropertyKey.create(HiiragiCoreAPI.id("crushed_prefix"), CommonTagPrefixes.DUST)
 
     /**
-     * 加工レシピのフラグを管理する[プロパティキー][HTPropertyKey]
-     * @since 0.8.0
+     * @since 0.9.0
      */
     @JvmField
-    val FORMING_RECIPE_FLAG: HTPropertyKey<HTFormingRecipeFlag> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("forming_recipe_flag"), HTFormingRecipeFlag.enableAll())
+    val DISABLE_MECHANICAL: HTPropertyKey<Unit?> = HTPropertyKey.createFlag(HiiragiCoreAPI.id("disable_mechanical"))
+
+    /**
+     * @since 0.9.0
+     */
+    @JvmField
+    val DISABLE_MELTING: HTPropertyKey<Unit?> = HTPropertyKey.createFlag(HiiragiCoreAPI.id("disable_melting"))
 
     /**
      * 溶融状態の[液体][HTFluidMaterialProperty]に対応する[プロパティキー][HTPropertyKey]

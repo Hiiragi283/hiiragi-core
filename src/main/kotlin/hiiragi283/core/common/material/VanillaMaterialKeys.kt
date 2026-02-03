@@ -102,9 +102,6 @@ object VanillaMaterialKeys {
     @JvmStatic
     val OBSIDIAN: HTMaterialKey = create("obsidian")
 
-    @JvmStatic
-    val GUNPOWDER: HTMaterialKey = create("gunpowder")
-
     //    Item    //
 
     @JvmField

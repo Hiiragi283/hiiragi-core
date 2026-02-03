@@ -35,7 +35,7 @@ interface HTTable<R, C, V> {
     operator fun get(row: R, column: C): V?
 
     /**
-     * このマップに含まれる組の個数を返します。
+     * このテーブルに含まれる組の個数を返します。
      */
     val size: Int
 
@@ -45,32 +45,32 @@ interface HTTable<R, C, V> {
     val isEmpty: Boolean
 
     /**
-     * 指定した[row]に対応する列と値のマップを返します。
+     * 指定した[row]に対応する列と値のテーブルを返します。
      */
     fun row(row: R): Map<C, V>
 
     /**
-     * 指定した[column]に対応する行と値のマップを返します。
+     * 指定した[column]に対応する行と値のテーブルを返します。
      */
     fun column(column: C): Map<R, V>
 
     /**
-     * このマップに含まれるすべての行のキーの一覧を返します。
+     * このテーブルに含まれるすべての行のキーの一覧を返します。
      */
     val rowKeys: Set<R>
 
     /**
-     * このマップに含まれるすべての列のキーの一覧を返します。
+     * このテーブルに含まれるすべての列のキーの一覧を返します。
      */
     val columnKeys: Set<C>
 
     /**
-     * このマップに含まれるすべての値の一覧を返します。
+     * このテーブルに含まれるすべての値の一覧を返します。
      */
     val values: Collection<V>
 
     /**
-     * このマップに含まれるすべての組の一覧を返します。
+     * このテーブルに含まれるすべての組の一覧を返します。
      */
     val entries: Set<Triple<R, C, V>>
 

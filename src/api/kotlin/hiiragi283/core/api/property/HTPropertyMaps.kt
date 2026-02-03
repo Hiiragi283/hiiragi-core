@@ -14,6 +14,14 @@ fun <T : Any> HTPropertyMap.getOrDefault(key: HTPropertyKey<T>): T = get(key) ?:
 
 //    Mutable    //
 
+fun HTPropertyMap.Mutable.add(key: HTPropertyKey<Unit?>) {
+    this.put(key, Unit)
+}
+
+operator fun HTPropertyMap.Mutable.plusAssign(key: HTPropertyKey<Unit?>) {
+    this.add(key)
+}
+
 /**
  * @see MutableMap.computeIfAbsent
  */
