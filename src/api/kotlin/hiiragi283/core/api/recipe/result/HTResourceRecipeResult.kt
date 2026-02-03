@@ -39,12 +39,12 @@ abstract class HTResourceRecipeResult<TYPE : Any, RESOURCE : HTResourceType.Regi
         { tagKey: TagKey<TYPE> ->
             HiiragiCoreAccess.INSTANCE
                 .getFirstHolder(provider, tagKey)
-                .map { createStack(it, amount) }
+                .map { createStack(it.getHolder(), amount) }
         },
         { resource: RESOURCE, tagKey: TagKey<TYPE> ->
             HiiragiCoreAccess.INSTANCE
                 .getFirstHolder(provider, tagKey)
-                .map { createStack(it, amount) }
+                .map { createStack(it.getHolder(), amount) }
                 .let { either: HTTextResult<STACK> ->
                     HTTextResult.success(either.value() ?: createStack(resource, amount))
                 }

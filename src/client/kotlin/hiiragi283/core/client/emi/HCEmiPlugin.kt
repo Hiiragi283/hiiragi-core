@@ -17,18 +17,17 @@ import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.integration.emi.HTEmiPlugin
 import hiiragi283.core.api.integration.emi.toEmi
-import hiiragi283.core.api.integration.emi.toItemEmi
 import hiiragi283.core.api.integration.emi.widget.HTGhostWidget
 import hiiragi283.core.api.integration.emi.widget.HTIngredientWidget
 import hiiragi283.core.api.item.createItemStack
-import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.registry.asItemSequence
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.Screen
-import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponents
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
@@ -66,23 +65,22 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
 
     private fun addCustomRecipes(registry: EmiRegistry) {
         // Eternal Upgrade
-        ITEM_LOOKUP
-            .filterElements { item: Item -> item.defaultInstance.isDamageableItem }
-            .listElements()
-            .forEach { holder: Holder<Item> ->
-                addRecipeSafe(
-                    registry,
-                    holder.toLike().getId().withPrefix("/${HTConst.SMITHING}/${HiiragiCoreAPI.MOD_ID}/eternal_upgrade/"),
-                ) { id: ResourceLocation ->
-                    EmiSmithingRecipe(
-                        HCItems.ETERNAL_UPGRADE.toEmi(),
-                        holder.toItemEmi(),
-                        EmiIngredient.of(HTEternalSmithingRecipe.ADDITIONAL_TAG),
-                        createItemStack(holder.value(), DataComponents.UNBREAKABLE, Unbreakable(true)).toEmi(),
-                        id,
-                    )
-                }
+        for (holder: HTItemHolderLike<*> in ITEM_LOOKUP.asItemSequence()) {
+            val item: Item = holder.asItem()
+            if (!item.defaultInstance.isDamageableItem) continue
+            addRecipeSafe(
+                registry,
+                holder.getId().withPrefix("/${HTConst.SMITHING}/${HiiragiCoreAPI.MOD_ID}/eternal_upgrade/"),
+            ) { id: ResourceLocation ->
+                EmiSmithingRecipe(
+                    HCItems.ETERNAL_UPGRADE.toEmi(),
+                    item.toEmi(),
+                    EmiIngredient.of(HTEternalSmithingRecipe.ADDITIONAL_TAG),
+                    createItemStack(item, DataComponents.UNBREAKABLE, Unbreakable(true)).toEmi(),
+                    id,
+                )
             }
+        }
     }
 
     //    Handlers    //

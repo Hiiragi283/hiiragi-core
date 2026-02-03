@@ -13,7 +13,6 @@ import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTranslation
-import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.Component
 import net.minecraft.tags.TagKey
@@ -35,14 +34,6 @@ import net.neoforged.neoforge.fluids.FluidStack
  * @since 0.1.0
  */
 fun ItemLike.toEmi(amount: Int = 1): EmiStack = EmiStack.of(this, amount.toLong())
-
-/**
- * この[Holder][this]をアイテムの[EmiStack]に変換します。
- * @param amount スタックの個数
- * @author Hiiragi Tsubasa
- * @since 0.1.0
- */
-fun Holder<out ItemLike>.toItemEmi(amount: Int = 1): EmiStack = this.value().toEmi(amount)
 
 /**
  * この[ItemStack][this]を[EmiStack]に変換します。

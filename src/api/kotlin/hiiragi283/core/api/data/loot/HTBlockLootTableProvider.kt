@@ -8,9 +8,8 @@ import hiiragi283.core.api.material.property.HTBlockLootFactory
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.registry.asBlockSequence
 import hiiragi283.core.api.tag.HTTagPrefix
-import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
 import net.minecraft.data.loot.BlockLootSubProvider
@@ -28,9 +27,9 @@ abstract class HTBlockLootTableProvider(protected val modId: String, registries:
     BlockLootSubProvider(setOf(), FeatureFlags.REGISTRY.allFlags(), registries) {
     final override fun getKnownBlocks(): Iterable<Block> = registries
         .lookupOrThrow(Registries.BLOCK)
-        .listElements()
-        .filter { holder: Holder.Reference<Block> -> holder.toLike().namespace == modId }
-        .map(Holder<Block>::value)
+        .asBlockSequence()
+        .filter { holder: HTBlockHolderLike<*, *> -> holder.namespace == modId }
+        .map(HTBlockHolderLike<*, *>::asBlock)
         .filter { block: Block -> block.lootTable != BuiltInLootTables.EMPTY }
         .toList()
 

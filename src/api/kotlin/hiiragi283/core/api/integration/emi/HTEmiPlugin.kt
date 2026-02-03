@@ -30,7 +30,7 @@ abstract class HTEmiPlugin(protected val modId: String) : EmiPlugin {
          * [アイテム][Item]のレジストリです。
          */
         @JvmStatic
-        protected val ITEM_LOOKUP: HolderLookup.RegistryLookup<Item> by lazy(EmiPort.getItemRegistry()::asLookup)
+        protected val ITEM_LOOKUP: HolderLookup.RegistryLookup<Item> by lazy { EmiPort.getItemRegistry().asLookup() }
 
         /**
          * 液体源のみを含む[液体][Fluid]のレジストリです。

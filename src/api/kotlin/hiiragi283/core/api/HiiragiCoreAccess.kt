@@ -8,6 +8,7 @@ import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.holderSetOrNull
 import hiiragi283.core.api.registry.toLike
@@ -19,7 +20,6 @@ import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.toTextResult
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
-import net.minecraft.core.HolderSet
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.TagKey
 import net.neoforged.api.distmarker.Dist
@@ -71,17 +71,20 @@ interface HiiragiCoreAccess {
     //    Tag    //
 
     /**
-     * 指定した[provider]から，[tagKey]に紐づいた[Holder]を取得します。
+     * 指定した[provider]から，[tagKey]に紐づいた[HTHolderLike]を取得します。
      * @param T レジストリの種類のクラス
-     * @return [getModIdPriorityList]に基づいて選出された[Holder]の[結果][HTTextResult]
+     * @return [getModIdPriorityList]に基づいて選出された[HTHolderLike]の[結果][HTTextResult]
      */
-    fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<Holder<T>> {
+    fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<HTHolderLike.HolderDelegate<T, T>> {
         val provider1: HolderLookup.Provider = (provider ?: HiiragiCoreAPI.getActiveAccess())
             ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()
-        val holders: HolderSet<T> = provider1.holderSetOrNull(tagKey)
+        val holders: Sequence<HTHolderLike.HolderDelegate<T, T>> = provider1
+            .holderSetOrNull(tagKey)
+            ?.asSequence()
+            ?.map(Holder<T>::toLike)
             ?: return HTCommonTranslation.EMPTY_TAG_KEY.toTextResult(tagKey)
         for (modId: String in getModIdPriorityList()) {
-            val first: Holder<T>? = holders.firstOrNull { holder: Holder<T> -> holder.toLike().namespace == modId }
+            val first: HTHolderLike.HolderDelegate<T, T>? = holders.firstOrNull { it.namespace == modId }
             if (first != null) return HTTextResult.success(first)
         }
         return holders

@@ -49,8 +49,9 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             crushOreToCrushed(event, entry, CommonTagPrefixes.ORE)
             crushOreToCrushed(event, entry, CommonTagPrefixes.RAW)
 
-            baseToBlock(entry)
-            rawToBlock(entry)
+            baseToBlock(event, entry)
+            crushedToDust(event, entry)
+            rawToBlock(event, entry)
 
             flourToDough(event, entry)
 
@@ -84,7 +85,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         if (!event.isPresentTag(inputTag)) return
         if (inputTag == crushedPrefix.itemTagKey(entry)) return
         // 完成品を取得
-        val dust: Item = event.getFirstHolder(crushedPrefix, entry)?.value() ?: return
+        val dust: Item = event.getFirstHolder(crushedPrefix, entry)?.get() ?: return
         // レシピを登録
         HCSingleItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(inputTag)
@@ -98,7 +99,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // 材料が存在するか判定
         if (!event.isPresentTag(prefix, entry)) return
         // 完成品を取得
-        val crushedOre: Item = event.getFirstHolder(CommonTagPrefixes.CRUSHED_ORE, entry)?.value() ?: return
+        val crushedOre: Item = event.getFirstHolder(CommonTagPrefixes.CRUSHED_ORE, entry)?.get() ?: return
         // レシピを登録
         HCSingleItemRecipeBuilder.crushing(output) {
             // 材料
@@ -118,8 +119,9 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     private fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
         HiiragiCoreAccess.INSTANCE.getItemOrVanilla(prefix, material)
 
+    // Tag-Based
     @JvmStatic
-    private fun baseToBlock(entry: HTMaterialManager.Entry) {
+    private fun baseToBlock(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
         val blockProperty: HTStorageBlockProperty = entry.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK)
         val block: HTItemHolderLike<*> = getBlock(CommonTagPrefixes.BLOCK, entry) ?: return
 
@@ -128,68 +130,24 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         val base: HTItemHolderLike<*> = defaultPart.getItem(entry) ?: return
         if (block.namespace == HTConst.MINECRAFT && base.namespace == HTConst.MINECRAFT) return
         // レシピを登録
-        HTShapelessRecipeBuilder.create(output) {
-            ingredients += CommonTagPrefixes.BLOCK to entry
-            resultStack += base to blockProperty.baseCount
-            recipeId replace entry.getId().withSuffix("/${suffix}_from_block")
+        if (event.isPresentTag(CommonTagPrefixes.BLOCK, entry)) {
+            HTShapelessRecipeBuilder.create(output) {
+                ingredients += CommonTagPrefixes.BLOCK to entry
+                resultStack += base to blockProperty.baseCount
+                recipeId replace entry.getId().withSuffix("/${suffix}_from_block")
+            }
         }
         // レシピを登録
         val pattern: List<String> = blockProperty.pattern ?: return
-        HTShapedRecipeBuilder.create(output) {
-            pattern(pattern)
-            define('A') += defaultPart.getTag(entry)
-            define('B') += base
-            resultStack += block
-            recipeId replace entry.getId().withSuffix("/block_from_$suffix")
-        }
-    }
-
-    @JvmStatic
-    private fun rawToBlock(entry: HTMaterialManager.Entry) {
-        val raw: HTItemHolderLike<*> = getItem(CommonTagPrefixes.RAW, entry) ?: return
-        if (raw.namespace == HTConst.MINECRAFT) return
-        // レシピを登録
-        HTShapelessRecipeBuilder.create(output) {
-            ingredients += CommonTagPrefixes.RAW_BLOCK to entry
-            resultStack += raw to 9
-            recipeId replace entry.getId().withSuffix("/raw_from_block")
-        }
-        // レシピを登録
-        val rawBlock: HTItemHolderLike<*> = getBlock(CommonTagPrefixes.RAW_BLOCK, entry) ?: return
-        HTShapedRecipeBuilder.create(output) {
-            hollow8()
-            define('A') += CommonTagPrefixes.RAW to entry
-            define('B') += raw
-            resultStack += rawBlock
-            recipeId replace entry.getId()
-        }
-    }
-
-    @JvmStatic
-    private fun flourToDough(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
-        val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
-        if (!event.isPresentTag(crushedPrefix, entry)) return
-        val dough: Item = event.getFirstHolder(CommonTagPrefixes.DOUGH, entry)?.value() ?: return
-        // レシピを登録
-        HTShapelessRecipeBuilder.create(output) {
-            ingredients += crushedPrefix to entry
-            ingredients += inputCreator
-                .create(
-                    false,
-                    Items.POTION,
-                ) { expect(DataComponents.POTION_CONTENTS, PotionContents(Potions.WATER)) }
-                .ingredient
-            resultStack += dough
-            recipeId suffix "_with_bottle"
-        }
-        // レシピを登録
-        HTShapelessRecipeBuilder.create(output) {
-            repeat(3) {
-                ingredients += crushedPrefix to entry
+        val inputTag: TagKey<Item> = defaultPart.getTag(entry)
+        if (event.isPresentTag(inputTag)) {
+            HTShapedRecipeBuilder.create(output) {
+                pattern(pattern)
+                define('A') += inputTag
+                define('B') += base
+                resultStack += block
+                recipeId replace entry.getId().withSuffix("/block_from_$suffix")
             }
-            ingredients += Tags.Items.BUCKETS_WATER
-            resultStack += dough to 3
-            recipeId suffix "_with_bucket"
         }
     }
 
@@ -198,7 +156,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         val inputTag: TagKey<Item> = entry.getDefaultPart(entry) ?: return
         if (!event.isPresentTag(inputTag)) return
 
-        val gear: Item = event.getFirstHolder(CommonTagPrefixes.GEAR, entry)?.value() ?: return
+        val gear: Item = event.getFirstHolder(CommonTagPrefixes.GEAR, entry)?.get() ?: return
 
         val smithingProperty: HTSmithingRecipeProperty? = entry[HTMaterialPropertyKeys.SMITHING_RECIPE]
         if (smithingProperty != null) {
@@ -227,6 +185,48 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     }
 
     @JvmStatic
+    private fun crushedToDust(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
+        if (!event.isPresentTag(CommonTagPrefixes.CRUSHED_ORE, entry)) return
+        val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
+        val dust: Item = event.getFirstHolder(crushedPrefix, entry)?.get() ?: return
+        // レシピを登録
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += CommonTagPrefixes.CRUSHED_ORE to entry
+            ingredients += CommonToolTypes.HAMMER.toolTags
+            resultStack += dust to CommonTagPrefixes.CRUSHED_ORE.getScaledAmount(1, entry).toInt()
+            recipeId suffix "_from_crushed_ore"
+        }
+    }
+
+    @JvmStatic
+    private fun flourToDough(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
+        val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
+        if (!event.isPresentTag(crushedPrefix, entry)) return
+        val dough: Item = event.getFirstHolder(CommonTagPrefixes.DOUGH, entry)?.get() ?: return
+        // レシピを登録
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += crushedPrefix to entry
+            ingredients += inputCreator
+                .create(
+                    false,
+                    Items.POTION,
+                ) { expect(DataComponents.POTION_CONTENTS, PotionContents(Potions.WATER)) }
+                .ingredient
+            resultStack += dough
+            recipeId suffix "_with_bottle"
+        }
+        // レシピを登録
+        HTShapelessRecipeBuilder.create(output) {
+            repeat(3) {
+                ingredients += crushedPrefix to entry
+            }
+            ingredients += Tags.Items.BUCKETS_WATER
+            resultStack += dough to 3
+            recipeId suffix "_with_bucket"
+        }
+    }
+
+    @JvmStatic
     private fun ingotToNugget(entry: HTMaterialManager.Entry) {
         val nugget: HTItemHolderLike<*> = getItem(CommonTagPrefixes.NUGGET, entry) ?: return
         if (nugget.namespace == HTConst.MINECRAFT) return
@@ -250,13 +250,36 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     @JvmStatic
     private fun ingotToPlate(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
         if (!event.isPresentTag(CommonTagPrefixes.INGOT, entry)) return
-        val plate: Item = event.getFirstHolder(CommonTagPrefixes.PLATE, entry)?.value() ?: return
+        val plate: Item = event.getFirstHolder(CommonTagPrefixes.PLATE, entry)?.get() ?: return
         // レシピを登録
         HTShapelessRecipeBuilder.create(output) {
             ingredients += CommonTagPrefixes.INGOT to entry
             ingredients += CommonToolTypes.HAMMER.toolTags
             resultStack += plate
             recipeId suffix "_from_ingot"
+        }
+    }
+
+    @JvmStatic
+    private fun rawToBlock(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
+        val raw: HTItemHolderLike<*> = getItem(CommonTagPrefixes.RAW, entry) ?: return
+        if (raw.namespace == HTConst.MINECRAFT) return
+        // レシピを登録
+        if (event.isPresentTag(CommonTagPrefixes.RAW_BLOCK, entry)) {
+            HTShapelessRecipeBuilder.create(output) {
+                ingredients += CommonTagPrefixes.RAW_BLOCK to entry
+                resultStack += raw to 9
+                recipeId replace entry.getId().withSuffix("/raw_from_block")
+            }
+        }
+        // レシピを登録
+        val rawBlock: HTItemHolderLike<*> = getBlock(CommonTagPrefixes.RAW_BLOCK, entry) ?: return
+        HTShapedRecipeBuilder.create(output) {
+            hollow8()
+            define('A') += CommonTagPrefixes.RAW to entry
+            define('B') += raw
+            resultStack += rawBlock
+            recipeId replace entry.getId()
         }
     }
 
@@ -305,7 +328,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     @JvmStatic
     private fun plateToWire(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
         if (!event.isPresentTag(CommonTagPrefixes.PLATE, entry)) return
-        val wire: Item = event.getFirstHolder(CommonTagPrefixes.WIRE, entry)?.value() ?: return
+        val wire: Item = event.getFirstHolder(CommonTagPrefixes.WIRE, entry)?.get() ?: return
         // Stonecutting
         HTStonecuttingRecipeBuilder.create(output) {
             ingredient += CommonTagPrefixes.PLATE to entry
