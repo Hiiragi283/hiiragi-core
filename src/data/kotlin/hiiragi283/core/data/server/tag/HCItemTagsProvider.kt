@@ -59,11 +59,10 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
             }
         }
 
-        addMaterial(factory, CommonTagPrefixes.FUEL, VanillaMaterialKeys.COAL).addItem(Items.COAL)
         addMaterial(factory, CommonTagPrefixes.FUEL, VanillaMaterialKeys.CHARCOAL).addItem(Items.CHARCOAL)
+        addMaterial(factory, CommonTagPrefixes.FUEL, VanillaMaterialKeys.COAL).addItem(Items.COAL)
         addMaterial(factory, CommonTagPrefixes.GEM, VanillaMaterialKeys.ECHO).addItem(Items.ECHO_SHARD)
         addMaterial(factory, CommonTagPrefixes.PEARL, VanillaMaterialKeys.ENDER).addItem(Items.ENDER_PEARL)
-
         addMaterial(factory, CommonTagPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE).addItem(Items.NETHERITE_SCRAP)
 
         factory.apply(ItemTags.COALS).add(HCItems.BAMBOO_CHARCOAL)

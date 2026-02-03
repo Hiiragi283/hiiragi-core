@@ -3,7 +3,6 @@ package hiiragi283.core.api.storage.resource
 import hiiragi283.core.api.fixedFraction
 import hiiragi283.core.api.storage.amount.HTAmountView
 import org.apache.commons.lang3.math.Fraction
-import kotlin.math.max
 
 /**
  * 単一の不変のリソースを保持するインターフェースです。
@@ -26,7 +25,7 @@ interface HTResourceView<RESOURCE : HTResourceType<*>> : HTAmountView {
     /**
      * 指定した[resource]から空き容量を取得します。
      */
-    fun getNeeded(resource: RESOURCE?): Int = max(0, getCapacity(resource) - getAmount())
+    fun getNeeded(resource: RESOURCE?): Int = maxOf(0, getCapacity(resource) - getAmount())
 
     /**
      * 指定した[resource]から占有率を取得します。

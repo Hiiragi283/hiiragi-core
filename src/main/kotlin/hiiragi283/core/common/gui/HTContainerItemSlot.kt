@@ -19,7 +19,6 @@ import net.minecraft.world.item.ItemStack
 import java.util.Optional
 import java.util.function.BiPredicate
 import java.util.function.Consumer
-import kotlin.math.min
 
 /**
  * [HTItemSlot]に基づいた[Slot]の実装
@@ -102,7 +101,7 @@ open class HTContainerItemSlot(
             if (!mayPickup(player)) {
                 return Optional.empty()
             }
-            val count: Int = min(count, decrement)
+            val count: Int = minOf(count, decrement)
             val stack: ItemStack = remove(count)
             if (stack.isEmpty) {
                 return Optional.empty()

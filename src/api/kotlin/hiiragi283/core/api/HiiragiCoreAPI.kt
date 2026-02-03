@@ -6,7 +6,9 @@ import net.minecraft.client.Minecraft
 import net.minecraft.core.RegistryAccess
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.MinecraftServer
+import net.minecraft.world.entity.player.Player
 import net.neoforged.api.distmarker.Dist
+import net.neoforged.neoforge.common.CommonHooks
 import net.neoforged.neoforge.server.ServerLifecycleHooks
 import org.slf4j.Logger
 import thedarkcolour.kotlinforforge.neoforge.forge.callWhenOn
@@ -66,6 +68,15 @@ data object HiiragiCoreAPI {
     @JvmStatic
     fun getActiveAccess(): RegistryAccess? =
         callWhenOn(Dist.CLIENT) { Minecraft.getInstance().level?.registryAccess() } ?: getActiveServer()?.registryAccess()
+
+    /**
+     * クラフトを実行している[プレイヤー][Player]のインスタンスを取得します。
+     * @return クラフト中のプレイヤーがいない場合は`null`
+     * @author Hiiragi Tsubasa
+     * @since 0.10.0
+     */
+    @JvmStatic
+    fun getCraftingPlayer(): Player = CommonHooks.getCraftingPlayer()
 
     //    Service    //
 

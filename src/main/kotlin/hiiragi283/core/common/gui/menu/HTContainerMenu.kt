@@ -18,7 +18,6 @@ import net.minecraft.world.inventory.MenuType
 import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.network.PacketDistributor
-import kotlin.math.min
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[AbstractContainerMenu]の拡張クラスです。
@@ -169,7 +168,7 @@ abstract class HTContainerMenu<C>(
                 // スロットが空で現在のstackを配置可能な場合，スロットに入るだけ現在のstackを入れる
                 if (stackIn.isEmpty && slot.mayPlace(stack)) {
                     val maxCount: Int = slot.getMaxStackSize(stack)
-                    slot.setByPlayer(stack.split(min(stack.count, maxCount)))
+                    slot.setByPlayer(stack.split(minOf(stack.count, maxCount)))
                     slot.setChanged()
                     flag = true
                     break
