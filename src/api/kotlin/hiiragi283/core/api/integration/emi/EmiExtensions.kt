@@ -6,6 +6,7 @@ import dev.emi.emi.api.stack.EmiStack
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.HTHolderLike
@@ -123,6 +124,15 @@ fun HTItemResult.toEmi(): EmiStack = this.getStackResult(null).mapOrElse(ItemSta
  * @since 0.1.0
  */
 fun HTFluidResult.toEmi(): EmiStack = this.getStackResult(null).mapOrElse(FluidStack::toEmi, ::createErrorStack)
+
+/**
+ * この[確率付き完成品][this]を[EmiStack]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.10.0
+ */
+fun HTChancedItemResult.toEmi(): EmiStack = this.result
+    .toEmi()
+    .setChance(this.chance.toFloat())
 
 // Fluid Content
 

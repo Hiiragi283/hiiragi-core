@@ -51,9 +51,6 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
             if (prefix == CommonTagPrefixes.GEM || prefix == CommonTagPrefixes.INGOT) {
                 factory.apply(ItemTags.BEACON_PAYMENT_ITEMS).addTag(prefix, key)
             }
-            if (prefix == CommonTagPrefixes.PLATE && key == VanillaMaterialKeys.WOOD) {
-                factory.apply(ItemTags.PLANKS).add(item)
-            }
             if (prefix == CommonTagPrefixes.WIRE && key == CommonMaterialKeys.PLASTIC) {
                 factory.apply(Tags.Items.STRINGS).add(item)
             }
@@ -66,6 +63,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
         addMaterial(factory, CommonTagPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE).addItem(Items.NETHERITE_SCRAP)
 
         factory.apply(ItemTags.COALS).add(HCItems.BAMBOO_CHARCOAL)
+        factory.apply(ItemTags.PLANKS).add(HCItems.PARTICLE_BOARD)
     }
 
     //    Tool    //

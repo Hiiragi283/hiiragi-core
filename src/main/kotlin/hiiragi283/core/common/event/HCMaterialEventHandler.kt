@@ -275,13 +275,13 @@ object HCMaterialEventHandler {
         // Others
         event.modify(VanillaMaterialKeys.WOOD) {
             setDefaultPart(ItemTags.PLANKS, HTItemHolderLike.of(Items.OAK_PLANKS))
-            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEAR, CommonTagPrefixes.PLATE)
+            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEAR)
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
             this += HTMaterialPropertyKeys.DISABLE_MELTING
 
             setName("Wood", "木")
             addCustomName(CommonTagPrefixes.DUST, "Sawdust", "おがくず")
-            setTextureSet("wood")
+            setTextureSet("mineral")
             put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 15)
         }
         event.modify(VanillaMaterialKeys.GLASS) {

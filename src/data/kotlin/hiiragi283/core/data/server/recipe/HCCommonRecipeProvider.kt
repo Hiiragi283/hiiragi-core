@@ -4,6 +4,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
+import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -66,12 +67,25 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         }*/
 
         // Compressed Sawdust -> Charcoal
+        HTShapedRecipeBuilder.create(output) {
+            hollow8()
+            define('A') += CommonTagPrefixes.DUST to VanillaMaterialKeys.WOOD
+            define('B') += CommonToolTypes.HAMMER
+            resultStack += HCItems.COMPRESSED_SAWDUST
+        }
         HTCookingRecipeBuilder.smelting(output) {
             ingredient += HCItems.COMPRESSED_SAWDUST
             resultStack += Items.CHARCOAL
             exp = 0.5f
             time = 20 * 30
             recipeId suffix "_from_sawdust"
+        }
+        // Compressed Sawdust -> Particle Board
+        HTShapedRecipeBuilder.create(output) {
+            hollow8()
+            define('A') += CommonTagPrefixes.DUST to VanillaMaterialKeys.WOOD
+            define('B') += Tags.Items.SLIME_BALLS
+            resultStack += HCItems.PARTICLE_BOARD to 4
         }
         // Dough -> Bread
         HTCookingRecipeBuilder.smeltingAndSmoking(output) {

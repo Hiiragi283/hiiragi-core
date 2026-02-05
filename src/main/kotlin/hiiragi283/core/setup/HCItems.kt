@@ -33,6 +33,8 @@ object HCItems {
 
     @JvmStatic
     fun register(eventBus: IEventBus) {
+        REGISTER.addAlias("wood_plate", "particle_board")
+        
         REGISTER.register(eventBus)
 
         eventBus.addListener(::modifyComponents)
@@ -41,6 +43,7 @@ object HCItems {
 
     //    Materials   //
 
+    // Wood
     @JvmField
     val BAMBOO_CHARCOAL: HTSimpleDeferredItem = REGISTER.registerSimpleItem("bamboo_charcoal")
 
@@ -48,13 +51,18 @@ object HCItems {
     val COMPRESSED_SAWDUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("compressed_sawdust")
 
     @JvmField
+    val PARTICLE_BOARD: HTSimpleDeferredItem = REGISTER.registerSimpleItem("particle_board")
+
+    // Metal
+    @JvmField
+    val STEEL_COMPOUND: HTSimpleDeferredItem = REGISTER.registerSimpleItem("steel_compound")
+
+    // Polymer
+    @JvmField
     val POLYMER_RESIN: HTSimpleDeferredItem = REGISTER.registerSimpleItem("polymer_resin")
 
     @JvmField
     val RAW_RUBBER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("raw_rubber")
-
-    @JvmField
-    val STEEL_COMPOUND: HTSimpleDeferredItem = REGISTER.registerSimpleItem("steel_compound")
 
     @JvmField
     val SYNTHETIC_LEATHER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_leather")

@@ -1,5 +1,6 @@
 package hiiragi283.core.api.data.holder
 
+import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.core.NonNullList
@@ -74,6 +75,11 @@ abstract class HTIngredientHolder {
         prefixes
             .flatMap { prefix: HTTagPrefix -> materials.map(prefix::itemTagKey) }
             .let(this::plusAssign)
+    }
+
+    @JvmName("addToolTags")
+    operator fun plusAssign(toolType: HTToolType) {
+        this.plusAssign(toolType.toolTags)
     }
 
     /**

@@ -6,6 +6,7 @@ import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.HTHolderLike
+import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.holderSetOrNull
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.text.HTTextResult
@@ -66,8 +67,10 @@ class HTRegisterRuntimeRecipeEvent(val recipeManager: RecipeManager, val context
     fun <T : Any> isPresentTag(tagKey: TagKey<T>): Boolean = context.provider.holderSetOrNull(tagKey) != null
 
     // Material
-    fun getFirstHolder(prefix: HTTagPrefix, material: HTMaterialLike): HTHolderLike.HolderDelegate<Item, Item>? =
-        getFirstHolder(prefix.itemTagKey(material), true)
+    fun getFirstHolder(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
+        getFirstHolder(prefix.itemTagKey(material), true)?.let { holder: HTHolderLike.HolderDelegate<Item, Item> ->
+            HTItemHolderLike.of(holder.get())
+        }
 
     fun isPresentTag(prefix: HTTagPrefix, material: HTMaterialLike): Boolean = isPresentTag(prefix.itemTagKey(material))
 }
