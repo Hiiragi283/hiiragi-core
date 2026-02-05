@@ -53,17 +53,11 @@ data object HTResultCreator {
     //    Fluid    //
 
     @JvmStatic
-    fun create(content: HTFluidContent<*, *, *>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult = HTFluidResult.create {
-        this.fluid = content.toResource()
-        this.tagKey = content.fluidTag
-        this.amount = amount
-    }
+    fun create(content: HTFluidContent<*, *, *>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult =
+        HTFluidResult(checkNotNull(content.toResource()), amount)
 
     @JvmStatic
-    fun create(stack: FluidStack): HTFluidResult = HTFluidResult.create {
-        fluid = stack.toResource()
-        amount = stack.amount
-    }
+    fun create(stack: FluidStack): HTFluidResult = HTFluidResult(checkNotNull(stack.toResource()), stack.amount)
 
     @JvmStatic
     fun water(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult = create(VanillaFluidContents.WATER, amount)

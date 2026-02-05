@@ -1,16 +1,11 @@
 package hiiragi283.core.data.server
 
-import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.HTDataGenContext
-import hiiragi283.core.api.material.HTMaterialManager
-import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
-import hiiragi283.core.api.tag.CommonTagPrefixes
-import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.property.getScaledAmount
+import hiiragi283.core.api.data.map.HTDataMapGenHelper
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import net.minecraft.core.HolderLookup
+import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.neoforged.neoforge.common.data.DataMapProvider
 import net.neoforged.neoforge.registries.datamaps.builtin.Compostable
@@ -30,22 +25,8 @@ class HCDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.out
 
     private fun furnaceFuels() {
         val furnace: Builder<FurnaceFuel, Item> = builder(NeoForgeDataMaps.FURNACE_FUELS)
-
-        for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
-            if (entry.namespace != HiiragiCoreAPI.MOD_ID) continue
-            val fuelTime: Int = entry[HTMaterialPropertyKeys.FUEL_TIME] ?: continue
-            // Block
-            if (HiiragiCoreAccess.INSTANCE.materialContents.getBlock(CommonTagPrefixes.BLOCK, entry) != null) {
-                furnace.add(CommonTagPrefixes.BLOCK.itemTagKey(entry), FurnaceFuel(fuelTime * 10), false)
-            }
-            // Item
-            for ((prefix: HTTagPrefix, _) in HiiragiCoreAccess.INSTANCE.materialContents.getItemMap(entry)) {
-                val fuelTime1: Int = when (prefix) {
-                    CommonTagPrefixes.NUGGET -> fuelTime / 10
-                    else -> prefix.getScaledAmount(fuelTime, entry)
-                }.toInt()
-                furnace.add(prefix.itemTagKey(entry), FurnaceFuel(fuelTime1), false)
-            }
+        HTDataMapGenHelper.registerFurnaceFuels { tagKey: TagKey<Item>, time: Int ->
+            furnace.add(tagKey, FurnaceFuel(time), false)
         }
 
         furnace.add(HCItems.BAMBOO_CHARCOAL, FurnaceFuel(20 * 10 * 6), false)

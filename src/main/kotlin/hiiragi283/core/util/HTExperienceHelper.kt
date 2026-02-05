@@ -1,6 +1,8 @@
 package hiiragi283.core.util
 
 import com.google.common.primitives.Ints
+import hiiragi283.core.api.div
+import hiiragi283.core.api.times
 import hiiragi283.core.config.HCConfig
 import it.unimi.dsi.fastutil.longs.Long2LongArrayMap
 import net.minecraft.core.Holder
@@ -12,15 +14,17 @@ import net.minecraft.world.item.enchantment.Enchantment
 import net.minecraft.world.item.enchantment.ItemEnchantments
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.Vec3
-import kotlin.math.max
+import org.apache.commons.lang3.math.Fraction
 
 /**
  * @see me.desht.pneumaticcraft.common.util.EnchantmentUtils
  */
 object HTExperienceHelper {
-    fun fluidAmountFromExp(value: Int): Int = value * HCConfig.COMMON.expConversionRatio.asInt
+    fun getExpRatio(): Int = HCConfig.COMMON.expConversionRatio.asInt
 
-    fun expAmountFromFluid(value: Int): Int = value / HCConfig.COMMON.expConversionRatio.asInt
+    fun fluidAmountFromExp(value: Int): Int = value * getExpRatio()
+
+    fun expAmountFromFluid(value: Int): Int = value / getExpRatio()
 
     fun popExperienceOrb(level: Level, pos: Vec3i, amount: Int) {
         popExperienceOrb(level, Vec3.atCenterOf(pos), amount)
@@ -32,6 +36,20 @@ object HTExperienceHelper {
         }
     }
 
+    fun fluidAmountFromExp(value: Fraction): Fraction = value * getExpRatio()
+
+    fun expAmountFromFluid(value: Fraction): Fraction = value / getExpRatio()
+
+    fun popExperienceOrb(level: Level, pos: Vec3i, amount: Fraction) {
+        popExperienceOrb(level, Vec3.atCenterOf(pos), amount)
+    }
+
+    fun popExperienceOrb(level: Level, pos: Vec3, amount: Fraction) {
+        if (level is ServerLevel) {
+            ExperienceOrb.award(level, pos, amount.toInt())
+        }
+    }
+
     //    Player    //
 
     @JvmStatic
@@ -40,7 +58,7 @@ object HTExperienceHelper {
 
     @JvmStatic
     fun setPlayerExp(player: Player, amount: Long) {
-        val fixedAmount: Long = max(0, amount)
+        val fixedAmount: Long = maxOf(0, amount)
         player.totalExperience = Ints.saturatedCast(fixedAmount)
         player.experienceLevel = Ints.saturatedCast(getLevelForExp(fixedAmount))
         val expForLevel: Int = getExpForLevel(player.experienceLevel)

@@ -492,7 +492,6 @@ object HCMaterialEventHandler {
         // Others
         event.modify(CommonMaterialKeys.ASH) {
             setDefaultPart(HTDefaultPart.Prefixed.DUST)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(CommonTagPrefixes.DUST)
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
@@ -502,7 +501,6 @@ object HCMaterialEventHandler {
         }
         event.modify(CommonMaterialKeys.CARBON) {
             setDefaultPart(HTDefaultPart.Prefixed.DUST)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(
                 CommonTagPrefixes.DUST,
                 CommonTagPrefixes.PLATE,

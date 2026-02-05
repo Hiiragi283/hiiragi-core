@@ -31,6 +31,13 @@ class HTTextResult<T> private constructor(val contents: Either<Component, T>) {
     fun value(): T? = contents.getRight()
 
     /**
+     * 保持している値を返します。
+     * @return 値がない場合は[fallback]の戻り値
+     * @since 0.10.0
+     */
+    inline fun valueOrElse(fallback: () -> T): T = value() ?: fallback()
+
+    /**
      * 保持しているエラーを返します。
      * @return 値がある場合は`null`
      */

@@ -19,6 +19,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
         // Block
         add(HCBlocks.WARPED_WART, "歪んだウォート")
 
+        add(HCBlocks.EXP_DRAIN, "経験値排水溝")
+
         // Entity
         add(HCEntityTypes.ELDRITCH_EGG, "異質な卵")
 

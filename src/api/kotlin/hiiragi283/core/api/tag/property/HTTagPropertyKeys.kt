@@ -43,6 +43,11 @@ object HTTagPropertyKeys {
 
     //    Data Gen    //
 
+    // Data Map
+    @JvmField
+    val FUEL_SCALE: HTPropertyKey<Fraction?> = createNullable("fuel_scale")
+
+    // Lang
     /**
      * 翻訳のパターンを管理する[プロパティキー][HTPropertyKey]
      */
@@ -50,6 +55,7 @@ object HTTagPropertyKeys {
     val LANG_PATTERN: HTPropertyKey<HTLangPatternProvider> =
         HTPropertyKey.create(HiiragiCoreAPI.id("lang_pattern"), HTLangPatternProvider.create("%s", "%s"))
 
+    // Texture
     /**
      * テクスチャを生成する際のテクスチャの名前を管理する[プロパティキー][HTPropertyKey]
      */

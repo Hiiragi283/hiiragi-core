@@ -2,6 +2,7 @@ package hiiragi283.core.api.tag
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.div
+import hiiragi283.core.api.fraction
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
@@ -98,6 +99,7 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.BLOCK_PROP, BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK))
 
         addNamePattern("Block of %s", "%sブロック")
+        put(HTTagPropertyKeys.FUEL_SCALE, fraction(10))
     }
 
     @JvmField
@@ -163,6 +165,8 @@ object CommonTagPrefixes {
     @JvmField
     val FUEL: HTTagPrefix = HTTagPrefix.create("fuel", "fuels", "%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_fuel")
+
+        put(HTTagPropertyKeys.FUEL_SCALE, fraction(1))
     }
 
     @JvmField
@@ -176,6 +180,8 @@ object CommonTagPrefixes {
     @JvmField
     val GEM: HTTagPrefix = HTTagPrefix.create("gem", "gems", "gems/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_gem")
+
+        put(HTTagPropertyKeys.FUEL_SCALE, fraction(1))
     }
 
     @JvmField
@@ -183,6 +189,7 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_ingot")
 
         addNamePattern("%s Ingot", "%sインゴット")
+        put(HTTagPropertyKeys.FUEL_SCALE, fraction(1))
     }
 
     @JvmField
@@ -191,11 +198,13 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base / 9 }
 
         addNamePattern("%s Nugget", "%sナゲット")
+        put(HTTagPropertyKeys.FUEL_SCALE, fraction(1, 10))
     }
 
     @JvmField
     val PEARL: HTTagPrefix = HTTagPrefix.create("pearl", "pearls", "%s_pearls") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_pearl")
+        put(HTTagPropertyKeys.FUEL_SCALE, fraction(1))
     }
 
     @JvmField

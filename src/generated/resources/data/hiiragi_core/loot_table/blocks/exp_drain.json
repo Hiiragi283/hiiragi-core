@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "hiiragi_core:ash_block"
+          "name": "hiiragi_core:exp_drain"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "hiiragi_core:blocks/ash_block"
+  "random_sequence": "hiiragi_core:blocks/exp_drain"
 }

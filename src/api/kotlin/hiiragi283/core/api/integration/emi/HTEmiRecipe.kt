@@ -12,9 +12,9 @@ import dev.emi.emi.api.widget.WidgetHolder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.gui.HTBackgroundType
-import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.recipe.result.HTComplexResult
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.text.HTCommonTranslation
@@ -132,7 +132,7 @@ abstract class HTEmiRecipe<RECIPE : Any>(
     /**
      * アイテムと液体の完成品を追加します。
      */
-    protected fun addOutputs(results: Ior<HTItemResult, HTFluidResult>) {
+    protected fun addOutputs(results: HTComplexResult) {
         addOutputs(results.getLeft())
         addOutputs(results.getRight())
     }

@@ -19,6 +19,8 @@ class HCEnglishLangProvider(output: PackOutput) :
         // Block
         add(HCBlocks.WARPED_WART, "Warped Wart")
 
+        add(HCBlocks.EXP_DRAIN, "Experience Drain")
+
         // Entity
         add(HCEntityTypes.ELDRITCH_EGG, "Thrown Eldritch Egg")
 

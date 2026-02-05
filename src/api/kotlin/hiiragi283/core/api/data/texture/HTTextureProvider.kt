@@ -92,12 +92,20 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
         pathPrefix: String,
         factory: (HTMaterialLike) -> Map<HTTagPrefix, HTIdLike>,
     ) {
+        // すべての素材に対してテクスチャの生成を試みる
         for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
+            // 素材の名前空間がmodIdと異なる場合はパス
             if (entry.namespace != modId) continue
+            // 生成対象がない場合はパス
+            val prefixedMap: Map<HTTagPrefix, HTIdLike> = factory(entry)
+            if (prefixedMap.isEmpty()) continue
+            // パレットを取得
             val paletteId: ResourceLocation = (entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId())
             val palette: List<Color> = HTTextureUtil.getPalette(paletteId).getOrNull() ?: continue
+            // テクスチャを生成
             val textureSet: HTMaterialTextureSet = entry.getOrDefault(HTMaterialPropertyKeys.TEXTURE_SET)
-            for ((prefix: HTTagPrefix, element: HTIdLike) in factory(entry)) {
+            for ((prefix: HTTagPrefix, element: HTIdLike) in prefixedMap) {
+                // テンプレートを取得
                 val template: NativeImage = getTextureResult(textureSet, prefix).getOrNull() ?: continue
                 copyAndApplyColor(
                     output,
@@ -122,11 +130,19 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
      * @since 0.9.0
      */
     protected fun tool(output: BiConsumer<ResourceLocation, NativeImage>) {
+        // すべての素材に対してテクスチャの生成を試みる
         for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
+            // 素材の名前空間がmodIdと異なる場合はパス
             if (entry.namespace != modId) continue
+            // 生成対象がない場合はパス
+            val toolMap: Map<HTToolType, HTIdLike> = HiiragiCoreAccess.INSTANCE.materialContents.getToolMap(entry)
+            if (toolMap.isEmpty()) continue
+            // パレットを取得
             val paletteId: ResourceLocation = (entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId())
             val palette: List<Color> = HTTextureUtil.getPalette(paletteId).getOrNull() ?: continue
-            for ((toolType: HTToolType, item: HTIdLike) in HiiragiCoreAccess.INSTANCE.materialContents.getToolMap(entry)) {
+            // テクスチャを生成
+            for ((toolType: HTToolType, item: HTIdLike) in toolMap) {
+                // テンプレートを取得
                 val templateId: ResourceLocation = HiiragiCoreAPI.id("tool_set", toolType.name)
                 val template: NativeImage = HTTextureUtil.getTexture(templateId).getOrNull() ?: continue
                 copyAndApplyColor(output, item.itemId, palette, template)

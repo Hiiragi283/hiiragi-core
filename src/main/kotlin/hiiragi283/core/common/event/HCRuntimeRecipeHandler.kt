@@ -317,7 +317,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // Smelting & Blasting
         HTCookingRecipeBuilder.smeltingAndBlasting(output) {
             ingredient += ore
-            resultStack += base to prefix.getScaledAmount(1, smeltedPropertyMap).toInt()
+            resultStack += base to smeltedPropertyMap.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER).toInt()
             exp = 0.7f
             recipeId suffix "_from_${prefix.name}"
         }

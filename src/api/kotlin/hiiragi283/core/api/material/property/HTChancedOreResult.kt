@@ -16,5 +16,5 @@ data class HTChancedOreResult(val prefix: HTTagPrefix, val key: HTMaterialKey, v
     /**
      * [HTChancedItemResult]に変換します。
      */
-    fun toResult(creator: HTResultCreator): HTChancedItemResult = HTChancedItemResult(creator.material(prefix, key), chance)
+    fun toResult(creator: HTResultCreator): HTChancedItemResult = HTChancedItemResult(creator.material(prefix, key), chance, null)
 }
