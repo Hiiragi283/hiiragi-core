@@ -34,7 +34,7 @@ object HCItems {
     @JvmStatic
     fun register(eventBus: IEventBus) {
         REGISTER.addAlias("wood_plate", "particle_board")
-        
+
         REGISTER.register(eventBus)
 
         eventBus.addListener(::modifyComponents)

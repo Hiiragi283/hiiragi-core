@@ -3,12 +3,12 @@ package hiiragi283.core.util
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.recipe.input.HTShapelessRecipeInput
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.toResourcePair
 import hiiragi283.core.api.storage.item.HTItemResourceType
-import hiiragi283.core.api.storage.item.toResourcePair
 import hiiragi283.core.api.storage.resource.HTResourceSlot
 import hiiragi283.core.api.storage.resource.HTResourceType
 import hiiragi283.core.api.storage.resource.HTResourceView
@@ -69,15 +69,8 @@ object HTShapelessRecipeHelper {
      */
     @JvmName("shapelessMatchItem")
     @JvmStatic
-    fun shapelessMatch(ingredients: List<HTItemIngredient>, stacks: Iterable<ItemStack>): Map<HTItemResourceType, Int> {
-        val stackMap: Map<HTItemResourceType, Int> = stacks
-            .fold(hashMapOf()) { map: HashMap<HTItemResourceType, Int>, stack: ItemStack ->
-                val (resource: HTItemResourceType, amount: Int) = stack.toResourcePair() ?: return@fold map
-                map[resource] = (map[resource] ?: 0) + amount
-                map
-            }
-        return shapelessMatch(ingredients, stackMap)
-    }
+    fun shapelessMatch(ingredients: List<HTItemIngredient>, stacks: Iterable<ItemStack>): Map<HTItemResourceType, Int> =
+        shapelessMatch(ingredients, HTShapelessRecipeInput.createMap(stacks))
 
     /**
      * [HTFluidResourceType]向けのメソッドです。

@@ -8,11 +8,6 @@ import net.minecraft.world.item.crafting.RecipeInput
 import org.apache.commons.lang3.math.Fraction
 
 /**
- * @since 0.9.0
- */
-typealias HTViewProcessingRecipe = HTProcessingRecipe<HTViewRecipeInput>
-
-/**
  * 処理時間と獲得経験値を保持する[HTRecipe]の拡張クラスです。
  * @param INPUT レシピの入力となるクラス
  * @param time レシピの処理時間

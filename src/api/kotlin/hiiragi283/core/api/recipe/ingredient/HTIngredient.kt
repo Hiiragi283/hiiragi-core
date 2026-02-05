@@ -2,7 +2,6 @@ package hiiragi283.core.api.recipe.ingredient
 
 import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.storage.resource.HTResourceType
-import hiiragi283.core.api.storage.resource.HTResourceView
 import hiiragi283.core.api.tag.getName
 import hiiragi283.core.api.text.HTHasText
 import net.minecraft.network.chat.Component
@@ -30,27 +29,9 @@ interface HTIngredient<TYPE : Any, RESOURCE : HTResourceType<TYPE>> :
     override fun test(resource: RESOURCE, amount: Int): Boolean = testOnlyType(resource) && amount >= getRequiredAmount()
 
     /**
-     * @since 0.9.0
-     */
-    fun test(pair: Pair<RESOURCE, Int>): Boolean = test(pair.first, pair.second)
-
-    /**
-     * @since 0.9.0
-     */
-    fun test(view: HTResourceView<RESOURCE>): Boolean {
-        val resource: RESOURCE = view.getResource() ?: return false
-        return test(resource, view.getAmount())
-    }
-
-    /**
      * 指定した[resource]が条件を満たしているか判定します。
      */
     fun testOnlyType(resource: RESOURCE): Boolean
-
-    /**
-     * @since 0.9.0
-     */
-    fun testOnlyType(view: HTResourceView<RESOURCE>): Boolean = view.getResource()?.let(::testOnlyType) ?: false
 
     /**
      * この材料が要求する量を返します。
