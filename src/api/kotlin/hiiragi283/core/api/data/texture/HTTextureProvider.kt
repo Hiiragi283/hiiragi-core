@@ -99,12 +99,19 @@ abstract class HTTextureProvider(protected val modId: String, packOutput: PackOu
             // 生成対象がない場合はパス
             val prefixedMap: Map<HTTagPrefix, HTIdLike> = factory(entry)
             if (prefixedMap.isEmpty()) continue
-            // パレットを取得
-            val paletteId: ResourceLocation = (entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId())
-            val palette: List<Color> = HTTextureUtil.getPalette(paletteId).getOrNull() ?: continue
             // テクスチャを生成
             val textureSet: HTMaterialTextureSet = entry.getOrDefault(HTMaterialPropertyKeys.TEXTURE_SET)
             for ((prefix: HTTagPrefix, element: HTIdLike) in prefixedMap) {
+                if (HTTagPropertyKeys.DISABLE_TEXTURE_GEN in prefix) continue
+                // パレットを取得
+                val palette: List<Color> = sequence {
+                    if (HTTagPropertyKeys.IS_RAW in prefix) {
+                        yield(entry[HTMaterialPropertyKeys.TEXTURE_COLOR_RAW] ?: entry.getId().withPrefix("raw_"))
+                    }
+                    yield(entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId())
+                }.map(HTTextureUtil::getPalette)
+                    .firstNotNullOfOrNull { it.getOrNull() }
+                    ?: continue
                 // テンプレートを取得
                 val template: NativeImage = getTextureResult(textureSet, prefix).getOrNull() ?: continue
                 copyAndApplyColor(

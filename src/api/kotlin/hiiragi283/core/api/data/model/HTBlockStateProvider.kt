@@ -193,7 +193,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
             val stoneTexture: ResourceLocation = prefix[HTTagPropertyKeys.ORE_STONE_TEX] ?: continue
             for ((key: HTMaterialKey, ore: HTBlockHolderLike<*, *>) in contents.getBlockMap(prefix)) {
                 if (ore.namespace == modId) {
-                    layeredBlock(ore, stoneTexture, prefix.createId(key).withPrefix("block/"))
+                    layeredBlock(ore, stoneTexture, CommonTagPrefixes.ORE.createId(key).withPrefix("block/"))
                 }
             }
         }

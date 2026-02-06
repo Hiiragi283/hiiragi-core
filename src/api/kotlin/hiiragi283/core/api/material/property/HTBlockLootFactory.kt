@@ -3,6 +3,7 @@ package hiiragi283.core.api.material.property
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.loot.HTLootBuilderHelper
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.core.HolderLookup
 import net.minecraft.world.level.ItemLike
@@ -31,6 +32,9 @@ fun interface HTBlockLootFactory {
                         .`when`(ExplosionCondition.survivesExplosion()),
                 )
         }
+
+        @JvmStatic
+        fun createOre(): HTBlockLootFactory = createOre(CommonTagPrefixes.RAW)
 
         @JvmStatic
         fun createOre(dropPrefix: HTTagPrefix?): HTBlockLootFactory = HTBlockLootFactory { context: Context ->

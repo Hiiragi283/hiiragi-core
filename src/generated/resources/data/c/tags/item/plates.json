@@ -8,9 +8,13 @@
     "#c:plates/gold",
     "#c:plates/iridium",
     "#c:plates/iron",
+    "#c:plates/lead",
     "#c:plates/netherite",
     "#c:plates/plastic",
+    "#c:plates/platinum",
     "#c:plates/rubber",
+    "#c:plates/silver",
+    "#c:plates/stainless_steel",
     "#c:plates/steel"
   ]
 }

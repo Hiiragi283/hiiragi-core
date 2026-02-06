@@ -2,8 +2,9 @@
   "values": [
     "#c:ores/bauxite",
     "#c:ores/cinnabar",
-    "#c:ores/iridium",
-    "#c:ores/lead",
+    "#c:ores/galena",
+    "#c:ores/platinum_group",
+    "#c:ores/ruby",
     "#c:ores/salt",
     "#c:ores/saltpeter",
     "#c:ores/sulfur",

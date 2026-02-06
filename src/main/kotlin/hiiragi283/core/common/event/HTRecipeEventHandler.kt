@@ -3,12 +3,14 @@ package hiiragi283.core.common.event
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
+import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.toFraction
 import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import hiiragi283.core.common.recipe.HCSingleItemRecipe
 import hiiragi283.core.setup.HCRecipeTypes
+import hiiragi283.core.util.HTShapelessRecipeHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.item.ItemEntity
@@ -65,7 +67,12 @@ object HTRecipeEventHandler {
             if (isCompleted(entity)) continue
             val input: SingleRecipeInput = createInput(entity)
             val (_, recipe: HCAnvilCrushingRecipe) = HCRecipeTypes.ANVIL_CRUSHING.getRecipeFor(input, level, null) ?: continue
-            popResult(input, recipe, level, entity)
+            val multiplier: Int = popResult(input, recipe, level, entity)
+            List(multiplier) { recipe.getExtraResultItem(level) }
+                .let(HTShapelessRecipeHelper::createMap)
+                .forEach { (resource: HTItemResourceType, count: Int) ->
+                    entity.spawnAtLocation(resource.toStack(count))
+                }
             if (entity.item.isEmpty) {
                 entity.discard()
             }
@@ -132,18 +139,19 @@ object HTRecipeEventHandler {
         recipe: HCSingleItemRecipe<INPUT>,
         level: Level,
         entity: ItemEntity,
-    ): ItemEntity? = popResult(recipe.assemble(input, level.registryAccess()), recipe.ingredient.getRequiredAmount(), entity)
+    ): Int = popResult(recipe.assemble(input, level.registryAccess()), recipe.ingredient.getRequiredAmount(), entity)
 
     @JvmStatic
-    private fun popResult(result: ItemStack, recipeAmount: Int, entity: ItemEntity): ItemEntity? {
-        if (result.isEmpty) return null
+    private fun popResult(result: ItemStack, recipeAmount: Int, entity: ItemEntity): Int {
+        if (result.isEmpty) return 0
         val multiplier: Int = entity.item.count / recipeAmount
-        return result
+        result
             .copyWithCount(result.count * multiplier)
             .let(entity::spawnAtLocation)
             ?.also { itemEntity: ItemEntity ->
                 entity.item.count -= multiplier * recipeAmount
                 itemEntity.persistentData.putBoolean(HTConst.COMPLETED_RECIPE, true)
             }
+        return multiplier
     }
 }

@@ -14,17 +14,28 @@ object CommonMaterialKeys {
 
     //    Minerals    //
 
-    @JvmStatic
-    val BAUXITE: HTMaterialKey = create("bauxite")
-
+    // Na
     @JvmStatic
     val SALT: HTMaterialKey = create("salt")
 
     @JvmStatic
     val SALTPETER: HTMaterialKey = create("saltpeter")
 
+    // Al
+    @JvmStatic
+    val BAUXITE: HTMaterialKey = create("bauxite")
+
+    // S
     @JvmStatic
     val SULFUR: HTMaterialKey = create("sulfur")
+
+    // Ir, Pt
+    @JvmStatic
+    val PLATINUM_GROUP: HTMaterialKey = create("platinum_group")
+
+    // Pd
+    @JvmStatic
+    val GALENA: HTMaterialKey = create("galena")
 
     //    Gems    //
 
@@ -131,6 +142,9 @@ object CommonMaterialKeys {
     // Iron
     @JvmStatic
     val STEEL: HTMaterialKey = create("steel")
+
+    @JvmStatic
+    val STAINLESS_STEEL: HTMaterialKey = create("stainless_steel")
 
     @JvmStatic
     val INVAR: HTMaterialKey = create("invar")

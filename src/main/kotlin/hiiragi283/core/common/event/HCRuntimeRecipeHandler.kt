@@ -10,6 +10,7 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTDefaultPart
+import hiiragi283.core.api.material.property.HTMaterialLevel
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTSmithingRecipeProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
@@ -20,7 +21,7 @@ import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.property.getScaledAmount
-import hiiragi283.core.common.data.recipe.builder.HCSingleItemRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HCAnvilCrushingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
@@ -56,21 +57,21 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
             flourToDough(event, entry)
 
-            if (HTMaterialPropertyKeys.DISABLE_MECHANICAL !in entry) {
+            val hardness: HTMaterialLevel = entry.getOrDefault(HTMaterialPropertyKeys.HARDNESS)
+            if (hardness > HTMaterialLevel.NONE && hardness <= HTMaterialLevel.MEDIUM) {
                 baseToGear(event, entry)
                 ingotToNugget(entry)
                 ingotToPlate(event, entry)
 
                 plateToWire(event, entry)
             }
-            if (HTMaterialPropertyKeys.DISABLE_MELTING !in entry) {
-                smeltDustToIngot(entry)
-                for (prefix: HTTagPrefix in CommonTagPrefixes.ORES) {
-                    smeltOreToBase(prefix, entry)
-                }
-                smeltOreToBase(CommonTagPrefixes.CRUSHED_ORE, entry)
-                smeltOreToBase(CommonTagPrefixes.RAW, entry)
+
+            smeltDustToIngot(entry)
+            for (prefix: HTTagPrefix in CommonTagPrefixes.ORES) {
+                smeltOreToBase(prefix, entry)
             }
+            smeltOreToBase(CommonTagPrefixes.CRUSHED_ORE, entry)
+            smeltOreToBase(CommonTagPrefixes.RAW, entry)
         }
     }
 
@@ -88,7 +89,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // 完成品を取得
         val dust: ItemLike = event.getFirstHolder(crushedPrefix, entry) ?: return
         // レシピを登録
-        HCSingleItemRecipeBuilder.crushing(output) {
+        HCAnvilCrushingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(inputTag)
             result = resultCreator.create(dust)
             recipeId suffix "_from_${defaultPart.getSuffix()}"
@@ -102,11 +103,17 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // 完成品を取得
         val crushedOre: ItemLike = event.getFirstHolder(CommonTagPrefixes.CRUSHED_ORE, entry) ?: return
         // レシピを登録
-        HCSingleItemRecipeBuilder.crushing(output) {
+        HCAnvilCrushingRecipeBuilder.create(output) {
             // 材料
             ingredient = inputCreator.create(prefix, entry)
             // 主産物
             result = resultCreator.create(crushedOre, prefix.getScaledAmount(2, entry).toInt())
+            // 副産物
+            entry
+                .getOrDefault(HTMaterialPropertyKeys.ORE_EXTRA_RESULTS)
+                .map { it.toResult(resultCreator) }
+                .firstOrNull()
+                .let(::extraResult::set)
 
             recipeId suffix "_from_${prefix.name}"
         }
@@ -295,7 +302,13 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // 精錬の前後がどちらもバニラ由来の場合はパス
         if (dust.namespace == HTConst.MINECRAFT && ingot.namespace == HTConst.MINECRAFT) return
         // Smelting & Blasting
-        HTCookingRecipeBuilder.smeltingAndBlasting(output) {
+        when (entry.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT)) {
+            HTMaterialLevel.NONE -> return
+            HTMaterialLevel.LOW -> HTCookingRecipeBuilder::smeltingAndBlasting
+            HTMaterialLevel.MEDIUM -> HTCookingRecipeBuilder::smeltingAndBlasting
+            HTMaterialLevel.HIGH -> HTCookingRecipeBuilder::blasting
+            HTMaterialLevel.HIGHEST -> return
+        }(output) {
             ingredient += dust
             resultStack += ingot
             exp = 0.35f
@@ -316,7 +329,13 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // 精錬の前後がどちらもバニラ由来の場合はパス
         if (ore.namespace == HTConst.MINECRAFT && base.namespace == HTConst.MINECRAFT) return
         // Smelting & Blasting
-        HTCookingRecipeBuilder.smeltingAndBlasting(output) {
+        when (entry.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT)) {
+            HTMaterialLevel.NONE -> return
+            HTMaterialLevel.LOW -> HTCookingRecipeBuilder::smeltingAndBlasting
+            HTMaterialLevel.MEDIUM -> HTCookingRecipeBuilder::blasting
+            HTMaterialLevel.HIGH -> HTCookingRecipeBuilder::blasting
+            HTMaterialLevel.HIGHEST -> return
+        }(output) {
             ingredient += ore
             resultStack += base to smeltedPropertyMap.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER).toInt()
             exp = 0.7f

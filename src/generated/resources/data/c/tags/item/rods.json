@@ -9,8 +9,12 @@
     "#c:rods/gold",
     "#c:rods/iridium",
     "#c:rods/iron",
+    "#c:rods/lead",
     "#c:rods/netherite",
     "#c:rods/plastic",
+    "#c:rods/platinum",
+    "#c:rods/silver",
+    "#c:rods/stainless_steel",
     "#c:rods/steel"
   ]
 }

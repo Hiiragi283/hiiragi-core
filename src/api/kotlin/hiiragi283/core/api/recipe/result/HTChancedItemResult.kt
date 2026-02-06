@@ -1,5 +1,6 @@
 package hiiragi283.core.api.recipe.result
 
+import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
@@ -31,9 +32,11 @@ data class HTChancedItemResult(val result: HTItemResult, val chance: Fraction, v
             HTItemResult.CODEC.optionalFieldOf("fallback").forGetter(HTChancedItemResult::fallback),
             ::HTChancedItemResult,
         )
-    }
 
-    constructor(result: HTItemResult, chance: Fraction, fallback: HTItemResult?) : this(result, chance, Optional.ofNullable(fallback))
+        @HTBuilderMarker
+        @JvmStatic
+        inline fun create(builderAction: Builder.() -> Unit): HTChancedItemResult = Builder().apply(builderAction).build()
+    }
 
     /**
      * 指定した[レベル][level]から完成品を取得します。
@@ -54,5 +57,15 @@ data class HTChancedItemResult(val result: HTItemResult, val chance: Fraction, v
     fun getStackOrEmpty(provider: HolderLookup.Provider, chance: Float): ItemStack = when {
         chance <= this.chance.toFloat() -> result.getStackOrEmpty(provider)
         else -> fallback.map { it.getStackOrEmpty(provider) }.orElseGet(ItemStack::EMPTY)
+    }
+
+    //    Builder    //
+
+    class Builder {
+        lateinit var result: HTItemResult
+        var chance: Fraction = Fraction.ONE
+        var fallback: HTItemResult? = null
+
+        fun build(): HTChancedItemResult = HTChancedItemResult(result, chance, Optional.ofNullable(fallback))
     }
 }

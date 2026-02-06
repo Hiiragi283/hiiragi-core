@@ -5,6 +5,7 @@ import hiiragi283.core.api.div
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.property.add
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
@@ -29,6 +30,7 @@ object CommonTagPrefixes {
     @JvmField
     val ORE: HTTagPrefix = HTTagPrefix.create("ore", "ores", "ores/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_ore")
+        add(HTTagPropertyKeys.IS_RAW)
 
         put(
             HTTagPropertyKeys.BLOCK_PROP,
@@ -106,6 +108,7 @@ object CommonTagPrefixes {
     val RAW_BLOCK: HTTagPrefix = HTTagPrefix.create("raw_block", "storage_blocks", "storage_blocks/raw_%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "raw_%s_block")
         put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base * 9 }
+        add(HTTagPropertyKeys.IS_RAW)
 
         put(HTTagPropertyKeys.BLOCK_PROP, BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK))
 
@@ -131,6 +134,7 @@ object CommonTagPrefixes {
         put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
             base * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
         }
+        add(HTTagPropertyKeys.IS_RAW)
 
         addNamePattern("Crushed %s Ore", "砕かれた%s鉱石")
     }
@@ -217,6 +221,7 @@ object CommonTagPrefixes {
     @JvmField
     val RAW: HTTagPrefix = HTTagPrefix.create("raw", "raw_materials", "raw_materials/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "raw_%s")
+        add(HTTagPropertyKeys.IS_RAW)
 
         addNamePattern("Raw %s", "%sの原石")
     }
@@ -232,6 +237,7 @@ object CommonTagPrefixes {
     @JvmField
     val SCRAP: HTTagPrefix = HTTagPrefix.create("scrap", "scraps", "scraps/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_scrap")
+        add(HTTagPropertyKeys.IS_RAW)
 
         addNamePattern("%s Scrap", "%sの欠片")
     }
@@ -262,11 +268,12 @@ object CommonTagPrefixes {
         stoneTexture: ResourceLocation,
     ): HTTagPrefix = HTTagPrefix.create("${name}_ore", "ores", "ores/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "${name}_%s_ore")
+        add(HTTagPropertyKeys.IS_RAW)
 
         put(HTTagPropertyKeys.BLOCK_PROP, properties)
         put(HTTagPropertyKeys.ORE_STONE_TEX, stoneTexture)
 
         addNamePattern("$enPrefix %s Ore", "$jaPrefix%s鉱石")
-        put(HTTagPropertyKeys.TEXTURE_ICON, "ore")
+        add(HTTagPropertyKeys.DISABLE_TEXTURE_GEN)
     }
 }

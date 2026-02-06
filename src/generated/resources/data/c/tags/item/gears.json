@@ -9,7 +9,11 @@
     "#c:gears/gold",
     "#c:gears/iridium",
     "#c:gears/iron",
+    "#c:gears/lead",
     "#c:gears/netherite",
+    "#c:gears/platinum",
+    "#c:gears/silver",
+    "#c:gears/stainless_steel",
     "#c:gears/steel",
     "#c:gears/wood"
   ]

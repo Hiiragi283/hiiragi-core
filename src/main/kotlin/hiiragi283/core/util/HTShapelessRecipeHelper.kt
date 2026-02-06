@@ -3,12 +3,12 @@ package hiiragi283.core.util
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
-import hiiragi283.core.api.recipe.input.HTShapelessRecipeInput
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.toResourcePair
 import hiiragi283.core.api.storage.item.HTItemResourceType
+import hiiragi283.core.api.storage.item.toResourcePair
 import hiiragi283.core.api.storage.resource.HTResourceSlot
 import hiiragi283.core.api.storage.resource.HTResourceType
 import hiiragi283.core.api.storage.resource.HTResourceView
@@ -20,6 +20,44 @@ import net.neoforged.neoforge.fluids.FluidStack
  * @since 0.9.0
  */
 object HTShapelessRecipeHelper {
+    //    Input    //
+
+    /**
+     * @since 0.10.0
+     */
+    @JvmName("createMapFromViews")
+    @JvmStatic
+    fun <T : HTResourceType<*>> createMap(views: Iterable<HTResourceView<T>>): Map<T, Int> =
+        views.fold(hashMapOf()) { map: HashMap<T, Int>, view: HTResourceView<T> ->
+            val resource: T = view.getResource() ?: return@fold map
+            map[resource] = (map[resource] ?: 0) + view.getAmount()
+            map
+        }
+
+    /**
+     * @since 0.10.0
+     */
+    @JvmName("createMapFromItems")
+    @JvmStatic
+    fun createMap(stacks: Iterable<ItemStack>): Map<HTItemResourceType, Int> =
+        stacks.fold(hashMapOf()) { map: HashMap<HTItemResourceType, Int>, stack: ItemStack ->
+            val (resource: HTItemResourceType, amount: Int) = stack.toResourcePair() ?: return@fold map
+            map[resource] = (map[resource] ?: 0) + amount
+            map
+        }
+
+    /**
+     * @since 0.10.0
+     */
+    @JvmName("createMapFromFluids")
+    @JvmStatic
+    fun createMap(stacks: Iterable<FluidStack>): Map<HTFluidResourceType, Int> =
+        stacks.fold(hashMapOf()) { map: HashMap<HTFluidResourceType, Int>, stack: FluidStack ->
+            val (resource: HTFluidResourceType, amount: Int) = stack.toResourcePair() ?: return@fold map
+            map[resource] = (map[resource] ?: 0) + amount
+            map
+        }
+
     //    Match    //
 
     /**
@@ -54,38 +92,23 @@ object HTShapelessRecipeHelper {
     fun <T : HTResourceType<*>, I : HTIngredient<*, T>> shapelessMatch(
         ingredients: List<I>,
         views: Iterable<HTResourceView<T>>,
-    ): Map<T, Int> {
-        val stackMap: Map<T, Int> = views
-            .fold(hashMapOf()) { map: HashMap<T, Int>, view: HTResourceView<T> ->
-                val resource: T = view.getResource() ?: return@fold map
-                map[resource] = (map[resource] ?: 0) + view.getAmount()
-                map
-            }
-        return shapelessMatch(ingredients, stackMap)
-    }
+    ): Map<T, Int> = shapelessMatch(ingredients, createMap(views))
 
     /**
      * [HTItemResourceType]向けのメソッドです。
      */
-    @JvmName("shapelessMatchItem")
+    @JvmName("shapelessMatchItems")
     @JvmStatic
     fun shapelessMatch(ingredients: List<HTItemIngredient>, stacks: Iterable<ItemStack>): Map<HTItemResourceType, Int> =
-        shapelessMatch(ingredients, HTShapelessRecipeInput.createMap(stacks))
+        shapelessMatch(ingredients, createMap(stacks))
 
     /**
      * [HTFluidResourceType]向けのメソッドです。
      */
-    @JvmName("shapelessMatchFluid")
+    @JvmName("shapelessMatchFluids")
     @JvmStatic
-    fun shapelessMatch(ingredients: List<HTFluidIngredient>, stacks: Iterable<FluidStack>): Map<HTFluidResourceType, Int> {
-        val stackMap: Map<HTFluidResourceType, Int> = stacks
-            .fold(hashMapOf()) { map: HashMap<HTFluidResourceType, Int>, stack: FluidStack ->
-                val (resource: HTFluidResourceType, amount: Int) = stack.toResourcePair() ?: return@fold map
-                map[resource] = (map[resource] ?: 0) + amount
-                map
-            }
-        return shapelessMatch(ingredients, stackMap)
-    }
+    fun shapelessMatch(ingredients: List<HTFluidIngredient>, stacks: Iterable<FluidStack>): Map<HTFluidResourceType, Int> =
+        shapelessMatch(ingredients, createMap(stacks))
 
     //    Consume    //
 

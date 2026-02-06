@@ -49,7 +49,7 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
         // Recipes
         addCustomRecipes(registry)
 
-        addRegistryRecipes(registry, HCRecipeTypes.ANVIL_CRUSHING, HCSingleItemEmiRecipe.Companion::crushing)
+        addRegistryRecipes(registry, HCRecipeTypes.ANVIL_CRUSHING, ::HCAnvilCrushingEmiRecipe)
         addRegistryRecipes(registry, HCRecipeTypes.CHARGING, HCSingleItemEmiRecipe.Companion::charging)
         addRegistryRecipes(registry, HCRecipeTypes.EXPLODING, HCSingleItemEmiRecipe.Companion::exploding)
 

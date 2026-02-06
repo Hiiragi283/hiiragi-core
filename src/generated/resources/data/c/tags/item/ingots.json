@@ -6,8 +6,12 @@
     "#c:ingots/bronze",
     "#c:ingots/iridium",
     "#c:ingots/lead",
+    "#c:ingots/nickel",
     "#c:ingots/plastic",
+    "#c:ingots/platinum",
     "#c:ingots/rubber",
+    "#c:ingots/silver",
+    "#c:ingots/stainless_steel",
     "#c:ingots/steel",
     "#c:ingots/tin",
     "#c:ingots/zinc"

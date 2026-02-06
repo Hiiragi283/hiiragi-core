@@ -16,7 +16,7 @@ abstract class HCSingleItemRecipe<INPUT : RecipeInput>(val ingredient: HTItemIng
         fun <RECIPE : HCSingleItemRecipe<*>> codec(
             factory: (HTItemIngredient, HTItemResult) -> RECIPE,
         ): MapBiCodec<RegistryFriendlyByteBuf, RECIPE> = MapBiCodec.composite(
-            HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HCSingleItemRecipe<*>::ingredient),
+            HTItemIngredient.UNSIZED_CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HCSingleItemRecipe<*>::ingredient),
             HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCSingleItemRecipe<*>::result),
             factory,
         )

@@ -32,12 +32,12 @@ fun HTPropertyMap.Mutable.setDefaultPart(prefixed: HTDefaultPart.Prefixed) {
     this[HTMaterialPropertyKeys.DEFAULT_PART] = prefixed
 }
 
-fun HTPropertyMap.Mutable.addExtraOreResult(prefix: HTTagPrefix, key: HTMaterialKey, chance: Float) {
-    this.addExtraOreResult(HTChancedOreResult(prefix, key, chance.toFraction()))
+fun HTPropertyMap.Mutable.addExtraOreResult(key: HTMaterialKey, chance: Float) {
+    this.addExtraOreResult(HTChancedOreResult(key, chance.toFraction()))
 }
 
-fun HTPropertyMap.Mutable.addExtraOreResult(prefix: HTTagPrefix, key: HTMaterialKey, chance: Fraction) {
-    this.addExtraOreResult(HTChancedOreResult(prefix, key, chance))
+fun HTPropertyMap.Mutable.addExtraOreResult(key: HTMaterialKey, chance: Fraction) {
+    this.addExtraOreResult(HTChancedOreResult(key, chance))
 }
 
 fun HTPropertyMap.Mutable.addExtraOreResult(result: HTChancedOreResult) {

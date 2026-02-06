@@ -31,21 +31,17 @@ class HTViewRecipeInput private constructor(
     private val itemList: List<Pair<HTItemResourceType, Int>> = items.toList()
     private val fluidList: List<Pair<HTFluidResourceType, Int>> = fluids.toList()
 
-    fun getItemAt(index: Int): Pair<HTItemResourceType, Int> = itemList[index]
-
-    fun getFluidAt(index: Int): Pair<HTFluidResourceType, Int> = fluidList[index]
-
     //    RecipeInput    //
 
     override fun getFluid(index: Int): FluidStack {
-        val (resource: HTFluidResourceType, amount: Int) = getFluidAt(index)
+        val (resource: HTFluidResourceType, amount: Int) = fluidList[index]
         return resource.toStack(amount)
     }
 
     override fun getFluidSize(): Int = fluids.size
 
     override fun getItem(index: Int): ItemStack {
-        val (resource: HTItemResourceType, count: Int) = getItemAt(index)
+        val (resource: HTItemResourceType, count: Int) = itemList[index]
         return resource.toStack(count)
     }
 

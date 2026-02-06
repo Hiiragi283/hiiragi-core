@@ -5,7 +5,6 @@ import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.integration.emi.HTEmiHolderRecipe
 import hiiragi283.core.api.integration.emi.HTEmiRecipeCategory
 import hiiragi283.core.api.integration.emi.toEmi
-import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import hiiragi283.core.common.recipe.HCSingleItemRecipe
@@ -25,12 +24,6 @@ class HCSingleItemEmiRecipe<RECIPE : HCSingleItemRecipe<*>>(
                 HCEmiRecipeCategories.CHARGING,
                 holder,
             ) { ItemStack(Items.LIGHTNING_ROD) }
-
-        @JvmStatic
-        fun crushing(holder: RecipeHolder<HCAnvilCrushingRecipe>): HCSingleItemEmiRecipe<HCAnvilCrushingRecipe> = HCSingleItemEmiRecipe(
-            HCEmiRecipeCategories.ANVIL_CRUSHING,
-            holder,
-        ) { ItemStack(Items.ANVIL) }
 
         @JvmStatic
         fun exploding(holder: RecipeHolder<HCExplodingRecipe>): HCSingleItemEmiRecipe<HCExplodingRecipe> = HCSingleItemEmiRecipe(

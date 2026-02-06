@@ -22,7 +22,7 @@ object HTTextureUtil {
     private val PALETTE_REGEX = Regex("\\s+")
 
     @JvmStatic
-    val TEMPLATE_PALETTE: List<Color> = getPalette(HiiragiCoreAPI.id("template")).getOrThrow()
+    val TEMPLATE_PALETTE: List<Color> by lazy { getPalette(HiiragiCoreAPI.id("template")).getOrThrow() }
 
     @JvmStatic
     private fun getResourcePath(id: ResourceLocation, prefix: String, extension: String): Path = ModList
@@ -36,17 +36,23 @@ object HTTextureUtil {
     //    Color    //
 
     @JvmStatic
-    fun getPalette(id: ResourceLocation): Result<List<Color>> = runCatching(getResourcePath(id, "palettes", "gpl")::inputStream)
-        .mapCatching(InputStream::bufferedReader)
-        .mapCatching(BufferedReader::lines)
-        .map(Stream<String>::toList)
-        .mapCatching { lines: List<String> ->
-            check(lines.firstOrNull() == "GIMP Palette")
-            lines
-                .filterNot { it == "GIMP Palette" || it.startsWith("Name") || it.startsWith("Columns") }
-                .map { it.split(PALETTE_REGEX, limit = 4).take(3).map(String::toInt) }
-                .map { (red: Int, green: Int, blue: Int) -> Color(red, green, blue) }
-        }.onFailure { DataProvider.LOGGER.warn("Failed to load palette: $id") }
+    private val colorCache: MutableMap<ResourceLocation, List<Color>> = hashMapOf()
+
+    @JvmStatic
+    fun getPalette(id: ResourceLocation): Result<List<Color>> = colorCache[id]
+        ?.let(Result.Companion::success)
+        ?: runCatching(getResourcePath(id, "palettes", "gpl")::inputStream)
+            .mapCatching(InputStream::bufferedReader)
+            .mapCatching(BufferedReader::lines)
+            .map(Stream<String>::toList)
+            .mapCatching { lines: List<String> ->
+                check(lines.firstOrNull() == "GIMP Palette")
+                lines
+                    .filterNot { it == "GIMP Palette" || it.startsWith("Name") || it.startsWith("Columns") }
+                    .map { it.split(PALETTE_REGEX, limit = 4).take(3).map(String::toInt) }
+                    .map { (red: Int, green: Int, blue: Int) -> Color(red, green, blue) }
+            }.onSuccess { colorCache[id] = it }
+            .onFailure { DataProvider.LOGGER.warn("Failed to load palette: $id") }
 
     /**
      * @see mekanism.common.lib.Color.argbToFromABGR
@@ -60,13 +66,19 @@ object HTTextureUtil {
 
     //    Image    //
 
+    @JvmStatic
+    private val textureCache: MutableMap<ResourceLocation, NativeImage> = hashMapOf()
+
     /**
      * 指定した[id]から既存のテクスチャを取得します。
      */
     @JvmStatic
-    fun getTexture(id: ResourceLocation): Result<NativeImage> = runCatching(getResourcePath(id, HTConst.TEXTURES, "png")::inputStream)
-        .mapCatching(NativeImage::read)
-        .onFailure { DataProvider.LOGGER.warn("Failed to load image: $id") }
+    fun getTexture(id: ResourceLocation): Result<NativeImage> = textureCache[id]
+        ?.let(Result.Companion::success)
+        ?: runCatching(getResourcePath(id, HTConst.TEXTURES, "png")::inputStream)
+            .mapCatching(NativeImage::read)
+            .onSuccess { textureCache[id] = it }
+            .onFailure { DataProvider.LOGGER.warn("Failed to load image: $id") }
 
     /**
      * 指定した[テクスチャ][other]をコピーします。

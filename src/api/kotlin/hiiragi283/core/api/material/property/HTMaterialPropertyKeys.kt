@@ -103,19 +103,13 @@ object HTMaterialPropertyKeys {
     val CRUSHED_PREFIX: HTPropertyKey<HTTagPrefix> =
         HTPropertyKey.create(HiiragiCoreAPI.id("crushed_prefix"), CommonTagPrefixes.DUST)
 
-    /**
-     * プレス加工などのレシピを無効化する[プロパティキー][HTPropertyKey]
-     * @since 0.9.0
-     */
     @JvmField
-    val DISABLE_MECHANICAL: HTPropertyKey<Unit?> = HTPropertyKey.createFlag(HiiragiCoreAPI.id("disable_mechanical"))
+    val HARDNESS: HTPropertyKey<HTMaterialLevel> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("hardness"), HTMaterialLevel.LOW)
 
-    /**
-     * 溶融などのレシピを無効化する[プロパティキー][HTPropertyKey]
-     * @since 0.9.0
-     */
     @JvmField
-    val DISABLE_MELTING: HTPropertyKey<Unit?> = HTPropertyKey.createFlag(HiiragiCoreAPI.id("disable_melting"))
+    val MELTING_POINT: HTPropertyKey<HTMaterialLevel> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("melting_point"), HTMaterialLevel.LOW)
 
     /**
      * 溶融状態の[液体][HTFluidMaterialProperty]を管理する[プロパティキー][HTPropertyKey]
@@ -179,6 +173,12 @@ object HTMaterialPropertyKeys {
      */
     @JvmField
     val TEXTURE_COLOR: HTPropertyKey<ResourceLocation?> = createNullable("texture_color")
+
+    /**
+     * @since 0.10.0
+     */
+    @JvmField
+    val TEXTURE_COLOR_RAW: HTPropertyKey<ResourceLocation?> = createNullable("texture_color/raw")
 
     /**
      * テクスチャを生成する際のテンプレートを管理する[プロパティキー][HTPropertyKey]

@@ -5,7 +5,6 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.builder.HTRecipeBuilder
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
-import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import hiiragi283.core.common.recipe.HCSingleItemRecipe
 import net.minecraft.data.recipes.RecipeOutput
@@ -18,14 +17,6 @@ class HCSingleItemRecipeBuilder(private val factory: Factory<*>, prefix: String)
         @JvmStatic
         fun charging(output: RecipeOutput, builderAction: HCSingleItemRecipeBuilder.() -> Unit) {
             HCSingleItemRecipeBuilder(::HCLightningChargingRecipe, HTConst.CHARGING)
-                .apply(builderAction)
-                .save(output)
-        }
-
-        @HTBuilderMarker
-        @JvmStatic
-        fun crushing(output: RecipeOutput, builderAction: HCSingleItemRecipeBuilder.() -> Unit) {
-            HCSingleItemRecipeBuilder(::HCAnvilCrushingRecipe, HTConst.ANVIL_CRUSHING)
                 .apply(builderAction)
                 .save(output)
         }

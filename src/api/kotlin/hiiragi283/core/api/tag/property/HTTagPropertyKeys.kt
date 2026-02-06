@@ -27,6 +27,12 @@ object HTTagPropertyKeys {
     val ITEM_SCALE: HTPropertyKey<(Fraction, HTPropertyMap) -> Fraction> =
         HTPropertyKey.create(HiiragiCoreAPI.id("item_scale")) { base: Fraction, _ -> base }
 
+    /**
+     * @since 0.10.0
+     */
+    @JvmField
+    val IS_RAW: HTPropertyKey<Unit?> = HTPropertyKey.createFlag(HiiragiCoreAPI.id("is_raw"))
+
     //    Block    //
 
     /**
@@ -61,6 +67,12 @@ object HTTagPropertyKeys {
      */
     @JvmField
     val TEXTURE_ICON: HTPropertyKey<String?> = createNullable("texture_icon")
+
+    /**
+     * @since 0.10.0
+     */
+    @JvmField
+    val DISABLE_TEXTURE_GEN: HTPropertyKey<Unit?> = HTPropertyKey.createFlag(HiiragiCoreAPI.id("disable_texture_gen"))
 
     @JvmStatic
     fun <T : Any> createNullable(path: String): HTPropertyKey<T?> = HTPropertyKey.createNullable(HiiragiCoreAPI.id(path))
