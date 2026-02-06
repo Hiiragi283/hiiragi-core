@@ -19,6 +19,9 @@ class HTMaterialTextureSet(val name: String, val parent: HTMaterialTextureSet?) 
 
         @JvmField
         val SHINE = HTMaterialTextureSet("shine", DEFAULT)
+
+        @JvmField
+        val MYSTICAL = HTMaterialTextureSet("mystical", SHINE)
     }
 
     operator fun get(prefix: HTTagPrefix): ResourceLocation = parent?.get(prefix) ?: HiiragiCoreAPI.id(name, prefix.name)

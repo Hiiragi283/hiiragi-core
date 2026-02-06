@@ -148,7 +148,7 @@ object HCMaterialEventHandler {
                 CommonTagPrefixes.GEAR,
             )
             addToolPrefixes(VanillaEquipmentMaterial.DIAMOND, CommonToolTypes.HAMMER)
-            addExtraOreResult(VanillaMaterialKeys.COAL, 1 / 4f)
+            addExtraOreResult(CommonMaterialKeys.CARBON, 1 / 4f)
 
             setName("Diamond", "ダイヤモンド")
             setTextureSet("diamond")
@@ -349,6 +349,19 @@ object HCMaterialEventHandler {
                 addCustomOreLoot(HTBlockLootFactory.createOre())
             }
         }
+
+        fun platinumGroup(key: HTMaterialKey, enName: String, jaName: String) {
+            event.modify(key) {
+                setDefaultPart(HTDefaultPart.Prefixed.INGOT)
+                addBlockPrefixes(CommonTagPrefixes.BLOCK)
+                addItemPrefixes(alloySet)
+                put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.HIGHEST)
+                put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.HIGHEST)
+
+                setName(enName, jaName)
+                setTextureSet(HTMaterialTextureSet.MYSTICAL)
+            }
+        }
         // Fuels
         event.modify(CommonMaterialKeys.COAL_COKE) {
             setDefaultPart(HTDefaultPart.Prefixed.FUEL)
@@ -374,7 +387,6 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.DUST)
             addBlockPrefixes(CommonTagPrefixes.ORES.plus(CommonTagPrefixes.RAW_BLOCK))
             addItemPrefixes(oreSet)
-            addExtraOreResult(CommonMaterialKeys.PLATINUM, 1 / 4f)
 
             setName("Platinum Group", "白金族")
             setTextureSet("mineral", HTMaterialTextureSet.SHINE)
@@ -477,7 +489,9 @@ object HCMaterialEventHandler {
         }
 
         registerMetal(CommonMaterialKeys.MOLYBDENUM, "Molybdenum", "モリブデン")
-        registerMetal(CommonMaterialKeys.PALLADIUM, "Palladium", "パラジウム")
+        platinumGroup(CommonMaterialKeys.RUTHENIUM, "Ruthenium", "ルテニウム")
+        platinumGroup(CommonMaterialKeys.RHODIUM, "Rhodium", "ロジウム")
+        platinumGroup(CommonMaterialKeys.PALLADIUM, "Palladium", "パラジウム")
         registerMetal(CommonMaterialKeys.SILVER, "Silver", "銀")
         event.modify(CommonMaterialKeys.SILVER) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
@@ -502,27 +516,9 @@ object HCMaterialEventHandler {
         registerMetal(CommonMaterialKeys.ANTIMONY, "Antimony", "アンチモン")
 
         registerMetal(CommonMaterialKeys.TUNGSTEN, "Tungsten", "パラジウム")
-        registerMetal(CommonMaterialKeys.OSMIUM, "Osmium", "オスミウム")
-        event.modify(CommonMaterialKeys.IRIDIUM) {
-            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(alloySet.plus(partSet))
-            put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.HIGHEST)
-            put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.HIGHEST)
-
-            setName("Iridium", "イリジウム")
-            setTextureSet(HTMaterialTextureSet.SHINE)
-        }
-        event.modify(CommonMaterialKeys.PLATINUM) {
-            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(alloySet.plus(partSet))
-            put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.HIGHEST)
-            put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.HIGHEST)
-
-            setName("Platinum", "白金")
-            setTextureSet(HTMaterialTextureSet.SHINE)
-        }
+        platinumGroup(CommonMaterialKeys.OSMIUM, "Osmium", "オスミウム")
+        platinumGroup(CommonMaterialKeys.IRIDIUM, "Iridium", "イリジウム")
+        platinumGroup(CommonMaterialKeys.PLATINUM, "Platinum", "白金")
         event.modify(CommonMaterialKeys.LEAD) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
@@ -686,7 +682,7 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_ELDRITCH))
 
             setName("Eldritch Pearl", "異質な真珠")
-            setTextureSet("pearl")
+            setTextureSet("pearl", HTMaterialTextureSet.MYSTICAL)
         }
         // Metals
         /*event.modify(HCMaterialKeys.ANCIENT_METAL) {

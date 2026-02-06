@@ -53,6 +53,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
             baseToBlock(event, entry)
             crushedToDust(event, entry)
+            ingotToNugget(entry)
             rawToBlock(event, entry)
 
             flourToDough(event, entry)
@@ -60,7 +61,6 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             val hardness: HTMaterialLevel = entry.getOrDefault(HTMaterialPropertyKeys.HARDNESS)
             if (hardness > HTMaterialLevel.NONE && hardness <= HTMaterialLevel.MEDIUM) {
                 baseToGear(event, entry)
-                ingotToNugget(entry)
                 ingotToPlate(event, entry)
 
                 plateToWire(event, entry)

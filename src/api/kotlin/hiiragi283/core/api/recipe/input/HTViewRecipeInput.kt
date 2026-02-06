@@ -34,14 +34,14 @@ class HTViewRecipeInput private constructor(
     //    RecipeInput    //
 
     override fun getFluid(index: Int): FluidStack {
-        val (resource: HTFluidResourceType, amount: Int) = fluidList[index]
+        val (resource: HTFluidResourceType, amount: Int) = fluidList.getOrNull(index) ?: return FluidStack.EMPTY
         return resource.toStack(amount)
     }
 
     override fun getFluidSize(): Int = fluids.size
 
     override fun getItem(index: Int): ItemStack {
-        val (resource: HTItemResourceType, count: Int) = itemList[index]
+        val (resource: HTItemResourceType, count: Int) = itemList.getOrNull(index) ?: return ItemStack.EMPTY
         return resource.toStack(count)
     }
 

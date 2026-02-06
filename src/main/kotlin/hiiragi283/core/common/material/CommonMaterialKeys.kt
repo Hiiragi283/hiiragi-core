@@ -103,6 +103,12 @@ object CommonMaterialKeys {
     val MOLYBDENUM: HTMaterialKey = create("molybdenum")
 
     @JvmStatic
+    val RUTHENIUM: HTMaterialKey = create("ruthenium")
+
+    @JvmStatic
+    val RHODIUM: HTMaterialKey = create("rhodium")
+
+    @JvmStatic
     val PALLADIUM: HTMaterialKey = create("palladium")
 
     @JvmStatic
