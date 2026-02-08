@@ -31,10 +31,10 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.DRAGON_BREATH, "ドラゴンブレス")
 
         addFluid(HCFluids.LATEX, "ラテックス")
-        addFluid(HCFluids.BLOOD, "血液")
         addFluid(HCFluids.MEAT, "肉")
 
         addFluid(HCFluids.MOLTEN_GLASS, "溶融ガラス")
+        addFluid(HCFluids.MOLTEN_STAINLESS_STEEL, "溶融ステンレス鋼")
         addFluid(HCFluids.MOLTEN_PLASTIC, "溶融プラスチック")
         addFluid(HCFluids.MOLTEN_RUBBER, "溶融ゴム")
         addFluid(HCFluids.MOLTEN_CRIMSON_CRYSTAL, "深紅の血液")

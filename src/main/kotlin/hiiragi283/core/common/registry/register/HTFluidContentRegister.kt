@@ -2,6 +2,7 @@ package hiiragi283.core.common.registry.register
 
 import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.fluid.HTVirtualFluid
+import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.registry.BlockWithContextFactory
 import hiiragi283.core.api.registry.HTDeferredHolder
@@ -27,7 +28,6 @@ import net.neoforged.neoforge.fluids.BaseFlowingFluid
 import net.neoforged.neoforge.fluids.DispenseFluidContainer
 import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.registries.NeoForgeRegistries
-import java.util.function.UnaryOperator
 
 class HTFluidContentRegister(modId: String) {
     private val fluidRegister: HTDeferredRegister<Fluid> = HTDeferredRegister(Registries.FLUID, modId)
@@ -144,8 +144,11 @@ class HTFluidContentRegister(modId: String) {
     }
 
     inner class FlowingBuilder(name: String) : Builder<BaseFlowingFluid>(name) {
+        var sourceFactory: (BaseFlowingFluid.Properties) -> BaseFlowingFluid.Source = BaseFlowingFluid::Source
+        var flowingFactory: (BaseFlowingFluid.Properties) -> BaseFlowingFluid.Flowing = BaseFlowingFluid::Flowing
+
         var blockFactory: BlockWithContextFactory<BaseFlowingFluid, LiquidBlock>? = ::LiquidBlock
-        var blockProperties: UnaryOperator<BlockBehaviour.Properties> = UnaryOperator.identity()
+        var blockProperties: (BlockBehaviour.Properties) -> BlockBehaviour.Properties = identity()
 
         override fun createContent(
             typeHolder: HTDeferredHolder<FluidType, FluidType>,
@@ -161,7 +164,7 @@ class HTFluidContentRegister(modId: String) {
                     name,
                     BlockBehaviour.Properties
                         .of()
-                        .apply(blockProperties::apply)
+                        .let(blockProperties)
                         .noCollission()
                         .strength(100f)
                         .noLootTable()
@@ -177,8 +180,8 @@ class HTFluidContentRegister(modId: String) {
                 .Properties(typeHolder, sourceHolder, flowingHolder)
                 .bucket(bucketHolder)
             blockHolder?.let(fluidProperties::block)
-            fluidRegister.register(name) { _ -> BaseFlowingFluid.Source(fluidProperties) }
-            fluidRegister.register(flowingHolder.path) { _ -> BaseFlowingFluid.Flowing(fluidProperties) }
+            fluidRegister.register(name) { _ -> sourceFactory(fluidProperties) }
+            fluidRegister.register(flowingHolder.path) { _ -> flowingFactory(fluidProperties) }
             // Content
             return HTFluidContent(
                 typeHolder,

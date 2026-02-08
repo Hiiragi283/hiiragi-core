@@ -9,6 +9,7 @@ import hiiragi283.core.common.fluid.HTDragonBreathFluidType
 import hiiragi283.core.common.fluid.HTDyedFluidType
 import hiiragi283.core.common.fluid.HTEndFluidType
 import hiiragi283.core.common.fluid.HTExperienceFluidType
+import hiiragi283.core.common.fluid.HTLatexFluid
 import hiiragi283.core.common.fluid.HTNetherFluidType
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
@@ -70,10 +71,10 @@ object HCFluids {
     //    Organic    //
 
     @JvmField
-    val LATEX: HTFluidContent = REGISTER.registerFlowing("latex") { properties = liquid() }
-
-    @JvmField
-    val BLOOD: HTFluidContent = REGISTER.registerFlowing("blood") { properties = liquid() }
+    val LATEX: HTFluidContent = REGISTER.registerFlowing("latex") {
+        properties = liquid()
+        sourceFactory = ::HTLatexFluid
+    }
 
     @JvmField
     val MEAT: HTFluidContent = REGISTER.registerFlowing("meat") { properties = liquid() }
@@ -97,6 +98,11 @@ object HCFluids {
     }
 
     // Common
+    @JvmField
+    val MOLTEN_STAINLESS_STEEL: HTFluidContent = molten(CommonMaterialKeys.STAINLESS_STEEL) {
+        blockFactory = null
+    }
+
     @JvmField
     val MOLTEN_PLASTIC: HTFluidContent = molten(CommonMaterialKeys.PLASTIC) {
         blockFactory = null

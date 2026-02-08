@@ -577,6 +577,8 @@ object HCMaterialEventHandler {
             addItemPrefixes(alloySet.plus(partSet))
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.HIGH)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.HIGH)
+            put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_STAINLESS_STEEL))
+            this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
             setName("Stainless Steel", "ステンレス鋼")
             setTextureSet(HTMaterialTextureSet.SHINE)

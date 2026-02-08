@@ -32,10 +32,10 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.DRAGON_BREATH, "Dragon Breath")
 
         addFluid(HCFluids.LATEX, "Latex")
-        addFluid(HCFluids.BLOOD, "Blood")
         addFluid(HCFluids.MEAT, "Meat")
 
         addFluid(HCFluids.MOLTEN_GLASS, "Molten Glass")
+        addFluid(HCFluids.MOLTEN_STAINLESS_STEEL, "Molten Stainless Steel")
         addFluid(HCFluids.MOLTEN_PLASTIC, "Molten Plastic")
         addFluid(HCFluids.MOLTEN_RUBBER, "Molten Rubber")
         addFluid(HCFluids.MOLTEN_CRIMSON_CRYSTAL, "Crimson Blood")
