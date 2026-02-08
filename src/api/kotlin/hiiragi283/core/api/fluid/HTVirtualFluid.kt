@@ -23,7 +23,7 @@ import java.util.Optional
  * @author Hiiragi Tsubasa
  * @since 0.9.0
  */
-class HTVirtualFluid(private val content: HTFluidContent<*, *, *>) : Fluid() {
+class HTVirtualFluid(private val content: HTFluidContent) : Fluid() {
     override fun getBucket(): Item = content.getBucket()
 
     override fun canBeReplacedWith(

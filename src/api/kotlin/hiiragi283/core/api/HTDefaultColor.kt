@@ -6,9 +6,11 @@ import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.chat.TextColor
+import net.minecraft.tags.TagKey
 import net.minecraft.util.FastColor
 import net.minecraft.util.StringRepresentable
 import net.minecraft.world.item.DyeColor
+import net.minecraft.world.item.Item
 import net.minecraft.world.level.material.MapColor
 
 /**
@@ -57,6 +59,9 @@ enum class HTDefaultColor(
         @JvmField
         val CODEC: BiCodec<ByteBuf, HTDefaultColor> = BiCodecs.stringEnum(HTDefaultColor::getSerializedName)
     }
+
+    val dyesTag: TagKey<Item> = dyeColor.tag
+    val dyedTag: TagKey<Item> = dyeColor.dyedTag
 
     override fun getSerializedName(): String = name.lowercase()
 

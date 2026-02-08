@@ -93,13 +93,13 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
     /**
      * 液体の翻訳名を登録します。
      */
-    fun addFluid(content: HTFluidContent<*, *, *>, value: String) {
+    fun addFluid(content: HTFluidContent, value: String) {
         add(content.typeHolder.get().descriptionId, value)
         addFluidBucket(content, value)
         add(content.fluidTag, value)
     }
 
-    protected abstract fun addFluidBucket(content: HTFluidContent<*, *, *>, value: String)
+    protected abstract fun addFluidBucket(content: HTFluidContent, value: String)
 
     //    English    //
 
@@ -107,7 +107,7 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
      * 英語向けの[HTLangProvider]の抽象クラスです。
      */
     abstract class English(output: PackOutput, modid: String) : HTLangProvider(output, modid, HTLangTypes.EN_US) {
-        final override fun addFluidBucket(content: HTFluidContent<*, *, *>, value: String) {
+        final override fun addFluidBucket(content: HTFluidContent, value: String) {
             add(content.bucketHolder, "$value Bucket")
         }
     }
@@ -118,7 +118,7 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
      * 日本語向けの[HTLangProvider]の抽象クラスです。
      */
     abstract class Japanese(output: PackOutput, modid: String) : HTLangProvider(output, modid, HTLangTypes.JA_JP) {
-        final override fun addFluidBucket(content: HTFluidContent<*, *, *>, value: String) {
+        final override fun addFluidBucket(content: HTFluidContent, value: String) {
             add(content.bucketHolder, "${value}入りバケツ")
         }
     }

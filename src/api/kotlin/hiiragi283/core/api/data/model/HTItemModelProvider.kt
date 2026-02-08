@@ -75,7 +75,7 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
      * 液体バケツのアイテムモデルを登録します。
      * @since 0.1.0
      */
-    protected fun bucketItem(content: HTFluidContent<*, *, *>, isDrip: Boolean): DynamicFluidContainerModelBuilder<ItemModelBuilder> {
+    protected fun bucketItem(content: HTFluidContent, isDrip: Boolean): DynamicFluidContainerModelBuilder<ItemModelBuilder> {
         val parent: ResourceLocation = when {
             isDrip -> "bucket_drip"
             else -> "bucket"

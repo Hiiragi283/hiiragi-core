@@ -53,7 +53,7 @@ data object HTResultCreator {
     //    Fluid    //
 
     @JvmStatic
-    fun create(content: HTFluidContent<*, *, *>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult =
+    fun create(content: HTFluidContent, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult =
         HTFluidResult(checkNotNull(content.toResource()), amount)
 
     @JvmStatic
@@ -79,7 +79,7 @@ data object HTResultCreator {
         operator: IntUnaryOperator = IntUnaryOperator.identity(),
     ): HTFluidResult {
         val propertyMap: HTPropertyMap = HiiragiCoreAccess.INSTANCE.materialManager.getOrEmpty(material)
-        val fluid: HTFluidContent<*, *, *> = propertyMap.getOrThrow(propertyKey).fluid
+        val fluid: HTFluidContent = propertyMap.getOrThrow(propertyKey).fluid
         return create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
     }
 }

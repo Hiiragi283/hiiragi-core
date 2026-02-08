@@ -16,6 +16,7 @@ import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import net.minecraft.core.Direction
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.SlabBlock
 import net.minecraft.world.level.block.StairBlock
 import net.minecraft.world.level.block.WallBlock
@@ -175,9 +176,10 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      * 液体ブロックのモデルを追加します。
      * @since 0.3.0
      */
-    protected fun liquidBlock(content: HTFluidContent.Flowing<*, *, *, *>) {
+    protected fun liquidBlock(content: HTFluidContent) {
+        val block: Block = content.blockHolder?.get() ?: return
         simpleBlock(
-            content.blockHolder.asBlock(),
+            block,
             models()
                 .getBuilder(content.blockId)
                 .texture("particle", HTConst.MINECRAFT.toId(HTConst.BLOCK, "water_still")),

@@ -8,4 +8,4 @@ import hiiragi283.core.api.registry.HTFluidContent
  * @since 0.6.0
  */
 @JvmRecord
-data class HTFluidMaterialProperty(val fluid: HTFluidContent<*, *, *>)
+data class HTFluidMaterialProperty(val fluid: HTFluidContent)

@@ -1,11 +1,9 @@
 package hiiragi283.core.api.registry
 
 import net.minecraft.world.item.Items
-import net.minecraft.world.level.material.Fluid
 import net.minecraft.world.level.material.Fluids
 import net.neoforged.neoforge.common.NeoForgeMod
 import net.neoforged.neoforge.common.Tags
-import net.neoforged.neoforge.fluids.FluidType
 
 /**
  * バニラで追加される液体向けの[HTFluidContent]の一覧をまとめたクラスです。
@@ -13,31 +11,37 @@ import net.neoforged.neoforge.fluids.FluidType
  * @since 0.6.0
  */
 @Suppress("DEPRECATION")
-object VanillaFluidContents {
+data object VanillaFluidContents {
     @JvmField
-    val WATER: HTFluidContent<FluidType, Fluid, *> = HTFluidContent(
+    val WATER = HTFluidContent(
         NeoForgeMod.WATER_TYPE.toLike(),
         Fluids.WATER.builtInRegistryHolder().toLike(),
-        Tags.Fluids.WATER,
         HTItemHolderLike.of(Items.WATER_BUCKET),
+        Tags.Fluids.WATER,
         Tags.Items.BUCKETS_WATER,
+        null,
+        null,
     )
 
     @JvmField
-    val LAVA: HTFluidContent<FluidType, Fluid, *> = HTFluidContent(
+    val LAVA = HTFluidContent(
         NeoForgeMod.LAVA_TYPE.toLike(),
         Fluids.LAVA.builtInRegistryHolder().toLike(),
-        Tags.Fluids.LAVA,
         HTItemHolderLike.of(Items.LAVA_BUCKET),
+        Tags.Fluids.LAVA,
         Tags.Items.BUCKETS_LAVA,
+        null,
+        null,
     )
 
     @JvmField
-    val MILK: HTFluidContent<FluidType, Fluid, *> = HTFluidContent(
+    val MILK = HTFluidContent(
         NeoForgeMod.MILK_TYPE.toLike(),
         NeoForgeMod.MILK.toLike(),
-        Tags.Fluids.MILK,
         HTItemHolderLike.of(Items.MILK_BUCKET),
+        Tags.Fluids.MILK,
         Tags.Items.BUCKETS_MILK,
+        null,
+        null,
     )
 }

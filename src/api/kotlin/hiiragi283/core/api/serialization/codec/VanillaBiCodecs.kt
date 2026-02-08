@@ -21,7 +21,6 @@ import net.minecraft.resources.RegistryFixedCodec
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
-import net.minecraft.world.item.DyeColor
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.crafting.Ingredient
@@ -45,12 +44,6 @@ object VanillaBiCodecs {
      */
     @JvmField
     val BLOCK_POS: BiCodec<ByteBuf, BlockPos> = BiCodec.of(BlockPos.CODEC, BlockPos.STREAM_CODEC)
-
-    /**
-     * [DyeColor]の[BiCodec]
-     */
-    @JvmField
-    val COLOR: BiCodec<ByteBuf, DyeColor> = BiCodec.of(DyeColor.CODEC, DyeColor.STREAM_CODEC)
 
     /**
      * [DataComponentPatch]の[MapBiCodec]

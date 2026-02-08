@@ -1,6 +1,7 @@
 package hiiragi283.core.client
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTRegisterWidgetRendererEvent
 import hiiragi283.core.api.mod.HTClientMod
@@ -68,6 +69,10 @@ data object HiiragiCoreClient : HTClientMod() {
 
     override fun registerClientExtensions(event: RegisterClientExtensionsEvent) {
         // Vanilla
+        for ((color: HTDefaultColor, content: HTFluidContent) in HCFluids.DYE.entries) {
+            event.dull(content, Color(color.color))
+        }
+
         event.clear(HCFluids.EXPERIENCE, Color(0x66ff33))
         event.registerFluidType(
             HTSimpleFluidExtensions(HTConst.MINECRAFT.toId(HTConst.BLOCK, "honey_block_top")),
@@ -91,7 +96,7 @@ data object HiiragiCoreClient : HTClientMod() {
         event.molten(HCFluids.MOLTEN_CRIMSON_CRYSTAL, Color(0x993333))
         event.molten(HCFluids.MOLTEN_WARPED_CRYSTAL, Color(0x339999))
         event.molten(HCFluids.MOLTEN_ELDRITCH, Color(0x6633cc))
-        // event.molten(HCFluids.MOLTEN_OMINOUS_METAL, Color(0x333366))
+        // event.molten(HCFluidsN.MOLTEN_OMINOUS_METAL, Color(0x333366))
     }
 
     override fun registerScreens(event: RegisterMenuScreensEvent) {
@@ -106,15 +111,15 @@ data object HiiragiCoreClient : HTClientMod() {
 
     //    Extensions    //
 
-    private fun RegisterClientExtensionsEvent.clear(content: HTFluidContent<*, *, *>, color: Color) {
+    private fun RegisterClientExtensionsEvent.clear(content: HTFluidContent, color: Color) {
         this.registerFluidType(HTSimpleFluidExtensions.clear(color), content.getFluidType())
     }
 
-    private fun RegisterClientExtensionsEvent.dull(content: HTFluidContent<*, *, *>, color: Color) {
+    private fun RegisterClientExtensionsEvent.dull(content: HTFluidContent, color: Color) {
         this.registerFluidType(HTSimpleFluidExtensions.dull(color), content.getFluidType())
     }
 
-    private fun RegisterClientExtensionsEvent.molten(content: HTFluidContent<*, *, *>, color: Color) {
+    private fun RegisterClientExtensionsEvent.molten(content: HTFluidContent, color: Color) {
         this.registerFluidType(HTSimpleFluidExtensions.molten(color), content.getFluidType())
     }
 }

@@ -1,0 +1,5 @@
+{
+  "parent": "neoforge:item/bucket_drip",
+  "fluid": "hiiragi_core:cyan_dye",
+  "loader": "neoforge:fluid_container"
+}

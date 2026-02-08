@@ -30,8 +30,10 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
     }
 
     private fun registerBuckets() {
-        val dripFluids: List<HTFluidContent<*, *, *>> = buildList {
+        val dripFluids: List<HTFluidContent> = buildList {
             // Vanilla
+            addAll(HCFluids.DYE.values)
+
             add(HCFluids.HONEY)
             // Molten
             add(HCFluids.MOLTEN_GLASS)
@@ -42,7 +44,7 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
             add(HCFluids.MOLTEN_ELDRITCH)
             // add(HCFluids.MOLTEN_OMINOUS_METAL)
         }
-        for (content: HTFluidContent<*, *, *> in HCFluids.REGISTER.entries) {
+        for (content: HTFluidContent in HCFluids.REGISTER.entries) {
             bucketItem(content, content in dripFluids)
         }
     }

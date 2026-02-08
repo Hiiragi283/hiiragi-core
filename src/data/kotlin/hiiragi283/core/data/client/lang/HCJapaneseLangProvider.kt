@@ -40,7 +40,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.MOLTEN_CRIMSON_CRYSTAL, "深紅の血液")
         addFluid(HCFluids.MOLTEN_WARPED_CRYSTAL, "歪みの雫")
         addFluid(HCFluids.MOLTEN_ELDRITCH, "異質な流動体")
-        // addFluid(HCFluids.MOLTEN_OMINOUS_METAL, "不吉な流動体")
+        // addFluid(HCFluidsN.MOLTEN_OMINOUS_METAL, "不吉な流動体")
 
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "竹炭")

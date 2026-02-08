@@ -93,8 +93,7 @@ data object HTIngredientCreator {
     fun create(tagKeys: Iterable<TagKey<Fluid>>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient =
         create(CompoundFluidIngredient.of(tagKeys.sortedWith(TAG_COMPARATOR).map(FluidIngredient::tag)), amount)
 
-    fun create(content: HTFluidContent<*, *, *>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient =
-        create(content.fluidTag, amount)
+    fun create(content: HTFluidContent, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(content.fluidTag, amount)
 
     fun water(amount: Int): HTFluidIngredient = create(VanillaFluidContents.WATER, amount)
 
@@ -110,9 +109,9 @@ data object HTIngredientCreator {
         propertyKey: HTPropertyKey<HTFluidMaterialProperty?>,
         operator: IntUnaryOperator = IntUnaryOperator.identity(),
     ): HTFluidIngredient {
-        val propertyMap: HTPropertyMap = HiiragiCoreAccess.Companion.INSTANCE.materialManager
+        val propertyMap: HTPropertyMap = HiiragiCoreAccess.INSTANCE.materialManager
             .getOrEmpty(material)
-        val fluid: HTFluidContent<*, *, *> = propertyMap.getOrThrow(propertyKey).fluid
+        val fluid: HTFluidContent = propertyMap.getOrThrow(propertyKey).fluid
         return create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
     }
 

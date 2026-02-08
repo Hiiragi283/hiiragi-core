@@ -1,11 +1,13 @@
 package hiiragi283.core.data.server.recipe
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -14,6 +16,7 @@ import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTStonecuttingRecipeBuilder
+import hiiragi283.core.common.material.ColoredMaterials
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
@@ -210,6 +213,23 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
 
     @JvmStatic
     private fun buckets() {
+        // Dye
+        for ((color: HTDefaultColor, content: HTFluidContent) in HCFluids.DYE) {
+            HTShapelessRecipeBuilder.create(output) {
+                repeat(4) {
+                    ingredients += color.dyesTag
+                }
+                ingredients += Tags.Items.BUCKETS_WATER
+                resultStack += content.getBucket()
+                recipeId suffix "_from_bye"
+            }
+            HTCookingRecipeBuilder.smelting(output) {
+                ingredient += content.getBucket()
+                resultStack += ColoredMaterials.DYE[color]!! to 4
+                recipeId suffix "_from_bucket"
+            }
+        }
+
         // Exp Bottle <-> Exp Bucket
         HTShapelessRecipeBuilder.create(output) {
             repeat(4) {

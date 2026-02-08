@@ -1,15 +1,19 @@
 package hiiragi283.core.setup
 
+import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.common.fluid.HTDragonBreathFluidType
+import hiiragi283.core.common.fluid.HTDyedFluidType
 import hiiragi283.core.common.fluid.HTEndFluidType
+import hiiragi283.core.common.fluid.HTExperienceFluidType
 import hiiragi283.core.common.fluid.HTNetherFluidType
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.common.registry.register.HTFluidContentRegister
-import hiiragi283.core.common.registry.register.HTSimpleFluidContent
-import hiiragi283.core.common.registry.register.HTVirtualFluidContent
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
 import net.neoforged.bus.api.IEventBus
@@ -28,60 +32,96 @@ object HCFluids {
     //    Vanilla    //
 
     @JvmField
-    val EXPERIENCE: HTVirtualFluidContent = REGISTER.registerVirtual("experience", liquid(), ::FluidType)
+    val DYE: Map<HTDefaultColor, HTFluidContent> = HTDefaultColor.entries.associateWith { color: HTDefaultColor ->
+        val name: String = color.serializedName
+        REGISTER.registerFlowing("${name}_dye") {
+            properties = liquid()
+            typeFactory = ::HTDyedFluidType.partially1(color)
+            fluidTag = "dyes/$name"
+            bucketTag = "buckets/dye/$name"
+        }
+    }
+
+    @JvmStatic
+    fun getDye(color: HTDefaultColor): HTFluidContent = DYE[color]!!
 
     @JvmField
-    val HONEY: HTSimpleFluidContent = REGISTER.registerSimpleFlowing(
-        "honey",
-        create(SoundEvents.HONEY_BLOCK_PLACE, SoundEvents.HONEY_BLOCK_BREAK),
-    ) { it.speedFactor(0.4f) }
+    val EXPERIENCE: HTFluidContent = REGISTER.registerFlowing("experience") {
+        properties = liquid()
+        typeFactory = ::HTExperienceFluidType
+        blockFactory = null
+    }
 
     @JvmField
-    val MUSHROOM_STEW: HTSimpleFluidContent = REGISTER.registerSimpleFlowing("mushroom_stew", liquid())
+    val HONEY: HTFluidContent = REGISTER.registerFlowing("honey") {
+        properties = create(SoundEvents.HONEY_BLOCK_PLACE, SoundEvents.HONEY_BLOCK_BREAK)
+    }
 
     @JvmField
-    val DRAGON_BREATH: HTVirtualFluidContent = REGISTER.registerVirtual("dragon_breath", liquid().density(-1000))
+    val MUSHROOM_STEW: HTFluidContent = REGISTER.registerFlowing("mushroom_stew") { properties = liquid() }
+
+    @JvmField
+    val DRAGON_BREATH: HTFluidContent = REGISTER.registerFlowing("dragon_breath") {
+        properties = create(SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundEvents.BOTTLE_FILL_DRAGONBREATH).density(-1000)
+        typeFactory = ::HTDragonBreathFluidType
+        blockFactory = null
+    }
 
     //    Organic    //
 
     @JvmField
-    val LATEX: HTSimpleFluidContent = REGISTER.registerSimpleFlowing("latex", liquid())
+    val LATEX: HTFluidContent = REGISTER.registerFlowing("latex") { properties = liquid() }
 
     @JvmField
-    val BLOOD: HTSimpleFluidContent = REGISTER.registerSimpleFlowing("blood", liquid())
+    val BLOOD: HTFluidContent = REGISTER.registerFlowing("blood") { properties = liquid() }
 
     @JvmField
-    val MEAT: HTSimpleFluidContent = REGISTER.registerSimpleFlowing("meat", liquid())
+    val MEAT: HTFluidContent = REGISTER.registerFlowing("meat") { properties = liquid() }
 
     //    Material    //
 
     @JvmStatic
-    private fun molten(
+    private inline fun molten(
         key: HTMaterialKey,
         temp: Int = 1300,
-        typeFactory: (FluidType.Properties) -> FluidType = ::FluidType,
-    ): HTSimpleFluidContent = REGISTER.registerFlowing("molten_${key.asMaterialId().path}", molten().temperature(temp), typeFactory)
+        builderAction: HTFluidContentRegister.FlowingBuilder.() -> Unit = {},
+    ): HTFluidContent = REGISTER.registerFlowing("molten_${key.asMaterialId().path}") {
+        properties = molten().temperature(temp)
+        builderAction()
+    }
 
     // Vanilla
     @JvmField
-    val MOLTEN_GLASS: HTSimpleFluidContent = molten(VanillaMaterialKeys.GLASS)
+    val MOLTEN_GLASS: HTFluidContent = molten(VanillaMaterialKeys.GLASS) {
+        blockFactory = null
+    }
 
     // Common
     @JvmField
-    val MOLTEN_PLASTIC: HTSimpleFluidContent = molten(CommonMaterialKeys.PLASTIC)
+    val MOLTEN_PLASTIC: HTFluidContent = molten(CommonMaterialKeys.PLASTIC) {
+        blockFactory = null
+    }
 
     @JvmField
-    val MOLTEN_RUBBER: HTSimpleFluidContent = molten(CommonMaterialKeys.RUBBER)
+    val MOLTEN_RUBBER: HTFluidContent = molten(CommonMaterialKeys.RUBBER) {
+        blockFactory = null
+    }
 
     // Hiiragi Core
     @JvmField
-    val MOLTEN_CRIMSON_CRYSTAL: HTSimpleFluidContent = molten(HCMaterialKeys.CRIMSON_CRYSTAL, 2300, ::HTNetherFluidType)
+    val MOLTEN_CRIMSON_CRYSTAL: HTFluidContent = molten(HCMaterialKeys.CRIMSON_CRYSTAL, 2300) {
+        typeFactory = ::HTNetherFluidType
+    }
 
     @JvmField
-    val MOLTEN_WARPED_CRYSTAL: HTSimpleFluidContent = molten(HCMaterialKeys.WARPED_CRYSTAL, typeFactory = ::HTNetherFluidType)
+    val MOLTEN_WARPED_CRYSTAL: HTFluidContent = molten(HCMaterialKeys.WARPED_CRYSTAL) {
+        typeFactory = ::HTNetherFluidType
+    }
 
     @JvmField
-    val MOLTEN_ELDRITCH: HTSimpleFluidContent = molten(HCMaterialKeys.ELDRITCH, typeFactory = ::HTEndFluidType)
+    val MOLTEN_ELDRITCH: HTFluidContent = molten(HCMaterialKeys.ELDRITCH) {
+        typeFactory = ::HTEndFluidType
+    }
 
     //    Extensions    //
 

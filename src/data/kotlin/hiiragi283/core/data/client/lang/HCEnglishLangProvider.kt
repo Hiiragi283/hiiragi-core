@@ -25,6 +25,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCEntityTypes.ELDRITCH_EGG, "Thrown Eldritch Egg")
 
         // Fluid
+
         addFluid(HCFluids.EXPERIENCE, "Liquid Experience")
         addFluid(HCFluids.HONEY, "Honey")
         addFluid(HCFluids.MUSHROOM_STEW, "Mushroom Stew")
@@ -40,7 +41,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.MOLTEN_CRIMSON_CRYSTAL, "Crimson Blood")
         addFluid(HCFluids.MOLTEN_WARPED_CRYSTAL, "Dew of the Warp")
         addFluid(HCFluids.MOLTEN_ELDRITCH, "Eldritch Flux")
-        // addFluid(HCFluids.MOLTEN_OMINOUS_METAL, "Ominous Flux")
+        // addFluid(HCFluidsN.MOLTEN_OMINOUS_METAL, "Ominous Flux")
 
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "Bamboo Charcoal")

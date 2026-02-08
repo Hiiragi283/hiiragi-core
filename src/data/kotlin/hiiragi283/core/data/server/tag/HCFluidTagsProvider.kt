@@ -12,15 +12,11 @@ import net.minecraft.world.level.material.Fluid
 
 class HCFluidTagsProvider(context: HTDataGenContext) : HTTagsProvider<Fluid>(HiiragiCoreAPI.MOD_ID, Registries.FLUID, context) {
     override fun addTagsInternal(factory: BuilderFactory<Fluid>) {
-        HCFluids.REGISTER
-            .asSequence()
-            .forEach(::addContent.partially1(factory))
+        HCFluids.REGISTER.asSequence().forEach(::addContent.partially1(factory))
     }
 
-    fun addContent(factory: BuilderFactory<Fluid>, content: HTFluidContent<*, *, *>) {
+    fun addContent(factory: BuilderFactory<Fluid>, content: HTFluidContent) {
         val builder: HTTagBuilder<Fluid> = factory.apply(content.fluidTag).add(content)
-        if (content is HTFluidContent.Flowing<*, *, *, *>) {
-            builder.add(content.flowingHolder)
-        }
+        content.flowingHolder?.let(builder::add)
     }
 }
