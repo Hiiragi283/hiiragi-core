@@ -6,10 +6,12 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.item.tool.CommonToolTypes
+import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTDefaultPart
+import hiiragi283.core.api.material.property.HTExtraOreResultMap
 import hiiragi283.core.api.material.property.HTMaterialLevel
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTSmithingRecipeProperty
@@ -48,13 +50,14 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
         for (entry: HTMaterialManager.Entry in materialManager) {
             crushBaseToDust(event, entry)
+            crushCrushedToDust(event, entry)
             crushOreToCrushed(event, entry, CommonTagPrefixes.ORE)
             crushOreToCrushed(event, entry, CommonTagPrefixes.RAW)
 
             baseToBlock(event, entry)
-            crushedToDust(event, entry)
             ingotToNugget(entry)
             rawToBlock(event, entry)
+            tool(entry)
 
             flourToDough(event, entry)
 
@@ -109,13 +112,33 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             // 主産物
             result = resultCreator.create(crushedOre, prefix.getScaledAmount(2, entry).toInt())
             // 副産物
-            entry
-                .getOrDefault(HTMaterialPropertyKeys.ORE_EXTRA_RESULTS)
-                .map { it.toResult(resultCreator) }
-                .firstOrNull()
-                .let(::extraResult::set)
+            entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]
+                ?.getResult(HTExtraOreResultMap.Phase.CRUSH_ORE)
+                ?.let(::extraResult::set)
 
             recipeId suffix "_from_${prefix.name}"
+        }
+    }
+
+    @JvmStatic
+    private fun crushCrushedToDust(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
+        // 材料が存在するか判定
+        if (!event.isPresentTag(CommonTagPrefixes.CRUSHED_ORE, entry)) return
+        // 完成品を取得
+        val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
+        val dust: ItemLike = event.getFirstHolder(crushedPrefix, entry) ?: return
+        // レシピを登録
+        HCAnvilCrushingRecipeBuilder.create(output) {
+            // 材料
+            ingredient = inputCreator.create(CommonTagPrefixes.CRUSHED_ORE, entry)
+            // 主産物
+            result = resultCreator.create(dust, CommonTagPrefixes.CRUSHED_ORE.getScaledAmount(1, entry).toInt())
+            // 副産物
+            entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]
+                ?.getResult(HTExtraOreResultMap.Phase.CRUSH_CRUSHED)
+                ?.let(::extraResult::set)
+
+            recipeId suffix "_from_crushed_ore"
         }
     }
 
@@ -127,7 +150,6 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     private fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
         HiiragiCoreAccess.INSTANCE.getItemOrVanilla(prefix, material)
 
-    // Tag-Based
     @JvmStatic
     private fun baseToBlock(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
         val blockProperty: HTStorageBlockProperty = entry.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK)
@@ -189,20 +211,6 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
                 resultStack += gear
                 recipeId replace entry.getId().withSuffix("/gear")
             }
-        }
-    }
-
-    @JvmStatic
-    private fun crushedToDust(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
-        if (!event.isPresentTag(CommonTagPrefixes.CRUSHED_ORE, entry)) return
-        val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
-        val dust: ItemLike = event.getFirstHolder(crushedPrefix, entry) ?: return
-        // レシピを登録
-        HTShapelessRecipeBuilder.create(output) {
-            ingredients += CommonTagPrefixes.CRUSHED_ORE to entry
-            ingredients += CommonToolTypes.HAMMER
-            resultStack += dust to CommonTagPrefixes.CRUSHED_ORE.getScaledAmount(1, entry).toInt()
-            recipeId suffix "_from_crushed_ore"
         }
     }
 
@@ -288,6 +296,34 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             define('B') += raw
             resultStack += rawBlock
             recipeId replace entry.getId()
+        }
+    }
+
+    @JvmStatic
+    private fun tool(entry: HTMaterialManager.Entry) {
+        val inputTag: TagKey<Item> = entry.getDefaultPart(entry) ?: return
+        for ((toolType: HTToolType, tool: HTItemHolderLike<*>) in HiiragiCoreAccess.INSTANCE.materialContents.getToolMap(entry)) {
+            val smithingProperty: HTSmithingRecipeProperty? = entry[HTMaterialPropertyKeys.SMITHING_RECIPE]
+            if (smithingProperty != null) {
+                // Smithing
+                val (template: HTItemHolderLike<*>, base: HTMaterialKey) = smithingProperty
+                val baseTool: ItemLike = HiiragiCoreAccess.INSTANCE.getToolOrVanilla(toolType, base) ?: continue
+                HTSmithingRecipeBuilder.create(output) {
+                    this.template += template
+                    this.base += baseTool
+                    this.addition += inputTag
+                    this.resultStack += tool
+                }
+            }
+            if (smithingProperty?.allowCrafting ?: true) {
+                // Shaped
+                HTShapedRecipeBuilder.create(output) {
+                    pattern(toolType.recipePattern)
+                    define('A') += inputTag
+                    define('B') += Tags.Items.RODS_WOODEN
+                    resultStack += tool
+                }
+            }
         }
     }
 

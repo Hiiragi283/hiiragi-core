@@ -31,10 +31,10 @@ class HTItemIngredient(val delegate: SizedIngredient) : HTIngredient<Item, HTIte
         val UNSIZED_CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> =
             VanillaBiCodecs.INGREDIENT.xmap(::HTItemIngredient, HTItemIngredient::ingredient)
 
-        @JvmStatic
-        private val NESTED_CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> = BiCodec.composite(
+        @JvmField
+        val NESTED_CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> = BiCodec.composite(
             VanillaBiCodecs.INGREDIENT.fieldOf(HTConst.ITEMS).forGetter(HTItemIngredient::ingredient),
-            BiCodecs.POSITIVE_INT.fieldOf(HTConst.AMOUNT).forGetter(HTItemIngredient::getRequiredAmount),
+            BiCodecs.POSITIVE_INT.optionalFieldOf(HTConst.AMOUNT, 1).forGetter(HTItemIngredient::getRequiredAmount),
             ::HTItemIngredient,
         )
 

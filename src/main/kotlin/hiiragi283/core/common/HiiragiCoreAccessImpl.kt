@@ -1,6 +1,7 @@
 package hiiragi283.core.common
 
 import com.google.gson.JsonObject
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.item.tool.HTToolType
@@ -8,10 +9,17 @@ import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.registry.holderSetOrNull
+import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.text.HTCommonTranslation
+import hiiragi283.core.api.text.HTTextResult
+import hiiragi283.core.api.text.toTextResult
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.common.serialization.value.HTEmptyValueInput
 import hiiragi283.core.common.serialization.value.HTJsonValueInput
@@ -20,11 +28,46 @@ import hiiragi283.core.common.serialization.value.HTTagValueInput
 import hiiragi283.core.common.serialization.value.HTTagValueOutput
 import hiiragi283.core.config.HCConfig
 import hiiragi283.core.setup.HCMiscRegister
+import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.tags.TagKey
+import net.neoforged.bus.api.SubscribeEvent
+import net.neoforged.fml.common.EventBusSubscriber
+import net.neoforged.neoforge.event.TagsUpdatedEvent
 
-class HiiragiCoreAccessImpl : HiiragiCoreAccess {
-    override lateinit var materialManager: HTMaterialManager
+@EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
+class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
+    companion object {
+        @JvmStatic
+        internal lateinit var materialManagerCache: HTMaterialManager
+
+        @JvmStatic
+        private val modIdComparator: Comparator<HTIdLike> by lazy {
+            Comparator
+                .comparingInt { id: HTIdLike ->
+                    val modIds: List<String> = HCConfig.COMMON.tagOutputPriority.get()
+                    when (val priority: Int = modIds.indexOf(id.namespace)) {
+                        -1 -> modIds.size
+                        else -> priority
+                    }
+                }.thenBy(HTIdLike::namespace)
+        }
+
+        @JvmStatic
+        private val tagResultCache: MutableMap<TagKey<*>, HTHolderLike.HolderDelegate<*, *>> = hashMapOf()
+
+        @SubscribeEvent
+        @JvmStatic
+        fun clearTagCache(event: TagsUpdatedEvent) {
+            if (event.updateCause == TagsUpdatedEvent.UpdateCause.SERVER_DATA_LOAD) {
+                tagResultCache.clear()
+                HiiragiCoreAPI.LOGGER.debug("Cleared tag holder cache")
+            }
+        }
+    }
+
+    override val materialManager: HTMaterialManager get() = materialManagerCache
     override val materialContents: HTMaterialContents = object : HTMaterialContents {
         override fun getBlockTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTBlockHolderLike<*, *>> = HCMiscRegister.materialBlocks
 
@@ -41,7 +84,31 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess {
         override fun getToolTable(): HTTable<HTToolType, HTMaterialKey, out HTItemHolderLike<*>> = VanillaMaterialKeys.TOOLS
     }
 
-    override fun getModIdPriorityList(): List<String> = HCConfig.COMMON.tagOutputPriority.get()
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : Any> getFirstHolder(
+        provider: HolderLookup.Provider?,
+        tagKey: TagKey<T>,
+    ): HTTextResult<HTHolderLike.HolderDelegate<T, T>> {
+        // キャッシュから優先して取得
+        val cachedHolder: HTHolderLike.HolderDelegate<T, T>? = tagResultCache[tagKey] as? HTHolderLike.HolderDelegate<T, T>
+        if (cachedHolder != null) {
+            return HTTextResult.success(cachedHolder)
+        }
+        // キャッシュから取得できない場合はレジストリから取得
+        val provider1: HolderLookup.Provider = (provider ?: HiiragiCoreAPI.getActiveAccess())
+            ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()
+        val holder: HTHolderLike.HolderDelegate<T, T> = provider1
+            .holderSetOrNull(tagKey)
+            ?.asSequence()
+            ?.map(Holder<T>::toLike)
+            ?.sortedWith(modIdComparator)
+            ?.firstOrNull()
+            ?: return HTCommonTranslation.EMPTY_TAG_KEY.toTextResult(tagKey)
+        // キャッシュを保存
+        tagResultCache[tagKey] = holder
+        HiiragiCoreAPI.LOGGER.debug("Cached first holder: {} for tag: {}", holder.getId(), tagKey)
+        return HTTextResult.success(holder)
+    }
 
     override fun createInput(provider: HolderLookup.Provider, jsonObject: JsonObject): HTValueInput = when {
         jsonObject.isEmpty -> HTEmptyValueInput

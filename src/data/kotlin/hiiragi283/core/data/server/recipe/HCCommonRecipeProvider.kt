@@ -310,6 +310,8 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
     }
 
     @JvmStatic
-    private fun getOrThrow(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*> =
-        HiiragiCoreAccess.INSTANCE.materialContents.getItemOrThrow(prefix, material)
+    private fun getOrThrow(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*> = HiiragiCoreAccess.INSTANCE
+        .materialContents
+        .getItem(prefix, material)
+        ?: error("Unknown ${prefix.name} for ${material.asMaterialId()}")
 }

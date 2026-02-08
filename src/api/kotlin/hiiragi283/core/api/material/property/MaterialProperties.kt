@@ -3,7 +3,6 @@ package hiiragi283.core.api.material.property
 import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.item.tool.HTToolMaterial
 import hiiragi283.core.api.item.tool.HTToolType
-import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.computeIfAbsent
@@ -11,10 +10,8 @@ import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.toFraction
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
-import org.apache.commons.lang3.math.Fraction
 
 fun HTPropertyMap.getDefaultPart(): HTDefaultPart? = this[HTMaterialPropertyKeys.DEFAULT_PART]
 
@@ -30,18 +27,6 @@ fun HTPropertyMap.Mutable.setDefaultPart(tagKey: TagKey<Item>, altItem: HTItemHo
 
 fun HTPropertyMap.Mutable.setDefaultPart(prefixed: HTDefaultPart.Prefixed) {
     this[HTMaterialPropertyKeys.DEFAULT_PART] = prefixed
-}
-
-fun HTPropertyMap.Mutable.addExtraOreResult(key: HTMaterialKey, chance: Float) {
-    this.addExtraOreResult(HTChancedOreResult(key, chance.toFraction()))
-}
-
-fun HTPropertyMap.Mutable.addExtraOreResult(key: HTMaterialKey, chance: Fraction) {
-    this.addExtraOreResult(HTChancedOreResult(key, chance))
-}
-
-fun HTPropertyMap.Mutable.addExtraOreResult(result: HTChancedOreResult) {
-    this.computeIfAbsent(HTMaterialPropertyKeys.ORE_EXTRA_RESULTS) { it.plus(result) }
 }
 
 fun HTPropertyMap.Mutable.addBlockPrefixes(vararg tagPrefixes: HTTagPrefix) {

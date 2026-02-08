@@ -61,7 +61,7 @@ sealed class HTSubRecipeProvider(protected val modId: String) : HTRecipeProvider
     /**
      * 指定した[output]別の[RecipeOutput]に変換します。
      */
-    protected abstract fun modifyOutput(output: RecipeOutput): RecipeOutput
+    protected open fun modifyOutput(output: RecipeOutput): RecipeOutput = output
 
     /**
      * レシピを生成します。
@@ -75,8 +75,6 @@ sealed class HTSubRecipeProvider(protected val modId: String) : HTRecipeProvider
      */
     abstract class Direct(modId: String) : HTSubRecipeProvider(modId) {
         final override fun modifyId(id: ResourceLocation): ResourceLocation = modId.toId(id.path)
-
-        final override fun modifyOutput(output: RecipeOutput): RecipeOutput = output
     }
 
     //    Integration    //

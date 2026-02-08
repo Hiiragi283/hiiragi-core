@@ -103,6 +103,13 @@ object HTMaterialPropertyKeys {
     val CRUSHED_PREFIX: HTPropertyKey<HTTagPrefix> =
         HTPropertyKey.create(HiiragiCoreAPI.id("crushed_prefix"), CommonTagPrefixes.DUST)
 
+    /**
+     * 鉱石粉砕の副産物を管理する[プロパティキー][HTPropertyKey]
+     * @since 0.10.0
+     */
+    @JvmField
+    val EXTRA_ORE_RESULTS: HTPropertyKey<HTExtraOreResultMap?> = createNullable("extra_ore_results")
+
     @JvmField
     val HARDNESS: HTPropertyKey<HTMaterialLevel> =
         HTPropertyKey.create(HiiragiCoreAPI.id("hardness"), HTMaterialLevel.LOW)
@@ -116,14 +123,6 @@ object HTMaterialPropertyKeys {
      */
     @JvmField
     val MOLTEN_FLUID: HTPropertyKey<HTFluidMaterialProperty?> = createNullable("molten_fluid")
-
-    /**
-     * 鉱石粉砕の副産物を管理する[プロパティキー][HTPropertyKey]
-     * @since 0.8.0
-     */
-    @JvmField
-    val ORE_EXTRA_RESULTS: HTPropertyKey<Set<HTChancedOreResult>> =
-        HTPropertyKey.createSet(HiiragiCoreAPI.id("ore_extra_results"))
 
     /**
      * 鉱石粉砕の主産物の個数の倍率を管理する[プロパティキー][HTPropertyKey]

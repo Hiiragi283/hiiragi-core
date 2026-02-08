@@ -10,15 +10,10 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
-import hiiragi283.core.api.registry.holderSetOrNull
-import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextResult
-import hiiragi283.core.api.text.toTextResult
-import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.TagKey
@@ -30,7 +25,7 @@ import net.neoforged.api.distmarker.OnlyIn
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
-interface HiiragiCoreAccess {
+abstract class HiiragiCoreAccess {
     companion object {
         /**
          * [HiiragiCoreAccess]のインスタンス
@@ -44,17 +39,17 @@ interface HiiragiCoreAccess {
     /**
      * 素材マネージャを取得します。
      */
-    val materialManager: HTMaterialManager
+    abstract val materialManager: HTMaterialManager
 
     /**
      * 登録された素材コンテンツを取得します。
      */
-    val materialContents: HTMaterialContents
+    abstract val materialContents: HTMaterialContents
 
     /**
      * バニラ由来の素材コンテンツを取得します。
      */
-    val vanillaContents: HTMaterialContents
+    abstract val vanillaContents: HTMaterialContents
 
     fun getBlockOrVanilla(prefix: HTTagPrefix, material: HTMaterialLike): HTBlockHolderLike<*, *>? =
         materialContents.getBlock(prefix, material) ?: vanillaContents.getBlock(prefix, material)
@@ -73,49 +68,34 @@ interface HiiragiCoreAccess {
     /**
      * 指定した[provider]から，[tagKey]に紐づいた[HTHolderLike]を取得します。
      * @param T レジストリの種類のクラス
-     * @return [getModIdPriorityList]に基づいて選出された[HTHolderLike]の[結果][HTTextResult]
+     * @return [HTHolderLike]の[結果][HTTextResult]
      */
-    fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<HTHolderLike.HolderDelegate<T, T>> {
-        val provider1: HolderLookup.Provider = (provider ?: HiiragiCoreAPI.getActiveAccess())
-            ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()
-        val holders: Sequence<HTHolderLike.HolderDelegate<T, T>> = provider1
-            .holderSetOrNull(tagKey)
-            ?.asSequence()
-            ?.map(Holder<T>::toLike)
-            ?: return HTCommonTranslation.EMPTY_TAG_KEY.toTextResult(tagKey)
-        for (modId: String in getModIdPriorityList()) {
-            val first: HTHolderLike.HolderDelegate<T, T>? = holders.firstOrNull { it.namespace == modId }
-            if (first != null) return HTTextResult.success(first)
-        }
-        return holders
-            .firstOrNull()
-            ?.let(HTTextResult.Companion::success)
-            ?: HTCommonTranslation.EMPTY_TAG_KEY.toTextResult(tagKey)
-    }
-
-    fun getModIdPriorityList(): List<String>
+    abstract fun <T : Any> getFirstHolder(
+        provider: HolderLookup.Provider?,
+        tagKey: TagKey<T>,
+    ): HTTextResult<HTHolderLike.HolderDelegate<T, T>>
 
     //    Value IO    //
 
     /**
      * 指定した[レジストリ][provider]と[JSON][jsonObject]から[HTValueInput]を作成します。
      */
-    fun createInput(provider: HolderLookup.Provider, jsonObject: JsonObject): HTValueInput
+    abstract fun createInput(provider: HolderLookup.Provider, jsonObject: JsonObject): HTValueInput
 
     /**
      * 指定した[レジストリ][provider]と[JSON][jsonObject]から[HTValueOutput]を作成します。
      */
-    fun createOutput(provider: HolderLookup.Provider, jsonObject: JsonObject): HTValueOutput
+    abstract fun createOutput(provider: HolderLookup.Provider, jsonObject: JsonObject): HTValueOutput
 
     /**
      * 指定した[レジストリ][provider]と[NBT][compoundTag]から[HTValueInput]を作成します。
      */
-    fun createInput(provider: HolderLookup.Provider, compoundTag: CompoundTag): HTValueInput
+    abstract fun createInput(provider: HolderLookup.Provider, compoundTag: CompoundTag): HTValueInput
 
     /**
      * 指定した[レジストリ][provider]と[NBT][compoundTag]から[HTValueOutput]を作成します。
      */
-    fun createOutput(provider: HolderLookup.Provider, compoundTag: CompoundTag): HTValueOutput
+    abstract fun createOutput(provider: HolderLookup.Provider, compoundTag: CompoundTag): HTValueOutput
 
     //    Client    //
 

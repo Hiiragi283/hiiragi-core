@@ -28,9 +28,6 @@ interface HTMaterialContents {
     fun getBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTBlockHolderLike<*, *>? =
         getBlockTable()[prefix, material.asMaterialKey()]
 
-    fun getBlockOrThrow(prefix: HTTagPrefix, material: HTMaterialLike): HTBlockHolderLike<*, *> =
-        getBlockTable().getOrThrow(prefix, material.asMaterialKey())
-
     fun getBlockMap(prefix: HTTagPrefix): Map<HTMaterialKey, HTBlockHolderLike<*, *>> = getBlockTable().row(prefix)
 
     fun getBlockMap(material: HTMaterialLike): Map<HTTagPrefix, HTBlockHolderLike<*, *>> = getBlockTable().column(material.asMaterialKey())
@@ -49,9 +46,6 @@ interface HTMaterialContents {
 
     fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? = getItemTable()[prefix, material.asMaterialKey()]
 
-    fun getItemOrThrow(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*> =
-        getItemTable().getOrThrow(prefix, material.asMaterialKey())
-
     fun getItemMap(prefix: HTTagPrefix): Map<HTMaterialKey, HTItemHolderLike<*>> = getItemTable().row(prefix)
 
     fun getItemMap(material: HTMaterialLike): Map<HTTagPrefix, HTItemHolderLike<*>> = getItemTable().column(material.asMaterialKey())
@@ -69,9 +63,6 @@ interface HTMaterialContents {
     fun getToolTable(): HTTable<HTToolType, HTMaterialKey, out HTItemHolderLike<*>>
 
     fun getTool(toolType: HTToolType, material: HTMaterialLike): HTItemHolderLike<*>? = getToolTable()[toolType, material.asMaterialKey()]
-
-    fun getToolOrThrow(toolType: HTToolType, material: HTMaterialLike): HTItemHolderLike<*> =
-        getTool(toolType, material) ?: error("Unknown ${toolType.name} for ${material.asMaterialId()}")
 
     fun getToolMap(toolType: HTToolType): Map<HTMaterialKey, HTItemHolderLike<*>> = getToolTable().row(toolType)
 
