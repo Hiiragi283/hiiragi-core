@@ -3,13 +3,12 @@ package hiiragi283.core.api.serialization.codec
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.monad.Ior
-import hiiragi283.core.api.monad.toIorOrThrow
 import hiiragi283.core.api.serialization.codec.impl.HTEitherMapCodec
 import hiiragi283.core.api.serialization.codec.impl.HTEitherStreamCodec
+import hiiragi283.core.api.serialization.codec.impl.HTIorMapCodec
+import hiiragi283.core.api.serialization.codec.impl.HTIorStreamCodec
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.StreamCodec
-import java.util.Optional
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * [MapBiCodec]に関するメソッドを集めたクラスです。
@@ -43,26 +42,16 @@ object MapBiCodecs {
 
     /**
      * 指定した[left], [right]から，[Ior]の[BiCodec]を返します。
-     * @param left [L]を対象とする[Optional]の[MapBiCodec]
-     * @param right [R]を対象とする[Optional]の[MapBiCodec]
+     * @param left [L]を対象とする[MapBiCodec]
+     * @param right [R]を対象とする[MapBiCodec]
      * @return [Ior]の[MapBiCodec]
      */
     @JvmStatic
-    fun <B : ByteBuf, L : Any, R : Any> ior(
-        left: MapBiCodec<in B, Optional<L>>,
-        right: MapBiCodec<in B, Optional<R>>,
-    ): MapBiCodec<B, Ior<L, R>> = pair(left, right).flatXmap(
-        { pair: Pair<Optional<L>, Optional<R>> ->
-            (pair.first.getOrNull() to pair.second.getOrNull()).toIorOrThrow("Cannot serialize empty ior")
-        },
-        { ior: Ior<L, R> ->
-            ior.fold(
-                { Optional.of(it) to Optional.empty() },
-                { Optional.empty<L>() to Optional.of(it) },
-                { leftIn: L, rightIn: R -> Optional.of(leftIn) to Optional.of(rightIn) },
-            )
-        },
-    )
+    fun <B : ByteBuf, L : Any, R : Any> ior(left: MapBiCodec<in B, L>, right: MapBiCodec<in B, R>): MapBiCodec<B, Ior<L, R>> =
+        MapBiCodec.of(
+            HTIorMapCodec(left.codec, right.codec),
+            HTIorStreamCodec(left.streamCodec, right.streamCodec),
+        )
 
     /**
      * 指定した[instance]を常に返す[MapBiCodec]を返します。

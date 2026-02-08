@@ -23,6 +23,7 @@ import hiiragi283.core.api.material.property.addToolPrefixes
 import hiiragi283.core.api.material.property.setDefaultPart
 import hiiragi283.core.api.material.property.setName
 import hiiragi283.core.api.material.property.setTextureSet
+import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.plusAssign
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -388,16 +389,21 @@ object HCMaterialEventHandler {
             }
         }
 
-        fun registerMineral(key: HTMaterialKey, enName: String, jaName: String) {
+        fun registerMineral(
+            key: HTMaterialKey,
+            enName: String,
+            jaName: String,
+            builderAction: HTPropertyMap.Mutable.() -> Unit = {},
+        ) {
             event.modify(key) {
                 setDefaultPart(HTDefaultPart.Prefixed.DUST)
                 addBlockPrefixes(CommonTagPrefixes.ORES.plus(CommonTagPrefixes.RAW_BLOCK))
                 addItemPrefixes(oreSet)
-                put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(3))
 
                 setName(enName, jaName)
                 setTextureSet("mineral", HTMaterialTextureSet.DULL)
                 addCustomOreLoot(HTBlockLootFactory.createOre())
+                builderAction()
             }
         }
 
@@ -429,26 +435,18 @@ object HCMaterialEventHandler {
         // Minerals
         registerMineral(CommonMaterialKeys.SALT, "Salt", "塩")
         registerMineral(CommonMaterialKeys.SALTPETER, "Saltpeter", "硝石")
-
         registerMineral(CommonMaterialKeys.BAUXITE, "Bauxite", "ボーキサイト")
 
         registerMineral(CommonMaterialKeys.SULFUR, "Sulfur", "硫黄")
 
-        event.modify(CommonMaterialKeys.PLATINUM_GROUP) {
-            setDefaultPart(HTDefaultPart.Prefixed.DUST)
-            addBlockPrefixes(CommonTagPrefixes.ORES.plus(CommonTagPrefixes.RAW_BLOCK))
-            addItemPrefixes(oreSet)
-
-            setName("Platinum Group", "白金族")
+        registerMineral(CommonMaterialKeys.PLATINUM_GROUP, "Platinum Group", "白金族") {
             setTextureSet("mineral", HTMaterialTextureSet.SHINE)
-            addCustomOreLoot(HTBlockLootFactory.createOre())
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("black"))
         }
 
-        event.modify(CommonMaterialKeys.GALENA) {
-            setDefaultPart(HTDefaultPart.Prefixed.DUST)
-            addBlockPrefixes(CommonTagPrefixes.ORES.plus(CommonTagPrefixes.RAW_BLOCK))
-            addItemPrefixes(oreSet)
+        registerMineral(CommonMaterialKeys.CINNABAR, "Cinnabar", "辰砂")
+
+        registerMineral(CommonMaterialKeys.GALENA, "Galena", "方鉛鉱") {
             put(
                 HTMaterialPropertyKeys.EXTRA_ORE_RESULTS,
                 HTExtraOreResultMap.create {
@@ -458,23 +456,8 @@ object HCMaterialEventHandler {
                 },
             )
             put(HTMaterialPropertyKeys.SMELTED_TO, CommonMaterialKeys.LEAD)
-
-            setName("Galena", "方鉛鉱")
-            setTextureSet("mineral", HTMaterialTextureSet.DULL)
-            addCustomOreLoot(HTBlockLootFactory.createOre())
         }
         // Gems
-        event.modify(CommonMaterialKeys.CINNABAR) {
-            setDefaultPart(HTDefaultPart.Prefixed.GEM)
-            addBlockPrefixes(materialBlockSet)
-            addItemPrefixes(gemSet)
-            put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(3))
-
-            setName("Cinnabar", "辰砂")
-            setTextureSet("lapis")
-            addCustomOreLoot(HTBlockLootFactory.createOre())
-        }
-
         event.modify(CommonMaterialKeys.FLUORITE) {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
             put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(3))
@@ -647,24 +630,19 @@ object HCMaterialEventHandler {
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
             setName("Carbon", "炭素")
+            addCustomName(CommonTagPrefixes.WIRE, "Carbon Fiber", "炭素繊維")
             setTextureSet("mineral", HTMaterialTextureSet.DULL)
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, VanillaMaterialKeys.COAL.getId())
         }
         event.modify(CommonMaterialKeys.PLASTIC) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(
-                CommonTagPrefixes.DUST,
-                CommonTagPrefixes.INGOT,
-                CommonTagPrefixes.PLATE,
-                CommonTagPrefixes.ROD,
-                CommonTagPrefixes.WIRE,
-            )
+            addItemPrefixes(CommonTagPrefixes.INGOT, CommonTagPrefixes.PLATE, CommonTagPrefixes.ROD, CommonTagPrefixes.WIRE)
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_PLASTIC))
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
             setName("Plastic", "プラスチック")
-            addCustomName(CommonTagPrefixes.DUST, "Plastic Pulp", "プラスチックパルプ")
+            // addCustomName(CommonTagPrefixes.DUST, "Plastic Pulp", "プラスチックパルプ")
             addCustomName(CommonTagPrefixes.INGOT, "Plastic Bar", "プラスチックバー")
             addCustomName(CommonTagPrefixes.PLATE, "Plastic Sheet", "プラスチックシート")
             addCustomName(CommonTagPrefixes.WIRE, "Synthetic Fiber", "合成繊維")
@@ -673,16 +651,12 @@ object HCMaterialEventHandler {
         event.modify(CommonMaterialKeys.RUBBER) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(
-                CommonTagPrefixes.DUST,
-                CommonTagPrefixes.INGOT,
-                CommonTagPrefixes.PLATE,
-            )
+            addItemPrefixes(CommonTagPrefixes.INGOT, CommonTagPrefixes.PLATE)
             put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_RUBBER))
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
             setName("Rubber", "ゴム")
-            addCustomName(CommonTagPrefixes.DUST, "Rubber Pulp", "ゴムパルプ")
+            // addCustomName(CommonTagPrefixes.DUST, "Rubber Pulp", "ゴムパルプ")
             addCustomName(CommonTagPrefixes.INGOT, "Rubber Bar", "ゴムバー")
             addCustomName(CommonTagPrefixes.PLATE, "Rubber Sheet", "ゴムシート")
             setTextureSet("polymer")

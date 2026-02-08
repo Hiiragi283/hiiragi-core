@@ -30,8 +30,8 @@ class HTItemResult(private val contents: Ior<HTItemResourceType, TagKey<Item>>, 
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemResult> = BiCodec.composite(
             MapBiCodecs
                 .ior(
-                    HTItemResourceType.CODEC.toOptional().toMap(),
-                    VanillaBiCodecs.tagKey(Registries.ITEM, false).optionalFieldOf(HTConst.TAG),
+                    HTItemResourceType.CODEC.toMap(),
+                    VanillaBiCodecs.tagKey(Registries.ITEM, false).fieldOf(HTConst.TAG),
                 ).forGetter(HTItemResult::contents),
             BiCodecs.POSITIVE_INT.optionalFieldOf(HTConst.COUNT, 1).forGetter(HTItemResult::count),
             ::HTItemResult,
