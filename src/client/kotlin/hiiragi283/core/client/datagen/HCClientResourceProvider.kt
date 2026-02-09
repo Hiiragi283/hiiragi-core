@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDynamicResourceProvider
 import hiiragi283.core.client.datagen.lang.HCEnglishLangProvider
 import hiiragi283.core.client.datagen.lang.HCJapaneseLangProvider
+import hiiragi283.core.client.datagen.model.HCItemModelProvider
 import net.mehvahdjukaar.moonlight.api.events.AfterLanguageLoadEvent
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import java.util.function.Consumer
@@ -17,5 +18,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         // Lang
         executor.accept(HCEnglishLangProvider)
         executor.accept(HCJapaneseLangProvider)
+        // Model
+        executor.accept(HCItemModelProvider)
     }
 }

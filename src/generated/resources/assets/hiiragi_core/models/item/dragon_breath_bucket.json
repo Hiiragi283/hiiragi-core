@@ -1,6 +1,0 @@
-{
-  "parent": "neoforge:item/bucket",
-  "flip_gas": true,
-  "fluid": "hiiragi_core:dragon_breath",
-  "loader": "neoforge:fluid_container"
-}
