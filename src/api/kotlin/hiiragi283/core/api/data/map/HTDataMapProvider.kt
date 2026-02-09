@@ -3,14 +3,13 @@ package hiiragi283.core.api.data.map
 import com.mojang.datafixers.util.Either
 import com.mojang.serialization.JsonOps
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.data.HTServerResourceGenTask
 import hiiragi283.core.api.resource.HTKeyLike
 import net.mehvahdjukaar.moonlight.api.resources.ResType
-import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
 import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.tags.TagKey
 import net.neoforged.neoforge.common.conditions.ConditionalOps
 import net.neoforged.neoforge.common.conditions.WithConditions
@@ -22,18 +21,19 @@ import net.neoforged.neoforge.registries.datamaps.DataMapType
 import java.util.Optional
 
 /**
+ * データマップを生成する[HTServerResourceGenTask]の抽象クラスです。
  * @param T 値のクラス
  * @param R レジストリの要素のクラス
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  * @see DataMapProvider
  */
-abstract class HTDataMapProvider<T : Any, R : Any>(private val type: DataMapType<R, T>) : ResourceGenTask {
+abstract class HTDataMapProvider<T : Any, R : Any>(private val type: DataMapType<R, T>) : HTServerResourceGenTask {
     private val registryKey: ResourceKey<Registry<R>> = type.registryKey()
     private val tagValues: MutableMap<TagKey<R>, DataMapEntry<T>> = hashMapOf()
     private val keyValues: MutableMap<ResourceKey<R>, DataMapEntry<T>> = hashMapOf()
 
-    override fun accept(manager: ResourceManager, sink: ResourceSink) {
+    override fun accept(sink: ResourceSink) {
         gather()
 
         val file: DataMapFile<T, R> = DataMapFile(

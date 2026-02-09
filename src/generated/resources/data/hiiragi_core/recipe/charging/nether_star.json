@@ -1,7 +1,0 @@
-{
-  "type": "hiiragi_core:charging",
-  "ingredient": "hiiragi_core:wither_star",
-  "result": {
-    "id": "minecraft:nether_star"
-  }
-}

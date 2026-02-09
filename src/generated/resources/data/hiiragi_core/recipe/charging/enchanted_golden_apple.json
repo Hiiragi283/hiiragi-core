@@ -1,7 +1,0 @@
-{
-  "type": "hiiragi_core:charging",
-  "ingredient": "minecraft:golden_apple",
-  "result": {
-    "id": "minecraft:enchanted_golden_apple"
-  }
-}

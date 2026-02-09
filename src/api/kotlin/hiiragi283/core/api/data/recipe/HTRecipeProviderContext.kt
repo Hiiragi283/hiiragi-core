@@ -19,7 +19,7 @@ import net.neoforged.neoforge.common.conditions.ICondition
  * レシピ生成で使用される抽象クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.8.0
- * @see HTSubRecipeProvider
+ * @see HTRecipeProvider
  * @see HTRegisterRuntimeRecipeEvent
  */
 abstract class HTRecipeProviderContext {

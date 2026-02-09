@@ -1,29 +1,28 @@
 package hiiragi283.core.api.data.tag
 
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.data.HTServerResourceGenTask
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.mehvahdjukaar.moonlight.api.resources.SimpleTagBuilder
-import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
-import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.tags.TagEntry
 import net.minecraft.tags.TagKey
 import java.util.function.Function
 
 /**
- * [HTTagBuilder]に基づいて[TagKey]を生成する[ResourceGenTask]の抽象クラスです。
+ * [HTTagBuilder]に基づいて[TagKey]を生成する[HTServerResourceGenTask]の抽象クラスです。
  * @param T レジストリの要素のクラス
  * @param registryKey レジストリを表すキー
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
-abstract class HTTagsProvider<T : Any>(private val registryKey: RegistryKey<T>) : ResourceGenTask {
+abstract class HTTagsProvider<T : Any>(private val registryKey: RegistryKey<T>) : HTServerResourceGenTask {
     private val builderCache: MutableMap<TagKey<T>, SimpleTagBuilder> = hashMapOf()
 
-    override fun accept(manager: ResourceManager, sink: ResourceSink) {
+    override fun accept(sink: ResourceSink) {
         addTagsInternal { tagKey: TagKey<T> ->
             HTTagBuilder(registryKey) { entry: TagEntry ->
                 builderCache

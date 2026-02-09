@@ -1,7 +1,0 @@
-{
-  "type": "hiiragi_core:charging",
-  "ingredient": "#c:gems/quartz",
-  "result": {
-    "id": "minecraft:prismarine_shard"
-  }
-}

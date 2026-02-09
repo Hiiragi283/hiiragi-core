@@ -1,25 +1,45 @@
 package hiiragi283.core.api.data.recipe
 
-import hiiragi283.core.api.data.HTDataGenContext
+import hiiragi283.core.api.data.HTServerResourceGenTask
+import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
+import net.minecraft.advancements.Advancement
+import net.minecraft.advancements.AdvancementHolder
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeOutput
-import net.minecraft.data.recipes.RecipeProvider
-import java.util.function.Consumer
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.item.crafting.Recipe
+import net.neoforged.neoforge.common.conditions.ICondition
 
 /**
- * [HTSubRecipeProvider]に基づいた[RecipeProvider]の拡張クラスです。
+ * [レシピ][Recipe]を生成する[HTServerResourceGenTask]の抽象クラスです。。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 0.10.0
  */
-abstract class HTRecipeProvider(context: HTDataGenContext) : RecipeProvider(context.output, context.registries) {
-    final override fun buildRecipes(recipeOutput: RecipeOutput, holderLookup: HolderLookup.Provider) {
-        for (provider: HTSubRecipeProvider in buildList { collectProviders(::add) }) {
-            provider.buildRecipes(recipeOutput, holderLookup)
-        }
+abstract class HTRecipeProvider :
+    HTRecipeProviderContext(),
+    HTServerResourceGenTask {
+    @Deprecated("Do not use", level = DeprecationLevel.ERROR)
+    final override val provider: HolderLookup.Provider get() = error("Cannot access registry from runtime-datapack")
+    final override lateinit var output: RecipeOutput
+        private set
+
+    override fun accept(sink: ResourceSink) {
+        this.output = SinkRecipeOutput(sink)
+        buildRecipes()
     }
 
-    /**
-     * レシピを生成させたい[HTSubRecipeProvider]を[consumer]に登録します。
-     */
-    protected abstract fun collectProviders(consumer: Consumer<HTSubRecipeProvider>)
+    protected abstract fun buildRecipes()
+
+    private class SinkRecipeOutput(private val sink: ResourceSink) : RecipeOutput {
+        override fun accept(
+            id: ResourceLocation,
+            recipe: Recipe<*>,
+            advancement: AdvancementHolder?,
+            vararg conditions: ICondition,
+        ) {
+            sink.addRecipe(recipe, id)
+        }
+
+        override fun advancement(): Advancement.Builder = Advancement.Builder.recipeAdvancement()
+    }
 }
