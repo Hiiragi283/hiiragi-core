@@ -3,8 +3,15 @@ package hiiragi283.core.api.data.texture
 import com.mojang.blaze3d.platform.NativeImage
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.function.partially1
+import net.mehvahdjukaar.moonlight.api.resources.RPUtils
+import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
+import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage.open
 import net.minecraft.data.DataProvider
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.server.packs.resources.ResourceManager
+import net.minecraft.world.item.Item
+import net.minecraft.world.level.block.Block
 import net.neoforged.fml.ModList
 import java.awt.Color
 import java.io.BufferedReader
@@ -103,5 +110,15 @@ object HTTextureUtil {
                 }
             }
         }
+    }
+
+    @JvmStatic
+    fun getTexture(manager: ResourceManager, block: Block): Result<TextureImage> = runCatching {
+        RPUtils.findFirstBlockTextureLocation(manager, block).let(TextureImage::open.partially1(manager))
+    }
+
+    @JvmStatic
+    fun getTexture(manager: ResourceManager, item: Item): Result<TextureImage> = runCatching {
+        RPUtils.findFirstItemTextureLocation(manager, item).let(TextureImage::open.partially1(manager))
     }
 }

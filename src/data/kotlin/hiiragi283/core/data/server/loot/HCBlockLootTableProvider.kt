@@ -2,6 +2,7 @@ package hiiragi283.core.data.server.loot
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.loot.HTBlockLootTableProvider
+import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.setup.HCBlocks
 import net.minecraft.advancements.critereon.StatePropertiesPredicate
 import net.minecraft.core.HolderLookup
@@ -17,10 +18,10 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 
 class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootTableProvider(HiiragiCoreAPI.MOD_ID, registries) {
-    override fun generate() {
-        HCBlocks.REGISTER.asBlockSequence().forEach(::dropSelf)
+    override fun getRawBlocks(): Sequence<HTBlockHolderLike<*, *>> = HCBlocks.REGISTER.asBlockSequence()
 
-        registerMaterials()
+    override fun generate() {
+        getRawBlocks().forEach(::dropSelf)
 
         registerCrops()
     }
@@ -45,7 +46,7 @@ class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootT
                                 LootItem
                                     .lootTableItem(HCBlocks.WARPED_WART)
                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(2f, 4f)).`when`(stateCondition))
-                                    .apply(ApplyBonusCount.addUniformBonusCount(helper.fortune).`when`(stateCondition)),
+                                    .apply(ApplyBonusCount.addUniformBonusCount(fortune).`when`(stateCondition)),
                             ),
                     ),
                 )

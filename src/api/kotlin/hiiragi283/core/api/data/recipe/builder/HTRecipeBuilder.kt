@@ -1,10 +1,8 @@
 package hiiragi283.core.api.data.recipe.builder
 
-import hiiragi283.core.api.data.holder.HTConditionHolder
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.Recipe
-import net.neoforged.neoforge.common.conditions.ICondition
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[Recipe]のビルダークラスです。
@@ -13,13 +11,6 @@ import net.neoforged.neoforge.common.conditions.ICondition
  * @since 0.8.0
  */
 abstract class HTRecipeBuilder(private val prefix: String) {
-    //    Conditions    //
-
-    /**
-     * [ICondition]を保持するインスタンス
-     */
-    val conditions = HTConditionHolder()
-
     //    Save    //
 
     /**
@@ -60,7 +51,7 @@ abstract class HTRecipeBuilder(private val prefix: String) {
      * レシピを生成します。
      */
     fun save(recipeOutput: RecipeOutput) {
-        recipeOutput.accept(recipeId.id.withPrefix("$prefix/"), createRecipe(), null, *conditions.toArray())
+        recipeOutput.accept(recipeId.id.withPrefix("$prefix/"), createRecipe(), null)
     }
 
     /**

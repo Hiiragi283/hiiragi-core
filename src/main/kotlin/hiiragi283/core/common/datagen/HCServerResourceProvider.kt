@@ -2,6 +2,7 @@ package hiiragi283.core.common.datagen
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDynamicResourceProvider
+import hiiragi283.core.common.datagen.loot.HCMaterialBlockLootProvider
 import hiiragi283.core.common.datagen.map.HCDataMapProviders
 import hiiragi283.core.common.datagen.recipe.HCChargingRecipeProvider
 import hiiragi283.core.common.datagen.recipe.HCCommonRecipeProvider
@@ -19,6 +20,8 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
 
         // Data Map
         executor.accept(HCDataMapProviders.FurnaceFuels)
+        // Loot Table
+        executor.accept(HCMaterialBlockLootProvider)
         // Recipe
         executor.accept(HCChargingRecipeProvider)
         executor.accept(HCCommonRecipeProvider)

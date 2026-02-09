@@ -6,7 +6,6 @@ import hiiragi283.core.api.event.HTMaterialPropertyEvent
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.property.HTBlockLootFactory
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTExtraOreResultMap
 import hiiragi283.core.api.material.property.HTFluidMaterialProperty
@@ -17,7 +16,6 @@ import hiiragi283.core.api.material.property.HTSmithingRecipeProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
 import hiiragi283.core.api.material.property.addBlockPrefixes
 import hiiragi283.core.api.material.property.addCustomName
-import hiiragi283.core.api.material.property.addCustomOreLoot
 import hiiragi283.core.api.material.property.addItemPrefixes
 import hiiragi283.core.api.material.property.addToolPrefixes
 import hiiragi283.core.api.material.property.setDefaultPart
@@ -402,7 +400,6 @@ object HCMaterialEventHandler {
 
                 setName(enName, jaName)
                 setTextureSet("mineral", HTMaterialTextureSet.DULL)
-                addCustomOreLoot(HTBlockLootFactory.createOre())
                 builderAction()
             }
         }
@@ -515,7 +512,6 @@ object HCMaterialEventHandler {
 
             setName("Zinc", "亜鉛")
             setTextureSet(HTMaterialTextureSet.DULL)
-            addCustomOreLoot(HTBlockLootFactory.createOre())
         }
 
         registerMetal(CommonMaterialKeys.MOLYBDENUM, "Molybdenum", "モリブデン")
@@ -540,7 +536,6 @@ object HCMaterialEventHandler {
 
             setName("Tin", "錫")
             setTextureSet(HTMaterialTextureSet.DULL)
-            addCustomOreLoot(HTBlockLootFactory.createOre())
         }
         registerMetal(CommonMaterialKeys.ANTIMONY, "Antimony", "アンチモン")
 
