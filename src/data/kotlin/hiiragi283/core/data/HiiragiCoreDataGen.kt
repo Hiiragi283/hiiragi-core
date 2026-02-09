@@ -3,8 +3,6 @@ package hiiragi283.core.data
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTRootDataGenerator
 import hiiragi283.core.data.client.HCTextureProvider
-import hiiragi283.core.data.client.lang.HCEnglishLangProvider
-import hiiragi283.core.data.client.lang.HCJapaneseLangProvider
 import hiiragi283.core.data.client.model.HCBlockStateProvider
 import hiiragi283.core.data.client.model.HCItemModelProvider
 import hiiragi283.core.data.server.loot.HCBlockLootTableProvider
@@ -34,8 +32,8 @@ data object HiiragiCoreDataGen {
 
         // server.addProvider(::HCDataMapProvider)
         // Client
-        client.addProvider(::HCEnglishLangProvider)
-        client.addProvider(::HCJapaneseLangProvider)
+        // client.addProvider(::HCEnglishLangProvider)
+        // client.addProvider(::HCJapaneseLangProvider)
 
         client.addProvider(::HCTextureProvider)
 

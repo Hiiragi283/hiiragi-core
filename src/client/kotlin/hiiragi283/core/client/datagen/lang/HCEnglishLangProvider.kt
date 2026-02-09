@@ -1,4 +1,4 @@
-package hiiragi283.core.data.client.lang
+package hiiragi283.core.client.datagen.lang
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
@@ -9,13 +9,10 @@ import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
-import net.minecraft.data.PackOutput
 
-class HCEnglishLangProvider(output: PackOutput) :
-    HTLangProvider.English(output, HiiragiCoreAPI.MOD_ID),
-    HCLangProvider {
+data object HCEnglishLangProvider : HTLangProvider.English(HiiragiCoreAPI.MOD_ID) {
     override fun addTranslations() {
-        addMaterials()
+        HCMaterialTranslationHelper.addTranslations(this)
         // Block
         add(HCBlocks.WARPED_WART, "Warped Wart")
 
@@ -26,22 +23,22 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         // Fluid
 
-        addFluid(HCFluids.EXPERIENCE, "Liquid Experience")
-        addFluid(HCFluids.HONEY, "Honey")
-        addFluid(HCFluids.MUSHROOM_STEW, "Mushroom Stew")
-        addFluid(HCFluids.DRAGON_BREATH, "Dragon Breath")
+        add(HCFluids.EXPERIENCE, "Liquid Experience")
+        add(HCFluids.HONEY, "Honey")
+        add(HCFluids.MUSHROOM_STEW, "Mushroom Stew")
+        add(HCFluids.DRAGON_BREATH, "Dragon Breath")
 
-        addFluid(HCFluids.LATEX, "Latex")
-        addFluid(HCFluids.MEAT, "Meat")
+        add(HCFluids.LATEX, "Latex")
+        add(HCFluids.MEAT, "Meat")
 
-        addFluid(HCFluids.MOLTEN_GLASS, "Molten Glass")
-        addFluid(HCFluids.MOLTEN_STAINLESS_STEEL, "Molten Stainless Steel")
-        addFluid(HCFluids.MOLTEN_PLASTIC, "Molten Plastic")
-        addFluid(HCFluids.MOLTEN_RUBBER, "Molten Rubber")
-        addFluid(HCFluids.MOLTEN_CRIMSON_CRYSTAL, "Crimson Blood")
-        addFluid(HCFluids.MOLTEN_WARPED_CRYSTAL, "Dew of the Warp")
-        addFluid(HCFluids.MOLTEN_ELDRITCH, "Eldritch Flux")
-        // addFluid(HCFluidsN.MOLTEN_OMINOUS_METAL, "Ominous Flux")
+        add(HCFluids.MOLTEN_GLASS, "Molten Glass")
+        add(HCFluids.MOLTEN_STAINLESS_STEEL, "Molten Stainless Steel")
+        add(HCFluids.MOLTEN_PLASTIC, "Molten Plastic")
+        add(HCFluids.MOLTEN_RUBBER, "Molten Rubber")
+        add(HCFluids.MOLTEN_CRIMSON_CRYSTAL, "Crimson Blood")
+        add(HCFluids.MOLTEN_WARPED_CRYSTAL, "Dew of the Warp")
+        add(HCFluids.MOLTEN_ELDRITCH, "Eldritch Flux")
+        // add(HCFluidsN.MOLTEN_OMINOUS_METAL, "Ominous Flux")
 
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "Bamboo Charcoal")
@@ -81,7 +78,23 @@ class HCEnglishLangProvider(output: PackOutput) :
     }
 
     private fun translation() {
-        addCommonTranslations(::add)
+        // API - Constants
+        add(HTCommonTranslation.TRUE, "True")
+        add(HTCommonTranslation.FALSE, "False")
+        // API - GUI
+        add(HTCommonTranslation.CAPACITY, $$"Capacity: %1$s")
+        add(HTCommonTranslation.CAPACITY_MB, $$"Capacity: %1$s mB")
+        add(HTCommonTranslation.CAPACITY_FE, $$"Capacity: %1$s FE")
+
+        add(HTCommonTranslation.STORED, $$"%1$s: %2$s")
+        add(HTCommonTranslation.STORED_MB, $$"%1$s: %2$s mB")
+        add(HTCommonTranslation.STORED_FE, $$"%1$s FE")
+        add(HTCommonTranslation.STORED_EXP, $$"%1$s Exp")
+
+        add(HTCommonTranslation.FRACTION, $$"%1$s / %2$s")
+        add(HTCommonTranslation.PERCENTAGE, $$"%1$s %%")
+
+        add(HTCommonTranslation.TICK, $$"%1$s ticks")
 
         // API - Constants
         add(HTCommonTranslation.ERROR, "Error")

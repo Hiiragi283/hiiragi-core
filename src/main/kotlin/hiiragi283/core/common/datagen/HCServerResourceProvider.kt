@@ -1,9 +1,7 @@
 package hiiragi283.core.common.datagen
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.data.HTDynamicResourceProvider
 import hiiragi283.core.common.datagen.map.HCDataMapProviders
 import hiiragi283.core.common.datagen.recipe.HCChargingRecipeProvider
 import hiiragi283.core.common.datagen.recipe.HCCommonRecipeProvider
@@ -12,27 +10,12 @@ import hiiragi283.core.common.datagen.recipe.HCExplodingRecipeProvider
 import hiiragi283.core.common.datagen.tag.HCBlockTagsProvider
 import hiiragi283.core.common.datagen.tag.HCFluidTagsProvider
 import hiiragi283.core.common.datagen.tag.HCItemTagsProvider
-import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicServerResourceProvider
-import net.mehvahdjukaar.moonlight.api.resources.pack.PackGenerationStrategy
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import java.util.function.Consumer
 
-data object HCServerResourceProvider :
-    DynamicServerResourceProvider(HiiragiCoreAPI.id("dynamic_resources"), PackGenerationStrategy.REGEN_ON_EVERY_RELOAD) {
-    override fun gatherSupportedNamespaces(): Collection<String> = buildSet {
-        this += HTConst.MINECRAFT
-        this += HTConst.COMMON
-        this += HTConst.NEOFORGE
-    }
-
+data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiCoreAPI.MOD_ID) {
     override fun regenerateDynamicAssets(executor: Consumer<ResourceGenTask>) {
-        HiiragiCoreAccess.Companion.INSTANCE
-            .materialManager
-            .keys
-            .map(HTIdLike::namespace)
-            .distinct()
-            .toTypedArray()
-            .let(this::addSupportedNamespaces)
+        HTDynamicResourceProvider.addMaterialIds(this::addSupportedNamespaces)
 
         // Data Map
         executor.accept(HCDataMapProviders.FurnaceFuels)

@@ -1,4 +1,4 @@
-package hiiragi283.core.data.client.lang
+package hiiragi283.core.client.datagen.lang
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
@@ -9,13 +9,10 @@ import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
-import net.minecraft.data.PackOutput
 
-class HCJapaneseLangProvider(output: PackOutput) :
-    HTLangProvider.Japanese(output, HiiragiCoreAPI.MOD_ID),
-    HCLangProvider {
+object HCJapaneseLangProvider : HTLangProvider.Japanese(HiiragiCoreAPI.MOD_ID) {
     override fun addTranslations() {
-        addMaterials()
+        HCMaterialTranslationHelper.addTranslations(this)
         // Block
         add(HCBlocks.WARPED_WART, "歪んだウォート")
 
@@ -25,22 +22,22 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCEntityTypes.ELDRITCH_EGG, "異質な卵")
 
         // Fluid
-        addFluid(HCFluids.EXPERIENCE, "液体経験値")
-        addFluid(HCFluids.HONEY, "ハチミツ")
-        addFluid(HCFluids.MUSHROOM_STEW, "キノコシチュー")
-        addFluid(HCFluids.DRAGON_BREATH, "ドラゴンブレス")
+        add(HCFluids.EXPERIENCE, "液体経験値")
+        add(HCFluids.HONEY, "ハチミツ")
+        add(HCFluids.MUSHROOM_STEW, "キノコシチュー")
+        add(HCFluids.DRAGON_BREATH, "ドラゴンブレス")
 
-        addFluid(HCFluids.LATEX, "ラテックス")
-        addFluid(HCFluids.MEAT, "肉")
+        add(HCFluids.LATEX, "ラテックス")
+        add(HCFluids.MEAT, "肉")
 
-        addFluid(HCFluids.MOLTEN_GLASS, "溶融ガラス")
-        addFluid(HCFluids.MOLTEN_STAINLESS_STEEL, "溶融ステンレス鋼")
-        addFluid(HCFluids.MOLTEN_PLASTIC, "溶融プラスチック")
-        addFluid(HCFluids.MOLTEN_RUBBER, "溶融ゴム")
-        addFluid(HCFluids.MOLTEN_CRIMSON_CRYSTAL, "深紅の血液")
-        addFluid(HCFluids.MOLTEN_WARPED_CRYSTAL, "歪みの雫")
-        addFluid(HCFluids.MOLTEN_ELDRITCH, "異質な流動体")
-        // addFluid(HCFluidsN.MOLTEN_OMINOUS_METAL, "不吉な流動体")
+        add(HCFluids.MOLTEN_GLASS, "溶融ガラス")
+        add(HCFluids.MOLTEN_STAINLESS_STEEL, "溶融ステンレス鋼")
+        add(HCFluids.MOLTEN_PLASTIC, "溶融プラスチック")
+        add(HCFluids.MOLTEN_RUBBER, "溶融ゴム")
+        add(HCFluids.MOLTEN_CRIMSON_CRYSTAL, "深紅の血液")
+        add(HCFluids.MOLTEN_WARPED_CRYSTAL, "歪みの雫")
+        add(HCFluids.MOLTEN_ELDRITCH, "異質な流動体")
+        // set(HCFluidsN.MOLTEN_OMINOUS_METAL, "不吉な流動体")
 
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "竹炭")
@@ -80,8 +77,6 @@ class HCJapaneseLangProvider(output: PackOutput) :
     }
 
     private fun translation() {
-        addCommonTranslations(::add)
-
         // API - Constants
         add(HTCommonTranslation.ERROR, "エラー")
         add(HTCommonTranslation.INFINITE, "無限")
