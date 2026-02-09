@@ -7,14 +7,10 @@ import hiiragi283.core.data.client.lang.HCEnglishLangProvider
 import hiiragi283.core.data.client.lang.HCJapaneseLangProvider
 import hiiragi283.core.data.client.model.HCBlockStateProvider
 import hiiragi283.core.data.client.model.HCItemModelProvider
-import hiiragi283.core.data.server.HCDataMapProvider
 import hiiragi283.core.data.server.HCRecipeProvider
 import hiiragi283.core.data.server.loot.HCBlockLootTableProvider
 import hiiragi283.core.data.server.loot.HCGlobalLootModifierProvider
 import hiiragi283.core.data.server.loot.HCGlobalLootProvider
-import hiiragi283.core.data.server.tag.HCBlockTagsProvider
-import hiiragi283.core.data.server.tag.HCFluidTagsProvider
-import hiiragi283.core.data.server.tag.HCItemTagsProvider
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
@@ -34,10 +30,10 @@ data object HiiragiCoreDataGen {
 
         server.addProvider(::HCRecipeProvider)
 
-        server.addProvider(::HCFluidTagsProvider)
-        server.addBlockAndItemTags(::HCBlockTagsProvider, ::HCItemTagsProvider)
+        // server.addProvider(::HCFluidTagsProvider)
+        // server.addBlockAndItemTags(::HCBlockTagsProvider, ::HCItemTagsProvider)
 
-        server.addProvider(::HCDataMapProvider)
+        // server.addProvider(::HCDataMapProvider)
         // Client
         client.addProvider(::HCEnglishLangProvider)
         client.addProvider(::HCJapaneseLangProvider)
