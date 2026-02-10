@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data.model
 
-import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.HTBlockHolderLike
@@ -8,9 +7,7 @@ import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.IdToFunction
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
-import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
-import net.mehvahdjukaar.moonlight.api.resources.ResType
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
 import net.minecraft.data.models.blockstates.BlockStateGenerator
@@ -22,35 +19,40 @@ import net.minecraft.data.models.model.DelegatedModel
 import net.minecraft.data.models.model.ModelTemplate
 import net.minecraft.data.models.model.ModelTemplates
 import net.minecraft.data.models.model.TextureMapping
-import net.minecraft.data.models.model.TextureSlot
-import net.minecraft.data.models.model.TexturedModel
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.world.level.block.state.properties.Property
-import java.util.function.Supplier
 
+/**
+ * BlockState JSONおよびモデルJSONを生成する[ResourceGenTask]の抽象クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.10.0
+ */
 abstract class HTModelProvider : ResourceGenTask {
-    private lateinit var sink: ResourceSink
+    protected lateinit var sink: ResourceSink
+        private set
 
     final override fun accept(manager: ResourceManager, sink: ResourceSink) {
         this.sink = sink
         registerModels(manager)
     }
 
+    /**
+     * BlockStateやモデルを生成します。
+     */
     protected abstract fun registerModels(manager: ResourceManager)
 
     //    Extensions    //
 
-    protected val modelOutput: (
-        ResourceLocation,
-        Supplier<JsonElement>,
-    ) -> Unit = { id: ResourceLocation, json: Supplier<JsonElement> ->
-        sink.addJson(id, json.get(), ResType.MODELS)
-    }
+    /**
+     * モデルJSONの出力先のインスタンス
+     */
+    protected val modelOutput: HTModelOutput = HTModelOutput { id, json, type -> sink.addJson(id, json, type) }
 
     // Block
 
     /**
+     * BlockState JSONを生成します。
      * @see net.minecraft.data.models.ModelProvider.run
      */
     protected fun addBlockState(generator: BlockStateGenerator, block: HTIdLike) {
@@ -60,15 +62,15 @@ abstract class HTModelProvider : ResourceGenTask {
     /**
      * @see net.minecraft.data.models.BlockModelGenerators.createTrivialBlock
      */
-    protected fun addSimpleBlock(block: HTBlockHolderLike<*, *>, provider: TexturedModel.Provider = TexturedModel.CUBE) {
-        addBlockState(createSimpleGenerator(block, provider.create(block.asBlock(), modelOutput)), block)
+    protected fun addSimpleBlock(block: HTBlockHolderLike<*, *>, provider: HTTexturedModel.Provider = HTTexturedModels.CUBE_ALL) {
+        addBlockState(createSimpleGenerator(block, provider.saveBlock(block, modelOutput)), block)
     }
 
-    protected fun addSimpleBlockAndItem(block: HTBlockHolderLike<*, *>, provider: TexturedModel.Provider = TexturedModel.CUBE) {
+    protected fun addSimpleBlockAndItem(block: HTBlockHolderLike<*, *>, provider: HTTexturedModel.Provider = HTTexturedModels.CUBE_ALL) {
         addSimpleBlock(block, provider)
         sink.addItemModel(block.getId(), DelegatedModel(block.blockId).get())
     }
-    
+
     /**
      * @see net.minecraft.data.models.BlockModelGenerators.createSimpleBlock
      */
@@ -79,9 +81,7 @@ abstract class HTModelProvider : ResourceGenTask {
         val block: HTBlockHolderLike<*, *> = content.blockHolder ?: return
         addSimpleBlock(
             block,
-            TexturedModel.PARTICLE_ONLY.updateTexture {
-                it.put(TextureSlot.PARTICLE, HTConst.MINECRAFT.toId(HTConst.BLOCK, "water_still"))
-            },
+            HTTexturedModels.particleOnly(HTConst.MINECRAFT.toId(HTConst.BLOCK, "water_still")),
         )
     }
 
@@ -126,33 +126,20 @@ abstract class HTModelProvider : ResourceGenTask {
         model: ModelTemplate,
         textureFactory: IdToFunction<TextureMapping>,
     ): ResourceLocation {
-        val id: ResourceLocation = block.blockId.withSuffix(suffix)
-        return model.create(id, textureFactory.apply(id), modelOutput)
+        val id: ResourceLocation = block.blockId
+        return model.create(id.withSuffix(suffix), textureFactory.apply(id), modelOutput)
     }
 
-    protected fun addBlockModel(block: HTIdLike, model: ModelTemplate, textureMap: TextureMapping): ResourceLocation =
-        model.create(block.blockId, textureMap, modelOutput)
+    protected fun addBlockModel(block: HTIdLike, provider: HTTexturedModel.Provider): ResourceLocation =
+        provider.saveBlock(block, modelOutput)
 
     // Item
-    protected fun addItemModel(item: HTIdLike, model: ModelTemplate, textureMap: TextureMapping) {
-        model.create(item.itemId, textureMap, modelOutput)
+    protected fun addItemModel(item: HTIdLike, provider: HTTexturedModel.Provider) {
+        provider.saveItem(item, modelOutput)
     }
 
     protected fun addSimpleItemModel(item: HTIdLike) {
-        addItemModel(item, ModelTemplates.FLAT_ITEM, TextureMapping.layer0(item.itemId))
-    }
-
-    protected fun addLayeredItemModel(item: HTIdLike, vararg layers: ResourceLocation) {
-        addLayeredItemModel(item, listOf(*layers))
-    }
-
-    protected fun addLayeredItemModel(item: HTIdLike, layers: List<ResourceLocation>) {
-        when (layers.size) {
-            1 -> addItemModel(item, ModelTemplates.FLAT_ITEM, TextureMapping.layer0(layers[0]))
-            2 -> addItemModel(item, ModelTemplates.TWO_LAYERED_ITEM, TextureMapping.layered(layers[0], layers[1]))
-            3 -> addItemModel(item, ModelTemplates.THREE_LAYERED_ITEM, TextureMapping.layered(layers[0], layers[1], layers[2]))
-            else -> error("Unsupported layer count: ${layers.size}")
-        }
+        addItemModel(item, HTTexturedModels.FLAT_ITEM)
     }
 
     /**
