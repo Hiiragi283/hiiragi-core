@@ -59,6 +59,15 @@ abstract class HTModelProvider : ResourceGenTask {
         sink.addBlockState(block.getId(), generator.get())
     }
 
+    protected fun addSimpleBlock(block: HTBlockHolderLike<*, *>, model: HTTexturedModel) {
+        addBlockState(createSimpleGenerator(block, model.saveBlock(block, modelOutput)), block)
+    }
+
+    protected fun addSimpleBlockAndItem(block: HTBlockHolderLike<*, *>, model: HTTexturedModel) {
+        addSimpleBlock(block, model)
+        sink.addItemModel(block.getId(), DelegatedModel(block.blockId).get())
+    }
+
     /**
      * @see net.minecraft.data.models.BlockModelGenerators.createTrivialBlock
      */
@@ -134,6 +143,10 @@ abstract class HTModelProvider : ResourceGenTask {
         provider.saveBlock(block, modelOutput)
 
     // Item
+    protected fun addItemModel(item: HTIdLike, model: HTTexturedModel) {
+        model.saveItem(item, modelOutput)
+    }
+
     protected fun addItemModel(item: HTIdLike, provider: HTTexturedModel.Provider) {
         provider.saveItem(item, modelOutput)
     }

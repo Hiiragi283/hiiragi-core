@@ -32,7 +32,6 @@ data object HCEnglishLangProvider : HTLangProvider.English(HiiragiCoreAPI.MOD_ID
         add(HCFluids.MEAT, "Meat")
 
         add(HCFluids.MOLTEN_GLASS, "Molten Glass")
-        add(HCFluids.MOLTEN_STAINLESS_STEEL, "Molten Stainless Steel")
         add(HCFluids.MOLTEN_PLASTIC, "Molten Plastic")
         add(HCFluids.MOLTEN_RUBBER, "Molten Rubber")
         add(HCFluids.MOLTEN_CRIMSON_CRYSTAL, "Crimson Blood")

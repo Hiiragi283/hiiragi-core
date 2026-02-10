@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation
  * @since 0.10.0
  * @see TexturedModel
  */
-class HTTexturedModel private constructor(val template: ModelTemplate, val texture: TextureMapping) {
+class HTTexturedModel(val template: ModelTemplate, val texture: TextureMapping) {
     companion object {
         /**
          * 指定された[template]と[transform]から[Provider]を作成します。
@@ -49,6 +49,9 @@ class HTTexturedModel private constructor(val template: ModelTemplate, val textu
      * @return 生成されたモデルの[ID][ResourceLocation]
      */
     fun saveBlock(block: HTIdLike, output: HTModelOutput): ResourceLocation = template.create(block.blockId, texture, output)
+
+    fun saveBlock(block: HTIdLike, suffix: String, output: HTModelOutput): ResourceLocation =
+        template.create(block.blockId.withSuffix(suffix), texture, output)
 
     /**
      * 指定された[アイテム][item]からモデルを生成し，[output]に保存します。

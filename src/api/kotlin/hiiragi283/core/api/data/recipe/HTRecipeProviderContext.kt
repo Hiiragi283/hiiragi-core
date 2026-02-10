@@ -7,7 +7,6 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
-import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
@@ -23,11 +22,6 @@ import net.neoforged.neoforge.common.conditions.ICondition
  * @see HTRegisterRuntimeRecipeEvent
  */
 abstract class HTRecipeProviderContext {
-    /**
-     * レジストリへのアクセスを取得します。
-     */
-    abstract val provider: HolderLookup.Provider
-
     /**
      * レシピの出力先を取得します。
      */
@@ -76,8 +70,6 @@ abstract class HTRecipeProviderContext {
     abstract class Delegated : HTRecipeProviderContext() {
         protected abstract val delegated: HTRecipeProviderContext
 
-        final override val provider: HolderLookup.Provider
-            get() = delegated.provider
         final override val output: RecipeOutput
             get() = delegated.output
     }

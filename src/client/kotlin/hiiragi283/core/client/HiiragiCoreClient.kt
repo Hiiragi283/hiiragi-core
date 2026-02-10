@@ -93,7 +93,6 @@ data object HiiragiCoreClient : HTClientMod() {
 
         event.molten(HCFluids.MOLTEN_GLASS, Color(0xe6e6e6))
 
-        event.molten(HCFluids.MOLTEN_STAINLESS_STEEL, Color(0xb0bad0))
         event.molten(HCFluids.MOLTEN_PLASTIC, Color(0xa0cfb5))
         event.molten(HCFluids.MOLTEN_RUBBER, Color(0x453945))
 

@@ -31,7 +31,6 @@ object HCJapaneseLangProvider : HTLangProvider.Japanese(HiiragiCoreAPI.MOD_ID) {
         add(HCFluids.MEAT, "肉")
 
         add(HCFluids.MOLTEN_GLASS, "溶融ガラス")
-        add(HCFluids.MOLTEN_STAINLESS_STEEL, "溶融ステンレス鋼")
         add(HCFluids.MOLTEN_PLASTIC, "溶融プラスチック")
         add(HCFluids.MOLTEN_RUBBER, "溶融ゴム")
         add(HCFluids.MOLTEN_CRIMSON_CRYSTAL, "深紅の血液")

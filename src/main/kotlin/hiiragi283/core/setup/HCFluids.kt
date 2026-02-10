@@ -99,11 +99,6 @@ object HCFluids {
 
     // Common
     @JvmField
-    val MOLTEN_STAINLESS_STEEL: HTFluidContent = molten(CommonMaterialKeys.STAINLESS_STEEL) {
-        blockFactory = null
-    }
-
-    @JvmField
     val MOLTEN_PLASTIC: HTFluidContent = molten(CommonMaterialKeys.PLASTIC) {
         blockFactory = null
     }
