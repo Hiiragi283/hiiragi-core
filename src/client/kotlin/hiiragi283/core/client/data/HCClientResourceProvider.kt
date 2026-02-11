@@ -1,4 +1,4 @@
-package hiiragi283.core.client.datagen
+package hiiragi283.core.client.data
 
 import com.google.gson.JsonObject
 import hiiragi283.core.api.HTConst
@@ -25,6 +25,7 @@ import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
 import net.mehvahdjukaar.moonlight.api.resources.textures.Palette
 import net.mehvahdjukaar.moonlight.api.resources.textures.Respriter
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
+import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.world.level.block.Blocks
 import java.util.function.Consumer
 
@@ -35,8 +36,6 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
     override fun addDynamicTranslations(afterLanguageLoadEvent: AfterLanguageLoadEvent) {}
 
     override fun regenerateDynamicAssets(executor: Consumer<ResourceGenTask>) {
-        HTDynamicResourceProvider.addMaterialIds(this::addSupportedNamespaces)
-
         // Lang
         executor.accept { _, sink: ResourceSink -> addLang(sink, HTLangTypes.EN_US) }
         executor.accept { _, sink: ResourceSink -> addLang(sink, HTLangTypes.JA_JP) }
@@ -45,7 +44,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         // Texture
         executor.accept(HCMaterialTextureProvider)
 
-        executor.accept { manager, sink ->
+        executor.accept { manager: ResourceManager, sink: ResourceSink ->
             runCatching {
                 val base: TextureImage = TextureImage.open(manager, HTConst.MINECRAFT.toId(HTConst.BLOCK, "lava_still.png"))
                 val color: TextureImage = HTTextureUtil

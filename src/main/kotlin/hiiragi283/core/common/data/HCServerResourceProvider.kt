@@ -1,4 +1,4 @@
-package hiiragi283.core.common.datagen
+package hiiragi283.core.common.data
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
@@ -18,25 +18,23 @@ import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.api.times
+import hiiragi283.core.common.material.CommonMaterialKeys
 import net.mehvahdjukaar.moonlight.api.resources.ResType
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
+import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps
 import org.apache.commons.lang3.math.Fraction
 import java.util.function.Consumer
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.iterator
 
 data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiCoreAPI.MOD_ID) {
     override fun regenerateDynamicAssets(executor: Consumer<ResourceGenTask>) {
-        HTDynamicResourceProvider.addMaterialIds(this::addSupportedNamespaces)
-
         val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
         val materialManager: HTMaterialManager = HiiragiCoreAccess.INSTANCE.materialManager
         // Data Map
@@ -147,6 +145,12 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
                 }
                 contents.getItemTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
                     addMaterial(factory, prefix, key).add(item)
+                    if (prefix == CommonTagPrefixes.GEM || prefix == CommonTagPrefixes.INGOT) {
+                        factory.apply(ItemTags.BEACON_PAYMENT_ITEMS).addTag(prefix, key)
+                    }
+                    if (prefix == CommonTagPrefixes.WIRE && key == CommonMaterialKeys.PLASTIC) {
+                        factory.apply(Tags.Items.STRINGS).add(item)
+                    }
                 }
                 // Tool
                 contents.getToolTable().forEach { (toolType: HTToolType, _, tool: HTIdLike) ->

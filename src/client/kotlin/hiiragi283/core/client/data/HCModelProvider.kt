@@ -1,4 +1,4 @@
-package hiiragi283.core.client.datagen
+package hiiragi283.core.client.data
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
@@ -44,7 +44,7 @@ data object HCModelProvider : HTModelProvider() {
         contents.getItemTable().forEach { (prefix: HTTagPrefix, _, item: HTIdLike) ->
             val textureIcon: String = prefix[HTTagPropertyKeys.TEXTURE_ICON] ?: prefix.name
             val overlay: ResourceLocation = HiiragiCoreAPI.id(HTConst.ITEM, "${textureIcon}_overlay")
-            if (manager.getResource(overlay.withSuffix(".png")).isPresent) {
+            if (manager.getResource(overlay.withPath { "textures/$it.png" }).isPresent) {
                 addItemModel(item, HTTexturedModels.layeredItem(item.itemId, overlay))
             } else {
                 addSimpleItemModel(item)

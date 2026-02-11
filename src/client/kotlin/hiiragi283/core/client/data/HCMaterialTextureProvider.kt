@@ -1,4 +1,4 @@
-package hiiragi283.core.client.datagen
+package hiiragi283.core.client.data
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
@@ -14,16 +14,15 @@ import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
-import net.mehvahdjukaar.moonlight.api.resources.textures.Palette
-import net.mehvahdjukaar.moonlight.api.resources.textures.PaletteColor
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
-import net.mehvahdjukaar.moonlight.api.util.math.colors.RGBColor
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
 import kotlin.collections.iterator
 
 data object HCMaterialTextureProvider : ResourceGenTask {
     override fun accept(manager: ResourceManager, sink: ResourceSink) {
+        HTTextureUtil.templatePalette = HTTextureUtil.getPalette(manager, HiiragiCoreAPI.id("template")).getOrThrow()
+
         with(HiiragiCoreAccess.INSTANCE.materialContents) {
             material(manager, sink, HTConst.BLOCK, ::getBlockMap)
             material(manager, sink, HTConst.ITEM, ::getItemMap)
@@ -47,12 +46,12 @@ data object HCMaterialTextureProvider : ResourceGenTask {
             for ((prefix: HTTagPrefix, element: HTIdLike) in prefixedMap) {
                 if (HTTagPropertyKeys.DISABLE_TEXTURE_GEN in prefix) continue
                 // パレットを取得
-                val palette: Palette = sequence {
+                val palette: List<Int> = sequence {
                     if (HTTagPropertyKeys.IS_RAW in prefix) {
                         yield(entry[HTMaterialPropertyKeys.TEXTURE_COLOR_RAW] ?: entry.getId().withPrefix("raw_"))
                     }
                     yield(entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId())
-                }.map(HTTextureUtil::getPalette)
+                }.map { HTTextureUtil.getPalette(manager, it) }
                     .firstNotNullOfOrNull { it.getOrNull() }
                     ?: continue
                 // テンプレートを取得
@@ -82,13 +81,13 @@ data object HCMaterialTextureProvider : ResourceGenTask {
     private fun copyAndApplyColor(
         sink: ResourceSink,
         id: ResourceLocation,
-        palette: Palette,
+        palette: List<Int>,
         template: TextureImage,
     ) {
         val image: TextureImage = template.makeCopy()
         for ((index: Int, pixels: Set<Pair<Int, Int>>) in createTemplate(template)) {
             for ((x: Int, y: Int) in pixels) {
-                image.setPixel(x, y, palette[index].value())
+                image.setPixel(x, y, palette[index])
             }
         }
         sink.addTexture(id, image)
@@ -98,9 +97,7 @@ data object HCMaterialTextureProvider : ResourceGenTask {
     private fun createTemplate(image: TextureImage): Map<Int, Set<Pair<Int, Int>>> = buildMap {
         for (x: Int in (0..<image.imageWidth())) {
             for (y: Int in (0..<image.imageHeight())) {
-                val color: RGBColor = image.getPixel(x, y).let(::RGBColor)
-                val index: Int = HTTextureUtil.TEMPLATE_PALETTE
-                    .indexOfFirst { colorIn: PaletteColor -> colorIn.value() == color.toInt() }
+                val index: Int = HTTextureUtil.templatePalette.indexOf(image.getPixel(x, y))
                 if (index >= 0) {
                     this[index] = (this[index]?.plus(x to y) ?: setOf(x to y))
                 }
