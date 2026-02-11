@@ -97,7 +97,6 @@ object HCMaterialEventHandler {
         }
         // Minerals
         event.modify(VanillaMaterialKeys.REDSTONE) {
-            setDefaultPart(HTDefaultPart.Prefixed.DUST)
             addItemPrefixes(CommonTagPrefixes.RAW, CommonTagPrefixes.CRUSHED_ORE)
             put(
                 HTMaterialPropertyKeys.EXTRA_ORE_RESULTS,
@@ -110,13 +109,11 @@ object HCMaterialEventHandler {
             setName("Redstone", "赤石")
         }
         event.modify(VanillaMaterialKeys.GLOWSTONE) {
-            setDefaultPart(HTDefaultPart.Prefixed.DUST)
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
 
             setName("Glowstone", "グロウストーン")
         }
         event.modify(VanillaMaterialKeys.CALCITE) {
-            setDefaultPart(HTDefaultPart.Prefixed.DUST)
             addItemPrefixes(CommonTagPrefixes.DUST)
 
             setName("Calcite", "方解石")
@@ -388,7 +385,7 @@ object HCMaterialEventHandler {
             builderAction: HTPropertyMap.Mutable.() -> Unit = {},
         ) {
             event.modify(key) {
-                setDefaultPart(HTDefaultPart.Prefixed.DUST)
+                setDefaultPart(HTDefaultPart.Prefixed.GEM)
                 addBlockPrefixes(CommonTagPrefixes.ORES.plus(CommonTagPrefixes.RAW_BLOCK))
                 addItemPrefixes(oreSet)
 
@@ -578,7 +575,6 @@ object HCMaterialEventHandler {
         registerMetal(CommonMaterialKeys.ENDERIUM, "Enderium", "エンダリウム")
         // Others
         event.modify(CommonMaterialKeys.ASH) {
-            setDefaultPart(HTDefaultPart.Prefixed.DUST)
             addItemPrefixes(CommonTagPrefixes.DUST)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.NONE)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.NONE)
@@ -589,7 +585,6 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.STEEL.getId())
         }
         event.modify(CommonMaterialKeys.CARBON) {
-            setDefaultPart(HTDefaultPart.Prefixed.DUST)
             addItemPrefixes(
                 CommonTagPrefixes.DUST,
                 CommonTagPrefixes.PLATE,

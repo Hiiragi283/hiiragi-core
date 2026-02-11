@@ -1,9 +1,7 @@
 package hiiragi283.core.api.data.texture
 
-import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.function.partially1
 import net.mehvahdjukaar.moonlight.api.resources.RPUtils
-import net.mehvahdjukaar.moonlight.api.resources.textures.Palette
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.mehvahdjukaar.moonlight.api.util.math.colors.RGBColor
 import net.minecraft.data.DataProvider
@@ -11,12 +9,9 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
-import net.neoforged.fml.ModList
 import java.io.BufferedReader
 import java.io.InputStream
-import java.nio.file.Path
 import java.util.stream.Stream
-import kotlin.io.path.inputStream
 
 /**
  * @author Hiiragi Tsubasa
@@ -27,26 +22,13 @@ object HTTextureUtil {
     private val PALETTE_REGEX = Regex("\\s+")
 
     @JvmStatic
-    val TEMPLATE_PALETTE: Palette by lazy { getPalette(HiiragiCoreAPI.id("template")).getOrThrow() }
-
-    @JvmStatic
-    private fun getResourcePath(id: ResourceLocation, prefix: String, extension: String): Path = ModList
-        .get()
-        .getModFileById(id.namespace)
-        .file
-        .secureJar
-        .rootPath
-        .resolve("assets/${id.namespace}/$prefix/${id.path}.$extension")
+    lateinit var templatePalette: List<Int>
 
     //    Color    //
 
     @JvmStatic
-    private val colorCache: MutableMap<ResourceLocation, Palette> = hashMapOf()
-
-    @JvmStatic
-    fun getPalette(id: ResourceLocation): Result<Palette> = colorCache[id]
-        ?.let(Result.Companion::success)
-        ?: runCatching(getResourcePath(id, "palettes", "gpl")::inputStream)
+    fun getPalette(manager: ResourceManager, id: ResourceLocation): Result<List<Int>> =
+        runCatching { manager.getResource(id.withPath { "palettes/$it.gpl" }).get().open() }
             .mapCatching(InputStream::bufferedReader)
             .mapCatching(BufferedReader::lines)
             .map(Stream<String>::toList)
@@ -55,10 +37,8 @@ object HTTextureUtil {
                 lines
                     .filterNot { it == "GIMP Palette" || it.startsWith("Name") || it.startsWith("Columns") }
                     .map { it.split(PALETTE_REGEX, limit = 4).take(3).map(String::toInt) }
-                    .map { (red: Int, green: Int, blue: Int) -> RGBColor.combine(255, blue, green, red).let(::RGBColor) }
-                    .let(Palette::ofColors)
-            }.onSuccess { colorCache[id] = it }
-            .onFailure { DataProvider.LOGGER.warn("Failed to load palette: $id") }
+                    .map { (red: Int, green: Int, blue: Int) -> RGBColor.combine(255, blue, green, red) }
+            }.onFailure { DataProvider.LOGGER.warn("Failed to load palette: $id") }
 
     //    TextureImage    //
 
