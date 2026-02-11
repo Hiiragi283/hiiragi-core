@@ -1,0 +1,5 @@
+{
+  "parent": "neoforge:item/bucket_drip",
+  "fluid": "hiiragi_core:molten_glass",
+  "loader": "neoforge:fluid_container"
+}

@@ -2,7 +2,9 @@ package hiiragi283.core.data
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTRootDataGenerator
+import hiiragi283.core.data.client.HCBlockStateProvider
 import hiiragi283.core.data.client.HCEnglishLangProvider
+import hiiragi283.core.data.client.HCItemModelProvider
 import hiiragi283.core.data.client.HCJapaneseLangProvider
 import hiiragi283.core.data.server.HCRecipeProvider
 import hiiragi283.core.data.server.loot.HCBlockLootTableProvider
@@ -40,7 +42,7 @@ data object HiiragiCoreDataGen {
 
         // client.addProvider(::HCTextureProvider)
 
-        // client.addProvider(::HCBlockStateProvider)
-        // client.addProvider(::HCItemModelProvider)
+        client.addProvider(::HCBlockStateProvider)
+        client.addProvider(::HCItemModelProvider)
     }
 }
