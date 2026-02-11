@@ -3,6 +3,7 @@ package hiiragi283.core.api
 import hiiragi283.core.api.HiiragiCoreAPI.id
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
 import hiiragi283.core.api.gui.widget.HTWidgetType
+import hiiragi283.core.api.property.HTPropertyMap
 import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceKey
 import net.neoforged.neoforge.registries.RegistryBuilder
@@ -32,6 +33,12 @@ object HCRegistries {
      * @since 0.8.0
      */
     object Keys {
+        /**
+         * @since 0.10.0
+         */
+        @JvmField
+        val MATERIAL: ResourceKey<Registry<HTPropertyMap>> = createKey("material")
+
         @JvmField
         val SLOT_TYPE: ResourceKey<Registry<HTSyncablePayload.Type<*>>> = createKey("syncable_slot_type")
 

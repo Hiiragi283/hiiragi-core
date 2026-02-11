@@ -43,8 +43,8 @@ data object HTResultCreator {
 
     @JvmStatic
     fun material(prefix: HTTagPrefix, material: HTMaterialLike, amount: Int = 1): HTItemResult = HTItemResult.create {
-        this.item = with(HiiragiCoreAccess.INSTANCE) {
-            getBlockOrVanilla(prefix, material) ?: getItemOrVanilla(prefix, material)
+        this.item = with(HiiragiCoreAccess.INSTANCE.patchedMaterialContents) {
+            getBlock(prefix, material) ?: getItem(prefix, material)
         }.toResource()
         this.tagKey = prefix.itemTagKey(material)
         this.amount = amount

@@ -145,10 +145,10 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     //    Crafting    //
 
     private fun getBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
-        HiiragiCoreAccess.INSTANCE.getBlockOrVanilla(prefix, material)
+        HiiragiCoreAccess.INSTANCE.patchedMaterialContents.getBlock(prefix, material)
 
     private fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
-        HiiragiCoreAccess.INSTANCE.getItemOrVanilla(prefix, material)
+        HiiragiCoreAccess.INSTANCE.patchedMaterialContents.getItem(prefix, material)
 
     @JvmStatic
     private fun baseToBlock(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
@@ -307,7 +307,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             if (smithingProperty != null) {
                 // Smithing
                 val (template: HTItemHolderLike<*>, base: HTMaterialKey) = smithingProperty
-                val baseTool: ItemLike = HiiragiCoreAccess.INSTANCE.getToolOrVanilla(toolType, base) ?: continue
+                val baseTool: ItemLike = HiiragiCoreAccess.INSTANCE.patchedMaterialContents.getTool(toolType, base) ?: continue
                 HTSmithingRecipeBuilder.create(output) {
                     this.template += template
                     this.base += baseTool

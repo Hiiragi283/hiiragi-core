@@ -47,8 +47,9 @@ interface HTMaterialPart {
         override val tagKey: TagKey<Item>
             get() = prefix.itemTagKey(key)
         override val item: HTItemHolderLike<*>?
-            get() = HiiragiCoreAccess.INSTANCE.getItemOrVanilla(prefix, key)
-                ?: HiiragiCoreAccess.INSTANCE.getBlockOrVanilla(prefix, key)
+            get() = with(HiiragiCoreAccess.INSTANCE.patchedMaterialContents) {
+                getBlock(prefix, key) ?: getItem(prefix, key)
+            }
         override val suffix: String = prefix.name
     }
 }

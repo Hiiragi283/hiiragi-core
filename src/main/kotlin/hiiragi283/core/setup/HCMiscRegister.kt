@@ -12,6 +12,7 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.getOrDefault
+import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -24,7 +25,6 @@ import hiiragi283.core.common.gui.sync.HTItemSyncPayload
 import hiiragi283.core.common.gui.sync.HTLongSyncPayload
 import hiiragi283.core.common.material.HTMaterialManagerImpl
 import hiiragi283.core.common.registry.HTDeferredBlock
-import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
@@ -39,7 +39,7 @@ internal object HCMiscRegister {
     private var hasInit: Boolean = false
 
     @JvmStatic
-    lateinit var materialBlocks: HTTable<HTTagPrefix, HTMaterialKey, HTSimpleDeferredBlock>
+    lateinit var materialBlocks: HTTable<HTTagPrefix, HTMaterialKey, HTBlockHolderLike<*, *>>
         private set
 
     @JvmStatic
@@ -74,7 +74,7 @@ internal object HCMiscRegister {
                                 id,
                                 HTBlockItem(block, Item.Properties()),
                             )
-                            Triple(prefix, entry.asMaterialKey(), HTDeferredBlock(id))
+                            Triple(prefix, entry.asMaterialKey(), HTDeferredBlock<Block, Item>(id))
                         }
                 }
         }

@@ -38,13 +38,13 @@ object HCCreativeTabs {
             HTDeferredCreativeTabRegister.addToDisplay(
                 parameters,
                 output,
-                HiiragiCoreAccess.INSTANCE.materialContents.getAllItems(),
+                HiiragiCoreAccess.INSTANCE.patchedMaterialContents.getAllItems(),
             )
             // Blocks
             HTDeferredCreativeTabRegister.addToDisplay(
                 parameters,
                 output,
-                HiiragiCoreAccess.INSTANCE.materialContents.getAllBlocks(),
+                HiiragiCoreAccess.INSTANCE.patchedMaterialContents.getAllBlocks(),
             )
         }
     }
@@ -61,7 +61,7 @@ object HCCreativeTabs {
             HTDeferredCreativeTabRegister.addToDisplay(
                 parameters,
                 output,
-                HiiragiCoreAccess.INSTANCE.materialContents.getAllTools(),
+                HiiragiCoreAccess.INSTANCE.patchedMaterialContents.getAllTools(),
             )
         }
     }

@@ -1,12 +1,10 @@
 package hiiragi283.core.api.material.property
 
 import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 
@@ -69,12 +67,8 @@ sealed interface HTDefaultPart {
 
         override fun getTag(material: HTMaterialLike): TagKey<Item> = prefix.itemTagKey(material)
 
-        override fun getItem(material: HTMaterialLike): HTItemHolderLike<*>? = with(HiiragiCoreAccess.INSTANCE) {
-            val key: HTMaterialKey = material.asMaterialKey()
-            when {
-                prefix.contains(HTTagPropertyKeys.BLOCK_PROP) -> getBlockOrVanilla(prefix, key)
-                else -> getItemOrVanilla(prefix, key)
-            }
+        override fun getItem(material: HTMaterialLike): HTItemHolderLike<*>? = with(HiiragiCoreAccess.INSTANCE.patchedMaterialContents) {
+            getBlock(prefix, material) ?: getItem(prefix, material)
         }
 
         override fun getSuffix(): String = prefix.name

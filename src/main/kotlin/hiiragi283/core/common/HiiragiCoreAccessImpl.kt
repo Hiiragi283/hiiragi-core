@@ -3,7 +3,9 @@ package hiiragi283.core.common
 import com.google.gson.JsonObject
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.collection.HTTable
+import hiiragi283.core.api.collection.HTPatchedTable
+import hiiragi283.core.api.collection.HTTableLike
+import hiiragi283.core.api.collection.toLike
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
@@ -69,19 +71,23 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
 
     override val materialManager: HTMaterialManager get() = materialManagerCache
     override val materialContents: HTMaterialContents = object : HTMaterialContents {
-        override fun getBlockTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTBlockHolderLike<*, *>> = HCMiscRegister.materialBlocks
+        override fun getBlockTable(): HTTableLike<HTTagPrefix, HTMaterialKey, HTBlockHolderLike<*, *>> =
+            HCMiscRegister.materialBlocks.toLike()
 
-        override fun getItemTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTItemHolderLike<*>> = HCMiscRegister.materialItems
+        override fun getItemTable(): HTTableLike<HTTagPrefix, HTMaterialKey, HTItemHolderLike<*>> = HCMiscRegister.materialItems.toLike()
 
-        override fun getToolTable(): HTTable<HTToolType, HTMaterialKey, out HTItemHolderLike<*>> = HCMiscRegister.toolItems
+        override fun getToolTable(): HTTableLike<HTToolType, HTMaterialKey, HTItemHolderLike<*>> = HCMiscRegister.toolItems.toLike()
     }
 
-    override val vanillaContents: HTMaterialContents = object : HTMaterialContents {
-        override fun getBlockTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTBlockHolderLike<*, *>> = VanillaMaterialKeys.BLOCKS
+    override val patchedMaterialContents: HTMaterialContents = object : HTMaterialContents {
+        override fun getBlockTable(): HTTableLike<HTTagPrefix, HTMaterialKey, HTBlockHolderLike<*, *>> =
+            HTPatchedTable(VanillaMaterialKeys.BLOCKS, HCMiscRegister.materialBlocks)
 
-        override fun getItemTable(): HTTable<HTTagPrefix, HTMaterialKey, out HTItemHolderLike<*>> = VanillaMaterialKeys.ITEMS
+        override fun getItemTable(): HTTableLike<HTTagPrefix, HTMaterialKey, HTItemHolderLike<*>> =
+            HTPatchedTable(VanillaMaterialKeys.ITEMS, HCMiscRegister.materialItems)
 
-        override fun getToolTable(): HTTable<HTToolType, HTMaterialKey, out HTItemHolderLike<*>> = VanillaMaterialKeys.TOOLS
+        override fun getToolTable(): HTTableLike<HTToolType, HTMaterialKey, HTItemHolderLike<*>> =
+            HTPatchedTable(VanillaMaterialKeys.TOOLS, HCMiscRegister.toolItems)
     }
 
     @Suppress("UNCHECKED_CAST")

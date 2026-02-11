@@ -111,26 +111,46 @@ object VanillaMaterialKeys {
         }
 
         // Fuel
+        add(CommonTagPrefixes.ORE, COAL, Blocks.COAL_ORE)
+        add(CommonTagPrefixes.ORE_DEEPSLATE, COAL, Blocks.DEEPSLATE_COAL_ORE)
         add(CommonTagPrefixes.BLOCK, COAL, Blocks.COAL_BLOCK)
         // Mineral
+        add(CommonTagPrefixes.ORE, REDSTONE, Blocks.REDSTONE_ORE)
+        add(CommonTagPrefixes.ORE_DEEPSLATE, REDSTONE, Blocks.DEEPSLATE_REDSTONE_ORE)
         add(CommonTagPrefixes.BLOCK, REDSTONE, Blocks.REDSTONE_BLOCK)
+
         add(CommonTagPrefixes.BLOCK, GLOWSTONE, Blocks.GLOWSTONE)
         // Gem
+        add(CommonTagPrefixes.ORE, LAPIS, Blocks.LAPIS_ORE)
+        add(CommonTagPrefixes.ORE_DEEPSLATE, LAPIS, Blocks.DEEPSLATE_LAPIS_ORE)
         add(CommonTagPrefixes.BLOCK, LAPIS, Blocks.LAPIS_BLOCK)
+
+        add(CommonTagPrefixes.ORE_NETHER, QUARTZ, Blocks.NETHER_QUARTZ_ORE)
         add(CommonTagPrefixes.BLOCK, QUARTZ, Blocks.QUARTZ_BLOCK)
+
         add(CommonTagPrefixes.BLOCK, AMETHYST, Blocks.AMETHYST_BLOCK)
+
+        add(CommonTagPrefixes.ORE, DIAMOND, Blocks.DIAMOND_ORE)
+        add(CommonTagPrefixes.ORE_DEEPSLATE, DIAMOND, Blocks.DEEPSLATE_DIAMOND_ORE)
         add(CommonTagPrefixes.BLOCK, DIAMOND, Blocks.DIAMOND_BLOCK)
+
+        add(CommonTagPrefixes.ORE, EMERALD, Blocks.EMERALD_ORE)
+        add(CommonTagPrefixes.ORE_DEEPSLATE, EMERALD, Blocks.DEEPSLATE_EMERALD_ORE)
         add(CommonTagPrefixes.BLOCK, EMERALD, Blocks.EMERALD_BLOCK)
         // Metal
         add(CommonTagPrefixes.ORE, COPPER, Blocks.COPPER_ORE)
+        add(CommonTagPrefixes.ORE_DEEPSLATE, COPPER, Blocks.DEEPSLATE_COPPER_ORE)
         add(CommonTagPrefixes.RAW_BLOCK, COPPER, Blocks.RAW_COPPER_BLOCK)
         add(CommonTagPrefixes.BLOCK, COPPER, Blocks.COPPER_BLOCK)
 
         add(CommonTagPrefixes.ORE, IRON, Blocks.IRON_ORE)
+        add(CommonTagPrefixes.ORE_DEEPSLATE, IRON, Blocks.DEEPSLATE_IRON_ORE)
         add(CommonTagPrefixes.RAW_BLOCK, IRON, Blocks.RAW_IRON_BLOCK)
         add(CommonTagPrefixes.BLOCK, IRON, Blocks.IRON_BLOCK)
 
         add(CommonTagPrefixes.ORE, GOLD, Blocks.GOLD_ORE)
+        add(CommonTagPrefixes.ORE_DEEPSLATE, GOLD, Blocks.DEEPSLATE_GOLD_ORE)
+        add(CommonTagPrefixes.ORE_NETHER, GOLD, Blocks.NETHER_GOLD_ORE)
         add(CommonTagPrefixes.RAW_BLOCK, GOLD, Blocks.RAW_GOLD_BLOCK)
         add(CommonTagPrefixes.BLOCK, GOLD, Blocks.GOLD_BLOCK)
         // Alloy
