@@ -60,7 +60,7 @@ abstract class HTRecipeBuilder(private val prefix: String) {
      * レシピを生成します。
      */
     fun save(recipeOutput: RecipeOutput) {
-        recipeOutput.accept(recipeId.id.withPrefix("$prefix/"), createRecipe(), null)
+        recipeOutput.accept(recipeId.id.withPrefix("$prefix/"), createRecipe(), null, *conditions.toArray())
     }
 
     /**

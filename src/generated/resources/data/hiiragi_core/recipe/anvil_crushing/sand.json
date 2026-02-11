@@ -1,0 +1,7 @@
+{
+  "type": "hiiragi_core:anvil_crushing",
+  "ingredient": "#c:gravels",
+  "result": {
+    "id": "minecraft:sand"
+  }
+}

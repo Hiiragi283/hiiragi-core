@@ -1,0 +1,16 @@
+{
+  "type": "hiiragi_core:exploding",
+  "ingredient": {
+    "amount": 64,
+    "items": [
+      "#c:charcoal",
+      "#c:coal",
+      "#c:dusts/charcoal",
+      "#c:dusts/coal"
+    ]
+  },
+  "result": {
+    "id": "minecraft:diamond",
+    "tag": "c:gems/diamond"
+  }
+}

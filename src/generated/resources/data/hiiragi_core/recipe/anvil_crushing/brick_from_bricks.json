@@ -1,0 +1,8 @@
+{
+  "type": "hiiragi_core:anvil_crushing",
+  "ingredient": "minecraft:bricks",
+  "result": {
+    "count": 4,
+    "id": "minecraft:brick"
+  }
+}

@@ -1,99 +1,82 @@
 package hiiragi283.core.api.data.lang
 
-import com.google.gson.JsonObject
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toDescriptionKey
-import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.text.HTHasTranslationKey
-import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
-import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
+import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceKey
-import net.minecraft.server.packs.resources.ResourceManager
-import net.minecraft.tags.TagKey
 import net.minecraft.world.item.enchantment.Enchantment
-import net.neoforged.neoforge.common.Tags.*
-import java.util.*
+import net.neoforged.neoforge.common.data.LanguageProvider
 
 /**
+ * Hiiragi Coreとそれを前提とするmodで使用される[LanguageProvider]の拡張クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.10.0
+ * @since 0.1.0
  */
-abstract class HTLangProvider(private val modId: String, val langType: HTLangType) : ResourceGenTask {
-    private val map: MutableMap<String, String> = TreeMap()
-
-    final override fun accept(manager: ResourceManager, sink: ResourceSink) {
-        addTranslations()
-
-        sink.addLang(
-            modId.toId(langType.name),
-            map.entries.fold(JsonObject()) { json: JsonObject, (key: String, value: String) ->
-                json.addProperty(key, value)
-                json
-            },
-        )
-    }
-
-    protected abstract fun addTranslations()
-
-    //    Extensions    //
+abstract class HTLangProvider(output: PackOutput, val modId: String, val langType: HTLangType) :
+    LanguageProvider(output, modId, langType.name.lowercase()) {
+    // HTHasTranslationKey
 
     /**
      * [HTHasTranslationKey.translationKey]に基づいて翻訳名を追加します。
      */
-    fun add(key: HTHasTranslationKey, value: String) {
-        this.add(key.translationKey, value)
+    fun add(translatable: HTHasTranslationKey, value: String) {
+        add(translatable.translationKey, value)
     }
+
+    // Registry
 
     /**
      * 進捗の翻訳名を追加します。
      * @param title 進捗のタイトル名
      * @param desc 進捗の説明
      */
-    fun add(key: HTAdvancementKey, title: String, desc: String) {
-        this.add(key.titleKey, title)
-        this.add(key.descKey, desc)
+    protected fun addAdvancement(key: HTAdvancementKey, title: String, desc: String) {
+        add(key.titleKey, title)
+        add(key.descKey, desc)
     }
 
     /**
      * エンチャントの翻訳名を追加します。
-     * @param title エンチャントの翻訳名
+     * @param value エンチャントの翻訳名
      * @param desc エンチャントの説明
      */
-    @JvmName("setEnchantment")
-    fun add(key: ResourceKey<Enchantment>, title: String, desc: String) {
-        this.add(key.toDescriptionKey("enchantment"), title)
-        this.add(key.toDescriptionKey("enchantment", "desc"), desc)
+    protected fun addEnchantment(key: ResourceKey<Enchantment>, value: String, desc: String) {
+        add(key.toDescriptionKey("enchantment"), value)
+        add(key.toDescriptionKey("enchantment", "desc"), desc)
     }
 
     /**
      * 液体の翻訳名を登録します。
      */
-    fun add(content: HTFluidContent, value: String) {
-        this.add(content.typeHolder.get().descriptionId, value)
-        this.add(content.bucketHolder, getBucketName(value))
-        this.add(content.fluidTag, value)
+    fun addFluid(content: HTFluidContent, value: String) {
+        add(content.typeHolder.get().descriptionId, value)
+        addFluidBucket(content, value)
+        add(content.fluidTag, value)
     }
 
-    protected abstract fun getBucketName(value: String): String
-
-    fun add(tagKey: TagKey<*>, value: String) {
-        this.add(getTagTranslationKey(tagKey), value)
-    }
-
-    fun add(key: String, value: String) {
-        check(map.put(key, value) == null) { "Duplicate translation key: $key" }
-    }
+    protected abstract fun addFluidBucket(content: HTFluidContent, value: String)
 
     //    English    //
 
-    abstract class English(modId: String) : HTLangProvider(modId, HTLangTypes.EN_US) {
-        final override fun getBucketName(value: String): String = "$value Bucket"
+    /**
+     * 英語向けの[HTLangProvider]の抽象クラスです。
+     */
+    abstract class English(output: PackOutput, modid: String) : HTLangProvider(output, modid, HTLangTypes.EN_US) {
+        final override fun addFluidBucket(content: HTFluidContent, value: String) {
+            add(content.bucketHolder, "$value Bucket")
+        }
     }
 
     //    Japanese    //
 
-    abstract class Japanese(modId: String) : HTLangProvider(modId, HTLangTypes.JA_JP) {
-        final override fun getBucketName(value: String): String = "${value}入りバケツ"
+    /**
+     * 日本語向けの[HTLangProvider]の抽象クラスです。
+     */
+    abstract class Japanese(output: PackOutput, modid: String) : HTLangProvider(output, modid, HTLangTypes.JA_JP) {
+        final override fun addFluidBucket(content: HTFluidContent, value: String) {
+            add(content.bucketHolder, "${value}入りバケツ")
+        }
     }
 }

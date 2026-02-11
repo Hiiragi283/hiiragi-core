@@ -1,19 +1,17 @@
 package hiiragi283.core.api.data.texture
 
-import com.mojang.blaze3d.platform.NativeImage
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.function.partially1
 import net.mehvahdjukaar.moonlight.api.resources.RPUtils
+import net.mehvahdjukaar.moonlight.api.resources.textures.Palette
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
-import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage.open
+import net.mehvahdjukaar.moonlight.api.util.math.colors.RGBColor
 import net.minecraft.data.DataProvider
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.neoforged.fml.ModList
-import java.awt.Color
 import java.io.BufferedReader
 import java.io.InputStream
 import java.nio.file.Path
@@ -29,7 +27,7 @@ object HTTextureUtil {
     private val PALETTE_REGEX = Regex("\\s+")
 
     @JvmStatic
-    val TEMPLATE_PALETTE: List<Color> by lazy { getPalette(HiiragiCoreAPI.id("template")).getOrThrow() }
+    val TEMPLATE_PALETTE: Palette by lazy { getPalette(HiiragiCoreAPI.id("template")).getOrThrow() }
 
     @JvmStatic
     private fun getResourcePath(id: ResourceLocation, prefix: String, extension: String): Path = ModList
@@ -43,10 +41,10 @@ object HTTextureUtil {
     //    Color    //
 
     @JvmStatic
-    private val colorCache: MutableMap<ResourceLocation, List<Color>> = hashMapOf()
+    private val colorCache: MutableMap<ResourceLocation, Palette> = hashMapOf()
 
     @JvmStatic
-    fun getPalette(id: ResourceLocation): Result<List<Color>> = colorCache[id]
+    fun getPalette(id: ResourceLocation): Result<Palette> = colorCache[id]
         ?.let(Result.Companion::success)
         ?: runCatching(getResourcePath(id, "palettes", "gpl")::inputStream)
             .mapCatching(InputStream::bufferedReader)
@@ -57,60 +55,12 @@ object HTTextureUtil {
                 lines
                     .filterNot { it == "GIMP Palette" || it.startsWith("Name") || it.startsWith("Columns") }
                     .map { it.split(PALETTE_REGEX, limit = 4).take(3).map(String::toInt) }
-                    .map { (red: Int, green: Int, blue: Int) -> Color(red, green, blue) }
+                    .map { (red: Int, green: Int, blue: Int) -> RGBColor.combine(255, blue, green, red).let(::RGBColor) }
+                    .let(Palette::ofColors)
             }.onSuccess { colorCache[id] = it }
             .onFailure { DataProvider.LOGGER.warn("Failed to load palette: $id") }
 
-    /**
-     * @see mekanism.common.lib.Color.argbToFromABGR
-     */
-    @JvmStatic
-    fun argbToFromABGR(argb: Int): Int {
-        val red: Int = argb shr 16 and 0xFF
-        val blue: Int = argb and 0xFF
-        return argb and -0xff0100 or (blue shl 16) or red
-    }
-
-    //    Image    //
-
-    @JvmStatic
-    private val textureCache: MutableMap<ResourceLocation, NativeImage> = hashMapOf()
-
-    /**
-     * 指定した[id]から既存のテクスチャを取得します。
-     */
-    @JvmStatic
-    fun getTexture(id: ResourceLocation): Result<NativeImage> = textureCache[id]
-        ?.let(Result.Companion::success)
-        ?: runCatching(getResourcePath(id, HTConst.TEXTURES, "png")::inputStream)
-            .mapCatching(NativeImage::read)
-            .onSuccess { textureCache[id] = it }
-            .onFailure { DataProvider.LOGGER.warn("Failed to load image: $id") }
-
-    /**
-     * 指定した[テクスチャ][other]をコピーします。
-     * @return コピーされたテクスチャ
-     */
-    @JvmStatic
-    fun copyFrom(other: NativeImage): NativeImage {
-        val image = NativeImage(other.width, other.height, true)
-        image.copyFrom(other)
-        return image
-    }
-
-    @JvmStatic
-    fun merge(base: NativeImage, overlay: NativeImage, replace: Boolean) {
-        check(base.width == overlay.width) { "Require same width" }
-        check(base.height == overlay.height) { "Require same height" }
-        for (x: Int in (0..<base.width)) {
-            for (y: Int in (0..<base.height)) {
-                val baseColor: Color = base.getPixelRGBA(x, y).let(::argbToFromABGR).let(::Color)
-                if (baseColor.alpha == 0 || replace) {
-                    base.setPixelRGBA(x, y, overlay.getPixelRGBA(x, y))
-                }
-            }
-        }
-    }
+    //    TextureImage    //
 
     @JvmStatic
     fun getTexture(manager: ResourceManager, block: Block): Result<TextureImage> = runCatching {

@@ -1,0 +1,7 @@
+{
+  "type": "hiiragi_core:anvil_crushing",
+  "ingredient": "#c:cobblestones",
+  "result": {
+    "id": "minecraft:gravel"
+  }
+}

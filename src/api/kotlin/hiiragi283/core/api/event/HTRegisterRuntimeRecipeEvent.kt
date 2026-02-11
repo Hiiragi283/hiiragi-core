@@ -25,19 +25,15 @@ import net.neoforged.bus.api.Event
 import net.neoforged.neoforge.common.conditions.ICondition
 import java.util.function.Function
 
-class HTRegisterRuntimeRecipeEvent(
-    val recipeManager: RecipeManager,
-    val provider: HolderLookup.Provider,
-    val context: HTRecipeProviderContext,
-) : Event() {
+class HTRegisterRuntimeRecipeEvent(val recipeManager: RecipeManager, val context: HTRecipeProviderContext) : Event() {
     constructor(
         recipeManager: RecipeManager,
         provider: HolderLookup.Provider,
         consumer: Function<RecipeHolder<*>, Boolean>,
     ) : this(
         recipeManager,
-        provider,
         object : HTRecipeProviderContext() {
+            override val provider: HolderLookup.Provider = provider
             override val output: RecipeOutput = object : RecipeOutput {
                 override fun accept(
                     id: ResourceLocation,
@@ -60,7 +56,7 @@ class HTRegisterRuntimeRecipeEvent(
 
     // TagKey
     fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<HTHolderLike.HolderDelegate<T, T>> =
-        HiiragiCoreAccess.INSTANCE.getFirstHolder(provider, tagKey)
+        HiiragiCoreAccess.INSTANCE.getFirstHolder(context.provider, tagKey)
 
     fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): HTHolderLike.HolderDelegate<T, T>? = getHolderResult(tagKey)
         .mapOrElse(identity()) { message: Component ->
@@ -68,7 +64,7 @@ class HTRegisterRuntimeRecipeEvent(
             null
         }
 
-    fun <T : Any> isPresentTag(tagKey: TagKey<T>): Boolean = provider.holderSetOrNull(tagKey) != null
+    fun <T : Any> isPresentTag(tagKey: TagKey<T>): Boolean = context.provider.holderSetOrNull(tagKey) != null
 
     // Material
     fun getFirstHolder(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
