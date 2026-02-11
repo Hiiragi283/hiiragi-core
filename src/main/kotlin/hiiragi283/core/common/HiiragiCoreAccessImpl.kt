@@ -3,6 +3,7 @@ package hiiragi283.core.common
 import com.google.gson.JsonObject
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.collection.HTMapLike
 import hiiragi283.core.api.collection.HTPatchedTable
 import hiiragi283.core.api.collection.HTTableLike
 import hiiragi283.core.api.collection.toLike
@@ -11,6 +12,7 @@ import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.holderSetOrNull
@@ -74,6 +76,8 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
         override fun getBlockTable(): HTTableLike<HTTagPrefix, HTMaterialKey, HTBlockHolderLike<*, *>> =
             HCMiscRegister.materialBlocks.toLike()
 
+        override fun getMoltenFluidMap(): HTMapLike<HTMaterialKey, HTFluidContent> = HCMiscRegister.moltenFluids.toLike()
+
         override fun getItemTable(): HTTableLike<HTTagPrefix, HTMaterialKey, HTItemHolderLike<*>> = HCMiscRegister.materialItems.toLike()
 
         override fun getToolTable(): HTTableLike<HTToolType, HTMaterialKey, HTItemHolderLike<*>> = HCMiscRegister.toolItems.toLike()
@@ -82,6 +86,8 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
     override val patchedMaterialContents: HTMaterialContents = object : HTMaterialContents {
         override fun getBlockTable(): HTTableLike<HTTagPrefix, HTMaterialKey, HTBlockHolderLike<*, *>> =
             HTPatchedTable(VanillaMaterialKeys.BLOCKS, HCMiscRegister.materialBlocks)
+
+        override fun getMoltenFluidMap(): HTMapLike<HTMaterialKey, HTFluidContent> = HCMiscRegister.moltenFluids.toLike()
 
         override fun getItemTable(): HTTableLike<HTTagPrefix, HTMaterialKey, HTItemHolderLike<*>> =
             HTPatchedTable(VanillaMaterialKeys.ITEMS, HCMiscRegister.materialItems)

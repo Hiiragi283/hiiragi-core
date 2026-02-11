@@ -2,6 +2,7 @@ package hiiragi283.core.data.client
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
+import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
@@ -12,7 +13,7 @@ import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.data.PackOutput
 
 class HCEnglishLangProvider(output: PackOutput) :
-    HTLangProvider.English(output, HiiragiCoreAPI.MOD_ID),
+    HTLangProvider(output, HiiragiCoreAPI.MOD_ID, HTLangTypes.EN_US),
     HCLangProvider {
     override fun addTranslations() {
         // Block
@@ -32,15 +33,6 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         addFluid(HCFluids.LATEX, "Latex")
         addFluid(HCFluids.MEAT, "Meat")
-
-        addFluid(HCFluids.MOLTEN_GLASS, "Molten Glass")
-        addFluid(HCFluids.MOLTEN_PLASTIC, "Molten Plastic")
-        addFluid(HCFluids.MOLTEN_RUBBER, "Molten Rubber")
-        addFluid(HCFluids.MOLTEN_CRIMSON_CRYSTAL, "Crimson Blood")
-        addFluid(HCFluids.MOLTEN_WARPED_CRYSTAL, "Dew of the Warp")
-        addFluid(HCFluids.MOLTEN_ELDRITCH, "Eldritch Flux")
-        // addFluid(HCFluidsN.MOLTEN_OMINOUS_METAL, "Ominous Flux")
-
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "Bamboo Charcoal")
         add(HCItems.COMPRESSED_SAWDUST, "Compressed Sawdust")

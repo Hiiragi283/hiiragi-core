@@ -5,17 +5,24 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.HTMapLike
 import hiiragi283.core.api.data.texture.HTTextureUtil
+import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialTextureSet
 import hiiragi283.core.api.property.getOrDefault
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.blockId
+import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
+import net.mehvahdjukaar.moonlight.api.resources.textures.Palette
+import net.mehvahdjukaar.moonlight.api.resources.textures.Respriter
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
+import net.mehvahdjukaar.moonlight.api.util.math.colors.RGBColor
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
 import kotlin.collections.iterator
@@ -27,6 +34,7 @@ data object HCMaterialTextureProvider : ResourceGenTask {
         with(HiiragiCoreAccess.INSTANCE.materialContents) {
             material(manager, sink, HTConst.BLOCK, ::getBlockMap)
             material(manager, sink, HTConst.ITEM, ::getItemMap)
+            molten(manager, sink, this)
         }
     }
 
@@ -64,6 +72,25 @@ data object HCMaterialTextureProvider : ResourceGenTask {
                     template,
                 )
             }
+        }
+    }
+
+    @JvmStatic
+    private fun molten(manager: ResourceManager, sink: ResourceSink, contents: HTMaterialContents) {
+        // すべての素材に対してテクスチャの生成を試みる
+        for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
+            val molten: HTFluidContent = contents.getMoltenFluidMap()[entry.asMaterialKey()] ?: continue
+            // パレットを取得
+            val palette: List<Int> = HTTextureUtil
+                .getPalette(
+                    manager,
+                    entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId(),
+                ).getOrNull() ?: continue
+            // テンプレートを取得
+            val template: TextureImage = TextureImage.open(manager, HTConst.MINECRAFT.toId(HTConst.BLOCK, "lava_still.png"))
+            val respriter: Respriter = Respriter.of(template)
+            val newImage: TextureImage = respriter.recolor(palette.map(::RGBColor).let(Palette::ofColors))
+            sink.addTexture(molten.blockId, newImage)
         }
     }
 

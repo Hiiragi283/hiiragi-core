@@ -4,7 +4,9 @@ import hiiragi283.core.api.collection.HTMapLike
 import hiiragi283.core.api.collection.HTTableLike
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import java.util.Comparator
 
@@ -15,7 +17,9 @@ import java.util.Comparator
  */
 interface HTMaterialContents {
     companion object {
-        private val COMPARATOR: Comparator<Triple<Comparable<*>, HTMaterialKey, *>> =
+        private val ENTRY_COMPARATOR: Comparator<Map.Entry<HTMaterialKey, HTIdLike>> = compareBy { it.key }
+
+        private val TRIPLE_COMPARATOR: Comparator<Triple<Comparable<*>, HTMaterialKey, *>> =
             compareBy<Triple<Comparable<*>, HTMaterialKey, *>> { it.first }.thenComparing { it.second }
     }
 
@@ -35,9 +39,18 @@ interface HTMaterialContents {
         getBlockTable().column(material.asMaterialKey())
 
     fun getBlockEntries(): Sequence<Triple<HTTagPrefix, HTMaterialKey, HTBlockHolderLike<*, *>>> =
-        getBlockTable().iterator().asSequence().sortedWith(COMPARATOR)
+        getBlockTable().iterator().asSequence().sortedWith(TRIPLE_COMPARATOR)
 
     fun getAllBlocks(): Sequence<HTBlockHolderLike<*, *>> = getBlockEntries().map { it.third }
+
+    //    Fluid    //
+
+    fun getMoltenFluidMap(): HTMapLike<HTMaterialKey, HTFluidContent>
+
+    fun getMoltenFluidEntries(): Sequence<Map.Entry<HTMaterialKey, HTFluidContent>> =
+        getMoltenFluidMap().iterator().asSequence().sortedWith(ENTRY_COMPARATOR)
+
+    fun getAllMoltenFluids(): Sequence<HTFluidContent> = getMoltenFluidEntries().map { it.value }
 
     //    Item    //
 
@@ -53,7 +66,7 @@ interface HTMaterialContents {
     fun getItemMap(material: HTMaterialLike): HTMapLike<HTTagPrefix, HTItemHolderLike<*>> = getItemTable().column(material.asMaterialKey())
 
     fun getItemEntries(): Sequence<Triple<HTTagPrefix, HTMaterialKey, HTItemHolderLike<*>>> =
-        getItemTable().iterator().asSequence().sortedWith(COMPARATOR)
+        getItemTable().iterator().asSequence().sortedWith(TRIPLE_COMPARATOR)
 
     fun getAllItems(): Sequence<HTItemHolderLike<*>> = getItemEntries().map { it.third }
 
@@ -71,7 +84,7 @@ interface HTMaterialContents {
     fun getToolMap(material: HTMaterialLike): HTMapLike<HTToolType, HTItemHolderLike<*>> = getToolTable().column(material.asMaterialKey())
 
     fun getToolEntries(): Sequence<Triple<HTToolType, HTMaterialKey, HTItemHolderLike<*>>> =
-        getToolTable().iterator().asSequence().sortedWith(COMPARATOR)
+        getToolTable().iterator().asSequence().sortedWith(TRIPLE_COMPARATOR)
 
     fun getAllTools(): Sequence<HTItemHolderLike<*>> = getToolEntries().map { it.third }
 }

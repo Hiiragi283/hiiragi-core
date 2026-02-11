@@ -2,7 +2,6 @@ package hiiragi283.core.common.data
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.HTDynamicResourceProvider
 import hiiragi283.core.api.data.map.HTDataMapGenTask
 import hiiragi283.core.api.data.tag.HTTagsProvider
@@ -12,6 +11,7 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -27,6 +27,7 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps
@@ -137,11 +138,21 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
                 }
             }
         })
+        executor.accept(object : HTTagsProvider.GenTask<Fluid>(Registries.FLUID) {
+            override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Fluid>) {
+                for ((_, molten: HTFluidContent) in contents.getMoltenFluidMap()) {
+                    factory.apply(molten.fluidTag).add(molten)
+                }
+            }
+        })
         executor.accept(object : HTTagsProvider.GenTask<Item>(Registries.ITEM) {
             override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Item>) {
                 // Material
                 contents.getBlockTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
                     addMaterial(factory, prefix, key).add(block)
+                }
+                for ((_, molten: HTFluidContent) in contents.getMoltenFluidMap()) {
+                    addTags(factory, Tags.Items.BUCKETS, molten.bucketTag).add(molten.bucketHolder)
                 }
                 contents.getItemTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
                     addMaterial(factory, prefix, key).add(item)

@@ -3,9 +3,11 @@ package hiiragi283.core.client
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.event.HTRegisterWidgetRendererEvent
 import hiiragi283.core.api.mod.HTClientMod
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.client.data.HCClientResourceProvider
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
@@ -91,15 +93,9 @@ data object HiiragiCoreClient : HTClientMod() {
         event.dull(HCFluids.LATEX, Color(0xcccccc))
         event.dull(HCFluids.MEAT, Color(0x993333))
 
-        event.molten(HCFluids.MOLTEN_GLASS, Color(0xe6e6e6))
-
-        event.molten(HCFluids.MOLTEN_PLASTIC, Color(0xa0cfb5))
-        event.molten(HCFluids.MOLTEN_RUBBER, Color(0x453945))
-
-        event.molten(HCFluids.MOLTEN_CRIMSON_CRYSTAL, Color(0x993333))
-        event.molten(HCFluids.MOLTEN_WARPED_CRYSTAL, Color(0x339999))
-        event.molten(HCFluids.MOLTEN_ELDRITCH, Color(0x6633cc))
-        // event.molten(HCFluidsN.MOLTEN_OMINOUS_METAL, Color(0x333366))
+        for ((_, molten: HTFluidContent) in HiiragiCoreAccess.INSTANCE.materialContents.getMoltenFluidMap()) {
+            event.registerFluidType(HTSimpleFluidExtensions(molten.blockId), molten.getFluidType())
+        }
     }
 
     override fun registerScreens(event: RegisterMenuScreensEvent) {

@@ -2,6 +2,7 @@ package hiiragi283.core.data.client
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
+import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
@@ -12,7 +13,7 @@ import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.data.PackOutput
 
 class HCJapaneseLangProvider(output: PackOutput) :
-    HTLangProvider.Japanese(output, HiiragiCoreAPI.MOD_ID),
+    HTLangProvider(output, HiiragiCoreAPI.MOD_ID, HTLangTypes.JA_JP),
     HCLangProvider {
     override fun addTranslations() {
         // Block
@@ -31,15 +32,6 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         addFluid(HCFluids.LATEX, "ラテックス")
         addFluid(HCFluids.MEAT, "肉")
-
-        addFluid(HCFluids.MOLTEN_GLASS, "溶融ガラス")
-        addFluid(HCFluids.MOLTEN_PLASTIC, "溶融プラスチック")
-        addFluid(HCFluids.MOLTEN_RUBBER, "溶融ゴム")
-        addFluid(HCFluids.MOLTEN_CRIMSON_CRYSTAL, "深紅の血液")
-        addFluid(HCFluids.MOLTEN_WARPED_CRYSTAL, "歪みの雫")
-        addFluid(HCFluids.MOLTEN_ELDRITCH, "異質な流動体")
-        // addFluid(HCFluidsN.MOLTEN_OMINOUS_METAL, "不吉な流動体")
-
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "竹炭")
         add(HCItems.COMPRESSED_SAWDUST, "圧縮されたおがくず")

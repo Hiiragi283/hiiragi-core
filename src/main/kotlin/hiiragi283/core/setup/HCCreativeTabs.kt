@@ -3,6 +3,7 @@ package hiiragi283.core.setup
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.registry.HTDeferredHolder
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.common.registry.register.HTDeferredCreativeTabRegister
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.world.item.CreativeModeTab
@@ -45,6 +46,15 @@ object HCCreativeTabs {
                 parameters,
                 output,
                 HiiragiCoreAccess.INSTANCE.patchedMaterialContents.getAllBlocks(),
+            )
+            // Fluids
+            HTDeferredCreativeTabRegister.addToDisplay(
+                parameters,
+                output,
+                HiiragiCoreAccess.INSTANCE
+                    .patchedMaterialContents
+                    .getAllMoltenFluids()
+                    .map(HTFluidContent::bucketHolder),
             )
         }
     }

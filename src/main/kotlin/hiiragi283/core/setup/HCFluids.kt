@@ -3,17 +3,11 @@ package hiiragi283.core.setup
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.function.partially1
-import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.common.fluid.HTDragonBreathFluidType
 import hiiragi283.core.common.fluid.HTDyedFluidType
-import hiiragi283.core.common.fluid.HTEndFluidType
 import hiiragi283.core.common.fluid.HTExperienceFluidType
 import hiiragi283.core.common.fluid.HTLatexFluid
-import hiiragi283.core.common.fluid.HTNetherFluidType
-import hiiragi283.core.common.material.CommonMaterialKeys
-import hiiragi283.core.common.material.HCMaterialKeys
-import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.common.registry.register.HTFluidContentRegister
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
@@ -78,51 +72,6 @@ object HCFluids {
 
     @JvmField
     val MEAT: HTFluidContent = REGISTER.registerFlowing("meat") { properties = liquid() }
-
-    //    Material    //
-
-    @JvmStatic
-    private inline fun molten(
-        key: HTMaterialKey,
-        temp: Int = 1300,
-        builderAction: HTFluidContentRegister.FlowingBuilder.() -> Unit = {},
-    ): HTFluidContent = REGISTER.registerFlowing("molten_${key.asMaterialId().path}") {
-        properties = molten().temperature(temp)
-        builderAction()
-    }
-
-    // Vanilla
-    @JvmField
-    val MOLTEN_GLASS: HTFluidContent = molten(VanillaMaterialKeys.GLASS) {
-        blockFactory = null
-    }
-
-    // Common
-    @JvmField
-    val MOLTEN_PLASTIC: HTFluidContent = molten(CommonMaterialKeys.PLASTIC) {
-        blockFactory = null
-    }
-
-    @JvmField
-    val MOLTEN_RUBBER: HTFluidContent = molten(CommonMaterialKeys.RUBBER) {
-        blockFactory = null
-    }
-
-    // Hiiragi Core
-    @JvmField
-    val MOLTEN_CRIMSON_CRYSTAL: HTFluidContent = molten(HCMaterialKeys.CRIMSON_CRYSTAL, 2300) {
-        typeFactory = ::HTNetherFluidType
-    }
-
-    @JvmField
-    val MOLTEN_WARPED_CRYSTAL: HTFluidContent = molten(HCMaterialKeys.WARPED_CRYSTAL) {
-        typeFactory = ::HTNetherFluidType
-    }
-
-    @JvmField
-    val MOLTEN_ELDRITCH: HTFluidContent = molten(HCMaterialKeys.ELDRITCH) {
-        typeFactory = ::HTEndFluidType
-    }
 
     //    Extensions    //
 

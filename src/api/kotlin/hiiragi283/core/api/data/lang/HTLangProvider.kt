@@ -16,6 +16,11 @@ import net.neoforged.neoforge.common.data.LanguageProvider
  */
 abstract class HTLangProvider(output: PackOutput, val modId: String, val langType: HTLangType) :
     LanguageProvider(output, modId, langType.name.lowercase()) {
+    companion object {
+        @JvmField
+        val BUCKET_PATTERN: HTLangPatternProvider = HTLangPatternProvider.create("%s Bucket", "%s入りバケツ")
+    }
+
     // HTHasTranslationKey
 
     /**
@@ -52,31 +57,10 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
      */
     fun addFluid(content: HTFluidContent, value: String) {
         add(content.typeHolder.get().descriptionId, value)
-        addFluidBucket(content, value)
         add(content.fluidTag, value)
-    }
 
-    protected abstract fun addFluidBucket(content: HTFluidContent, value: String)
-
-    //    English    //
-
-    /**
-     * 英語向けの[HTLangProvider]の抽象クラスです。
-     */
-    abstract class English(output: PackOutput, modid: String) : HTLangProvider(output, modid, HTLangTypes.EN_US) {
-        final override fun addFluidBucket(content: HTFluidContent, value: String) {
-            add(content.bucketHolder, "$value Bucket")
-        }
-    }
-
-    //    Japanese    //
-
-    /**
-     * 日本語向けの[HTLangProvider]の抽象クラスです。
-     */
-    abstract class Japanese(output: PackOutput, modid: String) : HTLangProvider(output, modid, HTLangTypes.JA_JP) {
-        final override fun addFluidBucket(content: HTFluidContent, value: String) {
-            add(content.bucketHolder, "${value}入りバケツ")
-        }
+        val bucketName: String = BUCKET_PATTERN.translate(langType, value)
+        add(content.bucketHolder, bucketName)
+        add(content.bucketTag, bucketName)
     }
 }

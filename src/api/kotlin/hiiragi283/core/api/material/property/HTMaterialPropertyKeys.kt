@@ -62,6 +62,9 @@ object HTMaterialPropertyKeys {
     @JvmField
     val TOOL_MATERIAL: HTPropertyKey<HTToolMaterial?> = createNullable("tool_material")
 
+    @JvmField
+    val GENERATE_MOLTEN: HTPropertyKey<Unit?> = HTPropertyKey.createFlag(HiiragiCoreAPI.id("generate_molten"))
+
     //    Recipe    //
 
     /**
@@ -117,12 +120,6 @@ object HTMaterialPropertyKeys {
     @JvmField
     val MELTING_POINT: HTPropertyKey<HTMaterialLevel> =
         HTPropertyKey.create(HiiragiCoreAPI.id("melting_point"), HTMaterialLevel.LOW)
-
-    /**
-     * 溶融状態の[液体][HTFluidMaterialProperty]を管理する[プロパティキー][HTPropertyKey]
-     */
-    @JvmField
-    val MOLTEN_FLUID: HTPropertyKey<HTFluidMaterialProperty?> = createNullable("molten_fluid")
 
     /**
      * 鉱石粉砕の主産物の個数の倍率を管理する[プロパティキー][HTPropertyKey]

@@ -3,12 +3,12 @@ package hiiragi283.core.client.data
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.model.HTModelProvider
 import hiiragi283.core.api.data.model.HTTexturedModels
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -39,6 +39,11 @@ data object HCModelProvider : HTModelProvider() {
             } else {
                 addSimpleBlockAndItem(block)
             }
+        }
+        // Fluid
+        for ((_, molten: HTFluidContent) in contents.getMoltenFluidMap()) {
+            addLiquidBlock(molten)
+            addBucketModel(molten, true)
         }
         // Item
         contents.getItemTable().forEach { (prefix: HTTagPrefix, _, item: HTIdLike) ->

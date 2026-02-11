@@ -16,7 +16,6 @@ import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTStonecuttingRecipeBuilder
-import hiiragi283.core.common.material.ColoredMaterials
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
@@ -222,11 +221,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
                 ingredients += Tags.Items.BUCKETS_WATER
                 resultStack += content.getBucket()
                 recipeId suffix "_from_bye"
-            }
-            HTCookingRecipeBuilder.smelting(output) {
-                ingredient += content.getBucket()
-                resultStack += ColoredMaterials.DYE[color]!! to 4
-                recipeId suffix "_from_bucket"
             }
         }
 

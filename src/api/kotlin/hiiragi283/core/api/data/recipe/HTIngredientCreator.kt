@@ -5,12 +5,8 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.buildDataPredicate
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.property.HTFluidMaterialProperty
-import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.getDefaultFluidAmount
-import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.property.HTPropertyMap
-import hiiragi283.core.api.property.getOrThrow
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.registry.HTFluidContent
@@ -101,18 +97,12 @@ data object HTIngredientCreator {
 
     fun milk(amount: Int): HTFluidIngredient = create(VanillaFluidContents.MILK, amount)
 
-    fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidIngredient =
-        create(material, HTMaterialPropertyKeys.MOLTEN_FLUID, operator)
-
-    fun create(
-        material: HTMaterialLike,
-        propertyKey: HTPropertyKey<HTFluidMaterialProperty?>,
-        operator: IntUnaryOperator = IntUnaryOperator.identity(),
-    ): HTFluidIngredient {
-        val propertyMap: HTPropertyMap = HiiragiCoreAccess.INSTANCE.materialManager
-            .getOrEmpty(material)
-        val fluid: HTFluidContent = propertyMap.getOrThrow(propertyKey).fluid
-        return create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
+    fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidIngredient {
+        val propertyMap: HTPropertyMap = HiiragiCoreAccess.INSTANCE.materialManager.getOrEmpty(material)
+        val content: HTFluidContent =
+            HiiragiCoreAccess.INSTANCE.materialContents.getMoltenFluidMap()[material.asMaterialKey()]
+                ?: error("Unknown molten fluid: ${material.asMaterialId()}")
+        return create(content, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
     }
 
     // Ingredient

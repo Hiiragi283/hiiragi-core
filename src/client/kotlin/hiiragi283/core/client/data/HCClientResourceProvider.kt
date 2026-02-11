@@ -6,6 +6,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.HTDynamicResourceProvider
 import hiiragi283.core.api.data.lang.HTLangName
+import hiiragi283.core.api.data.lang.HTLangPatternProvider
 import hiiragi283.core.api.data.lang.HTLangType
 import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.data.texture.HTTextureUtil
@@ -15,6 +16,7 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
@@ -27,6 +29,7 @@ import net.mehvahdjukaar.moonlight.api.resources.textures.Respriter
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.world.level.block.Blocks
+import net.neoforged.neoforge.common.Tags
 import java.util.function.Consumer
 
 data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiCoreAPI.MOD_ID) {
@@ -67,29 +70,39 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
     @JvmStatic
     private fun addLang(sink: ResourceSink, langType: HTLangType) {
         val root = JsonObject()
-        addTranslations(langType) { key: HTHasTranslationKey, value: String ->
-            root.addProperty(key.translationKey, value)
-        }
+        addTranslations(langType, root::addProperty)
         sink.addLang(HiiragiCoreAPI.MOD_ID.toId(langType.name), root)
     }
 
     @JvmStatic
-    fun addTranslations(langType: HTLangType, consumer: (HTHasTranslationKey, String) -> Unit) {
+    fun addTranslations(langType: HTLangType, consumer: (String, String) -> Unit) {
         for (entry: HTMaterialManager.Entry in materialManager) {
             // Block
             for ((prefix: HTTagPrefix, block: HTHasTranslationKey) in contents.getBlockMap(entry)) {
                 val name: String = translate(langType, prefix, entry) ?: continue
-                consumer(block, name)
+                consumer(block.translationKey, name)
+            }
+            // Fluid
+            val molten: HTFluidContent? = contents.getMoltenFluidMap()[entry.asMaterialKey()]
+            if (molten != null) {
+                val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
+                val name: String = HTLangPatternProvider.create("Molten %s", "溶融%s").translate(langType, materialName)
+                consumer(molten.getFluidType().descriptionId, name)
+                consumer(Tags.getTagTranslationKey(molten.fluidTag), name)
+
+                val bucketName: String = HTLangPatternProvider.create("Molten %s Bucket", "溶融%s入りバケツ").translate(langType, materialName)
+                consumer(molten.bucketHolder.translationKey, bucketName)
+                consumer(Tags.getTagTranslationKey(molten.bucketTag), bucketName)
             }
             // Item
             for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in contents.getItemMap(entry)) {
                 val name: String = translate(langType, prefix, entry) ?: continue
-                consumer(item, name)
+                consumer(item.translationKey, name)
             }
             // Tool
             for ((toolType: HTToolType, tool: HTHasTranslationKey) in contents.getToolMap(entry)) {
                 val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
-                consumer(tool, toolType.langPattern.translate(langType, materialName))
+                consumer(tool.translationKey, toolType.langPattern.translate(langType, materialName))
             }
         }
     }

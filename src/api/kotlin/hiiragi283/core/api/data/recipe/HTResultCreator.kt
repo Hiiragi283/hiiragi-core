@@ -3,12 +3,8 @@ package hiiragi283.core.api.data.recipe
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.property.HTFluidMaterialProperty
-import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.getDefaultFluidAmount
-import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.property.HTPropertyMap
-import hiiragi283.core.api.property.getOrThrow
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.HTFluidContent
@@ -69,17 +65,11 @@ data object HTResultCreator {
     fun milk(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult = create(VanillaFluidContents.MILK, amount)
 
     @JvmStatic
-    fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidResult =
-        material(material, HTMaterialPropertyKeys.MOLTEN_FLUID, operator)
-
-    @JvmStatic
-    fun material(
-        material: HTMaterialLike,
-        propertyKey: HTPropertyKey<HTFluidMaterialProperty?>,
-        operator: IntUnaryOperator = IntUnaryOperator.identity(),
-    ): HTFluidResult {
+    fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidResult {
         val propertyMap: HTPropertyMap = HiiragiCoreAccess.INSTANCE.materialManager.getOrEmpty(material)
-        val fluid: HTFluidContent = propertyMap.getOrThrow(propertyKey).fluid
-        return create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
+        val content: HTFluidContent =
+            HiiragiCoreAccess.INSTANCE.materialContents.getMoltenFluidMap()[material.asMaterialKey()]
+                ?: error("Unknown molten fluid: ${material.asMaterialId()}")
+        return create(content, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
     }
 }
