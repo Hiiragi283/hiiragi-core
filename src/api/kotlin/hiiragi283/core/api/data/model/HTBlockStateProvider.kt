@@ -2,18 +2,12 @@ package hiiragi283.core.api.data.model
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.HTDataGenContext
-import hiiragi283.core.api.material.HTMaterialContents
-import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
-import hiiragi283.core.api.tag.CommonTagPrefixes
-import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import net.minecraft.core.Direction
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.Block
@@ -35,7 +29,6 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper
 abstract class HTBlockStateProvider(protected val modId: String, context: HTDataGenContext) :
     BlockStateProvider(context.output, modId, context.fileHelper) {
     protected val fileHelper: ExistingFileHelper = context.fileHelper
-    protected val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
 
     //    Extensions    //
 
@@ -177,39 +170,12 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      * @since 0.3.0
      */
     protected fun liquidBlock(content: HTFluidContent) {
-        val block: Block = content.blockHolder?.get() ?: return
+        val block: Block = content.blockHolder?.asBlock() ?: return
         simpleBlock(
             block,
             models()
                 .getBuilder(content.blockId)
                 .texture("particle", HTConst.MINECRAFT.toId(HTConst.BLOCK, "water_still")),
         )
-    }
-
-    /**
-     * 鉱石ブロックのモデルを追加します。
-     * @since 0.7.0
-     */
-    protected fun registerOres() {
-        for (prefix: HTTagPrefix in CommonTagPrefixes.ORES) {
-            val stoneTexture: ResourceLocation = prefix[HTTagPropertyKeys.ORE_STONE_TEX] ?: continue
-            for ((key: HTMaterialKey, ore: HTBlockHolderLike<*, *>) in contents.getBlockMap(prefix)) {
-                if (ore.namespace == modId) {
-                    layeredBlock(ore, stoneTexture, CommonTagPrefixes.ORE.createId(key).withPrefix("block/"))
-                }
-            }
-        }
-    }
-
-    /**
-     * [prefix]に対応する素材ブロックのモデルを追加します。
-     * @since 0.8.0
-     */
-    protected fun registerMaterials(prefix: HTTagPrefix) {
-        contents
-            .getBlockMap(prefix)
-            .values
-            .filter { it.namespace == modId }
-            .forEach { existTexture(it, ::simpleBlockAndItem) }
     }
 }

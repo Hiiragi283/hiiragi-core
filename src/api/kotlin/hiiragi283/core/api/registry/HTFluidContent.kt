@@ -8,7 +8,6 @@ import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
-import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.LiquidBlock
 import net.minecraft.world.level.material.FlowingFluid
 import net.minecraft.world.level.material.Fluid
@@ -29,7 +28,7 @@ class HTFluidContent(
     val bucketTag: TagKey<Item>,
     // Optional
     val flowingHolder: HTHolderLike<Fluid, out FlowingFluid>?,
-    val blockHolder: HTHolderLike<Block, out LiquidBlock>?,
+    val blockHolder: HTBlockHolderLike<out LiquidBlock, *>?,
 ) : HTHolderLike.HolderDelegate<Fluid, Fluid> {
     /**
      * 保持している液体の[FluidType]を取得します。

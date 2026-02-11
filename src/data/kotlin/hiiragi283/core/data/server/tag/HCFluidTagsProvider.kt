@@ -10,12 +10,12 @@ import hiiragi283.core.setup.HCFluids
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.level.material.Fluid
 
-class HCFluidTagsProvider(context: HTDataGenContext) : HTTagsProvider<Fluid>(HiiragiCoreAPI.MOD_ID, Registries.FLUID, context) {
-    override fun addTagsInternal(factory: BuilderFactory<Fluid>) {
+class HCFluidTagsProvider(context: HTDataGenContext) : HTTagsProvider.DataGen<Fluid>(HiiragiCoreAPI.MOD_ID, Registries.FLUID, context) {
+    override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Fluid>) {
         HCFluids.REGISTER.asSequence().forEach(::addContent.partially1(factory))
     }
 
-    fun addContent(factory: BuilderFactory<Fluid>, content: HTFluidContent) {
+    fun addContent(factory: HTTagsProvider.BuilderFactory<Fluid>, content: HTFluidContent) {
         val builder: HTTagBuilder<Fluid> = factory.apply(content.fluidTag).add(content)
         content.flowingHolder?.let(builder::add)
     }

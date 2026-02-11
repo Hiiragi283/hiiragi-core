@@ -7,6 +7,7 @@ import hiiragi283.core.api.event.HTRegisterWidgetRendererEvent
 import hiiragi283.core.api.mod.HTClientMod
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.client.datagen.HCClientResourceProvider
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.gui.tooltip.HTClientFluidFilterTooltip
 import hiiragi283.core.client.gui.tooltip.HTClientItemFilterTooltip
@@ -20,6 +21,7 @@ import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCMenuTypes
 import hiiragi283.core.setup.HCWidgetTypes
+import net.mehvahdjukaar.moonlight.api.platform.RegHelper
 import net.minecraft.client.renderer.entity.ThrownItemRenderer
 import net.minecraft.world.level.ItemLike
 import net.neoforged.api.distmarker.Dist
@@ -41,6 +43,8 @@ data object HiiragiCoreClient : HTClientMod() {
         eventBus.addListener(::registerClientTooltips)
 
         configScreen(container)
+
+        RegHelper.registerDynamicResourceProvider(HCClientResourceProvider)
         HiiragiCoreAPI.LOGGER.info("Hiiragi-Core loaded on client side")
     }
 
@@ -89,7 +93,6 @@ data object HiiragiCoreClient : HTClientMod() {
 
         event.molten(HCFluids.MOLTEN_GLASS, Color(0xe6e6e6))
 
-        event.molten(HCFluids.MOLTEN_STAINLESS_STEEL, Color(0xb0bad0))
         event.molten(HCFluids.MOLTEN_PLASTIC, Color(0xa0cfb5))
         event.molten(HCFluids.MOLTEN_RUBBER, Color(0x453945))
 

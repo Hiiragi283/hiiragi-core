@@ -2,12 +2,10 @@ package hiiragi283.core.data
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTRootDataGenerator
-import hiiragi283.core.data.client.HCTextureProvider
-import hiiragi283.core.data.client.lang.HCEnglishLangProvider
-import hiiragi283.core.data.client.lang.HCJapaneseLangProvider
-import hiiragi283.core.data.client.model.HCBlockStateProvider
-import hiiragi283.core.data.client.model.HCItemModelProvider
-import hiiragi283.core.data.server.HCDataMapProvider
+import hiiragi283.core.data.client.HCBlockStateProvider
+import hiiragi283.core.data.client.HCEnglishLangProvider
+import hiiragi283.core.data.client.HCItemModelProvider
+import hiiragi283.core.data.client.HCJapaneseLangProvider
 import hiiragi283.core.data.server.HCRecipeProvider
 import hiiragi283.core.data.server.loot.HCBlockLootTableProvider
 import hiiragi283.core.data.server.loot.HCGlobalLootModifierProvider
@@ -37,12 +35,12 @@ data object HiiragiCoreDataGen {
         server.addProvider(::HCFluidTagsProvider)
         server.addBlockAndItemTags(::HCBlockTagsProvider, ::HCItemTagsProvider)
 
-        server.addProvider(::HCDataMapProvider)
+        // server.addProvider(::HCDataMapProvider)
         // Client
         client.addProvider(::HCEnglishLangProvider)
         client.addProvider(::HCJapaneseLangProvider)
 
-        client.addProvider(::HCTextureProvider)
+        // client.addProvider(::HCTextureProvider)
 
         client.addProvider(::HCBlockStateProvider)
         client.addProvider(::HCItemModelProvider)

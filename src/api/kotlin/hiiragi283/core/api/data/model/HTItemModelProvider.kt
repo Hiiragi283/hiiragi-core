@@ -2,16 +2,11 @@ package hiiragi283.core.api.data.model
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.HTDataGenContext
-import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
-import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider
@@ -24,8 +19,6 @@ import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContai
  */
 abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
     ItemModelProvider(context.output, modId, context.fileHelper) {
-    protected val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
-
     //    Extensions    //
 
     /**
@@ -88,35 +81,5 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
             builder.flipGas(true)
         }
         return builder
-    }
-
-    /**
-     * 素材アイテムのモデルを追加します。
-     * @since 0.8.0
-     */
-    protected fun registerMaterials() {
-        contents.getItemTable().forEach { (prefix: HTTagPrefix, _, item: HTIdLike) ->
-            if (item.namespace != modid) return@forEach
-            existTexture(item) { itemIn: HTIdLike ->
-                val textureIcon: String = prefix[HTTagPropertyKeys.TEXTURE_ICON] ?: prefix.name
-                val overlay: ResourceLocation = HiiragiCoreAPI.id(HTConst.ITEM, "${textureIcon}_overlay")
-                if (existingFileHelper.exists(overlay, TEXTURE)) {
-                    layeredItem(itemIn, itemIn.itemId, overlay)
-                } else {
-                    layeredItem(itemIn, itemIn.itemId)
-                }
-            }
-        }
-    }
-
-    /**
-     * 素材ツールのモデルを追加します。
-     * @since 0.9.0
-     */
-    protected fun registerTools() {
-        for (item: HTIdLike in contents.getAllTools()) {
-            if (item.namespace != modid) continue
-            existTexture(item, ::basicItem)
-        }
     }
 }

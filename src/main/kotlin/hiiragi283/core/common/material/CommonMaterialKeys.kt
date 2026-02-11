@@ -150,9 +150,6 @@ object CommonMaterialKeys {
     val STEEL: HTMaterialKey = create("steel")
 
     @JvmStatic
-    val STAINLESS_STEEL: HTMaterialKey = create("stainless_steel")
-
-    @JvmStatic
     val INVAR: HTMaterialKey = create("invar")
 
     // Copper

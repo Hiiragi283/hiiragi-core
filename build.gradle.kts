@@ -105,6 +105,7 @@ repositories {
     maven(url = "https://maven.wispforest.io/releases") // Accessories
     maven(url = "https://modmaven.dev/") // AU, Mekanism, MI, PnC, Oritech
     maven(url = "https://mvn.devos.one/snapshots") // Registrate
+    maven(url = "https://registry.somethingcatchy.net/repository/maven-releases/") // Moonlight
     maven(url = "https://thedarkcolour.github.io/KotlinForForge/") // KFF
 
     maven(url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/") {

@@ -156,16 +156,6 @@ object HTMaterialPropertyKeys {
     @JvmField
     val CUSTOM_LANG_NAME: HTPropertyKey<Map<HTTagPrefix, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_lang_name"))
 
-    // Loot Table
-    /**
-     * ブロックのルートテーブルを管理する[プロパティキー][HTPropertyKey]
-     * @since 0.9.0
-     */
-    @JvmField
-    val BLOCK_LOOT: HTPropertyKey<Map<HTTagPrefix, HTBlockLootFactory>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("block_loot"))
-
-    // Tag
-
     // Texture
     /**
      * テクスチャを生成する際のカラーパレットの[ID][ResourceLocation]を管理する[プロパティキー][HTPropertyKey]

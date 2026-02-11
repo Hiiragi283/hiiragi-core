@@ -21,6 +21,7 @@ emi = "1.1.22+1.21.1"
 jade = "15.10.3+neoforge"
 mek = "1.21.1-10.7.17.83"
 mi = "2.4.1"
+moonlight = "1.21-2.29.16"
 
 arch = "13.0.8"
 guide = "21.1.15"
@@ -35,6 +36,7 @@ emi = { group = "dev.emi", name = "emi-neoforge", version.ref = "emi" }
 jade = { group = "maven.modrinth", name = "jade", version.ref = "jade" }
 mek = { group = "mekanism", name = "Mekanism", version.ref = "mek" }
 mi = { group = "aztech", name = "Modern-Industrialization", version.ref = "mi" }
+moonlight = { group = "net.mehvahdjukaar", name = "moonlight-neoforge", version.ref = "moonlight" }
 
 arch = { group = "dev.architectury", name = "architectury-neoforge", version.ref = "arch" }
 guide = { group = "org.appliedenergistics", name = "guideme", version.ref = "guide" }
@@ -47,7 +49,9 @@ mods-impl = [
     "jade",
 ]
 
-mods-transitive = []
+mods-transitive = [
+    "moonlight"
+]
 
 mods-compile = []
 

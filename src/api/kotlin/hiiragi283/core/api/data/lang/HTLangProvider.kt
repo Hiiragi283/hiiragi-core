@@ -1,16 +1,8 @@
 package hiiragi283.core.api.data.lang
 
-import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
-import hiiragi283.core.api.item.tool.HTToolType
-import hiiragi283.core.api.material.HTMaterialContents
-import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
-import hiiragi283.core.api.property.HTPropertyMap
-import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toDescriptionKey
-import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.api.text.HTHasTranslationKey
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceKey
@@ -24,41 +16,6 @@ import net.neoforged.neoforge.common.data.LanguageProvider
  */
 abstract class HTLangProvider(output: PackOutput, val modId: String, val langType: HTLangType) :
     LanguageProvider(output, modId, langType.name.lowercase()) {
-    // Material
-    /**
-     * @since 0.8.0
-     */
-    fun addMaterials() {
-        val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
-        for (entry in HiiragiCoreAccess.INSTANCE.materialManager) {
-            if (entry.namespace != modId) continue
-            // Block
-            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in contents.getBlockMap(entry)) {
-                val name: String = translate(langType, prefix, entry) ?: continue
-                add(item, name)
-            }
-            // Item
-            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in contents.getItemMap(entry)) {
-                val name: String = translate(langType, prefix, entry) ?: continue
-                add(item, name)
-            }
-            // Tool
-            for ((toolType: HTToolType, item: HTHasTranslationKey) in contents.getToolMap(entry)) {
-                val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
-                add(item, toolType.langPattern.translate(langType, materialName))
-            }
-        }
-    }
-
-    /**
-     * @since 0.8.0
-     */
-    fun translate(type: HTLangType, prefix: HTTagPrefix, propertyMap: HTPropertyMap): String? =
-        propertyMap.getOrDefault(HTMaterialPropertyKeys.CUSTOM_LANG_NAME)[prefix]?.getTranslatedName(type) ?: run {
-            val materialName: HTLangName = propertyMap[HTMaterialPropertyKeys.LANG_NAME] ?: return@run null
-            prefix.getOrDefault(HTTagPropertyKeys.LANG_PATTERN).translate(type, materialName)
-        }
-
     // HTHasTranslationKey
 
     /**

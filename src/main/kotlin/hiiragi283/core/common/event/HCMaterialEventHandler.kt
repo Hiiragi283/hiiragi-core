@@ -6,7 +6,6 @@ import hiiragi283.core.api.event.HTMaterialPropertyEvent
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.property.HTBlockLootFactory
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTExtraOreResultMap
 import hiiragi283.core.api.material.property.HTFluidMaterialProperty
@@ -17,7 +16,6 @@ import hiiragi283.core.api.material.property.HTSmithingRecipeProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
 import hiiragi283.core.api.material.property.addBlockPrefixes
 import hiiragi283.core.api.material.property.addCustomName
-import hiiragi283.core.api.material.property.addCustomOreLoot
 import hiiragi283.core.api.material.property.addItemPrefixes
 import hiiragi283.core.api.material.property.addToolPrefixes
 import hiiragi283.core.api.material.property.setDefaultPart
@@ -188,12 +186,6 @@ object HCMaterialEventHandler {
                 CommonTagPrefixes.RAW,
                 CommonTagPrefixes.CRUSHED_ORE,
                 CommonTagPrefixes.GEAR,
-            )
-            put(
-                HTMaterialPropertyKeys.EXTRA_ORE_RESULTS,
-                HTExtraOreResultMap.create {
-                    washCrushed(CommonMaterialKeys.CHROMIUM, 1 / 4f)
-                },
             )
 
             setName("Emerald", "エメラルド")
@@ -402,7 +394,6 @@ object HCMaterialEventHandler {
 
                 setName(enName, jaName)
                 setTextureSet("mineral", HTMaterialTextureSet.DULL)
-                addCustomOreLoot(HTBlockLootFactory.createOre())
                 builderAction()
             }
         }
@@ -486,16 +477,7 @@ object HCMaterialEventHandler {
 
         registerMetal(CommonMaterialKeys.TITANIUM, "Titanium", "チタン")
         registerMetal(CommonMaterialKeys.VANADIUM, "Vanadium", "バナジウム")
-        event.modify(CommonMaterialKeys.CHROMIUM) {
-            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
-            addItemPrefixes(CommonTagPrefixes.DUST)
-            put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)
-            put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
-
-            setName("Chromium", "クロム")
-            setTextureSet(HTMaterialTextureSet.DULL)
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.ALUMINUM.getId())
-        }
+        registerMetal(CommonMaterialKeys.CHROMIUM, "Chromium", "クロム")
         registerMetal(CommonMaterialKeys.MANGANESE, "Manganese", "マンガン")
         registerMetal(CommonMaterialKeys.COBALT, "Cobalt", "コバルト")
         event.modify(CommonMaterialKeys.NICKEL) {
@@ -515,7 +497,6 @@ object HCMaterialEventHandler {
 
             setName("Zinc", "亜鉛")
             setTextureSet(HTMaterialTextureSet.DULL)
-            addCustomOreLoot(HTBlockLootFactory.createOre())
         }
 
         registerMetal(CommonMaterialKeys.MOLYBDENUM, "Molybdenum", "モリブデン")
@@ -540,7 +521,6 @@ object HCMaterialEventHandler {
 
             setName("Tin", "錫")
             setTextureSet(HTMaterialTextureSet.DULL)
-            addCustomOreLoot(HTBlockLootFactory.createOre())
         }
         registerMetal(CommonMaterialKeys.ANTIMONY, "Antimony", "アンチモン")
 
@@ -569,18 +549,6 @@ object HCMaterialEventHandler {
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
 
             setName("Steel", "鋼鉄")
-            setTextureSet(HTMaterialTextureSet.SHINE)
-        }
-        event.modify(CommonMaterialKeys.STAINLESS_STEEL) {
-            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(alloySet.plus(partSet))
-            put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.HIGH)
-            put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.HIGH)
-            put(HTMaterialPropertyKeys.MOLTEN_FLUID, HTFluidMaterialProperty(HCFluids.MOLTEN_STAINLESS_STEEL))
-            this += HTMaterialPropertyKeys.DISABLE_SMELTING
-
-            setName("Stainless Steel", "ステンレス鋼")
             setTextureSet(HTMaterialTextureSet.SHINE)
         }
         registerMetal(CommonMaterialKeys.INVAR, "Invar", "不変鋼")

@@ -7,11 +7,17 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-val HTIdLike.blockId: ResourceLocation get() = getId().withPrefix("block/")
+val HTIdLike.blockId: ResourceLocation get() = when {
+    this.path.startsWith("block/") -> getId()
+    else -> getId().withPrefix("block/")
+}
 
 /**
  * この[HTIdLike]から，`item/`で前置された[ID][HTIdLike.getId]を返します。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-val HTIdLike.itemId: ResourceLocation get() = getId().withPrefix("item/")
+val HTIdLike.itemId: ResourceLocation get() = when {
+    this.path.startsWith("item/") -> getId()
+    else -> getId().withPrefix("item/")
+}

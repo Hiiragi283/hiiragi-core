@@ -4,6 +4,7 @@ import hiiragi283.core.api.HCRegistries
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.mod.HTCommonMod
 import hiiragi283.core.api.network.HTPayloadHandlers
+import hiiragi283.core.common.datagen.HCServerResourceProvider
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
 import hiiragi283.core.common.network.HTUpdateMenuPacket
 import hiiragi283.core.config.HCConfig
@@ -20,6 +21,7 @@ import hiiragi283.core.setup.HCMiscRegister
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.core.setup.HCWidgetTypes
+import net.mehvahdjukaar.moonlight.api.platform.RegHelper
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
@@ -48,6 +50,8 @@ data object HiiragiCore : HTCommonMod() {
         HCWidgetTypes.REGISTER.register(eventBus)
 
         container.registerConfig(ModConfig.Type.COMMON, HCConfig.COMMON_SPEC)
+
+        RegHelper.registerDynamicResourceProvider(HCServerResourceProvider)
 
         HiiragiCoreAPI.LOGGER.info("Hiiragi-Core loaded")
     }
