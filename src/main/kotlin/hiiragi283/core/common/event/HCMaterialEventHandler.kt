@@ -376,9 +376,16 @@ object HCMaterialEventHandler {
             }
         }
 
-        fun registerMetal(key: HTMaterialKey, enName: String, jaName: String) {
+        fun registerMetal(
+            key: HTMaterialKey,
+            enName: String,
+            jaName: String,
+            level: HTMaterialLevel = HTMaterialLevel.MEDIUM,
+        ) {
             event.modify(key) {
                 setDefaultPart(HTDefaultPart.Prefixed.INGOT)
+                put(HTMaterialPropertyKeys.HARDNESS, level)
+                put(HTMaterialPropertyKeys.MELTING_POINT, level)
 
                 setName(enName, jaName)
             }
@@ -408,6 +415,7 @@ object HCMaterialEventHandler {
                 addItemPrefixes(alloySet)
                 put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.HIGHEST)
                 put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.HIGHEST)
+                this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
                 setName(enName, jaName)
                 setTextureSet(HTMaterialTextureSet.MYSTICAL)
@@ -462,10 +470,10 @@ object HCMaterialEventHandler {
         registerGem(CommonMaterialKeys.RUBY, "Ruby", "ルビー")
         registerGem(CommonMaterialKeys.SAPPHIRE, "Sapphire", "サファイア")
         // Metals
-        registerMetal(CommonMaterialKeys.LITHIUM, "Lithium", "リチウム")
-        registerMetal(CommonMaterialKeys.BERYLLIUM, "Beryllium", "ベリリウム")
+        registerMetal(CommonMaterialKeys.LITHIUM, "Lithium", "リチウム", HTMaterialLevel.LOW)
+        registerMetal(CommonMaterialKeys.BERYLLIUM, "Beryllium", "ベリリウム", HTMaterialLevel.HIGH)
 
-        registerMetal(CommonMaterialKeys.SODIUM, "Sodium", "ナトリウム")
+        registerMetal(CommonMaterialKeys.SODIUM, "Sodium", "ナトリウム", HTMaterialLevel.LOW)
         registerMetal(CommonMaterialKeys.MAGNESIUM, "Magnesium", "マグネシウム")
 
         event.modify(CommonMaterialKeys.ALUMINUM) {
@@ -477,9 +485,9 @@ object HCMaterialEventHandler {
 
             setName("Aluminum", "アルミニウム")
         }
-        registerMetal(CommonMaterialKeys.SILICON, "Silicon", "シリコン")
+        registerMetal(CommonMaterialKeys.SILICON, "Silicon", "シリコン", HTMaterialLevel.HIGH)
 
-        registerMetal(CommonMaterialKeys.TITANIUM, "Titanium", "チタン")
+        registerMetal(CommonMaterialKeys.TITANIUM, "Titanium", "チタン", HTMaterialLevel.HIGH)
         registerMetal(CommonMaterialKeys.VANADIUM, "Vanadium", "バナジウム")
         registerMetal(CommonMaterialKeys.CHROMIUM, "Chromium", "クロム")
         registerMetal(CommonMaterialKeys.MANGANESE, "Manganese", "マンガン")
@@ -509,7 +517,6 @@ object HCMaterialEventHandler {
         platinumGroup(CommonMaterialKeys.RUTHENIUM, "Ruthenium", "ルテニウム")
         platinumGroup(CommonMaterialKeys.RHODIUM, "Rhodium", "ロジウム")
         platinumGroup(CommonMaterialKeys.PALLADIUM, "Palladium", "パラジウム")
-        registerMetal(CommonMaterialKeys.SILVER, "Silver", "銀")
         event.modify(CommonMaterialKeys.SILVER) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
@@ -532,7 +539,7 @@ object HCMaterialEventHandler {
         }
         registerMetal(CommonMaterialKeys.ANTIMONY, "Antimony", "アンチモン")
 
-        registerMetal(CommonMaterialKeys.TUNGSTEN, "Tungsten", "パラジウム")
+        registerMetal(CommonMaterialKeys.TUNGSTEN, "Tungsten", "パラジウム", HTMaterialLevel.HIGH)
         platinumGroup(CommonMaterialKeys.OSMIUM, "Osmium", "オスミウム")
         platinumGroup(CommonMaterialKeys.IRIDIUM, "Iridium", "イリジウム")
         platinumGroup(CommonMaterialKeys.PLATINUM, "Platinum", "白金")

@@ -368,7 +368,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         when (entry.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT)) {
             HTMaterialLevel.NONE -> return
             HTMaterialLevel.LOW -> HTCookingRecipeBuilder::smeltingAndBlasting
-            HTMaterialLevel.MEDIUM -> HTCookingRecipeBuilder::blasting
+            HTMaterialLevel.MEDIUM -> HTCookingRecipeBuilder::smeltingAndBlasting
             HTMaterialLevel.HIGH -> HTCookingRecipeBuilder::blasting
             HTMaterialLevel.HIGHEST -> return
         }(output) {

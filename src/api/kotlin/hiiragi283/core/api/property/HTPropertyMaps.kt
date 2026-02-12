@@ -10,7 +10,7 @@ fun <T : Any> HTPropertyMap.getOrThrow(key: HTPropertyKey<T?>): T = get(key) ?: 
  * 指定した[key]に紐づいた値を返します。
  * @return 値がない場合は[デフォルト値][HTPropertyKey.defaultValue]
  */
-fun <T : Any> HTPropertyMap.getOrDefault(key: HTPropertyKey<T>) = get(key) ?: key.defaultValue
+fun <T : Any> HTPropertyMap.getOrDefault(key: HTPropertyKey<T>): T = get(key) ?: key.defaultValue
 
 //    Mutable    //
 

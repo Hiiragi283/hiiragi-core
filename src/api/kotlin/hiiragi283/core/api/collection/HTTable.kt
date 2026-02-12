@@ -45,12 +45,12 @@ interface HTTable<R, C, V> {
     val isEmpty: Boolean
 
     /**
-     * 指定した[row]に対応する列と値のテーブルを返します。
+     * 指定した[row]に対応する列と値のマップを返します。
      */
     fun row(row: R): Map<C, V>
 
     /**
-     * 指定した[column]に対応する行と値のテーブルを返します。
+     * 指定した[column]に対応する行と値のマップを返します。
      */
     fun column(column: C): Map<R, V>
 

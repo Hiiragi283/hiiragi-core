@@ -62,6 +62,10 @@ object HTMaterialPropertyKeys {
     @JvmField
     val TOOL_MATERIAL: HTPropertyKey<HTToolMaterial?> = createNullable("tool_material")
 
+    /**
+     * 溶融液体を生成する[プロパティキー][HTPropertyKey]
+     * @since 0.10.0
+     */
     @JvmField
     val GENERATE_MOLTEN: HTPropertyKey<Unit?> = HTPropertyKey.createFlag(HiiragiCoreAPI.id("generate_molten"))
 
@@ -113,10 +117,18 @@ object HTMaterialPropertyKeys {
     @JvmField
     val EXTRA_ORE_RESULTS: HTPropertyKey<HTExtraOreResultMap?> = createNullable("extra_ore_results")
 
+    /**
+     * 素材の硬度を管理する[プロパティキー][HTPropertyKey]
+     * @since 0.10.0
+     */
     @JvmField
     val HARDNESS: HTPropertyKey<HTMaterialLevel> =
         HTPropertyKey.create(HiiragiCoreAPI.id("hardness"), HTMaterialLevel.LOW)
 
+    /**
+     * 素材の融点を管理する[プロパティキー][HTPropertyKey]
+     * @since 0.10.0
+     */
     @JvmField
     val MELTING_POINT: HTPropertyKey<HTMaterialLevel> =
         HTPropertyKey.create(HiiragiCoreAPI.id("melting_point"), HTMaterialLevel.LOW)
@@ -161,6 +173,7 @@ object HTMaterialPropertyKeys {
     val TEXTURE_COLOR: HTPropertyKey<ResourceLocation?> = createNullable("texture_color")
 
     /**
+     * 鉱石や原石のカラーパレットの[ID][ResourceLocation]を管理する[プロパティキー][HTPropertyKey]
      * @since 0.10.0
      */
     @JvmField

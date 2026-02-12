@@ -61,6 +61,11 @@ data class HTChancedItemResult(val result: HTItemResult, val chance: Fraction, v
 
     //    Builder    //
 
+    /**
+     * [HTChancedItemResult]のビルダークラスです。
+     * @author Hiiragi Tsubasa
+     * @since 0.10.0
+     */
     class Builder {
         lateinit var result: HTItemResult
         var chance: Fraction = Fraction.ONE

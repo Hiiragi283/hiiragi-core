@@ -77,6 +77,9 @@ abstract class HTIngredientHolder {
             .let(this::plusAssign)
     }
 
+    /**
+     * @since 0.10.0
+     */
     @JvmName("addToolTags")
     operator fun plusAssign(toolType: HTToolType) {
         this.plusAssign(toolType.toolTags)

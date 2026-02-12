@@ -3,15 +3,16 @@ package hiiragi283.core.common.event
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
-import hiiragi283.core.api.storage.item.HTItemResourceType
+import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.times
 import hiiragi283.core.api.toFraction
 import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import hiiragi283.core.common.recipe.HCSingleItemRecipe
 import hiiragi283.core.setup.HCRecipeTypes
-import hiiragi283.core.util.HTShapelessRecipeHelper
 import net.minecraft.core.BlockPos
+import net.minecraft.core.RegistryAccess
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.item.ItemStack
@@ -24,6 +25,8 @@ import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent
 import net.neoforged.neoforge.event.level.ExplosionEvent
+import org.apache.commons.lang3.math.Fraction
+import java.util.Optional
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 object HTRecipeEventHandler {
@@ -68,11 +71,14 @@ object HTRecipeEventHandler {
             val input: SingleRecipeInput = createInput(entity)
             val (_, recipe: HCAnvilCrushingRecipe) = HCRecipeTypes.ANVIL_CRUSHING.getRecipeFor(input, level, null) ?: continue
             val multiplier: Int = popResult(input, recipe, level, entity)
-            List(multiplier) { recipe.getExtraResultItem(level) }
-                .let(HTShapelessRecipeHelper::createMap)
-                .forEach { (resource: HTItemResourceType, count: Int) ->
-                    entity.spawnAtLocation(resource.toStack(count))
+            recipe.extraResult?.let { (result: HTItemResult, chance: Fraction, fallback: Optional<HTItemResult>) ->
+                val access: RegistryAccess = level.registryAccess()
+                val amount: Int = (chance * multiplier).toInt()
+                entity.spawnAtLocation(result.copyWithCount { it * amount }.getStackOrEmpty(access))
+                fallback.ifPresent { result1: HTItemResult ->
+                    entity.spawnAtLocation(result1.copyWithCount { it * (multiplier - amount) }.getStackOrEmpty(access))
                 }
+            }
             if (entity.item.isEmpty) {
                 entity.discard()
             }

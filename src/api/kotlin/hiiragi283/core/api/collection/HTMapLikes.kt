@@ -1,5 +1,10 @@
 package hiiragi283.core.api.collection
 
+/**
+ * この[Map][this]を[HTMapLike]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.10.0
+ */
 fun <K, V> Map<K, V>.toLike(): HTMapLike<K, V> = object : HTMapLike<K, V> {
     override val isEmpty: Boolean
         get() = this@toLike.isEmpty()

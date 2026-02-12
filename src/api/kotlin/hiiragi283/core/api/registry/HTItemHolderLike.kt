@@ -69,7 +69,7 @@ interface HTItemHolderLike<ITEM : Item> :
 
     override fun asItem(): ITEM
 
-    fun toStack(count: Int = 4): ItemStack = ItemStack(this, count)
+    fun toStack(count: Int = 1): ItemStack = ItemStack(this, count)
 
     /**
      * @since 0.7.0

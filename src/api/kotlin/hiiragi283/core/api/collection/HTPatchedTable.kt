@@ -1,5 +1,12 @@
 package hiiragi283.core.api.collection
 
+/**
+ * 二つの[HTTable]に基づいた[HTTableLike]の実装クラスです。
+ * @param prototype 基本となる[マップ][HTTable]
+ * @param patch パッチとなる[マップ][HTTable]
+ * @author Hiiragi Tsubasa
+ * @since 0.10.0
+ */
 class HTPatchedTable<R, C, V>(val prototype: HTTable<R, C, V>, val patch: HTTable<R, C, V>) : HTTableLike<R, C, V> {
     override val isEmpty: Boolean get() = prototype.isEmpty && patch.isEmpty
 

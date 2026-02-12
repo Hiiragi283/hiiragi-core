@@ -28,6 +28,9 @@ abstract class HTBlockLootTableProvider(protected val modId: String, registries:
         .filter { block: Block -> block.lootTable != BuiltInLootTables.EMPTY }
         .toList()
 
+    /**
+     * @since 0.10.0
+     */
     protected open fun getRawBlocks(): Sequence<HTBlockHolderLike<*, *>> = registries
         .lookupOrThrow(Registries.BLOCK)
         .asBlockSequence()

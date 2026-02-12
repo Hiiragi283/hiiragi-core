@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangPatternProvider
 import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.state.BlockBehaviour
 import org.apache.commons.lang3.math.Fraction
@@ -28,6 +29,7 @@ object HTTagPropertyKeys {
         HTPropertyKey.create(HiiragiCoreAPI.id("item_scale")) { base: Fraction, _ -> base }
 
     /**
+     * 原石にまつわる[プレフィックス][HTTagPrefix]かどうか管理する[プロパティキー][HTPropertyKey]
      * @since 0.10.0
      */
     @JvmField
@@ -50,6 +52,10 @@ object HTTagPropertyKeys {
     //    Data Gen    //
 
     // Data Map
+    /**
+     * かまど燃料の燃焼時間の倍率を管理する[プロパティキー][HTPropertyKey]
+     * @since 0.10.0
+     */
     @JvmField
     val FUEL_SCALE: HTPropertyKey<Fraction?> = createNullable("fuel_scale")
 
@@ -69,6 +75,7 @@ object HTTagPropertyKeys {
     val TEXTURE_ICON: HTPropertyKey<String?> = createNullable("texture_icon")
 
     /**
+     * テクスチャの生成を無効化する[プロパティキー][HTPropertyKey]
      * @since 0.10.0
      */
     @JvmField

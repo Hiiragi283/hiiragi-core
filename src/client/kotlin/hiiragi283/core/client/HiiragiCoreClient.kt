@@ -24,6 +24,7 @@ import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCMenuTypes
 import hiiragi283.core.setup.HCWidgetTypes
 import net.mehvahdjukaar.moonlight.api.platform.RegHelper
+import net.mehvahdjukaar.moonlight.api.platform.neoforge.RegHelperImpl
 import net.minecraft.client.renderer.entity.ThrownItemRenderer
 import net.minecraft.world.level.ItemLike
 import net.neoforged.api.distmarker.Dist
@@ -46,6 +47,7 @@ data object HiiragiCoreClient : HTClientMod() {
 
         configScreen(container)
 
+        RegHelperImpl.startRegisteringFor(eventBus)
         RegHelper.registerDynamicResourceProvider(HCClientResourceProvider)
         HiiragiCoreAPI.LOGGER.info("Hiiragi-Core loaded on client side")
     }

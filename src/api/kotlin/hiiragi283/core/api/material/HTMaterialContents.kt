@@ -45,11 +45,25 @@ interface HTMaterialContents {
 
     //    Fluid    //
 
+    /**
+     * @since 0.10.0
+     */
     fun getMoltenFluidMap(): HTMapLike<HTMaterialKey, HTFluidContent>
 
+    /**
+     * @since 0.10.0
+     */
+    fun getMoltenFluid(material: HTMaterialLike): HTFluidContent? = getMoltenFluidMap()[material.asMaterialKey()]
+
+    /**
+     * @since 0.10.0
+     */
     fun getMoltenFluidEntries(): Sequence<Map.Entry<HTMaterialKey, HTFluidContent>> =
         getMoltenFluidMap().iterator().asSequence().sortedWith(ENTRY_COMPARATOR)
 
+    /**
+     * @since 0.10.0
+     */
     fun getAllMoltenFluids(): Sequence<HTFluidContent> = getMoltenFluidEntries().map { it.value }
 
     //    Item    //

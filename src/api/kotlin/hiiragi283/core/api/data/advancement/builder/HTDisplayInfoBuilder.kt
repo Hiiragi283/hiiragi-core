@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation
 import java.util.Optional
 
 /**
- * [DisplayInfo]向けのビルダークラスです。
+ * [DisplayInfo]のビルダークラスです。
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */

@@ -15,6 +15,11 @@ import hiiragi283.core.api.toFraction
 import org.apache.commons.lang3.math.Fraction
 import java.util.EnumMap
 
+/**
+ * 鉱石処理での副産物を表すクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.10.0
+ */
 class HTExtraOreResultMap private constructor(map: Map<Phase, Pair<HTMaterialKey, Fraction>>) :
     Map<Phase, Pair<HTMaterialKey, Fraction>> by map {
         companion object {
@@ -52,6 +57,11 @@ class HTExtraOreResultMap private constructor(map: Map<Phase, Pair<HTMaterialKey
 
         //    Builder    //
 
+        /**
+         * [HTExtraOreResultMap]のビルダークラスです。
+         * @author Hiiragi Tsubasa
+         * @since 0.10.0
+         */
         class Builder {
             private val map: MutableMap<Phase, Pair<HTMaterialKey, Fraction>> = EnumMap(Phase::class.java)
 

@@ -20,6 +20,9 @@ class HTMaterialTextureSet(val name: String, val parent: HTMaterialTextureSet?) 
         @JvmField
         val SHINE = HTMaterialTextureSet("shine", DEFAULT)
 
+        /**
+         * @since 0.10.0
+         */
         @JvmField
         val MYSTICAL = HTMaterialTextureSet("mystical", SHINE)
     }

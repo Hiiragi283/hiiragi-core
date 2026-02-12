@@ -60,7 +60,14 @@ enum class HTDefaultColor(
         val CODEC: BiCodec<ByteBuf, HTDefaultColor> = BiCodecs.stringEnum(HTDefaultColor::getSerializedName)
     }
 
+    /**
+     * @since 0.10.0
+     */
     val dyesTag: TagKey<Item> = dyeColor.tag
+
+    /**
+     * @since 0.10.0
+     */
     val dyedTag: TagKey<Item> = dyeColor.dyedTag
 
     override fun getSerializedName(): String = name.lowercase()

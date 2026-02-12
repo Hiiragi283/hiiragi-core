@@ -18,13 +18,14 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
+import java.util.function.IntUnaryOperator
 
 /**
  * [アイテム][ItemStack]の[完成品][HTRecipeResult]を表すクラスです。
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
-class HTItemResult(private val contents: Ior<HTItemResourceType, TagKey<Item>>, private val count: Int) : HTRecipeResult<ItemStack> {
+class HTItemResult(private val content: Ior<HTItemResourceType, TagKey<Item>>, private val count: Int) : HTRecipeResult<ItemStack> {
     companion object {
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemResult> = BiCodec.composite(
@@ -32,7 +33,7 @@ class HTItemResult(private val contents: Ior<HTItemResourceType, TagKey<Item>>, 
                 .ior(
                     HTItemResourceType.CODEC.toMap(),
                     VanillaBiCodecs.tagKey(Registries.ITEM, false).fieldOf(HTConst.TAG),
-                ).forGetter(HTItemResult::contents),
+                ).forGetter(HTItemResult::content),
             BiCodecs.POSITIVE_INT.optionalFieldOf(HTConst.COUNT, 1).forGetter(HTItemResult::count),
             ::HTItemResult,
         )
@@ -46,13 +47,17 @@ class HTItemResult(private val contents: Ior<HTItemResourceType, TagKey<Item>>, 
         fun create(builderAction: Builder.() -> Unit): HTItemResult = Builder().apply(builderAction).build()
     }
 
+    fun copyWithCount(count: Int): HTItemResult = HTItemResult(content, count)
+
+    fun copyWithCount(operator: IntUnaryOperator): HTItemResult = HTItemResult(content, operator.applyAsInt(count))
+
     /**
      * 指定した[レジストリ][provider]から完成品を取得します。
      * @return 完成品を取得できなかった場合は[ItemStack.EMPTY]
      */
     fun getStackOrEmpty(provider: HolderLookup.Provider?): ItemStack = getStackResult(provider).valueOrElse(ItemStack::EMPTY)
 
-    override fun getStackResult(provider: HolderLookup.Provider?): HTTextResult<ItemStack> = contents.fold(
+    override fun getStackResult(provider: HolderLookup.Provider?): HTTextResult<ItemStack> = content.fold(
         { resource: HTItemResourceType -> HTTextResult.success(resource.toStack(count)) },
         { tagKey: TagKey<Item> ->
             HiiragiCoreAccess.INSTANCE
@@ -69,12 +74,12 @@ class HTItemResult(private val contents: Ior<HTItemResourceType, TagKey<Item>>, 
         },
     )
 
-    override fun getId(): ResourceLocation = contents.map(HTItemResourceType::getId, TagKey<Item>::location)
+    override fun getId(): ResourceLocation = content.map(HTItemResourceType::getId, TagKey<Item>::location)
 
     //    Builder    //
 
     /**
-     * [HTItemResult]向けのビルダークラスです。
+     * [HTItemResult]のビルダークラスです。
      * @author Hiiragi Tsubasa
      * @since 0.10.0
      */

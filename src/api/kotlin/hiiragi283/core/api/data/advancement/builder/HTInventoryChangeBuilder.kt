@@ -6,7 +6,7 @@ import net.minecraft.advancements.critereon.ItemPredicate
 import java.util.Optional
 
 /**
- * [InventoryChangeTrigger.TriggerInstance]向けのビルダークラスです。
+ * [InventoryChangeTrigger.TriggerInstance]のビルダークラスです。
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
