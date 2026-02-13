@@ -4,7 +4,9 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.gui.HTBounds
+import hiiragi283.core.api.gui.HTSlotHelper
 import hiiragi283.core.api.gui.widget.HTWidget
+import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.gui.widget.HTWidgetRenderer
 import hiiragi283.core.common.gui.menu.HTWidgetContainerMenu
 import hiiragi283.core.common.gui.widget.HTItemSlotWidget
@@ -25,13 +27,24 @@ class HTWidgetContainerScreen(menu: HTWidgetContainerMenu, inventory: Inventory,
         val BACKGROUND: ResourceLocation = HiiragiCoreAPI.id(HTConst.TEXTURES, HTConst.GUI, "background.png")
     }
 
+    init {
+        with(menu.widgetHolder) {
+            imageHeight = 144 + 6 * 18 + heightOffset
+
+            inventoryLabelY = imageHeight - 125 + heightOffset
+        }
+    }
+
+    val widgetHolder: HTWidgetHolder get() = menu.widgetHolder
+
     override fun init() {
         super.init()
-        menu.widgets.map(::WidgetWrapper).forEach(::addRenderableWidget)
+        titleLabelX = (imageWidth - font.width(title)) / 2
+        widgetHolder.map(::WidgetWrapper).forEach(::addRenderableWidget)
     }
 
     /**
-     * @see mekanism.client.gui.GuiMekanism.renderBg
+     * @see net.minecraft.client.gui.screens.inventory.ContainerScreen
      */
     override fun renderBg(
         guiGraphics: GuiGraphics,
@@ -39,8 +52,17 @@ class HTWidgetContainerScreen(menu: HTWidgetContainerMenu, inventory: Inventory,
         mouseX: Int,
         mouseY: Int,
     ) {
-        guiGraphics.setColor(1f, 1f, 1f, 1f)
-        guiGraphics.blit(BACKGROUND, startX, startY, 0, 0, imageWidth, imageHeight)
+        val widgetsHeight: Int = HTSlotHelper.getSlotPosY(6) + widgetHolder.heightOffset
+        guiGraphics.blit(BACKGROUND, startX, startY, 0, 0, imageWidth, widgetsHeight)
+        guiGraphics.blit(
+            BACKGROUND,
+            startX,
+            startY + widgetsHeight,
+            0,
+            HTSlotHelper.getSlotPosY(6) + 2,
+            imageWidth,
+            HTSlotHelper.getSlotPosY(4) + 9,
+        )
     }
 
     inner class WidgetWrapper<WIDGET : HTWidget>(val widget: WIDGET) :

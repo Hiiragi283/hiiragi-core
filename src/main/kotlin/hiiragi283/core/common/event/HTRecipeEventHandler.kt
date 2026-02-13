@@ -51,7 +51,7 @@ object HTRecipeEventHandler {
                     level,
                 ).map(RecipeHolder<HCLightningChargingRecipe>::value)
                 .firstOrNull() ?: return
-            popResult(recipe.assemble(input, level.registryAccess()), recipe.ingredient.getRequiredAmount(), entity)
+            popResult(recipe.assemble(input, level.registryAccess()), recipe.ingredient.amount, entity)
             if (entity.item.isEmpty) {
                 entity.discard()
                 event.isCanceled = true
@@ -145,7 +145,7 @@ object HTRecipeEventHandler {
         recipe: HCSingleItemRecipe<INPUT>,
         level: Level,
         entity: ItemEntity,
-    ): Int = popResult(recipe.assemble(input, level.registryAccess()), recipe.ingredient.getRequiredAmount(), entity)
+    ): Int = popResult(recipe.assemble(input, level.registryAccess()), recipe.ingredient.amount, entity)
 
     @JvmStatic
     private fun popResult(result: ItemStack, recipeAmount: Int, entity: ItemEntity): Int {

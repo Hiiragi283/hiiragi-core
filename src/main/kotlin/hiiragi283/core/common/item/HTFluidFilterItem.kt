@@ -36,6 +36,8 @@ class HTFluidFilterItem(properties: Properties) :
         .let { Optional.ofNullable(it) }
 
     override fun setup(context: HTItemWidgetHolderContext, widgetHolder: HTWidgetHolder) {
+        widgetHolder.heightOffset = -HTSlotHelper.getSlotPosY(4)
+
         HTFluidCapabilities
             .getFluidViews(context.stack)
             .filterIsInstance<HTComponentFluidTank>()
@@ -44,7 +46,7 @@ class HTFluidFilterItem(properties: Properties) :
                     .createSlot(
                         tank,
                         HTSlotHelper.getSlotPosX(index),
-                        HTSlotHelper.getSlotPosY(1),
+                        HTSlotHelper.getSlotPosY(0),
                     ).setGhost()
             }.forEach(widgetHolder::addWidget)
     }

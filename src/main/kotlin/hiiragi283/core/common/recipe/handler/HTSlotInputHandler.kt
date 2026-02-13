@@ -19,7 +19,7 @@ class HTSlotInputHandler<RESOURCE : HTResourceType<*>>(private val slot: HTResou
     override fun getMatchingAmount(ingredient: HTIngredient<*, RESOURCE>): Int {
         val resource: RESOURCE = getResource() ?: return 0
         if (ingredient.testOnlyType(resource)) {
-            return ingredient.getRequiredAmount()
+            return ingredient.amount
         }
         return 0
     }

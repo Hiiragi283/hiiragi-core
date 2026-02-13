@@ -1,6 +1,9 @@
 {
   "type": "hiiragi_core:exploding",
-  "ingredient": "#c:ores/netherite_scrap",
+  "ingredient": {
+    "amount": 1,
+    "items": "#c:ores/netherite_scrap"
+  },
   "min_power": 6,
   "result": {
     "count": 2,

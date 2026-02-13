@@ -14,19 +14,24 @@ import java.util.function.BiPredicate
  * @param TYPE [RESOURCE]の種類のクラス
  * @param RESOURCE 判定の対象となるクラス
  * @author Hiiragi Tsubasa
- * @since 0.4.0
+ * @since 0.10.0
  * @see HTItemIngredient
  * @see HTFluidIngredient
- * @see mekanism.api.recipes.ingredients.InputIngredient
  */
 interface HTIngredient<TYPE : Any, RESOURCE : HTResourceType<TYPE>> :
     BiPredicate<RESOURCE, Int>,
     HTHasText {
     /**
      * 指定した[resource]と[amount]が条件を満たしているか判定します。
-     * @return [testOnlyType]が`true`，かつ[amount]が[getRequiredAmount]以上の場合は`true`
+     * @return [testOnlyType]が`true`，かつ[amount]が[HTIngredient.amount]以上の場合は`true`
      */
-    override fun test(resource: RESOURCE, amount: Int): Boolean = testOnlyType(resource) && amount >= getRequiredAmount()
+    override fun test(resource: RESOURCE, amount: Int): Boolean {
+        val bool1: Boolean = testOnlyType(resource)
+        return when {
+            isCatalyst -> bool1
+            else -> bool1 && amount >= this.amount
+        }
+    }
 
     /**
      * 指定した[resource]が条件を満たしているか判定します。
@@ -34,9 +39,14 @@ interface HTIngredient<TYPE : Any, RESOURCE : HTResourceType<TYPE>> :
     fun testOnlyType(resource: RESOURCE): Boolean
 
     /**
-     * この材料が要求する量を返します。
+     * この材料が要求する量を取得します。
      */
-    fun getRequiredAmount(): Int
+    val amount: Int
+
+    /**
+     * この材料が触媒であるか判定します。
+     */
+    val isCatalyst: Boolean get() = amount <= 0
 
     /**
      * この材料に一致するすべての種類を返します。

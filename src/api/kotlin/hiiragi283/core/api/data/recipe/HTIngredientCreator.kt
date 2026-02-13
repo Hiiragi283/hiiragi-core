@@ -71,9 +71,9 @@ data object HTIngredientCreator {
         builderAction: DataComponentPredicate.Builder.() -> Unit,
     ): HTItemIngredient = create(DataComponentIngredient.of(strict, buildDataPredicate(builderAction), *items), amount)
 
-    fun create(ingredient: Ingredient, amount: Int = 1): HTItemIngredient = create(SizedIngredient(ingredient, amount))
+    fun create(ingredient: SizedIngredient): HTItemIngredient = create(ingredient.ingredient(), ingredient.count())
 
-    fun create(ingredient: SizedIngredient): HTItemIngredient = HTItemIngredient(ingredient)
+    fun create(ingredient: Ingredient, amount: Int = 1): HTItemIngredient = HTItemIngredient(ingredient, amount)
 
     //    Fluid    //
 
@@ -106,8 +106,8 @@ data object HTIngredientCreator {
     }
 
     // Ingredient
-    fun create(ingredient: FluidIngredient, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient =
-        create(SizedFluidIngredient(ingredient, amount))
+    fun create(ingredient: SizedFluidIngredient): HTFluidIngredient = HTFluidIngredient(ingredient.ingredient(), ingredient.amount())
 
-    fun create(ingredient: SizedFluidIngredient): HTFluidIngredient = HTFluidIngredient(ingredient)
+    fun create(ingredient: FluidIngredient, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient =
+        HTFluidIngredient(ingredient, amount)
 }

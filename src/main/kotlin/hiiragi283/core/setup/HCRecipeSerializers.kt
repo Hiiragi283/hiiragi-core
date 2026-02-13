@@ -38,7 +38,11 @@ object HCRecipeSerializers {
     @JvmField
     val CHARGING: RecipeSerializer<HCLightningChargingRecipe> = REGISTER.registerSerializer(
         HTConst.CHARGING,
-        HCSingleItemRecipe.codec(::HCLightningChargingRecipe),
+        MapBiCodec.composite(
+            HTItemIngredient.UNSIZED_CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HCSingleItemRecipe<*>::ingredient),
+            HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCSingleItemRecipe<*>::result),
+            ::HCLightningChargingRecipe,
+        ),
     )
 
     @JvmField

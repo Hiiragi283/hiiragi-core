@@ -60,8 +60,7 @@ data object HCMaterialTextureProvider : ResourceGenTask {
                         yield(entry[HTMaterialPropertyKeys.TEXTURE_COLOR_RAW] ?: entry.getId().withPrefix("raw_"))
                     }
                     yield(entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId())
-                }.map { HTTextureUtil.getPalette(manager, it) }
-                    .firstNotNullOfOrNull { it.getOrNull() }
+                }.firstNotNullOfOrNull { HTTextureUtil.getPalette(manager, it).getOrNull() }
                     ?: continue
                 // テンプレートを取得
                 val template: TextureImage = getTextureResult(manager, textureSet, prefix).getOrNull() ?: continue

@@ -20,21 +20,20 @@ class HTWidgetContainerMenu(
     inventory: Inventory,
     context: HTWidgetHolderContext,
 ) : HTContainerMenu<HTWidgetHolderContext>(menuType, containerId, inventory, context) {
-    val widgets: List<HTWidget> get() = _widgets
-    private val _widgets: MutableList<HTWidget> = mutableListOf()
-    private val widgetHolder: HTWidgetHolder = WidgetHolderImpl()
+    private val widgets: MutableList<HTWidget> = mutableListOf()
+    val widgetHolder: HTWidgetHolder = WidgetHolderImpl()
 
     init {
         context.setup(inventory.player, widgetHolder)
         // Player Inventory
-        addPlayerInv(inventory)
+        addPlayerInv(inventory, widgetHolder.heightOffset)
     }
 
     override fun stillValid(player: Player): Boolean = context.stillValid(player)
 
     private inner class WidgetHolderImpl : HTWidgetHolder {
         override fun <WIDGET : HTWidget> addWidget(widget: WIDGET): WIDGET {
-            _widgets += widget
+            widgets += widget
             HiiragiCoreAPI.LOGGER.debug("Added widget: {}", widget)
             widget.setupHolder(this)
             if (widget is HTItemSlotWidget) {
@@ -47,5 +46,9 @@ class HTWidgetContainerMenu(
             this@HTWidgetContainerMenu.addTrackedSlot(slot, type)
             HiiragiCoreAPI.LOGGER.debug("Added syncable slot: {} for {}", slot, type)
         }
+
+        override var heightOffset: Int = 0
+
+        override fun iterator(): Iterator<HTWidget> = widgets.iterator()
     }
 }

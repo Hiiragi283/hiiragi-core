@@ -38,6 +38,8 @@ class HTItemFilterItem(properties: Properties) :
         .let { Optional.ofNullable(it) }
 
     override fun setup(context: HTItemWidgetHolderContext, widgetHolder: HTWidgetHolder) {
+        widgetHolder.heightOffset = -HTSlotHelper.getSlotPosY(4)
+
         HTItemCapabilities
             .getItemSlots(context.stack)
             .filterIsInstance<HTComponentItemSlot>()
@@ -45,7 +47,7 @@ class HTItemFilterItem(properties: Properties) :
                 HTItemSlotWidget(
                     HTItemSyncSlot(slot),
                     HTSlotHelper.getSlotPosX(index),
-                    HTSlotHelper.getSlotPosY(1),
+                    HTSlotHelper.getSlotPosY(0),
                     HTBackgroundType.NONE,
                 ).setGhost()
             }.forEach(widgetHolder::addWidget)

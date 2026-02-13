@@ -9,7 +9,7 @@ import hiiragi283.core.api.gui.sync.HTSyncableSlot
  * @since 0.8.0
  * @see dev.emi.emi.api.widget.WidgetHolder
  */
-interface HTWidgetHolder {
+interface HTWidgetHolder : Iterable<HTWidget> {
     /**
      * 指定した[widget]を追加します。
      * @param WIDGET [HTWidget]を実装したクラス
@@ -35,4 +35,6 @@ interface HTWidgetHolder {
         val (slot: HTSyncableSlot, type: HTSyncType) = pair
         this.track(slot, type)
     }
+
+    var heightOffset: Int
 }

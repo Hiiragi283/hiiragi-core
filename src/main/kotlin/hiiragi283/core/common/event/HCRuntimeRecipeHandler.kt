@@ -227,7 +227,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
                     false,
                     Items.POTION,
                 ) { expect(DataComponents.POTION_CONTENTS, PotionContents(Potions.WATER)) }
-                .ingredient
+                .unsized
             resultStack += dough
             recipeId suffix "_with_bottle"
         }

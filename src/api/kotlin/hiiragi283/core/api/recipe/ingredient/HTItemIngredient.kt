@@ -2,7 +2,6 @@ package hiiragi283.core.api.recipe.ingredient
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.monad.Either
-import hiiragi283.core.api.monad.unwrap
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
@@ -14,47 +13,25 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.neoforged.neoforge.common.crafting.ICustomIngredient
-import net.neoforged.neoforge.common.crafting.SizedIngredient
-import java.util.function.IntUnaryOperator
 
 /**
  * [HTItemResourceType]向けに[HTIngredient]を実装したクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.4.0
+ * @since 0.10.0
  */
-class HTItemIngredient(val delegate: SizedIngredient) : HTIngredient<Item, HTItemResourceType> {
+class HTItemIngredient(val unsized: Ingredient, override val amount: Int) : HTIngredient<Item, HTItemResourceType> {
     companion object {
-        /**
-         * 個数を無視した[HTItemIngredient]の[BiCodec]
-         */
         @JvmField
         val UNSIZED_CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> =
-            VanillaBiCodecs.INGREDIENT.xmap(::HTItemIngredient, HTItemIngredient::ingredient)
+            VanillaBiCodecs.INGREDIENT.xmap({ HTItemIngredient(it, 1) }, HTItemIngredient::unsized)
 
         @JvmField
-        val NESTED_CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> = BiCodec.composite(
-            VanillaBiCodecs.INGREDIENT.fieldOf(HTConst.ITEMS).forGetter(HTItemIngredient::ingredient),
-            BiCodecs.POSITIVE_INT.optionalFieldOf(HTConst.AMOUNT, 1).forGetter(HTItemIngredient::getRequiredAmount),
+        val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> = BiCodec.composite(
+            VanillaBiCodecs.INGREDIENT.fieldOf(HTConst.ITEMS).forGetter(HTItemIngredient::unsized),
+            BiCodecs.NON_NEGATIVE_INT.optionalFieldOf(HTConst.AMOUNT, 0).forGetter(HTItemIngredient::amount),
             ::HTItemIngredient,
         )
-
-        /**
-         * [HTItemIngredient]の[BiCodec]
-         */
-        @JvmField
-        val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> = BiCodecs
-            .either(UNSIZED_CODEC, NESTED_CODEC, true)
-            .xmap({ it.unwrap() }, { ingredient: HTItemIngredient ->
-                when (ingredient.getRequiredAmount()) {
-                    1 -> Either.Left(ingredient)
-                    else -> Either.Right(ingredient)
-                }
-            })
     }
-
-    constructor(ingredient: Ingredient, count: Int = 1) : this(SizedIngredient(ingredient, count))
-
-    val ingredient: Ingredient get() = delegate.ingredient()
 
     fun test(stack: ItemStack): Boolean {
         val resource: HTItemResourceType = stack.toResource() ?: return false
@@ -63,19 +40,16 @@ class HTItemIngredient(val delegate: SizedIngredient) : HTIngredient<Item, HTIte
 
     fun testOnlyType(stack: ItemStack): Boolean = stack.toResource()?.let(::testOnlyType) ?: false
 
-    fun copyWithCount(operator: IntUnaryOperator): HTItemIngredient =
-        HTItemIngredient(this.ingredient, operator.applyAsInt(getRequiredAmount()))
+    //    HTIngredientN    //
 
-    override fun testOnlyType(resource: HTItemResourceType): Boolean = ingredient.test(resource.toStack())
-
-    override fun getRequiredAmount(): Int = delegate.count()
+    override fun testOnlyType(resource: HTItemResourceType): Boolean = unsized.test(resource.toStack())
 
     override fun unwrap(): Either<TagKey<Item>, List<HTItemResourceType>> {
-        val custom: ICustomIngredient? = ingredient.customIngredient
+        val custom: ICustomIngredient? = unsized.customIngredient
         if (custom != null) {
             return Either.Right(custom.items.toList().mapNotNull(ItemStack::toResource))
         } else {
-            val values: Array<Ingredient.Value> = ingredient.values
+            val values: Array<Ingredient.Value> = unsized.values
             return when (values.size) {
                 0 -> Either.Right(listOf())
                 1 -> {

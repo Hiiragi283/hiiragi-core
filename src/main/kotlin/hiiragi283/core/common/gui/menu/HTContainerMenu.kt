@@ -1,6 +1,7 @@
 package hiiragi283.core.common.gui.menu
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.gui.HTSlotHelper
 import hiiragi283.core.api.gui.sync.HTChangeType
 import hiiragi283.core.api.gui.sync.HTSyncType
@@ -89,7 +90,8 @@ abstract class HTContainerMenu<C>(
     override fun addSlot(slot: Slot): Slot {
         if (slot is HTContainerItemSlot) {
             widgetSlots += slotCount
-            if (slot.slotType.isInput) {
+            val slotType: HTBackgroundType = slot.slotType
+            if (slotType.isInput || !slotType.isOutput) {
                 inputSlots += slotCount
             }
             HiiragiCoreAPI.LOGGER.info("${slot.slotType} slot: $slotCount")
@@ -98,12 +100,12 @@ abstract class HTContainerMenu<C>(
         return super.addSlot(slot)
     }
 
-    protected fun addPlayerInv(inventory: Inventory, yOffset: Int = 0) {
+    protected fun addPlayerInv(inventory: Inventory, yOffset: Int) {
         // hotbar
         for (index: Int in 0..8) {
             hotBarSlots.add(slotCount)
             HiiragiCoreAPI.LOGGER.debug("Hotbar slot: $slotCount")
-            addSlot(Slot(inventory, index, HTSlotHelper.getSlotPosX(index), HTSlotHelper.getSlotPosY(7) - 2 + yOffset))
+            addSlot(Slot(inventory, index, HTSlotHelper.getSlotPosX(index), HTSlotHelper.getSlotPosY(10) - 2 + yOffset))
         }
         // inventory
         for (index: Int in 0..26) {
@@ -114,7 +116,7 @@ abstract class HTContainerMenu<C>(
                     inventory,
                     index + 9,
                     HTSlotHelper.getSlotPosX(index % 9),
-                    HTSlotHelper.getSlotPosY(3 + (index / 9)) + 12 + yOffset,
+                    HTSlotHelper.getSlotPosY(6 + (index / 9)) + 12 + yOffset,
                 ),
             )
         }

@@ -14,6 +14,7 @@ import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
+import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.IntUnaryOperator
 
@@ -47,6 +48,9 @@ data object HTResultCreator {
     }
 
     //    Fluid    //
+
+    @JvmStatic
+    fun create(fluid: Fluid, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult = create(FluidStack(fluid, amount))
 
     @JvmStatic
     fun create(content: HTFluidContent, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult =

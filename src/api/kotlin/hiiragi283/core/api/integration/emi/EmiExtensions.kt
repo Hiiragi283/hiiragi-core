@@ -79,13 +79,16 @@ fun TagKey<*>.toEmi(amount: Int = 1): EmiIngredient = EmiIngredient
  * @since 0.1.0
  */
 fun HTItemIngredient.toEmi(): EmiIngredient {
-    val count: Int = this.getRequiredAmount()
-    return this.unwrap().map(
-        { tagKey: TagKey<Item> -> tagKey.toEmi(count) },
+    val ingredient: EmiIngredient = this.unwrap().map(
+        { tagKey: TagKey<Item> -> tagKey.toEmi(this.amount) },
         { resources: List<HTItemResourceType> ->
-            resources.map { it.toStack(count) }.map(ItemStack::toEmi).let(::ingredient)
+            resources.map { it.toStack(this.amount) }.map(ItemStack::toEmi).let(::ingredient)
         },
     )
+    if (this.isCatalyst) {
+        ingredient.chance = 0f
+    }
+    return ingredient
 }
 
 /**
@@ -94,13 +97,16 @@ fun HTItemIngredient.toEmi(): EmiIngredient {
  * @since 0.1.0
  */
 fun HTFluidIngredient.toEmi(): EmiIngredient {
-    val count: Int = this.getRequiredAmount()
-    return this.unwrap().map(
-        { tagKey: TagKey<Fluid> -> tagKey.toEmi(count) },
+    val ingredient: EmiIngredient = this.unwrap().map(
+        { tagKey: TagKey<Fluid> -> tagKey.toEmi(this.amount) },
         { resources: List<HTFluidResourceType> ->
-            resources.map { it.toStack(count) }.map(FluidStack::toEmi).let(::ingredient)
+            resources.map { it.toStack(this.amount) }.map(FluidStack::toEmi).let(::ingredient)
         },
     )
+    if (this.isCatalyst) {
+        ingredient.chance = 0f
+    }
+    return ingredient
 }
 
 private fun ingredient(stacks: List<EmiStack>): EmiIngredient = when {
