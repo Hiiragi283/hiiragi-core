@@ -39,6 +39,7 @@ abstract class HTBlockLootTableProvider(protected val modId: String, registries:
 
     /**
      * 幸運エンチャントのインスタンス
+     * @since 0.10.0
      */
     val fortune: Holder<Enchantment> by lazy { registries.holderOrThrow(Enchantments.FORTUNE) }
 

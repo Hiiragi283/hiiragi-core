@@ -22,10 +22,14 @@ import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.core.setup.HCWidgetTypes
 import net.mehvahdjukaar.moonlight.api.platform.RegHelper
+import net.minecraft.world.item.ProjectileItem
+import net.minecraft.world.level.ItemLike
+import net.minecraft.world.level.block.DispenserBlock
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.config.ModConfig
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.neoforge.network.registration.PayloadRegistrar
 import net.neoforged.neoforge.registries.NewRegistryEvent
 
@@ -59,6 +63,14 @@ data object HiiragiCore : HTCommonMod() {
     override fun registerRegistries(event: NewRegistryEvent) {
         event.register(HCRegistries.SLOT_TYPE)
         event.register(HCRegistries.WIDGET_TYPE)
+    }
+
+    override fun commonSetup(event: FMLCommonSetupEvent) {
+        HCItems.REGISTER
+            .asSequence()
+            .map(ItemLike::asItem)
+            .filter { it is ProjectileItem }
+            .forEach(DispenserBlock::registerProjectileBehavior)
     }
 
     override fun registerPayload(registrar: PayloadRegistrar) {

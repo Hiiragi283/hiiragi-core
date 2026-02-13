@@ -22,6 +22,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCBlocks.EXP_DRAIN, "経験値排水溝")
 
         // Entity
+        add(HCEntityTypes.BOMB, "ボム")
         add(HCEntityTypes.ELDRITCH_EGG, "異質な卵")
 
         // Fluid
@@ -50,9 +51,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HCItems.ANCIENT_UPGRADE, "古代の鍛冶型")
 
+        add(HCItems.BOMB, "ボム")
         add(HCItems.ELDRITCH_EGG, "異質な卵")
-        add(HCItems.FLUID_FILTER, "液体フィルター")
-        add(HCItems.ITEM_FILTER, "アイテムフィルター")
         add(HCItems.SLOT_COVER, "スロットカバー")
         add(HCItems.TRADER_CATALOG, "行商人のカタログ")
 

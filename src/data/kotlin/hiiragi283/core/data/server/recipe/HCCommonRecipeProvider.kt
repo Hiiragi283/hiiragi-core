@@ -173,6 +173,18 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             resultStack += HCItems.ANCIENT_UPGRADE
         }
 
+        // Bomb
+        HTShapedRecipeBuilder.create(output) {
+            pattern(
+                "  A",
+                "BC ",
+                "CB ",
+            )
+            define('A') += Tags.Items.STRINGS
+            define('B') += CommonTagPrefixes.NUGGET to VanillaMaterialKeys.IRON
+            define('C') += Tags.Items.GUNPOWDERS
+            resultStack += HCItems.BOMB
+        }
         // Slot Cover
         HTStonecuttingRecipeBuilder.create(output) {
             ingredient += Items.SMOOTH_STONE_SLAB

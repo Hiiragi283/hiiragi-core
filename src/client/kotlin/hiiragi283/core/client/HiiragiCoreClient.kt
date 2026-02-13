@@ -108,6 +108,7 @@ data object HiiragiCoreClient : HTClientMod() {
 
     override fun registerEntityRenderer(event: EntityRenderersEvent.RegisterRenderers) {
         // Entity
+        event.registerEntityRenderer(HCEntityTypes.BOMB.get(), ::ThrownItemRenderer)
         event.registerEntityRenderer(HCEntityTypes.ELDRITCH_EGG.get(), ::ThrownItemRenderer)
     }
 

@@ -33,16 +33,28 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
 
     //    Extensions    //
 
+    /**
+     * @since 0.10.0
+     */
     protected fun exists(id: ResourceLocation): Boolean = this.fileHelper.exists(id, TEXTURE)
 
+    /**
+     * @since 0.10.0
+     */
     protected fun track(id: ResourceLocation) {
         this.fileHelper.trackGenerated(id, TEXTURE)
     }
 
+    /**
+     * @since 0.10.0
+     */
     protected fun trackBlock(id: HTIdLike) {
         this.track(id.blockId)
     }
 
+    /**
+     * @since 0.10.0
+     */
     protected fun trackItem(id: HTIdLike) {
         this.track(id.itemId)
     }

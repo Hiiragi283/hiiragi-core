@@ -25,6 +25,9 @@ object HiiragiCoreTags {
     }
 
     object Items {
+        /**
+         * @since 0.10.0
+         */
         @JvmField
         val CROPS_WARPED_WART: TagKey<Item> = common("crops", "warped_wart")
 

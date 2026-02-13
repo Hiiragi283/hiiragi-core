@@ -11,6 +11,11 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.material.Fluid
 
+/**
+ * [液体][Fluid]向けのタグのプレフィックスを表すクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.10.0
+ */
 class HTFluidTagPrefix(
     val name: String,
     private val idPattern: String,

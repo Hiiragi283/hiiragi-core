@@ -21,12 +21,21 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
     ItemModelProvider(context.output, modId, context.fileHelper) {
     //    Extensions    //
 
+    /**
+     * @since 0.10.0
+     */
     protected fun exists(id: ResourceLocation): Boolean = this.existingFileHelper.exists(id, TEXTURE)
 
+    /**
+     * @since 0.10.0
+     */
     protected fun track(id: ResourceLocation) {
         this.existingFileHelper.trackGenerated(id, TEXTURE)
     }
 
+    /**
+     * @since 0.10.0
+     */
     protected fun trackItem(id: HTIdLike) {
         this.track(id.itemId)
     }

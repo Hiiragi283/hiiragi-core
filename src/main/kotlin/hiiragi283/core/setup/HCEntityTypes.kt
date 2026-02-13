@@ -1,6 +1,7 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.common.entity.HTThrownBomb
 import hiiragi283.core.common.entity.HTThrownCaptureEgg
 import hiiragi283.core.common.registry.HTDeferredEntityType
 import hiiragi283.core.common.registry.register.HTDeferredEntityTypeRegister
@@ -20,6 +21,9 @@ object HCEntityTypes {
 
         REGISTER.register(eventBus)
     }
+
+    @JvmField
+    val BOMB: HTDeferredEntityType<HTThrownBomb> = registerThrowable("bomb", ::HTThrownBomb)
 
     @JvmField
     val ELDRITCH_EGG: HTDeferredEntityType<HTThrownCaptureEgg> = registerThrowable("eldritch_egg", ::HTThrownCaptureEgg)

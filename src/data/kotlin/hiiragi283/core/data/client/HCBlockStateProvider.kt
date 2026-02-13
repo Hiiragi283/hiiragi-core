@@ -38,9 +38,8 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(Hii
                         models()
                             .withExistingParent(id.path, "crop")
                             .texture("crop", id)
-                            .renderType("cutout")
-                    )
-                    .build()
+                            .renderType("cutout"),
+                    ).build()
             }
         itemModels().basicItem(HCBlocks.WARPED_WART.id)
     }

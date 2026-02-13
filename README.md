@@ -47,7 +47,7 @@
   - Trader's Catalog: Opens trading menu of Wandering Trader
 - End-Game Items
   - Almighty Pickaxe: A mining tool suitable for ALL BLOCKS
-  - Ambrosia: NON-CONSUMABLE FOOD
+  - Ambrosia: NON-CONSUMABLE Food
   - Eternal Smithing Template: Make any equipment UNBREAKABLE
 - Recipe Types
   - Charging: Fired when Lightning Strike hit on item entity
