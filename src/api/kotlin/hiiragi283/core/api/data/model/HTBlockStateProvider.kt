@@ -7,6 +7,7 @@ import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
+import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
 import net.minecraft.core.Direction
 import net.minecraft.resources.ResourceLocation
@@ -32,6 +33,20 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
 
     //    Extensions    //
 
+    protected fun exists(id: ResourceLocation): Boolean = this.fileHelper.exists(id, TEXTURE)
+
+    protected fun track(id: ResourceLocation) {
+        this.fileHelper.trackGenerated(id, TEXTURE)
+    }
+
+    protected fun trackBlock(id: HTIdLike) {
+        this.track(id.blockId)
+    }
+
+    protected fun trackItem(id: HTIdLike) {
+        this.track(id.itemId)
+    }
+
     /**
      * 指定した[ID][id]でモデルのビルダーを作成します。
      */
@@ -43,27 +58,6 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      */
     protected fun <BUILDER : ModelBuilder<BUILDER>, PROVIDER : ModelProvider<BUILDER>> PROVIDER.getBuilder(like: HTIdLike): BUILDER =
         this.getBuilder(like.getId())
-
-    /**
-     * 指定したテクスチャが存在する場合にのみモデルを登録します。
-     * @param block モデルを登録させるブロック
-     * @param action モデルを登録するブロック
-     */
-    protected inline fun existTexture(block: HTBlockHolderLike<*, *>, action: (HTBlockHolderLike<*, *>) -> Unit) {
-        existTexture(block, block.blockId) { blockIn: HTBlockHolderLike<*, *>, _: ResourceLocation -> action(blockIn) }
-    }
-
-    protected inline fun existTexture(
-        block: HTBlockHolderLike<*, *>,
-        id: ResourceLocation,
-        action: (HTBlockHolderLike<*, *>, ResourceLocation) -> Unit,
-    ) {
-        if (fileHelper.exists(id, TEXTURE)) {
-            action(block, id)
-        } else {
-            HiiragiCoreAPI.LOGGER.debug("Missing texture {} for {}", id, block.getId())
-        }
-    }
 
     protected fun Direction.getRotationY(): Int = ((this.toYRot() + 180) % 360).toInt()
 

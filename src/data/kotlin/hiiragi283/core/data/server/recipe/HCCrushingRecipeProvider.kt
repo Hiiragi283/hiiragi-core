@@ -6,6 +6,7 @@ import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.data.recipe.builder.HCAnvilCrushingRecipeBuilder
 import hiiragi283.core.common.material.VanillaMaterialKeys
+import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import net.minecraft.tags.ItemTags
 import net.minecraft.tags.TagKey
@@ -23,6 +24,16 @@ object HCCrushingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
             HCAnvilCrushingRecipeBuilder.create(this.output) {
                 ingredient = inputCreator.create(input)
                 result = resultCreator.create(output)
+            }
+        }
+
+        mapOf(
+            Items.NETHER_WART to Items.NETHER_WART_BLOCK,
+            HCBlocks.WARPED_WART to Items.WARPED_WART_BLOCK,
+        ).forEach { (output: ItemLike, input: ItemLike) ->
+            HCAnvilCrushingRecipeBuilder.create(this.output) {
+                ingredient = inputCreator.create(input)
+                result = resultCreator.create(output, 3)
             }
         }
 

@@ -16,18 +16,26 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
+import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.api.text.HTHasTranslationKey
+import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCItems
 import net.mehvahdjukaar.moonlight.api.events.AfterLanguageLoadEvent
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
 import net.mehvahdjukaar.moonlight.api.resources.textures.Palette
 import net.mehvahdjukaar.moonlight.api.resources.textures.Respriter
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.Items
+import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.neoforged.neoforge.common.Tags
 import java.util.function.Consumer
@@ -47,23 +55,112 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         // Texture
         executor.accept(HCMaterialTextureProvider)
 
-        executor.accept { manager: ResourceManager, sink: ResourceSink ->
-            runCatching {
-                val base: TextureImage = TextureImage.open(manager, HTConst.MINECRAFT.toId(HTConst.BLOCK, "lava_still.png"))
-                val color: TextureImage = HTTextureUtil
-                    .getTexture(manager, Blocks.MAGENTA_CONCRETE_POWDER)
-                    .getOrNull()
-                    ?: return@runCatching
-                val respriter: Respriter = Respriter.of(base)
-                val palette: Palette = Palette.fromImage(color)
-                val newImage: TextureImage = respriter.recolor(palette)
-                sink.addTexture(
-                    HiiragiCoreAPI.id(HTConst.BLOCK, "dragon_breath"),
-                    newImage,
-                )
-            }
+        for (i in (0..2)) {
+            executor.accept(
+                resprite(
+                    HiiragiCoreAPI.id(HTConst.BLOCK, "warped_wart_stage$i"),
+                    HTConst.MINECRAFT.toId(HTConst.BLOCK, "nether_wart_stage$i.png"),
+                    Blocks.TWISTING_VINES,
+                ),
+            )
         }
+        executor.accept(
+            resprite(
+                HCBlocks.WARPED_WART.itemId,
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "nether_wart.png"),
+                Blocks.TWISTING_VINES,
+            ),
+        )
+
+        executor.accept(
+            resprite(
+                HiiragiCoreAPI.id(HTConst.BLOCK, "dragon_breath"),
+                HTConst.MINECRAFT.toId(HTConst.BLOCK, "lava_still.png"),
+                Blocks.BRAIN_CORAL_BLOCK,
+            ),
+        )
+
+        executor.accept(
+            resprite(
+                HCItems.BAMBOO_CHARCOAL.itemId,
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "bamboo.png"),
+                Blocks.DEEPSLATE,
+            ),
+        )
+        executor.accept(
+            resprite(
+                HCItems.COMPRESSED_SAWDUST.itemId,
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "coal.png"),
+                Blocks.OAK_PLANKS,
+            ),
+        )
+
+        executor.accept(
+            resprite(
+                HCItems.RAW_RUBBER.itemId,
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "slime_ball.png"),
+                Blocks.SANDSTONE,
+            ),
+        )
+        mapOf(
+            HCItems.POLYMER_RESIN to "slime_ball.png",
+            HCItems.SYNTHETIC_FEATHER to "feather.png",
+            HCItems.SYNTHETIC_LEATHER to "leather.png",
+        ).forEach { (item: HTIdLike, path: String) ->
+            executor.accept(
+                resprite(
+                    item.itemId,
+                    HTConst.MINECRAFT.toId(HTConst.ITEM, path),
+                    Items.WHITE_DYE,
+                ),
+            )
+        }
+
+        executor.accept(
+            resprite(
+                HCItems.LUMINOUS_PASTE.itemId,
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "black_dye.png"),
+                Items.GLOW_INK_SAC,
+            ),
+        )
+        executor.accept(
+            resprite(
+                HCItems.ELDER_HEART.itemId,
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "heart_of_the_sea.png"),
+                Blocks.DIORITE,
+            ),
+        )
+        executor.accept(
+            resprite(
+                HCItems.WITHER_STAR.itemId,
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "nether_star.png"),
+                Blocks.DEEPSLATE,
+            ),
+        )
     }
+
+    //    Texture    //
+
+    @JvmStatic
+    private fun resprite(
+        id: ResourceLocation,
+        base: ResourceLocation,
+        paletteFactory: (ResourceManager) -> Result<Palette>,
+    ): ResourceGenTask = ResourceGenTask { manager: ResourceManager, sink: ResourceSink ->
+        val palette: Palette = paletteFactory(manager).getOrNull() ?: return@ResourceGenTask
+        runCatching { TextureImage.open(manager, base) }
+            .map(Respriter::of)
+            .map { it.recolor(palette) }
+            .onSuccess { sink.addTexture(id, it) }
+    }
+
+    @JvmStatic
+    private fun resprite(id: ResourceLocation, base: ResourceLocation, palette: Block): ResourceGenTask =
+        resprite(id, base) { manager: ResourceManager -> HTTextureUtil.getTexture(manager, palette).map(Palette::fromImage) }
+
+    @JvmStatic
+    private fun resprite(id: ResourceLocation, base: ResourceLocation, palette: Item): ResourceGenTask =
+        resprite(id, base) { manager: ResourceManager -> HTTextureUtil.getTexture(manager, palette).map(Palette::fromImage) }
 
     //    Translation    //
 

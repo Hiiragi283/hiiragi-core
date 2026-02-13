@@ -21,6 +21,16 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
     ItemModelProvider(context.output, modId, context.fileHelper) {
     //    Extensions    //
 
+    protected fun exists(id: ResourceLocation): Boolean = this.existingFileHelper.exists(id, TEXTURE)
+
+    protected fun track(id: ResourceLocation) {
+        this.existingFileHelper.trackGenerated(id, TEXTURE)
+    }
+
+    protected fun trackItem(id: HTIdLike) {
+        this.track(id.itemId)
+    }
+
     /**
      * 指定したテクスチャが存在する場合にのみモデルを登録します。
      * @param item モデルを登録させるアイテム

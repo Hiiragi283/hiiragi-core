@@ -3,6 +3,7 @@ package hiiragi283.core.data.client
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.model.HTBlockStateProvider
+import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.resources.ResourceLocation
@@ -12,6 +13,8 @@ import net.neoforged.neoforge.client.model.generators.ConfiguredModel
 
 class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(HiiragiCoreAPI.MOD_ID, context) {
     override fun registerStatesAndModels() {
+        trackItem(HCBlocks.WARPED_WART)
+
         registerCrops()
 
         // Fluids
@@ -27,15 +30,17 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(Hii
                     2 -> 1
                     else -> 2
                 }
-                val id: ResourceLocation = HCBlocks.WARPED_WART.id.withSuffix("_stage$age")
+                val id: ResourceLocation = HCBlocks.WARPED_WART.blockId.withSuffix("_stage$age")
+                track(id)
                 ConfiguredModel
                     .builder()
                     .modelFile(
                         models()
                             .withExistingParent(id.path, "crop")
-                            // .texture("crop", id.withPrefix("block/"))
-                            .renderType("cutout"),
-                    ).build()
+                            .texture("crop", id)
+                            .renderType("cutout")
+                    )
+                    .build()
             }
         itemModels().basicItem(HCBlocks.WARPED_WART.id)
     }

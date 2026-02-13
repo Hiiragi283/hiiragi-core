@@ -40,6 +40,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.POLYMER_RESIN, "Polymer Resin")
         add(HCItems.RAW_RUBBER, "Raw Rubber")
         add(HCItems.STEEL_COMPOUND, "Steel Compound")
+        add(HCItems.SYNTHETIC_FEATHER, "Synthetic Feather")
         add(HCItems.SYNTHETIC_LEATHER, "Synthetic Leather")
 
         add(HCItems.LUMINOUS_PASTE, "Luminous Paste")

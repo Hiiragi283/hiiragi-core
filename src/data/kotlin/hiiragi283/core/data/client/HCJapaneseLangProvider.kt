@@ -39,6 +39,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.POLYMER_RESIN, "高分子樹脂")
         add(HCItems.RAW_RUBBER, "生ゴム")
         add(HCItems.STEEL_COMPOUND, "鋼鉄混合物")
+        add(HCItems.SYNTHETIC_FEATHER, "合成羽")
         add(HCItems.SYNTHETIC_LEATHER, "合成牛皮")
 
         add(HCItems.LUMINOUS_PASTE, "蛍光ペースト")

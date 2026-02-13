@@ -11,6 +11,7 @@ import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
@@ -19,6 +20,7 @@ import hiiragi283.core.common.data.recipe.builder.HTStonecuttingRecipeBuilder
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
+import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.tags.ItemTags
@@ -67,6 +69,14 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             define('B') += Items.DEEPSLATE
             resultStack += Items.REINFORCED_DEEPSLATE
         }*/
+
+        // Warped Wart Block
+        HTShapedRecipeBuilder.create(output) {
+            hollow8()
+            define('A') += HiiragiCoreTags.Items.CROPS_WARPED_WART
+            define('B') += HCBlocks.WARPED_WART
+            resultStack += Items.WARPED_WART_BLOCK
+        }
 
         // Compressed Sawdust -> Charcoal
         HTShapedRecipeBuilder.create(output) {

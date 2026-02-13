@@ -9,6 +9,7 @@ import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.material.VanillaMaterialKeys
+import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.tags.ItemTags
@@ -50,8 +51,11 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
             Tags.Items.MINING_TOOL_TOOLS,
         ).map(factory::apply).forEach { it.add(HCItems.ALMIGHTY_PICKAXE) }
         // Others
+        factory.apply(Tags.Items.FEATHERS).add(HCItems.SYNTHETIC_FEATHER)
         factory.apply(Tags.Items.LEATHERS).add(HCItems.SYNTHETIC_LEATHER)
         factory.apply(Tags.Items.SLIME_BALLS).add(HCItems.RAW_RUBBER)
+
+        addTags(factory, Tags.Items.CROPS, HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)
 
         factory
             .apply(HiiragiCoreTags.Items.ELDRITCH_PEARL_BINDER)

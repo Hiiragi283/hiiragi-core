@@ -13,6 +13,18 @@ import hiiragi283.core.setup.HCItems
 
 class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(HiiragiCoreAPI.MOD_ID, context) {
     override fun registerModels() {
+        trackItem(HCItems.BAMBOO_CHARCOAL)
+        trackItem(HCItems.COMPRESSED_SAWDUST)
+
+        trackItem(HCItems.RAW_RUBBER)
+        trackItem(HCItems.POLYMER_RESIN)
+        trackItem(HCItems.SYNTHETIC_FEATHER)
+        trackItem(HCItems.SYNTHETIC_LEATHER)
+
+        trackItem(HCItems.LUMINOUS_PASTE)
+        trackItem(HCItems.ELDER_HEART)
+        trackItem(HCItems.WITHER_STAR)
+
         buildList {
             addAll(HCItems.REGISTER.asSequence())
 
