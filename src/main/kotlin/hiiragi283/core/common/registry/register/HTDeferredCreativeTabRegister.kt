@@ -63,7 +63,9 @@ class HTDeferredCreativeTabRegister(namespace: String) :
                     }
                     item.addItems(like, HTSubCreativeTabContents.Context(parameters, output))
                 } else {
-                    output.accept(item, visibility)
+                    val stack: ItemStack = like.toStack()
+                    if (stack.isEmpty) continue
+                    output.accept(stack, visibility)
                 }
             }
         }

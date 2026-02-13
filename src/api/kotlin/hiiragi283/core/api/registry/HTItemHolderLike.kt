@@ -90,6 +90,8 @@ interface HTItemHolderLike<ITEM : Item> :
         @Suppress("DEPRECATION")
         override fun getItemHolder(): Holder<Item> = contents.map(BuiltInRegistries.ITEM::getHolderOrThrow, Item::builtInRegistryHolder)
 
+        override fun getItemKey(): ResourceKey<Item> = contents.getLeft() ?: super.getItemKey()
+
         override fun asItem(): Item = getItemHolder().value()
     }
 }

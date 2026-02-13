@@ -28,7 +28,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
 
         // Buckets
         for (content: HTFluidContent in HCFluids.REGISTER.entries) {
-            addTags(factory, Tags.Items.BUCKETS, content.bucketTag).add(content.bucketHolder)
+            addTags(factory, Tags.Items.BUCKETS, content.bucketTag).add(content.getBucketHolder())
         }
         // Foods
         factory.apply(Tags.Items.FOODS_GOLDEN).add(HCItems.AMBROSIA)

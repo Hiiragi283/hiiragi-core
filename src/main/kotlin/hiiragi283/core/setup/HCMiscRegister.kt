@@ -16,10 +16,12 @@ import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.createCommonTag
+import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.common.gui.sync.HTBoolSyncPayload
 import hiiragi283.core.common.gui.sync.HTFluidSyncPayload
@@ -40,7 +42,6 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockBehaviour
-import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.SoundActions
 import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.registries.NeoForgeRegistries
@@ -55,7 +56,7 @@ internal object HCMiscRegister {
         private set
 
     @JvmStatic
-    lateinit var moltenFluids: Map<HTMaterialKey, HTFluidContent>
+    lateinit var materialFluids: HTTable<HTFluidTagPrefix, HTMaterialKey, HTFluidHolderLike<*>>
         private set
 
     @JvmStatic
@@ -97,44 +98,49 @@ internal object HCMiscRegister {
 
         event.register(Registries.ITEM) { helper ->
             // 素材液体を追加する
-            moltenFluids = manager
-                .mapNotNull { entry: HTMaterialManager.Entry ->
-                    if (HTMaterialPropertyKeys.GENERATE_MOLTEN !in entry) return@mapNotNull null
-                    val id: ResourceLocation = entry.getId().withPrefix("molten_")
+            materialFluids = manager
+                .toFlatTable { entry: HTMaterialManager.Entry ->
+                    entry
+                        .getOrDefault(HTMaterialPropertyKeys.FLUID_PREFIXES)
+                        .map { prefix: HTFluidTagPrefix ->
+                            val id: ResourceLocation = prefix.createId(entry)
 
-                    val typeHolder: HTDeferredHolder<FluidType, FluidType> = HTDeferredHolder(NeoForgeRegistries.Keys.FLUID_TYPES, id)
-                    Registry.register(
-                        NeoForgeRegistries.FLUID_TYPES,
-                        id,
-                        FluidType(
-                            FluidType.Properties
-                                .create()
-                                .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL_LAVA)
-                                .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY_LAVA),
-                        ),
-                    )
+                            val typeHolder: HTDeferredHolder<FluidType, FluidType> = HTDeferredHolder(
+                                NeoForgeRegistries.Keys.FLUID_TYPES,
+                                id,
+                            )
+                            Registry.register(
+                                NeoForgeRegistries.FLUID_TYPES,
+                                id,
+                                FluidType(
+                                    FluidType.Properties
+                                        .create()
+                                        .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL_LAVA)
+                                        .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY_LAVA),
+                                ),
+                            )
 
-                    val bucketId: ResourceLocation = id.withSuffix("_bucket")
-                    val bucketHolder: HTDeferredItem<Item> = HTDeferredItem(bucketId)
+                            val bucketId: ResourceLocation = id.withSuffix("_bucket")
+                            val bucketHolder: HTDeferredItem<Item> = HTDeferredItem(bucketId)
 
-                    val fluidHolder: HTDeferredHolder<Fluid, Fluid> = HTDeferredHolder(Registries.FLUID, id)
-                    val content = HTFluidContent(
-                        typeHolder,
-                        fluidHolder,
-                        bucketHolder,
-                        Registries.FLUID.createCommonTag(id.path),
-                        Registries.ITEM.createCommonTag(bucketId.path),
-                        null,
-                        null,
-                    )
-                    val fluid: HTVirtualFluid = Registry.register(BuiltInRegistries.FLUID, id, HTVirtualFluid(content))
-                    helper.register(
-                        bucketId,
-                        BucketItem(fluid, Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)),
-                    )
+                            val content = HTFluidContent(
+                                typeHolder,
+                                HTFluidHolderLike.of(id),
+                                bucketHolder,
+                                Registries.FLUID.createCommonTag(id.path),
+                                Registries.ITEM.createCommonTag(bucketId.path),
+                                null,
+                                null,
+                            )
+                            val fluid: HTVirtualFluid = Registry.register(BuiltInRegistries.FLUID, id, HTVirtualFluid(content))
+                            helper.register(
+                                bucketId,
+                                BucketItem(fluid, Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)),
+                            )
 
-                    entry.asMaterialKey() to content
-                }.toMap()
+                            Triple(prefix, entry.asMaterialKey(), content)
+                        }
+                }
             // 素材アイテムを生成する
             materialItems = manager
                 .toFlatTable { entry: HTMaterialManager.Entry ->

@@ -11,11 +11,12 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.api.times
 import hiiragi283.core.common.material.CommonMaterialKeys
@@ -63,65 +64,65 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
             // Moonlightが生成時点でレジストリを参照できないのでこの世の終わりみたいな文字列を書くことになった
             // GTCEu Modernをいい感じに参考にしたらなんとかなるんかなこれ
             // それかJSONビルダー作って真面目に書くか
-            contents.getBlockTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTBlockHolderLike<*, *>) ->
+            for ((prefix: HTTagPrefix, key: HTMaterialKey, block: HTBlockHolderLike<*, *>) in contents.getBlockTable()) {
                 if (prefix in CommonTagPrefixes.ORES) {
-                    val raw: HTIdLike = contents.getItem(CommonTagPrefixes.RAW, key) ?: return@forEach
+                    val raw: HTIdLike = contents.getItem(CommonTagPrefixes.RAW, key) ?: continue
                     val id: ResourceLocation = block.getId()
                     sink.addBytes(
                         id,
                         """
-                        {
-                          "type": "minecraft:block",
-                          "pools": [
-                            {
-                              "bonus_rolls": 0.0,
-                              "entries": [
                                 {
-                                  "type": "minecraft:alternatives",
-                                  "children": [
+                                  "type": "minecraft:block",
+                                  "pools": [
                                     {
-                                      "type": "minecraft:item",
-                                      "conditions": [
+                                      "bonus_rolls": 0.0,
+                                      "entries": [
                                         {
-                                          "condition": "minecraft:match_tool",
-                                          "predicate": {
-                                            "predicates": {
-                                              "minecraft:enchantments": [
+                                          "type": "minecraft:alternatives",
+                                          "children": [
+                                            {
+                                              "type": "minecraft:item",
+                                              "conditions": [
                                                 {
-                                                  "enchantments": "minecraft:silk_touch",
-                                                  "levels": {
-                                                    "min": 1
+                                                  "condition": "minecraft:match_tool",
+                                                  "predicate": {
+                                                    "predicates": {
+                                                      "minecraft:enchantments": [
+                                                        {
+                                                          "enchantments": "minecraft:silk_touch",
+                                                          "levels": {
+                                                            "min": 1
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
                                                   }
                                                 }
-                                              ]
+                                              ],
+                                              "name": "$id"
+                                            },
+                                            {
+                                              "type": "minecraft:item",
+                                              "functions": [
+                                                {
+                                                  "enchantment": "minecraft:fortune",
+                                                  "formula": "minecraft:ore_drops",
+                                                  "function": "minecraft:apply_bonus"
+                                                },
+                                                {
+                                                  "function": "minecraft:explosion_decay"
+                                                }
+                                              ],
+                                              "name": "${raw.getId()}"
                                             }
-                                          }
+                                          ]
                                         }
                                       ],
-                                      "name": "$id"
-                                    },
-                                    {
-                                      "type": "minecraft:item",
-                                      "functions": [
-                                        {
-                                          "enchantment": "minecraft:fortune",
-                                          "formula": "minecraft:ore_drops",
-                                          "function": "minecraft:apply_bonus"
-                                        },
-                                        {
-                                          "function": "minecraft:explosion_decay"
-                                        }
-                                      ],
-                                      "name": "${raw.getId()}"
+                                      "rolls": 1.0
                                     }
-                                  ]
+                                  ],
+                                  "random_sequence": "${block.blockId}"
                                 }
-                              ],
-                              "rolls": 1.0
-                            }
-                          ],
-                          "random_sequence": "${block.blockId}"
-                        }
                         """.trimIndent().toByteArray(),
                         ResType.BLOCK_LOOT_TABLES,
                     )
@@ -133,28 +134,28 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
         // Tag
         executor.accept(object : HTTagsProvider.GenTask<Block>(Registries.BLOCK) {
             override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Block>) {
-                contents.getBlockTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
+                for ((prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) in contents.getBlockTable()) {
                     addMaterial(factory, prefix, key).add(block)
                 }
             }
         })
         executor.accept(object : HTTagsProvider.GenTask<Fluid>(Registries.FLUID) {
             override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Fluid>) {
-                for ((_, molten: HTFluidContent) in contents.getMoltenFluidMap()) {
-                    factory.apply(molten.fluidTag).add(molten)
+                for ((prefix: HTFluidTagPrefix, key: HTMaterialKey, fluid: HTIdLike) in contents.getFluidTable()) {
+                    factory.apply(prefix.createTagKey(key)).add(fluid)
                 }
             }
         })
         executor.accept(object : HTTagsProvider.GenTask<Item>(Registries.ITEM) {
             override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Item>) {
                 // Material
-                contents.getBlockTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
+                for ((prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) in contents.getBlockTable()) {
                     addMaterial(factory, prefix, key).add(block)
                 }
-                for ((_, molten: HTFluidContent) in contents.getMoltenFluidMap()) {
-                    addTags(factory, Tags.Items.BUCKETS, molten.bucketTag).add(molten.bucketHolder)
+                for ((prefix: HTFluidTagPrefix, key: HTMaterialKey, fluid: HTFluidHolderLike<*>) in contents.getFluidTable()) {
+                    addTags(factory, Tags.Items.BUCKETS, prefix.createBucketTag(key)).add(fluid.getBucketHolder())
                 }
-                contents.getItemTable().forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
+                for ((prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) in contents.getItemTable()) {
                     addMaterial(factory, prefix, key).add(item)
                     if (prefix == CommonTagPrefixes.GEM || prefix == CommonTagPrefixes.INGOT) {
                         factory.apply(ItemTags.BEACON_PAYMENT_ITEMS).addTag(prefix, key)
@@ -164,7 +165,7 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
                     }
                 }
                 // Tool
-                contents.getToolTable().forEach { (toolType: HTToolType, _, tool: HTIdLike) ->
+                for ((toolType: HTToolType, _, tool: HTIdLike) in contents.getToolTable()) {
                     toolType.toolTags.map(factory::apply).forEach { it.add(tool) }
                 }
             }

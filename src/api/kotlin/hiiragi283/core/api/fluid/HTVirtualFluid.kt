@@ -1,6 +1,6 @@
 package hiiragi283.core.api.fluid
 
-import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.HTFluidHolderLike
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.sounds.SoundEvent
@@ -23,8 +23,8 @@ import java.util.Optional
  * @author Hiiragi Tsubasa
  * @since 0.9.0
  */
-class HTVirtualFluid(private val content: HTFluidContent) : Fluid() {
-    override fun getBucket(): Item = content.getBucket()
+class HTVirtualFluid(private val fluid: HTFluidHolderLike<*>) : Fluid() {
+    override fun getBucket(): Item = fluid.getBucket()
 
     override fun canBeReplacedWith(
         state: FluidState,
@@ -50,11 +50,11 @@ class HTVirtualFluid(private val content: HTFluidContent) : Fluid() {
 
     override fun getAmount(state: FluidState): Int = 0
 
-    override fun isSame(fluid: Fluid): Boolean = fluid == content.get()
+    override fun isSame(fluid: Fluid): Boolean = fluid == this.fluid.asFluid()
 
     override fun getShape(state: FluidState, level: BlockGetter, pos: BlockPos): VoxelShape = Shapes.empty()
 
-    override fun getFluidType(): FluidType = content.getFluidType()
+    override fun getFluidType(): FluidType = fluid.getFluidType()
 
     override fun getPickupSound(): Optional<SoundEvent> = Optional.ofNullable(fluidType.getSound(SoundActions.BUCKET_FILL))
 }

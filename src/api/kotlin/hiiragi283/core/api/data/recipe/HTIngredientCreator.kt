@@ -6,12 +6,13 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.buildDataPredicate
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.property.getDefaultFluidAmount
-import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.VanillaFluidContents
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.fluid.CommonFluidTagPrefixes
+import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import net.minecraft.core.component.DataComponentPredicate
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -97,12 +98,20 @@ data object HTIngredientCreator {
 
     fun milk(amount: Int): HTFluidIngredient = create(VanillaFluidContents.MILK, amount)
 
-    fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidIngredient {
-        val propertyMap: HTPropertyMap = HiiragiCoreAccess.INSTANCE.materialManager.getOrEmpty(material)
-        val content: HTFluidContent =
-            HiiragiCoreAccess.INSTANCE.materialContents.getMoltenFluidMap()[material.asMaterialKey()]
-                ?: error("Unknown molten fluid: ${material.asMaterialId()}")
-        return create(content, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
+    fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidIngredient =
+        create(CommonFluidTagPrefixes.MOLTEN, material, operator)
+
+    fun create(
+        prefix: HTFluidTagPrefix,
+        material: HTMaterialLike,
+        operator: IntUnaryOperator = IntUnaryOperator.identity(),
+    ): HTFluidIngredient {
+        val amount: Int = HiiragiCoreAccess.INSTANCE
+            .materialManager
+            .getOrEmpty(material)
+            .getDefaultFluidAmount()
+            .let(operator::applyAsInt)
+        return create(prefix.createTagKey(material), amount)
     }
 
     // Ingredient

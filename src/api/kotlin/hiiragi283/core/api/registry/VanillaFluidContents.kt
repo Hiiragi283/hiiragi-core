@@ -1,6 +1,8 @@
 package hiiragi283.core.api.registry
 
+import net.minecraft.core.Holder
 import net.minecraft.world.item.Items
+import net.minecraft.world.level.material.Fluid
 import net.minecraft.world.level.material.Fluids
 import net.neoforged.neoforge.common.NeoForgeMod
 import net.neoforged.neoforge.common.Tags
@@ -15,7 +17,7 @@ data object VanillaFluidContents {
     @JvmField
     val WATER = HTFluidContent(
         NeoForgeMod.WATER_TYPE.toLike(),
-        Fluids.WATER.builtInRegistryHolder().toLike(),
+        HTFluidHolderLike.of(Fluids.WATER),
         HTItemHolderLike.of(Items.WATER_BUCKET),
         Tags.Fluids.WATER,
         Tags.Items.BUCKETS_WATER,
@@ -26,7 +28,7 @@ data object VanillaFluidContents {
     @JvmField
     val LAVA = HTFluidContent(
         NeoForgeMod.LAVA_TYPE.toLike(),
-        Fluids.LAVA.builtInRegistryHolder().toLike(),
+        HTFluidHolderLike.of(Fluids.LAVA),
         HTItemHolderLike.of(Items.LAVA_BUCKET),
         Tags.Fluids.LAVA,
         Tags.Items.BUCKETS_LAVA,
@@ -37,7 +39,11 @@ data object VanillaFluidContents {
     @JvmField
     val MILK = HTFluidContent(
         NeoForgeMod.MILK_TYPE.toLike(),
-        NeoForgeMod.MILK.toLike(),
+        object : HTFluidHolderLike.Delegated<Fluid> {
+            override fun getFluidHolder(): Holder<Fluid> = NeoForgeMod.MILK
+
+            override fun asFluid(): Fluid = getFluidHolder().value()
+        },
         HTItemHolderLike.of(Items.MILK_BUCKET),
         Tags.Fluids.MILK,
         Tags.Items.BUCKETS_MILK,

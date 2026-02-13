@@ -80,9 +80,17 @@ fun TagKey<*>.toEmi(amount: Int = 1): EmiIngredient = EmiIngredient
  */
 fun HTItemIngredient.toEmi(): EmiIngredient {
     val ingredient: EmiIngredient = this.unwrap().map(
-        { tagKey: TagKey<Item> -> tagKey.toEmi(this.amount) },
+        { tagKey: TagKey<Item> ->
+            when {
+                this.isCatalyst -> tagKey.toEmi().setChance(0f)
+                else -> tagKey.toEmi(this.amount)
+            }
+        },
         { resources: List<HTItemResourceType> ->
-            resources.map { it.toStack(this.amount) }.map(ItemStack::toEmi).let(::ingredient)
+            when {
+                this.isCatalyst -> resources.map(HTItemResourceType::toStack)
+                else -> resources.map { it.toStack(this.amount) }
+            }.map(ItemStack::toEmi).let(::ingredient)
         },
     )
     if (this.isCatalyst) {

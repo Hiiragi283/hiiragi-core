@@ -9,6 +9,7 @@ import hiiragi283.core.api.property.computeIfAbsent
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 
@@ -34,6 +35,14 @@ fun HTPropertyMap.Mutable.addBlockPrefixes(vararg tagPrefixes: HTTagPrefix) {
 
 fun HTPropertyMap.Mutable.addBlockPrefixes(tagPrefixes: Set<HTTagPrefix>) {
     this.computeIfAbsent(HTMaterialPropertyKeys.BLOCK_PREFIXES) { it.plus(tagPrefixes) }
+}
+
+fun HTPropertyMap.Mutable.addFluidPrefixes(vararg tagPrefixes: HTFluidTagPrefix) {
+    this.computeIfAbsent(HTMaterialPropertyKeys.FLUID_PREFIXES) { it.plus(tagPrefixes) }
+}
+
+fun HTPropertyMap.Mutable.addFluidPrefixes(tagPrefixes: Set<HTFluidTagPrefix>) {
+    this.computeIfAbsent(HTMaterialPropertyKeys.FLUID_PREFIXES) { it.plus(tagPrefixes) }
 }
 
 fun HTPropertyMap.Mutable.addItemPrefixes(vararg tagPrefixes: HTTagPrefix) {

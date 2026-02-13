@@ -7,11 +7,13 @@ import hiiragi283.core.api.material.property.getDefaultFluidAmount
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
-import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.VanillaFluidContents
 import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.fluid.CommonFluidTagPrefixes
+import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.material.Fluid
@@ -53,8 +55,8 @@ data object HTResultCreator {
     fun create(fluid: Fluid, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult = create(FluidStack(fluid, amount))
 
     @JvmStatic
-    fun create(content: HTFluidContent, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult =
-        HTFluidResult(checkNotNull(content.toResource()), amount)
+    fun create(fluid: HTFluidHolderLike<*>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult =
+        HTFluidResult(checkNotNull(fluid.toResource()), amount)
 
     @JvmStatic
     fun create(stack: FluidStack): HTFluidResult = HTFluidResult(checkNotNull(stack.toResource()), stack.amount)
@@ -69,11 +71,19 @@ data object HTResultCreator {
     fun milk(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult = create(VanillaFluidContents.MILK, amount)
 
     @JvmStatic
-    fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidResult {
+    fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidResult =
+        material(CommonFluidTagPrefixes.MOLTEN, material, operator)
+
+    @JvmStatic
+    fun material(
+        prefix: HTFluidTagPrefix,
+        material: HTMaterialLike,
+        operator: IntUnaryOperator = IntUnaryOperator.identity(),
+    ): HTFluidResult {
         val propertyMap: HTPropertyMap = HiiragiCoreAccess.INSTANCE.materialManager.getOrEmpty(material)
-        val content: HTFluidContent =
-            HiiragiCoreAccess.INSTANCE.materialContents.getMoltenFluidMap()[material.asMaterialKey()]
-                ?: error("Unknown molten fluid: ${material.asMaterialId()}")
-        return create(content, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
+        val fluid: HTFluidHolderLike<*> =
+            HiiragiCoreAccess.INSTANCE.materialContents.getFluid(prefix, material)
+                ?: error("Unknown ${prefix.name} fluid: ${material.asMaterialId()}")
+        return create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
     }
 }

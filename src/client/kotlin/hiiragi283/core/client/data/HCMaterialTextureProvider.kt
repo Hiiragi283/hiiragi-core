@@ -11,11 +11,11 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialTextureSet
 import hiiragi283.core.api.property.getOrDefault
-import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.fluid.CommonFluidTagPrefixes
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
@@ -78,7 +78,7 @@ data object HCMaterialTextureProvider : ResourceGenTask {
     private fun molten(manager: ResourceManager, sink: ResourceSink, contents: HTMaterialContents) {
         // すべての素材に対してテクスチャの生成を試みる
         for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
-            val molten: HTFluidContent = contents.getMoltenFluidMap()[entry.asMaterialKey()] ?: continue
+            val molten: HTIdLike = contents.getFluid(CommonFluidTagPrefixes.MOLTEN, entry) ?: continue
             // パレットを取得
             var palette: Palette = HTTextureUtil
                 .getPalette(

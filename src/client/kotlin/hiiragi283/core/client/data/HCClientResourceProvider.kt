@@ -16,9 +16,9 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
-import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.api.text.HTHasTranslationKey
 import net.mehvahdjukaar.moonlight.api.events.AfterLanguageLoadEvent
@@ -83,16 +83,15 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
                 consumer(block.translationKey, name)
             }
             // Fluid
-            val molten: HTFluidContent? = contents.getMoltenFluidMap()[entry.asMaterialKey()]
-            if (molten != null) {
+            for ((prefix: HTFluidTagPrefix, fluid) in contents.getFluidMap(entry)) {
                 val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
-                val name: String = HTLangPatternProvider.create("Molten %s", "溶融%s").translate(langType, materialName)
-                consumer(molten.getFluidType().descriptionId, name)
-                consumer(Tags.getTagTranslationKey(molten.fluidTag), name)
+                val name: String = prefix.translate(langType, materialName)
+                consumer(fluid.getFluidType().descriptionId, name)
+                consumer(Tags.getTagTranslationKey(prefix.createTagKey(entry)), name)
 
-                val bucketName: String = HTLangPatternProvider.create("Molten %s Bucket", "溶融%s入りバケツ").translate(langType, materialName)
-                consumer(molten.bucketHolder.translationKey, bucketName)
-                consumer(Tags.getTagTranslationKey(molten.bucketTag), bucketName)
+                val bucketName: String = HTLangPatternProvider.create("%s Bucket", "%s入りバケツ").translate(langType, name)
+                consumer(fluid.getBucketHolder().translationKey, bucketName)
+                consumer(Tags.getTagTranslationKey(prefix.createBucketTag(entry)), bucketName)
             }
             // Item
             for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in contents.getItemMap(entry)) {

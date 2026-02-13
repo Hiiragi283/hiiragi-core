@@ -15,6 +15,7 @@ import hiiragi283.core.api.material.property.HTSmithingRecipeProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
 import hiiragi283.core.api.material.property.addBlockPrefixes
 import hiiragi283.core.api.material.property.addCustomName
+import hiiragi283.core.api.material.property.addFluidPrefixes
 import hiiragi283.core.api.material.property.addItemPrefixes
 import hiiragi283.core.api.material.property.addToolPrefixes
 import hiiragi283.core.api.material.property.setDefaultPart
@@ -25,6 +26,7 @@ import hiiragi283.core.api.property.plusAssign
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.fluid.CommonFluidTagPrefixes
 import hiiragi283.core.common.item.VanillaEquipmentMaterial
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
@@ -95,6 +97,7 @@ object HCMaterialEventHandler {
         }
         // Minerals
         event.modify(VanillaMaterialKeys.REDSTONE) {
+            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
             addItemPrefixes(CommonTagPrefixes.RAW, CommonTagPrefixes.CRUSHED_ORE)
             put(
                 HTMaterialPropertyKeys.EXTRA_ORE_RESULTS,
@@ -103,13 +106,12 @@ object HCMaterialEventHandler {
                 },
             )
             put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(4))
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Redstone", "赤石")
         }
         event.modify(VanillaMaterialKeys.GLOWSTONE) {
+            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Glowstone", "グロウストーン")
         }
@@ -206,8 +208,8 @@ object HCMaterialEventHandler {
         event.modify(VanillaMaterialKeys.ENDER) {
             setDefaultPart(HTDefaultPart.Prefixed.PEARL)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
             addItemPrefixes(CommonTagPrefixes.DUST)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Ender Pearl", "エンダーパール")
             setTextureSet("pearl")
@@ -233,7 +235,6 @@ object HCMaterialEventHandler {
                 },
             )
             put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(3, 2))
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Copper", "銅")
             setTextureSet(HTMaterialTextureSet.SHINE)
@@ -258,7 +259,6 @@ object HCMaterialEventHandler {
             )
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Iron", "鉄")
         }
@@ -283,7 +283,6 @@ object HCMaterialEventHandler {
             )
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Gold", "金")
         }
@@ -300,7 +299,6 @@ object HCMaterialEventHandler {
             addToolPrefixes(VanillaEquipmentMaterial.NETHERITE, CommonToolTypes.HAMMER)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.HIGH)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.HIGH)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Netherite", "ネザライト")
             setTextureSet(HTMaterialTextureSet.DULL)
@@ -337,11 +335,11 @@ object HCMaterialEventHandler {
         }
         event.modify(VanillaMaterialKeys.GLASS) {
             setDefaultPart(Tags.Items.GLASS_BLOCKS, HTItemHolderLike.of(Items.GLASS))
+            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
             addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.ROD)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.NONE)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Glass", "ガラス")
             setTextureSet(HTMaterialTextureSet.SHINE)
@@ -357,9 +355,9 @@ object HCMaterialEventHandler {
         }
         event.modify(VanillaMaterialKeys.OBSIDIAN) {
             setDefaultPart(Tags.Items.OBSIDIANS_NORMAL, HTItemHolderLike.of(Items.OBSIDIAN))
+            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
             addItemPrefixes(CommonTagPrefixes.DUST)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Obsidian", "黒曜石")
             setTextureSet(HTMaterialTextureSet.DULL)
@@ -412,10 +410,10 @@ object HCMaterialEventHandler {
             event.modify(key) {
                 setDefaultPart(HTDefaultPart.Prefixed.INGOT)
                 addBlockPrefixes(CommonTagPrefixes.BLOCK)
+                addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
                 addItemPrefixes(alloySet)
                 put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.HIGHEST)
                 put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.HIGHEST)
-                this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
                 setName(enName, jaName)
                 setTextureSet(HTMaterialTextureSet.MYSTICAL)
@@ -479,9 +477,9 @@ object HCMaterialEventHandler {
         event.modify(CommonMaterialKeys.ALUMINUM) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
             addItemPrefixes(alloySet)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Aluminum", "アルミニウム")
         }
@@ -498,7 +496,6 @@ object HCMaterialEventHandler {
             addItemPrefixes(alloySet)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Nickel", "ニッケル")
             setTextureSet(HTMaterialTextureSet.DULL)
@@ -506,8 +503,8 @@ object HCMaterialEventHandler {
         event.modify(CommonMaterialKeys.ZINC) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(materialBlockSet)
+            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
             addItemPrefixes(metalSet)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Zinc", "亜鉛")
             setTextureSet(HTMaterialTextureSet.DULL)
@@ -523,7 +520,6 @@ object HCMaterialEventHandler {
             addItemPrefixes(alloySet.plus(partSet))
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Silver", "銀")
             setTextureSet(HTMaterialTextureSet.SHINE)
@@ -531,8 +527,8 @@ object HCMaterialEventHandler {
         event.modify(CommonMaterialKeys.TIN) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(materialBlockSet)
+            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
             addItemPrefixes(metalSet)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Tin", "錫")
             setTextureSet(HTMaterialTextureSet.DULL)
@@ -547,7 +543,6 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(alloySet.plus(partSet))
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Lead", "鉛")
             setTextureSet(HTMaterialTextureSet.DULL)
@@ -563,7 +558,6 @@ object HCMaterialEventHandler {
             addToolPrefixes(HCToolMaterials.STEEL, CommonToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER))
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Steel", "鋼鉄")
             setTextureSet(HTMaterialTextureSet.SHINE)
@@ -574,7 +568,6 @@ object HCMaterialEventHandler {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(alloySet.plus(partSet))
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Brass", "真鍮")
             setTextureSet(HTMaterialTextureSet.DULL)
@@ -585,7 +578,6 @@ object HCMaterialEventHandler {
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(alloySet.plus(partSet))
             addToolPrefixes(HCToolMaterials.BRONZE, CommonToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER))
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Bronze", "青銅")
         }
@@ -624,9 +616,9 @@ object HCMaterialEventHandler {
         event.modify(CommonMaterialKeys.PLASTIC) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
             addItemPrefixes(CommonTagPrefixes.INGOT, CommonTagPrefixes.PLATE, CommonTagPrefixes.ROD, CommonTagPrefixes.WIRE)
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Plastic", "プラスチック")
             // addCustomName(CommonTagPrefixes.DUST, "Plastic Pulp", "プラスチックパルプ")
@@ -638,9 +630,9 @@ object HCMaterialEventHandler {
         event.modify(CommonMaterialKeys.RUBBER) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
             addItemPrefixes(CommonTagPrefixes.INGOT, CommonTagPrefixes.PLATE)
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Rubber", "ゴム")
             // addCustomName(CommonTagPrefixes.DUST, "Rubber Pulp", "ゴムパルプ")
@@ -665,8 +657,8 @@ object HCMaterialEventHandler {
         event.modify(HCMaterialKeys.CRIMSON_CRYSTAL) {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
             addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEM)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Crimson Crystal", "深紅のクリスタリル")
             setTextureSet("emerald")
@@ -675,8 +667,8 @@ object HCMaterialEventHandler {
         event.modify(HCMaterialKeys.WARPED_CRYSTAL) {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
             addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEM)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Warped Crystal", "歪んだクリスタリル")
             setTextureSet("emerald")
@@ -685,8 +677,8 @@ object HCMaterialEventHandler {
         event.modify(HCMaterialKeys.ELDRITCH) {
             setDefaultPart(HTDefaultPart.Prefixed.PEARL)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
             addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.PEARL)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Eldritch Pearl", "異質な真珠")
             setTextureSet("pearl", HTMaterialTextureSet.MYSTICAL)
@@ -734,7 +726,6 @@ object HCMaterialEventHandler {
             addToolPrefixes(HCToolMaterials.AZURE_STEEL, CommonToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER))
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
-            this += HTMaterialPropertyKeys.GENERATE_MOLTEN
 
             setName("Azure Steel", "紺碧鋼")
         }

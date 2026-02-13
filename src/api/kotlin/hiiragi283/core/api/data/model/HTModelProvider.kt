@@ -4,6 +4,7 @@ import com.google.gson.JsonObject
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.IdToFunction
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
@@ -158,7 +159,7 @@ abstract class HTModelProvider : ResourceGenTask {
     /**
      * @see net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder
      */
-    protected fun addBucketModel(content: HTFluidContent, isDrip: Boolean) {
+    protected fun addBucketModel(content: HTFluidHolderLike<*>, isDrip: Boolean) {
         val parent: ResourceLocation = when {
             isDrip -> "bucket_drip"
             else -> "bucket"
@@ -170,6 +171,6 @@ abstract class HTModelProvider : ResourceGenTask {
         if (content.getFluidType().isLighterThanAir) {
             root.addProperty("flip_gas", "true")
         }
-        sink.addItemModel(content.bucketHolder.getId(), root)
+        sink.addItemModel(content.getBucketHolder().getId(), root)
     }
 }

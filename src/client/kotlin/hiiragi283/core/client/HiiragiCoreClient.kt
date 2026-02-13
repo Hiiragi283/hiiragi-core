@@ -7,6 +7,7 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.event.HTRegisterWidgetRendererEvent
 import hiiragi283.core.api.mod.HTClientMod
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.client.data.HCClientResourceProvider
@@ -95,8 +96,8 @@ data object HiiragiCoreClient : HTClientMod() {
         event.dull(HCFluids.LATEX, Color(0xcccccc))
         event.dull(HCFluids.MEAT, Color(0x993333))
 
-        for ((_, molten: HTFluidContent) in HiiragiCoreAccess.INSTANCE.materialContents.getMoltenFluidMap()) {
-            event.registerFluidType(HTSimpleFluidExtensions(molten.blockId), molten.getFluidType())
+        for (holder: HTFluidHolderLike<*> in HiiragiCoreAccess.INSTANCE.materialContents.getAllFluids()) {
+            event.registerFluidType(HTSimpleFluidExtensions(holder.blockId), holder.getFluidType())
         }
     }
 

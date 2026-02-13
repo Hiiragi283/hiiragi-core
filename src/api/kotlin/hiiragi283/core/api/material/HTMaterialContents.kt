@@ -4,10 +4,11 @@ import hiiragi283.core.api.collection.HTMapLike
 import hiiragi283.core.api.collection.HTTableLike
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import java.util.Comparator
 
 /**
@@ -46,25 +47,22 @@ interface HTMaterialContents {
     //    Fluid    //
 
     /**
-     * @since 0.10.0
+     * 素材液体の[HTTableLike]を取得します。
      */
-    fun getMoltenFluidMap(): HTMapLike<HTMaterialKey, HTFluidContent>
+    fun getFluidTable(): HTTableLike<HTFluidTagPrefix, HTMaterialKey, HTFluidHolderLike<*>>
 
-    /**
-     * @since 0.10.0
-     */
-    fun getMoltenFluid(material: HTMaterialLike): HTFluidContent? = getMoltenFluidMap()[material.asMaterialKey()]
+    fun getFluid(prefix: HTFluidTagPrefix, material: HTMaterialLike): HTFluidHolderLike<*>? =
+        getFluidTable()[prefix, material.asMaterialKey()]
 
-    /**
-     * @since 0.10.0
-     */
-    fun getMoltenFluidEntries(): Sequence<Map.Entry<HTMaterialKey, HTFluidContent>> =
-        getMoltenFluidMap().iterator().asSequence().sortedWith(ENTRY_COMPARATOR)
+    fun getFluidMap(prefix: HTFluidTagPrefix): HTMapLike<HTMaterialKey, HTFluidHolderLike<*>> = getFluidTable().row(prefix)
 
-    /**
-     * @since 0.10.0
-     */
-    fun getAllMoltenFluids(): Sequence<HTFluidContent> = getMoltenFluidEntries().map { it.value }
+    fun getFluidMap(material: HTMaterialLike): HTMapLike<HTFluidTagPrefix, HTFluidHolderLike<*>> =
+        getFluidTable().column(material.asMaterialKey())
+
+    fun getFluidEntries(): Sequence<Triple<HTFluidTagPrefix, HTMaterialKey, HTFluidHolderLike<*>>> =
+        getFluidTable().iterator().asSequence().sortedWith(TRIPLE_COMPARATOR)
+
+    fun getAllFluids(): Sequence<HTFluidHolderLike<*>> = getFluidEntries().map { it.third }
 
     //    Item    //
 

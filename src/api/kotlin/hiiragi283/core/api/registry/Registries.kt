@@ -6,6 +6,7 @@ import net.minecraft.core.HolderSet
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.registries.datamaps.DataMapType
 import kotlin.jvm.optionals.getOrNull
 import kotlin.streams.asSequence
@@ -26,6 +27,14 @@ fun <R : Any> HolderLookup<R>.asSequence(): Sequence<HTHolderLike.HolderDelegate
 fun HolderLookup<Block>.asBlockSequence(): Sequence<HTBlockHolderLike<*, *>> = this
     .listElementIds()
     .map(HTBlockHolderLike.Companion::of)
+    .asSequence()
+
+/**
+ * @since 0.10.0
+ */
+fun HolderLookup<Fluid>.asFluidSequence(): Sequence<HTFluidHolderLike<*>> = this
+    .listElementIds()
+    .map(HTFluidHolderLike.Companion::of)
     .asSequence()
 
 /**

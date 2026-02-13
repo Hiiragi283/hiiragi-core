@@ -9,6 +9,7 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import net.minecraft.resources.ResourceLocation
 import org.apache.commons.lang3.math.Fraction
 
@@ -42,6 +43,13 @@ object HTMaterialPropertyKeys {
     val BLOCK_PREFIXES: HTPropertyKey<Set<HTTagPrefix>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("block_prefixes"))
 
     /**
+     * 登録する素材液体を管理する[プロパティキー][HTPropertyKey]
+     * @since 0.10.0
+     */
+    @JvmField
+    val FLUID_PREFIXES: HTPropertyKey<Set<HTFluidTagPrefix>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("fluid_prefixes"))
+
+    /**
      * 登録する素材アイテムを管理する[プロパティキー][HTPropertyKey]
      * @since 0.7.0
      */
@@ -61,13 +69,6 @@ object HTMaterialPropertyKeys {
      */
     @JvmField
     val TOOL_MATERIAL: HTPropertyKey<HTToolMaterial?> = createNullable("tool_material")
-
-    /**
-     * 溶融液体を生成する[プロパティキー][HTPropertyKey]
-     * @since 0.10.0
-     */
-    @JvmField
-    val GENERATE_MOLTEN: HTPropertyKey<Unit?> = HTPropertyKey.createFlag(HiiragiCoreAPI.id("generate_molten"))
 
     //    Recipe    //
 

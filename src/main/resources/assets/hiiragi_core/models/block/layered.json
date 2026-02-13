@@ -1,5 +1,6 @@
 {
   "credit": "Made by Hiiragi Russell Tsubasa",
+  "render_type": "minecraft:cutout",
   "textures": {
     "particle": "#layer0"
   },

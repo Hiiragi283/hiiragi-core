@@ -10,7 +10,15 @@ import org.apache.commons.lang3.math.Fraction
  */
 abstract class HTProcessingRecipeBuilder(prefix: String) : HTRecipeBuilder(prefix) {
     var time: Int = 20 * 10
+        set(value) {
+            require(value > 0) { "Recipe time must be positive" }
+            field = value
+        }
     var exp: Fraction = Fraction.ZERO
+        set(value) {
+            require(value > Fraction.ZERO) { "Recipe exp must be positive" }
+            field = value
+        }
 
     /**
      * @since 0.9.0
