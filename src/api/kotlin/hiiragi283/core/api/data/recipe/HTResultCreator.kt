@@ -42,9 +42,7 @@ data object HTResultCreator {
 
     @JvmStatic
     fun material(prefix: HTTagPrefix, material: HTMaterialLike, amount: Int = 1): HTItemResult = HTItemResult.create {
-        this.item = with(HiiragiCoreAccess.INSTANCE.patchedMaterialContents) {
-            getBlock(prefix, material) ?: getItem(prefix, material)
-        }.toResource()
+        this.item = HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(prefix, material).toResource()
         this.tagKey = prefix.itemTagKey(material)
         this.amount = amount
     }
@@ -79,11 +77,9 @@ data object HTResultCreator {
         prefix: HTFluidTagPrefix,
         material: HTMaterialLike,
         operator: IntUnaryOperator = IntUnaryOperator.identity(),
-    ): HTFluidResult {
-        val propertyMap: HTPropertyMap = HiiragiCoreAccess.INSTANCE.materialManager.getOrEmpty(material)
-        val fluid: HTFluidHolderLike<*> =
-            HiiragiCoreAccess.INSTANCE.materialContents.getFluid(prefix, material)
-                ?: error("Unknown ${prefix.name} fluid: ${material.asMaterialId()}")
-        return create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
+    ): HTFluidResult = with(HiiragiCoreAccess.INSTANCE) {
+        val fluid: HTFluidHolderLike<*> = registeredFluids.getOrThrow(prefix, material)
+        val propertyMap: HTPropertyMap = materialManager.getOrEmpty(material)
+        create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
     }
 }

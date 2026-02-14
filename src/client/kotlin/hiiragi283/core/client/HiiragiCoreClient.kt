@@ -96,7 +96,7 @@ data object HiiragiCoreClient : HTClientMod() {
         event.dull(HCFluids.LATEX, Color(0xcccccc))
         event.dull(HCFluids.MEAT, Color(0x993333))
 
-        for (holder: HTFluidHolderLike<*> in HiiragiCoreAccess.INSTANCE.materialContents.getAllFluids()) {
+        for ((_, _, holder: HTFluidHolderLike<*>) in HiiragiCoreAccess.INSTANCE.registeredFluids) {
             event.registerFluidType(HTSimpleFluidExtensions(holder.blockId), holder.getFluidType())
         }
     }

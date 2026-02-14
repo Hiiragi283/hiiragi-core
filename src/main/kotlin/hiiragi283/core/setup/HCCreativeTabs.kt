@@ -2,14 +2,18 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTDeferredHolder
-import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.common.registry.register.HTDeferredCreativeTabRegister
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.Items
 
 object HCCreativeTabs {
+    @JvmStatic
+    private val TRIPLE_COMPARATOR: Comparator<Triple<Comparable<*>, HTMaterialKey, *>> =
+        compareBy<Triple<Comparable<*>, HTMaterialKey, *>> { it.first }.thenComparing { it.second }
+
     @JvmField
     val REGISTER = HTDeferredCreativeTabRegister(HiiragiCoreAPI.MOD_ID)
 
@@ -39,21 +43,33 @@ object HCCreativeTabs {
             HTDeferredCreativeTabRegister.addToDisplay(
                 parameters,
                 output,
-                HiiragiCoreAccess.INSTANCE.patchedMaterialContents.getAllItems(),
+                HiiragiCoreAccess.INSTANCE
+                    .registeredContents
+                    .items
+                    .asSequence()
+                    .sortedWith(TRIPLE_COMPARATOR)
+                    .map { it.third },
             )
             // Blocks
             HTDeferredCreativeTabRegister.addToDisplay(
                 parameters,
                 output,
-                HiiragiCoreAccess.INSTANCE.patchedMaterialContents.getAllBlocks(),
+                HiiragiCoreAccess.INSTANCE
+                    .registeredContents
+                    .blocks
+                    .asSequence()
+                    .sortedWith(TRIPLE_COMPARATOR)
+                    .map { it.third },
             )
             // Fluids
             HTDeferredCreativeTabRegister.addToDisplay(
                 parameters,
                 output,
-                HiiragiCoreAccess.INSTANCE.patchedMaterialContents
-                    .getAllFluids()
-                    .map(HTFluidHolderLike<*>::getBucketHolder),
+                HiiragiCoreAccess.INSTANCE
+                    .registeredFluids
+                    .asSequence()
+                    .sortedWith(TRIPLE_COMPARATOR)
+                    .map { it.third.getBucketHolder() },
             )
         }
     }
@@ -70,7 +86,12 @@ object HCCreativeTabs {
             HTDeferredCreativeTabRegister.addToDisplay(
                 parameters,
                 output,
-                HiiragiCoreAccess.INSTANCE.patchedMaterialContents.getAllTools(),
+                HiiragiCoreAccess.INSTANCE
+                    .registeredContents
+                    .tools
+                    .asSequence()
+                    .sortedWith(TRIPLE_COMPARATOR)
+                    .map { it.third },
             )
         }
     }

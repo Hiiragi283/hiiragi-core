@@ -6,6 +6,7 @@ import hiiragi283.core.api.data.HTDynamicResourceProvider
 import hiiragi283.core.api.data.map.HTDataMapGenTask
 import hiiragi283.core.api.data.tag.HTTagsProvider
 import hiiragi283.core.api.item.tool.HTToolType
+import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
@@ -37,7 +38,8 @@ import java.util.function.Consumer
 
 data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiCoreAPI.MOD_ID) {
     override fun regenerateDynamicAssets(executor: Consumer<ResourceGenTask>) {
-        val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
+        val existing: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.existingContents
+        val registered: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
         val materialManager: HTMaterialManager = HiiragiCoreAccess.INSTANCE.materialManager
         // Data Map
         executor.accept(object : HTDataMapGenTask<FurnaceFuel, Item>(NeoForgeDataMaps.FURNACE_FUELS) {
@@ -45,13 +47,13 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
                 for (entry: HTMaterialManager.Entry in materialManager) {
                     val baseTime: Int = entry[HTMaterialPropertyKeys.FUEL_TIME] ?: continue
                     // Block
-                    for ((prefix: HTTagPrefix, _) in contents.getBlockMap(entry)) {
+                    for ((prefix: HTTagPrefix, _) in registered.blocks.column(entry)) {
                         val fuelScale: Fraction = prefix[HTTagPropertyKeys.FUEL_SCALE] ?: continue
                         val fuelTime: Int = (baseTime * fuelScale).toInt()
                         add(prefix.itemTagKey(entry), FurnaceFuel(fuelTime))
                     }
                     // Item
-                    for ((prefix: HTTagPrefix, _) in contents.getItemMap(entry)) {
+                    for ((prefix: HTTagPrefix, _) in registered.items.column(entry)) {
                         val fuelScale: Fraction = prefix[HTTagPropertyKeys.FUEL_SCALE] ?: continue
                         val fuelTime: Int = (baseTime * fuelScale).toInt()
                         add(prefix.itemTagKey(entry), FurnaceFuel(fuelTime))
@@ -64,9 +66,9 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
             // Moonlightが生成時点でレジストリを参照できないのでこの世の終わりみたいな文字列を書くことになった
             // GTCEu Modernをいい感じに参考にしたらなんとかなるんかなこれ
             // それかJSONビルダー作って真面目に書くか
-            for ((prefix: HTTagPrefix, key: HTMaterialKey, block: HTBlockHolderLike<*, *>) in contents.getBlockTable()) {
+            for ((prefix: HTTagPrefix, key: HTMaterialKey, block: HTBlockHolderLike<*, *>) in registered.blocks) {
                 if (prefix in CommonTagPrefixes.ORES) {
-                    val raw: HTIdLike = contents.getItem(CommonTagPrefixes.RAW, key) ?: continue
+                    val raw: HTIdLike = registered.items[CommonTagPrefixes.RAW, key] ?: continue
                     val id: ResourceLocation = block.getId()
                     sink.addBytes(
                         id,
@@ -134,28 +136,41 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
         // Tag
         executor.accept(object : HTTagsProvider.GenTask<Block>(Registries.BLOCK) {
             override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Block>) {
-                for ((prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) in contents.getBlockTable()) {
+                // Material Block
+                for ((prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) in existing.blocks) {
+                    addMaterial(factory, prefix, key).add(block)
+                }
+                for ((prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) in registered.blocks) {
                     addMaterial(factory, prefix, key).add(block)
                 }
             }
         })
+        val fluids: HTMaterialContents<HTFluidTagPrefix, HTFluidHolderLike<*>> = HiiragiCoreAccess.INSTANCE.registeredFluids
         executor.accept(object : HTTagsProvider.GenTask<Fluid>(Registries.FLUID) {
             override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Fluid>) {
-                for ((prefix: HTFluidTagPrefix, key: HTMaterialKey, fluid: HTIdLike) in contents.getFluidTable()) {
+                for ((prefix: HTFluidTagPrefix, key: HTMaterialKey, fluid: HTIdLike) in fluids) {
                     factory.apply(prefix.createTagKey(key)).add(fluid)
                 }
             }
         })
         executor.accept(object : HTTagsProvider.GenTask<Item>(Registries.ITEM) {
             override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Item>) {
-                // Material
-                for ((prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) in contents.getBlockTable()) {
+                // Material Block
+                for ((prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) in existing.blocks) {
                     addMaterial(factory, prefix, key).add(block)
                 }
-                for ((prefix: HTFluidTagPrefix, key: HTMaterialKey, fluid: HTFluidHolderLike<*>) in contents.getFluidTable()) {
+                for ((prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) in registered.blocks) {
+                    addMaterial(factory, prefix, key).add(block)
+                }
+                // Material Fluid
+                for ((prefix: HTFluidTagPrefix, key: HTMaterialKey, fluid: HTFluidHolderLike<*>) in fluids) {
                     addTags(factory, Tags.Items.BUCKETS, prefix.createBucketTag(key)).add(fluid.getBucketHolder())
                 }
-                for ((prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) in contents.getItemTable()) {
+                // Material Item
+                for ((prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) in existing.items) {
+                    addMaterial(factory, prefix, key).add(item)
+                }
+                for ((prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) in registered.items) {
                     addMaterial(factory, prefix, key).add(item)
                     if (prefix == CommonTagPrefixes.GEM || prefix == CommonTagPrefixes.INGOT) {
                         factory.apply(ItemTags.BEACON_PAYMENT_ITEMS).addTag(prefix, key)
@@ -164,8 +179,8 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
                         factory.apply(Tags.Items.STRINGS).add(item)
                     }
                 }
-                // Tool
-                for ((toolType: HTToolType, _, tool: HTIdLike) in contents.getToolTable()) {
+                // Material Tool
+                for ((toolType: HTToolType, _, tool: HTIdLike) in registered.tools) {
                     toolType.toolTags.map(factory::apply).forEach { it.add(tool) }
                 }
             }

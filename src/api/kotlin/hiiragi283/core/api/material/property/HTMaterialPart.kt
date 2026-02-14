@@ -1,6 +1,5 @@
 package hiiragi283.core.api.material.property
 
-import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -47,9 +46,7 @@ interface HTMaterialPart {
         override val tagKey: TagKey<Item>
             get() = prefix.itemTagKey(key)
         override val item: HTItemHolderLike<*>?
-            get() = with(HiiragiCoreAccess.INSTANCE.patchedMaterialContents) {
-                getBlock(prefix, key) ?: getItem(prefix, key)
-            }
+            get() = TODO()
         override val suffix: String = prefix.name
     }
 }

@@ -3,11 +3,18 @@ package hiiragi283.core.api
 import com.google.gson.JsonObject
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetRenderer
+import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
+import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.HTHolderLike
+import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
+import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.text.HTTextResult
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
@@ -37,14 +44,25 @@ abstract class HiiragiCoreAccess {
     abstract val materialManager: HTMaterialManager
 
     /**
-     * 登録された素材コンテンツを取得します。
+     * 既存の素材コンテンツを取得します。
      */
-    abstract val materialContents: HTMaterialContents
+    abstract val existingContents: HTMaterialAccess
 
     /**
-     * バニラ由来の素材コンテンツを取得します。
+     * 登録された素材コンテンツを取得します。
      */
-    abstract val patchedMaterialContents: HTMaterialContents
+    abstract val registeredContents: HTMaterialAccess
+
+    abstract val registeredFluids: HTMaterialContents<HTFluidTagPrefix, HTFluidHolderLike<*>>
+
+    fun getMaterialBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTBlockHolderLike<*, *>? =
+        existingContents.blocks[prefix, material] ?: registeredContents.blocks[prefix, material]
+
+    fun getMaterialItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
+        existingContents.items[prefix, material] ?: registeredContents.items[prefix, material]
+
+    fun getMaterialBlockOrItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
+        existingContents.getBlockOrItem(prefix, material) ?: registeredContents.getBlockOrItem(prefix, material)
 
     //    Tag    //
 

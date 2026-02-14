@@ -34,14 +34,15 @@ import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCToolMaterials
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
+import net.neoforged.bus.api.EventPriority
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.common.Tags
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
-object HCMaterialEventHandler {
-    @SubscribeEvent
-    fun gatherAttributes(event: HTMaterialPropertyEvent) {
+object HCMaterialPropertyHandler {
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    fun gatherProperties(event: HTMaterialPropertyEvent) {
         vanilla(event)
         common(event)
         hiiragiCore(event)
@@ -200,7 +201,6 @@ object HCMaterialEventHandler {
         }
         event.modify(VanillaMaterialKeys.PRISMARINE) {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
-            addItemPrefixes(CommonTagPrefixes.DUST)
 
             setName("Prismarine", "プリズマリン")
         }
@@ -361,6 +361,13 @@ object HCMaterialEventHandler {
 
             setName("Obsidian", "黒曜石")
             setTextureSet(HTMaterialTextureSet.DULL)
+        }
+
+        event.modify(VanillaMaterialKeys.BLAZE) {
+            setName("Blaze", "ブレイズ")
+        }
+        event.modify(VanillaMaterialKeys.BREEZE) {
+            setName("Breeze", "ブリーズ")
         }
     }
 

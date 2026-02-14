@@ -11,11 +11,12 @@ import hiiragi283.core.api.data.lang.HTLangType
 import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.data.texture.HTTextureUtil
 import hiiragi283.core.api.item.tool.HTToolType
-import hiiragi283.core.api.material.HTMaterialContents
+import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
+import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
@@ -41,9 +42,6 @@ import net.neoforged.neoforge.common.Tags
 import java.util.function.Consumer
 
 data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiCoreAPI.MOD_ID) {
-    private val contents: HTMaterialContents by lazy { HiiragiCoreAccess.INSTANCE.materialContents }
-    private val materialManager: HTMaterialManager by lazy { HiiragiCoreAccess.INSTANCE.materialManager }
-
     override fun addDynamicTranslations(afterLanguageLoadEvent: AfterLanguageLoadEvent) {}
 
     override fun regenerateDynamicAssets(executor: Consumer<ResourceGenTask>) {
@@ -173,14 +171,17 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
 
     @JvmStatic
     fun addTranslations(langType: HTLangType, consumer: (String, String) -> Unit) {
-        for (entry: HTMaterialManager.Entry in materialManager) {
+        val registered: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
+        val manager: HTMaterialManager = HiiragiCoreAccess.INSTANCE.materialManager
+
+        for (entry: HTMaterialManager.Entry in manager) {
             // Block
-            for ((prefix: HTTagPrefix, block: HTHasTranslationKey) in contents.getBlockMap(entry)) {
+            for ((prefix: HTTagPrefix, block: HTHasTranslationKey) in registered.blocks.column(entry)) {
                 val name: String = translate(langType, prefix, entry) ?: continue
                 consumer(block.translationKey, name)
             }
             // Fluid
-            for ((prefix: HTFluidTagPrefix, fluid) in contents.getFluidMap(entry)) {
+            for ((prefix: HTFluidTagPrefix, fluid: HTFluidHolderLike<*>) in HiiragiCoreAccess.INSTANCE.registeredFluids.column(entry)) {
                 val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
                 val name: String = prefix.translate(langType, materialName)
                 consumer(fluid.getFluidType().descriptionId, name)
@@ -191,12 +192,12 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
                 consumer(Tags.getTagTranslationKey(prefix.createBucketTag(entry)), bucketName)
             }
             // Item
-            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in contents.getItemMap(entry)) {
+            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in registered.items.column(entry)) {
                 val name: String = translate(langType, prefix, entry) ?: continue
                 consumer(item.translationKey, name)
             }
             // Tool
-            for ((toolType: HTToolType, tool: HTHasTranslationKey) in contents.getToolMap(entry)) {
+            for ((toolType: HTToolType, tool: HTHasTranslationKey) in registered.tools.column(entry)) {
                 val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
                 consumer(tool.translationKey, toolType.langPattern.translate(langType, materialName))
             }

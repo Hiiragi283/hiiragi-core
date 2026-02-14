@@ -1,7 +1,5 @@
 package hiiragi283.core.api.data.loot
 
-import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.asBlockSequence
 import net.minecraft.core.Holder
@@ -42,8 +40,6 @@ abstract class HTBlockLootTableProvider(protected val modId: String, registries:
      * @since 0.10.0
      */
     val fortune: Holder<Enchantment> by lazy { registries.holderOrThrow(Enchantments.FORTUNE) }
-
-    protected val contents: HTMaterialContents = HiiragiCoreAccess.INSTANCE.materialContents
 
     /**
      * ブロックをそのままドロップするルートテーブルを指定します。

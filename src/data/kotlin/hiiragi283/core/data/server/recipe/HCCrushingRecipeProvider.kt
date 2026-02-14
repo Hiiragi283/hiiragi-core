@@ -67,12 +67,6 @@ object HCCrushingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
         }
 
         HCAnvilCrushingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(Items.PRISMARINE_SHARD)
-            result = resultCreator.create(Items.PRISMARINE_CRYSTALS)
-            recipeId suffix "_from_shard"
-        }
-
-        HCAnvilCrushingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(Tags.Items.COBBLESTONES)
             result = resultCreator.create(Items.GRAVEL)
         }

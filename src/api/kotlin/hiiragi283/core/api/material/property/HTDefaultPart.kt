@@ -67,9 +67,8 @@ sealed interface HTDefaultPart {
 
         override fun getTag(material: HTMaterialLike): TagKey<Item> = prefix.itemTagKey(material)
 
-        override fun getItem(material: HTMaterialLike): HTItemHolderLike<*>? = with(HiiragiCoreAccess.INSTANCE.patchedMaterialContents) {
-            getBlock(prefix, material) ?: getItem(prefix, material)
-        }
+        override fun getItem(material: HTMaterialLike): HTItemHolderLike<*>? =
+            HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(prefix, material)
 
         override fun getSuffix(): String = prefix.name
     }

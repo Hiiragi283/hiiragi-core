@@ -7,6 +7,7 @@ import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.item.tool.HTToolType
+import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
@@ -144,16 +145,13 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     //    Crafting    //
 
-    private fun getBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
-        HiiragiCoreAccess.INSTANCE.patchedMaterialContents.getBlock(prefix, material)
-
     private fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
-        HiiragiCoreAccess.INSTANCE.patchedMaterialContents.getItem(prefix, material)
+        HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(prefix, material)
 
     @JvmStatic
     private fun baseToBlock(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
         val blockProperty: HTStorageBlockProperty = entry.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK)
-        val block: HTItemHolderLike<*> = getBlock(CommonTagPrefixes.BLOCK, entry) ?: return
+        val block: HTItemHolderLike<*> = getItem(CommonTagPrefixes.BLOCK, entry) ?: return
 
         val defaultPart: HTDefaultPart = entry.getDefaultPart() ?: return
         val suffix: String = defaultPart.getSuffix()
@@ -289,7 +287,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             }
         }
         // レシピを登録
-        val rawBlock: HTItemHolderLike<*> = getBlock(CommonTagPrefixes.RAW_BLOCK, entry) ?: return
+        val rawBlock: HTItemHolderLike<*> = getItem(CommonTagPrefixes.RAW_BLOCK, entry) ?: return
         HTShapedRecipeBuilder.create(output) {
             hollow8()
             define('A') += CommonTagPrefixes.RAW to entry
@@ -301,13 +299,16 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     @JvmStatic
     private fun tool(entry: HTMaterialManager.Entry) {
+        val existing: HTMaterialContents<HTToolType, HTItemHolderLike<*>> = HiiragiCoreAccess.INSTANCE.existingContents.tools
+        val registered: HTMaterialContents<HTToolType, HTItemHolderLike<*>> = HiiragiCoreAccess.INSTANCE.registeredContents.tools
+
         val inputTag: TagKey<Item> = entry.getDefaultPart(entry) ?: return
-        for ((toolType: HTToolType, tool: HTItemHolderLike<*>) in HiiragiCoreAccess.INSTANCE.materialContents.getToolMap(entry)) {
+        for ((toolType: HTToolType, tool: HTItemHolderLike<*>) in registered.column(entry)) {
             val smithingProperty: HTSmithingRecipeProperty? = entry[HTMaterialPropertyKeys.SMITHING_RECIPE]
             if (smithingProperty != null) {
                 // Smithing
                 val (template: HTItemHolderLike<*>, base: HTMaterialKey) = smithingProperty
-                val baseTool: ItemLike = HiiragiCoreAccess.INSTANCE.patchedMaterialContents.getTool(toolType, base) ?: continue
+                val baseTool: ItemLike = existing[toolType, base] ?: registered[toolType, base] ?: continue
                 HTSmithingRecipeBuilder.create(output) {
                     this.template += template
                     this.base += baseTool
@@ -355,7 +356,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     @JvmStatic
     private fun smeltOreToBase(prefix: HTTagPrefix, entry: HTMaterialManager.Entry) {
         if (HTMaterialPropertyKeys.DISABLE_SMELTING in entry) return
-        val ore: HTItemHolderLike<*> = getBlock(prefix, entry) ?: getItem(prefix, entry) ?: return
+        val ore: HTItemHolderLike<*> = getItem(prefix, entry) ?: getItem(prefix, entry) ?: return
         val smeltedMaterial: HTMaterialLike = entry[HTMaterialPropertyKeys.SMELTED_TO] ?: entry
         val smeltedPropertyMap: HTPropertyMap = materialManager[smeltedMaterial] ?: return
         val base: HTItemHolderLike<*> = smeltedPropertyMap

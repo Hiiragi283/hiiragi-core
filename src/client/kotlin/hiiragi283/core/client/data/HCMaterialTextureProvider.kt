@@ -5,7 +5,6 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.HTMapLike
 import hiiragi283.core.api.data.texture.HTTextureUtil
-import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
@@ -16,6 +15,7 @@ import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.CommonFluidTagPrefixes
+import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
@@ -31,10 +31,10 @@ data object HCMaterialTextureProvider : ResourceGenTask {
     override fun accept(manager: ResourceManager, sink: ResourceSink) {
         HTTextureUtil.templatePalette = HTTextureUtil.getPalette(manager, HiiragiCoreAPI.id("template")).getOrThrow()
 
-        with(HiiragiCoreAccess.INSTANCE.materialContents) {
-            material(manager, sink, HTConst.BLOCK, ::getBlockMap)
-            material(manager, sink, HTConst.ITEM, ::getItemMap)
-            molten(manager, sink, this)
+        with(HiiragiCoreAccess.INSTANCE) {
+            material(manager, sink, HTConst.BLOCK, registeredContents.blocks::column)
+            material(manager, sink, HTConst.ITEM, registeredContents.items::column)
+            molten(manager, sink, registeredFluids::get)
         }
     }
 
@@ -75,10 +75,10 @@ data object HCMaterialTextureProvider : ResourceGenTask {
     }
 
     @JvmStatic
-    private fun molten(manager: ResourceManager, sink: ResourceSink, contents: HTMaterialContents) {
+    private fun molten(manager: ResourceManager, sink: ResourceSink, factory: (HTFluidTagPrefix, HTMaterialLike) -> HTIdLike?) {
         // すべての素材に対してテクスチャの生成を試みる
         for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
-            val molten: HTIdLike = contents.getFluid(CommonFluidTagPrefixes.MOLTEN, entry) ?: continue
+            val molten: HTIdLike = factory(CommonFluidTagPrefixes.MOLTEN, entry) ?: continue
             // パレットを取得
             var palette: Palette = HTTextureUtil
                 .getPalette(
