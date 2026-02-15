@@ -60,11 +60,11 @@ abstract class HTModelProvider : ResourceGenTask {
         sink.addBlockState(block.getId(), generator.get())
     }
 
-    protected fun addSimpleBlock(block: HTBlockHolderLike<*, *>, model: HTTexturedModel) {
+    protected fun addSimpleBlock(block: HTBlockHolderLike<*>, model: HTTexturedModel) {
         addBlockState(createSimpleGenerator(block, model.saveBlock(block, modelOutput)), block)
     }
 
-    protected fun addSimpleBlockAndItem(block: HTBlockHolderLike<*, *>, model: HTTexturedModel) {
+    protected fun addSimpleBlockAndItem(block: HTBlockHolderLike<*>, model: HTTexturedModel) {
         addSimpleBlock(block, model)
         sink.addItemModel(block.getId(), DelegatedModel(block.blockId).get())
     }
@@ -72,11 +72,11 @@ abstract class HTModelProvider : ResourceGenTask {
     /**
      * @see net.minecraft.data.models.BlockModelGenerators.createTrivialBlock
      */
-    protected fun addSimpleBlock(block: HTBlockHolderLike<*, *>, provider: HTTexturedModel.Provider = HTTexturedModels.CUBE_ALL) {
+    protected fun addSimpleBlock(block: HTBlockHolderLike<*>, provider: HTTexturedModel.Provider = HTTexturedModels.CUBE_ALL) {
         addBlockState(createSimpleGenerator(block, provider.saveBlock(block, modelOutput)), block)
     }
 
-    protected fun addSimpleBlockAndItem(block: HTBlockHolderLike<*, *>, provider: HTTexturedModel.Provider = HTTexturedModels.CUBE_ALL) {
+    protected fun addSimpleBlockAndItem(block: HTBlockHolderLike<*>, provider: HTTexturedModel.Provider = HTTexturedModels.CUBE_ALL) {
         addSimpleBlock(block, provider)
         sink.addItemModel(block.getId(), DelegatedModel(block.blockId).get())
     }
@@ -84,11 +84,11 @@ abstract class HTModelProvider : ResourceGenTask {
     /**
      * @see net.minecraft.data.models.BlockModelGenerators.createSimpleBlock
      */
-    protected fun createSimpleGenerator(block: HTBlockHolderLike<*, *>, modelId: ResourceLocation): MultiVariantGenerator =
+    protected fun createSimpleGenerator(block: HTBlockHolderLike<*>, modelId: ResourceLocation): MultiVariantGenerator =
         MultiVariantGenerator.multiVariant(block.asBlock(), Variant.variant().with(VariantProperties.MODEL, modelId))
 
     protected fun addLiquidBlock(content: HTFluidContent) {
-        val block: HTBlockHolderLike<*, *> = content.blockHolder ?: return
+        val block: HTBlockHolderLike<*> = content.blockHolder ?: return
         addSimpleBlock(
             block,
             HTTexturedModels.particleOnly(HTConst.MINECRAFT.toId(HTConst.BLOCK, "water_still")),
@@ -98,7 +98,7 @@ abstract class HTModelProvider : ResourceGenTask {
     /**
      * @see net.minecraft.data.models.BlockModelGenerators.createCropBlock
      */
-    protected fun addCropBlock(block: HTBlockHolderLike<*, *>, ageProperty: Property<Int>, vararg ageToSuffix: Int) {
+    protected fun addCropBlock(block: HTBlockHolderLike<*>, ageProperty: Property<Int>, vararg ageToSuffix: Int) {
         // Block
         require(ageProperty.possibleValues.size == ageToSuffix.size)
         val map: MutableMap<Int, ResourceLocation> = hashMapOf()

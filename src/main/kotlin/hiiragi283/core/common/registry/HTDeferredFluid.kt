@@ -10,14 +10,14 @@ import net.minecraft.world.level.material.Fluid
 
 class HTDeferredFluid<FLUID : Fluid> :
     HTDeferredHolder<Fluid, FLUID>,
-    HTFluidHolderLike.Delegated<FLUID> {
+    HTFluidHolderLike.Simple<FLUID> {
     constructor(key: ResourceKey<Fluid>) : super(key)
 
     constructor(id: ResourceLocation) : super(Registries.FLUID, id)
 
     override fun getId(): ResourceLocation = super<HTDeferredHolder>.getId()
 
-    override fun getFluidHolder(): Holder<Fluid> = getHolder()
-
     override fun asFluid(): FLUID = get()
+
+    override fun getFluidHolder(): Holder<Fluid> = getHolder()
 }

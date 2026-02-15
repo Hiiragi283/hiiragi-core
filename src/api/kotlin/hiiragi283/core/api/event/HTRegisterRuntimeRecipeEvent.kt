@@ -6,8 +6,8 @@ import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.HTFluidHolderLike
-import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.registry.holderSetOrNull
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
@@ -58,10 +58,10 @@ class HTRegisterRuntimeRecipeEvent(val recipeManager: RecipeManager, val context
     )
 
     // TagKey
-    fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<HTHolderLike.HolderDelegate<T, T>> =
+    fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLikeDelegate<T>> =
         HiiragiCoreAccess.INSTANCE.getFirstHolder(context.provider, tagKey)
 
-    fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): HTHolderLike.HolderDelegate<T, T>? = getHolderResult(tagKey)
+    fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): HTSimpleHolderLikeDelegate<T>? = getHolderResult(tagKey)
         .mapOrElse(identity()) { message: Component ->
             if (printLog) HiiragiCoreAPI.LOGGER.debug(message.string)
             null
@@ -71,14 +71,14 @@ class HTRegisterRuntimeRecipeEvent(val recipeManager: RecipeManager, val context
 
     // Material
     fun getFirstHolder(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
-        getFirstHolder(prefix.itemTagKey(material), true)?.let { holder: HTHolderLike.HolderDelegate<Item, Item> ->
+        getFirstHolder(prefix.itemTagKey(material), true)?.let { holder: HTSimpleHolderLikeDelegate<Item> ->
             HTItemHolderLike.of(holder.get())
         }
 
     fun isPresentTag(prefix: HTTagPrefix, material: HTMaterialLike): Boolean = isPresentTag(prefix.itemTagKey(material))
 
     fun getFirstHolder(prefix: HTFluidTagPrefix, material: HTMaterialLike): HTFluidHolderLike<*>? =
-        getFirstHolder(prefix.createTagKey(material), true)?.let { holder: HTHolderLike.HolderDelegate<Fluid, Fluid> ->
+        getFirstHolder(prefix.createTagKey(material), true)?.let { holder: HTSimpleHolderLikeDelegate<Fluid> ->
             HTFluidHolderLike.of(holder.get())
         }
 

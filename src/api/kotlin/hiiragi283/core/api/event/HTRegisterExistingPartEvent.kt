@@ -16,13 +16,13 @@ sealed class HTRegisterExistingPartEvent :
     IModBusEvent {
     //    BlockEvent    //
 
-    class BlockEvent(private val blockConsumer: (HTTagPrefix, HTMaterialKey, HTBlockHolderLike<*, *>) -> Unit) :
+    class BlockEvent(private val blockConsumer: (HTTagPrefix, HTMaterialKey, HTBlockHolderLike<*>) -> Unit) :
         HTRegisterExistingPartEvent() {
         fun registerBlock(prefix: HTTagPrefix, material: HTMaterialLike, block: Block) {
             registerBlock(prefix, material, HTBlockHolderLike.of(block))
         }
 
-        fun registerBlock(prefix: HTTagPrefix, material: HTMaterialLike, block: HTBlockHolderLike<*, *>) {
+        fun registerBlock(prefix: HTTagPrefix, material: HTMaterialLike, block: HTBlockHolderLike<*>) {
             blockConsumer(prefix, material.asMaterialKey(), block)
         }
     }

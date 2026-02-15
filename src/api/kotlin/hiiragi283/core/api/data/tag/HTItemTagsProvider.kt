@@ -41,7 +41,7 @@ abstract class HTItemTagsProvider(modId: String, private val blockTags: Completa
     }
 
     fun HTTagBuilder<Item>.addItem(item: ItemLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<Item> =
-        this.add(HTItemHolderLike.of(item), type)
+        this.add(HTItemHolderLike.of(item.asItem()), type)
 
     //    HTTagsProvider    //
 

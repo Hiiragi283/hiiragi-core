@@ -67,7 +67,7 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
             // Moonlightが生成時点でレジストリを参照できないのでこの世の終わりみたいな文字列を書くことになった
             // GTCEu Modernをいい感じに参考にしたらなんとかなるんかなこれ
             // それかJSONビルダー作って真面目に書くか
-            registered.blocks.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTBlockHolderLike<*, *>) ->
+            registered.blocks.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTBlockHolderLike<*>) ->
                 if (prefix in CommonTagPrefixes.ORES) {
                     val raw: HTIdLike = registered.items[CommonTagPrefixes.RAW, key] ?: return@forEach
                     val id: ResourceLocation = block.getId()

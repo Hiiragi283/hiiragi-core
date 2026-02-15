@@ -3,8 +3,8 @@ package hiiragi283.core.api.item
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
-import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.registry.asSequence
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries
@@ -41,7 +41,7 @@ open class HTPotionBasedItem(properties: Properties) :
             .lookupOrThrow(Registries.POTION)
             .filterFeatures(context.enabledFeatures)
             .asSequence()
-            .mapNotNull { holder: HTHolderLike.HolderDelegate<Potion, Potion> ->
+            .mapNotNull { holder: HTSimpleHolderLikeDelegate<Potion> ->
                 val potion: Holder<Potion> = holder.getHolder()
                 val contents: HTPotionContents = HTPotionContents.of(potion, HTBottleType.DEFAULT) ?: return@mapNotNull null
                 HTPotionHelper.setContents(baseItem.toStack(), contents)

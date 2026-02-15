@@ -4,6 +4,7 @@ import hiiragi283.core.api.item.HTBlockItem
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTDoubleDeferredHolder
+import hiiragi283.core.api.registry.HTItemHolderLike
 import net.minecraft.core.Holder
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
@@ -19,7 +20,8 @@ class HTDeferredBlock<BLOCK : Block, ITEM : Item>(first: HTDeferredOnlyBlock<BLO
         first,
         second,
     ),
-    HTBlockHolderLike<BLOCK, ITEM> {
+    HTBlockHolderLike<BLOCK>,
+    HTItemHolderLike<ITEM> {
     constructor(first: HTDeferredHolder<Block, BLOCK>, second: HTDeferredHolder<Item, ITEM>) : this(
         HTDeferredOnlyBlock(first.id),
         HTDeferredItem(second.id),
@@ -29,13 +31,13 @@ class HTDeferredBlock<BLOCK : Block, ITEM : Item>(first: HTDeferredOnlyBlock<BLO
 
     val itemHolder: HTDeferredItem<ITEM> = second
 
-    override fun getBlockHolder(): Holder<Block> = delegate
-
     override fun asBlock(): BLOCK = get()
 
-    override fun getItemHolder(): Holder<Item> = second.delegate
+    override fun getBlockHolder(): Holder<Block> = delegate
 
     override fun asItem(): ITEM = getSecond()
+
+    override fun getItemHolder(): Holder<Item> = second.delegate
 
     override val translationKey: String get() = get().descriptionId
 

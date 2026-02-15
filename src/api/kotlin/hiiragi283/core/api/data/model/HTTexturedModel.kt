@@ -1,10 +1,10 @@
 package hiiragi283.core.api.data.model
 
 import hiiragi283.core.api.HTBuilderMarker
-import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.data.models.model.ModelTemplate
 import net.minecraft.data.models.model.TextureMapping
 import net.minecraft.data.models.model.TexturedModel
@@ -36,8 +36,7 @@ class HTTexturedModel(val template: ModelTemplate, val texture: TextureMapping) 
             Provider { holder: HTIdLike ->
                 val model: TexturedModel = holder
                     .getId()
-                    .let(HTBlockHolderLike.Companion::of)
-                    .asBlock()
+                    .let(BuiltInRegistries.BLOCK::get)
                     .let(provider::get)
                 HTTexturedModel(model.template, model.mapping)
             }

@@ -2,10 +2,10 @@ package hiiragi283.core.data.server.recipe
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.data.recipe.builder.HCAnvilCrushingRecipeBuilder
 import hiiragi283.core.common.material.VanillaMaterialKeys
+import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import net.minecraft.tags.ItemTags
@@ -38,7 +38,7 @@ object HCCrushingRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_
         }
 
         mapOf(
-            HTItemHolderLike.of(CommonTagPrefixes.DUST.createId(VanillaMaterialKeys.WOOD)) to ItemTags.LOGS,
+            HTSimpleDeferredItem(CommonTagPrefixes.DUST.createId(VanillaMaterialKeys.WOOD)) to ItemTags.LOGS,
             Items.SAND to Tags.Items.SANDSTONE_UNCOLORED_BLOCKS,
             Items.RED_SAND to Tags.Items.SANDSTONE_RED_BLOCKS,
         ).forEach { (output: ItemLike, input: TagKey<Item>) ->

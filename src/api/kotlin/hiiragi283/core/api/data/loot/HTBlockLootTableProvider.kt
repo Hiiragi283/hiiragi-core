@@ -21,15 +21,15 @@ import net.minecraft.world.level.storage.loot.LootTable
 abstract class HTBlockLootTableProvider(protected val modId: String, registries: HolderLookup.Provider) :
     BlockLootSubProvider(setOf(), FeatureFlags.REGISTRY.allFlags(), registries) {
     final override fun getKnownBlocks(): Iterable<Block> = getRawBlocks()
-        .filter { holder: HTBlockHolderLike<*, *> -> holder.namespace == modId }
-        .map(HTBlockHolderLike<*, *>::asBlock)
+        .filter { holder: HTBlockHolderLike<*> -> holder.namespace == modId }
+        .map(HTBlockHolderLike<*>::asBlock)
         .filter { block: Block -> block.lootTable != BuiltInLootTables.EMPTY }
         .toList()
 
     /**
      * @since 0.10.0
      */
-    protected open fun getRawBlocks(): Sequence<HTBlockHolderLike<*, *>> = registries
+    protected open fun getRawBlocks(): Sequence<HTBlockHolderLike<*>> = registries
         .lookupOrThrow(Registries.BLOCK)
         .asBlockSequence()
 
@@ -44,15 +44,15 @@ abstract class HTBlockLootTableProvider(protected val modId: String, registries:
     /**
      * ブロックをそのままドロップするルートテーブルを指定します。
      */
-    protected fun dropSelf(like: HTBlockHolderLike<*, *>) {
+    protected fun dropSelf(like: HTBlockHolderLike<*>) {
         dropSelf(like.asBlock())
     }
 
-    protected fun add(like: HTBlockHolderLike<*, *>, table: LootTable.Builder) {
+    protected fun add(like: HTBlockHolderLike<*>, table: LootTable.Builder) {
         add(like.asBlock(), table)
     }
 
-    protected inline fun <BLOCK : Block> add(like: HTBlockHolderLike<BLOCK, *>, factory: (BLOCK) -> LootTable.Builder) {
+    protected inline fun <BLOCK : Block> add(like: HTBlockHolderLike<BLOCK>, factory: (BLOCK) -> LootTable.Builder) {
         val block: BLOCK = like.asBlock()
         add(block, factory(block))
     }

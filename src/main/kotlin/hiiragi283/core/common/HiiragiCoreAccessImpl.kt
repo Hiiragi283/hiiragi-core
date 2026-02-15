@@ -16,6 +16,7 @@ import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.registry.holderSetOrNull
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
@@ -91,7 +92,7 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
     override val materialManager: HTMaterialManager get() = materialManagerCache
 
     override val existingContents: HTMaterialAccess = object : HTMaterialAccess {
-        override val blocks: HTMaterialContents<HTTagPrefix, HTBlockHolderLike<*, *>> by lazy {
+        override val blocks: HTMaterialContents<HTTagPrefix, HTBlockHolderLike<*>> by lazy {
             HTMaterialContentsImpl(HCMiscRegister.existingBlocks) { prefix: HTTagPrefix, key: HTMaterialKey ->
                 "Unknown ${prefix.name} block for ${key.getId()}"
             }
@@ -109,7 +110,7 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
     }
 
     override val registeredContents: HTMaterialAccess = object : HTMaterialAccess {
-        override val blocks: HTMaterialContents<HTTagPrefix, HTBlockHolderLike<*, *>> by lazy {
+        override val blocks: HTMaterialContents<HTTagPrefix, HTBlockHolderLike<*>> by lazy {
             HTMaterialContentsImpl(HCMiscRegister.materialBlocks) { prefix: HTTagPrefix, key: HTMaterialKey ->
                 "Unregistered ${prefix.name} block for ${key.getId()}"
             }
@@ -153,16 +154,16 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
     override fun <T : Any> getFirstHolder(
         provider: HolderLookup.Provider?,
         tagKey: TagKey<T>,
-    ): HTTextResult<HTHolderLike.HolderDelegate<T, T>> {
+    ): HTTextResult<HTSimpleHolderLikeDelegate<T>> {
         // キャッシュから優先して取得
-        val cachedHolder: HTHolderLike.HolderDelegate<T, T>? = tagResultCache[tagKey] as? HTHolderLike.HolderDelegate<T, T>
+        val cachedHolder: HTSimpleHolderLikeDelegate<T>? = tagResultCache[tagKey] as? HTSimpleHolderLikeDelegate<T>
         if (cachedHolder != null) {
             return HTTextResult.success(cachedHolder)
         }
         // キャッシュから取得できない場合はレジストリから取得
         val provider1: HolderLookup.Provider = (provider ?: HiiragiCoreAPI.getActiveAccess())
             ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()
-        val holder: HTHolderLike.HolderDelegate<T, T> = provider1
+        val holder: HTSimpleHolderLikeDelegate<T> = provider1
             .holderSetOrNull(tagKey)
             ?.asSequence()
             ?.map(Holder<T>::toLike)

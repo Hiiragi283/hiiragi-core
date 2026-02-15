@@ -12,6 +12,7 @@ import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -58,7 +59,7 @@ abstract class HiiragiCoreAccess {
 
     abstract val registeredFluids: HTMaterialContents<HTFluidTagPrefix, HTFluidHolderLike<*>>
 
-    fun getMaterialBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTBlockHolderLike<*, *>? =
+    fun getMaterialBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTBlockHolderLike<*>? =
         existingContents.blocks[prefix, material] ?: registeredContents.blocks[prefix, material]
 
     fun getMaterialItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
@@ -80,10 +81,7 @@ abstract class HiiragiCoreAccess {
      * @param T レジストリの種類のクラス
      * @return [HTHolderLike]の[結果][HTTextResult]
      */
-    abstract fun <T : Any> getFirstHolder(
-        provider: HolderLookup.Provider?,
-        tagKey: TagKey<T>,
-    ): HTTextResult<HTHolderLike.HolderDelegate<T, T>>
+    abstract fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLikeDelegate<T>>
 
     //    Value IO    //
 

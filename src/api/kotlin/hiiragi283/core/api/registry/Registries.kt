@@ -16,7 +16,7 @@ import kotlin.streams.asSequence
 /**
  * @since 0.9.0
  */
-fun <R : Any> HolderLookup<R>.asSequence(): Sequence<HTHolderLike.HolderDelegate<R, R>> = this
+fun <R : Any> HolderLookup<R>.asSequence(): Sequence<HTSimpleHolderLikeDelegate<R>> = this
     .listElements()
     .map(Holder<R>::toLike)
     .asSequence()
@@ -24,8 +24,8 @@ fun <R : Any> HolderLookup<R>.asSequence(): Sequence<HTHolderLike.HolderDelegate
 /**
  * @since 0.9.0
  */
-fun HolderLookup<Block>.asBlockSequence(): Sequence<HTBlockHolderLike<*, *>> = this
-    .listElementIds()
+fun HolderLookup<Block>.asBlockSequence(): Sequence<HTBlockHolderLike<*>> = this
+    .listElements()
     .map(HTBlockHolderLike.Companion::of)
     .asSequence()
 
@@ -33,7 +33,7 @@ fun HolderLookup<Block>.asBlockSequence(): Sequence<HTBlockHolderLike<*, *>> = t
  * @since 0.10.0
  */
 fun HolderLookup<Fluid>.asFluidSequence(): Sequence<HTFluidHolderLike<*>> = this
-    .listElementIds()
+    .listElements()
     .map(HTFluidHolderLike.Companion::of)
     .asSequence()
 
@@ -41,13 +41,13 @@ fun HolderLookup<Fluid>.asFluidSequence(): Sequence<HTFluidHolderLike<*>> = this
  * @since 0.9.0
  */
 fun HolderLookup<Item>.asItemSequence(): Sequence<HTItemHolderLike<*>> = this
-    .listElementIds()
+    .listElements()
     .map(HTItemHolderLike.Companion::of)
     .asSequence()
 
-fun <R : Any, T : Any> HolderLookup<R>.getHolderDataMap(type: DataMapType<R, T>): Map<HTHolderLike<R, R>, T> = this
+fun <R : Any, T : Any> HolderLookup<R>.getHolderDataMap(type: DataMapType<R, T>): Map<HTSimpleHolderLikeDelegate<R>, T> = this
     .asSequence()
-    .mapNotNull { holder: HTHolderLike.HolderDelegate<R, R> ->
+    .mapNotNull { holder: HTSimpleHolderLikeDelegate<R> ->
         val data: T = holder.getHolder().getData(type) ?: return@mapNotNull null
         holder to data
     }.toMap()

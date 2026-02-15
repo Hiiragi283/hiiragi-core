@@ -29,7 +29,7 @@ data object HCModelProvider : HTModelProvider() {
     private fun registerMaterials(manager: ResourceManager) {
         val registered: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
         // Block
-        registered.blocks.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTBlockHolderLike<*, *>) ->
+        registered.blocks.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTBlockHolderLike<*>) ->
             if (prefix in CommonTagPrefixes.ORES) {
                 val stoneTexture: ResourceLocation = prefix[HTTagPropertyKeys.ORE_STONE_TEX] ?: return@forEach
                 addSimpleBlockAndItem(

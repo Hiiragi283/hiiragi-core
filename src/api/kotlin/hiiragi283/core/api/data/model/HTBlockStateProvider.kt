@@ -78,7 +78,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
 
     // Block
 
-    protected fun <BLOCK : HTBlockHolderLike<*, *>> registerVariants(
+    protected fun <BLOCK : HTBlockHolderLike<*>> registerVariants(
         block: BLOCK,
         stateDispatcher: (BLOCK, BlockState) -> Array<ConfiguredModel>,
     ) {
@@ -88,18 +88,18 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
     /**
      * フルブロックのモデルを登録します。
      */
-    protected fun simpleBlockAndItem(block: HTBlockHolderLike<*, *>, model: ModelFile = cubeAll(block.asBlock())) {
+    protected fun simpleBlockAndItem(block: HTBlockHolderLike<*>, model: ModelFile = cubeAll(block.asBlock())) {
         simpleBlockWithItem(block.asBlock(), model)
     }
 
-    protected fun <BLOCK : HTBlockHolderLike<*, *>> simpleBlockAndItem(block: BLOCK, factory: (BLOCK) -> ModelFile) {
+    protected fun <BLOCK : HTBlockHolderLike<*>> simpleBlockAndItem(block: BLOCK, factory: (BLOCK) -> ModelFile) {
         simpleBlockWithItem(block.asBlock(), factory(block))
     }
 
     /**
      * レイヤーを持ったフルブロックのモデルを登録します。
      */
-    protected fun layeredBlock(block: HTBlockHolderLike<*, *>, layer0: ResourceLocation, layer1: ResourceLocation) {
+    protected fun layeredBlock(block: HTBlockHolderLike<*>, layer0: ResourceLocation, layer1: ResourceLocation) {
         simpleBlockAndItem(
             block,
             models()
@@ -113,7 +113,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
     /**
      * 水平方向に回転できるモデルを登録します。
      */
-    protected fun horizontalBlock(block: HTBlockHolderLike<*, *>, model: ModelFile) {
+    protected fun horizontalBlock(block: HTBlockHolderLike<*>, model: ModelFile) {
         horizontalBlock(block.asBlock(), model)
         itemModels().simpleBlockItem(block.asBlock())
     }
@@ -122,7 +122,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      * 柱状のモデルを登録します。
      */
     protected fun cubeColumn(
-        block: HTBlockHolderLike<*, *>,
+        block: HTBlockHolderLike<*>,
         side: ResourceLocation = block.blockId.withSuffix("_side"),
         end: ResourceLocation = block.blockId.withSuffix("_top"),
     ) {
@@ -132,7 +132,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
     /**
      * 既存のモデルを使用して登録します。
      */
-    protected fun <BLOCK : HTBlockHolderLike<*, *>> altModelBlock(
+    protected fun <BLOCK : HTBlockHolderLike<*>> altModelBlock(
         block: BLOCK,
         id: ResourceLocation = block.blockId,
         factory: (BLOCK, ModelFile) -> Unit = ::simpleBlockAndItem,
@@ -143,28 +143,28 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
     /**
      * テクスチャに[all]を使用するフルブロックのモデルを登録します。
      */
-    protected fun altTextureBlock(block: HTBlockHolderLike<*, *>, all: ResourceLocation) {
+    protected fun altTextureBlock(block: HTBlockHolderLike<*>, all: ResourceLocation) {
         simpleBlockAndItem(block, models().cubeAll(block.path, all))
     }
 
     /**
      * 描画タイプが`cutout`となるフルブロックのモデルを登録します。
      */
-    protected fun cutoutSimpleBlock(block: HTBlockHolderLike<*, *>, texId: ResourceLocation = block.blockId) {
+    protected fun cutoutSimpleBlock(block: HTBlockHolderLike<*>, texId: ResourceLocation = block.blockId) {
         simpleBlockAndItem(block, models().cubeAll(block.path, texId).renderType("cutout"))
     }
 
     /**
      * 描画タイプが`translucent`となるフルブロックのモデルを登録します。
      */
-    protected fun translucentSimpleBlock(block: HTBlockHolderLike<*, *>, texId: ResourceLocation = block.blockId) {
+    protected fun translucentSimpleBlock(block: HTBlockHolderLike<*>, texId: ResourceLocation = block.blockId) {
         simpleBlockAndItem(block, models().cubeAll(block.path, texId).renderType("translucent"))
     }
 
     /**
      * ハーフブロックのモデルを登録します。
      */
-    protected fun slabBlock(block: HTBlockHolderLike<SlabBlock, *>, texture: ResourceLocation) {
+    protected fun slabBlock(block: HTBlockHolderLike<out SlabBlock>, texture: ResourceLocation) {
         slabBlock(block.asBlock(), texture, texture)
         itemModels().simpleBlockItem(block.getId())
     }
@@ -172,7 +172,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
     /**
      * 階段ブロックのモデルを登録します。
      */
-    protected fun stairsBlock(block: HTBlockHolderLike<StairBlock, *>, texture: ResourceLocation) {
+    protected fun stairsBlock(block: HTBlockHolderLike<out StairBlock>, texture: ResourceLocation) {
         stairsBlock(block.asBlock(), texture)
         itemModels().simpleBlockItem(block.getId())
     }
@@ -180,7 +180,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
     /**
      * 壁ブロックのモデルを登録します。
      */
-    protected fun wallBlock(block: HTBlockHolderLike<WallBlock, *>, texture: ResourceLocation) {
+    protected fun wallBlock(block: HTBlockHolderLike<out WallBlock>, texture: ResourceLocation) {
         wallBlock(block.asBlock(), texture)
         itemModels().wallInventory(block.path, texture)
     }

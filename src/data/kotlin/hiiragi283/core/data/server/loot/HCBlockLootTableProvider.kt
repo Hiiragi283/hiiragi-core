@@ -18,7 +18,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 
 class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootTableProvider(HiiragiCoreAPI.MOD_ID, registries) {
-    override fun getRawBlocks(): Sequence<HTBlockHolderLike<*, *>> = HCBlocks.REGISTER.asBlockSequence()
+    override fun getRawBlocks(): Sequence<HTBlockHolderLike<*>> = HCBlocks.REGISTER.asBlockSequence()
 
     override fun generate() {
         getRawBlocks().forEach(::dropSelf)

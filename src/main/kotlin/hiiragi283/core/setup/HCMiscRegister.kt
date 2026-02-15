@@ -40,6 +40,8 @@ import hiiragi283.core.common.gui.sync.HTIntSyncPayload
 import hiiragi283.core.common.gui.sync.HTItemSyncPayload
 import hiiragi283.core.common.gui.sync.HTLongSyncPayload
 import hiiragi283.core.common.material.HTMaterialManagerImpl
+import hiiragi283.core.common.registry.HTDeferredFluid
+import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
@@ -61,7 +63,7 @@ internal object HCMiscRegister {
     private var hasInit: Boolean = false
 
     @JvmStatic
-    val existingBlocks: HTTable.Mutable<HTTagPrefix, HTMaterialKey, HTBlockHolderLike<*, *>> = mutableTableOf()
+    val existingBlocks: HTTable.Mutable<HTTagPrefix, HTMaterialKey, HTBlockHolderLike<*>> = mutableTableOf()
 
     @JvmStatic
     val existingItems: HTTable.Mutable<HTTagPrefix, HTMaterialKey, HTItemHolderLike<*>> = mutableTableOf()
@@ -70,7 +72,7 @@ internal object HCMiscRegister {
     val existingTools: HTTable.Mutable<HTToolType, HTMaterialKey, HTItemHolderLike<*>> = mutableTableOf()
 
     @JvmStatic
-    lateinit var materialBlocks: HTTable<HTTagPrefix, HTMaterialKey, HTBlockHolderLike<*, *>>
+    lateinit var materialBlocks: HTTable<HTTagPrefix, HTMaterialKey, HTBlockHolderLike<*>>
         private set
 
     @JvmStatic
@@ -142,7 +144,7 @@ internal object HCMiscRegister {
 
     @JvmStatic
     private fun registerExistingBlocks() {
-        ModLoader.postEvent(HTRegisterExistingPartEvent.BlockEvent(existingItems::put))
+        ModLoader.postEvent(HTRegisterExistingPartEvent.BlockEvent(existingBlocks::put))
 
         HiiragiCoreAPI.LOGGER.info("Registered Existing Material Blocks")
     }
@@ -209,8 +211,8 @@ internal object HCMiscRegister {
 
                         val content = HTFluidContent(
                             typeHolder,
-                            HTFluidHolderLike.of(id),
-                            HTItemHolderLike.of(bucketId),
+                            HTDeferredFluid(id),
+                            HTSimpleDeferredItem(bucketId),
                             Registries.FLUID.createCommonTag(id.path),
                             Registries.ITEM.createCommonTag(bucketId.path),
                             null,
@@ -230,7 +232,7 @@ internal object HCMiscRegister {
     @JvmStatic
     private fun registerMaterialItems(manager: HTMaterialManager, helper: RegisterEvent.RegisterHelper<Item>) {
         // 素材ブロックのアイテムを生成する
-        materialBlocks.forEach { (_, _, block: HTBlockHolderLike<*, *>) ->
+        materialBlocks.forEach { (_, _, block: HTBlockHolderLike<*>) ->
             val id: ResourceLocation = block.getId()
             helper.register(id, HTBlockItem(block.asBlock(), Item.Properties()))
         }
@@ -242,7 +244,7 @@ internal object HCMiscRegister {
                     .map { prefix: HTTagPrefix ->
                         val id: ResourceLocation = prefix.createId(entry)
                         helper.register(id, Item(Item.Properties()))
-                        Triple(prefix, entry.asMaterialKey(), HTItemHolderLike.of(id))
+                        Triple(prefix, entry.asMaterialKey(), HTSimpleDeferredItem(id))
                     }
             }
     }
@@ -259,7 +261,7 @@ internal object HCMiscRegister {
                     .map { toolType: HTToolType ->
                         val id: ResourceLocation = toolType.createId(entry)
                         helper.register(id, toolType.createTool(material))
-                        Triple(toolType, entry.asMaterialKey(), HTItemHolderLike.of(id))
+                        Triple(toolType, entry.asMaterialKey(), HTSimpleDeferredItem(id))
                     }
             }
     }

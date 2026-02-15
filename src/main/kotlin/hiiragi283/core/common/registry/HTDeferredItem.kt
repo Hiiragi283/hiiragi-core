@@ -18,9 +18,9 @@ class HTDeferredItem<ITEM : Item> :
 
     constructor(id: ResourceLocation) : super(Registries.ITEM, id)
 
-    override fun getItemHolder(): Holder<Item> = getHolder()
-
     override fun asItem(): ITEM = get()
+
+    override fun getItemHolder(): Holder<Item> = getHolder()
 
     override val translationKey: String get() = asItem().descriptionId
 
