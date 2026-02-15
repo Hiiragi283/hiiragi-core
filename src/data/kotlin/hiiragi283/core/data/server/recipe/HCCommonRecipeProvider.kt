@@ -322,14 +322,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             recipeId suffix "_from_bucket"
         }
 
-        // Latex
-        HTShapedRecipeBuilder.create(output) {
-            hollow8()
-            define('A') += Items.DANDELION
-            define('B') += Tags.Items.BUCKETS_EMPTY
-            resultStack += HCFluids.LATEX.getBucket()
-            recipeId suffix "_from_flower"
-        }
         // Latex -> Raw Rubber
         HTShapelessRecipeBuilder.create(output) {
             ingredients += HCFluids.LATEX.bucketTag

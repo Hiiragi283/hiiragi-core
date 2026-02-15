@@ -2,6 +2,7 @@ package hiiragi283.core.api.recipe.result
 
 import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.compareTo
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import net.minecraft.core.HolderLookup
@@ -55,7 +56,7 @@ data class HTChancedItemResult(val result: HTItemResult, val chance: Fraction, v
      * @return 完成品を取得できなかった場合は[fallback]の戻り値
      */
     fun getStackOrEmpty(provider: HolderLookup.Provider, chance: Float): ItemStack = when {
-        chance <= this.chance.toFloat() -> result.getStackOrEmpty(provider)
+        chance <= this.chance -> result.getStackOrEmpty(provider)
         else -> fallback.map { it.getStackOrEmpty(provider) }.orElseGet(ItemStack::EMPTY)
     }
 

@@ -1,7 +1,12 @@
 package hiiragi283.core.data.client
 
+import hiiragi283.core.api.HTDefaultColor
+import hiiragi283.core.api.data.lang.HTLangPatternProvider
+import hiiragi283.core.api.data.lang.HTLangProvider
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTranslation
+import hiiragi283.core.setup.HCFluids
 import java.util.function.BiConsumer
 
 interface HCLangProvider {
@@ -23,5 +28,12 @@ interface HCLangProvider {
         consumer.accept(HTCommonTranslation.PERCENTAGE, $$"%1$s %%")
 
         consumer.accept(HTCommonTranslation.TICK, $$"%1$s ticks")
+    }
+
+    fun addPatternTranslations(provider: HTLangProvider) {
+        val dyePattern: HTLangPatternProvider = HTLangPatternProvider.create("%s Dye", "%sの染料")
+        for ((color: HTDefaultColor, fluid: HTFluidContent) in HCFluids.DYE) {
+            provider.addFluid(fluid, dyePattern.translate(provider.langType, color))
+        }
     }
 }

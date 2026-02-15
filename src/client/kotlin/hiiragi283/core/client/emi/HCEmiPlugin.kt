@@ -20,6 +20,7 @@ import hiiragi283.core.api.integration.emi.HTEmiPlugin
 import hiiragi283.core.api.integration.emi.toEmi
 import hiiragi283.core.api.integration.emi.widget.HTGhostWidget
 import hiiragi283.core.api.integration.emi.widget.HTIngredientWidget
+import hiiragi283.core.api.item.HTPotionBasedItem
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionContents
 import hiiragi283.core.api.item.createItemStack
@@ -28,7 +29,6 @@ import hiiragi283.core.api.registry.asItemSequence
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
-import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.core.util.HCPotionFluidHelper
@@ -70,10 +70,14 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
             .map(HTFluidResourceType::toEmi)
             .forEach(registry::addEmiStack)
 
-        registry.setDefaultComparison(
-            HCFluids.POTION.getBucket(),
-            Comparison.compareData { stack: EmiStack -> stack.get(DataComponents.POTION_CONTENTS) },
-        )
+        for (item: Item in EmiPort.getItemRegistry()) {
+            if (item is HTPotionBasedItem) {
+                registry.setDefaultComparison(
+                    item,
+                    Comparison.compareData { stack: EmiStack -> stack.get(DataComponents.POTION_CONTENTS) },
+                )
+            }
+        }
 
         registry.setDefaultComparison(
             HCItems.ALMIGHTY_PICKAXE.asItem(),

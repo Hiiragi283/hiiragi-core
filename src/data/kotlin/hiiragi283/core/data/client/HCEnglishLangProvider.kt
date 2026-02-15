@@ -16,6 +16,7 @@ class HCEnglishLangProvider(output: PackOutput) :
     HTLangProvider(output, HiiragiCoreAPI.MOD_ID, HTLangTypes.EN_US),
     HCLangProvider {
     override fun addTranslations() {
+        addPatternTranslations(this)
         // Block
         add(HCBlocks.OIL_SAND, "Oil Sand")
         add(HCBlocks.OIL_SHALE, "Oil Shale")
@@ -29,17 +30,15 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCEntityTypes.ELDRITCH_EGG, "Thrown Eldritch Egg")
 
         // Fluid
-
         addFluid(HCFluids.EXPERIENCE, "Liquid Experience")
         addFluid(HCFluids.HONEY, "Honey")
         addFluid(HCFluids.MUSHROOM_STEW, "Mushroom Stew")
         addFluid(HCFluids.DRAGON_BREATH, "Dragon Breath")
+        add(HCFluids.POTION.getFluidType().descriptionId, "Invalid Potion Bucket")
+        add(HCFluids.POTION.getBucketHolder(), $$"%1$s Bucket")
 
         addFluid(HCFluids.LATEX, "Latex")
         addFluid(HCFluids.MEAT, "Meat")
-
-        add(HCFluids.POTION.getFluidType().descriptionId, "Invalid Potion Bucket")
-        add(HCFluids.POTION.getBucketHolder(), $$"%1$s Bucket")
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "Bamboo Charcoal")
         add(HCItems.COMPRESSED_SAWDUST, "Compressed Sawdust")

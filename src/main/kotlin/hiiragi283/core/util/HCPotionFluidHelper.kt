@@ -19,8 +19,7 @@ object HCPotionFluidHelper {
         HTPotionHelper.setContents(HCFluids.POTION.toStack(amount), contents)
 
     @JvmStatic
-    fun createItem(item: ItemLike, contents: HTPotionContents): ItemStack =
-        HTPotionHelper.setContents(ItemStack(item), contents)
+    fun createItem(item: ItemLike, contents: HTPotionContents): ItemStack = HTPotionHelper.setContents(ItemStack(item), contents)
 
     @JvmStatic
     fun createBucket(contents: HTPotionContents): ItemStack = createItem(HCFluids.POTION.getBucket(), contents)

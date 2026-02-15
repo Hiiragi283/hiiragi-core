@@ -64,6 +64,13 @@ object HCFluids {
         blockFactory = null
     }
 
+    @JvmField
+    val POTION: HTFluidContent = REGISTER.registerVirtual("potion") {
+        properties = liquid()
+        typeFactory = ::HTPotionFluidType
+        bucketFactory = ::HTPotionBucketItem
+    }
+
     //    Organic    //
 
     @JvmField
@@ -74,15 +81,6 @@ object HCFluids {
 
     @JvmField
     val MEAT: HTFluidContent = REGISTER.registerFlowing("meat") { properties = liquid() }
-
-    //    Misc    //
-
-    @JvmField
-    val POTION: HTFluidContent = REGISTER.registerVirtual("potion") {
-        properties = liquid()
-        typeFactory = ::HTPotionFluidType
-        bucketFactory = ::HTPotionBucketItem
-    }
 
     //    Extensions    //
 

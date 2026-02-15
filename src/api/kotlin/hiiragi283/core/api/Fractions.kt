@@ -62,6 +62,8 @@ operator fun Fraction.times(other: Int): Fraction = this.multiplyBy(other.toFrac
 
 operator fun Fraction.div(other: Int): Fraction = this.divideBy(other.toFraction(1))
 
+operator fun Fraction.compareTo(other: Int): Int = this.compareTo(other.toFraction(1))
+
 operator fun Int.plus(other: Fraction): Fraction = this.toFraction(1).add(other)
 
 operator fun Int.minus(other: Fraction): Fraction = this.toFraction(1).subtract(other)
@@ -69,6 +71,8 @@ operator fun Int.minus(other: Fraction): Fraction = this.toFraction(1).subtract(
 operator fun Int.times(other: Fraction): Fraction = this.toFraction(1).multiplyBy(other)
 
 operator fun Int.div(other: Fraction): Fraction = this.toFraction(1).divideBy(other)
+
+operator fun Int.compareTo(other: Fraction): Int = this.toFraction(1).compareTo(other)
 
 // Long
 fun fixedFraction(amount: Long, capacity: Long): Fraction {
@@ -90,6 +94,8 @@ operator fun Fraction.times(other: Float): Fraction = this.multiplyBy(other.toFr
 
 operator fun Fraction.div(other: Float): Fraction = this.divideBy(other.toFraction())
 
+operator fun Fraction.compareTo(other: Float): Int = this.compareTo(other.toFraction())
+
 operator fun Float.plus(other: Fraction): Fraction = this.toFraction().add(other)
 
 operator fun Float.minus(other: Fraction): Fraction = this.toFraction().subtract(other)
@@ -97,3 +103,5 @@ operator fun Float.minus(other: Fraction): Fraction = this.toFraction().subtract
 operator fun Float.times(other: Fraction): Fraction = this.toFraction().multiplyBy(other)
 
 operator fun Float.div(other: Fraction): Fraction = this.toFraction().divideBy(other)
+
+operator fun Float.compareTo(other: Fraction): Int = this.toFraction().compareTo(other)

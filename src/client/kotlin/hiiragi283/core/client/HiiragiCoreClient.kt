@@ -92,11 +92,10 @@ data object HiiragiCoreClient : HTClientMod() {
             HTSimpleFluidExtensions(HiiragiCoreAPI.id(HTConst.BLOCK, "dragon_breath")),
             HCFluids.DRAGON_BREATH.getFluidType(),
         )
+        event.registerFluidType(HTPotionFluidExtensions, HCFluids.POTION.getFluidType())
 
         event.dull(HCFluids.LATEX, Color(0xcccccc))
         event.dull(HCFluids.MEAT, Color(0x993333))
-
-        event.registerFluidType(HTPotionFluidExtensions, HCFluids.POTION.getFluidType())
 
         for (holder: HTFluidHolderLike<*> in HiiragiCoreAccess.INSTANCE.registeredFluids.values) {
             event.registerFluidType(HTSimpleFluidExtensions(holder.blockId), holder.getFluidType())

@@ -16,6 +16,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
     HTLangProvider(output, HiiragiCoreAPI.MOD_ID, HTLangTypes.JA_JP),
     HCLangProvider {
     override fun addTranslations() {
+        addPatternTranslations(this)
         // Block
         add(HCBlocks.OIL_SAND, "オイルサンド")
         add(HCBlocks.OIL_SHALE, "オイルシェール")
@@ -33,12 +34,11 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.HONEY, "ハチミツ")
         addFluid(HCFluids.MUSHROOM_STEW, "キノコシチュー")
         addFluid(HCFluids.DRAGON_BREATH, "ドラゴンブレス")
+        add(HCFluids.POTION.getFluidType().descriptionId, "無効なポーション入りバケツ")
+        add(HCFluids.POTION.getBucketHolder(), $$"%1$s入りバケツ")
 
         addFluid(HCFluids.LATEX, "ラテックス")
         addFluid(HCFluids.MEAT, "肉")
-
-        add(HCFluids.POTION.getFluidType().descriptionId, "無効なポーション入りバケツ")
-        add(HCFluids.POTION.getBucketHolder(), $$"%1$s入りバケツ")
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "竹炭")
         add(HCItems.COMPRESSED_SAWDUST, "圧縮されたおがくず")
