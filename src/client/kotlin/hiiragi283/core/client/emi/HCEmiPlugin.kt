@@ -1,5 +1,6 @@
 package hiiragi283.core.client.emi
 
+import dev.emi.emi.EmiPort
 import dev.emi.emi.api.EmiDragDropHandler
 import dev.emi.emi.api.EmiEntrypoint
 import dev.emi.emi.api.EmiRegistry
@@ -11,6 +12,7 @@ import dev.emi.emi.api.stack.EmiStackInteraction
 import dev.emi.emi.recipe.EmiSmithingRecipe
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.fluid.createFluidStack
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.gui.HTBounds
@@ -19,9 +21,11 @@ import hiiragi283.core.api.integration.emi.HTEmiPlugin
 import hiiragi283.core.api.integration.emi.toEmi
 import hiiragi283.core.api.integration.emi.widget.HTGhostWidget
 import hiiragi283.core.api.integration.emi.widget.HTIngredientWidget
+import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.asItemSequence
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
 import hiiragi283.core.setup.HCItems
@@ -35,6 +39,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.component.Unbreakable
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
+import kotlin.streams.asSequence
 
 @EmiEntrypoint
 class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
@@ -54,6 +59,14 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
         addRegistryRecipes(registry, HCRecipeTypes.EXPLODING, HCSingleItemEmiRecipe.Companion::exploding)
 
         // Misc
+        EmiPort
+            .getPotionRegistry()
+            .holders()
+            .asSequence()
+            .mapNotNull { HiiragiCoreAccess.INSTANCE.potionFluid(it, HTBottleType.DEFAULT) }
+            .map(HTFluidResourceType::toEmi)
+            .forEach(registry::addEmiStack)
+
         registry.setDefaultComparison(
             HCItems.ALMIGHTY_PICKAXE.asItem(),
             Comparison.compareData { stack: EmiStack -> stack.get(DataComponents.UNBREAKABLE) },

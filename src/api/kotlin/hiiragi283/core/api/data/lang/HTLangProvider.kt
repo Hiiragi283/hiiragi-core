@@ -21,16 +21,12 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
         val BUCKET_PATTERN: HTLangPatternProvider = HTLangPatternProvider.create("%s Bucket", "%s入りバケツ")
     }
 
-    // HTHasTranslationKey
-
     /**
      * [HTHasTranslationKey.translationKey]に基づいて翻訳名を追加します。
      */
     fun add(translatable: HTHasTranslationKey, value: String) {
         add(translatable.translationKey, value)
     }
-
-    // Registry
 
     /**
      * 進捗の翻訳名を追加します。

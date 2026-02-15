@@ -91,7 +91,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
                 Blocks.TWISTING_VINES,
             ),
         )
-
+        // Fluid
         executor.accept(
             resprite(
                 HiiragiCoreAPI.id(HTConst.BLOCK, "dragon_breath"),

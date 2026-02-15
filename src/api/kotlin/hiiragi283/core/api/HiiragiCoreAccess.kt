@@ -3,6 +3,7 @@ package hiiragi283.core.api
 import com.google.gson.JsonObject
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetRenderer
+import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
@@ -13,14 +14,19 @@ import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.text.HTTextResult
+import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.TagKey
+import net.minecraft.world.item.alchemy.Potion
+import net.minecraft.world.item.alchemy.PotionContents
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
+import net.neoforged.neoforge.fluids.FluidStack
 
 /**
  * モジュールをまたいで実装する要素をまとめたインターフェースです。
@@ -63,6 +69,19 @@ abstract class HiiragiCoreAccess {
 
     fun getMaterialBlockOrItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
         existingContents.getBlockOrItem(prefix, material) ?: registeredContents.getBlockOrItem(prefix, material)
+
+    //    Potion    //
+
+    abstract fun potionFluid(contents: PotionContents, bottleType: HTBottleType): HTFluidResourceType?
+
+    fun potionFluid(contents: PotionContents, bottleType: HTBottleType, amount: Int): FluidStack =
+        potionFluid(contents, bottleType)?.toStack(amount) ?: FluidStack.EMPTY
+
+    fun potionFluid(potion: Holder<Potion>, bottleType: HTBottleType): HTFluidResourceType? =
+        potionFluid(PotionContents(potion), bottleType)
+
+    fun potionFluid(potion: Holder<Potion>, bottleType: HTBottleType, amount: Int): FluidStack =
+        potionFluid(potion, bottleType)?.toStack(amount) ?: FluidStack.EMPTY
 
     //    Tag    //
 

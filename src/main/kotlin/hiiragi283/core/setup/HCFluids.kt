@@ -8,6 +8,8 @@ import hiiragi283.core.common.fluid.HTDragonBreathFluidType
 import hiiragi283.core.common.fluid.HTDyedFluidType
 import hiiragi283.core.common.fluid.HTExperienceFluidType
 import hiiragi283.core.common.fluid.HTLatexFluid
+import hiiragi283.core.common.fluid.HTPotionFluidType
+import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.common.registry.register.HTFluidContentRegister
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
@@ -72,6 +74,15 @@ object HCFluids {
 
     @JvmField
     val MEAT: HTFluidContent = REGISTER.registerFlowing("meat") { properties = liquid() }
+
+    //    Misc    //
+
+    @JvmField
+    val POTION: HTFluidContent = REGISTER.registerVirtual("potion") {
+        properties = liquid()
+        typeFactory = ::HTPotionFluidType
+        bucketFactory = ::HTPotionBucketItem
+    }
 
     //    Extensions    //
 

@@ -58,6 +58,13 @@ fun Fluid.toEmi(amount: Int = 0): EmiStack = EmiStack.of(this, amount.toLong())
  */
 fun FluidStack.toEmi(): EmiStack = NeoForgeEmiStack.of(this)
 
+/**
+ * この[HTFluidResourceType][this]を[EmiStack]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.10.0
+ */
+fun HTFluidResourceType.toEmi(): EmiStack = EmiStack.of(this.type(), this.componentsPatch())
+
 // TagKey
 
 /**

@@ -21,6 +21,7 @@ import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTBasicPropertyMap
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
+import hiiragi283.core.api.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTFluidContent
@@ -94,6 +95,11 @@ internal object HCMiscRegister {
         event.register(Registries.ITEM, ::registerMaterialFluids.partially1(manager))
         event.register(Registries.ITEM, ::registerMaterialItems.partially1(manager))
         event.register(Registries.ITEM, ::registerMaterialTools.partially1(manager))
+
+        // Fluid Ingredient Type
+        event.register(NeoForgeRegistries.Keys.FLUID_INGREDIENT_TYPES) { helper ->
+            helper.register(HiiragiCoreAPI.id("potion"), HTPotionFluidIngredient.TYPE)
+        }
 
         // Slot Sync Type
         event.register(HCRegistries.Keys.SLOT_TYPE) { helper ->

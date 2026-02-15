@@ -4,6 +4,10 @@ import com.google.gson.JsonObject
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.toLike
+import hiiragi283.core.api.data.buildDataPatch
+import hiiragi283.core.api.fluid.createFluidStack
+import hiiragi283.core.api.item.alchemy.HTBottleType
+import hiiragi283.core.api.item.alchemy.isEmpty
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
@@ -18,6 +22,8 @@ import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.text.HTCommonTranslation
@@ -30,11 +36,15 @@ import hiiragi283.core.common.serialization.value.HTJsonValueOutput
 import hiiragi283.core.common.serialization.value.HTTagValueInput
 import hiiragi283.core.common.serialization.value.HTTagValueOutput
 import hiiragi283.core.config.HCConfig
+import hiiragi283.core.setup.HCDataComponents
+import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCMiscRegister
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
+import net.minecraft.core.component.DataComponents
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.TagKey
+import net.minecraft.world.item.alchemy.PotionContents
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.event.TagsUpdatedEvent
@@ -112,6 +122,17 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
         HTMaterialContentsImpl(HCMiscRegister.materialFluids.toLike()) { prefix: HTFluidTagPrefix, key: HTMaterialKey ->
             "Unregistered ${prefix.name} fluid for ${key.getId()}"
         }
+    }
+
+    override fun potionFluid(contents: PotionContents, bottleType: HTBottleType): HTFluidResourceType? = when {
+        contents.isEmpty() -> null
+        else -> createFluidStack(
+            HCFluids.POTION.asFluid(),
+            patch = buildDataPatch {
+                set(DataComponents.POTION_CONTENTS, contents)
+                set(HCDataComponents.BOTTLE_TYPE, bottleType)
+            },
+        ).toResource()
     }
 
     @Suppress("UNCHECKED_CAST")

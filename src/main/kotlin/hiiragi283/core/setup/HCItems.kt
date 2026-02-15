@@ -1,7 +1,14 @@
 package hiiragi283.core.setup
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.item.HTSmithingTemplateItem
+import hiiragi283.core.api.item.alchemy.HTBottleType
+import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
+import hiiragi283.core.api.item.alchemy.HTPotionHelper
+import hiiragi283.core.api.item.alchemy.isEmpty
+import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.item.HTAlmightyPickaxe
 import hiiragi283.core.common.item.HTAmbrosiaItem
 import hiiragi283.core.common.item.HTBombItem
@@ -17,10 +24,14 @@ import net.minecraft.core.component.DataComponentType
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.food.FoodConstants
 import net.minecraft.world.food.FoodProperties
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.level.ItemLike
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent
+import net.neoforged.neoforge.fluids.FluidStack
+import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper
 
 object HCItems {
     @JvmField
@@ -152,6 +163,25 @@ object HCItems {
 
     @JvmStatic
     private fun registerCapabilities(event: RegisterCapabilitiesEvent) {
+        HTFluidCapabilities.registerItem(
+            event,
+            { stack: ItemStack ->
+                object : FluidBucketWrapper(stack) {
+                    override fun getFluid(): FluidStack {
+                        val contents: PotionContents = HTPotionHelper.getPotion(container)
+                        return when {
+                            !contents.isEmpty() -> {
+                                val bottleType: HTBottleType = HTPotionFluidManager.getBottleType(HCFluids.POTION.asFluid(), container)
+                                HiiragiCoreAccess.INSTANCE.potionFluid(contents, bottleType, HTConst.DEFAULT_FLUID_AMOUNT)
+                            }
+                            else -> super.getFluid()
+                        }
+                    }
+                }
+            },
+            HCFluids.POTION.getBucket(),
+        )
+
         // HTFluidCapabilities.registerItem(event, 9, { HTComponentFluidTank.create(1000, it) }, FLUID_FILTER)
 
         // HTItemCapabilities.registerItem(event, 9, HTComponentItemSlot::create, ITEM_FILTER)
