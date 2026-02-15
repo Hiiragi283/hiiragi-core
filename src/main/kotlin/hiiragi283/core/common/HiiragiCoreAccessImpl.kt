@@ -3,7 +3,6 @@ package hiiragi283.core.common
 import com.google.gson.JsonObject
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.collection.toLike
 import hiiragi283.core.api.data.buildDataPatch
 import hiiragi283.core.api.fluid.createFluidStack
 import hiiragi283.core.api.item.alchemy.HTBottleType
@@ -84,17 +83,17 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
 
     override val existingContents: HTMaterialAccess = object : HTMaterialAccess {
         override val blocks: HTMaterialContents<HTTagPrefix, HTBlockHolderLike<*, *>> by lazy {
-            HTMaterialContentsImpl(HCMiscRegister.existingBlocks.toLike()) { prefix: HTTagPrefix, key: HTMaterialKey ->
+            HTMaterialContentsImpl(HCMiscRegister.existingBlocks) { prefix: HTTagPrefix, key: HTMaterialKey ->
                 "Unknown ${prefix.name} block for ${key.getId()}"
             }
         }
         override val items: HTMaterialContents<HTTagPrefix, HTItemHolderLike<*>> by lazy {
-            HTMaterialContentsImpl(HCMiscRegister.existingItems.toLike()) { prefix: HTTagPrefix, key: HTMaterialKey ->
+            HTMaterialContentsImpl(HCMiscRegister.existingItems) { prefix: HTTagPrefix, key: HTMaterialKey ->
                 "Unknown ${prefix.name} item for ${key.getId()}"
             }
         }
         override val tools: HTMaterialContents<HTToolType, HTItemHolderLike<*>> by lazy {
-            HTMaterialContentsImpl(HCMiscRegister.existingTools.toLike()) { toolType: HTToolType, key: HTMaterialKey ->
+            HTMaterialContentsImpl(HCMiscRegister.existingTools) { toolType: HTToolType, key: HTMaterialKey ->
                 "Unknown ${toolType.name} item for ${key.getId()}"
             }
         }
@@ -102,24 +101,24 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
 
     override val registeredContents: HTMaterialAccess = object : HTMaterialAccess {
         override val blocks: HTMaterialContents<HTTagPrefix, HTBlockHolderLike<*, *>> by lazy {
-            HTMaterialContentsImpl(HCMiscRegister.materialBlocks.toLike()) { prefix: HTTagPrefix, key: HTMaterialKey ->
+            HTMaterialContentsImpl(HCMiscRegister.materialBlocks) { prefix: HTTagPrefix, key: HTMaterialKey ->
                 "Unregistered ${prefix.name} block for ${key.getId()}"
             }
         }
         override val items: HTMaterialContents<HTTagPrefix, HTItemHolderLike<*>> by lazy {
-            HTMaterialContentsImpl(HCMiscRegister.materialItems.toLike()) { prefix: HTTagPrefix, key: HTMaterialKey ->
+            HTMaterialContentsImpl(HCMiscRegister.materialItems) { prefix: HTTagPrefix, key: HTMaterialKey ->
                 "Unregistered ${prefix.name} item for ${key.getId()}"
             }
         }
         override val tools: HTMaterialContents<HTToolType, HTItemHolderLike<*>> by lazy {
-            HTMaterialContentsImpl(HCMiscRegister.materialTools.toLike()) { toolType: HTToolType, key: HTMaterialKey ->
+            HTMaterialContentsImpl(HCMiscRegister.materialTools) { toolType: HTToolType, key: HTMaterialKey ->
                 "Unregistered ${toolType.name} item for ${key.getId()}"
             }
         }
     }
 
     override val registeredFluids: HTMaterialContents<HTFluidTagPrefix, HTFluidHolderLike<*>> by lazy {
-        HTMaterialContentsImpl(HCMiscRegister.materialFluids.toLike()) { prefix: HTFluidTagPrefix, key: HTMaterialKey ->
+        HTMaterialContentsImpl(HCMiscRegister.materialFluids) { prefix: HTFluidTagPrefix, key: HTMaterialKey ->
             "Unregistered ${prefix.name} fluid for ${key.getId()}"
         }
     }

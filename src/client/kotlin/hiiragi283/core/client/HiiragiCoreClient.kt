@@ -98,7 +98,7 @@ data object HiiragiCoreClient : HTClientMod() {
 
         event.registerFluidType(HTPotionFluidExtensions, HCFluids.POTION.getFluidType())
 
-        for ((_, _, holder: HTFluidHolderLike<*>) in HiiragiCoreAccess.INSTANCE.registeredFluids) {
+        for (holder: HTFluidHolderLike<*> in HiiragiCoreAccess.INSTANCE.registeredFluids.values) {
             event.registerFluidType(HTSimpleFluidExtensions(holder.blockId), holder.getFluidType())
         }
     }

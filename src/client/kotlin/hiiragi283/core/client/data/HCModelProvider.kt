@@ -3,6 +3,7 @@ package hiiragi283.core.client.data
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.model.HTModelProvider
 import hiiragi283.core.api.data.model.HTTexturedModels
 import hiiragi283.core.api.material.HTMaterialAccess
@@ -28,9 +29,9 @@ data object HCModelProvider : HTModelProvider() {
     private fun registerMaterials(manager: ResourceManager) {
         val registered: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
         // Block
-        for ((prefix: HTTagPrefix, key: HTMaterialKey, block: HTBlockHolderLike<*, *>) in registered.blocks) {
+        registered.blocks.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTBlockHolderLike<*, *>) ->
             if (prefix in CommonTagPrefixes.ORES) {
-                val stoneTexture: ResourceLocation = prefix[HTTagPropertyKeys.ORE_STONE_TEX] ?: continue
+                val stoneTexture: ResourceLocation = prefix[HTTagPropertyKeys.ORE_STONE_TEX] ?: return@forEach
                 addSimpleBlockAndItem(
                     block,
                     HTTexturedModels.layeredBlock(
@@ -43,11 +44,11 @@ data object HCModelProvider : HTModelProvider() {
             }
         }
         // Fluid
-        for ((prefix: HTFluidTagPrefix, _, fluid: HTFluidHolderLike<*>) in HiiragiCoreAccess.INSTANCE.registeredFluids) {
+        HiiragiCoreAccess.INSTANCE.registeredFluids.forEach { (prefix: HTFluidTagPrefix, _, fluid: HTFluidHolderLike<*>) ->
             addBucketModel(fluid, prefix == CommonFluidTagPrefixes.MOLTEN)
         }
         // Item
-        for ((prefix: HTTagPrefix, _, item: HTIdLike) in registered.items) {
+        registered.items.forEach { (prefix: HTTagPrefix, _, item: HTIdLike) ->
             val textureIcon: String = prefix[HTTagPropertyKeys.TEXTURE_ICON] ?: prefix.name
             val overlay: ResourceLocation = HiiragiCoreAPI.id(HTConst.ITEM, "${textureIcon}_overlay")
             if (manager.getResource(overlay.withPath { "textures/$it.png" }).isPresent) {

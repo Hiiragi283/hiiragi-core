@@ -3,7 +3,6 @@ package hiiragi283.core.client.data
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.collection.HTMapLike
 import hiiragi283.core.api.data.texture.HTTextureUtil
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
@@ -43,13 +42,13 @@ data object HCMaterialTextureProvider : ResourceGenTask {
         manager: ResourceManager,
         sink: ResourceSink,
         pathPrefix: String,
-        factory: (HTMaterialLike) -> HTMapLike<HTTagPrefix, out HTIdLike>,
+        factory: (HTMaterialLike) -> Map<HTTagPrefix, HTIdLike>,
     ) {
         // すべての素材に対してテクスチャの生成を試みる
         for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
             // 生成対象がない場合はパス
-            val prefixedMap: HTMapLike<HTTagPrefix, out HTIdLike> = factory(entry)
-            if (prefixedMap.isEmpty) continue
+            val prefixedMap: Map<HTTagPrefix, HTIdLike> = factory(entry)
+            if (prefixedMap.isEmpty()) continue
             // テクスチャを生成
             val textureSet: HTMaterialTextureSet = entry.getOrDefault(HTMaterialPropertyKeys.TEXTURE_SET)
             for ((prefix: HTTagPrefix, element: HTIdLike) in prefixedMap) {

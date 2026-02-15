@@ -2,6 +2,7 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.collection.asSequence
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.common.registry.register.HTDeferredCreativeTabRegister

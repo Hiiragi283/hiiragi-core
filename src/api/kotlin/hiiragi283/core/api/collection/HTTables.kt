@@ -73,6 +73,8 @@ inline fun <R, C, V> HTTable<R, C, V>.forEach(action: (Triple<R, C, V>) -> Unit)
     this.entries.forEach(action)
 }
 
+fun <R, C, V> HTTable<R, C, V>.asSequence(): Sequence<Triple<R, C, V>> = this.entries.asSequence()
+
 // toTable
 
 /**
