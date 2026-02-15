@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour
+import net.minecraft.world.level.material.MapColor
 import net.neoforged.bus.api.IEventBus
 
 object HCBlocks {
@@ -24,6 +25,18 @@ object HCBlocks {
     }
 
     //    Materials    //
+
+    @JvmField
+    val OIL_SAND: HTSimpleDeferredBlock = REGISTER.registerSimple(
+        "oil_sand",
+        copyOf(Blocks.SAND).mapColor(MapColor.COLOR_BLACK),
+    )
+
+    @JvmField
+    val OIL_SHALE: HTSimpleDeferredBlock = REGISTER.registerSimple(
+        "oil_shale",
+        copyOf(Blocks.STONE).mapColor(MapColor.COLOR_BLACK),
+    )
 
     //    Crops    //
 

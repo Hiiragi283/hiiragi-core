@@ -18,6 +18,7 @@ import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -53,6 +54,27 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         // Texture
         executor.accept(HCMaterialTextureProvider)
 
+        blockTextures(executor)
+        itemTextures(executor)
+    }
+
+    @JvmStatic
+    private fun blockTextures(executor: Consumer<ResourceGenTask>) {
+        executor.accept(
+            resprite(
+                HCBlocks.OIL_SAND.blockId,
+                HTConst.MINECRAFT.toId(HTConst.BLOCK, "sand.png"),
+                Blocks.COAL_BLOCK,
+            ),
+        )
+        executor.accept(
+            resprite(
+                HCBlocks.OIL_SHALE.blockId,
+                HTConst.MINECRAFT.toId(HTConst.BLOCK, "stone.png"),
+                Blocks.COAL_BLOCK,
+            ),
+        )
+
         for (i in (0..2)) {
             executor.accept(
                 resprite(
@@ -77,7 +99,10 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
                 Blocks.BRAIN_CORAL_BLOCK,
             ),
         )
+    }
 
+    @JvmStatic
+    private fun itemTextures(executor: Consumer<ResourceGenTask>) {
         executor.accept(
             resprite(
                 HCItems.BAMBOO_CHARCOAL.itemId,

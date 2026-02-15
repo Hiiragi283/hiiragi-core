@@ -17,6 +17,9 @@ class HCJapaneseLangProvider(output: PackOutput) :
     HCLangProvider {
     override fun addTranslations() {
         // Block
+        add(HCBlocks.OIL_SAND, "オイルサンド")
+        add(HCBlocks.OIL_SHALE, "オイルシェール")
+
         add(HCBlocks.WARPED_WART, "歪んだウォート")
 
         add(HCBlocks.EXP_DRAIN, "経験値排水溝")

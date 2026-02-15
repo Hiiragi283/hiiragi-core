@@ -3,6 +3,7 @@ package hiiragi283.core.api.data.model
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
+import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
@@ -15,7 +16,9 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.SlabBlock
 import net.minecraft.world.level.block.StairBlock
 import net.minecraft.world.level.block.WallBlock
+import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel
 import net.neoforged.neoforge.client.model.generators.ModelBuilder
 import net.neoforged.neoforge.client.model.generators.ModelFile
 import net.neoforged.neoforge.client.model.generators.ModelProvider
@@ -75,11 +78,22 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
 
     // Block
 
+    protected fun <BLOCK : HTBlockHolderLike<*, *>> registerVariants(
+        block: BLOCK,
+        stateDispatcher: (BLOCK, BlockState) -> Array<ConfiguredModel>,
+    ) {
+        getVariantBuilder(block.asBlock()).forAllStates(stateDispatcher.partially1(block))
+    }
+
     /**
      * フルブロックのモデルを登録します。
      */
     protected fun simpleBlockAndItem(block: HTBlockHolderLike<*, *>, model: ModelFile = cubeAll(block.asBlock())) {
         simpleBlockWithItem(block.asBlock(), model)
+    }
+
+    protected fun <BLOCK : HTBlockHolderLike<*, *>> simpleBlockAndItem(block: BLOCK, factory: (BLOCK) -> ModelFile) {
+        simpleBlockWithItem(block.asBlock(), factory(block))
     }
 
     /**
@@ -118,10 +132,10 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
     /**
      * 既存のモデルを使用して登録します。
      */
-    protected fun altModelBlock(
-        block: HTBlockHolderLike<*, *>,
+    protected fun <BLOCK : HTBlockHolderLike<*, *>> altModelBlock(
+        block: BLOCK,
         id: ResourceLocation = block.blockId,
-        factory: (HTBlockHolderLike<*, *>, ModelFile) -> Unit = ::simpleBlockAndItem,
+        factory: (BLOCK, ModelFile) -> Unit = ::simpleBlockAndItem,
     ) {
         factory(block, ModelFile.ExistingModelFile(id, fileHelper))
     }

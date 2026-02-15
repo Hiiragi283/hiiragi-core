@@ -13,7 +13,11 @@ import net.neoforged.neoforge.client.model.generators.ConfiguredModel
 
 class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(HiiragiCoreAPI.MOD_ID, context) {
     override fun registerStatesAndModels() {
-        trackItem(HCBlocks.WARPED_WART)
+        trackBlock(HCBlocks.OIL_SAND)
+        simpleBlockAndItem(HCBlocks.OIL_SAND)
+
+        trackBlock(HCBlocks.OIL_SHALE)
+        simpleBlockAndItem(HCBlocks.OIL_SHALE)
 
         registerCrops()
 
@@ -22,25 +26,26 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(Hii
     }
 
     private fun registerCrops() {
-        getVariantBuilder(HCBlocks.WARPED_WART.get())
-            .forAllStates { state: BlockState ->
-                val age: Int = when (state.getValue(NetherWartBlock.AGE)) {
-                    0 -> 0
-                    1 -> 1
-                    2 -> 1
-                    else -> 2
-                }
-                val id: ResourceLocation = HCBlocks.WARPED_WART.blockId.withSuffix("_stage$age")
-                track(id)
-                ConfiguredModel
-                    .builder()
-                    .modelFile(
-                        models()
-                            .withExistingParent(id.path, "crop")
-                            .texture("crop", id)
-                            .renderType("cutout"),
-                    ).build()
+        registerVariants(HCBlocks.WARPED_WART) { block, state: BlockState ->
+            val age: Int = when (state.getValue(NetherWartBlock.AGE)) {
+                0 -> 0
+                1 -> 1
+                2 -> 1
+                else -> 2
             }
+            val id: ResourceLocation = block.blockId.withSuffix("_stage$age")
+            track(id)
+            ConfiguredModel
+                .builder()
+                .modelFile(
+                    models()
+                        .withExistingParent(id.path, "crop")
+                        .texture("crop", id)
+                        .renderType("cutout"),
+                ).build()
+        }
+
+        trackItem(HCBlocks.WARPED_WART)
         itemModels().basicItem(HCBlocks.WARPED_WART.id)
     }
 }

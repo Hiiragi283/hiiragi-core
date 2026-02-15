@@ -17,6 +17,9 @@ class HCEnglishLangProvider(output: PackOutput) :
     HCLangProvider {
     override fun addTranslations() {
         // Block
+        add(HCBlocks.OIL_SAND, "Oil Sand")
+        add(HCBlocks.OIL_SHALE, "Oil Shale")
+
         add(HCBlocks.WARPED_WART, "Warped Wart")
 
         add(HCBlocks.EXP_DRAIN, "Experience Drain")
