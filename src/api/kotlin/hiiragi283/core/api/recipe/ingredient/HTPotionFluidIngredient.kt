@@ -3,7 +3,9 @@ package hiiragi283.core.api.recipe.ingredient
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.function.generateHash
 import hiiragi283.core.api.item.alchemy.HTBottleType
+import hiiragi283.core.api.item.alchemy.HTPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
+import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.serialization.codec.MapBiCodec
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import net.minecraft.core.Holder
@@ -38,20 +40,19 @@ class HTPotionFluidIngredient(val potions: HolderSet<Potion>, val bottleType: HT
     }
 
     override fun test(fluidStack: FluidStack): Boolean {
-        if (HTPotionFluidManager.getBottleType(fluidStack) != bottleType) return false
-        return HTPotionFluidManager
-            .getContents(fluidStack)
-            .potion()
-            .map(potions::contains)
-            .orElse(false)
+        val contents: HTPotionContents = HTPotionHelper.getContents(fluidStack) ?: return false
+        if (contents.bottleType != bottleType) return false
+        return contents.potion?.let(potions::contains) ?: false
     }
 
     override fun generateStacks(): Stream<FluidStack> = HTPotionFluidManager
         .getSupportedFluids()
-        .map { fluid: Holder<Fluid> ->
-            val stack = FluidStack(fluid, HTConst.DEFAULT_FLUID_AMOUNT)
-            HTPotionFluidManager.setBottleType(fluid.value(), stack, bottleType)
-            stack
+        .flatMap { fluid: Holder<Fluid> ->
+            potions
+                .mapNotNull { potion: Holder<Potion> ->
+                    val contents: HTPotionContents = HTPotionContents.of(potion, bottleType) ?: return@mapNotNull null
+                    HTPotionHelper.setContents(FluidStack(fluid, HTConst.DEFAULT_FLUID_AMOUNT), contents)
+                }
         }.stream()
 
     override fun isSimple(): Boolean = false

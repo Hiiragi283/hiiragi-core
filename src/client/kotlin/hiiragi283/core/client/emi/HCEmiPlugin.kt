@@ -12,7 +12,6 @@ import dev.emi.emi.api.stack.EmiStackInteraction
 import dev.emi.emi.recipe.EmiSmithingRecipe
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.fluid.createFluidStack
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.gui.HTBounds
@@ -22,14 +21,17 @@ import hiiragi283.core.api.integration.emi.toEmi
 import hiiragi283.core.api.integration.emi.widget.HTGhostWidget
 import hiiragi283.core.api.integration.emi.widget.HTIngredientWidget
 import hiiragi283.core.api.item.alchemy.HTBottleType
+import hiiragi283.core.api.item.alchemy.HTPotionContents
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.asItemSequence
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
+import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
+import hiiragi283.core.util.HCPotionFluidHelper
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.core.component.DataComponents
@@ -63,9 +65,15 @@ class HCEmiPlugin : HTEmiPlugin(HiiragiCoreAPI.MOD_ID) {
             .getPotionRegistry()
             .holders()
             .asSequence()
-            .mapNotNull { HiiragiCoreAccess.INSTANCE.potionFluid(it, HTBottleType.DEFAULT) }
+            .mapNotNull { HTPotionContents.of(it, HTBottleType.DEFAULT) }
+            .map(HCPotionFluidHelper::createResource)
             .map(HTFluidResourceType::toEmi)
             .forEach(registry::addEmiStack)
+
+        registry.setDefaultComparison(
+            HCFluids.POTION.getBucket(),
+            Comparison.compareData { stack: EmiStack -> stack.get(DataComponents.POTION_CONTENTS) },
+        )
 
         registry.setDefaultComparison(
             HCItems.ALMIGHTY_PICKAXE.asItem(),

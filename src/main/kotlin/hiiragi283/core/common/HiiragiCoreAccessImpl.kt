@@ -3,10 +3,10 @@ package hiiragi283.core.common
 import com.google.gson.JsonObject
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.data.buildDataPatch
-import hiiragi283.core.api.fluid.createFluidStack
 import hiiragi283.core.api.item.alchemy.HTBottleType
-import hiiragi283.core.api.item.alchemy.isEmpty
+import hiiragi283.core.api.item.alchemy.HTPotionContents
+import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
+import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
@@ -21,8 +21,6 @@ import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
-import hiiragi283.core.api.storage.fluid.HTFluidResourceType
-import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.text.HTCommonTranslation
@@ -36,17 +34,18 @@ import hiiragi283.core.common.serialization.value.HTTagValueInput
 import hiiragi283.core.common.serialization.value.HTTagValueOutput
 import hiiragi283.core.config.HCConfig
 import hiiragi283.core.setup.HCDataComponents
-import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCMiscRegister
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
+import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.core.component.DataComponents
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.TagKey
-import net.minecraft.world.item.alchemy.PotionContents
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
+import net.neoforged.neoforge.common.MutableDataComponentHolder
 import net.neoforged.neoforge.event.TagsUpdatedEvent
+import net.neoforged.neoforge.fluids.FluidStack
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
@@ -75,6 +74,16 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
             if (event.updateCause == TagsUpdatedEvent.UpdateCause.SERVER_DATA_LOAD) {
                 tagResultCache.clear()
                 HiiragiCoreAPI.LOGGER.debug("Cleared tag holder cache")
+            }
+        }
+
+        @JvmField
+        val DEFAULT_POTION_HANDLER: HTPotionFluidManager.Handler = object : HTPotionFluidManager.Handler {
+            override fun get(holder: DataComponentHolder): HTBottleType =
+                holder.getOrDefault(HCDataComponents.BOTTLE_TYPE, HTBottleType.DEFAULT)
+
+            override fun set(holder: MutableDataComponentHolder, bottleType: HTBottleType) {
+                holder.set(HCDataComponents.BOTTLE_TYPE, bottleType)
             }
         }
     }
@@ -123,15 +132,21 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
         }
     }
 
-    override fun potionFluid(contents: PotionContents, bottleType: HTBottleType): HTFluidResourceType? = when {
-        contents.isEmpty() -> null
-        else -> createFluidStack(
-            HCFluids.POTION.asFluid(),
-            patch = buildDataPatch {
-                set(DataComponents.POTION_CONTENTS, contents)
-                set(HCDataComponents.BOTTLE_TYPE, bottleType)
-            },
-        ).toResource()
+    override fun getContents(holder: DataComponentHolder): HTPotionContents? {
+        val handler: HTPotionFluidManager.Handler = when (holder) {
+            is FluidStack -> HTPotionFluidManager.getHandler(holder.fluid)
+            else -> null
+        } ?: DEFAULT_POTION_HANDLER
+        return HTPotionContents.fromVanilla(HTPotionHelper.getPotion(holder), handler[holder])
+    }
+
+    override fun setContents(holder: MutableDataComponentHolder, contents: HTPotionContents) {
+        holder.set(DataComponents.POTION_CONTENTS, contents.vanilla)
+        val handler: HTPotionFluidManager.Handler = when (holder) {
+            is FluidStack -> HTPotionFluidManager.getHandler(holder.fluid)
+            else -> null
+        } ?: DEFAULT_POTION_HANDLER
+        handler[holder] = contents.bottleType
     }
 
     @Suppress("UNCHECKED_CAST")

@@ -38,6 +38,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.LATEX, "Latex")
         addFluid(HCFluids.MEAT, "Meat")
 
+        add(HCFluids.POTION.getFluidType().descriptionId, "Invalid Potion Bucket")
         add(HCFluids.POTION.getBucketHolder(), $$"%1$s Bucket")
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "Bamboo Charcoal")

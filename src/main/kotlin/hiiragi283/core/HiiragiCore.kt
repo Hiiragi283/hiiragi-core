@@ -2,10 +2,10 @@ package hiiragi283.core
 
 import hiiragi283.core.api.HCRegistries
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
 import hiiragi283.core.api.mod.HTCommonMod
 import hiiragi283.core.api.network.HTPayloadHandlers
+import hiiragi283.core.common.HiiragiCoreAccessImpl
 import hiiragi283.core.common.data.HCServerResourceProvider
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
 import hiiragi283.core.common.network.HTUpdateMenuPacket
@@ -24,7 +24,6 @@ import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.core.setup.HCWidgetTypes
 import net.mehvahdjukaar.moonlight.api.platform.RegHelper
-import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.world.item.ProjectileItem
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.DispenserBlock
@@ -33,7 +32,6 @@ import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.config.ModConfig
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
-import net.neoforged.neoforge.common.MutableDataComponentHolder
 import net.neoforged.neoforge.network.registration.PayloadRegistrar
 import net.neoforged.neoforge.registries.NewRegistryEvent
 
@@ -76,17 +74,7 @@ data object HiiragiCore : HTCommonMod() {
             .filter { it is ProjectileItem }
             .forEach(DispenserBlock::registerProjectileBehavior)
 
-        HTPotionFluidManager.register(
-            HCFluids.POTION.asFluid(),
-            object : HTPotionFluidManager.Handler {
-                override fun get(holder: DataComponentHolder): HTBottleType =
-                    holder.getOrDefault(HCDataComponents.BOTTLE_TYPE, HTBottleType.DEFAULT)
-
-                override fun set(holder: MutableDataComponentHolder, bottleType: HTBottleType) {
-                    holder.set(HCDataComponents.BOTTLE_TYPE, bottleType)
-                }
-            },
-        )
+        HTPotionFluidManager.register(HCFluids.POTION.asFluid(), HiiragiCoreAccessImpl.DEFAULT_POTION_HANDLER)
     }
 
     override fun registerPayload(registrar: PayloadRegistrar) {

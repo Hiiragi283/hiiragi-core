@@ -1,13 +1,19 @@
 package hiiragi283.core.api.item.alchemy
 
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.item.createItemStack
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.core.component.DataComponents
+import net.minecraft.resources.ResourceKey
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.level.ItemLike
+import net.neoforged.neoforge.common.MutableDataComponentHolder
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * @author Hiiragi Tsubasa
@@ -15,6 +21,24 @@ import net.minecraft.world.level.ItemLike
  */
 object HTPotionHelper {
     //    DataComponentHolder    //
+
+    /**
+     * 指定した[holder]から[HTPotionContents]を取得します。
+     * @return [HTPotionContents]を取得できない場合は`null`
+     * @since 0.10.1
+     */
+    @JvmStatic
+    fun getContents(holder: DataComponentHolder): HTPotionContents? = HiiragiCoreAccess.INSTANCE.getContents(holder)
+
+    /**
+     * 指定した[holder]に[contents]を設定します。
+     * @since 0.10.1
+     */
+    @JvmStatic
+    fun <T : MutableDataComponentHolder> setContents(holder: T, contents: HTPotionContents): T {
+        HiiragiCoreAccess.INSTANCE.setContents(holder, contents)
+        return holder
+    }
 
     /**
      * 指定した[holder]から[PotionContents]を取得します。
@@ -25,14 +49,32 @@ object HTPotionHelper {
     fun getPotion(holder: DataComponentHolder): PotionContents = holder.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY)
 
     /**
-     * 指定した[holder]と[bottleType]からポーションの翻訳キーを取得します。
-     * @since 0.10.0
+     * 指定した[holder]からポーションのMod IDを取得します。
+     * @since 0.10.1
      */
     @JvmStatic
-    fun getPotionName(holder: DataComponentHolder, bottleType: HTBottleType): String =
-        Potion.getName(getPotion(holder).potion(), "${bottleType.asItem().descriptionId}.effect.")
+    fun getPotionModId(holder: DataComponentHolder): String? = getPotion(holder)
+        .potion()
+        .flatMap(Holder<Potion>::unwrapKey)
+        .map(ResourceKey<Potion>::location)
+        .map(ResourceLocation::getNamespace)
+        .getOrNull()
+
+    /**
+     * 指定した[holder]からポーションの翻訳キーを取得します。
+     * @return [holder]がポーションを保持していない場合は`null`
+     * @since 0.10.1
+     */
+    @JvmStatic
+    fun getPotionDescId(holder: DataComponentHolder): String? {
+        val contents: HTPotionContents = getContents(holder) ?: return null
+        return Potion.getName(Optional.ofNullable(contents.potion), "${contents.bottleType.asItem().descriptionId}.effect.")
+    }
 
     //    ItemStack    //
+
+    @JvmStatic
+    fun createPotion(contents: HTPotionContents): ItemStack = createPotion(contents.bottleType, contents.vanilla)
 
     /**
      * 指定した引数からポーションの[ItemStack]を作成します。
