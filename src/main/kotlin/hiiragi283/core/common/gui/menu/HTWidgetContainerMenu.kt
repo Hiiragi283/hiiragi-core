@@ -1,6 +1,7 @@
 package hiiragi283.core.common.gui.menu
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.gui.HTSlotHelper
 import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
 import hiiragi283.core.api.gui.widget.HTWidget
@@ -26,7 +27,7 @@ class HTWidgetContainerMenu(
     init {
         context.setup(inventory.player, widgetHolder)
         // Player Inventory
-        addPlayerInv(inventory, widgetHolder.heightOffset)
+        addPlayerInv(inventory, HTSlotHelper.getSlotPosY(widgetHolder.rows))
     }
 
     override fun stillValid(player: Player): Boolean = context.stillValid(player)
@@ -47,7 +48,7 @@ class HTWidgetContainerMenu(
             HiiragiCoreAPI.LOGGER.debug("Added syncable slot: {} for {}", slot, type)
         }
 
-        override var heightOffset: Int = 0
+        override var rows: Int = 3
 
         override fun iterator(): Iterator<HTWidget> = widgets.iterator()
     }

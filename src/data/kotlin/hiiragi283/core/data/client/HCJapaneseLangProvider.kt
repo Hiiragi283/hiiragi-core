@@ -102,6 +102,9 @@ class HCJapaneseLangProvider(output: PackOutput) :
         // API - GUI
         add(HTCommonTranslation.PROGRESS, $$"進捗率: %1$s %%")
         add(HTCommonTranslation.SECONDS, $$"%1$s 秒 (%2$s ticks)")
+
+        add(HTCommonTranslation.CHANCE_CONSUME, $$"消費確率: %1$s %%")
+        add(HTCommonTranslation.CHANCE_PRODUCE, $$"生産確率: %1$s %%")
         // API - Item
         add(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT, $$"常に少なくとも%1$sがあります")
         add(HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION, "シフトキーを押して説明を表示")

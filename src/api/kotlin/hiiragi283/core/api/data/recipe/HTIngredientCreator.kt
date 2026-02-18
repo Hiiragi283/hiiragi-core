@@ -1,6 +1,7 @@
 package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTBuilderMarker
+import hiiragi283.core.api.HTComparators
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.buildDataPredicate
@@ -33,12 +34,6 @@ import java.util.function.IntUnaryOperator
  * @since 0.8.0
  */
 data object HTIngredientCreator {
-    /**
-     * @since 0.9.0
-     */
-    @JvmStatic
-    private val TAG_COMPARATOR: Comparator<TagKey<*>> = compareBy(TagKey<*>::location)
-
     //    Item    //
 
     // Item
@@ -57,7 +52,7 @@ data object HTIngredientCreator {
 
     @JvmName("createItem")
     fun create(tagKeys: Iterable<TagKey<Item>>, amount: Int = 1): HTItemIngredient =
-        create(tagKeys.sortedWith(TAG_COMPARATOR).map(Ingredient::TagValue), amount)
+        create(tagKeys.sortedWith(HTComparators.TAG_KEY).map(Ingredient::TagValue), amount)
 
     // Ingredient
     @JvmName("createValues")
@@ -88,7 +83,7 @@ data object HTIngredientCreator {
 
     @JvmName("createFluid")
     fun create(tagKeys: Iterable<TagKey<Fluid>>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient =
-        create(CompoundFluidIngredient.of(tagKeys.sortedWith(TAG_COMPARATOR).map(FluidIngredient::tag)), amount)
+        create(CompoundFluidIngredient.of(tagKeys.sortedWith(HTComparators.TAG_KEY).map(FluidIngredient::tag)), amount)
 
     fun create(content: HTFluidContent, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(content.fluidTag, amount)
 

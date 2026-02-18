@@ -21,7 +21,7 @@ fun HTPropertyMap.getDefaultFluidAmount(): Int = this.getOrDefault(HTMaterialPro
 
 // Mutable
 
-fun HTPropertyMap.Mutable.setDefaultPart(tagKey: TagKey<Item>, altItem: HTItemHolderLike<*>) {
+fun HTPropertyMap.Mutable.setDefaultPart(tagKey: TagKey<Item>, altItem: HTItemHolderLike<*>?) {
     this[HTMaterialPropertyKeys.DEFAULT_PART] = HTDefaultPart.BuiltIn(tagKey, altItem)
 }
 

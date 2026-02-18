@@ -11,6 +11,7 @@ import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 
 interface HTBlockHolderLike<BLOCK : Block> :
@@ -40,6 +41,14 @@ interface HTBlockHolderLike<BLOCK : Block> :
 
             @Suppress("DEPRECATION")
             override fun getBlockHolder(): Holder<Block> = block.builtInRegistryHolder()
+        }
+
+        @JvmStatic
+        fun wrap(block: HTBlockHolderLike<*>): HTItemHolderLike<*> = object : HTItemHolderLike.Simple<Item> {
+            override fun asItem(): Item = block.asBlock().asItem()
+
+            @Suppress("DEPRECATION")
+            override fun getItemHolder(): Holder<Item> = asItem().builtInRegistryHolder()
         }
     }
 

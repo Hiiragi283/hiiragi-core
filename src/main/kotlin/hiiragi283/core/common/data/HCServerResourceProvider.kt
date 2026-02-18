@@ -18,6 +18,7 @@ import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.api.times
@@ -176,8 +177,12 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
                     if (prefix == CommonTagPrefixes.GEM || prefix == CommonTagPrefixes.INGOT) {
                         factory.apply(ItemTags.BEACON_PAYMENT_ITEMS).addTag(prefix, key)
                     }
-                    if (prefix == CommonTagPrefixes.WIRE && key == CommonMaterialKeys.PLASTIC) {
-                        factory.apply(Tags.Items.STRINGS).add(item)
+                    if (key == CommonMaterialKeys.PLASTIC) {
+                        when (prefix) {
+                            CommonTagPrefixes.PLATE -> HiiragiCoreTags.Items.PLASTICS
+                            CommonTagPrefixes.WIRE -> Tags.Items.STRINGS
+                            else -> return@forEach
+                        }.let(factory::apply).add(item)
                     }
                 }
                 // Material Tool

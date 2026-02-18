@@ -6,8 +6,8 @@ import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.widget.HTAbstractWidget
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.gui.widget.HTWidgetType
-import hiiragi283.core.api.integration.emi.widget.HTGhostWidget
-import hiiragi283.core.api.integration.emi.widget.HTIngredientWidget
+import hiiragi283.core.api.integration.jei.widget.HTGhostWidget
+import hiiragi283.core.api.integration.jei.widget.HTIngredientWidget
 import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.storage.item.HTMutableItemSlot
 import hiiragi283.core.common.gui.HTContainerItemSlot

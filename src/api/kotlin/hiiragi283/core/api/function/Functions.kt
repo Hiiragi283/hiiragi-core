@@ -14,6 +14,10 @@ fun generateHash(vararg obj: Any?): Int = arrayOf(*obj).fold(0) { result: Int, o
  */
 fun <T> identity(): (T) -> T = { it }
 
+fun <T> identityLeft(): (T, T) -> T = { left: T, _: T -> left }
+
+fun <T> identityRight(): (T, T) -> T = { _: T, right: T -> right }
+
 fun <IP, R> (() -> IP).andThen(f: (IP) -> R): () -> R = { this().let(f) }
 
 fun <P1, IP, R> ((P1) -> IP).andThen(f: (IP) -> R): (P1) -> R = { p1: P1 -> this(p1).let(f) }

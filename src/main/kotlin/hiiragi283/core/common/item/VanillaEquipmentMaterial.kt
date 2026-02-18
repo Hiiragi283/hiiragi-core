@@ -24,6 +24,8 @@ enum class VanillaEquipmentMaterial(
     NETHERITE(Tiers.NETHERITE, 5f, -3f, ArmorMaterials.NETHERITE, 37),
     ;
 
+    override fun getEnchantmentValue(): Int = super<HTToolMaterial.Delegated>.getEnchantmentValue()
+
     //    HTArmorMaterial    //
 
     override fun getHolder(): Holder<ArmorMaterial> = armor

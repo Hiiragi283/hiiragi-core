@@ -90,7 +90,7 @@ repositories {
 
     maven(url = "https://maven4.bai.lol/") // WTHIT
     maven(url = "https://maven.architectury.dev/") // Arch
-    maven(url = "https://maven.blamejared.com/") // Patchouli, Ars
+    maven(url = "https://maven.blamejared.com/") // Patchouli, Ars, JEI
     maven(url = "https://maven.createmod.net") // Create, Flywheel
     maven(url = "https://maven.firstdark.dev/snapshots") // LDLib
     maven(url = "https://maven.k-4u.nl/") // TOP

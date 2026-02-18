@@ -36,5 +36,5 @@ interface HTWidgetHolder : Iterable<HTWidget> {
         this.track(slot, type)
     }
 
-    var heightOffset: Int
+    var rows: Int
 }
