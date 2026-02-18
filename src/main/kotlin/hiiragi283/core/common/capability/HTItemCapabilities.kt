@@ -77,7 +77,7 @@ object HTItemCapabilities : HTMultiCapability.Simple<IItemHandler> {
      * @return [HTItemSlot]の[List]
      */
     fun getItemSlots(level: Level, pos: BlockPos, side: Direction?): List<HTItemSlot> =
-        getItemHandler(level, pos, side)?.getItemSlots(side) ?: listOf()
+        getItemHandler(level, pos, side)?.getItemSlots(side) ?: emptyList()
 
     fun getItemSlot(
         level: Level,
@@ -90,7 +90,7 @@ object HTItemCapabilities : HTMultiCapability.Simple<IItemHandler> {
 
     fun getItemHandler(entity: Entity, side: Direction?): HTItemHandler? = getCapability(entity, side)?.let(::wrapHandler)
 
-    fun getItemSlots(entity: Entity, side: Direction?): List<HTItemSlot> = getItemHandler(entity, side)?.getItemSlots(side) ?: listOf()
+    fun getItemSlots(entity: Entity, side: Direction?): List<HTItemSlot> = getItemHandler(entity, side)?.getItemSlots(side) ?: emptyList()
 
     fun getItemSlot(entity: Entity, side: Direction?, slot: Int): HTItemSlot? = getItemSlots(entity, side).getOrNull(slot)
 
@@ -102,7 +102,7 @@ object HTItemCapabilities : HTMultiCapability.Simple<IItemHandler> {
      * 指定した引数から[HTItemSlot]の一覧を返します。
      * @return [HTItemSlot]の[List]
      */
-    fun getItemSlots(stack: ItemStack): List<HTItemSlot> = getItemHandler(stack)?.getItemSlots(null) ?: listOf()
+    fun getItemSlots(stack: ItemStack): List<HTItemSlot> = getItemHandler(stack)?.getItemSlots(null) ?: emptyList()
 
     /**
      * 指定した引数から[index]に対応する[HTItemSlot]を返します。
@@ -113,7 +113,7 @@ object HTItemCapabilities : HTMultiCapability.Simple<IItemHandler> {
     // HTItemResourceType
     fun getItemHandler(resource: HTItemResourceType?): HTItemHandler? = getCapability(resource)?.let(::wrapHandler)
 
-    fun getItemSlots(resource: HTItemResourceType?): List<HTItemSlot> = getItemHandler(resource)?.getItemSlots(null) ?: listOf()
+    fun getItemSlots(resource: HTItemResourceType?): List<HTItemSlot> = getItemHandler(resource)?.getItemSlots(null) ?: emptyList()
 
     fun getItemSlot(resource: HTItemResourceType?, index: Int): HTItemSlot? = getItemSlots(resource).getOrNull(index)
 

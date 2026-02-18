@@ -4,13 +4,22 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
 import hiiragi283.core.api.integration.jei.HTSubtypeInterpreter
 import hiiragi283.core.api.item.HTPotionBasedItem
+import hiiragi283.core.api.item.alchemy.HTBottleType
+import hiiragi283.core.api.item.alchemy.HTPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
+import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
+import hiiragi283.core.api.registry.asSequence
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
+import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
+import hiiragi283.core.util.HCPotionFluidHelper
 import mezz.jei.api.JeiPlugin
 import mezz.jei.api.helpers.IGuiHelper
+import mezz.jei.api.helpers.IPlatformFluidHelper
+import mezz.jei.api.neoforge.NeoForgeTypes
+import mezz.jei.api.registration.IExtraIngredientRegistration
 import mezz.jei.api.registration.IGuiHandlerRegistration
 import mezz.jei.api.registration.IRecipeCatalystRegistration
 import mezz.jei.api.registration.IRecipeCategoryRegistration
@@ -21,6 +30,8 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.alchemy.Potion
+import net.neoforged.neoforge.fluids.FluidStack
 
 @JeiPlugin
 class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
@@ -40,6 +51,26 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         }
     }
 
+    override fun <T : Any> registerFluidSubtypes(registration: ISubtypeRegistration, platformFluidHelper: IPlatformFluidHelper<T>) {
+        registration.registerSubtypeInterpreter(
+            platformFluidHelper.fluidIngredientType,
+            HCFluids.POTION.asFluid(),
+            HTSubtypeInterpreter { stack: T, _ -> (stack as? FluidStack)?.let(HTPotionHelper::getContents) },
+        )
+    }
+
+    override fun registerExtraIngredients(registration: IExtraIngredientRegistration) {
+        registration.addExtraIngredients(
+            NeoForgeTypes.FLUID_STACK,
+            BuiltInRegistries.POTION
+                .asLookup()
+                .asSequence()
+                .mapNotNull { holder: HTSimpleHolderLikeDelegate<Potion> -> HTPotionContents.of(holder.getHolder(), HTBottleType.DEFAULT) }
+                .map(HCPotionFluidHelper::createFluid)
+                .toList(),
+        )
+    }
+
     override fun registerCategories(registration: IRecipeCategoryRegistration) {
         val guiHelper: IGuiHelper = registration.jeiHelpers.guiHelper
 
@@ -56,9 +87,9 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     override fun registerRecipes(registration: IRecipeRegistration) {
-        registration.addRecipes(HCJeiRecipeTypes.ANVIL_CRUSHING, HCRecipeTypes.ANVIL_CRUSHING.get())
-        registration.addRecipes(HCJeiRecipeTypes.CHARGING, HCRecipeTypes.CHARGING.get())
-        registration.addRecipes(HCJeiRecipeTypes.EXPLODING, HCRecipeTypes.EXPLODING.get())
+        registration.addRecipes(HCJeiRecipeTypes.ANVIL_CRUSHING, HCRecipeTypes.ANVIL_CRUSHING)
+        registration.addRecipes(HCJeiRecipeTypes.CHARGING, HCRecipeTypes.CHARGING)
+        registration.addRecipes(HCJeiRecipeTypes.EXPLODING, HCRecipeTypes.EXPLODING)
     }
 
     override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {

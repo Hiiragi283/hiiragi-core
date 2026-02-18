@@ -65,8 +65,12 @@ abstract class HiiragiCoreAccess {
     fun getMaterialItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
         existingContents.items[prefix, material] ?: registeredContents.items[prefix, material]
 
-    fun getMaterialBlockOrItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
-        existingContents.getBlockOrItem(prefix, material) ?: registeredContents.getBlockOrItem(prefix, material)
+    fun getMaterialBlockOrItem(prefix: HTTagPrefix, material: HTMaterialLike): Pair<HTItemHolderLike<*>, Boolean>? =
+        listOf(existingContents to true, registeredContents to false)
+            .firstNotNullOfOrNull { (access: HTMaterialAccess, flag: Boolean) ->
+                val item: HTItemHolderLike<*> = access.getBlockOrItem(prefix, material) ?: return@firstNotNullOfOrNull null
+                item to flag
+            }
 
     //    Potion    //
 

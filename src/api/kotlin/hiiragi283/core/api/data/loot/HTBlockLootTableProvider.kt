@@ -19,7 +19,7 @@ import net.minecraft.world.level.storage.loot.LootTable
  * @since 0.1.0
  */
 abstract class HTBlockLootTableProvider(protected val modId: String, registries: HolderLookup.Provider) :
-    BlockLootSubProvider(setOf(), FeatureFlags.REGISTRY.allFlags(), registries) {
+    BlockLootSubProvider(emptySet(), FeatureFlags.REGISTRY.allFlags(), registries) {
     final override fun getKnownBlocks(): Iterable<Block> = getRawBlocks()
         .filter { holder: HTBlockHolderLike<*> -> holder.namespace == modId }
         .map(HTBlockHolderLike<*>::asBlock)

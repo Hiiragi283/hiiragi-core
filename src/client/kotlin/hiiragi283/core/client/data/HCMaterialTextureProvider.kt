@@ -21,14 +21,13 @@ import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
 import net.mehvahdjukaar.moonlight.api.resources.textures.Palette
 import net.mehvahdjukaar.moonlight.api.resources.textures.Respriter
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
-import net.mehvahdjukaar.moonlight.api.util.math.colors.RGBColor
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
 import kotlin.collections.iterator
 
 data object HCMaterialTextureProvider : ResourceGenTask {
     override fun accept(manager: ResourceManager, sink: ResourceSink) {
-        HTTextureUtil.templatePalette = HTTextureUtil.getPalette(manager, HiiragiCoreAPI.id("template")).getOrThrow()
+        HTTextureUtil.templatePalette = HTTextureUtil.getOrCreateColors(HiiragiCoreAPI.id("template"), manager).getOrThrow()
 
         with(HiiragiCoreAccess.INSTANCE) {
             material(manager, sink, HTConst.BLOCK, registeredContents.blocks::column)
@@ -59,8 +58,11 @@ data object HCMaterialTextureProvider : ResourceGenTask {
                         yield(entry[HTMaterialPropertyKeys.TEXTURE_COLOR_RAW] ?: entry.getId().withPrefix("raw_"))
                     }
                     yield(entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId())
-                }.firstNotNullOfOrNull { HTTextureUtil.getPalette(manager, it).getOrNull() }
-                    ?: continue
+                }.firstNotNullOfOrNull { HTTextureUtil.getOrCreateColors(it, manager).getOrNull() }
+                    ?: run {
+                        HiiragiCoreAPI.LOGGER.error("Failed to get color palette for material; ${entry.asMaterialId()}")
+                        continue
+                    }
                 // テンプレートを取得
                 val template: TextureImage = getTextureResult(manager, textureSet, prefix).getOrNull() ?: continue
                 copyAndApplyColor(
@@ -80,12 +82,8 @@ data object HCMaterialTextureProvider : ResourceGenTask {
             val molten: HTIdLike = factory(CommonFluidTagPrefixes.MOLTEN, entry) ?: continue
             // パレットを取得
             var palette: Palette = HTTextureUtil
-                .getPalette(
-                    manager,
-                    entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId(),
-                ).getOrNull()
-                ?.map(::RGBColor)
-                ?.let(Palette::ofColors)
+                .getOrCreatePalette(entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId(), manager)
+                .getOrNull()
                 ?: continue
             palette = Palette.fromArc(palette.first().hcl(), palette.last().hcl(), 9)
             // テンプレートを取得

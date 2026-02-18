@@ -46,7 +46,7 @@ abstract class HTDataMapGenTask<T : Any, R : Any>(private val type: DataMapType<
                     this[Either.right(key)] = Optional.of(WithConditions(value))
                 }
             },
-            listOf(),
+            emptyList(),
         )
 
         ConditionalOps

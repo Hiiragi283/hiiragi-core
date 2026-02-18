@@ -28,11 +28,9 @@ class HTWidgetContainerScreen(menu: HTWidgetContainerMenu, inventory: Inventory,
     }
 
     init {
-        with(menu.widgetHolder) {
-            imageHeight = 144 + rows * 18
+        imageHeight = 144 + menu.widgetHolder.rows * 18
 
-            inventoryLabelY = imageHeight - 94
-        }
+        inventoryLabelY = imageHeight - 94
     }
 
     val widgetHolder: HTWidgetHolder get() = menu.widgetHolder

@@ -17,8 +17,11 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider.DataGen<Bl
 
         factory
             .apply(BlockTags.MINEABLE_WITH_PICKAXE)
-            .add(HCBlocks.OIL_SAND)
             .add(HCBlocks.OIL_SHALE)
+
+        factory
+            .apply(BlockTags.MINEABLE_WITH_SHOVEL)
+            .add(HCBlocks.OIL_SAND)
 
         factory
             .apply(BlockTags.SWORD_EFFICIENT)

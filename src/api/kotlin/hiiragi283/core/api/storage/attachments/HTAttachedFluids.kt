@@ -20,7 +20,7 @@ data class HTAttachedFluids(override val containers: List<FluidStack>) : HTAttac
             .filterOrElse(HTAttachedFluids::isNotEmpty) { create(it.size) }
 
         @JvmField
-        val EMPTY = HTAttachedFluids(listOf())
+        val EMPTY = HTAttachedFluids(emptyList())
 
         @JvmStatic
         fun create(size: Int): HTAttachedFluids = HTAttachedFluids(List(size) { FluidStack.EMPTY })

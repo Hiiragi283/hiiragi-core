@@ -25,6 +25,10 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
         trackItem(HCItems.ELDER_HEART)
         trackItem(HCItems.WITHER_STAR)
 
+        trackItem(HCItems.ELDRITCH_EGG)
+
+        trackItem(HCItems.IRIDESCENT_POWDER)
+
         buildList {
             addAll(HCItems.REGISTER.asSequence())
 

@@ -23,7 +23,7 @@ sealed interface HTDefaultPart {
      * 指定した[素材][material]から素材アイテムを取得します。
      * @return 対応するアイテムがない場合は`null`
      */
-    fun getItem(material: HTMaterialLike): HTItemHolderLike<*>?
+    fun getItem(material: HTMaterialLike): Pair<HTItemHolderLike<*>, Boolean>?
 
     /**
      * レシピの生成時に使用されるサフィックスを取得します。
@@ -38,7 +38,7 @@ sealed interface HTDefaultPart {
     data class BuiltIn(val tagKey: TagKey<Item>, val item: HTItemHolderLike<*>?) : HTDefaultPart {
         override fun getTag(material: HTMaterialLike): TagKey<Item> = tagKey
 
-        override fun getItem(material: HTMaterialLike): HTItemHolderLike<*>? = item
+        override fun getItem(material: HTMaterialLike): Pair<HTItemHolderLike<*>, Boolean>? = item?.let { it to true }
 
         override fun getSuffix(): String = tagKey.location().path
     }
@@ -67,7 +67,7 @@ sealed interface HTDefaultPart {
 
         override fun getTag(material: HTMaterialLike): TagKey<Item> = prefix.itemTagKey(material)
 
-        override fun getItem(material: HTMaterialLike): HTItemHolderLike<*>? =
+        override fun getItem(material: HTMaterialLike): Pair<HTItemHolderLike<*>, Boolean>? =
             HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(prefix, material)
 
         override fun getSuffix(): String = prefix.name

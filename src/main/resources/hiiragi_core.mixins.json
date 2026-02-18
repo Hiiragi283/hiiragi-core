@@ -5,6 +5,8 @@
   "client": [],
   "mixins": [
     "AnvilBlockMixin",
+    "PotionBrewingAccessor",
+    "PotionBrewingMixAccessor",
     "RecipeManagerAccessor",
     "ReloadableServerResourcesMixin"
   ],

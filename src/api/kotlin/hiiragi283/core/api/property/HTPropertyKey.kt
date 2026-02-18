@@ -35,7 +35,7 @@ class HTPropertyKey<T> private constructor(val id: ResourceLocation, val default
          * @since 0.8.0
          */
         @JvmStatic
-        fun <T : Any> createSet(id: ResourceLocation): HTPropertyKey<Set<T>> = create(id, setOf())
+        fun <T : Any> createSet(id: ResourceLocation): HTPropertyKey<Set<T>> = create(id, emptySet())
 
         /**
          * 指定した[id]から，[Map]向けの新しい[HTPropertyKey]のインスタンスを作成します。
@@ -44,7 +44,7 @@ class HTPropertyKey<T> private constructor(val id: ResourceLocation, val default
          * @throws IllegalStateException 指定した[ID][id]がすでに使用されていた場合
          */
         @JvmStatic
-        fun <K : Any, V : Any> createMap(id: ResourceLocation): HTPropertyKey<Map<K, V>> = create(id, mapOf())
+        fun <K : Any, V : Any> createMap(id: ResourceLocation): HTPropertyKey<Map<K, V>> = create(id, emptyMap())
 
         /**
          * 指定した[id]と[defaultValue]から新しい[HTPropertyKey]のインスタンスを作成します。

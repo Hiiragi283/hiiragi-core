@@ -46,7 +46,7 @@ object HTFluidCapabilities : HTMultiCapability<IFluidHandler, IFluidHandlerItem>
     //    Block    //
 
     fun getFluidViews(level: Level, pos: BlockPos, side: Direction?): List<HTFluidView> =
-        getCapability(level, pos, side)?.let { wrapHandler(it, side) } ?: listOf()
+        getCapability(level, pos, side)?.let { wrapHandler(it, side) } ?: emptyList()
 
     fun getFluidView(
         level: Level,
@@ -58,19 +58,20 @@ object HTFluidCapabilities : HTMultiCapability<IFluidHandler, IFluidHandlerItem>
     //    Entity    //
 
     fun getFluidViews(entity: Entity, side: Direction?): List<HTFluidView> =
-        getCapability(entity, side)?.let { wrapHandler(it, side) } ?: listOf()
+        getCapability(entity, side)?.let { wrapHandler(it, side) } ?: emptyList()
 
     fun getFluidView(entity: Entity, side: Direction?, tank: Int): HTFluidView? = getFluidViews(entity, side).getOrNull(tank)
 
     //    Item    //
 
-    fun getFluidViews(stack: ItemStack): List<HTFluidView> = getCapability(stack)?.let { wrapHandler(it, null) } ?: listOf()
+    fun getFluidViews(stack: ItemStack): List<HTFluidView> = getCapability(stack)?.let { wrapHandler(it, null) } ?: emptyList()
 
     fun getFluidView(stack: ItemStack, tank: Int): HTFluidView? = getFluidViews(stack).getOrNull(tank)
 
     // HTItemResourceType
 
-    fun getFluidViews(resource: HTItemResourceType?): List<HTFluidView> = getCapability(resource)?.let { wrapHandler(it, null) } ?: listOf()
+    fun getFluidViews(resource: HTItemResourceType?): List<HTFluidView> =
+        getCapability(resource)?.let { wrapHandler(it, null) } ?: emptyList()
 
     fun getFluidView(resource: HTItemResourceType?, tank: Int): HTFluidView? = getFluidViews(resource).getOrNull(tank)
 

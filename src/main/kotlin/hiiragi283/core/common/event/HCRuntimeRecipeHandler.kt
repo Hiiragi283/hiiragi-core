@@ -1,6 +1,5 @@
 package hiiragi283.core.common.event
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
@@ -29,7 +28,6 @@ import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSmithingRecipeBuilder
-import hiiragi283.core.common.data.recipe.builder.HTStonecuttingRecipeBuilder
 import net.minecraft.core.component.DataComponents
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -66,8 +64,6 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             if (hardness > HTMaterialLevel.NONE && hardness <= HTMaterialLevel.MEDIUM) {
                 baseToGear(event, entry)
                 ingotToPlate(event, entry)
-
-                plateToWire(event, entry)
             }
 
             smeltDustToIngot(entry)
@@ -145,18 +141,19 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     //    Crafting    //
 
-    private fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
+    private fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): Pair<HTItemHolderLike<*>, Boolean>? =
         HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(prefix, material)
 
     @JvmStatic
     private fun baseToBlock(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
         val blockProperty: HTStorageBlockProperty = entry.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK)
-        val block: HTItemHolderLike<*> = getItem(CommonTagPrefixes.BLOCK, entry) ?: return
+        val (block: HTItemHolderLike<*>, existingBlock: Boolean) = getItem(CommonTagPrefixes.BLOCK, entry) ?: return
 
         val defaultPart: HTDefaultPart = entry.getDefaultPart() ?: return
         val suffix: String = defaultPart.getSuffix()
-        val base: HTItemHolderLike<*> = defaultPart.getItem(entry) ?: return
-        if (block.namespace == HTConst.MINECRAFT && base.namespace == HTConst.MINECRAFT) return
+        val (base: HTItemHolderLike<*>, existingBase: Boolean) = defaultPart.getItem(entry) ?: return
+        // クラフトの前後がどちらも既存アイテムの場合はパス
+        if (existingBlock && existingBase) return
         // レシピを登録
         if (event.isPresentTag(CommonTagPrefixes.BLOCK, entry)) {
             HTShapelessRecipeBuilder.create(output) {
@@ -242,16 +239,16 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     @JvmStatic
     private fun ingotToNugget(entry: HTMaterialManager.Entry) {
-        val nugget: HTItemHolderLike<*> = getItem(CommonTagPrefixes.NUGGET, entry) ?: return
-        if (nugget.namespace == HTConst.MINECRAFT) return
+        val (nugget: HTItemHolderLike<*>, existingNugget: Boolean) = getItem(CommonTagPrefixes.NUGGET, entry) ?: return
+        val (ingot: HTItemHolderLike<*>, existingIngot: Boolean) = getItem(CommonTagPrefixes.INGOT, entry) ?: return
+        // クラフトの前後がどちらも既存アイテムの場合はパス
+        if (existingNugget && existingIngot) return
         // レシピを登録
         HTShapelessRecipeBuilder.create(output) {
             ingredients += CommonTagPrefixes.INGOT to entry
             resultStack += nugget to 9
             recipeId replace entry.getId().withSuffix("/nugget_from_ingot")
         }
-        // レシピを登録
-        val ingot: HTItemHolderLike<*> = getItem(CommonTagPrefixes.INGOT, entry) ?: return
         HTShapedRecipeBuilder.create(output) {
             hollow8()
             define('A') += CommonTagPrefixes.NUGGET to entry
@@ -276,8 +273,10 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     @JvmStatic
     private fun rawToBlock(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
-        val raw: HTItemHolderLike<*> = getItem(CommonTagPrefixes.RAW, entry) ?: return
-        if (raw.namespace == HTConst.MINECRAFT) return
+        val (raw: HTItemHolderLike<*>, existingRaw: Boolean) = getItem(CommonTagPrefixes.RAW, entry) ?: return
+        val (rawBlock: HTItemHolderLike<*>, existingRawBlock: Boolean) = getItem(CommonTagPrefixes.RAW_BLOCK, entry) ?: return
+        // クラフトの前後がどちらも既存アイテムの場合はパス
+        if (existingRaw && existingRawBlock) return
         // レシピを登録
         if (event.isPresentTag(CommonTagPrefixes.RAW_BLOCK, entry)) {
             HTShapelessRecipeBuilder.create(output) {
@@ -286,8 +285,6 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
                 recipeId replace entry.getId().withSuffix("/raw_from_block")
             }
         }
-        // レシピを登録
-        val rawBlock: HTItemHolderLike<*> = getItem(CommonTagPrefixes.RAW_BLOCK, entry) ?: return
         HTShapedRecipeBuilder.create(output) {
             hollow8()
             define('A') += CommonTagPrefixes.RAW to entry
@@ -333,11 +330,11 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     @JvmStatic
     private fun smeltDustToIngot(entry: HTMaterialManager.Entry) {
         if (HTMaterialPropertyKeys.DISABLE_SMELTING in entry) return
-        val dust: HTItemHolderLike<*> = getItem(CommonTagPrefixes.DUST, entry) ?: return
+        val (dust: HTItemHolderLike<*>, existingDust: Boolean) = getItem(CommonTagPrefixes.DUST, entry) ?: return
         val smeltedMaterial: HTMaterialLike = entry[HTMaterialPropertyKeys.SMELTED_TO] ?: entry
-        val ingot: HTItemHolderLike<*> = getItem(CommonTagPrefixes.INGOT, smeltedMaterial) ?: return
-        // 精錬の前後がどちらもバニラ由来の場合はパス
-        if (dust.namespace == HTConst.MINECRAFT && ingot.namespace == HTConst.MINECRAFT) return
+        val (ingot: HTItemHolderLike<*>, existingIngot: Boolean) = getItem(CommonTagPrefixes.INGOT, smeltedMaterial) ?: return
+        // 精錬の前後がどちらも既存アイテムの場合はパス
+        if (existingDust && existingIngot) return
         // Smelting & Blasting
         when (entry.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT)) {
             HTMaterialLevel.NONE -> return
@@ -356,12 +353,12 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     @JvmStatic
     private fun smeltOreToBase(prefix: HTTagPrefix, entry: HTMaterialManager.Entry) {
         if (HTMaterialPropertyKeys.DISABLE_SMELTING in entry) return
-        val ore: HTItemHolderLike<*> = getItem(prefix, entry) ?: getItem(prefix, entry) ?: return
+        val (ore: HTItemHolderLike<*>, existingOre: Boolean) = getItem(prefix, entry) ?: return
         val smeltedMaterial: HTMaterialLike = entry[HTMaterialPropertyKeys.SMELTED_TO] ?: entry
         val smeltedPropertyMap: HTPropertyMap = materialManager[smeltedMaterial] ?: return
-        val base: HTItemHolderLike<*> = smeltedPropertyMap.getDefaultPart()?.getItem(smeltedMaterial) ?: return
-        // 精錬の前後がどちらもバニラ由来の場合はパス
-        if (ore.namespace == HTConst.MINECRAFT && base.namespace == HTConst.MINECRAFT) return
+        val(base: HTItemHolderLike<*>, existingBase: Boolean) = smeltedPropertyMap.getDefaultPart()?.getItem(smeltedMaterial) ?: return
+        // 精錬の前後がどちらも既存アイテムの場合はパス
+        if (existingOre && existingBase) return
         // Smelting & Blasting
         when (entry.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT)) {
             HTMaterialLevel.NONE -> return
@@ -374,20 +371,6 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             resultStack += base to smeltedPropertyMap.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER).toInt()
             exp = 0.7f
             recipeId suffix "_from_${prefix.name}"
-        }
-    }
-
-    //    Stonecutting    //
-
-    @JvmStatic
-    private fun plateToWire(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
-        if (!event.isPresentTag(CommonTagPrefixes.PLATE, entry)) return
-        val wire: ItemLike = event.getFirstHolder(CommonTagPrefixes.WIRE, entry) ?: return
-        // Stonecutting
-        HTStonecuttingRecipeBuilder.create(output) {
-            ingredient += CommonTagPrefixes.PLATE to entry
-            resultStack += wire
-            recipeId suffix "_from_plate"
         }
     }
 }

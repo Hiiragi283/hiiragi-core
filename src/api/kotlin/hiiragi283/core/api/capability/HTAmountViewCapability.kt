@@ -23,7 +23,7 @@ interface HTAmountViewCapability<HANDLER : Any, ITEM_HANDLER : HANDLER> : HTMult
      * @return [HTAmountView]の[List]
      */
     fun getCapabilityViews(level: Level, pos: BlockPos, side: Direction?): List<HTAmountView> =
-        getCapability(level, pos, side)?.let { apply(it, side) } ?: listOf()
+        getCapability(level, pos, side)?.let { apply(it, side) } ?: emptyList()
 
     /**
      * 指定した引数から[index]に対応する[HTAmountView]を返します。
@@ -39,7 +39,7 @@ interface HTAmountViewCapability<HANDLER : Any, ITEM_HANDLER : HANDLER> : HTMult
     //    Entity    //
 
     fun getCapabilityViews(entity: Entity, side: Direction?): List<HTAmountView> =
-        getCapability(entity, side)?.let { apply(it, side) } ?: listOf()
+        getCapability(entity, side)?.let { apply(it, side) } ?: emptyList()
 
     fun getCapabilityView(entity: Entity, side: Direction?, index: Int): HTAmountView? = getCapabilityViews(entity, side).getOrNull(index)
 
@@ -53,7 +53,7 @@ interface HTAmountViewCapability<HANDLER : Any, ITEM_HANDLER : HANDLER> : HTMult
      * 指定した引数から[HTAmountView]の一覧を返します。
      * @return [HTAmountView]の[List]
      */
-    fun getCapabilityViews(stack: ItemStack): List<HTAmountView> = getCapability(stack)?.let { apply(it, null) } ?: listOf()
+    fun getCapabilityViews(stack: ItemStack): List<HTAmountView> = getCapability(stack)?.let { apply(it, null) } ?: emptyList()
 
     /**
      * 指定した引数から[index]に対応する[HTAmountView]を返します。
@@ -67,7 +67,8 @@ interface HTAmountViewCapability<HANDLER : Any, ITEM_HANDLER : HANDLER> : HTMult
 
     // HTItemResourceType
 
-    fun getCapabilityViews(resource: HTItemResourceType?): List<HTAmountView> = getCapability(resource)?.let { apply(it, null) } ?: listOf()
+    fun getCapabilityViews(resource: HTItemResourceType?): List<HTAmountView> =
+        getCapability(resource)?.let { apply(it, null) } ?: emptyList()
 
     fun getCapabilityView(resource: HTItemResourceType?, index: Int): HTAmountView? = getCapabilityViews(resource).getOrNull(index)
 

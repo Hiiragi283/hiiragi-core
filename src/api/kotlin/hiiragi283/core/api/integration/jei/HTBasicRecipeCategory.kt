@@ -168,7 +168,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     )
 
     protected fun IRecipeLayoutBuilder.addItemSlot(x: Int, y: Int, ingredient: HTItemIngredient?): IRecipeSlotBuilder = when (ingredient) {
-        null -> this.addItemSlot(RecipeIngredientRole.RENDER_ONLY, x, y, listOf())
+        null -> this.addItemSlot(RecipeIngredientRole.RENDER_ONLY, x, y, emptyList())
         else -> {
             val (role: RecipeIngredientRole, amount: Int) = when {
                 ingredient.isCatalyst -> RecipeIngredientRole.CATALYST to 1
@@ -201,7 +201,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     }
 
     protected fun IRecipeLayoutBuilder.addItemSlot(x: Int, y: Int, result: HTItemResult?): IRecipeSlotBuilder = when (result) {
-        null -> this.addItemSlot(RecipeIngredientRole.RENDER_ONLY, x, y, listOf())
+        null -> this.addItemSlot(RecipeIngredientRole.RENDER_ONLY, x, y, emptyList())
         else -> this.addItemSlot(
             RecipeIngredientRole.OUTPUT,
             x,
@@ -211,7 +211,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     }
 
     protected fun IRecipeLayoutBuilder.addItemSlot(x: Int, y: Int, result: HTChancedItemResult?): IRecipeSlotBuilder = when (result) {
-        null -> this.addItemSlot(RecipeIngredientRole.RENDER_ONLY, x, y, listOf())
+        null -> this.addItemSlot(RecipeIngredientRole.RENDER_ONLY, x, y, emptyList())
         else ->
             this
                 .addItemSlot(x, y, result.result)
@@ -234,7 +234,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
         isTank: Boolean,
         ingredient: HTFluidIngredient?,
     ): IRecipeSlotBuilder = when (ingredient) {
-        null -> this.addFluidSlot(RecipeIngredientRole.RENDER_ONLY, x, y, isTank, listOf())
+        null -> this.addFluidSlot(RecipeIngredientRole.RENDER_ONLY, x, y, isTank, emptyList())
         else -> {
             val (role: RecipeIngredientRole, amount: Int) = when {
                 ingredient.isCatalyst -> RecipeIngredientRole.CATALYST to 1
@@ -261,7 +261,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
         isTank: Boolean,
         result: HTFluidResult?,
     ): IRecipeSlotBuilder = when (result) {
-        null -> this.addFluidSlot(RecipeIngredientRole.RENDER_ONLY, x, y, isTank, listOf())
+        null -> this.addFluidSlot(RecipeIngredientRole.RENDER_ONLY, x, y, isTank, emptyList())
         else -> this.addFluidSlot(
             RecipeIngredientRole.OUTPUT,
             x,

@@ -16,7 +16,7 @@ data class HTAttachedEnergy(override val containers: List<Int>) : HTAttachedCont
             .xmap(::HTAttachedEnergy, HTAttachedEnergy::containers)
 
         @JvmField
-        val EMPTY = HTAttachedEnergy(listOf())
+        val EMPTY = HTAttachedEnergy(emptyList())
 
         @JvmStatic
         fun create(size: Int): HTAttachedEnergy = HTAttachedEnergy(List(size) { 0 })

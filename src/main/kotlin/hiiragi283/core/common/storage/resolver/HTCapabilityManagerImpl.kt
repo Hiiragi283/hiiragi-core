@@ -25,7 +25,7 @@ open class HTCapabilityManagerImpl<HOLDER : HTCapabilityHolder, CONTAINER : Any,
 
     override fun getContainers(side: Direction?): List<CONTAINER> = when (canHandle()) {
         true -> containerGetter(holder!!, side)
-        false -> listOf()
+        false -> emptyList()
     }
 
     @Suppress("UNCHECKED_CAST")

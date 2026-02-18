@@ -90,7 +90,7 @@ data class HTPotionContents private constructor(val contents: RawPotionContents,
     val vanilla = PotionContents(
         Optional.ofNullable(contents.getLeft()),
         Optional.empty(),
-        contents.getRight()?.map(HTMobEffectInstance::toMutable) ?: listOf(),
+        contents.getRight()?.map(HTMobEffectInstance::toMutable) ?: emptyList(),
     )
 
     //    Builder    //

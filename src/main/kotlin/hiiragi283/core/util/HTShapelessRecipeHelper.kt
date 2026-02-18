@@ -82,9 +82,9 @@ object HTShapelessRecipeHelper {
                     continue@ing
                 }
             }
-            return mapOf()
+            return emptyMap()
         }
-        if (count != ingredients.size) return mapOf()
+        if (count != ingredients.size) return emptyMap()
         return resultMap
     }
 

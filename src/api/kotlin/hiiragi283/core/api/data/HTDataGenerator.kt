@@ -51,7 +51,7 @@ interface HTDataGenerator {
         addProvider { output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider> ->
             LootTableProvider(
                 output,
-                setOf(),
+                emptySet(),
                 pairs.map { LootTableProvider.SubProviderEntry(it.first, it.second) },
                 lookupProvider,
             )

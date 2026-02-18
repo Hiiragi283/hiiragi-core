@@ -1,20 +1,16 @@
 package hiiragi283.core.api.integration.jei
 
 import hiiragi283.core.api.HTComparators
-import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.recipe.HTRecipeLookup
 import hiiragi283.core.api.resource.toId
 import mezz.jei.api.IModPlugin
 import mezz.jei.api.constants.VanillaTypes
 import mezz.jei.api.registration.IRecipeCatalystRegistration
 import mezz.jei.api.registration.IRecipeRegistration
-import net.minecraft.client.Minecraft
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeInput
-import net.minecraft.world.item.crafting.RecipeManager
-import net.minecraft.world.item.crafting.RecipeType
-import thedarkcolour.kotlinforforge.neoforge.forge.runForDist
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[IModPlugin]の抽象クラスです。
@@ -43,37 +39,26 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
 
         // Recipe
         @JvmStatic
-        protected fun getRecipeManager(): RecipeManager = runForDist(
-            { Minecraft.getInstance().level?.recipeManager },
-            { HiiragiCoreAPI.getActiveServer()?.recipeManager },
-        ) ?: error("Failed to access vanilla recipe manager")
-
-        @JvmStatic
         protected val RECIPE_COMPARATOR: Comparator<RecipeHolder<*>> = compareBy(HTComparators.ID) { it.id }
 
         @JvmStatic
         protected fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
             recipeType: HTJeiHolderRecipeType<RECIPE>,
-            recipeType1: RecipeType<RECIPE>,
+            lookup: HTRecipeLookup<INPUT, RECIPE>,
         ) {
-            this.addRecipes(
-                getRecipeType(recipeType),
-                getRecipeManager()
-                    .getAllRecipesFor(recipeType1)
-                    .sortedWith(RECIPE_COMPARATOR),
-            )
+            this.addRecipes(getRecipeType(recipeType), lookup.getAllRecipes())
         }
 
         @JvmStatic
         protected fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
             recipeType: HTJeiHolderRecipeType<RECIPE>,
-            recipeType1: RecipeType<RECIPE>,
+            lookup: HTRecipeLookup<INPUT, RECIPE>,
             sorter: Comparator<RECIPE>,
         ) {
             this.addRecipes(
                 getRecipeType(recipeType),
-                getRecipeManager()
-                    .getAllRecipesFor(recipeType1)
+                lookup
+                    .getAllRecipes()
                     .sortedWith(compareBy<RecipeHolder<RECIPE>, RECIPE>(sorter) { it.value }.thenComparing(RECIPE_COMPARATOR)),
             )
         }

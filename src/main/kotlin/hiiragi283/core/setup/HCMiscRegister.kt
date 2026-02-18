@@ -255,7 +255,7 @@ internal object HCMiscRegister {
         materialTools = manager
             .toFlatTable { entry: HTMaterialManager.Entry ->
                 val material: HTToolMaterial =
-                    entry[HTMaterialPropertyKeys.TOOL_MATERIAL] ?: return@toFlatTable setOf()
+                    entry[HTMaterialPropertyKeys.TOOL_MATERIAL] ?: return@toFlatTable emptySet()
                 entry
                     .getOrDefault(HTMaterialPropertyKeys.TOOL_PREFIXES)
                     .map { toolType: HTToolType ->

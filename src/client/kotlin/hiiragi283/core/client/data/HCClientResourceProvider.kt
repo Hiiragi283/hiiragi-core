@@ -10,8 +10,10 @@ import hiiragi283.core.api.data.lang.HTLangPatternProvider
 import hiiragi283.core.api.data.lang.HTLangType
 import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.data.texture.HTTextureUtil
+import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialAccess
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
@@ -25,6 +27,9 @@ import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.api.text.HTHasTranslationKey
+import hiiragi283.core.common.material.CommonMaterialKeys
+import hiiragi283.core.common.material.HCMaterialKeys
+import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import net.mehvahdjukaar.moonlight.api.events.AfterLanguageLoadEvent
@@ -52,6 +57,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         // Model
         executor.accept(HCModelProvider)
         // Texture
+        HTTextureUtil.clearCache()
         executor.accept(HCMaterialTextureProvider)
 
         blockTextures(executor)
@@ -64,14 +70,14 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
             resprite(
                 HCBlocks.OIL_SAND.blockId,
                 HTConst.MINECRAFT.toId(HTConst.BLOCK, "sand.png"),
-                Blocks.COAL_BLOCK,
+                VanillaMaterialKeys.COAL,
             ),
         )
         executor.accept(
             resprite(
                 HCBlocks.OIL_SHALE.blockId,
                 HTConst.MINECRAFT.toId(HTConst.BLOCK, "stone.png"),
-                Blocks.COAL_BLOCK,
+                VanillaMaterialKeys.COAL,
             ),
         )
 
@@ -134,7 +140,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
                 resprite(
                     item.itemId,
                     HTConst.MINECRAFT.toId(HTConst.ITEM, path),
-                    Items.WHITE_DYE,
+                    CommonMaterialKeys.PLASTIC,
                 ),
             )
         }
@@ -150,7 +156,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
             resprite(
                 HCItems.ELDER_HEART.itemId,
                 HTConst.MINECRAFT.toId(HTConst.ITEM, "heart_of_the_sea.png"),
-                Blocks.DIORITE,
+                CommonMaterialKeys.PLASTIC,
             ),
         )
         executor.accept(
@@ -158,6 +164,22 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
                 HCItems.WITHER_STAR.itemId,
                 HTConst.MINECRAFT.toId(HTConst.ITEM, "nether_star.png"),
                 Blocks.DEEPSLATE,
+            ),
+        )
+
+        executor.accept(
+            resprite(
+                HCItems.ELDRITCH_EGG.itemId,
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "egg.png"),
+                HCMaterialKeys.ELDRITCH,
+            ),
+        )
+
+        executor.accept(
+            resprite(
+                HCItems.IRIDESCENT_POWDER.itemId,
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "blaze_powder.png"),
+                CommonMaterialKeys.PLASTIC,
             ),
         )
     }
@@ -176,6 +198,10 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
             .map { it.recolor(palette) }
             .onSuccess { sink.addTexture(id, it) }
     }
+
+    @JvmStatic
+    private fun resprite(id: ResourceLocation, base: ResourceLocation, key: HTMaterialKey): ResourceGenTask =
+        resprite(id, base, HTTextureUtil::getOrCreatePalette.partially1(key.getId()))
 
     @JvmStatic
     private fun resprite(id: ResourceLocation, base: ResourceLocation, palette: Block): ResourceGenTask =

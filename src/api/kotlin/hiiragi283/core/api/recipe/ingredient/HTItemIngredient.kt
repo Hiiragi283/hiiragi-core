@@ -51,7 +51,7 @@ class HTItemIngredient(val unsized: Ingredient, override val amount: Int) : HTIn
         } else {
             val values: Array<Ingredient.Value> = unsized.values
             return when (values.size) {
-                0 -> Either.Right(listOf())
+                0 -> Either.Right(emptyList())
                 1 -> {
                     when (val value: Ingredient.Value = values[0]) {
                         is Ingredient.TagValue -> Either.Left(value.tag())

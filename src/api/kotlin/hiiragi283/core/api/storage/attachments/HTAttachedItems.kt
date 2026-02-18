@@ -20,7 +20,7 @@ data class HTAttachedItems(override val containers: List<ItemStack>) : HTAttache
             .filterOrElse(HTAttachedItems::isNotEmpty) { create(it.size) }
 
         @JvmField
-        val EMPTY = HTAttachedItems(listOf())
+        val EMPTY = HTAttachedItems(emptyList())
 
         @JvmStatic
         fun create(size: Int): HTAttachedItems = HTAttachedItems(List(size) { ItemStack.EMPTY })
