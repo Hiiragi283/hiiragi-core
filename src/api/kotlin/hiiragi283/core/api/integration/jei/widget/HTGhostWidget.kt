@@ -1,4 +1,4 @@
-package hiiragi283.core.api.integration.emi.widget
+package hiiragi283.core.api.integration.jei.widget
 
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack

@@ -19,11 +19,12 @@ object HCJeiRecipeTypes {
     private fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> create(
         recipeType: HTDeferredRecipeType<INPUT, RECIPE>,
         icon: ItemLike,
-        bounds: HTBounds = HTBounds(0, 0, 18 * 4, 18 * 2),
-    ): HTJeiHolderRecipeType<RECIPE> = HTJeiRecipeType.createRecipe(recipeType, recipeType, ItemStack(icon), bounds)
+        width: Int = 18 * 4,
+        height: Int = 18 * 1,
+    ): HTJeiHolderRecipeType<RECIPE> = HTJeiRecipeType.createRecipe(recipeType, recipeType, ItemStack(icon), HTBounds(0, 0, width, height))
 
     @JvmField
-    val ANVIL_CRUSHING: HTJeiHolderRecipeType<HCAnvilCrushingRecipe> = create(HCRecipeTypes.ANVIL_CRUSHING, Items.ANVIL)
+    val ANVIL_CRUSHING: HTJeiHolderRecipeType<HCAnvilCrushingRecipe> = create(HCRecipeTypes.ANVIL_CRUSHING, Items.ANVIL, 18 * 5)
 
     @JvmField
     val CHARGING: HTJeiHolderRecipeType<HCLightningChargingRecipe> = create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD)

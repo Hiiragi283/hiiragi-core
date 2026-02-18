@@ -16,6 +16,10 @@ import net.minecraft.world.item.crafting.RecipeType
 import thedarkcolour.kotlinforforge.neoforge.forge.runForDist
 
 /**
+ * Hiiragi Coreとそれを前提とするmodで使用される[IModPlugin]の抽象クラスです。
+ * @param modId 対象のMOD ID
+ * @author Hiiragi Tsubasa
+ * @since 0.11.0
  * @see mekanism.client.recipe_viewer.jei.MekanismJEI
  * @see mekanism.client.recipe_viewer.jei.RecipeRegistryHelper
  */

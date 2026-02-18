@@ -56,7 +56,6 @@ mods-transitive = [
 ]
 
 mods-compile = [
-    "emi",
     "jei-api"
 ]
 

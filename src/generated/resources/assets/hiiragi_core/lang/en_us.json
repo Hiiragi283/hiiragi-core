@@ -62,6 +62,8 @@
   "gui.hiiragi_core.capacity": "Capacity: %1$s",
   "gui.hiiragi_core.capacity.fe": "Capacity: %1$s FE",
   "gui.hiiragi_core.capacity.mb": "Capacity: %1$s mB",
+  "gui.hiiragi_core.chance.consume": "Consumption Chance: %1$s %%",
+  "gui.hiiragi_core.chance.produce": "Production Chance: %1$s %%",
   "gui.hiiragi_core.fraction": "%1$s / %2$s",
   "gui.hiiragi_core.min_power": "Minimum Explosion Power: %s",
   "gui.hiiragi_core.percentage": "%1$s %%",

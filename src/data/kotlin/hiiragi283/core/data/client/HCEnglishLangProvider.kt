@@ -102,6 +102,9 @@ class HCEnglishLangProvider(output: PackOutput) :
         // API - GUI
         add(HTCommonTranslation.PROGRESS, $$"Progress: %1$s %%")
         add(HTCommonTranslation.SECONDS, $$"%1$s sec (%2$s ticks)")
+
+        add(HTCommonTranslation.CHANCE_CONSUME, $$"Consumption Chance: %1$s %%")
+        add(HTCommonTranslation.CHANCE_PRODUCE, $$"Production Chance: %1$s %%")
         // API - Item
         add(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT, $$"Always has at least %1$s")
         add(HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION, "Press Shift to show description")

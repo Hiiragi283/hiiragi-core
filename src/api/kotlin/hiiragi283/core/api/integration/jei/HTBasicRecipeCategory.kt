@@ -2,6 +2,7 @@ package hiiragi283.core.api.integration.jei
 
 import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.serialization.Codec
+import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.function.identity
@@ -10,6 +11,7 @@ import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.text.HTCommonTranslation
@@ -17,9 +19,9 @@ import hiiragi283.core.api.times
 import mezz.jei.api.constants.VanillaTypes
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder
+import mezz.jei.api.gui.builder.ITooltipBuilder
 import mezz.jei.api.gui.drawable.IDrawable
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView
-import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder
 import mezz.jei.api.helpers.ICodecHelper
 import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
@@ -81,8 +83,6 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
 
     abstract override fun setRecipe(builder: IRecipeLayoutBuilder, recipe: RECIPE, focuses: IFocusGroup)
 
-    abstract override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: RECIPE, focuses: IFocusGroup)
-
     override fun draw(
         recipe: RECIPE,
         recipeSlotsView: IRecipeSlotsView,
@@ -122,7 +122,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
 
     abstract override fun getRegistryName(recipe: RECIPE): ResourceLocation?
 
-    abstract override fun getCodec(codecHelper: ICodecHelper, recipeManager: IRecipeManager): Codec<RECIPE>?
+    abstract override fun getCodec(codecHelper: ICodecHelper, recipeManager: IRecipeManager): Codec<RECIPE>
 
     //    Extensions    //
 
@@ -153,7 +153,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
         return widget
     }
 
-    // Item
+    // IRecipeLayoutBuilder
     private fun createError(message: Component): ItemStack = createItemStack(
         Items.BARRIER,
         DataComponents.CUSTOM_NAME,
@@ -197,13 +197,23 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
         )
     }
 
+    protected fun IRecipeLayoutBuilder.addItemSlot(x: Int, y: Int, result: HTChancedItemResult?): IRecipeSlotBuilder = when (result) {
+        null -> this.addItemSlot(RecipeIngredientRole.RENDER_ONLY, x, y, listOf())
+        else ->
+            this
+                .addItemSlot(x, y, result.result)
+                .addRichTooltipCallback { _, builder: ITooltipBuilder ->
+                    builder.add(HTCommonTranslation.CHANCE_PRODUCE.translateColored(HTDefaultColor.YELLOW, result.chance * 100))
+                }
+    }
+
     protected fun IRecipeSlotBuilder.setSlotBackground(type: HTBackgroundType): IRecipeSlotBuilder =
-        this.setBackground(HTJeiDrawables.getSlot(type, guiHelper), 0, 0)
+        this.setBackground(HTJeiDrawables.getSlot(type, guiHelper), -1, -1).setSlotName(type.name)
 
     protected fun IRecipeLayoutBuilder.addItemSlot(
         role: RecipeIngredientRole,
         x: Int,
         y: Int,
         stacks: List<ItemStack>,
-    ): IRecipeSlotBuilder = this.addSlot(role, x + 1, y + 1).addItemStacks(stacks)
+    ): IRecipeSlotBuilder = this.addSlot(role, x, y).addItemStacks(stacks)
 }
