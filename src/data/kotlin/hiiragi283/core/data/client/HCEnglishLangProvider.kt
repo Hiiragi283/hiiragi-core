@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.text.HTCommonTranslation
+import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCEntityTypes
@@ -68,6 +69,11 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.ALMIGHTY_PICKAXE, "Almighty Pickaxe")
 
         // Recipe
+        add(HTVanillaRecipeTypes.SMELTING, "Smelting")
+        add(HTVanillaRecipeTypes.BLASTING, "Blasting")
+        add(HTVanillaRecipeTypes.SMOKING, "Smoking")
+        add(HTVanillaRecipeTypes.BREWING, "Brewing")
+
         add(HCRecipeTypes.ANVIL_CRUSHING, "Anvil Crushing")
         add(HCRecipeTypes.CHARGING, "Lightning Charging")
         add(HCRecipeTypes.EXPLODING, "Exploding")

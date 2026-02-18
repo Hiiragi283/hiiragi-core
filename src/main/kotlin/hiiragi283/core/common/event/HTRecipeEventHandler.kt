@@ -3,6 +3,7 @@ package hiiragi283.core.common.event
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
+import hiiragi283.core.api.item.enchantment.toInstances
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.times
 import hiiragi283.core.api.toFraction
@@ -11,14 +12,16 @@ import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import hiiragi283.core.common.recipe.HCSingleItemRecipe
 import hiiragi283.core.setup.HCRecipeTypes
-import net.minecraft.core.BlockPos
 import net.minecraft.core.RegistryAccess
+import net.minecraft.core.component.DataComponents
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.item.ItemEntity
+import net.minecraft.world.item.EnchantedBookItem
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.SingleRecipeInput
+import net.minecraft.world.item.enchantment.ItemEnchantments
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.AABB
 import net.neoforged.bus.api.SubscribeEvent
@@ -64,25 +67,42 @@ object HTRecipeEventHandler {
      */
     @SubscribeEvent
     fun onAnvilLand(event: HTAnvilLandEvent) {
-        val level: Level = event.level
-        val pos: BlockPos = event.pos
-        for (entity: ItemEntity in level.getEntitiesOfClass(ItemEntity::class.java, AABB(pos))) {
+        for (entity: ItemEntity in event.level.getEntitiesOfClass(ItemEntity::class.java, AABB(event.pos))) {
             if (isCompleted(entity)) continue
-            val input: SingleRecipeInput = createInput(entity)
-            val (_, recipe: HCAnvilCrushingRecipe) = HCRecipeTypes.ANVIL_CRUSHING.getRecipeFor(input, level, null) ?: continue
-            val multiplier: Int = popResult(input, recipe, level, entity)
-            recipe.extraResult?.let { (result: HTItemResult, chance: Fraction, fallback: Optional<HTItemResult>) ->
-                val access: RegistryAccess = level.registryAccess()
-                val amount: Int = (chance * multiplier).toInt()
-                entity.spawnAtLocation(result.copyWithCount { it * amount }.getStackOrEmpty(access))
-                fallback.ifPresent { result1: HTItemResult ->
-                    entity.spawnAtLocation(result1.copyWithCount { it * (multiplier - amount) }.getStackOrEmpty(access))
-                }
-            }
-            if (entity.item.isEmpty) {
-                entity.discard()
+            anvilCrushing(entity)
+            splitEnchantment(entity)
+        }
+    }
+
+    @JvmStatic
+    private fun anvilCrushing(entity: ItemEntity) {
+        val level: Level = entity.level()
+        val input: SingleRecipeInput = createInput(entity)
+        val (_, recipe: HCAnvilCrushingRecipe) = HCRecipeTypes.ANVIL_CRUSHING.getRecipeFor(input, level, null) ?: return
+        val multiplier: Int = popResult(input, recipe, level, entity)
+        recipe.extraResult?.let { (result: HTItemResult, chance: Fraction, fallback: Optional<HTItemResult>) ->
+            val access: RegistryAccess = entity.registryAccess()
+            val amount: Int = (chance * multiplier).toInt()
+            entity.spawnAtLocation(result.copyWithCount { it * amount }.getStackOrEmpty(access))?.let(::setComplete)
+            fallback.ifPresent { result1: HTItemResult ->
+                entity.spawnAtLocation(result1.copyWithCount { it * (multiplier - amount) }.getStackOrEmpty(access))?.let(::setComplete)
             }
         }
+        if (entity.item.isEmpty) {
+            entity.discard()
+        }
+    }
+
+    @JvmStatic
+    private fun splitEnchantment(entity: ItemEntity) {
+        val stored: ItemEnchantments = entity.item.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY)
+        if (stored.size() <= 1) return
+        stored
+            .toInstances()
+            .map(EnchantedBookItem::createForEnchantment)
+            .mapNotNull(entity::spawnAtLocation)
+            .onEach(::setComplete)
+        entity.discard()
     }
 
     /*fun onStepOnBlock(event: HTStepOnBlockEvent) {
@@ -137,6 +157,11 @@ object HTRecipeEventHandler {
     private fun isCompleted(entity: Entity): Boolean = entity.persistentData.getBoolean(HTConst.COMPLETED_RECIPE)
 
     @JvmStatic
+    private fun setComplete(entity: Entity) {
+        entity.persistentData.putBoolean(HTConst.COMPLETED_RECIPE, true)
+    }
+
+    @JvmStatic
     private fun createInput(entity: ItemEntity): SingleRecipeInput = SingleRecipeInput(entity.item)
 
     @JvmStatic
@@ -156,7 +181,7 @@ object HTRecipeEventHandler {
             .let(entity::spawnAtLocation)
             ?.also { itemEntity: ItemEntity ->
                 entity.item.count -= multiplier * recipeAmount
-                itemEntity.persistentData.putBoolean(HTConst.COMPLETED_RECIPE, true)
+                setComplete(itemEntity)
             }
         return multiplier
     }

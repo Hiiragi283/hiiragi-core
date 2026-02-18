@@ -1,7 +1,7 @@
 package hiiragi283.core.common.recipe
 
 import hiiragi283.core.api.recipe.HTFluidRecipe
-import hiiragi283.core.api.recipe.HTRecipe
+import hiiragi283.core.api.recipe.HTProcessingRecipe
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level
 import net.neoforged.neoforge.fluids.FluidStack
 
 class HCBrewingRecipe(val potionFrom: HTFluidIngredient, val ingredient: HTItemIngredient, val potionTo: HTFluidResult) :
-    HTRecipe<HTItemAndFluidRecipeInput>,
+    HTProcessingRecipe<HTItemAndFluidRecipeInput>(SubParameters(100, Fraction.ZERO)),
     HTFluidRecipe {
     override fun getResultFluid(registries: HolderLookup.Provider): FluidStack = potionTo.getStackOrEmpty(registries)
 

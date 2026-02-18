@@ -10,6 +10,7 @@ import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTWidget
+import hiiragi283.core.api.integration.jei.type.HTJeiRecipeType
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient

@@ -10,6 +10,7 @@ import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.recipe.HTRecipeCache
 import hiiragi283.core.api.recipe.HTRecipeFinder
 import hiiragi283.core.api.recipe.HTRecipeLookup
+import hiiragi283.core.api.recipe.HTRecipeType
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
@@ -43,16 +44,16 @@ import kotlin.jvm.optionals.getOrNull
  */
 object HTVanillaRecipeTypes {
     @JvmField
-    val SMELTING: HTRecipeLookup<SingleRecipeInput, SmeltingRecipe> = VanillaLookup(RecipeType.SMELTING)
+    val SMELTING: HTRecipeType<SingleRecipeInput, SmeltingRecipe> = VanillaLookup(RecipeType.SMELTING)
 
     @JvmField
-    val BLASTING: HTRecipeLookup<SingleRecipeInput, BlastingRecipe> = VanillaLookup(RecipeType.BLASTING)
+    val BLASTING: HTRecipeType<SingleRecipeInput, BlastingRecipe> = VanillaLookup(RecipeType.BLASTING)
 
     @JvmField
-    val SMOKING: HTRecipeLookup<SingleRecipeInput, SmokingRecipe> = VanillaLookup(RecipeType.SMOKING)
+    val SMOKING: HTRecipeType<SingleRecipeInput, SmokingRecipe> = VanillaLookup(RecipeType.SMOKING)
 
     private class VanillaLookup<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(private val recipeType: RecipeType<RECIPE>) :
-        HTRecipeLookup<INPUT, RECIPE> {
+        HTRecipeType<INPUT, RECIPE> {
         override fun createCache(): HTRecipeCache<INPUT, RECIPE> = HTFinderRecipeCache(
             HTRecipeFinder.Vanilla { input: INPUT, level: Level, lastRecipe: RecipeHolder<RECIPE>? ->
                 level.recipeManager
@@ -68,9 +69,9 @@ object HTVanillaRecipeTypes {
     }
 
     @JvmField
-    val BREWING: HTRecipeLookup<HTItemAndFluidRecipeInput, HCBrewingRecipe> = BrewingLookup
+    val BREWING: HTRecipeType<HTItemAndFluidRecipeInput, HCBrewingRecipe> = BrewingType
 
-    private data object BrewingLookup : HTRecipeLookup<HTItemAndFluidRecipeInput, HCBrewingRecipe> {
+    private data object BrewingType : HTRecipeType<HTItemAndFluidRecipeInput, HCBrewingRecipe> {
         private val storedBrewing: PotionBrewing = PotionBrewing.EMPTY
         private val cachedRecipes: List<RecipeHolder<HCBrewingRecipe>> = emptyList()
 

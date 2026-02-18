@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.text.HTCommonTranslation
+import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCEntityTypes
@@ -68,6 +69,11 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.ALMIGHTY_PICKAXE, "全能なるツルハシ")
 
         // Recipe
+        add(HTVanillaRecipeTypes.SMELTING, "かまど")
+        add(HTVanillaRecipeTypes.BLASTING, "溶鉱炉")
+        add(HTVanillaRecipeTypes.SMOKING, "燻製器")
+        add(HTVanillaRecipeTypes.BREWING, "醸造")
+
         add(HCRecipeTypes.ANVIL_CRUSHING, "金床による粉砕")
         add(HCRecipeTypes.CHARGING, "落雷によるチャージ")
         add(HCRecipeTypes.EXPLODING, "爆破")

@@ -3,15 +3,12 @@ package hiiragi283.core.common.registry
 import hiiragi283.core.api.recipe.HTRecipeCache
 import hiiragi283.core.api.recipe.HTRecipeFinder
 import hiiragi283.core.api.recipe.HTRecipeLookup
+import hiiragi283.core.api.recipe.HTRecipeType
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.createKey
-import hiiragi283.core.api.text.HTHasText
-import hiiragi283.core.api.text.HTHasTranslationKey
-import hiiragi283.core.api.text.translatableText
 import hiiragi283.core.common.recipe.HTFinderRecipeCache
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
-import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.Recipe
@@ -24,9 +21,7 @@ import kotlin.jvm.optionals.getOrNull
 data class HTDeferredRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(private val key: ResourceKey<RecipeType<*>>) :
     HTHolderLike<RecipeType<*>, RecipeType<RECIPE>>,
     HTRecipeFinder.Vanilla<INPUT, RECIPE>,
-    HTRecipeLookup<INPUT, RECIPE>,
-    HTHasTranslationKey,
-    HTHasText {
+    HTRecipeType<INPUT, RECIPE> {
     constructor(id: ResourceLocation) : this(Registries.RECIPE_TYPE.createKey(id))
 
     override fun getResourceKey(): ResourceKey<RecipeType<*>> = key
@@ -42,8 +37,4 @@ data class HTDeferredRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(pri
     override fun createCache(): HTRecipeCache<INPUT, RECIPE> = HTFinderRecipeCache(this)
 
     override fun getAllRecipes(context: HTRecipeLookup.Context): List<RecipeHolder<RECIPE>> = context.manager.getAllRecipesFor(get())
-
-    override val translationKey: String = getId().toLanguageKey("recipe_type")
-
-    override fun getText(): Component = translatableText(translationKey)
 }

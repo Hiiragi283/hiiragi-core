@@ -19,4 +19,8 @@ interface HTSoundPlayerBlockEntity : HTAbstractBlockEntity {
     fun playSound(sound: SoundEvent, volume: Float = 1f, pitch: Float = 1f) {
         getLevel()?.playSound(null, getSoundPos(), sound, getSoundSource(), volume, pitch)
     }
+
+    fun interface User {
+        fun playSound(blockEntity: HTSoundPlayerBlockEntity)
+    }
 }

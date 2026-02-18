@@ -13,7 +13,6 @@ import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
-import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.core.util.HCPotionFluidHelper
 import mezz.jei.api.JeiPlugin
 import mezz.jei.api.helpers.IGuiHelper
@@ -87,9 +86,9 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     override fun registerRecipes(registration: IRecipeRegistration) {
-        registration.addRecipes(HCJeiRecipeTypes.ANVIL_CRUSHING, HCRecipeTypes.ANVIL_CRUSHING)
-        registration.addRecipes(HCJeiRecipeTypes.CHARGING, HCRecipeTypes.CHARGING)
-        registration.addRecipes(HCJeiRecipeTypes.EXPLODING, HCRecipeTypes.EXPLODING)
+        registration.addRecipes(HCJeiRecipeTypes.ANVIL_CRUSHING)
+        registration.addRecipes(HCJeiRecipeTypes.CHARGING)
+        registration.addRecipes(HCJeiRecipeTypes.EXPLODING)
     }
 
     override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {

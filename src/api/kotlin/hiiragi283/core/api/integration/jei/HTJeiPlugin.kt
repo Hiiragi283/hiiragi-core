@@ -1,6 +1,8 @@
 package hiiragi283.core.api.integration.jei
 
 import hiiragi283.core.api.HTComparators
+import hiiragi283.core.api.integration.jei.type.HTHolderJeiRecipeType
+import hiiragi283.core.api.integration.jei.type.HTJeiRecipeType
 import hiiragi283.core.api.recipe.HTRecipeLookup
 import hiiragi283.core.api.resource.toId
 import mezz.jei.api.IModPlugin
@@ -43,7 +45,7 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
 
         @JvmStatic
         protected fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
-            recipeType: HTJeiHolderRecipeType<RECIPE>,
+            recipeType: HTJeiRecipeType<RecipeHolder<RECIPE>>,
             lookup: HTRecipeLookup<INPUT, RECIPE>,
         ) {
             this.addRecipes(getRecipeType(recipeType), lookup.getAllRecipes())
@@ -51,13 +53,33 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
 
         @JvmStatic
         protected fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
-            recipeType: HTJeiHolderRecipeType<RECIPE>,
+            recipeType: HTJeiRecipeType<RecipeHolder<RECIPE>>,
             lookup: HTRecipeLookup<INPUT, RECIPE>,
             sorter: Comparator<RECIPE>,
         ) {
             this.addRecipes(
                 getRecipeType(recipeType),
                 lookup
+                    .getAllRecipes()
+                    .sortedWith(compareBy<RecipeHolder<RECIPE>, RECIPE>(sorter) { it.value }.thenComparing(RECIPE_COMPARATOR)),
+            )
+        }
+
+        @JvmStatic
+        protected fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
+            recipeType: HTHolderJeiRecipeType<INPUT, RECIPE>,
+        ) {
+            this.addRecipes(getRecipeType(recipeType), recipeType.getAllRecipes())
+        }
+
+        @JvmStatic
+        protected fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
+            recipeType: HTHolderJeiRecipeType<INPUT, RECIPE>,
+            sorter: Comparator<RECIPE>,
+        ) {
+            this.addRecipes(
+                getRecipeType(recipeType),
+                recipeType
                     .getAllRecipes()
                     .sortedWith(compareBy<RecipeHolder<RECIPE>, RECIPE>(sorter) { it.value }.thenComparing(RECIPE_COMPARATOR)),
             )
