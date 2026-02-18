@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.asSequence
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.common.registry.register.HTDeferredCreativeTabRegister
 import hiiragi283.core.common.text.HCTranslation
@@ -60,7 +61,8 @@ object HCCreativeTabs {
                     .blocks
                     .asSequence()
                     .sortedWith(TRIPLE_COMPARATOR)
-                    .map { it.third },
+                    .map { it.third }
+                    .map(HTBlockHolderLike.Companion::wrap),
             )
             // Fluids
             HTDeferredCreativeTabRegister.addToDisplay(

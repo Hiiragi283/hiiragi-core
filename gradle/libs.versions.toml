@@ -19,6 +19,7 @@ ae2 = "19.2.17"
 almost = "1.21.1-1.3.0"
 emi = "1.1.22+1.21.1"
 jade = "15.10.3+neoforge"
+jei = "19.27.0.340"
 mek = "1.21.1-10.7.17.83"
 mi = "2.4.1"
 moonlight = "1.21-2.29.16"
@@ -33,6 +34,8 @@ kff = { group = "thedarkcolour", name = "kotlinforforge-neoforge", version.ref =
 ae2 = { group = "org.appliedenergistics", name = "appliedenergistics2", version.ref = "ae2" }
 almost = { group = "com.almostreliable.mods", name = "almostunified-neoforge", version.ref = "almost" }
 emi = { group = "dev.emi", name = "emi-neoforge", version.ref = "emi" }
+jei = { group = "mezz.jei", name = "jei-1.21.1-neoforge", version.ref = "jei" }
+jei-api = { group = "mezz.jei", name = "jei-1.21.1-neoforge-api", version.ref = "jei" }
 jade = { group = "maven.modrinth", name = "jade", version.ref = "jade" }
 mek = { group = "mekanism", name = "Mekanism", version.ref = "mek" }
 mi = { group = "aztech", name = "Modern-Industrialization", version.ref = "mi" }
@@ -45,17 +48,21 @@ guide = { group = "org.appliedenergistics", name = "guideme", version.ref = "gui
 
 mods-impl = [
     "ae2",
-    "emi",
     "jade",
 ]
 
 mods-transitive = [
-    "moonlight"
+    "moonlight",
 ]
 
-mods-compile = []
+mods-compile = [
+    "emi",
+    "jei-api"
+]
 
-mods-runtime = []
+mods-runtime = [
+    "jei",
+]
 
 [plugins]
 
