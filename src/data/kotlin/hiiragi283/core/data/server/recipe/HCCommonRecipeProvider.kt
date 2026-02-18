@@ -116,7 +116,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         // Polymer Resin -> Plastic Bar
         HTCookingRecipeBuilder.smelting(output) {
             ingredient += HCItems.POLYMER_RESIN
-            resultStack += getOrThrow(CommonTagPrefixes.INGOT, CommonMaterialKeys.PLASTIC)
+            resultStack += getOrThrow(CommonTagPrefixes.PLATE, CommonMaterialKeys.PLASTIC)
             exp = 0.7f
             recipeId suffix "_from_resin"
         }

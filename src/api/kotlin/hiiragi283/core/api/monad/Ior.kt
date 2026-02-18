@@ -44,11 +44,12 @@ sealed class Ior<A, B> {
      * 保持している値を変換します。
      * @param C 変換後のクラス
      * @param left このインスタンスが[Left]の場合の変換ブロック
-     * @param right このインスタンスが[Right]または[Both]の場合の変換ブロック
+     * @param right このインスタンスが[Right]の場合の変換ブロック
+     * @param combine このインスタンスが[Both]の場合に変換された値を統合するブロック
      * @return 変換された値
      */
-    inline fun <C> map(left: (A) -> C, right: (B) -> C): C = when (this) {
-        is Both<A, B> -> right(rightValue)
+    inline fun <C> map(left: (A) -> C, right: (B) -> C, combine: (C, C) -> C): C = when (this) {
+        is Both<A, B> -> combine(left(leftValue), right(rightValue))
         is Left<A, B> -> left(value)
         is Right<A, B> -> right(value)
     }

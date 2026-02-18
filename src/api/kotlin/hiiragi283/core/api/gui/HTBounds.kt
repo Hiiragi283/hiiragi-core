@@ -8,7 +8,7 @@ package hiiragi283.core.api.gui
  * @param height y軸方向の長さ
  * @author Hiiragi Tsubasa
  * @since 0.1.0
- * @see dev.emi.emi.api.widget.Bounds
+ * @see net.minecraft.client.renderer.Rect2i
  */
 @JvmRecord
 data class HTBounds(

@@ -359,10 +359,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         val ore: HTItemHolderLike<*> = getItem(prefix, entry) ?: getItem(prefix, entry) ?: return
         val smeltedMaterial: HTMaterialLike = entry[HTMaterialPropertyKeys.SMELTED_TO] ?: entry
         val smeltedPropertyMap: HTPropertyMap = materialManager[smeltedMaterial] ?: return
-        val base: HTItemHolderLike<*> = smeltedPropertyMap
-            .getDefaultPart()
-            ?.getItem(smeltedMaterial)
-            ?: return
+        val base: HTItemHolderLike<*> = smeltedPropertyMap.getDefaultPart()?.getItem(smeltedMaterial) ?: return
         // 精錬の前後がどちらもバニラ由来の場合はパス
         if (ore.namespace == HTConst.MINECRAFT && base.namespace == HTConst.MINECRAFT) return
         // Smelting & Blasting

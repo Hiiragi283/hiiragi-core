@@ -17,7 +17,6 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration
 import mezz.jei.api.registration.IRecipeRegistration
 import mezz.jei.api.registration.ISubtypeRegistration
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration
-import net.minecraft.client.gui.screens.Screen
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.Item
@@ -57,11 +56,9 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     override fun registerRecipes(registration: IRecipeRegistration) {
-        registration.addRecipes(HCJeiRecipeTypes.ANVIL_CRUSHING, HCRecipeTypes.ANVIL_CRUSHING.get()) { it.result.getId() }
-        registration.addRecipes(HCJeiRecipeTypes.CHARGING, HCRecipeTypes.CHARGING.get()) { it.result.getId() }
-        registration.addRecipes(HCJeiRecipeTypes.EXPLODING, HCRecipeTypes.EXPLODING.get()) { it.result.getId() }
-
-        // Eternal Upgrade
+        registration.addRecipes(HCJeiRecipeTypes.ANVIL_CRUSHING, HCRecipeTypes.ANVIL_CRUSHING.get())
+        registration.addRecipes(HCJeiRecipeTypes.CHARGING, HCRecipeTypes.CHARGING.get())
+        registration.addRecipes(HCJeiRecipeTypes.EXPLODING, HCRecipeTypes.EXPLODING.get())
     }
 
     override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {
@@ -70,13 +67,6 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             HCJeiRecipeTypes.CHARGING,
             HCJeiRecipeTypes.EXPLODING,
         )
-    }
-
-    companion object {
-        @JvmStatic
-        private fun getWidgets(screen: Screen): List<HTWidgetContainerScreen.WidgetWrapper<*>> = screen
-            .children()
-            .filterIsInstance<HTWidgetContainerScreen.WidgetWrapper<*>>()
     }
 
     override fun registerGuiHandlers(registration: IGuiHandlerRegistration) {

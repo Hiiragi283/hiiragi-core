@@ -30,6 +30,7 @@ object HCItems {
 
     @JvmStatic
     fun register(eventBus: IEventBus) {
+        REGISTER.addAlias("plastic_ingot", "plastic_plate")
         REGISTER.addAlias("wood_plate", "particle_board")
 
         REGISTER.register(eventBus)

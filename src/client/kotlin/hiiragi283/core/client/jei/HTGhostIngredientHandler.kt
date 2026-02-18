@@ -1,6 +1,7 @@
 package hiiragi283.core.client.jei
 
 import hiiragi283.core.api.gui.HTBounds
+import hiiragi283.core.api.gui.toRec2i
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.integration.jei.widget.HTGhostWidget
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
@@ -26,10 +27,7 @@ object HTGhostIngredientHandler : IGhostIngredientHandler<HTWidgetContainerScree
             val matchType: Boolean = ghostConsumer.supportedTarget(ingredient.ingredient)?.let(type::getCastIngredient) != null
             if (!matchType) return@mapNotNull null
             object : IGhostIngredientHandler.Target<I> {
-                override fun getArea(): Rect2i {
-                    val (x: Int, y: Int, width: Int, height: Int) = bounds
-                    return Rect2i(x, y, width, height)
-                }
+                override fun getArea(): Rect2i = bounds.toRec2i()
 
                 override fun accept(ingredient: I) {
                     ghostConsumer.accept(ingredient)

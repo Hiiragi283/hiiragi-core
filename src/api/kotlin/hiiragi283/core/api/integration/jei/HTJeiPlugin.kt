@@ -1,5 +1,6 @@
 package hiiragi283.core.api.integration.jei
 
+import hiiragi283.core.api.HTComparators
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.resource.toId
 import mezz.jei.api.IModPlugin
@@ -48,13 +49,18 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
         ) ?: error("Failed to access vanilla recipe manager")
 
         @JvmStatic
+        protected val RECIPE_COMPARATOR: Comparator<RecipeHolder<*>> = compareBy(HTComparators.ID) { it.id }
+
+        @JvmStatic
         protected fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
             recipeType: HTJeiHolderRecipeType<RECIPE>,
             recipeType1: RecipeType<RECIPE>,
         ) {
             this.addRecipes(
                 getRecipeType(recipeType),
-                getRecipeManager().getAllRecipesFor(recipeType1).sortedWith(compareBy { it.id }),
+                getRecipeManager()
+                    .getAllRecipesFor(recipeType1)
+                    .sortedWith(RECIPE_COMPARATOR),
             )
         }
 
@@ -68,21 +74,7 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
                 getRecipeType(recipeType),
                 getRecipeManager()
                     .getAllRecipesFor(recipeType1)
-                    .sortedWith(compareBy<RecipeHolder<RECIPE>, RECIPE>(sorter) { it.value }.thenComparing { it.id }),
-            )
-        }
-
-        @JvmStatic
-        protected inline fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
-            recipeType: HTJeiHolderRecipeType<RECIPE>,
-            recipeType1: RecipeType<RECIPE>,
-            crossinline sorter: (RECIPE) -> Comparable<*>,
-        ) {
-            this.addRecipes(
-                getRecipeType(recipeType),
-                getRecipeManager()
-                    .getAllRecipesFor(recipeType1)
-                    .sortedWith(compareBy<RecipeHolder<RECIPE>, RECIPE>(compareBy(sorter)) { it.value }.thenComparing { it.id }),
+                    .sortedWith(compareBy<RecipeHolder<RECIPE>, RECIPE>(sorter) { it.value }.thenComparing(RECIPE_COMPARATOR)),
             )
         }
 

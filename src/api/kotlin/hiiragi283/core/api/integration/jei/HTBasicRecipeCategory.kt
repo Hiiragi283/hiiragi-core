@@ -2,6 +2,7 @@ package hiiragi283.core.api.integration.jei
 
 import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.serialization.Codec
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.fraction
@@ -10,9 +11,12 @@ import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.item.createItemStack
+import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
+import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.times
@@ -24,6 +28,7 @@ import mezz.jei.api.gui.drawable.IDrawable
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView
 import mezz.jei.api.helpers.ICodecHelper
 import mezz.jei.api.helpers.IGuiHelper
+import mezz.jei.api.neoforge.NeoForgeTypes
 import mezz.jei.api.recipe.IFocusGroup
 import mezz.jei.api.recipe.IRecipeManager
 import mezz.jei.api.recipe.RecipeIngredientRole
@@ -38,6 +43,8 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
+import net.minecraft.world.level.material.Fluid
+import net.neoforged.neoforge.fluids.FluidStack
 import org.apache.commons.lang3.math.Fraction
 
 /**
@@ -153,7 +160,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
         return widget
     }
 
-    // IRecipeLayoutBuilder
+    // IRecipeLayoutBuilder - Item
     private fun createError(message: Component): ItemStack = createItemStack(
         Items.BARRIER,
         DataComponents.CUSTOM_NAME,
@@ -183,7 +190,13 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
                         ?: listOf(createError(HTCommonTranslation.EMPTY.translate()))
                 },
             )
-            this.addItemSlot(role, x, y, stacks)
+            val builder: IRecipeSlotBuilder = this.addItemSlot(role, x, y, stacks)
+            if (ingredient.isCatalyst) {
+                builder.addRichTooltipCallback { _, builder: ITooltipBuilder ->
+                    builder.add(HTCommonTranslation.CHANCE_CONSUME.translateColored(HTDefaultColor.YELLOW, 0))
+                }
+            }
+            builder
         }
     }
 
@@ -207,13 +220,79 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
                 }
     }
 
-    protected fun IRecipeSlotBuilder.setSlotBackground(type: HTBackgroundType): IRecipeSlotBuilder =
-        this.setBackground(HTJeiDrawables.getSlot(type, guiHelper), -1, -1).setSlotName(type.name)
-
     protected fun IRecipeLayoutBuilder.addItemSlot(
         role: RecipeIngredientRole,
         x: Int,
         y: Int,
         stacks: List<ItemStack>,
     ): IRecipeSlotBuilder = this.addSlot(role, x, y).addItemStacks(stacks)
+
+    // IRecipeLayoutBuilder - Fluid
+    protected fun IRecipeLayoutBuilder.addFluidSlot(
+        x: Int,
+        y: Int,
+        isTank: Boolean,
+        ingredient: HTFluidIngredient?,
+    ): IRecipeSlotBuilder = when (ingredient) {
+        null -> this.addFluidSlot(RecipeIngredientRole.RENDER_ONLY, x, y, isTank, listOf())
+        else -> {
+            val (role: RecipeIngredientRole, amount: Int) = when {
+                ingredient.isCatalyst -> RecipeIngredientRole.CATALYST to 1
+                else -> RecipeIngredientRole.INPUT to ingredient.amount
+            }
+
+            val stacks: List<FluidStack> = ingredient.unwrap().map(
+                { tagKey: TagKey<Fluid> -> BuiltInRegistries.FLUID.getTagOrEmpty(tagKey).map { FluidStack(it, amount) } },
+                { resources: List<HTFluidResourceType> -> resources.map { it.toStack(amount) } },
+            )
+            val builder: IRecipeSlotBuilder = this.addFluidSlot(role, x, y, isTank, stacks)
+            if (ingredient.isCatalyst) {
+                builder.addRichTooltipCallback { _, builder: ITooltipBuilder ->
+                    builder.add(HTCommonTranslation.CHANCE_CONSUME.translateColored(HTDefaultColor.YELLOW, 0))
+                }
+            }
+            builder
+        }
+    }
+
+    protected fun IRecipeLayoutBuilder.addFluidSlot(
+        x: Int,
+        y: Int,
+        isTank: Boolean,
+        result: HTFluidResult?,
+    ): IRecipeSlotBuilder = when (result) {
+        null -> this.addFluidSlot(RecipeIngredientRole.RENDER_ONLY, x, y, isTank, listOf())
+        else -> this.addFluidSlot(
+            RecipeIngredientRole.OUTPUT,
+            x,
+            y,
+            isTank,
+            listOfNotNull(result.getStackResult(null).value()),
+        )
+    }
+
+    protected fun IRecipeLayoutBuilder.addFluidSlot(
+        role: RecipeIngredientRole,
+        x: Int,
+        y: Int,
+        isTank: Boolean,
+        stacks: List<FluidStack>,
+    ): IRecipeSlotBuilder {
+        val (width: Int, height: Int) = when (isTank) {
+            true -> getPosition(1) - 2 to getPosition(3) - 2
+            false -> 16 to 16
+        }
+        val capacity: Long = (stacks.maxOfOrNull(FluidStack::getAmount) ?: HTConst.DEFAULT_FLUID_AMOUNT).toLong()
+        return this
+            .addSlot(role, x, y)
+            .addIngredients(NeoForgeTypes.FLUID_STACK, stacks)
+            .setFluidRenderer(capacity, false, width, height)
+    }
+
+    // IRecipeSlotBuilder
+    protected fun IRecipeSlotBuilder.setSlotBackground(type: HTBackgroundType): IRecipeSlotBuilder =
+        this.setBackground(HTJeiDrawables.getSlot(type, guiHelper), -1, -1).setSlotName(type.name)
+
+    protected fun IRecipeSlotBuilder.setTankBackground(type: HTBackgroundType): IRecipeSlotBuilder =
+        this.setBackground(HTJeiDrawables.getTank(type, guiHelper), -1, -1).setSlotName(type.name)
 }

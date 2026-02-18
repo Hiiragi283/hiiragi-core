@@ -3,6 +3,7 @@ package hiiragi283.core.api.recipe.result
 import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.function.identityRight
 import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.monad.toIorOrThrow
 import hiiragi283.core.api.serialization.codec.BiCodec
@@ -57,24 +58,19 @@ class HTItemResult(private val content: Ior<HTItemResourceType, TagKey<Item>>, p
      */
     fun getStackOrEmpty(provider: HolderLookup.Provider?): ItemStack = getStackResult(provider).valueOrElse(ItemStack::EMPTY)
 
-    override fun getStackResult(provider: HolderLookup.Provider?): HTTextResult<ItemStack> = content.fold(
+    override fun getStackResult(provider: HolderLookup.Provider?): HTTextResult<ItemStack> = content.map(
         { resource: HTItemResourceType -> HTTextResult.success(resource.toStack(count)) },
         { tagKey: TagKey<Item> ->
             HiiragiCoreAccess.INSTANCE
                 .getFirstHolder(provider, tagKey)
                 .map { ItemStack(it.getHolder(), count) }
         },
-        { resource: HTItemResourceType, tagKey: TagKey<Item> ->
-            HiiragiCoreAccess.INSTANCE
-                .getFirstHolder(provider, tagKey)
-                .map { ItemStack(it.getHolder(), count) }
-                .let { either: HTTextResult<ItemStack> ->
-                    HTTextResult.success(either.value() ?: resource.toStack(count))
-                }
+        { itemResult: HTTextResult<ItemStack>, tagResult: HTTextResult<ItemStack> ->
+            tagResult.mapOrElse(HTTextResult.Companion::success) { _ -> itemResult }
         },
     )
 
-    override fun getId(): ResourceLocation = content.map(HTItemResourceType::getId, TagKey<Item>::location)
+    override fun getId(): ResourceLocation = content.map(HTItemResourceType::getId, TagKey<Item>::location, identityRight())
 
     //    Builder    //
 

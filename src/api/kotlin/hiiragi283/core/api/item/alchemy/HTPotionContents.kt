@@ -64,12 +64,10 @@ data class HTPotionContents private constructor(val contents: RawPotionContents,
          */
         @JvmStatic
         fun of(contents: RawPotionContents, bottleType: HTBottleType): HTPotionContents? {
-            val isEmpty: Boolean = contents.fold(
+            val isEmpty: Boolean = contents.map(
                 { potion: Holder<Potion> -> potion == Potions.WATER },
                 { instances: List<HTMobEffectInstance> -> instances.isEmpty() },
-                { potion: Holder<Potion>, instances: List<HTMobEffectInstance> ->
-                    potion == Potions.WATER && instances.isEmpty()
-                },
+                { left: Boolean, right: Boolean -> left && right },
             )
             return when {
                 isEmpty -> null

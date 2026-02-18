@@ -29,9 +29,9 @@ class HTWidgetContainerScreen(menu: HTWidgetContainerMenu, inventory: Inventory,
 
     init {
         with(menu.widgetHolder) {
-            imageHeight = 144 + 6 * 18 + heightOffset
+            imageHeight = 144 + rows * 18
 
-            inventoryLabelY = imageHeight - 125 + heightOffset
+            inventoryLabelY = imageHeight - 94
         }
     }
 
@@ -52,7 +52,7 @@ class HTWidgetContainerScreen(menu: HTWidgetContainerMenu, inventory: Inventory,
         mouseX: Int,
         mouseY: Int,
     ) {
-        val widgetsHeight: Int = HTSlotHelper.getSlotPosY(6) + widgetHolder.heightOffset
+        val widgetsHeight: Int = HTSlotHelper.getSlotPosY(widgetHolder.rows)
         guiGraphics.blit(BACKGROUND, startX, startY, 0, 0, imageWidth, widgetsHeight)
         guiGraphics.blit(
             BACKGROUND,

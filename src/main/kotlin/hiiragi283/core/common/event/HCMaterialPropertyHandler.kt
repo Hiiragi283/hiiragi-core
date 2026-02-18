@@ -26,11 +26,13 @@ import hiiragi283.core.api.property.plusAssign
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.tag.fluid.CommonFluidTagPrefixes
 import hiiragi283.core.common.item.VanillaEquipmentMaterial
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
+import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import hiiragi283.core.setup.HCToolMaterials
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
@@ -490,7 +492,14 @@ object HCMaterialPropertyHandler {
 
             setName("Aluminum", "アルミニウム")
         }
-        registerMetal(CommonMaterialKeys.SILICON, "Silicon", "シリコン", HTMaterialLevel.HIGH)
+        event.modify(CommonMaterialKeys.SILICON) {
+            setDefaultPart(HiiragiCoreTags.Items.SILICON, null)
+
+            put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.HIGH)
+            put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.HIGH)
+
+            setName("Silicon", "シリコン")
+        }
 
         registerMetal(CommonMaterialKeys.TITANIUM, "Titanium", "チタン", HTMaterialLevel.HIGH)
         registerMetal(CommonMaterialKeys.VANADIUM, "Vanadium", "バナジウム")
@@ -621,10 +630,13 @@ object HCMaterialPropertyHandler {
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, VanillaMaterialKeys.COAL.getId())
         }
         event.modify(CommonMaterialKeys.PLASTIC) {
-            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
+            setDefaultPart(
+                HiiragiCoreTags.Items.PLASTICS,
+                HTSimpleDeferredItem(CommonTagPrefixes.PLATE.createId(CommonMaterialKeys.PLASTIC)),
+            )
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
-            addItemPrefixes(CommonTagPrefixes.INGOT, CommonTagPrefixes.PLATE, CommonTagPrefixes.ROD, CommonTagPrefixes.WIRE)
+            addItemPrefixes(CommonTagPrefixes.PLATE, CommonTagPrefixes.ROD, CommonTagPrefixes.WIRE)
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
             setName("Plastic", "プラスチック")
@@ -645,7 +657,7 @@ object HCMaterialPropertyHandler {
             // addCustomName(CommonTagPrefixes.DUST, "Rubber Pulp", "ゴムパルプ")
             addCustomName(CommonTagPrefixes.INGOT, "Rubber Bar", "ゴムバー")
             addCustomName(CommonTagPrefixes.PLATE, "Rubber Sheet", "ゴムシート")
-            setTextureSet("polymer")
+            setTextureSet("polymer", HTMaterialTextureSet.DULL)
         }
     }
 
