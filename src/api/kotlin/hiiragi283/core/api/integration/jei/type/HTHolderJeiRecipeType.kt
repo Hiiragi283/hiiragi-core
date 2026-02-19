@@ -9,6 +9,11 @@ import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeInput
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.11.0
+ * @see mekanism.client.recipe_viewer.type.RecipeViewerRecipeType
+ */
 class HTHolderJeiRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(
     override val recipeClass: Class<out RecipeHolder<RECIPE>>,
     deferredType: HTRecipeType<INPUT, RECIPE>,

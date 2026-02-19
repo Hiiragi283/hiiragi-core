@@ -5,6 +5,10 @@ import mezz.jei.api.gui.drawable.IDrawable
 import mezz.jei.api.helpers.IGuiHelper
 import java.util.EnumMap
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.11.0
+ */
 object HTJeiDrawables {
     @JvmStatic
     private val SLOTS: MutableMap<HTBackgroundType, IDrawable> = EnumMap(HTBackgroundType::class.java)

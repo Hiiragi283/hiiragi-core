@@ -8,6 +8,8 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 
 /**
+ * @author Hiiragi Tsubasa
+ * @since 0.11.0
  * @see mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType
  */
 interface HTJeiRecipeType<RECIPE : Any> :
