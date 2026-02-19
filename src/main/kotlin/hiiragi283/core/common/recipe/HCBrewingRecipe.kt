@@ -12,6 +12,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.level.Level
 import net.neoforged.neoforge.fluids.FluidStack
+import org.apache.commons.lang3.math.Fraction
 
 class HCBrewingRecipe(val potionFrom: HTFluidIngredient, val ingredient: HTItemIngredient, val potionTo: HTFluidResult) :
     HTProcessingRecipe<HTItemAndFluidRecipeInput>(SubParameters(100, Fraction.ZERO)),
