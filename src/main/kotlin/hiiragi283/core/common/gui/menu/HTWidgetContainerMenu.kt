@@ -1,7 +1,6 @@
 package hiiragi283.core.common.gui.menu
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.gui.HTSlotHelper
 import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
 import hiiragi283.core.api.gui.widget.HTWidget
@@ -14,6 +13,7 @@ import net.minecraft.world.inventory.MenuType
 
 /**
  * [HTWidgetHolder]に基づいた[HTContainerMenu]の拡張クラスです。
+ * @see net.minecraft.world.inventory.ChestMenu
  */
 class HTWidgetContainerMenu(
     menuType: MenuType<*>,
@@ -27,7 +27,7 @@ class HTWidgetContainerMenu(
     init {
         context.setup(inventory.player, widgetHolder)
         // Player Inventory
-        addPlayerInv(inventory, HTSlotHelper.getSlotPosY(widgetHolder.rows))
+        addPlayerInv(inventory, (widgetHolder.rows - 4) * 18)
     }
 
     override fun stillValid(player: Player): Boolean = context.stillValid(player)

@@ -19,6 +19,7 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
         trackItem(HCItems.RAW_RUBBER)
         trackItem(HCItems.POLYMER_RESIN)
         trackItem(HCItems.SYNTHETIC_FEATHER)
+        trackItem(HCItems.SYNTHETIC_FIBER)
         trackItem(HCItems.SYNTHETIC_LEATHER)
 
         trackItem(HCItems.LUMINOUS_PASTE)

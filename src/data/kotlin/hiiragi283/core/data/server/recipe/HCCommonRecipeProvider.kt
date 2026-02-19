@@ -26,6 +26,7 @@ import hiiragi283.core.setup.HCItems
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.crafting.CraftingBookCategory
+import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
 
 object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID) {
@@ -155,6 +156,14 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             define('A') += Items.WITHER_SKELETON_SKULL
             define('B') += ItemTags.SOUL_FIRE_BASE_BLOCKS
             resultStack += HCItems.WITHER_DOLL
+        }
+
+        // Synthetic
+        for (item: ItemLike in listOf(HCItems.SYNTHETIC_FEATHER, HCItems.SYNTHETIC_FIBER, HCItems.SYNTHETIC_LEATHER)) {
+            HTStonecuttingRecipeBuilder.create(output) {
+                ingredient += HiiragiCoreTags.Items.PLASTICS
+                resultStack += item
+            }
         }
     }
 

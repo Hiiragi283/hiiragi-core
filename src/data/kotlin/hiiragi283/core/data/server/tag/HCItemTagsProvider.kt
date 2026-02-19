@@ -18,6 +18,7 @@ import java.util.concurrent.CompletableFuture
 
 class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context: HTDataGenContext) :
     HTItemTagsProvider(HiiragiCoreAPI.MOD_ID, blockTags, context) {
+    @Suppress("DEPRECATION")
     override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Item>) {
         // Buckets
         for (content: HTFluidContent in HCFluids.REGISTER.entries) {
@@ -40,6 +41,8 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
         factory.apply(Tags.Items.FEATHERS).add(HCItems.SYNTHETIC_FEATHER)
         factory.apply(Tags.Items.LEATHERS).add(HCItems.SYNTHETIC_LEATHER)
         factory.apply(Tags.Items.SLIME_BALLS).add(HCItems.RAW_RUBBER)
+        factory.apply(Tags.Items.SLIMEBALLS).add(HCItems.RAW_RUBBER)
+        factory.apply(Tags.Items.STRINGS).add(HCItems.SYNTHETIC_FIBER)
 
         addTags(factory, Tags.Items.CROPS, HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)
 

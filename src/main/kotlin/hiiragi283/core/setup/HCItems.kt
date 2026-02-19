@@ -31,6 +31,7 @@ object HCItems {
     @JvmStatic
     fun register(eventBus: IEventBus) {
         REGISTER.addAlias("plastic_ingot", "plastic_plate")
+        REGISTER.addAlias("plastic_wire", "synthetic_fiber")
         REGISTER.addAlias("wood_plate", "particle_board")
 
         REGISTER.register(eventBus)
@@ -67,6 +68,9 @@ object HCItems {
 
     @JvmField
     val SYNTHETIC_LEATHER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_leather")
+
+    @JvmField
+    val SYNTHETIC_FIBER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_fiber")
 
     // Mob
     @JvmField

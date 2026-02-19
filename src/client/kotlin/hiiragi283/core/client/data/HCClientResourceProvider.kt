@@ -134,6 +134,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         mapOf(
             HCItems.POLYMER_RESIN to "slime_ball.png",
             HCItems.SYNTHETIC_FEATHER to "feather.png",
+            HCItems.SYNTHETIC_FIBER to "string.png",
             HCItems.SYNTHETIC_LEATHER to "leather.png",
         ).forEach { (item: HTIdLike, path: String) ->
             executor.accept(

@@ -105,7 +105,7 @@ abstract class HTContainerMenu<C>(
         for (index: Int in 0..8) {
             hotBarSlots.add(slotCount)
             HiiragiCoreAPI.LOGGER.debug("Hotbar slot: $slotCount")
-            addSlot(Slot(inventory, index, HTSlotHelper.getSlotPosX(index), HTSlotHelper.getSlotPosY(10) - 2 + yOffset))
+            addSlot(Slot(inventory, index, HTSlotHelper.getSlotPosX(index), 161 + yOffset))
         }
         // inventory
         for (index: Int in 0..26) {
@@ -116,7 +116,7 @@ abstract class HTContainerMenu<C>(
                     inventory,
                     index + 9,
                     HTSlotHelper.getSlotPosX(index % 9),
-                    HTSlotHelper.getSlotPosY(6 + (index / 9)) + 12 + yOffset,
+                    103 + (index / 9) * 18 + yOffset,
                 ),
             )
         }

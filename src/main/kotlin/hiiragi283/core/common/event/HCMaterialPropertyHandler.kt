@@ -487,7 +487,7 @@ object HCMaterialPropertyHandler {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
-            addItemPrefixes(alloySet)
+            addItemPrefixes(alloySet.plus(CommonTagPrefixes.WIRE))
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
 
             setName("Aluminum", "アルミニウム")
@@ -570,7 +570,7 @@ object HCMaterialPropertyHandler {
         event.modify(CommonMaterialKeys.STEEL) {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(alloySet.plus(partSet).plus(CommonTagPrefixes.WIRE))
+            addItemPrefixes(alloySet.plus(partSet))
             addToolPrefixes(HCToolMaterials.STEEL, CommonToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER))
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
@@ -615,17 +615,12 @@ object HCMaterialPropertyHandler {
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.STEEL.getId())
         }
         event.modify(CommonMaterialKeys.CARBON) {
-            addItemPrefixes(
-                CommonTagPrefixes.DUST,
-                CommonTagPrefixes.PLATE,
-                CommonTagPrefixes.ROD,
-                CommonTagPrefixes.WIRE,
-            )
+            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.PLATE, CommonTagPrefixes.ROD)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.NONE)
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
             setName("Carbon", "炭素")
-            addCustomName(CommonTagPrefixes.WIRE, "Carbon Fiber", "炭素繊維")
+            // addCustomName(CommonTagPrefixes.WIRE, "Carbon Fiber", "炭素繊維")
             setTextureSet("mineral", HTMaterialTextureSet.DULL)
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, VanillaMaterialKeys.COAL.getId())
         }
@@ -636,14 +631,14 @@ object HCMaterialPropertyHandler {
             )
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
-            addItemPrefixes(CommonTagPrefixes.PLATE, CommonTagPrefixes.ROD, CommonTagPrefixes.WIRE)
+            addItemPrefixes(CommonTagPrefixes.PLATE, CommonTagPrefixes.ROD)
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
             setName("Plastic", "プラスチック")
             // addCustomName(CommonTagPrefixes.DUST, "Plastic Pulp", "プラスチックパルプ")
             addCustomName(CommonTagPrefixes.INGOT, "Plastic Bar", "プラスチックバー")
             addCustomName(CommonTagPrefixes.PLATE, "Plastic Sheet", "プラスチックシート")
-            addCustomName(CommonTagPrefixes.WIRE, "Synthetic Fiber", "合成繊維")
+            // addCustomName(CommonTagPrefixes.WIRE, "Synthetic Fiber", "合成繊維")
             setTextureSet("polymer")
         }
         event.modify(CommonMaterialKeys.RUBBER) {

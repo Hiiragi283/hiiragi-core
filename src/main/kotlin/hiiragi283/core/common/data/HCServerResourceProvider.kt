@@ -180,7 +180,6 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
                     if (key == CommonMaterialKeys.PLASTIC) {
                         when (prefix) {
                             CommonTagPrefixes.PLATE -> HiiragiCoreTags.Items.PLASTICS
-                            CommonTagPrefixes.WIRE -> Tags.Items.STRINGS
                             else -> return@forEach
                         }.let(factory::apply).add(item)
                     }
