@@ -2,7 +2,9 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.block.HTTestBlock
+import hiiragi283.core.common.block.HTTreeTapBlock
 import hiiragi283.core.common.block.HTWarpedWartBlock
+import hiiragi283.core.common.block.cauldron.HTLatexCauldronBlock
 import hiiragi283.core.common.item.block.HTWarpedWartItem
 import hiiragi283.core.common.registry.HTBasicDeferredBlock
 import hiiragi283.core.common.registry.HTDeferredBlock
@@ -13,6 +15,7 @@ import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.MapColor
+import net.minecraft.world.level.material.PushReaction
 import net.neoforged.bus.api.IEventBus
 
 object HCBlocks {
@@ -49,6 +52,25 @@ object HCBlocks {
     )
 
     //    Misc    //
+
+    // Basic
+    @JvmField
+    val TREE_TAP: HTBasicDeferredBlock<HTTreeTapBlock> = REGISTER.registerSimple(
+        "tree_tap",
+        properties(3.5f, 16f)
+            .sound(SoundType.LANTERN)
+            .pushReaction(PushReaction.DESTROY)
+            .noOcclusion()
+            .randomTicks(),
+        ::HTTreeTapBlock,
+    )
+
+    @JvmField
+    val LATEX_CAULDRON: HTBasicDeferredBlock<HTLatexCauldronBlock> = REGISTER.registerSimple(
+        "latex_cauldron",
+        copyOf(Blocks.CAULDRON).randomTicks(),
+        ::HTLatexCauldronBlock,
+    )
 
     @JvmField
     val EXP_DRAIN: HTSimpleDeferredBlock = REGISTER.registerSimple("exp_drain", properties(5f, 6f).sound(SoundType.METAL).noCollission())

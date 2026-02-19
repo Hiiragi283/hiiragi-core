@@ -6,6 +6,7 @@ import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.setup.HCBlocks
 import net.minecraft.advancements.critereon.StatePropertiesPredicate
 import net.minecraft.core.HolderLookup
+import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.NetherWartBlock
 import net.minecraft.world.level.storage.loot.LootPool
@@ -24,6 +25,8 @@ class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootT
         getRawBlocks().forEach(::dropSelf)
 
         registerCrops()
+
+        dropOther(HCBlocks.LATEX_CAULDRON.asBlock(), Items.CAULDRON)
     }
 
     private fun registerCrops() {

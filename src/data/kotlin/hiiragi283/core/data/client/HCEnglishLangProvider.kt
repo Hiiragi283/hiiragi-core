@@ -24,6 +24,8 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         add(HCBlocks.WARPED_WART, "Warped Wart")
 
+        add(HCBlocks.TREE_TAP, "Tree Tap")
+        add(HCBlocks.LATEX_CAULDRON, "Latex Cauldron")
         add(HCBlocks.EXP_DRAIN, "Experience Drain")
 
         // Entity

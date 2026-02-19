@@ -1,11 +1,13 @@
 package hiiragi283.core
 
 import hiiragi283.core.api.HCRegistries
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
 import hiiragi283.core.api.mod.HTCommonMod
 import hiiragi283.core.api.network.HTPayloadHandlers
 import hiiragi283.core.common.HiiragiCoreAccessImpl
+import hiiragi283.core.common.block.cauldron.HCCauldronInteractions
 import hiiragi283.core.common.data.HCServerResourceProvider
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
 import hiiragi283.core.common.network.HTUpdateMenuPacket
@@ -27,11 +29,13 @@ import net.mehvahdjukaar.moonlight.api.platform.RegHelper
 import net.minecraft.world.item.ProjectileItem
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.DispenserBlock
+import net.minecraft.world.level.block.LayeredCauldronBlock
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.config.ModConfig
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
+import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent
 import net.neoforged.neoforge.network.registration.PayloadRegistrar
 import net.neoforged.neoforge.registries.NewRegistryEvent
 
@@ -39,6 +43,7 @@ import net.neoforged.neoforge.registries.NewRegistryEvent
 data object HiiragiCore : HTCommonMod() {
     override fun initialize(eventBus: IEventBus, container: ModContainer) {
         eventBus.addListener(HCMiscRegister::register)
+        eventBus.addListener(::registerCauldronContent)
 
         HCDataComponents.REGISTER.register(eventBus)
 
@@ -75,6 +80,17 @@ data object HiiragiCore : HTCommonMod() {
             .forEach(DispenserBlock::registerProjectileBehavior)
 
         HTPotionFluidManager.register(HCFluids.POTION.asFluid(), HiiragiCoreAccessImpl.DEFAULT_POTION_HANDLER)
+
+        HCCauldronInteractions.init()
+    }
+
+    private fun registerCauldronContent(event: RegisterCauldronFluidContentEvent) {
+        event.register(
+            HCBlocks.LATEX_CAULDRON.get(),
+            HCFluids.LATEX.get(),
+            HTConst.DEFAULT_FLUID_AMOUNT,
+            LayeredCauldronBlock.LEVEL,
+        )
     }
 
     override fun registerPayload(registrar: PayloadRegistrar) {

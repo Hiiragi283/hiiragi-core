@@ -20,6 +20,7 @@ import hiiragi283.core.client.gui.widget.HTProgressWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.common.gui.tooltip.HTFluidFilterTooltip
 import hiiragi283.core.common.gui.tooltip.HTItemFilterTooltip
+import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCMenuTypes
@@ -27,7 +28,10 @@ import hiiragi283.core.setup.HCWidgetTypes
 import net.mehvahdjukaar.moonlight.api.platform.RegHelper
 import net.mehvahdjukaar.moonlight.api.platform.neoforge.RegHelperImpl
 import net.minecraft.client.renderer.entity.ThrownItemRenderer
+import net.minecraft.core.BlockPos
+import net.minecraft.world.level.BlockAndTintGetter
 import net.minecraft.world.level.ItemLike
+import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
@@ -37,6 +41,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent
 import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent
 import net.neoforged.neoforge.client.model.DynamicFluidContainerModel
 import java.awt.Color
@@ -66,6 +71,16 @@ data object HiiragiCoreClient : HTClientMod() {
         event.register(HCWidgetTypes.FLUID.get(), ::HTFluidWidgetRenderer)
         event.register(HCWidgetTypes.ITEM_SLOT.get(), ::HTItemSlotWidgetRenderer)
         event.register(HCWidgetTypes.PROGRESS.get(), ::HTProgressWidgetRenderer)
+    }
+
+    override fun registerBlockColors(event: RegisterColorHandlersEvent.Block) {
+        // Latex Cauldron
+        event.register(
+            { _: BlockState, _: BlockAndTintGetter?, _: BlockPos?, _: Int ->
+                IClientFluidTypeExtensions.of(HCFluids.LATEX.get()).tintColor
+            },
+            HCBlocks.LATEX_CAULDRON.get(),
+        )
     }
 
     override fun registerItemColors(event: RegisterColorHandlersEvent.Item) {
