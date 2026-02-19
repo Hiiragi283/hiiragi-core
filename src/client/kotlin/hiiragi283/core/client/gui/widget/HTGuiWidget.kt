@@ -1,6 +1,5 @@
 package hiiragi283.core.client.gui.widget
 
-import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.common.gui.widget.HTItemSlotWidget
@@ -21,7 +20,7 @@ class HTGuiWidget<WIDGET : HTWidget>(gui: HTAbstractGui, val widget: WIDGET) :
         widget.bounds.height,
         Component.empty(),
     ) {
-    private val renderer: Renderable? by lazy { HiiragiCoreAccess.Client.INSTANCE.createRenderer(gui, widget) }
+    private val renderer: Renderable? by lazy { HTWidgetRendererManager.create(gui, widget) }
 
     init {
         if (widget is HTItemSlotWidget && widget.containerSlot != null) {
@@ -41,7 +40,7 @@ class HTGuiWidget<WIDGET : HTWidget>(gui: HTAbstractGui, val widget: WIDGET) :
     }
 
     override fun onClick(mouseX: Double, mouseY: Double, button: Int) {
-        widget.mouseClicked(TODO(), mouseX, mouseY, button)
+        // widget.mouseClicked(null, mouseX, mouseY, button)
     }
 
     override fun onRelease(mouseX: Double, mouseY: Double) {

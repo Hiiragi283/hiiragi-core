@@ -1,4 +1,4 @@
-package hiiragi283.core.client.jei
+package hiiragi283.core.client.jei.category
 
 import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
 import hiiragi283.core.setup.HCItems

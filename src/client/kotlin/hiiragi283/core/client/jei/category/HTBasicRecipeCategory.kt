@@ -1,16 +1,17 @@
-package hiiragi283.core.api.integration.jei
+package hiiragi283.core.client.jei.category
 
 import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTDefaultColor
-import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTWidget
+import hiiragi283.core.api.integration.jei.HTJeiDrawables
+import hiiragi283.core.api.integration.jei.HTJeiPlugin
 import hiiragi283.core.api.integration.jei.type.HTJeiRecipeType
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
@@ -22,6 +23,7 @@ import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.times
+import hiiragi283.core.client.gui.widget.HTGuiWidget
 import mezz.jei.api.constants.VanillaTypes
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder
@@ -83,14 +85,14 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
         recipeType.bounds,
     )
 
-    private val widgets: MutableList<HTWidget> = mutableListOf()
+    private val widgets: MutableList<HTGuiWidget<*>> = mutableListOf()
 
     protected fun <WIDGET : HTWidget> addWidget(widget: WIDGET): WIDGET {
-        this.widgets += widget
+        this.widgets += HTGuiWidget(this, widget)
         return widget
     }
 
-    override fun children(): List<GuiEventListener> = emptyList() // TODO
+    override fun children(): List<GuiEventListener> = widgets
 
     override fun getRectangle(): ScreenRectangle = ScreenRectangle(getGuiLeft(), getGuiTop(), getXSize(), getYSize())
 
@@ -140,16 +142,9 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
         mouseY: Int,
     ) {
         val pose: PoseStack = guiGraphics.pose()
-        for (widget: HTWidget in widgets) {
+        for (widget: HTGuiWidget<*> in widgets) {
             pose.pushPose()
-            HiiragiCoreAccess.Client.INSTANCE
-                .createRenderer(this, widget)
-                ?.render(
-                    guiGraphics,
-                    mouseX,
-                    mouseY,
-                    0f,
-                )
+            widget.render(guiGraphics, mouseX, mouseY, 0f)
             pose.popPose()
         }
     }

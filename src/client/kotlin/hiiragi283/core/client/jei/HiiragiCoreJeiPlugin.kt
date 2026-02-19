@@ -10,6 +10,9 @@ import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.registry.asSequence
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
+import hiiragi283.core.client.jei.category.HCAnvilCrushingRecipeCategory
+import hiiragi283.core.client.jei.category.HCSingleItemRecipeCategory
+import hiiragi283.core.client.jei.category.HTEternalSmithingCategoryExtension
 import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems

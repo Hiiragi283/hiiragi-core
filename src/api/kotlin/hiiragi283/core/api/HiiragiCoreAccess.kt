@@ -1,8 +1,6 @@
 package hiiragi283.core.api
 
 import com.google.gson.JsonObject
-import hiiragi283.core.api.gui.HTAbstractGui
-import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.item.alchemy.HTPotionContents
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
@@ -18,13 +16,10 @@ import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.text.HTTextResult
-import net.minecraft.client.gui.components.Renderable
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.TagKey
-import net.neoforged.api.distmarker.Dist
-import net.neoforged.api.distmarker.OnlyIn
 import net.neoforged.neoforge.common.MutableDataComponentHolder
 
 /**
@@ -109,28 +104,4 @@ abstract class HiiragiCoreAccess {
      * 指定した[レジストリ][provider]と[NBT][compoundTag]から[HTValueOutput]を作成します。
      */
     abstract fun createOutput(provider: HolderLookup.Provider, compoundTag: CompoundTag): HTValueOutput
-
-    //    Client    //
-
-    /**
-     * @author Hiiragi Tsubasa
-     * @since 0.8.0
-     */
-    @OnlyIn(Dist.CLIENT)
-    interface Client {
-        companion object {
-            /**
-             * [Client]のインスタンス
-             */
-            @JvmField
-            val INSTANCE: Client = HiiragiCoreAPI.getService()
-        }
-
-        /**
-         * 指定した[widget]から[Renderable]を作成します。
-         * @param WIDGET [HTWidget]を実装したクラス
-         * @return 対応する[Renderable]がない場合は`null`
-         */
-        fun <WIDGET : HTWidget> createRenderer(gui: HTAbstractGui, widget: WIDGET): Renderable?
-    }
 }

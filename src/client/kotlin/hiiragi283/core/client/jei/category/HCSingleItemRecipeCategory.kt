@@ -1,8 +1,8 @@
-package hiiragi283.core.client.jei
+package hiiragi283.core.client.jei.category
 
 import hiiragi283.core.api.gui.HTBackgroundType
-import hiiragi283.core.api.integration.jei.HTHolderRecipeCategory
 import hiiragi283.core.api.integration.jei.type.HTJeiRecipeType
+import hiiragi283.core.client.jei.HCJeiRecipeTypes
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import hiiragi283.core.common.recipe.HCSingleItemRecipe
