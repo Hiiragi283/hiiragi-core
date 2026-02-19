@@ -1,12 +1,34 @@
 package hiiragi283.core.api.gui.widget
 
+import hiiragi283.core.api.gui.HTAbstractGui
+import hiiragi283.core.api.gui.HTBounds
+import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.components.Renderable
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 
 /**
- * [HTWidgetRenderer]の抽象クラスです。
+ * [HTWidget]向けの[Renderable]の抽象クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
 @OnlyIn(Dist.CLIENT)
-abstract class HTAbstractWidgetRenderer<WIDGET : HTWidget>(protected val widget: WIDGET) : HTWidgetRenderer<WIDGET>
+abstract class HTAbstractWidgetRenderer<WIDGET : HTWidget>(protected val gui: HTAbstractGui, protected val widget: WIDGET) : Renderable {
+    final override fun render(
+        guiGraphics: GuiGraphics,
+        mouseX: Int,
+        mouseY: Int,
+        partialTick: Float,
+    ) {
+        val bounds: HTBounds = widget.bounds.offset(gui.getGuiLeft(), gui.getGuiTop())
+        render(bounds, guiGraphics, mouseX, mouseY, partialTick)
+    }
+
+    protected abstract fun render(
+        bounds: HTBounds,
+        guiGraphics: GuiGraphics,
+        mouseX: Int,
+        mouseY: Int,
+        partialTick: Float,
+    )
+}

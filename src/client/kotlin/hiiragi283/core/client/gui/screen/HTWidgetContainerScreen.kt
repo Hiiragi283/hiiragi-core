@@ -2,17 +2,11 @@ package hiiragi283.core.client.gui.screen
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.HTSlotHelper
-import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
-import hiiragi283.core.api.gui.widget.HTWidgetRenderer
+import hiiragi283.core.client.gui.widget.HTGuiWidget
 import hiiragi283.core.common.gui.menu.HTWidgetContainerMenu
-import hiiragi283.core.common.gui.widget.HTItemSlotWidget
 import net.minecraft.client.gui.GuiGraphics
-import net.minecraft.client.gui.components.AbstractWidget
-import net.minecraft.client.gui.narration.NarrationElementOutput
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.entity.player.Inventory
@@ -38,7 +32,7 @@ class HTWidgetContainerScreen(menu: HTWidgetContainerMenu, inventory: Inventory,
     override fun init() {
         super.init()
         titleLabelX = (imageWidth - font.width(title)) / 2
-        widgetHolder.map(::WidgetWrapper).forEach(::addRenderableWidget)
+        widgetHolder.map { HTGuiWidget(this, it) }.forEach(::addRenderableWidget)
     }
 
     /**
@@ -61,67 +55,5 @@ class HTWidgetContainerScreen(menu: HTWidgetContainerMenu, inventory: Inventory,
             imageWidth,
             HTSlotHelper.getSlotPosY(4) + 9,
         )
-    }
-
-    inner class WidgetWrapper<WIDGET : HTWidget>(val widget: WIDGET) :
-        AbstractWidget(
-            widget.bounds.x + startX,
-            widget.bounds.y + startY,
-            widget.bounds.width,
-            widget.bounds.height,
-            Component.empty(),
-        ) {
-        val bounds: HTBounds get() = HTBounds(this.x, this.y, this.width, this.height)
-
-        private val renderer: HTWidgetRenderer<WIDGET>? by lazy { HiiragiCoreAccess.Client.INSTANCE.createRenderer(widget) }
-
-        init {
-            if (widget is HTItemSlotWidget && widget.containerSlot != null) {
-                active = false
-            }
-        }
-
-        override fun renderWidget(
-            guiGraphics: GuiGraphics,
-            mouseX: Int,
-            mouseY: Int,
-            partialTick: Float,
-        ) {
-            if (visible) {
-                renderer?.render(bounds, guiGraphics, mouseX, mouseY, partialTick)
-            }
-        }
-
-        override fun onClick(mouseX: Double, mouseY: Double, button: Int) {
-            widget.mouseClicked(menu, mouseX, mouseY, button)
-        }
-
-        override fun onRelease(mouseX: Double, mouseY: Double) {
-            widget.mouseReleased(mouseX, mouseY)
-        }
-
-        override fun onDrag(
-            mouseX: Double,
-            mouseY: Double,
-            dragX: Double,
-            dragY: Double,
-        ) {
-            widget.mouseDragged(mouseX, mouseY, dragX, dragY)
-        }
-
-        override fun mouseScrolled(
-            mouseX: Double,
-            mouseY: Double,
-            scrollX: Double,
-            scrollY: Double,
-        ): Boolean = widget.mouseScrolled(mouseX, mouseY, scrollX, scrollY)
-
-        override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean = widget.keyPressed(keyCode, scanCode, modifiers)
-
-        override fun keyReleased(keyCode: Int, scanCode: Int, modifiers: Int): Boolean = widget.keyReleased(keyCode, scanCode, modifiers)
-
-        override fun charTyped(codePoint: Char, modifiers: Int): Boolean = widget.charTyped(codePoint, modifiers)
-
-        override fun updateWidgetNarration(narrationElementOutput: NarrationElementOutput) {}
     }
 }

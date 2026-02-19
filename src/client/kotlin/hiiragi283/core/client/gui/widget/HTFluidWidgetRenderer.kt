@@ -1,5 +1,6 @@
 package hiiragi283.core.client.gui.widget
 
+import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.api.storage.fluid.getStillTexture
@@ -18,7 +19,7 @@ import org.apache.commons.lang3.math.Fraction
 import java.util.function.Consumer
 
 @OnlyIn(Dist.CLIENT)
-class HTFluidWidgetRenderer(widget: HTFluidWidget) : HTSpriteWidgetRenderer<HTFluidWidget>(widget) {
+class HTFluidWidgetRenderer(gui: HTAbstractGui, widget: HTFluidWidget) : HTSpriteWidgetRenderer<HTFluidWidget>(gui, widget) {
     override fun renderBackground(bounds: HTBounds, guiGraphics: GuiGraphics) {
         val texture: ResourceLocation = when (widget.isTank) {
             true -> widget.backgroundType.tankTexture

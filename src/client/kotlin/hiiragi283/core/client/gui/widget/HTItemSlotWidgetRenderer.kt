@@ -1,5 +1,6 @@
 package hiiragi283.core.client.gui.widget
 
+import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTAbstractWidgetRenderer
 import hiiragi283.core.common.gui.widget.HTItemSlotWidget
@@ -12,7 +13,7 @@ import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 
 @OnlyIn(Dist.CLIENT)
-class HTItemSlotWidgetRenderer(widget: HTItemSlotWidget) : HTAbstractWidgetRenderer<HTItemSlotWidget>(widget) {
+class HTItemSlotWidgetRenderer(gui: HTAbstractGui, widget: HTItemSlotWidget) : HTAbstractWidgetRenderer<HTItemSlotWidget>(gui, widget) {
     override fun render(
         bounds: HTBounds,
         guiGraphics: GuiGraphics,

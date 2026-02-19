@@ -7,6 +7,7 @@ import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.function.identity
+import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTWidget
@@ -36,6 +37,9 @@ import mezz.jei.api.recipe.RecipeIngredientRole
 import mezz.jei.api.recipe.RecipeType
 import mezz.jei.api.recipe.category.IRecipeCategory
 import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.components.events.AbstractContainerEventHandler
+import net.minecraft.client.gui.components.events.GuiEventListener
+import net.minecraft.client.gui.navigation.ScreenRectangle
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
@@ -60,7 +64,9 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     private val title: Component,
     private val icon: IDrawable,
     private val bounds: HTBounds,
-) : IRecipeCategory<RECIPE> {
+) : AbstractContainerEventHandler(),
+    IRecipeCategory<RECIPE>,
+    HTAbstractGui {
     companion object {
         @JvmStatic
         protected fun createIcon(guiHelper: IGuiHelper, recipeType: HTJeiRecipeType<*>): IDrawable = recipeType.icon.map(
@@ -77,15 +83,36 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
         recipeType.bounds,
     )
 
+    private val widgets: MutableList<HTWidget> = mutableListOf()
+
+    protected fun <WIDGET : HTWidget> addWidget(widget: WIDGET): WIDGET {
+        this.widgets += widget
+        return widget
+    }
+
+    override fun children(): List<GuiEventListener> = emptyList() // TODO
+
+    override fun getRectangle(): ScreenRectangle = ScreenRectangle(getGuiLeft(), getGuiTop(), getXSize(), getYSize())
+
+    //    HTAbstractGui    //
+
+    override fun getGuiLeft(): Int = bounds.left
+
+    override fun getGuiTop(): Int = bounds.top
+
+    override fun getXSize(): Int = bounds.width
+
+    override fun getYSize(): Int = bounds.height
+
     //    IRecipeCategory    //
 
     final override fun getRecipeType(): RecipeType<RECIPE> = recipeType
 
     final override fun getTitle(): Component = title
 
-    override fun getWidth(): Int = bounds.width
+    override fun getWidth(): Int = getXSize()
 
-    override fun getHeight(): Int = bounds.height
+    override fun getHeight(): Int = getYSize()
 
     final override fun getIcon(): IDrawable = icon
 
@@ -116,9 +143,8 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
         for (widget: HTWidget in widgets) {
             pose.pushPose()
             HiiragiCoreAccess.Client.INSTANCE
-                .createRenderer(widget)
+                .createRenderer(this, widget)
                 ?.render(
-                    widget.bounds.copy(x = bounds.x, y = bounds.y),
                     guiGraphics,
                     mouseX,
                     mouseY,
@@ -153,13 +179,6 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
      * 指定した[インデックス][index]から座標を返します。
      */
     fun getPosition(index: Fraction): Int = (index * 18).toInt()
-
-    private val widgets: MutableList<HTWidget> = mutableListOf()
-
-    protected fun <WIDGET : HTWidget> addWidget(widget: WIDGET): WIDGET {
-        this.widgets += widget
-        return widget
-    }
 
     // IRecipeLayoutBuilder - Item
     private fun createError(message: Component): ItemStack = createItemStack(

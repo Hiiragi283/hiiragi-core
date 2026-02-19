@@ -56,4 +56,10 @@ data class HTBounds(
      * 指定した[x], [y]がこの範囲に含まれているか判定します。
      */
     fun contains(x: Int, y: Int): Boolean = x in widthRange && y in heightRange
+
+    /**
+     * 指定した[x]と[y]だけ始点を移動した[HTBounds]を返します。
+     * @since 0.11.0
+     */
+    fun offset(x: Int, y: Int): HTBounds = HTBounds(this.x + x, this.y + y, this.width, this.height)
 }

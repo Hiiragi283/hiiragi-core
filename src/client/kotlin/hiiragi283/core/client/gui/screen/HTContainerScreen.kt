@@ -1,6 +1,7 @@
 package hiiragi283.core.client.gui.screen
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.sync.HTChangeType
 import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
@@ -13,13 +14,15 @@ import net.minecraft.core.RegistryAccess
 import net.minecraft.network.chat.Component
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.ItemStack
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 import net.neoforged.neoforge.network.PacketDistributor
 
 @OnlyIn(Dist.CLIENT)
 abstract class HTContainerScreen<MENU : HTContainerMenu<*>>(menu: MENU, inventory: Inventory, title: Component) :
-    AbstractContainerScreen<MENU>(menu, inventory, title) {
+    AbstractContainerScreen<MENU>(menu, inventory, title),
+    HTAbstractGui {
     override fun render(
         guiGraphics: GuiGraphics,
         mouseX: Int,
@@ -50,6 +53,11 @@ abstract class HTContainerScreen<MENU : HTContainerMenu<*>>(menu: MENU, inventor
                 }
             }?.let(PacketDistributor::sendToServer)
     }
+
+    //    HTAbstractGui    //
+
+    override val carried: ItemStack
+        get() = menu.carried
 
     //    Extensions    //
 

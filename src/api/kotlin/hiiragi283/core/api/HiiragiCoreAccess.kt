@@ -1,8 +1,8 @@
 package hiiragi283.core.api
 
 import com.google.gson.JsonObject
+import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.widget.HTWidget
-import hiiragi283.core.api.gui.widget.HTWidgetRenderer
 import hiiragi283.core.api.item.alchemy.HTPotionContents
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
@@ -18,6 +18,7 @@ import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.text.HTTextResult
+import net.minecraft.client.gui.components.Renderable
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.nbt.CompoundTag
@@ -126,10 +127,10 @@ abstract class HiiragiCoreAccess {
         }
 
         /**
-         * 指定した[widget]から[HTWidgetRenderer]を作成します。
+         * 指定した[widget]から[Renderable]を作成します。
          * @param WIDGET [HTWidget]を実装したクラス
-         * @return 対応する[HTWidgetRenderer]がない場合は`null`
+         * @return 対応する[Renderable]がない場合は`null`
          */
-        fun <WIDGET : HTWidget> createRenderer(widget: WIDGET): HTWidgetRenderer<WIDGET>?
+        fun <WIDGET : HTWidget> createRenderer(gui: HTAbstractGui, widget: WIDGET): Renderable?
     }
 }

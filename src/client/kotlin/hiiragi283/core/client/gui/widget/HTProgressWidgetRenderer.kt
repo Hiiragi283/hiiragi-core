@@ -1,5 +1,6 @@
 package hiiragi283.core.client.gui.widget
 
+import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTAbstractWidgetRenderer
 import hiiragi283.core.api.minus
@@ -14,7 +15,7 @@ import net.neoforged.api.distmarker.OnlyIn
 import org.apache.commons.lang3.math.Fraction
 
 @OnlyIn(Dist.CLIENT)
-class HTProgressWidgetRenderer(widget: HTProgressWidget) : HTAbstractWidgetRenderer<HTProgressWidget>(widget) {
+class HTProgressWidgetRenderer(gui: HTAbstractGui, widget: HTProgressWidget) : HTAbstractWidgetRenderer<HTProgressWidget>(gui, widget) {
     override fun render(
         bounds: HTBounds,
         guiGraphics: GuiGraphics,
