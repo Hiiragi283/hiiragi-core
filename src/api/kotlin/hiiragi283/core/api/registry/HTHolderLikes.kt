@@ -38,18 +38,18 @@ fun Block.toLike(): HTBlockHolderLike<*> = this.builtInRegistryHolder().toLike()
 
 //    Fluid    //
 
-typealias HTFluidHolderLikeN<FLUID> = HTHolderLike<Fluid, FLUID>
+typealias HTFluidHolderLike<FLUID> = HTHolderLike<Fluid, FLUID>
 
-fun Fluid.toLike(): HTFluidHolderLikeN<*> = this.builtInRegistryHolder().toLike()
+fun Fluid.toLike(): HTFluidHolderLike<*> = this.builtInRegistryHolder().toLike()
 
-fun HTFluidHolderLikeN<*>.getBucket(): Item = this.get().bucket
+fun HTFluidHolderLike<*>.getBucket(): Item = this.get().bucket
 
-fun HTFluidHolderLikeN<*>.getBucketHolder(): HTItemHolderLike<*> = HTItemHolderLike.of(this.getBucket())
+fun HTFluidHolderLike<*>.getBucketHolder(): HTItemHolderLike<*> = HTItemHolderLike.of(this.getBucket())
 
-fun HTFluidHolderLikeN<*>.getFluidType(): FluidType = this.get().fluidType
+fun HTFluidHolderLike<*>.getFluidType(): FluidType = this.get().fluidType
 
-fun HTFluidHolderLikeN<*>.toStack(amount: Int): FluidStack = FluidStack(this.get(), amount)
+fun HTFluidHolderLike<*>.toStack(amount: Int): FluidStack = FluidStack(this.get(), amount)
 
-fun HTFluidHolderLikeN<*>.toResource(): HTFluidResourceType? = this.get().toResource()
+fun HTFluidHolderLike<*>.toResource(): HTFluidResourceType? = this.get().toResource()
 
-fun HTFluidHolderLikeN<*>.toResource(patch: DataComponentPatch): HTFluidResourceType? = this.get().toResource(patch)
+fun HTFluidHolderLike<*>.toResource(patch: DataComponentPatch): HTFluidResourceType? = this.get().toResource(patch)

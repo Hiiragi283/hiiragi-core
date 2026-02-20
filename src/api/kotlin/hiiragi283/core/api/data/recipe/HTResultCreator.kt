@@ -7,7 +7,7 @@ import hiiragi283.core.api.material.property.getDefaultFluidAmount
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
-import hiiragi283.core.api.registry.HTFluidHolderLikeN
+import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.VanillaFluidContents
 import hiiragi283.core.api.registry.toResource
 import hiiragi283.core.api.storage.fluid.toResource
@@ -57,7 +57,7 @@ data object HTResultCreator {
     fun create(fluid: Fluid, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult = create(FluidStack(fluid, amount))
 
     @JvmStatic
-    fun create(fluid: HTFluidHolderLikeN<*>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult =
+    fun create(fluid: HTFluidHolderLike<*>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult =
         HTFluidResult(checkNotNull(fluid.toResource()), amount)
 
     @JvmStatic

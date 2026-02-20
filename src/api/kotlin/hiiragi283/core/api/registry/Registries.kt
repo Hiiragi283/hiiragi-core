@@ -29,7 +29,7 @@ fun HolderLookup<Block>.asBlockSequence(): Sequence<HTBlockHolderLike<*>> = this
 /**
  * @since 0.10.0
  */
-fun HolderLookup<Fluid>.asFluidSequence(): Sequence<HTFluidHolderLikeN<*>> = this.asSequence()
+fun HolderLookup<Fluid>.asFluidSequence(): Sequence<HTFluidHolderLike<*>> = this.asSequence()
 
 /**
  * @since 0.9.0

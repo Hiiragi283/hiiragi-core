@@ -4,7 +4,7 @@ import com.google.gson.JsonObject
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.HTFluidHolderLikeN
+import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.IdToFunction
 import hiiragi283.core.api.registry.getBucketHolder
 import hiiragi283.core.api.registry.getFluidType
@@ -161,7 +161,7 @@ abstract class HTModelProvider : ResourceGenTask {
     /**
      * @see net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder
      */
-    protected fun addBucketModel(content: HTFluidHolderLikeN<*>, isDrip: Boolean) {
+    protected fun addBucketModel(content: HTFluidHolderLike<*>, isDrip: Boolean) {
         val parent: ResourceLocation = when {
             isDrip -> "bucket_drip"
             else -> "bucket"

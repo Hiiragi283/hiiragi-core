@@ -384,10 +384,10 @@ ktlint {
     }
 }
 
-dokka {
+/*dokka {
     dokkaSourceSets {
         configureEach {
             sourceRoots.from(apiModule.kotlin.srcDirs, clientModule.kotlin.srcDirs)
         }
     }
-}
+}*/

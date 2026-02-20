@@ -1,7 +1,6 @@
 package hiiragi283.core.api.data.recipe.builder
 
 import hiiragi283.core.api.recipe.HTProcessingRecipe
-import org.apache.commons.lang3.math.Fraction
 
 /**
  * [HTProcessingRecipe]向けの[HTRecipeBuilder]の拡張クラスです。
@@ -14,14 +13,4 @@ abstract class HTProcessingRecipeBuilder(prefix: String) : HTRecipeBuilder(prefi
             require(value > 0) { "Recipe time must be positive" }
             field = value
         }
-    var exp: Fraction = Fraction.ZERO
-        set(value) {
-            require(value > Fraction.ZERO) { "Recipe exp must be positive" }
-            field = value
-        }
-
-    /**
-     * @since 0.9.0
-     */
-    fun subParameters(): HTProcessingRecipe.SubParameters = HTProcessingRecipe.SubParameters(time, exp)
 }

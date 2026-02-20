@@ -16,7 +16,7 @@ import net.neoforged.neoforge.fluids.FluidType
 class HTFluidContent(
     // Required
     val typeHolder: HTHolderLike<FluidType, *>,
-    private val sourceHolder: HTFluidHolderLikeN<*>,
+    private val sourceHolder: HTFluidHolderLike<*>,
     val bucketHolder: HTItemHolderLike<*>,
     val fluidTag: TagKey<Fluid>,
     val bucketTag: TagKey<Item>,
