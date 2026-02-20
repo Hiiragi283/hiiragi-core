@@ -1,6 +1,8 @@
 package hiiragi283.core.client.jei.category
 
 import hiiragi283.core.api.gui.HTBackgroundType
+import hiiragi283.core.api.integration.jei.addItemIngredient
+import hiiragi283.core.api.integration.jei.addItemResult
 import hiiragi283.core.api.integration.jei.type.HTJeiRecipeType
 import hiiragi283.core.client.jei.HCJeiRecipeTypes
 import hiiragi283.core.common.recipe.HCExplodingRecipe
@@ -34,11 +36,13 @@ class HCSingleItemRecipeCategory<RECIPE : HCSingleItemRecipe<*>>(
     override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: RECIPE, focuses: IFocusGroup) {
         // input
         builder
-            .addItemSlot(getPosition(0), getPosition(0), recipe.ingredient)
+            .addInputSlot(getPosition(0), getPosition(0))
+            .addItemIngredient(recipe.ingredient)
             .setSlotBackground(HTBackgroundType.INPUT)
         // output
         builder
-            .addItemSlot(getPosition(3), getPosition(0), recipe.result)
+            .addOutputSlot(getPosition(0), getPosition(0))
+            .addItemResult(recipe.result)
             .setSlotBackground(HTBackgroundType.OUTPUT)
     }
 

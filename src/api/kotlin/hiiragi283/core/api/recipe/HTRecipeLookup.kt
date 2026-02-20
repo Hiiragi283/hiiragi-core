@@ -10,6 +10,7 @@ import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeManager
+import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.level.Level
 import net.neoforged.api.distmarker.Dist
 import thedarkcolour.kotlinforforge.neoforge.forge.callWhenOn
@@ -30,31 +31,31 @@ interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Recipe<INPUT>> : HTIdLike
 
     /**
      * 現在のサーバーまたはクライアントからレシピの一覧を取得します。
-     * @return [RecipeHolder]の[List]
+     * @return [RecipeHolder]の[Sequence]
      */
-    fun getAllRecipes(): List<RecipeHolder<RECIPE>> = callWhenOn(Dist.CLIENT) { Minecraft.getInstance().level?.let(::getAllRecipes) }
+    fun getAllRecipes(): Sequence<RecipeHolder<RECIPE>> = callWhenOn(Dist.CLIENT) { Minecraft.getInstance().level?.let(::getAllRecipes) }
         ?: run { HiiragiCoreAPI.getActiveServer()?.let(::getAllRecipes) }
-        ?: emptyList()
+        ?: emptySequence()
 
     /**
      * 指定した[level]からレシピの一覧を取得します。
-     * @return [RecipeHolder]の[List]
+     * @return [RecipeHolder]の[Sequence]
      */
-    fun getAllRecipes(level: Level): List<RecipeHolder<RECIPE>> =
+    fun getAllRecipes(level: Level): Sequence<RecipeHolder<RECIPE>> =
         getAllRecipes(Context(level.recipeManager, level.registryAccess(), level.potionBrewing()))
 
     /**
      * 指定した[server]からレシピの一覧を取得します。
-     * @return [RecipeHolder]の[List]
+     * @return [RecipeHolder]の[Sequence]
      */
-    fun getAllRecipes(server: MinecraftServer): List<RecipeHolder<RECIPE>> =
+    fun getAllRecipes(server: MinecraftServer): Sequence<RecipeHolder<RECIPE>> =
         getAllRecipes(Context(server.recipeManager, server.registryAccess(), server.potionBrewing()))
 
     /**
      * 指定した[context]からレシピの一覧を取得します。
-     * @return [RecipeHolder]の[List]
+     * @return [RecipeHolder]の[Sequence]
      */
-    fun getAllRecipes(context: Context): List<RecipeHolder<RECIPE>>
+    fun getAllRecipes(context: Context): Sequence<RecipeHolder<RECIPE>>
 
     /**
      * 指定した[level]から，[predicate]に一致するレシピを取得します。
@@ -67,5 +68,9 @@ interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Recipe<INPUT>> : HTIdLike
      * @author Hiiragi Tsubasa
      * @since 0.11.0
      */
-    data class Context(val manager: RecipeManager, val access: RegistryAccess, val brewing: PotionBrewing)
+    @JvmRecord
+    data class Context(val manager: RecipeManager, val access: RegistryAccess, val brewing: PotionBrewing) {
+        fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(recipeType: RecipeType<RECIPE>): Sequence<RecipeHolder<RECIPE>> =
+            manager.getAllRecipesFor(recipeType).asSequence()
+    }
 }

@@ -4,6 +4,8 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.item.enchantment.toInstances
+import hiiragi283.core.api.recipe.component1
+import hiiragi283.core.api.recipe.component2
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.times
 import hiiragi283.core.api.toFraction
@@ -77,7 +79,7 @@ object HTRecipeEventHandler {
     private fun anvilCrushing(entity: ItemEntity) {
         val level: Level = entity.level()
         val input: SingleRecipeInput = createInput(entity)
-        val (_, recipe: HCAnvilCrushingRecipe) = HCRecipeTypes.ANVIL_CRUSHING.getRecipeFor(input, level, null) ?: return
+        val (_, recipe: HCAnvilCrushingRecipe) = HCRecipeTypes.ANVIL_CRUSHING.findFirst(level) { it.matches(input, level) } ?: return
         val multiplier: Int = popResult(input, recipe, level, entity)
         recipe.extraResult?.let { (result: HTItemResult, chance: Fraction) ->
             val access: RegistryAccess = entity.registryAccess()
@@ -137,7 +139,7 @@ object HTRecipeEventHandler {
             val entity: Entity = iterator.next()
             if (entity is ItemEntity && entity.isAlive && !isCompleted(entity)) {
                 val input = HCExplodingRecipe.Input(entity.item, event.explosion.radius().toFraction())
-                val (_, recipe: HCExplodingRecipe) = HCRecipeTypes.EXPLODING.getRecipeFor(input, level, null) ?: continue
+                val (_, recipe: HCExplodingRecipe) = HCRecipeTypes.EXPLODING.findFirst(level) { it.matches(input, level) } ?: continue
                 popResult(input, recipe, level, entity)
                 if (entity.item.isEmpty) {
                     iterator.remove()

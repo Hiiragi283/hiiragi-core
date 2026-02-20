@@ -15,10 +15,11 @@ import net.neoforged.neoforge.fluids.FluidStack
 
 class HCBrewingRecipe(val potionFrom: HTFluidIngredient, val ingredient: HTItemIngredient, val potionTo: HTFluidResult) :
     HTProcessingRecipe<HTItemAndFluidRecipeInput>,
-    HTFluidRecipe {
+    HTFluidRecipe<HTItemAndFluidRecipeInput> {
     override val time: Int = 100
 
-    override fun getResultFluid(registries: HolderLookup.Provider): FluidStack = potionTo.getStackOrEmpty(registries)
+    override fun assembleFluid(input: HTItemAndFluidRecipeInput, registries: HolderLookup.Provider): FluidStack =
+        potionTo.getStackOrEmpty(registries)
 
     override fun matches(input: HTItemAndFluidRecipeInput, level: Level): Boolean =
         potionFrom.test(input.fluid) && ingredient.test(input.item)

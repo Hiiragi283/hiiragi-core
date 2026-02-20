@@ -2,6 +2,7 @@ package hiiragi283.core.api.item.alchemy
 
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentHolder
+import net.minecraft.world.item.Item
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.MutableDataComponentHolder
 
@@ -13,7 +14,10 @@ import net.neoforged.neoforge.common.MutableDataComponentHolder
 @Suppress("DEPRECATION")
 data object HTPotionFluidManager {
     @JvmStatic
-    private val providers: MutableMap<Holder<Fluid>, Handler> = hashMapOf()
+    private val fluidHandlers: MutableMap<Holder<Fluid>, Handler> = hashMapOf()
+
+    @JvmStatic
+    private val itemHandlers: MutableMap<Holder<Item>, Handler> = hashMapOf()
 
     /**
      * 指定した[fluid]に[handler]を登録します。
@@ -21,20 +25,41 @@ data object HTPotionFluidManager {
      */
     @JvmStatic
     fun register(fluid: Fluid, handler: Handler) {
-        check(providers.put(fluid.builtInRegistryHolder(), handler) == null) {
+        check(fluidHandlers.put(fluid.builtInRegistryHolder(), handler) == null) {
             "Duplicated potion fluid registration: $fluid"
         }
     }
 
     @JvmStatic
-    fun getSupportedFluids(): Set<Holder<Fluid>> = providers.keys
+    fun getSupportedFluids(): Set<Holder<Fluid>> = fluidHandlers.keys
 
     /**
-     * 指定した[fluid]から[Handler]を取得します。
+     * 指定した[holder]から[Handler]を取得します。
      * @return 対応する[Handler]がない場合は`null`
      */
     @JvmStatic
-    fun getHandler(fluid: Fluid): Handler? = providers[fluid.builtInRegistryHolder()]
+    fun getFluidHandler(holder: Holder<Fluid>): Handler? = fluidHandlers[holder.delegate]
+
+    /**
+     * 指定した[item]に[handler]を登録します。
+     * @throws IllegalStateException 指定した[item]が既に登録されいた場合
+     */
+    @JvmStatic
+    fun register(item: Item, handler: Handler) {
+        check(itemHandlers.put(item.builtInRegistryHolder(), handler) == null) {
+            "Duplicated potion item registration: $item"
+        }
+    }
+
+    @JvmStatic
+    fun getSupportedItems(): Set<Holder<Item>> = itemHandlers.keys
+
+    /**
+     * 指定した[holder]から[Handler]を取得します。
+     * @return 対応する[Handler]がない場合は`null`
+     */
+    @JvmStatic
+    fun getItemHandler(holder: Holder<Item>): Handler? = itemHandlers[holder.delegate]
 
     //    Handler    //
 
@@ -44,7 +69,7 @@ data object HTPotionFluidManager {
      * @since 0.10.0
      */
     interface Handler {
-        operator fun get(holder: DataComponentHolder): HTBottleType
+        operator fun get(holder: DataComponentHolder): HTBottleType?
 
         operator fun set(holder: MutableDataComponentHolder, bottleType: HTBottleType)
     }

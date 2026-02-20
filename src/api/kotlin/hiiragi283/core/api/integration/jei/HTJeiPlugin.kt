@@ -47,6 +47,11 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
         @JvmStatic
         protected val RECIPE_COMPARATOR: Comparator<RecipeHolder<*>> = compareBy(HTComparators.ID) { it.id }
 
+        @JvmStatic
+        protected fun <T : Any> IRecipeRegistration.addRecipes(recipeType: JeiRecipeType<T>, recipes: Sequence<T>) {
+            this.addRecipes(recipeType, recipes.toList())
+        }
+
         /**
          * 指定した[recipeType]と[lookup]からレシピを登録します。
          * @param INPUT レシピの入力となるクラス

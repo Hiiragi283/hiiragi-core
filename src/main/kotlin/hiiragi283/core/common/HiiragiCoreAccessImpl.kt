@@ -40,6 +40,7 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.bus.api.SubscribeEvent
@@ -80,8 +81,7 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
 
         @JvmField
         val DEFAULT_POTION_HANDLER: HTPotionFluidManager.Handler = object : HTPotionFluidManager.Handler {
-            override fun get(holder: DataComponentHolder): HTBottleType =
-                holder.getOrDefault(HCDataComponents.BOTTLE_TYPE, HTBottleType.DEFAULT)
+            override fun get(holder: DataComponentHolder): HTBottleType? = holder.get(HCDataComponents.BOTTLE_TYPE)
 
             override fun set(holder: MutableDataComponentHolder, bottleType: HTBottleType) {
                 holder.set(HCDataComponents.BOTTLE_TYPE, bottleType)
@@ -135,16 +135,19 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
 
     override fun getContents(holder: DataComponentHolder): HTPotionContents? {
         val handler: HTPotionFluidManager.Handler = when (holder) {
-            is FluidStack -> HTPotionFluidManager.getHandler(holder.fluid)
+            is FluidStack -> HTPotionFluidManager.getFluidHandler(holder.fluidHolder)
+            is ItemStack -> HTPotionFluidManager.getItemHandler(holder.itemHolder)
             else -> null
         } ?: DEFAULT_POTION_HANDLER
-        return HTPotionContents.fromVanilla(HTPotionHelper.getPotion(holder), handler[holder])
+        val bottleType: HTBottleType = handler[holder] ?: return null
+        return HTPotionContents.fromVanilla(HTPotionHelper.getPotion(holder), bottleType)
     }
 
     override fun setContents(holder: MutableDataComponentHolder, contents: HTPotionContents) {
         holder.set(DataComponents.POTION_CONTENTS, contents.vanilla)
         val handler: HTPotionFluidManager.Handler = when (holder) {
-            is FluidStack -> HTPotionFluidManager.getHandler(holder.fluid)
+            is FluidStack -> HTPotionFluidManager.getFluidHandler(holder.fluidHolder)
+            is ItemStack -> HTPotionFluidManager.getItemHandler(holder.itemHolder)
             else -> null
         } ?: DEFAULT_POTION_HANDLER
         handler[holder] = contents.bottleType
