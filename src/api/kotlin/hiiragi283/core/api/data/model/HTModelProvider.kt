@@ -4,8 +4,10 @@ import com.google.gson.JsonObject
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.HTFluidHolderLike
+import hiiragi283.core.api.registry.HTFluidHolderLikeN
 import hiiragi283.core.api.registry.IdToFunction
+import hiiragi283.core.api.registry.getBucketHolder
+import hiiragi283.core.api.registry.getFluidType
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
@@ -85,7 +87,7 @@ abstract class HTModelProvider : ResourceGenTask {
      * @see net.minecraft.data.models.BlockModelGenerators.createSimpleBlock
      */
     protected fun createSimpleGenerator(block: HTBlockHolderLike<*>, modelId: ResourceLocation): MultiVariantGenerator =
-        MultiVariantGenerator.multiVariant(block.asBlock(), Variant.variant().with(VariantProperties.MODEL, modelId))
+        MultiVariantGenerator.multiVariant(block.get(), Variant.variant().with(VariantProperties.MODEL, modelId))
 
     protected fun addLiquidBlock(content: HTFluidContent) {
         val block: HTBlockHolderLike<*> = content.blockHolder ?: return
@@ -104,7 +106,7 @@ abstract class HTModelProvider : ResourceGenTask {
         val map: MutableMap<Int, ResourceLocation> = hashMapOf()
         addBlockState(
             MultiVariantGenerator
-                .multiVariant(block.asBlock())
+                .multiVariant(block.get())
                 .with(
                     PropertyDispatch
                         .property(ageProperty)
@@ -159,7 +161,7 @@ abstract class HTModelProvider : ResourceGenTask {
     /**
      * @see net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder
      */
-    protected fun addBucketModel(content: HTFluidHolderLike<*>, isDrip: Boolean) {
+    protected fun addBucketModel(content: HTFluidHolderLikeN<*>, isDrip: Boolean) {
         val parent: ResourceLocation = when {
             isDrip -> "bucket_drip"
             else -> "bucket"

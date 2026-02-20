@@ -33,14 +33,15 @@ object CommonMaterialKeys {
     @JvmStatic
     val PLATINUM_GROUP: HTMaterialKey = create("platinum_group")
 
+    // Hg
+    @JvmStatic
+    val CINNABAR: HTMaterialKey = create("cinnabar")
+
     // Pd
     @JvmStatic
     val GALENA: HTMaterialKey = create("galena")
 
     //    Gems    //
-
-    @JvmStatic
-    val CINNABAR: HTMaterialKey = create("cinnabar")
 
     @JvmStatic
     val FLUORITE: HTMaterialKey = create("fluorite")

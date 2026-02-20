@@ -4,6 +4,8 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.getBucketHolder
+import hiiragi283.core.api.registry.getFluidType
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId

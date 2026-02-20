@@ -79,7 +79,7 @@ data object HiiragiCore : HTCommonMod() {
             .filter { it is ProjectileItem }
             .forEach(DispenserBlock::registerProjectileBehavior)
 
-        HTPotionFluidManager.register(HCFluids.POTION.asFluid(), HiiragiCoreAccessImpl.DEFAULT_POTION_HANDLER)
+        HTPotionFluidManager.register(HCFluids.POTION.get(), HiiragiCoreAccessImpl.DEFAULT_POTION_HANDLER)
 
         HCCauldronInteractions.init()
     }

@@ -4,8 +4,8 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.asSequence
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTDeferredHolder
+import hiiragi283.core.api.registry.getBucketHolder
 import hiiragi283.core.common.registry.register.HTDeferredCreativeTabRegister
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.world.item.CreativeModeTab
@@ -26,11 +26,11 @@ object HCCreativeTabs {
         HCItems.IRIDESCENT_POWDER,
     ) { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
         // Items
-        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCItems.REGISTER.asSequence())
+        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCItems.REGISTER.asSequence())
         // Blocks
-        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCBlocks.REGISTER.asItemSequence())
+        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCBlocks.REGISTER.asItemSequence())
         // Fluids
-        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, HCFluids.REGISTER.asItemSequence())
+        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCFluids.REGISTER.asItemSequence())
     }
 
     @JvmField
@@ -42,7 +42,7 @@ object HCCreativeTabs {
         withTabsBefore(COMMON.key)
         displayItems { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
             // Items
-            HTDeferredCreativeTabRegister.addToDisplay(
+            HTDeferredCreativeTabRegister.addHoldersToDisplay(
                 parameters,
                 output,
                 HiiragiCoreAccess.INSTANCE
@@ -53,7 +53,7 @@ object HCCreativeTabs {
                     .map { it.third },
             )
             // Blocks
-            HTDeferredCreativeTabRegister.addToDisplay(
+            HTDeferredCreativeTabRegister.addHoldersToDisplay(
                 parameters,
                 output,
                 HiiragiCoreAccess.INSTANCE
@@ -61,8 +61,7 @@ object HCCreativeTabs {
                     .blocks
                     .asSequence()
                     .sortedWith(TRIPLE_COMPARATOR)
-                    .map { it.third }
-                    .map(HTBlockHolderLike.Companion::wrap),
+                    .map { it.third },
             )
             // Fluids
             HTDeferredCreativeTabRegister.addToDisplay(
@@ -86,7 +85,7 @@ object HCCreativeTabs {
         withTabsBefore(MATERIAL.key)
         displayItems { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
             // Items
-            HTDeferredCreativeTabRegister.addToDisplay(
+            HTDeferredCreativeTabRegister.addHoldersToDisplay(
                 parameters,
                 output,
                 HiiragiCoreAccess.INSTANCE

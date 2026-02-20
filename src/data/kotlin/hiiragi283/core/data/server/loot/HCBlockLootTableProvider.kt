@@ -26,7 +26,7 @@ class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootT
 
         registerCrops()
 
-        dropOther(HCBlocks.LATEX_CAULDRON.asBlock(), Items.CAULDRON)
+        dropOther(HCBlocks.LATEX_CAULDRON.get(), Items.CAULDRON)
     }
 
     private fun registerCrops() {

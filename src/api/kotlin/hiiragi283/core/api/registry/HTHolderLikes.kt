@@ -1,6 +1,16 @@
+@file:Suppress("DEPRECATION")
+
 package hiiragi283.core.api.registry
 
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.api.storage.fluid.toResource
 import net.minecraft.core.Holder
+import net.minecraft.core.component.DataComponentPatch
+import net.minecraft.world.item.Item
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.material.Fluid
+import net.neoforged.neoforge.fluids.FluidStack
+import net.neoforged.neoforge.fluids.FluidType
 
 typealias HTSimpleHolderLike<R> = HTHolderLike<R, R>
 
@@ -19,3 +29,27 @@ fun <R : Any> Holder<R>.toLike(): HTSimpleHolderLikeDelegate<R> =
 
         override fun getHolder(): Holder<R> = this@toLike
     }
+
+//    Block    //
+
+typealias HTBlockHolderLike<BLOCK> = HTHolderLike<Block, BLOCK>
+
+fun Block.toLike(): HTBlockHolderLike<*> = this.builtInRegistryHolder().toLike()
+
+//    Fluid    //
+
+typealias HTFluidHolderLikeN<FLUID> = HTHolderLike<Fluid, FLUID>
+
+fun Fluid.toLike(): HTFluidHolderLikeN<*> = this.builtInRegistryHolder().toLike()
+
+fun HTFluidHolderLikeN<*>.getBucket(): Item = this.get().bucket
+
+fun HTFluidHolderLikeN<*>.getBucketHolder(): HTItemHolderLike<*> = HTItemHolderLike.of(this.getBucket())
+
+fun HTFluidHolderLikeN<*>.getFluidType(): FluidType = this.get().fluidType
+
+fun HTFluidHolderLikeN<*>.toStack(amount: Int): FluidStack = FluidStack(this.get(), amount)
+
+fun HTFluidHolderLikeN<*>.toResource(): HTFluidResourceType? = this.get().toResource()
+
+fun HTFluidHolderLikeN<*>.toResource(patch: DataComponentPatch): HTFluidResourceType? = this.get().toResource(patch)

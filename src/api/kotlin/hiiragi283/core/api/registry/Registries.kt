@@ -24,18 +24,12 @@ fun <R : Any> HolderLookup<R>.asSequence(): Sequence<HTSimpleHolderLikeDelegate<
 /**
  * @since 0.9.0
  */
-fun HolderLookup<Block>.asBlockSequence(): Sequence<HTBlockHolderLike<*>> = this
-    .listElements()
-    .map(HTBlockHolderLike.Companion::of)
-    .asSequence()
+fun HolderLookup<Block>.asBlockSequence(): Sequence<HTBlockHolderLike<*>> = this.asSequence()
 
 /**
  * @since 0.10.0
  */
-fun HolderLookup<Fluid>.asFluidSequence(): Sequence<HTFluidHolderLike<*>> = this
-    .listElements()
-    .map(HTFluidHolderLike.Companion::of)
-    .asSequence()
+fun HolderLookup<Fluid>.asFluidSequence(): Sequence<HTFluidHolderLikeN<*>> = this.asSequence()
 
 /**
  * @since 0.9.0

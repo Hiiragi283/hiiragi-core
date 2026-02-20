@@ -8,8 +8,10 @@ import hiiragi283.core.common.block.cauldron.HTLatexCauldronBlock
 import hiiragi283.core.common.item.block.HTWarpedWartItem
 import hiiragi283.core.common.registry.HTBasicDeferredBlock
 import hiiragi283.core.common.registry.HTDeferredBlock
+import hiiragi283.core.common.registry.HTDeferredOnlyBlock
 import hiiragi283.core.common.registry.HTSimpleDeferredBlock
 import hiiragi283.core.common.registry.register.HTDeferredBlockRegister
+import hiiragi283.core.common.registry.register.HTDeferredOnlyBlockRegister
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.SoundType
@@ -20,7 +22,10 @@ import net.neoforged.bus.api.IEventBus
 
 object HCBlocks {
     @JvmField
-    val REGISTER = HTDeferredBlockRegister(HiiragiCoreAPI.MOD_ID)
+    val REGISTER_ONLY_BLOCK = HTDeferredOnlyBlockRegister(HiiragiCoreAPI.MOD_ID)
+
+    @JvmField
+    val REGISTER = HTDeferredBlockRegister(REGISTER_ONLY_BLOCK)
 
     @JvmStatic
     fun register(eventBus: IEventBus) {
@@ -66,7 +71,7 @@ object HCBlocks {
     )
 
     @JvmField
-    val LATEX_CAULDRON: HTBasicDeferredBlock<HTLatexCauldronBlock> = REGISTER.registerSimple(
+    val LATEX_CAULDRON: HTDeferredOnlyBlock<HTLatexCauldronBlock> = REGISTER_ONLY_BLOCK.registerBlock(
         "latex_cauldron",
         copyOf(Blocks.CAULDRON).randomTicks(),
         ::HTLatexCauldronBlock,

@@ -7,8 +7,9 @@ import hiiragi283.core.api.material.property.getDefaultFluidAmount
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
-import hiiragi283.core.api.registry.HTFluidHolderLike
+import hiiragi283.core.api.registry.HTFluidHolderLikeN
 import hiiragi283.core.api.registry.VanillaFluidContents
+import hiiragi283.core.api.registry.toResource
 import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -44,7 +45,7 @@ data object HTResultCreator {
     fun material(prefix: HTTagPrefix, material: HTMaterialLike, amount: Int = 1): HTItemResult = HTItemResult.create {
         this.item = HiiragiCoreAccess.INSTANCE
             .getMaterialBlockOrItem(prefix, material)
-            ?.first
+            ?.get()
             .toResource()
         this.tagKey = prefix.itemTagKey(material)
         this.amount = amount
@@ -56,7 +57,7 @@ data object HTResultCreator {
     fun create(fluid: Fluid, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult = create(FluidStack(fluid, amount))
 
     @JvmStatic
-    fun create(fluid: HTFluidHolderLike<*>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult =
+    fun create(fluid: HTFluidHolderLikeN<*>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult =
         HTFluidResult(checkNotNull(fluid.toResource()), amount)
 
     @JvmStatic
@@ -81,7 +82,7 @@ data object HTResultCreator {
         material: HTMaterialLike,
         operator: IntUnaryOperator = IntUnaryOperator.identity(),
     ): HTFluidResult = with(HiiragiCoreAccess.INSTANCE) {
-        val fluid: HTFluidHolderLike<*> = registeredFluids.getOrThrow(prefix, material)
+        val fluid: Fluid = registeredFluids.getOrThrow(prefix, material).get()
         val propertyMap: HTPropertyMap = materialManager.getOrEmpty(material)
         create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
     }

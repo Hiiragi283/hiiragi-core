@@ -141,17 +141,17 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     //    Crafting    //
 
-    private fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): Pair<HTItemHolderLike<*>, Boolean>? =
+    private fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTMaterialContents.Entry<out ItemLike>? =
         HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(prefix, material)
 
     @JvmStatic
     private fun baseToBlock(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
         val blockProperty: HTStorageBlockProperty = entry.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK)
-        val (block: HTItemHolderLike<*>, existingBlock: Boolean) = getItem(CommonTagPrefixes.BLOCK, entry) ?: return
+        val (_, block: ItemLike, existingBlock: Boolean) = getItem(CommonTagPrefixes.BLOCK, entry) ?: return
 
         val defaultPart: HTDefaultPart = entry.getDefaultPart() ?: return
         val suffix: String = defaultPart.getSuffix()
-        val (base: HTItemHolderLike<*>, existingBase: Boolean) = defaultPart.getItem(entry) ?: return
+        val (_, base: ItemLike, existingBase: Boolean) = defaultPart.getItem(entry) ?: return
         // クラフトの前後がどちらも既存アイテムの場合はパス
         if (existingBlock && existingBase) return
         // レシピを登録
@@ -239,8 +239,8 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     @JvmStatic
     private fun ingotToNugget(entry: HTMaterialManager.Entry) {
-        val (nugget: HTItemHolderLike<*>, existingNugget: Boolean) = getItem(CommonTagPrefixes.NUGGET, entry) ?: return
-        val (ingot: HTItemHolderLike<*>, existingIngot: Boolean) = getItem(CommonTagPrefixes.INGOT, entry) ?: return
+        val (_, nugget: ItemLike, existingNugget: Boolean) = getItem(CommonTagPrefixes.NUGGET, entry) ?: return
+        val (_, ingot: ItemLike, existingIngot: Boolean) = getItem(CommonTagPrefixes.INGOT, entry) ?: return
         // クラフトの前後がどちらも既存アイテムの場合はパス
         if (existingNugget && existingIngot) return
         // レシピを登録
@@ -273,8 +273,8 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     @JvmStatic
     private fun rawToBlock(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
-        val (raw: HTItemHolderLike<*>, existingRaw: Boolean) = getItem(CommonTagPrefixes.RAW, entry) ?: return
-        val (rawBlock: HTItemHolderLike<*>, existingRawBlock: Boolean) = getItem(CommonTagPrefixes.RAW_BLOCK, entry) ?: return
+        val (_, raw: ItemLike, existingRaw: Boolean) = getItem(CommonTagPrefixes.RAW, entry) ?: return
+        val (_, rawBlock: ItemLike, existingRawBlock: Boolean) = getItem(CommonTagPrefixes.RAW_BLOCK, entry) ?: return
         // クラフトの前後がどちらも既存アイテムの場合はパス
         if (existingRaw && existingRawBlock) return
         // レシピを登録
@@ -296,21 +296,21 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     @JvmStatic
     private fun tool(entry: HTMaterialManager.Entry) {
-        val existing: HTMaterialContents<HTToolType, HTItemHolderLike<*>> = HiiragiCoreAccess.INSTANCE.existingContents.tools
-        val registered: HTMaterialContents<HTToolType, HTItemHolderLike<*>> = HiiragiCoreAccess.INSTANCE.registeredContents.tools
+        val existing: HTMaterialContents<HTToolType, Item> = HiiragiCoreAccess.INSTANCE.existingContents.tools
+        val registered: HTMaterialContents<HTToolType, Item> = HiiragiCoreAccess.INSTANCE.registeredContents.tools
 
         val inputTag: TagKey<Item> = entry.getDefaultPart(entry) ?: return
-        for ((toolType: HTToolType, tool: HTItemHolderLike<*>) in registered.column(entry)) {
+        for ((toolType: HTToolType, tool: HTMaterialContents.Entry<Item>) in registered.column(entry)) {
             val smithingProperty: HTSmithingRecipeProperty? = entry[HTMaterialPropertyKeys.SMITHING_RECIPE]
             if (smithingProperty != null) {
                 // Smithing
                 val (template: HTItemHolderLike<*>, base: HTMaterialKey) = smithingProperty
-                val baseTool: ItemLike = existing[toolType, base] ?: registered[toolType, base] ?: continue
+                val baseTool: HTMaterialContents.Entry<Item> = existing[toolType, base] ?: registered[toolType, base] ?: continue
                 HTSmithingRecipeBuilder.create(output) {
                     this.template += template
-                    this.base += baseTool
+                    this.base += baseTool.get()
                     this.addition += inputTag
-                    this.resultStack += tool
+                    this.resultStack += tool.get()
                 }
             }
             if (smithingProperty?.allowCrafting ?: true) {
@@ -319,7 +319,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
                     pattern(toolType.recipePattern)
                     define('A') += inputTag
                     define('B') += Tags.Items.RODS_WOODEN
-                    resultStack += tool
+                    resultStack += tool.get()
                 }
             }
         }
@@ -330,9 +330,9 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     @JvmStatic
     private fun smeltDustToIngot(entry: HTMaterialManager.Entry) {
         if (HTMaterialPropertyKeys.DISABLE_SMELTING in entry) return
-        val (dust: HTItemHolderLike<*>, existingDust: Boolean) = getItem(CommonTagPrefixes.DUST, entry) ?: return
+        val (_, dust: ItemLike, existingDust: Boolean) = getItem(CommonTagPrefixes.DUST, entry) ?: return
         val smeltedMaterial: HTMaterialLike = entry[HTMaterialPropertyKeys.SMELTED_TO] ?: entry
-        val (ingot: HTItemHolderLike<*>, existingIngot: Boolean) = getItem(CommonTagPrefixes.INGOT, smeltedMaterial) ?: return
+        val (_, ingot: ItemLike, existingIngot: Boolean) = getItem(CommonTagPrefixes.INGOT, smeltedMaterial) ?: return
         // 精錬の前後がどちらも既存アイテムの場合はパス
         if (existingDust && existingIngot) return
         // Smelting & Blasting
@@ -353,10 +353,10 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     @JvmStatic
     private fun smeltOreToBase(prefix: HTTagPrefix, entry: HTMaterialManager.Entry) {
         if (HTMaterialPropertyKeys.DISABLE_SMELTING in entry) return
-        val (ore: HTItemHolderLike<*>, existingOre: Boolean) = getItem(prefix, entry) ?: return
+        val (_, ore: ItemLike, existingOre: Boolean) = getItem(prefix, entry) ?: return
         val smeltedMaterial: HTMaterialLike = entry[HTMaterialPropertyKeys.SMELTED_TO] ?: entry
         val smeltedPropertyMap: HTPropertyMap = materialManager[smeltedMaterial] ?: return
-        val(base: HTItemHolderLike<*>, existingBase: Boolean) = smeltedPropertyMap.getDefaultPart()?.getItem(smeltedMaterial) ?: return
+        val(_, base: ItemLike, existingBase: Boolean) = smeltedPropertyMap.getDefaultPart()?.getItem(smeltedMaterial) ?: return
         // 精錬の前後がどちらも既存アイテムの場合はパス
         if (existingOre && existingBase) return
         // Smelting & Blasting

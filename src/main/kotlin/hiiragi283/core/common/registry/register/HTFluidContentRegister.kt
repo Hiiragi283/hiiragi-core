@@ -3,14 +3,13 @@ package hiiragi283.core.common.registry.register
 import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.fluid.HTVirtualFluid
 import hiiragi283.core.api.function.identity
-import hiiragi283.core.api.function.partially1
+import hiiragi283.core.api.function.partially2
 import hiiragi283.core.api.registry.BlockWithContextFactory
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.ItemWithContextFactory
 import hiiragi283.core.api.tag.createCommonTag
-import hiiragi283.core.common.registry.HTDeferredFluid
 import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.common.registry.HTDeferredOnlyBlock
 import net.minecraft.core.registries.Registries
@@ -31,12 +30,12 @@ import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.registries.NeoForgeRegistries
 
 class HTFluidContentRegister(modId: String) {
-    private val fluidRegister = HTDeferredFluidRegister(modId)
+    private val fluidRegister: HTDeferredRegister<Fluid> = HTDeferredRegister(Registries.FLUID, modId)
     private val typeRegister: HTDeferredRegister<FluidType> = HTDeferredRegister(NeoForgeRegistries.Keys.FLUID_TYPES, modId)
     private val blockRegister = HTDeferredOnlyBlockRegister(modId)
     private val itemRegister = HTDeferredItemRegister(modId)
 
-    fun asFluidSequence(): Sequence<HTDeferredFluid<*>> = fluidRegister.asSequence()
+    fun asFluidSequence(): Sequence<HTDeferredHolder<Fluid, *>> = fluidRegister.asSequence()
 
     fun asTypeSequence(): Sequence<HTDeferredHolder<FluidType, *>> = typeRegister.asSequence()
 
@@ -103,7 +102,7 @@ class HTFluidContentRegister(modId: String) {
                 typeFactory(properties.descriptionId("block.${typeRegister.namespace}.$name"))
             }
             // Fluid Holder
-            val sourceHolder: HTDeferredFluid<FLUID> = HTDeferredFluid(fluidRegister.createId(name))
+            val sourceHolder: HTDeferredHolder<Fluid, FLUID> = HTDeferredHolder(Registries.FLUID, fluidRegister.createId(name))
             // Bucket Item
             val bucketHolder: HTDeferredItem<Item> = itemRegister.registerItem(
                 "${name}_bucket",
@@ -117,7 +116,7 @@ class HTFluidContentRegister(modId: String) {
 
         protected abstract fun createContent(
             typeHolder: HTDeferredHolder<FluidType, FluidType>,
-            sourceHolder: HTDeferredFluid<FLUID>,
+            sourceHolder: HTDeferredHolder<Fluid, FLUID>,
             bucketHolder: HTDeferredItem<Item>,
         ): HTFluidContent
     }
@@ -125,11 +124,12 @@ class HTFluidContentRegister(modId: String) {
     inner class VirtualBuilder(name: String) : Builder<HTVirtualFluid>(name) {
         override fun createContent(
             typeHolder: HTDeferredHolder<FluidType, FluidType>,
-            sourceHolder: HTDeferredFluid<HTVirtualFluid>,
+            sourceHolder: HTDeferredHolder<Fluid, HTVirtualFluid>,
             bucketHolder: HTDeferredItem<Item>,
         ): HTFluidContent {
             // Content
-            val content = HTFluidContent(
+            fluidRegister.register(name, ::HTVirtualFluid.partially2(typeHolder, bucketHolder))
+            return HTFluidContent(
                 typeHolder,
                 sourceHolder,
                 bucketHolder,
@@ -138,8 +138,6 @@ class HTFluidContentRegister(modId: String) {
                 null,
                 null,
             )
-            fluidRegister.register(name, ::HTVirtualFluid.partially1(content))
-            return content
         }
     }
 
@@ -152,7 +150,7 @@ class HTFluidContentRegister(modId: String) {
 
         override fun createContent(
             typeHolder: HTDeferredHolder<FluidType, FluidType>,
-            sourceHolder: HTDeferredFluid<BaseFlowingFluid>,
+            sourceHolder: HTDeferredHolder<Fluid, BaseFlowingFluid>,
             bucketHolder: HTDeferredItem<Item>,
         ): HTFluidContent {
             // Liquid Block

@@ -22,7 +22,7 @@ abstract class HTBlockLootTableProvider(protected val modId: String, registries:
     BlockLootSubProvider(emptySet(), FeatureFlags.REGISTRY.allFlags(), registries) {
     final override fun getKnownBlocks(): Iterable<Block> = getRawBlocks()
         .filter { holder: HTBlockHolderLike<*> -> holder.namespace == modId }
-        .map(HTBlockHolderLike<*>::asBlock)
+        .map(HTBlockHolderLike<*>::get)
         .filter { block: Block -> block.lootTable != BuiltInLootTables.EMPTY }
         .toList()
 
@@ -45,15 +45,15 @@ abstract class HTBlockLootTableProvider(protected val modId: String, registries:
      * ブロックをそのままドロップするルートテーブルを指定します。
      */
     protected fun dropSelf(like: HTBlockHolderLike<*>) {
-        dropSelf(like.asBlock())
+        dropSelf(like.get())
     }
 
     protected fun add(like: HTBlockHolderLike<*>, table: LootTable.Builder) {
-        add(like.asBlock(), table)
+        add(like.get(), table)
     }
 
     protected inline fun <BLOCK : Block> add(like: HTBlockHolderLike<BLOCK>, factory: (BLOCK) -> LootTable.Builder) {
-        val block: BLOCK = like.asBlock()
+        val block: BLOCK = like.get()
         add(block, factory(block))
     }
 }

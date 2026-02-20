@@ -16,26 +16,16 @@ import net.neoforged.neoforge.fluids.FluidType
 class HTFluidContent(
     // Required
     val typeHolder: HTHolderLike<FluidType, *>,
-    private val sourceHolder: HTFluidHolderLike<out Fluid>,
-    private val bucketHolder: HTItemHolderLike<*>,
+    private val sourceHolder: HTFluidHolderLikeN<*>,
+    val bucketHolder: HTItemHolderLike<*>,
     val fluidTag: TagKey<Fluid>,
     val bucketTag: TagKey<Item>,
     // Optional
     val flowingHolder: HTHolderLike<Fluid, out FlowingFluid>?,
     val blockHolder: HTBlockHolderLike<out LiquidBlock>?,
-) : HTSimpleHolderLikeDelegate<Fluid>,
-    HTFluidHolderLike<Fluid> {
-    override fun getFluidHolder(): Holder<Fluid> = getHolder()
+) : HTSimpleHolderLikeDelegate<Fluid> {
+    override fun get(): Fluid = sourceHolder.get()
 
-    override fun asFluid(): Fluid = get()
-
-    override fun getBucket(): Item = getBucketHolder().asItem()
-
-    override fun getBucketHolder(): HTItemHolderLike<*> = bucketHolder
-
-    override fun getFluidType(): FluidType = typeHolder.get()
-
-    override fun get(): Fluid = sourceHolder.asFluid()
-
-    override fun getHolder(): Holder<Fluid> = sourceHolder.getFluidHolder()
+    @Suppress("DEPRECATION")
+    override fun getHolder(): Holder<Fluid> = get().builtInRegistryHolder()
 }

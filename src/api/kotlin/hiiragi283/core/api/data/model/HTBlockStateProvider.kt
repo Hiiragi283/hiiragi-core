@@ -82,18 +82,18 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
         block: BLOCK,
         stateDispatcher: (BLOCK, BlockState) -> Array<ConfiguredModel>,
     ) {
-        getVariantBuilder(block.asBlock()).forAllStates(stateDispatcher.partially1(block))
+        getVariantBuilder(block.get()).forAllStates(stateDispatcher.partially1(block))
     }
 
     /**
      * フルブロックのモデルを登録します。
      */
-    protected fun simpleBlockAndItem(block: HTBlockHolderLike<*>, model: ModelFile = cubeAll(block.asBlock())) {
-        simpleBlockWithItem(block.asBlock(), model)
+    protected fun simpleBlockAndItem(block: HTBlockHolderLike<*>, model: ModelFile = cubeAll(block.get())) {
+        simpleBlockWithItem(block.get(), model)
     }
 
     protected fun <BLOCK : HTBlockHolderLike<*>> simpleBlockAndItem(block: BLOCK, factory: (BLOCK) -> ModelFile) {
-        simpleBlockWithItem(block.asBlock(), factory(block))
+        simpleBlockWithItem(block.get(), factory(block))
     }
 
     /**
@@ -114,8 +114,8 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      * 水平方向に回転できるモデルを登録します。
      */
     protected fun horizontalBlock(block: HTBlockHolderLike<*>, model: ModelFile) {
-        horizontalBlock(block.asBlock(), model)
-        itemModels().simpleBlockItem(block.asBlock())
+        horizontalBlock(block.get(), model)
+        itemModels().simpleBlockItem(block.get())
     }
 
     /**
@@ -165,7 +165,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      * ハーフブロックのモデルを登録します。
      */
     protected fun slabBlock(block: HTBlockHolderLike<out SlabBlock>, texture: ResourceLocation) {
-        slabBlock(block.asBlock(), texture, texture)
+        slabBlock(block.get(), texture, texture)
         itemModels().simpleBlockItem(block.getId())
     }
 
@@ -173,7 +173,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      * 階段ブロックのモデルを登録します。
      */
     protected fun stairsBlock(block: HTBlockHolderLike<out StairBlock>, texture: ResourceLocation) {
-        stairsBlock(block.asBlock(), texture)
+        stairsBlock(block.get(), texture)
         itemModels().simpleBlockItem(block.getId())
     }
 
@@ -181,7 +181,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      * 壁ブロックのモデルを登録します。
      */
     protected fun wallBlock(block: HTBlockHolderLike<out WallBlock>, texture: ResourceLocation) {
-        wallBlock(block.asBlock(), texture)
+        wallBlock(block.get(), texture)
         itemModels().wallInventory(block.path, texture)
     }
 
@@ -190,7 +190,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      * @since 0.3.0
      */
     protected fun liquidBlock(content: HTFluidContent) {
-        val block: Block = content.blockHolder?.asBlock() ?: return
+        val block: Block = content.blockHolder?.get() ?: return
         simpleBlock(
             block,
             models()

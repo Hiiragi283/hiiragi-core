@@ -13,12 +13,14 @@ import hiiragi283.core.api.data.texture.HTTextureUtil
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialAccess
+import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
-import hiiragi283.core.api.registry.HTFluidHolderLike
+import hiiragi283.core.api.registry.getBucketHolder
+import hiiragi283.core.api.registry.getFluidType
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
@@ -26,7 +28,6 @@ import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
-import hiiragi283.core.api.text.HTHasTranslationKey
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
@@ -44,6 +45,7 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.Tags
 import java.util.function.Consumer
 
@@ -228,12 +230,14 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
 
         for (entry: HTMaterialManager.Entry in manager) {
             // Block
-            for ((prefix: HTTagPrefix, block: HTHasTranslationKey) in registered.blocks.column(entry)) {
+            for ((prefix: HTTagPrefix, block: HTMaterialContents.Entry<Block>) in registered.blocks.column(entry)) {
                 val name: String = translate(langType, prefix, entry) ?: continue
-                consumer(block.translationKey, name)
+                consumer(block.get().descriptionId, name)
             }
             // Fluid
-            for ((prefix: HTFluidTagPrefix, fluid: HTFluidHolderLike<*>) in HiiragiCoreAccess.INSTANCE.registeredFluids.column(entry)) {
+            for ((prefix: HTFluidTagPrefix, fluid: HTMaterialContents.Entry<Fluid>) in HiiragiCoreAccess.INSTANCE.registeredFluids.column(
+                entry,
+            )) {
                 val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
                 val name: String = prefix.translate(langType, materialName)
                 consumer(fluid.getFluidType().descriptionId, name)
@@ -244,14 +248,14 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
                 consumer(Tags.getTagTranslationKey(prefix.createBucketTag(entry)), bucketName)
             }
             // Item
-            for ((prefix: HTTagPrefix, item: HTHasTranslationKey) in registered.items.column(entry)) {
+            for ((prefix: HTTagPrefix, item: HTMaterialContents.Entry<Item>) in registered.items.column(entry)) {
                 val name: String = translate(langType, prefix, entry) ?: continue
-                consumer(item.translationKey, name)
+                consumer(item.get().descriptionId, name)
             }
             // Tool
-            for ((toolType: HTToolType, tool: HTHasTranslationKey) in registered.tools.column(entry)) {
+            for ((toolType: HTToolType, tool: HTMaterialContents.Entry<Item>) in registered.tools.column(entry)) {
                 val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
-                consumer(tool.translationKey, toolType.langPattern.translate(langType, materialName))
+                consumer(tool.get().descriptionId, toolType.langPattern.translate(langType, materialName))
             }
         }
     }

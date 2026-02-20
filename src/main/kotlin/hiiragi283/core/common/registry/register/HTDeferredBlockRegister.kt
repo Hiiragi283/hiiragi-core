@@ -23,7 +23,7 @@ class HTDeferredBlockRegister(
     override val firstRegister: HTDeferredOnlyBlockRegister,
     override val secondRegister: HTDeferredItemRegister,
 ) : HTDoubleDeferredRegister<Block, Item>(firstRegister, secondRegister) {
-    constructor(namespace: String) : this(HTDeferredOnlyBlockRegister(namespace), HTDeferredItemRegister(namespace))
+    constructor(blockRegister: HTDeferredOnlyBlockRegister) : this(blockRegister, HTDeferredItemRegister(blockRegister.namespace))
 
     // Simple
     fun registerSimple(

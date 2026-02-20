@@ -2,6 +2,7 @@ package hiiragi283.core.api.data.tag
 
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.getFluidType
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.Tags

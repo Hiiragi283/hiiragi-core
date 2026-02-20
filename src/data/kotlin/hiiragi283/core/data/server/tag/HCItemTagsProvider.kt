@@ -5,6 +5,7 @@ import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.tag.HTItemTagsProvider
 import hiiragi283.core.api.data.tag.HTTagsProvider
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.getBucketHolder
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids

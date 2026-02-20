@@ -7,10 +7,7 @@ import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
-import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.HTHolderLike
-import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
@@ -21,6 +18,10 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
+import net.minecraft.world.level.ItemLike
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.MutableDataComponentHolder
 
 /**
@@ -54,20 +55,16 @@ abstract class HiiragiCoreAccess {
      */
     abstract val registeredContents: HTMaterialAccess
 
-    abstract val registeredFluids: HTMaterialContents<HTFluidTagPrefix, HTFluidHolderLike<*>>
+    abstract val registeredFluids: HTMaterialContents<HTFluidTagPrefix, Fluid>
 
-    fun getMaterialBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTBlockHolderLike<*>? =
+    fun getMaterialBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTMaterialContents.Entry<Block>? =
         existingContents.blocks[prefix, material] ?: registeredContents.blocks[prefix, material]
 
-    fun getMaterialItem(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
+    fun getMaterialItem(prefix: HTTagPrefix, material: HTMaterialLike): HTMaterialContents.Entry<Item>? =
         existingContents.items[prefix, material] ?: registeredContents.items[prefix, material]
 
-    fun getMaterialBlockOrItem(prefix: HTTagPrefix, material: HTMaterialLike): Pair<HTItemHolderLike<*>, Boolean>? =
-        listOf(existingContents to true, registeredContents to false)
-            .firstNotNullOfOrNull { (access: HTMaterialAccess, flag: Boolean) ->
-                val item: HTItemHolderLike<*> = access.getBlockOrItem(prefix, material) ?: return@firstNotNullOfOrNull null
-                item to flag
-            }
+    fun getMaterialBlockOrItem(prefix: HTTagPrefix, material: HTMaterialLike): HTMaterialContents.Entry<out ItemLike>? =
+        existingContents.getBlockOrItem(prefix, material) ?: registeredContents.getBlockOrItem(prefix, material)
 
     //    Potion    //
 

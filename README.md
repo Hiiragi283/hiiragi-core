@@ -21,29 +21,36 @@
     - Metals: Iron, Copper, Gold
     - Alloys: Netherite
     - Crops: Wheat,
-    - Others: Wood, Glass, Stone, Obsidian
+    - Others: Wood, Glass, Stone, Obsidian, Blaze, Breeze, Brick, Nether Brick
   - Common
     - Fuels: Coal Coke
-    - Minerals: Bauxite, Salt, Saltpeter, Sulfur
-    - Gems: Cinnabar, (Fluorite), (Peridot), (Ruby), (Sapphire)
+    - Minerals: Salt, Saltpeter, Bauxite, Sulfur, Platinum Group, Cinnabar, Galena
+    - Gems: (Fluorite), (Peridot), (Ruby), (Sapphire)
     - Metals
       - 2nd Period: (Lithium), (Beryllium)
       - 3rd Period: (Sodium), (Magnesium), Aluminum, (Silicon)
       - 4th Period: (Titanium), (Vanadium), (Chromium), (Manganese), (Cobalt), (Nickel), Zinc
-      - 5th Period: (Molybdenum), (Palladium), (Silver), Tin, (Antimony)
-      - 6th Period: (Tungsten), (Osmium), Iridium, (Platinum), (Lead)
+      - 5th Period: (Molybdenum), Ruthenium, Rhodium, Palladium, Silver, Tin, (Antimony)
+      - 6th Period: (Tungsten), Osmium, Iridium, Platinum, Lead
       - 7th Period: (Uranium), (Plutonium)
-    - Alloys: Steel, (Invar), (Electrum), Brass, (Constantan), Bronze, (Signalum), (Lumium), (Enderium)
+    - Alloys: Steel, (Invar), Brass, (Constantan), Bronze, (Electrum), (Signalum), (Lumium), (Enderium)
     - Others: Ash, Carbon, Plastic, Rubber
   - Original
     - Gems: Azure, Crimson Crystal, Warped Crystal
     - Pearls: Eldritch
     - Alloys: Azure Steel
+  - (`Material`): No contents added by Hiiragi Core
 
 - Blocks
+  - Latex Cauldron: Drops Raw Rubber randomly
+  - Tree Tap: Extracts Latex from attached logs to below cauldron
   - Warped Wart: Clears one bad effect randomly when eaten.
 - Items
+  - Bamboo Charcoal: A substitute for Charcoal made from Bamboo
+  - Bomb: Throwable explosive
   - Compressed Sawdust: Recycles Sawdust into Charcoal
+  - Particle Board: Recycled Planks made from Sawdust
+  - Synthetic Feather/Fiber/Leather: A substitute for Feather/String/Leather made from Plastic
   - Trader's Catalog: Opens trading menu of Wandering Trader
 - End-Game Items
   - Almighty Pickaxe: A mining tool suitable for ALL BLOCKS

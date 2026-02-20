@@ -2,6 +2,8 @@ package hiiragi283.core.api.data.lang
 
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.getBucketHolder
+import hiiragi283.core.api.registry.getFluidType
 import hiiragi283.core.api.resource.toDescriptionKey
 import hiiragi283.core.api.text.HTHasTranslationKey
 import net.minecraft.data.PackOutput

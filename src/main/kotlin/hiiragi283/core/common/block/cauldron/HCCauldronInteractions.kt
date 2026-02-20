@@ -2,6 +2,8 @@ package hiiragi283.core.common.block.cauldron
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.getBucketHolder
+import hiiragi283.core.api.registry.getFluidType
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.core.BlockPos
 import net.minecraft.core.cauldron.CauldronInteraction

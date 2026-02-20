@@ -56,7 +56,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     override fun <T : Any> registerFluidSubtypes(registration: ISubtypeRegistration, platformFluidHelper: IPlatformFluidHelper<T>) {
         registration.registerSubtypeInterpreter(
             platformFluidHelper.fluidIngredientType,
-            HCFluids.POTION.asFluid(),
+            HCFluids.POTION.get(),
             HTSubtypeInterpreter { stack: T, _ -> (stack as? FluidStack)?.let(HTPotionHelper::getContents) },
         )
     }

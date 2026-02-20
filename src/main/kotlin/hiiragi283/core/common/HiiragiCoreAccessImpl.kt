@@ -12,10 +12,7 @@ import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
-import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.HTHolderLike
-import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.registry.holderSetOrNull
 import hiiragi283.core.api.registry.toLike
@@ -42,6 +39,9 @@ import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.core.component.DataComponents
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.material.Fluid
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.common.MutableDataComponentHolder
@@ -92,17 +92,17 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
     override val materialManager: HTMaterialManager get() = materialManagerCache
 
     override val existingContents: HTMaterialAccess = object : HTMaterialAccess {
-        override val blocks: HTMaterialContents<HTTagPrefix, HTBlockHolderLike<*>> by lazy {
+        override val blocks: HTMaterialContents<HTTagPrefix, Block> by lazy {
             HTMaterialContentsImpl(HCMiscRegister.existingBlocks) { prefix: HTTagPrefix, key: HTMaterialKey ->
                 "Unknown ${prefix.name} block for ${key.getId()}"
             }
         }
-        override val items: HTMaterialContents<HTTagPrefix, HTItemHolderLike<*>> by lazy {
+        override val items: HTMaterialContents<HTTagPrefix, Item> by lazy {
             HTMaterialContentsImpl(HCMiscRegister.existingItems) { prefix: HTTagPrefix, key: HTMaterialKey ->
                 "Unknown ${prefix.name} item for ${key.getId()}"
             }
         }
-        override val tools: HTMaterialContents<HTToolType, HTItemHolderLike<*>> by lazy {
+        override val tools: HTMaterialContents<HTToolType, Item> by lazy {
             HTMaterialContentsImpl(HCMiscRegister.existingTools) { toolType: HTToolType, key: HTMaterialKey ->
                 "Unknown ${toolType.name} item for ${key.getId()}"
             }
@@ -110,24 +110,24 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
     }
 
     override val registeredContents: HTMaterialAccess = object : HTMaterialAccess {
-        override val blocks: HTMaterialContents<HTTagPrefix, HTBlockHolderLike<*>> by lazy {
+        override val blocks: HTMaterialContents<HTTagPrefix, Block> by lazy {
             HTMaterialContentsImpl(HCMiscRegister.materialBlocks) { prefix: HTTagPrefix, key: HTMaterialKey ->
                 "Unregistered ${prefix.name} block for ${key.getId()}"
             }
         }
-        override val items: HTMaterialContents<HTTagPrefix, HTItemHolderLike<*>> by lazy {
+        override val items: HTMaterialContents<HTTagPrefix, Item> by lazy {
             HTMaterialContentsImpl(HCMiscRegister.materialItems) { prefix: HTTagPrefix, key: HTMaterialKey ->
                 "Unregistered ${prefix.name} item for ${key.getId()}"
             }
         }
-        override val tools: HTMaterialContents<HTToolType, HTItemHolderLike<*>> by lazy {
+        override val tools: HTMaterialContents<HTToolType, Item> by lazy {
             HTMaterialContentsImpl(HCMiscRegister.materialTools) { toolType: HTToolType, key: HTMaterialKey ->
                 "Unregistered ${toolType.name} item for ${key.getId()}"
             }
         }
     }
 
-    override val registeredFluids: HTMaterialContents<HTFluidTagPrefix, HTFluidHolderLike<*>> by lazy {
+    override val registeredFluids: HTMaterialContents<HTFluidTagPrefix, Fluid> by lazy {
         HTMaterialContentsImpl(HCMiscRegister.materialFluids) { prefix: HTFluidTagPrefix, key: HTMaterialKey ->
             "Unregistered ${prefix.name} fluid for ${key.getId()}"
         }

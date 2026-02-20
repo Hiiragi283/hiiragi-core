@@ -1,5 +1,6 @@
 package hiiragi283.core.common.block.entity
 
+import hiiragi283.core.api.registry.toStack
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCFluids
