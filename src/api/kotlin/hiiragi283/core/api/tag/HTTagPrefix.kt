@@ -12,6 +12,7 @@ import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
+import java.util.TreeMap
 
 /**
  * タグのプレフィックスを表すクラスです。
@@ -26,6 +27,12 @@ class HTTagPrefix private constructor(
 ) : Comparable<HTTagPrefix>,
     HTPropertyMap by properties {
     companion object {
+        @JvmStatic
+        val instances: Map<String, HTTagPrefix> get() = _instances
+
+        @JvmStatic
+        private val _instances: MutableMap<String, HTTagPrefix> = TreeMap()
+
         @HTBuilderMarker
         @JvmStatic
         inline fun create(
@@ -43,6 +50,10 @@ class HTTagPrefix private constructor(
             tagPattern: String,
             builderAction: HTPropertyMap.Mutable.() -> Unit,
         ): HTTagPrefix = Builder(name).apply(builderAction).build(commonTagId, tagPattern)
+    }
+
+    init {
+        require(_instances.put(name, this) == null) { "Duplicated tag prefix: $name" }
     }
 
     /**

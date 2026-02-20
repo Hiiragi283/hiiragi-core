@@ -6,7 +6,7 @@ import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.translatableText
-import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
+import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
@@ -59,7 +59,7 @@ class HTAlmightyPickaxe(properties: Properties) :
 
         override fun getEnchantmentValue(): Int = Tiers.NETHERITE.enchantmentValue
 
-        override fun getRepairIngredient(): Ingredient = HTEternalSmithingRecipe.ADDITIONAL_TAG
+        override fun getRepairIngredient(): Ingredient = HCEternalSmithingRecipe.ADDITIONAL_TAG
 
         override fun createToolProperties(block: TagKey<Block>): Tool = Tool(
             listOf(

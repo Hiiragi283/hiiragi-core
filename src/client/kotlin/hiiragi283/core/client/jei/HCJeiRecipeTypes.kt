@@ -1,12 +1,19 @@
 package hiiragi283.core.client.jei
 
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.integration.jei.type.HTHolderJeiRecipeType
+import hiiragi283.core.api.integration.jei.type.HTJeiRecipeType
+import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.monad.Either
+import hiiragi283.core.api.text.toText
 import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import hiiragi283.core.common.registry.HTDeferredRecipeType
 import hiiragi283.core.setup.HCRecipeTypes
+import net.minecraft.network.chat.Component
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.crafting.Recipe
@@ -34,4 +41,15 @@ object HCJeiRecipeTypes {
     @JvmField
     val EXPLODING: HTHolderJeiRecipeType<HCExplodingRecipe.Input, HCExplodingRecipe> =
         create(HCRecipeTypes.EXPLODING, Items.TNT)
+
+    data object MaterialType : HTJeiRecipeType<HTMaterialManager.Entry> {
+        override val recipeClass: Class<HTMaterialManager.Entry> = HTMaterialManager.Entry::class.java
+        override val icon: Either<ResourceLocation, ItemStack> = Either.Right(ItemStack(Items.IRON_INGOT))
+        override val bounds: HTBounds = HTBounds(0, 0, 142, 110)
+        override val workStations: List<ItemStack> = emptyList()
+
+        override fun getText(): Component = "Material Parts".toText()
+
+        override fun getId(): ResourceLocation = HiiragiCoreAPI.id("material")
+    }
 }

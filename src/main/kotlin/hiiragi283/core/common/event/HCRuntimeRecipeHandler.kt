@@ -4,7 +4,6 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
-import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
@@ -28,12 +27,8 @@ import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSmithingRecipeBuilder
-import net.minecraft.core.component.DataComponents
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
-import net.minecraft.world.item.Items
-import net.minecraft.world.item.alchemy.PotionContents
-import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.level.ItemLike
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
@@ -56,14 +51,12 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             baseToBlock(event, entry)
             ingotToNugget(entry)
             rawToBlock(event, entry)
+            tinyToFuel(event, entry)
             tool(entry)
-
-            flourToDough(event, entry)
 
             val hardness: HTMaterialLevel = entry.getOrDefault(HTMaterialPropertyKeys.HARDNESS)
             if (hardness > HTMaterialLevel.NONE && hardness <= HTMaterialLevel.MEDIUM) {
                 baseToGear(event, entry)
-                ingotToPlate(event, entry)
             }
 
             smeltDustToIngot(entry)
@@ -209,8 +202,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         }
     }
 
-    @JvmStatic
-    private fun flourToDough(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
+    /*private fun flourToDough(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
         val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
         if (!event.isPresentTag(crushedPrefix, entry)) return
         val dough: ItemLike = event.getFirstHolder(CommonTagPrefixes.DOUGH, entry) ?: return
@@ -235,7 +227,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             resultStack += dough to 3
             recipeId suffix "_with_bucket"
         }
-    }
+    }*/
 
     @JvmStatic
     private fun ingotToNugget(entry: HTMaterialManager.Entry) {
@@ -258,8 +250,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         }
     }
 
-    @JvmStatic
-    private fun ingotToPlate(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
+    /*private fun ingotToPlate(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
         if (!event.isPresentTag(CommonTagPrefixes.INGOT, entry)) return
         val plate: ItemLike = event.getFirstHolder(CommonTagPrefixes.PLATE, entry) ?: return
         // レシピを登録
@@ -269,7 +260,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             resultStack += plate
             recipeId suffix "_from_ingot"
         }
-    }
+    }*/
 
     @JvmStatic
     private fun rawToBlock(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
@@ -285,12 +276,38 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
                 recipeId replace entry.getId().withSuffix("/raw_from_block")
             }
         }
-        HTShapedRecipeBuilder.create(output) {
-            hollow8()
-            define('A') += CommonTagPrefixes.RAW to entry
-            define('B') += raw
-            resultStack += rawBlock
-            recipeId replace entry.getId()
+        if (event.isPresentTag(CommonTagPrefixes.RAW, entry)) {
+            HTShapedRecipeBuilder.create(output) {
+                hollow8()
+                define('A') += CommonTagPrefixes.RAW to entry
+                define('B') += raw
+                resultStack += rawBlock
+                recipeId replace entry.getId()
+            }
+        }
+    }
+
+    @JvmStatic
+    private fun tinyToFuel(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
+        val (_, tiny: ItemLike, existingTiny: Boolean) = getItem(CommonTagPrefixes.TINY, entry) ?: return
+        val (_, fuel: ItemLike, existingFuel: Boolean) = getItem(CommonTagPrefixes.FUEL, entry) ?: return
+        // クラフトの前後がどちらも既存アイテムの場合はパス
+        if (existingTiny && existingFuel) return
+        // レシピを登録
+        if (event.isPresentTag(CommonTagPrefixes.FUEL, entry)) {
+            HTShapelessRecipeBuilder.create(output) {
+                ingredients += CommonTagPrefixes.FUEL to entry
+                resultStack += tiny to 8
+                recipeId replace entry.getId().withSuffix("/tiny_from_fuel")
+            }
+        }
+        if (event.isPresentTag(CommonTagPrefixes.TINY, entry)) {
+            HTShapedRecipeBuilder.create(output) {
+                hollow()
+                define('A') += CommonTagPrefixes.TINY to entry
+                resultStack += fuel
+                recipeId replace entry.getId()
+            }
         }
     }
 

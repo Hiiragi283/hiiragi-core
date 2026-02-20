@@ -1,6 +1,6 @@
 package hiiragi283.core.client.jei.category
 
-import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
+import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.setup.HCItems
 import mezz.jei.api.gui.builder.IIngredientAcceptor
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable
@@ -11,21 +11,21 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.component.Unbreakable
 
-class HTEternalSmithingCategoryExtension(private val manager: IIngredientManager) : ISmithingCategoryExtension<HTEternalSmithingRecipe> {
-    override fun <T : IIngredientAcceptor<T>> setTemplate(recipe: HTEternalSmithingRecipe, ingredientAcceptor: T) {
+class HCEternalSmithingCategoryExtension(private val manager: IIngredientManager) : ISmithingCategoryExtension<HCEternalSmithingRecipe> {
+    override fun <T : IIngredientAcceptor<T>> setTemplate(recipe: HCEternalSmithingRecipe, ingredientAcceptor: T) {
         ingredientAcceptor.addItemLike(HCItems.ETERNAL_UPGRADE)
     }
 
-    override fun <T : IIngredientAcceptor<T>> setBase(recipe: HTEternalSmithingRecipe, ingredientAcceptor: T) {
+    override fun <T : IIngredientAcceptor<T>> setBase(recipe: HCEternalSmithingRecipe, ingredientAcceptor: T) {
         ingredientAcceptor.addItemStacks(manager.allItemStacks.filter { it.isDamageableItem })
     }
 
-    override fun <T : IIngredientAcceptor<T>> setAddition(recipe: HTEternalSmithingRecipe, ingredientAcceptor: T) {
-        ingredientAcceptor.addIngredients(HTEternalSmithingRecipe.ADDITIONAL_TAG)
+    override fun <T : IIngredientAcceptor<T>> setAddition(recipe: HCEternalSmithingRecipe, ingredientAcceptor: T) {
+        ingredientAcceptor.addIngredients(HCEternalSmithingRecipe.ADDITIONAL_TAG)
     }
 
     override fun onDisplayedIngredientsUpdate(
-        recipe: HTEternalSmithingRecipe,
+        recipe: HCEternalSmithingRecipe,
         templateSlot: IRecipeSlotDrawable,
         baseSlot: IRecipeSlotDrawable,
         additionSlot: IRecipeSlotDrawable,

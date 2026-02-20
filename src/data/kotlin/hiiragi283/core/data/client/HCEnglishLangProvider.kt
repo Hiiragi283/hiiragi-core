@@ -55,6 +55,9 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.SYNTHETIC_FIBER, "Synthetic Fiber")
         add(HCItems.SYNTHETIC_LEATHER, "Synthetic Leather")
 
+        add(HCItems.WHEAT_DOUGH, "Wheat Dough")
+        add(HCItems.WHEAT_FLOUR, "Wheat Flour")
+
         add(HCItems.LUMINOUS_PASTE, "Luminous Paste")
         add(HCItems.MAGMA_SHARD, "Magma Shard")
         add(HCItems.ELDER_HEART, "Elder Heart")

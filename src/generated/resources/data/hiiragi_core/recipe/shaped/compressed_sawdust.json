@@ -5,14 +5,9 @@
     "A": {
       "tag": "c:dusts/wood"
     },
-    "B": [
-      {
-        "tag": "c:hammers"
-      },
-      {
-        "tag": "c:tools/hammer"
-      }
-    ]
+    "B": {
+      "tag": "minecraft:wooden_buttons"
+    }
   },
   "pattern": [
     "AAA",

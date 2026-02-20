@@ -54,7 +54,6 @@ sealed interface HTDefaultPart {
      * @since 0.8.0
      */
     enum class Prefixed : HTDefaultPart {
-        CROP,
         FUEL,
         GEM,
         INGOT,
@@ -62,7 +61,7 @@ sealed interface HTDefaultPart {
         ;
 
         val prefix: HTTagPrefix get() = when (this) {
-            CROP -> CommonTagPrefixes.CROP
+            // CROP -> CommonTagPrefixes.CROP
             // DUST -> CommonTagPrefixes.DUST
             FUEL -> CommonTagPrefixes.FUEL
             GEM -> CommonTagPrefixes.GEM

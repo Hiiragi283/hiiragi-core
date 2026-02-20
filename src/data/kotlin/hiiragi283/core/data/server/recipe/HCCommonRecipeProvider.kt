@@ -5,14 +5,13 @@ import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.getBucket
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HiiragiCoreTags
-import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
+import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
@@ -84,7 +83,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         HTShapedRecipeBuilder.create(output) {
             hollow8()
             define('A') += CommonTagPrefixes.DUST to VanillaMaterialKeys.WOOD
-            define('B') += CommonToolTypes.HAMMER
+            define('B') += ItemTags.WOODEN_BUTTONS
             resultStack += HCItems.COMPRESSED_SAWDUST
         }
         HTCookingRecipeBuilder.smelting(output) {
@@ -103,7 +102,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         }
         // Dough -> Bread
         HTCookingRecipeBuilder.smeltingAndSmoking(output) {
-            ingredient += getOrThrow(CommonTagPrefixes.DOUGH, VanillaMaterialKeys.WHEAT)
+            ingredient += HCItems.WHEAT_DOUGH
             resultStack += Items.BREAD
             exp = 0.3f
             recipeId suffix "_from_dough"
@@ -228,7 +227,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             define('C') += HCItems.IRIDESCENT_POWDER
             resultStack += HCItems.ETERNAL_UPGRADE
         }
-        save(id(HTConst.SMITHING, "eternal_upgrade"), HTEternalSmithingRecipe)
+        save(id(HTConst.SMITHING, "eternal_upgrade"), HCEternalSmithingRecipe)
         // Almighty Pickaxe
         HTShapelessRecipeBuilder.create(output) {
             ingredients += Items.NETHERITE_SHOVEL

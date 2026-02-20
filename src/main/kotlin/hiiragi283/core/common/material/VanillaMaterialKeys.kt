@@ -70,11 +70,6 @@ object VanillaMaterialKeys {
     @JvmStatic
     val NETHERITE: HTMaterialKey = create("netherite")
 
-    //    Crops    //
-
-    @JvmStatic
-    val WHEAT: HTMaterialKey = create("wheat")
-
     //    Others    //
 
     @JvmStatic

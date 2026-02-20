@@ -1,7 +1,6 @@
 package hiiragi283.core.api.item.tool
 
 import hiiragi283.core.api.data.lang.HTLangPatternProvider
-import hiiragi283.core.api.tag.HiiragiCoreTags
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.AxeItem
 import net.minecraft.world.item.DiggerItem
@@ -73,12 +72,11 @@ object CommonToolTypes {
 
     //    Common    //
 
-    @JvmField
-    val HAMMER: HTToolType = HTToolType.create("hammer") {
+    /*val HAMMER: HTToolType = HTToolType.create("hammer") {
         factory = ::HTCraftingToolItem
         langPattern = HTLangPatternProvider.create("%s Hammer", "%sのハンマー")
         recipePattern = listOf(" B ", " B ", "ABA")
         toolTags += HiiragiCoreTags.Items.HAMMERS
         toolTags += HiiragiCoreTags.Items.TOOLS_HAMMER
-    }
+    }*/
 }

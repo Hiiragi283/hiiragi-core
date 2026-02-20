@@ -28,7 +28,6 @@ import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.tag.fluid.CommonFluidTagPrefixes
-import hiiragi283.core.common.item.VanillaEquipmentMaterial
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
@@ -71,7 +70,7 @@ object HCMaterialPropertyHandler {
         // Fuels
         event.modify(VanillaMaterialKeys.COAL) {
             setDefaultPart(HTDefaultPart.Prefixed.FUEL)
-            addItemPrefixes(oreSet)
+            addItemPrefixes(oreSet.plus(CommonTagPrefixes.TINY))
             put(
                 HTMaterialPropertyKeys.EXTRA_ORE_RESULTS,
                 HTExtraOreResultMap.create {
@@ -90,7 +89,7 @@ object HCMaterialPropertyHandler {
         event.modify(VanillaMaterialKeys.CHARCOAL) {
             setDefaultPart(HTDefaultPart.Prefixed.FUEL)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(CommonTagPrefixes.DUST)
+            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.TINY)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.NONE)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.NONE)
 
@@ -170,7 +169,6 @@ object HCMaterialPropertyHandler {
                 CommonTagPrefixes.CRUSHED_ORE,
                 CommonTagPrefixes.GEAR,
             )
-            addToolPrefixes(VanillaEquipmentMaterial.DIAMOND, CommonToolTypes.HAMMER)
             put(
                 HTMaterialPropertyKeys.EXTRA_ORE_RESULTS,
                 HTExtraOreResultMap.create {
@@ -250,7 +248,6 @@ object HCMaterialPropertyHandler {
                 CommonTagPrefixes.PLATE,
                 CommonTagPrefixes.ROD,
             )
-            addToolPrefixes(VanillaEquipmentMaterial.IRON, CommonToolTypes.HAMMER)
             put(
                 HTMaterialPropertyKeys.EXTRA_ORE_RESULTS,
                 HTExtraOreResultMap.create {
@@ -274,7 +271,6 @@ object HCMaterialPropertyHandler {
                 CommonTagPrefixes.ROD,
                 CommonTagPrefixes.WIRE,
             )
-            addToolPrefixes(VanillaEquipmentMaterial.GOLD, CommonToolTypes.HAMMER)
             put(
                 HTMaterialPropertyKeys.EXTRA_ORE_RESULTS,
                 HTExtraOreResultMap.create {
@@ -298,7 +294,6 @@ object HCMaterialPropertyHandler {
                 CommonTagPrefixes.PLATE,
                 CommonTagPrefixes.ROD,
             )
-            addToolPrefixes(VanillaEquipmentMaterial.NETHERITE, CommonToolTypes.HAMMER)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.HIGH)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.HIGH)
 
@@ -312,16 +307,6 @@ object HCMaterialPropertyHandler {
                     false,
                 ),
             )
-        }
-        // Crops
-        event.modify(VanillaMaterialKeys.WHEAT) {
-            setDefaultPart(HTDefaultPart.Prefixed.CROP)
-            addItemPrefixes(CommonTagPrefixes.FLOUR, CommonTagPrefixes.DOUGH)
-            put(HTMaterialPropertyKeys.CRUSHED_PREFIX, CommonTagPrefixes.FLOUR)
-            this += HTMaterialPropertyKeys.DISABLE_SMELTING
-
-            setName("Wheat", "小麦")
-            setTextureSet("crop")
         }
         // Others
         event.modify(VanillaMaterialKeys.WOOD) {
@@ -349,7 +334,6 @@ object HCMaterialPropertyHandler {
         }
         event.modify(VanillaMaterialKeys.STONE) {
             setDefaultPart(ItemTags.STONE_CRAFTING_MATERIALS, HTItemHolderLike.of(Items.COBBLESTONE))
-            addToolPrefixes(VanillaEquipmentMaterial.STONE, CommonToolTypes.HAMMER)
 
             setName("Stone", "石")
             setTextureSet(HTMaterialTextureSet.DULL)
@@ -445,7 +429,7 @@ object HCMaterialPropertyHandler {
         event.modify(CommonMaterialKeys.COAL_COKE) {
             setDefaultPart(HTDefaultPart.Prefixed.FUEL)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.FUEL)
+            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.FUEL, CommonTagPrefixes.TINY)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.NONE)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.NONE)
 
@@ -584,7 +568,7 @@ object HCMaterialPropertyHandler {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(alloySet.plus(partSet))
-            addToolPrefixes(HCToolMaterials.STEEL, CommonToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER))
+            addToolPrefixes(HCToolMaterials.STEEL, CommonToolTypes.VANILLA_SET)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
 
@@ -606,7 +590,7 @@ object HCMaterialPropertyHandler {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(alloySet.plus(partSet))
-            addToolPrefixes(HCToolMaterials.BRONZE, CommonToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER))
+            addToolPrefixes(HCToolMaterials.BRONZE, CommonToolTypes.VANILLA_SET)
 
             setName("Bronze", "青銅")
         }
@@ -723,7 +707,7 @@ object HCMaterialPropertyHandler {
                 CommonTagPrefixes.PLATE,
                 CommonTagPrefixes.ROD,
             )
-            addToolPrefixes(HCToolMaterials.ANCIENT_METAL, CommonToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER))
+            addToolPrefixes(HCToolMaterials.ANCIENT_METAL, CommonToolTypes.VANILLA_SET))
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
             setName("Ancient Metal", "古代の金属")
@@ -750,7 +734,7 @@ object HCMaterialPropertyHandler {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addItemPrefixes(alloySet.plus(partSet))
-            addToolPrefixes(HCToolMaterials.AZURE_STEEL, CommonToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER))
+            addToolPrefixes(HCToolMaterials.AZURE_STEEL, CommonToolTypes.VANILLA_SET)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
 

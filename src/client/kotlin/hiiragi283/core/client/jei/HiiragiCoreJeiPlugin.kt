@@ -1,6 +1,7 @@
 package hiiragi283.core.client.jei
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
 import hiiragi283.core.api.integration.jei.HTSubtypeInterpreter
 import hiiragi283.core.api.item.HTPotionBasedItem
@@ -11,9 +12,10 @@ import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.registry.asSequence
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.jei.category.HCAnvilCrushingRecipeCategory
+import hiiragi283.core.client.jei.category.HCEternalSmithingCategoryExtension
+import hiiragi283.core.client.jei.category.HCMaterialPartCategory
 import hiiragi283.core.client.jei.category.HCSingleItemRecipeCategory
-import hiiragi283.core.client.jei.category.HTEternalSmithingCategoryExtension
-import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
+import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.util.HCPotionFluidHelper
@@ -76,6 +78,8 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     override fun registerCategories(registration: IRecipeCategoryRegistration) {
         val guiHelper: IGuiHelper = registration.jeiHelpers.guiHelper
 
+        registration.addRecipeCategories(HCMaterialPartCategory(guiHelper))
+
         registration.addRecipeCategories(HCAnvilCrushingRecipeCategory(guiHelper))
         registration.addRecipeCategories(HCSingleItemRecipeCategory.charging(guiHelper))
         registration.addRecipeCategories(HCSingleItemRecipeCategory.exploding(guiHelper))
@@ -83,12 +87,18 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
 
     override fun registerVanillaCategoryExtensions(registration: IVanillaCategoryExtensionRegistration) {
         registration.smithingCategory.addExtension(
-            HTEternalSmithingRecipe::class.java,
-            HTEternalSmithingCategoryExtension(registration.jeiHelpers.ingredientManager),
+            HCEternalSmithingRecipe::class.java,
+            HCEternalSmithingCategoryExtension(registration.jeiHelpers.ingredientManager),
         )
     }
 
     override fun registerRecipes(registration: IRecipeRegistration) {
+        registration.addRecipes(
+            getRecipeType(HCJeiRecipeTypes.MaterialType),
+            HiiragiCoreAccess.INSTANCE.materialManager.entries
+                .asSequence(),
+        )
+
         registration.addRecipes(HCJeiRecipeTypes.ANVIL_CRUSHING, sorter = compareBy { it.result.getId() })
         registration.addRecipes(HCJeiRecipeTypes.CHARGING, sorter = compareBy { it.result.getId() })
         registration.addRecipes(HCJeiRecipeTypes.EXPLODING, sorter = compareBy { it.result.getId() })

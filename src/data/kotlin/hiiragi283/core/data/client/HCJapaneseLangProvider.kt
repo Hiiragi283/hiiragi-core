@@ -55,6 +55,9 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.SYNTHETIC_FIBER, "合成繊維")
         add(HCItems.SYNTHETIC_LEATHER, "合成牛皮")
 
+        add(HCItems.WHEAT_DOUGH, "小麦の生地")
+        add(HCItems.WHEAT_FLOUR, "小麦粉")
+
         add(HCItems.LUMINOUS_PASTE, "蛍光ペースト")
         add(HCItems.MAGMA_SHARD, "マグマシャード")
         add(HCItems.ELDER_HEART, "エルダーの心臓")

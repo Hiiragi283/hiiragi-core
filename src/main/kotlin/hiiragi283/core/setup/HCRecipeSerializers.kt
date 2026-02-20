@@ -8,8 +8,8 @@ import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.MapBiCodec
 import hiiragi283.core.api.serialization.codec.MapBiCodecs
+import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.crafting.HTClearComponentRecipe
-import hiiragi283.core.common.crafting.HTEternalSmithingRecipe
 import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
@@ -29,8 +29,8 @@ object HCRecipeSerializers {
         REGISTER.registerSerializer("clear_component", HTClearComponentRecipe.CODEC)
 
     @JvmField
-    val ETERNAL_UPGRADE: RecipeSerializer<HTEternalSmithingRecipe> =
-        REGISTER.registerSerializer("eternal_upgrade", MapBiCodecs.unit(HTEternalSmithingRecipe))
+    val ETERNAL_UPGRADE: RecipeSerializer<HCEternalSmithingRecipe> =
+        REGISTER.registerSerializer("eternal_upgrade", MapBiCodecs.unit(HCEternalSmithingRecipe))
 
     //    Misc    //
 

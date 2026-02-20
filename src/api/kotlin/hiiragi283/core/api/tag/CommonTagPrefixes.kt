@@ -118,14 +118,6 @@ object CommonTagPrefixes {
     //    Item    //
 
     /**
-     * @since 0.8.0
-     */
-    @JvmField
-    val CROP: HTTagPrefix = HTTagPrefix.create("crop", "crops", "crops/%s") {
-        put(HTTagPropertyKeys.ID_PATTERN, "%s")
-    }
-
-    /**
      * @since 0.9.0
      */
     @JvmField
@@ -139,31 +131,11 @@ object CommonTagPrefixes {
         addNamePattern("Crushed %s Ore", "砕かれた%s鉱石")
     }
 
-    /**
-     * @since 0.8.0
-     */
-    @JvmField
-    val DOUGH: HTTagPrefix = HTTagPrefix.create("dough", "doughs", "doughs/%s") {
-        put(HTTagPropertyKeys.ID_PATTERN, "%s_dough")
-
-        addNamePattern("%s Dough", "%s粉の生地")
-    }
-
     @JvmField
     val DUST: HTTagPrefix = HTTagPrefix.create("dust", "dusts", "dusts/%s") {
         put(HTTagPropertyKeys.ID_PATTERN, "%s_dust")
 
         addNamePattern("%s Dust", "%sの粉")
-    }
-
-    /**
-     * @since 0.8.0
-     */
-    @JvmField
-    val FLOUR: HTTagPrefix = HTTagPrefix.create("flour", "flours", "flours/%s") {
-        put(HTTagPropertyKeys.ID_PATTERN, "%s_flour")
-
-        addNamePattern("%s Flour", "%s粉")
     }
 
     @JvmField
@@ -242,14 +214,13 @@ object CommonTagPrefixes {
         addNamePattern("%s Scrap", "%sの欠片")
     }
 
-    /**
-     * @since 0.8.0
-     */
     @JvmField
-    val SEED: HTTagPrefix = HTTagPrefix.create("seed", "seeds", "seeds/%s") {
-        put(HTTagPropertyKeys.ID_PATTERN, "%s_seed")
+    val TINY: HTTagPrefix = HTTagPrefix.create("tiny", "tiny", "tiny/%s") {
+        put(HTTagPropertyKeys.ID_PATTERN, "tiny_%s")
+        put(HTTagPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base / 8 }
 
-        addNamePattern("%s Seed", "%sの種")
+        addNamePattern("Tiny %s", "小さな%s")
+        put(HTTagPropertyKeys.FUEL_SCALE, fraction(1, 8))
     }
 
     @JvmField

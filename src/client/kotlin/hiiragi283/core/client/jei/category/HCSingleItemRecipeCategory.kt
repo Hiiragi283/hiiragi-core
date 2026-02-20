@@ -41,7 +41,7 @@ class HCSingleItemRecipeCategory<RECIPE : HCSingleItemRecipe<*>>(
             .setSlotBackground(HTBackgroundType.INPUT)
         // output
         builder
-            .addOutputSlot(getPosition(0), getPosition(0))
+            .addOutputSlot(getPosition(3), getPosition(0))
             .addItemResult(recipe.result)
             .setSlotBackground(HTBackgroundType.OUTPUT)
     }

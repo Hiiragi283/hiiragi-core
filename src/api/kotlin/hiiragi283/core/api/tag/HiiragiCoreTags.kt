@@ -37,6 +37,18 @@ object HiiragiCoreTags {
         @JvmField
         val CROPS_WARPED_WART: TagKey<Item> = common("crops", "warped_wart")
 
+        @JvmField
+        val DOUGHS: TagKey<Item> = common("doughs")
+
+        @JvmField
+        val DOUGHS_WHEAT: TagKey<Item> = common("doughs", "wheat")
+
+        @JvmField
+        val FLOURS: TagKey<Item> = common("flours")
+
+        @JvmField
+        val FLOURS_WHEAT: TagKey<Item> = common("flours", "wheat")
+
         /**
          * @since 0.9.0
          */

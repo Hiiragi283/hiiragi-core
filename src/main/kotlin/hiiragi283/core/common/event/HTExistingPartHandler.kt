@@ -61,7 +61,7 @@ object HTExistingPartHandler {
         // Alloy
         event.registerBlock(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.NETHERITE, Blocks.NETHERITE_BLOCK)
         // Crop
-        event.registerBlock(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.WHEAT, Blocks.HAY_BLOCK)
+        // event.registerBlock(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.WHEAT, Blocks.HAY_BLOCK)
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -98,8 +98,8 @@ object HTExistingPartHandler {
         event.registerItem(CommonTagPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_SCRAP)
         event.registerItem(CommonTagPrefixes.INGOT, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_INGOT)
         // Crop
-        event.registerItem(CommonTagPrefixes.CROP, VanillaMaterialKeys.WHEAT, Items.WHEAT)
-        event.registerItem(CommonTagPrefixes.SEED, VanillaMaterialKeys.WHEAT, Items.WHEAT_SEEDS)
+        // event.registerItem(CommonTagPrefixes.CROP, VanillaMaterialKeys.WHEAT, Items.WHEAT)
+        // event.registerItem(CommonTagPrefixes.SEED, VanillaMaterialKeys.WHEAT, Items.WHEAT_SEEDS)
         // Other
         event.registerItem(CommonTagPrefixes.DUST, VanillaMaterialKeys.BLAZE, Items.BLAZE_POWDER)
         event.registerItem(CommonTagPrefixes.ROD, VanillaMaterialKeys.BLAZE, Items.BLAZE_ROD)
