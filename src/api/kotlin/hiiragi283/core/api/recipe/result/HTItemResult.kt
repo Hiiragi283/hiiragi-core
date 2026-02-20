@@ -40,6 +40,9 @@ class HTItemResult(private val content: Ior<HTItemResourceType, TagKey<Item>>, p
             ::HTItemResult,
         )
 
+        /**
+         * @since 0.11.0
+         */
         @JvmField
         val CHANCED_CODEC: BiCodec<RegistryFriendlyByteBuf, HTChancedItemResult> = BiCodec.composite(
             CODEC.toMap().forGetter(HTChancedItemResult::first),

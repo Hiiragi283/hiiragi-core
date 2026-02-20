@@ -8,6 +8,13 @@ import net.minecraft.network.chat.Component
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeInput
 
+/**
+ * [HTRecipeLookup]の拡張インターフェースです。
+ * @param INPUT レシピの入力となるクラス
+ * @param RECIPE レシピのクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.11.0
+ */
 interface HTRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>> :
     HTHasTranslationKey,
     HTHasText,

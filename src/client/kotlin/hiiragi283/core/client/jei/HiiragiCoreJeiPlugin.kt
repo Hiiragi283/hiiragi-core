@@ -89,9 +89,9 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     override fun registerRecipes(registration: IRecipeRegistration) {
-        registration.addRecipes(HCJeiRecipeTypes.ANVIL_CRUSHING)
-        registration.addRecipes(HCJeiRecipeTypes.CHARGING)
-        registration.addRecipes(HCJeiRecipeTypes.EXPLODING)
+        registration.addRecipes(HCJeiRecipeTypes.ANVIL_CRUSHING, sorter = compareBy { it.result.getId() })
+        registration.addRecipes(HCJeiRecipeTypes.CHARGING, sorter = compareBy { it.result.getId() })
+        registration.addRecipes(HCJeiRecipeTypes.EXPLODING, sorter = compareBy { it.result.getId() })
     }
 
     override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {

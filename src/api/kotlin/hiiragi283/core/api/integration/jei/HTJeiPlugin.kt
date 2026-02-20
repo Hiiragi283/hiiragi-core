@@ -30,8 +30,12 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
     companion object {
         // Recipe Type
         @JvmStatic
-        val recipeTypeCache: MutableMap<HTJeiRecipeType<*>, JeiRecipeType<*>> = hashMapOf()
+        private val recipeTypeCache: MutableMap<HTJeiRecipeType<*>, JeiRecipeType<*>> = hashMapOf()
 
+        /**
+         * 指定した[recipeType]から[JeiRecipeType]を取得します。
+         * @param RECIPE レシピのクラス
+         */
         @JvmStatic
         @Suppress("UNCHECKED_CAST")
         fun <RECIPE : Any> getRecipeType(recipeType: HTJeiRecipeType<RECIPE>): JeiRecipeType<RECIPE> =
@@ -43,14 +47,25 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
         @JvmStatic
         protected val RECIPE_COMPARATOR: Comparator<RecipeHolder<*>> = compareBy(HTComparators.ID) { it.id }
 
+        /**
+         * 指定した[recipeType]と[lookup]からレシピを登録します。
+         * @param INPUT レシピの入力となるクラス
+         * @param RECIPE レシピのクラス
+         */
         @JvmStatic
         protected fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
             recipeType: HTJeiRecipeType<RecipeHolder<RECIPE>>,
             lookup: HTRecipeLookup<INPUT, RECIPE>,
         ) {
-            this.addRecipes(getRecipeType(recipeType), lookup.getAllRecipes())
+            this.addRecipes(getRecipeType(recipeType), lookup.getAllRecipes().sortedWith(RECIPE_COMPARATOR))
         }
 
+        /**
+         * 指定した[recipeType]と[lookup]からレシピを登録します。
+         * @param INPUT レシピの入力となるクラス
+         * @param RECIPE レシピのクラス
+         * @param sorter レシピの順番の制御
+         */
         @JvmStatic
         protected fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
             recipeType: HTJeiRecipeType<RecipeHolder<RECIPE>>,
@@ -65,13 +80,24 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
             )
         }
 
+        /**
+         * 指定した[recipeType]からレシピを登録します。
+         * @param INPUT レシピの入力となるクラス
+         * @param RECIPE レシピのクラス
+         */
         @JvmStatic
         protected fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
             recipeType: HTHolderJeiRecipeType<INPUT, RECIPE>,
         ) {
-            this.addRecipes(getRecipeType(recipeType), recipeType.getAllRecipes())
+            this.addRecipes(getRecipeType(recipeType), recipeType.getAllRecipes().sortedWith(RECIPE_COMPARATOR))
         }
 
+        /**
+         * 指定した[recipeType]からレシピを登録します。
+         * @param INPUT レシピの入力となるクラス
+         * @param RECIPE レシピのクラス
+         * @param sorter レシピの順番の制御
+         */
         @JvmStatic
         protected fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
             recipeType: HTHolderJeiRecipeType<INPUT, RECIPE>,

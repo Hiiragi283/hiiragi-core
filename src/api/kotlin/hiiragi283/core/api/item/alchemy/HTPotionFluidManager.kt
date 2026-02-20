@@ -29,6 +29,10 @@ data object HTPotionFluidManager {
     @JvmStatic
     fun getSupportedFluids(): Set<Holder<Fluid>> = providers.keys
 
+    /**
+     * 指定した[fluid]から[Handler]を取得します。
+     * @return 対応する[Handler]がない場合は`null`
+     */
     @JvmStatic
     fun getHandler(fluid: Fluid): Handler? = providers[fluid.builtInRegistryHolder()]
 

@@ -17,6 +17,9 @@ object HiiragiCoreTags {
         @JvmField
         val INCORRECT_FOR_ALMIGHTY_PICKAXE: TagKey<Block> = mod("incorrect_for_almighty_pickaxe")
 
+        /**
+         * @since 0.11.0
+         */
         @JvmField
         val LATEX_DRIPPING_LOGS: TagKey<Block> = mod("latex_dripping_logs")
 
@@ -40,9 +43,15 @@ object HiiragiCoreTags {
         @JvmField
         val HAMMERS: TagKey<Item> = common("hammers")
 
+        /**
+         * @since 0.11.0
+         */
         @JvmField
         val PLASTICS: TagKey<Item> = common("plastics")
 
+        /**
+         * @since 0.11.0
+         */
         @JvmField
         val SILICON: TagKey<Item> = common("silicon")
 

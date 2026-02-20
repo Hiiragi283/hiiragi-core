@@ -22,21 +22,36 @@ import net.minecraft.world.level.ItemLike
  * [HTIdLike]と[ItemLike]とその他諸々を継承した[HTIdLike]の拡張インターフェースです。
  * @param ITEM アイテムのクラス
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 0.11.0
  */
 interface HTItemHolderLike<ITEM : Item> :
     ItemLike,
     HTIdLike,
     HTHasTranslationKey,
     HTHasText {
+    /**
+     * 保持している[アイテム][ITEM]を取得します。
+     */
     override fun asItem(): ITEM
 
+    /**
+     * 保持しているアイテムの[Holder]を取得します。
+     */
     fun getItemHolder(): Holder<Item>
 
+    /**
+     * 指定した[個数][count]で[ItemStack]に変換します。
+     */
     fun toStack(count: Int = 1): ItemStack = ItemStack(this, count)
 
+    /**
+     * [HTItemResourceType]に変換します。
+     */
     fun toResource(): HTItemResourceType? = toStack().toResource()
 
+    /**
+     * 指定した[patch]で[HTItemResourceType]に変換します。
+     */
     fun toResource(patch: DataComponentPatch): HTItemResourceType? {
         val stack: ItemStack = toStack()
         stack.applyComponents(patch)
@@ -44,6 +59,9 @@ interface HTItemHolderLike<ITEM : Item> :
     }
 
     companion object {
+        /**
+         * [Holder]に基づいた[HTItemHolderLike]の[BiCodec]
+         */
         @JvmField
         val HOLDER_CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemHolderLike<*>> = VanillaBiCodecs
             .holder(Registries.ITEM)
@@ -51,7 +69,6 @@ interface HTItemHolderLike<ITEM : Item> :
 
         /**
          * 指定した[holder]から[HTItemHolderLike]の新しいインスタンスを作成します。
-         * @since 0.10.1
          */
         @JvmStatic
         fun of(holder: Holder<Item>): HTItemHolderLike<Item> = object : Simple<Item> {
@@ -62,7 +79,6 @@ interface HTItemHolderLike<ITEM : Item> :
 
         /**
          * 指定した[item]から[HTItemHolderLike]の新しいインスタンスを作成します。
-         * @since 0.8.0
          */
         @JvmStatic
         fun <ITEM : Item> of(item: ITEM): HTItemHolderLike<ITEM> = object : Simple<ITEM> {
@@ -73,6 +89,10 @@ interface HTItemHolderLike<ITEM : Item> :
         }
     }
 
+    /**
+     * @author Hiiragi Tsubasa
+     * @since 0.11.0
+     */
     interface Simple<ITEM : Item> : HTItemHolderLike<ITEM> {
         override fun getId(): ResourceLocation = getItemHolder().toLike().getId()
 

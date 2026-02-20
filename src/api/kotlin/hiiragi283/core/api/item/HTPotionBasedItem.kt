@@ -17,7 +17,7 @@ import net.minecraft.world.item.alchemy.Potion
 /**
  * ポーションに基づいた[アイテム][Item]の拡張クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.10.1
+ * @since 0.11.0
  */
 open class HTPotionBasedItem(properties: Properties) :
     Item(properties),

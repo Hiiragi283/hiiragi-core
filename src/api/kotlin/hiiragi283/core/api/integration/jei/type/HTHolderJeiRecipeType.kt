@@ -10,6 +10,7 @@ import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeInput
 
 /**
+ * [RecipeHolder]に基づいた[HTJeiRecipeType]の実装クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.11.0
  * @see mekanism.client.recipe_viewer.type.RecipeViewerRecipeType

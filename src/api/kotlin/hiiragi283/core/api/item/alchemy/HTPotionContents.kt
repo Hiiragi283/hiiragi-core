@@ -18,7 +18,7 @@ typealias RawPotionContents = Ior<Holder<Potion>, List<HTMobEffectInstance>>
 /**
  * [PotionContents]と[HTBottleType]を束ねたクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.10.1
+ * @since 0.11.0
  */
 @ConsistentCopyVisibility
 data class HTPotionContents private constructor(val contents: RawPotionContents, val bottleType: HTBottleType) {
@@ -98,7 +98,7 @@ data class HTPotionContents private constructor(val contents: RawPotionContents,
     /**
      * [HTPotionContents]のビルダークラスです。
      * @author Hiiragi Tsubasa
-     * @since 0.10.1
+     * @since 0.11.0
      */
     class Builder {
         var potion: Holder<Potion>? = null

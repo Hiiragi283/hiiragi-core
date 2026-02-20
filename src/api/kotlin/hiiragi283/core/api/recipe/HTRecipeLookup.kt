@@ -15,25 +15,57 @@ import net.neoforged.api.distmarker.Dist
 import thedarkcolour.kotlinforforge.neoforge.forge.callWhenOn
 
 /**
+ * レシピの一覧を提供するインターフェースです。
+ * @param INPUT レシピの入力となるクラス
+ * @param RECIPE レシピのクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.11.0
  * @see mekanism.common.recipe.IMekanismRecipeTypeProvider
  */
 interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Recipe<INPUT>> : HTIdLike {
+    /**
+     * [HTRecipeCache]の新しいインスタンスを作成します。
+     */
     fun createCache(): HTRecipeCache<INPUT, RECIPE>
 
+    /**
+     * 現在のサーバーまたはクライアントからレシピの一覧を取得します。
+     * @return [RecipeHolder]の[List]
+     */
     fun getAllRecipes(): List<RecipeHolder<RECIPE>> = callWhenOn(Dist.CLIENT) { Minecraft.getInstance().level?.let(::getAllRecipes) }
         ?: run { HiiragiCoreAPI.getActiveServer()?.let(::getAllRecipes) }
         ?: emptyList()
 
+    /**
+     * 指定した[level]からレシピの一覧を取得します。
+     * @return [RecipeHolder]の[List]
+     */
     fun getAllRecipes(level: Level): List<RecipeHolder<RECIPE>> =
         getAllRecipes(Context(level.recipeManager, level.registryAccess(), level.potionBrewing()))
 
+    /**
+     * 指定した[server]からレシピの一覧を取得します。
+     * @return [RecipeHolder]の[List]
+     */
     fun getAllRecipes(server: MinecraftServer): List<RecipeHolder<RECIPE>> =
         getAllRecipes(Context(server.recipeManager, server.registryAccess(), server.potionBrewing()))
 
+    /**
+     * 指定した[context]からレシピの一覧を取得します。
+     * @return [RecipeHolder]の[List]
+     */
     fun getAllRecipes(context: Context): List<RecipeHolder<RECIPE>>
 
+    /**
+     * 指定した[level]から，[predicate]に一致するレシピを取得します。
+     * @return [predicate]に一致するレシピがない場合は`null`
+     */
     fun findFirst(level: Level?, predicate: (RECIPE) -> Boolean): RecipeHolder<RECIPE>? =
         (level?.let(this::getAllRecipes) ?: this.getAllRecipes()).firstOrNull { predicate(it.value) }
 
+    /**
+     * @author Hiiragi Tsubasa
+     * @since 0.11.0
+     */
     data class Context(val manager: RecipeManager, val access: RegistryAccess, val brewing: PotionBrewing)
 }

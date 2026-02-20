@@ -2,6 +2,7 @@ package hiiragi283.core.api
 
 import com.google.gson.JsonObject
 import hiiragi283.core.api.item.alchemy.HTPotionContents
+import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
@@ -70,8 +71,19 @@ abstract class HiiragiCoreAccess {
 
     //    Potion    //
 
+    /**
+     * 指定した[holder]から[HTPotionContents]を取得します。
+     * @return 取得できなかった場合は`null`
+     * @since 0.11.0
+     * @see HTPotionHelper.getContents
+     */
     abstract fun getContents(holder: DataComponentHolder): HTPotionContents?
 
+    /**
+     * 指定した[holder]に[HTPotionContents]を設定します。
+     * @since 0.11.0
+     * @see HTPotionHelper.setContents
+     */
     abstract fun setContents(holder: MutableDataComponentHolder, contents: HTPotionContents)
 
     //    Tag    //

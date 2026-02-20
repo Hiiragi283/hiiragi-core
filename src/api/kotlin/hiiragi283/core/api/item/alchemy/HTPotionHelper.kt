@@ -25,14 +25,14 @@ object HTPotionHelper {
     /**
      * 指定した[holder]から[HTPotionContents]を取得します。
      * @return [HTPotionContents]を取得できない場合は`null`
-     * @since 0.10.1
+     * @since 0.11.0
      */
     @JvmStatic
     fun getContents(holder: DataComponentHolder): HTPotionContents? = HiiragiCoreAccess.INSTANCE.getContents(holder)
 
     /**
      * 指定した[holder]に[contents]を設定します。
-     * @since 0.10.1
+     * @since 0.11.0
      */
     @JvmStatic
     fun <T : MutableDataComponentHolder> setContents(holder: T, contents: HTPotionContents): T {
@@ -50,7 +50,7 @@ object HTPotionHelper {
 
     /**
      * 指定した[holder]からポーションのMod IDを取得します。
-     * @since 0.10.1
+     * @since 0.11.0
      */
     @JvmStatic
     fun getPotionModId(holder: DataComponentHolder): String? = getPotion(holder)
@@ -63,7 +63,7 @@ object HTPotionHelper {
     /**
      * 指定した[holder]からポーションの翻訳キーを取得します。
      * @return [holder]がポーションを保持していない場合は`null`
-     * @since 0.10.1
+     * @since 0.11.0
      */
     @JvmStatic
     fun getPotionDescId(holder: DataComponentHolder): String? {
@@ -73,6 +73,10 @@ object HTPotionHelper {
 
     //    ItemStack    //
 
+    /**
+     * 指定した[contents]からポーションの[ItemStack]を作成します。
+     * @since 0.11.0
+     */
     @JvmStatic
     fun createPotion(contents: HTPotionContents): ItemStack = createPotion(contents.bottleType, contents.vanilla)
 

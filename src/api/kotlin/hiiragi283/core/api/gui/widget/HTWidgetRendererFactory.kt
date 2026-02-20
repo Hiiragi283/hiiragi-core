@@ -8,7 +8,7 @@ import net.neoforged.api.distmarker.OnlyIn
 /**
  * [HTWidget]から[Renderable]を作成するインターフェースです。
  * @author Hiiragi Tsubasa
- * @since 0.8.0
+ * @since 0.11.0
  */
 @OnlyIn(Dist.CLIENT)
 fun interface HTWidgetRendererFactory<WIDGET : HTWidget, RENDERER : Renderable> {
