@@ -371,6 +371,19 @@ object HCMaterialPropertyHandler {
         event.modify(VanillaMaterialKeys.BREEZE) {
             setName("Breeze", "ブリーズ")
         }
+
+        event.modify(VanillaMaterialKeys.BRICK) {
+            setDefaultPart(Tags.Items.BRICKS_NORMAL, HTItemHolderLike.of(Items.BRICK))
+            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.PLATE, CommonTagPrefixes.ROD)
+
+            setName("Brick", "レンガ")
+        }
+        event.modify(VanillaMaterialKeys.NETHER_BRICK) {
+            setDefaultPart(Tags.Items.BRICKS_NETHER, HTItemHolderLike.of(Items.NETHER_BRICK))
+            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.PLATE, CommonTagPrefixes.ROD)
+
+            setName("Nether Brick", "ネザーレンガ")
+        }
     }
 
     @JvmStatic

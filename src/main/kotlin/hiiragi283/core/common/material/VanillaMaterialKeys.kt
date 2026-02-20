@@ -95,6 +95,12 @@ object VanillaMaterialKeys {
     @JvmStatic
     val BREEZE: HTMaterialKey = create("breeze")
 
+    @JvmStatic
+    val BRICK: HTMaterialKey = create("brick")
+
+    @JvmStatic
+    val NETHER_BRICK: HTMaterialKey = create("nether_brick")
+
     //    Item    //
 
     /*val ARMOR_TABLE: ImmutableTable<HTArmorVariant, HTMaterialKey, Item> = buildTable {

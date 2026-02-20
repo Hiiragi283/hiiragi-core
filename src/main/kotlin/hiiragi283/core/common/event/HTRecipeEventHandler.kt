@@ -29,7 +29,6 @@ import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent
 import net.neoforged.neoforge.event.level.ExplosionEvent
 import org.apache.commons.lang3.math.Fraction
-import java.util.Optional
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 object HTRecipeEventHandler {
@@ -80,13 +79,10 @@ object HTRecipeEventHandler {
         val input: SingleRecipeInput = createInput(entity)
         val (_, recipe: HCAnvilCrushingRecipe) = HCRecipeTypes.ANVIL_CRUSHING.getRecipeFor(input, level, null) ?: return
         val multiplier: Int = popResult(input, recipe, level, entity)
-        recipe.extraResult?.let { (result: HTItemResult, chance: Fraction, fallback: Optional<HTItemResult>) ->
+        recipe.extraResult?.let { (result: HTItemResult, chance: Fraction) ->
             val access: RegistryAccess = entity.registryAccess()
             val amount: Int = (chance * multiplier).toInt()
             entity.spawnAtLocation(result.copyWithCount { it * amount }.getStackOrEmpty(access))?.let(::setComplete)
-            fallback.ifPresent { result1: HTItemResult ->
-                entity.spawnAtLocation(result1.copyWithCount { it * (multiplier - amount) }.getStackOrEmpty(access))?.let(::setComplete)
-            }
         }
         if (entity.item.isEmpty) {
             entity.discard()

@@ -19,6 +19,7 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
+import org.apache.commons.lang3.math.Fraction
 import java.util.function.IntUnaryOperator
 
 /**
@@ -37,6 +38,16 @@ class HTItemResult(private val content: Ior<HTItemResourceType, TagKey<Item>>, p
                 ).forGetter(HTItemResult::content),
             BiCodecs.POSITIVE_INT.optionalFieldOf(HTConst.COUNT, 1).forGetter(HTItemResult::count),
             ::HTItemResult,
+        )
+
+        @JvmField
+        val CHANCED_CODEC: BiCodec<RegistryFriendlyByteBuf, HTChancedItemResult> = BiCodec.composite(
+            CODEC.toMap().forGetter(HTChancedItemResult::first),
+            BiCodecs
+                .fractionRange(Fraction.ZERO, Fraction.ONE)
+                .optionalFieldOf(HTConst.CHANCE, Fraction.ONE)
+                .forGetter(HTChancedItemResult::second),
+            ::HTChancedItemResult,
         )
 
         /**

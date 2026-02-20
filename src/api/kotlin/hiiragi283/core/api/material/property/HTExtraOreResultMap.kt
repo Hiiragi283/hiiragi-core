@@ -10,7 +10,6 @@ import hiiragi283.core.api.material.property.HTExtraOreResultMap.Phase
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
-import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.toFraction
 import org.apache.commons.lang3.math.Fraction
 import java.util.EnumMap
@@ -31,20 +30,18 @@ class HTExtraOreResultMap private constructor(map: Map<Phase, Pair<HTMaterialKey
         fun getResult(phase: Phase): HTChancedItemResult? {
             val (key: HTMaterialKey, chance: Fraction) = this[phase] ?: return null
             val entry: HTPropertyMap = HiiragiCoreAccess.INSTANCE.materialManager.getOrEmpty(key)
-            return HTChancedItemResult.create {
-                val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
-                this.result = HTResultCreator.material(crushedPrefix, key)
-                this.chance = chance
-            }
+            return HTChancedItemResult(
+                HTResultCreator.material(entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX), key),
+                chance,
+            )
         }
 
         fun getResult(phase: Phase, entry: HTMaterialManager.Entry): HTChancedItemResult? {
             val (key: HTMaterialKey, chance: Fraction) = this[phase] ?: return null
-            return HTChancedItemResult.create {
-                val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
-                this.result = HTResultCreator.material(crushedPrefix, key)
-                this.chance = chance
-            }
+            return HTChancedItemResult(
+                HTResultCreator.material(entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX), key),
+                chance,
+            )
         }
 
         //    Phase    //

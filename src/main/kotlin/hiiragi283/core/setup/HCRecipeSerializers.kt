@@ -4,7 +4,6 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
-import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.MapBiCodec
@@ -51,7 +50,7 @@ object HCRecipeSerializers {
         MapBiCodec.composite(
             HTItemIngredient.UNSIZED_CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HCAnvilCrushingRecipe::ingredient),
             HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCAnvilCrushingRecipe::result),
-            HTChancedItemResult.CODEC
+            HTItemResult.CHANCED_CODEC
                 .optionalFieldOf(HTConst.EXTRA_RESULT)
                 .forGetter { Optional.ofNullable(it.extraResult) },
             ::HCAnvilCrushingRecipe,

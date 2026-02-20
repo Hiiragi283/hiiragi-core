@@ -28,10 +28,10 @@ class HTItemInputHandler(private val slot: HTItemSlot) :
                 val stackIn: ItemStack = getItemStack()
                 if (stackIn.hasCraftingRemainingItem()) {
                     slot.setStack(stackIn.craftingRemainingItem)
+                    return
                 }
-            } else {
-                extract(amount, HTStorageAction.EXECUTE, HTStorageAccess.INTERNAL)
             }
+            extract(amount, HTStorageAction.EXECUTE, HTStorageAccess.INTERNAL)
         }
     }
 }

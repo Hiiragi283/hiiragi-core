@@ -229,9 +229,9 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
         null -> this.addItemSlot(RecipeIngredientRole.RENDER_ONLY, x, y, emptyList())
         else ->
             this
-                .addItemSlot(x, y, result.result)
+                .addItemSlot(x, y, result.first)
                 .addRichTooltipCallback { _, builder: ITooltipBuilder ->
-                    builder.add(HTCommonTranslation.CHANCE_PRODUCE.translateColored(HTDefaultColor.YELLOW, result.chance * 100))
+                    builder.add(HTCommonTranslation.CHANCE_PRODUCE.translateColored(HTDefaultColor.YELLOW, result.second * 100))
                 }
     }
 
