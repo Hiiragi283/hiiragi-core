@@ -58,7 +58,7 @@ class HTDeferredCreativeTabRegister(namespace: String) :
             for (like: HTItemHolderLike<*> in items) {
                 val stack: ItemStack = like.toStack()
                 if (stack.isEmpty) continue
-                
+
                 val item: Item = stack.item
                 if (!item.isEnabled(parameters.enabledFeatures())) continue
                 if (item is HTSubCreativeTabContents) {

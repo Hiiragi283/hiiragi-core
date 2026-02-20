@@ -54,6 +54,7 @@ import net.neoforged.neoforge.common.SoundActions
 import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.registries.NeoForgeRegistries
 import net.neoforged.neoforge.registries.RegisterEvent
+import java.util.function.Supplier
 
 internal object HCMiscRegister {
     @JvmStatic
@@ -146,7 +147,7 @@ internal object HCMiscRegister {
                 prefix: HTTagPrefix,
                 key: HTMaterialKey,
                 id: ResourceLocation,
-                block: Block,
+                block: Supplier<out Block>,
                 ->
                 existingBlocks.put(prefix, key, HTMaterialContents.blockEntry(id, block, true))
             },
@@ -162,7 +163,7 @@ internal object HCMiscRegister {
                 prefix: HTTagPrefix,
                 key: HTMaterialKey,
                 id: ResourceLocation,
-                item: Item,
+                item: Supplier<out Item>,
                 ->
                 existingItems.put(prefix, key, HTMaterialContents.itemEntry(id, item, true))
             },
@@ -178,7 +179,7 @@ internal object HCMiscRegister {
                 type: HTToolType,
                 key: HTMaterialKey,
                 id: ResourceLocation,
-                item: Item,
+                item: Supplier<out Item>,
                 ->
                 existingTools.put(type, key, HTMaterialContents.itemEntry(id, item, true))
             },

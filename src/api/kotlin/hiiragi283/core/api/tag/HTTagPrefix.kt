@@ -20,7 +20,7 @@ import net.minecraft.world.item.Item
  */
 class HTTagPrefix private constructor(
     val name: String,
-    private val commonTagPattern: String,
+    private val commonTagId: ResourceLocation,
     private val tagPattern: String,
     properties: HTPropertyMap,
 ) : Comparable<HTTagPrefix>,
@@ -33,7 +33,16 @@ class HTTagPrefix private constructor(
             commonTagPattern: String,
             tagPattern: String,
             builderAction: HTPropertyMap.Mutable.() -> Unit,
-        ): HTTagPrefix = Builder(name).apply(builderAction).build(commonTagPattern, tagPattern)
+        ): HTTagPrefix = Builder(name).apply(builderAction).build(HTConst.COMMON.toId(commonTagPattern), tagPattern)
+
+        @HTBuilderMarker
+        @JvmStatic
+        inline fun create(
+            name: String,
+            commonTagId: ResourceLocation,
+            tagPattern: String,
+            builderAction: HTPropertyMap.Mutable.() -> Unit,
+        ): HTTagPrefix = Builder(name).apply(builderAction).build(commonTagId, tagPattern)
     }
 
     /**
@@ -48,10 +57,7 @@ class HTTagPrefix private constructor(
      * 指定した[レジストリキー][key]から，共通タグを生成します。
      * @param T レジストリの要素のクラス
      */
-    fun <T : Any> createCommonTagKey(key: RegistryKey<T>): TagKey<T> {
-        val id: ResourceLocation = HTConst.COMMON.toId(commonTagPattern)
-        return key.createTagKey(id)
-    }
+    fun <T : Any> createCommonTagKey(key: RegistryKey<T>): TagKey<T> = key.createTagKey(commonTagId)
 
     /**
      * 指定した[レジストリキー][key]と[素材][material]から，素材の共通タグを生成します。
@@ -76,7 +82,7 @@ class HTTagPrefix private constructor(
      * @since 0.7.0
      */
     class Builder(private val name: String) : HTPropertyMap.Mutable by HTBasicPropertyMap.Mutable() {
-        fun build(commonTagPattern: String, tagPattern: String): HTTagPrefix =
-            HTTagPrefix(name.lowercase(), commonTagPattern, tagPattern, this)
+        fun build(commonTagId: ResourceLocation, tagPattern: String): HTTagPrefix =
+            HTTagPrefix(name.lowercase(), commonTagId, tagPattern, this)
     }
 }

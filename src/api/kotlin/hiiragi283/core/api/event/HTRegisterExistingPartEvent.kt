@@ -12,6 +12,7 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.neoforged.bus.api.Event
 import net.neoforged.fml.event.IModBusEvent
+import java.util.function.Supplier
 
 sealed class HTRegisterExistingPartEvent :
     Event(),
@@ -21,7 +22,7 @@ sealed class HTRegisterExistingPartEvent :
             type: T,
             key: HTMaterialKey,
             id: ResourceLocation,
-            value: V,
+            value: Supplier<out V>,
         )
     }
 
@@ -32,8 +33,17 @@ sealed class HTRegisterExistingPartEvent :
             registerBlock(prefix, material, block.toLike())
         }
 
+        fun registerBlock(
+            prefix: HTTagPrefix,
+            material: HTMaterialLike,
+            id: ResourceLocation,
+            block: Supplier<out Block>,
+        ) {
+            blockConsumer.accept(prefix, material.asMaterialKey(), id, block)
+        }
+
         fun registerBlock(prefix: HTTagPrefix, material: HTMaterialLike, block: HTBlockHolderLike<*>) {
-            blockConsumer.accept(prefix, material.asMaterialKey(), block.getId(), block.get())
+            blockConsumer.accept(prefix, material.asMaterialKey(), block.getId(), block)
         }
     }
 
@@ -44,8 +54,17 @@ sealed class HTRegisterExistingPartEvent :
             registerItem(prefix, material, HTItemHolderLike.of(item))
         }
 
+        fun registerItem(
+            prefix: HTTagPrefix,
+            material: HTMaterialLike,
+            id: ResourceLocation,
+            item: Supplier<out Item>,
+        ) {
+            itemConsumer.accept(prefix, material.asMaterialKey(), id, item)
+        }
+
         fun registerItem(prefix: HTTagPrefix, material: HTMaterialLike, item: HTItemHolderLike<*>) {
-            itemConsumer.accept(prefix, material.asMaterialKey(), item.getId(), item.asItem())
+            itemConsumer.accept(prefix, material.asMaterialKey(), item.getId(), item::asItem)
         }
     }
 
@@ -53,10 +72,20 @@ sealed class HTRegisterExistingPartEvent :
 
     class ToolEvent(private val toolConsumer: Consumer<HTToolType, Item>) : HTRegisterExistingPartEvent() {
         fun registerTool(toolType: HTToolType, material: HTMaterialLike, item: Item) {
+            registerTool(toolType, material, HTItemHolderLike.of(item))
+        }
+
+        fun registerItem(
+            toolType: HTToolType,
+            material: HTMaterialLike,
+            id: ResourceLocation,
+            item: Supplier<out Item>,
+        ) {
+            toolConsumer.accept(toolType, material.asMaterialKey(), id, item)
         }
 
         fun registerTool(toolType: HTToolType, material: HTMaterialLike, item: HTItemHolderLike<*>) {
-            toolConsumer.accept(toolType, material.asMaterialKey(), item.getId(), item.asItem())
+            toolConsumer.accept(toolType, material.asMaterialKey(), item.getId(), item::asItem)
         }
     }
 }

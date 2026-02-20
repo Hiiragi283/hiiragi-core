@@ -9,6 +9,8 @@ import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.Block
 
+typealias HTSimpleDeferredOnlyBlock = HTDeferredOnlyBlock<Block>
+
 class HTDeferredOnlyBlock<BLOCK : Block> :
     HTDeferredHolder<Block, BLOCK>,
     HTHasTranslationKey,
