@@ -1,7 +1,7 @@
 package hiiragi283.core.client.jei.category
 
 import com.mojang.serialization.Codec
-import hiiragi283.core.api.integration.jei.type.HTJeiRecipeType
+import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.helpers.ICodecHelper
 import mezz.jei.api.helpers.IGuiHelper
@@ -18,7 +18,7 @@ import net.minecraft.world.item.crafting.RecipeHolder
  * @since 0.11.0
  * @see mekanism.client.recipe_viewer.jei.HolderRecipeCategory
  */
-abstract class HTHolderRecipeCategory<RECIPE : Recipe<*>>(guiHelper: IGuiHelper, recipeType: HTJeiRecipeType<RecipeHolder<RECIPE>>) :
+abstract class HTHolderRecipeCategory<RECIPE : Recipe<*>>(guiHelper: IGuiHelper, recipeType: HTRecipeViewerType<RecipeHolder<RECIPE>>) :
     HTBasicRecipeCategory<RecipeHolder<RECIPE>>(guiHelper, recipeType) {
     final override fun setRecipe(builder: IRecipeLayoutBuilder, recipe: RecipeHolder<RECIPE>, focuses: IFocusGroup) {
         setupRecipe(builder, recipe.value, focuses)

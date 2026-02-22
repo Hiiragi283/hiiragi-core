@@ -2,10 +2,10 @@ package hiiragi283.core.client.jei
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTBounds
-import hiiragi283.core.api.integration.jei.type.HTHolderJeiRecipeType
-import hiiragi283.core.api.integration.jei.type.HTJeiRecipeType
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.monad.Either
+import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
+import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
@@ -28,21 +28,21 @@ object HCJeiRecipeTypes {
         icon: ItemLike,
         width: Int = 18 * 4,
         height: Int = 18 * 1,
-    ): HTHolderJeiRecipeType<INPUT, RECIPE> = HTHolderJeiRecipeType.create(recipeType, ItemStack(icon), HTBounds(0, 0, width, height))
+    ): HTHolderRecipeViewerType<INPUT, RECIPE> = HTHolderRecipeViewerType.create(recipeType, ItemStack(icon), HTBounds(0, 0, width, height))
 
     @JvmField
-    val ANVIL_CRUSHING: HTHolderJeiRecipeType<SingleRecipeInput, HCAnvilCrushingRecipe> =
+    val ANVIL_CRUSHING: HTHolderRecipeViewerType<SingleRecipeInput, HCAnvilCrushingRecipe> =
         create(HCRecipeTypes.ANVIL_CRUSHING, Items.ANVIL, 18 * 5)
 
     @JvmField
-    val CHARGING: HTHolderJeiRecipeType<SingleRecipeInput, HCLightningChargingRecipe> =
+    val CHARGING: HTHolderRecipeViewerType<SingleRecipeInput, HCLightningChargingRecipe> =
         create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD)
 
     @JvmField
-    val EXPLODING: HTHolderJeiRecipeType<HCExplodingRecipe.Input, HCExplodingRecipe> =
+    val EXPLODING: HTHolderRecipeViewerType<HCExplodingRecipe.Input, HCExplodingRecipe> =
         create(HCRecipeTypes.EXPLODING, Items.TNT)
 
-    data object MaterialType : HTJeiRecipeType<HTMaterialManager.Entry> {
+    data object MaterialType : HTRecipeViewerType<HTMaterialManager.Entry> {
         override val recipeClass: Class<HTMaterialManager.Entry> = HTMaterialManager.Entry::class.java
         override val icon: Either<ResourceLocation, ItemStack> = Either.Right(ItemStack(Items.IRON_INGOT))
         override val bounds: HTBounds = HTBounds(0, 0, 142, 110)

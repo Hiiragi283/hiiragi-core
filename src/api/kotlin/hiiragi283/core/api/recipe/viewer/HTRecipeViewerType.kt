@@ -1,4 +1,4 @@
-package hiiragi283.core.api.integration.jei.type
+package hiiragi283.core.api.recipe.viewer
 
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.monad.Either
@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack
  * @since 0.11.0
  * @see mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType
  */
-interface HTJeiRecipeType<RECIPE : Any> :
+interface HTRecipeViewerType<RECIPE : Any> :
     HTHasText,
     HTIdLike {
     val recipeClass: Class<out RECIPE>

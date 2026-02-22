@@ -3,7 +3,7 @@ package hiiragi283.core.client.jei.category
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.integration.jei.addItemIngredient
 import hiiragi283.core.api.integration.jei.addItemResult
-import hiiragi283.core.api.integration.jei.type.HTJeiRecipeType
+import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.client.jei.HCJeiRecipeTypes
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
@@ -18,7 +18,7 @@ import net.minecraft.world.item.crafting.RecipeHolder
 
 class HCSingleItemRecipeCategory<RECIPE : HCSingleItemRecipe<*>>(
     guiHelper: IGuiHelper,
-    recipeType: HTJeiRecipeType<RecipeHolder<RECIPE>>,
+    recipeType: HTRecipeViewerType<RecipeHolder<RECIPE>>,
     private val iconFactory: (RECIPE) -> ItemStack,
 ) : HTHolderRecipeCategory<RECIPE>(guiHelper, recipeType) {
     companion object {

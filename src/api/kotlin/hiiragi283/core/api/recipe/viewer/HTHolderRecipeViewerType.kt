@@ -1,4 +1,4 @@
-package hiiragi283.core.api.integration.jei.type
+package hiiragi283.core.api.recipe.viewer
 
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.monad.Either
@@ -10,18 +10,18 @@ import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeInput
 
 /**
- * [RecipeHolder]に基づいた[HTJeiRecipeType]の実装クラスです。
+ * [RecipeHolder]に基づいた[HTRecipeViewerType]の実装クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.11.0
  * @see mekanism.client.recipe_viewer.type.RecipeViewerRecipeType
  */
-class HTHolderJeiRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(
+class HTHolderRecipeViewerType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(
     override val recipeClass: Class<out RecipeHolder<RECIPE>>,
     deferredType: HTRecipeType<INPUT, RECIPE>,
     override val icon: Either<ResourceLocation, ItemStack>,
     override val bounds: HTBounds,
     override val workStations: List<ItemStack>,
-) : HTJeiRecipeType<RecipeHolder<RECIPE>>,
+) : HTRecipeViewerType<RecipeHolder<RECIPE>>,
     HTRecipeType<INPUT, RECIPE> by deferredType {
     companion object {
         @JvmStatic
@@ -30,7 +30,7 @@ class HTHolderJeiRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(
             icon: ItemStack,
             bounds: HTBounds,
             vararg workStations: ItemStack,
-        ): HTHolderJeiRecipeType<INPUT, RECIPE> = create(deferredType, Either.Right(icon), bounds, *workStations)
+        ): HTHolderRecipeViewerType<INPUT, RECIPE> = create(deferredType, Either.Right(icon), bounds, *workStations)
 
         @JvmStatic
         fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> create(
@@ -38,7 +38,7 @@ class HTHolderJeiRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(
             icon: Either<ResourceLocation, ItemStack>,
             bounds: HTBounds,
             vararg workStations: ItemStack,
-        ): HTHolderJeiRecipeType<INPUT, RECIPE> = create(deferredType, icon, bounds, listOfNotNull(icon.getRight(), *workStations))
+        ): HTHolderRecipeViewerType<INPUT, RECIPE> = create(deferredType, icon, bounds, listOfNotNull(icon.getRight(), *workStations))
 
         @JvmStatic
         inline fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>, reified HOLDER : RecipeHolder<RECIPE>> create(
@@ -46,7 +46,7 @@ class HTHolderJeiRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(
             icon: Either<ResourceLocation, ItemStack>,
             bounds: HTBounds,
             workstations: List<ItemStack>,
-        ): HTHolderJeiRecipeType<INPUT, RECIPE> = HTHolderJeiRecipeType(
+        ): HTHolderRecipeViewerType<INPUT, RECIPE> = HTHolderRecipeViewerType(
             HOLDER::class.java,
             deferredType,
             icon,

@@ -1,9 +1,9 @@
 package hiiragi283.core.api.integration.jei
 
 import hiiragi283.core.api.HTComparators
-import hiiragi283.core.api.integration.jei.type.HTHolderJeiRecipeType
-import hiiragi283.core.api.integration.jei.type.HTJeiRecipeType
 import hiiragi283.core.api.recipe.HTRecipeLookup
+import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
+import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.resource.toId
 import mezz.jei.api.IModPlugin
 import mezz.jei.api.constants.VanillaTypes
@@ -30,7 +30,7 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
     companion object {
         // Recipe Type
         @JvmStatic
-        private val recipeTypeCache: MutableMap<HTJeiRecipeType<*>, JeiRecipeType<*>> = hashMapOf()
+        private val recipeTypeCache: MutableMap<HTRecipeViewerType<*>, JeiRecipeType<*>> = hashMapOf()
 
         /**
          * 指定した[recipeType]から[JeiRecipeType]を取得します。
@@ -38,8 +38,8 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
          */
         @JvmStatic
         @Suppress("UNCHECKED_CAST")
-        fun <RECIPE : Any> getRecipeType(recipeType: HTJeiRecipeType<RECIPE>): JeiRecipeType<RECIPE> =
-            recipeTypeCache.computeIfAbsent(recipeType) { recipeTypeIn: HTJeiRecipeType<*> ->
+        fun <RECIPE : Any> getRecipeType(recipeType: HTRecipeViewerType<RECIPE>): JeiRecipeType<RECIPE> =
+            recipeTypeCache.computeIfAbsent(recipeType) { recipeTypeIn: HTRecipeViewerType<*> ->
                 JeiRecipeType(recipeTypeIn.getId(), recipeTypeIn.recipeClass)
             } as JeiRecipeType<RECIPE>
 
@@ -59,7 +59,7 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
          */
         @JvmStatic
         protected fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
-            recipeType: HTJeiRecipeType<RecipeHolder<RECIPE>>,
+            recipeType: HTRecipeViewerType<RecipeHolder<RECIPE>>,
             lookup: HTRecipeLookup<INPUT, RECIPE>,
         ) {
             this.addRecipes(getRecipeType(recipeType), lookup.getAllRecipes().sortedWith(RECIPE_COMPARATOR))
@@ -73,7 +73,7 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
          */
         @JvmStatic
         protected fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
-            recipeType: HTJeiRecipeType<RecipeHolder<RECIPE>>,
+            recipeType: HTRecipeViewerType<RecipeHolder<RECIPE>>,
             lookup: HTRecipeLookup<INPUT, RECIPE>,
             sorter: Comparator<RECIPE>,
         ) {
@@ -92,7 +92,7 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
          */
         @JvmStatic
         protected fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
-            recipeType: HTHolderJeiRecipeType<INPUT, RECIPE>,
+            recipeType: HTHolderRecipeViewerType<INPUT, RECIPE>,
         ) {
             this.addRecipes(getRecipeType(recipeType), recipeType.getAllRecipes().sortedWith(RECIPE_COMPARATOR))
         }
@@ -105,7 +105,7 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
          */
         @JvmStatic
         protected fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
-            recipeType: HTHolderJeiRecipeType<INPUT, RECIPE>,
+            recipeType: HTHolderRecipeViewerType<INPUT, RECIPE>,
             sorter: Comparator<RECIPE>,
         ) {
             this.addRecipes(
@@ -117,8 +117,8 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
         }
 
         @JvmStatic
-        protected fun IRecipeCatalystRegistration.addRecipeCatalysts(vararg recipeTypes: HTJeiRecipeType<*>) {
-            for (recipeType: HTJeiRecipeType<*> in recipeTypes) {
+        protected fun IRecipeCatalystRegistration.addRecipeCatalysts(vararg recipeTypes: HTRecipeViewerType<*>) {
+            for (recipeType: HTRecipeViewerType<*> in recipeTypes) {
                 this.addRecipeCatalysts(
                     getRecipeType(recipeType),
                     VanillaTypes.ITEM_STACK,

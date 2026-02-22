@@ -9,7 +9,7 @@ import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.integration.jei.HTJeiDrawables
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
-import hiiragi283.core.api.integration.jei.type.HTJeiRecipeType
+import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.times
 import hiiragi283.core.client.gui.widget.HTGuiWidget
 import mezz.jei.api.constants.VanillaTypes
@@ -49,13 +49,13 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     HTAbstractGui {
     companion object {
         @JvmStatic
-        protected fun createIcon(guiHelper: IGuiHelper, recipeType: HTJeiRecipeType<*>): IDrawable = recipeType.icon.map(
+        protected fun createIcon(guiHelper: IGuiHelper, recipeType: HTRecipeViewerType<*>): IDrawable = recipeType.icon.map(
             { id: ResourceLocation -> guiHelper.drawableBuilder(id, 0, 0, 18, 18).setTextureSize(18, 18).build() },
             { stack: ItemStack -> guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, stack) },
         )
     }
 
-    constructor(guiHelper: IGuiHelper, recipeType: HTJeiRecipeType<RECIPE>) : this(
+    constructor(guiHelper: IGuiHelper, recipeType: HTRecipeViewerType<RECIPE>) : this(
         guiHelper,
         HTJeiPlugin.getRecipeType(recipeType),
         recipeType.getText(),

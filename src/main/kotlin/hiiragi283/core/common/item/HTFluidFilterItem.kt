@@ -70,7 +70,7 @@ class HTFluidFilterItem(properties: Properties) :
                         },
                         slot,
                         HTSlotHelper.getSlotPosX(index),
-                        HTSlotHelper.getSlotPosY(1),
+                        HTSlotHelper.getSlotPosY(0),
                     ).setGhost()
             }.forEach(widgetHolder::addWidget)
     }

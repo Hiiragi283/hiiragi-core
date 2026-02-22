@@ -113,6 +113,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     override fun registerGuiHandlers(registration: IGuiHandlerRegistration) {
+        registration.addGuiContainerHandler(HTWidgetContainerScreen::class.java, HTWidgetContainerJeiHandler)
         registration.addGhostIngredientHandler(HTWidgetContainerScreen::class.java, HTGhostIngredientHandler)
     }
 }
