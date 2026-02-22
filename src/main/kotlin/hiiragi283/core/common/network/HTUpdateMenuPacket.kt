@@ -34,15 +34,16 @@ class HTUpdateMenuPacket private constructor(val containerId: Int, val map: Map<
                 ::HTUpdateMenuPacket,
             )
 
+            @JvmStatic
+            fun create(containerId: Int, map: Map<Int, HTSyncablePayload>): HTUpdateMenuPacket? = when {
+                map.isEmpty() -> null
+                else -> HTUpdateMenuPacket(containerId, map)
+            }
+
             @HTBuilderMarker
             @JvmStatic
-            fun create(containerId: Int, builderAction: MutableMap<Int, HTSyncablePayload>.() -> Unit): HTUpdateMenuPacket? {
-                val map: Map<Int, HTSyncablePayload> = buildMap(builderAction)
-                return when {
-                    map.isEmpty() -> null
-                    else -> HTUpdateMenuPacket(containerId, map)
-                }
-            }
+            inline fun create(containerId: Int, builderAction: MutableMap<Int, HTSyncablePayload>.() -> Unit): HTUpdateMenuPacket? =
+                create(containerId, buildMap(builderAction))
         }
 
         override fun type(): CustomPacketPayload.Type<HTUpdateMenuPacket> = TYPE

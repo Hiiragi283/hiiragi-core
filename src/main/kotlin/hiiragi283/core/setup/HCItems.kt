@@ -10,6 +10,8 @@ import hiiragi283.core.common.item.HTBombItem
 import hiiragi283.core.common.item.HTCaptureEggItem
 import hiiragi283.core.common.item.HTCreativeItem
 import hiiragi283.core.common.item.HTEternalUpgradeItem
+import hiiragi283.core.common.item.HTFluidFilterItem
+import hiiragi283.core.common.item.HTItemFilterItem
 import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.common.item.HTTraderCatalogItem
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
@@ -116,6 +118,12 @@ object HCItems {
 
     @JvmField
     val ELDRITCH_EGG: HTSimpleDeferredItem = REGISTER.registerItem("eldritch_egg", ::HTCaptureEggItem)
+
+    @JvmField
+    val FLUID_FILTER: HTSimpleDeferredItem = REGISTER.registerItem("fluid_filter", ::HTFluidFilterItem)
+
+    @JvmField
+    val ITEM_FILTER: HTSimpleDeferredItem = REGISTER.registerItem("item_filter", ::HTItemFilterItem)
 
     @JvmField
     val SLOT_COVER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("slot_cover")

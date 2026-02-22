@@ -6,12 +6,11 @@ import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
-import hiiragi283.core.api.storage.item.HTMutableItemSlot
 import hiiragi283.core.api.storage.item.getItemStack
-import hiiragi283.core.api.storage.item.setStack
 import net.minecraft.world.item.ItemStack
+import java.util.function.Consumer
 
-class HTItemInputHandler(private val slot: HTItemSlot) :
+class HTItemInputHandler(slot: HTItemSlot, private val remainderConsumer: Consumer<ItemStack>? = null) :
     HTInputHandler<HTItemResourceType>,
     HTItemSlot by slot {
     override fun getMatchingAmount(ingredient: HTIngredient<*, HTItemResourceType>): Int {
@@ -24,10 +23,10 @@ class HTItemInputHandler(private val slot: HTItemSlot) :
 
     override fun consume(amount: Int) {
         if (amount > 0) {
-            if (slot is HTMutableItemSlot && getAmount() == 1) {
+            if (remainderConsumer != null && getAmount() == 1) {
                 val stackIn: ItemStack = getItemStack()
                 if (stackIn.hasCraftingRemainingItem()) {
-                    slot.setStack(stackIn.craftingRemainingItem)
+                    remainderConsumer.accept(stackIn.craftingRemainingItem)
                     return
                 }
             }

@@ -1,9 +1,11 @@
 package hiiragi283.core.common.gui.widget
 
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.widget.HTAbstractWidget
+import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.gui.widget.HTWidgetType
 import hiiragi283.core.api.integration.jei.widget.HTGhostWidget
@@ -13,7 +15,6 @@ import hiiragi283.core.api.storage.item.HTMutableItemSlot
 import hiiragi283.core.common.gui.HTContainerItemSlot
 import hiiragi283.core.common.gui.sync.HTItemSyncSlot
 import hiiragi283.core.setup.HCWidgetTypes
-import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 
@@ -65,10 +66,16 @@ class HTItemSlotWidget private constructor(
         widgetHolder.track(
             slot,
             when (isGhost) {
-                true -> HTSyncType.BOTH
+                true -> HTSyncType.C2S
                 false -> HTSyncType.S2C
             },
         )
+    }
+
+    override fun onInit(access: HTWidget.Access) {
+        if (containerSlot != null) {
+            access.isActive = false
+        }
     }
 
     //    HTGhostWidget    //
@@ -87,13 +94,16 @@ class HTItemSlotWidget private constructor(
     }
 
     override fun mouseClicked(
-        menu: AbstractContainerMenu,
+        access: HTWidget.Access,
         mouseX: Double,
         mouseY: Double,
         button: Int,
     ) {
+        HiiragiCoreAPI.LOGGER.debug("Slot clicked!")
         if (isGhost) {
-            setStack(menu.carried.copy())
+            val stack = access.carried.copy()
+            HiiragiCoreAPI.LOGGER.debug("Tries to set stack: {}", stack)
+            setStack(stack)
         }
     }
 

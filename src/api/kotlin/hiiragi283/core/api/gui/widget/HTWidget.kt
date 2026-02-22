@@ -1,7 +1,7 @@
 package hiiragi283.core.api.gui.widget
 
 import hiiragi283.core.api.gui.HTBounds
-import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.world.item.ItemStack
 
 /**
  * GUI上の要素を表すインターフェースです。
@@ -23,11 +23,13 @@ interface HTWidget {
 
     fun setupHolder(widgetHolder: HTWidgetHolder) {}
 
+    fun onInit(access: Access) {}
+
     /**
      * このウィジェットをクリックした時に呼び出されます。
      */
     fun mouseClicked(
-        menu: AbstractContainerMenu,
+        access: Access,
         mouseX: Double,
         mouseY: Double,
         button: Int,
@@ -72,4 +74,10 @@ interface HTWidget {
      * このウィジェットの上で文字を入力すると呼び出されます。
      */
     fun charTyped(codePoint: Char, modifiers: Int): Boolean = false
+
+    interface Access {
+        var isActive: Boolean
+        var isVisible: Boolean
+        val carried: ItemStack
+    }
 }

@@ -3,6 +3,7 @@ package hiiragi283.core.common.gui.widget
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.widget.HTAbstractWidget
+import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.gui.widget.HTWidgetType
 import hiiragi283.core.api.integration.jei.widget.HTGhostWidget
@@ -12,7 +13,6 @@ import hiiragi283.core.api.storage.fluid.HTMutableFluidTank
 import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.common.gui.sync.HTFluidSyncSlot
 import hiiragi283.core.setup.HCWidgetTypes
-import net.minecraft.world.inventory.AbstractContainerMenu
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidUtil
 
@@ -90,14 +90,14 @@ class HTFluidWidget private constructor(
     }
 
     override fun mouseClicked(
-        menu: AbstractContainerMenu,
+        access: HTWidget.Access,
         mouseX: Double,
         mouseY: Double,
         button: Int,
     ) {
         if (isGhost) {
             FluidUtil
-                .getFluidContained(menu.carried)
+                .getFluidContained(access.carried)
                 .ifPresentOrElse(
                     { stack: FluidStack -> fluidSlot.asFluidStack = stack.copy() },
                     { fluidSlot.asFluidStack = FluidStack.EMPTY },

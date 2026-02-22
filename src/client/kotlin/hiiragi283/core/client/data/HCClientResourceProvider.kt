@@ -235,9 +235,8 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
                 consumer(block.get().descriptionId, name)
             }
             // Fluid
-            for ((prefix: HTFluidTagPrefix, fluid: HTMaterialContents.Entry<Fluid>) in HiiragiCoreAccess.INSTANCE.registeredFluids.column(
-                entry,
-            )) {
+            val fluids: HTMaterialContents<HTFluidTagPrefix, Fluid> = HiiragiCoreAccess.INSTANCE.registeredFluids
+            for ((prefix: HTFluidTagPrefix, fluid: HTMaterialContents.Entry<Fluid>) in fluids.column(entry)) {
                 val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
                 val name: String = prefix.translate(langType, materialName)
                 consumer(fluid.getFluidType().descriptionId, name)

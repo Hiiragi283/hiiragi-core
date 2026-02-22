@@ -93,6 +93,7 @@ repositories {
     maven(url = "https://maven.blamejared.com/") // Patchouli, Ars, JEI
     maven(url = "https://maven.createmod.net") // Create, Flywheel
     maven(url = "https://maven.firstdark.dev/snapshots") // LDLib
+    maven(url = "https://maven.ftb.dev/") // FTB
     maven(url = "https://maven.k-4u.nl/") // TOP
     maven(url = "https://maven.rover656.dev/releases") // EIO
     maven(url = "https://maven.saps.dev/releases") // AA

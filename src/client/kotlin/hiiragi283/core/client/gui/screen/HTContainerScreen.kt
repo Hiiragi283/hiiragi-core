@@ -41,17 +41,18 @@ abstract class HTContainerScreen<MENU : HTContainerMenu<*>>(menu: MENU, inventor
         val player: Player = menu.inventory.player
         val access: RegistryAccess = player.registryAccess()
         HTUpdateMenuPacket
-            .create(menu.containerId) {
-                val trackedSlots: MutableList<Pair<HTSyncableSlot, HTSyncType>> = menu.trackedSlots
-                for (i: Int in trackedSlots.indices) {
-                    val (slot: HTSyncableSlot, syncType: HTSyncType) = trackedSlots[i]
-                    if (!syncType.allowC2S) continue
-                    val changeType: HTChangeType = slot.getChange() ?: continue
-                    val payload: HTSyncablePayload = slot.createPayload(access, changeType) ?: continue
-                    this[i] = payload
-                    HiiragiCoreAPI.LOGGER.debug("Index: {}, Payload: {}", i, payload)
-                }
-            }?.let(PacketDistributor::sendToServer)
+            .create(
+                menu.containerId,
+                menu.trackedSlots
+                    .mapIndexedNotNull { index: Int, (slot: HTSyncableSlot, syncType: HTSyncType) ->
+                        if (!syncType.allowC2S) return@mapIndexedNotNull null
+                        val changeType: HTChangeType = slot.getChange() ?: return@mapIndexedNotNull null
+                        val payload: HTSyncablePayload = slot.createPayload(access, changeType) ?: return@mapIndexedNotNull null
+                        index to payload
+                    }.onEach { (index: Int, payload: HTSyncablePayload) ->
+                        HiiragiCoreAPI.LOGGER.debug("Index: {}, Payload: {}", index, payload)
+                    }.toMap(),
+            )?.let(PacketDistributor::sendToServer)
     }
 
     //    HTAbstractGui    //

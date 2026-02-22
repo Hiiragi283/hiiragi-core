@@ -68,6 +68,8 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         add(HCItems.BOMB, "Bomb")
         add(HCItems.ELDRITCH_EGG, "Eldritch Egg")
+        add(HCItems.FLUID_FILTER, "Fluid Filter")
+        add(HCItems.ITEM_FILTER, "Item Filter")
         add(HCItems.SLOT_COVER, "Slot Cover")
         add(HCItems.TRADER_CATALOG, "Trader's Catalog")
 

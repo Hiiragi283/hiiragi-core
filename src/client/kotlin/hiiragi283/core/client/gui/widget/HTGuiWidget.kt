@@ -2,17 +2,20 @@ package hiiragi283.core.client.gui.widget
 
 import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.widget.HTWidget
-import hiiragi283.core.common.gui.widget.HTItemSlotWidget
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.components.AbstractWidget
 import net.minecraft.client.gui.components.Renderable
 import net.minecraft.client.gui.narration.NarrationElementOutput
 import net.minecraft.network.chat.Component
+import net.minecraft.world.item.ItemStack
+import net.neoforged.api.distmarker.Dist
+import net.neoforged.api.distmarker.OnlyIn
 
 /**
  * @see mekanism.client.gui.element.GuiElement
  */
-class HTGuiWidget<WIDGET : HTWidget>(gui: HTAbstractGui, val widget: WIDGET) :
+@OnlyIn(Dist.CLIENT)
+class HTGuiWidget<WIDGET : HTWidget>(private val gui: HTAbstractGui, val widget: WIDGET) :
     AbstractWidget(
         widget.bounds.x + gui.getGuiLeft(),
         widget.bounds.y + gui.getGuiTop(),
@@ -20,12 +23,11 @@ class HTGuiWidget<WIDGET : HTWidget>(gui: HTAbstractGui, val widget: WIDGET) :
         widget.bounds.height,
         Component.empty(),
     ) {
+    private val access = Access()
     private val renderer: Renderable? by lazy { HTWidgetRendererManager.create(gui, widget) }
 
     init {
-        if (widget is HTItemSlotWidget && widget.containerSlot != null) {
-            active = false
-        }
+        widget.onInit(access)
     }
 
     override fun renderWidget(
@@ -40,7 +42,7 @@ class HTGuiWidget<WIDGET : HTWidget>(gui: HTAbstractGui, val widget: WIDGET) :
     }
 
     override fun onClick(mouseX: Double, mouseY: Double, button: Int) {
-        // widget.mouseClicked(null, mouseX, mouseY, button)
+        widget.mouseClicked(access, mouseX, mouseY, button)
     }
 
     override fun onRelease(mouseX: Double, mouseY: Double) {
@@ -70,4 +72,12 @@ class HTGuiWidget<WIDGET : HTWidget>(gui: HTAbstractGui, val widget: WIDGET) :
     override fun charTyped(codePoint: Char, modifiers: Int): Boolean = widget.charTyped(codePoint, modifiers)
 
     override fun updateWidgetNarration(narrationElementOutput: NarrationElementOutput) {}
+
+    //    HTWidget.Access    //
+
+    private inner class Access : HTWidget.Access {
+        override var isActive: Boolean by this@HTGuiWidget::active
+        override var isVisible: Boolean by this@HTGuiWidget::visible
+        override val carried: ItemStack by this@HTGuiWidget.gui::carried
+    }
 }
