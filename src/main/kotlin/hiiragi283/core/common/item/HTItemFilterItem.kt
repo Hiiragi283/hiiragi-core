@@ -39,7 +39,7 @@ class HTItemFilterItem(properties: Properties) :
 
     override fun getTooltipImage(stack: ItemStack): Optional<TooltipComponent> = getOrCreateAttached(stack)
         .let(::HTItemFilterTooltip)
-        .takeUnless { stack.has(DataComponents.HIDE_ADDITIONAL_TOOLTIP) }
+        .takeUnless { it.items.isEmpty() || stack.has(DataComponents.HIDE_ADDITIONAL_TOOLTIP) }
         .let { Optional.ofNullable(it) }
 
     override fun setup(context: HTItemWidgetHolderContext, widgetHolder: HTWidgetHolder) {

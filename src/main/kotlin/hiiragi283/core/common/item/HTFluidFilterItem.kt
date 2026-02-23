@@ -42,7 +42,7 @@ class HTFluidFilterItem(properties: Properties) :
 
     override fun getTooltipImage(stack: ItemStack): Optional<TooltipComponent> = getOrCreateAttached(stack)
         .let(::HTFluidFilterTooltip)
-        .takeUnless { stack.has(DataComponents.HIDE_ADDITIONAL_TOOLTIP) }
+        .takeUnless { it.fluids.isEmpty() || stack.has(DataComponents.HIDE_ADDITIONAL_TOOLTIP) }
         .let { Optional.ofNullable(it) }
 
     override fun setup(context: HTItemWidgetHolderContext, widgetHolder: HTWidgetHolder) {
