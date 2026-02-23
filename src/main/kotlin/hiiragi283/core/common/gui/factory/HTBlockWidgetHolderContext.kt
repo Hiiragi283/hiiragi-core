@@ -1,11 +1,11 @@
 package hiiragi283.core.common.gui.factory
 
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
+import hiiragi283.core.api.text.Text
 import hiiragi283.core.common.gui.menu.HTWidgetContainerMenu
 import hiiragi283.core.setup.HCMenuTypes
 import net.minecraft.core.BlockPos
 import net.minecraft.network.RegistryFriendlyByteBuf
-import net.minecraft.network.chat.Component
 import net.minecraft.world.MenuProvider
 import net.minecraft.world.Nameable
 import net.minecraft.world.entity.player.Inventory
@@ -55,7 +55,7 @@ data class HTBlockWidgetHolderContext(val factory: Factory, val player: Player, 
 
     override fun stillValid(player: Player): Boolean = factory.stillValid(this)
 
-    override fun getDisplayName(): Component = factory.getDisplayName(this)
+    override fun getDisplayName(): Text = factory.getDisplayName(this)
 
     override fun createMenu(containerId: Int, playerInventory: Inventory, player: Player): HTWidgetContainerMenu =
         HTWidgetContainerMenu(HCMenuTypes.BLOCK.get(), containerId, playerInventory, this)
@@ -77,7 +77,7 @@ data class HTBlockWidgetHolderContext(val factory: Factory, val player: Player, 
             return !blockEntity.isRemoved
         }
 
-        fun getDisplayName(context: HTBlockWidgetHolderContext): Component =
+        fun getDisplayName(context: HTBlockWidgetHolderContext): Text =
             (context.blockEntity as? Nameable)?.displayName ?: context.state.block.name
     }
 }

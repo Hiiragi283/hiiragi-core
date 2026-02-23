@@ -3,6 +3,7 @@ package hiiragi283.core.setup
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.fraction
+import hiiragi283.core.api.function.wrapOptional
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.BiCodecs
@@ -16,7 +17,6 @@ import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import hiiragi283.core.common.recipe.HCSingleItemRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
 import net.minecraft.world.item.crafting.RecipeSerializer
-import java.util.Optional
 
 object HCRecipeSerializers {
     @JvmField
@@ -52,7 +52,7 @@ object HCRecipeSerializers {
             HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCAnvilCrushingRecipe::result),
             HTItemResult.CHANCED_CODEC
                 .optionalFieldOf(HTConst.EXTRA_RESULT)
-                .forGetter { Optional.ofNullable(it.extraResult) },
+                .forGetter { it.extraResult.wrapOptional() },
             ::HCAnvilCrushingRecipe,
         ),
     )

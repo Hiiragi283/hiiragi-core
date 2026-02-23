@@ -1,6 +1,7 @@
 package hiiragi283.core.api.serialization.value
 
 import com.mojang.serialization.Codec
+import hiiragi283.core.api.function.wrapOptional
 import java.util.Optional
 
 /**
@@ -19,7 +20,7 @@ interface HTValueOutput {
     fun <T : Any> write(key: String, codec: Codec<T>, value: T?)
 
     fun <T : Any> writeOptional(key: String, codec: Codec<Optional<T>>, value: T?) {
-        write(key, codec, Optional.ofNullable(value))
+        write(key, codec, value.wrapOptional())
     }
 
     fun isEmpty(): Boolean

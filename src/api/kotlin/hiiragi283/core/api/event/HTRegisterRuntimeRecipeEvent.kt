@@ -12,11 +12,11 @@ import hiiragi283.core.api.registry.holderSetOrNull
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.text.HTTextResult
+import hiiragi283.core.api.text.Text
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementHolder
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeOutput
-import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -61,7 +61,7 @@ class HTRegisterRuntimeRecipeEvent(val recipeManager: RecipeManager, val context
         HiiragiCoreAccess.INSTANCE.getFirstHolder(context.provider, tagKey)
 
     fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): HTSimpleHolderLikeDelegate<T>? = getHolderResult(tagKey)
-        .mapOrElse(identity()) { message: Component ->
+        .mapOrElse(identity()) { message: Text ->
             if (printLog) HiiragiCoreAPI.LOGGER.debug(message.string)
             null
         }

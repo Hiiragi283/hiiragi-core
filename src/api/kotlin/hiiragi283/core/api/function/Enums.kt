@@ -1,4 +1,4 @@
-package hiiragi283.core.api
+package hiiragi283.core.api.function
 
 import net.minecraft.Util
 import kotlin.enums.enumEntries

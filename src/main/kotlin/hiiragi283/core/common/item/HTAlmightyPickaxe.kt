@@ -5,12 +5,12 @@ import hiiragi283.core.api.item.HTSubCreativeTabContents
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.HiiragiCoreTags
+import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.network.chat.Component
 import net.minecraft.tags.TagKey
 import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.item.DiggerItem
@@ -29,7 +29,7 @@ import java.util.Optional
 class HTAlmightyPickaxe(properties: Properties) :
     DiggerItem(AlmightyTier, HiiragiCoreTags.Blocks.INCORRECT_FOR_ALMIGHTY_PICKAXE, properties.rarity(Rarity.RARE)),
     HTSubCreativeTabContents {
-    override fun getName(stack: ItemStack): Component = when (stack.has(DataComponents.UNBREAKABLE)) {
+    override fun getName(stack: ItemStack): Text = when (stack.has(DataComponents.UNBREAKABLE)) {
         true -> HCTranslation.ETERNAL_PICKAXE.translateColored(HTDefaultColor.RED)
         false -> translatableText(getDescriptionId(stack))
     }

@@ -4,8 +4,8 @@ import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTranslation
+import hiiragi283.core.api.text.Text
 import hiiragi283.core.setup.HCDataComponents
-import net.minecraft.network.chat.Component
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.TooltipFlag
 import net.neoforged.api.distmarker.Dist
@@ -19,14 +19,14 @@ object HCTooltipHandler {
     @SubscribeEvent
     fun onItemTooltip(event: ItemTooltipEvent) {
         val stack: ItemStack = event.itemStack
-        val consumer: Consumer<Component> = Consumer { event.toolTip.add(1, it) }
+        val consumer: Consumer<Text> = Consumer { event.toolTip.add(1, it) }
         val flag: TooltipFlag = event.flags
 
         information(stack, consumer, flag)
     }
 
     @JvmStatic
-    private fun information(stack: ItemStack, consumer: Consumer<Component>, flag: TooltipFlag) {
+    private fun information(stack: ItemStack, consumer: Consumer<Text>, flag: TooltipFlag) {
         val translation: HTTranslation = stack.get(HCDataComponents.DESCRIPTION) ?: return
         if (flag.hasShiftDown()) {
             consumer.accept(translation.translate())

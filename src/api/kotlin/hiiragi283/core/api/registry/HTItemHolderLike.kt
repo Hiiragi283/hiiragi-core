@@ -8,11 +8,11 @@ import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.HTHasTranslationKey
+import hiiragi283.core.api.text.Text
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
-import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -74,7 +74,7 @@ interface HTItemHolderLike<ITEM : Item> :
         fun of(holder: Holder<Item>): HTItemHolderLike<Item> = object : Simple<Item> {
             override fun asItem(): Item = holder.value()
 
-            override fun getItemHolder(): Holder<Item> = holder
+            override fun getItemHolder(): Holder<Item> = holder.delegate
         }
 
         /**
@@ -98,6 +98,6 @@ interface HTItemHolderLike<ITEM : Item> :
 
         override val translationKey: String get() = asItem().descriptionId
 
-        override fun getText(): Component = asItem().description
+        override fun getText(): Text = asItem().description
     }
 }

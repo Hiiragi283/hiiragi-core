@@ -3,7 +3,7 @@ package hiiragi283.core.api.item
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.block.HTBlockWithDescription
 import hiiragi283.core.api.text.HTCommonTranslation
-import net.minecraft.network.chat.Component
+import hiiragi283.core.api.text.Text
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.level.block.Block
@@ -22,7 +22,7 @@ open class HTDescriptionBlockItem<BLOCK>(block: BLOCK, private val hasDetails: B
     final override fun appendHoverText(
         stack: ItemStack,
         context: TooltipContext,
-        tooltips: MutableList<Component>,
+        tooltips: MutableList<Text>,
         flag: TooltipFlag,
     ) {
         if (flag.hasShiftDown()) {
@@ -41,14 +41,14 @@ open class HTDescriptionBlockItem<BLOCK>(block: BLOCK, private val hasDetails: B
     protected open fun addStats(
         stack: ItemStack,
         context: TooltipContext,
-        tooltips: MutableList<Component>,
+        tooltips: MutableList<Text>,
         flag: TooltipFlag,
     ) {}
 
     protected open fun addDetails(
         stack: ItemStack,
         context: TooltipContext,
-        tooltips: MutableList<Component>,
+        tooltips: MutableList<Text>,
         flag: TooltipFlag,
     ) {}
 }

@@ -6,13 +6,13 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
+import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import hiiragi283.core.common.registry.HTDeferredRecipeType
 import hiiragi283.core.setup.HCRecipeTypes
-import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
@@ -48,7 +48,7 @@ object HCJeiRecipeTypes {
         override val bounds: HTBounds = HTBounds(0, 0, 142, 110)
         override val workStations: List<ItemStack> = emptyList()
 
-        override fun getText(): Component = "Material Parts".toText()
+        override fun getText(): Text = "Material Parts".toText()
 
         override fun getId(): ResourceLocation = HiiragiCoreAPI.id("material")
     }

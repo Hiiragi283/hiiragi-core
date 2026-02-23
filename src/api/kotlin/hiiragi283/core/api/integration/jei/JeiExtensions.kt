@@ -13,6 +13,7 @@ import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.text.HTCommonTranslation
+import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.times
 import mezz.jei.api.gui.builder.IIngredientAcceptor
 import mezz.jei.api.gui.builder.IIngredientConsumer
@@ -22,7 +23,6 @@ import mezz.jei.api.neoforge.NeoForgeTypes
 import mezz.jei.api.recipe.RecipeType
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.network.chat.Component
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -51,7 +51,7 @@ fun <T : IIngredientAcceptor<T>> T.addFluidStacks(isTank: Boolean, stacks: Itera
     return this
 }
 
-private fun createError(message: Component): ItemStack = createItemStack(
+private fun createError(message: Text): ItemStack = createItemStack(
     Items.BARRIER,
     DataComponents.CUSTOM_NAME,
     message,

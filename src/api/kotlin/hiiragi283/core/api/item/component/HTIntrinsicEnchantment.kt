@@ -6,6 +6,7 @@ import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextResult
+import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.toTextResult
 import hiiragi283.core.api.text.unwrap
 import io.netty.buffer.ByteBuf
@@ -13,7 +14,6 @@ import net.minecraft.core.Holder
 import net.minecraft.core.HolderGetter
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
-import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.TooltipFlag
@@ -44,9 +44,9 @@ data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: 
             .toTextResult(HTCommonTranslation.MISSING_KEY)
     }
 
-    fun getFullName(provider: HolderLookup.Provider?): HTTextResult<Component> = useInstance(provider, Enchantment::getFullname)
+    fun getFullName(provider: HolderLookup.Provider?): HTTextResult<Text> = useInstance(provider, Enchantment::getFullname)
 
-    override fun addToTooltip(context: Item.TooltipContext, tooltipAdder: Consumer<Component>, tooltipFlag: TooltipFlag) {
+    override fun addToTooltip(context: Item.TooltipContext, tooltipAdder: Consumer<Text>, tooltipFlag: TooltipFlag) {
         when {
             tooltipFlag.hasShiftDown() -> getFullName(context.registries())
                 .map(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT::translate)

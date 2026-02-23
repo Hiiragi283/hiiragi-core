@@ -4,7 +4,7 @@ import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.storage.resource.HTResourceType
 import hiiragi283.core.api.tag.getName
 import hiiragi283.core.api.text.HTHasText
-import net.minecraft.network.chat.Component
+import hiiragi283.core.api.text.Text
 import net.minecraft.network.chat.ComponentUtils
 import net.minecraft.tags.TagKey
 import java.util.function.BiPredicate
@@ -53,7 +53,7 @@ interface HTIngredient<TYPE : Any, RESOURCE : HTResourceType<TYPE>> :
      */
     fun unwrap(): Either<TagKey<TYPE>, List<RESOURCE>>
 
-    override fun getText(): Component = unwrap().map(TagKey<TYPE>::getName) { resources: List<RESOURCE> ->
+    override fun getText(): Text = unwrap().map(TagKey<TYPE>::getName) { resources: List<RESOURCE> ->
         ComponentUtils.formatList(resources, HTHasText::getText)
     }
 }

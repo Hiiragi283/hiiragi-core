@@ -12,43 +12,46 @@ import net.neoforged.neoforge.common.extensions.ILevelExtension
 
 //    Text    //
 
-/**
- * 指定した[文字列][this]を[テキスト][MutableComponent]に変換します。
- * @author Hiiragi Tsubasa
- * @since 0.1.0
- */
-fun String.toText(): MutableComponent = Component.literal(this)
+typealias Text = Component
+typealias MutableText = MutableComponent
 
 /**
- * 指定した[文字列][value]を翻訳された[テキスト][MutableComponent]に変換します。
+ * 指定した[文字列][this]を[テキスト][MutableText]に変換します。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun translatableText(value: String): MutableComponent = Component.translatable(value)
+fun String.toText(): MutableText = Text.literal(this)
 
 /**
- * 指定した[文字列][value]と[引数][args]を翻訳された[テキスト][MutableComponent]に変換します。
+ * 指定した[文字列][value]を翻訳された[テキスト][MutableText]に変換します。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun translatableText(value: String, vararg args: Any): MutableComponent = Component.translatable(value, *args)
+fun translatableText(value: String): MutableText = Text.translatable(value)
 
 /**
- * 指定した[Boolean]を翻訳された[テキスト][MutableComponent]に変換します。
+ * 指定した[文字列][value]と[引数][args]を翻訳された[テキスト][MutableText]に変換します。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun boolText(value: Boolean): MutableComponent = when (value) {
+fun translatableText(value: String, vararg args: Any): MutableText = Text.translatable(value, *args)
+
+/**
+ * 指定した[Boolean]を翻訳された[テキスト][MutableText]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
+fun boolText(value: Boolean): MutableText = when (value) {
     true -> HTCommonTranslation.TRUE
     false -> HTCommonTranslation.FALSE
 }.translate()
 
 /**
- * 指定した[Direction]を翻訳された[テキスト][MutableComponent]に変換します。
+ * 指定した[Direction]を翻訳された[テキスト][MutableText]に変換します。
  * @author Hiiragi Tsubasa
  * @since 0.7.0
  */
-fun directionText(direction: Direction): MutableComponent = when (direction) {
+fun directionText(direction: Direction): MutableText = when (direction) {
     Direction.DOWN -> HTCommonTranslation.DOWN
     Direction.UP -> HTCommonTranslation.UP
     Direction.NORTH -> HTCommonTranslation.NORTH
@@ -62,7 +65,7 @@ fun directionText(direction: Direction): MutableComponent = when (direction) {
  * @since 0.1.0
  * @see ILevelExtension.getDescription
  */
-fun levelText(key: ResourceKey<Level>): MutableComponent {
+fun levelText(key: ResourceKey<Level>): MutableText {
     val location: ResourceLocation = key.location()
     return translatableText(location.toLanguageKey(ILevelExtension.TRANSLATION_PREFIX), location.toString())
 }
@@ -72,5 +75,4 @@ fun levelText(key: ResourceKey<Level>): MutableComponent {
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
-fun MutableComponent.withStyle(color: HTDefaultColor): MutableComponent =
-    this.withStyle { style: Style -> style.withColor(color.textColor) }
+fun MutableText.withStyle(color: HTDefaultColor): MutableText = this.withStyle { style: Style -> style.withColor(color.textColor) }

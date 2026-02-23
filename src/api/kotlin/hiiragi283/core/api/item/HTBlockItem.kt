@@ -1,10 +1,10 @@
 package hiiragi283.core.api.item
 
 import hiiragi283.core.api.HTDefaultColor
+import hiiragi283.core.api.text.MutableText
+import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
 import hiiragi283.core.api.text.withStyle
-import net.minecraft.network.chat.Component
-import net.minecraft.network.chat.MutableComponent
 import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.Block
@@ -26,8 +26,8 @@ open class HTBlockItem<BLOCK : Block>(block: BLOCK, properties: Properties) : Bl
      */
     protected open fun getNameColor(stack: ItemStack): HTDefaultColor? = null
 
-    override fun getName(stack: ItemStack): Component {
-        var name: MutableComponent = translatableText(getDescriptionId(stack))
+    override fun getName(stack: ItemStack): Text {
+        var name: MutableText = translatableText(getDescriptionId(stack))
         val color: HTDefaultColor? = getNameColor(stack)
         if (color != null) {
             name = name.withStyle(color)

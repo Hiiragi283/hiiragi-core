@@ -6,8 +6,8 @@ import hiiragi283.core.api.registry.HTDoubleDeferredHolder
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.HTHasTranslationKey
+import hiiragi283.core.api.text.Text
 import net.minecraft.core.Holder
-import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
@@ -39,5 +39,5 @@ class HTDeferredBlock<BLOCK : Block, ITEM : Item>(first: HTDeferredOnlyBlock<BLO
 
     override val translationKey: String get() = get().descriptionId
 
-    override fun getText(): Component = get().name
+    override fun getText(): Text = get().name
 }

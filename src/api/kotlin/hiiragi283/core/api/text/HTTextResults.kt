@@ -2,7 +2,6 @@ package hiiragi283.core.api.text
 
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.monad.unwrap
-import net.minecraft.network.chat.Component
 import java.util.Optional
 
 /**
@@ -49,7 +48,7 @@ fun <T : Any> Optional<T>.toTextResult(error: () -> HTTextResult<T>): HTTextResu
 
 /**
  * この[Optional][this]を[HTTextResult]に変換します。
- * @param error エラーの[テキスト][Component]
+ * @param error エラーの[テキスト][Text]
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
@@ -59,4 +58,4 @@ fun <T : Any> Optional<T>.toTextResult(error: HTTranslation): HTTextResult<T> = 
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-fun HTTextResult<out Component>.unwrap(): Component = this.contents.unwrap()
+fun HTTextResult<out Text>.unwrap(): Text = this.contents.unwrap()

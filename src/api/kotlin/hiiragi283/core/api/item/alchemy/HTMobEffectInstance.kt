@@ -14,7 +14,7 @@ import net.minecraft.world.effect.MobEffectInstance
  * @see MobEffectInstance
  */
 data class HTMobEffectInstance(
-    val effect: Holder<MobEffect>,
+    private val effect: Holder<MobEffect>,
     val duration: Int,
     val amplifier: Int = 0,
     val ambient: Boolean = false,
@@ -24,7 +24,7 @@ data class HTMobEffectInstance(
     companion object {
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTMobEffectInstance> = BiCodec.composite(
-            BiCodecs.lazy { VanillaBiCodecs.holder(Registries.MOB_EFFECT) }.fieldOf("id").forGetter(HTMobEffectInstance::effect),
+            BiCodecs.lazy { VanillaBiCodecs.holder(Registries.MOB_EFFECT) }.fieldOf("id").forGetter(HTMobEffectInstance::getHolder),
             BiCodecs.intRange(-1, Int.MAX_VALUE).fieldOf("duration").forGetter(HTMobEffectInstance::duration),
             BiCodecs.NON_NEGATIVE_INT.optionalFieldOf("amplifier", 0).forGetter(HTMobEffectInstance::amplifier),
             BiCodec.BOOL.optionalFieldOf("ambient", false).forGetter(HTMobEffectInstance::ambient),
@@ -43,7 +43,7 @@ data class HTMobEffectInstance(
         mutable.showIcon(),
     )
 
-    fun toMutable(): MobEffectInstance = MobEffectInstance(effect, duration, amplifier, ambient, visible, showIcon)
+    fun toMutable(): MobEffectInstance = MobEffectInstance(getHolder(), duration, amplifier, ambient, visible, showIcon)
 
-    override fun getHolder(): Holder<MobEffect> = this.effect
+    override fun getHolder(): Holder<MobEffect> = this.effect.delegate
 }

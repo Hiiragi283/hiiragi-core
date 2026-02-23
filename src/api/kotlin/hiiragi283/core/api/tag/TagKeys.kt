@@ -3,8 +3,8 @@ package hiiragi283.core.api.tag
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.text.MutableText
 import net.minecraft.network.chat.Component
-import net.minecraft.network.chat.MutableComponent
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.neoforged.neoforge.common.Tags
@@ -41,4 +41,4 @@ fun <T : Any> RegistryKey<T>.createCommonTag(vararg path: String): TagKey<T> = c
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun TagKey<*>.getName(): MutableComponent = Component.translatableWithFallback(Tags.getTagTranslationKey(this), "#${this.location}")
+fun TagKey<*>.getName(): MutableText = Component.translatableWithFallback(Tags.getTagTranslationKey(this), "#${this.location}")

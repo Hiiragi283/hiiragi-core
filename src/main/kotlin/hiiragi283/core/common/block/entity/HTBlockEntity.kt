@@ -28,6 +28,7 @@ import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.HTMutableItemView
 import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.storage.item.setStack
+import hiiragi283.core.api.text.Text
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import hiiragi283.core.common.storage.HTCapabilityCodec
 import hiiragi283.core.common.storage.energy.HTBasicEnergyBattery
@@ -40,7 +41,6 @@ import net.minecraft.core.UUIDUtil
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.core.component.DataComponents
-import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.ComponentSerialization
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.Nameable
@@ -230,11 +230,11 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
 
     //    Nameable    //
 
-    private var customName: Component? = null
+    private var customName: Text? = null
 
-    final override fun getName(): Component = customName ?: blockState.block.name
+    final override fun getName(): Text = customName ?: blockState.block.name
 
-    final override fun getCustomName(): Component? = customName
+    final override fun getCustomName(): Text? = customName
 
     //    HTMenuCallback    //
 

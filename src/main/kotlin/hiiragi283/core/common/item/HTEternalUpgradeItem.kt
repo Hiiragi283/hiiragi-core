@@ -2,10 +2,10 @@ package hiiragi283.core.common.item
 
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.item.HTSmithingTemplateItem
+import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
 import hiiragi283.core.api.text.withStyle
 import hiiragi283.core.common.text.HCTranslation
-import net.minecraft.network.chat.Component
 import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.item.ItemStack
 
@@ -17,7 +17,7 @@ class HTEternalUpgradeItem :
         HCTranslation.ETERNAL_UPGRADE_BASE_SLOT_DESCRIPTION,
         HCTranslation.ETERNAL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION,
     ) {
-    override fun getName(stack: ItemStack): Component = translatableText(getDescriptionId(stack)).withStyle(HTDefaultColor.RED)
+    override fun getName(stack: ItemStack): Text = translatableText(getDescriptionId(stack)).withStyle(HTDefaultColor.RED)
 
     override fun isFoil(stack: ItemStack): Boolean = true
 

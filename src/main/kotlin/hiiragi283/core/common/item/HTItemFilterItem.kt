@@ -1,5 +1,6 @@
 package hiiragi283.core.common.item
 
+import hiiragi283.core.api.function.wrapOptional
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.gui.HTSlotHelper
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
@@ -40,7 +41,7 @@ class HTItemFilterItem(properties: Properties) :
     override fun getTooltipImage(stack: ItemStack): Optional<TooltipComponent> = getOrCreateAttached(stack)
         .let(::HTItemFilterTooltip)
         .takeUnless { it.items.isEmpty() || stack.has(DataComponents.HIDE_ADDITIONAL_TOOLTIP) }
-        .let { Optional.ofNullable(it) }
+        .wrapOptional()
 
     override fun setup(context: HTItemWidgetHolderContext, widgetHolder: HTWidgetHolder) {
         widgetHolder.rows = 1

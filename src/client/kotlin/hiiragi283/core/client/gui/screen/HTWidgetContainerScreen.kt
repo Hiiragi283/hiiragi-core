@@ -2,10 +2,10 @@ package hiiragi283.core.client.gui.screen
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.text.Text
 import hiiragi283.core.client.gui.widget.HTGuiWidget
 import hiiragi283.core.common.gui.menu.HTWidgetContainerMenu
 import net.minecraft.client.gui.GuiGraphics
-import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.entity.player.Inventory
 import net.neoforged.api.distmarker.Dist
@@ -15,7 +15,7 @@ import net.neoforged.api.distmarker.OnlyIn
  * @see net.minecraft.client.gui.screens.inventory.ContainerScreen
  */
 @OnlyIn(Dist.CLIENT)
-class HTWidgetContainerScreen(menu: HTWidgetContainerMenu, inventory: Inventory, title: Component) :
+class HTWidgetContainerScreen(menu: HTWidgetContainerMenu, inventory: Inventory, title: Text) :
     HTContainerScreen<HTWidgetContainerMenu>(menu, inventory, title) {
     companion object {
         @JvmField

@@ -4,9 +4,9 @@ import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.HTHasTranslationKey
+import hiiragi283.core.api.text.Text
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
-import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.entity.Entity
@@ -25,5 +25,5 @@ data class HTDeferredEntityType<ENTITY : Entity>(private val key: ResourceKey<En
 
     override val translationKey: String get() = get().descriptionId
 
-    override fun getText(): Component = get().description
+    override fun getText(): Text = get().description
 }

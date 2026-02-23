@@ -27,7 +27,7 @@ fun <R : Any> Holder<R>.toLike(): HTSimpleHolderLikeDelegate<R> =
     (this as? HTSimpleHolderLikeDelegate<R>) ?: object : HTSimpleHolderLikeDelegate<R> {
         override fun get(): R = this@toLike.value()
 
-        override fun getHolder(): Holder<R> = this@toLike
+        override fun getHolder(): Holder<R> = this@toLike.delegate
     }
 
 //    Block    //

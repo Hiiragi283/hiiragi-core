@@ -1,14 +1,15 @@
 package hiiragi283.core.common.gui.factory
 
+import hiiragi283.core.api.function.wrapOptional
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.api.tag.HiiragiCoreTags
+import hiiragi283.core.api.text.Text
 import hiiragi283.core.common.gui.menu.HTWidgetContainerMenu
 import hiiragi283.core.setup.HCMenuTypes
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.RegistryFriendlyByteBuf
-import net.minecraft.network.chat.Component
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.InteractionHand
@@ -19,7 +20,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
-import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 @JvmRecord
@@ -78,13 +78,13 @@ data class HTItemWidgetHolderContext(
 
     override fun stillValid(player: Player): Boolean = factory.stillValid(this)
 
-    override fun getDisplayName(): Component = factory.getDisplayName(this)
+    override fun getDisplayName(): Text = factory.getDisplayName(this)
 
     override fun createMenu(containerId: Int, playerInventory: Inventory, player: Player): HTWidgetContainerMenu =
         HTWidgetContainerMenu(HCMenuTypes.ITEM.get(), containerId, playerInventory, this)
 
     override fun writeClientSideData(menu: AbstractContainerMenu, buffer: RegistryFriendlyByteBuf) {
-        buffer.writeOptional(Optional.ofNullable(hand), HAND_CODEC)
+        buffer.writeOptional(hand.wrapOptional(), HAND_CODEC)
         VanillaBiCodecs.ITEM_STACK_NON_EMPTY.encode(buffer, stack)
     }
 
@@ -104,6 +104,6 @@ data class HTItemWidgetHolderContext(
             }
         }
 
-        fun getDisplayName(context: HTItemWidgetHolderContext): Component = context.stack.hoverName
+        fun getDisplayName(context: HTItemWidgetHolderContext): Text = context.stack.hoverName
     }
 }

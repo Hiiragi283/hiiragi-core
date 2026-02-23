@@ -2,6 +2,7 @@ package hiiragi283.core.api.item.component
 
 import com.google.common.base.Suppliers
 import hiiragi283.core.api.HTBuilderMarker
+import hiiragi283.core.api.function.wrapOptional
 import net.minecraft.core.Holder
 import net.minecraft.world.effect.MobEffect
 import net.minecraft.world.effect.MobEffectInstance
@@ -9,7 +10,6 @@ import net.minecraft.world.food.FoodConstants
 import net.minecraft.world.food.FoodProperties
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
-import java.util.Optional
 import java.util.function.Supplier
 
 /**
@@ -81,7 +81,7 @@ class HTFoodBuilder private constructor() {
         FoodConstants.saturationByModifier(nutrition, saturation),
         alwaysEat,
         eatSeconds,
-        Optional.ofNullable(convertTo),
+        convertTo.wrapOptional(),
         effects,
     )
 }

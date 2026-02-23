@@ -2,9 +2,9 @@ package hiiragi283.core.common.registry
 
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.text.Text
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries
-import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
@@ -24,5 +24,5 @@ class HTDeferredItem<ITEM : Item> :
 
     override val translationKey: String get() = asItem().descriptionId
 
-    override fun getText(): Component = asItem().description
+    override fun getText(): Text = asItem().description
 }

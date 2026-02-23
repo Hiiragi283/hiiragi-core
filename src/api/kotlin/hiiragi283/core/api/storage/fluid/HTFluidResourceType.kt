@@ -3,11 +3,11 @@ package hiiragi283.core.api.storage.fluid
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.storage.resource.HTResourceType
+import hiiragi283.core.api.text.Text
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.network.RegistryFriendlyByteBuf
-import net.minecraft.network.chat.Component
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidType
@@ -63,7 +63,7 @@ class HTFluidResourceType private constructor(private val stack: FluidStack) : H
 
     override fun type(): Fluid = stack.fluid
 
-    override fun getText(): Component = stack.hoverName
+    override fun getText(): Text = stack.hoverName
 
     override fun getHolder(): Holder<Fluid> = stack.fluidHolder
 

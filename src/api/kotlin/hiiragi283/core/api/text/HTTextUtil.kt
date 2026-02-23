@@ -7,9 +7,7 @@ import hiiragi283.core.api.HTDefaultColor
 import net.minecraft.ChatFormatting
 import net.minecraft.core.Direction
 import net.minecraft.network.chat.ClickEvent
-import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.HoverEvent
-import net.minecraft.network.chat.MutableComponent
 import net.minecraft.network.chat.Style
 import net.minecraft.network.chat.TextColor
 import net.minecraft.network.chat.contents.TranslatableContents
@@ -28,7 +26,7 @@ import org.apache.commons.lang3.text.WordUtils
 import java.text.NumberFormat
 
 /**
- * [テキスト][Component]に関するメソッドを集めたクラスです。
+ * [テキスト][Text]に関するメソッドを集めたクラスです。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  * @see mekanism.api.text.TextComponentUtil
@@ -36,10 +34,10 @@ import java.text.NumberFormat
  */
 object HTTextUtil {
     /**
-     * 引数が`null`の時に置き換えられる[テキスト][Component]
+     * 引数が`null`の時に置き換えられる[テキスト][Text]
      */
     @JvmStatic
-    private val TEXT_NULL: Component = "null".toText()
+    private val TEXT_NULL: Text = "null".toText()
 
     @JvmStatic
     private val INT_FORMAT: NumberFormat = NumberFormat.getIntegerInstance()
@@ -65,15 +63,15 @@ object HTTextUtil {
     }
 
     @JvmStatic
-    fun getModNameText(modId: String): MutableComponent = getModName(modId).toText()
+    fun getModNameText(modId: String): MutableText = getModName(modId).toText()
 
     /**
-     * 指定した[翻訳キー][key]と[引数][args]をいい感じにして[テキスト][MutableComponent]に変換します。
-     * @return いい感じになった[テキスト][MutableComponent]
+     * 指定した[翻訳キー][key]と[引数][args]をいい感じにして[テキスト][MutableText]に変換します。
+     * @return いい感じになった[テキスト][MutableText]
      * @see mekanism.api.text.TextComponentUtil.smartTranslate
      */
     @JvmStatic
-    fun smartTranslate(key: String, vararg args: Any?): MutableComponent {
+    fun smartTranslate(key: String, vararg args: Any?): MutableText {
         if (args.isEmpty()) {
             return translatableText(key)
         } else {
@@ -85,9 +83,9 @@ object HTTextUtil {
                     cachedStyle = Style.EMPTY
                     continue
                 }
-                var current: MutableComponent? = null
+                var current: MutableText? = null
                 when (arg) {
-                    is Component -> current = arg.copy()
+                    is Text -> current = arg.copy()
                     // Ragium
                     is HTHasText -> current = arg.getText().copy()
                     is HTHasTranslationKey -> current = translatableText(arg.translationKey)
@@ -164,7 +162,7 @@ object HTTextUtil {
                 val lastArg: Any? = args.lastOrNull()
                 formattedArgs += when {
                     lastArg == null -> TEXT_NULL
-                    lastArg is Component || TranslatableContents.isAllowedPrimitiveArgument(lastArg) -> lastArg
+                    lastArg is Text || TranslatableContents.isAllowedPrimitiveArgument(lastArg) -> lastArg
                     else -> lastArg.toString()
                 }
             }

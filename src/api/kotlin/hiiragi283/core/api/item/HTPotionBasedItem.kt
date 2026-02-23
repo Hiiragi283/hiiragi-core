@@ -6,9 +6,9 @@ import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.registry.asSequence
+import hiiragi283.core.api.text.Text
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries
-import net.minecraft.network.chat.Component
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.TooltipFlag
@@ -25,7 +25,7 @@ open class HTPotionBasedItem(properties: Properties) :
     override fun appendHoverText(
         stack: ItemStack,
         context: TooltipContext,
-        tooltips: MutableList<Component>,
+        tooltips: MutableList<Text>,
         flag: TooltipFlag,
     ) {
         HTPotionHelper.getPotion(stack).addPotionTooltip(tooltips::add, 1f, context.tickRate())

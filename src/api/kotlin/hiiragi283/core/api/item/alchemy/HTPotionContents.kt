@@ -1,5 +1,6 @@
 package hiiragi283.core.api.item.alchemy
 
+import hiiragi283.core.api.function.wrapOptional
 import hiiragi283.core.api.monad.Ior
 import hiiragi283.core.api.monad.toIor
 import hiiragi283.core.api.serialization.codec.BiCodec
@@ -88,7 +89,7 @@ data class HTPotionContents private constructor(val contents: RawPotionContents,
      * バニラの[PotionContents]のインスタンス
      */
     val vanilla = PotionContents(
-        Optional.ofNullable(contents.getLeft()),
+        contents.getLeft().wrapOptional(),
         Optional.empty(),
         contents.getRight()?.map(HTMobEffectInstance::toMutable) ?: emptyList(),
     )

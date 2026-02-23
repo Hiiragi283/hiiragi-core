@@ -10,6 +10,7 @@ import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.integration.jei.HTJeiDrawables
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
+import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.times
 import hiiragi283.core.client.gui.widget.HTGuiWidget
 import mezz.jei.api.constants.VanillaTypes
@@ -27,7 +28,6 @@ import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.components.events.AbstractContainerEventHandler
 import net.minecraft.client.gui.components.events.GuiEventListener
 import net.minecraft.client.gui.navigation.ScreenRectangle
-import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import org.apache.commons.lang3.math.Fraction
@@ -41,7 +41,7 @@ import org.apache.commons.lang3.math.Fraction
 abstract class HTBasicRecipeCategory<RECIPE : Any>(
     private val guiHelper: IGuiHelper,
     private val recipeType: RecipeType<RECIPE>,
-    private val title: Component,
+    private val title: Text,
     private val icon: IDrawable,
     private val bounds: HTBounds,
 ) : AbstractContainerEventHandler(),
@@ -88,7 +88,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
 
     final override fun getRecipeType(): RecipeType<RECIPE> = recipeType
 
-    final override fun getTitle(): Component = title
+    final override fun getTitle(): Text = title
 
     override fun getWidth(): Int = getXSize()
 

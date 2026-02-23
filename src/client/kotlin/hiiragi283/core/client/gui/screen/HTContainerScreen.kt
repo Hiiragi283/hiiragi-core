@@ -6,12 +6,12 @@ import hiiragi283.core.api.gui.sync.HTChangeType
 import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
+import hiiragi283.core.api.text.Text
 import hiiragi283.core.common.gui.menu.HTContainerMenu
 import hiiragi283.core.common.network.HTUpdateMenuPacket
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
 import net.minecraft.core.RegistryAccess
-import net.minecraft.network.chat.Component
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
@@ -20,7 +20,7 @@ import net.neoforged.api.distmarker.OnlyIn
 import net.neoforged.neoforge.network.PacketDistributor
 
 @OnlyIn(Dist.CLIENT)
-abstract class HTContainerScreen<MENU : HTContainerMenu<*>>(menu: MENU, inventory: Inventory, title: Component) :
+abstract class HTContainerScreen<MENU : HTContainerMenu<*>>(menu: MENU, inventory: Inventory, title: Text) :
     AbstractContainerScreen<MENU>(menu, inventory, title),
     HTAbstractGui {
     override fun render(

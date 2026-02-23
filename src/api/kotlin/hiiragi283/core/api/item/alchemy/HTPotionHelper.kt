@@ -1,6 +1,7 @@
 package hiiragi283.core.api.item.alchemy
 
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.function.wrapOptional
 import hiiragi283.core.api.item.createItemStack
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentHolder
@@ -12,7 +13,6 @@ import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.MutableDataComponentHolder
-import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
@@ -68,7 +68,7 @@ object HTPotionHelper {
     @JvmStatic
     fun getPotionDescId(holder: DataComponentHolder): String? {
         val contents: HTPotionContents = getContents(holder) ?: return null
-        return Potion.getName(Optional.ofNullable(contents.potion), "${contents.bottleType.asItem().descriptionId}.effect.")
+        return Potion.getName(contents.potion.wrapOptional(), "${contents.bottleType.asItem().descriptionId}.effect.")
     }
 
     //    ItemStack    //

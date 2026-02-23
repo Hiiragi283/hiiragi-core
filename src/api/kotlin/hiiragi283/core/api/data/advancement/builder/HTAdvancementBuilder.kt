@@ -4,6 +4,7 @@ import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
 import hiiragi283.core.api.data.advancement.HTAdvancementOutput
 import hiiragi283.core.api.data.holder.HTConditionHolder
+import hiiragi283.core.api.function.wrapOptional
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementRequirements
 import net.minecraft.advancements.AdvancementRewards
@@ -11,7 +12,6 @@ import net.minecraft.advancements.CriteriaTriggers
 import net.minecraft.advancements.Criterion
 import net.minecraft.advancements.DisplayInfo
 import net.minecraft.resources.ResourceLocation
-import java.util.Optional
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[進捗][Advancement]のビルダークラスです。
@@ -38,8 +38,8 @@ class HTAdvancementBuilder(private val key: HTAdvancementKey) {
     fun save(output: HTAdvancementOutput) {
         val id: ResourceLocation = key.getId()
         val adv = Advancement(
-            Optional.ofNullable(parent?.getId()),
-            Optional.ofNullable(display), // TODO
+            parent?.getId().wrapOptional(),
+            display.wrapOptional(), // TODO
             rewards,
             criteria.toMap(),
             this.requirements ?: criteria.createRequirements(),

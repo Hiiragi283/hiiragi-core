@@ -2,11 +2,11 @@ package hiiragi283.core.api.storage.item
 
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.storage.resource.HTResourceType
+import hiiragi283.core.api.text.Text
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.network.RegistryFriendlyByteBuf
-import net.minecraft.network.chat.Component
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 
@@ -59,7 +59,7 @@ class HTItemResourceType private constructor(private val stack: ItemStack) : HTR
 
     override fun type(): Item = stack.item
 
-    override fun getText(): Component = stack.hoverName
+    override fun getText(): Text = stack.hoverName
 
     override fun getHolder(): Holder<Item> = stack.itemHolder
 

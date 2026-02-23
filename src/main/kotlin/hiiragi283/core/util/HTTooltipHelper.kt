@@ -4,11 +4,11 @@ import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextUtil
+import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.api.text.withStyle
 import net.minecraft.ChatFormatting
 import net.minecraft.core.Holder
-import net.minecraft.network.chat.Component
 import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
@@ -16,7 +16,7 @@ import java.util.function.Consumer
 
 object HTTooltipHelper {
     @JvmStatic
-    fun addEnergyTooltip(amount: Int, consumer: Consumer<Component>, isCreative: Boolean) {
+    fun addEnergyTooltip(amount: Int, consumer: Consumer<Text>, isCreative: Boolean) {
         // Empty name if amount is not positive
         if (amount <= 0) {
             consumer.accept(HTCommonTranslation.EMPTY.translate())
@@ -33,7 +33,7 @@ object HTTooltipHelper {
     @JvmStatic
     fun addFluidTooltip(
         stack: FluidStack,
-        consumer: Consumer<Component>,
+        consumer: Consumer<Text>,
         flag: TooltipFlag,
         isCreative: Boolean,
     ) {

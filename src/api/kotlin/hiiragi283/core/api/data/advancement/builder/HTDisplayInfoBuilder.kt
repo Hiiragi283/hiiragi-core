@@ -3,12 +3,12 @@ package hiiragi283.core.api.data.advancement.builder
 import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
 import hiiragi283.core.api.data.holder.HTItemStackHolder
+import hiiragi283.core.api.function.wrapOptional
+import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
 import net.minecraft.advancements.AdvancementType
 import net.minecraft.advancements.DisplayInfo
-import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
-import java.util.Optional
 
 /**
  * [DisplayInfo]のビルダークラスです。
@@ -35,7 +35,7 @@ class HTDisplayInfoBuilder {
         iconStack.stack,
         titleText.text,
         descText.text,
-        Optional.ofNullable(backGround),
+        backGround.wrapOptional(),
         type,
         showToast,
         showChat,
@@ -43,14 +43,14 @@ class HTDisplayInfoBuilder {
     )
 
     inner class TextHolder(private val factory: (HTAdvancementKey) -> String) {
-        lateinit var text: Component
+        lateinit var text: Text
             private set
 
         operator fun plusAssign(key: HTAdvancementKey) {
             this.plusAssign(key.let(factory).let(::translatableText))
         }
 
-        operator fun plusAssign(text: Component) {
+        operator fun plusAssign(text: Text) {
             check(!::text.isInitialized) { "Text has already been initialized" }
             this.text = text
         }

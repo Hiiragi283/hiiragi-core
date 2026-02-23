@@ -2,11 +2,11 @@ package hiiragi283.core.client.gui.widget
 
 import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.widget.HTWidget
+import hiiragi283.core.api.text.Text
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.components.AbstractWidget
 import net.minecraft.client.gui.components.Renderable
 import net.minecraft.client.gui.narration.NarrationElementOutput
-import net.minecraft.network.chat.Component
 import net.minecraft.world.item.ItemStack
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
@@ -21,7 +21,7 @@ class HTGuiWidget<WIDGET : HTWidget>(private val gui: HTAbstractGui, val widget:
         widget.bounds.y + gui.getGuiTop(),
         widget.bounds.width,
         widget.bounds.height,
-        Component.empty(),
+        Text.empty(),
     ) {
     private val access = Access()
     private val renderer: Renderable? by lazy { HTWidgetRendererManager.create(gui, widget) }

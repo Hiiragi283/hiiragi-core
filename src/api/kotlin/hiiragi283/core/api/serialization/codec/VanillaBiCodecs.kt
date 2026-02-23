@@ -4,6 +4,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.serialization.codec.impl.HTIngredientCodec
 import hiiragi283.core.api.tag.createTagKey
+import hiiragi283.core.api.text.Text
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
@@ -14,7 +15,6 @@ import net.minecraft.core.RegistryCodecs
 import net.minecraft.core.UUIDUtil
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.network.RegistryFriendlyByteBuf
-import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.ComponentSerialization
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.resources.RegistryFixedCodec
@@ -75,10 +75,10 @@ object VanillaBiCodecs {
         BiCodec.of(PotionContents.CODEC, PotionContents.STREAM_CODEC)
 
     /**
-     * [Component]の[BiCodec]
+     * [Text]の[BiCodec]
      */
     @JvmField
-    val TEXT: BiCodec<RegistryFriendlyByteBuf, Component> =
+    val TEXT: BiCodec<RegistryFriendlyByteBuf, Text> =
         BiCodec.of(ComponentSerialization.CODEC, ComponentSerialization.STREAM_CODEC)
 
     /**

@@ -7,6 +7,7 @@ import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
 import hiiragi283.core.api.mod.HTCommonMod
 import hiiragi283.core.api.network.HTPayloadHandlers
+import hiiragi283.core.common.HiiragiCoreAccessImpl
 import hiiragi283.core.common.block.cauldron.HCCauldronInteractions
 import hiiragi283.core.common.data.HCServerResourceProvider
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
@@ -75,12 +76,20 @@ data object HiiragiCore : HTCommonMod() {
     }
 
     override fun commonSetup(event: FMLCommonSetupEvent) {
-        HCItems.REGISTER
-            .asSequence()
-            .map(ItemLike::asItem)
-            .filter { it is ProjectileItem }
-            .forEach(DispenserBlock::registerProjectileBehavior)
+        event.enqueueWork {
+            HCItems.REGISTER
+                .asSequence()
+                .map(ItemLike::asItem)
+                .filter { it is ProjectileItem }
+                .forEach(DispenserBlock::registerProjectileBehavior)
+        }
 
+        event.enqueueWork(::registerPotionHandlers)
+        event.enqueueWork(HCCauldronInteractions::init)
+    }
+
+    private fun registerPotionHandlers() {
+        // Bottle Item
         for (bottleType: HTBottleType in HTBottleType.entries) {
             HTPotionFluidManager.register(
                 bottleType.asItem(),
@@ -91,8 +100,8 @@ data object HiiragiCore : HTCommonMod() {
                 },
             )
         }
-
-        HCCauldronInteractions.init()
+        // Potion Fluid
+        HTPotionFluidManager.register(HCFluids.POTION.get(), HiiragiCoreAccessImpl.DEFAULT_POTION_HANDLER)
     }
 
     private fun registerCauldronContent(event: RegisterCauldronFluidContentEvent) {

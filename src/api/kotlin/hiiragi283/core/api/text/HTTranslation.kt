@@ -1,8 +1,6 @@
 package hiiragi283.core.api.text
 
 import hiiragi283.core.api.HTDefaultColor
-import net.minecraft.network.chat.Component
-import net.minecraft.network.chat.MutableComponent
 
 /**
  * 翻訳を保持するインターフェースです。
@@ -12,24 +10,24 @@ import net.minecraft.network.chat.MutableComponent
  */
 interface HTTranslation : HTHasTranslationKey {
     /**
-     * [テキスト][Component]を返します。
+     * [テキスト][Text]を返します。
      */
-    fun translate(): MutableComponent = translatableText(this.translationKey)
+    fun translate(): MutableText = translatableText(this.translationKey)
 
     /**
-     * [テキスト][Component]を返します。
+     * [テキスト][Text]を返します。
      * @param args テキストの引数
      */
-    fun translate(vararg args: Any?): MutableComponent = HTTextUtil.smartTranslate(this.translationKey, *args)
+    fun translate(vararg args: Any?): MutableText = HTTextUtil.smartTranslate(this.translationKey, *args)
 
     /**
-     * [color]で着色された[テキスト][Component]を返します。
+     * [color]で着色された[テキスト][Text]を返します。
      */
-    fun translateColored(color: HTDefaultColor): MutableComponent = translate().withStyle(color)
+    fun translateColored(color: HTDefaultColor): MutableText = translate().withStyle(color)
 
     /**
-     * [color]で着色された[テキスト][Component]を返します。
+     * [color]で着色された[テキスト][Text]を返します。
      * @param args テキストの引数
      */
-    fun translateColored(color: HTDefaultColor, vararg args: Any?): MutableComponent = translate(*args).withStyle(color)
+    fun translateColored(color: HTDefaultColor, vararg args: Any?): MutableText = translate(*args).withStyle(color)
 }

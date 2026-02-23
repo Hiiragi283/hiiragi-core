@@ -6,13 +6,13 @@ import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTAbstractWidgetRenderer
 import hiiragi283.core.api.gui.widget.HTWidget
+import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.times
 import hiiragi283.core.util.HTSpriteRenderHelper
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Font
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
-import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.util.Mth
 import net.minecraft.world.item.TooltipFlag
@@ -113,5 +113,5 @@ abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget>(gui: HTAbstractGui, wid
 
     protected abstract fun getLevel(): Fraction
 
-    protected abstract fun collectTooltips(consumer: Consumer<Component>, flag: TooltipFlag)
+    protected abstract fun collectTooltips(consumer: Consumer<Text>, flag: TooltipFlag)
 }
