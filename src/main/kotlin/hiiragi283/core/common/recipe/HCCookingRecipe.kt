@@ -1,0 +1,15 @@
+package hiiragi283.core.common.recipe
+
+import hiiragi283.core.api.recipe.base.HTProcessingRecipe
+import net.minecraft.core.HolderLookup
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.crafting.AbstractCookingRecipe
+import net.minecraft.world.item.crafting.SingleRecipeInput
+
+class HCCookingRecipe(val recipe: AbstractCookingRecipe) : HTProcessingRecipe<SingleRecipeInput> {
+    override val time: Int = recipe.cookingTime
+
+    override fun test(input: SingleRecipeInput): Boolean = recipe.ingredients[0].test(input.item())
+
+    override fun assemble(input: SingleRecipeInput, registries: HolderLookup.Provider): ItemStack = recipe.assemble(input, registries)
+}

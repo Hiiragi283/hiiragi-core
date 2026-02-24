@@ -26,13 +26,10 @@ import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.PotionBrewing
 import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.item.crafting.AbstractCookingRecipe
-import net.minecraft.world.item.crafting.BlastingRecipe
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput
-import net.minecraft.world.item.crafting.SmeltingRecipe
-import net.minecraft.world.item.crafting.SmokingRecipe
 import net.neoforged.neoforge.common.brewing.BrewingRecipe
 
 /**
@@ -42,21 +39,22 @@ import net.neoforged.neoforge.common.brewing.BrewingRecipe
  */
 object HTVanillaRecipeTypes {
     @JvmField
-    val SMELTING: HTRecipeType.Managed<SingleRecipeInput, SmeltingRecipe> = CookingType(RecipeType.SMELTING)
+    val SMELTING: HTRecipeType.Fake<SingleRecipeInput, HCCookingRecipe> = CookingType(RecipeType.SMELTING)
 
     @JvmField
-    val BLASTING: HTRecipeType.Managed<SingleRecipeInput, BlastingRecipe> = CookingType(RecipeType.BLASTING)
+    val BLASTING: HTRecipeType.Fake<SingleRecipeInput, HCCookingRecipe> = CookingType(RecipeType.BLASTING)
 
     @JvmField
-    val SMOKING: HTRecipeType.Managed<SingleRecipeInput, SmokingRecipe> = CookingType(RecipeType.SMOKING)
+    val SMOKING: HTRecipeType.Fake<SingleRecipeInput, HCCookingRecipe> = CookingType(RecipeType.SMOKING)
 
     private class CookingType<RECIPE : AbstractCookingRecipe>(private val recipeType: RecipeType<RECIPE>) :
-        HTRecipeType.Managed<SingleRecipeInput, RECIPE> {
+        HTRecipeType.Fake<SingleRecipeInput, HCCookingRecipe> {
         override fun getId(): ResourceLocation = ResourceLocation.parse(recipeType.toString())
 
-        override fun createCache(): HTRecipeCache<SingleRecipeInput, RECIPE> = HTLookupRecipeCache.forManager(this)
+        override fun createCache(): HTRecipeCache<SingleRecipeInput, HCCookingRecipe> = HTLookupRecipeCache.forRecipe(this)
 
-        override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<RecipeHolder<RECIPE>> = context.getAllRecipes(recipeType)
+        override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<IdToValue<HCCookingRecipe>> =
+            context.getAllRecipes(recipeType).map { holder: RecipeHolder<RECIPE> -> holder.id() to HCCookingRecipe(holder.value()) }
     }
 
     @JvmField

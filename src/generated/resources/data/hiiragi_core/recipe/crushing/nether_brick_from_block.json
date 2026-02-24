@@ -2,10 +2,11 @@
   "type": "hiiragi_core:crushing",
   "ingredient": {
     "amount": 1,
-    "items": "#c:gravels"
+    "items": "minecraft:nether_bricks"
   },
   "result": {
-    "id": "minecraft:sand"
+    "count": 4,
+    "id": "minecraft:nether_brick"
   },
   "time": 100
 }

@@ -4,10 +4,13 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.resource.toId
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementHolder
+import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeOutput
+import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.Recipe
+import net.minecraft.world.item.enchantment.Enchantment
 import net.neoforged.neoforge.common.conditions.ICondition
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition
 
@@ -20,6 +23,8 @@ import net.neoforged.neoforge.common.conditions.ModLoadedCondition
 sealed class HTSubRecipeProvider(protected val modId: String) : HTRecipeProviderContext() {
     override lateinit var provider: HolderLookup.Provider
     override lateinit var output: RecipeOutput
+
+    fun getEnchantment(key: ResourceKey<Enchantment>): Holder<Enchantment> = provider.holderOrThrow(key)
 
     /**
      * [HTRecipeProvider.buildRecipes]内で呼び出されるメソッドです。
