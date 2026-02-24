@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": {
+    "amount": 1,
+    "items": "minecraft:stone"
+  },
+  "result": {
+    "id": "minecraft:cobblestone"
+  },
+  "time": 100
+}

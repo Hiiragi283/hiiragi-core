@@ -3,19 +3,22 @@ package hiiragi283.core.setup
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.fraction
+import hiiragi283.core.api.recipe.base.HTProcessingRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.MapBiCodec
 import hiiragi283.core.api.serialization.codec.MapBiCodecs
-import hiiragi283.core.api.util.wrapOptional
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.crafting.HTClearComponentRecipe
-import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
+import hiiragi283.core.common.data.recipe.builder.HTItemToChancedRecipeBuilder
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import hiiragi283.core.common.recipe.HCSingleItemRecipe
+import hiiragi283.core.common.recipe.HTCrushingRecipe
+import hiiragi283.core.common.recipe.base.HTBasicItemToChancedRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
+import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.world.item.crafting.RecipeSerializer
 
 object HCRecipeSerializers {
@@ -32,7 +35,18 @@ object HCRecipeSerializers {
     val ETERNAL_UPGRADE: RecipeSerializer<HCEternalSmithingRecipe> =
         REGISTER.registerSerializer("eternal_upgrade", MapBiCodecs.unit(HCEternalSmithingRecipe))
 
-    //    Misc    //
+    //    Basic    //
+
+    @JvmStatic
+    private fun <R : HTBasicItemToChancedRecipe> itemChanced(
+        factory: HTItemToChancedRecipeBuilder.Factory<R>,
+    ): MapBiCodec<RegistryFriendlyByteBuf, R> = MapBiCodec.composite(
+        HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicItemToChancedRecipe::ingredient),
+        HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HTBasicItemToChancedRecipe::result),
+        HTItemResult.CHANCED_CODEC.optionalFieldOf(HTConst.EXTRA_RESULT).forGetter(HTBasicItemToChancedRecipe::extraResult),
+        HTProcessingRecipe.timeCodec(),
+        factory::create,
+    )
 
     @JvmField
     val CHARGING: RecipeSerializer<HCLightningChargingRecipe> = REGISTER.registerSerializer(
@@ -45,17 +59,7 @@ object HCRecipeSerializers {
     )
 
     @JvmField
-    val ANVIL_CRUSHING: RecipeSerializer<HCAnvilCrushingRecipe> = REGISTER.registerSerializer(
-        HTConst.ANVIL_CRUSHING,
-        MapBiCodec.composite(
-            HTItemIngredient.UNSIZED_CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HCAnvilCrushingRecipe::ingredient),
-            HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCAnvilCrushingRecipe::result),
-            HTItemResult.CHANCED_CODEC
-                .optionalFieldOf(HTConst.EXTRA_RESULT)
-                .forGetter { it.extraResult.wrapOptional() },
-            ::HCAnvilCrushingRecipe,
-        ),
-    )
+    val CRUSHING: RecipeSerializer<HTCrushingRecipe> = REGISTER.registerSerializer(HTConst.CRUSHING, itemChanced(::HTCrushingRecipe))
 
     @JvmField
     val EXPLODING: RecipeSerializer<HCExplodingRecipe> = REGISTER.registerSerializer(

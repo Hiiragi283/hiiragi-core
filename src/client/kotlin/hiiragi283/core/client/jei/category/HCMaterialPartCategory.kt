@@ -5,6 +5,7 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.client.jei.HCJeiRecipeTypes
+import hiiragi283.core.client.jei.category.base.HTBasicRecipeCategory
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawablesView

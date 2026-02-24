@@ -2,6 +2,8 @@ package hiiragi283.core.common.event
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.component1
+import hiiragi283.core.api.component2
 import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.item.tool.HTToolType
@@ -22,8 +24,8 @@ import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.property.getScaledAmount
-import hiiragi283.core.common.data.recipe.builder.HCAnvilCrushingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTItemToChancedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSmithingRecipeBuilder
@@ -44,9 +46,14 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
         for (entry: HTMaterialManager.Entry in materialManager) {
             crushBaseToDust(event, entry)
-            crushCrushedToDust(event, entry)
             crushOreToCrushed(event, entry, CommonTagPrefixes.ORE)
             crushOreToCrushed(event, entry, CommonTagPrefixes.RAW)
+            crushCrushedToDust(event, entry)
+            crushPrefixToDust(event, entry, CommonTagPrefixes.GEAR)
+            crushPrefixToDust(event, entry, CommonTagPrefixes.NUGGET)
+            crushPrefixToDust(event, entry, CommonTagPrefixes.PLATE)
+            crushPrefixToDust(event, entry, CommonTagPrefixes.ROD)
+            crushPrefixToDust(event, entry, CommonTagPrefixes.WIRE)
 
             baseToBlock(event, entry)
             ingotToNugget(entry)
@@ -68,23 +75,50 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         }
     }
 
-    //    Anvil Crushing    //
+    @JvmStatic
+    private fun getTimeFromHardness(propertyMap: HTPropertyMap, time: Int = 20 * 10): Int? =
+        (propertyMap.getOrDefault(HTMaterialPropertyKeys.HARDNESS) * time)?.toInt()
+
+    @JvmStatic
+    private fun getTimeFromMelting(propertyMap: HTPropertyMap, time: Int = 20 * 10): Int? =
+        (propertyMap.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT) * time)?.toInt()
+    
+    //    Crushing    //
+
+    @JvmStatic
+    private fun crushPrefixToDust(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry, prefix: HTTagPrefix) {
+        // 材料が存在するか判定
+        if (!event.isPresentTag(prefix, entry)) return
+        // 素材のプロパティから完成品を取得
+        val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
+        val dust: HTItemHolderLike<*> = event.getFirstHolder(crushedPrefix, entry) ?: return
+        // プレフィックスのスケールから個数を算出
+        val (outputCount: Int, inputCount: Int) = prefix.getScaledAmount(1, entry)
+        // レシピを登録
+        HTItemToChancedRecipeBuilder.crushing(output) {
+            ingredient = inputCreator.create(prefix, entry, inputCount)
+            this.result = resultCreator.create(dust, outputCount)
+            time = getTimeFromHardness(entry, time) ?: return
+            recipeId suffix "_from_${prefix.name}"
+        }
+    }
 
     @JvmStatic
     private fun crushBaseToDust(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
         // 素材のプロパティから材料を取得
-        val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
         val defaultPart: HTDefaultPart = entry.getDefaultPart() ?: return
+        val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
         val inputTag: TagKey<Item> = defaultPart.getTag(entry)
-        // 加工の前後でタグが一致する場合はパス
         if (!event.isPresentTag(inputTag)) return
+        // 加工の前後でタグが一致する場合はパス
         if (inputTag == crushedPrefix.itemTagKey(entry)) return
         // 完成品を取得
-        val dust: ItemLike = event.getFirstHolder(crushedPrefix, entry) ?: return
+        val dust: HTItemHolderLike<*> = event.getFirstHolder(crushedPrefix, entry) ?: return
         // レシピを登録
-        HCAnvilCrushingRecipeBuilder.create(output) {
+        HTItemToChancedRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(inputTag)
-            result = resultCreator.create(dust)
+            this.result = resultCreator.create(dust)
+            time = getTimeFromHardness(entry, time) ?: return
             recipeId suffix "_from_${defaultPart.getSuffix()}"
         }
     }
@@ -94,17 +128,17 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // 材料が存在するか判定
         if (!event.isPresentTag(prefix, entry)) return
         // 完成品を取得
-        val crushedOre: ItemLike = event.getFirstHolder(CommonTagPrefixes.CRUSHED_ORE, entry) ?: return
+        val crushedOre: HTItemHolderLike<*> = event.getFirstHolder(CommonTagPrefixes.CRUSHED_ORE, entry) ?: return
         // レシピを登録
-        HCAnvilCrushingRecipeBuilder.create(output) {
+        HTItemToChancedRecipeBuilder.crushing(output) {
             // 材料
             ingredient = inputCreator.create(prefix, entry)
             // 主産物
-            result = resultCreator.create(crushedOre, prefix.getScaledAmount(2, entry).toInt())
+            this.result = resultCreator.create(crushedOre, prefix.getScaledAmount(2, entry).toInt())
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]
                 ?.getResult(HTExtraOreResultMap.Phase.CRUSH_ORE)
-                ?.let(::extraResult::set)
+                ?.let(extraResult::plusAssign)
 
             recipeId suffix "_from_${prefix.name}"
         }
@@ -117,16 +151,18 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // 完成品を取得
         val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
         val dust: ItemLike = event.getFirstHolder(crushedPrefix, entry) ?: return
+        // プレフィックスのスケールから個数を算出
+        val (outputCount: Int, inputCount: Int) = CommonTagPrefixes.CRUSHED_ORE.getScaledAmount(1, entry)
         // レシピを登録
-        HCAnvilCrushingRecipeBuilder.create(output) {
+        HTItemToChancedRecipeBuilder.crushing(output) {
             // 材料
-            ingredient = inputCreator.create(CommonTagPrefixes.CRUSHED_ORE, entry)
+            ingredient = inputCreator.create(CommonTagPrefixes.CRUSHED_ORE, entry, inputCount)
             // 主産物
-            result = resultCreator.create(dust, CommonTagPrefixes.CRUSHED_ORE.getScaledAmount(1, entry).toInt())
+            this.result = resultCreator.create(dust, outputCount)
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]
                 ?.getResult(HTExtraOreResultMap.Phase.CRUSH_CRUSHED)
-                ?.let(::extraResult::set)
+                ?.let(extraResult::plusAssign)
 
             recipeId suffix "_from_crushed_ore"
         }

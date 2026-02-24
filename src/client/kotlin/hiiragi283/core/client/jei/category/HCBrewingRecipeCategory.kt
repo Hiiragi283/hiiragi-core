@@ -8,6 +8,7 @@ import hiiragi283.core.api.integration.jei.addItemIngredient
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.resource.IdToValue
 import hiiragi283.core.client.jei.HCJeiRecipeTypes
+import hiiragi283.core.client.jei.category.base.HTFakeRecipeCategory
 import hiiragi283.core.common.recipe.HCBrewingRecipe
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.builder.ITooltipBuilder

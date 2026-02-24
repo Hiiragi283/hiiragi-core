@@ -1,0 +1,14 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": {
+    "amount": 1,
+    "items": [
+      "#c:cobblestones/mossy",
+      "#c:cobblestones/normal"
+    ]
+  },
+  "result": {
+    "id": "minecraft:gravel"
+  },
+  "time": 100
+}

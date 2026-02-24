@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": {
+    "amount": 1,
+    "items": "#c:gravels"
+  },
+  "result": {
+    "id": "minecraft:sand"
+  },
+  "time": 100
+}

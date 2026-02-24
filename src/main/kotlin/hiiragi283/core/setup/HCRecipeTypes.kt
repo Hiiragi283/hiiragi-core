@@ -2,7 +2,7 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
+import hiiragi283.core.api.recipe.HTItemToChancedRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import hiiragi283.core.common.registry.HTDeferredRecipeType
@@ -14,10 +14,10 @@ object HCRecipeTypes {
     val REGISTER = HTDeferredRecipeTypeRegister(HiiragiCoreAPI.MOD_ID)
 
     @JvmField
-    val ANVIL_CRUSHING: HTDeferredRecipeType<SingleRecipeInput, HCAnvilCrushingRecipe> = REGISTER.registerType(HTConst.ANVIL_CRUSHING)
+    val CHARGING: HTDeferredRecipeType<SingleRecipeInput, HCLightningChargingRecipe> = REGISTER.registerType(HTConst.CHARGING)
 
     @JvmField
-    val CHARGING: HTDeferredRecipeType<SingleRecipeInput, HCLightningChargingRecipe> = REGISTER.registerType(HTConst.CHARGING)
+    val CRUSHING: HTDeferredRecipeType<SingleRecipeInput, HTItemToChancedRecipe.Serializable> = REGISTER.registerType(HTConst.CRUSHING)
 
     @JvmField
     val EXPLODING: HTDeferredRecipeType<HCExplodingRecipe.Input, HCExplodingRecipe> = REGISTER.registerType(HTConst.EXPLODING)

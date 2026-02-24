@@ -4,16 +4,16 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.item.enchantment.toInstances
+import hiiragi283.core.api.recipe.HTItemToChancedRecipe
+import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.findFirst
-import hiiragi283.core.api.recipe.result.HTItemResult
-import hiiragi283.core.api.times
+import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.toFraction
-import hiiragi283.core.common.recipe.HCAnvilCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import hiiragi283.core.common.recipe.HCSingleItemRecipe
 import hiiragi283.core.setup.HCRecipeTypes
-import net.minecraft.core.RegistryAccess
+import hiiragi283.core.util.HTShapelessRecipeHelper
 import net.minecraft.core.component.DataComponents
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.item.ItemEntity
@@ -28,7 +28,6 @@ import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent
 import net.neoforged.neoforge.event.level.ExplosionEvent
-import org.apache.commons.lang3.math.Fraction
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 object HTRecipeEventHandler {
@@ -56,7 +55,7 @@ object HTRecipeEventHandler {
     }
 
     /**
-     * [HCAnvilCrushingRecipe]を処理するイベント
+     * [HTItemToChancedRecipe]を処理するイベント
      */
     @SubscribeEvent
     fun onAnvilLand(event: HTAnvilLandEvent) {
@@ -71,13 +70,13 @@ object HTRecipeEventHandler {
     private fun anvilCrushing(entity: ItemEntity) {
         val level: Level = entity.level()
         val input: SingleRecipeInput = createInput(entity)
-        val recipe: HCAnvilCrushingRecipe = HCRecipeTypes.ANVIL_CRUSHING.findFirst(input, level)?.value() ?: return
-        val multiplier: Int = popResult(input, recipe, level, entity)
-        recipe.extraResult?.let { (result: HTItemResult, chance: Fraction) ->
-            val access: RegistryAccess = entity.registryAccess()
-            val amount: Int = (chance * multiplier).toInt()
-            entity.spawnAtLocation(result.copyWithCount { it * amount }.getStackOrEmpty(access))?.let(::setComplete)
-        }
+        val recipe: HTItemToChancedRecipe.Serializable = HCRecipeTypes.CRUSHING.findFirst(input, level)?.value() ?: return
+        val multiplier: Int = popResult(input, recipe, level, entity, HTItemToChancedRecipe::getRequiredAmount)
+        (0 until multiplier)
+            .map { recipe.assembleExtraItem(input, level) }
+            .let(HTShapelessRecipeHelper::createMap)
+            .map { (resource: HTItemResourceType, count: Int) -> resource.toStack(count) }
+            .forEach(entity::spawnAtLocation)
         if (entity.item.isEmpty) {
             entity.discard()
         }
@@ -161,6 +160,15 @@ object HTRecipeEventHandler {
         level: Level,
         entity: ItemEntity,
     ): Int = popResult(recipe.assemble(input, level.registryAccess()), recipe.ingredient.amount, entity)
+
+    @JvmStatic
+    private fun <INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> popResult(
+        input: INPUT,
+        recipe: RECIPE,
+        level: Level,
+        entity: ItemEntity,
+        amountGetter: (RECIPE, INPUT) -> Int,
+    ): Int = popResult(recipe.assemble(input, level.registryAccess()), amountGetter(recipe, input), entity)
 
     @JvmStatic
     private fun popResult(result: ItemStack, recipeAmount: Int, entity: ItemEntity): Int {

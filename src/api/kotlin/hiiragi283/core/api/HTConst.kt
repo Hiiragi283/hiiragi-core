@@ -90,6 +90,7 @@ data object HTConst {
 
     //    Recipes    //
 
+    // Vanilla
     const val BLASTING = "blasting"
     const val SHAPED = "shaped"
     const val SHAPELESS = "shapeless"
@@ -97,10 +98,12 @@ data object HTConst {
     const val SMITHING = "smithing"
     const val SMOKING = "smoking"
 
-    const val ANVIL_CRUSHING = "anvil_crushing"
+    // Basic
     const val CHARGING = "charging"
+    const val CRUSHING = "crushing"
     const val EXPLODING = "exploding"
 
+    // Serialization
     const val ENERGY = "energy"
     const val EXP = "exp"
     const val TIME = "time"

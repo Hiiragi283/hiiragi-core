@@ -11,11 +11,12 @@ import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.registry.asSequence
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
-import hiiragi283.core.client.jei.category.HCAnvilCrushingRecipeCategory
 import hiiragi283.core.client.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.jei.category.HCEternalSmithingCategoryExtension
 import hiiragi283.core.client.jei.category.HCMaterialPartCategory
 import hiiragi283.core.client.jei.category.HCSingleItemRecipeCategory
+import hiiragi283.core.client.jei.category.HTItemToChancedRecipeCategory
+import hiiragi283.core.client.jei.extension.HTBasicItemToChancedRecipeCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
@@ -31,6 +32,7 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration
 import mezz.jei.api.registration.IRecipeRegistration
 import mezz.jei.api.registration.ISubtypeRegistration
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration
+import mezz.jei.api.runtime.IIngredientManager
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.Item
@@ -40,6 +42,13 @@ import net.neoforged.neoforge.fluids.FluidStack
 
 @JeiPlugin
 class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
+    companion object {
+        // ItemToChanced
+        @JvmStatic
+        lateinit var crushing: HTItemToChancedRecipeCategory
+            private set
+    }
+
     override fun registerItemSubtypes(registration: ISubtypeRegistration) {
         registration.registerSubtypeInterpreter(
             HCItems.ALMIGHTY_PICKAXE.get(),
@@ -78,13 +87,25 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
 
     override fun registerCategories(registration: IRecipeCategoryRegistration) {
         val guiHelper: IGuiHelper = registration.jeiHelpers.guiHelper
+        val manager: IIngredientManager = registration.jeiHelpers.ingredientManager
 
-        registration.addRecipeCategories(HCMaterialPartCategory(guiHelper))
+        initItemToChanced(guiHelper, manager)
 
-        registration.addRecipeCategories(HCAnvilCrushingRecipeCategory(guiHelper))
-        registration.addRecipeCategories(HCBrewingRecipeCategory(guiHelper))
-        registration.addRecipeCategories(HCSingleItemRecipeCategory.charging(guiHelper))
-        registration.addRecipeCategories(HCSingleItemRecipeCategory.exploding(guiHelper))
+        registration.addRecipeCategories(
+            // Material
+            HCMaterialPartCategory(guiHelper),
+            // Basic
+            HCBrewingRecipeCategory(guiHelper),
+            crushing,
+            HCSingleItemRecipeCategory.charging(guiHelper),
+            HCSingleItemRecipeCategory.exploding(guiHelper),
+        )
+    }
+
+    private fun initItemToChanced(guiHelper: IGuiHelper, manager: IIngredientManager) {
+        crushing = HTItemToChancedRecipeCategory.crushing(guiHelper)
+
+        crushing.addExtension(HTBasicItemToChancedRecipeCategoryExtension())
     }
 
     override fun registerVanillaCategoryExtensions(registration: IVanillaCategoryExtensionRegistration) {
@@ -101,17 +122,17 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                 .asSequence(),
         )
 
-        registration.addRecipes(HCJeiRecipeTypes.ANVIL_CRUSHING, sorter = compareBy { it.result.getId() })
         registration.addRecipes(HCJeiRecipeTypes.BREWING)
         registration.addRecipes(HCJeiRecipeTypes.CHARGING, sorter = compareBy { it.result.getId() })
+        registration.addRecipes(HCJeiRecipeTypes.CRUSHING)
         registration.addRecipes(HCJeiRecipeTypes.EXPLODING, sorter = compareBy { it.result.getId() })
     }
 
     override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {
         registration.addRecipeCatalysts(
-            HCJeiRecipeTypes.ANVIL_CRUSHING,
             HCJeiRecipeTypes.BREWING,
             HCJeiRecipeTypes.CHARGING,
+            HCJeiRecipeTypes.CRUSHING,
             HCJeiRecipeTypes.EXPLODING,
         )
     }
