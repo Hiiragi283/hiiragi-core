@@ -2,6 +2,7 @@ package hiiragi283.core.api.integration.jei
 
 import hiiragi283.core.api.HTComparators
 import hiiragi283.core.api.recipe.HTRecipeLookup
+import hiiragi283.core.api.recipe.viewer.HTFakeRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.resource.toId
@@ -109,6 +110,37 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
         @JvmStatic
         protected fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> IRecipeRegistration.addRecipes(
             recipeType: HTHolderRecipeViewerType<INPUT, RECIPE>,
+            sorter: Comparator<RECIPE>,
+        ) {
+            this.addRecipes(
+                getRecipeType(recipeType),
+                recipeType
+                    .getAllRecipes()
+                    .sortedWith(compareBy(sorter, recipeType::getRecipe).thenComparing(createSorter(recipeType))),
+            )
+        }
+
+        /**
+         * 指定した[recipeType]からレシピを登録します。
+         * @param INPUT レシピの入力となるクラス
+         * @param RECIPE レシピのクラス
+         */
+        @JvmStatic
+        protected fun <INPUT : RecipeInput, RECIPE : Any> IRecipeRegistration.addRecipes(
+            recipeType: HTFakeRecipeViewerType<INPUT, RECIPE>,
+        ) {
+            this.addRecipes(getRecipeType(recipeType), recipeType.getAllRecipes().sortedWith(createSorter(recipeType)))
+        }
+
+        /**
+         * 指定した[recipeType]からレシピを登録します。
+         * @param INPUT レシピの入力となるクラス
+         * @param RECIPE レシピのクラス
+         * @param sorter レシピの順番の制御
+         */
+        @JvmStatic
+        protected fun <INPUT : RecipeInput, RECIPE : Any> IRecipeRegistration.addRecipes(
+            recipeType: HTFakeRecipeViewerType<INPUT, RECIPE>,
             sorter: Comparator<RECIPE>,
         ) {
             this.addRecipes(

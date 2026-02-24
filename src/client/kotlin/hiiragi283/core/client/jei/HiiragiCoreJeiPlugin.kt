@@ -12,6 +12,7 @@ import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.registry.asSequence
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.jei.category.HCAnvilCrushingRecipeCategory
+import hiiragi283.core.client.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.jei.category.HCEternalSmithingCategoryExtension
 import hiiragi283.core.client.jei.category.HCMaterialPartCategory
 import hiiragi283.core.client.jei.category.HCSingleItemRecipeCategory
@@ -81,6 +82,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         registration.addRecipeCategories(HCMaterialPartCategory(guiHelper))
 
         registration.addRecipeCategories(HCAnvilCrushingRecipeCategory(guiHelper))
+        registration.addRecipeCategories(HCBrewingRecipeCategory(guiHelper))
         registration.addRecipeCategories(HCSingleItemRecipeCategory.charging(guiHelper))
         registration.addRecipeCategories(HCSingleItemRecipeCategory.exploding(guiHelper))
     }
@@ -100,6 +102,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         )
 
         registration.addRecipes(HCJeiRecipeTypes.ANVIL_CRUSHING, sorter = compareBy { it.result.getId() })
+        registration.addRecipes(HCJeiRecipeTypes.BREWING)
         registration.addRecipes(HCJeiRecipeTypes.CHARGING, sorter = compareBy { it.result.getId() })
         registration.addRecipes(HCJeiRecipeTypes.EXPLODING, sorter = compareBy { it.result.getId() })
     }
@@ -107,6 +110,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {
         registration.addRecipeCatalysts(
             HCJeiRecipeTypes.ANVIL_CRUSHING,
+            HCJeiRecipeTypes.BREWING,
             HCJeiRecipeTypes.CHARGING,
             HCJeiRecipeTypes.EXPLODING,
         )

@@ -1,7 +1,7 @@
 package hiiragi283.core.common.recipe
 
 import com.google.common.collect.ImmutableMultimap
-import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTIngredientCreator
 import hiiragi283.core.api.data.recipe.HTResultCreator
 import hiiragi283.core.api.item.alchemy.HTBottleType
@@ -16,7 +16,6 @@ import hiiragi283.core.api.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.IdToValue
-import hiiragi283.core.api.resource.toId
 import hiiragi283.core.mixin.PotionBrewingAccessor
 import hiiragi283.core.mixin.PotionBrewingMixAccessor
 import hiiragi283.core.util.HCPotionFluidHelper
@@ -64,8 +63,8 @@ object HTVanillaRecipeTypes {
     val BREWING: HTRecipeType.Fake<HTItemAndFluidRecipeInput, HCBrewingRecipe> = BrewingType
 
     private data object BrewingType : HTRecipeType.Fake<HTItemAndFluidRecipeInput, HCBrewingRecipe> {
-        private val storedBrewing: PotionBrewing = PotionBrewing.EMPTY
-        private val cachedRecipes: Sequence<IdToValue<HCBrewingRecipe>> = emptySequence()
+        private var storedBrewing: PotionBrewing = PotionBrewing.EMPTY
+        private var cachedRecipes: Sequence<IdToValue<HCBrewingRecipe>> = emptySequence()
 
         override fun createCache(): HTRecipeCache<HTItemAndFluidRecipeInput, HCBrewingRecipe> =
             HTRecipeCache { input: HTItemAndFluidRecipeInput, level: Level -> findFirst(input, level)?.second }
@@ -78,6 +77,7 @@ object HTVanillaRecipeTypes {
             if (potionBrewing == storedBrewing && cachedRecipes.any()) {
                 return cachedRecipes
             }
+            storedBrewing = potionBrewing
             // 醸造レシピを集める
             val builder: ImmutableMultimap.Builder<Holder<Potion>, Pair<Holder<Potion>, Ingredient>> = ImmutableMultimap.builder()
             // Vanilla
@@ -94,7 +94,7 @@ object HTVanillaRecipeTypes {
             }
             // 醸造レシピを登録していく
             val multimap: ImmutableMultimap<Holder<Potion>, Pair<Holder<Potion>, Ingredient>> = builder.build()
-            return multimap
+            cachedRecipes = multimap
                 .keySet()
                 .asSequence()
                 .flatMap { potionTo: Holder<Potion> ->
@@ -112,8 +112,9 @@ object HTVanillaRecipeTypes {
                         potionTo.toLike().getId().withSuffix("_$index") to recipe
                     }
                 }.filterNotNull()
+            return cachedRecipes
         }
 
-        override fun getId(): ResourceLocation = HTConst.MINECRAFT.toId("brewing")
+        override fun getId(): ResourceLocation = HiiragiCoreAPI.id("brewing")
     }
 }
