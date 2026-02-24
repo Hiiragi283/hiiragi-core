@@ -10,7 +10,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
 import java.util.Optional
 
-class HTCrushingRecipe(
+class HCCrushingRecipe(
     ingredient: HTItemIngredient,
     result: HTItemResult,
     extraResult: Optional<HTChancedItemResult>,

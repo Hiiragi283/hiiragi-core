@@ -1,7 +1,11 @@
 {
   "type": "hiiragi_core:charging",
-  "ingredient": "hiiragi_core:wither_star",
+  "ingredient": {
+    "amount": 1,
+    "items": "hiiragi_core:wither_star"
+  },
   "result": {
     "id": "minecraft:nether_star"
-  }
+  },
+  "time": 200
 }

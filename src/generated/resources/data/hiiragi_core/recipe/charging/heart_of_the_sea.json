@@ -1,7 +1,11 @@
 {
   "type": "hiiragi_core:charging",
-  "ingredient": "hiiragi_core:elder_heart",
+  "ingredient": {
+    "amount": 1,
+    "items": "hiiragi_core:elder_heart"
+  },
   "result": {
     "id": "minecraft:heart_of_the_sea"
-  }
+  },
+  "time": 200
 }

@@ -1,8 +1,12 @@
 {
   "type": "hiiragi_core:charging",
-  "ingredient": "minecraft:end_crystal",
+  "ingredient": {
+    "amount": 1,
+    "items": "minecraft:end_crystal"
+  },
   "result": {
     "id": "hiiragi_core:eldritch_pearl",
     "tag": "c:eldritch_pearls"
-  }
+  },
+  "time": 200
 }

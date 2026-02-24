@@ -16,7 +16,9 @@ import hiiragi283.core.client.jei.category.HCEternalSmithingCategoryExtension
 import hiiragi283.core.client.jei.category.HCMaterialPartCategory
 import hiiragi283.core.client.jei.category.HCSingleItemRecipeCategory
 import hiiragi283.core.client.jei.category.HTItemToChancedRecipeCategory
+import hiiragi283.core.client.jei.category.HTItemToItemRecipeCategory
 import hiiragi283.core.client.jei.extension.HTBasicItemToChancedRecipeCategoryExtension
+import hiiragi283.core.client.jei.extension.HTBasicItemToItemRecipeCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
@@ -43,6 +45,11 @@ import net.neoforged.neoforge.fluids.FluidStack
 @JeiPlugin
 class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     companion object {
+        // ItemToItem
+        @JvmStatic
+        lateinit var charging: HTItemToItemRecipeCategory
+            private set
+
         // ItemToChanced
         @JvmStatic
         lateinit var crushing: HTItemToChancedRecipeCategory
@@ -89,6 +96,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         val guiHelper: IGuiHelper = registration.jeiHelpers.guiHelper
         val manager: IIngredientManager = registration.jeiHelpers.ingredientManager
 
+        initItemToItem(guiHelper, manager)
         initItemToChanced(guiHelper, manager)
 
         registration.addRecipeCategories(
@@ -96,14 +104,20 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             HCMaterialPartCategory(guiHelper),
             // Basic
             HCBrewingRecipeCategory(guiHelper),
+            charging,
             crushing,
-            HCSingleItemRecipeCategory.charging(guiHelper),
             HCSingleItemRecipeCategory.exploding(guiHelper),
         )
     }
 
+    private fun initItemToItem(guiHelper: IGuiHelper, manager: IIngredientManager) {
+        charging = HTItemToItemRecipeCategory(guiHelper, HCJeiRecipeTypes.CHARGING)
+
+        charging.addExtension(HTBasicItemToItemRecipeCategoryExtension())
+    }
+
     private fun initItemToChanced(guiHelper: IGuiHelper, manager: IIngredientManager) {
-        crushing = HTItemToChancedRecipeCategory.crushing(guiHelper)
+        crushing = HTItemToChancedRecipeCategory(guiHelper, HCJeiRecipeTypes.CRUSHING)
 
         crushing.addExtension(HTBasicItemToChancedRecipeCategoryExtension())
     }
@@ -123,7 +137,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         )
 
         registration.addRecipes(HCJeiRecipeTypes.BREWING)
-        registration.addRecipes(HCJeiRecipeTypes.CHARGING, sorter = compareBy { it.result.getId() })
+        registration.addRecipes(HCJeiRecipeTypes.CHARGING)
         registration.addRecipes(HCJeiRecipeTypes.CRUSHING)
         registration.addRecipes(HCJeiRecipeTypes.EXPLODING, sorter = compareBy { it.result.getId() })
     }

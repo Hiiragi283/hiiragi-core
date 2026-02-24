@@ -5,7 +5,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.recipe.result.HTItemResult
-import hiiragi283.core.common.recipe.HTCrushingRecipe
+import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.base.HTBasicItemToChancedRecipe
 import net.minecraft.data.recipes.RecipeOutput
 import java.util.Optional
@@ -15,7 +15,7 @@ class HTItemToChancedRecipeBuilder(prefix: String, private val factory: Factory<
         @HTBuilderMarker
         @JvmStatic
         inline fun crushing(output: RecipeOutput, builderAction: HTItemToChancedRecipeBuilder.() -> Unit) {
-            HTItemToChancedRecipeBuilder(HTConst.CRUSHING, ::HTCrushingRecipe).apply(builderAction).save(output)
+            HTItemToChancedRecipeBuilder(HTConst.CRUSHING, ::HCCrushingRecipe).apply(builderAction).save(output)
         }
     }
 

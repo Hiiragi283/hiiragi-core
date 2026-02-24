@@ -5,13 +5,12 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.item.enchantment.toInstances
 import hiiragi283.core.api.recipe.HTItemToChancedRecipe
+import hiiragi283.core.api.recipe.HTItemToItemRecipe
 import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.findFirst
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.toFraction
 import hiiragi283.core.common.recipe.HCExplodingRecipe
-import hiiragi283.core.common.recipe.HCLightningChargingRecipe
-import hiiragi283.core.common.recipe.HCSingleItemRecipe
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.core.util.HTShapelessRecipeHelper
 import net.minecraft.core.component.DataComponents
@@ -32,7 +31,7 @@ import net.neoforged.neoforge.event.level.ExplosionEvent
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 object HTRecipeEventHandler {
     /**
-     * [HCLightningChargingRecipe]を処理するイベント
+     * [HTItemToItemRecipe]を処理するイベント
      */
     @SubscribeEvent
     fun onStruck(event: EntityStruckByLightningEvent) {
@@ -45,8 +44,8 @@ object HTRecipeEventHandler {
         if (level.isClientSide) return
         if (entity is ItemEntity && entity.isAlive) {
             val input: SingleRecipeInput = createInput(entity)
-            val recipe: HCLightningChargingRecipe = HCRecipeTypes.CHARGING.findFirst(input, level)?.value() ?: return
-            popResult(recipe.assemble(input, level.registryAccess()), recipe.ingredient.amount, entity)
+            val recipe: HTItemToItemRecipe.Serializable = HCRecipeTypes.CHARGING.findFirst(input, level)?.value() ?: return
+            popResult(input, recipe, level, entity, HTItemToItemRecipe::getRequiredAmount)
             if (entity.item.isEmpty) {
                 entity.discard()
                 event.isCanceled = true
@@ -131,7 +130,7 @@ object HTRecipeEventHandler {
             if (entity is ItemEntity && entity.isAlive && !isCompleted(entity)) {
                 val input = HCExplodingRecipe.Input(entity.item, event.explosion.radius().toFraction())
                 val recipe: HCExplodingRecipe = HCRecipeTypes.EXPLODING.findFirst(input, level)?.value ?: continue
-                popResult(input, recipe, level, entity)
+                popResult(input, recipe, level, entity, { recipeIn, _ -> recipeIn.ingredient.amount })
                 if (entity.item.isEmpty) {
                     iterator.remove()
                     entity.discard()
@@ -152,14 +151,6 @@ object HTRecipeEventHandler {
 
     @JvmStatic
     private fun createInput(entity: ItemEntity): SingleRecipeInput = SingleRecipeInput(entity.item)
-
-    @JvmStatic
-    private fun <INPUT : RecipeInput> popResult(
-        input: INPUT,
-        recipe: HCSingleItemRecipe<INPUT>,
-        level: Level,
-        entity: ItemEntity,
-    ): Int = popResult(recipe.assemble(input, level.registryAccess()), recipe.ingredient.amount, entity)
 
     @JvmStatic
     private fun <INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> popResult(

@@ -7,14 +7,12 @@ import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.core.client.jei.HCJeiRecipeTypes
 import hiiragi283.core.client.jei.category.base.HTHolderRecipeCategory
 import hiiragi283.core.common.recipe.HCExplodingRecipe
-import hiiragi283.core.common.recipe.HCLightningChargingRecipe
 import hiiragi283.core.common.recipe.HCSingleItemRecipe
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder
 import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.Items
 import net.minecraft.world.item.crafting.RecipeHolder
 
 class HCSingleItemRecipeCategory<RECIPE : HCSingleItemRecipe<*>>(
@@ -23,10 +21,6 @@ class HCSingleItemRecipeCategory<RECIPE : HCSingleItemRecipe<*>>(
     private val iconFactory: (RECIPE) -> ItemStack,
 ) : HTHolderRecipeCategory<RECIPE>(guiHelper, recipeType) {
     companion object {
-        @JvmStatic
-        fun charging(guiHelper: IGuiHelper): HCSingleItemRecipeCategory<HCLightningChargingRecipe> =
-            HCSingleItemRecipeCategory(guiHelper, HCJeiRecipeTypes.CHARGING) { ItemStack(Items.LIGHTNING_ROD) }
-
         @JvmStatic
         fun exploding(guiHelper: IGuiHelper): HCSingleItemRecipeCategory<HCExplodingRecipe> =
             HCSingleItemRecipeCategory(guiHelper, HCJeiRecipeTypes.EXPLODING) { recipe: HCExplodingRecipe ->

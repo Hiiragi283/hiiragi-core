@@ -3,7 +3,6 @@ package hiiragi283.core.client.jei.category
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.recipe.HTItemToChancedRecipe
 import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
-import hiiragi283.core.client.jei.HCJeiRecipeTypes
 import hiiragi283.core.client.jei.category.base.HTHolderRecipeCategory
 import hiiragi283.core.client.jei.extension.HTItemToChancedRecipeCategoryExtension
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
@@ -15,12 +14,6 @@ import net.minecraft.world.item.crafting.RecipeHolder
 
 class HTItemToChancedRecipeCategory(guiHelper: IGuiHelper, recipeType: HTHolderRecipeViewerType<*, HTItemToChancedRecipe.Serializable>) :
     HTHolderRecipeCategory<HTItemToChancedRecipe.Serializable>(guiHelper, recipeType) {
-    companion object {
-        @JvmStatic
-        fun crushing(guiHelper: IGuiHelper): HTItemToChancedRecipeCategory =
-            HTItemToChancedRecipeCategory(guiHelper, HCJeiRecipeTypes.CRUSHING)
-    }
-
     private val extensions: MutableMap<Class<out HTItemToChancedRecipe>, HTItemToChancedRecipeCategoryExtension<*>> = hashMapOf()
 
     inline fun <reified RECIPE : HTItemToChancedRecipe> addExtension(extension: HTItemToChancedRecipeCategoryExtension<RECIPE>) {
