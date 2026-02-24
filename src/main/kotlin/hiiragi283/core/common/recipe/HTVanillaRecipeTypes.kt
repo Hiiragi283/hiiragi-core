@@ -10,10 +10,12 @@ import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.recipe.HTRecipeCache
 import hiiragi283.core.api.recipe.HTRecipeLookup
 import hiiragi283.core.api.recipe.HTRecipeType
+import hiiragi283.core.api.recipe.findFirst
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.resource.IdToValue
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.mixin.PotionBrewingAccessor
 import hiiragi283.core.mixin.PotionBrewingMixAccessor
@@ -41,36 +43,36 @@ import net.neoforged.neoforge.common.brewing.BrewingRecipe
  */
 object HTVanillaRecipeTypes {
     @JvmField
-    val SMELTING: HTRecipeType<SingleRecipeInput, SmeltingRecipe> = CookingType(RecipeType.SMELTING)
+    val SMELTING: HTRecipeType.Managed<SingleRecipeInput, SmeltingRecipe> = CookingType(RecipeType.SMELTING)
 
     @JvmField
-    val BLASTING: HTRecipeType<SingleRecipeInput, BlastingRecipe> = CookingType(RecipeType.BLASTING)
+    val BLASTING: HTRecipeType.Managed<SingleRecipeInput, BlastingRecipe> = CookingType(RecipeType.BLASTING)
 
     @JvmField
-    val SMOKING: HTRecipeType<SingleRecipeInput, SmokingRecipe> = CookingType(RecipeType.SMOKING)
+    val SMOKING: HTRecipeType.Managed<SingleRecipeInput, SmokingRecipe> = CookingType(RecipeType.SMOKING)
 
     private class CookingType<RECIPE : AbstractCookingRecipe>(private val recipeType: RecipeType<RECIPE>) :
-        HTRecipeType<SingleRecipeInput, RECIPE> {
+        HTRecipeType.Managed<SingleRecipeInput, RECIPE> {
         override fun getId(): ResourceLocation = ResourceLocation.parse(recipeType.toString())
 
-        override fun createCache(): HTRecipeCache<SingleRecipeInput, RECIPE> = HTLookupRecipeCache(this)
+        override fun createCache(): HTRecipeCache<SingleRecipeInput, RECIPE> = HTLookupRecipeCache.forManager(this)
 
         override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<RecipeHolder<RECIPE>> = context.getAllRecipes(recipeType)
     }
 
     @JvmField
-    val BREWING: HTRecipeType<HTItemAndFluidRecipeInput, HCBrewingRecipe> = BrewingType
+    val BREWING: HTRecipeType.Fake<HTItemAndFluidRecipeInput, HCBrewingRecipe> = BrewingType
 
-    private data object BrewingType : HTRecipeType<HTItemAndFluidRecipeInput, HCBrewingRecipe> {
+    private data object BrewingType : HTRecipeType.Fake<HTItemAndFluidRecipeInput, HCBrewingRecipe> {
         private val storedBrewing: PotionBrewing = PotionBrewing.EMPTY
-        private val cachedRecipes: Sequence<RecipeHolder<HCBrewingRecipe>> = emptySequence()
+        private val cachedRecipes: Sequence<IdToValue<HCBrewingRecipe>> = emptySequence()
 
         override fun createCache(): HTRecipeCache<HTItemAndFluidRecipeInput, HCBrewingRecipe> =
-            HTRecipeCache { input: HTItemAndFluidRecipeInput, level: Level -> findFirst(level) { it.matches(input, level) }?.value() }
+            HTRecipeCache { input: HTItemAndFluidRecipeInput, level: Level -> findFirst(input, level)?.second }
 
         private fun getPotion(stack: ItemStack): Holder<Potion> = HTPotionHelper.getPotion(stack).potion.orElse(Potions.WATER)
 
-        override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<RecipeHolder<HCBrewingRecipe>> {
+        override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<IdToValue<HCBrewingRecipe>> {
             // すでにレシピが生成されている場合はパス
             val potionBrewing: PotionBrewing = context.brewing
             if (potionBrewing == storedBrewing && cachedRecipes.any()) {
@@ -107,7 +109,7 @@ object HTVanillaRecipeTypes {
                             HTIngredientCreator.create(ingredient),
                             HTResultCreator.create(HCPotionFluidHelper.createFluid(resultContents)),
                         )
-                        RecipeHolder(potionTo.toLike().getId().withSuffix("_$index"), recipe)
+                        potionTo.toLike().getId().withSuffix("_$index") to recipe
                     }
                 }.filterNotNull()
         }

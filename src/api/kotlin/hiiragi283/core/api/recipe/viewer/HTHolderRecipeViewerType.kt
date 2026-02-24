@@ -13,20 +13,20 @@ import net.minecraft.world.item.crafting.RecipeInput
  * [RecipeHolder]に基づいた[HTRecipeViewerType]の実装クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.11.0
- * @see mekanism.client.recipe_viewer.type.RecipeViewerRecipeType
+ * @see mekanism.client.recipe_viewer.type.RVRecipeTypeWrapper
  */
 class HTHolderRecipeViewerType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(
     override val recipeClass: Class<out RecipeHolder<RECIPE>>,
-    deferredType: HTRecipeType<INPUT, RECIPE>,
+    deferredType: HTRecipeType.Managed<INPUT, RECIPE>,
     override val icon: Either<ResourceLocation, ItemStack>,
     override val bounds: HTBounds,
     override val workStations: List<ItemStack>,
 ) : HTRecipeViewerType<RecipeHolder<RECIPE>>,
-    HTRecipeType<INPUT, RECIPE> by deferredType {
+    HTRecipeType.Managed<INPUT, RECIPE> by deferredType {
     companion object {
         @JvmStatic
         fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> create(
-            deferredType: HTRecipeType<INPUT, RECIPE>,
+            deferredType: HTRecipeType.Managed<INPUT, RECIPE>,
             icon: ItemStack,
             bounds: HTBounds,
             vararg workStations: ItemStack,
@@ -34,7 +34,7 @@ class HTHolderRecipeViewerType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(
 
         @JvmStatic
         fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> create(
-            deferredType: HTRecipeType<INPUT, RECIPE>,
+            deferredType: HTRecipeType.Managed<INPUT, RECIPE>,
             icon: Either<ResourceLocation, ItemStack>,
             bounds: HTBounds,
             vararg workStations: ItemStack,
@@ -42,7 +42,7 @@ class HTHolderRecipeViewerType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(
 
         @JvmStatic
         inline fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>, reified HOLDER : RecipeHolder<RECIPE>> create(
-            deferredType: HTRecipeType<INPUT, RECIPE>,
+            deferredType: HTRecipeType.Managed<INPUT, RECIPE>,
             icon: Either<ResourceLocation, ItemStack>,
             bounds: HTBounds,
             workstations: List<ItemStack>,

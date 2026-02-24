@@ -22,23 +22,23 @@ import net.neoforged.neoforge.fluids.FluidStack
  * @since 0.1.0
  * @see HTHolderLike
  */
-fun interface HTKeyLike<T : Any> : HTIdLike {
+fun interface HTKeyLike<R : Any> : HTIdLike {
     /**
      * 保持している[ResourceKey]を返します。
      */
-    fun getResourceKey(): ResourceKey<T>
+    fun getResourceKey(): ResourceKey<R>
 
     /**
      * 指定した[key]が保持している[ResourceKey]と一致するか判定します。
      * @since 0.6.0
      */
-    fun isOf(key: ResourceKey<T>): Boolean = key == getResourceKey()
+    fun isOf(key: ResourceKey<R>): Boolean = key == getResourceKey()
 
     /**
      * 指定した[other]と保持している[ResourceKey]が一致するか判定します。
      * @since 0.6.0
      */
-    fun isOf(other: HTKeyLike<T>): Boolean = isOf(other.getResourceKey())
+    fun isOf(other: HTKeyLike<R>): Boolean = isOf(other.getResourceKey())
 
     override fun getId(): ResourceLocation = getResourceKey().location()
 
@@ -48,38 +48,38 @@ fun interface HTKeyLike<T : Any> : HTIdLike {
      * @since 0.1.0
      * @see HTHolderLike.HolderDelegate
      */
-    fun interface HolderDelegate<T : Any> : HTKeyLike<T> {
+    fun interface HolderDelegate<R : Any> : HTKeyLike<R> {
         /**
          * 保持している[Holder]を返します。
          */
-        fun getHolder(): Holder<T>
+        fun getHolder(): Holder<R>
 
         /**
          * 指定した[value]が保持している[Holder]の値と一致するか判定します。
          * @since 0.6.0
          */
-        fun isOf(value: T): Boolean = getHolder().value() == value
+        fun isOf(value: R): Boolean = getHolder().value() == value
 
         /**
          * 指定した[tagKey]が保持している[Holder]に含まれるか判定します。
          * @since 0.6.0
          */
-        fun isOf(tagKey: TagKey<T>): Boolean = getHolder().`is`(tagKey)
+        fun isOf(tagKey: TagKey<R>): Boolean = getHolder().`is`(tagKey)
 
         /**
          * 指定した[holder]が保持している[Holder]と一致するか判定します。
          * @since 0.6.0
          */
         @Suppress("DEPRECATION")
-        fun isOf(holder: Holder<T>): Boolean = getHolder().`is`(holder)
+        fun isOf(holder: Holder<R>): Boolean = getHolder().`is`(holder)
 
         /**
          * 指定した[holderSet]に保持している[Holder]が含まれるか判定します。
          * @since 0.6.0
          */
-        fun isOf(holderSet: HolderSet<T>): Boolean = holderSet.contains(getHolder())
+        fun isOf(holderSet: HolderSet<R>): Boolean = holderSet.contains(getHolder())
 
-        override fun getResourceKey(): ResourceKey<T> = getHolder().unwrapKey().orElseThrow()
+        override fun getResourceKey(): ResourceKey<R> = getHolder().unwrapKey().orElseThrow()
     }
 }
 

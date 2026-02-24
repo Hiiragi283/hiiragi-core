@@ -17,7 +17,7 @@ import net.minecraft.world.item.crafting.RecipeType
 
 data class HTDeferredRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(private val key: ResourceKey<RecipeType<*>>) :
     HTHolderLike<RecipeType<*>, RecipeType<RECIPE>>,
-    HTRecipeType<INPUT, RECIPE> {
+    HTRecipeType.Managed<INPUT, RECIPE> {
     constructor(id: ResourceLocation) : this(Registries.RECIPE_TYPE.createKey(id))
 
     override fun getResourceKey(): ResourceKey<RecipeType<*>> = key
@@ -25,7 +25,7 @@ data class HTDeferredRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(pri
     @Suppress("UNCHECKED_CAST")
     override fun get(): RecipeType<RECIPE> = BuiltInRegistries.RECIPE_TYPE.getOrThrow(key) as RecipeType<RECIPE>
 
-    override fun createCache(): HTRecipeCache<INPUT, RECIPE> = HTLookupRecipeCache(this)
+    override fun createCache(): HTRecipeCache<INPUT, RECIPE> = HTLookupRecipeCache.forManager(this)
 
     override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<RecipeHolder<RECIPE>> = context.getAllRecipes(get())
 }

@@ -1,6 +1,7 @@
-package hiiragi283.core.api.recipe
+package hiiragi283.core.api.recipe.base
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.ParameterCodec
 import io.netty.buffer.ByteBuf
@@ -14,4 +15,8 @@ interface HTProcessingRecipe<INPUT : RecipeInput> : HTRecipe<INPUT> {
     }
 
     val time: Int
+
+    interface Serializable<INPUT : RecipeInput> :
+        HTProcessingRecipe<INPUT>,
+        HTSerializableRecipe<INPUT>
 }

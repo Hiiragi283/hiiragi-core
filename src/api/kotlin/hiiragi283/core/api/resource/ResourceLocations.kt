@@ -4,6 +4,8 @@ import net.minecraft.Util
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 
+typealias IdToValue<T> = Pair<ResourceLocation, T>
+
 //    ResourceLocation    //
 
 /**

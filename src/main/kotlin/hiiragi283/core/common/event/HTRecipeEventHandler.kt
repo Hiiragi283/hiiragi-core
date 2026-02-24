@@ -4,8 +4,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.item.enchantment.toInstances
-import hiiragi283.core.api.recipe.component1
-import hiiragi283.core.api.recipe.component2
+import hiiragi283.core.api.recipe.findFirst
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.times
 import hiiragi283.core.api.toFraction
@@ -20,7 +19,6 @@ import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.item.EnchantedBookItem
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.minecraft.world.item.enchantment.ItemEnchantments
@@ -48,13 +46,7 @@ object HTRecipeEventHandler {
         if (level.isClientSide) return
         if (entity is ItemEntity && entity.isAlive) {
             val input: SingleRecipeInput = createInput(entity)
-            val recipe: HCLightningChargingRecipe = level.recipeManager
-                .getRecipesFor(
-                    HCRecipeTypes.CHARGING.get(),
-                    input,
-                    level,
-                ).map(RecipeHolder<HCLightningChargingRecipe>::value)
-                .firstOrNull() ?: return
+            val recipe: HCLightningChargingRecipe = HCRecipeTypes.CHARGING.findFirst(input, level)?.value() ?: return
             popResult(recipe.assemble(input, level.registryAccess()), recipe.ingredient.amount, entity)
             if (entity.item.isEmpty) {
                 entity.discard()
@@ -79,7 +71,7 @@ object HTRecipeEventHandler {
     private fun anvilCrushing(entity: ItemEntity) {
         val level: Level = entity.level()
         val input: SingleRecipeInput = createInput(entity)
-        val (_, recipe: HCAnvilCrushingRecipe) = HCRecipeTypes.ANVIL_CRUSHING.findFirst(level) { it.matches(input, level) } ?: return
+        val recipe: HCAnvilCrushingRecipe = HCRecipeTypes.ANVIL_CRUSHING.findFirst(input, level)?.value() ?: return
         val multiplier: Int = popResult(input, recipe, level, entity)
         recipe.extraResult?.let { (result: HTItemResult, chance: Fraction) ->
             val access: RegistryAccess = entity.registryAccess()
@@ -139,7 +131,7 @@ object HTRecipeEventHandler {
             val entity: Entity = iterator.next()
             if (entity is ItemEntity && entity.isAlive && !isCompleted(entity)) {
                 val input = HCExplodingRecipe.Input(entity.item, event.explosion.radius().toFraction())
-                val (_, recipe: HCExplodingRecipe) = HCRecipeTypes.EXPLODING.findFirst(level) { it.matches(input, level) } ?: continue
+                val recipe: HCExplodingRecipe = HCRecipeTypes.EXPLODING.findFirst(input, level)?.value ?: continue
                 popResult(input, recipe, level, entity)
                 if (entity.item.isEmpty) {
                     iterator.remove()

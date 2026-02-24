@@ -7,13 +7,12 @@ import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput
-import net.minecraft.world.level.Level
 
 class HCLightningChargingRecipe(ingredient: HTItemIngredient, result: HTItemResult) :
     HCSingleItemRecipe<SingleRecipeInput>(ingredient, result) {
-    override fun matches(input: SingleRecipeInput, level: Level): Boolean = ingredient.test(input.item())
-
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.CHARGING
 
     override fun getType(): RecipeType<*> = HCRecipeTypes.CHARGING.get()
+
+    override fun test(input: SingleRecipeInput): Boolean = ingredient.test(input.item())
 }

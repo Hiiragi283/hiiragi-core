@@ -27,13 +27,11 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
-import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 import org.apache.commons.lang3.math.Fraction
 
 typealias JeiRecipeType<T> = RecipeType<T>
-typealias JeiRecipeHolderType<T> = JeiRecipeType<RecipeHolder<T>>
 
 fun IIngredientConsumer.addFluidStack(stack: FluidStack): IIngredientConsumer? =
     this.addFluidStack(stack.fluid, stack.amount.toLong(), stack.componentsPatch)

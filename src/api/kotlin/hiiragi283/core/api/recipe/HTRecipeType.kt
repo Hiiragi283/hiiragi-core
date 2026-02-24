@@ -15,13 +15,20 @@ import net.minecraft.world.item.crafting.RecipeInput
  * @author Hiiragi Tsubasa
  * @since 0.11.0
  */
-interface HTRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>> :
+sealed interface HTRecipeType<INPUT : RecipeInput, RECIPE : Any> :
     HTHasTranslationKey,
     HTHasText,
-    HTIdLike,
-    HTRecipeLookup<INPUT, RECIPE> {
+    HTIdLike {
     override val translationKey: String
         get() = getId().toLanguageKey("recipe_type")
 
     override fun getText(): Text = translatableText(translationKey)
+
+    interface Managed<INPUT : RecipeInput, RECIPE : Recipe<INPUT>> :
+        HTRecipeType<INPUT, RECIPE>,
+        HTRecipeLookup.Managed<INPUT, RECIPE>
+
+    interface Fake<INPUT : RecipeInput, RECIPE : Any> :
+        HTRecipeType<INPUT, RECIPE>,
+        HTRecipeLookup.Fake<INPUT, RECIPE>
 }

@@ -1,6 +1,5 @@
 package hiiragi283.core.common.crafting
 
-import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.resource.isOf
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.material.CommonMaterialKeys
@@ -9,7 +8,6 @@ import hiiragi283.core.setup.HCRecipeSerializers
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponents
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.Items
 import net.minecraft.world.item.component.Unbreakable
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeSerializer
@@ -38,8 +36,7 @@ object HCEternalSmithingRecipe : SmithingRecipe {
         return stack
     }
 
-    override fun getResultItem(registries: HolderLookup.Provider): ItemStack =
-        createItemStack(Items.IRON_PICKAXE, DataComponents.UNBREAKABLE, Unbreakable(true))
+    override fun getResultItem(registries: HolderLookup.Provider): ItemStack = ItemStack.EMPTY
 
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.ETERNAL_UPGRADE
 }

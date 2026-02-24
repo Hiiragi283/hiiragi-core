@@ -1,6 +1,5 @@
-package hiiragi283.core.api.recipe
+package hiiragi283.core.api.recipe.base
 
-import hiiragi283.core.api.recipe.result.HTFluidResult
 import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.crafting.RecipeInput
 import net.neoforged.neoforge.fluids.FluidStack
@@ -17,7 +16,6 @@ fun interface HTFluidRecipe<INPUT : RecipeInput> {
     fun assembleFluid(input: INPUT, registries: HolderLookup.Provider): FluidStack
 
     /**
-     * [液体の完成品][HTFluidResult]に基づいた[HTFluidResult]の拡張インターフェースです。
      * @author Hiiragi Tsubasa
      * @since 0.10.0
      */
@@ -25,7 +23,7 @@ fun interface HTFluidRecipe<INPUT : RecipeInput> {
         override fun assembleFluid(input: INPUT, registries: HolderLookup.Provider): FluidStack = getResultFluid(registries)
 
         /**
-         * 完成品の[液体][FluidStack]を取得します。
+         * 完成品の[液体][net.neoforged.neoforge.fluids.FluidStack]を取得します。
          */
         fun getResultFluid(registries: HolderLookup.Provider): FluidStack
     }

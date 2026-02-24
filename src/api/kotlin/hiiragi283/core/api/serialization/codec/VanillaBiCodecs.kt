@@ -155,8 +155,9 @@ object VanillaBiCodecs {
      * @param T レジストリの要素のクラス
      */
     @JvmStatic
-    fun <T : Any> holder(registryKey: RegistryKey<T>): BiCodec<RegistryFriendlyByteBuf, Holder<T>> =
-        BiCodec.of(RegistryFixedCodec.create(registryKey), ByteBufCodecs.holderRegistry(registryKey))
+    fun <T : Any> holder(registryKey: RegistryKey<T>): BiCodec<RegistryFriendlyByteBuf, Holder<T>> = BiCodec
+        .of(RegistryFixedCodec.create(registryKey), ByteBufCodecs.holderRegistry(registryKey))
+        .filterOrElse({ holder: Holder<T> -> holder.unwrap().left().isPresent }, Holder<T>::getDelegate)
 
     /**
      * 指定した[registryKey]から[HolderSet]の[BiCodec]を返します。

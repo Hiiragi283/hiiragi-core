@@ -14,7 +14,6 @@ import net.minecraft.world.item.Items
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
-import net.minecraft.world.level.Level
 import org.apache.commons.lang3.math.Fraction
 
 class HCExplodingRecipe(ingredient: HTItemIngredient, result: HTItemResult, val minPower: Fraction) :
@@ -36,11 +35,11 @@ class HCExplodingRecipe(ingredient: HTItemIngredient, result: HTItemResult, val 
         }
     }
 
-    override fun matches(input: Input, level: Level): Boolean = ingredient.test(input.item) && input.power >= minPower
-
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.EXPLODING
 
     override fun getType(): RecipeType<*> = HCRecipeTypes.EXPLODING.get()
+
+    override fun test(input: Input): Boolean = ingredient.test(input.item) && input.power >= minPower
 
     @JvmRecord
     data class Input(val item: ItemStack, val power: Fraction) : RecipeInput {

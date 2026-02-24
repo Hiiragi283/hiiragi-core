@@ -1,6 +1,6 @@
 package hiiragi283.core.api.data.recipe.builder
 
-import hiiragi283.core.api.recipe.HTProcessingRecipe
+import hiiragi283.core.api.recipe.base.HTProcessingRecipe
 
 /**
  * [HTProcessingRecipe]向けの[HTRecipeBuilder]の拡張クラスです。
