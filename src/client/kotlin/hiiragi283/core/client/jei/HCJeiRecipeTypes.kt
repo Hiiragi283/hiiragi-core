@@ -56,7 +56,7 @@ object HCJeiRecipeTypes {
 
     @JvmField
     val EXPLODING: HTHolderRecipeViewerType<HCExplodingRecipe.Input, HCExplodingRecipe> =
-        create(HCRecipeTypes.EXPLODING, Items.TNT, 18 * 4)
+        create(HCRecipeTypes.EXPLODING, Items.TNT, 18 * 6)
 
     data object MaterialType : HTRecipeViewerType<HTMaterialManager.Entry> {
         override val recipeClass: Class<HTMaterialManager.Entry> = HTMaterialManager.Entry::class.java

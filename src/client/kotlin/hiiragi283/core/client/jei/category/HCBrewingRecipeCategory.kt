@@ -8,7 +8,7 @@ import hiiragi283.core.api.integration.jei.addItemIngredient
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.resource.IdToValue
 import hiiragi283.core.client.jei.HCJeiRecipeTypes
-import hiiragi283.core.client.jei.category.base.HTFakeRecipeCategory
+import hiiragi283.core.client.jei.category.base.HTLookupRecipeCategory
 import hiiragi283.core.common.recipe.HCBrewingRecipe
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.builder.ITooltipBuilder
@@ -21,12 +21,7 @@ import net.minecraft.network.chat.FormattedText
 import net.minecraft.world.inventory.tooltip.TooltipComponent
 import net.minecraft.world.item.alchemy.PotionContents
 
-class HCBrewingRecipeCategory(guiHelper: IGuiHelper) : HTFakeRecipeCategory<HCBrewingRecipe>(guiHelper, HCJeiRecipeTypes.BREWING) {
-    override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: IdToValue<HCBrewingRecipe>, focuses: IFocusGroup) {
-        builder.addAnimatedRecipeArrow(recipe.second.time).setPosition(getPosition(3.25), getPosition(0))
-        builder.addRecipePlusSign().setPosition(getPosition(1) + 2, getPosition(0) + 2)
-    }
-
+class HCBrewingRecipeCategory(guiHelper: IGuiHelper) : HTLookupRecipeCategory.Fake<HCBrewingRecipe>(guiHelper, HCJeiRecipeTypes.BREWING) {
     override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: HCBrewingRecipe, focuses: IFocusGroup) {
         // inputs
         builder
@@ -55,5 +50,10 @@ class HCBrewingRecipeCategory(guiHelper: IGuiHelper) : HTFakeRecipeCategory<HCBr
                     .map { Either.left<FormattedText, TooltipComponent>(it) }
                     .let { builder.lines.addAll(1, it) }
             }
+    }
+
+    override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: IdToValue<HCBrewingRecipe>, focuses: IFocusGroup) {
+        builder.addAnimatedRecipeArrow(recipe.second.time).setPosition(getPosition(3.25), getPosition(0))
+        builder.addRecipePlusSign().setPosition(getPosition(1) + 2, getPosition(0) + 2)
     }
 }

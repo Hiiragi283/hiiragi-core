@@ -1,4 +1,4 @@
-package hiiragi283.core.client.jei.category
+package hiiragi283.core.client.jei.extension
 
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.setup.HCItems
@@ -11,7 +11,8 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.component.Unbreakable
 
-class HCEternalSmithingCategoryExtension(private val manager: IIngredientManager) : ISmithingCategoryExtension<HCEternalSmithingRecipe> {
+class HCEternalSmithingCategoryExtension(private val manager: IIngredientManager) :
+    ISmithingCategoryExtension<HCEternalSmithingRecipe> {
     override fun <T : IIngredientAcceptor<T>> setTemplate(recipe: HCEternalSmithingRecipe, ingredientAcceptor: T) {
         ingredientAcceptor.addItemLike(HCItems.ETERNAL_UPGRADE)
     }

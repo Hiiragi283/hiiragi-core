@@ -2,11 +2,13 @@ package hiiragi283.core.common.recipe
 
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.item.createItemStack
+import hiiragi283.core.api.recipe.base.HTSerializableRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
+import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponents
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -16,8 +18,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
 import org.apache.commons.lang3.math.Fraction
 
-class HCExplodingRecipe(ingredient: HTItemIngredient, result: HTItemResult, val minPower: Fraction) :
-    HCSingleItemRecipe<HCExplodingRecipe.Input>(ingredient, result) {
+class HCExplodingRecipe(val ingredient: HTItemIngredient, val result: HTItemResult, val minPower: Fraction) :
+    HTSerializableRecipe<HCExplodingRecipe.Input> {
     companion object {
         @JvmStatic
         fun createIcon(power: Float): ItemStack {
@@ -34,6 +36,8 @@ class HCExplodingRecipe(ingredient: HTItemIngredient, result: HTItemResult, val 
             )
         }
     }
+
+    override fun assemble(input: Input, registries: HolderLookup.Provider): ItemStack = result.getStackOrEmpty(registries)
 
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.EXPLODING
 

@@ -12,11 +12,11 @@ import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.registry.asSequence
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.jei.category.HCBrewingRecipeCategory
-import hiiragi283.core.client.jei.category.HCEternalSmithingCategoryExtension
+import hiiragi283.core.client.jei.category.HCExplodingRecipeCategory
 import hiiragi283.core.client.jei.category.HCMaterialPartCategory
-import hiiragi283.core.client.jei.category.HCSingleItemRecipeCategory
 import hiiragi283.core.client.jei.category.HTItemToChancedRecipeCategory
 import hiiragi283.core.client.jei.category.HTItemToItemRecipeCategory
+import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicItemToChancedRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicItemToItemRecipeCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
@@ -106,7 +106,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             HCBrewingRecipeCategory(guiHelper),
             charging,
             crushing,
-            HCSingleItemRecipeCategory.exploding(guiHelper),
+            HCExplodingRecipeCategory(guiHelper),
         )
     }
 

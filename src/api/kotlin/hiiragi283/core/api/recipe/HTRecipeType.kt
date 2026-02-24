@@ -24,10 +24,20 @@ sealed interface HTRecipeType<INPUT : RecipeInput, RECIPE : Any> :
 
     override fun getText(): Text = translatableText(translationKey)
 
+    /**
+     * [HTRecipeLookup.Managed]に基づいた[HTRecipeType]の拡張インターフェースです。
+     * @author Hiiragi Tsubasa
+     * @since 0.12.0
+     */
     interface Managed<INPUT : RecipeInput, RECIPE : Recipe<INPUT>> :
         HTRecipeType<INPUT, RECIPE>,
         HTRecipeLookup.Managed<INPUT, RECIPE>
 
+    /**
+     * [HTRecipeLookup.Fake]に基づいた[HTRecipeType]の拡張インターフェースです。
+     * @author Hiiragi Tsubasa
+     * @since 0.12.0
+     */
     interface Fake<INPUT : RecipeInput, RECIPE : Any> :
         HTRecipeType<INPUT, RECIPE>,
         HTRecipeLookup.Fake<INPUT, RECIPE>

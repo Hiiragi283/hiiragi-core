@@ -10,7 +10,6 @@ import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.recipe.HTRecipeCache
 import hiiragi283.core.api.recipe.HTRecipeLookup
 import hiiragi283.core.api.recipe.HTRecipeType
-import hiiragi283.core.api.recipe.findFirst
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
@@ -34,11 +33,12 @@ import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.minecraft.world.item.crafting.SmeltingRecipe
 import net.minecraft.world.item.crafting.SmokingRecipe
-import net.minecraft.world.level.Level
 import net.neoforged.neoforge.common.brewing.BrewingRecipe
 
 /**
- * @see RecipeType
+ * バニラのレシピ向けの[HTRecipeType]の実装をまとめたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
  */
 object HTVanillaRecipeTypes {
     @JvmField
@@ -66,8 +66,7 @@ object HTVanillaRecipeTypes {
         private var storedBrewing: PotionBrewing = PotionBrewing.EMPTY
         private var cachedRecipes: Sequence<IdToValue<HCBrewingRecipe>> = emptySequence()
 
-        override fun createCache(): HTRecipeCache<HTItemAndFluidRecipeInput, HCBrewingRecipe> =
-            HTRecipeCache { input: HTItemAndFluidRecipeInput, level: Level -> findFirst(input, level)?.second }
+        override fun createCache(): HTRecipeCache<HTItemAndFluidRecipeInput, HCBrewingRecipe> = HTLookupRecipeCache.forRecipe(this)
 
         private fun getPotion(stack: ItemStack): Holder<Potion> = HTPotionHelper.getPotion(stack).potion.orElse(Potions.WATER)
 

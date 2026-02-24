@@ -82,6 +82,11 @@ sealed interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any, HOLDER : Any>
             manager.getAllRecipesFor(recipeType).asSequence()
     }
 
+    /**
+     * [RecipeHolder]に基づいた[HTRecipeLookup]の拡張インターフェースです。
+     * @author Hiiragi Tsubasa
+     * @since 0.12.0
+     */
     interface Managed<INPUT : RecipeInput, RECIPE : Recipe<INPUT>> : HTRecipeLookup<INPUT, RECIPE, RecipeHolder<RECIPE>> {
         override fun createHolder(id: ResourceLocation, recipe: RECIPE): RecipeHolder<RECIPE> = RecipeHolder(id, recipe)
 
@@ -90,6 +95,11 @@ sealed interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any, HOLDER : Any>
         override fun getRecipe(holder: RecipeHolder<RECIPE>): RECIPE = holder.value()
     }
 
+    /**
+     * [IdToValue]に基づいた[HTRecipeLookup]の拡張インターフェースです。
+     * @author Hiiragi Tsubasa
+     * @since 0.12.0
+     */
     interface Fake<INPUT : RecipeInput, RECIPE : Any> : HTRecipeLookup<INPUT, RECIPE, IdToValue<RECIPE>> {
         override fun createHolder(id: ResourceLocation, recipe: RECIPE): IdToValue<RECIPE> = IdToValue(id, recipe)
 

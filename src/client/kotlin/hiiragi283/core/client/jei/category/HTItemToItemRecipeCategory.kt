@@ -3,7 +3,7 @@ package hiiragi283.core.client.jei.category
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.recipe.HTItemToItemRecipe
 import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
-import hiiragi283.core.client.jei.category.base.HTHolderRecipeCategory
+import hiiragi283.core.client.jei.category.base.HTLookupRecipeCategory
 import hiiragi283.core.client.jei.extension.HTItemToItemRecipeCategoryExtension
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable
@@ -13,7 +13,7 @@ import mezz.jei.api.recipe.IFocusGroup
 import net.minecraft.world.item.crafting.RecipeHolder
 
 class HTItemToItemRecipeCategory(guiHelper: IGuiHelper, recipeType: HTHolderRecipeViewerType<*, HTItemToItemRecipe.Serializable>) :
-    HTHolderRecipeCategory<HTItemToItemRecipe.Serializable>(guiHelper, recipeType) {
+    HTLookupRecipeCategory.Managed<HTItemToItemRecipe.Serializable>(guiHelper, recipeType) {
     private val extensions: MutableMap<Class<out HTItemToItemRecipe>, HTItemToItemRecipeCategoryExtension<*>> = hashMapOf()
 
     inline fun <reified RECIPE : HTItemToItemRecipe> addExtension(extension: HTItemToItemRecipeCategoryExtension<RECIPE>) {
