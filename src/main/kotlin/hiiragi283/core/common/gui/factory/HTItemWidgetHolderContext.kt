@@ -1,11 +1,11 @@
 package hiiragi283.core.common.gui.factory
 
-import hiiragi283.core.api.function.wrapOptional
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.Text
+import hiiragi283.core.api.util.wrapOptional
 import hiiragi283.core.common.gui.menu.HTWidgetContainerMenu
 import hiiragi283.core.setup.HCMenuTypes
 import io.netty.buffer.ByteBuf

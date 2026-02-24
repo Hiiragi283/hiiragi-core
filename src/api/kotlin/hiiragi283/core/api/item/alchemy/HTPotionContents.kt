@@ -1,18 +1,18 @@
 package hiiragi283.core.api.item.alchemy
 
-import hiiragi283.core.api.function.wrapOptional
-import hiiragi283.core.api.monad.Ior
-import hiiragi283.core.api.monad.toIor
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.MapBiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
+import hiiragi283.core.api.util.Ior
+import hiiragi283.core.api.util.emptyOptional
+import hiiragi283.core.api.util.toIor
+import hiiragi283.core.api.util.wrapOptional
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.alchemy.Potions
-import java.util.Optional
 
 typealias RawPotionContents = Ior<Holder<Potion>, List<HTMobEffectInstance>>
 
@@ -90,7 +90,7 @@ data class HTPotionContents private constructor(val contents: RawPotionContents,
      */
     val vanilla = PotionContents(
         contents.getLeft().wrapOptional(),
-        Optional.empty(),
+        emptyOptional(),
         contents.getRight()?.map(HTMobEffectInstance::toMutable) ?: emptyList(),
     )
 

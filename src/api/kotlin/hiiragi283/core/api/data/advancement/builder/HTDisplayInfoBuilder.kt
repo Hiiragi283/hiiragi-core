@@ -3,9 +3,9 @@ package hiiragi283.core.api.data.advancement.builder
 import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
 import hiiragi283.core.api.data.holder.HTItemStackHolder
-import hiiragi283.core.api.function.wrapOptional
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
+import hiiragi283.core.api.util.wrapOptional
 import net.minecraft.advancements.AdvancementType
 import net.minecraft.advancements.DisplayInfo
 import net.minecraft.resources.ResourceLocation

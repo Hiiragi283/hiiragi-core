@@ -1,12 +1,12 @@
 package hiiragi283.core.api.recipe.ingredient
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.toResource
+import hiiragi283.core.api.util.Either
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.tags.TagKey
 import net.minecraft.world.level.material.Fluid

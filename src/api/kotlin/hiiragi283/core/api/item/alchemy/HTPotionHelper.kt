@@ -1,8 +1,8 @@
 package hiiragi283.core.api.item.alchemy
 
 import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.function.wrapOptional
 import hiiragi283.core.api.item.createItemStack
+import hiiragi283.core.api.util.wrapOptional
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.core.component.DataComponents

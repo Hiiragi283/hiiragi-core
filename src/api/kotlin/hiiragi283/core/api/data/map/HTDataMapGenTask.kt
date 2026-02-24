@@ -5,6 +5,7 @@ import com.mojang.serialization.JsonOps
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTServerResourceGenTask
 import hiiragi283.core.api.resource.HTKeyLike
+import hiiragi283.core.api.util.wrapOptional
 import net.mehvahdjukaar.moonlight.api.resources.ResType
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
 import net.minecraft.core.Registry
@@ -18,7 +19,6 @@ import net.neoforged.neoforge.registries.DataMapLoader
 import net.neoforged.neoforge.registries.datamaps.DataMapEntry
 import net.neoforged.neoforge.registries.datamaps.DataMapFile
 import net.neoforged.neoforge.registries.datamaps.DataMapType
-import java.util.Optional
 
 /**
  * データマップを生成する[HTServerResourceGenTask]の抽象クラスです。
@@ -40,10 +40,10 @@ abstract class HTDataMapGenTask<T : Any, R : Any>(private val type: DataMapType<
             false,
             buildMap {
                 for ((tagKey: TagKey<R>, value: DataMapEntry<T>) in tagValues) {
-                    this[Either.left(tagKey)] = Optional.of(WithConditions(value))
+                    this[Either.left(tagKey)] = WithConditions(value).wrapOptional()
                 }
                 for ((key: ResourceKey<R>, value: DataMapEntry<T>) in keyValues) {
-                    this[Either.right(key)] = Optional.of(WithConditions(value))
+                    this[Either.right(key)] = WithConditions(value).wrapOptional()
                 }
             },
             emptyList(),
@@ -51,7 +51,7 @@ abstract class HTDataMapGenTask<T : Any, R : Any>(private val type: DataMapType<
 
         ConditionalOps
             .createConditionalCodecWithConditions(DataMapFile.codec(registryKey, type))
-            .encodeStart(JsonOps.INSTANCE, Optional.of(WithConditions(file)))
+            .encodeStart(JsonOps.INSTANCE, WithConditions(file).wrapOptional())
             .ifSuccess {
                 val folderLocation: String = DataMapLoader.getFolderLocation(type.registryKey().location())
                 val id: ResourceLocation = type.id().withPrefix("${DataMapLoader.PATH}/$folderLocation/")

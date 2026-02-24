@@ -5,7 +5,7 @@ import com.mojang.serialization.DynamicOps
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.MapLike
 import com.mojang.serialization.RecordBuilder
-import hiiragi283.core.api.monad.Either
+import hiiragi283.core.api.util.Either
 import java.util.stream.Stream
 
 /**

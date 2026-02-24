@@ -7,6 +7,7 @@ import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
+import hiiragi283.core.api.util.wrapOptional
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.core.component.DataComponents
@@ -24,7 +25,6 @@ import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.common.ItemAbility
 import net.neoforged.neoforge.registries.holdersets.AnyHolderSet
-import java.util.Optional
 
 class HTAlmightyPickaxe(properties: Properties) :
     DiggerItem(AlmightyTier, HiiragiCoreTags.Blocks.INCORRECT_FOR_ALMIGHTY_PICKAXE, properties.rarity(Rarity.RARE)),
@@ -66,8 +66,8 @@ class HTAlmightyPickaxe(properties: Properties) :
                 Tool.Rule.deniesDrops(incorrectBlocksForDrops),
                 Tool.Rule(
                     AnyHolderSet(BuiltInRegistries.BLOCK.asLookup()),
-                    Optional.of(40f),
-                    Optional.of(true),
+                    40f.wrapOptional(),
+                    true.wrapOptional(),
                 ),
             ),
             1f,

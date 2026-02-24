@@ -1,8 +1,8 @@
 package hiiragi283.core.api.recipe.viewer
 
 import hiiragi283.core.api.gui.HTBounds
-import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.recipe.HTRecipeType
+import hiiragi283.core.api.util.Either
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Recipe

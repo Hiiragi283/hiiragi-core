@@ -1,4 +1,4 @@
-package hiiragi283.core.api.monad
+package hiiragi283.core.api.util
 
 import hiiragi283.core.api.function.identity
 
@@ -88,3 +88,7 @@ sealed class Either<A, B> {
      */
     data class Right<A, B>(val value: B) : Either<A, B>()
 }
+
+//    Extensions    //
+
+fun <U> Either<out U, out U>.unwrap(): U = map(identity(), identity())

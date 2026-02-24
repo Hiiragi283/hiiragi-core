@@ -1,10 +1,10 @@
 package hiiragi283.core.api.recipe.ingredient
 
-import hiiragi283.core.api.monad.Either
 import hiiragi283.core.api.storage.resource.HTResourceType
 import hiiragi283.core.api.tag.getName
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.Text
+import hiiragi283.core.api.util.Either
 import net.minecraft.network.chat.ComponentUtils
 import net.minecraft.tags.TagKey
 import java.util.function.BiPredicate

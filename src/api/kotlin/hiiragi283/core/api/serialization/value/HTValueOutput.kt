@@ -1,7 +1,8 @@
 package hiiragi283.core.api.serialization.value
 
 import com.mojang.serialization.Codec
-import hiiragi283.core.api.function.wrapOptional
+import hiiragi283.core.api.serialization.codec.BiCodec
+import hiiragi283.core.api.util.wrapOptional
 import java.util.Optional
 
 /**
@@ -146,3 +147,15 @@ interface HTValueOutput {
         fun discardLast()
     }
 }
+
+//    Extensions    //
+
+fun <T : Any> HTValueOutput.write(key: String, codec: BiCodec<*, T>, value: T?) {
+    this.write(key, codec.codec, value)
+}
+
+fun <T : Any> HTValueOutput.writeOptional(key: String, codec: BiCodec<*, Optional<T>>, value: T?) {
+    this.writeOptional(key, codec.codec, value)
+}
+
+fun <T : Any> HTValueOutput.list(key: String, codec: BiCodec<*, T>): HTValueOutput.TypedOutputList<T> = this.list(key, codec.codec)

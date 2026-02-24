@@ -1,9 +1,9 @@
 package hiiragi283.core.api.data.advancement.builder
 
 import hiiragi283.core.api.HTBuilderMarker
+import hiiragi283.core.api.util.emptyOptional
 import net.minecraft.advancements.critereon.InventoryChangeTrigger
 import net.minecraft.advancements.critereon.ItemPredicate
-import java.util.Optional
 
 /**
  * [InventoryChangeTrigger.TriggerInstance]のビルダークラスです。
@@ -15,7 +15,7 @@ class HTInventoryChangeBuilder {
     val predicates = ItemPredicates()
 
     fun build(): InventoryChangeTrigger.TriggerInstance =
-        InventoryChangeTrigger.TriggerInstance(Optional.empty(), slots, predicates.toList())
+        InventoryChangeTrigger.TriggerInstance(emptyOptional(), slots, predicates.toList())
 
     //    ItemPredicates    //
 

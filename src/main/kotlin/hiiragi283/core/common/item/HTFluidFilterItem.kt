@@ -1,12 +1,12 @@
 package hiiragi283.core.common.item
 
-import hiiragi283.core.api.function.wrapOptional
 import hiiragi283.core.api.gui.HTSlotHelper
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.storage.attachments.HTAttachedFluids
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.HTFluidView
 import hiiragi283.core.api.storage.fluid.toResource
+import hiiragi283.core.api.util.wrapOptional
 import hiiragi283.core.common.gui.factory.HTItemWidgetHolderContext
 import hiiragi283.core.common.gui.sync.HTFluidSyncSlot
 import hiiragi283.core.common.gui.tooltip.HTFluidFilterTooltip

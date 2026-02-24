@@ -1,6 +1,6 @@
 package hiiragi283.core.api.fluid
 
-import hiiragi283.core.api.function.wrapOptional
+import hiiragi283.core.api.util.wrapOptional
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.sounds.SoundEvent

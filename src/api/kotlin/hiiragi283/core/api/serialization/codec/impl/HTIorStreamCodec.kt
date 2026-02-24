@@ -1,6 +1,6 @@
 package hiiragi283.core.api.serialization.codec.impl
 
-import hiiragi283.core.api.monad.Ior
+import hiiragi283.core.api.util.Ior
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.StreamCodec
 

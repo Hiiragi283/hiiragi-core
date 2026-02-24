@@ -2,7 +2,7 @@ package hiiragi283.core.api.item.component
 
 import com.google.common.base.Suppliers
 import hiiragi283.core.api.HTBuilderMarker
-import hiiragi283.core.api.function.wrapOptional
+import hiiragi283.core.api.util.wrapOptional
 import net.minecraft.core.Holder
 import net.minecraft.world.effect.MobEffect
 import net.minecraft.world.effect.MobEffectInstance

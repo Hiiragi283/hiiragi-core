@@ -1,6 +1,8 @@
-package hiiragi283.core.api.function
+package hiiragi283.core.api.util
 
 import java.util.Optional
+
+fun <T : Any> emptyOptional(): Optional<T> = Optional.empty<T>()
 
 fun <T : Any> T?.wrapOptional(): Optional<T> = Optional.ofNullable(this)
 

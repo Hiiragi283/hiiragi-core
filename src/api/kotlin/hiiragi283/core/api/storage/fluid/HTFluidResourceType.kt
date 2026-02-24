@@ -1,6 +1,7 @@
 package hiiragi283.core.api.storage.fluid
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.fluid.createFluidStack
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.storage.resource.HTResourceType
 import hiiragi283.core.api.text.Text
@@ -69,3 +70,41 @@ class HTFluidResourceType private constructor(private val stack: FluidStack) : H
 
     override fun getComponents(): DataComponentMap = stack.components
 }
+
+//    Extensions    //
+
+/**
+ * この[Fluid][this]を[HTFluidResourceType]に変換します。
+ * @param patch コンポーネントの差分
+ * @author Hiiragi Tsubasa
+ * @since 0.8.0
+ */
+fun Fluid?.toResource(patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType? =
+    createFluidStack(this, patch = patch).toResource()
+
+/**
+ * この[FluidStack][this]を[HTFluidResourceType]に変換します。
+ * @return [FluidStack.isEmpty]の場合は`null`
+ * @author Hiiragi Tsubasa
+ * @since 0.4.0
+ */
+fun FluidStack.toResource(): HTFluidResourceType? = HTFluidResourceType.of(this)
+
+/**
+ * この[FluidStack][this]を[HTFluidResourceType]と数量に展開します。
+ * @return [FluidStack.isEmpty]の場合は`null`
+ * @author Hiiragi Tsubasa
+ * @since 0.5.0
+ */
+fun FluidStack.toResourcePair(): Pair<HTFluidResourceType, Int>? {
+    val resource: HTFluidResourceType = this.toResource() ?: return null
+    return resource to this.amount
+}
+
+/**
+ * この[HTFluidResourceType][this]を[FluidStack]に変換します
+ * @return この[HTFluidResourceType]が`null`の場合は[FluidStack.EMPTY]
+ * @author Hiiragi Tsubasa
+ * @since 0.8.0
+ */
+fun HTFluidResourceType?.toStackOrEmpty(amount: Int): FluidStack = this?.toStack(amount) ?: FluidStack.EMPTY
