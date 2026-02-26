@@ -1,5 +1,6 @@
 package hiiragi283.core.api.recipe.handler
 
+import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.fixedFraction
 import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
@@ -33,15 +34,30 @@ abstract class HTRecipeHandler<INPUT : Any, RECIPE : Any> {
         false -> Fraction.ZERO
     }
 
+    protected var shouldCheck: Boolean = true
+
+    fun createListener(listener: HTContentListener): HTContentListener = HTContentListener {
+        shouldCheck = true
+        listener.onContentsChanged()
+    }
+
     fun tick(level: ServerLevel, pos: BlockPos): Boolean {
+        if (!shouldCheck) return false
         // インプットに一致するレシピを探索する
-        val input: INPUT = createRecipeInput(level, pos) ?: return false
-        val recipe: RECIPE = getMatchedRecipe(input, level) ?: return false
+        val input: INPUT = createRecipeInput(level, pos) ?: return run {
+            shouldCheck = false
+            updateProgress(-1)
+            false
+        }
+        val recipe: RECIPE = getMatchedRecipe(input, level) ?: return run {
+            shouldCheck = false
+            updateProgress(-1)
+            false
+        }
         val maxProgress: Int = getMaxProgress(recipe)
         // レシピの最大進捗量を更新する
         if (this.maxProgress != maxProgress) {
-            this.maxProgress = maxProgress
-            this.progress = 0
+            updateProgress(maxProgress)
         }
         // 進捗を更新する
         if (progress < maxProgress) {
@@ -54,6 +70,11 @@ abstract class HTRecipeHandler<INPUT : Any, RECIPE : Any> {
             completeRecipe(level, pos, input, recipe)
         }
         return true
+    }
+
+    private fun updateProgress(maxProgress: Int) {
+        this.maxProgress = maxProgress
+        progress = 0
     }
 
     /**

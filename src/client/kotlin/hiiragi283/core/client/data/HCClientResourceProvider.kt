@@ -118,13 +118,6 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
                 Blocks.DEEPSLATE,
             ),
         )
-        executor.accept(
-            resprite(
-                HCItems.COMPRESSED_SAWDUST.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "coal.png"),
-                Blocks.OAK_PLANKS,
-            ),
-        )
 
         executor.accept(
             resprite(
@@ -134,7 +127,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
             ),
         )
         mapOf(
-            HCItems.POLYMER_RESIN to "slime_ball.png",
+            HCItems.POLYMER_RESIN to "blue_dye.png",
             HCItems.SYNTHETIC_FEATHER to "feather.png",
             HCItems.SYNTHETIC_FIBER to "string.png",
             HCItems.SYNTHETIC_LEATHER to "leather.png",

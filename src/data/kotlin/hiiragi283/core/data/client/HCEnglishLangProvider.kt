@@ -46,7 +46,6 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.MEAT, "Meat")
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "Bamboo Charcoal")
-        add(HCItems.COMPRESSED_SAWDUST, "Compressed Sawdust")
         add(HCItems.PARTICLE_BOARD, "Particle Board")
         add(HCItems.POLYMER_RESIN, "Polymer Resin")
         add(HCItems.RAW_RUBBER, "Raw Rubber")
@@ -148,6 +147,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCTranslation.ELDRITCH_EGG, "Can be throwable by right-click，and capture mobs when hit.")
         add(HCTranslation.ETERNAL_UPGRADE, "Dropped from Ender Dragon.")
         add(HCTranslation.IRIDESCENT_POWDER, "Do not expire by time over or any damage.")
+        add(HCTranslation.RAW_RUBBER, "Dropped from placed Latex fluid or Latex Cauldron.")
         add(HCTranslation.SLOT_COVER, "Ignored by recipes when placed in machine slot.")
         add(HCTranslation.TRADER_CATALOG, "Dropped from Wandering Trader. Right-click to trade with merchant.")
 

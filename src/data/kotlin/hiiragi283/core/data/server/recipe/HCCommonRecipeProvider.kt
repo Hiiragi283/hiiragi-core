@@ -94,21 +94,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             resultStack += HCItems.BAMBOO_CHARCOAL
             exp = 0.5f
         }
-
-        // Compressed Sawdust -> Charcoal
-        HTShapedRecipeBuilder.create(output) {
-            hollow8()
-            define('A') += CommonTagPrefixes.DUST to VanillaMaterialKeys.WOOD
-            define('B') += ItemTags.WOODEN_BUTTONS
-            resultStack += HCItems.COMPRESSED_SAWDUST
-        }
-        HTCookingRecipeBuilder.smelting(output) {
-            ingredient += HCItems.COMPRESSED_SAWDUST
-            resultStack += Items.CHARCOAL
-            exp = 0.5f
-            time = 20 * 30
-            recipeId suffix "_from_sawdust"
-        }
         // Compressed Sawdust -> Particle Board
         HTShapedRecipeBuilder.create(output) {
             hollow8()
@@ -398,12 +383,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             recipeId suffix "_from_bucket"
         }
 
-        // Latex -> Raw Rubber
-        HTShapelessRecipeBuilder.create(output) {
-            ingredients += HCFluids.LATEX.bucketTag
-            resultStack += HCItems.RAW_RUBBER
-            recipeId suffix "_from_bucket"
-        }
         // Raw Rubber -> Rubber Bar
         HTCookingRecipeBuilder.smelting(output) {
             ingredient += HCItems.RAW_RUBBER

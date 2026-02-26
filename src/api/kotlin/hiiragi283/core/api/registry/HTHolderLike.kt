@@ -8,6 +8,7 @@ import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidType
@@ -59,6 +60,8 @@ typealias HTBlockHolderLike<BLOCK> = HTHolderLike<Block, BLOCK>
 
 @Suppress("DEPRECATION")
 fun Block.toLike(): HTBlockHolderLike<*> = this.builtInRegistryHolder().toLike()
+
+fun HTBlockHolderLike<*>.getDefaultState(): BlockState = this.get().defaultBlockState()
 
 //    Fluid    //
 

@@ -30,4 +30,6 @@ abstract class HTFluidTagsProvider(modId: String, context: HTDataGenContext) :
         content.flowingHolder?.let(this::add)
         return this
     }
+
+    fun HTTagBuilder<Fluid>.addContentTag(content: HTFluidContent): HTTagBuilder<Fluid> = this.addTag(content.fluidTag)
 }

@@ -5,11 +5,14 @@ import hiiragi283.core.api.data.HTServerResourceGenTask
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.createCommonTag
+import hiiragi283.core.api.tag.createTagKey
 import net.mehvahdjukaar.moonlight.api.resources.SimpleTagBuilder
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.data.tags.TagsProvider
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagEntry
 import net.minecraft.tags.TagKey
 import net.neoforged.neoforge.common.data.ExistingFileHelper
@@ -54,6 +57,12 @@ sealed interface HTTagsProvider<T : Any> {
      */
     fun addMaterial(factory: BuilderFactory<T>, prefix: HTTagPrefix, material: HTMaterialLike): HTTagBuilder<T> =
         addTags(factory, prefix.createCommonTagKey(registryKey), prefix.createTagKey(registryKey, material))
+
+    fun tag(id: ResourceLocation): TagKey<T> = registryKey.createTagKey(id)
+
+    fun commonTag(path: String): TagKey<T> = registryKey.createCommonTag(path)
+
+    fun commonTag(vararg path: String): TagKey<T> = registryKey.createCommonTag(*path)
 
     //    Factory    //
 

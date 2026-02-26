@@ -29,6 +29,7 @@ enum class HCTranslation(type: String, vararg path: String) : HTTranslation {
     ELDRITCH_EGG("description", "eldritch_heart"),
     ETERNAL_UPGRADE("description", "eternal_upgrade"),
     IRIDESCENT_POWDER("description", "iridescent_powder"),
+    RAW_RUBBER("description", "raw_rubber"),
     SLOT_COVER("description", "slot_cover"),
     TRADER_CATALOG("description", "trader_catalog"),
 

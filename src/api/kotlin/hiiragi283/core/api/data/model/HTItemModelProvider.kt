@@ -68,9 +68,7 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
     /**
      * @since 0.7.0
      */
-    protected fun basicItem(id: HTIdLike) {
-        basicItem(id.getId())
-    }
+    protected fun basicItem(id: HTIdLike): ItemModelBuilder = basicItem(id.getId())
 
     /**
      * 複数のレイヤーをもつアイテムモデルを登録します。

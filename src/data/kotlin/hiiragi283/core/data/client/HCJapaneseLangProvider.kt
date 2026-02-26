@@ -46,7 +46,6 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.MEAT, "肉")
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "竹炭")
-        add(HCItems.COMPRESSED_SAWDUST, "圧縮されたおがくず")
         add(HCItems.PARTICLE_BOARD, "パーティクルボード")
         add(HCItems.POLYMER_RESIN, "高分子樹脂")
         add(HCItems.RAW_RUBBER, "生ゴム")
@@ -147,6 +146,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCTranslation.ELDRITCH_EGG, "右クリックで投げることができ，モブに当たるとスポーンエッグになります。")
         add(HCTranslation.ETERNAL_UPGRADE, "エンダードラゴンからドロップします。")
         add(HCTranslation.IRIDESCENT_POWDER, "時間経過やダメージで消滅しません。")
+        add(HCTranslation.RAW_RUBBER, "設置したラテックスか，ラテックス入り大釜からドロップします。")
         add(HCTranslation.SLOT_COVER, "機械のスロットに入れることでレシピ判定から無視されます。")
         add(HCTranslation.TRADER_CATALOG, "行商人からドロップします。右クリックで行商人との取引を行えます。")
 

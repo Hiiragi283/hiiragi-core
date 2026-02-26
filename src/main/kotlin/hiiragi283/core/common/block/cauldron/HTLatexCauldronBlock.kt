@@ -25,7 +25,7 @@ class HTLatexCauldronBlock(properties: Properties) :
         random: RandomSource,
     ) {
         if (isFull(state) && random.nextInt(7) == 0) {
-            HTItemDropHelper.dropStackAt(level, Vec3.atCenterOf(pos), HCItems.RAW_RUBBER.toStack())
+            HTItemDropHelper.dropStackAt(level, Vec3.atCenterOf(pos), HCItems.RAW_RUBBER.toStack(random.nextInt(1, 4)))
             level.setBlockAndUpdate(pos, Blocks.CAULDRON.defaultBlockState())
         }
     }
