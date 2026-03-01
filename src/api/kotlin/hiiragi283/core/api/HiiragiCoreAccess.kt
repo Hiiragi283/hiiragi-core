@@ -8,6 +8,7 @@ import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.get
+import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.plugin.HTMaterialPlugin
@@ -17,7 +18,6 @@ import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
-import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.text.HTTextResult
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.HolderLookup
@@ -96,7 +96,7 @@ abstract class HiiragiCoreAccess {
      */
     abstract val registeredContents: HTMaterialAccess
 
-    abstract val registeredFluids: HTMaterialContents<HTFluidTagPrefix, Fluid>
+    abstract val registeredFluids: HTMaterialContents<HTFluidPart, Fluid>
 
     fun getMaterialBlock(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.Entry<Block>? =
         existingContents.blocks[part, material] ?: registeredContents.blocks[part, material]

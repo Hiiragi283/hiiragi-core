@@ -13,6 +13,7 @@ import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.property.HTPropertyMap
@@ -23,7 +24,6 @@ import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
-import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.toTextResult
@@ -94,10 +94,11 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
     }
 
     override val materialPlugins: Sequence<HTMaterialPlugin> by lazy {
-        HTPluginLoader.collectPlugins<HTMaterialPlugin>()
+        HTPluginLoader
+            .collectPlugins<HTMaterialPlugin>()
             .sortedWith(
                 compareBy(HTMaterialPlugin::priority)
-                    .thenComparing(HTMaterialPlugin::getId, HTComparators.ID)
+                    .thenComparing(HTMaterialPlugin::getId, HTComparators.ID),
             )
     }
 
@@ -151,9 +152,9 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
         }
     }
 
-    override val registeredFluids: HTMaterialContents<HTFluidTagPrefix, Fluid> by lazy {
-        HTMaterialContentsImpl(HCMiscRegister.materialFluids) { prefix: HTFluidTagPrefix, key: HTMaterialKey ->
-            "Unregistered ${prefix.name} fluid for ${key.getId()}"
+    override val registeredFluids: HTMaterialContents<HTFluidPart, Fluid> by lazy {
+        HTMaterialContentsImpl(HCMiscRegister.materialFluids) { part: HTFluidPart, key: HTMaterialKey ->
+            "Unregistered ${part.asPartName()} fluid for ${key.getId()}"
         }
     }
 

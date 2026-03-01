@@ -7,6 +7,7 @@ import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.part.CommonParts
+import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTExtraOreResultMap
@@ -28,7 +29,6 @@ import hiiragi283.core.api.property.plusAssign
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.toId
-import hiiragi283.core.api.tag.fluid.CommonFluidTagPrefixes
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import net.minecraft.resources.ResourceLocation
@@ -234,7 +234,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
     @JvmStatic
     private fun mineral(builder: HTMaterialPlugin.MaterialProvider) {
         builder.getBuilder(VanillaMaterialKeys.REDSTONE).apply {
-            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
+            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.RAW, CommonParts.CRUSHED_ORE)
             put(
                 HTMaterialPropertyKeys.EXTRA_ORE_RESULTS,
@@ -247,7 +247,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             setName("Redstone", "赤石")
         }
         builder.getBuilder(VanillaMaterialKeys.GLOWSTONE).apply {
-            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
+            addFluidPrefixes(HTFluidPart.MOLTEN)
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
 
             setName("Glowstone", "グロウストーン")
@@ -334,7 +334,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(VanillaMaterialKeys.ENDER).apply {
             setDefaultPart(HTDefaultPart.Prefixed.PEARL)
             addBlockPrefixes(CommonParts.BLOCK)
-            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
+            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.DUST)
 
             setName("Ender Pearl", "エンダーパール")
@@ -457,7 +457,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         }
         builder.getBuilder(VanillaMaterialKeys.GLASS).apply {
             setDefaultPart(Tags.Items.GLASS_BLOCKS, HTItemHolderLike.of(Items.GLASS))
-            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
+            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.DUST, CommonParts.ROD)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.NONE)
@@ -476,7 +476,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         }
         builder.getBuilder(VanillaMaterialKeys.OBSIDIAN).apply {
             setDefaultPart(Tags.Items.OBSIDIANS_NORMAL, HTItemHolderLike.of(Items.OBSIDIAN))
-            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
+            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.DUST)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
             put(HTMaterialPropertyKeys.DEFAULT_SCALE, fraction(4))

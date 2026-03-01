@@ -3,6 +3,7 @@ package hiiragi283.core.common.plugin
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.material.part.CommonParts
+import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTMaterialLevel
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
@@ -17,7 +18,6 @@ import hiiragi283.core.api.material.property.setName
 import hiiragi283.core.api.material.property.setTextureSet
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.plugin.HTPlugin
-import hiiragi283.core.api.tag.fluid.CommonFluidTagPrefixes
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.setup.HCToolMaterials
 import net.minecraft.resources.ResourceLocation
@@ -48,7 +48,7 @@ object HCMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(HCMaterialKeys.CRIMSON_CRYSTAL).apply {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
             addBlockPrefixes(CommonParts.BLOCK)
-            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
+            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.DUST, CommonParts.GEM)
 
             setName("Crimson Crystal", "深紅のクリスタリル")
@@ -58,7 +58,7 @@ object HCMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(HCMaterialKeys.WARPED_CRYSTAL).apply {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
             addBlockPrefixes(CommonParts.BLOCK)
-            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
+            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.DUST, CommonParts.GEM)
 
             setName("Warped Crystal", "歪んだクリスタリル")
@@ -71,7 +71,7 @@ object HCMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(HCMaterialKeys.ELDRITCH).apply {
             setDefaultPart(HTDefaultPart.Prefixed.PEARL)
             addBlockPrefixes(CommonParts.BLOCK)
-            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
+            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.DUST, CommonParts.PEARL)
 
             setName("Eldritch Pearl", "異質な真珠")

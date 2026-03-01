@@ -3,6 +3,7 @@ package hiiragi283.core.api.data.recipe
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.material.property.getDefaultFluidAmount
@@ -15,8 +16,6 @@ import hiiragi283.core.api.registry.toResource
 import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.fluid.CommonFluidTagPrefixes
-import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.material.Fluid
@@ -90,16 +89,13 @@ data object HTResultCreator {
 
     @JvmStatic
     fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidResult =
-        material(CommonFluidTagPrefixes.MOLTEN, material, operator)
+        material(HTFluidPart.MOLTEN, material, operator)
 
     @JvmStatic
-    fun material(
-        prefix: HTFluidTagPrefix,
-        material: HTMaterialLike,
-        operator: IntUnaryOperator = IntUnaryOperator.identity(),
-    ): HTFluidResult = with(HiiragiCoreAccess.INSTANCE) {
-        val fluid: Fluid = registeredFluids.getOrThrow(prefix, material).get()
-        val propertyMap: HTPropertyMap = materialManager.getOrEmpty(material)
-        create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
-    }
+    fun material(part: HTFluidPart, material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidResult =
+        with(HiiragiCoreAccess.INSTANCE) {
+            val fluid: Fluid = registeredFluids.getOrThrow(part, material).get()
+            val propertyMap: HTPropertyMap = materialManager.getOrEmpty(material)
+            create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
+        }
 }

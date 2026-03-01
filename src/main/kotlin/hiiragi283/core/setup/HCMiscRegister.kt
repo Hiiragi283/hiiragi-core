@@ -16,6 +16,7 @@ import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
@@ -31,7 +32,6 @@ import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.toId
-import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.common.HiiragiCoreAccessImpl
 import hiiragi283.core.common.gui.sync.HTBoolSyncPayload
 import hiiragi283.core.common.gui.sync.HTFluidSyncPayload
@@ -77,7 +77,7 @@ internal object HCMiscRegister {
         private set
 
     @JvmStatic
-    lateinit var materialFluids: HTTable<HTFluidTagPrefix, HTMaterialKey, HTMaterialContents.Entry<Fluid>>
+    lateinit var materialFluids: HTTable<HTFluidPart, HTMaterialKey, HTMaterialContents.Entry<Fluid>>
         private set
 
     @JvmStatic
@@ -196,8 +196,8 @@ internal object HCMiscRegister {
             .toFlatTable { entry: HTMaterialManager.Entry ->
                 entry
                     .getOrDefault(HTMaterialPropertyKeys.FLUID_PREFIXES)
-                    .map { prefix: HTFluidTagPrefix ->
-                        val key: ResourceKey<Fluid> = prefix.createKey(entry)
+                    .map { part: HTFluidPart ->
+                        val key: ResourceKey<Fluid> = part.createKey(Registries.FLUID, entry)
                         val id: ResourceLocation = key.location()
 
                         val typeHolder: HTDeferredHolder<FluidType, FluidType> = HTDeferredHolder(
@@ -226,7 +226,7 @@ internal object HCMiscRegister {
                             BucketItem(fluid, Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)),
                         )
 
-                        Triple(prefix, entry.asMaterialKey(), HTMaterialContents.fluidEntry(key, fluid, false))
+                        Triple(part, entry.asMaterialKey(), HTMaterialContents.fluidEntry(key, fluid, false))
                     }
             }
     }

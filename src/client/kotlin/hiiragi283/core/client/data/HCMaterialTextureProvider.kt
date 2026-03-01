@@ -6,6 +6,7 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.texture.HTTextureUtil
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
@@ -14,8 +15,6 @@ import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
-import hiiragi283.core.api.tag.fluid.CommonFluidTagPrefixes
-import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
 import net.mehvahdjukaar.moonlight.api.resources.textures.Palette
@@ -76,10 +75,10 @@ data object HCMaterialTextureProvider : ResourceGenTask {
     }
 
     @JvmStatic
-    private fun molten(manager: ResourceManager, sink: ResourceSink, factory: (HTFluidTagPrefix, HTMaterialLike) -> HTIdLike?) {
+    private fun molten(manager: ResourceManager, sink: ResourceSink, factory: (HTFluidPart, HTMaterialLike) -> HTIdLike?) {
         // すべての素材に対してテクスチャの生成を試みる
         for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
-            val molten: HTIdLike = factory(CommonFluidTagPrefixes.MOLTEN, entry) ?: continue
+            val molten: HTIdLike = factory(HTFluidPart.MOLTEN, entry) ?: continue
             // パレットを取得
             val palette: Palette = HTTextureUtil
                 .getOrCreatePalette(entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId(), manager)

@@ -16,7 +16,9 @@ import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
+import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
@@ -29,7 +31,6 @@ import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
-import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
@@ -230,16 +231,15 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
                 consumer(block.get().descriptionId, name)
             }
             // Fluid
-            val fluids: HTMaterialContents<HTFluidTagPrefix, Fluid> = HiiragiCoreAccess.INSTANCE.registeredFluids
-            for ((prefix: HTFluidTagPrefix, fluid: HTFluidHolderLike<*>) in fluids.column(entry)) {
-                val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
-                val name: String = prefix.translate(langType, materialName)
+            val fluids: HTMaterialContents<HTFluidPart, Fluid> = HiiragiCoreAccess.INSTANCE.registeredFluids
+            for ((part: HTFluidPart, fluid: HTFluidHolderLike<*>) in fluids.column(entry)) {
+                val name: String = translate(langType, part, entry) ?: continue
                 consumer(fluid.getFluidType().descriptionId, name)
-                consumer(Tags.getTagTranslationKey(prefix.createTagKey(entry)), name)
+                consumer(Tags.getTagTranslationKey(part.createTagKey(entry)), name)
 
                 val bucketName: String = HTLangPatternProvider.create("%s Bucket", "%s入りバケツ").translate(langType, name)
                 consumer(fluid.getBucketHolder().translationKey, bucketName)
-                consumer(Tags.getTagTranslationKey(prefix.createBucketTag(entry)), bucketName)
+                consumer(Tags.getTagTranslationKey(part.createBucketTag(entry)), bucketName)
             }
             // Item
             for ((part: HTPart, item: HTMaterialContents.Entry<Item>) in registered.items.column(entry)) {
@@ -255,7 +255,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
     }
 
     @JvmStatic
-    private fun translate(type: HTLangType, part: HTPart, propertyMap: HTPropertyMap): String? =
+    private fun translate(type: HTLangType, part: HTPartLike, propertyMap: HTPropertyMap): String? =
         propertyMap.getOrDefault(HTMaterialPropertyKeys.CUSTOM_LANG_NAME)[part]?.getTranslatedName(type) ?: run {
             val materialName: HTLangName = propertyMap[HTMaterialPropertyKeys.LANG_NAME] ?: return@run null
             part.getOrDefault(HTPartPropertyKeys.LANG_PATTERN).translate(type, materialName)

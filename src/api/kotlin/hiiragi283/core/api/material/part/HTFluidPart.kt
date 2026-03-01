@@ -1,39 +1,30 @@
-package hiiragi283.core.api.tag.fluid
+package hiiragi283.core.api.material.part
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.data.lang.HTLangPatternProvider
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.registry.createKey
+import hiiragi283.core.api.material.part.property.addNamePattern
+import hiiragi283.core.api.property.HTBasicPropertyMap
+import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.createTagKey
 import net.minecraft.core.registries.Registries
-import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.material.Fluid
 
-/**
- * [液体][Fluid]向けのタグのプレフィックスを表すクラスです。
- * @author Hiiragi Tsubasa
- * @since 0.10.0
- */
-class HTFluidTagPrefix(
-    val name: String,
-    private val idPattern: String,
-    private val tagPattern: String,
-    langPattern: HTLangPatternProvider,
-) : Comparable<HTFluidTagPrefix>,
-    HTLangPatternProvider by langPattern {
-    /**
-     * 指定した[素材][material]から素材液体などの[ID][ResourceLocation]を生成します。
-     */
-    fun createId(material: HTMaterialLike): ResourceLocation = material.asMaterialId().withPath { idPattern.replace("%s", it) }
+enum class HTFluidPart(private val idPattern: String, private val tagPattern: String, properties: HTPropertyMap) :
+    HTPartLike,
+    HTPropertyMap by properties {
+    MOLTEN("molten_%s", "molten_%s", HTBasicPropertyMap.Mutable().apply { addNamePattern("Molten %s", "溶融%s") }),
+    ;
 
-    fun createKey(material: HTMaterialLike): ResourceKey<Fluid> = material
-        .asMaterialId()
-        .withPath { idPattern.replace("%s", it) }
-        .let(Registries.FLUID::createKey)
+    @Deprecated("Not Implemented", level = DeprecationLevel.ERROR)
+    override fun asPart(): HTPart = throw UnsupportedOperationException()
+
+    override fun asPartName(): String = name.lowercase()
+
+    override fun createId(material: HTMaterialLike): ResourceLocation = material.asMaterialId().withPath { idPattern.replace("%s", it) }
 
     /**
      * 指定した[素材][material]から，[液体][Fluid]の共通タグを生成します。
@@ -50,6 +41,4 @@ class HTFluidTagPrefix(
         val id: ResourceLocation = HTConst.COMMON.toId(tagPattern.replace("%s", material.asMaterialId().path))
         return Registries.ITEM.createTagKey(id.withSuffix("_bucket"))
     }
-
-    override fun compareTo(other: HTFluidTagPrefix): Int = this.name.compareTo(other.name)
 }

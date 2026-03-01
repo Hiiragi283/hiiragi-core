@@ -9,14 +9,13 @@ import hiiragi283.core.api.data.model.HTTexturedModels
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
+import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
-import hiiragi283.core.api.tag.fluid.CommonFluidTagPrefixes
-import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
 
@@ -46,8 +45,8 @@ data object HCModelProvider : HTModelProvider() {
             }
         }
         // Fluid
-        HiiragiCoreAccess.INSTANCE.registeredFluids.forEach { (prefix: HTFluidTagPrefix, _, fluid: HTFluidHolderLike<*>) ->
-            addBucketModel(fluid, prefix == CommonFluidTagPrefixes.MOLTEN)
+        HiiragiCoreAccess.INSTANCE.registeredFluids.forEach { (part: HTFluidPart, _: HTMaterialKey, fluid: HTFluidHolderLike<*>) ->
+            addBucketModel(fluid, part == HTFluidPart.MOLTEN)
         }
         // Item
         registered.items.forEach { (part: HTPart, _, item: HTIdLike) ->

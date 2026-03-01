@@ -7,6 +7,7 @@ import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
+import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.part.property.addNamePattern
@@ -32,7 +33,6 @@ import hiiragi283.core.api.property.plusAssign
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HiiragiCoreTags
-import hiiragi283.core.api.tag.fluid.CommonFluidTagPrefixes
 import hiiragi283.core.api.times
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
@@ -372,7 +372,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
             builder.getBuilder(key).apply {
                 setDefaultPart(HTDefaultPart.Prefixed.INGOT)
                 addBlockPrefixes(CommonParts.BLOCK)
-                addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
+                addFluidPrefixes(HTFluidPart.MOLTEN)
                 addItemPrefixes(alloySet)
                 put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.HIGHEST)
                 put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.HIGHEST)
@@ -391,7 +391,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(CommonMaterialKeys.ALUMINUM).apply {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonParts.BLOCK)
-            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
+            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(alloySet.plus(CommonParts.WIRE))
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
 
@@ -424,7 +424,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(CommonMaterialKeys.ZINC).apply {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(materialBlockSet)
-            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
+            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(metalSet)
 
             setName("Zinc", "亜鉛")
@@ -448,7 +448,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(CommonMaterialKeys.TIN).apply {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(materialBlockSet)
-            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
+            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(metalSet)
 
             setName("Tin", "錫")
@@ -556,7 +556,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
                 HTSimpleDeferredItem(CommonParts.PLATE.createId(CommonMaterialKeys.PLASTIC)),
             )
             addBlockPrefixes(CommonParts.BLOCK)
-            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
+            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.PLATE, CommonParts.ROD)
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
@@ -570,7 +570,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(CommonMaterialKeys.RUBBER).apply {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonParts.BLOCK)
-            addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
+            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.INGOT, CommonParts.PLATE)
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
