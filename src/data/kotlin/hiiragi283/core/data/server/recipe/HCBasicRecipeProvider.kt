@@ -52,6 +52,11 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
             ingredient = inputCreator.create(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE)
             result = resultCreator.material(CommonParts.DUST, VanillaMaterialKeys.GLOWSTONE)
         }
+        // Honey Bottle -> Exp Bottle
+        HTItemToItemRecipeBuilder.charging(output) {
+            ingredient = inputCreator.create(Tags.Items.DRINKS_HONEY)
+            result = resultCreator.create(Items.EXPERIENCE_BOTTLE)
+        }
 
         // End Crystal -> Eldritch Pearl
         HTItemToItemRecipeBuilder.charging(output) {

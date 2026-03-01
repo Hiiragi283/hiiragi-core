@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:charging",
+  "ingredient": {
+    "amount": 1,
+    "items": "#c:drinks/honey"
+  },
+  "result": {
+    "id": "minecraft:experience_bottle"
+  },
+  "time": 200
+}

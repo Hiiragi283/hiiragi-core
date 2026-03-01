@@ -10,12 +10,14 @@ import hiiragi283.core.common.item.HTBombItem
 import hiiragi283.core.common.item.HTCaptureEggItem
 import hiiragi283.core.common.item.HTCreativeItem
 import hiiragi283.core.common.item.HTEternalUpgradeItem
+import hiiragi283.core.common.item.HTExperienceTomeItem
 import hiiragi283.core.common.item.HTFluidFilterItem
 import hiiragi283.core.common.item.HTItemFilterItem
 import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.common.item.HTTraderCatalogItem
 import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import hiiragi283.core.common.registry.register.HTDeferredItemRegister
+import hiiragi283.core.common.storage.fluid.HTExperienceTomeFluidTank
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
@@ -128,6 +130,9 @@ object HCItems {
     @JvmField
     val TRADER_CATALOG: HTSimpleDeferredItem = REGISTER.registerItem("trader_catalog", ::HTTraderCatalogItem)
 
+    @JvmField
+    val EXPERIENCE_TOME: HTSimpleDeferredItem = REGISTER.registerItem("experience_tome", ::HTExperienceTomeItem)
+
     //    End Game    //
 
     @JvmField
@@ -165,6 +170,7 @@ object HCItems {
         modify(ELDER_HEART, HCDataComponents.DESCRIPTION, HCTranslation.ELDER_HEART)
         modify(ELDRITCH_EGG, HCDataComponents.DESCRIPTION, HCTranslation.ELDRITCH_EGG)
         modify(ETERNAL_UPGRADE, HCDataComponents.DESCRIPTION, HCTranslation.ETERNAL_UPGRADE)
+        modify(EXPERIENCE_TOME, HCDataComponents.DESCRIPTION, HCTranslation.EXPERIENCE_TOME)
         modify(IRIDESCENT_POWDER, HCDataComponents.DESCRIPTION, HCTranslation.IRIDESCENT_POWDER)
         modify(SLOT_COVER, HCDataComponents.DESCRIPTION, HCTranslation.SLOT_COVER)
         modify(TRADER_CATALOG, HCDataComponents.DESCRIPTION, HCTranslation.TRADER_CATALOG)
@@ -174,8 +180,6 @@ object HCItems {
     private fun registerCapabilities(event: RegisterCapabilitiesEvent) {
         HTFluidCapabilities.registerItem(event, HTPotionBucketItem::BucketHandler, HCFluids.POTION.getBucket())
 
-        // HTFluidCapabilities.registerItem(event, 9, { HTComponentFluidTank.create(1000, it) }, FLUID_FILTER)
-
-        // HTItemCapabilities.registerItem(event, 9, HTComponentItemSlot::create, ITEM_FILTER)
+        HTFluidCapabilities.registerItem(event, 1, ::HTExperienceTomeFluidTank, EXPERIENCE_TOME)
     }
 }

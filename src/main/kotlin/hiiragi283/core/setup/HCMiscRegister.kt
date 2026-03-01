@@ -122,14 +122,14 @@ internal object HCMiscRegister {
     private fun initMaterials() {
         if (!hasInit) {
             HiiragiCoreAccess.INSTANCE.partManager
-            // 素材のプロパティを定義する
-            gatherProperties()
             // 既存の素材ブロックを登録する
             registerExistingBlocks()
             // 既存の素材アイテムを登録する
             registerExistingItems()
             // 既存の素材ツールを登録する
             registerExistingTools()
+            // 素材のプロパティを定義する
+            gatherProperties()
             hasInit = true
         }
     }

@@ -9,6 +9,7 @@ import hiiragi283.core.api.mod.HTCommonMod
 import hiiragi283.core.api.network.HTPayloadHandlers
 import hiiragi283.core.common.HiiragiCoreAccessImpl
 import hiiragi283.core.common.block.cauldron.HCCauldronInteractions
+import hiiragi283.core.common.block.dispenser.HCDispenserBehaviours
 import hiiragi283.core.common.data.HCServerResourceProvider
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
 import hiiragi283.core.common.network.HTUpdateMenuPacket
@@ -86,6 +87,7 @@ data object HiiragiCore : HTCommonMod() {
 
         event.enqueueWork(::registerPotionHandlers)
         event.enqueueWork(HCCauldronInteractions::init)
+        event.enqueueWork(HCDispenserBehaviours::init)
     }
 
     private fun registerPotionHandlers() {

@@ -71,6 +71,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.ITEM_FILTER, "アイテムフィルタ")
         add(HCItems.SLOT_COVER, "スロットカバー")
         add(HCItems.TRADER_CATALOG, "行商人のカタログ")
+        add(HCItems.EXPERIENCE_TOME, "経験の書")
 
         add(HCItems.IRIDESCENT_POWDER, "七色の粉")
         add(HCItems.AMBROSIA, "アンブロシア")
@@ -145,6 +146,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCTranslation.ELDER_HEART, "エルダーガーディアンからドロップします。")
         add(HCTranslation.ELDRITCH_EGG, "右クリックで投げることができ，モブに当たるとスポーンエッグになります。")
         add(HCTranslation.ETERNAL_UPGRADE, "エンダードラゴンからドロップします。")
+        add(HCTranslation.EXPERIENCE_TOME, "右クリックで経験値を貯蔵，シフトキーを押しながらで放出することができます。")
         add(HCTranslation.IRIDESCENT_POWDER, "時間経過やダメージで消滅しません。")
         add(HCTranslation.RAW_RUBBER, "設置したラテックスか，ラテックス入り大釜からドロップします。")
         add(HCTranslation.SLOT_COVER, "機械のスロットに入れることでレシピ判定から無視されます。")

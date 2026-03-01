@@ -1,20 +1,20 @@
 package hiiragi283.core.util
 
 import com.google.common.primitives.Ints
-import hiiragi283.core.api.div
-import hiiragi283.core.api.times
 import hiiragi283.core.config.HCConfig
+import hiiragi283.core.setup.HCDataComponents
 import it.unimi.dsi.fastutil.longs.Long2LongArrayMap
 import net.minecraft.core.Holder
 import net.minecraft.core.Vec3i
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.entity.ExperienceOrb
 import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.enchantment.Enchantment
 import net.minecraft.world.item.enchantment.ItemEnchantments
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.Vec3
-import org.apache.commons.lang3.math.Fraction
+import java.util.function.IntUnaryOperator
 
 /**
  * @see me.desht.pneumaticcraft.common.util.EnchantmentUtils
@@ -22,7 +22,7 @@ import org.apache.commons.lang3.math.Fraction
 object HTExperienceHelper {
     fun getExpRatio(): Int = HCConfig.COMMON.expConversionRatio.asInt
 
-    fun fluidAmountFromExp(value: Int): Int = value * getExpRatio()
+    fun fluidAmountFromExp(value: Int): Long = value * getExpRatio().toLong()
 
     fun expAmountFromFluid(value: Int): Int = value / getExpRatio()
 
@@ -33,20 +33,6 @@ object HTExperienceHelper {
     fun popExperienceOrb(level: Level, pos: Vec3, amount: Int) {
         if (level is ServerLevel) {
             ExperienceOrb.award(level, pos, amount)
-        }
-    }
-
-    fun fluidAmountFromExp(value: Fraction): Fraction = value * getExpRatio()
-
-    fun expAmountFromFluid(value: Fraction): Fraction = value / getExpRatio()
-
-    fun popExperienceOrb(level: Level, pos: Vec3i, amount: Fraction) {
-        popExperienceOrb(level, Vec3.atCenterOf(pos), amount)
-    }
-
-    fun popExperienceOrb(level: Level, pos: Vec3, amount: Fraction) {
-        if (level is ServerLevel) {
-            ExperienceOrb.award(level, pos, amount.toInt())
         }
     }
 
@@ -100,6 +86,13 @@ object HTExperienceHelper {
             exp1 -= nextLevel
         }
     }
+
+    //    Player    //
+
+    fun getStoredExp(stack: ItemStack): Int = stack.getOrDefault(HCDataComponents.EXPERIENCE, 0)
+
+    fun updateStoredExp(stack: ItemStack, operator: IntUnaryOperator): Int? =
+        stack.update(HCDataComponents.EXPERIENCE, 0, operator::applyAsInt)
 
     //    Enchantment    //
 

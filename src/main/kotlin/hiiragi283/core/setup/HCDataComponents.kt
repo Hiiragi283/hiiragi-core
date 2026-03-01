@@ -4,6 +4,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.alchemy.HTBottleType
+import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.api.storage.attachments.HTAttachedEnergy
 import hiiragi283.core.api.storage.attachments.HTAttachedFluids
@@ -30,6 +31,9 @@ object HCDataComponents {
 
     @JvmField
     val LOCATION: DataComponentType<GlobalPos> = REGISTER.registerType("location", VanillaBiCodecs.GLOBAL_POS)
+
+    @JvmField
+    val EXPERIENCE: DataComponentType<Int> = REGISTER.registerType("experience", BiCodecs.NON_NEGATIVE_INT)
 
     //    Storage    //
 

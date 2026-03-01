@@ -105,7 +105,6 @@ data object HTConst {
 
     // Serialization
     const val ENERGY = "energy"
-    const val EXP = "exp"
     const val TIME = "time"
 
     const val INGREDIENT = "ingredient"

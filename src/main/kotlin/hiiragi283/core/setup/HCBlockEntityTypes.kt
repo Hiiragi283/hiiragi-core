@@ -3,7 +3,6 @@ package hiiragi283.core.setup
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.storage.HTHandlerProvider
 import hiiragi283.core.common.block.HTBlockWithEntity
-import hiiragi283.core.common.block.entity.HTExpDrainBlockEntity
 import hiiragi283.core.common.block.entity.HTTestBlockEntity
 import hiiragi283.core.common.capability.HTEnergyCapabilities
 import hiiragi283.core.common.capability.HTFluidCapabilities
@@ -29,9 +28,6 @@ object HCBlockEntityTypes {
 
         REGISTER.register(eventBus)
     }
-
-    @JvmField
-    val EXP_DRAIN: HTDeferredBlockEntityType<HTExpDrainBlockEntity> = REGISTER.registerTick("exp_drain", ::HTExpDrainBlockEntity)
 
     @JvmField
     val TEST: HTDeferredBlockEntityType<HTTestBlockEntity> = REGISTER.registerTick("test", ::HTTestBlockEntity)

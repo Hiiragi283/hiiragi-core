@@ -33,7 +33,6 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
-import net.minecraft.world.item.crafting.CraftingBookCategory
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
 import org.apache.commons.lang3.math.Fraction
@@ -259,7 +258,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             ingredients += Items.BOOK
             ingredients += CommonTagPrefixes.GEM to VanillaMaterialKeys.EMERALD
             resultStack += HCItems.TRADER_CATALOG
-            category = CraftingBookCategory.EQUIPMENT
         }
         // Eldritch Egg
         HTShapedRecipeBuilder.create(output) {
@@ -267,7 +265,14 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             define('A') += Tags.Items.EGGS
             define('B') += CommonTagPrefixes.PEARL to HCMaterialKeys.ELDRITCH
             resultStack += HCItems.ELDRITCH_EGG to 4
-            category = CraftingBookCategory.EQUIPMENT
+        }
+        // Experience Tome
+        HTShapedRecipeBuilder.create(output) {
+            cross8()
+            define('A') += Items.EXPERIENCE_BOTTLE
+            define('B') += CommonTagPrefixes.GEM to VanillaMaterialKeys.EMERALD
+            define('C') += Items.BOOK
+            resultStack += HCItems.EXPERIENCE_TOME
         }
 
         // Eternal Upgrade

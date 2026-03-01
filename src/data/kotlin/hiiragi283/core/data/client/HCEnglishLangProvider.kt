@@ -71,6 +71,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.ITEM_FILTER, "Item Filter")
         add(HCItems.SLOT_COVER, "Slot Cover")
         add(HCItems.TRADER_CATALOG, "Trader's Catalog")
+        add(HCItems.EXPERIENCE_TOME, "Experience Tome")
 
         add(HCItems.IRIDESCENT_POWDER, "Iridescent Powder")
         add(HCItems.AMBROSIA, "Ambrosia")
@@ -146,6 +147,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCTranslation.ELDER_HEART, "Dropped from Elder Guardian.")
         add(HCTranslation.ELDRITCH_EGG, "Can be throwable by right-click，and capture mobs when hit.")
         add(HCTranslation.ETERNAL_UPGRADE, "Dropped from Ender Dragon.")
+        add(HCTranslation.EXPERIENCE_TOME, "Right-click to store experience, or release when shifting.")
         add(HCTranslation.IRIDESCENT_POWDER, "Do not expire by time over or any damage.")
         add(HCTranslation.RAW_RUBBER, "Dropped from placed Latex fluid or Latex Cauldron.")
         add(HCTranslation.SLOT_COVER, "Ignored by recipes when placed in machine slot.")

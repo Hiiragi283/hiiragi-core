@@ -46,13 +46,14 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) :
     }
 
     override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HTMaterialManager.Entry, focuses: IFocusGroup) {
-        builder.addText(recipe.asMaterialKey().getText(), width - 22, 20)
+        builder
+            .addText(recipe.asMaterialKey().getText(), width - 22, 20)
             .setPosition(22, 0)
             .setColor(0x505050)
             .setLineSpacing(0)
             .setTextAlignment(VerticalAlignment.CENTER)
             .setTextAlignment(HorizontalAlignment.CENTER)
-        
+
         val recipeSlots: IRecipeSlotDrawablesView = builder.recipeSlots
         val outputSlots: List<IRecipeSlotDrawable> = recipeSlots.getSlots(RecipeIngredientRole.OUTPUT)
 
