@@ -3,6 +3,7 @@ package hiiragi283.core.api.material
 import com.google.common.base.Suppliers
 import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.material.part.HTPart
+import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLike
@@ -59,6 +60,12 @@ interface HTMaterialContents<R : Any, V : Any> : HTTable<R, HTMaterialKey, HTMat
 }
 
 //    Extensions    //
+
+operator fun <V : Any> HTMaterialContents<HTPart, V>.get(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.Entry<V>? =
+    this[part.asPart(), material]
+
+fun <V : Any> HTMaterialContents<HTPart, V>.getOrThrow(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.Entry<V> =
+    this.getOrThrow(part.asPart(), material)
 
 val <V : Any> HTMaterialContents<HTPart, V>.prefixEntries: Sequence<Triple<HTTagPrefix, HTMaterialKey, HTMaterialContents.Entry<V>>>
     get() = this

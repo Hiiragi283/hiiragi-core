@@ -37,7 +37,7 @@ fun HTPropertyMap.Mutable.addBlockPrefixes(vararg parts: HTPartLike) {
 }
 
 fun HTPropertyMap.Mutable.addBlockPrefixes(parts: Set<HTPartLike>) {
-    this.computeIfAbsent(HTMaterialPropertyKeys.BLOCK_PREFIXES) { it.plus(parts.map(HTPartLike::asPart)) }
+    this.computeIfAbsent(HTMaterialPropertyKeys.BLOCK_PREFIXES) { it.plus(parts) }
 }
 
 fun HTPropertyMap.Mutable.addFluidPrefixes(vararg tagPrefixes: HTFluidTagPrefix) {

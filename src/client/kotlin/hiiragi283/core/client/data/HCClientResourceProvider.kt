@@ -256,7 +256,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
 
     @JvmStatic
     private fun translate(type: HTLangType, part: HTPart, propertyMap: HTPropertyMap): String? =
-        propertyMap.getOrDefault(HTMaterialPropertyKeys.CUSTOM_LANG_NAME)[part.asPart()]?.getTranslatedName(type) ?: run {
+        propertyMap.getOrDefault(HTMaterialPropertyKeys.CUSTOM_LANG_NAME)[part]?.getTranslatedName(type) ?: run {
             val materialName: HTLangName = propertyMap[HTMaterialPropertyKeys.LANG_NAME] ?: return@run null
             part.getOrDefault(HTPartPropertyKeys.LANG_PATTERN).translate(type, materialName)
         }

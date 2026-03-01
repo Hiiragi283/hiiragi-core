@@ -16,5 +16,5 @@ interface HTMaterialAccess {
 
     @Suppress("DEPRECATION")
     fun getBlockOrItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.Entry<out ItemLike>? =
-        blocks[part.asPart(), material] ?: items[part.asPart(), material]
+        blocks[part, material] ?: items[part, material]
 }

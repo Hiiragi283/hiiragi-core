@@ -11,6 +11,7 @@ import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.get
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.itemTagKey
@@ -78,7 +79,7 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
             // それかJSONビルダー作って真面目に書くか
             registered.blocks.forEach { (part: HTPart, key: HTMaterialKey, block: HTBlockHolderLike<*>) ->
                 if (HTPartPropertyKeys.IS_ORE in part) {
-                    val raw: HTIdLike = registered.items[CommonParts.RAW.asPart(), key] ?: return@forEach
+                    val raw: HTIdLike = registered.items[CommonParts.RAW, key] ?: return@forEach
                     val id: ResourceLocation = block.getId()
                     sink.addBytes(
                         id,

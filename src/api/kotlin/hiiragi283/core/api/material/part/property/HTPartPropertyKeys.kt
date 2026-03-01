@@ -16,12 +16,6 @@ import org.apache.commons.lang3.math.Fraction
  */
 object HTPartPropertyKeys {
     /**
-     * [ID][ResourceLocation]のパターンを管理する[プロパティキー][HTPropertyKey]
-     */
-    @JvmField
-    val ID_PATTERN: HTPropertyKey<String?> = createNullable("id_pattern")
-
-    /**
      * 基準値に対する数量を管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField

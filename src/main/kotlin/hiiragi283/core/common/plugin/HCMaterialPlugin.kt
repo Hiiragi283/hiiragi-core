@@ -31,6 +31,7 @@ object HCMaterialPlugin : HTMaterialPlugin {
     override fun modifyMaterial(provider: HTMaterialPlugin.MaterialProvider) {
         gem(provider)
         pearl(provider)
+        alloy(provider)
     }
 
     @JvmStatic

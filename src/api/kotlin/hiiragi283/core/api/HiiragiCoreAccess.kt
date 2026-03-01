@@ -7,6 +7,7 @@ import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.get
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.plugin.HTMaterialPlugin
@@ -98,10 +99,10 @@ abstract class HiiragiCoreAccess {
     abstract val registeredFluids: HTMaterialContents<HTFluidTagPrefix, Fluid>
 
     fun getMaterialBlock(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.Entry<Block>? =
-        existingContents.blocks[part.asPart(), material] ?: registeredContents.blocks[part.asPart(), material]
+        existingContents.blocks[part, material] ?: registeredContents.blocks[part, material]
 
     fun getMaterialItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.Entry<Item>? =
-        existingContents.items[part.asPart(), material] ?: registeredContents.items[part.asPart(), material]
+        existingContents.items[part, material] ?: registeredContents.items[part, material]
 
     fun getMaterialBlockOrItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.Entry<out ItemLike>? =
         existingContents.getBlockOrItem(part, material) ?: registeredContents.getBlockOrItem(part, material)

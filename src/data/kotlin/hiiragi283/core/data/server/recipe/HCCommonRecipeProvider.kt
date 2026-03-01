@@ -9,6 +9,7 @@ import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.getOrThrow
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.registry.HTFluidContent
@@ -398,6 +399,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
     private fun getOrThrow(part: HTPartLike, material: HTMaterialLike): Item = HiiragiCoreAccess.INSTANCE
         .registeredContents
         .items
-        .getOrThrow(part.asPart(), material)
+        .getOrThrow(part, material)
         .get()
 }
