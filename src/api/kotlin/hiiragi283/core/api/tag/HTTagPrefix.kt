@@ -9,6 +9,11 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 
+/**
+ * タグのプレフィックスを表すクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.7.0
+ */
 class HTTagPrefix(private val commonTagId: ResourceLocation, private val tagPattern: String) {
     constructor(commonTagId: String, tagPattern: String) : this(HTConst.COMMON.toId(commonTagId), tagPattern)
 

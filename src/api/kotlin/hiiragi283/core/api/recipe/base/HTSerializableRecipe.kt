@@ -10,10 +10,10 @@ import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.level.Level
 
 /**
- * [Recipe]の拡張インターフェースです。
+ * シリアライズ可能なレシピを表す，[Recipe]の拡張インターフェースです。
  * @param INPUT レシピの入力となるクラス
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 0.12.0
  * @see mekanism.api.recipes.MekanismRecipe
  */
 interface HTSerializableRecipe<INPUT : RecipeInput> :

@@ -1,5 +1,10 @@
 package hiiragi283.core.api.tag
 
+/**
+ * Hiiragi Coreとそれを前提とするmodで使用される[HTTagPrefix]の一覧をまとめたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.7.0
+ */
 object CommonTagPrefixes {
     //    Block    //
 
@@ -14,6 +19,9 @@ object CommonTagPrefixes {
 
     //    Item    //
 
+    /**
+     * @since 0.9.0
+     */
     @JvmField
     val CRUSHED_ORE = HTTagPrefix("crushed_ores", "crushed_ores/%s")
 
@@ -47,6 +55,9 @@ object CommonTagPrefixes {
     @JvmField
     val ROD = HTTagPrefix("rods", "rods/%s")
 
+    /**
+     * @since 0.12.0
+     */
     @JvmField
     val TINY = HTTagPrefix("tiny", "tiny/%s")
 

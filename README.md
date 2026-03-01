@@ -15,13 +15,12 @@
 - Material Blocks/Items
   - Vanilla
     - Fuels: Coal, Charcoal
-    - Minerals: (Redstone), (Glowstone), Calcite
+    - Minerals: (Redstone), (Glowstone)
     - Gems: Lapis, Quartz, Amethyst, Diamond, Emerald, Echo, Prismarine
     - Pearls: Ender
     - Metals: Iron, Copper, Gold
     - Alloys: Netherite
-    - Crops: Wheat,
-    - Others: Wood, Glass, Stone, Obsidian, Blaze, Breeze, Brick, Nether Brick
+    - Others: Wood, Glass, (Stone), Obsidian, (Blaze), (Breeze), Brick, Nether Brick
   - Common
     - Fuels: Coal Coke
     - Minerals: Salt, Saltpeter, Bauxite, Sulfur, Platinum Group, Cinnabar, Galena
@@ -48,10 +47,10 @@
 - Items
   - Bamboo Charcoal: A substitute for Charcoal made from Bamboo
   - Bomb: Throwable explosive
-  - Compressed Sawdust: Recycles Sawdust into Charcoal
   - Particle Board: Recycled Planks made from Sawdust
   - Synthetic Feather/Fiber/Leather: A substitute for Feather/String/Leather made from Plastic
   - Trader's Catalog: Opens trading menu of Wandering Trader
+  - Experience Tome: Store your experience or release it
 - End-Game Items
   - Almighty Pickaxe: A mining tool suitable for ALL BLOCKS
   - Ambrosia: NON-CONSUMABLE Food
@@ -63,17 +62,24 @@
 
 ## Maven
 
+- Use [Modrinth Maven](https://support.modrinth.com/en/articles/8801191-modrinth-maven)
+
 ### Groovy
 
-[![Maven Central Version](https://img.shields.io/maven-central/v/io.github.hiiragi283/hiiragi-core?style=for-the-badge)](https://search.maven.org/artifact/io.github.hiiragi283/hiiragi-core)
+![Modrinth Version](https://img.shields.io/modrinth/v/hiiragi-core?style=for-the-badge)
 
 ```groovy
 repositories {
-    mavenCentral()
+    maven {
+        url = "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
 
 dependencies {
-    implementation "io.github.hiiragi283:hiiragi-core:VERSION"
+    implementation "maven.modrinth:hiiragi-core:VERSION"
 }
 ```
 
@@ -81,10 +87,14 @@ dependencies {
 
 ```kotlin
 repositories {
-    mavenCentral()
+    maven(url = "https://api.modrinth.com/maven") {
+        content { 
+            includeGroup("maven.modrinth")
+        }
+    }
 }
 
 dependencies {
-    implementation("io.github.hiiragi283:hiiragi-core:VERSION")
+    implementation("maven.modrinth:hiiragi-core:VERSION")
 }
 ```

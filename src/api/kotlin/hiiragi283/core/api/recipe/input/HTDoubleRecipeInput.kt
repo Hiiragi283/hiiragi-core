@@ -4,6 +4,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeInput
 
 /**
+ * 二種類の[アイテム][ItemStack]を保持する[RecipeInput]の実装クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */

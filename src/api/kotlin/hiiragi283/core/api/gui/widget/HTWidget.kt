@@ -23,6 +23,9 @@ interface HTWidget {
 
     fun setupHolder(widgetHolder: HTWidgetHolder) {}
 
+    /**
+     * @since 0.12.0
+     */
     fun onInit(access: Access) {}
 
     /**
@@ -75,6 +78,11 @@ interface HTWidget {
      */
     fun charTyped(codePoint: Char, modifiers: Int): Boolean = false
 
+    /**
+     * クライアント側のウィジェットへのアクセスを表すインターフェースです。
+     * @author Hiiragi Tsubasa
+     * @since 0.12.0
+     */
     interface Access {
         var isActive: Boolean
         var isVisible: Boolean

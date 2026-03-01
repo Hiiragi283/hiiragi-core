@@ -46,7 +46,7 @@ object HTPartPropertyKeys {
 
     /**
      * 鉱石にまつわる部品かどうか管理する[プロパティキー][HTPropertyKey]
-     * @since 0.10.0
+     * @since 0.12.0
      */
     @JvmField
     val IS_ORE: HTPropertyKey<Unit?> = HTPropertyKey.createFlag(HiiragiCoreAPI.id("is_ore"))

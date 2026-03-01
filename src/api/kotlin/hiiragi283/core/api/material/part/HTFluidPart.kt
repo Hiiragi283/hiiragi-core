@@ -13,6 +13,11 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.material.Fluid
 
+/**
+ * [液体][Fluid]向けに[HTPartLike]を実装したクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
+ */
 enum class HTFluidPart(private val idPattern: String, private val tagPattern: String, properties: HTPropertyMap) :
     HTPartLike,
     HTPropertyMap by properties {

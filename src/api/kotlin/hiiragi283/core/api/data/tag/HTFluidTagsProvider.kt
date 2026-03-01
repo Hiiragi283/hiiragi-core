@@ -31,5 +31,9 @@ abstract class HTFluidTagsProvider(modId: String, context: HTDataGenContext) :
         return this
     }
 
+    /**
+     * [HTFluidContent.fluidTag]に基づいてタグの値を追加します。
+     * @since 0.12.0
+     */
     fun HTTagBuilder<Fluid>.addContentTag(content: HTFluidContent): HTTagBuilder<Fluid> = this.addTag(content.fluidTag)
 }

@@ -111,6 +111,10 @@ sealed interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any, HOLDER : Any>
 
 //    Extensions    //
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
+ */
 fun <INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>, HOLDER : Any> HTRecipeLookup<INPUT, RECIPE, HOLDER>.findFirst(
     input: INPUT,
     level: Level?,

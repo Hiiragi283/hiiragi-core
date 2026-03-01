@@ -49,12 +49,22 @@ abstract class HiiragiCoreAccess {
 
     //    Material    //
 
+    /**
+     * [素材のプラグイン][HTMaterialPlugin]の一覧を取得します。
+     * @since 0.12.0
+     */
     abstract val materialPlugins: Sequence<HTMaterialPlugin>
 
     fun forEachPlugin(title: String, action: Consumer<HTMaterialPlugin>) {
         this.forEachPlugin(title, action::accept)
     }
 
+    /**
+     * 登録された[素材のプラグイン][HTMaterialPlugin]について処理を行います。
+     * @param title ログに表示される名前
+     * @param action 処理を行うブロック
+     * @since 0.12.0
+     */
     @HTBuilderMarker
     inline fun forEachPlugin(title: String, action: (HTMaterialPlugin) -> Unit) {
         HiiragiCoreAPI.LOGGER.info("{}...", title)
@@ -75,8 +85,17 @@ abstract class HiiragiCoreAccess {
         HiiragiCoreAPI.LOGGER.info("{} took {}", title, duration)
     }
 
+    /**
+     * 登録された[部品の種類][HTPart]を取得します。
+     * @since 0.12.0
+     */
     abstract val partManager: Map<String, HTPart>
 
+    /**
+     * [partManager]に基づいた[HTPart]の[BiCodec]のインスタンス
+     * @since 0.12.0
+     */
+    @JvmField
     val partCodec: BiCodec<ByteBuf, HTPart> = BiCodecs.lazy {
         BiCodec.STRING.flatXmap({ name: String -> partManager[name] ?: error("Unknown part: $name") }, HTPart::name)
     }

@@ -12,7 +12,16 @@ import net.neoforged.neoforge.common.extensions.ILevelExtension
 
 //    Text    //
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
+ */
 typealias Text = Component
+
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
+ */
 typealias MutableText = MutableComponent
 
 /**

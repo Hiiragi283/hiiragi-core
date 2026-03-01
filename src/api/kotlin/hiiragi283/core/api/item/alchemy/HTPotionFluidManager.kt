@@ -30,6 +30,10 @@ data object HTPotionFluidManager {
         }
     }
 
+    /**
+     * 登録されている[液体][Fluid]の一覧を取得します。
+     * @return [Holder]の一覧
+     */
     @JvmStatic
     fun getSupportedFluids(): Set<Holder<Fluid>> = fluidHandlers.keys
 
@@ -43,6 +47,7 @@ data object HTPotionFluidManager {
     /**
      * 指定した[item]に[handler]を登録します。
      * @throws IllegalStateException 指定した[item]が既に登録されいた場合
+     * @since 0.12.0
      */
     @JvmStatic
     fun register(item: Item, handler: Handler) {
@@ -51,12 +56,18 @@ data object HTPotionFluidManager {
         }
     }
 
+    /**
+     * 登録されている[アイテム][Item]の一覧を取得します。
+     * @return [Holder]の一覧
+     * @since 0.12.0
+     */
     @JvmStatic
     fun getSupportedItems(): Set<Holder<Item>> = itemHandlers.keys
 
     /**
      * 指定した[holder]から[Handler]を取得します。
      * @return 対応する[Handler]がない場合は`null`
+     * @since 0.12.0
      */
     @JvmStatic
     fun getItemHandler(holder: Holder<Item>): Handler? = itemHandlers[holder.delegate]

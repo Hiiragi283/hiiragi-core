@@ -104,6 +104,10 @@ interface HTItemHolderLike<ITEM : Item> :
 
 //    Extensions    //
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
+ */
 fun <ITEM : Item> HTItemHolderLike<ITEM>.toLike(): HTHolderLike.HolderDelegate<Item, ITEM> =
     object : HTHolderLike.HolderDelegate<Item, ITEM> {
         override fun get(): ITEM = this@toLike.asItem()

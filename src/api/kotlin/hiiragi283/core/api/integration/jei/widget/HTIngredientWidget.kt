@@ -1,7 +1,7 @@
 package hiiragi283.core.api.integration.jei.widget
 
 /**
- * レシピビューワーに保持しているオブジェクトを提供可能ウィジェットを表すインターフェースです。
+ * レシピビューワーに保持しているオブジェクトを提供可能なウィジェットを表すインターフェースです。
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  * @see mekanism.client.recipe_viewer.interfaces.IRecipeViewerIngredientHelper

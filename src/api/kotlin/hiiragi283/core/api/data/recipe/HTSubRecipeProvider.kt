@@ -24,6 +24,10 @@ sealed class HTSubRecipeProvider(protected val modId: String) : HTRecipeProvider
     override lateinit var provider: HolderLookup.Provider
     override lateinit var output: RecipeOutput
 
+    /**
+     * 指定した[key]からエンチャントを取得します。
+     * @since 0.12.0
+     */
     fun getEnchantment(key: ResourceKey<Enchantment>): Holder<Enchantment> = provider.holderOrThrow(key)
 
     /**

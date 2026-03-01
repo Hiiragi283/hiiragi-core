@@ -18,6 +18,9 @@ fun HTPropertyMap.getDefaultPart(): HTDefaultPart? = this[HTMaterialPropertyKeys
 
 fun HTPropertyMap.getDefaultPart(material: HTMaterialLike): TagKey<Item>? = this.getDefaultPart()?.getTag(material.asMaterialKey())
 
+/**
+ * @since 0.12.0
+ */
 fun HTPropertyMap.getDefaultScale(): Fraction = this.getOrDefault(HTMaterialPropertyKeys.DEFAULT_SCALE)
 
 fun HTPropertyMap.getDefaultFluidAmount(): Int = this.getOrDefault(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT)

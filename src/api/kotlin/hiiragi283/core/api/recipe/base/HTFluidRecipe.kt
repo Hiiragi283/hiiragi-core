@@ -14,17 +14,4 @@ fun interface HTFluidRecipe<INPUT : RecipeInput> {
      * 完成品の[液体][FluidStack]を取得します。
      */
     fun assembleFluid(input: INPUT, registries: HolderLookup.Provider): FluidStack
-
-    /**
-     * @author Hiiragi Tsubasa
-     * @since 0.10.0
-     */
-    fun interface Simple<INPUT : RecipeInput> : HTFluidRecipe<INPUT> {
-        override fun assembleFluid(input: INPUT, registries: HolderLookup.Provider): FluidStack = getResultFluid(registries)
-
-        /**
-         * 完成品の[液体][net.neoforged.neoforge.fluids.FluidStack]を取得します。
-         */
-        fun getResultFluid(registries: HolderLookup.Provider): FluidStack
-    }
 }

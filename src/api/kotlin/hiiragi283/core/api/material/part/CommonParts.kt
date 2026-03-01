@@ -1,7 +1,7 @@
 package hiiragi283.core.api.material.part
 
 /**
- * 一般的に使用される[HTPartLike]をまとめたクラスです。
+ * 一般に使用される[HTPartLike]をまとめたクラスです。
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */

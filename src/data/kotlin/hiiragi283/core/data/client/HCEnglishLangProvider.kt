@@ -85,7 +85,6 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HTVanillaRecipeTypes.BREWING, "Brewing")
 
         add(HCRecipeTypes.CRUSHING, "Crushing")
-
         add(HCRecipeTypes.CHARGING, "Lightning Charging")
         add(HCRecipeTypes.EXPLODING, "Exploding")
 

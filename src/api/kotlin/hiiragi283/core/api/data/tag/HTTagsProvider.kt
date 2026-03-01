@@ -58,10 +58,22 @@ sealed interface HTTagsProvider<T : Any> {
     fun addMaterial(factory: BuilderFactory<T>, prefix: HTTagPrefix, material: HTMaterialLike): HTTagBuilder<T> =
         addTags(factory, prefix.createCommonTagKey(registryKey), prefix.createTagKey(registryKey, material))
 
+    /**
+     * 指定した[ID][id]から[タグ][TagKey]を作成します。
+     * @since 0.12.0
+     */
     fun tag(id: ResourceLocation): TagKey<T> = registryKey.createTagKey(id)
 
+    /**
+     * 指定した[パス][path]から[共通タグ][TagKey]を作成します。
+     * @since 0.12.0
+     */
     fun commonTag(path: String): TagKey<T> = registryKey.createCommonTag(path)
 
+    /**
+     * 指定した[パス][path]から[共通タグ][TagKey]を作成します。
+     * @since 0.12.0
+     */
     fun commonTag(vararg path: String): TagKey<T> = registryKey.createCommonTag(*path)
 
     //    Factory    //

@@ -14,6 +14,12 @@ fun generateHash(vararg obj: Any?): Int = arrayOf(*obj).fold(0) { result: Int, o
  */
 fun <T> identity(): (T) -> T = { it }
 
+/**
+ * @since 0.12.0
+ */
 fun <T> identityLeft(): (T, T) -> T = { left: T, _: T -> left }
 
+/**
+ * @since 0.12.0
+ */
 fun <T> identityRight(): (T, T) -> T = { _: T, right: T -> right }

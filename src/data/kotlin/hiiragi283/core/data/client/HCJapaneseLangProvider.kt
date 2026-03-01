@@ -85,7 +85,6 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HTVanillaRecipeTypes.BREWING, "醸造")
 
         add(HCRecipeTypes.CRUSHING, "粉砕")
-
         add(HCRecipeTypes.CHARGING, "落雷によるチャージ")
         add(HCRecipeTypes.EXPLODING, "爆破")
 

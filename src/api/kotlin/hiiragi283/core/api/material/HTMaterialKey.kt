@@ -44,9 +44,15 @@ value class HTMaterialKey private constructor(private val id: ResourceLocation) 
 
         override fun asMaterialKey(): HTMaterialKey = this
 
+        /**
+         * @since 0.12.0
+         */
         override val translationKey: String
             get() = getId().toLanguageKey("material")
 
+        /**
+         * @since 0.12.0
+         */
         override fun getText(): Text = translatableText(translationKey)
 
         override fun compareTo(other: HTMaterialKey): Int = this.id.compareNamespaced(other.id)

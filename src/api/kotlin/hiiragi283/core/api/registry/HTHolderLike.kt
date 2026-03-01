@@ -56,28 +56,72 @@ fun <R : Any> Holder<R>.toLike(): HTSimpleHolderLikeDelegate<R> =
 
 //    Block    //
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
+ */
 typealias HTBlockHolderLike<BLOCK> = HTHolderLike<Block, BLOCK>
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
+ */
 @Suppress("DEPRECATION")
 fun Block.toLike(): HTBlockHolderLike<Block> = this.builtInRegistryHolder().toLike()
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
+ */
 fun HTBlockHolderLike<*>.getDefaultState(): BlockState = this.get().defaultBlockState()
 
 //    Fluid    //
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
+ */
 typealias HTFluidHolderLike<FLUID> = HTHolderLike<Fluid, FLUID>
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
+ */
 @Suppress("DEPRECATION")
 fun Fluid.toLike(): HTFluidHolderLike<Fluid> = this.builtInRegistryHolder().toLike()
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
+ */
 fun HTFluidHolderLike<*>.getBucket(): Item = this.get().bucket
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
+ */
 fun HTFluidHolderLike<*>.getBucketHolder(): HTItemHolderLike<*> = HTItemHolderLike.of(this.getBucket())
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
+ */
 fun HTFluidHolderLike<*>.getFluidType(): FluidType = this.get().fluidType
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
+ */
 fun HTFluidHolderLike<*>.toStack(amount: Int): FluidStack = FluidStack(this.get(), amount)
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
+ */
 fun HTFluidHolderLike<*>.toResource(): HTFluidResourceType? = this.get().toResource()
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.12.0
+ */
 fun HTFluidHolderLike<*>.toResource(patch: DataComponentPatch): HTFluidResourceType? = this.get().toResource(patch)
