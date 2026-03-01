@@ -12,10 +12,13 @@ import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
+import org.apache.commons.lang3.math.Fraction
 
 fun HTPropertyMap.getDefaultPart(): HTDefaultPart? = this[HTMaterialPropertyKeys.DEFAULT_PART]
 
 fun HTPropertyMap.getDefaultPart(material: HTMaterialLike): TagKey<Item>? = this.getDefaultPart()?.getTag(material.asMaterialKey())
+
+fun HTPropertyMap.getDefaultScale(): Fraction = this.getOrDefault(HTMaterialPropertyKeys.DEFAULT_SCALE)
 
 fun HTPropertyMap.getDefaultFluidAmount(): Int = this.getOrDefault(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT)
 

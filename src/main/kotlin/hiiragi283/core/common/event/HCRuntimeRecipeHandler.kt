@@ -18,6 +18,7 @@ import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTSmithingRecipeProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
 import hiiragi283.core.api.material.property.getDefaultPart
+import hiiragi283.core.api.material.property.getDefaultScale
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTItemHolderLike
@@ -88,12 +89,13 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     @JvmStatic
     private fun crushPrefixToDust(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry, prefix: HTTagPrefix) {
         // 材料が存在するか判定
+        if (prefix.itemTagKey(entry) == entry.getDefaultPart(entry)) return
         if (!event.isPresentTag(prefix, entry)) return
         // 素材のプロパティから完成品を取得
         val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
         val dust: HTItemHolderLike<*> = event.getFirstHolder(crushedPrefix, entry) ?: return
         // プレフィックスのスケールから個数を算出
-        val (outputCount: Int, inputCount: Int) = prefix.getScaledAmount(1, entry)
+        val (outputCount: Int, inputCount: Int) = prefix.getScaledAmount(entry.getDefaultScale(), entry)
         // レシピを登録
         HTItemToChancedRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(prefix, entry, inputCount)
@@ -114,10 +116,12 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         if (inputTag == crushedPrefix.itemTagKey(entry)) return
         // 完成品を取得
         val dust: HTItemHolderLike<*> = event.getFirstHolder(crushedPrefix, entry) ?: return
+        // プレフィックスのスケールから個数を算出
+        val (outputCount: Int, inputCount: Int) = entry.getDefaultScale()
         // レシピを登録
         HTItemToChancedRecipeBuilder.crushing(output) {
-            ingredient = inputCreator.create(inputTag)
-            this.result = resultCreator.create(dust)
+            ingredient = inputCreator.create(inputTag, inputCount)
+            this.result = resultCreator.create(dust, outputCount)
             time = getTimeFromHardness(entry, time) ?: return
             recipeId suffix "_from_${defaultPart.getSuffix()}"
         }

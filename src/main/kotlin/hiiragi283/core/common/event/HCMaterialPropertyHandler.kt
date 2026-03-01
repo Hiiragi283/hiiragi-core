@@ -344,15 +344,22 @@ object HCMaterialPropertyHandler {
             addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
             addItemPrefixes(CommonTagPrefixes.DUST)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
+            put(HTMaterialPropertyKeys.DEFAULT_SCALE, fraction(4))
 
             setName("Obsidian", "黒曜石")
             setTextureSet(HTMaterialTextureSet.DULL)
         }
 
         event.modify(VanillaMaterialKeys.BLAZE) {
+            setDefaultPart(Tags.Items.RODS_BLAZE, HTItemHolderLike.of(Items.BLAZE_ROD))
+            put(HTMaterialPropertyKeys.DEFAULT_SCALE, fraction(4))
+
             setName("Blaze", "ブレイズ")
         }
         event.modify(VanillaMaterialKeys.BREEZE) {
+            setDefaultPart(Tags.Items.RODS_BREEZE, HTItemHolderLike.of(Items.BREEZE_ROD))
+            put(HTMaterialPropertyKeys.DEFAULT_SCALE, fraction(6))
+
             setName("Breeze", "ブリーズ")
         }
 

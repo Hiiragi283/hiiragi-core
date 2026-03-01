@@ -26,6 +26,14 @@ object HTMaterialPropertyKeys {
     val DEFAULT_PART: HTPropertyKey<HTDefaultPart?> = createNullable("default_part")
 
     /**
+     * デフォルトの部品のスケールを管理する[プロパティキー][HTPropertyKey]
+     * @since 0.12.0
+     */
+    @JvmField
+    val DEFAULT_SCALE: HTPropertyKey<Fraction> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("default_scale"), Fraction.ONE)
+
+    /**
      * デフォルトの[部品][HTTagPrefix]あたりの液体量を管理する[プロパティキー][HTPropertyKey]
      * @since 0.7.0
      */
