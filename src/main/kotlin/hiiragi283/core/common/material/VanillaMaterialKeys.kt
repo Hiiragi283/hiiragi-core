@@ -23,9 +23,6 @@ object VanillaMaterialKeys {
     @JvmStatic
     val GLOWSTONE: HTMaterialKey = create("glowstone")
 
-    @JvmStatic
-    val CALCITE: HTMaterialKey = create("calcite")
-
     //    Gems    //
 
     @JvmStatic

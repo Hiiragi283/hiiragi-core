@@ -8,7 +8,6 @@ import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.collection.mutableTableOf
 import hiiragi283.core.api.collection.toFlatTable
-import hiiragi283.core.api.event.HTMaterialPropertyEvent
 import hiiragi283.core.api.event.HTRegisterExistingPartEvent
 import hiiragi283.core.api.fluid.HTVirtualFluid
 import hiiragi283.core.api.function.partially1
@@ -134,11 +133,10 @@ internal object HCMiscRegister {
     @JvmStatic
     private fun gatherProperties() {
         val builderMap: MutableMap<HTMaterialKey, HTPropertyMap.Mutable> = mutableMapOf()
-        ModLoader.postEvent(
-            HTMaterialPropertyEvent { key: HTMaterialKey -> builderMap.computeIfAbsent(key) { HTBasicPropertyMap.Mutable() } },
-        )
+        HiiragiCoreAccess.INSTANCE.forEachPlugin("Modifying Material Properties") {
+            it.onModifyMaterial { key: HTMaterialKey -> builderMap.computeIfAbsent(key) { HTBasicPropertyMap.Mutable() } }
+        }
         HiiragiCoreAccessImpl.materialManagerCache = builderMap.filterValues(HTPropertyMap::isNotEmpty).let(::HTMaterialManagerImpl)
-        HiiragiCoreAPI.LOGGER.info("Gathered Material Properties")
     }
 
     @JvmStatic

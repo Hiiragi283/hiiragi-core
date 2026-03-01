@@ -7,6 +7,7 @@ import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.serialization.value.HTValueInput
@@ -23,6 +24,9 @@ import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.MutableDataComponentHolder
+import java.util.function.Consumer
+import kotlin.time.Duration
+import kotlin.time.measureTime
 
 /**
  * モジュールをまたいで実装する要素をまとめたインターフェースです。
@@ -39,6 +43,32 @@ abstract class HiiragiCoreAccess {
     }
 
     //    Material    //
+
+    abstract val materialPlugins: Sequence<HTMaterialPlugin>
+
+    fun forEachPlugin(title: String, action: Consumer<HTMaterialPlugin>) {
+        this.forEachPlugin(title, action::accept)
+    }
+
+    @HTBuilderMarker
+    inline fun forEachPlugin(title: String, action: (HTMaterialPlugin) -> Unit) {
+        HiiragiCoreAPI.LOGGER.info("{}...", title)
+        val duration: Duration = measureTime {
+            for (plugin: HTMaterialPlugin in materialPlugins) {
+                runCatching {
+                    action(plugin)
+                }.onFailure { throwable: Throwable ->
+                    HiiragiCoreAPI.LOGGER.error(
+                        "Caught an error from plugin: {} {}",
+                        plugin::class.java,
+                        plugin.getId(),
+                        throwable,
+                    )
+                }
+            }
+        }
+        HiiragiCoreAPI.LOGGER.info("{} took {}", title, duration)
+    }
 
     /**
      * 素材マネージャを取得します。

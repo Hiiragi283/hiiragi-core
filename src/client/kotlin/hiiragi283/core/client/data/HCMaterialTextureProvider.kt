@@ -81,11 +81,11 @@ data object HCMaterialTextureProvider : ResourceGenTask {
         for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
             val molten: HTIdLike = factory(CommonFluidTagPrefixes.MOLTEN, entry) ?: continue
             // パレットを取得
-            var palette: Palette = HTTextureUtil
+            val palette: Palette = HTTextureUtil
                 .getOrCreatePalette(entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId(), manager)
                 .getOrNull()
                 ?: continue
-            palette = Palette.fromArc(palette.first().hcl(), palette.last().hcl(), 9)
+            // palette = Palette.fromArc(palette.first().lab(), palette.last().lab(), 9)
             // テンプレートを取得
             val template: TextureImage = TextureImage.open(manager, HTConst.MINECRAFT.toId(HTConst.BLOCK, "lava_still.png"))
             val respriter: Respriter = Respriter.of(template)

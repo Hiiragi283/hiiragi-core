@@ -12,6 +12,7 @@ import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.registry.holderSetOrNull
@@ -33,6 +34,7 @@ import hiiragi283.core.common.serialization.value.HTTagValueOutput
 import hiiragi283.core.config.HCConfig
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCMiscRegister
+import hiiragi283.core.util.HTPluginLoader
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponentHolder
@@ -87,6 +89,10 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
                 holder.set(HCDataComponents.BOTTLE_TYPE, bottleType)
             }
         }
+    }
+
+    override val materialPlugins: Sequence<HTMaterialPlugin> by lazy {
+        HTPluginLoader.collectPlugins<HTMaterialPlugin>().sortedBy(HTMaterialPlugin::priority)
     }
 
     override val materialManager: HTMaterialManager get() = materialManagerCache
