@@ -101,3 +101,12 @@ interface HTItemHolderLike<ITEM : Item> :
         override fun getText(): Text = asItem().description
     }
 }
+
+//    Extensions    //
+
+fun <ITEM : Item> HTItemHolderLike<ITEM>.toLike(): HTHolderLike.HolderDelegate<Item, ITEM> =
+    object : HTHolderLike.HolderDelegate<Item, ITEM> {
+        override fun get(): ITEM = this@toLike.asItem()
+
+        override fun getHolder(): Holder<Item> = this@toLike.getItemHolder()
+    }

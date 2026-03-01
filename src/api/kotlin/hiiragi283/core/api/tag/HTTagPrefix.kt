@@ -6,9 +6,11 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.property.HTBasicPropertyMap
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.registry.RegistryKey
+import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import net.minecraft.core.registries.Registries
+import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -63,6 +65,10 @@ class HTTagPrefix private constructor(
         val pathPattern: String = this[HTTagPropertyKeys.ID_PATTERN] ?: "%s_$name"
         return material.asMaterialId().withPath { pathPattern.replace("%s", it) }
     }
+
+    fun <T : Any> createKey(key: RegistryKey<T>, material: HTMaterialLike): ResourceKey<T> = createId(material).let(key::createKey)
+
+    fun itemKey(material: HTMaterialLike): ResourceKey<Item> = createKey(Registries.ITEM, material)
 
     /**
      * 指定した[レジストリキー][key]から，共通タグを生成します。

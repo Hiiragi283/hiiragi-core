@@ -59,7 +59,7 @@ fun <R : Any> Holder<R>.toLike(): HTSimpleHolderLikeDelegate<R> =
 typealias HTBlockHolderLike<BLOCK> = HTHolderLike<Block, BLOCK>
 
 @Suppress("DEPRECATION")
-fun Block.toLike(): HTBlockHolderLike<*> = this.builtInRegistryHolder().toLike()
+fun Block.toLike(): HTBlockHolderLike<Block> = this.builtInRegistryHolder().toLike()
 
 fun HTBlockHolderLike<*>.getDefaultState(): BlockState = this.get().defaultBlockState()
 
@@ -68,7 +68,7 @@ fun HTBlockHolderLike<*>.getDefaultState(): BlockState = this.get().defaultBlock
 typealias HTFluidHolderLike<FLUID> = HTHolderLike<Fluid, FLUID>
 
 @Suppress("DEPRECATION")
-fun Fluid.toLike(): HTFluidHolderLike<*> = this.builtInRegistryHolder().toLike()
+fun Fluid.toLike(): HTFluidHolderLike<Fluid> = this.builtInRegistryHolder().toLike()
 
 fun HTFluidHolderLike<*>.getBucket(): Item = this.get().bucket
 

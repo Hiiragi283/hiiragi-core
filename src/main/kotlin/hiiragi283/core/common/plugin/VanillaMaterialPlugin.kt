@@ -3,6 +3,9 @@ package hiiragi283.core.common.plugin
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.fraction
+import hiiragi283.core.api.item.tool.CommonToolTypes
+import hiiragi283.core.api.item.tool.HTToolType
+import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTExtraOreResultMap
 import hiiragi283.core.api.material.property.HTMaterialLevel
@@ -21,6 +24,7 @@ import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.plugin.HTPlugin
 import hiiragi283.core.api.property.plusAssign
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -29,7 +33,10 @@ import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.ItemTags
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.Blocks
 import net.neoforged.neoforge.common.Tags
 
 @HTPlugin
@@ -37,6 +44,145 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
     override val priority: Int = -1000
 
     override fun getId(): ResourceLocation = HTConst.MINECRAFT.toId("material_plugin")
+
+    override fun registerExistingBlock(consumer: HTMaterialPlugin.BlockConsumer) {
+        fun accept(prefix: HTTagPrefix, material: HTMaterialLike, block: Block) {
+            consumer.accept(prefix, material.asMaterialKey(), block.toLike())
+        }
+
+        // Fuels
+        accept(CommonTagPrefixes.ORE, VanillaMaterialKeys.COAL, Blocks.COAL_ORE)
+        accept(CommonTagPrefixes.ORE_DEEPSLATE, VanillaMaterialKeys.COAL, Blocks.DEEPSLATE_COAL_ORE)
+        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.COAL, Blocks.COAL_BLOCK)
+        // Mineral
+        accept(CommonTagPrefixes.ORE, VanillaMaterialKeys.REDSTONE, Blocks.REDSTONE_ORE)
+        accept(CommonTagPrefixes.ORE_DEEPSLATE, VanillaMaterialKeys.REDSTONE, Blocks.DEEPSLATE_REDSTONE_ORE)
+        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.REDSTONE, Blocks.REDSTONE_BLOCK)
+
+        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.GLOWSTONE, Blocks.GLOWSTONE)
+        // Gem
+        accept(CommonTagPrefixes.ORE, VanillaMaterialKeys.LAPIS, Blocks.LAPIS_ORE)
+        accept(CommonTagPrefixes.ORE_DEEPSLATE, VanillaMaterialKeys.LAPIS, Blocks.DEEPSLATE_LAPIS_ORE)
+        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.LAPIS, Blocks.LAPIS_BLOCK)
+
+        accept(CommonTagPrefixes.ORE_NETHER, VanillaMaterialKeys.QUARTZ, Blocks.NETHER_QUARTZ_ORE)
+        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.QUARTZ, Blocks.QUARTZ_BLOCK)
+
+        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.AMETHYST, Blocks.AMETHYST_BLOCK)
+
+        accept(CommonTagPrefixes.ORE, VanillaMaterialKeys.DIAMOND, Blocks.DIAMOND_ORE)
+        accept(CommonTagPrefixes.ORE_DEEPSLATE, VanillaMaterialKeys.DIAMOND, Blocks.DEEPSLATE_DIAMOND_ORE)
+        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.DIAMOND, Blocks.DIAMOND_BLOCK)
+
+        accept(CommonTagPrefixes.ORE, VanillaMaterialKeys.EMERALD, Blocks.EMERALD_ORE)
+        accept(CommonTagPrefixes.ORE_DEEPSLATE, VanillaMaterialKeys.EMERALD, Blocks.DEEPSLATE_EMERALD_ORE)
+        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.EMERALD, Blocks.EMERALD_BLOCK)
+        // Metal
+        accept(CommonTagPrefixes.ORE, VanillaMaterialKeys.COPPER, Blocks.COPPER_ORE)
+        accept(CommonTagPrefixes.ORE_DEEPSLATE, VanillaMaterialKeys.COPPER, Blocks.DEEPSLATE_COPPER_ORE)
+        accept(CommonTagPrefixes.RAW_BLOCK, VanillaMaterialKeys.COPPER, Blocks.RAW_COPPER_BLOCK)
+        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.COPPER, Blocks.COPPER_BLOCK)
+
+        accept(CommonTagPrefixes.ORE, VanillaMaterialKeys.IRON, Blocks.IRON_ORE)
+        accept(CommonTagPrefixes.ORE_DEEPSLATE, VanillaMaterialKeys.IRON, Blocks.DEEPSLATE_IRON_ORE)
+        accept(CommonTagPrefixes.RAW_BLOCK, VanillaMaterialKeys.IRON, Blocks.RAW_IRON_BLOCK)
+        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.IRON, Blocks.IRON_BLOCK)
+
+        accept(CommonTagPrefixes.ORE, VanillaMaterialKeys.GOLD, Blocks.GOLD_ORE)
+        accept(CommonTagPrefixes.ORE_DEEPSLATE, VanillaMaterialKeys.GOLD, Blocks.DEEPSLATE_GOLD_ORE)
+        accept(CommonTagPrefixes.ORE_NETHER, VanillaMaterialKeys.GOLD, Blocks.NETHER_GOLD_ORE)
+        accept(CommonTagPrefixes.RAW_BLOCK, VanillaMaterialKeys.GOLD, Blocks.RAW_GOLD_BLOCK)
+        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.GOLD, Blocks.GOLD_BLOCK)
+        // Alloy
+        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.NETHERITE, Blocks.NETHERITE_BLOCK)
+    }
+
+    override fun registerExistingItem(consumer: HTMaterialPlugin.ItemConsumer) {
+        fun accept(prefix: HTTagPrefix, material: HTMaterialLike, item: Item) {
+            consumer.accept(prefix, material.asMaterialKey(), HTItemHolderLike.of(item))
+        }
+
+        // Fuel
+        accept(CommonTagPrefixes.FUEL, VanillaMaterialKeys.COAL, Items.COAL)
+        accept(CommonTagPrefixes.FUEL, VanillaMaterialKeys.CHARCOAL, Items.CHARCOAL)
+        // Mineral
+        accept(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE, Items.REDSTONE)
+        accept(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLOWSTONE, Items.GLOWSTONE_DUST)
+        // Gem
+        accept(CommonTagPrefixes.GEM, VanillaMaterialKeys.LAPIS, Items.LAPIS_LAZULI)
+        accept(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ, Items.QUARTZ)
+        accept(CommonTagPrefixes.GEM, VanillaMaterialKeys.AMETHYST, Items.AMETHYST_SHARD)
+        accept(CommonTagPrefixes.GEM, VanillaMaterialKeys.DIAMOND, Items.DIAMOND)
+        accept(CommonTagPrefixes.GEM, VanillaMaterialKeys.EMERALD, Items.EMERALD)
+        accept(CommonTagPrefixes.GEM, VanillaMaterialKeys.ECHO, Items.ECHO_SHARD)
+        accept(CommonTagPrefixes.DUST, VanillaMaterialKeys.PRISMARINE, Items.PRISMARINE_SHARD)
+        accept(CommonTagPrefixes.GEM, VanillaMaterialKeys.PRISMARINE, Items.PRISMARINE_CRYSTALS)
+        // Pearl
+        accept(CommonTagPrefixes.PEARL, VanillaMaterialKeys.ENDER, Items.ENDER_PEARL)
+        // Metal
+        accept(CommonTagPrefixes.RAW, VanillaMaterialKeys.COPPER, Items.RAW_COPPER)
+        accept(CommonTagPrefixes.INGOT, VanillaMaterialKeys.COPPER, Items.COPPER_INGOT)
+
+        accept(CommonTagPrefixes.RAW, VanillaMaterialKeys.IRON, Items.RAW_IRON)
+        accept(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON, Items.IRON_INGOT)
+        accept(CommonTagPrefixes.NUGGET, VanillaMaterialKeys.IRON, Items.IRON_NUGGET)
+
+        accept(CommonTagPrefixes.RAW, VanillaMaterialKeys.GOLD, Items.RAW_GOLD)
+        accept(CommonTagPrefixes.INGOT, VanillaMaterialKeys.GOLD, Items.GOLD_INGOT)
+        accept(CommonTagPrefixes.NUGGET, VanillaMaterialKeys.GOLD, Items.GOLD_NUGGET)
+        // Alloy
+        accept(CommonTagPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_SCRAP)
+        accept(CommonTagPrefixes.INGOT, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_INGOT)
+        // Other
+        accept(CommonTagPrefixes.DUST, VanillaMaterialKeys.BLAZE, Items.BLAZE_POWDER)
+        accept(CommonTagPrefixes.ROD, VanillaMaterialKeys.BLAZE, Items.BLAZE_ROD)
+
+        accept(CommonTagPrefixes.DUST, VanillaMaterialKeys.BREEZE, Items.WIND_CHARGE)
+        accept(CommonTagPrefixes.ROD, VanillaMaterialKeys.BREEZE, Items.BREEZE_ROD)
+    }
+
+    override fun registerExistingTool(consumer: HTMaterialPlugin.ToolConsumer) {
+        fun accept(toolType: HTToolType, material: HTMaterialLike, item: Item) {
+            consumer.accept(toolType, material.asMaterialKey(), HTItemHolderLike.of(item))
+        }
+
+        // Wooden
+        accept(CommonToolTypes.SHOVEL, VanillaMaterialKeys.WOOD, Items.WOODEN_SHOVEL)
+        accept(CommonToolTypes.PICKAXE, VanillaMaterialKeys.WOOD, Items.WOODEN_PICKAXE)
+        accept(CommonToolTypes.AXE, VanillaMaterialKeys.WOOD, Items.WOODEN_AXE)
+        accept(CommonToolTypes.HOE, VanillaMaterialKeys.WOOD, Items.WOODEN_HOE)
+        accept(CommonToolTypes.SWORD, VanillaMaterialKeys.WOOD, Items.WOODEN_SWORD)
+        // Stone
+        accept(CommonToolTypes.SHOVEL, VanillaMaterialKeys.STONE, Items.STONE_SHOVEL)
+        accept(CommonToolTypes.PICKAXE, VanillaMaterialKeys.STONE, Items.STONE_PICKAXE)
+        accept(CommonToolTypes.AXE, VanillaMaterialKeys.STONE, Items.STONE_AXE)
+        accept(CommonToolTypes.HOE, VanillaMaterialKeys.STONE, Items.STONE_HOE)
+        accept(CommonToolTypes.SWORD, VanillaMaterialKeys.STONE, Items.STONE_SWORD)
+        // Iron
+        accept(CommonToolTypes.SHOVEL, VanillaMaterialKeys.IRON, Items.IRON_SHOVEL)
+        accept(CommonToolTypes.PICKAXE, VanillaMaterialKeys.IRON, Items.IRON_PICKAXE)
+        accept(CommonToolTypes.AXE, VanillaMaterialKeys.IRON, Items.IRON_AXE)
+        accept(CommonToolTypes.HOE, VanillaMaterialKeys.IRON, Items.IRON_HOE)
+        accept(CommonToolTypes.SWORD, VanillaMaterialKeys.IRON, Items.IRON_SWORD)
+        // Golden
+        accept(CommonToolTypes.SHOVEL, VanillaMaterialKeys.GOLD, Items.GOLDEN_SHOVEL)
+        accept(CommonToolTypes.PICKAXE, VanillaMaterialKeys.GOLD, Items.GOLDEN_PICKAXE)
+        accept(CommonToolTypes.AXE, VanillaMaterialKeys.GOLD, Items.GOLDEN_AXE)
+        accept(CommonToolTypes.HOE, VanillaMaterialKeys.GOLD, Items.GOLDEN_HOE)
+        accept(CommonToolTypes.SWORD, VanillaMaterialKeys.GOLD, Items.GOLDEN_SWORD)
+        // Diamond
+        accept(CommonToolTypes.SHOVEL, VanillaMaterialKeys.DIAMOND, Items.DIAMOND_SHOVEL)
+        accept(CommonToolTypes.PICKAXE, VanillaMaterialKeys.DIAMOND, Items.DIAMOND_PICKAXE)
+        accept(CommonToolTypes.AXE, VanillaMaterialKeys.DIAMOND, Items.DIAMOND_AXE)
+        accept(CommonToolTypes.HOE, VanillaMaterialKeys.DIAMOND, Items.DIAMOND_HOE)
+        accept(CommonToolTypes.SWORD, VanillaMaterialKeys.DIAMOND, Items.DIAMOND_SWORD)
+        // Netherite
+        accept(CommonToolTypes.SHOVEL, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_SHOVEL)
+        accept(CommonToolTypes.PICKAXE, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_PICKAXE)
+        accept(CommonToolTypes.AXE, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_AXE)
+        accept(CommonToolTypes.HOE, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_HOE)
+        accept(CommonToolTypes.SWORD, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_SWORD)
+    }
 
     override fun onModifyMaterial(builder: HTMaterialPlugin.MaterialBuilder) {
         fuel(builder)

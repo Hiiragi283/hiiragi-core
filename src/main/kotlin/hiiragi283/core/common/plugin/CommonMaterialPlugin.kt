@@ -355,7 +355,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(CommonMaterialKeys.PLASTIC).apply {
             setDefaultPart(
                 HiiragiCoreTags.Items.PLASTICS,
-                HTSimpleDeferredItem(CommonTagPrefixes.PLATE.createId(CommonMaterialKeys.PLASTIC)),
+                HTSimpleDeferredItem(CommonTagPrefixes.PLATE.itemKey(CommonMaterialKeys.PLASTIC)),
             )
             addBlockPrefixes(CommonTagPrefixes.BLOCK)
             addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)

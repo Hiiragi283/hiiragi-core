@@ -3,7 +3,9 @@ package hiiragi283.core.api.item.tool
 import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.data.lang.HTLangPatternProvider
 import hiiragi283.core.api.material.HTMaterialLike
-import net.minecraft.resources.ResourceLocation
+import hiiragi283.core.api.registry.createKey
+import net.minecraft.core.registries.Registries
+import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.TieredItem
@@ -35,7 +37,10 @@ class HTToolType(
         inline fun create(name: String, builderAction: Builder.() -> Unit): HTToolType = Builder(name).apply(builderAction).build()
     }
 
-    fun createId(material: HTMaterialLike): ResourceLocation = material.asMaterialId().withPath { idPattern.replace("%s", it) }
+    fun createKey(material: HTMaterialLike): ResourceKey<Item> = material
+        .asMaterialId()
+        .withPath { idPattern.replace("%s", it) }
+        .let(Registries.ITEM::createKey)
 
     fun createTool(material: HTToolMaterial): TieredItem {
         val properties = Item.Properties()
