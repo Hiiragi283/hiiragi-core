@@ -3,6 +3,10 @@ package hiiragi283.core.api.material
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
+import hiiragi283.core.api.text.HTHasText
+import hiiragi283.core.api.text.HTHasTranslationKey
+import hiiragi283.core.api.text.Text
+import hiiragi283.core.api.text.translatableText
 import io.netty.buffer.ByteBuf
 import net.minecraft.resources.ResourceLocation
 
@@ -18,6 +22,8 @@ import net.minecraft.resources.ResourceLocation
 value class HTMaterialKey private constructor(private val id: ResourceLocation) :
     HTIdLike,
     HTMaterialLike,
+    HTHasTranslationKey,
+    HTHasText,
     Comparable<HTMaterialKey> {
         companion object {
             /**
@@ -37,6 +43,11 @@ value class HTMaterialKey private constructor(private val id: ResourceLocation) 
         override fun getId(): ResourceLocation = id
 
         override fun asMaterialKey(): HTMaterialKey = this
+
+        override val translationKey: String
+            get() = getId().toLanguageKey("material")
+
+        override fun getText(): Text = translatableText(translationKey)
 
         override fun compareTo(other: HTMaterialKey): Int = this.id.compareNamespaced(other.id)
     }

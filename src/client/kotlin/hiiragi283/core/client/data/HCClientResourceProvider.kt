@@ -225,6 +225,10 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         val manager: HTMaterialManager = HiiragiCoreAccess.INSTANCE.materialManager
 
         for (entry: HTMaterialManager.Entry in manager) {
+            // Material Name
+            val key: HTMaterialKey = entry.asMaterialKey()
+            val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
+            consumer(key.translationKey, materialName.getTranslatedName(langType))
             // Block
             for ((part: HTPart, block: HTBlockHolderLike<*>) in registered.blocks.column(entry)) {
                 val name: String = translate(langType, part, entry) ?: continue
@@ -248,7 +252,6 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
             }
             // Tool
             for ((toolType: HTToolType, tool: HTMaterialContents.Entry<Item>) in registered.tools.column(entry)) {
-                val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
                 consumer(tool.get().descriptionId, toolType.langPattern.translate(langType, materialName))
             }
         }
