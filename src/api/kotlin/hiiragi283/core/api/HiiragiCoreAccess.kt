@@ -7,14 +7,18 @@ import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.part.HTPart
+import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
+import hiiragi283.core.api.serialization.codec.BiCodec
+import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
-import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.text.HTTextResult
+import io.netty.buffer.ByteBuf
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.nbt.CompoundTag
@@ -70,6 +74,12 @@ abstract class HiiragiCoreAccess {
         HiiragiCoreAPI.LOGGER.info("{} took {}", title, duration)
     }
 
+    abstract val partManager: Map<String, HTPart>
+
+    val partCodec: BiCodec<ByteBuf, HTPart> = BiCodecs.lazy {
+        BiCodec.STRING.flatXmap({ name: String -> partManager[name] ?: error("Unknown part: $name") }, HTPart::name)
+    }
+
     /**
      * 素材マネージャを取得します。
      */
@@ -87,14 +97,14 @@ abstract class HiiragiCoreAccess {
 
     abstract val registeredFluids: HTMaterialContents<HTFluidTagPrefix, Fluid>
 
-    fun getMaterialBlock(prefix: HTTagPrefix, material: HTMaterialLike): HTMaterialContents.Entry<Block>? =
-        existingContents.blocks[prefix, material] ?: registeredContents.blocks[prefix, material]
+    fun getMaterialBlock(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.Entry<Block>? =
+        existingContents.blocks[part.asPart(), material] ?: registeredContents.blocks[part.asPart(), material]
 
-    fun getMaterialItem(prefix: HTTagPrefix, material: HTMaterialLike): HTMaterialContents.Entry<Item>? =
-        existingContents.items[prefix, material] ?: registeredContents.items[prefix, material]
+    fun getMaterialItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.Entry<Item>? =
+        existingContents.items[part.asPart(), material] ?: registeredContents.items[part.asPart(), material]
 
-    fun getMaterialBlockOrItem(prefix: HTTagPrefix, material: HTMaterialLike): HTMaterialContents.Entry<out ItemLike>? =
-        existingContents.getBlockOrItem(prefix, material) ?: registeredContents.getBlockOrItem(prefix, material)
+    fun getMaterialBlockOrItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.Entry<out ItemLike>? =
+        existingContents.getBlockOrItem(part, material) ?: registeredContents.getBlockOrItem(part, material)
 
     //    Potion    //
 

@@ -16,6 +16,9 @@ import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.part.HTPart
+import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.property.HTBasicPropertyMap
@@ -28,9 +31,7 @@ import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.toId
-import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
-import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.common.HiiragiCoreAccessImpl
 import hiiragi283.core.common.gui.sync.HTBoolSyncPayload
 import hiiragi283.core.common.gui.sync.HTFluidSyncPayload
@@ -63,16 +64,16 @@ internal object HCMiscRegister {
     private var hasInit: Boolean = false
 
     @JvmStatic
-    val existingBlocks: HTTable.Mutable<HTTagPrefix, HTMaterialKey, HTMaterialContents.Entry<Block>> = mutableTableOf()
+    val existingBlocks: HTTable.Mutable<HTPart, HTMaterialKey, HTMaterialContents.Entry<Block>> = mutableTableOf()
 
     @JvmStatic
-    val existingItems: HTTable.Mutable<HTTagPrefix, HTMaterialKey, HTMaterialContents.Entry<Item>> = mutableTableOf()
+    val existingItems: HTTable.Mutable<HTPart, HTMaterialKey, HTMaterialContents.Entry<Item>> = mutableTableOf()
 
     @JvmStatic
     val existingTools: HTTable.Mutable<HTToolType, HTMaterialKey, HTMaterialContents.Entry<Item>> = mutableTableOf()
 
     @JvmStatic
-    lateinit var materialBlocks: HTTable<HTTagPrefix, HTMaterialKey, HTMaterialContents.Entry<Block>>
+    lateinit var materialBlocks: HTTable<HTPart, HTMaterialKey, HTMaterialContents.Entry<Block>>
         private set
 
     @JvmStatic
@@ -80,7 +81,7 @@ internal object HCMiscRegister {
         private set
 
     @JvmStatic
-    lateinit var materialItems: HTTable<HTTagPrefix, HTMaterialKey, HTMaterialContents.Entry<Item>>
+    lateinit var materialItems: HTTable<HTPart, HTMaterialKey, HTMaterialContents.Entry<Item>>
         private set
 
     @JvmStatic
@@ -120,6 +121,7 @@ internal object HCMiscRegister {
     @JvmStatic
     private fun initMaterials() {
         if (!hasInit) {
+            HiiragiCoreAccess.INSTANCE.partManager
             // 素材のプロパティを定義する
             gatherProperties()
             // 既存の素材ブロックを登録する
@@ -136,7 +138,7 @@ internal object HCMiscRegister {
     private fun gatherProperties() {
         val builderMap: MutableMap<HTMaterialKey, HTPropertyMap.Mutable> = mutableMapOf()
         HiiragiCoreAccess.INSTANCE.forEachPlugin("Modifying Material Properties") {
-            it.onModifyMaterial { key: HTMaterialKey -> builderMap.computeIfAbsent(key) { HTBasicPropertyMap.Mutable() } }
+            it.modifyMaterial { key: HTMaterialKey -> builderMap.computeIfAbsent(key) { HTBasicPropertyMap.Mutable() } }
         }
         HiiragiCoreAccessImpl.materialManagerCache = builderMap.filterValues(HTPropertyMap::isNotEmpty).let(::HTMaterialManagerImpl)
     }
@@ -144,8 +146,8 @@ internal object HCMiscRegister {
     @JvmStatic
     private fun registerExistingBlocks() {
         HiiragiCoreAccess.INSTANCE.forEachPlugin("Register Existing Blocks") { plugin: HTMaterialPlugin ->
-            plugin.registerExistingBlock { prefix: HTTagPrefix, key: HTMaterialKey, block: HTBlockHolderLike<*> ->
-                existingBlocks.put(prefix, key, HTMaterialContents.Entry(block, true))
+            plugin.registerExistingBlock { part: HTPartLike, material: HTMaterialKey, block: HTBlockHolderLike<*> ->
+                existingBlocks.put(part.asPart(), material, HTMaterialContents.Entry(block, true))
             }
         }
     }
@@ -153,8 +155,8 @@ internal object HCMiscRegister {
     @JvmStatic
     private fun registerExistingItems() {
         HiiragiCoreAccess.INSTANCE.forEachPlugin("Register Existing Items") { plugin: HTMaterialPlugin ->
-            plugin.registerExistingItem { prefix: HTTagPrefix, key: HTMaterialKey, item: HTItemHolderLike<*> ->
-                existingItems.put(prefix, key, HTMaterialContents.Entry(item.toLike(), true))
+            plugin.registerExistingItem { part: HTPartLike, material: HTMaterialKey, item: HTItemHolderLike<*> ->
+                existingItems.put(part.asPart(), material, HTMaterialContents.Entry(item.toLike(), true))
             }
         }
     }
@@ -177,12 +179,12 @@ internal object HCMiscRegister {
             .toFlatTable { entry: HTMaterialManager.Entry ->
                 entry
                     .getOrDefault(HTMaterialPropertyKeys.BLOCK_PREFIXES)
-                    .mapNotNull { prefix: HTTagPrefix ->
-                        val properties: BlockBehaviour.Properties = prefix[HTTagPropertyKeys.BLOCK_PROP] ?: return@mapNotNull null
-                        val key: ResourceKey<Block> = prefix.createKey(Registries.BLOCK, entry)
+                    .mapNotNull { part: HTPartLike ->
+                        val properties: BlockBehaviour.Properties = part[HTPartPropertyKeys.BLOCK_PROP] ?: return@mapNotNull null
+                        val key: ResourceKey<Block> = part.createKey(Registries.BLOCK, entry)
                         val block = Block(properties)
                         helper.register(key, block)
-                        Triple(prefix, entry.asMaterialKey(), HTMaterialContents.blockEntry(key, block, false))
+                        Triple(part.asPart(), entry.asMaterialKey(), HTMaterialContents.blockEntry(key, block, false))
                     }
             }
     }
@@ -241,11 +243,11 @@ internal object HCMiscRegister {
             .toFlatTable { entry: HTMaterialManager.Entry ->
                 entry
                     .getOrDefault(HTMaterialPropertyKeys.ITEM_PREFIXES)
-                    .map { prefix: HTTagPrefix ->
-                        val key: ResourceKey<Item> = prefix.itemKey(entry)
+                    .map { part: HTPartLike ->
+                        val key: ResourceKey<Item> = part.createKey(Registries.ITEM, entry)
                         val item = Item(Item.Properties())
                         helper.register(key, item)
-                        Triple(prefix, entry.asMaterialKey(), HTMaterialContents.itemEntry(key, item, false))
+                        Triple(part.asPart(), entry.asMaterialKey(), HTMaterialContents.itemEntry(key, item, false))
                     }
             }
     }

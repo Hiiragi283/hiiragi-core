@@ -51,6 +51,12 @@ abstract class HTRecipeProviderContext {
     protected val resultCreator: HTResultCreator get() = HTResultCreator
 
     /**
+     * 部品を管理するマネージャを取得します。
+     * @since 0.12.0
+     */
+    protected val partManager by lazy(HiiragiCoreAccess.INSTANCE::partManager)
+
+    /**
      * 素材を管理するマネージャを取得します。
      */
     protected val materialManager: HTMaterialManager by lazy(HiiragiCoreAccess.INSTANCE::materialManager)

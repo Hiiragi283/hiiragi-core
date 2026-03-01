@@ -6,6 +6,8 @@ import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.part.CommonParts
+import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTExtraOreResultMap
 import hiiragi283.core.api.material.property.HTMaterialLevel
@@ -26,8 +28,6 @@ import hiiragi283.core.api.property.plusAssign
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.toId
-import hiiragi283.core.api.tag.CommonTagPrefixes
-import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.CommonFluidTagPrefixes
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
@@ -46,99 +46,98 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
     override fun getId(): ResourceLocation = HTConst.MINECRAFT.toId("material_plugin")
 
     override fun registerExistingBlock(consumer: HTMaterialPlugin.BlockConsumer) {
-        fun accept(prefix: HTTagPrefix, material: HTMaterialLike, block: Block) {
-            consumer.accept(prefix, material.asMaterialKey(), block.toLike())
+        fun accept(part: HTPartLike, material: HTMaterialLike, block: Block) {
+            consumer.accept(part, material.asMaterialKey(), block.toLike())
         }
-
         // Fuels
-        accept(CommonTagPrefixes.ORE, VanillaMaterialKeys.COAL, Blocks.COAL_ORE)
-        accept(CommonTagPrefixes.ORE_DEEPSLATE, VanillaMaterialKeys.COAL, Blocks.DEEPSLATE_COAL_ORE)
-        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.COAL, Blocks.COAL_BLOCK)
+        accept(CommonParts.ORE, VanillaMaterialKeys.COAL, Blocks.COAL_ORE)
+        accept(CommonParts.ORE_DEEPSLATE, VanillaMaterialKeys.COAL, Blocks.DEEPSLATE_COAL_ORE)
+        accept(CommonParts.BLOCK, VanillaMaterialKeys.COAL, Blocks.COAL_BLOCK)
         // Mineral
-        accept(CommonTagPrefixes.ORE, VanillaMaterialKeys.REDSTONE, Blocks.REDSTONE_ORE)
-        accept(CommonTagPrefixes.ORE_DEEPSLATE, VanillaMaterialKeys.REDSTONE, Blocks.DEEPSLATE_REDSTONE_ORE)
-        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.REDSTONE, Blocks.REDSTONE_BLOCK)
+        accept(CommonParts.ORE, VanillaMaterialKeys.REDSTONE, Blocks.REDSTONE_ORE)
+        accept(CommonParts.ORE_DEEPSLATE, VanillaMaterialKeys.REDSTONE, Blocks.DEEPSLATE_REDSTONE_ORE)
+        accept(CommonParts.BLOCK, VanillaMaterialKeys.REDSTONE, Blocks.REDSTONE_BLOCK)
 
-        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.GLOWSTONE, Blocks.GLOWSTONE)
+        accept(CommonParts.BLOCK, VanillaMaterialKeys.GLOWSTONE, Blocks.GLOWSTONE)
         // Gem
-        accept(CommonTagPrefixes.ORE, VanillaMaterialKeys.LAPIS, Blocks.LAPIS_ORE)
-        accept(CommonTagPrefixes.ORE_DEEPSLATE, VanillaMaterialKeys.LAPIS, Blocks.DEEPSLATE_LAPIS_ORE)
-        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.LAPIS, Blocks.LAPIS_BLOCK)
+        accept(CommonParts.ORE, VanillaMaterialKeys.LAPIS, Blocks.LAPIS_ORE)
+        accept(CommonParts.ORE_DEEPSLATE, VanillaMaterialKeys.LAPIS, Blocks.DEEPSLATE_LAPIS_ORE)
+        accept(CommonParts.BLOCK, VanillaMaterialKeys.LAPIS, Blocks.LAPIS_BLOCK)
 
-        accept(CommonTagPrefixes.ORE_NETHER, VanillaMaterialKeys.QUARTZ, Blocks.NETHER_QUARTZ_ORE)
-        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.QUARTZ, Blocks.QUARTZ_BLOCK)
+        accept(CommonParts.ORE_NETHER, VanillaMaterialKeys.QUARTZ, Blocks.NETHER_QUARTZ_ORE)
+        accept(CommonParts.BLOCK, VanillaMaterialKeys.QUARTZ, Blocks.QUARTZ_BLOCK)
 
-        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.AMETHYST, Blocks.AMETHYST_BLOCK)
+        accept(CommonParts.BLOCK, VanillaMaterialKeys.AMETHYST, Blocks.AMETHYST_BLOCK)
 
-        accept(CommonTagPrefixes.ORE, VanillaMaterialKeys.DIAMOND, Blocks.DIAMOND_ORE)
-        accept(CommonTagPrefixes.ORE_DEEPSLATE, VanillaMaterialKeys.DIAMOND, Blocks.DEEPSLATE_DIAMOND_ORE)
-        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.DIAMOND, Blocks.DIAMOND_BLOCK)
+        accept(CommonParts.ORE, VanillaMaterialKeys.DIAMOND, Blocks.DIAMOND_ORE)
+        accept(CommonParts.ORE_DEEPSLATE, VanillaMaterialKeys.DIAMOND, Blocks.DEEPSLATE_DIAMOND_ORE)
+        accept(CommonParts.BLOCK, VanillaMaterialKeys.DIAMOND, Blocks.DIAMOND_BLOCK)
 
-        accept(CommonTagPrefixes.ORE, VanillaMaterialKeys.EMERALD, Blocks.EMERALD_ORE)
-        accept(CommonTagPrefixes.ORE_DEEPSLATE, VanillaMaterialKeys.EMERALD, Blocks.DEEPSLATE_EMERALD_ORE)
-        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.EMERALD, Blocks.EMERALD_BLOCK)
+        accept(CommonParts.ORE, VanillaMaterialKeys.EMERALD, Blocks.EMERALD_ORE)
+        accept(CommonParts.ORE_DEEPSLATE, VanillaMaterialKeys.EMERALD, Blocks.DEEPSLATE_EMERALD_ORE)
+        accept(CommonParts.BLOCK, VanillaMaterialKeys.EMERALD, Blocks.EMERALD_BLOCK)
         // Metal
-        accept(CommonTagPrefixes.ORE, VanillaMaterialKeys.COPPER, Blocks.COPPER_ORE)
-        accept(CommonTagPrefixes.ORE_DEEPSLATE, VanillaMaterialKeys.COPPER, Blocks.DEEPSLATE_COPPER_ORE)
-        accept(CommonTagPrefixes.RAW_BLOCK, VanillaMaterialKeys.COPPER, Blocks.RAW_COPPER_BLOCK)
-        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.COPPER, Blocks.COPPER_BLOCK)
+        accept(CommonParts.ORE, VanillaMaterialKeys.COPPER, Blocks.COPPER_ORE)
+        accept(CommonParts.ORE_DEEPSLATE, VanillaMaterialKeys.COPPER, Blocks.DEEPSLATE_COPPER_ORE)
+        accept(CommonParts.RAW_BLOCK, VanillaMaterialKeys.COPPER, Blocks.RAW_COPPER_BLOCK)
+        accept(CommonParts.BLOCK, VanillaMaterialKeys.COPPER, Blocks.COPPER_BLOCK)
 
-        accept(CommonTagPrefixes.ORE, VanillaMaterialKeys.IRON, Blocks.IRON_ORE)
-        accept(CommonTagPrefixes.ORE_DEEPSLATE, VanillaMaterialKeys.IRON, Blocks.DEEPSLATE_IRON_ORE)
-        accept(CommonTagPrefixes.RAW_BLOCK, VanillaMaterialKeys.IRON, Blocks.RAW_IRON_BLOCK)
-        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.IRON, Blocks.IRON_BLOCK)
+        accept(CommonParts.ORE, VanillaMaterialKeys.IRON, Blocks.IRON_ORE)
+        accept(CommonParts.ORE_DEEPSLATE, VanillaMaterialKeys.IRON, Blocks.DEEPSLATE_IRON_ORE)
+        accept(CommonParts.RAW_BLOCK, VanillaMaterialKeys.IRON, Blocks.RAW_IRON_BLOCK)
+        accept(CommonParts.BLOCK, VanillaMaterialKeys.IRON, Blocks.IRON_BLOCK)
 
-        accept(CommonTagPrefixes.ORE, VanillaMaterialKeys.GOLD, Blocks.GOLD_ORE)
-        accept(CommonTagPrefixes.ORE_DEEPSLATE, VanillaMaterialKeys.GOLD, Blocks.DEEPSLATE_GOLD_ORE)
-        accept(CommonTagPrefixes.ORE_NETHER, VanillaMaterialKeys.GOLD, Blocks.NETHER_GOLD_ORE)
-        accept(CommonTagPrefixes.RAW_BLOCK, VanillaMaterialKeys.GOLD, Blocks.RAW_GOLD_BLOCK)
-        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.GOLD, Blocks.GOLD_BLOCK)
+        accept(CommonParts.ORE, VanillaMaterialKeys.GOLD, Blocks.GOLD_ORE)
+        accept(CommonParts.ORE_DEEPSLATE, VanillaMaterialKeys.GOLD, Blocks.DEEPSLATE_GOLD_ORE)
+        accept(CommonParts.ORE_NETHER, VanillaMaterialKeys.GOLD, Blocks.NETHER_GOLD_ORE)
+        accept(CommonParts.RAW_BLOCK, VanillaMaterialKeys.GOLD, Blocks.RAW_GOLD_BLOCK)
+        accept(CommonParts.BLOCK, VanillaMaterialKeys.GOLD, Blocks.GOLD_BLOCK)
         // Alloy
-        accept(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.NETHERITE, Blocks.NETHERITE_BLOCK)
+        accept(CommonParts.BLOCK, VanillaMaterialKeys.NETHERITE, Blocks.NETHERITE_BLOCK)
     }
 
     override fun registerExistingItem(consumer: HTMaterialPlugin.ItemConsumer) {
-        fun accept(prefix: HTTagPrefix, material: HTMaterialLike, item: Item) {
-            consumer.accept(prefix, material.asMaterialKey(), HTItemHolderLike.of(item))
+        fun accept(part: HTPartLike, material: HTMaterialLike, item: Item) {
+            consumer.accept(part, material.asMaterialKey(), HTItemHolderLike.of(item))
         }
 
         // Fuel
-        accept(CommonTagPrefixes.FUEL, VanillaMaterialKeys.COAL, Items.COAL)
-        accept(CommonTagPrefixes.FUEL, VanillaMaterialKeys.CHARCOAL, Items.CHARCOAL)
+        accept(CommonParts.FUEL, VanillaMaterialKeys.COAL, Items.COAL)
+        accept(CommonParts.FUEL, VanillaMaterialKeys.CHARCOAL, Items.CHARCOAL)
         // Mineral
-        accept(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE, Items.REDSTONE)
-        accept(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLOWSTONE, Items.GLOWSTONE_DUST)
+        accept(CommonParts.DUST, VanillaMaterialKeys.REDSTONE, Items.REDSTONE)
+        accept(CommonParts.DUST, VanillaMaterialKeys.GLOWSTONE, Items.GLOWSTONE_DUST)
         // Gem
-        accept(CommonTagPrefixes.GEM, VanillaMaterialKeys.LAPIS, Items.LAPIS_LAZULI)
-        accept(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ, Items.QUARTZ)
-        accept(CommonTagPrefixes.GEM, VanillaMaterialKeys.AMETHYST, Items.AMETHYST_SHARD)
-        accept(CommonTagPrefixes.GEM, VanillaMaterialKeys.DIAMOND, Items.DIAMOND)
-        accept(CommonTagPrefixes.GEM, VanillaMaterialKeys.EMERALD, Items.EMERALD)
-        accept(CommonTagPrefixes.GEM, VanillaMaterialKeys.ECHO, Items.ECHO_SHARD)
-        accept(CommonTagPrefixes.DUST, VanillaMaterialKeys.PRISMARINE, Items.PRISMARINE_SHARD)
-        accept(CommonTagPrefixes.GEM, VanillaMaterialKeys.PRISMARINE, Items.PRISMARINE_CRYSTALS)
+        accept(CommonParts.GEM, VanillaMaterialKeys.LAPIS, Items.LAPIS_LAZULI)
+        accept(CommonParts.GEM, VanillaMaterialKeys.QUARTZ, Items.QUARTZ)
+        accept(CommonParts.GEM, VanillaMaterialKeys.AMETHYST, Items.AMETHYST_SHARD)
+        accept(CommonParts.GEM, VanillaMaterialKeys.DIAMOND, Items.DIAMOND)
+        accept(CommonParts.GEM, VanillaMaterialKeys.EMERALD, Items.EMERALD)
+        accept(CommonParts.GEM, VanillaMaterialKeys.ECHO, Items.ECHO_SHARD)
+        accept(CommonParts.DUST, VanillaMaterialKeys.PRISMARINE, Items.PRISMARINE_SHARD)
+        accept(CommonParts.GEM, VanillaMaterialKeys.PRISMARINE, Items.PRISMARINE_CRYSTALS)
         // Pearl
-        accept(CommonTagPrefixes.PEARL, VanillaMaterialKeys.ENDER, Items.ENDER_PEARL)
+        accept(CommonParts.PEARL, VanillaMaterialKeys.ENDER, Items.ENDER_PEARL)
         // Metal
-        accept(CommonTagPrefixes.RAW, VanillaMaterialKeys.COPPER, Items.RAW_COPPER)
-        accept(CommonTagPrefixes.INGOT, VanillaMaterialKeys.COPPER, Items.COPPER_INGOT)
+        accept(CommonParts.RAW, VanillaMaterialKeys.COPPER, Items.RAW_COPPER)
+        accept(CommonParts.INGOT, VanillaMaterialKeys.COPPER, Items.COPPER_INGOT)
 
-        accept(CommonTagPrefixes.RAW, VanillaMaterialKeys.IRON, Items.RAW_IRON)
-        accept(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON, Items.IRON_INGOT)
-        accept(CommonTagPrefixes.NUGGET, VanillaMaterialKeys.IRON, Items.IRON_NUGGET)
+        accept(CommonParts.RAW, VanillaMaterialKeys.IRON, Items.RAW_IRON)
+        accept(CommonParts.INGOT, VanillaMaterialKeys.IRON, Items.IRON_INGOT)
+        accept(CommonParts.NUGGET, VanillaMaterialKeys.IRON, Items.IRON_NUGGET)
 
-        accept(CommonTagPrefixes.RAW, VanillaMaterialKeys.GOLD, Items.RAW_GOLD)
-        accept(CommonTagPrefixes.INGOT, VanillaMaterialKeys.GOLD, Items.GOLD_INGOT)
-        accept(CommonTagPrefixes.NUGGET, VanillaMaterialKeys.GOLD, Items.GOLD_NUGGET)
+        accept(CommonParts.RAW, VanillaMaterialKeys.GOLD, Items.RAW_GOLD)
+        accept(CommonParts.INGOT, VanillaMaterialKeys.GOLD, Items.GOLD_INGOT)
+        accept(CommonParts.NUGGET, VanillaMaterialKeys.GOLD, Items.GOLD_NUGGET)
         // Alloy
-        accept(CommonTagPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_SCRAP)
-        accept(CommonTagPrefixes.INGOT, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_INGOT)
+        accept(CommonParts.SCRAP, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_SCRAP)
+        accept(CommonParts.INGOT, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_INGOT)
         // Other
-        accept(CommonTagPrefixes.DUST, VanillaMaterialKeys.BLAZE, Items.BLAZE_POWDER)
-        accept(CommonTagPrefixes.ROD, VanillaMaterialKeys.BLAZE, Items.BLAZE_ROD)
+        accept(CommonParts.DUST, VanillaMaterialKeys.BLAZE, Items.BLAZE_POWDER)
+        accept(CommonParts.ROD, VanillaMaterialKeys.BLAZE, Items.BLAZE_ROD)
 
-        accept(CommonTagPrefixes.DUST, VanillaMaterialKeys.BREEZE, Items.WIND_CHARGE)
-        accept(CommonTagPrefixes.ROD, VanillaMaterialKeys.BREEZE, Items.BREEZE_ROD)
+        accept(CommonParts.DUST, VanillaMaterialKeys.BREEZE, Items.WIND_CHARGE)
+        accept(CommonParts.ROD, VanillaMaterialKeys.BREEZE, Items.BREEZE_ROD)
     }
 
     override fun registerExistingTool(consumer: HTMaterialPlugin.ToolConsumer) {
@@ -184,25 +183,25 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         accept(CommonToolTypes.SWORD, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_SWORD)
     }
 
-    override fun onModifyMaterial(builder: HTMaterialPlugin.MaterialBuilder) {
-        fuel(builder)
-        mineral(builder)
-        gem(builder)
-        metal(builder)
-        pearl(builder)
-        alloy(builder)
-        other(builder)
+    override fun modifyMaterial(provider: HTMaterialPlugin.MaterialProvider) {
+        fuel(provider)
+        mineral(provider)
+        gem(provider)
+        metal(provider)
+        pearl(provider)
+        alloy(provider)
+        other(provider)
     }
 
     @JvmStatic
-    private fun fuel(builder: HTMaterialPlugin.MaterialBuilder) {
+    private fun fuel(builder: HTMaterialPlugin.MaterialProvider) {
         builder.getBuilder(VanillaMaterialKeys.COAL).apply {
             setDefaultPart(HTDefaultPart.Prefixed.FUEL)
             addItemPrefixes(
-                CommonTagPrefixes.DUST,
-                CommonTagPrefixes.RAW,
-                CommonTagPrefixes.CRUSHED_ORE,
-                CommonTagPrefixes.TINY,
+                CommonParts.DUST,
+                CommonParts.RAW,
+                CommonParts.CRUSHED_ORE,
+                CommonParts.TINY,
             )
             put(
                 HTMaterialPropertyKeys.EXTRA_ORE_RESULTS,
@@ -221,8 +220,8 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         }
         builder.getBuilder(VanillaMaterialKeys.CHARCOAL).apply {
             setDefaultPart(HTDefaultPart.Prefixed.FUEL)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.TINY)
+            addBlockPrefixes(CommonParts.BLOCK)
+            addItemPrefixes(CommonParts.DUST, CommonParts.TINY)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.NONE)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.NONE)
 
@@ -233,10 +232,10 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
     }
 
     @JvmStatic
-    private fun mineral(builder: HTMaterialPlugin.MaterialBuilder) {
+    private fun mineral(builder: HTMaterialPlugin.MaterialProvider) {
         builder.getBuilder(VanillaMaterialKeys.REDSTONE).apply {
             addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
-            addItemPrefixes(CommonTagPrefixes.RAW, CommonTagPrefixes.CRUSHED_ORE)
+            addItemPrefixes(CommonParts.RAW, CommonParts.CRUSHED_ORE)
             put(
                 HTMaterialPropertyKeys.EXTRA_ORE_RESULTS,
                 HTExtraOreResultMap.create {
@@ -256,8 +255,8 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
     }
 
     @JvmStatic
-    private fun gem(builder: HTMaterialPlugin.MaterialBuilder) {
-        val itemSet: Set<HTTagPrefix> = setOf(CommonTagPrefixes.DUST, CommonTagPrefixes.RAW, CommonTagPrefixes.CRUSHED_ORE)
+    private fun gem(builder: HTMaterialPlugin.MaterialProvider) {
+        val itemSet: Set<HTPartLike> = setOf(CommonParts.DUST, CommonParts.RAW, CommonParts.CRUSHED_ORE)
         builder.getBuilder(VanillaMaterialKeys.LAPIS).apply {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
             addItemPrefixes(itemSet)
@@ -297,7 +296,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         }
         builder.getBuilder(VanillaMaterialKeys.DIAMOND).apply {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
-            addItemPrefixes(itemSet.plus(CommonTagPrefixes.GEAR))
+            addItemPrefixes(itemSet.plus(CommonParts.GEAR))
             put(
                 HTMaterialPropertyKeys.EXTRA_ORE_RESULTS,
                 HTExtraOreResultMap.create {
@@ -310,15 +309,15 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         }
         builder.getBuilder(VanillaMaterialKeys.EMERALD).apply {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
-            addItemPrefixes(itemSet.plus(CommonTagPrefixes.GEAR))
+            addItemPrefixes(itemSet.plus(CommonParts.GEAR))
 
             setName("Emerald", "エメラルド")
             setTextureSet("emerald")
         }
         builder.getBuilder(VanillaMaterialKeys.ECHO).apply {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(CommonTagPrefixes.DUST)
+            addBlockPrefixes(CommonParts.BLOCK)
+            addItemPrefixes(CommonParts.DUST)
 
             setName("Echo Shard", "残響の欠片")
             setTextureSet("echo")
@@ -331,12 +330,12 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
     }
 
     @JvmStatic
-    private fun pearl(builder: HTMaterialPlugin.MaterialBuilder) {
+    private fun pearl(builder: HTMaterialPlugin.MaterialProvider) {
         builder.getBuilder(VanillaMaterialKeys.ENDER).apply {
             setDefaultPart(HTDefaultPart.Prefixed.PEARL)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addBlockPrefixes(CommonParts.BLOCK)
             addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
-            addItemPrefixes(CommonTagPrefixes.DUST)
+            addItemPrefixes(CommonParts.DUST)
 
             setName("Ender Pearl", "エンダーパール")
             setTextureSet("pearl")
@@ -344,17 +343,17 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
     }
 
     @JvmStatic
-    private fun metal(builder: HTMaterialPlugin.MaterialBuilder) {
+    private fun metal(builder: HTMaterialPlugin.MaterialProvider) {
         builder.getBuilder(VanillaMaterialKeys.COPPER).apply {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addItemPrefixes(
-                CommonTagPrefixes.DUST,
-                CommonTagPrefixes.CRUSHED_ORE,
-                CommonTagPrefixes.GEAR,
-                CommonTagPrefixes.NUGGET,
-                CommonTagPrefixes.PLATE,
-                CommonTagPrefixes.ROD,
-                CommonTagPrefixes.WIRE,
+                CommonParts.DUST,
+                CommonParts.CRUSHED_ORE,
+                CommonParts.GEAR,
+                CommonParts.NUGGET,
+                CommonParts.PLATE,
+                CommonParts.ROD,
+                CommonParts.WIRE,
             )
             put(
                 HTMaterialPropertyKeys.EXTRA_ORE_RESULTS,
@@ -372,11 +371,11 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(VanillaMaterialKeys.IRON).apply {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addItemPrefixes(
-                CommonTagPrefixes.DUST,
-                CommonTagPrefixes.CRUSHED_ORE,
-                CommonTagPrefixes.GEAR,
-                CommonTagPrefixes.PLATE,
-                CommonTagPrefixes.ROD,
+                CommonParts.DUST,
+                CommonParts.CRUSHED_ORE,
+                CommonParts.GEAR,
+                CommonParts.PLATE,
+                CommonParts.ROD,
             )
             put(
                 HTMaterialPropertyKeys.EXTRA_ORE_RESULTS,
@@ -394,12 +393,12 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(VanillaMaterialKeys.GOLD).apply {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addItemPrefixes(
-                CommonTagPrefixes.DUST,
-                CommonTagPrefixes.CRUSHED_ORE,
-                CommonTagPrefixes.GEAR,
-                CommonTagPrefixes.PLATE,
-                CommonTagPrefixes.ROD,
-                CommonTagPrefixes.WIRE,
+                CommonParts.DUST,
+                CommonParts.CRUSHED_ORE,
+                CommonParts.GEAR,
+                CommonParts.PLATE,
+                CommonParts.ROD,
+                CommonParts.WIRE,
             )
             put(
                 HTMaterialPropertyKeys.EXTRA_ORE_RESULTS,
@@ -417,15 +416,15 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
     }
 
     @JvmStatic
-    private fun alloy(builder: HTMaterialPlugin.MaterialBuilder) {
+    private fun alloy(builder: HTMaterialPlugin.MaterialProvider) {
         builder.getBuilder(VanillaMaterialKeys.NETHERITE).apply {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addItemPrefixes(
-                CommonTagPrefixes.DUST,
-                CommonTagPrefixes.GEAR,
-                CommonTagPrefixes.NUGGET,
-                CommonTagPrefixes.PLATE,
-                CommonTagPrefixes.ROD,
+                CommonParts.DUST,
+                CommonParts.GEAR,
+                CommonParts.NUGGET,
+                CommonParts.PLATE,
+                CommonParts.ROD,
             )
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.HIGH)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.HIGH)
@@ -444,22 +443,22 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
     }
 
     @JvmStatic
-    private fun other(builder: HTMaterialPlugin.MaterialBuilder) {
+    private fun other(builder: HTMaterialPlugin.MaterialProvider) {
         builder.getBuilder(VanillaMaterialKeys.WOOD).apply {
             setDefaultPart(ItemTags.PLANKS, HTItemHolderLike.of(Items.OAK_PLANKS))
-            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEAR)
+            addItemPrefixes(CommonParts.DUST, CommonParts.GEAR)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.NONE)
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
             setName("Wood", "木")
-            addCustomName(CommonTagPrefixes.DUST, "Sawdust", "おがくず")
+            addCustomName(CommonParts.DUST, "Sawdust", "おがくず")
             setTextureSet("mineral")
             put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 15)
         }
         builder.getBuilder(VanillaMaterialKeys.GLASS).apply {
             setDefaultPart(Tags.Items.GLASS_BLOCKS, HTItemHolderLike.of(Items.GLASS))
             addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
-            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.ROD)
+            addItemPrefixes(CommonParts.DUST, CommonParts.ROD)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.NONE)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
@@ -478,7 +477,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(VanillaMaterialKeys.OBSIDIAN).apply {
             setDefaultPart(Tags.Items.OBSIDIANS_NORMAL, HTItemHolderLike.of(Items.OBSIDIAN))
             addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
-            addItemPrefixes(CommonTagPrefixes.DUST)
+            addItemPrefixes(CommonParts.DUST)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
             put(HTMaterialPropertyKeys.DEFAULT_SCALE, fraction(4))
 
@@ -501,13 +500,13 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
 
         builder.getBuilder(VanillaMaterialKeys.BRICK).apply {
             setDefaultPart(Tags.Items.BRICKS_NORMAL, HTItemHolderLike.of(Items.BRICK))
-            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.PLATE)
+            addItemPrefixes(CommonParts.DUST, CommonParts.PLATE)
 
             setName("Brick", "レンガ")
         }
         builder.getBuilder(VanillaMaterialKeys.NETHER_BRICK).apply {
             setDefaultPart(Tags.Items.BRICKS_NETHER, HTItemHolderLike.of(Items.NETHER_BRICK))
-            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.PLATE)
+            addItemPrefixes(CommonParts.DUST, CommonParts.PLATE)
 
             setName("Nether Brick", "ネザーレンガ")
         }

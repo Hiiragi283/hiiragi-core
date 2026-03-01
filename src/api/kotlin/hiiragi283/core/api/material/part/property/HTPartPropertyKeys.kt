@@ -1,4 +1,4 @@
-package hiiragi283.core.api.tag.property
+package hiiragi283.core.api.material.part.property
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangPatternProvider
@@ -14,7 +14,7 @@ import org.apache.commons.lang3.math.Fraction
  * @author Hiiragi Tsubasa
  * @since 0.7.0
  */
-object HTTagPropertyKeys {
+object HTPartPropertyKeys {
     /**
      * [ID][ResourceLocation]のパターンを管理する[プロパティキー][HTPropertyKey]
      */
@@ -29,11 +29,18 @@ object HTTagPropertyKeys {
         HTPropertyKey.create(HiiragiCoreAPI.id("item_scale")) { base: Fraction, _ -> base }
 
     /**
-     * 原石にまつわる[プレフィックス][HTTagPrefix]かどうか管理する[プロパティキー][HTPropertyKey]
+     * 原石にまつわる部品かどうか管理する[プロパティキー][HTPropertyKey]
      * @since 0.10.0
      */
     @JvmField
     val IS_RAW: HTPropertyKey<Unit?> = HTPropertyKey.createFlag(HiiragiCoreAPI.id("is_raw"))
+
+    /**
+     * この部品に対応する[プレフィックス][HTTagPrefix]を管理する[プロパティキー][HTPropertyKey]
+     * @since 0.12.0
+     */
+    @JvmField
+    val TAG_PREFIX: HTPropertyKey<HTTagPrefix?> = createNullable("tag_prefix")
 
     //    Block    //
 
@@ -42,6 +49,13 @@ object HTTagPropertyKeys {
      */
     @JvmField
     val BLOCK_PROP: HTPropertyKey<BlockBehaviour.Properties?> = createNullable("block_properties")
+
+    /**
+     * 鉱石にまつわる部品かどうか管理する[プロパティキー][HTPropertyKey]
+     * @since 0.10.0
+     */
+    @JvmField
+    val IS_ORE: HTPropertyKey<Unit?> = HTPropertyKey.createFlag(HiiragiCoreAPI.id("is_ore"))
 
     /**
      * 鉱石ブロックの母岩部分のテクスチャを管理する[プロパティキー][HTPropertyKey]

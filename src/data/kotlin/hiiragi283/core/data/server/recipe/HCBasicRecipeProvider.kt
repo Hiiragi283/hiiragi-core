@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.data.recipe.builder.HCExplodingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTItemToChancedRecipeBuilder
@@ -49,13 +50,13 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         // Redstone Dust -> Glowstone Dust
         HTItemToItemRecipeBuilder.charging(output) {
             ingredient = inputCreator.create(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE)
-            result = resultCreator.material(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLOWSTONE)
+            result = resultCreator.material(CommonParts.DUST, VanillaMaterialKeys.GLOWSTONE)
         }
 
         // End Crystal -> Eldritch Pearl
         HTItemToItemRecipeBuilder.charging(output) {
             ingredient = inputCreator.create(Items.END_CRYSTAL)
-            result = resultCreator.material(CommonTagPrefixes.PEARL, HCMaterialKeys.ELDRITCH)
+            result = resultCreator.material(CommonParts.PEARL, HCMaterialKeys.ELDRITCH)
         }
         // Heart of the Sea
         HTItemToItemRecipeBuilder.charging(output) {
@@ -172,14 +173,14 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         HTItemToChancedRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.SANDSTONE_UNCOLORED_BLOCKS)
             result = resultCreator.create(Items.SAND, 2)
-            extraResult += resultCreator.material(CommonTagPrefixes.DUST, CommonMaterialKeys.SALTPETER) to fraction(1, 4)
+            extraResult += resultCreator.material(CommonParts.DUST, CommonMaterialKeys.SALTPETER) to fraction(1, 4)
             recipeId suffix "_from_sandstone"
         }
 
         HTItemToChancedRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.SANDSTONE_RED_BLOCKS)
             result = resultCreator.create(Items.RED_SAND, 2)
-            extraResult += resultCreator.material(CommonTagPrefixes.DUST, CommonMaterialKeys.SALTPETER) to fraction(1, 4)
+            extraResult += resultCreator.material(CommonParts.DUST, CommonMaterialKeys.SALTPETER) to fraction(1, 4)
             recipeId suffix "_from_sandstone"
         }
     }
@@ -190,7 +191,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         fun wood(tagKey: TagKey<Item>, input: Int, output: Int) {
             HTItemToChancedRecipeBuilder.crushing(this.output) {
                 ingredient = inputCreator.create(tagKey, input)
-                result = resultCreator.material(CommonTagPrefixes.DUST, VanillaMaterialKeys.WOOD, output)
+                result = resultCreator.material(CommonParts.DUST, VanillaMaterialKeys.WOOD, output)
                 recipeId suffix "_from_${tagKey.location().path}"
             }
         }
@@ -223,7 +224,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         // Ancient Debris -> Netherite Scrap
         HCExplodingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(Tags.Items.ORES_NETHERITE_SCRAP)
-            result = resultCreator.material(CommonTagPrefixes.SCRAP, VanillaMaterialKeys.NETHERITE, 2)
+            result = resultCreator.material(CommonParts.SCRAP, VanillaMaterialKeys.NETHERITE, 2)
             minPower = fraction(6f)
         }
         // Gunpowder -> Blaze Powder
@@ -234,11 +235,11 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         // Glass -> Quartz
         HCExplodingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(Tags.Items.GLASS_BLOCKS, 4)
-            result = resultCreator.material(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ)
+            result = resultCreator.material(CommonParts.GEM, VanillaMaterialKeys.QUARTZ)
         }
         // Quartz Block -> Ghast Tear
         HCExplodingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(CommonTagPrefixes.BLOCK, VanillaMaterialKeys.QUARTZ, 4)
+            ingredient = inputCreator.create(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.QUARTZ, 4)
             result = resultCreator.create(Items.GHAST_TEAR)
             minPower = fraction(3f)
         }
@@ -255,7 +256,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         ).forEach { (fuels: List<HTMaterialKey>, count: Int) ->
             HCExplodingRecipeBuilder.create(output) {
                 ingredient = inputCreator.create(fuels.flatMap(::baseOrDust), count)
-                result = resultCreator.material(CommonTagPrefixes.GEM, VanillaMaterialKeys.DIAMOND)
+                result = resultCreator.material(CommonParts.GEM, VanillaMaterialKeys.DIAMOND)
                 recipeId suffix "_from_${fuels.joinToString(separator = "_or_", transform = HTMaterialKey::path)}"
             }
         }
@@ -263,19 +264,19 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         // Echo Shard
         HCExplodingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(Items.SCULK, 8)
-            result = resultCreator.material(CommonTagPrefixes.GEM, VanillaMaterialKeys.ECHO)
+            result = resultCreator.material(CommonParts.GEM, VanillaMaterialKeys.ECHO)
             minPower = fraction(6f)
         }
 
         // Crimson Crystal
         HCExplodingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(ItemTags.CRIMSON_STEMS, 12)
-            result = resultCreator.material(CommonTagPrefixes.GEM, HCMaterialKeys.CRIMSON_CRYSTAL)
+            result = resultCreator.material(CommonParts.GEM, HCMaterialKeys.CRIMSON_CRYSTAL)
         }
         // Warped Crystal
         HCExplodingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(ItemTags.WARPED_STEMS, 12)
-            result = resultCreator.material(CommonTagPrefixes.GEM, HCMaterialKeys.WARPED_CRYSTAL)
+            result = resultCreator.material(CommonParts.GEM, HCMaterialKeys.WARPED_CRYSTAL)
         }
     }
 }

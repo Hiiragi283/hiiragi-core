@@ -11,6 +11,12 @@ import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.part.CommonParts
+import hiiragi283.core.api.material.part.HTPart
+import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
+import hiiragi283.core.api.material.part.property.getScaledAmount
+import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTExtraOreResultMap
 import hiiragi283.core.api.material.property.HTMaterialLevel
@@ -24,7 +30,6 @@ import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.property.getScaledAmount
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTItemToChancedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
@@ -47,14 +52,14 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
         for (entry: HTMaterialManager.Entry in materialManager) {
             crushBaseToDust(event, entry)
-            crushOreToCrushed(event, entry, CommonTagPrefixes.ORE)
-            crushOreToCrushed(event, entry, CommonTagPrefixes.RAW)
+            crushOreToCrushed(event, entry, CommonParts.ORE)
+            crushOreToCrushed(event, entry, CommonParts.RAW)
             crushCrushedToDust(event, entry)
-            crushPrefixToDust(event, entry, CommonTagPrefixes.GEAR)
-            crushPrefixToDust(event, entry, CommonTagPrefixes.NUGGET)
-            crushPrefixToDust(event, entry, CommonTagPrefixes.PLATE)
-            crushPrefixToDust(event, entry, CommonTagPrefixes.ROD)
-            crushPrefixToDust(event, entry, CommonTagPrefixes.WIRE)
+            crushPrefixToDust(event, entry, CommonParts.GEAR)
+            crushPrefixToDust(event, entry, CommonParts.NUGGET)
+            crushPrefixToDust(event, entry, CommonParts.PLATE)
+            crushPrefixToDust(event, entry, CommonParts.ROD)
+            crushPrefixToDust(event, entry, CommonParts.WIRE)
 
             baseToBlock(event, entry)
             ingotToNugget(entry)
@@ -68,11 +73,11 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             }
 
             smeltDustToIngot(entry)
-            for (prefix: HTTagPrefix in CommonTagPrefixes.ORES) {
-                smeltOreToBase(prefix, entry)
+            for (part: HTPart in partManager.values.filter { HTPartPropertyKeys.IS_ORE in it }) {
+                smeltOreToBase(part, entry)
             }
-            smeltOreToBase(CommonTagPrefixes.CRUSHED_ORE, entry)
-            smeltOreToBase(CommonTagPrefixes.RAW, entry)
+            smeltOreToBase(CommonParts.CRUSHED_ORE, entry)
+            smeltOreToBase(CommonParts.RAW, entry)
         }
     }
 
@@ -87,21 +92,22 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     //    Crushing    //
 
     @JvmStatic
-    private fun crushPrefixToDust(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry, prefix: HTTagPrefix) {
+    private fun crushPrefixToDust(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry, part: HTPartLike) {
+        val prefix: HTTagPrefix = part.tagPrefix ?: return
         // 材料が存在するか判定
         if (prefix.itemTagKey(entry) == entry.getDefaultPart(entry)) return
         if (!event.isPresentTag(prefix, entry)) return
         // 素材のプロパティから完成品を取得
-        val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
+        val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART).tagPrefix ?: return
         val dust: HTItemHolderLike<*> = event.getFirstHolder(crushedPrefix, entry) ?: return
         // プレフィックスのスケールから個数を算出
-        val (outputCount: Int, inputCount: Int) = prefix.getScaledAmount(entry.getDefaultScale(), entry)
+        val (outputCount: Int, inputCount: Int) = part.getScaledAmount(entry.getDefaultScale(), entry)
         // レシピを登録
         HTItemToChancedRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(prefix, entry, inputCount)
             this.result = resultCreator.create(dust, outputCount)
             time = getTimeFromHardness(entry, time) ?: return
-            recipeId suffix "_from_${prefix.name}"
+            recipeId suffix "_from_${part.asPartName()}"
         }
     }
 
@@ -109,7 +115,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     private fun crushBaseToDust(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
         // 素材のプロパティから材料を取得
         val defaultPart: HTDefaultPart = entry.getDefaultPart() ?: return
-        val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
+        val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART).tagPrefix ?: return
         val inputTag: TagKey<Item> = defaultPart.getTag(entry)
         if (!event.isPresentTag(inputTag)) return
         // 加工の前後でタグが一致する場合はパス
@@ -128,7 +134,8 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     }
 
     @JvmStatic
-    private fun crushOreToCrushed(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry, prefix: HTTagPrefix) {
+    private fun crushOreToCrushed(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry, part: HTPartLike) {
+        val prefix: HTTagPrefix = part.tagPrefix ?: return
         // 材料が存在するか判定
         if (!event.isPresentTag(prefix, entry)) return
         // 完成品を取得
@@ -138,13 +145,13 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             // 材料
             ingredient = inputCreator.create(prefix, entry)
             // 主産物
-            this.result = resultCreator.create(crushedOre, prefix.getScaledAmount(2, entry).toInt())
+            this.result = resultCreator.create(crushedOre, part.getScaledAmount(2, entry).toInt())
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]
                 ?.getResult(HTExtraOreResultMap.Phase.CRUSH_ORE)
                 ?.let(extraResult::plusAssign)
 
-            recipeId suffix "_from_${prefix.name}"
+            recipeId suffix "_from_${part.asPartName()}"
         }
     }
 
@@ -153,10 +160,10 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // 材料が存在するか判定
         if (!event.isPresentTag(CommonTagPrefixes.CRUSHED_ORE, entry)) return
         // 完成品を取得
-        val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX)
+        val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART).tagPrefix ?: return
         val dust: ItemLike = event.getFirstHolder(crushedPrefix, entry) ?: return
         // プレフィックスのスケールから個数を算出
-        val (outputCount: Int, inputCount: Int) = CommonTagPrefixes.CRUSHED_ORE.getScaledAmount(1, entry)
+        val (outputCount: Int, inputCount: Int) = CommonParts.CRUSHED_ORE.getScaledAmount(1, entry)
         // レシピを登録
         HTItemToChancedRecipeBuilder.crushing(output) {
             // 材料
@@ -174,13 +181,13 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     //    Crafting    //
 
-    private fun getItem(prefix: HTTagPrefix, material: HTMaterialLike): HTMaterialContents.Entry<out ItemLike>? =
-        HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(prefix, material)
+    private fun getItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.Entry<out ItemLike>? =
+        HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, material)
 
     @JvmStatic
     private fun baseToBlock(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
         val blockProperty: HTStorageBlockProperty = entry.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK)
-        val (_, block: ItemLike, existingBlock: Boolean) = getItem(CommonTagPrefixes.BLOCK, entry) ?: return
+        val (_, block: ItemLike, existingBlock: Boolean) = getItem(CommonParts.BLOCK, entry) ?: return
 
         val defaultPart: HTDefaultPart = entry.getDefaultPart() ?: return
         val suffix: String = defaultPart.getSuffix()
@@ -188,9 +195,9 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // クラフトの前後がどちらも既存アイテムの場合はパス
         if (existingBlock && existingBase) return
         // レシピを登録
-        if (event.isPresentTag(CommonTagPrefixes.BLOCK, entry)) {
+        if (event.isPresentTag(CommonTagPrefixes.STORAGE_BLOCK, entry)) {
             HTShapelessRecipeBuilder.create(output) {
-                ingredients += CommonTagPrefixes.BLOCK to entry
+                ingredients += CommonTagPrefixes.STORAGE_BLOCK to entry
                 resultStack += base to blockProperty.baseCount
                 recipeId replace entry.getId().withSuffix("/${suffix}_from_block")
             }
@@ -271,8 +278,8 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     @JvmStatic
     private fun ingotToNugget(entry: HTMaterialManager.Entry) {
-        val (_, nugget: ItemLike, existingNugget: Boolean) = getItem(CommonTagPrefixes.NUGGET, entry) ?: return
-        val (_, ingot: ItemLike, existingIngot: Boolean) = getItem(CommonTagPrefixes.INGOT, entry) ?: return
+        val (_, nugget: ItemLike, existingNugget: Boolean) = getItem(CommonParts.NUGGET, entry) ?: return
+        val (_, ingot: ItemLike, existingIngot: Boolean) = getItem(CommonParts.INGOT, entry) ?: return
         // クラフトの前後がどちらも既存アイテムの場合はパス
         if (existingNugget && existingIngot) return
         // レシピを登録
@@ -304,22 +311,22 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     @JvmStatic
     private fun rawToBlock(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
-        val (_, raw: ItemLike, existingRaw: Boolean) = getItem(CommonTagPrefixes.RAW, entry) ?: return
-        val (_, rawBlock: ItemLike, existingRawBlock: Boolean) = getItem(CommonTagPrefixes.RAW_BLOCK, entry) ?: return
+        val (_, raw: ItemLike, existingRaw: Boolean) = getItem(CommonParts.RAW, entry) ?: return
+        val (_, rawBlock: ItemLike, existingRawBlock: Boolean) = getItem(CommonParts.RAW_BLOCK, entry) ?: return
         // クラフトの前後がどちらも既存アイテムの場合はパス
         if (existingRaw && existingRawBlock) return
         // レシピを登録
-        if (event.isPresentTag(CommonTagPrefixes.RAW_BLOCK, entry)) {
+        if (event.isPresentTag(CommonTagPrefixes.RAW_STORAGE_BLOCK, entry)) {
             HTShapelessRecipeBuilder.create(output) {
-                ingredients += CommonTagPrefixes.RAW_BLOCK to entry
+                ingredients += CommonTagPrefixes.RAW_STORAGE_BLOCK to entry
                 resultStack += raw to 9
                 recipeId replace entry.getId().withSuffix("/raw_from_block")
             }
         }
-        if (event.isPresentTag(CommonTagPrefixes.RAW, entry)) {
+        if (event.isPresentTag(CommonTagPrefixes.RAW_MATERIALS, entry)) {
             HTShapedRecipeBuilder.create(output) {
                 hollow8()
-                define('A') += CommonTagPrefixes.RAW to entry
+                define('A') += CommonTagPrefixes.RAW_MATERIALS to entry
                 define('B') += raw
                 resultStack += rawBlock
                 recipeId replace entry.getId()
@@ -329,8 +336,8 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     @JvmStatic
     private fun tinyToFuel(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
-        val (_, tiny: ItemLike, existingTiny: Boolean) = getItem(CommonTagPrefixes.TINY, entry) ?: return
-        val (_, fuel: ItemLike, existingFuel: Boolean) = getItem(CommonTagPrefixes.FUEL, entry) ?: return
+        val (_, tiny: ItemLike, existingTiny: Boolean) = getItem(CommonParts.TINY, entry) ?: return
+        val (_, fuel: ItemLike, existingFuel: Boolean) = getItem(CommonParts.FUEL, entry) ?: return
         // クラフトの前後がどちらも既存アイテムの場合はパス
         if (existingTiny && existingFuel) return
         // レシピを登録
@@ -387,9 +394,9 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     @JvmStatic
     private fun smeltDustToIngot(entry: HTMaterialManager.Entry) {
         if (HTMaterialPropertyKeys.DISABLE_SMELTING in entry) return
-        val (_, dust: ItemLike, existingDust: Boolean) = getItem(CommonTagPrefixes.DUST, entry) ?: return
+        val (_, dust: ItemLike, existingDust: Boolean) = getItem(CommonParts.DUST, entry) ?: return
         val smeltedMaterial: HTMaterialLike = entry[HTMaterialPropertyKeys.SMELTED_TO] ?: entry
-        val (_, ingot: ItemLike, existingIngot: Boolean) = getItem(CommonTagPrefixes.INGOT, smeltedMaterial) ?: return
+        val (_, ingot: ItemLike, existingIngot: Boolean) = getItem(CommonParts.INGOT, smeltedMaterial) ?: return
         // 精錬の前後がどちらも既存アイテムの場合はパス
         if (existingDust && existingIngot) return
         // Smelting & Blasting
@@ -408,9 +415,9 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     }
 
     @JvmStatic
-    private fun smeltOreToBase(prefix: HTTagPrefix, entry: HTMaterialManager.Entry) {
+    private fun smeltOreToBase(part: HTPartLike, entry: HTMaterialManager.Entry) {
         if (HTMaterialPropertyKeys.DISABLE_SMELTING in entry) return
-        val (_, ore: ItemLike, existingOre: Boolean) = getItem(prefix, entry) ?: return
+        val (_, ore: ItemLike, existingOre: Boolean) = getItem(part, entry) ?: return
         val smeltedMaterial: HTMaterialLike = entry[HTMaterialPropertyKeys.SMELTED_TO] ?: entry
         val smeltedPropertyMap: HTPropertyMap = materialManager[smeltedMaterial] ?: return
         val(_, base: ItemLike, existingBase: Boolean) = smeltedPropertyMap.getDefaultPart()?.getItem(smeltedMaterial) ?: return
@@ -427,7 +434,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             ingredient += ore
             resultStack += base to smeltedPropertyMap.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER).toInt()
             exp = 0.7f
-            recipeId suffix "_from_${prefix.name}"
+            recipeId suffix "_from_${part.asPartName()}"
         }
     }
 }

@@ -2,8 +2,11 @@ package hiiragi283.core.api.material
 
 import com.google.common.base.Suppliers
 import hiiragi283.core.api.collection.HTTable
+import hiiragi283.core.api.material.part.HTPart
+import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLike
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
@@ -54,3 +57,14 @@ interface HTMaterialContents<R : Any, V : Any> : HTTable<R, HTMaterialKey, HTMat
         operator fun component3(): Boolean = isBuiltIn
     }
 }
+
+//    Extensions    //
+
+val <V : Any> HTMaterialContents<HTPart, V>.prefixEntries: Sequence<Triple<HTTagPrefix, HTMaterialKey, HTMaterialContents.Entry<V>>>
+    get() = this
+        .entries
+        .asSequence()
+        .mapNotNull { (part: HTPart, key: HTMaterialKey, entry: HTMaterialContents.Entry<V>) ->
+            val prefix = part.tagPrefix ?: return@mapNotNull null
+            Triple(prefix, key, entry)
+        }

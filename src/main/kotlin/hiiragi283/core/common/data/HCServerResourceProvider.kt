@@ -11,7 +11,14 @@ import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.part.CommonParts
+import hiiragi283.core.api.material.part.HTPart
+import hiiragi283.core.api.material.part.itemTagKey
+import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
+import hiiragi283.core.api.material.prefixEntries
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
+import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.getBucketHolder
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
@@ -19,7 +26,6 @@ import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
-import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import hiiragi283.core.api.times
 import hiiragi283.core.common.material.CommonMaterialKeys
 import net.mehvahdjukaar.moonlight.api.resources.ResType
@@ -28,6 +34,7 @@ import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.ItemTags
+import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.material.Fluid
@@ -48,16 +55,18 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
                 for (entry: HTMaterialManager.Entry in materialManager) {
                     val baseTime: Int = entry[HTMaterialPropertyKeys.FUEL_TIME] ?: continue
                     // Block
-                    for ((prefix: HTTagPrefix, _) in registered.blocks.column(entry)) {
-                        val fuelScale: Fraction = prefix[HTTagPropertyKeys.FUEL_SCALE] ?: continue
+                    for ((part: HTPart, _) in registered.blocks.column(entry)) {
+                        val tagKey: TagKey<Item> = part.itemTagKey(entry) ?: continue
+                        val fuelScale: Fraction = part[HTPartPropertyKeys.FUEL_SCALE] ?: continue
                         val fuelTime: Int = (baseTime * fuelScale).toInt()
-                        add(prefix.itemTagKey(entry), FurnaceFuel(fuelTime))
+                        add(tagKey, FurnaceFuel(fuelTime))
                     }
                     // Item
-                    for ((prefix: HTTagPrefix, _) in registered.items.column(entry)) {
-                        val fuelScale: Fraction = prefix[HTTagPropertyKeys.FUEL_SCALE] ?: continue
+                    for ((part: HTPart, _) in registered.items.column(entry)) {
+                        val tagKey: TagKey<Item> = part.itemTagKey(entry) ?: continue
+                        val fuelScale: Fraction = part[HTPartPropertyKeys.FUEL_SCALE] ?: continue
                         val fuelTime: Int = (baseTime * fuelScale).toInt()
-                        add(prefix.itemTagKey(entry), FurnaceFuel(fuelTime))
+                        add(tagKey, FurnaceFuel(fuelTime))
                     }
                 }
             }
@@ -67,9 +76,9 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
             // Moonlightが生成時点でレジストリを参照できないのでこの世の終わりみたいな文字列を書くことになった
             // GTCEu Modernをいい感じに参考にしたらなんとかなるんかなこれ
             // それかJSONビルダー作って真面目に書くか
-            registered.blocks.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTMaterialContents.Entry<Block>) ->
-                if (prefix in CommonTagPrefixes.ORES) {
-                    val raw: HTIdLike = registered.items[CommonTagPrefixes.RAW, key] ?: return@forEach
+            registered.blocks.forEach { (part: HTPart, key: HTMaterialKey, block: HTBlockHolderLike<*>) ->
+                if (HTPartPropertyKeys.IS_ORE in part) {
+                    val raw: HTIdLike = registered.items[CommonParts.RAW.asPart(), key] ?: return@forEach
                     val id: ResourceLocation = block.getId()
                     sink.addBytes(
                         id,
@@ -138,10 +147,10 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
         executor.accept(object : HTTagsProvider.GenTask<Block>(Registries.BLOCK) {
             override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Block>) {
                 // Material Block
-                existing.blocks.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
+                existing.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
                     addMaterial(factory, prefix, key).add(block)
                 }
-                registered.blocks.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
+                registered.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
                     addMaterial(factory, prefix, key).add(block)
                 }
             }
@@ -157,21 +166,21 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
         executor.accept(object : HTTagsProvider.GenTask<Item>(Registries.ITEM) {
             override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Item>) {
                 // Material Block
-                existing.blocks.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
+                existing.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
                     addMaterial(factory, prefix, key).add(block)
                 }
-                registered.blocks.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
+                registered.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
                     addMaterial(factory, prefix, key).add(block)
                 }
                 // Material Fluid
-                fluids.forEach { (prefix: HTFluidTagPrefix, key: HTMaterialKey, fluid: HTMaterialContents.Entry<Fluid>) ->
+                fluids.forEach { (prefix: HTFluidTagPrefix, key: HTMaterialKey, fluid: HTFluidHolderLike<*>) ->
                     addTags(factory, Tags.Items.BUCKETS, prefix.createBucketTag(key)).add(fluid.getBucketHolder())
                 }
                 // Material Item
-                existing.items.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
+                existing.items.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
                     addMaterial(factory, prefix, key).add(item)
                 }
-                registered.items.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
+                registered.items.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
                     addMaterial(factory, prefix, key).add(item)
                     if (prefix == CommonTagPrefixes.GEM || prefix == CommonTagPrefixes.INGOT) {
                         factory.apply(ItemTags.BEACON_PAYMENT_ITEMS).addTag(prefix, key)

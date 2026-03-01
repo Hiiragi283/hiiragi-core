@@ -7,19 +7,18 @@ import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.model.HTModelProvider
 import hiiragi283.core.api.data.model.HTTexturedModels
 import hiiragi283.core.api.material.HTMaterialAccess
-import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.part.CommonParts
+import hiiragi283.core.api.material.part.HTPart
+import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
+import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
-import hiiragi283.core.api.tag.CommonTagPrefixes
-import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.CommonFluidTagPrefixes
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
-import hiiragi283.core.api.tag.property.HTTagPropertyKeys
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
-import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.material.Fluid
 
 data object HCModelProvider : HTModelProvider() {
     override fun registerModels(manager: ResourceManager) {
@@ -30,14 +29,16 @@ data object HCModelProvider : HTModelProvider() {
     private fun registerMaterials(manager: ResourceManager) {
         val registered: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
         // Block
-        registered.blocks.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTMaterialContents.Entry<Block>) ->
-            if (prefix in CommonTagPrefixes.ORES) {
-                val stoneTexture: ResourceLocation = prefix[HTTagPropertyKeys.ORE_STONE_TEX] ?: return@forEach
+        registered.blocks.forEach { (part: HTPart, key: HTMaterialKey, block: HTBlockHolderLike<*>) ->
+            if (HTPartPropertyKeys.IS_ORE in part) {
+                val stoneTexture: ResourceLocation = part[HTPartPropertyKeys.ORE_STONE_TEX] ?: return@forEach
                 addSimpleBlockAndItem(
                     block,
                     HTTexturedModels.layeredBlock(
                         stoneTexture,
-                        CommonTagPrefixes.ORE.createId(key).withPrefix("block/"),
+                        CommonParts.ORE
+                            .createId(key)
+                            .withPrefix("block/"),
                     ),
                 )
             } else {
@@ -45,12 +46,12 @@ data object HCModelProvider : HTModelProvider() {
             }
         }
         // Fluid
-        HiiragiCoreAccess.INSTANCE.registeredFluids.forEach { (prefix: HTFluidTagPrefix, _, fluid: HTMaterialContents.Entry<Fluid>) ->
+        HiiragiCoreAccess.INSTANCE.registeredFluids.forEach { (prefix: HTFluidTagPrefix, _, fluid: HTFluidHolderLike<*>) ->
             addBucketModel(fluid, prefix == CommonFluidTagPrefixes.MOLTEN)
         }
         // Item
-        registered.items.forEach { (prefix: HTTagPrefix, _, item: HTIdLike) ->
-            val textureIcon: String = prefix[HTTagPropertyKeys.TEXTURE_ICON] ?: prefix.name
+        registered.items.forEach { (part: HTPart, _, item: HTIdLike) ->
+            val textureIcon: String = part[HTPartPropertyKeys.TEXTURE_ICON] ?: part.name
             val overlay: ResourceLocation = HiiragiCoreAPI.id(HTConst.ITEM, "${textureIcon}_overlay")
             if (manager.getResource(overlay.withPath { "textures/$it.png" }).isPresent) {
                 addItemModel(item, HTTexturedModels.layeredItem(item.itemId, overlay))

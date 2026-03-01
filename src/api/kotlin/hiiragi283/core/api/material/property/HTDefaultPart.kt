@@ -3,6 +3,8 @@ package hiiragi283.core.api.material.property
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.part.CommonParts
+import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -48,7 +50,7 @@ sealed interface HTDefaultPart {
     }
 
     /**
-     * [HTTagPrefix]に基づいた[HTDefaultPart]の実装クラスです。
+     * [HTPart]と[HTTagPrefix]に基づいた[HTDefaultPart]の実装クラスです。
      * @author Hiiragi Tsubasa
      * @since 0.8.0
      */
@@ -59,6 +61,13 @@ sealed interface HTDefaultPart {
         PEARL,
         ;
 
+        val part: HTPart
+            get() = when (this) {
+                FUEL -> CommonParts.FUEL
+                GEM -> CommonParts.GEM
+                INGOT -> CommonParts.INGOT
+                PEARL -> CommonParts.PEARL
+            }.asPart()
         val prefix: HTTagPrefix get() = when (this) {
             // CROP -> CommonTagPrefixes.CROP
             // DUST -> CommonTagPrefixes.DUST
@@ -71,8 +80,8 @@ sealed interface HTDefaultPart {
         override fun getTag(material: HTMaterialLike): TagKey<Item> = prefix.itemTagKey(material)
 
         override fun getItem(material: HTMaterialLike): HTMaterialContents.Entry<out ItemLike>? =
-            HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(prefix, material)
+            HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, material)
 
-        override fun getSuffix(): String = prefix.name
+        override fun getSuffix(): String = part.name
     }
 }

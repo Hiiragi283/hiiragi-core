@@ -12,7 +12,9 @@ import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.plugin.HTMaterialPlugin
+import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.registry.holderSetOrNull
@@ -20,7 +22,6 @@ import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
-import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextResult
@@ -95,17 +96,29 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
         HTPluginLoader.collectPlugins<HTMaterialPlugin>().sortedBy(HTMaterialPlugin::priority)
     }
 
+    override val partManager: Map<String, HTPart> by lazy {
+        buildMap {
+            forEachPlugin("Register Part") { plugin: HTMaterialPlugin ->
+                plugin.registerPart { name: String, idPattern: String, properties: HTPropertyMap ->
+                    val part = HTPart(name, idPattern, properties)
+                    check(this.put(name, part) == null) { "Duplicated part registration: $name" }
+                    part
+                }
+            }
+        }
+    }
+
     override val materialManager: HTMaterialManager get() = materialManagerCache
 
     override val existingContents: HTMaterialAccess = object : HTMaterialAccess {
-        override val blocks: HTMaterialContents<HTTagPrefix, Block> by lazy {
-            HTMaterialContentsImpl(HCMiscRegister.existingBlocks) { prefix: HTTagPrefix, key: HTMaterialKey ->
-                "Unknown ${prefix.name} block for ${key.getId()}"
+        override val blocks: HTMaterialContents<HTPart, Block> by lazy {
+            HTMaterialContentsImpl(HCMiscRegister.existingBlocks) { part: HTPart, key: HTMaterialKey ->
+                "Unknown ${part.name} block for ${key.getId()}"
             }
         }
-        override val items: HTMaterialContents<HTTagPrefix, Item> by lazy {
-            HTMaterialContentsImpl(HCMiscRegister.existingItems) { prefix: HTTagPrefix, key: HTMaterialKey ->
-                "Unknown ${prefix.name} item for ${key.getId()}"
+        override val items: HTMaterialContents<HTPart, Item> by lazy {
+            HTMaterialContentsImpl(HCMiscRegister.existingItems) { part: HTPart, key: HTMaterialKey ->
+                "Unknown ${part.name} item for ${key.getId()}"
             }
         }
         override val tools: HTMaterialContents<HTToolType, Item> by lazy {
@@ -116,14 +129,14 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
     }
 
     override val registeredContents: HTMaterialAccess = object : HTMaterialAccess {
-        override val blocks: HTMaterialContents<HTTagPrefix, Block> by lazy {
-            HTMaterialContentsImpl(HCMiscRegister.materialBlocks) { prefix: HTTagPrefix, key: HTMaterialKey ->
-                "Unregistered ${prefix.name} block for ${key.getId()}"
+        override val blocks: HTMaterialContents<HTPart, Block> by lazy {
+            HTMaterialContentsImpl(HCMiscRegister.materialBlocks) { part: HTPart, key: HTMaterialKey ->
+                "Unregistered ${part.name} block for ${key.getId()}"
             }
         }
-        override val items: HTMaterialContents<HTTagPrefix, Item> by lazy {
-            HTMaterialContentsImpl(HCMiscRegister.materialItems) { prefix: HTTagPrefix, key: HTMaterialKey ->
-                "Unregistered ${prefix.name} item for ${key.getId()}"
+        override val items: HTMaterialContents<HTPart, Item> by lazy {
+            HTMaterialContentsImpl(HCMiscRegister.materialItems) { part: HTPart, key: HTMaterialKey ->
+                "Unregistered ${part.name} item for ${key.getId()}"
             }
         }
         override val tools: HTMaterialContents<HTToolType, Item> by lazy {

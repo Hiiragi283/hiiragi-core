@@ -9,6 +9,8 @@ import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.part.CommonParts
+import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.getBucket
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -51,12 +53,12 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
                 ingredients += Tags.Items.SANDS
             }
             ingredients += CommonTagPrefixes.DUST to CommonMaterialKeys.ASH
-            resultStack += getOrThrow(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLASS) to 4
+            resultStack += getOrThrow(CommonParts.DUST, VanillaMaterialKeys.GLASS) to 4
             recipeId suffix "_from_sand_and_ash"
         }
         // Glass Dust -> Glass
         HTCookingRecipeBuilder.smelting(output) {
-            ingredient += getOrThrow(CommonTagPrefixes.DUST, VanillaMaterialKeys.GLASS)
+            ingredient += getOrThrow(CommonParts.DUST, VanillaMaterialKeys.GLASS)
             resultStack += Items.GLASS
             recipeId suffix "_from_dust"
         }
@@ -121,7 +123,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         }
         HTCookingRecipeBuilder.blasting(output) {
             ingredient += HCItems.STEEL_COMPOUND
-            resultStack += getOrThrow(CommonTagPrefixes.INGOT, CommonMaterialKeys.STEEL)
+            resultStack += getOrThrow(CommonParts.INGOT, CommonMaterialKeys.STEEL)
             exp = 0.7f
             recipeId suffix "_from_compound"
         }
@@ -129,7 +131,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         // Polymer Resin -> Plastic Bar
         HTCookingRecipeBuilder.smelting(output) {
             ingredient += HCItems.POLYMER_RESIN
-            resultStack += getOrThrow(CommonTagPrefixes.PLATE, CommonMaterialKeys.PLASTIC)
+            resultStack += getOrThrow(CommonParts.PLATE, CommonMaterialKeys.PLASTIC)
             exp = 0.7f
             recipeId suffix "_from_resin"
         }
@@ -386,16 +388,16 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         // Raw Rubber -> Rubber Bar
         HTCookingRecipeBuilder.smelting(output) {
             ingredient += HCItems.RAW_RUBBER
-            resultStack += getOrThrow(CommonTagPrefixes.INGOT, CommonMaterialKeys.RUBBER)
+            resultStack += getOrThrow(CommonParts.INGOT, CommonMaterialKeys.RUBBER)
             exp = 0.7f
             recipeId suffix "_from_raw"
         }
     }
 
     @JvmStatic
-    private fun getOrThrow(prefix: HTTagPrefix, material: HTMaterialLike): Item = HiiragiCoreAccess.INSTANCE
+    private fun getOrThrow(part: HTPartLike, material: HTMaterialLike): Item = HiiragiCoreAccess.INSTANCE
         .registeredContents
         .items
-        .getOrThrow(prefix, material)
+        .getOrThrow(part.asPart(), material)
         .get()
 }

@@ -31,7 +31,7 @@ class HTExtraOreResultMap private constructor(map: Map<Phase, Pair<HTMaterialKey
             val (key: HTMaterialKey, chance: Fraction) = this[phase] ?: return null
             val entry: HTPropertyMap = HiiragiCoreAccess.INSTANCE.materialManager.getOrEmpty(key)
             return HTChancedItemResult(
-                HTResultCreator.material(entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX), key),
+                HTResultCreator.material(entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART), key),
                 chance,
             )
         }
@@ -39,7 +39,7 @@ class HTExtraOreResultMap private constructor(map: Map<Phase, Pair<HTMaterialKey
         fun getResult(phase: Phase, entry: HTMaterialManager.Entry): HTChancedItemResult? {
             val (key: HTMaterialKey, chance: Fraction) = this[phase] ?: return null
             return HTChancedItemResult(
-                HTResultCreator.material(entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PREFIX), key),
+                HTResultCreator.material(entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART), key),
                 chance,
             )
         }

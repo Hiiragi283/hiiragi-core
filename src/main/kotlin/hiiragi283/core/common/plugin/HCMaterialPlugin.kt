@@ -2,6 +2,7 @@ package hiiragi283.core.common.plugin
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.tool.CommonToolTypes
+import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTMaterialLevel
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
@@ -16,7 +17,6 @@ import hiiragi283.core.api.material.property.setName
 import hiiragi283.core.api.material.property.setTextureSet
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.plugin.HTPlugin
-import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.fluid.CommonFluidTagPrefixes
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.setup.HCToolMaterials
@@ -28,17 +28,17 @@ object HCMaterialPlugin : HTMaterialPlugin {
 
     override fun getId(): ResourceLocation = HiiragiCoreAPI.id("material_plugin")
 
-    override fun onModifyMaterial(builder: HTMaterialPlugin.MaterialBuilder) {
-        gem(builder)
-        pearl(builder)
+    override fun modifyMaterial(provider: HTMaterialPlugin.MaterialProvider) {
+        gem(provider)
+        pearl(provider)
     }
 
     @JvmStatic
-    private fun gem(builder: HTMaterialPlugin.MaterialBuilder) {
+    private fun gem(builder: HTMaterialPlugin.MaterialProvider) {
         builder.getBuilder(HCMaterialKeys.AZURE).apply {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
-            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEM)
+            addBlockPrefixes(CommonParts.BLOCK)
+            addItemPrefixes(CommonParts.DUST, CommonParts.GEM)
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
 
             setName("Azure Shard", "紺碧の欠片")
@@ -46,9 +46,9 @@ object HCMaterialPlugin : HTMaterialPlugin {
         }
         builder.getBuilder(HCMaterialKeys.CRIMSON_CRYSTAL).apply {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addBlockPrefixes(CommonParts.BLOCK)
             addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
-            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEM)
+            addItemPrefixes(CommonParts.DUST, CommonParts.GEM)
 
             setName("Crimson Crystal", "深紅のクリスタリル")
             setTextureSet("emerald")
@@ -56,9 +56,9 @@ object HCMaterialPlugin : HTMaterialPlugin {
         }
         builder.getBuilder(HCMaterialKeys.WARPED_CRYSTAL).apply {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addBlockPrefixes(CommonParts.BLOCK)
             addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
-            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.GEM)
+            addItemPrefixes(CommonParts.DUST, CommonParts.GEM)
 
             setName("Warped Crystal", "歪んだクリスタリル")
             setTextureSet("emerald")
@@ -66,12 +66,12 @@ object HCMaterialPlugin : HTMaterialPlugin {
     }
 
     @JvmStatic
-    private fun pearl(builder: HTMaterialPlugin.MaterialBuilder) {
+    private fun pearl(builder: HTMaterialPlugin.MaterialProvider) {
         builder.getBuilder(HCMaterialKeys.ELDRITCH).apply {
             setDefaultPart(HTDefaultPart.Prefixed.PEARL)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addBlockPrefixes(CommonParts.BLOCK)
             addFluidPrefixes(CommonFluidTagPrefixes.MOLTEN)
-            addItemPrefixes(CommonTagPrefixes.DUST, CommonTagPrefixes.PEARL)
+            addItemPrefixes(CommonParts.DUST, CommonParts.PEARL)
 
             setName("Eldritch Pearl", "異質な真珠")
             setTextureSet("pearl", HTMaterialTextureSet.MYSTICAL)
@@ -79,17 +79,17 @@ object HCMaterialPlugin : HTMaterialPlugin {
     }
 
     @JvmStatic
-    private fun alloy(builder: HTMaterialPlugin.MaterialBuilder) {
+    private fun alloy(builder: HTMaterialPlugin.MaterialProvider) {
         builder.getBuilder(HCMaterialKeys.AZURE_STEEL).apply {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
-            addBlockPrefixes(CommonTagPrefixes.BLOCK)
+            addBlockPrefixes(CommonParts.BLOCK)
             addItemPrefixes(
-                CommonTagPrefixes.DUST,
-                CommonTagPrefixes.INGOT,
-                CommonTagPrefixes.NUGGET,
-                CommonTagPrefixes.GEAR,
-                CommonTagPrefixes.PLATE,
-                CommonTagPrefixes.ROD,
+                CommonParts.DUST,
+                CommonParts.INGOT,
+                CommonParts.NUGGET,
+                CommonParts.GEAR,
+                CommonParts.PLATE,
+                CommonParts.ROD,
             )
             addToolPrefixes(HCToolMaterials.AZURE_STEEL, CommonToolTypes.VANILLA_SET)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)

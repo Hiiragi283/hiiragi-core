@@ -6,9 +6,10 @@ import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.item.tool.HTToolMaterial
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.part.CommonParts
+import hiiragi283.core.api.material.part.HTPart
+import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.property.HTPropertyKey
-import hiiragi283.core.api.tag.CommonTagPrefixes
-import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.fluid.HTFluidTagPrefix
 import net.minecraft.resources.ResourceLocation
 import org.apache.commons.lang3.math.Fraction
@@ -34,7 +35,7 @@ object HTMaterialPropertyKeys {
         HTPropertyKey.create(HiiragiCoreAPI.id("default_scale"), Fraction.ONE)
 
     /**
-     * デフォルトの[部品][HTTagPrefix]あたりの液体量を管理する[プロパティキー][HTPropertyKey]
+     * デフォルトの[部品][HTPart]あたりの液体量を管理する[プロパティキー][HTPropertyKey]
      * @since 0.7.0
      */
     @JvmField
@@ -48,7 +49,7 @@ object HTMaterialPropertyKeys {
      * @since 0.7.0
      */
     @JvmField
-    val BLOCK_PREFIXES: HTPropertyKey<Set<HTTagPrefix>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("block_prefixes"))
+    val BLOCK_PREFIXES: HTPropertyKey<Set<HTPartLike>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("block_prefixes"))
 
     /**
      * 登録する素材液体を管理する[プロパティキー][HTPropertyKey]
@@ -62,7 +63,7 @@ object HTMaterialPropertyKeys {
      * @since 0.7.0
      */
     @JvmField
-    val ITEM_PREFIXES: HTPropertyKey<Set<HTTagPrefix>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("item_prefixes"))
+    val ITEM_PREFIXES: HTPropertyKey<Set<HTPartLike>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("item_prefixes"))
 
     /**
      * 登録する素材ツールを管理する[プロパティキー][HTPropertyKey]
@@ -112,12 +113,12 @@ object HTMaterialPropertyKeys {
 
     // Processing
     /**
-     * 粉砕後の[HTTagPrefix]を管理する[プロパティキー][HTPropertyKey]
+     * 粉砕後の[部品][HTPartLike]を管理する[プロパティキー][HTPropertyKey]
      * @since 0.8.0
      */
     @JvmField
-    val CRUSHED_PREFIX: HTPropertyKey<HTTagPrefix> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("crushed_prefix"), CommonTagPrefixes.DUST)
+    val CRUSHED_PART: HTPropertyKey<HTPartLike> =
+        HTPropertyKey.create(HiiragiCoreAPI.id("crushed_part"), CommonParts.DUST)
 
     /**
      * 鉱石粉砕の副産物を管理する[プロパティキー][HTPropertyKey]
@@ -168,11 +169,11 @@ object HTMaterialPropertyKeys {
     val LANG_NAME: HTPropertyKey<HTLangName?> = createNullable("lang_name")
 
     /**
-     * [プレフィックス][HTTagPrefix]に依存する[翻訳名][HTLangName]を管理する[プロパティキー][HTPropertyKey]
+     * [部品][HTPart]に依存する[翻訳名][HTLangName]を管理する[プロパティキー][HTPropertyKey]
      * @since 0.7.0
      */
     @JvmField
-    val CUSTOM_LANG_NAME: HTPropertyKey<Map<HTTagPrefix, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_lang_name"))
+    val CUSTOM_LANG_NAME: HTPropertyKey<Map<HTPart, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_lang_name"))
 
     // Texture
     /**

@@ -7,7 +7,6 @@
   "min_power": 6,
   "result": {
     "count": 2,
-    "id": "minecraft:netherite_scrap",
-    "tag": "c:scraps/netherite"
+    "id": "minecraft:netherite_scrap"
   }
 }

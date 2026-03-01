@@ -3,6 +3,8 @@ package hiiragi283.core.api.data.recipe
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.material.property.getDefaultFluidAmount
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.recipe.result.HTFluidResult
@@ -41,13 +43,27 @@ data object HTResultCreator {
         amount = stack.count
     }
 
+    /**
+     * 指定した[プレフィックス][prefix]と[素材][material]から[HTItemResult]の新しいインスタンスを作成します。
+     * @since 0.12.0
+     */
     @JvmStatic
     fun material(prefix: HTTagPrefix, material: HTMaterialLike, amount: Int = 1): HTItemResult = HTItemResult.create {
+        this.tagKey = prefix.itemTagKey(material)
+        this.amount = amount
+    }
+
+    /**
+     * 指定した[部品][part]と[素材][material]から[HTItemResult]の新しいインスタンスを作成します。
+     * @since 0.12.0
+     */
+    @JvmStatic
+    fun material(part: HTPartLike, material: HTMaterialLike, amount: Int = 1): HTItemResult = HTItemResult.create {
         this.item = HiiragiCoreAccess.INSTANCE
-            .getMaterialBlockOrItem(prefix, material)
+            .getMaterialBlockOrItem(part, material)
             ?.get()
             .toResource()
-        this.tagKey = prefix.itemTagKey(material)
+        this.tagKey = part.tagPrefix?.itemTagKey(material)
         this.amount = amount
     }
 

@@ -1,9 +1,11 @@
 package hiiragi283.core.client.jei.category
 
 import com.mojang.serialization.Codec
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.material.property.getDefaultPart
-import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.client.jei.HCJeiRecipeTypes
 import hiiragi283.core.client.jei.category.base.HTBasicRecipeCategory
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
@@ -24,9 +26,11 @@ import net.minecraft.world.item.crafting.Ingredient
 class HCMaterialPartCategory(guiHelper: IGuiHelper) :
     HTBasicRecipeCategory<HTMaterialManager.Entry>(guiHelper, HCJeiRecipeTypes.MaterialType) {
     override fun setRecipe(builder: IRecipeLayoutBuilder, recipe: HTMaterialManager.Entry, focuses: IFocusGroup) {
-        val ingredients: Sequence<Ingredient> = HTTagPrefix.instances
+        val ingredients: Sequence<Ingredient> = HiiragiCoreAccess.INSTANCE
+            .partManager
             .values
             .asSequence()
+            .mapNotNull(HTPartLike::tagPrefix)
             .map { it.itemTagKey(recipe) }
             .distinct()
             .map(Ingredient::of)
