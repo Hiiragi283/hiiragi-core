@@ -26,12 +26,12 @@ interface HTPartLike : HTPropertyMap {
     /**
      * [asPart]から部品の名前を取得します。
      */
-    fun asPartName(): String = asPart().name
+    fun asPartName(): String
 
     /**
      * 指定した[素材][material]から[ID][ResourceLocation]を生成します。
      */
-    fun createId(material: HTMaterialLike): ResourceLocation = asPart().createId(material)
+    fun createId(material: HTMaterialLike): ResourceLocation
 
     /**
      * 指定した[素材][material]から[ResourceKey]を生成します。

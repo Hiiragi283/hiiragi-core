@@ -15,6 +15,8 @@ class HTPart(val name: String, private val idPattern: String, properties: HTProp
     Comparable<HTPart> {
     override fun asPart(): HTPart = this
 
+    override fun asPartName(): String = name
+
     override fun createId(material: HTMaterialLike): ResourceLocation = material.asMaterialId().withPath { idPattern.replace("%s", it) }
 
     override fun compareTo(other: HTPart): Int = this.name.compareTo(other.name)

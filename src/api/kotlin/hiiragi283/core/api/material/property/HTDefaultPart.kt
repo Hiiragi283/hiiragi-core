@@ -61,13 +61,12 @@ sealed interface HTDefaultPart {
         PEARL,
         ;
 
-        val part: HTPart
-            get() = when (this) {
-                FUEL -> CommonParts.FUEL
-                GEM -> CommonParts.GEM
-                INGOT -> CommonParts.INGOT
-                PEARL -> CommonParts.PEARL
-            }.asPart()
+        val part: HTPart get() = when (this) {
+            FUEL -> CommonParts.FUEL
+            GEM -> CommonParts.GEM
+            INGOT -> CommonParts.INGOT
+            PEARL -> CommonParts.PEARL
+        }.asPart()
         val prefix: HTTagPrefix get() = when (this) {
             // CROP -> CommonTagPrefixes.CROP
             // DUST -> CommonTagPrefixes.DUST

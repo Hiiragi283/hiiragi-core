@@ -63,7 +63,11 @@ data object HCMaterialTextureProvider : ResourceGenTask {
                         continue
                     }
                 // テンプレートを取得
-                val template: TextureImage = getTextureResult(manager, textureSet, part).getOrNull() ?: continue
+                val template: TextureImage = getTextureResult(manager, textureSet, part)
+                    .onFailure { HiiragiCoreAPI.LOGGER.error("Failed to get template image for ${part.name}") }
+                    .getOrNull()
+                    ?: continue
+                // HiiragiCoreAPI.LOGGER.debug("Found template for part; {} and material; {}", part.name, entry.getId())
                 copyAndApplyColor(
                     sink,
                     element.getId().withPrefix("$pathPrefix/"),
