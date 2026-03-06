@@ -34,6 +34,7 @@ import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.tags.BlockTags
 import net.minecraft.tags.ItemTags
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -153,6 +154,7 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
                 }
                 registered.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
                     addMaterial(factory, prefix, key).add(block)
+                    factory.apply(BlockTags.MINEABLE_WITH_PICKAXE).add(block)
                 }
             }
         })

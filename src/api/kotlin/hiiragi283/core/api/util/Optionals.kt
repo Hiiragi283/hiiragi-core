@@ -1,5 +1,7 @@
 package hiiragi283.core.api.util
 
+import net.minecraft.world.item.ItemStack
+import net.neoforged.neoforge.fluids.FluidStack
 import java.util.Optional
 
 /**
@@ -26,3 +28,9 @@ inline fun <T : Any> Optional<T>.onPresent(action: (T) -> Unit): Optional<T> {
     }
     return this
 }
+
+fun <T : Any, R : Any> Optional<T>.mapNotNull(transform: (T) -> R?): Optional<R> = this.flatMap { transform(it).wrapOptional() }
+
+fun Optional<ItemStack>.getOrEmpty(): ItemStack = this.orElseGet(ItemStack::EMPTY)
+
+fun Optional<FluidStack>.getOrEmpty(): FluidStack = this.orElseGet(FluidStack::EMPTY)

@@ -5,9 +5,14 @@
     "A": {
       "tag": "c:dusts/wood"
     },
-    "B": {
-      "tag": "c:slime_balls"
-    }
+    "B": [
+      {
+        "tag": "c:slime_balls"
+      },
+      {
+        "tag": "c:slimeballs"
+      }
+    ]
   },
   "pattern": [
     "AAA",

@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.material.Fluid
+import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 import net.neoforged.neoforge.common.crafting.SizedIngredient
 import net.neoforged.neoforge.fluids.crafting.CompoundFluidIngredient
@@ -53,10 +54,13 @@ data object HTIngredientCreator {
     fun create(tagKeys: Iterable<TagKey<Item>>, amount: Int = 1): HTItemIngredient =
         create(tagKeys.sortedWith(HTComparators.TAG_KEY).map(Ingredient::TagValue), amount)
 
+    @Suppress("DEPRECATION")
+    fun slimeBall(amount: Int = 1): HTItemIngredient = create(listOf(Tags.Items.SLIMEBALLS, Tags.Items.SLIME_BALLS), amount)
+
     // Ingredient
     @JvmName("createValues")
     fun create(values: Iterable<Ingredient.Value>, amount: Int = 1): HTItemIngredient =
-        create(Ingredient.fromValues(values.toList().stream()), amount)
+        create(Ingredient.fromValues(values.toSet().stream()), amount)
 
     @HTBuilderMarker
     inline fun create(
@@ -82,15 +86,15 @@ data object HTIngredientCreator {
 
     @JvmName("createFluid")
     fun create(tagKeys: Iterable<TagKey<Fluid>>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient =
-        create(CompoundFluidIngredient.of(tagKeys.sortedWith(HTComparators.TAG_KEY).map(FluidIngredient::tag)), amount)
+        create(CompoundFluidIngredient.of(tagKeys.sortedWith(HTComparators.TAG_KEY).toSet().map(FluidIngredient::tag)), amount)
 
     fun create(content: HTFluidContent, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(content.fluidTag, amount)
 
-    fun water(amount: Int): HTFluidIngredient = create(VanillaFluidContents.WATER, amount)
+    fun water(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(VanillaFluidContents.WATER, amount)
 
-    fun lava(amount: Int): HTFluidIngredient = create(VanillaFluidContents.LAVA, amount)
+    fun lava(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(VanillaFluidContents.LAVA, amount)
 
-    fun milk(amount: Int): HTFluidIngredient = create(VanillaFluidContents.MILK, amount)
+    fun milk(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(VanillaFluidContents.MILK, amount)
 
     fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidIngredient =
         create(HTFluidPart.MOLTEN, material, operator)

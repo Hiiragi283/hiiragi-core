@@ -100,17 +100,6 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         }
 
         mapOf(
-            Items.SAND to Tags.Items.SANDSTONE_UNCOLORED_BLOCKS,
-            Items.RED_SAND to Tags.Items.SANDSTONE_RED_BLOCKS,
-        ).forEach { (output: ItemLike, input: TagKey<Item>) ->
-            HTItemToChancedRecipeBuilder.crushing(this.output) {
-                ingredient = inputCreator.create(input)
-                result = resultCreator.create(output, 4)
-                recipeId suffix "_from_block"
-            }
-        }
-
-        mapOf(
             Items.BRICK to Items.BRICKS,
             Items.NETHER_BRICK to Items.NETHER_BRICKS,
             Items.PRISMARINE_SHARD to Items.PRISMARINE,

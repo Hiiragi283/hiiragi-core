@@ -74,7 +74,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         }
         // Sticky Piston
         HTShapelessRecipeBuilder.create(output) {
-            ingredients += Tags.Items.SLIME_BALLS
+            ingredients += inputCreator.slimeBall().unsized
             ingredients += Items.PISTON
             resultStack += Items.STICKY_PISTON
         }
@@ -100,7 +100,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         HTShapedRecipeBuilder.create(output) {
             hollow8()
             define('A') += CommonTagPrefixes.DUST to VanillaMaterialKeys.WOOD
-            define('B') += Tags.Items.SLIME_BALLS
+            define('B') += inputCreator.slimeBall().unsized
             resultStack += HCItems.PARTICLE_BOARD to 4
         }
 
@@ -285,7 +285,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             define('A') += CommonTagPrefixes.GEM to VanillaMaterialKeys.DIAMOND
             define('B') += HCItems.ETERNAL_UPGRADE
             define('C') += HCItems.IRIDESCENT_POWDER
-            resultStack += HCItems.ETERNAL_UPGRADE
+            resultStack += HCItems.ETERNAL_UPGRADE to 2
         }
         save(id(HTConst.SMITHING, "eternal_upgrade"), HCEternalSmithingRecipe)
         // Almighty Pickaxe

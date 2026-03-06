@@ -15,7 +15,7 @@ import net.minecraft.world.item.crafting.SmithingRecipe
 import net.minecraft.world.item.crafting.SmithingRecipeInput
 import net.minecraft.world.level.Level
 
-object HCEternalSmithingRecipe : SmithingRecipe {
+data object HCEternalSmithingRecipe : SmithingRecipe {
     @JvmField
     val ADDITIONAL_TAG: Ingredient = Ingredient.of(CommonTagPrefixes.INGOT.itemTagKey(CommonMaterialKeys.IRIDIUM))
 

@@ -76,7 +76,7 @@ data object HiiragiCoreAPI {
      * @since 0.10.0
      */
     @JvmStatic
-    fun getCraftingPlayer(): Player = CommonHooks.getCraftingPlayer()
+    fun getCraftingPlayer(): Player? = CommonHooks.getCraftingPlayer()
 
     //    Service    //
 

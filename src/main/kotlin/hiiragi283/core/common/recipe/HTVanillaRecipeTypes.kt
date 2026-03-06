@@ -98,7 +98,7 @@ object HTVanillaRecipeTypes {
                     multimap[potionTo].mapIndexed { index: Int, (potionFrom: Holder<Potion>, ingredient: Ingredient) ->
                         val resultContents: HTPotionContents = HTPotionContents.of(potionTo, HTBottleType.DEFAULT) ?: return@mapIndexed null
                         val fluidIngredient: HTFluidIngredient = when (potionFrom) {
-                            Potions.WATER -> HTIngredientCreator.water(1000)
+                            Potions.WATER -> HTIngredientCreator.water()
                             else -> HTIngredientCreator.create(HTPotionFluidIngredient(HolderSet.direct(potionFrom), HTBottleType.DEFAULT))
                         }
                         val recipe = HCBrewingRecipe(
