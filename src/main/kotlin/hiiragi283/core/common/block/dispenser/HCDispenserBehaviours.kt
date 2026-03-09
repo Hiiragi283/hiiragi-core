@@ -14,7 +14,7 @@ object HCDispenserBehaviours {
     @JvmField
     val EXPERIENCE_TOME: DispenseItemBehavior = object : DefaultDispenseItemBehavior() {
         override fun execute(blockSource: BlockSource, item: ItemStack): ItemStack {
-            val storedExp: Int = HTExperienceHelper.getStoredExp(item)
+            val storedExp: Long = HTExperienceHelper.getStoredExp(item)
             if (storedExp > 0) {
                 val position: Position = DispenserBlock.getDispensePosition(blockSource)
                 HTExperienceHelper.popExperienceOrb(blockSource.level, position as Vec3, storedExp)

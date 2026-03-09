@@ -1,6 +1,8 @@
 package hiiragi283.core.common.fluid
 
+import hiiragi283.core.util.ExpValue
 import hiiragi283.core.util.HTExperienceHelper
+import hiiragi283.core.util.storedExperience
 import net.minecraft.core.BlockPos
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
@@ -19,9 +21,9 @@ class HTExperienceFluidType(properties: Properties) : FluidType(properties) {
         stack: FluidStack,
     ) {
         level.playSound(player, pos, SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 0.5F, 1.0F)
-        val expAmount: Int = HTExperienceHelper.expAmountFromFluid(stack.amount)
+        val expAmount: ExpValue = HTExperienceHelper.expAmountFromFluid(stack.amount)
         if (player != null) {
-            player.giveExperiencePoints(expAmount)
+            player.storedExperience += expAmount
         } else {
             HTExperienceHelper.popExperienceOrb(level, pos, expAmount)
         }

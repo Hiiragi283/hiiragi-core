@@ -3,7 +3,7 @@ package hiiragi283.core.util
 import com.google.common.primitives.Ints
 import hiiragi283.core.config.HCConfig
 import hiiragi283.core.setup.HCDataComponents
-import it.unimi.dsi.fastutil.longs.Long2LongArrayMap
+import it.unimi.dsi.fastutil.longs.Long2IntArrayMap
 import net.minecraft.core.Holder
 import net.minecraft.core.Vec3i
 import net.minecraft.server.level.ServerLevel
@@ -14,85 +14,104 @@ import net.minecraft.world.item.enchantment.Enchantment
 import net.minecraft.world.item.enchantment.ItemEnchantments
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.Vec3
-import java.util.function.IntUnaryOperator
+import java.util.function.LongUnaryOperator
+
+typealias ExpValue = Long
+typealias ExpLevel = Int
 
 /**
  * @see me.desht.pneumaticcraft.common.util.EnchantmentUtils
  */
 object HTExperienceHelper {
+    @JvmStatic
     fun getExpRatio(): Int = HCConfig.COMMON.expConversionRatio.asInt
 
-    fun fluidAmountFromExp(value: Int): Long = value * getExpRatio().toLong()
+    @JvmStatic
+    fun fluidAmountFromExp(value: Int): Int = value * getExpRatio()
 
-    fun expAmountFromFluid(value: Int): Int = value / getExpRatio()
+    @JvmStatic
+    fun fluidAmountFromExp(value: ExpValue): Long = value * getExpRatio().toLong()
 
-    fun popExperienceOrb(level: Level, pos: Vec3i, amount: Int) {
+    @JvmStatic
+    fun expAmountFromFluid(amount: Int): ExpValue = amount / getExpRatio().toLong()
+
+    @JvmStatic
+    fun popExperienceOrb(level: Level, pos: Vec3i, amount: ExpValue) {
         popExperienceOrb(level, Vec3.atCenterOf(pos), amount)
     }
 
-    fun popExperienceOrb(level: Level, pos: Vec3, amount: Int) {
+    @JvmStatic
+    fun popExperienceOrb(level: Level, pos: Vec3, amount: ExpValue) {
         if (level is ServerLevel) {
-            ExperienceOrb.award(level, pos, amount)
+            repeatLongAsInt(amount) { ExperienceOrb.award(level, pos, it) }
         }
+    }
+
+    @JvmStatic
+    fun repeatLongAsInt(amount: Long, action: (Int) -> Unit) {
+        repeat((amount / Int.MAX_VALUE).toInt(), action)
+        action((amount % Int.MAX_VALUE).toInt())
     }
 
     //    Player    //
 
     @JvmStatic
-    fun getPlayerExp(player: Player): Int =
-        getExpForLevel(player.experienceLevel) + (player.experienceProgress * player.xpNeededForNextLevel).toInt()
+    fun getPlayerExp(player: Player): ExpValue =
+        getExpForLevel(player.experienceLevel) + (player.experienceProgress * player.xpNeededForNextLevel).toLong()
 
     @JvmStatic
     fun setPlayerExp(player: Player, amount: Long) {
         val fixedAmount: Long = maxOf(0, amount)
         player.totalExperience = Ints.saturatedCast(fixedAmount)
-        player.experienceLevel = Ints.saturatedCast(getLevelForExp(fixedAmount))
-        val expForLevel: Int = getExpForLevel(player.experienceLevel)
+        player.experienceLevel = getLevelForExp(fixedAmount)
+        val expForLevel: ExpValue = getExpForLevel(player.experienceLevel)
         player.experienceProgress = (fixedAmount - expForLevel) / player.xpNeededForNextLevel.toFloat()
     }
 
     @JvmStatic
-    fun getExpForLevel(level: Int): Int = when {
-        level == 0 -> 0
+    fun getExpForLevel(level: ExpLevel): ExpValue = when {
+        level == 0 -> 0L
         level <= 15 -> sum(level, 7, 2)
         level <= 30 -> 315 + sum(level - 15, 37, 5)
         else -> 1395 + sum(level - 30, 112, 9)
     }
 
     @JvmStatic
-    private fun sum(n: Int, a: Int, d: Int): Int = n * (2 * a + (n - 1) * d) / 2
+    private fun sum(n: Int, a: Int, d: Int): Long = n * (2 * a + (n - 1) * d) / 2L
 
     @JvmStatic
-    fun getExpBarCapacity(level: Long): Long = when {
-        level >= 30 -> 112 + (level - 30) * 9
-        level >= 15 -> 37 + (level - 15) * 5
-        else -> 7 + level * 2
+    fun getExpBarCapacity(level: ExpLevel): ExpValue = when {
+        level >= 30 -> 112 + (level - 30L) * 9
+        level >= 15 -> 37 + (level - 15L) * 5
+        else -> 7 + level * 2L
     }
 
     @JvmStatic
-    private val levelCache: MutableMap<Long, Long> = Long2LongArrayMap()
+    private val levelCache: MutableMap<Long, Int> = Long2IntArrayMap()
 
     @JvmStatic
-    fun getLevelForExp(exp: Long): Long = levelCache.computeIfAbsent(exp, ::findLevelForExp)
+    fun getLevelForExp(amount: ExpValue): ExpLevel = levelCache.computeIfAbsent(amount, ::findLevelForExp)
 
     @JvmStatic
-    private fun findLevelForExp(exp: Long): Long {
-        var exp1: Long = exp
-        var level = 0L
+    private fun findLevelForExp(amount: ExpValue): ExpLevel {
+        var amount1: ExpValue = amount
+        var level = 0
         while (true) {
-            val nextLevel: Long = getExpBarCapacity(level)
-            if (exp1 < nextLevel) return level
+            val nextAmount: ExpValue = getExpBarCapacity(level)
+            if (amount1 < nextAmount) return level
             level++
-            exp1 -= nextLevel
+            amount1 -= nextAmount
         }
     }
 
     //    Player    //
 
-    fun getStoredExp(stack: ItemStack): Int = stack.getOrDefault(HCDataComponents.EXPERIENCE, 0)
+    @JvmStatic
+    fun getStoredExp(stack: ItemStack): ExpValue = stack.getOrDefault(HCDataComponents.EXPERIENCE, 0)
 
-    fun updateStoredExp(stack: ItemStack, operator: IntUnaryOperator): Int? =
-        stack.update(HCDataComponents.EXPERIENCE, 0, operator::applyAsInt)
+    @JvmStatic
+    fun updateStoredExp(stack: ItemStack, operator: LongUnaryOperator): ExpValue? =
+        stack.update(HCDataComponents.EXPERIENCE, 0, operator::applyAsLong)
 
     //    Enchantment    //
 
@@ -156,3 +175,9 @@ object HTExperienceHelper {
         return result != null
     }*/
 }
+
+//    Extension    //
+
+var Player.storedExperience: Long
+    get() = HTExperienceHelper.getPlayerExp(this)
+    set(value) = HTExperienceHelper.setPlayerExp(this, value)

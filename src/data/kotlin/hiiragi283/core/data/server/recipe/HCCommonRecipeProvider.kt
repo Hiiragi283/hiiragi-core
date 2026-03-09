@@ -19,6 +19,7 @@ import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.times
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
+import hiiragi283.core.common.crafting.HCExperienceStoringRecipe
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
@@ -33,6 +34,7 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
+import net.minecraft.world.item.crafting.CraftingBookCategory
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
 import org.apache.commons.lang3.math.Fraction
@@ -274,6 +276,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             define('C') += Items.BOOK
             resultStack += HCItems.EXPERIENCE_TOME
         }
+        save(id(HTConst.SHAPELESS, "experience_tome"), HCExperienceStoringRecipe(CraftingBookCategory.MISC))
 
         // Eternal Upgrade
         HTShapedRecipeBuilder.create(output) {
