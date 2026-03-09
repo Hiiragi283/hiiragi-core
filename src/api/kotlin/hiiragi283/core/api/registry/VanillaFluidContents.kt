@@ -16,7 +16,7 @@ data object VanillaFluidContents {
     val WATER = HTFluidContent(
         NeoForgeMod.WATER_TYPE.toLike(),
         Fluids.WATER.toLike(),
-        HTItemHolderLike.of(Items.WATER_BUCKET),
+        Items.WATER_BUCKET.toLike(),
         Tags.Fluids.WATER,
         Tags.Items.BUCKETS_WATER,
         null,
@@ -27,7 +27,7 @@ data object VanillaFluidContents {
     val LAVA = HTFluidContent(
         NeoForgeMod.LAVA_TYPE.toLike(),
         Fluids.LAVA.toLike(),
-        HTItemHolderLike.of(Items.LAVA_BUCKET),
+        Items.LAVA_BUCKET.toLike(),
         Tags.Fluids.LAVA,
         Tags.Items.BUCKETS_LAVA,
         null,
@@ -38,7 +38,7 @@ data object VanillaFluidContents {
     val MILK = HTFluidContent(
         NeoForgeMod.MILK_TYPE.toLike(),
         NeoForgeMod.MILK.toLike(),
-        HTItemHolderLike.of(Items.MILK_BUCKET),
+        Items.MILK_BUCKET.toLike(),
         Tags.Fluids.MILK,
         Tags.Items.BUCKETS_MILK,
         null,

@@ -79,7 +79,7 @@ data object HiiragiCore : HTCommonMod() {
     override fun commonSetup(event: FMLCommonSetupEvent) {
         event.enqueueWork {
             HCItems.REGISTER
-                .asSequence()
+                .asItemSequence()
                 .map(ItemLike::asItem)
                 .filter { it is ProjectileItem }
                 .forEach(DispenserBlock::registerProjectileBehavior)

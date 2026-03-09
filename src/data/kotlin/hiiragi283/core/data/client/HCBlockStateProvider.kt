@@ -62,6 +62,6 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(Hii
         }
 
         trackItem(HCBlocks.WARPED_WART)
-        itemModels().basicItem(HCBlocks.WARPED_WART.id)
+        itemModels().basicItem(HCBlocks.WARPED_WART.getId())
     }
 }

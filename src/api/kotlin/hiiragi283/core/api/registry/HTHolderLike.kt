@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidType
+import net.neoforged.neoforge.registries.DeferredHolder
 import java.util.function.Supplier
 
 /**
@@ -26,7 +27,6 @@ interface HTHolderLike<R : Any, T : R> :
      * [Holder]を保持する[HolderDelegate]の拡張インターフェースです。
      * @author Hiiragi Tsubasa
      * @since 0.6.0
-     * @see HTDeferredHolder
      * @see HTFluidContent
      */
     interface HolderDelegate<R : Any, T : R> :
@@ -54,13 +54,23 @@ fun <R : Any> Holder<R>.toLike(): HTSimpleHolderLikeDelegate<R> =
         override fun getHolder(): Holder<R> = this@toLike.delegate
     }
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
+fun <R : Any, T : R> DeferredHolder<R, T>.toLike(): HTHolderLike.HolderDelegate<R, T> = object : HTHolderLike.HolderDelegate<R, T> {
+    override fun get(): T = this@toLike.get()
+
+    override fun getHolder(): Holder<R> = this@toLike.delegate
+}
+
 //    Block    //
 
 /**
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-typealias HTBlockHolderLike<BLOCK> = HTHolderLike<Block, BLOCK>
+typealias HTBlockHolderLike<BLOCK> = HTHolderLike.HolderDelegate<Block, BLOCK>
 
 /**
  * @author Hiiragi Tsubasa
@@ -81,7 +91,7 @@ fun HTBlockHolderLike<*>.getDefaultState(): BlockState = this.get().defaultBlock
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-typealias HTFluidHolderLike<FLUID> = HTHolderLike<Fluid, FLUID>
+typealias HTFluidHolderLike<FLUID> = HTHolderLike.HolderDelegate<Fluid, FLUID>
 
 /**
  * @author Hiiragi Tsubasa
@@ -100,7 +110,7 @@ fun HTFluidHolderLike<*>.getBucket(): Item = this.get().bucket
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-fun HTFluidHolderLike<*>.getBucketHolder(): HTItemHolderLike<*> = HTItemHolderLike.of(this.getBucket())
+fun HTFluidHolderLike<*>.getBucketHolder(): HTItemHolderLike<*> = this.getBucket().toLike()
 
 /**
  * @author Hiiragi Tsubasa

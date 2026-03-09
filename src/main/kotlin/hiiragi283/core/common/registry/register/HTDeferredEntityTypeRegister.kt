@@ -17,7 +17,7 @@ class HTDeferredEntityTypeRegister(namespace: String) : HTDeferredRegister<Entit
         builderAction: Consumer<EntityType.Builder<ENTITY>>,
     ): HTDeferredEntityType<ENTITY> {
         val holder = HTDeferredEntityType<ENTITY>(createId(name))
-        register(name) { id: ResourceLocation ->
+        delegate.register(name) { id: ResourceLocation ->
             EntityType.Builder
                 .of(factory, category)
                 .apply(builderAction::accept)

@@ -28,9 +28,7 @@ import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.property.isNotEmpty
 import hiiragi283.core.api.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTItemHolderLike
-import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.HiiragiCoreAccessImpl
 import hiiragi283.core.common.gui.sync.HTBoolSyncPayload
@@ -40,11 +38,9 @@ import hiiragi283.core.common.gui.sync.HTIntSyncPayload
 import hiiragi283.core.common.gui.sync.HTItemSyncPayload
 import hiiragi283.core.common.gui.sync.HTLongSyncPayload
 import hiiragi283.core.common.material.HTMaterialManagerImpl
-import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
-import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.world.item.BucketItem
@@ -56,6 +52,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.SoundActions
 import net.neoforged.neoforge.fluids.FluidType
+import net.neoforged.neoforge.registries.DeferredHolder
+import net.neoforged.neoforge.registries.DeferredItem
 import net.neoforged.neoforge.registries.NeoForgeRegistries
 import net.neoforged.neoforge.registries.RegisterEvent
 
@@ -156,7 +154,7 @@ internal object HCMiscRegister {
     private fun registerExistingItems() {
         HiiragiCoreAccess.INSTANCE.forEachPlugin("Register Existing Items") { plugin: HTMaterialPlugin ->
             plugin.registerExistingItem { part: HTPartLike, material: HTMaterialKey, item: HTItemHolderLike<*> ->
-                existingItems.put(part.asPart(), material, HTMaterialContents.Entry(item.toLike(), true))
+                existingItems.put(part.asPart(), material, HTMaterialContents.Entry(item, true))
             }
         }
     }
@@ -165,7 +163,7 @@ internal object HCMiscRegister {
     private fun registerExistingTools() {
         HiiragiCoreAccess.INSTANCE.forEachPlugin("Register Existing Items") { plugin: HTMaterialPlugin ->
             plugin.registerExistingTool { toolType: HTToolType, key: HTMaterialKey, item: HTItemHolderLike<*> ->
-                existingTools.put(toolType, key, HTMaterialContents.Entry(item.toLike(), true))
+                existingTools.put(toolType, key, HTMaterialContents.Entry(item, true))
             }
         }
     }
@@ -181,10 +179,9 @@ internal object HCMiscRegister {
                     .getOrDefault(HTMaterialPropertyKeys.BLOCK_PREFIXES)
                     .mapNotNull { part: HTPartLike ->
                         val properties: BlockBehaviour.Properties = part[HTPartPropertyKeys.BLOCK_PROP] ?: return@mapNotNull null
-                        val key: ResourceKey<Block> = part.createKey(Registries.BLOCK, entry)
                         val block = Block(properties)
-                        helper.register(key, block)
-                        Triple(part.asPart(), entry.asMaterialKey(), HTMaterialContents.blockEntry(key, block, false))
+                        helper.register(part.createId(entry), block)
+                        Triple(part.asPart(), entry.asMaterialKey(), HTMaterialContents.blockEntry(block, false))
                     }
             }
     }
@@ -197,13 +194,10 @@ internal object HCMiscRegister {
                 entry
                     .getOrDefault(HTMaterialPropertyKeys.FLUID_PREFIXES)
                     .map { part: HTFluidPart ->
-                        val key: ResourceKey<Fluid> = part.createKey(Registries.FLUID, entry)
-                        val id: ResourceLocation = key.location()
+                        val id: ResourceLocation = part.createId(entry)
 
-                        val typeHolder: HTDeferredHolder<FluidType, FluidType> = HTDeferredHolder(
-                            NeoForgeRegistries.Keys.FLUID_TYPES,
-                            id,
-                        )
+                        val typeHolder: DeferredHolder<FluidType, FluidType> =
+                            DeferredHolder.create(NeoForgeRegistries.Keys.FLUID_TYPES, id)
                         Registry.register(
                             NeoForgeRegistries.FLUID_TYPES,
                             id,
@@ -218,15 +212,15 @@ internal object HCMiscRegister {
                         val bucketId: ResourceLocation = id.withSuffix("_bucket")
                         val fluid: HTVirtualFluid = Registry.register(
                             BuiltInRegistries.FLUID,
-                            key,
-                            HTVirtualFluid(typeHolder, HTSimpleDeferredItem(bucketId)),
+                            id,
+                            HTVirtualFluid(typeHolder, DeferredItem.createItem(bucketId)),
                         )
                         helper.register(
                             bucketId,
                             BucketItem(fluid, Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)),
                         )
 
-                        Triple(part, entry.asMaterialKey(), HTMaterialContents.fluidEntry(key, fluid, false))
+                        Triple(part, entry.asMaterialKey(), HTMaterialContents.fluidEntry(fluid, false))
                     }
             }
     }
@@ -244,10 +238,9 @@ internal object HCMiscRegister {
                 entry
                     .getOrDefault(HTMaterialPropertyKeys.ITEM_PREFIXES)
                     .map { part: HTPartLike ->
-                        val key: ResourceKey<Item> = part.createKey(Registries.ITEM, entry)
                         val item = Item(Item.Properties())
-                        helper.register(key, item)
-                        Triple(part.asPart(), entry.asMaterialKey(), HTMaterialContents.itemEntry(key, item, false))
+                        helper.register(part.createId(entry), item)
+                        Triple(part.asPart(), entry.asMaterialKey(), HTMaterialContents.itemEntry(item, false))
                     }
             }
     }
@@ -262,10 +255,9 @@ internal object HCMiscRegister {
                 entry
                     .getOrDefault(HTMaterialPropertyKeys.TOOL_PREFIXES)
                     .map { toolType: HTToolType ->
-                        val key: ResourceKey<Item> = toolType.createKey(entry)
                         val item: TieredItem = toolType.createTool(material)
-                        helper.register(key, item)
-                        Triple(toolType, entry.asMaterialKey(), HTMaterialContents.itemEntry(key, item, false))
+                        helper.register(toolType.createKey(entry), item)
+                        Triple(toolType, entry.asMaterialKey(), HTMaterialContents.itemEntry(item, false))
                     }
             }
     }

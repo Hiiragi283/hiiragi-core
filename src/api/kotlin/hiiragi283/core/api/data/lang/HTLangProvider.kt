@@ -35,7 +35,7 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
      * @param title 進捗のタイトル名
      * @param desc 進捗の説明
      */
-    protected fun addAdvancement(key: HTAdvancementKey, title: String, desc: String) {
+    protected fun add(key: HTAdvancementKey, title: String, desc: String) {
         add(key.titleKey, title)
         add(key.descKey, desc)
     }
@@ -45,7 +45,8 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
      * @param value エンチャントの翻訳名
      * @param desc エンチャントの説明
      */
-    protected fun addEnchantment(key: ResourceKey<Enchantment>, value: String, desc: String) {
+    @JvmName("addEnchantment")
+    protected fun add(key: ResourceKey<Enchantment>, value: String, desc: String) {
         add(key.toDescriptionKey("enchantment"), value)
         add(key.toDescriptionKey("enchantment", "desc"), desc)
     }

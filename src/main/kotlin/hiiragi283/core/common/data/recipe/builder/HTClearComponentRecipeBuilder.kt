@@ -31,7 +31,7 @@ class HTClearComponentRecipeBuilder : HTRecipeBuilder("${HTConst.SHAPELESS}/clea
     override fun createRecipe(): HTClearComponentRecipe = HTClearComponentRecipe(
         group ?: "",
         category,
-        item.getItemHolder(),
+        item.getHolder(),
         targets.holderSet,
     )
 

@@ -12,7 +12,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer
 class HTDeferredRecipeSerializerRegister(namespace: String) :
     HTDeferredRegister<RecipeSerializer<*>>(Registries.RECIPE_SERIALIZER, namespace) {
     fun <SERIALIZER : RecipeSerializer<*>> registerSerializer(name: String, serializer: SERIALIZER): SERIALIZER {
-        register(name) { _ -> serializer }
+        delegate.register(name) { _ -> serializer }
         return serializer
     }
 

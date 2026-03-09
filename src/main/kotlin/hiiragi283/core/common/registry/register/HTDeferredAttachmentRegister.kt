@@ -17,7 +17,7 @@ import java.util.function.UnaryOperator
 class HTDeferredAttachmentRegister(namespace: String) :
     HTDeferredRegister<AttachmentType<*>>(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, namespace) {
     fun <TYPE : Any> registerType(name: String, builder: AttachmentType.Builder<TYPE>): HTDeferredAttachmentType<TYPE> {
-        register(name) { _: ResourceLocation -> builder.build() }
+        delegate.register(name) { _: ResourceLocation -> builder.build() }
         return HTDeferredAttachmentType(createId(name))
     }
 

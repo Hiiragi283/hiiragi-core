@@ -1,17 +1,17 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.common.block.HTTestBlock
 import hiiragi283.core.common.block.HTTreeTapBlock
 import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.block.cauldron.HTLatexCauldronBlock
 import hiiragi283.core.common.item.block.HTWarpedWartItem
-import hiiragi283.core.common.registry.HTBasicDeferredBlock
-import hiiragi283.core.common.registry.HTDeferredBlock
-import hiiragi283.core.common.registry.HTDeferredOnlyBlock
-import hiiragi283.core.common.registry.HTSimpleDeferredBlock
+import hiiragi283.core.common.registry.HTBasicDeferredBlockAndItem
+import hiiragi283.core.common.registry.HTDeferredBlockAndItem
+import hiiragi283.core.common.registry.HTSimpleDeferredBlockAndItem
+import hiiragi283.core.common.registry.register.HTDeferredBlockAndItemRegister
 import hiiragi283.core.common.registry.register.HTDeferredBlockRegister
-import hiiragi283.core.common.registry.register.HTDeferredOnlyBlockRegister
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.SoundType
@@ -22,10 +22,10 @@ import net.neoforged.bus.api.IEventBus
 
 object HCBlocks {
     @JvmField
-    val REGISTER_ONLY_BLOCK = HTDeferredOnlyBlockRegister(HiiragiCoreAPI.MOD_ID)
+    val REGISTER_ONLY_BLOCK = HTDeferredBlockRegister(HiiragiCoreAPI.MOD_ID)
 
     @JvmField
-    val REGISTER = HTDeferredBlockRegister(REGISTER_ONLY_BLOCK)
+    val REGISTER = HTDeferredBlockAndItemRegister(REGISTER_ONLY_BLOCK)
 
     @JvmStatic
     fun register(eventBus: IEventBus) {
@@ -35,13 +35,13 @@ object HCBlocks {
     //    Materials    //
 
     @JvmField
-    val OIL_SAND: HTSimpleDeferredBlock = REGISTER.registerSimple(
+    val OIL_SAND: HTSimpleDeferredBlockAndItem = REGISTER.registerSimple(
         "oil_sand",
         copyOf(Blocks.SAND).mapColor(MapColor.COLOR_BLACK),
     )
 
     @JvmField
-    val OIL_SHALE: HTSimpleDeferredBlock = REGISTER.registerSimple(
+    val OIL_SHALE: HTSimpleDeferredBlockAndItem = REGISTER.registerSimple(
         "oil_shale",
         copyOf(Blocks.STONE).mapColor(MapColor.COLOR_BLACK),
     )
@@ -49,7 +49,7 @@ object HCBlocks {
     //    Crops    //
 
     @JvmField
-    val WARPED_WART: HTDeferredBlock<HTWarpedWartBlock, HTWarpedWartItem> = REGISTER.register(
+    val WARPED_WART: HTDeferredBlockAndItem<HTWarpedWartBlock, HTWarpedWartItem> = REGISTER.register(
         "warped_wart",
         copyOf(Blocks.NETHER_WART),
         ::HTWarpedWartBlock,
@@ -60,7 +60,7 @@ object HCBlocks {
 
     // Basic
     @JvmField
-    val TREE_TAP: HTBasicDeferredBlock<HTTreeTapBlock> = REGISTER.registerSimple(
+    val TREE_TAP: HTBasicDeferredBlockAndItem<HTTreeTapBlock> = REGISTER.registerSimple(
         "tree_tap",
         properties(3.5f, 16f)
             .sound(SoundType.LANTERN)
@@ -71,17 +71,20 @@ object HCBlocks {
     )
 
     @JvmField
-    val LATEX_CAULDRON: HTDeferredOnlyBlock<HTLatexCauldronBlock> = REGISTER_ONLY_BLOCK.registerBlock(
+    val LATEX_CAULDRON: HTBlockHolderLike<HTLatexCauldronBlock> = REGISTER_ONLY_BLOCK.registerBlock(
         "latex_cauldron",
         copyOf(Blocks.CAULDRON).randomTicks(),
         ::HTLatexCauldronBlock,
     )
 
     @JvmField
-    val EXP_DRAIN: HTSimpleDeferredBlock = REGISTER.registerSimple("exp_drain", properties(5f, 6f).sound(SoundType.METAL).noCollission())
+    val EXP_DRAIN: HTSimpleDeferredBlockAndItem = REGISTER.registerSimple(
+        "exp_drain",
+        properties(5f, 6f).sound(SoundType.METAL).noCollission(),
+    )
 
     @JvmField
-    val TEST: HTBasicDeferredBlock<HTTestBlock> = REGISTER.registerSimple("test", unbreakable(), ::HTTestBlock)
+    val TEST: HTBasicDeferredBlockAndItem<HTTestBlock> = REGISTER.registerSimple("test", unbreakable(), ::HTTestBlock)
 
     //    Extensions    //
 

@@ -22,7 +22,7 @@ class HTDeferredDataComponentRegister(registryKey: RegistryKey<DataComponentType
             .builder<DATA>()
             .apply(builderAction)
             .build()
-        register(name) { _: ResourceLocation -> type }
+        delegate.register(name) { _: ResourceLocation -> type }
         return type
     }
 

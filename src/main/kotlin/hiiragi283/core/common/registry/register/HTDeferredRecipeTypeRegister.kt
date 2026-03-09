@@ -11,7 +11,7 @@ import net.minecraft.world.item.crafting.RecipeType
 class HTDeferredRecipeTypeRegister(namespace: String) : HTDeferredRegister<RecipeType<*>>(Registries.RECIPE_TYPE, namespace) {
     fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> registerType(name: String): HTDeferredRecipeType<INPUT, RECIPE> {
         val recipeType = HTDeferredRecipeType<INPUT, RECIPE>(createId(name))
-        register(name) { id: ResourceLocation -> RecipeType.simple<RECIPE>(id) }
+        delegate.register(name) { id: ResourceLocation -> RecipeType.simple<RECIPE>(id) }
         return recipeType
     }
 }
