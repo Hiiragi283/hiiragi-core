@@ -10,6 +10,7 @@ import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.registry.holderSetOrNull
+import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.Text
@@ -71,7 +72,7 @@ class HTRegisterRuntimeRecipeEvent(val recipeManager: RecipeManager, val context
     // Material
     fun getFirstHolder(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
         getFirstHolder(prefix.itemTagKey(material), true)?.let { holder: HTSimpleHolderLikeDelegate<Item> ->
-            HTItemHolderLike.of(holder.get())
+            holder.get().toLike()
         }
 
     fun isPresentTag(prefix: HTTagPrefix, material: HTMaterialLike): Boolean = isPresentTag(prefix.itemTagKey(material))

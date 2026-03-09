@@ -6,7 +6,6 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.registry.HTItemHolderLike
-import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.tags.TagKey
@@ -44,7 +43,7 @@ sealed interface HTDefaultPart {
         override fun getTag(material: HTMaterialLike): TagKey<Item> = tagKey
 
         override fun getItem(material: HTMaterialLike): HTMaterialContents.Entry<out ItemLike>? =
-            this.item?.let { HTMaterialContents.Entry(it.toLike(), true) }
+            this.item?.let { HTMaterialContents.Entry(it, true) }
 
         override fun getSuffix(): String = tagKey.location().path
     }

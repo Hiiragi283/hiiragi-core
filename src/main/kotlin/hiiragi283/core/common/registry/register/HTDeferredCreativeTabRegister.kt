@@ -2,10 +2,11 @@ package hiiragi283.core.common.registry.register
 
 import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.item.HTSubCreativeTabContents
-import hiiragi283.core.api.registry.HTDeferredHolder
-import hiiragi283.core.api.registry.HTDeferredRegister
+import hiiragi283.core.api.registry.HTDeferredRegisterN
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
+import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.text.HTTranslation
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.item.CreativeModeTab
@@ -15,7 +16,7 @@ import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent
 
 class HTDeferredCreativeTabRegister(namespace: String) :
-    HTDeferredRegister<CreativeModeTab>(
+    HTDeferredRegisterN<CreativeModeTab>(
         Registries.CREATIVE_MODE_TAB,
         namespace,
     ) {
@@ -27,7 +28,7 @@ class HTDeferredCreativeTabRegister(namespace: String) :
             holders: Sequence<HTHolderLike<out ItemLike, *>>,
         ) {
             for (holder: HTHolderLike<out ItemLike, *> in holders) {
-                addToDisplay(parameters, output, HTItemHolderLike.of(holder.get().asItem()))
+                addToDisplay(parameters, output, holder.get().asItem().toLike())
             }
         }
 
@@ -78,14 +79,15 @@ class HTDeferredCreativeTabRegister(namespace: String) :
         title: HTTranslation,
         icon: ItemLike,
         builder: CreativeModeTab.DisplayItemsGenerator,
-    ): HTDeferredHolder<CreativeModeTab, CreativeModeTab> = register(name) { _ ->
-        CreativeModeTab
-            .builder()
-            .title(title.translate())
-            .icon { ItemStack(icon) }
-            .displayItems(builder)
-            .build()
-    }
+    ): HTSimpleHolderLikeDelegate<CreativeModeTab> = delegate
+        .register(name) { _ ->
+            CreativeModeTab
+                .builder()
+                .title(title.translate())
+                .icon { ItemStack(icon) }
+                .displayItems(builder)
+                .build()
+        }.toLike()
 
     @HTBuilderMarker
     fun registerTab(
@@ -93,12 +95,13 @@ class HTDeferredCreativeTabRegister(namespace: String) :
         title: HTTranslation,
         icon: ItemLike,
         builderAction: CreativeModeTab.Builder.() -> Unit,
-    ): HTDeferredHolder<CreativeModeTab, CreativeModeTab> = register(name) { _ ->
-        CreativeModeTab
-            .builder()
-            .title(title.translate())
-            .icon { ItemStack(icon) }
-            .apply(builderAction)
-            .build()
-    }
+    ): HTSimpleHolderLikeDelegate<CreativeModeTab> = delegate
+        .register(name) { _ ->
+            CreativeModeTab
+                .builder()
+                .title(title.translate())
+                .icon { ItemStack(icon) }
+                .apply(builderAction)
+                .build()
+        }.toLike()
 }

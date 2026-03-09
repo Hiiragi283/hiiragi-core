@@ -1,7 +1,7 @@
 package hiiragi283.core.common.registry.register
 
 import com.mojang.serialization.Codec
-import hiiragi283.core.api.registry.HTDeferredRegister
+import hiiragi283.core.api.registry.HTDeferredRegisterN
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.serialization.codec.BiCodec
 import net.minecraft.core.component.DataComponentType
@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation
  * @see net.neoforged.neoforge.registries.DeferredRegister.DataComponents
  */
 class HTDeferredDataComponentRegister(registryKey: RegistryKey<DataComponentType<*>>, namespace: String) :
-    HTDeferredRegister<DataComponentType<*>>(
+    HTDeferredRegisterN<DataComponentType<*>>(
         registryKey,
         namespace,
     ) {
@@ -22,7 +22,7 @@ class HTDeferredDataComponentRegister(registryKey: RegistryKey<DataComponentType
             .builder<DATA>()
             .apply(builderAction)
             .build()
-        register(name) { _: ResourceLocation -> type }
+        delegate.register(name) { _: ResourceLocation -> type }
         return type
     }
 

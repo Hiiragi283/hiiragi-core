@@ -1,18 +1,18 @@
 package hiiragi283.core.api.material
 
-import com.google.common.base.Suppliers
 import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.registry.HTHolderLike
-import hiiragi283.core.api.registry.HTSimpleHolderLike
+import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
+import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.tag.HTTagPrefix
+import net.minecraft.core.Holder
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.material.Fluid
-import java.util.function.Supplier
 
 /**
  * 素材システムに基づいた要素を管理するインターフェースです。
@@ -24,16 +24,13 @@ import java.util.function.Supplier
 interface HTMaterialContents<R : Any, V : Any> : HTTable<R, HTMaterialKey, HTMaterialContents.Entry<V>> {
     companion object {
         @JvmStatic
-        fun blockEntry(key: ResourceKey<Block>, block: Block, isBuiltIn: Boolean): Entry<Block> =
-            Entry(key, Suppliers.ofInstance(block), isBuiltIn)
+        fun blockEntry(block: Block, isBuiltIn: Boolean): Entry<Block> = Entry(block.toLike(), isBuiltIn)
 
         @JvmStatic
-        fun fluidEntry(key: ResourceKey<Fluid>, fluid: Fluid, isBuiltIn: Boolean): Entry<Fluid> =
-            Entry(key, Suppliers.ofInstance(fluid), isBuiltIn)
+        fun fluidEntry(fluid: Fluid, isBuiltIn: Boolean): Entry<Fluid> = Entry(fluid.toLike(), isBuiltIn)
 
         @JvmStatic
-        fun itemEntry(key: ResourceKey<Item>, item: Item, isBuiltIn: Boolean): Entry<Item> =
-            Entry(key, Suppliers.ofInstance(item), isBuiltIn)
+        fun itemEntry(item: Item, isBuiltIn: Boolean): Entry<Item> = Entry(item.toLike(), isBuiltIn)
     }
 
     /**
@@ -61,19 +58,11 @@ interface HTMaterialContents<R : Any, V : Any> : HTTable<R, HTMaterialKey, HTMat
      * @author Hiiragi Tsubasa
      * @since 0.12.0
      */
-    class Entry<V : Any>(private val holder: HTHolderLike<V, *>, private val isBuiltIn: Boolean) : HTSimpleHolderLike<V> {
-        constructor(key: ResourceKey<V>, value: Supplier<out V>, isBuiltIn: Boolean) : this(
-            object : HTSimpleHolderLike<V> {
-                override fun getResourceKey(): ResourceKey<V> = key
-
-                override fun get(): V = value.get()
-            },
-            isBuiltIn,
-        )
-
-        override fun getResourceKey(): ResourceKey<V> = holder.getResourceKey()
-
+    class Entry<V : Any>(private val holder: HTHolderLike.HolderDelegate<V, *>, private val isBuiltIn: Boolean) :
+        HTSimpleHolderLikeDelegate<V> {
         override fun get(): V = holder.get()
+
+        override fun getHolder(): Holder<V> = holder.getHolder()
 
         operator fun component1(): ResourceKey<V> = getResourceKey()
 

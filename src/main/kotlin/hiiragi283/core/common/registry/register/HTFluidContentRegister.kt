@@ -6,12 +6,18 @@ import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.function.partially2
 import hiiragi283.core.api.registry.BlockWithContextFactory
 import hiiragi283.core.api.registry.HTDeferredHolder
-import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.HTFluidHolderLike
+import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.ItemWithContextFactory
+import hiiragi283.core.api.registry.addAlias
+import hiiragi283.core.api.registry.asSequence
+import hiiragi283.core.api.registry.createId
+import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.tag.createCommonTag
 import hiiragi283.core.common.registry.HTDeferredItem
 import hiiragi283.core.common.registry.HTDeferredOnlyBlock
+import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.BucketItem
@@ -27,17 +33,19 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.neoforge.fluids.BaseFlowingFluid
 import net.neoforged.neoforge.fluids.DispenseFluidContainer
 import net.neoforged.neoforge.fluids.FluidType
+import net.neoforged.neoforge.registries.DeferredHolder
+import net.neoforged.neoforge.registries.DeferredRegister
 import net.neoforged.neoforge.registries.NeoForgeRegistries
 
 class HTFluidContentRegister(modId: String) {
-    private val fluidRegister: HTDeferredRegister<Fluid> = HTDeferredRegister(Registries.FLUID, modId)
-    private val typeRegister: HTDeferredRegister<FluidType> = HTDeferredRegister(NeoForgeRegistries.Keys.FLUID_TYPES, modId)
+    private val fluidRegister: DeferredRegister<Fluid> = DeferredRegister.create(Registries.FLUID, modId)
+    private val typeRegister: DeferredRegister<FluidType> = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, modId)
     private val blockRegister = HTDeferredOnlyBlockRegister(modId)
     private val itemRegister = HTDeferredItemRegister(modId)
 
-    fun asFluidSequence(): Sequence<HTDeferredHolder<Fluid, *>> = fluidRegister.asSequence()
+    fun asFluidSequence(): Sequence<HTFluidHolderLike<*>> = fluidRegister.asSequence()
 
-    fun asTypeSequence(): Sequence<HTDeferredHolder<FluidType, *>> = typeRegister.asSequence()
+    fun asTypeSequence(): Sequence<HTHolderLike.HolderDelegate<FluidType, *>> = typeRegister.asSequence()
 
     fun asBlockSequence(): Sequence<HTDeferredOnlyBlock<*>> = blockRegister.asSequence()
 
@@ -98,7 +106,7 @@ class HTFluidContentRegister(modId: String) {
 
         fun build(): HTFluidContent {
             // Fluid Type
-            val typeHolder: HTDeferredHolder<FluidType, FluidType> = typeRegister.register(name) { _ ->
+            val typeHolder: DeferredHolder<FluidType, FluidType> = typeRegister.register(name) { _ ->
                 typeFactory(properties.descriptionId("block.${typeRegister.namespace}.$name"))
             }
             // Fluid Holder
@@ -109,23 +117,23 @@ class HTFluidContentRegister(modId: String) {
                 { bucketFactory(sourceHolder.get(), it) },
                 { it.stacksTo(1).craftRemainder(Items.BUCKET) },
             )
-            val content: HTFluidContent = createContent(typeHolder, sourceHolder, bucketHolder)
+            val content: HTFluidContent = createContent(typeHolder.toLike(), sourceHolder, bucketHolder)
             contentsCache[sourceHolder.key] = content
             return content
         }
 
         protected abstract fun createContent(
-            typeHolder: HTDeferredHolder<FluidType, FluidType>,
-            sourceHolder: HTDeferredHolder<Fluid, FLUID>,
-            bucketHolder: HTDeferredItem<Item>,
+            typeHolder: HTHolderLike.HolderDelegate<FluidType, FluidType>,
+            sourceHolder: HTHolderLike.HolderDelegate<Fluid, FLUID>,
+            bucketHolder: HTSimpleDeferredItem,
         ): HTFluidContent
     }
 
     inner class VirtualBuilder(name: String) : Builder<HTVirtualFluid>(name) {
         override fun createContent(
-            typeHolder: HTDeferredHolder<FluidType, FluidType>,
-            sourceHolder: HTDeferredHolder<Fluid, HTVirtualFluid>,
-            bucketHolder: HTDeferredItem<Item>,
+            typeHolder: HTHolderLike.HolderDelegate<FluidType, FluidType>,
+            sourceHolder: HTHolderLike.HolderDelegate<Fluid, HTVirtualFluid>,
+            bucketHolder: HTSimpleDeferredItem,
         ): HTFluidContent {
             // Content
             fluidRegister.register(name, ::HTVirtualFluid.partially2(typeHolder, bucketHolder))
@@ -149,9 +157,9 @@ class HTFluidContentRegister(modId: String) {
         var blockProperties: (BlockBehaviour.Properties) -> BlockBehaviour.Properties = identity()
 
         override fun createContent(
-            typeHolder: HTDeferredHolder<FluidType, FluidType>,
-            sourceHolder: HTDeferredHolder<Fluid, BaseFlowingFluid>,
-            bucketHolder: HTDeferredItem<Item>,
+            typeHolder: HTHolderLike.HolderDelegate<FluidType, FluidType>,
+            sourceHolder: HTHolderLike.HolderDelegate<Fluid, BaseFlowingFluid>,
+            bucketHolder: HTSimpleDeferredItem,
         ): HTFluidContent {
             // Liquid Block
             val blockHolder: HTDeferredOnlyBlock<LiquidBlock>?

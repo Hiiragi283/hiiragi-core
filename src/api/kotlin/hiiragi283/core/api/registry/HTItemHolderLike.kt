@@ -1,7 +1,6 @@
 package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.function.andThen
-import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.api.storage.item.HTItemResourceType
@@ -13,31 +12,22 @@ import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 
 /**
- * [HTIdLike]と[ItemLike]とその他諸々を継承した[HTIdLike]の拡張インターフェースです。
+ * [ItemLike]とその他諸々を継承した[HTHolderLike.HolderDelegate]の拡張インターフェースです。
  * @param ITEM アイテムのクラス
  * @author Hiiragi Tsubasa
  * @since 0.11.0
  */
 interface HTItemHolderLike<ITEM : Item> :
-    ItemLike,
-    HTIdLike,
+    HTHolderLike.HolderDelegate<Item, ITEM>,
     HTHasTranslationKey,
-    HTHasText {
-    /**
-     * 保持している[アイテム][ITEM]を取得します。
-     */
-    override fun asItem(): ITEM
-
-    /**
-     * 保持しているアイテムの[Holder]を取得します。
-     */
-    fun getItemHolder(): Holder<Item>
+    HTHasText,
+    ItemLike {
+    override fun asItem(): ITEM = get()
 
     /**
      * 指定した[個数][count]で[ItemStack]に変換します。
@@ -65,16 +55,16 @@ interface HTItemHolderLike<ITEM : Item> :
         @JvmField
         val HOLDER_CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemHolderLike<*>> = VanillaBiCodecs
             .holder(Registries.ITEM)
-            .xmap(Holder<Item>::value.andThen(::of), HTItemHolderLike<*>::getItemHolder)
+            .xmap(Holder<Item>::value.andThen(::of), HTItemHolderLike<*>::getHolder)
 
         /**
          * 指定した[holder]から[HTItemHolderLike]の新しいインスタンスを作成します。
          */
         @JvmStatic
         fun of(holder: Holder<Item>): HTItemHolderLike<Item> = object : Simple<Item> {
-            override fun asItem(): Item = holder.value()
+            override fun get(): Item = holder.value()
 
-            override fun getItemHolder(): Holder<Item> = holder.delegate
+            override fun getHolder(): Holder<Item> = holder.delegate
         }
 
         /**
@@ -82,35 +72,20 @@ interface HTItemHolderLike<ITEM : Item> :
          */
         @JvmStatic
         fun <ITEM : Item> of(item: ITEM): HTItemHolderLike<ITEM> = object : Simple<ITEM> {
-            override fun asItem(): ITEM = item
+            override fun get(): ITEM = item
 
             @Suppress("DEPRECATION")
-            override fun getItemHolder(): Holder<Item> = item.builtInRegistryHolder()
+            override fun getHolder(): Holder<Item> = item.builtInRegistryHolder()
         }
     }
 
-    /**
-     * @author Hiiragi Tsubasa
-     * @since 0.11.0
-     */
     interface Simple<ITEM : Item> : HTItemHolderLike<ITEM> {
-        override fun getId(): ResourceLocation = getItemHolder().toLike().getId()
+        override val translationKey: String get() = get().descriptionId
 
-        override val translationKey: String get() = asItem().descriptionId
-
-        override fun getText(): Text = asItem().description
+        override fun getText(): Text = get().description
     }
 }
 
 //    Extensions    //
 
-/**
- * @author Hiiragi Tsubasa
- * @since 0.12.0
- */
-fun <ITEM : Item> HTItemHolderLike<ITEM>.toLike(): HTHolderLike.HolderDelegate<Item, ITEM> =
-    object : HTHolderLike.HolderDelegate<Item, ITEM> {
-        override fun get(): ITEM = this@toLike.asItem()
-
-        override fun getHolder(): Holder<Item> = this@toLike.getItemHolder()
-    }
+fun Item.toLike(): HTItemHolderLike<Item> = HTItemHolderLike.of(this)

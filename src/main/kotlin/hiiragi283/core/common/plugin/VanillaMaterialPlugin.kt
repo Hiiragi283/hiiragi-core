@@ -26,7 +26,6 @@ import hiiragi283.core.api.material.property.setTextureSet
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.plugin.HTPlugin
 import hiiragi283.core.api.property.plusAssign
-import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.material.CommonMaterialKeys
@@ -98,7 +97,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
 
     override fun registerExistingItem(consumer: HTMaterialPlugin.ItemConsumer) {
         fun accept(part: HTPartLike, material: HTMaterialLike, item: Item) {
-            consumer.accept(part, material.asMaterialKey(), HTItemHolderLike.of(item))
+            consumer.accept(part, material.asMaterialKey(), item.toLike())
         }
 
         // Fuel
@@ -142,7 +141,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
 
     override fun registerExistingTool(consumer: HTMaterialPlugin.ToolConsumer) {
         fun accept(toolType: HTToolType, material: HTMaterialLike, item: Item) {
-            consumer.accept(toolType, material.asMaterialKey(), HTItemHolderLike.of(item))
+            consumer.accept(toolType, material.asMaterialKey(), item.toLike())
         }
 
         // Wooden
@@ -434,7 +433,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             put(
                 HTMaterialPropertyKeys.SMITHING_RECIPE,
                 HTSmithingRecipeProperty(
-                    HTItemHolderLike.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
+                    Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE.toLike(),
                     VanillaMaterialKeys.DIAMOND,
                     false,
                 ),
@@ -445,7 +444,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
     @JvmStatic
     private fun other(builder: HTMaterialPlugin.MaterialProvider) {
         builder.getBuilder(VanillaMaterialKeys.WOOD).apply {
-            setDefaultPart(ItemTags.PLANKS, HTItemHolderLike.of(Items.OAK_PLANKS))
+            setDefaultPart(ItemTags.PLANKS, Items.OAK_PLANKS.toLike())
             addItemPrefixes(CommonParts.DUST, CommonParts.GEAR)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.NONE)
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
@@ -456,7 +455,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 15)
         }
         builder.getBuilder(VanillaMaterialKeys.GLASS).apply {
-            setDefaultPart(Tags.Items.GLASS_BLOCKS, HTItemHolderLike.of(Items.GLASS))
+            setDefaultPart(Tags.Items.GLASS_BLOCKS, Items.GLASS.toLike())
             addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.DUST, CommonParts.ROD)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
@@ -468,14 +467,14 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("white"))
         }
         builder.getBuilder(VanillaMaterialKeys.STONE).apply {
-            setDefaultPart(ItemTags.STONE_CRAFTING_MATERIALS, HTItemHolderLike.of(Items.COBBLESTONE))
+            setDefaultPart(ItemTags.STONE_CRAFTING_MATERIALS, Items.COBBLESTONE.toLike())
 
             setName("Stone", "石")
             setTextureSet(HTMaterialTextureSet.DULL)
             put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.STEEL.getId())
         }
         builder.getBuilder(VanillaMaterialKeys.OBSIDIAN).apply {
-            setDefaultPart(Tags.Items.OBSIDIANS_NORMAL, HTItemHolderLike.of(Items.OBSIDIAN))
+            setDefaultPart(Tags.Items.OBSIDIANS_NORMAL, Items.OBSIDIAN.toLike())
             addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.DUST)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
@@ -486,26 +485,26 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         }
 
         builder.getBuilder(VanillaMaterialKeys.BLAZE).apply {
-            setDefaultPart(Tags.Items.RODS_BLAZE, HTItemHolderLike.of(Items.BLAZE_ROD))
+            setDefaultPart(Tags.Items.RODS_BLAZE, Items.BLAZE_ROD.toLike())
             put(HTMaterialPropertyKeys.DEFAULT_SCALE, fraction(4))
 
             setName("Blaze", "ブレイズ")
         }
         builder.getBuilder(VanillaMaterialKeys.BREEZE).apply {
-            setDefaultPart(Tags.Items.RODS_BREEZE, HTItemHolderLike.of(Items.BREEZE_ROD))
+            setDefaultPart(Tags.Items.RODS_BREEZE, Items.BREEZE_ROD.toLike())
             put(HTMaterialPropertyKeys.DEFAULT_SCALE, fraction(6))
 
             setName("Breeze", "ブリーズ")
         }
 
         builder.getBuilder(VanillaMaterialKeys.BRICK).apply {
-            setDefaultPart(Tags.Items.BRICKS_NORMAL, HTItemHolderLike.of(Items.BRICK))
+            setDefaultPart(Tags.Items.BRICKS_NORMAL, Items.BRICK.toLike())
             addItemPrefixes(CommonParts.DUST, CommonParts.PLATE)
 
             setName("Brick", "レンガ")
         }
         builder.getBuilder(VanillaMaterialKeys.NETHER_BRICK).apply {
-            setDefaultPart(Tags.Items.BRICKS_NETHER, HTItemHolderLike.of(Items.NETHER_BRICK))
+            setDefaultPart(Tags.Items.BRICKS_NETHER, Items.NETHER_BRICK.toLike())
             addItemPrefixes(CommonParts.DUST, CommonParts.PLATE)
 
             setName("Nether Brick", "ネザーレンガ")

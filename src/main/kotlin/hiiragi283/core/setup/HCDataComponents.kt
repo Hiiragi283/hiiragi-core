@@ -33,7 +33,7 @@ object HCDataComponents {
     val LOCATION: DataComponentType<GlobalPos> = REGISTER.registerType("location", VanillaBiCodecs.GLOBAL_POS)
 
     @JvmField
-    val EXPERIENCE: DataComponentType<Int> = REGISTER.registerType("experience", BiCodecs.NON_NEGATIVE_INT)
+    val EXPERIENCE: DataComponentType<Long> = REGISTER.registerType("experience", BiCodecs.NON_NEGATIVE_LONG)
 
     //    Storage    //
 
