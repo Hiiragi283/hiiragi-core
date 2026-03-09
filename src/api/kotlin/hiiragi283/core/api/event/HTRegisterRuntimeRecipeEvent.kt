@@ -10,7 +10,7 @@ import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
 import hiiragi283.core.api.registry.holderSetOrNull
-import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.registry.toItemLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.Text
@@ -20,7 +20,6 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
-import net.minecraft.world.item.Item
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeManager
@@ -71,9 +70,7 @@ class HTRegisterRuntimeRecipeEvent(val recipeManager: RecipeManager, val context
 
     // Material
     fun getFirstHolder(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
-        getFirstHolder(prefix.itemTagKey(material), true)?.let { holder: HTSimpleHolderLikeDelegate<Item> ->
-            holder.get().toLike()
-        }
+        getFirstHolder(prefix.itemTagKey(material), true)?.toItemLike()
 
     fun isPresentTag(prefix: HTTagPrefix, material: HTMaterialLike): Boolean = isPresentTag(prefix.itemTagKey(material))
 

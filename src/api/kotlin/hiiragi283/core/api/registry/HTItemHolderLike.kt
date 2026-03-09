@@ -23,7 +23,7 @@ import net.neoforged.neoforge.registries.DeferredItem
  * [ItemLike]とその他諸々を継承した[HTHolderLike.HolderDelegate]の拡張インターフェースです。
  * @param ITEM アイテムのクラス
  * @author Hiiragi Tsubasa
- * @since 0.11.0
+ * @since 0.13.0
  */
 interface HTItemHolderLike<ITEM : Item> :
     HTHolderLike.HolderDelegate<Item, ITEM>,
@@ -70,8 +70,16 @@ interface HTItemHolderLike<ITEM : Item> :
 
 //    Extensions    //
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun ItemLike.toItemLike(): HTItemHolderLike<Item> = this.asItem().toLike()
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun <ITEM : Item> ITEM.toLike(): HTItemHolderLike<ITEM> = object : HTItemHolderLike.Simple<ITEM> {
     override fun get(): ITEM = this@toLike
 
@@ -79,12 +87,20 @@ fun <ITEM : Item> ITEM.toLike(): HTItemHolderLike<ITEM> = object : HTItemHolderL
     override fun getHolder(): Holder<Item> = this@toLike.builtInRegistryHolder()
 }
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun Holder<Item>.toItemLike(): HTItemHolderLike<Item> = object : HTItemHolderLike.Simple<Item> {
     override fun get(): Item = this@toItemLike.value()
 
     override fun getHolder(): Holder<Item> = this@toItemLike.delegate
 }
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun <ITEM : Item> DeferredHolder<Item, ITEM>.toItemLike(): HTItemHolderLike<ITEM> = object : HTItemHolderLike.Simple<ITEM> {
     override fun get(): ITEM = this@toItemLike.get()
 
@@ -93,6 +109,10 @@ fun <ITEM : Item> DeferredHolder<Item, ITEM>.toItemLike(): HTItemHolderLike<ITEM
     override fun getId(): ResourceLocation = this@toItemLike.id
 }
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun <ITEM : Item> DeferredItem<ITEM>.toLike(): HTItemHolderLike<ITEM> = object : HTItemHolderLike.Simple<ITEM> {
     override fun get(): ITEM = this@toLike.get()
 
@@ -101,6 +121,10 @@ fun <ITEM : Item> DeferredItem<ITEM>.toLike(): HTItemHolderLike<ITEM> = object :
     override fun getId(): ResourceLocation = this@toLike.id
 }
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun <ITEM : Item> HTHolderLike<Item, ITEM>.toItemLike(): HTItemHolderLike<ITEM> = object : HTItemHolderLike.Simple<ITEM> {
     override fun get(): ITEM = this@toItemLike.get()
 

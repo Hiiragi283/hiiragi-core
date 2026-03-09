@@ -54,6 +54,10 @@ fun <R : Any> Holder<R>.toLike(): HTSimpleHolderLikeDelegate<R> =
         override fun getHolder(): Holder<R> = this@toLike.delegate
     }
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun <R : Any, T : R> DeferredHolder<R, T>.toLike(): HTHolderLike.HolderDelegate<R, T> = object : HTHolderLike.HolderDelegate<R, T> {
     override fun get(): T = this@toLike.get()
 

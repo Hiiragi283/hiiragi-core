@@ -42,6 +42,10 @@ fun HolderLookup<Item>.asItemSequence(): Sequence<HTItemHolderLike<*>> = this
     .map(Holder<Item>::toItemLike)
     .asSequence()
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun <R : Any, T : Any> HolderLookup<R>.getDataSequence(type: DataMapType<R, T>): Sequence<Pair<HTSimpleHolderLikeDelegate<R>, T>> = this
     .asSequence()
     .mapNotNull { holder: HTSimpleHolderLikeDelegate<R> ->
@@ -57,12 +61,24 @@ fun <T : Any> HolderLookup.Provider.holderSetOrNull(tagKey: TagKey<T>): HolderSe
 
 //    DeferredRegister    //
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun DeferredRegister<*>.createId(path: String): ResourceLocation = this.namespace.toId(path)
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun DeferredRegister<*>.addAlias(from: String, to: String) {
     this.addAlias(this.createId(from), this.createId(to))
 }
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun <R : Any> DeferredRegister<R>.asSequence(): Sequence<HTHolderLike.HolderDelegate<R, *>> = this.entries
     .asSequence()
     .map { it.toLike() }

@@ -5,6 +5,12 @@ import net.minecraft.resources.ResourceLocation
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.registries.DeferredRegister
 
+/**
+ * Hiiragi Coreとそれを前提とするmodで使用される[DeferredRegister]のラッパークラスです。
+ * @param R レジストリの要素の値
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 open class HTDeferredRegister<R : Any>(protected val delegate: DeferredRegister<R>) {
     constructor(registryKey: RegistryKey<R>, namespace: String) : this(DeferredRegister.create(registryKey, namespace))
 
