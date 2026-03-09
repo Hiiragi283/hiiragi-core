@@ -1,6 +1,6 @@
 package hiiragi283.core.common.registry.register
 
-import hiiragi283.core.api.registry.HTDeferredRegisterN
+import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.common.registry.HTDeferredAttachmentType
 import net.minecraft.nbt.CompoundTag
@@ -15,7 +15,7 @@ import java.util.function.Supplier
 import java.util.function.UnaryOperator
 
 class HTDeferredAttachmentRegister(namespace: String) :
-    HTDeferredRegisterN<AttachmentType<*>>(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, namespace) {
+    HTDeferredRegister<AttachmentType<*>>(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, namespace) {
     fun <TYPE : Any> registerType(name: String, builder: AttachmentType.Builder<TYPE>): HTDeferredAttachmentType<TYPE> {
         delegate.register(name) { _: ResourceLocation -> builder.build() }
         return HTDeferredAttachmentType(createId(name))

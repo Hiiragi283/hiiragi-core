@@ -1,79 +1,38 @@
 package hiiragi283.core.common.registry.register
 
-import hiiragi283.core.api.item.HTBlockItem
 import hiiragi283.core.api.registry.BlockFactory
-import hiiragi283.core.api.registry.HTDeferredHolder
-import hiiragi283.core.api.registry.HTDoubleDeferredRegister
-import hiiragi283.core.api.registry.ItemWithContextFactory
-import hiiragi283.core.common.registry.HTBasicDeferredBlock
-import hiiragi283.core.common.registry.HTDeferredBlock
-import hiiragi283.core.common.registry.HTDeferredItem
-import hiiragi283.core.common.registry.HTDeferredOnlyBlock
-import hiiragi283.core.common.registry.HTSimpleDeferredBlock
+import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.registry.HTDeferredRegister
+import net.minecraft.core.Holder
+import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockBehaviour
-import java.util.function.UnaryOperator
+import net.neoforged.neoforge.registries.DeferredHolder
 
-/**
- * @see mekanism.common.registration.impl.BlockDeferredRegister
- */
-class HTDeferredBlockRegister(
-    override val firstRegister: HTDeferredOnlyBlockRegister,
-    override val secondRegister: HTDeferredItemRegister,
-) : HTDoubleDeferredRegister<Block, Item>(firstRegister, secondRegister) {
-    constructor(namespace: String) : this(HTDeferredOnlyBlockRegister(namespace))
+class HTDeferredBlockRegister(namespace: String) : HTDeferredRegister<Block>(Registries.BLOCK, namespace) {
+    private val blockEntries: MutableCollection<HTBlockHolderLike<*>> = mutableSetOf()
 
-    constructor(blockRegister: HTDeferredOnlyBlockRegister) : this(blockRegister, HTDeferredItemRegister(blockRegister.namespace))
+    private fun <BLOCK : Block> wrapHolder(holder: DeferredHolder<Block, BLOCK>): HTBlockHolderLike<BLOCK> =
+        object : HTBlockHolderLike<BLOCK> {
+            override fun get(): BLOCK = holder.get()
 
-    // Simple
-    fun registerSimple(
+            override fun getHolder(): Holder<Block> = holder.delegate
+
+            override fun getId(): ResourceLocation = holder.id
+        }
+
+    fun <BLOCK : Block> registerBlock(
         name: String,
         blockProp: BlockBehaviour.Properties,
-        itemProp: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
-    ): HTSimpleDeferredBlock = register(name, blockProp, ::Block, ::HTBlockItem, itemProp)
+        factory: BlockFactory<BLOCK>,
+    ): HTBlockHolderLike<BLOCK> = delegate
+        .register(name) { _: ResourceLocation -> factory(blockProp) }
+        .let(::wrapHolder)
+        .also(blockEntries::add)
 
-    fun <BLOCK : Block> registerSimple(
-        name: String,
-        blockProp: BlockBehaviour.Properties,
-        blockGetter: BlockFactory<BLOCK>,
-        itemProp: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
-    ): HTBasicDeferredBlock<BLOCK> = register(name, blockProp, blockGetter, ::HTBlockItem, itemProp)
+    fun registerSimpleBlock(name: String, blockProp: BlockBehaviour.Properties): HTBlockHolderLike<Block> =
+        registerBlock(name, blockProp, ::Block)
 
-    fun <BLOCK : Block> registerSimple(
-        name: String,
-        blockFactory: () -> BLOCK,
-        itemProp: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
-    ): HTBasicDeferredBlock<BLOCK> = register(name, blockFactory, ::HTBlockItem, itemProp)
-
-    // Basic
-    fun <BLOCK : Block, ITEM : Item> register(
-        name: String,
-        blockProp: BlockBehaviour.Properties,
-        blockFactory: BlockFactory<BLOCK>,
-        itemFactory: ItemWithContextFactory<BLOCK, ITEM>,
-        itemProp: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
-    ): HTDeferredBlock<BLOCK, ITEM> = register(
-        name,
-        { blockFactory(blockProp) },
-        itemFactory,
-        itemProp,
-    )
-
-    fun <BLOCK : Block, ITEM : Item> register(
-        name: String,
-        blockGetter: () -> BLOCK,
-        itemFactory: ItemWithContextFactory<BLOCK, ITEM>,
-        itemProp: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
-    ): HTDeferredBlock<BLOCK, ITEM> = registerAdvanced(
-        name,
-        { _: ResourceLocation -> blockGetter() },
-        { block: HTDeferredHolder<Block, BLOCK> -> itemFactory(block.get(), itemProp.apply(Item.Properties())) },
-        ::HTDeferredBlock,
-    )
-
-    fun asBlockSequence(): Sequence<HTDeferredOnlyBlock<*>> = firstRegister.asSequence()
-
-    fun asItemSequence(): Sequence<HTDeferredItem<*>> = secondRegister.asSequence()
+    fun asBlockSequence(): Sequence<HTBlockHolderLike<*>> = blockEntries.asSequence()
 }

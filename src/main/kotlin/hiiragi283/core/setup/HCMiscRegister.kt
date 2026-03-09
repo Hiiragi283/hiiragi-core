@@ -28,7 +28,6 @@ import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.property.isNotEmpty
 import hiiragi283.core.api.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.HiiragiCoreAccessImpl
@@ -39,7 +38,6 @@ import hiiragi283.core.common.gui.sync.HTIntSyncPayload
 import hiiragi283.core.common.gui.sync.HTItemSyncPayload
 import hiiragi283.core.common.gui.sync.HTLongSyncPayload
 import hiiragi283.core.common.material.HTMaterialManagerImpl
-import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
@@ -54,6 +52,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.SoundActions
 import net.neoforged.neoforge.fluids.FluidType
+import net.neoforged.neoforge.registries.DeferredHolder
+import net.neoforged.neoforge.registries.DeferredItem
 import net.neoforged.neoforge.registries.NeoForgeRegistries
 import net.neoforged.neoforge.registries.RegisterEvent
 
@@ -196,10 +196,8 @@ internal object HCMiscRegister {
                     .map { part: HTFluidPart ->
                         val id: ResourceLocation = part.createId(entry)
 
-                        val typeHolder: HTDeferredHolder<FluidType, FluidType> = HTDeferredHolder(
-                            NeoForgeRegistries.Keys.FLUID_TYPES,
-                            id,
-                        )
+                        val typeHolder: DeferredHolder<FluidType, FluidType> =
+                            DeferredHolder.create(NeoForgeRegistries.Keys.FLUID_TYPES, id)
                         Registry.register(
                             NeoForgeRegistries.FLUID_TYPES,
                             id,
@@ -215,7 +213,7 @@ internal object HCMiscRegister {
                         val fluid: HTVirtualFluid = Registry.register(
                             BuiltInRegistries.FLUID,
                             id,
-                            HTVirtualFluid(typeHolder, HTSimpleDeferredItem(bucketId)),
+                            HTVirtualFluid(typeHolder, DeferredItem.createItem(bucketId)),
                         )
                         helper.register(
                             bucketId,

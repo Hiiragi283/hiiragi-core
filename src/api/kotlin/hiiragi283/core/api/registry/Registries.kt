@@ -39,7 +39,7 @@ fun HolderLookup<Fluid>.asFluidSequence(): Sequence<HTFluidHolderLike<*>> = this
  */
 fun HolderLookup<Item>.asItemSequence(): Sequence<HTItemHolderLike<*>> = this
     .listElements()
-    .map(HTItemHolderLike.Companion::of)
+    .map(Holder<Item>::toItemLike)
     .asSequence()
 
 fun <R : Any, T : Any> HolderLookup<R>.getDataSequence(type: DataMapType<R, T>): Sequence<Pair<HTSimpleHolderLikeDelegate<R>, T>> = this

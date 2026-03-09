@@ -2,6 +2,7 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.HTSmithingTemplateItem
+import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.getBucket
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.item.HTAlmightyPickaxe
@@ -15,15 +16,14 @@ import hiiragi283.core.common.item.HTFluidFilterItem
 import hiiragi283.core.common.item.HTItemFilterItem
 import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.common.item.HTTraderCatalogItem
-import hiiragi283.core.common.registry.HTSimpleDeferredItem
 import hiiragi283.core.common.registry.register.HTDeferredItemRegister
 import hiiragi283.core.common.storage.fluid.HTExperienceTomeFluidTank
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.food.FoodConstants
 import net.minecraft.world.food.FoodProperties
+import net.minecraft.world.item.Item
 import net.minecraft.world.level.ItemLike
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
@@ -49,58 +49,58 @@ object HCItems {
 
     // Wood
     @JvmField
-    val BAMBOO_CHARCOAL: HTSimpleDeferredItem = REGISTER.registerSimpleItem("bamboo_charcoal")
+    val BAMBOO_CHARCOAL: HTItemHolderLike<Item> = REGISTER.registerSimpleItem("bamboo_charcoal")
 
     @JvmField
-    val PARTICLE_BOARD: HTSimpleDeferredItem = REGISTER.registerSimpleItem("particle_board")
+    val PARTICLE_BOARD: HTItemHolderLike<Item> = REGISTER.registerSimpleItem("particle_board")
 
     // Metal
     @JvmField
-    val STEEL_COMPOUND: HTSimpleDeferredItem = REGISTER.registerSimpleItem("steel_compound")
+    val STEEL_COMPOUND: HTItemHolderLike<Item> = REGISTER.registerSimpleItem("steel_compound")
 
     // Polymer
     @JvmField
-    val RAW_RUBBER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("raw_rubber")
+    val RAW_RUBBER: HTItemHolderLike<Item> = REGISTER.registerSimpleItem("raw_rubber")
 
     @JvmField
-    val POLYMER_RESIN: HTSimpleDeferredItem = REGISTER.registerSimpleItem("polymer_resin")
+    val POLYMER_RESIN: HTItemHolderLike<Item> = REGISTER.registerSimpleItem("polymer_resin")
 
     @JvmField
-    val SYNTHETIC_FEATHER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_feather")
+    val SYNTHETIC_FEATHER: HTItemHolderLike<Item> = REGISTER.registerSimpleItem("synthetic_feather")
 
     @JvmField
-    val SYNTHETIC_LEATHER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_leather")
+    val SYNTHETIC_LEATHER: HTItemHolderLike<Item> = REGISTER.registerSimpleItem("synthetic_leather")
 
     @JvmField
-    val SYNTHETIC_FIBER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_fiber")
+    val SYNTHETIC_FIBER: HTItemHolderLike<Item> = REGISTER.registerSimpleItem("synthetic_fiber")
 
     // Crops
     @JvmField
-    val WHEAT_FLOUR: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wheat_flour")
+    val WHEAT_FLOUR: HTItemHolderLike<Item> = REGISTER.registerSimpleItem("wheat_flour")
 
     @JvmField
-    val WHEAT_DOUGH: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wheat_dough")
+    val WHEAT_DOUGH: HTItemHolderLike<Item> = REGISTER.registerSimpleItem("wheat_dough")
 
     // Mob
     @JvmField
-    val LUMINOUS_PASTE: HTSimpleDeferredItem = REGISTER.registerSimpleItem("luminous_paste")
+    val LUMINOUS_PASTE: HTItemHolderLike<Item> = REGISTER.registerSimpleItem("luminous_paste")
 
     @JvmField
-    val MAGMA_SHARD: HTSimpleDeferredItem = REGISTER.registerSimpleItem("magma_shard")
+    val MAGMA_SHARD: HTItemHolderLike<Item> = REGISTER.registerSimpleItem("magma_shard")
 
     @JvmField
-    val ELDER_HEART: HTSimpleDeferredItem = REGISTER.registerSimpleItem("elder_heart")
+    val ELDER_HEART: HTItemHolderLike<Item> = REGISTER.registerSimpleItem("elder_heart")
 
     @JvmField
-    val WITHER_DOLL: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wither_doll")
+    val WITHER_DOLL: HTItemHolderLike<Item> = REGISTER.registerSimpleItem("wither_doll")
 
     @JvmField
-    val WITHER_STAR: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wither_star")
+    val WITHER_STAR: HTItemHolderLike<Item> = REGISTER.registerSimpleItem("wither_star")
 
     //    Tools   //
 
     @JvmField
-    val ANCIENT_UPGRADE: HTSimpleDeferredItem = REGISTER.register("ancient_upgrade") { _: ResourceLocation ->
+    val ANCIENT_UPGRADE: HTItemHolderLike<Item> = REGISTER.registerItem("ancient_upgrade") {
         HTSmithingTemplateItem(
             HCTranslation.ANCIENT_UPGRADE_APPLIES_TO,
             HCTranslation.ANCIENT_UPGRADE_INGREDIENTS,
@@ -113,33 +113,33 @@ object HCItems {
     //    Utilities    //
 
     @JvmField
-    val BOMB: HTSimpleDeferredItem = REGISTER.registerItem("bomb", ::HTBombItem)
+    val BOMB: HTItemHolderLike<Item> = REGISTER.registerItem("bomb", ::HTBombItem)
 
     @JvmField
-    val ELDRITCH_EGG: HTSimpleDeferredItem = REGISTER.registerItem("eldritch_egg", ::HTCaptureEggItem)
+    val ELDRITCH_EGG: HTItemHolderLike<Item> = REGISTER.registerItem("eldritch_egg", ::HTCaptureEggItem)
 
     @JvmField
-    val FLUID_FILTER: HTSimpleDeferredItem = REGISTER.registerItem("fluid_filter", ::HTFluidFilterItem)
+    val FLUID_FILTER: HTItemHolderLike<Item> = REGISTER.registerItem("fluid_filter", ::HTFluidFilterItem)
 
     @JvmField
-    val ITEM_FILTER: HTSimpleDeferredItem = REGISTER.registerItem("item_filter", ::HTItemFilterItem)
+    val ITEM_FILTER: HTItemHolderLike<Item> = REGISTER.registerItem("item_filter", ::HTItemFilterItem)
 
     @JvmField
-    val SLOT_COVER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("slot_cover")
+    val SLOT_COVER: HTItemHolderLike<Item> = REGISTER.registerSimpleItem("slot_cover")
 
     @JvmField
-    val TRADER_CATALOG: HTSimpleDeferredItem = REGISTER.registerItem("trader_catalog", ::HTTraderCatalogItem)
+    val TRADER_CATALOG: HTItemHolderLike<Item> = REGISTER.registerItem("trader_catalog", ::HTTraderCatalogItem)
 
     @JvmField
-    val EXPERIENCE_TOME: HTSimpleDeferredItem = REGISTER.registerItem("experience_tome", ::HTExperienceTomeItem)
+    val EXPERIENCE_TOME: HTItemHolderLike<Item> = REGISTER.registerItem("experience_tome", ::HTExperienceTomeItem)
 
     //    End Game    //
 
     @JvmField
-    val IRIDESCENT_POWDER: HTSimpleDeferredItem = REGISTER.registerItem("iridescent_powder", ::HTCreativeItem)
+    val IRIDESCENT_POWDER: HTItemHolderLike<Item> = REGISTER.registerItem("iridescent_powder", ::HTCreativeItem)
 
     @JvmField
-    val AMBROSIA: HTSimpleDeferredItem = REGISTER.registerItem("ambrosia", ::HTAmbrosiaItem) {
+    val AMBROSIA: HTItemHolderLike<Item> = REGISTER.registerItem("ambrosia", ::HTAmbrosiaItem) {
         it
             .food(
                 FoodProperties
@@ -152,10 +152,10 @@ object HCItems {
     }
 
     @JvmField
-    val ETERNAL_UPGRADE: HTSimpleDeferredItem = REGISTER.register("eternal_upgrade", ::HTEternalUpgradeItem)
+    val ETERNAL_UPGRADE: HTItemHolderLike<Item> = REGISTER.registerItem("eternal_upgrade", ::HTEternalUpgradeItem)
 
     @JvmField
-    val ALMIGHTY_PICKAXE: HTSimpleDeferredItem = REGISTER.registerItem("almighty_pickaxe", ::HTAlmightyPickaxe)
+    val ALMIGHTY_PICKAXE: HTItemHolderLike<Item> = REGISTER.registerItem("almighty_pickaxe", ::HTAlmightyPickaxe)
 
     //    Event    //
 

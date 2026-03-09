@@ -1,6 +1,6 @@
 package hiiragi283.core.common.registry.register
 
-import hiiragi283.core.api.registry.HTDeferredRegisterN
+import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.common.block.entity.HTBlockEntity
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import net.minecraft.core.registries.Registries
@@ -10,11 +10,11 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker
 import net.minecraft.world.level.block.entity.BlockEntityType
 
 /**
- * Ragiumで使用される[BlockEntityType]向けの[HTDeferredRegisterN]の実装クラスです。
+ * Ragiumで使用される[BlockEntityType]向けの[HTDeferredRegister]の実装クラスです。
  */
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class HTDeferredBlockEntityTypeRegister(namespace: String) :
-    HTDeferredRegisterN<BlockEntityType<*>>(Registries.BLOCK_ENTITY_TYPE, namespace) {
+    HTDeferredRegister<BlockEntityType<*>>(Registries.BLOCK_ENTITY_TYPE, namespace) {
     fun <BE : BlockEntity> registerType(name: String, factory: BlockEntityType.BlockEntitySupplier<BE>): HTDeferredBlockEntityType<BE> {
         val holder = HTDeferredBlockEntityType<BE>(createId(name))
         delegate.register(name) { _: ResourceLocation -> BlockEntityType.Builder.of(factory).build(null) }

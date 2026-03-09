@@ -27,7 +27,6 @@ interface HTHolderLike<R : Any, T : R> :
      * [Holder]を保持する[HolderDelegate]の拡張インターフェースです。
      * @author Hiiragi Tsubasa
      * @since 0.6.0
-     * @see HTDeferredHolder
      * @see HTFluidContent
      */
     interface HolderDelegate<R : Any, T : R> :

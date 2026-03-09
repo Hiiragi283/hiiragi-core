@@ -2,7 +2,7 @@ package hiiragi283.core.api.data.tag
 
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.registry.toItemLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
@@ -41,7 +41,7 @@ abstract class HTItemTagsProvider(modId: String, private val blockTags: Completa
     }
 
     fun HTTagBuilder<Item>.addItem(item: ItemLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<Item> =
-        this.add(item.asItem().toLike(), type)
+        this.add(item.toItemLike(), type)
 
     //    HTTagsProvider    //
 

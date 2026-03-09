@@ -2,7 +2,7 @@ package hiiragi283.core.common.registry.register
 
 import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.item.HTSubCreativeTabContents
-import hiiragi283.core.api.registry.HTDeferredRegisterN
+import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
@@ -16,7 +16,7 @@ import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent
 
 class HTDeferredCreativeTabRegister(namespace: String) :
-    HTDeferredRegisterN<CreativeModeTab>(
+    HTDeferredRegister<CreativeModeTab>(
         Registries.CREATIVE_MODE_TAB,
         namespace,
     ) {
