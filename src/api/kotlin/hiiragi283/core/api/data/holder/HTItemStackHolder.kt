@@ -1,6 +1,6 @@
 package hiiragi283.core.api.data.holder
 
-import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.registry.getHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import net.minecraft.resources.ResourceLocation
@@ -62,5 +62,5 @@ class HTItemStackHolder : HTIdLike {
         this.stack = stack
     }
 
-    override fun getId(): ResourceLocation = stack.itemHolder.toLike().getId()
+    override fun getId(): ResourceLocation = stack.getHolderLike().getId()
 }

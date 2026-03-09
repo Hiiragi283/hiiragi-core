@@ -10,6 +10,7 @@ import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.registry.HTSimpleItemHolderLike
 import hiiragi283.core.api.registry.ItemWithContextFactory
 import hiiragi283.core.api.registry.addAlias
 import hiiragi283.core.api.registry.asSequence
@@ -110,7 +111,7 @@ class HTFluidContentRegister(modId: String) {
             // Fluid Holder
             val sourceHolder: DeferredHolder<Fluid, FLUID> = DeferredHolder.create(Registries.FLUID, fluidRegister.createId(name))
             // Bucket Item
-            val bucketHolder: HTItemHolderLike<Item> = itemRegister.registerItem(
+            val bucketHolder: HTSimpleItemHolderLike = itemRegister.registerItem(
                 "${name}_bucket",
                 { bucketFactory(sourceHolder.get(), it) },
                 { it.stacksTo(1).craftRemainder(Items.BUCKET) },
@@ -123,7 +124,7 @@ class HTFluidContentRegister(modId: String) {
         protected abstract fun createContent(
             typeHolder: HTHolderLike.HolderDelegate<FluidType, FluidType>,
             sourceHolder: HTHolderLike.HolderDelegate<Fluid, FLUID>,
-            bucketHolder: HTItemHolderLike<Item>,
+            bucketHolder: HTSimpleItemHolderLike,
         ): HTFluidContent
     }
 
@@ -131,7 +132,7 @@ class HTFluidContentRegister(modId: String) {
         override fun createContent(
             typeHolder: HTHolderLike.HolderDelegate<FluidType, FluidType>,
             sourceHolder: HTHolderLike.HolderDelegate<Fluid, HTVirtualFluid>,
-            bucketHolder: HTItemHolderLike<Item>,
+            bucketHolder: HTSimpleItemHolderLike,
         ): HTFluidContent {
             // Content
             fluidRegister.register(name, ::HTVirtualFluid.partially2(typeHolder, bucketHolder))
@@ -157,7 +158,7 @@ class HTFluidContentRegister(modId: String) {
         override fun createContent(
             typeHolder: HTHolderLike.HolderDelegate<FluidType, FluidType>,
             sourceHolder: HTHolderLike.HolderDelegate<Fluid, BaseFlowingFluid>,
-            bucketHolder: HTItemHolderLike<Item>,
+            bucketHolder: HTSimpleItemHolderLike,
         ): HTFluidContent {
             // Liquid Block
             val blockHolder: HTBlockHolderLike<LiquidBlock>?

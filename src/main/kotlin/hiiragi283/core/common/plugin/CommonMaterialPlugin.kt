@@ -30,7 +30,7 @@ import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.add
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.property.plusAssign
-import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.registry.toItemLike
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HiiragiCoreTags
@@ -39,13 +39,11 @@ import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCToolMaterials
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument
 import net.minecraft.world.level.material.MapColor
-import net.neoforged.neoforge.registries.DeferredItem
 import org.apache.commons.lang3.math.Fraction
 
 @HTPlugin
@@ -555,7 +553,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(CommonMaterialKeys.PLASTIC).apply {
             setDefaultPart(
                 HiiragiCoreTags.Items.PLASTICS,
-                DeferredItem.createItem<Item>(CommonParts.PLATE.createId(CommonMaterialKeys.PLASTIC)).toLike(),
+                CommonParts.PLATE.createId(CommonMaterialKeys.PLASTIC).toItemLike(),
             )
             addBlockPrefixes(CommonParts.BLOCK)
             addFluidPrefixes(HTFluidPart.MOLTEN)

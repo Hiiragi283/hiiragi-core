@@ -39,7 +39,7 @@ class HTAdvancementBuilder(private val key: HTAdvancementKey) {
         val id: ResourceLocation = key.getId()
         val adv = Advancement(
             parent?.getId().wrapOptional(),
-            display.wrapOptional(), // TODO
+            display.wrapOptional(),
             rewards,
             criteria.toMap(),
             this.requirements ?: criteria.createRequirements(),

@@ -29,6 +29,7 @@ import hiiragi283.core.api.property.isNotEmpty
 import hiiragi283.core.api.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.registry.toItemLike
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.HiiragiCoreAccessImpl
 import hiiragi283.core.common.gui.sync.HTBoolSyncPayload
@@ -53,7 +54,6 @@ import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.SoundActions
 import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.registries.DeferredHolder
-import net.neoforged.neoforge.registries.DeferredItem
 import net.neoforged.neoforge.registries.NeoForgeRegistries
 import net.neoforged.neoforge.registries.RegisterEvent
 
@@ -213,7 +213,7 @@ internal object HCMiscRegister {
                         val fluid: HTVirtualFluid = Registry.register(
                             BuiltInRegistries.FLUID,
                             id,
-                            HTVirtualFluid(typeHolder, DeferredItem.createItem(bucketId)),
+                            HTVirtualFluid(typeHolder, bucketId.toItemLike()),
                         )
                         helper.register(
                             bucketId,

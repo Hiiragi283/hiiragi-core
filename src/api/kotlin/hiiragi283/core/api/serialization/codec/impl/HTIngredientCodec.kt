@@ -5,10 +5,9 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.RegistryKey
-import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.registry.getHolderLike
 import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.serialization.codec.listOrElement
-import net.minecraft.core.Holder
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey
@@ -64,8 +63,7 @@ internal object HTIngredientCodec {
                         is Ingredient.TagValue -> Either.left(value.tag)
                         else ->
                             value.items
-                                .map(ItemStack::getItemHolder)
-                                .map(Holder<Item>::toLike)
+                                .map(ItemStack::getHolderLike)
                                 .map(HTKeyLike<Item>::getResourceKey)
                                 .let { Either.right(it) }
                     }
@@ -118,8 +116,7 @@ internal object HTIngredientCodec {
                         is TagFluidIngredient -> Either.left(ingredient.tag())
                         else ->
                             ingredient.stacks
-                                .map(FluidStack::getFluidHolder)
-                                .map(Holder<Fluid>::toLike)
+                                .map(FluidStack::getHolderLike)
                                 .map(HTKeyLike<Fluid>::getResourceKey)
                                 .let { Either.right(it) }
                     }

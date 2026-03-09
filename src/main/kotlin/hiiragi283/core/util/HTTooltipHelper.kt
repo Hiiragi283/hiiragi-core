@@ -1,16 +1,15 @@
 package hiiragi283.core.util
 
 import hiiragi283.core.api.HTDefaultColor
-import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.registry.getHolderLike
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextUtil
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.api.text.withStyle
 import net.minecraft.ChatFormatting
-import net.minecraft.core.Holder
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.TooltipFlag
-import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.Consumer
 
@@ -49,18 +48,16 @@ object HTTooltipHelper {
             HTCommonTranslation.STORED_MB.translate(stack, stack.amount)
         }.let(consumer::accept)
         // Fluid id if advanced
-        val holder: Holder<Fluid> = stack.fluidHolder
+        val fluidId: ResourceLocation = stack.getHolderLike().getId()
         if (flag.isAdvanced) {
-            holder
-                .registeredName
+            fluidId
+                .toString()
                 .toText()
                 .withStyle(HTDefaultColor.GRAY)
                 .let(consumer::accept)
         }
         // Mod Name
-        holder
-            .toLike()
-            .getId()
+        fluidId
             .namespace
             .let(HTTextUtil::getModNameText)
             .withStyle(HTDefaultColor.BLUE)

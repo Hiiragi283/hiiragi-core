@@ -76,8 +76,12 @@ typealias HTBlockHolderLike<BLOCK> = HTHolderLike.HolderDelegate<Block, BLOCK>
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-@Suppress("DEPRECATION")
-fun Block.toLike(): HTBlockHolderLike<Block> = this.builtInRegistryHolder().toLike()
+fun <BLOCK : Block> BLOCK.toLike(): HTBlockHolderLike<BLOCK> = object : HTBlockHolderLike<BLOCK> {
+    override fun get(): BLOCK = this@toLike
+
+    @Suppress("DEPRECATION")
+    override fun getHolder(): Holder<Block> = this@toLike.builtInRegistryHolder()
+}
 
 /**
  * @author Hiiragi Tsubasa
@@ -95,10 +99,20 @@ typealias HTFluidHolderLike<FLUID> = HTHolderLike.HolderDelegate<Fluid, FLUID>
 
 /**
  * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
+typealias HTSimpleFluidHolderLike = HTFluidHolderLike<Fluid>
+
+/**
+ * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-@Suppress("DEPRECATION")
-fun Fluid.toLike(): HTFluidHolderLike<Fluid> = this.builtInRegistryHolder().toLike()
+fun <FLUID : Fluid> FLUID.toLike(): HTFluidHolderLike<FLUID> = object : HTFluidHolderLike<FLUID> {
+    override fun get(): FLUID = this@toLike
+
+    @Suppress("DEPRECATION")
+    override fun getHolder(): Holder<Fluid> = this@toLike.builtInRegistryHolder()
+}
 
 /**
  * @author Hiiragi Tsubasa
@@ -135,3 +149,9 @@ fun HTFluidHolderLike<*>.toResource(): HTFluidResourceType? = this.get().toResou
  * @since 0.12.0
  */
 fun HTFluidHolderLike<*>.toResource(patch: DataComponentPatch): HTFluidResourceType? = this.get().toResource(patch)
+
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
+fun FluidStack.getHolderLike(): HTSimpleFluidHolderLike = this.fluidHolder.toLike()

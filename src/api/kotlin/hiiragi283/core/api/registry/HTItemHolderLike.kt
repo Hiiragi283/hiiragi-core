@@ -16,8 +16,9 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
-import net.neoforged.neoforge.registries.DeferredHolder
 import net.neoforged.neoforge.registries.DeferredItem
+
+typealias HTSimpleItemHolderLike = HTItemHolderLike<Item>
 
 /**
  * [ItemLike]とその他諸々を継承した[HTHolderLike.HolderDelegate]の拡張インターフェースです。
@@ -74,7 +75,7 @@ interface HTItemHolderLike<ITEM : Item> :
  * @author Hiiragi Tsubasa
  * @since 0.13.0
  */
-fun ItemLike.toItemLike(): HTItemHolderLike<Item> = this.asItem().toLike()
+fun ItemLike.toItemLike(): HTSimpleItemHolderLike = this.asItem().toLike()
 
 /**
  * @author Hiiragi Tsubasa
@@ -91,34 +92,10 @@ fun <ITEM : Item> ITEM.toLike(): HTItemHolderLike<ITEM> = object : HTItemHolderL
  * @author Hiiragi Tsubasa
  * @since 0.13.0
  */
-fun Holder<Item>.toItemLike(): HTItemHolderLike<Item> = object : HTItemHolderLike.Simple<Item> {
+fun Holder<Item>.toItemLike(): HTSimpleItemHolderLike = object : HTItemHolderLike.Simple<Item> {
     override fun get(): Item = this@toItemLike.value()
 
     override fun getHolder(): Holder<Item> = this@toItemLike.delegate
-}
-
-/**
- * @author Hiiragi Tsubasa
- * @since 0.13.0
- */
-fun <ITEM : Item> DeferredHolder<Item, ITEM>.toItemLike(): HTItemHolderLike<ITEM> = object : HTItemHolderLike.Simple<ITEM> {
-    override fun get(): ITEM = this@toItemLike.get()
-
-    override fun getHolder(): Holder<Item> = this@toItemLike.delegate
-
-    override fun getId(): ResourceLocation = this@toItemLike.id
-}
-
-/**
- * @author Hiiragi Tsubasa
- * @since 0.13.0
- */
-fun <ITEM : Item> DeferredItem<ITEM>.toLike(): HTItemHolderLike<ITEM> = object : HTItemHolderLike.Simple<ITEM> {
-    override fun get(): ITEM = this@toLike.get()
-
-    override fun getHolder(): Holder<Item> = this@toLike.delegate
-
-    override fun getId(): ResourceLocation = this@toLike.id
 }
 
 /**
@@ -136,3 +113,23 @@ fun <ITEM : Item> HTHolderLike<Item, ITEM>.toItemLike(): HTItemHolderLike<ITEM> 
 
     override fun getId(): ResourceLocation = this@toItemLike.getId()
 }
+
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
+fun ResourceLocation.toItemLike(): HTSimpleItemHolderLike = object : HTItemHolderLike.Simple<Item> {
+    private val holder: DeferredItem<Item> = DeferredItem.createItem<Item>(this@toItemLike)
+
+    override fun get(): Item = holder.get()
+
+    override fun getHolder(): Holder<Item> = holder.delegate
+
+    override fun getId(): ResourceLocation = this@toItemLike
+}
+
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
+fun ItemStack.getHolderLike(): HTSimpleItemHolderLike = this.itemHolder.toItemLike()
