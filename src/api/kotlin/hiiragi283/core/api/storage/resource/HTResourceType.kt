@@ -5,6 +5,7 @@ import hiiragi283.core.api.text.HTHasText
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.core.component.DataComponentPatch
+import net.minecraft.resources.ResourceKey
 import net.neoforged.neoforge.registries.datamaps.DataMapType
 import net.neoforged.neoforge.registries.datamaps.IWithData
 
@@ -27,8 +28,12 @@ interface HTResourceType<TYPE : Any> : HTHasText {
      */
     interface Registered<TYPE : Any> :
         HTResourceType<TYPE>,
-        HTKeyLike.HolderDelegate<TYPE>,
+        HTKeyLike<TYPE>,
         IWithData<TYPE> {
+        fun getHolder(): Holder<TYPE>
+
+        override fun getResourceKey(): ResourceKey<TYPE> = getHolder().unwrapKey().orElseThrow()
+
         override fun <T : Any> getData(type: DataMapType<TYPE, T>): T? = getHolder().getData(type)
     }
 

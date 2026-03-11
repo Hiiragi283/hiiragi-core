@@ -5,10 +5,9 @@ import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.registry.HTHolderLike
-import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
+import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.tag.HTTagPrefix
-import net.minecraft.core.Holder
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
@@ -58,11 +57,10 @@ interface HTMaterialContents<R : Any, V : Any> : HTTable<R, HTMaterialKey, HTMat
      * @author Hiiragi Tsubasa
      * @since 0.12.0
      */
-    class Entry<V : Any>(private val holder: HTHolderLike.HolderDelegate<V, *>, private val isBuiltIn: Boolean) :
-        HTSimpleHolderLikeDelegate<V> {
-        override fun get(): V = holder.get()
+    class Entry<V : Any>(private val holder: HTHolderLike<V, *>, private val isBuiltIn: Boolean) : HTSimpleHolderLike<V> {
+        override fun getResourceKey(): ResourceKey<V> = holder.getResourceKey()
 
-        override fun getHolder(): Holder<V> = holder.getHolder()
+        override fun get(): V = holder.get()
 
         operator fun component1(): ResourceKey<V> = getResourceKey()
 

@@ -52,7 +52,7 @@ object HCJeiRecipeTypes {
 
     @JvmField
     val CRUSHING: HTHolderRecipeViewerType<SingleRecipeInput, HTItemToChancedRecipe.Serializable> =
-        create(HCRecipeTypes.CRUSHING, Items.ANVIL, 18 * 5)
+        create(HCRecipeTypes.CRUSHING, Items.ANVIL, 18 * 6)
 
     @JvmField
     val EXPLODING: HTHolderRecipeViewerType<HCExplodingRecipe.Input, HCExplodingRecipe> =

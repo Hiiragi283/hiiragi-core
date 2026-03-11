@@ -5,7 +5,7 @@ import hiiragi283.core.api.item.HTSubCreativeTabContents
 import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
-import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
+import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.text.HTTranslation
 import net.minecraft.core.registries.Registries
@@ -79,7 +79,7 @@ class HTDeferredCreativeTabRegister(namespace: String) :
         title: HTTranslation,
         icon: ItemLike,
         builder: CreativeModeTab.DisplayItemsGenerator,
-    ): HTSimpleHolderLikeDelegate<CreativeModeTab> = delegate
+    ): HTSimpleHolderLike<CreativeModeTab> = delegate
         .register(name) { _ ->
             CreativeModeTab
                 .builder()
@@ -95,7 +95,7 @@ class HTDeferredCreativeTabRegister(namespace: String) :
         title: HTTranslation,
         icon: ItemLike,
         builderAction: CreativeModeTab.Builder.() -> Unit,
-    ): HTSimpleHolderLikeDelegate<CreativeModeTab> = delegate
+    ): HTSimpleHolderLike<CreativeModeTab> = delegate
         .register(name) { _ ->
             CreativeModeTab
                 .builder()

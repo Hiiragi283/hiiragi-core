@@ -1,7 +1,6 @@
 package hiiragi283.core.common.plugin
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.div
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.tool.CommonToolTypes
@@ -309,11 +308,6 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         register(CommonMaterialKeys.BAUXITE, "Bauxite", "ボーキサイト")
 
         register(CommonMaterialKeys.SULFUR, "Sulfur", "硫黄")
-
-        register(CommonMaterialKeys.PLATINUM_GROUP, "Platinum Group", "白金族") {
-            setTextureSet("mineral", HTMaterialTextureSet.SHINE)
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("black"))
-        }
 
         register(CommonMaterialKeys.CINNABAR, "Cinnabar", "辰砂")
 

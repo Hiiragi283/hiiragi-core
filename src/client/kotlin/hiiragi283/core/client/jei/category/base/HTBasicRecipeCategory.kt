@@ -18,6 +18,8 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder
 import mezz.jei.api.gui.drawable.IDrawable
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView
+import mezz.jei.api.gui.placement.IPlaceable
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder
 import mezz.jei.api.helpers.ICodecHelper
 import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
@@ -157,6 +159,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     protected fun IRecipeSlotBuilder.setSlotBackground(type: HTBackgroundType): IRecipeSlotBuilder =
         this.setBackground(HTJeiDrawables.getSlot(type, guiHelper), -1, -1).setSlotName(type.name)
 
-    protected fun IRecipeSlotBuilder.setTankBackground(type: HTBackgroundType): IRecipeSlotBuilder =
-        this.setBackground(HTJeiDrawables.getTank(type, guiHelper), -1, -1).setSlotName(type.name)
+    // IRecipeExtrasBuilder
+    protected fun IRecipeExtrasBuilder.addRecipePlus(x: Int, y: Int = getPosition(0)): IPlaceable<*> =
+        this.addRecipePlusSign().setPosition(x + 2, y + 2)
 }

@@ -1,6 +1,6 @@
 package hiiragi283.core.api.registry
 
-import net.minecraft.core.Holder
+import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.LiquidBlock
@@ -21,11 +21,10 @@ class HTFluidContent(
     val fluidTag: TagKey<Fluid>,
     val bucketTag: TagKey<Item>,
     // Optional
-    val flowingHolder: HTHolderLike<Fluid, out FlowingFluid>?,
+    val flowingHolder: HTFluidHolderLike<out FlowingFluid>?,
     val blockHolder: HTBlockHolderLike<out LiquidBlock>?,
-) : HTSimpleHolderLikeDelegate<Fluid> {
-    override fun get(): Fluid = sourceHolder.get()
+) : HTFluidHolderLike<Fluid> {
+    override fun getResourceKey(): ResourceKey<Fluid> = sourceHolder.getResourceKey()
 
-    @Suppress("DEPRECATION")
-    override fun getHolder(): Holder<Fluid> = get().builtInRegistryHolder()
+    override fun get(): Fluid = sourceHolder.get()
 }

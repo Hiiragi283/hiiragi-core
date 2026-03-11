@@ -15,30 +15,20 @@ import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.registries.DeferredHolder
 import java.util.function.Supplier
 
+typealias HTSimpleHolderLike<R> = HTHolderLike<R, R>
+
 /**
  * [ResourceKey]と値を保持する[HTKeyLike]の拡張インターフェースです。
+ * @param R レジストリの要素のクラス
+ * @param T 保持している値のクラス
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
 interface HTHolderLike<R : Any, T : R> :
     HTKeyLike<R>,
-    Supplier<T> {
-    /**
-     * [Holder]を保持する[HolderDelegate]の拡張インターフェースです。
-     * @author Hiiragi Tsubasa
-     * @since 0.6.0
-     * @see HTFluidContent
-     */
-    interface HolderDelegate<R : Any, T : R> :
-        HTHolderLike<R, T>,
-        HTKeyLike.HolderDelegate<R>
-}
+    Supplier<T>
 
 //    Extensions    //
-
-typealias HTSimpleHolderLike<R> = HTHolderLike<R, R>
-
-typealias HTSimpleHolderLikeDelegate<R> = HTHolderLike.HolderDelegate<R, R>
 
 /**
  * この[Holder][this]を[HTHolderLike]に変換します。
@@ -47,21 +37,20 @@ typealias HTSimpleHolderLikeDelegate<R> = HTHolderLike.HolderDelegate<R, R>
  * @since 0.1.0
  */
 @Suppress("UNCHECKED_CAST")
-fun <R : Any> Holder<R>.toLike(): HTSimpleHolderLikeDelegate<R> =
-    (this as? HTSimpleHolderLikeDelegate<R>) ?: object : HTSimpleHolderLikeDelegate<R> {
-        override fun get(): R = this@toLike.value()
+fun <R : Any> Holder<R>.toLike(): HTSimpleHolderLike<R> = object : HTSimpleHolderLike<R> {
+    override fun getResourceKey(): ResourceKey<R> = this@toLike.unwrapKey().orElseThrow()
 
-        override fun getHolder(): Holder<R> = this@toLike.delegate
-    }
+    override fun get(): R = this@toLike.value()
+}
 
 /**
  * @author Hiiragi Tsubasa
  * @since 0.13.0
  */
-fun <R : Any, T : R> DeferredHolder<R, T>.toLike(): HTHolderLike.HolderDelegate<R, T> = object : HTHolderLike.HolderDelegate<R, T> {
-    override fun get(): T = this@toLike.get()
+fun <R : Any, T : R> DeferredHolder<R, T>.toLike(): HTHolderLike<R, T> = object : HTHolderLike<R, T> {
+    override fun getResourceKey(): ResourceKey<R> = this@toLike.key!!
 
-    override fun getHolder(): Holder<R> = this@toLike.delegate
+    override fun get(): T = this@toLike.get()
 }
 
 //    Block    //
@@ -70,17 +59,17 @@ fun <R : Any, T : R> DeferredHolder<R, T>.toLike(): HTHolderLike.HolderDelegate<
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-typealias HTBlockHolderLike<BLOCK> = HTHolderLike.HolderDelegate<Block, BLOCK>
+typealias HTBlockHolderLike<BLOCK> = HTHolderLike<Block, BLOCK>
 
 /**
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
 fun <BLOCK : Block> BLOCK.toLike(): HTBlockHolderLike<BLOCK> = object : HTBlockHolderLike<BLOCK> {
-    override fun get(): BLOCK = this@toLike
-
     @Suppress("DEPRECATION")
-    override fun getHolder(): Holder<Block> = this@toLike.builtInRegistryHolder()
+    override fun getResourceKey(): ResourceKey<Block> = get().builtInRegistryHolder().unwrapKey().orElseThrow()
+
+    override fun get(): BLOCK = this@toLike
 }
 
 /**
@@ -89,13 +78,21 @@ fun <BLOCK : Block> BLOCK.toLike(): HTBlockHolderLike<BLOCK> = object : HTBlockH
  */
 fun HTBlockHolderLike<*>.getDefaultState(): BlockState = this.get().defaultBlockState()
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
+@JvmName("getBlockHolder")
+@Suppress("DEPRECATION")
+fun HTBlockHolderLike<*>.getHolder(): Holder<Block> = this.get().builtInRegistryHolder()
+
 //    Fluid    //
 
 /**
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-typealias HTFluidHolderLike<FLUID> = HTHolderLike.HolderDelegate<Fluid, FLUID>
+typealias HTFluidHolderLike<FLUID> = HTHolderLike<Fluid, FLUID>
 
 /**
  * @author Hiiragi Tsubasa
@@ -108,11 +105,19 @@ typealias HTSimpleFluidHolderLike = HTFluidHolderLike<Fluid>
  * @since 0.12.0
  */
 fun <FLUID : Fluid> FLUID.toLike(): HTFluidHolderLike<FLUID> = object : HTFluidHolderLike<FLUID> {
-    override fun get(): FLUID = this@toLike
-
     @Suppress("DEPRECATION")
-    override fun getHolder(): Holder<Fluid> = this@toLike.builtInRegistryHolder()
+    override fun getResourceKey(): ResourceKey<Fluid> = get().builtInRegistryHolder().unwrapKey().orElseThrow()
+
+    override fun get(): FLUID = this@toLike
 }
+
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
+@JvmName("getFluidHolder")
+@Suppress("DEPRECATION")
+fun HTFluidHolderLike<*>.getHolder(): Holder<Fluid> = this.get().builtInRegistryHolder()
 
 /**
  * @author Hiiragi Tsubasa

@@ -41,7 +41,7 @@ class HTItemToChancedRecipeCategory(guiHelper: IGuiHelper, recipeType: HTHolderR
         )
         extension.setExtraOutput(
             recipe1,
-            builder.addOutputSlot(getPosition(4), getPosition(0)).setSlotBackground(HTBackgroundType.EXTRA_OUTPUT),
+            builder.addOutputSlot(getPosition(5), getPosition(0)).setSlotBackground(HTBackgroundType.EXTRA_OUTPUT),
         )
     }
 
@@ -51,6 +51,7 @@ class HTItemToChancedRecipeCategory(guiHelper: IGuiHelper, recipeType: HTHolderR
         focuses: IFocusGroup,
     ) {
         builder.addAnimatedRecipeArrow(recipe.value().time).setPosition(getPosition(1.25), getPosition(0))
+        builder.addRecipePlus(getPosition(4))
     }
 
     override fun onDisplayedIngredientsUpdate(

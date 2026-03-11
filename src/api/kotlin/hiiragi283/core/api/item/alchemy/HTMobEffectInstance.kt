@@ -1,6 +1,5 @@
 package hiiragi283.core.api.item.alchemy
 
-import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
@@ -14,13 +13,13 @@ import net.minecraft.world.effect.MobEffectInstance
  * @see MobEffectInstance
  */
 data class HTMobEffectInstance(
-    private val effect: Holder<MobEffect>,
+    val effect: Holder<MobEffect>,
     val duration: Int,
     val amplifier: Int = 0,
     val ambient: Boolean = false,
     val visible: Boolean = true,
     val showIcon: Boolean = visible,
-) : HTKeyLike.HolderDelegate<MobEffect> {
+) {
     companion object {
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTMobEffectInstance> = BiCodec.composite(
@@ -43,7 +42,5 @@ data class HTMobEffectInstance(
         mutable.showIcon(),
     )
 
-    fun toMutable(): MobEffectInstance = MobEffectInstance(getHolder(), duration, amplifier, ambient, visible, showIcon)
-
-    override fun getHolder(): Holder<MobEffect> = this.effect.delegate
+    fun toMutable(): MobEffectInstance = MobEffectInstance(effect, duration, amplifier, ambient, visible, showIcon)
 }

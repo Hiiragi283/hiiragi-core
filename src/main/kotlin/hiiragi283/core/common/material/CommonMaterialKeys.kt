@@ -29,10 +29,6 @@ object CommonMaterialKeys {
     @JvmStatic
     val SULFUR: HTMaterialKey = create("sulfur")
 
-    // Ir, Pt
-    @JvmStatic
-    val PLATINUM_GROUP: HTMaterialKey = create("platinum_group")
-
     // Hg
     @JvmStatic
     val CINNABAR: HTMaterialKey = create("cinnabar")

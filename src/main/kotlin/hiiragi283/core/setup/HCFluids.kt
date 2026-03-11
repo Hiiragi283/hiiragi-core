@@ -71,6 +71,9 @@ object HCFluids {
         bucketFactory = ::HTPotionBucketItem
     }
 
+    @JvmField
+    val OMINOUS_FLUX: HTFluidContent = REGISTER.registerFlowing("ominous_flux") { properties = molten() }
+
     //    Organic    //
 
     @JvmField

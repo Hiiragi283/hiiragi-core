@@ -5,6 +5,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.compareTo
 import hiiragi283.core.api.function.identityRight
+import hiiragi283.core.api.registry.toItemLike
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.MapBiCodecs
@@ -80,7 +81,7 @@ class HTItemResult(private val content: Ior<HTItemResourceType, TagKey<Item>>, p
         { tagKey: TagKey<Item> ->
             HiiragiCoreAccess.INSTANCE
                 .getFirstHolder(provider, tagKey)
-                .map { ItemStack(it.getHolder(), count) }
+                .map { ItemStack(it.toItemLike(), count) }
         },
         { itemResult: HTTextResult<ItemStack>, tagResult: HTTextResult<ItemStack> ->
             tagResult.mapOrElse(HTTextResult.Companion::success) { _ -> itemResult }

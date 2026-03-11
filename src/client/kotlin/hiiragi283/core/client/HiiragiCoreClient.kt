@@ -107,6 +107,7 @@ data object HiiragiCoreClient : HTClientMod() {
             HCFluids.DRAGON_BREATH.getFluidType(),
         )
         event.registerFluidType(HTPotionFluidExtensions, HCFluids.POTION.getFluidType())
+        event.dull(HCFluids.OMINOUS_FLUX, Color(0x003366))
 
         event.dull(HCFluids.LATEX, Color(0xcccccc))
         event.dull(HCFluids.MEAT, Color(0x993333))

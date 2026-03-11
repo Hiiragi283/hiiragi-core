@@ -9,6 +9,7 @@ import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.tags.TagKey
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidType
@@ -42,6 +43,11 @@ class HTFluidResourceType private constructor(private val stack: FluidStack) : H
      * 保持している[液体][type]の[FluidType]を返します。
      */
     fun fluidType(): FluidType = stack.fluidType
+
+    fun isOf(tagKey: TagKey<Fluid>): Boolean = this.getHolder().`is`(tagKey)
+
+    // FluidStack
+    fun isOf(stack: FluidStack): Boolean = stack.`is`(this.getHolder())
 
     fun toStack(amount: Int): FluidStack = stack.copyWithAmount(amount)
 

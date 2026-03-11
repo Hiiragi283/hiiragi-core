@@ -6,8 +6,10 @@ import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.HTSimpleItemHolderLike
 import hiiragi283.core.api.registry.ItemFactory
 import hiiragi283.core.api.registry.ItemWithContextFactory
+import hiiragi283.core.api.util.Either
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries
+import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.neoforged.neoforge.registries.DeferredHolder
@@ -19,9 +21,9 @@ class HTDeferredItemRegister(namespace: String) : HTDeferredRegister<Item>(Regis
 
     private fun <ITEM : Item> wrapHolder(holder: DeferredHolder<Item, ITEM>): HTItemHolderLike<ITEM> =
         object : HTItemHolderLike.Simple<ITEM> {
-            override fun get(): ITEM = holder.get()
+            override fun unwrap(): Either<ResourceKey<Item>, Holder<Item>> = Either.Right(holder.delegate)
 
-            override fun getHolder(): Holder<Item> = holder.delegate
+            override fun get(): ITEM = holder.get()
 
             override fun getId(): ResourceLocation = holder.id
         }

@@ -1,6 +1,5 @@
 package hiiragi283.core.common.crafting
 
-import hiiragi283.core.api.resource.isOf
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.setup.HCItems

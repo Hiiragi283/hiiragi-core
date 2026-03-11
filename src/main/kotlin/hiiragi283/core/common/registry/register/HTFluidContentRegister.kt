@@ -10,6 +10,7 @@ import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.HTSimpleItemHolderLike
 import hiiragi283.core.api.registry.ItemWithContextFactory
 import hiiragi283.core.api.registry.addAlias
@@ -44,7 +45,7 @@ class HTFluidContentRegister(modId: String) {
 
     fun asFluidSequence(): Sequence<HTFluidHolderLike<*>> = fluidRegister.asSequence()
 
-    fun asTypeSequence(): Sequence<HTHolderLike.HolderDelegate<FluidType, *>> = typeRegister.asSequence()
+    fun asTypeSequence(): Sequence<HTHolderLike<FluidType, *>> = typeRegister.asSequence()
 
     fun asBlockSequence(): Sequence<HTBlockHolderLike<*>> = blockRegister.asBlockSequence()
 
@@ -122,16 +123,16 @@ class HTFluidContentRegister(modId: String) {
         }
 
         protected abstract fun createContent(
-            typeHolder: HTHolderLike.HolderDelegate<FluidType, FluidType>,
-            sourceHolder: HTHolderLike.HolderDelegate<Fluid, FLUID>,
+            typeHolder: HTSimpleHolderLike<FluidType>,
+            sourceHolder: HTHolderLike<Fluid, FLUID>,
             bucketHolder: HTSimpleItemHolderLike,
         ): HTFluidContent
     }
 
     inner class VirtualBuilder(name: String) : Builder<HTVirtualFluid>(name) {
         override fun createContent(
-            typeHolder: HTHolderLike.HolderDelegate<FluidType, FluidType>,
-            sourceHolder: HTHolderLike.HolderDelegate<Fluid, HTVirtualFluid>,
+            typeHolder: HTSimpleHolderLike<FluidType>,
+            sourceHolder: HTHolderLike<Fluid, HTVirtualFluid>,
             bucketHolder: HTSimpleItemHolderLike,
         ): HTFluidContent {
             // Content
@@ -156,8 +157,8 @@ class HTFluidContentRegister(modId: String) {
         var blockProperties: (BlockBehaviour.Properties) -> BlockBehaviour.Properties = identity()
 
         override fun createContent(
-            typeHolder: HTHolderLike.HolderDelegate<FluidType, FluidType>,
-            sourceHolder: HTHolderLike.HolderDelegate<Fluid, BaseFlowingFluid>,
+            typeHolder: HTSimpleHolderLike<FluidType>,
+            sourceHolder: HTHolderLike<Fluid, BaseFlowingFluid>,
             bucketHolder: HTSimpleItemHolderLike,
         ): HTFluidContent {
             // Liquid Block

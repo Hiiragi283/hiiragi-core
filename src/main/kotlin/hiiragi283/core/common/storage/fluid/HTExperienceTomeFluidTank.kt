@@ -21,7 +21,7 @@ class HTExperienceTomeFluidTank(private val attachedTo: ItemStack) :
 
     fun getExpRatio(): Int = HTExperienceHelper.getExpRatio()
 
-    override fun isValid(resource: HTFluidResourceType): Boolean = resource.isOf(HCFluids.EXPERIENCE.fluidTag)
+    override fun isValid(resource: HTFluidResourceType): Boolean = resource.getHolder().`is`(HCFluids.EXPERIENCE.fluidTag)
 
     override fun insert(
         resource: HTFluidResourceType?,

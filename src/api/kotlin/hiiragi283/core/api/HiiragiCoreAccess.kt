@@ -12,8 +12,7 @@ import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.plugin.HTMaterialPlugin
-import hiiragi283.core.api.registry.HTHolderLike
-import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
+import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.value.HTValueInput
@@ -146,11 +145,11 @@ abstract class HiiragiCoreAccess {
     //    Tag    //
 
     /**
-     * 指定した[provider]から，[tagKey]に紐づいた[HTHolderLike]を取得します。
+     * 指定した[provider]から，[tagKey]に紐づいた[HTSimpleHolderLike]を取得します。
      * @param T レジストリの種類のクラス
-     * @return [HTHolderLike]の[結果][HTTextResult]
+     * @return [HTSimpleHolderLike]の[結果][HTTextResult]
      */
-    abstract fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLikeDelegate<T>>
+    abstract fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLike<T>>
 
     //    Value IO    //
 

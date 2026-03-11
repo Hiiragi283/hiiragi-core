@@ -8,7 +8,10 @@ import hiiragi283.core.api.property.HTBasicPropertyMap
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.registry.toItemLike
+import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
+import net.minecraft.core.Holder
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 
@@ -46,6 +49,10 @@ interface HTMaterialPlugin : HTIdLike {
 
     fun interface BlockConsumer {
         fun accept(part: HTPartLike, material: HTMaterialKey, holder: HTBlockHolderLike<*>)
+
+        fun accept(part: HTPartLike, material: HTMaterialKey, holder: Holder<Block>) {
+            this.accept(part, material, holder.toLike())
+        }
     }
 
     /**
@@ -55,6 +62,10 @@ interface HTMaterialPlugin : HTIdLike {
 
     fun interface ItemConsumer {
         fun accept(part: HTPartLike, material: HTMaterialKey, holder: HTItemHolderLike<*>)
+
+        fun accept(part: HTPartLike, material: HTMaterialKey, holder: Holder<Item>) {
+            this.accept(part, material, holder.toLike().toItemLike())
+        }
     }
 
     /**
@@ -64,6 +75,10 @@ interface HTMaterialPlugin : HTIdLike {
 
     fun interface ToolConsumer {
         fun accept(toolType: HTToolType, material: HTMaterialKey, holder: HTItemHolderLike<*>)
+
+        fun accept(toolType: HTToolType, material: HTMaterialKey, holder: Holder<Item>) {
+            this.accept(toolType, material, holder.toLike().toItemLike())
+        }
     }
 
     /**

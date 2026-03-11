@@ -135,8 +135,8 @@ sealed interface HTTagsProvider<T : Any> {
              */
             @JvmField
             val COMPARATOR: Comparator<TagEntry> = Comparator
-                .comparing(TagEntry::isTag, Comparator.reverseOrder())
-                .thenComparing(TagEntry::isRequired)
+                .comparing(TagEntry::isRequired)
+                .thenComparing(TagEntry::isTag, Comparator.reverseOrder())
                 .thenComparing(TagEntry::getId)
         }
 

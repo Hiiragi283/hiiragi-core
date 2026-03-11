@@ -3,8 +3,8 @@ package hiiragi283.core.common.registry.register
 import hiiragi283.core.api.registry.BlockFactory
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTDeferredRegister
-import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries
+import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockBehaviour
@@ -15,9 +15,9 @@ class HTDeferredBlockRegister(namespace: String) : HTDeferredRegister<Block>(Reg
 
     private fun <BLOCK : Block> wrapHolder(holder: DeferredHolder<Block, BLOCK>): HTBlockHolderLike<BLOCK> =
         object : HTBlockHolderLike<BLOCK> {
-            override fun get(): BLOCK = holder.get()
+            override fun getResourceKey(): ResourceKey<Block> = holder.key!!
 
-            override fun getHolder(): Holder<Block> = holder.delegate
+            override fun get(): BLOCK = holder.get()
 
             override fun getId(): ResourceLocation = holder.id
         }

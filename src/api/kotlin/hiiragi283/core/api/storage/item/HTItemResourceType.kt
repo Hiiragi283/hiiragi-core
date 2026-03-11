@@ -8,6 +8,7 @@ import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
@@ -36,6 +37,11 @@ class HTItemResourceType private constructor(private val stack: ItemStack) : HTR
             else -> HTItemResourceType(stack.copyWithCount(1))
         }
     }
+
+    fun isOf(tagKey: TagKey<Item>): Boolean = this.getHolder().`is`(tagKey)
+
+    // ItemStack
+    fun isOf(stack: ItemStack): Boolean = stack.`is`(this.getHolder())
 
     /**
      * 指定した[count]から[ItemStack]に変換します。

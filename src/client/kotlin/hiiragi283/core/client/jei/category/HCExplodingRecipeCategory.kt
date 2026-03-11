@@ -34,6 +34,6 @@ class HCExplodingRecipeCategory(guiHelper: IGuiHelper) :
 
     override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: RecipeHolder<HCExplodingRecipe>, focuses: IFocusGroup) {
         builder.addRecipeArrow().setPosition(getPosition(3.25), getPosition(0))
-        builder.addRecipePlusSign().setPosition(getPosition(1) + 2, getPosition(0) + 2)
+        builder.addRecipePlus(getPosition(1))
     }
 }

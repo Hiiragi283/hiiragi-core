@@ -1,7 +1,6 @@
 package hiiragi283.core.common.crafting
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.resource.isOf
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.util.ExpValue

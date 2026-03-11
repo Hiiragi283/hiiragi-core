@@ -5,6 +5,7 @@ import net.minecraft.core.registries.Registries
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.material.Fluid
 
 /**
  * Hiiragi Coreで使用されるタグをまとめたクラスです。
@@ -28,6 +29,17 @@ object HiiragiCoreTags {
 
         @JvmStatic
         private fun mod(vararg path: String): TagKey<Block> = Registries.BLOCK.createTagKey(HiiragiCoreAPI.id(*path))
+    }
+
+    object Fluids {
+        @JvmField
+        val ELDRITCH: TagKey<Fluid> = mod("eldritch")
+
+        @JvmStatic
+        private fun common(vararg path: String): TagKey<Fluid> = Registries.FLUID.createCommonTag(*path)
+
+        @JvmStatic
+        private fun mod(vararg path: String): TagKey<Fluid> = Registries.FLUID.createTagKey(HiiragiCoreAPI.id(*path))
     }
 
     object Items {

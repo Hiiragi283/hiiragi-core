@@ -41,6 +41,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.DRAGON_BREATH, "ドラゴンブレス")
         add(HCFluids.POTION.getFluidType().descriptionId, "無効なポーション入りバケツ")
         add(HCFluids.POTION.getBucketHolder(), $$"%1$s入りバケツ")
+        addFluid(HCFluids.OMINOUS_FLUX, "不吉な流動体")
 
         addFluid(HCFluids.LATEX, "ラテックス")
         addFluid(HCFluids.MEAT, "肉")

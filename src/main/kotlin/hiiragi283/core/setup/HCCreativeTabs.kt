@@ -4,7 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.asSequence
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
+import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.getBucketHolder
 import hiiragi283.core.common.registry.register.HTDeferredCreativeTabRegister
 import hiiragi283.core.common.text.HCTranslation
@@ -20,7 +20,7 @@ object HCCreativeTabs {
     val REGISTER = HTDeferredCreativeTabRegister(HiiragiCoreAPI.MOD_ID)
 
     @JvmField
-    val COMMON: HTSimpleHolderLikeDelegate<CreativeModeTab> = REGISTER.registerSimpleTab(
+    val COMMON: HTSimpleHolderLike<CreativeModeTab> = REGISTER.registerSimpleTab(
         "common",
         HCTranslation.HIIRAGI_CORE,
         HCItems.IRIDESCENT_POWDER,
@@ -34,7 +34,7 @@ object HCCreativeTabs {
     }
 
     @JvmField
-    val MATERIAL: HTSimpleHolderLikeDelegate<CreativeModeTab> = REGISTER.registerTab(
+    val MATERIAL: HTSimpleHolderLike<CreativeModeTab> = REGISTER.registerTab(
         "material",
         HCTranslation.CREATIVE_TAB_MATERIAL,
         Items.IRON_INGOT,
@@ -77,7 +77,7 @@ object HCCreativeTabs {
     }
 
     @JvmField
-    val EQUIPMENT: HTSimpleHolderLikeDelegate<CreativeModeTab> = REGISTER.registerTab(
+    val EQUIPMENT: HTSimpleHolderLike<CreativeModeTab> = REGISTER.registerTab(
         "equipment",
         HCTranslation.CREATIVE_TAB_EQUIPMENT,
         Items.IRON_PICKAXE,

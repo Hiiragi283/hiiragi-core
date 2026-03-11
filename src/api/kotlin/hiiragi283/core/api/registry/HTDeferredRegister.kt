@@ -39,7 +39,7 @@ open class HTDeferredRegister<R : Any>(protected val delegate: DeferredRegister<
         this.addAlias(createId(from), createId(to))
     }
 
-    fun asSequence(): Sequence<HTHolderLike.HolderDelegate<R, *>> = delegate.entries.asSequence().map { it.toLike() }
+    fun asSequence(): Sequence<HTHolderLike<R, *>> = delegate.entries.asSequence().map { it.toLike() }
 
     fun register(bus: IEventBus) {
         delegate.register(bus)

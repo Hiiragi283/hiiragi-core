@@ -19,7 +19,7 @@ import kotlin.streams.asSequence
 /**
  * @since 0.9.0
  */
-fun <R : Any> HolderLookup<R>.asSequence(): Sequence<HTSimpleHolderLikeDelegate<R>> = this
+fun <R : Any> HolderLookup<R>.asSequence(): Sequence<HTSimpleHolderLike<R>> = this
     .listElements()
     .map(Holder<R>::toLike)
     .asSequence()
@@ -39,21 +39,23 @@ fun HolderLookup<Fluid>.asFluidSequence(): Sequence<HTFluidHolderLike<*>> = this
  */
 fun HolderLookup<Item>.asItemSequence(): Sequence<HTItemHolderLike<*>> = this
     .listElements()
-    .map(Holder<Item>::toItemLike)
+    .map(Holder<Item>::toLike)
+    .map(HTSimpleHolderLike<Item>::toItemLike)
     .asSequence()
 
 /**
  * @author Hiiragi Tsubasa
  * @since 0.13.0
  */
-fun <R : Any, T : Any> HolderLookup<R>.getDataSequence(type: DataMapType<R, T>): Sequence<Pair<HTSimpleHolderLikeDelegate<R>, T>> = this
+fun <R : Any, T : Any> HolderLookup<R>.getDataSequence(type: DataMapType<R, T>): Sequence<Pair<HTSimpleHolderLike<R>, T>> = this
+    .listElements()
     .asSequence()
-    .mapNotNull { holder: HTSimpleHolderLikeDelegate<R> ->
-        val data: T = holder.getHolder().getData(type) ?: return@mapNotNull null
-        holder to data
+    .mapNotNull { holder: Holder.Reference<R> ->
+        val data: T = holder.getData(type) ?: return@mapNotNull null
+        holder.toLike() to data
     }
 
-fun <R : Any, T : Any> HolderLookup<R>.getHolderDataMap(type: DataMapType<R, T>): Map<HTSimpleHolderLikeDelegate<R>, T> =
+fun <R : Any, T : Any> HolderLookup<R>.getHolderDataMap(type: DataMapType<R, T>): Map<HTSimpleHolderLike<R>, T> =
     this.getDataSequence(type).toMap()
 
 fun <T : Any> HolderLookup.Provider.holderSetOrNull(tagKey: TagKey<T>): HolderSet<T>? =
@@ -79,6 +81,6 @@ fun DeferredRegister<*>.addAlias(from: String, to: String) {
  * @author Hiiragi Tsubasa
  * @since 0.13.0
  */
-fun <R : Any> DeferredRegister<R>.asSequence(): Sequence<HTHolderLike.HolderDelegate<R, *>> = this.entries
+fun <R : Any> DeferredRegister<R>.asSequence(): Sequence<HTHolderLike<R, *>> = this.entries
     .asSequence()
     .map { it.toLike() }

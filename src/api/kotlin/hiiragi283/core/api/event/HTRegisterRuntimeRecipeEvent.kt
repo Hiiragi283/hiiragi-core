@@ -8,7 +8,7 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
-import hiiragi283.core.api.registry.HTSimpleHolderLikeDelegate
+import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.holderSetOrNull
 import hiiragi283.core.api.registry.toItemLike
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -57,10 +57,10 @@ class HTRegisterRuntimeRecipeEvent(val recipeManager: RecipeManager, val context
     )
 
     // TagKey
-    fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLikeDelegate<T>> =
+    fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLike<T>> =
         HiiragiCoreAccess.INSTANCE.getFirstHolder(context.provider, tagKey)
 
-    fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): HTSimpleHolderLikeDelegate<T>? = getHolderResult(tagKey)
+    fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): HTSimpleHolderLike<T>? = getHolderResult(tagKey)
         .mapOrElse(identity()) { message: Text ->
             if (printLog) HiiragiCoreAPI.LOGGER.debug(message.string)
             null

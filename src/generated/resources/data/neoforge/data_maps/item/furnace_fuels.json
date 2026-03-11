@@ -1,0 +1,10 @@
+{
+  "values": {
+    "hiiragi_core:oil_sand": {
+      "burn_time": 800
+    },
+    "hiiragi_core:oil_shale": {
+      "burn_time": 800
+    }
+  }
+}
