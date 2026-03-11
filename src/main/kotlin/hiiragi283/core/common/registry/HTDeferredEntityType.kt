@@ -1,7 +1,5 @@
 package hiiragi283.core.common.registry
 
-import hiiragi283.core.api.registry.HTHolderLike
-import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.HTHasTranslationKey
 import hiiragi283.core.api.text.Text
@@ -12,13 +10,13 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.EntityType
 
-data class HTDeferredEntityType<ENTITY : Entity>(private val key: ResourceKey<EntityType<*>>) :
-    HTHolderLike<EntityType<*>, EntityType<ENTITY>>,
+class HTDeferredEntityType<ENTITY : Entity> :
+    HTBasicHolderLike<EntityType<*>, EntityType<ENTITY>>,
     HTHasTranslationKey,
     HTHasText {
-    constructor(id: ResourceLocation) : this(Registries.ENTITY_TYPE.createKey(id))
+    constructor(key: ResourceKey<EntityType<*>>) : super(key)
 
-    override fun getResourceKey(): ResourceKey<EntityType<*>> = key
+    constructor(id: ResourceLocation) : super(Registries.ENTITY_TYPE, id)
 
     @Suppress("UNCHECKED_CAST")
     override fun get(): EntityType<ENTITY> = BuiltInRegistries.ENTITY_TYPE.getOrThrow(key) as EntityType<ENTITY>
@@ -26,4 +24,6 @@ data class HTDeferredEntityType<ENTITY : Entity>(private val key: ResourceKey<En
     override val translationKey: String get() = get().descriptionId
 
     override fun getText(): Text = get().description
+
+    override fun toString(): String = "HTDeferredEntityType(key=$key)"
 }

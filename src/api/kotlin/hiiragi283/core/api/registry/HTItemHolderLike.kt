@@ -1,6 +1,5 @@
 package hiiragi283.core.api.registry
 
-import hiiragi283.core.api.function.andThen
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
@@ -35,10 +34,6 @@ interface HTItemHolderLike<ITEM : Item> :
     HTHasTranslationKey,
     HTHasText,
     ItemLike {
-    fun unwrap(): Either<ResourceKey<Item>, Holder<Item>>
-
-    override fun getResourceKey(): ResourceKey<Item> = unwrap().mapRight(Holder<Item>::unwrapKey.andThen { it.orElseThrow() }).unwrap()
-
     fun getHolder(): Holder<Item> = unwrap().mapLeft(BuiltInRegistries.ITEM::getHolderOrThrow).unwrap()
 
     override fun asItem(): ITEM = get()
@@ -106,6 +101,8 @@ fun <ITEM : Item> ITEM.toLike(): HTItemHolderLike<ITEM> = object : HTItemHolderL
     override fun unwrap(): Either<ResourceKey<Item>, Holder<Item>> = Either.Right(this@toLike.builtInRegistryHolder())
 
     override fun get(): ITEM = this@toLike
+
+    override fun toString(): String = this@toLike.toString()
 }
 
 /**
@@ -116,6 +113,8 @@ fun <ITEM : Item> HTHolderLike<Item, ITEM>.toItemLike(): HTItemHolderLike<ITEM> 
     override fun unwrap(): Either<ResourceKey<Item>, Holder<Item>> = Either.Left(this@toItemLike.getResourceKey())
 
     override fun get(): ITEM = this@toItemLike.get()
+
+    override fun toString(): String = this@toItemLike.toString()
 }
 
 /**
@@ -126,6 +125,8 @@ fun ResourceLocation.toItemLike(): HTSimpleItemHolderLike = object : HTItemHolde
     override fun unwrap(): Either<ResourceKey<Item>, Holder<Item>> = Either.Left(Registries.ITEM.createKey(this@toItemLike))
 
     override fun get(): Item = BuiltInRegistries.ITEM.getOrThrow(getResourceKey())
+
+    override fun toString(): String = "HTItemHolderLike(id=${this@toItemLike})"
 }
 
 /**

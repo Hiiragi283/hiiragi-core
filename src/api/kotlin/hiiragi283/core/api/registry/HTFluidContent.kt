@@ -1,5 +1,7 @@
 package hiiragi283.core.api.registry
 
+import hiiragi283.core.api.util.Either
+import net.minecraft.core.Holder
 import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -24,7 +26,7 @@ class HTFluidContent(
     val flowingHolder: HTFluidHolderLike<out FlowingFluid>?,
     val blockHolder: HTBlockHolderLike<out LiquidBlock>?,
 ) : HTFluidHolderLike<Fluid> {
-    override fun getResourceKey(): ResourceKey<Fluid> = sourceHolder.getResourceKey()
+    override fun unwrap(): Either<ResourceKey<Fluid>, Holder<Fluid>> = sourceHolder.unwrap()
 
     override fun get(): Fluid = sourceHolder.get()
 }

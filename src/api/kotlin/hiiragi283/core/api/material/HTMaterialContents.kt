@@ -8,6 +8,8 @@ import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.util.Either
+import net.minecraft.core.Holder
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
@@ -58,7 +60,7 @@ interface HTMaterialContents<R : Any, V : Any> : HTTable<R, HTMaterialKey, HTMat
      * @since 0.12.0
      */
     class Entry<V : Any>(private val holder: HTHolderLike<V, *>, private val isBuiltIn: Boolean) : HTSimpleHolderLike<V> {
-        override fun getResourceKey(): ResourceKey<V> = holder.getResourceKey()
+        override fun unwrap(): Either<ResourceKey<V>, Holder<V>> = holder.unwrap()
 
         override fun get(): V = holder.get()
 
