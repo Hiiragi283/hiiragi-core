@@ -6,42 +6,12 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.core.HolderSet
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
-import net.minecraft.world.item.Item
-import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.registries.DeferredRegister
 import net.neoforged.neoforge.registries.datamaps.DataMapType
 import kotlin.jvm.optionals.getOrNull
 import kotlin.streams.asSequence
 
 //    HolderLookup    //
-
-/**
- * @since 0.9.0
- */
-fun <R : Any> HolderLookup<R>.asSequence(): Sequence<HTSimpleHolderLike<R>> = this
-    .listElements()
-    .map(Holder<R>::toLike)
-    .asSequence()
-
-/**
- * @since 0.9.0
- */
-fun HolderLookup<Block>.asBlockSequence(): Sequence<HTBlockHolderLike<*>> = this.asSequence()
-
-/**
- * @since 0.10.0
- */
-fun HolderLookup<Fluid>.asFluidSequence(): Sequence<HTFluidHolderLike<*>> = this.asSequence()
-
-/**
- * @since 0.9.0
- */
-fun HolderLookup<Item>.asItemSequence(): Sequence<HTItemHolderLike<*>> = this
-    .listElements()
-    .map(Holder<Item>::toLike)
-    .map(HTSimpleHolderLike<Item>::toItemLike)
-    .asSequence()
 
 /**
  * @author Hiiragi Tsubasa

@@ -10,7 +10,6 @@ import hiiragi283.core.api.data.lang.HTLangPatternProvider
 import hiiragi283.core.api.data.lang.HTLangType
 import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.data.texture.HTTextureUtil
-import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
@@ -39,14 +38,8 @@ import hiiragi283.core.setup.HCItems
 import net.mehvahdjukaar.moonlight.api.events.AfterLanguageLoadEvent
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
-import net.mehvahdjukaar.moonlight.api.resources.textures.Palette
-import net.mehvahdjukaar.moonlight.api.resources.textures.Respriter
-import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
-import net.minecraft.resources.ResourceLocation
-import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
-import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.Tags
@@ -182,33 +175,6 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
             ),
         )
     }
-
-    //    Texture    //
-
-    @JvmStatic
-    private fun resprite(
-        id: ResourceLocation,
-        base: ResourceLocation,
-        paletteFactory: (ResourceManager) -> Result<Palette>,
-    ): ResourceGenTask = ResourceGenTask { manager: ResourceManager, sink: ResourceSink ->
-        val palette: Palette = paletteFactory(manager).getOrNull() ?: return@ResourceGenTask
-        runCatching { TextureImage.open(manager, base) }
-            .map(Respriter::of)
-            .map { it.recolor(palette) }
-            .onSuccess { sink.addTexture(id, it) }
-    }
-
-    @JvmStatic
-    private fun resprite(id: ResourceLocation, base: ResourceLocation, key: HTMaterialKey): ResourceGenTask =
-        resprite(id, base, HTTextureUtil::getOrCreatePalette.partially1(key.getId()))
-
-    @JvmStatic
-    private fun resprite(id: ResourceLocation, base: ResourceLocation, palette: Block): ResourceGenTask =
-        resprite(id, base) { manager: ResourceManager -> HTTextureUtil.getTexture(manager, palette).map(Palette::fromImage) }
-
-    @JvmStatic
-    private fun resprite(id: ResourceLocation, base: ResourceLocation, palette: Item): ResourceGenTask =
-        resprite(id, base) { manager: ResourceManager -> HTTextureUtil.getTexture(manager, palette).map(Palette::fromImage) }
 
     //    Translation    //
 

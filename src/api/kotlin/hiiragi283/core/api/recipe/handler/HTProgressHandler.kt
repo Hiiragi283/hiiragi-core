@@ -6,25 +6,24 @@ import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
 import org.apache.commons.lang3.math.Fraction
 
+typealias HTRecipeHandler<INPUT, RECIPE> = HTProgressHandler<out HTHandledRecipe<INPUT, RECIPE>>
+
 /**
  * レシピの処理を行う抽象クラスです。
- * @param INPUT レシピの入力となるクラス
- * @param RECIPE レシピのクラス
+ * @param T レシピのクラス
  * @author Hiiragi Tsubasa
  * @since 0.5.0
  */
-class HTRecipeHandler<INPUT : Any, RECIPE : Any> private constructor(
-    private val inputFactory: (ServerLevel, BlockPos) -> INPUT?,
-    private val recipeFinder: (INPUT, ServerLevel) -> RECIPE?,
-    private val maxProgressGetter: (RECIPE) -> Int,
-    private val progressGetter: (ServerLevel, BlockPos) -> Int,
-    private val canComplete: (ServerLevel, BlockPos, INPUT, RECIPE) -> Boolean,
-    private val onComplete: (ServerLevel, BlockPos, INPUT, RECIPE) -> Unit,
+class HTProgressHandler<T : Any> private constructor(
+    private val recipeFinder: LevelFunction<T?>,
+    private val maxProgressGetter: (T) -> Int,
+    private val progressGetter: LevelFunction<Int>,
+    private val canComplete: BiLevelFunction<T, Boolean>,
+    private val onComplete: BiLevelFunction<T, Unit>,
 ) {
     companion object {
         @JvmStatic
-        inline fun <INPUT : Any, RECIPE : Any> create(builderAction: Builder<INPUT, RECIPE>.() -> Unit): HTRecipeHandler<INPUT, RECIPE> =
-            Builder<INPUT, RECIPE>().apply(builderAction).build()
+        inline fun <T : Any> create(builderAction: Builder<T>.() -> Unit): HTProgressHandler<T> = Builder<T>().apply(builderAction).build()
     }
 
     /**
@@ -57,12 +56,7 @@ class HTRecipeHandler<INPUT : Any, RECIPE : Any> private constructor(
     fun tick(level: ServerLevel, pos: BlockPos): Boolean {
         if (!shouldCheck) return false
         // インプットに一致するレシピを探索する
-        val input: INPUT = inputFactory(level, pos) ?: return run {
-            shouldCheck = false
-            updateProgress(-1)
-            false
-        }
-        val recipe: RECIPE = recipeFinder(input, level) ?: return run {
+        val recipe: T = recipeFinder.apply(level, pos) ?: return run {
             shouldCheck = false
             updateProgress(-1)
             false
@@ -74,13 +68,13 @@ class HTRecipeHandler<INPUT : Any, RECIPE : Any> private constructor(
         }
         // 進捗を更新する
         if (progress < maxProgress) {
-            progress += progressGetter(level, pos)
+            progress += progressGetter.apply(level, pos)
         }
         // アウトプットに完成品を搬出できるか判定する
-        if (progress >= maxProgress && canComplete(level, pos, input, recipe)) {
+        if (progress >= maxProgress && canComplete.apply(level, pos, recipe)) {
             progress -= maxProgress
             // レシピを実行する
-            onComplete(level, pos, input, recipe)
+            onComplete.apply(level, pos, recipe)
         }
         return true
     }
@@ -90,23 +84,25 @@ class HTRecipeHandler<INPUT : Any, RECIPE : Any> private constructor(
         progress = 0
     }
 
-    class Builder<INPUT : Any, RECIPE : Any> {
-        /**
-         * 指定された引数から，入力を取得します。
-         * @return 入力を生成できない場合は`null`
-         */
-        lateinit var inputFactory: (ServerLevel, BlockPos) -> INPUT?
+    fun interface LevelFunction<T> {
+        fun apply(level: ServerLevel, pos: BlockPos): T
+    }
 
+    fun interface BiLevelFunction<T, R> {
+        fun apply(level: ServerLevel, pos: BlockPos, value: T): R
+    }
+
+    class Builder<T : Any> {
         /**
          * 指定された引数に一致するレシピを取得します。
-         * @return 一致するレシピがない場合は`null`
+         * @return 入力を生成できない場合は`null`
          */
-        lateinit var recipeFinder: (INPUT, ServerLevel) -> RECIPE?
+        lateinit var recipeFinder: (ServerLevel, BlockPos) -> T?
 
         /**
          * 指定された引数から，レシピの最大進捗量を取得します。
          */
-        lateinit var maxProgressGetter: (RECIPE) -> Int
+        lateinit var maxProgressGetter: (T) -> Int
 
         /**
          * 進捗を取得します。
@@ -117,14 +113,13 @@ class HTRecipeHandler<INPUT : Any, RECIPE : Any> private constructor(
          * 指定された引数から，レシピ処理を完了できるかどうか判定します。
          * @return 完了できる場合は`true`, それ以外の場合は`false`
          */
-        lateinit var canComplete: (ServerLevel, BlockPos, INPUT, RECIPE) -> Boolean
+        lateinit var canComplete: (ServerLevel, BlockPos, T) -> Boolean
 
         /**
          * 指定された引数から，レシピ処理を実行します。
          */
-        lateinit var onComplete: (ServerLevel, BlockPos, INPUT, RECIPE) -> Unit
+        lateinit var onComplete: (ServerLevel, BlockPos, T) -> Unit
 
-        fun build(): HTRecipeHandler<INPUT, RECIPE> =
-            HTRecipeHandler(inputFactory, recipeFinder, maxProgressGetter, progressGetter, canComplete, onComplete)
+        fun build(): HTProgressHandler<T> = HTProgressHandler(recipeFinder, maxProgressGetter, progressGetter, canComplete, onComplete)
     }
 }

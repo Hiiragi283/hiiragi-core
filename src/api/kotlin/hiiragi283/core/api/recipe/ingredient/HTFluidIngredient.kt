@@ -24,9 +24,7 @@ class HTFluidIngredient(val unsized: FluidIngredient, override val amount: Int) 
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTFluidIngredient> = BiCodec.composite(
             VanillaBiCodecs.FLUID_INGREDIENT.forGetter(HTFluidIngredient::unsized),
-            BiCodecs.NON_NEGATIVE_INT
-                .optionalFieldOf(HTConst.AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
-                .forGetter(HTFluidIngredient::amount),
+            BiCodecs.NON_NEGATIVE_INT.fieldOf(HTConst.AMOUNT).forGetter(HTFluidIngredient::amount),
             ::HTFluidIngredient,
         )
     }

@@ -1,7 +1,6 @@
 package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.toResource
@@ -10,6 +9,7 @@ import hiiragi283.core.api.text.HTHasTranslationKey
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.unwrap
+import io.netty.buffer.ByteBuf
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.registries.BuiltInRegistries
@@ -64,17 +64,14 @@ interface HTItemHolderLike<ITEM : Item> :
 
     companion object {
         @JvmField
-        val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemHolderLike<*>> = BiCodecs
-            .either(
-                VanillaBiCodecs.resourceKey(Registries.ITEM),
-                VanillaBiCodecs.holder(Registries.ITEM),
-                true,
-            ).xmap({ either: Either<ResourceKey<Item>, Holder<Item>> ->
-                either.map(
-                    { key: ResourceKey<Item> -> key.location().toItemLike() },
-                    { holder: Holder<Item> -> holder.toLike().toItemLike() },
-                )
-            }, HTItemHolderLike<*>::unwrap)
+        val KEY_CODEC: BiCodec<ByteBuf, HTSimpleItemHolderLike> = VanillaBiCodecs
+            .resourceKey(Registries.ITEM)
+            .xmap({ key: ResourceKey<Item> -> key.location().toItemLike() }, HTItemHolderLike<*>::getResourceKey)
+
+        @JvmField
+        val HOLDER_CODEC: BiCodec<RegistryFriendlyByteBuf, HTSimpleItemHolderLike> = VanillaBiCodecs
+            .holder(Registries.ITEM)
+            .xmap({ holder: Holder<Item> -> holder.toLike().toItemLike() }, HTItemHolderLike<*>::getHolder)
     }
 
     interface Simple<ITEM : Item> : HTItemHolderLike<ITEM> {
@@ -110,7 +107,7 @@ fun <ITEM : Item> ITEM.toLike(): HTItemHolderLike<ITEM> = object : HTItemHolderL
  * @since 0.13.0
  */
 fun <ITEM : Item> HTHolderLike<Item, ITEM>.toItemLike(): HTItemHolderLike<ITEM> = object : HTItemHolderLike.Simple<ITEM> {
-    override fun unwrap(): Either<ResourceKey<Item>, Holder<Item>> = Either.Left(this@toItemLike.getResourceKey())
+    override fun unwrap(): Either<ResourceKey<Item>, Holder<Item>> = this@toItemLike.unwrap()
 
     override fun get(): ITEM = this@toItemLike.get()
 

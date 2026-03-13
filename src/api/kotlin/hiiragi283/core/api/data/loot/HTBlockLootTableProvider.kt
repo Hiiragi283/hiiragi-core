@@ -1,10 +1,8 @@
 package hiiragi283.core.api.data.loot
 
 import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.asBlockSequence
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
-import net.minecraft.core.registries.Registries
 import net.minecraft.data.loot.BlockLootSubProvider
 import net.minecraft.world.flag.FeatureFlags
 import net.minecraft.world.item.enchantment.Enchantment
@@ -29,9 +27,7 @@ abstract class HTBlockLootTableProvider(protected val modId: String, registries:
     /**
      * @since 0.10.0
      */
-    protected open fun getRawBlocks(): Sequence<HTBlockHolderLike<*>> = registries
-        .lookupOrThrow(Registries.BLOCK)
-        .asBlockSequence()
+    protected abstract fun getRawBlocks(): Sequence<HTBlockHolderLike<*>>
 
     //    Extensions    //
 
