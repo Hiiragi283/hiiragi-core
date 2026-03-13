@@ -48,6 +48,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.bus.api.SubscribeEvent
+import net.neoforged.fml.ModList
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.common.MutableDataComponentHolder
 import net.neoforged.neoforge.event.TagsUpdatedEvent
@@ -96,6 +97,7 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
     override val materialPlugins: Sequence<HTMaterialPlugin> by lazy {
         HTPluginLoader
             .collectPlugins<HTMaterialPlugin>()
+            .filter { ModList.get().isLoaded(it.getId().namespace) }
             .sortedWith(
                 compareBy(HTMaterialPlugin::priority)
                     .thenComparing(HTMaterialPlugin::getId, HTComparators.ID),
