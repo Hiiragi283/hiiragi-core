@@ -57,12 +57,13 @@ class HTItemFilterItem(properties: Properties) :
                     },
                 )
             }.mapIndexed { index: Int, slot: HTItemSyncSlot ->
-                HTItemSlotWidget(
-                    slot,
-                    HTSlotHelper.getSlotPosX(index),
-                    HTSlotHelper.getSlotPosY(0),
-                    HTBackgroundType.NONE,
-                ).setGhost()
+                HTItemSlotWidget
+                    .fake(
+                        slot,
+                        HTSlotHelper.getSlotPosX(index),
+                        HTSlotHelper.getSlotPosY(0),
+                        HTBackgroundType.NONE,
+                    ).setGhost()
             }.forEach(widgetHolder::addWidget)
     }
 }

@@ -11,14 +11,13 @@ import java.util.function.BiPredicate
 
 /**
  * レシピの材料を表すインターフェースです。
- * @param TYPE [RESOURCE]の種類のクラス
  * @param RESOURCE 判定の対象となるクラス
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  * @see HTItemIngredient
  * @see HTFluidIngredient
  */
-interface HTIngredient<TYPE : Any, RESOURCE : HTResourceType<TYPE>> :
+interface HTIngredient<RESOURCE : Any> :
     BiPredicate<RESOURCE, Int>,
     HTHasText {
     /**
@@ -48,12 +47,14 @@ interface HTIngredient<TYPE : Any, RESOURCE : HTResourceType<TYPE>> :
      */
     val isCatalyst: Boolean get() = amount <= 0
 
-    /**
-     * この材料に一致するすべての種類を返します。
-     */
-    fun unwrap(): Either<TagKey<TYPE>, List<RESOURCE>>
+    interface Registered<TYPE : Any, RESOURCE : HTResourceType<TYPE>> : HTIngredient<RESOURCE> {
+        /**
+         * この材料に一致するすべての種類を返します。
+         */
+        fun unwrap(): Either<TagKey<TYPE>, List<RESOURCE>>
 
-    override fun getText(): Text = unwrap().map(TagKey<TYPE>::getName) { resources: List<RESOURCE> ->
-        ComponentUtils.formatList(resources, HTHasText::getText)
+        override fun getText(): Text = unwrap().map(TagKey<TYPE>::getName) { resources: List<RESOURCE> ->
+            ComponentUtils.formatList(resources, HTHasText::getText)
+        }
     }
 }

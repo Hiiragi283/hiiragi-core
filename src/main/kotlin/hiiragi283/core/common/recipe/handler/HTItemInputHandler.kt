@@ -13,7 +13,7 @@ import java.util.function.Consumer
 class HTItemInputHandler(slot: HTItemSlot, private val remainderConsumer: Consumer<ItemStack>? = null) :
     HTInputHandler<HTItemResourceType>,
     HTItemSlot by slot {
-    override fun getMatchingAmount(ingredient: HTIngredient<*, HTItemResourceType>): Int {
+    override fun getMatchingAmount(ingredient: HTIngredient<HTItemResourceType>): Int {
         val resource: HTItemResourceType = getResource() ?: return 0
         if (ingredient.testOnlyType(resource)) {
             return ingredient.amount

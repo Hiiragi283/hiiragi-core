@@ -11,7 +11,6 @@ import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.common.gui.sync.HTFractionSyncSlot
-import hiiragi283.core.common.gui.sync.HTItemSyncSlot
 import hiiragi283.core.common.gui.widget.HTFillDirection
 import hiiragi283.core.common.gui.widget.HTFluidWidget
 import hiiragi283.core.common.gui.widget.HTItemSlotWidget
@@ -23,7 +22,6 @@ import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.level.block.state.BlockState
-import org.apache.commons.lang3.math.Fraction
 
 class HTTestBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HCBlockEntityTypes.TEST, pos, state) {
     private lateinit var tank1: HTBasicFluidTank
@@ -68,15 +66,15 @@ class HTTestBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HCBloc
 
         // slot
         for (i in (0..2)) {
-            widgetHolder += HTItemSlotWidget(
+            widgetHolder += HTItemSlotWidget.container(
                 slot1,
                 HTSlotHelper.getSlotPosX(3),
                 HTSlotHelper.getSlotPosY(i),
                 HTBackgroundType.INPUT,
             )
         }
-        widgetHolder += HTItemSlotWidget(
-            HTItemSyncSlot(slot2),
+        widgetHolder += HTItemSlotWidget.fake(
+            slot2,
             HTSlotHelper.getSlotPosX(2),
             HTSlotHelper.getSlotPosY(2),
             HTBackgroundType.OUTPUT,
@@ -85,10 +83,7 @@ class HTTestBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HCBloc
         // progress
         widgetHolder += HTProgressWidget
             .createArrow(
-                HTFractionSyncSlot.create(
-                    { fixedFraction(ticks, 20 * 5, true) },
-                    { fraction: Fraction -> ticks },
-                ),
+                HTFractionSyncSlot.create({ fixedFraction(ticks, 20 * 5, true) }, { _ -> ticks }),
                 HTSlotHelper.getSlotPosX(4),
                 HTSlotHelper.getSlotPosY(1),
             ).setDirection(HTFillDirection.END_TO_TOP)

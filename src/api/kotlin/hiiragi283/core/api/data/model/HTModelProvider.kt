@@ -5,7 +5,6 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTFluidHolderLike
-import hiiragi283.core.api.registry.IdToFunction
 import hiiragi283.core.api.registry.getBucketHolder
 import hiiragi283.core.api.registry.getFluidType
 import hiiragi283.core.api.resource.HTIdLike
@@ -136,10 +135,10 @@ abstract class HTModelProvider : ResourceGenTask {
         block: HTIdLike,
         suffix: String,
         model: ModelTemplate,
-        textureFactory: IdToFunction<TextureMapping>,
+        textureFactory: (ResourceLocation) -> TextureMapping,
     ): ResourceLocation {
         val id: ResourceLocation = block.blockId
-        return model.create(id.withSuffix(suffix), textureFactory.apply(id), modelOutput)
+        return model.create(id.withSuffix(suffix), textureFactory(id), modelOutput)
     }
 
     protected fun addBlockModel(block: HTIdLike, provider: HTTexturedModel.Provider): ResourceLocation =

@@ -8,7 +8,6 @@ import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.HTHasTranslationKey
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.Either
-import hiiragi283.core.api.util.unwrap
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentPatch
@@ -34,7 +33,7 @@ interface HTItemHolderLike<ITEM : Item> :
     HTHasTranslationKey,
     HTHasText,
     ItemLike {
-    fun getHolder(): Holder<Item> = unwrap().mapLeft(BuiltInRegistries.ITEM::getHolderOrThrow).unwrap()
+    fun getHolder(): Holder<Item> = getHolder(BuiltInRegistries.ITEM::getHolderOrThrow)
 
     override fun asItem(): ITEM = get()
 

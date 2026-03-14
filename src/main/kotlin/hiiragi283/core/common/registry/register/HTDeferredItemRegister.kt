@@ -4,8 +4,6 @@ import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.HTSimpleItemHolderLike
-import hiiragi283.core.api.registry.ItemFactory
-import hiiragi283.core.api.registry.ItemWithContextFactory
 import hiiragi283.core.api.util.Either
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries
@@ -15,6 +13,8 @@ import net.minecraft.world.item.Item
 import net.neoforged.neoforge.registries.DeferredHolder
 import java.util.function.Supplier
 import java.util.function.UnaryOperator
+
+typealias ItemWithContextFactory<C, ITEM> = (C, Item.Properties) -> ITEM
 
 class HTDeferredItemRegister(namespace: String) : HTDeferredRegister<Item>(Registries.ITEM, namespace) {
     private val itemEntries: MutableCollection<HTItemHolderLike<*>> = mutableSetOf()
@@ -35,7 +35,7 @@ class HTDeferredItemRegister(namespace: String) : HTDeferredRegister<Item>(Regis
 
     fun <ITEM : Item> registerItem(
         name: String,
-        factory: ItemFactory<ITEM>,
+        factory: (Item.Properties) -> ITEM,
         operator: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
     ): HTItemHolderLike<ITEM> = delegate
         .register(name) { _: ResourceLocation -> factory(operator.apply(Item.Properties())) }

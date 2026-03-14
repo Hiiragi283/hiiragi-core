@@ -19,7 +19,7 @@ import net.neoforged.neoforge.fluids.crafting.TagFluidIngredient
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
-class HTFluidIngredient(val unsized: FluidIngredient, override val amount: Int) : HTIngredient<Fluid, HTFluidResourceType> {
+class HTFluidIngredient(val unsized: FluidIngredient, override val amount: Int) : HTIngredient.Registered<Fluid, HTFluidResourceType> {
     companion object {
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTFluidIngredient> = BiCodec.composite(

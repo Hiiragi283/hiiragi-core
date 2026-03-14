@@ -11,6 +11,7 @@ import hiiragi283.core.api.gui.widget.HTWidgetType
 import hiiragi283.core.api.integration.jei.widget.HTGhostWidget
 import hiiragi283.core.api.integration.jei.widget.HTIngredientWidget
 import hiiragi283.core.api.storage.item.HTMutableItemSlot
+import hiiragi283.core.api.storage.item.HTMutableItemView
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.common.gui.HTContainerItemSlot
 import hiiragi283.core.common.gui.sync.HTItemSyncSlot
@@ -25,31 +26,35 @@ class HTItemSlotWidget private constructor(
 ) : HTAbstractWidget(bounds),
     HTGhostWidget,
     HTIngredientWidget {
-    constructor(
-        slot: Slot,
-        backgroundType: HTBackgroundType,
-    ) : this(
-        Either.Right(slot),
-        backgroundType,
-        HTBounds.createSlot(
-            slot.x - 1,
-            slot.y - 1,
-        ),
-    )
+    companion object {
+        @JvmStatic
+        fun container(
+            slot: HTMutableItemSlot,
+            x: Int,
+            y: Int,
+            backgroundType: HTBackgroundType,
+        ): HTItemSlotWidget = container(HTContainerItemSlot.create(slot, x, y, backgroundType), backgroundType)
 
-    constructor(slot: HTMutableItemSlot, x: Int, y: Int, backgroundType: HTBackgroundType) : this(
-        HTContainerItemSlot.create(slot, x, y, backgroundType),
-        backgroundType,
-    )
+        @JvmStatic
+        fun container(slot: Slot, backgroundType: HTBackgroundType): HTItemSlotWidget =
+            HTItemSlotWidget(Either.Right(slot), backgroundType, HTBounds.createSlot(slot.x - 1, slot.y - 1))
 
-    constructor(slot: HTItemSyncSlot, x: Int, y: Int, backgroundType: HTBackgroundType) : this(
-        Either.Left(slot),
-        backgroundType,
-        HTBounds.createSlot(
-            x - 1,
-            y - 1,
-        ),
-    )
+        @JvmStatic
+        fun fake(
+            view: HTMutableItemView,
+            x: Int,
+            y: Int,
+            backgroundType: HTBackgroundType,
+        ): HTItemSlotWidget = fake(HTItemSyncSlot(view), x, y, backgroundType)
+
+        @JvmStatic
+        fun fake(
+            slot: HTItemSyncSlot,
+            x: Int,
+            y: Int,
+            backgroundType: HTBackgroundType,
+        ): HTItemSlotWidget = HTItemSlotWidget(Either.Left(slot), backgroundType, HTBounds.createSlot(x - 1, y - 1))
+    }
 
     fun getStack(): ItemStack = contents.map(HTItemSyncSlot::asItemStack, Slot::getItem)
 

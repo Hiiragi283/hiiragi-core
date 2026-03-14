@@ -1,6 +1,5 @@
 package hiiragi283.core.common.registry.register
 
-import hiiragi283.core.api.registry.BlockFactory
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.util.Either

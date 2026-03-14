@@ -4,7 +4,6 @@ import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.fluid.HTVirtualFluid
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.function.partially2
-import hiiragi283.core.api.registry.BlockWithContextFactory
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTFluidHolderLike
@@ -12,7 +11,6 @@ import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.HTSimpleItemHolderLike
-import hiiragi283.core.api.registry.ItemWithContextFactory
 import hiiragi283.core.api.registry.addAlias
 import hiiragi283.core.api.registry.asSequence
 import hiiragi283.core.api.registry.createId
@@ -153,7 +151,7 @@ class HTFluidContentRegister(modId: String) {
         var sourceFactory: (BaseFlowingFluid.Properties) -> BaseFlowingFluid.Source = BaseFlowingFluid::Source
         var flowingFactory: (BaseFlowingFluid.Properties) -> BaseFlowingFluid.Flowing = BaseFlowingFluid::Flowing
 
-        var blockFactory: BlockWithContextFactory<BaseFlowingFluid, LiquidBlock>? = ::LiquidBlock
+        var blockFactory: ((BaseFlowingFluid, BlockBehaviour.Properties) -> LiquidBlock)? = ::LiquidBlock
         var blockProperties: (BlockBehaviour.Properties) -> BlockBehaviour.Properties = identity()
 
         override fun createContent(

@@ -2,6 +2,7 @@ package hiiragi283.core.common
 
 import com.google.gson.JsonObject
 import hiiragi283.core.api.HTComparators
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.item.alchemy.HTBottleType
@@ -97,8 +98,10 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
     override val materialPlugins: Sequence<HTMaterialPlugin> by lazy {
         HTPluginLoader
             .collectPlugins<HTMaterialPlugin>()
-            .filter { ModList.get().isLoaded(it.getId().namespace) }
-            .sortedWith(
+            .filter {
+                val modId: String = it.namespace
+                modId in HTConst.getBuiltInIdSet(HiiragiCoreAPI.MOD_ID) || ModList.get().isLoaded(modId)
+            }.sortedWith(
                 compareBy(HTMaterialPlugin::priority)
                     .thenComparing(HTMaterialPlugin::getId, HTComparators.ID),
             )

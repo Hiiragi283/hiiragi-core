@@ -1,7 +1,10 @@
 package hiiragi283.core.api.serialization.codec
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.RegistryKey
+import hiiragi283.core.api.serialization.codec.impl.HTHolderLikeCodec
+import hiiragi283.core.api.serialization.codec.impl.HTHolderLikeStreamCodec
 import hiiragi283.core.api.serialization.codec.impl.HTIngredientCodec
 import hiiragi283.core.api.tag.createTagKey
 import hiiragi283.core.api.text.Text
@@ -166,4 +169,8 @@ object VanillaBiCodecs {
     @JvmStatic
     fun <T : Any> holderSet(registryKey: RegistryKey<T>): BiCodec<RegistryFriendlyByteBuf, HolderSet<T>> =
         BiCodec.of(RegistryCodecs.homogeneousList(registryKey), ByteBufCodecs.holderSet(registryKey))
+
+    @JvmStatic
+    fun <T : Any> holderLike(registryKey: RegistryKey<T>): BiCodec<RegistryFriendlyByteBuf, HTSimpleHolderLike<T>> =
+        BiCodec.of(HTHolderLikeCodec(registryKey), HTHolderLikeStreamCodec(registryKey))
 }

@@ -62,12 +62,12 @@ object HTShapelessRecipeHelper {
 
     /**
      * 指定した[ingredients]に[stacks]が不定形で一致するか判定します。
-     * @param T [HTResourceType]を実装したクラス
+     * @param T [HTIngredient]の対象となるクラス
      * @param I [HTIngredient]を実装したクラス
      * @return 消費される[リソース][T]と消費する量のマップ
      */
     @JvmStatic
-    fun <T : HTResourceType<*>, I : HTIngredient<*, T>> shapelessMatch(ingredients: List<I>, stacks: Map<T, Int>): Map<T, Int> {
+    fun <T : Any, I : HTIngredient<T>> shapelessMatch(ingredients: List<I>, stacks: Map<T, Int>): Map<T, Int> {
         val stacks1: MutableMap<T, Int> = stacks.toMutableMap()
 
         var count = 0
@@ -89,7 +89,7 @@ object HTShapelessRecipeHelper {
     }
 
     @JvmStatic
-    fun <T : HTResourceType<*>, I : HTIngredient<*, T>> shapelessMatch(
+    fun <T : HTResourceType<*>, I : HTIngredient<T>> shapelessMatch(
         ingredients: List<I>,
         views: Iterable<HTResourceView<T>>,
     ): Map<T, Int> = shapelessMatch(ingredients, createMap(views))
@@ -119,10 +119,7 @@ object HTShapelessRecipeHelper {
      * @return すべての材料に対して消費が行われた場合は`true`
      */
     @JvmStatic
-    fun <T : HTResourceType<*>, I : HTIngredient<*, T>> shapelessConsume(
-        ingredients: List<I>,
-        slots: Iterable<HTResourceSlot<T>>,
-    ): Boolean {
+    fun <T : HTResourceType<*>, I : HTIngredient<T>> shapelessConsume(ingredients: List<I>, slots: Iterable<HTResourceSlot<T>>): Boolean {
         val resultMap: Map<T, Int> = shapelessMatch(ingredients, slots)
         if (resultMap.isEmpty()) return false
 

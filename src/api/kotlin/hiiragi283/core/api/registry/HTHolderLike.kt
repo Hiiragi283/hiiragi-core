@@ -32,6 +32,8 @@ interface HTHolderLike<R : Any, T : R> :
     Supplier<T> {
     fun unwrap(): Either<ResourceKey<R>, Holder<R>>
 
+    fun getHolder(holderGetter: (ResourceKey<R>) -> Holder<R>): Holder<R> = unwrap().mapLeft(holderGetter).unwrap()
+
     override fun getResourceKey(): ResourceKey<R> = unwrap().mapRight(Holder<R>::unwrapKey.andThen { it.orElseThrow() }).unwrap()
 }
 

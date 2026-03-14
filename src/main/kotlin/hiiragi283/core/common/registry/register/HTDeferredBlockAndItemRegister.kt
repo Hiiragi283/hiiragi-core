@@ -1,10 +1,8 @@
 package hiiragi283.core.common.registry.register
 
 import hiiragi283.core.api.item.HTBlockItem
-import hiiragi283.core.api.registry.BlockFactory
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
-import hiiragi283.core.api.registry.ItemWithContextFactory
 import hiiragi283.core.common.registry.HTBasicDeferredBlockAndItem
 import hiiragi283.core.common.registry.HTDeferredBlockAndItem
 import hiiragi283.core.common.registry.HTSimpleDeferredBlockAndItem
@@ -13,6 +11,8 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.neoforged.bus.api.IEventBus
 import java.util.function.UnaryOperator
+
+typealias BlockFactory<BLOCK> = (BlockBehaviour.Properties) -> BLOCK
 
 class HTDeferredBlockAndItemRegister(private val blockRegister: HTDeferredBlockRegister, private val itemRegister: HTDeferredItemRegister) {
     constructor(namespace: String) : this(HTDeferredBlockRegister(namespace))

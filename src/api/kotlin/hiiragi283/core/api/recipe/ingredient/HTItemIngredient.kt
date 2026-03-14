@@ -19,7 +19,7 @@ import net.neoforged.neoforge.common.crafting.ICustomIngredient
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
-class HTItemIngredient(val unsized: Ingredient, override val amount: Int) : HTIngredient<Item, HTItemResourceType> {
+class HTItemIngredient(val unsized: Ingredient, override val amount: Int) : HTIngredient.Registered<Item, HTItemResourceType> {
     companion object {
         @JvmField
         val UNSIZED_CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> =

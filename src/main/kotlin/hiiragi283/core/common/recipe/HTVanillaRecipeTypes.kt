@@ -13,13 +13,13 @@ import hiiragi283.core.api.recipe.HTRecipeType
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
+import hiiragi283.core.api.registry.toHolderSet
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.IdToValue
 import hiiragi283.core.mixin.PotionBrewingAccessor
 import hiiragi283.core.mixin.PotionBrewingMixAccessor
 import hiiragi283.core.util.HCPotionFluidHelper
 import net.minecraft.core.Holder
-import net.minecraft.core.HolderSet
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.alchemy.Potion
@@ -99,7 +99,10 @@ object HTVanillaRecipeTypes {
                         val resultContents: HTPotionContents = HTPotionContents.of(potionTo, HTBottleType.DEFAULT) ?: return@mapIndexed null
                         val fluidIngredient: HTFluidIngredient = when (potionFrom) {
                             Potions.WATER -> HTIngredientCreator.water()
-                            else -> HTIngredientCreator.create(HTPotionFluidIngredient(HolderSet.direct(potionFrom), HTBottleType.DEFAULT))
+                            else -> listOf(potionFrom)
+                                .toHolderSet()
+                                .let { HTPotionFluidIngredient(it, HTBottleType.DEFAULT) }
+                                .let(HTIngredientCreator::create)
                         }
                         val recipe = HCBrewingRecipe(
                             fluidIngredient,
