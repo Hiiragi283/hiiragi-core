@@ -12,7 +12,6 @@ import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.VanillaFluidContents
-import hiiragi283.core.api.registry.toResource
 import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.tag.HTTagPrefix

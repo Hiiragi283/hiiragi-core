@@ -2,7 +2,6 @@ package hiiragi283.core.common.storage.fluid
 
 import com.google.common.primitives.Ints
 import hiiragi283.core.api.HTContentListener
-import hiiragi283.core.api.registry.toResource
 import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction

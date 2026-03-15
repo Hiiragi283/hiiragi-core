@@ -23,9 +23,6 @@ import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.HTFluidHolderLike
-import hiiragi283.core.api.registry.getBucketHolder
-import hiiragi283.core.api.registry.getFluidType
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
@@ -202,13 +199,13 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
             }
             // Fluid
             val fluids: HTMaterialContents<HTFluidPart, Fluid> = HiiragiCoreAccess.INSTANCE.registeredFluids
-            for ((part: HTFluidPart, fluid: HTFluidHolderLike<*>) in fluids.column(entry)) {
+            for ((part: HTFluidPart, fluid: HTMaterialContents.Entry<Fluid>) in fluids.column(entry)) {
                 val name: String = translate(langType, part, entry) ?: continue
-                consumer(fluid.getFluidType().descriptionId, name)
+                consumer(fluid.get().fluidType.descriptionId, name)
                 consumer(Tags.getTagTranslationKey(part.createTagKey(entry)), name)
 
                 val bucketName: String = HTLangPatternProvider.create("%s Bucket", "%s入りバケツ").translate(langType, name)
-                consumer(fluid.getBucketHolder().translationKey, bucketName)
+                consumer(fluid.get().bucket.descriptionId, bucketName)
                 consumer(Tags.getTagTranslationKey(part.createBucketTag(entry)), bucketName)
             }
             // Item

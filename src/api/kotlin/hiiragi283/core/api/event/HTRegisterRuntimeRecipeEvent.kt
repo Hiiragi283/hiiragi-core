@@ -6,10 +6,11 @@ import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.part.HTFluidPart
-import hiiragi283.core.api.registry.HTFluidHolderLike
-import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.registry.HTSimpleFluidHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLike
+import hiiragi283.core.api.registry.HTSimpleItemHolderLike
 import hiiragi283.core.api.registry.holderSetOrNull
+import hiiragi283.core.api.registry.toFluidLike
 import hiiragi283.core.api.registry.toItemLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.text.HTTextResult
@@ -69,13 +70,13 @@ class HTRegisterRuntimeRecipeEvent(val recipeManager: RecipeManager, val context
     fun <T : Any> isPresentTag(tagKey: TagKey<T>): Boolean = context.provider.holderSetOrNull(tagKey) != null
 
     // Material
-    fun getFirstHolder(prefix: HTTagPrefix, material: HTMaterialLike): HTItemHolderLike<*>? =
+    fun getFirstHolder(prefix: HTTagPrefix, material: HTMaterialLike): HTSimpleItemHolderLike? =
         getFirstHolder(prefix.itemTagKey(material), true)?.toItemLike()
 
     fun isPresentTag(prefix: HTTagPrefix, material: HTMaterialLike): Boolean = isPresentTag(prefix.itemTagKey(material))
 
-    fun getFirstHolder(part: HTFluidPart, material: HTMaterialLike): HTFluidHolderLike<*>? =
-        getFirstHolder(part.createTagKey(material), true)
+    fun getFirstHolder(part: HTFluidPart, material: HTMaterialLike): HTSimpleFluidHolderLike? =
+        getFirstHolder(part.createTagKey(material), true)?.toFluidLike()
 
     fun isPresentTag(part: HTFluidPart, material: HTMaterialLike): Boolean = isPresentTag(part.createTagKey(material))
 }

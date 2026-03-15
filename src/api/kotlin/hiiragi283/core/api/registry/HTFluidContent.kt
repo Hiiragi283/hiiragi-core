@@ -19,13 +19,17 @@ class HTFluidContent(
     // Required
     val typeHolder: HTHolderLike<FluidType, *>,
     private val sourceHolder: HTFluidHolderLike<*>,
-    val bucketHolder: HTItemHolderLike<*>,
+    val bucketHolder: HTSimpleItemHolderLike,
     val fluidTag: TagKey<Fluid>,
     val bucketTag: TagKey<Item>,
     // Optional
     val flowingHolder: HTFluidHolderLike<out FlowingFluid>?,
     val blockHolder: HTBlockHolderLike<out LiquidBlock>?,
-) : HTFluidHolderLike<Fluid> {
+) : HTSimpleFluidHolderLike {
+    override fun getBucket(): HTSimpleItemHolderLike = bucketHolder
+
+    override fun getFluidType(): FluidType = typeHolder.get()
+
     override fun unwrap(): Either<ResourceKey<Fluid>, Holder<Fluid>> = sourceHolder.unwrap()
 
     override fun get(): Fluid = sourceHolder.get()

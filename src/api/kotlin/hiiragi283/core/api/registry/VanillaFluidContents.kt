@@ -37,7 +37,7 @@ data object VanillaFluidContents {
     @JvmField
     val MILK = HTFluidContent(
         NeoForgeMod.MILK_TYPE.toLike(),
-        NeoForgeMod.MILK.toLike(),
+        NeoForgeMod.MILK.toLike().toFluidLike(),
         Items.MILK_BUCKET.toLike(),
         Tags.Fluids.MILK,
         Tags.Items.BUCKETS_MILK,

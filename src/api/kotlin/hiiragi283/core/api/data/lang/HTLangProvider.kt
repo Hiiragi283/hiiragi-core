@@ -2,8 +2,6 @@ package hiiragi283.core.api.data.lang
 
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.getBucketHolder
-import hiiragi283.core.api.registry.getFluidType
 import hiiragi283.core.api.resource.toDescriptionKey
 import hiiragi283.core.api.text.HTHasTranslationKey
 import net.minecraft.data.PackOutput
@@ -59,7 +57,7 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
         add(content.fluidTag, value)
 
         val bucketName: String = BUCKET_PATTERN.translate(langType, value)
-        add(content.getBucketHolder(), bucketName)
+        add(content.getBucket(), bucketName)
         add(content.bucketTag, bucketName)
     }
 }

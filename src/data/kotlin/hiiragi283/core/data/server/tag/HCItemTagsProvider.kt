@@ -5,7 +5,6 @@ import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.tag.HTItemTagsProvider
 import hiiragi283.core.api.data.tag.HTTagsProvider
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.getBucketHolder
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
@@ -23,7 +22,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
     override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Item>) {
         // Buckets
         for (content: HTFluidContent in HCFluids.REGISTER.entries) {
-            addTags(factory, Tags.Items.BUCKETS, content.bucketTag).add(content.getBucketHolder())
+            addTags(factory, Tags.Items.BUCKETS, content.bucketTag).add(content.getBucket())
         }
         // Foods
         addTags(factory, HiiragiCoreTags.Items.DOUGHS, HiiragiCoreTags.Items.DOUGHS_WHEAT).add(HCItems.WHEAT_DOUGH)

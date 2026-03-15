@@ -13,7 +13,6 @@ import hiiragi283.core.api.material.getOrThrow
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.getBucket
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HiiragiCoreTags

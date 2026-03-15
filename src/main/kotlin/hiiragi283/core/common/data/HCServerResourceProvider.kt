@@ -20,8 +20,7 @@ import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.prefixEntries
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.HTFluidHolderLike
-import hiiragi283.core.api.registry.getBucketHolder
+import hiiragi283.core.api.registry.toFluidLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -176,8 +175,8 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
                     addMaterial(factory, prefix, key).add(block)
                 }
                 // Material Fluid
-                fluids.forEach { (part: HTFluidPart, key: HTMaterialKey, fluid: HTFluidHolderLike<*>) ->
-                    addTags(factory, Tags.Items.BUCKETS, part.createBucketTag(key)).add(fluid.getBucketHolder())
+                fluids.forEach { (part: HTFluidPart, key: HTMaterialKey, fluid: HTMaterialContents.Entry<Fluid>) ->
+                    addTags(factory, Tags.Items.BUCKETS, part.createBucketTag(key)).add(fluid.toFluidLike().getBucket())
                 }
                 // Material Item
                 existing.items.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->

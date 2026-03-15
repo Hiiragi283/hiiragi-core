@@ -4,8 +4,6 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.getBucketHolder
-import hiiragi283.core.api.registry.getFluidType
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
@@ -93,7 +91,7 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
             else -> "bucket"
         }.let { HTConst.NEOFORGE.toId(HTConst.ITEM, it) }
 
-        val builder: DynamicFluidContainerModelBuilder<ItemModelBuilder> = withExistingParent(content.getBucketHolder().path, parent)
+        val builder: DynamicFluidContainerModelBuilder<ItemModelBuilder> = withExistingParent(content.getBucket().path, parent)
             .customLoader(DynamicFluidContainerModelBuilder<ItemModelBuilder>::begin)
             .fluid(content.get())
         if (content.getFluidType().isLighterThanAir) {

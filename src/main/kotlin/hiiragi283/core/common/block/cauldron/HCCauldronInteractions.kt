@@ -2,10 +2,7 @@ package hiiragi283.core.common.block.cauldron
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.getBucket
-import hiiragi283.core.api.registry.getBucketHolder
 import hiiragi283.core.api.registry.getDefaultState
-import hiiragi283.core.api.registry.getFluidType
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.core.BlockPos
@@ -44,7 +41,7 @@ object HCCauldronInteractions {
 
     @JvmStatic
     private fun emptyBucket(fluid: HTFluidContent, cauldron: BlockState) {
-        CauldronInteraction.EMPTY.map[fluid.getBucket()] =
+        CauldronInteraction.EMPTY.map[fluid.getBucket().get()] =
             CauldronInteraction { _: BlockState, level: Level, pos: BlockPos, player: Player, hand: InteractionHand, stack: ItemStack ->
                 CauldronInteraction.emptyBucket(
                     level,
@@ -62,6 +59,6 @@ object HCCauldronInteractions {
     private fun fillBucket(fluid: HTFluidContent, predicate: Predicate<BlockState>): CauldronInteraction =
         CauldronInteraction { state: BlockState, level: Level, pos: BlockPos, player: Player, hand: InteractionHand, stack: ItemStack ->
             val fillSound: SoundEvent = fluid.getFluidType().getSound(SoundActions.BUCKET_FILL) ?: SoundEvents.BUCKET_FILL
-            CauldronInteraction.fillBucket(state, level, pos, player, hand, stack, fluid.getBucketHolder().toStack(), predicate, fillSound)
+            CauldronInteraction.fillBucket(state, level, pos, player, hand, stack, fluid.getBucket().toStack(), predicate, fillSound)
         }
 }

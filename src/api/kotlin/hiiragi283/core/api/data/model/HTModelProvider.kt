@@ -5,8 +5,6 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTFluidHolderLike
-import hiiragi283.core.api.registry.getBucketHolder
-import hiiragi283.core.api.registry.getFluidType
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
@@ -172,6 +170,6 @@ abstract class HTModelProvider : ResourceGenTask {
         if (content.getFluidType().isLighterThanAir) {
             root.addProperty("flip_gas", "true")
         }
-        sink.addItemModel(content.getBucketHolder().getId(), root)
+        sink.addItemModel(content.getBucket().getId(), root)
     }
 }

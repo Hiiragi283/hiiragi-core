@@ -4,8 +4,6 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.item.alchemy.HTPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.registry.VanillaFluidContents
-import hiiragi283.core.api.registry.getBucket
-import hiiragi283.core.api.registry.toStack
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.setup.HCFluids

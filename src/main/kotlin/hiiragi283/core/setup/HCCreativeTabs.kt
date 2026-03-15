@@ -5,7 +5,7 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.asSequence
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTSimpleHolderLike
-import hiiragi283.core.api.registry.getBucketHolder
+import hiiragi283.core.api.registry.toFluidLike
 import hiiragi283.core.common.registry.register.HTDeferredCreativeTabRegister
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.world.item.CreativeModeTab
@@ -71,7 +71,9 @@ object HCCreativeTabs {
                     .registeredFluids
                     .asSequence()
                     .sortedWith(TRIPLE_COMPARATOR)
-                    .map { it.third.getBucketHolder() },
+                    .map { it.third }
+                    .map { it.toFluidLike() }
+                    .map { it.getBucket() },
             )
         }
     }

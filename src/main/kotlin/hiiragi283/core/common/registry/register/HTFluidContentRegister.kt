@@ -14,6 +14,7 @@ import hiiragi283.core.api.registry.HTSimpleItemHolderLike
 import hiiragi283.core.api.registry.addAlias
 import hiiragi283.core.api.registry.asSequence
 import hiiragi283.core.api.registry.createId
+import hiiragi283.core.api.registry.toFluidLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.tag.createCommonTag
 import net.minecraft.core.registries.Registries
@@ -41,7 +42,7 @@ class HTFluidContentRegister(modId: String) {
     private val blockRegister = HTDeferredBlockRegister(modId)
     private val itemRegister = HTDeferredItemRegister(modId)
 
-    fun asFluidSequence(): Sequence<HTFluidHolderLike<*>> = fluidRegister.asSequence()
+    fun asFluidSequence(): Sequence<HTFluidHolderLike<*>> = fluidRegister.asSequence().map { it.toFluidLike() }
 
     fun asTypeSequence(): Sequence<HTHolderLike<FluidType, *>> = typeRegister.asSequence()
 
@@ -115,14 +116,14 @@ class HTFluidContentRegister(modId: String) {
                 { bucketFactory(sourceHolder.get(), it) },
                 { it.stacksTo(1).craftRemainder(Items.BUCKET) },
             )
-            val content: HTFluidContent = createContent(typeHolder.toLike(), sourceHolder.toLike(), bucketHolder)
+            val content: HTFluidContent = createContent(typeHolder.toLike(), sourceHolder.toLike().toFluidLike(), bucketHolder)
             contentsCache[sourceHolder.key!!] = content
             return content
         }
 
         protected abstract fun createContent(
             typeHolder: HTSimpleHolderLike<FluidType>,
-            sourceHolder: HTHolderLike<Fluid, FLUID>,
+            sourceHolder: HTFluidHolderLike<FLUID>,
             bucketHolder: HTSimpleItemHolderLike,
         ): HTFluidContent
     }
@@ -130,7 +131,7 @@ class HTFluidContentRegister(modId: String) {
     inner class VirtualBuilder(name: String) : Builder<HTVirtualFluid>(name) {
         override fun createContent(
             typeHolder: HTSimpleHolderLike<FluidType>,
-            sourceHolder: HTHolderLike<Fluid, HTVirtualFluid>,
+            sourceHolder: HTFluidHolderLike<HTVirtualFluid>,
             bucketHolder: HTSimpleItemHolderLike,
         ): HTFluidContent {
             // Content
@@ -156,7 +157,7 @@ class HTFluidContentRegister(modId: String) {
 
         override fun createContent(
             typeHolder: HTSimpleHolderLike<FluidType>,
-            sourceHolder: HTHolderLike<Fluid, BaseFlowingFluid>,
+            sourceHolder: HTFluidHolderLike<BaseFlowingFluid>,
             bucketHolder: HTSimpleItemHolderLike,
         ): HTFluidContent {
             // Liquid Block
@@ -193,7 +194,7 @@ class HTFluidContentRegister(modId: String) {
                 bucketHolder,
                 Registries.FLUID.createCommonTag(fluidTag),
                 Registries.ITEM.createCommonTag(bucketTag),
-                flowingHolder.toLike(),
+                flowingHolder.toLike().toFluidLike(),
                 blockHolder,
             )
         }

@@ -3,8 +3,6 @@ package hiiragi283.core.data.client
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.data.lang.HTLangTypes
-import hiiragi283.core.api.registry.getBucketHolder
-import hiiragi283.core.api.registry.getFluidType
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.common.text.HCTranslation
@@ -40,7 +38,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.MUSHROOM_STEW, "キノコシチュー")
         addFluid(HCFluids.DRAGON_BREATH, "ドラゴンブレス")
         add(HCFluids.POTION.getFluidType().descriptionId, "無効なポーション入りバケツ")
-        add(HCFluids.POTION.getBucketHolder(), $$"%1$s入りバケツ")
+        add(HCFluids.POTION.getBucket(), $$"%1$s入りバケツ")
         addFluid(HCFluids.OMINOUS_FLUX, "不吉な流動体")
 
         addFluid(HCFluids.LATEX, "ラテックス")
