@@ -8,7 +8,8 @@ import net.neoforged.neoforge.fluids.FluidStack
  * @author Hiiragi Tsubasa
  * @since 0.5.0
  */
-open class HTSingleFluidRecipeInput(val fluid: FluidStack) : HTFluidRecipeInput {
+@JvmRecord
+data class HTSingleFluidRecipeInput(val fluid: FluidStack) : HTFluidRecipeInput {
     override fun getFluid(index: Int): FluidStack = fluid
 
     override fun getFluidSize(): Int = 1

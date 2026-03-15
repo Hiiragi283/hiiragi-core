@@ -31,17 +31,17 @@ import org.apache.commons.lang3.math.Fraction
 
 typealias JeiRecipeType<T> = RecipeType<T>
 
-fun <T : IIngredientConsumer> T.addFluidStack(stack: FluidStack): T {
+fun <T : IIngredientConsumer> T.addFluidStack(stack: FluidStack, setRenderer: Boolean = true): T {
     this.addFluidStack(stack.fluid, stack.amount.toLong(), stack.componentsPatch)
-    if (this is IRecipeSlotBuilder) {
+    if (setRenderer && this is IRecipeSlotBuilder) {
         this.setFluidRenderer(stack.amount.toLong(), false, 16, 16)
     }
     return this
 }
 
-fun <T : IIngredientConsumer> T.addFluidStacks(stacks: Iterable<FluidStack>): T {
+fun <T : IIngredientConsumer> T.addFluidStacks(stacks: Iterable<FluidStack>, setRenderer: Boolean = true): T {
     this.addIngredients(NeoForgeTypes.FLUID_STACK, stacks.toList())
-    if (this is IRecipeSlotBuilder) {
+    if (setRenderer && this is IRecipeSlotBuilder) {
         val capacity: Long = (stacks.maxOfOrNull(FluidStack::getAmount) ?: HTConst.DEFAULT_FLUID_AMOUNT).toLong()
         this.setFluidRenderer(capacity, false, 16, 16)
     }
@@ -103,7 +103,7 @@ fun <T : IIngredientConsumer> T.addItemResult(result: HTChancedItemResult?): T {
 }
 
 // Fluid
-fun <T : IIngredientConsumer> T.addFluidIngredient(ingredient: HTFluidIngredient?): T {
+fun <T : IIngredientConsumer> T.addFluidIngredient(ingredient: HTFluidIngredient?, setRenderer: Boolean = true): T {
     if (ingredient == null) return this
     val amount: Int = when {
         ingredient.isCatalyst -> 1
@@ -114,7 +114,7 @@ fun <T : IIngredientConsumer> T.addFluidIngredient(ingredient: HTFluidIngredient
         .map(
             { tagKey: TagKey<Fluid> -> BuiltInRegistries.FLUID.getTagOrEmpty(tagKey).map { FluidStack(it, amount) } },
             { resources: List<HTFluidResourceType> -> resources.map { it.toStack(amount) } },
-        ).let(this::addFluidStacks)
+        ).let { this.addFluidStacks(it, setRenderer) }
     if (ingredient.isCatalyst && this is IRecipeSlotBuilder) {
         this.addRichTooltipCallback { _, builder: ITooltipBuilder ->
             builder.add(HTCommonTranslation.CHANCE_CONSUME.translateColored(HTDefaultColor.YELLOW, 0))
@@ -123,5 +123,5 @@ fun <T : IIngredientConsumer> T.addFluidIngredient(ingredient: HTFluidIngredient
     return this
 }
 
-fun <T : IIngredientConsumer> T.addFluidResult(result: HTFluidResult?): T =
-    this.addFluidStacks(listOfNotNull(result?.getStackResult(null)?.value()))
+fun <T : IIngredientConsumer> T.addFluidResult(result: HTFluidResult?, setRenderer: Boolean = true): T =
+    this.addFluidStacks(listOfNotNull(result?.getStackResult(null)?.value()), setRenderer)

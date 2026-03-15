@@ -13,11 +13,23 @@ import net.neoforged.neoforge.common.MutableDataComponentHolder
  */
 @Suppress("DEPRECATION")
 data object HTPotionFluidManager {
+    /**
+     * 登録されている[液体][Fluid]のインスタンス
+     */
     @JvmStatic
-    private val fluidHandlers: MutableMap<Holder<Fluid>, Handler> = hashMapOf()
+    val fluidHandlers: Map<Holder<Fluid>, Handler> get() = _fluidHandlers
 
     @JvmStatic
-    private val itemHandlers: MutableMap<Holder<Item>, Handler> = hashMapOf()
+    private val _fluidHandlers: MutableMap<Holder<Fluid>, Handler> = hashMapOf()
+
+    /**
+     * 登録されている[アイテム][Item]のインスタンス
+     */
+    @JvmStatic
+    val itemHandlers: Map<Holder<Item>, Handler> get() = _itemHandlers
+
+    @JvmStatic
+    private val _itemHandlers: MutableMap<Holder<Item>, Handler> = hashMapOf()
 
     /**
      * 指定した[fluid]に[handler]を登録します。
@@ -25,24 +37,17 @@ data object HTPotionFluidManager {
      */
     @JvmStatic
     fun register(fluid: Fluid, handler: Handler) {
-        check(fluidHandlers.put(fluid.builtInRegistryHolder(), handler) == null) {
+        check(_fluidHandlers.put(fluid.builtInRegistryHolder(), handler) == null) {
             "Duplicated potion fluid registration: $fluid"
         }
     }
-
-    /**
-     * 登録されている[液体][Fluid]の一覧を取得します。
-     * @return [Holder]の一覧
-     */
-    @JvmStatic
-    fun getSupportedFluids(): Set<Holder<Fluid>> = fluidHandlers.keys
 
     /**
      * 指定した[holder]から[Handler]を取得します。
      * @return 対応する[Handler]がない場合は`null`
      */
     @JvmStatic
-    fun getFluidHandler(holder: Holder<Fluid>): Handler? = fluidHandlers[holder.delegate]
+    fun getFluidHandler(holder: Holder<Fluid>): Handler? = _fluidHandlers[holder.delegate]
 
     /**
      * 指定した[item]に[handler]を登録します。
@@ -51,18 +56,10 @@ data object HTPotionFluidManager {
      */
     @JvmStatic
     fun register(item: Item, handler: Handler) {
-        check(itemHandlers.put(item.builtInRegistryHolder(), handler) == null) {
+        check(_itemHandlers.put(item.builtInRegistryHolder(), handler) == null) {
             "Duplicated potion item registration: $item"
         }
     }
-
-    /**
-     * 登録されている[アイテム][Item]の一覧を取得します。
-     * @return [Holder]の一覧
-     * @since 0.12.0
-     */
-    @JvmStatic
-    fun getSupportedItems(): Set<Holder<Item>> = itemHandlers.keys
 
     /**
      * 指定した[holder]から[Handler]を取得します。
@@ -70,7 +67,7 @@ data object HTPotionFluidManager {
      * @since 0.12.0
      */
     @JvmStatic
-    fun getItemHandler(holder: Holder<Item>): Handler? = itemHandlers[holder.delegate]
+    fun getItemHandler(holder: Holder<Item>): Handler? = _itemHandlers[holder.delegate]
 
     //    Handler    //
 

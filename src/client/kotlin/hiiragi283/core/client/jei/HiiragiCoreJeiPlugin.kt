@@ -2,13 +2,13 @@ package hiiragi283.core.client.jei
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.function.negate
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
 import hiiragi283.core.api.integration.jei.HTSubtypeInterpreter
 import hiiragi283.core.api.item.HTPotionBasedItem
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
-import hiiragi283.core.api.util.wrapOptional
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.jei.category.HCExplodingRecipeCategory
@@ -84,7 +84,8 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             BuiltInRegistries.POTION
                 .asLookup()
                 .listElements()
-                .flatMap { HTPotionContents.of(it, HTBottleType.DEFAULT).wrapOptional().stream() }
+                .map { HTPotionContents.of(it, HTBottleType.DEFAULT) }
+                .filter(HTPotionContents::isWater.negate())
                 .map(HCPotionFluidHelper::createFluid)
                 .toList(),
         )

@@ -10,9 +10,11 @@ import hiiragi283.core.api.serialization.codec.MapBiCodec
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
+import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.world.item.alchemy.Potion
+import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
@@ -46,12 +48,14 @@ class HTPotionFluidIngredient(val potions: HolderSet<Potion>, val bottleType: HT
     }
 
     override fun generateStacks(): Stream<FluidStack> = HTPotionFluidManager
-        .getSupportedFluids()
-        .flatMap { fluid: Holder<Fluid> ->
+        .fluidHandlers
+        .flatMap { (fluid: Holder<Fluid>, handler: HTPotionFluidManager.Handler) ->
             potions
-                .mapNotNull { potion: Holder<Potion> ->
-                    val contents: HTPotionContents = HTPotionContents.of(potion, bottleType) ?: return@mapNotNull null
-                    HTPotionHelper.setContents(FluidStack(fluid, HTConst.DEFAULT_FLUID_AMOUNT), contents)
+                .map { potion: Holder<Potion> ->
+                    val stack = FluidStack(fluid, HTConst.DEFAULT_FLUID_AMOUNT)
+                    stack.set(DataComponents.POTION_CONTENTS, PotionContents(potion))
+                    handler[stack] = bottleType
+                    stack
                 }
         }.stream()
 

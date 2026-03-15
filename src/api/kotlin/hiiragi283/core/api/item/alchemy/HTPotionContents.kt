@@ -40,8 +40,7 @@ data class HTPotionContents private constructor(val contents: RawPotionContents,
          * @return [contents]が空の場合は`null`
          */
         @JvmStatic
-        fun fromVanilla(contents: PotionContents, bottleType: HTBottleType): HTPotionContents? {
-            if (contents == PotionContents.EMPTY) return null
+        fun fromVanilla(contents: PotionContents, bottleType: HTBottleType): HTPotionContents {
             val instances: List<HTMobEffectInstance> = contents.customEffects().map(::HTMobEffectInstance)
             return of(
                 contents
@@ -54,31 +53,23 @@ data class HTPotionContents private constructor(val contents: RawPotionContents,
 
         /**
          * [ポーション][potion]と[ポーション瓶の種類][bottleType]から[HTPotionContents]を作成します。
-         * @return [potion]が空の場合は`null`
          */
         @JvmStatic
-        fun of(potion: Holder<Potion>, bottleType: HTBottleType): HTPotionContents? = of(Ior.Left(potion), bottleType)
+        fun of(potion: Holder<Potion>, bottleType: HTBottleType): HTPotionContents = of(Ior.Left(potion), bottleType)
 
         /**
          * [ポーション][contents]と[ポーション瓶の種類][bottleType]から[HTPotionContents]を作成します。
-         * @return [contents]が空の場合は`null`
          */
         @JvmStatic
-        fun of(contents: RawPotionContents, bottleType: HTBottleType): HTPotionContents? {
-            val isEmpty: Boolean = contents.map(
-                { potion: Holder<Potion> -> potion == Potions.WATER },
-                { instances: List<HTMobEffectInstance> -> instances.isEmpty() },
-                { left: Boolean, right: Boolean -> left && right },
-            )
-            return when {
-                isEmpty -> null
-                else -> HTPotionContents(contents.mapLeft(Holder<Potion>::getDelegate), bottleType)
-            }
-        }
+        fun of(contents: RawPotionContents, bottleType: HTBottleType): HTPotionContents =
+            HTPotionContents(contents.mapLeft(Holder<Potion>::getDelegate), bottleType)
 
         @JvmStatic
         fun create(builderAction: Builder.() -> Unit): HTPotionContents? = Builder().apply(builderAction).build()
     }
+
+    val isEmpty: Boolean = contents.getLeft() == null && (contents.getRight() ?: emptyList()).isEmpty()
+    val isWater: Boolean = contents.getLeft() == Potions.WATER && bottleType == HTBottleType.DEFAULT
 
     /**
      * ポーションのインスタンス
@@ -88,11 +79,14 @@ data class HTPotionContents private constructor(val contents: RawPotionContents,
     /**
      * バニラの[PotionContents]のインスタンス
      */
-    val vanilla = PotionContents(
-        contents.getLeft().wrapOptional(),
-        emptyOptional(),
-        contents.getRight()?.map(HTMobEffectInstance::toMutable) ?: emptyList(),
-    )
+    val vanilla: PotionContents = when (isEmpty) {
+        true -> PotionContents.EMPTY
+        else -> PotionContents(
+            contents.getLeft().wrapOptional(),
+            emptyOptional(),
+            contents.getRight()?.map(HTMobEffectInstance::toMutable) ?: emptyList(),
+        )
+    }
 
     //    Builder    //
 

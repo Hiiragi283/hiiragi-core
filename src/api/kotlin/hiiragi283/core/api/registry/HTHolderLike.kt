@@ -138,6 +138,9 @@ fun HTFluidHolderLike<*>.getBucketHolder(): HTItemHolderLike<*> = this.getBucket
  */
 fun HTFluidHolderLike<*>.getFluidType(): FluidType = this.get().fluidType
 
+// FluidStack
+fun HTFluidHolderLike<*>.isOf(stack: FluidStack): Boolean = stack.`is`(this.get())
+
 /**
  * @author Hiiragi Tsubasa
  * @since 0.12.0

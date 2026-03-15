@@ -9,7 +9,8 @@ import net.minecraft.world.item.crafting.RecipeInput
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
-open class HTShapelessRecipeInput(val items: Map<HTItemResourceType, Int>) : RecipeInput {
+@JvmRecord
+data class HTShapelessRecipeInput(val items: Map<HTItemResourceType, Int>) : RecipeInput {
     final override fun getItem(index: Int): ItemStack {
         val (resource: HTItemResourceType, count: Int) = items.entries.elementAt(index)
         return resource.toStack(count)

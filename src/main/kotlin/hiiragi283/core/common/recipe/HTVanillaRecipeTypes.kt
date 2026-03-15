@@ -96,7 +96,6 @@ object HTVanillaRecipeTypes {
                 .asSequence()
                 .flatMap { potionTo: Holder<Potion> ->
                     multimap[potionTo].mapIndexed { index: Int, (potionFrom: Holder<Potion>, ingredient: Ingredient) ->
-                        val resultContents: HTPotionContents = HTPotionContents.of(potionTo, HTBottleType.DEFAULT) ?: return@mapIndexed null
                         val fluidIngredient: HTFluidIngredient = when (potionFrom) {
                             Potions.WATER -> HTIngredientCreator.water()
                             else -> listOf(potionFrom)
@@ -107,11 +106,14 @@ object HTVanillaRecipeTypes {
                         val recipe = HCBrewingRecipe(
                             fluidIngredient,
                             HTIngredientCreator.create(ingredient),
-                            HTResultCreator.create(HCPotionFluidHelper.createFluid(resultContents)),
+                            HTPotionContents
+                                .of(potionTo, HTBottleType.DEFAULT)
+                                .let(HCPotionFluidHelper::createFluid)
+                                .let(HTResultCreator::create),
                         )
                         potionTo.toLike().getId().withSuffix("_$index") to recipe
                     }
-                }.filterNotNull()
+                }
             return cachedRecipes
         }
 
