@@ -4,7 +4,6 @@ import hiiragi283.core.api.resource.toId
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.HolderSet
-import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.neoforged.neoforge.registries.DeferredRegister
@@ -12,18 +11,30 @@ import net.neoforged.neoforge.registries.datamaps.DataMapType
 import kotlin.jvm.optionals.getOrNull
 import kotlin.streams.asSequence
 
-//    Registry    //
-
-@Suppress("DEPRECATION")
-fun <T : Any> Registry<T>.getHolderSet(tagKey: TagKey<T>): HolderSet<T> =
-    this.getTag(tagKey).getOrNull() ?: HolderSet.emptyNamed(this.holderOwner(), tagKey)
-
 //    HolderSet    //
 
+/**
+ * [Holder]の一覧を[HolderSet]に変換します。
+ * @param T 要素のクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun <T : Any> Iterable<Holder<T>>.toHolderSet(): HolderSet<T> = HolderSet.direct(this.toList())
 
+/**
+ * [Holder]の配列を[HolderSet]に変換します。
+ * @param T 要素のクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun <T : Any> Array<Holder<T>>.toHolderSet(): HolderSet<T> = HolderSet.direct(this.toList())
 
+/**
+ * [Holder]の一覧を[HolderSet]に変換します。
+ * @param T 要素のクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun <T : Any> Sequence<Holder<T>>.toHolderSet(): HolderSet<T> = HolderSet.direct(this.toList())
 
 //    HolderLookup    //

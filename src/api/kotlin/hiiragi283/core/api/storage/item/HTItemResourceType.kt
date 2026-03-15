@@ -38,9 +38,16 @@ class HTItemResourceType private constructor(private val stack: ItemStack) : HTR
         }
     }
 
+    /**
+     * @since 0.13.0
+     */
     fun isOf(tagKey: TagKey<Item>): Boolean = this.getHolder().`is`(tagKey)
 
     // ItemStack
+
+    /**
+     * @since 0.13.0
+     */
     fun isOf(stack: ItemStack): Boolean = stack.`is`(this.getHolder())
 
     /**

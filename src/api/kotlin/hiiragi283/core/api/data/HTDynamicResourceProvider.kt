@@ -30,14 +30,15 @@ object HTDynamicResourceProvider {
      */
     abstract class Client(modId: String) :
         DynamicClientResourceProvider(modId.toId("dynamic_resources"), PackGenerationStrategy.REGEN_ON_EVERY_RELOAD) {
-        final override fun gatherSupportedNamespaces(): Collection<String> = buildSet {
-            this += HTConst.MINECRAFT
-            this += HTConst.COMMON
-            this += HTConst.NEOFORGE
-        }
-
+        final override fun gatherSupportedNamespaces(): Collection<String> = HTConst.getBuiltInIdSet(name.namespace)
         //    Extensions    //
 
+        /**
+         * @param id テクスチャの出力先の[ID][ResourceLocation]
+         * @param base 元となるテクスチャの[ID][ResourceLocation]
+         * @param paletteFactory [ResourceManager]から[Palette]を取得するブロック
+         * @since 0.13.0
+         */
         protected fun resprite(
             id: ResourceLocation,
             base: ResourceLocation,
@@ -50,12 +51,30 @@ object HTDynamicResourceProvider {
                 .onSuccess { sink.addTexture(id, it) }
         }
 
+        /**
+         * @param id テクスチャの出力先の[ID][ResourceLocation]
+         * @param base 元となるテクスチャの[ID][ResourceLocation]
+         * @param key パレットを提供する素材のキー
+         * @since 0.13.0
+         */
         protected fun resprite(id: ResourceLocation, base: ResourceLocation, key: HTMaterialKey): ResourceGenTask =
             resprite(id, base, HTTextureUtil::getOrCreatePalette.partially1(key.getId()))
 
+        /**
+         * @param id テクスチャの出力先の[ID][ResourceLocation]
+         * @param base 元となるテクスチャの[ID][ResourceLocation]
+         * @param palette パレットを提供するブロック
+         * @since 0.13.0
+         */
         protected fun resprite(id: ResourceLocation, base: ResourceLocation, palette: Block): ResourceGenTask =
             resprite(id, base) { manager: ResourceManager -> HTTextureUtil.getTexture(manager, palette).map(Palette::fromImage) }
 
+        /**
+         * @param id テクスチャの出力先の[ID][ResourceLocation]
+         * @param base 元となるテクスチャの[ID][ResourceLocation]
+         * @param palette パレットを提供するアイテム
+         * @since 0.13.0
+         */
         protected fun resprite(id: ResourceLocation, base: ResourceLocation, palette: Item): ResourceGenTask =
             resprite(id, base) { manager: ResourceManager -> HTTextureUtil.getTexture(manager, palette).map(Palette::fromImage) }
     }
@@ -67,10 +86,6 @@ object HTDynamicResourceProvider {
      */
     abstract class Server(modId: String) :
         DynamicServerResourceProvider(modId.toId("dynamic_resources"), PackGenerationStrategy.REGEN_ON_EVERY_RELOAD) {
-        final override fun gatherSupportedNamespaces(): Collection<String> = buildSet {
-            this += HTConst.MINECRAFT
-            this += HTConst.COMMON
-            this += HTConst.NEOFORGE
-        }
+        final override fun gatherSupportedNamespaces(): Collection<String> = HTConst.getBuiltInIdSet(name.namespace)
     }
 }

@@ -19,21 +19,43 @@ import net.neoforged.neoforge.fluids.FluidType
 
 typealias HTSimpleFluidHolderLike = HTFluidHolderLike<Fluid>
 
+/**
+ * [液体][Fluid]向けの[HTHolderLike]の拡張インターフェースです。
+ * @param FLUID 液体のクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 interface HTFluidHolderLike<FLUID : Fluid> : HTHolderLike<Fluid, FLUID> {
     fun getHolder(): Holder<Fluid> = getHolder(BuiltInRegistries.FLUID::getHolderOrThrow)
 
+    /**
+     * 保持している液体に対応するバケツを取得します。
+     */
     fun getBucket(): HTSimpleItemHolderLike
 
+    /**
+     * 保持している液体に対応する[FluidType]を取得します。
+     */
     fun getFluidType(): FluidType
 
     // FluidStack
     fun isOf(stack: FluidStack): Boolean = stack.`is`(this.get())
 
+    /**
+     * 指定した[量][amount]で[FluidStack]に変換します。
+     */
     fun toStack(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): FluidStack = FluidStack(this.get(), amount)
 
     // HTFluidResourceType
+
+    /**
+     * [HTFluidResourceType]に変換します。
+     */
     fun toResource(): HTFluidResourceType? = toStack().toResource()
 
+    /**
+     * 指定した[patch]で[HTFluidResourceType]に変換します。
+     */
     fun toResource(patch: DataComponentPatch): HTFluidResourceType? {
         val stack: FluidStack = toStack()
         stack.applyComponents(patch)
@@ -46,6 +68,10 @@ interface HTFluidHolderLike<FLUID : Fluid> : HTHolderLike<Fluid, FLUID> {
             VanillaBiCodecs.holderLike(Registries.FLUID).xmap(HTSimpleHolderLike<Fluid>::toFluidLike, identity())
     }
 
+    /**
+     * @author Hiiragi Tsubasa
+     * @since 0.13.0
+     */
     interface Simple<FLUID : Fluid> : HTFluidHolderLike<FLUID> {
         override fun getBucket(): HTSimpleItemHolderLike = get().bucket.toItemLike()
 

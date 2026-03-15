@@ -14,6 +14,11 @@ import net.neoforged.neoforge.common.data.DataMapProvider
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps
 
+/**
+ * Hiiragi Coreとそれを前提とするmodで使用される[DataMapProvider]の拡張クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 abstract class HTDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.output, context.registries) {
     protected lateinit var provider: HolderLookup.Provider
         private set
@@ -24,6 +29,9 @@ abstract class HTDataMapProvider(context: HTDataGenContext) : DataMapProvider(co
         gatherInternal()
     }
 
+    /**
+     * データマップの値を登録します。
+     */
     protected abstract fun gatherInternal()
 
     protected fun furnaceFuel(builderAction: Builder<FurnaceFuel, Item>.() -> Unit) {

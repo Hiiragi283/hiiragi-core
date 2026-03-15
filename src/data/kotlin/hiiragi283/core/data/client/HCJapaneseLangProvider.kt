@@ -26,7 +26,6 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HCBlocks.TREE_TAP, "ツリータップ")
         add(HCBlocks.LATEX_CAULDRON.get(), "ラテックス入り大釜")
-        add(HCBlocks.EXP_DRAIN, "経験値排水溝")
 
         // Entity
         add(HCEntityTypes.BOMB, "ボム")

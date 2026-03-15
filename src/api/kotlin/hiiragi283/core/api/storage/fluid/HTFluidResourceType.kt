@@ -44,9 +44,16 @@ class HTFluidResourceType private constructor(private val stack: FluidStack) : H
      */
     fun fluidType(): FluidType = stack.fluidType
 
+    /**
+     * @since 0.13.0
+     */
     fun isOf(tagKey: TagKey<Fluid>): Boolean = this.getHolder().`is`(tagKey)
 
     // FluidStack
+
+    /**
+     * @since 0.13.0
+     */
     fun isOf(stack: FluidStack): Boolean = stack.`is`(this.getHolder())
 
     fun toStack(amount: Int): FluidStack = stack.copyWithAmount(amount)

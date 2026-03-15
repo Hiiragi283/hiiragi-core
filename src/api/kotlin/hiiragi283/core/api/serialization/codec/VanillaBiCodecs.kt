@@ -170,6 +170,11 @@ object VanillaBiCodecs {
     fun <T : Any> holderSet(registryKey: RegistryKey<T>): BiCodec<RegistryFriendlyByteBuf, HolderSet<T>> =
         BiCodec.of(RegistryCodecs.homogeneousList(registryKey), ByteBufCodecs.holderSet(registryKey))
 
+    /**
+     * 指定した[registryKey]から[HTSimpleHolderLike]の[BiCodec]を返します。
+     * @param T レジストリの要素のクラス
+     * @since 0.13.0
+     */
     @JvmStatic
     fun <T : Any> holderLike(registryKey: RegistryKey<T>): BiCodec<RegistryFriendlyByteBuf, HTSimpleHolderLike<T>> =
         BiCodec.of(HTHolderLikeCodec(registryKey), HTHolderLikeStreamCodec(registryKey))

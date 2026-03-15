@@ -129,7 +129,7 @@ abstract class HTModelProvider : ResourceGenTask {
     /**
      * @see net.minecraft.data.models.BlockModelGenerators.createSuffixedVariant
      */
-    protected fun addBlockModel(
+    protected inline fun addBlockModel(
         block: HTIdLike,
         suffix: String,
         model: ModelTemplate,

@@ -14,7 +14,8 @@ import net.neoforged.neoforge.common.MutableDataComponentHolder
 @Suppress("DEPRECATION")
 data object HTPotionFluidManager {
     /**
-     * 登録されている[液体][Fluid]のインスタンス
+     * 登録されている[液体][Fluid]の一覧
+     * @since 0.13.0
      */
     @JvmStatic
     val fluidHandlers: Map<Holder<Fluid>, Handler> get() = _fluidHandlers
@@ -23,7 +24,8 @@ data object HTPotionFluidManager {
     private val _fluidHandlers: MutableMap<Holder<Fluid>, Handler> = hashMapOf()
 
     /**
-     * 登録されている[アイテム][Item]のインスタンス
+     * 登録されている[アイテム][Item]の一覧
+     * @since 0.13.0
      */
     @JvmStatic
     val itemHandlers: Map<Holder<Item>, Handler> get() = _itemHandlers

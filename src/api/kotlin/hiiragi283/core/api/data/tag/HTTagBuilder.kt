@@ -55,6 +55,11 @@ class HTTagBuilder<T : Any>(private val registryKey: RegistryKey<T>, private val
      */
     fun addTag(child: TagKey<T>, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<T> = addTag(child.location, type)
 
+    /**
+     * 指定した[タグ][id]を追加します。
+     * @param type このエントリの依存関係
+     * @since 0.13.0
+     */
     fun addTag(id: ResourceLocation, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<T> = apply {
         when (type) {
             HTTagDependType.REQUIRED -> TagEntry.tag(id)

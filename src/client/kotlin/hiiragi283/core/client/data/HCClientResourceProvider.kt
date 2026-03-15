@@ -64,14 +64,14 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         executor.accept(
             resprite(
                 HCBlocks.OIL_SAND.blockId,
-                HTConst.MINECRAFT.toId(HTConst.BLOCK, "sand.png"),
+                HTConst.MINECRAFT.toId(HTConst.BLOCK, "sand"),
                 VanillaMaterialKeys.COAL,
             ),
         )
         executor.accept(
             resprite(
                 HCBlocks.OIL_SHALE.blockId,
-                HTConst.MINECRAFT.toId(HTConst.BLOCK, "stone.png"),
+                HTConst.MINECRAFT.toId(HTConst.BLOCK, "stone"),
                 VanillaMaterialKeys.COAL,
             ),
         )
@@ -80,7 +80,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
             executor.accept(
                 resprite(
                     HiiragiCoreAPI.id(HTConst.BLOCK, "warped_wart_stage$i"),
-                    HTConst.MINECRAFT.toId(HTConst.BLOCK, "nether_wart_stage$i.png"),
+                    HTConst.MINECRAFT.toId(HTConst.BLOCK, "nether_wart_stage$i"),
                     Blocks.TWISTING_VINES,
                 ),
             )
@@ -88,7 +88,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         executor.accept(
             resprite(
                 HCBlocks.WARPED_WART.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "nether_wart.png"),
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "nether_wart"),
                 Blocks.TWISTING_VINES,
             ),
         )
@@ -96,7 +96,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         executor.accept(
             resprite(
                 HiiragiCoreAPI.id(HTConst.BLOCK, "dragon_breath"),
-                HTConst.MINECRAFT.toId(HTConst.BLOCK, "lava_still.png"),
+                HTConst.MINECRAFT.toId(HTConst.BLOCK, "lava_still"),
                 Blocks.BRAIN_CORAL_BLOCK,
             ),
         )
@@ -107,7 +107,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         executor.accept(
             resprite(
                 HCItems.BAMBOO_CHARCOAL.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "bamboo.png"),
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "bamboo"),
                 Blocks.DEEPSLATE,
             ),
         )
@@ -115,15 +115,15 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         executor.accept(
             resprite(
                 HCItems.RAW_RUBBER.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "slime_ball.png"),
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "slime_ball"),
                 Blocks.SANDSTONE,
             ),
         )
         mapOf(
-            HCItems.POLYMER_RESIN to "blue_dye.png",
-            HCItems.SYNTHETIC_FEATHER to "feather.png",
-            HCItems.SYNTHETIC_FIBER to "string.png",
-            HCItems.SYNTHETIC_LEATHER to "leather.png",
+            HCItems.POLYMER_RESIN to "blue_dye",
+            HCItems.SYNTHETIC_FEATHER to "feather",
+            HCItems.SYNTHETIC_FIBER to "string",
+            HCItems.SYNTHETIC_LEATHER to "leather",
         ).forEach { (item: HTIdLike, path: String) ->
             executor.accept(
                 resprite(
@@ -137,21 +137,21 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         executor.accept(
             resprite(
                 HCItems.LUMINOUS_PASTE.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "black_dye.png"),
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "black_dye"),
                 Items.GLOW_INK_SAC,
             ),
         )
         executor.accept(
             resprite(
                 HCItems.ELDER_HEART.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "heart_of_the_sea.png"),
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "heart_of_the_sea"),
                 CommonMaterialKeys.PLASTIC,
             ),
         )
         executor.accept(
             resprite(
                 HCItems.WITHER_STAR.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "nether_star.png"),
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "nether_star"),
                 Blocks.DEEPSLATE,
             ),
         )
@@ -159,7 +159,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         executor.accept(
             resprite(
                 HCItems.ELDRITCH_EGG.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "egg.png"),
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "egg"),
                 HCMaterialKeys.ELDRITCH,
             ),
         )
@@ -167,7 +167,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         executor.accept(
             resprite(
                 HCItems.IRIDESCENT_POWDER.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "blaze_powder.png"),
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "blaze_powder"),
                 CommonMaterialKeys.PLASTIC,
             ),
         )

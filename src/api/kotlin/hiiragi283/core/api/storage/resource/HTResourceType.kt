@@ -30,6 +30,9 @@ interface HTResourceType<TYPE : Any> : HTHasText {
         HTResourceType<TYPE>,
         HTKeyLike<TYPE>,
         IWithData<TYPE> {
+        /**
+         * @since 0.13.0
+         */
         fun getHolder(): Holder<TYPE>
 
         override fun getResourceKey(): ResourceKey<TYPE> = getHolder().unwrapKey().orElseThrow()

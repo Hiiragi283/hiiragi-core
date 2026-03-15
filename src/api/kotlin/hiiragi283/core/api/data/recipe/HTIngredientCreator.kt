@@ -54,6 +54,9 @@ data object HTIngredientCreator {
     fun create(tagKeys: Iterable<TagKey<Item>>, amount: Int = 1): HTItemIngredient =
         create(tagKeys.sortedWith(HTComparators.TAG_KEY).map(Ingredient::TagValue), amount)
 
+    /**
+     * @since 0.13.0
+     */
     @Suppress("DEPRECATION")
     fun slimeBall(amount: Int = 1): HTItemIngredient = create(listOf(Tags.Items.SLIMEBALLS, Tags.Items.SLIME_BALLS), amount)
 

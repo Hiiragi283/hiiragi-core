@@ -68,12 +68,18 @@ interface HTMaterialContents<R : Any, V : HTMaterialContents.Entry<*>> : HTTable
         operator fun component3(): Boolean = isBuiltIn
     }
 
+    /**
+     * @since 0.13.0
+     */
     class SimpleEntry<V : Any>(private val holder: HTHolderLike<V, *>, override val isBuiltIn: Boolean) : Entry<V> {
         override fun unwrap(): Either<ResourceKey<V>, Holder<V>> = holder.unwrap()
 
         override fun get(): V = holder.get()
     }
 
+    /**
+     * @since 0.13.0
+     */
     class FluidEntry(private val holder: HTFluidHolderLike<*>, override val isBuiltIn: Boolean) :
         Entry<Fluid>,
         HTSimpleFluidHolderLike {
@@ -88,6 +94,9 @@ interface HTMaterialContents<R : Any, V : HTMaterialContents.Entry<*>> : HTTable
         override fun getFluidType(): FluidType = holder.getFluidType()
     }
 
+    /**
+     * @since 0.13.0
+     */
     class ItemEntry(private val holder: HTItemHolderLike<*>, override val isBuiltIn: Boolean) :
         Entry<Item>,
         HTSimpleItemHolderLike {

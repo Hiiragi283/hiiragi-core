@@ -23,8 +23,14 @@ typealias HTSimpleHolderLike<R> = HTHolderLike<R, R>
 interface HTHolderLike<R : Any, T : R> :
     HTKeyLike<R>,
     Supplier<T> {
+    /**
+     * @since 0.13.0
+     */
     fun unwrap(): Either<ResourceKey<R>, Holder<R>>
 
+    /**
+     * @since 0.13.0
+     */
     fun getHolder(holderGetter: (ResourceKey<R>) -> Holder<R>): Holder<R> = unwrap().mapLeft(holderGetter).unwrap()
 
     override fun getResourceKey(): ResourceKey<R> = unwrap().mapRight(Holder<R>::unwrapKey.andThen { it.orElseThrow() }).unwrap()

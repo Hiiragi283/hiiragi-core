@@ -26,7 +26,6 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         add(HCBlocks.TREE_TAP, "Tree Tap")
         add(HCBlocks.LATEX_CAULDRON.get(), "Latex Cauldron")
-        add(HCBlocks.EXP_DRAIN, "Experience Drain")
 
         // Entity
         add(HCEntityTypes.BOMB, "Thrown Bomb")

@@ -68,7 +68,16 @@ data class HTPotionContents private constructor(val contents: RawPotionContents,
         fun create(builderAction: Builder.() -> Unit): HTPotionContents? = Builder().apply(builderAction).build()
     }
 
+    /**
+     * 保持しているエフェクトが空かどうか
+     * @since 0.13.0
+     */
     val isEmpty: Boolean = contents.getLeft() == null && (contents.getRight() ?: emptyList()).isEmpty()
+
+    /**
+     * 保持しているエフェクトが水に一致するかどうか
+     * @since 0.13.0
+     */
     val isWater: Boolean = contents.getLeft() == Potions.WATER && bottleType == HTBottleType.DEFAULT
 
     /**

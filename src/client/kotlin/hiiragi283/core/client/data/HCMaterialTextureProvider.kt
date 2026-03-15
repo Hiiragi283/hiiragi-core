@@ -4,6 +4,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.texture.HTTextureUtil
+import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.part.HTFluidPart
@@ -25,31 +26,33 @@ import net.minecraft.server.packs.resources.ResourceManager
 import kotlin.collections.iterator
 
 data object HCMaterialTextureProvider : ResourceGenTask {
+    private lateinit var lavaTexture: TextureImage
+    
     override fun accept(manager: ResourceManager, sink: ResourceSink) {
         HTTextureUtil.templatePalette = HTTextureUtil.getOrCreateColors(HiiragiCoreAPI.id("template"), manager).getOrThrow()
+        lavaTexture = TextureImage.open(manager, HTConst.MINECRAFT.toId(HTConst.BLOCK, "lava_still"))
 
-        with(HiiragiCoreAccess.INSTANCE) {
-            material(manager, sink, HTConst.BLOCK, registeredContents.blocks::column)
-            material(manager, sink, HTConst.ITEM, registeredContents.items::column)
-            molten(manager, sink, registeredFluids::get)
-        }
+        val contents: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
+        material(manager, sink, HTConst.BLOCK, contents.blocks::column)
+        material(manager, sink, HTConst.ITEM, contents.items::column)
+        molten(manager, sink)
     }
 
     @JvmStatic
-    private fun material(
+    private inline fun <T: HTIdLike> material(
         manager: ResourceManager,
         sink: ResourceSink,
         pathPrefix: String,
-        factory: (HTMaterialLike) -> Map<HTPart, HTIdLike>,
+        factory: (HTMaterialLike) -> Map<HTPart, T>,
     ) {
         // すべての素材に対してテクスチャの生成を試みる
         for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
             // 生成対象がない場合はパス
-            val partMap: Map<HTPart, HTIdLike> = factory(entry)
+            val partMap: Map<HTPart, T> = factory(entry)
             if (partMap.isEmpty()) continue
             // テクスチャを生成
             val textureSet: HTMaterialTextureSet = entry.getOrDefault(HTMaterialPropertyKeys.TEXTURE_SET)
-            for ((part: HTPart, element: HTIdLike) in partMap) {
+            for ((part: HTPart, element: T) in partMap) {
                 if (HTPartPropertyKeys.DISABLE_TEXTURE_GEN in part) continue
                 // パレットを取得
                 val palette: List<Int> = sequence {
@@ -67,7 +70,6 @@ data object HCMaterialTextureProvider : ResourceGenTask {
                     .onFailure { HiiragiCoreAPI.LOGGER.error("Failed to get template image for ${part.name}") }
                     .getOrNull()
                     ?: continue
-                // HiiragiCoreAPI.LOGGER.debug("Found template for part; {} and material; {}", part.name, entry.getId())
                 copyAndApplyColor(
                     sink,
                     element.getId().withPrefix("$pathPrefix/"),
@@ -79,18 +81,23 @@ data object HCMaterialTextureProvider : ResourceGenTask {
     }
 
     @JvmStatic
-    private fun molten(manager: ResourceManager, sink: ResourceSink, factory: (HTFluidPart, HTMaterialLike) -> HTIdLike?) {
+    private fun molten(manager: ResourceManager, sink: ResourceSink) {
         // すべての素材に対してテクスチャの生成を試みる
         for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
-            val molten: HTIdLike = factory(HTFluidPart.MOLTEN, entry) ?: continue
+            val molten: HTIdLike = HiiragiCoreAccess.INSTANCE.registeredFluids[HTFluidPart.MOLTEN, entry] ?: continue
             // パレットを取得
-            val palette: Palette = HTTextureUtil
+            var palette: Palette = HTTextureUtil
                 .getOrCreatePalette(entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId(), manager)
                 .getOrNull()
                 ?: continue
-            // palette = Palette.fromArc(palette.first().lab(), palette.last().lab(), 9)
+            palette = Palette.fromArc(palette.elementAt(1).lab(), palette.elementAt(palette.size - 1).lab(), 9)
+            HiiragiCoreAPI.LOGGER.debug(
+                "Molten {} palette: {}",
+                entry.asMaterialId(),
+                palette.joinToString(separator = ",", transform = { it.value().toHexString() })
+            )
             // テンプレートを取得
-            val template: TextureImage = TextureImage.open(manager, HTConst.MINECRAFT.toId(HTConst.BLOCK, "lava_still.png"))
+            val template: TextureImage = lavaTexture.makeCopy()
             val respriter: Respriter = Respriter.of(template)
             val newImage: TextureImage = respriter.recolor(palette)
             sink.addTexture(molten.blockId, newImage)

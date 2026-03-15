@@ -47,6 +47,13 @@ interface HTIngredient<RESOURCE : Any> :
      */
     val isCatalyst: Boolean get() = amount <= 0
 
+    /**
+     * [HTResourceType]に基づいた[HTIngredient]の拡張インターフェースです。
+     * @param TYPE [RESOURCE]の種類のクラス
+     * @param RESOURCE 判定の対象となるクラス
+     * @author Hiiragi Tsubasa
+     * @since 0.13.0
+     */
     interface Registered<TYPE : Any, RESOURCE : HTResourceType<TYPE>> : HTIngredient<RESOURCE> {
         /**
          * この材料に一致するすべての種類を返します。

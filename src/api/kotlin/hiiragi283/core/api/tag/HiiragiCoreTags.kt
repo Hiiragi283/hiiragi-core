@@ -32,6 +32,9 @@ object HiiragiCoreTags {
     }
 
     object Fluids {
+        /**
+         * @since 0.13.0
+         */
         @JvmField
         val ELDRITCH: TagKey<Fluid> = mod("eldritch")
 

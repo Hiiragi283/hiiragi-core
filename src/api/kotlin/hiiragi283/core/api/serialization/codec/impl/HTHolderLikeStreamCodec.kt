@@ -9,6 +9,9 @@ import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceKey
 
+/**
+ * @suppress
+ */
 internal class HTHolderLikeStreamCodec<R : Any>(private val registryKey: RegistryKey<R>) :
     StreamCodec<RegistryFriendlyByteBuf, HTSimpleHolderLike<R>> {
     private val holderCodec: StreamCodec<RegistryFriendlyByteBuf, Holder<R>> = ByteBufCodecs.holderRegistry(registryKey)

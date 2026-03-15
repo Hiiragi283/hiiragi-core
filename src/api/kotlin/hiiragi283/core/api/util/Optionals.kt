@@ -29,8 +29,20 @@ inline fun <T : Any> Optional<T>.onPresent(action: (T) -> Unit): Optional<T> {
     return this
 }
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun <T : Any, R : Any> Optional<T>.mapNotNull(transform: (T) -> R?): Optional<R> = this.flatMap { transform(it).wrapOptional() }
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun Optional<ItemStack>.getOrEmpty(): ItemStack = this.orElseGet(ItemStack::EMPTY)
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 fun Optional<FluidStack>.getOrEmpty(): FluidStack = this.orElseGet(FluidStack::EMPTY)

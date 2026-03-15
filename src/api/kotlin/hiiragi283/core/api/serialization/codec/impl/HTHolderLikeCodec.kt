@@ -15,6 +15,9 @@ import net.minecraft.resources.RegistryOps
 import net.minecraft.resources.ResourceKey
 import java.util.Optional
 
+/**
+ * @suppress
+ */
 internal class HTHolderLikeCodec<R : Any>(private val registryKey: RegistryKey<R>) : Codec<HTSimpleHolderLike<R>> {
     private val keyCodec: Codec<ResourceKey<R>> = ResourceKey.codec(registryKey)
     private val holderCodec: Codec<Holder<R>> = RegistryFixedCodec.create(registryKey)

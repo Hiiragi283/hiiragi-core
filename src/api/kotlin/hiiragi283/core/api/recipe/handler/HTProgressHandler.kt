@@ -12,7 +12,7 @@ typealias HTRecipeHandler<INPUT, RECIPE> = HTProgressHandler<out HTHandledRecipe
  * レシピの処理を行う抽象クラスです。
  * @param T レシピのクラス
  * @author Hiiragi Tsubasa
- * @since 0.5.0
+ * @since 0.13.0
  */
 class HTProgressHandler<T : Any> private constructor(
     private val recipeFinder: LevelFunction<T?>,

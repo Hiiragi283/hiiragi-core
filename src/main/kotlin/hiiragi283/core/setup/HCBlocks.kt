@@ -78,12 +78,6 @@ object HCBlocks {
     )
 
     @JvmField
-    val EXP_DRAIN: HTSimpleDeferredBlockAndItem = REGISTER.registerSimple(
-        "exp_drain",
-        properties(5f, 6f).sound(SoundType.METAL).noCollission(),
-    )
-
-    @JvmField
     val TEST: HTBasicDeferredBlockAndItem<HTTestBlock> = REGISTER.registerSimple("test", unbreakable(), ::HTTestBlock)
 
     //    Extensions    //
