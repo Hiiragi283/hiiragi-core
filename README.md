@@ -23,7 +23,7 @@
     - Others: Wood, Glass, (Stone), Obsidian, (Blaze), (Breeze), Brick, Nether Brick
   - Common
     - Fuels: Coal Coke
-    - Minerals: Salt, Saltpeter, Bauxite, Sulfur, Platinum Group, Cinnabar, Galena
+    - Minerals: Salt, Saltpeter, Bauxite, Sulfur, Cinnabar, Galena
     - Gems: (Fluorite), (Peridot), (Ruby), (Sapphire)
     - Metals
       - 2nd Period: (Lithium), (Beryllium)
