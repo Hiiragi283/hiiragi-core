@@ -5,9 +5,9 @@ import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.event.HTRegisterWidgetRendererEvent
-import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.mod.HTClientMod
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.HTSimpleFluidHolderLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.client.data.HCClientResourceProvider
@@ -31,7 +31,6 @@ import net.minecraft.core.BlockPos
 import net.minecraft.world.level.BlockAndTintGetter
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.level.material.Fluid
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
@@ -112,8 +111,8 @@ data object HiiragiCoreClient : HTClientMod() {
         event.dull(HCFluids.LATEX, Color(0xcccccc))
         event.dull(HCFluids.MEAT, Color(0x993333))
 
-        for (holder: HTMaterialContents.Entry<Fluid> in HiiragiCoreAccess.INSTANCE.registeredFluids.values) {
-            event.registerFluidType(HTSimpleFluidExtensions(holder.blockId), holder.get().fluidType)
+        for (holder: HTSimpleFluidHolderLike in HiiragiCoreAccess.INSTANCE.registeredFluids.values) {
+            event.registerFluidType(HTSimpleFluidExtensions(holder.blockId), holder.getFluidType())
         }
     }
 

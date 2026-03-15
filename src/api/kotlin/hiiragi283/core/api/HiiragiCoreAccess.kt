@@ -23,10 +23,7 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.TagKey
-import net.minecraft.world.item.Item
-import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.MutableDataComponentHolder
 import java.util.function.Consumer
 import kotlin.time.Duration
@@ -114,15 +111,15 @@ abstract class HiiragiCoreAccess {
      */
     abstract val registeredContents: HTMaterialAccess
 
-    abstract val registeredFluids: HTMaterialContents<HTFluidPart, Fluid>
+    abstract val registeredFluids: HTMaterialContents<HTFluidPart, HTMaterialContents.FluidEntry>
 
-    fun getMaterialBlock(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.Entry<Block>? =
+    fun getMaterialBlock(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.SimpleEntry<Block>? =
         existingContents.blocks[part, material] ?: registeredContents.blocks[part, material]
 
-    fun getMaterialItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.Entry<Item>? =
+    fun getMaterialItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry? =
         existingContents.items[part, material] ?: registeredContents.items[part, material]
 
-    fun getMaterialBlockOrItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.Entry<out ItemLike>? =
+    fun getMaterialBlockOrItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry? =
         existingContents.getBlockOrItem(part, material) ?: registeredContents.getBlockOrItem(part, material)
 
     //    Potion    //

@@ -28,6 +28,7 @@ import hiiragi283.core.api.material.property.getDefaultScale
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.registry.HTSimpleItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
@@ -181,7 +182,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     //    Crafting    //
 
-    private fun getItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.Entry<out ItemLike>? =
+    private fun getItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry? =
         HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, material)
 
     @JvmStatic
@@ -360,16 +361,18 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     @JvmStatic
     private fun tool(entry: HTMaterialManager.Entry) {
-        val existing: HTMaterialContents<HTToolType, Item> = HiiragiCoreAccess.INSTANCE.existingContents.tools
-        val registered: HTMaterialContents<HTToolType, Item> = HiiragiCoreAccess.INSTANCE.registeredContents.tools
+        val existing: HTMaterialContents<HTToolType, HTMaterialContents.ItemEntry> =
+            HiiragiCoreAccess.INSTANCE.existingContents.tools
+        val registered: HTMaterialContents<HTToolType, HTMaterialContents.ItemEntry> =
+            HiiragiCoreAccess.INSTANCE.registeredContents.tools
 
         val inputTag: TagKey<Item> = entry.getDefaultPart(entry) ?: return
-        for ((toolType: HTToolType, tool: HTMaterialContents.Entry<Item>) in registered.column(entry)) {
+        for ((toolType: HTToolType, tool: HTSimpleItemHolderLike) in registered.column(entry)) {
             val smithingProperty: HTSmithingRecipeProperty? = entry[HTMaterialPropertyKeys.SMITHING_RECIPE]
             if (smithingProperty != null) {
                 // Smithing
                 val (template: HTItemHolderLike<*>, base: HTMaterialKey) = smithingProperty
-                val baseTool: HTMaterialContents.Entry<Item> = existing[toolType, base] ?: registered[toolType, base] ?: continue
+                val baseTool: HTSimpleItemHolderLike = existing[toolType, base] ?: registered[toolType, base] ?: continue
                 HTSmithingRecipeBuilder.create(output) {
                     this.template += template
                     this.base += baseTool.get()

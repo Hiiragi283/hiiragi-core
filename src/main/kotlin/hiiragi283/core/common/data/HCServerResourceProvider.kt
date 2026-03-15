@@ -20,7 +20,7 @@ import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.prefixEntries
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.toFluidLike
+import hiiragi283.core.api.registry.HTSimpleFluidHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -157,7 +157,7 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
                 }
             }
         })
-        val fluids: HTMaterialContents<HTFluidPart, Fluid> = HiiragiCoreAccess.INSTANCE.registeredFluids
+        val fluids: HTMaterialContents<HTFluidPart, HTMaterialContents.FluidEntry> = HiiragiCoreAccess.INSTANCE.registeredFluids
         executor.accept(object : HTTagsProvider.GenTask<Fluid>(Registries.FLUID) {
             override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Fluid>) {
                 fluids.forEach { (part: HTFluidPart, key: HTMaterialKey, fluid: HTIdLike) ->
@@ -175,8 +175,8 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
                     addMaterial(factory, prefix, key).add(block)
                 }
                 // Material Fluid
-                fluids.forEach { (part: HTFluidPart, key: HTMaterialKey, fluid: HTMaterialContents.Entry<Fluid>) ->
-                    addTags(factory, Tags.Items.BUCKETS, part.createBucketTag(key)).add(fluid.toFluidLike().getBucket())
+                fluids.forEach { (part: HTFluidPart, key: HTMaterialKey, fluid: HTSimpleFluidHolderLike) ->
+                    addTags(factory, Tags.Items.BUCKETS, part.createBucketTag(key)).add(fluid.getBucket())
                 }
                 // Material Item
                 existing.items.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->

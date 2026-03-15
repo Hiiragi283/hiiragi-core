@@ -30,6 +30,7 @@ import hiiragi283.core.api.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.toItemLike
+import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.HiiragiCoreAccessImpl
 import hiiragi283.core.common.gui.sync.HTBoolSyncPayload
@@ -50,7 +51,6 @@ import net.minecraft.world.item.Items
 import net.minecraft.world.item.TieredItem
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockBehaviour
-import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.SoundActions
 import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.registries.DeferredHolder
@@ -62,28 +62,28 @@ internal object HCMiscRegister {
     private var hasInit: Boolean = false
 
     @JvmStatic
-    val existingBlocks: HTTable.Mutable<HTPart, HTMaterialKey, HTMaterialContents.Entry<Block>> = mutableTableOf()
+    val existingBlocks: HTTable.Mutable<HTPart, HTMaterialKey, HTMaterialContents.SimpleEntry<Block>> = mutableTableOf()
 
     @JvmStatic
-    val existingItems: HTTable.Mutable<HTPart, HTMaterialKey, HTMaterialContents.Entry<Item>> = mutableTableOf()
+    val existingItems: HTTable.Mutable<HTPart, HTMaterialKey, HTMaterialContents.ItemEntry> = mutableTableOf()
 
     @JvmStatic
-    val existingTools: HTTable.Mutable<HTToolType, HTMaterialKey, HTMaterialContents.Entry<Item>> = mutableTableOf()
+    val existingTools: HTTable.Mutable<HTToolType, HTMaterialKey, HTMaterialContents.ItemEntry> = mutableTableOf()
 
     @JvmStatic
-    lateinit var materialBlocks: HTTable<HTPart, HTMaterialKey, HTMaterialContents.Entry<Block>>
+    lateinit var materialBlocks: HTTable<HTPart, HTMaterialKey, HTMaterialContents.SimpleEntry<Block>>
         private set
 
     @JvmStatic
-    lateinit var materialFluids: HTTable<HTFluidPart, HTMaterialKey, HTMaterialContents.Entry<Fluid>>
+    lateinit var materialFluids: HTTable<HTFluidPart, HTMaterialKey, HTMaterialContents.FluidEntry>
         private set
 
     @JvmStatic
-    lateinit var materialItems: HTTable<HTPart, HTMaterialKey, HTMaterialContents.Entry<Item>>
+    lateinit var materialItems: HTTable<HTPart, HTMaterialKey, HTMaterialContents.ItemEntry>
         private set
 
     @JvmStatic
-    lateinit var materialTools: HTTable<HTToolType, HTMaterialKey, HTMaterialContents.Entry<Item>>
+    lateinit var materialTools: HTTable<HTToolType, HTMaterialKey, HTMaterialContents.ItemEntry>
         private set
 
     @JvmStatic
@@ -145,7 +145,7 @@ internal object HCMiscRegister {
     private fun registerExistingBlocks() {
         HiiragiCoreAccess.INSTANCE.forEachPlugin("Register Existing Blocks") { plugin: HTMaterialPlugin ->
             plugin.registerExistingBlock { part: HTPartLike, material: HTMaterialKey, block: HTBlockHolderLike<*> ->
-                existingBlocks.put(part.asPart(), material, HTMaterialContents.Entry(block, true))
+                existingBlocks.put(part.asPart(), material, HTMaterialContents.SimpleEntry(block, true))
             }
         }
     }
@@ -154,7 +154,7 @@ internal object HCMiscRegister {
     private fun registerExistingItems() {
         HiiragiCoreAccess.INSTANCE.forEachPlugin("Register Existing Items") { plugin: HTMaterialPlugin ->
             plugin.registerExistingItem { part: HTPartLike, material: HTMaterialKey, item: HTItemHolderLike<*> ->
-                existingItems.put(part.asPart(), material, HTMaterialContents.Entry(item, true))
+                existingItems.put(part.asPart(), material, HTMaterialContents.ItemEntry(item, true))
             }
         }
     }
@@ -163,7 +163,7 @@ internal object HCMiscRegister {
     private fun registerExistingTools() {
         HiiragiCoreAccess.INSTANCE.forEachPlugin("Register Existing Items") { plugin: HTMaterialPlugin ->
             plugin.registerExistingTool { toolType: HTToolType, key: HTMaterialKey, item: HTItemHolderLike<*> ->
-                existingTools.put(toolType, key, HTMaterialContents.Entry(item, true))
+                existingTools.put(toolType, key, HTMaterialContents.ItemEntry(item, true))
             }
         }
     }
@@ -181,7 +181,7 @@ internal object HCMiscRegister {
                         val properties: BlockBehaviour.Properties = part[HTPartPropertyKeys.BLOCK_PROP] ?: return@mapNotNull null
                         val block = Block(properties)
                         helper.register(part.createId(entry), block)
-                        Triple(part.asPart(), entry.asMaterialKey(), HTMaterialContents.blockEntry(block, false))
+                        Triple(part.asPart(), entry.asMaterialKey(), HTMaterialContents.SimpleEntry(block.toLike(), false))
                     }
             }
     }
@@ -220,7 +220,7 @@ internal object HCMiscRegister {
                             BucketItem(fluid, Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)),
                         )
 
-                        Triple(part, entry.asMaterialKey(), HTMaterialContents.fluidEntry(fluid, false))
+                        Triple(part, entry.asMaterialKey(), HTMaterialContents.FluidEntry(fluid, false))
                     }
             }
     }
@@ -228,7 +228,7 @@ internal object HCMiscRegister {
     @JvmStatic
     private fun registerMaterialItems(manager: HTMaterialManager, helper: RegisterEvent.RegisterHelper<Item>) {
         // 素材ブロックのアイテムを生成する
-        materialBlocks.forEach { (_, _, block: HTMaterialContents.Entry<Block>) ->
+        materialBlocks.forEach { (_, _, block: HTMaterialContents.SimpleEntry<Block>) ->
             val id: ResourceLocation = block.getId()
             helper.register(id, HTBlockItem(block.get(), Item.Properties()))
         }
@@ -240,7 +240,7 @@ internal object HCMiscRegister {
                     .map { part: HTPartLike ->
                         val item = Item(Item.Properties())
                         helper.register(part.createId(entry), item)
-                        Triple(part.asPart(), entry.asMaterialKey(), HTMaterialContents.itemEntry(item, false))
+                        Triple(part.asPart(), entry.asMaterialKey(), HTMaterialContents.ItemEntry(item, false))
                     }
             }
     }
@@ -257,7 +257,7 @@ internal object HCMiscRegister {
                     .map { toolType: HTToolType ->
                         val item: TieredItem = toolType.createTool(material)
                         helper.register(toolType.createKey(entry), item)
-                        Triple(toolType, entry.asMaterialKey(), HTMaterialContents.itemEntry(item, false))
+                        Triple(toolType, entry.asMaterialKey(), HTMaterialContents.ItemEntry(item, false))
                     }
             }
     }

@@ -23,6 +23,8 @@ import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.registry.HTSimpleFluidHolderLike
+import hiiragi283.core.api.registry.HTSimpleItemHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
@@ -35,10 +37,8 @@ import hiiragi283.core.setup.HCItems
 import net.mehvahdjukaar.moonlight.api.events.AfterLanguageLoadEvent
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
-import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Blocks
-import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.Tags
 import java.util.function.Consumer
 
@@ -198,24 +198,24 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
                 consumer(block.get().descriptionId, name)
             }
             // Fluid
-            val fluids: HTMaterialContents<HTFluidPart, Fluid> = HiiragiCoreAccess.INSTANCE.registeredFluids
-            for ((part: HTFluidPart, fluid: HTMaterialContents.Entry<Fluid>) in fluids.column(entry)) {
+            val fluids: HTMaterialContents<HTFluidPart, HTMaterialContents.FluidEntry> = HiiragiCoreAccess.INSTANCE.registeredFluids
+            for ((part: HTFluidPart, fluid: HTSimpleFluidHolderLike) in fluids.column(entry)) {
                 val name: String = translate(langType, part, entry) ?: continue
-                consumer(fluid.get().fluidType.descriptionId, name)
+                consumer(fluid.getFluidType().descriptionId, name)
                 consumer(Tags.getTagTranslationKey(part.createTagKey(entry)), name)
 
                 val bucketName: String = HTLangPatternProvider.create("%s Bucket", "%s入りバケツ").translate(langType, name)
-                consumer(fluid.get().bucket.descriptionId, bucketName)
+                consumer(fluid.getBucket().translationKey, bucketName)
                 consumer(Tags.getTagTranslationKey(part.createBucketTag(entry)), bucketName)
             }
             // Item
-            for ((part: HTPart, item: HTMaterialContents.Entry<Item>) in registered.items.column(entry)) {
+            for ((part: HTPart, item: HTSimpleItemHolderLike) in registered.items.column(entry)) {
                 val name: String = translate(langType, part, entry) ?: continue
-                consumer(item.get().descriptionId, name)
+                consumer(item.translationKey, name)
             }
             // Tool
-            for ((toolType: HTToolType, tool: HTMaterialContents.Entry<Item>) in registered.tools.column(entry)) {
-                consumer(tool.get().descriptionId, toolType.langPattern.translate(langType, materialName))
+            for ((toolType: HTToolType, tool: HTSimpleItemHolderLike) in registered.tools.column(entry)) {
+                consumer(tool.translationKey, toolType.langPattern.translate(langType, materialName))
             }
         }
     }

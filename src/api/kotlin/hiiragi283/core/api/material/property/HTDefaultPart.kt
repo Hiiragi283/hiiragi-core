@@ -10,7 +10,6 @@ import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
-import net.minecraft.world.level.ItemLike
 
 /**
  * 素材のデフォルトのアイテムを表すインターフェースです。
@@ -27,7 +26,7 @@ sealed interface HTDefaultPart {
      * 指定した[素材][material]から素材アイテムを取得します。
      * @return 対応するアイテムがない場合は`null`
      */
-    fun getItem(material: HTMaterialLike): HTMaterialContents.Entry<out ItemLike>?
+    fun getItem(material: HTMaterialLike): HTMaterialContents.ItemEntry?
 
     /**
      * レシピの生成時に使用されるサフィックスを取得します。
@@ -42,8 +41,8 @@ sealed interface HTDefaultPart {
     data class BuiltIn(val tagKey: TagKey<Item>, val item: HTItemHolderLike<*>?) : HTDefaultPart {
         override fun getTag(material: HTMaterialLike): TagKey<Item> = tagKey
 
-        override fun getItem(material: HTMaterialLike): HTMaterialContents.Entry<out ItemLike>? =
-            this.item?.let { HTMaterialContents.Entry(it, true) }
+        override fun getItem(material: HTMaterialLike): HTMaterialContents.ItemEntry? =
+            this.item?.let { HTMaterialContents.ItemEntry(it, true) }
 
         override fun getSuffix(): String = tagKey.location().path
     }
@@ -77,7 +76,7 @@ sealed interface HTDefaultPart {
 
         override fun getTag(material: HTMaterialLike): TagKey<Item> = prefix.itemTagKey(material)
 
-        override fun getItem(material: HTMaterialLike): HTMaterialContents.Entry<out ItemLike>? =
+        override fun getItem(material: HTMaterialLike): HTMaterialContents.ItemEntry? =
             HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, material)
 
         override fun getSuffix(): String = part.name
