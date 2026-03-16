@@ -138,6 +138,11 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
             result = resultCreator.create(Items.SNOWBALL, 4)
             recipeId suffix "_from_ice"
         }
+        // Wheat -> Flour
+        HTItemToChancedRecipeBuilder.crushing(output) {
+            ingredient = inputCreator.create(Tags.Items.CROPS_WHEAT)
+            result = resultCreator.create(HCItems.WHEAT_FLOUR)
+        }
 
         crushStones()
         crushWoods()

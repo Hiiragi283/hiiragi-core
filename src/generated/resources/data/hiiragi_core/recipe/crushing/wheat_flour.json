@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": {
+    "amount": 1,
+    "items": "#c:crops/wheat"
+  },
+  "result": {
+    "id": "hiiragi_core:wheat_flour"
+  },
+  "time": 100
+}

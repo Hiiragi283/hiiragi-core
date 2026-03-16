@@ -20,6 +20,7 @@ import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
+import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTBlockHolderLike
@@ -61,37 +62,32 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
 
     @JvmStatic
     private fun blockTextures(executor: Consumer<ResourceGenTask>) {
-        executor.accept(
-            resprite(
+        buildSet {
+            this += resprite(
                 HCBlocks.OIL_SAND.blockId,
                 HTConst.MINECRAFT.toId(HTConst.BLOCK, "sand"),
                 VanillaMaterialKeys.COAL,
-            ),
-        )
-        executor.accept(
-            resprite(
+            )
+            this += resprite(
                 HCBlocks.OIL_SHALE.blockId,
                 HTConst.MINECRAFT.toId(HTConst.BLOCK, "stone"),
                 VanillaMaterialKeys.COAL,
-            ),
-        )
+            )
+            this += resprite(
+                HCBlocks.WARPED_WART.itemId,
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "nether_wart"),
+                Blocks.TWISTING_VINES,
+            )
+        }.forEach(executor)
 
-        for (i in (0..2)) {
-            executor.accept(
+        (0..2)
+            .map { i: Int ->
                 resprite(
                     HiiragiCoreAPI.id(HTConst.BLOCK, "warped_wart_stage$i"),
                     HTConst.MINECRAFT.toId(HTConst.BLOCK, "nether_wart_stage$i"),
                     Blocks.TWISTING_VINES,
-                ),
-            )
-        }
-        executor.accept(
-            resprite(
-                HCBlocks.WARPED_WART.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "nether_wart"),
-                Blocks.TWISTING_VINES,
-            ),
-        )
+                )
+            }.forEach(executor)
         // Fluid
         executor.accept(
             resprite(
@@ -104,73 +100,66 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
 
     @JvmStatic
     private fun itemTextures(executor: Consumer<ResourceGenTask>) {
-        executor.accept(
-            resprite(
+        buildSet {
+            this += resprite(
                 HCItems.BAMBOO_CHARCOAL.itemId,
                 HTConst.MINECRAFT.toId(HTConst.ITEM, "bamboo"),
                 Blocks.DEEPSLATE,
-            ),
-        )
-
-        executor.accept(
-            resprite(
+            )
+            this += resprite(
                 HCItems.RAW_RUBBER.itemId,
                 HTConst.MINECRAFT.toId(HTConst.ITEM, "slime_ball"),
                 Blocks.SANDSTONE,
-            ),
-        )
+            )
+        }.forEach(executor)
+
         mapOf(
             HCItems.POLYMER_RESIN to "blue_dye",
             HCItems.SYNTHETIC_FEATHER to "feather",
             HCItems.SYNTHETIC_FIBER to "string",
             HCItems.SYNTHETIC_LEATHER to "leather",
-        ).forEach { (item: HTIdLike, path: String) ->
-            executor.accept(
-                resprite(
-                    item.itemId,
-                    HTConst.MINECRAFT.toId(HTConst.ITEM, path),
-                    CommonMaterialKeys.PLASTIC,
-                ),
-            )
-        }
-
-        executor.accept(
+        ).map { (item: HTIdLike, path: String) ->
             resprite(
+                item.itemId,
+                HTConst.MINECRAFT.toId(HTConst.ITEM, path),
+                CommonMaterialKeys.PLASTIC,
+            )
+        }.forEach(executor)
+
+        mapOf(
+            HCItems.WHEAT_FLOUR to "brown_dye",
+            HCItems.WHEAT_DOUGH to "clay_ball",
+        ).map { (item: HTIdLike, base: String) ->
+            resprite(item.itemId, HTConst.MINECRAFT.toId(HTConst.ITEM, base), Items.WHEAT)
+        }.forEach(executor)
+
+        buildSet {
+            this += resprite(
                 HCItems.LUMINOUS_PASTE.itemId,
                 HTConst.MINECRAFT.toId(HTConst.ITEM, "black_dye"),
                 Items.GLOW_INK_SAC,
-            ),
-        )
-        executor.accept(
-            resprite(
+            )
+            this += resprite(
                 HCItems.ELDER_HEART.itemId,
                 HTConst.MINECRAFT.toId(HTConst.ITEM, "heart_of_the_sea"),
                 CommonMaterialKeys.PLASTIC,
-            ),
-        )
-        executor.accept(
-            resprite(
+            )
+            this += resprite(
                 HCItems.WITHER_STAR.itemId,
                 HTConst.MINECRAFT.toId(HTConst.ITEM, "nether_star"),
                 Blocks.DEEPSLATE,
-            ),
-        )
-
-        executor.accept(
-            resprite(
+            )
+            this += resprite(
                 HCItems.ELDRITCH_EGG.itemId,
                 HTConst.MINECRAFT.toId(HTConst.ITEM, "egg"),
                 HCMaterialKeys.ELDRITCH,
-            ),
-        )
-
-        executor.accept(
-            resprite(
+            )
+            this += resprite(
                 HCItems.IRIDESCENT_POWDER.itemId,
                 HTConst.MINECRAFT.toId(HTConst.ITEM, "blaze_powder"),
                 CommonMaterialKeys.PLASTIC,
-            ),
-        )
+            )
+        }.forEach(executor)
     }
 
     //    Translation    //
@@ -221,9 +210,21 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
     }
 
     @JvmStatic
-    private fun translate(type: HTLangType, part: HTPartLike, propertyMap: HTPropertyMap): String? =
-        propertyMap.getOrDefault(HTMaterialPropertyKeys.CUSTOM_LANG_NAME)[part]?.getTranslatedName(type) ?: run {
-            val materialName: HTLangName = propertyMap[HTMaterialPropertyKeys.LANG_NAME] ?: return@run null
-            part.getOrDefault(HTPartPropertyKeys.LANG_PATTERN).translate(type, materialName)
-        }
+    private fun translate(type: HTLangType, part: HTPart, propertyMap: HTPropertyMap): String? =
+        translate(type, part, propertyMap, HTMaterialPropertyKeys.CUSTOM_LANG_NAME)
+
+    @JvmStatic
+    private fun translate(type: HTLangType, part: HTFluidPart, propertyMap: HTPropertyMap): String? =
+        translate(type, part, propertyMap, HTMaterialPropertyKeys.CUSTOM_FLUID_NAME)
+
+    @JvmStatic
+    private fun <T : HTPartLike> translate(
+        type: HTLangType,
+        part: T,
+        propertyMap: HTPropertyMap,
+        key: HTPropertyKey<Map<T, HTLangName>>,
+    ): String? = propertyMap.getOrDefault(key)[part]?.getTranslatedName(type) ?: run {
+        val materialName: HTLangName = propertyMap[HTMaterialPropertyKeys.LANG_NAME] ?: return@run null
+        part.getOrDefault(HTPartPropertyKeys.LANG_PATTERN).translate(type, materialName)
+    }
 }

@@ -175,6 +175,13 @@ object HTMaterialPropertyKeys {
     @JvmField
     val CUSTOM_LANG_NAME: HTPropertyKey<Map<HTPart, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_lang_name"))
 
+    /**
+     * [部品][HTFluidPart]に依存する[翻訳名][HTLangName]を管理する[プロパティキー][HTPropertyKey]
+     * @since 0.14.0
+     */
+    @JvmField
+    val CUSTOM_FLUID_NAME: HTPropertyKey<Map<HTFluidPart, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_fluid_name"))
+
     // Texture
     /**
      * テクスチャを生成する際のカラーパレットの[ID][ResourceLocation]を管理する[プロパティキー][HTPropertyKey]

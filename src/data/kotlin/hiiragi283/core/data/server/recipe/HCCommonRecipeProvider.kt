@@ -33,9 +33,12 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
+import net.minecraft.world.item.alchemy.PotionContents
+import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.item.crafting.CraftingBookCategory
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
+import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 import org.apache.commons.lang3.math.Fraction
 
 object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID) {
@@ -150,6 +153,26 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             define('A') += HiiragiCoreTags.Items.CROPS_WARPED_WART
             define('B') += HCBlocks.WARPED_WART
             resultStack += Items.WARPED_WART_BLOCK
+        }
+        // Flour + Water -> Dough
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += HiiragiCoreTags.Items.FLOURS_WHEAT
+            ingredients += DataComponentIngredient.of(
+                false,
+                DataComponents.POTION_CONTENTS,
+                PotionContents(Potions.WATER),
+                Items.POTION,
+            )
+            resultStack += HCItems.WHEAT_DOUGH
+            recipeId suffix "_with_bottle"
+        }
+        HTShapelessRecipeBuilder.create(output) {
+            repeat(3) {
+                ingredients += HiiragiCoreTags.Items.FLOURS_WHEAT
+            }
+            ingredients += Tags.Items.BUCKETS_WATER
+            resultStack += HCItems.WHEAT_DOUGH to 3
+            recipeId suffix "_with_bucket"
         }
         // Dough -> Bread
         HTCookingRecipeBuilder.smeltingAndSmoking(output) {

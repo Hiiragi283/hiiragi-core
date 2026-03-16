@@ -85,6 +85,14 @@ fun HTPropertyMap.Mutable.addCustomName(part: HTPartLike, value: HTLangName) {
     this.computeIfAbsent(HTMaterialPropertyKeys.CUSTOM_LANG_NAME) { it.plus(part.asPart() to value) }
 }
 
+fun HTPropertyMap.Mutable.addCustomFluidName(part: HTFluidPart, enName: String, jaName: String) {
+    this.addCustomFluidName(part, HTLangName.create(enName, jaName))
+}
+
+fun HTPropertyMap.Mutable.addCustomFluidName(part: HTFluidPart, value: HTLangName) {
+    this.computeIfAbsent(HTMaterialPropertyKeys.CUSTOM_FLUID_NAME) { it.plus(part to value) }
+}
+
 fun HTPropertyMap.Mutable.setTextureSet(name: String) {
     this.setTextureSet(HTMaterialTextureSet(name, HTMaterialTextureSet.DEFAULT))
 }
