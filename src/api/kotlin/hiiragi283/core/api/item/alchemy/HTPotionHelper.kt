@@ -11,11 +11,8 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.PotionContents
-import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.MutableDataComponentHolder
-import net.neoforged.neoforge.common.Tags
-import net.neoforged.neoforge.fluids.FluidStack
 import kotlin.jvm.optionals.getOrNull
 
 /**
@@ -49,12 +46,7 @@ object HTPotionHelper {
      * @since 0.10.0
      */
     @JvmStatic
-    fun getPotion(holder: DataComponentHolder): PotionContents {
-        if (holder is FluidStack && holder.`is`(Tags.Fluids.WATER)) {
-            return PotionContents(Potions.WATER)
-        }
-        return holder.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY)
-    }
+    fun getPotion(holder: DataComponentHolder): PotionContents = getContents(holder)?.vanilla ?: PotionContents.EMPTY
 
     /**
      * 指定した[holder]からポーションのMod IDを取得します。

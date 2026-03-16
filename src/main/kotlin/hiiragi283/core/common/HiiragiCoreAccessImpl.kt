@@ -8,7 +8,6 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
-import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
@@ -46,11 +45,14 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.alchemy.PotionContents
+import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.level.block.Block
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.ModList
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.common.MutableDataComponentHolder
+import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.event.TagsUpdatedEvent
 import net.neoforged.neoforge.fluids.FluidStack
 
@@ -164,12 +166,18 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
 
     override fun getContents(holder: DataComponentHolder): HTPotionContents? {
         val handler: HTPotionFluidManager.Handler = when (holder) {
-            is FluidStack -> HTPotionFluidManager.getFluidHandler(holder.fluidHolder)
+            is FluidStack -> {
+                if (holder.`is`(Tags.Fluids.WATER)) {
+                    return HTPotionContents.of(Potions.WATER, HTBottleType.DEFAULT)
+                }
+                HTPotionFluidManager.getFluidHandler(holder.fluidHolder)
+            }
             is ItemStack -> HTPotionFluidManager.getItemHandler(holder.itemHolder)
             else -> null
         } ?: DEFAULT_POTION_HANDLER
         val bottleType: HTBottleType = handler[holder] ?: return null
-        return HTPotionContents.fromVanilla(HTPotionHelper.getPotion(holder), bottleType)
+        val contents: PotionContents = holder.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY)
+        return HTPotionContents.fromVanilla(contents, bottleType)
     }
 
     override fun setContents(holder: MutableDataComponentHolder, contents: HTPotionContents) {

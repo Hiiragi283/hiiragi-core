@@ -8,9 +8,7 @@ import com.mojang.serialization.Lifecycle
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.registry.toLike
-import net.minecraft.core.Holder
 import net.minecraft.core.HolderGetter
-import net.minecraft.resources.RegistryFixedCodec
 import net.minecraft.resources.RegistryOps
 import net.minecraft.resources.ResourceKey
 import java.util.Optional
@@ -20,14 +18,10 @@ import java.util.Optional
  */
 internal class HTHolderLikeCodec<R : Any>(private val registryKey: RegistryKey<R>) : Codec<HTSimpleHolderLike<R>> {
     private val keyCodec: Codec<ResourceKey<R>> = ResourceKey.codec(registryKey)
-    private val holderCodec: Codec<Holder<R>> = RegistryFixedCodec.create(registryKey)
 
     override fun <T : Any> encode(input: HTSimpleHolderLike<R>, ops: DynamicOps<T>, prefix: T): DataResult<T> = input
-        .unwrap()
-        .map(
-            { key: ResourceKey<R> -> keyCodec.encode(key, ops, prefix) },
-            { holder: Holder<R> -> holderCodec.encode(holder, ops, prefix) },
-        )
+        .getResourceKey()
+        .let { keyCodec.encode(it, ops, prefix) }
 
     override fun <T : Any> decode(ops: DynamicOps<T>, input: T): DataResult<Pair<HTSimpleHolderLike<R>, T>> {
         if (ops is RegistryOps<T>) {

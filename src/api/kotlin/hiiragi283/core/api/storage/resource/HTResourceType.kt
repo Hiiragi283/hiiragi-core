@@ -3,9 +3,11 @@ package hiiragi283.core.api.storage.resource
 import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.text.HTHasText
 import net.minecraft.core.Holder
+import net.minecraft.core.HolderSet
 import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.resources.ResourceKey
+import net.minecraft.tags.TagKey
 import net.neoforged.neoforge.registries.datamaps.DataMapType
 import net.neoforged.neoforge.registries.datamaps.IWithData
 
@@ -19,6 +21,8 @@ import net.neoforged.neoforge.registries.datamaps.IWithData
  */
 interface HTResourceType<TYPE : Any> : HTHasText {
     fun type(): TYPE
+
+    fun isOf(other: TYPE): Boolean = other == type()
 
     /**
      * [Holder]を保持する[HTResourceType]の拡張インターフェースです。
@@ -34,6 +38,10 @@ interface HTResourceType<TYPE : Any> : HTHasText {
          * @since 0.13.0
          */
         fun getHolder(): Holder<TYPE>
+
+        fun isOf(tagKey: TagKey<TYPE>): Boolean = getHolder().`is`(tagKey)
+
+        fun isOf(holderSet: HolderSet<TYPE>): Boolean = getHolder() in holderSet
 
         override fun getResourceKey(): ResourceKey<TYPE> = getHolder().unwrapKey().orElseThrow()
 

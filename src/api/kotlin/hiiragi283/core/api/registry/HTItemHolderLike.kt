@@ -37,6 +37,8 @@ interface HTItemHolderLike<ITEM : Item> :
 
     override fun asItem(): ITEM = get()
 
+    fun isOf(item: Item): Boolean = this.asItem() == item
+
     // ItemStack
     fun isOf(stack: ItemStack): Boolean = stack.`is`(this.asItem())
 

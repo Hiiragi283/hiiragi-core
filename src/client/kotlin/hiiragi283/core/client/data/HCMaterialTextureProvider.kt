@@ -27,7 +27,7 @@ import kotlin.collections.iterator
 
 data object HCMaterialTextureProvider : ResourceGenTask {
     private lateinit var lavaTexture: TextureImage
-    
+
     override fun accept(manager: ResourceManager, sink: ResourceSink) {
         HTTextureUtil.templatePalette = HTTextureUtil.getOrCreateColors(HiiragiCoreAPI.id("template"), manager).getOrThrow()
         lavaTexture = TextureImage.open(manager, HTConst.MINECRAFT.toId(HTConst.BLOCK, "lava_still"))
@@ -39,7 +39,7 @@ data object HCMaterialTextureProvider : ResourceGenTask {
     }
 
     @JvmStatic
-    private inline fun <T: HTIdLike> material(
+    private inline fun <T : HTIdLike> material(
         manager: ResourceManager,
         sink: ResourceSink,
         pathPrefix: String,
@@ -94,7 +94,7 @@ data object HCMaterialTextureProvider : ResourceGenTask {
             HiiragiCoreAPI.LOGGER.debug(
                 "Molten {} palette: {}",
                 entry.asMaterialId(),
-                palette.joinToString(separator = ",", transform = { it.value().toHexString() })
+                palette.joinToString(separator = ",", transform = { it.value().toHexString() }),
             )
             // テンプレートを取得
             val template: TextureImage = lavaTexture.makeCopy()
