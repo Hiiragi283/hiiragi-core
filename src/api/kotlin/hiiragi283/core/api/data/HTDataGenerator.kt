@@ -1,5 +1,7 @@
 package hiiragi283.core.api.data
 
+import hiiragi283.core.api.data.advancement.HTAdvancementProvider
+import hiiragi283.core.api.data.advancement.HTSubAdvancementProvider
 import hiiragi283.core.api.function.partially1
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.DataProvider
@@ -67,6 +69,11 @@ interface HTDataGenerator {
     ) {
         addProvider(blockTags).contentsGetter().let(itemTags::partially1).let { addProvider(it) }
     }
+
+    fun addAdvancements(vararg providers: HTSubAdvancementProvider): HTAdvancementProvider = addAdvancements(providers.toList())
+
+    fun addAdvancements(providers: List<HTSubAdvancementProvider>): HTAdvancementProvider =
+        addProvider { context: HTDataGenContext -> HTAdvancementProvider(context, providers) }
 
     /**
      * [HTDataGenContext]を受けるとって[DataProvider]に変換する処理を表すインターフェースです。

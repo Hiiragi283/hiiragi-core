@@ -2,19 +2,17 @@ package hiiragi283.core.api.recipe.ingredient
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.function.generateHash
+import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTBottleType
-import hiiragi283.core.api.item.alchemy.HTPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.serialization.codec.MapBiCodec
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
-import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.world.item.alchemy.Potion
-import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
@@ -42,20 +40,19 @@ class HTPotionFluidIngredient(val potions: HolderSet<Potion>, val bottleType: HT
     }
 
     override fun test(fluidStack: FluidStack): Boolean {
-        val contents: HTPotionContents = HTPotionHelper.getContents(fluidStack) ?: return false
+        val contents: BottledPotionContents = HTPotionHelper.getContents(fluidStack) ?: return false
         if (contents.bottleType != bottleType) return false
         return contents.potion?.let(potions::contains) ?: false
     }
 
     override fun generateStacks(): Stream<FluidStack> = HTPotionFluidManager
         .fluidHandlers
-        .flatMap { (fluid: Holder<Fluid>, handler: HTPotionFluidManager.Handler) ->
+        .keys
+        .flatMap { fluid: Holder<Fluid> ->
             potions
                 .map { potion: Holder<Potion> ->
                     val stack = FluidStack(fluid, HTConst.DEFAULT_FLUID_AMOUNT)
-                    stack.set(DataComponents.POTION_CONTENTS, PotionContents(potion))
-                    handler[stack] = bottleType
-                    stack
+                    HTPotionHelper.setContents(stack, BottledPotionContents(potion))
                 }
         }.stream()
 

@@ -6,8 +6,7 @@ import hiiragi283.core.api.function.negate
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
 import hiiragi283.core.api.integration.jei.HTSubtypeInterpreter
 import hiiragi283.core.api.item.HTPotionBasedItem
-import hiiragi283.core.api.item.alchemy.HTBottleType
-import hiiragi283.core.api.item.alchemy.HTPotionContents
+import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.jei.category.HCBrewingRecipeCategory
@@ -84,8 +83,8 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             BuiltInRegistries.POTION
                 .asLookup()
                 .listElements()
-                .map { HTPotionContents.of(it, HTBottleType.DEFAULT) }
-                .filter(HTPotionContents::isWater.negate())
+                .map(::BottledPotionContents)
+                .filter(BottledPotionContents::isWater.negate())
                 .map(HCPotionFluidHelper::createFluid)
                 .toList(),
         )

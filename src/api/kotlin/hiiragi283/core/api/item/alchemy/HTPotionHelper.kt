@@ -2,6 +2,10 @@ package hiiragi283.core.api.item.alchemy
 
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.item.createItemStack
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.api.storage.fluid.toResource
+import hiiragi283.core.api.storage.item.HTItemResourceType
+import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.util.wrapOptional
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentHolder
@@ -13,6 +17,7 @@ import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.MutableDataComponentHolder
+import net.neoforged.neoforge.fluids.FluidStack
 import kotlin.jvm.optionals.getOrNull
 
 /**
@@ -23,30 +28,17 @@ object HTPotionHelper {
     //    DataComponentHolder    //
 
     /**
-     * 指定した[holder]から[HTPotionContents]を取得します。
-     * @return [HTPotionContents]を取得できない場合は`null`
-     * @since 0.11.0
-     */
-    @JvmStatic
-    fun getContents(holder: DataComponentHolder): HTPotionContents? = HiiragiCoreAccess.INSTANCE.getContents(holder)
-
-    /**
-     * 指定した[holder]に[contents]を設定します。
-     * @since 0.11.0
-     */
-    @JvmStatic
-    fun <T : MutableDataComponentHolder> setContents(holder: T, contents: HTPotionContents): T {
-        HiiragiCoreAccess.INSTANCE.setContents(holder, contents)
-        return holder
-    }
-
-    /**
      * 指定した[holder]から[PotionContents]を取得します。
      * @return 値を保持していない場合は[PotionContents.EMPTY]
      * @since 0.10.0
      */
     @JvmStatic
-    fun getPotion(holder: DataComponentHolder): PotionContents = getContents(holder)?.vanilla ?: PotionContents.EMPTY
+    fun getPotion(holder: DataComponentHolder): PotionContents = holder.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY)
+
+    @JvmStatic
+    fun setPotion(holder: MutableDataComponentHolder, contents: PotionContents?) {
+        holder.set(DataComponents.POTION_CONTENTS, contents)
+    }
 
     /**
      * 指定した[holder]からポーションのMod IDを取得します。
@@ -67,7 +59,13 @@ object HTPotionHelper {
      */
     @JvmStatic
     fun getPotionDescId(holder: DataComponentHolder): String? {
-        val contents: HTPotionContents = getContents(holder) ?: return null
+        val contents: BottledPotionContents = when (holder) {
+            is FluidStack -> getContents(holder)
+            is ItemStack -> getContents(holder)
+            is HTFluidResourceType -> getContents(holder)
+            is HTItemResourceType -> getContents(holder)
+            else -> null
+        } ?: return null
         return Potion.getName(contents.potion.wrapOptional(), "${contents.bottleType.asItem().descriptionId}.effect.")
     }
 
@@ -78,7 +76,7 @@ object HTPotionHelper {
      * @since 0.11.0
      */
     @JvmStatic
-    fun createPotion(contents: HTPotionContents): ItemStack = createPotion(contents.bottleType, contents.vanilla)
+    fun createPotion(contents: BottledPotionContents): ItemStack = createPotion(contents.bottleType, contents.contents)
 
     /**
      * 指定した引数からポーションの[ItemStack]を作成します。
@@ -98,4 +96,62 @@ object HTPotionHelper {
     @JvmStatic
     fun createPotion(item: ItemLike, contents: PotionContents, count: Int = 1): ItemStack =
         createItemStack(item, DataComponents.POTION_CONTENTS, contents, count)
+
+    /**
+     * 指定した[stack]から[BottledPotionContents]を取得します。
+     * @return [BottledPotionContents]を取得できない場合は`null`
+     * @since 0.14.0
+     */
+    @JvmStatic
+    fun getContents(stack: ItemStack): BottledPotionContents? = stack.toResource()?.let(::getContents)
+
+    /**
+     * 指定した[resource]から[BottledPotionContents]を取得します。
+     * @return [BottledPotionContents]を取得できない場合は`null`
+     * @since 0.14.0
+     */
+    @JvmStatic
+    fun getContents(resource: HTItemResourceType): BottledPotionContents? {
+        val bottleType: HTBottleType = HTBottleType.getBottleType(resource) ?: return null
+        val contents: PotionContents = getPotion(resource)
+        return BottledPotionContents(contents, bottleType)
+    }
+
+    /**
+     * 指定した[stack]に[contents]を設定します。
+     * @since 0.14.0
+     */
+    @JvmStatic
+    fun setContents(stack: ItemStack, contents: BottledPotionContents): ItemStack {
+        HiiragiCoreAccess.INSTANCE.setContents(stack, contents)
+        return stack
+    }
+
+    //    FluidStack    //
+
+    /**
+     * 指定した[stack]から[BottledPotionContents]を取得します。
+     * @return [BottledPotionContents]を取得できない場合は`null`
+     * @since 0.11.0
+     */
+    @JvmStatic
+    fun getContents(stack: FluidStack): BottledPotionContents? = stack.toResource()?.let(::getContents)
+
+    /**
+     * 指定した[resource]から[BottledPotionContents]を取得します。
+     * @return [BottledPotionContents]を取得できない場合は`null`
+     * @since 0.14.0
+     */
+    @JvmStatic
+    fun getContents(resource: HTFluidResourceType): BottledPotionContents? = HiiragiCoreAccess.INSTANCE.getContents(resource)
+
+    /**
+     * 指定した[stack]に[contents]を設定します。
+     * @since 0.11.0
+     */
+    @JvmStatic
+    fun setContents(stack: FluidStack, contents: BottledPotionContents): FluidStack {
+        HiiragiCoreAccess.INSTANCE.setContents(stack, contents)
+        return stack
+    }
 }

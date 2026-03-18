@@ -1,7 +1,7 @@
 package hiiragi283.core.api
 
 import com.google.gson.JsonObject
-import hiiragi283.core.api.item.alchemy.HTPotionContents
+import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
@@ -17,14 +17,15 @@ import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.text.HTTextResult
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.HolderLookup
-import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.TagKey
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.Block
-import net.neoforged.neoforge.common.MutableDataComponentHolder
+import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.Consumer
 import kotlin.time.Duration
 import kotlin.time.measureTime
@@ -125,19 +126,21 @@ abstract class HiiragiCoreAccess {
     //    Potion    //
 
     /**
-     * 指定した[holder]から[HTPotionContents]を取得します。
+     * 指定した[resource]から[BottledPotionContents]を取得します。
      * @return 取得できなかった場合は`null`
      * @since 0.11.0
      * @see HTPotionHelper.getContents
      */
-    abstract fun getContents(holder: DataComponentHolder): HTPotionContents?
+    abstract fun getContents(resource: HTFluidResourceType): BottledPotionContents?
 
     /**
-     * 指定した[holder]に[HTPotionContents]を設定します。
+     * 指定した[stack]に[BottledPotionContents]を設定します。
      * @since 0.11.0
      * @see HTPotionHelper.setContents
      */
-    abstract fun setContents(holder: MutableDataComponentHolder, contents: HTPotionContents)
+    abstract fun setContents(stack: FluidStack, contents: BottledPotionContents)
+
+    abstract fun setContents(stack: ItemStack, contents: BottledPotionContents)
 
     //    Tag    //
 

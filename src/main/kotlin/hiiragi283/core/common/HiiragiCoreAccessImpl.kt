@@ -5,9 +5,10 @@ import hiiragi283.core.api.HTComparators
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTBottleType
-import hiiragi283.core.api.item.alchemy.HTPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
+import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
@@ -25,6 +26,7 @@ import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.toTextResult
@@ -41,7 +43,6 @@ import hiiragi283.core.util.HTPluginLoader
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponentHolder
-import net.minecraft.core.component.DataComponents
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.ItemStack
@@ -164,30 +165,25 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
         }
     }
 
-    override fun getContents(holder: DataComponentHolder): HTPotionContents? {
-        val handler: HTPotionFluidManager.Handler = when (holder) {
-            is FluidStack -> {
-                if (holder.`is`(Tags.Fluids.WATER)) {
-                    return HTPotionContents.of(Potions.WATER, HTBottleType.DEFAULT)
-                }
-                HTPotionFluidManager.getFluidHandler(holder.fluidHolder)
-            }
-            is ItemStack -> HTPotionFluidManager.getItemHandler(holder.itemHolder)
-            else -> null
-        } ?: DEFAULT_POTION_HANDLER
-        val bottleType: HTBottleType = handler[holder] ?: return null
-        val contents: PotionContents = holder.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY)
-        return HTPotionContents.fromVanilla(contents, bottleType)
+    override fun getContents(resource: HTFluidResourceType): BottledPotionContents? {
+        val handler: HTPotionFluidManager.Handler = when {
+            resource.isOf(Tags.Fluids.WATER) -> return BottledPotionContents(Potions.WATER)
+            else -> HTPotionFluidManager.getFluidHandler(resource.getHolder()) ?: DEFAULT_POTION_HANDLER
+        }
+        val bottleType: HTBottleType = handler[resource] ?: return null
+        val contents: PotionContents = HTPotionHelper.getPotion(resource)
+        return BottledPotionContents(contents, bottleType)
     }
 
-    override fun setContents(holder: MutableDataComponentHolder, contents: HTPotionContents) {
-        holder.set(DataComponents.POTION_CONTENTS, contents.vanilla)
-        val handler: HTPotionFluidManager.Handler = when (holder) {
-            is FluidStack -> HTPotionFluidManager.getFluidHandler(holder.fluidHolder)
-            is ItemStack -> HTPotionFluidManager.getItemHandler(holder.itemHolder)
-            else -> null
-        } ?: DEFAULT_POTION_HANDLER
-        handler[holder] = contents.bottleType
+    override fun setContents(stack: FluidStack, contents: BottledPotionContents) {
+        HTPotionHelper.setPotion(stack, contents.contents)
+        val handler: HTPotionFluidManager.Handler = HTPotionFluidManager.getFluidHandler(stack.fluidHolder) ?: DEFAULT_POTION_HANDLER
+        handler[stack] = contents.bottleType
+    }
+
+    override fun setContents(stack: ItemStack, contents: BottledPotionContents) {
+        HTPotionHelper.setPotion(stack, contents.contents)
+        DEFAULT_POTION_HANDLER[stack] = contents.bottleType
     }
 
     @Suppress("UNCHECKED_CAST")

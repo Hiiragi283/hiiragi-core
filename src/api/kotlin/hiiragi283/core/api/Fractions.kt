@@ -47,7 +47,10 @@ fun fixedFraction(amount: Int, capacity: Int, loop: Boolean = false): Fraction {
         true -> amount % capacity
         false -> minOf(amount, capacity)
     }
-    return fraction(fixedAmount, capacity)
+    return when (fixedAmount) {
+        capacity -> Fraction.ONE
+        else -> fraction(fixedAmount, capacity)
+    }
 }
 
 fun fraction(numerator: Int): Fraction = fraction(numerator, 1)

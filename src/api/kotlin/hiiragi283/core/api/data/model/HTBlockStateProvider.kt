@@ -19,11 +19,7 @@ import net.minecraft.world.level.block.WallBlock
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel
-import net.neoforged.neoforge.client.model.generators.ModelBuilder
 import net.neoforged.neoforge.client.model.generators.ModelFile
-import net.neoforged.neoforge.client.model.generators.ModelProvider
-import net.neoforged.neoforge.client.model.generators.ModelProvider.TEXTURE
-import net.neoforged.neoforge.common.data.ExistingFileHelper
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[BlockStateProvider]の拡張クラスです。
@@ -32,47 +28,21 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper
  */
 abstract class HTBlockStateProvider(protected val modId: String, context: HTDataGenContext) :
     BlockStateProvider(context.output, modId, context.fileHelper) {
-    protected val fileHelper: ExistingFileHelper = context.fileHelper
-
     //    Extensions    //
 
     /**
      * @since 0.10.0
      */
-    protected fun exists(id: ResourceLocation): Boolean = this.fileHelper.exists(id, TEXTURE)
-
-    /**
-     * @since 0.10.0
-     */
-    protected fun track(id: ResourceLocation) {
-        this.fileHelper.trackGenerated(id, TEXTURE)
-    }
-
-    /**
-     * @since 0.10.0
-     */
     protected fun trackBlock(id: HTIdLike) {
-        this.track(id.blockId)
+        models().trackTexture(id.blockId)
     }
 
     /**
      * @since 0.10.0
      */
     protected fun trackItem(id: HTIdLike) {
-        this.track(id.itemId)
+        models().trackTexture(id.itemId)
     }
-
-    /**
-     * 指定した[ID][id]でモデルのビルダーを作成します。
-     */
-    protected fun <BUILDER : ModelBuilder<BUILDER>, PROVIDER : ModelProvider<BUILDER>> PROVIDER.getBuilder(id: ResourceLocation): BUILDER =
-        this.getBuilder(id.toString())
-
-    /**
-     * 指定した[like]からモデルのビルダーを作成します。
-     */
-    protected fun <BUILDER : ModelBuilder<BUILDER>, PROVIDER : ModelProvider<BUILDER>> PROVIDER.getBuilder(like: HTIdLike): BUILDER =
-        this.getBuilder(like.getId())
 
     protected fun Direction.getRotationY(): Int = ((this.toYRot() + 180) % 360).toInt()
 
@@ -92,8 +62,13 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
         simpleBlockWithItem(block.get(), model)
     }
 
-    protected fun <BLOCK : HTBlockHolderLike<*>> simpleBlockAndItem(block: BLOCK, factory: (BLOCK) -> ModelFile) {
-        simpleBlockWithItem(block.get(), factory(block))
+    protected fun simpleBlockAndItem(block: HTBlockHolderLike<*>, vararg models: ConfiguredModel) {
+        simpleBlock(block.get(), *models)
+        simpleBlockItem(block.get(), models[0].model)
+    }
+
+    protected fun <BLOCK : HTBlockHolderLike<*>> simpleBlockAndItem(block: BLOCK, factory: (BLOCK) -> Array<ConfiguredModel>) {
+        simpleBlockAndItem(block, *factory(block))
     }
 
     /**
@@ -103,7 +78,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
         simpleBlockAndItem(
             block,
             models()
-                .withExistingParent(block.path, HiiragiCoreAPI.id(HTConst.BLOCK, "layered"))
+                .withExistingParent(block, HiiragiCoreAPI.id(HTConst.BLOCK, "layered"))
                 .texture("layer0", layer0)
                 .texture("layer1", layer1)
                 .renderType("cutout"),
@@ -137,7 +112,7 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
         id: ResourceLocation = block.blockId,
         factory: (BLOCK, ModelFile) -> Unit = ::simpleBlockAndItem,
     ) {
-        factory(block, ModelFile.ExistingModelFile(id, fileHelper))
+        factory(block, models().getExistingFile(id))
     }
 
     /**

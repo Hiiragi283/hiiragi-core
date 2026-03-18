@@ -24,20 +24,8 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
     /**
      * @since 0.10.0
      */
-    protected fun exists(id: ResourceLocation): Boolean = this.existingFileHelper.exists(id, TEXTURE)
-
-    /**
-     * @since 0.10.0
-     */
-    protected fun track(id: ResourceLocation) {
-        this.existingFileHelper.trackGenerated(id, TEXTURE)
-    }
-
-    /**
-     * @since 0.10.0
-     */
     protected fun trackItem(id: HTIdLike) {
-        this.track(id.itemId)
+        this.trackTexture(id.itemId)
     }
 
     /**
@@ -56,7 +44,7 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
      * @param action モデルを登録するブロック
      */
     protected inline fun existTexture(item: HTIdLike, id: ResourceLocation, action: (HTIdLike, ResourceLocation) -> Unit) {
-        if (existingFileHelper.exists(id, TEXTURE)) {
+        if (this.existsTexture(id)) {
             action(item, id)
         } else {
             HiiragiCoreAPI.LOGGER.debug("Missing texture {} for {}", id, item.getId())
@@ -74,7 +62,7 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
      * @param layers 各レイヤーのテクスチャID
      */
     protected fun layeredItem(item: HTIdLike, vararg layers: ResourceLocation): ItemModelBuilder {
-        val builder: ItemModelBuilder = withExistingParent(item.path, HTConst.MINECRAFT.toId(HTConst.ITEM, "generated"))
+        val builder: ItemModelBuilder = withExistingParent(item, HTConst.MINECRAFT.toId(HTConst.ITEM, "generated"))
         layers.forEachIndexed { index: Int, layer: ResourceLocation ->
             builder.texture("layer$index", layer)
         }
@@ -91,7 +79,7 @@ abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
             else -> "bucket"
         }.let { HTConst.NEOFORGE.toId(HTConst.ITEM, it) }
 
-        val builder: DynamicFluidContainerModelBuilder<ItemModelBuilder> = withExistingParent(content.getBucket().path, parent)
+        val builder: DynamicFluidContainerModelBuilder<ItemModelBuilder> = withExistingParent(content.getBucket(), parent)
             .customLoader(DynamicFluidContainerModelBuilder<ItemModelBuilder>::begin)
             .fluid(content.get())
         if (content.getFluidType().isLighterThanAir) {

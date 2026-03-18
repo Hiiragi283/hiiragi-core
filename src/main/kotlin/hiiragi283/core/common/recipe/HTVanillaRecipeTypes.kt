@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableMultimap
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTIngredientCreator
 import hiiragi283.core.api.data.recipe.HTResultCreator
+import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTBottleType
-import hiiragi283.core.api.item.alchemy.HTPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.recipe.HTRecipeCache
 import hiiragi283.core.api.recipe.HTRecipeLookup
@@ -106,8 +106,7 @@ object HTVanillaRecipeTypes {
                         val recipe = HCBrewingRecipe(
                             fluidIngredient,
                             HTIngredientCreator.create(ingredient),
-                            HTPotionContents
-                                .of(potionTo, HTBottleType.DEFAULT)
+                            BottledPotionContents(potionTo)
                                 .let(HCPotionFluidHelper::createFluid)
                                 .let(HTResultCreator::create),
                         )

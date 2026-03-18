@@ -19,12 +19,17 @@ class HTDisplayInfoBuilder {
     companion object {
         @HTBuilderMarker
         @JvmStatic
-        fun create(builderAction: HTDisplayInfoBuilder.() -> Unit): DisplayInfo = HTDisplayInfoBuilder().apply(builderAction).build()
+        inline fun create(key: HTAdvancementKey, builderAction: HTDisplayInfoBuilder.() -> Unit): DisplayInfo = HTDisplayInfoBuilder()
+            .apply {
+                titleText += translatableText(key.titleKey)
+                descText += translatableText(key.descKey)
+            }.apply(builderAction)
+            .build()
     }
 
     val iconStack = HTItemStackHolder()
-    val titleText = TextHolder(HTAdvancementKey::titleKey)
-    val descText = TextHolder(HTAdvancementKey::descKey)
+    val titleText = TextHolder()
+    val descText = TextHolder()
     var backGround: ResourceLocation? = null
     var type: AdvancementType = AdvancementType.TASK
     var showToast: Boolean = true
@@ -42,13 +47,9 @@ class HTDisplayInfoBuilder {
         hidden,
     )
 
-    inner class TextHolder(private val factory: (HTAdvancementKey) -> String) {
+    inner class TextHolder {
         lateinit var text: Text
             private set
-
-        operator fun plusAssign(key: HTAdvancementKey) {
-            this.plusAssign(key.let(factory).let(::translatableText))
-        }
 
         operator fun plusAssign(text: Text) {
             check(!::text.isInitialized) { "Text has already been initialized" }

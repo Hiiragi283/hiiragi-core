@@ -18,12 +18,12 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
-class HTAdvancementBuilder(private val key: HTAdvancementKey) {
+class HTAdvancementBuilder(val key: HTAdvancementKey) {
     companion object {
         @HTBuilderMarker
         @JvmStatic
-        fun create(key: HTAdvancementKey, builderAction: HTAdvancementBuilder.() -> Unit) {
-            HTAdvancementBuilder(key).apply(builderAction)
+        inline fun create(output: HTAdvancementOutput, key: HTAdvancementKey, builderAction: HTAdvancementBuilder.() -> Unit) {
+            HTAdvancementBuilder(key).apply(builderAction).save(output)
         }
     }
 
@@ -34,6 +34,11 @@ class HTAdvancementBuilder(private val key: HTAdvancementKey) {
     var requirements: AdvancementRequirements? = null
     var strategy: AdvancementRequirements.Strategy = AdvancementRequirements.Strategy.AND
     val conditions = HTConditionHolder()
+
+    @HTBuilderMarker
+    inline fun display(builderAction: HTDisplayInfoBuilder.() -> Unit) {
+        display = HTDisplayInfoBuilder.create(key, builderAction)
+    }
 
     fun save(output: HTAdvancementOutput) {
         val id: ResourceLocation = key.getId()

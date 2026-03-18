@@ -4,6 +4,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.model.HTBlockStateProvider
+import hiiragi283.core.api.data.model.trackTexture
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.setup.HCBlocks
@@ -13,7 +14,6 @@ import net.minecraft.world.level.block.LayeredCauldronBlock
 import net.minecraft.world.level.block.NetherWartBlock
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel
-import net.neoforged.neoforge.client.model.generators.ModelFile
 
 class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(HiiragiCoreAPI.MOD_ID, context) {
     override fun registerStatesAndModels() {
@@ -33,7 +33,7 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(Hii
             }
             ConfiguredModel
                 .builder()
-                .modelFile(ModelFile.UncheckedModelFile(HTConst.MINECRAFT.toId("block/water_cauldron").withSuffix(suffix)))
+                .modelFile(models().getExistingFile(HTConst.MINECRAFT.toId("block/water_cauldron").withSuffix(suffix)))
                 .build()
         }
 
@@ -50,7 +50,7 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(Hii
                 else -> 2
             }
             val id: ResourceLocation = block.blockId.withSuffix("_stage$age")
-            track(id)
+            models().trackTexture(id)
             ConfiguredModel
                 .builder()
                 .modelFile(

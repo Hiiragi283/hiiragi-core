@@ -21,7 +21,7 @@ import java.util.concurrent.CompletableFuture
  * @since 0.1.0
  * @see AdvancementProvider
  */
-abstract class HTAdvancementProvider(
+class HTAdvancementProvider(
     output: PackOutput,
     private val registries: CompletableFuture<HolderLookup.Provider>,
     private val fileHelper: ExistingFileHelper,

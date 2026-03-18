@@ -37,7 +37,7 @@ class HTFluidWidgetRenderer(gui: HTAbstractGui, widget: HTFluidWidget) : HTSprit
     override fun getLevel(): Fraction = when (widget.isTank) {
         true -> widget.getLevelAsFraction()
         false -> Fraction.ONE
-    }
+    }.coerceAtMost(Fraction.ONE)
 
     override fun collectTooltips(consumer: Consumer<Text>, flag: TooltipFlag) {
         HTTooltipHelper.addFluidTooltip(widget.getFluidStack(), consumer, flag, false)
