@@ -18,6 +18,7 @@ import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.text.HTTextResult
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.HolderLookup
@@ -132,6 +133,8 @@ abstract class HiiragiCoreAccess {
      * @see HTPotionHelper.getContents
      */
     abstract fun getContents(resource: HTFluidResourceType): BottledPotionContents?
+
+    abstract fun getContents(resource: HTItemResourceType): BottledPotionContents?
 
     /**
      * 指定した[stack]に[BottledPotionContents]を設定します。

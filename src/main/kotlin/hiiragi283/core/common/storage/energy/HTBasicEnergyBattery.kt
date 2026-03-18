@@ -69,7 +69,7 @@ open class HTBasicEnergyBattery(
     }
 
     override fun deserialize(input: HTValueInput) {
-        input.getInt(HTConst.AMOUNT)?.let(::setAmountUnchecked)
+        input.getInt(HTConst.AMOUNT, 0).let(::setAmountUnchecked)
     }
 
     final override fun onContentsChanged() {

@@ -101,7 +101,10 @@ open class HTBasicFluidTank protected constructor(
     }
 
     override fun deserialize(input: HTValueInput) {
-        val resource: HTFluidResourceType = input.read(HTConst.FLUID, HTFluidResourceType.CODEC) ?: return
+        val resource: HTFluidResourceType = input.read(HTConst.FLUID, HTFluidResourceType.CODEC) ?: run {
+            stack = FluidStack.EMPTY
+            return
+        }
         val amount: Int = input.getInt(HTConst.AMOUNT) ?: return
         resource.toStack(amount).let(::setStack)
     }

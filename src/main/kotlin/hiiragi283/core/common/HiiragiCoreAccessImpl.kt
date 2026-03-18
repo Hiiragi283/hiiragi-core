@@ -27,6 +27,7 @@ import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.toTextResult
@@ -171,6 +172,12 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
             else -> HTPotionFluidManager.getFluidHandler(resource.getHolder()) ?: DEFAULT_POTION_HANDLER
         }
         val bottleType: HTBottleType = handler[resource] ?: return null
+        val contents: PotionContents = HTPotionHelper.getPotion(resource)
+        return BottledPotionContents(contents, bottleType)
+    }
+
+    override fun getContents(resource: HTItemResourceType): BottledPotionContents? {
+        val bottleType: HTBottleType = DEFAULT_POTION_HANDLER[resource] ?: return null
         val contents: PotionContents = HTPotionHelper.getPotion(resource)
         return BottledPotionContents(contents, bottleType)
     }

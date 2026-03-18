@@ -33,12 +33,16 @@ class HTWeatheringCopperBasinBlock(private val weatherState: WeatheringCopper.We
         val result: ItemInteractionResult = super.useItemOn(stack, state, level, pos, player, hand, hitResult)
         if (stack.isEmpty) return result
         if (!player.isShiftKeyDown) {
-            val tankEntity: HTCopperBasinBlockEntity = level.getTypedBlockEntity(pos) ?: return ItemInteractionResult.FAIL
-            val result: ItemInteractionResult = ItemInteractionResult.sidedSuccess(level.isClientSide)
-            when {
-                tankEntity.drainContainer(player, hand) -> return result
-                tankEntity.fillContainer(player, hand) -> return result
-                FluidUtil.interactWithFluidHandler(player, hand, tankEntity) -> return result
+            if (!level.isClientSide) {
+                val tankEntity: HTCopperBasinBlockEntity = level.getTypedBlockEntity(pos) ?: return ItemInteractionResult.FAIL
+                val result: ItemInteractionResult = ItemInteractionResult.CONSUME
+                when {
+                    tankEntity.drainContainer(player, hand) -> return result
+                    tankEntity.fillContainer(player, hand) -> return result
+                    FluidUtil.interactWithFluidHandler(player, hand, tankEntity) -> return result
+                }
+            } else {
+                return ItemInteractionResult.SUCCESS
             }
         }
         return result

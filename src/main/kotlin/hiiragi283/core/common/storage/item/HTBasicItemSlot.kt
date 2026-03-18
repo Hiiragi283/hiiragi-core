@@ -108,7 +108,10 @@ open class HTBasicItemSlot protected constructor(
     }
 
     override fun deserialize(input: HTValueInput) {
-        val resource: HTItemResourceType = input.read(HTConst.ITEM, HTItemResourceType.CODEC) ?: return
+        val resource: HTItemResourceType = input.read(HTConst.ITEM, HTItemResourceType.CODEC) ?: run {
+            stack = ItemStack.EMPTY
+            return
+        }
         val count: Int = input.getInt(HTConst.COUNT) ?: return
         resource.toStack(count).let(::setStack)
     }
