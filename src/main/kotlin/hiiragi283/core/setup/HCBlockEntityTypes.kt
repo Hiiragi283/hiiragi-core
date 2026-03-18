@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.storage.HTHandlerProvider
 import hiiragi283.core.common.block.HTBlockWithEntity
+import hiiragi283.core.common.block.entity.HTCopperBasinBlockEntity
 import hiiragi283.core.common.block.entity.HTTestBlockEntity
 import hiiragi283.core.common.capability.HTEnergyCapabilities
 import hiiragi283.core.common.capability.HTFluidCapabilities
@@ -30,6 +31,10 @@ object HCBlockEntityTypes {
     }
 
     @JvmField
+    val COPPER_BASIN: HTDeferredBlockEntityType<HTCopperBasinBlockEntity> =
+        REGISTER.registerTick("copper_basin", ::HTCopperBasinBlockEntity)
+
+    @JvmField
     val TEST: HTDeferredBlockEntityType<HTTestBlockEntity> = REGISTER.registerTick("test", ::HTTestBlockEntity)
 
     //    Event    //
@@ -49,6 +54,8 @@ object HCBlockEntityTypes {
     // Capabilities
     @JvmStatic
     private fun registerBlockCapabilities(event: RegisterCapabilitiesEvent) {
+        registerHandler(event, COPPER_BASIN.get())
+
         registerHandler(event, TEST.get())
 
         HiiragiCoreAPI.LOGGER.info("Registered Block Capabilities!")

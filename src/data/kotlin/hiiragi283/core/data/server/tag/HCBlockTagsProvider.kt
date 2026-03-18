@@ -2,6 +2,7 @@ package hiiragi283.core.data.server.tag
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
+import hiiragi283.core.api.data.tag.HTTagBuilder
 import hiiragi283.core.api.data.tag.HTTagsProvider
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.setup.HCBlocks
@@ -16,10 +17,12 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider.DataGen<Bl
             .apply(BlockTags.MINEABLE_WITH_AXE)
             .add(HCBlocks.WARPED_WART)
 
-        factory
+        val pickaxe: HTTagBuilder<Block> = factory
             .apply(BlockTags.MINEABLE_WITH_PICKAXE)
             .add(HCBlocks.OIL_SHALE)
             .add(HCBlocks.TREE_TAP)
+        HCBlocks.COPPER_BASINS.values.forEach(pickaxe::add)
+        HCBlocks.WAXED_COPPER_BASINS.values.forEach(pickaxe::add)
 
         factory
             .apply(BlockTags.MINEABLE_WITH_SHOVEL)
