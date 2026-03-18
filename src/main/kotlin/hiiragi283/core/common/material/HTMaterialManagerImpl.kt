@@ -10,9 +10,8 @@ class HTMaterialManagerImpl(private val propertyMapMap: Map<HTMaterialKey, HTPro
 
     override fun get(material: HTMaterialLike): HTPropertyMap? = propertyMapMap[material.asMaterialKey()]
 
-    override val keys: Set<HTMaterialKey> get() = propertyMapMap.keys
-    override val entries: Set<HTMaterialManager.Entry>
-        get() = propertyMapMap.mapTo(mutableSetOf(), ::EntryImpl)
+    override val keys: Set<HTMaterialKey> = propertyMapMap.keys
+    override val entries: Set<HTMaterialManager.Entry> = propertyMapMap.mapTo(mutableSetOf(), ::EntryImpl)
 
     private class EntryImpl(entry: Map.Entry<HTMaterialKey, HTPropertyMap>) :
         HTMaterialManager.Entry,

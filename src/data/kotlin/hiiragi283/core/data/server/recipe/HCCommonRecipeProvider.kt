@@ -4,6 +4,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.block.HTWeatheringLevel
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.createItemStack
@@ -12,6 +13,7 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.getOrThrow
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -47,6 +49,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         materials()
         utilities()
         buckets()
+        copper()
     }
 
     @JvmStatic
@@ -422,6 +425,30 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             resultStack += getOrThrow(CommonParts.INGOT, CommonMaterialKeys.RUBBER)
             exp = 0.7f
             recipeId suffix "_from_raw"
+        }
+    }
+
+    @JvmStatic
+    private fun copper() {
+        // Copper -> Copper Basin
+        HTShapedRecipeBuilder.create(output) {
+            pattern(
+                "A A",
+                "A A",
+                "BAB",
+            )
+            define('A') += CommonTagPrefixes.PLATE to VanillaMaterialKeys.COPPER
+            define('B') += CommonTagPrefixes.INGOT to VanillaMaterialKeys.COPPER
+            resultStack += HCBlocks.COPPER_BASINS[HTWeatheringLevel.UNAFFECTED]?.first?.get() ?: return
+        }
+        HCBlocks.COPPER_BASINS.forEach { base: HTBlockHolderLike<*>, waxed: HTBlockHolderLike<*> ->
+            // Waxing
+            HTShapelessRecipeBuilder.create(output) {
+                ingredients += base.get()
+                ingredients += Items.HONEYCOMB
+                resultStack += waxed.get()
+                recipeId suffix "_from_${base.path}"
+            }
         }
     }
 

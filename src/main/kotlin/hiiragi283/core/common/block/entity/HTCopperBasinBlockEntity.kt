@@ -1,6 +1,8 @@
 package hiiragi283.core.common.block.entity
 
 import hiiragi283.core.api.HTContentListener
+import hiiragi283.core.api.serialization.value.HTValueInput
+import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.common.storage.fluid.HTBasicFluidTank
@@ -14,7 +16,8 @@ import net.minecraft.world.level.block.state.BlockState
 import org.apache.commons.lang3.math.Fraction
 
 class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HCBlockEntityTypes.COPPER_BASIN, pos, state) {
-    private lateinit var tank: HTBasicFluidTank
+    lateinit var tank: HTBasicFluidTank
+        private set
 
     override fun createFluidHandler(listener: HTContentListener): HTFluidTankHolder {
         tank = HTBasicFluidTank.create(listener, 4000)
@@ -43,5 +46,15 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
             return true
         }
         return false
+    }
+
+    override fun initReducedUpdateTag(output: HTValueOutput) {
+        super.initReducedUpdateTag(output)
+        tank.serialize(output)
+    }
+
+    override fun handleUpdateTag(input: HTValueInput) {
+        super.handleUpdateTag(input)
+        tank.deserialize(input)
     }
 }

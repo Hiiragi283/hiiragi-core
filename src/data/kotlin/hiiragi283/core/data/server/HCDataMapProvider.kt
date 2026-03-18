@@ -1,5 +1,6 @@
 package hiiragi283.core.data.server
 
+import hiiragi283.core.api.block.HTWeatheringBlockMap
 import hiiragi283.core.api.block.HTWeatheringLevel
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.map.HTDataMapProvider
@@ -19,9 +20,9 @@ class HCDataMapProvider(context: HTDataGenContext) : HTDataMapProvider(context) 
             addHolder(HCBlocks.OIL_SHALE, FurnaceFuel(20 * 10 * 4))
         }
 
-        registerOxidizables(HCBlocks.COPPER_BASINS)
+        registerOxidizables(HCBlocks.COPPER_BASINS.base)
 
-        registerWaxed(HCBlocks.COPPER_BASINS, HCBlocks.WAXED_COPPER_BASINS)
+        registerWaxed(HCBlocks.COPPER_BASINS)
     }
 
     private fun registerOxidizables(map: Map<HTWeatheringLevel, HTBlockHolderLike<*>>) {
@@ -33,15 +34,11 @@ class HCDataMapProvider(context: HTDataGenContext) : HTDataMapProvider(context) 
         }
     }
 
-    private fun registerWaxed(
-        unwaxedMap: Map<HTWeatheringLevel, HTBlockHolderLike<*>>,
-        waxedMap: Map<HTWeatheringLevel, HTBlockHolderLike<*>>,
-    ) {
+    private fun registerWaxed(map: HTWeatheringBlockMap) {
         val builder: Builder<Waxable, Block> = builder(NeoForgeDataMaps.WAXABLES)
         for (level: HTWeatheringLevel in HTWeatheringLevel.entries) {
-            val unwaxed: HTIdLike = unwaxedMap[level] ?: continue
-            val waxed: HTBlockHolderLike<*> = waxedMap[level] ?: continue
-            builder.addHolder(unwaxed, Waxable(waxed.get()))
+            val (base: HTIdLike, waxed: HTBlockHolderLike<*>) = map[level] ?: continue
+            builder.addHolder(base, Waxable(waxed.get()))
         }
     }
 }

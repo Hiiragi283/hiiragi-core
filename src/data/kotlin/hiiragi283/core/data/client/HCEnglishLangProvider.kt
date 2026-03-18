@@ -25,8 +25,6 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCBlocks.WARPED_WART, "Warped Wart")
 
         add(HCBlocks.TREE_TAP, "Tree Tap")
-        add(HCBlocks.LATEX_CAULDRON.get(), "Latex Cauldron")
-
         // Entity
         add(HCEntityTypes.BOMB, "Thrown Bomb")
         add(HCEntityTypes.ELDRITCH_EGG, "Thrown Eldritch Egg")

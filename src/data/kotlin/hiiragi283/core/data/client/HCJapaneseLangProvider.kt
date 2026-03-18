@@ -25,8 +25,6 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCBlocks.WARPED_WART, "歪んだウォート")
 
         add(HCBlocks.TREE_TAP, "ツリータップ")
-        add(HCBlocks.LATEX_CAULDRON.get(), "ラテックス入り大釜")
-
         // Entity
         add(HCEntityTypes.BOMB, "ボム")
         add(HCEntityTypes.ELDRITCH_EGG, "異質な卵")

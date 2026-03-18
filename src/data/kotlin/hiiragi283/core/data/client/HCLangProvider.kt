@@ -1,12 +1,13 @@
 package hiiragi283.core.data.client
 
+import hiiragi283.core.api.block.HTWeatheringLevel
 import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.data.lang.HTLangPatternProvider
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.data.lang.HTLangType
+import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.text.HTCommonTranslation
-import hiiragi283.core.api.text.HTHasTranslationKey
 import hiiragi283.core.api.text.HTTranslation
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
@@ -36,14 +37,13 @@ interface HCLangProvider {
     fun addPatternTranslations(provider: HTLangProvider) {
         val langType: HTLangType = provider.langType
         // Block
-        val waxed: HTLangPatternProvider = HTLangPatternProvider.create("Waxed %s", "錆止めされた%s")
-        
+        val waxedCopper: HTLangPatternProvider = HTLangPatternProvider.create("Waxed %s", "錆止めされた%s")
+
         val copperBasin: HTLangName = HTLangName.create("Copper Basin", "銅の鉢")
-        for ((level: HTLangPatternProvider, block: HTHasTranslationKey) in HCBlocks.COPPER_BASINS) {
-            provider.add(block, level.translate(langType, copperBasin))
-        }
-        for ((level: HTLangPatternProvider, block: HTHasTranslationKey) in HCBlocks.WAXED_COPPER_BASINS) {
-            provider.add(block, waxed.translate(langType, level.translate(langType, copperBasin)))
+        for (level: HTWeatheringLevel in HTWeatheringLevel.entries) {
+            val (base: HTBlockHolderLike<*>, waxed: HTBlockHolderLike<*>) = HCBlocks.COPPER_BASINS[level] ?: continue
+            provider.add(base.get(), level.translate(langType, copperBasin))
+            provider.add(waxed.get(), waxedCopper.translate(langType, level.translate(langType, copperBasin)))
         }
         // Fluid
         val dyePattern: HTLangPatternProvider = HTLangPatternProvider.create("%s Dye", "%sの染料")

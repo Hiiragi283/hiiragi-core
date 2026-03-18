@@ -2,6 +2,7 @@ package hiiragi283.core.common.registry.register
 
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTDeferredRegister
+import hiiragi283.core.api.registry.HTSimpleBlockHolderLike
 import hiiragi283.core.api.util.Either
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries
@@ -34,7 +35,7 @@ class HTDeferredBlockRegister(namespace: String) : HTDeferredRegister<Block>(Reg
         .let(::wrapHolder)
         .also(blockEntries::add)
 
-    fun registerSimpleBlock(name: String, blockProp: BlockBehaviour.Properties): HTBlockHolderLike<Block> =
+    fun registerSimpleBlock(name: String, blockProp: BlockBehaviour.Properties): HTSimpleBlockHolderLike =
         registerBlock(name, blockProp, ::Block)
 
     fun asBlockSequence(): Sequence<HTBlockHolderLike<*>> = blockEntries.asSequence()

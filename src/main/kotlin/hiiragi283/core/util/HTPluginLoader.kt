@@ -28,8 +28,10 @@ data object HTPluginLoader {
                 asmClazz.kotlin.objectInstance ?: run {
                     // Try to load from constructor with no parameter
                     val constructors: Array<out Constructor<*>> = asmClazz.constructors
-                    check(constructors.size == 1) { "Plugin class must have exactly 1 public constructor, found ${constructors.size}" }
-                    constructors.first().newInstance()as T
+                    if (constructors.size != 1) {
+                        throw IllegalArgumentException("Plugin class must have exactly 1 public constructor, found ${constructors.size}")
+                    }
+                    constructors.first().newInstance() as T
                 }
             }.onFailure { throwable: Throwable ->
                 HiiragiCoreAPI.LOGGER.error("Failed to construct {}", className, throwable)

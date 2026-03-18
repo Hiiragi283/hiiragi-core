@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "c:plates/copper"
+    },
+    "B": {
+      "tag": "c:ingots/copper"
+    }
+  },
+  "pattern": [
+    "A A",
+    "A A",
+    "BAB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:copper_basin"
+  }
+}

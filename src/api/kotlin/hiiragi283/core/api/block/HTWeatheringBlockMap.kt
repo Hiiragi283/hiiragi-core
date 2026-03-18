@@ -1,0 +1,22 @@
+package hiiragi283.core.api.block
+
+import hiiragi283.core.api.registry.HTBlockHolderLike
+
+data class HTWeatheringBlockMap(
+    val base: Map<HTWeatheringLevel, HTBlockHolderLike<*>>,
+    val waxed: Map<HTWeatheringLevel, HTBlockHolderLike<*>>,
+) {
+    operator fun get(level: HTWeatheringLevel): Pair<HTBlockHolderLike<*>, HTBlockHolderLike<*>>? {
+        val baseBlock: HTBlockHolderLike<*> = base[level] ?: return null
+        val waxedBlock: HTBlockHolderLike<*> = waxed[level] ?: return null
+        return baseBlock to waxedBlock
+    }
+
+    inline fun forEach(action: (base: HTBlockHolderLike<*>, waxed: HTBlockHolderLike<*>) -> Unit) {
+        for (level: HTWeatheringLevel in HTWeatheringLevel.entries) {
+            val baseBlock: HTBlockHolderLike<*> = base[level] ?: continue
+            val waxedBlock: HTBlockHolderLike<*> = waxed[level] ?: continue
+            action(baseBlock, waxedBlock)
+        }
+    }
+}

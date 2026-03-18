@@ -49,7 +49,9 @@ object HTExperienceHelper {
 
     @JvmStatic
     fun repeatLongAsInt(amount: Long, action: (Int) -> Unit) {
-        repeat((amount / Int.MAX_VALUE).toInt(), action)
+        repeat((amount / Int.MAX_VALUE).toInt()) {
+            action(Int.MAX_VALUE)
+        }
         action((amount % Int.MAX_VALUE).toInt())
     }
 

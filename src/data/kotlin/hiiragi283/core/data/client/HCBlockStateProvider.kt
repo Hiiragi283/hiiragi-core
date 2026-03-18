@@ -2,15 +2,17 @@ package hiiragi283.core.data.client
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.block.HTWeatheringBlocks
+import hiiragi283.core.api.block.HTWeatheringLevel
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.model.HTBlockStateProvider
 import hiiragi283.core.api.data.model.trackTexture
+import hiiragi283.core.api.data.model.withExistingParent
+import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.resource.blockId
-import hiiragi283.core.api.resource.toId
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.level.block.LayeredCauldronBlock
 import net.minecraft.world.level.block.NetherWartBlock
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel
@@ -25,18 +27,23 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(Hii
 
         registerCrops()
 
-        // Device
-        registerVariants(HCBlocks.LATEX_CAULDRON) { _, state: BlockState ->
-            val suffix: String = when (val level: Int = state.getValue(LayeredCauldronBlock.LEVEL)) {
-                3 -> "_full"
-                else -> "_level$level"
-            }
-            ConfiguredModel
-                .builder()
-                .modelFile(models().getExistingFile(HTConst.MINECRAFT.toId("block/water_cauldron").withSuffix(suffix)))
-                .build()
-        }
+        // Misc
+        for (level: HTWeatheringLevel in HTWeatheringLevel.entries) {
+            val (base: HTBlockHolderLike<*>, waxed: HTBlockHolderLike<*>) = HCBlocks.COPPER_BASINS[level] ?: continue
+            val cutCopper: ResourceLocation = HTWeatheringBlocks.CUT_COPPER[level]?.first?.blockId ?: continue
+            val chiseledCopper: ResourceLocation = HTWeatheringBlocks.CHISELED_COPPER[level]?.first?.blockId ?: continue
+            simpleBlockAndItem(
+                base,
+                models()
+                    .withExistingParent(base, HiiragiCoreAPI.id(HTConst.BLOCK, "cauldron_template"))
+                    .texture("top", chiseledCopper)
+                    .texture("side", cutCopper)
+                    .texture("bottom", cutCopper)
+                    .texture("inside", cutCopper),
+            )
 
+            altModelBlock(waxed, base.blockId)
+        }
         // Fluids
         HCFluids.REGISTER.asSequence().forEach(::liquidBlock)
     }

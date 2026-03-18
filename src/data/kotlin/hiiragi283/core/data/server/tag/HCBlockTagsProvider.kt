@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.tag.HTTagBuilder
 import hiiragi283.core.api.data.tag.HTTagsProvider
+import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.setup.HCBlocks
 import net.minecraft.core.registries.Registries
@@ -21,8 +22,10 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider.DataGen<Bl
             .apply(BlockTags.MINEABLE_WITH_PICKAXE)
             .add(HCBlocks.OIL_SHALE)
             .add(HCBlocks.TREE_TAP)
-        HCBlocks.COPPER_BASINS.values.forEach(pickaxe::add)
-        HCBlocks.WAXED_COPPER_BASINS.values.forEach(pickaxe::add)
+        HCBlocks.COPPER_BASINS.forEach { base: HTIdLike, waxed: HTIdLike ->
+            pickaxe.add(base)
+            pickaxe.add(waxed)
+        }
 
         factory
             .apply(BlockTags.MINEABLE_WITH_SHOVEL)
@@ -32,10 +35,6 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider.DataGen<Bl
             .apply(BlockTags.SWORD_EFFICIENT)
             .add(HCBlocks.WARPED_WART)
         // Other
-        factory
-            .apply(BlockTags.CAULDRONS)
-            .add(HCBlocks.LATEX_CAULDRON)
-
         factory
             .apply(HiiragiCoreTags.Blocks.LATEX_DRIPPING_LOGS)
             .addTag(BlockTags.ACACIA_LOGS)

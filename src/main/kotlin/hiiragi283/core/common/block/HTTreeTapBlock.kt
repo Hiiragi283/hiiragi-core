@@ -1,7 +1,9 @@
 package hiiragi283.core.common.block
 
 import com.mojang.serialization.MapCodec
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.tag.HiiragiCoreTags
+import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
@@ -18,12 +20,10 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock
 import net.minecraft.world.level.block.LayeredCauldronBlock
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
-import net.minecraft.world.level.block.state.properties.IntegerProperty
-import net.minecraft.world.level.gameevent.GameEvent
 import net.minecraft.world.level.pathfinder.PathComputationType
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
-import net.neoforged.neoforge.fluids.CauldronFluidContent
+import net.neoforged.neoforge.fluids.capability.IFluidHandler
 
 class HTTreeTapBlock(properties: Properties) : HorizontalDirectionalBlock(properties) {
     init {
@@ -43,28 +43,11 @@ class HTTreeTapBlock(properties: Properties) : HorizontalDirectionalBlock(proper
     ) {
         if (random.nextInt(5) == 0) {
             val posBelow: BlockPos = pos.below()
-            val stateBelow: BlockState = level.getBlockState(posBelow)
-            handleCauldron(stateBelow, level, posBelow)
-        }
-    }
-
-    private fun handleCauldron(state: BlockState, level: ServerLevel, pos: BlockPos) {
-        val newState: BlockState = if (state.`is`(Blocks.CAULDRON)) {
-            val cauldron: CauldronFluidContent = CauldronFluidContent.getForFluid(HCFluids.LATEX.get()) ?: return
-            cauldron.block.defaultBlockState()
-        } else {
-            val cauldron: CauldronFluidContent = CauldronFluidContent.getForBlock(state.block) ?: return
-            val newLevel: Int = cauldron.currentLevel(state) + 1
-            if (newLevel <= cauldron.maxLevel) {
-                val property: IntegerProperty = cauldron.levelProperty ?: return
-                state.setValue(property, newLevel)
-            } else {
-                return
+            HTFluidCapabilities.getCapability(level, posBelow, Direction.UP)?.let { handler: IFluidHandler ->
+                handler.fill(HCFluids.LATEX.toStack(HTConst.DEFAULT_FLUID_AMOUNT / 4), IFluidHandler.FluidAction.EXECUTE)
             }
+            level.levelEvent(1047, posBelow, 0)
         }
-        level.setBlockAndUpdate(pos, newState)
-        level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(newState))
-        level.levelEvent(1047, pos, 0)
     }
 
     override fun canSurvive(state: BlockState, level: LevelReader, pos: BlockPos): Boolean =

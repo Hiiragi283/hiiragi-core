@@ -22,10 +22,9 @@ object HTTooltipHelper {
             return
         }
         // Fluid Name and Amount
-        if (isCreative) {
-            HTCommonTranslation.STORED_FE.translate(HTCommonTranslation.INFINITE)
-        } else {
-            HTCommonTranslation.STORED_FE.translate(amount)
+        when {
+            isCreative -> HTCommonTranslation.STORED_FE.translate(HTCommonTranslation.INFINITE)
+            else -> HTCommonTranslation.STORED_FE.translate(amount)
         }.let(consumer::accept)
     }
 

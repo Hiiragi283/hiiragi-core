@@ -1,15 +1,13 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.block.HTWeatheringBlockMap
 import hiiragi283.core.api.block.HTWeatheringLevel
 import hiiragi283.core.api.function.partially1
-import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.common.block.HTCopperBasinBlock
 import hiiragi283.core.common.block.HTTestBlock
 import hiiragi283.core.common.block.HTTreeTapBlock
 import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.block.HTWeatheringCopperBasinBlock
-import hiiragi283.core.common.block.cauldron.HTLatexCauldronBlock
 import hiiragi283.core.common.item.block.HTWarpedWartItem
 import hiiragi283.core.common.registry.HTBasicDeferredBlockAndItem
 import hiiragi283.core.common.registry.HTDeferredBlockAndItem
@@ -19,6 +17,7 @@ import hiiragi283.core.common.registry.register.HTDeferredBlockRegister
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.SoundType
+import net.minecraft.world.level.block.WeatheringCopper
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.MapColor
 import net.minecraft.world.level.material.PushReaction
@@ -74,32 +73,30 @@ object HCBlocks {
         ::HTTreeTapBlock,
     )
 
-    @JvmField
-    val LATEX_CAULDRON: HTBlockHolderLike<HTLatexCauldronBlock> = REGISTER_ONLY_BLOCK.registerBlock(
-        "latex_cauldron",
-        copyOf(Blocks.CAULDRON).randomTicks(),
-        ::HTLatexCauldronBlock,
+    @JvmStatic
+    private fun <BLOCK : Block> createCopperMap(
+        name: String,
+        properties: BlockBehaviour.Properties,
+        factory: (WeatheringCopper.WeatherState, BlockBehaviour.Properties) -> BLOCK,
+    ): HTWeatheringBlockMap = HTWeatheringBlockMap(
+        HTWeatheringLevel.entries.associateWith { level: HTWeatheringLevel ->
+            REGISTER.registerSimple(
+                level.applyPrefix(name),
+                properties.mapColor(level.mapColor).randomTicks(),
+                factory.partially1(level.state),
+            )
+        },
+        HTWeatheringLevel.entries.associateWith { level: HTWeatheringLevel ->
+            REGISTER.registerSimple(
+                "waxed_${level.applyPrefix(name)}",
+                properties.mapColor(level.mapColor),
+                factory.partially1(level.state),
+            )
+        },
     )
 
     @JvmField
-    val WAXED_COPPER_BASINS: Map<HTWeatheringLevel, HTBasicDeferredBlockAndItem<HTCopperBasinBlock>> =
-        HTWeatheringLevel.entries.associateWith { level: HTWeatheringLevel ->
-            REGISTER.registerSimple(
-                "waxed_${level.applyPrefix("copper_basin")}",
-                copyOf(Blocks.CAULDRON),
-                ::HTCopperBasinBlock,
-            )
-        }
-    
-    @JvmField
-    val COPPER_BASINS: Map<HTWeatheringLevel, HTBasicDeferredBlockAndItem<HTWeatheringCopperBasinBlock>> =
-        HTWeatheringLevel.entries.associateWith { level: HTWeatheringLevel ->
-            REGISTER.registerSimple(
-                level.applyPrefix("copper_basin"),
-                copyOf(Blocks.CAULDRON),
-                ::HTWeatheringCopperBasinBlock.partially1(level.state),
-            )
-        }
+    val COPPER_BASINS: HTWeatheringBlockMap = createCopperMap("copper_basin", copyOf(Blocks.CAULDRON), ::HTWeatheringCopperBasinBlock)
 
     @JvmField
     val TEST: HTBasicDeferredBlockAndItem<HTTestBlock> = REGISTER.registerSimple("test", unbreakable(), ::HTTestBlock)
