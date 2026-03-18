@@ -33,6 +33,8 @@ import hiiragi283.core.api.registry.toItemLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.HiiragiCoreAccessImpl
+import hiiragi283.core.common.data.tank.HTPotionTankInteraction
+import hiiragi283.core.common.data.tank.HTSimpleTankInteraction
 import hiiragi283.core.common.gui.sync.HTBoolSyncPayload
 import hiiragi283.core.common.gui.sync.HTFluidSyncPayload
 import hiiragi283.core.common.gui.sync.HTFractionSyncPayload
@@ -111,6 +113,11 @@ internal object HCMiscRegister {
 
             helper.register(HTConst.MINECRAFT.toId("fluid"), HTFluidSyncPayload.TYPE)
             helper.register(HTConst.MINECRAFT.toId("item"), HTItemSyncPayload.TYPE)
+        }
+        // Tank Interaction Type
+        event.register(HCRegistries.Keys.TANK_INTERACTION_TYPE) { helper ->
+            helper.register(HTConst.MINECRAFT.toId("simple"), HTSimpleTankInteraction.CODEC)
+            helper.register(HTConst.MINECRAFT.toId("potion"), HTPotionTankInteraction.CODEC)
         }
     }
 

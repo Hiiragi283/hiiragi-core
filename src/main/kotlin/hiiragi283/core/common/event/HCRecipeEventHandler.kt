@@ -2,6 +2,8 @@ package hiiragi283.core.common.event
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.data.HTJsonResourceReloadListener
+import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.item.enchantment.toInstances
 import hiiragi283.core.api.recipe.HTItemToChancedRecipe
@@ -14,6 +16,7 @@ import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.core.util.HTShapelessRecipeHelper
 import net.minecraft.core.component.DataComponents
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.item.EnchantedBookItem
@@ -25,11 +28,12 @@ import net.minecraft.world.level.Level
 import net.minecraft.world.phys.AABB
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
+import net.neoforged.neoforge.event.AddReloadListenerEvent
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent
 import net.neoforged.neoforge.event.level.ExplosionEvent
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
-object HTRecipeEventHandler {
+object HCRecipeEventHandler {
     /**
      * [HTItemToItemRecipe]を処理するイベント
      */
@@ -137,6 +141,19 @@ object HTRecipeEventHandler {
                 }
             }
         }
+    }
+
+    @JvmStatic
+    private lateinit var tankInteraction: HTJsonResourceReloadListener<HTTankInteraction.Serializable>
+
+    @JvmStatic
+    val tankInteractionMap: Map<ResourceLocation, HTTankInteraction.Serializable>
+        get() = tankInteraction.resultMap
+
+    @SubscribeEvent
+    fun addReloadListener(event: AddReloadListenerEvent) {
+        tankInteraction = HTJsonResourceReloadListener.create(HTConst.TANK_INTERACTION, HTTankInteraction.Serializable.CODEC)
+        event.addListener(tankInteraction)
     }
 
     //    Extensions    //

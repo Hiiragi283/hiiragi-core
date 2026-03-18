@@ -1,27 +1,43 @@
 package hiiragi283.core.client.jei
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.function.negate
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
 import hiiragi283.core.api.integration.jei.HTSubtypeInterpreter
+import hiiragi283.core.api.integration.jei.JeiRecipeType
 import hiiragi283.core.api.item.HTPotionBasedItem
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
+import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.registry.HTFluidHolderLike
+import hiiragi283.core.api.registry.HTSimpleHolderLike
+import hiiragi283.core.api.registry.toFluidLike
+import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.resource.IdToValue
+import hiiragi283.core.api.util.emptyOptional
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.jei.category.HCExplodingRecipeCategory
 import hiiragi283.core.client.jei.category.HCMaterialPartCategory
 import hiiragi283.core.client.jei.category.HTItemToChancedRecipeCategory
 import hiiragi283.core.client.jei.category.HTItemToItemRecipeCategory
+import hiiragi283.core.client.jei.category.HTTankInteractionRecipeCategory
 import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicItemToChancedRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicItemToItemRecipeCategoryExtension
+import hiiragi283.core.client.jei.extension.HTPotionTankInteractionCategoryExtension
+import hiiragi283.core.client.jei.extension.HTSimpleTankInteractionCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
+import hiiragi283.core.common.data.tank.HTSimpleTankInteraction
+import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.util.HCPotionFluidHelper
 import mezz.jei.api.JeiPlugin
+import mezz.jei.api.constants.VanillaTypes
 import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.helpers.IPlatformFluidHelper
 import mezz.jei.api.neoforge.NeoForgeTypes
@@ -33,15 +49,22 @@ import mezz.jei.api.registration.IRecipeRegistration
 import mezz.jei.api.registration.ISubtypeRegistration
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration
 import mezz.jei.api.runtime.IIngredientManager
+import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.Items
+import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 
 @JeiPlugin
 class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     companion object {
+        @JvmStatic
+        lateinit var tankInteraction: HTTankInteractionRecipeCategory
+            private set
+
         // ItemToItem
         @JvmStatic
         lateinit var charging: HTItemToItemRecipeCategory
@@ -94,17 +117,22 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         val guiHelper: IGuiHelper = registration.jeiHelpers.guiHelper
         val manager: IIngredientManager = registration.jeiHelpers.ingredientManager
 
+        tankInteraction = HTTankInteractionRecipeCategory(guiHelper)
+        tankInteraction.addExtension(HTSimpleTankInteractionCategoryExtension)
+        tankInteraction.addExtension(HTPotionTankInteractionCategoryExtension)
+
         initItemToItem(guiHelper, manager)
         initItemToChanced(guiHelper, manager)
 
         registration.addRecipeCategories(
             // Material
             HCMaterialPartCategory(guiHelper),
-            // Basic
+            // Recipes
             HCBrewingRecipeCategory(guiHelper),
             charging,
             crushing,
             HCExplodingRecipeCategory(guiHelper),
+            tankInteraction,
         )
     }
 
@@ -138,6 +166,31 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         registration.addRecipes(HCJeiRecipeTypes.CHARGING)
         registration.addRecipes(HCJeiRecipeTypes.CRUSHING)
         registration.addRecipes(HCJeiRecipeTypes.EXPLODING, sorter = compareBy { it.result.getId() })
+        registerTankInteractions(registration)
+    }
+
+    private fun registerTankInteractions(registration: IRecipeRegistration) {
+        val recipeType: JeiRecipeType<IdToValue<HTTankInteraction>> = getRecipeType(HCJeiRecipeTypes.TANK_INTERACTION)
+        // Custom
+        registration.addRecipes(HCJeiRecipeTypes.TANK_INTERACTION)
+        // Bucket
+        BuiltInRegistries.FLUID
+            .holders()
+            .filter { holder: Holder<Fluid> ->
+                val fluid: Fluid = holder.value()
+                fluid.isSource(fluid.defaultFluidState()) && !fluid.bucket.let(::ItemStack).isEmpty
+            }.map(Holder<Fluid>::toLike)
+            .map(HTSimpleHolderLike<Fluid>::toFluidLike)
+            .map { holder: HTFluidHolderLike<Fluid> ->
+                HTSimpleTankInteraction(
+                    Items.BUCKET.toLike(),
+                    holder.get().bucket.toLike(),
+                    holder,
+                    HTConst.DEFAULT_FLUID_AMOUNT,
+                    emptyOptional(),
+                ).let { holder.getId().withPrefix("bucket/") to it as HTTankInteraction }
+            }.toList()
+            .let { registration.addRecipes(recipeType, it) }
     }
 
     override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {
@@ -146,6 +199,16 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             HCJeiRecipeTypes.CHARGING,
             HCJeiRecipeTypes.CRUSHING,
             HCJeiRecipeTypes.EXPLODING,
+        )
+
+        val tankInteraction: JeiRecipeType<IdToValue<HTTankInteraction>> = getRecipeType(HCJeiRecipeTypes.TANK_INTERACTION)
+        registration.addRecipeCatalysts(
+            tankInteraction,
+            VanillaTypes.ITEM_STACK,
+            HCBlocks.COPPER_BASINS.allBlocks
+                .map(HTBlockHolderLike<*>::get)
+                .map(::ItemStack)
+                .toList(),
         )
     }
 

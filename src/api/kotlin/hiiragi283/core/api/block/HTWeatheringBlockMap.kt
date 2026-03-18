@@ -6,6 +6,8 @@ data class HTWeatheringBlockMap(
     val base: Map<HTWeatheringLevel, HTBlockHolderLike<*>>,
     val waxed: Map<HTWeatheringLevel, HTBlockHolderLike<*>>,
 ) {
+    val allBlocks: Sequence<HTBlockHolderLike<*>> get() = base.values.plus(waxed.values).asSequence()
+
     operator fun get(level: HTWeatheringLevel): Pair<HTBlockHolderLike<*>, HTBlockHolderLike<*>>? {
         val baseBlock: HTBlockHolderLike<*> = base[level] ?: return null
         val waxedBlock: HTBlockHolderLike<*> = waxed[level] ?: return null

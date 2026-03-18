@@ -5,7 +5,9 @@ import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.insert
+import hiiragi283.core.util.HTItemDropHelper
 import hiiragi283.core.util.HTStackSlotHelper
+import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 
 interface HTItemOutputHandler : HTOutputHandler<ItemStack> {

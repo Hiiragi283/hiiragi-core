@@ -65,6 +65,7 @@ data object HiiragiCore : HTCommonMod() {
 
     override fun registerRegistries(event: NewRegistryEvent) {
         event.register(HCRegistries.SLOT_TYPE)
+        event.register(HCRegistries.TANK_INTERACTION_TYPE)
         event.register(HCRegistries.WIDGET_TYPE)
     }
 

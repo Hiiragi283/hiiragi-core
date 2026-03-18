@@ -83,6 +83,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCRecipeTypes.CRUSHING, "粉砕")
         add(HCRecipeTypes.CHARGING, "落雷によるチャージ")
         add(HCRecipeTypes.EXPLODING, "爆破")
+        add(HCRecipeTypes.TANK_INTERACTION, "タンクとの相互作用")
 
         // Translation
         translation()

@@ -1,6 +1,7 @@
 package hiiragi283.core.client.jei
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.recipe.HTItemToChancedRecipe
@@ -57,6 +58,10 @@ object HCJeiRecipeTypes {
     @JvmField
     val EXPLODING: HTHolderRecipeViewerType<HCExplodingRecipe.Input, HCExplodingRecipe> =
         create(HCRecipeTypes.EXPLODING, Items.TNT, 18 * 6)
+
+    @JvmField
+    val TANK_INTERACTION: HTFakeRecipeViewerType<RecipeInput, HTTankInteraction> =
+        create(HCRecipeTypes.TANK_INTERACTION, Items.CAULDRON, 18 * 5, 18 * 3)
 
     data object MaterialType : HTRecipeViewerType<HTMaterialManager.Entry> {
         override val recipeClass: Class<HTMaterialManager.Entry> = HTMaterialManager.Entry::class.java

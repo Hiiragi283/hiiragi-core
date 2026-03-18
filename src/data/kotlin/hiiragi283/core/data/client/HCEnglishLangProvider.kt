@@ -83,6 +83,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCRecipeTypes.CRUSHING, "Crushing")
         add(HCRecipeTypes.CHARGING, "Lightning Charging")
         add(HCRecipeTypes.EXPLODING, "Exploding")
+        add(HCRecipeTypes.TANK_INTERACTION, "Tank Interaction")
 
         // Translation
         translation()
