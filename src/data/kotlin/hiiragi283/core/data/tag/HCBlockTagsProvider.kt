@@ -2,6 +2,7 @@ package hiiragi283.core.data.tag
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.tag.HTTagsProvider
+import hiiragi283.core.common.tag.HiiragiCoreTags
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
 import net.minecraft.data.PackOutput
@@ -10,5 +11,7 @@ import java.util.concurrent.CompletableFuture
 
 class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) :
     HTTagsProvider.DataGen<Block>(output, Registries.BLOCK, lookupProvider, HiiragiCoreAPI.MOD_ID) {
-    override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Block>) {}
+    override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Block>) {
+        getOrCreateRawBuilder(HiiragiCoreTags.Blocks.INCORRECT_FOR_ALMIGHTY_PICKAXE)
+    }
 }

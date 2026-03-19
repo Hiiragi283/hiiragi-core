@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_almighty_pickaxe_materials": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:almighty_pickaxe_materials"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "hiiragi_core:almighty_pickaxe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_almighty_pickaxe_materials"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "hiiragi_core:almighty_pickaxe"
+    ]
+  }
+}

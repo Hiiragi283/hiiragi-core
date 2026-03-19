@@ -19,7 +19,7 @@ object HCCreativeTabs {
         Items.APPLE.toItemLike(),
     ) { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
         // Items
-        // HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCItems.REGISTER.asItemSequence())
+        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCItems.REGISTER.asItemSequence())
         // Blocks
         HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCBlocks.REGISTER.asItemSequence())
         // Fluids

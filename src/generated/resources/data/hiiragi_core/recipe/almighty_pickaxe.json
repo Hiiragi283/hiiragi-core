@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:netherite_shovel",
+    "minecraft:netherite_pickaxe",
+    "minecraft:netherite_axe",
+    "minecraft:netherite_hoe",
+    "#c:almighty_pickaxe_materials",
+    "#c:almighty_pickaxe_materials",
+    "#c:almighty_pickaxe_materials",
+    "#c:almighty_pickaxe_materials"
+  ],
+  "result": {
+    "id": "hiiragi_core:almighty_pickaxe"
+  }
+}

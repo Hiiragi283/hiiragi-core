@@ -101,6 +101,9 @@ object HiiragiCoreTags {
 
         // Mod
         @JvmField
+        val ALMIGHTY_PICKAXE_MATERIALS: TagKey<Item> = common("almighty_pickaxe_materials")
+
+        @JvmField
         val BYPASS_MENU_VALIDATION: TagKey<Item> = mod("bypass_menu_validation")
 
         @JvmField

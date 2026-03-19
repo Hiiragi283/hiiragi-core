@@ -19,5 +19,9 @@ class HCItemTagsProvider(
 ) : HTItemTagsProvider(output, lookupProvider, blockTags, HiiragiCoreAPI.MOD_ID) {
     override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Item>) {
         addTags(factory, Tags.Items.CROPS, HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)
+
+        factory
+            .apply(HiiragiCoreTags.Items.ALMIGHTY_PICKAXE_MATERIALS)
+            .addTag(Tags.Items.NETHER_STARS)
     }
 }
