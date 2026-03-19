@@ -1,6 +1,6 @@
 package hiiragi283.core.api.function
 
-import net.minecraft.Util
+import net.minecraft.util.Util
 import kotlin.enums.enumEntries
 
 /**

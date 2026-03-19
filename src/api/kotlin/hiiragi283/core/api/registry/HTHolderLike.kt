@@ -5,6 +5,7 @@ import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.unwrap
 import net.minecraft.core.Holder
+import net.minecraft.core.TypedInstance
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
@@ -52,6 +53,8 @@ fun <R : Any> Holder<R>.toLike(): HTSimpleHolderLike<R> = object : HTSimpleHolde
 
     override fun toString(): String = this@toLike.toString()
 }
+
+fun <R : Any> TypedInstance<R>.holderLike(): HTSimpleHolderLike<R> = this.typeHolder().toLike()
 
 /**
  * @author Hiiragi Tsubasa
