@@ -14,9 +14,9 @@ import net.minecraft.tags.TagKey
  */
 interface HTIngredientCreator<TYPE : Any, INGREDIENT : Any> {
     // Type
-    fun create(type: TYPE): INGREDIENT
+    fun from(type: TYPE): INGREDIENT
 
-    fun create(types: Collection<TYPE>): INGREDIENT
+    fun from(types: Collection<TYPE>): INGREDIENT
 
     //    Registered    //
 

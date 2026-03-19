@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:charging",
+  "ingredient": {
+    "count": 1,
+    "ingredient": "#c:dusts/redstone"
+  },
+  "result": {
+    "id": "minecraft:glowstone_dust"
+  },
+  "time": 200
+}

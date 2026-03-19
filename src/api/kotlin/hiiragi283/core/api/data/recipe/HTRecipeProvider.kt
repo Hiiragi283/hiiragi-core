@@ -3,6 +3,7 @@ package hiiragi283.core.api.data.recipe
 import hiiragi283.core.api.data.recipe.ingredient.HTFluidIngredientCreator
 import hiiragi283.core.api.data.recipe.ingredient.HTIngredientAccess
 import hiiragi283.core.api.data.recipe.ingredient.HTItemIngredientCreator
+import hiiragi283.core.api.data.recipe.result.HTResultCreator
 import net.minecraft.core.HolderGetter
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
@@ -15,4 +16,6 @@ abstract class HTRecipeProvider(registries: HolderLookup.Provider, output: Recip
 
     protected val itemCreator: HTItemIngredientCreator = HTIngredientAccess.INSTANCE.itemCreator(items)
     protected val fluidCreator: HTFluidIngredientCreator = HTIngredientAccess.INSTANCE.fluidCreator(fluids)
+
+    protected val resultCreator: HTResultCreator = HTResultCreator
 }

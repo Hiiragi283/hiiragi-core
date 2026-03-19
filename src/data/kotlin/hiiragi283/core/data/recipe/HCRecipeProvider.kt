@@ -35,10 +35,10 @@ class HCRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput) 
             .requires(almightyMaterial)
             .unlockedBy("has_${almightyMaterial.location.path}", has(almightyMaterial))
             .save(output)
-    
+
         charging()
     }
-    
+
     private fun charging() {
         // Ender Pearl -> Ender Eye
         HTItemToItemRecipeBuilder.charging(output) {
@@ -47,7 +47,7 @@ class HCRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput) 
         }
         // Golden Apple
         HTItemToItemRecipeBuilder.charging(output) {
-            ingredient = itemCreator.create(Items.GOLDEN_APPLE) withSize 1
+            ingredient = itemCreator.from(Items.GOLDEN_APPLE) withSize 1
             result = resultCreator.create(Items.ENCHANTED_GOLDEN_APPLE)
         }
         // Quartz -> Prismarine
@@ -58,7 +58,7 @@ class HCRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput) 
         // Redstone Dust -> Glowstone Dust
         HTItemToItemRecipeBuilder.charging(output) {
             ingredient = itemCreator.fromTagKey(Tags.Items.DUSTS_REDSTONE) withSize 1
-            result = resultCreator.material(CommonParts.DUST, VanillaMaterialKeys.GLOWSTONE)
+            result = resultCreator.create(Items.GLOWSTONE_DUST)
         }
         // Honey Bottle -> Exp Bottle
         HTItemToItemRecipeBuilder.charging(output) {

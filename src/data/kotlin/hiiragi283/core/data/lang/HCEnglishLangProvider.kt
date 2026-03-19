@@ -17,9 +17,8 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCBlocks.WARPED_WART, "Warped Wart")
         // Item
         add(HCItems.ALMIGHTY_PICKAXE, "Almighty Pickaxe")
-        add(HCItems.ALMIGHTY_PICKAXE, "全能なるツルハシ")
         // Recipe
-        add(HCRecipeTypes.CHARGING, "落雷によるチャージ")
+        add(HCRecipeTypes.CHARGING, "Lightning Charging")
 
         // Translation
         translation()

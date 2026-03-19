@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:charging",
+  "ingredient": {
+    "count": 1,
+    "ingredient": "#c:nether_stars"
+  },
+  "result": {
+    "id": "minecraft:nether_star"
+  },
+  "time": 200
+}

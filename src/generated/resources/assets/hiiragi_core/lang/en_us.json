@@ -52,6 +52,7 @@
   "item.hiiragi_core.eternal_pickaxe": "Eternal Pickaxe",
   "itemGroup.hiiragi_core.equipment": "Hiiragi Core - Equipment",
   "itemGroup.hiiragi_core.material": "Hiiragi Core - Material",
+  "recipe_type.hiiragi_core.charging": "Lightning Charging",
   "tooltip.hiiragi_core.intrinsic_enchantment": "Always has at least %1$s",
   "tooltip.hiiragi_core.show_description": "Press Shift to show description",
   "tooltip.hiiragi_core.show_details": "Press Ctrl to show details",

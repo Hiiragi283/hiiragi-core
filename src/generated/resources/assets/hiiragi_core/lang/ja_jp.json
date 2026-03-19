@@ -52,6 +52,7 @@
   "item.hiiragi_core.eternal_pickaxe": "永遠のツルハシ",
   "itemGroup.hiiragi_core.equipment": "Hiiragi Core - 装備品",
   "itemGroup.hiiragi_core.material": "Hiiragi Core - 素材",
+  "recipe_type.hiiragi_core.charging": "落雷によるチャージ",
   "tooltip.hiiragi_core.intrinsic_enchantment": "常に少なくとも%1$sがあります",
   "tooltip.hiiragi_core.show_description": "シフトキーを押して説明を表示",
   "tooltip.hiiragi_core.show_details": "シフトキーを押して詳細を表示",

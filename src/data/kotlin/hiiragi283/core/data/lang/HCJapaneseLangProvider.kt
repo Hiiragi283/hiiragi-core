@@ -18,7 +18,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         // Item
         add(HCItems.ALMIGHTY_PICKAXE, "全能なるツルハシ")
         // Recipe
-        add(HCRecipeTypes.CHARGING, "Lightning Charging")
+        add(HCRecipeTypes.CHARGING, "落雷によるチャージ")
 
         // Translation
         translation()
