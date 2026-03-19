@@ -24,10 +24,16 @@ import net.minecraft.resources.RegistryFixedCodec
 import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.crafting.Ingredient
+import net.neoforged.neoforge.common.crafting.SizedIngredient
 import net.neoforged.neoforge.fluids.FluidStack
+import net.neoforged.neoforge.fluids.FluidStackTemplate
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient
+import net.neoforged.neoforge.transfer.fluid.FluidResource
+import net.neoforged.neoforge.transfer.item.ItemResource
 import java.util.UUID
 
 /**
@@ -89,44 +95,88 @@ object VanillaBiCodecs {
     @JvmField
     val UUID: BiCodec<ByteBuf, UUID> = BiCodec.of(UUIDUtil.CODEC, UUIDUtil.STREAM_CODEC)
 
+    // Typed Instances
     /**
-     * [ItemStack.EMPTY]を受け付けない[ItemStack]の[BiCodec]
+     * [ItemStackTemplate]の[BiCodec]
      */
     @JvmField
-    val ITEM_STACK_NON_EMPTY: BiCodec<RegistryFriendlyByteBuf, ItemStack> = BiCodec.of(ItemStack.CODEC, ItemStack.STREAM_CODEC)
+    val ITEM_STACK_TEMPLATE: BiCodec<RegistryFriendlyByteBuf, ItemStackTemplate> =
+        BiCodec.of(ItemStackTemplate.CODEC, ItemStackTemplate.STREAM_CODEC)
+
+    /**
+     * [FluidStackTemplate]の[BiCodec]
+     */
+    @JvmField
+    val FLUID_STACK_TEMPLATE: BiCodec<RegistryFriendlyByteBuf, FluidStackTemplate> =
+        BiCodec.of(FluidStackTemplate.CODEC, FluidStackTemplate.STREAM_CODEC)
 
     /**
      * [ItemStack]の[BiCodec]
      */
-    @JvmField
-    val ITEM_STACK: BiCodec<RegistryFriendlyByteBuf, ItemStack> = BiCodec.of(ItemStack.OPTIONAL_CODEC, ItemStack.OPTIONAL_STREAM_CODEC)
-
-    /**
-     * [FluidStack.EMPTY]を受け付けない[FluidStack]の[BiCodec]
-     */
-    @JvmField
-    val FLUID_STACK_NON_EMPTY: BiCodec<RegistryFriendlyByteBuf, FluidStack> = BiCodec.of(FluidStack.CODEC, FluidStack.STREAM_CODEC)
+    @JvmStatic
+    fun itemStack(alloyEmpty: Boolean): BiCodec<RegistryFriendlyByteBuf, ItemStack> = when (alloyEmpty) {
+        true -> BiCodec.of(ItemStack.OPTIONAL_CODEC, ItemStack.OPTIONAL_STREAM_CODEC)
+        false -> BiCodec.of(ItemStack.CODEC, ItemStack.STREAM_CODEC)
+    }
 
     /**
      * [FluidStack]の[BiCodec]
      */
-    @JvmField
-    val FLUID_STACK: BiCodec<RegistryFriendlyByteBuf, FluidStack> = BiCodec.of(FluidStack.OPTIONAL_CODEC, FluidStack.OPTIONAL_STREAM_CODEC)
+    @JvmStatic
+    fun fluidStack(alloyEmpty: Boolean): BiCodec<RegistryFriendlyByteBuf, FluidStack> = when (alloyEmpty) {
+        true -> BiCodec.of(FluidStack.OPTIONAL_CODEC, FluidStack.OPTIONAL_STREAM_CODEC)
+        false -> BiCodec.of(FluidStack.CODEC, FluidStack.STREAM_CODEC)
+    }
+
+    // Transfer
+
+    /**
+     * [ItemResource]の[BiCodec]
+     */
+    @JvmStatic
+    fun itemResource(alloyEmpty: Boolean): BiCodec<RegistryFriendlyByteBuf, ItemResource> = when (alloyEmpty) {
+        true -> BiCodec.of(ItemResource.OPTIONAL_CODEC, ItemResource.STREAM_CODEC)
+        false -> BiCodec.of(ItemResource.CODEC, ItemResource.STREAM_CODEC)
+    }
+
+    /**
+     * [FluidResource]の[BiCodec]
+     */
+    @JvmStatic
+    fun fluidResource(alloyEmpty: Boolean): BiCodec<RegistryFriendlyByteBuf, FluidResource> = when (alloyEmpty) {
+        true -> BiCodec.of(FluidResource.OPTIONAL_CODEC, FluidResource.STREAM_CODEC)
+        false -> BiCodec.of(FluidResource.CODEC, FluidResource.STREAM_CODEC)
+    }
+
+    // Recipe
 
     /**
      * [Ingredient]の[BiCodec]
      */
     @JvmField
-    val INGREDIENT: BiCodec<RegistryFriendlyByteBuf, Ingredient> = BiCodec.of(Ingredient.CODEC, Ingredient.CONTENTS_STREAM_CODEC)
+    val INGREDIENT: BiCodec<RegistryFriendlyByteBuf, Ingredient> =
+        BiCodec.of(Ingredient.CODEC, Ingredient.CONTENTS_STREAM_CODEC)
 
     /**
      * [FluidIngredient]の[BiCodec]
      */
     @JvmField
-    val FLUID_INGREDIENT: BiCodec<RegistryFriendlyByteBuf, FluidIngredient> = BiCodec.of(
-        FluidIngredient.CODEC,
-        FluidIngredient.STREAM_CODEC,
-    )
+    val FLUID_INGREDIENT: BiCodec<RegistryFriendlyByteBuf, FluidIngredient> =
+        BiCodec.of(FluidIngredient.CODEC, FluidIngredient.STREAM_CODEC)
+
+    /**
+     * [SizedIngredient]の[BiCodec]
+     */
+    @JvmField
+    val SIZED_INGREDIENT: BiCodec<RegistryFriendlyByteBuf, SizedIngredient> =
+        BiCodec.of(SizedIngredient.NESTED_CODEC, SizedIngredient.STREAM_CODEC)
+
+    /**
+     * [SizedFluidIngredient]の[BiCodec]
+     */
+    @JvmField
+    val SIZED_FLUID_INGREDIENT: BiCodec<RegistryFriendlyByteBuf, SizedFluidIngredient> =
+        BiCodec.of(SizedFluidIngredient.CODEC, SizedFluidIngredient.STREAM_CODEC)
 
     // Registry
 
