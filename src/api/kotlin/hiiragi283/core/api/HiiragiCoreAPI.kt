@@ -75,9 +75,8 @@ data object HiiragiCoreAPI {
      * @author Hiiragi Tsubasa
      * @since 0.10.0
      */
-    @Suppress("RedundantNullableReturnType")
     @JvmStatic
-    fun getCraftingPlayer(): Player? = CommonHooks.getCraftingPlayer()
+    fun getCraftingPlayer(): Player = CommonHooks.getCraftingPlayer()
 
     //    Service    //
 

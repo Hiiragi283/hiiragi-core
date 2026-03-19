@@ -6,6 +6,7 @@ import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
+import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.data.PackOutput
 
 class HCEnglishLangProvider(output: PackOutput) :
@@ -16,6 +17,9 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCBlocks.WARPED_WART, "Warped Wart")
         // Item
         add(HCItems.ALMIGHTY_PICKAXE, "Almighty Pickaxe")
+        add(HCItems.ALMIGHTY_PICKAXE, "全能なるツルハシ")
+        // Recipe
+        add(HCRecipeTypes.CHARGING, "落雷によるチャージ")
 
         // Translation
         translation()

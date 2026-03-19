@@ -9,9 +9,9 @@ abstract class HTRegisteredIngredientCreatorImpl<TYPE : Any, INGREDIENT : Any>(p
     HTIngredientCreator.Registered<TYPE, INGREDIENT> {
     protected abstract fun getHolder(type: TYPE): Holder<TYPE>
 
-    final override fun from(type: TYPE): INGREDIENT = fromHolder(getHolder(type))
+    final override fun create(type: TYPE): INGREDIENT = fromHolder(getHolder(type))
 
-    final override fun from(types: Collection<TYPE>): INGREDIENT = fromHolders(types.map(::getHolder))
+    final override fun create(types: Collection<TYPE>): INGREDIENT = fromHolders(types.map(::getHolder))
 
     final override fun fromTagKey(tagKey: TagKey<TYPE>): INGREDIENT = fromHolderSet(getter.getOrThrow(tagKey))
 

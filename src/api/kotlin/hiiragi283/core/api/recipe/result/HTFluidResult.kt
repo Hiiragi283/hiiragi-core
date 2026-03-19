@@ -1,56 +1,39 @@
 package hiiragi283.core.api.recipe.result
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.holderLike
 import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
-import hiiragi283.core.api.text.HTTextResult
-import net.minecraft.core.HolderLookup
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.resources.Identifier
 import net.minecraft.world.level.material.FlowingFluid
 import net.minecraft.world.level.material.Fluid
+import net.neoforged.neoforge.fluids.FluidInstance
 import net.neoforged.neoforge.fluids.FluidStack
-import net.neoforged.neoforge.transfer.fluid.FluidResource
+import net.neoforged.neoforge.fluids.FluidStackTemplate
 
-/**
- * [液体][FluidStack]の[完成品][HTRecipeResult]を表すクラスです。
- * @author Hiiragi Tsubasa
- * @since 0.10.0
- */
-class HTFluidResult(resource: FluidResource, private val amount: Int) : HTRecipeResult<FluidStack> {
+class HTFluidResult(private val template: FluidStackTemplate) :
+    HTRecipeResult<FluidStack>,
+    FluidInstance by validate(template) {
     companion object {
         @JvmField
-        val CODEC: BiCodec<RegistryFriendlyByteBuf, HTFluidResult> = BiCodec.composite(
-            VanillaBiCodecs.fluidResource(false).toMap().forGetter(HTFluidResult::resource),
-            BiCodecs.POSITIVE_INT.optionalFieldOf(HTConst.AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT).forGetter(HTFluidResult::amount),
-            ::HTFluidResult,
-        )
+        val CODEC: BiCodec<RegistryFriendlyByteBuf, HTFluidResult> =
+            VanillaBiCodecs.FLUID_STACK_TEMPLATE.xmap(::HTFluidResult, HTFluidResult::template)
 
         /**
          * 液体流が指定されている場合，液体源に置き換える
          */
         @JvmStatic
-        private fun validate(resource: FluidResource): FluidResource {
-            val fluid: Fluid = resource.fluid
+        private fun validate(template: FluidStackTemplate): FluidStackTemplate {
+            val fluid: Fluid = template.typeHolder().value()
             return if (!fluid.isSource(fluid.defaultFluidState()) && fluid is FlowingFluid) {
-                FluidResource.of(fluid.source, resource.componentsPatch)
+                FluidStackTemplate(fluid.source, template.amount, template.components)
             } else {
-                resource
+                template
             }
         }
     }
 
-    private val resource: FluidResource = validate(resource)
+    override fun create(): FluidStack = template.create()
 
-    /**
-     * 指定した[レジストリ][provider]から完成品を取得します。
-     * @return 完成品を取得できなかった場合は[FluidStack.EMPTY]
-     */
-    fun getStackOrEmpty(provider: HolderLookup.Provider?): FluidStack = getStackResult(provider).valueOrElse(FluidStack::EMPTY)
-
-    override fun getStackResult(provider: HolderLookup.Provider?): HTTextResult<FluidStack> = HTTextResult.success(resource.toStack(amount))
-
-    override fun getId(): Identifier = resource.holderLike().getId()
+    override fun getId(): Identifier = this.holderLike().getId()
 }

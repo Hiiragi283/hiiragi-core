@@ -3,12 +3,6 @@ package hiiragi283.core.api.resource
 import net.minecraft.resources.Identifier
 import net.minecraft.util.Util
 
-/**
- * @author Hiiragi Tsubasa
- * @since 0.12.0
- */
-typealias IdToValue<T> = Pair<Identifier, T>
-
 //    Identifier    //
 
 /**

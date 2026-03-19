@@ -2,7 +2,6 @@ package hiiragi283.core.api.recipe.handler
 
 import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.base.HTFluidRecipe
-import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeInput
 import net.neoforged.neoforge.fluids.FluidStack
@@ -28,7 +27,7 @@ data class HTHandledRecipe<INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> privat
     /**
      * レシピの完成品を取得します。
      */
-    fun assemble(registries: HolderLookup.Provider): ItemStack = map(registries, HTRecipe<INPUT>::assemble)
+    fun assemble(): ItemStack = map(HTRecipe<INPUT>::assemble)
 
     /**
      * 保持している[input]と[recipe]を変換します。
@@ -47,6 +46,5 @@ data class HTHandledRecipe<INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> privat
  * @author Hiiragi Tsubasa
  * @since 0.13.0
  */
-fun <INPUT : RecipeInput, RECIPE : HTFluidRecipe<INPUT>> HTHandledRecipe<INPUT, RECIPE>.assembleFluid(
-    registries: HolderLookup.Provider,
-): FluidStack = this.map(registries, HTFluidRecipe<INPUT>::assembleFluid)
+fun <INPUT : RecipeInput, RECIPE : HTFluidRecipe<INPUT>> HTHandledRecipe<INPUT, RECIPE>.assembleFluid(): FluidStack =
+    this.map(HTFluidRecipe<INPUT>::assembleFluid)
