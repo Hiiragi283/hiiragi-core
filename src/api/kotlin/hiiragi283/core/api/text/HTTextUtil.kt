@@ -3,7 +3,6 @@
 package hiiragi283.core.api.text
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HTDefaultColor
 import net.minecraft.ChatFormatting
 import net.minecraft.core.Direction
 import net.minecraft.network.chat.ClickEvent
@@ -32,7 +31,7 @@ import java.text.NumberFormat
  * @see mekanism.api.text.TextComponentUtil
  * @see mekanism.common.util.text.TextUtils
  */
-object HTTextUtil {
+data object HTTextUtil {
     /**
      * 引数が`null`の時に置き換えられる[テキスト][Text]
      */
@@ -95,7 +94,7 @@ object HTTextUtil {
                     is Fluid -> current = arg.fluidType.description.copy()
                     is FluidStack -> current = arg.hoverName.copy()
                     is Direction -> current = directionText(arg)
-                    is Item -> current = arg.description.copy()
+                    is Item -> current = ItemStack(arg).itemName.copy()
                     is ItemStack -> current = arg.hoverName.copy()
                     is Level -> current = arg.description.copy()
                     // Primitive
@@ -106,13 +105,6 @@ object HTTextUtil {
                     is Boolean -> current = boolText(arg)
                     is Fraction -> current = DOUBLE_FORMAT.format(arg.toDouble()).toText()
                     // Formatting
-                    is HTDefaultColor -> {
-                        if (cachedStyle.color == null) {
-                            cachedStyle = cachedStyle.withColor(arg.textColor)
-                            continue
-                        }
-                    }
-
                     is TextColor -> {
                         if (cachedStyle.color == null) {
                             cachedStyle = cachedStyle.withColor(arg)

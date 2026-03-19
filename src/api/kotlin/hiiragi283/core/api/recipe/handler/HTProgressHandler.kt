@@ -1,10 +1,8 @@
 package hiiragi283.core.api.recipe.handler
 
-import hiiragi283.core.api.HTContentListener
-import hiiragi283.core.api.fixedFraction
+import hiiragi283.core.api.util.fixedFraction
 import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
-import org.apache.commons.lang3.math.Fraction
 
 typealias HTRecipeHandler<INPUT, RECIPE> = HTProgressHandler<out HTHandledRecipe<INPUT, RECIPE>>
 
@@ -39,19 +37,19 @@ class HTProgressHandler<T : Any> private constructor(
     /**
      * 進捗率を取得します。
      * @param isActive 稼働中かどうかの判定
-     * @return `0..1`の範囲に制限された[Fraction]型の値
+     * @return `0f..1f`の範囲に制限された[Float]型の値
      */
-    fun getProgress(isActive: Boolean): Fraction = when (isActive) {
+    fun getProgress(isActive: Boolean): Float = when (isActive) {
         true -> fixedFraction(progress, maxProgress, true)
-        false -> Fraction.ZERO
+        false -> 0f
     }
 
     private var shouldCheck: Boolean = true
 
-    fun createListener(listener: HTContentListener): HTContentListener = HTContentListener {
+    /*fun createListener(listener: HTContentListener): HTContentListener = HTContentListener {
         shouldCheck = true
         listener.onContentsChanged()
-    }
+    }*/
 
     fun tick(level: ServerLevel, pos: BlockPos): Boolean {
         if (!shouldCheck) return false

@@ -7,19 +7,23 @@ package hiiragi283.core.api.function
  */
 fun generateHash(vararg obj: Any?): Int = arrayOf(*obj).fold(0) { result: Int, obj: Any? -> 31 * result + (obj?.hashCode() ?: 0) }
 
+typealias Identity<T> = (T) -> T
+
+typealias BiIdentity<T> = (T, T) -> T
+
 /**
  * 恒等操作を行うブロックを返します。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun <T> identity(): (T) -> T = { it }
+fun <T> identity(): Identity<T> = { it }
 
 /**
  * @since 0.12.0
  */
-fun <T> identityLeft(): (T, T) -> T = { left: T, _: T -> left }
+fun <T> identityLeft(): BiIdentity<T> = { left: T, _: T -> left }
 
 /**
  * @since 0.12.0
  */
-fun <T> identityRight(): (T, T) -> T = { _: T, right: T -> right }
+fun <T> identityRight(): BiIdentity<T> = { _: T, right: T -> right }

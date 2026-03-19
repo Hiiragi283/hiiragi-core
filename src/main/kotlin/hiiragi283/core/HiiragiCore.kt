@@ -1,6 +1,8 @@
 package hiiragi283.core
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCMiscRegister
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
@@ -9,6 +11,10 @@ import net.neoforged.fml.common.Mod
 class HiiragiCore(eventBus: IEventBus, container: ModContainer) {
     init {
         HiiragiCoreAPI.LOGGER.info("Hiiragi Core is loading...")
+
+        eventBus.addListener(HCMiscRegister::register)
+
+        HCBlocks.register(eventBus)
 
         HiiragiCoreAPI.LOGGER.info("Hiiragi Core has been loaded successfully!")
     }
