@@ -1,0 +1,183 @@
+package hiiragi283.core.api.util
+
+import hiiragi283.core.api.function.identity
+
+/**
+ * [A]と[B]の両方の値または片方だけを保持するクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
+sealed class Ior<A, B> {
+    /**
+     * このインスタンスが[Left]であるか判定します。
+     * @return [Left]の場合は`true`，それ以外の場合は`false`
+     */
+    fun isLeft(): Boolean = this is Left<A, B>
+
+    /**
+     * このインスタンスが[Right]であるか判定します。
+     * @return [Right]の場合は`true`，それ以外の場合は`false`
+     */
+    fun isRight(): Boolean = this is Right<A, B>
+
+    /**
+     * このインスタンスが[Both]であるか判定します。
+     * @return [Both]の場合は`true`，それ以外の場合は`false`
+     */
+    fun isBoth(): Boolean = this is Both<A, B>
+
+    /**
+     * 保持している値を変換します。
+     * @param C 変換後のクラス
+     * @param left このインスタンスが[Left]の場合の変換ブロック
+     * @param right このインスタンスが[Right]の場合の変換ブロック
+     * @param both このインスタンスが[Both]の場合の変換ブロック
+     * @return 変換された値
+     */
+    inline fun <C> fold(left: (A) -> C, right: (B) -> C, both: (A, B) -> C): C = when (this) {
+        is Both<A, B> -> both(leftValue, rightValue)
+        is Left<A, B> -> left(value)
+        is Right<A, B> -> right(value)
+    }
+
+    /**
+     * 保持している値を変換します。
+     * @param C 変換後のクラス
+     * @param left このインスタンスが[Left]の場合の変換ブロック
+     * @param right このインスタンスが[Right]の場合の変換ブロック
+     * @param combine このインスタンスが[Both]の場合に変換された値を統合するブロック
+     * @return 変換された値
+     */
+    inline fun <C> map(left: (A) -> C, right: (B) -> C, combine: (C, C) -> C): C = when (this) {
+        is Both<A, B> -> combine(left(leftValue), right(rightValue))
+        is Left<A, B> -> left(value)
+        is Right<A, B> -> right(value)
+    }
+
+    /**
+     * 保持している値を変換します。
+     * @param C 変換後のクラス
+     * @param right このインスタンスが[Right]または[Both]の場合の変換ブロック
+     * @return 変換された[Ior]のインスタンス
+     */
+    inline fun <C> mapRight(right: (B) -> C): Ior<A, C> = when (this) {
+        is Both<A, B> -> Both(leftValue, right(rightValue))
+        is Left<A, B> -> Left(value)
+        is Right<A, B> -> Right(right(value))
+    }
+
+    /**
+     * 保持している値を変換します。
+     * @param C 変換後のクラス
+     * @param left このインスタンスが[Left]または[Both]の場合の変換ブロック
+     * @return 変換された[Ior]のインスタンス
+     */
+    inline fun <C> mapLeft(left: (A) -> C): Ior<C, B> = when (this) {
+        is Both<A, B> -> Both(left(leftValue), rightValue)
+        is Left<A, B> -> Left(left(value))
+        is Right<A, B> -> Right(value)
+    }
+
+    /**
+     * 保持している値を入れ替えます。
+     * @return 値が入れ替わった[Ior]のインスタンス
+     */
+    fun swap(): Ior<B, A> = fold(
+        { Right(it) },
+        { Left(it) },
+        { left: A, right: B -> Both(right, left) },
+    )
+
+    /**
+     * 保持している値を[Either]に展開します。
+     * @return 展開された[Either]のインスタンス
+     */
+    fun unwrap(): Either<Either<A, B>, Pair<A, B>> = fold(
+        { Either.Left(Either.Left(it)) },
+        { Either.Left(Either.Right(it)) },
+        { left: A, right: B -> Either.Right(left to right) },
+    )
+
+    /**
+     * 保持している値を[Pair]に展開します。
+     * @return 展開された[Pair]のインスタンス
+     */
+    fun toPair(): Pair<A?, B?> = fold(
+        { it to null },
+        { null to it },
+        { left: A, right: B -> left to right },
+    )
+
+    /**
+     * [右側][B]の値を取得します。
+     * @return このインスタンスが[Left]の場合は`null`
+     */
+    fun getRight(): B? = fold(
+        { null },
+        identity(),
+        { _: A, right: B -> right },
+    )
+
+    /**
+     * [左側][A]の値を取得します。
+     * @return このインスタンスが[Right]の場合は`null`
+     */
+    fun getLeft(): A? = fold(
+        identity(),
+        { null },
+        { left: A, _: B -> left },
+    )
+
+    /**
+     * [A]だけを保持する[Ior]の実装クラスです。
+     */
+    data class Left<A, B>(val value: A) : Ior<A, B>()
+
+    /**
+     * [B]だけを保持する[Ior]の実装クラスです。
+     */
+    data class Right<A, B>(val value: B) : Ior<A, B>()
+
+    /**
+     * [A]と[B]の両方を保持する[Ior]の実装クラスです。
+     */
+    data class Both<A, B>(val leftValue: A, val rightValue: B) : Ior<A, B>()
+}
+
+//    Extensions    //
+
+/**
+ * この[Either][this]を[Ior]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
+fun <A, B> Either<A, B>.toIor(): Ior<A, B> = this.map({ Ior.Left(it) }, { Ior.Right(it) })
+
+/**
+ * この[Pair][this]を[Ior]に変換します。
+ * @return [Pair]自体が`null`の場合，または左右の値が`null`の場合は`null`
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
+fun <A : Any, B : Any> Pair<A?, B?>?.toIor(): Ior<A, B>? {
+    val (first: A?, second: B?) = this ?: return null
+    return when {
+        first != null -> when {
+            second != null -> Ior.Both(first, second)
+            else -> Ior.Left(first)
+        }
+        else -> when {
+            second != null -> Ior.Right(second)
+            else -> null
+        }
+    }
+}
+
+/**
+ * この[Pair][this]を[Ior]に変換します。
+ * @throws IllegalStateException [Pair]自体が`null`の場合，または左右の値が`null`の場合
+ * @author Hiiragi Tsubasa
+ * @since 0.8.0
+ */
+fun <A : Any, B : Any> Pair<A?, B?>.toIorOrThrow(message: Any = "Either left or right value required"): Ior<A, B> =
+    this.toIor() ?: error(message)

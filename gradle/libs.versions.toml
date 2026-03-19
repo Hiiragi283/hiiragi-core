@@ -5,7 +5,7 @@ neo-moddev = "2.0.140"
 neo-version = "26.1.0.0-alpha.15+pre-3"
 
 dokka = "2.1.0"
-kff-version = "5.10.0"
+kff-version = "6.2.0"
 ktlint = "14.0.1"
 
 axion-release = "1.21.1"

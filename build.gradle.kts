@@ -228,7 +228,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-    // implementation(libs.kff)
+    implementation(libs.kff)
 
     implementation(libs.bundles.mods.impl)
     implementation(libs.bundles.mods.transitive) { isTransitive = false }
