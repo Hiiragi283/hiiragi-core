@@ -28,7 +28,7 @@ data class HTHandledRecipe<INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> privat
     /**
      * レシピの完成品を取得します。
      */
-    fun assemble(registries: HolderLookup.Provider): ItemStack = recipe.assemble(input, registries)
+    fun assemble(registries: HolderLookup.Provider): ItemStack = map(registries, HTRecipe<INPUT>::assemble)
 
     /**
      * 保持している[input]と[recipe]を変換します。
@@ -36,6 +36,8 @@ data class HTHandledRecipe<INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> privat
      * @param transform 変換するブロック
      */
     inline fun <T> map(transform: (RECIPE, INPUT) -> T): T = transform(recipe, input)
+
+    inline fun <T, C> map(context: C, transform: (RECIPE, INPUT, C) -> T): T = transform(recipe, input, context)
 }
 
 //    Extensions    //
@@ -47,6 +49,4 @@ data class HTHandledRecipe<INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> privat
  */
 fun <INPUT : RecipeInput, RECIPE> HTHandledRecipe<INPUT, RECIPE>.assembleFluid(
     registries: HolderLookup.Provider,
-): FluidStack where RECIPE : HTRecipe<INPUT>, RECIPE : HTFluidRecipe<INPUT> = this.map { recipe: RECIPE, input: INPUT ->
-    recipe.assembleFluid(input, registries)
-}
+): FluidStack where RECIPE : HTRecipe<INPUT>, RECIPE : HTFluidRecipe<INPUT> = this.map(registries, HTFluidRecipe<INPUT>::assembleFluid)

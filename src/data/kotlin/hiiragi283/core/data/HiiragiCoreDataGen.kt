@@ -13,6 +13,7 @@ import hiiragi283.core.data.server.loot.HCBlockLootTableProvider
 import hiiragi283.core.data.server.loot.HCGlobalLootModifierProvider
 import hiiragi283.core.data.server.loot.HCGlobalLootProvider
 import hiiragi283.core.data.server.tag.HCBlockTagsProvider
+import hiiragi283.core.data.server.tag.HCEntityTypeTagsProvider
 import hiiragi283.core.data.server.tag.HCFluidTagsProvider
 import hiiragi283.core.data.server.tag.HCItemTagsProvider
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets
@@ -34,6 +35,7 @@ data object HiiragiCoreDataGen {
 
         server.addProvider(::HCRecipeProvider)
 
+        server.addProvider(::HCEntityTypeTagsProvider)
         server.addProvider(::HCFluidTagsProvider)
         server.addBlockAndItemTags(::HCBlockTagsProvider, ::HCItemTagsProvider)
 

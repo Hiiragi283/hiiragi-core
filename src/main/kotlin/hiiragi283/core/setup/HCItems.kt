@@ -4,7 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.HTSmithingTemplateItem
 import hiiragi283.core.api.registry.HTSimpleItemHolderLike
 import hiiragi283.core.common.capability.HTFluidCapabilities
-import hiiragi283.core.common.item.HTAlmightyPickaxe
+import hiiragi283.core.common.item.HTAlmightyPickaxeItem
 import hiiragi283.core.common.item.HTAmbrosiaItem
 import hiiragi283.core.common.item.HTBombItem
 import hiiragi283.core.common.item.HTCaptureEggItem
@@ -153,7 +153,7 @@ object HCItems {
     val ETERNAL_UPGRADE: HTSimpleItemHolderLike = REGISTER.registerItem("eternal_upgrade", ::HTEternalUpgradeItem)
 
     @JvmField
-    val ALMIGHTY_PICKAXE: HTSimpleItemHolderLike = REGISTER.registerItem("almighty_pickaxe", ::HTAlmightyPickaxe)
+    val ALMIGHTY_PICKAXE: HTSimpleItemHolderLike = REGISTER.registerItem("almighty_pickaxe", ::HTAlmightyPickaxeItem)
 
     //    Event    //
 

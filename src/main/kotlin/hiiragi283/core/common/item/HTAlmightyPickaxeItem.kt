@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.common.ItemAbility
 import net.neoforged.neoforge.registries.holdersets.AnyHolderSet
 
-class HTAlmightyPickaxe(properties: Properties) :
+class HTAlmightyPickaxeItem(properties: Properties) :
     DiggerItem(AlmightyTier, HiiragiCoreTags.Blocks.INCORRECT_FOR_ALMIGHTY_PICKAXE, properties.rarity(Rarity.RARE)),
     HTSubCreativeTabContents {
     override fun getName(stack: ItemStack): Text = when (stack.has(DataComponents.UNBREAKABLE)) {

@@ -11,12 +11,12 @@ import net.minecraft.world.item.crafting.RecipeInput
  */
 @JvmRecord
 data class HTShapelessRecipeInput(val items: Map<HTItemResourceType, Int>) : RecipeInput {
-    final override fun getItem(index: Int): ItemStack {
+    override fun getItem(index: Int): ItemStack {
         val (resource: HTItemResourceType, count: Int) = items.entries.elementAt(index)
         return resource.toStack(count)
     }
 
-    final override fun size(): Int = items.size
+    override fun size(): Int = items.size
 
     override fun isEmpty(): Boolean = items.isEmpty()
 }

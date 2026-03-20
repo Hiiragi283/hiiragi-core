@@ -3,6 +3,7 @@ package hiiragi283.core.api.tag
 import hiiragi283.core.api.HiiragiCoreAPI
 import net.minecraft.core.registries.Registries
 import net.minecraft.tags.TagKey
+import net.minecraft.world.entity.EntityType
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.material.Fluid
@@ -31,6 +32,17 @@ object HiiragiCoreTags {
         private fun mod(vararg path: String): TagKey<Block> = Registries.BLOCK.createTagKey(HiiragiCoreAPI.id(*path))
     }
 
+    object EntityTypes {
+        @JvmField
+        val CAPTURE_BLACKLIST: TagKey<EntityType<*>> = mod("capture_blacklist")
+        
+        @JvmStatic
+        private fun common(vararg path: String): TagKey<EntityType<*>> = Registries.ENTITY_TYPE.createCommonTag(*path)
+
+        @JvmStatic
+        private fun mod(vararg path: String): TagKey<EntityType<*>> = Registries.ENTITY_TYPE.createTagKey(HiiragiCoreAPI.id(*path))
+    }
+    
     object Fluids {
         /**
          * @since 0.13.0

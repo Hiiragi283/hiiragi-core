@@ -1,5 +1,6 @@
 package hiiragi283.core.common.entity
 
+import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.util.HTItemDropHelper
@@ -25,7 +26,7 @@ class HTThrownCaptureEgg : ThrowableItemProjectile {
         fun getCapturedStack(target: Entity): ItemStack {
             val targetType: EntityType<*> = target.type
             // 対象がブラックリストに入っていたらパス
-            // if (targetType.`is`(RagiumModTags.EntityTypes.CAPTURE_BLACKLIST)) return null
+            if (targetType.`is`(HiiragiCoreTags.EntityTypes.CAPTURE_BLACKLIST)) return ItemStack.EMPTY
             // クリックしたモブのスポーンエッグを取得する
             return SpawnEggItem.byId(targetType)?.let(::ItemStack) ?: ItemStack.EMPTY
         }

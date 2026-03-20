@@ -54,7 +54,7 @@ object HCBlocks {
     @JvmField
     val WARPED_WART: HTDeferredBlockAndItem<HTWarpedWartBlock, HTWarpedWartItem> = REGISTER.register(
         "warped_wart",
-        copyOf(Blocks.NETHER_WART),
+        copyOf(Blocks.NETHER_WART).mapColor(MapColor.WARPED_WART_BLOCK),
         ::HTWarpedWartBlock,
         ::HTWarpedWartItem,
     )
