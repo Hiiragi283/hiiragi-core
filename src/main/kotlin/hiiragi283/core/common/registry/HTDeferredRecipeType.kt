@@ -21,7 +21,7 @@ class HTDeferredRecipeType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>> :
     constructor(id: Identifier) : super(Registries.RECIPE_TYPE, id)
 
     @Suppress("UNCHECKED_CAST")
-    override fun get(): RecipeType<RECIPE> = BuiltInRegistries.RECIPE_TYPE.getOrThrow(key) as RecipeType<RECIPE>
+    override fun get(): RecipeType<RECIPE> = BuiltInRegistries.RECIPE_TYPE.getValueOrThrow(key) as RecipeType<RECIPE>
 
     override fun createCache(): HTRecipeCache<INPUT, RECIPE> = HTLookupRecipeCache.forManager(this)
 

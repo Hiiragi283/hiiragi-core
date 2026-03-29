@@ -1,8 +1,8 @@
 [versions]
-minecraft = "26.1-pre-3"
+minecraft = "26.1"
 
 neo-moddev = "2.0.140"
-neo-version = "26.1.0.0-alpha.15+pre-3"
+neo-version = "26.1.0.8-beta"
 
 dokka = "2.1.0"
 kff-version = "6.2.0"
@@ -13,11 +13,10 @@ maven-publish = "0.35.0"
 minotaur = "2.+"
 
 ae2 = "19.2.17"
-jade = "15.10.3+neoforge"
-jei = "19.27.0.340"
+jade = "26.0.6+neoforge"
+jei = "29.2.0.17"
 mek = "1.21.1-10.7.17.83"
 mi = "2.4.1"
-moonlight = "1.21-2.29.20"
 
 arch = "13.0.8"
 guide = "21.1.15"
@@ -27,25 +26,29 @@ guide = "21.1.15"
 kff = { group = "thedarkcolour", name = "kotlinforforge-neoforge", version.ref = "kff-version" }
 
 ae2 = { group = "org.appliedenergistics", name = "appliedenergistics2", version.ref = "ae2" }
-jei = { group = "mezz.jei", name = "jei-1.21.1-neoforge", version.ref = "jei" }
-jei-api = { group = "mezz.jei", name = "jei-1.21.1-neoforge-api", version.ref = "jei" }
+jei = { group = "mezz.jei", name = "jei-26.1-neoforge", version.ref = "jei" }
+jei-api = { group = "mezz.jei", name = "jei-26.1-neoforge-api", version.ref = "jei" }
 jade = { group = "maven.modrinth", name = "jade", version.ref = "jade" }
 mek = { group = "mekanism", name = "Mekanism", version.ref = "mek" }
 mi = { group = "aztech", name = "Modern-Industrialization", version.ref = "mi" }
-moonlight = { group = "net.mehvahdjukaar", name = "moonlight-neoforge", version.ref = "moonlight" }
 
 arch = { group = "dev.architectury", name = "architectury-neoforge", version.ref = "arch" }
 guide = { group = "org.appliedenergistics", name = "guideme", version.ref = "guide" }
 
 [bundles]
 
-mods-impl = []
+mods-impl = [
+    "jei-api",
+    "jade",
+]
 
 mods-transitive = []
 
 mods-compile = []
 
-mods-runtime = []
+mods-runtime = [
+    "jei",
+]
 
 [plugins]
 

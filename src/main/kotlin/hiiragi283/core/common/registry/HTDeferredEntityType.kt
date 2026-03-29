@@ -19,7 +19,7 @@ class HTDeferredEntityType<ENTITY : Entity> :
     constructor(id: Identifier) : super(Registries.ENTITY_TYPE, id)
 
     @Suppress("UNCHECKED_CAST")
-    override fun get(): EntityType<ENTITY> = BuiltInRegistries.ENTITY_TYPE.getOrThrow(key) as EntityType<ENTITY>
+    override fun get(): EntityType<ENTITY> = BuiltInRegistries.ENTITY_TYPE.getValueOrThrow(key) as EntityType<ENTITY>
 
     override val translationKey: String get() = get().descriptionId
 
