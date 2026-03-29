@@ -12,7 +12,6 @@ import net.minecraft.client.data.models.ModelProvider
 import net.minecraft.client.data.models.model.ModelTemplate
 import net.minecraft.client.resources.model.sprite.Material
 import net.minecraft.data.PackOutput
-import net.minecraft.resources.Identifier
 import net.neoforged.neoforge.client.model.item.DynamicFluidContainerModel
 
 abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvider(output, modId) {
@@ -25,20 +24,21 @@ abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvide
     }
 
     fun ItemModelGenerators.generateBucketItem(content: HTFluidContent, isDrip: Boolean) {
-        val parentId: Identifier = when {
-            isDrip -> "bucket_drip"
-            else -> "bucket"
-        }.let { HTConst.NEOFORGE.toId(HTConst.ITEM, it) }
+        val mask: Material = when (isDrip) {
+            true -> "_drip"
+            false -> ""
+        }.let { HTConst.NEOFORGE.toId(HTConst.ITEM, "mask", "bucket_fluid$it") }
+            .let(::Material)
 
         val baseMaterial = Material(HTConst.MINECRAFT.toId(HTConst.ITEM, "bucket"))
-
         this.itemModelOutput.accept(
             content.getBucket().get(),
             DynamicFluidContainerModel.Unbaked(
                 DynamicFluidContainerModel.Textures(
                     baseMaterial.wrapOptional(),
                     baseMaterial.wrapOptional(),
-                    Material(parentId).wrapOptional(),
+                    mask.wrapOptional(),
+                    // Material(HTConst.NEOFORGE.toId(HTConst.ITEM, "mask", "bucket_fluid_cover$suffix")).wrapOptional(),
                     emptyOptional(),
                 ),
                 content.get(),

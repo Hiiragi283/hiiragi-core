@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:experience_bottle",
+    "minecraft:experience_bottle",
+    "minecraft:experience_bottle",
+    "minecraft:experience_bottle",
+    "#c:buckets/empty"
+  ],
+  "result": {
+    "id": "hiiragi_core:experience_bucket"
+  }
+}

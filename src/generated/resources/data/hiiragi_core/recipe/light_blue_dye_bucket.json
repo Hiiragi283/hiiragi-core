@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#c:dyes/light_blue",
+    "#c:dyes/light_blue",
+    "#c:dyes/light_blue",
+    "#c:dyes/light_blue",
+    "#c:buckets/empty"
+  ],
+  "result": {
+    "id": "hiiragi_core:light_blue_dye_bucket"
+  }
+}

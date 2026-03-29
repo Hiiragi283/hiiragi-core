@@ -5,7 +5,13 @@ import hiiragi283.core.api.text.HTHasTranslationKey
 import net.minecraft.data.PackOutput
 import net.neoforged.neoforge.common.data.LanguageProvider
 
-sealed class HTLanguageProvider(output: PackOutput, modid: String, locale: String) : LanguageProvider(output, modid, locale) {
+abstract class HTLanguageProvider(output: PackOutput, modid: String, val langType: HTLangType) :
+    LanguageProvider(output, modid, langType.name) {
+    companion object {
+        @JvmField
+        val BUCKET_PATTERN: HTLangPatternProvider = HTLangPatternProvider.create("%s Bucket", "%s入りバケツ")
+    }
+
     /**
      * [HTHasTranslationKey.translationKey]に基づいて翻訳名を追加します。
      */
@@ -20,18 +26,8 @@ sealed class HTLanguageProvider(output: PackOutput, modid: String, locale: Strin
         add(content.getFluidType().descriptionId, value)
         add(content.fluidTag, value)
 
-        val bucketName: String = getBucketName(value)
+        val bucketName: String = BUCKET_PATTERN.translate(langType, value)
         add(content.getBucket(), bucketName)
         add(content.bucketTag, bucketName)
-    }
-
-    protected abstract fun getBucketName(fluidName: String): String
-
-    abstract class English(output: PackOutput, modid: String) : HTLanguageProvider(output, modid, "en_us") {
-        final override fun getBucketName(fluidName: String): String = "$fluidName Bucket"
-    }
-
-    abstract class Japanese(output: PackOutput, modid: String) : HTLanguageProvider(output, modid, "ja_jp") {
-        final override fun getBucketName(fluidName: String): String = "${fluidName}入りバケツ"
     }
 }

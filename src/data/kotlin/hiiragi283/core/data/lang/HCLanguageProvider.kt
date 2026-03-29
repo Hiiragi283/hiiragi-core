@@ -1,10 +1,19 @@
 package hiiragi283.core.data.lang
 
+import hiiragi283.core.api.data.lang.HTLangPatternProvider
+import hiiragi283.core.api.data.lang.HTLangType
+import hiiragi283.core.api.data.lang.HTLanguageProvider
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTranslation
+import hiiragi283.core.setup.HCFluids
+import net.minecraft.world.item.DyeColor
 import java.util.function.BiConsumer
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.iterator
 
-interface HCLangProvider {
+interface HCLanguageProvider {
     fun addCommonTranslations(consumer: BiConsumer<HTTranslation, String>) {
         // API - Constants
         consumer.accept(HTCommonTranslation.TRUE, "True")
@@ -23,5 +32,14 @@ interface HCLangProvider {
         consumer.accept(HTCommonTranslation.PERCENTAGE, $$"%1$s %%")
 
         consumer.accept(HTCommonTranslation.TICK, $$"%1$s ticks")
+    }
+
+    fun addPatternTranslations(provider: HTLanguageProvider) {
+        val langType: HTLangType = provider.langType
+        // Fluid
+        val dyePattern: HTLangPatternProvider = HTLangPatternProvider.create("%s Dye", "%sの染料")
+        for ((color: DyeColor, fluid: HTFluidContent) in HCFluids.DYE) {
+            provider.addFluid(fluid, dyePattern.translate(langType, color.name))
+        }
     }
 }

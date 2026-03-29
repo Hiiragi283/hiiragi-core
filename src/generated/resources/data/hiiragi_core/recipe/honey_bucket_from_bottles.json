@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:honey_bottle",
+    "minecraft:honey_bottle",
+    "minecraft:honey_bottle",
+    "minecraft:honey_bottle",
+    "#c:buckets/empty"
+  ],
+  "result": {
+    "id": "hiiragi_core:honey_bucket"
+  }
+}

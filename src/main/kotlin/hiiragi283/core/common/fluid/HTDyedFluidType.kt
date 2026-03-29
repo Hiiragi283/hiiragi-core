@@ -1,6 +1,6 @@
 package hiiragi283.core.common.fluid
 
-import hiiragi283.core.util.HTItemDropHelper
+import hiiragi283.core.common.util.HTItemDropHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.resources.Identifier
 import net.minecraft.world.entity.LivingEntity

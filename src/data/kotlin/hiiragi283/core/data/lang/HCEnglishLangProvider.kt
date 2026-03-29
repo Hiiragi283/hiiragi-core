@@ -1,6 +1,7 @@
 package hiiragi283.core.data.lang
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.data.lang.HTLanguageProvider
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.common.text.HCTranslation
@@ -11,9 +12,10 @@ import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.data.PackOutput
 
 class HCEnglishLangProvider(output: PackOutput) :
-    HTLanguageProvider.English(output, HiiragiCoreAPI.MOD_ID),
-    HCLangProvider {
+    HTLanguageProvider(output, HiiragiCoreAPI.MOD_ID, HTLangTypes.EN_US),
+    HCLanguageProvider {
     override fun addTranslations() {
+        addPatternTranslations(this)
         // Block
         add(HCBlocks.WARPED_WART, "Warped Wart")
         // Fluid

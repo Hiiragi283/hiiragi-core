@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#c:dyes/purple",
+    "#c:dyes/purple",
+    "#c:dyes/purple",
+    "#c:dyes/purple",
+    "#c:buckets/empty"
+  ],
+  "result": {
+    "id": "hiiragi_core:purple_dye_bucket"
+  }
+}

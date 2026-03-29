@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#c:dyes/white",
+    "#c:dyes/white",
+    "#c:dyes/white",
+    "#c:dyes/white",
+    "#c:buckets/empty"
+  ],
+  "result": {
+    "id": "hiiragi_core:white_dye_bucket"
+  }
+}

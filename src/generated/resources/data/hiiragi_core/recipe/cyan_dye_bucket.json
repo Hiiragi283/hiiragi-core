@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#c:dyes/cyan",
+    "#c:dyes/cyan",
+    "#c:dyes/cyan",
+    "#c:dyes/cyan",
+    "#c:buckets/empty"
+  ],
+  "result": {
+    "id": "hiiragi_core:cyan_dye_bucket"
+  }
+}

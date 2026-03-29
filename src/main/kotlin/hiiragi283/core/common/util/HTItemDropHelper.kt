@@ -1,4 +1,4 @@
-package hiiragi283.core.util
+package hiiragi283.core.common.util
 
 import hiiragi283.core.api.transfer.ItemResourceHandler
 import net.minecraft.core.BlockPos

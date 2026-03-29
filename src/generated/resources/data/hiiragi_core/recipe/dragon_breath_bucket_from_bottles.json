@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:dragon_breath",
+    "minecraft:dragon_breath",
+    "minecraft:dragon_breath",
+    "minecraft:dragon_breath",
+    "#c:buckets/empty"
+  ],
+  "result": {
+    "id": "hiiragi_core:dragon_breath_bucket"
+  }
+}

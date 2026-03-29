@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#c:dyes/magenta",
+    "#c:dyes/magenta",
+    "#c:dyes/magenta",
+    "#c:dyes/magenta",
+    "#c:buckets/empty"
+  ],
+  "result": {
+    "id": "hiiragi_core:magenta_dye_bucket"
+  }
+}

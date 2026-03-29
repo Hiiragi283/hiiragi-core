@@ -1,17 +1,22 @@
 package hiiragi283.core.data.recipe
 
 import hiiragi283.core.api.data.recipe.HTRecipeProvider
+import hiiragi283.core.api.data.recipe.builder.saveSuffix
 import hiiragi283.core.api.recipe.withSize
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.common.data.recipe.builder.HCChargingRecipeBuilder
 import hiiragi283.core.common.tag.HiiragiCoreTags
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.tags.TagKey
+import net.minecraft.world.item.DyeColor
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
+import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
 
 class HCRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(registries, output) {
@@ -36,7 +41,58 @@ class HCRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput) 
             .unlockedBy("has_${almightyMaterial.location.path}", has(almightyMaterial))
             .save(output)
 
+        buckets()
         charging()
+    }
+
+    private fun buckets() {
+        // Dye
+        for ((color: DyeColor, content: HTFluidContent) in HCFluids.DYE) {
+            val dyeTag: TagKey<Item> = color.tag
+            shapeless(RecipeCategory.MISC, content.getBucket())
+                .requires(dyeTag)
+                .requires(dyeTag)
+                .requires(dyeTag)
+                .requires(dyeTag)
+                .requires(Tags.Items.BUCKETS_EMPTY)
+                .unlockedBy("has_${color.serializedName}_dye", has(dyeTag))
+                .save(output)
+        }
+        // Exp Bottle <-> Exp Bucket
+        bottleToBucket(HCFluids.EXPERIENCE, Items.EXPERIENCE_BOTTLE)
+        // Honey Bottle <-> Honey Bucket
+        bottleToBucket(HCFluids.HONEY, Items.HONEY_BOTTLE)
+        // Dragon Breath
+        bottleToBucket(HCFluids.DRAGON_BREATH, Items.DRAGON_BREATH)
+
+        // Mushroom Stew
+        shapeless(RecipeCategory.MISC, HCFluids.MUSHROOM_STEW.getBucket())
+            .requires(Items.MUSHROOM_STEW)
+            .requires(Items.MUSHROOM_STEW)
+            .requires(Items.MUSHROOM_STEW)
+            .requires(Items.MUSHROOM_STEW)
+            .requires(Tags.Items.BUCKETS_EMPTY)
+            .unlockedBy("has_mushroom_stew_bucket", has(HCFluids.MUSHROOM_STEW.bucketTag))
+            .saveSuffix(output, "_from_bowls")
+    }
+
+    private fun bottleToBucket(content: HTFluidContent, filled: ItemLike) {
+        shapeless(RecipeCategory.MISC, content.getBucket())
+            .requires(filled)
+            .requires(filled)
+            .requires(filled)
+            .requires(filled)
+            .requires(Tags.Items.BUCKETS_EMPTY)
+            .unlockedBy("has_${content.path}_bucket", has(content.bucketTag))
+            .saveSuffix(output, "_from_bottles")
+        shapeless(RecipeCategory.MISC, filled, 4)
+            .requires(content.bucketTag)
+            .requires(Items.GLASS_BOTTLE)
+            .requires(Items.GLASS_BOTTLE)
+            .requires(Items.GLASS_BOTTLE)
+            .requires(Items.GLASS_BOTTLE)
+            .unlockedBy(getHasName(filled), has(filled))
+            .saveSuffix(output, "_from_bucket")
     }
 
     private fun charging() {

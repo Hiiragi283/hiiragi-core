@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#c:dyes/yellow",
+    "#c:dyes/yellow",
+    "#c:dyes/yellow",
+    "#c:dyes/yellow",
+    "#c:buckets/empty"
+  ],
+  "result": {
+    "id": "hiiragi_core:yellow_dye_bucket"
+  }
+}

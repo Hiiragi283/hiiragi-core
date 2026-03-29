@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:mushroom_stew",
+    "minecraft:mushroom_stew",
+    "minecraft:mushroom_stew",
+    "minecraft:mushroom_stew",
+    "#c:buckets/empty"
+  ],
+  "result": {
+    "id": "hiiragi_core:mushroom_stew_bucket"
+  }
+}
