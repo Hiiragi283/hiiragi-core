@@ -18,6 +18,13 @@ interface HTIngredientCreator<TYPE : Any, INGREDIENT : Any> {
 
     fun from(types: Collection<TYPE>): INGREDIENT
 
+    // Custom
+    fun allOf(ingredients: List<INGREDIENT>): INGREDIENT
+
+    fun anyOf(ingredients: List<INGREDIENT>): INGREDIENT
+
+    fun difference(base: INGREDIENT, subtracted: INGREDIENT): INGREDIENT
+
     //    Registered    //
 
     interface Registered<TYPE : Any, INGREDIENT : Any> : HTIngredientCreator<TYPE, INGREDIENT> {
@@ -36,6 +43,9 @@ interface HTIngredientCreator<TYPE : Any, INGREDIENT : Any> {
         // HolderSet
         fun fromHolderSet(holderSet: HolderSet<TYPE>): INGREDIENT
 
-        fun fromHolderSets(holderSets: Collection<HolderSet<TYPE>>): INGREDIENT
+        fun fromHolderSets(holderSets: Collection<HolderSet<TYPE>>): INGREDIENT = when (holderSets.size) {
+            1 -> holderSets.first().let(::fromHolderSet)
+            else -> holderSets.map(::fromHolderSet).let(::anyOf)
+        }
     }
 }

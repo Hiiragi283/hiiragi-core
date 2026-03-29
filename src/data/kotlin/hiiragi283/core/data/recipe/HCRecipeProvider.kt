@@ -15,6 +15,7 @@ import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
@@ -99,43 +100,43 @@ class HCRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput) 
         // Ender Pearl -> Ender Eye
         HCChargingRecipeBuilder.create(output) {
             ingredient = itemCreator.fromTagKey(Tags.Items.ENDER_PEARLS) withSize 1
-            result = resultCreator.create(Items.ENDER_EYE)
+            result = ItemStackTemplate(Items.ENDER_EYE)
         }
         // Golden Apple
         HCChargingRecipeBuilder.create(output) {
             ingredient = itemCreator.from(Items.GOLDEN_APPLE) withSize 1
-            result = resultCreator.create(Items.ENCHANTED_GOLDEN_APPLE)
+            result = ItemStackTemplate(Items.ENCHANTED_GOLDEN_APPLE)
         }
         // Quartz -> Prismarine
         HCChargingRecipeBuilder.create(output) {
             ingredient = itemCreator.fromTagKey(Tags.Items.GEMS_QUARTZ) withSize 1
-            result = resultCreator.create(Items.PRISMARINE_SHARD)
+            result = ItemStackTemplate(Items.PRISMARINE_SHARD)
         }
         // Redstone Dust -> Glowstone Dust
         HCChargingRecipeBuilder.create(output) {
             ingredient = itemCreator.fromTagKey(Tags.Items.DUSTS_REDSTONE) withSize 1
-            result = resultCreator.create(Items.GLOWSTONE_DUST)
+            result = ItemStackTemplate(Items.GLOWSTONE_DUST)
         }
         // Honey Bottle -> Exp Bottle
         HCChargingRecipeBuilder.create(output) {
             ingredient = itemCreator.fromTagKey(Tags.Items.DRINKS_HONEY) withSize 1
-            result = resultCreator.create(Items.EXPERIENCE_BOTTLE)
+            result = ItemStackTemplate(Items.EXPERIENCE_BOTTLE)
         }
 
         // End Crystal -> Eldritch Pearl
         /*HCChargingRecipeBuilder.charging(output) {
             ingredient = itemCreator.from(Items.END_CRYSTAL) withSize 1
-            result = resultCreator.material(CommonParts.PEARL, HCMaterialKeys.ELDRITCH)
+            result = ItemStackTemplate(CommonParts.PEARL, HCMaterialKeys.ELDRITCH)
         }
         // Heart of the Sea
         HCChargingRecipeBuilder.charging(output) {
             ingredient = itemCreator.from(HCItems.ELDER_HEART) withSize 1
-            result = resultCreator.create(Items.HEART_OF_THE_SEA)
+            result = ItemStackTemplate(Items.HEART_OF_THE_SEA)
         }*/
         // Nether Star
         HCChargingRecipeBuilder.create(output) {
             ingredient = itemCreator.fromTagKey(Tags.Items.NETHER_STARS) withSize 1
-            result = resultCreator.create(Items.NETHER_STAR)
+            result = ItemStackTemplate(Items.NETHER_STAR)
         }
     }
 }

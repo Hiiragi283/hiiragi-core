@@ -16,7 +16,7 @@ abstract class HTRegisteredIngredientCreatorImpl<TYPE : Any, INGREDIENT : Any>(p
     final override fun fromTagKey(tagKey: TagKey<TYPE>): INGREDIENT = fromHolderSet(getter.getOrThrow(tagKey))
 
     final override fun fromTagKeys(tagKeys: Collection<TagKey<TYPE>>): INGREDIENT = when (tagKeys.size) {
-        1 -> return fromTagKey(tagKeys.first())
-        else -> fromHolderSets(tagKeys.map(getter::getOrThrow))
+        1 -> tagKeys.first().let(::fromTagKey)
+        else -> tagKeys.map(getter::getOrThrow).let(::fromHolderSets)
     }
 }
