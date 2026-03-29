@@ -5,19 +5,23 @@ import hiiragi283.core.api.HTDyeColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.util.HTFluidModelHelper
 import hiiragi283.core.setup.HCFluids
+import hiiragi283.core.setup.HCMenuTypes
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 import net.neoforged.neoforge.client.event.RegisterFluidModelsEvent
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent
 import java.awt.Color
 
 @Mod(value = HiiragiCoreAPI.MOD_ID, dist = [Dist.CLIENT])
 class HiiragiCoreClient(eventBus: IEventBus, container: ModContainer) {
     init {
         eventBus.addListener(::registerFluidModels)
+        eventBus.addListener(::registerScreens)
 
         HiiragiCoreAPI.LOGGER.info("Hiiragi Core Client has been loaded successfully!")
     }
@@ -35,5 +39,10 @@ class HiiragiCoreClient(eventBus: IEventBus, container: ModContainer) {
 
         HTFluidModelHelper.registerDull(event, HCFluids.LATEX, Color(0xcccccc))
         HTFluidModelHelper.registerDull(event, HCFluids.MEAT, Color(0x993333))
+    }
+
+    private fun registerScreens(event: RegisterMenuScreensEvent) {
+        event.register(HCMenuTypes.BLOCK.get(), ::HTWidgetContainerScreen)
+        event.register(HCMenuTypes.ITEM.get(), ::HTWidgetContainerScreen)
     }
 }
