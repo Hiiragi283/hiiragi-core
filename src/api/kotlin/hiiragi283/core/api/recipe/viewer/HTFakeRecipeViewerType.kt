@@ -53,4 +53,6 @@ class HTFakeRecipeViewerType<INPUT : RecipeInput, RECIPE : Any>(
             workstations,
         )
     }
+
+    override fun toString(): String = "HTFakeRecipeViewerType(class=${recipeClass.canonicalName})"
 }

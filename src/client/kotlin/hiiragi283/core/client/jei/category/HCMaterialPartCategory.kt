@@ -21,28 +21,33 @@ import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
 import mezz.jei.api.recipe.IRecipeManager
 import mezz.jei.api.recipe.RecipeIngredientRole
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 
 class HCMaterialPartCategory(guiHelper: IGuiHelper) :
     HTBasicRecipeCategory<HTMaterialManager.Entry>(guiHelper, HCJeiRecipeTypes.MaterialType) {
-    override fun setRecipe(builder: IRecipeLayoutBuilder, recipe: HTMaterialManager.Entry, focuses: IFocusGroup) {
-        val ingredients: Sequence<Ingredient> = HiiragiCoreAccess.INSTANCE
-            .partManager
-            .values
-            .asSequence()
-            .mapNotNull(HTPartLike::tagPrefix)
-            .map { it.itemTagKey(recipe) }
-            .distinct()
-            .map(Ingredient::of)
+    private fun getIngredients(entry: HTMaterialManager.Entry): Sequence<List<ItemStack>> = HiiragiCoreAccess.INSTANCE
+        .partManager
+        .values
+        .asSequence()
+        .mapNotNull(HTPartLike::tagPrefix)
+        .map { it.itemTagKey(entry) }
+        .distinct()
+        .map { tagKey: TagKey<Item> -> BuiltInRegistries.ITEM.getTagOrEmpty(tagKey).map(::ItemStack) }
+        .filterNot(Iterable<ItemStack>::none)
 
+    override fun setRecipe(builder: IRecipeLayoutBuilder, recipe: HTMaterialManager.Entry, focuses: IFocusGroup) {
         builder
             .addInputSlot()
             .addIngredients(recipe.getDefaultPart(recipe)?.let(Ingredient::of) ?: Ingredient.EMPTY)
             .setStandardSlotBackground()
 
-        for (ingredient: Ingredient in ingredients) {
-            builder.addOutputSlot().addIngredients(ingredient)
+        for (ingredient: Iterable<ItemStack> in getIngredients(recipe)) {
+            builder.addOutputSlot().addItemStacks(ingredient.toList())
         }
     }
 
@@ -66,6 +71,8 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) :
             .first()
             .setPosition(widget.screenRectangle.position.x + 1, 1)
     }
+
+    override fun isHandled(recipe: HTMaterialManager.Entry): Boolean = getIngredients(recipe).any() || recipe.getDefaultPart(recipe) != null
 
     override fun getRegistryName(recipe: HTMaterialManager.Entry): ResourceLocation = recipe.getId()
 

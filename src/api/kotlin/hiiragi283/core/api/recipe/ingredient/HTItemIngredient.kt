@@ -40,7 +40,7 @@ class HTItemIngredient(val unsized: Ingredient, override val amount: Int) : HTIn
 
     fun testOnlyType(stack: ItemStack): Boolean = stack.toResource()?.let(::testOnlyType) ?: false
 
-    //    HTIngredientN    //
+    //    HTIngredient    //
 
     override fun testOnlyType(resource: HTItemResourceType): Boolean = unsized.test(resource.toStack())
 
@@ -62,4 +62,6 @@ class HTItemIngredient(val unsized: Ingredient, override val amount: Int) : HTIn
             }
         }
     }
+
+    override fun toString(): String = "HTIngredient(unsized=$unsized, amount=$amount)"
 }

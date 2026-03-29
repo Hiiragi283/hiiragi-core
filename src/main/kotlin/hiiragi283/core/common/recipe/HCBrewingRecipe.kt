@@ -10,7 +10,7 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
 
-class HCBrewingRecipe(val potionFrom: HTFluidIngredient, val ingredient: HTItemIngredient, val potionTo: HTFluidResult) :
+data class HCBrewingRecipe(val potionFrom: HTFluidIngredient, val ingredient: HTItemIngredient, val potionTo: HTFluidResult) :
     HTProcessingRecipe<HTItemAndFluidRecipeInput>,
     HTFluidRecipe<HTItemAndFluidRecipeInput> {
     override val time: Int = 100

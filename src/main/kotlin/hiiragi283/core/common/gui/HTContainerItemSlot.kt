@@ -1,5 +1,6 @@
 package hiiragi283.core.common.gui
 
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
@@ -88,6 +89,7 @@ open class HTContainerItemSlot(
     override fun setChanged() {
         super.setChanged()
         slot.onContentsChanged()
+        HiiragiCoreAPI.LOGGER.debug("Slot {} updated!", this)
     }
 
     override fun getMaxStackSize(): Int = slot.getCapacity()
@@ -117,4 +119,6 @@ open class HTContainerItemSlot(
     }
 
     protected open fun allowPartialRemoval(): Boolean = true
+
+    override fun toString(): String = "HTContainerItemSlot(slot=$slot, x=$x, y=$y, slotType=$slotType)"
 }

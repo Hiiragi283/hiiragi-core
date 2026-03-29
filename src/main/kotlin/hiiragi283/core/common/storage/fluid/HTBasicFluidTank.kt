@@ -112,4 +112,6 @@ open class HTBasicFluidTank protected constructor(
     final override fun onContentsChanged() {
         listener?.onContentsChanged()
     }
+
+    override fun toString(): String = "HTBasicFluidTank(capacity=$capacity)"
 }

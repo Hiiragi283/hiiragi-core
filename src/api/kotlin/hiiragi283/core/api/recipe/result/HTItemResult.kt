@@ -90,6 +90,8 @@ class HTItemResult(private val content: Ior<HTItemResourceType, TagKey<Item>>, p
 
     override fun getId(): ResourceLocation = content.map(HTItemResourceType::getId, TagKey<Item>::location, identityRight())
 
+    override fun toString(): String = "HTItemResult(content=$content, count=$count)"
+
     //    Builder    //
 
     /**

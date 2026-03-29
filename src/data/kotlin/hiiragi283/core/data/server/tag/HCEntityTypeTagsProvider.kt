@@ -13,7 +13,8 @@ import net.neoforged.neoforge.common.Tags
 class HCEntityTypeTagsProvider(context: HTDataGenContext) :
     HTTagsProvider.DataGen<EntityType<*>>(HiiragiCoreAPI.MOD_ID, Registries.ENTITY_TYPE, context) {
     override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<EntityType<*>>) {
-        factory.apply(HiiragiCoreTags.EntityTypes.CAPTURE_BLACKLIST)
+        factory
+            .apply(HiiragiCoreTags.EntityTypes.CAPTURE_BLACKLIST)
             .add(HTConst.MINECRAFT.toId("warden"))
             .addTag(Tags.EntityTypes.BOSSES)
             .addTag(Tags.EntityTypes.CAPTURING_NOT_SUPPORTED)

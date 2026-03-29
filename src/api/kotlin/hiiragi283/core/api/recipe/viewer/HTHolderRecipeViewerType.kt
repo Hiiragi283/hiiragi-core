@@ -54,4 +54,6 @@ class HTHolderRecipeViewerType<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(
             workstations,
         )
     }
+
+    override fun toString(): String = "HTHolderRecipeViewerType(class=${recipeClass.canonicalName})"
 }

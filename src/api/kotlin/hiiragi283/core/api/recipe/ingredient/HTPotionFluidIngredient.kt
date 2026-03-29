@@ -65,4 +65,6 @@ class HTPotionFluidIngredient(val potions: HolderSet<Potion>, val bottleType: HT
     override fun equals(obj: Any?): Boolean = (obj as? HTPotionFluidIngredient)?.let {
         it.potions == this.potions && it.bottleType == this.bottleType
     } ?: false
+
+    override fun toString(): String = "HTPotionFluidIngredient(potions=$potions, bottleType=$bottleType)"
 }

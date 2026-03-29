@@ -36,7 +36,7 @@ class HTFluidIngredient(val unsized: FluidIngredient, override val amount: Int) 
 
     fun testOnlyType(stack: FluidStack): Boolean = stack.toResource()?.let(::testOnlyType) ?: false
 
-    //    HTIngredientN    //
+    //    HTIngredient    //
 
     override fun testOnlyType(resource: HTFluidResourceType): Boolean = unsized.test(resource.toStack(HTConst.DEFAULT_FLUID_AMOUNT))
 
@@ -44,4 +44,6 @@ class HTFluidIngredient(val unsized: FluidIngredient, override val amount: Int) 
         is TagFluidIngredient -> Either.Left(unsized.tag())
         else -> Either.Right(unsized.stacks.mapNotNull(FluidStack::toResource))
     }
+
+    override fun toString(): String = "HTFluidIngredient(unsized=$unsized, amount=$amount)"
 }

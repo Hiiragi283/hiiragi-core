@@ -35,14 +35,14 @@ object HiiragiCoreTags {
     object EntityTypes {
         @JvmField
         val CAPTURE_BLACKLIST: TagKey<EntityType<*>> = mod("capture_blacklist")
-        
+
         @JvmStatic
         private fun common(vararg path: String): TagKey<EntityType<*>> = Registries.ENTITY_TYPE.createCommonTag(*path)
 
         @JvmStatic
         private fun mod(vararg path: String): TagKey<EntityType<*>> = Registries.ENTITY_TYPE.createTagKey(HiiragiCoreAPI.id(*path))
     }
-    
+
     object Fluids {
         /**
          * @since 0.13.0

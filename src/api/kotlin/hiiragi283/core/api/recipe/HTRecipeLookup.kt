@@ -72,6 +72,8 @@ sealed interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any, HOLDER : Any>
 
     fun getRecipe(holder: HOLDER): RECIPE
 
+    fun getHolder(id: ResourceLocation): HOLDER? = getAllRecipes().firstOrNull { holder: HOLDER -> getId(holder) == id }
+
     /**
      * @author Hiiragi Tsubasa
      * @since 0.11.0

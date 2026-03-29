@@ -119,4 +119,6 @@ open class HTBasicItemSlot protected constructor(
     final override fun onContentsChanged() {
         this.listener?.onContentsChanged()
     }
+
+    override fun toString(): String = "HTBasicItemSlot(limit=$limit)"
 }

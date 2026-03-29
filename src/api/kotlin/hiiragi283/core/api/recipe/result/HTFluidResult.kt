@@ -55,4 +55,6 @@ class HTFluidResult(resource: HTFluidResourceType, private val amount: Int) : HT
     override fun getStackResult(provider: HolderLookup.Provider?): HTTextResult<FluidStack> = HTTextResult.success(resource.toStack(amount))
 
     override fun getId(): ResourceLocation = resource.getId()
+
+    override fun toString(): String = "HTItemResult(resource=$resource, amount=$amount)"
 }

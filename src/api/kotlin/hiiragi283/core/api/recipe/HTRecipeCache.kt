@@ -1,5 +1,6 @@
 package hiiragi283.core.api.recipe
 
+import hiiragi283.core.api.serialization.value.HTValueSerializable
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.level.Level
 
@@ -10,7 +11,7 @@ import net.minecraft.world.level.Level
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun interface HTRecipeCache<INPUT : RecipeInput, RECIPE : Any> {
+interface HTRecipeCache<INPUT : RecipeInput, RECIPE : Any> : HTValueSerializable {
     /**
      * 指定した[入力][input]と[レベル][level]から最初に一致するレシピを返します。
      * @return 一致するレシピがない場合は`null`
