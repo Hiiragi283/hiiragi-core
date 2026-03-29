@@ -9,6 +9,7 @@ import hiiragi283.core.data.loot.HCBlockLootTableProvider
 import hiiragi283.core.data.model.HCModelProvider
 import hiiragi283.core.data.recipe.HCRecipeProvider
 import hiiragi283.core.data.tag.HCBlockTagsProvider
+import hiiragi283.core.data.tag.HCFluidTagsProvider
 import hiiragi283.core.data.tag.HCItemTagsProvider
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets
 import net.neoforged.bus.api.SubscribeEvent
@@ -25,6 +26,7 @@ object HiiragiCoreDataGen {
 
         event.createRecipeProvider("Recipes", ::HCRecipeProvider)
 
+        event.createProvider(::HCFluidTagsProvider)
         event.createBlockAndItemTags(::HCBlockTagsProvider, ::HCItemTagsProvider)
         // Client
         event.createProvider(::HCEnglishLangProvider)

@@ -1,5 +1,6 @@
 package hiiragi283.core.api.data.tag
 
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.toItemLike
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
@@ -9,6 +10,7 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
+import net.neoforged.neoforge.common.Tags
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -36,6 +38,12 @@ abstract class HTItemTagsProvider(
 
     fun HTTagBuilder<Item>.addItem(item: ItemLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<Item> =
         this.add(item.toItemLike(), type)
+
+    fun addBuckets(factory: HTTagsProvider.BuilderFactory<Item>, contents: Sequence<HTFluidContent>) {
+        for (content: HTFluidContent in contents) {
+            addTags(factory, Tags.Items.BUCKETS, content.bucketTag).add(content.getBucket())
+        }
+    }
 
     //    HTTagsProvider    //
 
