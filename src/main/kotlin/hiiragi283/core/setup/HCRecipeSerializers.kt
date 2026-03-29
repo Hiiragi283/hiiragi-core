@@ -7,7 +7,7 @@ import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.MapBiCodec
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.common.recipe.HCChargingRecipe
-import hiiragi283.core.common.registry.HTDeferredRecipeSerializerRegister
+import hiiragi283.core.impl.registry.HTDeferredRecipeSerializerRegister
 import net.minecraft.world.item.crafting.RecipeSerializer
 
 data object HCRecipeSerializers {

@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "neoforge:fluid_container",
+    "fluid": "hiiragi_core:latex",
+    "textures": {
+      "base": "minecraft:item/bucket",
+      "fluid": "neoforge:item/bucket",
+      "particle": "minecraft:item/bucket"
+    }
+  }
+}

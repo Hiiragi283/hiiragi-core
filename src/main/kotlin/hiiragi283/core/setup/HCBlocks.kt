@@ -2,9 +2,9 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.block.HTWarpedWartBlock
-import hiiragi283.core.common.registry.HTBasicDeferredBlockAndItem
-import hiiragi283.core.common.registry.HTDeferredBlockAndItemRegister
-import hiiragi283.core.common.registry.HTDeferredBlockRegister
+import hiiragi283.core.impl.registry.HTBasicDeferredBlockAndItem
+import hiiragi283.core.impl.registry.HTDeferredBlockAndItemRegister
+import hiiragi283.core.impl.registry.HTDeferredBlockRegister
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks

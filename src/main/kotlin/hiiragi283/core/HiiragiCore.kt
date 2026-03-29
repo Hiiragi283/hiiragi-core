@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCCreativeTabs
 import hiiragi283.core.setup.HCDataComponents
+import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCMiscRegister
 import hiiragi283.core.setup.HCRecipeBookCategories
@@ -22,6 +23,7 @@ class HiiragiCore(eventBus: IEventBus, container: ModContainer) {
 
         HCDataComponents.REGISTER.register(eventBus)
 
+        HCFluids.register(eventBus)
         HCBlocks.register(eventBus)
         HCItems.register(eventBus)
 

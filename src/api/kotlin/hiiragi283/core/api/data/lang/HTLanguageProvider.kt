@@ -1,5 +1,6 @@
 package hiiragi283.core.api.data.lang
 
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.text.HTHasTranslationKey
 import net.minecraft.data.PackOutput
 import net.neoforged.neoforge.common.data.LanguageProvider
@@ -12,7 +13,25 @@ sealed class HTLanguageProvider(output: PackOutput, modid: String, locale: Strin
         add(translatable.translationKey, value)
     }
 
-    abstract class English(output: PackOutput, modid: String) : HTLanguageProvider(output, modid, "en_us")
+    /**
+     * 液体の翻訳名を登録します。
+     */
+    fun addFluid(content: HTFluidContent, value: String) {
+        add(content.getFluidType().descriptionId, value)
+        add(content.fluidTag, value)
 
-    abstract class Japanese(output: PackOutput, modid: String) : HTLanguageProvider(output, modid, "ja_jp")
+        val bucketName: String = getBucketName(value)
+        add(content.getBucket(), bucketName)
+        add(content.bucketTag, bucketName)
+    }
+
+    protected abstract fun getBucketName(fluidName: String): String
+
+    abstract class English(output: PackOutput, modid: String) : HTLanguageProvider(output, modid, "en_us") {
+        final override fun getBucketName(fluidName: String): String = "$fluidName Bucket"
+    }
+
+    abstract class Japanese(output: PackOutput, modid: String) : HTLanguageProvider(output, modid, "ja_jp") {
+        final override fun getBucketName(fluidName: String): String = "${fluidName}入りバケツ"
+    }
 }

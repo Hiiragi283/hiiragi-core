@@ -2,7 +2,7 @@ package hiiragi283.core.impl.block.entity
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.block.entity.HTAbstractBlockEntity
-import hiiragi283.core.common.registry.HTDeferredBlockEntityType
+import hiiragi283.core.impl.registry.HTDeferredBlockEntityType
 import net.minecraft.core.BlockPos
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag

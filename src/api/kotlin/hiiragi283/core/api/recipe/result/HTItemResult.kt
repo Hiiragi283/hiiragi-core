@@ -1,6 +1,5 @@
 package hiiragi283.core.api.recipe.result
 
-import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.holderLike
 import hiiragi283.core.api.serialization.codec.BiCodec
@@ -44,7 +43,6 @@ class HTItemResult(private val contents: Ior<ItemStackTemplate, Pair<HolderSet<I
          * [HTItemResult]の新しいインスタンスを作成します。
          * @since 0.8.0
          */
-        @HTBuilderMarker
         @JvmStatic
         fun create(builderAction: Builder.() -> Unit): HTItemResult = Builder().apply(builderAction).build()
     }

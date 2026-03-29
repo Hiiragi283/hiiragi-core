@@ -3,8 +3,8 @@ package hiiragi283.core.setup
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.toItemLike
-import hiiragi283.core.common.registry.HTDeferredCreativeTabRegister
 import hiiragi283.core.common.text.HCTranslation
+import hiiragi283.core.impl.registry.HTDeferredCreativeTabRegister
 import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.Items
 

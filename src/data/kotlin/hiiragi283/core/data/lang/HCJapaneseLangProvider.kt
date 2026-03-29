@@ -5,6 +5,7 @@ import hiiragi283.core.api.data.lang.HTLanguageProvider
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.data.PackOutput
@@ -15,6 +16,17 @@ class HCJapaneseLangProvider(output: PackOutput) :
     override fun addTranslations() {
         // Block
         add(HCBlocks.WARPED_WART, "歪んだウォート")
+        // Fluid
+        addFluid(HCFluids.EXPERIENCE, "液体経験値")
+        addFluid(HCFluids.HONEY, "ハチミツ")
+        addFluid(HCFluids.MUSHROOM_STEW, "キノコシチュー")
+        addFluid(HCFluids.DRAGON_BREATH, "ドラゴンブレス")
+        // add(HCFluids.POTION.getFluidType().descriptionId, "無効なポーション入りバケツ")
+        // add(HCFluids.POTION.getBucket(), $$"%1$s入りバケツ")
+        addFluid(HCFluids.OMINOUS_FLUX, "不吉な流動体")
+
+        addFluid(HCFluids.LATEX, "ラテックス")
+        addFluid(HCFluids.MEAT, "肉")
         // Item
         add(HCItems.ALMIGHTY_PICKAXE, "全能なるツルハシ")
         // Recipe

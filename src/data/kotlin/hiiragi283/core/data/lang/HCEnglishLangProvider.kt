@@ -5,6 +5,7 @@ import hiiragi283.core.api.data.lang.HTLanguageProvider
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.data.PackOutput
@@ -15,6 +16,17 @@ class HCEnglishLangProvider(output: PackOutput) :
     override fun addTranslations() {
         // Block
         add(HCBlocks.WARPED_WART, "Warped Wart")
+        // Fluid
+        addFluid(HCFluids.EXPERIENCE, "Liquid Experience")
+        addFluid(HCFluids.HONEY, "Honey")
+        addFluid(HCFluids.MUSHROOM_STEW, "Mushroom Stew")
+        addFluid(HCFluids.DRAGON_BREATH, "Dragon Breath")
+        // add(HCFluids.POTION.getFluidType().descriptionId, "Invalid Potion Bucket")
+        // add(HCFluids.POTION.getBucket(), $$"%1$s Bucket")
+        addFluid(HCFluids.OMINOUS_FLUX, "Ominous Flux")
+
+        addFluid(HCFluids.LATEX, "Latex")
+        addFluid(HCFluids.MEAT, "Meat")
         // Item
         add(HCItems.ALMIGHTY_PICKAXE, "Almighty Pickaxe")
         // Recipe

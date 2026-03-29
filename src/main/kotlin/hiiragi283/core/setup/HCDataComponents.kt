@@ -2,8 +2,8 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.text.HTTranslation
-import hiiragi283.core.common.registry.HTDeferredDataComponentRegister
 import hiiragi283.core.common.text.HTSimpleTranslation
+import hiiragi283.core.impl.registry.HTDeferredDataComponentRegister
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.core.registries.Registries
 

@@ -4,8 +4,8 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.HTSimpleItemHolderLike
 import hiiragi283.core.api.util.wrapOptional
 import hiiragi283.core.common.item.HTAlmightyPickaxeItem
-import hiiragi283.core.common.registry.HTDeferredItemRegister
 import hiiragi283.core.common.tag.HiiragiCoreTags
+import hiiragi283.core.impl.registry.HTDeferredItemRegister
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.Registries

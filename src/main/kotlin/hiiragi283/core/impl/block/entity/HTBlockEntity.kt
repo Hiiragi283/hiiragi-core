@@ -5,9 +5,13 @@ import hiiragi283.core.api.block.entity.HTBlockEntityComponent
 import hiiragi283.core.api.block.entity.HTOwnedBlockEntity
 import hiiragi283.core.api.block.entity.HTSoundPlayerBlockEntity
 import hiiragi283.core.api.text.Text
+import hiiragi283.core.api.transfer.FluidResourceHandler
 import hiiragi283.core.api.transfer.HTHandlerProvider
-import hiiragi283.core.common.registry.HTDeferredBlockEntityType
+import hiiragi283.core.api.transfer.ItemResourceHandler
+import hiiragi283.core.impl.registry.HTDeferredBlockEntityType
+import hiiragi283.core.impl.transfer.HTSlotInfo
 import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
 import net.minecraft.core.UUIDUtil
 import net.minecraft.core.component.DataComponentGetter
 import net.minecraft.core.component.DataComponentMap
@@ -19,7 +23,13 @@ import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
+import net.neoforged.neoforge.transfer.DelegatingResourceHandler
+import net.neoforged.neoforge.transfer.ResourceHandler
+import net.neoforged.neoforge.transfer.energy.EnergyHandler
+import net.neoforged.neoforge.transfer.resource.Resource
+import net.neoforged.neoforge.transfer.transaction.TransactionContext
 import java.util.UUID
+import java.util.function.IntFunction
 
 /**
  * キャパビリティやオーナーを保持する[HTExtendedBlockEntity]の拡張クラス
@@ -69,12 +79,6 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
         for (component: HTBlockEntityComponent in components) {
             component.serialize(output)
         }
-        // Capability
-        /*for (type: HTCapabilityCodec<*, *> in HTCapabilityCodec.TYPES) {
-            if (type.canHandle(this)) {
-                type.saveTo(output, this)
-            }
-        }*/
         // Custom Name
         output.storeNullable("custom_name", ComponentSerialization.CODEC, this.customName)
         // Owner
@@ -87,12 +91,6 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
         for (component: HTBlockEntityComponent in components) {
             component.deserialize(input)
         }
-        // Capability
-        /*for (type: HTCapabilityCodec<*, *> in HTCapabilityCodec.TYPES) {
-            if (type.canHandle(this)) {
-                type.loadFrom(input, this)
-            }
-        }*/
         // Custom Name
         input.read("custom_name", ComponentSerialization.CODEC).ifPresent(::customName::set)
         // Owner
@@ -105,12 +103,6 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
         for (component: HTBlockEntityComponent in this.components) {
             component.applyComponents(components)
         }
-        // Capability
-        /*for (type: HTCapabilityCodec<*, *> in HTCapabilityCodec.TYPES) {
-            if (type.canHandle(this)) {
-                type.copyTo(this, components::get)
-            }
-        }*/
         // Custom Name
         this.customName = components.get(DataComponents.CUSTOM_NAME)
     }
@@ -121,12 +113,6 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
         for (component: HTBlockEntityComponent in this.components) {
             component.collectComponents(components)
         }
-        // Capability
-        /*for (type: HTCapabilityCodec<*, *> in HTCapabilityCodec.TYPES) {
-            if (type.canHandle(this)) {
-                type.copyFrom(this, builder)
-            }
-        }*/
         // Custom Name
         components.set(DataComponents.CUSTOM_NAME, this.customName)
     }
@@ -144,4 +130,58 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     var ownerId: UUID? = null
 
     override fun getOwner(): UUID? = ownerId
+
+    //    HTHandlerProvider    //
+
+    protected abstract fun getInfoFrom(index: Int): HTSlotInfo
+
+    protected abstract fun getInfoFrom(direction: Direction): HTSlotInfo
+
+    final override fun getItemHandler(direction: Direction?): ItemResourceHandler? {
+        val handler: ItemResourceHandler = getInternalItemHandler() ?: return null
+        return when (direction) {
+            null -> handler
+            else -> SidedResourceHandler(handler, ::getInfoFrom, getInfoFrom(direction))
+        }
+    }
+
+    protected open fun getInternalItemHandler(): ItemResourceHandler? = null
+
+    final override fun getFluidHandler(direction: Direction?): FluidResourceHandler? {
+        val handler: FluidResourceHandler = getInternalFluidHandler() ?: return null
+        return when (direction) {
+            null -> handler
+            else -> SidedResourceHandler(handler, ::getInfoFrom, getInfoFrom(direction))
+        }
+    }
+
+    protected open fun getInternalFluidHandler(): FluidResourceHandler? = null
+
+    override fun getEnergyStorage(direction: Direction?): EnergyHandler? = null
+
+    private class SidedResourceHandler<T : Resource>(
+        delegate: ResourceHandler<T>,
+        private val indexToInfo: IntFunction<HTSlotInfo>,
+        private val slotInfo: HTSlotInfo,
+    ) : DelegatingResourceHandler<T>(delegate) {
+        override fun insert(
+            index: Int,
+            resource: T,
+            amount: Int,
+            transaction: TransactionContext,
+        ): Int = when (slotInfo) {
+            indexToInfo.apply(index) -> super.insert(index, resource, amount, transaction)
+            else -> 0
+        }
+
+        override fun extract(
+            index: Int,
+            resource: T,
+            amount: Int,
+            transaction: TransactionContext,
+        ): Int = when (slotInfo) {
+            indexToInfo.apply(index) -> super.extract(index, resource, amount, transaction)
+            else -> 0
+        }
+    }
 }

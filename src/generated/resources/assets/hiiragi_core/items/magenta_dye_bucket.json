@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "neoforge:fluid_container",
+    "fluid": "hiiragi_core:magenta_dye",
+    "textures": {
+      "base": "minecraft:item/bucket",
+      "fluid": "neoforge:item/bucket_drip",
+      "particle": "minecraft:item/bucket"
+    }
+  }
+}
