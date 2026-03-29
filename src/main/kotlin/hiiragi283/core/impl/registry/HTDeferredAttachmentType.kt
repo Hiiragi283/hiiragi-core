@@ -12,7 +12,7 @@ class HTDeferredAttachmentType<TYPE : Any> : HTBasicHolderLike<AttachmentType<*>
     constructor(id: Identifier) : super(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, id)
 
     @Suppress("UNCHECKED_CAST")
-    override fun get(): AttachmentType<TYPE> = NeoForgeRegistries.ATTACHMENT_TYPES.getOrThrow(key) as AttachmentType<TYPE>
+    override fun get(): AttachmentType<TYPE> = NeoForgeRegistries.ATTACHMENT_TYPES.getValueOrThrow(key) as AttachmentType<TYPE>
 
     fun hasData(holder: IAttachmentHolder): Boolean = holder.hasData(this)
 

@@ -3,7 +3,6 @@ package hiiragi283.core.data.recipe
 import hiiragi283.core.api.HTDyeColor
 import hiiragi283.core.api.data.recipe.HTRecipeProvider
 import hiiragi283.core.api.data.recipe.builder.saveSuffix
-import hiiragi283.core.api.recipe.withSize
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.common.data.recipe.builder.HCChargingRecipeBuilder
 import hiiragi283.core.common.tag.HiiragiCoreTags
@@ -99,43 +98,43 @@ class HCRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput) 
     private fun charging() {
         // Ender Pearl -> Ender Eye
         HCChargingRecipeBuilder.create(output) {
-            ingredient = itemCreator.fromTagKey(Tags.Items.ENDER_PEARLS) withSize 1
+            ingredient = itemCreator.fromTagKey(Tags.Items.ENDER_PEARLS)
             result = ItemStackTemplate(Items.ENDER_EYE)
         }
         // Golden Apple
         HCChargingRecipeBuilder.create(output) {
-            ingredient = itemCreator.from(Items.GOLDEN_APPLE) withSize 1
+            ingredient = itemCreator.from(Items.GOLDEN_APPLE)
             result = ItemStackTemplate(Items.ENCHANTED_GOLDEN_APPLE)
         }
         // Quartz -> Prismarine
         HCChargingRecipeBuilder.create(output) {
-            ingredient = itemCreator.fromTagKey(Tags.Items.GEMS_QUARTZ) withSize 1
+            ingredient = itemCreator.fromTagKey(Tags.Items.GEMS_QUARTZ)
             result = ItemStackTemplate(Items.PRISMARINE_SHARD)
         }
         // Redstone Dust -> Glowstone Dust
         HCChargingRecipeBuilder.create(output) {
-            ingredient = itemCreator.fromTagKey(Tags.Items.DUSTS_REDSTONE) withSize 1
+            ingredient = itemCreator.fromTagKey(Tags.Items.DUSTS_REDSTONE)
             result = ItemStackTemplate(Items.GLOWSTONE_DUST)
         }
         // Honey Bottle -> Exp Bottle
         HCChargingRecipeBuilder.create(output) {
-            ingredient = itemCreator.fromTagKey(Tags.Items.DRINKS_HONEY) withSize 1
+            ingredient = itemCreator.fromTagKey(Tags.Items.DRINKS_HONEY)
             result = ItemStackTemplate(Items.EXPERIENCE_BOTTLE)
         }
 
         // End Crystal -> Eldritch Pearl
         /*HCChargingRecipeBuilder.charging(output) {
-            ingredient = itemCreator.from(Items.END_CRYSTAL) withSize 1
+            ingredient = itemCreator.from(Items.END_CRYSTAL)
             result = ItemStackTemplate(CommonParts.PEARL, HCMaterialKeys.ELDRITCH)
         }
         // Heart of the Sea
         HCChargingRecipeBuilder.charging(output) {
-            ingredient = itemCreator.from(HCItems.ELDER_HEART) withSize 1
+            ingredient = itemCreator.from(HCItems.ELDER_HEART)
             result = ItemStackTemplate(Items.HEART_OF_THE_SEA)
         }*/
         // Nether Star
         HCChargingRecipeBuilder.create(output) {
-            ingredient = itemCreator.fromTagKey(Tags.Items.NETHER_STARS) withSize 1
+            ingredient = itemCreator.fromTagKey(Tags.Items.NETHER_STARS)
             result = ItemStackTemplate(Items.NETHER_STAR)
         }
     }

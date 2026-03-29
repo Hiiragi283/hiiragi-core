@@ -19,7 +19,7 @@ data object HCRecipeSerializers {
     val CHARGING: RecipeSerializer<HCChargingRecipe> = REGISTER.registerSerializer(
         HTConst.CHARGING,
         MapBiCodec.composite(
-            VanillaBiCodecs.SIZED_INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HCChargingRecipe::ingredient),
+            VanillaBiCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HCChargingRecipe::ingredient),
             VanillaBiCodecs.ITEM_STACK_TEMPLATE.fieldOf(HTConst.RESULT).forGetter(HCChargingRecipe::result),
             BiCodecs.POSITIVE_INT.optionalFieldOf(HTConst.ENERGY, HCChargingRecipe.DEFAULT_ENERGY).forGetter(HCChargingRecipe::energy),
             ::HCChargingRecipe,

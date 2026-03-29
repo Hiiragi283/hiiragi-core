@@ -7,7 +7,7 @@ import hiiragi283.core.common.recipe.HCChargingRecipe
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStackTemplate
-import net.neoforged.neoforge.common.crafting.SizedIngredient
+import net.minecraft.world.item.crafting.Ingredient
 
 class HCChargingRecipeBuilder : HTRecipeBuilder(HTConst.CHARGING) {
     companion object {
@@ -17,7 +17,7 @@ class HCChargingRecipeBuilder : HTRecipeBuilder(HTConst.CHARGING) {
         }
     }
 
-    lateinit var ingredient: SizedIngredient
+    lateinit var ingredient: Ingredient
     lateinit var result: ItemStackTemplate
     var energy: Int = HCChargingRecipe.DEFAULT_ENERGY
 
