@@ -1,5 +1,6 @@
 package hiiragi283.core.setup
 
+import hiiragi283.core.api.HTDyeColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.registry.HTFluidContent
@@ -10,7 +11,6 @@ import hiiragi283.core.common.fluid.HTLatexFluid
 import hiiragi283.core.impl.registry.HTFluidContentRegister
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
-import net.minecraft.world.item.DyeColor
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.common.SoundActions
 import net.neoforged.neoforge.fluids.FluidType
@@ -27,7 +27,7 @@ object HCFluids {
     //    Vanilla    //
 
     @JvmField
-    val DYE: Map<DyeColor, HTFluidContent> = DyeColor.entries.associateWith { color: DyeColor ->
+    val DYE: Map<HTDyeColor, HTFluidContent> = HTDyeColor.entries.associateWith { color: HTDyeColor ->
         val name: String = color.serializedName
         REGISTER.registerFlowing("${name}_dye") {
             properties = liquid()
@@ -38,7 +38,7 @@ object HCFluids {
     }
 
     @JvmStatic
-    fun getDye(color: DyeColor): HTFluidContent = DYE[color]!!
+    fun getDye(color: HTDyeColor): HTFluidContent = DYE[color]!!
 
     @JvmField
     val EXPERIENCE: HTFluidContent = REGISTER.registerFlowing("experience") {

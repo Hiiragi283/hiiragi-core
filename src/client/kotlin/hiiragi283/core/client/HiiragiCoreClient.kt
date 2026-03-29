@@ -1,12 +1,12 @@
 package hiiragi283.core.client
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HTDyeColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.client.util.HTFluidModelHelper
 import hiiragi283.core.setup.HCFluids
-import net.minecraft.world.item.DyeColor
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
@@ -23,8 +23,8 @@ class HiiragiCoreClient(eventBus: IEventBus, container: ModContainer) {
     }
 
     private fun registerFluidModels(event: RegisterFluidModelsEvent) {
-        for ((color: DyeColor, content: HTFluidContent) in HCFluids.DYE) {
-            HTFluidModelHelper.registerDull(event, content, Color(color.textureDiffuseColor))
+        for ((color: HTDyeColor, content: HTFluidContent) in HCFluids.DYE) {
+            HTFluidModelHelper.registerDull(event, content, color.colorObj)
         }
 
         HTFluidModelHelper.registerClear(event, HCFluids.EXPERIENCE, Color(0x66ff33))

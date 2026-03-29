@@ -30,6 +30,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.LATEX, "ラテックス")
         addFluid(HCFluids.MEAT, "肉")
         // Item
+        add(HCItems.IRIDESCENT_POWDER, "七色の粉")
         add(HCItems.ALMIGHTY_PICKAXE, "全能なるツルハシ")
         // Recipe
         add(HCRecipeTypes.CHARGING, "落雷によるチャージ")

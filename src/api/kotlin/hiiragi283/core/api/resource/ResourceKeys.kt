@@ -7,13 +7,13 @@ import net.minecraft.resources.ResourceKey
 
 //    ResourceKey    //
 
-fun <T: Any> ResourceKey<T>.withPrefix(prefix: String): ResourceKey<T> =
+fun <T : Any> ResourceKey<T>.withPrefix(prefix: String): ResourceKey<T> =
     this.identifier().withPrefix(prefix).let(this.registryKey()::createKey)
 
-fun <T: Any> ResourceKey<T>.withSuffix(suffix: String): ResourceKey<T> =
+fun <T : Any> ResourceKey<T>.withSuffix(suffix: String): ResourceKey<T> =
     this.identifier().withSuffix(suffix).let(this.registryKey()::createKey)
 
-inline fun <T: Any> ResourceKey<T>.withPath(transform: Identity<String>): ResourceKey<T> {
+inline fun <T : Any> ResourceKey<T>.withPath(transform: Identity<String>): ResourceKey<T> {
     val id: Identifier = this.identifier()
     return id.path
         .let(transform)

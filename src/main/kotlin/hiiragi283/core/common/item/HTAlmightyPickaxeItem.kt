@@ -7,7 +7,6 @@ import net.minecraft.ChatFormatting
 import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.Component
 import net.minecraft.util.Unit
-import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemInstance
 import net.minecraft.world.item.ItemStack
@@ -24,8 +23,6 @@ class HTAlmightyPickaxeItem(properties: Properties) :
     override fun isFoil(stack: ItemStack): Boolean = super.isFoil(stack) || stack.has(DataComponents.UNBREAKABLE)
 
     override fun canPerformAction(stack: ItemInstance, itemAbility: ItemAbility): Boolean = itemAbility.name().endsWith("_dig")
-
-    override fun canBeHurtBy(stack: ItemStack, source: DamageSource): Boolean = false
 
     //    HTSubCreativeTabContents    //
 

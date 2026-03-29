@@ -1,10 +1,10 @@
 package hiiragi283.core.common.fluid
 
+import hiiragi283.core.api.HTDyeColor
 import hiiragi283.core.common.util.HTItemDropHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.resources.Identifier
 import net.minecraft.world.entity.LivingEntity
-import net.minecraft.world.item.DyeColor
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
@@ -13,7 +13,7 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.registries.DeferredItem
 
-class HTDyedFluidType(private val color: DyeColor, properties: Properties) : FluidType(properties) {
+class HTDyedFluidType(private val color: HTDyeColor, properties: Properties) : FluidType(properties) {
     override fun isVaporizedOnPlacement(level: Level, pos: BlockPos, stack: FluidStack): Boolean = true
 
     override fun onVaporize(

@@ -4,10 +4,10 @@ import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.HTRecipeCache
 import hiiragi283.core.api.recipe.HTRecipeLookup
 import hiiragi283.core.api.recipe.RecipeKey
+import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeInput
-import net.minecraft.world.level.Level
 
 /**
  * [HTRecipeLookup]に基づいた[HTRecipeCache]の実装クラスです。
@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level
  */
 class HTLookupRecipeCache<INPUT : RecipeInput, RECIPE : Any, HOLDER : Any>(
     val lookup: HTRecipeLookup<INPUT, RECIPE, HOLDER>,
-    private val predicate: (RECIPE, INPUT, Level) -> Boolean,
+    private val predicate: (RECIPE, INPUT, ServerLevel) -> Boolean,
 ) : HTRecipeCache<INPUT, RECIPE> {
     companion object {
         /**
@@ -48,7 +48,7 @@ class HTLookupRecipeCache<INPUT : RecipeInput, RECIPE : Any, HOLDER : Any>(
 
     private var lastRecipe: HOLDER? = null
 
-    override fun getFirstRecipe(input: INPUT, level: Level): RECIPE? {
+    override fun getFirstRecipe(input: INPUT, level: ServerLevel): RECIPE? {
         val holder: HOLDER = lastRecipe ?: return run {
             lookup.findFirst(level) { predicate(it, input, level) }.also(::lastRecipe::set)?.let(lookup::getRecipe)
         }

@@ -1,6 +1,5 @@
 package hiiragi283.core.api.recipe
 
-import hiiragi283.core.api.HiiragiCoreAPI
 import net.minecraft.core.RegistryAccess
 import net.minecraft.resources.Identifier
 import net.minecraft.server.MinecraftServer
@@ -11,7 +10,6 @@ import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeMap
 import net.minecraft.world.item.crafting.RecipeType
-import net.minecraft.world.level.Level
 
 /**
  * レシピの一覧を提供するインターフェースです。
@@ -27,12 +25,6 @@ sealed interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any, HOLDER : Any>
      * [HTRecipeCache]の新しいインスタンスを作成します。
      */
     fun createCache(): HTRecipeCache<INPUT, RECIPE>
-
-    /**
-     * 現在のサーバーまたはクライアントからレシピの一覧を取得します。
-     * @return [HOLDER]の[Sequence]
-     */
-    fun getAllRecipes(): Sequence<HOLDER> = HiiragiCoreAPI.getActiveServer()?.let(::getAllRecipes) ?: emptySequence()
 
     /**
      * 指定した[server]からレシピの一覧を取得します。
@@ -51,10 +43,8 @@ sealed interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any, HOLDER : Any>
      * 指定した[level]から，[predicate]に一致するレシピを取得します。
      * @return [predicate]に一致するレシピがない場合は`null`
      */
-    fun findFirst(level: Level?, predicate: (RECIPE) -> Boolean): HOLDER? = when (level) {
-        is ServerLevel -> this.getAllRecipes(level.server)
-        else -> this.getAllRecipes()
-    }.firstOrNull { getRecipe(it).let(predicate) }
+    fun findFirst(level: ServerLevel, predicate: (RECIPE) -> Boolean): HOLDER? =
+        this.getAllRecipes(level.server).firstOrNull { getRecipe(it).let(predicate) }
 
     fun createHolder(key: RecipeKey, recipe: RECIPE): HOLDER
 
@@ -109,5 +99,5 @@ sealed interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any, HOLDER : Any>
  */
 fun <INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>, HOLDER : Any> HTRecipeLookup<INPUT, RECIPE, HOLDER>.findFirst(
     input: INPUT,
-    level: Level?,
+    level: ServerLevel,
 ): HOLDER? = this.findFirst(level) { it.test(input) }

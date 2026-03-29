@@ -33,6 +33,7 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
             itemModels.generateBucketItem(content, content in dripFluids)
         }
         // Item
+        itemModels.generateFlatItem(HCItems.IRIDESCENT_POWDER)
         itemModels.generateFlatItem(HCItems.ALMIGHTY_PICKAXE, ModelTemplates.FLAT_HANDHELD_ITEM)
     }
 }

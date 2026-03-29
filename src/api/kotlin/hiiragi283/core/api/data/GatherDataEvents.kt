@@ -47,10 +47,10 @@ fun GatherDataEvent.createRecipeProvider(
                     val modId: String = this@createRecipeProvider.modContainer.modId
                     val id: Identifier = modId.toId(key.identifier().path)
                     output.accept(
-                        Registries.RECIPE.createKey(id), 
-                        recipe, 
+                        Registries.RECIPE.createKey(id),
+                        recipe,
                         advancement?.let { AdvancementHolder(modId.toId(it.id().path), it.value()) },
-                        *conditions
+                        *conditions,
                     )
                 }
 

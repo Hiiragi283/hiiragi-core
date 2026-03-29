@@ -9,10 +9,14 @@ import hiiragi283.core.impl.registry.HTDeferredItemRegister
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.Registries
+import net.minecraft.tags.DamageTypeTags
 import net.minecraft.world.item.Item
+import net.minecraft.world.item.Rarity
+import net.minecraft.world.item.component.DamageResistant
 import net.minecraft.world.item.component.Tool
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.registries.holdersets.AnyHolderSet
+import net.neoforged.neoforge.registries.holdersets.NotHolderSet
 
 data object HCItems {
     @JvmField
@@ -23,7 +27,17 @@ data object HCItems {
         REGISTER.register(bus)
     }
 
+    //    Utilities    //
+
     //    End Game    //
+
+    @JvmField
+    val IRIDESCENT_POWDER: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("iridescent_powder") { prop: Item.Properties ->
+        prop
+            .invulnerable()
+            .rarity(Rarity.EPIC)
+            .component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true)
+    }
 
     @JvmField
     val ALMIGHTY_PICKAXE: HTSimpleItemHolderLike = REGISTER.registerItem(
@@ -32,8 +46,10 @@ data object HCItems {
     ) { prop: Item.Properties ->
         prop
             .durability(2048)
-            .repairable(HiiragiCoreTags.Items.ALMIGHTY_PICKAXE_MATERIALS)
             .enchantable(25)
+            .invulnerable()
+            .rarity(Rarity.EPIC)
+            .repairable(HiiragiCoreTags.Items.ALMIGHTY_PICKAXE_MATERIALS)
             .delayedComponent(DataComponents.TOOL) { provider: HolderLookup.Provider ->
                 Tool(
                     listOf(
@@ -50,4 +66,13 @@ data object HCItems {
                 )
             }
     }
+
+    @JvmStatic
+    private fun Item.Properties.invulnerable(): Item.Properties =
+        this.delayedComponent(DataComponents.DAMAGE_RESISTANT) { provider: HolderLookup.Provider ->
+            NotHolderSet(
+                provider.lookupOrThrow(Registries.DAMAGE_TYPE),
+                provider.getOrThrow(DamageTypeTags.BYPASSES_INVULNERABILITY),
+            ).let(::DamageResistant)
+        }
 }

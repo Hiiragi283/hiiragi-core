@@ -30,6 +30,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.LATEX, "Latex")
         addFluid(HCFluids.MEAT, "Meat")
         // Item
+        add(HCItems.IRIDESCENT_POWDER, "Iridescent Powder")
         add(HCItems.ALMIGHTY_PICKAXE, "Almighty Pickaxe")
         // Recipe
         add(HCRecipeTypes.CHARGING, "Lightning Charging")

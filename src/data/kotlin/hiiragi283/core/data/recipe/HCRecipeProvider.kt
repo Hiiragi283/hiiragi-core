@@ -1,5 +1,6 @@
 package hiiragi283.core.data.recipe
 
+import hiiragi283.core.api.HTDyeColor
 import hiiragi283.core.api.data.recipe.HTRecipeProvider
 import hiiragi283.core.api.data.recipe.builder.saveSuffix
 import hiiragi283.core.api.recipe.withSize
@@ -13,7 +14,6 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.tags.TagKey
-import net.minecraft.world.item.DyeColor
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.ItemLike
@@ -47,8 +47,8 @@ class HCRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput) 
 
     private fun buckets() {
         // Dye
-        for ((color: DyeColor, content: HTFluidContent) in HCFluids.DYE) {
-            val dyeTag: TagKey<Item> = color.tag
+        for ((color: HTDyeColor, content: HTFluidContent) in HCFluids.DYE) {
+            val dyeTag: TagKey<Item> = color.dyesTag
             shapeless(RecipeCategory.MISC, content.getBucket())
                 .requires(dyeTag)
                 .requires(dyeTag)
