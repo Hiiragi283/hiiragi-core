@@ -2,9 +2,9 @@ package hiiragi283.core.data.recipe
 
 import hiiragi283.core.api.HTDyeColor
 import hiiragi283.core.api.data.recipe.HTRecipeProvider
-import hiiragi283.core.api.data.recipe.builder.saveSuffix
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.common.data.recipe.builder.HCChargingRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.tag.HiiragiCoreTags
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
@@ -12,9 +12,6 @@ import hiiragi283.core.setup.HCItems
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput
-import net.minecraft.tags.TagKey
-import net.minecraft.world.item.Item
-import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
@@ -22,24 +19,23 @@ import net.neoforged.neoforge.common.Tags
 class HCRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(registries, output) {
     override fun buildRecipes() {
         // Warped Wart
-        shapeless(RecipeCategory.FOOD, HCBlocks.WARPED_WART, 9)
-            .requires(Items.WARPED_WART_BLOCK)
-            .unlockedBy(getHasName(Items.WARPED_WART_BLOCK), has(Items.WARPED_WART_BLOCK))
-            .save(output)
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += itemCreator.fromItem(Items.WARPED_WART_BLOCK)
+            result += HCBlocks.WARPED_WART to 9
+        }
 
         // Almighty Pickaxe
-        val almightyMaterial: TagKey<Item> = HiiragiCoreTags.Items.ALMIGHTY_PICKAXE_MATERIALS
-        shapeless(RecipeCategory.TOOLS, HCItems.ALMIGHTY_PICKAXE)
-            .requires(Items.NETHERITE_SHOVEL)
-            .requires(Items.NETHERITE_PICKAXE)
-            .requires(Items.NETHERITE_AXE)
-            .requires(Items.NETHERITE_HOE)
-            .requires(almightyMaterial)
-            .requires(almightyMaterial)
-            .requires(almightyMaterial)
-            .requires(almightyMaterial)
-            .unlockedBy("has_${almightyMaterial.location.path}", has(almightyMaterial))
-            .save(output)
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += itemCreator.fromItem(Items.NETHERITE_SHOVEL)
+            ingredients += itemCreator.fromItem(Items.NETHERITE_PICKAXE)
+            ingredients += itemCreator.fromItem(Items.NETHERITE_AXE)
+            ingredients += itemCreator.fromItem(Items.NETHERITE_HOE)
+            repeat(4) {
+                ingredients += itemCreator.fromTagKey(HiiragiCoreTags.Items.ALMIGHTY_PICKAXE_MATERIALS)
+            }
+            result += HCItems.ALMIGHTY_PICKAXE
+            category = RecipeCategory.TOOLS
+        }
 
         buckets()
         charging()
@@ -48,15 +44,13 @@ class HCRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput) 
     private fun buckets() {
         // Dye
         for ((color: HTDyeColor, content: HTFluidContent) in HCFluids.DYE) {
-            val dyeTag: TagKey<Item> = color.dyesTag
-            shapeless(RecipeCategory.MISC, content.getBucket())
-                .requires(dyeTag)
-                .requires(dyeTag)
-                .requires(dyeTag)
-                .requires(dyeTag)
-                .requires(Tags.Items.BUCKETS_EMPTY)
-                .unlockedBy("has_${color.serializedName}_dye", has(dyeTag))
-                .save(output)
+            HTShapelessRecipeBuilder.create(output) {
+                repeat(4) {
+                    ingredients += itemCreator.fromTagKey(color.dyesTag)
+                }
+                ingredients += itemCreator.fromTagKey(Tags.Items.BUCKETS_EMPTY)
+                result += content.getBucket()
+            }
         }
         // Exp Bottle <-> Exp Bucket
         bottleToBucket(HCFluids.EXPERIENCE, Items.EXPERIENCE_BOTTLE)
@@ -66,76 +60,76 @@ class HCRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput) 
         bottleToBucket(HCFluids.DRAGON_BREATH, Items.DRAGON_BREATH)
 
         // Mushroom Stew
-        shapeless(RecipeCategory.MISC, HCFluids.MUSHROOM_STEW.getBucket())
-            .requires(Items.MUSHROOM_STEW)
-            .requires(Items.MUSHROOM_STEW)
-            .requires(Items.MUSHROOM_STEW)
-            .requires(Items.MUSHROOM_STEW)
-            .requires(Tags.Items.BUCKETS_EMPTY)
-            .unlockedBy("has_mushroom_stew_bucket", has(HCFluids.MUSHROOM_STEW.bucketTag))
-            .saveSuffix(output, "_from_bowls")
+        HTShapelessRecipeBuilder.create(output) {
+            repeat(4) {
+                ingredients += itemCreator.fromItem(Items.MUSHROOM_STEW)
+            }
+            ingredients += itemCreator.fromTagKey(Tags.Items.BUCKETS_EMPTY)
+            result += HCFluids.MUSHROOM_STEW.getBucket()
+            recipeId suffix "_from_bowls"
+        }
     }
 
     private fun bottleToBucket(content: HTFluidContent, filled: ItemLike) {
-        shapeless(RecipeCategory.MISC, content.getBucket())
-            .requires(filled)
-            .requires(filled)
-            .requires(filled)
-            .requires(filled)
-            .requires(Tags.Items.BUCKETS_EMPTY)
-            .unlockedBy("has_${content.path}_bucket", has(content.bucketTag))
-            .saveSuffix(output, "_from_bottles")
-        shapeless(RecipeCategory.MISC, filled, 4)
-            .requires(content.bucketTag)
-            .requires(Items.GLASS_BOTTLE)
-            .requires(Items.GLASS_BOTTLE)
-            .requires(Items.GLASS_BOTTLE)
-            .requires(Items.GLASS_BOTTLE)
-            .unlockedBy(getHasName(filled), has(filled))
-            .saveSuffix(output, "_from_bucket")
+        HTShapelessRecipeBuilder.create(output) {
+            repeat(4) {
+                ingredients += itemCreator.fromItem(filled)
+            }
+            ingredients += itemCreator.fromTagKey(Tags.Items.BUCKETS_EMPTY)
+            result += content.getBucket()
+            recipeId suffix "_from_bottles"
+        }
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += itemCreator.fromTagKey(content.bucketTag)
+            repeat(4) {
+                ingredients += itemCreator.fromItem(Items.GLASS_BOTTLE)
+            }
+            result += filled to 4
+            recipeId suffix "_from_bucket"
+        }
     }
 
     private fun charging() {
         // Ender Pearl -> Ender Eye
         HCChargingRecipeBuilder.create(output) {
             ingredient = itemCreator.fromTagKey(Tags.Items.ENDER_PEARLS)
-            result = ItemStackTemplate(Items.ENDER_EYE)
+            result += Items.ENDER_EYE
         }
         // Golden Apple
         HCChargingRecipeBuilder.create(output) {
             ingredient = itemCreator.from(Items.GOLDEN_APPLE)
-            result = ItemStackTemplate(Items.ENCHANTED_GOLDEN_APPLE)
+            result += Items.ENCHANTED_GOLDEN_APPLE
         }
         // Quartz -> Prismarine
         HCChargingRecipeBuilder.create(output) {
             ingredient = itemCreator.fromTagKey(Tags.Items.GEMS_QUARTZ)
-            result = ItemStackTemplate(Items.PRISMARINE_SHARD)
+            result += Items.PRISMARINE_SHARD
         }
         // Redstone Dust -> Glowstone Dust
         HCChargingRecipeBuilder.create(output) {
             ingredient = itemCreator.fromTagKey(Tags.Items.DUSTS_REDSTONE)
-            result = ItemStackTemplate(Items.GLOWSTONE_DUST)
+            result += Items.GLOWSTONE_DUST
         }
         // Honey Bottle -> Exp Bottle
         HCChargingRecipeBuilder.create(output) {
             ingredient = itemCreator.fromTagKey(Tags.Items.DRINKS_HONEY)
-            result = ItemStackTemplate(Items.EXPERIENCE_BOTTLE)
+            result += Items.EXPERIENCE_BOTTLE
         }
 
         // End Crystal -> Eldritch Pearl
         /*HCChargingRecipeBuilder.charging(output) {
             ingredient = itemCreator.from(Items.END_CRYSTAL)
-            result = ItemStackTemplate(CommonParts.PEARL, HCMaterialKeys.ELDRITCH)
+            result += CommonParts.PEARL, HCMaterialKeys.ELDRITCH
         }
         // Heart of the Sea
         HCChargingRecipeBuilder.charging(output) {
             ingredient = itemCreator.from(HCItems.ELDER_HEART)
-            result = ItemStackTemplate(Items.HEART_OF_THE_SEA)
+            result += Items.HEART_OF_THE_SEA
         }*/
         // Nether Star
         HCChargingRecipeBuilder.create(output) {
             ingredient = itemCreator.fromTagKey(Tags.Items.NETHER_STARS)
-            result = ItemStackTemplate(Items.NETHER_STAR)
+            result += Items.NETHER_STAR
         }
     }
 }

@@ -33,7 +33,7 @@ interface HTItemHolderLike<ITEM : Item> :
     HTHasTranslationKey,
     HTHasText,
     ItemLike {
-    fun getHolder(): Holder<Item> = getHolder(BuiltInRegistries.ITEM::getOrThrow)
+    fun getHolder(): Holder<Item> = getHolder(BuiltInRegistries.ITEM)
 
     override fun asItem(): ITEM = get()
 

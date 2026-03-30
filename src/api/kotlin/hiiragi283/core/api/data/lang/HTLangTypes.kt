@@ -6,9 +6,9 @@ package hiiragi283.core.api.data.lang
  * @since 0.8.0
  */
 object HTLangTypes {
-    @JvmField
+    @JvmStatic
     val EN_US: HTLangType = HTLangType.of("en_us")
 
-    @JvmField
+    @JvmStatic
     val JA_JP: HTLangType = HTLangType.of("ja_jp")
 }

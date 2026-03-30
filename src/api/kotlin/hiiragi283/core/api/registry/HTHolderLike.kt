@@ -5,6 +5,7 @@ import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.unwrap
 import net.minecraft.core.Holder
+import net.minecraft.core.HolderGetter
 import net.minecraft.core.TypedInstance
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.level.block.Block
@@ -32,7 +33,7 @@ interface HTHolderLike<R : Any, T : R> :
     /**
      * @since 0.13.0
      */
-    fun getHolder(holderGetter: (ResourceKey<R>) -> Holder<R>): Holder<R> = unwrap().mapLeft(holderGetter).unwrap()
+    fun getHolder(getter: HolderGetter<R>): Holder<R> = unwrap().mapLeft(getter::getOrThrow).unwrap()
 
     override fun getResourceKey(): ResourceKey<R> = unwrap().mapRight(Holder<R>::unwrapKey.andThen { it.orElseThrow() }).unwrap()
 }

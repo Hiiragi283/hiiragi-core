@@ -26,7 +26,7 @@ typealias HTSimpleFluidHolderLike = HTFluidHolderLike<Fluid>
  * @since 0.13.0
  */
 interface HTFluidHolderLike<FLUID : Fluid> : HTHolderLike<Fluid, FLUID> {
-    fun getHolder(): Holder<Fluid> = getHolder(BuiltInRegistries.FLUID::getOrThrow)
+    fun getHolder(): Holder<Fluid> = getHolder(BuiltInRegistries.FLUID)
 
     /**
      * 保持している液体に対応するバケツを取得します。
