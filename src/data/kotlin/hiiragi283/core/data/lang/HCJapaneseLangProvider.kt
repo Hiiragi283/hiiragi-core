@@ -18,6 +18,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addPatternTranslations(this)
         // Block
         add(HCBlocks.WARPED_WART, "歪んだウォート")
+
+        add(HCBlocks.CRUCIBLE, "るつぼ")
         // Fluid
         addFluid(HCFluids.EXPERIENCE, "液体経験値")
         addFluid(HCFluids.HONEY, "ハチミツ")

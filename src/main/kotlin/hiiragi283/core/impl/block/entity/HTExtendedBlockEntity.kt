@@ -65,10 +65,10 @@ abstract class HTExtendedBlockEntity(private val type: HTDeferredBlockEntityType
         onUpdateLevel(level, blockPos)
     }
 
-    final override fun setRemoved() {
-        super.setRemoved()
+    final override fun preRemoveSideEffects(pos: BlockPos, state: BlockState) {
+        super.preRemoveSideEffects(pos, state)
         val level: Level = this.level ?: return
-        onRemove(level, blockPos)
+        onRemove(level, pos)
     }
 
     //    HTContentListener    //

@@ -2,6 +2,7 @@ package hiiragi283.core
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCAttachmentTypes
+import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCCreativeTabs
 import hiiragi283.core.setup.HCDataComponents
@@ -31,6 +32,7 @@ class HiiragiCore(eventBus: IEventBus, container: ModContainer) {
         HCItems.register(eventBus)
 
         HCAttachmentTypes.REGISTER.register(eventBus)
+        HCBlockEntityTypes.register(eventBus)
         HCCreativeTabs.REGISTER.register(eventBus)
         HCMenuTypes.REGISTER.register(eventBus)
         HCRecipeBookCategories.REGISTER.register(eventBus)

@@ -6,13 +6,10 @@ import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetRendererFactory
 import hiiragi283.core.api.gui.widget.HTWidgetType
 import net.minecraft.client.gui.components.Renderable
-import net.neoforged.api.distmarker.Dist
-import net.neoforged.api.distmarker.OnlyIn
 
 /**
  * @see net.minecraft.client.gui.screens.MenuScreens
  */
-@OnlyIn(Dist.CLIENT)
 internal object HTWidgetRendererManager {
     @JvmStatic
     private lateinit var factories: Map<HTWidgetType<*>, HTWidgetRendererFactory<*, *>>

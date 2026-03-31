@@ -8,6 +8,8 @@ import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.transfer.FluidResourceHandler
 import hiiragi283.core.api.transfer.HTHandlerProvider
 import hiiragi283.core.api.transfer.ItemResourceHandler
+import hiiragi283.core.api.transfer.getStack
+import hiiragi283.core.api.transfer.indices
 import hiiragi283.core.impl.registry.HTDeferredBlockEntityType
 import hiiragi283.core.impl.transfer.HTSlotInfo
 import net.minecraft.core.BlockPos
@@ -18,11 +20,14 @@ import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.ComponentSerialization
 import net.minecraft.server.level.ServerLevel
+import net.minecraft.world.Containers
 import net.minecraft.world.Nameable
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
+import net.minecraft.world.phys.Vec3
 import net.neoforged.neoforge.transfer.DelegatingResourceHandler
 import net.neoforged.neoforge.transfer.ResourceHandler
 import net.neoforged.neoforge.transfer.energy.EnergyHandler
@@ -177,6 +182,19 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     protected open fun getInternalItemHandler(): ItemResourceHandler? = null
 
     protected abstract fun getItemInfoFrom(index: Int): HTSlotInfo
+
+    override fun onRemove(level: Level, pos: BlockPos) {
+        super.onRemove(level, pos)
+        val itemHandler: ItemResourceHandler = getInternalItemHandler() ?: return
+        val pos1: Vec3 = Vec3.atCenterOf(pos)
+        if (shouldDropItems()) {
+            for (stack: ItemStack in itemHandler.indices.map(itemHandler::getStack)) {
+                Containers.dropItemStack(level, pos1.x, pos1.y, pos1.z, stack)
+            }
+        }
+    }
+
+    protected open fun shouldDropItems(): Boolean = true
 
     final override fun getFluidHandler(direction: Direction?): FluidResourceHandler? {
         val handler: FluidResourceHandler = getInternalFluidHandler() ?: return null

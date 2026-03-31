@@ -22,10 +22,12 @@ import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.sounds.SoundEvents
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
+import net.neoforged.neoforge.fluids.FluidStack
 
 class HTCrucibleBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HCBlockEntityTypes.CRUCIBLE, pos, state) {
     //    Transfer    //
@@ -37,6 +39,11 @@ class HTCrucibleBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HC
             0 -> HTHandlerAccess.NOT_EXTERNAL.test(access)
             else -> false
         }
+
+        override fun onContentsChanged(index: Int, previousContents: ItemStack) {
+            super.onContentsChanged(index, previousContents)
+            setOnlySave()
+        }
     }
     private val fluidHandler: StrictFluidStacksResourceHandler = object : StrictFluidStacksResourceHandler(1, 8000) {
         override fun canInsert(index: Int, access: HTHandlerAccess): Boolean = when (index) {
@@ -45,6 +52,11 @@ class HTCrucibleBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HC
         }
 
         override fun canExtract(index: Int, access: HTHandlerAccess): Boolean = index == 0
+
+        override fun onContentsChanged(index: Int, previousContents: FluidStack) {
+            super.onContentsChanged(index, previousContents)
+            setOnlySave()
+        }
     }
 
     override fun getInternalItemHandler(): ItemResourceHandler = itemHandler
@@ -62,6 +74,18 @@ class HTCrucibleBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HC
     }
 
     //    Sync    //
+
+    override fun writeValue(output: ValueOutput) {
+        super.writeValue(output)
+        output.putChild(HTConst.ITEM, itemHandler)
+        output.putChild(HTConst.FLUID, fluidHandler)
+    }
+
+    override fun readValue(input: ValueInput) {
+        super.readValue(input)
+        input.readChild(HTConst.ITEM, itemHandler)
+        input.readChild(HTConst.FLUID, fluidHandler)
+    }
 
     override fun initReducedUpdateTag(output: ValueOutput) {
         super.initReducedUpdateTag(output)

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "#c:bricks/normal",
+    "B": "minecraft:bricks",
+    "C": "#c:storage_blocks/copper"
+  },
+  "pattern": [
+    "A A",
+    "A A",
+    "BCB"
+  ],
+  "result": {
+    "id": "hiiragi_core:crucible"
+  }
+}

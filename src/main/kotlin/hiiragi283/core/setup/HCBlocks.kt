@@ -1,7 +1,9 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.function.partially1
 import hiiragi283.core.common.block.HTWarpedWartBlock
+import hiiragi283.core.impl.block.HTBasicEntityBlock
 import hiiragi283.core.impl.registry.HTBasicDeferredBlockAndItem
 import hiiragi283.core.impl.registry.HTDeferredBlockAndItemRegister
 import hiiragi283.core.impl.registry.HTDeferredBlockRegister
@@ -30,6 +32,15 @@ data object HCBlocks {
         copyOf(Blocks.NETHER_WART).mapColor(MapColor.WARPED_WART_BLOCK),
         ::HTWarpedWartBlock,
     ) { prop: Item.Properties -> prop.food(HCFoods.WARPED_WART, HCConsumables.WARPED_WART) }
+
+    //    Processor    //
+
+    @JvmField
+    val CRUCIBLE: HTBasicDeferredBlockAndItem<HTBasicEntityBlock> = REGISTER.registerSimple(
+        "crucible",
+        copyOf(Blocks.TERRACOTTA),
+        ::HTBasicEntityBlock.partially1(HCBlockEntityTypes.CRUCIBLE),
+    )
 
     //    Extensions    //
 

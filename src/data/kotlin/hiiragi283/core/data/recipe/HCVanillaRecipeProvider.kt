@@ -3,6 +3,7 @@ package hiiragi283.core.data.recipe
 import hiiragi283.core.api.HTDyeColor
 import hiiragi283.core.api.data.recipe.HTRecipeProvider
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.tag.HiiragiCoreTags
 import hiiragi283.core.setup.HCBlocks
@@ -21,6 +22,18 @@ class HCVanillaRecipeProvider(registries: HolderLookup.Provider, output: RecipeO
         HTShapelessRecipeBuilder.create(output) {
             ingredients += itemCreator.fromItem(Items.WARPED_WART_BLOCK)
             result += HCBlocks.WARPED_WART to 9
+        }
+        // Crucible
+        HTShapedRecipeBuilder.create(output) {
+            pattern(
+                "A A",
+                "A A",
+                "BCB",
+            )
+            define('A')(itemCreator.fromTagKey(Tags.Items.BRICKS_NORMAL))
+            define('B')(itemCreator.from(Items.BRICKS))
+            define('C')(itemCreator.fromTagKey(Tags.Items.STORAGE_BLOCKS_COPPER))
+            result += HCBlocks.CRUCIBLE
         }
 
         // Almighty Pickaxe

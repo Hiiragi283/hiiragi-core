@@ -18,6 +18,8 @@ class HCEnglishLangProvider(output: PackOutput) :
         addPatternTranslations(this)
         // Block
         add(HCBlocks.WARPED_WART, "Warped Wart")
+
+        add(HCBlocks.CRUCIBLE, "Crucible")
         // Fluid
         addFluid(HCFluids.EXPERIENCE, "Liquid Experience")
         addFluid(HCFluids.HONEY, "Honey")

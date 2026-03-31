@@ -47,6 +47,8 @@ data object HCBlockEntityTypes {
     // Capabilities
     @JvmStatic
     private fun registerBlockCapabilities(event: RegisterCapabilitiesEvent) {
+        registerHandler(event, CRUCIBLE.get())
+
         HiiragiCoreAPI.LOGGER.info("Registered Block Capabilities!")
     }
 

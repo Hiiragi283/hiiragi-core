@@ -17,6 +17,7 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
     override fun registerModels(blockModels: BlockModelGenerators, itemModels: ItemModelGenerators) {
         // Block
         blockModels.createCropBlock(HCBlocks.WARPED_WART.get(), BlockStateProperties.AGE_3, 0, 1, 1, 2)
+        blockModels.createNonTemplateModelBlock(HCBlocks.CRUCIBLE.get()) // TODO
         // Fluid
         HCFluids.REGISTER
             .asBlockSequence()

@@ -58,18 +58,4 @@ abstract class StrictFluidStacksResourceHandler :
         amount: Int,
         transaction: TransactionContext,
     ): Int = super<StrictResourceHandler>.extract(index, resource, amount, transaction)
-
-    fun insertStack(
-        index: Int,
-        stack: FluidStack,
-        transaction: TransactionContext,
-        access: HTHandlerAccess,
-    ): Int = this.insert(index, FluidResource.of(stack), stack.amount, transaction, access)
-
-    fun extractStack(
-        index: Int,
-        stack: FluidStack,
-        transaction: TransactionContext,
-        access: HTHandlerAccess,
-    ): Int = this.extract(index, FluidResource.of(stack), stack.amount, transaction, access)
 }
