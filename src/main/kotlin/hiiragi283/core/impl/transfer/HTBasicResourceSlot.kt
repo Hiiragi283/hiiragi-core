@@ -110,7 +110,7 @@ abstract class HTBasicResourceSlot<T : Resource> :
     protected open fun outputRate(access: HTHandlerAccess): Int = Int.MAX_VALUE
 
     //    Stacked    //
-    
+
     abstract class Stacked<S : Any, T : Resource>(
         private val key: String,
         private val codec: Codec<S>,
