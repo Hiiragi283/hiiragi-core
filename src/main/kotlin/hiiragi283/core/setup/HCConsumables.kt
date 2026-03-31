@@ -1,7 +1,7 @@
 package hiiragi283.core.setup
 
 import com.mojang.serialization.MapCodec
-import hiiragi283.core.common.item.consume_effects.HTRemoveRandomStatusEffectConsumeEffect
+import hiiragi283.core.common.item.consumeEffects.HTRemoveRandomStatusEffectConsumeEffect
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.world.item.component.Consumable

@@ -1,4 +1,4 @@
-package hiiragi283.core.common.item.consume_effects
+package hiiragi283.core.common.item.consumeEffects
 
 import hiiragi283.core.api.collection.randomOrNull
 import hiiragi283.core.api.serialization.codec.MapBiCodec
