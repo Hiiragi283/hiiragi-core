@@ -1,9 +1,8 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.function.partially1
+import hiiragi283.core.common.block.HTCrucibleBlock
 import hiiragi283.core.common.block.HTWarpedWartBlock
-import hiiragi283.core.impl.block.HTBasicEntityBlock
 import hiiragi283.core.impl.registry.HTBasicDeferredBlockAndItem
 import hiiragi283.core.impl.registry.HTDeferredBlockAndItemRegister
 import hiiragi283.core.impl.registry.HTDeferredBlockRegister
@@ -36,10 +35,10 @@ data object HCBlocks {
     //    Processor    //
 
     @JvmField
-    val CRUCIBLE: HTBasicDeferredBlockAndItem<HTBasicEntityBlock> = REGISTER.registerSimple(
+    val CRUCIBLE: HTBasicDeferredBlockAndItem<HTCrucibleBlock> = REGISTER.registerSimple(
         "crucible",
         copyOf(Blocks.TERRACOTTA),
-        ::HTBasicEntityBlock.partially1(HCBlockEntityTypes.CRUCIBLE),
+        ::HTCrucibleBlock,
     )
 
     //    Extensions    //

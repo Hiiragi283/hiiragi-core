@@ -4,26 +4,18 @@ import hiiragi283.core.api.transfer.HTHandlerAccess
 import net.minecraft.core.Direction
 import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
-interface HTEnergyHandler : SidedEnergyHandler {
+fun interface HTEnergyHandler : SidedEnergyHandler {
     fun hasEnergyHandler(): Boolean = true
 
-    fun insert(
-        amount: Int,
-        transaction: TransactionContext,
-        side: Direction?,
-        access: HTHandlerAccess,
-    ): Int
+    fun getBattery(side: Direction?): HTEnergyBattery?
 
-    fun extract(
-        amount: Int,
-        transaction: TransactionContext,
-        side: Direction?,
-        access: HTHandlerAccess,
-    ): Int
+    override fun getAmountAsLong(side: Direction?): Long = getBattery(side)?.amountAsLong ?: 0
+
+    override fun getCapacityAsLong(side: Direction?): Long = getBattery(side)?.capacityAsLong ?: 0
 
     override fun insert(amount: Int, transaction: TransactionContext, side: Direction?): Int =
-        insert(amount, transaction, side, HTHandlerAccess.forHandler(side))
+        getBattery(side)?.insert(amount, transaction, HTHandlerAccess.forHandler(side)) ?: 0
 
     override fun extract(amount: Int, transaction: TransactionContext, side: Direction?): Int =
-        extract(amount, transaction, side, HTHandlerAccess.forHandler(side))
+        getBattery(side)?.extract(amount, transaction, HTHandlerAccess.forHandler(side)) ?: 0
 }

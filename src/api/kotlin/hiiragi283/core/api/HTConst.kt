@@ -47,6 +47,7 @@ data object HTConst {
     const val AMOUNT = "amount"
     const val CAPACITY = "capacity"
     const val BATTERIES = "batteries"
+    const val BATTERY = "battery"
 
     const val ID = "id"
     const val TAG = "tag"

@@ -7,18 +7,18 @@ import hiiragi283.core.api.block.entity.HTOwnedBlockEntity
 import hiiragi283.core.api.block.entity.HTSoundPlayerBlockEntity
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.transfer.FluidResourceHandler
-import hiiragi283.core.api.transfer.HTHandlerAccess
 import hiiragi283.core.api.transfer.HTHandlerProvider
 import hiiragi283.core.api.transfer.HTResourceHandler
 import hiiragi283.core.api.transfer.ItemResourceHandler
+import hiiragi283.core.api.transfer.energy.HTEnergyBattery
 import hiiragi283.core.api.transfer.energy.HTEnergyHandler
-import hiiragi283.core.api.transfer.energy.StrictEnergyHandler
 import hiiragi283.core.api.transfer.fluid.HTFluidTank
-import hiiragi283.core.api.transfer.holder.HTEnergyHandlerHolder
+import hiiragi283.core.api.transfer.holder.HTEnergyBatteryHolder
 import hiiragi283.core.api.transfer.holder.HTResourceSlotHolder
 import hiiragi283.core.api.transfer.item.HTItemSlot
 import hiiragi283.core.api.transfer.item.stack
 import hiiragi283.core.impl.registry.HTDeferredBlockEntityType
+import hiiragi283.core.impl.transfer.HTCapabilityCodec
 import hiiragi283.core.impl.transfer.resolver.HTEnergyHandlerManager
 import hiiragi283.core.impl.transfer.resolver.HTResourceHandlerManager
 import net.minecraft.core.BlockPos
@@ -39,7 +39,6 @@ import net.minecraft.world.phys.Vec3
 import net.neoforged.neoforge.transfer.energy.EnergyHandler
 import net.neoforged.neoforge.transfer.fluid.FluidResource
 import net.neoforged.neoforge.transfer.item.ItemResource
-import net.neoforged.neoforge.transfer.transaction.TransactionContext
 import java.util.UUID
 
 /**
@@ -126,6 +125,12 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
         for (component: HTBlockEntityComponent in components) {
             component.serialize(output)
         }
+        // Capability
+        for (type: HTCapabilityCodec<*> in HTCapabilityCodec.TYPES) {
+            if (type.canHandle(this)) {
+                type.saveTo(output, this)
+            }
+        }
         // Custom Name
         output.storeNullable("custom_name", ComponentSerialization.CODEC, this.customName)
         // Owner
@@ -137,6 +142,12 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
         // Components
         for (component: HTBlockEntityComponent in components) {
             component.deserialize(input)
+        }
+        // Capability
+        for (type: HTCapabilityCodec<*> in HTCapabilityCodec.TYPES) {
+            if (type.canHandle(this)) {
+                type.loadFrom(input, this)
+            }
         }
         // Custom Name
         input.read("custom_name", ComponentSerialization.CODEC).ifPresent(::customName::set)
@@ -184,57 +195,27 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     protected val energyHandlerManager: HTEnergyHandlerManager?
     protected val itemHandlerManager: HTResourceHandlerManager<ItemResource>?
 
+    val fluidHandler: HTResourceHandler<FluidResource> = object : HTResourceHandler<FluidResource> {
+        override fun getSlots(side: Direction?): List<HTFluidTank> = fluidHandlerManager?.getContainers(side) ?: listOf()
+
+        override fun hasResourceHandler(): Boolean = fluidHandlerManager?.canHandle() ?: false
+    }
+    val energyHandler: HTEnergyHandler = object : HTEnergyHandler {
+        override fun getBattery(side: Direction?): HTEnergyBattery? = energyHandlerManager?.getContainers(side)?.firstOrNull()
+
+        override fun hasEnergyHandler(): Boolean = energyHandlerManager?.canHandle() ?: false
+    }
+    val itemHandler: HTResourceHandler<ItemResource> = object : HTResourceHandler<ItemResource> {
+        override fun getSlots(side: Direction?): List<HTItemSlot> = itemHandlerManager?.getContainers(side) ?: listOf()
+
+        override fun hasResourceHandler(): Boolean = itemHandlerManager?.canHandle() ?: false
+    }
+
     init {
         initializeVariables()
-        fluidHandlerManager = createFluidHandler(::setOnlySave)?.let {
-            HTResourceHandlerManager(
-                it,
-                object : HTResourceHandler<FluidResource> {
-                    override fun getSlots(side: Direction?): List<HTFluidTank> = fluidHandlerManager?.getContainers(side) ?: listOf()
-
-                    override fun hasResourceHandler(): Boolean = fluidHandlerManager?.canHandle() ?: false
-                },
-            )
-        }
-        energyHandlerManager = createEnergyHandler(::setOnlySave)?.let {
-            HTEnergyHandlerManager(
-                it,
-                object : HTEnergyHandler {
-                    private fun getEnergyHandler(side: Direction?): StrictEnergyHandler? =
-                        energyHandlerManager?.getContainers(side)?.firstOrNull()
-
-                    override fun insert(
-                        amount: Int,
-                        transaction: TransactionContext,
-                        side: Direction?,
-                        access: HTHandlerAccess,
-                    ): Int = getEnergyHandler(side)?.insert(amount, transaction, access) ?: 0
-
-                    override fun extract(
-                        amount: Int,
-                        transaction: TransactionContext,
-                        side: Direction?,
-                        access: HTHandlerAccess,
-                    ): Int = getEnergyHandler(side)?.extract(amount, transaction, access) ?: 0
-
-                    override fun getAmountAsLong(side: Direction?): Long = getEnergyHandler(side)?.amountAsLong ?: 0
-
-                    override fun getCapacityAsLong(side: Direction?): Long = getEnergyHandler(side)?.capacityAsLong ?: 0
-
-                    override fun hasEnergyHandler(): Boolean = energyHandlerManager?.canHandle() ?: false
-                },
-            )
-        }
-        itemHandlerManager = createItemHandler(::setOnlySave)?.let {
-            HTResourceHandlerManager(
-                it,
-                object : HTResourceHandler<ItemResource> {
-                    override fun getSlots(side: Direction?): List<HTItemSlot> = itemHandlerManager?.getContainers(side) ?: listOf()
-
-                    override fun hasResourceHandler(): Boolean = itemHandlerManager?.canHandle() ?: false
-                },
-            )
-        }
+        fluidHandlerManager = createFluidHandler(::setOnlySave)?.let { HTResourceHandlerManager(it, fluidHandler) }
+        energyHandlerManager = createEnergyHandler(::setOnlySave)?.let { HTEnergyHandlerManager(it, energyHandler) }
+        itemHandlerManager = createItemHandler(::setOnlySave)?.let { HTResourceHandlerManager(it, itemHandler) }
     }
 
     protected open fun initializeVariables() {}
@@ -245,7 +226,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     final override fun getFluidHandler(direction: Direction?): FluidResourceHandler? = fluidHandlerManager?.resolve(direction)
 
     // Energy
-    protected open fun createEnergyHandler(listener: HTContentListener): HTEnergyHandlerHolder? = null
+    protected open fun createEnergyHandler(listener: HTContentListener): HTEnergyBatteryHolder? = null
 
     final override fun getEnergyStorage(direction: Direction?): EnergyHandler? = energyHandlerManager?.resolve(direction)
 

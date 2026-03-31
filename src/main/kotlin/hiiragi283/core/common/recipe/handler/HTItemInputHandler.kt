@@ -8,7 +8,7 @@ import hiiragi283.core.api.transfer.item.HTItemSlot
 import hiiragi283.core.api.transfer.item.stack
 import hiiragi283.core.api.transfer.set
 import hiiragi283.core.api.transfer.useTransaction
-import hiiragi283.core.impl.transfer.HTBasicResourceSlot
+import hiiragi283.core.impl.transfer.item.HTBasicItemSlot
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.common.crafting.SizedIngredient
 import net.neoforged.neoforge.transfer.item.ItemResource
@@ -16,7 +16,7 @@ import net.neoforged.neoforge.transfer.item.ItemResource
 class HTItemInputHandler(slot: HTItemSlot, private val remainderConsumer: HTSlotModifier<ItemResource>? = null) :
     HTInputHandler<SizedIngredient>,
     HTItemSlot by slot {
-    constructor(slot: HTBasicResourceSlot<ItemResource>) : this(slot, slot)
+    constructor(slot: HTBasicItemSlot) : this(slot, slot)
 
     override fun getMatchingAmount(ingredient: SizedIngredient): Int = when {
         ingredient.testOnlyType(this.resource) -> ingredient.count()
