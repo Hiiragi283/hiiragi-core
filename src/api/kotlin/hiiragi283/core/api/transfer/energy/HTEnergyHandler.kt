@@ -1,15 +1,29 @@
 package hiiragi283.core.api.transfer.energy
 
 import hiiragi283.core.api.transfer.HTHandlerAccess
-import net.neoforged.neoforge.transfer.energy.EnergyHandler
+import net.minecraft.core.Direction
 import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
-interface HTEnergyHandler : EnergyHandler {
-    fun insert(amount: Int, transaction: TransactionContext, access: HTHandlerAccess): Int
+interface HTEnergyHandler : SidedEnergyHandler {
+    fun hasEnergyHandler(): Boolean = true
 
-    fun extract(amount: Int, transaction: TransactionContext, access: HTHandlerAccess): Int
+    fun insert(
+        amount: Int,
+        transaction: TransactionContext,
+        side: Direction?,
+        access: HTHandlerAccess,
+    ): Int
 
-    override fun insert(amount: Int, transaction: TransactionContext): Int = insert(amount, transaction, HTHandlerAccess.EXTERNAL)
+    fun extract(
+        amount: Int,
+        transaction: TransactionContext,
+        side: Direction?,
+        access: HTHandlerAccess,
+    ): Int
 
-    override fun extract(amount: Int, transaction: TransactionContext): Int = extract(amount, transaction, HTHandlerAccess.EXTERNAL)
+    override fun insert(amount: Int, transaction: TransactionContext, side: Direction?): Int =
+        insert(amount, transaction, side, HTHandlerAccess.forHandler(side))
+
+    override fun extract(amount: Int, transaction: TransactionContext, side: Direction?): Int =
+        extract(amount, transaction, side, HTHandlerAccess.forHandler(side))
 }
