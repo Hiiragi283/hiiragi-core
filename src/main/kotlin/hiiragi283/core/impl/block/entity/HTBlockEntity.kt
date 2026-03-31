@@ -41,6 +41,42 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     HTHandlerProvider,
     HTOwnedBlockEntity,
     HTSoundPlayerBlockEntity {
+    //    Ticking    //
+
+    companion object {
+        /**
+         * @see mekanism.common.tile.base.TileEntityMekanism.tickClient
+         */
+        @JvmStatic
+        fun tickClient(
+            level: Level,
+            pos: BlockPos,
+            state: BlockState,
+            blockEntity: HTBlockEntity,
+        ) {
+            blockEntity.onUpdateClient(level, pos, state)
+            blockEntity.ticks++
+        }
+
+        /**
+         * @see mekanism.common.tile.base.TileEntityMekanism.tickServer
+         */
+        @JvmStatic
+        fun tickServer(
+            level: Level,
+            pos: BlockPos,
+            state: BlockState,
+            blockEntity: HTBlockEntity,
+        ) {
+            val serverLevel: ServerLevel = level as? ServerLevel ?: return
+            val shouldUpdate: Boolean = blockEntity.onUpdateServer(serverLevel, pos, state)
+            blockEntity.ticks++
+            if (shouldUpdate) {
+                blockEntity.sendUpdatePacket(serverLevel)
+            }
+        }
+    }
+
     var ticks: Int = 0
         protected set
 
@@ -133,44 +169,35 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
 
     //    HTHandlerProvider    //
 
-    protected abstract fun getInfoFrom(index: Int): HTSlotInfo
-
-    protected abstract fun getInfoFrom(direction: Direction): HTSlotInfo
-
     final override fun getItemHandler(direction: Direction?): ItemResourceHandler? {
         val handler: ItemResourceHandler = getInternalItemHandler() ?: return null
-        return when (direction) {
-            null -> handler
-            else -> SidedResourceHandler(handler, ::getInfoFrom, getInfoFrom(direction))
-        }
+        return SidedResourceHandler(handler, ::getItemInfoFrom)
     }
 
     protected open fun getInternalItemHandler(): ItemResourceHandler? = null
 
+    protected abstract fun getItemInfoFrom(index: Int): HTSlotInfo
+
     final override fun getFluidHandler(direction: Direction?): FluidResourceHandler? {
         val handler: FluidResourceHandler = getInternalFluidHandler() ?: return null
-        return when (direction) {
-            null -> handler
-            else -> SidedResourceHandler(handler, ::getInfoFrom, getInfoFrom(direction))
-        }
+        return SidedResourceHandler(handler, ::getFluidInfoFrom)
     }
 
     protected open fun getInternalFluidHandler(): FluidResourceHandler? = null
 
+    protected abstract fun getFluidInfoFrom(index: Int): HTSlotInfo
+
     override fun getEnergyStorage(direction: Direction?): EnergyHandler? = null
 
-    private class SidedResourceHandler<T : Resource>(
-        delegate: ResourceHandler<T>,
-        private val indexToInfo: IntFunction<HTSlotInfo>,
-        private val slotInfo: HTSlotInfo,
-    ) : DelegatingResourceHandler<T>(delegate) {
+    private class SidedResourceHandler<T : Resource>(delegate: ResourceHandler<T>, private val indexToInfo: IntFunction<HTSlotInfo>) :
+        DelegatingResourceHandler<T>(delegate) {
         override fun insert(
             index: Int,
             resource: T,
             amount: Int,
             transaction: TransactionContext,
-        ): Int = when (slotInfo) {
-            indexToInfo.apply(index) -> super.insert(index, resource, amount, transaction)
+        ): Int = when {
+            indexToInfo.apply(index).canInsert -> super.insert(index, resource, amount, transaction)
             else -> 0
         }
 
@@ -179,8 +206,8 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
             resource: T,
             amount: Int,
             transaction: TransactionContext,
-        ): Int = when (slotInfo) {
-            indexToInfo.apply(index) -> super.extract(index, resource, amount, transaction)
+        ): Int = when {
+            indexToInfo.apply(index).canExtract -> super.extract(index, resource, amount, transaction)
             else -> 0
         }
     }

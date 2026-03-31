@@ -91,6 +91,7 @@ data object HTConst {
     const val CHARGING = "charging"
     const val CRUSHING = "crushing"
     const val EXPLODING = "exploding"
+    const val MELTING = "melting"
 
     const val TANK_INTERACTION = "tank_interaction"
 

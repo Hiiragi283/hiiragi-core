@@ -34,6 +34,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.ALMIGHTY_PICKAXE, "Almighty Pickaxe")
         // Recipe
         add(HCRecipeTypes.CHARGING, "Lightning Charging")
+        add(HCRecipeTypes.MELTING, "Melting")
 
         // Translation
         translation()

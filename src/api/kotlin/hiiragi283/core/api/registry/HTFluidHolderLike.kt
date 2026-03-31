@@ -14,8 +14,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
+import net.neoforged.neoforge.fluids.FluidStackTemplate
 import net.neoforged.neoforge.fluids.FluidType
-import net.neoforged.neoforge.transfer.fluid.FluidResource
 
 typealias HTSimpleFluidHolderLike = HTFluidHolderLike<Fluid>
 
@@ -46,17 +46,18 @@ interface HTFluidHolderLike<FLUID : Fluid> : HTHolderLike<Fluid, FLUID> {
      */
     fun toStack(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): FluidStack = FluidStack(this.get(), amount)
 
-    // FluidResource
+    // FluidStackTemplate
 
     /**
-     * [FluidResource]に変換します。
+     * 指定した[量][amount]で[FluidStackTemplate]に変換します。
      */
-    fun toResource(): FluidResource = FluidResource.of(this.get())
+    fun toTemplate(amount: Int = FluidType.BUCKET_VOLUME): FluidStackTemplate = FluidStackTemplate(this.getHolder(), amount)
 
     /**
-     * 指定した[patch]で[FluidResource]に変換します。
+     * 指定した[量][amount]と[patch]で[FluidStackTemplate]に変換します。
      */
-    fun toResource(patch: DataComponentPatch): FluidResource = FluidResource.of(this.get(), patch)
+    fun toTemplate(amount: Int = FluidType.BUCKET_VOLUME, patch: DataComponentPatch): FluidStackTemplate =
+        FluidStackTemplate(this.getHolder(), amount, patch)
 
     companion object {
         @JvmField

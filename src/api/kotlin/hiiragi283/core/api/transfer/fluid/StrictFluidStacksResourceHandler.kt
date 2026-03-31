@@ -41,6 +41,7 @@ abstract class StrictFluidStacksResourceHandler :
         else -> 0
     }
 
+    @Deprecated("Use `insert(Int, T, Int, TransactionContext, HTHandlerAccess)` instead")
     @Suppress("DEPRECATION")
     final override fun insert(
         index: Int,
@@ -49,6 +50,7 @@ abstract class StrictFluidStacksResourceHandler :
         transaction: TransactionContext,
     ): Int = super<StrictResourceHandler>.insert(index, resource, amount, transaction)
 
+    @Deprecated("Use `extract(Int, T, Int, TransactionContext, HTHandlerAccess)` instead")
     @Suppress("DEPRECATION")
     final override fun extract(
         index: Int,
@@ -56,4 +58,18 @@ abstract class StrictFluidStacksResourceHandler :
         amount: Int,
         transaction: TransactionContext,
     ): Int = super<StrictResourceHandler>.extract(index, resource, amount, transaction)
+
+    fun insertStack(
+        index: Int,
+        stack: FluidStack,
+        transaction: TransactionContext,
+        access: HTHandlerAccess,
+    ): Int = this.insert(index, FluidResource.of(stack), stack.amount, transaction, access)
+
+    fun extractStack(
+        index: Int,
+        stack: FluidStack,
+        transaction: TransactionContext,
+        access: HTHandlerAccess,
+    ): Int = this.extract(index, FluidResource.of(stack), stack.amount, transaction, access)
 }

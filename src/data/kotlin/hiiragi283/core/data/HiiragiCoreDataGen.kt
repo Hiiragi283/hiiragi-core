@@ -8,6 +8,7 @@ import hiiragi283.core.data.lang.HCJapaneseLangProvider
 import hiiragi283.core.data.loot.HCBlockLootTableProvider
 import hiiragi283.core.data.model.HCModelProvider
 import hiiragi283.core.data.recipe.HCRecipeProvider
+import hiiragi283.core.data.recipe.HCVanillaRecipeProvider
 import hiiragi283.core.data.tag.HCBlockTagsProvider
 import hiiragi283.core.data.tag.HCFluidTagsProvider
 import hiiragi283.core.data.tag.HCItemTagsProvider
@@ -24,7 +25,8 @@ object HiiragiCoreDataGen {
         // Server
         event.createLootProvider(::HCBlockLootTableProvider to LootContextParamSets.BLOCK)
 
-        event.createRecipeProvider("Recipes", ::HCRecipeProvider)
+        event.createRecipeProvider("Recipes for Vanilla", ::HCVanillaRecipeProvider)
+        event.createRecipeProvider("Recipes for Hiiragi Core", ::HCRecipeProvider)
 
         event.createProvider(::HCFluidTagsProvider)
         event.createBlockAndItemTags(::HCBlockTagsProvider, ::HCItemTagsProvider)

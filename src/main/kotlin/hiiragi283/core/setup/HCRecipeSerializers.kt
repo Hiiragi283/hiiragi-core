@@ -2,10 +2,14 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.recipe.base.HTProcessingRecipe
+import hiiragi283.core.api.recipe.result.HTFluidResult
+import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.MapBiCodec
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.common.recipe.HCChargingRecipe
+import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.impl.registry.HTDeferredRecipeSerializerRegister
 import net.minecraft.world.item.crafting.RecipeSerializer
 
@@ -20,9 +24,20 @@ data object HCRecipeSerializers {
         HTConst.CHARGING,
         MapBiCodec.composite(
             VanillaBiCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HCChargingRecipe::ingredient),
-            VanillaBiCodecs.ITEM_STACK_TEMPLATE.fieldOf(HTConst.RESULT).forGetter(HCChargingRecipe::result),
+            HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCChargingRecipe::result),
             BiCodecs.POSITIVE_INT.optionalFieldOf(HTConst.ENERGY, HCChargingRecipe.DEFAULT_ENERGY).forGetter(HCChargingRecipe::energy),
             ::HCChargingRecipe,
+        ),
+    )
+
+    @JvmField
+    val MELTING: RecipeSerializer<HCMeltingRecipe> = REGISTER.registerSerializer(
+        HTConst.MELTING,
+        MapBiCodec.composite(
+            VanillaBiCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HCMeltingRecipe::ingredient),
+            HTFluidResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCMeltingRecipe::result),
+            HTProcessingRecipe.timeCodec(),
+            ::HCMeltingRecipe,
         ),
     )
 }

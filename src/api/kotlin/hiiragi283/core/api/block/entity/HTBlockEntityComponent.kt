@@ -1,6 +1,6 @@
 package hiiragi283.core.api.block.entity
 
-import hiiragi283.core.api.serialization.HTComponentSerializable
+import hiiragi283.core.api.serialization.DataComponentSerializable
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.neoforged.neoforge.common.util.ValueIOSerializable
 
@@ -12,4 +12,4 @@ import net.neoforged.neoforge.common.util.ValueIOSerializable
  */
 interface HTBlockEntityComponent :
     ValueIOSerializable,
-    HTComponentSerializable
+    DataComponentSerializable

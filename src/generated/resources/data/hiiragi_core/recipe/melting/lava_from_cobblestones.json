@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:melting",
+  "ingredient": "#c:cobblestones",
+  "result": {
+    "amount": 100,
+    "id": "minecraft:lava"
+  },
+  "time": 600
+}

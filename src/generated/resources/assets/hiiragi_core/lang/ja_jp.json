@@ -100,6 +100,7 @@
   "itemGroup.hiiragi_core.equipment": "Hiiragi Core - 装備品",
   "itemGroup.hiiragi_core.material": "Hiiragi Core - 素材",
   "recipe_type.hiiragi_core.charging": "落雷によるチャージ",
+  "recipe_type.hiiragi_core.melting": "融解",
   "tag.fluid.c.dragon_breath": "ドラゴンブレス",
   "tag.fluid.c.dyes.black": "黒色の染料",
   "tag.fluid.c.dyes.blue": "青色の染料",

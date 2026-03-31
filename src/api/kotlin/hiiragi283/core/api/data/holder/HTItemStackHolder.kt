@@ -1,5 +1,6 @@
 package hiiragi283.core.api.data.holder
 
+import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.holderLike
 import hiiragi283.core.api.resource.HTIdLike
 import net.minecraft.resources.Identifier
@@ -45,4 +46,6 @@ class HTItemStackHolder : HTIdLike {
     }
 
     override fun getId(): Identifier = template.holderLike().getId()
+
+    fun createResult(chance: Float): HTItemResult = HTItemResult(template, chance)
 }

@@ -2,7 +2,7 @@
 minecraft = "26.1"
 
 neo-moddev = "2.0.140"
-neo-version = "26.1.0.8-beta"
+neo-version = "26.1.0.17-beta"
 
 dokka = "2.1.0"
 kff-version = "6.2.0"

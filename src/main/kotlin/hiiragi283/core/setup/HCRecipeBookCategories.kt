@@ -11,4 +11,7 @@ data object HCRecipeBookCategories {
 
     @JvmField
     val CHARGING: RecipeBookCategory = REGISTER.register(HTConst.CHARGING)
+
+    @JvmField
+    val MELTING: RecipeBookCategory = REGISTER.register(HTConst.MELTING)
 }

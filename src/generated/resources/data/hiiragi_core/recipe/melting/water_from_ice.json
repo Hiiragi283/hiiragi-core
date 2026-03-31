@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:melting",
+  "ingredient": "minecraft:ice",
+  "result": {
+    "amount": 1000,
+    "id": "minecraft:water"
+  },
+  "time": 200
+}

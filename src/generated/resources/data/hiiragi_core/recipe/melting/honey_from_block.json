@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:melting",
+  "ingredient": "minecraft:honey_block",
+  "result": {
+    "amount": 1000,
+    "id": "hiiragi_core:honey"
+  },
+  "time": 200
+}

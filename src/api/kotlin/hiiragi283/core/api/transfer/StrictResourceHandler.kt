@@ -21,7 +21,7 @@ interface StrictResourceHandler<T : Resource> : ResourceHandler<T> {
         access: HTHandlerAccess,
     ): Int
 
-    @Deprecated("Use `insert(Int, T, Int, TransactionContext, HTHandlerAccess` instead")
+    @Deprecated("Use `insert(Int, T, Int, TransactionContext, HTHandlerAccess)` instead")
     override fun insert(
         index: Int,
         resource: T,
@@ -29,7 +29,7 @@ interface StrictResourceHandler<T : Resource> : ResourceHandler<T> {
         transaction: TransactionContext,
     ): Int = insert(index, resource, amount, transaction, HTHandlerAccess.EXTERNAL)
 
-    @Deprecated("Use `extract(Int, T, Int, TransactionContext, HTHandlerAccess` instead")
+    @Deprecated("Use `extract(Int, T, Int, TransactionContext, HTHandlerAccess)` instead")
     override fun extract(
         index: Int,
         resource: T,
