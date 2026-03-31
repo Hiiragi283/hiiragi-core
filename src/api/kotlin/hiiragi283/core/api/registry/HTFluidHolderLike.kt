@@ -1,6 +1,5 @@
 package hiiragi283.core.api.registry
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
@@ -44,7 +43,7 @@ interface HTFluidHolderLike<FLUID : Fluid> : HTHolderLike<Fluid, FLUID> {
     /**
      * 指定した[量][amount]で[FluidStack]に変換します。
      */
-    fun toStack(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): FluidStack = FluidStack(this.get(), amount)
+    fun toStack(amount: Int = FluidType.BUCKET_VOLUME): FluidStack = FluidStack(this.get(), amount)
 
     // FluidStackTemplate
 

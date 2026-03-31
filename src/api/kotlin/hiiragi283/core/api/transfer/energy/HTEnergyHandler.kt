@@ -4,7 +4,7 @@ import hiiragi283.core.api.transfer.HTHandlerAccess
 import net.neoforged.neoforge.transfer.energy.EnergyHandler
 import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
-interface StrictEnergyHandler : EnergyHandler {
+interface HTEnergyHandler : EnergyHandler {
     fun insert(amount: Int, transaction: TransactionContext, access: HTHandlerAccess): Int
 
     fun extract(amount: Int, transaction: TransactionContext, access: HTHandlerAccess): Int

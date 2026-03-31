@@ -1,8 +1,6 @@
 package hiiragi283.core.api
 
-import net.minecraft.world.item.Item
 import net.neoforged.neoforge.common.NeoForgeMod
-import net.neoforged.neoforge.fluids.FluidType
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される定数を集めたクラスです。
@@ -12,25 +10,6 @@ data object HTConst {
 
     const val TEXTURES = "textures"
     const val GUI = "gui"
-
-    //    Fluid    //
-
-    /**
-     * 液体におけるデフォルトの数量
-     */
-    const val DEFAULT_FLUID_AMOUNT: Int = FluidType.BUCKET_VOLUME
-
-    /**
-     * 1インゴットあたりの液体量
-     */
-    const val INGOT_AMOUNT = 90
-
-    //    Item    //
-
-    /**
-     * アイテムにおけるデフォルトの最大個数
-     */
-    const val ABSOLUTE_MAX_STACK_SIZE: Int = Item.ABSOLUTE_MAX_STACK_SIZE
 
     //    Mod ID    //
 
