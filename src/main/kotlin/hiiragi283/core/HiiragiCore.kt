@@ -1,6 +1,9 @@
 package hiiragi283.core
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.network.HTPayloadHandlers
+import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
+import hiiragi283.core.common.network.HTUpdateMenuPacket
 import hiiragi283.core.setup.HCAttachmentTypes
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks
@@ -17,6 +20,8 @@ import hiiragi283.core.setup.HCWidgetTypes
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
+import net.neoforged.neoforge.network.registration.PayloadRegistrar
 
 @Mod(HiiragiCoreAPI.MOD_ID)
 class HiiragiCore(eventBus: IEventBus, container: ModContainer) {
@@ -24,6 +29,19 @@ class HiiragiCore(eventBus: IEventBus, container: ModContainer) {
         HiiragiCoreAPI.LOGGER.info("Hiiragi Core is loading...")
 
         eventBus.addListener(HCMiscRegister::register)
+        eventBus.addListener { event: RegisterPayloadHandlersEvent ->
+            val registrar: PayloadRegistrar = container.modInfo
+                .version
+                .toString()
+                .let(event::registrar)
+            registrar.playToClient(HTUpdateBlockEntityPacket.TYPE, HTUpdateBlockEntityPacket.STREAM_CODEC, HTPayloadHandlers::handleS2C)
+            registrar.playBidirectional(
+                HTUpdateMenuPacket.TYPE,
+                HTUpdateMenuPacket.STREAM_CODEC,
+                HTPayloadHandlers::handleS2C,
+                HTPayloadHandlers::handleC2S,
+            )
+        }
 
         HCDataComponents.REGISTER.register(eventBus)
 

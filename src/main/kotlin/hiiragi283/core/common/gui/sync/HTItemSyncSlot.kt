@@ -2,13 +2,14 @@ package hiiragi283.core.common.gui.sync
 
 import hiiragi283.core.api.gui.sync.HTChangeType
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
-import hiiragi283.core.api.transfer.ItemResourceHandler
-import hiiragi283.core.api.transfer.getStack
+import hiiragi283.core.api.transfer.HTSlotModifier
+import hiiragi283.core.api.transfer.item.HTItemView
+import hiiragi283.core.api.transfer.item.stack
+import hiiragi283.core.api.transfer.set
+import hiiragi283.core.impl.transfer.item.HTBasicItemSlot
 import net.minecraft.core.RegistryAccess
 import net.minecraft.world.item.ItemStack
-import net.neoforged.neoforge.transfer.IndexModifier
 import net.neoforged.neoforge.transfer.item.ItemResource
-import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler
 import java.util.function.Consumer
 import java.util.function.Supplier
 import kotlin.reflect.KMutableProperty0
@@ -23,12 +24,9 @@ import kotlin.reflect.KProperty
 class HTItemSyncSlot(private val getter: Supplier<ItemStack>, private val setter: Consumer<ItemStack>) : HTIntSyncSlot {
     constructor(property: KMutableProperty0<ItemStack>) : this(property::get, property::set)
 
-    constructor(handler: ItemStacksResourceHandler, index: Int) : this(handler, handler::set, index)
+    constructor(slot: HTBasicItemSlot) : this(slot, slot)
 
-    constructor(handler: ItemResourceHandler, modifier: IndexModifier<ItemResource>, index: Int) : this(
-        { handler.getStack(index) },
-        { stack: ItemStack -> modifier.set(index, ItemResource.of(stack), stack.count) },
-    )
+    constructor(slot: HTItemView, modifier: HTSlotModifier<ItemResource>) : this(slot::stack, modifier::set)
 
     private var lastStack: ItemStack = ItemStack.EMPTY
 

@@ -1,17 +1,26 @@
 package hiiragi283.core.impl.block.entity
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.block.entity.HTBlockEntityComponent
 import hiiragi283.core.api.block.entity.HTOwnedBlockEntity
 import hiiragi283.core.api.block.entity.HTSoundPlayerBlockEntity
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.transfer.FluidResourceHandler
 import hiiragi283.core.api.transfer.HTHandlerProvider
+import hiiragi283.core.api.transfer.HTResourceHandler
 import hiiragi283.core.api.transfer.ItemResourceHandler
-import hiiragi283.core.api.transfer.getStack
-import hiiragi283.core.api.transfer.indices
+import hiiragi283.core.api.transfer.energy.HTEnergyBattery
+import hiiragi283.core.api.transfer.energy.HTEnergyHandler
+import hiiragi283.core.api.transfer.fluid.HTFluidTank
+import hiiragi283.core.api.transfer.holder.HTEnergyBatteryHolder
+import hiiragi283.core.api.transfer.holder.HTResourceSlotHolder
+import hiiragi283.core.api.transfer.item.HTItemSlot
+import hiiragi283.core.api.transfer.item.stack
 import hiiragi283.core.impl.registry.HTDeferredBlockEntityType
-import hiiragi283.core.impl.transfer.HTSlotInfo
+import hiiragi283.core.impl.transfer.HTCapabilityCodec
+import hiiragi283.core.impl.transfer.resolver.HTEnergyHandlerManager
+import hiiragi283.core.impl.transfer.resolver.HTResourceHandlerManager
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.UUIDUtil
@@ -22,19 +31,15 @@ import net.minecraft.network.chat.ComponentSerialization
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.Containers
 import net.minecraft.world.Nameable
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 import net.minecraft.world.phys.Vec3
-import net.neoforged.neoforge.transfer.DelegatingResourceHandler
-import net.neoforged.neoforge.transfer.ResourceHandler
 import net.neoforged.neoforge.transfer.energy.EnergyHandler
-import net.neoforged.neoforge.transfer.resource.Resource
-import net.neoforged.neoforge.transfer.transaction.TransactionContext
+import net.neoforged.neoforge.transfer.fluid.FluidResource
+import net.neoforged.neoforge.transfer.item.ItemResource
 import java.util.UUID
-import java.util.function.IntFunction
 
 /**
  * キャパビリティやオーナーを保持する[HTExtendedBlockEntity]の拡張クラス
@@ -120,6 +125,12 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
         for (component: HTBlockEntityComponent in components) {
             component.serialize(output)
         }
+        // Capability
+        for (type: HTCapabilityCodec<*> in HTCapabilityCodec.TYPES) {
+            if (type.canHandle(this)) {
+                type.saveTo(output, this)
+            }
+        }
         // Custom Name
         output.storeNullable("custom_name", ComponentSerialization.CODEC, this.customName)
         // Owner
@@ -131,6 +142,12 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
         // Components
         for (component: HTBlockEntityComponent in components) {
             component.deserialize(input)
+        }
+        // Capability
+        for (type: HTCapabilityCodec<*> in HTCapabilityCodec.TYPES) {
+            if (type.canHandle(this)) {
+                type.loadFrom(input, this)
+            }
         }
         // Custom Name
         input.read("custom_name", ComponentSerialization.CODEC).ifPresent(::customName::set)
@@ -172,61 +189,62 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
 
     override fun getOwner(): UUID? = ownerId
 
-    //    HTHandlerProvider    //
+    //    Transfer    //
 
-    final override fun getItemHandler(direction: Direction?): ItemResourceHandler? {
-        val handler: ItemResourceHandler = getInternalItemHandler() ?: return null
-        return SidedResourceHandler(handler, ::getItemInfoFrom)
+    protected val fluidHandlerManager: HTResourceHandlerManager<FluidResource>?
+    protected val energyHandlerManager: HTEnergyHandlerManager?
+    protected val itemHandlerManager: HTResourceHandlerManager<ItemResource>?
+
+    val fluidHandler: HTResourceHandler<FluidResource> = object : HTResourceHandler<FluidResource> {
+        override fun getSlots(side: Direction?): List<HTFluidTank> = fluidHandlerManager?.getContainers(side) ?: listOf()
+
+        override fun hasResourceHandler(): Boolean = fluidHandlerManager?.canHandle() ?: false
+    }
+    val energyHandler: HTEnergyHandler = object : HTEnergyHandler {
+        override fun getBattery(side: Direction?): HTEnergyBattery? = energyHandlerManager?.getContainers(side)?.firstOrNull()
+
+        override fun hasEnergyHandler(): Boolean = energyHandlerManager?.canHandle() ?: false
+    }
+    val itemHandler: HTResourceHandler<ItemResource> = object : HTResourceHandler<ItemResource> {
+        override fun getSlots(side: Direction?): List<HTItemSlot> = itemHandlerManager?.getContainers(side) ?: listOf()
+
+        override fun hasResourceHandler(): Boolean = itemHandlerManager?.canHandle() ?: false
     }
 
-    protected open fun getInternalItemHandler(): ItemResourceHandler? = null
+    init {
+        initializeVariables()
+        fluidHandlerManager = createFluidHandler(::setOnlySave)?.let { HTResourceHandlerManager(it, fluidHandler) }
+        energyHandlerManager = createEnergyHandler(::setOnlySave)?.let { HTEnergyHandlerManager(it, energyHandler) }
+        itemHandlerManager = createItemHandler(::setOnlySave)?.let { HTResourceHandlerManager(it, itemHandler) }
+    }
 
-    protected abstract fun getItemInfoFrom(index: Int): HTSlotInfo
+    protected open fun initializeVariables() {}
+
+    // Fluid
+    protected open fun createFluidHandler(listener: HTContentListener): HTResourceSlotHolder<FluidResource>? = null
+
+    final override fun getFluidHandler(direction: Direction?): FluidResourceHandler? = fluidHandlerManager?.resolve(direction)
+
+    // Energy
+    protected open fun createEnergyHandler(listener: HTContentListener): HTEnergyBatteryHolder? = null
+
+    final override fun getEnergyStorage(direction: Direction?): EnergyHandler? = energyHandlerManager?.resolve(direction)
+
+    // Item
+    protected open fun createItemHandler(listener: HTContentListener): HTResourceSlotHolder<ItemResource>? = null
+
+    final override fun getItemHandler(direction: Direction?): ItemResourceHandler? = itemHandlerManager?.resolve(direction)
 
     override fun onRemove(level: Level, pos: BlockPos) {
         super.onRemove(level, pos)
-        val itemHandler: ItemResourceHandler = getInternalItemHandler() ?: return
-        val pos1: Vec3 = Vec3.atCenterOf(pos)
         if (shouldDropItems()) {
-            for (stack: ItemStack in itemHandler.indices.map(itemHandler::getStack)) {
-                Containers.dropItemStack(level, pos1.x, pos1.y, pos1.z, stack)
+            val pos1: Vec3 = Vec3.atCenterOf(pos)
+            val slots: List<HTItemSlot> = itemHandlerManager?.getContainers(null) ?: return
+            for (slot: HTItemSlot in slots) {
+                Containers.dropItemStack(level, pos1.x, pos1.y, pos1.z, slot.stack)
             }
         }
     }
 
     protected open fun shouldDropItems(): Boolean = true
-
-    final override fun getFluidHandler(direction: Direction?): FluidResourceHandler? {
-        val handler: FluidResourceHandler = getInternalFluidHandler() ?: return null
-        return SidedResourceHandler(handler, ::getFluidInfoFrom)
-    }
-
-    protected open fun getInternalFluidHandler(): FluidResourceHandler? = null
-
-    protected abstract fun getFluidInfoFrom(index: Int): HTSlotInfo
-
-    override fun getEnergyStorage(direction: Direction?): EnergyHandler? = null
-
-    private class SidedResourceHandler<T : Resource>(delegate: ResourceHandler<T>, private val indexToInfo: IntFunction<HTSlotInfo>) :
-        DelegatingResourceHandler<T>(delegate) {
-        override fun insert(
-            index: Int,
-            resource: T,
-            amount: Int,
-            transaction: TransactionContext,
-        ): Int = when {
-            indexToInfo.apply(index).canInsert -> super.insert(index, resource, amount, transaction)
-            else -> 0
-        }
-
-        override fun extract(
-            index: Int,
-            resource: T,
-            amount: Int,
-            transaction: TransactionContext,
-        ): Int = when {
-            indexToInfo.apply(index).canExtract -> super.extract(index, resource, amount, transaction)
-            else -> 0
-        }
-    }
 }

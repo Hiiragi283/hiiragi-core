@@ -9,7 +9,7 @@ import hiiragi283.core.common.gui.sync.HTDoubleSyncPayload
 import hiiragi283.core.common.gui.sync.HTFluidSyncPayload
 import hiiragi283.core.common.gui.sync.HTIntSyncPayload
 import hiiragi283.core.common.gui.sync.HTLongSyncPayload
-import hiiragi283.core.common.item.consume_effects.HTRemoveRandomStatusEffectConsumeEffect
+import hiiragi283.core.common.item.consumeEffects.HTRemoveRandomStatusEffectConsumeEffect
 import net.minecraft.core.registries.Registries
 import net.neoforged.neoforge.registries.RegisterEvent
 

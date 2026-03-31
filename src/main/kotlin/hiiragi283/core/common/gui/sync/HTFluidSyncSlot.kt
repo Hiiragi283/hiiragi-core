@@ -2,13 +2,14 @@ package hiiragi283.core.common.gui.sync
 
 import hiiragi283.core.api.gui.sync.HTChangeType
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
-import hiiragi283.core.api.transfer.FluidResourceHandler
-import hiiragi283.core.api.transfer.getStack
+import hiiragi283.core.api.transfer.HTSlotModifier
+import hiiragi283.core.api.transfer.fluid.HTFluidView
+import hiiragi283.core.api.transfer.fluid.stack
+import hiiragi283.core.api.transfer.set
+import hiiragi283.core.impl.transfer.fluid.HTBasicFluidTank
 import net.minecraft.core.RegistryAccess
 import net.neoforged.neoforge.fluids.FluidStack
-import net.neoforged.neoforge.transfer.IndexModifier
 import net.neoforged.neoforge.transfer.fluid.FluidResource
-import net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler
 import java.util.function.Consumer
 import java.util.function.Supplier
 import kotlin.reflect.KMutableProperty0
@@ -23,12 +24,9 @@ import kotlin.reflect.KProperty
 class HTFluidSyncSlot(private val getter: Supplier<FluidStack>, private val setter: Consumer<FluidStack>) : HTIntSyncSlot {
     constructor(property: KMutableProperty0<FluidStack>) : this(property::get, property::set)
 
-    constructor(handler: FluidStacksResourceHandler, index: Int) : this(handler, handler::set, index)
+    constructor(slot: HTBasicFluidTank) : this(slot, slot)
 
-    constructor(handler: FluidResourceHandler, modifier: IndexModifier<FluidResource>, index: Int) : this(
-        { handler.getStack(index) },
-        { stack: FluidStack -> modifier.set(index, FluidResource.of(stack), stack.amount) },
-    )
+    constructor(slot: HTFluidView, modifier: HTSlotModifier<FluidResource>) : this(slot::stack, modifier::set)
 
     private var lastStack: FluidStack = FluidStack.EMPTY
 

@@ -2,6 +2,7 @@ package hiiragi283.core.impl.block.entity
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.block.entity.HTAbstractBlockEntity
+import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
 import hiiragi283.core.impl.registry.HTDeferredBlockEntityType
 import net.minecraft.core.BlockPos
 import net.minecraft.core.HolderLookup
@@ -10,6 +11,7 @@ import net.minecraft.network.Connection
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.ProblemReporter
+import net.minecraft.world.level.ChunkPos
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.entity.BlockEntity
@@ -17,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.TagValueOutput
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
+import net.neoforged.neoforge.network.PacketDistributor
 
 /**
  * Ragiumで使用される[BlockEntity]の拡張クラス
@@ -49,8 +52,8 @@ abstract class HTExtendedBlockEntity(private val type: HTDeferredBlockEntityType
 
     fun sendUpdatePacket(level: ServerLevel) {
         if (isRemoved) return
-        // val payload: HTUpdateBlockEntityPacket = HTUpdateBlockEntityPacket.create(this) ?: return
-        // PacketDistributor.sendToPlayersTrackingChunk(level, ChunkPos(blockPos), payload)
+        val payload: HTUpdateBlockEntityPacket = HTUpdateBlockEntityPacket.create(this) ?: return
+        PacketDistributor.sendToPlayersTrackingChunk(level, ChunkPos.containing(blockPos), payload)
     }
 
     @Deprecated("Deprecated in Java")
