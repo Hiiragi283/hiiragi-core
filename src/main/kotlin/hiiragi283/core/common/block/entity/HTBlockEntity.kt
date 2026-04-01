@@ -6,7 +6,7 @@ import hiiragi283.core.api.block.entity.HTBlockEntityComponent
 import hiiragi283.core.api.block.entity.HTOwnedBlockEntity
 import hiiragi283.core.api.block.entity.HTSoundPlayerBlockEntity
 import hiiragi283.core.api.collection.isEmpty
-import hiiragi283.core.api.serialization.component.HTComponentInput
+import hiiragi283.core.api.serialization.component.DataComponentGetter
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.HTHandlerProvider
@@ -177,7 +177,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
         super.applyImplicitComponents(componentInput)
         // Components
         for (component: HTBlockEntityComponent in components) {
-            component.applyComponents(object : HTComponentInput {
+            component.applyComponents(object : DataComponentGetter {
                 override fun <T : Any> get(type: DataComponentType<T>): T? = componentInput.get(type)
             })
         }

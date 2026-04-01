@@ -1,6 +1,6 @@
 package hiiragi283.core.api.block.entity
 
-import hiiragi283.core.api.serialization.component.HTComponentSerializable
+import hiiragi283.core.api.serialization.component.DataComponentSerializable
 import hiiragi283.core.api.serialization.value.HTValueSerializable
 import net.minecraft.world.level.block.entity.BlockEntity
 
@@ -12,4 +12,4 @@ import net.minecraft.world.level.block.entity.BlockEntity
  */
 interface HTBlockEntityComponent :
     HTValueSerializable,
-    HTComponentSerializable
+    DataComponentSerializable

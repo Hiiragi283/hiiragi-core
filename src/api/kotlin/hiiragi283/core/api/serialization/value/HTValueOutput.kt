@@ -158,4 +158,6 @@ fun <T : Any> HTValueOutput.writeOptional(key: String, codec: BiCodec<*, Optiona
     this.writeOptional(key, codec.codec, value)
 }
 
-fun <T : Any> HTValueOutput.list(key: String, codec: BiCodec<*, T>): HTValueOutput.TypedOutputList<T> = this.list(key, codec.codec)
+fun HTValueOutput.write(key: String, value: HTValueSerializable) {
+    value.serialize(this.child(key))
+}

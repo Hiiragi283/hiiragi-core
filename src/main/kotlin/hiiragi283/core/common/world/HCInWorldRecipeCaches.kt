@@ -7,6 +7,8 @@ import hiiragi283.core.api.recipe.HTRecipeCache
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.serialization.value.HTValueSerializable
+import hiiragi283.core.api.serialization.value.read
+import hiiragi283.core.api.serialization.value.write
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.world.item.crafting.SingleRecipeInput
@@ -17,14 +19,14 @@ class HCInWorldRecipeCaches : HTValueSerializable {
     val exploding: HTRecipeCache<HCExplodingRecipe.Input, HCExplodingRecipe> = HCRecipeTypes.EXPLODING.createCache()
 
     override fun serialize(output: HTValueOutput) {
-        output.child(HTConst.CRUSHING).let(crushing::serialize)
-        output.child(HTConst.CHARGING).let(charging::serialize)
-        output.child(HTConst.EXPLODING).let(exploding::serialize)
+        output.write(HTConst.CRUSHING, crushing)
+        output.write(HTConst.CHARGING, charging)
+        output.write(HTConst.EXPLODING, exploding)
     }
 
     override fun deserialize(input: HTValueInput) {
-        input.child(HTConst.CRUSHING)?.let(crushing::deserialize)
-        input.child(HTConst.CHARGING)?.let(charging::deserialize)
-        input.child(HTConst.EXPLODING)?.let(exploding::deserialize)
+        input.read(HTConst.CRUSHING, crushing)
+        input.read(HTConst.CHARGING, charging)
+        input.read(HTConst.EXPLODING, exploding)
     }
 }

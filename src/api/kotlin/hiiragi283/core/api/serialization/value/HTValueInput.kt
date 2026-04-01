@@ -2,6 +2,8 @@ package hiiragi283.core.api.serialization.value
 
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.serialization.codec.BiCodec
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * NBTやJSONから値を読み取るインターフェースです。
@@ -17,6 +19,8 @@ interface HTValueInput {
      * @return 指定した[key]に値がない，または[codec]での変換に失敗した場合は`null`
      */
     fun <T : Any> read(key: String, codec: Codec<T>): T?
+
+    fun <T : Any> readOptional(key: String, codec: Codec<Optional<T>>): T? = read(key, codec)?.getOrNull()
 
     // Compound
 
@@ -157,6 +161,6 @@ interface HTValueInput {
 
 fun <T : Any> HTValueInput.read(key: String, codec: BiCodec<*, T>): T? = this.read(key, codec.codec)
 
-fun <T : Any> HTValueInput.list(key: String, codec: BiCodec<*, T>): Iterable<T>? = this.list(key, codec.codec)
-
-fun <T : Any> HTValueInput.listOrEmpty(key: String, codec: BiCodec<*, T>): Iterable<T> = this.listOrEmpty(key, codec.codec)
+fun HTValueInput.read(key: String, value: HTValueSerializable) {
+    this.child(key)?.let(value::deserialize)
+}

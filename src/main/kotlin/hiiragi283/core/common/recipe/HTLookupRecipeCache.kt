@@ -4,11 +4,8 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.HTRecipeCache
 import hiiragi283.core.api.recipe.HTRecipeLookup
-import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
-import hiiragi283.core.api.serialization.value.read
-import hiiragi283.core.api.serialization.value.write
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
@@ -77,12 +74,12 @@ class HTLookupRecipeCache<INPUT : RecipeInput, RECIPE : Any, HOLDER : Any>(
     //    HTValueSerializable    //
 
     override fun serialize(output: HTValueOutput) {
-        output.write("last_recipe", VanillaBiCodecs.ID, lastRecipe?.let(lookup::getId))
+        output.write("last_recipe", ResourceLocation.CODEC, lastRecipe?.let(lookup::getId))
     }
 
     override fun deserialize(input: HTValueInput) {
         input
-            .read("last_recipe", VanillaBiCodecs.ID)
+            .read("last_recipe", ResourceLocation.CODEC)
             ?.let(lookup::getHolder)
             .let(::lastRecipe::set)
     }
