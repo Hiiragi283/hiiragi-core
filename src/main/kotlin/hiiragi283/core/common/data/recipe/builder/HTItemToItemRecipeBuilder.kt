@@ -6,7 +6,7 @@ import hiiragi283.core.api.data.recipe.builder.HTProcessingRecipeBuilder
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.common.recipe.HCChargingRecipe
-import hiiragi283.core.common.recipe.base.HTBasicItemToItemRecipe
+import hiiragi283.core.impl.recipe.HTBasicItemToItemRecipe
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.ResourceLocation
 

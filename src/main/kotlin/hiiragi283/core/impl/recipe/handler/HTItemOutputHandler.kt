@@ -1,4 +1,4 @@
-package hiiragi283.core.common.recipe.handler
+package hiiragi283.core.impl.recipe.handler
 
 import hiiragi283.core.api.recipe.handler.HTOutputHandler
 import hiiragi283.core.api.storage.HTStorageAccess

@@ -1,10 +1,13 @@
 package hiiragi283.core.common.event
 
+import com.google.common.collect.HashMultimap
+import com.google.common.collect.Multimap
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTJsonResourceReloadListener
 import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.event.HTAnvilLandEvent
+import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.item.enchantment.toInstances
 import hiiragi283.core.api.recipe.HTItemToChancedRecipe
 import hiiragi283.core.api.recipe.HTItemToItemRecipe
@@ -13,27 +16,63 @@ import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.toFraction
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.world.HCInWorldRecipeCaches
+import hiiragi283.core.mixin.RecipeManagerAccessor
 import hiiragi283.core.setup.HCAttachmentTypes
 import hiiragi283.core.util.HTShapelessRecipeHelper
+import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponents
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.server.ReloadableServerResources
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.item.EnchantedBookItem
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.crafting.Recipe
+import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeInput
+import net.minecraft.world.item.crafting.RecipeManager
+import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.minecraft.world.item.enchantment.ItemEnchantments
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.AABB
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
+import net.neoforged.neoforge.common.NeoForge
 import net.neoforged.neoforge.event.AddReloadListenerEvent
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent
 import net.neoforged.neoforge.event.level.ExplosionEvent
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 object HCRecipeEventHandler {
+    @JvmStatic
+    fun registerRuntimeRecipe(registries: ReloadableServerResources) {
+        val provider: HolderLookup.Provider = registries.fullRegistries().get()
+        val recipeManager: RecipeManager = registries.recipeManager
+        val patches: MutableList<HTRegisterRuntimeRecipeEvent.Result> = mutableListOf()
+        val event = HTRegisterRuntimeRecipeEvent(recipeManager, provider, patches)
+        NeoForge.EVENT_BUS.post(event)
+
+        val accessor: RecipeManagerAccessor = recipeManager as RecipeManagerAccessor
+        val byType: Multimap<RecipeType<*>, RecipeHolder<*>> = HashMultimap.create(accessor.byType)
+        val byName: MutableMap<ResourceLocation, RecipeHolder<*>> = accessor.byName.toMutableMap()
+
+        for (result: HTRegisterRuntimeRecipeEvent.Result in patches) {
+            val (id: ResourceLocation, newRecipe: Recipe<*>?) = result
+            if (newRecipe != null) {
+                val holder: RecipeHolder<Recipe<*>> = RecipeHolder(id, newRecipe)
+                byType.put(newRecipe.type, holder)
+                byName[id] = holder
+            } else {
+                val oldHolder: RecipeHolder<*> = byName.remove(id) ?: continue
+                byType.remove(oldHolder.value().type, oldHolder)
+            }
+        }
+
+        accessor.byType = byType
+        accessor.byName = byName
+    }
+
     /**
      * [HTItemToItemRecipe]を処理するイベント
      */

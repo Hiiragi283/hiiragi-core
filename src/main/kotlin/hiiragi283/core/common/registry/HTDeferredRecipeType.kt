@@ -3,7 +3,7 @@ package hiiragi283.core.common.registry
 import hiiragi283.core.api.recipe.HTRecipeCache
 import hiiragi283.core.api.recipe.HTRecipeLookup
 import hiiragi283.core.api.recipe.HTRecipeType
-import hiiragi283.core.common.recipe.HTLookupRecipeCache
+import hiiragi283.core.impl.recipe.HTLookupRecipeCache
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey

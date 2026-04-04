@@ -1,4 +1,4 @@
-package hiiragi283.core.common.recipe
+package hiiragi283.core.impl.recipe
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.recipe.HTRecipe
@@ -13,10 +13,10 @@ import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.level.Level
 
 /**
- * [HTRecipeLookup]に基づいた[HTRecipeCache]の実装クラスです。
+ * [hiiragi283.core.api.recipe.HTRecipeLookup]に基づいた[hiiragi283.core.api.recipe.HTRecipeCache]の実装クラスです。
  * @param INPUT レシピの入力となるクラス
  * @param RECIPE レシピのクラス
- * @param HOLDER [ResourceLocation]と[RECIPE]を束ねたクラス
+ * @param HOLDER [net.minecraft.resources.ResourceLocation]と[RECIPE]を束ねたクラス
  * @param predicate レシピが一致するかを判定するブロック
  * @author Hiiragi Tsubasa
  * @since 0.12.0
@@ -27,7 +27,7 @@ class HTLookupRecipeCache<INPUT : RecipeInput, RECIPE : Any, HOLDER : Any>(
 ) : HTRecipeCache<INPUT, RECIPE> {
     companion object {
         /**
-         * 指定した[lookup]から，[Recipe.matches]に基づいた[HTLookupRecipeCache]の新しいインスタンスを作成します。
+         * 指定した[lookup]から，[net.minecraft.world.item.crafting.Recipe.matches]に基づいた[HTLookupRecipeCache]の新しいインスタンスを作成します。
          * @param INPUT レシピの入力となるクラス
          * @param RECIPE レシピのクラス
          */
@@ -37,10 +37,10 @@ class HTLookupRecipeCache<INPUT : RecipeInput, RECIPE : Any, HOLDER : Any>(
         ): HTLookupRecipeCache<INPUT, RECIPE, RecipeHolder<RECIPE>> = HTLookupRecipeCache(lookup, Recipe<INPUT>::matches)
 
         /**
-         * 指定した[lookup]から，[HTRecipe.test]に基づいた[HTLookupRecipeCache]の新しいインスタンスを作成します。
+         * 指定した[lookup]から，[hiiragi283.core.api.recipe.HTRecipe.test]に基づいた[HTLookupRecipeCache]の新しいインスタンスを作成します。
          * @param INPUT レシピの入力となるクラス
-         * @param RECIPE [HTRecipe]を実装したクラス
-         * @param HOLDER [ResourceLocation]と[RECIPE]を束ねたクラス
+         * @param RECIPE [hiiragi283.core.api.recipe.HTRecipe]を実装したクラス
+         * @param HOLDER [net.minecraft.resources.ResourceLocation]と[RECIPE]を束ねたクラス
          */
         @JvmStatic
         fun <INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>, HOLDER : Any> forRecipe(

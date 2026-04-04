@@ -2,7 +2,7 @@ package hiiragi283.core.client.jei.extension
 
 import hiiragi283.core.api.integration.jei.addItemIngredient
 import hiiragi283.core.api.integration.jei.addItemResult
-import hiiragi283.core.common.recipe.base.HTBasicItemToChancedRecipe
+import hiiragi283.core.impl.recipe.HTBasicItemToChancedRecipe
 import mezz.jei.api.gui.builder.IIngredientAcceptor
 import kotlin.jvm.optionals.getOrNull
 

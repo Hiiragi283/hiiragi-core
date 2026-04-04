@@ -22,40 +22,40 @@ import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.crafting.Recipe
-import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeManager
 import net.neoforged.bus.api.Event
 import net.neoforged.neoforge.common.conditions.ICondition
-import java.util.function.Function
 
-class HTRegisterRuntimeRecipeEvent(val recipeManager: RecipeManager, val context: HTRecipeProviderContext) : Event() {
-    constructor(
-        recipeManager: RecipeManager,
-        provider: HolderLookup.Provider,
-        consumer: Function<RecipeHolder<*>, Boolean>,
-    ) : this(
-        recipeManager,
-        object : HTRecipeProviderContext() {
-            override val provider: HolderLookup.Provider = provider
-            override val output: RecipeOutput = object : RecipeOutput {
-                override fun accept(
-                    id: ResourceLocation,
-                    recipe: Recipe<*>,
-                    advancement: AdvancementHolder?,
-                    vararg conditions: ICondition?,
-                ) {
-                    val id1: ResourceLocation = id.withPrefix("runtime/")
-                    val holder: RecipeHolder<Recipe<*>> = RecipeHolder(id1, recipe)
-                    if (consumer.apply(holder)) {
-                        HiiragiCoreAPI.LOGGER.warn("Recipe: {} was overrided!", holder.id())
-                    }
-                    HiiragiCoreAPI.LOGGER.debug("Added runtime recipe {}", id1)
-                }
-
-                override fun advancement(): Advancement.Builder = Advancement.Builder.recipeAdvancement()
+class HTRegisterRuntimeRecipeEvent(
+    val recipeManager: RecipeManager,
+    provider: HolderLookup.Provider,
+    private val patches: MutableList<Result>,
+) : Event() {
+    val context: HTRecipeProviderContext = object : HTRecipeProviderContext() {
+        override val provider: HolderLookup.Provider = provider
+        override val output: RecipeOutput = object : RecipeOutput {
+            override fun accept(
+                id: ResourceLocation,
+                recipe: Recipe<*>,
+                advancement: AdvancementHolder?,
+                vararg conditions: ICondition?,
+            ) {
+                val id1: ResourceLocation = id.withPrefix("runtime/")
+                patches += Result(id1, recipe)
+                HiiragiCoreAPI.LOGGER.debug("Added runtime recipe {}", id1)
             }
-        },
-    )
+
+            override fun advancement(): Advancement.Builder = Advancement.Builder.recipeAdvancement()
+        }
+    }
+
+    fun removeRecipe(id: ResourceLocation) {
+        patches += Result(id, null)
+        HiiragiCoreAPI.LOGGER.debug("Removed recipe {}", id)
+    }
+
+    @JvmRecord
+    data class Result(val key: ResourceLocation, val recipe: Recipe<*>?)
 
     // TagKey
     fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLike<T>> =

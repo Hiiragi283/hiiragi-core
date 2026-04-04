@@ -9,9 +9,9 @@ import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.toResource
-import hiiragi283.core.common.recipe.handler.HTFluidInputHandler
-import hiiragi283.core.common.recipe.handler.HTFluidOutputHandler
 import hiiragi283.core.common.storage.fluid.HTBasicFluidTank
+import hiiragi283.core.impl.recipe.handler.HTFluidInputHandler
+import hiiragi283.core.impl.recipe.handler.HTFluidOutputHandler
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.core.util.HTItemDropHelper

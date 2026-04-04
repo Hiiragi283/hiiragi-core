@@ -16,6 +16,7 @@ import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.registry.toHolderSet
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.IdToValue
+import hiiragi283.core.impl.recipe.HTLookupRecipeCache
 import hiiragi283.core.mixin.PotionBrewingAccessor
 import hiiragi283.core.mixin.PotionBrewingMixAccessor
 import hiiragi283.core.util.HCPotionFluidHelper
@@ -66,7 +67,7 @@ object HTVanillaRecipeTypes {
 
         override fun createCache(): HTRecipeCache<HTItemAndFluidRecipeInput, HCBrewingRecipe> = HTLookupRecipeCache.forRecipe(this)
 
-        private fun getPotion(stack: ItemStack): Holder<Potion> = HTPotionHelper.getPotion(stack).potion.orElse(Potions.WATER)
+        private fun getPotion(stack: ItemStack): Holder<Potion> = HTPotionHelper.getPotion(stack).potion.orElseGet(Potions::WATER)
 
         override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<IdToValue<HCBrewingRecipe>> {
             // すでにレシピが生成されている場合はパス

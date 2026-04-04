@@ -1,4 +1,4 @@
-package hiiragi283.core.common.recipe.base
+package hiiragi283.core.impl.recipe
 
 import hiiragi283.core.api.recipe.HTChancedRecipe
 import hiiragi283.core.api.recipe.result.HTChancedItemResult

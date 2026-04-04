@@ -6,7 +6,7 @@ import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.common.recipe.HCCrushingRecipe
-import hiiragi283.core.common.recipe.base.HTBasicItemToChancedRecipe
+import hiiragi283.core.impl.recipe.HTBasicItemToChancedRecipe
 import net.minecraft.data.recipes.RecipeOutput
 import java.util.Optional
 

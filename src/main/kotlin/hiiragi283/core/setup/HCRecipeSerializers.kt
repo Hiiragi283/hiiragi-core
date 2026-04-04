@@ -19,9 +19,9 @@ import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCMeltingRecipe
-import hiiragi283.core.common.recipe.base.HTBasicItemToChancedRecipe
-import hiiragi283.core.common.recipe.base.HTBasicItemToItemRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
+import hiiragi283.core.impl.recipe.HTBasicItemToChancedRecipe
+import hiiragi283.core.impl.recipe.HTBasicItemToItemRecipe
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer
