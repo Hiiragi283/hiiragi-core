@@ -9,6 +9,7 @@ import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.recipe.VanillaRecipeTypes
+import hiiragi283.core.common.recipe.base.HTItemToChancedRecipe
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.world.item.ItemStackTemplate
@@ -44,6 +45,10 @@ object HCJeiRecipeTypes {
     @JvmField
     val CHARGING: HTHolderRecipeViewerType<SingleRecipeInput, HCChargingRecipe> =
         create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD, 18 * 4)
+
+    @JvmField
+    val CRUSHING: HTHolderRecipeViewerType<SingleRecipeInput, HTItemToChancedRecipe.Serializable> =
+        create(HCRecipeTypes.CRUSHING, Items.ANVIL, 18 * 6)
 
     @JvmField
     val MELTING: HTHolderRecipeViewerType<HCMeltingRecipe.Input, HCMeltingRecipe> =

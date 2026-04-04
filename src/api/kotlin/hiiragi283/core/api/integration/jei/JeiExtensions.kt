@@ -34,8 +34,11 @@ fun <T : IIngredientAcceptor<T>> T.add(ingredient: SizedIngredient): T {
 
 fun <T : IIngredientAcceptor<T>> T.add(result: HTItemResult): T {
     if (this is IRecipeSlotBuilder) {
-        this.addRichTooltipCallback { _, builder: ITooltipBuilder ->
-            builder.add(HTCommonTranslation.CHANCE_PRODUCE.translateColored(ChatFormatting.YELLOW, result.chance * 100))
+        val chance: Float = result.chance
+        if (chance < 1f) {
+            this.addRichTooltipCallback { _, builder: ITooltipBuilder ->
+                builder.add(HTCommonTranslation.CHANCE_PRODUCE.translateColored(ChatFormatting.YELLOW, chance * 100))
+            }
         }
     }
     return this.add(result.create())

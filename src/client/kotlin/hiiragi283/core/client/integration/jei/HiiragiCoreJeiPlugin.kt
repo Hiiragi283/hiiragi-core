@@ -9,6 +9,8 @@ import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.integration.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCChargingRecipeCategory
+import hiiragi283.core.client.integration.jei.category.HTItemToChancedRecipeCategory
+import hiiragi283.core.client.integration.jei.extension.HTBasicItemToChancedRecipeCategoryExtension
 import hiiragi283.core.common.util.HCPotionFluidHelper
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
@@ -32,6 +34,13 @@ import net.neoforged.neoforge.fluids.FluidStack
 
 @JeiPlugin
 class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
+    companion object {
+        // ItemToChanced
+        @JvmStatic
+        lateinit var crushing: HTItemToChancedRecipeCategory
+            private set
+    }
+
     override fun registerItemSubtypes(registration: ISubtypeRegistration) {
         registration.registerSubtypeInterpreter(
             HCItems.ALMIGHTY_PICKAXE.get(),
@@ -67,15 +76,25 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         val guiHelper: IGuiHelper = registration.jeiHelpers.guiHelper
         val manager: IIngredientManager = registration.jeiHelpers.ingredientManager
 
+        initItemToChanced(guiHelper, manager)
+
         registration.addRecipeCategories(
             HCBrewingRecipeCategory(guiHelper),
             HCChargingRecipeCategory(guiHelper),
+            crushing,
         )
+    }
+
+    private fun initItemToChanced(guiHelper: IGuiHelper, manager: IIngredientManager) {
+        crushing = HTItemToChancedRecipeCategory(guiHelper, HCJeiRecipeTypes.CRUSHING)
+
+        crushing.addExtension(HTBasicItemToChancedRecipeCategoryExtension())
     }
 
     override fun registerRecipes(registration: IRecipeRegistration) {
         registration.addRecipes(HCJeiRecipeTypes.BREWING)
         registration.addRecipes(HCJeiRecipeTypes.CHARGING)
+        registration.addRecipes(HCJeiRecipeTypes.CRUSHING)
         // registration.addRecipes(HCJeiRecipeTypes.MELTING)
     }
 
@@ -83,6 +102,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         registration.addCraftingStations(
             HCJeiRecipeTypes.BREWING,
             HCJeiRecipeTypes.CHARGING,
+            HCJeiRecipeTypes.CRUSHING,
             HCJeiRecipeTypes.MELTING,
         )
 
