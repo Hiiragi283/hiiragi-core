@@ -3,8 +3,10 @@ package hiiragi283.core.data.recipe
 import hiiragi283.core.api.HTDyeColor
 import hiiragi283.core.api.data.recipe.HTRecipeProvider
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
+import hiiragi283.core.common.material.VanillaMaterials
 import hiiragi283.core.common.tag.HiiragiCoreTags
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
@@ -32,7 +34,7 @@ class HCVanillaRecipeProvider(registries: HolderLookup.Provider, output: RecipeO
             )
             define('A')(itemCreator.fromTagKey(Tags.Items.BRICKS_NORMAL))
             define('B')(itemCreator.from(Items.BRICKS))
-            define('C')(itemCreator.fromTagKey(Tags.Items.STORAGE_BLOCKS_COPPER))
+            define('C')(itemCreator.fromMaterial(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterials.COPPER))
             result += HCBlocks.CRUCIBLE
         }
         HTShapedRecipeBuilder.create(output) {
@@ -43,7 +45,7 @@ class HCVanillaRecipeProvider(registries: HolderLookup.Provider, output: RecipeO
             )
             define('A')(itemCreator.fromTagKey(Tags.Items.BRICKS_NETHER))
             define('B')(itemCreator.from(Items.NETHER_BRICKS))
-            define('C')(itemCreator.fromTagKey(Tags.Items.STORAGE_BLOCKS_GOLD))
+            define('C')(itemCreator.fromMaterial(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterials.GOLD))
             result += HCBlocks.NETHER_CRUCIBLE
         }
 

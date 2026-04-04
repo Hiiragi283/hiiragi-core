@@ -1,6 +1,8 @@
 package hiiragi283.core.api.data.tag
 
+import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.RegistryKey
+import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.createCommonTag
 import hiiragi283.core.api.tag.createTagKey
 import net.minecraft.core.HolderLookup
@@ -88,6 +90,22 @@ sealed interface HTTagsProvider<T : Any> {
                 .comparing(TagEntry::isRequired)
                 .thenComparing(TagEntry::isTag, Comparator.reverseOrder())
                 .thenComparing(TagEntry::getId)
+        }
+
+        /**
+         * タグをチェインして登録します。
+         */
+        inline fun addMaterial(
+            factory: BuilderFactory<T>,
+            prefix: HTTagPrefix,
+            material: HTMaterialLike,
+            action: (HTTagBuilder<T>) -> Unit,
+        ) {
+            prefix
+                .createTagKeys(registryKey, material)
+                .onEach(factory.apply(prefix.createCommonTagKey(registryKey))::addTag)
+                .map(factory::apply)
+                .forEach(action)
         }
 
         @Suppress("DEPRECATION")

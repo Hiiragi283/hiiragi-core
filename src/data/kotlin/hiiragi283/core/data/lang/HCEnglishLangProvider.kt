@@ -5,6 +5,7 @@ import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.data.lang.HTLanguageProvider
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.client.integration.jade.HCCrucibleJadeProvider
+import hiiragi283.core.common.material.VanillaMaterials
 import hiiragi283.core.common.recipe.VanillaRecipeTypes
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
@@ -37,6 +38,22 @@ class HCEnglishLangProvider(output: PackOutput) :
         // Item
         add(HCItems.IRIDESCENT_POWDER, "Iridescent Powder")
         add(HCItems.ALMIGHTY_PICKAXE, "Almighty Pickaxe")
+        // Material
+        add(VanillaMaterials.COAL, "Coal")
+
+        add(VanillaMaterials.REDSTONE, "Redstone")
+
+        add(VanillaMaterials.LAPIS, "Lapis")
+        add(VanillaMaterials.QUARTZ, "Quartz")
+        add(VanillaMaterials.AMETHYST, "Amethyst")
+        add(VanillaMaterials.DIAMOND, "Diamond")
+        add(VanillaMaterials.EMERALD, "Emerald")
+        add(VanillaMaterials.ECHO, "Echo")
+        add(VanillaMaterials.PRISMARINE, "Prismarine")
+
+        add(VanillaMaterials.COPPER, "Copper")
+        add(VanillaMaterials.IRON, "Iron")
+        add(VanillaMaterials.GOLD, "Gold")
         // Recipe
         add(VanillaRecipeTypes.SMELTING, "Smelting")
         add(VanillaRecipeTypes.BLASTING, "Blasting")

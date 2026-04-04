@@ -6,6 +6,8 @@ import net.neoforged.neoforge.common.NeoForgeMod
  * Hiiragi Coreとそれを前提とするmodで使用される定数を集めたクラスです。
  */
 data object HTConst {
+    const val MATERIAL = "material"
+
     //    GUI    //
 
     const val TEXTURES = "textures"

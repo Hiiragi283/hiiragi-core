@@ -5,6 +5,7 @@ import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.data.lang.HTLanguageProvider
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.client.integration.jade.HCCrucibleJadeProvider
+import hiiragi283.core.common.material.VanillaMaterials
 import hiiragi283.core.common.recipe.VanillaRecipeTypes
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
@@ -37,6 +38,22 @@ class HCJapaneseLangProvider(output: PackOutput) :
         // Item
         add(HCItems.IRIDESCENT_POWDER, "七色の粉")
         add(HCItems.ALMIGHTY_PICKAXE, "全能なるツルハシ")
+        // Material
+        add(VanillaMaterials.COAL, "石炭")
+
+        add(VanillaMaterials.REDSTONE, "レッドストーン")
+
+        add(VanillaMaterials.LAPIS, "ラピス")
+        add(VanillaMaterials.QUARTZ, "水晶")
+        add(VanillaMaterials.AMETHYST, "アメジスト")
+        add(VanillaMaterials.DIAMOND, "ダイヤモンド")
+        add(VanillaMaterials.EMERALD, "エメラルド")
+        add(VanillaMaterials.ECHO, "残響")
+        add(VanillaMaterials.PRISMARINE, "プリズマリン")
+
+        add(VanillaMaterials.COPPER, "銅")
+        add(VanillaMaterials.IRON, "鉄")
+        add(VanillaMaterials.GOLD, "金")
         // Recipe
         add(VanillaRecipeTypes.SMELTING, "かまど")
         add(VanillaRecipeTypes.BLASTING, "溶鉱炉")

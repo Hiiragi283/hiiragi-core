@@ -1,7 +1,10 @@
 package hiiragi283.core.api.data.tag
 
+import hiiragi283.core.api.data.tag.HTTagsProvider.BuilderFactory
+import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.toItemLike
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
 import net.minecraft.data.PackOutput
@@ -14,7 +17,7 @@ import net.neoforged.neoforge.common.Tags
 import java.util.concurrent.CompletableFuture
 
 /**
- * [アイテム][Item]向けの[HTTagsProvider.DataGen]の拡張クラスです。
+ * [アイテム][Item]向けの[DataGen]の拡張クラスです。
  * @param blockTags 生成された[ブロック][Block]のタグの一覧
  * @author Hiiragi Tsubasa
  * @since 0.1.0
@@ -30,6 +33,19 @@ abstract class HTItemTagsProvider(
     private val tagsToCopy: MutableMap<TagKey<Block>, TagKey<Item>> = mutableMapOf()
 
     /**
+     * [HTTagPrefix.createCommonTagKey]と[HTTagPrefix.createTagKey]に基づいて，ブロックのタグの値をアイテムのタグにコピーします。
+     */
+    protected fun copy(prefix: HTTagPrefix, material: HTMaterialLike) {
+        copy(prefix.createCommonTagKey(Registries.BLOCK), prefix.createCommonTagKey(Registries.ITEM))
+        prefix
+            .createTagKeys(Registries.BLOCK, material)
+            .zip(prefix.createTagKeys(Registries.ITEM, material))
+            .forEach { (blockTag: TagKey<Block>, itemTag: TagKey<Item>) ->
+                copy(blockTag, itemTag)
+            }
+    }
+
+    /**
      * [ブロックのタグ][blockTag]の値を[アイテムのタグ][itemTag]にコピーします。
      */
     protected fun copy(blockTag: TagKey<Block>, itemTag: TagKey<Item>) {
@@ -39,7 +55,7 @@ abstract class HTItemTagsProvider(
     fun HTTagBuilder<Item>.addItem(item: ItemLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<Item> =
         this.add(item.toItemLike(), type)
 
-    fun addBuckets(factory: HTTagsProvider.BuilderFactory<Item>, contents: Sequence<HTFluidContent>) {
+    fun addBuckets(factory: BuilderFactory<Item>, contents: Sequence<HTFluidContent>) {
         for (content: HTFluidContent in contents) {
             addTags(factory, Tags.Items.BUCKETS, content.bucketTag).add(content.getBucket())
         }

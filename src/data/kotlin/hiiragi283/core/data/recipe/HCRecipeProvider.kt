@@ -2,9 +2,11 @@ package hiiragi283.core.data.recipe
 
 import hiiragi283.core.api.data.recipe.HTRecipeProvider
 import hiiragi283.core.api.recipe.withSize
+import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.data.recipe.builder.HCChargingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HCMeltingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTItemToChancedRecipeBuilder
+import hiiragi283.core.common.material.VanillaMaterials
 import hiiragi283.core.impl.registry.VanillaFluidContents
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
@@ -37,12 +39,12 @@ class HCRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput) 
         }
         // Quartz -> Prismarine
         HCChargingRecipeBuilder.create(output) {
-            ingredient = itemCreator.fromTagKey(Tags.Items.GEMS_QUARTZ)
+            ingredient = itemCreator.fromMaterial(CommonTagPrefixes.GEM, VanillaMaterials.QUARTZ)
             result += Items.PRISMARINE_SHARD
         }
         // Redstone Dust -> Glowstone Dust
         HCChargingRecipeBuilder.create(output) {
-            ingredient = itemCreator.fromTagKey(Tags.Items.DUSTS_REDSTONE)
+            ingredient = itemCreator.fromMaterial(CommonTagPrefixes.DUST, VanillaMaterials.REDSTONE)
             result += Items.GLOWSTONE_DUST
         }
         // Honey Bottle -> Exp Bottle

@@ -1,7 +1,10 @@
 package hiiragi283.core.api.data.recipe.ingredient
 
+import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.core.HolderSet
 import net.minecraft.core.component.DataComponentPatch
+import net.minecraft.core.registries.Registries
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.level.ItemLike
@@ -15,6 +18,11 @@ interface HTItemIngredientCreator : HTIngredientCreator.Registered<Item, Ingredi
     fun fromItem(item: ItemLike): Ingredient = from(item.asItem())
 
     fun fromItems(items: Collection<ItemLike>): Ingredient = from(items.map(ItemLike::asItem))
+
+    // Material
+    fun fromTagPrefix(prefix: HTTagPrefix): Ingredient = fromTagKey(prefix.createCommonTagKey(Registries.ITEM))
+
+    fun fromMaterial(prefix: HTTagPrefix, material: HTMaterialLike): Ingredient = fromTagKeys(prefix.itemTagKeys(material))
 
     // HolderSet
     override fun fromHolderSet(holderSet: HolderSet<Item>): Ingredient = Ingredient.of(holderSet)
