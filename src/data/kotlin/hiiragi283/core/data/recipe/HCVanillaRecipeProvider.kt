@@ -35,6 +35,17 @@ class HCVanillaRecipeProvider(registries: HolderLookup.Provider, output: RecipeO
             define('C')(itemCreator.fromTagKey(Tags.Items.STORAGE_BLOCKS_COPPER))
             result += HCBlocks.CRUCIBLE
         }
+        HTShapedRecipeBuilder.create(output) {
+            pattern(
+                "A A",
+                "A A",
+                "BCB",
+            )
+            define('A')(itemCreator.fromTagKey(Tags.Items.BRICKS_NETHER))
+            define('B')(itemCreator.from(Items.NETHER_BRICKS))
+            define('C')(itemCreator.fromTagKey(Tags.Items.STORAGE_BLOCKS_GOLD))
+            result += HCBlocks.NETHER_CRUCIBLE
+        }
 
         // Almighty Pickaxe
         HTShapelessRecipeBuilder.create(output) {

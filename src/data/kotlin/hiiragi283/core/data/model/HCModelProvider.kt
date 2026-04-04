@@ -18,21 +18,26 @@ import net.minecraft.client.data.models.model.ModelTemplates
 import net.minecraft.client.data.models.model.TextureSlot
 import net.minecraft.client.data.models.model.TexturedModel
 import net.minecraft.data.PackOutput
+import net.minecraft.resources.Identifier
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
 
 class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreAPI.MOD_ID) {
     override fun registerModels(blockModels: BlockModelGenerators, itemModels: ItemModelGenerators) {
         // Block
         blockModels.createCropBlock(HCBlocks.WARPED_WART.get(), BlockStateProperties.AGE_3, 0, 1, 1, 2)
-        blockModels.createTrivialBlock(HCBlocks.CRUCIBLE) { _ ->
-            TexturedModel(
-                buildTextureMap {
-                    put(TextureSlot.ALL, HTConst.MINECRAFT.toId(HTConst.BLOCK, "terracotta"))
-                    put(TextureSlot.INSIDE, HTConst.MINECRAFT.toId(HTConst.BLOCK, "chiseled_copper"))
-                },
-                HTModelTemplates.CRUCIBLE,
-            )
-        }
+
+        registerCrucible(
+            blockModels,
+            HCBlocks.CRUCIBLE,
+            HTConst.MINECRAFT.toId(HTConst.BLOCK, "terracotta"),
+            HTConst.MINECRAFT.toId(HTConst.BLOCK, "chiseled_copper"),
+        )
+        registerCrucible(
+            blockModels,
+            HCBlocks.NETHER_CRUCIBLE,
+            HTConst.MINECRAFT.toId(HTConst.BLOCK, "nether_bricks"),
+            HTConst.MINECRAFT.toId(HTConst.BLOCK, "gold_block"),
+        )
         // Fluid
         HCFluids.REGISTER
             .asBlockSequence()
@@ -51,5 +56,22 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
         // Item
         itemModels.generateFlatItem(HCItems.IRIDESCENT_POWDER)
         itemModels.generateFlatItem(HCItems.ALMIGHTY_PICKAXE, ModelTemplates.FLAT_HANDHELD_ITEM)
+    }
+
+    private fun registerCrucible(
+        blockModels: BlockModelGenerators,
+        block: HTBlockHolderLike<*>,
+        all: Identifier,
+        inside: Identifier,
+    ) {
+        blockModels.createTrivialBlock(block) { _ ->
+            TexturedModel(
+                buildTextureMap {
+                    put(TextureSlot.ALL, all)
+                    put(TextureSlot.INSIDE, inside)
+                },
+                HTModelTemplates.CRUCIBLE,
+            )
+        }
     }
 }

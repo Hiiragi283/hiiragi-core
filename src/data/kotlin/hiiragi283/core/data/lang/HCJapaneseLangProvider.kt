@@ -21,6 +21,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCBlocks.WARPED_WART, "歪んだウォート")
 
         add(HCBlocks.CRUCIBLE, "るつぼ")
+        add(HCBlocks.NETHER_CRUCIBLE, "ネザーるつぼ")
         // Fluid
         addFluid(HCFluids.EXPERIENCE, "液体経験値")
         addFluid(HCFluids.HONEY, "ハチミツ")

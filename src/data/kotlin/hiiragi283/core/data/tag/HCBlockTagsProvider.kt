@@ -17,6 +17,7 @@ class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<
         factory
             .apply(BlockTags.MINEABLE_WITH_PICKAXE)
             .add(HCBlocks.CRUCIBLE)
+            .add(HCBlocks.NETHER_CRUCIBLE)
 
         getOrCreateRawBuilder(HiiragiCoreTags.Blocks.INCORRECT_FOR_ALMIGHTY_PICKAXE)
     }

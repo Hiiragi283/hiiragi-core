@@ -47,5 +47,6 @@ class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootT
         }
 
         dropSelf(HCBlocks.CRUCIBLE)
+        dropSelf(HCBlocks.NETHER_CRUCIBLE)
     }
 }

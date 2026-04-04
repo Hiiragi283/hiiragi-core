@@ -41,6 +41,13 @@ data object HCBlocks {
         ::HTCrucibleBlock,
     )
 
+    @JvmField
+    val NETHER_CRUCIBLE: HTBasicDeferredBlockAndItem<HTCrucibleBlock> = REGISTER.registerSimple(
+        "nether_crucible",
+        copyOf(Blocks.TERRACOTTA).mapColor(MapColor.NETHER).noCollision(),
+        ::HTCrucibleBlock,
+    )
+
     //    Extensions    //
 
     @JvmStatic

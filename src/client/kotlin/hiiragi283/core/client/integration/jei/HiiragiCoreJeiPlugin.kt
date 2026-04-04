@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.integration.jei.category.HCChargingRecipeCategory
+import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import mezz.jei.api.JeiPlugin
 import mezz.jei.api.helpers.IGuiHelper
@@ -33,12 +34,16 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
 
     override fun registerRecipes(registration: IRecipeRegistration) {
         registration.addRecipes(HCJeiRecipeTypes.CHARGING)
+        registration.addRecipes(HCJeiRecipeTypes.MELTING)
     }
 
     override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {
         registration.addCraftingStations(
             HCJeiRecipeTypes.CHARGING,
+            HCJeiRecipeTypes.MELTING,
         )
+
+        registration.addCraftingStation(getRecipeType(HCJeiRecipeTypes.MELTING), HCBlocks.NETHER_CRUCIBLE)
     }
 
     override fun registerGuiHandlers(registration: IGuiHandlerRegistration) {

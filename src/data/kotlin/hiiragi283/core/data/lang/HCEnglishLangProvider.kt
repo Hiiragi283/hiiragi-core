@@ -21,6 +21,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCBlocks.WARPED_WART, "Warped Wart")
 
         add(HCBlocks.CRUCIBLE, "Crucible")
+        add(HCBlocks.NETHER_CRUCIBLE, "Nether Crucible")
         // Fluid
         addFluid(HCFluids.EXPERIENCE, "Liquid Experience")
         addFluid(HCFluids.HONEY, "Honey")

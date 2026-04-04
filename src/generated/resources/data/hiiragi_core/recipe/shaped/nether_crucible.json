@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "#c:bricks/nether",
+    "B": "minecraft:nether_bricks",
+    "C": "#c:storage_blocks/iron"
+  },
+  "pattern": [
+    "A A",
+    "A A",
+    "BCB"
+  ],
+  "result": {
+    "id": "hiiragi_core:nether_crucible"
+  }
+}
