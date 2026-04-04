@@ -1,5 +1,8 @@
 {
   "type": "hiiragi_core:melting",
+  "heat_range": {
+    "min": 1300
+  },
   "ingredient": "#c:cobblestones",
   "result": {
     "amount": 100,

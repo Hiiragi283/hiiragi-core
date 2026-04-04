@@ -16,5 +16,5 @@ data object HCRecipeTypes {
     val CHARGING: HTDeferredRecipeType<SingleRecipeInput, HCChargingRecipe> = REGISTER.registerType(HTConst.CHARGING)
 
     @JvmField
-    val MELTING: HTDeferredRecipeType<SingleRecipeInput, HCMeltingRecipe> = REGISTER.registerType(HTConst.MELTING)
+    val MELTING: HTDeferredRecipeType<HCMeltingRecipe.Input, HCMeltingRecipe> = REGISTER.registerType(HTConst.MELTING)
 }

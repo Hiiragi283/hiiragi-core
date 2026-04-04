@@ -8,6 +8,7 @@ import hiiragi283.core.api.serialization.codec.impl.HTHolderLikeStreamCodec
 import hiiragi283.core.api.tag.createTagKey
 import hiiragi283.core.api.text.Text
 import io.netty.buffer.ByteBuf
+import net.minecraft.advancements.criterion.MinMaxBounds
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.GlobalPos
@@ -94,6 +95,19 @@ object VanillaBiCodecs {
      */
     @JvmField
     val UUID: BiCodec<ByteBuf, UUID> = BiCodec.of(UUIDUtil.CODEC, UUIDUtil.STREAM_CODEC)
+
+    // Bounds
+    @JvmField
+    val INT_BOUNDS: BiCodec<ByteBuf, MinMaxBounds.Ints> =
+        BiCodec.of(MinMaxBounds.Ints.CODEC, MinMaxBounds.Ints.STREAM_CODEC)
+
+    @JvmField
+    val FLOAT_BOUNDS: BiCodec<ByteBuf, MinMaxBounds.FloatDegrees> =
+        BiCodec.of(MinMaxBounds.FloatDegrees.CODEC, MinMaxBounds.FloatDegrees.STREAM_CODEC)
+
+    @JvmField
+    val DOUBLE_BOUNDS: BiCodec<ByteBuf, MinMaxBounds.Doubles> =
+        BiCodec.of(MinMaxBounds.Doubles.CODEC, MinMaxBounds.Doubles.STREAM_CODEC)
 
     // Typed Instances
     /**

@@ -84,6 +84,7 @@ class HCRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput) 
             ingredient = itemCreator.fromTagKey(Tags.Items.COBBLESTONES)
             result = VanillaFluidContents.LAVA.toTemplate(100)
             time *= 3
+            heatRange = heatRange(1000)
             recipeId suffix "_from_cobblestones"
         }
 
@@ -91,6 +92,7 @@ class HCRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput) 
         HCMeltingRecipeBuilder.create(output) {
             ingredient = itemCreator.fromItem(Items.HONEY_BLOCK)
             result = HCFluids.HONEY.toTemplate()
+            heatRange = heatRange(60)
             recipeId suffix "_from_block"
         }
     }

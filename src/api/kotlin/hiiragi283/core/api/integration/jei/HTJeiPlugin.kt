@@ -1,6 +1,7 @@
 package hiiragi283.core.api.integration.jei
 
 import hiiragi283.core.api.HTComparators
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.recipe.HTRecipeLookup
 import hiiragi283.core.api.recipe.RecipeKey
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
@@ -10,9 +11,11 @@ import mezz.jei.api.constants.VanillaTypes
 import mezz.jei.api.recipe.types.IRecipeType
 import mezz.jei.api.registration.IRecipeCatalystRegistration
 import mezz.jei.api.registration.IRecipeRegistration
+import net.minecraft.client.Minecraft
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.crafting.RecipeInput
+import net.minecraft.world.level.Level
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[IModPlugin]の抽象クラスです。
@@ -23,7 +26,7 @@ import net.minecraft.world.item.crafting.RecipeInput
  * @see mekanism.client.recipe_viewer.jei.RecipeRegistryHelper
  */
 abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
-    override fun getPluginUid(): Identifier = modId.toId("jei_plugin")
+    final override fun getPluginUid(): Identifier = modId.toId("jei_plugin")
 
     //    Extensions    //
 
@@ -49,7 +52,10 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
             compareBy(HTComparators.ID, lookup::getId)
 
         @JvmStatic
-        protected fun createLookupContext(): HTRecipeLookup.Context = TODO()
+        fun createLookupContext(): HTRecipeLookup.Context {
+            val level: Level = checkNotNull(Minecraft.getInstance().level)
+            return HTRecipeLookup.Context(HiiragiCoreAPI.clientRecipeMap, level.registryAccess(), level.potionBrewing())
+        }
 
         /**
          * @since 0.12.0

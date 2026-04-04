@@ -13,8 +13,10 @@ import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
+import net.neoforged.neoforge.client.event.RecipesReceivedEvent
 import net.neoforged.neoforge.client.event.RegisterFluidModelsEvent
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent
+import net.neoforged.neoforge.common.NeoForge
 import java.awt.Color
 
 @Mod(value = HiiragiCoreAPI.MOD_ID, dist = [Dist.CLIENT])
@@ -22,6 +24,10 @@ class HiiragiCoreClient(eventBus: IEventBus, container: ModContainer) {
     init {
         eventBus.addListener(::registerFluidModels)
         eventBus.addListener(::registerScreens)
+
+        NeoForge.EVENT_BUS.addListener { event: RecipesReceivedEvent ->
+            HiiragiCoreAPI.clientRecipeMap = event.recipeMap
+        }
 
         HiiragiCoreAPI.LOGGER.info("Hiiragi Core Client has been loaded successfully!")
     }

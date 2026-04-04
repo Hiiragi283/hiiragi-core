@@ -21,7 +21,6 @@ import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.sounds.SoundEvents
-import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
@@ -73,22 +72,22 @@ class HTCrucibleBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HC
 
     //    Processing    //
 
-    private val cache: HTRecipeCache<SingleRecipeInput, HCMeltingRecipe> = HCRecipeTypes.MELTING.createCache()
+    private val cache: HTRecipeCache<HCMeltingRecipe.Input, HCMeltingRecipe> = HCRecipeTypes.MELTING.createCache()
     private val inputHandler: HTItemInputHandler by lazy { HTItemInputHandler(slot) }
     private val outputHandler: HTFluidOutputHandler by lazy { HTFluidOutputHandler.single(tank) }
 
-    private val handler: HTRecipeHandler<SingleRecipeInput, HCMeltingRecipe> = HTProgressHandler.create {
+    private val handler: HTRecipeHandler<HCMeltingRecipe.Input, HCMeltingRecipe> = HTProgressHandler.create {
         recipeFinder = finder@{ level: ServerLevel, _ ->
-            val input = SingleRecipeInput(slot.stack)
+            val input = HCMeltingRecipe.Input(slot.stack, 0)
             if (input.isEmpty) return@finder null
             cache.getFirstRecipe(input, level)?.let { HTHandledRecipe.create(input, it) }
         }
         maxProgressGetter = { it.recipe.time }
         progressGetter = { level, pos -> 1 }
-        canComplete = { _, _, recipe: HTHandledRecipe<SingleRecipeInput, HCMeltingRecipe> ->
+        canComplete = { _, _, recipe: HTHandledRecipe<HCMeltingRecipe.Input, HCMeltingRecipe> ->
             outputHandler.canInsert(recipe.assembleFluid())
         }
-        onComplete = { level, _, recipe: HTHandledRecipe<SingleRecipeInput, HCMeltingRecipe> ->
+        onComplete = { level, _, recipe: HTHandledRecipe<HCMeltingRecipe.Input, HCMeltingRecipe> ->
             // output
             outputHandler.insert(recipe.assembleFluid())
             // input

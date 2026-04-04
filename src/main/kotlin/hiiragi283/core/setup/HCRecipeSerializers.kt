@@ -36,6 +36,7 @@ data object HCRecipeSerializers {
         MapBiCodec.composite(
             VanillaBiCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HCMeltingRecipe::ingredient),
             HTFluidResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCMeltingRecipe::result),
+            VanillaBiCodecs.INT_BOUNDS.fieldOf("heat_range").forGetter(HCMeltingRecipe::heatRange),
             HTProcessingRecipe.timeCodec(),
             ::HCMeltingRecipe,
         ),

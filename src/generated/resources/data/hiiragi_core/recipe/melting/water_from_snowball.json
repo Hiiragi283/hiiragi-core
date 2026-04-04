@@ -1,5 +1,8 @@
 {
   "type": "hiiragi_core:melting",
+  "heat_range": {
+    "min": 400
+  },
   "ingredient": "minecraft:snowball",
   "result": {
     "amount": 250,
