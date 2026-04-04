@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.data.lang.HTLanguageProvider
 import hiiragi283.core.api.text.HTCommonTranslation
+import hiiragi283.core.client.integration.jade.HCCrucibleJadeProvider
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
@@ -40,6 +41,9 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         // Translation
         translation()
+
+        // Jade
+        add(HCCrucibleJadeProvider.Client, "Crucible")
     }
 
     private fun translation() {

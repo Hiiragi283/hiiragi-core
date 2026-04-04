@@ -6,10 +6,10 @@ import net.minecraft.core.Position
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.Containers
 import net.minecraft.world.entity.Entity
-import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
+import net.minecraft.world.phys.Vec3
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.transfer.item.ItemUtil
 
@@ -45,13 +45,13 @@ object HTItemDropHelper {
      * 指定した[stack]を[pos]にドロップします。
      */
     fun dropStackAt(level: Level, pos: BlockPos, stack: ItemStack) {
-        Containers.dropItemStack(level, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), stack)
+        dropStackAt(level, Vec3.atCenterOf(pos), stack)
     }
 
     /**
      * 指定した[stack]を[pos]にドロップします。
      */
     fun dropStackAt(level: Level, pos: Position, stack: ItemStack) {
-        ItemEntity(level, pos.x(), pos.y(), pos.z(), stack).let(level::addFreshEntity)
+        Containers.dropItemStack(level, pos.x(), pos.y(), pos.z(), stack)
     }
 }

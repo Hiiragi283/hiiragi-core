@@ -1,5 +1,6 @@
 package hiiragi283.core.api.recipe.handler
 
+import net.neoforged.neoforge.transfer.transaction.TransactionContext
 import java.util.Optional
 
 /**
@@ -19,19 +20,19 @@ interface HTInputHandler<INGREDIENT : Any> {
     /**
      * 指定した[材料][ingredient]から中身を消費します。
      */
-    fun consume(ingredient: INGREDIENT?) {
-        ingredient?.let(::getMatchingAmount)?.let(::consume)
+    fun consume(ingredient: INGREDIENT?, transaction: TransactionContext) {
+        ingredient?.let(::getMatchingAmount)?.let { consume(it, transaction) }
     }
 
     /**
      * 指定した[材料][ingredient]から中身を消費します。
      */
-    fun consume(ingredient: Optional<out INGREDIENT>) {
-        ingredient.map(::consume)
+    fun consume(ingredient: Optional<out INGREDIENT>, transaction: TransactionContext) {
+        ingredient.ifPresent { consume(it, transaction) }
     }
 
     /**
      * 指定した[数量][amount]だけ中身を消費します。
      */
-    fun consume(amount: Int)
+    fun consume(amount: Int, transaction: TransactionContext)
 }

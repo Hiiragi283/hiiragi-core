@@ -2,42 +2,37 @@ package hiiragi283.core.common.recipe.handler
 
 import hiiragi283.core.api.recipe.handler.HTInputHandler
 import hiiragi283.core.api.recipe.testOnlyType
-import hiiragi283.core.api.transfer.HTHandlerAccess
-import hiiragi283.core.api.transfer.HTSlotModifier
-import hiiragi283.core.api.transfer.item.HTItemSlot
-import hiiragi283.core.api.transfer.item.stack
-import hiiragi283.core.api.transfer.set
-import hiiragi283.core.api.transfer.useTransaction
-import hiiragi283.core.impl.transfer.item.HTBasicItemSlot
+import hiiragi283.core.api.transfer.ItemResourceHandler
+import hiiragi283.core.api.transfer.getStack
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.common.crafting.SizedIngredient
+import net.neoforged.neoforge.transfer.IndexModifier
 import net.neoforged.neoforge.transfer.item.ItemResource
+import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
-class HTItemInputHandler(slot: HTItemSlot, private val remainderConsumer: HTSlotModifier<ItemResource>? = null) :
-    HTInputHandler<SizedIngredient>,
-    HTItemSlot by slot {
-    constructor(slot: HTBasicItemSlot) : this(slot, slot)
-
+class HTItemInputHandler(
+    private val handler: ItemResourceHandler,
+    private val index: Int,
+    private val remainderConsumer: IndexModifier<ItemResource>? = null,
+) : HTInputHandler<SizedIngredient> {
     override fun getMatchingAmount(ingredient: SizedIngredient): Int = when {
-        ingredient.testOnlyType(this.resource) -> ingredient.count()
+        ingredient.testOnlyType(handler.getResource(index)) -> ingredient.count()
         else -> 0
     }
 
-    override fun consume(amount: Int) {
+    override fun consume(amount: Int, transaction: TransactionContext) {
         if (amount > 0) {
-            if (remainderConsumer != null && this.amountAsLong == 1L) {
-                val remainder: ItemStack? = this.stack.craftingRemainder?.create()
+            if (remainderConsumer != null && handler.getAmountAsLong(index) == 1L) {
+                val stackIn: ItemStack = handler.getStack(index)
+                val remainder: ItemStack? = stackIn.craftingRemainder?.create()
                 if (remainder != null) {
-                    remainderConsumer.set(remainder)
+                    remainderConsumer.set(index, ItemResource.of(remainder), remainder.count)
                     return
                 }
             }
-            useTransaction {
-                val resource: ItemResource = this.resource
-                if (resource.isEmpty) return@useTransaction
-                this.extract(resource, amount, it, HTHandlerAccess.INTERNAL)
-                it.commit()
-            }
+            val resource: ItemResource = handler.getResource(index)
+            if (resource.isEmpty) return
+            handler.extract(index, resource, amount, transaction)
         }
     }
 }

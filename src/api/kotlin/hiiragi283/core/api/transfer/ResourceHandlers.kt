@@ -5,13 +5,10 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.transfer.ResourceHandler
 import net.neoforged.neoforge.transfer.fluid.FluidResource
 import net.neoforged.neoforge.transfer.item.ItemResource
-import net.neoforged.neoforge.transfer.resource.Resource
 import net.neoforged.neoforge.transfer.transaction.Transaction
 import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
 val ResourceHandler<*>.indices: IntRange get() = (0..<size())
-
-fun <T : Resource> ResourceHandler<T>.asResourceSequence(): Sequence<T> = this.indices.asSequence().map(this::getResource)
 
 inline fun <R> useTransaction(parent: TransactionContext? = null, action: (Transaction) -> R): R = Transaction.open(parent).use(action)
 
