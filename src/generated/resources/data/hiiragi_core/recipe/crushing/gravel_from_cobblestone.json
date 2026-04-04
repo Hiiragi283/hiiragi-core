@@ -1,0 +1,17 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": {
+    "count": 1,
+    "ingredient": {
+      "neoforge:ingredient_type": "neoforge:compound",
+      "children": [
+        "#c:cobblestones/normal",
+        "#c:cobblestones/mossy"
+      ]
+    }
+  },
+  "result": {
+    "id": "minecraft:gravel"
+  },
+  "time": 100
+}

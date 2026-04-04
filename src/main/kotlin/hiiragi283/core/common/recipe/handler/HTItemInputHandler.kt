@@ -15,6 +15,8 @@ class HTItemInputHandler(
     private val index: Int,
     private val remainderConsumer: IndexModifier<ItemResource>? = null,
 ) : HTInputHandler<SizedIngredient> {
+    val stack: ItemStack get() = handler.getStack(index)
+
     override fun getMatchingAmount(ingredient: SizedIngredient): Int = when {
         ingredient.testOnlyType(handler.getResource(index)) -> ingredient.count()
         else -> 0
@@ -23,8 +25,7 @@ class HTItemInputHandler(
     override fun consume(amount: Int, transaction: TransactionContext) {
         if (amount > 0) {
             if (remainderConsumer != null && handler.getAmountAsLong(index) == 1L) {
-                val stackIn: ItemStack = handler.getStack(index)
-                val remainder: ItemStack? = stackIn.craftingRemainder?.create()
+                val remainder: ItemStack? = stack.craftingRemainder?.create()
                 if (remainder != null) {
                     remainderConsumer.set(index, ItemResource.of(remainder), remainder.count)
                     return

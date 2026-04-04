@@ -19,7 +19,6 @@ import net.neoforged.neoforge.data.event.GatherDataEvent
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 object HiiragiCoreDataGen {
-    @JvmStatic
     @SubscribeEvent
     fun gatherData(event: GatherDataEvent.Client) {
         // Server

@@ -1,0 +1,12 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": {
+    "count": 1,
+    "ingredient": "minecraft:bricks"
+  },
+  "result": {
+    "count": 4,
+    "id": "minecraft:brick"
+  },
+  "time": 100
+}

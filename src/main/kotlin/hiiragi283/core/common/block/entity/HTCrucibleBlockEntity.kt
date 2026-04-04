@@ -6,7 +6,6 @@ import hiiragi283.core.api.recipe.handler.HTHandledRecipe
 import hiiragi283.core.api.recipe.handler.HTProgressHandler
 import hiiragi283.core.api.recipe.handler.HTRecipeHandler
 import hiiragi283.core.api.recipe.handler.assembleFluid
-import hiiragi283.core.api.transfer.getStack
 import hiiragi283.core.api.transfer.useTransaction
 import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.recipe.handler.HTFluidOutputHandler
@@ -72,7 +71,7 @@ class HTCrucibleBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HC
 
     val handler: HTRecipeHandler<HCMeltingRecipe.Input, HCMeltingRecipe> = HTProgressHandler.create {
         recipeFinder = finder@{ level: ServerLevel, _ ->
-            val input = HCMeltingRecipe.Input(items.getStack(0), 10000)
+            val input = HCMeltingRecipe.Input(inputHandler.stack, 10000)
             if (input.isEmpty) return@finder null
             cache.getFirstRecipe(input, level)?.let { HTHandledRecipe.create(input, it) }
         }

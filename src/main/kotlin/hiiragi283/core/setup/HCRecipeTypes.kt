@@ -4,6 +4,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCMeltingRecipe
+import hiiragi283.core.common.recipe.base.HTItemToChancedRecipe
 import hiiragi283.core.impl.registry.HTDeferredRecipeType
 import hiiragi283.core.impl.registry.HTDeferredRecipeTypeRegister
 import net.minecraft.world.item.crafting.SingleRecipeInput
@@ -14,6 +15,9 @@ data object HCRecipeTypes {
 
     @JvmField
     val CHARGING: HTDeferredRecipeType<SingleRecipeInput, HCChargingRecipe> = REGISTER.registerType(HTConst.CHARGING)
+
+    @JvmField
+    val CRUSHING: HTDeferredRecipeType<SingleRecipeInput, HTItemToChancedRecipe.Serializable> = REGISTER.registerType(HTConst.CRUSHING)
 
     @JvmField
     val MELTING: HTDeferredRecipeType<HCMeltingRecipe.Input, HCMeltingRecipe> = REGISTER.registerType(HTConst.MELTING)
