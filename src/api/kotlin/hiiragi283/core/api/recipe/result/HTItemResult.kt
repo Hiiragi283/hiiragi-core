@@ -51,7 +51,7 @@ class HTItemResult(private val content: Ior<HTItemResourceType, TagKey<Item>>, p
         val CHANCED_CODEC: BiCodec<RegistryFriendlyByteBuf, HTChancedItemResult> = BiCodec.composite(
             CODEC.toMap().forGetter(HTChancedItemResult::first),
             BiCodecs
-                .fractionRange(Fraction.ZERO, Fraction.ONE)
+                .fractionRange(Fraction.ZERO..Fraction.ONE)
                 .optionalFieldOf(HTConst.CHANCE, Fraction.ONE)
                 .forGetter(HTChancedItemResult::second),
             ::HTChancedItemResult,

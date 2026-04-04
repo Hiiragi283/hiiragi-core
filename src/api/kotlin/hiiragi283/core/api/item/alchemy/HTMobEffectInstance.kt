@@ -24,7 +24,7 @@ data class HTMobEffectInstance(
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTMobEffectInstance> = BiCodec.composite(
             BiCodecs.lazy { VanillaBiCodecs.holder(Registries.MOB_EFFECT) }.fieldOf("id").forGetter(HTMobEffectInstance::effect),
-            BiCodecs.intRange(-1, Int.MAX_VALUE).fieldOf("duration").forGetter(HTMobEffectInstance::duration),
+            BiCodecs.intRange(-1..Int.MAX_VALUE).fieldOf("duration").forGetter(HTMobEffectInstance::duration),
             BiCodecs.NON_NEGATIVE_INT.optionalFieldOf("amplifier", 0).forGetter(HTMobEffectInstance::amplifier),
             BiCodec.BOOL.optionalFieldOf("ambient", false).forGetter(HTMobEffectInstance::ambient),
             BiCodec.BOOL.optionalFieldOf("visible", true).forGetter(HTMobEffectInstance::visible),

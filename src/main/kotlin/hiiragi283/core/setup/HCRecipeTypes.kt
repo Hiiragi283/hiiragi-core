@@ -11,6 +11,7 @@ import hiiragi283.core.api.recipe.HTRecipeType
 import hiiragi283.core.api.resource.IdToValue
 import hiiragi283.core.common.event.HCRecipeEventHandler
 import hiiragi283.core.common.recipe.HCExplodingRecipe
+import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.registry.HTDeferredRecipeType
 import hiiragi283.core.common.registry.register.HTDeferredRecipeTypeRegister
 import net.minecraft.resources.ResourceLocation
@@ -29,6 +30,9 @@ object HCRecipeTypes {
 
     @JvmField
     val EXPLODING: HTDeferredRecipeType<HCExplodingRecipe.Input, HCExplodingRecipe> = REGISTER.registerType(HTConst.EXPLODING)
+
+    @JvmField
+    val MELTING: HTDeferredRecipeType<HCMeltingRecipe.Input, HCMeltingRecipe> = REGISTER.registerType(HTConst.MELTING)
 
     @JvmField
     val TANK_INTERACTION: HTRecipeType.Fake<RecipeInput, HTTankInteraction> = object : HTRecipeType.Fake<RecipeInput, HTTankInteraction> {

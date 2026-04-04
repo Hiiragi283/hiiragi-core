@@ -32,20 +32,36 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(Hii
             val (base: HTBlockHolderLike<*>, waxed: HTBlockHolderLike<*>) = HCBlocks.COPPER_BASINS[level] ?: continue
             val cutCopper: ResourceLocation = HTWeatheringBlocks.CUT_COPPER[level]?.first?.blockId ?: continue
             val chiseledCopper: ResourceLocation = HTWeatheringBlocks.CHISELED_COPPER[level]?.first?.blockId ?: continue
-            simpleBlockAndItem(
+            registerCauldron(
                 base,
-                models()
-                    .withExistingParent(base, HiiragiCoreAPI.id(HTConst.BLOCK, "cauldron_template"))
-                    .texture("top", chiseledCopper)
-                    .texture("side", cutCopper)
-                    .texture("bottom", cutCopper)
-                    .texture("inside", cutCopper),
+                chiseledCopper,
+                cutCopper,
+                cutCopper,
+                cutCopper,
             )
 
             altModelBlock(waxed, base.blockId)
         }
         // Fluids
         HCFluids.REGISTER.asSequence().forEach(::liquidBlock)
+    }
+
+    private fun registerCauldron(
+        block: HTBlockHolderLike<*>,
+        top: ResourceLocation,
+        side: ResourceLocation,
+        bottom: ResourceLocation,
+        inside: ResourceLocation,
+    ) {
+        simpleBlockAndItem(
+            block,
+            models()
+                .withExistingParent(block, HiiragiCoreAPI.id(HTConst.BLOCK, "cauldron_template"))
+                .texture("top", top)
+                .texture("side", side)
+                .texture("bottom", bottom)
+                .texture("inside", inside),
+        )
     }
 
     private fun registerCrops() {

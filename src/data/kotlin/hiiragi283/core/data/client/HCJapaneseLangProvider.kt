@@ -83,6 +83,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCRecipeTypes.CRUSHING, "粉砕")
         add(HCRecipeTypes.CHARGING, "落雷によるチャージ")
         add(HCRecipeTypes.EXPLODING, "爆破")
+        add(HCRecipeTypes.MELTING, "溶融")
         add(HCRecipeTypes.TANK_INTERACTION, "タンクとの相互作用")
 
         // Translation
@@ -118,6 +119,10 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HTCommonTranslation.CHANCE_CONSUME, $$"消費確率: %1$s %%")
         add(HTCommonTranslation.CHANCE_PRODUCE, $$"生産確率: %1$s %%")
+
+        add(HTCommonTranslation.RANGE_MIN, $$"最小値: %1$s")
+        add(HTCommonTranslation.RANGE_MAX, $$"最大値: %1$s")
+        add(HTCommonTranslation.RANGE_MIN_MAX, $$"最小値: %1$s, 最大値: %2$s")
         // API - Item
         add(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT, $$"常に少なくとも%1$sがあります")
         add(HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION, "シフトキーを押して説明を表示")

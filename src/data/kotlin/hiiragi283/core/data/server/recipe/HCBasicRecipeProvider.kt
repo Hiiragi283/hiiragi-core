@@ -1,5 +1,7 @@
 package hiiragi283.core.data.server.recipe
 
+import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HTMinMaxRange
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.fraction
@@ -7,6 +9,7 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.data.recipe.builder.HCExplodingRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HCMeltingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTItemToChancedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTItemToItemRecipeBuilder
 import hiiragi283.core.common.material.CommonMaterialKeys
@@ -26,6 +29,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         charging()
         crushing()
         exploding()
+        melting()
     }
 
     //    Charging    //
@@ -276,6 +280,34 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         HCExplodingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(ItemTags.WARPED_STEMS, 12)
             result = resultCreator.material(CommonParts.GEM, HCMaterialKeys.WARPED_CRYSTAL)
+        }
+    }
+
+    //    Exploding    //
+
+    @JvmStatic
+    private fun melting() {
+        val iceRange: HTMinMaxRange<Int> = HTMinMaxRange.atLeast(HTConst.STANDARD_TEMP)
+        // Water
+        HCMeltingRecipeBuilder.create(output) {
+            ingredient = inputCreator.create(Items.SNOWBALL)
+            result = resultCreator.water(250)
+            heatRange = iceRange
+            time = 25
+            recipeId suffix "_from_snowball"
+        }
+        HCMeltingRecipeBuilder.create(output) {
+            ingredient = inputCreator.create(Items.SNOW_BLOCK)
+            result = resultCreator.water()
+            heatRange = iceRange
+            time = 100
+            recipeId suffix "_from_snow"
+        }
+        HCMeltingRecipeBuilder.create(output) {
+            ingredient = inputCreator.create(Items.ICE)
+            result = resultCreator.water()
+            heatRange = iceRange
+            recipeId suffix "_from_ice"
         }
     }
 }

@@ -1,10 +1,12 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HTMinMaxRange
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.recipe.base.HTProcessingRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.MapBiCodec
@@ -17,6 +19,7 @@ import hiiragi283.core.common.data.recipe.builder.HTItemToItemRecipeBuilder
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
+import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.recipe.base.HTBasicItemToChancedRecipe
 import hiiragi283.core.common.recipe.base.HTBasicItemToItemRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
@@ -79,6 +82,18 @@ object HCRecipeSerializers {
             HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCExplodingRecipe::result),
             BiCodecs.NON_NEGATIVE_FRACTION.optionalFieldOf("min_power", fraction(4)).forGetter(HCExplodingRecipe::minPower),
             ::HCExplodingRecipe,
+        ),
+    )
+
+    @JvmField
+    val MELTING: RecipeSerializer<HCMeltingRecipe> = REGISTER.registerSerializer(
+        HTConst.MELTING,
+        MapBiCodec.composite(
+            HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HCMeltingRecipe::ingredient),
+            HTFluidResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCMeltingRecipe::result),
+            HTMinMaxRange.INT_CODEC.fieldOf("heat_range").forGetter(HCMeltingRecipe::heatRange),
+            HTProcessingRecipe.timeCodec(),
+            ::HCMeltingRecipe,
         ),
     )
 }

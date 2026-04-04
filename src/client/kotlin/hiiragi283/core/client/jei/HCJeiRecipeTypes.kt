@@ -16,6 +16,7 @@ import hiiragi283.core.api.text.toText
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
+import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.resources.ResourceLocation
@@ -58,6 +59,10 @@ object HCJeiRecipeTypes {
     @JvmField
     val EXPLODING: HTHolderRecipeViewerType<HCExplodingRecipe.Input, HCExplodingRecipe> =
         create(HCRecipeTypes.EXPLODING, Items.TNT, 18 * 6)
+
+    @JvmField
+    val MELTING: HTHolderRecipeViewerType<HCMeltingRecipe.Input, HCMeltingRecipe> =
+        create(HCRecipeTypes.MELTING, Items.LAVA_BUCKET, 18 * 4)
 
     @JvmField
     val TANK_INTERACTION: HTFakeRecipeViewerType<RecipeInput, HTTankInteraction> =

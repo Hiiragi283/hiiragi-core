@@ -11,6 +11,9 @@ import net.neoforged.neoforge.internal.versions.neoforge.NeoForgeVersion
  * Hiiragi Coreとそれを前提とするmodで使用される定数を集めたクラスです。
  */
 data object HTConst {
+    const val ZERO_CELSIUS = 273
+    const val STANDARD_TEMP = 300
+
     //    GUI    //
 
     /**
@@ -102,6 +105,7 @@ data object HTConst {
     const val CHARGING = "charging"
     const val CRUSHING = "crushing"
     const val EXPLODING = "exploding"
+    const val MELTING = "melting"
 
     const val TANK_INTERACTION = "tank_interaction"
 

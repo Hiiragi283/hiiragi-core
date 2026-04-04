@@ -3,6 +3,8 @@ package hiiragi283.core.common.storage.component
 import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.attachments.HTAttachedContainers
 import hiiragi283.core.common.storage.HTCapabilityCodec
+import net.minecraft.core.component.DataComponentHolder
+import net.minecraft.core.component.DataComponentMap
 import net.minecraft.world.item.ItemStack
 
 /**
@@ -64,7 +66,9 @@ abstract class HTComponentHandler<TYPE, CONTAINER : HTValueSerializable, ATTACHE
     override fun get(index: Int): CONTAINER = getContainer(index)
 
     @JvmRecord
-    data class ContainerContext(val attachedTo: ItemStack, val size: Int, val index: Int)
+    data class ContainerContext(val attachedTo: ItemStack, val size: Int, val index: Int) : DataComponentHolder {
+        override fun getComponents(): DataComponentMap = attachedTo.components
+    }
 
     /**
      * nullableな[List]を遅延評価でnot-nullに変換する[List]の実装

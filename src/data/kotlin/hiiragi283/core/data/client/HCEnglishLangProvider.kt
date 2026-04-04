@@ -83,6 +83,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCRecipeTypes.CRUSHING, "Crushing")
         add(HCRecipeTypes.CHARGING, "Lightning Charging")
         add(HCRecipeTypes.EXPLODING, "Exploding")
+        add(HCRecipeTypes.MELTING, "Melting")
         add(HCRecipeTypes.TANK_INTERACTION, "Tank Interaction")
 
         // Translation
@@ -118,6 +119,10 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         add(HTCommonTranslation.CHANCE_CONSUME, $$"Consumption Chance: %1$s %%")
         add(HTCommonTranslation.CHANCE_PRODUCE, $$"Production Chance: %1$s %%")
+
+        add(HTCommonTranslation.RANGE_MIN, $$"Min: %1$s")
+        add(HTCommonTranslation.RANGE_MAX, $$"Max: %1$s")
+        add(HTCommonTranslation.RANGE_MIN_MAX, $$"Min: %1$s, Max: %2$s")
         // API - Item
         add(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT, $$"Always has at least %1$s")
         add(HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION, "Press Shift to show description")

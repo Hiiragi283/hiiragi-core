@@ -1,0 +1,14 @@
+{
+  "type": "hiiragi_core:melting",
+  "heat_range": {
+    "min": 300
+  },
+  "ingredient": {
+    "amount": 1,
+    "items": "minecraft:ice"
+  },
+  "result": {
+    "id": "minecraft:water"
+  },
+  "time": 200
+}

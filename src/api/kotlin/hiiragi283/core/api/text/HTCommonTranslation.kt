@@ -56,6 +56,10 @@ enum class HTCommonTranslation(type: String, vararg path: String) : HTTranslatio
     CHANCE_CONSUME("gui", "chance", "consume"),
     CHANCE_PRODUCE("gui", "chance", "produce"),
 
+    RANGE_MIN("gui", "range", "min"),
+    RANGE_MAX("gui", "range", "max"),
+    RANGE_MIN_MAX("gui", "range", "min_max"),
+
     // Item Description
     TOOLTIP_INTRINSIC_ENCHANTMENT("tooltip", "intrinsic_enchantment"),
     TOOLTIP_SHOW_DESCRIPTION("tooltip", "show_description"),

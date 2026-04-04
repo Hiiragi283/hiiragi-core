@@ -22,66 +22,57 @@ import kotlin.enums.enumEntries
  */
 object BiCodecs {
     /**
-     * 範囲をチェックするブロックを作成します。
-     * @param N [Number]と[Comparable]を実装したクラス
-     * @param min 範囲の最小値
-     * @param max 範囲の最大値
+     * [範囲][range]をチェックするブロックを作成します。
      */
     @JvmStatic
-    fun <N> checkRange(min: N, max: N): (N) -> N where N : Number, N : Comparable<N> =
-        Codec.checkRange(min, max).andThen(DataResult<N>::getOrThrow)::apply
+    fun <N> checkRange(range: ClosedRange<N>): (N) -> N where N : Number, N : Comparable<N> =
+        Codec.checkRange(range.start, range.endInclusive).andThen(DataResult<N>::getOrThrow)::apply
 
     /**
-     * 範囲が制限された[Int]の[BiCodec]を返します。
-     * @param min 範囲の最小値
-     * @param max 範囲の最大値
+     * [範囲][range]内の値に制限された[Int]の[BiCodec]を返します。
      */
     @JvmStatic
-    fun intRange(min: Int, max: Int): BiCodec<ByteBuf, Int> = BiCodec.INT.validate(checkRange(min, max))
+    fun intRange(range: IntRange): BiCodec<ByteBuf, Int> = BiCodec.INT.validate(checkRange(range))
 
     /**
-     * 範囲が制限された[Long]の[BiCodec]を返します。
-     * @param min 範囲の最小値
-     * @param max 範囲の最大値
+     * [範囲][range]内の値に制限された[Long]の[BiCodec]を返します。
      */
     @JvmStatic
-    fun longRange(min: Long, max: Long): BiCodec<ByteBuf, Long> = BiCodec.LONG.validate(checkRange(min, max))
+    fun longRange(range: LongRange): BiCodec<ByteBuf, Long> = BiCodec.LONG.validate(checkRange(range))
 
     /**
-     * 範囲が制限された[Fraction]の[BiCodec]を返します。
-     * @param min 範囲の最小値
-     * @param max 範囲の最大値
+     * [範囲][range]内の値に制限された[Fraction]の[BiCodec]を返します。
      */
     @JvmStatic
-    fun fractionRange(min: Fraction, max: Fraction): BiCodec<ByteBuf, Fraction> = FRACTION.validate(checkRange(min, max))
+    fun fractionRange(range: ClosedRange<Fraction>): BiCodec<ByteBuf, Fraction> = FRACTION.validate(checkRange(range))
 
     /**
      * `0`以上の値を対象とする[Int]の[BiCodec]
      * @see net.minecraft.util.ExtraCodecs.NON_NEGATIVE_INT
      */
     @JvmField
-    val NON_NEGATIVE_INT: BiCodec<ByteBuf, Int> = intRange(0, Int.MAX_VALUE)
+    val NON_NEGATIVE_INT: BiCodec<ByteBuf, Int> = intRange(0..Int.MAX_VALUE)
 
     /**
      * `0`以上の値を対象とする[Long]の[BiCodec]
      * @see mekanism.api.SerializerHelper.POSITIVE_LONG_CODEC
      */
     @JvmField
-    val NON_NEGATIVE_LONG: BiCodec<ByteBuf, Long> = longRange(0, Long.MAX_VALUE)
+    val NON_NEGATIVE_LONG: BiCodec<ByteBuf, Long> = longRange(0..Long.MAX_VALUE)
 
     /**
      * `1`以上の値を対象とする[Int]の[BiCodec]
      * @see net.minecraft.util.ExtraCodecs.POSITIVE_INT
      */
     @JvmField
-    val POSITIVE_INT: BiCodec<ByteBuf, Int> = intRange(1, Int.MAX_VALUE)
+    val POSITIVE_INT: BiCodec<ByteBuf, Int> = intRange(1..Int.MAX_VALUE)
 
     /**
      * `1`以上の値を対象とする[Long]の[BiCodec]
      * @see mekanism.api.SerializerHelper.POSITIVE_NONZERO_LONG_CODEC
      */
     @JvmField
-    val POSITIVE_LONG: BiCodec<ByteBuf, Long> = longRange(1, Long.MAX_VALUE)
+    val POSITIVE_LONG: BiCodec<ByteBuf, Long> = longRange(1..Long.MAX_VALUE)
 
     /**
      * [Fraction]の[BiCodec]

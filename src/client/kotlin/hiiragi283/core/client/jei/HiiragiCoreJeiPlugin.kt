@@ -22,6 +22,7 @@ import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.jei.category.HCExplodingRecipeCategory
 import hiiragi283.core.client.jei.category.HCMaterialPartCategory
+import hiiragi283.core.client.jei.category.HCMeltingRecipeCategory
 import hiiragi283.core.client.jei.category.HTItemToChancedRecipeCategory
 import hiiragi283.core.client.jei.category.HTItemToItemRecipeCategory
 import hiiragi283.core.client.jei.category.HTTankInteractionRecipeCategory
@@ -132,6 +133,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             charging,
             crushing,
             HCExplodingRecipeCategory(guiHelper),
+            HCMeltingRecipeCategory(guiHelper),
             tankInteraction,
         )
     }
@@ -166,6 +168,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         registration.addRecipes(HCJeiRecipeTypes.CHARGING)
         registration.addRecipes(HCJeiRecipeTypes.CRUSHING)
         registration.addRecipes(HCJeiRecipeTypes.EXPLODING, sorter = compareBy { it.result.getId() })
+        registration.addRecipes(HCJeiRecipeTypes.MELTING, sorter = compareBy { it.result.getId() })
         registerTankInteractions(registration)
     }
 
@@ -199,6 +202,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             HCJeiRecipeTypes.CHARGING,
             HCJeiRecipeTypes.CRUSHING,
             HCJeiRecipeTypes.EXPLODING,
+            HCJeiRecipeTypes.MELTING,
         )
 
         val tankInteraction: JeiRecipeType<IdToValue<HTTankInteraction>> = getRecipeType(HCJeiRecipeTypes.TANK_INTERACTION)
