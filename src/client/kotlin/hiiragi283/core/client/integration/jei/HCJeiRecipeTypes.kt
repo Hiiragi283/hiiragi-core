@@ -2,10 +2,13 @@ package hiiragi283.core.client.integration.jei
 
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.recipe.HTRecipeType
+import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.recipe.viewer.HTFakeRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
+import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCMeltingRecipe
+import hiiragi283.core.common.recipe.VanillaRecipeTypes
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.world.item.ItemStackTemplate
@@ -33,6 +36,10 @@ object HCJeiRecipeTypes {
         height: Int = 18 * 1,
     ): HTFakeRecipeViewerType<INPUT, RECIPE> =
         HTFakeRecipeViewerType.create(recipeType, ItemStackTemplate(icon.asItem()), HTBounds(0, 0, width, height))
+
+    @JvmField
+    val BREWING: HTFakeRecipeViewerType<HTItemAndFluidRecipeInput, HCBrewingRecipe> =
+        create(VanillaRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 6)
 
     @JvmField
     val CHARGING: HTHolderRecipeViewerType<SingleRecipeInput, HCChargingRecipe> =

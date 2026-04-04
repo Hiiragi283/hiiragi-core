@@ -25,11 +25,22 @@ import net.minecraft.world.item.enchantment.ItemEnchantments
 import net.minecraft.world.phys.AABB
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
+import net.neoforged.neoforge.event.OnDatapackSyncEvent
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent
 import net.neoforged.neoforge.transfer.item.ItemResource
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 object HCRecipeEventHandler {
+    @SubscribeEvent
+    fun syncRecipeToClient(event: OnDatapackSyncEvent) {
+        event.sendRecipes(
+            HCRecipeTypes.REGISTER
+                .asSequence()
+                .map { it.get() }
+                .toList(),
+        )
+    }
+
     /**
      * [HTItemToItemRecipe]を処理するイベント
      */

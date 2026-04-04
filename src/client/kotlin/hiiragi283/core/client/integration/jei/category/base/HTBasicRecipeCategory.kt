@@ -10,7 +10,6 @@ import hiiragi283.core.api.integration.jei.HTJeiPlugin
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.client.gui.widget.HTGuiWidget
-import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder
 import mezz.jei.api.gui.drawable.IDrawable
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView
@@ -18,7 +17,6 @@ import mezz.jei.api.gui.placement.IPlaceable
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder
 import mezz.jei.api.helpers.ICodecHelper
 import mezz.jei.api.helpers.IGuiHelper
-import mezz.jei.api.recipe.IFocusGroup
 import mezz.jei.api.recipe.IRecipeManager
 import mezz.jei.api.recipe.category.IRecipeCategory
 import mezz.jei.api.recipe.types.IRecipeType
@@ -93,8 +91,6 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     override fun getHeight(): Int = getYSize()
 
     final override fun getIcon(): IDrawable = icon
-
-    abstract override fun setRecipe(builder: IRecipeLayoutBuilder, recipe: RECIPE, focuses: IFocusGroup)
 
     override fun draw(
         recipe: RECIPE,

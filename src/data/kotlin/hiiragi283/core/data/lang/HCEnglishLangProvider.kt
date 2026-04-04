@@ -5,6 +5,7 @@ import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.data.lang.HTLanguageProvider
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.client.integration.jade.HCCrucibleJadeProvider
+import hiiragi283.core.common.recipe.VanillaRecipeTypes
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
@@ -37,6 +38,12 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.IRIDESCENT_POWDER, "Iridescent Powder")
         add(HCItems.ALMIGHTY_PICKAXE, "Almighty Pickaxe")
         // Recipe
+        add(VanillaRecipeTypes.SMELTING, "Smelting")
+        add(VanillaRecipeTypes.BLASTING, "Blasting")
+        add(VanillaRecipeTypes.SMOKING, "Smoking")
+        add(VanillaRecipeTypes.BREWING, "Brewing")
+
+        add(HCRecipeTypes.CRUSHING, "Crushing")
         add(HCRecipeTypes.CHARGING, "Lightning Charging")
         add(HCRecipeTypes.MELTING, "Melting")
 

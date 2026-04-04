@@ -6,8 +6,7 @@
   "mixins": [
     "AnvilBlockMixin",
     "PotionBrewingAccessor",
-    "PotionBrewingMixAccessor",
-    "RecipeMapAccessor"
+    "PotionBrewingMixAccessor"
   ],
   "minVersion": "0.8"
 }

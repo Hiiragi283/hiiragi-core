@@ -7,7 +7,6 @@ import net.minecraft.core.RegistryAccess
 import net.minecraft.resources.Identifier
 import net.minecraft.server.MinecraftServer
 import net.minecraft.world.entity.player.Player
-import net.minecraft.world.item.crafting.RecipeMap
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.neoforge.common.CommonHooks
 import net.neoforged.neoforge.server.ServerLifecycleHooks
@@ -78,9 +77,6 @@ data object HiiragiCoreAPI {
      */
     @JvmStatic
     fun getCraftingPlayer(): Player = CommonHooks.getCraftingPlayer()
-
-    @JvmStatic
-    var clientRecipeMap: RecipeMap = RecipeMap.EMPTY
 
     //    Service    //
 

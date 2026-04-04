@@ -11,6 +11,7 @@ import mezz.jei.api.constants.VanillaTypes
 import mezz.jei.api.recipe.types.IRecipeType
 import mezz.jei.api.registration.IRecipeCatalystRegistration
 import mezz.jei.api.registration.IRecipeRegistration
+import mezz.jei.common.Internal
 import net.minecraft.client.Minecraft
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStackTemplate
@@ -54,7 +55,7 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
         @JvmStatic
         fun createLookupContext(): HTRecipeLookup.Context {
             val level: Level = checkNotNull(Minecraft.getInstance().level)
-            return HTRecipeLookup.Context(HiiragiCoreAPI.clientRecipeMap, level.registryAccess(), level.potionBrewing())
+            return HTRecipeLookup.Context(Internal.getClientSyncedRecipes(), level.registryAccess(), level.potionBrewing())
         }
 
         /**
@@ -62,7 +63,7 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
          */
         @JvmStatic
         protected fun <T : Any> IRecipeRegistration.addRecipes(recipeType: IRecipeType<T>, recipes: Sequence<T>) {
-            this.addRecipes(recipeType, recipes.toList())
+            this.addRecipes(recipeType, recipes.onEach { HiiragiCoreAPI.LOGGER.debug("Adding recipe {} to JEI", it) }.toList())
         }
 
         /**
