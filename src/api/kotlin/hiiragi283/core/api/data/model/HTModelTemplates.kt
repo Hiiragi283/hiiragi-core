@@ -1,12 +1,14 @@
 package hiiragi283.core.api.data.model
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.resource.toId
 import net.minecraft.client.data.models.model.ModelTemplate
 import net.minecraft.client.data.models.model.TextureSlot
 import net.minecraft.core.Direction
 import net.minecraft.resources.Identifier
 import net.neoforged.neoforge.client.model.generators.template.ElementBuilder
+import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplate
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder
 import net.neoforged.neoforge.client.model.generators.template.FaceBuilder
 
@@ -65,6 +67,14 @@ object HTModelTemplates {
                         .tintindex(0)
                 }
         }.build()
+
+    @JvmField
+    val CRUCIBLE: ExtendedModelTemplate = ExtendedModelTemplateBuilder
+        .builder()
+        .parent(HiiragiCoreAPI.id(HTConst.BLOCK, "crucible_template"))
+        .requiredTextureSlot(TextureSlot.ALL)
+        .requiredTextureSlot(TextureSlot.INSIDE)
+        .build()
 
     //    Item    //
 }

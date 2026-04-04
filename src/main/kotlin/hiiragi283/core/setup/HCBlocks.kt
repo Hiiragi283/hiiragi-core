@@ -37,7 +37,7 @@ data object HCBlocks {
     @JvmField
     val CRUCIBLE: HTBasicDeferredBlockAndItem<HTCrucibleBlock> = REGISTER.registerSimple(
         "crucible",
-        copyOf(Blocks.TERRACOTTA),
+        copyOf(Blocks.TERRACOTTA).noCollision(),
         ::HTCrucibleBlock,
     )
 

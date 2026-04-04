@@ -1,15 +1,22 @@
 package hiiragi283.core.data.model
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.model.HTModelProvider
+import hiiragi283.core.api.data.model.HTModelTemplates
+import hiiragi283.core.api.data.model.buildTextureMap
+import hiiragi283.core.api.data.model.put
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.resource.toId
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.client.data.models.BlockModelGenerators
 import net.minecraft.client.data.models.ItemModelGenerators
 import net.minecraft.client.data.models.model.ModelTemplates
+import net.minecraft.client.data.models.model.TextureSlot
+import net.minecraft.client.data.models.model.TexturedModel
 import net.minecraft.data.PackOutput
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
 
@@ -17,7 +24,15 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
     override fun registerModels(blockModels: BlockModelGenerators, itemModels: ItemModelGenerators) {
         // Block
         blockModels.createCropBlock(HCBlocks.WARPED_WART.get(), BlockStateProperties.AGE_3, 0, 1, 1, 2)
-        blockModels.createNonTemplateModelBlock(HCBlocks.CRUCIBLE.get()) // TODO
+        blockModels.createTrivialBlock(HCBlocks.CRUCIBLE) { _ ->
+            TexturedModel(
+                buildTextureMap {
+                    put(TextureSlot.ALL, HTConst.MINECRAFT.toId(HTConst.BLOCK, "terracotta"))
+                    put(TextureSlot.INSIDE, HTConst.MINECRAFT.toId(HTConst.BLOCK, "chiseled_copper"))
+                },
+                HTModelTemplates.CRUCIBLE,
+            )
+        }
         // Fluid
         HCFluids.REGISTER
             .asBlockSequence()

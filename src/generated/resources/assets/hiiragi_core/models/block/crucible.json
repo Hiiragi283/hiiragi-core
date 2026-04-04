@@ -1,0 +1,7 @@
+{
+  "parent": "hiiragi_core:block/crucible_template",
+  "textures": {
+    "all": "minecraft:block/terracotta",
+    "inside": "minecraft:block/chiseled_copper"
+  }
+}

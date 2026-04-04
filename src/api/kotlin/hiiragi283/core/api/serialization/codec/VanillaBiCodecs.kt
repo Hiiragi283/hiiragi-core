@@ -14,6 +14,7 @@ import net.minecraft.core.Direction
 import net.minecraft.core.GlobalPos
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
+import net.minecraft.core.Registry
 import net.minecraft.core.RegistryCodecs
 import net.minecraft.core.UUIDUtil
 import net.minecraft.core.component.DataComponentPatch
@@ -215,6 +216,10 @@ object VanillaBiCodecs {
         },
         Identifier.STREAM_CODEC.map(registryKey::createTagKey, TagKey<T>::location),
     )
+
+    @JvmStatic
+    fun <T : Any> registryBased(registry: Registry<T>): BiCodec<RegistryFriendlyByteBuf, T> =
+        BiCodec.of(registry.byNameCodec(), ByteBufCodecs.registry(registry.key()))
 
     /**
      * 指定した[registryKey]から[Holder]の[BiCodec]を返します。

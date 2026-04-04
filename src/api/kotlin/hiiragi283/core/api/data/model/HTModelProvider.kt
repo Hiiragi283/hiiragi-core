@@ -1,6 +1,7 @@
 package hiiragi283.core.api.data.model
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.resource.toId
@@ -11,6 +12,7 @@ import net.minecraft.client.data.models.ItemModelGenerators
 import net.minecraft.client.data.models.ModelProvider
 import net.minecraft.client.data.models.model.ModelTemplate
 import net.minecraft.client.data.models.model.ModelTemplates
+import net.minecraft.client.data.models.model.TexturedModel
 import net.minecraft.client.resources.model.sprite.Material
 import net.minecraft.data.PackOutput
 import net.neoforged.neoforge.client.model.item.DynamicFluidContainerModel
@@ -19,6 +21,14 @@ abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvide
     abstract override fun registerModels(blockModels: BlockModelGenerators, itemModels: ItemModelGenerators)
 
     //    Extensions    //
+
+    fun BlockModelGenerators.createTrivialCube(block: HTBlockHolderLike<*>) {
+        this.createTrivialCube(block.get())
+    }
+
+    fun BlockModelGenerators.createTrivialBlock(block: HTBlockHolderLike<*>, provider: TexturedModel.Provider) {
+        this.createTrivialBlock(block.get(), provider)
+    }
 
     fun ItemModelGenerators.generateFlatItem(item: HTItemHolderLike<*>, template: ModelTemplate = ModelTemplates.FLAT_ITEM) {
         this.generateFlatItem(item.get(), template)
