@@ -2,6 +2,6 @@
   "parent": "hiiragi_core:block/crucible_template",
   "textures": {
     "all": "minecraft:block/nether_bricks",
-    "inside": "minecraft:block/iron_block"
+    "inside": "minecraft:block/gold_block"
   }
 }

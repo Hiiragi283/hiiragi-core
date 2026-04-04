@@ -4,7 +4,7 @@
   "key": {
     "A": "#c:bricks/nether",
     "B": "minecraft:nether_bricks",
-    "C": "#c:storage_blocks/iron"
+    "C": "#c:storage_blocks/gold"
   },
   "pattern": [
     "A A",

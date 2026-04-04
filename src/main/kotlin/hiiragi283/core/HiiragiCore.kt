@@ -1,9 +1,11 @@
 package hiiragi283.core
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
 import hiiragi283.core.api.network.HTPayloadHandlers
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
 import hiiragi283.core.common.network.HTUpdateMenuPacket
+import hiiragi283.core.impl.HiiragiCoreAccessImpl
 import hiiragi283.core.setup.HCAttachmentTypes
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks
@@ -20,6 +22,7 @@ import hiiragi283.core.setup.HCWidgetTypes
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.neoforged.neoforge.network.registration.PayloadRegistrar
 
@@ -29,6 +32,7 @@ class HiiragiCore(eventBus: IEventBus, container: ModContainer) {
         HiiragiCoreAPI.LOGGER.info("Hiiragi Core is loading...")
 
         eventBus.addListener(HCMiscRegister::register)
+        eventBus.addListener(::commonSetup)
         eventBus.addListener { event: RegisterPayloadHandlersEvent ->
             val registrar: PayloadRegistrar = container.modInfo
                 .version
@@ -59,5 +63,9 @@ class HiiragiCore(eventBus: IEventBus, container: ModContainer) {
         HCWidgetTypes.REGISTER.register(eventBus)
 
         HiiragiCoreAPI.LOGGER.info("Hiiragi Core has been loaded successfully!")
+    }
+
+    private fun commonSetup(event: FMLCommonSetupEvent) {
+        event.enqueueWork { HTPotionFluidManager.register(HCFluids.POTION.get(), HiiragiCoreAccessImpl.DEFAULT_POTION_HANDLER) }
     }
 }

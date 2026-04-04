@@ -10,7 +10,9 @@ import hiiragi283.core.common.gui.sync.HTFluidSyncPayload
 import hiiragi283.core.common.gui.sync.HTIntSyncPayload
 import hiiragi283.core.common.gui.sync.HTLongSyncPayload
 import hiiragi283.core.common.item.consumeEffects.HTRemoveRandomStatusEffectConsumeEffect
+import hiiragi283.core.impl.recipe.ingredient.HTPotionFluidIngredient
 import net.minecraft.core.registries.Registries
+import net.neoforged.neoforge.registries.NeoForgeRegistries
 import net.neoforged.neoforge.registries.RegisterEvent
 
 internal object HCMiscRegister {
@@ -19,6 +21,11 @@ internal object HCMiscRegister {
         // Consume Effect Type
         event.register(Registries.CONSUME_EFFECT_TYPE) { helper ->
             helper.register(HiiragiCoreAPI.id("remove_random_effect"), HTRemoveRandomStatusEffectConsumeEffect.TYPE)
+        }
+
+        // Fluid Ingredient Type
+        event.register(NeoForgeRegistries.Keys.FLUID_INGREDIENT_TYPES) { helper ->
+            helper.register(HiiragiCoreAPI.id("potion"), HTPotionFluidIngredient.TYPE)
         }
 
         // Slot Sync Type

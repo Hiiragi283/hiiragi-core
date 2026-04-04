@@ -1,13 +1,21 @@
 package hiiragi283.core.client.integration.jei
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.function.negate
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
+import hiiragi283.core.api.item.alchemy.BottledPotionContents
+import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.integration.jei.category.HCChargingRecipeCategory
+import hiiragi283.core.common.util.HCPotionFluidHelper
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import mezz.jei.api.JeiPlugin
 import mezz.jei.api.helpers.IGuiHelper
+import mezz.jei.api.helpers.IPlatformFluidHelper
+import mezz.jei.api.neoforge.NeoForgeTypes
+import mezz.jei.api.registration.IExtraIngredientRegistration
 import mezz.jei.api.registration.IGuiHandlerRegistration
 import mezz.jei.api.registration.IRecipeCatalystRegistration
 import mezz.jei.api.registration.IRecipeCategoryRegistration
@@ -15,7 +23,9 @@ import mezz.jei.api.registration.IRecipeRegistration
 import mezz.jei.api.registration.ISubtypeRegistration
 import mezz.jei.api.runtime.IIngredientManager
 import net.minecraft.core.component.DataComponents
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.ItemStack
+import net.neoforged.neoforge.fluids.FluidStack
 
 @JeiPlugin
 class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
@@ -23,6 +33,25 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         registration.registerSubtypeInterpreter(
             HCItems.ALMIGHTY_PICKAXE.get(),
         ) { stack: ItemStack, _ -> stack.get(DataComponents.UNBREAKABLE) }
+    }
+
+    override fun <T : Any> registerFluidSubtypes(registration: ISubtypeRegistration, platformFluidHelper: IPlatformFluidHelper<T>) {
+        registration.registerSubtypeInterpreter(
+            platformFluidHelper.fluidIngredientType,
+            HCFluids.POTION.get(),
+        ) { stack: T, _ -> (stack as? FluidStack)?.let(HTPotionHelper::getContents) }
+    }
+
+    override fun registerExtraIngredients(registration: IExtraIngredientRegistration) {
+        registration.addExtraIngredients(
+            NeoForgeTypes.FLUID_STACK,
+            BuiltInRegistries.POTION
+                .listElements()
+                .map(::BottledPotionContents)
+                .filter(BottledPotionContents::isWater.negate())
+                .map(HCPotionFluidHelper::createFluid)
+                .toList(),
+        )
     }
 
     override fun registerCategories(registration: IRecipeCategoryRegistration) {

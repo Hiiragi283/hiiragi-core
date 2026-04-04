@@ -8,6 +8,8 @@ import hiiragi283.core.common.fluid.HTDragonBreathFluidType
 import hiiragi283.core.common.fluid.HTDyedFluidType
 import hiiragi283.core.common.fluid.HTExperienceFluidType
 import hiiragi283.core.common.fluid.HTLatexFluid
+import hiiragi283.core.common.fluid.HTPotionFluidType
+import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.impl.registry.HTFluidContentRegister
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
@@ -62,11 +64,12 @@ object HCFluids {
         blockFactory = null
     }
 
-    /*val POTION: HTFluidContent = REGISTER.registerVirtual("potion") {
+    @JvmField
+    val POTION: HTFluidContent = REGISTER.registerVirtual("potion") {
         properties = liquid()
         typeFactory = ::HTPotionFluidType
         bucketFactory = ::HTPotionBucketItem
-    }*/
+    }
 
     @JvmField
     val OMINOUS_FLUX: HTFluidContent = REGISTER.registerFlowing("ominous_flux") { properties = molten() }

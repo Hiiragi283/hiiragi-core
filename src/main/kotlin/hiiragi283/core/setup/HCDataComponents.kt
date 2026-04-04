@@ -2,6 +2,7 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.text.HTTranslation
 import hiiragi283.core.common.text.HTSimpleTranslation
@@ -13,6 +14,9 @@ import net.neoforged.neoforge.fluids.SimpleFluidContent
 data object HCDataComponents {
     @JvmField
     val REGISTER = HTDeferredDataComponentRegister(Registries.DATA_COMPONENT_TYPE, HiiragiCoreAPI.MOD_ID)
+
+    @JvmField
+    val BOTTLE_TYPE: DataComponentType<HTBottleType> = REGISTER.registerType("bottle_type", HTBottleType.CODEC)
 
     @JvmField
     val DESCRIPTION: DataComponentType<HTTranslation> = REGISTER.registerType("description", HTSimpleTranslation.CODEC)
