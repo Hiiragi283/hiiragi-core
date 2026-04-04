@@ -1,4 +1,4 @@
-package hiiragi283.core.common.serialization.value
+package hiiragi283.core.impl.serialization.value
 
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.serialization.value.HTValueInput

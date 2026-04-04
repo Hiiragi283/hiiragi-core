@@ -1,4 +1,4 @@
-package hiiragi283.core.common.material
+package hiiragi283.core.impl.material
 
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike

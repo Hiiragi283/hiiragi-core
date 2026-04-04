@@ -1,4 +1,4 @@
-package hiiragi283.core.common.material
+package hiiragi283.core.impl.material
 
 import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.material.HTMaterialContents

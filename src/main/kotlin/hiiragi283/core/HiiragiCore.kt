@@ -5,12 +5,12 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
 import hiiragi283.core.api.mod.HTCommonMod
 import hiiragi283.core.api.network.HTPayloadHandlers
-import hiiragi283.core.common.HiiragiCoreAccessImpl
 import hiiragi283.core.common.block.dispenser.HCDispenserBehaviours
 import hiiragi283.core.common.data.HCServerResourceProvider
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
 import hiiragi283.core.common.network.HTUpdateMenuPacket
 import hiiragi283.core.config.HCConfig
+import hiiragi283.core.impl.HiiragiCoreAccessImpl
 import hiiragi283.core.setup.HCAttachmentTypes
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks

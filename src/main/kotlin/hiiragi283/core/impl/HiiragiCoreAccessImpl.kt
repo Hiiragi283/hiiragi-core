@@ -1,4 +1,4 @@
-package hiiragi283.core.common
+package hiiragi283.core.impl
 
 import com.google.gson.JsonObject
 import hiiragi283.core.api.HTComparators
@@ -31,13 +31,13 @@ import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.toTextResult
-import hiiragi283.core.common.material.HTMaterialContentsImpl
-import hiiragi283.core.common.serialization.value.HTEmptyValueInput
-import hiiragi283.core.common.serialization.value.HTJsonValueInput
-import hiiragi283.core.common.serialization.value.HTJsonValueOutput
-import hiiragi283.core.common.serialization.value.HTTagValueInput
-import hiiragi283.core.common.serialization.value.HTTagValueOutput
 import hiiragi283.core.config.HCConfig
+import hiiragi283.core.impl.material.HTMaterialContentsImpl
+import hiiragi283.core.impl.serialization.value.HTEmptyValueInput
+import hiiragi283.core.impl.serialization.value.HTJsonValueInput
+import hiiragi283.core.impl.serialization.value.HTJsonValueOutput
+import hiiragi283.core.impl.serialization.value.HTTagValueInput
+import hiiragi283.core.impl.serialization.value.HTTagValueOutput
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCMiscRegister
 import hiiragi283.core.util.HTPluginLoader

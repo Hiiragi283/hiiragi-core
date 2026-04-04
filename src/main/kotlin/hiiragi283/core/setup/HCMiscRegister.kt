@@ -32,7 +32,6 @@ import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.toItemLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.toId
-import hiiragi283.core.common.HiiragiCoreAccessImpl
 import hiiragi283.core.common.data.tank.HTPotionTankInteraction
 import hiiragi283.core.common.data.tank.HTSimpleTankInteraction
 import hiiragi283.core.common.gui.sync.HTBoolSyncPayload
@@ -41,7 +40,8 @@ import hiiragi283.core.common.gui.sync.HTFractionSyncPayload
 import hiiragi283.core.common.gui.sync.HTIntSyncPayload
 import hiiragi283.core.common.gui.sync.HTItemSyncPayload
 import hiiragi283.core.common.gui.sync.HTLongSyncPayload
-import hiiragi283.core.common.material.HTMaterialManagerImpl
+import hiiragi283.core.impl.HiiragiCoreAccessImpl
+import hiiragi283.core.impl.material.HTMaterialManagerImpl
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries

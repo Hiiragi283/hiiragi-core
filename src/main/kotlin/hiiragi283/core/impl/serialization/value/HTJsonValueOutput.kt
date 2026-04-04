@@ -1,4 +1,4 @@
-package hiiragi283.core.common.serialization.value
+package hiiragi283.core.impl.serialization.value
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
