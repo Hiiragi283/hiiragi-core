@@ -3,16 +3,15 @@ package hiiragi283.core.common.storage.resolver
 import net.minecraft.core.Direction
 
 /**
- * 向きに応じたCapabilityを取得するインターフェース
+ * 向きに応じたキャパビリティを取得するインターフェース
  * @param CONTAINER 要素を保持するクラス
  * @see mekanism.common.capabilities.resolver.ICapabilityResolver
  * @see mekanism.common.capabilities.resolver.manager.ICapabilityHandlerManager
  */
 interface HTCapabilityManager<CONTAINER : Any> {
     /**
-     * 指定された引数からCapabilityを取得します。
-     * @param T Capabilityのクラス
-     * @param capability Capabilityの種類
+     * 指定された引数からキャパビリティを取得します。
+     * @param T キャパビリティのクラス
      * @param side アクセスする面
      * @return 見つからない場合は`null`
      */

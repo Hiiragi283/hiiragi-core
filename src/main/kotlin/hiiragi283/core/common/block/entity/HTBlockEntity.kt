@@ -32,9 +32,9 @@ import hiiragi283.core.api.text.Text
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import hiiragi283.core.common.storage.HTCapabilityCodec
 import hiiragi283.core.common.storage.energy.HTBasicEnergyBattery
-import hiiragi283.core.common.storage.resolver.HTEnergyStorageManager
-import hiiragi283.core.common.storage.resolver.HTFluidHandlerManager
-import hiiragi283.core.common.storage.resolver.HTItemHandlerManager
+import hiiragi283.core.impl.storage.resolver.HTEnergyStorageManager
+import hiiragi283.core.impl.storage.resolver.HTFluidHandlerManager
+import hiiragi283.core.impl.storage.resolver.HTItemHandlerManager
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.UUIDUtil

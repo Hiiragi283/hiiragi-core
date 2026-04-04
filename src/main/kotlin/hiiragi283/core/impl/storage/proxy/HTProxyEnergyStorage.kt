@@ -1,4 +1,4 @@
-package hiiragi283.core.common.storage.proxy
+package hiiragi283.core.impl.storage.proxy
 
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.energy.HTSidedEnergyStorage

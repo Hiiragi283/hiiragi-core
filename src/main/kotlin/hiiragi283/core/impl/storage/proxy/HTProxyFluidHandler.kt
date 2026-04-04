@@ -1,4 +1,4 @@
-package hiiragi283.core.common.storage.proxy
+package hiiragi283.core.impl.storage.proxy
 
 import hiiragi283.core.api.storage.fluid.HTSidedFluidHandler
 import hiiragi283.core.api.storage.holder.HTCapabilityHolder

@@ -1,9 +1,9 @@
-package hiiragi283.core.common.storage.resolver
+package hiiragi283.core.impl.storage.resolver
 
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.HTSidedItemHandler
-import hiiragi283.core.common.storage.proxy.HTProxyItemHandler
+import hiiragi283.core.impl.storage.proxy.HTProxyItemHandler
 import net.neoforged.neoforge.items.IItemHandler
 
 /**
