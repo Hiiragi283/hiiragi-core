@@ -1,6 +1,5 @@
 package hiiragi283.core.api.material.property
 
-import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTResultCreator
 import hiiragi283.core.api.material.HTMaterialKey
@@ -9,7 +8,7 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTExtraOreResultMap.Phase
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
-import hiiragi283.core.api.recipe.result.HTChancedItemResult
+import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.toFraction
 import org.apache.commons.lang3.math.Fraction
 import java.util.EnumMap
@@ -22,26 +21,19 @@ import java.util.EnumMap
 class HTExtraOreResultMap private constructor(map: Map<Phase, Pair<HTMaterialKey, Fraction>>) :
     Map<Phase, Pair<HTMaterialKey, Fraction>> by map {
         companion object {
-            @HTBuilderMarker
             @JvmStatic
             inline fun create(builderAction: Builder.() -> Unit): HTExtraOreResultMap = Builder().apply(builderAction).build()
         }
 
-        fun getResult(phase: Phase): HTChancedItemResult? {
+        fun getResult(phase: Phase): HTItemResult? {
             val (key: HTMaterialKey, chance: Fraction) = this[phase] ?: return null
             val entry: HTPropertyMap = HiiragiCoreAccess.INSTANCE.materialManager.getOrEmpty(key)
-            return HTChancedItemResult(
-                HTResultCreator.material(entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART), key),
-                chance,
-            )
+            return HTResultCreator.material(entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART), key, chance = chance)
         }
 
-        fun getResult(phase: Phase, entry: HTMaterialManager.Entry): HTChancedItemResult? {
+        fun getResult(phase: Phase, entry: HTMaterialManager.Entry): HTItemResult? {
             val (key: HTMaterialKey, chance: Fraction) = this[phase] ?: return null
-            return HTChancedItemResult(
-                HTResultCreator.material(entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART), key),
-                chance,
-            )
+            return HTResultCreator.material(entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART), key, chance = chance)
         }
 
         //    Phase    //

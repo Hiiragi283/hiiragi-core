@@ -13,6 +13,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks
 import org.slf4j.Logger
 import thedarkcolour.kotlinforforge.neoforge.forge.callWhenOn
 import java.util.ServiceLoader
+import kotlin.random.Random
 
 /**
  * @see mekanism.api.MekanismAPI
@@ -25,6 +26,9 @@ data object HiiragiCoreAPI {
 
     @JvmField
     val LOGGER: Logger = LogUtils.getLogger()
+
+    @JvmField
+    val RANDOM: Random = Random.Default
 
     //    ResourceLocation    //
 

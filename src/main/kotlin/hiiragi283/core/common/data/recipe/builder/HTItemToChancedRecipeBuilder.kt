@@ -2,7 +2,6 @@ package hiiragi283.core.common.data.recipe.builder
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
-import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.impl.recipe.HTBasicItemToChancedRecipe
@@ -31,7 +30,7 @@ class HTItemToChancedRecipeBuilder(prefix: String, private val factory: Factory<
         fun create(
             ingredient: HTItemIngredient,
             result: HTItemResult,
-            extraResult: Optional<HTChancedItemResult>,
+            extraResult: Optional<HTItemResult>,
             time: Int,
         ): RECIPE
     }

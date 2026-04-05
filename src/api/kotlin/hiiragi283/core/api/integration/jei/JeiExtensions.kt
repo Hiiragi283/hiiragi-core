@@ -2,11 +2,11 @@ package hiiragi283.core.api.integration.jei
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTDefaultColor
+import hiiragi283.core.api.compareTo
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
-import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
@@ -87,16 +87,13 @@ fun <T : IIngredientConsumer> T.addItemIngredient(ingredient: HTItemIngredient?)
 }
 
 fun <T : IIngredientConsumer> T.addItemResult(result: HTItemResult?): T {
-    this.addItemStacks(listOfNotNull(result?.getStackResult(null)?.mapOrElse(identity(), ::createError)))
-    return this
-}
-
-fun <T : IIngredientConsumer> T.addItemResult(result: HTChancedItemResult?): T {
-    val (result: HTItemResult, chance: Fraction) = result ?: return this
-    this.addItemResult(result)
-    if (this is IRecipeSlotBuilder) {
-        this.addRichTooltipCallback { _, builder: ITooltipBuilder ->
-            builder.add(HTCommonTranslation.CHANCE_PRODUCE.translateColored(HTDefaultColor.YELLOW, chance * 100))
+    this.addItemStacks(listOfNotNull(result?.getStackResult(null, false)?.mapOrElse(identity(), ::createError)))
+    if (result != null && this is IRecipeSlotBuilder) {
+        val chance: Fraction = result.chance
+        if (result.chance < 1f) {
+            this.addRichTooltipCallback { _, builder: ITooltipBuilder ->
+                builder.add(HTCommonTranslation.CHANCE_PRODUCE.translateColored(HTDefaultColor.YELLOW, chance * 100))
+            }
         }
     }
     return this

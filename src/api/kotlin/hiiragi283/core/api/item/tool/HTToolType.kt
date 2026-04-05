@@ -1,6 +1,5 @@
 package hiiragi283.core.api.item.tool
 
-import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.data.lang.HTLangPatternProvider
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.createKey
@@ -32,7 +31,6 @@ class HTToolType(
         @JvmStatic
         fun getAllTypes(): Map<String, HTToolType> = instances
 
-        @HTBuilderMarker
         @JvmStatic
         inline fun create(name: String, builderAction: Builder.() -> Unit): HTToolType = Builder(name).apply(builderAction).build()
     }
