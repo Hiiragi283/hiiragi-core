@@ -176,14 +176,14 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         HTItemToChancedRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.SANDSTONE_UNCOLORED_BLOCKS)
             result = resultCreator.create(Items.SAND, 2)
-            extraResult += resultCreator.material(CommonParts.DUST, CommonMaterialKeys.SALTPETER) to fraction(1, 4)
+            extraResult += resultCreator.material(CommonParts.DUST, CommonMaterialKeys.SALTPETER, chance = fraction(1, 4))
             recipeId suffix "_from_sandstone"
         }
 
         HTItemToChancedRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.SANDSTONE_RED_BLOCKS)
             result = resultCreator.create(Items.RED_SAND, 2)
-            extraResult += resultCreator.material(CommonParts.DUST, CommonMaterialKeys.SALTPETER) to fraction(1, 4)
+            extraResult += resultCreator.material(CommonParts.DUST, CommonMaterialKeys.SALTPETER, chance = fraction(1, 4))
             recipeId suffix "_from_sandstone"
         }
     }

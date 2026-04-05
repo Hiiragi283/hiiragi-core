@@ -1,6 +1,5 @@
 package hiiragi283.core.common.data.recipe.builder
 
-import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.builder.HTRecipeBuilder
 import hiiragi283.core.api.fraction
@@ -13,7 +12,6 @@ import org.apache.commons.lang3.math.Fraction
 
 class HCExplodingRecipeBuilder : HTRecipeBuilder(HTConst.EXPLODING) {
     companion object {
-        @HTBuilderMarker
         @JvmStatic
         fun create(output: RecipeOutput, builderAction: HCExplodingRecipeBuilder.() -> Unit) {
             HCExplodingRecipeBuilder().apply(builderAction).save(output)

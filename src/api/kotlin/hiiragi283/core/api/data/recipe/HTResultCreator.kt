@@ -13,12 +13,17 @@ import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.VanillaFluidContents
 import hiiragi283.core.api.storage.fluid.toResource
+import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.util.toIorOrThrow
+import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
+import org.apache.commons.lang3.math.Fraction
 import java.util.function.IntUnaryOperator
 
 /**
@@ -30,36 +35,37 @@ data object HTResultCreator {
     //    Item    //
 
     @JvmStatic
-    fun create(item: ItemLike, amount: Int = 1): HTItemResult = HTItemResult.create {
-        this.item = item.toResource()
-        this.amount = amount
-    }
+    fun create(item: ItemLike, amount: Int = 1, chance: Fraction = Fraction.ONE): HTItemResult = HTItemResult.create(item, amount, chance)
 
     @JvmStatic
-    fun create(stack: ItemStack): HTItemResult = HTItemResult.create {
-        item = stack.toResource()
-        amount = stack.count
-    }
+    fun create(stack: ItemStack, chance: Fraction = Fraction.ONE): HTItemResult = HTItemResult.create(stack, chance)
 
     /**
      * 指定した[プレフィックス][prefix]と[素材][material]から[HTItemResult]の新しいインスタンスを作成します。
      * @since 0.12.0
      */
     @JvmStatic
-    fun material(prefix: HTTagPrefix, material: HTMaterialLike, amount: Int = 1): HTItemResult = HTItemResult.create {
-        this.tagKey = prefix.itemTagKey(material)
-        this.amount = amount
-    }
+    fun material(
+        prefix: HTTagPrefix,
+        material: HTMaterialLike,
+        amount: Int = 1,
+        chance: Fraction = Fraction.ONE,
+    ): HTItemResult = HTItemResult.create(prefix.itemTagKey(material), amount, chance)
 
     /**
      * 指定した[部品][part]と[素材][material]から[HTItemResult]の新しいインスタンスを作成します。
      * @since 0.12.0
      */
     @JvmStatic
-    fun material(part: HTPartLike, material: HTMaterialLike, amount: Int = 1): HTItemResult = HTItemResult.create {
-        this.item = HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, material).toResource()
-        this.tagKey = part.tagPrefix?.itemTagKey(material)
-        this.amount = amount
+    fun material(
+        part: HTPartLike,
+        material: HTMaterialLike,
+        amount: Int = 1,
+        chance: Fraction = Fraction.ONE,
+    ): HTItemResult {
+        val item: HTItemResourceType? = HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, material).toResource()
+        val tagKey: TagKey<Item>? = part.tagPrefix?.itemTagKey(material)
+        return HTItemResult((item to tagKey).toIorOrThrow(), amount, chance)
     }
 
     //    Fluid    //

@@ -115,7 +115,7 @@ object HCRecipeEventHandler {
         val recipe: HTItemToChancedRecipe.Serializable = getCaches(level).crushing.getFirstRecipe(input, level) ?: return
         val multiplier: Int = popResult(input, recipe, level, entity, HTItemToChancedRecipe::getRequiredAmount)
         (0 until multiplier)
-            .map { recipe.assembleExtraItem(input, level) }
+            .map { recipe.assembleExtraItem(input, level.registryAccess()) }
             .let(HTShapelessRecipeHelper::createMap)
             .map { (resource: HTItemResourceType, count: Int) -> resource.toStack(count) }
             .forEach(entity::spawnAtLocation)

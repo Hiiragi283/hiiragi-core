@@ -1,6 +1,5 @@
 package hiiragi283.core.client.model
 
-import hiiragi283.core.api.HTBuilderMarker
 import net.minecraft.client.model.Model
 import net.minecraft.client.model.geom.builders.LayerDefinition
 import net.minecraft.client.model.geom.builders.MeshDefinition
@@ -16,7 +15,6 @@ import net.neoforged.api.distmarker.OnlyIn
 @OnlyIn(Dist.CLIENT)
 abstract class HTModel(renderType: (ResourceLocation) -> RenderType) : Model(renderType) {
     companion object {
-        @HTBuilderMarker
         fun createLayerDefinition(width: Int, height: Int, builderAction: PartDefinition.() -> Unit): LayerDefinition =
             LayerDefinition.create(
                 MeshDefinition().apply { root.builderAction() },
