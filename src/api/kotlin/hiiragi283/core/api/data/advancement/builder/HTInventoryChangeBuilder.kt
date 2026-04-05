@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data.advancement.builder
 
-import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.util.emptyOptional
 import net.minecraft.advancements.critereon.InventoryChangeTrigger
 import net.minecraft.advancements.critereon.ItemPredicate
@@ -22,7 +21,6 @@ class HTInventoryChangeBuilder {
     class ItemPredicates {
         private val predicates: MutableList<ItemPredicate> = mutableListOf()
 
-        @HTBuilderMarker
         operator fun plusAssign(builderAction: ItemPredicate.Builder.() -> Unit) {
             ItemPredicate.Builder
                 .item()

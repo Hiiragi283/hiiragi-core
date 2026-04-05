@@ -49,6 +49,10 @@ class HTRegisterRuntimeRecipeEvent(
         }
     }
 
+    /**
+     * @author Hiiragi Tsubasa
+     * @since 0.14.0
+     */
     fun removeRecipe(id: ResourceLocation) {
         patches += Result(id, null)
         HiiragiCoreAPI.LOGGER.debug("Removed recipe {}", id)

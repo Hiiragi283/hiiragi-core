@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data.advancement.builder
 
-import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
 import hiiragi283.core.api.data.holder.HTItemStackHolder
 import hiiragi283.core.api.text.Text
@@ -17,7 +16,6 @@ import net.minecraft.resources.ResourceLocation
  */
 class HTDisplayInfoBuilder {
     companion object {
-        @HTBuilderMarker
         @JvmStatic
         inline fun create(key: HTAdvancementKey, builderAction: HTDisplayInfoBuilder.() -> Unit): DisplayInfo = HTDisplayInfoBuilder()
             .apply {

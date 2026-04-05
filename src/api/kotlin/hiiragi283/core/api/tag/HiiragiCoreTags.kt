@@ -33,6 +33,9 @@ object HiiragiCoreTags {
     }
 
     object EntityTypes {
+        /**
+         * @since 0.14.0
+         */
         @JvmField
         val CAPTURE_BLACKLIST: TagKey<EntityType<*>> = mod("capture_blacklist")
 

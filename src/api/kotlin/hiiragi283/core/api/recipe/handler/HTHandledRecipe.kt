@@ -37,6 +37,9 @@ data class HTHandledRecipe<INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> privat
      */
     inline fun <T> map(transform: (RECIPE, INPUT) -> T): T = transform(recipe, input)
 
+    /**
+     * @since 0.14.0
+     */
     inline fun <T, C> map(context: C, transform: (RECIPE, INPUT, C) -> T): T = transform(recipe, input, context)
 }
 

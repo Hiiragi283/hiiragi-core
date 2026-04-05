@@ -7,6 +7,7 @@ import net.minecraft.server.packs.PackType
 import net.neoforged.neoforge.common.data.JsonCodecProvider
 
 /**
+ * [HTTankInteraction]のデータ生成で使用される抽象クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.14.0
  */

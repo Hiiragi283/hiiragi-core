@@ -1,6 +1,5 @@
 package hiiragi283.core.api.recipe.result
 
-import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.compareTo
@@ -61,7 +60,6 @@ class HTItemResult(private val content: Ior<HTItemResourceType, TagKey<Item>>, p
          * [HTItemResult]の新しいインスタンスを作成します。
          * @since 0.8.0
          */
-        @HTBuilderMarker
         @JvmStatic
         fun create(builderAction: Builder.() -> Unit): HTItemResult = Builder().apply(builderAction).build()
     }

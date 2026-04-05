@@ -62,11 +62,17 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
         simpleBlockWithItem(block.get(), model)
     }
 
+    /**
+     * @since 0.14.0
+     */
     protected fun simpleBlockAndItem(block: HTBlockHolderLike<*>, vararg models: ConfiguredModel) {
         simpleBlock(block.get(), *models)
         simpleBlockItem(block.get(), models[0].model)
     }
 
+    /**
+     * @since 0.14.0
+     */
     protected fun <BLOCK : HTBlockHolderLike<*>> simpleBlockAndItem(block: BLOCK, factory: (BLOCK) -> Array<ConfiguredModel>) {
         simpleBlockAndItem(block, *factory(block))
     }

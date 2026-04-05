@@ -63,7 +63,6 @@ abstract class HiiragiCoreAccess {
      * @param action 処理を行うブロック
      * @since 0.12.0
      */
-    @HTBuilderMarker
     inline fun forEachPlugin(title: String, action: (HTMaterialPlugin) -> Unit) {
         HiiragiCoreAPI.LOGGER.info("{}...", title)
         val duration: Duration = measureTime {

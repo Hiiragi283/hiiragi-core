@@ -5,6 +5,11 @@ import hiiragi283.core.api.registry.toLike
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 
+/**
+ * 既存の銅系ブロックをまとめたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.14.0
+ */
 object HTWeatheringBlocks {
     @JvmField
     val COPPER_BLOCK: HTWeatheringBlockMap = createMap(

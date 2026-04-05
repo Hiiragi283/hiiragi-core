@@ -27,9 +27,15 @@ enum class HTBottleType :
         @JvmField
         val CODEC: BiCodec<ByteBuf, HTBottleType> = BiCodecs.stringEnum(HTBottleType::getSerializedName)
 
+        /**
+         * @since 0.14.0
+         */
         @JvmStatic
         fun getBottleType(stack: ItemStack): HTBottleType? = entries.firstOrNull { stack.`is`(it.asItem()) }
 
+        /**
+         * @since 0.14.0
+         */
         @JvmStatic
         fun getBottleType(resource: HTItemResourceType): HTBottleType? = entries.firstOrNull { resource.isOf(it.asItem()) }
     }

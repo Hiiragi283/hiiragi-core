@@ -1,7 +1,6 @@
 package hiiragi283.core.api.item.component
 
 import com.google.common.base.Suppliers
-import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.util.wrapOptional
 import net.minecraft.core.Holder
 import net.minecraft.world.effect.MobEffect
@@ -23,11 +22,9 @@ import java.util.function.Supplier
  */
 class HTFoodBuilder private constructor() {
     companion object {
-        @HTBuilderMarker
         @JvmStatic
         fun create(builderAction: HTFoodBuilder.() -> Unit): FoodProperties = HTFoodBuilder().apply(builderAction).build()
 
-        @HTBuilderMarker
         @JvmStatic
         fun copyOf(parent: FoodProperties, builderAction: HTFoodBuilder.() -> Unit): FoodProperties = create {
             nutrition = parent.nutrition

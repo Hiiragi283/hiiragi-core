@@ -22,6 +22,9 @@ import net.neoforged.neoforge.registries.datamaps.IWithData
 interface HTResourceType<TYPE : Any> : HTHasText {
     fun type(): TYPE
 
+    /**
+     * @since 0.14.0
+     */
     fun isOf(other: TYPE): Boolean = other == type()
 
     /**
@@ -39,8 +42,14 @@ interface HTResourceType<TYPE : Any> : HTHasText {
          */
         fun getHolder(): Holder<TYPE>
 
+        /**
+         * @since 0.14.0
+         */
         fun isOf(tagKey: TagKey<TYPE>): Boolean = getHolder().`is`(tagKey)
 
+        /**
+         * @since 0.14.0
+         */
         fun isOf(holderSet: HolderSet<TYPE>): Boolean = getHolder() in holderSet
 
         override fun getResourceKey(): ResourceKey<TYPE> = getHolder().unwrapKey().orElseThrow()

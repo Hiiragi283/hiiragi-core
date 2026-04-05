@@ -70,8 +70,16 @@ interface HTDataGenerator {
         addProvider(blockTags).contentsGetter().let(itemTags::partially1).let { addProvider(it) }
     }
 
+    /**
+     * 進捗を登録します。
+     * @since 0.14.0
+     */
     fun addAdvancements(vararg providers: HTSubAdvancementProvider): HTAdvancementProvider = addAdvancements(providers.toList())
 
+    /**
+     * 進捗を登録します。
+     * @since 0.14.0
+     */
     fun addAdvancements(providers: List<HTSubAdvancementProvider>): HTAdvancementProvider =
         addProvider { context: HTDataGenContext -> HTAdvancementProvider(context, providers) }
 

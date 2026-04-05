@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data.advancement.builder
 
-import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
 import hiiragi283.core.api.data.advancement.HTAdvancementOutput
 import hiiragi283.core.api.data.holder.HTConditionHolder
@@ -20,7 +19,6 @@ import net.minecraft.resources.ResourceLocation
  */
 class HTAdvancementBuilder(val key: HTAdvancementKey) {
     companion object {
-        @HTBuilderMarker
         @JvmStatic
         inline fun create(output: HTAdvancementOutput, key: HTAdvancementKey, builderAction: HTAdvancementBuilder.() -> Unit) {
             HTAdvancementBuilder(key).apply(builderAction).save(output)
@@ -35,7 +33,6 @@ class HTAdvancementBuilder(val key: HTAdvancementKey) {
     var strategy: AdvancementRequirements.Strategy = AdvancementRequirements.Strategy.AND
     val conditions = HTConditionHolder()
 
-    @HTBuilderMarker
     inline fun display(builderAction: HTDisplayInfoBuilder.() -> Unit) {
         display = HTDisplayInfoBuilder.create(key, builderAction)
     }
@@ -58,7 +55,6 @@ class HTAdvancementBuilder(val key: HTAdvancementKey) {
     inner class Criterions {
         private val map: MutableMap<String, Criterion<*>> = mutableMapOf()
 
-        @HTBuilderMarker
         @JvmName("hasItem")
         operator fun set(key: String, builder: HTInventoryChangeBuilder.() -> Unit) {
             this[key] = HTInventoryChangeBuilder()

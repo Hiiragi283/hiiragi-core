@@ -5,6 +5,11 @@ import net.minecraft.util.StringRepresentable
 import net.minecraft.world.level.block.WeatheringCopper
 import net.minecraft.world.level.material.MapColor
 
+/**
+ * 酸化状態を管理するクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.14.0
+ */
 enum class HTWeatheringLevel(private val prefix: String, provider: HTLangPatternProvider) :
     StringRepresentable,
     HTLangPatternProvider by provider {

@@ -2,6 +2,13 @@ package hiiragi283.core.api.block
 
 import hiiragi283.core.api.registry.HTBlockHolderLike
 
+/**
+ * 銅系ブロックを管理するクラスです。
+ * @param base 錆止めされていないブロックの一覧
+ * @param waxed 錆止めされたブロックの一覧
+ * @author Hiiragi Tsubasa
+ * @since 0.14.0
+ */
 data class HTWeatheringBlockMap(
     val base: Map<HTWeatheringLevel, HTBlockHolderLike<*>>,
     val waxed: Map<HTWeatheringLevel, HTBlockHolderLike<*>>,

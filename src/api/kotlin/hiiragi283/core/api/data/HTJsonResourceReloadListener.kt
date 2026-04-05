@@ -16,6 +16,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
+ * Hiiragi Coreとそれを前提とするmodで使用される[SimpleJsonResourceReloadListener]の実装クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.14.0
  * @see net.neoforged.neoforge.common.loot.LootModifierManager

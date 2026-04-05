@@ -7,7 +7,6 @@ import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.energy.HTEnergyBattery
-import net.minecraft.util.Mth
 import java.util.function.Predicate
 
 /**
@@ -49,7 +48,7 @@ open class HTBasicEnergyBattery(
             if (this.amount == 0) return
             this.amount = 0
         } else if (!validate || amount > 0) {
-            this.amount = Mth.clamp(amount, 0, getCapacity())
+            this.amount = amount.coerceIn(0, getCapacity())
         } else {
             error("Invalid amount for storage: $amount")
         }

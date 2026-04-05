@@ -9,6 +9,9 @@ import hiiragi283.core.api.util.Ior
 import io.netty.buffer.ByteBuf
 
 /**
+ * 区間を表すクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.14.0
  * @see net.minecraft.advancements.critereon.MinMaxBounds
  */
 @JvmInline
@@ -23,18 +26,30 @@ value class HTMinMaxRange<T : Comparable<T>> private constructor(private val con
         @JvmField
         val INT_CODEC: BiCodec<ByteBuf, HTMinMaxRange<Int>> = codec(BiCodec.INT)
 
+        /**
+         * 下限をもつ区間を作成します。
+         */
         @JvmStatic
         fun <T : Comparable<T>> atLeast(min: T): HTMinMaxRange<T> = HTMinMaxRange(Ior.Left(min))
 
+        /**
+         * 上限をもつ区間を作成します。
+         */
         @JvmStatic
         fun <T : Comparable<T>> atMost(max: T): HTMinMaxRange<T> = HTMinMaxRange(Ior.Right(max))
 
+        /**
+         * 閉区間を作成します。
+         */
         @JvmStatic
         fun <T : Comparable<T>> between(range: ClosedRange<T>): HTMinMaxRange<T> {
             check(!range.isEmpty()) { "Range $range must be not empty" }
             return HTMinMaxRange(Ior.Both(range.start, range.endInclusive))
         }
 
+        /**
+         * 閉区間を作成します。
+         */
         @JvmStatic
         fun <T : Comparable<T>> between(min: T, max: T): HTMinMaxRange<T> {
             check(min < max) { "Maximum value $max must be larger than minimum value $min" }
@@ -42,7 +57,14 @@ value class HTMinMaxRange<T : Comparable<T>> private constructor(private val con
         }
     }
 
+    /**
+     * 区間の最小値
+     */
     val min: T? get() = content.getLeft()
+
+    /**
+     * 区間の最大値
+     */
     val max: T? get() = content.getRight()
 
     operator fun contains(value: T): Boolean = content.fold(

@@ -1,6 +1,5 @@
 package hiiragi283.core.common.data.recipe.builder
 
-import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
@@ -12,7 +11,6 @@ import java.util.Optional
 
 class HTItemToChancedRecipeBuilder(prefix: String, private val factory: Factory<*>) : HTChancedRecipeBuilder(prefix) {
     companion object {
-        @HTBuilderMarker
         @JvmStatic
         inline fun crushing(output: RecipeOutput, builderAction: HTItemToChancedRecipeBuilder.() -> Unit) {
             HTItemToChancedRecipeBuilder(HTConst.CRUSHING, ::HCCrushingRecipe).apply(builderAction).save(output)

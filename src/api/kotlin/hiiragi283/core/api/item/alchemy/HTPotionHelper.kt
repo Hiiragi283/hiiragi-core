@@ -35,6 +35,9 @@ object HTPotionHelper {
     @JvmStatic
     fun getPotion(holder: DataComponentHolder): PotionContents = holder.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY)
 
+    /**
+     * @since 0.14.0
+     */
     @JvmStatic
     fun setPotion(holder: MutableDataComponentHolder, contents: PotionContents?) {
         holder.set(DataComponents.POTION_CONTENTS, contents)

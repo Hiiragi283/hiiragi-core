@@ -18,6 +18,9 @@ object HCRegistries {
     @JvmField
     val SLOT_TYPE: Registry<HTSyncablePayload.Type<*>> = createRegistry(Keys.SLOT_TYPE)
 
+    /**
+     * @since 0.14.0
+     */
     @JvmField
     val TANK_INTERACTION_TYPE: Registry<MapCodec<out HTTankInteraction.Serializable>> = createRegistry(Keys.TANK_INTERACTION_TYPE)
 
@@ -40,6 +43,9 @@ object HCRegistries {
         @JvmField
         val SLOT_TYPE: ResourceKey<Registry<HTSyncablePayload.Type<*>>> = createKey("syncable_slot_type")
 
+        /**
+         * @since 0.14.0
+         */
         @JvmField
         val TANK_INTERACTION_TYPE: ResourceKey<Registry<MapCodec<out HTTankInteraction.Serializable>>> =
             createCodecKey(HTConst.TANK_INTERACTION)

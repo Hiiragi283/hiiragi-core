@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data.model
 
-import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
@@ -23,7 +22,6 @@ class HTTexturedModel(val template: ModelTemplate, val texture: TextureMapping) 
          * @param template 親となるモデル
          * @param transform IDからテクスチャに変換するブロック
          */
-        @HTBuilderMarker
         @JvmStatic
         fun create(template: ModelTemplate, transform: (HTIdLike) -> TextureMapping): Provider =
             Provider { holder: HTIdLike -> HTTexturedModel(template, transform(holder)) }

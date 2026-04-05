@@ -1,6 +1,5 @@
 package hiiragi283.core.common.data.recipe.builder
 
-import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.builder.HTProcessingRecipeBuilder
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
@@ -12,7 +11,6 @@ import net.minecraft.resources.ResourceLocation
 
 class HTItemToItemRecipeBuilder(prefix: String, private val factory: Factory<*>) : HTProcessingRecipeBuilder(prefix) {
     companion object {
-        @HTBuilderMarker
         @JvmStatic
         inline fun charging(output: RecipeOutput, builderAction: HTItemToItemRecipeBuilder.() -> Unit) {
             HTItemToItemRecipeBuilder(HTConst.CHARGING, ::HCChargingRecipe).apply(builderAction).save(output)

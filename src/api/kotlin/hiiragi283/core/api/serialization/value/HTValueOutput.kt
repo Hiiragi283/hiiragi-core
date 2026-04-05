@@ -158,6 +158,10 @@ fun <T : Any> HTValueOutput.writeOptional(key: String, codec: BiCodec<*, Optiona
     this.writeOptional(key, codec.codec, value)
 }
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.14.0
+ */
 fun HTValueOutput.write(key: String, value: HTValueSerializable) {
     value.serialize(this.child(key))
 }
