@@ -4,13 +4,13 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.text.HTCommonTranslation
+import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
-import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.data.PackOutput
 
 class HCJapaneseLangProvider(output: PackOutput) :
@@ -80,11 +80,11 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HTVanillaRecipeTypes.SMOKING, "燻製器")
         add(HTVanillaRecipeTypes.BREWING, "醸造")
 
-        add(HCRecipeTypes.CRUSHING, "粉砕")
-        add(HCRecipeTypes.CHARGING, "落雷によるチャージ")
-        add(HCRecipeTypes.EXPLODING, "爆破")
-        add(HCRecipeTypes.MELTING, "溶融")
-        add(HCRecipeTypes.TANK_INTERACTION, "タンクとの相互作用")
+        add(HCRecipeLookups.CHARGING, "落雷によるチャージ")
+        add(HCRecipeLookups.CRUSHING, "粉砕")
+        add(HCRecipeLookups.EXPLODING, "爆破")
+        add(HCRecipeLookups.MELTING, "溶融")
+        add(HCRecipeLookups.TANK_INTERACTION, "タンクとの相互作用")
 
         // Translation
         translation()

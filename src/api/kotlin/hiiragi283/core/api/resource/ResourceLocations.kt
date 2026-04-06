@@ -4,12 +4,6 @@ import net.minecraft.Util
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 
-/**
- * @author Hiiragi Tsubasa
- * @since 0.12.0
- */
-typealias IdToValue<T> = Pair<ResourceLocation, T>
-
 //    ResourceLocation    //
 
 /**

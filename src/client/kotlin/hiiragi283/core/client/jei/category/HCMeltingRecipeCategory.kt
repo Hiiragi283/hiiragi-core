@@ -11,10 +11,8 @@ import mezz.jei.api.gui.builder.ITooltipBuilder
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder
 import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
-import net.minecraft.world.item.crafting.RecipeHolder
 
-class HCMeltingRecipeCategory(guiHelper: IGuiHelper) :
-    HTLookupRecipeCategory.Managed<HCMeltingRecipe>(guiHelper, HCJeiRecipeTypes.MELTING) {
+class HCMeltingRecipeCategory(guiHelper: IGuiHelper) : HTLookupRecipeCategory<HCMeltingRecipe>(guiHelper, HCJeiRecipeTypes.MELTING) {
     override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: HCMeltingRecipe, focuses: IFocusGroup) {
         // input
         builder
@@ -29,8 +27,7 @@ class HCMeltingRecipeCategory(guiHelper: IGuiHelper) :
             .setSlotBackground(HTBackgroundType.OUTPUT)
     }
 
-    override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: RecipeHolder<HCMeltingRecipe>, focuses: IFocusGroup) {
-        val recipe: HCMeltingRecipe = recipe.value()
+    override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HCMeltingRecipe, focuses: IFocusGroup) {
         builder
             .addAnimatedRecipeArrow(recipe.time)
             .setPosition(getPosition(1.25), getPosition(0))

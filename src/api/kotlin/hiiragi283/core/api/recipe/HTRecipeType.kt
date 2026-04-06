@@ -5,7 +5,6 @@ import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.HTHasTranslationKey
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
-import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeInput
 
 /**
@@ -15,7 +14,8 @@ import net.minecraft.world.item.crafting.RecipeInput
  * @author Hiiragi Tsubasa
  * @since 0.11.0
  */
-sealed interface HTRecipeType<INPUT : RecipeInput, RECIPE : Any> :
+interface HTRecipeType<INPUT : RecipeInput, RECIPE : Any> :
+    HTRecipeLookup<INPUT, RECIPE>,
     HTHasTranslationKey,
     HTHasText,
     HTIdLike {
@@ -23,22 +23,4 @@ sealed interface HTRecipeType<INPUT : RecipeInput, RECIPE : Any> :
         get() = getId().toLanguageKey("recipe_type")
 
     override fun getText(): Text = translatableText(translationKey)
-
-    /**
-     * [HTRecipeLookup.Managed]に基づいた[HTRecipeType]の拡張インターフェースです。
-     * @author Hiiragi Tsubasa
-     * @since 0.12.0
-     */
-    interface Managed<INPUT : RecipeInput, RECIPE : Recipe<INPUT>> :
-        HTRecipeType<INPUT, RECIPE>,
-        HTRecipeLookup.Managed<INPUT, RECIPE>
-
-    /**
-     * [HTRecipeLookup.Fake]に基づいた[HTRecipeType]の拡張インターフェースです。
-     * @author Hiiragi Tsubasa
-     * @since 0.12.0
-     */
-    interface Fake<INPUT : RecipeInput, RECIPE : Any> :
-        HTRecipeType<INPUT, RECIPE>,
-        HTRecipeLookup.Fake<INPUT, RECIPE>
 }

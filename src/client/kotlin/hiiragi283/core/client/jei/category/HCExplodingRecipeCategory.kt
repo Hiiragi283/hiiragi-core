@@ -11,10 +11,9 @@ import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder
 import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
 import mezz.jei.api.recipe.RecipeIngredientRole
-import net.minecraft.world.item.crafting.RecipeHolder
 
 class HCExplodingRecipeCategory(guiHelper: IGuiHelper) :
-    HTLookupRecipeCategory.Managed<HCExplodingRecipe>(guiHelper, HCJeiRecipeTypes.EXPLODING) {
+    HTLookupRecipeCategory<HCExplodingRecipe>(guiHelper, HCJeiRecipeTypes.EXPLODING) {
     override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: HCExplodingRecipe, focuses: IFocusGroup) {
         // inputs
         builder
@@ -32,7 +31,7 @@ class HCExplodingRecipeCategory(guiHelper: IGuiHelper) :
             .setSlotBackground(HTBackgroundType.OUTPUT)
     }
 
-    override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: RecipeHolder<HCExplodingRecipe>, focuses: IFocusGroup) {
+    override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HCExplodingRecipe, focuses: IFocusGroup) {
         builder.addRecipeArrow().setPosition(getPosition(3.25), getPosition(0))
         builder.addRecipePlus(getPosition(1))
     }

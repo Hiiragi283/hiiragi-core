@@ -9,11 +9,11 @@ import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.toResource
+import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.storage.fluid.HTBasicFluidTank
 import hiiragi283.core.impl.recipe.handler.HTFluidInputHandler
 import hiiragi283.core.impl.recipe.handler.HTFluidOutputHandler
 import hiiragi283.core.setup.HCBlockEntityTypes
-import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.core.util.HTItemDropHelper
 import hiiragi283.core.util.HTStackSlotHelper
 import net.minecraft.core.BlockPos
@@ -48,9 +48,9 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
     fun drainContainer(player: Player, hand: InteractionHand): Boolean {
         val stack: ItemStack = player.getItemInHand(hand)
         val filledContainer: HTItemResourceType = stack.toResource() ?: return false
-        val recipe: HTTankInteraction = HCRecipeTypes.TANK_INTERACTION
+        val recipe: HTTankInteraction = HCRecipeLookups.TANK_INTERACTION
             .findFirst(level) { recipe: HTTankInteraction -> recipe.canEmptyContainer(filledContainer) }
-            ?.second
+            ?.recipe
             ?: return false
 
         val (emptyContainer: ItemStack, fluidStack: FluidStack) = recipe.emptyContainer(filledContainer)
@@ -68,9 +68,9 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
         val stack: ItemStack = player.getItemInHand(hand)
         val emptyContainer: HTItemResourceType = stack.toResource() ?: return false
         val fluid: HTFluidResourceType = fluidInputHandler.getResource() ?: return false
-        val recipe: HTTankInteraction = HCRecipeTypes.TANK_INTERACTION
+        val recipe: HTTankInteraction = HCRecipeLookups.TANK_INTERACTION
             .findFirst(level) { recipe: HTTankInteraction -> recipe.canFillContainer(emptyContainer, fluid) }
-            ?.second
+            ?.recipe
             ?: return false
 
         val filledContainer: ItemStack = recipe.fillContainer(emptyContainer, fluid)

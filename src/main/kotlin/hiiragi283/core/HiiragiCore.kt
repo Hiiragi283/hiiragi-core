@@ -9,6 +9,7 @@ import hiiragi283.core.common.block.dispenser.HCDispenserBehaviours
 import hiiragi283.core.common.data.HCServerResourceProvider
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
 import hiiragi283.core.common.network.HTUpdateMenuPacket
+import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.config.HCConfig
 import hiiragi283.core.impl.HiiragiCoreAccessImpl
 import hiiragi283.core.setup.HCAttachmentTypes
@@ -80,6 +81,7 @@ data object HiiragiCore : HTCommonMod() {
 
         event.enqueueWork(::registerPotionHandlers)
         event.enqueueWork(HCDispenserBehaviours::init)
+        event.enqueueWork(HCRecipeLookups::init)
     }
 
     private fun registerPotionHandlers() {

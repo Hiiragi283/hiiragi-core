@@ -6,7 +6,6 @@ import hiiragi283.core.api.integration.jei.addFluidIngredient
 import hiiragi283.core.api.integration.jei.addFluidResult
 import hiiragi283.core.api.integration.jei.addItemIngredient
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
-import hiiragi283.core.api.resource.IdToValue
 import hiiragi283.core.client.jei.HCJeiRecipeTypes
 import hiiragi283.core.client.jei.category.base.HTLookupRecipeCategory
 import hiiragi283.core.common.recipe.HCBrewingRecipe
@@ -21,7 +20,7 @@ import net.minecraft.network.chat.FormattedText
 import net.minecraft.world.inventory.tooltip.TooltipComponent
 import net.minecraft.world.item.alchemy.PotionContents
 
-class HCBrewingRecipeCategory(guiHelper: IGuiHelper) : HTLookupRecipeCategory.Fake<HCBrewingRecipe>(guiHelper, HCJeiRecipeTypes.BREWING) {
+class HCBrewingRecipeCategory(guiHelper: IGuiHelper) : HTLookupRecipeCategory<HCBrewingRecipe>(guiHelper, HCJeiRecipeTypes.BREWING) {
     override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: HCBrewingRecipe, focuses: IFocusGroup) {
         // inputs
         builder
@@ -52,8 +51,8 @@ class HCBrewingRecipeCategory(guiHelper: IGuiHelper) : HTLookupRecipeCategory.Fa
             }
     }
 
-    override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: IdToValue<HCBrewingRecipe>, focuses: IFocusGroup) {
-        builder.addAnimatedRecipeArrow(recipe.second.time).setPosition(getPosition(3.25), getPosition(0))
+    override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HCBrewingRecipe, focuses: IFocusGroup) {
+        builder.addAnimatedRecipeArrow(recipe.time).setPosition(getPosition(3.25), getPosition(0))
         builder.addRecipePlus(getPosition(1))
     }
 }

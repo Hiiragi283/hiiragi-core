@@ -87,7 +87,7 @@ object HCRecipeEventHandler {
         if (level.isClientSide) return
         if (entity is ItemEntity && entity.isAlive) {
             val input: SingleRecipeInput = createInput(entity)
-            val recipe: HTItemToItemRecipe.Serializable = getCaches(level).charging.getFirstRecipe(input, level) ?: return
+            val recipe: HTItemToItemRecipe = getCaches(level).charging.getFirstRecipe(input, level) ?: return
             popResult(input, recipe, level, entity, HTItemToItemRecipe::getRequiredAmount)
             if (entity.item.isEmpty) {
                 entity.discard()
@@ -112,7 +112,7 @@ object HCRecipeEventHandler {
     private fun anvilCrushing(entity: ItemEntity) {
         val level: Level = entity.level()
         val input: SingleRecipeInput = createInput(entity)
-        val recipe: HTItemToChancedRecipe.Serializable = getCaches(level).crushing.getFirstRecipe(input, level) ?: return
+        val recipe: HTItemToChancedRecipe = getCaches(level).crushing.getFirstRecipe(input, level) ?: return
         val multiplier: Int = popResult(input, recipe, level, entity, HTItemToChancedRecipe::getRequiredAmount)
         (0 until multiplier)
             .map { recipe.assembleExtraItem(input, level.registryAccess()) }

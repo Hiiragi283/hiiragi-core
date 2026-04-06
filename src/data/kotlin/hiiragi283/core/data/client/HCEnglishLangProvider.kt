@@ -4,13 +4,13 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.text.HTCommonTranslation
+import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
-import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.data.PackOutput
 
 class HCEnglishLangProvider(output: PackOutput) :
@@ -80,11 +80,11 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HTVanillaRecipeTypes.SMOKING, "Smoking")
         add(HTVanillaRecipeTypes.BREWING, "Brewing")
 
-        add(HCRecipeTypes.CRUSHING, "Crushing")
-        add(HCRecipeTypes.CHARGING, "Lightning Charging")
-        add(HCRecipeTypes.EXPLODING, "Exploding")
-        add(HCRecipeTypes.MELTING, "Melting")
-        add(HCRecipeTypes.TANK_INTERACTION, "Tank Interaction")
+        add(HCRecipeLookups.CHARGING, "Lightning Charging")
+        add(HCRecipeLookups.CRUSHING, "Crushing")
+        add(HCRecipeLookups.EXPLODING, "Exploding")
+        add(HCRecipeLookups.MELTING, "Melting")
+        add(HCRecipeLookups.TANK_INTERACTION, "Tank Interaction")
 
         // Translation
         translation()

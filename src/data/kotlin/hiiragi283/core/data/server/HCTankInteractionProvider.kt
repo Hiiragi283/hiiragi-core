@@ -8,9 +8,7 @@ import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTSimpleItemHolderLike
 import hiiragi283.core.api.registry.VanillaFluidContents
 import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.util.wrapOptional
-import hiiragi283.core.common.data.tank.HTPotionTankInteraction
 import hiiragi283.core.common.data.tank.HTSimpleTankInteraction
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.world.item.Items
@@ -27,7 +25,6 @@ class HCTankInteractionProvider(context: HTDataGenContext) : HTTankInteractionPr
         // Dragon Breath
         tankInteraction(glassBottle, Items.DRAGON_BREATH.toLike(), HCFluids.DRAGON_BREATH)
         // Potion Bottle
-        unconditional(HTConst.MINECRAFT.toId("potion"), HTPotionTankInteraction)
 
         // Sponge
         tankInteraction(Items.SPONGE.toLike(), Items.WET_SPONGE.toLike(), VanillaFluidContents.WATER, HTConst.DEFAULT_FLUID_AMOUNT)

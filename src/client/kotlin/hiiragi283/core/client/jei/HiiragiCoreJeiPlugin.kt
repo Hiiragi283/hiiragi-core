@@ -11,12 +11,12 @@ import hiiragi283.core.api.integration.jei.JeiRecipeType
 import hiiragi283.core.api.item.HTPotionBasedItem
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
+import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.toFluidLike
 import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.api.resource.IdToValue
 import hiiragi283.core.api.util.emptyOptional
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.jei.category.HCBrewingRecipeCategory
@@ -167,13 +167,13 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         registration.addRecipes(HCJeiRecipeTypes.BREWING)
         registration.addRecipes(HCJeiRecipeTypes.CHARGING)
         registration.addRecipes(HCJeiRecipeTypes.CRUSHING)
-        registration.addRecipes(HCJeiRecipeTypes.EXPLODING, sorter = compareBy { it.result.getId() })
-        registration.addRecipes(HCJeiRecipeTypes.MELTING, sorter = compareBy { it.result.getId() })
+        registration.addRecipes(HCJeiRecipeTypes.EXPLODING)
+        registration.addRecipes(HCJeiRecipeTypes.MELTING)
         registerTankInteractions(registration)
     }
 
     private fun registerTankInteractions(registration: IRecipeRegistration) {
-        val recipeType: JeiRecipeType<IdToValue<HTTankInteraction>> = getRecipeType(HCJeiRecipeTypes.TANK_INTERACTION)
+        val recipeType: JeiRecipeType<HTRecipeHolder<HTTankInteraction>> = getRecipeType(HCJeiRecipeTypes.TANK_INTERACTION)
         // Custom
         registration.addRecipes(HCJeiRecipeTypes.TANK_INTERACTION)
         // Bucket
@@ -191,7 +191,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                     holder,
                     HTConst.DEFAULT_FLUID_AMOUNT,
                     emptyOptional(),
-                ).let { holder.getId().withPrefix("bucket/") to it as HTTankInteraction }
+                ).let { HTRecipeHolder(holder.getId().withPrefix("bucket/"), it as HTTankInteraction) }
             }.toList()
             .let { registration.addRecipes(recipeType, it) }
     }
@@ -205,7 +205,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             HCJeiRecipeTypes.MELTING,
         )
 
-        val tankInteraction: JeiRecipeType<IdToValue<HTTankInteraction>> = getRecipeType(HCJeiRecipeTypes.TANK_INTERACTION)
+        val tankInteraction: JeiRecipeType<HTRecipeHolder<HTTankInteraction>> = getRecipeType(HCJeiRecipeTypes.TANK_INTERACTION)
         registration.addRecipeCatalysts(
             tankInteraction,
             VanillaTypes.ITEM_STACK,

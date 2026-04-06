@@ -1,6 +1,5 @@
 package hiiragi283.core.common.data.tank
 
-import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
@@ -13,12 +12,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.neoforged.neoforge.fluids.FluidStack
 
-data object HTPotionTankInteraction : HTTankInteraction.Serializable {
-    @JvmField
-    val CODEC: MapCodec<HTPotionTankInteraction> = MapCodec.unit { HTPotionTankInteraction }
-
-    override fun type(): MapCodec<HTPotionTankInteraction> = CODEC
-
+data object HTPotionTankInteraction : HTTankInteraction {
     override val amount: Int = HTConst.DEFAULT_FLUID_AMOUNT / 4
 
     override fun canEmptyContainer(container: HTItemResourceType): Boolean {

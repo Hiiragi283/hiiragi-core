@@ -10,13 +10,14 @@ import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.serialization.value.read
 import hiiragi283.core.api.serialization.value.write
 import hiiragi283.core.common.recipe.HCExplodingRecipe
-import hiiragi283.core.setup.HCRecipeTypes
+import hiiragi283.core.common.recipe.HCRecipeLookups
+import hiiragi283.core.impl.recipe.HTLookupRecipeCache
 import net.minecraft.world.item.crafting.SingleRecipeInput
 
 class HCInWorldRecipeCaches : HTValueSerializable {
-    val crushing: HTRecipeCache<SingleRecipeInput, HTItemToChancedRecipe.Serializable> = HCRecipeTypes.CRUSHING.createCache()
-    val charging: HTRecipeCache<SingleRecipeInput, HTItemToItemRecipe.Serializable> = HCRecipeTypes.CHARGING.createCache()
-    val exploding: HTRecipeCache<HCExplodingRecipe.Input, HCExplodingRecipe> = HCRecipeTypes.EXPLODING.createCache()
+    val crushing: HTRecipeCache<SingleRecipeInput, HTItemToChancedRecipe> = HTLookupRecipeCache.forRecipe(HCRecipeLookups.CRUSHING)
+    val charging: HTRecipeCache<SingleRecipeInput, HTItemToItemRecipe> = HTLookupRecipeCache.forRecipe(HCRecipeLookups.CHARGING)
+    val exploding: HTRecipeCache<HCExplodingRecipe.Input, HCExplodingRecipe> = HTLookupRecipeCache.forRecipe(HCRecipeLookups.EXPLODING)
 
     override fun serialize(output: HTValueOutput) {
         output.write(HTConst.CRUSHING, crushing)
