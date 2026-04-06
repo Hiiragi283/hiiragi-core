@@ -27,10 +27,10 @@ abstract class HTLookupRecipeCategory<RECIPE : Any>(guiHelper: IGuiHelper, recip
     protected abstract fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: RECIPE, focuses: IFocusGroup)
 
     final override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HTRecipeHolder<RECIPE>, focuses: IFocusGroup) {
-        createRecipeExtras(builder, recipe.recipe, focuses)
+        createRecipeExtrasImpl(builder, recipe.recipe, focuses)
     }
 
-    protected open fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: RECIPE, focuses: IFocusGroup) {}
+    protected open fun createRecipeExtrasImpl(builder: IRecipeExtrasBuilder, recipe: RECIPE, focuses: IFocusGroup) {}
 
     final override fun getRegistryName(recipe: HTRecipeHolder<RECIPE>): ResourceLocation = recipe.id
 

@@ -51,7 +51,7 @@ class HCBrewingRecipeCategory(guiHelper: IGuiHelper) : HTLookupRecipeCategory<HC
             }
     }
 
-    override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HCBrewingRecipe, focuses: IFocusGroup) {
+    override fun createRecipeExtrasImpl(builder: IRecipeExtrasBuilder, recipe: HCBrewingRecipe, focuses: IFocusGroup) {
         builder.addAnimatedRecipeArrow(recipe.time).setPosition(getPosition(3.25), getPosition(0))
         builder.addRecipePlus(getPosition(1))
     }

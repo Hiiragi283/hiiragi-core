@@ -27,7 +27,7 @@ class HCMeltingRecipeCategory(guiHelper: IGuiHelper) : HTLookupRecipeCategory<HC
             .setSlotBackground(HTBackgroundType.OUTPUT)
     }
 
-    override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HCMeltingRecipe, focuses: IFocusGroup) {
+    override fun createRecipeExtrasImpl(builder: IRecipeExtrasBuilder, recipe: HCMeltingRecipe, focuses: IFocusGroup) {
         builder
             .addAnimatedRecipeArrow(recipe.time)
             .setPosition(getPosition(1.25), getPosition(0))

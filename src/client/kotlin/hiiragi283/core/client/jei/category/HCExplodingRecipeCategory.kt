@@ -31,7 +31,7 @@ class HCExplodingRecipeCategory(guiHelper: IGuiHelper) :
             .setSlotBackground(HTBackgroundType.OUTPUT)
     }
 
-    override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HCExplodingRecipe, focuses: IFocusGroup) {
+    override fun createRecipeExtrasImpl(builder: IRecipeExtrasBuilder, recipe: HCExplodingRecipe, focuses: IFocusGroup) {
         builder.addRecipeArrow().setPosition(getPosition(3.25), getPosition(0))
         builder.addRecipePlus(getPosition(1))
     }

@@ -22,7 +22,7 @@ import thedarkcolour.kotlinforforge.neoforge.forge.callWhenOn
  * @since 0.11.0
  * @see mekanism.common.recipe.IMekanismRecipeTypeProvider
  */
-interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any> {
+fun interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any> {
     /**
      * 現在のサーバーまたはクライアントからレシピの一覧を取得します。
      * @return [HTRecipeHolder]の[Sequence]

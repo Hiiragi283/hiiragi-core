@@ -41,7 +41,7 @@ class HTItemToItemRecipeCategory(guiHelper: IGuiHelper, recipeType: HTLookupReci
         )
     }
 
-    override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HTItemToItemRecipe, focuses: IFocusGroup) {
+    override fun createRecipeExtrasImpl(builder: IRecipeExtrasBuilder, recipe: HTItemToItemRecipe, focuses: IFocusGroup) {
         builder.addAnimatedRecipeArrow(recipe.time).setPosition(getPosition(1.25), getPosition(0))
     }
 
