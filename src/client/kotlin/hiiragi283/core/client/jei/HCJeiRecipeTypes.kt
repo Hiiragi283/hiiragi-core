@@ -63,7 +63,14 @@ object HCJeiRecipeTypes {
 
     @JvmField
     val TANK_INTERACTION: HTLookupRecipeViewerType<RecipeInput, HTTankInteraction> =
-        create(HCRecipeLookups.TANK_INTERACTION, Items.CAULDRON, 18 * 5, 18 * 3)
+        create(
+            HCRecipeLookups.TANK_INTERACTION,
+            HCBlocks.COPPER_BASINS.allBlocks
+                .first()
+                .get(),
+            18 * 5,
+            18 * 3,
+        )
 
     data object MaterialType : HTRecipeViewerType<HTMaterialManager.Entry> {
         override val recipeClass: Class<HTMaterialManager.Entry> = HTMaterialManager.Entry::class.java

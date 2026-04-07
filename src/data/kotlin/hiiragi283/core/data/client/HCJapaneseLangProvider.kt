@@ -144,6 +144,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HCTranslation.AMBROSIA, "いつでも食べられる上，いくら食べてもなくなりません！")
         add(HCTranslation.ANCIENT_UPGRADE, "ウォーデンからドロップします。")
+        add(HCTranslation.BLUEPRINT, "GUI上で右クリックすると番号を変えられます。")
+        add(HCTranslation.BLUEPRINT_NUMBER, $$"番号: %1$s")
         add(HCTranslation.ELDER_HEART, "エルダーガーディアンからドロップします。")
         add(HCTranslation.ELDRITCH_EGG, "右クリックで投げることができ，モブに当たるとスポーンエッグになります。")
         add(HCTranslation.ETERNAL_UPGRADE, "エンダードラゴンからドロップします。")

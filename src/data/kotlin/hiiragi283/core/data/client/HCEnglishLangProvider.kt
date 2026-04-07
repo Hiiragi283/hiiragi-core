@@ -145,6 +145,8 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         add(HCTranslation.AMBROSIA, "ALWAYS EDIBLE and NOT CONSUMED!")
         add(HCTranslation.ANCIENT_UPGRADE, "Dropped from Warden.")
+        add(HCTranslation.BLUEPRINT, "Right click on GUI to cycle number")
+        add(HCTranslation.BLUEPRINT_NUMBER, $$"Number: %1$s")
         add(HCTranslation.ELDER_HEART, "Dropped from Elder Guardian.")
         add(HCTranslation.ELDRITCH_EGG, "Can be throwable by right-click，and capture mobs when hit.")
         add(HCTranslation.ETERNAL_UPGRADE, "Dropped from Ender Dragon.")

@@ -46,6 +46,8 @@
   "datapack.hiiragi_core.work_in_progress": "Enables work in progress contents",
   "description.hiiragi_core.ambrosia": "ALWAYS EDIBLE and NOT CONSUMED!",
   "description.hiiragi_core.ancient_upgrade": "Dropped from Warden.",
+  "description.hiiragi_core.blueprint": "Right click on GUI to cycle number",
+  "description.hiiragi_core.blueprint.number": "Number: %1$s",
   "description.hiiragi_core.elder_heart": "Dropped from Elder Guardian.",
   "description.hiiragi_core.eldritch_heart": "Can be throwable by right-click，and capture mobs when hit.",
   "description.hiiragi_core.eternal_upgrade": "Dropped from Ender Dragon.",

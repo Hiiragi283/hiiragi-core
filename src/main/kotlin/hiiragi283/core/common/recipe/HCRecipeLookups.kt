@@ -10,6 +10,7 @@ import hiiragi283.core.api.recipe.base.HTSingleItemRecipe
 import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.common.data.tank.HTPotionArrowTankInteraction
 import hiiragi283.core.common.data.tank.HTPotionTankInteraction
 import hiiragi283.core.common.event.HCRecipeEventHandler
 import hiiragi283.core.impl.recipe.HTRecipeTypeImpl
@@ -56,5 +57,6 @@ data object HCRecipeLookups {
 
         TANK_INTERACTION.addProvider { HCRecipeEventHandler.tankInteractionMap.asSequence().map(::HTRecipeHolder) }
         TANK_INTERACTION.addProvider(HTConst.MINECRAFT.toId("potion") to HTPotionTankInteraction)
+        TANK_INTERACTION.addProvider(HTConst.MINECRAFT.toId("tipped_arrow") to HTPotionArrowTankInteraction)
     }
 }

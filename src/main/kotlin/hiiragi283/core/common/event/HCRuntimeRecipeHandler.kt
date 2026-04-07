@@ -27,11 +27,14 @@ import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.api.material.property.getDefaultScale
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
+import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.HTSimpleItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.common.data.recipe.blueprint
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTDoubleMultiOutputRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSingleMultiOutputRecipeBuilder
@@ -62,6 +65,10 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             crushPrefixToDust(event, entry, CommonParts.ROD)
             crushPrefixToDust(event, entry, CommonParts.WIRE)
 
+            forgeBaseToGear(event, entry)
+            forgeBaseToPlate(event, entry)
+            forgeBaseToWire(event, entry)
+
             baseToBlock(event, entry)
             ingotToNugget(entry)
             rawToBlock(event, entry)
@@ -83,12 +90,25 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     }
 
     @JvmStatic
-    private fun getTimeFromHardness(propertyMap: HTPropertyMap, time: Int = 20 * 10): Int? =
+    fun getTimeFromHardness(propertyMap: HTPropertyMap, time: Int = 20 * 10): Int? =
         (propertyMap.getOrDefault(HTMaterialPropertyKeys.HARDNESS) * time)?.toInt()
 
     @JvmStatic
-    private fun getTimeFromMelting(propertyMap: HTPropertyMap, time: Int = 20 * 10): Int? =
+    fun getTimeFromMelting(propertyMap: HTPropertyMap, time: Int = 20 * 10): Int? =
         (propertyMap.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT) * time)?.toInt()
+
+    @JvmStatic
+    fun getBlueprint(prefix: HTTagPrefix): HTItemIngredient = when (prefix) {
+        CommonTagPrefixes.DUST -> 0
+        CommonTagPrefixes.INGOT -> 1
+        CommonTagPrefixes.GEM -> 2
+        CommonTagPrefixes.PEARL -> 3
+        CommonTagPrefixes.GEAR -> 4
+        CommonTagPrefixes.PLATE -> 5
+        CommonTagPrefixes.ROD -> 6
+        CommonTagPrefixes.WIRE -> 7
+        else -> error("Cannot define blueprint for prefix: $prefix")
+    }.let(inputCreator::blueprint)
 
     //    Crushing    //
 
@@ -177,6 +197,65 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
                 ?.let(results::add)
 
             recipeId suffix "_from_crushed_ore"
+        }
+    }
+
+    //    Forging    //
+
+    @JvmStatic
+    private fun forgeBaseToGear(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
+        // 素材のプロパティから材料を取得
+        val inputTag: TagKey<Item> = entry.getDefaultPart(entry) ?: return
+        if (!event.isPresentTag(inputTag)) return
+        // 完成品を取得
+        val gear: HTItemHolderLike<*> = event.getFirstHolder(CommonTagPrefixes.GEAR, entry) ?: return
+        // レシピを登録
+        HTDoubleMultiOutputRecipeBuilder.forging(output) {
+            base = inputCreator.create(inputTag, 4)
+            addition = getBlueprint(CommonTagPrefixes.GEAR)
+            results += resultCreator.create(gear)
+            time = getTimeFromHardness(entry, time) ?: return
+        }
+    }
+
+    @JvmStatic
+    private fun forgeBaseToPlate(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
+        // 基本アイテムがインゴットの素材を除外
+        val inputPrefix: HTTagPrefix? = when (entry.getDefaultPart()) {
+            HTDefaultPart.Prefixed.FUEL -> null
+            HTDefaultPart.Prefixed.GEM -> null
+            HTDefaultPart.Prefixed.INGOT -> CommonTagPrefixes.INGOT
+            HTDefaultPart.Prefixed.PEARL -> null
+            is HTDefaultPart.BuiltIn -> CommonTagPrefixes.DUST
+            null -> CommonTagPrefixes.DUST
+        }
+        if (inputPrefix == null) return
+        // 材料が存在するか判定
+        if (!event.isPresentTag(inputPrefix, entry)) return
+        // 完成品を取得
+        val plate: HTItemHolderLike<*> = event.getFirstHolder(CommonTagPrefixes.PLATE, entry) ?: return
+        // レシピを登録
+        HTDoubleMultiOutputRecipeBuilder.forging(output) {
+            base = inputCreator.create(inputPrefix, entry)
+            addition = getBlueprint(CommonTagPrefixes.PLATE)
+            results += resultCreator.create(plate)
+            time = getTimeFromHardness(entry, time) ?: return
+        }
+    }
+
+    @JvmStatic
+    private fun forgeBaseToWire(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {
+        // 材料が存在するか判定
+        val inputTag: TagKey<Item> = entry.getDefaultPart(entry) ?: return
+        if (!event.isPresentTag(inputTag)) return
+        // 完成品を取得
+        val wire: HTItemHolderLike<*> = event.getFirstHolder(CommonTagPrefixes.WIRE, entry) ?: return
+        // レシピを登録
+        HTDoubleMultiOutputRecipeBuilder.forging(output) {
+            base = inputCreator.create(inputTag)
+            addition = getBlueprint(CommonTagPrefixes.WIRE)
+            results += resultCreator.create(wire, 2)
+            time = getTimeFromHardness(entry, time) ?: return
         }
     }
 

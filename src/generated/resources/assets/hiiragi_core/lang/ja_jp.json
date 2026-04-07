@@ -46,6 +46,8 @@
   "datapack.hiiragi_core.work_in_progress": "開発中の要素を有効にします",
   "description.hiiragi_core.ambrosia": "いつでも食べられる上，いくら食べてもなくなりません！",
   "description.hiiragi_core.ancient_upgrade": "ウォーデンからドロップします。",
+  "description.hiiragi_core.blueprint": "GUI上で右クリックすると番号を変えられます。",
+  "description.hiiragi_core.blueprint.number": "番号: %1$s",
   "description.hiiragi_core.elder_heart": "エルダーガーディアンからドロップします。",
   "description.hiiragi_core.eldritch_heart": "右クリックで投げることができ，モブに当たるとスポーンエッグになります。",
   "description.hiiragi_core.eternal_upgrade": "エンダードラゴンからドロップします。",

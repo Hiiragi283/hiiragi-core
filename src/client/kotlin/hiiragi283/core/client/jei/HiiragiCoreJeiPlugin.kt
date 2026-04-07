@@ -33,6 +33,7 @@ import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicDoubleMultiOutputRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicSingleItemRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicSingleMultiOutputRecipeCategoryExtension
+import hiiragi283.core.client.jei.extension.HTPotionArrowTankInteractionCategoryExtension
 import hiiragi283.core.client.jei.extension.HTPotionTankInteractionCategoryExtension
 import hiiragi283.core.client.jei.extension.HTSimpleTankInteractionCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
@@ -135,6 +136,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         tankInteraction = HTTankInteractionRecipeCategory(guiHelper)
         tankInteraction.addExtension(HTSimpleTankInteractionCategoryExtension)
         tankInteraction.addExtension(HTPotionTankInteractionCategoryExtension)
+        tankInteraction.addExtension(HTPotionArrowTankInteractionCategoryExtension)
 
         initItemToItem(guiHelper, manager)
         initItemToMultiOutput(guiHelper, manager)
