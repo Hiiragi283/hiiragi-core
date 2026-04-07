@@ -10,7 +10,7 @@ import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.item.enchantment.toInstances
 import hiiragi283.core.api.recipe.HTSingleItemRecipe
-import hiiragi283.core.api.recipe.HTItemToMultiOutputRecipe
+import hiiragi283.core.api.recipe.HTSingleMultiOutputRecipe
 import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.toFraction
@@ -97,7 +97,7 @@ object HCRecipeEventHandler {
     }
 
     /**
-     * [HTItemToMultiOutputRecipe]を処理するイベント
+     * [HTSingleMultiOutputRecipe]を処理するイベント
      */
     @SubscribeEvent
     fun onAnvilLand(event: HTAnvilLandEvent) {
@@ -112,8 +112,8 @@ object HCRecipeEventHandler {
     private fun anvilCrushing(entity: ItemEntity) {
         val level: Level = entity.level()
         val input: SingleRecipeInput = createInput(entity)
-        val recipe: HTItemToMultiOutputRecipe = getCaches(level).crushing.getFirstRecipe(input, level) ?: return
-        val multiplier: Int = popResult(input, recipe, level, entity, HTItemToMultiOutputRecipe::getRequiredAmount)
+        val recipe: HTSingleMultiOutputRecipe = getCaches(level).crushing.getFirstRecipe(input, level) ?: return
+        val multiplier: Int = popResult(input, recipe, level, entity, HTSingleMultiOutputRecipe::getRequiredAmount)
         (0 until multiplier)
             .flatMap { recipe.assembleItems(input, level.registryAccess()) }
             .let(HTShapelessRecipeHelper::createMap)

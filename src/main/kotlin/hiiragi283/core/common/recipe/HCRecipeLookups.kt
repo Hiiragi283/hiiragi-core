@@ -6,7 +6,7 @@ import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.recipe.HTDoubleItemToMultiOutputRecipe
 import hiiragi283.core.api.recipe.HTSingleItemRecipe
-import hiiragi283.core.api.recipe.HTItemToMultiOutputRecipe
+import hiiragi283.core.api.recipe.HTSingleMultiOutputRecipe
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.resource.toId
@@ -24,7 +24,7 @@ data object HCRecipeLookups {
     val CHARGING: HTRecipeTypeImpl<SingleRecipeInput, HTSingleItemRecipe> = create(HTConst.CHARGING)
 
     @JvmField
-    val CRUSHING: HTRecipeTypeImpl<SingleRecipeInput, HTItemToMultiOutputRecipe> = create(HTConst.CRUSHING)
+    val CRUSHING: HTRecipeTypeImpl<SingleRecipeInput, HTSingleMultiOutputRecipe> = create(HTConst.CRUSHING)
 
     @JvmField
     val EXPLODING: HTRecipeTypeImpl<HCExplodingRecipe.Input, HCExplodingRecipe> = create(HTConst.EXPLODING)

@@ -28,11 +28,11 @@ import hiiragi283.core.client.jei.category.HCMeltingRecipeCategory
 import hiiragi283.core.client.jei.category.HTSingleItemRecipeCategory
 import hiiragi283.core.client.jei.category.HTTankInteractionRecipeCategory
 import hiiragi283.core.client.jei.category.base.HTDoubleItemToMultiOutputRecipeCategory
-import hiiragi283.core.client.jei.category.base.HTItemToMultiOutputRecipeCategory
+import hiiragi283.core.client.jei.category.base.HTSingleMultiOutputRecipeCategory
 import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicDoubleItemToMultiOutputRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicSingleItemRecipeCategoryExtension
-import hiiragi283.core.client.jei.extension.HTBasicItemToMultiOutputRecipeCategoryExtension
+import hiiragi283.core.client.jei.extension.HTBasicSingleMultiOutputRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTPotionTankInteractionCategoryExtension
 import hiiragi283.core.client.jei.extension.HTSimpleTankInteractionCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
@@ -77,7 +77,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
 
         // ItemToMultiOutput
         @JvmStatic
-        lateinit var crushing: HTItemToMultiOutputRecipeCategory
+        lateinit var crushing: HTSingleMultiOutputRecipeCategory
             private set
 
         // DoubleItemToMultiOutput
@@ -158,7 +158,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     private fun initItemToMultiOutput(guiHelper: IGuiHelper, manager: IIngredientManager) {
         crushing = HCCrushingRecipeCategory(guiHelper)
 
-        crushing.addExtension(HTBasicItemToMultiOutputRecipeCategoryExtension())
+        crushing.addExtension(HTBasicSingleMultiOutputRecipeCategoryExtension())
     }
 
     private fun initDoubleItemToMultiOutput(guiHelper: IGuiHelper, manager: IIngredientManager) {

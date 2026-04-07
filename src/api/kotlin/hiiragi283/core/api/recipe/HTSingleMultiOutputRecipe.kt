@@ -7,17 +7,17 @@ import net.minecraft.world.item.crafting.SingleRecipeInput
  * @author Hiiragi Tsubasa
  * @since 0.15.0
  */
-interface HTItemToMultiOutputRecipe : HTMultiOutputRecipe<SingleRecipeInput> {
+interface HTSingleMultiOutputRecipe : HTMultiOutputRecipe<SingleRecipeInput> {
     fun getRequiredAmount(input: SingleRecipeInput): Int
 
     //    Serializable    //
 
     /**
-     * シリアライズ可能な[HTItemToMultiOutputRecipe]の拡張インターフェースです。
+     * シリアライズ可能な[HTSingleMultiOutputRecipe]の拡張インターフェースです。
      * @author Hiiragi Tsubasa
      * @since 0.15.0
      */
     interface Serializable :
-        HTItemToMultiOutputRecipe,
+        HTSingleMultiOutputRecipe,
         HTMultiOutputRecipe.Serializable<SingleRecipeInput>
 }

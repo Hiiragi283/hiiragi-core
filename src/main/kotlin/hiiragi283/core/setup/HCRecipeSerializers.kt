@@ -15,7 +15,7 @@ import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.crafting.HCExperienceStoringRecipe
 import hiiragi283.core.common.data.recipe.builder.HTDoubleItemToMultiOutputRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
-import hiiragi283.core.common.data.recipe.builder.HTItemToMultiOutputRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTSingleMultiOutputRecipeBuilder
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
@@ -24,7 +24,7 @@ import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
 import hiiragi283.core.impl.recipe.HTBasicDoubleItemToMultiOutputRecipe
 import hiiragi283.core.impl.recipe.HTBasicSingleItemRecipe
-import hiiragi283.core.impl.recipe.HTBasicItemToMultiOutputRecipe
+import hiiragi283.core.impl.recipe.HTBasicSingleMultiOutputRecipe
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer
@@ -56,15 +56,15 @@ object HCRecipeSerializers {
     )
 
     @JvmStatic
-    private fun <R : HTBasicItemToMultiOutputRecipe> itemToMulti(
+    private fun <R : HTBasicSingleMultiOutputRecipe> itemToMulti(
         outputRange: IntRange,
-        factory: HTItemToMultiOutputRecipeBuilder.Factory<R>,
+        factory: HTSingleMultiOutputRecipeBuilder.Factory<R>,
     ): MapBiCodec<RegistryFriendlyByteBuf, R> = MapBiCodec.composite(
-        HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicItemToMultiOutputRecipe::ingredient),
+        HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicSingleMultiOutputRecipe::ingredient),
         HTItemResult.CODEC
             .listOrElement(outputRange)
             .fieldOf(HTConst.RESULTS)
-            .forGetter(HTBasicItemToMultiOutputRecipe::results),
+            .forGetter(HTBasicSingleMultiOutputRecipe::results),
         HTProcessingRecipe.timeCodec(),
         factory::create,
     )

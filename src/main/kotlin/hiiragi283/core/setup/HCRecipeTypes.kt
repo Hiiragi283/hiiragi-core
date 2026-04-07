@@ -4,7 +4,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.recipe.HTDoubleItemToMultiOutputRecipe
 import hiiragi283.core.api.recipe.HTSingleItemRecipe
-import hiiragi283.core.api.recipe.HTItemToMultiOutputRecipe
+import hiiragi283.core.api.recipe.HTSingleMultiOutputRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeTypeRegister
@@ -19,7 +19,7 @@ object HCRecipeTypes {
     val CHARGING: Supplier<RecipeType<HTSingleItemRecipe.Serializable>> = REGISTER.registerType(HTConst.CHARGING)
 
     @JvmField
-    val CRUSHING: Supplier<RecipeType<HTItemToMultiOutputRecipe.Serializable>> = REGISTER.registerType(HTConst.CRUSHING)
+    val CRUSHING: Supplier<RecipeType<HTSingleMultiOutputRecipe.Serializable>> = REGISTER.registerType(HTConst.CRUSHING)
 
     @JvmField
     val EXPLODING: Supplier<RecipeType<HCExplodingRecipe>> = REGISTER.registerType(HTConst.EXPLODING)
