@@ -1,6 +1,10 @@
 {
   "values": [
     {
+      "id": "#c:hammers",
+      "required": false
+    },
+    {
       "id": "#c:tools/hammer",
       "required": false
     }

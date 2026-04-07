@@ -1,7 +1,7 @@
 package hiiragi283.core.common.plugin
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.item.tool.CommonToolTypes
+import hiiragi283.core.api.item.tool.VanillaToolTypes
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.property.HTDefaultPart
@@ -19,6 +19,7 @@ import hiiragi283.core.api.material.property.setName
 import hiiragi283.core.api.material.property.setTextureSet
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.plugin.HTPlugin
+import hiiragi283.core.common.item.tool.CommonToolTypes
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.setup.HCToolMaterials
 import net.minecraft.resources.ResourceLocation
@@ -96,11 +97,11 @@ object HCMaterialPlugin : HTMaterialPlugin {
                 CommonParts.PLATE,
                 CommonParts.ROD,
             )
-            addToolPrefixes(HCToolMaterials.AZURE_STEEL, CommonToolTypes.VANILLA_SET)
+            addToolPrefixes(HCToolMaterials.AZURE_STEEL, VanillaToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER))
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
 
-            setName("Azure Steel", "紺碧鋼")
+            setName("Azure Steel", "紺鉄")
         }
     }
 }

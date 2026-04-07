@@ -5,8 +5,6 @@ import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
-import hiiragi283.core.api.storage.HTStorageAccess
-import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
@@ -22,6 +20,7 @@ import hiiragi283.core.util.HTStackSlotHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
+import net.minecraft.sounds.SoundEvents
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
@@ -53,7 +52,7 @@ class HTForgingAnvilBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntit
 
     private val cache: HTLookupRecipeCache<HTDoubleRecipeInput, HCForgingRecipe> = HTLookupRecipeCache.forRecipe(HCRecipeLookups.FORGING)
     private val inputHandler: HTItemInputHandler by lazy { HTItemInputHandler(slot) }
-    
+
     override fun writeValue(output: HTValueOutput) {
         super.writeValue(output)
         cache.serialize(output)
@@ -76,6 +75,8 @@ class HTForgingAnvilBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntit
         // inputs
         input.let(recipe::getBaseAmount).let(inputHandler::consume)
         input.let(recipe::getAdditionAmount).let(stack1::shrink)
+        // sound
+        playSound(SoundEvents.ANVIL_LAND)
         return true
     }
 

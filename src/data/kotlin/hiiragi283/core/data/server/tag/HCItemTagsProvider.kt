@@ -58,6 +58,7 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
 
         factory
             .apply(HiiragiCoreTags.Items.FORGING_HAMMERS)
+            .addTag(HiiragiCoreTags.Items.HAMMERS, HTTagDependType.OPTIONAL)
             .addTag(HiiragiCoreTags.Items.TOOLS_HAMMER, HTTagDependType.OPTIONAL)
     }
 }

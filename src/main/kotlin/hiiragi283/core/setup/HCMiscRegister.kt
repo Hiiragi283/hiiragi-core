@@ -49,7 +49,6 @@ import net.minecraft.sounds.SoundEvents
 import net.minecraft.world.item.BucketItem
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
-import net.minecraft.world.item.TieredItem
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.neoforged.neoforge.common.SoundActions
@@ -260,7 +259,7 @@ internal object HCMiscRegister {
                 entry
                     .getOrDefault(HTMaterialPropertyKeys.TOOL_PREFIXES)
                     .map { toolType: HTToolType ->
-                        val item: TieredItem = toolType.createTool(material)
+                        val item: Item = toolType.createTool(material)
                         helper.register(toolType.createKey(entry), item)
                         Triple(toolType, entry.asMaterialKey(), HTMaterialContents.ItemEntry(item, false))
                     }

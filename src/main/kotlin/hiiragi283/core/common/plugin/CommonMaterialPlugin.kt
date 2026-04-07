@@ -3,7 +3,8 @@ package hiiragi283.core.common.plugin
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.div
 import hiiragi283.core.api.fraction
-import hiiragi283.core.api.item.tool.CommonToolTypes
+import hiiragi283.core.api.item.tool.HTToolType
+import hiiragi283.core.api.item.tool.VanillaToolTypes
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTFluidPart
@@ -34,6 +35,7 @@ import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.times
+import hiiragi283.core.common.item.tool.CommonToolTypes
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCToolMaterials
@@ -55,6 +57,9 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         blockPart(registrar)
         itemPart(registrar)
     }
+
+    @JvmStatic
+    private val toolTypes: Set<HTToolType> = VanillaToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER)
 
     @JvmStatic
     private fun blockPart(registrar: HTMaterialPlugin.PartRegistrar) {
@@ -488,7 +493,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonParts.BLOCK)
             addItemPrefixes(alloySet.plus(partSet))
-            addToolPrefixes(HCToolMaterials.STEEL, CommonToolTypes.VANILLA_SET)
+            addToolPrefixes(HCToolMaterials.STEEL, toolTypes)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
 
@@ -510,7 +515,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonParts.BLOCK)
             addItemPrefixes(alloySet.plus(partSet))
-            addToolPrefixes(HCToolMaterials.BRONZE, CommonToolTypes.VANILLA_SET)
+            addToolPrefixes(HCToolMaterials.BRONZE, toolTypes)
 
             setName("Bronze", "青銅")
         }

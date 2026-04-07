@@ -14,6 +14,7 @@ import hiiragi283.core.util.HTItemDropHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.ItemInteractionResult
+import net.minecraft.world.entity.EquipmentSlot
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
@@ -30,6 +31,8 @@ class HTForgingAnvilBlock(properties: Properties) : HTBasicEntityBlock(HCBlockEn
         hand: InteractionHand,
         hitResult: BlockHitResult,
     ): ItemInteractionResult {
+        val result: ItemInteractionResult = super.useItemOn(stack, state, level, pos, player, hand, hitResult)
+        if (hand != InteractionHand.MAIN_HAND) return result
         val anvilBlockEntity: HTForgingAnvilBlockEntity = level.getTypedBlockEntity(pos) ?: return ItemInteractionResult.FAIL
         val anvilSlot: HTBasicItemSlot = anvilBlockEntity.slot
         val anvilStack: ItemStack = anvilSlot.getItemStack()
@@ -46,17 +49,16 @@ class HTForgingAnvilBlock(properties: Properties) : HTBasicEntityBlock(HCBlockEn
             if (stack.`is`(HiiragiCoreTags.Items.FORGING_HAMMERS)) {
                 // レシピを実行
                 if (anvilBlockEntity.process(player)) {
+                    stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND)
                     return ItemInteractionResult.sidedSuccess(!level.isClientSide)
                 }
             } else {
                 // ハンマーでない場合，手持ちのアイテムをセットする
                 val remainder: ItemStack = anvilSlot.insert(stack, HTStorageAction.EXECUTE, HTStorageAccess.INTERNAL)
-                if (!remainder.isEmpty) {
-                    stack.shrink(stack.count - remainder.count)
-                    return ItemInteractionResult.sidedSuccess(!level.isClientSide)
-                }
+                stack.shrink(stack.count - remainder.count)
+                return ItemInteractionResult.sidedSuccess(!level.isClientSide)
             }
         }
-        return super.useItemOn(stack, state, level, pos, player, hand, hitResult)
+        return result
     }
 }

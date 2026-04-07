@@ -3,8 +3,8 @@ package hiiragi283.core.common.plugin
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.fraction
-import hiiragi283.core.api.item.tool.CommonToolTypes
 import hiiragi283.core.api.item.tool.HTToolType
+import hiiragi283.core.api.item.tool.VanillaToolTypes
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTFluidPart
@@ -145,41 +145,41 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         }
 
         // Wooden
-        accept(CommonToolTypes.SHOVEL, VanillaMaterialKeys.WOOD, Items.WOODEN_SHOVEL)
-        accept(CommonToolTypes.PICKAXE, VanillaMaterialKeys.WOOD, Items.WOODEN_PICKAXE)
-        accept(CommonToolTypes.AXE, VanillaMaterialKeys.WOOD, Items.WOODEN_AXE)
-        accept(CommonToolTypes.HOE, VanillaMaterialKeys.WOOD, Items.WOODEN_HOE)
-        accept(CommonToolTypes.SWORD, VanillaMaterialKeys.WOOD, Items.WOODEN_SWORD)
+        accept(VanillaToolTypes.SHOVEL, VanillaMaterialKeys.WOOD, Items.WOODEN_SHOVEL)
+        accept(VanillaToolTypes.PICKAXE, VanillaMaterialKeys.WOOD, Items.WOODEN_PICKAXE)
+        accept(VanillaToolTypes.AXE, VanillaMaterialKeys.WOOD, Items.WOODEN_AXE)
+        accept(VanillaToolTypes.HOE, VanillaMaterialKeys.WOOD, Items.WOODEN_HOE)
+        accept(VanillaToolTypes.SWORD, VanillaMaterialKeys.WOOD, Items.WOODEN_SWORD)
         // Stone
-        accept(CommonToolTypes.SHOVEL, VanillaMaterialKeys.STONE, Items.STONE_SHOVEL)
-        accept(CommonToolTypes.PICKAXE, VanillaMaterialKeys.STONE, Items.STONE_PICKAXE)
-        accept(CommonToolTypes.AXE, VanillaMaterialKeys.STONE, Items.STONE_AXE)
-        accept(CommonToolTypes.HOE, VanillaMaterialKeys.STONE, Items.STONE_HOE)
-        accept(CommonToolTypes.SWORD, VanillaMaterialKeys.STONE, Items.STONE_SWORD)
+        accept(VanillaToolTypes.SHOVEL, VanillaMaterialKeys.STONE, Items.STONE_SHOVEL)
+        accept(VanillaToolTypes.PICKAXE, VanillaMaterialKeys.STONE, Items.STONE_PICKAXE)
+        accept(VanillaToolTypes.AXE, VanillaMaterialKeys.STONE, Items.STONE_AXE)
+        accept(VanillaToolTypes.HOE, VanillaMaterialKeys.STONE, Items.STONE_HOE)
+        accept(VanillaToolTypes.SWORD, VanillaMaterialKeys.STONE, Items.STONE_SWORD)
         // Iron
-        accept(CommonToolTypes.SHOVEL, VanillaMaterialKeys.IRON, Items.IRON_SHOVEL)
-        accept(CommonToolTypes.PICKAXE, VanillaMaterialKeys.IRON, Items.IRON_PICKAXE)
-        accept(CommonToolTypes.AXE, VanillaMaterialKeys.IRON, Items.IRON_AXE)
-        accept(CommonToolTypes.HOE, VanillaMaterialKeys.IRON, Items.IRON_HOE)
-        accept(CommonToolTypes.SWORD, VanillaMaterialKeys.IRON, Items.IRON_SWORD)
+        accept(VanillaToolTypes.SHOVEL, VanillaMaterialKeys.IRON, Items.IRON_SHOVEL)
+        accept(VanillaToolTypes.PICKAXE, VanillaMaterialKeys.IRON, Items.IRON_PICKAXE)
+        accept(VanillaToolTypes.AXE, VanillaMaterialKeys.IRON, Items.IRON_AXE)
+        accept(VanillaToolTypes.HOE, VanillaMaterialKeys.IRON, Items.IRON_HOE)
+        accept(VanillaToolTypes.SWORD, VanillaMaterialKeys.IRON, Items.IRON_SWORD)
         // Golden
-        accept(CommonToolTypes.SHOVEL, VanillaMaterialKeys.GOLD, Items.GOLDEN_SHOVEL)
-        accept(CommonToolTypes.PICKAXE, VanillaMaterialKeys.GOLD, Items.GOLDEN_PICKAXE)
-        accept(CommonToolTypes.AXE, VanillaMaterialKeys.GOLD, Items.GOLDEN_AXE)
-        accept(CommonToolTypes.HOE, VanillaMaterialKeys.GOLD, Items.GOLDEN_HOE)
-        accept(CommonToolTypes.SWORD, VanillaMaterialKeys.GOLD, Items.GOLDEN_SWORD)
+        accept(VanillaToolTypes.SHOVEL, VanillaMaterialKeys.GOLD, Items.GOLDEN_SHOVEL)
+        accept(VanillaToolTypes.PICKAXE, VanillaMaterialKeys.GOLD, Items.GOLDEN_PICKAXE)
+        accept(VanillaToolTypes.AXE, VanillaMaterialKeys.GOLD, Items.GOLDEN_AXE)
+        accept(VanillaToolTypes.HOE, VanillaMaterialKeys.GOLD, Items.GOLDEN_HOE)
+        accept(VanillaToolTypes.SWORD, VanillaMaterialKeys.GOLD, Items.GOLDEN_SWORD)
         // Diamond
-        accept(CommonToolTypes.SHOVEL, VanillaMaterialKeys.DIAMOND, Items.DIAMOND_SHOVEL)
-        accept(CommonToolTypes.PICKAXE, VanillaMaterialKeys.DIAMOND, Items.DIAMOND_PICKAXE)
-        accept(CommonToolTypes.AXE, VanillaMaterialKeys.DIAMOND, Items.DIAMOND_AXE)
-        accept(CommonToolTypes.HOE, VanillaMaterialKeys.DIAMOND, Items.DIAMOND_HOE)
-        accept(CommonToolTypes.SWORD, VanillaMaterialKeys.DIAMOND, Items.DIAMOND_SWORD)
+        accept(VanillaToolTypes.SHOVEL, VanillaMaterialKeys.DIAMOND, Items.DIAMOND_SHOVEL)
+        accept(VanillaToolTypes.PICKAXE, VanillaMaterialKeys.DIAMOND, Items.DIAMOND_PICKAXE)
+        accept(VanillaToolTypes.AXE, VanillaMaterialKeys.DIAMOND, Items.DIAMOND_AXE)
+        accept(VanillaToolTypes.HOE, VanillaMaterialKeys.DIAMOND, Items.DIAMOND_HOE)
+        accept(VanillaToolTypes.SWORD, VanillaMaterialKeys.DIAMOND, Items.DIAMOND_SWORD)
         // Netherite
-        accept(CommonToolTypes.SHOVEL, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_SHOVEL)
-        accept(CommonToolTypes.PICKAXE, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_PICKAXE)
-        accept(CommonToolTypes.AXE, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_AXE)
-        accept(CommonToolTypes.HOE, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_HOE)
-        accept(CommonToolTypes.SWORD, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_SWORD)
+        accept(VanillaToolTypes.SHOVEL, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_SHOVEL)
+        accept(VanillaToolTypes.PICKAXE, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_PICKAXE)
+        accept(VanillaToolTypes.AXE, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_AXE)
+        accept(VanillaToolTypes.HOE, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_HOE)
+        accept(VanillaToolTypes.SWORD, VanillaMaterialKeys.NETHERITE, Items.NETHERITE_SWORD)
     }
 
     override fun modifyMaterial(provider: HTMaterialPlugin.MaterialProvider) {

@@ -43,6 +43,12 @@ object HTTexturedModels {
         HTIdLike::itemId.andThen(TextureMapping::layer0),
     )
 
+    @JvmField
+    val FLAT_HANDHELD_ITEM: HTTexturedModel.Provider = HTTexturedModel.create(
+        ModelTemplates.FLAT_HANDHELD_ITEM,
+        HTIdLike::itemId.andThen(TextureMapping::layer0),
+    )
+
     @JvmStatic
     fun flatAlt(layer0: ResourceLocation): HTTexturedModel = HTTexturedModel(ModelTemplates.FLAT_ITEM, TextureMapping.layer0(layer0))
 

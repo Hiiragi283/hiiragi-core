@@ -9,9 +9,7 @@ import net.minecraft.world.item.PickaxeItem
 import net.minecraft.world.item.ShovelItem
 import net.minecraft.world.item.SwordItem
 
-object CommonToolTypes {
-    //    Vanilla    //
-
+data object VanillaToolTypes {
     @JvmField
     val SWORD: HTToolType = HTToolType.create("sword") {
         factory = ::SwordItem
@@ -69,14 +67,4 @@ object CommonToolTypes {
 
     @JvmField
     val VANILLA_SET: Set<HTToolType> = setOf(SWORD, SHOVEL, PICKAXE, AXE, HOE)
-
-    //    Common    //
-
-    /*val HAMMER: HTToolType = HTToolType.create("hammer") {
-        factory = ::HTCraftingToolItem
-        langPattern = HTLangPatternProvider.create("%s Hammer", "%sのハンマー")
-        recipePattern = listOf(" B ", " B ", "ABA")
-        toolTags += HiiragiCoreTags.Items.HAMMERS
-        toolTags += HiiragiCoreTags.Items.TOOLS_HAMMER
-    }*/
 }

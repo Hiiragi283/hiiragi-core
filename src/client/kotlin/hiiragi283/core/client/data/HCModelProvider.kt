@@ -58,5 +58,8 @@ data object HCModelProvider : HTModelProvider() {
                 addSimpleItemModel(item)
             }
         }
+        registered.tools.forEach { (_, _, item: HTIdLike) ->
+            addItemModel(item, HTTexturedModels.FLAT_HANDHELD_ITEM)
+        }
     }
 }

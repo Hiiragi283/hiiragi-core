@@ -4,6 +4,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.texture.HTTextureUtil
+import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
@@ -15,6 +16,7 @@ import hiiragi283.core.api.material.property.HTMaterialTextureSet
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
+import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
@@ -35,6 +37,7 @@ data object HCMaterialTextureProvider : ResourceGenTask {
         val contents: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
         material(manager, sink, HTConst.BLOCK, contents.blocks::column)
         material(manager, sink, HTConst.ITEM, contents.items::column)
+        tool(manager, sink)
         molten(manager, sink)
     }
 
@@ -62,12 +65,12 @@ data object HCMaterialTextureProvider : ResourceGenTask {
                     yield(entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId())
                 }.firstNotNullOfOrNull { HTTextureUtil.getOrCreateColors(it, manager).getOrNull() }
                     ?: run {
-                        HiiragiCoreAPI.LOGGER.error("Failed to get color palette for material; ${entry.asMaterialId()}")
+                        missingPalette(entry)
                         continue
                     }
                 // テンプレートを取得
                 val template: TextureImage = getTextureResult(manager, textureSet, part)
-                    .onFailure { HiiragiCoreAPI.LOGGER.error("Failed to get template image for ${part.name}") }
+                    .onFailure { HiiragiCoreAPI.LOGGER.error("Failed to get template image for part ${part.name}") }
                     .getOrNull()
                     ?: continue
                 copyAndApplyColor(
@@ -78,6 +81,39 @@ data object HCMaterialTextureProvider : ResourceGenTask {
                 )
             }
         }
+    }
+
+    @JvmStatic
+    private fun tool(manager: ResourceManager, sink: ResourceSink) {
+        // すべての素材に対してテクスチャの生成を試みる
+        for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
+            if (HTMaterialPropertyKeys.TOOL_MATERIAL !in entry) continue
+            val toolMap: Map<HTToolType, HTIdLike> = HiiragiCoreAccess.INSTANCE.registeredContents.tools
+                .column(entry)
+            if (toolMap.isEmpty()) continue
+            // パレットを取得
+            val palette: List<Int> = (entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: entry.getId())
+                .let { HTTextureUtil.getOrCreateColors(it, manager).getOrNull() }
+                ?: run {
+                    missingPalette(entry)
+                    continue
+                }
+            // テンプレートを取得
+            for ((toolType: HTToolType, item: HTIdLike) in toolMap) {
+                val toolTypeName: String = toolType.name
+                val textureId: ResourceLocation = HiiragiCoreAPI.id("tool_set", "$toolTypeName.png")
+                val template: TextureImage = runCatching { TextureImage.open(manager, textureId) }
+                    .onFailure { HiiragiCoreAPI.LOGGER.error("Failed to get template image for tool type $toolTypeName") }
+                    .getOrNull()
+                    ?: continue
+                copyAndApplyColor(sink, item.itemId, palette, template)
+            }
+        }
+    }
+
+    @JvmStatic
+    private fun missingPalette(entry: HTMaterialManager.Entry) {
+        HiiragiCoreAPI.LOGGER.error("Failed to get color palette for material; ${entry.getId()}")
     }
 
     @JvmStatic

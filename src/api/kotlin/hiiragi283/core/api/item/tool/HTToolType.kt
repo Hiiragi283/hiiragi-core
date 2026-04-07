@@ -7,7 +7,6 @@ import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
-import net.minecraft.world.item.TieredItem
 import net.minecraft.world.item.component.ItemAttributeModifiers
 
 /**
@@ -18,7 +17,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers
 class HTToolType(
     val name: String,
     private val idPattern: String,
-    private val toolFactory: (HTToolMaterial, Item.Properties) -> TieredItem,
+    private val toolFactory: (HTToolMaterial, Item.Properties) -> Item,
     private val attributeFactory: (HTToolMaterial) -> ItemAttributeModifiers?,
     val langPattern: HTLangPatternProvider,
     val recipePattern: List<String>,
@@ -40,7 +39,7 @@ class HTToolType(
         .withPath { idPattern.replace("%s", it) }
         .let(Registries.ITEM::createKey)
 
-    fun createTool(material: HTToolMaterial): TieredItem {
+    fun createTool(material: HTToolMaterial): Item {
         val properties = Item.Properties()
         val attribute: ItemAttributeModifiers? = attributeFactory(material)
         if (attribute != null) {
@@ -60,7 +59,7 @@ class HTToolType(
      */
     class Builder(private val name: String) {
         var idPattern = "%s_$name"
-        lateinit var factory: (HTToolMaterial, Item.Properties) -> TieredItem
+        lateinit var factory: (HTToolMaterial, Item.Properties) -> Item
         var attribute: (HTToolMaterial) -> ItemAttributeModifiers? = { null }
         lateinit var langPattern: HTLangPatternProvider
         lateinit var recipePattern: List<String>
