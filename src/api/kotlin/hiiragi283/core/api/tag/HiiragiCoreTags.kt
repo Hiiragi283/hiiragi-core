@@ -119,6 +119,9 @@ object HiiragiCoreTags {
         @JvmField
         val ELDRITCH_PEARL_BINDER: TagKey<Item> = mod("eldritch_pearl_binder")
 
+        /**
+         * @since 0.15.0
+         */
         @JvmField
         val FORGING_HAMMERS: TagKey<Item> = mod("forging_hammers")
 

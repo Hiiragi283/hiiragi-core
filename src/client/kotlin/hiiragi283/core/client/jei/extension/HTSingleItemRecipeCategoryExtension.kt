@@ -1,6 +1,6 @@
 package hiiragi283.core.client.jei.extension
 
-import hiiragi283.core.api.recipe.HTSingleItemRecipe
+import hiiragi283.core.api.recipe.base.HTSingleItemRecipe
 import mezz.jei.api.gui.builder.IIngredientAcceptor
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable
 import mezz.jei.api.recipe.IFocusGroup

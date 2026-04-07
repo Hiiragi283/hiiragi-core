@@ -1,11 +1,9 @@
-package hiiragi283.core.api.recipe
+package hiiragi283.core.api.recipe.base
 
-import hiiragi283.core.api.recipe.base.HTProcessingRecipe
-import hiiragi283.core.api.recipe.base.HTSerializableRecipe
 import net.minecraft.world.item.crafting.SingleRecipeInput
 
 /**
- * 単一のアイテムを単一のアイテムに変換するレシピを表すインターフェースです。
+ * 一つのアイテムを一つのアイテムに変換するレシピを表すインターフェースです。
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */

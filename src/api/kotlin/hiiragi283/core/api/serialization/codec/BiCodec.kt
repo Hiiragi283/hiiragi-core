@@ -420,6 +420,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
      * [List]の[BiCodec]に変換します。
      * @param range リストの[長さ][List.size]の範囲
      * @return リストの[長さ][List.size]が制限された[List]の[BiCodec]
+     * @since 0.15.0
      */
     fun listOf(range: IntRange): BiCodec<B, List<V>> = listOf(range.first, range.last)
 
@@ -440,6 +441,7 @@ data class BiCodec<B : ByteBuf, V : Any> private constructor(val codec: Codec<V>
      * 要素が一つの場合はそのままコーデックする[List]の[BiCodec]に変換します。
      * @param range リストの[長さ][List.size]の範囲
      * @return リストの[長さ][List.size]が制限された[List]の[BiCodec]
+     * @since 0.15.0
      */
     fun listOrElement(range: IntRange): BiCodec<B, List<V>> = listOrElement(range.first, range.last)
 

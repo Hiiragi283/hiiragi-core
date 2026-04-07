@@ -1,6 +1,6 @@
 package hiiragi283.core.impl.recipe
 
-import hiiragi283.core.api.recipe.HTDoubleMultiOutputRecipe
+import hiiragi283.core.api.recipe.base.HTDoubleMultiOutputRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.recipe.result.HTItemResult

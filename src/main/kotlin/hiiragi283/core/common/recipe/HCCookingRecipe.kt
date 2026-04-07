@@ -1,6 +1,6 @@
 package hiiragi283.core.common.recipe
 
-import hiiragi283.core.api.recipe.HTSingleItemRecipe
+import hiiragi283.core.api.recipe.base.HTSingleItemRecipe
 import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.AbstractCookingRecipe

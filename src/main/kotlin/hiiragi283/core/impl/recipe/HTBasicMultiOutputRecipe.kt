@@ -1,6 +1,6 @@
 package hiiragi283.core.impl.recipe
 
-import hiiragi283.core.api.recipe.HTMultiOutputRecipe
+import hiiragi283.core.api.recipe.base.HTMultiOutputRecipe
 import hiiragi283.core.api.recipe.result.HTItemResult
 import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack

@@ -1,4 +1,4 @@
-package hiiragi283.core.api.recipe
+package hiiragi283.core.api.recipe.base
 
 import net.minecraft.world.item.crafting.SingleRecipeInput
 
@@ -7,9 +7,9 @@ import net.minecraft.world.item.crafting.SingleRecipeInput
  * @author Hiiragi Tsubasa
  * @since 0.15.0
  */
-interface HTSingleMultiOutputRecipe : HTMultiOutputRecipe<SingleRecipeInput> {
-    fun getRequiredAmount(input: SingleRecipeInput): Int
-
+interface HTSingleMultiOutputRecipe :
+    HTMultiOutputRecipe<SingleRecipeInput>,
+    HTSingleItemRecipe {
     //    Serializable    //
 
     /**

@@ -4,10 +4,10 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.material.HTMaterialManager
-import hiiragi283.core.api.recipe.HTDoubleMultiOutputRecipe
 import hiiragi283.core.api.recipe.HTRecipeType
-import hiiragi283.core.api.recipe.HTSingleItemRecipe
-import hiiragi283.core.api.recipe.HTSingleMultiOutputRecipe
+import hiiragi283.core.api.recipe.base.HTDoubleMultiOutputRecipe
+import hiiragi283.core.api.recipe.base.HTSingleItemRecipe
+import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.recipe.viewer.HTLookupRecipeViewerType

@@ -1,6 +1,5 @@
-package hiiragi283.core.api.recipe
+package hiiragi283.core.api.recipe.base
 
-import hiiragi283.core.api.recipe.base.HTProcessingRecipe
 import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeInput

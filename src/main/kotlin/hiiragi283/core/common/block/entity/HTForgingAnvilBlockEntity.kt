@@ -2,7 +2,7 @@ package hiiragi283.core.common.block.entity
 
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.function.partially1
-import hiiragi283.core.api.recipe.HTDoubleMultiOutputRecipe
+import hiiragi283.core.api.recipe.base.HTDoubleMultiOutputRecipe
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput

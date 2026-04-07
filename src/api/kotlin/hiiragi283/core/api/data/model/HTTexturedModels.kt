@@ -43,6 +43,9 @@ object HTTexturedModels {
         HTIdLike::itemId.andThen(TextureMapping::layer0),
     )
 
+    /**
+     * @since 0.15.0
+     */
     @JvmField
     val FLAT_HANDHELD_ITEM: HTTexturedModel.Provider = HTTexturedModel.create(
         ModelTemplates.FLAT_HANDHELD_ITEM,

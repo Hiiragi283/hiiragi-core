@@ -1,6 +1,6 @@
 package hiiragi283.core.impl.recipe
 
-import hiiragi283.core.api.recipe.HTSingleMultiOutputRecipe
+import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import net.minecraft.world.item.crafting.SingleRecipeInput

@@ -1,4 +1,4 @@
-package hiiragi283.core.api.recipe
+package hiiragi283.core.api.recipe.base
 
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 
@@ -7,11 +7,9 @@ import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
  * @author Hiiragi Tsubasa
  * @since 0.15.0
  */
-interface HTDoubleMultiOutputRecipe : HTMultiOutputRecipe<HTDoubleRecipeInput> {
-    fun getBaseAmount(input: HTDoubleRecipeInput): Int
-
-    fun getAdditionAmount(input: HTDoubleRecipeInput): Int
-
+interface HTDoubleMultiOutputRecipe :
+    HTMultiOutputRecipe<HTDoubleRecipeInput>,
+    HTDoubleItemRecipe {
     //    Serializable    //
 
     /**
