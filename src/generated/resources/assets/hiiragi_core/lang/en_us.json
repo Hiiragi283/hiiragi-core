@@ -146,6 +146,7 @@
   "recipe_type.hiiragi_core.charging": "Lightning Charging",
   "recipe_type.hiiragi_core.crushing": "Crushing",
   "recipe_type.hiiragi_core.exploding": "Exploding",
+  "recipe_type.hiiragi_core.forging": "Forging",
   "recipe_type.hiiragi_core.melting": "Melting",
   "recipe_type.hiiragi_core.tank_interaction": "Tank Interaction",
   "recipe_type.minecraft.blasting": "Blasting",

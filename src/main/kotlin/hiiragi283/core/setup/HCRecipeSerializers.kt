@@ -18,8 +18,10 @@ import hiiragi283.core.common.data.recipe.builder.HTItemToItemRecipeBuilder
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
+import hiiragi283.core.common.recipe.HCForgingRecipe
 import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
+import hiiragi283.core.impl.recipe.HTBasicForgingRecipe
 import hiiragi283.core.impl.recipe.HTBasicItemToChancedRecipe
 import hiiragi283.core.impl.recipe.HTBasicItemToItemRecipe
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -77,6 +79,21 @@ object HCRecipeSerializers {
             HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCExplodingRecipe::result),
             BiCodecs.NON_NEGATIVE_FRACTION.optionalFieldOf("min_power", fraction(4)).forGetter(HCExplodingRecipe::minPower),
             ::HCExplodingRecipe,
+        ),
+    )
+
+    @JvmField
+    val FORGING: RecipeSerializer<HTBasicForgingRecipe> = REGISTER.registerSerializer(
+        HTConst.FORGING,
+        MapBiCodec.composite(
+            HTItemIngredient.CODEC.fieldOf("base").forGetter(HTBasicForgingRecipe::base),
+            HTItemIngredient.CODEC.optionalFieldOf("addition").forGetter(HTBasicForgingRecipe::addition),
+            HTItemResult.CODEC
+                .listOf(HCForgingRecipe.RESULT_RANGE)
+                .fieldOf(HTConst.RESULT)
+                .forGetter(HTBasicForgingRecipe::results),
+            HTProcessingRecipe.timeCodec(),
+            ::HTBasicForgingRecipe,
         ),
     )
 

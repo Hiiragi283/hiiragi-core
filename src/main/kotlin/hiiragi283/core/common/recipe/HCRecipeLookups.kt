@@ -7,6 +7,7 @@ import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.recipe.HTItemToChancedRecipe
 import hiiragi283.core.api.recipe.HTItemToItemRecipe
 import hiiragi283.core.api.recipe.HTRecipeHolder
+import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.data.tank.HTPotionTankInteraction
 import hiiragi283.core.common.event.HCRecipeEventHandler
@@ -28,6 +29,9 @@ data object HCRecipeLookups {
     val EXPLODING: HTRecipeTypeImpl<HCExplodingRecipe.Input, HCExplodingRecipe> = create(HTConst.EXPLODING)
 
     @JvmField
+    val FORGING: HTRecipeTypeImpl<HTDoubleRecipeInput, HCForgingRecipe> = create(HTConst.FORGING)
+
+    @JvmField
     val MELTING: HTRecipeTypeImpl<HCMeltingRecipe.Input, HCMeltingRecipe> = create(HTConst.MELTING)
 
     @JvmField
@@ -44,6 +48,8 @@ data object HCRecipeLookups {
         CRUSHING.addProvider(HCRecipeTypes.CRUSHING.get(), identity())
 
         EXPLODING.addProvider(HCRecipeTypes.EXPLODING.get(), identity())
+
+        FORGING.addProvider(HCRecipeTypes.FORGING.get(), identity())
 
         MELTING.addProvider(HCRecipeTypes.MELTING.get(), identity())
 

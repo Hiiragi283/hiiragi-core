@@ -21,12 +21,14 @@ import hiiragi283.core.api.util.emptyOptional
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.jei.category.HCExplodingRecipeCategory
+import hiiragi283.core.client.jei.category.HCForgingRecipeCategory
 import hiiragi283.core.client.jei.category.HCMaterialPartCategory
 import hiiragi283.core.client.jei.category.HCMeltingRecipeCategory
 import hiiragi283.core.client.jei.category.HTItemToChancedRecipeCategory
 import hiiragi283.core.client.jei.category.HTItemToItemRecipeCategory
 import hiiragi283.core.client.jei.category.HTTankInteractionRecipeCategory
 import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
+import hiiragi283.core.client.jei.extension.HTBasicForgingRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicItemToChancedRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicItemToItemRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTPotionTankInteractionCategoryExtension
@@ -62,6 +64,10 @@ import net.neoforged.neoforge.fluids.FluidStack
 @JeiPlugin
 class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     companion object {
+        @JvmStatic
+        lateinit var forging: HCForgingRecipeCategory
+            private set
+
         @JvmStatic
         lateinit var tankInteraction: HTTankInteractionRecipeCategory
             private set
@@ -118,6 +124,9 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         val guiHelper: IGuiHelper = registration.jeiHelpers.guiHelper
         val manager: IIngredientManager = registration.jeiHelpers.ingredientManager
 
+        forging = HCForgingRecipeCategory(guiHelper)
+        forging.addExtension(HTBasicForgingRecipeCategoryExtension)
+
         tankInteraction = HTTankInteractionRecipeCategory(guiHelper)
         tankInteraction.addExtension(HTSimpleTankInteractionCategoryExtension)
         tankInteraction.addExtension(HTPotionTankInteractionCategoryExtension)
@@ -133,6 +142,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             charging,
             crushing,
             HCExplodingRecipeCategory(guiHelper),
+            forging,
             HCMeltingRecipeCategory(guiHelper),
             tankInteraction,
         )
@@ -168,6 +178,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         registration.addRecipes(HCJeiRecipeTypes.CHARGING)
         registration.addRecipes(HCJeiRecipeTypes.CRUSHING)
         registration.addRecipes(HCJeiRecipeTypes.EXPLODING)
+        registration.addRecipes(HCJeiRecipeTypes.FORGING)
         registration.addRecipes(HCJeiRecipeTypes.MELTING)
         registerTankInteractions(registration)
     }
@@ -202,6 +213,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             HCJeiRecipeTypes.CHARGING,
             HCJeiRecipeTypes.CRUSHING,
             HCJeiRecipeTypes.EXPLODING,
+            HCJeiRecipeTypes.FORGING,
             HCJeiRecipeTypes.MELTING,
         )
 

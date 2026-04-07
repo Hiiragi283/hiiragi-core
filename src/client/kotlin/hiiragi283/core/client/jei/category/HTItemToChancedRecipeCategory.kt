@@ -24,7 +24,7 @@ class HTItemToChancedRecipeCategory(guiHelper: IGuiHelper, recipeType: HTLookupR
         extensions[clazz] = extension
     }
 
-    //    HTProcessingRecipeCategory    //
+    //    HTLookupRecipeCategory    //
 
     override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: HTItemToChancedRecipe, focuses: IFocusGroup) {
         val (recipe1: HTItemToChancedRecipe, extension: HTItemToChancedRecipeCategoryExtension<HTItemToChancedRecipe>) =

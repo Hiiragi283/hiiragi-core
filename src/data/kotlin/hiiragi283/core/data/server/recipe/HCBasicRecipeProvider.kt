@@ -9,6 +9,7 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.data.recipe.builder.HCExplodingRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HCForgingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HCMeltingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTItemToChancedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTItemToItemRecipeBuilder
@@ -29,6 +30,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         charging()
         crushing()
         exploding()
+        forging()
         melting()
     }
 
@@ -283,7 +285,18 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         }
     }
 
-    //    Exploding    //
+    //    Forging    //
+
+    @JvmStatic
+    private fun forging() {
+        HCForgingRecipeBuilder.create(output) {
+            base = inputCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON)
+            addition = inputCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON)
+            results += resultCreator.create(Items.HEAVY_WEIGHTED_PRESSURE_PLATE)
+        }
+    }
+
+    //    Melting    //
 
     @JvmStatic
     private fun melting() {

@@ -27,16 +27,18 @@ fun interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any> {
      * 現在のサーバーまたはクライアントからレシピの一覧を取得します。
      * @return [HTRecipeHolder]の[Sequence]
      */
-    fun getAllRecipes(): Sequence<HTRecipeHolder<RECIPE>> = callWhenOn(Dist.CLIENT) { Minecraft.getInstance().level?.let(::getAllRecipes) }
-        ?: run { HiiragiCoreAPI.getActiveServer()?.let(::getAllRecipes) }
-        ?: emptySequence()
+    fun getAllRecipes(): Sequence<HTRecipeHolder<RECIPE>> = getAllRecipes(null)
 
     /**
      * 指定した[level]からレシピの一覧を取得します。
      * @return [HTRecipeHolder]の[Sequence]
      */
-    fun getAllRecipes(level: Level): Sequence<HTRecipeHolder<RECIPE>> =
-        getAllRecipes(Context(level.recipeManager, level.registryAccess(), level.potionBrewing()))
+    fun getAllRecipes(level: Level?): Sequence<HTRecipeHolder<RECIPE>> {
+        val level1: Level = level
+            ?: callWhenOn(Dist.CLIENT) { Minecraft.getInstance().level }
+            ?: return HiiragiCoreAPI.getActiveServer()?.let(::getAllRecipes) ?: emptySequence()
+        return getAllRecipes(Context(level1.recipeManager, level1.registryAccess(), level1.potionBrewing()))
+    }
 
     /**
      * 指定した[server]からレシピの一覧を取得します。
@@ -56,7 +58,7 @@ fun interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any> {
      * @return [predicate]に一致するレシピがない場合は`null`
      */
     fun findFirst(level: Level?, predicate: (RECIPE) -> Boolean): HTRecipeHolder<RECIPE>? =
-        (level?.let(this::getAllRecipes) ?: this.getAllRecipes()).firstOrNull { it.recipe.let(predicate) }
+        this.getAllRecipes(level).firstOrNull { it.recipe.let(predicate) }
 
     /**
      * @since 0.14.0
@@ -74,14 +76,3 @@ fun interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any> {
             manager.getAllRecipesFor(recipeType).asSequence().map(HTRecipeHolder.Companion::from)
     }
 }
-
-//    Extensions    //
-
-/**
- * @author Hiiragi Tsubasa
- * @since 0.12.0
- */
-fun <INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> HTRecipeLookup<INPUT, RECIPE>.findFirst(
-    input: INPUT,
-    level: Level?,
-): HTRecipeHolder<RECIPE>? = this.findFirst(level) { it.test(input) }

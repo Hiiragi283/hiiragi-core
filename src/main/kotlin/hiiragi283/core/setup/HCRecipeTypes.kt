@@ -7,6 +7,7 @@ import hiiragi283.core.api.recipe.HTItemToItemRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeTypeRegister
+import hiiragi283.core.impl.recipe.HTBasicForgingRecipe
 import net.minecraft.world.item.crafting.RecipeType
 import java.util.function.Supplier
 
@@ -22,6 +23,9 @@ object HCRecipeTypes {
 
     @JvmField
     val EXPLODING: Supplier<RecipeType<HCExplodingRecipe>> = REGISTER.registerType(HTConst.EXPLODING)
+
+    @JvmField
+    val FORGING: Supplier<RecipeType<HTBasicForgingRecipe>> = REGISTER.registerType(HTConst.FORGING)
 
     @JvmField
     val MELTING: Supplier<RecipeType<HCMeltingRecipe>> = REGISTER.registerType(HTConst.MELTING)

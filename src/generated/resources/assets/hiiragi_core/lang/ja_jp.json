@@ -146,6 +146,7 @@
   "recipe_type.hiiragi_core.charging": "落雷によるチャージ",
   "recipe_type.hiiragi_core.crushing": "粉砕",
   "recipe_type.hiiragi_core.exploding": "爆破",
+  "recipe_type.hiiragi_core.forging": "鍛造",
   "recipe_type.hiiragi_core.melting": "溶融",
   "recipe_type.hiiragi_core.tank_interaction": "タンクとの相互作用",
   "recipe_type.minecraft.blasting": "溶鉱炉",

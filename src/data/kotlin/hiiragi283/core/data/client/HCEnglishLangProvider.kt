@@ -83,6 +83,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCRecipeLookups.CHARGING, "Lightning Charging")
         add(HCRecipeLookups.CRUSHING, "Crushing")
         add(HCRecipeLookups.EXPLODING, "Exploding")
+        add(HCRecipeLookups.FORGING, "Forging")
         add(HCRecipeLookups.MELTING, "Melting")
         add(HCRecipeLookups.TANK_INTERACTION, "Tank Interaction")
 

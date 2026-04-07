@@ -7,6 +7,7 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.recipe.HTItemToChancedRecipe
 import hiiragi283.core.api.recipe.HTItemToItemRecipe
 import hiiragi283.core.api.recipe.HTRecipeType
+import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.recipe.viewer.HTLookupRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
@@ -15,6 +16,7 @@ import hiiragi283.core.api.text.toText
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
+import hiiragi283.core.common.recipe.HCForgingRecipe
 import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
@@ -49,6 +51,10 @@ object HCJeiRecipeTypes {
     @JvmField
     val EXPLODING: HTLookupRecipeViewerType<HCExplodingRecipe.Input, HCExplodingRecipe> =
         create(HCRecipeLookups.EXPLODING, Items.TNT, 18 * 6)
+
+    @JvmField
+    val FORGING: HTLookupRecipeViewerType<HTDoubleRecipeInput, HCForgingRecipe> =
+        create(HCRecipeLookups.FORGING, Items.ANVIL, 18 * 6, 18 * 3)
 
     @JvmField
     val MELTING: HTLookupRecipeViewerType<HCMeltingRecipe.Input, HCMeltingRecipe> =
