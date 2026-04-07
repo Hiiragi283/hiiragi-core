@@ -1,6 +1,5 @@
 package hiiragi283.core.common.registry.register
 
-import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.item.HTSubCreativeTabContents
 import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.HTHolderLike
@@ -89,7 +88,6 @@ class HTDeferredCreativeTabRegister(namespace: String) :
                 .build()
         }.toLike()
 
-    @HTBuilderMarker
     fun registerTab(
         name: String,
         title: HTTranslation,

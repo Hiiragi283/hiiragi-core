@@ -1,6 +1,5 @@
 package hiiragi283.core.common.registry.register
 
-import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.fluid.HTVirtualFluid
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.function.partially2
@@ -84,11 +83,9 @@ class HTFluidContentRegister(modId: String) {
         }
     }
 
-    @HTBuilderMarker
     inline fun registerVirtual(name: String, builderAction: VirtualBuilder.() -> Unit): HTFluidContent =
         VirtualBuilder(name).apply(builderAction).build()
 
-    @HTBuilderMarker
     inline fun registerFlowing(name: String, builderAction: FlowingBuilder.() -> Unit): HTFluidContent =
         FlowingBuilder(name).apply(builderAction).build()
 

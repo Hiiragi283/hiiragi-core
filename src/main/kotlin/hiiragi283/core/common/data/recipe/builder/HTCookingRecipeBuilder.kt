@@ -1,6 +1,5 @@
 package hiiragi283.core.common.data.recipe.builder
 
-import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.holder.HTIngredientHolder
 import hiiragi283.core.api.data.recipe.builder.HTStackRecipeBuilder
@@ -18,7 +17,6 @@ class HTCookingRecipeBuilder(
     prefix: String,
 ) : HTStackRecipeBuilder(prefix) {
     companion object {
-        @HTBuilderMarker
         @JvmStatic
         fun smelting(output: RecipeOutput, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             HTCookingRecipeBuilder(::SmeltingRecipe, IntUnaryOperator.identity(), HTConst.SMELTING)
@@ -26,7 +24,6 @@ class HTCookingRecipeBuilder(
                 .save(output)
         }
 
-        @HTBuilderMarker
         @JvmStatic
         fun blasting(output: RecipeOutput, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             HTCookingRecipeBuilder(::BlastingRecipe, IntUnaryOperator.identity(), HTConst.BLASTING)
@@ -34,7 +31,6 @@ class HTCookingRecipeBuilder(
                 .save(output)
         }
 
-        @HTBuilderMarker
         @JvmStatic
         fun smoking(output: RecipeOutput, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             HTCookingRecipeBuilder(::SmokingRecipe, IntUnaryOperator.identity(), HTConst.SMOKING)
@@ -42,7 +38,6 @@ class HTCookingRecipeBuilder(
                 .save(output)
         }
 
-        @HTBuilderMarker
         @JvmStatic
         fun smeltingAndBlasting(output: RecipeOutput, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             smelting(output, builderAction)
@@ -51,7 +46,6 @@ class HTCookingRecipeBuilder(
                 .save(output)
         }
 
-        @HTBuilderMarker
         @JvmStatic
         fun smeltingAndSmoking(output: RecipeOutput, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             smelting(output, builderAction)

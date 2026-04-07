@@ -1,6 +1,5 @@
 package hiiragi283.core.common.network
 
-import hiiragi283.core.api.HTBuilderMarker
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
 import hiiragi283.core.api.network.HTCustomPayload
@@ -40,7 +39,6 @@ class HTUpdateMenuPacket private constructor(val containerId: Int, val map: Map<
                 else -> HTUpdateMenuPacket(containerId, map)
             }
 
-            @HTBuilderMarker
             @JvmStatic
             inline fun create(containerId: Int, builderAction: MutableMap<Int, HTSyncablePayload>.() -> Unit): HTUpdateMenuPacket? =
                 create(containerId, buildMap(builderAction))
