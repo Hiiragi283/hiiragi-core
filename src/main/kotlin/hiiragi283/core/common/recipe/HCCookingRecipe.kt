@@ -1,12 +1,12 @@
 package hiiragi283.core.common.recipe
 
-import hiiragi283.core.api.recipe.HTItemToItemRecipe
+import hiiragi283.core.api.recipe.HTSingleItemRecipe
 import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.AbstractCookingRecipe
 import net.minecraft.world.item.crafting.SingleRecipeInput
 
-class HCCookingRecipe(val recipe: AbstractCookingRecipe) : HTItemToItemRecipe {
+class HCCookingRecipe(val recipe: AbstractCookingRecipe) : HTSingleItemRecipe {
     override fun getRequiredAmount(input: SingleRecipeInput): Int = 1
 
     override val time: Int = recipe.cookingTime

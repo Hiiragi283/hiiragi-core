@@ -5,15 +5,15 @@ import hiiragi283.core.api.data.recipe.builder.HTProcessingRecipeBuilder
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.common.recipe.HCChargingRecipe
-import hiiragi283.core.impl.recipe.HTBasicItemToItemRecipe
+import hiiragi283.core.impl.recipe.HTBasicSingleItemRecipe
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.ResourceLocation
 
-class HTItemToItemRecipeBuilder(prefix: String, private val factory: Factory<*>) : HTProcessingRecipeBuilder(prefix) {
+class HTSingleItemRecipeBuilder(prefix: String, private val factory: Factory<*>) : HTProcessingRecipeBuilder(prefix) {
     companion object {
         @JvmStatic
-        inline fun charging(output: RecipeOutput, builderAction: HTItemToItemRecipeBuilder.() -> Unit) {
-            HTItemToItemRecipeBuilder(HTConst.CHARGING, ::HCChargingRecipe).apply(builderAction).save(output)
+        inline fun charging(output: RecipeOutput, builderAction: HTSingleItemRecipeBuilder.() -> Unit) {
+            HTSingleItemRecipeBuilder(HTConst.CHARGING, ::HCChargingRecipe).apply(builderAction).save(output)
         }
     }
 
@@ -22,11 +22,11 @@ class HTItemToItemRecipeBuilder(prefix: String, private val factory: Factory<*>)
 
     override fun getPrimalId(): ResourceLocation = result.getId()
 
-    override fun createRecipe(): HTBasicItemToItemRecipe = factory.create(ingredient, result, time)
+    override fun createRecipe(): HTBasicSingleItemRecipe = factory.create(ingredient, result, time)
 
     //    Factory    //
 
-    fun interface Factory<RECIPE : HTBasicItemToItemRecipe> {
+    fun interface Factory<RECIPE : HTBasicSingleItemRecipe> {
         fun create(ingredient: HTItemIngredient, result: HTItemResult, time: Int): RECIPE
     }
 }

@@ -14,7 +14,7 @@ import hiiragi283.core.api.serialization.codec.MapBiCodecs
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.crafting.HCExperienceStoringRecipe
 import hiiragi283.core.common.data.recipe.builder.HTDoubleItemToMultiOutputRecipeBuilder
-import hiiragi283.core.common.data.recipe.builder.HTItemToItemRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTItemToMultiOutputRecipeBuilder
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
@@ -23,7 +23,7 @@ import hiiragi283.core.common.recipe.HCForgingRecipe
 import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
 import hiiragi283.core.impl.recipe.HTBasicDoubleItemToMultiOutputRecipe
-import hiiragi283.core.impl.recipe.HTBasicItemToItemRecipe
+import hiiragi283.core.impl.recipe.HTBasicSingleItemRecipe
 import hiiragi283.core.impl.recipe.HTBasicItemToMultiOutputRecipe
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.world.item.crafting.RecipeSerializer
@@ -46,11 +46,11 @@ object HCRecipeSerializers {
     //    Basic    //
 
     @JvmStatic
-    private fun <R : HTBasicItemToItemRecipe> itemToItem(
-        factory: HTItemToItemRecipeBuilder.Factory<R>,
+    private fun <R : HTBasicSingleItemRecipe> itemToItem(
+        factory: HTSingleItemRecipeBuilder.Factory<R>,
     ): MapBiCodec<RegistryFriendlyByteBuf, R> = MapBiCodec.composite(
-        HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicItemToItemRecipe::ingredient),
-        HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HTBasicItemToItemRecipe::result),
+        HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicSingleItemRecipe::ingredient),
+        HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HTBasicSingleItemRecipe::result),
         HTProcessingRecipe.timeCodec(),
         factory::create,
     )

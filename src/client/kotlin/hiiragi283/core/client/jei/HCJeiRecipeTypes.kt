@@ -5,7 +5,7 @@ import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.recipe.HTDoubleItemToMultiOutputRecipe
-import hiiragi283.core.api.recipe.HTItemToItemRecipe
+import hiiragi283.core.api.recipe.HTSingleItemRecipe
 import hiiragi283.core.api.recipe.HTItemToMultiOutputRecipe
 import hiiragi283.core.api.recipe.HTRecipeType
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
@@ -41,7 +41,7 @@ object HCJeiRecipeTypes {
         create(HTVanillaRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 6)
 
     @JvmField
-    val CHARGING: HTLookupRecipeViewerType<SingleRecipeInput, HTItemToItemRecipe> =
+    val CHARGING: HTLookupRecipeViewerType<SingleRecipeInput, HTSingleItemRecipe> =
         create(HCRecipeLookups.CHARGING, Items.LIGHTNING_ROD, 18 * 4)
 
     @JvmField

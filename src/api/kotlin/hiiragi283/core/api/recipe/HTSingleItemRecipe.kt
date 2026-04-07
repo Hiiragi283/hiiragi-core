@@ -9,7 +9,7 @@ import net.minecraft.world.item.crafting.SingleRecipeInput
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-interface HTItemToItemRecipe : HTProcessingRecipe<SingleRecipeInput> {
+interface HTSingleItemRecipe : HTProcessingRecipe<SingleRecipeInput> {
     fun getRequiredAmount(input: SingleRecipeInput): Int
 
     //    Serializable    //
@@ -20,6 +20,6 @@ interface HTItemToItemRecipe : HTProcessingRecipe<SingleRecipeInput> {
      * @since 0.12.0
      */
     interface Serializable :
-        HTItemToItemRecipe,
+        HTSingleItemRecipe,
         HTSerializableRecipe<SingleRecipeInput>
 }

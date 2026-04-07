@@ -9,7 +9,7 @@ import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.item.enchantment.toInstances
-import hiiragi283.core.api.recipe.HTItemToItemRecipe
+import hiiragi283.core.api.recipe.HTSingleItemRecipe
 import hiiragi283.core.api.recipe.HTItemToMultiOutputRecipe
 import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.storage.item.HTItemResourceType
@@ -74,7 +74,7 @@ object HCRecipeEventHandler {
     }
 
     /**
-     * [HTItemToItemRecipe]を処理するイベント
+     * [HTSingleItemRecipe]を処理するイベント
      */
     @SubscribeEvent
     fun onStruck(event: EntityStruckByLightningEvent) {
@@ -87,8 +87,8 @@ object HCRecipeEventHandler {
         if (level.isClientSide) return
         if (entity is ItemEntity && entity.isAlive) {
             val input: SingleRecipeInput = createInput(entity)
-            val recipe: HTItemToItemRecipe = getCaches(level).charging.getFirstRecipe(input, level) ?: return
-            popResult(input, recipe, level, entity, HTItemToItemRecipe::getRequiredAmount)
+            val recipe: HTSingleItemRecipe = getCaches(level).charging.getFirstRecipe(input, level) ?: return
+            popResult(input, recipe, level, entity, HTSingleItemRecipe::getRequiredAmount)
             if (entity.item.isEmpty) {
                 entity.discard()
                 event.isCanceled = true

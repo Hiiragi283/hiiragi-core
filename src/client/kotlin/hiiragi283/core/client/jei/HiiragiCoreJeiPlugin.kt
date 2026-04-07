@@ -25,13 +25,13 @@ import hiiragi283.core.client.jei.category.HCExplodingRecipeCategory
 import hiiragi283.core.client.jei.category.HCForgingRecipeCategory
 import hiiragi283.core.client.jei.category.HCMaterialPartCategory
 import hiiragi283.core.client.jei.category.HCMeltingRecipeCategory
-import hiiragi283.core.client.jei.category.HTItemToItemRecipeCategory
+import hiiragi283.core.client.jei.category.HTSingleItemRecipeCategory
 import hiiragi283.core.client.jei.category.HTTankInteractionRecipeCategory
 import hiiragi283.core.client.jei.category.base.HTDoubleItemToMultiOutputRecipeCategory
 import hiiragi283.core.client.jei.category.base.HTItemToMultiOutputRecipeCategory
 import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicDoubleItemToMultiOutputRecipeCategoryExtension
-import hiiragi283.core.client.jei.extension.HTBasicItemToItemRecipeCategoryExtension
+import hiiragi283.core.client.jei.extension.HTBasicSingleItemRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicItemToMultiOutputRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTPotionTankInteractionCategoryExtension
 import hiiragi283.core.client.jei.extension.HTSimpleTankInteractionCategoryExtension
@@ -72,7 +72,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
 
         // ItemToItem
         @JvmStatic
-        lateinit var charging: HTItemToItemRecipeCategory
+        lateinit var charging: HTSingleItemRecipeCategory
             private set
 
         // ItemToMultiOutput
@@ -150,9 +150,9 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     private fun initItemToItem(guiHelper: IGuiHelper, manager: IIngredientManager) {
-        charging = HTItemToItemRecipeCategory(guiHelper, HCJeiRecipeTypes.CHARGING)
+        charging = HTSingleItemRecipeCategory(guiHelper, HCJeiRecipeTypes.CHARGING)
 
-        charging.addExtension(HTBasicItemToItemRecipeCategoryExtension())
+        charging.addExtension(HTBasicSingleItemRecipeCategoryExtension())
     }
 
     private fun initItemToMultiOutput(guiHelper: IGuiHelper, manager: IIngredientManager) {
