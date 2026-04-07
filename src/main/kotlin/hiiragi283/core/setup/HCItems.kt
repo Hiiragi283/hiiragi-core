@@ -6,6 +6,7 @@ import hiiragi283.core.api.registry.HTSimpleItemHolderLike
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.item.HTAlmightyPickaxeItem
 import hiiragi283.core.common.item.HTAmbrosiaItem
+import hiiragi283.core.common.item.HTBlueprintItem
 import hiiragi283.core.common.item.HTBombItem
 import hiiragi283.core.common.item.HTCaptureEggItem
 import hiiragi283.core.common.item.HTCreativeItem
@@ -111,6 +112,11 @@ object HCItems {
     //    Utilities    //
 
     @JvmField
+    val BLUEPRINT: HTSimpleItemHolderLike = REGISTER.registerItem("blueprint", ::HTBlueprintItem) {
+        it.stacksTo(1).component(HCDataComponents.BLUEPRINT_NUMBER, 0)
+    }
+
+    @JvmField
     val BOMB: HTSimpleItemHolderLike = REGISTER.registerItem("bomb", ::HTBombItem)
 
     @JvmField
@@ -165,6 +171,7 @@ object HCItems {
 
         modify(AMBROSIA, HCDataComponents.DESCRIPTION, HCTranslation.AMBROSIA)
         modify(ANCIENT_UPGRADE, HCDataComponents.DESCRIPTION, HCTranslation.ANCIENT_UPGRADE)
+        modify(BLUEPRINT, HCDataComponents.DESCRIPTION, HCTranslation.BLUEPRINT)
         modify(ELDER_HEART, HCDataComponents.DESCRIPTION, HCTranslation.ELDER_HEART)
         modify(ELDRITCH_EGG, HCDataComponents.DESCRIPTION, HCTranslation.ELDRITCH_EGG)
         modify(ETERNAL_UPGRADE, HCDataComponents.DESCRIPTION, HCTranslation.ETERNAL_UPGRADE)

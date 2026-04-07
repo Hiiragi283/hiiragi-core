@@ -11,10 +11,10 @@ import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.HTRecipeLookup
 import hiiragi283.core.api.recipe.HTRecipeType
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
-import hiiragi283.core.api.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.registry.toHolderSet
 import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.common.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.mixin.PotionBrewingAccessor
 import hiiragi283.core.mixin.PotionBrewingMixAccessor
 import hiiragi283.core.util.HCPotionFluidHelper

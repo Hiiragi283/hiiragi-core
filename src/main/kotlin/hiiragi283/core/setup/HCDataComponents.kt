@@ -10,6 +10,7 @@ import hiiragi283.core.api.storage.attachments.HTAttachedEnergy
 import hiiragi283.core.api.storage.attachments.HTAttachedFluids
 import hiiragi283.core.api.storage.attachments.HTAttachedItems
 import hiiragi283.core.api.text.HTTranslation
+import hiiragi283.core.common.item.HTBlueprintItem
 import hiiragi283.core.common.registry.register.HTDeferredDataComponentRegister
 import hiiragi283.core.common.text.HTSimpleTranslation
 import net.minecraft.core.GlobalPos
@@ -19,6 +20,9 @@ import net.minecraft.core.registries.Registries
 object HCDataComponents {
     @JvmField
     val REGISTER = HTDeferredDataComponentRegister(Registries.DATA_COMPONENT_TYPE, HiiragiCoreAPI.MOD_ID)
+
+    @JvmField
+    val BLUEPRINT_NUMBER: DataComponentType<Int> = REGISTER.registerType("blueprint_number", HTBlueprintItem.RANGE_CODEC)
 
     @JvmField
     val BOTTLE_TYPE: DataComponentType<HTBottleType> = REGISTER.registerType("bottle_type", HTBottleType.CODEC)

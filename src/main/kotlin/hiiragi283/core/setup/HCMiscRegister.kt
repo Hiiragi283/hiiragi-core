@@ -26,7 +26,6 @@ import hiiragi283.core.api.property.HTBasicPropertyMap
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.property.isNotEmpty
-import hiiragi283.core.api.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.toItemLike
@@ -39,6 +38,8 @@ import hiiragi283.core.common.gui.sync.HTFractionSyncPayload
 import hiiragi283.core.common.gui.sync.HTIntSyncPayload
 import hiiragi283.core.common.gui.sync.HTItemSyncPayload
 import hiiragi283.core.common.gui.sync.HTLongSyncPayload
+import hiiragi283.core.common.recipe.ingredient.HTBluePrintIngredient
+import hiiragi283.core.common.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.impl.HiiragiCoreAccessImpl
 import hiiragi283.core.impl.material.HTMaterialManagerImpl
 import net.minecraft.core.Registry
@@ -97,6 +98,10 @@ internal object HCMiscRegister {
         event.register(Registries.ITEM, ::registerMaterialItems.partially1(manager))
         event.register(Registries.ITEM, ::registerMaterialTools.partially1(manager))
 
+        // Ingredient Type
+        event.register(NeoForgeRegistries.Keys.INGREDIENT_TYPES) { helper ->
+            helper.register(HiiragiCoreAPI.id("blue_print"), HTBluePrintIngredient.TYPE)
+        }
         // Fluid Ingredient Type
         event.register(NeoForgeRegistries.Keys.FLUID_INGREDIENT_TYPES) { helper ->
             helper.register(HiiragiCoreAPI.id("potion"), HTPotionFluidIngredient.TYPE)

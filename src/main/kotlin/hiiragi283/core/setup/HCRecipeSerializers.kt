@@ -13,6 +13,7 @@ import hiiragi283.core.api.serialization.codec.MapBiCodec
 import hiiragi283.core.api.serialization.codec.MapBiCodecs
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.crafting.HCExperienceStoringRecipe
+import hiiragi283.core.common.crafting.HTBlueprintCloningRecipe
 import hiiragi283.core.common.data.recipe.builder.HTDoubleMultiOutputRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSingleMultiOutputRecipeBuilder
@@ -40,23 +41,28 @@ object HCRecipeSerializers {
         REGISTER.registerSerializer("eternal_upgrade", MapBiCodecs.unit(HCEternalSmithingRecipe))
 
     @JvmField
+    val BLUEPRINT_CLONING: SimpleCraftingRecipeSerializer<HTBlueprintCloningRecipe> = REGISTER.registerSerializer(
+        "blueprint_cloning",
+        SimpleCraftingRecipeSerializer(::HTBlueprintCloningRecipe),
+    )
+
+    @JvmField
     val EXPERIENCE_STORING: SimpleCraftingRecipeSerializer<HCExperienceStoringRecipe> =
         REGISTER.registerSerializer("experience_storing", SimpleCraftingRecipeSerializer(::HCExperienceStoringRecipe))
 
     //    Basic    //
 
     @JvmStatic
-    private fun <R : HTBasicSingleItemRecipe> itemToItem(
-        factory: HTSingleItemRecipeBuilder.Factory<R>,
-    ): MapBiCodec<RegistryFriendlyByteBuf, R> = MapBiCodec.composite(
-        HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicSingleItemRecipe::ingredient),
-        HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HTBasicSingleItemRecipe::result),
-        HTProcessingRecipe.timeCodec(),
-        factory::create,
-    )
+    fun <R : HTBasicSingleItemRecipe> singleItem(factory: HTSingleItemRecipeBuilder.Factory<R>): MapBiCodec<RegistryFriendlyByteBuf, R> =
+        MapBiCodec.composite(
+            HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicSingleItemRecipe::ingredient),
+            HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HTBasicSingleItemRecipe::result),
+            HTProcessingRecipe.timeCodec(),
+            factory::create,
+        )
 
     @JvmStatic
-    private fun <R : HTBasicSingleMultiOutputRecipe> itemToMulti(
+    fun <R : HTBasicSingleMultiOutputRecipe> singleItemToMulti(
         outputRange: IntRange,
         factory: HTSingleMultiOutputRecipeBuilder.Factory<R>,
     ): MapBiCodec<RegistryFriendlyByteBuf, R> = MapBiCodec.composite(
@@ -70,7 +76,7 @@ object HCRecipeSerializers {
     )
 
     @JvmStatic
-    private fun <R : HTBasicDoubleMultiOutputRecipe> doubleItemToMulti(
+    fun <R : HTBasicDoubleMultiOutputRecipe> doubleItemToMulti(
         outputRange: IntRange,
         factory: HTDoubleMultiOutputRecipeBuilder.Factory<R>,
     ): MapBiCodec<RegistryFriendlyByteBuf, R> = MapBiCodec.composite(
@@ -85,11 +91,11 @@ object HCRecipeSerializers {
     )
 
     @JvmField
-    val CHARGING: RecipeSerializer<HCChargingRecipe> = REGISTER.registerSerializer(HTConst.CHARGING, itemToItem(::HCChargingRecipe))
+    val CHARGING: RecipeSerializer<HCChargingRecipe> = REGISTER.registerSerializer(HTConst.CHARGING, singleItem(::HCChargingRecipe))
 
     @JvmField
     val CRUSHING: RecipeSerializer<HCCrushingRecipe> =
-        REGISTER.registerSerializer(HTConst.CRUSHING, itemToMulti(HCCrushingRecipe.OUTPUT_RANGE, ::HCCrushingRecipe))
+        REGISTER.registerSerializer(HTConst.CRUSHING, singleItemToMulti(HCCrushingRecipe.OUTPUT_RANGE, ::HCCrushingRecipe))
 
     @JvmField
     val EXPLODING: RecipeSerializer<HCExplodingRecipe> = REGISTER.registerSerializer(

@@ -13,7 +13,7 @@ class HTBasicDoubleMultiOutputRecipeCategoryExtension<RECIPE : HTBasicDoubleMult
         accessor.addItemIngredient(recipe.base)
     }
 
-    override fun <T : IIngredientAcceptor<T>> setAdditional(recipe: RECIPE, accessor: T) {
+    override fun <T : IIngredientAcceptor<T>> setAddition(recipe: RECIPE, accessor: T) {
         accessor.addItemIngredient(recipe.addition.getOrNull())
     }
 

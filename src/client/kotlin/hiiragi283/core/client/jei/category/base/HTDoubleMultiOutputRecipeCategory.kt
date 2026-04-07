@@ -45,7 +45,7 @@ abstract class HTDoubleMultiOutputRecipeCategory(
             recipe1,
             builder.addInputSlot(getPosition(0), getPosition(0)).setSlotBackground(HTBackgroundType.INPUT),
         )
-        extension.setBase(
+        extension.setAddition(
             recipe1,
             builder.addInputSlot(getPosition(0), getPosition(2)).setSlotBackground(HTBackgroundType.EXTRA_INPUT),
         )

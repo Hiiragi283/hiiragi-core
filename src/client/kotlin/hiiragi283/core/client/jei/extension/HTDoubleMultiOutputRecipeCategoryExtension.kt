@@ -9,7 +9,7 @@ import java.util.function.IntFunction
 interface HTDoubleMultiOutputRecipeCategoryExtension<RECIPE : HTDoubleMultiOutputRecipe> {
     fun <T : IIngredientAcceptor<T>> setBase(recipe: RECIPE, accessor: T)
 
-    fun <T : IIngredientAcceptor<T>> setAdditional(recipe: RECIPE, accessor: T)
+    fun <T : IIngredientAcceptor<T>> setAddition(recipe: RECIPE, accessor: T)
 
     fun <T : IIngredientAcceptor<T>> setOutput(recipe: RECIPE, index: Int, accessor: T) {}
 

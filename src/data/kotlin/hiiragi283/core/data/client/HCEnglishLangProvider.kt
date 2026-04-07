@@ -62,6 +62,7 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         add(HCItems.ANCIENT_UPGRADE, "Ancient Smithing Template")
 
+        add(HCItems.BLUEPRINT, "Blueprint")
         add(HCItems.BOMB, "Bomb")
         add(HCItems.ELDRITCH_EGG, "Eldritch Egg")
         add(HCItems.FLUID_FILTER, "Fluid Filter")

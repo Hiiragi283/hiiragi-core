@@ -38,6 +38,7 @@ import hiiragi283.core.client.jei.extension.HTSimpleTankInteractionCategoryExten
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.data.tank.HTSimpleTankInteraction
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.util.HCPotionFluidHelper
@@ -87,6 +88,10 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     override fun registerItemSubtypes(registration: ISubtypeRegistration) {
+        registration.registerSubtypeInterpreter(
+            HCItems.BLUEPRINT.get(),
+            HTSubtypeInterpreter { stack: ItemStack, _ -> stack.get(HCDataComponents.BLUEPRINT_NUMBER) },
+        )
         registration.registerSubtypeInterpreter(
             HCItems.ALMIGHTY_PICKAXE.get(),
             HTSubtypeInterpreter { stack: ItemStack, _ -> stack.get(DataComponents.UNBREAKABLE) },

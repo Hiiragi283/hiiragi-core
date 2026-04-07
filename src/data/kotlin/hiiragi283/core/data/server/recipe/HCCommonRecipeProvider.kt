@@ -21,6 +21,7 @@ import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.times
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.crafting.HCExperienceStoringRecipe
+import hiiragi283.core.common.crafting.HTBlueprintCloningRecipe
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
@@ -276,6 +277,14 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             resultStack += HCBlocks.FORGING_ANVIL
         }
 
+        // Blueprint
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += Items.PAPER
+            ingredients += Tags.Items.DYES_WHITE
+            ingredients += Tags.Items.DYES_BLUE
+            resultStack += HCItems.BLUEPRINT
+        }
+        save(id(HTConst.SHAPELESS, "blueprint_cloning"), HTBlueprintCloningRecipe(CraftingBookCategory.MISC))
         // Bomb
         HTShapedRecipeBuilder.create(output) {
             pattern(

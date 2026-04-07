@@ -1,4 +1,4 @@
-package hiiragi283.core.api.recipe.ingredient
+package hiiragi283.core.common.recipe.ingredient
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.function.generateHash
@@ -18,6 +18,7 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import net.neoforged.neoforge.fluids.crafting.FluidIngredientType
 import java.util.stream.Stream
+import kotlin.collections.map
 
 /**
  * [HTPotionFluidManager]に基づいて液体ポーションを扱う[FluidIngredient]の実装クラスです。
@@ -29,7 +30,7 @@ import java.util.stream.Stream
 class HTPotionFluidIngredient(val potions: HolderSet<Potion>, val bottleType: HTBottleType) : FluidIngredient() {
     companion object {
         @JvmField
-        val CODEC: MapBiCodec<RegistryFriendlyByteBuf, HTPotionFluidIngredient> = MapBiCodec.composite(
+        val CODEC: MapBiCodec<RegistryFriendlyByteBuf, HTPotionFluidIngredient> = MapBiCodec.Companion.composite(
             VanillaBiCodecs.holderSet(Registries.POTION).fieldOf("potions").forGetter(HTPotionFluidIngredient::potions),
             HTBottleType.CODEC.fieldOf("bottle_type").forGetter(HTPotionFluidIngredient::bottleType),
             ::HTPotionFluidIngredient,

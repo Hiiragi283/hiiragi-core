@@ -36,10 +36,20 @@ class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(Hiira
             addAll(HCItems.REGISTER.asSequence())
 
             remove(HCItems.STEEL_COMPOUND)
+
+            remove(HCItems.BLUEPRINT)
         }.forEach { item: HTIdLike -> existTexture(item, ::basicItem) }
 
         existTexture(HCItems.STEEL_COMPOUND) { item: HTIdLike ->
             layeredItem(item, HTConst.MINECRAFT.toId(HTConst.ITEM, "iron_ingot"), item.itemId)
+        }
+
+        existTexture(HCItems.BLUEPRINT) { item: HTIdLike ->
+            layeredItem(
+                item,
+                item.itemId,
+                HTConst.MINECRAFT.toId(HTConst.ITEM, "filled_map_markings"),
+            )
         }
 
         registerBuckets()

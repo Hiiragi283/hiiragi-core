@@ -62,6 +62,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HCItems.ANCIENT_UPGRADE, "古代の鍛冶型")
 
+        add(HCItems.BLUEPRINT, "青写真")
         add(HCItems.BOMB, "ボム")
         add(HCItems.ELDRITCH_EGG, "異質な卵")
         add(HCItems.FLUID_FILTER, "液体フィルタ")

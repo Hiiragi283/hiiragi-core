@@ -22,6 +22,8 @@ enum class HCTranslation(type: String, vararg path: String) : HTTranslation {
     // Item
     AMBROSIA(HTConst.DESCRIPTION, "ambrosia"),
     ANCIENT_UPGRADE(HTConst.DESCRIPTION, "ancient_upgrade"),
+    BLUEPRINT(HTConst.DESCRIPTION, "blueprint"),
+    BLUEPRINT_NUMBER(HTConst.DESCRIPTION, "blueprint", "number"),
     ELDER_HEART(HTConst.DESCRIPTION, "elder_heart"),
     ELDRITCH_EGG(HTConst.DESCRIPTION, "eldritch_heart"),
     ETERNAL_UPGRADE(HTConst.DESCRIPTION, "eternal_upgrade"),

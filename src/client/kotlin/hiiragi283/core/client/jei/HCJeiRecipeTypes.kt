@@ -20,6 +20,7 @@ import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
+import hiiragi283.core.setup.HCBlocks
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
@@ -54,7 +55,7 @@ object HCJeiRecipeTypes {
 
     @JvmField
     val FORGING: HTLookupRecipeViewerType<HTDoubleRecipeInput, HTDoubleMultiOutputRecipe> =
-        create(HCRecipeLookups.FORGING, Items.ANVIL, 18 * 6, 18 * 3)
+        create(HCRecipeLookups.FORGING, HCBlocks.FORGING_ANVIL, 18 * 6, 18 * 3)
 
     @JvmField
     val MELTING: HTLookupRecipeViewerType<HCMeltingRecipe.Input, HCMeltingRecipe> =
