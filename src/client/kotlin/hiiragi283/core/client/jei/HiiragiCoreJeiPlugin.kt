@@ -27,10 +27,10 @@ import hiiragi283.core.client.jei.category.HCMaterialPartCategory
 import hiiragi283.core.client.jei.category.HCMeltingRecipeCategory
 import hiiragi283.core.client.jei.category.HTSingleItemRecipeCategory
 import hiiragi283.core.client.jei.category.HTTankInteractionRecipeCategory
-import hiiragi283.core.client.jei.category.base.HTDoubleItemToMultiOutputRecipeCategory
+import hiiragi283.core.client.jei.category.base.HTDoubleMultiOutputRecipeCategory
 import hiiragi283.core.client.jei.category.base.HTSingleMultiOutputRecipeCategory
 import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
-import hiiragi283.core.client.jei.extension.HTBasicDoubleItemToMultiOutputRecipeCategoryExtension
+import hiiragi283.core.client.jei.extension.HTBasicDoubleMultiOutputRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicSingleItemRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicSingleMultiOutputRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTPotionTankInteractionCategoryExtension
@@ -82,7 +82,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
 
         // DoubleItemToMultiOutput
         @JvmStatic
-        lateinit var forging: HTDoubleItemToMultiOutputRecipeCategory
+        lateinit var forging: HTDoubleMultiOutputRecipeCategory
             private set
     }
 
@@ -164,7 +164,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     private fun initDoubleItemToMultiOutput(guiHelper: IGuiHelper, manager: IIngredientManager) {
         forging = HCForgingRecipeCategory(guiHelper)
 
-        forging.addExtension(HTBasicDoubleItemToMultiOutputRecipeCategoryExtension())
+        forging.addExtension(HTBasicDoubleMultiOutputRecipeCategoryExtension())
     }
 
     override fun registerVanillaCategoryExtensions(registration: IVanillaCategoryExtensionRegistration) {

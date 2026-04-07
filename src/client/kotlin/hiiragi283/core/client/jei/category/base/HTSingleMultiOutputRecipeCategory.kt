@@ -1,8 +1,8 @@
 package hiiragi283.core.client.jei.category.base
 
 import hiiragi283.core.api.gui.HTBackgroundType
-import hiiragi283.core.api.recipe.HTSingleMultiOutputRecipe
 import hiiragi283.core.api.recipe.HTRecipeHolder
+import hiiragi283.core.api.recipe.HTSingleMultiOutputRecipe
 import hiiragi283.core.api.recipe.viewer.HTLookupRecipeViewerType
 import hiiragi283.core.client.jei.extension.HTSingleMultiOutputRecipeCategoryExtension
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
@@ -73,7 +73,10 @@ abstract class HTSingleMultiOutputRecipeCategory(
     ): Pair<RECIPE, HTSingleMultiOutputRecipeCategoryExtension<RECIPE>>? {
         val extension: HTSingleMultiOutputRecipeCategoryExtension<RECIPE> =
             (extensions[recipe::class.java] as? HTSingleMultiOutputRecipeCategoryExtension<RECIPE>) ?: run {
-                for ((clazz: Class<out HTSingleMultiOutputRecipe>, extension: HTSingleMultiOutputRecipeCategoryExtension<*>) in extensions) {
+                for ((
+                    clazz: Class<out HTSingleMultiOutputRecipe>,
+                    extension: HTSingleMultiOutputRecipeCategoryExtension<*>,
+                ) in extensions) {
                     if (clazz.isInstance(recipe)) {
                         return@run extension as? HTSingleMultiOutputRecipeCategoryExtension<RECIPE>
                     }

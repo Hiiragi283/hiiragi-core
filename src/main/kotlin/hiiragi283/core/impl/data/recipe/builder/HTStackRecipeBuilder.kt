@@ -1,6 +1,7 @@
-package hiiragi283.core.api.data.recipe.builder
+package hiiragi283.core.impl.data.recipe.builder
 
 import hiiragi283.core.api.data.holder.HTItemStackHolder
+import hiiragi283.core.api.data.recipe.builder.HTRecipeBuilder
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 
@@ -13,7 +14,7 @@ abstract class HTStackRecipeBuilder(prefix: String) : HTRecipeBuilder(prefix) {
     final override fun getPrimalId(): ResourceLocation = resultStack.getId()
 
     /**
-     * 完成品の[ItemStack]を保持するインスタンス
+     * 完成品の[net.minecraft.world.item.ItemStack]を保持するインスタンス
      */
     val resultStack = HTItemStackHolder()
 }

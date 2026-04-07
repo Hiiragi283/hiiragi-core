@@ -10,7 +10,7 @@ import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.data.recipe.builder.HCExplodingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HCMeltingRecipeBuilder
-import hiiragi283.core.common.data.recipe.builder.HTDoubleItemToMultiOutputRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTDoubleMultiOutputRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSingleMultiOutputRecipeBuilder
 import hiiragi283.core.common.material.CommonMaterialKeys
@@ -289,7 +289,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
 
     @JvmStatic
     private fun forging() {
-        HTDoubleItemToMultiOutputRecipeBuilder.forging(output) {
+        HTDoubleMultiOutputRecipeBuilder.forging(output) {
             base = inputCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON)
             addition = inputCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON)
             results += resultCreator.create(Items.HEAVY_WEIGHTED_PRESSURE_PLATE)

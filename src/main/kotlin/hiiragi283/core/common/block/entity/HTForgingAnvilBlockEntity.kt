@@ -2,7 +2,7 @@ package hiiragi283.core.common.block.entity
 
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.function.partially1
-import hiiragi283.core.api.recipe.HTDoubleItemToMultiOutputRecipe
+import hiiragi283.core.api.recipe.HTDoubleMultiOutputRecipe
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
@@ -50,7 +50,7 @@ class HTForgingAnvilBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntit
 
     //    Processing    //
 
-    private val cache: HTLookupRecipeCache<HTDoubleRecipeInput, HTDoubleItemToMultiOutputRecipe> =
+    private val cache: HTLookupRecipeCache<HTDoubleRecipeInput, HTDoubleMultiOutputRecipe> =
         HTLookupRecipeCache.forRecipe(HCRecipeLookups.FORGING)
     private val inputHandler: HTItemInputHandler by lazy { HTItemInputHandler(slot) }
 
@@ -70,7 +70,7 @@ class HTForgingAnvilBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntit
         val input = HTDoubleRecipeInput(stack, stack1)
         if (input.isEmpty) return false
         val level: Level = player.level()
-        val recipe: HTDoubleItemToMultiOutputRecipe = cache.getFirstRecipe(input, level) ?: return false
+        val recipe: HTDoubleMultiOutputRecipe = cache.getFirstRecipe(input, level) ?: return false
         // outputs
         recipe.assembleItems(input, level.registryAccess()).forEach(HTItemDropHelper::giveStackTo.partially1(player))
         // inputs

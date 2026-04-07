@@ -4,10 +4,10 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.material.HTMaterialManager
-import hiiragi283.core.api.recipe.HTDoubleItemToMultiOutputRecipe
+import hiiragi283.core.api.recipe.HTDoubleMultiOutputRecipe
+import hiiragi283.core.api.recipe.HTRecipeType
 import hiiragi283.core.api.recipe.HTSingleItemRecipe
 import hiiragi283.core.api.recipe.HTSingleMultiOutputRecipe
-import hiiragi283.core.api.recipe.HTRecipeType
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.recipe.viewer.HTLookupRecipeViewerType
@@ -53,7 +53,7 @@ object HCJeiRecipeTypes {
         create(HCRecipeLookups.EXPLODING, Items.TNT, 18 * 6)
 
     @JvmField
-    val FORGING: HTLookupRecipeViewerType<HTDoubleRecipeInput, HTDoubleItemToMultiOutputRecipe> =
+    val FORGING: HTLookupRecipeViewerType<HTDoubleRecipeInput, HTDoubleMultiOutputRecipe> =
         create(HCRecipeLookups.FORGING, Items.ANVIL, 18 * 6, 18 * 3)
 
     @JvmField

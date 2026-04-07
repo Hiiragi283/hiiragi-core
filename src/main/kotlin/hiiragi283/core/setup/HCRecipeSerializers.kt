@@ -13,7 +13,7 @@ import hiiragi283.core.api.serialization.codec.MapBiCodec
 import hiiragi283.core.api.serialization.codec.MapBiCodecs
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.crafting.HCExperienceStoringRecipe
-import hiiragi283.core.common.data.recipe.builder.HTDoubleItemToMultiOutputRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTDoubleMultiOutputRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSingleMultiOutputRecipeBuilder
 import hiiragi283.core.common.recipe.HCChargingRecipe
@@ -22,7 +22,7 @@ import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCForgingRecipe
 import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
-import hiiragi283.core.impl.recipe.HTBasicDoubleItemToMultiOutputRecipe
+import hiiragi283.core.impl.recipe.HTBasicDoubleMultiOutputRecipe
 import hiiragi283.core.impl.recipe.HTBasicSingleItemRecipe
 import hiiragi283.core.impl.recipe.HTBasicSingleMultiOutputRecipe
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -70,16 +70,16 @@ object HCRecipeSerializers {
     )
 
     @JvmStatic
-    private fun <R : HTBasicDoubleItemToMultiOutputRecipe> doubleItemToMulti(
+    private fun <R : HTBasicDoubleMultiOutputRecipe> doubleItemToMulti(
         outputRange: IntRange,
-        factory: HTDoubleItemToMultiOutputRecipeBuilder.Factory<R>,
+        factory: HTDoubleMultiOutputRecipeBuilder.Factory<R>,
     ): MapBiCodec<RegistryFriendlyByteBuf, R> = MapBiCodec.composite(
-        HTItemIngredient.CODEC.fieldOf("base").forGetter(HTBasicDoubleItemToMultiOutputRecipe::base),
-        HTItemIngredient.CODEC.optionalFieldOf("addition").forGetter(HTBasicDoubleItemToMultiOutputRecipe::addition),
+        HTItemIngredient.CODEC.fieldOf("base").forGetter(HTBasicDoubleMultiOutputRecipe::base),
+        HTItemIngredient.CODEC.optionalFieldOf("addition").forGetter(HTBasicDoubleMultiOutputRecipe::addition),
         HTItemResult.CODEC
             .listOrElement(outputRange)
             .fieldOf(HTConst.RESULTS)
-            .forGetter(HTBasicDoubleItemToMultiOutputRecipe::results),
+            .forGetter(HTBasicDoubleMultiOutputRecipe::results),
         HTProcessingRecipe.timeCodec(),
         factory::create,
     )

@@ -2,7 +2,7 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.recipe.HTDoubleItemToMultiOutputRecipe
+import hiiragi283.core.api.recipe.HTDoubleMultiOutputRecipe
 import hiiragi283.core.api.recipe.HTSingleItemRecipe
 import hiiragi283.core.api.recipe.HTSingleMultiOutputRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
@@ -25,7 +25,7 @@ object HCRecipeTypes {
     val EXPLODING: Supplier<RecipeType<HCExplodingRecipe>> = REGISTER.registerType(HTConst.EXPLODING)
 
     @JvmField
-    val FORGING: Supplier<RecipeType<HTDoubleItemToMultiOutputRecipe.Serializable>> = REGISTER.registerType(HTConst.FORGING)
+    val FORGING: Supplier<RecipeType<HTDoubleMultiOutputRecipe.Serializable>> = REGISTER.registerType(HTConst.FORGING)
 
     @JvmField
     val MELTING: Supplier<RecipeType<HCMeltingRecipe>> = REGISTER.registerType(HTConst.MELTING)

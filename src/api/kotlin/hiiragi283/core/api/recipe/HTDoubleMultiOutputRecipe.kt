@@ -7,7 +7,7 @@ import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
  * @author Hiiragi Tsubasa
  * @since 0.15.0
  */
-interface HTDoubleItemToMultiOutputRecipe : HTMultiOutputRecipe<HTDoubleRecipeInput> {
+interface HTDoubleMultiOutputRecipe : HTMultiOutputRecipe<HTDoubleRecipeInput> {
     fun getBaseAmount(input: HTDoubleRecipeInput): Int
 
     fun getAdditionAmount(input: HTDoubleRecipeInput): Int
@@ -15,11 +15,11 @@ interface HTDoubleItemToMultiOutputRecipe : HTMultiOutputRecipe<HTDoubleRecipeIn
     //    Serializable    //
 
     /**
-     * シリアライズ可能な[HTDoubleItemToMultiOutputRecipe]の拡張インターフェースです。
+     * シリアライズ可能な[HTDoubleMultiOutputRecipe]の拡張インターフェースです。
      * @author Hiiragi Tsubasa
      * @since 0.15.0
      */
     interface Serializable :
-        HTDoubleItemToMultiOutputRecipe,
+        HTDoubleMultiOutputRecipe,
         HTMultiOutputRecipe.Serializable<HTDoubleRecipeInput>
 }

@@ -9,9 +9,9 @@ import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.item.enchantment.toInstances
+import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.HTSingleItemRecipe
 import hiiragi283.core.api.recipe.HTSingleMultiOutputRecipe
-import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.toFraction
 import hiiragi283.core.common.recipe.HCExplodingRecipe

@@ -6,15 +6,15 @@ import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.util.wrapOptional
 import hiiragi283.core.common.recipe.HCForgingRecipe
 import hiiragi283.core.impl.data.recipe.builder.HTMultiOutputRecipeBuilder
-import hiiragi283.core.impl.recipe.HTBasicDoubleItemToMultiOutputRecipe
+import hiiragi283.core.impl.recipe.HTBasicDoubleMultiOutputRecipe
 import net.minecraft.data.recipes.RecipeOutput
 import java.util.Optional
 
-class HTDoubleItemToMultiOutputRecipeBuilder(prefix: String, private val factory: Factory<*>) : HTMultiOutputRecipeBuilder(prefix) {
+class HTDoubleMultiOutputRecipeBuilder(prefix: String, private val factory: Factory<*>) : HTMultiOutputRecipeBuilder(prefix) {
     companion object {
         @JvmStatic
-        inline fun forging(output: RecipeOutput, builderAction: HTDoubleItemToMultiOutputRecipeBuilder.() -> Unit) {
-            HTDoubleItemToMultiOutputRecipeBuilder(HTConst.FORGING, ::HCForgingRecipe).apply(builderAction).save(output)
+        inline fun forging(output: RecipeOutput, builderAction: HTDoubleMultiOutputRecipeBuilder.() -> Unit) {
+            HTDoubleMultiOutputRecipeBuilder(HTConst.FORGING, ::HCForgingRecipe).apply(builderAction).save(output)
         }
     }
 
@@ -25,11 +25,11 @@ class HTDoubleItemToMultiOutputRecipeBuilder(prefix: String, private val factory
         time /= 2
     }
 
-    override fun createRecipe(): HTBasicDoubleItemToMultiOutputRecipe = factory.create(base, addition.wrapOptional(), results, time)
+    override fun createRecipe(): HTBasicDoubleMultiOutputRecipe = factory.create(base, addition.wrapOptional(), results, time)
 
     //    Factory    //
 
-    fun interface Factory<RECIPE : HTBasicDoubleItemToMultiOutputRecipe> {
+    fun interface Factory<RECIPE : HTBasicDoubleMultiOutputRecipe> {
         fun create(
             base: HTItemIngredient,
             addition: Optional<HTItemIngredient>,

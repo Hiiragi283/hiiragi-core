@@ -1,8 +1,8 @@
 package hiiragi283.core.client.jei.category
 
 import hiiragi283.core.api.gui.HTBackgroundType
-import hiiragi283.core.api.recipe.HTSingleItemRecipe
 import hiiragi283.core.api.recipe.HTRecipeHolder
+import hiiragi283.core.api.recipe.HTSingleItemRecipe
 import hiiragi283.core.api.recipe.viewer.HTLookupRecipeViewerType
 import hiiragi283.core.client.jei.category.base.HTLookupRecipeCategory
 import hiiragi283.core.client.jei.extension.HTSingleItemRecipeCategoryExtension
