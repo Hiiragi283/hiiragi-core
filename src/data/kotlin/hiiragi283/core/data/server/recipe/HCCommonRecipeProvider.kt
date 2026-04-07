@@ -49,6 +49,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         materials()
         utilities()
         buckets()
+
         copper()
     }
 
@@ -263,6 +264,18 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
 
     @JvmStatic
     private fun utilities() {
+        // Forging Anvil
+        HTShapedRecipeBuilder.create(output) {
+            pattern(
+                "AAA",
+                " B ",
+                "BBB",
+            )
+            define('A') += CommonTagPrefixes.STORAGE_BLOCK to HCMaterialKeys.AZURE_STEEL
+            define('B') += CommonTagPrefixes.INGOT to HCMaterialKeys.AZURE_STEEL
+            resultStack += HCBlocks.FORGING_ANVIL
+        }
+
         // Bomb
         HTShapedRecipeBuilder.create(output) {
             pattern(
@@ -430,15 +443,26 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
 
     @JvmStatic
     private fun copper() {
-        // Copper -> Copper Basin
+        // Tree Tap
+        HTShapedRecipeBuilder.create(output) {
+            pattern(
+                " A ",
+                "BBB",
+                "B  ",
+            )
+            define('A') += Items.LEVER
+            define('B') += CommonTagPrefixes.INGOT to VanillaMaterialKeys.COPPER
+            resultStack += HCBlocks.TREE_TAP
+        }
+        // Copper Basin
         HTShapedRecipeBuilder.create(output) {
             pattern(
                 "A A",
                 "A A",
                 "BAB",
             )
-            define('A') += CommonTagPrefixes.PLATE to VanillaMaterialKeys.COPPER
-            define('B') += CommonTagPrefixes.INGOT to VanillaMaterialKeys.COPPER
+            define('A') += CommonTagPrefixes.INGOT to VanillaMaterialKeys.COPPER
+            define('B') += CommonTagPrefixes.STORAGE_BLOCK to VanillaMaterialKeys.COPPER
             resultStack += HCBlocks.COPPER_BASINS[HTWeatheringLevel.UNAFFECTED]?.first?.get() ?: return
         }
         HCBlocks.COPPER_BASINS.forEach { base: HTBlockHolderLike<*>, waxed: HTBlockHolderLike<*> ->

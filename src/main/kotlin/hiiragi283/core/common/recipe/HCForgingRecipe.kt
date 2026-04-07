@@ -14,6 +14,10 @@ interface HCForgingRecipe : HTProcessingRecipe<HTDoubleRecipeInput> {
     fun testBase(stack: ItemStack): Boolean
 
     fun testAddition(stack: ItemStack): Boolean
+    
+    fun getBaseAmount(input: HTDoubleRecipeInput): Int
+    
+    fun getAdditionAmount(input: HTDoubleRecipeInput): Int
 
     fun assembleItems(input: HTDoubleRecipeInput, registries: HolderLookup.Provider): List<ItemStack>
 

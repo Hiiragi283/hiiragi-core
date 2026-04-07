@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.block.HTWeatheringBlockMap
 import hiiragi283.core.api.block.HTWeatheringLevel
 import hiiragi283.core.api.function.partially1
+import hiiragi283.core.common.block.HTForgingAnvilBlock
 import hiiragi283.core.common.block.HTTestBlock
 import hiiragi283.core.common.block.HTTreeTapBlock
 import hiiragi283.core.common.block.HTWarpedWartBlock
@@ -97,6 +98,13 @@ object HCBlocks {
 
     @JvmField
     val COPPER_BASINS: HTWeatheringBlockMap = createCopperMap("copper_basin", copyOf(Blocks.CAULDRON), ::HTWeatheringCopperBasinBlock)
+
+    @JvmField
+    val FORGING_ANVIL: HTBasicDeferredBlockAndItem<HTForgingAnvilBlock> = REGISTER.registerSimple(
+        "forging_anvil",
+        copyOf(Blocks.ANVIL),
+        ::HTForgingAnvilBlock,
+    )
 
     @JvmField
     val TEST: HTBasicDeferredBlockAndItem<HTTestBlock> = REGISTER.registerSimple("test", unbreakable(), ::HTTestBlock)

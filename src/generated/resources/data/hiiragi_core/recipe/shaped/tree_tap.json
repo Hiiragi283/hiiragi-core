@@ -3,19 +3,19 @@
   "category": "misc",
   "key": {
     "A": {
-      "tag": "c:ingots/copper"
+      "item": "minecraft:lever"
     },
     "B": {
-      "tag": "c:storage_blocks/copper"
+      "tag": "c:ingots/copper"
     }
   },
   "pattern": [
-    "A A",
-    "A A",
-    "BAB"
+    " A ",
+    "BBB",
+    "B  "
   ],
   "result": {
     "count": 1,
-    "id": "hiiragi_core:copper_basin"
+    "id": "hiiragi_core:tree_tap"
   }
 }

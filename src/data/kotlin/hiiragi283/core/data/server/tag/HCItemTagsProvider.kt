@@ -3,6 +3,7 @@ package hiiragi283.core.data.server.tag
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.tag.HTItemTagsProvider
+import hiiragi283.core.api.data.tag.HTTagDependType
 import hiiragi283.core.api.data.tag.HTTagsProvider
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.tag.HiiragiCoreTags
@@ -54,5 +55,9 @@ class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context
             .addItem(Items.GHAST_TEAR)
             .addItem(Items.PHANTOM_MEMBRANE)
             .addItem(Items.WIND_CHARGE)
+
+        factory
+            .apply(HiiragiCoreTags.Items.FORGING_HAMMERS)
+            .addTag(HiiragiCoreTags.Items.TOOLS_HAMMER, HTTagDependType.OPTIONAL)
     }
 }

@@ -22,6 +22,7 @@ class HCBlockTagsProvider(context: HTDataGenContext) : HTTagsProvider.DataGen<Bl
             .apply(BlockTags.MINEABLE_WITH_PICKAXE)
             .add(HCBlocks.OIL_SHALE)
             .add(HCBlocks.TREE_TAP)
+            .add(HCBlocks.FORGING_ANVIL)
         HCBlocks.COPPER_BASINS.forEach { base: HTIdLike, waxed: HTIdLike ->
             pickaxe.add(base)
             pickaxe.add(waxed)

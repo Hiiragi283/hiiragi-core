@@ -22,6 +22,10 @@ class HTBasicForgingRecipe(
 
     override fun testAddition(stack: ItemStack): Boolean = addition.map { it.test(stack) }.orElseGet(stack::isEmpty)
 
+    override fun getBaseAmount(input: HTDoubleRecipeInput): Int = base.amount
+
+    override fun getAdditionAmount(input: HTDoubleRecipeInput): Int = addition.map(HTItemIngredient::amount).orElseGet { 0 }
+
     override fun assembleItems(input: HTDoubleRecipeInput, registries: HolderLookup.Provider): List<ItemStack> =
         results.map { it.getStackOrEmpty(registries) }.filterNot(ItemStack::isEmpty)
 

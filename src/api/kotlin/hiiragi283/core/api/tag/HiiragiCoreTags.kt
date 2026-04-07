@@ -119,6 +119,9 @@ object HiiragiCoreTags {
         @JvmField
         val ELDRITCH_PEARL_BINDER: TagKey<Item> = mod("eldritch_pearl_binder")
 
+        @JvmField
+        val FORGING_HAMMERS: TagKey<Item> = mod("forging_hammers")
+
         @JvmStatic
         private fun common(vararg path: String): TagKey<Item> = Registries.ITEM.createCommonTag(*path)
 
