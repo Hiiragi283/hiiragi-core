@@ -139,9 +139,6 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCTranslation.CREATIVE_TAB_MATERIAL, "Hiiragi Core - 素材")
         add(HCTranslation.CREATIVE_TAB_EQUIPMENT, "Hiiragi Core - 装備品")
 
-        add(HCTranslation.MOLTEN_METAL, "溶融%s")
-        add(HCTranslation.MOLTEN_METAL_BUCKET, "溶融%s入りバケツ")
-
         add(HCTranslation.MIN_POWER, "最小の爆発力: %s")
 
         add(HCTranslation.AMBROSIA, "いつでも食べられる上，いくら食べてもなくなりません！")

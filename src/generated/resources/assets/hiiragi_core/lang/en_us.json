@@ -69,8 +69,6 @@
   "error.hiiragi_core.missing.key": "Missing key: %1$s",
   "error.hiiragi_core.missing.registry": "Missing registry: %1$s",
   "error.hiiragi_core.missing.server": "Could not find current server",
-  "fluid.hiiragi_core.molten_metal": "Molten %s",
-  "fluid.hiiragi_core.molten_metal_bucket": "Molten %s Bucket",
   "gui.hiiragi_core.capacity": "Capacity: %1$s",
   "gui.hiiragi_core.capacity.fe": "Capacity: %1$s FE",
   "gui.hiiragi_core.capacity.mb": "Capacity: %1$s mB",

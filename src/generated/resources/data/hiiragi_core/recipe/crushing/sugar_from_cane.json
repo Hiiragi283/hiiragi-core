@@ -4,7 +4,7 @@
     "amount": 1,
     "items": "#c:crops/sugar_cane"
   },
-  "result": {
+  "results": {
     "count": 4,
     "id": "minecraft:sugar"
   },

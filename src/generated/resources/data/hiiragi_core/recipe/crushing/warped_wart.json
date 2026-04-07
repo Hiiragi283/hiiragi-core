@@ -4,7 +4,7 @@
     "amount": 1,
     "items": "minecraft:warped_wart_block"
   },
-  "result": {
+  "results": {
     "count": 3,
     "id": "hiiragi_core:warped_wart"
   },

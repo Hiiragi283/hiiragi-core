@@ -4,7 +4,7 @@
     "amount": 1,
     "items": "#c:fence_gates/wooden"
   },
-  "result": {
+  "results": {
     "count": 4,
     "id": "hiiragi_core:wood_dust",
     "tag": "c:dusts/wood"

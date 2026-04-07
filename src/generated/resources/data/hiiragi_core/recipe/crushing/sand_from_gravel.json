@@ -4,7 +4,7 @@
     "amount": 1,
     "items": "#c:gravels"
   },
-  "result": {
+  "results": {
     "id": "minecraft:sand"
   },
   "time": 100

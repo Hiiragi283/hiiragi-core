@@ -4,7 +4,7 @@
     "amount": 1,
     "items": "#c:chests/wooden"
   },
-  "result": {
+  "results": {
     "count": 8,
     "id": "hiiragi_core:wood_dust",
     "tag": "c:dusts/wood"

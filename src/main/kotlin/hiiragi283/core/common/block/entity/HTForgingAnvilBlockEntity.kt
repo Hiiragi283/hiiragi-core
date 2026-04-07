@@ -2,6 +2,7 @@ package hiiragi283.core.common.block.entity
 
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.function.partially1
+import hiiragi283.core.api.recipe.HTDoubleItemToMultiOutputRecipe
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
@@ -9,7 +10,6 @@ import hiiragi283.core.api.storage.holder.HTItemSlotHolder
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.getItemStack
-import hiiragi283.core.common.recipe.HCForgingRecipe
 import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.storage.item.HTBasicItemSlot
 import hiiragi283.core.impl.recipe.HTLookupRecipeCache
@@ -50,7 +50,8 @@ class HTForgingAnvilBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntit
 
     //    Processing    //
 
-    private val cache: HTLookupRecipeCache<HTDoubleRecipeInput, HCForgingRecipe> = HTLookupRecipeCache.forRecipe(HCRecipeLookups.FORGING)
+    private val cache: HTLookupRecipeCache<HTDoubleRecipeInput, HTDoubleItemToMultiOutputRecipe> =
+        HTLookupRecipeCache.forRecipe(HCRecipeLookups.FORGING)
     private val inputHandler: HTItemInputHandler by lazy { HTItemInputHandler(slot) }
 
     override fun writeValue(output: HTValueOutput) {
@@ -69,7 +70,7 @@ class HTForgingAnvilBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntit
         val input = HTDoubleRecipeInput(stack, stack1)
         if (input.isEmpty) return false
         val level: Level = player.level()
-        val recipe: HCForgingRecipe = cache.getFirstRecipe(input, level) ?: return false
+        val recipe: HTDoubleItemToMultiOutputRecipe = cache.getFirstRecipe(input, level) ?: return false
         // outputs
         recipe.assembleItems(input, level.registryAccess()).forEach(HTItemDropHelper::giveStackTo.partially1(player))
         // inputs

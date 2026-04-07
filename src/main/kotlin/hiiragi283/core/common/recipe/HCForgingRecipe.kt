@@ -1,43 +1,26 @@
 package hiiragi283.core.common.recipe
 
-import hiiragi283.core.api.recipe.base.HTProcessingRecipe
-import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
-import net.minecraft.core.HolderLookup
-import net.minecraft.world.item.ItemStack
+import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.impl.recipe.HTBasicDoubleItemToMultiOutputRecipe
+import hiiragi283.core.setup.HCRecipeSerializers
+import hiiragi283.core.setup.HCRecipeTypes
+import net.minecraft.world.item.crafting.RecipeSerializer
+import net.minecraft.world.item.crafting.RecipeType
+import java.util.Optional
 
-interface HCForgingRecipe : HTProcessingRecipe<HTDoubleRecipeInput> {
+class HCForgingRecipe(
+    base: HTItemIngredient,
+    addition: Optional<HTItemIngredient>,
+    results: List<HTItemResult>,
+    time: Int,
+) : HTBasicDoubleItemToMultiOutputRecipe(base, addition, results, time) {
     companion object {
         @JvmField
-        val RESULT_RANGE: IntRange = 1 until 9
+        val OUTPUT_RANGE: IntRange = 1..9
     }
 
-    fun testBase(stack: ItemStack): Boolean
+    override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.FORGING
 
-    fun testAddition(stack: ItemStack): Boolean
-
-    fun getBaseAmount(input: HTDoubleRecipeInput): Int
-
-    fun getAdditionAmount(input: HTDoubleRecipeInput): Int
-
-    fun assembleItems(input: HTDoubleRecipeInput, registries: HolderLookup.Provider): List<ItemStack>
-
-    override fun test(input: HTDoubleRecipeInput): Boolean {
-        val (first: ItemStack, second: ItemStack) = input
-        return testBase(first) && testAddition(second)
-    }
-
-    @Deprecated("Use 'assembles(HolderLookup.Provider)' instead")
-    override fun assemble(input: HTDoubleRecipeInput, registries: HolderLookup.Provider): ItemStack =
-        assembleItems(input, registries).firstOrNull() ?: ItemStack.EMPTY
-
-    //    Serializable    //
-
-    interface Serializable :
-        HCForgingRecipe,
-        HTProcessingRecipe.Serializable<HTDoubleRecipeInput> {
-        override fun test(input: HTDoubleRecipeInput): Boolean = super.test(input)
-
-        @Suppress("DEPRECATION")
-        override fun assemble(input: HTDoubleRecipeInput, registries: HolderLookup.Provider): ItemStack = super.assemble(input, registries)
-    }
+    override fun getType(): RecipeType<*> = HCRecipeTypes.FORGING.get()
 }

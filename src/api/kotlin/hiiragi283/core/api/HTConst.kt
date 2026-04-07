@@ -126,5 +126,14 @@ data object HTConst {
     const val FLUID_RESULT = "fluid_result"
 
     const val CHANCE = "chance"
-    const val EXTRA_RESULT = "extra_result"
+
+    //    Text    //
+
+    const val CONSTANTS = "constants"
+    const val DESCRIPTION = "description"
+    const val ERROR = "error"
+    const val TOOLTIP = "tooltip"
+
+    const val ITEM_GROUP = "itemGroup"
+    const val UPGRADE = "upgrade"
 }

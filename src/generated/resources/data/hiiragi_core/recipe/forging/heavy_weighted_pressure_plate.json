@@ -8,10 +8,8 @@
     "amount": 1,
     "items": "#c:ingots/iron"
   },
-  "result": [
-    {
-      "id": "minecraft:heavy_weighted_pressure_plate"
-    }
-  ],
-  "time": 200
+  "results": {
+    "id": "minecraft:heavy_weighted_pressure_plate"
+  },
+  "time": 100
 }

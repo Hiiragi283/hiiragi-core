@@ -4,7 +4,7 @@
     "amount": 1,
     "items": "minecraft:nether_wart_block"
   },
-  "result": {
+  "results": {
     "count": 3,
     "id": "minecraft:nether_wart"
   },

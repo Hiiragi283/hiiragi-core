@@ -4,8 +4,9 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.function.identity
-import hiiragi283.core.api.recipe.HTItemToChancedRecipe
+import hiiragi283.core.api.recipe.HTDoubleItemToMultiOutputRecipe
 import hiiragi283.core.api.recipe.HTItemToItemRecipe
+import hiiragi283.core.api.recipe.HTItemToMultiOutputRecipe
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.resource.toId
@@ -23,13 +24,13 @@ data object HCRecipeLookups {
     val CHARGING: HTRecipeTypeImpl<SingleRecipeInput, HTItemToItemRecipe> = create(HTConst.CHARGING)
 
     @JvmField
-    val CRUSHING: HTRecipeTypeImpl<SingleRecipeInput, HTItemToChancedRecipe> = create(HTConst.CRUSHING)
+    val CRUSHING: HTRecipeTypeImpl<SingleRecipeInput, HTItemToMultiOutputRecipe> = create(HTConst.CRUSHING)
 
     @JvmField
     val EXPLODING: HTRecipeTypeImpl<HCExplodingRecipe.Input, HCExplodingRecipe> = create(HTConst.EXPLODING)
 
     @JvmField
-    val FORGING: HTRecipeTypeImpl<HTDoubleRecipeInput, HCForgingRecipe> = create(HTConst.FORGING)
+    val FORGING: HTRecipeTypeImpl<HTDoubleRecipeInput, HTDoubleItemToMultiOutputRecipe> = create(HTConst.FORGING)
 
     @JvmField
     val MELTING: HTRecipeTypeImpl<HCMeltingRecipe.Input, HCMeltingRecipe> = create(HTConst.MELTING)

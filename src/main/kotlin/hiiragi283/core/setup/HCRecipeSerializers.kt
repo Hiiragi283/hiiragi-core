@@ -13,17 +13,18 @@ import hiiragi283.core.api.serialization.codec.MapBiCodec
 import hiiragi283.core.api.serialization.codec.MapBiCodecs
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.crafting.HCExperienceStoringRecipe
-import hiiragi283.core.common.data.recipe.builder.HTItemToChancedRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTDoubleItemToMultiOutputRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTItemToItemRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTItemToMultiOutputRecipeBuilder
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCForgingRecipe
 import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
-import hiiragi283.core.impl.recipe.HTBasicForgingRecipe
-import hiiragi283.core.impl.recipe.HTBasicItemToChancedRecipe
+import hiiragi283.core.impl.recipe.HTBasicDoubleItemToMultiOutputRecipe
 import hiiragi283.core.impl.recipe.HTBasicItemToItemRecipe
+import hiiragi283.core.impl.recipe.HTBasicItemToMultiOutputRecipe
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer
@@ -55,12 +56,30 @@ object HCRecipeSerializers {
     )
 
     @JvmStatic
-    private fun <R : HTBasicItemToChancedRecipe> itemChanced(
-        factory: HTItemToChancedRecipeBuilder.Factory<R>,
+    private fun <R : HTBasicItemToMultiOutputRecipe> itemToMulti(
+        outputRange: IntRange,
+        factory: HTItemToMultiOutputRecipeBuilder.Factory<R>,
     ): MapBiCodec<RegistryFriendlyByteBuf, R> = MapBiCodec.composite(
-        HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicItemToChancedRecipe::ingredient),
-        HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HTBasicItemToChancedRecipe::result),
-        HTItemResult.CODEC.optionalFieldOf(HTConst.EXTRA_RESULT).forGetter(HTBasicItemToChancedRecipe::extraResult),
+        HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicItemToMultiOutputRecipe::ingredient),
+        HTItemResult.CODEC
+            .listOrElement(outputRange)
+            .fieldOf(HTConst.RESULTS)
+            .forGetter(HTBasicItemToMultiOutputRecipe::results),
+        HTProcessingRecipe.timeCodec(),
+        factory::create,
+    )
+
+    @JvmStatic
+    private fun <R : HTBasicDoubleItemToMultiOutputRecipe> doubleItemToMulti(
+        outputRange: IntRange,
+        factory: HTDoubleItemToMultiOutputRecipeBuilder.Factory<R>,
+    ): MapBiCodec<RegistryFriendlyByteBuf, R> = MapBiCodec.composite(
+        HTItemIngredient.CODEC.fieldOf("base").forGetter(HTBasicDoubleItemToMultiOutputRecipe::base),
+        HTItemIngredient.CODEC.optionalFieldOf("addition").forGetter(HTBasicDoubleItemToMultiOutputRecipe::addition),
+        HTItemResult.CODEC
+            .listOrElement(outputRange)
+            .fieldOf(HTConst.RESULTS)
+            .forGetter(HTBasicDoubleItemToMultiOutputRecipe::results),
         HTProcessingRecipe.timeCodec(),
         factory::create,
     )
@@ -69,7 +88,8 @@ object HCRecipeSerializers {
     val CHARGING: RecipeSerializer<HCChargingRecipe> = REGISTER.registerSerializer(HTConst.CHARGING, itemToItem(::HCChargingRecipe))
 
     @JvmField
-    val CRUSHING: RecipeSerializer<HCCrushingRecipe> = REGISTER.registerSerializer(HTConst.CRUSHING, itemChanced(::HCCrushingRecipe))
+    val CRUSHING: RecipeSerializer<HCCrushingRecipe> =
+        REGISTER.registerSerializer(HTConst.CRUSHING, itemToMulti(HCCrushingRecipe.OUTPUT_RANGE, ::HCCrushingRecipe))
 
     @JvmField
     val EXPLODING: RecipeSerializer<HCExplodingRecipe> = REGISTER.registerSerializer(
@@ -83,19 +103,8 @@ object HCRecipeSerializers {
     )
 
     @JvmField
-    val FORGING: RecipeSerializer<HTBasicForgingRecipe> = REGISTER.registerSerializer(
-        HTConst.FORGING,
-        MapBiCodec.composite(
-            HTItemIngredient.CODEC.fieldOf("base").forGetter(HTBasicForgingRecipe::base),
-            HTItemIngredient.CODEC.optionalFieldOf("addition").forGetter(HTBasicForgingRecipe::addition),
-            HTItemResult.CODEC
-                .listOf(HCForgingRecipe.RESULT_RANGE)
-                .fieldOf(HTConst.RESULT)
-                .forGetter(HTBasicForgingRecipe::results),
-            HTProcessingRecipe.timeCodec(),
-            ::HTBasicForgingRecipe,
-        ),
-    )
+    val FORGING: RecipeSerializer<HCForgingRecipe> =
+        REGISTER.registerSerializer(HTConst.FORGING, doubleItemToMulti(HCForgingRecipe.OUTPUT_RANGE, ::HCForgingRecipe))
 
     @JvmField
     val MELTING: RecipeSerializer<HCMeltingRecipe> = REGISTER.registerSerializer(

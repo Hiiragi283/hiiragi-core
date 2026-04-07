@@ -20,17 +20,19 @@ import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.util.emptyOptional
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.jei.category.HCBrewingRecipeCategory
+import hiiragi283.core.client.jei.category.HCCrushingRecipeCategory
 import hiiragi283.core.client.jei.category.HCExplodingRecipeCategory
 import hiiragi283.core.client.jei.category.HCForgingRecipeCategory
 import hiiragi283.core.client.jei.category.HCMaterialPartCategory
 import hiiragi283.core.client.jei.category.HCMeltingRecipeCategory
-import hiiragi283.core.client.jei.category.HTItemToChancedRecipeCategory
 import hiiragi283.core.client.jei.category.HTItemToItemRecipeCategory
 import hiiragi283.core.client.jei.category.HTTankInteractionRecipeCategory
+import hiiragi283.core.client.jei.category.base.HTDoubleItemToMultiOutputRecipeCategory
+import hiiragi283.core.client.jei.category.base.HTItemToMultiOutputRecipeCategory
 import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
-import hiiragi283.core.client.jei.extension.HTBasicForgingRecipeCategoryExtension
-import hiiragi283.core.client.jei.extension.HTBasicItemToChancedRecipeCategoryExtension
+import hiiragi283.core.client.jei.extension.HTBasicDoubleItemToMultiOutputRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicItemToItemRecipeCategoryExtension
+import hiiragi283.core.client.jei.extension.HTBasicItemToMultiOutputRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTPotionTankInteractionCategoryExtension
 import hiiragi283.core.client.jei.extension.HTSimpleTankInteractionCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
@@ -65,10 +67,6 @@ import net.neoforged.neoforge.fluids.FluidStack
 class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     companion object {
         @JvmStatic
-        lateinit var forging: HCForgingRecipeCategory
-            private set
-
-        @JvmStatic
         lateinit var tankInteraction: HTTankInteractionRecipeCategory
             private set
 
@@ -77,9 +75,14 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         lateinit var charging: HTItemToItemRecipeCategory
             private set
 
-        // ItemToChanced
+        // ItemToMultiOutput
         @JvmStatic
-        lateinit var crushing: HTItemToChancedRecipeCategory
+        lateinit var crushing: HTItemToMultiOutputRecipeCategory
+            private set
+
+        // DoubleItemToMultiOutput
+        @JvmStatic
+        lateinit var forging: HTDoubleItemToMultiOutputRecipeCategory
             private set
     }
 
@@ -124,15 +127,13 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         val guiHelper: IGuiHelper = registration.jeiHelpers.guiHelper
         val manager: IIngredientManager = registration.jeiHelpers.ingredientManager
 
-        forging = HCForgingRecipeCategory(guiHelper)
-        forging.addExtension(HTBasicForgingRecipeCategoryExtension)
-
         tankInteraction = HTTankInteractionRecipeCategory(guiHelper)
         tankInteraction.addExtension(HTSimpleTankInteractionCategoryExtension)
         tankInteraction.addExtension(HTPotionTankInteractionCategoryExtension)
 
         initItemToItem(guiHelper, manager)
-        initItemToChanced(guiHelper, manager)
+        initItemToMultiOutput(guiHelper, manager)
+        initDoubleItemToMultiOutput(guiHelper, manager)
 
         registration.addRecipeCategories(
             // Material
@@ -154,10 +155,16 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         charging.addExtension(HTBasicItemToItemRecipeCategoryExtension())
     }
 
-    private fun initItemToChanced(guiHelper: IGuiHelper, manager: IIngredientManager) {
-        crushing = HTItemToChancedRecipeCategory(guiHelper, HCJeiRecipeTypes.CRUSHING)
+    private fun initItemToMultiOutput(guiHelper: IGuiHelper, manager: IIngredientManager) {
+        crushing = HCCrushingRecipeCategory(guiHelper)
 
-        crushing.addExtension(HTBasicItemToChancedRecipeCategoryExtension())
+        crushing.addExtension(HTBasicItemToMultiOutputRecipeCategoryExtension())
+    }
+
+    private fun initDoubleItemToMultiOutput(guiHelper: IGuiHelper, manager: IIngredientManager) {
+        forging = HCForgingRecipeCategory(guiHelper)
+
+        forging.addExtension(HTBasicDoubleItemToMultiOutputRecipeCategoryExtension())
     }
 
     override fun registerVanillaCategoryExtensions(registration: IVanillaCategoryExtensionRegistration) {

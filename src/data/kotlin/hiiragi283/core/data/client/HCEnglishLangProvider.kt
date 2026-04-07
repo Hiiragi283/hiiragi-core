@@ -140,9 +140,6 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCTranslation.CREATIVE_TAB_MATERIAL, "Hiiragi Core - Material")
         add(HCTranslation.CREATIVE_TAB_EQUIPMENT, "Hiiragi Core - Equipment")
 
-        add(HCTranslation.MOLTEN_METAL, "Molten %s")
-        add(HCTranslation.MOLTEN_METAL_BUCKET, "Molten %s Bucket")
-
         add(HCTranslation.MIN_POWER, "Minimum Explosion Power: %s")
 
         add(HCTranslation.AMBROSIA, "ALWAYS EDIBLE and NOT CONSUMED!")

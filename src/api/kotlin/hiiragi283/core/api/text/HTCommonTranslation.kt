@@ -1,5 +1,6 @@
 package hiiragi283.core.api.text
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.resource.toDescriptionKey
 
@@ -12,13 +13,13 @@ import hiiragi283.core.api.resource.toDescriptionKey
  */
 enum class HTCommonTranslation(type: String, vararg path: String) : HTTranslation {
     // Constants
-    ERROR("constants", "error"),
-    INFINITE("constants", "infinite"),
-    NONE("constants", "none"),
-    EMPTY("constants", "empty"),
+    ERROR(HTConst.CONSTANTS, "error"),
+    INFINITE(HTConst.CONSTANTS, "infinite"),
+    NONE(HTConst.CONSTANTS, "none"),
+    EMPTY(HTConst.CONSTANTS, "empty"),
 
-    TRUE("constants", "true"),
-    FALSE("constants", "false"),
+    TRUE(HTConst.CONSTANTS, "true"),
+    FALSE(HTConst.CONSTANTS, "false"),
 
     DOWN("direction", "down"),
     UP("direction", "up"),
@@ -28,42 +29,42 @@ enum class HTCommonTranslation(type: String, vararg path: String) : HTTranslatio
     EAST("direction", "east"),
 
     // Error
-    EMPTY_TAG_KEY("error", "empty.tag_key"),
-    INVALID_PACKET_S2C("error", "invalid_packet", "s2c"),
-    INVALID_PACKET_C2S("error", "invalid_packet", "c2s"),
+    EMPTY_TAG_KEY(HTConst.ERROR, "empty.tag_key"),
+    INVALID_PACKET_S2C(HTConst.ERROR, "invalid_packet", "s2c"),
+    INVALID_PACKET_C2S(HTConst.ERROR, "invalid_packet", "c2s"),
 
-    MISSING_SERVER("error", "missing", "server"),
-    MISSING_REGISTRY("error", "missing", "registry"),
-    MISSING_KEY("error", "missing", "key"),
+    MISSING_SERVER(HTConst.ERROR, "missing", "server"),
+    MISSING_REGISTRY(HTConst.ERROR, "missing", "registry"),
+    MISSING_KEY(HTConst.ERROR, "missing", "key"),
 
     // GUI
-    CAPACITY("gui", "capacity"),
-    CAPACITY_MB("gui", "capacity", "mb"),
-    CAPACITY_FE("gui", "capacity", "fe"),
+    CAPACITY(HTConst.GUI, "capacity"),
+    CAPACITY_MB(HTConst.GUI, "capacity", "mb"),
+    CAPACITY_FE(HTConst.GUI, "capacity", "fe"),
 
-    STORED("gui", "stored"),
-    STORED_MB("gui", "stored", "mb"),
-    STORED_FE("gui", "stored", "fe"),
-    STORED_EXP("gui", "stored", "exp"),
+    STORED(HTConst.GUI, "stored"),
+    STORED_MB(HTConst.GUI, "stored", "mb"),
+    STORED_FE(HTConst.GUI, "stored", "fe"),
+    STORED_EXP(HTConst.GUI, "stored", "exp"),
 
-    FRACTION("gui", "fraction"),
-    PERCENTAGE("gui", "percentage"),
-    PROGRESS("gui", "progress"),
+    FRACTION(HTConst.GUI, "fraction"),
+    PERCENTAGE(HTConst.GUI, "percentage"),
+    PROGRESS(HTConst.GUI, "progress"),
 
-    TICK("gui", "tick"),
-    SECONDS("gui", "seconds"),
+    TICK(HTConst.GUI, "tick"),
+    SECONDS(HTConst.GUI, "seconds"),
 
-    CHANCE_CONSUME("gui", "chance", "consume"),
-    CHANCE_PRODUCE("gui", "chance", "produce"),
+    CHANCE_CONSUME(HTConst.GUI, "chance", "consume"),
+    CHANCE_PRODUCE(HTConst.GUI, "chance", "produce"),
 
-    RANGE_MIN("gui", "range", "min"),
-    RANGE_MAX("gui", "range", "max"),
-    RANGE_MIN_MAX("gui", "range", "min_max"),
+    RANGE_MIN(HTConst.GUI, "range", "min"),
+    RANGE_MAX(HTConst.GUI, "range", "max"),
+    RANGE_MIN_MAX(HTConst.GUI, "range", "min_max"),
 
     // Item Description
-    TOOLTIP_INTRINSIC_ENCHANTMENT("tooltip", "intrinsic_enchantment"),
-    TOOLTIP_SHOW_DESCRIPTION("tooltip", "show_description"),
-    TOOLTIP_SHOW_DETAILS("tooltip", "show_details"),
+    TOOLTIP_INTRINSIC_ENCHANTMENT(HTConst.TOOLTIP, "intrinsic_enchantment"),
+    TOOLTIP_SHOW_DESCRIPTION(HTConst.TOOLTIP, "show_description"),
+    TOOLTIP_SHOW_DETAILS(HTConst.TOOLTIP, "show_details"),
 
     DATAPACK_WIP("datapack", "work_in_progress"),
     ;

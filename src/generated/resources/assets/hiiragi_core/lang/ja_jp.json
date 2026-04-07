@@ -69,8 +69,6 @@
   "error.hiiragi_core.missing.key": "不明なキー: %1$s",
   "error.hiiragi_core.missing.registry": "不明なレジストリ: %1$s",
   "error.hiiragi_core.missing.server": "サーバーが見つかりません",
-  "fluid.hiiragi_core.molten_metal": "溶融%s",
-  "fluid.hiiragi_core.molten_metal_bucket": "溶融%s入りバケツ",
   "gui.hiiragi_core.capacity": "Capacity: %1$s",
   "gui.hiiragi_core.capacity.fe": "Capacity: %1$s FE",
   "gui.hiiragi_core.capacity.mb": "Capacity: %1$s mB",

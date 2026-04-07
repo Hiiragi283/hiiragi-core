@@ -32,7 +32,7 @@ import hiiragi283.core.api.registry.HTSimpleItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
-import hiiragi283.core.common.data.recipe.builder.HTItemToChancedRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTItemToMultiOutputRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSmithingRecipeBuilder
@@ -104,9 +104,9 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = part.getScaledAmount(entry.getDefaultScale(), entry)
         // レシピを登録
-        HTItemToChancedRecipeBuilder.crushing(output) {
+        HTItemToMultiOutputRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(prefix, entry, inputCount)
-            this.result = resultCreator.create(dust, outputCount)
+            results += resultCreator.create(dust, outputCount)
             time = getTimeFromHardness(entry, time) ?: return
             recipeId suffix "_from_${part.asPartName()}"
         }
@@ -126,9 +126,9 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = entry.getDefaultScale()
         // レシピを登録
-        HTItemToChancedRecipeBuilder.crushing(output) {
+        HTItemToMultiOutputRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(inputTag, inputCount)
-            this.result = resultCreator.create(dust, outputCount)
+            results += resultCreator.create(dust, outputCount)
             time = getTimeFromHardness(entry, time) ?: return
             recipeId suffix "_from_${defaultPart.getSuffix()}"
         }
@@ -142,15 +142,15 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // 完成品を取得
         val crushedOre: HTItemHolderLike<*> = event.getFirstHolder(CommonTagPrefixes.CRUSHED_ORE, entry) ?: return
         // レシピを登録
-        HTItemToChancedRecipeBuilder.crushing(output) {
+        HTItemToMultiOutputRecipeBuilder.crushing(output) {
             // 材料
             ingredient = inputCreator.create(prefix, entry)
             // 主産物
-            this.result = resultCreator.create(crushedOre, part.getScaledAmount(2, entry).toInt())
+            results += resultCreator.create(crushedOre, part.getScaledAmount(2, entry).toInt())
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]
                 ?.getResult(HTExtraOreResultMap.Phase.CRUSH_ORE)
-                ?.let(extraResult::plusAssign)
+                ?.let(results::add)
 
             recipeId suffix "_from_${part.asPartName()}"
         }
@@ -166,15 +166,15 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = CommonParts.CRUSHED_ORE.getScaledAmount(1, entry)
         // レシピを登録
-        HTItemToChancedRecipeBuilder.crushing(output) {
+        HTItemToMultiOutputRecipeBuilder.crushing(output) {
             // 材料
             ingredient = inputCreator.create(CommonTagPrefixes.CRUSHED_ORE, entry, inputCount)
             // 主産物
-            this.result = resultCreator.create(dust, outputCount)
+            results += resultCreator.create(dust, outputCount)
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]
                 ?.getResult(HTExtraOreResultMap.Phase.CRUSH_CRUSHED)
-                ?.let(extraResult::plusAssign)
+                ?.let(results::add)
 
             recipeId suffix "_from_crushed_ore"
         }

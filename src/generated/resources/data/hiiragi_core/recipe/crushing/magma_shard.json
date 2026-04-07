@@ -4,7 +4,7 @@
     "amount": 1,
     "items": "minecraft:magma_block"
   },
-  "result": {
+  "results": {
     "id": "hiiragi_core:magma_shard"
   },
   "time": 100
