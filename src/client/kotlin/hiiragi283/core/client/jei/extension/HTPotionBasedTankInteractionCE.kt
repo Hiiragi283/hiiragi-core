@@ -15,7 +15,7 @@ import net.minecraft.core.registries.BuiltInRegistries
 import net.neoforged.neoforge.fluids.FluidStack
 import kotlin.streams.asSequence
 
-abstract class HTPotionBasedTankInteractionCategoryExtension<RECIPE : HTTankInteraction> : HTTankInteractionCategoryExtension<RECIPE> {
+abstract class HTPotionBasedTankInteractionCE<RECIPE : HTTankInteraction> : HTTankInteractionCE<RECIPE> {
     final override fun <T : IIngredientAcceptor<T>> setFluid(recipe: RECIPE, accessor: T) {
         val stacks: List<FluidStack> = supportedBottles().flatMap {
             BuiltInRegistries.POTION

@@ -7,8 +7,7 @@ import hiiragi283.core.impl.recipe.HTBasicDoubleMultiOutputRecipe
 import mezz.jei.api.gui.builder.IIngredientAcceptor
 import kotlin.jvm.optionals.getOrNull
 
-class HTBasicDoubleMultiOutputRecipeCategoryExtension<RECIPE : HTBasicDoubleMultiOutputRecipe> :
-    HTDoubleMultiOutputRecipeCategoryExtension<RECIPE> {
+class HTBasicDoubleMultiOutputRecipeCE<RECIPE : HTBasicDoubleMultiOutputRecipe> : HTDoubleMultiOutputRecipeCE<RECIPE> {
     override fun <T : IIngredientAcceptor<T>> setBase(recipe: RECIPE, accessor: T) {
         accessor.addItemIngredient(recipe.base)
     }

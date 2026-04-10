@@ -30,12 +30,12 @@ import hiiragi283.core.client.jei.category.HTTankInteractionRecipeCategory
 import hiiragi283.core.client.jei.category.base.HTDoubleMultiOutputRecipeCategory
 import hiiragi283.core.client.jei.category.base.HTSingleMultiOutputRecipeCategory
 import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
-import hiiragi283.core.client.jei.extension.HTBasicDoubleMultiOutputRecipeCategoryExtension
-import hiiragi283.core.client.jei.extension.HTBasicSingleItemRecipeCategoryExtension
-import hiiragi283.core.client.jei.extension.HTBasicSingleMultiOutputRecipeCategoryExtension
-import hiiragi283.core.client.jei.extension.HTPotionArrowTankInteractionCategoryExtension
-import hiiragi283.core.client.jei.extension.HTPotionTankInteractionCategoryExtension
-import hiiragi283.core.client.jei.extension.HTSimpleTankInteractionCategoryExtension
+import hiiragi283.core.client.jei.extension.HTBasicDoubleMultiOutputRecipeCE
+import hiiragi283.core.client.jei.extension.HTBasicSingleItemRecipeCE
+import hiiragi283.core.client.jei.extension.HTBasicSingleMultiOutputRecipeCE
+import hiiragi283.core.client.jei.extension.HTPotionArrowTankInteractionCE
+import hiiragi283.core.client.jei.extension.HTPotionTankInteractionCE
+import hiiragi283.core.client.jei.extension.HTSimpleTankInteractionCE
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.data.tank.HTSimpleTankInteraction
 import hiiragi283.core.setup.HCBlocks
@@ -134,9 +134,9 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         val manager: IIngredientManager = registration.jeiHelpers.ingredientManager
 
         tankInteraction = HTTankInteractionRecipeCategory(guiHelper)
-        tankInteraction.addExtension(HTSimpleTankInteractionCategoryExtension)
-        tankInteraction.addExtension(HTPotionTankInteractionCategoryExtension)
-        tankInteraction.addExtension(HTPotionArrowTankInteractionCategoryExtension)
+        tankInteraction.addExtension(HTSimpleTankInteractionCE)
+        tankInteraction.addExtension(HTPotionTankInteractionCE)
+        tankInteraction.addExtension(HTPotionArrowTankInteractionCE)
 
         initItemToItem(guiHelper, manager)
         initItemToMultiOutput(guiHelper, manager)
@@ -159,19 +159,19 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     private fun initItemToItem(guiHelper: IGuiHelper, manager: IIngredientManager) {
         charging = HTSingleItemRecipeCategory(guiHelper, HCJeiRecipeTypes.CHARGING)
 
-        charging.addExtension(HTBasicSingleItemRecipeCategoryExtension())
+        charging.addExtension(HTBasicSingleItemRecipeCE())
     }
 
     private fun initItemToMultiOutput(guiHelper: IGuiHelper, manager: IIngredientManager) {
         crushing = HCCrushingRecipeCategory(guiHelper)
 
-        crushing.addExtension(HTBasicSingleMultiOutputRecipeCategoryExtension())
+        crushing.addExtension(HTBasicSingleMultiOutputRecipeCE())
     }
 
     private fun initDoubleItemToMultiOutput(guiHelper: IGuiHelper, manager: IIngredientManager) {
         forging = HCForgingRecipeCategory(guiHelper)
 
-        forging.addExtension(HTBasicDoubleMultiOutputRecipeCategoryExtension())
+        forging.addExtension(HTBasicDoubleMultiOutputRecipeCE())
     }
 
     override fun registerVanillaCategoryExtensions(registration: IVanillaCategoryExtensionRegistration) {
