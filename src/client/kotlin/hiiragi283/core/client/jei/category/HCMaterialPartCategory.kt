@@ -83,8 +83,8 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) :
         private val CODEC: Codec<HTMaterialManager.Entry> = HTMaterialKey.CODEC
             .flatXmap(
                 { key: HTMaterialKey ->
-                    HiiragiCoreAccess.INSTANCE
-                        .materialManager
+                    HTMaterialManager
+                        .getInstance()
                         .entries
                         .firstOrNull(key::isOf)
                         ?: error("Unknown material; ${key.getId()}")

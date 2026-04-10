@@ -2,9 +2,9 @@ package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTComparators
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.buildDataPredicate
 import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.property.getDefaultFluidAmount
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
@@ -101,8 +101,8 @@ data object HTIngredientCreator {
         create(HTFluidPart.MOLTEN, material, operator)
 
     fun create(part: HTFluidPart, material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidIngredient {
-        val amount: Int = HiiragiCoreAccess.INSTANCE
-            .materialManager
+        val amount: Int = HTMaterialManager
+            .getInstance()
             .getOrEmpty(material)
             .getDefaultFluidAmount()
             .let(operator::applyAsInt)

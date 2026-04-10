@@ -8,13 +8,6 @@ import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
-import hiiragi283.core.api.item.tool.HTToolType
-import hiiragi283.core.api.material.HTMaterialAccess
-import hiiragi283.core.api.material.HTMaterialContents
-import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialManager
-import hiiragi283.core.api.material.HTSimpleMaterialContents
-import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.property.HTPropertyMap
@@ -29,9 +22,7 @@ import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.toTextResult
 import hiiragi283.core.config.HCConfig
-import hiiragi283.core.impl.material.HTMaterialContentsImpl
 import hiiragi283.core.setup.HCDataComponents
-import hiiragi283.core.setup.HCMiscRegister
 import hiiragi283.core.util.HTPluginLoader
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
@@ -40,7 +31,6 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.alchemy.Potions
-import net.minecraft.world.level.block.Block
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.ModList
 import net.neoforged.fml.common.EventBusSubscriber
@@ -52,9 +42,6 @@ import net.neoforged.neoforge.fluids.FluidStack
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
     companion object {
-        @JvmStatic
-        internal lateinit var materialManagerCache: HTMaterialManager
-
         @JvmStatic
         private val modIdComparator: Comparator<HTIdLike> by lazy {
             Comparator
@@ -110,50 +97,6 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
                     part
                 }
             }
-        }
-    }
-
-    override val materialManager: HTMaterialManager get() = materialManagerCache
-
-    override val existingContents: HTMaterialAccess = object : HTMaterialAccess {
-        override val blocks: HTSimpleMaterialContents<HTPart, Block> by lazy {
-            HTMaterialContentsImpl(HCMiscRegister.existingBlocks) { part: HTPart, key: HTMaterialKey ->
-                "Unknown ${part.name} block for ${key.getId()}"
-            }
-        }
-        override val items: HTMaterialContents<HTPart, HTMaterialContents.ItemEntry> by lazy {
-            HTMaterialContentsImpl(HCMiscRegister.existingItems) { part: HTPart, key: HTMaterialKey ->
-                "Unknown ${part.name} item for ${key.getId()}"
-            }
-        }
-        override val tools: HTMaterialContents<HTToolType, HTMaterialContents.ItemEntry> by lazy {
-            HTMaterialContentsImpl(HCMiscRegister.existingTools) { toolType: HTToolType, key: HTMaterialKey ->
-                "Unknown ${toolType.name} item for ${key.getId()}"
-            }
-        }
-    }
-
-    override val registeredContents: HTMaterialAccess = object : HTMaterialAccess {
-        override val blocks: HTSimpleMaterialContents<HTPart, Block> by lazy {
-            HTMaterialContentsImpl(HCMiscRegister.materialBlocks) { part: HTPart, key: HTMaterialKey ->
-                "Unregistered ${part.name} block for ${key.getId()}"
-            }
-        }
-        override val items: HTMaterialContents<HTPart, HTMaterialContents.ItemEntry> by lazy {
-            HTMaterialContentsImpl(HCMiscRegister.materialItems) { part: HTPart, key: HTMaterialKey ->
-                "Unregistered ${part.name} item for ${key.getId()}"
-            }
-        }
-        override val tools: HTMaterialContents<HTToolType, HTMaterialContents.ItemEntry> by lazy {
-            HTMaterialContentsImpl(HCMiscRegister.materialTools) { toolType: HTToolType, key: HTMaterialKey ->
-                "Unregistered ${toolType.name} item for ${key.getId()}"
-            }
-        }
-    }
-
-    override val registeredFluids: HTMaterialContents<HTFluidPart, HTMaterialContents.FluidEntry> by lazy {
-        HTMaterialContentsImpl(HCMiscRegister.materialFluids) { part: HTFluidPart, key: HTMaterialKey ->
-            "Unregistered ${part.asPartName()} fluid for ${key.getId()}"
         }
     }
 

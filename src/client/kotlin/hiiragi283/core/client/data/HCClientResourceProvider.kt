@@ -174,9 +174,8 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
     @JvmStatic
     fun addTranslations(langType: HTLangType, consumer: (String, String) -> Unit) {
         val registered: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
-        val manager: HTMaterialManager = HiiragiCoreAccess.INSTANCE.materialManager
 
-        for (entry: HTMaterialManager.Entry in manager) {
+        for (entry: HTMaterialManager.Entry in HTMaterialManager.getInstance()) {
             // Material Name
             val key: HTMaterialKey = entry.asMaterialKey()
             val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue

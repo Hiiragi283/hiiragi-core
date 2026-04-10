@@ -3,6 +3,7 @@ package hiiragi283.core.api.data.recipe
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.tagPrefix
@@ -94,10 +95,11 @@ data object HTResultCreator {
         material(HTFluidPart.MOLTEN, material, operator)
 
     @JvmStatic
-    fun material(part: HTFluidPart, material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidResult =
-        with(HiiragiCoreAccess.INSTANCE) {
-            val fluid: Fluid = registeredFluids.getOrThrow(part, material).get()
-            val propertyMap: HTPropertyMap = materialManager.getOrEmpty(material)
-            create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
-        }
+    fun material(part: HTFluidPart, material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidResult {
+        val fluid: Fluid = HiiragiCoreAccess.INSTANCE.registeredFluids
+            .getOrThrow(part, material)
+            .get()
+        val propertyMap: HTPropertyMap = HTMaterialManager.getInstance().getOrEmpty(material)
+        return create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
+    }
 }

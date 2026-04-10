@@ -2,10 +2,12 @@ package hiiragi283.core.api
 
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
+import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.HTSimpleMaterialContents
 import hiiragi283.core.api.material.get
 import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
@@ -17,6 +19,8 @@ import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.text.HTTextResult
+import hiiragi283.core.impl.material.HTMaterialContentsImpl
+import hiiragi283.core.impl.material.HTMaterialContentsRegister
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.HolderLookup
 import net.minecraft.tags.TagKey
@@ -94,21 +98,52 @@ abstract class HiiragiCoreAccess {
     }
 
     /**
-     * 素材マネージャを取得します。
-     */
-    abstract val materialManager: HTMaterialManager
-
-    /**
      * 既存の素材コンテンツを取得します。
      */
-    abstract val existingContents: HTMaterialAccess
+    val existingContents: HTMaterialAccess = object : HTMaterialAccess {
+        override val blocks: HTSimpleMaterialContents<HTPart, Block> by lazy {
+            HTMaterialContentsImpl(HTMaterialContentsRegister.existingBlocks) { part: HTPart, key: HTMaterialKey ->
+                "Unknown ${part.name} block for ${key.getId()}"
+            }
+        }
+        override val items: HTMaterialContents<HTPart, HTMaterialContents.ItemEntry> by lazy {
+            HTMaterialContentsImpl(HTMaterialContentsRegister.existingItems) { part: HTPart, key: HTMaterialKey ->
+                "Unknown ${part.name} item for ${key.getId()}"
+            }
+        }
+        override val tools: HTMaterialContents<HTToolType, HTMaterialContents.ItemEntry> by lazy {
+            HTMaterialContentsImpl(HTMaterialContentsRegister.existingTools) { toolType: HTToolType, key: HTMaterialKey ->
+                "Unknown ${toolType.name} item for ${key.getId()}"
+            }
+        }
+    }
 
     /**
      * 登録された素材コンテンツを取得します。
      */
-    abstract val registeredContents: HTMaterialAccess
+    val registeredContents: HTMaterialAccess = object : HTMaterialAccess {
+        override val blocks: HTSimpleMaterialContents<HTPart, Block> by lazy {
+            HTMaterialContentsImpl(HTMaterialContentsRegister.materialBlocks) { part: HTPart, key: HTMaterialKey ->
+                "Unregistered ${part.name} block for ${key.getId()}"
+            }
+        }
+        override val items: HTMaterialContents<HTPart, HTMaterialContents.ItemEntry> by lazy {
+            HTMaterialContentsImpl(HTMaterialContentsRegister.materialItems) { part: HTPart, key: HTMaterialKey ->
+                "Unregistered ${part.name} item for ${key.getId()}"
+            }
+        }
+        override val tools: HTMaterialContents<HTToolType, HTMaterialContents.ItemEntry> by lazy {
+            HTMaterialContentsImpl(HTMaterialContentsRegister.materialTools) { toolType: HTToolType, key: HTMaterialKey ->
+                "Unregistered ${toolType.name} item for ${key.getId()}"
+            }
+        }
+    }
 
-    abstract val registeredFluids: HTMaterialContents<HTFluidPart, HTMaterialContents.FluidEntry>
+    val registeredFluids: HTMaterialContents<HTFluidPart, HTMaterialContents.FluidEntry> by lazy {
+        HTMaterialContentsImpl(HTMaterialContentsRegister.materialFluids) { part: HTFluidPart, key: HTMaterialKey ->
+            "Unregistered ${part.asPartName()} fluid for ${key.getId()}"
+        }
+    }
 
     fun getMaterialBlock(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.SimpleEntry<Block>? =
         existingContents.blocks[part, material] ?: registeredContents.blocks[part, material]

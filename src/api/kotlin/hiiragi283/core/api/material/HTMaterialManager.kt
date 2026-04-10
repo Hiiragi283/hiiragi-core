@@ -3,6 +3,7 @@ package hiiragi283.core.api.material
 import hiiragi283.core.api.property.HTEmptyPropertyMap
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.impl.material.HTMaterialContentsRegister
 import net.minecraft.resources.ResourceLocation
 
 /**
@@ -11,6 +12,11 @@ import net.minecraft.resources.ResourceLocation
  * @since 0.9.0
  */
 interface HTMaterialManager : Iterable<HTMaterialManager.Entry> {
+    companion object {
+        @JvmStatic
+        fun getInstance(): HTMaterialManager = HTMaterialContentsRegister.materialManager
+    }
+
     /**
      * 指定した[素材][material]がプロパティを保持しているか判定します。
      */

@@ -59,7 +59,7 @@ abstract class HTRecipeProviderContext {
     /**
      * 素材を管理するマネージャを取得します。
      */
-    protected val materialManager: HTMaterialManager by lazy(HiiragiCoreAccess.INSTANCE::materialManager)
+    protected val materialManager: HTMaterialManager by lazy(HTMaterialManager::getInstance)
 
     /**
      * @since 0.9.0

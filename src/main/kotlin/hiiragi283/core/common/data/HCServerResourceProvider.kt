@@ -49,11 +49,10 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
     override fun regenerateDynamicAssets(executor: Consumer<ResourceGenTask>) {
         val existing: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.existingContents
         val registered: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
-        val materialManager: HTMaterialManager = HiiragiCoreAccess.INSTANCE.materialManager
         // Data Map
         executor.accept(object : HTDataMapGenTask<FurnaceFuel, Item>(NeoForgeDataMaps.FURNACE_FUELS) {
             override fun gather() {
-                for (entry: HTMaterialManager.Entry in materialManager) {
+                for (entry: HTMaterialManager.Entry in HTMaterialManager.getInstance()) {
                     val baseTime: Int = entry[HTMaterialPropertyKeys.FUEL_TIME] ?: continue
                     // Block
                     for ((part: HTPart, _) in registered.blocks.column(entry)) {

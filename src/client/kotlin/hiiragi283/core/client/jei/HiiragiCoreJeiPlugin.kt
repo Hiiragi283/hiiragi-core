@@ -2,7 +2,6 @@ package hiiragi283.core.client.jei
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.function.negate
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
@@ -11,6 +10,7 @@ import hiiragi283.core.api.integration.jei.JeiRecipeType
 import hiiragi283.core.api.item.HTPotionBasedItem
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
+import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidHolderLike
@@ -184,8 +184,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     override fun registerRecipes(registration: IRecipeRegistration) {
         registration.addRecipes(
             getRecipeType(HCJeiRecipeTypes.MaterialType),
-            HiiragiCoreAccess.INSTANCE.materialManager.entries
-                .asSequence(),
+            HTMaterialManager.getInstance().entries.asSequence(),
         )
 
         registration.addRecipes(HCJeiRecipeTypes.BREWING)

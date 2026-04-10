@@ -49,7 +49,7 @@ data object HCMaterialTextureProvider : ResourceGenTask {
         factory: (HTMaterialLike) -> Map<HTPart, T>,
     ) {
         // すべての素材に対してテクスチャの生成を試みる
-        for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
+        for (entry: HTMaterialManager.Entry in HTMaterialManager.getInstance()) {
             // 生成対象がない場合はパス
             val partMap: Map<HTPart, T> = factory(entry)
             if (partMap.isEmpty()) continue
@@ -86,7 +86,7 @@ data object HCMaterialTextureProvider : ResourceGenTask {
     @JvmStatic
     private fun tool(manager: ResourceManager, sink: ResourceSink) {
         // すべての素材に対してテクスチャの生成を試みる
-        for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
+        for (entry: HTMaterialManager.Entry in HTMaterialManager.getInstance()) {
             if (HTMaterialPropertyKeys.TOOL_MATERIAL !in entry) continue
             val toolMap: Map<HTToolType, HTIdLike> = HiiragiCoreAccess.INSTANCE.registeredContents.tools
                 .column(entry)
@@ -119,7 +119,7 @@ data object HCMaterialTextureProvider : ResourceGenTask {
     @JvmStatic
     private fun molten(manager: ResourceManager, sink: ResourceSink) {
         // すべての素材に対してテクスチャの生成を試みる
-        for (entry: HTMaterialManager.Entry in HiiragiCoreAccess.INSTANCE.materialManager) {
+        for (entry: HTMaterialManager.Entry in HTMaterialManager.getInstance()) {
             val molten: HTIdLike = HiiragiCoreAccess.INSTANCE.registeredFluids[HTFluidPart.MOLTEN, entry] ?: continue
             // パレットを取得
             var palette: Palette = HTTextureUtil
