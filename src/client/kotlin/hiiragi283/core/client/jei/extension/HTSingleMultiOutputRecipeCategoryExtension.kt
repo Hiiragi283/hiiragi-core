@@ -5,7 +5,7 @@ import mezz.jei.api.gui.builder.IIngredientAcceptor
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable
 import mezz.jei.api.recipe.IFocusGroup
 
-interface HTSingleMultiOutputRecipeCE<RECIPE : HTSingleMultiOutputRecipe> {
+interface HTSingleMultiOutputRecipeCategoryExtension<RECIPE : HTSingleMultiOutputRecipe> {
     fun <T : IIngredientAcceptor<T>> setInput(recipe: RECIPE, accessor: T)
 
     fun <T : IIngredientAcceptor<T>> setOutput(recipe: RECIPE, index: Int, accessor: T) {}

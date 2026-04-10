@@ -8,7 +8,7 @@ import mezz.jei.api.gui.builder.IIngredientAcceptor
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable
 import net.minecraft.world.item.Items
 
-data object HTPotionTankInteractionCE : HTPotionBasedTankInteractionCE<HTPotionTankInteraction>() {
+data object HTPotionTankInteractionCategoryExtension : HTPotionBasedTankInteractionCategoryExtension<HTPotionTankInteraction>() {
     override val canFill: Boolean = true
     override val canEmpty: Boolean = true
 

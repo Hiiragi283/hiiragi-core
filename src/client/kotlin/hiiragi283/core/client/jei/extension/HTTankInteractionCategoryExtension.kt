@@ -5,7 +5,7 @@ import mezz.jei.api.gui.builder.IIngredientAcceptor
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable
 import mezz.jei.api.recipe.IFocusGroup
 
-interface HTTankInteractionCE<RECIPE : HTTankInteraction> {
+interface HTTankInteractionCategoryExtension<RECIPE : HTTankInteraction> {
     val canFill: Boolean
     val canEmpty: Boolean
 

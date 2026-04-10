@@ -8,7 +8,7 @@ import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 
-data object HTSimpleTankInteractionCE : HTTankInteractionCE<HTSimpleTankInteraction> {
+data object HTSimpleTankInteractionCategoryExtension : HTTankInteractionCategoryExtension<HTSimpleTankInteraction> {
     override val canFill: Boolean = true
     override val canEmpty: Boolean = true
 

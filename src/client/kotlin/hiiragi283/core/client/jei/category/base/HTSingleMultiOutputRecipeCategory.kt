@@ -4,7 +4,7 @@ import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
 import hiiragi283.core.api.recipe.viewer.HTLookupRecipeViewerType
-import hiiragi283.core.client.jei.extension.HTSingleMultiOutputRecipeCE
+import hiiragi283.core.client.jei.extension.HTSingleMultiOutputRecipeCategoryExtension
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable
@@ -12,27 +12,29 @@ import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder
 import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
 
-private typealias RecipeCE = HTSingleMultiOutputRecipeCE<HTSingleMultiOutputRecipe>
-
 abstract class HTSingleMultiOutputRecipeCategory(
     guiHelper: IGuiHelper,
     recipeType: HTLookupRecipeViewerType<*, HTSingleMultiOutputRecipe>,
     private val maxOutputs: Int,
 ) : HTLookupRecipeCategory<HTSingleMultiOutputRecipe>(guiHelper, recipeType) {
-    private val extensions: MutableMap<Class<out HTSingleMultiOutputRecipe>, HTSingleMultiOutputRecipeCE<*>> = hashMapOf()
+    private val extensions: MutableMap<Class<out HTSingleMultiOutputRecipe>, HTSingleMultiOutputRecipeCategoryExtension<*>> = hashMapOf()
 
-    inline fun <reified RECIPE : HTSingleMultiOutputRecipe> addExtension(extension: HTSingleMultiOutputRecipeCE<RECIPE>) {
+    inline fun <reified RECIPE : HTSingleMultiOutputRecipe> addExtension(extension: HTSingleMultiOutputRecipeCategoryExtension<RECIPE>) {
         this.addExtension(RECIPE::class.java, extension)
     }
 
-    fun <RECIPE : HTSingleMultiOutputRecipe> addExtension(clazz: Class<RECIPE>, extension: HTSingleMultiOutputRecipeCE<RECIPE>) {
+    fun <RECIPE : HTSingleMultiOutputRecipe> addExtension(
+        clazz: Class<RECIPE>,
+        extension: HTSingleMultiOutputRecipeCategoryExtension<RECIPE>,
+    ) {
         extensions[clazz] = extension
     }
 
     //    HTLookupRecipeCategory    //
 
     final override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: HTSingleMultiOutputRecipe, focuses: IFocusGroup) {
-        val (recipe1: HTSingleMultiOutputRecipe, extension: RecipeCE) = getExtension<HTSingleMultiOutputRecipe>(recipe) ?: return
+        val (recipe1: HTSingleMultiOutputRecipe, extension: HTSingleMultiOutputRecipeCategoryExtension<HTSingleMultiOutputRecipe>) =
+            getExtension<HTSingleMultiOutputRecipe>(recipe) ?: return
         // input
         extension.setInput(
             recipe1,
@@ -58,7 +60,8 @@ abstract class HTSingleMultiOutputRecipeCategory(
         recipeSlots: List<IRecipeSlotDrawable?>,
         focuses: IFocusGroup,
     ) {
-        val (recipe1: HTSingleMultiOutputRecipe, extension: RecipeCE) = getExtension<HTSingleMultiOutputRecipe>(recipe.recipe) ?: return
+        val (recipe1: HTSingleMultiOutputRecipe, extension: HTSingleMultiOutputRecipeCategoryExtension<HTSingleMultiOutputRecipe>) =
+            getExtension<HTSingleMultiOutputRecipe>(recipe.recipe) ?: return
     }
 
     override fun isHandled(recipe: HTRecipeHolder<HTSingleMultiOutputRecipe>): Boolean =
@@ -67,12 +70,15 @@ abstract class HTSingleMultiOutputRecipeCategory(
     @Suppress("UNCHECKED_CAST")
     private fun <RECIPE : HTSingleMultiOutputRecipe> getExtension(
         recipe: HTSingleMultiOutputRecipe,
-    ): Pair<RECIPE, HTSingleMultiOutputRecipeCE<RECIPE>>? {
-        val extension: HTSingleMultiOutputRecipeCE<RECIPE> =
-            (extensions[recipe::class.java] as? HTSingleMultiOutputRecipeCE<RECIPE>) ?: run {
-                for ((clazz: Class<out HTSingleMultiOutputRecipe>, extension: HTSingleMultiOutputRecipeCE<*>) in extensions) {
+    ): Pair<RECIPE, HTSingleMultiOutputRecipeCategoryExtension<RECIPE>>? {
+        val extension: HTSingleMultiOutputRecipeCategoryExtension<RECIPE> =
+            (extensions[recipe::class.java] as? HTSingleMultiOutputRecipeCategoryExtension<RECIPE>) ?: run {
+                for ((
+                    clazz: Class<out HTSingleMultiOutputRecipe>,
+                    extension: HTSingleMultiOutputRecipeCategoryExtension<*>,
+                ) in extensions) {
                     if (clazz.isInstance(recipe)) {
-                        return@run extension as? HTSingleMultiOutputRecipeCE<RECIPE>
+                        return@run extension as? HTSingleMultiOutputRecipeCategoryExtension<RECIPE>
                     }
                 }
                 null

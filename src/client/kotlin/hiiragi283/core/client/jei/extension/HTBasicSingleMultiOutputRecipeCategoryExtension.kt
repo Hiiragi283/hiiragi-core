@@ -6,7 +6,8 @@ import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.impl.recipe.HTBasicSingleMultiOutputRecipe
 import mezz.jei.api.gui.builder.IIngredientAcceptor
 
-class HTBasicSingleMultiOutputRecipeCE<RECIPE : HTBasicSingleMultiOutputRecipe> : HTSingleMultiOutputRecipeCE<RECIPE> {
+class HTBasicSingleMultiOutputRecipeCategoryExtension<RECIPE : HTBasicSingleMultiOutputRecipe> :
+    HTSingleMultiOutputRecipeCategoryExtension<RECIPE> {
     override fun <T : IIngredientAcceptor<T>> setInput(recipe: RECIPE, accessor: T) {
         accessor.addItemIngredient(recipe.ingredient)
     }

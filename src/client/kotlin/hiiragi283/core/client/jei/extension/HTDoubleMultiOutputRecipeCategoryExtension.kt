@@ -6,7 +6,7 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable
 import mezz.jei.api.recipe.IFocusGroup
 import java.util.function.IntFunction
 
-interface HTDoubleMultiOutputRecipeCE<RECIPE : HTDoubleMultiOutputRecipe> {
+interface HTDoubleMultiOutputRecipeCategoryExtension<RECIPE : HTDoubleMultiOutputRecipe> {
     fun <T : IIngredientAcceptor<T>> setBase(recipe: RECIPE, accessor: T)
 
     fun <T : IIngredientAcceptor<T>> setAddition(recipe: RECIPE, accessor: T)
