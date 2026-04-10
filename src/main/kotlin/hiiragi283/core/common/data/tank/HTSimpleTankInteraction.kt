@@ -29,7 +29,9 @@ class HTSimpleTankInteraction(
     val fluid: HTSimpleFluidHolderLike,
     override val amount: Int,
     val fluidTag: Optional<TagKey<Fluid>>,
-) : HTTankInteraction.Serializable {
+) : HTTankInteraction.Serializable,
+    HTTankInteraction.Emptying,
+    HTTankInteraction.Filling {
     companion object {
         @JvmField
         val CODEC: MapCodec<HTSimpleTankInteraction> = MapBiCodec

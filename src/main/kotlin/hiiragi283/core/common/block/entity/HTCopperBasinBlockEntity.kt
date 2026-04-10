@@ -48,9 +48,11 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
     fun drainContainer(player: Player, hand: InteractionHand): Boolean {
         val stack: ItemStack = player.getItemInHand(hand)
         val filledContainer: HTItemResourceType = stack.toResource() ?: return false
-        val recipe: HTTankInteraction = HCRecipeLookups.TANK_INTERACTION
-            .findFirst(level) { recipe: HTTankInteraction -> recipe.canEmptyContainer(filledContainer) }
-            ?.recipe
+        val recipe: HTTankInteraction.Emptying = HCRecipeLookups.TANK_INTERACTION
+            .getAllRecipes(player.level())
+            .map { it.recipe }
+            .filterIsInstance<HTTankInteraction.Emptying>()
+            .firstOrNull { recipe: HTTankInteraction.Emptying -> recipe.canEmptyContainer(filledContainer) }
             ?: return false
 
         val (emptyContainer: ItemStack, fluidStack: FluidStack) = recipe.emptyContainer(filledContainer)
@@ -68,9 +70,11 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
         val stack: ItemStack = player.getItemInHand(hand)
         val emptyContainer: HTItemResourceType = stack.toResource() ?: return false
         val fluid: HTFluidResourceType = fluidInputHandler.getResource() ?: return false
-        val recipe: HTTankInteraction = HCRecipeLookups.TANK_INTERACTION
-            .findFirst(level) { recipe: HTTankInteraction -> recipe.canFillContainer(emptyContainer, fluid) }
-            ?.recipe
+        val recipe: HTTankInteraction.Filling = HCRecipeLookups.TANK_INTERACTION
+            .getAllRecipes(player.level())
+            .map { it.recipe }
+            .filterIsInstance<HTTankInteraction.Filling>()
+            .firstOrNull { recipe: HTTankInteraction.Filling -> recipe.canFillContainer(emptyContainer, fluid) }
             ?: return false
 
         val filledContainer: ItemStack = recipe.fillContainer(emptyContainer, fluid)

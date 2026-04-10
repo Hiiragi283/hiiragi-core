@@ -9,14 +9,9 @@ import hiiragi283.core.api.storage.item.HTItemResourceType
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.alchemy.PotionContents
-import net.neoforged.neoforge.fluids.FluidStack
 
-data object HTPotionArrowTankInteraction : HTTankInteraction {
+data object HTPotionArrowTankInteraction : HTTankInteraction.Filling {
     override val amount: Int = 125
-
-    override fun canEmptyContainer(container: HTItemResourceType): Boolean = false
-
-    override fun emptyContainer(container: HTItemResourceType): Pair<ItemStack, FluidStack> = ItemStack.EMPTY to FluidStack.EMPTY
 
     override fun canFillContainer(container: HTItemResourceType, fluidStack: HTFluidResourceType): Boolean {
         if (!container.isOf(Items.ARROW)) return false

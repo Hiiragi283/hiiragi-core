@@ -9,9 +9,6 @@ import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 
 data object HTSimpleTankInteractionCategoryExtension : HTTankInteractionCategoryExtension<HTSimpleTankInteraction> {
-    override val canFill: Boolean = true
-    override val canEmpty: Boolean = true
-
     override fun <T : IIngredientAcceptor<T>> setEmptyContainer(recipe: HTSimpleTankInteraction, accessor: T) {
         accessor.addItemStack(recipe.emptyContainer.toStack())
     }

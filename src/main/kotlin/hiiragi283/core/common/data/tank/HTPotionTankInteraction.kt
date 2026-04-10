@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.neoforged.neoforge.fluids.FluidStack
 
-data object HTPotionTankInteraction : HTTankInteraction {
+data object HTPotionTankInteraction : HTTankInteraction.Emptying, HTTankInteraction.Filling {
     override val amount: Int = HTConst.DEFAULT_FLUID_AMOUNT / 4
 
     override fun canEmptyContainer(container: HTItemResourceType): Boolean {

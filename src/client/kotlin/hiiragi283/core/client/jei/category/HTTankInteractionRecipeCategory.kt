@@ -35,7 +35,7 @@ class HTTankInteractionRecipeCategory(guiHelper: IGuiHelper) :
             builder.addInputSlot().setPosition(getPosition(0), getPosition(0)).setSlotBackground(HTBackgroundType.INPUT)
         val fillOutput: IRecipeSlotBuilder =
             builder.addOutputSlot().setPosition(getPosition(0), getPosition(2)).setSlotBackground(HTBackgroundType.OUTPUT)
-        if (extension.canFill) {
+        if (recipe is HTTankInteraction.Filling) {
             extension.setEmptyContainer(recipe1, fillInput)
             extension.setFilledContainer(recipe1, fillOutput)
         }
@@ -53,7 +53,7 @@ class HTTankInteractionRecipeCategory(guiHelper: IGuiHelper) :
             builder.addInputSlot().setPosition(getPosition(4), getPosition(0)).setSlotBackground(HTBackgroundType.EXTRA_INPUT)
         val emptyOutput: IRecipeSlotBuilder =
             builder.addOutputSlot().setPosition(getPosition(4), getPosition(2)).setSlotBackground(HTBackgroundType.EXTRA_OUTPUT)
-        if (extension.canEmpty) {
+        if (recipe is HTTankInteraction.Emptying) {
             extension.setFilledContainer(recipe1, emptyInput)
             extension.setEmptyContainer(recipe1, emptyOutput)
         }
@@ -66,7 +66,7 @@ class HTTankInteractionRecipeCategory(guiHelper: IGuiHelper) :
     ) {
         val (recipe1: HTTankInteraction, extension: HTTankInteractionCategoryExtension<HTTankInteraction>) =
             getExtension<HTTankInteraction>(recipe.recipe) ?: return
-        if (extension.canFill) {
+        if (recipe1 is HTTankInteraction.Filling) {
             extension.onDisplayedIngredientsUpdate(
                 recipe1,
                 recipeSlots[0],
@@ -75,7 +75,7 @@ class HTTankInteractionRecipeCategory(guiHelper: IGuiHelper) :
                 focuses,
             )
         }
-        if (extension.canEmpty) {
+        if (recipe1 is HTTankInteraction.Emptying) {
             extension.onDisplayedIngredientsUpdate(
                 recipe1,
                 recipeSlots[4],

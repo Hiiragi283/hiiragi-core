@@ -9,9 +9,6 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable
 import net.minecraft.world.item.Items
 
 data object HTPotionArrowTankInteractionCategoryExtension : HTPotionBasedTankInteractionCategoryExtension<HTPotionArrowTankInteraction>() {
-    override val canFill: Boolean = true
-    override val canEmpty: Boolean = false
-
     override fun <T : IIngredientAcceptor<T>> setEmptyContainer(recipe: HTPotionArrowTankInteraction, accessor: T) {
         accessor.addItemLike(Items.ARROW)
     }

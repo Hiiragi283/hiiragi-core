@@ -14,35 +14,39 @@ import net.neoforged.neoforge.fluids.FluidStack
  * @author Hiiragi Tsubasa
  * @since 0.14.0
  */
-interface HTTankInteraction {
+sealed interface HTTankInteraction {
     /**
      * 必要な液体量
      */
     val amount: Int
 
-    /**
-     * 指定した[容器][container]から液体を搬出できるか判定します。
-     * @return 搬出できる場合は`true`
-     */
-    fun canEmptyContainer(container: HTItemResourceType): Boolean
+    interface Emptying : HTTankInteraction {
+        /**
+         * 指定した[容器][container]から液体を搬出できるか判定します。
+         * @return 搬出できる場合は`true`
+         */
+        fun canEmptyContainer(container: HTItemResourceType): Boolean
 
-    /**
-     * 指定した[容器][container]から液体を取り出します。
-     * @return 空の容器と保持していた液体
-     */
-    fun emptyContainer(container: HTItemResourceType): Pair<ItemStack, FluidStack>
+        /**
+         * 指定した[容器][container]から液体を取り出します。
+         * @return 空の容器と保持していた液体
+         */
+        fun emptyContainer(container: HTItemResourceType): Pair<ItemStack, FluidStack>
+    }
 
-    /**
-     * 指定した[容器][container]に[液体][fluidStack]を搬入できるか判定します。
-     * @return 搬入できる場合は`true`
-     */
-    fun canFillContainer(container: HTItemResourceType, fluidStack: HTFluidResourceType): Boolean
+    interface Filling : HTTankInteraction {
+        /**
+         * 指定した[容器][container]に[液体][fluidStack]を搬入できるか判定します。
+         * @return 搬入できる場合は`true`
+         */
+        fun canFillContainer(container: HTItemResourceType, fluidStack: HTFluidResourceType): Boolean
 
-    /**
-     * 指定した[容器][container]に[液体][fluidStack]を搬入します。
-     * @return 液体入りの容器
-     */
-    fun fillContainer(container: HTItemResourceType, fluidStack: HTFluidResourceType): ItemStack
+        /**
+         * 指定した[容器][container]に[液体][fluidStack]を搬入します。
+         * @return 液体入りの容器
+         */
+        fun fillContainer(container: HTItemResourceType, fluidStack: HTFluidResourceType): ItemStack
+    }
 
     /**
      * JSONに変換可能な[HTTankInteraction]の拡張インターフェースです。
