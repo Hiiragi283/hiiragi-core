@@ -15,8 +15,8 @@ import mezz.jei.api.recipe.IFocusGroup
 abstract class HTDoubleMultiOutputRecipeCategory(
     guiHelper: IGuiHelper,
     recipeType: HTLookupRecipeViewerType<*, HTDoubleMultiOutputRecipe>,
-    private val maxOutputs: Int,
-) : HTLookupRecipeCategory<HTDoubleMultiOutputRecipe>(guiHelper, recipeType) {
+    maxOutputs: Int,
+) : HTMultiOutputRecipeCategory<HTDoubleMultiOutputRecipe>(guiHelper, recipeType, maxOutputs) {
     private val extensions: MutableMap<
         Class<out HTDoubleMultiOutputRecipe>,
         HTDoubleMultiOutputRecipeCategoryExtension<*>,
@@ -36,29 +36,21 @@ abstract class HTDoubleMultiOutputRecipeCategory(
     //    HTLookupRecipeCategory    //
 
     final override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: HTDoubleMultiOutputRecipe, focuses: IFocusGroup) {
-        val (
-            recipe1: HTDoubleMultiOutputRecipe,
-            extension: HTDoubleMultiOutputRecipeCategoryExtension<HTDoubleMultiOutputRecipe>,
-        ) = getExtension<HTDoubleMultiOutputRecipe>(recipe) ?: return
+        val extension: HTDoubleMultiOutputRecipeCategoryExtension<HTDoubleMultiOutputRecipe> = getExtension(recipe) ?: return
         // inputs
         extension.setBase(
-            recipe1,
+            recipe,
             builder.addInputSlot(getPosition(0), getPosition(0)).setSlotBackground(HTBackgroundType.INPUT),
         )
         extension.setAddition(
-            recipe1,
+            recipe,
             builder.addInputSlot(getPosition(0), getPosition(2)).setSlotBackground(HTBackgroundType.EXTRA_INPUT),
         )
         // outputs
-        Array(maxOutputs) { index: Int ->
-            val (x: Int, y: Int) = getOutputPos(index)
-            builder.addOutputSlot(x, y).setSlotBackground(HTBackgroundType.OUTPUT)
-        }.forEachIndexed { index: Int, builder: IRecipeSlotBuilder ->
-            extension.setOutput(recipe1, index, builder)
+        addOutputSlots(builder) { index: Int, builder: IRecipeSlotBuilder ->
+            extension.setOutput(recipe, index, builder)
         }
     }
-
-    protected abstract fun getOutputPos(index: Int): Pair<Int, Int>
 
     override fun createRecipeExtrasImpl(builder: IRecipeExtrasBuilder, recipe: HTDoubleMultiOutputRecipe, focuses: IFocusGroup) {
         builder.addAnimatedRecipeArrow(recipe.time).setPosition(getPosition(1.25), getPosition(0.5))
@@ -66,13 +58,17 @@ abstract class HTDoubleMultiOutputRecipeCategory(
 
     override fun onDisplayedIngredientsUpdate(
         recipe: HTRecipeHolder<HTDoubleMultiOutputRecipe>,
-        recipeSlots: List<IRecipeSlotDrawable?>,
+        recipeSlots: List<IRecipeSlotDrawable>,
         focuses: IFocusGroup,
     ) {
-        val (
-            recipe1: HTDoubleMultiOutputRecipe,
-            extension: HTDoubleMultiOutputRecipeCategoryExtension<HTDoubleMultiOutputRecipe>,
-        ) = getExtension<HTDoubleMultiOutputRecipe>(recipe.recipe) ?: return
+        val extension: HTDoubleMultiOutputRecipeCategoryExtension<HTDoubleMultiOutputRecipe> = getExtension(recipe.recipe) ?: return
+        extension.onDisplayedIngredientsUpdate(
+            recipe.recipe,
+            recipeSlots[0],
+            recipeSlots[1],
+            recipeSlots.subList(2, maxOutputs + 1),
+            focuses,
+        )
     }
 
     override fun isHandled(recipe: HTRecipeHolder<HTDoubleMultiOutputRecipe>): Boolean =
@@ -81,7 +77,7 @@ abstract class HTDoubleMultiOutputRecipeCategory(
     @Suppress("UNCHECKED_CAST")
     private fun <RECIPE : HTDoubleMultiOutputRecipe> getExtension(
         recipe: HTDoubleMultiOutputRecipe,
-    ): Pair<RECIPE, HTDoubleMultiOutputRecipeCategoryExtension<RECIPE>>? {
+    ): HTDoubleMultiOutputRecipeCategoryExtension<RECIPE>? {
         val extension: HTDoubleMultiOutputRecipeCategoryExtension<RECIPE> =
             (extensions[recipe::class.java] as? HTDoubleMultiOutputRecipeCategoryExtension<RECIPE>) ?: run {
                 for ((
@@ -94,6 +90,6 @@ abstract class HTDoubleMultiOutputRecipeCategory(
                 }
                 null
             } ?: return null
-        return (recipe as RECIPE) to extension
+        return extension
     }
 }

@@ -4,7 +4,6 @@ import hiiragi283.core.api.recipe.base.HTDoubleMultiOutputRecipe
 import mezz.jei.api.gui.builder.IIngredientAcceptor
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable
 import mezz.jei.api.recipe.IFocusGroup
-import java.util.function.IntFunction
 
 interface HTDoubleMultiOutputRecipeCategoryExtension<RECIPE : HTDoubleMultiOutputRecipe> {
     fun <T : IIngredientAcceptor<T>> setBase(recipe: RECIPE, accessor: T)
@@ -17,7 +16,7 @@ interface HTDoubleMultiOutputRecipeCategoryExtension<RECIPE : HTDoubleMultiOutpu
         recipe: RECIPE,
         baseSlot: IRecipeSlotDrawable,
         additionSlot: IRecipeSlotDrawable,
-        outputSlots: IntFunction<IRecipeSlotDrawable>,
+        outputSlots: List<IRecipeSlotDrawable>,
         focuses: IFocusGroup,
     ) {}
 }
