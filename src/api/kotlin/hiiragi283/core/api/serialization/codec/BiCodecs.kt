@@ -4,9 +4,9 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.function.andThen
-import hiiragi283.core.api.serialization.codec.impl.HTEitherCodec
-import hiiragi283.core.api.serialization.codec.impl.HTEitherStreamCodec
 import hiiragi283.core.api.util.Either
+import hiiragi283.core.impl.serialization.codec.HTEitherCodec
+import hiiragi283.core.impl.serialization.codec.HTEitherStreamCodec
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec

@@ -1,7 +1,7 @@
 package hiiragi283.core.common.block.entity
 
-import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.block.entity.HTAbstractBlockEntity
+import hiiragi283.core.api.serialization.value.HTValueIOAccess
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
@@ -32,12 +32,12 @@ abstract class HTExtendedBlockEntity(private val type: HTDeferredBlockEntityType
 
     final override fun saveAdditional(tag: CompoundTag, registries: HolderLookup.Provider) {
         super.saveAdditional(tag, registries)
-        HiiragiCoreAccess.INSTANCE.createOutput(registries, tag).let(::writeValue)
+        HTValueIOAccess.createOutput(registries, tag).let(::writeValue)
     }
 
     final override fun loadAdditional(tag: CompoundTag, registries: HolderLookup.Provider) {
         super.loadAdditional(tag, registries)
-        HiiragiCoreAccess.INSTANCE.createInput(registries, tag).let(::readValue)
+        HTValueIOAccess.createInput(registries, tag).let(::readValue)
     }
 
     final override fun getUpdatePacket(): ClientboundBlockEntityDataPacket = ClientboundBlockEntityDataPacket.create(this)
@@ -46,7 +46,7 @@ abstract class HTExtendedBlockEntity(private val type: HTDeferredBlockEntityType
 
     final override fun handleUpdateTag(tag: CompoundTag, provider: HolderLookup.Provider) {
         super.loadAdditional(tag, provider)
-        handleUpdateTag(HiiragiCoreAccess.INSTANCE.createInput(provider, tag))
+        handleUpdateTag(HTValueIOAccess.createInput(provider, tag))
         requestModelDataUpdate()
     }
 
@@ -117,7 +117,7 @@ abstract class HTExtendedBlockEntity(private val type: HTDeferredBlockEntityType
      */
     fun getReducedUpdateTag(provider: HolderLookup.Provider): CompoundTag {
         val tag: CompoundTag = super.getUpdateTag(provider)
-        initReducedUpdateTag(HiiragiCoreAccess.INSTANCE.createOutput(provider, tag))
+        initReducedUpdateTag(HTValueIOAccess.createOutput(provider, tag))
         return tag
     }
 

@@ -6,7 +6,7 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import com.mojang.serialization.Codec
 import com.mojang.serialization.JsonOps
-import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.serialization.value.HTValueIOAccess
 import hiiragi283.core.api.serialization.value.HTValueInput
 import net.minecraft.core.HolderLookup
 import net.minecraft.resources.RegistryOps
@@ -29,7 +29,7 @@ internal class HTJsonValueInput(private val provider: HolderLookup.Provider, pri
 
     override fun child(key: String): HTValueInput? {
         val jsonIn: JsonObject = jsonObject.get(key) as? JsonObject ?: return null
-        return HiiragiCoreAccess.INSTANCE.createInput(provider, jsonIn)
+        return HTValueIOAccess.createInput(provider, jsonIn)
     }
 
     override fun childOrEmpty(key: String): HTValueInput = child(key) ?: HTEmptyValueInput
@@ -38,7 +38,7 @@ internal class HTJsonValueInput(private val provider: HolderLookup.Provider, pri
         val list: JsonArray = jsonObject.get(key) as? JsonArray ?: return null
         return when {
             list.isEmpty -> null
-            else -> list.filterIsInstance<JsonObject>().map { HiiragiCoreAccess.INSTANCE.createInput(provider, it) }
+            else -> list.filterIsInstance<JsonObject>().map { HTValueIOAccess.createInput(provider, it) }
         }
     }
 

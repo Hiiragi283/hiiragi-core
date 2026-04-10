@@ -3,11 +3,11 @@ package hiiragi283.core.api.serialization.codec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.RegistryKey
-import hiiragi283.core.api.serialization.codec.impl.HTHolderLikeCodec
-import hiiragi283.core.api.serialization.codec.impl.HTHolderLikeStreamCodec
-import hiiragi283.core.api.serialization.codec.impl.HTIngredientCodec
 import hiiragi283.core.api.tag.createTagKey
 import hiiragi283.core.api.text.Text
+import hiiragi283.core.impl.serialization.codec.HTHolderLikeCodec
+import hiiragi283.core.impl.serialization.codec.HTHolderLikeStreamCodec
+import hiiragi283.core.impl.serialization.codec.HTIngredientCodec
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction

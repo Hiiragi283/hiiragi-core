@@ -1,6 +1,5 @@
 package hiiragi283.core.impl
 
-import com.google.gson.JsonObject
 import hiiragi283.core.api.HTComparators
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
@@ -24,8 +23,6 @@ import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.holderSetOrNull
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.api.serialization.value.HTValueInput
-import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.text.HTCommonTranslation
@@ -33,18 +30,12 @@ import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.toTextResult
 import hiiragi283.core.config.HCConfig
 import hiiragi283.core.impl.material.HTMaterialContentsImpl
-import hiiragi283.core.impl.serialization.value.HTEmptyValueInput
-import hiiragi283.core.impl.serialization.value.HTJsonValueInput
-import hiiragi283.core.impl.serialization.value.HTJsonValueOutput
-import hiiragi283.core.impl.serialization.value.HTTagValueInput
-import hiiragi283.core.impl.serialization.value.HTTagValueOutput
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCMiscRegister
 import hiiragi283.core.util.HTPluginLoader
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponentHolder
-import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.alchemy.PotionContents
@@ -215,20 +206,4 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
         HiiragiCoreAPI.LOGGER.debug("Cached first holder: {} for tag: {}", holder.getId(), tagKey)
         return HTTextResult.success(holder)
     }
-
-    override fun createInput(provider: HolderLookup.Provider, jsonObject: JsonObject): HTValueInput = when {
-        jsonObject.isEmpty -> HTEmptyValueInput
-        else -> HTJsonValueInput(provider, jsonObject)
-    }
-
-    override fun createOutput(provider: HolderLookup.Provider, jsonObject: JsonObject): HTValueOutput =
-        HTJsonValueOutput(provider, jsonObject)
-
-    override fun createInput(provider: HolderLookup.Provider, compoundTag: CompoundTag): HTValueInput = when {
-        compoundTag.isEmpty -> HTEmptyValueInput
-        else -> HTTagValueInput(provider, compoundTag)
-    }
-
-    override fun createOutput(provider: HolderLookup.Provider, compoundTag: CompoundTag): HTValueOutput =
-        HTTagValueOutput(provider, compoundTag)
 }

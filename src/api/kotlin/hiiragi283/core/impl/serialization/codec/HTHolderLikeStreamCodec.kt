@@ -1,4 +1,4 @@
-package hiiragi283.core.api.serialization.codec.impl
+package hiiragi283.core.impl.serialization.codec
 
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.RegistryKey

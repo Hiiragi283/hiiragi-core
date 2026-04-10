@@ -1,4 +1,4 @@
-package hiiragi283.core.common.storage.resolver
+package hiiragi283.core.impl.storage.resolver
 
 import net.minecraft.core.Direction
 

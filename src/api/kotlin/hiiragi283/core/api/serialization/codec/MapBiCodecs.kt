@@ -1,12 +1,12 @@
 package hiiragi283.core.api.serialization.codec
 
 import com.mojang.serialization.MapCodec
-import hiiragi283.core.api.serialization.codec.impl.HTEitherMapCodec
-import hiiragi283.core.api.serialization.codec.impl.HTEitherStreamCodec
-import hiiragi283.core.api.serialization.codec.impl.HTIorMapCodec
-import hiiragi283.core.api.serialization.codec.impl.HTIorStreamCodec
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.Ior
+import hiiragi283.core.impl.serialization.codec.HTEitherMapCodec
+import hiiragi283.core.impl.serialization.codec.HTEitherStreamCodec
+import hiiragi283.core.impl.serialization.codec.HTIorMapCodec
+import hiiragi283.core.impl.serialization.codec.HTIorStreamCodec
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.StreamCodec
 

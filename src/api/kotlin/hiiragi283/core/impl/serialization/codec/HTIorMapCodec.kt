@@ -1,4 +1,4 @@
-package hiiragi283.core.api.serialization.codec.impl
+package hiiragi283.core.impl.serialization.codec
 
 import com.mojang.serialization.DataResult
 import com.mojang.serialization.DynamicOps

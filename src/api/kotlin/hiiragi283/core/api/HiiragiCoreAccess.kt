@@ -1,6 +1,5 @@
 package hiiragi283.core.api
 
-import com.google.gson.JsonObject
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.material.HTMaterialAccess
@@ -15,14 +14,11 @@ import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
-import hiiragi283.core.api.serialization.value.HTValueInput
-import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.text.HTTextResult
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.HolderLookup
-import net.minecraft.nbt.CompoundTag
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.Block
@@ -152,26 +148,4 @@ abstract class HiiragiCoreAccess {
      * @return [HTSimpleHolderLike]の[結果][HTTextResult]
      */
     abstract fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLike<T>>
-
-    //    Value IO    //
-
-    /**
-     * 指定した[レジストリ][provider]と[JSON][jsonObject]から[HTValueInput]を作成します。
-     */
-    abstract fun createInput(provider: HolderLookup.Provider, jsonObject: JsonObject): HTValueInput
-
-    /**
-     * 指定した[レジストリ][provider]と[JSON][jsonObject]から[HTValueOutput]を作成します。
-     */
-    abstract fun createOutput(provider: HolderLookup.Provider, jsonObject: JsonObject): HTValueOutput
-
-    /**
-     * 指定した[レジストリ][provider]と[NBT][compoundTag]から[HTValueInput]を作成します。
-     */
-    abstract fun createInput(provider: HolderLookup.Provider, compoundTag: CompoundTag): HTValueInput
-
-    /**
-     * 指定した[レジストリ][provider]と[NBT][compoundTag]から[HTValueOutput]を作成します。
-     */
-    abstract fun createOutput(provider: HolderLookup.Provider, compoundTag: CompoundTag): HTValueOutput
 }

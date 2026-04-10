@@ -1,7 +1,6 @@
 package hiiragi283.core.impl.storage.resolver
 
 import hiiragi283.core.api.storage.holder.HTCapabilityHolder
-import hiiragi283.core.common.storage.resolver.HTCapabilityManager
 import net.minecraft.core.Direction
 
 /**
