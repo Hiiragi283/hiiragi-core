@@ -29,6 +29,7 @@ import hiiragi283.core.impl.recipe.HTBasicSingleMultiOutputRecipe
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer
+import java.util.Optional
 
 object HCRecipeSerializers {
     @JvmField
@@ -53,41 +54,76 @@ object HCRecipeSerializers {
     //    Basic    //
 
     @JvmStatic
+    fun <R : HTProcessingRecipe.Serializable<*>> singleItem(
+        ingredient: (R) -> HTItemIngredient,
+        result: (R) -> HTItemResult,
+        factory: HTSingleItemRecipeBuilder.Factory<R>,
+    ): MapBiCodec<RegistryFriendlyByteBuf, R> = MapBiCodec.composite(
+        HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(ingredient),
+        HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(result),
+        HTProcessingRecipe.timeCodec(),
+        factory::create,
+    )
+
+    @JvmStatic
+    fun <R : HTProcessingRecipe.Serializable<*>> singleItemToMulti(
+        outputRange: IntRange,
+        ingredient: (R) -> HTItemIngredient,
+        results: (R) -> List<HTItemResult>,
+        factory: HTSingleMultiOutputRecipeBuilder.Factory<R>,
+    ): MapBiCodec<RegistryFriendlyByteBuf, R> = MapBiCodec.composite(
+        HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(ingredient),
+        HTItemResult.CODEC
+            .listOrElement(outputRange)
+            .fieldOf(HTConst.RESULTS)
+            .forGetter(results),
+        HTProcessingRecipe.timeCodec(),
+        factory::create,
+    )
+
+    @JvmStatic
+    fun <R : HTProcessingRecipe.Serializable<*>> doubleItemToMulti(
+        outputRange: IntRange,
+        base: (R) -> HTItemIngredient,
+        addition: (R) -> Optional<HTItemIngredient>,
+        results: (R) -> List<HTItemResult>,
+        factory: HTDoubleMultiOutputRecipeBuilder.Factory<R>,
+    ): MapBiCodec<RegistryFriendlyByteBuf, R> = MapBiCodec.composite(
+        HTItemIngredient.CODEC.fieldOf("base").forGetter(base),
+        HTItemIngredient.CODEC.optionalFieldOf("addition").forGetter(addition),
+        HTItemResult.CODEC
+            .listOrElement(outputRange)
+            .fieldOf(HTConst.RESULTS)
+            .forGetter(results),
+        HTProcessingRecipe.timeCodec(),
+        factory::create,
+    )
+
+    @JvmStatic
     fun <R : HTBasicSingleItemRecipe> singleItem(factory: HTSingleItemRecipeBuilder.Factory<R>): MapBiCodec<RegistryFriendlyByteBuf, R> =
-        MapBiCodec.composite(
-            HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicSingleItemRecipe::ingredient),
-            HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HTBasicSingleItemRecipe::result),
-            HTProcessingRecipe.timeCodec(),
-            factory::create,
-        )
+        singleItem(HTBasicSingleItemRecipe::ingredient, HTBasicSingleItemRecipe::result, factory)
 
     @JvmStatic
     fun <R : HTBasicSingleMultiOutputRecipe> singleItemToMulti(
         outputRange: IntRange,
         factory: HTSingleMultiOutputRecipeBuilder.Factory<R>,
-    ): MapBiCodec<RegistryFriendlyByteBuf, R> = MapBiCodec.composite(
-        HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicSingleMultiOutputRecipe::ingredient),
-        HTItemResult.CODEC
-            .listOrElement(outputRange)
-            .fieldOf(HTConst.RESULTS)
-            .forGetter(HTBasicSingleMultiOutputRecipe::results),
-        HTProcessingRecipe.timeCodec(),
-        factory::create,
+    ): MapBiCodec<RegistryFriendlyByteBuf, R> = singleItemToMulti(
+        outputRange,
+        HTBasicSingleMultiOutputRecipe::ingredient,
+        HTBasicSingleMultiOutputRecipe::results,
+        factory,
     )
 
     @JvmStatic
     fun <R : HTBasicDoubleMultiOutputRecipe> doubleItemToMulti(
         outputRange: IntRange,
         factory: HTDoubleMultiOutputRecipeBuilder.Factory<R>,
-    ): MapBiCodec<RegistryFriendlyByteBuf, R> = MapBiCodec.composite(
-        HTItemIngredient.CODEC.fieldOf("base").forGetter(HTBasicDoubleMultiOutputRecipe::base),
-        HTItemIngredient.CODEC.optionalFieldOf("addition").forGetter(HTBasicDoubleMultiOutputRecipe::addition),
-        HTItemResult.CODEC
-            .listOrElement(outputRange)
-            .fieldOf(HTConst.RESULTS)
-            .forGetter(HTBasicDoubleMultiOutputRecipe::results),
-        HTProcessingRecipe.timeCodec(),
-        factory::create,
+    ): MapBiCodec<RegistryFriendlyByteBuf, R> = doubleItemToMulti(
+        outputRange,
+        HTBasicDoubleMultiOutputRecipe::base,
+        HTBasicDoubleMultiOutputRecipe::addition,
+        HTBasicDoubleMultiOutputRecipe::results,
+        factory,
     )
 
     @JvmField

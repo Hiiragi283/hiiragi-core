@@ -1,12 +1,12 @@
 package hiiragi283.core.common.data.recipe.builder
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.recipe.base.HTSerializableRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.util.wrapOptional
 import hiiragi283.core.common.recipe.HCForgingRecipe
 import hiiragi283.core.impl.data.recipe.builder.HTMultiOutputRecipeBuilder
-import hiiragi283.core.impl.recipe.HTBasicDoubleMultiOutputRecipe
 import net.minecraft.data.recipes.RecipeOutput
 import java.util.Optional
 
@@ -25,11 +25,11 @@ class HTDoubleMultiOutputRecipeBuilder(prefix: String, private val factory: Fact
         time /= 2
     }
 
-    override fun createRecipe(): HTBasicDoubleMultiOutputRecipe = factory.create(base, addition.wrapOptional(), results, time)
+    override fun createRecipe(): HTSerializableRecipe<*> = factory.create(base, addition.wrapOptional(), results, time)
 
     //    Factory    //
 
-    fun interface Factory<RECIPE : HTBasicDoubleMultiOutputRecipe> {
+    fun interface Factory<RECIPE : HTSerializableRecipe<*>> {
         fun create(
             base: HTItemIngredient,
             addition: Optional<HTItemIngredient>,

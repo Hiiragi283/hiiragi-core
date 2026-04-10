@@ -19,5 +19,5 @@ interface HTSingleItemRecipe : HTProcessingRecipe<SingleRecipeInput> {
      */
     interface Serializable :
         HTSingleItemRecipe,
-        HTSerializableRecipe<SingleRecipeInput>
+        HTProcessingRecipe.Serializable<SingleRecipeInput>
 }

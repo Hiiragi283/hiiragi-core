@@ -2,10 +2,10 @@ package hiiragi283.core.common.data.recipe.builder
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.builder.HTProcessingRecipeBuilder
+import hiiragi283.core.api.recipe.base.HTSerializableRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.common.recipe.HCChargingRecipe
-import hiiragi283.core.impl.recipe.HTBasicSingleItemRecipe
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.ResourceLocation
 
@@ -22,11 +22,11 @@ class HTSingleItemRecipeBuilder(prefix: String, private val factory: Factory<*>)
 
     override fun getPrimalId(): ResourceLocation = result.getId()
 
-    override fun createRecipe(): HTBasicSingleItemRecipe = factory.create(ingredient, result, time)
+    override fun createRecipe(): HTSerializableRecipe<*> = factory.create(ingredient, result, time)
 
     //    Factory    //
 
-    fun interface Factory<RECIPE : HTBasicSingleItemRecipe> {
+    fun interface Factory<RECIPE : HTSerializableRecipe<*>> {
         fun create(ingredient: HTItemIngredient, result: HTItemResult, time: Int): RECIPE
     }
 }
