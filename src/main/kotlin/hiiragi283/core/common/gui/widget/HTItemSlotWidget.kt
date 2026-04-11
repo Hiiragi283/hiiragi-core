@@ -13,7 +13,7 @@ import hiiragi283.core.api.integration.jei.widget.HTIngredientWidget
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.common.gui.HTContainerItemSlot
 import hiiragi283.core.common.gui.sync.HTItemSyncSlot
-import hiiragi283.core.common.storage.item.HTBasicItemSlot
+import hiiragi283.core.impl.storage.item.HTItemStackResourceSlot
 import hiiragi283.core.setup.HCWidgetTypes
 import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
@@ -28,7 +28,7 @@ class HTItemSlotWidget private constructor(
     companion object {
         @JvmStatic
         fun container(
-            slot: HTBasicItemSlot,
+            slot: HTItemStackResourceSlot,
             x: Int,
             y: Int,
             backgroundType: HTBackgroundType,
@@ -40,7 +40,7 @@ class HTItemSlotWidget private constructor(
 
         @JvmStatic
         fun fake(
-            slot: HTBasicItemSlot,
+            slot: HTItemStackResourceSlot,
             x: Int,
             y: Int,
             backgroundType: HTBackgroundType,

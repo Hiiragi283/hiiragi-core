@@ -2,7 +2,6 @@ package hiiragi283.core.common.block
 
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
-import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.storage.item.insert
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.world.getTypedBlockEntity
@@ -34,7 +33,7 @@ class HTForgingAnvilBlock(properties: Properties) : HTBasicEntityBlock(HCBlockEn
         if (hand != InteractionHand.MAIN_HAND) return result
         val anvilBlockEntity: HTForgingAnvilBlockEntity = level.getTypedBlockEntity(pos) ?: return ItemInteractionResult.FAIL
         val anvilSlot: HTBasicItemSlot = anvilBlockEntity.slot
-        val anvilStack: ItemStack = anvilSlot.getItemStack()
+        val anvilStack: ItemStack = anvilSlot.getStack()
         // 手持ちのアイテムが空の場合
         if (stack.isEmpty) {
             // 金床のアイテムが空でない場合，中身をプレイヤーに渡す

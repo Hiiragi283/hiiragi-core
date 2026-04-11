@@ -7,6 +7,7 @@ import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.common.storage.HTStorageValidators
 import hiiragi283.core.impl.storage.fluid.HTFluidStackResourceSlot
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.BiPredicate
@@ -24,19 +25,13 @@ open class HTBasicFluidTank(
 ) : HTFluidStackResourceSlot() {
     companion object {
         @JvmStatic
-        fun validateCapacity(capacity: Int): Int {
-            check(capacity >= 0) { "Capacity must be non negative" }
-            return capacity
-        }
-
-        @JvmStatic
         fun create(
             listener: HTContentListener?,
             capacity: Int,
             canExtract: BiPredicate<HTFluidResourceType, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
             canInsert: BiPredicate<HTFluidResourceType, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
             filter: Predicate<HTFluidResourceType> = HTStoragePredicates.alwaysTrue(),
-        ): HTBasicFluidTank = HTBasicFluidTank(validateCapacity(capacity), canExtract, canInsert, filter, listener)
+        ): HTBasicFluidTank = HTBasicFluidTank(HTStorageValidators.validateCapacity(capacity), canExtract, canInsert, filter, listener)
 
         @JvmStatic
         fun input(
@@ -60,14 +55,14 @@ open class HTBasicFluidTank(
     @JvmField
     protected var stack: FluidStack = FluidStack.EMPTY
 
-    final override fun getStackInternal(): FluidStack = stack.copy()
+    final override fun getStack(): FluidStack = stack.copy()
+
+    override fun setStack(stack: FluidStack) {
+        setStackUnchecked(stack, true)
+    }
 
     override fun setStackInternal(stack: FluidStack) {
         setStackUnchecked(stack, false)
-    }
-
-    fun setStack(other: FluidStack) {
-        setStackUnchecked(other, true)
     }
 
     private fun setStackUnchecked(other: FluidStack, validate: Boolean) {

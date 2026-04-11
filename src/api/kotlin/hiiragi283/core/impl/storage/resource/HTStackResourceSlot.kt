@@ -13,7 +13,9 @@ import hiiragi283.core.api.storage.resource.HTResourceType
  * @since 0.15.0
  */
 abstract class HTStackResourceSlot<STACK : Any, RESOURCE : HTResourceType<*>> : HTResourceSlot<RESOURCE> {
-    protected abstract fun getStackInternal(): STACK
+    abstract fun getStack(): STACK
+
+    abstract fun setStack(stack: STACK)
 
     protected abstract fun setStackInternal(stack: STACK)
 
@@ -67,7 +69,7 @@ abstract class HTStackResourceSlot<STACK : Any, RESOURCE : HTResourceType<*>> : 
         val needed: Int = minOf(inputRate(access), getNeeded(resource))
         if (needed <= 0 || !isStackValidForInsert(resource, access)) return amount
 
-        val stackIn: STACK = getStackInternal()
+        val stackIn: STACK = getStack()
         val sameType: Boolean = isSame(stackIn, resource)
         if (getResource() == null || sameType) {
             val toAdd: Int = minOf(amount, needed)
@@ -95,7 +97,7 @@ abstract class HTStackResourceSlot<STACK : Any, RESOURCE : HTResourceType<*>> : 
         return fixedAmount
     }
 
-    final override fun getResource(): RESOURCE? = getStackInternal().let(::getResourceFrom)
+    final override fun getResource(): RESOURCE? = getStack().let(::getResourceFrom)
 
-    final override fun getAmount(): Int = getStackInternal().let(::getAmountFrom)
+    final override fun getAmount(): Int = getStack().let(::getAmountFrom)
 }

@@ -2,8 +2,7 @@ package hiiragi283.core.common.gui.sync
 
 import hiiragi283.core.api.gui.sync.HTChangeType
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
-import hiiragi283.core.api.storage.fluid.getFluidStack
-import hiiragi283.core.common.storage.fluid.HTBasicFluidTank
+import hiiragi283.core.impl.storage.fluid.HTFluidStackResourceSlot
 import net.minecraft.core.RegistryAccess
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.Consumer
@@ -20,7 +19,7 @@ import kotlin.reflect.KProperty
 class HTFluidSyncSlot(private val getter: Supplier<FluidStack>, private val setter: Consumer<FluidStack>) : HTIntSyncSlot {
     constructor(property: KMutableProperty0<FluidStack>) : this(property::get, property::set)
 
-    constructor(tank: HTBasicFluidTank) : this(tank::getFluidStack, tank::setStack)
+    constructor(tank: HTFluidStackResourceSlot) : this(tank::getStack, tank::setStack)
 
     private var lastStack: FluidStack = FluidStack.EMPTY
 

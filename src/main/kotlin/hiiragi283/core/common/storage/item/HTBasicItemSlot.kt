@@ -7,6 +7,7 @@ import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.item.HTItemResourceType
+import hiiragi283.core.common.storage.HTStorageValidators
 import hiiragi283.core.impl.storage.item.HTItemStackResourceSlot
 import net.minecraft.world.item.ItemStack
 import java.util.function.BiPredicate
@@ -24,19 +25,13 @@ open class HTBasicItemSlot(
 ) : HTItemStackResourceSlot() {
     companion object {
         @JvmStatic
-        private fun validateLimit(limit: Int): Int {
-            check(limit >= 0) { "Limit must be non negative" }
-            return limit
-        }
-
-        @JvmStatic
         fun create(
             listener: HTContentListener?,
             limit: Int = HTConst.ABSOLUTE_MAX_STACK_SIZE,
             canExtract: BiPredicate<HTItemResourceType, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
             canInsert: BiPredicate<HTItemResourceType, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
             filter: Predicate<HTItemResourceType> = HTStoragePredicates.alwaysTrue(),
-        ): HTBasicItemSlot = HTBasicItemSlot(validateLimit(limit), canExtract, canInsert, filter, listener)
+        ): HTBasicItemSlot = HTBasicItemSlot(HTStorageValidators.validateLimit(limit), canExtract, canInsert, filter, listener)
 
         @JvmStatic
         fun input(
@@ -62,14 +57,14 @@ open class HTBasicItemSlot(
     @JvmField
     protected var stack: ItemStack = ItemStack.EMPTY
 
-    final override fun getStackInternal(): ItemStack = stack.copy()
+    final override fun getStack(): ItemStack = stack.copy()
+
+    override fun setStack(stack: ItemStack) {
+        setStackUnchecked(stack, true)
+    }
 
     override fun setStackInternal(stack: ItemStack) {
         setStackUnchecked(stack, false)
-    }
-
-    fun setStack(other: ItemStack) {
-        setStackUnchecked(other, true)
     }
 
     private fun setStackUnchecked(other: ItemStack, validate: Boolean) {

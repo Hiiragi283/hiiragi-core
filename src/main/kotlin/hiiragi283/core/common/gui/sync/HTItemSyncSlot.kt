@@ -2,8 +2,7 @@ package hiiragi283.core.common.gui.sync
 
 import hiiragi283.core.api.gui.sync.HTChangeType
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
-import hiiragi283.core.api.storage.item.getItemStack
-import hiiragi283.core.common.storage.item.HTBasicItemSlot
+import hiiragi283.core.impl.storage.item.HTItemStackResourceSlot
 import net.minecraft.core.RegistryAccess
 import net.minecraft.world.item.ItemStack
 import java.util.function.Consumer
@@ -20,7 +19,7 @@ import kotlin.reflect.KProperty
 class HTItemSyncSlot(private val getter: Supplier<ItemStack>, private val setter: Consumer<ItemStack>) : HTIntSyncSlot {
     constructor(property: KMutableProperty0<ItemStack>) : this(property::get, property::set)
 
-    constructor(slot: HTBasicItemSlot) : this(slot::getItemStack, slot::setStack)
+    constructor(slot: HTItemStackResourceSlot) : this(slot::getStack, slot::setStack)
 
     private var lastStack: ItemStack = ItemStack.EMPTY
 

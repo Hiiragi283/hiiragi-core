@@ -7,6 +7,7 @@ import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.energy.HTEnergyBattery
+import hiiragi283.core.common.storage.HTStorageValidators
 import java.util.function.Predicate
 
 /**
@@ -33,7 +34,7 @@ open class HTBasicEnergyBattery(
             capacity: Int,
             canExtract: Predicate<HTStorageAccess> = HTStoragePredicates.alwaysTrue(),
             canInsert: Predicate<HTStorageAccess> = HTStoragePredicates.alwaysTrue(),
-        ): HTBasicEnergyBattery = HTBasicEnergyBattery(capacity, canExtract, canInsert, listener)
+        ): HTBasicEnergyBattery = HTBasicEnergyBattery(HTStorageValidators.validateCapacity(capacity), canExtract, canInsert, listener)
     }
 
     @JvmField

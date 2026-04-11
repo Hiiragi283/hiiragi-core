@@ -12,11 +12,13 @@ import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.Level
 import net.neoforged.neoforge.capabilities.BlockCapability
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.capabilities.EntityCapability
 import net.neoforged.neoforge.capabilities.ItemCapability
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
 import net.neoforged.neoforge.energy.IEnergyStorage
 
 object HTEnergyCapabilities : HTMultiCapability.Simple<IEnergyStorage> {
@@ -49,4 +51,8 @@ object HTEnergyCapabilities : HTMultiCapability.Simple<IEnergyStorage> {
     }
 
     //    Register    //
+
+    fun registerItemEnergy(event: RegisterCapabilitiesEvent, factory: (ItemStack) -> HTEnergyBattery?, vararg items: ItemLike) {
+        registerItem(event, { stack: ItemStack -> HTEnergyHandler { factory(stack) } }, *items)
+    }
 }

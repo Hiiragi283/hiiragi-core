@@ -11,7 +11,7 @@ import hiiragi283.core.api.integration.jei.widget.HTIngredientWidget
 import hiiragi283.core.api.storage.fluid.HTFluidView
 import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.common.gui.sync.HTFluidSyncSlot
-import hiiragi283.core.common.storage.fluid.HTBasicFluidTank
+import hiiragi283.core.impl.storage.fluid.HTFluidStackResourceSlot
 import hiiragi283.core.setup.HCWidgetTypes
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidUtil
@@ -30,7 +30,7 @@ class HTFluidWidget private constructor(
     HTFluidView by view {
     companion object {
         @JvmStatic
-        fun createTank(tank: HTBasicFluidTank, x: Int, y: Int): HTFluidWidget = createTank(tank, HTFluidSyncSlot(tank), x, y)
+        fun createTank(tank: HTFluidStackResourceSlot, x: Int, y: Int): HTFluidWidget = createTank(tank, HTFluidSyncSlot(tank), x, y)
 
         @JvmStatic
         fun createTank(
@@ -41,7 +41,7 @@ class HTFluidWidget private constructor(
         ): HTFluidWidget = HTFluidWidget(view, fluidSlot, true, x, y, 18, 18 * 3)
 
         @JvmStatic
-        fun createSlot(tank: HTBasicFluidTank, x: Int, y: Int): HTFluidWidget = createSlot(tank, HTFluidSyncSlot(tank), x, y)
+        fun createSlot(tank: HTFluidStackResourceSlot, x: Int, y: Int): HTFluidWidget = createSlot(tank, HTFluidSyncSlot(tank), x, y)
 
         @JvmStatic
         fun createSlot(

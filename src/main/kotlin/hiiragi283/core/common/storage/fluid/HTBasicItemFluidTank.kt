@@ -3,6 +3,7 @@ package hiiragi283.core.common.storage.fluid
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.common.storage.HTStorageValidators
 import hiiragi283.core.impl.storage.fluid.HTFluidStackResourceSlot
 import hiiragi283.core.impl.storage.fluid.HTItemFluidTank
 import hiiragi283.core.setup.HCDataComponents
@@ -32,10 +33,14 @@ open class HTBasicItemFluidTank(
             filter: Predicate<HTFluidResourceType> = HTStoragePredicates.alwaysTrue(),
             containerUpdater: UnaryOperator<ItemStack>? = null,
         ): HTBasicItemFluidTank =
-            HTBasicItemFluidTank(containerUpdater, HTBasicFluidTank.validateCapacity(capacity), canExtract, canInsert, filter, container)
+            HTBasicItemFluidTank(containerUpdater, HTStorageValidators.validateCapacity(capacity), canExtract, canInsert, filter, container)
     }
 
-    override fun getStackInternal(): FluidStack = container.getOrDefault(HCDataComponents.FLUID, SimpleFluidContent.EMPTY).copy()
+    override fun getStack(): FluidStack = container.getOrDefault(HCDataComponents.FLUID, SimpleFluidContent.EMPTY).copy()
+
+    override fun setStack(stack: FluidStack) {
+        setStackInternal(stack)
+    }
 
     override fun setStackInternal(stack: FluidStack) {
         val content: SimpleFluidContent = SimpleFluidContent.copyOf(stack)
@@ -48,7 +53,7 @@ open class HTBasicItemFluidTank(
     }
 
     override fun updateAmount(newAmount: Int) {
-        getStackInternal().copyWithAmount(newAmount).let(::setStackInternal)
+        getStack().copyWithAmount(newAmount).let(::setStackInternal)
     }
 
     final override fun isValid(resource: HTFluidResourceType): Boolean = filter.test(resource)

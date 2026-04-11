@@ -13,7 +13,7 @@ import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.storage.item.toStackOrEmpty
 import hiiragi283.core.api.util.emptyOptional
 import hiiragi283.core.api.util.wrapOptional
-import hiiragi283.core.common.storage.item.HTBasicItemSlot
+import hiiragi283.core.impl.storage.item.HTItemStackResourceSlot
 import net.minecraft.world.SimpleContainer
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.Slot
@@ -40,7 +40,7 @@ open class HTContainerItemSlot(
 
         @JvmStatic
         fun create(
-            slot: HTBasicItemSlot,
+            slot: HTItemStackResourceSlot,
             x: Int,
             y: Int,
             slotType: HTBackgroundType,
