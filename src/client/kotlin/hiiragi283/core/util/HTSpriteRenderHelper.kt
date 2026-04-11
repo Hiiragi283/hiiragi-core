@@ -6,11 +6,8 @@ import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.Tesselator
 import com.mojang.blaze3d.vertex.VertexConsumer
 import com.mojang.blaze3d.vertex.VertexFormat
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.gui.HTBounds
 import net.minecraft.client.gui.GuiGraphics
-import net.minecraft.client.renderer.MultiBufferSource
-import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.core.Direction
 import net.minecraft.resources.ResourceLocation
@@ -19,6 +16,11 @@ import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 import org.joml.Matrix4f
 import org.joml.Vector3f
+import kotlin.apply
+import kotlin.collections.indices
+import kotlin.let
+import kotlin.ranges.reversed
+import kotlin.text.endsWith
 
 @OnlyIn(Dist.CLIENT)
 object HTSpriteRenderHelper {
@@ -215,14 +217,13 @@ object HTSpriteRenderHelper {
     @JvmStatic
     fun drawFluidBox(
         poseStack: PoseStack,
-        bufferSource: MultiBufferSource,
+        consumer: VertexConsumer,
         sprite: TextureAtlasSprite,
         color: Int,
         light: Int,
         overlay: Int,
         sides: Iterable<Direction> = Direction.entries,
     ) {
-        val consumer: VertexConsumer = bufferSource.getBuffer(RenderType.entityTranslucentCull(HTConst.BLOCK_ATLAS))
         val pose: PoseStack.Pose = poseStack.last()
         val matrix: Matrix4f = pose.pose()
 

@@ -56,18 +56,25 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
     }
 
     /**
+     * アイテム時に専用のレンダラーを使用するブロック向けのモデル
+     * @since 0.15.0
+     */
+    protected val builtIn: ModelFile = models().getExistingFile(HiiragiCoreAPI.id(HTConst.BLOCK, "builtin"))
+
+    /**
      * フルブロックのモデルを登録します。
      */
-    protected fun simpleBlockAndItem(block: HTBlockHolderLike<*>, model: ModelFile = cubeAll(block.get())) {
-        simpleBlockWithItem(block.get(), model)
+    protected fun simpleBlockAndItem(block: HTBlockHolderLike<*>, model: ModelFile = cubeAll(block.get()), itemModel: ModelFile = model) {
+        simpleBlock(block.get(), model)
+        simpleBlockItem(block.get(), itemModel)
     }
 
     /**
      * @since 0.14.0
      */
-    protected fun simpleBlockAndItem(block: HTBlockHolderLike<*>, vararg models: ConfiguredModel) {
+    protected fun simpleBlockAndItem(block: HTBlockHolderLike<*>, vararg models: ConfiguredModel, itemModel: ModelFile = models[0].model) {
         simpleBlock(block.get(), *models)
-        simpleBlockItem(block.get(), models[0].model)
+        simpleBlockItem(block.get(), itemModel)
     }
 
     /**
@@ -75,6 +82,18 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
      */
     protected fun <BLOCK : HTBlockHolderLike<*>> simpleBlockAndItem(block: BLOCK, factory: (BLOCK) -> Array<ConfiguredModel>) {
         simpleBlockAndItem(block, *factory(block))
+    }
+
+    /**
+     * @since 0.15.0
+     */
+    protected fun <BLOCK : HTBlockHolderLike<*>> simpleBlockAndItem(
+        block: BLOCK,
+        factory: (BLOCK) -> Array<ConfiguredModel>,
+        itemFactory: (Array<ConfiguredModel>) -> ModelFile,
+    ) {
+        val models: Array<ConfiguredModel> = factory(block)
+        simpleBlockAndItem(block, *models, itemModel = itemFactory(models))
     }
 
     /**
@@ -108,17 +127,6 @@ abstract class HTBlockStateProvider(protected val modId: String, context: HTData
         end: ResourceLocation = block.blockId.withSuffix("_top"),
     ) {
         simpleBlockAndItem(block, models().cubeColumn(block.blockId.path, side, end))
-    }
-
-    /**
-     * 既存のモデルを使用して登録します。
-     */
-    protected fun <BLOCK : HTBlockHolderLike<*>> altModelBlock(
-        block: BLOCK,
-        id: ResourceLocation = block.blockId,
-        factory: (BLOCK, ModelFile) -> Unit = ::simpleBlockAndItem,
-    ) {
-        factory(block, models().getExistingFile(id))
     }
 
     /**

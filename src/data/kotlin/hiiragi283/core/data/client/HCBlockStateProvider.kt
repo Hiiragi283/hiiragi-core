@@ -40,7 +40,7 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(Hii
                 cutCopper,
             )
 
-            altModelBlock(waxed, base.blockId)
+            simpleBlockAndItem(waxed, models().getExistingFile(base.blockId))
         }
         // Fluids
         HCFluids.REGISTER.asSequence().forEach(::liquidBlock)

@@ -10,6 +10,7 @@ import hiiragi283.core.common.block.entity.HTCopperBasinBlockEntity
 import hiiragi283.core.util.HTSpriteRenderHelper
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.MultiBufferSource
+import net.minecraft.client.renderer.Sheets
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.core.Direction
@@ -38,7 +39,7 @@ class HTCopperBasinRenderer(context: BlockEntityRendererProvider.Context) : HTBl
         poseStack.scale(12 / 16f, (3f + level * 8f) / 16f, 12 / 16f)
         HTSpriteRenderHelper.drawFluidBox(
             poseStack,
-            bufferSource,
+            bufferSource.getBuffer(Sheets.translucentCullBlockSheet()),
             sprite,
             resource.getTintColor(),
             packedLight,
