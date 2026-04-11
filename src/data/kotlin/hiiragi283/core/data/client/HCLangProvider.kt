@@ -47,7 +47,7 @@ interface HCLangProvider {
         }
         // Fluid
         val dyePattern: HTLangPatternProvider = HTLangPatternProvider.create("%s Dye", "%sの染料")
-        for ((color: HTLangName, fluid: HTFluidContent) in HCFluids.DYE) {
+        for ((color: HTLangName, fluid: HTFluidContent) in HCFluids.DyeContents) {
             provider.addFluid(fluid, dyePattern.translate(langType, color))
         }
     }

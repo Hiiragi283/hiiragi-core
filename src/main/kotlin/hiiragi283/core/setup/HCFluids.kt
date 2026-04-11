@@ -1,5 +1,6 @@
 package hiiragi283.core.setup
 
+import hiiragi283.core.api.HTColoredContents
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.function.partially1
@@ -13,6 +14,7 @@ import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.common.registry.register.HTFluidContentRegister
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
+import net.minecraft.world.item.DyeColor
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.common.SoundActions
 import net.neoforged.neoforge.fluids.FluidType
@@ -21,6 +23,10 @@ object HCFluids {
     @JvmField
     val REGISTER = HTFluidContentRegister(HiiragiCoreAPI.MOD_ID)
 
+    init {
+        DyeContents.values
+    }
+
     @JvmStatic
     fun register(eventBus: IEventBus) {
         REGISTER.register(eventBus)
@@ -28,19 +34,26 @@ object HCFluids {
 
     //    Vanilla    //
 
-    @JvmField
-    val DYE: Map<HTDefaultColor, HTFluidContent> = HTDefaultColor.entries.associateWith { color: HTDefaultColor ->
-        val name: String = color.serializedName
-        REGISTER.registerFlowing("${name}_dye") {
-            properties = liquid()
-            typeFactory = ::HTDyedFluidType.partially1(color)
-            fluidTag = "dyes/$name"
-            bucketTag = "buckets/dye/$name"
+    data object DyeContents : HTColoredContents<HTFluidContent> {
+        @JvmStatic
+        private val map: Map<HTDefaultColor, HTFluidContent> = HTDefaultColor.entries.associateWith { color: HTDefaultColor ->
+            val name: String = color.serializedName
+            REGISTER.registerFlowing("${name}_dye") {
+                properties = liquid()
+                typeFactory = ::HTDyedFluidType.partially1(color)
+                fluidTag = "dyes/$name"
+                bucketTag = "buckets/dye/$name"
+            }
         }
-    }
 
-    @JvmStatic
-    fun getDye(color: HTDefaultColor): HTFluidContent = DYE[color]!!
+        val values: Collection<HTFluidContent> get() = map.values
+
+        override fun get(color: HTDefaultColor): HTFluidContent = map[color]!!
+
+        override fun get(color: DyeColor): HTFluidContent = HTDefaultColor.fromDye(color).let(::get)
+
+        override fun iterator(): Iterator<Pair<HTDefaultColor, HTFluidContent>> = map.toList().iterator()
+    }
 
     @JvmField
     val EXPERIENCE: HTFluidContent = REGISTER.registerFlowing("experience") {

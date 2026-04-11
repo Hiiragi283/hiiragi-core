@@ -33,7 +33,6 @@ import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicDoubleMultiOutputRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicSingleItemRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicSingleMultiOutputRecipeCategoryExtension
-import hiiragi283.core.client.jei.extension.HTColoringTankInteractionCategoryExtension
 import hiiragi283.core.client.jei.extension.HTPotionArrowTankInteractionCategoryExtension
 import hiiragi283.core.client.jei.extension.HTPotionTankInteractionCategoryExtension
 import hiiragi283.core.client.jei.extension.HTSimpleTankInteractionCategoryExtension
@@ -135,7 +134,6 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         val manager: IIngredientManager = registration.jeiHelpers.ingredientManager
 
         tankInteraction = HTTankInteractionRecipeCategory(guiHelper)
-        tankInteraction.addExtension(HTColoringTankInteractionCategoryExtension)
         tankInteraction.addExtension(HTPotionArrowTankInteractionCategoryExtension)
         tankInteraction.addExtension(HTPotionTankInteractionCategoryExtension)
         tankInteraction.addExtension(HTSimpleTankInteractionCategoryExtension)

@@ -24,6 +24,10 @@ class HTRecipeTypeImpl<INPUT : RecipeInput, RECIPE : Any>(private val id: Resour
         this.addProvider { recipes.asSequence().map(::HTRecipeHolder) }
     }
 
+    fun addProvider(other: HTRecipeTypeImpl<INPUT, RECIPE>) {
+        this.addProvider(other::getAllRecipes)
+    }
+
     fun addProvider(provider: Provider<HTRecipeHolder<RECIPE>>) {
         this.providers += provider
     }

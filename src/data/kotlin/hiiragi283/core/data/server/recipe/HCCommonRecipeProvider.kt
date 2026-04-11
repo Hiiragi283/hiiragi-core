@@ -354,7 +354,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
     @JvmStatic
     private fun buckets() {
         // Dye
-        for ((color: HTDefaultColor, content: HTFluidContent) in HCFluids.DYE) {
+        for ((color: HTDefaultColor, content: HTFluidContent) in HCFluids.DyeContents) {
             HTShapelessRecipeBuilder.create(output) {
                 repeat(4) {
                     ingredients += color.dyesTag

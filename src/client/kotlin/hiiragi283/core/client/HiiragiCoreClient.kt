@@ -78,7 +78,7 @@ data object HiiragiCoreClient : HTClientMod() {
 
     override fun registerClientExtensions(event: RegisterClientExtensionsEvent) {
         // Vanilla
-        for ((color: HTDefaultColor, content: HTFluidContent) in HCFluids.DYE.entries) {
+        for ((color: HTDefaultColor, content: HTFluidContent) in HCFluids.DyeContents) {
             event.dull(content, Color(color.color))
         }
 
