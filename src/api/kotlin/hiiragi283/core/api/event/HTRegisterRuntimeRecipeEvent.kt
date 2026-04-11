@@ -48,6 +48,7 @@ class HTRegisterRuntimeRecipeEvent(
     }
 
     /**
+     * 指定した[ID][id]で[レシピ][recipe]を追加します。
      * @since 0.15.0
      */
     fun addRecipe(id: ResourceLocation, recipe: Recipe<*>) {
@@ -57,6 +58,7 @@ class HTRegisterRuntimeRecipeEvent(
     }
 
     /**
+     * 指定した[ID][id]でレシピを削除します。
      * @since 0.14.0
      */
     fun removeRecipe(id: ResourceLocation) {

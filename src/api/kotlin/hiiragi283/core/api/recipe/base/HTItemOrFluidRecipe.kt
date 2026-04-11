@@ -9,6 +9,11 @@ import java.util.function.Predicate
 typealias ItemAmount = Int
 typealias FluidAmount = Int
 
+/**
+ * 一つのアイテムまたは液体を，一つのアイテムまたは液体に変換するレシピを表すインターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.15.0
+ */
 interface HTItemOrFluidRecipe :
     HTProcessingRecipe<HTItemAndFluidRecipeInput>,
     HTFluidRecipe<HTItemAndFluidRecipeInput> {
@@ -27,6 +32,11 @@ interface HTItemOrFluidRecipe :
 
     //    Serializable    //
 
+    /**
+     * シリアライズ可能な[HTItemOrFluidRecipe]の拡張インターフェースです。
+     * @author Hiiragi Tsubasa
+     * @since 0.15.0
+     */
     interface Serializable :
         HTItemOrFluidRecipe,
         HTProcessingRecipe.Serializable<HTItemAndFluidRecipeInput>

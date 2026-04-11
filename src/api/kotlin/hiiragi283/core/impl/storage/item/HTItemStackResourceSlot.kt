@@ -6,6 +6,11 @@ import hiiragi283.core.api.storage.item.toStackOrEmpty
 import hiiragi283.core.impl.storage.resource.HTStackResourceSlot
 import net.minecraft.world.item.ItemStack
 
+/**
+ * アイテム向けの[HTStackResourceSlot]の拡張クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.15.0
+ */
 abstract class HTItemStackResourceSlot : HTStackResourceSlot<ItemStack, HTItemResourceType>() {
     final override fun getResourceFrom(stack: ItemStack): HTItemResourceType? = stack.toResource()
 

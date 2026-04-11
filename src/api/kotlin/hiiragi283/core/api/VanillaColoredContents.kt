@@ -5,6 +5,10 @@ import hiiragi283.core.api.registry.toItemLike
 import hiiragi283.core.api.resource.toId
 import net.minecraft.world.item.DyeColor
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.15.0
+ */
 object VanillaColoredContents {
     @JvmField
     val BANNER: HTColoredContents<HTSimpleItemHolderLike> = create("%s_banner")

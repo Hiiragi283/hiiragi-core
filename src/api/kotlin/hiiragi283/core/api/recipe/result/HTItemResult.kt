@@ -68,11 +68,17 @@ data class HTItemResult(private val content: Ior<HTItemResourceType, TagKey<Item
      */
     fun getStackOrEmpty(provider: HolderLookup.Provider?): ItemStack = getStackResult(provider).valueOrElse(ItemStack::EMPTY)
 
+    /**
+     * @since 0.15.0
+     */
     fun getStackOrEmpty(provider: HolderLookup.Provider?, useChance: Boolean): ItemStack =
         getStackResult(provider, useChance).valueOrElse(ItemStack::EMPTY)
 
     override fun getStackResult(provider: HolderLookup.Provider?): HTTextResult<ItemStack> = getStackResult(provider, true)
 
+    /**
+     * @since 0.15.0
+     */
     fun getStackResult(provider: HolderLookup.Provider?, useChance: Boolean): HTTextResult<ItemStack> = when {
         useChance && HiiragiCoreAPI.RANDOM.nextFloat() >= this.chance -> HTTextResult.success(ItemStack.EMPTY)
         else ->

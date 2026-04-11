@@ -20,6 +20,11 @@ sealed interface HTTankInteraction {
      */
     val amount: Int
 
+    /**
+     * 液体コンテナから液体を取り出す処理を表す[HTTankInteraction]の拡張インターフェースです。
+     * @author Hiiragi Tsubasa
+     * @since 0.15.0
+     */
     interface Emptying : HTTankInteraction {
         /**
          * 指定した[容器][container]から液体を搬出できるか判定します。
@@ -34,6 +39,11 @@ sealed interface HTTankInteraction {
         fun emptyContainer(container: HTItemResourceType): Pair<ItemStack, FluidStack>
     }
 
+    /**
+     * 液体コンテナに液体を入れる処理を表す[HTTankInteraction]の拡張インターフェースです。
+     * @author Hiiragi Tsubasa
+     * @since 0.15.0
+     */
     interface Filling : HTTankInteraction {
         /**
          * 指定した[容器][container]に[液体][fluidStack]を搬入できるか判定します。

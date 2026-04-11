@@ -13,7 +13,7 @@ interface HTSingleItemRecipe : HTProcessingRecipe<SingleRecipeInput> {
     //    Serializable    //
 
     /**
-     * シリアライズ可能な[HTProcessingRecipe]の拡張インターフェースです。
+     * シリアライズ可能な[HTSingleItemRecipe]の拡張インターフェースです。
      * @author Hiiragi Tsubasa
      * @since 0.12.0
      */

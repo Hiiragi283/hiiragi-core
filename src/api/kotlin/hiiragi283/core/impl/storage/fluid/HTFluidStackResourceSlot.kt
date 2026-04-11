@@ -6,6 +6,11 @@ import hiiragi283.core.api.storage.fluid.toStackOrEmpty
 import hiiragi283.core.impl.storage.resource.HTStackResourceSlot
 import net.neoforged.neoforge.fluids.FluidStack
 
+/**
+ * 液体向けの[HTStackResourceSlot]の拡張クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.15.0
+ */
 abstract class HTFluidStackResourceSlot : HTStackResourceSlot<FluidStack, HTFluidResourceType>() {
     final override fun getResourceFrom(stack: FluidStack): HTFluidResourceType? = stack.toResource()
 

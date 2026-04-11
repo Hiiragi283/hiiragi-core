@@ -9,6 +9,11 @@ import hiiragi283.core.impl.serialization.value.HTTagValueOutput
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
 
+/**
+ * [HTValueInput]や[HTValueOutput]のインスタンスを作成するクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.15.0
+ */
 data object HTValueIOAccess {
     /**
      * 指定した[レジストリ][provider]と[JSON][jsonObject]から[HTValueInput]を作成します。

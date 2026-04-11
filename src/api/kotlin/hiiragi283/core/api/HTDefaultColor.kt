@@ -65,6 +65,9 @@ enum class HTDefaultColor(
         @JvmField
         val CODEC: BiCodec<ByteBuf, HTDefaultColor> = BiCodecs.stringEnum(HTDefaultColor::getSerializedName)
 
+        /**
+         * @since 0.15.0
+         */
         @JvmStatic
         fun fromDye(dyeColor: DyeColor): HTDefaultColor = entries.first { it.dyeColor == dyeColor }
     }

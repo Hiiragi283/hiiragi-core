@@ -15,7 +15,7 @@ interface HTDoubleItemRecipe : HTProcessingRecipe<HTDoubleRecipeInput> {
     //    Serializable    //
 
     /**
-     * シリアライズ可能な[HTProcessingRecipe]の拡張インターフェースです。
+     * シリアライズ可能な[HTDoubleItemRecipe]の拡張インターフェースです。
      * @author Hiiragi Tsubasa
      * @since 0.15.0
      */

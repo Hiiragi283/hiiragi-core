@@ -27,6 +27,9 @@ data object HiiragiCoreAPI {
     @JvmField
     val LOGGER: Logger = LogUtils.getLogger()
 
+    /**
+     * @since 0.15.0
+     */
     @JvmField
     val RANDOM: Random = Random.Default
 

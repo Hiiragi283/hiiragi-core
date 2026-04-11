@@ -16,11 +16,6 @@ import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 import org.joml.Matrix4f
 import org.joml.Vector3f
-import kotlin.apply
-import kotlin.collections.indices
-import kotlin.let
-import kotlin.ranges.reversed
-import kotlin.text.endsWith
 
 @OnlyIn(Dist.CLIENT)
 object HTSpriteRenderHelper {
