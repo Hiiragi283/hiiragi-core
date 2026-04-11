@@ -4,12 +4,11 @@ import hiiragi283.core.api.capability.HTMultiCapability
 import hiiragi283.core.api.capability.tankRange
 import hiiragi283.core.api.storage.fluid.HTFluidHandler
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
-import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.fluid.HTFluidView
 import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.storage.item.HTItemResourceType
-import hiiragi283.core.common.storage.component.HTComponentHandler
-import hiiragi283.core.common.storage.fluid.HTComponentFluidHandler
+import hiiragi283.core.impl.storage.fluid.HTItemFluidHandler
+import hiiragi283.core.impl.storage.fluid.HTItemFluidTank
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.entity.Entity
@@ -77,24 +76,10 @@ object HTFluidCapabilities : HTMultiCapability<IFluidHandler, IFluidHandlerItem>
 
     //    Register    //
 
-    fun registerItem(
-        event: RegisterCapabilitiesEvent,
-        size: Int,
-        factory: HTComponentHandler.ContainerFactory<HTFluidTank>,
-        vararg items: ItemLike,
-    ) {
-        registerItem(
-            event,
-            { stack: ItemStack -> HTComponentFluidHandler(stack, size, factory) },
-            *items,
-        )
-    }
-
-    fun registerItem(event: RegisterCapabilitiesEvent, factory: HTComponentHandler.ContainerFactory<HTFluidTank>, vararg items: ItemLike) {
-        registerItem(
-            event,
-            1,
-            factory,
+    fun registerItemTank(event: RegisterCapabilitiesEvent, factory: (ItemStack) -> HTItemFluidTank, vararg items: ItemLike) {
+        event.registerItem(
+            item,
+            { stack: ItemStack, _ -> HTItemFluidHandler { factory(stack) } },
             *items,
         )
     }

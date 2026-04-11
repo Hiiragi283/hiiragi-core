@@ -12,15 +12,11 @@ import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.client.data.HCClientResourceProvider
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
-import hiiragi283.core.client.gui.tooltip.HTClientFluidFilterTooltip
-import hiiragi283.core.client.gui.tooltip.HTClientItemFilterTooltip
 import hiiragi283.core.client.gui.widget.HTFluidWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTItemSlotWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTProgressWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.client.render.block.HTCopperBasinRenderer
-import hiiragi283.core.common.gui.tooltip.HTFluidFilterTooltip
-import hiiragi283.core.common.gui.tooltip.HTItemFilterTooltip
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
@@ -35,7 +31,6 @@ import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.neoforge.client.event.EntityRenderersEvent
-import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent
@@ -45,17 +40,10 @@ import java.awt.Color
 @Mod(value = HiiragiCoreAPI.MOD_ID, dist = [Dist.CLIENT])
 data object HiiragiCoreClient : HTClientMod() {
     override fun initialize(eventBus: IEventBus, container: ModContainer) {
-        eventBus.addListener(::registerClientTooltips)
-
         configScreen(container)
 
         RegHelper.registerDynamicResourceProvider(HCClientResourceProvider)
         HiiragiCoreAPI.LOGGER.info("Hiiragi-Core loaded on client side")
-    }
-
-    private fun registerClientTooltips(event: RegisterClientTooltipComponentFactoriesEvent) {
-        event.register(HTFluidFilterTooltip::class.java, ::HTClientFluidFilterTooltip)
-        event.register(HTItemFilterTooltip::class.java, ::HTClientItemFilterTooltip)
     }
 
     override fun clientSetup(event: FMLClientSetupEvent) {

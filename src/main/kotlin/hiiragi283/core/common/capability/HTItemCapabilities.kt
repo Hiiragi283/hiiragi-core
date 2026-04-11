@@ -11,19 +11,15 @@ import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.storage.item.toStackOrEmpty
-import hiiragi283.core.common.storage.component.HTComponentHandler
-import hiiragi283.core.common.storage.item.HTComponentItemHandler
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.Level
 import net.neoforged.neoforge.capabilities.BlockCapability
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.capabilities.EntityCapability
 import net.neoforged.neoforge.capabilities.ItemCapability
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
 import net.neoforged.neoforge.items.IItemHandler
 
 object HTItemCapabilities : HTMultiCapability.Simple<IItemHandler> {
@@ -118,17 +114,4 @@ object HTItemCapabilities : HTMultiCapability.Simple<IItemHandler> {
     fun getItemSlot(resource: HTItemResourceType?, index: Int): HTItemSlot? = getItemSlots(resource).getOrNull(index)
 
     //    Register    //
-
-    fun registerItem(
-        event: RegisterCapabilitiesEvent,
-        size: Int,
-        factory: HTComponentHandler.ContainerFactory<HTItemSlot>,
-        vararg items: ItemLike,
-    ) {
-        registerItem(
-            event,
-            { stack: ItemStack -> HTComponentItemHandler(stack, size, factory) },
-            *items,
-        )
-    }
 }

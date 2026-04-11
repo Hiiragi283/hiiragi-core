@@ -6,9 +6,6 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
-import hiiragi283.core.api.storage.attachments.HTAttachedEnergy
-import hiiragi283.core.api.storage.attachments.HTAttachedFluids
-import hiiragi283.core.api.storage.attachments.HTAttachedItems
 import hiiragi283.core.api.text.HTTranslation
 import hiiragi283.core.common.item.HTBlueprintItem
 import hiiragi283.core.common.registry.register.HTDeferredDataComponentRegister
@@ -16,6 +13,7 @@ import hiiragi283.core.common.text.HTSimpleTranslation
 import net.minecraft.core.GlobalPos
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.core.registries.Registries
+import net.neoforged.neoforge.fluids.SimpleFluidContent
 
 object HCDataComponents {
     @JvmField
@@ -42,11 +40,9 @@ object HCDataComponents {
     //    Storage    //
 
     @JvmField
-    val ENERGY: DataComponentType<HTAttachedEnergy> = REGISTER.registerType(HTConst.ENERGY, HTAttachedEnergy.CODEC)
+    val ENERGY: DataComponentType<Int> = REGISTER.registerType(HTConst.ENERGY, BiCodecs.NON_NEGATIVE_INT)
 
     @JvmField
-    val FLUID: DataComponentType<HTAttachedFluids> = REGISTER.registerType(HTConst.FLUID, HTAttachedFluids.CODEC)
-
-    @JvmField
-    val ITEM: DataComponentType<HTAttachedItems> = REGISTER.registerType(HTConst.ITEM, HTAttachedItems.CODEC)
+    val FLUID: DataComponentType<SimpleFluidContent> =
+        REGISTER.registerType(HTConst.FLUID, SimpleFluidContent.CODEC, SimpleFluidContent.STREAM_CODEC)
 }

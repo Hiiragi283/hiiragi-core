@@ -25,7 +25,7 @@ open class HTBasicFluidTank protected constructor(
 ) : HTMutableFluidTank() {
     companion object {
         @JvmStatic
-        private fun validateCapacity(capacity: Int): Int {
+        fun validateCapacity(capacity: Int): Int {
             check(capacity >= 0) { "Capacity must be non negative" }
             return capacity
         }

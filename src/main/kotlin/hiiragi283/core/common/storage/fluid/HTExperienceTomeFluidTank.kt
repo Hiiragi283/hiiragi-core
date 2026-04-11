@@ -1,23 +1,15 @@
 package hiiragi283.core.common.storage.fluid
 
 import com.google.common.primitives.Ints
-import hiiragi283.core.api.HTContentListener
-import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
-import hiiragi283.core.api.storage.fluid.HTFluidTank
-import hiiragi283.core.common.storage.component.HTComponentHandler
+import hiiragi283.core.impl.storage.fluid.HTItemFluidTank
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.util.HTExperienceHelper
 import net.minecraft.world.item.ItemStack
 
-class HTExperienceTomeFluidTank(private val attachedTo: ItemStack) :
-    HTFluidTank,
-    HTContentListener.Empty,
-    HTValueSerializable.Empty {
-    constructor(context: HTComponentHandler.ContainerContext) : this(context.attachedTo)
-
+class HTExperienceTomeFluidTank(override val container: ItemStack) : HTItemFluidTank {
     fun getExpRatio(): Int = HTExperienceHelper.getExpRatio()
 
     override fun isValid(resource: HTFluidResourceType): Boolean = resource.getHolder().`is`(HCFluids.EXPERIENCE.fluidTag)
@@ -36,7 +28,7 @@ class HTExperienceTomeFluidTank(private val attachedTo: ItemStack) :
         val fixedAmount: Int = validAmount - (validAmount % getExpRatio())
         if (fixedAmount <= 0) return amount
         if (action.execute()) {
-            HTExperienceHelper.updateStoredExp(attachedTo) { it + HTExperienceHelper.expAmountFromFluid(fixedAmount) }
+            HTExperienceHelper.updateStoredExp(container) { it + HTExperienceHelper.expAmountFromFluid(fixedAmount) }
         }
         return amount - fixedAmount
     }
@@ -48,7 +40,7 @@ class HTExperienceTomeFluidTank(private val attachedTo: ItemStack) :
         val validAmount: Int = minOf(amount, getAmount())
         val fixedAmount: Int = validAmount - (validAmount % getExpRatio())
         if (fixedAmount > 0 && action.execute()) {
-            HTExperienceHelper.updateStoredExp(attachedTo) { maxOf(0, it - HTExperienceHelper.expAmountFromFluid(fixedAmount)) }
+            HTExperienceHelper.updateStoredExp(container) { maxOf(0, it - HTExperienceHelper.expAmountFromFluid(fixedAmount)) }
         }
         return fixedAmount
     }
@@ -58,7 +50,7 @@ class HTExperienceTomeFluidTank(private val attachedTo: ItemStack) :
     override fun getCapacity(resource: HTFluidResourceType?): Int = Int.MAX_VALUE
 
     override fun getAmount(): Int = HTExperienceHelper
-        .getStoredExp(attachedTo)
+        .getStoredExp(container)
         .let(HTExperienceHelper::fluidAmountFromExp)
         .let(Ints::saturatedCast)
 }

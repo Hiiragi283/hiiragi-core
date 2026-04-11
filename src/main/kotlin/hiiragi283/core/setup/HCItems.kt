@@ -12,20 +12,18 @@ import hiiragi283.core.common.item.HTCaptureEggItem
 import hiiragi283.core.common.item.HTCreativeItem
 import hiiragi283.core.common.item.HTEternalUpgradeItem
 import hiiragi283.core.common.item.HTExperienceTomeItem
-import hiiragi283.core.common.item.HTFluidFilterItem
-import hiiragi283.core.common.item.HTItemFilterItem
 import hiiragi283.core.common.item.HTPaintBrushItem
 import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.common.item.HTTraderCatalogItem
 import hiiragi283.core.common.registry.register.HTDeferredItemRegister
-import hiiragi283.core.common.storage.component.HTComponentHandler
-import hiiragi283.core.common.storage.fluid.HTComponentFluidTank
+import hiiragi283.core.common.storage.fluid.HTBasicItemFluidTank
 import hiiragi283.core.common.storage.fluid.HTExperienceTomeFluidTank
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.world.food.FoodConstants
 import net.minecraft.world.food.FoodProperties
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
@@ -129,10 +127,10 @@ object HCItems {
     val ELDRITCH_EGG: HTSimpleItemHolderLike = REGISTER.registerItem("eldritch_egg", ::HTCaptureEggItem)
 
     @JvmField
-    val FLUID_FILTER: HTSimpleItemHolderLike = REGISTER.registerItem("fluid_filter", ::HTFluidFilterItem)
+    val FLUID_FILTER: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("fluid_filter")
 
     @JvmField
-    val ITEM_FILTER: HTSimpleItemHolderLike = REGISTER.registerItem("item_filter", ::HTItemFilterItem)
+    val ITEM_FILTER: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("item_filter")
 
     @JvmField
     val SLOT_COVER: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("slot_cover")
@@ -191,15 +189,11 @@ object HCItems {
     private fun registerCapabilities(event: RegisterCapabilitiesEvent) {
         HTFluidCapabilities.registerItem(event, HTPotionBucketItem::BucketHandler, HCFluids.POTION.getBucket())
 
-        HTFluidCapabilities.registerItem(event, { context: HTComponentHandler.ContainerContext ->
-            HTComponentFluidTank.create(
-                context,
-                4000,
-                /*filter = { resource: HTFluidResourceType ->
-                    HCFluids.DyeContents.values.any { contents: HTFluidContent -> resource.isOf(contents) }
-                },*/
-            )
-        }, PAINT_BRUSH)
-        HTFluidCapabilities.registerItem(event, ::HTExperienceTomeFluidTank, EXPERIENCE_TOME)
+        HTFluidCapabilities.registerItemTank(
+            event,
+            { container: ItemStack -> HTBasicItemFluidTank.create(container, 4000) },
+            PAINT_BRUSH,
+        )
+        HTFluidCapabilities.registerItemTank(event, ::HTExperienceTomeFluidTank, EXPERIENCE_TOME)
     }
 }

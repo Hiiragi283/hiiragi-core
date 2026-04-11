@@ -5,33 +5,22 @@ import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.block.entity.HTBlockEntityComponent
 import hiiragi283.core.api.block.entity.HTOwnedBlockEntity
 import hiiragi283.core.api.block.entity.HTSoundPlayerBlockEntity
-import hiiragi283.core.api.collection.isEmpty
 import hiiragi283.core.api.serialization.component.DataComponentGetter
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.HTHandlerProvider
-import hiiragi283.core.api.storage.attachments.HTAttachedEnergy
-import hiiragi283.core.api.storage.attachments.HTAttachedFluids
-import hiiragi283.core.api.storage.attachments.HTAttachedItems
 import hiiragi283.core.api.storage.energy.HTEnergyBattery
 import hiiragi283.core.api.storage.energy.HTEnergyHandler
 import hiiragi283.core.api.storage.fluid.HTFluidHandler
 import hiiragi283.core.api.storage.fluid.HTFluidTank
-import hiiragi283.core.api.storage.fluid.HTMutableFluidView
-import hiiragi283.core.api.storage.fluid.getFluidStack
-import hiiragi283.core.api.storage.fluid.setStack
 import hiiragi283.core.api.storage.holder.HTEnergyBatteryHolder
 import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
 import hiiragi283.core.api.storage.item.HTItemHandler
 import hiiragi283.core.api.storage.item.HTItemSlot
-import hiiragi283.core.api.storage.item.HTMutableItemView
-import hiiragi283.core.api.storage.item.getItemStack
-import hiiragi283.core.api.storage.item.setStack
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import hiiragi283.core.common.storage.HTCapabilityCodec
-import hiiragi283.core.common.storage.energy.HTBasicEnergyBattery
 import hiiragi283.core.impl.storage.resolver.HTEnergyStorageManager
 import hiiragi283.core.impl.storage.resolver.HTFluidHandlerManager
 import hiiragi283.core.impl.storage.resolver.HTItemHandlerManager
@@ -45,11 +34,9 @@ import net.minecraft.network.chat.ComponentSerialization
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.Nameable
 import net.minecraft.world.entity.player.Player
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.energy.IEnergyStorage
-import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.capability.IFluidHandler
 import net.neoforged.neoforge.items.IItemHandler
 import java.util.UUID
@@ -144,7 +131,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
             component.serialize(output)
         }
         // Capability
-        for (type: HTCapabilityCodec<*, *> in HTCapabilityCodec.TYPES) {
+        for (type: HTCapabilityCodec<*> in HTCapabilityCodec.TYPES) {
             if (type.canHandle(this)) {
                 type.saveTo(output, this)
             }
@@ -162,7 +149,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
             component.deserialize(input)
         }
         // Capability
-        for (type: HTCapabilityCodec<*, *> in HTCapabilityCodec.TYPES) {
+        for (type: HTCapabilityCodec<*> in HTCapabilityCodec.TYPES) {
             if (type.canHandle(this)) {
                 type.loadFrom(input, this)
             }
@@ -181,12 +168,6 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
                 override fun <T : Any> get(type: DataComponentType<T>): T? = componentInput.get(type)
             })
         }
-        // Capability
-        for (type: HTCapabilityCodec<*, *> in HTCapabilityCodec.TYPES) {
-            if (type.canHandle(this)) {
-                type.copyTo(this, componentInput::get)
-            }
-        }
         // Custom Name
         this.customName = componentInput.get(DataComponents.CUSTOM_NAME)
     }
@@ -196,12 +177,6 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
         // Components
         for (component: HTBlockEntityComponent in components) {
             component.collectComponents(builder)
-        }
-        // Capability
-        for (type: HTCapabilityCodec<*, *> in HTCapabilityCodec.TYPES) {
-            if (type.canHandle(this)) {
-                type.copyFrom(this, builder)
-            }
         }
         // Custom Name
         builder.set(DataComponents.CUSTOM_NAME, this.customName)
@@ -279,24 +254,6 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
 
     final override fun getFluidHandler(direction: Direction?): IFluidHandler? = fluidHandlerManager?.resolve(direction)
 
-    /**
-     * @see mekanism.common.tile.base.TileEntityMekanism.applyFluidTanks
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun applyFluidTanks(containers: List<HTFluidTank>, contents: HTAttachedFluids) {
-        for (i: Int in contents.indices) {
-            (containers.getOrNull(i) as? HTMutableFluidView)?.setStack(contents[i])
-        }
-    }
-
-    /**
-     * @see mekanism.common.tile.base.TileEntityMekanism.collectFluidTanks
-     */
-    fun collectFluidTanks(containers: List<HTFluidTank>): HTAttachedFluids? = containers
-        .map(HTFluidTank::getFluidStack)
-        .let(::HTAttachedFluids)
-        .takeUnless { it.isEmpty(FluidStack::isEmpty) }
-
     // Energy
 
     /**
@@ -313,24 +270,6 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
 
     final override fun getEnergyStorage(direction: Direction?): IEnergyStorage? = energyHandlerManager?.resolve(direction)
 
-    /**
-     * @see mekanism.common.tile.base.TileEntityMekanism.applyEnergyContainers
-     */
-    fun applyEnergyBattery(containers: List<HTEnergyBattery>, contents: HTAttachedEnergy) {
-        for (i: Int in contents.indices) {
-            val amount: Int = contents[i]
-            (containers.getOrNull(i) as? HTBasicEnergyBattery)?.setAmountUnchecked(amount, true)
-        }
-    }
-
-    /**
-     * @see mekanism.common.tile.base.TileEntityMekanism.collectEnergyContainers
-     */
-    fun collectEnergyBattery(containers: List<HTEnergyBattery>): HTAttachedEnergy? = containers
-        .map(HTEnergyBattery::getAmount)
-        .let(::HTAttachedEnergy)
-        .takeUnless { it.isEmpty() || it.all { amount: Int -> amount <= 0 } }
-
     // Item
 
     /**
@@ -346,22 +285,4 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     final override fun getItemSlots(side: Direction?): List<HTItemSlot> = itemHandlerManager?.getContainers(side) ?: emptyList()
 
     final override fun getItemHandler(direction: Direction?): IItemHandler? = itemHandlerManager?.resolve(direction)
-
-    /**
-     * @see mekanism.common.tile.base.TileEntityMekanism.applyInventorySlots
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun applyItemSlots(containers: List<HTItemSlot>, contents: HTAttachedItems) {
-        for (i: Int in contents.indices) {
-            (containers.getOrNull(i) as? HTMutableItemView)?.setStack(contents[i])
-        }
-    }
-
-    /**
-     * @see mekanism.common.tile.base.TileEntityMekanism.collectInventorySlots
-     */
-    fun collectItemSlots(containers: List<HTItemSlot>): HTAttachedItems? = containers
-        .map(HTItemSlot::getItemStack)
-        .let(::HTAttachedItems)
-        .takeUnless { it.isEmpty(ItemStack::isEmpty) }
 }
