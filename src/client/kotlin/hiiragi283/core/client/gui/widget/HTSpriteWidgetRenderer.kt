@@ -4,10 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.HTBounds
-import hiiragi283.core.api.gui.widget.HTAbstractWidgetRenderer
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.times
+import hiiragi283.core.impl.gui.widget.HTAbstractWidgetRenderer
 import hiiragi283.core.util.HTSpriteRenderHelper
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Font

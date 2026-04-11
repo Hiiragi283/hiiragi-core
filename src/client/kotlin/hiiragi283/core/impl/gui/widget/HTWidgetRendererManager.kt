@@ -1,4 +1,4 @@
-package hiiragi283.core.client.gui.widget
+package hiiragi283.core.impl.gui.widget
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTRegisterWidgetRendererEvent

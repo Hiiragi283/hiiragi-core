@@ -11,12 +11,12 @@ import hiiragi283.core.api.registry.HTSimpleFluidHolderLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.client.data.HCClientResourceProvider
-import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.gui.widget.HTFluidWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTItemSlotWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTProgressWidgetRenderer
-import hiiragi283.core.client.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.client.render.block.HTCopperBasinRenderer
+import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
+import hiiragi283.core.impl.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids

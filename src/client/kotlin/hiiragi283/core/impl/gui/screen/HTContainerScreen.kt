@@ -1,4 +1,4 @@
-package hiiragi283.core.client.gui.screen
+package hiiragi283.core.impl.gui.screen
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTAbstractGui

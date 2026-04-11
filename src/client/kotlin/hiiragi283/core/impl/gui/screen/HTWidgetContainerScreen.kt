@@ -1,10 +1,10 @@
-package hiiragi283.core.client.gui.screen
+package hiiragi283.core.impl.gui.screen
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.text.Text
-import hiiragi283.core.client.gui.widget.HTGuiWidget
 import hiiragi283.core.common.gui.menu.HTWidgetContainerMenu
+import hiiragi283.core.impl.gui.widget.HTGuiWidget
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.entity.player.Inventory

@@ -2,7 +2,6 @@ package hiiragi283.core.common.gui.widget
 
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.gui.sync.HTSyncType
-import hiiragi283.core.api.gui.widget.HTAbstractWidget
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.gui.widget.HTWidgetType
@@ -11,6 +10,7 @@ import hiiragi283.core.api.integration.jei.widget.HTIngredientWidget
 import hiiragi283.core.api.storage.fluid.HTFluidView
 import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.common.gui.sync.HTFluidSyncSlot
+import hiiragi283.core.impl.gui.widget.HTAbstractWidget
 import hiiragi283.core.impl.storage.fluid.HTFluidStackResourceSlot
 import hiiragi283.core.setup.HCWidgetTypes
 import net.neoforged.neoforge.fluids.FluidStack

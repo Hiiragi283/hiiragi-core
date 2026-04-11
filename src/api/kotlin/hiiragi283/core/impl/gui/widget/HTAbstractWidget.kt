@@ -1,6 +1,7 @@
-package hiiragi283.core.api.gui.widget
+package hiiragi283.core.impl.gui.widget
 
 import hiiragi283.core.api.gui.HTBounds
+import hiiragi283.core.api.gui.widget.HTWidget
 
 /**
  * [HTWidget]の抽象クラスです。

@@ -18,7 +18,6 @@ import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.toFluidLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.util.emptyOptional
-import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.jei.category.HCCrushingRecipeCategory
 import hiiragi283.core.client.jei.category.HCExplodingRecipeCategory
@@ -38,6 +37,7 @@ import hiiragi283.core.client.jei.extension.HTPotionTankInteractionCategoryExten
 import hiiragi283.core.client.jei.extension.HTSimpleTankInteractionCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.data.tank.HTSimpleTankInteraction
+import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCFluids

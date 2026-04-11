@@ -12,7 +12,7 @@ import hiiragi283.core.api.integration.jei.HTJeiPlugin
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.times
-import hiiragi283.core.client.gui.widget.HTGuiWidget
+import hiiragi283.core.impl.gui.widget.HTGuiWidget
 import mezz.jei.api.constants.VanillaTypes
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder

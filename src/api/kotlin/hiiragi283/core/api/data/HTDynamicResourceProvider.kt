@@ -60,7 +60,7 @@ object HTDynamicResourceProvider {
          * @since 0.13.0
          */
         protected fun resprite(id: ResourceLocation, base: ResourceLocation, key: HTMaterialKey): ResourceGenTask {
-            val paletteId: ResourceLocation = 
+            val paletteId: ResourceLocation =
                 HTMaterialManager.getInstance().getOrEmpty(key)[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId()
             return resprite(id, base, HTTextureUtil::getOrCreatePalette.partially1(paletteId))
         }

@@ -1,7 +1,8 @@
-package hiiragi283.core.api.gui.widget
+package hiiragi283.core.impl.gui.widget
 
 import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.HTBounds
+import hiiragi283.core.api.gui.widget.HTWidget
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.components.Renderable
 import net.neoforged.api.distmarker.Dist
