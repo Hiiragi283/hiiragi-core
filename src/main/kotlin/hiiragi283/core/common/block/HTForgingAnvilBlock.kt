@@ -4,7 +4,6 @@ import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.storage.item.insert
-import hiiragi283.core.api.storage.item.setStack
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.world.getTypedBlockEntity
 import hiiragi283.core.common.block.entity.HTForgingAnvilBlockEntity

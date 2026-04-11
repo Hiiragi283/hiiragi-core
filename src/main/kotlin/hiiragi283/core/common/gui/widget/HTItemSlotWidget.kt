@@ -10,11 +10,10 @@ import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.gui.widget.HTWidgetType
 import hiiragi283.core.api.integration.jei.widget.HTGhostWidget
 import hiiragi283.core.api.integration.jei.widget.HTIngredientWidget
-import hiiragi283.core.api.storage.item.HTMutableItemSlot
-import hiiragi283.core.api.storage.item.HTMutableItemView
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.common.gui.HTContainerItemSlot
 import hiiragi283.core.common.gui.sync.HTItemSyncSlot
+import hiiragi283.core.common.storage.item.HTBasicItemSlot
 import hiiragi283.core.setup.HCWidgetTypes
 import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
@@ -29,7 +28,7 @@ class HTItemSlotWidget private constructor(
     companion object {
         @JvmStatic
         fun container(
-            slot: HTMutableItemSlot,
+            slot: HTBasicItemSlot,
             x: Int,
             y: Int,
             backgroundType: HTBackgroundType,
@@ -41,11 +40,11 @@ class HTItemSlotWidget private constructor(
 
         @JvmStatic
         fun fake(
-            view: HTMutableItemView,
+            slot: HTBasicItemSlot,
             x: Int,
             y: Int,
             backgroundType: HTBackgroundType,
-        ): HTItemSlotWidget = fake(HTItemSyncSlot(view), x, y, backgroundType)
+        ): HTItemSlotWidget = fake(HTItemSyncSlot(slot), x, y, backgroundType)
 
         @JvmStatic
         fun fake(

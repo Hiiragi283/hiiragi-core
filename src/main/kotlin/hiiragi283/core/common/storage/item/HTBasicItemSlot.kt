@@ -4,25 +4,24 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
-import hiiragi283.core.api.serialization.value.read
-import hiiragi283.core.api.serialization.value.write
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.item.HTItemResourceType
-import hiiragi283.core.api.storage.item.HTMutableItemSlot
-import hiiragi283.core.api.storage.item.setStack
-import hiiragi283.core.api.storage.item.toResource
+import hiiragi283.core.impl.storage.item.HTItemStackResourceSlot
 import net.minecraft.world.item.ItemStack
 import java.util.function.BiPredicate
 import java.util.function.Predicate
 
-open class HTBasicItemSlot protected constructor(
+/**
+ * @see mekanism.common.inventory.slot.BasicInventorySlot
+ */
+open class HTBasicItemSlot(
     private val limit: Int,
     private val canExtract: BiPredicate<HTItemResourceType, HTStorageAccess>,
     private val canInsert: BiPredicate<HTItemResourceType, HTStorageAccess>,
     private val filter: Predicate<HTItemResourceType>,
     private val listener: HTContentListener?,
-) : HTMutableItemSlot() {
+) : HTItemStackResourceSlot() {
     companion object {
         @JvmStatic
         private fun validateLimit(limit: Int): Int {
@@ -63,28 +62,31 @@ open class HTBasicItemSlot protected constructor(
     @JvmField
     protected var stack: ItemStack = ItemStack.EMPTY
 
-    final override fun setResource(resource: HTItemResourceType?) {
-        setResourceUnchecked(resource, true)
+    final override fun getStackInternal(): ItemStack = stack.copy()
+
+    override fun setStackInternal(stack: ItemStack) {
+        setStackUnchecked(stack, false)
     }
 
-    fun setResourceUnchecked(resource: HTItemResourceType?, validate: Boolean = false) {
+    fun setStack(other: ItemStack) {
+        setStackUnchecked(other, true)
+    }
+
+    private fun setStackUnchecked(other: ItemStack, validate: Boolean) {
+        val resource: HTItemResourceType? = getResourceFrom(other)
         if (resource == null) {
-            if (this.getResource() == null) return
+            if (this.stack.isEmpty) return
             this.stack = ItemStack.EMPTY
         } else if (!validate || isValid(resource)) {
-            setStackInternal(resource.toStack(stack.count))
+            this.stack = other
         } else {
-            error("Invalid stack for slot: $resource")
+            error("Invalid stack for slot: $other")
         }
         onContentsChanged()
     }
 
-    protected open fun setStackInternal(stack: ItemStack) {
-        this.stack = stack
-    }
-
-    override fun setAmount(amount: Int) {
-        stack.count = amount
+    final override fun updateAmount(newAmount: Int) {
+        stack.count = newAmount
     }
 
     final override fun isValid(resource: HTItemResourceType): Boolean = this.filter.test(resource)
@@ -95,30 +97,18 @@ open class HTBasicItemSlot protected constructor(
     final override fun canStackExtract(resource: HTItemResourceType, access: HTStorageAccess): Boolean =
         super.canStackExtract(resource, access) && this.canExtract.test(resource, access)
 
-    override fun getResource(): HTItemResourceType? = stack.toResource()
-
     override fun getCapacity(resource: HTItemResourceType?): Int =
         if (resource == null) limit else minOf(limit, resource.toStack().maxStackSize)
 
-    override fun getAmount(): Int = stack.count
-
     override fun serialize(output: HTValueOutput) {
-        output.write(HTConst.ITEM, HTItemResourceType.CODEC, getResource())
-        output.putInt(HTConst.COUNT, getAmount())
+        output.write(HTConst.ITEM, ItemStack.CODEC, this.stack)
     }
 
     override fun deserialize(input: HTValueInput) {
-        val resource: HTItemResourceType = input.read(HTConst.ITEM, HTItemResourceType.CODEC) ?: run {
-            stack = ItemStack.EMPTY
-            return
-        }
-        val count: Int = input.getInt(HTConst.COUNT) ?: return
-        resource.toStack(count).let(::setStack)
+        input.read(HTConst.ITEM, ItemStack.CODEC)?.let(::setStackInternal)
     }
 
     final override fun onContentsChanged() {
         this.listener?.onContentsChanged()
     }
-
-    override fun toString(): String = "HTBasicItemSlot(limit=$limit)"
 }

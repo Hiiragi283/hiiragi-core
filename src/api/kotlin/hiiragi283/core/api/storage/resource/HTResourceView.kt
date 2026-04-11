@@ -43,18 +43,4 @@ interface HTResourceView<RESOURCE : HTResourceType<*>> : HTAmountView {
     override fun getCapacity(): Int = getCapacity(null)
 
     override fun isEmpty(): Boolean = super.isEmpty() || getResource() == null
-
-    //    Mutable    //
-
-    /**
-     * @since 0.9.0
-     */
-    abstract class Mutable<RESOURCE : HTResourceType<*>> :
-        HTAmountView.Mutable(),
-        HTResourceView<RESOURCE> {
-        /**
-         * 指定した[resource]で中身を置換します。
-         */
-        abstract fun setResource(resource: RESOURCE?)
-    }
 }

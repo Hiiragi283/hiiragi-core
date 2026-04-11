@@ -1,18 +1,17 @@
 package hiiragi283.core.common.item
 
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
-import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.recipe.HCColoringRecipe
 import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.impl.recipe.handler.HTFluidInputHandler
+import hiiragi283.core.impl.storage.fluid.HTItemFluidTank
 import hiiragi283.core.util.HTItemDropHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.InteractionResultHolder
-import net.minecraft.world.entity.EquipmentSlot
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.Item
@@ -62,17 +61,19 @@ class HTPaintBrushItem(properties: Properties) : Item(properties) {
         offStack: ItemStack,
         onSucceeded: (ItemStack) -> Unit,
     ): InteractionResult {
-        val tank: HTFluidTank = HTFluidCapabilities.getFluidView(mainStack, 0) as? HTFluidTank ?: return InteractionResult.FAIL
+        val tank: HTItemFluidTank = HTFluidCapabilities.getFluidView(mainStack, 0) as? HTItemFluidTank ?: return InteractionResult.FAIL
         val fluidInput = HTFluidInputHandler(tank)
         val input = HTItemAndFluidRecipeInput(offStack, fluidInput.getFluidStack())
         val recipe: HCColoringRecipe = HCRecipeLookups.COLORING
             .findFirst(level) { it.test(input) }
             ?.recipe
             ?: return InteractionResult.PASS
+        // output
         recipe.assemble(input, level.registryAccess()).let(onSucceeded)
-        mainStack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND)
+        // input
         offStack.consume(1, player)
         recipe.getRequiredAmount(input).getRight()?.let(fluidInput::consume)
+        player.setItemInHand(InteractionHand.MAIN_HAND, tank.container)
         return InteractionResult.sidedSuccess(level.isClientSide)
     }
 }

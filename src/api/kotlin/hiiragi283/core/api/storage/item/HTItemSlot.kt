@@ -12,22 +12,10 @@ import net.minecraft.world.item.ItemStack
 typealias HTItemView = HTResourceView<HTItemResourceType>
 
 /**
- * [HTItemResourceType]向けの[HTResourceView.Mutable]のエイリアス
- * @since 0.9.0
- */
-typealias HTMutableItemView = HTResourceView.Mutable<HTItemResourceType>
-
-/**
  * [HTItemResourceType]向けの[HTResourceSlot]のエイリアス
  * @since 0.9.0
  */
 typealias HTItemSlot = HTResourceSlot<HTItemResourceType>
-
-/**
- * [HTItemResourceType]向けの[HTResourceSlot.Mutable]のエイリアス
- * @since 0.9.0
- */
-typealias HTMutableItemSlot = HTResourceSlot.Mutable<HTItemResourceType>
 
 /**
  * この[HTItemView][this]から[ItemStack]を取得します。
@@ -35,16 +23,6 @@ typealias HTMutableItemSlot = HTResourceSlot.Mutable<HTItemResourceType>
  * @since 0.4.0
  */
 fun HTItemView.getItemStack(): ItemStack = this.getResource().toStackOrEmpty(this.getAmount())
-
-/**
- * この[スロット][this]に[stack]を代入します。
- * @author Hiiragi Tsubasa
- * @since 0.8.0
- */
-fun HTMutableItemView.setStack(stack: ItemStack) {
-    setResource(stack.toResource())
-    setAmount(stack.count)
-}
 
 /**
  * この[HTItemSlot][this]に指定した[stack]を搬入します。

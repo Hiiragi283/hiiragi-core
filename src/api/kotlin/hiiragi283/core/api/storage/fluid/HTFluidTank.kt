@@ -12,22 +12,10 @@ import net.neoforged.neoforge.fluids.FluidStack
 typealias HTFluidView = HTResourceView<HTFluidResourceType>
 
 /**
- * [HTFluidResourceType]向けの[HTResourceView.Mutable]のエイリアス
- * @since 0.9.0
- */
-typealias HTMutableFluidView = HTResourceView.Mutable<HTFluidResourceType>
-
-/**
  * [HTFluidResourceType]向けの[HTResourceSlot]のエイリアス
  * @since 0.9.0
  */
 typealias HTFluidTank = HTResourceSlot<HTFluidResourceType>
-
-/**
- * [HTFluidResourceType]向けの[HTResourceSlot.Mutable]のエイリアス
- * @since 0.9.0
- */
-typealias HTMutableFluidTank = HTResourceSlot.Mutable<HTFluidResourceType>
 
 /**
  * この[HTFluidView][this]から[FluidStack]を取得します。
@@ -35,16 +23,6 @@ typealias HTMutableFluidTank = HTResourceSlot.Mutable<HTFluidResourceType>
  * @since 0.4.0
  */
 fun HTFluidView.getFluidStack(): FluidStack = this.getResource().toStackOrEmpty(this.getAmount())
-
-/**
- * この[スロット][this]に[stack]を代入します。
- * @author Hiiragi Tsubasa
- * @since 0.8.0
- */
-fun HTMutableFluidView.setStack(stack: FluidStack) {
-    setResource(stack.toResource())
-    setAmount(stack.amount)
-}
 
 /**
  * この[HTFluidTank][this]に指定した[stack]を搬入します。
