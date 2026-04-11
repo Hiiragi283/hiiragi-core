@@ -14,9 +14,12 @@ import hiiragi283.core.common.item.HTEternalUpgradeItem
 import hiiragi283.core.common.item.HTExperienceTomeItem
 import hiiragi283.core.common.item.HTFluidFilterItem
 import hiiragi283.core.common.item.HTItemFilterItem
+import hiiragi283.core.common.item.HTPaintBrushItem
 import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.common.item.HTTraderCatalogItem
 import hiiragi283.core.common.registry.register.HTDeferredItemRegister
+import hiiragi283.core.common.storage.component.HTComponentHandler
+import hiiragi283.core.common.storage.fluid.HTComponentFluidTank
 import hiiragi283.core.common.storage.fluid.HTExperienceTomeFluidTank
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.core.component.DataComponentPatch
@@ -109,6 +112,9 @@ object HCItems {
         )
     }
 
+    @JvmField
+    val PAINT_BRUSH: HTSimpleItemHolderLike = REGISTER.registerItem("paint_brush", ::HTPaintBrushItem) { it.stacksTo(1) }
+
     //    Utilities    //
 
     @JvmField
@@ -185,6 +191,15 @@ object HCItems {
     private fun registerCapabilities(event: RegisterCapabilitiesEvent) {
         HTFluidCapabilities.registerItem(event, HTPotionBucketItem::BucketHandler, HCFluids.POTION.getBucket())
 
-        HTFluidCapabilities.registerItem(event, 1, ::HTExperienceTomeFluidTank, EXPERIENCE_TOME)
+        HTFluidCapabilities.registerItem(event, { context: HTComponentHandler.ContainerContext ->
+            HTComponentFluidTank.create(
+                context,
+                4000,
+                /*filter = { resource: HTFluidResourceType ->
+                    HCFluids.DyeContents.values.any { contents: HTFluidContent -> resource.isOf(contents) }
+                },*/
+            )
+        }, PAINT_BRUSH)
+        HTFluidCapabilities.registerItem(event, ::HTExperienceTomeFluidTank, EXPERIENCE_TOME)
     }
 }

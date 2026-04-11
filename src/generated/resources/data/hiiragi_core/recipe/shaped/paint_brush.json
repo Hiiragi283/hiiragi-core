@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "minecraft:wool"
+    },
+    "B": {
+      "tag": "c:ingots/copper"
+    },
+    "C": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "A",
+    "B",
+    "C"
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:paint_brush"
+  }
+}

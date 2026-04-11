@@ -61,6 +61,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.WITHER_STAR, "Wither Star")
 
         add(HCItems.ANCIENT_UPGRADE, "Ancient Smithing Template")
+        add(HCItems.PAINT_BRUSH, "Paint Brush")
 
         add(HCItems.BLUEPRINT, "Blueprint")
         add(HCItems.BOMB, "Bomb")

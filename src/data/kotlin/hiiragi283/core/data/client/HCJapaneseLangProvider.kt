@@ -61,6 +61,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.WITHER_STAR, "ウィザースター")
 
         add(HCItems.ANCIENT_UPGRADE, "古代の鍛冶型")
+        add(HCItems.PAINT_BRUSH, "ペイントブラシ")
 
         add(HCItems.BLUEPRINT, "青写真")
         add(HCItems.BOMB, "ボム")

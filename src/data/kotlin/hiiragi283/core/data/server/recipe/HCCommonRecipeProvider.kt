@@ -277,6 +277,19 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             resultStack += HCBlocks.FORGING_ANVIL
         }
 
+        // Paint Brush
+        HTShapedRecipeBuilder.create(output) {
+            pattern(
+                "A",
+                "B",
+                "C",
+            )
+            define('A') += ItemTags.WOOL
+            define('B') += CommonTagPrefixes.INGOT to VanillaMaterialKeys.COPPER
+            define('C') += Tags.Items.RODS_WOODEN
+            resultStack += HCItems.PAINT_BRUSH
+        }
+
         // Blueprint
         HTShapelessRecipeBuilder.create(output) {
             ingredients += Items.PAPER
