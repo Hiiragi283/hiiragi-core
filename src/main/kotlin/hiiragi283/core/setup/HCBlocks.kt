@@ -102,7 +102,7 @@ object HCBlocks {
     @JvmField
     val FORGING_ANVIL: HTBasicDeferredBlockAndItem<HTForgingAnvilBlock> = REGISTER.registerSimple(
         "forging_anvil",
-        copyOf(Blocks.ANVIL),
+        copyOf(Blocks.ANVIL).noOcclusion(),
         ::HTForgingAnvilBlock,
     )
 

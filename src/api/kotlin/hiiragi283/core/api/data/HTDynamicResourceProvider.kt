@@ -4,6 +4,8 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.texture.HTTextureUtil
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.resource.toId
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicClientResourceProvider
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicServerResourceProvider
@@ -57,8 +59,11 @@ object HTDynamicResourceProvider {
          * @param key パレットを提供する素材のキー
          * @since 0.13.0
          */
-        protected fun resprite(id: ResourceLocation, base: ResourceLocation, key: HTMaterialKey): ResourceGenTask =
-            resprite(id, base, HTTextureUtil::getOrCreatePalette.partially1(key.getId()))
+        protected fun resprite(id: ResourceLocation, base: ResourceLocation, key: HTMaterialKey): ResourceGenTask {
+            val paletteId: ResourceLocation = 
+                HTMaterialManager.getInstance().getOrEmpty(key)[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId()
+            return resprite(id, base, HTTextureUtil::getOrCreatePalette.partially1(paletteId))
+        }
 
         /**
          * @param id テクスチャの出力先の[ID][ResourceLocation]

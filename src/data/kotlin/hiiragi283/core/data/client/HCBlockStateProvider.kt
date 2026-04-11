@@ -10,6 +10,7 @@ import hiiragi283.core.api.data.model.trackTexture
 import hiiragi283.core.api.data.model.withExistingParent
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.resource.blockId
+import hiiragi283.core.api.resource.toId
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.resources.ResourceLocation
@@ -41,6 +42,21 @@ class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(Hii
             )
 
             simpleBlockAndItem(waxed, models().getExistingFile(base.blockId))
+        }
+        with(HCBlocks.FORGING_ANVIL) {
+            val blockId: ResourceLocation = this.blockId
+            val topId: ResourceLocation = blockId.withSuffix("_top")
+            models().trackTexture(blockId)
+            models().trackTexture(topId)
+
+            simpleBlockAndItem(
+                this,
+                models()
+                    .withExistingParent(this, HTConst.MINECRAFT.toId(HTConst.BLOCK, "anvil"))
+                    .texture("top", topId)
+                    .texture("body", blockId)
+                    .texture("particle", blockId),
+            )
         }
         // Fluids
         HCFluids.REGISTER.asSequence().forEach(::liquidBlock)

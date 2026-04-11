@@ -38,6 +38,7 @@ import hiiragi283.core.setup.HCItems
 import net.mehvahdjukaar.moonlight.api.events.AfterLanguageLoadEvent
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Blocks
 import net.neoforged.neoforge.common.Tags
@@ -61,21 +62,27 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
     }
 
     @JvmStatic
+    private fun vanillaBlockId(vararg path: String): ResourceLocation = HTConst.MINECRAFT.toId(HTConst.BLOCK, *path)
+
+    @JvmStatic
+    private fun vanillaItemId(vararg path: String): ResourceLocation = HTConst.MINECRAFT.toId(HTConst.ITEM, *path)
+
+    @JvmStatic
     private fun blockTextures(executor: Consumer<ResourceGenTask>) {
         buildSet {
             this += resprite(
                 HCBlocks.OIL_SAND.blockId,
-                HTConst.MINECRAFT.toId(HTConst.BLOCK, "sand"),
+                vanillaBlockId("sand"),
                 VanillaMaterialKeys.COAL,
             )
             this += resprite(
                 HCBlocks.OIL_SHALE.blockId,
-                HTConst.MINECRAFT.toId(HTConst.BLOCK, "stone"),
+                vanillaBlockId("stone"),
                 VanillaMaterialKeys.COAL,
             )
             this += resprite(
                 HCBlocks.WARPED_WART.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "nether_wart"),
+                vanillaItemId("nether_wart"),
                 Blocks.TWISTING_VINES,
             )
         }.forEach(executor)
@@ -84,15 +91,24 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
             .map { i: Int ->
                 resprite(
                     HiiragiCoreAPI.id(HTConst.BLOCK, "warped_wart_stage$i"),
-                    HTConst.MINECRAFT.toId(HTConst.BLOCK, "nether_wart_stage$i"),
+                    vanillaBlockId("nether_wart_stage$i"),
                     Blocks.TWISTING_VINES,
+                )
+            }.forEach(executor)
+
+        arrayOf("", "_top")
+            .map { suffix: String ->
+                resprite(
+                    HCBlocks.FORGING_ANVIL.blockId.withSuffix(suffix),
+                    vanillaBlockId("anvil$suffix"),
+                    HCMaterialKeys.AZURE_STEEL,
                 )
             }.forEach(executor)
         // Fluid
         executor.accept(
             resprite(
                 HiiragiCoreAPI.id(HTConst.BLOCK, "dragon_breath"),
-                HTConst.MINECRAFT.toId(HTConst.BLOCK, "lava_still"),
+                vanillaBlockId("lava_still"),
                 Blocks.BRAIN_CORAL_BLOCK,
             ),
         )
@@ -103,12 +119,12 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         buildSet {
             this += resprite(
                 HCItems.BAMBOO_CHARCOAL.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "bamboo"),
+                vanillaItemId("bamboo"),
                 Blocks.DEEPSLATE,
             )
             this += resprite(
                 HCItems.RAW_RUBBER.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "slime_ball"),
+                vanillaItemId("slime_ball"),
                 Blocks.SANDSTONE,
             )
         }.forEach(executor)
@@ -121,7 +137,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
         ).map { (item: HTIdLike, path: String) ->
             resprite(
                 item.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, path),
+                vanillaItemId(path),
                 CommonMaterialKeys.PLASTIC,
             )
         }.forEach(executor)
@@ -130,33 +146,33 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
             HCItems.WHEAT_FLOUR to "brown_dye",
             HCItems.WHEAT_DOUGH to "clay_ball",
         ).map { (item: HTIdLike, base: String) ->
-            resprite(item.itemId, HTConst.MINECRAFT.toId(HTConst.ITEM, base), Items.WHEAT)
+            resprite(item.itemId, vanillaItemId(base), Items.WHEAT)
         }.forEach(executor)
 
         buildSet {
             this += resprite(
                 HCItems.LUMINOUS_PASTE.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "black_dye"),
+                vanillaItemId("black_dye"),
                 Items.GLOW_INK_SAC,
             )
             this += resprite(
                 HCItems.ELDER_HEART.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "heart_of_the_sea"),
+                vanillaItemId("heart_of_the_sea"),
                 CommonMaterialKeys.PLASTIC,
             )
             this += resprite(
                 HCItems.WITHER_STAR.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "nether_star"),
+                vanillaItemId("nether_star"),
                 Blocks.DEEPSLATE,
             )
             this += resprite(
                 HCItems.ELDRITCH_EGG.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "egg"),
+                vanillaItemId("egg"),
                 HCMaterialKeys.ELDRITCH,
             )
             this += resprite(
                 HCItems.IRIDESCENT_POWDER.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "blaze_powder"),
+                vanillaItemId("blaze_powder"),
                 CommonMaterialKeys.PLASTIC,
             )
         }.forEach(executor)
