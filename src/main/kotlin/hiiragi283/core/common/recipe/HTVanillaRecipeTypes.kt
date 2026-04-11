@@ -99,7 +99,7 @@ object HTVanillaRecipeTypes {
                         }
                         val recipe = HCBrewingRecipe(
                             fluidIngredient,
-                            HTIngredientCreator.create(ingredient),
+                            ingredient,
                             BottledPotionContents(potionTo)
                                 .let(HCPotionFluidHelper::createFluid)
                                 .let(HTResultCreator::create),

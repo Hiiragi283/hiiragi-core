@@ -40,9 +40,7 @@ class HTRegisterRuntimeRecipeEvent(
                 advancement: AdvancementHolder?,
                 vararg conditions: ICondition?,
             ) {
-                val id1: ResourceLocation = id.withPrefix("runtime/")
-                patches += Result(id1, recipe)
-                HiiragiCoreAPI.LOGGER.debug("Added runtime recipe {}", id1)
+                addRecipe(id, recipe)
             }
 
             override fun advancement(): Advancement.Builder = Advancement.Builder.recipeAdvancement()
@@ -50,7 +48,15 @@ class HTRegisterRuntimeRecipeEvent(
     }
 
     /**
-     * @author Hiiragi Tsubasa
+     * @since 0.15.0
+     */
+    fun addRecipe(id: ResourceLocation, recipe: Recipe<*>) {
+        val id1: ResourceLocation = id.withPrefix("runtime/")
+        patches += Result(id1, recipe)
+        HiiragiCoreAPI.LOGGER.debug("Added runtime recipe {}", id)
+    }
+
+    /**
      * @since 0.14.0
      */
     fun removeRecipe(id: ResourceLocation) {

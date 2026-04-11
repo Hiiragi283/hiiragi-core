@@ -31,7 +31,7 @@ abstract class HTRecipeProviderContext {
     /**
      * レシピの出力先を取得します。
      */
-    protected abstract val output: RecipeOutput
+    abstract val output: RecipeOutput
 
     /**
      * 指定した[recipe]を進捗なしで登録します。

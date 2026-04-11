@@ -4,7 +4,6 @@ import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.integration.jei.addFluidIngredient
 import hiiragi283.core.api.integration.jei.addFluidResult
-import hiiragi283.core.api.integration.jei.addItemIngredient
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.client.jei.HCJeiRecipeTypes
 import hiiragi283.core.client.jei.category.base.HTLookupRecipeCategory
@@ -30,7 +29,7 @@ class HCBrewingRecipeCategory(guiHelper: IGuiHelper) : HTLookupRecipeCategory<HC
             .addRichTooltipCallback(::addPotionTooltip)
         builder
             .addInputSlot(getPosition(2), getPosition(0))
-            .addItemIngredient(recipe.ingredient)
+            .addIngredients(recipe.ingredient)
             .setSlotBackground(HTBackgroundType.INPUT)
         // output
         builder

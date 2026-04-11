@@ -22,8 +22,10 @@ import hiiragi283.core.impl.recipe.HTRecipeTypeManager
 import hiiragi283.core.impl.recipe.addProvider
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCRecipeTypes
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.ItemTags
 import net.minecraft.tags.TagKey
+import net.minecraft.world.item.DyeColor
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.SingleRecipeInput
@@ -68,15 +70,15 @@ data object HCRecipeLookups {
         TANK_INTERACTION.addProvider(HTConst.MINECRAFT.toId("potion") to HTPotionTankInteraction)
         TANK_INTERACTION.addProvider(HTConst.MINECRAFT.toId("tipped_arrow") to HTPotionArrowTankInteraction)
 
-        dyesItems(ItemTags.BANNERS, ColoredMaterials.BANNER)
-        dyesItems(ItemTags.BEDS, ColoredMaterials.BED)
-        dyesItems(ItemTags.WOOL, ColoredMaterials.WOOL)
-        dyesItems(ItemTags.WOOL_CARPETS, ColoredMaterials.CARPET)
-        dyesItems(Tags.Items.SHULKER_BOXES, ColoredMaterials.SHULKER_BOX)
+        coloring(ItemTags.BANNERS, ColoredMaterials.BANNER)
+        coloring(ItemTags.BEDS, ColoredMaterials.BED)
+        coloring(ItemTags.WOOL, ColoredMaterials.WOOL)
+        coloring(ItemTags.WOOL_CARPETS, ColoredMaterials.CARPET)
+        coloring(Tags.Items.SHULKER_BOXES, ColoredMaterials.SHULKER_BOX)
     }
 
     @JvmStatic
-    private fun dyesItems(inputTag: TagKey<Item>, map: Map<HTDefaultColor, HTSimpleItemHolderLike>) {
+    fun coloring(inputTag: TagKey<Item>, map: Map<HTDefaultColor, HTSimpleItemHolderLike>) {
         TANK_INTERACTION.addProvider {
             map
                 .asSequence()
@@ -86,6 +88,16 @@ data object HCRecipeLookups {
                         HTColoringTankInteraction(inputTag, HCFluids.getDye(color), colored.toStack()),
                     )
                 }
+        }
+    }
+
+    @JvmStatic
+    fun coloring(transform: (DyeColor) -> Pair<ResourceLocation, HTTankInteraction>) {
+        TANK_INTERACTION.addProvider {
+            DyeColor.entries
+                .asSequence()
+                .map(transform)
+                .map(::HTRecipeHolder)
         }
     }
 }
