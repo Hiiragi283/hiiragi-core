@@ -14,12 +14,14 @@ import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.common.data.tank.HTOminousTankInteraction
 import hiiragi283.core.common.data.tank.HTPotionArrowTankInteraction
 import hiiragi283.core.common.data.tank.HTPotionTankInteraction
 import hiiragi283.core.common.event.HCRecipeEventHandler
 import hiiragi283.core.impl.recipe.HTRecipeTypeImpl
 import hiiragi283.core.impl.recipe.HTRecipeTypeManager
 import hiiragi283.core.impl.recipe.addProvider
+import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.tags.ItemTags
 import net.minecraft.tags.TagKey
@@ -70,6 +72,12 @@ data object HCRecipeLookups {
         TANK_INTERACTION.addProvider { HCRecipeEventHandler.tankInteractionMap.asSequence().map(::HTRecipeHolder) }
         TANK_INTERACTION.addProvider(HTConst.MINECRAFT.toId("potion") to HTPotionTankInteraction)
         TANK_INTERACTION.addProvider(HTConst.MINECRAFT.toId("tipped_arrow") to HTPotionArrowTankInteraction)
+        TANK_INTERACTION.addProvider {
+            HTOminousTankInteraction.RANGE
+                .asSequence()
+                .map { HCFluids.OMINOUS_FLUX.getId().withSuffix("_$it") to HTOminousTankInteraction(it) }
+                .map(::HTRecipeHolder)
+        }
 
         coloring(ItemTags.BANNERS, VanillaColoredContents.BANNER)
         coloring(ItemTags.BEDS, VanillaColoredContents.BED)
