@@ -127,12 +127,6 @@ object HCItems {
     val ELDRITCH_EGG: HTSimpleItemHolderLike = REGISTER.registerItem("eldritch_egg", ::HTCaptureEggItem)
 
     @JvmField
-    val FLUID_FILTER: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("fluid_filter")
-
-    @JvmField
-    val ITEM_FILTER: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("item_filter")
-
-    @JvmField
     val SLOT_COVER: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("slot_cover")
 
     @JvmField
