@@ -1,4 +1,4 @@
-package hiiragi283.core.api.integration.jei.widget
+package hiiragi283.core.api.recipe.viewer.widget
 
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType

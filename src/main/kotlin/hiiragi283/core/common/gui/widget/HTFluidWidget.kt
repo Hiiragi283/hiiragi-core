@@ -5,8 +5,8 @@ import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.gui.widget.HTWidgetType
-import hiiragi283.core.api.integration.jei.widget.HTGhostWidget
-import hiiragi283.core.api.integration.jei.widget.HTIngredientWidget
+import hiiragi283.core.api.recipe.viewer.widget.HTGhostWidget
+import hiiragi283.core.api.recipe.viewer.widget.HTIngredientWidget
 import hiiragi283.core.api.storage.fluid.HTFluidView
 import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.common.gui.sync.HTFluidSyncSlot

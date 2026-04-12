@@ -1,4 +1,4 @@
-package hiiragi283.core.client.jei.extension
+package hiiragi283.core.api.integration.jei.extension
 
 import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
 import mezz.jei.api.gui.builder.IIngredientAcceptor

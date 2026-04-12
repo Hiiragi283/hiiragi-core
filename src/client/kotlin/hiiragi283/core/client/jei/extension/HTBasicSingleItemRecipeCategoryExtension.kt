@@ -2,6 +2,7 @@ package hiiragi283.core.client.jei.extension
 
 import hiiragi283.core.api.integration.jei.addItemIngredient
 import hiiragi283.core.api.integration.jei.addItemResult
+import hiiragi283.core.api.integration.jei.extension.HTSingleItemRecipeCategoryExtension
 import hiiragi283.core.impl.recipe.HTBasicSingleItemRecipe
 import mezz.jei.api.gui.builder.IIngredientAcceptor
 

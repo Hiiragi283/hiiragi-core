@@ -37,6 +37,7 @@ import hiiragi283.core.client.jei.extension.HTPotionTankInteractionCategoryExten
 import hiiragi283.core.client.jei.extension.HTSimpleTankInteractionCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.data.tank.HTSimpleTankInteraction
+import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
 import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCDataComponents
@@ -157,7 +158,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     private fun initItemToItem(guiHelper: IGuiHelper, manager: IIngredientManager) {
-        charging = HTSingleItemRecipeCategory(guiHelper, HCJeiRecipeTypes.CHARGING)
+        charging = HTSingleItemRecipeCategory(guiHelper, HCRecipeViewerTypes.CHARGING)
 
         charging.addExtension(HTBasicSingleItemRecipeCategoryExtension())
     }
@@ -183,23 +184,23 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
 
     override fun registerRecipes(registration: IRecipeRegistration) {
         registration.addRecipes(
-            getRecipeType(HCJeiRecipeTypes.MaterialType),
+            getRecipeType(HCRecipeViewerTypes.MaterialType),
             HTMaterialManager.getInstance().entries.asSequence(),
         )
 
-        registration.addRecipes(HCJeiRecipeTypes.BREWING)
-        registration.addRecipes(HCJeiRecipeTypes.CHARGING)
-        registration.addRecipes(HCJeiRecipeTypes.CRUSHING)
-        registration.addRecipes(HCJeiRecipeTypes.EXPLODING)
-        registration.addRecipes(HCJeiRecipeTypes.FORGING)
-        registration.addRecipes(HCJeiRecipeTypes.MELTING)
+        registration.addRecipes(HCRecipeViewerTypes.BREWING)
+        registration.addRecipes(HCRecipeViewerTypes.CHARGING)
+        registration.addRecipes(HCRecipeViewerTypes.CRUSHING)
+        registration.addRecipes(HCRecipeViewerTypes.EXPLODING)
+        registration.addRecipes(HCRecipeViewerTypes.FORGING)
+        registration.addRecipes(HCRecipeViewerTypes.MELTING)
         registerTankInteractions(registration)
     }
 
     private fun registerTankInteractions(registration: IRecipeRegistration) {
-        val recipeType: JeiRecipeType<HTRecipeHolder<HTTankInteraction>> = getRecipeType(HCJeiRecipeTypes.TANK_INTERACTION)
+        val recipeType: JeiRecipeType<HTRecipeHolder<HTTankInteraction>> = getRecipeType(HCRecipeViewerTypes.TANK_INTERACTION)
         // Custom
-        registration.addRecipes(HCJeiRecipeTypes.TANK_INTERACTION)
+        registration.addRecipes(HCRecipeViewerTypes.TANK_INTERACTION)
         // Bucket
         BuiltInRegistries.FLUID
             .holders()
@@ -222,15 +223,15 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
 
     override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {
         registration.addRecipeCatalysts(
-            HCJeiRecipeTypes.BREWING,
-            HCJeiRecipeTypes.CHARGING,
-            HCJeiRecipeTypes.CRUSHING,
-            HCJeiRecipeTypes.EXPLODING,
-            HCJeiRecipeTypes.FORGING,
-            HCJeiRecipeTypes.MELTING,
+            HCRecipeViewerTypes.BREWING,
+            HCRecipeViewerTypes.CHARGING,
+            HCRecipeViewerTypes.CRUSHING,
+            HCRecipeViewerTypes.EXPLODING,
+            HCRecipeViewerTypes.FORGING,
+            HCRecipeViewerTypes.MELTING,
         )
 
-        val tankInteraction: JeiRecipeType<*> = getRecipeType(HCJeiRecipeTypes.TANK_INTERACTION)
+        val tankInteraction: JeiRecipeType<*> = getRecipeType(HCRecipeViewerTypes.TANK_INTERACTION)
         registration.addRecipeCatalysts(
             tankInteraction,
             VanillaTypes.ITEM_STACK,

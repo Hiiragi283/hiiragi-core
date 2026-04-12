@@ -1,4 +1,4 @@
-package hiiragi283.core.client.jei
+package hiiragi283.core.common.recipe.viewer
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.tank.HTTankInteraction
@@ -28,7 +28,7 @@ import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.minecraft.world.level.ItemLike
 
-object HCJeiRecipeTypes {
+object HCRecipeViewerTypes {
     @JvmStatic
     private fun <INPUT : RecipeInput, RECIPE : Any> create(
         recipeType: HTRecipeType<INPUT, RECIPE>,

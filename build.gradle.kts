@@ -297,7 +297,7 @@ pluginManager.withPlugin("com.vanniktech.maven.publish") {
         signAllPublications()
         pom {
             name = "Hiiragi-Core"
-            description = "Library mod for Hiiragi Series"
+            description = "Library and Utilities mod for Hiiragi Series"
             inceptionYear = "2025"
             url = "https://github.com/Hiiragi283/hiiragi-core"
             scm {

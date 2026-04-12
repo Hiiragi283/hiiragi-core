@@ -1,11 +1,15 @@
 package hiiragi283.core.common.capability
 
+import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.capability.HTMultiCapability
-import hiiragi283.core.api.capability.tankRange
+import hiiragi283.core.api.serialization.value.HTValueSerializable
+import hiiragi283.core.api.storage.HTStorageAccess
+import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.fluid.HTFluidHandler
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
-import hiiragi283.core.api.storage.fluid.HTFluidView
+import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.fluid.toResource
+import hiiragi283.core.api.storage.fluid.toStackOrEmpty
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.impl.storage.fluid.HTItemFluidHandler
 import hiiragi283.core.impl.storage.fluid.HTItemFluidTank
@@ -28,51 +32,47 @@ object HTFluidCapabilities : HTMultiCapability<IFluidHandler, IFluidHandlerItem>
     override val entity: EntityCapability<IFluidHandler, Direction?> = Capabilities.FluidHandler.ENTITY
     override val item: ItemCapability<IFluidHandlerItem, Void?> = Capabilities.FluidHandler.ITEM
 
-    fun wrapHandler(handler: IFluidHandler, context: Direction?): List<HTFluidView> = when (handler) {
-        is HTFluidHandler -> handler.getFluidTanks(context)
+    fun wrapAsTank(handler: IFluidHandler, context: Direction?): HTFluidTank? = when {
+        handler is HTFluidHandler -> handler.getFluidTank(0, context)
+        handler.tanks == 0 -> null
+        else -> object : HTFluidTank, HTContentListener.Empty, HTValueSerializable.Empty {
+            override fun isValid(resource: HTFluidResourceType): Boolean = handler.isFluidValid(0, resource.toStack(1))
 
-        else -> handler.tankRange.map { tank: Int ->
-            object : HTFluidView {
-                override fun getResource(): HTFluidResourceType? = handler.getFluidInTank(tank).toResource()
-
-                override fun getCapacity(resource: HTFluidResourceType?): Int = handler.getTankCapacity(tank)
-
-                override fun getAmount(): Int = handler.getFluidInTank(tank).amount
+            override fun insert(
+                resource: HTFluidResourceType?,
+                amount: Int,
+                action: HTStorageAction,
+                access: HTStorageAccess,
+            ): Int {
+                val filled: Int = handler.fill(resource.toStackOrEmpty(amount), action.toFluid())
+                return amount - filled
             }
+
+            override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int =
+                handler.drain(amount, action.toFluid()).amount
+
+            override fun getResource(): HTFluidResourceType? = handler.getFluidInTank(0).toResource()
+
+            override fun getCapacity(resource: HTFluidResourceType?): Int = handler.getTankCapacity(0)
+
+            override fun getAmount(): Int = handler.getFluidInTank(0).amount
         }
     }
 
     //    Block    //
 
-    fun getFluidViews(level: Level, pos: BlockPos, side: Direction?): List<HTFluidView> =
-        getCapability(level, pos, side)?.let { wrapHandler(it, side) } ?: emptyList()
-
-    fun getFluidView(
-        level: Level,
-        pos: BlockPos,
-        side: Direction?,
-        tank: Int,
-    ): HTFluidView? = getFluidViews(level, pos, side).getOrNull(tank)
+    fun getFirstTank(level: Level, pos: BlockPos, side: Direction?): HTFluidTank? =
+        getCapability(level, pos, side)?.let { wrapAsTank(it, side) }
 
     //    Entity    //
 
-    fun getFluidViews(entity: Entity, side: Direction?): List<HTFluidView> =
-        getCapability(entity, side)?.let { wrapHandler(it, side) } ?: emptyList()
-
-    fun getFluidView(entity: Entity, side: Direction?, tank: Int): HTFluidView? = getFluidViews(entity, side).getOrNull(tank)
+    fun getFirstTank(entity: Entity, side: Direction?): HTFluidTank? = getCapability(entity, side)?.let { wrapAsTank(it, side) }
 
     //    Item    //
 
-    fun getFluidViews(stack: ItemStack): List<HTFluidView> = getCapability(stack)?.let { wrapHandler(it, null) } ?: emptyList()
+    fun getFirstTank(stack: ItemStack): HTFluidTank? = getCapability(stack)?.let { wrapAsTank(it, null) }
 
-    fun getFluidView(stack: ItemStack, tank: Int): HTFluidView? = getFluidViews(stack).getOrNull(tank)
-
-    // HTItemResourceType
-
-    fun getFluidViews(resource: HTItemResourceType?): List<HTFluidView> =
-        getCapability(resource)?.let { wrapHandler(it, null) } ?: emptyList()
-
-    fun getFluidView(resource: HTItemResourceType?, tank: Int): HTFluidView? = getFluidViews(resource).getOrNull(tank)
+    fun getFirstTank(resource: HTItemResourceType?): HTFluidTank? = getCapability(resource)?.let { wrapAsTank(it, null) }
 
     //    Register    //
 

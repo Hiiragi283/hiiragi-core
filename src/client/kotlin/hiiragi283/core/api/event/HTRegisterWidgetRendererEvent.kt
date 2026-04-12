@@ -30,12 +30,6 @@ class HTRegisterWidgetRendererEvent(
         type: HTWidgetType<WIDGET>,
         factory: HTWidgetRendererFactory<WIDGET, RENDERER>,
     ) {
-        check(registerer(type, factory) == null) {
-            "Duplicated widget renderer for ${
-                HCRegistries.WIDGET_TYPE.getKey(
-                    type,
-                )
-            }"
-        }
+        check(registerer(type, factory) == null) { "Duplicated widget renderer for ${HCRegistries.WIDGET_TYPE.getKey(type)}" }
     }
 }

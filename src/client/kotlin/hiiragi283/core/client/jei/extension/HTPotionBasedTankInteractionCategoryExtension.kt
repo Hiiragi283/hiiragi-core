@@ -2,6 +2,7 @@ package hiiragi283.core.client.jei.extension
 
 import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.integration.jei.addFluidStacks
+import hiiragi283.core.api.integration.jei.extension.HTTankInteractionCategoryExtension
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionHelper

@@ -1,6 +1,7 @@
 package hiiragi283.core.client.jei.category.base
 
 import hiiragi283.core.api.gui.HTBackgroundType
+import hiiragi283.core.api.integration.jei.category.HTLookupRecipeCategory
 import hiiragi283.core.api.recipe.base.HTMultiOutputRecipe
 import hiiragi283.core.api.recipe.viewer.HTLookupRecipeViewerType
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder

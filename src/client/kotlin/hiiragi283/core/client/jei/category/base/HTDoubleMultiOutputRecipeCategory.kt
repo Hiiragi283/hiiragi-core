@@ -1,10 +1,10 @@
 package hiiragi283.core.client.jei.category.base
 
 import hiiragi283.core.api.gui.HTBackgroundType
+import hiiragi283.core.api.integration.jei.extension.HTDoubleMultiOutputRecipeCategoryExtension
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.base.HTDoubleMultiOutputRecipe
 import hiiragi283.core.api.recipe.viewer.HTLookupRecipeViewerType
-import hiiragi283.core.client.jei.extension.HTDoubleMultiOutputRecipeCategoryExtension
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable

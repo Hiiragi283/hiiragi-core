@@ -1,4 +1,4 @@
-package hiiragi283.core.client.jei.category.base
+package hiiragi283.core.api.integration.jei.category
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult

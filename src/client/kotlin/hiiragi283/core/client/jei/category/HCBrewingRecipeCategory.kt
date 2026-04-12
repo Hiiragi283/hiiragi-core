@@ -4,10 +4,10 @@ import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.integration.jei.addFluidIngredient
 import hiiragi283.core.api.integration.jei.addFluidResult
+import hiiragi283.core.api.integration.jei.category.HTLookupRecipeCategory
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
-import hiiragi283.core.client.jei.HCJeiRecipeTypes
-import hiiragi283.core.client.jei.category.base.HTLookupRecipeCategory
 import hiiragi283.core.common.recipe.HCBrewingRecipe
+import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.builder.ITooltipBuilder
 import mezz.jei.api.gui.ingredient.IRecipeSlotView
@@ -19,7 +19,7 @@ import net.minecraft.network.chat.FormattedText
 import net.minecraft.world.inventory.tooltip.TooltipComponent
 import net.minecraft.world.item.alchemy.PotionContents
 
-class HCBrewingRecipeCategory(guiHelper: IGuiHelper) : HTLookupRecipeCategory<HCBrewingRecipe>(guiHelper, HCJeiRecipeTypes.BREWING) {
+class HCBrewingRecipeCategory(guiHelper: IGuiHelper) : HTLookupRecipeCategory<HCBrewingRecipe>(guiHelper, HCRecipeViewerTypes.BREWING) {
     override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: HCBrewingRecipe, focuses: IFocusGroup) {
         // inputs
         builder

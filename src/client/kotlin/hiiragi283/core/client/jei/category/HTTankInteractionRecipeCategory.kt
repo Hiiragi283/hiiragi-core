@@ -2,10 +2,10 @@ package hiiragi283.core.client.jei.category
 
 import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.gui.HTBackgroundType
+import hiiragi283.core.api.integration.jei.category.HTLookupRecipeCategory
+import hiiragi283.core.api.integration.jei.extension.HTTankInteractionCategoryExtension
 import hiiragi283.core.api.recipe.HTRecipeHolder
-import hiiragi283.core.client.jei.HCJeiRecipeTypes
-import hiiragi283.core.client.jei.category.base.HTLookupRecipeCategory
-import hiiragi283.core.client.jei.extension.HTTankInteractionCategoryExtension
+import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable
@@ -14,7 +14,7 @@ import mezz.jei.api.recipe.IFocusGroup
 import mezz.jei.api.recipe.RecipeIngredientRole
 
 class HTTankInteractionRecipeCategory(guiHelper: IGuiHelper) :
-    HTLookupRecipeCategory<HTTankInteraction>(guiHelper, HCJeiRecipeTypes.TANK_INTERACTION) {
+    HTLookupRecipeCategory<HTTankInteraction>(guiHelper, HCRecipeViewerTypes.TANK_INTERACTION) {
     private val extensions: MutableMap<Class<out HTTankInteraction>, HTTankInteractionCategoryExtension<*>> = hashMapOf()
 
     inline fun <reified RECIPE : HTTankInteraction> addExtension(extension: HTTankInteractionCategoryExtension<RECIPE>) {

@@ -1,4 +1,4 @@
-package hiiragi283.core.client.jei.extension
+package hiiragi283.core.api.integration.jei.extension
 
 import hiiragi283.core.api.data.tank.HTTankInteraction
 import mezz.jei.api.gui.builder.IIngredientAcceptor

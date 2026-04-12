@@ -1,5 +1,6 @@
 package hiiragi283.core.client.jei.extension
 
+import hiiragi283.core.api.integration.jei.extension.HTTankInteractionCategoryExtension
 import hiiragi283.core.common.data.tank.HTSimpleTankInteraction
 import mezz.jei.api.gui.builder.IIngredientAcceptor
 import mezz.jei.api.neoforge.NeoForgeTypes

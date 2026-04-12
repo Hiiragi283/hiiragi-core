@@ -61,7 +61,7 @@ class HTPaintBrushItem(properties: Properties) : Item(properties) {
         offStack: ItemStack,
         onSucceeded: (ItemStack) -> Unit,
     ): InteractionResult {
-        val tank: HTItemFluidTank = HTFluidCapabilities.getFluidView(mainStack, 0) as? HTItemFluidTank ?: return InteractionResult.FAIL
+        val tank: HTItemFluidTank = HTFluidCapabilities.getFirstTank(mainStack) as? HTItemFluidTank ?: return InteractionResult.FAIL
         val fluidInput = HTFluidInputHandler(tank)
         val input = HTItemAndFluidRecipeInput(offStack, fluidInput.getFluidStack())
         val recipe: HCColoringRecipe = HCRecipeLookups.COLORING

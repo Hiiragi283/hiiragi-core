@@ -2,13 +2,13 @@ package hiiragi283.core.client.jei.category
 
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.integration.jei.category.HTBasicRecipeCategory
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.material.property.getDefaultPart
-import hiiragi283.core.client.jei.HCJeiRecipeTypes
-import hiiragi283.core.client.jei.category.base.HTBasicRecipeCategory
+import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawablesView
@@ -29,7 +29,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 
 class HCMaterialPartCategory(guiHelper: IGuiHelper) :
-    HTBasicRecipeCategory<HTMaterialManager.Entry>(guiHelper, HCJeiRecipeTypes.MaterialType) {
+    HTBasicRecipeCategory<HTMaterialManager.Entry>(guiHelper, HCRecipeViewerTypes.MaterialType) {
     private fun getIngredients(entry: HTMaterialManager.Entry): Sequence<List<ItemStack>> = HiiragiCoreAccess.INSTANCE
         .partManager
         .values

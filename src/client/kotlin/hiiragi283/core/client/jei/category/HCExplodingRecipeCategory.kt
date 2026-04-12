@@ -3,9 +3,9 @@ package hiiragi283.core.client.jei.category
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.integration.jei.addItemIngredient
 import hiiragi283.core.api.integration.jei.addItemResult
-import hiiragi283.core.client.jei.HCJeiRecipeTypes
-import hiiragi283.core.client.jei.category.base.HTLookupRecipeCategory
+import hiiragi283.core.api.integration.jei.category.HTLookupRecipeCategory
 import hiiragi283.core.common.recipe.HCExplodingRecipe
+import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder
 import mezz.jei.api.helpers.IGuiHelper
@@ -13,7 +13,7 @@ import mezz.jei.api.recipe.IFocusGroup
 import mezz.jei.api.recipe.RecipeIngredientRole
 
 class HCExplodingRecipeCategory(guiHelper: IGuiHelper) :
-    HTLookupRecipeCategory<HCExplodingRecipe>(guiHelper, HCJeiRecipeTypes.EXPLODING) {
+    HTLookupRecipeCategory<HCExplodingRecipe>(guiHelper, HCRecipeViewerTypes.EXPLODING) {
     override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: HCExplodingRecipe, focuses: IFocusGroup) {
         // inputs
         builder

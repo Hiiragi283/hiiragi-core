@@ -4,8 +4,8 @@ import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.bounds
 import hiiragi283.core.api.gui.toRec2i
 import hiiragi283.core.api.gui.widget.HTWidget
-import hiiragi283.core.api.integration.jei.widget.HTGhostWidget
-import hiiragi283.core.api.integration.jei.widget.HTIngredientWidget
+import hiiragi283.core.api.recipe.viewer.widget.HTGhostWidget
+import hiiragi283.core.api.recipe.viewer.widget.HTIngredientWidget
 import hiiragi283.core.api.util.emptyOptional
 import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.impl.gui.widget.HTGuiWidget

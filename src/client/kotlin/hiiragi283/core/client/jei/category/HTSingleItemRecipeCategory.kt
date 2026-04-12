@@ -1,11 +1,11 @@
 package hiiragi283.core.client.jei.category
 
 import hiiragi283.core.api.gui.HTBackgroundType
+import hiiragi283.core.api.integration.jei.category.HTLookupRecipeCategory
+import hiiragi283.core.api.integration.jei.extension.HTSingleItemRecipeCategoryExtension
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.base.HTSingleItemRecipe
 import hiiragi283.core.api.recipe.viewer.HTLookupRecipeViewerType
-import hiiragi283.core.client.jei.category.base.HTLookupRecipeCategory
-import hiiragi283.core.client.jei.extension.HTSingleItemRecipeCategoryExtension
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder

@@ -1,4 +1,4 @@
-package hiiragi283.core.api.integration.jei.widget
+package hiiragi283.core.api.recipe.viewer.widget
 
 /**
  * レシピビューワーに保持しているオブジェクトを提供可能なウィジェットを表すインターフェースです。
