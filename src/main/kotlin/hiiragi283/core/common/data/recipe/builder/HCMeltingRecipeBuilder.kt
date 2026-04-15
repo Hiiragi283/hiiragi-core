@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation
 class HCMeltingRecipeBuilder : HTProcessingRecipeBuilder(HTConst.MELTING) {
     companion object {
         @JvmStatic
-        fun create(output: RecipeOutput, builderAction: HCMeltingRecipeBuilder.() -> Unit) {
+        inline fun create(output: RecipeOutput, builderAction: HCMeltingRecipeBuilder.() -> Unit) {
             HCMeltingRecipeBuilder().apply(builderAction).save(output)
         }
     }

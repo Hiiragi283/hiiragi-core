@@ -12,7 +12,6 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.part.CommonParts
-import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.part.property.getScaledAmount
@@ -81,9 +80,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             }
 
             smeltDustToIngot(entry)
-            for (part: HTPart in partManager.values.filter { HTPartPropertyKeys.IS_ORE in it }) {
-                smeltOreToBase(part, entry)
-            }
+            smeltOresToBase(entry)
             smeltOreToBase(CommonParts.CRUSHED_ORE, entry)
             smeltOreToBase(CommonParts.RAW, entry)
         }
@@ -482,17 +479,33 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // 精錬の前後がどちらも既存アイテムの場合はパス
         if (existingDust && existingIngot) return
         // Smelting & Blasting
-        when (entry.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT)) {
-            HTMaterialLevel.NONE -> return
-            HTMaterialLevel.LOW -> HTCookingRecipeBuilder::smeltingAndBlasting
-            HTMaterialLevel.MEDIUM -> HTCookingRecipeBuilder::smeltingAndBlasting
-            HTMaterialLevel.HIGH -> HTCookingRecipeBuilder::blasting
-            HTMaterialLevel.HIGHEST -> return
-        }(output) {
+        registerSmelting(entry) {
             ingredient += dust
             resultStack += ingot
             exp = 0.35f
-            recipeId suffix "_from_dust"
+            recipeId suffix "_from_${CommonParts.DUST.createId(entry).path}"
+        }
+    }
+
+    @JvmStatic
+    private fun smeltOresToBase(entry: HTMaterialManager.Entry) {
+        if (HTMaterialPropertyKeys.DISABLE_SMELTING in entry) return
+        val smeltedMaterial: HTMaterialLike = entry[HTMaterialPropertyKeys.SMELTED_TO] ?: entry
+        val smeltedPropertyMap: HTPropertyMap = materialManager[smeltedMaterial] ?: return
+        val (_, base: ItemLike, _) = smeltedPropertyMap.getDefaultPart()?.getItem(smeltedMaterial) ?: return
+        // 精錬の前後がどちらも既存アイテムの場合はパス
+        val oreEntries: List<HTMaterialContents.ItemEntry> =
+            partManager.values
+                .filter { HTPartPropertyKeys.IS_ORE in it }
+                .mapNotNull { getItem(it, entry) }
+                .filterNot(HTMaterialContents.Entry<*>::isBuiltIn)
+        if (oreEntries.isEmpty()) return
+        // Smelting & Blasting
+        registerSmelting(entry) {
+            ingredient += oreEntries
+            resultStack += base to smeltedPropertyMap.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER).toInt()
+            exp = 0.7f
+            recipeId suffix "_from_${CommonParts.ORE.asPartName()}"
         }
     }
 
@@ -517,6 +530,17 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             resultStack += base to smeltedPropertyMap.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER).toInt()
             exp = 0.7f
             recipeId suffix "_from_${part.asPartName()}"
+        }
+    }
+
+    @JvmStatic
+    private inline fun registerSmelting(entry: HTMaterialManager.Entry, builderAction: HTCookingRecipeBuilder.() -> Unit) {
+        when (entry.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT)) {
+            HTMaterialLevel.NONE -> return
+            HTMaterialLevel.LOW -> HTCookingRecipeBuilder.smeltingAndBlasting(output, builderAction)
+            HTMaterialLevel.MEDIUM -> HTCookingRecipeBuilder.smeltingAndBlasting(output, builderAction)
+            HTMaterialLevel.HIGH -> HTCookingRecipeBuilder.blasting(output, builderAction)
+            HTMaterialLevel.HIGHEST -> return
         }
     }
 }

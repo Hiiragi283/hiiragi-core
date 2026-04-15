@@ -13,7 +13,7 @@ import org.apache.commons.lang3.math.Fraction
 class HCExplodingRecipeBuilder : HTRecipeBuilder(HTConst.EXPLODING) {
     companion object {
         @JvmStatic
-        fun create(output: RecipeOutput, builderAction: HCExplodingRecipeBuilder.() -> Unit) {
+        inline fun create(output: RecipeOutput, builderAction: HCExplodingRecipeBuilder.() -> Unit) {
             HCExplodingRecipeBuilder().apply(builderAction).save(output)
         }
     }

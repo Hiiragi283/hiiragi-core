@@ -18,28 +18,28 @@ class HTCookingRecipeBuilder(
 ) : HTStackRecipeBuilder(prefix) {
     companion object {
         @JvmStatic
-        fun smelting(output: RecipeOutput, builderAction: HTCookingRecipeBuilder.() -> Unit) {
+        inline fun smelting(output: RecipeOutput, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             HTCookingRecipeBuilder(::SmeltingRecipe, IntUnaryOperator.identity(), HTConst.SMELTING)
                 .apply(builderAction)
                 .save(output)
         }
 
         @JvmStatic
-        fun blasting(output: RecipeOutput, builderAction: HTCookingRecipeBuilder.() -> Unit) {
+        inline fun blasting(output: RecipeOutput, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             HTCookingRecipeBuilder(::BlastingRecipe, IntUnaryOperator.identity(), HTConst.BLASTING)
                 .apply(builderAction)
                 .save(output)
         }
 
         @JvmStatic
-        fun smoking(output: RecipeOutput, builderAction: HTCookingRecipeBuilder.() -> Unit) {
+        inline fun smoking(output: RecipeOutput, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             HTCookingRecipeBuilder(::SmokingRecipe, IntUnaryOperator.identity(), HTConst.SMOKING)
                 .apply(builderAction)
                 .save(output)
         }
 
         @JvmStatic
-        fun smeltingAndBlasting(output: RecipeOutput, builderAction: HTCookingRecipeBuilder.() -> Unit) {
+        inline fun smeltingAndBlasting(output: RecipeOutput, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             smelting(output, builderAction)
             HTCookingRecipeBuilder(::BlastingRecipe, { it / 2 }, HTConst.BLASTING)
                 .apply(builderAction)
@@ -47,7 +47,7 @@ class HTCookingRecipeBuilder(
         }
 
         @JvmStatic
-        fun smeltingAndSmoking(output: RecipeOutput, builderAction: HTCookingRecipeBuilder.() -> Unit) {
+        inline fun smeltingAndSmoking(output: RecipeOutput, builderAction: HTCookingRecipeBuilder.() -> Unit) {
             smelting(output, builderAction)
             HTCookingRecipeBuilder(::SmokingRecipe, { it / 2 }, HTConst.SMOKING)
                 .apply(builderAction)
