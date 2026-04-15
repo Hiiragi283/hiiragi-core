@@ -1,0 +1,31 @@
+package hiiragi283.core.common.recipe
+
+import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
+import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.recipe.result.HTFluidResult
+import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.util.getOrEmpty
+import hiiragi283.core.setup.HCRecipeSerializers
+import hiiragi283.core.setup.HCRecipeTypes
+import net.minecraft.core.HolderLookup
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.crafting.RecipeSerializer
+import net.minecraft.world.item.crafting.RecipeType
+import net.minecraft.world.item.crafting.SingleRecipeInput
+import net.neoforged.neoforge.fluids.FluidStack
+import java.util.Optional
+
+class HCTankEmptyingRecipe(val ingredient: HTItemIngredient, val fluidResult: HTFluidResult, val itemResult: Optional<HTItemResult>) :
+    HTTankEmptyingRecipe.Serializable {
+    override fun testContainer(stack: ItemStack): Boolean = ingredient.test(stack)
+
+    override fun assemble(input: SingleRecipeInput, registries: HolderLookup.Provider): ItemStack =
+        itemResult.map { it.getStackOrEmpty(registries) }.getOrEmpty()
+
+    override fun assembleFluid(input: SingleRecipeInput, registries: HolderLookup.Provider): FluidStack =
+        fluidResult.getStackOrEmpty(registries)
+
+    override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.EMPTYING
+
+    override fun getType(): RecipeType<*> = HCRecipeTypes.EMPTYING.get()
+}

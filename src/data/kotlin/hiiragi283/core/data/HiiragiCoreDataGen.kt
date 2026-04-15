@@ -8,7 +8,6 @@ import hiiragi283.core.data.client.HCItemModelProvider
 import hiiragi283.core.data.client.HCJapaneseLangProvider
 import hiiragi283.core.data.server.HCDataMapProvider
 import hiiragi283.core.data.server.HCRecipeProvider
-import hiiragi283.core.data.server.HCTankInteractionProvider
 import hiiragi283.core.data.server.loot.HCBlockLootTableProvider
 import hiiragi283.core.data.server.loot.HCGlobalLootModifierProvider
 import hiiragi283.core.data.server.loot.HCGlobalLootProvider
@@ -40,8 +39,6 @@ data object HiiragiCoreDataGen {
         server.addBlockAndItemTags(::HCBlockTagsProvider, ::HCItemTagsProvider)
 
         server.addProvider(::HCDataMapProvider)
-
-        server.addProvider(::HCTankInteractionProvider)
         // Client
         client.addProvider(::HCEnglishLangProvider)
         client.addProvider(::HCJapaneseLangProvider)

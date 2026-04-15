@@ -2,7 +2,6 @@ package hiiragi283.core.api
 
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HiiragiCoreAPI.id
-import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
 import hiiragi283.core.api.gui.widget.HTWidgetType
 import net.minecraft.core.Registry
@@ -17,12 +16,6 @@ import net.neoforged.neoforge.registries.RegistryBuilder
 object HCRegistries {
     @JvmField
     val SLOT_TYPE: Registry<HTSyncablePayload.Type<*>> = createRegistry(Keys.SLOT_TYPE)
-
-    /**
-     * @since 0.14.0
-     */
-    @JvmField
-    val TANK_INTERACTION_TYPE: Registry<MapCodec<out HTTankInteraction.Serializable>> = createRegistry(Keys.TANK_INTERACTION_TYPE)
 
     @JvmField
     val WIDGET_TYPE: Registry<HTWidgetType<*>> = createRegistry(Keys.WIDGET_TYPE)
@@ -42,13 +35,6 @@ object HCRegistries {
     object Keys {
         @JvmField
         val SLOT_TYPE: ResourceKey<Registry<HTSyncablePayload.Type<*>>> = createKey("syncable_slot_type")
-
-        /**
-         * @since 0.14.0
-         */
-        @JvmField
-        val TANK_INTERACTION_TYPE: ResourceKey<Registry<MapCodec<out HTTankInteraction.Serializable>>> =
-            createCodecKey(HTConst.TANK_INTERACTION)
 
         @JvmField
         val WIDGET_TYPE: ResourceKey<Registry<HTWidgetType<*>>> = createKey("widget_type")

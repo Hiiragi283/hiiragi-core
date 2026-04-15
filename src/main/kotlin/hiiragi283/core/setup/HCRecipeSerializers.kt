@@ -5,6 +5,7 @@ import hiiragi283.core.api.HTMinMaxRange
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.recipe.base.HTProcessingRecipe
+import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
@@ -22,6 +23,8 @@ import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCForgingRecipe
 import hiiragi283.core.common.recipe.HCMeltingRecipe
+import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
+import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
 import hiiragi283.core.impl.recipe.HTBasicDoubleMultiOutputRecipe
 import hiiragi283.core.impl.recipe.HTBasicSingleItemRecipe
@@ -157,6 +160,30 @@ object HCRecipeSerializers {
             HTMinMaxRange.INT_CODEC.fieldOf("heat_range").forGetter(HCMeltingRecipe::heatRange),
             HTProcessingRecipe.timeCodec(),
             ::HCMeltingRecipe,
+        ),
+    )
+
+    //    Tank Interaction    //
+
+    @JvmField
+    val EMPTYING: RecipeSerializer<HCTankEmptyingRecipe> = REGISTER.registerSerializer(
+        HTConst.EMPTYING,
+        MapBiCodec.composite(
+            HTItemIngredient.UNSIZED_CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HCTankEmptyingRecipe::ingredient),
+            HTFluidResult.CODEC.fieldOf(HTConst.FLUID_RESULT).forGetter(HCTankEmptyingRecipe::fluidResult),
+            HTItemResult.CODEC.optionalFieldOf(HTConst.ITEM_RESULT).forGetter(HCTankEmptyingRecipe::itemResult),
+            ::HCTankEmptyingRecipe,
+        ),
+    )
+
+    @JvmField
+    val FILLING: RecipeSerializer<HCTankFillingRecipe> = REGISTER.registerSerializer(
+        HTConst.FILLING,
+        MapBiCodec.composite(
+            HTItemIngredient.UNSIZED_CODEC.fieldOf(HTConst.ITEM_INGREDIENT).forGetter(HCTankFillingRecipe::itemIngredient),
+            HTFluidIngredient.CODEC.fieldOf(HTConst.FLUID_INGREDIENT).forGetter(HCTankFillingRecipe::fluidIngredient),
+            HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCTankFillingRecipe::result),
+            ::HCTankFillingRecipe,
         ),
     )
 }

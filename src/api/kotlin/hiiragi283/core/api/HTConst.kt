@@ -109,7 +109,8 @@ data object HTConst {
     const val MELTING = "melting"
 
     const val COLORING = "coloring"
-    const val TANK_INTERACTION = "tank_interaction"
+    const val EMPTYING = "emptying"
+    const val FILLING = "filling"
 
     // Serialization
     const val ENERGY = "energy"

@@ -117,6 +117,14 @@ object HTPotionHelper {
     fun getContents(resource: HTItemResourceType): BottledPotionContents? = HiiragiCoreAccess.INSTANCE.getContents(resource)
 
     /**
+     * 指定した[stack]から[BottledPotionContents]を取得します。
+     * @return [BottledPotionContents]を取得できない場合は`null`
+     * @since 0.16.0
+     */
+    @JvmStatic
+    fun getContentsFromBottle(stack: ItemStack): BottledPotionContents? = stack.toResource()?.let(::getContentsFromBottle)
+
+    /**
      * 指定した[resource]から[BottledPotionContents]を取得します。
      * @return [BottledPotionContents]を取得できない場合は`null`
      * @since 0.14.0

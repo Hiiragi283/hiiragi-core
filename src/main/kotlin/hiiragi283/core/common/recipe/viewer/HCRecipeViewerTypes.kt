@@ -1,13 +1,14 @@
 package hiiragi283.core.common.recipe.viewer
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.recipe.HTRecipeType
 import hiiragi283.core.api.recipe.base.HTDoubleMultiOutputRecipe
 import hiiragi283.core.api.recipe.base.HTSingleItemRecipe
 import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
+import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
+import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.recipe.viewer.HTLookupRecipeViewerType
@@ -37,6 +38,8 @@ object HCRecipeViewerTypes {
         height: Int = 18 * 1,
     ): HTLookupRecipeViewerType<INPUT, RECIPE> = HTLookupRecipeViewerType.create(recipeType, ItemStack(icon), HTBounds(0, 0, width, height))
 
+    //    Basic    //
+
     @JvmField
     val BREWING: HTLookupRecipeViewerType<HTItemAndFluidRecipeInput, HCBrewingRecipe> =
         create(HTVanillaRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 6)
@@ -61,16 +64,17 @@ object HCRecipeViewerTypes {
     val MELTING: HTLookupRecipeViewerType<HCMeltingRecipe.Input, HCMeltingRecipe> =
         create(HCRecipeLookups.MELTING, Items.LAVA_BUCKET, 18 * 4)
 
+    //    Tank Interaction    //
+
     @JvmField
-    val TANK_INTERACTION: HTLookupRecipeViewerType<RecipeInput, HTTankInteraction> =
-        create(
-            HCRecipeLookups.TANK_INTERACTION,
-            HCBlocks.COPPER_BASINS.allBlocks
-                .first()
-                .get(),
-            18 * 5,
-            18 * 3,
-        )
+    val EMPTYING: HTLookupRecipeViewerType<SingleRecipeInput, HTTankEmptyingRecipe> =
+        create(HCRecipeLookups.EMPTYING, Items.BUCKET, 18 * 3, 18 * 3)
+
+    @JvmField
+    val FILLING: HTLookupRecipeViewerType<HTItemAndFluidRecipeInput, HTTankFillingRecipe> =
+        create(HCRecipeLookups.FILLING, Items.BUCKET, 18 * 3, 18 * 3)
+
+    //    Material    //
 
     data object MaterialType : HTRecipeViewerType<HTMaterialManager.Entry> {
         override val recipeClass: Class<HTMaterialManager.Entry> = HTMaterialManager.Entry::class.java

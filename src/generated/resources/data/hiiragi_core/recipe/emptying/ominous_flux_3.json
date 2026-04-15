@@ -1,0 +1,16 @@
+{
+  "type": "hiiragi_core:emptying",
+  "fluid_result": {
+    "id": "hiiragi_core:ominous_flux"
+  },
+  "ingredient": {
+    "type": "neoforge:components",
+    "components": {
+      "minecraft:ominous_bottle_amplifier": 3
+    },
+    "items": "minecraft:ominous_bottle"
+  },
+  "item_result": {
+    "id": "minecraft:glass_bottle"
+  }
+}

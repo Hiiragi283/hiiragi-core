@@ -7,17 +7,22 @@ import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
+import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.VanillaFluidContents
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.data.recipe.builder.HCExplodingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HCMeltingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTDoubleMultiOutputRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSingleMultiOutputRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTTankInteractionRecipeBuilder
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
+import net.minecraft.core.component.DataComponents
 import net.minecraft.tags.ItemTags
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -32,6 +37,8 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         exploding()
         forging()
         melting()
+
+        tankInteraction()
     }
 
     //    Charging    //
@@ -321,6 +328,50 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
             result = resultCreator.water()
             heatRange = iceRange
             recipeId suffix "_from_ice"
+        }
+    }
+
+    //    Tank Interaction    //
+
+    @JvmStatic
+    private fun tankInteraction() {
+        emptyAndFill(Items.EXPERIENCE_BOTTLE, HCFluids.EXPERIENCE)
+        emptyAndFill(Items.HONEY_BOTTLE, HCFluids.HONEY)
+        emptyAndFill(Items.MUSHROOM_STEW, HCFluids.MUSHROOM_STEW, container = Items.BOWL)
+        emptyAndFill(Items.DRAGON_BREATH, HCFluids.DRAGON_BREATH)
+
+        emptyAndFill(Items.WET_SPONGE, VanillaFluidContents.WATER, HTConst.DEFAULT_FLUID_AMOUNT, Items.SPONGE)
+
+        repeat(5) { amplifier: Int ->
+            HTTankInteractionRecipeBuilder.emptying(output) {
+                ingredient = inputCreator.create(false, Items.OMINOUS_BOTTLE) {
+                    expect(DataComponents.OMINOUS_BOTTLE_AMPLIFIER, amplifier)
+                }
+                fluidResult = resultCreator.create(HCFluids.OMINOUS_FLUX, 250 * (amplifier + 1))
+                itemResult = resultCreator.create(Items.GLASS_BOTTLE)
+                recipeId suffix "_$amplifier"
+            }
+        }
+    }
+
+    @JvmStatic
+    private fun emptyAndFill(
+        bottle: ItemLike,
+        fluid: HTFluidContent,
+        amount: Int = 250,
+        container: ItemLike = Items.GLASS_BOTTLE,
+    ) {
+        // Emptying
+        HTTankInteractionRecipeBuilder.emptying(output) {
+            ingredient = inputCreator.create(bottle)
+            fluidResult = resultCreator.create(fluid, amount)
+            itemResult = resultCreator.create(container)
+        }
+        // Filling
+        HTTankInteractionRecipeBuilder.filling(output) {
+            itemIngredient = inputCreator.create(container)
+            fluidIngredient = inputCreator.create(fluid, amount)
+            itemResult = resultCreator.create(bottle)
         }
     }
 }

@@ -1,8 +1,6 @@
 package hiiragi283.core.client.jei
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.function.negate
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
 import hiiragi283.core.api.integration.jei.HTSubtypeInterpreter
@@ -11,13 +9,7 @@ import hiiragi283.core.api.item.HTPotionBasedItem
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.material.HTMaterialManager
-import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.HTFluidHolderLike
-import hiiragi283.core.api.registry.HTSimpleHolderLike
-import hiiragi283.core.api.registry.toFluidLike
-import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.api.util.emptyOptional
 import hiiragi283.core.client.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.jei.category.HCCrushingRecipeCategory
 import hiiragi283.core.client.jei.category.HCExplodingRecipeCategory
@@ -25,19 +17,13 @@ import hiiragi283.core.client.jei.category.HCForgingRecipeCategory
 import hiiragi283.core.client.jei.category.HCMaterialPartCategory
 import hiiragi283.core.client.jei.category.HCMeltingRecipeCategory
 import hiiragi283.core.client.jei.category.HTSingleItemRecipeCategory
-import hiiragi283.core.client.jei.category.HTTankInteractionRecipeCategory
 import hiiragi283.core.client.jei.category.base.HTDoubleMultiOutputRecipeCategory
 import hiiragi283.core.client.jei.category.base.HTSingleMultiOutputRecipeCategory
 import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicDoubleMultiOutputRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicSingleItemRecipeCategoryExtension
 import hiiragi283.core.client.jei.extension.HTBasicSingleMultiOutputRecipeCategoryExtension
-import hiiragi283.core.client.jei.extension.HTOminousTankInteractionCategoryExtension
-import hiiragi283.core.client.jei.extension.HTPotionArrowTankInteractionCategoryExtension
-import hiiragi283.core.client.jei.extension.HTPotionTankInteractionCategoryExtension
-import hiiragi283.core.client.jei.extension.HTSimpleTankInteractionCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
-import hiiragi283.core.common.data.tank.HTSimpleTankInteraction
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
 import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.setup.HCBlocks
@@ -58,22 +44,15 @@ import mezz.jei.api.registration.IRecipeRegistration
 import mezz.jei.api.registration.ISubtypeRegistration
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration
 import mezz.jei.api.runtime.IIngredientManager
-import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.Items
-import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 
 @JeiPlugin
 class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     companion object {
-        @JvmStatic
-        lateinit var tankInteraction: HTTankInteractionRecipeCategory
-            private set
-
         // ItemToItem
         @JvmStatic
         lateinit var charging: HTSingleItemRecipeCategory
@@ -135,12 +114,6 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         val guiHelper: IGuiHelper = registration.jeiHelpers.guiHelper
         val manager: IIngredientManager = registration.jeiHelpers.ingredientManager
 
-        tankInteraction = HTTankInteractionRecipeCategory(guiHelper)
-        tankInteraction.addExtension(HTOminousTankInteractionCategoryExtension)
-        tankInteraction.addExtension(HTPotionArrowTankInteractionCategoryExtension)
-        tankInteraction.addExtension(HTPotionTankInteractionCategoryExtension)
-        tankInteraction.addExtension(HTSimpleTankInteractionCategoryExtension)
-
         initItemToItem(guiHelper, manager)
         initItemToMultiOutput(guiHelper, manager)
         initDoubleItemToMultiOutput(guiHelper, manager)
@@ -155,7 +128,6 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             HCExplodingRecipeCategory(guiHelper),
             forging,
             HCMeltingRecipeCategory(guiHelper),
-            tankInteraction,
         )
     }
 
@@ -196,32 +168,13 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         registration.addRecipes(HCRecipeViewerTypes.EXPLODING)
         registration.addRecipes(HCRecipeViewerTypes.FORGING)
         registration.addRecipes(HCRecipeViewerTypes.MELTING)
-        registerTankInteractions(registration)
+        registerTankEmptying(registration)
+        registerTankFilling(registration)
     }
 
-    private fun registerTankInteractions(registration: IRecipeRegistration) {
-        val recipeType: JeiRecipeType<HTRecipeHolder<HTTankInteraction>> = getRecipeType(HCRecipeViewerTypes.TANK_INTERACTION)
-        // Custom
-        registration.addRecipes(HCRecipeViewerTypes.TANK_INTERACTION)
-        // Bucket
-        BuiltInRegistries.FLUID
-            .holders()
-            .filter { holder: Holder<Fluid> ->
-                val fluid: Fluid = holder.value()
-                fluid.isSource(fluid.defaultFluidState()) && !fluid.bucket.let(::ItemStack).isEmpty
-            }.map(Holder<Fluid>::toLike)
-            .map(HTSimpleHolderLike<Fluid>::toFluidLike)
-            .map { holder: HTFluidHolderLike<Fluid> ->
-                HTSimpleTankInteraction(
-                    Items.BUCKET.toLike(),
-                    holder.get().bucket.toLike(),
-                    holder,
-                    HTConst.DEFAULT_FLUID_AMOUNT,
-                    emptyOptional(),
-                ).let { HTRecipeHolder(holder.getId().withPrefix("bucket/"), it as HTTankInteraction) }
-            }.toList()
-            .let { registration.addRecipes(recipeType, it) }
-    }
+    private fun registerTankEmptying(registration: IRecipeRegistration) {}
+
+    private fun registerTankFilling(registration: IRecipeRegistration) {}
 
     override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {
         registration.addRecipeCatalysts(
@@ -233,15 +186,18 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             HCRecipeViewerTypes.MELTING,
         )
 
-        val tankInteraction: JeiRecipeType<*> = getRecipeType(HCRecipeViewerTypes.TANK_INTERACTION)
-        registration.addRecipeCatalysts(
-            tankInteraction,
-            VanillaTypes.ITEM_STACK,
-            HCBlocks.COPPER_BASINS.allBlocks
-                .map(HTBlockHolderLike<*>::get)
-                .map(::ItemStack)
-                .toList(),
-        )
+        arrayOf(HCRecipeViewerTypes.EMPTYING, HCRecipeViewerTypes.FILLING)
+            .map { getRecipeType(it) }
+            .forEach { recipeType: JeiRecipeType<*> ->
+                registration.addRecipeCatalysts(
+                    recipeType,
+                    VanillaTypes.ITEM_STACK,
+                    HCBlocks.COPPER_BASINS.allBlocks
+                        .map(HTBlockHolderLike<*>::get)
+                        .map(::ItemStack)
+                        .toList(),
+                )
+            }
     }
 
     override fun registerGuiHandlers(registration: IGuiHandlerRegistration) {

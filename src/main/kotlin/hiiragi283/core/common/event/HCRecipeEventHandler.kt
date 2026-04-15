@@ -4,8 +4,6 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.HTJsonResourceReloadListener
-import hiiragi283.core.api.data.tank.HTTankInteraction
 import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.item.enchantment.toInstances
@@ -39,7 +37,6 @@ import net.minecraft.world.phys.AABB
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.common.NeoForge
-import net.neoforged.neoforge.event.AddReloadListenerEvent
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent
 import net.neoforged.neoforge.event.level.ExplosionEvent
 
@@ -180,19 +177,6 @@ object HCRecipeEventHandler {
                 }
             }
         }
-    }
-
-    @JvmStatic
-    private lateinit var tankInteraction: HTJsonResourceReloadListener<HTTankInteraction.Serializable>
-
-    @JvmStatic
-    val tankInteractionMap: Map<ResourceLocation, HTTankInteraction.Serializable>
-        get() = tankInteraction.resultMap
-
-    @SubscribeEvent
-    fun addReloadListener(event: AddReloadListenerEvent) {
-        tankInteraction = HTJsonResourceReloadListener.create(HTConst.TANK_INTERACTION, HTTankInteraction.Serializable.CODEC)
-        event.addListener(tankInteraction)
     }
 
     //    Extensions    //

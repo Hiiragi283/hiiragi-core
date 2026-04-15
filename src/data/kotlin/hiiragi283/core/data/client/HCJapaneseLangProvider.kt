@@ -86,8 +86,9 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCRecipeLookups.EXPLODING, "爆破")
         add(HCRecipeLookups.FORGING, "鍛造")
         add(HCRecipeLookups.MELTING, "溶融")
-        add(HCRecipeLookups.TANK_INTERACTION, "タンクとの相互作用")
 
+        add(HCRecipeLookups.EMPTYING, "タンクとの相互作用（搬出）")
+        add(HCRecipeLookups.FILLING, "タンクとの相互作用（搬入）")
         // Translation
         translation()
     }

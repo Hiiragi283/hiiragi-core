@@ -5,6 +5,8 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.recipe.base.HTDoubleMultiOutputRecipe
 import hiiragi283.core.api.recipe.base.HTSingleItemRecipe
 import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
+import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
+import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeTypeRegister
@@ -14,6 +16,8 @@ import java.util.function.Supplier
 object HCRecipeTypes {
     @JvmField
     val REGISTER = HTDeferredRecipeTypeRegister(HiiragiCoreAPI.MOD_ID)
+
+    //    Basic    //
 
     @JvmField
     val CHARGING: Supplier<RecipeType<HTSingleItemRecipe.Serializable>> = REGISTER.registerType(HTConst.CHARGING)
@@ -29,4 +33,12 @@ object HCRecipeTypes {
 
     @JvmField
     val MELTING: Supplier<RecipeType<HCMeltingRecipe>> = REGISTER.registerType(HTConst.MELTING)
+
+    //    Tank Interaction    //
+
+    @JvmField
+    val EMPTYING: Supplier<RecipeType<HTTankEmptyingRecipe.Serializable>> = REGISTER.registerType(HTConst.EMPTYING)
+
+    @JvmField
+    val FILLING: Supplier<RecipeType<HTTankFillingRecipe.Serializable>> = REGISTER.registerType(HTConst.FILLING)
 }
