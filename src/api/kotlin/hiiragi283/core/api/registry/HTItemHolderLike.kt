@@ -3,14 +3,11 @@ package hiiragi283.core.api.registry
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
-import hiiragi283.core.api.storage.item.HTItemResourceType
-import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.HTHasTranslationKey
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.Either
 import net.minecraft.core.Holder
-import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -32,40 +29,10 @@ interface HTItemHolderLike<ITEM : Item> :
     HTHolderLike<Item, ITEM>,
     HTHasTranslationKey,
     HTHasText,
-    ItemLike {
+    HTItemLike<ITEM> {
     fun getHolder(): Holder<Item> = getHolder(BuiltInRegistries.ITEM::getHolderOrThrow)
 
     override fun asItem(): ITEM = get()
-
-    /**
-     * @author Hiiragi Tsubasa
-     * @since 0.14.0
-     */
-    fun isOf(item: Item): Boolean = this.asItem() == item
-
-    // ItemStack
-    fun isOf(stack: ItemStack): Boolean = stack.`is`(this.asItem())
-
-    /**
-     * 指定した[個数][count]で[ItemStack]に変換します。
-     */
-    fun toStack(count: Int = 1): ItemStack = ItemStack(this, count)
-
-    // HTItemResourceType
-
-    /**
-     * [HTItemResourceType]に変換します。
-     */
-    fun toResource(): HTItemResourceType? = toStack().toResource()
-
-    /**
-     * 指定した[patch]で[HTItemResourceType]に変換します。
-     */
-    fun toResource(patch: DataComponentPatch): HTItemResourceType? {
-        val stack: ItemStack = toStack()
-        stack.applyComponents(patch)
-        return stack.toResource()
-    }
 
     companion object {
         @JvmField
