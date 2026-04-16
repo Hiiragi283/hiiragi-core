@@ -1,5 +1,9 @@
 package hiiragi283.core.api.recipe
 
+import com.mojang.serialization.Codec
+import com.mojang.serialization.MapCodec
+import com.mojang.serialization.codecs.RecordCodecBuilder
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.resource.HTIdLike
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.Recipe
@@ -18,10 +22,24 @@ data class HTRecipeHolder<RECIPE : Any>(
 ) : HTIdLike {
     companion object {
         /**
+         * [HTRecipeHolder]の[Codec]を作成します。
+         * @since 0.16.0
+         */
+        @JvmStatic
+        fun <RECIPE : Any> codec(recipeCodec: MapCodec<RECIPE>): Codec<HTRecipeHolder<RECIPE>> = RecordCodecBuilder.create { instance ->
+            instance
+                .group(
+                    ResourceLocation.CODEC.fieldOf(HTConst.ID).forGetter(HTRecipeHolder<RECIPE>::id),
+                    recipeCodec.codec().fieldOf("recipe").forGetter(HTRecipeHolder<RECIPE>::recipe),
+                ).apply(instance, ::HTRecipeHolder)
+        }
+
+        /**
          * バニラの[RecipeHolder]を[HTRecipeHolder]に変換します。
          */
         @JvmStatic
-        fun <RECIPE : Recipe<*>> from(holder: RecipeHolder<RECIPE>): HTRecipeHolder<RECIPE> = HTRecipeHolder(holder.id(), holder.value())
+        fun <RECIPE : Recipe<*>> from(holder: RecipeHolder<out RECIPE>): HTRecipeHolder<RECIPE> =
+            HTRecipeHolder(holder.id(), holder.value())
     }
 
     constructor(pair: Pair<ResourceLocation, RECIPE>) : this(pair.first, pair.second)
@@ -34,6 +52,18 @@ data class HTRecipeHolder<RECIPE : Any>(
      * @param transform [recipe]を[R]に変換するブロック
      */
     inline fun <R : Any> mapRecipe(transform: (RECIPE) -> R): HTRecipeHolder<R> = HTRecipeHolder(this.id, transform(this.recipe))
+
+    /**
+     * レシピの値を変換し，新しいインスタンスを作成します。
+     * @param R 変換後のクラス
+     * @param transform [recipe]を[R]に変換するブロック
+     * @return [transform]で変換した値が`null`の場合は`null`
+     * @since 0.16.0
+     */
+    inline fun <R : Any> mapRecipeOrNull(transform: (RECIPE) -> R?): HTRecipeHolder<R>? {
+        val recipe: R = transform(this.recipe) ?: return null
+        return HTRecipeHolder(this.id, recipe)
+    }
 
     override fun getId(): ResourceLocation = id
 }

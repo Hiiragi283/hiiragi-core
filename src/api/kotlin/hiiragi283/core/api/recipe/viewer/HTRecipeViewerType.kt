@@ -1,11 +1,19 @@
 package hiiragi283.core.api.recipe.viewer
 
 import hiiragi283.core.api.gui.HTBounds
+import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.util.Either
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
+
+/**
+ * [HTRecipeHolder]に基づいた[HTRecipeViewerType]の型エイリアスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.16.0
+ */
+typealias HTHolderRecipeViewerType<RECIPE> = HTRecipeViewerType<HTRecipeHolder<RECIPE>>
 
 /**
  * @author Hiiragi Tsubasa

@@ -107,7 +107,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
         mouseX: Double,
         mouseY: Double,
     ) {
-        val pose = guiGraphics.pose()
+        val pose: PoseStack = guiGraphics.pose()
         pose.pushPose()
         pose.translate(bounds.left.toDouble(), bounds.top.toDouble(), 0.0)
         renderWidgets(recipe, recipeSlotsView, guiGraphics, mouseX.toInt(), mouseY.toInt())
