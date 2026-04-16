@@ -3,9 +3,10 @@ package hiiragi283.core.client.jei.category
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.integration.jei.addItemIngredient
 import hiiragi283.core.api.integration.jei.addItemResult
-import hiiragi283.core.api.integration.jei.category.HTLookupRecipeCategory
+import hiiragi283.core.api.integration.jei.category.HTHolderRecipeCategory
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
+import hiiragi283.core.setup.HCRecipeSerializers
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder
 import mezz.jei.api.helpers.IGuiHelper
@@ -13,7 +14,7 @@ import mezz.jei.api.recipe.IFocusGroup
 import mezz.jei.api.recipe.RecipeIngredientRole
 
 class HCExplodingRecipeCategory(guiHelper: IGuiHelper) :
-    HTLookupRecipeCategory<HCExplodingRecipe>(guiHelper, HCRecipeViewerTypes.EXPLODING) {
+    HTHolderRecipeCategory.Registered<HCExplodingRecipe>(guiHelper, HCRecipeViewerTypes.EXPLODING, HCRecipeSerializers.EXPLODING) {
     override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: HCExplodingRecipe, focuses: IFocusGroup) {
         // inputs
         builder
@@ -31,7 +32,7 @@ class HCExplodingRecipeCategory(guiHelper: IGuiHelper) :
             .setSlotBackground(HTBackgroundType.OUTPUT)
     }
 
-    override fun createRecipeExtrasImpl(builder: IRecipeExtrasBuilder, recipe: HCExplodingRecipe, focuses: IFocusGroup) {
+    override fun setupRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HCExplodingRecipe, focuses: IFocusGroup) {
         builder.addRecipeArrow().setPosition(getPosition(3.25), getPosition(0))
         builder.addRecipePlus(getPosition(1))
     }

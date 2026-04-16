@@ -3,76 +3,89 @@ package hiiragi283.core.common.recipe.viewer
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.HTRecipeType
 import hiiragi283.core.api.recipe.base.HTDoubleMultiOutputRecipe
 import hiiragi283.core.api.recipe.base.HTSingleItemRecipe
 import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
-import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
-import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
+import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTLookupRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
+import hiiragi283.core.api.recipe.viewer.HTSimpleRecipeViewerType
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.common.recipe.HCBrewingRecipe
+import hiiragi283.core.common.recipe.HCChargingRecipe
+import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
+import hiiragi283.core.common.recipe.HCForgingRecipe
 import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.recipe.HCRecipeLookups
+import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
+import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.setup.HCBlocks
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
-import net.minecraft.world.item.crafting.RecipeInput
-import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.minecraft.world.level.ItemLike
 
-object HCRecipeViewerTypes {
+data object HCRecipeViewerTypes {
     @JvmStatic
-    private fun <INPUT : RecipeInput, RECIPE : Any> create(
-        recipeType: HTRecipeType<INPUT, RECIPE>,
+    private fun <BASE : Any, RECIPE : BASE> lookup(
+        recipeType: HTRecipeType<*, BASE>,
         icon: ItemLike,
         width: Int,
         height: Int = 18 * 1,
-    ): HTLookupRecipeViewerType<INPUT, RECIPE> = HTLookupRecipeViewerType.create(recipeType, ItemStack(icon), HTBounds(0, 0, width, height))
+    ): HTLookupRecipeViewerType<BASE, RECIPE> = HTLookupRecipeViewerType.create(recipeType, ItemStack(icon), HTBounds(0, 0, width, height))
+
+    @JvmStatic
+    private inline fun <reified RECIPE : Any> simple(
+        recipeType: HTRecipeType<*, RECIPE>,
+        icon: ItemLike,
+        width: Int,
+        height: Int = 18 * 1,
+    ): HTHolderRecipeViewerType<RECIPE> =
+        HTSimpleRecipeViewerType.create<HTRecipeHolder<RECIPE>>(recipeType, recipeType, ItemStack(icon), HTBounds(0, 0, width, height))
 
     //    Basic    //
 
     @JvmField
-    val BREWING: HTLookupRecipeViewerType<HTItemAndFluidRecipeInput, HCBrewingRecipe> =
-        create(HTVanillaRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 6)
+    val BREWING: HTHolderRecipeViewerType<HCBrewingRecipe> =
+        simple(HTVanillaRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 6)
 
     @JvmField
-    val CHARGING: HTLookupRecipeViewerType<SingleRecipeInput, HTSingleItemRecipe> =
-        create(HCRecipeLookups.CHARGING, Items.LIGHTNING_ROD, 18 * 4)
+    val CHARGING: HTLookupRecipeViewerType<HTSingleItemRecipe, HCChargingRecipe> =
+        lookup(HCRecipeLookups.CHARGING, Items.LIGHTNING_ROD, 18 * 4)
 
     @JvmField
-    val CRUSHING: HTLookupRecipeViewerType<SingleRecipeInput, HTSingleMultiOutputRecipe> =
-        create(HCRecipeLookups.CRUSHING, Items.ANVIL, 18 * 5, 18 * 2)
+    val CRUSHING: HTLookupRecipeViewerType<HTSingleMultiOutputRecipe, HCCrushingRecipe> =
+        lookup(HCRecipeLookups.CRUSHING, Items.ANVIL, 18 * 5, 18 * 2)
 
     @JvmField
-    val EXPLODING: HTLookupRecipeViewerType<HCExplodingRecipe.Input, HCExplodingRecipe> =
-        create(HCRecipeLookups.EXPLODING, Items.TNT, 18 * 6)
+    val EXPLODING: HTHolderRecipeViewerType<HCExplodingRecipe> =
+        simple(HCRecipeLookups.EXPLODING, Items.TNT, 18 * 6)
 
     @JvmField
-    val FORGING: HTLookupRecipeViewerType<HTDoubleRecipeInput, HTDoubleMultiOutputRecipe> =
-        create(HCRecipeLookups.FORGING, HCBlocks.FORGING_ANVIL, 18 * 6, 18 * 3)
+    val FORGING: HTLookupRecipeViewerType<HTDoubleMultiOutputRecipe, HCForgingRecipe> =
+        lookup(HCRecipeLookups.FORGING, HCBlocks.FORGING_ANVIL, 18 * 6, 18 * 3)
 
     @JvmField
-    val MELTING: HTLookupRecipeViewerType<HCMeltingRecipe.Input, HCMeltingRecipe> =
-        create(HCRecipeLookups.MELTING, Items.LAVA_BUCKET, 18 * 4)
+    val MELTING: HTHolderRecipeViewerType<HCMeltingRecipe> =
+        simple(HCRecipeLookups.MELTING, Items.LAVA_BUCKET, 18 * 4)
 
     //    Tank Interaction    //
 
     @JvmField
-    val EMPTYING: HTLookupRecipeViewerType<SingleRecipeInput, HTTankEmptyingRecipe> =
-        create(HCRecipeLookups.EMPTYING, Items.BUCKET, 18 * 3, 18 * 3)
+    val EMPTYING: HTLookupRecipeViewerType<HTTankEmptyingRecipe, HCTankEmptyingRecipe> =
+        lookup(HCRecipeLookups.EMPTYING, Items.BUCKET, 18 * 3, 18 * 3)
 
     @JvmField
-    val FILLING: HTLookupRecipeViewerType<HTItemAndFluidRecipeInput, HTTankFillingRecipe> =
-        create(HCRecipeLookups.FILLING, Items.BUCKET, 18 * 3, 18 * 3)
+    val FILLING: HTLookupRecipeViewerType<HTTankFillingRecipe, HCTankFillingRecipe> =
+        lookup(HCRecipeLookups.FILLING, Items.WATER_BUCKET, 18 * 3, 18 * 3)
 
     //    Material    //
 

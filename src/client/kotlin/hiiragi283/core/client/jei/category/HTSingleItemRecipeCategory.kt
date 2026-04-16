@@ -1,75 +1,36 @@
 package hiiragi283.core.client.jei.category
 
 import hiiragi283.core.api.gui.HTBackgroundType
-import hiiragi283.core.api.integration.jei.category.HTLookupRecipeCategory
-import hiiragi283.core.api.integration.jei.extension.HTSingleItemRecipeCategoryExtension
-import hiiragi283.core.api.recipe.HTRecipeHolder
-import hiiragi283.core.api.recipe.base.HTSingleItemRecipe
+import hiiragi283.core.api.integration.jei.addItemIngredient
+import hiiragi283.core.api.integration.jei.addItemResult
+import hiiragi283.core.api.integration.jei.category.HTHolderRecipeCategory
 import hiiragi283.core.api.recipe.viewer.HTLookupRecipeViewerType
+import hiiragi283.core.impl.recipe.HTBasicSingleItemRecipe
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
-import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder
 import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
+import net.minecraft.world.item.crafting.RecipeSerializer
 
-class HTSingleItemRecipeCategory(guiHelper: IGuiHelper, recipeType: HTLookupRecipeViewerType<*, HTSingleItemRecipe>) :
-    HTLookupRecipeCategory<HTSingleItemRecipe>(guiHelper, recipeType) {
-    private val extensions: MutableMap<Class<out HTSingleItemRecipe>, HTSingleItemRecipeCategoryExtension<*>> = hashMapOf()
-
-    inline fun <reified RECIPE : HTSingleItemRecipe> addExtension(extension: HTSingleItemRecipeCategoryExtension<RECIPE>) {
-        this.addExtension(RECIPE::class.java, extension)
-    }
-
-    fun <RECIPE : HTSingleItemRecipe> addExtension(clazz: Class<RECIPE>, extension: HTSingleItemRecipeCategoryExtension<RECIPE>) {
-        extensions[clazz] = extension
-    }
-
-    //    HTLookupRecipeCategory    //
-
-    override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: HTSingleItemRecipe, focuses: IFocusGroup) {
-        val (recipe1: HTSingleItemRecipe, extension: HTSingleItemRecipeCategoryExtension<HTSingleItemRecipe>) =
-            getExtension<HTSingleItemRecipe>(recipe) ?: return
+open class HTSingleItemRecipeCategory<RECIPE : HTBasicSingleItemRecipe>(
+    guiHelper: IGuiHelper,
+    recipeType: HTLookupRecipeViewerType<*, RECIPE>,
+    serializer: RecipeSerializer<RECIPE>,
+) : HTHolderRecipeCategory.Registered<RECIPE>(guiHelper, recipeType, serializer) {
+    override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: RECIPE, focuses: IFocusGroup) {
         // input
-        extension.setInput(
-            recipe1,
-            builder.addInputSlot(getPosition(0), getPosition(0)).setSlotBackground(HTBackgroundType.INPUT),
-        )
+        builder
+            .addInputSlot(getPosition(0), getPosition(0))
+            .addItemIngredient(recipe.ingredient)
+            .setSlotBackground(HTBackgroundType.INPUT)
         // output
-        extension.setOutput(
-            recipe1,
-            builder.addOutputSlot(getPosition(3), getPosition(0)).setSlotBackground(HTBackgroundType.OUTPUT),
-        )
+        builder
+            .addOutputSlot(getPosition(3), getPosition(0))
+            .addItemResult(recipe.result)
+            .setSlotBackground(HTBackgroundType.OUTPUT)
     }
 
-    override fun createRecipeExtrasImpl(builder: IRecipeExtrasBuilder, recipe: HTSingleItemRecipe, focuses: IFocusGroup) {
+    override fun setupRecipeExtras(builder: IRecipeExtrasBuilder, recipe: RECIPE, focuses: IFocusGroup) {
         builder.addAnimatedRecipeArrow(recipe.time).setPosition(getPosition(1.25), getPosition(0))
-    }
-
-    override fun onDisplayedIngredientsUpdate(
-        recipe: HTRecipeHolder<HTSingleItemRecipe>,
-        recipeSlots: List<IRecipeSlotDrawable>,
-        focuses: IFocusGroup,
-    ) {
-        val (recipe1: HTSingleItemRecipe, extension: HTSingleItemRecipeCategoryExtension<HTSingleItemRecipe>) =
-            getExtension<HTSingleItemRecipe>(recipe.recipe) ?: return
-        extension.onDisplayedIngredientsUpdate(recipe1, recipeSlots[0], recipeSlots[1], focuses)
-    }
-
-    override fun isHandled(recipe: HTRecipeHolder<HTSingleItemRecipe>): Boolean = getExtension<HTSingleItemRecipe>(recipe.recipe) != null
-
-    @Suppress("UNCHECKED_CAST")
-    private fun <RECIPE : HTSingleItemRecipe> getExtension(
-        recipe: HTSingleItemRecipe,
-    ): Pair<RECIPE, HTSingleItemRecipeCategoryExtension<RECIPE>>? {
-        val extension: HTSingleItemRecipeCategoryExtension<RECIPE> =
-            (extensions[recipe::class.java] as? HTSingleItemRecipeCategoryExtension<RECIPE>) ?: run {
-                for ((clazz: Class<out HTSingleItemRecipe>, extension: HTSingleItemRecipeCategoryExtension<*>) in extensions) {
-                    if (clazz.isInstance(recipe)) {
-                        return@run extension as? HTSingleItemRecipeCategoryExtension<RECIPE>
-                    }
-                }
-                null
-            } ?: return null
-        return (recipe as RECIPE) to extension
     }
 }

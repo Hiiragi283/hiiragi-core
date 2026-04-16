@@ -17,19 +17,17 @@ import hiiragi283.core.client.jei.category.HCForgingRecipeCategory
 import hiiragi283.core.client.jei.category.HCMaterialPartCategory
 import hiiragi283.core.client.jei.category.HCMeltingRecipeCategory
 import hiiragi283.core.client.jei.category.HTSingleItemRecipeCategory
-import hiiragi283.core.client.jei.category.base.HTDoubleMultiOutputRecipeCategory
-import hiiragi283.core.client.jei.category.base.HTSingleMultiOutputRecipeCategory
 import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
-import hiiragi283.core.client.jei.extension.HTBasicDoubleMultiOutputRecipeCategoryExtension
-import hiiragi283.core.client.jei.extension.HTBasicSingleItemRecipeCategoryExtension
-import hiiragi283.core.client.jei.extension.HTBasicSingleMultiOutputRecipeCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
+import hiiragi283.core.common.recipe.HCRecipeLookups
+import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
 import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
+import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.util.HCPotionFluidHelper
 import mezz.jei.api.JeiPlugin
 import mezz.jei.api.constants.VanillaTypes
@@ -43,7 +41,6 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration
 import mezz.jei.api.registration.IRecipeRegistration
 import mezz.jei.api.registration.ISubtypeRegistration
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration
-import mezz.jei.api.runtime.IIngredientManager
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.Item
@@ -52,23 +49,6 @@ import net.neoforged.neoforge.fluids.FluidStack
 
 @JeiPlugin
 class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
-    companion object {
-        // ItemToItem
-        @JvmStatic
-        lateinit var charging: HTSingleItemRecipeCategory
-            private set
-
-        // ItemToMultiOutput
-        @JvmStatic
-        lateinit var crushing: HTSingleMultiOutputRecipeCategory
-            private set
-
-        // DoubleItemToMultiOutput
-        @JvmStatic
-        lateinit var forging: HTDoubleMultiOutputRecipeCategory
-            private set
-    }
-
     override fun registerItemSubtypes(registration: ISubtypeRegistration) {
         registration.registerSubtypeInterpreter(
             HCItems.BLUEPRINT.get(),
@@ -112,41 +92,18 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
 
     override fun registerCategories(registration: IRecipeCategoryRegistration) {
         val guiHelper: IGuiHelper = registration.jeiHelpers.guiHelper
-        val manager: IIngredientManager = registration.jeiHelpers.ingredientManager
-
-        initItemToItem(guiHelper, manager)
-        initItemToMultiOutput(guiHelper, manager)
-        initDoubleItemToMultiOutput(guiHelper, manager)
 
         registration.addRecipeCategories(
             // Material
             HCMaterialPartCategory(guiHelper),
             // Recipes
             HCBrewingRecipeCategory(guiHelper),
-            charging,
-            crushing,
+            HCCrushingRecipeCategory(guiHelper),
+            HTSingleItemRecipeCategory(guiHelper, HCRecipeViewerTypes.CHARGING, HCRecipeSerializers.CHARGING),
             HCExplodingRecipeCategory(guiHelper),
-            forging,
+            HCForgingRecipeCategory(guiHelper),
             HCMeltingRecipeCategory(guiHelper),
         )
-    }
-
-    private fun initItemToItem(guiHelper: IGuiHelper, manager: IIngredientManager) {
-        charging = HTSingleItemRecipeCategory(guiHelper, HCRecipeViewerTypes.CHARGING)
-
-        charging.addExtension(HTBasicSingleItemRecipeCategoryExtension())
-    }
-
-    private fun initItemToMultiOutput(guiHelper: IGuiHelper, manager: IIngredientManager) {
-        crushing = HCCrushingRecipeCategory(guiHelper)
-
-        crushing.addExtension(HTBasicSingleMultiOutputRecipeCategoryExtension())
-    }
-
-    private fun initDoubleItemToMultiOutput(guiHelper: IGuiHelper, manager: IIngredientManager) {
-        forging = HCForgingRecipeCategory(guiHelper)
-
-        forging.addExtension(HTBasicDoubleMultiOutputRecipeCategoryExtension())
     }
 
     override fun registerVanillaCategoryExtensions(registration: IVanillaCategoryExtensionRegistration) {
@@ -157,19 +114,20 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     override fun registerRecipes(registration: IRecipeRegistration) {
+        registration.addRecipes(HCRecipeViewerTypes.BREWING, HTVanillaRecipeTypes.BREWING)
+        registration.addRecipes(HCRecipeViewerTypes.CHARGING, HCRecipeLookups.CHARGING)
+        registration.addRecipes(HCRecipeViewerTypes.CRUSHING, HCRecipeLookups.CRUSHING)
+        registration.addRecipes(HCRecipeViewerTypes.EXPLODING, HCRecipeLookups.EXPLODING)
+        registration.addRecipes(HCRecipeViewerTypes.FORGING, HCRecipeLookups.FORGING)
+        registration.addRecipes(HCRecipeViewerTypes.MELTING, HCRecipeLookups.MELTING)
+
+        registerTankEmptying(registration)
+        registerTankFilling(registration)
+
         registration.addRecipes(
             getRecipeType(HCRecipeViewerTypes.MaterialType),
             HTMaterialManager.getInstance().entries.asSequence(),
         )
-
-        registration.addRecipes(HCRecipeViewerTypes.BREWING)
-        registration.addRecipes(HCRecipeViewerTypes.CHARGING)
-        registration.addRecipes(HCRecipeViewerTypes.CRUSHING)
-        registration.addRecipes(HCRecipeViewerTypes.EXPLODING)
-        registration.addRecipes(HCRecipeViewerTypes.FORGING)
-        registration.addRecipes(HCRecipeViewerTypes.MELTING)
-        registerTankEmptying(registration)
-        registerTankFilling(registration)
     }
 
     private fun registerTankEmptying(registration: IRecipeRegistration) {}

@@ -1,8 +1,11 @@
 package hiiragi283.core.api.integration.jei
 
 import hiiragi283.core.api.HTComparators
+import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.HTRecipeLookup
+import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
+import hiiragi283.core.api.recipe.viewer.HTLookupRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.resource.toId
 import mezz.jei.api.IModPlugin
@@ -10,7 +13,6 @@ import mezz.jei.api.constants.VanillaTypes
 import mezz.jei.api.registration.IRecipeCatalystRegistration
 import mezz.jei.api.registration.IRecipeRegistration
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.item.crafting.RecipeInput
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[IModPlugin]の抽象クラスです。
@@ -54,35 +56,33 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
         }
 
         /**
-         * 指定した[recipeType]と[lookup]からレシピを登録します。
-         * @param INPUT レシピの入力となるクラス
+         * 指定した[viewerType]と[lookup]からレシピを登録します。
          * @param RECIPE レシピのクラス
          */
         @JvmStatic
-        protected fun <INPUT : RecipeInput, RECIPE : Any> IRecipeRegistration.addRecipes(
-            recipeType: HTRecipeViewerType<HTRecipeHolder<RECIPE>>,
-            lookup: HTRecipeLookup<INPUT, RECIPE>,
+        protected fun <RECIPE : Any> IRecipeRegistration.addRecipes(
+            viewerType: HTHolderRecipeViewerType<RECIPE>,
+            lookup: HTRecipeLookup<*, RECIPE>,
         ) {
             this.addRecipes(
-                getRecipeType(recipeType),
+                getRecipeType(viewerType),
                 lookup.getAllRecipes().sortedWith(HOLDER_SORTER),
             )
         }
 
         /**
-         * 指定した[recipeType]と[lookup]からレシピを登録します。
-         * @param INPUT レシピの入力となるクラス
+         * 指定した[viewerType]と[lookup]からレシピを登録します。
          * @param RECIPE レシピのクラス
          * @param sorter レシピの順番の制御
          */
         @JvmStatic
-        protected fun <INPUT : RecipeInput, RECIPE : Any> IRecipeRegistration.addRecipes(
-            recipeType: HTRecipeViewerType<HTRecipeHolder<RECIPE>>,
-            lookup: HTRecipeLookup<INPUT, RECIPE>,
+        protected fun <RECIPE : Any> IRecipeRegistration.addRecipes(
+            viewerType: HTHolderRecipeViewerType<RECIPE>,
+            lookup: HTRecipeLookup<*, RECIPE>,
             sorter: Comparator<RECIPE>,
         ) {
             this.addRecipes(
-                getRecipeType(recipeType),
+                getRecipeType(viewerType),
                 lookup
                     .getAllRecipes()
                     .sortedWith(compareBy(sorter, HTRecipeHolder<RECIPE>::recipe).thenComparing(HOLDER_SORTER)),
@@ -90,37 +90,43 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
         }
 
         /**
-         * 指定した[recipeType]からレシピを登録します。
-         * @param INPUT レシピの入力となるクラス
-         * @param RECIPE レシピのクラス
-         * @param TYPE [HTRecipeViewerType]と[HTRecipeLookup]を実装したクラス
+         * 指定した[viewerType]と[lookup]からレシピを登録します。
+         * @param BASE [lookup]で取得できるレシピのクラス
+         * @param RECIPE [BASE]を継承したクラス
+         * @since 0.16.0
          */
         @JvmStatic
-        protected fun <INPUT : RecipeInput, RECIPE : Any, TYPE> IRecipeRegistration.addRecipes(
-            recipeType: TYPE,
-        ) where TYPE : HTRecipeViewerType<HTRecipeHolder<RECIPE>>, TYPE : HTRecipeLookup<INPUT, RECIPE> {
+        protected inline fun <BASE : HTRecipe<*>, reified RECIPE : BASE> IRecipeRegistration.addRecipes(
+            viewerType: HTLookupRecipeViewerType<BASE, RECIPE>,
+            lookup: HTRecipeLookup<*, BASE>,
+        ) {
             this.addRecipes(
-                getRecipeType(recipeType),
-                recipeType.getAllRecipes().sortedWith(HOLDER_SORTER),
+                getRecipeType(viewerType),
+                lookup
+                    .getAllRecipes()
+                    .mapNotNull { holder: HTRecipeHolder<BASE> -> holder.mapRecipeOrNull { it as? RECIPE } }
+                    .sortedWith(HOLDER_SORTER),
             )
         }
 
         /**
-         * 指定した[recipeType]からレシピを登録します。
-         * @param INPUT レシピの入力となるクラス
-         * @param RECIPE レシピのクラス
-         * @param TYPE [HTRecipeViewerType]と[HTRecipeLookup]を実装したクラス
+         * 指定した[viewerType]と[lookup]からレシピを登録します。
+         * @param BASE [lookup]で取得できるレシピのクラス
+         * @param RECIPE [BASE]を継承したクラス
          * @param sorter レシピの順番の制御
+         * @since 0.16.0
          */
         @JvmStatic
-        protected fun <INPUT : RecipeInput, RECIPE : Any, TYPE> IRecipeRegistration.addRecipes(
-            recipeType: TYPE,
+        protected inline fun <BASE : HTRecipe<*>, reified RECIPE : BASE> IRecipeRegistration.addRecipes(
+            viewerType: HTLookupRecipeViewerType<BASE, RECIPE>,
+            lookup: HTRecipeLookup<*, BASE>,
             sorter: Comparator<RECIPE>,
-        ) where TYPE : HTRecipeViewerType<HTRecipeHolder<RECIPE>>, TYPE : HTRecipeLookup<INPUT, RECIPE> {
+        ) {
             this.addRecipes(
-                getRecipeType(recipeType),
-                recipeType
+                getRecipeType(viewerType),
+                lookup
                     .getAllRecipes()
+                    .mapNotNull { holder: HTRecipeHolder<BASE> -> holder.mapRecipeOrNull { it as? RECIPE } }
                     .sortedWith(compareBy(sorter, HTRecipeHolder<RECIPE>::recipe).thenComparing(HOLDER_SORTER)),
             )
         }
