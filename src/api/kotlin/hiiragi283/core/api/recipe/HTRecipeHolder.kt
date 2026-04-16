@@ -23,7 +23,7 @@ data class HTRecipeHolder<RECIPE : Any>(
     companion object {
         /**
          * [HTRecipeHolder]の[Codec]を作成します。
-         * @since 0.16.0
+         * @since 0.15.1
          */
         @JvmStatic
         fun <RECIPE : Any> codec(recipeCodec: MapCodec<RECIPE>): Codec<HTRecipeHolder<RECIPE>> = RecordCodecBuilder.create { instance ->
@@ -58,7 +58,7 @@ data class HTRecipeHolder<RECIPE : Any>(
      * @param R 変換後のクラス
      * @param transform [recipe]を[R]に変換するブロック
      * @return [transform]で変換した値が`null`の場合は`null`
-     * @since 0.16.0
+     * @since 0.15.1
      */
     inline fun <R : Any> mapRecipeOrNull(transform: (RECIPE) -> R?): HTRecipeHolder<R>? {
         val recipe: R = transform(this.recipe) ?: return null

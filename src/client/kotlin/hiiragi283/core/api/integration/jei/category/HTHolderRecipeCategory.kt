@@ -17,7 +17,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer
 /**
  * [HTRecipeHolder]に基づいた[HTBasicRecipeCategory]の拡張クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.16.0
+ * @since 0.15.1
  */
 abstract class HTHolderRecipeCategory<RECIPE : Any>(
     guiHelper: IGuiHelper,
@@ -46,6 +46,11 @@ abstract class HTHolderRecipeCategory<RECIPE : Any>(
 
     final override fun getCodec(codecHelper: ICodecHelper, recipeManager: IRecipeManager): Codec<HTRecipeHolder<RECIPE>> = codec
 
+    /**
+     * [Recipe]向けの[HTHolderRecipeCategory]の拡張クラスです。
+     * @author Hiiragi Tsubasa
+     * @since 0.15.1
+     */
     abstract class Registered<RECIPE : Recipe<*>>(
         guiHelper: IGuiHelper,
         recipeType: HTHolderRecipeViewerType<RECIPE>,

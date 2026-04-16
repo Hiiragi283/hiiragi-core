@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack
 /**
  * [HTRecipeHolder]に基づいた[HTRecipeViewerType]の型エイリアスです。
  * @author Hiiragi Tsubasa
- * @since 0.16.0
+ * @since 0.15.1
  */
 typealias HTHolderRecipeViewerType<RECIPE> = HTRecipeViewerType<HTRecipeHolder<RECIPE>>
 

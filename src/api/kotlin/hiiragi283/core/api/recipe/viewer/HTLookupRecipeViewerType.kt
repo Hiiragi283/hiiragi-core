@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack
 /**
  * [HTRecipeHolder]に基づいた[HTRecipeViewerType]の実装クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.16.0
+ * @since 0.15.1
  * @see mekanism.client.recipe_viewer.type.FakeRVRecipeType
  */
 class HTLookupRecipeViewerType<BASE : Any, RECIPE : BASE>(

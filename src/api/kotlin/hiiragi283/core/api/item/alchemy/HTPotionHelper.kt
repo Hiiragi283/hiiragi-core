@@ -119,7 +119,7 @@ object HTPotionHelper {
     /**
      * 指定した[stack]から[BottledPotionContents]を取得します。
      * @return [BottledPotionContents]を取得できない場合は`null`
-     * @since 0.16.0
+     * @since 0.15.1
      */
     @JvmStatic
     fun getContentsFromBottle(stack: ItemStack): BottledPotionContents? = stack.toResource()?.let(::getContentsFromBottle)

@@ -7,10 +7,17 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 
+/**
+ * Hiiragi Coreとそれを前提とするmodで使用される[ItemLike]の拡張インターフェースです。
+ * @param ITEM アイテムのクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.15.1
+ */
 interface HTItemLike<ITEM : Item> : ItemLike {
     override fun asItem(): ITEM
 
     /**
+     * 指定した[item]と一致するか判定します。
      * @author Hiiragi Tsubasa
      * @since 0.14.0
      */
