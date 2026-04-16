@@ -81,11 +81,11 @@ data object HCRecipeViewerTypes {
 
     @JvmField
     val EMPTYING: HTLookupRecipeViewerType<HTTankEmptyingRecipe, HCTankEmptyingRecipe> =
-        lookup(HCRecipeLookups.EMPTYING, Items.BUCKET, 18 * 3, 18 * 3)
+        lookup(HCRecipeLookups.EMPTYING, Items.BUCKET, 18 * 6)
 
     @JvmField
     val FILLING: HTLookupRecipeViewerType<HTTankFillingRecipe, HCTankFillingRecipe> =
-        lookup(HCRecipeLookups.FILLING, Items.WATER_BUCKET, 18 * 3, 18 * 3)
+        lookup(HCRecipeLookups.FILLING, Items.WATER_BUCKET, 18 * 6)
 
     //    Material    //
 
