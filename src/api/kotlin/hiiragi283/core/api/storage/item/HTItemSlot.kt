@@ -4,6 +4,7 @@ import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.resource.HTResourceSlot
 import hiiragi283.core.api.storage.resource.HTResourceView
+import hiiragi283.core.impl.storage.item.HTItemStackResourceSlot
 import net.minecraft.world.item.ItemStack
 
 /**
@@ -22,7 +23,10 @@ typealias HTItemSlot = HTResourceSlot<HTItemResourceType>
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-fun HTItemView.getItemStack(): ItemStack = this.getResource().toStackOrEmpty(this.getAmount())
+fun HTItemView.getItemStack(): ItemStack = when (this) {
+    is HTItemStackResourceSlot -> this.getStack()
+    else -> this.getResource().toStackOrEmpty(this.getAmount())
+}
 
 /**
  * この[HTItemSlot][this]に指定した[stack]を搬入します。

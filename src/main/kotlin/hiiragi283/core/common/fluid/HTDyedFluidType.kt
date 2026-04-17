@@ -5,6 +5,7 @@ import hiiragi283.core.api.VanillaColoredContents
 import hiiragi283.core.api.fluid.HTFluidType
 import hiiragi283.core.util.HTItemDropHelper
 import net.minecraft.core.BlockPos
+import net.minecraft.network.chat.TextColor
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
@@ -12,6 +13,8 @@ import net.minecraft.world.phys.Vec3
 import net.neoforged.neoforge.fluids.FluidStack
 
 class HTDyedFluidType(private val color: HTDefaultColor, properties: Properties) : HTFluidType(properties) {
+    override fun getNameColor(stack: FluidStack): TextColor = color.textColor
+
     override fun onVaporize(
         player: Player?,
         level: Level,

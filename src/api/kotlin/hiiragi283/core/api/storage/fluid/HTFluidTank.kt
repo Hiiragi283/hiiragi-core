@@ -4,6 +4,7 @@ import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.resource.HTResourceSlot
 import hiiragi283.core.api.storage.resource.HTResourceView
+import hiiragi283.core.impl.storage.fluid.HTFluidStackResourceSlot
 import net.neoforged.neoforge.fluids.FluidStack
 
 /**
@@ -22,7 +23,10 @@ typealias HTFluidTank = HTResourceSlot<HTFluidResourceType>
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-fun HTFluidView.getFluidStack(): FluidStack = this.getResource().toStackOrEmpty(this.getAmount())
+fun HTFluidView.getFluidStack(): FluidStack = when (this) {
+    is HTFluidStackResourceSlot -> this.getStack()
+    else -> this.getResource().toStackOrEmpty(this.getAmount())
+}
 
 /**
  * この[HTFluidTank][this]に指定した[stack]を搬入します。

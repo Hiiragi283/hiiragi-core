@@ -8,6 +8,7 @@ import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCEnchantments
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
@@ -26,6 +27,11 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HCBlocks.TREE_TAP, "ツリータップ")
         add(HCBlocks.FORGING_ANVIL, "紺鉄の金床")
+        // Enchantment
+        add(HCEnchantments.HAMMER_OF_JUSTICE, "正義の鉄槌", "襲撃者に対するダメージを増加させます。")
+        add(HCEnchantments.NOISE_CANCELING, "ノイズキャンセリング", "ウォーデンなどのスカルク系モンスターに対するダメージを増加させます。")
+
+        add(HCEnchantments.SONIC_PROTECTION, "音響耐性", "ソニックブームなどの音響攻撃を無効にします。")
         // Entity
         add(HCEntityTypes.BOMB, "ボム")
         add(HCEntityTypes.ELDRITCH_EGG, "異質な卵")

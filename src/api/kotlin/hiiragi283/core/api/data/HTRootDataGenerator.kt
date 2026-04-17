@@ -6,11 +6,14 @@ import net.minecraft.core.RegistrySetBuilder
 import net.minecraft.data.DataGenerator
 import net.minecraft.data.DataProvider
 import net.minecraft.data.PackOutput
+import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
+import net.neoforged.neoforge.common.conditions.ICondition
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider
 import net.neoforged.neoforge.common.data.ExistingFileHelper
 import net.neoforged.neoforge.data.event.GatherDataEvent
 import java.util.concurrent.CompletableFuture
+import java.util.function.BiConsumer
 import java.util.function.BooleanSupplier
 
 /**
@@ -55,6 +58,7 @@ data class HTRootDataGenerator private constructor(
         fun withDataPack(
             event: GatherDataEvent,
             builderAction: RegistrySetBuilder.() -> Unit,
+            conditionBuilder: (BiConsumer<ResourceKey<*>, ICondition>) -> Unit = {},
         ): Pair<HTRootDataGenerator, HTRootDataGenerator> {
             val generator: DataGenerator = event.generator
             val registries: CompletableFuture<HolderLookup.Provider> = generator
@@ -63,6 +67,7 @@ data class HTRootDataGenerator private constructor(
                         output,
                         event.lookupProvider,
                         RegistrySetBuilder().apply(builderAction),
+                        conditionBuilder,
                         event.mods.plus(HTConst.MINECRAFT),
                     )
                 }.registryProvider

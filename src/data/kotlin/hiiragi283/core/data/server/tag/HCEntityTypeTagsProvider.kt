@@ -3,8 +3,10 @@ package hiiragi283.core.data.server.tag
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.tag.HTTagsProvider
+import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import net.minecraft.core.registries.Registries
+import net.minecraft.tags.EntityTypeTags
 import net.minecraft.world.entity.EntityType
 import net.neoforged.neoforge.common.Tags
 
@@ -16,5 +18,13 @@ class HCEntityTypeTagsProvider(context: HTDataGenContext) :
             // .add(HTConst.MINECRAFT.toId("warden"))
             .addTag(Tags.EntityTypes.BOSSES)
             .addTag(Tags.EntityTypes.CAPTURING_NOT_SUPPORTED)
+
+        factory
+            .apply(HiiragiCoreTags.EntityTypes.SENSITIVE_TO_HAMMER_OF_JUSTICE)
+            .addTag(EntityTypeTags.RAIDERS)
+
+        factory
+            .apply(HiiragiCoreTags.EntityTypes.SENSITIVE_TO_NOISE_CANCELLING)
+            .add(EntityType.WARDEN.toLike())
     }
 }

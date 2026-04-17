@@ -3,6 +3,7 @@ package hiiragi283.core.api.tag
 import hiiragi283.core.api.HiiragiCoreAPI
 import net.minecraft.core.registries.Registries
 import net.minecraft.tags.TagKey
+import net.minecraft.world.damagesource.DamageType
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
@@ -32,12 +33,26 @@ object HiiragiCoreTags {
         private fun mod(vararg path: String): TagKey<Block> = Registries.BLOCK.createTagKey(HiiragiCoreAPI.id(*path))
     }
 
+    object DamageTypes {
+        @JvmField
+        val IS_SONIC: TagKey<DamageType> = mod("is_sonic")
+
+        @JvmStatic
+        private fun mod(path: String): TagKey<DamageType> = Registries.DAMAGE_TYPE.createTagKey(HiiragiCoreAPI.id(path))
+    }
+
     object EntityTypes {
         /**
          * @since 0.14.0
          */
         @JvmField
         val CAPTURE_BLACKLIST: TagKey<EntityType<*>> = mod("capture_blacklist")
+
+        @JvmField
+        val SENSITIVE_TO_HAMMER_OF_JUSTICE: TagKey<EntityType<*>> = mod("sensitive_to_hammer_of_justice")
+
+        @JvmField
+        val SENSITIVE_TO_NOISE_CANCELLING: TagKey<EntityType<*>> = mod("sensitive_to_noise_cancelling")
 
         @JvmStatic
         private fun common(vararg path: String): TagKey<EntityType<*>> = Registries.ENTITY_TYPE.createCommonTag(*path)

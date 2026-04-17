@@ -5,6 +5,9 @@ import hiiragi283.core.api.fixedFraction
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.amount.HTAmountView
+import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.api.storage.fluid.HTFluidTank
+import hiiragi283.core.api.storage.fluid.toResourcePair
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.toResourcePair
@@ -14,7 +17,7 @@ import hiiragi283.core.api.storage.resource.HTResourceView
 import net.minecraft.util.Mth
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.redstone.Redstone
-import java.util.function.ToIntBiFunction
+import net.neoforged.neoforge.fluids.FluidStack
 
 object HTStackSlotHelper {
     @JvmStatic
@@ -43,46 +46,13 @@ object HTStackSlotHelper {
         }
     }
 
-    @JvmStatic
-    fun <RESOURCE : HTResourceType<*>> shrinkStack(
-        slot: HTResourceSlot<RESOURCE>,
-        ingredient: ToIntBiFunction<RESOURCE, Int>,
-        action: HTStorageAction,
-    ): Int {
-        val stackIn: RESOURCE = slot.getResource() ?: return 0
-        return slot.extract(ingredient.applyAsInt(stackIn, slot.getAmount()), action, HTStorageAccess.INTERNAL)
-    }
-
-    @JvmStatic
-    fun <RESOURCE : HTResourceType<*>> canShrinkStack(slot: HTResourceSlot<RESOURCE>, amount: Int, exactMatch: Boolean): Boolean {
-        val extracted: Int = slot.extract(amount, HTStorageAction.SIMULATE, HTStorageAccess.INTERNAL)
-        return when (exactMatch) {
-            true -> extracted == amount
-            false -> extracted > 0
-        }
-    }
-
-    @JvmStatic
-    fun <RESOURCE : HTResourceType<*>> canShrinkStack(
-        slot: HTResourceSlot<RESOURCE>,
-        ingredient: ToIntBiFunction<RESOURCE, Int>,
-        exactMatch: Boolean,
-    ): Boolean {
-        val amount: Int = slot.getResource()?.let { ingredient.applyAsInt(it, slot.getAmount()) } ?: return false
-        val extracted: Int = slot.extract(amount, HTStorageAction.SIMULATE, HTStorageAccess.INTERNAL)
-        return when (exactMatch) {
-            true -> extracted == amount
-            false -> extracted > 0
-        }
-    }
-
     /**
      * 指定した[resource]をすべてのスロットへ搬入します。
      * @return 搬入されない量
      */
     @JvmStatic
     fun <RESOURCE : HTResourceType<*>> insert(
-        slots: Iterable<HTResourceSlot<RESOURCE>>,
+        slots: Sequence<HTResourceSlot<RESOURCE>>,
         resource: RESOURCE?,
         amount: Int,
         action: HTStorageAction,
@@ -150,30 +120,26 @@ object HTStackSlotHelper {
     //    Item    //
 
     @JvmStatic
-    inline fun shrinkItemStack(
-        slot: HTItemSlot,
-        remainderGetter: (HTItemResourceType) -> ItemStack,
-        stackSetter: (ItemStack) -> Unit,
-        amount: Int,
-        action: HTStorageAction,
-    ): Int {
-        val stackIn: HTItemResourceType = slot.getResource() ?: return 0
-        if (action.execute()) {
-            stackIn
-                .let(remainderGetter)
-                .let(stackSetter)
-        }
-        return slot.extract(amount, action, HTStorageAccess.INTERNAL)
-    }
-
-    @JvmStatic
     fun insertStacks(
-        slot: Iterable<HTItemSlot>,
+        slots: Sequence<HTItemSlot>,
         stack: ItemStack,
         action: HTStorageAction,
         access: HTStorageAccess,
     ): Int {
         val (resource: HTItemResourceType, amount: Int) = stack.toResourcePair() ?: return 0
-        return insert(slot, resource, amount, action, access)
+        return insert(slots, resource, amount, action, access)
+    }
+
+    //    Fluid    //
+
+    @JvmStatic
+    fun insertStacks(
+        tanks: Sequence<HTFluidTank>,
+        stack: FluidStack,
+        action: HTStorageAction,
+        access: HTStorageAccess,
+    ): Int {
+        val (resource: HTFluidResourceType, amount: Int) = stack.toResourcePair() ?: return 0
+        return insert(tanks, resource, amount, action, access)
     }
 }

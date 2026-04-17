@@ -8,13 +8,16 @@ import hiiragi283.core.data.client.HCItemModelProvider
 import hiiragi283.core.data.client.HCJapaneseLangProvider
 import hiiragi283.core.data.server.HCDataMapProvider
 import hiiragi283.core.data.server.HCRecipeProvider
+import hiiragi283.core.data.server.bootsrap.HCEnchantmentProvider
 import hiiragi283.core.data.server.loot.HCBlockLootTableProvider
 import hiiragi283.core.data.server.loot.HCGlobalLootModifierProvider
 import hiiragi283.core.data.server.loot.HCGlobalLootProvider
 import hiiragi283.core.data.server.tag.HCBlockTagsProvider
+import hiiragi283.core.data.server.tag.HCDamageTypeTagsProvider
 import hiiragi283.core.data.server.tag.HCEntityTypeTagsProvider
 import hiiragi283.core.data.server.tag.HCFluidTagsProvider
 import hiiragi283.core.data.server.tag.HCItemTagsProvider
+import net.minecraft.core.registries.Registries
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
@@ -24,7 +27,10 @@ import net.neoforged.neoforge.data.event.GatherDataEvent
 data object HiiragiCoreDataGen {
     @SubscribeEvent
     fun gatherData(event: GatherDataEvent) {
-        val (server: HTRootDataGenerator, client: HTRootDataGenerator) = HTRootDataGenerator.withDataPack(event)
+        val (server: HTRootDataGenerator, client: HTRootDataGenerator) = HTRootDataGenerator.withDataPack(
+            event,
+            { add(Registries.ENCHANTMENT, HCEnchantmentProvider) },
+        )
         // Server
         server.addLootTables(
             ::HCBlockLootTableProvider to LootContextParamSets.BLOCK,
@@ -34,6 +40,7 @@ data object HiiragiCoreDataGen {
 
         server.addProvider(::HCRecipeProvider)
 
+        server.addProvider(::HCDamageTypeTagsProvider)
         server.addProvider(::HCEntityTypeTagsProvider)
         server.addProvider(::HCFluidTagsProvider)
         server.addBlockAndItemTags(::HCBlockTagsProvider, ::HCItemTagsProvider)

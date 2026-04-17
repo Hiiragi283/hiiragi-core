@@ -6,6 +6,8 @@ import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.unwrap
 import net.minecraft.core.Holder
 import net.minecraft.resources.ResourceKey
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.EntityType
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.registries.DeferredHolder
@@ -97,3 +99,22 @@ fun <BLOCK : Block> BLOCK.toLike(): HTBlockHolderLike<BLOCK> = object : HTBlockH
  * @since 0.12.0
  */
 fun HTBlockHolderLike<*>.getDefaultState(): BlockState = this.get().defaultBlockState()
+
+//    EntityType    //
+
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.15.2
+ */
+typealias HTEntityHolderLike<ENTITY> = HTHolderLike<EntityType<*>, EntityType<ENTITY>>
+
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.15.2
+ */
+@Suppress("DEPRECATION")
+fun <ENTITY : Entity> EntityType<ENTITY>.toLike(): HTEntityHolderLike<ENTITY> = object : HTEntityHolderLike<ENTITY> {
+    override fun unwrap(): Either<ResourceKey<EntityType<*>>, Holder<EntityType<*>>> = Either.Right(this@toLike.builtInRegistryHolder())
+
+    override fun get(): EntityType<ENTITY> = this@toLike
+}

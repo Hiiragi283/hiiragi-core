@@ -14,10 +14,13 @@ interface HTItemOutputHandler : HTOutputHandler<ItemStack> {
         fun single(slot: HTItemSlot): HTItemOutputHandler = Single(slot)
 
         @JvmStatic
-        fun multiple(vararg slots: HTItemSlot): HTItemOutputHandler = multiple(listOf(*slots))
+        fun multiple(vararg slots: HTItemSlot): HTItemOutputHandler = multiple(slots.asSequence())
 
         @JvmStatic
-        fun multiple(slots: List<HTItemSlot>): HTItemOutputHandler = Multiple(slots)
+        fun multiple(slots: Iterable<HTItemSlot>): HTItemOutputHandler = multiple(slots.asSequence())
+
+        @JvmStatic
+        fun multiple(slots: Sequence<HTItemSlot>): HTItemOutputHandler = Multiple(slots)
     }
 
     private class Single(private val slot: HTItemSlot) : HTItemOutputHandler {
@@ -28,7 +31,7 @@ interface HTItemOutputHandler : HTOutputHandler<ItemStack> {
         }
     }
 
-    private class Multiple(private val slots: List<HTItemSlot>) : HTItemOutputHandler {
+    private class Multiple(private val slots: Sequence<HTItemSlot>) : HTItemOutputHandler {
         override fun canInsert(stack: ItemStack): Boolean = HTStackSlotHelper.insertStacks(
             slots,
             stack,

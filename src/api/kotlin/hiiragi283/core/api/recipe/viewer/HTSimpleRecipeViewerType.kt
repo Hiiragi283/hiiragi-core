@@ -40,7 +40,7 @@ class HTSimpleRecipeViewerType<RECIPE : Any>(
             icon: Either<ResourceLocation, ItemStack>,
             bounds: HTBounds,
             vararg workStations: ItemStack,
-        ): HTSimpleRecipeViewerType<RECIPE> = create<RECIPE>(idLike, hasText, icon, bounds, listOf(*workStations))
+        ): HTSimpleRecipeViewerType<RECIPE> = create<RECIPE>(idLike, hasText, icon, bounds, listOfNotNull(icon.getRight(), *workStations))
 
         @JvmStatic
         inline fun <reified RECIPE : Any> create(
