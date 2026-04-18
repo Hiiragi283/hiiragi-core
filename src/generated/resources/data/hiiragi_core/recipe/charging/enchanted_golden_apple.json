@@ -5,6 +5,7 @@
     "items": "minecraft:golden_apple"
   },
   "result": {
+    "chance": "1/8",
     "id": "minecraft:enchanted_golden_apple"
   }
 }

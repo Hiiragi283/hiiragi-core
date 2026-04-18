@@ -5,6 +5,7 @@
     "items": "#c:gems/quartz"
   },
   "result": {
+    "chance": "3/4",
     "id": "minecraft:prismarine_shard"
   }
 }

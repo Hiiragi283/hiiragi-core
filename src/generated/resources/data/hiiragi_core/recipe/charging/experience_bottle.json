@@ -5,6 +5,7 @@
     "items": "#c:drinks/honey"
   },
   "result": {
+    "chance": "1/2",
     "id": "minecraft:experience_bottle"
   }
 }

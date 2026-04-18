@@ -18,18 +18,20 @@ class HCChargingRecipe(val ingredient: HTItemIngredient, val result: HTItemResul
     }
 
     override fun test(input: Input): Boolean {
-        val (item: ItemStack, energy: Int) = input
-        return ingredient.test(item) && energy >= requiredEnergy
+        val (item: ItemStack, energy: Int?) = input
+        if (!ingredient.test(item)) return false
+        return energy == null || energy >= requiredEnergy
     }
 
-    override fun assemble(input: Input, registries: HolderLookup.Provider): ItemStack = result.getStackOrEmpty(registries)
+    override fun assemble(input: Input, registries: HolderLookup.Provider): ItemStack =
+        result.getStackOrEmpty(registries, input.energy == null)
 
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.CHARGING
 
     override fun getType(): RecipeType<*> = HCRecipeTypes.CHARGING.get()
 
     @JvmRecord
-    data class Input(val item: ItemStack, val energy: Int = DEFAULT_ENERGY) : RecipeInput {
+    data class Input(val item: ItemStack, val energy: Int?) : RecipeInput {
         override fun getItem(index: Int): ItemStack = when (index) {
             0 -> item
             else -> error("No item for index $index")

@@ -45,33 +45,33 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         // Ender Pearl -> Ender Eye
         HCChargingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(CommonTagPrefixes.PEARL, VanillaMaterialKeys.ENDER)
-            result = resultCreator.create(Items.ENDER_EYE)
+            result = resultCreator.create(Items.ENDER_EYE, chance = fraction(1, 2))
         }
         // Golden Apple
         HCChargingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(Items.GOLDEN_APPLE)
-            result = resultCreator.create(Items.ENCHANTED_GOLDEN_APPLE)
+            result = resultCreator.create(Items.ENCHANTED_GOLDEN_APPLE, chance = fraction(1, 8))
         }
         // Quartz -> Prismarine
         HCChargingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ)
-            result = resultCreator.create(Items.PRISMARINE_SHARD)
+            result = resultCreator.create(Items.PRISMARINE_SHARD, chance = fraction(3, 4))
         }
         // Redstone Dust -> Glowstone Dust
         HCChargingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE)
-            result = resultCreator.material(CommonParts.DUST, VanillaMaterialKeys.GLOWSTONE)
+            result = resultCreator.material(CommonParts.DUST, VanillaMaterialKeys.GLOWSTONE, chance = fraction(3, 4))
         }
         // Honey Bottle -> Exp Bottle
         HCChargingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(Tags.Items.DRINKS_HONEY)
-            result = resultCreator.create(Items.EXPERIENCE_BOTTLE)
+            result = resultCreator.create(Items.EXPERIENCE_BOTTLE, chance = fraction(1, 2))
         }
 
         // End Crystal -> Eldritch Pearl
         HCChargingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(Items.END_CRYSTAL)
-            result = resultCreator.material(CommonParts.PEARL, HCMaterialKeys.ELDRITCH)
+            result = resultCreator.material(CommonParts.PEARL, HCMaterialKeys.ELDRITCH, chance = fraction(1, 4))
         }
         // Heart of the Sea
         HCChargingRecipeBuilder.create(output) {
