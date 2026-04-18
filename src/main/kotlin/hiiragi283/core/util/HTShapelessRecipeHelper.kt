@@ -47,6 +47,14 @@ object HTShapelessRecipeHelper {
         }
 
     /**
+     * @since 0.15.2
+     */
+    @JvmName("mergeItemStacks")
+    @JvmStatic
+    fun mergeStacks(stacks: Iterable<ItemStack>): List<ItemStack> =
+        createMap(stacks).map { (resource: HTItemResourceType, count: Int) -> resource.toStack(count) }
+
+    /**
      * @since 0.10.0
      */
     @JvmName("createMapFromFluids")
@@ -57,6 +65,14 @@ object HTShapelessRecipeHelper {
             map[resource] = (map[resource] ?: 0) + amount
             map
         }
+
+    /**
+     * @since 0.15.2
+     */
+    @JvmName("mergeFluidStacks")
+    @JvmStatic
+    fun mergeStacks(stacks: Iterable<FluidStack>): List<FluidStack> =
+        createMap(stacks).map { (resource: HTFluidResourceType, amount: Int) -> resource.toStack(amount) }
 
     //    Match    //
 

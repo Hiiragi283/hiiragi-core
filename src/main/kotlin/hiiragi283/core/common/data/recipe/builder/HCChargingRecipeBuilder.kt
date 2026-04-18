@@ -22,5 +22,5 @@ class HCChargingRecipeBuilder : HTRecipeBuilder(HTConst.CHARGING) {
 
     override fun getPrimalId(): ResourceLocation = result.getId()
 
-    override fun createRecipe(): HCChargingRecipe = HCChargingRecipe(ingredient, result, requiredEnergy)
+    override fun createRecipe(): HCChargingRecipe = HCChargingRecipe(ingredient.unsized, result, requiredEnergy)
 }

@@ -58,7 +58,9 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.alchemy.Potion
+import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.level.ItemLike
+import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.DataComponentFluidIngredient
 import kotlin.streams.asSequence
@@ -162,9 +164,12 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                     HTRecipeHolder(
                         potion.toLike().getId().withPath { "/${HTConst.EMPTYING}/potion/$it" },
                         HCTankEmptyingRecipe(
-                            HTIngredientCreator.create(false, Items.POTION) {
-                                expect(DataComponents.POTION_CONTENTS, contents.contents)
-                            },
+                            DataComponentIngredient.of(
+                                false,
+                                DataComponents.POTION_CONTENTS,
+                                contents.contents,
+                                Items.POTION,
+                            ),
                             HTResultCreator.create(HCPotionFluidHelper.createFluid(contents, 250)),
                             HTResultCreator.create(Items.GLASS_BOTTLE).wrapOptional(),
                         ),
@@ -199,7 +204,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                     HTRecipeHolder(
                         potion.toLike().getId().withPath { "/${HTConst.FILLING}/$prefix/$it" },
                         HCTankFillingRecipe(
-                            HTIngredientCreator.create(input),
+                            Ingredient.of(input),
                             HTIngredientCreator.create(
                                 DataComponentFluidIngredient.of(
                                     false,

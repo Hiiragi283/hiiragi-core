@@ -1,9 +1,6 @@
 {
   "type": "hiiragi_core:charging",
-  "ingredient": {
-    "amount": 1,
-    "items": "#c:drinks/honey"
-  },
+  "ingredient": "#c:drinks/honey",
   "result": {
     "chance": "1/2",
     "id": "minecraft:experience_bottle"

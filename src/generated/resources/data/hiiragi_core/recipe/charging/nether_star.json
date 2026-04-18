@@ -1,9 +1,6 @@
 {
   "type": "hiiragi_core:charging",
-  "ingredient": {
-    "amount": 1,
-    "items": "hiiragi_core:wither_star"
-  },
+  "ingredient": "hiiragi_core:wither_star",
   "result": {
     "id": "minecraft:nether_star"
   }

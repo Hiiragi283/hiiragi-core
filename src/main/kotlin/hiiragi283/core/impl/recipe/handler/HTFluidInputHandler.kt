@@ -7,7 +7,7 @@ import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.HTFluidTank
 
-class HTFluidInputHandler(private val tank: HTFluidTank) :
+class HTFluidInputHandler(tank: HTFluidTank) :
     HTInputHandler<HTFluidResourceType>,
     HTFluidTank by tank {
     override fun getMatchingAmount(ingredient: HTIngredient<HTFluidResourceType>): Int {

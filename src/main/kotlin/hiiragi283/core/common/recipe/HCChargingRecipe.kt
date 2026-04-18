@@ -1,17 +1,17 @@
 package hiiragi283.core.common.recipe
 
 import hiiragi283.core.api.recipe.base.HTSerializableRecipe
-import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
 
-class HCChargingRecipe(val ingredient: HTItemIngredient, val result: HTItemResult, val requiredEnergy: Int) :
+class HCChargingRecipe(val ingredient: Ingredient, val result: HTItemResult, val requiredEnergy: Int) :
     HTSerializableRecipe<HCChargingRecipe.Input> {
     companion object {
         const val DEFAULT_ENERGY = 1_024_000

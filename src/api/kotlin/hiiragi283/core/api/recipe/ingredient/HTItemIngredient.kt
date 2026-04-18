@@ -22,10 +22,6 @@ import net.neoforged.neoforge.common.crafting.ICustomIngredient
 class HTItemIngredient(val unsized: Ingredient, override val amount: Int) : HTIngredient.Registered<Item, HTItemResourceType> {
     companion object {
         @JvmField
-        val UNSIZED_CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> =
-            VanillaBiCodecs.INGREDIENT.xmap({ HTItemIngredient(it, 1) }, HTItemIngredient::unsized)
-
-        @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> = BiCodec.composite(
             VanillaBiCodecs.INGREDIENT.fieldOf(HTConst.ITEMS).forGetter(HTItemIngredient::unsized),
             BiCodecs.NON_NEGATIVE_INT.optionalFieldOf(HTConst.AMOUNT, 0).forGetter(HTItemIngredient::amount),

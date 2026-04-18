@@ -10,7 +10,7 @@ import java.util.Optional
  * @since 0.5.0
  * @see mekanism.api.recipes.inputs.IInputHandler
  */
-interface HTInputHandler<RESOURCE : Any> {
+interface HTInputHandler<RESOURCE : Any> : HTAmountInputHandler {
     /**
      * 指定した[材料][ingredient]から消費される数量を取得します。
      * @return [ingredient]が要求する数量
@@ -30,9 +30,4 @@ interface HTInputHandler<RESOURCE : Any> {
     fun consume(ingredient: Optional<out HTIngredient<RESOURCE>>) {
         ingredient.map(::consume)
     }
-
-    /**
-     * 指定した[数量][amount]だけ中身を消費します。
-     */
-    fun consume(amount: Int)
 }

@@ -11,6 +11,7 @@ import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.serialization.codec.MapBiCodec
 import hiiragi283.core.api.serialization.codec.MapBiCodecs
+import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.crafting.HCExperienceStoringRecipe
 import hiiragi283.core.common.crafting.HTBlueprintCloningRecipe
@@ -131,7 +132,7 @@ object HCRecipeSerializers {
     val CHARGING: RecipeSerializer<HCChargingRecipe> = REGISTER.registerSerializer(
         HTConst.CHARGING,
         MapBiCodec.composite(
-            HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HCChargingRecipe::ingredient),
+            VanillaBiCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HCChargingRecipe::ingredient),
             HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCChargingRecipe::result),
             BiCodecs.NON_NEGATIVE_INT
                 .optionalFieldOf("energy", HCChargingRecipe.DEFAULT_ENERGY)
@@ -165,7 +166,7 @@ object HCRecipeSerializers {
     val EMPTYING: RecipeSerializer<HCTankEmptyingRecipe> = REGISTER.registerSerializer(
         HTConst.EMPTYING,
         MapBiCodec.composite(
-            HTItemIngredient.UNSIZED_CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HCTankEmptyingRecipe::ingredient),
+            VanillaBiCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HCTankEmptyingRecipe::ingredient),
             HTFluidResult.CODEC.fieldOf(HTConst.FLUID_RESULT).forGetter(HCTankEmptyingRecipe::fluidResult),
             HTItemResult.CODEC.optionalFieldOf(HTConst.ITEM_RESULT).forGetter(HCTankEmptyingRecipe::itemResult),
             ::HCTankEmptyingRecipe,
@@ -176,7 +177,7 @@ object HCRecipeSerializers {
     val FILLING: RecipeSerializer<HCTankFillingRecipe> = REGISTER.registerSerializer(
         HTConst.FILLING,
         MapBiCodec.composite(
-            HTItemIngredient.UNSIZED_CODEC.fieldOf(HTConst.ITEM_INGREDIENT).forGetter(HCTankFillingRecipe::itemIngredient),
+            VanillaBiCodecs.INGREDIENT.fieldOf(HTConst.ITEM_INGREDIENT).forGetter(HCTankFillingRecipe::itemIngredient),
             HTFluidIngredient.CODEC.fieldOf(HTConst.FLUID_INGREDIENT).forGetter(HCTankFillingRecipe::fluidIngredient),
             HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCTankFillingRecipe::result),
             ::HCTankFillingRecipe,

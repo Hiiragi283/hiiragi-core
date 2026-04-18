@@ -9,7 +9,6 @@ import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.item.enchantment.toInstances
 import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
-import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.toFraction
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
@@ -85,11 +84,13 @@ object HCRecipeEventHandler {
         if (entity is ItemEntity && entity.isAlive) {
             val input = HCChargingRecipe.Input(entity.item, null)
             val recipe: HCChargingRecipe = getCaches(level).charging.getFirstRecipe(input, level) ?: return
-            popResult(input, recipe, level, entity) { recipe: HCChargingRecipe, _ -> recipe.ingredient.amount }
-            if (entity.item.isEmpty) {
-                entity.discard()
-                event.isCanceled = true
-            }
+            (0 until entity.item.count)
+                .map { recipe.assemble(input, level.registryAccess()) }
+                .let(HTShapelessRecipeHelper::mergeStacks)
+                .mapNotNull(entity::spawnAtLocation)
+                .forEach(::setComplete)
+            entity.discard()
+            event.isCanceled = true
         }
     }
 
@@ -113,9 +114,9 @@ object HCRecipeEventHandler {
         val multiplier: Int = popResult(input, recipe, level, entity, HTSingleMultiOutputRecipe::getRequiredAmount)
         (0 until multiplier)
             .flatMap { recipe.assembleItems(input, level.registryAccess()) }
-            .let(HTShapelessRecipeHelper::createMap)
-            .map { (resource: HTItemResourceType, count: Int) -> resource.toStack(count) }
-            .forEach(entity::spawnAtLocation)
+            .let(HTShapelessRecipeHelper::mergeStacks)
+            .mapNotNull(entity::spawnAtLocation)
+            .forEach(::setComplete)
         if (entity.item.isEmpty) {
             entity.discard()
         }

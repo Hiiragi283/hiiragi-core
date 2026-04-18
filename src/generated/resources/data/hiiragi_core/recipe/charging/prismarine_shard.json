@@ -1,9 +1,6 @@
 {
   "type": "hiiragi_core:charging",
-  "ingredient": {
-    "amount": 1,
-    "items": "#c:gems/quartz"
-  },
+  "ingredient": "#c:gems/quartz",
   "result": {
     "chance": "3/4",
     "id": "minecraft:prismarine_shard"

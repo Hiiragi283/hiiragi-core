@@ -30,7 +30,7 @@ data object HTTankInteractionRecipeBuilder {
 
         override fun getPrimalId(): ResourceLocation = fluidResult.getId()
 
-        override fun createRecipe(): HCTankEmptyingRecipe = HCTankEmptyingRecipe(ingredient, fluidResult, itemResult.wrapOptional())
+        override fun createRecipe(): HCTankEmptyingRecipe = HCTankEmptyingRecipe(ingredient.unsized, fluidResult, itemResult.wrapOptional())
     }
 
     class Filling : HTRecipeBuilder(HTConst.FILLING) {
@@ -40,6 +40,6 @@ data object HTTankInteractionRecipeBuilder {
 
         override fun getPrimalId(): ResourceLocation = itemResult.getId()
 
-        override fun createRecipe(): HCTankFillingRecipe = HCTankFillingRecipe(itemIngredient, fluidIngredient, itemResult)
+        override fun createRecipe(): HCTankFillingRecipe = HCTankFillingRecipe(itemIngredient.unsized, fluidIngredient, itemResult)
     }
 }
