@@ -1,6 +1,5 @@
 package hiiragi283.core.data
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.createLootTables
 import hiiragi283.core.api.data.createProviderWithHelper
@@ -35,7 +34,6 @@ data object HiiragiCoreDataGen {
         event.createDatapackRegistryObjects(
             RegistrySetBuilder()
                 .add(Registries.ENCHANTMENT, HCEnchantmentProvider),
-            setOf(event.modContainer.modId, HTConst.MINECRAFT),
         )
         // Server
         event.createLootTables(

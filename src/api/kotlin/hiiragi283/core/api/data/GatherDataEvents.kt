@@ -1,5 +1,7 @@
 package hiiragi283.core.api.data
 
+import hiiragi283.core.api.data.advancement.HTAdvancementProvider
+import hiiragi283.core.api.data.advancement.HTSubAdvancementProvider
 import hiiragi283.core.api.function.partially1
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.DataProvider
@@ -28,3 +30,9 @@ fun GatherDataEvent.createLootTables(
         future,
     )
 }
+
+fun GatherDataEvent.createAdvancements(vararg subProviders: HTSubAdvancementProvider): HTAdvancementProvider =
+    this.createAdvancements(subProviders.toList())
+
+fun GatherDataEvent.createAdvancements(subProviders: List<HTSubAdvancementProvider>): HTAdvancementProvider =
+    this.createProviderWithHelper(::HTAdvancementProvider.partially1(subProviders))

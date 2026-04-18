@@ -346,8 +346,9 @@ tasks {
         }
         from(apiModule.output)
         from(clientModule.output)
-        from(dataModule.output)
-        exclude("**/core/data/**")
+        from(dataModule.output) {
+            this.include("**/core/data/bootsrap/**")
+        }
     }
 
     /*wrapper {

@@ -21,10 +21,10 @@ import java.util.concurrent.CompletableFuture
  * @see AdvancementProvider
  */
 class HTAdvancementProvider(
+    private val subProviders: List<HTSubAdvancementProvider>,
     private val fileHelper: ExistingFileHelper,
     output: PackOutput,
     private val registries: CompletableFuture<HolderLookup.Provider>,
-    private val subProviders: List<HTSubAdvancementProvider>,
 ) : DataProvider {
     private val pathProvider: PackOutput.PathProvider =
         output.createRegistryElementsPathProvider(Registries.ADVANCEMENT)
