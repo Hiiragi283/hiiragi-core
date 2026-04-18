@@ -1,4 +1,4 @@
-package hiiragi283.core.data.server.loot
+package hiiragi283.core.data.loot
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.loot.HTGlobalLootModifierProvider

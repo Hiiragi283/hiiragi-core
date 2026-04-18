@@ -1,4 +1,4 @@
-package hiiragi283.core.data.server
+package hiiragi283.core.data
 
 import hiiragi283.core.api.block.HTWeatheringBlockMap
 import hiiragi283.core.api.block.HTWeatheringLevel

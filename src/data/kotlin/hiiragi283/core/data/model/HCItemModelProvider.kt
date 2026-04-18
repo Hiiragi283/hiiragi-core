@@ -1,4 +1,4 @@
-package hiiragi283.core.data.client
+package hiiragi283.core.data.model
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI

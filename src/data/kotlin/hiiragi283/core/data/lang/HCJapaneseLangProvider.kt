@@ -1,4 +1,4 @@
-package hiiragi283.core.data.client
+package hiiragi283.core.data.lang
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider

@@ -1,4 +1,4 @@
-package hiiragi283.core.data.server.tag
+package hiiragi283.core.data.tag
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.tag.HTFluidTagsProvider

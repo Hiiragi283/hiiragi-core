@@ -1,9 +1,9 @@
-package hiiragi283.core.data.server
+package hiiragi283.core.data
 
 import hiiragi283.core.api.data.recipe.HTRecipeProvider
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.data.server.recipe.HCBasicRecipeProvider
-import hiiragi283.core.data.server.recipe.HCCommonRecipeProvider
+import hiiragi283.core.data.recipe.HCBasicRecipeProvider
+import hiiragi283.core.data.recipe.HCCommonRecipeProvider
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import java.util.concurrent.CompletableFuture
