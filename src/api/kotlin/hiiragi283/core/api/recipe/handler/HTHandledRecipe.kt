@@ -2,7 +2,6 @@ package hiiragi283.core.api.recipe.handler
 
 import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.base.HTFluidRecipe
-import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeInput
 import net.neoforged.neoforge.fluids.FluidStack
@@ -28,19 +27,7 @@ data class HTHandledRecipe<INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> privat
     /**
      * レシピの完成品を取得します。
      */
-    fun assemble(registries: HolderLookup.Provider): ItemStack = map(registries, HTRecipe<INPUT>::assemble)
-
-    /**
-     * 保持している[input]と[recipe]を変換します。
-     * @param T 変換後のクラス
-     * @param transform 変換するブロック
-     */
-    inline fun <T> map(transform: (RECIPE, INPUT) -> T): T = transform(recipe, input)
-
-    /**
-     * @since 0.14.0
-     */
-    inline fun <T, C> map(context: C, transform: (RECIPE, INPUT, C) -> T): T = transform(recipe, input, context)
+    fun assemble(preview: Boolean): ItemStack = recipe.assemble(input, preview)
 }
 
 //    Extensions    //
@@ -50,6 +37,5 @@ data class HTHandledRecipe<INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> privat
  * @author Hiiragi Tsubasa
  * @since 0.13.0
  */
-fun <INPUT : RecipeInput, RECIPE> HTHandledRecipe<INPUT, RECIPE>.assembleFluid(
-    registries: HolderLookup.Provider,
-): FluidStack where RECIPE : HTRecipe<INPUT>, RECIPE : HTFluidRecipe<INPUT> = this.map(registries, HTFluidRecipe<INPUT>::assembleFluid)
+fun <INPUT : RecipeInput, RECIPE> HTHandledRecipe<INPUT, RECIPE>.assembleFluid(): FluidStack where RECIPE : HTRecipe<INPUT>, RECIPE : HTFluidRecipe<INPUT> =
+    this.recipe.assembleFluid(this.input)

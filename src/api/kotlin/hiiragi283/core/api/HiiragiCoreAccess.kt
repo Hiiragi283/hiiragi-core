@@ -14,15 +14,19 @@ import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.registry.HTSimpleHolderLike
+import hiiragi283.core.api.registry.holderSetOrNull
 import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.item.HTItemResourceType
+import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextResult
+import hiiragi283.core.api.text.toTextResult
 import hiiragi283.core.impl.material.HTMaterialContentsImpl
 import hiiragi283.core.impl.material.HTMaterialContentsRegister
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.HolderLookup
+import net.minecraft.core.HolderSet
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.Block
@@ -182,5 +186,18 @@ abstract class HiiragiCoreAccess {
      * @param T レジストリの種類のクラス
      * @return [HTSimpleHolderLike]の[結果][HTTextResult]
      */
-    abstract fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLike<T>>
+    fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLike<T>> {
+        val provider1: HolderLookup.Provider =
+            (provider ?: HiiragiCoreAPI.getActiveAccess()) ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()
+        val holderSet: HolderSet<T> =
+            provider1.holderSetOrNull(tagKey) ?: return HTCommonTranslation.EMPTY_TAG_KEY.toTextResult(tagKey)
+        return getFirstHolder(holderSet)
+    }
+
+    /**
+     * 指定した[holderSet]から，最初の[HTSimpleHolderLike]を取得します。
+     * @param T レジストリの種類のクラス
+     * @return [HTSimpleHolderLike]の[結果][HTTextResult]
+     */
+    abstract fun <T : Any> getFirstHolder(holderSet: HolderSet<T>): HTTextResult<HTSimpleHolderLike<T>>
 }

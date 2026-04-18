@@ -29,6 +29,9 @@ interface HTSerializableRecipe<INPUT : RecipeInput> :
     override fun getResultItem(registries: HolderLookup.Provider): ItemStack = ItemStack.EMPTY
 
     @Deprecated("Not used in Hiiragi Series", level = DeprecationLevel.ERROR)
+    override fun assemble(input: INPUT, registries: HolderLookup.Provider): ItemStack = assemble(input, false)
+
+    @Deprecated("Not used in Hiiragi Series", level = DeprecationLevel.ERROR)
     override fun getRemainingItems(input: INPUT): NonNullList<ItemStack> = super.getRemainingItems(input)
 
     @Deprecated("Not used in Hiiragi Series", level = DeprecationLevel.ERROR)

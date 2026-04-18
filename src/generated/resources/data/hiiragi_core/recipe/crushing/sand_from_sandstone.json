@@ -12,7 +12,7 @@
     {
       "chance": "1/4",
       "id": "hiiragi_core:saltpeter_dust",
-      "tag": "c:dusts/saltpeter"
+      "tag": "#c:dusts/saltpeter"
     }
   ],
   "time": 100

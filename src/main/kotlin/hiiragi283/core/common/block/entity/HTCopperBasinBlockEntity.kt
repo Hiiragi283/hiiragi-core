@@ -22,7 +22,6 @@ import hiiragi283.core.util.HTItemDropHelper
 import hiiragi283.core.util.HTStackSlotHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
-import net.minecraft.core.RegistryAccess
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.entity.player.Player
@@ -63,9 +62,8 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
         val level: Level = player.level()
         val recipe: HTTankEmptyingRecipe = emptyingCache.getFirstRecipe(input, level) ?: return false
 
-        val access: RegistryAccess = level.registryAccess()
-        val emptyContainer: ItemStack = recipe.assemble(input, access)
-        val fluidStack: FluidStack = recipe.assembleFluid(input, access)
+        val emptyContainer: ItemStack = recipe.assemble(input, false)
+        val fluidStack: FluidStack = recipe.assembleFluid(input)
         if (fluidOutputHandler.canInsert(fluidStack)) {
             HTItemDropHelper.giveStackTo(player, emptyContainer)
             fluidOutputHandler.insert(fluidStack)
@@ -84,7 +82,7 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
         val level: Level = player.level()
         val recipe: HTTankFillingRecipe = fillingCache.getFirstRecipe(input, level) ?: return false
 
-        val filledContainer: ItemStack = recipe.assemble(input, level.registryAccess())
+        val filledContainer: ItemStack = recipe.assemble(input, false)
         HTItemDropHelper.giveStackTo(player, filledContainer)
         stack.consume(1, player)
         recipe.getRequiredFluidAmount(input).let(fluidInputHandler::consume)

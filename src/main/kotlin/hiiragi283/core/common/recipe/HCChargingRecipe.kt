@@ -4,7 +4,6 @@ import hiiragi283.core.api.recipe.base.HTSerializableRecipe
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
-import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeInput
@@ -23,8 +22,7 @@ class HCChargingRecipe(val ingredient: Ingredient, val result: HTItemResult, val
         return energy == null || energy >= requiredEnergy
     }
 
-    override fun assemble(input: Input, registries: HolderLookup.Provider): ItemStack =
-        result.getStackOrEmpty(registries, input.energy == null)
+    override fun assemble(input: Input, preview: Boolean): ItemStack = result.getOrEmpty(input.energy == null)
 
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.CHARGING
 

@@ -87,7 +87,7 @@ fun <T : IIngredientConsumer> T.addItemIngredient(ingredient: HTItemIngredient?)
 }
 
 fun <T : IIngredientConsumer> T.addItemResult(result: HTItemResult?): T {
-    this.addItemStacks(listOfNotNull(result?.getStackResult(null, false)?.mapOrElse(identity(), ::createError)))
+    this.addItemStacks(listOfNotNull(result?.get(true)?.mapOrElse(identity(), ::createError)))
     if (result != null && this is IRecipeSlotBuilder) {
         val chance: Fraction = result.chance
         if (result.chance < 1f) {
@@ -121,4 +121,4 @@ fun <T : IIngredientConsumer> T.addFluidIngredient(ingredient: HTFluidIngredient
 }
 
 fun <T : IIngredientConsumer> T.addFluidResult(result: HTFluidResult?, setRenderer: Boolean = true): T =
-    this.addFluidStacks(listOfNotNull(result?.getStackResult(null)?.value()), setRenderer)
+    this.addFluidStacks(listOfNotNull(result?.get()?.value()), setRenderer)

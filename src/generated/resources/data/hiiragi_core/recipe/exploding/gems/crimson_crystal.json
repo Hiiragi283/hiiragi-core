@@ -4,6 +4,6 @@
   "result": {
     "chance": "1/8",
     "id": "hiiragi_core:crimson_crystal_gem",
-    "tag": "c:gems/crimson_crystal"
+    "tag": "#c:gems/crimson_crystal"
   }
 }

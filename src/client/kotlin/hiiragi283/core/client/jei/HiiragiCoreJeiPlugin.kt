@@ -3,7 +3,6 @@ package hiiragi283.core.client.jei
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTIngredientCreator
-import hiiragi283.core.api.data.recipe.HTResultCreator
 import hiiragi283.core.api.function.negate
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
 import hiiragi283.core.api.integration.jei.HTJeiRecipeHelper
@@ -15,6 +14,8 @@ import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.recipe.HTRecipeHolder
+import hiiragi283.core.api.recipe.result.HTFluidResult
+import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.util.wrapOptional
@@ -170,8 +171,8 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                                 contents.contents,
                                 Items.POTION,
                             ),
-                            HTResultCreator.create(HCPotionFluidHelper.createFluid(contents, 250)),
-                            HTResultCreator.create(Items.GLASS_BOTTLE).wrapOptional(),
+                            HTFluidResult.create(HCPotionFluidHelper.createFluid(contents, 250)),
+                            HTItemResult.create(Items.GLASS_BOTTLE).wrapOptional(),
                         ),
                     )
                 },
@@ -212,7 +213,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                                 ),
                                 amount,
                             ),
-                            HTResultCreator.create(HTPotionHelper.createPotion(output, potion)),
+                            HTItemResult.create(HTPotionHelper.createPotion(output, potion)),
                         ),
                     )
                 },

@@ -6,7 +6,6 @@ import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
-import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeSerializer
@@ -21,8 +20,7 @@ class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: H
 
     override fun getRequiredFluidAmount(input: HTItemAndFluidRecipeInput): Int = fluidIngredient.amount
 
-    override fun assemble(input: HTItemAndFluidRecipeInput, registries: HolderLookup.Provider): ItemStack =
-        result.getStackOrEmpty(registries)
+    override fun assemble(input: HTItemAndFluidRecipeInput, preview: Boolean): ItemStack = result.getOrEmpty(preview)
 
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.FILLING
 

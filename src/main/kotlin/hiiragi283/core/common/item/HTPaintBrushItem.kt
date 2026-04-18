@@ -69,7 +69,7 @@ class HTPaintBrushItem(properties: Properties) : Item(properties) {
             ?.recipe
             ?: return InteractionResult.PASS
         // output
-        recipe.assemble(input, level.registryAccess()).let(onSucceeded)
+        recipe.assemble(input, false).let(onSucceeded)
         // input
         offStack.consume(1, player)
         recipe.getRequiredAmount(input).getRight()?.let(fluidInput::consume)

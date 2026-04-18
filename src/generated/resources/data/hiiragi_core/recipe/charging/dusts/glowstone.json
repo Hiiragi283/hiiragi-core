@@ -4,6 +4,6 @@
   "result": {
     "chance": "3/4",
     "id": "minecraft:glowstone_dust",
-    "tag": "c:dusts/glowstone"
+    "tag": "#c:dusts/glowstone"
   }
 }

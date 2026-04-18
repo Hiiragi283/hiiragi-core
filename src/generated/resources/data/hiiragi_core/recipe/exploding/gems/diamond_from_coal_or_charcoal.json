@@ -9,6 +9,6 @@
   "result": {
     "chance": "1/64",
     "id": "minecraft:diamond",
-    "tag": "c:gems/diamond"
+    "tag": "#c:gems/diamond"
   }
 }

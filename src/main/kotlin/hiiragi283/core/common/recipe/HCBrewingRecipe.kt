@@ -10,7 +10,6 @@ import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.serialization.codec.MapBiCodec
 import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.api.util.Ior
-import net.minecraft.core.HolderLookup
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
@@ -35,8 +34,7 @@ data class HCBrewingRecipe(val potionFrom: HTFluidIngredient, val ingredient: In
 
     override val time: Int = 100
 
-    override fun assemble(input: HTItemAndFluidRecipeInput, registries: HolderLookup.Provider): ItemStack = ItemStack.EMPTY
+    override fun assemble(input: HTItemAndFluidRecipeInput, preview: Boolean): ItemStack = ItemStack.EMPTY
 
-    override fun assembleFluid(input: HTItemAndFluidRecipeInput, registries: HolderLookup.Provider): FluidStack =
-        potionTo.getStackOrEmpty(registries)
+    override fun assembleFluid(input: HTItemAndFluidRecipeInput): FluidStack = potionTo.getOrEmpty()
 }

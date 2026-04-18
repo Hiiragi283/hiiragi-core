@@ -9,7 +9,6 @@ import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.util.Ior
-import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.Predicate
@@ -25,9 +24,8 @@ abstract class HTBasicItemOrFluidRecipe(
     final override fun getRequiredAmount(input: HTItemAndFluidRecipeInput): Ior<ItemAmount, FluidAmount> =
         ingredient.mapLeft(HTItemIngredient::amount).mapRight(HTFluidIngredient::amount)
 
-    final override fun assembleFluid(input: HTItemAndFluidRecipeInput, registries: HolderLookup.Provider): FluidStack =
-        result.getRight()?.getStackResult(registries)?.value() ?: FluidStack.EMPTY
+    final override fun assemble(input: HTItemAndFluidRecipeInput, preview: Boolean): ItemStack =
+        result.getLeft()?.getOrEmpty(preview) ?: ItemStack.EMPTY
 
-    override fun assemble(input: HTItemAndFluidRecipeInput, registries: HolderLookup.Provider): ItemStack =
-        result.getLeft()?.getStackResult(registries)?.value() ?: ItemStack.EMPTY
+    final override fun assembleFluid(input: HTItemAndFluidRecipeInput): FluidStack = result.getRight()?.getOrEmpty() ?: FluidStack.EMPTY
 }

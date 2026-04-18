@@ -4,6 +4,6 @@
   "result": {
     "chance": "1/4",
     "id": "minecraft:quartz",
-    "tag": "c:gems/quartz"
+    "tag": "#c:gems/quartz"
   }
 }

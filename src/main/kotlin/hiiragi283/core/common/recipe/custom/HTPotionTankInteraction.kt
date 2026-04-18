@@ -8,7 +8,6 @@ import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.util.HCPotionFluidHelper
-import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.crafting.SingleRecipeInput
@@ -24,9 +23,9 @@ data object HTPotionTankInteraction {
             return bool1 && bool2
         }
 
-        override fun assemble(input: SingleRecipeInput, registries: HolderLookup.Provider): ItemStack = ItemStack(Items.GLASS_BOTTLE)
+        override fun assemble(input: SingleRecipeInput, preview: Boolean): ItemStack = ItemStack(Items.GLASS_BOTTLE)
 
-        override fun assembleFluid(input: SingleRecipeInput, registries: HolderLookup.Provider): FluidStack {
+        override fun assembleFluid(input: SingleRecipeInput): FluidStack {
             val contents: BottledPotionContents = HTPotionHelper.getContentsFromBottle(input.item()) ?: return FluidStack.EMPTY
             return HCPotionFluidHelper.createFluid(contents, FLUID_AMOUNT)
         }
@@ -39,7 +38,7 @@ data object HTPotionTankInteraction {
 
         override fun getRequiredFluidAmount(input: HTItemAndFluidRecipeInput): Int = FLUID_AMOUNT
 
-        override fun assemble(input: HTItemAndFluidRecipeInput, registries: HolderLookup.Provider): ItemStack = HTPotionHelper
+        override fun assemble(input: HTItemAndFluidRecipeInput, preview: Boolean): ItemStack = HTPotionHelper
             .getContents(input.fluid)
             ?.let(HTPotionHelper::createPotion)
             ?: ItemStack.EMPTY
