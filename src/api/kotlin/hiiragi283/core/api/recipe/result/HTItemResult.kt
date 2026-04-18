@@ -14,7 +14,7 @@ import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.util.Ior
-import net.minecraft.core.HolderLookup
+import net.minecraft.core.HolderSet
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.resources.ResourceLocation
@@ -24,23 +24,31 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 import org.apache.commons.lang3.math.Fraction
 
-/**
- * [アイテム][ItemStack]の[完成品][HTRecipeResult]を表すクラスです。
- * @author Hiiragi Tsubasa
- * @since 0.10.0
- */
 @JvmRecord
-data class HTItemResult(private val content: Ior<HTItemResourceType, TagKey<Item>>, val count: Int, val chance: Fraction) :
+data class HTItemResult(private val content: Ior<HTItemResourceType, HolderSet<Item>>, val count: Int, val chance: Fraction) :
     HTRecipeResult<ItemStack> {
     companion object {
+        @JvmStatic
+        fun checkTagHolderSet(holderSet: HolderSet<Item>) {
+            check(holderSet.unwrapKey().isPresent) { "HTItemResult only supports HolderSet with tag" }
+        }
+
+        @JvmStatic
+        private val HOLDER_SET_CODEC: BiCodec<RegistryFriendlyByteBuf, HolderSet<Item>> = VanillaBiCodecs
+            .holderSet(Registries.ITEM)
+            .validate { holderSet: HolderSet<Item> ->
+                checkTagHolderSet(holderSet)
+                holderSet
+            }
+
         @JvmField
         val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemResult> = BiCodec.composite(
             MapBiCodecs
-                .ior(
-                    HTItemResourceType.CODEC.toMap(),
-                    VanillaBiCodecs.tagKey(Registries.ITEM, false).fieldOf(HTConst.TAG),
-                ).forGetter(HTItemResult::content),
-            BiCodecs.POSITIVE_INT.optionalFieldOf(HTConst.COUNT, 1).forGetter(HTItemResult::count),
+                .ior(HTItemResourceType.CODEC.toMap(), HOLDER_SET_CODEC.fieldOf(HTConst.TAG))
+                .forGetter(HTItemResult::content),
+            BiCodecs.POSITIVE_INT
+                .optionalFieldOf(HTConst.COUNT, 1)
+                .forGetter(HTItemResult::count),
             BiCodecs
                 .fractionRange(Fraction.ZERO..Fraction.ONE)
                 .optionalFieldOf(HTConst.CHANCE, Fraction.ONE)
@@ -58,42 +66,38 @@ data class HTItemResult(private val content: Ior<HTItemResourceType, TagKey<Item
         }
 
         @JvmStatic
-        fun create(tagKey: TagKey<Item>, count: Int = 1, chance: Fraction = Fraction.ONE): HTItemResult =
-            HTItemResult(Ior.Right(tagKey), count, chance)
+        fun create(holderSet: HolderSet<Item>, count: Int = 1, chance: Fraction = Fraction.ONE): HTItemResult {
+            checkTagHolderSet(holderSet)
+            return HTItemResult(Ior.Right(holderSet), count, chance)
+        }
     }
 
-    /**
-     * 指定した[レジストリ][provider]から完成品を取得します。
-     * @return 完成品を取得できなかった場合は[ItemStack.EMPTY]
-     */
-    fun getStackOrEmpty(provider: HolderLookup.Provider?): ItemStack = getStackResult(provider).valueOrElse(ItemStack::EMPTY)
+    fun getOrEmpty(): ItemStack = get().valueOrElse(ItemStack::EMPTY)
 
-    /**
-     * @since 0.15.0
-     */
-    fun getStackOrEmpty(provider: HolderLookup.Provider?, useChance: Boolean): ItemStack =
-        getStackResult(provider, useChance).valueOrElse(ItemStack::EMPTY)
+    fun getOrEmpty(preview: Boolean): ItemStack = get(preview).valueOrElse(ItemStack::EMPTY)
 
-    override fun getStackResult(provider: HolderLookup.Provider?): HTTextResult<ItemStack> = getStackResult(provider, true)
+    override fun get(): HTTextResult<ItemStack> = get(true)
 
-    /**
-     * @since 0.15.0
-     */
-    fun getStackResult(provider: HolderLookup.Provider?, useChance: Boolean): HTTextResult<ItemStack> = when {
-        useChance && HiiragiCoreAPI.RANDOM.nextFloat() >= this.chance -> HTTextResult.success(ItemStack.EMPTY)
-        else ->
+    fun get(preview: Boolean): HTTextResult<ItemStack> = when {
+        !preview && HiiragiCoreAPI.RANDOM.nextFloat() >= this.chance -> HTTextResult.success(ItemStack.EMPTY)
+        else -> {
             content.map(
                 { resource: HTItemResourceType -> HTTextResult.success(resource.toStack(count)) },
-                { tagKey: TagKey<Item> ->
+                { holderSet: HolderSet<Item> ->
                     HiiragiCoreAccess.INSTANCE
-                        .getFirstHolder(provider, tagKey)
+                        .getFirstHolder(holderSet)
                         .map { ItemStack(it.toItemLike(), count) }
                 },
                 { itemResult: HTTextResult<ItemStack>, tagResult: HTTextResult<ItemStack> ->
                     tagResult.mapOrElse(HTTextResult.Companion::success) { _ -> itemResult }
                 },
             )
+        }
     }
 
-    override fun getId(): ResourceLocation = content.map(HTItemResourceType::getId, TagKey<Item>::location, identityRight())
+    override fun getId(): ResourceLocation = content.map(
+        HTItemResourceType::getId,
+        { holderSet: HolderSet<Item> -> holderSet.unwrapKey().map(TagKey<Item>::location).orElseThrow() },
+        identityRight(),
+    )
 }

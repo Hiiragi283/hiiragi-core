@@ -9,7 +9,6 @@ import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.util.Ior
 import hiiragi283.core.setup.HCFluids
-import net.minecraft.core.HolderLookup
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -30,7 +29,7 @@ data class HCColoringRecipe(val inputTag: TagKey<Item>, val contents: HTColoredC
     override val time: Int
         get() = 100
 
-    override fun assemble(input: HTItemAndFluidRecipeInput, registries: HolderLookup.Provider): ItemStack {
+    override fun assemble(input: HTItemAndFluidRecipeInput, preview: Boolean): ItemStack {
         for ((color: HTDefaultColor, item: HTHolderLike<out ItemLike, *>) in contents) {
             if (HCFluids.DyeContents[color].isOf(input.fluid)) {
                 return ItemStack(item.get())
@@ -39,5 +38,5 @@ data class HCColoringRecipe(val inputTag: TagKey<Item>, val contents: HTColoredC
         return ItemStack.EMPTY
     }
 
-    override fun assembleFluid(input: HTItemAndFluidRecipeInput, registries: HolderLookup.Provider): FluidStack = FluidStack.EMPTY
+    override fun assembleFluid(input: HTItemAndFluidRecipeInput): FluidStack = FluidStack.EMPTY
 }

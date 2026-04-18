@@ -70,6 +70,7 @@ object HTVanillaRecipeTypes {
             }
             storedBrewing = potionBrewing
             // 醸造レシピを集める
+            val resultCreator = HTResultCreator(context.access)
             val builder: ImmutableMultimap.Builder<Holder<Potion>, Pair<Holder<Potion>, Ingredient>> = ImmutableMultimap.builder()
             // Vanilla
             for (accessor: PotionBrewingMixAccessor<Potion> in (potionBrewing as PotionBrewingAccessor).potionMixes) {
@@ -102,7 +103,7 @@ object HTVanillaRecipeTypes {
                             ingredient,
                             BottledPotionContents(potionTo)
                                 .let(HCPotionFluidHelper::createFluid)
-                                .let(HTResultCreator::create),
+                                .let(resultCreator::create),
                         )
                         HTRecipeHolder(potionTo.toLike().getId().withSuffix("_$index"), recipe)
                     }

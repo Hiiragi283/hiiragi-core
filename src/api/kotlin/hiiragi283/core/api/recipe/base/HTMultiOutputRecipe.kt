@@ -1,6 +1,5 @@
 package hiiragi283.core.api.recipe.base
 
-import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeInput
 
@@ -14,13 +13,11 @@ interface HTMultiOutputRecipe<INPUT : RecipeInput> : HTProcessingRecipe<INPUT> {
     /**
      * 指定された引数から完成品を作成します。
      * @param input レシピの入力
-     * @param registries レジストリへのアクセス
      */
-    fun assembleItems(input: INPUT, registries: HolderLookup.Provider): List<ItemStack>
+    fun assembleItems(input: INPUT, preview: Boolean): List<ItemStack>
 
-    @Deprecated("Use 'assembleItems(INPUT, HolderLookup.Provider)' instead")
-    override fun assemble(input: INPUT, registries: HolderLookup.Provider): ItemStack =
-        assembleItems(input, registries).firstOrNull() ?: ItemStack.EMPTY
+    @Deprecated("Use 'assembleItems(INPUT, Boolean)' instead")
+    override fun assemble(input: INPUT, preview: Boolean): ItemStack = assembleItems(input, preview).firstOrNull() ?: ItemStack.EMPTY
 
     //    Serializable    //
 
@@ -34,6 +31,6 @@ interface HTMultiOutputRecipe<INPUT : RecipeInput> : HTProcessingRecipe<INPUT> {
         HTMultiOutputRecipe<INPUT>,
         HTProcessingRecipe.Serializable<INPUT> {
         @Suppress("DEPRECATION")
-        override fun assemble(input: INPUT, registries: HolderLookup.Provider): ItemStack = super.assemble(input, registries)
+        override fun assemble(input: INPUT, preview: Boolean): ItemStack = super<HTMultiOutputRecipe>.assemble(input, preview)
     }
 }

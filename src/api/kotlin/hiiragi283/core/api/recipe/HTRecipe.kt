@@ -1,6 +1,5 @@
 package hiiragi283.core.api.recipe
 
-import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeInput
 import java.util.function.Predicate
@@ -19,7 +18,7 @@ interface HTRecipe<INPUT : RecipeInput> : Predicate<INPUT> {
     abstract override fun test(input: INPUT): Boolean
 
     /**
-     * 指定された[input]と[registries]から完成品を作成します。
+     * 指定された[input]から完成品を作成します。
      */
-    fun assemble(input: INPUT, registries: HolderLookup.Provider): ItemStack
+    fun assemble(input: INPUT, preview: Boolean): ItemStack
 }

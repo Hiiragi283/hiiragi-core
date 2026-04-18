@@ -6,7 +6,7 @@
   },
   "results": {
     "id": "hiiragi_core:wood_dust",
-    "tag": "c:dusts/wood"
+    "tag": "#c:dusts/wood"
   },
   "time": 100
 }

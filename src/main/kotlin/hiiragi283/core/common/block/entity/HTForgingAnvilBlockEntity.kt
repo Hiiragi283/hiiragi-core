@@ -72,7 +72,7 @@ class HTForgingAnvilBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntit
         val level: Level = player.level()
         val recipe: HTDoubleMultiOutputRecipe = cache.getFirstRecipe(input, level) ?: return false
         // outputs
-        recipe.assembleItems(input, level.registryAccess()).forEach(HTItemDropHelper::giveStackTo.partially1(player))
+        recipe.assembleItems(input, false).forEach(HTItemDropHelper::giveStackTo.partially1(player))
         // inputs
         input.let(recipe::getBaseAmount).let(inputHandler::consume)
         input.let(recipe::getAdditionAmount).let(stack1::shrink)

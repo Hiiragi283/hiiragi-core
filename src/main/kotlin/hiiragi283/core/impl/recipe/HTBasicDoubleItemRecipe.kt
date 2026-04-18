@@ -4,7 +4,6 @@ import hiiragi283.core.api.recipe.base.HTDoubleItemRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.recipe.result.HTItemResult
-import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack
 import java.util.Optional
 
@@ -23,6 +22,5 @@ abstract class HTBasicDoubleItemRecipe(
         return base.test(first) && addition.map { it.test(second) }.orElseGet { true }
     }
 
-    final override fun assemble(input: HTDoubleRecipeInput, registries: HolderLookup.Provider): ItemStack =
-        result.getStackOrEmpty(registries)
+    final override fun assemble(input: HTDoubleRecipeInput, preview: Boolean): ItemStack = result.getOrEmpty(preview)
 }

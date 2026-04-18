@@ -82,7 +82,7 @@ object HCRecipeEventHandler {
         if (entity is ItemEntity && entity.isAlive) {
             val input = HCChargingRecipe.Input(entity.item, null)
             val recipe: HCChargingRecipe = getCaches(level).charging.getFirstRecipe(input, level) ?: return
-            spawnResults(entity) { recipe.assemble(input, level.registryAccess()) }
+            spawnResults(entity) { recipe.assemble(input, false) }
             entity.discard()
             event.isCanceled = true
         }
@@ -108,7 +108,7 @@ object HCRecipeEventHandler {
         val inputAmount: Int = recipe.getRequiredAmount(input)
         val multiplier: Int = entity.item.count / inputAmount
         (0 until multiplier)
-            .flatMap { recipe.assembleItems(input, level.registryAccess()) }
+            .flatMap { recipe.assembleItems(input, false) }
             .let(HTShapelessRecipeHelper::mergeStacks)
             .mapNotNull(entity::spawnAtLocation)
             .forEach {
@@ -169,7 +169,7 @@ object HCRecipeEventHandler {
             if (entity is ItemEntity && entity.isAlive && !isCompleted(entity)) {
                 val input = HCExplodingRecipe.Input(entity.item, event.explosion.radius().toFraction())
                 val recipe: HCExplodingRecipe = getCaches(level).exploding.getFirstRecipe(input, level) ?: continue
-                spawnResults(entity) { recipe.assemble(input, level.registryAccess()) }
+                spawnResults(entity) { recipe.assemble(input, false) }
                 if (entity.item.isEmpty) {
                     iterator.remove()
                     entity.discard()

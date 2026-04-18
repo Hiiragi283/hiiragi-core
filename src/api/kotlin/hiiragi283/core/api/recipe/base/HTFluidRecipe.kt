@@ -1,6 +1,5 @@
 package hiiragi283.core.api.recipe.base
 
-import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.crafting.RecipeInput
 import net.neoforged.neoforge.fluids.FluidStack
 
@@ -13,5 +12,5 @@ fun interface HTFluidRecipe<INPUT : RecipeInput> {
     /**
      * 完成品の[液体][FluidStack]を取得します。
      */
-    fun assembleFluid(input: INPUT, registries: HolderLookup.Provider): FluidStack
+    fun assembleFluid(input: INPUT): FluidStack
 }

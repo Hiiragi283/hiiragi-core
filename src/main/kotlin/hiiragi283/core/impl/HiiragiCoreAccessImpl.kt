@@ -11,9 +11,7 @@ import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.property.HTPropertyMap
-import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLike
-import hiiragi283.core.api.registry.holderSetOrNull
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
@@ -25,21 +23,16 @@ import hiiragi283.core.config.HCConfig
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.util.HTPluginLoader
 import net.minecraft.core.Holder
-import net.minecraft.core.HolderLookup
+import net.minecraft.core.HolderSet
 import net.minecraft.core.component.DataComponentHolder
-import net.minecraft.tags.TagKey
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.alchemy.Potions
-import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.ModList
-import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.common.MutableDataComponentHolder
 import net.neoforged.neoforge.common.Tags
-import net.neoforged.neoforge.event.TagsUpdatedEvent
 import net.neoforged.neoforge.fluids.FluidStack
 
-@EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
     companion object {
         @JvmStatic
@@ -52,18 +45,6 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
                         else -> priority
                     }
                 }.thenBy(HTIdLike::namespace)
-        }
-
-        @JvmStatic
-        private val tagResultCache: MutableMap<TagKey<*>, HTHolderLike<*, *>> = hashMapOf()
-
-        @SubscribeEvent
-        @JvmStatic
-        fun clearTagCache(event: TagsUpdatedEvent) {
-            if (event.updateCause == TagsUpdatedEvent.UpdateCause.SERVER_DATA_LOAD) {
-                tagResultCache.clear()
-                HiiragiCoreAPI.LOGGER.debug("Cleared tag holder cache")
-            }
         }
 
         @JvmField
@@ -127,26 +108,11 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
         DEFAULT_POTION_HANDLER[stack] = contents.bottleType
     }
 
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLike<T>> {
-        // キャッシュから優先して取得
-        val cachedHolder: HTSimpleHolderLike<T>? = tagResultCache[tagKey] as? HTSimpleHolderLike<T>
-        if (cachedHolder != null) {
-            return HTTextResult.success(cachedHolder)
-        }
-        // キャッシュから取得できない場合はレジストリから取得
-        val provider1: HolderLookup.Provider = (provider ?: HiiragiCoreAPI.getActiveAccess())
-            ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()
-        val holder: HTSimpleHolderLike<T> = provider1
-            .holderSetOrNull(tagKey)
-            ?.asSequence()
-            ?.map(Holder<T>::toLike)
-            ?.sortedWith(modIdComparator)
-            ?.firstOrNull()
-            ?: return HTCommonTranslation.EMPTY_TAG_KEY.toTextResult(tagKey)
-        // キャッシュを保存
-        tagResultCache[tagKey] = holder
-        HiiragiCoreAPI.LOGGER.debug("Cached first holder: {} for tag: {}", holder.getId(), tagKey)
-        return HTTextResult.success(holder)
-    }
+    override fun <T : Any> getFirstHolder(holderSet: HolderSet<T>): HTTextResult<HTSimpleHolderLike<T>> = holderSet
+        .asSequence()
+        .map(Holder<T>::toLike)
+        .sortedWith(modIdComparator)
+        .firstOrNull()
+        ?.let(HTTextResult.Companion::success)
+        ?: HTCommonTranslation.EMPTY.toTextResult()
 }
