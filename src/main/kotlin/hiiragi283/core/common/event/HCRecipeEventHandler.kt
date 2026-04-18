@@ -7,7 +7,6 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.item.enchantment.toInstances
-import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
 import hiiragi283.core.api.toFraction
 import hiiragi283.core.common.recipe.HCChargingRecipe
@@ -26,7 +25,6 @@ import net.minecraft.world.item.EnchantedBookItem
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
-import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeManager
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput
@@ -84,11 +82,7 @@ object HCRecipeEventHandler {
         if (entity is ItemEntity && entity.isAlive) {
             val input = HCChargingRecipe.Input(entity.item, null)
             val recipe: HCChargingRecipe = getCaches(level).charging.getFirstRecipe(input, level) ?: return
-            (0 until entity.item.count)
-                .map { recipe.assemble(input, level.registryAccess()) }
-                .let(HTShapelessRecipeHelper::mergeStacks)
-                .mapNotNull(entity::spawnAtLocation)
-                .forEach(::setComplete)
+            spawnResults(entity) { recipe.assemble(input, level.registryAccess()) }
             entity.discard()
             event.isCanceled = true
         }
@@ -111,12 +105,16 @@ object HCRecipeEventHandler {
         val level: Level = entity.level()
         val input: SingleRecipeInput = createInput(entity)
         val recipe: HTSingleMultiOutputRecipe = getCaches(level).crushing.getFirstRecipe(input, level) ?: return
-        val multiplier: Int = popResult(input, recipe, level, entity, HTSingleMultiOutputRecipe::getRequiredAmount)
+        val inputAmount: Int = recipe.getRequiredAmount(input)
+        val multiplier: Int = entity.item.count / inputAmount
         (0 until multiplier)
             .flatMap { recipe.assembleItems(input, level.registryAccess()) }
             .let(HTShapelessRecipeHelper::mergeStacks)
             .mapNotNull(entity::spawnAtLocation)
-            .forEach(::setComplete)
+            .forEach {
+                setComplete(it)
+                entity.item.count -= inputAmount
+            }
         if (entity.item.isEmpty) {
             entity.discard()
         }
@@ -171,7 +169,7 @@ object HCRecipeEventHandler {
             if (entity is ItemEntity && entity.isAlive && !isCompleted(entity)) {
                 val input = HCExplodingRecipe.Input(entity.item, event.explosion.radius().toFraction())
                 val recipe: HCExplodingRecipe = getCaches(level).exploding.getFirstRecipe(input, level) ?: continue
-                popResult(input, recipe, level, entity) { recipeIn, _ -> recipeIn.ingredient.amount }
+                spawnResults(entity) { recipe.assemble(input, level.registryAccess()) }
                 if (entity.item.isEmpty) {
                     iterator.remove()
                     entity.discard()
@@ -197,25 +195,11 @@ object HCRecipeEventHandler {
     private fun createInput(entity: ItemEntity): SingleRecipeInput = SingleRecipeInput(entity.item)
 
     @JvmStatic
-    private fun <INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> popResult(
-        input: INPUT,
-        recipe: RECIPE,
-        level: Level,
-        entity: ItemEntity,
-        amountGetter: (RECIPE, INPUT) -> Int,
-    ): Int = popResult(recipe.assemble(input, level.registryAccess()), amountGetter(recipe, input), entity)
-
-    @JvmStatic
-    private fun popResult(result: ItemStack, recipeAmount: Int, entity: ItemEntity): Int {
-        if (result.isEmpty) return 0
-        val multiplier: Int = entity.item.count / recipeAmount
-        result
-            .copyWithCount(result.count * multiplier)
-            .let(entity::spawnAtLocation)
-            ?.also { itemEntity: ItemEntity ->
-                entity.item.count -= multiplier * recipeAmount
-                setComplete(itemEntity)
-            }
-        return multiplier
+    private fun spawnResults(entity: ItemEntity, result: () -> ItemStack) {
+        (0 until entity.item.count)
+            .map { result() }
+            .let(HTShapelessRecipeHelper::mergeStacks)
+            .mapNotNull(entity::spawnAtLocation)
+            .forEach(::setComplete)
     }
 }

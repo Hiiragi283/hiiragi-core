@@ -65,7 +65,7 @@ data object HCRecipeViewerTypes {
 
     @JvmField
     val EXPLODING: HTHolderRecipeViewerType<HCExplodingRecipe> =
-        simple(HCRecipeLookups.EXPLODING, Items.TNT, 18 * 6)
+        simple(HCRecipeLookups.EXPLODING, Items.TNT, 18 * 4, 18 * 2)
 
     @JvmField
     val FORGING: HTLookupRecipeViewerType<HTDoubleMultiOutputRecipe, HCForgingRecipe> =

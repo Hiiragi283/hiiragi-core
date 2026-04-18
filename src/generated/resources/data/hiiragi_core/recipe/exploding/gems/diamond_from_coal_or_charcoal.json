@@ -1,15 +1,13 @@
 {
   "type": "hiiragi_core:exploding",
-  "ingredient": {
-    "amount": 64,
-    "items": [
-      "#c:charcoal",
-      "#c:coal",
-      "#c:dusts/charcoal",
-      "#c:dusts/coal"
-    ]
-  },
+  "ingredient": [
+    "#c:charcoal",
+    "#c:coal",
+    "#c:dusts/charcoal",
+    "#c:dusts/coal"
+  ],
   "result": {
+    "chance": "1/64",
     "id": "minecraft:diamond",
     "tag": "c:gems/diamond"
   }

@@ -44,43 +44,43 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
     private fun charging() {
         // Ender Pearl -> Ender Eye
         HCChargingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(CommonTagPrefixes.PEARL, VanillaMaterialKeys.ENDER)
+            ingredient = itemCreator.create(CommonTagPrefixes.PEARL, VanillaMaterialKeys.ENDER)
             result = resultCreator.create(Items.ENDER_EYE, chance = fraction(1, 2))
         }
         // Golden Apple
         HCChargingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(Items.GOLDEN_APPLE)
+            ingredient = itemCreator.create(Items.GOLDEN_APPLE)
             result = resultCreator.create(Items.ENCHANTED_GOLDEN_APPLE, chance = fraction(1, 8))
         }
         // Quartz -> Prismarine
         HCChargingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ)
+            ingredient = itemCreator.create(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ)
             result = resultCreator.create(Items.PRISMARINE_SHARD, chance = fraction(3, 4))
         }
         // Redstone Dust -> Glowstone Dust
         HCChargingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE)
+            ingredient = itemCreator.create(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE)
             result = resultCreator.material(CommonParts.DUST, VanillaMaterialKeys.GLOWSTONE, chance = fraction(3, 4))
         }
         // Honey Bottle -> Exp Bottle
         HCChargingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(Tags.Items.DRINKS_HONEY)
+            ingredient = itemCreator.create(Tags.Items.DRINKS_HONEY)
             result = resultCreator.create(Items.EXPERIENCE_BOTTLE, chance = fraction(1, 2))
         }
 
         // End Crystal -> Eldritch Pearl
         HCChargingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(Items.END_CRYSTAL)
+            ingredient = itemCreator.create(Items.END_CRYSTAL)
             result = resultCreator.material(CommonParts.PEARL, HCMaterialKeys.ELDRITCH, chance = fraction(1, 4))
         }
         // Heart of the Sea
         HCChargingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(HCItems.ELDER_HEART)
+            ingredient = itemCreator.create(HCItems.ELDER_HEART)
             result = resultCreator.create(Items.HEART_OF_THE_SEA)
         }
         // Nether Star
         HCChargingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(HCItems.WITHER_STAR)
+            ingredient = itemCreator.create(HCItems.WITHER_STAR)
             result = resultCreator.create(Items.NETHER_STAR)
         }
     }
@@ -226,31 +226,31 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
     private fun exploding() {
         // Cobblestone -> Cobbled Deepslate
         HCExplodingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(listOf(Tags.Items.STONES, Tags.Items.COBBLESTONES_NORMAL), amount = 2)
-            result = resultCreator.create(Items.COBBLED_DEEPSLATE)
-            minPower = fraction(3f)
+            ingredient = itemCreator.create(listOf(Tags.Items.STONES, Tags.Items.COBBLESTONES_NORMAL))
+            result = resultCreator.create(Items.COBBLED_DEEPSLATE, chance = fraction(1, 2))
+            requiredPower = fraction(3f)
         }
         // Ancient Debris -> Netherite Scrap
         HCExplodingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(Tags.Items.ORES_NETHERITE_SCRAP)
+            ingredient = itemCreator.create(Tags.Items.ORES_NETHERITE_SCRAP)
             result = resultCreator.material(CommonParts.SCRAP, VanillaMaterialKeys.NETHERITE, 2)
-            minPower = fraction(6f)
+            requiredPower = fraction(6f)
         }
         // Gunpowder -> Blaze Powder
         HCExplodingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(Tags.Items.GUNPOWDERS, 3)
-            result = resultCreator.create(Items.BLAZE_POWDER)
+            ingredient = itemCreator.create(Tags.Items.GUNPOWDERS)
+            result = resultCreator.create(Items.BLAZE_POWDER, chance = fraction(1, 6))
         }
         // Glass -> Quartz
         HCExplodingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(Tags.Items.GLASS_BLOCKS, 4)
-            result = resultCreator.material(CommonParts.GEM, VanillaMaterialKeys.QUARTZ)
+            ingredient = itemCreator.create(Tags.Items.GLASS_BLOCKS)
+            result = resultCreator.material(CommonParts.GEM, VanillaMaterialKeys.QUARTZ, chance = fraction(1, 4))
         }
         // Quartz Block -> Ghast Tear
         HCExplodingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.QUARTZ, 4)
-            result = resultCreator.create(Items.GHAST_TEAR)
-            minPower = fraction(3f)
+            ingredient = itemCreator.create(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.QUARTZ)
+            result = resultCreator.create(Items.GHAST_TEAR, chance = fraction(1, 4))
+            requiredPower = fraction(3f)
         }
 
         gems()
@@ -262,30 +262,31 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         mapOf(
             listOf(VanillaMaterialKeys.COAL, VanillaMaterialKeys.CHARCOAL) to 64,
             listOf(CommonMaterialKeys.COAL_COKE) to 32,
+            listOf(CommonMaterialKeys.CARBON) to 16,
         ).forEach { (fuels: List<HTMaterialKey>, count: Int) ->
             HCExplodingRecipeBuilder.create(output) {
-                ingredient = inputCreator.create(fuels.flatMap(::baseOrDust), count)
-                result = resultCreator.material(CommonParts.GEM, VanillaMaterialKeys.DIAMOND)
+                ingredient = itemCreator.create(fuels.flatMap(::baseOrDust))
+                result = resultCreator.material(CommonParts.GEM, VanillaMaterialKeys.DIAMOND, chance = fraction(1, count))
                 recipeId suffix "_from_${fuels.joinToString(separator = "_or_", transform = HTMaterialKey::path)}"
             }
         }
 
         // Echo Shard
         HCExplodingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(Items.SCULK, 8)
-            result = resultCreator.material(CommonParts.GEM, VanillaMaterialKeys.ECHO)
-            minPower = fraction(6f)
+            ingredient = itemCreator.create(Items.SCULK)
+            result = resultCreator.material(CommonParts.GEM, VanillaMaterialKeys.ECHO, chance = fraction(1, 8))
+            requiredPower = fraction(6f)
         }
 
         // Crimson Crystal
         HCExplodingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(ItemTags.CRIMSON_STEMS, 12)
-            result = resultCreator.material(CommonParts.GEM, HCMaterialKeys.CRIMSON_CRYSTAL)
+            ingredient = itemCreator.create(ItemTags.CRIMSON_STEMS)
+            result = resultCreator.material(CommonParts.GEM, HCMaterialKeys.CRIMSON_CRYSTAL, chance = fraction(1, 8))
         }
         // Warped Crystal
         HCExplodingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(ItemTags.WARPED_STEMS, 12)
-            result = resultCreator.material(CommonParts.GEM, HCMaterialKeys.WARPED_CRYSTAL)
+            ingredient = itemCreator.create(ItemTags.WARPED_STEMS)
+            result = resultCreator.material(CommonParts.GEM, HCMaterialKeys.WARPED_CRYSTAL, chance = fraction(1, 8))
         }
     }
 
@@ -313,7 +314,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
 
         repeat(5) { amplifier: Int ->
             HTTankInteractionRecipeBuilder.emptying(output) {
-                ingredient = inputCreator.create(false, Items.OMINOUS_BOTTLE) {
+                ingredient = itemCreator.create(false, Items.OMINOUS_BOTTLE) {
                     expect(DataComponents.OMINOUS_BOTTLE_AMPLIFIER, amplifier)
                 }
                 fluidResult = resultCreator.create(HCFluids.OMINOUS_FLUX, 250 * (amplifier + 1))
@@ -332,13 +333,13 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
     ) {
         // Emptying
         HTTankInteractionRecipeBuilder.emptying(output) {
-            ingredient = inputCreator.create(bottle)
+            ingredient = itemCreator.create(bottle)
             fluidResult = resultCreator.create(fluid, amount)
             itemResult = resultCreator.create(container)
         }
         // Filling
         HTTankInteractionRecipeBuilder.filling(output) {
-            itemIngredient = inputCreator.create(container)
+            itemIngredient = itemCreator.create(container)
             fluidIngredient = inputCreator.create(fluid, amount)
             itemResult = resultCreator.create(bottle)
         }

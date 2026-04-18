@@ -1,11 +1,9 @@
 {
   "type": "hiiragi_core:exploding",
-  "ingredient": {
-    "amount": 4,
-    "items": "#c:storage_blocks/quartz"
-  },
-  "min_power": 3,
+  "ingredient": "#c:storage_blocks/quartz",
+  "required_power": 3,
   "result": {
+    "chance": "1/4",
     "id": "minecraft:ghast_tear"
   }
 }

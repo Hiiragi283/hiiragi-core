@@ -3,6 +3,7 @@ package hiiragi283.core.util
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.registry.getHolderLike
+import hiiragi283.core.api.storage.amount.HTAmountView
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextUtil
 import hiiragi283.core.api.text.Text
@@ -53,16 +54,16 @@ data object HTStorageHelper {
     }
 
     @JvmStatic
-    fun addEnergyTooltip(amount: Int, consumer: Consumer<Text>, isCreative: Boolean) {
+    fun addEnergyTooltip(view: HTAmountView, consumer: Consumer<Text>, isCreative: Boolean) {
         // Empty name if amount is not positive
-        if (amount <= 0) {
+        if (view.getAmount() <= 0) {
             consumer.accept(HTCommonTranslation.EMPTY.translate())
             return
         }
         // Fluid Name and Amount
         when {
             isCreative -> HTCommonTranslation.STORED_FE.translate(HTCommonTranslation.INFINITE)
-            else -> HTCommonTranslation.STORED_FE.translate(amount)
+            else -> HTCommonTranslation.STORED_FE.translate(HTCommonTranslation.FRACTION.translate(view.getAmount(), view.getCapacity()))
         }.let(consumer::accept)
     }
 

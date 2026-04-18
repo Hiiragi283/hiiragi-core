@@ -83,7 +83,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         }
         // Sticky Piston
         HTShapelessRecipeBuilder.create(output) {
-            ingredients += inputCreator.slimeBall().unsized
+            ingredients += itemCreator.slimeBall()
             ingredients += Items.PISTON
             resultStack += Items.STICKY_PISTON
         }
@@ -109,7 +109,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         HTShapedRecipeBuilder.create(output) {
             hollow8()
             define('A') += CommonTagPrefixes.DUST to VanillaMaterialKeys.WOOD
-            define('B') += inputCreator.slimeBall().unsized
+            define('B') += itemCreator.slimeBall()
             resultStack += HCItems.PARTICLE_BOARD to 4
         }
 

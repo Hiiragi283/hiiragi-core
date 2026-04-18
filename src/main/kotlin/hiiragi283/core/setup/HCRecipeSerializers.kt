@@ -149,9 +149,11 @@ object HCRecipeSerializers {
     val EXPLODING: RecipeSerializer<HCExplodingRecipe> = REGISTER.registerSerializer(
         HTConst.EXPLODING,
         MapBiCodec.composite(
-            HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HCExplodingRecipe::ingredient),
+            VanillaBiCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HCExplodingRecipe::ingredient),
             HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCExplodingRecipe::result),
-            BiCodecs.NON_NEGATIVE_FRACTION.optionalFieldOf("min_power", fraction(4)).forGetter(HCExplodingRecipe::minPower),
+            BiCodecs.NON_NEGATIVE_FRACTION
+                .optionalFieldOf("required_power", fraction(4))
+                .forGetter(HCExplodingRecipe::requiredPower),
             ::HCExplodingRecipe,
         ),
     )

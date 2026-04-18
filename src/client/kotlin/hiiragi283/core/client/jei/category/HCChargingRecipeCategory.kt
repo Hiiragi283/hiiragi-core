@@ -33,7 +33,7 @@ class HCChargingRecipeCategory(guiHelper: IGuiHelper) :
         builder.addRecipeArrow().setPosition(getPosition(1.25), getPosition(0))
 
         builder
-            .addText(HTCommonTranslation.STORED_FE.translate(recipe.requiredEnergy), width - 20, 10)
+            .addText(HTCommonTranslation.STORED_FE.translate(recipe.requiredEnergy), width, 10)
             .setPosition(0, 0, width, height, HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM)
             .setTextAlignment(HorizontalAlignment.CENTER)
             .setTextAlignment(VerticalAlignment.BOTTOM)

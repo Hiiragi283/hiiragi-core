@@ -1,11 +1,9 @@
 {
   "type": "hiiragi_core:exploding",
-  "ingredient": {
-    "amount": 8,
-    "items": "minecraft:sculk"
-  },
-  "min_power": 6,
+  "ingredient": "minecraft:sculk",
+  "required_power": 6,
   "result": {
+    "chance": "1/8",
     "id": "minecraft:echo_shard",
     "tag": "c:gems/echo"
   }

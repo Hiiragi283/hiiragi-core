@@ -1,14 +1,12 @@
 {
   "type": "hiiragi_core:exploding",
-  "ingredient": {
-    "amount": 2,
-    "items": [
-      "#c:cobblestones/normal",
-      "#c:stones"
-    ]
-  },
-  "min_power": 3,
+  "ingredient": [
+    "#c:cobblestones/normal",
+    "#c:stones"
+  ],
+  "required_power": 3,
   "result": {
+    "chance": "1/2",
     "id": "minecraft:cobbled_deepslate"
   }
 }
