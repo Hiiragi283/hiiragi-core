@@ -25,7 +25,6 @@ class HCItemTagsProvider(
     lookupProvider: CompletableFuture<HolderLookup.Provider>,
     blockTags: CompletableFuture<TagLookup<Block>>,
 ) : HTItemTagsProvider(fileHelper, output, lookupProvider, HiiragiCoreAPI.MOD_ID, blockTags) {
-    @Suppress("DEPRECATION")
     override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Item>) {
         // Buckets
         for (content: HTFluidContent in HCFluids.REGISTER.entries) {
@@ -50,11 +49,14 @@ class HCItemTagsProvider(
         // Others
         factory.apply(Tags.Items.FEATHERS).add(HCItems.SYNTHETIC_FEATHER)
         factory.apply(Tags.Items.LEATHERS).add(HCItems.SYNTHETIC_LEATHER)
-        factory.apply(Tags.Items.SLIME_BALLS).add(HCItems.RAW_RUBBER)
-        factory.apply(Tags.Items.SLIMEBALLS).add(HCItems.RAW_RUBBER)
         factory.apply(Tags.Items.STRINGS).add(HCItems.SYNTHETIC_FIBER)
 
         addTags(factory, Tags.Items.CROPS, HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)
+
+        factory
+            .apply(HiiragiCoreTags.Items.STICKY_BALLS)
+            .add(HCItems.RAW_RUBBER)
+            .addTag(Tags.Items.SLIME_BALLS)
 
         factory
             .apply(HiiragiCoreTags.Items.ELDRITCH_PEARL_BINDER)

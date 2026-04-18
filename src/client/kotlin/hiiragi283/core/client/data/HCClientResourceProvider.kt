@@ -124,7 +124,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
             )
             this += resprite(
                 HCItems.RAW_RUBBER.itemId,
-                vanillaItemId("slime_ball"),
+                vanillaItemId("raw_gold"),
                 Blocks.SANDSTONE,
             )
         }.forEach(executor)

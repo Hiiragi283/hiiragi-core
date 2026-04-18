@@ -128,6 +128,9 @@ object HiiragiCoreTags {
         val SILICON: TagKey<Item> = common("silicon")
 
         @JvmField
+        val STICKY_BALLS: TagKey<Item> = common("sticky_balls")
+
+        @JvmField
         val TOOLS_HAMMER: TagKey<Item> = common("tools", "hammer")
 
         // Mod

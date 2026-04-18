@@ -10,7 +10,6 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.level.ItemLike
-import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 
 data object HTItemIngredientCreator {
@@ -29,12 +28,6 @@ data object HTItemIngredientCreator {
     @JvmName("createItem")
     fun create(tagKeys: Iterable<TagKey<Item>>): Ingredient =
         tagKeys.sortedWith(HTComparators.TAG_KEY).map(Ingredient::TagValue).let(::create)
-
-    /**
-     * @since 0.13.0
-     */
-    @Suppress("DEPRECATION")
-    fun slimeBall(): Ingredient = listOf(Tags.Items.SLIMEBALLS, Tags.Items.SLIME_BALLS).let(::create)
 
     // Ingredient
     @JvmName("createValues")

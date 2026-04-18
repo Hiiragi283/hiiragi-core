@@ -1,0 +1,12 @@
+{
+  "type": "hiiragi_core:filling",
+  "fluid_ingredient": {
+    "amount": 1000,
+    "fluids": "#c:latex"
+  },
+  "item_ingredient": "minecraft:bowl",
+  "result": {
+    "count": 4,
+    "id": "hiiragi_core:raw_rubber"
+  }
+}

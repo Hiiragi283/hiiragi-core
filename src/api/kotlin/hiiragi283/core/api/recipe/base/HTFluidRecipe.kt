@@ -1,5 +1,6 @@
 package hiiragi283.core.api.recipe.base
 
+import hiiragi283.core.api.recipe.HTRecipe
 import net.minecraft.world.item.crafting.RecipeInput
 import net.neoforged.neoforge.fluids.FluidStack
 
@@ -8,7 +9,7 @@ import net.neoforged.neoforge.fluids.FluidStack
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
-fun interface HTFluidRecipe<INPUT : RecipeInput> {
+interface HTFluidRecipe<INPUT : RecipeInput> : HTRecipe<INPUT> {
     /**
      * 完成品の[液体][FluidStack]を取得します。
      */

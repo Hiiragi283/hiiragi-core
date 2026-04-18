@@ -322,6 +322,12 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
                 recipeId suffix "_$amplifier"
             }
         }
+
+        HTTankInteractionRecipeBuilder.filling(output) {
+            itemIngredient = itemCreator.create(Items.BOWL)
+            fluidIngredient = inputCreator.create(HCFluids.LATEX)
+            itemResult = resultCreator.create(HCItems.RAW_RUBBER, 4)
+        }
     }
 
     @JvmStatic
