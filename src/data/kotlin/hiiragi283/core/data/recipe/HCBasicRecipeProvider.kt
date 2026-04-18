@@ -1,7 +1,6 @@
 package hiiragi283.core.data.recipe
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HTMinMaxRange
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.fraction
@@ -10,10 +9,9 @@ import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.VanillaFluidContents
 import hiiragi283.core.api.tag.CommonTagPrefixes
+import hiiragi283.core.common.data.recipe.builder.HCChargingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HCExplodingRecipeBuilder
-import hiiragi283.core.common.data.recipe.builder.HCMeltingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTDoubleMultiOutputRecipeBuilder
-import hiiragi283.core.common.data.recipe.builder.HTSingleItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSingleMultiOutputRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTTankInteractionRecipeBuilder
 import hiiragi283.core.common.material.CommonMaterialKeys
@@ -36,7 +34,6 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         crushing()
         exploding()
         forging()
-        melting()
 
         tankInteraction()
     }
@@ -46,43 +43,43 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
     @JvmStatic
     private fun charging() {
         // Ender Pearl -> Ender Eye
-        HTSingleItemRecipeBuilder.charging(output) {
+        HCChargingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(CommonTagPrefixes.PEARL, VanillaMaterialKeys.ENDER)
             result = resultCreator.create(Items.ENDER_EYE)
         }
         // Golden Apple
-        HTSingleItemRecipeBuilder.charging(output) {
+        HCChargingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(Items.GOLDEN_APPLE)
             result = resultCreator.create(Items.ENCHANTED_GOLDEN_APPLE)
         }
         // Quartz -> Prismarine
-        HTSingleItemRecipeBuilder.charging(output) {
+        HCChargingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ)
             result = resultCreator.create(Items.PRISMARINE_SHARD)
         }
         // Redstone Dust -> Glowstone Dust
-        HTSingleItemRecipeBuilder.charging(output) {
+        HCChargingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE)
             result = resultCreator.material(CommonParts.DUST, VanillaMaterialKeys.GLOWSTONE)
         }
         // Honey Bottle -> Exp Bottle
-        HTSingleItemRecipeBuilder.charging(output) {
+        HCChargingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(Tags.Items.DRINKS_HONEY)
             result = resultCreator.create(Items.EXPERIENCE_BOTTLE)
         }
 
         // End Crystal -> Eldritch Pearl
-        HTSingleItemRecipeBuilder.charging(output) {
+        HCChargingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(Items.END_CRYSTAL)
             result = resultCreator.material(CommonParts.PEARL, HCMaterialKeys.ELDRITCH)
         }
         // Heart of the Sea
-        HTSingleItemRecipeBuilder.charging(output) {
+        HCChargingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(HCItems.ELDER_HEART)
             result = resultCreator.create(Items.HEART_OF_THE_SEA)
         }
         // Nether Star
-        HTSingleItemRecipeBuilder.charging(output) {
+        HCChargingRecipeBuilder.create(output) {
             ingredient = inputCreator.create(HCItems.WITHER_STAR)
             result = resultCreator.create(Items.NETHER_STAR)
         }
@@ -300,34 +297,6 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
             base = inputCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON)
             addition = inputCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON)
             results += resultCreator.create(Items.HEAVY_WEIGHTED_PRESSURE_PLATE)
-        }
-    }
-
-    //    Melting    //
-
-    @JvmStatic
-    private fun melting() {
-        val iceRange: HTMinMaxRange<Int> = HTMinMaxRange.atLeast(HTConst.STANDARD_TEMP)
-        // Water
-        HCMeltingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(Items.SNOWBALL)
-            result = resultCreator.water(250)
-            heatRange = iceRange
-            time = 25
-            recipeId suffix "_from_snowball"
-        }
-        HCMeltingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(Items.SNOW_BLOCK)
-            result = resultCreator.water()
-            heatRange = iceRange
-            time = 100
-            recipeId suffix "_from_snow"
-        }
-        HCMeltingRecipeBuilder.create(output) {
-            ingredient = inputCreator.create(Items.ICE)
-            result = resultCreator.water()
-            heatRange = iceRange
-            recipeId suffix "_from_ice"
         }
     }
 

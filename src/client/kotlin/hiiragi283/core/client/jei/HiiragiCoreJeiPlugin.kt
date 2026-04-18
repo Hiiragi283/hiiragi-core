@@ -19,14 +19,13 @@ import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.util.wrapOptional
 import hiiragi283.core.client.jei.category.HCBrewingRecipeCategory
+import hiiragi283.core.client.jei.category.HCChargingRecipeCategory
 import hiiragi283.core.client.jei.category.HCCrushingRecipeCategory
 import hiiragi283.core.client.jei.category.HCExplodingRecipeCategory
 import hiiragi283.core.client.jei.category.HCForgingRecipeCategory
 import hiiragi283.core.client.jei.category.HCMaterialPartCategory
-import hiiragi283.core.client.jei.category.HCMeltingRecipeCategory
 import hiiragi283.core.client.jei.category.HCTankEmptyingRecipeCategory
 import hiiragi283.core.client.jei.category.HCTankFillingRecipeCategory
-import hiiragi283.core.client.jei.category.HTSingleItemRecipeCategory
 import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.recipe.HCRecipeLookups
@@ -39,7 +38,6 @@ import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
-import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.util.HCPotionFluidHelper
 import mezz.jei.api.JeiPlugin
 import mezz.jei.api.constants.VanillaTypes
@@ -117,10 +115,9 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             // Recipes
             HCBrewingRecipeCategory(guiHelper),
             HCCrushingRecipeCategory(guiHelper),
-            HTSingleItemRecipeCategory(guiHelper, HCRecipeViewerTypes.CHARGING, HCRecipeSerializers.CHARGING),
+            HCChargingRecipeCategory(guiHelper),
             HCExplodingRecipeCategory(guiHelper),
             HCForgingRecipeCategory(guiHelper),
-            HCMeltingRecipeCategory(guiHelper),
             // Tank Interaction
             HCTankEmptyingRecipeCategory(guiHelper),
             HCTankFillingRecipeCategory(guiHelper),
@@ -140,7 +137,6 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         HTJeiRecipeHelper.addLookupRecipes(registration, HCRecipeViewerTypes.CRUSHING, HCRecipeLookups.CRUSHING)
         HTJeiRecipeHelper.addLookupRecipes(registration, HCRecipeViewerTypes.EXPLODING, HCRecipeLookups.EXPLODING)
         HTJeiRecipeHelper.addLookupRecipes(registration, HCRecipeViewerTypes.FORGING, HCRecipeLookups.FORGING)
-        HTJeiRecipeHelper.addLookupRecipes(registration, HCRecipeViewerTypes.MELTING, HCRecipeLookups.MELTING)
 
         registerTankEmptying(registration)
         registerTankFilling(registration)
@@ -225,7 +221,6 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             HCRecipeViewerTypes.CRUSHING,
             HCRecipeViewerTypes.EXPLODING,
             HCRecipeViewerTypes.FORGING,
-            HCRecipeViewerTypes.MELTING,
         )
 
         arrayOf(HCRecipeViewerTypes.EMPTYING, HCRecipeViewerTypes.FILLING)

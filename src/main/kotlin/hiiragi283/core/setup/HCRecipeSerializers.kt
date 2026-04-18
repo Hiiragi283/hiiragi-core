@@ -1,7 +1,6 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HTMinMaxRange
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.recipe.base.HTProcessingRecipe
@@ -22,7 +21,6 @@ import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCForgingRecipe
-import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
@@ -130,7 +128,17 @@ object HCRecipeSerializers {
     )
 
     @JvmField
-    val CHARGING: RecipeSerializer<HCChargingRecipe> = REGISTER.registerSerializer(HTConst.CHARGING, singleItem(::HCChargingRecipe))
+    val CHARGING: RecipeSerializer<HCChargingRecipe> = REGISTER.registerSerializer(
+        HTConst.CHARGING,
+        MapBiCodec.composite(
+            HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HCChargingRecipe::ingredient),
+            HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCChargingRecipe::result),
+            BiCodecs.NON_NEGATIVE_INT
+                .optionalFieldOf("energy", HCChargingRecipe.DEFAULT_ENERGY)
+                .forGetter(HCChargingRecipe::requiredEnergy),
+            ::HCChargingRecipe,
+        ),
+    )
 
     @JvmField
     val CRUSHING: RecipeSerializer<HCCrushingRecipe> =
@@ -150,18 +158,6 @@ object HCRecipeSerializers {
     @JvmField
     val FORGING: RecipeSerializer<HCForgingRecipe> =
         REGISTER.registerSerializer(HTConst.FORGING, doubleItemToMulti(HCForgingRecipe.OUTPUT_RANGE, ::HCForgingRecipe))
-
-    @JvmField
-    val MELTING: RecipeSerializer<HCMeltingRecipe> = REGISTER.registerSerializer(
-        HTConst.MELTING,
-        MapBiCodec.composite(
-            HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HCMeltingRecipe::ingredient),
-            HTFluidResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCMeltingRecipe::result),
-            HTMinMaxRange.INT_CODEC.fieldOf("heat_range").forGetter(HCMeltingRecipe::heatRange),
-            HTProcessingRecipe.timeCodec(),
-            ::HCMeltingRecipe,
-        ),
-    )
 
     //    Tank Interaction    //
 

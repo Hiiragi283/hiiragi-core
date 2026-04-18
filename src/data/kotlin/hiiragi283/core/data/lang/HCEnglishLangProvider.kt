@@ -92,7 +92,6 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCRecipeLookups.CRUSHING, "Crushing")
         add(HCRecipeLookups.EXPLODING, "Exploding")
         add(HCRecipeLookups.FORGING, "Forging")
-        add(HCRecipeLookups.MELTING, "Melting")
 
         add(HCRecipeLookups.EMPTYING, "Tank Interaction (Emptying)")
         add(HCRecipeLookups.FILLING, "Tank Interaction (Filling)")

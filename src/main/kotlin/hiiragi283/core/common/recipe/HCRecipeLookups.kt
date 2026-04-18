@@ -7,7 +7,6 @@ import hiiragi283.core.api.VanillaColoredContents
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.base.HTDoubleMultiOutputRecipe
-import hiiragi283.core.api.recipe.base.HTSingleItemRecipe
 import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
@@ -37,7 +36,7 @@ data object HCRecipeLookups {
     //    Basic    //
 
     @JvmField
-    val CHARGING: HTRecipeTypeImpl<SingleRecipeInput, HTSingleItemRecipe> = create(HTConst.CHARGING)
+    val CHARGING: HTRecipeTypeImpl<HCChargingRecipe.Input, HCChargingRecipe> = create(HTConst.CHARGING)
 
     @JvmField
     val CRUSHING: HTRecipeTypeImpl<SingleRecipeInput, HTSingleMultiOutputRecipe> = create(HTConst.CRUSHING)
@@ -47,9 +46,6 @@ data object HCRecipeLookups {
 
     @JvmField
     val FORGING: HTRecipeTypeImpl<HTDoubleRecipeInput, HTDoubleMultiOutputRecipe> = create(HTConst.FORGING)
-
-    @JvmField
-    val MELTING: HTRecipeTypeImpl<HCMeltingRecipe.Input, HCMeltingRecipe> = create(HTConst.MELTING)
 
     @JvmField
     val COLORING: HTRecipeTypeImpl<HTItemAndFluidRecipeInput, HCColoringRecipe> = create(HTConst.COLORING)
@@ -70,7 +66,6 @@ data object HCRecipeLookups {
         CRUSHING.addProvider(HCRecipeTypes.CRUSHING.get(), identity())
         EXPLODING.addProvider(HCRecipeTypes.EXPLODING.get(), identity())
         FORGING.addProvider(HCRecipeTypes.FORGING.get(), identity())
-        MELTING.addProvider(HCRecipeTypes.MELTING.get(), identity())
 
         EMPTYING.addProvider(HCRecipeTypes.EMPTYING.get(), identity())
         EMPTYING.addProvider(HTConst.MINECRAFT.toId(HTConst.EMPTYING, "potion") to HTPotionTankInteraction.Emptying)

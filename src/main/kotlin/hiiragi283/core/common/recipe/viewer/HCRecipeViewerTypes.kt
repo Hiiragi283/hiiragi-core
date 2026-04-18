@@ -6,7 +6,6 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.HTRecipeType
 import hiiragi283.core.api.recipe.base.HTDoubleMultiOutputRecipe
-import hiiragi283.core.api.recipe.base.HTSingleItemRecipe
 import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
@@ -22,7 +21,6 @@ import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCForgingRecipe
-import hiiragi283.core.common.recipe.HCMeltingRecipe
 import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
@@ -58,8 +56,8 @@ data object HCRecipeViewerTypes {
         simple(HTVanillaRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 6)
 
     @JvmField
-    val CHARGING: HTLookupRecipeViewerType<HTSingleItemRecipe, HCChargingRecipe> =
-        lookup(HCRecipeLookups.CHARGING, Items.LIGHTNING_ROD, 18 * 4)
+    val CHARGING: HTHolderRecipeViewerType<HCChargingRecipe> =
+        simple(HCRecipeLookups.CHARGING, Items.LIGHTNING_ROD, 18 * 4, 18 * 2)
 
     @JvmField
     val CRUSHING: HTLookupRecipeViewerType<HTSingleMultiOutputRecipe, HCCrushingRecipe> =
@@ -72,10 +70,6 @@ data object HCRecipeViewerTypes {
     @JvmField
     val FORGING: HTLookupRecipeViewerType<HTDoubleMultiOutputRecipe, HCForgingRecipe> =
         lookup(HCRecipeLookups.FORGING, HCBlocks.FORGING_ANVIL, 18 * 6, 18 * 3)
-
-    @JvmField
-    val MELTING: HTHolderRecipeViewerType<HCMeltingRecipe> =
-        simple(HCRecipeLookups.MELTING, Items.LAVA_BUCKET, 18 * 4)
 
     //    Tank Interaction    //
 

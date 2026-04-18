@@ -158,7 +158,6 @@
   "recipe_type.hiiragi_core.exploding": "爆破",
   "recipe_type.hiiragi_core.filling": "タンクとの相互作用（搬入）",
   "recipe_type.hiiragi_core.forging": "鍛造",
-  "recipe_type.hiiragi_core.melting": "溶融",
   "recipe_type.minecraft.blasting": "溶鉱炉",
   "recipe_type.minecraft.smelting": "かまど",
   "recipe_type.minecraft.smoking": "燻製器",

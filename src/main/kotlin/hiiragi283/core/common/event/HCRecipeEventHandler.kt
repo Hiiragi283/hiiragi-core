@@ -8,10 +8,10 @@ import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.item.enchantment.toInstances
 import hiiragi283.core.api.recipe.HTRecipe
-import hiiragi283.core.api.recipe.base.HTSingleItemRecipe
 import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.toFraction
+import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.world.HCInWorldRecipeCaches
 import hiiragi283.core.mixin.RecipeManagerAccessor
@@ -71,7 +71,7 @@ object HCRecipeEventHandler {
     }
 
     /**
-     * [HTSingleItemRecipe]を処理するイベント
+     * [HCChargingRecipe]を処理するイベント
      */
     @SubscribeEvent
     fun onStruck(event: EntityStruckByLightningEvent) {
@@ -83,9 +83,9 @@ object HCRecipeEventHandler {
         val level: Level = entity.level()
         if (level.isClientSide) return
         if (entity is ItemEntity && entity.isAlive) {
-            val input: SingleRecipeInput = createInput(entity)
-            val recipe: HTSingleItemRecipe = getCaches(level).charging.getFirstRecipe(input, level) ?: return
-            popResult(input, recipe, level, entity, HTSingleItemRecipe::getRequiredAmount)
+            val input = HCChargingRecipe.Input(entity.item)
+            val recipe: HCChargingRecipe = getCaches(level).charging.getFirstRecipe(input, level) ?: return
+            popResult(input, recipe, level, entity) { recipe: HCChargingRecipe, _ -> recipe.ingredient.amount }
             if (entity.item.isEmpty) {
                 entity.discard()
                 event.isCanceled = true
