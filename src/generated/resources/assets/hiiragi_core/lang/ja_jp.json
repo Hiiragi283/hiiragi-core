@@ -67,6 +67,8 @@
   "enchantment.hiiragi_core.hammer_of_justice.desc": "襲撃者に対するダメージを増加させます。",
   "enchantment.hiiragi_core.noise_canceling": "ノイズキャンセリング",
   "enchantment.hiiragi_core.noise_canceling.desc": "ウォーデンなどのスカルク系モンスターに対するダメージを増加させます。",
+  "enchantment.hiiragi_core.purification": "浄化",
+  "enchantment.hiiragi_core.purification.desc": "ウィザー系モンスターに対するダメージを増加させます。",
   "enchantment.hiiragi_core.sonic_protection": "音響耐性",
   "enchantment.hiiragi_core.sonic_protection.desc": "ソニックブームなどの音響攻撃を無効にします。",
   "entity.hiiragi_core.bomb": "ボム",

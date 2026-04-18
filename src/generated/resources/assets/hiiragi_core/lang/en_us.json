@@ -67,6 +67,8 @@
   "enchantment.hiiragi_core.hammer_of_justice.desc": "Increases damage against raiders.",
   "enchantment.hiiragi_core.noise_canceling": "Noise Canceling",
   "enchantment.hiiragi_core.noise_canceling.desc": "Increases damage against sculk mobs such as Warden.",
+  "enchantment.hiiragi_core.purification": "Purification",
+  "enchantment.hiiragi_core.purification.desc": "Increases damage against wither mobs.",
   "enchantment.hiiragi_core.sonic_protection": "Sonic Protection",
   "enchantment.hiiragi_core.sonic_protection.desc": "Immune damage from sonic boom.",
   "entity.hiiragi_core.bomb": "Thrown Bomb",

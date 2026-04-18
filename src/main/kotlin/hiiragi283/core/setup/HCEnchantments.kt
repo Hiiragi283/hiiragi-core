@@ -18,6 +18,9 @@ data object HCEnchantments {
     @JvmField
     val NOISE_CANCELING: ResourceKey<Enchantment> = create("noise_canceling")
 
+    @JvmField
+    val PURIFICATION: ResourceKey<Enchantment> = create("purification")
+
     //    Armor    //
 
     @JvmField

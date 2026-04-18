@@ -32,23 +32,25 @@ object HCEnchantmentProvider : RegistrySetBuilder.RegistryBootstrap<Enchantment>
         val enchLookup: HolderGetter<Enchantment> = context.lookup(Registries.ENCHANTMENT)
         val itemLookup: HolderGetter<Item> = context.lookup(Registries.ITEM)
 
+        fun swordBuilder(): Enchantment.Builder = Enchantment
+            .enchantment(
+                Enchantment.definition(
+                    itemLookup.getOrThrow(ItemTags.WEAPON_ENCHANTABLE),
+                    itemLookup.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                    5,
+                    5,
+                    Enchantment.dynamicCost(5, 8),
+                    Enchantment.dynamicCost(25, 8),
+                    2,
+                    EquipmentSlotGroup.MAINHAND,
+                ),
+            ).exclusiveWith(enchLookup.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
+
         // Weapon
         register(
             context,
             HCEnchantments.HAMMER_OF_JUSTICE,
-            Enchantment
-                .enchantment(
-                    Enchantment.definition(
-                        itemLookup.getOrThrow(ItemTags.WEAPON_ENCHANTABLE),
-                        itemLookup.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
-                        5,
-                        5,
-                        Enchantment.dynamicCost(5, 8),
-                        Enchantment.dynamicCost(25, 8),
-                        2,
-                        EquipmentSlotGroup.MAINHAND,
-                    ),
-                ).exclusiveWith(enchLookup.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
+            swordBuilder()
                 .withEffect(
                     EnchantmentEffectComponents.DAMAGE,
                     AddValue(LevelBasedValue.perLevel(2.5f)),
@@ -60,23 +62,10 @@ object HCEnchantmentProvider : RegistrySetBuilder.RegistryBootstrap<Enchantment>
                     ),
                 ),
         )
-
         register(
             context,
             HCEnchantments.NOISE_CANCELING,
-            Enchantment
-                .enchantment(
-                    Enchantment.definition(
-                        itemLookup.getOrThrow(ItemTags.WEAPON_ENCHANTABLE),
-                        itemLookup.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
-                        5,
-                        5,
-                        Enchantment.dynamicCost(5, 8),
-                        Enchantment.dynamicCost(25, 8),
-                        2,
-                        EquipmentSlotGroup.MAINHAND,
-                    ),
-                ).exclusiveWith(enchLookup.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
+            swordBuilder()
                 .withEffect(
                     EnchantmentEffectComponents.DAMAGE,
                     AddValue(LevelBasedValue.perLevel(20f)),
@@ -85,6 +74,21 @@ object HCEnchantmentProvider : RegistrySetBuilder.RegistryBootstrap<Enchantment>
                         EntityPredicate.Builder
                             .entity()
                             .of(HiiragiCoreTags.EntityTypes.SENSITIVE_TO_NOISE_CANCELLING),
+                    ),
+                ),
+        )
+        register(
+            context,
+            HCEnchantments.PURIFICATION,
+            swordBuilder()
+                .withEffect(
+                    EnchantmentEffectComponents.DAMAGE,
+                    AddValue(LevelBasedValue.perLevel(5f)),
+                    LootItemEntityPropertyCondition.hasProperties(
+                        LootContext.EntityTarget.THIS,
+                        EntityPredicate.Builder
+                            .entity()
+                            .of(HiiragiCoreTags.EntityTypes.SENSITIVE_TO_PURIFICATION),
                     ),
                 ),
         )

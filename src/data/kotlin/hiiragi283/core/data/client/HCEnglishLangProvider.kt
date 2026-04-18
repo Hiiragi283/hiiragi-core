@@ -30,6 +30,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         // Enchantment
         add(HCEnchantments.HAMMER_OF_JUSTICE, "Hammer of Justice", "Increases damage against raiders.")
         add(HCEnchantments.NOISE_CANCELING, "Noise Canceling", "Increases damage against sculk mobs such as Warden.")
+        add(HCEnchantments.PURIFICATION, "Purification", "Increases damage against wither mobs.")
 
         add(HCEnchantments.SONIC_PROTECTION, "Sonic Protection", "Immune damage from sonic boom.")
         // Entity
