@@ -6,7 +6,7 @@ import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.energy.HTEnergyBattery
 import hiiragi283.core.common.storage.HTStorageValidators
-import hiiragi283.core.setup.HCDataComponents
+import hiiragi283.core.util.HTStorageHelper
 import net.minecraft.world.item.ItemStack
 import java.util.function.Predicate
 
@@ -54,14 +54,10 @@ open class HTBasicItemEnergyBattery(
     }
 
     private fun setAmountInternal(amount: Int) {
-        if (amount <= 0) {
-            container.remove(HCDataComponents.ENERGY)
-        } else {
-            container.set(HCDataComponents.ENERGY, amount)
-        }
+        HTStorageHelper.updateEnergy(container, amount)
     }
 
-    override fun getAmount(): Int = container.getOrDefault(HCDataComponents.ENERGY, 0)
+    override fun getAmount(): Int = HTStorageHelper.getEnergy(container)
 
     override fun getCapacity(): Int = capacity
 

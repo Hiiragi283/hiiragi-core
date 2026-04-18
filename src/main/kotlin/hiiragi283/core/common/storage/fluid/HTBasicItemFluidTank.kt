@@ -6,10 +6,9 @@ import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.common.storage.HTStorageValidators
 import hiiragi283.core.impl.storage.fluid.HTFluidStackResourceSlot
 import hiiragi283.core.impl.storage.fluid.HTItemFluidTank
-import hiiragi283.core.setup.HCDataComponents
+import hiiragi283.core.util.HTStorageHelper
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
-import net.neoforged.neoforge.fluids.SimpleFluidContent
 import java.util.function.BiPredicate
 import java.util.function.Predicate
 import java.util.function.UnaryOperator
@@ -36,19 +35,14 @@ open class HTBasicItemFluidTank(
             HTBasicItemFluidTank(containerUpdater, HTStorageValidators.validateCapacity(capacity), canExtract, canInsert, filter, container)
     }
 
-    override fun getStack(): FluidStack = container.getOrDefault(HCDataComponents.FLUID, SimpleFluidContent.EMPTY).copy()
+    override fun getStack(): FluidStack = HTStorageHelper.getFluid(container)
 
     override fun setStack(stack: FluidStack) {
         setStackInternal(stack)
     }
 
     override fun setStackInternal(stack: FluidStack) {
-        val content: SimpleFluidContent = SimpleFluidContent.copyOf(stack)
-        if (content.isEmpty) {
-            container.remove(HCDataComponents.FLUID)
-        } else {
-            container.set(HCDataComponents.FLUID, content)
-        }
+        HTStorageHelper.updateFluid(container, stack)
         containerUpdater?.apply(container)?.let(::container::set)
     }
 

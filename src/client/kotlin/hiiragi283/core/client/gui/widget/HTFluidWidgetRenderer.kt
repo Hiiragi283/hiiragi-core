@@ -8,7 +8,7 @@ import hiiragi283.core.api.storage.fluid.getTintColor
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.common.gui.widget.HTFluidWidget
 import hiiragi283.core.util.HTSpriteRenderHelper
-import hiiragi283.core.util.HTTooltipHelper
+import hiiragi283.core.util.HTStorageHelper
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.resources.ResourceLocation
@@ -40,6 +40,6 @@ class HTFluidWidgetRenderer(gui: HTAbstractGui, widget: HTFluidWidget) : HTSprit
     }.coerceAtMost(Fraction.ONE)
 
     override fun collectTooltips(consumer: Consumer<Text>, flag: TooltipFlag) {
-        HTTooltipHelper.addFluidTooltip(widget.getFluidStack(), consumer, flag, false)
+        HTStorageHelper.addFluidTooltip(widget.getFluidStack(), consumer, flag, false)
     }
 }
