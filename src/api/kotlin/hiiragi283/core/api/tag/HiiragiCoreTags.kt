@@ -54,6 +54,9 @@ object HiiragiCoreTags {
         @JvmField
         val SENSITIVE_TO_NOISE_CANCELLING: TagKey<EntityType<*>> = mod("sensitive_to_noise_cancelling")
 
+        @JvmField
+        val SENSITIVE_TO_PURIFICATION: TagKey<EntityType<*>> = mod("sensitive_to_purification")
+
         @JvmStatic
         private fun common(vararg path: String): TagKey<EntityType<*>> = Registries.ENTITY_TYPE.createCommonTag(*path)
 

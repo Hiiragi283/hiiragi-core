@@ -1,25 +1,27 @@
 package hiiragi283.core.api.data.map
 
-import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.recipe.HTIngredientCreator
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.toItemLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.core.HolderLookup
+import net.minecraft.data.PackOutput
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.conditions.ICondition
 import net.neoforged.neoforge.common.data.DataMapProvider
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps
+import java.util.concurrent.CompletableFuture
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[DataMapProvider]の拡張クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.13.0
  */
-abstract class HTDataMapProvider(context: HTDataGenContext) : DataMapProvider(context.output, context.registries) {
+abstract class HTDataMapProvider(packOutput: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) :
+    DataMapProvider(packOutput, lookupProvider) {
     protected lateinit var provider: HolderLookup.Provider
         private set
     protected val inputCreator: HTIngredientCreator = HTIngredientCreator

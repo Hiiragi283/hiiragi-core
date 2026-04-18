@@ -2,7 +2,6 @@ package hiiragi283.core.data.client
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.model.HTItemModelProvider
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
@@ -10,8 +9,11 @@ import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
+import net.minecraft.data.PackOutput
+import net.neoforged.neoforge.common.data.ExistingFileHelper
 
-class HCItemModelProvider(context: HTDataGenContext) : HTItemModelProvider(HiiragiCoreAPI.MOD_ID, context) {
+class HCItemModelProvider(fileHelper: ExistingFileHelper, output: PackOutput) :
+    HTItemModelProvider(fileHelper, output, HiiragiCoreAPI.MOD_ID) {
     override fun registerModels() {
         trackItem(HCItems.BAMBOO_CHARCOAL)
 

@@ -2,18 +2,21 @@ package hiiragi283.core.data.server
 
 import hiiragi283.core.api.block.HTWeatheringBlockMap
 import hiiragi283.core.api.block.HTWeatheringLevel
-import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.map.HTDataMapProvider
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.setup.HCBlocks
+import net.minecraft.core.HolderLookup
+import net.minecraft.data.PackOutput
 import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps
 import net.neoforged.neoforge.registries.datamaps.builtin.Oxidizable
 import net.neoforged.neoforge.registries.datamaps.builtin.Waxable
+import java.util.concurrent.CompletableFuture
 
-class HCDataMapProvider(context: HTDataGenContext) : HTDataMapProvider(context) {
+class HCDataMapProvider(packOutput: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) :
+    HTDataMapProvider(packOutput, lookupProvider) {
     override fun gatherInternal() {
         furnaceFuel {
             addHolder(HCBlocks.OIL_SAND, FurnaceFuel(20 * 10 * 4))

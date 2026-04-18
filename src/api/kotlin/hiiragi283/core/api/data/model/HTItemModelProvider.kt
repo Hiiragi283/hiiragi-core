@@ -2,23 +2,24 @@ package hiiragi283.core.api.data.model
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
+import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder
+import net.neoforged.neoforge.common.data.ExistingFileHelper
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[ItemModelBuilder]の拡張クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-abstract class HTItemModelProvider(modId: String, context: HTDataGenContext) :
-    ItemModelProvider(context.output, modId, context.fileHelper) {
+abstract class HTItemModelProvider(fileHelper: ExistingFileHelper, output: PackOutput, modid: String) :
+    ItemModelProvider(output, modid, fileHelper) {
     //    Extensions    //
 
     /**

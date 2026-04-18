@@ -1,9 +1,10 @@
 package hiiragi283.core.api.data.recipe
 
-import hiiragi283.core.api.data.HTDataGenContext
 import net.minecraft.core.HolderLookup
+import net.minecraft.data.PackOutput
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.data.recipes.RecipeProvider
+import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
 /**
@@ -11,7 +12,8 @@ import java.util.function.Consumer
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-abstract class HTRecipeProvider(context: HTDataGenContext) : RecipeProvider(context.output, context.registries) {
+abstract class HTRecipeProvider(output: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) :
+    RecipeProvider(output, registries) {
     final override fun buildRecipes(recipeOutput: RecipeOutput, holderLookup: HolderLookup.Provider) {
         for (provider: HTSubRecipeProvider in buildList { collectProviders(::add) }) {
             provider.buildRecipes(recipeOutput, holderLookup)

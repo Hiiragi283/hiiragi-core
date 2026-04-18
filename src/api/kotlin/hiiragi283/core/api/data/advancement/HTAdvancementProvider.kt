@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data.advancement
 
-import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.util.wrapOptional
 import net.minecraft.advancements.Advancement
 import net.minecraft.core.HolderLookup
@@ -22,14 +21,11 @@ import java.util.concurrent.CompletableFuture
  * @see AdvancementProvider
  */
 class HTAdvancementProvider(
+    private val fileHelper: ExistingFileHelper,
     output: PackOutput,
     private val registries: CompletableFuture<HolderLookup.Provider>,
-    private val fileHelper: ExistingFileHelper,
     private val subProviders: List<HTSubAdvancementProvider>,
 ) : DataProvider {
-    constructor(context: HTDataGenContext, subProviders: List<HTSubAdvancementProvider>) :
-        this(context.output, context.registries, context.fileHelper, subProviders)
-
     private val pathProvider: PackOutput.PathProvider =
         output.createRegistryElementsPathProvider(Registries.ADVANCEMENT)
 

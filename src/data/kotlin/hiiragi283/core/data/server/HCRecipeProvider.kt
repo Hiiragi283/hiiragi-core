@@ -1,13 +1,16 @@
 package hiiragi283.core.data.server
 
-import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.recipe.HTRecipeProvider
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.data.server.recipe.HCBasicRecipeProvider
 import hiiragi283.core.data.server.recipe.HCCommonRecipeProvider
+import net.minecraft.core.HolderLookup
+import net.minecraft.data.PackOutput
+import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
-class HCRecipeProvider(context: HTDataGenContext) : HTRecipeProvider(context) {
+class HCRecipeProvider(output: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) :
+    HTRecipeProvider(output, registries) {
     override fun collectProviders(consumer: Consumer<HTSubRecipeProvider>) {
         consumer.accept(HCCommonRecipeProvider)
         consumer.accept(HCBasicRecipeProvider)

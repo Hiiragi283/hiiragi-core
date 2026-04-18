@@ -4,7 +4,6 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.block.HTWeatheringBlocks
 import hiiragi283.core.api.block.HTWeatheringLevel
-import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.model.HTBlockStateProvider
 import hiiragi283.core.api.data.model.trackTexture
 import hiiragi283.core.api.data.model.withExistingParent
@@ -13,12 +12,15 @@ import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
+import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.NetherWartBlock
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel
+import net.neoforged.neoforge.common.data.ExistingFileHelper
 
-class HCBlockStateProvider(context: HTDataGenContext) : HTBlockStateProvider(HiiragiCoreAPI.MOD_ID, context) {
+class HCBlockStateProvider(fileHelper: ExistingFileHelper, output: PackOutput) :
+    HTBlockStateProvider(fileHelper, output, HiiragiCoreAPI.MOD_ID) {
     override fun registerStatesAndModels() {
         trackBlock(HCBlocks.OIL_SAND)
         simpleBlockAndItem(HCBlocks.OIL_SAND)

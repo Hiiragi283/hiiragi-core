@@ -1,7 +1,10 @@
 package hiiragi283.core.data
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.HTRootDataGenerator
+import hiiragi283.core.api.data.createLootTables
+import hiiragi283.core.api.data.createProviderWithHelper
+import hiiragi283.core.api.function.partially1
 import hiiragi283.core.data.client.HCBlockStateProvider
 import hiiragi283.core.data.client.HCEnglishLangProvider
 import hiiragi283.core.data.client.HCItemModelProvider
@@ -17,42 +20,45 @@ import hiiragi283.core.data.server.tag.HCDamageTypeTagsProvider
 import hiiragi283.core.data.server.tag.HCEntityTypeTagsProvider
 import hiiragi283.core.data.server.tag.HCFluidTagsProvider
 import hiiragi283.core.data.server.tag.HCItemTagsProvider
+import net.minecraft.core.RegistrySetBuilder
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
+import net.neoforged.neoforge.common.data.ExistingFileHelper
 import net.neoforged.neoforge.data.event.GatherDataEvent
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 data object HiiragiCoreDataGen {
     @SubscribeEvent
     fun gatherData(event: GatherDataEvent) {
-        val (server: HTRootDataGenerator, client: HTRootDataGenerator) = HTRootDataGenerator.withDataPack(
-            event,
-            { add(Registries.ENCHANTMENT, HCEnchantmentProvider) },
+        val fileHelper: ExistingFileHelper = event.existingFileHelper
+
+        event.createDatapackRegistryObjects(
+            RegistrySetBuilder()
+                .add(Registries.ENCHANTMENT, HCEnchantmentProvider),
+            setOf(event.modContainer.modId, HTConst.MINECRAFT),
         )
         // Server
-        server.addLootTables(
+        event.createLootTables(
             ::HCBlockLootTableProvider to LootContextParamSets.BLOCK,
             HCGlobalLootProvider::EntityProvider to LootContextParamSets.ENTITY,
         )
-        server.addProvider(::HCGlobalLootModifierProvider)
+        event.createProvider(::HCGlobalLootModifierProvider)
 
-        server.addProvider(::HCRecipeProvider)
+        event.createProvider(::HCRecipeProvider)
 
-        server.addProvider(::HCDamageTypeTagsProvider)
-        server.addProvider(::HCEntityTypeTagsProvider)
-        server.addProvider(::HCFluidTagsProvider)
-        server.addBlockAndItemTags(::HCBlockTagsProvider, ::HCItemTagsProvider)
+        event.createProviderWithHelper(::HCDamageTypeTagsProvider)
+        event.createProviderWithHelper(::HCEntityTypeTagsProvider)
+        event.createProviderWithHelper(::HCFluidTagsProvider)
+        event.createBlockAndItemTags(::HCBlockTagsProvider.partially1(fileHelper), ::HCItemTagsProvider.partially1(fileHelper))
 
-        server.addProvider(::HCDataMapProvider)
+        event.createProvider(::HCDataMapProvider)
         // Client
-        client.addProvider(::HCEnglishLangProvider)
-        client.addProvider(::HCJapaneseLangProvider)
+        event.createProvider(::HCEnglishLangProvider)
+        event.createProvider(::HCJapaneseLangProvider)
 
-        // client.addProvider(::HCTextureProvider)
-
-        client.addProvider(::HCBlockStateProvider)
-        client.addProvider(::HCItemModelProvider)
+        event.createProviderWithHelper(::HCBlockStateProvider)
+        event.createProviderWithHelper(::HCItemModelProvider)
     }
 }

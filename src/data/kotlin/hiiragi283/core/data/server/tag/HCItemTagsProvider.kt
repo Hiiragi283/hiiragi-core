@@ -1,7 +1,6 @@
 package hiiragi283.core.data.server.tag
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.tag.HTItemTagsProvider
 import hiiragi283.core.api.data.tag.HTTagDependType
 import hiiragi283.core.api.data.tag.HTTagsProvider
@@ -10,15 +9,22 @@ import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
+import net.minecraft.core.HolderLookup
+import net.minecraft.data.PackOutput
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.common.Tags
+import net.neoforged.neoforge.common.data.ExistingFileHelper
 import java.util.concurrent.CompletableFuture
 
-class HCItemTagsProvider(blockTags: CompletableFuture<TagLookup<Block>>, context: HTDataGenContext) :
-    HTItemTagsProvider(HiiragiCoreAPI.MOD_ID, blockTags, context) {
+class HCItemTagsProvider(
+    fileHelper: ExistingFileHelper,
+    output: PackOutput,
+    lookupProvider: CompletableFuture<HolderLookup.Provider>,
+    blockTags: CompletableFuture<TagLookup<Block>>,
+) : HTItemTagsProvider(fileHelper, output, lookupProvider, HiiragiCoreAPI.MOD_ID, blockTags) {
     @Suppress("DEPRECATION")
     override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Item>) {
         // Buckets

@@ -1,16 +1,17 @@
 package hiiragi283.core.api.data.tag
 
-import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.toItemLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
+import net.minecraft.data.PackOutput
 import net.minecraft.tags.TagBuilder
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
+import net.neoforged.neoforge.common.data.ExistingFileHelper
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -19,8 +20,13 @@ import java.util.concurrent.CompletableFuture
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-abstract class HTItemTagsProvider(modId: String, private val blockTags: CompletableFuture<TagLookup<Block>>, context: HTDataGenContext) :
-    HTTagsProvider.DataGen<Item>(modId, Registries.ITEM, context) {
+abstract class HTItemTagsProvider(
+    fileHelper: ExistingFileHelper,
+    output: PackOutput,
+    lookupProvider: CompletableFuture<HolderLookup.Provider>,
+    modId: String,
+    private val blockTags: CompletableFuture<TagLookup<Block>>,
+) : HTTagsProvider.DataGen<Item>(fileHelper, output, Registries.ITEM, lookupProvider, modId) {
     //    Extensions    //
 
     private val tagsToCopy: MutableMap<TagKey<Block>, TagKey<Item>> = mutableMapOf()

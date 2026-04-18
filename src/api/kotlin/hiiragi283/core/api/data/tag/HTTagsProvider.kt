@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data.tag
 
-import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.HTServerResourceGenTask
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.RegistryKey
@@ -22,7 +21,6 @@ import java.util.function.Function
 /**
  * [HTTagBuilder]に基づいてタグを生成するインターフェースです。
  * @param T レジストリの要素のクラス
- * @param registryKey レジストリを表すキー
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  * @see GenTask
@@ -114,21 +112,13 @@ sealed interface HTTagsProvider<T : Any> {
      * @since 0.10.0
      */
     abstract class DataGen<T : Any>(
+        fileHelper: ExistingFileHelper,
         output: PackOutput,
         override val registryKey: RegistryKey<T>,
         lookupProvider: CompletableFuture<HolderLookup.Provider>,
         modId: String,
-        existingFileHelper: ExistingFileHelper?,
-    ) : TagsProvider<T>(output, registryKey, lookupProvider, modId, existingFileHelper),
+    ) : TagsProvider<T>(output, registryKey, lookupProvider, modId, fileHelper),
         HTTagsProvider<T> {
-        constructor(modId: String, registryKey: RegistryKey<T>, context: HTDataGenContext) : this(
-            context.output,
-            registryKey,
-            context.registries,
-            modId,
-            context.fileHelper,
-        )
-
         companion object {
             /**
              * タグの生成時に使用されるソーター

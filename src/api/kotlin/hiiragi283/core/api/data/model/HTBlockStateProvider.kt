@@ -2,7 +2,6 @@ package hiiragi283.core.api.data.model
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
@@ -11,6 +10,7 @@ import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
 import net.minecraft.core.Direction
+import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.SlabBlock
@@ -20,14 +20,15 @@ import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel
 import net.neoforged.neoforge.client.model.generators.ModelFile
+import net.neoforged.neoforge.common.data.ExistingFileHelper
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[BlockStateProvider]の拡張クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-abstract class HTBlockStateProvider(protected val modId: String, context: HTDataGenContext) :
-    BlockStateProvider(context.output, modId, context.fileHelper) {
+abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: PackOutput, protected val modid: String) :
+    BlockStateProvider(output, modid, fileHelper) {
     //    Extensions    //
 
     /**

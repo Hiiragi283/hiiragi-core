@@ -1,11 +1,14 @@
 package hiiragi283.core.data.server.loot
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.HTDataGenContext
 import hiiragi283.core.api.data.loot.HTGlobalLootModifierProvider
+import net.minecraft.core.HolderLookup
+import net.minecraft.data.PackOutput
 import net.minecraft.world.entity.EntityType
+import java.util.concurrent.CompletableFuture
 
-class HCGlobalLootModifierProvider(context: HTDataGenContext) : HTGlobalLootModifierProvider(HiiragiCoreAPI.MOD_ID, context) {
+class HCGlobalLootModifierProvider(output: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) :
+    HTGlobalLootModifierProvider(output, registries, HiiragiCoreAPI.MOD_ID) {
     override fun start() {
         // Drops Ancient Upgrade from Warden
         add(HCGlobalLootProvider.ANCIENT_UPGRADE, builder(EntityType.WARDEN).build())

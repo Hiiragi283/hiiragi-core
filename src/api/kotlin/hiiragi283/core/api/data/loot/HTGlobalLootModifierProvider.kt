@@ -1,6 +1,7 @@
 package hiiragi283.core.api.data.loot
 
-import hiiragi283.core.api.data.HTDataGenContext
+import net.minecraft.core.HolderLookup
+import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.level.block.Block
@@ -9,14 +10,15 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition
 import net.neoforged.neoforge.common.data.GlobalLootModifierProvider
 import net.neoforged.neoforge.common.loot.AddTableLootModifier
 import net.neoforged.neoforge.common.loot.LootTableIdCondition
+import java.util.concurrent.CompletableFuture
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[GlobalLootModifierProvider]の拡張クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-abstract class HTGlobalLootModifierProvider(modId: String, context: HTDataGenContext) :
-    GlobalLootModifierProvider(context.output, context.registries, modId) {
+abstract class HTGlobalLootModifierProvider(output: PackOutput, registries: CompletableFuture<HolderLookup.Provider>, modid: String) :
+    GlobalLootModifierProvider(output, registries, modid) {
     protected fun add(key: ResourceKey<LootTable>, vararg conditions: LootItemCondition) {
         add(key.location().path, AddTableLootModifier(arrayOf(*conditions), key))
     }
