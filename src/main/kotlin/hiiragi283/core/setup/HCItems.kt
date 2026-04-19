@@ -37,6 +37,8 @@ object HCItems {
     fun register(eventBus: IEventBus) {
         REGISTER.addAlias("plastic_ingot", "plastic_plate")
         REGISTER.addAlias("plastic_wire", "synthetic_fiber")
+        REGISTER.addAlias("rubber_ingot", "cured_rubber")
+        REGISTER.addAlias("rubber_plate", "cured_rubber")
         REGISTER.addAlias("wood_plate", "particle_board")
 
         REGISTER.register(eventBus)
@@ -61,6 +63,9 @@ object HCItems {
     // Polymer
     @JvmField
     val RAW_RUBBER: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("raw_rubber")
+
+    @JvmField
+    val CURED_RUBBER: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("cured_rubber")
 
     @JvmField
     val POLYMER_RESIN: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("polymer_resin")

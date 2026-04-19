@@ -50,6 +50,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.MEAT, "Meat")
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "Bamboo Charcoal")
+        add(HCItems.CURED_RUBBER, "Cured Rubber")
         add(HCItems.PARTICLE_BOARD, "Particle Board")
         add(HCItems.POLYMER_RESIN, "Polymer Resin")
         add(HCItems.RAW_RUBBER, "Raw Rubber")

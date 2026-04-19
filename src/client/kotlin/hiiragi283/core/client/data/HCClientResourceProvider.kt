@@ -127,6 +127,11 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
                 vanillaItemId("raw_gold"),
                 Blocks.SANDSTONE,
             )
+            this += resprite(
+                HCItems.CURED_RUBBER.itemId,
+                vanillaItemId("nether_brick"),
+                CommonMaterialKeys.RUBBER,
+            )
         }.forEach(executor)
 
         mapOf(

@@ -457,9 +457,8 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         // Raw Rubber -> Rubber Bar
         HTCookingRecipeBuilder.smelting(output) {
             ingredient += HCItems.RAW_RUBBER
-            resultStack += getOrThrow(CommonParts.INGOT, CommonMaterialKeys.RUBBER)
+            resultStack += HCItems.CURED_RUBBER
             exp = 0.7f
-            recipeId suffix "_from_raw"
         }
     }
 

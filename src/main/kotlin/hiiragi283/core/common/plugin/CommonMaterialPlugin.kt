@@ -38,6 +38,7 @@ import hiiragi283.core.api.times
 import hiiragi283.core.common.item.tool.CommonToolTypes
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
+import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCToolMaterials
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.Blocks
@@ -567,16 +568,12 @@ object CommonMaterialPlugin : HTMaterialPlugin {
             setTextureSet("polymer")
         }
         builder.getBuilder(CommonMaterialKeys.RUBBER).apply {
-            setDefaultPart(HTDefaultPart.Prefixed.INGOT)
+            setDefaultPart(HiiragiCoreTags.Items.RUBBERS, HCItems.CURED_RUBBER)
             addBlockPrefixes(CommonParts.BLOCK)
             addFluidPrefixes(HTFluidPart.MOLTEN)
-            addItemPrefixes(CommonParts.INGOT, CommonParts.PLATE)
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
             setName("Rubber", "ゴム")
-            // addCustomName(CommonPartsN.DUST, "Rubber Pulp", "ゴムパルプ")
-            addCustomName(CommonParts.INGOT, "Rubber Bar", "ゴムバー")
-            addCustomName(CommonParts.PLATE, "Rubber Sheet", "ゴムシート")
             setTextureSet("polymer", HTMaterialTextureSet.DULL)
         }
     }

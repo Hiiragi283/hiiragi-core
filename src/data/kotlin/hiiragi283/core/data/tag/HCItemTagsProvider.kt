@@ -53,6 +53,8 @@ class HCItemTagsProvider(
 
         addTags(factory, Tags.Items.CROPS, HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)
 
+        factory.apply(HiiragiCoreTags.Items.RUBBERS).add(HCItems.CURED_RUBBER)
+
         factory
             .apply(HiiragiCoreTags.Items.STICKY_BALLS)
             .add(HCItems.RAW_RUBBER)

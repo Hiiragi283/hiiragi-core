@@ -17,6 +17,7 @@ class HCItemModelProvider(fileHelper: ExistingFileHelper, output: PackOutput) :
     override fun registerModels() {
         trackItem(HCItems.BAMBOO_CHARCOAL)
 
+        trackItem(HCItems.CURED_RUBBER)
         trackItem(HCItems.RAW_RUBBER)
         trackItem(HCItems.POLYMER_RESIN)
         trackItem(HCItems.SYNTHETIC_FEATHER)

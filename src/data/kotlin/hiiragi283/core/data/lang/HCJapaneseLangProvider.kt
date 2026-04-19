@@ -50,6 +50,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.MEAT, "肉")
         // Item
         add(HCItems.BAMBOO_CHARCOAL, "竹炭")
+        add(HCItems.CURED_RUBBER, "加硫ゴム")
         add(HCItems.PARTICLE_BOARD, "パーティクルボード")
         add(HCItems.POLYMER_RESIN, "高分子樹脂")
         add(HCItems.RAW_RUBBER, "生ゴム")
