@@ -3,6 +3,7 @@ package hiiragi283.core.data.lang
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.data.lang.HTLangTypes
+import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
@@ -82,7 +83,6 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.AMBROSIA, "Ambrosia")
         add(HCItems.ETERNAL_UPGRADE, "Eternal Smithing Template")
         add(HCItems.ALMIGHTY_PICKAXE, "Almighty Pickaxe")
-
         // Recipe
         add(HTVanillaRecipeTypes.SMELTING, "Smelting")
         add(HTVanillaRecipeTypes.BLASTING, "Blasting")
@@ -96,6 +96,24 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         add(HCRecipeLookups.EMPTYING, "Tank Interaction (Emptying)")
         add(HCRecipeLookups.FILLING, "Tank Interaction (Filling)")
+        // Tag
+        add(HiiragiCoreTags.Blocks.INCORRECT_FOR_ALMIGHTY_PICKAXE, "Incorrect for Almighty Pickaxe")
+        add(HiiragiCoreTags.Blocks.LATEX_DRIPPING_LOGS, "Latex Dripping Logs")
+
+        add(HiiragiCoreTags.Fluids.ELDRITCH, "Eldritch Fluids")
+
+        add(HiiragiCoreTags.Items.CROPS_WARPED_WART, "Warped Wart Crops")
+        add(HiiragiCoreTags.Items.FLOURS, "Flours")
+        add(HiiragiCoreTags.Items.FLOURS_WHEAT, "Wheat Flours")
+        add(HiiragiCoreTags.Items.HAMMERS, "Hammers")
+        add(HiiragiCoreTags.Items.PLASTICS, "Plastics")
+        add(HiiragiCoreTags.Items.RUBBERS, "Rubbers")
+        add(HiiragiCoreTags.Items.SILICON, "Silicon")
+        add(HiiragiCoreTags.Items.STICKY_BALLS, "Sticky Balls")
+        add(HiiragiCoreTags.Items.TOOLS_HAMMER, "Hammers")
+        add(HiiragiCoreTags.Items.BYPASS_MENU_VALIDATION, "Bypass Menu Validation")
+        add(HiiragiCoreTags.Items.ELDRITCH_PEARL_BINDER, "Eldritch Pearl Binders")
+        add(HiiragiCoreTags.Items.FORGING_HAMMERS, "Forging Hammers")
         // Translation
         translation()
     }

@@ -3,6 +3,7 @@ package hiiragi283.core.data.lang
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.data.lang.HTLangTypes
+import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
@@ -96,6 +97,24 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HCRecipeLookups.EMPTYING, "タンクとの相互作用（搬出）")
         add(HCRecipeLookups.FILLING, "タンクとの相互作用（搬入）")
+        // Tag
+        add(HiiragiCoreTags.Blocks.INCORRECT_FOR_ALMIGHTY_PICKAXE, "全能なるツルハシで適切でないブロック")
+        add(HiiragiCoreTags.Blocks.LATEX_DRIPPING_LOGS, "ラテックスを抽出可能な木")
+
+        add(HiiragiCoreTags.Fluids.ELDRITCH, "異質な液体")
+
+        add(HiiragiCoreTags.Items.CROPS_WARPED_WART, "歪んだウォートの作物")
+        add(HiiragiCoreTags.Items.FLOURS, "穀物の粉")
+        add(HiiragiCoreTags.Items.FLOURS_WHEAT, "小麦粉")
+        add(HiiragiCoreTags.Items.HAMMERS, "ハンマー")
+        add(HiiragiCoreTags.Items.PLASTICS, "プラスチック")
+        add(HiiragiCoreTags.Items.RUBBERS, "ゴム")
+        add(HiiragiCoreTags.Items.SILICON, "シリコン")
+        add(HiiragiCoreTags.Items.STICKY_BALLS, "粘着質のボール")
+        add(HiiragiCoreTags.Items.TOOLS_HAMMER, "ハンマー")
+        add(HiiragiCoreTags.Items.BYPASS_MENU_VALIDATION, "メニューのバリデーションを行わないアイテム")
+        add(HiiragiCoreTags.Items.ELDRITCH_PEARL_BINDER, "異質な真珠の結合剤")
+        add(HiiragiCoreTags.Items.FORGING_HAMMERS, "鍛造ハンマー")
         // Translation
         translation()
     }

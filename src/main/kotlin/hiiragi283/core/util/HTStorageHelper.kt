@@ -1,6 +1,7 @@
 package hiiragi283.core.util
 
 import hiiragi283.core.api.HTDefaultColor
+import hiiragi283.core.api.fixedFraction
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.registry.getHolderLike
 import hiiragi283.core.api.storage.amount.HTAmountView
@@ -15,9 +16,11 @@ import hiiragi283.core.setup.HCDataComponents
 import net.minecraft.ChatFormatting
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.util.Mth
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.level.ItemLike
+import net.minecraft.world.level.redstone.Redstone
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.SimpleFluidContent
 import java.util.function.Consumer
@@ -27,6 +30,34 @@ import kotlin.math.roundToInt
  * @see mekanism.common.util.StorageUtils
  */
 data object HTStorageHelper {
+    //    Amount    //
+
+    /**
+     * @see net.neoforged.neoforge.items.ItemHandlerHelper.calcRedstoneFromInventory
+     * @see mekanism.common.util.MekanismUtils.redstoneLevelFromContents
+     */
+    @JvmStatic
+    fun calculateRedstoneLevel(views: Iterable<HTAmountView>): Int {
+        var amountSum = 0
+        var capacitySum = 0
+        for (view: HTAmountView in views) {
+            amountSum += view.getAmount()
+            capacitySum += view.getCapacity()
+        }
+        return calculateRedstoneLevel(amountSum, capacitySum)
+    }
+
+    /**
+     * @see mekanism.common.util.MekanismUtils.redstoneLevelFromContents
+     */
+    @JvmStatic
+    fun calculateRedstoneLevel(amount: Int, capacity: Int): Int =
+        Mth.lerpDiscrete(fixedFraction(amount, capacity).toFloat(), Redstone.SIGNAL_NONE, Redstone.SIGNAL_MAX)
+
+    @JvmStatic
+    fun calculateRedstoneLevel(view: HTAmountView): Int =
+        Mth.lerpDiscrete(view.getLevelAsFloat(), Redstone.SIGNAL_NONE, Redstone.SIGNAL_MAX)
+
     //    Energy    //
 
     @JvmStatic

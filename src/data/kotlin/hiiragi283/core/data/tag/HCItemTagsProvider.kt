@@ -31,7 +31,7 @@ class HCItemTagsProvider(
             addTags(factory, Tags.Items.BUCKETS, content.bucketTag).add(content.getBucket())
         }
         // Foods
-        addTags(factory, HiiragiCoreTags.Items.DOUGHS, HiiragiCoreTags.Items.DOUGHS_WHEAT).add(HCItems.WHEAT_DOUGH)
+        addTags(factory, Tags.Items.FOODS_DOUGH, HiiragiCoreTags.Items.FOODS_DOUGH_WHEAT).add(HCItems.WHEAT_DOUGH)
         addTags(factory, HiiragiCoreTags.Items.FLOURS, HiiragiCoreTags.Items.FLOURS_WHEAT).add(HCItems.WHEAT_FLOUR)
 
         factory.apply(Tags.Items.FOODS_GOLDEN).add(HCItems.AMBROSIA)

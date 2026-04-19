@@ -16,7 +16,7 @@ import hiiragi283.core.impl.recipe.HTLookupRecipeCache
 import hiiragi283.core.impl.recipe.handler.HTItemInputHandler
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.util.HTItemDropHelper
-import hiiragi283.core.util.HTStackSlotHelper
+import hiiragi283.core.util.HTStorageHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
@@ -46,7 +46,7 @@ class HTForgingAnvilBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntit
         level?.updateNeighbourForOutputSignal(blockPos, blockState.block)
     }
 
-    override fun getComparatorOutput(state: BlockState, level: Level, pos: BlockPos): Int = HTStackSlotHelper.calculateRedstoneLevel(slot)
+    override fun getComparatorOutput(state: BlockState, level: Level, pos: BlockPos): Int = HTStorageHelper.calculateRedstoneLevel(slot)
 
     //    Processing    //
 

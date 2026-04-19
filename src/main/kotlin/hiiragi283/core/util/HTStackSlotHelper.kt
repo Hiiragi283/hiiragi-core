@@ -1,10 +1,8 @@
 package hiiragi283.core.util
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.fixedFraction
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
-import hiiragi283.core.api.storage.amount.HTAmountView
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.fluid.toResourcePair
@@ -13,10 +11,7 @@ import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.toResourcePair
 import hiiragi283.core.api.storage.resource.HTResourceSlot
 import hiiragi283.core.api.storage.resource.HTResourceType
-import hiiragi283.core.api.storage.resource.HTResourceView
-import net.minecraft.util.Mth
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.level.redstone.Redstone
 import net.neoforged.neoforge.fluids.FluidStack
 
 object HTStackSlotHelper {
@@ -88,34 +83,6 @@ object HTStackSlotHelper {
         }
         return extracted
     }
-
-    //    Amount    //
-
-    /**
-     * @see net.neoforged.neoforge.items.ItemHandlerHelper.calcRedstoneFromInventory
-     * @see mekanism.common.util.MekanismUtils.redstoneLevelFromContents
-     */
-    @JvmStatic
-    fun <RESOURCE : HTResourceType<*>> calculateRedstoneLevel(views: Iterable<HTResourceView<RESOURCE>>): Int {
-        var amountSum = 0
-        var capacitySum = 0
-        for (view: HTResourceView<RESOURCE> in views) {
-            amountSum += view.getAmount()
-            capacitySum += view.getCapacity(view.getResource())
-        }
-        return calculateRedstoneLevel(amountSum, capacitySum)
-    }
-
-    /**
-     * @see mekanism.common.util.MekanismUtils.redstoneLevelFromContents
-     */
-    @JvmStatic
-    fun calculateRedstoneLevel(amount: Int, capacity: Int): Int =
-        Mth.lerpDiscrete(fixedFraction(amount, capacity).toFloat(), Redstone.SIGNAL_NONE, Redstone.SIGNAL_MAX)
-
-    @JvmStatic
-    fun calculateRedstoneLevel(view: HTAmountView): Int =
-        Mth.lerpDiscrete(view.getLevelAsFraction().toFloat(), Redstone.SIGNAL_NONE, Redstone.SIGNAL_MAX)
 
     //    Item    //
 

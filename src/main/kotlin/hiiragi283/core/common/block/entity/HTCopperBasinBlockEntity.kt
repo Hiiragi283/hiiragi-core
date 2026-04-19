@@ -19,7 +19,7 @@ import hiiragi283.core.impl.recipe.handler.HTFluidInputHandler
 import hiiragi283.core.impl.recipe.handler.HTFluidOutputHandler
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.util.HTItemDropHelper
-import hiiragi283.core.util.HTStackSlotHelper
+import hiiragi283.core.util.HTStorageHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
@@ -93,7 +93,7 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
         level?.updateNeighbourForOutputSignal(blockPos, blockState.block)
     }
 
-    override fun getComparatorOutput(state: BlockState, level: Level, pos: BlockPos): Int = HTStackSlotHelper.calculateRedstoneLevel(tank)
+    override fun getComparatorOutput(state: BlockState, level: Level, pos: BlockPos): Int = HTStorageHelper.calculateRedstoneLevel(tank)
 
     //    Sync    //
 

@@ -1,6 +1,5 @@
 package hiiragi283.core.api.integration.jei
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.compareTo
 import hiiragi283.core.api.function.identity
@@ -28,31 +27,25 @@ import net.minecraft.world.item.Items
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 import org.apache.commons.lang3.math.Fraction
+import java.util.function.IntSupplier
 
 typealias JeiRecipeType<T> = RecipeType<T>
 
-fun <T : IIngredientConsumer> T.addFluidStack(stack: FluidStack, setRenderer: Boolean = true): T {
+fun <T : IIngredientConsumer> T.addFluidStack(stack: FluidStack): T = apply {
     this.addFluidStack(stack.fluid, stack.amount.toLong(), stack.componentsPatch)
-    if (setRenderer && this is IRecipeSlotBuilder) {
-        this.setFluidRenderer(stack.amount.toLong(), false, 16, 16)
-    }
-    return this
 }
 
-fun <T : IIngredientConsumer> T.addFluidStacks(stacks: Iterable<FluidStack>, setRenderer: Boolean = true): T {
+fun <T : IRecipeSlotBuilder> T.setTankRenderer(capacity: IntSupplier): T = this.setTankRenderer(capacity.asInt)
+
+fun <T : IRecipeSlotBuilder> T.setTankRenderer(capacity: Int): T = apply {
+    this.setFluidRenderer(capacity.toLong(), false, 16, 18 * 3 - 2)
+}
+
+fun <T : IIngredientConsumer> T.addFluidStacks(stacks: Iterable<FluidStack>): T = apply {
     this.addIngredients(NeoForgeTypes.FLUID_STACK, stacks.toList())
-    if (setRenderer && this is IRecipeSlotBuilder) {
-        val capacity: Long = (stacks.maxOfOrNull(FluidStack::getAmount) ?: HTConst.DEFAULT_FLUID_AMOUNT).toLong()
-        this.setFluidRenderer(capacity, false, 16, 16)
-    }
-    return this
 }
 
-private fun createError(message: Text): ItemStack = createItemStack(
-    Items.BARRIER,
-    DataComponents.CUSTOM_NAME,
-    message,
-)
+private fun createError(message: Text): ItemStack = createItemStack(Items.BARRIER, DataComponents.CUSTOM_NAME, message)
 
 // Item
 fun <T : IIngredientConsumer> T.addItemIngredient(ingredient: HTItemIngredient?): T {
@@ -100,7 +93,7 @@ fun <T : IIngredientConsumer> T.addItemResult(result: HTItemResult?): T {
 }
 
 // Fluid
-fun <T : IIngredientConsumer> T.addFluidIngredient(ingredient: HTFluidIngredient?, setRenderer: Boolean = true): T {
+fun <T : IIngredientConsumer> T.addFluidIngredient(ingredient: HTFluidIngredient?): T {
     if (ingredient == null) return this
     val amount: Int = when {
         ingredient.isCatalyst -> 1
@@ -111,7 +104,7 @@ fun <T : IIngredientConsumer> T.addFluidIngredient(ingredient: HTFluidIngredient
         .map(
             { tagKey: TagKey<Fluid> -> BuiltInRegistries.FLUID.getTagOrEmpty(tagKey).map { FluidStack(it, amount) } },
             { resources: List<HTFluidResourceType> -> resources.map { it.toStack(amount) } },
-        ).let { this.addFluidStacks(it, setRenderer) }
+        ).let { this.addFluidStacks(it) }
     if (ingredient.isCatalyst && this is IRecipeSlotBuilder) {
         this.addRichTooltipCallback { _, builder: ITooltipBuilder ->
             builder.add(HTCommonTranslation.CHANCE_CONSUME.translateColored(HTDefaultColor.YELLOW, 0))
@@ -120,5 +113,4 @@ fun <T : IIngredientConsumer> T.addFluidIngredient(ingredient: HTFluidIngredient
     return this
 }
 
-fun <T : IIngredientConsumer> T.addFluidResult(result: HTFluidResult?, setRenderer: Boolean = true): T =
-    this.addFluidStacks(listOfNotNull(result?.get()?.value()), setRenderer)
+fun <T : IIngredientConsumer> T.addFluidResult(result: HTFluidResult?): T = this.addFluidStacks(listOfNotNull(result?.get()?.value()))
