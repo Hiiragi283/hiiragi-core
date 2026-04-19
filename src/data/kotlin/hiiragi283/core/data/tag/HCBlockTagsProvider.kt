@@ -41,6 +41,9 @@ class HCBlockTagsProvider(fileHelper: ExistingFileHelper, output: PackOutput, lo
             .add(HCBlocks.WARPED_WART)
         // Other
         factory
+            .apply(HiiragiCoreTags.Blocks.INCORRECT_FOR_ALMIGHTY_PICKAXE)
+
+        factory
             .apply(HiiragiCoreTags.Blocks.LATEX_DRIPPING_LOGS)
             .addTag(BlockTags.ACACIA_LOGS)
             .addTag(BlockTags.JUNGLE_LOGS)

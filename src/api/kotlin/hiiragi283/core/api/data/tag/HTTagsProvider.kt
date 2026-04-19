@@ -27,56 +27,56 @@ import java.util.function.Function
  * @see DataGen
  */
 sealed interface HTTagsProvider<T : Any> {
-    val registryKey: RegistryKey<T>
-
     /**
      * 生成するタグを登録します。
      * @param factory [TagKey]から[HTTagBuilder]を取得するブロック
      */
     fun addTagsInternal(factory: BuilderFactory<T>)
 
-    //    Extensions    //
-
-    /**
-     * タグをチェインして登録します。
-     * @return 最後の[children]に対する[HTTagBuilder]
-     */
-    fun addTags(factory: BuilderFactory<T>, parent: TagKey<T>, vararg children: TagKey<T>): HTTagBuilder<T> {
-        check(!children.isEmpty()) { "Empty tag key children" }
-        return children.fold(factory.apply(parent)) { current: HTTagBuilder<T>, child: TagKey<T> ->
-            current.addTag(child)
-            factory.apply(child)
-        }
-    }
-
-    /**
-     * タグをチェインして登録します。
-     * @return [HTTagPrefix.createTagKey]に対する[HTTagBuilder]
-     */
-    fun addMaterial(factory: BuilderFactory<T>, prefix: HTTagPrefix, material: HTMaterialLike): HTTagBuilder<T> =
-        addTags(factory, prefix.createCommonTagKey(registryKey), prefix.createTagKey(registryKey, material))
-
-    /**
-     * 指定した[ID][id]から[タグ][TagKey]を作成します。
-     * @since 0.12.0
-     */
-    fun tag(id: ResourceLocation): TagKey<T> = registryKey.createTagKey(id)
-
-    /**
-     * 指定した[パス][path]から[共通タグ][TagKey]を作成します。
-     * @since 0.12.0
-     */
-    fun commonTag(path: String): TagKey<T> = registryKey.createCommonTag(path)
-
-    /**
-     * 指定した[パス][path]から[共通タグ][TagKey]を作成します。
-     * @since 0.12.0
-     */
-    fun commonTag(vararg path: String): TagKey<T> = registryKey.createCommonTag(*path)
-
     //    Factory    //
 
-    fun interface BuilderFactory<T : Any> : Function<TagKey<T>, HTTagBuilder<T>>
+    abstract class BuilderFactory<T : Any>(private val registryKey: RegistryKey<T>) : Function<TagKey<T>, HTTagBuilder<T>> {
+        abstract override fun apply(tagKey: TagKey<T>): HTTagBuilder<T>
+
+        //    Extensions    //
+
+        /**
+         * タグをチェインして登録します。
+         * @return 最後の[children]に対する[HTTagBuilder]
+         */
+        fun addTags(parent: TagKey<T>, vararg children: TagKey<T>): HTTagBuilder<T> {
+            check(!children.isEmpty()) { "Empty tag key children" }
+            return children.fold(this.apply(parent)) { current: HTTagBuilder<T>, child: TagKey<T> ->
+                current.addTag(child)
+                this.apply(child)
+            }
+        }
+
+        /**
+         * タグをチェインして登録します。
+         * @return [HTTagPrefix.createTagKey]に対する[HTTagBuilder]
+         */
+        fun addMaterial(prefix: HTTagPrefix, material: HTMaterialLike): HTTagBuilder<T> =
+            addTags(prefix.createCommonTagKey(registryKey), prefix.createTagKey(registryKey, material))
+
+        /**
+         * 指定した[ID][id]から[タグ][TagKey]を作成します。
+         * @since 0.12.0
+         */
+        fun tag(id: ResourceLocation): TagKey<T> = registryKey.createTagKey(id)
+
+        /**
+         * 指定した[パス][path]から[共通タグ][TagKey]を作成します。
+         * @since 0.12.0
+         */
+        fun commonTag(path: String): TagKey<T> = registryKey.createCommonTag(path)
+
+        /**
+         * 指定した[パス][path]から[共通タグ][TagKey]を作成します。
+         * @since 0.12.0
+         */
+        fun commonTag(vararg path: String): TagKey<T> = registryKey.createCommonTag(*path)
+    }
 
     //    GenTask    //
 
@@ -85,19 +85,21 @@ sealed interface HTTagsProvider<T : Any> {
      * @author Hiiragi Tsubasa
      * @since 0.10.0
      */
-    abstract class GenTask<T : Any>(override val registryKey: RegistryKey<T>) :
+    abstract class GenTask<T : Any>(private val registryKey: RegistryKey<T>) :
         HTTagsProvider<T>,
         HTServerResourceGenTask {
         private val builderCache: MutableMap<TagKey<T>, SimpleTagBuilder> = hashMapOf()
 
         final override fun accept(sink: ResourceSink) {
-            addTagsInternal { tagKey: TagKey<T> ->
-                HTTagBuilder(registryKey) { entry: TagEntry ->
+            // タグの値を一時的に保存
+            addTagsInternal(object : BuilderFactory<T>(registryKey) {
+                override fun apply(tagKey: TagKey<T>): HTTagBuilder<T> = HTTagBuilder(registryKey) { entry: TagEntry ->
                     builderCache
                         .computeIfAbsent(tagKey) { SimpleTagBuilder.of(tagKey) }
                         .add(entry)
                 }
-            }
+            })
+            // タグの値を実際に登録
             for (builder: SimpleTagBuilder in builderCache.values) {
                 sink.addTag(builder, registryKey)
             }
@@ -114,7 +116,7 @@ sealed interface HTTagsProvider<T : Any> {
     abstract class DataGen<T : Any>(
         fileHelper: ExistingFileHelper,
         output: PackOutput,
-        override val registryKey: RegistryKey<T>,
+        registryKey: RegistryKey<T>,
         lookupProvider: CompletableFuture<HolderLookup.Provider>,
         modId: String,
     ) : TagsProvider<T>(output, registryKey, lookupProvider, modId, fileHelper),
@@ -130,20 +132,34 @@ sealed interface HTTagsProvider<T : Any> {
                 .thenComparing(TagEntry::getId)
         }
 
+        private val tagEntryMap: MutableMap<TagKey<T>, List<TagEntry>> = mutableMapOf()
+        private val tagKeysToGenerate: MutableSet<TagKey<T>> = mutableSetOf()
+
         @Suppress("DEPRECATION")
         final override fun addTags(provider: HolderLookup.Provider) {
-            buildMap { addTagsInternal { tagKey: TagKey<T> -> createBuilder(this, tagKey) } }
-                .forEach { (tagKey: TagKey<T>, entries: List<TagEntry>) ->
-                    entries
-                        .sortedWith(COMPARATOR)
-                        .distinctBy(TagEntry::toString)
-                        .forEach { entry: TagEntry -> tag(tagKey).add(entry) }
+            // タグの値を一時的に保存
+            addTagsInternal(object : BuilderFactory<T>(registryKey) {
+                override fun apply(tagKey: TagKey<T>): HTTagBuilder<T> {
+                    tagKeysToGenerate += tagKey
+                    return createBuilder(tagKey)
                 }
+            })
+            // 空のタグファイルを生成
+            tagKeysToGenerate.forEach(::getOrCreateRawBuilder)
+            // タグの値を実際に登録
+            tagEntryMap.forEach { (tagKey: TagKey<T>, entries: List<TagEntry>) ->
+                entries
+                    .sortedWith(COMPARATOR)
+                    .distinctBy(TagEntry::toString)
+                    .forEach { entry: TagEntry -> tag(tagKey).add(entry) }
+            }
         }
 
-        private fun createBuilder(map: MutableMap<TagKey<T>, List<TagEntry>>, tagKey: TagKey<T>): HTTagBuilder<T> =
-            HTTagBuilder(registryKey) { entry: TagEntry ->
-                map[tagKey] = (map[tagKey]?.plus(entry) ?: listOf(entry))
-            }
+        private fun createBuilder(tagKey: TagKey<T>): HTTagBuilder<T> {
+            tagKeysToGenerate += tagKey
+            return HTTagBuilder(
+                registryKey,
+            ) { entry: TagEntry -> tagEntryMap[tagKey] = (tagEntryMap[tagKey]?.plus(entry) ?: listOf(entry)) }
+        }
     }
 }

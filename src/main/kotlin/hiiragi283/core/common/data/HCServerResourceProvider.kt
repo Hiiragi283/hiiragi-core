@@ -148,10 +148,10 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
             override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Block>) {
                 // Material Block
                 existing.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
-                    addMaterial(factory, prefix, key).add(block)
+                    factory.addMaterial(prefix, key).add(block)
                 }
                 registered.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
-                    addMaterial(factory, prefix, key).add(block)
+                    factory.addMaterial(prefix, key).add(block)
                     factory.apply(BlockTags.MINEABLE_WITH_PICKAXE).add(block)
                 }
             }
@@ -168,21 +168,21 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
             override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Item>) {
                 // Material Block
                 existing.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
-                    addMaterial(factory, prefix, key).add(block)
+                    factory.addMaterial(prefix, key).add(block)
                 }
                 registered.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
-                    addMaterial(factory, prefix, key).add(block)
+                    factory.addMaterial(prefix, key).add(block)
                 }
                 // Material Fluid
                 fluids.forEach { (part: HTFluidPart, key: HTMaterialKey, fluid: HTSimpleFluidHolderLike) ->
-                    addTags(factory, Tags.Items.BUCKETS, part.createBucketTag(key)).add(fluid.getBucket())
+                    factory.addTags(Tags.Items.BUCKETS, part.createBucketTag(key)).add(fluid.getBucket())
                 }
                 // Material Item
                 existing.items.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
-                    addMaterial(factory, prefix, key).add(item)
+                    factory.addMaterial(prefix, key).add(item)
                 }
                 registered.items.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
-                    addMaterial(factory, prefix, key).add(item)
+                    factory.addMaterial(prefix, key).add(item)
                     if (prefix == CommonTagPrefixes.GEM || prefix == CommonTagPrefixes.INGOT) {
                         factory.apply(ItemTags.BEACON_PAYMENT_ITEMS).addTag(prefix, key)
                     }

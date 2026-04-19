@@ -28,11 +28,11 @@ class HCItemTagsProvider(
     override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Item>) {
         // Buckets
         for (content: HTFluidContent in HCFluids.REGISTER.entries) {
-            addTags(factory, Tags.Items.BUCKETS, content.bucketTag).add(content.getBucket())
+            factory.addTags(Tags.Items.BUCKETS, content.bucketTag).add(content.getBucket())
         }
         // Foods
-        addTags(factory, Tags.Items.FOODS_DOUGH, HiiragiCoreTags.Items.FOODS_DOUGH_WHEAT).add(HCItems.WHEAT_DOUGH)
-        addTags(factory, HiiragiCoreTags.Items.FLOURS, HiiragiCoreTags.Items.FLOURS_WHEAT).add(HCItems.WHEAT_FLOUR)
+        factory.addTags(Tags.Items.FOODS_DOUGH, HiiragiCoreTags.Items.FOODS_DOUGH_WHEAT).add(HCItems.WHEAT_DOUGH)
+        factory.addTags(HiiragiCoreTags.Items.FLOURS, HiiragiCoreTags.Items.FLOURS_WHEAT).add(HCItems.WHEAT_FLOUR)
 
         factory.apply(Tags.Items.FOODS_GOLDEN).add(HCItems.AMBROSIA)
         // Materials
@@ -51,7 +51,7 @@ class HCItemTagsProvider(
         factory.apply(Tags.Items.LEATHERS).add(HCItems.SYNTHETIC_LEATHER)
         factory.apply(Tags.Items.STRINGS).add(HCItems.SYNTHETIC_FIBER)
 
-        addTags(factory, Tags.Items.CROPS, HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)
+        factory.addTags(Tags.Items.CROPS, HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)
 
         factory.apply(HiiragiCoreTags.Items.RUBBERS).add(HCItems.CURED_RUBBER)
 
