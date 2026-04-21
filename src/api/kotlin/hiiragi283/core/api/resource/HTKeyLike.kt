@@ -16,17 +16,5 @@ fun interface HTKeyLike<R : Any> : HTIdLike {
      */
     fun getResourceKey(): ResourceKey<R>
 
-    /**
-     * 指定した[key]が保持している[ResourceKey]と一致するか判定します。
-     * @since 0.6.0
-     */
-    fun isOf(key: ResourceKey<R>): Boolean = key == getResourceKey()
-
-    /**
-     * 指定した[other]と保持している[ResourceKey]が一致するか判定します。
-     * @since 0.6.0
-     */
-    fun isOf(other: HTKeyLike<R>): Boolean = isOf(other.getResourceKey())
-
     override fun getId(): ResourceLocation = getResourceKey().location()
 }

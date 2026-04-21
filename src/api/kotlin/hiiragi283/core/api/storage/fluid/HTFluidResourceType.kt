@@ -48,7 +48,7 @@ class HTFluidResourceType private constructor(private val stack: FluidStack) : H
     /**
      * @since 0.13.0
      */
-    fun isOf(stack: FluidStack): Boolean = stack.`is`(this.getHolder())
+    fun isOf(stack: FluidStack): Boolean = stack.`is`(this.typeHolder())
 
     fun toStack(amount: Int): FluidStack = stack.copyWithAmount(amount)
 
@@ -61,7 +61,7 @@ class HTFluidResourceType private constructor(private val stack: FluidStack) : H
 
     override fun toString(): String = stack.toString()
 
-    operator fun component1(): Holder<Fluid> = getHolder()
+    operator fun component1(): Holder<Fluid> = typeHolder()
 
     operator fun component2(): DataComponentPatch = componentsPatch()
 
@@ -69,11 +69,9 @@ class HTFluidResourceType private constructor(private val stack: FluidStack) : H
 
     override fun componentsPatch(): DataComponentPatch = stack.componentsPatch
 
-    override fun type(): Fluid = stack.fluid
-
     override fun getText(): Text = stack.hoverName
 
-    override fun getHolder(): Holder<Fluid> = stack.fluidHolder
+    override fun typeHolder(): Holder<Fluid> = stack.fluidHolder
 
     override fun getComponents(): DataComponentMap = stack.components
 }

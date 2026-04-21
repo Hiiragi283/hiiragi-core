@@ -1,0 +1,14 @@
+{
+  "net/minecraft/world/entity/Entity": [
+    "hiiragi283/core/api/registry/TypedInstance<net.minecraft.world.entity.Entity>"
+  ],
+  "net/minecraft/world/item/ItemStack": [
+    "hiiragi283/core/api/registry/TypedInstance<net.minecraft.world.item.Item>"
+  ],
+  "net/minecraft/world/level/block/state/BlockState": [
+    "hiiragi283/core/api/registry/TypedInstance<net.minecraft.world.level.block.Block>"
+  ],
+  "net/minecraft/world/level/material/FluidState": [
+    "hiiragi283/core/api/registry/TypedInstance<net.minecraft.world.level.material.Fluid>"
+  ]
+}

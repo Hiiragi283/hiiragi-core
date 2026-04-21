@@ -86,7 +86,7 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) :
                     HTMaterialManager
                         .getInstance()
                         .entries
-                        .firstOrNull(key::isOf)
+                        .firstOrNull { it.asMaterialKey() == key }
                         ?: error("Unknown material; ${key.getId()}")
                 },
                 HTMaterialManager.Entry::asMaterialKey,

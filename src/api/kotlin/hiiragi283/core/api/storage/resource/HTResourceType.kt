@@ -1,13 +1,12 @@
 package hiiragi283.core.api.storage.resource
 
+import hiiragi283.core.api.registry.TypedInstance
 import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.text.HTHasText
 import net.minecraft.core.Holder
-import net.minecraft.core.HolderSet
 import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.resources.ResourceKey
-import net.minecraft.tags.TagKey
 import net.neoforged.neoforge.registries.datamaps.DataMapType
 import net.neoforged.neoforge.registries.datamaps.IWithData
 
@@ -36,25 +35,17 @@ interface HTResourceType<TYPE : Any> : HTHasText {
     interface Registered<TYPE : Any> :
         HTResourceType<TYPE>,
         HTKeyLike<TYPE>,
-        IWithData<TYPE> {
-        /**
-         * @since 0.13.0
-         */
-        fun getHolder(): Holder<TYPE>
+        IWithData<TYPE>,
+        TypedInstance<TYPE> {
+        override fun typeHolder(): Holder<TYPE>
 
-        /**
-         * @since 0.14.0
-         */
-        fun isOf(tagKey: TagKey<TYPE>): Boolean = getHolder().`is`(tagKey)
+        override fun type(): TYPE = typeHolder().value()
 
-        /**
-         * @since 0.14.0
-         */
-        fun isOf(holderSet: HolderSet<TYPE>): Boolean = getHolder() in holderSet
+        override fun isOf(other: TYPE): Boolean = super<HTResourceType>.isOf(other)
 
-        override fun getResourceKey(): ResourceKey<TYPE> = getHolder().unwrapKey().orElseThrow()
+        override fun getResourceKey(): ResourceKey<TYPE> = typeHolder().unwrapKey().orElseThrow()
 
-        override fun <T : Any> getData(type: DataMapType<TYPE, T>): T? = getHolder().getData(type)
+        override fun <T : Any> getData(type: DataMapType<TYPE, T>): T? = typeHolder().getData(type)
     }
 
     /**

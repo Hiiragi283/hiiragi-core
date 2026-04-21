@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack
 class HTExperienceTomeFluidTank(override val container: ItemStack) : HTItemFluidTank {
     fun getExpRatio(): Int = HTExperienceHelper.getExpRatio()
 
-    override fun isValid(resource: HTFluidResourceType): Boolean = resource.getHolder().`is`(HCFluids.EXPERIENCE.fluidTag)
+    override fun isValid(resource: HTFluidResourceType): Boolean = resource.typeHolder().`is`(HCFluids.EXPERIENCE.fluidTag)
 
     override fun insert(
         resource: HTFluidResourceType?,

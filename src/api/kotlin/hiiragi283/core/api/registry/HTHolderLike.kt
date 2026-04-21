@@ -67,6 +67,8 @@ fun <R : Any, T : R> DeferredHolder<R, T>.toLike(): HTHolderLike<R, T> = object 
     override fun toString(): String = this@toLike.toString()
 }
 
+fun <T : Any> TypedInstance<T>.getHolderLike(): HTSimpleHolderLike<T> = this.typeHolder().toLike()
+
 //    Block    //
 
 /**

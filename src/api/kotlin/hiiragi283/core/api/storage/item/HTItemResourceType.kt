@@ -42,7 +42,7 @@ class HTItemResourceType private constructor(private val stack: ItemStack) : HTR
     /**
      * @since 0.13.0
      */
-    fun isOf(stack: ItemStack): Boolean = stack.`is`(this.getHolder())
+    fun isOf(stack: ItemStack): Boolean = stack.`is`(this.typeHolder())
 
     /**
      * 指定した[count]から[ItemStack]に変換します。
@@ -58,7 +58,7 @@ class HTItemResourceType private constructor(private val stack: ItemStack) : HTR
 
     override fun toString(): String = stack.toString()
 
-    operator fun component1(): Holder<Item> = getHolder()
+    operator fun component1(): Holder<Item> = typeHolder()
 
     operator fun component2(): DataComponentPatch = componentsPatch()
 
@@ -66,11 +66,9 @@ class HTItemResourceType private constructor(private val stack: ItemStack) : HTR
 
     override fun componentsPatch(): DataComponentPatch = stack.componentsPatch
 
-    override fun type(): Item = stack.item
-
     override fun getText(): Text = stack.hoverName
 
-    override fun getHolder(): Holder<Item> = stack.itemHolder
+    override fun typeHolder(): Holder<Item> = stack.typeHolder()
 
     override fun getComponents(): DataComponentMap = stack.components
 }

@@ -5,6 +5,10 @@
   "client": [],
   "mixins": [
     "AnvilBlockMixin",
+    "BlockStateMixin",
+    "EntityMixin",
+    "FluidStateMixin",
+    "ItemStackMixin",
     "PotionBrewingAccessor",
     "PotionBrewingMixAccessor",
     "RecipeManagerAccessor",

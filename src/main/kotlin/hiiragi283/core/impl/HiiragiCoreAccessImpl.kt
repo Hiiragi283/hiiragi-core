@@ -84,7 +84,7 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
     override fun getContents(resource: HTFluidResourceType): BottledPotionContents? {
         val handler: HTPotionFluidManager.Handler = when {
             resource.isOf(Tags.Fluids.WATER) -> return BottledPotionContents(Potions.WATER)
-            else -> HTPotionFluidManager.getFluidHandler(resource.getHolder()) ?: DEFAULT_POTION_HANDLER
+            else -> HTPotionFluidManager.getFluidHandler(resource.typeHolder()) ?: DEFAULT_POTION_HANDLER
         }
         val bottleType: HTBottleType = handler[resource] ?: return null
         val contents: PotionContents = HTPotionHelper.getPotion(resource)
