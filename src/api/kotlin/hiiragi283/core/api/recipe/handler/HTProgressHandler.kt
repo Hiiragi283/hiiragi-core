@@ -97,14 +97,6 @@ abstract class HTProgressHandler<T : Any> {
         progress = 0
     }
 
-    fun interface LevelFunction<T> {
-        fun apply(level: ServerLevel, pos: BlockPos): T
-    }
-
-    fun interface BiLevelFunction<T, R> {
-        fun apply(level: ServerLevel, pos: BlockPos, value: T): R
-    }
-
     class Builder<T : Any> {
         /**
          * 指定された引数に一致するレシピを取得します。

@@ -33,6 +33,10 @@ object HiiragiCoreTags {
         private fun mod(vararg path: String): TagKey<Block> = Registries.BLOCK.createTagKey(HiiragiCoreAPI.id(*path))
     }
 
+    /**
+     * @author Hiiragi Tsubasa
+     * @since 0.15.2
+     */
     object DamageTypes {
         @JvmField
         val IS_SONIC: TagKey<DamageType> = mod("is_sonic")
@@ -48,12 +52,21 @@ object HiiragiCoreTags {
         @JvmField
         val CAPTURE_BLACKLIST: TagKey<EntityType<*>> = mod("capture_blacklist")
 
+        /**
+         * @since 0.15.2
+         */
         @JvmField
         val SENSITIVE_TO_HAMMER_OF_JUSTICE: TagKey<EntityType<*>> = mod("sensitive_to_hammer_of_justice")
 
+        /**
+         * @since 0.15.2
+         */
         @JvmField
         val SENSITIVE_TO_NOISE_CANCELLING: TagKey<EntityType<*>> = mod("sensitive_to_noise_cancelling")
 
+        /**
+         * @since 0.15.2
+         */
         @JvmField
         val SENSITIVE_TO_PURIFICATION: TagKey<EntityType<*>> = mod("sensitive_to_purification")
 

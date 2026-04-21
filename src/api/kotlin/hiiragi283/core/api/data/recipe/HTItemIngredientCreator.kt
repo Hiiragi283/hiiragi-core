@@ -12,6 +12,11 @@ import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 
+/**
+ * [Ingredient]を作成するクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.15.2
+ */
 data object HTItemIngredientCreator {
     // Item
     fun create(item: ItemLike): Ingredient = Ingredient.of(item)

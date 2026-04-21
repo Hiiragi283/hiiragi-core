@@ -198,6 +198,7 @@ abstract class HiiragiCoreAccess {
      * 指定した[holderSet]から，最初の[HTSimpleHolderLike]を取得します。
      * @param T レジストリの種類のクラス
      * @return [HTSimpleHolderLike]の[結果][HTTextResult]
+     * @since 0.15.2
      */
     abstract fun <T : Any> getFirstHolder(holderSet: HolderSet<T>): HTTextResult<HTSimpleHolderLike<T>>
 }

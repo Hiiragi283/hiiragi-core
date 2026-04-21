@@ -13,13 +13,28 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper
 import net.neoforged.neoforge.data.event.GatherDataEvent
 import java.util.concurrent.CompletableFuture
 
+/**
+ * この[GatherDataEvent][this]に[DataProvider]を登録します。
+ * @author Hiiragi Tsubasa
+ * @since 0.15.2
+ */
 fun <T : DataProvider> GatherDataEvent.createProviderWithHelper(builder: (ExistingFileHelper, PackOutput) -> T): T =
     this.createProvider(builder.partially1(this.existingFileHelper))
 
+/**
+ * この[GatherDataEvent][this]に[DataProvider]を登録します。
+ * @author Hiiragi Tsubasa
+ * @since 0.15.2
+ */
 fun <T : DataProvider> GatherDataEvent.createProviderWithHelper(
     builder: (ExistingFileHelper, PackOutput, CompletableFuture<HolderLookup.Provider>) -> T,
 ): T = this.createProvider(builder.partially1(this.existingFileHelper))
 
+/**
+ * この[GatherDataEvent][this]に[LootTableProvider]を登録します。
+ * @author Hiiragi Tsubasa
+ * @since 0.15.2
+ */
 fun GatherDataEvent.createLootTables(
     vararg pairs: Pair<(HolderLookup.Provider) -> LootTableSubProvider, LootContextParamSet>,
 ): LootTableProvider = this.createProvider { output: PackOutput, future: CompletableFuture<HolderLookup.Provider> ->
@@ -31,8 +46,18 @@ fun GatherDataEvent.createLootTables(
     )
 }
 
+/**
+ * この[GatherDataEvent][this]に[HTSubAdvancementProvider]を登録します。
+ * @author Hiiragi Tsubasa
+ * @since 0.15.2
+ */
 fun GatherDataEvent.createAdvancements(vararg subProviders: HTSubAdvancementProvider): HTAdvancementProvider =
     this.createAdvancements(subProviders.toList())
 
+/**
+ * この[GatherDataEvent][this]に[HTSubAdvancementProvider]を登録します。
+ * @author Hiiragi Tsubasa
+ * @since 0.15.2
+ */
 fun GatherDataEvent.createAdvancements(subProviders: List<HTSubAdvancementProvider>): HTAdvancementProvider =
     this.createProviderWithHelper(::HTAdvancementProvider.partially1(subProviders))

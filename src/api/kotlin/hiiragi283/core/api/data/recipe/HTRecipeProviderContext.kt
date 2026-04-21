@@ -45,6 +45,9 @@ abstract class HTRecipeProviderContext {
      */
     protected val inputCreator: HTIngredientCreator get() = HTIngredientCreator
 
+    /**
+     * 材料を作成するヘルパーを取得します。
+     */
     protected val itemCreator: HTItemIngredientCreator get() = HTItemIngredientCreator
 
     /**
