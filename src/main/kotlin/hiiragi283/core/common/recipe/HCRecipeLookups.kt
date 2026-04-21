@@ -12,7 +12,7 @@ import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
-import hiiragi283.core.api.registry.HTHolderLike
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.recipe.custom.HTPotionArrowFillingRecipe
 import hiiragi283.core.common.recipe.custom.HTPotionTankInteraction
@@ -82,7 +82,7 @@ data object HCRecipeLookups {
     }
 
     @JvmStatic
-    fun coloring(inputTag: TagKey<Item>, contents: HTColoredContents<out HTHolderLike<out ItemLike, *>>) {
+    fun coloring(inputTag: TagKey<Item>, contents: HTColoredContents<out SupplierWithId<out ItemLike>>) {
         COLORING.addProvider {
             sequenceOf(
                 HTRecipeHolder(

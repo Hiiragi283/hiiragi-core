@@ -2,10 +2,10 @@ package hiiragi283.core.common.registry.register
 
 import hiiragi283.core.api.item.HTSubCreativeTabContents
 import hiiragi283.core.api.registry.HTDeferredRegister
-import hiiragi283.core.api.registry.HTHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.text.HTTranslation
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.item.CreativeModeTab
@@ -24,9 +24,9 @@ class HTDeferredCreativeTabRegister(namespace: String) :
         fun addHoldersToDisplay(
             parameters: CreativeModeTab.ItemDisplayParameters,
             output: CreativeModeTab.Output,
-            holders: Sequence<HTHolderLike<out ItemLike, *>>,
+            holders: Sequence<SupplierWithId<out ItemLike>>,
         ) {
-            for (holder: HTHolderLike<out ItemLike, *> in holders) {
+            for (holder: SupplierWithId<out ItemLike> in holders) {
                 addToDisplay(parameters, output, holder.get().asItem().toLike())
             }
         }

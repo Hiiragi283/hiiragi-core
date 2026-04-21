@@ -1,8 +1,7 @@
 package hiiragi283.core.api.recipe.result
 
-import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.text.HTTextResult
-import java.util.function.Supplier
 
 /**
  * レシピの完成品を表すインターフェースです。
@@ -12,6 +11,4 @@ import java.util.function.Supplier
  * @see HTItemResult
  * @see HTFluidResult
  */
-interface HTRecipeResult<T : Any> :
-    Supplier<HTTextResult<T>>,
-    HTIdLike
+interface HTRecipeResult<T : Any> : SupplierWithId<HTTextResult<T>>

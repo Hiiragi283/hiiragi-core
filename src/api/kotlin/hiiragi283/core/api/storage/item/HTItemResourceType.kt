@@ -68,7 +68,7 @@ class HTItemResourceType private constructor(private val stack: ItemStack) : HTR
 
     override fun getText(): Text = stack.hoverName
 
-    override fun typeHolder(): Holder<Item> = stack.typeHolder()
+    override fun typeHolder(): Holder<Item> = stack.itemHolder
 
     override fun getComponents(): DataComponentMap = stack.components
 }

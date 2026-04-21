@@ -2,6 +2,7 @@ package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.function.andThen
 import hiiragi283.core.api.resource.HTKeyLike
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.unwrap
 import net.minecraft.core.Holder
@@ -11,7 +12,6 @@ import net.minecraft.world.entity.EntityType
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.registries.DeferredHolder
-import java.util.function.Supplier
 
 typealias HTSimpleHolderLike<R> = HTHolderLike<R, R>
 
@@ -23,8 +23,8 @@ typealias HTSimpleHolderLike<R> = HTHolderLike<R, R>
  * @since 0.1.0
  */
 interface HTHolderLike<R : Any, T : R> :
-    HTKeyLike<R>,
-    Supplier<T> {
+    SupplierWithId<T>,
+    HTKeyLike<R> {
     /**
      * @since 0.13.0
      */
