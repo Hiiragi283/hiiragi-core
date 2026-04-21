@@ -11,7 +11,7 @@ import hiiragi283.core.api.storage.HTStorageAction
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-interface HTResourceSlot<RESOURCE : HTResourceType<*>> :
+interface HTResourceSlot<RESOURCE : HTResourceType> :
     HTResourceView<RESOURCE>,
     HTValueSerializable,
     HTContentListener {

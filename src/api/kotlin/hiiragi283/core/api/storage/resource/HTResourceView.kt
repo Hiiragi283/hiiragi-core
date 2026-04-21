@@ -11,7 +11,7 @@ import org.apache.commons.lang3.math.Fraction
  * @since 0.1.0
  * @see HTResourceSlot
  */
-interface HTResourceView<RESOURCE : HTResourceType<*>> : HTAmountView {
+interface HTResourceView<RESOURCE : HTResourceType> : HTAmountView {
     /**
      * 保持しているリソースを取得します。
      */

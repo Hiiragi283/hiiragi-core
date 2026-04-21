@@ -1,6 +1,7 @@
 package hiiragi283.core.api.recipe.handler
 
 import hiiragi283.core.api.recipe.ingredient.HTIngredient
+import hiiragi283.core.api.storage.resource.HTResourceType
 import java.util.Optional
 
 /**
@@ -10,7 +11,7 @@ import java.util.Optional
  * @since 0.5.0
  * @see mekanism.api.recipes.inputs.IInputHandler
  */
-interface HTInputHandler<RESOURCE : Any> : HTAmountInputHandler {
+interface HTInputHandler<RESOURCE : HTResourceType> : HTAmountInputHandler {
     /**
      * 指定した[材料][ingredient]から消費される数量を取得します。
      * @return [ingredient]が要求する数量

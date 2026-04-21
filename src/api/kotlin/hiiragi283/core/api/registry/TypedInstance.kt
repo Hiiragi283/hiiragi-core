@@ -14,9 +14,7 @@ import java.util.stream.Stream
  * @see net.minecraft.world.level.material.FluidState
  */
 interface TypedInstance<T : Any> {
-    fun typeHolder(): Holder<T> {
-        TODO("typeHolder() should be implemented in mixin")
-    }
+    fun typeHolder(): Holder<T>
 
     fun tags(): Stream<TagKey<T>> = typeHolder().tags()
 

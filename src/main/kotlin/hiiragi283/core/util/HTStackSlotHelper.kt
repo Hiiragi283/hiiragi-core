@@ -16,9 +16,9 @@ import net.neoforged.neoforge.fluids.FluidStack
 
 object HTStackSlotHelper {
     @JvmStatic
-    fun <RESOURCE : HTResourceType<*>, SLOT : HTResourceSlot<RESOURCE>> moveResource(
-        from: SLOT?,
-        to: SLOT?,
+    fun <RESOURCE : HTResourceType> moveResource(
+        from: HTResourceSlot<RESOURCE>?,
+        to: HTResourceSlot<RESOURCE>?,
         amount: Int = from?.getAmount() ?: 0,
         access: HTStorageAccess = HTStorageAccess.INTERNAL,
     ): HTResourceMoveResult<RESOURCE> {
@@ -46,7 +46,7 @@ object HTStackSlotHelper {
      * @return 搬入されない量
      */
     @JvmStatic
-    fun <RESOURCE : HTResourceType<*>> insert(
+    fun <RESOURCE : HTResourceType> insert(
         slots: Sequence<HTResourceSlot<RESOURCE>>,
         resource: RESOURCE?,
         amount: Int,
@@ -67,7 +67,7 @@ object HTStackSlotHelper {
      * @return 搬出される量
      */
     @JvmStatic
-    fun <RESOURCE : HTResourceType<*>> extract(
+    fun <RESOURCE : HTResourceType> extract(
         slots: List<HTResourceSlot<RESOURCE>>,
         resource: RESOURCE?,
         amount: Int,

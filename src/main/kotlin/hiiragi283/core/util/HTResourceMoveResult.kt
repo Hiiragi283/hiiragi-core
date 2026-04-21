@@ -7,17 +7,17 @@ import hiiragi283.core.api.storage.resource.HTResourceType
  */
 @ConsistentCopyVisibility
 @JvmRecord
-data class HTResourceMoveResult<RESOURCE : HTResourceType<*>> private constructor(
+data class HTResourceMoveResult<RESOURCE : HTResourceType> private constructor(
     val succeeded: Boolean,
     val remainder: RESOURCE?,
     val amount: Int,
 ) {
     companion object {
         @JvmStatic
-        fun <RESOURCE : HTResourceType<*>> failed(): HTResourceMoveResult<RESOURCE> = HTResourceMoveResult(false, null, 0)
+        fun <RESOURCE : HTResourceType> failed(): HTResourceMoveResult<RESOURCE> = HTResourceMoveResult(false, null, 0)
 
         @JvmStatic
-        fun <RESOURCE : HTResourceType<*>> succeeded(remainder: RESOURCE?, amount: Int): HTResourceMoveResult<RESOURCE> =
+        fun <RESOURCE : HTResourceType> succeeded(remainder: RESOURCE?, amount: Int): HTResourceMoveResult<RESOURCE> =
             HTResourceMoveResult(true, remainder, amount)
     }
 }

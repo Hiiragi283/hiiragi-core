@@ -27,7 +27,7 @@ object HTShapelessRecipeHelper {
      */
     @JvmName("createMapFromViews")
     @JvmStatic
-    fun <T : HTResourceType<*>> createMap(views: Iterable<HTResourceView<T>>): Map<T, Int> =
+    fun <T : HTResourceType> createMap(views: Iterable<HTResourceView<T>>): Map<T, Int> =
         views.fold(hashMapOf()) { map: HashMap<T, Int>, view: HTResourceView<T> ->
             val resource: T = view.getResource() ?: return@fold map
             map[resource] = (map[resource] ?: 0) + view.getAmount()
@@ -105,10 +105,8 @@ object HTShapelessRecipeHelper {
     }
 
     @JvmStatic
-    fun <T : HTResourceType<*>, I : HTIngredient<T>> shapelessMatch(
-        ingredients: List<I>,
-        views: Iterable<HTResourceView<T>>,
-    ): Map<T, Int> = shapelessMatch(ingredients, createMap(views))
+    fun <T : HTResourceType, I : HTIngredient<T>> shapelessMatch(ingredients: List<I>, views: Iterable<HTResourceView<T>>): Map<T, Int> =
+        shapelessMatch(ingredients, createMap(views))
 
     /**
      * [HTItemResourceType]向けのメソッドです。
@@ -135,7 +133,7 @@ object HTShapelessRecipeHelper {
      * @return すべての材料に対して消費が行われた場合は`true`
      */
     @JvmStatic
-    fun <T : HTResourceType<*>, I : HTIngredient<T>> shapelessConsume(ingredients: List<I>, slots: Iterable<HTResourceSlot<T>>): Boolean {
+    fun <T : HTResourceType, I : HTIngredient<T>> shapelessConsume(ingredients: List<I>, slots: Iterable<HTResourceSlot<T>>): Boolean {
         val resultMap: Map<T, Int> = shapelessMatch(ingredients, slots)
         if (resultMap.isEmpty()) return false
 

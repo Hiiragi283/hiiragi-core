@@ -12,7 +12,7 @@ import hiiragi283.core.api.storage.resource.HTResourceType
  * @author Hiiragi Tsubasa
  * @since 0.15.0
  */
-abstract class HTStackResourceSlot<STACK : Any, RESOURCE : HTResourceType<*>> : HTResourceSlot<RESOURCE> {
+abstract class HTStackResourceSlot<STACK : Any, RESOURCE : HTResourceType> : HTResourceSlot<RESOURCE> {
     abstract fun getStack(): STACK
 
     abstract fun setStack(stack: STACK)
