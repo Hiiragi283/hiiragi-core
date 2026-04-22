@@ -1,7 +1,7 @@
 package hiiragi283.core.api.material.part
 
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.property.HTPropertyGetter
 import net.minecraft.resources.ResourceLocation
 
 /**
@@ -9,9 +9,9 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-class HTPart(val name: String, private val idPattern: String, properties: HTPropertyMap) :
+class HTPart(val name: String, private val idPattern: String, getter: HTPropertyGetter) :
     HTPartLike,
-    HTPropertyMap by properties,
+    HTPropertyGetter by getter,
     Comparable<HTPart> {
     override fun asPart(): HTPart = this
 

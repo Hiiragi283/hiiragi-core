@@ -26,6 +26,7 @@ import hiiragi283.core.api.material.property.setName
 import hiiragi283.core.api.material.property.setTextureSet
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.plugin.HTPlugin
+import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.add
 import hiiragi283.core.api.property.getOrDefault
@@ -138,8 +139,8 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         )
 
         registrar.register("block", "%s_block") {
-            put(HTPartPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
-                base * properties.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK).baseCount
+            put(HTPartPropertyKeys.ITEM_SCALE) { base: Fraction, getter: HTPropertyGetter ->
+                base * getter.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK).baseCount
             }
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.STORAGE_BLOCK)
 
@@ -162,8 +163,8 @@ object CommonMaterialPlugin : HTMaterialPlugin {
     @JvmStatic
     private fun itemPart(registrar: HTMaterialPlugin.PartRegistrar) {
         registrar.register("crushed_ore", "crushed_%s_ore") {
-            put(HTPartPropertyKeys.ITEM_SCALE) { base: Fraction, properties: HTPropertyMap ->
-                base * properties.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
+            put(HTPartPropertyKeys.ITEM_SCALE) { base: Fraction, getter: HTPropertyGetter ->
+                base * getter.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
             }
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.CRUSHED_ORE)
             add(HTPartPropertyKeys.IS_RAW)
@@ -296,7 +297,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
             key: HTMaterialKey,
             enName: String,
             jaName: String,
-            builderAction: HTPropertyMap.Mutable.() -> Unit = {},
+            builderAction: HTPropertyMap.Builder.() -> Unit = {},
         ) {
             builder.getBuilder(key).apply {
                 setDefaultPart(HTDefaultPart.Prefixed.GEM)

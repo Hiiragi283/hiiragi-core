@@ -24,8 +24,6 @@ class HTDeferredPart(private val name: String) : HTPartLike {
 
     override fun createId(material: HTMaterialLike): ResourceLocation = asPart().createId(material)
 
-    override fun isEmpty(): Boolean = asPart().isEmpty()
-
     override fun contains(key: HTPropertyKey<*>): Boolean = asPart().contains(key)
 
     override fun <T> get(key: HTPropertyKey<T>): T? = asPart()[key]

@@ -20,8 +20,8 @@ import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
+import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyKey
-import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTSimpleFluidHolderLike
@@ -230,21 +230,21 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
     }
 
     @JvmStatic
-    private fun translate(type: HTLangType, part: HTPart, propertyMap: HTPropertyMap): String? =
-        translate(type, part, propertyMap, HTMaterialPropertyKeys.CUSTOM_LANG_NAME)
+    private fun translate(type: HTLangType, part: HTPart, getter: HTPropertyGetter): String? =
+        translate(type, part, getter, HTMaterialPropertyKeys.CUSTOM_LANG_NAME)
 
     @JvmStatic
-    private fun translate(type: HTLangType, part: HTFluidPart, propertyMap: HTPropertyMap): String? =
-        translate(type, part, propertyMap, HTMaterialPropertyKeys.CUSTOM_FLUID_NAME)
+    private fun translate(type: HTLangType, part: HTFluidPart, getter: HTPropertyGetter): String? =
+        translate(type, part, getter, HTMaterialPropertyKeys.CUSTOM_FLUID_NAME)
 
     @JvmStatic
     private fun <T : HTPartLike> translate(
         type: HTLangType,
         part: T,
-        propertyMap: HTPropertyMap,
+        getter: HTPropertyGetter,
         key: HTPropertyKey<Map<T, HTLangName>>,
-    ): String? = propertyMap.getOrDefault(key)[part]?.getTranslatedName(type) ?: run {
-        val materialName: HTLangName = propertyMap[HTMaterialPropertyKeys.LANG_NAME] ?: return@run null
+    ): String? = getter.getOrDefault(key)[part]?.getTranslatedName(type) ?: run {
+        val materialName: HTLangName = getter[HTMaterialPropertyKeys.LANG_NAME] ?: return@run null
         part.getOrDefault(HTPartPropertyKeys.LANG_PATTERN).translate(type, materialName)
     }
 }

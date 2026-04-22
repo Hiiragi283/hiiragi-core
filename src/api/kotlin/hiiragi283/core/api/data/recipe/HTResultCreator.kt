@@ -8,7 +8,7 @@ import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.material.property.getDefaultFluidAmount
-import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.HTFluidHolderLike
@@ -91,7 +91,7 @@ class HTResultCreator(provider: HolderLookup.Provider) {
         val fluid: Fluid = HiiragiCoreAccess.INSTANCE.registeredFluids
             .getOrThrow(part, material)
             .get()
-        val propertyMap: HTPropertyMap = HTMaterialManager.getInstance().getOrEmpty(material)
-        return create(fluid, operator.applyAsInt(propertyMap.getDefaultFluidAmount()))
+        val getter: HTPropertyGetter = HTMaterialManager.getInstance().getOrEmpty(material)
+        return create(fluid, operator.applyAsInt(getter.getDefaultFluidAmount()))
     }
 }

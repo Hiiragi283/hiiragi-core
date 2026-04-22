@@ -4,8 +4,9 @@ import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
-import hiiragi283.core.api.property.HTBasicPropertyMap
+import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.property.buildPropertyMap
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.toItemLike
@@ -34,10 +35,10 @@ interface HTMaterialPlugin : HTIdLike {
     fun registerPart(registrar: PartRegistrar) {}
 
     fun interface PartRegistrar {
-        fun register(name: String, idPattern: String, properties: HTPropertyMap): HTPartLike
+        fun register(name: String, idPattern: String, properties: HTPropertyGetter): HTPartLike
 
-        fun register(name: String, idPattern: String, builderAction: HTPropertyMap.Mutable.() -> Unit): HTPartLike =
-            register(name, idPattern, HTBasicPropertyMap.Mutable().apply(builderAction))
+        fun register(name: String, idPattern: String, builderAction: HTPropertyMap.Builder.() -> Unit): HTPartLike =
+            register(name, idPattern, buildPropertyMap(builderAction))
     }
 
     //    Material    //
@@ -96,6 +97,6 @@ interface HTMaterialPlugin : HTIdLike {
     fun modifyMaterial(provider: MaterialProvider) {}
 
     fun interface MaterialProvider {
-        fun getBuilder(key: HTMaterialKey): HTPropertyMap.Mutable
+        fun getBuilder(key: HTMaterialKey): HTPropertyMap.Builder
     }
 }

@@ -1,90 +1,98 @@
 package hiiragi283.core.api.property
 
 /**
- * [HTPropertyKey]に基づいてデータを管理するインターフェースです。
+ * [Map]に基づいた[HTPropertyGetter]の実装クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
-interface HTPropertyMap {
-    /**
-     * このマップが空か判定します。
-     */
-    fun isEmpty(): Boolean
-
-    /**
-     * 指定した[key]が含まれるか判定します。
-     */
-    operator fun contains(key: HTPropertyKey<*>): Boolean
-
-    /**
-     * 指定した[key]に紐づいた値を返します。
-     * @return 値がない場合は`null`
-     */
-    operator fun <T> get(key: HTPropertyKey<T>): T?
-
-    /**
-     * 可変な[HTPropertyMap]の拡張インターフェースです。
-     * @author Hiiragi Tsubasa
-     * @since 0.6.0
-     */
-    interface Mutable : HTPropertyMap {
+class HTPropertyMap private constructor(private val map: Map<HTPropertyKey<*>, Any>) : HTPropertyGetter {
+    companion object {
         /**
-         * 指定した[key]と[value]を追加します。
-         * @return 以前に紐づいていた値
+         * 指定した[map]から[HTPropertyMap]のインスタンスを作成します。
+         * @return [map]が空の場合は[Empty]
          */
-        fun <T> put(key: HTPropertyKey<T>, value: T): T?
-
-        /**
-         * 指定した[key]と[value]を追加します。
-         */
-        operator fun <T> set(key: HTPropertyKey<T>, value: T) {
-            put(key, value)
+        @JvmStatic
+        fun create(map: Map<HTPropertyKey<*>, Any>): HTPropertyGetter = when {
+            map.isEmpty() -> Empty
+            else -> HTPropertyMap(map)
         }
-
-        /**
-         * 指定した[key]を削除します。
-         */
-        fun <T> remove(key: HTPropertyKey<T>): T?
     }
+
+    override fun contains(key: HTPropertyKey<*>): Boolean = key in map
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> get(key: HTPropertyKey<T>): T? = map[key] as? T
+
+    /**
+     * 何も値を返さない[HTPropertyGetter]の実装クラスです。
+     * @author Hiiragi Tsubasa
+     * @since 0.15.3
+     */
+    data object Empty : HTPropertyGetter {
+        override fun <T> get(key: HTPropertyKey<T>): T? = null
+    }
+
+    /**
+     * [HTPropertyMap]のビルダークラスです。
+     * @author Hiiragi Tsubasa
+     * @since 0.15.3
+     */
+    class Builder private constructor(private val map: MutableMap<HTPropertyKey<*>, Any>, delegate: HTPropertyMap) :
+        HTPropertyGetter by delegate {
+            constructor() : this(hashMapOf())
+
+            constructor(map: MutableMap<HTPropertyKey<*>, Any>) : this(map, HTPropertyMap(map))
+
+            /**
+             * 指定した[key]と[value]を追加します。
+             * @return 以前に紐づいていた値
+             */
+            @Suppress("UNCHECKED_CAST")
+            fun <T> put(key: HTPropertyKey<T>, value: T): T? {
+                if (value == null) return remove(key)
+                return map.put(key, value) as? T
+            }
+
+            /**
+             * 指定した[key]と[value]を追加します。
+             */
+            operator fun <T> set(key: HTPropertyKey<T>, value: T) {
+                put(key, value)
+            }
+
+            /**
+             * 指定した[key]を削除します。
+             */
+            @Suppress("UNCHECKED_CAST")
+            fun <T> remove(key: HTPropertyKey<T>): T? = map.remove(key) as? T
+
+            fun build(): HTPropertyGetter = create(map)
+        }
 }
 
-/**
- * このマップが空でないか判定します。
- */
-fun HTPropertyMap.isNotEmpty(): Boolean = !this.isEmpty()
+//    Extensions    //
 
-/**
- * 指定した[key]に紐づいた値を返します。
- * @throws IllegalStateException 値がない場合
- */
-fun <T : Any> HTPropertyMap.getOrThrow(key: HTPropertyKey<T?>): T = get(key) ?: error("Unbounded property: ${key.id}")
-
-/**
- * 指定した[key]に紐づいた値を返します。
- * @return 値がない場合は[デフォルト値][HTPropertyKey.defaultValue]
- */
-fun <T : Any> HTPropertyMap.getOrDefault(key: HTPropertyKey<T>): T = get(key) ?: key.defaultValue
-
-//    Mutable    //
+inline fun buildPropertyMap(builderAction: HTPropertyMap.Builder.() -> Unit): HTPropertyGetter =
+    HTPropertyMap.Builder().apply(builderAction).build()
 
 /**
  * @since 0.9.0
  */
-fun HTPropertyMap.Mutable.add(key: HTPropertyKey<Unit?>) {
+fun HTPropertyMap.Builder.add(key: HTPropertyKey<Unit?>) {
     this.put(key, Unit)
 }
 
 /**
  * @since 0.9.0
  */
-operator fun HTPropertyMap.Mutable.plusAssign(key: HTPropertyKey<Unit?>) {
+operator fun HTPropertyMap.Builder.plusAssign(key: HTPropertyKey<Unit?>) {
     this.add(key)
 }
 
 /**
  * @see MutableMap.computeIfAbsent
  */
-inline fun <T : Any> HTPropertyMap.Mutable.computeIfAbsent(key: HTPropertyKey<T?>, mapping: () -> T): T {
+inline fun <T : Any> HTPropertyMap.Builder.computeIfAbsent(key: HTPropertyKey<T?>, mapping: () -> T): T {
     val oldValue: T? = get(key) ?: key.defaultValue
     if (oldValue == null) {
         val newValue: T = mapping()
@@ -98,7 +106,7 @@ inline fun <T : Any> HTPropertyMap.Mutable.computeIfAbsent(key: HTPropertyKey<T?
 /**
  * @see MutableMap.computeIfAbsent
  */
-inline fun <T : Any> HTPropertyMap.Mutable.computeIfAbsent(key: HTPropertyKey<T>, mapping: (T) -> T): T {
+inline fun <T : Any> HTPropertyMap.Builder.computeIfAbsent(key: HTPropertyKey<T>, mapping: (T) -> T): T {
     val newValue: T = (get(key) ?: key.defaultValue).let(mapping)
     put(key, newValue)
     return newValue

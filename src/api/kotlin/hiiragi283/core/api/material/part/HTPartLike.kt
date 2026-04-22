@@ -2,7 +2,7 @@ package hiiragi283.core.api.material.part
 
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
-import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -17,7 +17,7 @@ import net.minecraft.world.item.Item
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-interface HTPartLike : HTPropertyMap {
+interface HTPartLike : HTPropertyGetter {
     /**
      * [HTPart]に変換します。
      */

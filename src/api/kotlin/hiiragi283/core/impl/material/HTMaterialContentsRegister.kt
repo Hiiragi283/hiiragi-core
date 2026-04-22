@@ -21,10 +21,9 @@ import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.plugin.HTMaterialPlugin
-import hiiragi283.core.api.property.HTBasicPropertyMap
+import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
-import hiiragi283.core.api.property.isNotEmpty
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.toItemLike
@@ -112,26 +111,29 @@ object HTMaterialContentsRegister {
 
     @JvmStatic
     private fun gatherProperties() {
-        val builderMap: MutableMap<HTMaterialKey, HTPropertyMap.Mutable> = mutableMapOf()
+        val builderMap: MutableMap<HTMaterialKey, HTPropertyMap.Builder> = mutableMapOf()
         HiiragiCoreAccess.INSTANCE.forEachPlugin("Modifying Material Properties") {
-            it.modifyMaterial { key: HTMaterialKey -> builderMap.computeIfAbsent(key) { HTBasicPropertyMap.Mutable() } }
+            it.modifyMaterial { key: HTMaterialKey -> builderMap.computeIfAbsent(key) { HTPropertyMap.Builder() } }
         }
-        materialManager = builderMap.filterValues(HTPropertyMap::isNotEmpty).let {
-            object : HTMaterialManager {
-                override fun contains(material: HTMaterialLike): Boolean = material.asMaterialKey() in it
+        materialManager = builderMap
+            .mapValues { (_, builder: HTPropertyMap.Builder) -> builder.build() }
+            .filterValues { it != HTPropertyMap.Empty }
+            .let {
+                object : HTMaterialManager {
+                    override fun contains(material: HTMaterialLike): Boolean = material.asMaterialKey() in it
 
-                override fun get(material: HTMaterialLike): HTPropertyMap? = it[material.asMaterialKey()]
+                    override fun get(material: HTMaterialLike): HTPropertyGetter? = it[material.asMaterialKey()]
 
-                override val keys: Set<HTMaterialKey> = it.keys
-                override val entries: Set<HTMaterialManager.Entry> = it.mapTo(mutableSetOf(), ::EntryImpl)
+                    override val keys: Set<HTMaterialKey> = it.keys
+                    override val entries: Set<HTMaterialManager.Entry> = it.mapTo(mutableSetOf(), ::EntryImpl)
+                }
             }
-        }
     }
 
-    private class EntryImpl(entry: Map.Entry<HTMaterialKey, HTPropertyMap>) :
+    private class EntryImpl(entry: Map.Entry<HTMaterialKey, HTPropertyGetter>) :
         HTMaterialManager.Entry,
         HTMaterialLike by entry.key,
-        HTPropertyMap by entry.value
+        HTPropertyGetter by entry.value
 
     @JvmStatic
     private fun registerExistingBlocks() {

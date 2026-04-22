@@ -10,7 +10,7 @@ import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.plugin.HTMaterialPlugin
-import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
@@ -72,8 +72,8 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
     override val partManager: Map<String, HTPart> by lazy {
         buildMap {
             forEachPlugin("Register Part") { plugin: HTMaterialPlugin ->
-                plugin.registerPart { name: String, idPattern: String, properties: HTPropertyMap ->
-                    val part = HTPart(name, idPattern, properties)
+                plugin.registerPart { name: String, idPattern: String, getter: HTPropertyGetter ->
+                    val part = HTPart(name, idPattern, getter)
                     check(this.put(name, part) == null) { "Duplicated part registration: $name" }
                     part
                 }

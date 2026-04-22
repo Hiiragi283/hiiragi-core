@@ -3,7 +3,7 @@ package hiiragi283.core.api.property
 import net.minecraft.resources.ResourceLocation
 
 /**
- * [HTPropertyMap]のキーとして使用されるクラスです。
+ * [HTPropertyGetter]のキーとして使用されるクラスです。
  * @param T 対応する値のクラス
  * @param id ユニークな[ID][ResourceLocation]
  * @param defaultValue 対応する値がない場合のデフォルト値

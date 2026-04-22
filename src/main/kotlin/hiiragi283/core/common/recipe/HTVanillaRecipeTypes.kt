@@ -57,20 +57,19 @@ object HTVanillaRecipeTypes {
     val BREWING: HTRecipeType<HTItemAndFluidRecipeInput, HCBrewingRecipe> = BrewingType
 
     private data object BrewingType : HTRecipeType<HTItemAndFluidRecipeInput, HCBrewingRecipe> {
-        private var storedBrewing: PotionBrewing = PotionBrewing.EMPTY
         private var cachedRecipes: Sequence<HTRecipeHolder<HCBrewingRecipe>> = emptySequence()
 
         private fun getPotion(stack: ItemStack): Holder<Potion> = HTPotionHelper.getPotion(stack).potion.orElseGet(Potions::WATER)
 
         override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<HTRecipeHolder<HCBrewingRecipe>> {
             // すでにレシピが生成されている場合はパス
-            val potionBrewing: PotionBrewing = context.brewing
-            if (potionBrewing == storedBrewing && cachedRecipes.any()) {
+            if (cachedRecipes.any()) {
                 return cachedRecipes
             }
-            storedBrewing = potionBrewing
+            val potionBrewing: PotionBrewing = context[HTRecipeLookup.Context.BREWING] ?: return emptySequence()
             // 醸造レシピを集める
-            val resultCreator = HTResultCreator(context.access)
+            val resultCreator: HTResultCreator =
+                context[HTRecipeLookup.Context.REGISTRY]?.let(::HTResultCreator) ?: return emptySequence()
             val builder: ImmutableMultimap.Builder<Holder<Potion>, Pair<Holder<Potion>, Ingredient>> = ImmutableMultimap.builder()
             // Vanilla
             for (accessor: PotionBrewingMixAccessor<Potion> in (potionBrewing as PotionBrewingAccessor).potionMixes) {
