@@ -1,9 +1,9 @@
 package hiiragi283.core.api.data.tag
 
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.RawTagKey
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagEntry
@@ -13,12 +13,10 @@ import java.util.function.Consumer
 /**
  * [HTTagsProvider]で使用されるビルダークラスです。
  * @param T レジストリの要素のクラス
- * @param registryKey レジストリを表すキー
- * @param consumer [TagEntry]を渡すブロック
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-class HTTagBuilder<T : Any>(private val registryKey: RegistryKey<T>, private val consumer: Consumer<TagEntry>) {
+fun interface HTTagBuilder<T : Any> : Consumer<TagEntry> {
     /**
      * 指定した[key]から[ID][ResourceLocation]を追加します。
      * @param type このエントリの依存関係
@@ -39,7 +37,7 @@ class HTTagBuilder<T : Any>(private val registryKey: RegistryKey<T>, private val
         when (type) {
             HTTagDependType.REQUIRED -> TagEntry.element(id)
             HTTagDependType.OPTIONAL -> TagEntry.optionalElement(id)
-        }.let(consumer::accept)
+        }.let(this::accept)
     }
 
     /**
@@ -47,13 +45,20 @@ class HTTagBuilder<T : Any>(private val registryKey: RegistryKey<T>, private val
      * @param type このエントリの依存関係
      */
     fun addTag(prefix: HTTagPrefix, material: HTMaterialLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<T> =
-        addTag(prefix.createTagKey(registryKey, material), type)
+        addTag(prefix.materialTag(material), type)
 
     /**
      * 指定した[タグ][child]を追加します。
      * @param type このエントリの依存関係
      */
     fun addTag(child: TagKey<T>, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<T> = addTag(child.location, type)
+
+    /**
+     * 指定した[タグ][child]を追加します。
+     * @param type このエントリの依存関係
+     * @since 0.15.3
+     */
+    fun addTag(child: RawTagKey, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<T> = addTag(child.location, type)
 
     /**
      * 指定した[タグ][id]を追加します。
@@ -64,6 +69,6 @@ class HTTagBuilder<T : Any>(private val registryKey: RegistryKey<T>, private val
         when (type) {
             HTTagDependType.REQUIRED -> TagEntry.tag(id)
             HTTagDependType.OPTIONAL -> TagEntry.optionalTag(id)
-        }.let(consumer::accept)
+        }.let(this::accept)
     }
 }

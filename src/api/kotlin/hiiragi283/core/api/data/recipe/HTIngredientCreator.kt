@@ -12,7 +12,9 @@ import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.VanillaFluidContents
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.RawTagKey
 import net.minecraft.core.component.DataComponentPredicate
+import net.minecraft.core.registries.Registries
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -37,18 +39,23 @@ data object HTIngredientCreator {
     // Item
     fun create(item: ItemLike, amount: Int = 1): HTItemIngredient = create(Ingredient.of(item), amount)
 
-    @JvmName("createItems")
+    @JvmName("createFromItems")
     fun create(items: Iterable<ItemLike>, amount: Int = 1): HTItemIngredient =
         create(items.map(::ItemStack).map(Ingredient::ItemValue), amount)
 
     // Tag
     fun create(prefix: HTTagPrefix, material: HTMaterialLike, amount: Int = 1): HTItemIngredient =
-        create(prefix.itemTagKey(material), amount)
+        create(prefix.materialTag(material), amount)
 
-    @JvmName("createItem")
+    fun create(rawTagKey: RawTagKey, amount: Int = 1): HTItemIngredient = create(rawTagKey.create(Registries.ITEM), amount)
+
+    @JvmName("createFromRawTags")
+    fun create(rawTagKeys: Iterable<RawTagKey>, amount: Int = 1): HTItemIngredient =
+        create(rawTagKeys.map { it.create(Registries.ITEM) }, amount)
+
     fun create(tagKey: TagKey<Item>, amount: Int = 1): HTItemIngredient = create(Ingredient.of(tagKey), amount)
 
-    @JvmName("createItem")
+    @JvmName("createFromTags")
     fun create(tagKeys: Iterable<TagKey<Item>>, amount: Int = 1): HTItemIngredient =
         create(tagKeys.sortedWith(HTComparators.TAG_KEY).map(Ingredient::TagValue), amount)
 

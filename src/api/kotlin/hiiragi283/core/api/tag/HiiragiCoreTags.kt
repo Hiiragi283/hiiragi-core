@@ -27,9 +27,6 @@ object HiiragiCoreTags {
         val LATEX_DRIPPING_LOGS: TagKey<Block> = mod("latex_dripping_logs")
 
         @JvmStatic
-        private fun common(vararg path: String): TagKey<Block> = Registries.BLOCK.createCommonTag(*path)
-
-        @JvmStatic
         private fun mod(vararg path: String): TagKey<Block> = Registries.BLOCK.createTagKey(HiiragiCoreAPI.id(*path))
     }
 
@@ -71,9 +68,6 @@ object HiiragiCoreTags {
         val SENSITIVE_TO_PURIFICATION: TagKey<EntityType<*>> = mod("sensitive_to_purification")
 
         @JvmStatic
-        private fun common(vararg path: String): TagKey<EntityType<*>> = Registries.ENTITY_TYPE.createCommonTag(*path)
-
-        @JvmStatic
         private fun mod(vararg path: String): TagKey<EntityType<*>> = Registries.ENTITY_TYPE.createTagKey(HiiragiCoreAPI.id(*path))
     }
 
@@ -83,9 +77,6 @@ object HiiragiCoreTags {
          */
         @JvmField
         val ELDRITCH: TagKey<Fluid> = mod("eldritch")
-
-        @JvmStatic
-        private fun common(vararg path: String): TagKey<Fluid> = Registries.FLUID.createCommonTag(*path)
 
         @JvmStatic
         private fun mod(vararg path: String): TagKey<Fluid> = Registries.FLUID.createTagKey(HiiragiCoreAPI.id(*path))
@@ -163,7 +154,7 @@ object HiiragiCoreTags {
         val FORGING_HAMMERS: TagKey<Item> = mod("forging_hammers")
 
         @JvmStatic
-        private fun common(vararg path: String): TagKey<Item> = Registries.ITEM.createCommonTag(*path)
+        private fun common(vararg path: String): TagKey<Item> = RawTagKey.common(*path).create(Registries.ITEM)
 
         @JvmStatic
         private fun mod(vararg path: String): TagKey<Item> = Registries.ITEM.createTagKey(HiiragiCoreAPI.id(*path))

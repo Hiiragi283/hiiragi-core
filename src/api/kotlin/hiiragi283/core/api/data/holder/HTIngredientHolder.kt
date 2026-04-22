@@ -3,7 +3,9 @@ package hiiragi283.core.api.data.holder
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.RawTagKey
 import net.minecraft.core.NonNullList
+import net.minecraft.core.registries.Registries
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -38,6 +40,22 @@ abstract class HTIngredientHolder {
     }
 
     /**
+     * 指定した[rawTagKey]を追加します。
+     */
+    @JvmName("addRawTag")
+    operator fun plusAssign(rawTagKey: RawTagKey) {
+        this.plusAssign(rawTagKey.create(Registries.ITEM))
+    }
+
+    /**
+     * 指定した[rawTagKeys]を単一の材料として追加します。
+     */
+    @JvmName("addRawTags")
+    operator fun plusAssign(rawTagKeys: Iterable<RawTagKey>) {
+        rawTagKeys.map { it.create(Registries.ITEM) }.let(this::plusAssign)
+    }
+
+    /**
      * 指定した[tagKey]を追加します。
      */
     @JvmName("addTag")
@@ -63,7 +81,7 @@ abstract class HTIngredientHolder {
     @JvmName("addMaterialTag")
     operator fun plusAssign(pair: Pair<HTTagPrefix, HTMaterialLike>) {
         val (tagPrefix: HTTagPrefix, material: HTMaterialLike) = pair
-        this.plusAssign(tagPrefix.itemTagKey(material))
+        this.plusAssign(tagPrefix.materialTag(material))
     }
 
     /**
@@ -73,7 +91,7 @@ abstract class HTIngredientHolder {
     operator fun plusAssign(pair: Pair<Iterable<HTTagPrefix>, Iterable<HTMaterialLike>>) {
         val (prefixes: Iterable<HTTagPrefix>, materials: Iterable<HTMaterialLike>) = pair
         prefixes
-            .flatMap { prefix: HTTagPrefix -> materials.map(prefix::itemTagKey) }
+            .flatMap { prefix: HTTagPrefix -> materials.map(prefix::materialTag) }
             .let(this::plusAssign)
     }
 

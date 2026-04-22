@@ -6,6 +6,7 @@ import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.RawTagKey
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
@@ -48,7 +49,6 @@ interface HTPartLike : HTPropertyGetter {
  */
 val HTPartLike.tagPrefix: HTTagPrefix? get() = this[HTPartPropertyKeys.TAG_PREFIX]
 
-fun <T : Any> HTPartLike.createTagKey(key: RegistryKey<T>, material: HTMaterialLike): TagKey<T>? =
-    this.tagPrefix?.createTagKey(key, material)
+fun HTPartLike.materialTag(material: HTMaterialLike): RawTagKey? = this.tagPrefix?.materialTag(material)
 
-fun HTPartLike.itemTagKey(material: HTMaterialLike): TagKey<Item>? = this.createTagKey(Registries.ITEM, material)
+fun HTPartLike.itemTagKey(material: HTMaterialLike): TagKey<Item>? = this.materialTag(material)?.create(Registries.ITEM)

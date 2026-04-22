@@ -2,6 +2,8 @@ package hiiragi283.core.api.data.holder
 
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.tag.RawTagKey
+import net.minecraft.core.registries.Registries
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.neoforged.neoforge.common.conditions.ICondition
@@ -31,7 +33,15 @@ class HTConditionHolder {
     @JvmName("addTagCondition")
     operator fun plusAssign(pair: Pair<HTTagPrefix, HTMaterialLike>) {
         val (prefix: HTTagPrefix, material: HTMaterialLike) = pair
-        this.plusAssign(prefix.itemTagKey(material))
+        this.plusAssign(prefix.materialTag(material))
+    }
+
+    /**
+     * 指定した[rawTagKey]を要求する[ICondition]を追加します。
+     */
+    @JvmName("addTagCondition")
+    operator fun plusAssign(rawTagKey: RawTagKey) {
+        this.plusAssign(rawTagKey.create(Registries.ITEM))
     }
 
     /**

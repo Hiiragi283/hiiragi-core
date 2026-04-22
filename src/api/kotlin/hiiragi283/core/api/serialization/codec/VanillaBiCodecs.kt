@@ -3,7 +3,7 @@ package hiiragi283.core.api.serialization.codec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.RegistryKey
-import hiiragi283.core.api.tag.createTagKey
+import hiiragi283.core.api.tag.RawTagKey
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.impl.serialization.codec.HTHolderLikeCodec
 import hiiragi283.core.impl.serialization.codec.HTHolderLikeStreamCodec
@@ -145,13 +145,8 @@ object VanillaBiCodecs {
      * @param withHash 変換後の文字列の先頭に'#'をつけるかどうか
      */
     @JvmStatic
-    fun <T : Any> tagKey(registryKey: RegistryKey<T>, withHash: Boolean): BiCodec<ByteBuf, TagKey<T>> = BiCodec.of(
-        when (withHash) {
-            true -> TagKey.hashedCodec(registryKey)
-            false -> TagKey.codec(registryKey)
-        },
-        ResourceLocation.STREAM_CODEC.map(registryKey::createTagKey, TagKey<T>::location),
-    )
+    fun <T : Any> tagKey(registryKey: RegistryKey<T>, withHash: Boolean): BiCodec<ByteBuf, TagKey<T>> =
+        RawTagKey.codec(withHash).xmap({ it.create(registryKey) }, RawTagKey::copy)
 
     /**
      * 指定した[registryKey]から[Holder]の[BiCodec]を返します。

@@ -1,12 +1,10 @@
 package hiiragi283.core.api.material.part
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.part.property.addNamePattern
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.buildPropertyMap
-import hiiragi283.core.api.resource.toId
-import hiiragi283.core.api.tag.createTagKey
+import hiiragi283.core.api.tag.RawTagKey
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
@@ -34,16 +32,13 @@ enum class HTFluidPart(private val idPattern: String, private val tagPattern: St
     /**
      * 指定した[素材][material]から，[液体][Fluid]の共通タグを生成します。
      */
-    fun createTagKey(material: HTMaterialLike): TagKey<Fluid> {
-        val id: ResourceLocation = HTConst.COMMON.toId(tagPattern.replace("%s", material.asMaterialId().path))
-        return Registries.FLUID.createTagKey(id)
-    }
+    fun createTagKey(material: HTMaterialLike): TagKey<Fluid> =
+        RawTagKey.common(tagPattern.replace("%s", material.asMaterialId().path)).create(Registries.FLUID)
 
     /**
      * 指定した[素材][material]から，[液体バケツ][Item]の共通タグを生成します。
      */
-    fun createBucketTag(material: HTMaterialLike): TagKey<Item> {
-        val id: ResourceLocation = HTConst.COMMON.toId(tagPattern.replace("%s", material.asMaterialId().path))
-        return Registries.ITEM.createTagKey(id.withSuffix("_bucket"))
-    }
+    fun createBucketTag(material: HTMaterialLike): TagKey<Item> = RawTagKey
+        .common(tagPattern.replace("%s", material.asMaterialId().path) + "_bucket")
+        .create(Registries.ITEM)
 }

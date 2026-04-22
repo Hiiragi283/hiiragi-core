@@ -15,7 +15,7 @@ import hiiragi283.core.api.registry.asSequence
 import hiiragi283.core.api.registry.createId
 import hiiragi283.core.api.registry.toFluidLike
 import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.api.tag.createCommonTag
+import hiiragi283.core.api.tag.RawTagKey
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.BucketItem
@@ -96,8 +96,8 @@ class HTFluidContentRegister(modId: String) {
         lateinit var properties: FluidType.Properties
         var typeFactory: (FluidType.Properties) -> FluidType = ::FluidType
         var bucketFactory: ItemWithContextFactory<Fluid, Item> = ::BucketItem
-        var fluidTag: String = name
-        var bucketTag: String = "buckets/$name"
+        var fluidTag: RawTagKey = RawTagKey.common(name)
+        var bucketTag: RawTagKey = fluidTag.withPrefix("buckets/")
         // Optional
 
         fun build(): HTFluidContent {
@@ -137,8 +137,8 @@ class HTFluidContentRegister(modId: String) {
                 typeHolder,
                 sourceHolder,
                 bucketHolder,
-                Registries.FLUID.createCommonTag(fluidTag),
-                Registries.ITEM.createCommonTag(bucketTag),
+                fluidTag.create(Registries.FLUID),
+                bucketTag.create(Registries.ITEM),
                 null,
                 null,
             )
@@ -189,8 +189,8 @@ class HTFluidContentRegister(modId: String) {
                 typeHolder,
                 sourceHolder,
                 bucketHolder,
-                Registries.FLUID.createCommonTag(fluidTag),
-                Registries.ITEM.createCommonTag(bucketTag),
+                fluidTag.create(Registries.FLUID),
+                bucketTag.create(Registries.ITEM),
                 flowingHolder.toLike().toFluidLike(),
                 blockHolder,
             )

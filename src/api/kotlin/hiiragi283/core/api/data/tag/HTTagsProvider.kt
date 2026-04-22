@@ -4,14 +4,12 @@ import hiiragi283.core.api.data.HTServerResourceGenTask
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.createCommonTag
-import hiiragi283.core.api.tag.createTagKey
+import hiiragi283.core.api.tag.RawTagKey
 import net.mehvahdjukaar.moonlight.api.resources.SimpleTagBuilder
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.data.tags.TagsProvider
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagEntry
 import net.minecraft.tags.TagKey
 import net.neoforged.neoforge.common.data.ExistingFileHelper
@@ -38,6 +36,8 @@ sealed interface HTTagsProvider<T : Any> {
     abstract class BuilderFactory<T : Any>(private val registryKey: RegistryKey<T>) : Function<TagKey<T>, HTTagBuilder<T>> {
         abstract override fun apply(tagKey: TagKey<T>): HTTagBuilder<T>
 
+        fun apply(rawTagKey: RawTagKey): HTTagBuilder<T> = apply(rawTagKey.create(registryKey))
+
         //    Extensions    //
 
         /**
@@ -54,28 +54,19 @@ sealed interface HTTagsProvider<T : Any> {
 
         /**
          * タグをチェインして登録します。
-         * @return [HTTagPrefix.createTagKey]に対する[HTTagBuilder]
+         * @return [HTTagPrefix.materialTag]に対する[HTTagBuilder]
          */
-        fun addMaterial(prefix: HTTagPrefix, material: HTMaterialLike): HTTagBuilder<T> =
-            addTags(prefix.createCommonTagKey(registryKey), prefix.createTagKey(registryKey, material))
+        fun addMaterial(prefix: HTTagPrefix, material: HTMaterialLike): HTTagBuilder<T> {
+            val materialTag: RawTagKey = prefix.materialTag(material)
+            this.apply(prefix.rawCommonTag).addTag(materialTag)
+            return this.apply(materialTag)
+        }
 
         /**
-         * 指定した[ID][id]から[タグ][TagKey]を作成します。
-         * @since 0.12.0
+         * 指定した[rawTagKey]から[タグ][TagKey]を作成します。
+         * @since 0.15.3
          */
-        fun tag(id: ResourceLocation): TagKey<T> = registryKey.createTagKey(id)
-
-        /**
-         * 指定した[パス][path]から[共通タグ][TagKey]を作成します。
-         * @since 0.12.0
-         */
-        fun commonTag(path: String): TagKey<T> = registryKey.createCommonTag(path)
-
-        /**
-         * 指定した[パス][path]から[共通タグ][TagKey]を作成します。
-         * @since 0.12.0
-         */
-        fun commonTag(vararg path: String): TagKey<T> = registryKey.createCommonTag(*path)
+        fun tag(rawTagKey: RawTagKey): TagKey<T> = rawTagKey.create(registryKey)
     }
 
     //    GenTask    //
@@ -93,7 +84,7 @@ sealed interface HTTagsProvider<T : Any> {
         final override fun accept(sink: ResourceSink) {
             // タグの値を一時的に保存
             addTagsInternal(object : BuilderFactory<T>(registryKey) {
-                override fun apply(tagKey: TagKey<T>): HTTagBuilder<T> = HTTagBuilder(registryKey) { entry: TagEntry ->
+                override fun apply(tagKey: TagKey<T>): HTTagBuilder<T> = HTTagBuilder { entry: TagEntry ->
                     builderCache
                         .computeIfAbsent(tagKey) { SimpleTagBuilder.of(tagKey) }
                         .add(entry)
@@ -157,9 +148,7 @@ sealed interface HTTagsProvider<T : Any> {
 
         private fun createBuilder(tagKey: TagKey<T>): HTTagBuilder<T> {
             tagKeysToGenerate += tagKey
-            return HTTagBuilder(
-                registryKey,
-            ) { entry: TagEntry -> tagEntryMap[tagKey] = (tagEntryMap[tagKey]?.plus(entry) ?: listOf(entry)) }
+            return HTTagBuilder { entry: TagEntry -> tagEntryMap[tagKey] = (tagEntryMap[tagKey]?.plus(entry) ?: listOf(entry)) }
         }
     }
 }

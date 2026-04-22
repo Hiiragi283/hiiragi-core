@@ -5,6 +5,7 @@ import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.tag.RawTagKey
 import hiiragi283.core.common.fluid.HTDragonBreathFluidType
 import hiiragi283.core.common.fluid.HTDyedFluidType
 import hiiragi283.core.common.fluid.HTExperienceFluidType
@@ -41,8 +42,9 @@ object HCFluids {
             REGISTER.registerFlowing("${name}_dye") {
                 properties = liquid()
                 typeFactory = ::HTDyedFluidType.partially1(color)
-                fluidTag = "dyes/$name"
-                bucketTag = "buckets/dye/$name"
+                val oldFluidTag: RawTagKey = fluidTag.withPath { it.removeSuffix("_dye") }
+                fluidTag = oldFluidTag.withPrefix("dyes/")
+                bucketTag = oldFluidTag.withPrefix("buckets/dye/")
             }
         }
 
