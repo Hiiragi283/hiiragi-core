@@ -13,9 +13,10 @@ abstract class HTBasicDoubleItemRecipe(
     val result: HTItemResult,
     final override val time: Int,
 ) : HTDoubleItemRecipe.Serializable {
-    final override fun getBaseAmount(input: HTDoubleRecipeInput): Int = base.amount
+    final override fun getBaseAmount(input: HTDoubleRecipeInput): Int = base.getRequiredAmount(input.first)
 
-    final override fun getAdditionAmount(input: HTDoubleRecipeInput): Int = addition.map(HTItemIngredient::amount).orElseGet { 0 }
+    final override fun getAdditionAmount(input: HTDoubleRecipeInput): Int =
+        addition.map { it.getRequiredAmount(input.second) }.orElseGet { 0 }
 
     final override fun test(input: HTDoubleRecipeInput): Boolean {
         val (first: ItemStack, second: ItemStack) = input

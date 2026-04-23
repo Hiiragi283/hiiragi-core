@@ -74,7 +74,7 @@ fun interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any> {
     fun getHolder(id: ResourceLocation): HTRecipeHolder<RECIPE>? =
         getAllRecipes().firstOrNull { holder: HTRecipeHolder<RECIPE> -> holder.id == id }
 
-    interface Context : HTPropertyGetter {
+    class Context(getter: HTPropertyGetter) : HTPropertyGetter by getter {
         companion object {
             @JvmField
             val BREWING: HTPropertyKey<PotionBrewing?> = create("brewing")
@@ -89,26 +89,22 @@ fun interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any> {
                 HTPropertyKey.createNullable(HTConst.MINECRAFT.toId("recipe", path))
 
             @JvmStatic
-            fun create(level: Level): Context = object : Context {
-                val map: HTPropertyGetter = buildPropertyMap {
+            fun create(level: Level): Context = Context(
+                buildPropertyMap {
                     this[BREWING] = level.potionBrewing()
                     this[MANAGER] = level.recipeManager
                     this[REGISTRY] = level.registryAccess()
-                }
-
-                override fun <T> get(key: HTPropertyKey<T>): T? = map[key]
-            }
+                },
+            )
 
             @JvmStatic
-            fun create(server: MinecraftServer): Context = object : Context {
-                val map: HTPropertyGetter = buildPropertyMap {
+            fun create(server: MinecraftServer): Context = Context(
+                buildPropertyMap {
                     this[BREWING] = server.potionBrewing()
                     this[MANAGER] = server.recipeManager
                     this[REGISTRY] = server.registryAccess()
-                }
-
-                override fun <T> get(key: HTPropertyKey<T>): T? = map[key]
-            }
+                },
+            )
         }
 
         fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(recipeType: RecipeType<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> =

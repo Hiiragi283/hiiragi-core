@@ -83,7 +83,7 @@ object HTShapelessRecipeHelper {
      * @return 消費される[リソース][T]と消費する量のマップ
      */
     @JvmStatic
-    fun <T : Any, I : HTIngredient<T>> shapelessMatch(ingredients: List<I>, stacks: Map<T, Int>): Map<T, Int> {
+    fun <T : HTResourceType, I : HTIngredient<T>> shapelessMatch(ingredients: List<I>, stacks: Map<T, Int>): Map<T, Int> {
         val stacks1: MutableMap<T, Int> = stacks.toMutableMap()
 
         var count = 0
@@ -92,7 +92,7 @@ object HTShapelessRecipeHelper {
         ing@for (ingredient: I in ingredients) {
             stack@for ((resource: T, amount: Int) in stacks1) {
                 if (ingredient.test(resource, amount)) {
-                    resultMap[resource] = (resultMap[resource] ?: 0) + ingredient.amount
+                    resultMap[resource] = (resultMap[resource] ?: 0) + ingredient.getRequiredAmount(resource, amount)
                     stacks1.remove(resource)
                     count++
                     continue@ing

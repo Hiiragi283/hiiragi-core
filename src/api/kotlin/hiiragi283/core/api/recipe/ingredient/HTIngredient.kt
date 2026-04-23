@@ -1,13 +1,7 @@
 package hiiragi283.core.api.recipe.ingredient
 
 import hiiragi283.core.api.storage.resource.HTResourceType
-import hiiragi283.core.api.tag.getName
-import hiiragi283.core.api.text.HTHasText
-import hiiragi283.core.api.text.Text
-import hiiragi283.core.api.util.Either
-import net.minecraft.network.chat.ComponentUtils
-import net.minecraft.tags.TagKey
-import java.util.function.BiPredicate
+import java.util.function.Predicate
 
 /**
  * レシピの材料を表すインターフェースです。
@@ -16,52 +10,33 @@ import java.util.function.BiPredicate
  * @since 0.10.0
  * @see HTItemIngredient
  * @see HTFluidIngredient
+ * @see mekanism.api.recipes.ingredients.InputIngredient
  */
-interface HTIngredient<RESOURCE : HTResourceType> :
-    BiPredicate<RESOURCE, Int>,
-    HTHasText {
+interface HTIngredient<RESOURCE : HTResourceType> {
     /**
      * 指定した[resource]と[amount]が条件を満たしているか判定します。
-     * @return [testOnlyType]が`true`，かつ[amount]が[HTIngredient.amount]以上の場合は`true`
      */
-    override fun test(resource: RESOURCE, amount: Int): Boolean {
-        val bool1: Boolean = testOnlyType(resource)
-        return when {
-            isCatalyst -> bool1
-            else -> bool1 && amount >= this.amount
-        }
-    }
+    fun test(resource: RESOURCE, amount: Int): Boolean
+
+    fun getRequiredAmount(resource: RESOURCE, amount: Int): Int
 
     /**
-     * 指定した[resource]が条件を満たしているか判定します。
-     */
-    fun testOnlyType(resource: RESOURCE): Boolean
-
-    /**
-     * この材料が要求する量を取得します。
-     */
-    val amount: Int
-
-    /**
-     * この材料が触媒であるか判定します。
-     */
-    val isCatalyst: Boolean get() = amount <= 0
-
-    /**
-     * [HTResourceType.Registered]に基づいた[HTIngredient]の拡張インターフェースです。
-     * @param TYPE [RESOURCE]の種類のクラス
-     * @param RESOURCE 判定の対象となるクラス
      * @author Hiiragi Tsubasa
-     * @since 0.13.0
+     * @since 0.15.3
      */
-    interface Registered<TYPE : Any, RESOURCE : HTResourceType.Registered<TYPE>> : HTIngredient<RESOURCE> {
+    interface Stacked<STACK : Any, RESOURCE : HTResourceType> :
+        HTIngredient<RESOURCE>,
+        Predicate<STACK> {
         /**
-         * この材料に一致するすべての種類を返します。
+         * 指定した[stack]が条件を満たしているか判定します。
          */
-        fun unwrap(): Either<TagKey<TYPE>, List<RESOURCE>>
+        override fun test(stack: STACK): Boolean
 
-        override fun getText(): Text = unwrap().map(TagKey<TYPE>::getName) { resources: List<RESOURCE> ->
-            ComponentUtils.formatList(resources, HTHasText::getText)
-        }
+        /**
+         * 指定した[stack]が数量を除いて条件を満たしているか判定します。
+         */
+        fun testOnlyType(stack: STACK): Boolean
+
+        fun getRequiredAmount(stack: STACK): Int
     }
 }

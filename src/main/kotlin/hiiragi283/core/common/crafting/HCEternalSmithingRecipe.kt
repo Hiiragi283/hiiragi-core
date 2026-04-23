@@ -37,5 +37,7 @@ data object HCEternalSmithingRecipe : SmithingRecipe {
 
     override fun getResultItem(registries: HolderLookup.Provider): ItemStack = ItemStack.EMPTY
 
+    override fun isSpecial(): Boolean = true
+
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.ETERNAL_UPGRADE
 }

@@ -1,10 +1,12 @@
 package hiiragi283.core.client.jei.category
 
 import com.mojang.datafixers.util.Either
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.integration.jei.addFluidIngredient
 import hiiragi283.core.api.integration.jei.addFluidResult
 import hiiragi283.core.api.integration.jei.category.HTHolderRecipeCategory
+import hiiragi283.core.api.integration.jei.setFluidSlotRenderer
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
@@ -25,8 +27,9 @@ class HCBrewingRecipeCategory(guiHelper: IGuiHelper) :
         // inputs
         builder
             .addInputSlot(getPosition(0), getPosition(0))
-            .addFluidIngredient(recipe.potionFrom)
+            .addFluidIngredient(recipe.potionFrom, HTConst.DEFAULT_FLUID_AMOUNT)
             .setSlotBackground(HTBackgroundType.EXTRA_INPUT)
+            .setFluidSlotRenderer()
             .addRichTooltipCallback(::addPotionTooltip)
         builder
             .addInputSlot(getPosition(2), getPosition(0))
@@ -37,6 +40,7 @@ class HCBrewingRecipeCategory(guiHelper: IGuiHelper) :
             .addOutputSlot(getPosition(5), getPosition(0))
             .addFluidResult(recipe.potionTo)
             .setSlotBackground(HTBackgroundType.OUTPUT)
+            .setFluidSlotRenderer()
             .addRichTooltipCallback(::addPotionTooltip)
     }
 

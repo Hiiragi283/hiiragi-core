@@ -8,7 +8,7 @@ import net.minecraft.world.item.crafting.SingleRecipeInput
 
 abstract class HTBasicSingleItemRecipe(val ingredient: HTItemIngredient, val result: HTItemResult, final override val time: Int) :
     HTSingleItemRecipe.Serializable {
-    override fun getRequiredAmount(input: SingleRecipeInput): Int = ingredient.amount
+    override fun getRequiredAmount(input: SingleRecipeInput): Int = ingredient.getRequiredAmount(input.item())
 
     override fun assemble(input: SingleRecipeInput, preview: Boolean): ItemStack = result.getOrEmpty(preview)
 

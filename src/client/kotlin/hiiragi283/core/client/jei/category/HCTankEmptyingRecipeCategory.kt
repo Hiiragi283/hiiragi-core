@@ -4,6 +4,7 @@ import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.integration.jei.addFluidResult
 import hiiragi283.core.api.integration.jei.addItemResult
 import hiiragi283.core.api.integration.jei.category.HTHolderRecipeCategory
+import hiiragi283.core.api.integration.jei.setFluidSlotRenderer
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
@@ -25,6 +26,7 @@ class HCTankEmptyingRecipeCategory(guiHelper: IGuiHelper) :
             .addOutputSlot(getPosition(3), getPosition(0))
             .addFluidResult(recipe.fluidResult)
             .setSlotBackground(HTBackgroundType.OUTPUT)
+            .setFluidSlotRenderer()
         builder
             .addOutputSlot(getPosition(5), getPosition(0))
             .addItemResult(recipe.itemResult.getOrNull())

@@ -44,7 +44,8 @@ abstract class HTBasicDoubleMultiOutputRecipe(
         return base.test(first) && addition.map { it.test(second) }.orElseGet { true }
     }
 
-    final override fun getBaseAmount(input: HTDoubleRecipeInput): Int = base.amount
+    final override fun getBaseAmount(input: HTDoubleRecipeInput): Int = base.getRequiredAmount(input.first)
 
-    final override fun getAdditionAmount(input: HTDoubleRecipeInput): Int = addition.map(HTItemIngredient::amount).orElseGet { 0 }
+    final override fun getAdditionAmount(input: HTDoubleRecipeInput): Int =
+        addition.map { it.getRequiredAmount(input.second) }.orElseGet { 0 }
 }

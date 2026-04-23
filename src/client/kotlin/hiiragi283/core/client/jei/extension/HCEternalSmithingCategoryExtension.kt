@@ -14,16 +14,22 @@ import net.minecraft.world.item.component.Unbreakable
 
 class HCEternalSmithingCategoryExtension(private val manager: IIngredientManager) :
     ISmithingCategoryExtension<HCEternalSmithingRecipe> {
+    private val toolStacks: List<ItemStack> by lazy { manager.allItemStacks.filter { it.isDamageableItem } }
+
     override fun <T : IIngredientAcceptor<T>> setTemplate(recipe: HCEternalSmithingRecipe, ingredientAcceptor: T) {
         ingredientAcceptor.addItemLike(HCItems.ETERNAL_UPGRADE)
     }
 
     override fun <T : IIngredientAcceptor<T>> setBase(recipe: HCEternalSmithingRecipe, ingredientAcceptor: T) {
-        ingredientAcceptor.addItemStacks(manager.allItemStacks.filter { it.isDamageableItem })
+        ingredientAcceptor.addItemStacks(toolStacks)
     }
 
     override fun <T : IIngredientAcceptor<T>> setAddition(recipe: HCEternalSmithingRecipe, ingredientAcceptor: T) {
         ingredientAcceptor.addIngredients(HCEternalSmithingRecipe.ADDITIONAL_TAG)
+    }
+
+    override fun <T : IIngredientAcceptor<T>> setOutput(recipe: HCEternalSmithingRecipe, ingredientAcceptor: T) {
+        ingredientAcceptor.addItemStacks(toolStacks)
     }
 
     override fun onDisplayedIngredientsUpdate(

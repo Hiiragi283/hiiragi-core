@@ -34,5 +34,5 @@ abstract class HTBasicSingleMultiOutputRecipe(val ingredient: HTItemIngredient, 
 
     final override fun test(input: SingleRecipeInput): Boolean = ingredient.test(input.item())
 
-    final override fun getRequiredAmount(input: SingleRecipeInput): Int = ingredient.amount
+    final override fun getRequiredAmount(input: SingleRecipeInput): Int = ingredient.getRequiredAmount(input.item())
 }
