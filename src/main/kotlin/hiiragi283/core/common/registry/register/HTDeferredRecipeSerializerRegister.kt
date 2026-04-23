@@ -19,7 +19,7 @@ class HTDeferredRecipeSerializerRegister(namespace: String) :
     fun <RECIPE : Recipe<*>> registerSerializer(
         name: String,
         codec: MapCodec<RECIPE>,
-        streamCodec: StreamCodec<RegistryFriendlyByteBuf, RECIPE> = ByteBufCodecs.fromCodec(codec.codec()).cast(),
+        streamCodec: StreamCodec<RegistryFriendlyByteBuf, RECIPE> = ByteBufCodecs.fromCodecWithRegistries(codec.codec()),
     ): RecipeSerializer<RECIPE> = registerSerializer(
         name,
         object : RecipeSerializer<RECIPE> {

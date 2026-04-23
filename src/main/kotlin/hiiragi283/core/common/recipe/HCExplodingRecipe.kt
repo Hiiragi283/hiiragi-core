@@ -7,11 +7,8 @@ import hiiragi283.core.api.fraction
 import hiiragi283.core.api.recipe.base.HTSerializableRecipe
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
-import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
-import net.minecraft.network.RegistryFriendlyByteBuf
-import net.minecraft.network.codec.StreamCodec
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeInput
@@ -35,17 +32,6 @@ class HCExplodingRecipe(val ingredient: Ingredient, val result: HTItemResult, va
                         ).forGetter(HCExplodingRecipe::requiredPower),
                 ).apply(instance, ::HCExplodingRecipe)
         }
-
-        @JvmField
-        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HCExplodingRecipe> = StreamCodec.composite(
-            Ingredient.CONTENTS_STREAM_CODEC,
-            HCExplodingRecipe::ingredient,
-            HTItemResult.STREAM_CODEC,
-            HCExplodingRecipe::result,
-            HTStreamCodecs.FRACTION,
-            HCExplodingRecipe::requiredPower,
-            ::HCExplodingRecipe,
-        )
     }
 
     override fun test(input: Input): Boolean = ingredient.test(input.item) && input.power >= requiredPower

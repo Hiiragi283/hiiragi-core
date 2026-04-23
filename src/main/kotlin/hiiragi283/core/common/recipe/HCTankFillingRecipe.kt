@@ -10,8 +10,6 @@ import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
-import net.minecraft.network.RegistryFriendlyByteBuf
-import net.minecraft.network.codec.StreamCodec
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeSerializer
@@ -30,17 +28,6 @@ class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: H
                     HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCTankFillingRecipe::result),
                 ).apply(instance, ::HCTankFillingRecipe)
         }
-
-        @JvmField
-        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HCTankFillingRecipe> = StreamCodec.composite(
-            Ingredient.CONTENTS_STREAM_CODEC,
-            HCTankFillingRecipe::itemIngredient,
-            HTFluidIngredient.STREAM_CODEC,
-            HCTankFillingRecipe::fluidIngredient,
-            HTItemResult.STREAM_CODEC,
-            HCTankFillingRecipe::result,
-            ::HCTankFillingRecipe,
-        )
     }
 
     override fun testContainer(stack: ItemStack): Boolean = itemIngredient.test(stack)

@@ -1,5 +1,6 @@
 package hiiragi283.core.common.recipe
 
+import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.impl.recipe.HTBasicDoubleMultiOutputRecipe
@@ -17,7 +18,7 @@ class HCForgingRecipe(
 ) : HTBasicDoubleMultiOutputRecipe(base, addition, results, time) {
     companion object {
         @JvmField
-        val OUTPUT_RANGE: IntRange = 1..9
+        val CODEC: MapCodec<HCForgingRecipe> = codec(1..9, ::HCForgingRecipe)
     }
 
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.FORGING

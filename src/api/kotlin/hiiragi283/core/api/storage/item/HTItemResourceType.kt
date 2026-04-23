@@ -30,7 +30,7 @@ class HTItemResourceType private constructor(private val stack: ItemStack) : HTR
         val MAP_CODEC: MapCodec<HTItemResourceType> = MapCodec.assumeMapUnsafe(CODEC)
 
         @JvmField
-        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemResourceType> = 
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemResourceType> =
             ItemStack.STREAM_CODEC.map(::HTItemResourceType, HTItemResourceType::stack)
 
         /**

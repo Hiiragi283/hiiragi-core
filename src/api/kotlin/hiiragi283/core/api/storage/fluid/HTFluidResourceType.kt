@@ -31,7 +31,7 @@ class HTFluidResourceType private constructor(private val stack: FluidStack) : H
         val MAP_CODEC: MapCodec<HTFluidResourceType> = MapCodec.assumeMapUnsafe(CODEC)
 
         @JvmField
-        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTFluidResourceType> = 
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTFluidResourceType> =
             FluidStack.STREAM_CODEC.map(::HTFluidResourceType, HTFluidResourceType::stack)
 
         /**

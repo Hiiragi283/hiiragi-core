@@ -8,9 +8,6 @@ import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
-import net.minecraft.network.RegistryFriendlyByteBuf
-import net.minecraft.network.codec.ByteBufCodecs
-import net.minecraft.network.codec.StreamCodec
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeInput
@@ -31,17 +28,6 @@ class HCChargingRecipe(val ingredient: Ingredient, val result: HTItemResult, val
                     HTCodecs.NON_NEGATIVE_INT.optionalFieldOf("energy", DEFAULT_ENERGY).forGetter(HCChargingRecipe::requiredEnergy),
                 ).apply(instance, ::HCChargingRecipe)
         }
-
-        @JvmField
-        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HCChargingRecipe> = StreamCodec.composite(
-            Ingredient.CONTENTS_STREAM_CODEC,
-            HCChargingRecipe::ingredient,
-            HTItemResult.STREAM_CODEC,
-            HCChargingRecipe::result,
-            ByteBufCodecs.VAR_INT,
-            HCChargingRecipe::requiredEnergy,
-            ::HCChargingRecipe,
-        )
     }
 
     override fun test(input: Input): Boolean {

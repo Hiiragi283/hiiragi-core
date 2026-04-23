@@ -9,12 +9,7 @@ import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.listOrElement
-import hiiragi283.core.api.serialization.network.listOf
-import hiiragi283.core.api.serialization.network.toOptional
 import hiiragi283.core.common.data.recipe.builder.HTDoubleMultiOutputRecipeBuilder
-import net.minecraft.network.RegistryFriendlyByteBuf
-import net.minecraft.network.codec.ByteBufCodecs
-import net.minecraft.network.codec.StreamCodec
 import net.minecraft.world.item.ItemStack
 import java.util.Optional
 
@@ -42,21 +37,6 @@ abstract class HTBasicDoubleMultiOutputRecipe(
                     HTProcessingRecipe.timeCodec(),
                 ).apply(instance, factory::create)
         }
-
-        @JvmStatic
-        fun <T : HTBasicDoubleMultiOutputRecipe> streamCodec(
-            factory: HTDoubleMultiOutputRecipeBuilder.Factory<T>,
-        ): StreamCodec<RegistryFriendlyByteBuf, T> = StreamCodec.composite(
-            HTItemIngredient.STREAM_CODEC,
-            HTBasicDoubleMultiOutputRecipe::base,
-            HTItemIngredient.STREAM_CODEC.toOptional(),
-            HTBasicDoubleMultiOutputRecipe::addition,
-            HTItemResult.STREAM_CODEC.listOf(),
-            HTBasicDoubleMultiOutputRecipe::results,
-            ByteBufCodecs.VAR_INT,
-            HTBasicDoubleMultiOutputRecipe::time,
-            factory::create,
-        )
     }
 
     final override fun test(input: HTDoubleRecipeInput): Boolean {

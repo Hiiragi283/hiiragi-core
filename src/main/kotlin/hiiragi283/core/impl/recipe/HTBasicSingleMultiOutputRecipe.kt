@@ -8,11 +8,7 @@ import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.listOrElement
-import hiiragi283.core.api.serialization.network.listOf
 import hiiragi283.core.common.data.recipe.builder.HTSingleMultiOutputRecipeBuilder
-import net.minecraft.network.RegistryFriendlyByteBuf
-import net.minecraft.network.codec.ByteBufCodecs
-import net.minecraft.network.codec.StreamCodec
 import net.minecraft.world.item.crafting.SingleRecipeInput
 
 abstract class HTBasicSingleMultiOutputRecipe(val ingredient: HTItemIngredient, results: List<HTItemResult>, time: Int) :
@@ -34,19 +30,6 @@ abstract class HTBasicSingleMultiOutputRecipe(val ingredient: HTItemIngredient, 
                     HTProcessingRecipe.timeCodec(),
                 ).apply(instance, factory::create)
         }
-
-        @JvmStatic
-        fun <T : HTBasicSingleMultiOutputRecipe> streamCodec(
-            factory: HTSingleMultiOutputRecipeBuilder.Factory<T>,
-        ): StreamCodec<RegistryFriendlyByteBuf, T> = StreamCodec.composite(
-            HTItemIngredient.STREAM_CODEC,
-            HTBasicSingleMultiOutputRecipe::ingredient,
-            HTItemResult.STREAM_CODEC.listOf(),
-            HTBasicSingleMultiOutputRecipe::results,
-            ByteBufCodecs.VAR_INT,
-            HTBasicSingleMultiOutputRecipe::time,
-            factory::create,
-        )
     }
 
     final override fun test(input: SingleRecipeInput): Boolean = ingredient.test(input.item())

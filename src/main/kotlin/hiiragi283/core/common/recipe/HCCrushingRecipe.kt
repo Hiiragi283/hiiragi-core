@@ -1,5 +1,6 @@
 package hiiragi283.core.common.recipe
 
+import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.impl.recipe.HTBasicSingleMultiOutputRecipe
@@ -12,7 +13,7 @@ class HCCrushingRecipe(ingredient: HTItemIngredient, results: List<HTItemResult>
     HTBasicSingleMultiOutputRecipe(ingredient, results, time) {
     companion object {
         @JvmField
-        val OUTPUT_RANGE: IntRange = 1..4
+        val CODEC: MapCodec<HCCrushingRecipe> = codec(1..4, ::HCCrushingRecipe)
     }
 
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.CRUSHING
