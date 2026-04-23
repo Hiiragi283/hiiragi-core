@@ -1,13 +1,15 @@
 package hiiragi283.core.api.recipe.ingredient
 
+import com.mojang.serialization.Codec
+import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.serialization.codec.BiCodecs
-import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
+import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.util.Either
 import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.network.codec.ByteBufCodecs
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -22,9 +24,20 @@ import net.neoforged.neoforge.common.crafting.ICustomIngredient
 class HTItemIngredient(val unsized: Ingredient, override val amount: Int) : HTIngredient.Registered<Item, HTItemResourceType> {
     companion object {
         @JvmField
-        val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemIngredient> = BiCodec.composite(
-            VanillaBiCodecs.INGREDIENT.fieldOf(HTConst.ITEMS).forGetter(HTItemIngredient::unsized),
-            BiCodecs.NON_NEGATIVE_INT.optionalFieldOf(HTConst.AMOUNT, 0).forGetter(HTItemIngredient::amount),
+        val CODEC: Codec<HTItemIngredient> = RecordCodecBuilder.create { instance ->
+            instance
+                .group(
+                    HTCodecs.INGREDIENT.fieldOf(HTConst.ITEMS).forGetter(HTItemIngredient::unsized),
+                    HTCodecs.NON_NEGATIVE_INT.optionalFieldOf(HTConst.AMOUNT, 0).forGetter(HTItemIngredient::amount),
+                ).apply(instance, ::HTItemIngredient)
+        }
+
+        @JvmField
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemIngredient> = StreamCodec.composite(
+            Ingredient.CONTENTS_STREAM_CODEC,
+            HTItemIngredient::unsized,
+            ByteBufCodecs.VAR_INT,
+            HTItemIngredient::amount,
             ::HTItemIngredient,
         )
     }

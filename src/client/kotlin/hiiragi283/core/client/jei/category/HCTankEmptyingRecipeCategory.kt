@@ -6,7 +6,6 @@ import hiiragi283.core.api.integration.jei.addItemResult
 import hiiragi283.core.api.integration.jei.category.HTHolderRecipeCategory
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
-import hiiragi283.core.setup.HCRecipeSerializers
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder
 import mezz.jei.api.helpers.IGuiHelper
@@ -14,7 +13,7 @@ import mezz.jei.api.recipe.IFocusGroup
 import kotlin.jvm.optionals.getOrNull
 
 class HCTankEmptyingRecipeCategory(guiHelper: IGuiHelper) :
-    HTHolderRecipeCategory.Registered<HCTankEmptyingRecipe>(guiHelper, HCRecipeViewerTypes.EMPTYING, HCRecipeSerializers.EMPTYING) {
+    HTHolderRecipeCategory.Registered<HCTankEmptyingRecipe>(guiHelper, HCRecipeViewerTypes.EMPTYING, HCTankEmptyingRecipe.CODEC) {
     override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: HCTankEmptyingRecipe, focuses: IFocusGroup) {
         // input
         builder

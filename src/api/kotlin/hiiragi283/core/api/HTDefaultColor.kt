@@ -1,12 +1,14 @@
 package hiiragi283.core.api
 
+import com.mojang.serialization.Codec
 import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.serialization.codec.BiCodecs
-import io.netty.buffer.ByteBuf
+import hiiragi283.core.api.serialization.codec.HTCodecs
+import hiiragi283.core.api.serialization.network.HTStreamCodecs
+import net.minecraft.network.FriendlyByteBuf
 import net.minecraft.network.chat.TextColor
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.tags.TagKey
 import net.minecraft.util.FastColor
 import net.minecraft.util.StringRepresentable
@@ -63,7 +65,10 @@ enum class HTDefaultColor(
 
     companion object {
         @JvmField
-        val CODEC: BiCodec<ByteBuf, HTDefaultColor> = BiCodecs.stringEnum(HTDefaultColor::getSerializedName)
+        val CODEC: Codec<HTDefaultColor> = HTCodecs.stringEnum(HTDefaultColor::getSerializedName)
+
+        @JvmField
+        val STREAM_CODEC: StreamCodec<FriendlyByteBuf, HTDefaultColor> = HTStreamCodecs.enum()
 
         /**
          * @since 0.15.0

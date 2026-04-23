@@ -1,9 +1,11 @@
 package hiiragi283.core.api.item.alchemy
 
-import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.serialization.codec.BiCodecs
+import com.mojang.serialization.Codec
+import hiiragi283.core.api.serialization.codec.HTCodecs
+import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.storage.item.HTItemResourceType
-import io.netty.buffer.ByteBuf
+import net.minecraft.network.FriendlyByteBuf
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.util.StringRepresentable
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -25,7 +27,10 @@ enum class HTBottleType :
 
     companion object {
         @JvmField
-        val CODEC: BiCodec<ByteBuf, HTBottleType> = BiCodecs.stringEnum(HTBottleType::getSerializedName)
+        val CODEC: Codec<HTBottleType> = HTCodecs.stringEnum(HTBottleType::getSerializedName)
+
+        @JvmField
+        val STREAM_CODEC: StreamCodec<FriendlyByteBuf, HTBottleType> = HTStreamCodecs.enum()
 
         /**
          * @since 0.14.0

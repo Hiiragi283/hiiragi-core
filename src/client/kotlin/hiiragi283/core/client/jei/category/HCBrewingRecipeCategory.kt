@@ -20,7 +20,7 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent
 import net.minecraft.world.item.alchemy.PotionContents
 
 class HCBrewingRecipeCategory(guiHelper: IGuiHelper) :
-    HTHolderRecipeCategory<HCBrewingRecipe>(guiHelper, HCRecipeViewerTypes.BREWING, HCBrewingRecipe.CODEC.codec) {
+    HTHolderRecipeCategory<HCBrewingRecipe>(guiHelper, HCRecipeViewerTypes.BREWING, HCBrewingRecipe.CODEC) {
     override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: HCBrewingRecipe, focuses: IFocusGroup) {
         // inputs
         builder

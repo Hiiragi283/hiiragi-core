@@ -1,15 +1,14 @@
 package hiiragi283.core.common.item
 
+import com.mojang.serialization.Codec
 import hiiragi283.core.api.item.HTSubCreativeTabContents
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.registry.HTItemHolderLike
-import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.serialization.codec.BiCodecs
+import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCItems
-import io.netty.buffer.ByteBuf
 import net.minecraft.world.entity.SlotAccess
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.ClickAction
@@ -28,7 +27,7 @@ class HTBlueprintItem(properties: Properties) :
         val RANGE: IntRange = 0..MAX_NUMBER
 
         @JvmField
-        val RANGE_CODEC: BiCodec<ByteBuf, Int> = BiCodecs.intRange(RANGE)
+        val CODEC: Codec<Int> = HTCodecs.numberRange(Codec.INT, RANGE)
     }
 
     override fun overrideOtherStackedOnMe(

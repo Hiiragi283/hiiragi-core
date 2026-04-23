@@ -6,7 +6,6 @@ import hiiragi283.core.api.integration.jei.category.HTHolderRecipeCategory
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
-import hiiragi283.core.setup.HCRecipeSerializers
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.placement.HorizontalAlignment
 import mezz.jei.api.gui.placement.VerticalAlignment
@@ -15,7 +14,7 @@ import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
 
 class HCChargingRecipeCategory(guiHelper: IGuiHelper) :
-    HTHolderRecipeCategory.Registered<HCChargingRecipe>(guiHelper, HCRecipeViewerTypes.CHARGING, HCRecipeSerializers.CHARGING) {
+    HTHolderRecipeCategory.Registered<HCChargingRecipe>(guiHelper, HCRecipeViewerTypes.CHARGING, HCChargingRecipe.CODEC) {
     override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: HCChargingRecipe, focuses: IFocusGroup) {
         // input
         builder

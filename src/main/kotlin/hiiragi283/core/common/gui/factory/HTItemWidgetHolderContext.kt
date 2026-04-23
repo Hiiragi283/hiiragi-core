@@ -1,14 +1,13 @@
 package hiiragi283.core.common.gui.factory
 
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
-import hiiragi283.core.api.serialization.codec.BiCodecs
-import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
+import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.wrapOptional
 import hiiragi283.core.common.gui.menu.HTWidgetContainerMenu
 import hiiragi283.core.setup.HCMenuTypes
-import io.netty.buffer.ByteBuf
+import net.minecraft.network.FriendlyByteBuf
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.server.level.ServerPlayer
@@ -32,7 +31,7 @@ data class HTItemWidgetHolderContext(
     MenuProvider {
     companion object {
         @JvmStatic
-        private val HAND_CODEC: StreamCodec<ByteBuf, InteractionHand> = BiCodecs.enum<InteractionHand>().streamCodec
+        private val HAND_CODEC: StreamCodec<FriendlyByteBuf, InteractionHand> = HTStreamCodecs.enum()
 
         @JvmStatic
         fun openMenu(player: ServerPlayer, hand: InteractionHand): Boolean {
@@ -59,7 +58,7 @@ data class HTItemWidgetHolderContext(
         fun create(containerId: Int, inventory: Inventory, buffer: RegistryFriendlyByteBuf): HTWidgetContainerMenu {
             val player: Player = inventory.player
             val hand: InteractionHand? = buffer.readOptional(HAND_CODEC).getOrNull()
-            val stack: ItemStack = VanillaBiCodecs.ITEM_STACK_NON_EMPTY.decode(buffer).getOrThrow()
+            val stack: ItemStack = ItemStack.STREAM_CODEC.decode(buffer)
             val item: Item = stack.item
             if (item is Factory) {
                 val context: HTItemWidgetHolderContext = item.createContext(player, hand, stack)
@@ -85,7 +84,7 @@ data class HTItemWidgetHolderContext(
 
     override fun writeClientSideData(menu: AbstractContainerMenu, buffer: RegistryFriendlyByteBuf) {
         buffer.writeOptional(hand.wrapOptional(), HAND_CODEC)
-        VanillaBiCodecs.ITEM_STACK_NON_EMPTY.encode(buffer, stack)
+        ItemStack.STREAM_CODEC.encode(buffer, stack)
     }
 
     //    Factory    //

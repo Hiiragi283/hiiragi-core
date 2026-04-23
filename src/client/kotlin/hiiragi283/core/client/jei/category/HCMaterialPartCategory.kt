@@ -1,6 +1,7 @@
 package hiiragi283.core.client.jei.category
 
 import com.mojang.serialization.Codec
+import com.mojang.serialization.DataResult
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.integration.jei.category.HTBasicRecipeCategory
 import hiiragi283.core.api.material.HTMaterialKey
@@ -81,15 +82,16 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) :
     companion object {
         @JvmStatic
         private val CODEC: Codec<HTMaterialManager.Entry> = HTMaterialKey.CODEC
-            .flatXmap(
+            .comapFlatMap(
                 { key: HTMaterialKey ->
                     HTMaterialManager
                         .getInstance()
                         .entries
                         .firstOrNull { it.asMaterialKey() == key }
-                        ?: error("Unknown material; ${key.getId()}")
+                        .let { DataResult.success(it) }
+                        ?: DataResult.error { "Unknown material; ${key.getId()}" }
                 },
                 HTMaterialManager.Entry::asMaterialKey,
-            ).codec
+            )
     }
 }

@@ -1,9 +1,10 @@
 package hiiragi283.core.api.registry
 
+import com.mojang.serialization.Codec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.function.identity
-import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
+import hiiragi283.core.api.serialization.codec.HTCodecs
+import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.util.Either
@@ -12,6 +13,7 @@ import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
@@ -64,8 +66,12 @@ interface HTFluidHolderLike<FLUID : Fluid> : HTHolderLike<Fluid, FLUID> {
 
     companion object {
         @JvmField
-        val CODEC: BiCodec<RegistryFriendlyByteBuf, HTSimpleFluidHolderLike> =
-            VanillaBiCodecs.holderLike(Registries.FLUID).xmap(HTSimpleHolderLike<Fluid>::toFluidLike, identity())
+        val CODEC: Codec<HTSimpleFluidHolderLike> =
+            HTCodecs.holderLike(Registries.FLUID).xmap(HTSimpleHolderLike<Fluid>::toFluidLike, identity())
+
+        @JvmField
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTSimpleFluidHolderLike> =
+            HTStreamCodecs.holderLike(Registries.FLUID).map(HTSimpleHolderLike<Fluid>::toFluidLike, identity())
     }
 
     /**

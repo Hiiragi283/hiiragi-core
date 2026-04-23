@@ -3,8 +3,6 @@ package hiiragi283.core.common.registry.register
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.RegistryKey
-import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.serialization.codec.BiCodecs
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
@@ -37,8 +35,6 @@ class HTDeferredDataComponentRegister(registryKey: RegistryKey<DataComponentType
         streamCodec?.let(builder::networkSynchronized)
     }
 
-    fun <DATA : Any> registerType(name: String, codec: BiCodec<in RegistryFriendlyByteBuf, DATA>): DataComponentType<DATA> =
-        registerType(name, codec.codec, codec.streamCodec)
-
-    fun registerFlag(name: String): DataComponentType<MCUnit> = registerType(name, BiCodecs.unit(MCUnit.INSTANCE))
+    fun registerFlag(name: String): DataComponentType<MCUnit> =
+        registerType(name, Codec.unit(MCUnit.INSTANCE), StreamCodec.unit(MCUnit.INSTANCE))
 }

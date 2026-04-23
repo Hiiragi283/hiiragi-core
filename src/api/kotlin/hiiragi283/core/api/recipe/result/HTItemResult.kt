@@ -1,15 +1,15 @@
 package hiiragi283.core.api.recipe.result
 
+import com.mojang.serialization.Codec
+import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.compareTo
 import hiiragi283.core.api.function.identityRight
 import hiiragi283.core.api.registry.toItemLike
-import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.serialization.codec.BiCodecs
-import hiiragi283.core.api.serialization.codec.MapBiCodecs
-import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
+import hiiragi283.core.api.serialization.codec.HTCodecs
+import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.text.HTTextResult
@@ -17,6 +17,8 @@ import hiiragi283.core.api.util.Ior
 import net.minecraft.core.HolderSet
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.network.codec.ByteBufCodecs
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -28,31 +30,31 @@ import org.apache.commons.lang3.math.Fraction
 data class HTItemResult(private val content: Ior<HTItemResourceType, HolderSet<Item>>, val count: Int, val chance: Fraction) :
     HTRecipeResult<ItemStack> {
     companion object {
-        @JvmStatic
-        fun checkTagHolderSet(holderSet: HolderSet<Item>) {
-            check(holderSet.unwrapKey().isPresent) { "HTItemResult only supports HolderSet with tag" }
+        @JvmField
+        val CODEC: Codec<HTItemResult> = RecordCodecBuilder.create { instance ->
+            instance
+                .group(
+                    HTCodecs
+                        .ior(HTItemResourceType.MAP_CODEC, HTCodecs.holderSet(Registries.ITEM).fieldOf(HTConst.TAG))
+                        .forGetter(HTItemResult::content),
+                    HTCodecs.POSITIVE_INT
+                        .optionalFieldOf(HTConst.COUNT, 1)
+                        .forGetter(HTItemResult::count),
+                    HTCodecs.FRACTION
+                        .validate(Codec.checkRange(Fraction.ZERO, Fraction.ONE))
+                        .optionalFieldOf(HTConst.CHANCE, Fraction.ONE)
+                        .forGetter(HTItemResult::chance),
+                ).apply(instance, ::HTItemResult)
         }
 
-        @JvmStatic
-        private val HOLDER_SET_CODEC: BiCodec<RegistryFriendlyByteBuf, HolderSet<Item>> = VanillaBiCodecs
-            .holderSet(Registries.ITEM)
-            .validate { holderSet: HolderSet<Item> ->
-                checkTagHolderSet(holderSet)
-                holderSet
-            }
-
         @JvmField
-        val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemResult> = BiCodec.composite(
-            MapBiCodecs
-                .ior(HTItemResourceType.CODEC.toMap(), HOLDER_SET_CODEC.fieldOf(HTConst.TAG))
-                .forGetter(HTItemResult::content),
-            BiCodecs.POSITIVE_INT
-                .optionalFieldOf(HTConst.COUNT, 1)
-                .forGetter(HTItemResult::count),
-            BiCodecs
-                .fractionRange(Fraction.ZERO..Fraction.ONE)
-                .optionalFieldOf(HTConst.CHANCE, Fraction.ONE)
-                .forGetter(HTItemResult::chance),
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemResult> = StreamCodec.composite(
+            HTStreamCodecs.ior(HTItemResourceType.STREAM_CODEC, HTStreamCodecs.holderSet(Registries.ITEM)),
+            HTItemResult::content,
+            ByteBufCodecs.VAR_INT,
+            HTItemResult::count,
+            HTStreamCodecs.FRACTION,
+            HTItemResult::chance,
             ::HTItemResult,
         )
 
@@ -66,9 +68,13 @@ data class HTItemResult(private val content: Ior<HTItemResourceType, HolderSet<I
         }
 
         @JvmStatic
-        fun create(holderSet: HolderSet<Item>, count: Int = 1, chance: Fraction = Fraction.ONE): HTItemResult {
-            checkTagHolderSet(holderSet)
-            return HTItemResult(Ior.Right(holderSet), count, chance)
+        fun create(holderSet: HolderSet<Item>, count: Int = 1, chance: Fraction = Fraction.ONE): HTItemResult =
+            HTItemResult(Ior.Right(holderSet), count, chance)
+    }
+
+    init {
+        content.getRight()?.let {
+            check(it.unwrapKey().isPresent) { "HTItemResult only supports HolderSet with tag" }
         }
     }
 

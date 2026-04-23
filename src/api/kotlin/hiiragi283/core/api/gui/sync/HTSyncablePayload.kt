@@ -35,13 +35,6 @@ interface HTSyncablePayload {
      * @author Hiiragi Tsubasa
      * @since 0.8.0
      */
-    @ConsistentCopyVisibility
     @JvmRecord
-    data class Type<PAYLOAD : HTSyncablePayload> private constructor(val streamCodec: StreamCodec<RegistryFriendlyByteBuf, PAYLOAD>) {
-        companion object {
-            @JvmStatic
-            fun <PAYLOAD : HTSyncablePayload> create(streamCodec: StreamCodec<in RegistryFriendlyByteBuf, PAYLOAD>): Type<PAYLOAD> =
-                Type(streamCodec.cast())
-        }
-    }
+    data class Type<PAYLOAD : HTSyncablePayload>(val streamCodec: StreamCodec<RegistryFriendlyByteBuf, PAYLOAD>)
 }

@@ -1,8 +1,10 @@
 package hiiragi283.core.api.item.alchemy
 
-import hiiragi283.core.api.serialization.codec.BiCodec
+import com.mojang.serialization.Codec
+import com.mojang.serialization.codecs.RecordCodecBuilder
 import net.minecraft.core.Holder
 import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.world.effect.MobEffectInstance
 import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.PotionContents
@@ -17,16 +19,23 @@ import kotlin.jvm.optionals.getOrNull
 @JvmRecord
 data class BottledPotionContents(val contents: PotionContents, val bottleType: HTBottleType) {
     companion object {
-        @JvmStatic
-        private val CONTENTS_CODEC: BiCodec<RegistryFriendlyByteBuf, PotionContents> = BiCodec.of(
-            PotionContents.CODEC,
-            PotionContents.STREAM_CODEC,
-        )
+        @JvmField
+        val CODEC: Codec<BottledPotionContents> = RecordCodecBuilder.create { instance ->
+            instance
+                .group(
+                    PotionContents.CODEC.fieldOf("contents").forGetter(BottledPotionContents::contents),
+                    HTBottleType.CODEC
+                        .optionalFieldOf("bottle_type", HTBottleType.DEFAULT)
+                        .forGetter(BottledPotionContents::bottleType),
+                ).apply(instance, ::BottledPotionContents)
+        }
 
         @JvmField
-        val CODEC: BiCodec<RegistryFriendlyByteBuf, BottledPotionContents> = BiCodec.composite(
-            CONTENTS_CODEC.fieldOf("contents").forGetter(BottledPotionContents::contents),
-            HTBottleType.CODEC.fieldOf("bottle_type").forGetter(BottledPotionContents::bottleType),
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, BottledPotionContents> = StreamCodec.composite(
+            PotionContents.STREAM_CODEC,
+            BottledPotionContents::contents,
+            HTBottleType.STREAM_CODEC,
+            BottledPotionContents::bottleType,
             ::BottledPotionContents,
         )
     }

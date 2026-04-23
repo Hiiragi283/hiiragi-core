@@ -1,4 +1,4 @@
-package hiiragi283.core.impl.serialization.codec
+package hiiragi283.core.impl.serialization.network
 
 import hiiragi283.core.api.util.Either
 import io.netty.buffer.ByteBuf

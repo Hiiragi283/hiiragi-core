@@ -1,8 +1,9 @@
 package hiiragi283.core.api.registry
 
+import com.mojang.serialization.Codec
 import hiiragi283.core.api.function.identity
-import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
+import hiiragi283.core.api.serialization.codec.HTCodecs
+import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.HTHasTranslationKey
 import hiiragi283.core.api.text.Text
@@ -11,6 +12,7 @@ import net.minecraft.core.Holder
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
@@ -36,8 +38,12 @@ interface HTItemHolderLike<ITEM : Item> :
 
     companion object {
         @JvmField
-        val CODEC: BiCodec<RegistryFriendlyByteBuf, HTSimpleItemHolderLike> =
-            VanillaBiCodecs.holderLike(Registries.ITEM).xmap(HTSimpleHolderLike<Item>::toItemLike, identity())
+        val CODEC: Codec<HTSimpleItemHolderLike> =
+            HTCodecs.holderLike(Registries.ITEM).xmap(HTSimpleHolderLike<Item>::toItemLike, identity())
+
+        @JvmField
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTSimpleItemHolderLike> =
+            HTStreamCodecs.holderLike(Registries.ITEM).map(HTSimpleHolderLike<Item>::toItemLike, identity())
     }
 
     interface Simple<ITEM : Item> : HTItemHolderLike<ITEM> {

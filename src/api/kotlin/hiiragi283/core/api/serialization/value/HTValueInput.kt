@@ -1,7 +1,6 @@
 package hiiragi283.core.api.serialization.value
 
 import com.mojang.serialization.Codec
-import hiiragi283.core.api.serialization.codec.BiCodec
 
 /**
  * NBTやJSONから値を読み取るインターフェースです。
@@ -154,8 +153,6 @@ interface HTValueInput {
 }
 
 //    Extensions    //
-
-fun <T : Any> HTValueInput.read(key: String, codec: BiCodec<*, T>): T? = this.read(key, codec.codec)
 
 /**
  * @author Hiiragi Tsubasa

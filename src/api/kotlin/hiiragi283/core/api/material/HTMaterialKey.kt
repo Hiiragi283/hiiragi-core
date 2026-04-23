@@ -1,13 +1,13 @@
 package hiiragi283.core.api.material
 
+import com.mojang.serialization.Codec
 import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.HTHasTranslationKey
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
 import io.netty.buffer.ByteBuf
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceLocation
 
 /**
@@ -34,10 +34,17 @@ value class HTMaterialKey private constructor(private val id: ResourceLocation) 
             fun of(id: ResourceLocation): HTMaterialKey = HTMaterialKey(id)
 
             /**
-             * [HTMaterialKey]の[BiCodec]
+             * [HTMaterialKey]の[Codec]
              */
             @JvmField
-            val CODEC: BiCodec<ByteBuf, HTMaterialKey> = VanillaBiCodecs.ID.flatXmap(HTMaterialKey::of, HTMaterialKey::getId)
+            val CODEC: Codec<HTMaterialKey> = ResourceLocation.CODEC.xmap(HTMaterialKey::of, HTMaterialKey::getId)
+
+            /**
+             * [HTMaterialKey]の[StreamCodec]
+             */
+            @JvmField
+            val STREAM_CODEC: StreamCodec<ByteBuf, HTMaterialKey> =
+                ResourceLocation.STREAM_CODEC.map(HTMaterialKey::of, HTMaterialKey::getId)
         }
 
         override fun getId(): ResourceLocation = id

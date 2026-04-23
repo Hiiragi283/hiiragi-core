@@ -1,14 +1,17 @@
 package hiiragi283.core.api.recipe.result
 
+import com.mojang.serialization.Codec
+import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.serialization.codec.BiCodecs
+import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.text.HTTextResult
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.network.codec.ByteBufCodecs
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.material.FlowingFluid
 import net.minecraft.world.level.material.Fluid
@@ -25,10 +28,25 @@ data class HTFluidResult private constructor(private val resource: HTFluidResour
     HTRecipeResult<FluidStack> {
         companion object {
             @JvmField
-            val CODEC: BiCodec<RegistryFriendlyByteBuf, HTFluidResult> = BiCodec.composite(
-                HTFluidResourceType.CODEC.toMap().forGetter(HTFluidResult::resource),
-                BiCodecs.POSITIVE_INT.optionalFieldOf(HTConst.AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT).forGetter(HTFluidResult::amount),
-                ::HTFluidResult,
+            val CODEC: Codec<HTFluidResult> = RecordCodecBuilder.create { instance ->
+                instance
+                    .group(
+                        HTFluidResourceType.MAP_CODEC.forGetter(HTFluidResult::resource),
+                        HTCodecs.POSITIVE_INT
+                            .optionalFieldOf(
+                                HTConst.AMOUNT,
+                                HTConst.DEFAULT_FLUID_AMOUNT,
+                            ).forGetter(HTFluidResult::amount),
+                    ).apply(instance, ::create)
+            }
+
+            @JvmField
+            val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTFluidResult> = StreamCodec.composite(
+                HTFluidResourceType.STREAM_CODEC,
+                HTFluidResult::resource,
+                ByteBufCodecs.VAR_INT,
+                HTFluidResult::amount,
+                ::create,
             )
 
             /**

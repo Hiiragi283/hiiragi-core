@@ -15,8 +15,6 @@ import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.holderSetOrNull
-import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.serialization.codec.BiCodecs
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.text.HTCommonTranslation
@@ -24,7 +22,6 @@ import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.toTextResult
 import hiiragi283.core.impl.material.HTMaterialContentsImpl
 import hiiragi283.core.impl.material.HTMaterialContentsRegister
-import io.netty.buffer.ByteBuf
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.HolderSet
 import net.minecraft.tags.TagKey
@@ -91,15 +88,6 @@ abstract class HiiragiCoreAccess {
      * @since 0.12.0
      */
     abstract val partManager: Map<String, HTPart>
-
-    /**
-     * [partManager]に基づいた[HTPart]の[BiCodec]のインスタンス
-     * @since 0.12.0
-     */
-    @JvmField
-    val partCodec: BiCodec<ByteBuf, HTPart> = BiCodecs.lazy {
-        BiCodec.STRING.flatXmap({ name: String -> partManager[name] ?: error("Unknown part: $name") }, HTPart::name)
-    }
 
     /**
      * 既存の素材コンテンツを取得します。
