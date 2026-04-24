@@ -96,7 +96,7 @@ fun Fluid?.toResource(patch: DataComponentPatch = DataComponentPatch.EMPTY): HTF
 
 /**
  * この[FluidStack][this]を[HTFluidResourceType]に変換します。
- * @return [isEmpty]の場合は`null`
+ * @return [FluidStack.isEmpty]の場合は`null`
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
@@ -104,7 +104,7 @@ fun FluidStack.toResource(): HTFluidResourceType? = HTFluidResourceType.of(this)
 
 /**
  * この[FluidStack][this]を[HTFluidResourceType]と数量に展開します。
- * @return [isEmpty]の場合は`null`
+ * @return [FluidStack.isEmpty]の場合は`null`
  * @author Hiiragi Tsubasa
  * @since 0.5.0
  */

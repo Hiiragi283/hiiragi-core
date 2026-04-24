@@ -1,7 +1,5 @@
 package hiiragi283.core.api.serialization.network
 
-import com.mojang.datafixers.util.Either
-import hiiragi283.core.api.fraction
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.RegistryKey
@@ -25,22 +23,16 @@ import net.minecraft.tags.TagKey
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs
 import org.apache.commons.lang3.math.Fraction
 import java.util.UUID
-import kotlin.Int
-import kotlin.String
 
 data object HTStreamCodecs {
     @JvmField
-    val FRACTION: StreamCodec<ByteBuf, Fraction> = ByteBufCodecs
-        .either(ByteBufCodecs.STRING_UTF8, ByteBufCodecs.VAR_INT)
-        .map(
-            { either: Either<String, Int> -> either.map(Fraction::getFraction, ::fraction) },
-            { fraction: Fraction ->
-                when (fraction.denominator) {
-                    1 -> Either.right(fraction.numerator)
-                    else -> Either.left(fraction.toString())
-                }
-            },
-        )
+    val FRACTION: StreamCodec<ByteBuf, Fraction> = StreamCodec.composite(
+        ByteBufCodecs.VAR_INT,
+        Fraction::getNumerator,
+        ByteBufCodecs.VAR_INT,
+        Fraction::getDenominator,
+        Fraction::getFraction,
+    )
 
     @JvmField
     val TEXT: StreamCodec<RegistryFriendlyByteBuf, Text> = ComponentSerialization.STREAM_CODEC
@@ -60,6 +52,10 @@ data object HTStreamCodecs {
     @JvmStatic
     fun <B : ByteBuf, L : Any, R : Any> ior(left: StreamCodec<in B, L>, right: StreamCodec<in B, R>): StreamCodec<B, Ior<L, R>> =
         HTIorStreamCodec(left, right)
+
+    @JvmStatic
+    fun <B : ByteBuf, K : Any, V : Any> mapOf(keyCodec: StreamCodec<in B, K>, valueCodec: StreamCodec<in B, V>): StreamCodec<B, Map<K, V>> =
+        ByteBufCodecs.map(::LinkedHashMap, keyCodec, valueCodec)
 
     //    Registry    //
 

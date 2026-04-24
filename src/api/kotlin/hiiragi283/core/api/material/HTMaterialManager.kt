@@ -1,9 +1,13 @@
 package hiiragi283.core.api.material
 
+import com.mojang.serialization.Codec
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.util.wrapResult
 import hiiragi283.core.impl.material.HTMaterialContentsRegister
+import io.netty.buffer.ByteBuf
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceLocation
 
 /**
@@ -15,6 +19,27 @@ interface HTMaterialManager : Iterable<HTMaterialManager.Entry> {
     companion object {
         @JvmStatic
         fun getInstance(): HTMaterialManager = HTMaterialContentsRegister.materialManager
+
+        private fun errorMessage(key: HTMaterialKey): String = "Unregistered material: $key"
+
+        @JvmField
+        val CODEC: Codec<Entry> = HTMaterialKey.CODEC.comapFlatMap(
+            { key: HTMaterialKey ->
+                getInstance()
+                    .entries
+                    .firstOrNull { it.asMaterialKey() == key }
+                    .wrapResult { errorMessage(key) }
+            },
+            Entry::asMaterialKey,
+        )
+
+        @JvmField
+        val STREAM_CODEC: StreamCodec<ByteBuf, Entry> = HTMaterialKey.STREAM_CODEC.map(
+            { key: HTMaterialKey ->
+                getInstance().entries.firstOrNull { it.asMaterialKey() == key } ?: errorMessage(key).let(::error)
+            },
+            Entry::asMaterialKey,
+        )
     }
 
     /**

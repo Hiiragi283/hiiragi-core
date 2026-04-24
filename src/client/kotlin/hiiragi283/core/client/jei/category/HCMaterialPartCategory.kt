@@ -1,10 +1,8 @@
 package hiiragi283.core.client.jei.category
 
 import com.mojang.serialization.Codec
-import com.mojang.serialization.DataResult
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.integration.jei.category.HTBasicRecipeCategory
-import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.tagPrefix
@@ -77,21 +75,6 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) :
 
     override fun getRegistryName(recipe: HTMaterialManager.Entry): ResourceLocation = recipe.getId()
 
-    override fun getCodec(codecHelper: ICodecHelper, recipeManager: IRecipeManager): Codec<HTMaterialManager.Entry> = CODEC
-
-    companion object {
-        @JvmStatic
-        private val CODEC: Codec<HTMaterialManager.Entry> = HTMaterialKey.CODEC
-            .comapFlatMap(
-                { key: HTMaterialKey ->
-                    HTMaterialManager
-                        .getInstance()
-                        .entries
-                        .firstOrNull { it.asMaterialKey() == key }
-                        .let { DataResult.success(it) }
-                        ?: DataResult.error { "Unknown material; ${key.getId()}" }
-                },
-                HTMaterialManager.Entry::asMaterialKey,
-            )
-    }
+    override fun getCodec(codecHelper: ICodecHelper, recipeManager: IRecipeManager): Codec<HTMaterialManager.Entry> =
+        HTMaterialManager.CODEC
 }
