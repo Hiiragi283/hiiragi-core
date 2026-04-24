@@ -8,9 +8,9 @@ import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.util.Either
+import hiiragi283.core.impl.registry.HTIntrusiveHolderLike
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentPatch
-import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
@@ -28,8 +28,6 @@ typealias HTSimpleFluidHolderLike = HTFluidHolderLike<Fluid>
  * @since 0.13.0
  */
 interface HTFluidHolderLike<FLUID : Fluid> : HTHolderLike<Fluid, FLUID> {
-    fun getHolder(): Holder<Fluid> = getHolder(BuiltInRegistries.FLUID::getHolderOrThrow)
-
     /**
      * 保持している液体に対応するバケツを取得します。
      */
@@ -88,11 +86,13 @@ interface HTFluidHolderLike<FLUID : Fluid> : HTHolderLike<Fluid, FLUID> {
 //    Extensions    //
 
 @Suppress("DEPRECATION")
-fun <FLUID : Fluid> FLUID.toLike(): HTFluidHolderLike<FLUID> = object : HTFluidHolderLike.Simple<FLUID> {
-    override fun unwrap(): Either<ResourceKey<Fluid>, Holder<Fluid>> = Either.Right(this@toLike.builtInRegistryHolder())
+fun <FLUID : Fluid> FLUID.toLike(): HTFluidHolderLike<FLUID> =
+    object : HTIntrusiveHolderLike<Fluid, FLUID>(), HTFluidHolderLike.Simple<FLUID> {
+        @Suppress("DEPRECATION")
+        override fun getHolder(value: Fluid): Holder<Fluid> = value.builtInRegistryHolder()
 
-    override fun get(): FLUID = this@toLike
-}
+        override fun get(): FLUID = this@toLike
+    }
 
 fun <FLUID : Fluid> HTHolderLike<Fluid, FLUID>.toFluidLike(): HTFluidHolderLike<FLUID> = object : HTFluidHolderLike.Simple<FLUID> {
     override fun unwrap(): Either<ResourceKey<Fluid>, Holder<Fluid>> = this@toFluidLike.unwrap()

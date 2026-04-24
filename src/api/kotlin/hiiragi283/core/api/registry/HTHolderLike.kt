@@ -1,10 +1,12 @@
 package hiiragi283.core.api.registry
 
-import hiiragi283.core.api.function.andThen
 import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.unwrap
+import hiiragi283.core.impl.registry.HTDeferredHolderLike
+import hiiragi283.core.impl.registry.HTIntrusiveHolderLike
+import hiiragi283.core.impl.registry.HTRegistryHolderLike
 import net.minecraft.core.Holder
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.entity.Entity
@@ -30,12 +32,7 @@ interface HTHolderLike<R : Any, T : R> :
      */
     fun unwrap(): Either<ResourceKey<R>, Holder<R>>
 
-    /**
-     * @since 0.13.0
-     */
-    fun getHolder(holderGetter: (ResourceKey<R>) -> Holder<R>): Holder<R> = unwrap().mapLeft(holderGetter).unwrap()
-
-    override fun getResourceKey(): ResourceKey<R> = unwrap().mapRight(Holder<R>::unwrapKey.andThen { it.orElseThrow() }).unwrap()
+    override fun getResourceKey(): ResourceKey<R> = unwrap().mapRight(Holder<R>::getKeyOrThrow).unwrap()
 }
 
 //    Extensions    //
@@ -47,25 +44,15 @@ interface HTHolderLike<R : Any, T : R> :
  * @since 0.1.0
  */
 @Suppress("UNCHECKED_CAST")
-fun <R : Any> Holder<R>.toLike(): HTSimpleHolderLike<R> = object : HTSimpleHolderLike<R> {
-    override fun unwrap(): Either<ResourceKey<R>, Holder<R>> = Either.Right(this@toLike.delegate)
+fun <R : Any> Holder<R>.toLike(): HTSimpleHolderLike<R> = HTRegistryHolderLike(this)
 
-    override fun get(): R = this@toLike.value()
-
-    override fun toString(): String = this@toLike.toString()
-}
+fun <R : Any> Holder<R>.getKeyOrThrow(): ResourceKey<R> = this.unwrapKey().orElseThrow { error("Unregistered holder: $this") }
 
 /**
  * @author Hiiragi Tsubasa
  * @since 0.13.0
  */
-fun <R : Any, T : R> DeferredHolder<R, T>.toLike(): HTHolderLike<R, T> = object : HTHolderLike<R, T> {
-    override fun unwrap(): Either<ResourceKey<R>, Holder<R>> = Either.Right(this@toLike.delegate)
-
-    override fun get(): T = this@toLike.get()
-
-    override fun toString(): String = this@toLike.toString()
-}
+fun <R : Any, T : R> DeferredHolder<R, T>.toLike(): HTHolderLike<R, T> = HTDeferredHolderLike(this)
 
 fun <T : Any> TypedInstance<T>.getHolderLike(): HTSimpleHolderLike<T> = this.typeHolder().toLike()
 
@@ -87,9 +74,9 @@ typealias HTSimpleBlockHolderLike = HTBlockHolderLike<Block>
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-fun <BLOCK : Block> BLOCK.toLike(): HTBlockHolderLike<BLOCK> = object : HTBlockHolderLike<BLOCK> {
+fun <BLOCK : Block> BLOCK.toLike(): HTBlockHolderLike<BLOCK> = object : HTIntrusiveHolderLike<Block, BLOCK>() {
     @Suppress("DEPRECATION")
-    override fun unwrap(): Either<ResourceKey<Block>, Holder<Block>> = Either.Right(get().builtInRegistryHolder())
+    override fun getHolder(value: Block): Holder<Block> = value.builtInRegistryHolder()
 
     override fun get(): BLOCK = this@toLike
 
@@ -114,9 +101,10 @@ typealias HTEntityHolderLike<ENTITY> = HTHolderLike<EntityType<*>, EntityType<EN
  * @author Hiiragi Tsubasa
  * @since 0.15.2
  */
-@Suppress("DEPRECATION")
-fun <ENTITY : Entity> EntityType<ENTITY>.toLike(): HTEntityHolderLike<ENTITY> = object : HTEntityHolderLike<ENTITY> {
-    override fun unwrap(): Either<ResourceKey<EntityType<*>>, Holder<EntityType<*>>> = Either.Right(this@toLike.builtInRegistryHolder())
+fun <ENTITY : Entity> EntityType<ENTITY>.toLike(): HTEntityHolderLike<ENTITY> =
+    object : HTIntrusiveHolderLike<EntityType<*>, EntityType<ENTITY>>() {
+        @Suppress("DEPRECATION")
+        override fun getHolder(value: EntityType<*>): Holder<EntityType<*>> = value.builtInRegistryHolder()
 
-    override fun get(): EntityType<ENTITY> = this@toLike
-}
+        override fun get(): EntityType<ENTITY> = this@toLike
+    }

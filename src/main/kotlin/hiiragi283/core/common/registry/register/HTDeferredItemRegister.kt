@@ -4,10 +4,8 @@ import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.HTSimpleItemHolderLike
-import hiiragi283.core.api.util.Either
-import net.minecraft.core.Holder
+import hiiragi283.core.impl.registry.HTDeferredHolderLike
 import net.minecraft.core.registries.Registries
-import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.neoforged.neoforge.registries.DeferredHolder
@@ -19,18 +17,9 @@ typealias ItemWithContextFactory<C, ITEM> = (C, Item.Properties) -> ITEM
 class HTDeferredItemRegister(namespace: String) : HTDeferredRegister<Item>(Registries.ITEM, namespace) {
     private val itemEntries: MutableCollection<HTItemHolderLike<*>> = mutableSetOf()
 
-    private fun <ITEM : Item> wrapHolder(holder: DeferredHolder<Item, ITEM>): HTItemHolderLike<ITEM> =
-        object : HTItemHolderLike.Simple<ITEM> {
-            override fun unwrap(): Either<ResourceKey<Item>, Holder<Item>> = Either.Right(holder.delegate)
-
-            override fun get(): ITEM = holder.get()
-
-            override fun getId(): ResourceLocation = holder.id
-        }
-
     fun <ITEM : Item> registerItem(name: String, factory: Supplier<ITEM>): HTItemHolderLike<ITEM> = delegate
         .register(name, factory)
-        .let(::wrapHolder)
+        .let(::DeferredItemLike)
         .also(itemEntries::add)
 
     fun <ITEM : Item> registerItem(
@@ -39,7 +28,7 @@ class HTDeferredItemRegister(namespace: String) : HTDeferredRegister<Item>(Regis
         operator: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
     ): HTItemHolderLike<ITEM> = delegate
         .register(name) { _: ResourceLocation -> factory(operator.apply(Item.Properties())) }
-        .let(::wrapHolder)
+        .let(::DeferredItemLike)
         .also(itemEntries::add)
 
     fun registerSimpleItem(name: String, operator: UnaryOperator<Item.Properties> = UnaryOperator.identity()): HTSimpleItemHolderLike =
@@ -53,4 +42,8 @@ class HTDeferredItemRegister(namespace: String) : HTDeferredRegister<Item>(Regis
     ): HTItemHolderLike<ITEM> = registerItem(name, factory.partially1(context), operator)
 
     fun asItemSequence(): Sequence<HTItemHolderLike<*>> = itemEntries.asSequence()
+
+    private class DeferredItemLike<ITEM : Item>(holder: DeferredHolder<Item, ITEM>) :
+        HTDeferredHolderLike<Item, ITEM>(holder),
+        HTItemHolderLike.Simple<ITEM>
 }

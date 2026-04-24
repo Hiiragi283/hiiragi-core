@@ -41,7 +41,7 @@ class HTItemIngredient(val unsized: Ingredient, val count: Int) : HTIngredient.S
     }
 
     init {
-        require(unsized.isEmpty) { "Ingredient must not be empty" }
+        require(!unsized.isEmpty) { "Ingredient must not be empty" }
         require(count > 0) { "Ingredient count must be positive" }
     }
 

@@ -49,9 +49,10 @@ object HTTextureUtil {
             .mapCatching(BufferedReader::lines)
             .map(Stream<String>::toList)
             .mapCatching { lines: List<String> ->
-                check(lines.firstOrNull() == "GIMP Palette")
+                val paletteId = "GIMP Palette"
+                check(lines.firstOrNull() == paletteId) { "First line must be \"$paletteId\"" }
                 lines
-                    .filterNot { it == "GIMP Palette" || it.startsWith("Name") || it.startsWith("Columns") }
+                    .filterNot { it == paletteId || it.startsWith("Name") || it.startsWith("Columns") }
                     .map { it.split(PALETTE_REGEX, limit = 4).take(3).map(String::toInt) }
                     .map { (red: Int, green: Int, blue: Int) -> RGBColor.combine(255, blue, green, red) }
             }.onSuccess { colorCache[id] = it }

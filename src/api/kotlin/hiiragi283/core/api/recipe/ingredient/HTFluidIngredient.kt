@@ -41,7 +41,7 @@ class HTFluidIngredient(val unsized: FluidIngredient, val amount: Int) : HTIngre
     }
 
     init {
-        require(unsized.isEmpty) { "Fluid ingredient must not be empty" }
+        require(!unsized.isEmpty) { "Fluid ingredient must not be empty" }
         require(amount > 0) { "Fluid ingredient amount must be positive" }
     }
 

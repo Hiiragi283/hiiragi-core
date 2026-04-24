@@ -103,7 +103,12 @@ data class HTItemResult(private val content: Ior<HTItemResourceType, HolderSet<I
 
     override fun getId(): ResourceLocation = content.map(
         HTItemResourceType::getId,
-        { holderSet: HolderSet<Item> -> holderSet.unwrapKey().map(TagKey<Item>::location).orElseThrow() },
+        { holderSet: HolderSet<Item> ->
+            holderSet
+                .unwrapKey()
+                .map(TagKey<Item>::location)
+                .orElseThrow { error("Cannot get result id from non-tag holder set") }
+        },
         identityRight(),
     )
 }
