@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:charging",
+  "ingredient": "#c:dusts/redstone",
+  "result": {
+    "type": "hiiragi_core:material_part",
+    "chance": "3/4",
+    "count": 1,
+    "material": "hiiragi_core:glowstone",
+    "part": "dust"
+  }
+}

@@ -1,9 +1,0 @@
-{
-  "type": "hiiragi_core:exploding",
-  "ingredient": "#minecraft:warped_stems",
-  "result": {
-    "chance": "1/8",
-    "id": "hiiragi_core:warped_crystal_gem",
-    "tag": "#c:gems/warped_crystal"
-  }
-}

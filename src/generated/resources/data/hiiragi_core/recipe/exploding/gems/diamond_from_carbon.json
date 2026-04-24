@@ -1,9 +1,0 @@
-{
-  "type": "hiiragi_core:exploding",
-  "ingredient": "#c:dusts/carbon",
-  "result": {
-    "chance": "1/16",
-    "id": "minecraft:diamond",
-    "tag": "#c:gems/diamond"
-  }
-}

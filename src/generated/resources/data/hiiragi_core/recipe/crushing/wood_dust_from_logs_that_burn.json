@@ -5,9 +5,10 @@
     "items": "#minecraft:logs_that_burn"
   },
   "results": {
+    "type": "hiiragi_core:material_part",
     "count": 6,
-    "id": "hiiragi_core:wood_dust",
-    "tag": "#c:dusts/wood"
+    "material": "hiiragi_core:wood",
+    "part": "dust"
   },
   "time": 100
 }

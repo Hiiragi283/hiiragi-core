@@ -1,9 +1,0 @@
-{
-  "type": "hiiragi_core:exploding",
-  "ingredient": "#minecraft:crimson_stems",
-  "result": {
-    "chance": "1/8",
-    "id": "hiiragi_core:crimson_crystal_gem",
-    "tag": "#c:gems/crimson_crystal"
-  }
-}

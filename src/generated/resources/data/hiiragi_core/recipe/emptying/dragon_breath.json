@@ -6,6 +6,7 @@
   },
   "ingredient": "minecraft:dragon_breath",
   "item_result": {
+    "count": 1,
     "id": "minecraft:glass_bottle"
   }
 }

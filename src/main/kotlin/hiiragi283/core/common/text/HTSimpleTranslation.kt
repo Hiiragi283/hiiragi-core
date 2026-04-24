@@ -12,7 +12,8 @@ import net.minecraft.network.codec.StreamCodec
 value class HTSimpleTranslation(override val translationKey: String) : HTTranslation {
     companion object {
         @JvmField
-        val CODEC: Codec<HTTranslation> = Codec.stringResolver(HTTranslation::translationKey, ::HTSimpleTranslation)
+        val CODEC: Codec<HTTranslation> =
+            Codec.stringResolver(HTTranslation::translationKey, ::HTSimpleTranslation)
 
         @JvmField
         val STREAM_CODEC: StreamCodec<ByteBuf, HTTranslation> =

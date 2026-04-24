@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:charging",
+  "ingredient": "minecraft:end_crystal",
+  "result": {
+    "type": "hiiragi_core:material_part",
+    "chance": "1/4",
+    "count": 1,
+    "material": "hiiragi_core:eldritch",
+    "part": "pearl"
+  }
+}

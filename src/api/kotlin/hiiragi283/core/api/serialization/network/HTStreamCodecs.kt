@@ -12,7 +12,6 @@ import io.netty.buffer.ByteBuf
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.core.UUIDUtil
-import net.minecraft.network.FriendlyByteBuf
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.chat.ComponentSerialization
 import net.minecraft.network.codec.ByteBufCodecs
@@ -20,7 +19,7 @@ import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
-import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs
+import net.minecraft.util.ByIdMap
 import org.apache.commons.lang3.math.Fraction
 import java.util.UUID
 
@@ -41,7 +40,12 @@ data object HTStreamCodecs {
     val UUID: StreamCodec<ByteBuf, UUID> = UUIDUtil.STREAM_CODEC
 
     @JvmStatic
-    inline fun <B : FriendlyByteBuf, reified V : Enum<V>> enum(): StreamCodec<B, V> = NeoForgeStreamCodecs.enumCodec(V::class.java)
+    inline fun <reified V : Enum<V>> enum(
+        strategy: ByIdMap.OutOfBoundsStrategy = ByIdMap.OutOfBoundsStrategy.WRAP,
+    ): StreamCodec<ByteBuf, V> = ByteBufCodecs.idMapper(
+        ByIdMap.continuous<V>(Enum<V>::ordinal, V::class.java.enumConstants, strategy),
+        Enum<V>::ordinal,
+    )
 
     /**
      * 指定した[left], [right]から，[Ior]の[StreamCodec]を返します。

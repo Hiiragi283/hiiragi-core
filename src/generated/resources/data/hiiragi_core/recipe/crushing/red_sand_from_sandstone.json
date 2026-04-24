@@ -10,9 +10,11 @@
       "id": "minecraft:red_sand"
     },
     {
+      "type": "hiiragi_core:material_part",
       "chance": "1/4",
-      "id": "hiiragi_core:saltpeter_dust",
-      "tag": "#c:dusts/saltpeter"
+      "count": 1,
+      "material": "hiiragi_core:saltpeter",
+      "part": "dust"
     }
   ],
   "time": 100

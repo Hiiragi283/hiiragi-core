@@ -5,8 +5,10 @@
     "#c:dusts/coal_coke"
   ],
   "result": {
+    "type": "hiiragi_core:material_part",
     "chance": "1/32",
-    "id": "minecraft:diamond",
-    "tag": "#c:gems/diamond"
+    "count": 1,
+    "material": "hiiragi_core:diamond",
+    "part": "gem"
   }
 }

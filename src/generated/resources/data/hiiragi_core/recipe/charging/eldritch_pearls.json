@@ -1,9 +1,0 @@
-{
-  "type": "hiiragi_core:charging",
-  "ingredient": "minecraft:end_crystal",
-  "result": {
-    "chance": "1/4",
-    "id": "hiiragi_core:eldritch_pearl",
-    "tag": "#c:eldritch_pearls"
-  }
-}

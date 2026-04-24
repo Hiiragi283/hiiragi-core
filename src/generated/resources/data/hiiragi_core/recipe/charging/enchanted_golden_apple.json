@@ -3,6 +3,7 @@
   "ingredient": "minecraft:golden_apple",
   "result": {
     "chance": "1/8",
+    "count": 1,
     "id": "minecraft:enchanted_golden_apple"
   }
 }

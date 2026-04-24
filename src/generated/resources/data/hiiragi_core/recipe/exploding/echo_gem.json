@@ -3,8 +3,10 @@
   "ingredient": "minecraft:sculk",
   "required_power": 6,
   "result": {
+    "type": "hiiragi_core:material_part",
     "chance": "1/8",
-    "id": "minecraft:echo_shard",
-    "tag": "#c:gems/echo"
+    "count": 1,
+    "material": "hiiragi_core:echo",
+    "part": "gem"
   }
 }

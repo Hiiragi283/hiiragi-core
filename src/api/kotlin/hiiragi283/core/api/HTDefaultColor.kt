@@ -6,7 +6,7 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
-import net.minecraft.network.FriendlyByteBuf
+import io.netty.buffer.ByteBuf
 import net.minecraft.network.chat.TextColor
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.tags.TagKey
@@ -68,7 +68,7 @@ enum class HTDefaultColor(
         val CODEC: Codec<HTDefaultColor> = HTCodecs.stringEnum(HTDefaultColor::getSerializedName)
 
         @JvmField
-        val STREAM_CODEC: StreamCodec<FriendlyByteBuf, HTDefaultColor> = HTStreamCodecs.enum()
+        val STREAM_CODEC: StreamCodec<ByteBuf, HTDefaultColor> = HTStreamCodecs.enum()
 
         /**
          * @since 0.15.0

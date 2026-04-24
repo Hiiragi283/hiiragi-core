@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:exploding",
+  "ingredient": "#minecraft:crimson_stems",
+  "result": {
+    "type": "hiiragi_core:material_part",
+    "chance": "1/8",
+    "count": 1,
+    "material": "hiiragi_core:crimson_crystal",
+    "part": "gem"
+  }
+}

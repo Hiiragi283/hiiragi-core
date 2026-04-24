@@ -4,6 +4,7 @@
   "required_power": 3,
   "result": {
     "chance": "1/4",
+    "count": 1,
     "id": "minecraft:ghast_tear"
   }
 }

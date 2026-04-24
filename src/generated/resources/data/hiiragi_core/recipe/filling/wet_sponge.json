@@ -6,6 +6,7 @@
   },
   "item_ingredient": "minecraft:sponge",
   "result": {
+    "count": 1,
     "id": "minecraft:wet_sponge"
   }
 }

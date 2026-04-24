@@ -6,21 +6,16 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPartLike
-import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.material.property.getDefaultFluidAmount
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.HTFluidHolderLike
 import hiiragi283.core.api.registry.VanillaFluidContents
-import hiiragi283.core.api.storage.item.HTItemResourceType
-import hiiragi283.core.api.storage.item.toResource
-import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.util.toIorOrThrow
 import net.minecraft.core.HolderGetter
 import net.minecraft.core.HolderLookup
-import net.minecraft.core.HolderSet
 import net.minecraft.core.registries.Registries
+import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
@@ -39,20 +34,12 @@ class HTResultCreator(provider: HolderLookup.Provider) {
 
     //    Item    //
 
-    fun create(item: ItemLike, amount: Int = 1, chance: Fraction = Fraction.ONE): HTItemResult = HTItemResult.create(item, amount, chance)
+    fun create(item: ItemLike, amount: Int = 1, chance: Fraction = Fraction.ONE): HTItemResult = create(ItemStack(item, amount), chance)
 
-    fun create(stack: ItemStack, chance: Fraction = Fraction.ONE): HTItemResult = HTItemResult.create(stack, chance)
+    fun create(stack: ItemStack, chance: Fraction = Fraction.ONE): HTItemResult = HTItemResult(stack, chance)
 
-    /**
-     * 指定した[プレフィックス][prefix]と[素材][material]から[HTItemResult]の新しいインスタンスを作成します。
-     * @since 0.12.0
-     */
-    fun material(
-        prefix: HTTagPrefix,
-        material: HTMaterialLike,
-        amount: Int = 1,
-        chance: Fraction = Fraction.ONE,
-    ): HTItemResult = HTItemResult.create(itemGetter.getOrThrow(prefix.itemTagKey(material)), amount, chance)
+    fun create(tagKey: TagKey<Item>, count: Int = 1, chance: Fraction = Fraction.ONE): HTItemResult =
+        HTItemResult(HTItemResult.TagEntry(itemGetter.getOrThrow(tagKey), count), chance)
 
     /**
      * 指定した[部品][part]と[素材][material]から[HTItemResult]の新しいインスタンスを作成します。
@@ -63,11 +50,7 @@ class HTResultCreator(provider: HolderLookup.Provider) {
         material: HTMaterialLike,
         amount: Int = 1,
         chance: Fraction = Fraction.ONE,
-    ): HTItemResult {
-        val item: HTItemResourceType? = HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, material).toResource()
-        val holderSet: HolderSet<Item>? = part.tagPrefix?.itemTagKey(material)?.let(itemGetter::getOrThrow)
-        return HTItemResult((item to holderSet).toIorOrThrow(), amount, chance)
-    }
+    ): HTItemResult = HTItemResult(HTItemResult.MaterialPartEntry(part, material, amount), chance)
 
     //    Fluid    //
 

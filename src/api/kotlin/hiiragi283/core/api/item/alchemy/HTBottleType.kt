@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.storage.item.HTItemResourceType
-import net.minecraft.network.FriendlyByteBuf
+import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.util.StringRepresentable
 import net.minecraft.world.item.Item
@@ -30,7 +30,7 @@ enum class HTBottleType :
         val CODEC: Codec<HTBottleType> = HTCodecs.stringEnum(HTBottleType::getSerializedName)
 
         @JvmField
-        val STREAM_CODEC: StreamCodec<FriendlyByteBuf, HTBottleType> = HTStreamCodecs.enum()
+        val STREAM_CODEC: StreamCodec<ByteBuf, HTBottleType> = HTStreamCodecs.enum()
 
         /**
          * @since 0.14.0

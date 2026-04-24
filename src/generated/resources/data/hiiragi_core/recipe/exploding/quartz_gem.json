@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:exploding",
+  "ingredient": "#c:glass_blocks",
+  "result": {
+    "type": "hiiragi_core:material_part",
+    "chance": "1/4",
+    "count": 1,
+    "material": "hiiragi_core:quartz",
+    "part": "gem"
+  }
+}

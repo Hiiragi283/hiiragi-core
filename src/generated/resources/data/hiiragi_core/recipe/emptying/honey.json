@@ -6,6 +6,7 @@
   },
   "ingredient": "minecraft:honey_bottle",
   "item_result": {
+    "count": 1,
     "id": "minecraft:glass_bottle"
   }
 }

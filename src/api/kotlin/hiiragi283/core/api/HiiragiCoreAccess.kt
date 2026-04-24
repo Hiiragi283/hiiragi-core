@@ -1,5 +1,6 @@
 package hiiragi283.core.api
 
+import com.mojang.serialization.Codec
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.item.tool.HTToolType
@@ -88,6 +89,8 @@ abstract class HiiragiCoreAccess {
      * @since 0.12.0
      */
     abstract val partManager: Map<String, HTPart>
+
+    val partCodec: Codec<HTPart> = Codec.lazyInitialized { Codec.stringResolver(HTPart::name, partManager::get) }
 
     /**
      * 既存の素材コンテンツを取得します。

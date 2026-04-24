@@ -5,8 +5,10 @@
     "items": "#minecraft:wooden_buttons"
   },
   "results": {
-    "id": "hiiragi_core:wood_dust",
-    "tag": "#c:dusts/wood"
+    "type": "hiiragi_core:material_part",
+    "count": 1,
+    "material": "hiiragi_core:wood",
+    "part": "dust"
   },
   "time": 100
 }

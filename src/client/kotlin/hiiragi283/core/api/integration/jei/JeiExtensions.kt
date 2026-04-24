@@ -2,7 +2,6 @@ package hiiragi283.core.api.integration.jei
 
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.compareTo
-import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
@@ -61,7 +60,7 @@ fun <T : IIngredientConsumer> T.addItemIngredient(ingredient: Ingredient, count:
 }
 
 fun <T : IIngredientConsumer> T.addItemResult(result: HTItemResult?): T {
-    this.addItemStacks(listOfNotNull(result?.get(true)?.mapOrElse(identity(), ::createError)))
+    this.addItemStacks(listOfNotNull(result?.get(true)?.valueOrElse(::createError)))
     if (result != null && this is IRecipeSlotBuilder) {
         val chance: Fraction = result.chance
         if (result.chance < 1f) {
