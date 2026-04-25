@@ -1,7 +1,6 @@
 package hiiragi283.core.api.recipe
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.property.buildPropertyMap
@@ -11,7 +10,6 @@ import hiiragi283.core.api.resource.toId
 import net.minecraft.client.Minecraft
 import net.minecraft.core.Registry
 import net.minecraft.core.RegistryAccess
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.MinecraftServer
 import net.minecraft.world.item.alchemy.PotionBrewing
 import net.minecraft.world.item.crafting.Recipe
@@ -19,8 +17,8 @@ import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeManager
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.level.Level
-import net.neoforged.api.distmarker.Dist
-import thedarkcolour.kotlinforforge.neoforge.forge.callWhenOn
+import net.neoforged.neoforge.server.ServerLifecycleHooks
+import thedarkcolour.kotlinforforge.neoforge.forge.runForDist
 import kotlin.jvm.optionals.getOrNull
 
 /**
@@ -36,18 +34,16 @@ fun interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any> {
      * 現在のサーバーまたはクライアントからレシピの一覧を取得します。
      * @return [HTRecipeHolder]の[Sequence]
      */
-    fun getAllRecipes(): Sequence<HTRecipeHolder<RECIPE>> = getAllRecipes(null)
+    fun getAllRecipes(): Sequence<HTRecipeHolder<RECIPE>> = runForDist(
+        { Minecraft.getInstance().level?.let(::getAllRecipes) },
+        { ServerLifecycleHooks.getCurrentServer()?.let(::getAllRecipes) },
+    ) ?: emptySequence()
 
     /**
      * 指定した[level]からレシピの一覧を取得します。
      * @return [HTRecipeHolder]の[Sequence]
      */
-    fun getAllRecipes(level: Level?): Sequence<HTRecipeHolder<RECIPE>> {
-        val level1: Level = level
-            ?: callWhenOn(Dist.CLIENT) { Minecraft.getInstance().level }
-            ?: return HiiragiCoreAPI.getActiveServer()?.let(::getAllRecipes) ?: emptySequence()
-        return Context.create(level1).let(::getAllRecipes)
-    }
+    fun getAllRecipes(level: Level): Sequence<HTRecipeHolder<RECIPE>> = Context.create(level).let(::getAllRecipes)
 
     /**
      * 指定した[server]からレシピの一覧を取得します。
@@ -65,14 +61,8 @@ fun interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any> {
      * 指定した[level]から，[predicate]に一致するレシピを取得します。
      * @return [predicate]に一致するレシピがない場合は`null`
      */
-    fun findFirst(level: Level?, predicate: (RECIPE) -> Boolean): HTRecipeHolder<RECIPE>? =
-        this.getAllRecipes(level).firstOrNull { it.recipe.let(predicate) }
-
-    /**
-     * @since 0.14.0
-     */
-    fun getHolder(id: ResourceLocation): HTRecipeHolder<RECIPE>? =
-        getAllRecipes().firstOrNull { holder: HTRecipeHolder<RECIPE> -> holder.id == id }
+    fun findFirst(level: Level, predicate: (RECIPE) -> Boolean): HTRecipeHolder<RECIPE>? =
+        getAllRecipes(level).firstOrNull { it.recipe.let(predicate) }
 
     class Context(getter: HTPropertyGetter) : HTPropertyGetter by getter {
         companion object {

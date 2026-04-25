@@ -3,7 +3,7 @@ package hiiragi283.core.api.item.component
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTDefaultColor
-import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HTPhysicalSideHelper
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.text.HTCommonTranslation
@@ -52,7 +52,7 @@ data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: 
 
     fun <T : Any> useInstance(provider: HolderLookup.Provider?, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> {
         val provider1: HolderLookup.Provider =
-            (provider ?: HiiragiCoreAPI.getActiveAccess()) ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()
+            (provider ?: HTPhysicalSideHelper.getRegistryAccess()) ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()
         return provider1
             .holder(key)
             .map { holder: Holder<Enchantment> -> action(holder, level) }

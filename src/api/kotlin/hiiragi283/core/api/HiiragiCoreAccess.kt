@@ -179,7 +179,7 @@ abstract class HiiragiCoreAccess {
      */
     fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLike<T>> {
         val provider1: HolderLookup.Provider =
-            (provider ?: HiiragiCoreAPI.getActiveAccess()) ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()
+            (provider ?: HTPhysicalSideHelper.getRegistryAccess()) ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()
         val holderSet: HolderSet<T> =
             provider1.holderSetOrNull(tagKey) ?: return HTCommonTranslation.EMPTY_TAG_KEY.toTextResult(tagKey)
         return getFirstHolder(holderSet)

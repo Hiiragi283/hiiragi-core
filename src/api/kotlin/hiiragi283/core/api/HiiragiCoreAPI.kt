@@ -2,16 +2,10 @@ package hiiragi283.core.api
 
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.resource.toId
-import net.minecraft.client.Minecraft
-import net.minecraft.core.RegistryAccess
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.server.MinecraftServer
 import net.minecraft.world.entity.player.Player
-import net.neoforged.api.distmarker.Dist
 import net.neoforged.neoforge.common.CommonHooks
-import net.neoforged.neoforge.server.ServerLifecycleHooks
 import org.slf4j.Logger
-import thedarkcolour.kotlinforforge.neoforge.forge.callWhenOn
 import java.util.ServiceLoader
 import kotlin.random.Random
 
@@ -56,25 +50,6 @@ data object HiiragiCoreAPI {
     fun id(vararg path: String): ResourceLocation = MOD_ID.toId(*path)
 
     //    Server    //
-
-    /**
-     * 現在の[サーバー][MinecraftServer]を取得します。
-     * @return サーバーがない場合は`null`
-     * @author Hiiragi Tsubasa
-     * @since 0.1.0
-     */
-    @JvmStatic
-    fun getActiveServer(): MinecraftServer? = ServerLifecycleHooks.getCurrentServer()
-
-    /**
-     * 現在の[レジストリへのアクセス][RegistryAccess]を取得します。
-     * @return レジストリへのアクセスがない場合は`null`
-     * @author Hiiragi Tsubasa
-     * @since 0.1.0
-     */
-    @JvmStatic
-    fun getActiveAccess(): RegistryAccess? =
-        callWhenOn(Dist.CLIENT) { Minecraft.getInstance().level?.registryAccess() } ?: getActiveServer()?.registryAccess()
 
     /**
      * クラフトを実行している[プレイヤー][Player]のインスタンスを取得します。
