@@ -20,15 +20,4 @@ interface HTTankFillingRecipe : HTRecipe<HTItemAndFluidRecipeInput> {
     //    HTRecipe    //
 
     override fun test(input: HTItemAndFluidRecipeInput): Boolean = testContainer(input.item) && testFluid(input.fluid)
-
-    //    Serializable    //
-
-    /**
-     * シリアライズ可能な[HTTankFillingRecipe]の拡張インターフェースです。
-     * @author Hiiragi Tsubasa
-     * @since 0.15.1
-     */
-    interface Serializable :
-        HTTankFillingRecipe,
-        HTSerializableRecipe<HTItemAndFluidRecipeInput>
 }

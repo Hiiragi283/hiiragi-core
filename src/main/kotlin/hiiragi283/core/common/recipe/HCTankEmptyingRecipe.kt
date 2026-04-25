@@ -3,6 +3,7 @@ package hiiragi283.core.common.recipe
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.recipe.base.HTSerializableRecipe
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
@@ -19,7 +20,8 @@ import net.neoforged.neoforge.fluids.FluidStack
 import java.util.Optional
 
 class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidResult, val itemResult: Optional<HTItemResult>) :
-    HTTankEmptyingRecipe.Serializable {
+    HTTankEmptyingRecipe,
+    HTSerializableRecipe<SingleRecipeInput> {
     companion object {
         @JvmField
         val CODEC: MapCodec<HCTankEmptyingRecipe> = RecordCodecBuilder.mapCodec { instance ->

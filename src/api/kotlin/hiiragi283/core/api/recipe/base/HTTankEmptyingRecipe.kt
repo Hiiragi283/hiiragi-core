@@ -17,15 +17,4 @@ interface HTTankEmptyingRecipe :
     //    HTRecipe    //
 
     override fun test(input: SingleRecipeInput): Boolean = testContainer(input.item())
-
-    //    Serializable    //
-
-    /**
-     * シリアライズ可能な[HTTankEmptyingRecipe]の拡張インターフェースです。
-     * @author Hiiragi Tsubasa
-     * @since 0.15.1
-     */
-    interface Serializable :
-        HTTankEmptyingRecipe,
-        HTSerializableRecipe<SingleRecipeInput>
 }

@@ -3,6 +3,7 @@ package hiiragi283.core.common.recipe
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.recipe.base.HTSerializableRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
@@ -17,7 +18,8 @@ import net.minecraft.world.item.crafting.RecipeType
 import net.neoforged.neoforge.fluids.FluidStack
 
 class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: HTFluidIngredient, val result: HTItemResult) :
-    HTTankFillingRecipe.Serializable {
+    HTTankFillingRecipe,
+    HTSerializableRecipe<HTItemAndFluidRecipeInput> {
     companion object {
         @JvmField
         val CODEC: MapCodec<HCTankFillingRecipe> = RecordCodecBuilder.mapCodec { instance ->
