@@ -16,8 +16,8 @@ import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.recipe.custom.HTPotionArrowFillingRecipe
 import hiiragi283.core.common.recipe.custom.HTPotionTankInteraction
-import hiiragi283.core.impl.recipe.HTRecipeTypeImpl
-import hiiragi283.core.impl.recipe.HTRecipeTypeManager
+import hiiragi283.core.impl.recipe.HTRecipeLookupImpl
+import hiiragi283.core.impl.recipe.HTRecipeLookupManager
 import hiiragi283.core.impl.recipe.addProvider
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.tags.ItemTags
@@ -30,33 +30,33 @@ import net.neoforged.neoforge.common.Tags
 
 data object HCRecipeLookups {
     @JvmStatic
-    private fun <INPUT : RecipeInput, RECIPE : Any> create(path: String): HTRecipeTypeImpl<INPUT, RECIPE> =
-        HTRecipeTypeManager.create(HiiragiCoreAPI.id(path))
+    private fun <INPUT : RecipeInput, RECIPE : Any> create(path: String): HTRecipeLookupImpl<INPUT, RECIPE> =
+        HTRecipeLookupManager.create(HiiragiCoreAPI.id(path))
 
     //    Basic    //
 
     @JvmField
-    val CHARGING: HTRecipeTypeImpl<HCChargingRecipe.Input, HCChargingRecipe> = create(HTConst.CHARGING)
+    val CHARGING: HTRecipeLookupImpl<HCChargingRecipe.Input, HCChargingRecipe> = create(HTConst.CHARGING)
 
     @JvmField
-    val CRUSHING: HTRecipeTypeImpl<SingleRecipeInput, HTSingleMultiOutputRecipe> = create(HTConst.CRUSHING)
+    val CRUSHING: HTRecipeLookupImpl<SingleRecipeInput, HTSingleMultiOutputRecipe> = create(HTConst.CRUSHING)
 
     @JvmField
-    val EXPLODING: HTRecipeTypeImpl<HCExplodingRecipe.Input, HCExplodingRecipe> = create(HTConst.EXPLODING)
+    val EXPLODING: HTRecipeLookupImpl<HCExplodingRecipe.Input, HCExplodingRecipe> = create(HTConst.EXPLODING)
 
     @JvmField
-    val FORGING: HTRecipeTypeImpl<HTDoubleRecipeInput, HTDoubleMultiOutputRecipe> = create(HTConst.FORGING)
+    val FORGING: HTRecipeLookupImpl<HTDoubleRecipeInput, HTDoubleMultiOutputRecipe> = create(HTConst.FORGING)
 
     @JvmField
-    val COLORING: HTRecipeTypeImpl<HTItemAndFluidRecipeInput, HCColoringRecipe> = create(HTConst.COLORING)
+    val COLORING: HTRecipeLookupImpl<HTItemAndFluidRecipeInput, HCColoringRecipe> = create(HTConst.COLORING)
 
     //    Tank Interaction    //
 
     @JvmField
-    val EMPTYING: HTRecipeTypeImpl<SingleRecipeInput, HTTankEmptyingRecipe> = create(HTConst.EMPTYING)
+    val EMPTYING: HTRecipeLookupImpl<SingleRecipeInput, HTTankEmptyingRecipe> = create(HTConst.EMPTYING)
 
     @JvmField
-    val FILLING: HTRecipeTypeImpl<HTItemAndFluidRecipeInput, HTTankFillingRecipe> = create(HTConst.FILLING)
+    val FILLING: HTRecipeLookupImpl<HTItemAndFluidRecipeInput, HTTankFillingRecipe> = create(HTConst.FILLING)
 
     //    Registration    //
 
