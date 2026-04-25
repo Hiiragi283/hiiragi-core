@@ -38,5 +38,7 @@ interface HTIngredient<RESOURCE : HTResourceType> {
         fun testOnlyType(stack: STACK): Boolean
 
         fun getRequiredAmount(stack: STACK): Int
+
+        fun getPreviewStacks(): List<STACK>
     }
 }

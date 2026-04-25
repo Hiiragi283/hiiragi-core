@@ -1,27 +1,14 @@
 package hiiragi283.core.api.integration.jei
 
 import hiiragi283.core.api.HTDefaultColor
-import hiiragi283.core.api.compareTo
-import hiiragi283.core.api.item.createItemStack
-import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
-import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
-import hiiragi283.core.api.recipe.result.HTFluidResult
-import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import hiiragi283.core.api.text.HTCommonTranslation
-import hiiragi283.core.api.text.Text
-import hiiragi283.core.api.times
 import mezz.jei.api.gui.builder.IIngredientConsumer
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder
 import mezz.jei.api.gui.builder.ITooltipBuilder
 import mezz.jei.api.neoforge.NeoForgeTypes
 import mezz.jei.api.recipe.RecipeType
-import net.minecraft.core.component.DataComponents
-import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.Items
-import net.minecraft.world.item.crafting.Ingredient
 import net.neoforged.neoforge.fluids.FluidStack
-import net.neoforged.neoforge.fluids.crafting.FluidIngredient
-import org.apache.commons.lang3.math.Fraction
 import java.util.function.IntSupplier
 
 typealias JeiRecipeType<T> = RecipeType<T>
@@ -44,45 +31,15 @@ fun <T : IIngredientConsumer> T.addFluidStacks(stacks: Iterable<FluidStack>): T 
     this.addIngredients(NeoForgeTypes.FLUID_STACK, stacks.toList())
 }
 
-private fun createError(message: Text): ItemStack = createItemStack(Items.BARRIER, DataComponents.CUSTOM_NAME, message)
-
-// Item
-fun <T : IIngredientConsumer> T.addItemIngredient(ingredient: HTItemIngredient?): T {
-    if (ingredient != null) {
-        this.addItemIngredient(ingredient.unsized, ingredient.count)
-    }
-    return this
-}
-
-fun <T : IIngredientConsumer> T.addItemIngredient(ingredient: Ingredient, count: Int): T {
-    this.addItemStacks(ingredient.items.map { it.copyWithCount(count) })
-    return this
-}
-
-fun <T : IIngredientConsumer> T.addItemResult(result: HTItemResult?): T {
-    this.addItemStacks(listOfNotNull(result?.get(true)?.valueOrElse(::createError)))
-    if (result != null && this is IRecipeSlotBuilder) {
-        val chance: Fraction = result.chance
-        if (result.chance < 1f) {
+fun <T : IIngredientConsumer> T.addChancedItem(stack: HTRecipeContents.ChancedItemStack): T {
+    this.addItemStack(stack.stack)
+    if (this is IRecipeSlotBuilder) {
+        val chance: Float = stack.chance
+        if (chance < 100f) {
             this.addRichTooltipCallback { _, builder: ITooltipBuilder ->
-                builder.add(HTCommonTranslation.CHANCE_PRODUCE.translateColored(HTDefaultColor.YELLOW, chance * 100))
+                builder.add(HTCommonTranslation.CHANCE_PRODUCE.translateColored(HTDefaultColor.YELLOW, chance))
             }
         }
     }
     return this
 }
-
-// Fluid
-fun <T : IIngredientConsumer> T.addFluidIngredient(ingredient: HTFluidIngredient?): T {
-    if (ingredient != null) {
-        this.addFluidIngredient(ingredient.unsized, ingredient.amount)
-    }
-    return this
-}
-
-fun <T : IIngredientConsumer> T.addFluidIngredient(ingredient: FluidIngredient, amount: Int): T {
-    this.addFluidStacks(ingredient.stacks.map { it.copyWithAmount(amount) })
-    return this
-}
-
-fun <T : IIngredientConsumer> T.addFluidResult(result: HTFluidResult?): T = this.addFluidStacks(listOfNotNull(result?.get()?.value()))

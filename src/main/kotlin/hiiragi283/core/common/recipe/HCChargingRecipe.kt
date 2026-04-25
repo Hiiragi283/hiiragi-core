@@ -25,7 +25,7 @@ class HCChargingRecipe(val ingredient: Ingredient, val result: HTItemResult, val
                 .group(
                     HTCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HCChargingRecipe::ingredient),
                     HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCChargingRecipe::result),
-                    HTCodecs.NON_NEGATIVE_INT.optionalFieldOf("energy", DEFAULT_ENERGY).forGetter(HCChargingRecipe::requiredEnergy),
+                    HTCodecs.NON_NEGATIVE_INT.optionalFieldOf(HTConst.ENERGY, DEFAULT_ENERGY).forGetter(HCChargingRecipe::requiredEnergy),
                 ).apply(instance, ::HCChargingRecipe)
         }
     }

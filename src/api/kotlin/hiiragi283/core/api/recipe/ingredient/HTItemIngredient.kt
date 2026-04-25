@@ -54,6 +54,8 @@ class HTItemIngredient(val unsized: Ingredient, val count: Int) : HTIngredient.S
         else -> 0
     }
 
+    override fun getPreviewStacks(): List<ItemStack> = unsized.items.map { it.copyWithCount(count) }
+
     override fun test(resource: HTItemResourceType, amount: Int): Boolean = resource.toStack(amount).let(::test)
 
     override fun getRequiredAmount(resource: HTItemResourceType, amount: Int): Int = resource.toStack(amount).let(::getRequiredAmount)

@@ -1,36 +1,31 @@
 package hiiragi283.core.client.jei.category.base
 
 import hiiragi283.core.api.gui.HTBackgroundType
-import hiiragi283.core.api.integration.jei.addItemIngredient
-import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
-import hiiragi283.core.impl.recipe.HTBasicDoubleMultiOutputRecipe
+import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
+import hiiragi283.core.api.recipe.viewer.display.HTProcessingRecipeDisplay
+import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder
 import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
-import net.minecraft.world.item.crafting.RecipeSerializer
-import kotlin.jvm.optionals.getOrNull
 
-abstract class HTDoubleMultiOutputRecipeCategory<RECIPE : HTBasicDoubleMultiOutputRecipe>(
-    guiHelper: IGuiHelper,
-    recipeType: HTHolderRecipeViewerType<RECIPE>,
-    serializer: RecipeSerializer<RECIPE>,
-) : HTMultiOutputRecipeCategory<RECIPE>(guiHelper, recipeType, serializer) {
-    override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: RECIPE, focuses: IFocusGroup) {
-        // input
+abstract class HTDoubleMultiOutputRecipeCategory(guiHelper: IGuiHelper, recipeType: HTRecipeViewerType<HTProcessingRecipeDisplay>) :
+    HTMultiOutputRecipeCategory(guiHelper, recipeType) {
+    override fun setRecipe(builder: IRecipeLayoutBuilder, contents: HTRecipeContents, focuses: IFocusGroup) {
+        // inputs
         builder
             .addInputSlot(getPosition(0), getPosition(0.5))
-            .addItemIngredient(recipe.base)
+            .addItemStacks(contents.inputItem(0))
             .setSlotBackground(HTBackgroundType.INPUT)
         builder
             .addInputSlot(getPosition(0), getPosition(2))
-            .addItemIngredient(recipe.addition.getOrNull())
+            .addItemStacks(contents.inputItem(1))
             .setSlotBackground(HTBackgroundType.EXTRA_INPUT)
         // outputs
-        setupOutputs(builder, recipe, focuses)
+        setupOutputs(builder, contents, focuses)
     }
 
-    override fun setupRecipeExtras(builder: IRecipeExtrasBuilder, recipe: RECIPE, focuses: IFocusGroup) {
+    override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HTProcessingRecipeDisplay, focuses: IFocusGroup) {
         builder.addAnimatedRecipeArrow(recipe.time).setPosition(getPosition(1.25), getPosition(1))
     }
 }

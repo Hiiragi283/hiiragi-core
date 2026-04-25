@@ -5,8 +5,8 @@ import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.HTRecipeLookup
 import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
-import hiiragi283.core.api.recipe.viewer.HTLookupRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
+import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
 import mezz.jei.api.registration.IRecipeRegistration
 
 /**
@@ -16,6 +16,9 @@ import mezz.jei.api.registration.IRecipeRegistration
  * @see mekanism.client.recipe_viewer.jei.RecipeRegistryHelper
  */
 data object HTJeiRecipeHelper {
+    @JvmField
+    val DISPLAY_SORTER: Comparator<in HTRecipeDisplay> = compareBy(HTComparators.ID, HTRecipeDisplay::getId)
+
     @JvmField
     val HOLDER_SORTER: Comparator<in HTRecipeHolder<*>> = compareBy(HTComparators.ID, HTRecipeHolder<*>::id)
 
@@ -109,49 +112,69 @@ data object HTJeiRecipeHelper {
         this.addHolderRecipes(registration, viewerType, lookup.getAllRecipes(), sorter)
     }
 
-    // HTLookupRecipeViewerType
+    // HTRecipeDisplay
 
     /**
-     * 指定した[viewerType]と[lookup]からレシピを登録します。
-     * @param BASE [lookup]で取得できるレシピのクラス
-     * @param RECIPE [BASE]を継承したクラス
-     * @since 0.15.1
+     * @since 0.15.3
      */
     @JvmStatic
-    inline fun <BASE : HTRecipe<*>, reified RECIPE : BASE> addLookupRecipes(
+    fun <DISPLAY : HTRecipeDisplay> addDisplayRecipes(
         registration: IRecipeRegistration,
-        viewerType: HTLookupRecipeViewerType<BASE, RECIPE>,
-        lookup: HTRecipeLookup<*, BASE>,
+        viewerType: HTRecipeViewerType<DISPLAY>,
+        recipes: Sequence<DISPLAY>,
     ) {
-        this.addHolderRecipes(
+        this.addRecipes(registration, viewerType, recipes, DISPLAY_SORTER)
+    }
+
+    /**
+     * @since 0.15.3
+     */
+    @JvmStatic
+    fun <DISPLAY : HTRecipeDisplay> addDisplayRecipes(
+        registration: IRecipeRegistration,
+        viewerType: HTRecipeViewerType<DISPLAY>,
+        recipes: Sequence<DISPLAY>,
+        sorter: Comparator<DISPLAY>,
+    ) {
+        this.addRecipes(registration, viewerType, recipes, sorter.thenComparing(DISPLAY_SORTER))
+    }
+
+    /**
+     * @since 0.15.3
+     */
+    @JvmStatic
+    fun <BASE : HTRecipe<*>, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
+        registration: IRecipeRegistration,
+        viewerType: HTRecipeViewerType<DISPLAY>,
+        lookup: HTRecipeLookup<*, BASE>,
+        transform: (HTRecipeHolder<BASE>) -> DISPLAY?,
+    ) {
+        this.addDisplayRecipes(
             registration,
             viewerType,
             lookup
                 .getAllRecipes()
-                .mapNotNull { holder: HTRecipeHolder<BASE> -> holder.mapRecipeOrNull { it as? RECIPE } },
+                .mapNotNull(transform),
         )
     }
 
     /**
-     * 指定した[viewerType]と[lookup]からレシピを登録します。
-     * @param BASE [lookup]で取得できるレシピのクラス
-     * @param RECIPE [BASE]を継承したクラス
-     * @param sorter レシピの順番の制御
-     * @since 0.11.0
+     * @since 0.15.3
      */
     @JvmStatic
-    inline fun <BASE : HTRecipe<*>, reified RECIPE : BASE> addLookupRecipes(
+    fun <BASE : HTRecipe<*>, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
         registration: IRecipeRegistration,
-        viewerType: HTLookupRecipeViewerType<BASE, RECIPE>,
+        viewerType: HTRecipeViewerType<DISPLAY>,
         lookup: HTRecipeLookup<*, BASE>,
-        sorter: Comparator<in RECIPE>,
+        sorter: Comparator<DISPLAY>,
+        transform: (HTRecipeHolder<BASE>) -> DISPLAY?,
     ) {
-        this.addHolderRecipes(
+        this.addDisplayRecipes(
             registration,
             viewerType,
             lookup
                 .getAllRecipes()
-                .mapNotNull { holder: HTRecipeHolder<BASE> -> holder.mapRecipeOrNull { it as? RECIPE } },
+                .mapNotNull(transform),
             sorter,
         )
     }

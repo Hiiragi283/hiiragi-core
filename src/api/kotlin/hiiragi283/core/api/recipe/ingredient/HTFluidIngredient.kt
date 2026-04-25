@@ -54,6 +54,8 @@ class HTFluidIngredient(val unsized: FluidIngredient, val amount: Int) : HTIngre
         else -> 0
     }
 
+    override fun getPreviewStacks(): List<FluidStack> = unsized.stacks.map { it.copyWithAmount(amount) }
+
     override fun test(resource: HTFluidResourceType, amount: Int): Boolean = resource.toStack(amount).let(::test)
 
     override fun getRequiredAmount(resource: HTFluidResourceType, amount: Int): Int = resource.toStack(amount).let(::getRequiredAmount)

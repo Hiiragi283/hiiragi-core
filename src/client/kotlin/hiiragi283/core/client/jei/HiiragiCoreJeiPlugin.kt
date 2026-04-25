@@ -2,23 +2,22 @@ package hiiragi283.core.client.jei
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.recipe.HTIngredientCreator
 import hiiragi283.core.api.function.negate
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
-import hiiragi283.core.api.integration.jei.HTJeiRecipeHelper
+import hiiragi283.core.api.integration.jei.HTJeiRecipeHelper.addDisplayRecipes
+import hiiragi283.core.api.integration.jei.HTJeiRecipeHelper.addLookupRecipes
+import hiiragi283.core.api.integration.jei.HTJeiRecipeHelper.addRecipes
+import hiiragi283.core.api.integration.jei.HTJeiWorkstationHelper
 import hiiragi283.core.api.integration.jei.HTSubtypeInterpreter
-import hiiragi283.core.api.integration.jei.JeiRecipeType
 import hiiragi283.core.api.item.HTPotionBasedItem
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.material.HTMaterialManager
-import hiiragi283.core.api.recipe.HTRecipeHolder
-import hiiragi283.core.api.recipe.result.HTFluidResult
-import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
+import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.api.util.wrapOptional
 import hiiragi283.core.client.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.jei.category.HCChargingRecipeCategory
 import hiiragi283.core.client.jei.category.HCCrushingRecipeCategory
@@ -34,14 +33,19 @@ import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
+import hiiragi283.core.common.recipe.viewer.display.HCChargingRecipeDisplay
+import hiiragi283.core.common.recipe.viewer.display.HCExplodingRecipeDisplay
+import hiiragi283.core.common.recipe.viewer.display.HCRecipeDisplayFactories
 import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
+import hiiragi283.core.impl.recipe.HTBasicDoubleMultiOutputRecipe
+import hiiragi283.core.impl.recipe.HTBasicSingleMultiOutputRecipe
+import hiiragi283.core.impl.recipe.viewer.display.HTRecipeDisplayFactories
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.util.HCPotionFluidHelper
 import mezz.jei.api.JeiPlugin
-import mezz.jei.api.constants.VanillaTypes
 import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.helpers.IPlatformFluidHelper
 import mezz.jei.api.neoforge.NeoForgeTypes
@@ -59,9 +63,7 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.alchemy.Potion
-import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.level.ItemLike
-import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.DataComponentFluidIngredient
 import kotlin.streams.asSequence
@@ -135,16 +137,20 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     override fun registerRecipes(registration: IRecipeRegistration) {
-        HTJeiRecipeHelper.addLookupRecipes(registration, HCRecipeViewerTypes.BREWING, HTVanillaRecipeTypes.BREWING)
-        HTJeiRecipeHelper.addLookupRecipes(registration, HCRecipeViewerTypes.CHARGING, HCRecipeLookups.CHARGING)
-        HTJeiRecipeHelper.addLookupRecipes(registration, HCRecipeViewerTypes.CRUSHING, HCRecipeLookups.CRUSHING)
-        HTJeiRecipeHelper.addLookupRecipes(registration, HCRecipeViewerTypes.EXPLODING, HCRecipeLookups.EXPLODING)
-        HTJeiRecipeHelper.addLookupRecipes(registration, HCRecipeViewerTypes.FORGING, HCRecipeLookups.FORGING)
+        addLookupRecipes(registration, HCRecipeViewerTypes.BREWING, HTVanillaRecipeTypes.BREWING)
+        addDisplayRecipes(registration, HCRecipeViewerTypes.CHARGING, HCRecipeLookups.CHARGING, HCChargingRecipeDisplay::frolHolder)
+        addDisplayRecipes(registration, HCRecipeViewerTypes.CRUSHING, HCRecipeLookups.CRUSHING) {
+            it.castRecipe<HTBasicSingleMultiOutputRecipe>()?.let(HTRecipeDisplayFactories::singleMultiItem)
+        }
+        addDisplayRecipes(registration, HCRecipeViewerTypes.EXPLODING, HCRecipeLookups.EXPLODING, HCExplodingRecipeDisplay::fromHolder)
+        addDisplayRecipes(registration, HCRecipeViewerTypes.FORGING, HCRecipeLookups.FORGING) {
+            it.castRecipe<HTBasicDoubleMultiOutputRecipe>()?.let(HTRecipeDisplayFactories::doubleMultiItem)
+        }
 
         registerTankEmptying(registration)
         registerTankFilling(registration)
 
-        HTJeiRecipeHelper.addRecipes(
+        addRecipes(
             registration,
             HCRecipeViewerTypes.MaterialType,
             HTMaterialManager.getInstance().entries.asSequence(),
@@ -152,9 +158,11 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     private fun registerTankEmptying(registration: IRecipeRegistration) {
-        HTJeiRecipeHelper.addLookupRecipes(registration, HCRecipeViewerTypes.EMPTYING, HCRecipeLookups.EMPTYING)
+        addDisplayRecipes(registration, HCRecipeViewerTypes.EMPTYING, HCRecipeLookups.EMPTYING) {
+            it.castRecipe<HCTankEmptyingRecipe>()?.let(HCRecipeDisplayFactories::emptyingTank)
+        }
         // Potion Bottle
-        HTJeiRecipeHelper.addRecipes(
+        addRecipes(
             registration,
             HCRecipeViewerTypes.EMPTYING,
             BuiltInRegistries.POTION
@@ -162,25 +170,22 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                 .asSequence()
                 .map { potion: Holder<Potion> ->
                     val contents = BottledPotionContents(potion)
-                    HTRecipeHolder(
+                    HTRecipeDisplay.Simple(
                         potion.toLike().getId().withPath { "/${HTConst.EMPTYING}/potion/$it" },
-                        HCTankEmptyingRecipe(
-                            DataComponentIngredient.of(
-                                false,
-                                DataComponents.POTION_CONTENTS,
-                                contents.contents,
-                                Items.POTION,
-                            ),
-                            HTFluidResult.create(HCPotionFluidHelper.createFluid(contents, 250)),
-                            HTItemResult(ItemStack(Items.GLASS_BOTTLE)).wrapOptional(),
-                        ),
+                        HTRecipeContents.create {
+                            addInput(HTPotionHelper.createPotion(contents))
+                            addOutput(HCPotionFluidHelper.createFluid(contents, 250))
+                            addInput(ItemStack(Items.GLASS_BOTTLE))
+                        },
                     )
                 },
         )
     }
 
     private fun registerTankFilling(registration: IRecipeRegistration) {
-        HTJeiRecipeHelper.addLookupRecipes(registration, HCRecipeViewerTypes.FILLING, HCRecipeLookups.FILLING)
+        addDisplayRecipes(registration, HCRecipeViewerTypes.FILLING, HCRecipeLookups.FILLING) {
+            it.castRecipe<HCTankFillingRecipe>()?.let(HCRecipeDisplayFactories::fillingTank)
+        }
         // Potion Bottle
         registerPotionFilling(registration, "potion", Items.GLASS_BOTTLE, Items.POTION)
         // Potion Arrow
@@ -195,33 +200,33 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         amount: Int = 250,
         bottleType: HTBottleType = HTBottleType.DEFAULT,
     ) {
-        HTJeiRecipeHelper.addRecipes(
+        addRecipes(
             registration,
             HCRecipeViewerTypes.FILLING,
             BuiltInRegistries.POTION
                 .holders()
                 .asSequence()
                 .map { potion: Holder<Potion> ->
-                    HTRecipeHolder(
+                    HTRecipeDisplay.Simple(
                         potion.toLike().getId().withPath { "/${HTConst.FILLING}/$prefix/$it" },
-                        HCTankFillingRecipe(
-                            Ingredient.of(input),
-                            HTIngredientCreator.create(
+                        HTRecipeContents.create {
+                            addInput(ItemStack(input))
+                            addInput(
                                 DataComponentFluidIngredient.of(
                                     false,
                                     HCPotionFluidHelper.createFluid(BottledPotionContents(potion, bottleType)),
                                 ),
-                                amount,
-                            ),
-                            HTItemResult(HTPotionHelper.createPotion(output, potion)),
-                        ),
+                            )
+                            addOutput(HTPotionHelper.createPotion(output, potion))
+                        },
                     )
                 },
         )
     }
 
     override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {
-        registration.addRecipeCatalysts(
+        HTJeiWorkstationHelper.addFromViewerType(
+            registration,
             HCRecipeViewerTypes.BREWING,
             HCRecipeViewerTypes.CHARGING,
             HCRecipeViewerTypes.CRUSHING,
@@ -229,18 +234,12 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             HCRecipeViewerTypes.FORGING,
         )
 
-        arrayOf(HCRecipeViewerTypes.EMPTYING, HCRecipeViewerTypes.FILLING)
-            .map { getRecipeType(it) }
-            .forEach { recipeType: JeiRecipeType<*> ->
-                registration.addRecipeCatalysts(
-                    recipeType,
-                    VanillaTypes.ITEM_STACK,
-                    HCBlocks.COPPER_BASINS.allBlocks
-                        .map(HTBlockHolderLike<*>::get)
-                        .map(::ItemStack)
-                        .toList(),
-                )
-            }
+        val copperBasins: List<ItemStack> = HCBlocks.COPPER_BASINS.allBlocks
+            .map(HTBlockHolderLike<*>::get)
+            .map(::ItemStack)
+            .toList()
+        HTJeiWorkstationHelper.add(registration, HCRecipeViewerTypes.EMPTYING, copperBasins)
+        HTJeiWorkstationHelper.add(registration, HCRecipeViewerTypes.FILLING, copperBasins)
     }
 
     override fun registerGuiHandlers(registration: IGuiHandlerRegistration) {

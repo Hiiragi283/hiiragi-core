@@ -3,8 +3,6 @@ package hiiragi283.core.api.integration.jei
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.resource.toId
 import mezz.jei.api.IModPlugin
-import mezz.jei.api.constants.VanillaTypes
-import mezz.jei.api.registration.IRecipeCatalystRegistration
 import net.minecraft.resources.ResourceLocation
 
 /**
@@ -13,7 +11,6 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 0.11.0
  * @see mekanism.client.recipe_viewer.jei.MekanismJEI
- * @see mekanism.client.recipe_viewer.jei.RecipeRegistryHelper
  */
 abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
     final override fun getPluginUid(): ResourceLocation = modId.toId("jei_plugin")
@@ -35,16 +32,5 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
             recipeTypeCache.computeIfAbsent(recipeType) { recipeTypeIn: HTRecipeViewerType<*> ->
                 JeiRecipeType(recipeTypeIn.getId(), recipeTypeIn.recipeClass)
             } as JeiRecipeType<RECIPE>
-
-        @JvmStatic
-        protected fun IRecipeCatalystRegistration.addRecipeCatalysts(vararg recipeTypes: HTRecipeViewerType<*>) {
-            for (recipeType: HTRecipeViewerType<*> in recipeTypes) {
-                this.addRecipeCatalysts(
-                    getRecipeType(recipeType),
-                    VanillaTypes.ITEM_STACK,
-                    recipeType.workStations,
-                )
-            }
-        }
     }
 }

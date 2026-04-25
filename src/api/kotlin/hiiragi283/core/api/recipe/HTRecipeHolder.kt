@@ -65,6 +65,8 @@ data class HTRecipeHolder<RECIPE : Any>(
         return HTRecipeHolder(this.id, recipe)
     }
 
+    inline fun <reified R : RECIPE> castRecipe(): HTRecipeHolder<R>? = mapRecipeOrNull { it as? R }
+
     override fun get(): RECIPE = recipe
 
     override fun getId(): ResourceLocation = id
