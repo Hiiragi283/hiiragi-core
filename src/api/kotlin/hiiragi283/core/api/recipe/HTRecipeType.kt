@@ -1,8 +1,6 @@
 package hiiragi283.core.api.recipe
 
 import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.api.text.HTHasText
-import hiiragi283.core.api.text.HTHasTranslationKey
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
 import net.minecraft.world.item.crafting.RecipeInput
@@ -16,9 +14,7 @@ import net.minecraft.world.item.crafting.RecipeInput
  */
 interface HTRecipeType<INPUT : RecipeInput, RECIPE : Any> :
     HTRecipeLookup<INPUT, RECIPE>,
-    HTHasTranslationKey,
-    HTHasText,
-    HTIdLike {
+    HTIdLike.Translatable {
     override val translationKey: String
         get() = getId().toLanguageKey("recipe_type")
 

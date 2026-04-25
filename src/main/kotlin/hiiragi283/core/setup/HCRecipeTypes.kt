@@ -8,9 +8,8 @@ import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
+import hiiragi283.core.common.registry.HTDeferredRecipeType
 import hiiragi283.core.common.registry.register.HTDeferredRecipeTypeRegister
-import net.minecraft.world.item.crafting.RecipeType
-import java.util.function.Supplier
 
 object HCRecipeTypes {
     @JvmField
@@ -19,22 +18,22 @@ object HCRecipeTypes {
     //    Basic    //
 
     @JvmField
-    val CHARGING: Supplier<RecipeType<HCChargingRecipe>> = REGISTER.registerType(HTConst.CHARGING)
+    val CHARGING: HTDeferredRecipeType<HCChargingRecipe> = REGISTER.registerType(HTConst.CHARGING)
 
     @JvmField
-    val CRUSHING: Supplier<RecipeType<HTSingleMultiOutputRecipe.Serializable>> = REGISTER.registerType(HTConst.CRUSHING)
+    val CRUSHING: HTDeferredRecipeType<HTSingleMultiOutputRecipe.Serializable> = REGISTER.registerType(HTConst.CRUSHING)
 
     @JvmField
-    val EXPLODING: Supplier<RecipeType<HCExplodingRecipe>> = REGISTER.registerType(HTConst.EXPLODING)
+    val EXPLODING: HTDeferredRecipeType<HCExplodingRecipe> = REGISTER.registerType(HTConst.EXPLODING)
 
     @JvmField
-    val FORGING: Supplier<RecipeType<HTDoubleMultiOutputRecipe.Serializable>> = REGISTER.registerType(HTConst.FORGING)
+    val FORGING: HTDeferredRecipeType<HTDoubleMultiOutputRecipe.Serializable> = REGISTER.registerType(HTConst.FORGING)
 
     //    Tank Interaction    //
 
     @JvmField
-    val EMPTYING: Supplier<RecipeType<HTTankEmptyingRecipe.Serializable>> = REGISTER.registerType(HTConst.EMPTYING)
+    val EMPTYING: HTDeferredRecipeType<HTTankEmptyingRecipe.Serializable> = REGISTER.registerType(HTConst.EMPTYING)
 
     @JvmField
-    val FILLING: Supplier<RecipeType<HTTankFillingRecipe.Serializable>> = REGISTER.registerType(HTConst.FILLING)
+    val FILLING: HTDeferredRecipeType<HTTankFillingRecipe.Serializable> = REGISTER.registerType(HTConst.FILLING)
 }

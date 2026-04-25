@@ -114,7 +114,7 @@ data class HTRecipeContents(
         fun addInput(ingredient: FluidIngredient?) {
             ingredient?.stacks?.toList()?.let(::addInput)
         }
-        
+
         fun addInput(ingredient: HTFluidIngredient?) {
             ingredient?.getPreviewStacks()?.let(::addInput)
         }

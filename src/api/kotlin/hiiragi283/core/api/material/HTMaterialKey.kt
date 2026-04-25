@@ -2,8 +2,6 @@ package hiiragi283.core.api.material
 
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.api.text.HTHasText
-import hiiragi283.core.api.text.HTHasTranslationKey
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
 import io.netty.buffer.ByteBuf
@@ -20,10 +18,8 @@ import net.minecraft.resources.ResourceLocation
  */
 @JvmInline
 value class HTMaterialKey private constructor(private val id: ResourceLocation) :
-    HTIdLike,
+    HTIdLike.Translatable,
     HTMaterialLike,
-    HTHasTranslationKey,
-    HTHasText,
     Comparable<HTMaterialKey> {
         companion object {
             /**

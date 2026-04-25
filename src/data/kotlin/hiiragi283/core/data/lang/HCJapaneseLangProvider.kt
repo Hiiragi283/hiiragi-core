@@ -5,7 +5,6 @@ import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.HTCommonTranslation
-import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
@@ -13,6 +12,7 @@ import hiiragi283.core.setup.HCEnchantments
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
+import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.data.PackOutput
 
 class HCJapaneseLangProvider(output: PackOutput) :
@@ -90,13 +90,13 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HTVanillaRecipeTypes.SMOKING, "燻製器")
         add(HTVanillaRecipeTypes.BREWING, "醸造")
 
-        add(HCRecipeLookups.CHARGING, "落雷によるチャージ")
-        add(HCRecipeLookups.CRUSHING, "粉砕")
-        add(HCRecipeLookups.EXPLODING, "爆破")
-        add(HCRecipeLookups.FORGING, "鍛造")
+        add(HCRecipeTypes.CHARGING, "落雷によるチャージ")
+        add(HCRecipeTypes.CRUSHING, "粉砕")
+        add(HCRecipeTypes.EXPLODING, "爆破")
+        add(HCRecipeTypes.FORGING, "鍛造")
 
-        add(HCRecipeLookups.EMPTYING, "タンクとの相互作用（搬出）")
-        add(HCRecipeLookups.FILLING, "タンクとの相互作用（搬入）")
+        add(HCRecipeTypes.EMPTYING, "タンクとの相互作用（搬出）")
+        add(HCRecipeTypes.FILLING, "タンクとの相互作用（搬入）")
         // Tag
         add(HiiragiCoreTags.Blocks.INCORRECT_FOR_ALMIGHTY_PICKAXE, "全能なるツルハシで適切でないブロック")
         add(HiiragiCoreTags.Blocks.LATEX_DRIPPING_LOGS, "ラテックスを抽出可能な木")

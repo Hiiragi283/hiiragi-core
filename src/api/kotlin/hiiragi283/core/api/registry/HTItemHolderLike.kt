@@ -2,10 +2,9 @@ package hiiragi283.core.api.registry
 
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.function.identity
+import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
-import hiiragi283.core.api.text.HTHasText
-import hiiragi283.core.api.text.HTHasTranslationKey
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.impl.registry.HTIntrusiveHolderLike
 import net.minecraft.core.Holder
@@ -28,8 +27,7 @@ typealias HTSimpleItemHolderLike = HTItemHolderLike<Item>
  */
 interface HTItemHolderLike<ITEM : Item> :
     HTHolderLike<Item, ITEM>,
-    HTHasTranslationKey,
-    HTHasText,
+    HTIdLike.Translatable,
     HTItemLike<ITEM> {
     override fun asItem(): ITEM = get()
 

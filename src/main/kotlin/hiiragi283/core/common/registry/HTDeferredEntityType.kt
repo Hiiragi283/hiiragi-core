@@ -1,7 +1,6 @@
 package hiiragi283.core.common.registry
 
-import hiiragi283.core.api.text.HTHasText
-import hiiragi283.core.api.text.HTHasTranslationKey
+import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.text.Text
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
@@ -12,8 +11,7 @@ import net.minecraft.world.entity.EntityType
 
 class HTDeferredEntityType<ENTITY : Entity> :
     HTBasicHolderLike<EntityType<*>, EntityType<ENTITY>>,
-    HTHasTranslationKey,
-    HTHasText {
+    HTIdLike.Translatable {
     constructor(key: ResourceKey<EntityType<*>>) : super(key)
 
     constructor(id: ResourceLocation) : super(Registries.ENTITY_TYPE, id)
