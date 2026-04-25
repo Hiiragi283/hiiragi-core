@@ -1,0 +1,34 @@
+package hiiragi283.core.impl.serialization.network
+
+import hiiragi283.core.api.util.Either
+import io.netty.buffer.ByteBuf
+import net.minecraft.network.codec.StreamCodec
+
+/**
+ * [Either]向けの[StreamCodec]の実装クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.5.0
+ * @see net.minecraft.network.codec.ByteBufCodecs.either
+ */
+internal class HTEitherStreamCodec<B : ByteBuf, A : Any, B1 : Any>(
+    private val left: StreamCodec<in B, A>,
+    private val right: StreamCodec<in B, B1>,
+) : StreamCodec<B, Either<A, B1>> {
+    override fun decode(buffer: B): Either<A, B1> = when (buffer.readBoolean()) {
+        true -> Either.Left(left.decode(buffer))
+        false -> Either.Right(right.decode(buffer))
+    }
+
+    override fun encode(buffer: B, value: Either<A, B1>) {
+        value.map(
+            {
+                buffer.writeBoolean(true)
+                left.encode(buffer, it)
+            },
+            {
+                buffer.writeBoolean(false)
+                right.encode(buffer, it)
+            },
+        )
+    }
+}

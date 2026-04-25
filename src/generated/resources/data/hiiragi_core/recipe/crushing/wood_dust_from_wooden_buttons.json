@@ -1,0 +1,14 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": {
+    "amount": 1,
+    "items": "#minecraft:wooden_buttons"
+  },
+  "results": {
+    "type": "hiiragi_core:material_part",
+    "count": 1,
+    "material": "hiiragi_core:wood",
+    "part": "dust"
+  },
+  "time": 100
+}

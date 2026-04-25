@@ -3,7 +3,6 @@ package hiiragi283.core.common.gui.sync
 import hiiragi283.core.api.gui.sync.HTSyncableMenu
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
-import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.world.item.ItemStack
@@ -12,12 +11,11 @@ import net.minecraft.world.item.ItemStack
 data class HTItemSyncPayload(val value: ItemStack) : HTSyncablePayload {
     companion object {
         @JvmField
-        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemSyncPayload> = VanillaBiCodecs.ITEM_STACK
-            .streamCodec
-            .map(::HTItemSyncPayload, HTItemSyncPayload::value)
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemSyncPayload> =
+            ItemStack.OPTIONAL_STREAM_CODEC.map(::HTItemSyncPayload, HTItemSyncPayload::value)
 
         @JvmField
-        val TYPE: HTSyncablePayload.Type<HTItemSyncPayload> = HTSyncablePayload.Type.create(STREAM_CODEC)
+        val TYPE: HTSyncablePayload.Type<HTItemSyncPayload> = HTSyncablePayload.Type(STREAM_CODEC)
     }
 
     override fun type(): HTSyncablePayload.Type<*> = TYPE

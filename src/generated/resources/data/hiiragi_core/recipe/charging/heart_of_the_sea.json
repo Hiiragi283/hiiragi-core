@@ -2,6 +2,7 @@
   "type": "hiiragi_core:charging",
   "ingredient": "hiiragi_core:elder_heart",
   "result": {
+    "count": 1,
     "id": "minecraft:heart_of_the_sea"
   }
 }

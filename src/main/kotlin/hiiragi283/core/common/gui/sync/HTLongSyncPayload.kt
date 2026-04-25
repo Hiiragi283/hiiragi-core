@@ -16,7 +16,7 @@ data class HTLongSyncPayload(val value: Long) : HTSyncablePayload {
             .cast()
 
         @JvmField
-        val TYPE: HTSyncablePayload.Type<HTLongSyncPayload> = HTSyncablePayload.Type.create(STREAM_CODEC)
+        val TYPE: HTSyncablePayload.Type<HTLongSyncPayload> = HTSyncablePayload.Type(STREAM_CODEC)
     }
 
     override fun type(): HTSyncablePayload.Type<*> = TYPE

@@ -1,21 +1,22 @@
 package hiiragi283.core.api.registry
 
+import com.mojang.serialization.Codec
 import hiiragi283.core.api.function.identity
-import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
+import hiiragi283.core.api.serialization.codec.HTCodecs
+import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.HTHasTranslationKey
 import hiiragi283.core.api.text.Text
-import hiiragi283.core.api.util.Either
+import hiiragi283.core.impl.registry.HTIntrusiveHolderLike
 import net.minecraft.core.Holder
-import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
-import net.minecraft.resources.ResourceKey
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
+import net.neoforged.neoforge.registries.DeferredItem
 
 typealias HTSimpleItemHolderLike = HTItemHolderLike<Item>
 
@@ -30,14 +31,16 @@ interface HTItemHolderLike<ITEM : Item> :
     HTHasTranslationKey,
     HTHasText,
     HTItemLike<ITEM> {
-    fun getHolder(): Holder<Item> = getHolder(BuiltInRegistries.ITEM::getHolderOrThrow)
-
     override fun asItem(): ITEM = get()
 
     companion object {
         @JvmField
-        val CODEC: BiCodec<RegistryFriendlyByteBuf, HTSimpleItemHolderLike> =
-            VanillaBiCodecs.holderLike(Registries.ITEM).xmap(HTSimpleHolderLike<Item>::toItemLike, identity())
+        val CODEC: Codec<HTSimpleItemHolderLike> =
+            HTCodecs.holderLike(Registries.ITEM).xmap(HTSimpleHolderLike<Item>::toItemLike, identity())
+
+        @JvmField
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTSimpleItemHolderLike> =
+            HTStreamCodecs.holderLike(Registries.ITEM).map(HTSimpleHolderLike<Item>::toItemLike, identity())
     }
 
     interface Simple<ITEM : Item> : HTItemHolderLike<ITEM> {
@@ -59,9 +62,9 @@ fun ItemLike.toItemLike(): HTSimpleItemHolderLike = this.asItem().toLike()
  * @author Hiiragi Tsubasa
  * @since 0.13.0
  */
-@Suppress("DEPRECATION")
-fun <ITEM : Item> ITEM.toLike(): HTItemHolderLike<ITEM> = object : HTItemHolderLike.Simple<ITEM> {
-    override fun unwrap(): Either<ResourceKey<Item>, Holder<Item>> = Either.Right(this@toLike.builtInRegistryHolder())
+fun <ITEM : Item> ITEM.toLike(): HTItemHolderLike<ITEM> = object : HTIntrusiveHolderLike<Item, ITEM>(), HTItemHolderLike.Simple<ITEM> {
+    @Suppress("DEPRECATION")
+    override fun getHolder(value: Item): Holder<Item> = value.builtInRegistryHolder()
 
     override fun get(): ITEM = this@toLike
 
@@ -72,25 +75,17 @@ fun <ITEM : Item> ITEM.toLike(): HTItemHolderLike<ITEM> = object : HTItemHolderL
  * @author Hiiragi Tsubasa
  * @since 0.13.0
  */
-fun <ITEM : Item> HTHolderLike<Item, ITEM>.toItemLike(): HTItemHolderLike<ITEM> = object : HTItemHolderLike.Simple<ITEM> {
-    override fun unwrap(): Either<ResourceKey<Item>, Holder<Item>> = this@toItemLike.unwrap()
+fun <ITEM : Item> HTHolderLike<Item, ITEM>.toItemLike(): HTItemHolderLike<ITEM> = HolderLikeItemHolderLike(this)
 
-    override fun get(): ITEM = this@toItemLike.get()
-
-    override fun toString(): String = this@toItemLike.toString()
-}
+private class HolderLikeItemHolderLike<ITEM : Item>(holder: HTHolderLike<Item, ITEM>) :
+    HTItemHolderLike.Simple<ITEM>,
+    HTHolderLike<Item, ITEM> by holder
 
 /**
  * @author Hiiragi Tsubasa
  * @since 0.13.0
  */
-fun ResourceLocation.toItemLike(): HTSimpleItemHolderLike = object : HTItemHolderLike.Simple<Item> {
-    override fun unwrap(): Either<ResourceKey<Item>, Holder<Item>> = Either.Left(Registries.ITEM.createKey(this@toItemLike))
-
-    override fun get(): Item = BuiltInRegistries.ITEM.getOrThrow(getResourceKey())
-
-    override fun toString(): String = "HTItemHolderLike(id=${this@toItemLike})"
-}
+fun ResourceLocation.toItemLike(): HTSimpleItemHolderLike = DeferredItem.createItem<Item>(this@toItemLike).toLike().toItemLike()
 
 /**
  * @author Hiiragi Tsubasa

@@ -1,13 +1,15 @@
 package hiiragi283.core.api.storage.item
 
+import com.mojang.serialization.Codec
+import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.item.createItemStack
-import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.storage.resource.HTResourceType
 import hiiragi283.core.api.text.Text
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
@@ -21,10 +23,15 @@ import net.minecraft.world.level.ItemLike
 class HTItemResourceType private constructor(private val stack: ItemStack) : HTResourceType.DataComponent<Item> {
     companion object {
         @JvmField
-        val CODEC: BiCodec<RegistryFriendlyByteBuf, HTItemResourceType> =
-            BiCodec
-                .of(ItemStack.SINGLE_ITEM_CODEC, ItemStack.STREAM_CODEC)
-                .xmap(::HTItemResourceType, HTItemResourceType::stack)
+        val CODEC: Codec<HTItemResourceType> =
+            ItemStack.SINGLE_ITEM_CODEC.xmap(::HTItemResourceType, HTItemResourceType::stack)
+
+        @JvmField
+        val MAP_CODEC: MapCodec<HTItemResourceType> = MapCodec.assumeMapUnsafe(CODEC)
+
+        @JvmField
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemResourceType> =
+            ItemStack.STREAM_CODEC.map(::HTItemResourceType, HTItemResourceType::stack)
 
         /**
          * 指定した[stack]を[HTItemResourceType]に変換します。

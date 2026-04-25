@@ -1,7 +1,11 @@
 package hiiragi283.core.common.recipe
 
+import com.mojang.serialization.MapCodec
+import com.mojang.serialization.codecs.RecordCodecBuilder
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTSerializableRecipe
 import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.world.item.ItemStack
@@ -14,6 +18,16 @@ class HCChargingRecipe(val ingredient: Ingredient, val result: HTItemResult, val
     HTSerializableRecipe<HCChargingRecipe.Input> {
     companion object {
         const val DEFAULT_ENERGY = 1_024_000
+
+        @JvmField
+        val CODEC: MapCodec<HCChargingRecipe> = RecordCodecBuilder.mapCodec { instance ->
+            instance
+                .group(
+                    HTCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HCChargingRecipe::ingredient),
+                    HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCChargingRecipe::result),
+                    HTCodecs.NON_NEGATIVE_INT.optionalFieldOf("energy", DEFAULT_ENERGY).forGetter(HCChargingRecipe::requiredEnergy),
+                ).apply(instance, ::HCChargingRecipe)
+        }
     }
 
     override fun test(input: Input): Boolean {

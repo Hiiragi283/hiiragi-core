@@ -1,9 +1,0 @@
-{
-  "type": "hiiragi_core:exploding",
-  "ingredient": "#c:glass_blocks",
-  "result": {
-    "chance": "1/4",
-    "id": "minecraft:quartz",
-    "tag": "#c:gems/quartz"
-  }
-}

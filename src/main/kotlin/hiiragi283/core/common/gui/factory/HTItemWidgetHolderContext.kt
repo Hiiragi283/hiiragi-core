@@ -1,8 +1,8 @@
 package hiiragi283.core.common.gui.factory
 
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
-import hiiragi283.core.api.serialization.codec.BiCodecs
-import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
+import hiiragi283.core.api.serialization.network.HTStreamCodecs
+import hiiragi283.core.api.serialization.network.toOptional
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.wrapOptional
@@ -20,6 +20,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
+import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 @JvmRecord
@@ -32,7 +33,8 @@ data class HTItemWidgetHolderContext(
     MenuProvider {
     companion object {
         @JvmStatic
-        private val HAND_CODEC: StreamCodec<ByteBuf, InteractionHand> = BiCodecs.enum<InteractionHand>().streamCodec
+        private val HAND_CODEC: StreamCodec<ByteBuf, Optional<InteractionHand>> =
+            HTStreamCodecs.enum<InteractionHand>().toOptional()
 
         @JvmStatic
         fun openMenu(player: ServerPlayer, hand: InteractionHand): Boolean {
@@ -58,8 +60,8 @@ data class HTItemWidgetHolderContext(
         @JvmStatic
         fun create(containerId: Int, inventory: Inventory, buffer: RegistryFriendlyByteBuf): HTWidgetContainerMenu {
             val player: Player = inventory.player
-            val hand: InteractionHand? = buffer.readOptional(HAND_CODEC).getOrNull()
-            val stack: ItemStack = VanillaBiCodecs.ITEM_STACK_NON_EMPTY.decode(buffer).getOrThrow()
+            val hand: InteractionHand? = HAND_CODEC.decode(buffer).getOrNull()
+            val stack: ItemStack = ItemStack.STREAM_CODEC.decode(buffer)
             val item: Item = stack.item
             if (item is Factory) {
                 val context: HTItemWidgetHolderContext = item.createContext(player, hand, stack)
@@ -84,8 +86,8 @@ data class HTItemWidgetHolderContext(
         HTWidgetContainerMenu(HCMenuTypes.ITEM.get(), containerId, playerInventory, this)
 
     override fun writeClientSideData(menu: AbstractContainerMenu, buffer: RegistryFriendlyByteBuf) {
-        buffer.writeOptional(hand.wrapOptional(), HAND_CODEC)
-        VanillaBiCodecs.ITEM_STACK_NON_EMPTY.encode(buffer, stack)
+        HAND_CODEC.encode(buffer, hand.wrapOptional())
+        ItemStack.STREAM_CODEC.encode(buffer, stack)
     }
 
     //    Factory    //

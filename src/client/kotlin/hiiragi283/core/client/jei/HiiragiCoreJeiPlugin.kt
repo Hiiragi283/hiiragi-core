@@ -172,7 +172,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                                 Items.POTION,
                             ),
                             HTFluidResult.create(HCPotionFluidHelper.createFluid(contents, 250)),
-                            HTItemResult.create(Items.GLASS_BOTTLE).wrapOptional(),
+                            HTItemResult(ItemStack(Items.GLASS_BOTTLE)).wrapOptional(),
                         ),
                     )
                 },
@@ -213,7 +213,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                                 ),
                                 amount,
                             ),
-                            HTItemResult.create(HTPotionHelper.createPotion(output, potion)),
+                            HTItemResult(HTPotionHelper.createPotion(output, potion)),
                         ),
                     )
                 },

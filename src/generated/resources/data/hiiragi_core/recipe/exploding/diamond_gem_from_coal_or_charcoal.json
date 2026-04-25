@@ -1,0 +1,16 @@
+{
+  "type": "hiiragi_core:exploding",
+  "ingredient": [
+    "#c:charcoal",
+    "#c:coal",
+    "#c:dusts/charcoal",
+    "#c:dusts/coal"
+  ],
+  "result": {
+    "type": "hiiragi_core:material_part",
+    "chance": "1/64",
+    "count": 1,
+    "material": "hiiragi_core:diamond",
+    "part": "gem"
+  }
+}

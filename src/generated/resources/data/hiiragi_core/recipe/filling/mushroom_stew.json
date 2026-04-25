@@ -6,6 +6,7 @@
   },
   "item_ingredient": "minecraft:bowl",
   "result": {
+    "count": 1,
     "id": "minecraft:mushroom_stew"
   }
 }

@@ -16,7 +16,7 @@ data class HTIntSyncPayload(val value: Int) : HTSyncablePayload {
             .cast()
 
         @JvmField
-        val TYPE: HTSyncablePayload.Type<HTIntSyncPayload> = HTSyncablePayload.Type.create(STREAM_CODEC)
+        val TYPE: HTSyncablePayload.Type<HTIntSyncPayload> = HTSyncablePayload.Type(STREAM_CODEC)
     }
 
     override fun type(): HTSyncablePayload.Type<*> = TYPE

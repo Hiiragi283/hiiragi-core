@@ -3,7 +3,9 @@
   "ingredient": "#c:ores/netherite_scrap",
   "required_power": 6,
   "result": {
+    "type": "hiiragi_core:material_part",
     "count": 2,
-    "id": "minecraft:netherite_scrap"
+    "material": "hiiragi_core:netherite",
+    "part": "scrap"
   }
 }

@@ -3,6 +3,7 @@
   "ingredient": "#c:gems/quartz",
   "result": {
     "chance": "3/4",
+    "count": 1,
     "id": "minecraft:prismarine_shard"
   }
 }

@@ -3,6 +3,7 @@
   "ingredient": "#c:gunpowders",
   "result": {
     "chance": "1/6",
+    "count": 1,
     "id": "minecraft:blaze_powder"
   }
 }

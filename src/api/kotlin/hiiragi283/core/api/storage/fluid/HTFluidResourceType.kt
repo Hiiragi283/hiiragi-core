@@ -1,20 +1,22 @@
 package hiiragi283.core.api.storage.fluid
 
+import com.mojang.serialization.Codec
+import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.fluid.createFluidStack
-import hiiragi283.core.api.serialization.codec.BiCodec
 import hiiragi283.core.api.storage.resource.HTResourceType
 import hiiragi283.core.api.text.Text
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidType
 
 /**
- * [液体][Fluid]向けの[HTResourceType.DataComponent]の実装クラスです。
+ * [液体][Fluid]向けの[DataComponent]の実装クラスです。
  * @param stack 内部で保持しているスタック
  * @author Hiiragi Tsubasa
  * @since 0.4.0
@@ -22,10 +24,15 @@ import net.neoforged.neoforge.fluids.FluidType
 class HTFluidResourceType private constructor(private val stack: FluidStack) : HTResourceType.DataComponent<Fluid> {
     companion object {
         @JvmField
-        val CODEC: BiCodec<RegistryFriendlyByteBuf, HTFluidResourceType> =
-            BiCodec
-                .of(FluidStack.fixedAmountCodec(HTConst.DEFAULT_FLUID_AMOUNT), FluidStack.STREAM_CODEC)
-                .xmap(::HTFluidResourceType, HTFluidResourceType::stack)
+        val CODEC: Codec<HTFluidResourceType> =
+            FluidStack.fixedAmountCodec(HTConst.DEFAULT_FLUID_AMOUNT).xmap(::HTFluidResourceType, HTFluidResourceType::stack)
+
+        @JvmField
+        val MAP_CODEC: MapCodec<HTFluidResourceType> = MapCodec.assumeMapUnsafe(CODEC)
+
+        @JvmField
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTFluidResourceType> =
+            FluidStack.STREAM_CODEC.map(::HTFluidResourceType, HTFluidResourceType::stack)
 
         /**
          * 指定した[stack]を[HTFluidResourceType]に変換します。

@@ -110,7 +110,7 @@ data object HTIngredientCreator {
     }
 
     // Ingredient
-    fun create(ingredient: SizedFluidIngredient): HTFluidIngredient = HTFluidIngredient(ingredient.ingredient(), ingredient.amount())
+    fun create(ingredient: SizedFluidIngredient): HTFluidIngredient = create(ingredient.ingredient(), ingredient.amount())
 
     fun create(ingredient: FluidIngredient, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient =
         HTFluidIngredient(ingredient, amount)

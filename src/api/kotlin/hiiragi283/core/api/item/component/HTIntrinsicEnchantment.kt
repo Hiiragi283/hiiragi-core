@@ -1,9 +1,11 @@
 package hiiragi283.core.api.item.component
 
+import com.mojang.serialization.Codec
+import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTDefaultColor
-import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.serialization.codec.VanillaBiCodecs
+import hiiragi283.core.api.HTPhysicalSideHelper
+import hiiragi283.core.api.serialization.codec.HTCodecs
+import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.Text
@@ -14,6 +16,8 @@ import net.minecraft.core.Holder
 import net.minecraft.core.HolderGetter
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
+import net.minecraft.network.codec.ByteBufCodecs
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.TooltipFlag
@@ -25,9 +29,20 @@ import java.util.function.Consumer
 data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: Int) : TooltipProvider {
     companion object {
         @JvmField
-        val CODEC: BiCodec<ByteBuf, HTIntrinsicEnchantment> = BiCodec.composite(
-            VanillaBiCodecs.resourceKey(Registries.ENCHANTMENT).fieldOf("enchantment").forGetter(HTIntrinsicEnchantment::key),
-            BiCodec.INT.optionalFieldOf("level", 1).forGetter(HTIntrinsicEnchantment::level),
+        val CODEC: Codec<HTIntrinsicEnchantment> = RecordCodecBuilder.create { instance ->
+            instance
+                .group(
+                    HTCodecs.resourceKey(Registries.ENCHANTMENT).fieldOf("enchantment").forGetter(HTIntrinsicEnchantment::key),
+                    Codec.INT.optionalFieldOf("level", 1).forGetter(HTIntrinsicEnchantment::level),
+                ).apply(instance, ::HTIntrinsicEnchantment)
+        }
+
+        @JvmField
+        val STREAM_CODEC: StreamCodec<ByteBuf, HTIntrinsicEnchantment> = StreamCodec.composite(
+            HTStreamCodecs.resourceKey(Registries.ENCHANTMENT),
+            HTIntrinsicEnchantment::key,
+            ByteBufCodecs.VAR_INT,
+            HTIntrinsicEnchantment::level,
             ::HTIntrinsicEnchantment,
         )
     }
@@ -37,7 +52,7 @@ data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: 
 
     fun <T : Any> useInstance(provider: HolderLookup.Provider?, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> {
         val provider1: HolderLookup.Provider =
-            (provider ?: HiiragiCoreAPI.getActiveAccess()) ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()
+            (provider ?: HTPhysicalSideHelper.getRegistryAccess()) ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()
         return provider1
             .holder(key)
             .map { holder: Holder<Enchantment> -> action(holder, level) }

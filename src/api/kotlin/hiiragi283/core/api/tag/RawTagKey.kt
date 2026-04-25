@@ -5,7 +5,6 @@ import com.mojang.serialization.DataResult
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.resource.toId
-import hiiragi283.core.api.serialization.codec.BiCodec
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceLocation
@@ -39,18 +38,6 @@ value class RawTagKey private constructor(val location: ResourceLocation) {
 
         @JvmField
         val STREAM_CODEC: StreamCodec<ByteBuf, RawTagKey> = ResourceLocation.STREAM_CODEC.map(::create, RawTagKey::location)
-
-        /**
-         * @see TagKey.hashedCodec
-         */
-        @JvmStatic
-        fun codec(withHash: Boolean): BiCodec<ByteBuf, RawTagKey> = BiCodec.of(
-            when (withHash) {
-                true -> HASHED_CODEC
-                false -> CODEC
-            },
-            STREAM_CODEC,
-        )
 
         @JvmStatic
         fun common(path: String): RawTagKey = create(HTConst.COMMON.toId(path))

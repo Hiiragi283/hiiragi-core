@@ -1,12 +1,14 @@
 package hiiragi283.core.api
 
-import hiiragi283.core.api.serialization.codec.BiCodec
-import hiiragi283.core.api.serialization.codec.MapBiCodecs
+import com.mojang.serialization.Codec
+import hiiragi283.core.api.serialization.codec.HTCodecs
+import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.Ior
 import io.netty.buffer.ByteBuf
+import net.minecraft.network.codec.StreamCodec
 
 /**
  * 区間を表すクラスです。
@@ -18,13 +20,15 @@ import io.netty.buffer.ByteBuf
 value class HTMinMaxRange<T : Comparable<T>> private constructor(private val content: Ior<T, T>) : HTHasText {
     companion object {
         @JvmStatic
-        fun <B : ByteBuf, T : Comparable<T>> codec(valueCodec: BiCodec<in B, T>): BiCodec<B, HTMinMaxRange<T>> = MapBiCodecs
-            .ior(valueCodec.fieldOf("min"), valueCodec.fieldOf("max"))
-            .toCodec()
+        fun <T : Comparable<T>> codec(codec: Codec<T>): Codec<HTMinMaxRange<T>> = HTCodecs
+            .ior(codec.fieldOf("min"), codec.fieldOf("max"))
+            .codec()
             .xmap(::HTMinMaxRange, HTMinMaxRange<T>::content)
 
-        @JvmField
-        val INT_CODEC: BiCodec<ByteBuf, HTMinMaxRange<Int>> = codec(BiCodec.INT)
+        @JvmStatic
+        fun <B : ByteBuf, T : Comparable<T>> streamCodec(codec: StreamCodec<in B, T>): StreamCodec<B, HTMinMaxRange<T>> = HTStreamCodecs
+            .ior(codec, codec)
+            .map(::HTMinMaxRange, HTMinMaxRange<T>::content)
 
         /**
          * 下限をもつ区間を作成します。

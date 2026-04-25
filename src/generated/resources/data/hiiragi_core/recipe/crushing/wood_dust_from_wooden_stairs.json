@@ -1,0 +1,14 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": {
+    "amount": 4,
+    "items": "#minecraft:wooden_stairs"
+  },
+  "results": {
+    "type": "hiiragi_core:material_part",
+    "count": 3,
+    "material": "hiiragi_core:wood",
+    "part": "dust"
+  },
+  "time": 100
+}

@@ -10,7 +10,6 @@ import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.HTRecipeLookup
 import hiiragi283.core.api.recipe.HTRecipeType
-import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.registry.toHolderSet
 import hiiragi283.core.api.registry.toLike
@@ -29,6 +28,7 @@ import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.neoforged.neoforge.common.brewing.BrewingRecipe
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 
 /**
  * バニラのレシピ向けの[HTRecipeType]の実装をまとめたクラスです。
@@ -90,12 +90,11 @@ object HTVanillaRecipeTypes {
                 .asSequence()
                 .flatMap { potionTo: Holder<Potion> ->
                     multimap[potionTo].mapIndexed { index: Int, (potionFrom: Holder<Potion>, ingredient: Ingredient) ->
-                        val fluidIngredient: HTFluidIngredient = when (potionFrom) {
-                            Potions.WATER -> HTIngredientCreator.water()
+                        val fluidIngredient: FluidIngredient = when (potionFrom) {
+                            Potions.WATER -> HTIngredientCreator.water().unsized
                             else -> listOf(potionFrom)
                                 .toHolderSet()
                                 .let { HTPotionFluidIngredient(it, HTBottleType.DEFAULT) }
-                                .let(HTIngredientCreator::create)
                         }
                         val recipe = HCBrewingRecipe(
                             fluidIngredient,

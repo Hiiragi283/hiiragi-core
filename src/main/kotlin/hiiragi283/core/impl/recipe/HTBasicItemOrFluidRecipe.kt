@@ -22,7 +22,7 @@ abstract class HTBasicItemOrFluidRecipe(
         ingredient.mapLeft { Predicate(it::test) }.mapRight { Predicate(it::test) }
 
     final override fun getRequiredAmount(input: HTItemAndFluidRecipeInput): Ior<ItemAmount, FluidAmount> =
-        ingredient.mapLeft(HTItemIngredient::amount).mapRight(HTFluidIngredient::amount)
+        ingredient.mapLeft { it.getRequiredAmount(input.item) }.mapRight { it.getRequiredAmount(input.fluid) }
 
     final override fun assemble(input: HTItemAndFluidRecipeInput, preview: Boolean): ItemStack =
         result.getLeft()?.getOrEmpty(preview) ?: ItemStack.EMPTY

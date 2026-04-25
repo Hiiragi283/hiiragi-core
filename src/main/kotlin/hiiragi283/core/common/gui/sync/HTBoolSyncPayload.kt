@@ -16,7 +16,7 @@ data class HTBoolSyncPayload(val value: Boolean) : HTSyncablePayload {
             .cast()
 
         @JvmField
-        val TYPE: HTSyncablePayload.Type<HTBoolSyncPayload> = HTSyncablePayload.Type.create(STREAM_CODEC)
+        val TYPE: HTSyncablePayload.Type<HTBoolSyncPayload> = HTSyncablePayload.Type(STREAM_CODEC)
     }
 
     override fun type(): HTSyncablePayload.Type<*> = TYPE

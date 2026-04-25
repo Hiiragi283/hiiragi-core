@@ -1,8 +1,12 @@
 package hiiragi283.core.common.recipe
 
+import com.mojang.serialization.MapCodec
+import com.mojang.serialization.codecs.RecordCodecBuilder
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.util.getOrEmpty
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
@@ -16,6 +20,18 @@ import java.util.Optional
 
 class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidResult, val itemResult: Optional<HTItemResult>) :
     HTTankEmptyingRecipe.Serializable {
+    companion object {
+        @JvmField
+        val CODEC: MapCodec<HCTankEmptyingRecipe> = RecordCodecBuilder.mapCodec { instance ->
+            instance
+                .group(
+                    HTCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HCTankEmptyingRecipe::ingredient),
+                    HTFluidResult.CODEC.fieldOf(HTConst.FLUID_RESULT).forGetter(HCTankEmptyingRecipe::fluidResult),
+                    HTItemResult.CODEC.optionalFieldOf(HTConst.ITEM_RESULT).forGetter(HCTankEmptyingRecipe::itemResult),
+                ).apply(instance, ::HCTankEmptyingRecipe)
+        }
+    }
+
     override fun testContainer(stack: ItemStack): Boolean = ingredient.test(stack)
 
     override fun assemble(input: SingleRecipeInput, preview: Boolean): ItemStack = itemResult.map { it.getOrEmpty(preview) }.getOrEmpty()

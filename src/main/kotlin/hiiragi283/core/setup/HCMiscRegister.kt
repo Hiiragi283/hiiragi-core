@@ -3,6 +3,7 @@ package hiiragi283.core.setup
 import hiiragi283.core.api.HCRegistries
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.gui.sync.HTBoolSyncPayload
 import hiiragi283.core.common.gui.sync.HTFluidSyncPayload
@@ -27,6 +28,13 @@ internal object HCMiscRegister {
             helper.register(HiiragiCoreAPI.id("potion"), HTPotionFluidIngredient.TYPE)
         }
 
+        // Item Result type
+        event.register(HCRegistries.Keys.ITEM_RESULT_TYPE) { helper ->
+            helper.register(HiiragiCoreAPI.id("simple"), HTItemResult.SimpleEntry.TYPE)
+            helper.register(HiiragiCoreAPI.id("tag"), HTItemResult.TagEntry.TYPE)
+            helper.register(HiiragiCoreAPI.id("enchanted_book"), HTItemResult.EnchantedBookEntry.TYPE)
+            helper.register(HiiragiCoreAPI.id("material_part"), HTItemResult.MaterialPartEntry.TYPE)
+        }
         // Slot Sync Type
         event.register(HCRegistries.Keys.SLOT_TYPE) { helper ->
             helper.register(HTConst.COMMON.toId("boolean"), HTBoolSyncPayload.TYPE)

@@ -2,11 +2,18 @@ package hiiragi283.core.api.serialization.codec
 
 import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
-import com.mojang.serialization.DataResult
 import hiiragi283.core.api.function.identity
-import kotlin.collections.List
 
-//    Codec    //
+//    List    //
+
+/**
+ * この[Codec][this]を[List]の[Codec]に変換します。
+ * @param range リストの[長さ][List.size]の範囲
+ * @return リストの[長さ][List.size]が制限された[List]の[Codec]
+ * @author Hiiragi Tsubasa
+ * @since 0.15.3
+ */
+fun <A : Any> Codec<A>.listOf(range: IntRange): Codec<List<A>> = this.listOf(range.first, range.last)
 
 /**
  * この[Codec][this]を，要素が一つの場合はそのままコーデックする[List]の[Codec]に変換します。
@@ -20,9 +27,18 @@ fun <A : Any> Codec<A>.listOrElement(): Codec<List<A>> = Codec.either(this.listO
 
 /**
  * この[Codec][this]を，要素が一つの場合はそのままコーデックする[List]の[Codec]に変換します。
+ * @param range リストの[長さ][List.size]の範囲
+ * @return リストの[長さ][List.size]が制限された[List]の[Codec]
+ * @author Hiiragi Tsubasa
+ * @since 0.15.3
+ */
+fun <A : Any> Codec<A>.listOrElement(range: IntRange): Codec<List<A>> = this.listOrElement(range.first, range.last)
+
+/**
+ * この[Codec][this]を，要素が一つの場合はそのままコーデックする[List]の[Codec]に変換します。
  * @param min リストの[長さ][List.size]の最小値
  * @param max リストの[長さ][List.size]の最大値
- * @return リストの[長さ][List.size]が制限された[List]の[BiCodec]
+ * @return リストの[長さ][List.size]が制限された[List]の[Codec]
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
@@ -31,12 +47,12 @@ fun <A : Any> Codec<A>.listOrElement(min: Int, max: Int): Codec<List<A>> = Codec
     { list: List<A> -> if (list.size == 1) Either.right(list[0]) else Either.left(list) },
 )
 
-//    BiCodec    //
+//    Set    //
 
 /**
+ * この[Codec][this]を[Set]の[Codec]に変換します。
+ * @return [Set]の[Codec]
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 0.15.3
  */
-fun <T : Any> Result<T>.toData(): DataResult<T> = fold(DataResult<T>::success) { throwable: Throwable ->
-    DataResult.error { throwable.message ?: "Thrown exception" }
-}
+fun <A : Any> Codec<List<A>>.setOf(): Codec<Set<A>> = this.xmap(List<A>::toSet, Set<A>::toList)

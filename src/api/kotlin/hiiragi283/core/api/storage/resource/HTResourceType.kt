@@ -1,6 +1,7 @@
 package hiiragi283.core.api.storage.resource
 
 import hiiragi283.core.api.registry.TypedInstance
+import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.text.HTHasText
@@ -31,7 +32,7 @@ interface HTResourceType :
         HTKeyLike<TYPE>,
         IWithData<TYPE>,
         TypedInstance<TYPE> {
-        override fun getResourceKey(): ResourceKey<TYPE> = typeHolder().unwrapKey().orElseThrow()
+        override fun getResourceKey(): ResourceKey<TYPE> = typeHolder().getKeyOrThrow()
 
         override fun <T : Any> getData(type: DataMapType<TYPE, T>): T? = typeHolder().getData(type)
     }

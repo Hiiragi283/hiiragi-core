@@ -3,6 +3,7 @@
   "ingredient": "#c:ender_pearls",
   "result": {
     "chance": "1/2",
+    "count": 1,
     "id": "minecraft:ender_eye"
   }
 }

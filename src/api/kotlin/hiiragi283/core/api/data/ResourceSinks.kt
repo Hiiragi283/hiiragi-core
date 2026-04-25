@@ -5,7 +5,6 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
 import com.mojang.serialization.JsonOps
 import hiiragi283.core.api.registry.RegistryKey
-import hiiragi283.core.api.serialization.codec.BiCodec
 import net.mehvahdjukaar.moonlight.api.resources.ResType
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
 import net.minecraft.core.registries.Registries
@@ -27,25 +26,7 @@ fun <T : Any> ResourceSink.addJson(id: ResourceLocation, codec: Codec<T>, value:
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
-fun <T : Any> ResourceSink.addJson(id: ResourceLocation, codec: BiCodec<*, T>, value: T): DataResult<JsonElement> =
-    this.addJson(id, codec.codec, value)
-
-/**
- * この[ResourceSink][this]に対して，[codec]に基づいて[value]を保存します。
- * @param T [value]のクラス
- * @author Hiiragi Tsubasa
- * @since 0.10.0
- */
 fun <T : Any> ResourceSink.register(key: ResourceKey<T>, codec: Codec<T>, value: T): DataResult<JsonElement> {
     val registryKey: RegistryKey<T> = key.registryKey()
     return addJson(key.location().withPrefix(Registries.elementsDirPath(registryKey) + "/"), codec, value)
 }
-
-/**
- * この[ResourceSink][this]に対して，[codec]に基づいて[value]を保存します。
- * @param T [value]のクラス
- * @author Hiiragi Tsubasa
- * @since 0.10.0
- */
-fun <T : Any> ResourceSink.register(key: ResourceKey<T>, codec: BiCodec<*, T>, value: T): DataResult<JsonElement> =
-    this.register(key, codec.codec, value)
