@@ -54,15 +54,8 @@ data object HTCodecs {
     @JvmField
     val UUID: Codec<UUID> = UUIDUtil.CODEC
 
-    /**
-     * [Enum]の[Codec]を返します。
-     * @param V [Enum]を実装したクラス
-     * @param factory [V]を[String]に変換するブロック
-     * @return [factory]に基づいた[Codec]
-     */
     @JvmStatic
-    inline fun <reified V : Enum<V>> stringEnum(factory: Function<V, String?>): Codec<V> =
-        Codec.stringResolver(factory) { name: String -> enumEntries<V>().firstOrNull { factory.apply(it) == name } }
+    fun <K : Any, V : Any> mapOf(keyCodec: Codec<K>, valueCodec: Codec<V>): Codec<Map<K, V>> = Codec.unboundedMap(keyCodec, valueCodec)
 
     /**
      * 指定した[left], [right]から，[Ior]の[MapCodec]を返します。
@@ -72,6 +65,16 @@ data object HTCodecs {
      */
     @JvmStatic
     fun <L : Any, R : Any> ior(left: MapCodec<L>, right: MapCodec<R>): MapCodec<Ior<L, R>> = HTIorMapCodec(left, right)
+
+    /**
+     * [Enum]の[Codec]を返します。
+     * @param V [Enum]を実装したクラス
+     * @param factory [V]を[String]に変換するブロック
+     * @return [factory]に基づいた[Codec]
+     */
+    @JvmStatic
+    inline fun <reified V : Enum<V>> stringEnum(factory: Function<V, String?>): Codec<V> =
+        Codec.stringResolver(factory) { name: String -> enumEntries<V>().firstOrNull { factory.apply(it) == name } }
 
     //    Ranged    //
 

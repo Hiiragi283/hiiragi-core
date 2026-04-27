@@ -126,11 +126,11 @@ data class HTRecipeContents(
         }
 
         fun addCatalyst(ingredient: Ingredient?) {
-            ingredient?.items?.toList()?.let(::addInput)
+            ingredient?.items?.toList()?.let(::addCatalyst)
         }
 
         fun addCatalyst(ingredient: HTItemIngredient?) {
-            ingredient?.getPreviewStacks()?.let(::addInput)
+            ingredient?.getPreviewStacks()?.let(::addCatalyst)
         }
 
         //    Output    //

@@ -120,6 +120,11 @@ abstract class HTIngredientHolder {
         lateinit var ingredient: Ingredient
             private set
 
+        fun getOrNull(): Ingredient? = when {
+            ::ingredient.isInitialized -> ingredient
+            else -> null
+        }
+
         /**
          * 保持している[Ingredient]を返します。
          * @return 値が初期化されていない場合は[Ingredient.EMPTY]

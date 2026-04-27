@@ -8,6 +8,7 @@ import hiiragi283.core.api.property.getOrThrow
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.resource.toId
 import net.minecraft.client.Minecraft
+import net.minecraft.core.HolderLookup
 import net.minecraft.core.Registry
 import net.minecraft.core.RegistryAccess
 import net.minecraft.server.MinecraftServer
@@ -99,6 +100,10 @@ fun interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any> {
 
         fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(recipeType: RecipeType<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> =
             this[MANAGER]?.getAllRecipesFor(recipeType)?.asSequence()?.map(HTRecipeHolder.Companion::from) ?: emptySequence()
+
+        fun <T : Any> lookup(key: RegistryKey<T>): HolderLookup.RegistryLookup<T>? = this[REGISTRY]?.lookup(key)?.getOrNull()
+
+        fun <T : Any> lookupOrThrow(key: RegistryKey<T>): HolderLookup.RegistryLookup<T> = this.getOrThrow(REGISTRY).lookupOrThrow(key)
 
         fun <T : Any> registry(key: RegistryKey<T>): Registry<T>? = this[REGISTRY]?.registry(key)?.getOrNull()
 

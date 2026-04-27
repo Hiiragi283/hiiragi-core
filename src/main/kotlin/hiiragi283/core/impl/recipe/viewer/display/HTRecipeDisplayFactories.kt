@@ -32,7 +32,7 @@ data object HTRecipeDisplayFactories {
         }
 
     @JvmStatic
-    private inline fun <RECIPE : HTProcessingRecipe<*>> processing(
+    inline fun <RECIPE : HTProcessingRecipe<*>> processing(
         holder: HTRecipeHolder<RECIPE>,
         builderAction: HTRecipeContents.Builder.(RECIPE) -> Unit,
     ): HTProcessingRecipeDisplay {

@@ -1,18 +1,30 @@
 package hiiragi283.core.impl.recipe.handler
 
 import hiiragi283.core.api.recipe.handler.HTInputHandler
-import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.recipe.ingredient.HTIngredient
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
+import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.getItemStack
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.crafting.Ingredient
 import java.util.function.Consumer
 
-class HTItemInputHandler(slot: HTItemSlot, private val remainderConsumer: Consumer<ItemStack>? = null) :
-    HTInputHandler<HTItemIngredient>,
+class HTItemInputHandler(private val slot: HTItemSlot, private val remainderConsumer: Consumer<ItemStack>? = null) :
+    HTInputHandler<HTItemResourceType>,
     HTItemSlot by slot {
-    override fun getMatchingAmount(ingredient: HTItemIngredient): Int = ingredient.getRequiredAmount(this.getItemStack())
+    fun consume(ingredient: Ingredient) {
+        when {
+            ingredient.test(this.getItemStack()) -> consume(1)
+            else -> return
+        }
+    }
+
+    override fun consume(ingredient: HTIngredient<HTItemResourceType>) {
+        val resource: HTItemResourceType = this.getResource() ?: return
+        ingredient.getRequiredAmount(resource, getAmount()).let(::consume)
+    }
 
     override fun consume(amount: Int) {
         if (amount > 0) {
@@ -26,4 +38,8 @@ class HTItemInputHandler(slot: HTItemSlot, private val remainderConsumer: Consum
             extract(amount, HTStorageAction.EXECUTE, HTStorageAccess.INTERNAL)
         }
     }
+
+    override fun getCapacity(): Int = slot.getCapacity()
+
+    override fun isEmpty(): Boolean = slot.isEmpty()
 }
