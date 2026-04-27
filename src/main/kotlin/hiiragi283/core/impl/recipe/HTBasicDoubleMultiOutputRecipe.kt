@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTDoubleMultiOutputRecipe
-import hiiragi283.core.api.recipe.base.HTProcessingRecipe
+import hiiragi283.core.api.recipe.base.HTProgressRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.recipe.result.HTItemResult
@@ -34,7 +34,7 @@ abstract class HTBasicDoubleMultiOutputRecipe(
                         .listOrElement(outputRange)
                         .fieldOf(HTConst.RESULTS)
                         .forGetter(HTBasicDoubleMultiOutputRecipe::results),
-                    HTProcessingRecipe.timeCodec(),
+                    HTProgressRecipe.timeCodec(),
                 ).apply(instance, factory::create)
         }
     }

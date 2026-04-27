@@ -3,7 +3,7 @@ package hiiragi283.core.impl.recipe
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.recipe.base.HTProcessingRecipe
+import hiiragi283.core.api.recipe.base.HTProgressRecipe
 import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
@@ -27,7 +27,7 @@ abstract class HTBasicSingleMultiOutputRecipe(val ingredient: HTItemIngredient, 
                         .listOrElement(outputRange)
                         .fieldOf(HTConst.RESULTS)
                         .forGetter(HTBasicSingleMultiOutputRecipe::results),
-                    HTProcessingRecipe.timeCodec(),
+                    HTProgressRecipe.timeCodec(),
                 ).apply(instance, factory::create)
         }
     }

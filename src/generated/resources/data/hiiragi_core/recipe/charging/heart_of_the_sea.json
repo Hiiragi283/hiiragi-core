@@ -1,5 +1,6 @@
 {
   "type": "hiiragi_core:charging",
+  "energy": 1024000,
   "ingredient": "hiiragi_core:elder_heart",
   "result": {
     "count": 1,

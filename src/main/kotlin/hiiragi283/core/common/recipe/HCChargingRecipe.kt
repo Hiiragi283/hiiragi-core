@@ -3,19 +3,21 @@ package hiiragi283.core.common.recipe
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.recipe.base.HTSerializableRecipe
+import hiiragi283.core.api.recipe.base.HTProgressRecipe
+import hiiragi283.core.api.recipe.base.HTSingleItemRecipe
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
-import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
+import net.minecraft.world.item.crafting.SingleRecipeInput
 
-class HCChargingRecipe(val ingredient: Ingredient, val result: HTItemResult, val requiredEnergy: Int) :
-    HTSerializableRecipe<HCChargingRecipe.Input> {
+class HCChargingRecipe(val ingredient: Ingredient, val result: HTItemResult, override val energy: Int) :
+    HTSingleItemRecipe.Serializable,
+    HTProgressRecipe.Energized<SingleRecipeInput> {
     companion object {
         const val DEFAULT_ENERGY = 1_024_000
 
@@ -25,30 +27,21 @@ class HCChargingRecipe(val ingredient: Ingredient, val result: HTItemResult, val
                 .group(
                     HTCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HCChargingRecipe::ingredient),
                     HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCChargingRecipe::result),
-                    HTCodecs.NON_NEGATIVE_INT.optionalFieldOf(HTConst.ENERGY, DEFAULT_ENERGY).forGetter(HCChargingRecipe::requiredEnergy),
+                    HTProgressRecipe.energyCodec(),
                 ).apply(instance, ::HCChargingRecipe)
         }
     }
 
-    override fun test(input: Input): Boolean {
-        val (item: ItemStack, energy: Int?) = input
-        if (!ingredient.test(item)) return false
-        return energy == null || energy >= requiredEnergy
+    override fun getRequiredAmount(input: SingleRecipeInput): Int = when {
+        ingredient.test(input.item()) -> 1
+        else -> 0
     }
 
-    override fun assemble(input: Input, preview: Boolean): ItemStack = result.getOrEmpty(input.energy == null)
+    override fun test(input: SingleRecipeInput): Boolean = ingredient.test(input.item())
+
+    override fun assemble(input: SingleRecipeInput, preview: Boolean): ItemStack = result.getOrEmpty(preview)
 
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.CHARGING
 
     override fun getType(): RecipeType<*> = HCRecipeTypes.CHARGING.get()
-
-    @JvmRecord
-    data class Input(val item: ItemStack, val energy: Int?) : RecipeInput {
-        override fun getItem(index: Int): ItemStack = when (index) {
-            0 -> item
-            else -> error("No item for index $index")
-        }
-
-        override fun size(): Int = 1
-    }
 }

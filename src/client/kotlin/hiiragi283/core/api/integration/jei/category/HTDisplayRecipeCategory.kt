@@ -2,10 +2,12 @@ package hiiragi283.core.api.integration.jei.category
 
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
-import hiiragi283.core.api.recipe.viewer.display.HTProcessingRecipeDisplay
+import hiiragi283.core.api.recipe.viewer.display.HTProgressRecipeDisplay
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
+import mezz.jei.api.gui.placement.IPlaceable
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder
 import mezz.jei.api.helpers.ICodecHelper
 import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
@@ -40,6 +42,10 @@ abstract class HTDisplayRecipeCategory<T : HTRecipeDisplay>(
     abstract class Simple(guiHelper: IGuiHelper, recipeType: HTRecipeViewerType<HTRecipeDisplay.Simple>) :
         Basic<HTRecipeDisplay.Simple>(guiHelper, recipeType, HTRecipeDisplay.Simple.CODEC)
 
-    abstract class Processing(guiHelper: IGuiHelper, recipeType: HTRecipeViewerType<HTProcessingRecipeDisplay>) :
-        Basic<HTProcessingRecipeDisplay>(guiHelper, recipeType, HTProcessingRecipeDisplay.CODEC)
+    abstract class Progress(guiHelper: IGuiHelper, recipeType: HTRecipeViewerType<HTProgressRecipeDisplay>) :
+        Basic<HTProgressRecipeDisplay>(guiHelper, recipeType, HTProgressRecipeDisplay.CODEC) {
+        protected fun IRecipeExtrasBuilder.addRecipeArrow(display: HTProgressRecipeDisplay): IPlaceable<*> = display.progressData.time
+            .map(this::addAnimatedRecipeArrow)
+            .orElseGet { this.addRecipeArrow() }
+    }
 }

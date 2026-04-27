@@ -6,7 +6,7 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
-import hiiragi283.core.api.recipe.viewer.display.HTProcessingRecipeDisplay
+import hiiragi283.core.api.recipe.viewer.display.HTProgressRecipeDisplay
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.text.Text
@@ -14,7 +14,6 @@ import hiiragi283.core.api.text.toText
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
-import hiiragi283.core.common.recipe.viewer.display.HCChargingRecipeDisplay
 import hiiragi283.core.common.recipe.viewer.display.HCExplodingRecipeDisplay
 import hiiragi283.core.impl.recipe.viewer.HTRecipeViewerTypeImpl
 import hiiragi283.core.setup.HCBlocks
@@ -32,11 +31,11 @@ data object HCRecipeViewerTypes {
         creteHolder(HTVanillaRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 6)
 
     @JvmField
-    val CHARGING: HTRecipeViewerType<HCChargingRecipeDisplay> =
+    val CHARGING: HTRecipeViewerType<HTProgressRecipeDisplay> =
         create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD, 18 * 4, 18 * 2)
 
     @JvmField
-    val CRUSHING: HTRecipeViewerType<HTProcessingRecipeDisplay> =
+    val CRUSHING: HTRecipeViewerType<HTProgressRecipeDisplay> =
         create(HCRecipeTypes.CRUSHING, Items.ANVIL, 18 * 5, 18 * 2)
 
     @JvmField
@@ -44,7 +43,7 @@ data object HCRecipeViewerTypes {
         create(HCRecipeTypes.EXPLODING, Items.TNT, 18 * 4, 18 * 2)
 
     @JvmField
-    val FORGING: HTRecipeViewerType<HTProcessingRecipeDisplay> =
+    val FORGING: HTRecipeViewerType<HTProgressRecipeDisplay> =
         create(HCRecipeTypes.FORGING, HCBlocks.FORGING_ANVIL, 18 * 6, 18 * 3)
 
     //    Tank Interaction    //

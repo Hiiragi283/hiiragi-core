@@ -2,6 +2,7 @@ package hiiragi283.core.impl.recipe
 
 import hiiragi283.core.api.recipe.base.FluidAmount
 import hiiragi283.core.api.recipe.base.HTItemOrFluidRecipe
+import hiiragi283.core.api.recipe.base.HTProgressRecipe
 import hiiragi283.core.api.recipe.base.ItemAmount
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
@@ -17,7 +18,8 @@ abstract class HTBasicItemOrFluidRecipe(
     val ingredient: Ior<HTItemIngredient, HTFluidIngredient>,
     val result: Ior<HTItemResult, HTFluidResult>,
     final override val time: Int,
-) : HTItemOrFluidRecipe.Serializable {
+) : HTItemOrFluidRecipe.Serializable,
+    HTProgressRecipe.Ticking<HTItemAndFluidRecipeInput> {
     final override fun getPredicate(): Ior<Predicate<ItemStack>, Predicate<FluidStack>> =
         ingredient.mapLeft { Predicate(it::test) }.mapRight { Predicate(it::test) }
 

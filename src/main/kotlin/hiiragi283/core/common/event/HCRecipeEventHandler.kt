@@ -80,7 +80,7 @@ object HCRecipeEventHandler {
         val level: Level = entity.level()
         if (level.isClientSide) return
         if (entity is ItemEntity && entity.isAlive) {
-            val input = HCChargingRecipe.Input(entity.item, null)
+            val input: SingleRecipeInput = createInput(entity)
             val recipe: HCChargingRecipe = getCaches(level).charging.getFirstRecipe(input, level) ?: return
             spawnResults(entity) { recipe.assemble(input, false) }
             entity.discard()

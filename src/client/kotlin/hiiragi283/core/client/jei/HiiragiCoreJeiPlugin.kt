@@ -33,7 +33,6 @@ import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
-import hiiragi283.core.common.recipe.viewer.display.HCChargingRecipeDisplay
 import hiiragi283.core.common.recipe.viewer.display.HCExplodingRecipeDisplay
 import hiiragi283.core.common.recipe.viewer.display.HCRecipeDisplayFactories
 import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
@@ -138,7 +137,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
 
     override fun registerRecipes(registration: IRecipeRegistration) {
         addLookupRecipes(registration, HCRecipeViewerTypes.BREWING, HTVanillaRecipeTypes.BREWING)
-        addDisplayRecipes(registration, HCRecipeViewerTypes.CHARGING, HCRecipeLookups.CHARGING, HCChargingRecipeDisplay::frolHolder)
+        addDisplayRecipes(registration, HCRecipeViewerTypes.CHARGING, HCRecipeLookups.CHARGING, HCRecipeDisplayFactories::charging)
         addDisplayRecipes(registration, HCRecipeViewerTypes.CRUSHING, HCRecipeLookups.CRUSHING) {
             it.castRecipe<HTBasicSingleMultiOutputRecipe>()?.let(HTRecipeDisplayFactories::singleMultiItem)
         }

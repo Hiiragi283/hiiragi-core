@@ -7,7 +7,7 @@ import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
  * @author Hiiragi Tsubasa
  * @since 0.15.0
  */
-interface HTDoubleItemRecipe : HTProcessingRecipe<HTDoubleRecipeInput> {
+interface HTDoubleItemRecipe : HTProgressRecipe<HTDoubleRecipeInput> {
     fun getBaseAmount(input: HTDoubleRecipeInput): Int
 
     fun getAdditionAmount(input: HTDoubleRecipeInput): Int

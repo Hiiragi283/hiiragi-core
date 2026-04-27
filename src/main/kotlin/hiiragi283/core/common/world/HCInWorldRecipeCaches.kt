@@ -16,7 +16,7 @@ import net.minecraft.world.item.crafting.SingleRecipeInput
 class HCInWorldRecipeCaches : HTValueSerializable {
     val crushing: HTLookupRecipeCache<SingleRecipeInput, HTSingleMultiOutputRecipe> =
         HTLookupRecipeCache.forRecipe(HCRecipeLookups.CRUSHING)
-    val charging: HTLookupRecipeCache<HCChargingRecipe.Input, HCChargingRecipe> =
+    val charging: HTLookupRecipeCache<SingleRecipeInput, HCChargingRecipe> =
         HTLookupRecipeCache.forRecipe(HCRecipeLookups.CHARGING)
     val exploding: HTLookupRecipeCache<HCExplodingRecipe.Input, HCExplodingRecipe> =
         HTLookupRecipeCache.forRecipe(HCRecipeLookups.EXPLODING)

@@ -1,5 +1,6 @@
 {
   "type": "hiiragi_core:charging",
+  "energy": 1024000,
   "ingredient": "#c:gems/quartz",
   "result": {
     "chance": "3/4",

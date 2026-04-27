@@ -1,5 +1,6 @@
 {
   "type": "hiiragi_core:charging",
+  "energy": 1024000,
   "ingredient": "#c:dusts/redstone",
   "result": {
     "type": "hiiragi_core:material_part",

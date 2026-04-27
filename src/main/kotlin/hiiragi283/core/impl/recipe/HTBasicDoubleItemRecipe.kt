@@ -1,6 +1,7 @@
 package hiiragi283.core.impl.recipe
 
 import hiiragi283.core.api.recipe.base.HTDoubleItemRecipe
+import hiiragi283.core.api.recipe.base.HTProgressRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.recipe.result.HTItemResult
@@ -12,7 +13,8 @@ abstract class HTBasicDoubleItemRecipe(
     val addition: Optional<HTItemIngredient>,
     val result: HTItemResult,
     final override val time: Int,
-) : HTDoubleItemRecipe.Serializable {
+) : HTDoubleItemRecipe.Serializable,
+    HTProgressRecipe.Ticking<HTDoubleRecipeInput> {
     final override fun getBaseAmount(input: HTDoubleRecipeInput): Int = base.getRequiredAmount(input.first)
 
     final override fun getAdditionAmount(input: HTDoubleRecipeInput): Int =

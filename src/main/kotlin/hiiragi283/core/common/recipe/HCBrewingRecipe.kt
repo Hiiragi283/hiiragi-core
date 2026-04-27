@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.FluidAmount
 import hiiragi283.core.api.recipe.base.HTItemOrFluidRecipe
+import hiiragi283.core.api.recipe.base.HTProgressRecipe
 import hiiragi283.core.api.recipe.base.ItemAmount
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.recipe.result.HTFluidResult
@@ -17,7 +18,8 @@ import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import java.util.function.Predicate
 
 data class HCBrewingRecipe(val potionFrom: FluidIngredient, val ingredient: Ingredient, val potionTo: HTFluidResult) :
-    HTItemOrFluidRecipe {
+    HTItemOrFluidRecipe,
+    HTProgressRecipe.Ticking<HTItemAndFluidRecipeInput> {
     companion object {
         @JvmField
         val CODEC: MapCodec<HCBrewingRecipe> = RecordCodecBuilder.mapCodec { instance ->

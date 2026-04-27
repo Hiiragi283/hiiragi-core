@@ -4,6 +4,7 @@ import hiiragi283.core.api.HTColoredContents
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.recipe.base.FluidAmount
 import hiiragi283.core.api.recipe.base.HTItemOrFluidRecipe
+import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.base.ItemAmount
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.resource.SupplierWithId
@@ -26,8 +27,7 @@ data class HCColoringRecipe(val inputTag: TagKey<Item>, val contents: HTColoredC
 
     override fun getRequiredAmount(input: HTItemAndFluidRecipeInput): Ior<ItemAmount, FluidAmount> = Ior.Right(250)
 
-    override val time: Int
-        get() = 100
+    override fun getProgressData(input: HTItemAndFluidRecipeInput): HTProgressData = HTProgressData.empty()
 
     override fun assemble(input: HTItemAndFluidRecipeInput, preview: Boolean): ItemStack {
         for ((color: HTDefaultColor, item: SupplierWithId<out ItemLike>) in contents) {

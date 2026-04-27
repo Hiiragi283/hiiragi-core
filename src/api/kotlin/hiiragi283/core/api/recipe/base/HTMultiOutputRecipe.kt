@@ -4,12 +4,12 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeInput
 
 /**
- * 複数の完成品をもつ[HTProcessingRecipe]の拡張インターフェースです。
+ * 複数の完成品をもつ[HTProgressRecipe]の拡張インターフェースです。
  * @param INPUT レシピの入力となるクラス
  * @author Hiiragi Tsubasa
  * @since 0.15.0
  */
-interface HTMultiOutputRecipe<INPUT : RecipeInput> : HTProcessingRecipe<INPUT> {
+interface HTMultiOutputRecipe<INPUT : RecipeInput> : HTProgressRecipe<INPUT> {
     /**
      * 指定された引数から完成品を作成します。
      * @param input レシピの入力
@@ -29,7 +29,7 @@ interface HTMultiOutputRecipe<INPUT : RecipeInput> : HTProcessingRecipe<INPUT> {
      */
     interface Serializable<INPUT : RecipeInput> :
         HTMultiOutputRecipe<INPUT>,
-        HTProcessingRecipe.Serializable<INPUT> {
+        HTSerializableRecipe<INPUT> {
         @Suppress("DEPRECATION")
         override fun assemble(input: INPUT, preview: Boolean): ItemStack = super<HTMultiOutputRecipe>.assemble(input, preview)
     }

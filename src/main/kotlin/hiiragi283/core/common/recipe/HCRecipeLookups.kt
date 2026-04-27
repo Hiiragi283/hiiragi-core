@@ -45,7 +45,7 @@ data object HCRecipeLookups {
     //    Basic    //
 
     @JvmField
-    val CHARGING: HTRecipeLookup<HCChargingRecipe.Input, HCChargingRecipe> = create(HCRecipeTypes.CHARGING)
+    val CHARGING: HTRecipeLookup<SingleRecipeInput, HCChargingRecipe> = create(HCRecipeTypes.CHARGING)
 
     @JvmField
     val CRUSHING: HTRecipeLookupImpl<SingleRecipeInput, HTSingleMultiOutputRecipe> = create(HTConst.CRUSHING)

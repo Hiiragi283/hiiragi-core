@@ -15,7 +15,7 @@ typealias FluidAmount = Int
  * @since 0.15.0
  */
 interface HTItemOrFluidRecipe :
-    HTProcessingRecipe<HTItemAndFluidRecipeInput>,
+    HTProgressRecipe<HTItemAndFluidRecipeInput>,
     HTFluidRecipe<HTItemAndFluidRecipeInput> {
     override fun test(input: HTItemAndFluidRecipeInput): Boolean {
         val (item: ItemStack, fluid: FluidStack) = input
@@ -39,5 +39,5 @@ interface HTItemOrFluidRecipe :
      */
     interface Serializable :
         HTItemOrFluidRecipe,
-        HTProcessingRecipe.Serializable<HTItemAndFluidRecipeInput>
+        HTSerializableRecipe<HTItemAndFluidRecipeInput>
 }
