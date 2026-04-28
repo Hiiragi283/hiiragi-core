@@ -3,7 +3,7 @@ package hiiragi283.core.api.integration.jei
 import hiiragi283.core.api.HTComparators
 import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.HTRecipeHolder
-import hiiragi283.core.api.recipe.HTRecipeLookup
+import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay

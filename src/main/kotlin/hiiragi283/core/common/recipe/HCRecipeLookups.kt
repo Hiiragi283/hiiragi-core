@@ -6,11 +6,11 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.VanillaColoredContents
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.recipe.HTRecipeHolder
-import hiiragi283.core.api.recipe.HTRecipeLookup
 import hiiragi283.core.api.recipe.base.HTDoubleMultiOutputRecipe
 import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
+import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.resource.SupplierWithId
@@ -18,10 +18,10 @@ import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.recipe.custom.HTPotionArrowFillingRecipe
 import hiiragi283.core.common.recipe.custom.HTPotionTankInteraction
 import hiiragi283.core.common.registry.HTDeferredRecipeType
-import hiiragi283.core.impl.recipe.HTRecipeLookupImpl
-import hiiragi283.core.impl.recipe.HTRecipeLookupManager
-import hiiragi283.core.impl.recipe.HTVanillaRecipeLookup
-import hiiragi283.core.impl.recipe.addProvider
+import hiiragi283.core.impl.recipe.cache.HTRecipeLookupImpl
+import hiiragi283.core.impl.recipe.cache.HTRecipeLookupManager
+import hiiragi283.core.impl.recipe.cache.HTVanillaRecipeLookup
+import hiiragi283.core.impl.recipe.cache.addProvider
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.tags.ItemTags
 import net.minecraft.tags.TagKey

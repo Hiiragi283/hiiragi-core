@@ -10,7 +10,7 @@ import hiiragi283.core.api.serialization.value.write
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCRecipeLookups
-import hiiragi283.core.impl.recipe.HTLookupRecipeCache
+import hiiragi283.core.impl.recipe.cache.HTLookupRecipeCache
 import net.minecraft.world.item.crafting.SingleRecipeInput
 
 class HCInWorldRecipeCaches : HTValueSerializable {

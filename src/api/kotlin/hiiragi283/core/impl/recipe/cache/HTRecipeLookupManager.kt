@@ -1,4 +1,4 @@
-package hiiragi283.core.impl.recipe
+package hiiragi283.core.impl.recipe.cache
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import net.minecraft.resources.ResourceLocation

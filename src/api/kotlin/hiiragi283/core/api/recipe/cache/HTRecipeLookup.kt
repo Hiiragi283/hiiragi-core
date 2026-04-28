@@ -1,10 +1,11 @@
-package hiiragi283.core.api.recipe
+package hiiragi283.core.api.recipe.cache
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.property.buildPropertyMap
 import hiiragi283.core.api.property.getOrThrow
+import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.resource.toId
 import net.minecraft.client.Minecraft
@@ -44,13 +45,13 @@ fun interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any> {
      * 指定した[level]からレシピの一覧を取得します。
      * @return [HTRecipeHolder]の[Sequence]
      */
-    fun getAllRecipes(level: Level): Sequence<HTRecipeHolder<RECIPE>> = Context.create(level).let(::getAllRecipes)
+    fun getAllRecipes(level: Level): Sequence<HTRecipeHolder<RECIPE>> = Context.Companion.create(level).let(::getAllRecipes)
 
     /**
      * 指定した[server]からレシピの一覧を取得します。
      * @return [HTRecipeHolder]の[Sequence]
      */
-    fun getAllRecipes(server: MinecraftServer): Sequence<HTRecipeHolder<RECIPE>> = Context.create(server).let(::getAllRecipes)
+    fun getAllRecipes(server: MinecraftServer): Sequence<HTRecipeHolder<RECIPE>> = Context.Companion.create(server).let(::getAllRecipes)
 
     /**
      * 指定した[context]からレシピの一覧を取得します。
@@ -77,7 +78,7 @@ fun interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any> {
             val REGISTRY: HTPropertyKey<RegistryAccess?> = create("registry")
 
             private fun <T : Any> create(path: String): HTPropertyKey<T?> =
-                HTPropertyKey.createNullable(HTConst.MINECRAFT.toId("recipe", path))
+                HTPropertyKey.Companion.createNullable(HTConst.MINECRAFT.toId("recipe", path))
 
             @JvmStatic
             fun create(level: Level): Context = Context(

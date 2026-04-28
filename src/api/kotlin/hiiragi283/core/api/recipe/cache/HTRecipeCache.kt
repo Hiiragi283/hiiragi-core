@@ -1,4 +1,4 @@
-package hiiragi283.core.api.recipe
+package hiiragi283.core.api.recipe.cache
 
 import hiiragi283.core.api.serialization.value.HTValueSerializable
 import net.minecraft.world.item.crafting.RecipeInput

@@ -1,7 +1,7 @@
-package hiiragi283.core.impl.recipe
+package hiiragi283.core.impl.recipe.cache
 
 import hiiragi283.core.api.recipe.HTRecipeHolder
-import hiiragi283.core.api.recipe.HTRecipeLookup
+import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeType

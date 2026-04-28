@@ -1,5 +1,6 @@
 package hiiragi283.core.api.recipe
 
+import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText

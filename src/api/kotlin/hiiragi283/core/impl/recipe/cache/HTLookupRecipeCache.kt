@@ -1,10 +1,10 @@
-package hiiragi283.core.impl.recipe
+package hiiragi283.core.impl.recipe.cache
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.recipe.HTRecipe
-import hiiragi283.core.api.recipe.HTRecipeCache
 import hiiragi283.core.api.recipe.HTRecipeHolder
-import hiiragi283.core.api.recipe.HTRecipeLookup
+import hiiragi283.core.api.recipe.cache.HTRecipeCache
+import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.util.Either

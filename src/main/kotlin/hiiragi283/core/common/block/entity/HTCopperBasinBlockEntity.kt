@@ -14,7 +14,7 @@ import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.storage.fluid.HTBasicFluidTank
-import hiiragi283.core.impl.recipe.HTLookupRecipeCache
+import hiiragi283.core.impl.recipe.cache.HTLookupRecipeCache
 import hiiragi283.core.impl.recipe.handler.HTFluidInputHandler
 import hiiragi283.core.impl.recipe.handler.HTFluidOutputHandler
 import hiiragi283.core.setup.HCBlockEntityTypes
