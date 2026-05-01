@@ -26,7 +26,6 @@ import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeManager
 import net.minecraft.world.item.crafting.RecipeType
-import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.minecraft.world.item.enchantment.ItemEnchantments
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.AABB
@@ -79,9 +78,9 @@ object HCRecipeEventHandler {
         val level: Level = entity.level()
         if (level.isClientSide) return
         if (entity is ItemEntity && entity.isAlive) {
-            val input: SingleRecipeInput = createInput(entity)
-            val recipe: HCChargingRecipe = getCaches(level).charging.getFirstRecipe(input, level) ?: return
-            spawnResults(entity) { recipe.assemble(input) }
+            val input: ItemStack = entity.item
+            val recipe: HCChargingRecipe = getCaches(level).charging.findFirstRecipe(input, level) ?: return
+            spawnResults(entity) { recipe.apply(input) }
             entity.discard()
             event.isCanceled = true
         }
@@ -102,12 +101,12 @@ object HCRecipeEventHandler {
     @JvmStatic
     private fun anvilCrushing(entity: ItemEntity) {
         val level: Level = entity.level()
-        val input: SingleRecipeInput = createInput(entity)
-        val recipe: HTCrushingRecipe = getCaches(level).crushing.getFirstRecipe(input, level) ?: return
-        val inputAmount: Int = recipe.getRequiredAmount(input.item())
+        val input: ItemStack = entity.item
+        val recipe: HTCrushingRecipe = getCaches(level).crushing.findFirstRecipe(input, level) ?: return
+        val inputAmount: Int = recipe.getRequiredAmount(input)
         val multiplier: Int = entity.item.count / inputAmount
         (0 until multiplier)
-            .flatMap { recipe.assemble(input) }
+            .flatMap { recipe.apply(input) }
             .let(HTShapelessRecipeHelper::mergeStacks)
             .mapNotNull(entity::spawnAtLocation)
             .forEach {
@@ -166,9 +165,9 @@ object HCRecipeEventHandler {
         while (iterator.hasNext()) {
             val entity: Entity = iterator.next()
             if (entity is ItemEntity && entity.isAlive && !isCompleted(entity)) {
-                val input: SingleRecipeInput = createInput(entity)
-                val recipe: HCExplodingRecipe = getCaches(level).exploding.getFirstRecipe(input, level) ?: continue
-                spawnResults(entity) { recipe.assemble(input) }
+                val input: ItemStack = entity.item
+                val recipe: HCExplodingRecipe = getCaches(level).exploding.findFirstRecipe(input, level) ?: continue
+                spawnResults(entity) { recipe.apply(input) }
                 if (entity.item.isEmpty) {
                     iterator.remove()
                     entity.discard()
@@ -189,9 +188,6 @@ object HCRecipeEventHandler {
     private fun setComplete(entity: Entity) {
         entity.persistentData.putBoolean(HTConst.COMPLETED_RECIPE, true)
     }
-
-    @JvmStatic
-    private fun createInput(entity: ItemEntity): SingleRecipeInput = SingleRecipeInput(entity.item)
 
     @JvmStatic
     private fun spawnResults(entity: ItemEntity, result: () -> ItemStack) {

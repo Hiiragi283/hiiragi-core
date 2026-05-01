@@ -1,0 +1,30 @@
+package hiiragi283.core.impl.recipe.cache
+
+import hiiragi283.core.api.recipe.HTRecipeHolder
+import hiiragi283.core.api.recipe.cache.HTRecipeLookup
+import net.minecraft.world.level.Level
+import java.util.function.BiPredicate
+
+abstract class HTDoubleInputRecipeCache<INPUT_A : Any, INPUT_B : Any, RECIPE : BiPredicate<INPUT_A, INPUT_B>>(
+    lookup: HTRecipeLookup<RECIPE>,
+) : HTBasicRecipeCache<RECIPE>(lookup) {
+    fun findFirstRecipe(firstInput: INPUT_A, secondInput: INPUT_B, level: Level): RECIPE? =
+        findFirstRecipe(firstInput, secondInput, HTRecipeLookup.Context.create(level))
+
+    fun findFirstRecipe(firstInput: INPUT_A, secondInput: INPUT_B, context: HTRecipeLookup.Context): RECIPE? =
+        findFirstHolder(firstInput, secondInput, context)?.recipe
+
+    fun findFirstHolder(firstInput: INPUT_A, secondInput: INPUT_B, context: HTRecipeLookup.Context): HTRecipeHolder<RECIPE>? {
+        if (isEmpty(firstInput, secondInput)) return null
+        if (lastRecipe != null && lastRecipe!!.recipe.test(firstInput, secondInput)) {
+            return lastRecipe
+        }
+        lastRecipe = lookup
+            .getAllRecipes(context)
+            .firstOrNull { (_, recipe) -> recipe.test(firstInput, secondInput) }
+            ?: return null
+        return lastRecipe
+    }
+
+    protected abstract fun isEmpty(firstInput: INPUT_A, secondInput: INPUT_B): Boolean
+}

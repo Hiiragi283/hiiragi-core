@@ -45,7 +45,7 @@ class HCForgingRecipe(
     override fun getRequiredAmount(first: ItemStack, second: ItemStack): Pair<Int, Int> =
         primary.getRequiredAmount(first) to secondary.getRequiredAmount(second)
 
-    override fun assemble(input: HTDoubleRecipeInput): ItemStack = result.getOrEmpty()
+    override fun apply(first: ItemStack, second: ItemStack): ItemStack = result.getOrEmpty()
 
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.FORGING
 

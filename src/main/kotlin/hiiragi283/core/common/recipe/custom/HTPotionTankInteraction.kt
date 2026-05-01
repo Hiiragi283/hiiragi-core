@@ -10,7 +10,6 @@ import hiiragi283.core.api.util.Ior
 import hiiragi283.core.util.HCPotionFluidHelper
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
-import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.neoforged.neoforge.fluids.FluidStack
 
 data object HTPotionTankInteraction {
@@ -28,8 +27,8 @@ data object HTPotionTankInteraction {
             else -> 0
         }
 
-        override fun assemble(input: SingleRecipeInput): Ior<ItemStack, FluidStack> {
-            val contents: BottledPotionContents = HTPotionHelper.getContentsFromBottle(input.item()) ?: return Ior.Right(FluidStack.EMPTY)
+        override fun apply(input: ItemStack): Ior<ItemStack, FluidStack> {
+            val contents: BottledPotionContents = HTPotionHelper.getContentsFromBottle(input) ?: return Ior.Right(FluidStack.EMPTY)
             return Ior.Both(
                 ItemStack(Items.GLASS_BOTTLE),
                 HCPotionFluidHelper.createFluid(contents, FLUID_AMOUNT),

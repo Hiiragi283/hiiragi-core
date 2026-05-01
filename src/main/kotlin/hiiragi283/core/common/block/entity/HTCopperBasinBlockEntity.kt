@@ -1,21 +1,17 @@
 package hiiragi283.core.common.block.entity
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
-import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
+import hiiragi283.core.api.recipe.cache.HTRecipeCaches
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
-import hiiragi283.core.api.serialization.value.read
-import hiiragi283.core.api.serialization.value.write
 import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.api.util.Ior
 import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.storage.fluid.HTBasicFluidTank
-import hiiragi283.core.impl.recipe.cache.HTLookupRecipeCache
 import hiiragi283.core.impl.recipe.handler.HTFluidInputHandler
 import hiiragi283.core.impl.recipe.handler.HTFluidOutputHandler
 import hiiragi283.core.setup.HCBlockEntityTypes
@@ -27,7 +23,6 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.fluids.FluidStack
@@ -48,22 +43,19 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
         }
     }
 
-    private val emptyingCache: HTLookupRecipeCache<SingleRecipeInput, HTTankEmptyingRecipe> =
-        HTLookupRecipeCache.forRecipe(HCRecipeLookups.EMPTYING)
-    private val fillingCache: HTLookupRecipeCache<HTItemAndFluidRecipeInput, HTTankFillingRecipe> =
-        HTLookupRecipeCache.forRecipe(HCRecipeLookups.FILLING)
+    private val emptyingCache: HTRecipeCaches.SingleItem<HTTankEmptyingRecipe> = HTRecipeCaches.SingleItem(HCRecipeLookups.EMPTYING)
+    private val fillingCache: HTRecipeCaches.ItemAndFluid<HTTankFillingRecipe> = HTRecipeCaches.ItemAndFluid(HCRecipeLookups.FILLING)
     private val fluidInputHandler: HTFluidInputHandler by lazy { HTFluidInputHandler(tank) }
     private val fluidOutputHandler: HTFluidOutputHandler by lazy { HTFluidOutputHandler.single(tank) }
 
     fun drainContainer(player: Player, hand: InteractionHand): Boolean {
         val stack: ItemStack = player.getItemInHand(hand)
-        val input = SingleRecipeInput(stack)
-        if (input.isEmpty) return false
+        if (stack.isEmpty) return false
 
         val level: Level = player.level()
-        val recipe: HTTankEmptyingRecipe = emptyingCache.getFirstRecipe(input, level) ?: return false
+        val recipe: HTTankEmptyingRecipe = emptyingCache.findFirstRecipe(stack, level) ?: return false
 
-        val rawResult: Ior<ItemStack, FluidStack> = recipe.assemble(input)
+        val rawResult: Ior<ItemStack, FluidStack> = recipe.apply(stack)
         val fluidStack: FluidStack = rawResult.getRight() ?: FluidStack.EMPTY
         if (!fluidStack.isEmpty && fluidOutputHandler.canInsert(fluidStack)) {
             rawResult.getLeft()?.let { HTItemDropHelper.giveStackTo(player, it) }
@@ -76,18 +68,16 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
     }
 
     fun fillContainer(player: Player, hand: InteractionHand): Boolean {
-        val stack: ItemStack = player.getItemInHand(hand)
-        val input = HTItemAndFluidRecipeInput(stack, fluidInputHandler.getFluidStack())
-        if (input.isEmpty) return false
-
+        val itemStack: ItemStack = player.getItemInHand(hand)
+        val fluidStack: FluidStack = fluidInputHandler.getFluidStack()
         val level: Level = player.level()
-        val recipe: HTTankFillingRecipe = fillingCache.getFirstRecipe(input, level) ?: return false
+        val recipe: HTTankFillingRecipe = fillingCache.findFirstRecipe(itemStack, fluidStack, level) ?: return false
 
-        val filledContainer: ItemStack = recipe.assemble(input)
+        val filledContainer: ItemStack = recipe.apply(itemStack, fluidStack)
         HTItemDropHelper.giveStackTo(player, filledContainer)
-        stack.consume(1, player)
+        itemStack.consume(1, player)
         recipe
-            .getRequiredAmount(input.item, input.fluid)
+            .getRequiredAmount(itemStack, fluidStack)
             .second
             .let(fluidInputHandler::consume)
         return true
@@ -100,18 +90,6 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
     override fun getComparatorOutput(state: BlockState, level: Level, pos: BlockPos): Int = HTStorageHelper.calculateRedstoneLevel(tank)
 
     //    Sync    //
-
-    override fun writeValue(output: HTValueOutput) {
-        super.writeValue(output)
-        output.write(HTConst.EMPTYING, emptyingCache)
-        output.write(HTConst.FILLING, fillingCache)
-    }
-
-    override fun readValue(input: HTValueInput) {
-        super.readValue(input)
-        input.read(HTConst.EMPTYING, emptyingCache)
-        input.read(HTConst.FILLING, fillingCache)
-    }
 
     override fun initReducedUpdateTag(output: HTValueOutput) {
         super.initReducedUpdateTag(output)

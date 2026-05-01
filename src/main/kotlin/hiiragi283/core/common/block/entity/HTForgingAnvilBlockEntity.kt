@@ -3,7 +3,7 @@ package hiiragi283.core.common.block.entity
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.recipe.base.HTForgingRecipe
-import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
+import hiiragi283.core.api.recipe.cache.HTRecipeCaches
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
@@ -12,7 +12,6 @@ import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.storage.item.HTBasicItemSlot
-import hiiragi283.core.impl.recipe.cache.HTLookupRecipeCache
 import hiiragi283.core.impl.recipe.handler.HTItemInputHandler
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.util.HTItemDropHelper
@@ -50,31 +49,19 @@ class HTForgingAnvilBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntit
 
     //    Processing    //
 
-    private val cache: HTLookupRecipeCache<HTDoubleRecipeInput, HTForgingRecipe> =
-        HTLookupRecipeCache.forRecipe(HCRecipeLookups.FORGING)
+    private val cache: HTRecipeCaches.DoubleItem<HTForgingRecipe> =
+        HTRecipeCaches.DoubleItem(HCRecipeLookups.FORGING)
     private val inputHandler: HTItemInputHandler by lazy { HTItemInputHandler(slot) }
-
-    override fun writeValue(output: HTValueOutput) {
-        super.writeValue(output)
-        cache.serialize(output)
-    }
-
-    override fun readValue(input: HTValueInput) {
-        super.readValue(input)
-        cache.deserialize(input)
-    }
 
     fun process(player: Player): Boolean {
         val stack: ItemStack = inputHandler.getItemStack()
         val stack1: ItemStack = player.getItemInHand(InteractionHand.OFF_HAND)
-        val input = HTDoubleRecipeInput(stack, stack1)
-        if (input.isEmpty) return false
         val level: Level = player.level()
-        val recipe: HTForgingRecipe = cache.getFirstRecipe(input, level) ?: return false
+        val recipe: HTForgingRecipe = cache.findFirstRecipe(stack, stack1, level) ?: return false
         // outputs
-        recipe.assemble(input).let(HTItemDropHelper::giveStackTo.partially1(player))
+        recipe.apply(stack, stack1).let(HTItemDropHelper::giveStackTo.partially1(player))
         // inputs
-        val (primaryAmount: Int, secondaryAmount: Int) = recipe.getRequiredAmount(input.first, input.second) // TODO
+        val (primaryAmount: Int, secondaryAmount: Int) = recipe.getRequiredAmount(stack, stack1) // TODO
         inputHandler.consume(primaryAmount)
         stack1.shrink(secondaryAmount)
         // sound

@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.registry.HTDeferredAttachmentType
 import hiiragi283.core.common.registry.register.HTDeferredAttachmentRegister
 import hiiragi283.core.common.world.HCInWorldRecipeCaches
+import net.neoforged.neoforge.attachment.AttachmentType
 
 object HCAttachmentTypes {
     @JvmField
@@ -11,5 +12,5 @@ object HCAttachmentTypes {
 
     @JvmField
     val IN_WORLD_RECIPE_CACHES: HTDeferredAttachmentType<HCInWorldRecipeCaches> =
-        REGISTER.registerSerializable("in_world_recipe_caches", ::HCInWorldRecipeCaches)
+        REGISTER.registerType("in_world_recipe_caches", AttachmentType.builder(::HCInWorldRecipeCaches))
 }
