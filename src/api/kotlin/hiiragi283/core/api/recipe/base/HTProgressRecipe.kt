@@ -17,17 +17,4 @@ interface HTProgressRecipe<INPUT : RecipeInput> {
 
         override fun getProgressData(input: INPUT): HTProgressData = progressData
     }
-
-    //    Ticking    //
-
-    /**
-     * 一定の処理時間のみを持つ[HTProgressRecipe]の拡張インターフェースです。
-     * @author Hiiragi Tsubasa
-     * @since 0.16.0
-     */
-    interface Ticking<INPUT : RecipeInput> : HTProgressRecipe<INPUT> {
-        val time: Int
-
-        override fun getProgressData(input: INPUT): HTProgressData = HTProgressData.time(time)
-    }
 }

@@ -5,7 +5,7 @@ import hiiragi283.core.api.recipe.base.HTCrushingRecipe
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
-import hiiragi283.core.impl.recipe.HTItemToMultiItemRecipe
+import hiiragi283.core.impl.recipe.HTBasicItemToMultiItemRecipe
 import hiiragi283.core.impl.recipe.HTSerializableRecipe
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
@@ -14,7 +14,7 @@ import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput
 
 class HCCrushingRecipe(ingredient: HTItemIngredient, results: List<HTItemResult>, progressData: HTProgressData) :
-    HTItemToMultiItemRecipe(ingredient, results, progressData),
+    HTBasicItemToMultiItemRecipe(ingredient, results, progressData),
     HTSerializableRecipe<SingleRecipeInput>,
     HTCrushingRecipe {
     companion object {

@@ -9,15 +9,10 @@ import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.HTRecipeType
-import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
-import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
-import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.toHolderSet
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.common.recipe.ingredient.HTPotionFluidIngredient
-import hiiragi283.core.impl.recipe.HTItemToItemRecipe
-import hiiragi283.core.mixin.AbstractCookingRecipeAccessor
 import hiiragi283.core.mixin.PotionBrewingAccessor
 import hiiragi283.core.mixin.PotionBrewingMixAccessor
 import hiiragi283.core.util.HCPotionFluidHelper
@@ -40,31 +35,20 @@ import net.neoforged.neoforge.fluids.crafting.FluidIngredient
  */
 object HTVanillaRecipeTypes {
     @JvmField
-    val SMELTING: HTRecipeType<HTItemToItemRecipe> = CookingType(RecipeType.SMELTING)
+    val SMELTING: HTRecipeType<HCCookingRecipe> = CookingType(RecipeType.SMELTING)
 
     @JvmField
-    val BLASTING: HTRecipeType<HTItemToItemRecipe> = CookingType(RecipeType.BLASTING)
+    val BLASTING: HTRecipeType<HCCookingRecipe> = CookingType(RecipeType.BLASTING)
 
     @JvmField
-    val SMOKING: HTRecipeType<HTItemToItemRecipe> = CookingType(RecipeType.SMOKING)
+    val SMOKING: HTRecipeType<HCCookingRecipe> = CookingType(RecipeType.SMOKING)
 
     private class CookingType<RECIPE : AbstractCookingRecipe>(private val recipeType: RecipeType<RECIPE>) :
-        HTRecipeType<HTItemToItemRecipe> {
+        HTRecipeType<HCCookingRecipe> {
         override fun getId(): ResourceLocation = ResourceLocation.parse(recipeType.toString())
 
-        override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<HTRecipeHolder<HTItemToItemRecipe>> =
-            context.getAllRecipes(recipeType).map { holder: HTRecipeHolder<RECIPE> ->
-                val (id: ResourceLocation, recipe: RECIPE) = holder
-                val accessor: AbstractCookingRecipeAccessor = (recipe as AbstractCookingRecipeAccessor)
-                HTRecipeHolder(
-                    id,
-                    HTItemToItemRecipe(
-                        HTItemIngredient(accessor.ingredient, 1),
-                        HTItemResult(accessor.result),
-                        HTProgressData.time(recipe.cookingTime),
-                    ),
-                )
-            }
+        override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<HTRecipeHolder<HCCookingRecipe>> =
+            context.getAllRecipes(recipeType).map { holder: HTRecipeHolder<RECIPE> -> holder.mapRecipe(::HCCookingRecipe) }
     }
 
     @JvmField
