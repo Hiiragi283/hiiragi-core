@@ -3,12 +3,13 @@ package hiiragi283.core.common.recipe
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.recipe.base.HTSerializableRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
+import hiiragi283.core.api.recipe.ingredient.getRequiredAmount
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
+import hiiragi283.core.impl.recipe.HTSerializableRecipe
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.world.item.ItemStack
@@ -36,9 +37,10 @@ class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: H
 
     override fun testFluid(stack: FluidStack): Boolean = fluidIngredient.test(stack)
 
-    override fun getRequiredFluidAmount(input: HTItemAndFluidRecipeInput): Int = fluidIngredient.getRequiredAmount(input.fluid)
+    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): ItemStack = result.getOrEmpty()
 
-    override fun assemble(input: HTItemAndFluidRecipeInput, preview: Boolean): ItemStack = result.getOrEmpty(preview)
+    override fun getRequiredAmount(first: ItemStack, second: FluidStack): Pair<Int, Int> =
+        itemIngredient.getRequiredAmount(first) to fluidIngredient.getRequiredAmount(second)
 
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.FILLING
 

@@ -23,6 +23,11 @@ import net.minecraft.util.ByIdMap
 import org.apache.commons.lang3.math.Fraction
 import java.util.UUID
 
+/**
+ * Hiiragi Coreとそれを前提とするmodで使用される[StreamCodec]をまとめたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.16.0
+ */
 data object HTStreamCodecs {
     @JvmField
     val FRACTION: StreamCodec<ByteBuf, Fraction> = StreamCodec.composite(

@@ -6,8 +6,6 @@ import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
 import org.apache.commons.lang3.math.Fraction
 
-typealias HTRecipeHandler<INPUT, RECIPE> = HTProgressHandler<HTHandledRecipe<INPUT, RECIPE>>
-
 /**
  * レシピの処理を行う抽象クラスです。
  * @param T レシピのクラス

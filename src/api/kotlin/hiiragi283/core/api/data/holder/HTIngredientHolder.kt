@@ -41,6 +41,7 @@ abstract class HTIngredientHolder {
 
     /**
      * 指定した[rawTagKey]を追加します。
+     * @since 0.16.0
      */
     @JvmName("addRawTag")
     operator fun plusAssign(rawTagKey: RawTagKey) {
@@ -49,6 +50,7 @@ abstract class HTIngredientHolder {
 
     /**
      * 指定した[rawTagKeys]を単一の材料として追加します。
+     * @since 0.16.0
      */
     @JvmName("addRawTags")
     operator fun plusAssign(rawTagKeys: Iterable<RawTagKey>) {
@@ -120,6 +122,9 @@ abstract class HTIngredientHolder {
         lateinit var ingredient: Ingredient
             private set
 
+        /**
+         * @since 0.16.0
+         */
         fun getOrNull(): Ingredient? = when {
             ::ingredient.isInitialized -> ingredient
             else -> null

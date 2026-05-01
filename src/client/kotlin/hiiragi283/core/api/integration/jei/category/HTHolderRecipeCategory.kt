@@ -11,8 +11,6 @@ import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
 import mezz.jei.api.recipe.IRecipeManager
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.item.crafting.Recipe
-import net.minecraft.world.item.crafting.RecipeSerializer
 
 /**
  * [HTRecipeHolder]に基づいた[HTBasicRecipeCategory]の拡張クラスです。
@@ -45,21 +43,4 @@ abstract class HTHolderRecipeCategory<RECIPE : Any>(
     final override fun getRegistryName(recipe: HTRecipeHolder<RECIPE>): ResourceLocation = recipe.id
 
     final override fun getCodec(codecHelper: ICodecHelper, recipeManager: IRecipeManager): Codec<HTRecipeHolder<RECIPE>> = codec
-
-    /**
-     * [Recipe]向けの[HTHolderRecipeCategory]の拡張クラスです。
-     * @author Hiiragi Tsubasa
-     * @since 0.15.1
-     */
-    abstract class Registered<RECIPE : Recipe<*>>(
-        guiHelper: IGuiHelper,
-        recipeType: HTHolderRecipeViewerType<RECIPE>,
-        codec: MapCodec<RECIPE>,
-    ) : HTHolderRecipeCategory<RECIPE>(guiHelper, recipeType, codec) {
-        constructor(
-            guiHelper: IGuiHelper,
-            recipeType: HTHolderRecipeViewerType<RECIPE>,
-            serializer: RecipeSerializer<RECIPE>,
-        ) : this(guiHelper, recipeType, serializer.codec())
-    }
 }

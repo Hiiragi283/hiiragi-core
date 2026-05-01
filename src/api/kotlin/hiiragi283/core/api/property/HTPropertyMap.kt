@@ -26,7 +26,7 @@ class HTPropertyMap private constructor(private val map: Map<HTPropertyKey<*>, A
     /**
      * 何も値を返さない[HTPropertyGetter]の実装クラスです。
      * @author Hiiragi Tsubasa
-     * @since 0.15.3
+     * @since 0.16.0
      */
     data object Empty : HTPropertyGetter {
         override fun <T> get(key: HTPropertyKey<T>): T? = null
@@ -35,7 +35,7 @@ class HTPropertyMap private constructor(private val map: Map<HTPropertyKey<*>, A
     /**
      * [HTPropertyMap]のビルダークラスです。
      * @author Hiiragi Tsubasa
-     * @since 0.15.3
+     * @since 0.16.0
      */
     class Builder private constructor(private val map: MutableMap<HTPropertyKey<*>, Any>, delegate: HTPropertyMap) :
         HTPropertyGetter by delegate {

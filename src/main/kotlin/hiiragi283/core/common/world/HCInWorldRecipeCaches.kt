@@ -1,35 +1,16 @@
 package hiiragi283.core.common.world
 
-import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
-import hiiragi283.core.api.serialization.value.HTValueInput
-import hiiragi283.core.api.serialization.value.HTValueOutput
-import hiiragi283.core.api.serialization.value.HTValueSerializable
-import hiiragi283.core.api.serialization.value.read
-import hiiragi283.core.api.serialization.value.write
+import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
+import hiiragi283.core.api.recipe.cache.HTRecipeCaches
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCRecipeLookups
-import hiiragi283.core.impl.recipe.HTLookupRecipeCache
-import net.minecraft.world.item.crafting.SingleRecipeInput
 
-class HCInWorldRecipeCaches : HTValueSerializable {
-    val crushing: HTLookupRecipeCache<SingleRecipeInput, HTSingleMultiOutputRecipe> =
-        HTLookupRecipeCache.forRecipe(HCRecipeLookups.CRUSHING)
-    val charging: HTLookupRecipeCache<SingleRecipeInput, HCChargingRecipe> =
-        HTLookupRecipeCache.forRecipe(HCRecipeLookups.CHARGING)
-    val exploding: HTLookupRecipeCache<HCExplodingRecipe.Input, HCExplodingRecipe> =
-        HTLookupRecipeCache.forRecipe(HCRecipeLookups.EXPLODING)
-
-    override fun serialize(output: HTValueOutput) {
-        output.write(HTConst.CRUSHING, crushing)
-        output.write(HTConst.CHARGING, charging)
-        output.write(HTConst.EXPLODING, exploding)
-    }
-
-    override fun deserialize(input: HTValueInput) {
-        input.read(HTConst.CRUSHING, crushing)
-        input.read(HTConst.CHARGING, charging)
-        input.read(HTConst.EXPLODING, exploding)
-    }
+class HCInWorldRecipeCaches {
+    val crushing: HTRecipeCaches.SingleItem<HTItemToMultiItemRecipe> =
+        HTRecipeCaches.SingleItem(HCRecipeLookups.CRUSHING)
+    val charging: HTRecipeCaches.SingleItem<HCChargingRecipe> =
+        HTRecipeCaches.SingleItem(HCRecipeLookups.CHARGING)
+    val exploding: HTRecipeCaches.SingleItem<HCExplodingRecipe> =
+        HTRecipeCaches.SingleItem(HCRecipeLookups.EXPLODING)
 }

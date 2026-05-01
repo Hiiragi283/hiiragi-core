@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceKey
 /**
  * [Holder]向けの[HTSimpleHolderLike]の実装クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.15.3
+ * @since 0.16.0
  */
 @JvmInline
 internal value class HTRegistryHolderLike<R : Any>(val holder: Holder<R>) : HTSimpleHolderLike<R> {

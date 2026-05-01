@@ -3,8 +3,6 @@ package hiiragi283.core.common.item
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.common.capability.HTFluidCapabilities
-import hiiragi283.core.common.recipe.HCColoringRecipe
-import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.impl.recipe.handler.HTFluidInputHandler
 import hiiragi283.core.impl.storage.fluid.HTItemFluidTank
 import hiiragi283.core.util.HTItemDropHelper
@@ -64,7 +62,7 @@ class HTPaintBrushItem(properties: Properties) : Item(properties) {
         val tank: HTItemFluidTank = HTFluidCapabilities.getFirstTank(mainStack) as? HTItemFluidTank ?: return InteractionResult.FAIL
         val fluidInput = HTFluidInputHandler(tank)
         val input = HTItemAndFluidRecipeInput(offStack, fluidInput.getFluidStack())
-        val recipe: HCColoringRecipe = HCRecipeLookups.COLORING
+        /*val recipe: HCColoringRecipe = HCRecipeLookups.COLORING
             .findFirst(level) { it.test(input) }
             ?.recipe
             ?: return InteractionResult.PASS
@@ -72,7 +70,7 @@ class HTPaintBrushItem(properties: Properties) : Item(properties) {
         recipe.assemble(input, false).let(onSucceeded)
         // input
         offStack.consume(1, player)
-        recipe.getRequiredAmount(input).getRight()?.let(fluidInput::consume)
+        recipe.getRequiredAmount(input).getRight()?.let(fluidInput::consume)*/
         player.setItemInHand(InteractionHand.MAIN_HAND, tank.container)
         return InteractionResult.sidedSuccess(level.isClientSide)
     }

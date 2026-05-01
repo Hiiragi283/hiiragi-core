@@ -6,6 +6,8 @@ import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.insert
 import hiiragi283.core.util.HTStackSlotHelper
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 
 interface HTItemOutputHandler : HTOutputHandler<ItemStack> {
@@ -21,6 +23,9 @@ interface HTItemOutputHandler : HTOutputHandler<ItemStack> {
 
         @JvmStatic
         fun multiple(slots: Sequence<HTItemSlot>): HTItemOutputHandler = Multiple(slots)
+
+        @JvmStatic
+        fun inventory(player: Player): HTItemOutputHandler = PlayerInv(player.inventory)
     }
 
     private class Single(private val slot: HTItemSlot) : HTItemOutputHandler {
@@ -46,6 +51,14 @@ interface HTItemOutputHandler : HTOutputHandler<ItemStack> {
                 HTStorageAction.EXECUTE,
                 HTStorageAccess.INTERNAL,
             )
+        }
+    }
+
+    private class PlayerInv(private val inventory: Inventory) : HTItemOutputHandler {
+        override fun canInsert(stack: ItemStack): Boolean = true
+
+        override fun insert(stack: ItemStack) {
+            inventory.add(stack)
         }
     }
 }

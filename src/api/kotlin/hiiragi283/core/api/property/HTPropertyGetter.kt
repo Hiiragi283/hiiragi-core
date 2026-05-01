@@ -3,7 +3,7 @@ package hiiragi283.core.api.property
 /**
  * [HTPropertyKey]に基づいてデータを管理するインターフェースです。
  * @author Hiiragi Tsubasa
- * @since 0.15.3
+ * @since 0.16.0
  */
 interface HTPropertyGetter {
     /**

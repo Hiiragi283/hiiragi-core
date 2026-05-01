@@ -4,7 +4,6 @@
     "#c:cobblestones/normal",
     "#c:stones"
   ],
-  "required_power": 3,
   "result": {
     "chance": "1/2",
     "count": 1,

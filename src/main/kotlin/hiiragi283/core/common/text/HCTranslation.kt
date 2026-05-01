@@ -16,9 +16,6 @@ enum class HCTranslation(type: String, vararg path: String) : HTTranslation {
     CREATIVE_TAB_MATERIAL(HTConst.ITEM_GROUP, "material"),
     CREATIVE_TAB_EQUIPMENT(HTConst.ITEM_GROUP, "equipment"),
 
-    // GUI
-    EXPLOSION_POWER("gui", "explosion_power"),
-
     // Item
     AMBROSIA(HTConst.DESCRIPTION, "ambrosia"),
     ANCIENT_UPGRADE(HTConst.DESCRIPTION, "ancient_upgrade"),

@@ -13,7 +13,7 @@ import net.minecraft.tags.TagKey
 /**
  * ジェネリクスのない[TagKey]を表すクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.15.3
+ * @since 0.16.0
  */
 @JvmInline
 value class RawTagKey private constructor(val location: ResourceLocation) {

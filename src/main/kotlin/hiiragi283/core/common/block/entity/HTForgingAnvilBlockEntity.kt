@@ -2,8 +2,8 @@ package hiiragi283.core.common.block.entity
 
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.function.partially1
-import hiiragi283.core.api.recipe.base.HTDoubleMultiOutputRecipe
-import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
+import hiiragi283.core.api.recipe.base.HTDoubleItemToItemRecipe
+import hiiragi283.core.api.recipe.cache.HTRecipeCaches
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
@@ -12,7 +12,6 @@ import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.storage.item.HTBasicItemSlot
-import hiiragi283.core.impl.recipe.HTLookupRecipeCache
 import hiiragi283.core.impl.recipe.handler.HTItemInputHandler
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.util.HTItemDropHelper
@@ -50,32 +49,21 @@ class HTForgingAnvilBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntit
 
     //    Processing    //
 
-    private val cache: HTLookupRecipeCache<HTDoubleRecipeInput, HTDoubleMultiOutputRecipe> =
-        HTLookupRecipeCache.forRecipe(HCRecipeLookups.FORGING)
+    private val cache: HTRecipeCaches.DoubleItem<HTDoubleItemToItemRecipe> =
+        HTRecipeCaches.DoubleItem(HCRecipeLookups.FORGING)
     private val inputHandler: HTItemInputHandler by lazy { HTItemInputHandler(slot) }
-
-    override fun writeValue(output: HTValueOutput) {
-        super.writeValue(output)
-        cache.serialize(output)
-    }
-
-    override fun readValue(input: HTValueInput) {
-        super.readValue(input)
-        cache.deserialize(input)
-    }
 
     fun process(player: Player): Boolean {
         val stack: ItemStack = inputHandler.getItemStack()
         val stack1: ItemStack = player.getItemInHand(InteractionHand.OFF_HAND)
-        val input = HTDoubleRecipeInput(stack, stack1)
-        if (input.isEmpty) return false
         val level: Level = player.level()
-        val recipe: HTDoubleMultiOutputRecipe = cache.getFirstRecipe(input, level) ?: return false
+        val recipe: HTDoubleItemToItemRecipe = cache.findFirstRecipe(stack, stack1, level) ?: return false
         // outputs
-        recipe.assembleItems(input, false).forEach(HTItemDropHelper::giveStackTo.partially1(player))
+        recipe.assemble(stack, stack1).let(HTItemDropHelper::giveStackTo.partially1(player))
         // inputs
-        input.let(recipe::getBaseAmount).let(inputHandler::consume)
-        input.let(recipe::getAdditionAmount).let(stack1::shrink)
+        val (primaryAmount: Int, secondaryAmount: Int) = recipe.getRequiredAmount(stack, stack1) // TODO
+        inputHandler.consume(primaryAmount)
+        stack1.shrink(secondaryAmount)
         // sound
         playSound(SoundEvents.ANVIL_LAND)
         return true

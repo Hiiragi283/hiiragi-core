@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack
 /**
  * [HTRecipeViewerType]の実装クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.15.3
+ * @since 0.16.0
  * @see mekanism.client.recipe_viewer.type.FakeRVRecipeType
  */
 class HTRecipeViewerTypeImpl<T : Any>(

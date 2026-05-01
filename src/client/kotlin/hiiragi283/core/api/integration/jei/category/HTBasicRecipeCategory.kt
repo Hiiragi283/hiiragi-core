@@ -9,6 +9,7 @@ import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.integration.jei.HTJeiDrawables
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
+import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.times
@@ -165,4 +166,11 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     // IRecipeExtrasBuilder
     protected fun IRecipeExtrasBuilder.addRecipePlus(x: Int, y: Int = getPosition(0)): IPlaceable<*> =
         this.addRecipePlusSign().setPosition(x + 2, y + 2)
+
+    /**
+     * @since 0.16.0
+     */
+    protected fun IRecipeExtrasBuilder.addRecipeArrow(progressData: HTProgressData): IPlaceable<*> = progressData.time
+        .map(this::addAnimatedRecipeArrow)
+        .orElseGet { this.addRecipeArrow() }
 }

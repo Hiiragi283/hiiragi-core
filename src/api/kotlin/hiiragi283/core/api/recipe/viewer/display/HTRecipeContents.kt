@@ -154,7 +154,7 @@ data class HTRecipeContents(
         }
 
         fun addOutput(result: HTFluidResult) {
-            addOutput(result.getOrEmpty())
+            addOutput(result.create())
         }
 
         fun build(): HTRecipeContents = HTRecipeContents(inputItems, inputFluids, catalysts, outputItems, outputFluids)

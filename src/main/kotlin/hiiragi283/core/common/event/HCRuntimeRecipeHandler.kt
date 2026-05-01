@@ -26,20 +26,20 @@ import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.api.material.property.getDefaultScale
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.getOrDefault
-import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.HTSimpleItemHolderLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.common.data.recipe.blueprint
+import hiiragi283.core.common.data.recipe.builder.HCForgingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
-import hiiragi283.core.common.data.recipe.builder.HTDoubleMultiOutputRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTItemToMultiItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTShapelessRecipeBuilder
-import hiiragi283.core.common.data.recipe.builder.HTSingleMultiOutputRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTSmithingRecipeBuilder
+import hiiragi283.core.common.recipe.ingredient.HTBluePrintIngredient
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
+import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.level.ItemLike
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
@@ -95,7 +95,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         (getter.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT) * time)?.toInt()
 
     @JvmStatic
-    fun getBlueprint(prefix: HTTagPrefix): HTItemIngredient = when (prefix) {
+    fun getBlueprint(prefix: HTTagPrefix): Ingredient = when (prefix) {
         CommonTagPrefixes.DUST -> 0
         CommonTagPrefixes.INGOT -> 1
         CommonTagPrefixes.GEM -> 2
@@ -105,7 +105,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         CommonTagPrefixes.ROD -> 6
         CommonTagPrefixes.WIRE -> 7
         else -> error("Cannot define blueprint for prefix: $prefix")
-    }.let(inputCreator::blueprint)
+    }.let(::HTBluePrintIngredient).toVanilla()
 
     //    Crushing    //
 
@@ -121,7 +121,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = part.getScaledAmount(entry.getDefaultScale(), entry)
         // レシピを登録
-        HTSingleMultiOutputRecipeBuilder.crushing(output) {
+        HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(prefix, entry, inputCount)
             results += resultCreator.create(dust, outputCount)
             time = getTimeFromHardness(entry, time) ?: return
@@ -143,7 +143,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = entry.getDefaultScale()
         // レシピを登録
-        HTSingleMultiOutputRecipeBuilder.crushing(output) {
+        HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(inputTag, inputCount)
             results += resultCreator.create(dust, outputCount)
             time = getTimeFromHardness(entry, time) ?: return
@@ -159,7 +159,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // 完成品を取得
         val crushedOre: HTItemHolderLike<*> = event.getFirstHolder(CommonTagPrefixes.CRUSHED_ORE, entry) ?: return
         // レシピを登録
-        HTSingleMultiOutputRecipeBuilder.crushing(output) {
+        HTItemToMultiItemRecipeBuilder.crushing(output) {
             // 材料
             ingredient = inputCreator.create(prefix, entry)
             // 主産物
@@ -183,7 +183,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = CommonParts.CRUSHED_ORE.getScaledAmount(1, entry)
         // レシピを登録
-        HTSingleMultiOutputRecipeBuilder.crushing(output) {
+        HTItemToMultiItemRecipeBuilder.crushing(output) {
             // 材料
             ingredient = inputCreator.create(CommonTagPrefixes.CRUSHED_ORE, entry, inputCount)
             // 主産物
@@ -207,10 +207,10 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // 完成品を取得
         val gear: HTItemHolderLike<*> = event.getFirstHolder(CommonTagPrefixes.GEAR, entry) ?: return
         // レシピを登録
-        HTDoubleMultiOutputRecipeBuilder.forging(output) {
-            base = inputCreator.create(inputTag, 4)
-            addition = getBlueprint(CommonTagPrefixes.GEAR)
-            results += resultCreator.create(gear)
+        HCForgingRecipeBuilder.create(output) {
+            primary = inputCreator.create(inputTag, 4)
+            secondary += getBlueprint(CommonTagPrefixes.GEAR)
+            result = resultCreator.create(gear)
             time = getTimeFromHardness(entry, time) ?: return
         }
     }
@@ -232,10 +232,10 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // 完成品を取得
         val plate: HTItemHolderLike<*> = event.getFirstHolder(CommonTagPrefixes.PLATE, entry) ?: return
         // レシピを登録
-        HTDoubleMultiOutputRecipeBuilder.forging(output) {
-            base = inputCreator.create(inputPrefix, entry)
-            addition = getBlueprint(CommonTagPrefixes.PLATE)
-            results += resultCreator.create(plate)
+        HCForgingRecipeBuilder.create(output) {
+            primary = inputCreator.create(inputPrefix, entry)
+            secondary += getBlueprint(CommonTagPrefixes.PLATE)
+            result = resultCreator.create(plate)
             time = getTimeFromHardness(entry, time) ?: return
         }
     }
@@ -248,10 +248,10 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // 完成品を取得
         val wire: HTItemHolderLike<*> = event.getFirstHolder(CommonTagPrefixes.WIRE, entry) ?: return
         // レシピを登録
-        HTDoubleMultiOutputRecipeBuilder.forging(output) {
-            base = inputCreator.create(inputTag)
-            addition = getBlueprint(CommonTagPrefixes.WIRE)
-            results += resultCreator.create(wire, 2)
+        HCForgingRecipeBuilder.create(output) {
+            primary = inputCreator.create(inputTag)
+            secondary += getBlueprint(CommonTagPrefixes.WIRE)
+            result = resultCreator.create(wire, 2)
             time = getTimeFromHardness(entry, time) ?: return
         }
     }

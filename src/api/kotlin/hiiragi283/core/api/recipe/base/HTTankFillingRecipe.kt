@@ -1,7 +1,5 @@
 package hiiragi283.core.api.recipe.base
 
-import hiiragi283.core.api.recipe.HTRecipe
-import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
 
@@ -10,14 +8,12 @@ import net.neoforged.neoforge.fluids.FluidStack
  * @author Hiiragi Tsubasa
  * @since 0.15.1
  */
-interface HTTankFillingRecipe : HTRecipe<HTItemAndFluidRecipeInput> {
+interface HTTankFillingRecipe :
+    HTRecipePredicates.ItemAndFluid,
+    HTRecipeFactories.ItemAndFluid<ItemStack> {
     fun testContainer(stack: ItemStack): Boolean
 
     fun testFluid(stack: FluidStack): Boolean
 
-    fun getRequiredFluidAmount(input: HTItemAndFluidRecipeInput): Int
-
-    //    HTRecipe    //
-
-    override fun test(input: HTItemAndFluidRecipeInput): Boolean = testContainer(input.item) && testFluid(input.fluid)
+    override fun test(first: ItemStack, second: FluidStack): Boolean = testContainer(first) && testFluid(second)
 }

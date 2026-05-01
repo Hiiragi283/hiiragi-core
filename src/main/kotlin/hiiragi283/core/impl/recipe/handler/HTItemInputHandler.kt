@@ -4,7 +4,6 @@ import hiiragi283.core.api.recipe.handler.HTInputHandler
 import hiiragi283.core.api.recipe.ingredient.HTIngredient
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
-import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.getItemStack
 import net.minecraft.world.item.ItemStack
@@ -12,7 +11,7 @@ import net.minecraft.world.item.crafting.Ingredient
 import java.util.function.Consumer
 
 class HTItemInputHandler(private val slot: HTItemSlot, private val remainderConsumer: Consumer<ItemStack>? = null) :
-    HTInputHandler<HTItemResourceType>,
+    HTInputHandler<ItemStack>,
     HTItemSlot by slot {
     fun consume(ingredient: Ingredient) {
         when {
@@ -21,15 +20,16 @@ class HTItemInputHandler(private val slot: HTItemSlot, private val remainderCons
         }
     }
 
-    override fun consume(ingredient: HTIngredient<HTItemResourceType>) {
-        val resource: HTItemResourceType = this.getResource() ?: return
-        ingredient.getRequiredAmount(resource, getAmount()).let(::consume)
+    override fun getStack(): ItemStack = this.getItemStack()
+
+    override fun consume(ingredient: HTIngredient<ItemStack>) {
+        ingredient.getRequiredAmount(getStack()).let(::consume)
     }
 
     override fun consume(amount: Int) {
         if (amount > 0) {
             if (remainderConsumer != null && getAmount() == 1) {
-                val stackIn: ItemStack = getItemStack()
+                val stackIn: ItemStack = getStack()
                 if (stackIn.hasCraftingRemainingItem()) {
                     remainderConsumer.accept(stackIn.craftingRemainingItem)
                     return

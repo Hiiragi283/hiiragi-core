@@ -1,16 +1,13 @@
 {
   "type": "hiiragi_core:forging",
-  "addition": {
+  "primary": {
     "amount": 1,
     "items": "#c:ingots/iron"
   },
-  "base": {
-    "amount": 1,
-    "items": "#c:ingots/iron"
-  },
-  "results": {
+  "result": {
     "count": 1,
     "id": "minecraft:heavy_weighted_pressure_plate"
   },
-  "time": 100
+  "secondary": "#c:ingots/iron",
+  "time": 200
 }

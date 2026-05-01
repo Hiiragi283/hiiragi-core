@@ -1,9 +1,8 @@
 package hiiragi283.core.api.integration.jei
 
 import hiiragi283.core.api.HTComparators
-import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.HTRecipeHolder
-import hiiragi283.core.api.recipe.HTRecipeLookup
+import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
@@ -27,6 +26,7 @@ data object HTJeiRecipeHelper {
      */
     @JvmStatic
     fun <T : Any> addRecipes(registration: IRecipeRegistration, recipeType: JeiRecipeType<T>, recipes: Sequence<T>) {
+        if (recipes.none()) return
         registration.addRecipes(recipeType, recipes.toList())
     }
 
@@ -88,11 +88,7 @@ data object HTJeiRecipeHelper {
      * @since 0.11.0
      */
     @JvmStatic
-    fun <T : Any> addLookupRecipes(
-        registration: IRecipeRegistration,
-        viewerType: HTHolderRecipeViewerType<T>,
-        lookup: HTRecipeLookup<*, T>,
-    ) {
+    fun <T : Any> addLookupRecipes(registration: IRecipeRegistration, viewerType: HTHolderRecipeViewerType<T>, lookup: HTRecipeLookup<T>) {
         this.addHolderRecipes(registration, viewerType, lookup.getAllRecipes())
     }
 
@@ -106,7 +102,7 @@ data object HTJeiRecipeHelper {
     fun <T : Any> addLookupRecipes(
         registration: IRecipeRegistration,
         viewerType: HTHolderRecipeViewerType<T>,
-        lookup: HTRecipeLookup<*, T>,
+        lookup: HTRecipeLookup<T>,
         sorter: Comparator<in T>,
     ) {
         this.addHolderRecipes(registration, viewerType, lookup.getAllRecipes(), sorter)
@@ -115,7 +111,7 @@ data object HTJeiRecipeHelper {
     // HTRecipeDisplay
 
     /**
-     * @since 0.15.3
+     * @since 0.16.0
      */
     @JvmStatic
     fun <DISPLAY : HTRecipeDisplay> addDisplayRecipes(
@@ -127,7 +123,7 @@ data object HTJeiRecipeHelper {
     }
 
     /**
-     * @since 0.15.3
+     * @since 0.16.0
      */
     @JvmStatic
     fun <DISPLAY : HTRecipeDisplay> addDisplayRecipes(
@@ -140,13 +136,13 @@ data object HTJeiRecipeHelper {
     }
 
     /**
-     * @since 0.15.3
+     * @since 0.16.0
      */
     @JvmStatic
-    fun <BASE : HTRecipe<*>, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
+    fun <BASE : Any, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
         registration: IRecipeRegistration,
         viewerType: HTRecipeViewerType<DISPLAY>,
-        lookup: HTRecipeLookup<*, BASE>,
+        lookup: HTRecipeLookup<BASE>,
         transform: (HTRecipeHolder<BASE>) -> DISPLAY?,
     ) {
         this.addDisplayRecipes(
@@ -159,13 +155,13 @@ data object HTJeiRecipeHelper {
     }
 
     /**
-     * @since 0.15.3
+     * @since 0.16.0
      */
     @JvmStatic
-    fun <BASE : HTRecipe<*>, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
+    fun <BASE : Any, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
         registration: IRecipeRegistration,
         viewerType: HTRecipeViewerType<DISPLAY>,
-        lookup: HTRecipeLookup<*, BASE>,
+        lookup: HTRecipeLookup<BASE>,
         sorter: Comparator<DISPLAY>,
         transform: (HTRecipeHolder<BASE>) -> DISPLAY?,
     ) {

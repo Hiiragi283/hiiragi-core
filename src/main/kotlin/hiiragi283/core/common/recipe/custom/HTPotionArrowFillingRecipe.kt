@@ -5,7 +5,6 @@ import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
-import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.alchemy.PotionContents
@@ -21,10 +20,10 @@ data object HTPotionArrowFillingRecipe : HTTankFillingRecipe {
         return !contents.isEmpty && contents.bottleType == HTBottleType.LINGERING
     }
 
-    override fun getRequiredFluidAmount(input: HTItemAndFluidRecipeInput): Int = FLUID_AMOUNT
-
-    override fun assemble(input: HTItemAndFluidRecipeInput, preview: Boolean): ItemStack {
-        val (contents: PotionContents, _) = HTPotionHelper.getContents(input.fluid) ?: return ItemStack.EMPTY
+    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): ItemStack {
+        val (contents: PotionContents, _) = HTPotionHelper.getContents(secondInput) ?: return ItemStack.EMPTY
         return HTPotionHelper.createPotion(Items.TIPPED_ARROW, contents)
     }
+
+    override fun getRequiredAmount(first: ItemStack, second: FluidStack): Pair<Int, Int> = 1 to FLUID_AMOUNT
 }

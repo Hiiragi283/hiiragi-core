@@ -37,7 +37,7 @@ class HCBrewingRecipeCategory(guiHelper: IGuiHelper) :
         // output
         builder
             .addOutputSlot(getPosition(5), getPosition(0))
-            .addFluidStack(recipe.potionTo.getOrEmpty())
+            .addFluidStack(recipe.potionTo.create())
             .setSlotBackground(HTBackgroundType.OUTPUT)
             .setFluidSlotRenderer()
             .addRichTooltipCallback(::addPotionTooltip)
@@ -55,7 +55,7 @@ class HCBrewingRecipeCategory(guiHelper: IGuiHelper) :
     }
 
     override fun setupRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HCBrewingRecipe, focuses: IFocusGroup) {
-        builder.addAnimatedRecipeArrow(recipe.time).setPosition(getPosition(3.25), getPosition(0))
+        builder.addRecipeArrow(recipe.progressData).setPosition(getPosition(3.25), getPosition(0))
         builder.addRecipePlus(getPosition(1))
     }
 }

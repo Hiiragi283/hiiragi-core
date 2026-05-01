@@ -7,8 +7,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.item.enchantment.toInstances
-import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
-import hiiragi283.core.api.toFraction
+import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.world.HCInWorldRecipeCaches
@@ -27,7 +26,6 @@ import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeManager
 import net.minecraft.world.item.crafting.RecipeType
-import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.minecraft.world.item.enchantment.ItemEnchantments
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.AABB
@@ -80,16 +78,16 @@ object HCRecipeEventHandler {
         val level: Level = entity.level()
         if (level.isClientSide) return
         if (entity is ItemEntity && entity.isAlive) {
-            val input: SingleRecipeInput = createInput(entity)
-            val recipe: HCChargingRecipe = getCaches(level).charging.getFirstRecipe(input, level) ?: return
-            spawnResults(entity) { recipe.assemble(input, false) }
+            val input: ItemStack = entity.item
+            val recipe: HCChargingRecipe = getCaches(level).charging.findFirstRecipe(input, level) ?: return
+            spawnResults(entity) { recipe.assemble(input) }
             entity.discard()
             event.isCanceled = true
         }
     }
 
     /**
-     * [HTSingleMultiOutputRecipe]を処理するイベント
+     * [HTItemToMultiItemRecipe]を処理するイベント
      */
     @SubscribeEvent
     fun onAnvilLand(event: HTAnvilLandEvent) {
@@ -103,20 +101,20 @@ object HCRecipeEventHandler {
     @JvmStatic
     private fun anvilCrushing(entity: ItemEntity) {
         val level: Level = entity.level()
-        val input: SingleRecipeInput = createInput(entity)
-        val recipe: HTSingleMultiOutputRecipe = getCaches(level).crushing.getFirstRecipe(input, level) ?: return
+        val input: ItemStack = entity.item
+        val recipe: HTItemToMultiItemRecipe = getCaches(level).crushing.findFirstRecipe(input, level) ?: return
         val inputAmount: Int = recipe.getRequiredAmount(input)
-        val multiplier: Int = entity.item.count / inputAmount
+        val multiplier: Int = input.count / inputAmount
         (0 until multiplier)
-            .flatMap { recipe.assembleItems(input, false) }
+            .flatMap { recipe.assemble(input) }
             .let(HTShapelessRecipeHelper::mergeStacks)
             .mapNotNull(entity::spawnAtLocation)
-            .forEach {
-                setComplete(it)
-                entity.item.count -= inputAmount
-            }
-        if (entity.item.isEmpty) {
+            .forEach(::setComplete)
+        val remainder: Int = input.count - (inputAmount * multiplier)
+        if (remainder == 0) {
             entity.discard()
+        } else {
+            entity.item = input.copyWithCount(remainder)
         }
     }
 
@@ -167,9 +165,9 @@ object HCRecipeEventHandler {
         while (iterator.hasNext()) {
             val entity: Entity = iterator.next()
             if (entity is ItemEntity && entity.isAlive && !isCompleted(entity)) {
-                val input = HCExplodingRecipe.Input(entity.item, event.explosion.radius().toFraction())
-                val recipe: HCExplodingRecipe = getCaches(level).exploding.getFirstRecipe(input, level) ?: continue
-                spawnResults(entity) { recipe.assemble(input, false) }
+                val input: ItemStack = entity.item
+                val recipe: HCExplodingRecipe = getCaches(level).exploding.findFirstRecipe(input, level) ?: continue
+                spawnResults(entity) { recipe.assemble(input) }
                 if (entity.item.isEmpty) {
                     iterator.remove()
                     entity.discard()
@@ -190,9 +188,6 @@ object HCRecipeEventHandler {
     private fun setComplete(entity: Entity) {
         entity.persistentData.putBoolean(HTConst.COMPLETED_RECIPE, true)
     }
-
-    @JvmStatic
-    private fun createInput(entity: ItemEntity): SingleRecipeInput = SingleRecipeInput(entity.item)
 
     @JvmStatic
     private fun spawnResults(entity: ItemEntity, result: () -> ItemStack) {

@@ -11,7 +11,7 @@ import hiiragi283.core.api.function.identity
  * @param range リストの[長さ][List.size]の範囲
  * @return リストの[長さ][List.size]が制限された[List]の[Codec]
  * @author Hiiragi Tsubasa
- * @since 0.15.3
+ * @since 0.16.0
  */
 fun <A : Any> Codec<A>.listOf(range: IntRange): Codec<List<A>> = this.listOf(range.first, range.last)
 
@@ -30,7 +30,7 @@ fun <A : Any> Codec<A>.listOrElement(): Codec<List<A>> = Codec.either(this.listO
  * @param range リストの[長さ][List.size]の範囲
  * @return リストの[長さ][List.size]が制限された[List]の[Codec]
  * @author Hiiragi Tsubasa
- * @since 0.15.3
+ * @since 0.16.0
  */
 fun <A : Any> Codec<A>.listOrElement(range: IntRange): Codec<List<A>> = this.listOrElement(range.first, range.last)
 
@@ -53,6 +53,6 @@ fun <A : Any> Codec<A>.listOrElement(min: Int, max: Int): Codec<List<A>> = Codec
  * この[Codec][this]を[Set]の[Codec]に変換します。
  * @return [Set]の[Codec]
  * @author Hiiragi Tsubasa
- * @since 0.15.3
+ * @since 0.16.0
  */
 fun <A : Any> Codec<List<A>>.setOf(): Codec<Set<A>> = this.xmap(List<A>::toSet, Set<A>::toList)

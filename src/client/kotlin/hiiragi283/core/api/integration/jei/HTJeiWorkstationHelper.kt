@@ -6,6 +6,11 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 
+/**
+ * [IRecipeCatalystRegistration]へのレシピ登録を簡略化するヘルパークラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.16.0
+ */
 data object HTJeiWorkstationHelper {
     @JvmStatic
     fun add(registration: IRecipeCatalystRegistration, recipeType: JeiRecipeType<*>, workstations: List<ItemStack>) {
