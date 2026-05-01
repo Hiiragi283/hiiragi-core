@@ -59,7 +59,7 @@ class HTForgingAnvilBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntit
         val level: Level = player.level()
         val recipe: HTForgingRecipe = cache.findFirstRecipe(stack, stack1, level) ?: return false
         // outputs
-        recipe.apply(stack, stack1).let(HTItemDropHelper::giveStackTo.partially1(player))
+        recipe.assemble(stack, stack1).let(HTItemDropHelper::giveStackTo.partially1(player))
         // inputs
         val (primaryAmount: Int, secondaryAmount: Int) = recipe.getRequiredAmount(stack, stack1) // TODO
         inputHandler.consume(primaryAmount)

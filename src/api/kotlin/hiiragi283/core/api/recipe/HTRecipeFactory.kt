@@ -1,7 +1,5 @@
 package hiiragi283.core.api.recipe
 
-import net.minecraft.world.item.crafting.RecipeInput
-
 /**
  * レシピの変換部分を切り出したインターフェースです。
  * @param INPUT レシピの入力となるクラス
@@ -9,7 +7,7 @@ import net.minecraft.world.item.crafting.RecipeInput
  * @author Hiiragi Tsubasa
  * @since 0.16.0
  */
-fun interface HTRecipeFactory<INPUT : RecipeInput, OUTPUT : Any> {
+fun interface HTRecipeFactory<INPUT : Any, OUTPUT : Any> {
     /**
      * 指定された[input]から完成品を作成します。
      */

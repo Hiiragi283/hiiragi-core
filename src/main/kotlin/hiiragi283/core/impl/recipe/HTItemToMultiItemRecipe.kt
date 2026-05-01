@@ -5,8 +5,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.base.HTProgressRecipe
-import hiiragi283.core.api.recipe.base.factory.HTMultiRecipeFactory
-import hiiragi283.core.api.recipe.base.predicate.HTSingleRecipePredicate
+import hiiragi283.core.api.recipe.base.HTRecipeFactories
+import hiiragi283.core.api.recipe.base.HTRecipePredicates
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.listOrElement
@@ -18,8 +18,8 @@ open class HTItemToMultiItemRecipe(
     val ingredient: HTItemIngredient,
     val results: List<HTItemResult>,
     override val progressData: HTProgressData,
-) : HTSingleRecipePredicate.SingleItem,
-    HTMultiRecipeFactory.ItemTo<Iterable<ItemStack>>,
+) : HTRecipePredicates.SingleItem,
+    HTRecipeFactories.SingleItemTo<Iterable<ItemStack>>,
     HTProgressRecipe.Simple<SingleRecipeInput> {
     companion object {
         @JvmStatic
@@ -41,5 +41,5 @@ open class HTItemToMultiItemRecipe(
 
     override fun getRequiredAmount(input: ItemStack): Int = ingredient.getRequiredAmount(input)
 
-    override fun apply(input: ItemStack): Iterable<ItemStack> = results.mapNotNull { it.get().value() }
+    override fun assemble(input: ItemStack): Iterable<ItemStack> = results.mapNotNull { it.get().value() }
 }

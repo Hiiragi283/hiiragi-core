@@ -40,7 +40,7 @@ class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidR
 
     override fun getRequiredAmount(input: ItemStack): Int = ingredient.getRequiredAmount(input)
 
-    override fun apply(input: ItemStack): Ior<ItemStack, FluidStack> {
+    override fun assemble(input: ItemStack): Ior<ItemStack, FluidStack> {
         val fluidStack: FluidStack = fluidResult.create()
         return itemResult
             .flatMap { it.get().value().wrapOptional() }

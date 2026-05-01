@@ -3,18 +3,18 @@ package hiiragi283.core.impl.recipe
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.recipe.HTRecipeFactory
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.base.HTProgressRecipe
-import hiiragi283.core.api.recipe.base.predicate.HTSingleRecipePredicate
+import hiiragi283.core.api.recipe.base.HTRecipeFactories
+import hiiragi283.core.api.recipe.base.HTRecipePredicates
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.SingleRecipeInput
 
 open class HTItemToItemRecipe(val ingredient: HTItemIngredient, val result: HTItemResult, override val progressData: HTProgressData) :
-    HTSingleRecipePredicate.SingleItem,
-    HTRecipeFactory<SingleRecipeInput, ItemStack>,
+    HTRecipePredicates.SingleItem,
+    HTRecipeFactories.SingleItemTo<ItemStack>,
     HTProgressRecipe.Simple<SingleRecipeInput> {
     companion object {
         @JvmStatic
@@ -36,5 +36,5 @@ open class HTItemToItemRecipe(val ingredient: HTItemIngredient, val result: HTIt
 
     override fun getRequiredAmount(input: ItemStack): Int = ingredient.getRequiredAmount(input)
 
-    override fun assemble(input: SingleRecipeInput): ItemStack = result.getOrEmpty()
+    override fun assemble(input: ItemStack): ItemStack = result.getOrEmpty()
 }

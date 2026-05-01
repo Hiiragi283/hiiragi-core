@@ -55,7 +55,7 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
         val level: Level = player.level()
         val recipe: HTTankEmptyingRecipe = emptyingCache.findFirstRecipe(stack, level) ?: return false
 
-        val rawResult: Ior<ItemStack, FluidStack> = recipe.apply(stack)
+        val rawResult: Ior<ItemStack, FluidStack> = recipe.assemble(stack)
         val fluidStack: FluidStack = rawResult.getRight() ?: FluidStack.EMPTY
         if (!fluidStack.isEmpty && fluidOutputHandler.canInsert(fluidStack)) {
             rawResult.getLeft()?.let { HTItemDropHelper.giveStackTo(player, it) }
@@ -73,7 +73,7 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
         val level: Level = player.level()
         val recipe: HTTankFillingRecipe = fillingCache.findFirstRecipe(itemStack, fluidStack, level) ?: return false
 
-        val filledContainer: ItemStack = recipe.apply(itemStack, fluidStack)
+        val filledContainer: ItemStack = recipe.assemble(itemStack, fluidStack)
         HTItemDropHelper.giveStackTo(player, filledContainer)
         itemStack.consume(1, player)
         recipe

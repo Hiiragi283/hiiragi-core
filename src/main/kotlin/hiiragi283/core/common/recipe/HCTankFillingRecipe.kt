@@ -37,7 +37,7 @@ class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: H
 
     override fun testFluid(stack: FluidStack): Boolean = fluidIngredient.test(stack)
 
-    override fun apply(first: ItemStack, second: FluidStack): ItemStack = result.getOrEmpty()
+    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): ItemStack = result.getOrEmpty()
 
     override fun getRequiredAmount(first: ItemStack, second: FluidStack): Pair<Int, Int> =
         itemIngredient.getRequiredAmount(first) to fluidIngredient.getRequiredAmount(second)

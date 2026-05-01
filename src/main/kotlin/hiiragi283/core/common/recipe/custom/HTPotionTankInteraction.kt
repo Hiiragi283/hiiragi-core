@@ -27,7 +27,7 @@ data object HTPotionTankInteraction {
             else -> 0
         }
 
-        override fun apply(input: ItemStack): Ior<ItemStack, FluidStack> {
+        override fun assemble(input: ItemStack): Ior<ItemStack, FluidStack> {
             val contents: BottledPotionContents = HTPotionHelper.getContentsFromBottle(input) ?: return Ior.Right(FluidStack.EMPTY)
             return Ior.Both(
                 ItemStack(Items.GLASS_BOTTLE),
@@ -41,8 +41,8 @@ data object HTPotionTankInteraction {
 
         override fun testFluid(stack: FluidStack): Boolean = HTPotionHelper.getContents(stack) != null
 
-        override fun apply(first: ItemStack, second: FluidStack): ItemStack = HTPotionHelper
-            .getContents(second)
+        override fun assemble(firstInput: ItemStack, secondInput: FluidStack): ItemStack = HTPotionHelper
+            .getContents(secondInput)
             ?.let(HTPotionHelper::createPotion)
             ?: ItemStack.EMPTY
 

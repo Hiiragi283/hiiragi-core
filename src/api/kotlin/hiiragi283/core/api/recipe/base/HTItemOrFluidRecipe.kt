@@ -1,9 +1,9 @@
 package hiiragi283.core.api.recipe.base
 
-import hiiragi283.core.api.recipe.base.factory.HTItemAndFluidRecipeFactory
-import hiiragi283.core.api.recipe.base.predicate.HTDoubleRecipePredicate
-import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
+import hiiragi283.core.api.util.Ior
+import net.minecraft.world.item.ItemStack
+import net.neoforged.neoforge.fluids.FluidStack
 
 interface HTItemOrFluidRecipe :
-    HTDoubleRecipePredicate.ItemAndFluid,
-    HTItemAndFluidRecipeFactory<HTItemAndFluidRecipeInput>
+    HTRecipePredicates.ItemAndFluid,
+    HTRecipeFactories.ItemAndFluid<Ior<ItemStack, FluidStack>>

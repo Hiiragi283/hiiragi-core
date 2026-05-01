@@ -36,7 +36,7 @@ data class HCBrewingRecipe(val potionFrom: FluidIngredient, val ingredient: Ingr
     override fun getRequiredAmount(first: ItemStack, second: FluidStack): Pair<Int, Int> =
         ingredient.getRequiredAmount(first) to potionFrom.getRequiredAmount(second)
 
-    override fun assemble(input: HTItemAndFluidRecipeInput): Ior<ItemStack, FluidStack> = Ior.Right(potionTo.create())
+    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): Ior<ItemStack, FluidStack> = Ior.Right(potionTo.create())
 
     override val progressData: HTProgressData = HTProgressData.time(200)
 }

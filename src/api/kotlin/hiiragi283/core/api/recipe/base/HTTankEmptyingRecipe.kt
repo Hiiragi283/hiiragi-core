@@ -1,7 +1,8 @@
 package hiiragi283.core.api.recipe.base
 
-import hiiragi283.core.api.recipe.base.factory.HTItemAndFluidRecipeFactory
-import hiiragi283.core.api.recipe.base.predicate.HTSingleRecipePredicate
+import hiiragi283.core.api.util.Ior
+import net.minecraft.world.item.ItemStack
+import net.neoforged.neoforge.fluids.FluidStack
 
 /**
  * 液体入りの容器から，空の容器と液体を取り出すレシピを表すインターフェースです。
@@ -9,5 +10,5 @@ import hiiragi283.core.api.recipe.base.predicate.HTSingleRecipePredicate
  * @since 0.15.1
  */
 interface HTTankEmptyingRecipe :
-    HTSingleRecipePredicate.SingleItem,
-    HTItemAndFluidRecipeFactory.SingleItemTo
+    HTRecipePredicates.SingleItem,
+    HTRecipeFactories.SingleItemTo<Ior<ItemStack, FluidStack>>
