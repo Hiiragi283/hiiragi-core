@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.serialization.codec.HTCodecs
-import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
@@ -12,11 +11,11 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 
 /**
- * [HTFluidResourceType]向けに[HTIngredient]を実装したクラスです。
+ * [FluidStack]向けに[HTIngredient]を実装したクラスです。
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
-class HTFluidIngredient(val unsized: FluidIngredient, val amount: Int) : HTIngredient.Stacked<FluidStack, HTFluidResourceType> {
+class HTFluidIngredient(val unsized: FluidIngredient, val amount: Int) : HTIngredient<FluidStack> {
     companion object {
         @JvmField
         val CODEC: Codec<HTFluidIngredient> = RecordCodecBuilder.create { instance ->
@@ -55,8 +54,4 @@ class HTFluidIngredient(val unsized: FluidIngredient, val amount: Int) : HTIngre
     }
 
     override fun getPreviewStacks(): List<FluidStack> = unsized.stacks.map { it.copyWithAmount(amount) }
-
-    override fun test(resource: HTFluidResourceType, amount: Int): Boolean = resource.toStack(amount).let(::test)
-
-    override fun getRequiredAmount(resource: HTFluidResourceType, amount: Int): Int = resource.toStack(amount).let(::getRequiredAmount)
 }

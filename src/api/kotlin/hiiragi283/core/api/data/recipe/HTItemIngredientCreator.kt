@@ -29,8 +29,14 @@ data object HTItemIngredientCreator {
     // Tag
     fun create(prefix: HTTagPrefix, material: HTMaterialLike): Ingredient = create(prefix.materialTag(material))
 
+    /**
+     * @since 0.16.0
+     */
     fun create(rawTagKey: RawTagKey): Ingredient = create(rawTagKey.create(Registries.ITEM))
 
+    /**
+     * @since 0.16.0
+     */
     @JvmName("createFromRawTags")
     fun create(rawTagKeys: Iterable<RawTagKey>): Ingredient = create(rawTagKeys.map { it.create(Registries.ITEM) })
 

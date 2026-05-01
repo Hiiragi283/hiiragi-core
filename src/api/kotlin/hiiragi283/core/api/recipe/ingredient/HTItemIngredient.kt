@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.serialization.codec.HTCodecs
-import hiiragi283.core.api.storage.item.HTItemResourceType
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
@@ -16,7 +15,7 @@ import net.minecraft.world.item.crafting.Ingredient
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
-class HTItemIngredient(val unsized: Ingredient, val count: Int) : HTIngredient.Stacked<ItemStack, HTItemResourceType> {
+class HTItemIngredient(val unsized: Ingredient, val count: Int) : HTIngredient<ItemStack> {
     companion object {
         @JvmField
         val CODEC: Codec<HTItemIngredient> = RecordCodecBuilder.create { instance ->
@@ -55,8 +54,4 @@ class HTItemIngredient(val unsized: Ingredient, val count: Int) : HTIngredient.S
     }
 
     override fun getPreviewStacks(): List<ItemStack> = unsized.items.map { it.copyWithCount(count) }
-
-    override fun test(resource: HTItemResourceType, amount: Int): Boolean = resource.toStack(amount).let(::test)
-
-    override fun getRequiredAmount(resource: HTItemResourceType, amount: Int): Int = resource.toStack(amount).let(::getRequiredAmount)
 }

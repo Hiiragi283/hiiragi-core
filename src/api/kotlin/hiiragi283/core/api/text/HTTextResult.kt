@@ -39,6 +39,11 @@ class HTTextResult<T> private constructor(val contents: Either<Text, T>) {
      */
     inline fun valueOrElse(fallback: () -> T): T = value() ?: fallback()
 
+    /**
+     * 保持している値を返します。
+     * @return 値がない場合は[fallback]の戻り値
+     * @since 0.16.0
+     */
     inline fun valueOrElse(fallback: (Text) -> T): T = contents.mapLeft(fallback).unwrap()
 
     /**
@@ -71,8 +76,6 @@ class HTTextResult<T> private constructor(val contents: Either<Text, T>) {
      * @return 新しい[HTTextResult]のインスタンス
      */
     fun <R> flatMap(transform: (T) -> HTTextResult<R>): HTTextResult<R> = contents.map({ HTTextResult(Either.Left(it)) }, { transform(it) })
-
-    fun recover(transform: (Text) -> HTTextResult<T>): HTTextResult<T> = contents.map(transform, ::success)
 }
 
 //    Extensions    //

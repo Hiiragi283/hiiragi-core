@@ -38,6 +38,7 @@ class HTConditionHolder {
 
     /**
      * 指定した[rawTagKey]を要求する[ICondition]を追加します。
+     * @since 0.16.0
      */
     @JvmName("addTagCondition")
     operator fun plusAssign(rawTagKey: RawTagKey) {

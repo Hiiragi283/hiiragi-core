@@ -28,6 +28,11 @@ import java.util.UUID
 import java.util.function.Function
 import kotlin.enums.enumEntries
 
+/**
+ * Hiiragi Coreとそれを前提とするmodで使用される[Codec]と[MapCodec]をまとめたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.16.0
+ */
 data object HTCodecs {
     @JvmField
     val FRACTION: Codec<Fraction> = Codec

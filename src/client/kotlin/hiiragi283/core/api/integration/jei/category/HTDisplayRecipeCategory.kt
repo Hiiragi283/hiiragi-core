@@ -17,7 +17,7 @@ import net.minecraft.resources.ResourceLocation
 /**
  * [HTRecipeDisplay]に基づいた[HTBasicRecipeCategory]の拡張クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.15.3
+ * @since 0.16.0
  */
 abstract class HTDisplayRecipeCategory<T : HTRecipeDisplay>(
     guiHelper: IGuiHelper,

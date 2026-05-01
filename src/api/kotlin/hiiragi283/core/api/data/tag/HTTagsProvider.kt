@@ -36,6 +36,9 @@ sealed interface HTTagsProvider<T : Any> {
     abstract class BuilderFactory<T : Any>(private val registryKey: RegistryKey<T>) : Function<TagKey<T>, HTTagBuilder<T>> {
         abstract override fun apply(tagKey: TagKey<T>): HTTagBuilder<T>
 
+        /**
+         * @since 0.16.0
+         */
         fun apply(rawTagKey: RawTagKey): HTTagBuilder<T> = apply(rawTagKey.create(registryKey))
 
         //    Extensions    //
@@ -64,7 +67,7 @@ sealed interface HTTagsProvider<T : Any> {
 
         /**
          * 指定した[rawTagKey]から[タグ][TagKey]を作成します。
-         * @since 0.15.3
+         * @since 0.16.0
          */
         fun tag(rawTagKey: RawTagKey): TagKey<T> = rawTagKey.create(registryKey)
     }

@@ -14,7 +14,7 @@ import java.util.Optional
 /**
  * 処理時間または消費エネルギーを保持するクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.15.3
+ * @since 0.16.0
  */
 @JvmInline
 value class HTProgressData(private val content: Either<Int, Int>) : HTHasText {

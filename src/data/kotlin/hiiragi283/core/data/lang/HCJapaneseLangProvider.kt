@@ -166,8 +166,6 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCTranslation.CREATIVE_TAB_MATERIAL, "Hiiragi Core - 素材")
         add(HCTranslation.CREATIVE_TAB_EQUIPMENT, "Hiiragi Core - 装備品")
 
-        add(HCTranslation.EXPLOSION_POWER, "爆発力: %s")
-
         add(HCTranslation.AMBROSIA, "いつでも食べられる上，いくら食べてもなくなりません！")
         add(HCTranslation.ANCIENT_UPGRADE, "ウォーデンからドロップします。")
         add(HCTranslation.BLUEPRINT, "GUI上で右クリックすると番号を変えられます。")

@@ -4,15 +4,17 @@ import hiiragi283.core.api.recipe.handler.HTInputHandler
 import hiiragi283.core.api.recipe.ingredient.HTIngredient
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
-import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.HTFluidTank
+import hiiragi283.core.api.storage.fluid.getFluidStack
+import net.neoforged.neoforge.fluids.FluidStack
 
 class HTFluidInputHandler(private val tank: HTFluidTank) :
-    HTInputHandler<HTFluidResourceType>,
+    HTInputHandler<FluidStack>,
     HTFluidTank by tank {
-    override fun consume(ingredient: HTIngredient<HTFluidResourceType>) {
-        val resource: HTFluidResourceType = getResource() ?: return
-        ingredient.getRequiredAmount(resource, getAmount()).let(::consume)
+    override fun getStack(): FluidStack = this.getFluidStack()
+
+    override fun consume(ingredient: HTIngredient<FluidStack>) {
+        ingredient.getRequiredAmount(getStack()).let(::consume)
     }
 
     override fun consume(amount: Int) {

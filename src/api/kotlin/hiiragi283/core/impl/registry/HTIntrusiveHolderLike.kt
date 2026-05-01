@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Block
 /**
  * [Item]や[Block]のように[Holder]を保持するクラス向けの[HTHolderLike]の実装クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.15.3
+ * @since 0.16.0
  */
 abstract class HTIntrusiveHolderLike<R : Any, T : R> : HTHolderLike<R, T> {
     /**

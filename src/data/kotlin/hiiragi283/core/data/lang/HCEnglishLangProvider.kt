@@ -166,8 +166,6 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCTranslation.CREATIVE_TAB_MATERIAL, "Hiiragi Core - Material")
         add(HCTranslation.CREATIVE_TAB_EQUIPMENT, "Hiiragi Core - Equipment")
 
-        add(HCTranslation.EXPLOSION_POWER, "Explosion Power: %s")
-
         add(HCTranslation.AMBROSIA, "ALWAYS EDIBLE and NOT CONSUMED!")
         add(HCTranslation.ANCIENT_UPGRADE, "Dropped from Warden.")
         add(HCTranslation.BLUEPRINT, "Right click on GUI to cycle number")

@@ -110,7 +110,7 @@ data object HTJeiRecipeHelper {
     // HTRecipeDisplay
 
     /**
-     * @since 0.15.3
+     * @since 0.16.0
      */
     @JvmStatic
     fun <DISPLAY : HTRecipeDisplay> addDisplayRecipes(
@@ -122,7 +122,7 @@ data object HTJeiRecipeHelper {
     }
 
     /**
-     * @since 0.15.3
+     * @since 0.16.0
      */
     @JvmStatic
     fun <DISPLAY : HTRecipeDisplay> addDisplayRecipes(
@@ -135,7 +135,7 @@ data object HTJeiRecipeHelper {
     }
 
     /**
-     * @since 0.15.3
+     * @since 0.16.0
      */
     @JvmStatic
     fun <BASE : Any, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
@@ -154,7 +154,7 @@ data object HTJeiRecipeHelper {
     }
 
     /**
-     * @since 0.15.3
+     * @since 0.16.0
      */
     @JvmStatic
     fun <BASE : Any, DISPLAY : HTRecipeDisplay> addDisplayRecipes(

@@ -5,6 +5,9 @@ import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import net.minecraft.world.level.Level
 import java.util.function.BiPredicate
 
+/**
+ * @see mekanism.api.recipes.cache.TwoInputCachedRecipe
+ */
 abstract class HTDoubleInputRecipeCache<INPUT_A : Any, INPUT_B : Any, RECIPE : BiPredicate<INPUT_A, INPUT_B>>(
     lookup: HTRecipeLookup<RECIPE>,
 ) : HTBasicRecipeCache<RECIPE>(lookup) {

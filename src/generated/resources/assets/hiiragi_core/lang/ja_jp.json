@@ -84,7 +84,6 @@
   "gui.hiiragi_core.capacity.mb": "Capacity: %1$s mB",
   "gui.hiiragi_core.chance.consume": "消費確率: %1$s %%",
   "gui.hiiragi_core.chance.produce": "生産確率: %1$s %%",
-  "gui.hiiragi_core.explosion_power": "爆発力: %s",
   "gui.hiiragi_core.fraction": "%1$s / %2$s",
   "gui.hiiragi_core.percentage": "%1$s %%",
   "gui.hiiragi_core.progress": "進捗率: %1$s %%",

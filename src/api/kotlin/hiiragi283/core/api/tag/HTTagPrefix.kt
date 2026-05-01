@@ -15,7 +15,7 @@ class HTTagPrefix(val rawCommonTag: RawTagKey, private val tagPattern: String) {
     constructor(commonTagId: String, tagPattern: String) : this(RawTagKey.common(commonTagId), tagPattern)
 
     /**
-     * @since 0.15.3
+     * @since 0.16.0
      */
     fun materialTag(material: HTMaterialLike): RawTagKey = RawTagKey.common(tagPattern.replace("%s", material.asMaterialId().path))
 

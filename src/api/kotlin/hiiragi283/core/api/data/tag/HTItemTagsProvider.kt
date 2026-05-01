@@ -40,6 +40,9 @@ abstract class HTItemTagsProvider(
         copy(prefix.materialTag(material))
     }
 
+    /**
+     * @since 0.16.0
+     */
     protected fun copy(rawTagKey: RawTagKey) {
         tagsToCopy[rawTagKey.create(Registries.BLOCK)] = rawTagKey.create(Registries.ITEM)
     }

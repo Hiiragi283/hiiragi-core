@@ -47,8 +47,14 @@ data object HTIngredientCreator {
     fun create(prefix: HTTagPrefix, material: HTMaterialLike, amount: Int = 1): HTItemIngredient =
         create(prefix.materialTag(material), amount)
 
+    /**
+     * @since 0.16.0
+     */
     fun create(rawTagKey: RawTagKey, amount: Int = 1): HTItemIngredient = create(rawTagKey.create(Registries.ITEM), amount)
 
+    /**
+     * @since 0.16.0
+     */
     @JvmName("createFromRawTags")
     fun create(rawTagKeys: Iterable<RawTagKey>, amount: Int = 1): HTItemIngredient =
         create(rawTagKeys.map { it.create(Registries.ITEM) }, amount)

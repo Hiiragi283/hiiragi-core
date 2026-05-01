@@ -56,7 +56,7 @@ fun interface HTTagBuilder<T : Any> : Consumer<TagEntry> {
     /**
      * 指定した[タグ][child]を追加します。
      * @param type このエントリの依存関係
-     * @since 0.15.3
+     * @since 0.16.0
      */
     fun addTag(child: RawTagKey, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<T> = addTag(child.location, type)
 

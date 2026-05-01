@@ -8,6 +8,8 @@ import java.util.function.BiPredicate
 import java.util.function.Predicate
 
 /**
+ * @author Hiiragi Tsubasa
+ * @since 0.16.0
  * @see mekanism.common.recipe.lookup.cache.InputRecipeCache
  */
 data object HTRecipeCaches {

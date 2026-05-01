@@ -14,6 +14,11 @@ import net.minecraft.world.level.material.FlowingFluid
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 
+/**
+ * [液体][FluidStack]の[完成品][HTRecipeResult]を表すクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.10.0
+ */
 @JvmRecord
 data class HTFluidResult(private val stack: FluidStack) : HTRecipeResult<FluidStack> {
     companion object {
