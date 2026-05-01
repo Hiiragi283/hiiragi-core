@@ -7,7 +7,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.item.enchantment.toInstances
-import hiiragi283.core.api.recipe.base.HTCrushingRecipe
+import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.world.HCInWorldRecipeCaches
@@ -87,7 +87,7 @@ object HCRecipeEventHandler {
     }
 
     /**
-     * [HTCrushingRecipe]を処理するイベント
+     * [HTItemToMultiItemRecipe]を処理するイベント
      */
     @SubscribeEvent
     fun onAnvilLand(event: HTAnvilLandEvent) {
@@ -102,7 +102,7 @@ object HCRecipeEventHandler {
     private fun anvilCrushing(entity: ItemEntity) {
         val level: Level = entity.level()
         val input: ItemStack = entity.item
-        val recipe: HTCrushingRecipe = getCaches(level).crushing.findFirstRecipe(input, level) ?: return
+        val recipe: HTItemToMultiItemRecipe = getCaches(level).crushing.findFirstRecipe(input, level) ?: return
         val inputAmount: Int = recipe.getRequiredAmount(input)
         val multiplier: Int = input.count / inputAmount
         (0 until multiplier)

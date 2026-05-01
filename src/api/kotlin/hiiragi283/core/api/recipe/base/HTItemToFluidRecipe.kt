@@ -1,9 +1,9 @@
 package hiiragi283.core.api.recipe.base
 
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.SingleRecipeInput
+import net.neoforged.neoforge.fluids.FluidStack
 
-interface HTCrushingRecipe :
+interface HTItemToFluidRecipe :
     HTRecipePredicates.SingleItem,
-    HTRecipeFactories.SingleItemTo<Iterable<ItemStack>>,
+    HTRecipeFactories.SingleItemTo<FluidStack>,
     HTProgressRecipe<SingleRecipeInput>

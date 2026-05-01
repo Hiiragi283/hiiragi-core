@@ -1,4 +1,4 @@
-package hiiragi283.core.api
+package hiiragi283.core.util
 
 import net.minecraft.client.Minecraft
 import net.minecraft.core.RegistryAccess
@@ -11,7 +11,7 @@ import thedarkcolour.kotlinforforge.neoforge.forge.runForDist
  */
 data object HTPhysicalSideHelper {
     /**
-     * 現在の[レジストリへのアクセス][RegistryAccess]を取得します。
+     * 現在の[レジストリへのアクセス][net.minecraft.core.RegistryAccess]を取得します。
      * @return クライアント側でワールドを読み込んでいない，またはサーバーのインスタンスが作成されていない場合は`null`
      */
     @JvmStatic

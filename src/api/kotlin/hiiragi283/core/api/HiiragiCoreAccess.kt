@@ -23,6 +23,7 @@ import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.toTextResult
 import hiiragi283.core.impl.material.HTMaterialContentsImpl
 import hiiragi283.core.impl.material.HTMaterialContentsRegister
+import hiiragi283.core.util.HTPhysicalSideHelper
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.HolderSet
 import net.minecraft.tags.TagKey

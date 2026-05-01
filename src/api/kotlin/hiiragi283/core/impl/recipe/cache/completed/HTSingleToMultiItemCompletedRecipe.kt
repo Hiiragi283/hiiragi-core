@@ -1,0 +1,38 @@
+package hiiragi283.core.impl.recipe.cache.completed
+
+import hiiragi283.core.api.recipe.HTRecipeFactory
+import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
+import hiiragi283.core.api.recipe.base.HTProgressData
+import hiiragi283.core.api.recipe.handler.HTInputHandler
+import hiiragi283.core.api.recipe.handler.HTOutputHandler
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.crafting.SingleRecipeInput
+
+/**
+ * @see mekanism.api.recipes.cache.OneInputCachedRecipe
+ */
+abstract class HTSingleToMultiItemCompletedRecipe<INPUT : Any, RECIPE : HTRecipeFactory<INPUT, out Iterable<ItemStack>>>(
+    recipe: RECIPE,
+    protected val inputHandler: HTInputHandler<INPUT>,
+    protected val outputHandler: HTOutputHandler<ItemStack>,
+    private val amountGetter: (RECIPE, INPUT) -> Int,
+) : HTCompletedRecipe.WithProgress<RECIPE>(recipe) {
+    private val output: Iterable<ItemStack> = recipe.assemble(inputHandler.getStack())
+
+    override fun canComplete(): Boolean = output.all(outputHandler::canInsert)
+
+    override fun complete() {
+        output.forEach(outputHandler::insert)
+        amountGetter(recipe, inputHandler.getStack()).let(inputHandler::consume)
+    }
+
+    class ItemToItem(recipe: HTItemToMultiItemRecipe, inputHandler: HTInputHandler<ItemStack>, outputHandler: HTOutputHandler<ItemStack>) :
+        HTSingleToMultiItemCompletedRecipe<ItemStack, HTItemToMultiItemRecipe>(
+            recipe,
+            inputHandler,
+            outputHandler,
+            HTItemToMultiItemRecipe::getRequiredAmount,
+        ) {
+        override fun getProgress(): HTProgressData = inputHandler.getStack().let(::SingleRecipeInput).let(recipe::getProgressData)
+    }
+}

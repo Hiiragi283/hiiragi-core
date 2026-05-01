@@ -5,8 +5,8 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.VanillaColoredContents
 import hiiragi283.core.api.function.identity
-import hiiragi283.core.api.recipe.base.HTCrushingRecipe
-import hiiragi283.core.api.recipe.base.HTForgingRecipe
+import hiiragi283.core.api.recipe.base.HTDoubleItemToItemRecipe
+import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
@@ -42,13 +42,13 @@ data object HCRecipeLookups {
     val CHARGING: HTRecipeLookup<HCChargingRecipe> = create(HCRecipeTypes.CHARGING)
 
     @JvmField
-    val CRUSHING: HTRecipeLookupImpl<HTCrushingRecipe> = create(HTConst.CRUSHING)
+    val CRUSHING: HTRecipeLookupImpl<HTItemToMultiItemRecipe> = create(HTConst.CRUSHING)
 
     @JvmField
     val EXPLODING: HTRecipeLookup<HCExplodingRecipe> = create(HCRecipeTypes.EXPLODING)
 
     @JvmField
-    val FORGING: HTRecipeLookupImpl<HTForgingRecipe> = create(HTConst.FORGING)
+    val FORGING: HTRecipeLookupImpl<HTDoubleItemToItemRecipe> = create(HTConst.FORGING)
 
     //    Tank Interaction    //
 

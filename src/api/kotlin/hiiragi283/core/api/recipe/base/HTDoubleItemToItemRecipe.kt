@@ -1,9 +1,9 @@
 package hiiragi283.core.api.recipe.base
 
-import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.crafting.RecipeInput
 
-interface HTForgingRecipe :
+interface HTDoubleItemToItemRecipe :
     HTRecipePredicates.DoubleItem,
     HTRecipeFactories.DoubleItem<ItemStack>,
-    HTProgressRecipe<HTDoubleRecipeInput>
+    HTProgressRecipe<RecipeInput>

@@ -3,7 +3,6 @@ package hiiragi283.core.api.item.component
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTDefaultColor
-import hiiragi283.core.api.HTPhysicalSideHelper
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.text.HTCommonTranslation
@@ -11,6 +10,7 @@ import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.toTextResult
 import hiiragi283.core.api.text.unwrap
+import hiiragi283.core.util.HTPhysicalSideHelper
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderGetter

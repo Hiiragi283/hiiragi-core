@@ -3,7 +3,7 @@ package hiiragi283.core.common.data.recipe.builder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
-import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.recipe.result.HTListItemResult
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.impl.data.recipe.builder.HTMultiOutputRecipeBuilder
 import hiiragi283.core.impl.recipe.HTSerializableRecipe
@@ -23,11 +23,11 @@ class HTItemToMultiItemRecipeBuilder(prefix: String, private val factory: Factor
 
     lateinit var ingredient: HTItemIngredient
 
-    override fun createRecipe(): HTSerializableRecipe<*> = factory.create(ingredient, results, progressData)
+    override fun createRecipe(): HTSerializableRecipe<*> = factory.create(ingredient, createList(), progressData)
 
     //    Factory    //
 
-    fun interface Factory<T : Any> {
-        fun create(ingredient: HTItemIngredient, results: List<HTItemResult>, progressData: HTProgressData): T
+    fun interface Factory<RECIPE : Any> {
+        fun create(ingredient: HTItemIngredient, results: HTListItemResult, progressData: HTProgressData): RECIPE
     }
 }

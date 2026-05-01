@@ -2,7 +2,7 @@ package hiiragi283.core.common.block.entity
 
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.function.partially1
-import hiiragi283.core.api.recipe.base.HTForgingRecipe
+import hiiragi283.core.api.recipe.base.HTDoubleItemToItemRecipe
 import hiiragi283.core.api.recipe.cache.HTRecipeCaches
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
@@ -49,7 +49,7 @@ class HTForgingAnvilBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntit
 
     //    Processing    //
 
-    private val cache: HTRecipeCaches.DoubleItem<HTForgingRecipe> =
+    private val cache: HTRecipeCaches.DoubleItem<HTDoubleItemToItemRecipe> =
         HTRecipeCaches.DoubleItem(HCRecipeLookups.FORGING)
     private val inputHandler: HTItemInputHandler by lazy { HTItemInputHandler(slot) }
 
@@ -57,7 +57,7 @@ class HTForgingAnvilBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntit
         val stack: ItemStack = inputHandler.getItemStack()
         val stack1: ItemStack = player.getItemInHand(InteractionHand.OFF_HAND)
         val level: Level = player.level()
-        val recipe: HTForgingRecipe = cache.findFirstRecipe(stack, stack1, level) ?: return false
+        val recipe: HTDoubleItemToItemRecipe = cache.findFirstRecipe(stack, stack1, level) ?: return false
         // outputs
         recipe.assemble(stack, stack1).let(HTItemDropHelper::giveStackTo.partially1(player))
         // inputs
