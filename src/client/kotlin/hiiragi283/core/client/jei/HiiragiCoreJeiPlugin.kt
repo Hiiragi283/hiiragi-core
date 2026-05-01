@@ -173,7 +173,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                         HTRecipeContents.create {
                             addInput(HTPotionHelper.createPotion(contents))
                             addOutput(HCPotionFluidHelper.createFluid(contents, 250))
-                            addInput(ItemStack(Items.GLASS_BOTTLE))
+                            addOutput(ItemStack(Items.GLASS_BOTTLE))
                         },
                     )
                 },

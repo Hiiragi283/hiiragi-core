@@ -26,6 +26,7 @@ data object HTJeiRecipeHelper {
      */
     @JvmStatic
     fun <T : Any> addRecipes(registration: IRecipeRegistration, recipeType: JeiRecipeType<T>, recipes: Sequence<T>) {
+        if (recipes.none()) return
         registration.addRecipes(recipeType, recipes.toList())
     }
 
