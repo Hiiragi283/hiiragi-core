@@ -11,8 +11,8 @@ import hiiragi283.core.api.registry.VanillaFluidContents
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.data.recipe.builder.HCChargingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HCExplodingRecipeBuilder
-import hiiragi283.core.common.data.recipe.builder.HTDoubleMultiOutputRecipeBuilder
-import hiiragi283.core.common.data.recipe.builder.HTSingleMultiOutputRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HCForgingRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTItemToMultiItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTTankInteractionRecipeBuilder
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
@@ -93,7 +93,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
             HCItems.LUMINOUS_PASTE to Items.GLOW_INK_SAC,
             HCItems.MAGMA_SHARD to Items.MAGMA_BLOCK,
         ).forEach { (output: ItemLike, input: Item) ->
-            HTSingleMultiOutputRecipeBuilder.crushing(this.output) {
+            HTItemToMultiItemRecipeBuilder.crushing(this.output) {
                 ingredient = inputCreator.create(input)
                 results += resultCreator.create(output)
             }
@@ -103,7 +103,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
             Items.NETHER_WART to Items.NETHER_WART_BLOCK,
             HCBlocks.WARPED_WART to Items.WARPED_WART_BLOCK,
         ).forEach { (output: ItemLike, input: Item) ->
-            HTSingleMultiOutputRecipeBuilder.crushing(this.output) {
+            HTItemToMultiItemRecipeBuilder.crushing(this.output) {
                 ingredient = inputCreator.create(input)
                 results += resultCreator.create(output, 3)
             }
@@ -115,7 +115,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
             Items.PRISMARINE_SHARD to Items.PRISMARINE,
             Items.SNOWBALL to Items.SNOW_BLOCK,
         ).forEach { (output: Item, input: Item) ->
-            HTSingleMultiOutputRecipeBuilder.crushing(this.output) {
+            HTItemToMultiItemRecipeBuilder.crushing(this.output) {
                 ingredient = inputCreator.create(input)
                 results += resultCreator.create(output, 4)
                 recipeId suffix "_from_block"
@@ -123,33 +123,33 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         }
 
         // Prismarine Bricks -> Prismarine Shard
-        HTSingleMultiOutputRecipeBuilder.crushing(output) {
+        HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Items.PRISMARINE_BRICKS)
             results += resultCreator.create(Items.PRISMARINE_SHARD, 9)
             recipeId suffix "_from_bricks"
         }
         // Beetroot -> Sugar + Molasses
-        HTSingleMultiOutputRecipeBuilder.crushing(output) {
+        HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.CROPS_BEETROOT)
             results += resultCreator.create(Items.SUGAR, 2)
             // extraResult += resultCreator.create(RagiumItems.MOLASSES)
             recipeId suffix "_from_beetroot"
         }
         // Sugar Cane -> Sugar + Molasses
-        HTSingleMultiOutputRecipeBuilder.crushing(output) {
+        HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.CROPS_SUGAR_CANE)
             results += resultCreator.create(Items.SUGAR, 4)
             // extraResult += resultCreator.create(RagiumItems.MOLASSES)
             recipeId suffix "_from_cane"
         }
         // Ice -> Snowball
-        HTSingleMultiOutputRecipeBuilder.crushing(output) {
+        HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Items.ICE)
             results += resultCreator.create(Items.SNOWBALL, 4)
             recipeId suffix "_from_ice"
         }
         // Wheat -> Flour
-        HTSingleMultiOutputRecipeBuilder.crushing(output) {
+        HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.CROPS_WHEAT)
             results += resultCreator.create(HCItems.WHEAT_FLOUR)
         }
@@ -161,32 +161,32 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
     @JvmStatic
     private fun crushStones() {
         // Stone -> Cobblestone
-        HTSingleMultiOutputRecipeBuilder.crushing(output) {
+        HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Items.STONE)
             results += resultCreator.create(Items.COBBLESTONE)
             recipeId suffix "_from_stone"
         }
         // Cobblestone -> Gravel
-        HTSingleMultiOutputRecipeBuilder.crushing(output) {
+        HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(listOf(Tags.Items.COBBLESTONES_NORMAL, Tags.Items.COBBLESTONES_MOSSY))
             results += resultCreator.create(Items.GRAVEL)
             recipeId suffix "_from_cobblestone"
         }
         // Gravel -> Sand
-        HTSingleMultiOutputRecipeBuilder.crushing(output) {
+        HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.GRAVELS)
             results += resultCreator.create(Items.SAND)
             recipeId suffix "_from_gravel"
         }
         // Sandstone -> Sand + Saltpeter
-        HTSingleMultiOutputRecipeBuilder.crushing(output) {
+        HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.SANDSTONE_UNCOLORED_BLOCKS)
             results += resultCreator.create(Items.SAND, 2)
             results += resultCreator.material(CommonParts.DUST, CommonMaterialKeys.SALTPETER, chance = fraction(1, 4))
             recipeId suffix "_from_sandstone"
         }
 
-        HTSingleMultiOutputRecipeBuilder.crushing(output) {
+        HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.SANDSTONE_RED_BLOCKS)
             results += resultCreator.create(Items.RED_SAND, 2)
             results += resultCreator.material(CommonParts.DUST, CommonMaterialKeys.SALTPETER, chance = fraction(1, 4))
@@ -198,7 +198,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
     private fun crushWoods() {
         // Wood Dust
         fun wood(tagKey: TagKey<Item>, input: Int, output: Int) {
-            HTSingleMultiOutputRecipeBuilder.crushing(this.output) {
+            HTItemToMultiItemRecipeBuilder.crushing(this.output) {
                 ingredient = inputCreator.create(tagKey, input)
                 results += resultCreator.material(CommonParts.DUST, VanillaMaterialKeys.WOOD, output)
                 recipeId suffix "_from_${tagKey.location().path}"
@@ -228,13 +228,11 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         HCExplodingRecipeBuilder.create(output) {
             ingredient = itemCreator.create(listOf(Tags.Items.STONES, Tags.Items.COBBLESTONES_NORMAL))
             result = resultCreator.create(Items.COBBLED_DEEPSLATE, chance = fraction(1, 2))
-            requiredPower = fraction(3f)
         }
         // Ancient Debris -> Netherite Scrap
         HCExplodingRecipeBuilder.create(output) {
             ingredient = itemCreator.create(Tags.Items.ORES_NETHERITE_SCRAP)
             result = resultCreator.material(CommonParts.SCRAP, VanillaMaterialKeys.NETHERITE, 2)
-            requiredPower = fraction(6f)
         }
         // Gunpowder -> Blaze Powder
         HCExplodingRecipeBuilder.create(output) {
@@ -250,7 +248,6 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         HCExplodingRecipeBuilder.create(output) {
             ingredient = itemCreator.create(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.QUARTZ)
             result = resultCreator.create(Items.GHAST_TEAR, chance = fraction(1, 4))
-            requiredPower = fraction(3f)
         }
 
         gems()
@@ -275,7 +272,6 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         HCExplodingRecipeBuilder.create(output) {
             ingredient = itemCreator.create(Items.SCULK)
             result = resultCreator.material(CommonParts.GEM, VanillaMaterialKeys.ECHO, chance = fraction(1, 8))
-            requiredPower = fraction(6f)
         }
 
         // Crimson Crystal
@@ -294,10 +290,10 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
 
     @JvmStatic
     private fun forging() {
-        HTDoubleMultiOutputRecipeBuilder.forging(output) {
-            base = inputCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON)
-            addition = inputCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON)
-            results += resultCreator.create(Items.HEAVY_WEIGHTED_PRESSURE_PLATE)
+        HCForgingRecipeBuilder.create(output) {
+            primary = inputCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON)
+            secondary += CommonTagPrefixes.INGOT to VanillaMaterialKeys.IRON
+            result = resultCreator.create(Items.HEAVY_WEIGHTED_PRESSURE_PLATE)
         }
     }
 

@@ -1,6 +1,7 @@
 {
   "type": "hiiragi_core:emptying",
   "fluid_result": {
+    "amount": 1000,
     "id": "minecraft:water"
   },
   "ingredient": "minecraft:wet_sponge",

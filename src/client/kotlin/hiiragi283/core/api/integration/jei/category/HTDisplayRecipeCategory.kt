@@ -44,8 +44,7 @@ abstract class HTDisplayRecipeCategory<T : HTRecipeDisplay>(
 
     abstract class Progress(guiHelper: IGuiHelper, recipeType: HTRecipeViewerType<HTProgressRecipeDisplay>) :
         Basic<HTProgressRecipeDisplay>(guiHelper, recipeType, HTProgressRecipeDisplay.CODEC) {
-        protected fun IRecipeExtrasBuilder.addRecipeArrow(display: HTProgressRecipeDisplay): IPlaceable<*> = display.progressData.time
-            .map(this::addAnimatedRecipeArrow)
-            .orElseGet { this.addRecipeArrow() }
+        protected fun IRecipeExtrasBuilder.addRecipeArrow(display: HTProgressRecipeDisplay): IPlaceable<*> =
+            this.addRecipeArrow(display.progressData)
     }
 }

@@ -1,7 +1,6 @@
 package hiiragi283.core.api.integration.jei
 
 import hiiragi283.core.api.HTComparators
-import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
@@ -88,11 +87,7 @@ data object HTJeiRecipeHelper {
      * @since 0.11.0
      */
     @JvmStatic
-    fun <T : Any> addLookupRecipes(
-        registration: IRecipeRegistration,
-        viewerType: HTHolderRecipeViewerType<T>,
-        lookup: HTRecipeLookup<*, T>,
-    ) {
+    fun <T : Any> addLookupRecipes(registration: IRecipeRegistration, viewerType: HTHolderRecipeViewerType<T>, lookup: HTRecipeLookup<T>) {
         this.addHolderRecipes(registration, viewerType, lookup.getAllRecipes())
     }
 
@@ -106,7 +101,7 @@ data object HTJeiRecipeHelper {
     fun <T : Any> addLookupRecipes(
         registration: IRecipeRegistration,
         viewerType: HTHolderRecipeViewerType<T>,
-        lookup: HTRecipeLookup<*, T>,
+        lookup: HTRecipeLookup<T>,
         sorter: Comparator<in T>,
     ) {
         this.addHolderRecipes(registration, viewerType, lookup.getAllRecipes(), sorter)
@@ -143,10 +138,10 @@ data object HTJeiRecipeHelper {
      * @since 0.15.3
      */
     @JvmStatic
-    fun <BASE : HTRecipe<*>, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
+    fun <BASE : Any, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
         registration: IRecipeRegistration,
         viewerType: HTRecipeViewerType<DISPLAY>,
-        lookup: HTRecipeLookup<*, BASE>,
+        lookup: HTRecipeLookup<BASE>,
         transform: (HTRecipeHolder<BASE>) -> DISPLAY?,
     ) {
         this.addDisplayRecipes(
@@ -162,10 +157,10 @@ data object HTJeiRecipeHelper {
      * @since 0.15.3
      */
     @JvmStatic
-    fun <BASE : HTRecipe<*>, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
+    fun <BASE : Any, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
         registration: IRecipeRegistration,
         viewerType: HTRecipeViewerType<DISPLAY>,
-        lookup: HTRecipeLookup<*, BASE>,
+        lookup: HTRecipeLookup<BASE>,
         sorter: Comparator<DISPLAY>,
         transform: (HTRecipeHolder<BASE>) -> DISPLAY?,
     ) {

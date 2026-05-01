@@ -25,13 +25,12 @@ import kotlin.jvm.optionals.getOrNull
 
 /**
  * レシピの一覧を提供するインターフェースです。
- * @param INPUT レシピの入力となるクラス
  * @param RECIPE レシピのクラス
  * @author Hiiragi Tsubasa
  * @since 0.11.0
  * @see mekanism.common.recipe.IMekanismRecipeTypeProvider
  */
-fun interface HTRecipeLookup<INPUT : RecipeInput, RECIPE : Any> {
+fun interface HTRecipeLookup<RECIPE : Any> {
     /**
      * 現在のサーバーまたはクライアントからレシピの一覧を取得します。
      * @return [HTRecipeHolder]の[Sequence]

@@ -1,6 +1,6 @@
-package hiiragi283.core.api.recipe.base
+package hiiragi283.core.impl.recipe
 
-import hiiragi283.core.api.recipe.HTRecipe
+import hiiragi283.core.api.recipe.HTRecipePredicate
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.NonNullList
 import net.minecraft.world.item.ItemStack
@@ -18,9 +18,9 @@ import net.minecraft.world.level.Level
  */
 interface HTSerializableRecipe<INPUT : RecipeInput> :
     Recipe<INPUT>,
-    HTRecipe<INPUT> {
+    HTRecipePredicate<INPUT> {
     @Deprecated("Not used in Hiiragi Series", level = DeprecationLevel.ERROR)
-    override fun matches(input: INPUT, level: Level): Boolean = test(input)
+    override fun matches(input: INPUT, level: Level): Boolean = matches(input)
 
     @Deprecated("Not used in Hiiragi Series", level = DeprecationLevel.ERROR)
     override fun canCraftInDimensions(width: Int, height: Int): Boolean = true
@@ -29,7 +29,7 @@ interface HTSerializableRecipe<INPUT : RecipeInput> :
     override fun getResultItem(registries: HolderLookup.Provider): ItemStack = ItemStack.EMPTY
 
     @Deprecated("Not used in Hiiragi Series", level = DeprecationLevel.ERROR)
-    override fun assemble(input: INPUT, registries: HolderLookup.Provider): ItemStack = assemble(input, false)
+    override fun assemble(input: INPUT, registries: HolderLookup.Provider): ItemStack = ItemStack.EMPTY
 
     @Deprecated("Not used in Hiiragi Series", level = DeprecationLevel.ERROR)
     override fun getRemainingItems(input: INPUT): NonNullList<ItemStack> = super.getRemainingItems(input)

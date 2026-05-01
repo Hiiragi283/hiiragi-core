@@ -9,11 +9,15 @@ import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.HTRecipeType
+import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
-import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
+import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.toHolderSet
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.common.recipe.ingredient.HTPotionFluidIngredient
+import hiiragi283.core.impl.recipe.HTItemToItemRecipe
+import hiiragi283.core.mixin.AbstractCookingRecipeAccessor
 import hiiragi283.core.mixin.PotionBrewingAccessor
 import hiiragi283.core.mixin.PotionBrewingMixAccessor
 import hiiragi283.core.util.HCPotionFluidHelper
@@ -26,7 +30,6 @@ import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.item.crafting.AbstractCookingRecipe
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeType
-import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.neoforged.neoforge.common.brewing.BrewingRecipe
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 
@@ -37,26 +40,37 @@ import net.neoforged.neoforge.fluids.crafting.FluidIngredient
  */
 object HTVanillaRecipeTypes {
     @JvmField
-    val SMELTING: HTRecipeType<SingleRecipeInput, HCCookingRecipe> = CookingType(RecipeType.SMELTING)
+    val SMELTING: HTRecipeType<HTItemToItemRecipe> = CookingType(RecipeType.SMELTING)
 
     @JvmField
-    val BLASTING: HTRecipeType<SingleRecipeInput, HCCookingRecipe> = CookingType(RecipeType.BLASTING)
+    val BLASTING: HTRecipeType<HTItemToItemRecipe> = CookingType(RecipeType.BLASTING)
 
     @JvmField
-    val SMOKING: HTRecipeType<SingleRecipeInput, HCCookingRecipe> = CookingType(RecipeType.SMOKING)
+    val SMOKING: HTRecipeType<HTItemToItemRecipe> = CookingType(RecipeType.SMOKING)
 
     private class CookingType<RECIPE : AbstractCookingRecipe>(private val recipeType: RecipeType<RECIPE>) :
-        HTRecipeType<SingleRecipeInput, HCCookingRecipe> {
+        HTRecipeType<HTItemToItemRecipe> {
         override fun getId(): ResourceLocation = ResourceLocation.parse(recipeType.toString())
 
-        override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<HTRecipeHolder<HCCookingRecipe>> =
-            context.getAllRecipes(recipeType).map { holder: HTRecipeHolder<RECIPE> -> holder.mapRecipe(::HCCookingRecipe) }
+        override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<HTRecipeHolder<HTItemToItemRecipe>> =
+            context.getAllRecipes(recipeType).map { holder: HTRecipeHolder<RECIPE> ->
+                val (id: ResourceLocation, recipe: RECIPE) = holder
+                val accessor: AbstractCookingRecipeAccessor = (recipe as AbstractCookingRecipeAccessor)
+                HTRecipeHolder(
+                    id,
+                    HTItemToItemRecipe(
+                        HTItemIngredient(accessor.ingredient, 1),
+                        HTItemResult(accessor.result),
+                        HTProgressData.time(recipe.cookingTime),
+                    ),
+                )
+            }
     }
 
     @JvmField
-    val BREWING: HTRecipeType<HTItemAndFluidRecipeInput, HCBrewingRecipe> = BrewingType
+    val BREWING: HTRecipeType<HCBrewingRecipe> = BrewingType
 
-    private data object BrewingType : HTRecipeType<HTItemAndFluidRecipeInput, HCBrewingRecipe> {
+    private data object BrewingType : HTRecipeType<HCBrewingRecipe> {
         private var cachedRecipes: Sequence<HTRecipeHolder<HCBrewingRecipe>> = emptySequence()
 
         private fun getPotion(stack: ItemStack): Holder<Potion> = HTPotionHelper.getPotion(stack).potion.orElseGet(Potions::WATER)

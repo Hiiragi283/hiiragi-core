@@ -2,7 +2,7 @@ package hiiragi283.core.common.block.entity
 
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.function.partially1
-import hiiragi283.core.api.recipe.base.HTDoubleMultiOutputRecipe
+import hiiragi283.core.api.recipe.base.HTForgingRecipe
 import hiiragi283.core.api.recipe.input.HTDoubleRecipeInput
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
@@ -50,7 +50,7 @@ class HTForgingAnvilBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntit
 
     //    Processing    //
 
-    private val cache: HTLookupRecipeCache<HTDoubleRecipeInput, HTDoubleMultiOutputRecipe> =
+    private val cache: HTLookupRecipeCache<HTDoubleRecipeInput, HTForgingRecipe> =
         HTLookupRecipeCache.forRecipe(HCRecipeLookups.FORGING)
     private val inputHandler: HTItemInputHandler by lazy { HTItemInputHandler(slot) }
 
@@ -70,12 +70,13 @@ class HTForgingAnvilBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntit
         val input = HTDoubleRecipeInput(stack, stack1)
         if (input.isEmpty) return false
         val level: Level = player.level()
-        val recipe: HTDoubleMultiOutputRecipe = cache.getFirstRecipe(input, level) ?: return false
+        val recipe: HTForgingRecipe = cache.getFirstRecipe(input, level) ?: return false
         // outputs
-        recipe.assembleItems(input, false).forEach(HTItemDropHelper::giveStackTo.partially1(player))
+        recipe.assemble(input).let(HTItemDropHelper::giveStackTo.partially1(player))
         // inputs
-        input.let(recipe::getBaseAmount).let(inputHandler::consume)
-        input.let(recipe::getAdditionAmount).let(stack1::shrink)
+        val (primaryAmount: Int, secondaryAmount: Int) = recipe.getRequiredAmount(input.first, input.second) // TODO
+        inputHandler.consume(primaryAmount)
+        stack1.shrink(secondaryAmount)
         // sound
         playSound(SoundEvents.ANVIL_LAND)
         return true

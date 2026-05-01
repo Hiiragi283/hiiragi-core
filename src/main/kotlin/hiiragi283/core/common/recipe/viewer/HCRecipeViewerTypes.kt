@@ -14,7 +14,6 @@ import hiiragi283.core.api.text.toText
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
-import hiiragi283.core.common.recipe.viewer.display.HCExplodingRecipeDisplay
 import hiiragi283.core.impl.recipe.viewer.HTRecipeViewerTypeImpl
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCRecipeTypes
@@ -39,8 +38,8 @@ data object HCRecipeViewerTypes {
         create(HCRecipeTypes.CRUSHING, Items.ANVIL, 18 * 5, 18 * 2)
 
     @JvmField
-    val EXPLODING: HTRecipeViewerType<HCExplodingRecipeDisplay> =
-        create(HCRecipeTypes.EXPLODING, Items.TNT, 18 * 4, 18 * 2)
+    val EXPLODING: HTRecipeViewerType<HTRecipeDisplay.Simple> =
+        create(HCRecipeTypes.EXPLODING, Items.TNT, 18 * 4)
 
     @JvmField
     val FORGING: HTRecipeViewerType<HTProgressRecipeDisplay> =

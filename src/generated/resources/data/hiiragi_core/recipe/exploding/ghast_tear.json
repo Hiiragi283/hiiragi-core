@@ -1,7 +1,6 @@
 {
   "type": "hiiragi_core:exploding",
   "ingredient": "#c:storage_blocks/quartz",
-  "required_power": 3,
   "result": {
     "chance": "1/4",
     "count": 1,

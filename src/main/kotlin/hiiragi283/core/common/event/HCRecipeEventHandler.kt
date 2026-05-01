@@ -7,8 +7,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.item.enchantment.toInstances
-import hiiragi283.core.api.recipe.base.HTSingleMultiOutputRecipe
-import hiiragi283.core.api.toFraction
+import hiiragi283.core.api.recipe.base.HTCrushingRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.world.HCInWorldRecipeCaches
@@ -82,14 +81,14 @@ object HCRecipeEventHandler {
         if (entity is ItemEntity && entity.isAlive) {
             val input: SingleRecipeInput = createInput(entity)
             val recipe: HCChargingRecipe = getCaches(level).charging.getFirstRecipe(input, level) ?: return
-            spawnResults(entity) { recipe.assemble(input, false) }
+            spawnResults(entity) { recipe.assemble(input) }
             entity.discard()
             event.isCanceled = true
         }
     }
 
     /**
-     * [HTSingleMultiOutputRecipe]を処理するイベント
+     * [HTCrushingRecipe]を処理するイベント
      */
     @SubscribeEvent
     fun onAnvilLand(event: HTAnvilLandEvent) {
@@ -104,11 +103,11 @@ object HCRecipeEventHandler {
     private fun anvilCrushing(entity: ItemEntity) {
         val level: Level = entity.level()
         val input: SingleRecipeInput = createInput(entity)
-        val recipe: HTSingleMultiOutputRecipe = getCaches(level).crushing.getFirstRecipe(input, level) ?: return
-        val inputAmount: Int = recipe.getRequiredAmount(input)
+        val recipe: HTCrushingRecipe = getCaches(level).crushing.getFirstRecipe(input, level) ?: return
+        val inputAmount: Int = recipe.getRequiredAmount(input.item())
         val multiplier: Int = entity.item.count / inputAmount
         (0 until multiplier)
-            .flatMap { recipe.assembleItems(input, false) }
+            .flatMap { recipe.assemble(input) }
             .let(HTShapelessRecipeHelper::mergeStacks)
             .mapNotNull(entity::spawnAtLocation)
             .forEach {
@@ -167,9 +166,9 @@ object HCRecipeEventHandler {
         while (iterator.hasNext()) {
             val entity: Entity = iterator.next()
             if (entity is ItemEntity && entity.isAlive && !isCompleted(entity)) {
-                val input = HCExplodingRecipe.Input(entity.item, event.explosion.radius().toFraction())
+                val input: SingleRecipeInput = createInput(entity)
                 val recipe: HCExplodingRecipe = getCaches(level).exploding.getFirstRecipe(input, level) ?: continue
-                spawnResults(entity) { recipe.assemble(input, false) }
+                spawnResults(entity) { recipe.assemble(input) }
                 if (entity.item.isEmpty) {
                     iterator.remove()
                     entity.discard()

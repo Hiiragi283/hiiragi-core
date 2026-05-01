@@ -1,7 +1,7 @@
 package hiiragi283.core.api.recipe.base
 
-import hiiragi283.core.api.recipe.HTRecipe
-import net.minecraft.world.item.ItemStack
+import hiiragi283.core.api.recipe.base.factory.HTItemAndFluidRecipeFactory
+import hiiragi283.core.api.recipe.base.predicate.HTSingleRecipePredicate
 import net.minecraft.world.item.crafting.SingleRecipeInput
 
 /**
@@ -10,11 +10,5 @@ import net.minecraft.world.item.crafting.SingleRecipeInput
  * @since 0.15.1
  */
 interface HTTankEmptyingRecipe :
-    HTRecipe<SingleRecipeInput>,
-    HTFluidRecipe<SingleRecipeInput> {
-    fun testContainer(stack: ItemStack): Boolean
-
-    //    HTRecipe    //
-
-    override fun test(input: SingleRecipeInput): Boolean = testContainer(input.item())
-}
+    HTSingleRecipePredicate.SingleItem,
+    HTItemAndFluidRecipeFactory<SingleRecipeInput>

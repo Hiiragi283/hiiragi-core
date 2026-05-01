@@ -1,8 +1,8 @@
 package hiiragi283.core.impl.recipe.cache
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.recipe.HTRecipe
 import hiiragi283.core.api.recipe.HTRecipeHolder
+import hiiragi283.core.api.recipe.HTRecipePredicate
 import hiiragi283.core.api.recipe.cache.HTRecipeCache
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.serialization.value.HTValueInput
@@ -22,19 +22,19 @@ import net.minecraft.world.level.Level
  * @since 0.12.0
  */
 class HTLookupRecipeCache<INPUT : RecipeInput, RECIPE : Any>(
-    val lookup: HTRecipeLookup<INPUT, RECIPE>,
+    val lookup: HTRecipeLookup<RECIPE>,
     private val predicate: (RECIPE, INPUT, Level) -> Boolean,
 ) : HTRecipeCache<INPUT, RECIPE> {
     companion object {
         /**
-         * 指定した[lookup]から，[HTRecipe.test]に基づいた[HTLookupRecipeCache]の新しいインスタンスを作成します。
+         * 指定した[lookup]から，[HTRecipePredicate.matches]に基づいた[HTLookupRecipeCache]の新しいインスタンスを作成します。
          * @param INPUT レシピの入力となるクラス
-         * @param RECIPE [HTRecipe]を実装したクラス
+         * @param RECIPE [HTRecipePredicate]を実装したクラス
          */
         @JvmStatic
-        fun <INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> forRecipe(
-            lookup: HTRecipeLookup<INPUT, RECIPE>,
-        ): HTLookupRecipeCache<INPUT, RECIPE> = HTLookupRecipeCache(lookup) { recipe: RECIPE, input: INPUT, _ -> recipe.test(input) }
+        fun <INPUT : RecipeInput, RECIPE : HTRecipePredicate<INPUT>> forRecipe(
+            lookup: HTRecipeLookup<RECIPE>,
+        ): HTLookupRecipeCache<INPUT, RECIPE> = HTLookupRecipeCache(lookup) { recipe: RECIPE, input: INPUT, _ -> recipe.matches(input) }
     }
 
     private var lastRecipe: Either<ResourceLocation, HTRecipeHolder<RECIPE>>? = null

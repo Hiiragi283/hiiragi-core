@@ -17,7 +17,7 @@ import java.util.Optional
  * @since 0.15.3
  */
 @JvmInline
-value class HTProgressData private constructor(private val content: Either<Int, Int>) : HTHasText {
+value class HTProgressData(private val content: Either<Int, Int>) : HTHasText {
     companion object {
         @JvmField
         val CODEC: MapCodec<HTProgressData> = Codec

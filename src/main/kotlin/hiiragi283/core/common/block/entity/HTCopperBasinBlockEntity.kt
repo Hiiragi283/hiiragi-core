@@ -12,6 +12,7 @@ import hiiragi283.core.api.serialization.value.write
 import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.api.storage.holder.HTFluidTankHolder
+import hiiragi283.core.api.util.Ior
 import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.storage.fluid.HTBasicFluidTank
 import hiiragi283.core.impl.recipe.cache.HTLookupRecipeCache
@@ -62,10 +63,10 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
         val level: Level = player.level()
         val recipe: HTTankEmptyingRecipe = emptyingCache.getFirstRecipe(input, level) ?: return false
 
-        val emptyContainer: ItemStack = recipe.assemble(input, false)
-        val fluidStack: FluidStack = recipe.assembleFluid(input)
-        if (fluidOutputHandler.canInsert(fluidStack)) {
-            HTItemDropHelper.giveStackTo(player, emptyContainer)
+        val rawResult: Ior<ItemStack, FluidStack> = recipe.assemble(input)
+        val fluidStack: FluidStack = rawResult.getRight() ?: FluidStack.EMPTY
+        if (!fluidStack.isEmpty && fluidOutputHandler.canInsert(fluidStack)) {
+            rawResult.getLeft()?.let { HTItemDropHelper.giveStackTo(player, it) }
             fluidOutputHandler.insert(fluidStack)
             stack.consume(1, player)
             return true
@@ -82,10 +83,13 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
         val level: Level = player.level()
         val recipe: HTTankFillingRecipe = fillingCache.getFirstRecipe(input, level) ?: return false
 
-        val filledContainer: ItemStack = recipe.assemble(input, false)
+        val filledContainer: ItemStack = recipe.assemble(input)
         HTItemDropHelper.giveStackTo(player, filledContainer)
         stack.consume(1, player)
-        recipe.getRequiredFluidAmount(input).let(fluidInputHandler::consume)
+        recipe
+            .getRequiredAmount(input.item, input.fluid)
+            .second
+            .let(fluidInputHandler::consume)
         return true
     }
 

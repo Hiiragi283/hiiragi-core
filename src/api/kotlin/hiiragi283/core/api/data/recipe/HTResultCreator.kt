@@ -56,8 +56,7 @@ class HTResultCreator(provider: HolderLookup.Provider) {
 
     fun create(fluid: Fluid, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult = create(FluidStack(fluid, amount))
 
-    fun create(fluid: HTFluidHolderLike<*>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult =
-        HTFluidResult.create(checkNotNull(fluid.toResource()) { "Cannot create fluid result from empty stack" }, amount)
+    fun create(fluid: HTFluidHolderLike<*>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult = create(fluid.toStack(amount))
 
     fun create(stack: FluidStack): HTFluidResult = HTFluidResult.create(stack)
 

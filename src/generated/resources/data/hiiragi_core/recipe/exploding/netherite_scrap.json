@@ -1,7 +1,6 @@
 {
   "type": "hiiragi_core:exploding",
   "ingredient": "#c:ores/netherite_scrap",
-  "required_power": 6,
   "result": {
     "type": "hiiragi_core:material_part",
     "count": 2,

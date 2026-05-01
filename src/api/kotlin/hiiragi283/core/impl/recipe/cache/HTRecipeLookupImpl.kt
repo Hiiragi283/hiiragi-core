@@ -7,7 +7,7 @@ import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeType
 
-data class HTRecipeLookupImpl<INPUT : RecipeInput, RECIPE : Any>(private val id: ResourceLocation) : HTRecipeLookup<INPUT, RECIPE> {
+data class HTRecipeLookupImpl<RECIPE : Any>(private val id: ResourceLocation) : HTRecipeLookup<RECIPE> {
     private val providers: MutableList<Provider<HTRecipeHolder<RECIPE>>> = mutableListOf()
     var cachedRecipes: List<HTRecipeHolder<RECIPE>> = listOf()
 
@@ -23,7 +23,7 @@ data class HTRecipeLookupImpl<INPUT : RecipeInput, RECIPE : Any>(private val id:
         this.addProvider { recipes.asSequence().map(::HTRecipeHolder) }
     }
 
-    fun addProvider(other: HTRecipeLookupImpl<INPUT, RECIPE>) {
+    fun addProvider(other: HTRecipeLookupImpl<RECIPE>) {
         this.addProvider(other::getAllRecipes)
     }
 
@@ -45,7 +45,7 @@ data class HTRecipeLookupImpl<INPUT : RecipeInput, RECIPE : Any>(private val id:
 
 //    Extensions    //
 
-fun <INPUT : RecipeInput, RECIPE : Any, R : Recipe<INPUT>> HTRecipeLookupImpl<INPUT, RECIPE>.addProvider(
+fun <INPUT : RecipeInput, RECIPE : Any, R : Recipe<INPUT>> HTRecipeLookupImpl<RECIPE>.addProvider(
     recipeType: RecipeType<R>,
     transform: (R) -> RECIPE,
 ) {

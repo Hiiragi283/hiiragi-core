@@ -1,13 +1,11 @@
 package hiiragi283.core.api.recipe.handler
 
-import hiiragi283.core.api.recipe.HTRecipe
-import hiiragi283.core.api.recipe.base.HTFluidRecipe
-import net.minecraft.world.item.ItemStack
+import hiiragi283.core.api.recipe.HTRecipeFactory
+import hiiragi283.core.api.recipe.HTRecipePredicate
 import net.minecraft.world.item.crafting.RecipeInput
-import net.neoforged.neoforge.fluids.FluidStack
 
 /**
- * [RecipeInput]と[HTRecipe]を束ねたクラスです。
+ * [RecipeInput]と[HTRecipeFactory]を束ねたクラスです。
  * @param INPUT レシピの入力となるクラス
  * @param RECIPE レシピのクラス
  * @author Hiiragi Tsubasa
@@ -15,11 +13,17 @@ import net.neoforged.neoforge.fluids.FluidStack
  */
 @ConsistentCopyVisibility
 @JvmRecord
-data class HTHandledRecipe<INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> private constructor(val input: INPUT, val recipe: RECIPE) {
+data class HTHandledRecipe<INPUT : RecipeInput, OUTPUT : Any, RECIPE : HTRecipeFactory<INPUT, OUTPUT>> private constructor(
+    val input: INPUT,
+    val recipe: RECIPE,
+) {
     companion object {
         @JvmStatic
-        fun <INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> create(input: INPUT, recipe: RECIPE): HTHandledRecipe<INPUT, RECIPE>? = when {
-            recipe.test(input) -> HTHandledRecipe(input, recipe)
+        fun <INPUT : RecipeInput, OUTPUT : Any, RECIPE> create(
+            input: INPUT,
+            recipe: RECIPE,
+        ): HTHandledRecipe<INPUT, OUTPUT, RECIPE>? where RECIPE : HTRecipePredicate<INPUT>, RECIPE : HTRecipeFactory<INPUT, OUTPUT> = when {
+            recipe.matches(input) -> HTHandledRecipe(input, recipe)
             else -> null
         }
     }
@@ -27,7 +31,7 @@ data class HTHandledRecipe<INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> privat
     /**
      * レシピの完成品を取得します。
      */
-    fun assemble(preview: Boolean): ItemStack = recipe.assemble(input, preview)
+    fun assemble(): OUTPUT = recipe.assemble(input)
 
     /**
      * 保持している[input]と[recipe]を変換します。
@@ -41,13 +45,3 @@ data class HTHandledRecipe<INPUT : RecipeInput, RECIPE : HTRecipe<INPUT>> privat
      */
     inline fun <T, C> map(context: C, transform: (RECIPE, INPUT, C) -> T): T = transform(recipe, input, context)
 }
-
-//    Extensions    //
-
-/**
- * [HTFluidRecipe.assembleFluid]に基づいて完成品を取得します。
- * @author Hiiragi Tsubasa
- * @since 0.13.0
- */
-fun <INPUT : RecipeInput, RECIPE : HTFluidRecipe<INPUT>> HTHandledRecipe<INPUT, RECIPE>.assembleFluid(): FluidStack =
-    this.recipe.assembleFluid(this.input)

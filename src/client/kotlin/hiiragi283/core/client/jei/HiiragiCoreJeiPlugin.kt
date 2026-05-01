@@ -28,16 +28,14 @@ import hiiragi283.core.client.jei.category.HCTankEmptyingRecipeCategory
 import hiiragi283.core.client.jei.category.HCTankFillingRecipeCategory
 import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
+import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
-import hiiragi283.core.common.recipe.viewer.display.HCExplodingRecipeDisplay
 import hiiragi283.core.common.recipe.viewer.display.HCRecipeDisplayFactories
 import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
-import hiiragi283.core.impl.recipe.HTBasicDoubleMultiOutputRecipe
-import hiiragi283.core.impl.recipe.HTBasicSingleMultiOutputRecipe
 import hiiragi283.core.impl.recipe.viewer.display.HTRecipeDisplayFactories
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCDataComponents
@@ -139,12 +137,9 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         addLookupRecipes(registration, HCRecipeViewerTypes.BREWING, HTVanillaRecipeTypes.BREWING)
         addDisplayRecipes(registration, HCRecipeViewerTypes.CHARGING, HCRecipeLookups.CHARGING, HCRecipeDisplayFactories::charging)
         addDisplayRecipes(registration, HCRecipeViewerTypes.CRUSHING, HCRecipeLookups.CRUSHING) {
-            it.castRecipe<HTBasicSingleMultiOutputRecipe>()?.let(HTRecipeDisplayFactories::singleMultiItem)
+            it.castRecipe<HCCrushingRecipe>()?.let(HTRecipeDisplayFactories::itemToMultiItem)
         }
-        addDisplayRecipes(registration, HCRecipeViewerTypes.EXPLODING, HCRecipeLookups.EXPLODING, HCExplodingRecipeDisplay::fromHolder)
-        addDisplayRecipes(registration, HCRecipeViewerTypes.FORGING, HCRecipeLookups.FORGING) {
-            it.castRecipe<HTBasicDoubleMultiOutputRecipe>()?.let(HTRecipeDisplayFactories::doubleMultiItem)
-        }
+        addDisplayRecipes(registration, HCRecipeViewerTypes.EXPLODING, HCRecipeLookups.EXPLODING, HCRecipeDisplayFactories::inWorld)
 
         registerTankEmptying(registration)
         registerTankFilling(registration)
