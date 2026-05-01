@@ -29,6 +29,7 @@ import hiiragi283.core.client.jei.category.HCTankFillingRecipeCategory
 import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
+import hiiragi283.core.common.recipe.HCForgingRecipe
 import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
@@ -140,6 +141,9 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             it.castRecipe<HCCrushingRecipe>()?.let(HTRecipeDisplayFactories::itemToMultiItem)
         }
         addDisplayRecipes(registration, HCRecipeViewerTypes.EXPLODING, HCRecipeLookups.EXPLODING, HCRecipeDisplayFactories::inWorld)
+        addDisplayRecipes(registration, HCRecipeViewerTypes.FORGING, HCRecipeLookups.FORGING) {
+            it.castRecipe<HCForgingRecipe>()?.let(HCRecipeDisplayFactories::forging)
+        }
 
         registerTankEmptying(registration)
         registerTankFilling(registration)

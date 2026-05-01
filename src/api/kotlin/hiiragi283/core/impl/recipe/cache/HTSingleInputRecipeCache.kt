@@ -21,7 +21,7 @@ abstract class HTSingleInputRecipeCache<INPUT : Any, RECIPE : Predicate<INPUT>>(
         }
         lastRecipe = lookup
             .getAllRecipes(context)
-            .firstOrNull { (_, recipe) -> recipe.test(input) }
+            .firstOrNull { (_, recipe: RECIPE) -> recipe.test(input) }
             ?: return null
         return lastRecipe
     }

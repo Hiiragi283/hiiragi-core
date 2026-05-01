@@ -37,8 +37,8 @@ class HTWeatheringCopperBasinBlock(private val weatherState: WeatheringCopper.We
                 val tankEntity: HTCopperBasinBlockEntity = level.getTypedBlockEntity(pos) ?: return ItemInteractionResult.FAIL
                 val result: ItemInteractionResult = ItemInteractionResult.CONSUME
                 when {
-                    tankEntity.tank.isEmpty() && tankEntity.fillContainer(player, hand) -> return result
                     tankEntity.drainContainer(player, hand) -> return result
+                    tankEntity.fillContainer(player, hand) -> return result
                     FluidUtil.interactWithFluidHandler(player, hand, tankEntity) -> return result
                 }
             } else {

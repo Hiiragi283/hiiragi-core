@@ -72,14 +72,12 @@ data class HTItemResult(val entry: Entry, val chance: Fraction, val fallback: Op
 
     constructor(stack: ItemStack) : this(stack, Fraction.ONE)
 
-    override fun get(): HTTextResult<ItemStack> = get(true)
+    override fun get(): HTTextResult<ItemStack> = get(false)
 
     fun get(preview: Boolean): HTTextResult<ItemStack> = when {
         !preview && HiiragiCoreAPI.RANDOM.nextFloat() >= chance -> HTTextResult.success(ItemStack.EMPTY)
         else -> entry.get()
     }
-
-    fun getOrEmpty(preview: Boolean): ItemStack = get(preview).valueOrElse(ItemStack::EMPTY)
 
     fun getOrEmpty(): ItemStack = get().valueOrElse(ItemStack::EMPTY)
 

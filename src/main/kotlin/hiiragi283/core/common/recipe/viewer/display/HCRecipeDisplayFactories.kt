@@ -6,9 +6,11 @@ import hiiragi283.core.api.recipe.viewer.display.HTProgressRecipeDisplay
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
 import hiiragi283.core.common.recipe.HCChargingRecipe
+import hiiragi283.core.common.recipe.HCForgingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import hiiragi283.core.impl.recipe.HTInWorldRecipe
+import hiiragi283.core.impl.recipe.viewer.display.HTRecipeDisplayFactories
 import net.minecraft.resources.ResourceLocation
 
 data object HCRecipeDisplayFactories {
@@ -35,6 +37,13 @@ data object HCRecipeDisplayFactories {
             },
             HTProgressData.energy(recipe.energy),
         )
+    }
+
+    @JvmStatic
+    fun forging(holder: HTRecipeHolder<HCForgingRecipe>): HTProgressRecipeDisplay = HTRecipeDisplayFactories.progress(holder) {
+        addInput(it.primary)
+        addInput(it.secondary)
+        addOutput(it.result)
     }
 
     @JvmStatic

@@ -104,17 +104,17 @@ object HCRecipeEventHandler {
         val input: ItemStack = entity.item
         val recipe: HTCrushingRecipe = getCaches(level).crushing.findFirstRecipe(input, level) ?: return
         val inputAmount: Int = recipe.getRequiredAmount(input)
-        val multiplier: Int = entity.item.count / inputAmount
+        val multiplier: Int = input.count / inputAmount
         (0 until multiplier)
             .flatMap { recipe.assemble(input) }
             .let(HTShapelessRecipeHelper::mergeStacks)
             .mapNotNull(entity::spawnAtLocation)
-            .forEach {
-                setComplete(it)
-                entity.item.count -= inputAmount
-            }
-        if (entity.item.isEmpty) {
+            .forEach(::setComplete)
+        val remainder: Int = input.count - (inputAmount * multiplier)
+        if (remainder == 0) {
             entity.discard()
+        } else {
+            entity.item = input.copyWithCount(remainder)
         }
     }
 

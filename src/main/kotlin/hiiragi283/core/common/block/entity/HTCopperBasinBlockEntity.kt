@@ -50,14 +50,13 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
 
     fun drainContainer(player: Player, hand: InteractionHand): Boolean {
         val stack: ItemStack = player.getItemInHand(hand)
-        if (stack.isEmpty) return false
 
         val level: Level = player.level()
         val recipe: HTTankEmptyingRecipe = emptyingCache.findFirstRecipe(stack, level) ?: return false
 
         val rawResult: Ior<ItemStack, FluidStack> = recipe.assemble(stack)
-        val fluidStack: FluidStack = rawResult.getRight() ?: FluidStack.EMPTY
-        if (!fluidStack.isEmpty && fluidOutputHandler.canInsert(fluidStack)) {
+        val fluidStack: FluidStack = rawResult.getRight() ?: return false
+        if (fluidOutputHandler.canInsert(fluidStack)) {
             rawResult.getLeft()?.let { HTItemDropHelper.giveStackTo(player, it) }
             fluidOutputHandler.insert(fluidStack)
             stack.consume(1, player)
@@ -73,13 +72,13 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
         val level: Level = player.level()
         val recipe: HTTankFillingRecipe = fillingCache.findFirstRecipe(itemStack, fluidStack, level) ?: return false
 
-        val filledContainer: ItemStack = recipe.assemble(itemStack, fluidStack)
-        HTItemDropHelper.giveStackTo(player, filledContainer)
-        itemStack.consume(1, player)
+        HTItemDropHelper.giveStackTo(player, recipe.assemble(itemStack, fluidStack))
         recipe
             .getRequiredAmount(itemStack, fluidStack)
-            .second
-            .let(fluidInputHandler::consume)
+            .let { (first: Int, second: Int) ->
+                itemStack.consume(first, player)
+                fluidInputHandler.consume(second)
+            }
         return true
     }
 

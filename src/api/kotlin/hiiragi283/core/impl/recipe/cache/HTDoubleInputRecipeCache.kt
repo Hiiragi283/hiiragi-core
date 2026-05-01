@@ -24,7 +24,7 @@ abstract class HTDoubleInputRecipeCache<INPUT_A : Any, INPUT_B : Any, RECIPE : B
         }
         lastRecipe = lookup
             .getAllRecipes(context)
-            .firstOrNull { (_, recipe) -> recipe.test(firstInput, secondInput) }
+            .firstOrNull { (_, recipe: RECIPE) -> recipe.test(firstInput, secondInput) }
             ?: return null
         return lastRecipe
     }

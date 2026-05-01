@@ -43,7 +43,7 @@ data object HCRecipeViewerTypes {
 
     @JvmField
     val FORGING: HTRecipeViewerType<HTProgressRecipeDisplay> =
-        create(HCRecipeTypes.FORGING, HCBlocks.FORGING_ANVIL, 18 * 6, 18 * 3)
+        create(HCRecipeTypes.FORGING, HCBlocks.FORGING_ANVIL, 18 * 6)
 
     //    Tank Interaction    //
 
