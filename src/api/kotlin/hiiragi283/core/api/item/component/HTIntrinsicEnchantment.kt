@@ -10,7 +10,6 @@ import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.toTextResult
 import hiiragi283.core.api.text.unwrap
-import hiiragi283.core.util.HTPhysicalSideHelper
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderGetter
@@ -50,23 +49,22 @@ data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: 
     fun <T : Any> useInstance(getter: HolderGetter<Enchantment>, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> =
         getter.get(key).map { holder: Holder<Enchantment> -> action(holder, level) }.toTextResult(HTCommonTranslation.MISSING_KEY)
 
-    fun <T : Any> useInstance(provider: HolderLookup.Provider?, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> {
-        val provider1: HolderLookup.Provider =
-            (provider ?: HTPhysicalSideHelper.getRegistryAccess()) ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()
-        return provider1
-            .holder(key)
-            .map { holder: Holder<Enchantment> -> action(holder, level) }
-            .toTextResult(HTCommonTranslation.MISSING_KEY)
-    }
+    fun <T : Any> useInstance(provider: HolderLookup.Provider, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> = provider
+        .holder(key)
+        .map { holder: Holder<Enchantment> -> action(holder, level) }
+        .toTextResult(HTCommonTranslation.MISSING_KEY)
 
-    fun getFullName(provider: HolderLookup.Provider?): HTTextResult<Text> = useInstance(provider, Enchantment::getFullname)
+    fun getFullName(provider: HolderLookup.Provider): HTTextResult<Text> = useInstance(provider, Enchantment::getFullname)
 
     override fun addToTooltip(context: Item.TooltipContext, tooltipAdder: Consumer<Text>, tooltipFlag: TooltipFlag) {
         when {
-            tooltipFlag.hasShiftDown() -> getFullName(context.registries())
-                .map(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT::translate)
-                .unwrap()
+            tooltipFlag.hasShiftDown() ->
+                context
+                    .registries()
+                    ?.let(::getFullName)
+                    ?.map(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT::translate)
+                    ?.unwrap()
             else -> HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION.translateColored(HTDefaultColor.YELLOW)
-        }.let(tooltipAdder::accept)
+        }?.let(tooltipAdder::accept)
     }
 }

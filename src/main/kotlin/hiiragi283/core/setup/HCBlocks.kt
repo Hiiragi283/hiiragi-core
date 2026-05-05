@@ -110,7 +110,7 @@ object HCBlocks {
     @JvmField
     val TEST: HTBlockHolderLike<HTTestBlock> = REGISTER_ONLY_BLOCK.registerBlock(
         "test",
-        unbreakable().requiredFeatures(HiiragiCoreAPI.EXPERIMENTAL),
+        unbreakable().requiredFeatures(HiiragiCoreAPI.EXPERIMENTAL).noLootTable(),
         ::HTTestBlock,
     )
 

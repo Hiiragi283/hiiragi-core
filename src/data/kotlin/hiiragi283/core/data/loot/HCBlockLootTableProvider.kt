@@ -2,7 +2,6 @@ package hiiragi283.core.data.loot
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.loot.HTBlockLootTableProvider
-import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.setup.HCBlocks
 import net.minecraft.advancements.critereon.StatePropertiesPredicate
 import net.minecraft.core.HolderLookup
@@ -17,11 +16,10 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePrope
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 
-class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootTableProvider(HiiragiCoreAPI.MOD_ID, registries) {
-    override fun getRawBlocks(): Sequence<HTBlockHolderLike<*>> = HCBlocks.REGISTER.asBlockSequence()
-
+class HCBlockLootTableProvider(registries: HolderLookup.Provider) :
+    HTBlockLootTableProvider(registries, HiiragiCoreAPI.MOD_ID, HCBlocks.REGISTER.asBlockSequence()) {
     override fun generate() {
-        getRawBlocks().forEach(::dropSelf)
+        knownBlocks.forEach(::dropSelf)
 
         registerCrops()
     }

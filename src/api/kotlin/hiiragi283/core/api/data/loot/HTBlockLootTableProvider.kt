@@ -16,18 +16,16 @@ import net.minecraft.world.level.storage.loot.LootTable
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-abstract class HTBlockLootTableProvider(protected val modId: String, registries: HolderLookup.Provider) :
-    BlockLootSubProvider(emptySet(), FeatureFlags.REGISTRY.allFlags(), registries) {
-    final override fun getKnownBlocks(): Iterable<Block> = getRawBlocks()
+abstract class HTBlockLootTableProvider(
+    registries: HolderLookup.Provider,
+    protected val modId: String,
+    private val rawBlocks: Sequence<HTBlockHolderLike<*>>,
+) : BlockLootSubProvider(emptySet(), FeatureFlags.REGISTRY.allFlags(), registries) {
+    final override fun getKnownBlocks(): Iterable<Block> = rawBlocks
         .filter { holder: HTBlockHolderLike<*> -> holder.namespace == modId }
         .map(HTBlockHolderLike<*>::get)
         .filter { block: Block -> block.lootTable != BuiltInLootTables.EMPTY }
         .toList()
-
-    /**
-     * @since 0.10.0
-     */
-    protected abstract fun getRawBlocks(): Sequence<HTBlockHolderLike<*>>
 
     //    Extensions    //
 

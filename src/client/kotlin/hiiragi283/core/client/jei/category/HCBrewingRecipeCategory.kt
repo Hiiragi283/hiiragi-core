@@ -4,10 +4,11 @@ import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.integration.jei.addFluidStack
 import hiiragi283.core.api.integration.jei.addFluidStacks
-import hiiragi283.core.api.integration.jei.category.HTHolderRecipeCategory
+import hiiragi283.core.api.integration.jei.category.HTDisplayRecipeCategory
 import hiiragi283.core.api.integration.jei.setFluidSlotRenderer
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
-import hiiragi283.core.common.recipe.HCBrewingRecipe
+import hiiragi283.core.api.recipe.viewer.display.HTProgressRecipeDisplay
+import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.builder.ITooltipBuilder
@@ -20,24 +21,23 @@ import net.minecraft.network.chat.FormattedText
 import net.minecraft.world.inventory.tooltip.TooltipComponent
 import net.minecraft.world.item.alchemy.PotionContents
 
-class HCBrewingRecipeCategory(guiHelper: IGuiHelper) :
-    HTHolderRecipeCategory<HCBrewingRecipe>(guiHelper, HCRecipeViewerTypes.BREWING, HCBrewingRecipe.CODEC) {
-    override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: HCBrewingRecipe, focuses: IFocusGroup) {
+class HCBrewingRecipeCategory(guiHelper: IGuiHelper) : HTDisplayRecipeCategory.Progress(guiHelper, HCRecipeViewerTypes.BREWING) {
+    override fun setRecipe(builder: IRecipeLayoutBuilder, contents: HTRecipeContents, focuses: IFocusGroup) {
         // inputs
         builder
             .addInputSlot(getPosition(0), getPosition(0))
-            .addFluidStacks(recipe.potionFrom.stacks.toList())
+            .addFluidStacks(contents.inputFluid(0))
             .setSlotBackground(HTBackgroundType.EXTRA_INPUT)
             .setFluidSlotRenderer()
             .addRichTooltipCallback(::addPotionTooltip)
         builder
             .addInputSlot(getPosition(2), getPosition(0))
-            .addIngredients(recipe.ingredient)
+            .addItemStacks(contents.inputItem(0))
             .setSlotBackground(HTBackgroundType.INPUT)
         // output
         builder
             .addOutputSlot(getPosition(5), getPosition(0))
-            .addFluidStack(recipe.potionTo.create())
+            .addFluidStack(contents.outputFluid(0))
             .setSlotBackground(HTBackgroundType.OUTPUT)
             .setFluidSlotRenderer()
             .addRichTooltipCallback(::addPotionTooltip)
@@ -54,7 +54,7 @@ class HCBrewingRecipeCategory(guiHelper: IGuiHelper) :
             }
     }
 
-    override fun setupRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HCBrewingRecipe, focuses: IFocusGroup) {
+    override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HTProgressRecipeDisplay, focuses: IFocusGroup) {
         builder.addRecipeArrow(recipe.progressData).setPosition(getPosition(3.25), getPosition(0))
         builder.addRecipePlus(getPosition(1))
     }
