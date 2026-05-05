@@ -14,6 +14,8 @@ data object HTConst {
     const val ZERO_CELSIUS = 273
     const val STANDARD_TEMP = 300
 
+    const val EXPERIMENTAL = "experimental"
+
     //    GUI    //
 
     /**

@@ -1,0 +1,11 @@
+{
+  "features": {
+    "enabled": [
+      "hiiragi_core:experimental"
+    ]
+  },
+  "pack": {
+    "description": "Enabled experimental feature for Hiiragi Core",
+    "pack_format": 48
+  }
+}

@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.block.HTWeatheringBlockMap
 import hiiragi283.core.api.block.HTWeatheringLevel
 import hiiragi283.core.api.function.partially1
+import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.common.block.HTForgingAnvilBlock
 import hiiragi283.core.common.block.HTTestBlock
 import hiiragi283.core.common.block.HTTreeTapBlock
@@ -107,7 +108,11 @@ object HCBlocks {
     )
 
     @JvmField
-    val TEST: HTBasicDeferredBlockAndItem<HTTestBlock> = REGISTER.registerSimple("test", unbreakable(), ::HTTestBlock)
+    val TEST: HTBlockHolderLike<HTTestBlock> = REGISTER_ONLY_BLOCK.registerBlock(
+        "test",
+        unbreakable().requiredFeatures(HiiragiCoreAPI.EXPERIMENTAL),
+        ::HTTestBlock,
+    )
 
     //    Extensions    //
 

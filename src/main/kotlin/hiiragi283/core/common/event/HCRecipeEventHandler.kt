@@ -13,6 +13,7 @@ import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.world.HCInWorldRecipeCaches
 import hiiragi283.core.mixin.RecipeManagerAccessor
 import hiiragi283.core.setup.HCAttachmentTypes
+import hiiragi283.core.setup.HCItems
 import hiiragi283.core.util.HTShapelessRecipeHelper
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponents
@@ -22,6 +23,8 @@ import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.item.EnchantedBookItem
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.Items
+import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeManager
@@ -32,6 +35,7 @@ import net.minecraft.world.phys.AABB
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.common.NeoForge
+import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent
 import net.neoforged.neoforge.event.level.ExplosionEvent
 
@@ -63,6 +67,15 @@ object HCRecipeEventHandler {
 
         accessor.byType = byType
         accessor.byName = byName
+    }
+
+    @SubscribeEvent
+    fun registerBrewing(event: RegisterBrewingRecipesEvent) {
+        event.builder.addRecipe(
+            Ingredient.of(Items.DRAGON_BREATH),
+            Ingredient.of(HCItems.IRIDESCENT_POWDER),
+            HCItems.UNLIMITED_POTION.toStack(),
+        )
     }
 
     /**

@@ -4,6 +4,8 @@ import com.mojang.logging.LogUtils
 import hiiragi283.core.api.resource.toId
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.entity.player.Player
+import net.minecraft.world.flag.FeatureFlag
+import net.minecraft.world.flag.FeatureFlags
 import net.neoforged.neoforge.common.CommonHooks
 import org.slf4j.Logger
 import java.util.ServiceLoader
@@ -26,6 +28,9 @@ data object HiiragiCoreAPI {
      */
     @JvmField
     val RANDOM: Random = Random.Default
+
+    @JvmField
+    val EXPERIMENTAL: FeatureFlag = FeatureFlags.REGISTRY.getFlag(id(HTConst.EXPERIMENTAL))
 
     //    ResourceLocation    //
 

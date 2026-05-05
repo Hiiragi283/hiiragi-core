@@ -1,9 +1,11 @@
 package hiiragi283.core.data
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.createLootTables
 import hiiragi283.core.api.data.createProviderWithHelper
 import hiiragi283.core.api.function.partially1
+import hiiragi283.core.api.text.toText
 import hiiragi283.core.data.bootsrap.HCEnchantmentProvider
 import hiiragi283.core.data.lang.HCEnglishLangProvider
 import hiiragi283.core.data.lang.HCJapaneseLangProvider
@@ -19,6 +21,8 @@ import hiiragi283.core.data.tag.HCFluidTagsProvider
 import hiiragi283.core.data.tag.HCItemTagsProvider
 import net.minecraft.core.RegistrySetBuilder
 import net.minecraft.core.registries.Registries
+import net.minecraft.data.metadata.PackMetadataGenerator
+import net.minecraft.world.flag.FeatureFlagSet
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
@@ -35,6 +39,16 @@ data object HiiragiCoreDataGen {
             RegistrySetBuilder()
                 .add(Registries.ENCHANTMENT, HCEnchantmentProvider),
         )
+
+        event.generator
+            .getBuiltinDatapack(true, HiiragiCoreAPI.MOD_ID, HTConst.EXPERIMENTAL)
+            .addProvider {
+                PackMetadataGenerator.forFeaturePack(
+                    it,
+                    "Enabled experimental feature for Hiiragi Core".toText(),
+                    FeatureFlagSet.of(HiiragiCoreAPI.EXPERIMENTAL),
+                )
+            }
         // Server
         event.createLootTables(
             ::HCBlockLootTableProvider to LootContextParamSets.BLOCK,

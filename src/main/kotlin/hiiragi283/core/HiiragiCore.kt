@@ -1,10 +1,12 @@
 package hiiragi283.core
 
 import hiiragi283.core.api.HCRegistries
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
 import hiiragi283.core.api.mod.HTCommonMod
 import hiiragi283.core.api.network.HTPayloadHandlers
+import hiiragi283.core.api.text.toText
 import hiiragi283.core.common.block.dispenser.HCDispenserBehaviours
 import hiiragi283.core.common.data.HCServerResourceProvider
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
@@ -26,6 +28,9 @@ import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.core.setup.HCWidgetTypes
 import net.mehvahdjukaar.moonlight.api.platform.RegHelper
+import net.minecraft.server.packs.PackType
+import net.minecraft.server.packs.repository.Pack
+import net.minecraft.server.packs.repository.PackSource
 import net.minecraft.world.item.ProjectileItem
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.DispenserBlock
@@ -34,6 +39,8 @@ import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.config.ModConfig
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
+import net.neoforged.fml.loading.FMLEnvironment
+import net.neoforged.neoforge.event.AddPackFindersEvent
 import net.neoforged.neoforge.network.registration.PayloadRegistrar
 import net.neoforged.neoforge.registries.NewRegistryEvent
 
@@ -92,5 +99,18 @@ data object HiiragiCore : HTCommonMod() {
     override fun registerPayload(registrar: PayloadRegistrar) {
         registrar.playToClient(HTUpdateBlockEntityPacket.TYPE, HTUpdateBlockEntityPacket.STREAM_CODEC, HTPayloadHandlers::handleS2C)
         registrar.playBidirectional(HTUpdateMenuPacket.TYPE, HTUpdateMenuPacket.STREAM_CODEC, HTPayloadHandlers::handleBoth)
+    }
+
+    override fun registerPack(event: AddPackFindersEvent) {
+        if (FMLEnvironment.production) return
+        event.addPackFinders(
+            HiiragiCoreAPI.id("data", HiiragiCoreAPI.MOD_ID, "datapacks", HTConst.EXPERIMENTAL),
+            PackType.SERVER_DATA,
+            "Hiiragi Core: Experimental".toText(),
+            PackSource.FEATURE,
+            false,
+            Pack.Position.TOP,
+        )
+        HiiragiCoreAPI.LOGGER.info("Enabled Experimental Feature")
     }
 }

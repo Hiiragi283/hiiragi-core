@@ -26,8 +26,9 @@ data object HTJeiRecipeHelper {
      */
     @JvmStatic
     fun <T : Any> addRecipes(registration: IRecipeRegistration, recipeType: JeiRecipeType<T>, recipes: Sequence<T>) {
-        if (recipes.none()) return
-        registration.addRecipes(recipeType, recipes.toList())
+        val list: List<T> = recipes.toList()
+        if (list.isEmpty()) return
+        registration.addRecipes(recipeType, list)
     }
 
     // HTRecipeViewerType
@@ -172,6 +173,22 @@ data object HTJeiRecipeHelper {
                 .getAllRecipes()
                 .mapNotNull(transform),
             sorter,
+        )
+    }
+
+    @JvmStatic
+    fun <BASE : Any, DISPLAY : HTRecipeDisplay> addFlatDisplayRecipes(
+        registration: IRecipeRegistration,
+        viewerType: HTRecipeViewerType<DISPLAY>,
+        lookup: HTRecipeLookup<BASE>,
+        transform: (HTRecipeHolder<BASE>) -> Sequence<DISPLAY>,
+    ) {
+        this.addDisplayRecipes(
+            registration,
+            viewerType,
+            lookup
+                .getAllRecipes()
+                .flatMap(transform),
         )
     }
 }

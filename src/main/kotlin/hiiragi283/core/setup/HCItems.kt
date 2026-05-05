@@ -3,6 +3,7 @@ package hiiragi283.core.setup
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.HTSmithingTemplateItem
 import hiiragi283.core.api.registry.HTSimpleItemHolderLike
+import hiiragi283.core.api.util.emptyOptional
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.item.HTAlmightyPickaxeItem
 import hiiragi283.core.common.item.HTAmbrosiaItem
@@ -12,6 +13,7 @@ import hiiragi283.core.common.item.HTCaptureEggItem
 import hiiragi283.core.common.item.HTCreativeItem
 import hiiragi283.core.common.item.HTEternalUpgradeItem
 import hiiragi283.core.common.item.HTExperienceTomeItem
+import hiiragi283.core.common.item.HTInfinitePotionItem
 import hiiragi283.core.common.item.HTPaintBrushItem
 import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.common.item.HTTraderCatalogItem
@@ -46,6 +48,9 @@ object HCItems {
         eventBus.addListener(::modifyComponents)
         eventBus.addListener(::registerCapabilities)
     }
+
+    @JvmField
+    val FAKE_FOOD = FoodProperties(0, 0f, true, 1.6f, emptyOptional(), emptyList())
 
     //    Materials   //
 
@@ -156,6 +161,11 @@ object HCItems {
                     .alwaysEdible()
                     .build(),
             )
+    }
+
+    @JvmField
+    val UNLIMITED_POTION: HTSimpleItemHolderLike = REGISTER.registerItem("unlimited_potion", ::HTInfinitePotionItem) {
+        it.requiredFeatures(HiiragiCoreAPI.EXPERIMENTAL)
     }
 
     @JvmField

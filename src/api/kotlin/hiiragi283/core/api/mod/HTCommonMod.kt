@@ -4,6 +4,7 @@ import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.neoforge.common.NeoForgeMod
+import net.neoforged.neoforge.event.AddPackFindersEvent
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.neoforged.neoforge.network.registration.PayloadRegistrar
 import net.neoforged.neoforge.registries.DataPackRegistryEvent
@@ -36,6 +37,7 @@ abstract class HTCommonMod {
                 .let(event::registrar)
                 .let(::registerPayload)
         }
+        eventBus.addListener(::registerPack)
 
         initialize(eventBus, container)
     }
@@ -69,4 +71,9 @@ abstract class HTCommonMod {
      * パケットを登録します。
      */
     protected open fun registerPayload(registrar: PayloadRegistrar) {}
+
+    /**
+     * 追加のリソース/データパックを登録します。
+     */
+    protected open fun registerPack(event: AddPackFindersEvent) {}
 }

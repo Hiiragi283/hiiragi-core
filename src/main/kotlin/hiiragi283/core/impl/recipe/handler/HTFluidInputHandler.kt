@@ -1,7 +1,6 @@
 package hiiragi283.core.impl.recipe.handler
 
 import hiiragi283.core.api.recipe.handler.HTInputHandler
-import hiiragi283.core.api.recipe.ingredient.HTIngredient
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.fluid.HTFluidTank
@@ -12,10 +11,6 @@ class HTFluidInputHandler(private val tank: HTFluidTank) :
     HTInputHandler<FluidStack>,
     HTFluidTank by tank {
     override fun getStack(): FluidStack = this.getFluidStack()
-
-    override fun consume(ingredient: HTIngredient<FluidStack>) {
-        ingredient.getRequiredAmount(getStack()).let(::consume)
-    }
 
     override fun consume(amount: Int) {
         if (amount > 0) {

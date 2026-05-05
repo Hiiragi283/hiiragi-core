@@ -1,10 +1,6 @@
-package hiiragi283.core.common.item.block
+package hiiragi283.core.common.item
 
-import hiiragi283.core.api.collection.randomOrNull
-import hiiragi283.core.api.item.HTDescriptionBlockItem
-import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.setup.HCItems
-import net.minecraft.world.effect.MobEffectCategory
 import net.minecraft.world.effect.MobEffectInstance
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.food.FoodProperties
@@ -12,17 +8,23 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.UseAnim
 import net.minecraft.world.level.Level
 
-class HTWarpedWartItem(block: HTWarpedWartBlock, properties: Properties) : HTDescriptionBlockItem<HTWarpedWartBlock>(block, properties) {
+class HTInfinitePotionItem(properties: Properties) : HTCreativeItem(properties) {
     override fun finishUsingItem(stack: ItemStack, level: Level, livingEntity: LivingEntity): ItemStack {
         livingEntity.activeEffects
-            .map(MobEffectInstance::getEffect)
-            .filter { it.value().category == MobEffectCategory.HARMFUL }
-            .randomOrNull(level.random)
-            ?.let(livingEntity::removeEffect)
+            .map {
+                MobEffectInstance(
+                    it.effect,
+                    -1,
+                    it.amplifier,
+                    it.isAmbient,
+                    it.isVisible,
+                    it.showIcon(),
+                )
+            }.forEach(livingEntity::addEffect)
         return super.finishUsingItem(stack, level, livingEntity)
     }
 
-    override fun getUseAnimation(stack: ItemStack): UseAnim = UseAnim.EAT
+    override fun getUseAnimation(stack: ItemStack): UseAnim = UseAnim.DRINK
 
     override fun getUseDuration(stack: ItemStack, entity: LivingEntity): Int =
         stack.getFoodProperties(entity)?.eatDurationTicks() ?: super.getUseDuration(stack, entity)
