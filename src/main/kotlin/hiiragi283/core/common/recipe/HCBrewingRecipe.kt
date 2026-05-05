@@ -46,8 +46,12 @@ data class HCBrewingRecipe(val potionFrom: Holder<Potion>, val ingredient: Ingre
 
     constructor(accessor: PotionBrewingMixAccessor<Potion>) : this(accessor.from, accessor.ingredient, accessor.to)
 
-    override fun test(first: ItemStack, second: FluidStack): Boolean =
-        ingredient.test(first) && HTPotionHelper.getPotion(second).`is`(potionFrom)
+    @Suppress("DEPRECATION")
+    override fun test(first: ItemStack, second: FluidStack): Boolean {
+        val contents: BottledPotionContents = HTPotionHelper.getContents(second) ?: return false
+        val potionIn: Holder<Potion> = contents.potion ?: return false
+        return ingredient.test(first) && potionIn.`is`(potionFrom)
+    }
 
     override fun getRequiredAmount(first: ItemStack, second: FluidStack): Pair<Int, Int> = when {
         test(first, second) -> 1 to HTConst.DEFAULT_FLUID_AMOUNT
