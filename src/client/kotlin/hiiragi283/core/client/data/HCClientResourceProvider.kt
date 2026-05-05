@@ -95,15 +95,6 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
                     Blocks.TWISTING_VINES,
                 )
             }.forEach(executor)
-
-        arrayOf("", "_top")
-            .map { suffix: String ->
-                resprite(
-                    HCBlocks.FORGING_ANVIL.blockId.withSuffix(suffix),
-                    vanillaBlockId("anvil$suffix"),
-                    HCMaterialKeys.AZURE_STEEL,
-                )
-            }.forEach(executor)
         // Fluid
         executor.accept(
             resprite(

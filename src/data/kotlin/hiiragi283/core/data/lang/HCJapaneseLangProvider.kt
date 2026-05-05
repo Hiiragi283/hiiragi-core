@@ -27,7 +27,6 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCBlocks.WARPED_WART, "歪んだウォート")
 
         add(HCBlocks.TREE_TAP, "ツリータップ")
-        add(HCBlocks.FORGING_ANVIL, "紺鉄の金床")
         // Enchantment
         add(HCEnchantments.HAMMER_OF_JUSTICE, "正義の鉄槌", "襲撃者に対するダメージを増加させます。")
         add(HCEnchantments.NOISE_CANCELING, "ノイズキャンセリング", "ウォーデンなどのスカルク系モンスターに対するダメージを増加させます。")
@@ -94,7 +93,6 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCRecipeTypes.CHARGING, "落雷によるチャージ")
         add(HCRecipeTypes.CRUSHING, "粉砕")
         add(HCRecipeTypes.EXPLODING, "爆破")
-        add(HCRecipeTypes.FORGING, "鍛造")
 
         add(HCRecipeTypes.EMPTYING, "タンクとの相互作用（搬出）")
         add(HCRecipeTypes.FILLING, "タンクとの相互作用（搬入）")

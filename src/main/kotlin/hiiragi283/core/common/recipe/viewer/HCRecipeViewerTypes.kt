@@ -15,7 +15,6 @@ import hiiragi283.core.api.util.Either
 import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.impl.recipe.viewer.HTRecipeViewerTypeImpl
-import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
@@ -40,10 +39,6 @@ data object HCRecipeViewerTypes {
     @JvmField
     val EXPLODING: HTRecipeViewerType<HTRecipeDisplay.Simple> =
         create(HCRecipeTypes.EXPLODING, Items.TNT, 18 * 4)
-
-    @JvmField
-    val FORGING: HTRecipeViewerType<HTProgressRecipeDisplay> =
-        create(HCRecipeTypes.FORGING, HCBlocks.FORGING_ANVIL, 18 * 6)
 
     //    Tank Interaction    //
 

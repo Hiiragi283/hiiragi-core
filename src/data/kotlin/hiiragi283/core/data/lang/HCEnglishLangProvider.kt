@@ -27,7 +27,6 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCBlocks.WARPED_WART, "Warped Wart")
 
         add(HCBlocks.TREE_TAP, "Tree Tap")
-        add(HCBlocks.FORGING_ANVIL, "Azure Steel Anvil")
         // Enchantment
         add(HCEnchantments.HAMMER_OF_JUSTICE, "Hammer of Justice", "Increases damage against raiders.")
         add(HCEnchantments.NOISE_CANCELING, "Noise Canceling", "Increases damage against sculk mobs such as Warden.")
@@ -93,7 +92,6 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCRecipeTypes.CHARGING, "Lightning Charging")
         add(HCRecipeTypes.CRUSHING, "Crushing")
         add(HCRecipeTypes.EXPLODING, "Exploding")
-        add(HCRecipeTypes.FORGING, "Forging")
 
         add(HCRecipeTypes.EMPTYING, "Tank Interaction (Emptying)")
         add(HCRecipeTypes.FILLING, "Tank Interaction (Filling)")

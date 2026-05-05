@@ -9,7 +9,6 @@ import hiiragi283.core.common.crafting.HTBlueprintCloningRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
-import hiiragi283.core.common.recipe.HCForgingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
@@ -44,9 +43,6 @@ object HCRecipeSerializers {
 
     @JvmField
     val EXPLODING: RecipeSerializer<HCExplodingRecipe> = REGISTER.registerSerializer(HTConst.EXPLODING, HCExplodingRecipe.CODEC)
-
-    @JvmField
-    val FORGING: RecipeSerializer<HCForgingRecipe> = REGISTER.registerSerializer(HTConst.FORGING, HCForgingRecipe.CODEC)
 
     //    Tank Interaction    //
 

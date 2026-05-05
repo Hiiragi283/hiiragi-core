@@ -265,18 +265,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
 
     @JvmStatic
     private fun utilities() {
-        // Forging Anvil
-        HTShapedRecipeBuilder.create(output) {
-            pattern(
-                "AAA",
-                " B ",
-                "BBB",
-            )
-            define('A') += CommonTagPrefixes.STORAGE_BLOCK to HCMaterialKeys.AZURE_STEEL
-            define('B') += CommonTagPrefixes.INGOT to HCMaterialKeys.AZURE_STEEL
-            resultStack += HCBlocks.FORGING_ANVIL
-        }
-
         // Paint Brush
         HTShapedRecipeBuilder.create(output) {
             pattern(

@@ -5,7 +5,6 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
-import hiiragi283.core.common.recipe.HCForgingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import hiiragi283.core.common.registry.HTDeferredRecipeType
@@ -25,9 +24,6 @@ object HCRecipeTypes {
 
     @JvmField
     val EXPLODING: HTDeferredRecipeType<HCExplodingRecipe> = REGISTER.registerType(HTConst.EXPLODING)
-
-    @JvmField
-    val FORGING: HTDeferredRecipeType<HCForgingRecipe> = REGISTER.registerType(HTConst.FORGING)
 
     //    Tank Interaction    //
 

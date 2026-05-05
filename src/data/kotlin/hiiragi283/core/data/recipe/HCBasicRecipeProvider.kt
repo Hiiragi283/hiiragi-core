@@ -11,7 +11,6 @@ import hiiragi283.core.api.registry.VanillaFluidContents
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.data.recipe.builder.HCChargingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HCExplodingRecipeBuilder
-import hiiragi283.core.common.data.recipe.builder.HCForgingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTItemToMultiItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTTankInteractionRecipeBuilder
 import hiiragi283.core.common.material.CommonMaterialKeys
@@ -33,7 +32,6 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         charging()
         crushing()
         exploding()
-        forging()
 
         tankInteraction()
     }
@@ -283,17 +281,6 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         HCExplodingRecipeBuilder.create(output) {
             ingredient = itemCreator.create(ItemTags.WARPED_STEMS)
             result = resultCreator.material(CommonParts.GEM, HCMaterialKeys.WARPED_CRYSTAL, chance = fraction(1, 8))
-        }
-    }
-
-    //    Forging    //
-
-    @JvmStatic
-    private fun forging() {
-        HCForgingRecipeBuilder.create(output) {
-            primary = inputCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON)
-            secondary += CommonTagPrefixes.INGOT to VanillaMaterialKeys.IRON
-            result = resultCreator.create(Items.HEAVY_WEIGHTED_PRESSURE_PLATE)
         }
     }
 

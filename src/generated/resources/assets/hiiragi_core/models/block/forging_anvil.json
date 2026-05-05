@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/anvil",
-  "textures": {
-    "body": "hiiragi_core:block/forging_anvil",
-    "particle": "hiiragi_core:block/forging_anvil",
-    "top": "hiiragi_core:block/forging_anvil_top"
-  }
-}

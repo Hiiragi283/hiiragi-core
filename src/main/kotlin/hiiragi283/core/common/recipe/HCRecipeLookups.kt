@@ -5,7 +5,6 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.VanillaColoredContents
 import hiiragi283.core.api.function.identity
-import hiiragi283.core.api.recipe.base.HTDoubleItemToItemRecipe
 import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
@@ -47,9 +46,6 @@ data object HCRecipeLookups {
     @JvmField
     val EXPLODING: HTRecipeLookup<HCExplodingRecipe> = create(HCRecipeTypes.EXPLODING)
 
-    @JvmField
-    val FORGING: HTRecipeLookupImpl<HTDoubleItemToItemRecipe> = create(HTConst.FORGING)
-
     //    Tank Interaction    //
 
     @JvmField
@@ -63,7 +59,6 @@ data object HCRecipeLookups {
     @JvmStatic
     fun init() {
         CRUSHING.addProvider(HCRecipeTypes.CRUSHING.get(), identity())
-        FORGING.addProvider(HCRecipeTypes.FORGING.get(), identity())
 
         EMPTYING.addProvider(HCRecipeTypes.EMPTYING.get(), identity())
         EMPTYING.addProvider(HTConst.MINECRAFT.toId(HTConst.EMPTYING, "potion") to HTPotionTankInteraction.Emptying)
