@@ -1,34 +1,25 @@
 package hiiragi283.core.api.property
 
 /**
- * [Map]に基づいた[HTPropertyGetter]の実装クラスです。
+ * [HTPropertyGetter]の拡張インターフェースです。
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
-class HTPropertyMap private constructor(private val map: Map<HTPropertyKey<*>, Any>) : HTPropertyGetter {
-    companion object {
-        /**
-         * 指定した[map]から[HTPropertyMap]のインスタンスを作成します。
-         * @return [map]が空の場合は[Empty]
-         */
-        @JvmStatic
-        fun create(map: Map<HTPropertyKey<*>, Any>): HTPropertyGetter = when {
-            map.isEmpty() -> Empty
-            else -> HTPropertyMap(map)
-        }
-    }
+interface HTPropertyMap : HTPropertyGetter {
+    val size: Int
 
-    override fun contains(key: HTPropertyKey<*>): Boolean = key in map
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T> get(key: HTPropertyKey<T>): T? = map[key] as? T
+    val isEmpty: Boolean get() = size == 0
 
     /**
-     * 何も値を返さない[HTPropertyGetter]の実装クラスです。
+     * 何も値を返さない[HTPropertyMap]の実装クラスです。
      * @author Hiiragi Tsubasa
      * @since 0.16.0
      */
-    data object Empty : HTPropertyGetter {
+    data object Empty : HTPropertyMap {
+        override val size: Int = 0
+
+        override val isEmpty: Boolean = true
+
         override fun <T> get(key: HTPropertyKey<T>): T? = null
     }
 
@@ -38,10 +29,10 @@ class HTPropertyMap private constructor(private val map: Map<HTPropertyKey<*>, A
      * @since 0.16.0
      */
     class Builder private constructor(private val map: MutableMap<HTPropertyKey<*>, Any>, delegate: HTPropertyMap) :
-        HTPropertyGetter by delegate {
+        HTPropertyMap by delegate {
             constructor() : this(hashMapOf())
 
-            constructor(map: MutableMap<HTPropertyKey<*>, Any>) : this(map, HTPropertyMap(map))
+            constructor(map: MutableMap<HTPropertyKey<*>, Any>) : this(map, SimpleMap(map))
 
             /**
              * 指定した[key]と[value]を追加します。
@@ -66,13 +57,32 @@ class HTPropertyMap private constructor(private val map: Map<HTPropertyKey<*>, A
             @Suppress("UNCHECKED_CAST")
             fun <T> remove(key: HTPropertyKey<T>): T? = map.remove(key) as? T
 
-            fun build(): HTPropertyGetter = create(map)
+            fun build(): HTPropertyMap = when {
+                map.isEmpty() -> Empty
+                else -> SimpleMap(map)
+            }
         }
+
+    /**
+     * [Map]に基づいた[HTPropertyMap]の実装クラスです。
+     * @author Hiiragi Tsubasa
+     * @since 0.6.0
+     */
+    private data class SimpleMap(private val map: Map<HTPropertyKey<*>, Any>) : HTPropertyMap {
+        override val size: Int get() = map.size
+
+        override val isEmpty: Boolean get() = map.isEmpty()
+
+        @Suppress("UNCHECKED_CAST")
+        override fun <T> get(key: HTPropertyKey<T>): T? = map[key] as? T
+
+        override fun contains(key: HTPropertyKey<*>): Boolean = key in map
+    }
 }
 
 //    Extensions    //
 
-inline fun buildPropertyMap(builderAction: HTPropertyMap.Builder.() -> Unit): HTPropertyGetter =
+inline fun buildPropertyMap(builderAction: HTPropertyMap.Builder.() -> Unit): HTPropertyMap =
     HTPropertyMap.Builder().apply(builderAction).build()
 
 /**

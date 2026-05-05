@@ -5,7 +5,6 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTExtraOreResultMap.Phase
-import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.toFraction
@@ -26,8 +25,11 @@ class HTExtraOreResultMap private constructor(map: Map<Phase, Pair<HTMaterialKey
 
         fun getResult(creator: HTResultCreator, phase: Phase): HTItemResult? {
             val (key: HTMaterialKey, chance: Fraction) = this[phase] ?: return null
-            val getter: HTPropertyGetter = HTMaterialManager.getInstance().getOrEmpty(key)
-            return creator.material(getter.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART), key, chance = chance)
+            return HTMaterialManager
+                .getInstance()
+                .getOrEmpty(key)
+                .getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART)
+                .let { creator.material(it, key, chance = chance) }
         }
 
         fun getResult(creator: HTResultCreator, phase: Phase, entry: HTMaterialManager.Entry): HTItemResult? {

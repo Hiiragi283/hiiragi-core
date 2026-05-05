@@ -24,7 +24,7 @@ import hiiragi283.core.api.material.property.HTSmithingRecipeProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
 import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.api.material.property.getDefaultScale
-import hiiragi283.core.api.property.HTPropertyGetter
+import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.HTSimpleItemHolderLike
@@ -87,12 +87,12 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     }
 
     @JvmStatic
-    fun getTimeFromHardness(getter: HTPropertyGetter, time: Int = 20 * 10): Int? =
-        (getter.getOrDefault(HTMaterialPropertyKeys.HARDNESS) * time)?.toInt()
+    fun getTimeFromHardness(map: HTPropertyMap, time: Int = 20 * 10): Int? =
+        (map.getOrDefault(HTMaterialPropertyKeys.HARDNESS) * time)?.toInt()
 
     @JvmStatic
-    fun getTimeFromMelting(getter: HTPropertyGetter, time: Int = 20 * 10): Int? =
-        (getter.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT) * time)?.toInt()
+    fun getTimeFromMelting(map: HTPropertyMap, time: Int = 20 * 10): Int? =
+        (map.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT) * time)?.toInt()
 
     @JvmStatic
     fun getBlueprint(prefix: HTTagPrefix): Ingredient = when (prefix) {
@@ -491,7 +491,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     private fun smeltOresToBase(entry: HTMaterialManager.Entry) {
         if (HTMaterialPropertyKeys.DISABLE_SMELTING in entry) return
         val smeltedMaterial: HTMaterialLike = entry[HTMaterialPropertyKeys.SMELTED_TO] ?: entry
-        val smeltedPropertyMap: HTPropertyGetter = materialManager[smeltedMaterial] ?: return
+        val smeltedPropertyMap: HTPropertyMap = materialManager[smeltedMaterial] ?: return
         val (_, base: ItemLike, _) = smeltedPropertyMap.getDefaultPart()?.getItem(smeltedMaterial) ?: return
         // 精錬の前後がどちらも既存アイテムの場合はパス
         val oreEntries: List<HTMaterialContents.ItemEntry> =
@@ -514,7 +514,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         if (HTMaterialPropertyKeys.DISABLE_SMELTING in entry) return
         val (_, ore: ItemLike, existingOre: Boolean) = getItem(part, entry) ?: return
         val smeltedMaterial: HTMaterialLike = entry[HTMaterialPropertyKeys.SMELTED_TO] ?: entry
-        val smeltedPropertyMap: HTPropertyGetter = materialManager[smeltedMaterial] ?: return
+        val smeltedPropertyMap: HTPropertyMap = materialManager[smeltedMaterial] ?: return
         val(_, base: ItemLike, existingBase: Boolean) = smeltedPropertyMap.getDefaultPart()?.getItem(smeltedMaterial) ?: return
         // 精錬の前後がどちらも既存アイテムの場合はパス
         if (existingOre && existingBase) return

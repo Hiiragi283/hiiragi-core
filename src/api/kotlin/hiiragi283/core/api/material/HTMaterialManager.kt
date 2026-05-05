@@ -1,7 +1,6 @@
 package hiiragi283.core.api.material
 
 import com.mojang.serialization.Codec
-import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.util.wrapResult
@@ -51,13 +50,13 @@ interface HTMaterialManager : Iterable<HTMaterialManager.Entry> {
      * 指定した[素材][material]のプロパティの一覧を取得します。
      * @return プロパティを保持していない場合は`null`
      */
-    operator fun get(material: HTMaterialLike): HTPropertyGetter?
+    operator fun get(material: HTMaterialLike): HTPropertyMap?
 
     /**
      * 指定した[素材][material]のプロパティの一覧を取得します。
      * @return プロパティを保持していない場合は[HTPropertyMap.Empty]
      */
-    fun getOrEmpty(material: HTMaterialLike): HTPropertyGetter = get(material) ?: HTPropertyMap.Empty
+    fun getOrEmpty(material: HTMaterialLike): HTPropertyMap = get(material) ?: HTPropertyMap.Empty
 
     /**
      * 登録された[素材][HTMaterialKey]の一覧を取得します。
@@ -72,14 +71,14 @@ interface HTMaterialManager : Iterable<HTMaterialManager.Entry> {
     override fun iterator(): Iterator<Entry> = entries.iterator()
 
     /**
-     * [HTMaterialLike]と[HTPropertyGetter]を束ねたインターフェースです。
+     * [HTMaterialLike]と[HTPropertyMap]を束ねたインターフェースです。
      * @author Hiiragi Tsubasa
      * @since 0.9.0
      */
     interface Entry :
         HTIdLike,
         HTMaterialLike,
-        HTPropertyGetter {
+        HTPropertyMap {
         override fun getId(): ResourceLocation = asMaterialId()
     }
 }
