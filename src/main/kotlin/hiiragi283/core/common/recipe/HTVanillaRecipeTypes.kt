@@ -1,24 +1,18 @@
 package hiiragi283.core.common.recipe
 
+import com.google.common.collect.ImmutableMultimap
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.item.alchemy.BottledPotionContents
-import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.HTRecipeType
-import hiiragi283.core.api.recipe.base.HTBrewingRecipe
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.api.util.Either
-import hiiragi283.core.api.util.unwrap
 import hiiragi283.core.mixin.PotionBrewingAccessor
-import hiiragi283.core.mixin.PotionBrewingMixAccessor
+import net.minecraft.core.Holder
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.PotionBrewing
 import net.minecraft.world.item.crafting.AbstractCookingRecipe
 import net.minecraft.world.item.crafting.RecipeType
-import net.neoforged.neoforge.common.brewing.BrewingRecipe
 
 /**
  * バニラのレシピ向けの[HTRecipeType]の実装をまとめたクラスです。
@@ -44,38 +38,25 @@ object HTVanillaRecipeTypes {
     }
 
     @JvmField
-    val BREWING: HTRecipeType<HTBrewingRecipe> = BrewingType
+    val BREWING: HTRecipeType<HCBrewingRecipe> = BrewingType
 
-    private data object BrewingType : HTRecipeType<HTBrewingRecipe> {
-        private fun getContents(stack: ItemStack): BottledPotionContents? = HTPotionHelper.getContents(stack)
-
-        override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<HTRecipeHolder<HTBrewingRecipe>> {
+    private data object BrewingType : HTRecipeType<HCBrewingRecipe> {
+        override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<HTRecipeHolder<HCBrewingRecipe>> {
             val potionBrewing: PotionBrewing = context[HTRecipeLookup.Context.BREWING] ?: return emptySequence()
-            // 醸造レシピを登録していく
-            return sequence<Either<HCVanillaBrewingRecipe, HCModdedBrewingRecipe>> {
-                // Vanilla
-                for (accessor: PotionBrewingMixAccessor<Potion> in (potionBrewing as PotionBrewingAccessor).potionMixes) {
-                    val recipe = HCVanillaBrewingRecipe(accessor)
-                    yield(Either.Left(recipe))
+            val builder: ImmutableMultimap.Builder<Holder<Potion>, HCBrewingRecipe> = ImmutableMultimap.builder()
+            (potionBrewing as PotionBrewingAccessor)
+                .potionMixes
+                .map(::HCBrewingRecipe)
+                .forEach { builder.put(it.potionTo, it) }
+            val recipeMap: ImmutableMultimap<Holder<Potion>, HCBrewingRecipe> = builder.build()
+            return recipeMap
+                .keySet()
+                .asSequence()
+                .flatMap { potionTo: Holder<Potion> ->
+                    recipeMap[potionTo].mapIndexed { index: Int, recipe: HCBrewingRecipe ->
+                        HTRecipeHolder(potionTo.toLike().getId().withSuffix("_$index"), recipe)
+                    }
                 }
-                // Modded
-                for (recipe: BrewingRecipe in potionBrewing.recipes.filterIsInstance<BrewingRecipe>()) {
-                    val potionFrom: BottledPotionContents = getContents(recipe.input.items[0]) ?: continue
-                    val potionTo: BottledPotionContents = getContents(recipe.output) ?: continue
-                    yield(Either.Right(HCModdedBrewingRecipe(potionFrom, recipe.ingredient, potionTo)))
-                }
-            }.mapIndexed { index: Int, recipe: Either<HCVanillaBrewingRecipe, HCModdedBrewingRecipe> ->
-                val id: ResourceLocation = recipe.map(
-                    {
-                        it.potionTo
-                            .toLike()
-                            .getId()
-                            .withSuffix("_$index")
-                    },
-                    { HiiragiCoreAPI.id("brewing", index.toString()) },
-                )
-                HTRecipeHolder(id, recipe.unwrap())
-            }
         }
 
         override fun getId(): ResourceLocation = HiiragiCoreAPI.id("brewing")

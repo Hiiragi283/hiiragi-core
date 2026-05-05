@@ -5,6 +5,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.function.negate
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
 import hiiragi283.core.api.integration.jei.HTJeiRecipeHelper.addDisplayRecipes
+import hiiragi283.core.api.integration.jei.HTJeiRecipeHelper.addLookupRecipes
 import hiiragi283.core.api.integration.jei.HTJeiRecipeHelper.addRecipes
 import hiiragi283.core.api.integration.jei.HTJeiWorkstationHelper
 import hiiragi283.core.api.integration.jei.HTSubtypeInterpreter
@@ -27,6 +28,7 @@ import hiiragi283.core.client.jei.category.HCTankEmptyingRecipeCategory
 import hiiragi283.core.client.jei.category.HCTankFillingRecipeCategory
 import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
+import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCForgingRecipe
 import hiiragi283.core.common.recipe.HCRecipeLookups
@@ -139,7 +141,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     override fun registerRecipes(registration: IRecipeRegistration) {
-        addDisplayRecipes(registration, HCRecipeViewerTypes.BREWING, HTVanillaRecipeTypes.BREWING, HCRecipeDisplayFactories::brewing)
+        addLookupRecipes(registration, HCRecipeViewerTypes.BREWING, HTVanillaRecipeTypes.BREWING, HCBrewingRecipe.SORTER)
         addDisplayRecipes(registration, HCRecipeViewerTypes.CHARGING, HCRecipeLookups.CHARGING, HCRecipeDisplayFactories::charging)
         addDisplayRecipes(registration, HCRecipeViewerTypes.CRUSHING, HCRecipeLookups.CRUSHING) {
             it.castRecipe<HCCrushingRecipe>()?.let(HTRecipeDisplayFactories::itemToMultiItem)

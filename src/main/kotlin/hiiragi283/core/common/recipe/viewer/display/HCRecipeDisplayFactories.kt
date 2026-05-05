@@ -1,22 +1,16 @@
 package hiiragi283.core.common.recipe.viewer.display
 
-import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.recipe.HTRecipeHolder
-import hiiragi283.core.api.recipe.base.HTBrewingRecipe
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.viewer.display.HTProgressRecipeDisplay
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCForgingRecipe
-import hiiragi283.core.common.recipe.HCModdedBrewingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
-import hiiragi283.core.common.recipe.HCVanillaBrewingRecipe
-import hiiragi283.core.common.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.impl.recipe.HTInWorldRecipe
 import hiiragi283.core.impl.recipe.viewer.display.HTRecipeDisplayFactories
-import hiiragi283.core.util.HCPotionFluidHelper
 import net.minecraft.resources.ResourceLocation
 
 data object HCRecipeDisplayFactories {
@@ -30,28 +24,6 @@ data object HCRecipeDisplayFactories {
                 addOutput(recipe.result)
             },
         )
-    }
-
-    @JvmStatic
-    fun brewing(holder: HTRecipeHolder<HTBrewingRecipe>): HTProgressRecipeDisplay = HTRecipeDisplayFactories.progress(holder) {
-        when (it) {
-            is HCVanillaBrewingRecipe -> {
-                it.potionFrom.let(::HTPotionFluidIngredient).let(::addInput)
-                addInput(it.ingredient)
-                it.potionTo
-                    .let(::BottledPotionContents)
-                    .let(HCPotionFluidHelper::createFluid)
-                    .let(::addOutput)
-            }
-            is HCModdedBrewingRecipe -> {
-                it.potionFrom
-                    .let(HCPotionFluidHelper::createFluid)
-                    .let(::listOf)
-                    .let(::addInput)
-                addInput(it.ingredient)
-                it.potionTo.let(HCPotionFluidHelper::createFluid).let(::addOutput)
-            }
-        }
     }
 
     @JvmStatic

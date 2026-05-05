@@ -3,6 +3,8 @@ package hiiragi283.core.common.recipe.viewer
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.recipe.HTRecipeHolder
+import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.display.HTProgressRecipeDisplay
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
@@ -10,6 +12,7 @@ import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.api.util.Either
+import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.impl.recipe.viewer.HTRecipeViewerTypeImpl
 import hiiragi283.core.setup.HCBlocks
@@ -23,8 +26,8 @@ data object HCRecipeViewerTypes {
     //    Basic    //
 
     @JvmField
-    val BREWING: HTRecipeViewerType<HTProgressRecipeDisplay> =
-        create(HTVanillaRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 6)
+    val BREWING: HTHolderRecipeViewerType<HCBrewingRecipe> =
+        creteHolder(HTVanillaRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 6)
 
     @JvmField
     val CHARGING: HTRecipeViewerType<HTProgressRecipeDisplay> =
@@ -79,4 +82,13 @@ data object HCRecipeViewerTypes {
         workStations += iconStack
         builderAction()
     }
+
+    @JvmStatic
+    private inline fun <reified RECIPE : Any> creteHolder(
+        recipeType: HTIdLike.Translatable,
+        iconItem: ItemLike,
+        width: Int,
+        height: Int = 18 * 1,
+        builderAction: HTRecipeViewerTypeImpl.Builder.() -> Unit = {},
+    ): HTHolderRecipeViewerType<RECIPE> = create<HTRecipeHolder<RECIPE>>(recipeType, iconItem, width, height, builderAction)
 }
