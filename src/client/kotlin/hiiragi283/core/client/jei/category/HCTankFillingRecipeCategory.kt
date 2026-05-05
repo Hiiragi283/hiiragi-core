@@ -4,7 +4,6 @@ import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.integration.jei.addChancedItem
 import hiiragi283.core.api.integration.jei.addFluidStacks
 import hiiragi283.core.api.integration.jei.category.HTDisplayRecipeCategory
-import hiiragi283.core.api.integration.jei.setFluidSlotRenderer
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
@@ -20,11 +19,12 @@ class HCTankFillingRecipeCategory(guiHelper: IGuiHelper) : HTDisplayRecipeCatego
             .addInputSlot(getPosition(0), getPosition(0))
             .addItemStacks(contents.inputItem(0))
             .setSlotBackground(HTBackgroundType.INPUT)
-        builder
-            .addInputSlot(getPosition(2), getPosition(0))
-            .addFluidStacks(contents.inputFluid(0))
-            .setFluidSlotRenderer()
-            .setSlotBackground(HTBackgroundType.INPUT)
+        contents.inputFluid(0) {
+            builder
+                .addInputSlot(getPosition(2), getPosition(0))
+                .addFluidStacks(it.stacks)
+                .setSlotBackground(HTBackgroundType.INPUT, it.capacity)
+        }
         // output
         builder
             .addOutputSlot(getPosition(5), getPosition(0))

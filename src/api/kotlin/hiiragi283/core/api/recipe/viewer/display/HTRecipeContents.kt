@@ -12,33 +12,45 @@ import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.times
 import net.minecraft.core.component.DataComponents
+import net.minecraft.util.ExtraCodecs
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.crafting.Ingredient
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @JvmRecord
 data class HTRecipeContents(
     private val inputItems: List<List<ItemStack>>,
-    private val inputFluids: List<List<FluidStack>>,
+    private val inputFluids: List<FluidInput>,
     private val catalysts: List<List<ItemStack>>,
-    private val outputItems: List<ChancedItemStack>,
+    private val outputItems: List<Optional<ChancedItemStack>>,
     private val outputFluids: List<FluidStack>,
 ) {
     companion object {
         @JvmField
         val CODEC: MapCodec<HTRecipeContents> = RecordCodecBuilder.mapCodec { instance ->
             val itemsCodec: Codec<List<ItemStack>> = ItemStack.CODEC.listOf()
-            val fluidsCodec: Codec<List<FluidStack>> = FluidStack.CODEC.listOf()
 
             instance
                 .group(
                     itemsCodec.listOf().fieldOf(HTConst.ITEM_INGREDIENT).forGetter(HTRecipeContents::inputItems),
-                    fluidsCodec.listOf().fieldOf(HTConst.FLUID_INGREDIENT).forGetter(HTRecipeContents::inputFluids),
+                    FluidInput.CODEC
+                        .listOf()
+                        .fieldOf(HTConst.FLUID_INGREDIENT)
+                        .forGetter(HTRecipeContents::inputFluids),
                     itemsCodec.listOf().fieldOf(HTConst.CATALYST).forGetter(HTRecipeContents::catalysts),
-                    ChancedItemStack.LIST_CODEC.fieldOf(HTConst.ITEM_RESULT).forGetter(HTRecipeContents::outputItems),
-                    fluidsCodec.fieldOf(HTConst.FLUID_RESULT).forGetter(HTRecipeContents::outputFluids),
+                    ExtraCodecs
+                        .optionalEmptyMap(ChancedItemStack.CODEC)
+                        .listOf()
+                        .fieldOf(HTConst.ITEM_RESULT)
+                        .forGetter(HTRecipeContents::outputItems),
+                    FluidStack.CODEC
+                        .listOf()
+                        .fieldOf(HTConst.FLUID_RESULT)
+                        .forGetter(HTRecipeContents::outputFluids),
                 ).apply(instance, ::HTRecipeContents)
         }
 
@@ -53,10 +65,14 @@ data class HTRecipeContents(
     fun inputItem(index: Int): List<ItemStack> = inputItems.getOrNull(index) ?: emptyList()
 
     /**
-     * 指定した[インデックス][index]に対応する[材料][List]を取得します。
-     * @return 指定した[インデックス][index]が範囲外の場合は[emptyList]
+     * 指定した[インデックス][index]に対応する[材料][FluidInput]を取得します。
+     * @return 指定した[インデックス][index]が範囲外の場合は[FluidInput.EMPTY]
      */
-    fun inputFluid(index: Int): List<FluidStack> = inputFluids.getOrNull(index) ?: emptyList()
+    fun inputFluid(index: Int): FluidInput = inputFluids.getOrNull(index) ?: FluidInput.EMPTY
+
+    inline fun inputFluid(index: Int, action: (FluidInput) -> Unit) {
+        inputFluid(index).let(action)
+    }
 
     /**
      * 指定した[インデックス][index]に対応する[触媒][List]を取得します。
@@ -66,9 +82,9 @@ data class HTRecipeContents(
 
     /**
      * 指定した[インデックス][index]に対応する[完成品のプレビュー][ChancedItemStack]を取得します。
-     * @return 指定した[インデックス][index]が範囲外の場合は[ChancedItemStack.EMPTY]
+     * @return 指定した[インデックス][index]が範囲外の場合は`null`
      */
-    fun outputItem(index: Int): ChancedItemStack = outputItems.getOrNull(index) ?: ChancedItemStack.EMPTY
+    fun outputItem(index: Int): ChancedItemStack? = outputItems.getOrNull(index)?.getOrNull()
 
     /**
      * 指定した[インデックス][index]に対応する[完成品のプレビュー][FluidStack]を取得します。
@@ -76,13 +92,17 @@ data class HTRecipeContents(
      */
     fun outputFluid(index: Int): FluidStack = outputFluids.getOrNull(index) ?: FluidStack.EMPTY
 
+    inline fun outputFluid(index: Int, action: (FluidStack) -> Unit) {
+        outputFluid(index).let(action)
+    }
+
     //    Builder    //
 
     class Builder {
         private val inputItems: MutableList<List<ItemStack>> = mutableListOf()
-        private val inputFluids: MutableList<List<FluidStack>> = mutableListOf()
+        private val inputFluids: MutableList<FluidInput> = mutableListOf()
         private val catalysts: MutableList<List<ItemStack>> = mutableListOf()
-        private val outputItems: MutableList<ChancedItemStack> = mutableListOf()
+        private val outputItems: MutableList<Optional<ChancedItemStack>> = mutableListOf()
         private val outputFluids: MutableList<FluidStack> = mutableListOf()
 
         //    Input    //
@@ -108,7 +128,7 @@ data class HTRecipeContents(
         // Fluid
         @JvmName("addFluidInput")
         fun addInput(stacks: List<FluidStack>?) {
-            inputFluids += stacks?.filterNot(FluidStack::isEmpty) ?: emptyList()
+            inputFluids += stacks?.let(FluidInput::create) ?: FluidInput.EMPTY
         }
 
         fun addInput(ingredient: FluidIngredient?) {
@@ -138,11 +158,14 @@ data class HTRecipeContents(
         // Item
         @JvmName("addItemOutput")
         fun addOutput(stack: ItemStack, chance: Float = 1f) {
-            outputItems += ChancedItemStack(stack, chance)
+            outputItems += when {
+                stack.isEmpty -> Optional.empty()
+                else -> Optional.of(ChancedItemStack(stack, chance))
+            }
         }
 
         fun addOutput(result: HTItemResult) {
-            addOutput(result.get(true).valueOrElse(::createError), (result.chance * 100).toFloat())
+            addOutput(result.get(true).valueOrElse(::createError), result.chance.toFloat())
         }
 
         private fun createError(message: Text): ItemStack = createItemStack(Items.BARRIER, DataComponents.CUSTOM_NAME, message)
@@ -160,6 +183,24 @@ data class HTRecipeContents(
         fun build(): HTRecipeContents = HTRecipeContents(inputItems, inputFluids, catalysts, outputItems, outputFluids)
     }
 
+    @ConsistentCopyVisibility
+    @JvmRecord
+    data class FluidInput private constructor(val stacks: List<FluidStack>, val capacity: Int) {
+        companion object {
+            @JvmField
+            val CODEC: Codec<FluidInput> = FluidStack.CODEC.listOf().xmap(::create, FluidInput::stacks)
+
+            @JvmField
+            val EMPTY = FluidInput(emptyList(), HTConst.DEFAULT_FLUID_AMOUNT)
+
+            @JvmStatic
+            fun create(stacks: List<FluidStack>): FluidInput = when {
+                stacks.isEmpty() || stacks.all(FluidStack::isEmpty) -> EMPTY
+                else -> FluidInput(stacks, stacks.maxOf(FluidStack::getAmount))
+            }
+        }
+    }
+
     @JvmRecord
     data class ChancedItemStack(val stack: ItemStack, val chance: Float) {
         companion object {
@@ -167,16 +208,10 @@ data class HTRecipeContents(
             val CODEC: Codec<ChancedItemStack> = RecordCodecBuilder.create { instance ->
                 instance
                     .group(
-                        MapCodec.assumeMapUnsafe(ItemStack.OPTIONAL_CODEC).forGetter(ChancedItemStack::stack),
+                        MapCodec.assumeMapUnsafe(ItemStack.CODEC).forGetter(ChancedItemStack::stack),
                         Codec.FLOAT.fieldOf(HTConst.CHANCE).forGetter(ChancedItemStack::chance),
                     ).apply(instance, ::ChancedItemStack)
             }
-
-            @JvmField
-            val LIST_CODEC: Codec<List<ChancedItemStack>> = CODEC.listOf()
-
-            @JvmField
-            val EMPTY = ChancedItemStack(ItemStack.EMPTY, 0f)
         }
     }
 }

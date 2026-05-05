@@ -54,7 +54,9 @@ mods-impl = [
 mods-transitive = []
 
 mods-compile = [
-    "jei-api"
+    "jei-api",
+    "moonlight",
+    "moonlight-neo",
 ]
 
 mods-runtime = [
