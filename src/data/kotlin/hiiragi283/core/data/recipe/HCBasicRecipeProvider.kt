@@ -11,6 +11,7 @@ import hiiragi283.core.api.registry.VanillaFluidContents
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.data.recipe.builder.HCChargingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HCExplodingRecipeBuilder
+import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTItemToMultiItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.builder.HTTankInteractionRecipeBuilder
 import hiiragi283.core.common.material.CommonMaterialKeys
@@ -306,10 +307,29 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
             }
         }
 
+        // Honey Block <-> Honey
+        HTTankInteractionRecipeBuilder.emptying(output) {
+            ingredient = itemCreator.create(Items.HONEY_BLOCK)
+            fluidResult = resultCreator.create(HCFluids.HONEY)
+            recipeId suffix "_from_block"
+        }
+        HTTankInteractionRecipeBuilder.filling(output) {
+            itemIngredient = itemCreator.create(Tags.Items.GLASS_BLOCKS)
+            fluidIngredient = inputCreator.create(HCFluids.HONEY)
+            itemResult = resultCreator.create(Items.HONEY_BLOCK)
+        }
+
+        // Latex + Bowl -> Raw Rubber
         HTTankInteractionRecipeBuilder.filling(output) {
             itemIngredient = itemCreator.create(Items.BOWL)
             fluidIngredient = inputCreator.create(HCFluids.LATEX)
             itemResult = resultCreator.create(HCItems.RAW_RUBBER, 4)
+        }
+        // Raw Rubber -> Rubber Bar
+        HTCookingRecipeBuilder.smelting(output) {
+            ingredient += HCItems.RAW_RUBBER
+            resultStack += HCItems.CURED_RUBBER
+            exp = 0.7f
         }
     }
 

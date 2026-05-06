@@ -1,0 +1,30 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "ae2"
+    }
+  ],
+  "type": "ae2:transform",
+  "circumstance": {
+    "type": "fluid",
+    "tag": "c:lava"
+  },
+  "ingredients": [
+    {
+      "tag": "c:ingots/iron"
+    },
+    [
+      {
+        "tag": "c:charcoal"
+      },
+      {
+        "tag": "c:dusts/charcoal"
+      }
+    ]
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:steel_ingot"
+  }
+}

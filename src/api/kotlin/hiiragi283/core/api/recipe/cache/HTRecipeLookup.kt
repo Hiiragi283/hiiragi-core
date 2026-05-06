@@ -4,6 +4,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.HTResultCreator
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyKey
+import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.buildPropertyMap
 import hiiragi283.core.api.property.getOrThrow
 import hiiragi283.core.api.recipe.HTRecipeHolder
@@ -11,8 +12,6 @@ import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.resource.toId
 import net.minecraft.client.Minecraft
 import net.minecraft.core.HolderLookup
-import net.minecraft.core.Registry
-import net.minecraft.core.RegistryAccess
 import net.minecraft.server.MinecraftServer
 import net.minecraft.world.item.alchemy.PotionBrewing
 import net.minecraft.world.item.crafting.Recipe
@@ -75,28 +74,27 @@ fun interface HTRecipeLookup<RECIPE : Any> {
             val MANAGER: HTPropertyKey<RecipeManager?> = create("manager")
 
             @JvmField
-            val REGISTRY: HTPropertyKey<RegistryAccess?> = create("registry")
+            val REGISTRY: HTPropertyKey<HolderLookup.Provider?> = create("registry")
 
             private fun <T : Any> create(path: String): HTPropertyKey<T?> =
                 HTPropertyKey.createNullable(HTConst.MINECRAFT.toId("recipe", path))
 
             @JvmStatic
-            fun create(level: Level): Context = Context(
-                buildPropertyMap {
-                    this[BREWING] = level.potionBrewing()
-                    this[MANAGER] = level.recipeManager
-                    this[REGISTRY] = level.registryAccess()
-                },
-            )
+            fun create(level: Level): Context = create {
+                this[BREWING] = level.potionBrewing()
+                this[MANAGER] = level.recipeManager
+                this[REGISTRY] = level.registryAccess()
+            }
 
             @JvmStatic
-            fun create(server: MinecraftServer): Context = Context(
-                buildPropertyMap {
-                    this[BREWING] = server.potionBrewing()
-                    this[MANAGER] = server.recipeManager
-                    this[REGISTRY] = server.registryAccess()
-                },
-            )
+            fun create(server: MinecraftServer): Context = create {
+                this[BREWING] = server.potionBrewing()
+                this[MANAGER] = server.recipeManager
+                this[REGISTRY] = server.registryAccess()
+            }
+
+            @JvmStatic
+            inline fun create(builderAction: HTPropertyMap.Builder.() -> Unit): Context = buildPropertyMap(builderAction).let(::Context)
         }
 
         fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(recipeType: RecipeType<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> =
@@ -105,10 +103,6 @@ fun interface HTRecipeLookup<RECIPE : Any> {
         fun <T : Any> lookup(key: RegistryKey<T>): HolderLookup.RegistryLookup<T>? = this[REGISTRY]?.lookup(key)?.getOrNull()
 
         fun <T : Any> lookupOrThrow(key: RegistryKey<T>): HolderLookup.RegistryLookup<T> = this.getOrThrow(REGISTRY).lookupOrThrow(key)
-
-        fun <T : Any> registry(key: RegistryKey<T>): Registry<T>? = this[REGISTRY]?.registry(key)?.getOrNull()
-
-        fun <T : Any> registryOrThrow(key: RegistryKey<T>): Registry<T> = this.getOrThrow(REGISTRY).registryOrThrow(key)
 
         fun resultCreator(): HTResultCreator? = this[REGISTRY]?.let(::HTResultCreator)
     }

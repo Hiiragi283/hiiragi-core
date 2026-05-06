@@ -7,6 +7,9 @@ import appeng.api.stacks.AEKey
 import appeng.api.stacks.KeyCounter
 import appeng.api.storage.MEStorage
 import com.google.common.primitives.Ints
+import hiiragi283.core.api.integration.ae2.storage.toAEKey
+import hiiragi283.core.api.integration.ae2.storage.toAction
+import hiiragi283.core.api.integration.ae2.storage.toResource
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.text.HTHasText
