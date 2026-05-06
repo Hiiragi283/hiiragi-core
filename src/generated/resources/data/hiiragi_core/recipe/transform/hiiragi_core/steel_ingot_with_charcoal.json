@@ -7,13 +7,17 @@
   ],
   "type": "ae2:transform",
   "circumstance": {
-    "type": "fluid",
-    "tag": "c:lava"
+    "type": "explosion"
   },
   "ingredients": [
-    {
-      "tag": "c:ingots/iron"
-    },
+    [
+      {
+        "tag": "c:dusts/iron"
+      },
+      {
+        "tag": "c:ingots/iron"
+      }
+    ],
     [
       {
         "tag": "c:charcoal"

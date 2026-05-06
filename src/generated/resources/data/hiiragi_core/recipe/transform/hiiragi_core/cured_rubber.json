@@ -10,25 +10,20 @@
     "type": "explosion"
   },
   "ingredients": [
+    {
+      "item": "hiiragi_core:raw_rubber"
+    },
     [
       {
-        "tag": "c:dusts/iron"
+        "tag": "c:dusts/sulfur"
       },
       {
-        "tag": "c:ingots/iron"
-      }
-    ],
-    [
-      {
-        "tag": "c:coal"
-      },
-      {
-        "tag": "c:dusts/coal"
+        "tag": "c:gems/sulfur"
       }
     ]
   ],
   "result": {
-    "count": 1,
-    "id": "hiiragi_core:steel_ingot"
+    "count": 2,
+    "id": "hiiragi_core:cured_rubber"
   }
 }

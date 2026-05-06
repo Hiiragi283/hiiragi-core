@@ -27,7 +27,7 @@ fun <T : IIngredientConsumer> T.addChancedItem(stack: HTRecipeContents.ChancedIt
     if (this is IRecipeSlotBuilder) {
         if (chance < 1f) {
             this.addRichTooltipCallback { _, builder: ITooltipBuilder ->
-                builder.add(HTCommonTranslation.CHANCE_PRODUCE.translateColored(HTDefaultColor.YELLOW, chance))
+                builder.add(HTCommonTranslation.CHANCE_PRODUCE.translateColored(HTDefaultColor.YELLOW, chance * 100))
             }
         }
     }

@@ -12,23 +12,23 @@
   "ingredients": [
     [
       {
-        "tag": "c:dusts/iron"
+        "tag": "c:dusts/amethyst"
       },
       {
-        "tag": "c:ingots/iron"
+        "tag": "c:gems/amethyst"
       }
     ],
     [
       {
-        "tag": "c:coal"
+        "tag": "c:dusts/lapis"
       },
       {
-        "tag": "c:dusts/coal"
+        "tag": "c:gems/lapis"
       }
     ]
   ],
   "result": {
     "count": 1,
-    "id": "hiiragi_core:steel_ingot"
+    "id": "hiiragi_core:azure_gem"
   }
 }
