@@ -1,4 +1,4 @@
-package hiiragi283.core.client.jei
+package hiiragi283.core.client.integration.jei
 
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.bounds

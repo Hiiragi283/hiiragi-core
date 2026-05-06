@@ -1,4 +1,4 @@
-package hiiragi283.core.client.jei.extension
+package hiiragi283.core.client.integration.jei.extension
 
 import hiiragi283.core.api.util.getOrEmpty
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe

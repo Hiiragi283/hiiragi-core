@@ -46,22 +46,28 @@ guide = { group = "org.appliedenergistics", name = "guideme", version.ref = "gui
 
 [bundles]
 
-mods-impl = [
-    "ae2",
-    "jade",
-]
+common-impl = []
 
-mods-transitive = []
-
-mods-compile = [
-    "jei-api",
+common-compile = [
     "moonlight",
     "moonlight-neo",
 ]
 
-mods-runtime = [
-    "jei",
+common-runtime = [
     "moonlight-runtime",
+]
+
+integration-impl = [
+    "ae2",
+    "jade",
+]
+
+integration-compile = [
+    "jei-api",
+]
+
+integration-runtime = [
+    "jei"
 ]
 
 [plugins]

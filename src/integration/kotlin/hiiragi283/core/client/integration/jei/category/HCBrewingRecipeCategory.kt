@@ -1,4 +1,4 @@
-package hiiragi283.core.client.jei.category
+package hiiragi283.core.client.integration.jei.category
 
 import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.HTConst

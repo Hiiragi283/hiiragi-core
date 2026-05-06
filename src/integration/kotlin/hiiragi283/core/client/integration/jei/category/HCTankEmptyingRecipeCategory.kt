@@ -1,4 +1,4 @@
-package hiiragi283.core.client.jei.category
+package hiiragi283.core.client.integration.jei.category
 
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.integration.jei.addChancedItem

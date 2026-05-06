@@ -1,4 +1,4 @@
-package hiiragi283.core.client.jei
+package hiiragi283.core.client.integration.jei
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
@@ -18,14 +18,14 @@ import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.client.jei.category.HCBrewingRecipeCategory
-import hiiragi283.core.client.jei.category.HCChargingRecipeCategory
-import hiiragi283.core.client.jei.category.HCCrushingRecipeCategory
-import hiiragi283.core.client.jei.category.HCExplodingRecipeCategory
-import hiiragi283.core.client.jei.category.HCMaterialPartCategory
-import hiiragi283.core.client.jei.category.HCTankEmptyingRecipeCategory
-import hiiragi283.core.client.jei.category.HCTankFillingRecipeCategory
-import hiiragi283.core.client.jei.extension.HCEternalSmithingCategoryExtension
+import hiiragi283.core.client.integration.jei.category.HCBrewingRecipeCategory
+import hiiragi283.core.client.integration.jei.category.HCChargingRecipeCategory
+import hiiragi283.core.client.integration.jei.category.HCCrushingRecipeCategory
+import hiiragi283.core.client.integration.jei.category.HCExplodingRecipeCategory
+import hiiragi283.core.client.integration.jei.category.HCMaterialPartCategory
+import hiiragi283.core.client.integration.jei.category.HCTankEmptyingRecipeCategory
+import hiiragi283.core.client.integration.jei.category.HCTankFillingRecipeCategory
+import hiiragi283.core.client.integration.jei.extension.HCEternalSmithingCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe

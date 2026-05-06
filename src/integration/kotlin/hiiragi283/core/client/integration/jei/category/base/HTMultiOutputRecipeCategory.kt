@@ -1,4 +1,4 @@
-package hiiragi283.core.client.jei.category.base
+package hiiragi283.core.client.integration.jei.category.base
 
 import hiiragi283.core.api.integration.jei.category.HTDisplayRecipeCategory
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
