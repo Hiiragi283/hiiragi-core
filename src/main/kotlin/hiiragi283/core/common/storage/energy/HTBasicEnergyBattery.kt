@@ -21,12 +21,10 @@ open class HTBasicEnergyBattery(
 ) : HTEnergyBattery.Basic() {
     companion object {
         @JvmStatic
-        fun input(listener: HTContentListener?, capacity: Int): HTBasicEnergyBattery =
-            create(listener, capacity, HTStorageAccess.NOT_EXTERNAL, HTStoragePredicates.alwaysTrue())
+        fun input(listener: HTContentListener?, capacity: Int): HTBasicEnergyBattery = create(listener, capacity, HTStorageAccess.NOT_EXTERNAL, HTStoragePredicates.alwaysTrue())
 
         @JvmStatic
-        fun output(listener: HTContentListener?, capacity: Int): HTBasicEnergyBattery =
-            create(listener, capacity, HTStoragePredicates.alwaysTrue(), HTStorageAccess.INTERNAL_ONLY)
+        fun output(listener: HTContentListener?, capacity: Int): HTBasicEnergyBattery = create(listener, capacity, HTStoragePredicates.alwaysTrue(), HTStorageAccess.INTERNAL_ONLY)
 
         @JvmStatic
         fun create(

@@ -7,6 +7,7 @@ import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
 import mezz.jei.api.registration.IRecipeRegistration
+import net.minecraft.client.Minecraft
 
 /**
  * [IRecipeRegistration]へのレシピ登録を簡略化するヘルパークラスです。
@@ -15,6 +16,13 @@ import mezz.jei.api.registration.IRecipeRegistration
  * @see mekanism.client.recipe_viewer.jei.RecipeRegistryHelper
  */
 data object HTJeiRecipeHelper {
+    @JvmStatic
+    private fun getContext(): HTRecipeLookup.Context = Minecraft
+        .getInstance()
+        .level
+        ?.let(HTRecipeLookup.Context::create)
+        ?: error("Cannot create recipe lookup context on client side")
+
     @JvmField
     val DISPLAY_SORTER: Comparator<in HTRecipeDisplay> = compareBy(HTComparators.ID, HTRecipeDisplay::getId)
 
@@ -90,7 +98,7 @@ data object HTJeiRecipeHelper {
      */
     @JvmStatic
     fun <T : Any> addLookupRecipes(registration: IRecipeRegistration, viewerType: HTHolderRecipeViewerType<T>, lookup: HTRecipeLookup<T>) {
-        this.addHolderRecipes(registration, viewerType, lookup.getAllRecipes())
+        this.addHolderRecipes(registration, viewerType, lookup.getAllRecipes(getContext()))
     }
 
     /**
@@ -106,7 +114,7 @@ data object HTJeiRecipeHelper {
         lookup: HTRecipeLookup<T>,
         sorter: Comparator<in T>,
     ) {
-        this.addHolderRecipes(registration, viewerType, lookup.getAllRecipes(), sorter)
+        this.addHolderRecipes(registration, viewerType, lookup.getAllRecipes(getContext()), sorter)
     }
 
     // HTRecipeDisplay
@@ -150,7 +158,7 @@ data object HTJeiRecipeHelper {
             registration,
             viewerType,
             lookup
-                .getAllRecipes()
+                .getAllRecipes(getContext())
                 .mapNotNull(transform),
         )
     }
@@ -170,7 +178,7 @@ data object HTJeiRecipeHelper {
             registration,
             viewerType,
             lookup
-                .getAllRecipes()
+                .getAllRecipes(getContext())
                 .mapNotNull(transform),
             sorter,
         )
@@ -187,7 +195,7 @@ data object HTJeiRecipeHelper {
             registration,
             viewerType,
             lookup
-                .getAllRecipes()
+                .getAllRecipes(getContext())
                 .flatMap(transform),
         )
     }

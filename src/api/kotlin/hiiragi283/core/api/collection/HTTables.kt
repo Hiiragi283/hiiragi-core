@@ -22,8 +22,7 @@ fun <R, C, V> mutableTableOf(): HTTable.Mutable<R, C, V> = HTHashTable()
 /**
  * @see mutableMapOf
  */
-fun <R, C, V> mutableTableOf(vararg triples: Triple<R, C, V>): HTTable.Mutable<R, C, V> =
-    HTHashTable<R, C, V>(triples.size, triples.size).apply { putAll(triples) }
+fun <R, C, V> mutableTableOf(vararg triples: Triple<R, C, V>): HTTable.Mutable<R, C, V> = HTHashTable<R, C, V>(triples.size, triples.size).apply { putAll(triples) }
 
 /**
  * @see EmptyMap
@@ -105,18 +104,15 @@ fun <R, C, V> Iterable<Triple<R, C, V>>.toTable(): HTTable<R, C, V> {
 /**
  * @see Iterable.toMap
  */
-fun <R, C, V, T : HTTable.Mutable<in R, in C, in V>> Iterable<Triple<R, C, V>>.toTable(destination: T): T =
-    destination.apply { putAll(this@toTable) }
+fun <R, C, V, T : HTTable.Mutable<in R, in C, in V>> Iterable<Triple<R, C, V>>.toTable(destination: T): T = destination.apply { putAll(this@toTable) }
 
 /**
  * @see Array.toMap
  */
-fun <R, C, V, T : HTTable.Mutable<in R, in C, in V>> Array<out Triple<R, C, V>>.toTable(destination: T): T =
-    destination.apply { putAll(this@toTable) }
+fun <R, C, V, T : HTTable.Mutable<in R, in C, in V>> Array<out Triple<R, C, V>>.toTable(destination: T): T = destination.apply { putAll(this@toTable) }
 
 // with transform
-inline fun <K, V, R, C, V1> Map<K, V>.toTable(transform: (Map.Entry<K, V>) -> Triple<R, C, V1>): HTTable<R, C, V1> =
-    this.toTable(HTHashTable(), transform)
+inline fun <K, V, R, C, V1> Map<K, V>.toTable(transform: (Map.Entry<K, V>) -> Triple<R, C, V1>): HTTable<R, C, V1> = this.toTable(HTHashTable(), transform)
 
 inline fun <K, V, R, C, V1, T : HTTable.Mutable<R, C, V1>> Map<K, V>.toTable(
     destination: T,
@@ -129,8 +125,7 @@ inline fun <K, V, R, C, V1, T : HTTable.Mutable<R, C, V1>> Map<K, V>.toTable(
 }
 
 // toFlatTable
-inline fun <T, R, C, V> Iterable<T>.toFlatTable(transform: (T) -> Iterable<Triple<R, C, V>>): HTTable<R, C, V> =
-    this.toFlatTable(HTHashTable(), transform)
+inline fun <T, R, C, V> Iterable<T>.toFlatTable(transform: (T) -> Iterable<Triple<R, C, V>>): HTTable<R, C, V> = this.toFlatTable(HTHashTable(), transform)
 
 inline fun <T, R, C, V, T1 : HTTable.Mutable<R, C, V>> Iterable<T>.toFlatTable(
     destination: T1,
@@ -142,8 +137,7 @@ inline fun <T, R, C, V, T1 : HTTable.Mutable<R, C, V>> Iterable<T>.toFlatTable(
     return destination
 }
 
-fun <T, R, C, V> Sequence<T>.toFlatTable(transform: (T) -> Iterable<Triple<R, C, V>>): HTTable<R, C, V> =
-    this.toFlatTable(HTHashTable(), transform)
+fun <T, R, C, V> Sequence<T>.toFlatTable(transform: (T) -> Iterable<Triple<R, C, V>>): HTTable<R, C, V> = this.toFlatTable(HTHashTable(), transform)
 
 fun <T, R, C, V, T1 : HTTable.Mutable<R, C, V>> Sequence<T>.toFlatTable(destination: T1, transform: (T) -> Iterable<Triple<R, C, V>>): T1 {
     for (triple: Triple<R, C, V> in this.flatMap(transform)) {
@@ -152,8 +146,7 @@ fun <T, R, C, V, T1 : HTTable.Mutable<R, C, V>> Sequence<T>.toFlatTable(destinat
     return destination
 }
 
-inline fun <K, V, R, C, V1> Map<K, V>.toFlatTable(transform: (Map.Entry<K, V>) -> Iterable<Triple<R, C, V1>>): HTTable<R, C, V1> =
-    this.toFlatTable(HTHashTable(), transform)
+inline fun <K, V, R, C, V1> Map<K, V>.toFlatTable(transform: (Map.Entry<K, V>) -> Iterable<Triple<R, C, V1>>): HTTable<R, C, V1> = this.toFlatTable(HTHashTable(), transform)
 
 inline fun <K, V, R, C, V1, T : HTTable.Mutable<R, C, V1>> Map<K, V>.toFlatTable(
     destination: T,
@@ -187,8 +180,7 @@ inline fun <R, C, V, T : HTTable.Mutable<R, C, V>> HTTable<R, C, V>.filterTo(des
 /**
  * @see Sequence.filterNot
  */
-fun <R, C, V> HTTable<R, C, V>.filterNot(predicate: (Triple<R, C, V>) -> Boolean): HTTable<R, C, V> =
-    this.filterNotTo(HTHashTable(), predicate)
+fun <R, C, V> HTTable<R, C, V>.filterNot(predicate: (Triple<R, C, V>) -> Boolean): HTTable<R, C, V> = this.filterNotTo(HTHashTable(), predicate)
 
 /**
  * @see Sequence.filterNotTo
@@ -206,8 +198,7 @@ inline fun <R, C, V, T : HTTable.Mutable<R, C, V>> HTTable<R, C, V>.filterNotTo(
 }
 
 // associate
-inline fun <R, C, V, K, V1> HTTable<R, C, V>.associate(transform: (Triple<R, C, V>) -> Pair<K, V1>): Map<K, V1> =
-    this.associateTo(linkedMapOf(), transform)
+inline fun <R, C, V, K, V1> HTTable<R, C, V>.associate(transform: (Triple<R, C, V>) -> Pair<K, V1>): Map<K, V1> = this.associateTo(linkedMapOf(), transform)
 
 inline fun <R, C, V, K, V1, M : MutableMap<in K, in V1>> HTTable<R, C, V>.associateTo(
     destination: M,
@@ -219,8 +210,7 @@ inline fun <R, C, V, K, V1, M : MutableMap<in K, in V1>> HTTable<R, C, V>.associ
     return destination
 }
 
-inline fun <R, C, V, K> HTTable<R, C, V>.associateBy(transform: (Triple<R, C, V>) -> K): Map<K, V> =
-    this.associateByTo(linkedMapOf(), transform)
+inline fun <R, C, V, K> HTTable<R, C, V>.associateBy(transform: (Triple<R, C, V>) -> K): Map<K, V> = this.associateByTo(linkedMapOf(), transform)
 
 inline fun <R, C, V, K, M : MutableMap<in K, in V>> HTTable<R, C, V>.associateByTo(destination: M, transform: (Triple<R, C, V>) -> K): M {
     this.forEach { triple: Triple<R, C, V> ->

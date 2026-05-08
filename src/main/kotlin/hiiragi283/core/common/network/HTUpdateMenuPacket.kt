@@ -20,46 +20,45 @@ import net.minecraft.world.entity.player.Player
 class HTUpdateMenuPacket private constructor(val containerId: Int, val map: Map<Int, HTSyncablePayload>) :
     HTCustomPayload.S2C,
     HTCustomPayload.C2S {
-        companion object {
-            @JvmField
-            val TYPE: CustomPacketPayload.Type<HTUpdateMenuPacket> = CustomPacketPayload.Type(HiiragiCoreAPI.id("update_menu"))
+    companion object {
+        @JvmField
+        val TYPE: CustomPacketPayload.Type<HTUpdateMenuPacket> = CustomPacketPayload.Type(HiiragiCoreAPI.id("update_menu"))
 
-            @JvmField
-            val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTUpdateMenuPacket> = StreamCodec.composite(
-                ByteBufCodecs.VAR_INT,
-                HTUpdateMenuPacket::containerId,
-                ByteBufCodecs.map(::HashMap, ByteBufCodecs.VAR_INT, HTSyncablePayload.STREAM_CODEC),
-                HTUpdateMenuPacket::map,
-                ::HTUpdateMenuPacket,
-            )
+        @JvmField
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTUpdateMenuPacket> = StreamCodec.composite(
+            ByteBufCodecs.VAR_INT,
+            HTUpdateMenuPacket::containerId,
+            ByteBufCodecs.map(::HashMap, ByteBufCodecs.VAR_INT, HTSyncablePayload.STREAM_CODEC),
+            HTUpdateMenuPacket::map,
+            ::HTUpdateMenuPacket,
+        )
 
-            @JvmStatic
-            fun create(containerId: Int, map: Map<Int, HTSyncablePayload>): HTUpdateMenuPacket? = when {
-                map.isEmpty() -> null
-                else -> HTUpdateMenuPacket(containerId, map)
-            }
-
-            @JvmStatic
-            inline fun create(containerId: Int, builderAction: MutableMap<Int, HTSyncablePayload>.() -> Unit): HTUpdateMenuPacket? =
-                create(containerId, buildMap(builderAction))
+        @JvmStatic
+        fun create(containerId: Int, map: Map<Int, HTSyncablePayload>): HTUpdateMenuPacket? = when {
+            map.isEmpty() -> null
+            else -> HTUpdateMenuPacket(containerId, map)
         }
 
-        override fun type(): CustomPacketPayload.Type<HTUpdateMenuPacket> = TYPE
+        @JvmStatic
+        inline fun create(containerId: Int, builderAction: MutableMap<Int, HTSyncablePayload>.() -> Unit): HTUpdateMenuPacket? = create(containerId, buildMap(builderAction))
+    }
 
-        override fun handle(player: AbstractClientPlayer, minecraft: Minecraft) {
-            handle(player)
-        }
+    override fun type(): CustomPacketPayload.Type<HTUpdateMenuPacket> = TYPE
 
-        override fun handle(player: ServerPlayer, server: MinecraftServer) {
-            handle(player)
-        }
+    override fun handle(player: AbstractClientPlayer, minecraft: Minecraft) {
+        handle(player)
+    }
 
-        private fun handle(player: Player) {
-            val container: HTContainerMenu<*> = player.containerMenu as? HTContainerMenu<*> ?: return
-            if (container.containerId == this.containerId) {
-                for ((index: Int, payload: HTSyncablePayload) in map) {
-                    payload.setValue(container, index)
-                }
+    override fun handle(player: ServerPlayer, server: MinecraftServer) {
+        handle(player)
+    }
+
+    private fun handle(player: Player) {
+        val container: HTContainerMenu<*> = player.containerMenu as? HTContainerMenu<*> ?: return
+        if (container.containerId == this.containerId) {
+            for ((index: Int, payload: HTSyncablePayload) in map) {
+                payload.setValue(container, index)
             }
         }
     }
+}

@@ -8,7 +8,6 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.recipe.IFocusGroup
 
-abstract class HTMultiOutputRecipeCategory(guiHelper: IGuiHelper, recipeType: HTRecipeViewerType<HTProgressRecipeDisplay>) :
-    HTDisplayRecipeCategory.Progress(guiHelper, recipeType) {
+abstract class HTMultiOutputRecipeCategory(guiHelper: IGuiHelper, recipeType: HTRecipeViewerType<HTProgressRecipeDisplay>) : HTDisplayRecipeCategory.Progress(guiHelper, recipeType) {
     protected abstract fun setupOutputs(builder: IRecipeLayoutBuilder, contents: HTRecipeContents, focuses: IFocusGroup)
 }

@@ -44,8 +44,7 @@ fun interface HTTagBuilder<T : Any> : Consumer<TagEntry> {
      * 指定した[プレフィックス][prefix]と[素材][material]を追加します。
      * @param type このエントリの依存関係
      */
-    fun addTag(prefix: HTTagPrefix, material: HTMaterialLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<T> =
-        addTag(prefix.materialTag(material), type)
+    fun addTag(prefix: HTTagPrefix, material: HTMaterialLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<T> = addTag(prefix.materialTag(material), type)
 
     /**
      * 指定した[タグ][child]を追加します。

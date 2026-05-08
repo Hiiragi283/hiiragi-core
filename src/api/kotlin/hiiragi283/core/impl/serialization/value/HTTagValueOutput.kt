@@ -92,8 +92,7 @@ internal class HTTagValueOutput(private val provider: HolderLookup.Provider, pri
 
     //    TypedOutputList    //
 
-    private class TypedOutputList<T : Any>(provider: HolderLookup.Provider, private val list: ListTag, private val codec: Codec<T>) :
-        HTValueOutput.TypedOutputList<T> {
+    private class TypedOutputList<T : Any>(provider: HolderLookup.Provider, private val list: ListTag, private val codec: Codec<T>) : HTValueOutput.TypedOutputList<T> {
         private val registryOps: RegistryOps<Tag> = provider.createSerializationContext(NbtOps.INSTANCE)
 
         override val isEmpty: Boolean

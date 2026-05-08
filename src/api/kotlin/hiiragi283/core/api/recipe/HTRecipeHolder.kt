@@ -38,8 +38,7 @@ data class HTRecipeHolder<RECIPE : Any>(
          * バニラの[RecipeHolder]を[HTRecipeHolder]に変換します。
          */
         @JvmStatic
-        fun <RECIPE : Recipe<*>> from(holder: RecipeHolder<out RECIPE>): HTRecipeHolder<RECIPE> =
-            HTRecipeHolder(holder.id(), holder.value())
+        fun <RECIPE : Recipe<*>> from(holder: RecipeHolder<out RECIPE>): HTRecipeHolder<RECIPE> = HTRecipeHolder(holder.id(), holder.value())
     }
 
     constructor(pair: Pair<ResourceLocation, RECIPE>) : this(pair.first, pair.second)

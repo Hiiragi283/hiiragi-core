@@ -10,6 +10,5 @@ import mezz.jei.api.ingredients.subtypes.UidContext
  */
 fun interface HTSubtypeInterpreter<T : Any> : ISubtypeInterpreter<T> {
     @Deprecated("Deprecated in Java")
-    override fun getLegacyStringSubtypeInfo(ingredient: T, context: UidContext): String =
-        getSubtypeData(ingredient, context)?.toString() ?: ""
+    override fun getLegacyStringSubtypeInfo(ingredient: T, context: UidContext): String = getSubtypeData(ingredient, context)?.toString() ?: ""
 }

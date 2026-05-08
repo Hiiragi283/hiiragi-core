@@ -48,8 +48,7 @@ open class HTBasicFluidTank(
         )
 
         @JvmStatic
-        fun output(listener: HTContentListener?, capacity: Int): HTBasicFluidTank =
-            create(listener, capacity, canInsert = HTStoragePredicates.internalOnly())
+        fun output(listener: HTContentListener?, capacity: Int): HTBasicFluidTank = create(listener, capacity, canInsert = HTStoragePredicates.internalOnly())
     }
 
     @JvmField
@@ -84,11 +83,9 @@ open class HTBasicFluidTank(
 
     final override fun isValid(resource: HTFluidResourceType): Boolean = this.filter.test(resource)
 
-    final override fun isStackValidForInsert(resource: HTFluidResourceType, access: HTStorageAccess): Boolean =
-        super.isStackValidForInsert(resource, access) && this.canInsert.test(resource, access)
+    final override fun isStackValidForInsert(resource: HTFluidResourceType, access: HTStorageAccess): Boolean = super.isStackValidForInsert(resource, access) && this.canInsert.test(resource, access)
 
-    final override fun canStackExtract(resource: HTFluidResourceType, access: HTStorageAccess): Boolean =
-        super.canStackExtract(resource, access) && this.canExtract.test(resource, access)
+    final override fun canStackExtract(resource: HTFluidResourceType, access: HTStorageAccess): Boolean = super.canStackExtract(resource, access) && this.canExtract.test(resource, access)
 
     override fun getCapacity(resource: HTFluidResourceType?): Int = capacity
 

@@ -15,8 +15,7 @@ import net.neoforged.neoforge.registries.datamaps.builtin.Oxidizable
 import net.neoforged.neoforge.registries.datamaps.builtin.Waxable
 import java.util.concurrent.CompletableFuture
 
-class HCDataMapProvider(packOutput: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) :
-    HTDataMapProvider(packOutput, lookupProvider) {
+class HCDataMapProvider(packOutput: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : HTDataMapProvider(packOutput, lookupProvider) {
     override fun gatherInternal() {
         furnaceFuel {
             addHolder(HCBlocks.OIL_SAND, FurnaceFuel(20 * 10 * 4))

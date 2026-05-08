@@ -57,8 +57,7 @@ data class HTBlockWidgetHolderContext(val factory: Factory, val player: Player, 
 
     override fun getDisplayName(): Text = factory.getDisplayName(this)
 
-    override fun createMenu(containerId: Int, playerInventory: Inventory, player: Player): HTWidgetContainerMenu =
-        HTWidgetContainerMenu(HCMenuTypes.BLOCK.get(), containerId, playerInventory, this)
+    override fun createMenu(containerId: Int, playerInventory: Inventory, player: Player): HTWidgetContainerMenu = HTWidgetContainerMenu(HCMenuTypes.BLOCK.get(), containerId, playerInventory, this)
 
     override fun writeClientSideData(menu: AbstractContainerMenu, buffer: RegistryFriendlyByteBuf) {
         buffer.writeBlockPos(pos)
@@ -77,7 +76,6 @@ data class HTBlockWidgetHolderContext(val factory: Factory, val player: Player, 
             return !blockEntity.isRemoved
         }
 
-        fun getDisplayName(context: HTBlockWidgetHolderContext): Text =
-            (context.blockEntity as? Nameable)?.displayName ?: context.state.block.name
+        fun getDisplayName(context: HTBlockWidgetHolderContext): Text = (context.blockEntity as? Nameable)?.displayName ?: context.state.block.name
     }
 }

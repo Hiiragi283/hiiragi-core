@@ -10,8 +10,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import java.awt.Color
 
 @OnlyIn(Dist.CLIENT)
-open class HTSimpleFluidExtensions(val stillTex: ResourceLocation, val color: Color? = null, val flowingTex: ResourceLocation = stillTex) :
-    IClientFluidTypeExtensions {
+open class HTSimpleFluidExtensions(val stillTex: ResourceLocation, val color: Color? = null, val flowingTex: ResourceLocation = stillTex) : IClientFluidTypeExtensions {
     companion object {
         @JvmStatic
         fun clear(color: Color): HTSimpleFluidExtensions = HTSimpleFluidExtensions(

@@ -37,8 +37,7 @@ interface HTMaterialPlugin : HTIdLike {
     fun interface PartRegistrar {
         fun register(name: String, idPattern: String, properties: HTPropertyGetter): HTPartLike
 
-        fun register(name: String, idPattern: String, builderAction: HTPropertyMap.Builder.() -> Unit): HTPartLike =
-            register(name, idPattern, buildPropertyMap(builderAction))
+        fun register(name: String, idPattern: String, builderAction: HTPropertyMap.Builder.() -> Unit): HTPartLike = register(name, idPattern, buildPropertyMap(builderAction))
     }
 
     //    Material    //

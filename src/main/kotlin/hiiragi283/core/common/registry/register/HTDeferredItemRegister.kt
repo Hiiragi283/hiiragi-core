@@ -31,8 +31,7 @@ class HTDeferredItemRegister(namespace: String) : HTDeferredRegister<Item>(Regis
         .let(::DeferredItemLike)
         .also(itemEntries::add)
 
-    fun registerSimpleItem(name: String, operator: UnaryOperator<Item.Properties> = UnaryOperator.identity()): HTSimpleItemHolderLike =
-        registerItem(name, ::Item, operator)
+    fun registerSimpleItem(name: String, operator: UnaryOperator<Item.Properties> = UnaryOperator.identity()): HTSimpleItemHolderLike = registerItem(name, ::Item, operator)
 
     fun <ITEM : Item, C> registerItemWith(
         name: String,

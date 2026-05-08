@@ -17,8 +17,7 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
-fun <T : Any> ResourceSink.addJson(id: ResourceLocation, codec: Codec<T>, value: T): DataResult<JsonElement> =
-    codec.encodeStart(JsonOps.INSTANCE, value).ifSuccess { this.addJson(id, it, ResType.JSON) }
+fun <T : Any> ResourceSink.addJson(id: ResourceLocation, codec: Codec<T>, value: T): DataResult<JsonElement> = codec.encodeStart(JsonOps.INSTANCE, value).ifSuccess { this.addJson(id, it, ResType.JSON) }
 
 /**
  * この[ResourceSink][this]に対して，[codec]に基づいて[value]を保存します。

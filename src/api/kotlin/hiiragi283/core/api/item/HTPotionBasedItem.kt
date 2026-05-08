@@ -27,8 +27,7 @@ open class HTPotionBasedItem(properties: Properties) :
         HTPotionHelper.getPotion(stack).addPotionTooltip(tooltips::add, 1f, context.tickRate())
     }
 
-    override fun getCreatorModId(itemStack: ItemStack): String? =
-        HTPotionHelper.getPotionModId(itemStack) ?: super.getCreatorModId(itemStack)
+    override fun getCreatorModId(itemStack: ItemStack): String? = HTPotionHelper.getPotionModId(itemStack) ?: super.getCreatorModId(itemStack)
 
     //    HTSubCreativeTabContents    //
 

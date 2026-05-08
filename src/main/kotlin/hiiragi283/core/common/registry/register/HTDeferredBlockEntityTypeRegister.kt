@@ -13,8 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType
  * Ragiumで使用される[BlockEntityType]向けの[HTDeferredRegister]の実装クラスです。
  */
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class HTDeferredBlockEntityTypeRegister(namespace: String) :
-    HTDeferredRegister<BlockEntityType<*>>(Registries.BLOCK_ENTITY_TYPE, namespace) {
+class HTDeferredBlockEntityTypeRegister(namespace: String) : HTDeferredRegister<BlockEntityType<*>>(Registries.BLOCK_ENTITY_TYPE, namespace) {
     fun <BE : BlockEntity> registerType(name: String, factory: BlockEntityType.BlockEntitySupplier<BE>): HTDeferredBlockEntityType<BE> {
         val holder = HTDeferredBlockEntityType<BE>(createId(name))
         delegate.register(name) { _: ResourceLocation -> BlockEntityType.Builder.of(factory).build(null) }
@@ -33,6 +32,5 @@ class HTDeferredBlockEntityTypeRegister(namespace: String) :
         return holder
     }
 
-    fun <BE : HTBlockEntity> registerTick(name: String, factory: BlockEntityType.BlockEntitySupplier<BE>): HTDeferredBlockEntityType<BE> =
-        registerType(name, factory, HTBlockEntity::tickServer, HTBlockEntity::tickClient)
+    fun <BE : HTBlockEntity> registerTick(name: String, factory: BlockEntityType.BlockEntitySupplier<BE>): HTDeferredBlockEntityType<BE> = registerType(name, factory, HTBlockEntity::tickServer, HTBlockEntity::tickClient)
 }

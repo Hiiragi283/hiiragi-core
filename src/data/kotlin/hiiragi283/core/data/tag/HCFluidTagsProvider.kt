@@ -15,8 +15,7 @@ import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.data.ExistingFileHelper
 import java.util.concurrent.CompletableFuture
 
-class HCFluidTagsProvider(fileHelper: ExistingFileHelper, output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) :
-    HTFluidTagsProvider(fileHelper, output, lookupProvider, HiiragiCoreAPI.MOD_ID) {
+class HCFluidTagsProvider(fileHelper: ExistingFileHelper, output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : HTFluidTagsProvider(fileHelper, output, lookupProvider, HiiragiCoreAPI.MOD_ID) {
     override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Fluid>) {
         addContents(factory, HCFluids.REGISTER.asSequence())
 

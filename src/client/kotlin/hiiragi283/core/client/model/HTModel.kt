@@ -15,11 +15,10 @@ import net.neoforged.api.distmarker.OnlyIn
 @OnlyIn(Dist.CLIENT)
 abstract class HTModel(renderType: (ResourceLocation) -> RenderType) : Model(renderType) {
     companion object {
-        fun createLayerDefinition(width: Int, height: Int, builderAction: PartDefinition.() -> Unit): LayerDefinition =
-            LayerDefinition.create(
-                MeshDefinition().apply { root.builderAction() },
-                width,
-                height,
-            )
+        fun createLayerDefinition(width: Int, height: Int, builderAction: PartDefinition.() -> Unit): LayerDefinition = LayerDefinition.create(
+            MeshDefinition().apply { root.builderAction() },
+            width,
+            height,
+        )
     }
 }

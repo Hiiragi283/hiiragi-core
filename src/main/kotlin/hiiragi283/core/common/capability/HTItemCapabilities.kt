@@ -54,8 +54,7 @@ object HTItemCapabilities : HTMultiCapability.Simple<IItemHandler> {
                         access: HTStorageAccess,
                     ): Int = handler.insertItem(slot, resource.toStackOrEmpty(amount), action.simulate()).count
 
-                    override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int =
-                        handler.extractItem(slot, amount, action.simulate()).count
+                    override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int = handler.extractItem(slot, amount, action.simulate()).count
 
                     override fun getResource(): HTItemResourceType? = handler.getStackInSlot(slot).toResource()
 
@@ -75,8 +74,7 @@ object HTItemCapabilities : HTMultiCapability.Simple<IItemHandler> {
      * 指定した引数から[HTItemSlot]の一覧を返します。
      * @return [HTItemSlot]の[List]
      */
-    fun getItemSlots(level: Level, pos: BlockPos, side: Direction?): List<HTItemSlot> =
-        getItemHandler(level, pos, side)?.getItemSlots(side) ?: emptyList()
+    fun getItemSlots(level: Level, pos: BlockPos, side: Direction?): List<HTItemSlot> = getItemHandler(level, pos, side)?.getItemSlots(side) ?: emptyList()
 
     fun getItemSlot(
         level: Level,

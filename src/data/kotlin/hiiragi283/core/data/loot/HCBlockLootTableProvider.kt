@@ -16,8 +16,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePrope
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 
-class HCBlockLootTableProvider(registries: HolderLookup.Provider) :
-    HTBlockLootTableProvider(registries, HiiragiCoreAPI.MOD_ID, HCBlocks.REGISTER.asBlockSequence()) {
+class HCBlockLootTableProvider(registries: HolderLookup.Provider) : HTBlockLootTableProvider(registries, HiiragiCoreAPI.MOD_ID, HCBlocks.REGISTER.asBlockSequence()) {
     override fun generate() {
         knownBlocks.forEach(::dropSelf)
 

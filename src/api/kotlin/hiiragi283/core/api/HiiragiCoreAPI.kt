@@ -76,6 +76,5 @@ data object HiiragiCoreAPI {
      */
     @Suppress("UnstableApiUsage")
     @JvmStatic
-    internal inline fun <reified SERVICE : Any> getService(): SERVICE =
-        ServiceLoader.load(SERVICE::class.java, HiiragiCoreAPI::class.java.classLoader).first()
+    internal inline fun <reified SERVICE : Any> getService(): SERVICE = ServiceLoader.load(SERVICE::class.java, HiiragiCoreAPI::class.java.classLoader).first()
 }

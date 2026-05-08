@@ -7,8 +7,7 @@ import net.minecraft.data.PackOutput
 import net.minecraft.world.entity.EntityType
 import java.util.concurrent.CompletableFuture
 
-class HCGlobalLootModifierProvider(output: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) :
-    HTGlobalLootModifierProvider(output, registries, HiiragiCoreAPI.MOD_ID) {
+class HCGlobalLootModifierProvider(output: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : HTGlobalLootModifierProvider(output, registries, HiiragiCoreAPI.MOD_ID) {
     override fun start() {
         // Drops Ancient Upgrade from Warden
         add(HCGlobalLootProvider.ANCIENT_UPGRADE, builder(EntityType.WARDEN).build())

@@ -1,6 +1,5 @@
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import org.slf4j.event.Level
 
 plugins {
@@ -11,7 +10,7 @@ plugins {
 
     alias(libs.plugins.dokka.asProvider())
     alias(libs.plugins.dokka.javadoc)
-    alias(libs.plugins.ktlint)
+    alias(libs.plugins.spotless)
 
     alias(libs.plugins.axion.release)
     alias(libs.plugins.maven.publish)
@@ -320,22 +319,31 @@ kotlin {
     }
 }
 
-ktlint {
-    version = "1.5.0"
-    reporters {
-        reporter(ReporterType.JSON)
-    }
-    filter {
-        exclude("**/generated/**")
-        include("**/kotlin/**")
-    }
-}
-
 dokka {
     dokkaSourceSets {
         configureEach {
             sourceRoots.from(apiModule.kotlin.srcDirs, clientModule.kotlin.srcDirs, integrationModule.kotlin.srcDirs)
         }
+    }
+}
+
+spotless {
+    kotlin {
+        target("src/**/*.kt")
+        ktlint().editorConfigOverride(
+            mapOf(
+                "ktlint_standard_import-ordering" to "disabled",
+                "ktlint_standard_comment-spacing" to "disabled",
+            ),
+        )
+    }
+    kotlinGradle {
+        target("*.gradle.kts")
+        ktlint()
+    }
+    java {
+        target("src/**/*.java")
+        palantirJavaFormat("2.90.0")
     }
 }
 

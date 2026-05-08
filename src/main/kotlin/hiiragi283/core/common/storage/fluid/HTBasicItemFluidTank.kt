@@ -31,8 +31,7 @@ open class HTBasicItemFluidTank(
             canInsert: BiPredicate<HTFluidResourceType, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
             filter: Predicate<HTFluidResourceType> = HTStoragePredicates.alwaysTrue(),
             containerUpdater: UnaryOperator<ItemStack>? = null,
-        ): HTBasicItemFluidTank =
-            HTBasicItemFluidTank(containerUpdater, HTStorageValidators.validateCapacity(capacity), canExtract, canInsert, filter, container)
+        ): HTBasicItemFluidTank = HTBasicItemFluidTank(containerUpdater, HTStorageValidators.validateCapacity(capacity), canExtract, canInsert, filter, container)
     }
 
     override fun getStack(): FluidStack = HTStorageHelper.getFluid(container)
@@ -52,11 +51,9 @@ open class HTBasicItemFluidTank(
 
     final override fun isValid(resource: HTFluidResourceType): Boolean = filter.test(resource)
 
-    final override fun isStackValidForInsert(resource: HTFluidResourceType, access: HTStorageAccess): Boolean =
-        super.isStackValidForInsert(resource, access) && canInsert.test(resource, access)
+    final override fun isStackValidForInsert(resource: HTFluidResourceType, access: HTStorageAccess): Boolean = super.isStackValidForInsert(resource, access) && canInsert.test(resource, access)
 
-    final override fun canStackExtract(resource: HTFluidResourceType, access: HTStorageAccess): Boolean =
-        super.canStackExtract(resource, access) && canExtract.test(resource, access)
+    final override fun canStackExtract(resource: HTFluidResourceType, access: HTStorageAccess): Boolean = super.canStackExtract(resource, access) && canExtract.test(resource, access)
 
     override fun getCapacity(resource: HTFluidResourceType?): Int = capacity
 }

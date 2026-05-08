@@ -39,8 +39,7 @@ class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: H
 
     override fun assemble(firstInput: ItemStack, secondInput: FluidStack): ItemStack = result.getOrEmpty()
 
-    override fun getRequiredAmount(first: ItemStack, second: FluidStack): Pair<Int, Int> =
-        itemIngredient.getRequiredAmount(first) to fluidIngredient.getRequiredAmount(second)
+    override fun getRequiredAmount(first: ItemStack, second: FluidStack): Pair<Int, Int> = itemIngredient.getRequiredAmount(first) to fluidIngredient.getRequiredAmount(second)
 
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.FILLING
 

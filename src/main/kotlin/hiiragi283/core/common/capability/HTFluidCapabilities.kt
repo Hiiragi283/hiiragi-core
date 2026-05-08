@@ -48,8 +48,7 @@ object HTFluidCapabilities : HTMultiCapability<IFluidHandler, IFluidHandlerItem>
                 return amount - filled
             }
 
-            override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int =
-                handler.drain(amount, action.toFluid()).amount
+            override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int = handler.drain(amount, action.toFluid()).amount
 
             override fun getResource(): HTFluidResourceType? = handler.getFluidInTank(0).toResource()
 
@@ -61,8 +60,7 @@ object HTFluidCapabilities : HTMultiCapability<IFluidHandler, IFluidHandlerItem>
 
     //    Block    //
 
-    fun getFirstTank(level: Level, pos: BlockPos, side: Direction?): HTFluidTank? =
-        getCapability(level, pos, side)?.let { wrapAsTank(it, side) }
+    fun getFirstTank(level: Level, pos: BlockPos, side: Direction?): HTFluidTank? = getCapability(level, pos, side)?.let { wrapAsTank(it, side) }
 
     //    Entity    //
 

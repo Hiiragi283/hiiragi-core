@@ -82,12 +82,10 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
     }
 
     @JvmStatic
-    fun getTimeFromHardness(map: HTPropertyMap, time: Int = 20 * 10): Int? =
-        (map.getOrDefault(HTMaterialPropertyKeys.HARDNESS) * time)?.toInt()
+    fun getTimeFromHardness(map: HTPropertyMap, time: Int = 20 * 10): Int? = (map.getOrDefault(HTMaterialPropertyKeys.HARDNESS) * time)?.toInt()
 
     @JvmStatic
-    fun getTimeFromMelting(map: HTPropertyMap, time: Int = 20 * 10): Int? =
-        (map.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT) * time)?.toInt()
+    fun getTimeFromMelting(map: HTPropertyMap, time: Int = 20 * 10): Int? = (map.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT) * time)?.toInt()
 
     @JvmStatic
     fun getBlueprint(prefix: HTTagPrefix): Ingredient = when (prefix) {
@@ -194,8 +192,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
 
     //    Crafting    //
 
-    private fun getItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry? =
-        HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, material)
+    private fun getItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry? = HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, material)
 
     @JvmStatic
     private fun baseToBlock(event: HTRegisterRuntimeRecipeEvent, entry: HTMaterialManager.Entry) {

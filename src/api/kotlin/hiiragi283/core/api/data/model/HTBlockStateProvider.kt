@@ -27,8 +27,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: PackOutput, protected val modid: String) :
-    BlockStateProvider(output, modid, fileHelper) {
+abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: PackOutput, protected val modid: String) : BlockStateProvider(output, modid, fileHelper) {
     //    Extensions    //
 
     /**

@@ -40,12 +40,10 @@ data object HTIngredientCreator {
     fun create(item: ItemLike, amount: Int = 1): HTItemIngredient = create(Ingredient.of(item), amount)
 
     @JvmName("createFromItems")
-    fun create(items: Iterable<ItemLike>, amount: Int = 1): HTItemIngredient =
-        create(items.map(::ItemStack).map(Ingredient::ItemValue), amount)
+    fun create(items: Iterable<ItemLike>, amount: Int = 1): HTItemIngredient = create(items.map(::ItemStack).map(Ingredient::ItemValue), amount)
 
     // Tag
-    fun create(prefix: HTTagPrefix, material: HTMaterialLike, amount: Int = 1): HTItemIngredient =
-        create(prefix.materialTag(material), amount)
+    fun create(prefix: HTTagPrefix, material: HTMaterialLike, amount: Int = 1): HTItemIngredient = create(prefix.materialTag(material), amount)
 
     /**
      * @since 0.16.0
@@ -56,19 +54,16 @@ data object HTIngredientCreator {
      * @since 0.16.0
      */
     @JvmName("createFromRawTags")
-    fun create(rawTagKeys: Iterable<RawTagKey>, amount: Int = 1): HTItemIngredient =
-        create(rawTagKeys.map { it.create(Registries.ITEM) }, amount)
+    fun create(rawTagKeys: Iterable<RawTagKey>, amount: Int = 1): HTItemIngredient = create(rawTagKeys.map { it.create(Registries.ITEM) }, amount)
 
     fun create(tagKey: TagKey<Item>, amount: Int = 1): HTItemIngredient = create(Ingredient.of(tagKey), amount)
 
     @JvmName("createFromTags")
-    fun create(tagKeys: Iterable<TagKey<Item>>, amount: Int = 1): HTItemIngredient =
-        create(tagKeys.sortedWith(HTComparators.TAG_KEY).map(Ingredient::TagValue), amount)
+    fun create(tagKeys: Iterable<TagKey<Item>>, amount: Int = 1): HTItemIngredient = create(tagKeys.sortedWith(HTComparators.TAG_KEY).map(Ingredient::TagValue), amount)
 
     // Ingredient
     @JvmName("createValues")
-    fun create(values: Iterable<Ingredient.Value>, amount: Int = 1): HTItemIngredient =
-        create(Ingredient.fromValues(values.toSet().stream()), amount)
+    fun create(values: Iterable<Ingredient.Value>, amount: Int = 1): HTItemIngredient = create(Ingredient.fromValues(values.toSet().stream()), amount)
 
     inline fun create(
         strict: Boolean,
@@ -88,12 +83,10 @@ data object HTIngredientCreator {
 
     // Tag
     @JvmName("createFluid")
-    fun create(tagKey: TagKey<Fluid>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient =
-        create(FluidIngredient.tag(tagKey), amount)
+    fun create(tagKey: TagKey<Fluid>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(FluidIngredient.tag(tagKey), amount)
 
     @JvmName("createFluid")
-    fun create(tagKeys: Iterable<TagKey<Fluid>>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient =
-        create(CompoundFluidIngredient.of(tagKeys.sortedWith(HTComparators.TAG_KEY).toSet().map(FluidIngredient::tag)), amount)
+    fun create(tagKeys: Iterable<TagKey<Fluid>>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(CompoundFluidIngredient.of(tagKeys.sortedWith(HTComparators.TAG_KEY).toSet().map(FluidIngredient::tag)), amount)
 
     fun create(content: HTFluidContent, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(content.fluidTag, amount)
 
@@ -103,8 +96,7 @@ data object HTIngredientCreator {
 
     fun milk(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(VanillaFluidContents.MILK, amount)
 
-    fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidIngredient =
-        create(HTFluidPart.MOLTEN, material, operator)
+    fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidIngredient = create(HTFluidPart.MOLTEN, material, operator)
 
     fun create(part: HTFluidPart, material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidIngredient {
         val amount: Int = HTMaterialManager
@@ -118,6 +110,5 @@ data object HTIngredientCreator {
     // Ingredient
     fun create(ingredient: SizedFluidIngredient): HTFluidIngredient = create(ingredient.ingredient(), ingredient.amount())
 
-    fun create(ingredient: FluidIngredient, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient =
-        HTFluidIngredient(ingredient, amount)
+    fun create(ingredient: FluidIngredient, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = HTFluidIngredient(ingredient, amount)
 }

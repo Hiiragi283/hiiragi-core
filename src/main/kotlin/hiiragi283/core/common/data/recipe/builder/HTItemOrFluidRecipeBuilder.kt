@@ -12,8 +12,7 @@ import hiiragi283.core.api.util.Ior
 import hiiragi283.core.impl.recipe.HTSerializableRecipe
 import net.minecraft.resources.ResourceLocation
 
-class HTItemOrFluidRecipeBuilder(prefix: String, private val factory: Factory<out HTSerializableRecipe<*>>) :
-    HTProgressRecipeBuilder(prefix) {
+class HTItemOrFluidRecipeBuilder(prefix: String, private val factory: Factory<out HTSerializableRecipe<*>>) : HTProgressRecipeBuilder(prefix) {
     val ingredient: HTIorHolder<HTItemIngredient, HTFluidIngredient> = HTIorHolder()
     val result: HTIorHolder<HTItemResult, HTFluidResult> = HTIorHolder()
 

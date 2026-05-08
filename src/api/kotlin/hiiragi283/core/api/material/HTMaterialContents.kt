@@ -119,15 +119,13 @@ interface HTMaterialContents<R : Any, V : HTMaterialContents.Entry<*>> : HTTable
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-operator fun <V : HTMaterialContents.Entry<*>> HTMaterialContents<HTPart, V>.get(part: HTPartLike, material: HTMaterialLike): V? =
-    this[part.asPart(), material]
+operator fun <V : HTMaterialContents.Entry<*>> HTMaterialContents<HTPart, V>.get(part: HTPartLike, material: HTMaterialLike): V? = this[part.asPart(), material]
 
 /**
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-fun <V : HTMaterialContents.Entry<*>> HTMaterialContents<HTPart, V>.getOrThrow(part: HTPartLike, material: HTMaterialLike): V =
-    this.getOrThrow(part.asPart(), material)
+fun <V : HTMaterialContents.Entry<*>> HTMaterialContents<HTPart, V>.getOrThrow(part: HTPartLike, material: HTMaterialLike): V = this.getOrThrow(part.asPart(), material)
 
 /**
  * @author Hiiragi Tsubasa

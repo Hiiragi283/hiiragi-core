@@ -20,12 +20,10 @@ open class HTBasicItemEnergyBattery(
     HTValueSerializable.Empty {
     companion object {
         @JvmStatic
-        fun input(container: ItemStack, capacity: Int): HTBasicItemEnergyBattery =
-            create(container, capacity, HTStorageAccess.NOT_EXTERNAL, HTStoragePredicates.alwaysTrue())
+        fun input(container: ItemStack, capacity: Int): HTBasicItemEnergyBattery = create(container, capacity, HTStorageAccess.NOT_EXTERNAL, HTStoragePredicates.alwaysTrue())
 
         @JvmStatic
-        fun output(container: ItemStack, capacity: Int): HTBasicItemEnergyBattery =
-            create(container, capacity, HTStoragePredicates.alwaysTrue(), HTStorageAccess.INTERNAL_ONLY)
+        fun output(container: ItemStack, capacity: Int): HTBasicItemEnergyBattery = create(container, capacity, HTStoragePredicates.alwaysTrue(), HTStorageAccess.INTERNAL_ONLY)
 
         @JvmStatic
         fun create(
@@ -33,8 +31,7 @@ open class HTBasicItemEnergyBattery(
             capacity: Int,
             canExtract: Predicate<HTStorageAccess> = HTStoragePredicates.alwaysTrue(),
             canInsert: Predicate<HTStorageAccess> = HTStoragePredicates.alwaysTrue(),
-        ): HTBasicItemEnergyBattery =
-            HTBasicItemEnergyBattery(HTStorageValidators.validateCapacity(capacity), canExtract, canInsert, container)
+        ): HTBasicItemEnergyBattery = HTBasicItemEnergyBattery(HTStorageValidators.validateCapacity(capacity), canExtract, canInsert, container)
     }
 
     override fun setAmount(amount: Int) {

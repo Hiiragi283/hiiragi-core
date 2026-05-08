@@ -28,9 +28,8 @@ abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
          */
         @JvmStatic
         @Suppress("UNCHECKED_CAST")
-        fun <RECIPE : Any> getRecipeType(recipeType: HTRecipeViewerType<RECIPE>): JeiRecipeType<RECIPE> =
-            recipeTypeCache.computeIfAbsent(recipeType) { recipeTypeIn: HTRecipeViewerType<*> ->
-                JeiRecipeType(recipeTypeIn.getId(), recipeTypeIn.recipeClass)
-            } as JeiRecipeType<RECIPE>
+        fun <RECIPE : Any> getRecipeType(recipeType: HTRecipeViewerType<RECIPE>): JeiRecipeType<RECIPE> = recipeTypeCache.computeIfAbsent(recipeType) { recipeTypeIn: HTRecipeViewerType<*> ->
+            JeiRecipeType(recipeTypeIn.getId(), recipeTypeIn.recipeClass)
+        } as JeiRecipeType<RECIPE>
     }
 }

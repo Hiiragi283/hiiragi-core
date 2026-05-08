@@ -19,14 +19,12 @@ interface HTSidedEnergyStorage : IEnergyStorage {
     fun receiveEnergy(toReceive: Int, action: HTStorageAction, side: Direction?): Int
 
     @Deprecated("Use `receiveEnergy(Int, Boolean, Direction?) instead`")
-    override fun receiveEnergy(toReceive: Int, simulate: Boolean): Int =
-        receiveEnergy(toReceive, HTStorageAction.of(simulate), getEnergySideFor())
+    override fun receiveEnergy(toReceive: Int, simulate: Boolean): Int = receiveEnergy(toReceive, HTStorageAction.of(simulate), getEnergySideFor())
 
     fun extractEnergy(toExtract: Int, action: HTStorageAction, side: Direction?): Int
 
     @Deprecated("Use `extractEnergy(Int, Boolean, Direction?) instead`")
-    override fun extractEnergy(toExtract: Int, simulate: Boolean): Int =
-        extractEnergy(toExtract, HTStorageAction.of(simulate), getEnergySideFor())
+    override fun extractEnergy(toExtract: Int, simulate: Boolean): Int = extractEnergy(toExtract, HTStorageAction.of(simulate), getEnergySideFor())
 
     fun getEnergyStored(side: Direction?): Int
 

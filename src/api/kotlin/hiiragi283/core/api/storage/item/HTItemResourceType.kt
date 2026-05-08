@@ -88,8 +88,7 @@ class HTItemResourceType private constructor(private val stack: ItemStack) : HTR
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
-fun ItemLike?.toResource(patch: DataComponentPatch = DataComponentPatch.EMPTY): HTItemResourceType? =
-    createItemStack(this, patch = patch).toResource()
+fun ItemLike?.toResource(patch: DataComponentPatch = DataComponentPatch.EMPTY): HTItemResourceType? = createItemStack(this, patch = patch).toResource()
 
 /**
  * この[ItemStack][this]を[HTItemResourceType]に変換します。

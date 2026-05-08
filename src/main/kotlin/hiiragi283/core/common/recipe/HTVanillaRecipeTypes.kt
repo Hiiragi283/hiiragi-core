@@ -29,12 +29,10 @@ object HTVanillaRecipeTypes {
     @JvmField
     val SMOKING: HTRecipeType<HCCookingRecipe> = CookingType(RecipeType.SMOKING)
 
-    private class CookingType<RECIPE : AbstractCookingRecipe>(private val recipeType: RecipeType<RECIPE>) :
-        HTRecipeType<HCCookingRecipe> {
+    private class CookingType<RECIPE : AbstractCookingRecipe>(private val recipeType: RecipeType<RECIPE>) : HTRecipeType<HCCookingRecipe> {
         override fun getId(): ResourceLocation = ResourceLocation.parse(recipeType.toString())
 
-        override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<HTRecipeHolder<HCCookingRecipe>> =
-            context.getAllRecipes(recipeType).map { holder: HTRecipeHolder<RECIPE> -> holder.mapRecipe(::HCCookingRecipe) }
+        override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<HTRecipeHolder<HCCookingRecipe>> = context.getAllRecipes(recipeType).map { holder: HTRecipeHolder<RECIPE> -> holder.mapRecipe(::HCCookingRecipe) }
     }
 
     @JvmField

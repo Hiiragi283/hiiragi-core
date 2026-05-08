@@ -21,42 +21,42 @@ value class HTMaterialKey private constructor(private val id: ResourceLocation) 
     HTIdLike.Translatable,
     HTMaterialLike,
     Comparable<HTMaterialKey> {
-        companion object {
-            /**
-             * 指定した[id]から[HTMaterialKey]のインスタンスを返します。
-             * @return キャッシュから取得した[HTMaterialKey]のインスタンス
-             */
-            @JvmStatic
-            fun of(id: ResourceLocation): HTMaterialKey = HTMaterialKey(id)
-
-            /**
-             * [HTMaterialKey]の[Codec]
-             */
-            @JvmField
-            val CODEC: Codec<HTMaterialKey> = ResourceLocation.CODEC.xmap(HTMaterialKey::of, HTMaterialKey::getId)
-
-            /**
-             * [HTMaterialKey]の[StreamCodec]
-             */
-            @JvmField
-            val STREAM_CODEC: StreamCodec<ByteBuf, HTMaterialKey> =
-                ResourceLocation.STREAM_CODEC.map(HTMaterialKey::of, HTMaterialKey::getId)
-        }
-
-        override fun getId(): ResourceLocation = id
-
-        override fun asMaterialKey(): HTMaterialKey = this
+    companion object {
+        /**
+         * 指定した[id]から[HTMaterialKey]のインスタンスを返します。
+         * @return キャッシュから取得した[HTMaterialKey]のインスタンス
+         */
+        @JvmStatic
+        fun of(id: ResourceLocation): HTMaterialKey = HTMaterialKey(id)
 
         /**
-         * @since 0.12.0
+         * [HTMaterialKey]の[Codec]
          */
-        override val translationKey: String
-            get() = getId().toLanguageKey("material")
+        @JvmField
+        val CODEC: Codec<HTMaterialKey> = ResourceLocation.CODEC.xmap(HTMaterialKey::of, HTMaterialKey::getId)
 
         /**
-         * @since 0.12.0
+         * [HTMaterialKey]の[StreamCodec]
          */
-        override fun getText(): Text = translatableText(translationKey)
-
-        override fun compareTo(other: HTMaterialKey): Int = this.id.compareNamespaced(other.id)
+        @JvmField
+        val STREAM_CODEC: StreamCodec<ByteBuf, HTMaterialKey> =
+            ResourceLocation.STREAM_CODEC.map(HTMaterialKey::of, HTMaterialKey::getId)
     }
+
+    override fun getId(): ResourceLocation = id
+
+    override fun asMaterialKey(): HTMaterialKey = this
+
+    /**
+     * @since 0.12.0
+     */
+    override val translationKey: String
+        get() = getId().toLanguageKey("material")
+
+    /**
+     * @since 0.12.0
+     */
+    override fun getText(): Text = translatableText(translationKey)
+
+    override fun compareTo(other: HTMaterialKey): Int = this.id.compareNamespaced(other.id)
+}

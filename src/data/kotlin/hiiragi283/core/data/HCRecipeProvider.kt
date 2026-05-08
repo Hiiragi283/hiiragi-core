@@ -10,8 +10,7 @@ import net.minecraft.data.PackOutput
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
-class HCRecipeProvider(output: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) :
-    HTRecipeProvider(output, registries) {
+class HCRecipeProvider(output: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : HTRecipeProvider(output, registries) {
     override fun collectProviders(consumer: Consumer<HTSubRecipeProvider>) {
         consumer.accept(HCCommonRecipeProvider)
         consumer.accept(HCBasicRecipeProvider)

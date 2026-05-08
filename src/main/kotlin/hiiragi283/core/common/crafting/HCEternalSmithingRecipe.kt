@@ -26,8 +26,7 @@ data object HCEternalSmithingRecipe : SmithingRecipe {
 
     override fun isAdditionIngredient(stack: ItemStack): Boolean = ADDITIONAL_TAG.test(stack)
 
-    override fun matches(input: SmithingRecipeInput, level: Level): Boolean =
-        isTemplateIngredient(input.template) && isBaseIngredient(input.base) && isAdditionIngredient(input.addition)
+    override fun matches(input: SmithingRecipeInput, level: Level): Boolean = isTemplateIngredient(input.template) && isBaseIngredient(input.base) && isAdditionIngredient(input.addition)
 
     override fun assemble(input: SmithingRecipeInput, registries: HolderLookup.Provider): ItemStack {
         val stack: ItemStack = input.base.copy()

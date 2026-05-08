@@ -51,11 +51,9 @@ fun <R : Any, T : Any> HolderLookup<R>.getDataSequence(type: DataMapType<R, T>):
         holder.toLike() to data
     }
 
-fun <R : Any, T : Any> HolderLookup<R>.getHolderDataMap(type: DataMapType<R, T>): Map<HTSimpleHolderLike<R>, T> =
-    this.getDataSequence(type).toMap()
+fun <R : Any, T : Any> HolderLookup<R>.getHolderDataMap(type: DataMapType<R, T>): Map<HTSimpleHolderLike<R>, T> = this.getDataSequence(type).toMap()
 
-fun <T : Any> HolderLookup.Provider.holderSetOrNull(tagKey: TagKey<T>): HolderSet<T>? =
-    this.lookup(tagKey.registry).flatMap { it.get(tagKey) }.getOrNull()
+fun <T : Any> HolderLookup.Provider.holderSetOrNull(tagKey: TagKey<T>): HolderSet<T>? = this.lookup(tagKey.registry).flatMap { it.get(tagKey) }.getOrNull()
 
 //    DeferredRegister    //
 

@@ -10,7 +10,6 @@ import hiiragi283.core.api.property.getOrThrow
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.resource.toId
-import net.minecraft.client.Minecraft
 import net.minecraft.core.HolderLookup
 import net.minecraft.server.MinecraftServer
 import net.minecraft.world.item.alchemy.PotionBrewing
@@ -19,8 +18,6 @@ import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeManager
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.level.Level
-import net.neoforged.neoforge.server.ServerLifecycleHooks
-import thedarkcolour.kotlinforforge.neoforge.forge.runForDist
 import kotlin.jvm.optionals.getOrNull
 
 /**
@@ -32,27 +29,6 @@ import kotlin.jvm.optionals.getOrNull
  */
 fun interface HTRecipeLookup<RECIPE : Any> {
     /**
-     * 現在のサーバーまたはクライアントからレシピの一覧を取得します。
-     * @return [HTRecipeHolder]の[Sequence]
-     */
-    fun getAllRecipes(): Sequence<HTRecipeHolder<RECIPE>> = runForDist(
-        { Minecraft.getInstance().level?.let(::getAllRecipes) },
-        { ServerLifecycleHooks.getCurrentServer()?.let(::getAllRecipes) },
-    ) ?: emptySequence()
-
-    /**
-     * 指定した[level]からレシピの一覧を取得します。
-     * @return [HTRecipeHolder]の[Sequence]
-     */
-    fun getAllRecipes(level: Level): Sequence<HTRecipeHolder<RECIPE>> = Context.create(level).let(::getAllRecipes)
-
-    /**
-     * 指定した[server]からレシピの一覧を取得します。
-     * @return [HTRecipeHolder]の[Sequence]
-     */
-    fun getAllRecipes(server: MinecraftServer): Sequence<HTRecipeHolder<RECIPE>> = Context.create(server).let(::getAllRecipes)
-
-    /**
      * 指定した[context]からレシピの一覧を取得します。
      * @return [HTRecipeHolder]の[Sequence]
      */
@@ -62,8 +38,7 @@ fun interface HTRecipeLookup<RECIPE : Any> {
      * 指定した[level]から，[predicate]に一致するレシピを取得します。
      * @return [predicate]に一致するレシピがない場合は`null`
      */
-    fun findFirst(level: Level, predicate: (RECIPE) -> Boolean): HTRecipeHolder<RECIPE>? =
-        getAllRecipes(level).firstOrNull { it.recipe.let(predicate) }
+    fun findFirst(level: Level, predicate: (RECIPE) -> Boolean): HTRecipeHolder<RECIPE>? = Context.create(level).let(::getAllRecipes).firstOrNull { it.recipe.let(predicate) }
 
     class Context(getter: HTPropertyGetter) : HTPropertyGetter by getter {
         companion object {
@@ -76,8 +51,7 @@ fun interface HTRecipeLookup<RECIPE : Any> {
             @JvmField
             val REGISTRY: HTPropertyKey<HolderLookup.Provider?> = create("registry")
 
-            private fun <T : Any> create(path: String): HTPropertyKey<T?> =
-                HTPropertyKey.createNullable(HTConst.MINECRAFT.toId("recipe", path))
+            private fun <T : Any> create(path: String): HTPropertyKey<T?> = HTPropertyKey.createNullable(HTConst.MINECRAFT.toId("recipe", path))
 
             @JvmStatic
             fun create(level: Level): Context = create {
@@ -97,8 +71,7 @@ fun interface HTRecipeLookup<RECIPE : Any> {
             inline fun create(builderAction: HTPropertyMap.Builder.() -> Unit): Context = buildPropertyMap(builderAction).let(::Context)
         }
 
-        fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(recipeType: RecipeType<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> =
-            this[MANAGER]?.getAllRecipesFor(recipeType)?.asSequence()?.map(HTRecipeHolder.Companion::from) ?: emptySequence()
+        fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(recipeType: RecipeType<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> = this[MANAGER]?.getAllRecipesFor(recipeType)?.asSequence()?.map(HTRecipeHolder.Companion::from) ?: emptySequence()
 
         fun <T : Any> lookup(key: RegistryKey<T>): HolderLookup.RegistryLookup<T>? = this[REGISTRY]?.lookup(key)?.getOrNull()
 

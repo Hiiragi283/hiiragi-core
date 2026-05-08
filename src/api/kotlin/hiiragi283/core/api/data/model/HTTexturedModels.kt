@@ -28,12 +28,10 @@ object HTTexturedModels {
     fun crop(texture: ResourceLocation): HTTexturedModel = HTTexturedModel(ModelTemplates.CROP, TextureMapping.crop(texture))
 
     @JvmStatic
-    fun particleOnly(particleId: ResourceLocation): HTTexturedModel =
-        HTTexturedModel(ModelTemplates.PARTICLE_ONLY, TextureMapping.particle(particleId))
+    fun particleOnly(particleId: ResourceLocation): HTTexturedModel = HTTexturedModel(ModelTemplates.PARTICLE_ONLY, TextureMapping.particle(particleId))
 
     @JvmStatic
-    fun layeredBlock(layer0: ResourceLocation, layer1: ResourceLocation): HTTexturedModel =
-        HTTexturedModel(HTModelTemplates.LAYERED, TextureMapping.layered(layer0, layer1))
+    fun layeredBlock(layer0: ResourceLocation, layer1: ResourceLocation): HTTexturedModel = HTTexturedModel(HTModelTemplates.LAYERED, TextureMapping.layered(layer0, layer1))
 
     //    Item    //
 
@@ -56,10 +54,8 @@ object HTTexturedModels {
     fun flatAlt(layer0: ResourceLocation): HTTexturedModel = HTTexturedModel(ModelTemplates.FLAT_ITEM, TextureMapping.layer0(layer0))
 
     @JvmStatic
-    fun layeredItem(layer0: ResourceLocation, layer1: ResourceLocation): HTTexturedModel =
-        HTTexturedModel(ModelTemplates.TWO_LAYERED_ITEM, TextureMapping.layered(layer0, layer1))
+    fun layeredItem(layer0: ResourceLocation, layer1: ResourceLocation): HTTexturedModel = HTTexturedModel(ModelTemplates.TWO_LAYERED_ITEM, TextureMapping.layered(layer0, layer1))
 
     @JvmStatic
-    fun layeredItem(layer0: ResourceLocation, layer1: ResourceLocation, layer2: ResourceLocation): HTTexturedModel =
-        HTTexturedModel(ModelTemplates.THREE_LAYERED_ITEM, TextureMapping.layered(layer0, layer1, layer2))
+    fun layeredItem(layer0: ResourceLocation, layer1: ResourceLocation, layer2: ResourceLocation): HTTexturedModel = HTTexturedModel(ModelTemplates.THREE_LAYERED_ITEM, TextureMapping.layered(layer0, layer1, layer2))
 }

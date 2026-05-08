@@ -157,8 +157,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     fun getPosition(index: Fraction): Int = (index * 18).toInt()
 
     // IRecipeSlotBuilder
-    protected fun IRecipeSlotBuilder.setSlotBackground(type: HTBackgroundType): IRecipeSlotBuilder =
-        this.setBackground(HTJeiDrawables.getSlot(type, guiHelper), -1, -1).setSlotName(type.name)
+    protected fun IRecipeSlotBuilder.setSlotBackground(type: HTBackgroundType): IRecipeSlotBuilder = this.setBackground(HTJeiDrawables.getSlot(type, guiHelper), -1, -1).setSlotName(type.name)
 
     protected fun IRecipeSlotBuilder.setSlotBackground(type: HTBackgroundType, capacity: Int): IRecipeSlotBuilder = this
         .setBackground(HTJeiDrawables.getSlot(type, guiHelper), -1, -1)
@@ -173,8 +172,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     private fun fixCapacity(capacity: Int): Long = maxOf(capacity, 1).toLong()
 
     // IRecipeExtrasBuilder
-    protected fun IRecipeExtrasBuilder.addRecipePlus(x: Int, y: Int = getPosition(0)): IPlaceable<*> =
-        this.addRecipePlusSign().setPosition(x + 2, y + 2)
+    protected fun IRecipeExtrasBuilder.addRecipePlus(x: Int, y: Int = getPosition(0)): IPlaceable<*> = this.addRecipePlusSign().setPosition(x + 2, y + 2)
 
     /**
      * @since 0.16.0

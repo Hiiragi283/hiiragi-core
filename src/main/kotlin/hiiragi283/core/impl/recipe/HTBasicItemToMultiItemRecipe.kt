@@ -20,18 +20,17 @@ open class HTBasicItemToMultiItemRecipe(
     HTProgressRecipe.Simple<SingleRecipeInput> {
     companion object {
         @JvmStatic
-        fun <T : HTBasicItemToMultiItemRecipe> codec(maxSize: Int, factory: HTItemToMultiItemRecipeBuilder.Factory<T>): MapCodec<T> =
-            RecordCodecBuilder.mapCodec { instance ->
-                instance
-                    .group(
-                        HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicItemToMultiItemRecipe::ingredient),
-                        HTListItemResult
-                            .codec(maxSize)
-                            .fieldOf(HTConst.RESULTS)
-                            .forGetter(HTBasicItemToMultiItemRecipe::results),
-                        HTProgressData.CODEC.forGetter(HTBasicItemToMultiItemRecipe::progressData),
-                    ).apply(instance, factory::create)
-            }
+        fun <T : HTBasicItemToMultiItemRecipe> codec(maxSize: Int, factory: HTItemToMultiItemRecipeBuilder.Factory<T>): MapCodec<T> = RecordCodecBuilder.mapCodec { instance ->
+            instance
+                .group(
+                    HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicItemToMultiItemRecipe::ingredient),
+                    HTListItemResult
+                        .codec(maxSize)
+                        .fieldOf(HTConst.RESULTS)
+                        .forGetter(HTBasicItemToMultiItemRecipe::results),
+                    HTProgressData.CODEC.forGetter(HTBasicItemToMultiItemRecipe::progressData),
+                ).apply(instance, factory::create)
+        }
     }
 
     override fun test(input: ItemStack): Boolean = ingredient.test(input)

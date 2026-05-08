@@ -28,40 +28,39 @@ interface HTPropertyMap : HTPropertyGetter {
      * @author Hiiragi Tsubasa
      * @since 0.16.0
      */
-    class Builder private constructor(private val map: MutableMap<HTPropertyKey<*>, Any>, delegate: HTPropertyMap) :
-        HTPropertyMap by delegate {
-            constructor() : this(hashMapOf())
+    class Builder private constructor(private val map: MutableMap<HTPropertyKey<*>, Any>, delegate: HTPropertyMap) : HTPropertyMap by delegate {
+        constructor() : this(hashMapOf())
 
-            constructor(map: MutableMap<HTPropertyKey<*>, Any>) : this(map, SimpleMap(map))
+        constructor(map: MutableMap<HTPropertyKey<*>, Any>) : this(map, SimpleMap(map))
 
-            /**
-             * 指定した[key]と[value]を追加します。
-             * @return 以前に紐づいていた値
-             */
-            @Suppress("UNCHECKED_CAST")
-            fun <T> put(key: HTPropertyKey<T>, value: T): T? {
-                if (value == null) return remove(key)
-                return map.put(key, value) as? T
-            }
-
-            /**
-             * 指定した[key]と[value]を追加します。
-             */
-            operator fun <T> set(key: HTPropertyKey<T>, value: T) {
-                put(key, value)
-            }
-
-            /**
-             * 指定した[key]を削除します。
-             */
-            @Suppress("UNCHECKED_CAST")
-            fun <T> remove(key: HTPropertyKey<T>): T? = map.remove(key) as? T
-
-            fun build(): HTPropertyMap = when {
-                map.isEmpty() -> Empty
-                else -> SimpleMap(map)
-            }
+        /**
+         * 指定した[key]と[value]を追加します。
+         * @return 以前に紐づいていた値
+         */
+        @Suppress("UNCHECKED_CAST")
+        fun <T> put(key: HTPropertyKey<T>, value: T): T? {
+            if (value == null) return remove(key)
+            return map.put(key, value) as? T
         }
+
+        /**
+         * 指定した[key]と[value]を追加します。
+         */
+        operator fun <T> set(key: HTPropertyKey<T>, value: T) {
+            put(key, value)
+        }
+
+        /**
+         * 指定した[key]を削除します。
+         */
+        @Suppress("UNCHECKED_CAST")
+        fun <T> remove(key: HTPropertyKey<T>): T? = map.remove(key) as? T
+
+        fun build(): HTPropertyMap = when {
+            map.isEmpty() -> Empty
+            else -> SimpleMap(map)
+        }
+    }
 
     /**
      * [Map]に基づいた[HTPropertyMap]の実装クラスです。
@@ -82,8 +81,7 @@ interface HTPropertyMap : HTPropertyGetter {
 
 //    Extensions    //
 
-inline fun buildPropertyMap(builderAction: HTPropertyMap.Builder.() -> Unit): HTPropertyMap =
-    HTPropertyMap.Builder().apply(builderAction).build()
+inline fun buildPropertyMap(builderAction: HTPropertyMap.Builder.() -> Unit): HTPropertyMap = HTPropertyMap.Builder().apply(builderAction).build()
 
 /**
  * @since 0.9.0

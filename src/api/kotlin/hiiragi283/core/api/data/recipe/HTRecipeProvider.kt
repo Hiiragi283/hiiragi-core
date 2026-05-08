@@ -12,8 +12,7 @@ import java.util.function.Consumer
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-abstract class HTRecipeProvider(output: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) :
-    RecipeProvider(output, registries) {
+abstract class HTRecipeProvider(output: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : RecipeProvider(output, registries) {
     final override fun buildRecipes(recipeOutput: RecipeOutput, holderLookup: HolderLookup.Provider) {
         for (provider: HTSubRecipeProvider in buildList { collectProviders(::add) }) {
             provider.buildRecipes(recipeOutput, holderLookup)

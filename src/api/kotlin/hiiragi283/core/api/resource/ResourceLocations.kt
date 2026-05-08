@@ -34,8 +34,7 @@ fun ResourceLocation.toDescriptionKey(prefix: String): String = Util.makeDescrip
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun ResourceLocation.toDescriptionKey(prefix: String, suffix: String): String =
-    "${Util.makeDescriptionId(prefix, this@toDescriptionKey)}.$suffix"
+fun ResourceLocation.toDescriptionKey(prefix: String, suffix: String): String = "${Util.makeDescriptionId(prefix, this@toDescriptionKey)}.$suffix"
 
 /**
  * この[ResourceKey]を翻訳キーに変換します。

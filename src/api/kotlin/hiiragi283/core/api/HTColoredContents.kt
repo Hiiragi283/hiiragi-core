@@ -30,7 +30,6 @@ interface HTColoredContents<T : SupplierWithId<*>> : Iterable<Pair<HTDefaultColo
     fun interface Simple<T : SupplierWithId<*>> : HTColoredContents<T> {
         override fun get(color: HTDefaultColor): T? = color.dyeColor.let(::get)
 
-        override fun iterator(): Iterator<Pair<HTDefaultColor, T>> =
-            HTDefaultColor.entries.mapNotNull { color: HTDefaultColor -> get(color)?.let { color to it } }.iterator()
+        override fun iterator(): Iterator<Pair<HTDefaultColor, T>> = HTDefaultColor.entries.mapNotNull { color: HTDefaultColor -> get(color)?.let { color to it } }.iterator()
     }
 }

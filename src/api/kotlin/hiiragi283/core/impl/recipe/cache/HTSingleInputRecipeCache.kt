@@ -8,8 +8,7 @@ import java.util.function.Predicate
 /**
  * @see mekanism.common.recipe.lookup.cache.SingleInputRecipeCache
  */
-abstract class HTSingleInputRecipeCache<INPUT : Any, RECIPE : Predicate<INPUT>>(lookup: HTRecipeLookup<RECIPE>) :
-    HTBasicRecipeCache<RECIPE>(lookup) {
+abstract class HTSingleInputRecipeCache<INPUT : Any, RECIPE : Predicate<INPUT>>(lookup: HTRecipeLookup<RECIPE>) : HTBasicRecipeCache<RECIPE>(lookup) {
     fun findFirstRecipe(input: INPUT, level: Level): RECIPE? = findFirstRecipe(input, HTRecipeLookup.Context.create(level))
 
     fun findFirstRecipe(input: INPUT, context: HTRecipeLookup.Context): RECIPE? = findFirstHolder(input, context)?.recipe

@@ -12,14 +12,12 @@ import net.neoforged.neoforge.client.model.generators.ModelProvider
 /**
  * 指定した[ID][id]でモデルのビルダーを作成します。
  */
-fun <BUILDER : ModelBuilder<BUILDER>, PROVIDER : ModelProvider<BUILDER>> PROVIDER.getBuilder(id: ResourceLocation): BUILDER =
-    this.getBuilder(id.toString())
+fun <BUILDER : ModelBuilder<BUILDER>, PROVIDER : ModelProvider<BUILDER>> PROVIDER.getBuilder(id: ResourceLocation): BUILDER = this.getBuilder(id.toString())
 
 /**
  * 指定した[like]からモデルのビルダーを作成します。
  */
-fun <BUILDER : ModelBuilder<BUILDER>, PROVIDER : ModelProvider<BUILDER>> PROVIDER.getBuilder(like: HTIdLike): BUILDER =
-    this.getBuilder(like.getId())
+fun <BUILDER : ModelBuilder<BUILDER>, PROVIDER : ModelProvider<BUILDER>> PROVIDER.getBuilder(like: HTIdLike): BUILDER = this.getBuilder(like.getId())
 
 fun <BUILDER : ModelBuilder<BUILDER>, PROVIDER : ModelProvider<BUILDER>> PROVIDER.withExistingParent(
     like: HTIdLike,
@@ -40,11 +38,8 @@ fun <BUILDER : ModelBuilder<BUILDER>> BUILDER.blockTexture(key: String, like: HT
 
 fun <BUILDER : ModelBuilder<BUILDER>> BUILDER.itemTexture(key: String, like: HTIdLike): BUILDER = this.texture(key, like.itemId)
 
-fun <BUILDER : ModelBuilder<BUILDER>> BUILDER.fixedTexture(key: String, like: HTIdLike): BUILDER =
-    this.texture(key, like.getId().withSuffix("_$key"))
+fun <BUILDER : ModelBuilder<BUILDER>> BUILDER.fixedTexture(key: String, like: HTIdLike): BUILDER = this.texture(key, like.getId().withSuffix("_$key"))
 
-fun <BUILDER : ModelBuilder<BUILDER>> BUILDER.fixedBlockTexture(key: String, like: HTIdLike): BUILDER =
-    this.texture(key, like.blockId.withSuffix("_$key"))
+fun <BUILDER : ModelBuilder<BUILDER>> BUILDER.fixedBlockTexture(key: String, like: HTIdLike): BUILDER = this.texture(key, like.blockId.withSuffix("_$key"))
 
-fun <BUILDER : ModelBuilder<BUILDER>> BUILDER.fixedItemTexture(key: String, like: HTIdLike): BUILDER =
-    this.texture(key, like.itemId.withSuffix("_$key"))
+fun <BUILDER : ModelBuilder<BUILDER>> BUILDER.fixedItemTexture(key: String, like: HTIdLike): BUILDER = this.texture(key, like.itemId.withSuffix("_$key"))

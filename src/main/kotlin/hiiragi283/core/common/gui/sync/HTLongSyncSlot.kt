@@ -46,7 +46,6 @@ interface HTLongSyncSlot : HTSyncableSlot {
             }
         }
 
-        override fun createPayload(access: RegistryAccess, changeType: HTChangeType): HTLongSyncPayload =
-            HTLongSyncPayload(this.amountAsLong)
+        override fun createPayload(access: RegistryAccess, changeType: HTChangeType): HTLongSyncPayload = HTLongSyncPayload(this.amountAsLong)
     }
 }

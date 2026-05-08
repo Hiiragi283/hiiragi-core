@@ -26,8 +26,7 @@ class HTInfinitePotionItem(properties: Properties) : HTCreativeItem(properties) 
 
     override fun getUseAnimation(stack: ItemStack): UseAnim = UseAnim.DRINK
 
-    override fun getUseDuration(stack: ItemStack, entity: LivingEntity): Int =
-        stack.getFoodProperties(entity)?.eatDurationTicks() ?: super.getUseDuration(stack, entity)
+    override fun getUseDuration(stack: ItemStack, entity: LivingEntity): Int = stack.getFoodProperties(entity)?.eatDurationTicks() ?: super.getUseDuration(stack, entity)
 
     override fun getFoodProperties(stack: ItemStack, entity: LivingEntity?): FoodProperties? {
         if (entity == null) return null

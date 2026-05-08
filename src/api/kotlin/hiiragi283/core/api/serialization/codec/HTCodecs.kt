@@ -78,8 +78,7 @@ data object HTCodecs {
      * @return [factory]に基づいた[Codec]
      */
     @JvmStatic
-    inline fun <reified V : Enum<V>> stringEnum(factory: Function<V, String?>): Codec<V> =
-        Codec.stringResolver(factory) { name: String -> enumEntries<V>().firstOrNull { factory.apply(it) == name } }
+    inline fun <reified V : Enum<V>> stringEnum(factory: Function<V, String?>): Codec<V> = Codec.stringResolver(factory) { name: String -> enumEntries<V>().firstOrNull { factory.apply(it) == name } }
 
     //    Ranged    //
 
@@ -87,13 +86,12 @@ data object HTCodecs {
      * @see ExtraCodecs.intRangeWithMessage
      */
     @JvmStatic
-    fun <N> numberRange(codec: Codec<N>, range: ClosedRange<N>): Codec<N> where N : Number, N : Comparable<N> =
-        codec.validate { number: N ->
-            when (number) {
-                in range -> DataResult.success(number)
-                else -> DataResult.error { "Value must be within range $range: $number" }
-            }
+    fun <N> numberRange(codec: Codec<N>, range: ClosedRange<N>): Codec<N> where N : Number, N : Comparable<N> = codec.validate { number: N ->
+        when (number) {
+            in range -> DataResult.success(number)
+            else -> DataResult.error { "Value must be within range $range: $number" }
         }
+    }
 
     /**
      * `0`以上の値を対象とする[Int]の[Codec]
@@ -157,8 +155,7 @@ data object HTCodecs {
      * @param T レジストリの要素のクラス
      */
     @JvmStatic
-    fun <T : Any> holder(registryKey: RegistryKey<T>): Codec<Holder<T>> =
-        RegistryFixedCodec.create(registryKey).validate { DataResult.success(it.delegate) }
+    fun <T : Any> holder(registryKey: RegistryKey<T>): Codec<Holder<T>> = RegistryFixedCodec.create(registryKey).validate { DataResult.success(it.delegate) }
 
     /**
      * 指定した[registryKey]から[HolderSet]の[Codec]を返します。

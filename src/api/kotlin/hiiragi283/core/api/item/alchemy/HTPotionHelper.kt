@@ -97,8 +97,7 @@ object HTPotionHelper {
      * @param count [ItemStack]の個数
      */
     @JvmStatic
-    fun createPotion(item: ItemLike, contents: PotionContents, count: Int = 1): ItemStack =
-        createItemStack(item, DataComponents.POTION_CONTENTS, contents, count)
+    fun createPotion(item: ItemLike, contents: PotionContents, count: Int = 1): ItemStack = createItemStack(item, DataComponents.POTION_CONTENTS, contents, count)
 
     /**
      * 指定した[stack]から[BottledPotionContents]を取得します。

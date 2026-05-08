@@ -23,8 +23,7 @@ import org.apache.commons.lang3.math.Fraction
 import java.util.function.Consumer
 
 @OnlyIn(Dist.CLIENT)
-abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget>(gui: HTAbstractGui, widget: WIDGET) :
-    HTAbstractWidgetRenderer<WIDGET>(gui, widget) {
+abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget>(gui: HTAbstractGui, widget: WIDGET) : HTAbstractWidgetRenderer<WIDGET>(gui, widget) {
     protected val font: Font = Minecraft.getInstance().font
 
     override fun render(

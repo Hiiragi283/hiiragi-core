@@ -9,8 +9,7 @@ import net.minecraft.resources.ResourceLocation
 interface HTRecipeDisplay : HTIdLike {
     companion object {
         @JvmStatic
-        fun <T : HTRecipeDisplay> idCodec(): RecordCodecBuilder<T, ResourceLocation> =
-            ResourceLocation.CODEC.fieldOf(HTConst.ID).forGetter(HTRecipeDisplay::getId)
+        fun <T : HTRecipeDisplay> idCodec(): RecordCodecBuilder<T, ResourceLocation> = ResourceLocation.CODEC.fieldOf(HTConst.ID).forGetter(HTRecipeDisplay::getId)
     }
 
     fun isHandled(): Boolean = true

@@ -42,8 +42,7 @@ fun Map<Holder<Enchantment>, Int>.toInstances(): List<EnchantmentInstance> = thi
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
-fun Map<Holder<Enchantment>, Int>.toItem(parent: ItemEnchantments = ItemEnchantments.EMPTY): ItemEnchantments =
-    buildEnchantments(parent) { this@toItem.forEach(this::set) }
+fun Map<Holder<Enchantment>, Int>.toItem(parent: ItemEnchantments = ItemEnchantments.EMPTY): ItemEnchantments = buildEnchantments(parent) { this@toItem.forEach(this::set) }
 
 /**
  * @author Hiiragi Tsubasa

@@ -15,8 +15,7 @@ import net.neoforged.api.distmarker.OnlyIn
  * @see net.minecraft.client.gui.screens.inventory.ContainerScreen
  */
 @OnlyIn(Dist.CLIENT)
-class HTWidgetContainerScreen(menu: HTWidgetContainerMenu, inventory: Inventory, title: Text) :
-    HTContainerScreen<HTWidgetContainerMenu>(menu, inventory, title) {
+class HTWidgetContainerScreen(menu: HTWidgetContainerMenu, inventory: Inventory, title: Text) : HTContainerScreen<HTWidgetContainerMenu>(menu, inventory, title) {
     companion object {
         @JvmField
         val BACKGROUND: ResourceLocation = HiiragiCoreAPI.id(HTConst.TEXTURES, HTConst.GUI, "background.png")

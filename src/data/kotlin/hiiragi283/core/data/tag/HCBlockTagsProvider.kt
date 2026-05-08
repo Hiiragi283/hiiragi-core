@@ -14,8 +14,7 @@ import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.common.data.ExistingFileHelper
 import java.util.concurrent.CompletableFuture
 
-class HCBlockTagsProvider(fileHelper: ExistingFileHelper, output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) :
-    HTTagsProvider.DataGen<Block>(fileHelper, output, Registries.BLOCK, lookupProvider, HiiragiCoreAPI.MOD_ID) {
+class HCBlockTagsProvider(fileHelper: ExistingFileHelper, output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : HTTagsProvider.DataGen<Block>(fileHelper, output, Registries.BLOCK, lookupProvider, HiiragiCoreAPI.MOD_ID) {
     override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Block>) {
         // Mineable
         factory

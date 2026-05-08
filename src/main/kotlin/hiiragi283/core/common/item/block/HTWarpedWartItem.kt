@@ -24,8 +24,7 @@ class HTWarpedWartItem(block: HTWarpedWartBlock, properties: Properties) : HTDes
 
     override fun getUseAnimation(stack: ItemStack): UseAnim = UseAnim.EAT
 
-    override fun getUseDuration(stack: ItemStack, entity: LivingEntity): Int =
-        stack.getFoodProperties(entity)?.eatDurationTicks() ?: super.getUseDuration(stack, entity)
+    override fun getUseDuration(stack: ItemStack, entity: LivingEntity): Int = stack.getFoodProperties(entity)?.eatDurationTicks() ?: super.getUseDuration(stack, entity)
 
     override fun getFoodProperties(stack: ItemStack, entity: LivingEntity?): FoodProperties? {
         if (entity == null) return null

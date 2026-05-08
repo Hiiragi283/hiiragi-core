@@ -54,8 +54,7 @@ abstract class HTItemTagsProvider(
         tagsToCopy[blockTag] = itemTag
     }
 
-    fun HTTagBuilder<Item>.addItem(item: ItemLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<Item> =
-        this.add(item.toItemLike(), type)
+    fun HTTagBuilder<Item>.addItem(item: ItemLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<Item> = this.add(item.toItemLike(), type)
 
     //    HTTagsProvider    //
 

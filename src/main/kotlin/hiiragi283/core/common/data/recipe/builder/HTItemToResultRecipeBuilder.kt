@@ -8,8 +8,7 @@ import hiiragi283.core.impl.recipe.HTSerializableRecipe
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.Recipe
 
-class HTItemToResultRecipeBuilder<RES : HTIdLike>(prefix: String, private val factory: Factory<RES, out HTSerializableRecipe<*>>) :
-    HTProgressRecipeBuilder(prefix) {
+class HTItemToResultRecipeBuilder<RES : HTIdLike>(prefix: String, private val factory: Factory<RES, out HTSerializableRecipe<*>>) : HTProgressRecipeBuilder(prefix) {
     lateinit var ingredient: HTItemIngredient
     lateinit var result: RES
 

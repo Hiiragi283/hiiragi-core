@@ -14,8 +14,7 @@ import net.minecraft.world.item.ItemStack
 value class HTListItemResult(val results: List<HTItemResult>) : Iterable<ItemStack> {
     companion object {
         @JvmStatic
-        fun codec(maxSize: Int): Codec<HTListItemResult> =
-            HTItemResult.CODEC.listOrElement(1, maxSize).xmap(::HTListItemResult, HTListItemResult::results)
+        fun codec(maxSize: Int): Codec<HTListItemResult> = HTItemResult.CODEC.listOrElement(1, maxSize).xmap(::HTListItemResult, HTListItemResult::results)
 
         @JvmField
         val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTListItemResult> =

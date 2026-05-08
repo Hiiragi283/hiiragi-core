@@ -23,11 +23,9 @@ fun interface HTEnergyHandler : HTSidedEnergyStorage {
      */
     fun getEnergyBattery(side: Direction?): HTEnergyBattery?
 
-    override fun receiveEnergy(toReceive: Int, action: HTStorageAction, side: Direction?): Int =
-        getEnergyBattery(side)?.insert(toReceive, action, HTStorageAccess.forHandler(side)) ?: 0
+    override fun receiveEnergy(toReceive: Int, action: HTStorageAction, side: Direction?): Int = getEnergyBattery(side)?.insert(toReceive, action, HTStorageAccess.forHandler(side)) ?: 0
 
-    override fun extractEnergy(toExtract: Int, action: HTStorageAction, side: Direction?): Int =
-        getEnergyBattery(side)?.extract(toExtract, action, HTStorageAccess.forHandler(side)) ?: 0
+    override fun extractEnergy(toExtract: Int, action: HTStorageAction, side: Direction?): Int = getEnergyBattery(side)?.extract(toExtract, action, HTStorageAccess.forHandler(side)) ?: 0
 
     override fun getEnergyStored(side: Direction?): Int = getEnergyBattery(side)?.getAmount() ?: 0
 

@@ -37,8 +37,7 @@ class HTResultCreator(provider: HolderLookup.Provider) {
 
     fun create(stack: ItemStack, chance: Fraction = Fraction.ONE): HTItemResult = HTItemResult(stack, chance)
 
-    fun create(tagKey: TagKey<Item>, count: Int = 1, chance: Fraction = Fraction.ONE): HTItemResult =
-        HTItemResult(HTItemResult.TagEntry(itemGetter.getOrThrow(tagKey), count), chance)
+    fun create(tagKey: TagKey<Item>, count: Int = 1, chance: Fraction = Fraction.ONE): HTItemResult = HTItemResult(HTItemResult.TagEntry(itemGetter.getOrThrow(tagKey), count), chance)
 
     /**
      * 指定した[部品][part]と[素材][material]から[HTItemResult]の新しいインスタンスを作成します。
@@ -65,8 +64,7 @@ class HTResultCreator(provider: HolderLookup.Provider) {
 
     fun milk(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult = create(VanillaFluidContents.MILK, amount)
 
-    fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidResult =
-        material(HTFluidPart.MOLTEN, material, operator)
+    fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidResult = material(HTFluidPart.MOLTEN, material, operator)
 
     fun material(part: HTFluidPart, material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidResult {
         val fluid: Fluid = HiiragiCoreAccess.INSTANCE.registeredFluids

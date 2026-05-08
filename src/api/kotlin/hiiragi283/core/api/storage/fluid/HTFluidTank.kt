@@ -45,8 +45,7 @@ fun HTFluidTank.insert(stack: FluidStack, action: HTStorageAction, access: HTSto
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-fun HTFluidTank.extractFluid(stack: FluidStack, action: HTStorageAction, access: HTStorageAccess): FluidStack =
-    this.extract(stack.toResource(), stack.amount, action, access).let(stack::copyWithAmount)
+fun HTFluidTank.extractFluid(stack: FluidStack, action: HTStorageAction, access: HTStorageAccess): FluidStack = this.extract(stack.toResource(), stack.amount, action, access).let(stack::copyWithAmount)
 
 /**
  * この[HTFluidTank][this]から指定した[amount]だけ搬出します。

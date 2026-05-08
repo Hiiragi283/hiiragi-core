@@ -28,12 +28,10 @@ data object HTPhysicalSideHelper {
     )
 
     @JvmStatic
-    fun <T : Any> lookup(registryKey: RegistryKey<T>): Optional<HolderLookup.RegistryLookup<T>> =
-        getRegistryAccess().wrapOptional().flatMap { it.lookup(registryKey) }
+    fun <T : Any> lookup(registryKey: RegistryKey<T>): Optional<HolderLookup.RegistryLookup<T>> = getRegistryAccess().wrapOptional().flatMap { it.lookup(registryKey) }
 
     @JvmStatic
-    fun <T : Any> lookupOrThrow(registryKey: RegistryKey<T>): HolderLookup.RegistryLookup<T> =
-        getRegistryAccess()?.lookupOrThrow(registryKey) ?: error("Missing Active Registry")
+    fun <T : Any> lookupOrThrow(registryKey: RegistryKey<T>): HolderLookup.RegistryLookup<T> = getRegistryAccess()?.lookupOrThrow(registryKey) ?: error("Missing Active Registry")
 
     //    Feature Flag    //
 
@@ -49,10 +47,8 @@ data object HTPhysicalSideHelper {
     ) ?: FeatureFlags.DEFAULT_FLAGS
 
     @JvmStatic
-    fun <T : FeatureElement> filteredLookup(registryKey: RegistryKey<T>): Optional<HolderLookup.RegistryLookup<T>> =
-        lookup(registryKey).map { it.filterFeatures(getFeatureFlags()) }
+    fun <T : FeatureElement> filteredLookup(registryKey: RegistryKey<T>): Optional<HolderLookup.RegistryLookup<T>> = lookup(registryKey).map { it.filterFeatures(getFeatureFlags()) }
 
     @JvmStatic
-    fun <T : FeatureElement> filteredLookupOrThrow(registryKey: RegistryKey<T>): HolderLookup.RegistryLookup<T> =
-        lookupOrThrow(registryKey).filterFeatures(getFeatureFlags())
+    fun <T : FeatureElement> filteredLookupOrThrow(registryKey: RegistryKey<T>): HolderLookup.RegistryLookup<T> = lookupOrThrow(registryKey).filterFeatures(getFeatureFlags())
 }

@@ -23,8 +23,7 @@ class HTTexturedModel(val template: ModelTemplate, val texture: TextureMapping) 
          * @param transform IDからテクスチャに変換するブロック
          */
         @JvmStatic
-        fun create(template: ModelTemplate, transform: (HTIdLike) -> TextureMapping): Provider =
-            Provider { holder: HTIdLike -> HTTexturedModel(template, transform(holder)) }
+        fun create(template: ModelTemplate, transform: (HTIdLike) -> TextureMapping): Provider = Provider { holder: HTIdLike -> HTTexturedModel(template, transform(holder)) }
 
         /**
          * [TexturedModel.Provider]を[Provider]に変換します。
@@ -47,8 +46,7 @@ class HTTexturedModel(val template: ModelTemplate, val texture: TextureMapping) 
      */
     fun saveBlock(block: HTIdLike, output: HTModelOutput): ResourceLocation = template.create(block.blockId, texture, output)
 
-    fun saveBlock(block: HTIdLike, suffix: String, output: HTModelOutput): ResourceLocation =
-        template.create(block.blockId.withSuffix(suffix), texture, output)
+    fun saveBlock(block: HTIdLike, suffix: String, output: HTModelOutput): ResourceLocation = template.create(block.blockId.withSuffix(suffix), texture, output)
 
     /**
      * 指定された[アイテム][item]からモデルを生成し，[output]に保存します。

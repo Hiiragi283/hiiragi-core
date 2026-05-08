@@ -82,8 +82,7 @@ data class HTItemWidgetHolderContext(
 
     override fun getDisplayName(): Text = factory.getDisplayName(this)
 
-    override fun createMenu(containerId: Int, playerInventory: Inventory, player: Player): HTWidgetContainerMenu =
-        HTWidgetContainerMenu(HCMenuTypes.ITEM.get(), containerId, playerInventory, this)
+    override fun createMenu(containerId: Int, playerInventory: Inventory, player: Player): HTWidgetContainerMenu = HTWidgetContainerMenu(HCMenuTypes.ITEM.get(), containerId, playerInventory, this)
 
     override fun writeClientSideData(menu: AbstractContainerMenu, buffer: RegistryFriendlyByteBuf) {
         HAND_CODEC.encode(buffer, hand.wrapOptional())
@@ -95,8 +94,7 @@ data class HTItemWidgetHolderContext(
     fun interface Factory {
         fun setup(context: HTItemWidgetHolderContext, widgetHolder: HTWidgetHolder)
 
-        fun createContext(player: Player, hand: InteractionHand?, stack: ItemStack): HTItemWidgetHolderContext =
-            HTItemWidgetHolderContext(this, player, hand, stack)
+        fun createContext(player: Player, hand: InteractionHand?, stack: ItemStack): HTItemWidgetHolderContext = HTItemWidgetHolderContext(this, player, hand, stack)
 
         fun stillValid(context: HTItemWidgetHolderContext): Boolean {
             val (_, player: Player, hand: InteractionHand?, stack: ItemStack) = context

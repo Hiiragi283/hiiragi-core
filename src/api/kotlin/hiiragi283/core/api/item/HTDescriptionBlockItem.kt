@@ -15,8 +15,7 @@ import net.minecraft.world.level.block.Block
  * @since 0.3.0
  * @see mekanism.common.item.block.ItemBlockTooltip
  */
-open class HTDescriptionBlockItem<BLOCK>(block: BLOCK, private val hasDetails: Boolean, properties: Properties) :
-    HTBlockItem<BLOCK>(block, properties) where BLOCK : Block, BLOCK : HTBlockWithDescription {
+open class HTDescriptionBlockItem<BLOCK>(block: BLOCK, private val hasDetails: Boolean, properties: Properties) : HTBlockItem<BLOCK>(block, properties) where BLOCK : Block, BLOCK : HTBlockWithDescription {
     constructor(block: BLOCK, properties: Properties) : this(block, false, properties)
 
     final override fun appendHoverText(

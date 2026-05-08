@@ -21,8 +21,7 @@ fun HTPartLike.getScaledAmount(base: Float, getter: HTPropertyGetter): Fraction 
 /**
  * @since 0.8.0
  */
-fun HTPartLike.getScaledAmount(base: Fraction, getter: HTPropertyGetter): Fraction =
-    this.getOrDefault(HTPartPropertyKeys.ITEM_SCALE)(base, getter)
+fun HTPartLike.getScaledAmount(base: Fraction, getter: HTPropertyGetter): Fraction = this.getOrDefault(HTPartPropertyKeys.ITEM_SCALE)(base, getter)
 
 // Mutable
 

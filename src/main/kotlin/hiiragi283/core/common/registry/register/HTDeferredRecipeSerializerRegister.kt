@@ -9,8 +9,7 @@ import net.minecraft.network.codec.StreamCodec
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeSerializer
 
-class HTDeferredRecipeSerializerRegister(namespace: String) :
-    HTDeferredRegister<RecipeSerializer<*>>(Registries.RECIPE_SERIALIZER, namespace) {
+class HTDeferredRecipeSerializerRegister(namespace: String) : HTDeferredRegister<RecipeSerializer<*>>(Registries.RECIPE_SERIALIZER, namespace) {
     fun <SERIALIZER : RecipeSerializer<*>> registerSerializer(name: String, serializer: SERIALIZER): SERIALIZER {
         delegate.register(name) { _ -> serializer }
         return serializer

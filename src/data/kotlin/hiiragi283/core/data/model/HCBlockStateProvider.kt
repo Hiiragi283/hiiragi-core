@@ -18,8 +18,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel
 import net.neoforged.neoforge.common.data.ExistingFileHelper
 
-class HCBlockStateProvider(fileHelper: ExistingFileHelper, output: PackOutput) :
-    HTBlockStateProvider(fileHelper, output, HiiragiCoreAPI.MOD_ID) {
+class HCBlockStateProvider(fileHelper: ExistingFileHelper, output: PackOutput) : HTBlockStateProvider(fileHelper, output, HiiragiCoreAPI.MOD_ID) {
     override fun registerStatesAndModels() {
         trackBlock(HCBlocks.OIL_SAND)
         simpleBlockAndItem(HCBlocks.OIL_SAND)

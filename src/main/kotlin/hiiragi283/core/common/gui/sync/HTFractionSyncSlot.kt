@@ -46,7 +46,6 @@ interface HTFractionSyncSlot : HTSyncableSlot {
             }
         }
 
-        override fun createPayload(access: RegistryAccess, changeType: HTChangeType): HTFractionSyncPayload =
-            HTFractionSyncPayload(this.amountAsFraction)
+        override fun createPayload(access: RegistryAccess, changeType: HTChangeType): HTFractionSyncPayload = HTFractionSyncPayload(this.amountAsFraction)
     }
 }

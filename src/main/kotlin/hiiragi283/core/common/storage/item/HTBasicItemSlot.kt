@@ -86,14 +86,11 @@ open class HTBasicItemSlot(
 
     final override fun isValid(resource: HTItemResourceType): Boolean = this.filter.test(resource)
 
-    final override fun isStackValidForInsert(resource: HTItemResourceType, access: HTStorageAccess): Boolean =
-        super.isStackValidForInsert(resource, access) && this.canInsert.test(resource, access)
+    final override fun isStackValidForInsert(resource: HTItemResourceType, access: HTStorageAccess): Boolean = super.isStackValidForInsert(resource, access) && this.canInsert.test(resource, access)
 
-    final override fun canStackExtract(resource: HTItemResourceType, access: HTStorageAccess): Boolean =
-        super.canStackExtract(resource, access) && this.canExtract.test(resource, access)
+    final override fun canStackExtract(resource: HTItemResourceType, access: HTStorageAccess): Boolean = super.canStackExtract(resource, access) && this.canExtract.test(resource, access)
 
-    override fun getCapacity(resource: HTItemResourceType?): Int =
-        if (resource == null) limit else minOf(limit, resource.toStack().maxStackSize)
+    override fun getCapacity(resource: HTItemResourceType?): Int = if (resource == null) limit else minOf(limit, resource.toStack().maxStackSize)
 
     override fun serialize(output: HTValueOutput) {
         output.write(HTConst.ITEM, ItemStack.CODEC, this.stack)

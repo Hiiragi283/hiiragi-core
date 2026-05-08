@@ -10,8 +10,7 @@ import net.minecraft.core.component.DataComponentPredicate
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
-inline fun buildDataMap(builderAction: DataComponentMap.Builder.() -> Unit): DataComponentMap =
-    DataComponentMap.builder().apply(builderAction).build()
+inline fun buildDataMap(builderAction: DataComponentMap.Builder.() -> Unit): DataComponentMap = DataComponentMap.builder().apply(builderAction).build()
 
 /**
  * 新しい[DataComponentPatch]のインスタンスを作成します。
@@ -19,8 +18,7 @@ inline fun buildDataMap(builderAction: DataComponentMap.Builder.() -> Unit): Dat
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
-inline fun buildDataPatch(builderAction: DataComponentPatch.Builder.() -> Unit): DataComponentPatch =
-    DataComponentPatch.builder().apply(builderAction).build()
+inline fun buildDataPatch(builderAction: DataComponentPatch.Builder.() -> Unit): DataComponentPatch = DataComponentPatch.builder().apply(builderAction).build()
 
 /**
  * 新しい[DataComponentPredicate]のインスタンスを作成します。
@@ -28,5 +26,4 @@ inline fun buildDataPatch(builderAction: DataComponentPatch.Builder.() -> Unit):
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
-inline fun buildDataPredicate(builderAction: DataComponentPredicate.Builder.() -> Unit): DataComponentPredicate =
-    DataComponentPredicate.builder().apply(builderAction).build()
+inline fun buildDataPredicate(builderAction: DataComponentPredicate.Builder.() -> Unit): DataComponentPredicate = DataComponentPredicate.builder().apply(builderAction).build()

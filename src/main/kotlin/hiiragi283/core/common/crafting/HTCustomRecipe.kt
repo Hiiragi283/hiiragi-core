@@ -12,8 +12,7 @@ abstract class HTCustomRecipe(category: CraftingBookCategory) : CustomRecipe(cat
 
     protected abstract fun matches(input: ImmutableRecipeInput, level: Level): Boolean
 
-    final override fun assemble(input: CraftingInput, registries: HolderLookup.Provider): ItemStack =
-        assemble(ImmutableRecipeInput(input), registries)
+    final override fun assemble(input: CraftingInput, registries: HolderLookup.Provider): ItemStack = assemble(ImmutableRecipeInput(input), registries)
 
     protected abstract fun assemble(input: ImmutableRecipeInput, registries: HolderLookup.Provider): ItemStack
 }

@@ -41,8 +41,7 @@ sealed interface HTDefaultPart {
     data class BuiltIn(val tagKey: TagKey<Item>, val item: HTItemHolderLike<*>?) : HTDefaultPart {
         override fun getTag(material: HTMaterialLike): TagKey<Item> = tagKey
 
-        override fun getItem(material: HTMaterialLike): HTMaterialContents.ItemEntry? =
-            this.item?.let { HTMaterialContents.ItemEntry(it, true) }
+        override fun getItem(material: HTMaterialLike): HTMaterialContents.ItemEntry? = this.item?.let { HTMaterialContents.ItemEntry(it, true) }
 
         override fun getSuffix(): String = tagKey.location().path
     }
@@ -76,8 +75,7 @@ sealed interface HTDefaultPart {
 
         override fun getTag(material: HTMaterialLike): TagKey<Item> = prefix.itemTagKey(material)
 
-        override fun getItem(material: HTMaterialLike): HTMaterialContents.ItemEntry? =
-            HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, material)
+        override fun getItem(material: HTMaterialLike): HTMaterialContents.ItemEntry? = HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, material)
 
         override fun getSuffix(): String = part.name
     }

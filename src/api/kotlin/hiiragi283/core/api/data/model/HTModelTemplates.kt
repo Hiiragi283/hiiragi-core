@@ -29,10 +29,8 @@ object HTModelTemplates {
     val LAYERED: ModelTemplate = block(HiiragiCoreAPI.id(HTConst.BLOCK, "layered"), TextureSlot.LAYER0, TextureSlot.LAYER1)
 
     @JvmStatic
-    private fun block(modelId: ResourceLocation, vararg requiredSlots: TextureSlot): ModelTemplate =
-        ModelTemplate(modelId.wrapOptional(), emptyOptional(), *requiredSlots)
+    private fun block(modelId: ResourceLocation, vararg requiredSlots: TextureSlot): ModelTemplate = ModelTemplate(modelId.wrapOptional(), emptyOptional(), *requiredSlots)
 
     @JvmStatic
-    private fun block(modelId: ResourceLocation, suffix: String, vararg requiredSlots: TextureSlot): ModelTemplate =
-        ModelTemplate(modelId.wrapOptional(), suffix.wrapOptional(), *requiredSlots)
+    private fun block(modelId: ResourceLocation, suffix: String, vararg requiredSlots: TextureSlot): ModelTemplate = ModelTemplate(modelId.wrapOptional(), suffix.wrapOptional(), *requiredSlots)
 }

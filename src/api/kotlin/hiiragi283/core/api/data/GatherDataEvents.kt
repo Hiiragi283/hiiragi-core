@@ -18,8 +18,7 @@ import java.util.concurrent.CompletableFuture
  * @author Hiiragi Tsubasa
  * @since 0.15.2
  */
-fun <T : DataProvider> GatherDataEvent.createProviderWithHelper(builder: (ExistingFileHelper, PackOutput) -> T): T =
-    this.createProvider(builder.partially1(this.existingFileHelper))
+fun <T : DataProvider> GatherDataEvent.createProviderWithHelper(builder: (ExistingFileHelper, PackOutput) -> T): T = this.createProvider(builder.partially1(this.existingFileHelper))
 
 /**
  * この[GatherDataEvent][this]に[DataProvider]を登録します。
@@ -51,13 +50,11 @@ fun GatherDataEvent.createLootTables(
  * @author Hiiragi Tsubasa
  * @since 0.15.2
  */
-fun GatherDataEvent.createAdvancements(vararg subProviders: HTSubAdvancementProvider): HTAdvancementProvider =
-    this.createAdvancements(subProviders.toList())
+fun GatherDataEvent.createAdvancements(vararg subProviders: HTSubAdvancementProvider): HTAdvancementProvider = this.createAdvancements(subProviders.toList())
 
 /**
  * この[GatherDataEvent][this]に[HTSubAdvancementProvider]を登録します。
  * @author Hiiragi Tsubasa
  * @since 0.15.2
  */
-fun GatherDataEvent.createAdvancements(subProviders: List<HTSubAdvancementProvider>): HTAdvancementProvider =
-    this.createProviderWithHelper(::HTAdvancementProvider.partially1(subProviders))
+fun GatherDataEvent.createAdvancements(subProviders: List<HTSubAdvancementProvider>): HTAdvancementProvider = this.createProviderWithHelper(::HTAdvancementProvider.partially1(subProviders))

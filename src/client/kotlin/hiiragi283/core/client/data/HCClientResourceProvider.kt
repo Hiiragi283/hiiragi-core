@@ -221,12 +221,10 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
     }
 
     @JvmStatic
-    private fun translate(type: HTLangType, part: HTPart, getter: HTPropertyGetter): String? =
-        translate(type, part, getter, HTMaterialPropertyKeys.CUSTOM_LANG_NAME)
+    private fun translate(type: HTLangType, part: HTPart, getter: HTPropertyGetter): String? = translate(type, part, getter, HTMaterialPropertyKeys.CUSTOM_LANG_NAME)
 
     @JvmStatic
-    private fun translate(type: HTLangType, part: HTFluidPart, getter: HTPropertyGetter): String? =
-        translate(type, part, getter, HTMaterialPropertyKeys.CUSTOM_FLUID_NAME)
+    private fun translate(type: HTLangType, part: HTFluidPart, getter: HTPropertyGetter): String? = translate(type, part, getter, HTMaterialPropertyKeys.CUSTOM_FLUID_NAME)
 
     @JvmStatic
     private fun <T : HTPartLike> translate(

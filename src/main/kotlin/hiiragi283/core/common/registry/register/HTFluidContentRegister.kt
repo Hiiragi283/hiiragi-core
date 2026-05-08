@@ -83,11 +83,9 @@ class HTFluidContentRegister(modId: String) {
         }
     }
 
-    inline fun registerVirtual(name: String, builderAction: VirtualBuilder.() -> Unit): HTFluidContent =
-        VirtualBuilder(name).apply(builderAction).build()
+    inline fun registerVirtual(name: String, builderAction: VirtualBuilder.() -> Unit): HTFluidContent = VirtualBuilder(name).apply(builderAction).build()
 
-    inline fun registerFlowing(name: String, builderAction: FlowingBuilder.() -> Unit): HTFluidContent =
-        FlowingBuilder(name).apply(builderAction).build()
+    inline fun registerFlowing(name: String, builderAction: FlowingBuilder.() -> Unit): HTFluidContent = FlowingBuilder(name).apply(builderAction).build()
 
     //    Builder    //
 

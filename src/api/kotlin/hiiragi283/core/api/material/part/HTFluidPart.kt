@@ -32,8 +32,7 @@ enum class HTFluidPart(private val idPattern: String, private val tagPattern: St
     /**
      * 指定した[素材][material]から，[液体][Fluid]の共通タグを生成します。
      */
-    fun createTagKey(material: HTMaterialLike): TagKey<Fluid> =
-        RawTagKey.common(tagPattern.replace("%s", material.asMaterialId().path)).create(Registries.FLUID)
+    fun createTagKey(material: HTMaterialLike): TagKey<Fluid> = RawTagKey.common(tagPattern.replace("%s", material.asMaterialId().path)).create(Registries.FLUID)
 
     /**
      * 指定した[素材][material]から，[液体バケツ][Item]の共通タグを生成します。

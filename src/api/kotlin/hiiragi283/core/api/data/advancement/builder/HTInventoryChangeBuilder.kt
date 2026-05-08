@@ -13,8 +13,7 @@ class HTInventoryChangeBuilder {
     var slots: InventoryChangeTrigger.TriggerInstance.Slots = InventoryChangeTrigger.TriggerInstance.Slots.ANY
     val predicates = ItemPredicates()
 
-    fun build(): InventoryChangeTrigger.TriggerInstance =
-        InventoryChangeTrigger.TriggerInstance(emptyOptional(), slots, predicates.toList())
+    fun build(): InventoryChangeTrigger.TriggerInstance = InventoryChangeTrigger.TriggerInstance(emptyOptional(), slots, predicates.toList())
 
     //    ItemPredicates    //
 

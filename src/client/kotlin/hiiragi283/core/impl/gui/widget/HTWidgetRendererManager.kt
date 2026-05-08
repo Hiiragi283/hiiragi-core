@@ -29,10 +29,8 @@ internal object HTWidgetRendererManager {
 
     @Suppress("UNCHECKED_CAST")
     @JvmStatic
-    fun <WIDGET : HTWidget> getFactory(type: HTWidgetType<WIDGET>): HTWidgetRendererFactory<WIDGET, *>? =
-        factories[type] as? HTWidgetRendererFactory<WIDGET, *>
+    fun <WIDGET : HTWidget> getFactory(type: HTWidgetType<WIDGET>): HTWidgetRendererFactory<WIDGET, *>? = factories[type] as? HTWidgetRendererFactory<WIDGET, *>
 
     @Suppress("UNCHECKED_CAST")
-    fun <WIDGET : HTWidget> create(gui: HTAbstractGui, widget: WIDGET): Renderable? =
-        getFactory(widget.getType() as HTWidgetType<WIDGET>)?.createRenderer(gui, widget)
+    fun <WIDGET : HTWidget> create(gui: HTAbstractGui, widget: WIDGET): Renderable? = getFactory(widget.getType() as HTWidgetType<WIDGET>)?.createRenderer(gui, widget)
 }

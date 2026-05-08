@@ -54,14 +54,11 @@ internal class HTJsonValueInput(private val provider: HolderLookup.Provider, pri
 
     override fun <T : Any> listOrEmpty(key: String, codec: Codec<T>): Iterable<T> = list(key, codec) ?: emptySet()
 
-    override fun getBoolean(key: String, defaultValue: Boolean): Boolean =
-        getJsonPrimitive(key)?.takeIf(JsonPrimitive::isBoolean)?.asBoolean ?: defaultValue
+    override fun getBoolean(key: String, defaultValue: Boolean): Boolean = getJsonPrimitive(key)?.takeIf(JsonPrimitive::isBoolean)?.asBoolean ?: defaultValue
 
-    override fun getByte(key: String, defaultValue: Byte): Byte =
-        getJsonPrimitive(key)?.takeIf(JsonPrimitive::isNumber)?.asByte ?: defaultValue
+    override fun getByte(key: String, defaultValue: Byte): Byte = getJsonPrimitive(key)?.takeIf(JsonPrimitive::isNumber)?.asByte ?: defaultValue
 
-    override fun getShort(key: String, defaultValue: Short): Short =
-        getJsonPrimitive(key)?.takeIf(JsonPrimitive::isNumber)?.asShort ?: defaultValue
+    override fun getShort(key: String, defaultValue: Short): Short = getJsonPrimitive(key)?.takeIf(JsonPrimitive::isNumber)?.asShort ?: defaultValue
 
     override fun getInt(key: String): Int? = getJsonPrimitive(key)?.takeIf(JsonPrimitive::isNumber)?.asInt
 
@@ -69,14 +66,11 @@ internal class HTJsonValueInput(private val provider: HolderLookup.Provider, pri
 
     override fun getLong(key: String): Long? = getJsonPrimitive(key)?.takeIf(JsonPrimitive::isNumber)?.asLong
 
-    override fun getLong(key: String, defaultValue: Long): Long =
-        getJsonPrimitive(key)?.takeIf(JsonPrimitive::isNumber)?.asLong ?: defaultValue
+    override fun getLong(key: String, defaultValue: Long): Long = getJsonPrimitive(key)?.takeIf(JsonPrimitive::isNumber)?.asLong ?: defaultValue
 
-    override fun getFloat(key: String, defaultValue: Float): Float =
-        getJsonPrimitive(key)?.takeIf(JsonPrimitive::isNumber)?.asFloat ?: defaultValue
+    override fun getFloat(key: String, defaultValue: Float): Float = getJsonPrimitive(key)?.takeIf(JsonPrimitive::isNumber)?.asFloat ?: defaultValue
 
-    override fun getDouble(key: String, defaultValue: Double): Double =
-        getJsonPrimitive(key)?.takeIf(JsonPrimitive::isNumber)?.asDouble ?: defaultValue
+    override fun getDouble(key: String, defaultValue: Double): Double = getJsonPrimitive(key)?.takeIf(JsonPrimitive::isNumber)?.asDouble ?: defaultValue
 
     override fun getString(key: String): String? = getJsonPrimitive(key)?.takeIf(JsonPrimitive::isString)?.asString
 
@@ -84,8 +78,7 @@ internal class HTJsonValueInput(private val provider: HolderLookup.Provider, pri
 
     //    TypedInputList    //
 
-    private class TypedInputList<T : Any>(provider: HolderLookup.Provider, private val list: JsonArray, private val codec: Codec<T>) :
-        Iterable<T> {
+    private class TypedInputList<T : Any>(provider: HolderLookup.Provider, private val list: JsonArray, private val codec: Codec<T>) : Iterable<T> {
         private val registryOps: RegistryOps<JsonElement> = provider.createSerializationContext(JsonOps.INSTANCE)
 
         override fun iterator(): Iterator<T> = list

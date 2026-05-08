@@ -60,12 +60,9 @@ class HTComponentItemSlot(
 
     override fun isValid(resource: HTItemResourceType): Boolean = this.filter.test(resource)
 
-    override fun isStackValidForInsert(resource: HTItemResourceType, access: HTStorageAccess): Boolean =
-        super.isStackValidForInsert(resource, access) && this.canInsert.test(resource, access)
+    override fun isStackValidForInsert(resource: HTItemResourceType, access: HTStorageAccess): Boolean = super.isStackValidForInsert(resource, access) && this.canInsert.test(resource, access)
 
-    override fun canStackExtract(resource: HTItemResourceType, access: HTStorageAccess): Boolean =
-        super.canStackExtract(resource, access) && this.canExtract.test(resource, access)
+    override fun canStackExtract(resource: HTItemResourceType, access: HTStorageAccess): Boolean = super.canStackExtract(resource, access) && this.canExtract.test(resource, access)
 
-    override fun getCapacity(resource: HTItemResourceType?): Int =
-        if (resource == null) limit else minOf(limit, resource.toStack().maxStackSize)
+    override fun getCapacity(resource: HTItemResourceType?): Int = if (resource == null) limit else minOf(limit, resource.toStack().maxStackSize)
 }

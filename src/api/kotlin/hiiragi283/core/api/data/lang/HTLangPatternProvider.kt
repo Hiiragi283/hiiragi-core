@@ -40,7 +40,6 @@ fun interface HTLangPatternProvider {
          * @since 0.8.0
          */
         @JvmStatic
-        fun create(enPattern: String, others: Map<HTLangType, String>): HTLangPatternProvider =
-            HTLangPatternProvider { type: HTLangType, value: String -> (others[type] ?: enPattern).replace("%s", value) }
+        fun create(enPattern: String, others: Map<HTLangType, String>): HTLangPatternProvider = HTLangPatternProvider { type: HTLangType, value: String -> (others[type] ?: enPattern).replace("%s", value) }
     }
 }

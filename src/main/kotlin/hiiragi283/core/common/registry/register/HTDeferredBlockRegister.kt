@@ -21,8 +21,7 @@ class HTDeferredBlockRegister(namespace: String) : HTDeferredRegister<Block>(Reg
         .let(::HTDeferredHolderLike)
         .also(blockEntries::add)
 
-    fun registerSimpleBlock(name: String, blockProp: BlockBehaviour.Properties): HTSimpleBlockHolderLike =
-        registerBlock(name, blockProp, ::Block)
+    fun registerSimpleBlock(name: String, blockProp: BlockBehaviour.Properties): HTSimpleBlockHolderLike = registerBlock(name, blockProp, ::Block)
 
     fun asBlockSequence(): Sequence<HTBlockHolderLike<*>> = blockEntries.asSequence()
 }

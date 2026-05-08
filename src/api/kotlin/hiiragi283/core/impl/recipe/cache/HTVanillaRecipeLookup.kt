@@ -8,8 +8,7 @@ import net.minecraft.world.item.crafting.RecipeType
 import java.util.function.Supplier
 
 @JvmRecord
-data class HTVanillaRecipeLookup<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(private val recipeType: Supplier<out RecipeType<RECIPE>>) :
-    HTRecipeLookup<RECIPE> {
+data class HTVanillaRecipeLookup<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(private val recipeType: Supplier<out RecipeType<RECIPE>>) : HTRecipeLookup<RECIPE> {
     override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<HTRecipeHolder<RECIPE>> = context.getAllRecipes(recipeType.get())
 
     override fun toString(): String = "HTVanillaRecipeLookup(recipeType=${recipeType.get()})"

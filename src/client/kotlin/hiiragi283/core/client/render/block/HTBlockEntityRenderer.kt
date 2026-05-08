@@ -14,8 +14,7 @@ import org.joml.Quaternionf
  * @see mekanism.client.render.tileentity.MekanismTileEntityRenderer
  */
 @OnlyIn(Dist.CLIENT)
-abstract class HTBlockEntityRenderer<BE : BlockEntity>(protected val context: BlockEntityRendererProvider.Context) :
-    BlockEntityRenderer<BE> {
+abstract class HTBlockEntityRenderer<BE : BlockEntity>(protected val context: BlockEntityRendererProvider.Context) : BlockEntityRenderer<BE> {
     companion object {
         /**
          * @see blusunrize.immersiveengineering.client.render.tile.IEBlockEntityRenderer.ROTATE_FOR_FACING

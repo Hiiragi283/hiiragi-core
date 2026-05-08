@@ -83,8 +83,7 @@ abstract class HTModelProvider : ResourceGenTask {
     /**
      * @see net.minecraft.data.models.BlockModelGenerators.createSimpleBlock
      */
-    protected fun createSimpleGenerator(block: HTBlockHolderLike<*>, modelId: ResourceLocation): MultiVariantGenerator =
-        MultiVariantGenerator.multiVariant(block.get(), Variant.variant().with(VariantProperties.MODEL, modelId))
+    protected fun createSimpleGenerator(block: HTBlockHolderLike<*>, modelId: ResourceLocation): MultiVariantGenerator = MultiVariantGenerator.multiVariant(block.get(), Variant.variant().with(VariantProperties.MODEL, modelId))
 
     protected fun addLiquidBlock(content: HTFluidContent) {
         val block: HTBlockHolderLike<*> = content.blockHolder ?: return
@@ -139,8 +138,7 @@ abstract class HTModelProvider : ResourceGenTask {
         return model.create(id.withSuffix(suffix), textureFactory(id), modelOutput)
     }
 
-    protected fun addBlockModel(block: HTIdLike, provider: HTTexturedModel.Provider): ResourceLocation =
-        provider.saveBlock(block, modelOutput)
+    protected fun addBlockModel(block: HTIdLike, provider: HTTexturedModel.Provider): ResourceLocation = provider.saveBlock(block, modelOutput)
 
     // Item
     protected fun addItemModel(item: HTIdLike, model: HTTexturedModel) {

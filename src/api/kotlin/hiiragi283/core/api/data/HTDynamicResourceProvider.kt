@@ -30,8 +30,7 @@ object HTDynamicResourceProvider {
      * @author Hiiragi Tsubasa
      * @since 0.10.0
      */
-    abstract class Client(modId: String) :
-        DynamicClientResourceProvider(modId.toId("dynamic_resources"), PackGenerationStrategy.REGEN_ON_EVERY_RELOAD) {
+    abstract class Client(modId: String) : DynamicClientResourceProvider(modId.toId("dynamic_resources"), PackGenerationStrategy.REGEN_ON_EVERY_RELOAD) {
         final override fun gatherSupportedNamespaces(): Collection<String> = HTConst.getBuiltInIdSet(name.namespace)
         //    Extensions    //
 
@@ -71,8 +70,7 @@ object HTDynamicResourceProvider {
          * @param palette パレットを提供するブロック
          * @since 0.13.0
          */
-        protected fun resprite(id: ResourceLocation, base: ResourceLocation, palette: Block): ResourceGenTask =
-            resprite(id, base) { manager: ResourceManager -> HTTextureUtil.getTexture(manager, palette).map(Palette::fromImage) }
+        protected fun resprite(id: ResourceLocation, base: ResourceLocation, palette: Block): ResourceGenTask = resprite(id, base) { manager: ResourceManager -> HTTextureUtil.getTexture(manager, palette).map(Palette::fromImage) }
 
         /**
          * @param id テクスチャの出力先の[ID][ResourceLocation]
@@ -80,8 +78,7 @@ object HTDynamicResourceProvider {
          * @param palette パレットを提供するアイテム
          * @since 0.13.0
          */
-        protected fun resprite(id: ResourceLocation, base: ResourceLocation, palette: Item): ResourceGenTask =
-            resprite(id, base) { manager: ResourceManager -> HTTextureUtil.getTexture(manager, palette).map(Palette::fromImage) }
+        protected fun resprite(id: ResourceLocation, base: ResourceLocation, palette: Item): ResourceGenTask = resprite(id, base) { manager: ResourceManager -> HTTextureUtil.getTexture(manager, palette).map(Palette::fromImage) }
     }
 
     /**
@@ -89,8 +86,7 @@ object HTDynamicResourceProvider {
      * @author Hiiragi Tsubasa
      * @since 0.10.0
      */
-    abstract class Server(modId: String) :
-        DynamicServerResourceProvider(modId.toId("dynamic_resources"), PackGenerationStrategy.REGEN_ON_EVERY_RELOAD) {
+    abstract class Server(modId: String) : DynamicServerResourceProvider(modId.toId("dynamic_resources"), PackGenerationStrategy.REGEN_ON_EVERY_RELOAD) {
         final override fun gatherSupportedNamespaces(): Collection<String> = HTConst.getBuiltInIdSet(name.namespace)
     }
 }

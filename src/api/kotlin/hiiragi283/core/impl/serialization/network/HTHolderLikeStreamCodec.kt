@@ -12,8 +12,7 @@ import net.minecraft.resources.ResourceKey
 /**
  * @suppress
  */
-internal class HTHolderLikeStreamCodec<R : Any>(private val registryKey: RegistryKey<R>) :
-    StreamCodec<RegistryFriendlyByteBuf, HTSimpleHolderLike<R>> {
+internal class HTHolderLikeStreamCodec<R : Any>(private val registryKey: RegistryKey<R>) : StreamCodec<RegistryFriendlyByteBuf, HTSimpleHolderLike<R>> {
     private val holderCodec: StreamCodec<RegistryFriendlyByteBuf, Holder<R>> = ByteBufCodecs.holderRegistry(registryKey)
 
     override fun decode(buffer: RegistryFriendlyByteBuf): HTSimpleHolderLike<R> = holderCodec.decode(buffer).toLike()

@@ -11,11 +11,9 @@ import java.util.function.BiPredicate
 abstract class HTDoubleInputRecipeCache<INPUT_A : Any, INPUT_B : Any, RECIPE : BiPredicate<INPUT_A, INPUT_B>>(
     lookup: HTRecipeLookup<RECIPE>,
 ) : HTBasicRecipeCache<RECIPE>(lookup) {
-    fun findFirstRecipe(firstInput: INPUT_A, secondInput: INPUT_B, level: Level): RECIPE? =
-        findFirstRecipe(firstInput, secondInput, HTRecipeLookup.Context.create(level))
+    fun findFirstRecipe(firstInput: INPUT_A, secondInput: INPUT_B, level: Level): RECIPE? = findFirstRecipe(firstInput, secondInput, HTRecipeLookup.Context.create(level))
 
-    fun findFirstRecipe(firstInput: INPUT_A, secondInput: INPUT_B, context: HTRecipeLookup.Context): RECIPE? =
-        findFirstHolder(firstInput, secondInput, context)?.recipe
+    fun findFirstRecipe(firstInput: INPUT_A, secondInput: INPUT_B, context: HTRecipeLookup.Context): RECIPE? = findFirstHolder(firstInput, secondInput, context)?.recipe
 
     fun findFirstHolder(firstInput: INPUT_A, secondInput: INPUT_B, context: HTRecipeLookup.Context): HTRecipeHolder<RECIPE>? {
         if (isEmpty(firstInput, secondInput)) return null

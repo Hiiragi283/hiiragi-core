@@ -179,5 +179,4 @@ fun <A : Any, B : Any> Pair<A?, B?>?.toIor(): Ior<A, B>? {
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
-fun <A : Any, B : Any> Pair<A?, B?>.toIorOrThrow(message: Any = "Either left or right value required"): Ior<A, B> =
-    this.toIor() ?: error(message)
+fun <A : Any, B : Any> Pair<A?, B?>.toIorOrThrow(message: Any = "Either left or right value required"): Ior<A, B> = this.toIor() ?: error(message)

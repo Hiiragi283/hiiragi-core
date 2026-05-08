@@ -17,15 +17,14 @@ open class HTBasicItemToItemRecipe(val ingredient: HTItemIngredient, val result:
     HTProgressRecipe.Simple<SingleRecipeInput> {
     companion object {
         @JvmStatic
-        fun <T : HTBasicItemToItemRecipe> codec(factory: HTItemToResultRecipeBuilder.Factory<HTItemResult, T>): MapCodec<T> =
-            RecordCodecBuilder.mapCodec { instance ->
-                instance
-                    .group(
-                        HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicItemToItemRecipe::ingredient),
-                        HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HTBasicItemToItemRecipe::result),
-                        HTProgressData.CODEC.forGetter(HTBasicItemToItemRecipe::progressData),
-                    ).apply(instance, factory::create)
-            }
+        fun <T : HTBasicItemToItemRecipe> codec(factory: HTItemToResultRecipeBuilder.Factory<HTItemResult, T>): MapCodec<T> = RecordCodecBuilder.mapCodec { instance ->
+            instance
+                .group(
+                    HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicItemToItemRecipe::ingredient),
+                    HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HTBasicItemToItemRecipe::result),
+                    HTProgressData.CODEC.forGetter(HTBasicItemToItemRecipe::progressData),
+                ).apply(instance, factory::create)
+        }
 
         @JvmField
         val SIMPLE_CODEC: MapCodec<HTBasicItemToItemRecipe> = codec(::HTBasicItemToItemRecipe)

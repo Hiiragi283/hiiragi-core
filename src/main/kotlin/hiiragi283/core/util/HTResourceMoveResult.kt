@@ -17,7 +17,6 @@ data class HTResourceMoveResult<RESOURCE : HTResourceType> private constructor(
         fun <RESOURCE : HTResourceType> failed(): HTResourceMoveResult<RESOURCE> = HTResourceMoveResult(false, null, 0)
 
         @JvmStatic
-        fun <RESOURCE : HTResourceType> succeeded(remainder: RESOURCE?, amount: Int): HTResourceMoveResult<RESOURCE> =
-            HTResourceMoveResult(true, remainder, amount)
+        fun <RESOURCE : HTResourceType> succeeded(remainder: RESOURCE?, amount: Int): HTResourceMoveResult<RESOURCE> = HTResourceMoveResult(true, remainder, amount)
     }
 }

@@ -46,8 +46,7 @@ data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: 
         )
     }
 
-    fun <T : Any> useInstance(getter: HolderGetter<Enchantment>, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> =
-        getter.get(key).map { holder: Holder<Enchantment> -> action(holder, level) }.toTextResult(HTCommonTranslation.MISSING_KEY)
+    fun <T : Any> useInstance(getter: HolderGetter<Enchantment>, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> = getter.get(key).map { holder: Holder<Enchantment> -> action(holder, level) }.toTextResult(HTCommonTranslation.MISSING_KEY)
 
     fun <T : Any> useInstance(provider: HolderLookup.Provider, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> = provider
         .holder(key)

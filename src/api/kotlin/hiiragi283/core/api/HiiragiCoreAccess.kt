@@ -141,14 +141,11 @@ abstract class HiiragiCoreAccess {
         }
     }
 
-    fun getMaterialBlock(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.SimpleEntry<Block>? =
-        existingContents.blocks[part, material] ?: registeredContents.blocks[part, material]
+    fun getMaterialBlock(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.SimpleEntry<Block>? = existingContents.blocks[part, material] ?: registeredContents.blocks[part, material]
 
-    fun getMaterialItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry? =
-        existingContents.items[part, material] ?: registeredContents.items[part, material]
+    fun getMaterialItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry? = existingContents.items[part, material] ?: registeredContents.items[part, material]
 
-    fun getMaterialBlockOrItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry? =
-        existingContents.getBlockOrItem(part, material) ?: registeredContents.getBlockOrItem(part, material)
+    fun getMaterialBlockOrItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry? = existingContents.getBlockOrItem(part, material) ?: registeredContents.getBlockOrItem(part, material)
 
     //    Potion    //
 

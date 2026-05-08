@@ -75,8 +75,7 @@ internal class HTJsonValueOutput(private val provider: HolderLookup.Provider, pr
 
     //    ValueOutputList    //
 
-    private class ValueOutputList(private val provider: HolderLookup.Provider, private val list: JsonArray) :
-        HTValueOutput.ValueOutputList {
+    private class ValueOutputList(private val provider: HolderLookup.Provider, private val list: JsonArray) : HTValueOutput.ValueOutputList {
         override val isEmpty: Boolean
             get() = list.isEmpty
 
@@ -93,8 +92,7 @@ internal class HTJsonValueOutput(private val provider: HolderLookup.Provider, pr
 
     //    TypedOutputList    //
 
-    private class TypedOutputList<T : Any>(provider: HolderLookup.Provider, private val list: JsonArray, private val codec: Codec<T>) :
-        HTValueOutput.TypedOutputList<T> {
+    private class TypedOutputList<T : Any>(provider: HolderLookup.Provider, private val list: JsonArray, private val codec: Codec<T>) : HTValueOutput.TypedOutputList<T> {
         private val registryOps: RegistryOps<JsonElement> = provider.createSerializationContext(JsonOps.INSTANCE)
 
         override val isEmpty: Boolean

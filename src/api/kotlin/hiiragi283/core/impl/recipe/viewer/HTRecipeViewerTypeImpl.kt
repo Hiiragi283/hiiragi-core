@@ -26,8 +26,7 @@ class HTRecipeViewerTypeImpl<T : Any>(
     HTHasText by hasText {
     companion object {
         @JvmStatic
-        inline fun <reified T : Any> create(builderAction: Builder.() -> Unit): HTRecipeViewerTypeImpl<T> =
-            Builder().apply(builderAction).build()
+        inline fun <reified T : Any> create(builderAction: Builder.() -> Unit): HTRecipeViewerTypeImpl<T> = Builder().apply(builderAction).build()
     }
 
     override fun toString(): String = "HTSimpleRecipeViewerType(class=${recipeClass.canonicalName})"
@@ -43,7 +42,6 @@ class HTRecipeViewerTypeImpl<T : Any>(
 
         inline fun <reified T : Any> build(): HTRecipeViewerTypeImpl<T> = build(T::class.java)
 
-        fun <T : Any> build(recipeClass: Class<out T>): HTRecipeViewerTypeImpl<T> =
-            HTRecipeViewerTypeImpl(recipeClass, id, title, icon, bounds, workStations)
+        fun <T : Any> build(recipeClass: Class<out T>): HTRecipeViewerTypeImpl<T> = HTRecipeViewerTypeImpl(recipeClass, id, title, icon, bounds, workStations)
     }
 }

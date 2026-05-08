@@ -26,8 +26,7 @@ object HTEnergyCapabilities : HTMultiCapability.Simple<IEnergyStorage> {
     override val entity: EntityCapability<IEnergyStorage, Direction?> = Capabilities.EnergyStorage.ENTITY
     override val item: ItemCapability<IEnergyStorage, Void?> = Capabilities.EnergyStorage.ITEM
 
-    fun getBattery(level: Level, pos: BlockPos, side: Direction?): HTEnergyBattery? =
-        this.getCapability(level, pos, side)?.let { wrapStorage(it, side) }
+    fun getBattery(level: Level, pos: BlockPos, side: Direction?): HTEnergyBattery? = this.getCapability(level, pos, side)?.let { wrapStorage(it, side) }
 
     fun getBattery(entity: Entity, side: Direction?): HTEnergyBattery? = this.getCapability(entity, side)?.let { wrapStorage(it, side) }
 
@@ -42,11 +41,9 @@ object HTEnergyCapabilities : HTMultiCapability.Simple<IEnergyStorage> {
 
             override fun getCapacity(): Int = storage.maxEnergyStored
 
-            override fun insert(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int =
-                storage.receiveEnergy(amount, action.simulate())
+            override fun insert(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int = storage.receiveEnergy(amount, action.simulate())
 
-            override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int =
-                storage.extractEnergy(amount, action.simulate())
+            override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int = storage.extractEnergy(amount, action.simulate())
         }
     }
 

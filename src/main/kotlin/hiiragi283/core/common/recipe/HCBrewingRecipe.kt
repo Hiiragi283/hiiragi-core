@@ -58,8 +58,7 @@ data class HCBrewingRecipe(val potionFrom: Holder<Potion>, val ingredient: Ingre
         else -> 0 to 0
     }
 
-    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): Ior<ItemStack, FluidStack> =
-        Ior.Right(BottledPotionContents(potionTo).let(HCPotionFluidHelper::createFluid))
+    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): Ior<ItemStack, FluidStack> = Ior.Right(BottledPotionContents(potionTo).let(HCPotionFluidHelper::createFluid))
 
     override val progressData: HTProgressData
         get() = HTProgressData.time(200)

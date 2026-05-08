@@ -35,6 +35,5 @@ class HTDeferredDataComponentRegister(registryKey: RegistryKey<DataComponentType
         streamCodec?.let(builder::networkSynchronized)
     }
 
-    fun registerFlag(name: String): DataComponentType<MCUnit> =
-        registerType(name, Codec.unit(MCUnit.INSTANCE), StreamCodec.unit(MCUnit.INSTANCE))
+    fun registerFlag(name: String): DataComponentType<MCUnit> = registerType(name, Codec.unit(MCUnit.INSTANCE), StreamCodec.unit(MCUnit.INSTANCE))
 }

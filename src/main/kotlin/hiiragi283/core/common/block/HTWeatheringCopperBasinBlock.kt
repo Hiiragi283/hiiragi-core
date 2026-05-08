@@ -57,8 +57,7 @@ class HTWeatheringCopperBasinBlock(private val weatherState: WeatheringCopper.We
         changeOverTime(state, level, pos, random)
     }
 
-    override fun isRandomlyTicking(state: BlockState): Boolean =
-        super.isRandomlyTicking(state) && WeatheringCopper.getNext(state.block).isPresent
+    override fun isRandomlyTicking(state: BlockState): Boolean = super.isRandomlyTicking(state) && WeatheringCopper.getNext(state.block).isPresent
 
     //    WeatheringCopper    //
 

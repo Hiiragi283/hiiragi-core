@@ -116,8 +116,7 @@ internal class HTTagValueInput(private val provider: HolderLookup.Provider, priv
 
     //    TypedInputList    //
 
-    private class TypedInputList<T : Any>(provider: HolderLookup.Provider, private val list: ListTag, private val codec: Codec<T>) :
-        Iterable<T> {
+    private class TypedInputList<T : Any>(provider: HolderLookup.Provider, private val list: ListTag, private val codec: Codec<T>) : Iterable<T> {
         private val registryOps: RegistryOps<Tag> = provider.createSerializationContext(NbtOps.INSTANCE)
 
         override fun iterator(): Iterator<T> = list

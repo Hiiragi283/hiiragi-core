@@ -58,8 +58,7 @@ object HTTextureUtil {
             }.onSuccess { colorCache[id] = it }
 
     @JvmStatic
-    fun getOrCreatePalette(id: ResourceLocation, manager: ResourceManager): Result<Palette> =
-        getOrCreateColors(id, manager).map(::wrapToPalette)
+    fun getOrCreatePalette(id: ResourceLocation, manager: ResourceManager): Result<Palette> = getOrCreateColors(id, manager).map(::wrapToPalette)
 
     @JvmStatic
     fun wrapToPalette(colors: List<Int>): Palette = colors.map(::RGBColor).let(Palette::ofColors)

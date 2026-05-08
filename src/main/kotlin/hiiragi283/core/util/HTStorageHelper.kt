@@ -51,12 +51,10 @@ data object HTStorageHelper {
      * @see mekanism.common.util.MekanismUtils.redstoneLevelFromContents
      */
     @JvmStatic
-    fun calculateRedstoneLevel(amount: Int, capacity: Int): Int =
-        Mth.lerpDiscrete(fixedFraction(amount, capacity).toFloat(), Redstone.SIGNAL_NONE, Redstone.SIGNAL_MAX)
+    fun calculateRedstoneLevel(amount: Int, capacity: Int): Int = Mth.lerpDiscrete(fixedFraction(amount, capacity).toFloat(), Redstone.SIGNAL_NONE, Redstone.SIGNAL_MAX)
 
     @JvmStatic
-    fun calculateRedstoneLevel(view: HTAmountView): Int =
-        Mth.lerpDiscrete(view.getLevelAsFloat(), Redstone.SIGNAL_NONE, Redstone.SIGNAL_MAX)
+    fun calculateRedstoneLevel(view: HTAmountView): Int = Mth.lerpDiscrete(view.getLevelAsFloat(), Redstone.SIGNAL_NONE, Redstone.SIGNAL_MAX)
 
     //    Energy    //
 

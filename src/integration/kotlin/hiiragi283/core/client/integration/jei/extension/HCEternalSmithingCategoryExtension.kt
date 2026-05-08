@@ -12,8 +12,7 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.component.Unbreakable
 
-class HCEternalSmithingCategoryExtension(private val manager: IIngredientManager) :
-    ISmithingCategoryExtension<HCEternalSmithingRecipe> {
+class HCEternalSmithingCategoryExtension(private val manager: IIngredientManager) : ISmithingCategoryExtension<HCEternalSmithingRecipe> {
     private val toolStacks: List<ItemStack> by lazy { manager.allItemStacks.filter { it.isDamageableItem } }
 
     override fun <T : IIngredientAcceptor<T>> setTemplate(recipe: HCEternalSmithingRecipe, ingredientAcceptor: T) {

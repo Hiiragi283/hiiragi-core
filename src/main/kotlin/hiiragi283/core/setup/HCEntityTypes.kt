@@ -29,13 +29,12 @@ object HCEntityTypes {
     val ELDRITCH_EGG: HTDeferredEntityType<HTThrownCaptureEgg> = registerThrowable("eldritch_egg", ::HTThrownCaptureEgg)
 
     @JvmStatic
-    private fun <T : Entity> registerThrowable(name: String, factory: EntityType.EntityFactory<T>): HTDeferredEntityType<T> =
-        REGISTER.registerType(name, factory, MobCategory.MISC) { builder: EntityType.Builder<T> ->
-            builder
-                .sized(0.25f, 0.25f)
-                .clientTrackingRange(4)
-                .updateInterval(10)
-        }
+    private fun <T : Entity> registerThrowable(name: String, factory: EntityType.EntityFactory<T>): HTDeferredEntityType<T> = REGISTER.registerType(name, factory, MobCategory.MISC) { builder: EntityType.Builder<T> ->
+        builder
+            .sized(0.25f, 0.25f)
+            .clientTrackingRange(4)
+            .updateInterval(10)
+    }
 
     //    Event    //
 

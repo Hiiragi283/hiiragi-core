@@ -27,8 +27,7 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 
-class HCMaterialPartCategory(guiHelper: IGuiHelper) :
-    HTBasicRecipeCategory<HTMaterialManager.Entry>(guiHelper, HCRecipeViewerTypes.MaterialType) {
+class HCMaterialPartCategory(guiHelper: IGuiHelper) : HTBasicRecipeCategory<HTMaterialManager.Entry>(guiHelper, HCRecipeViewerTypes.MaterialType) {
     private fun getIngredients(entry: HTMaterialManager.Entry): Sequence<List<ItemStack>> = HiiragiCoreAccess.INSTANCE
         .partManager
         .values
@@ -75,6 +74,5 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) :
 
     override fun getRegistryName(recipe: HTMaterialManager.Entry): ResourceLocation = recipe.getId()
 
-    override fun getCodec(codecHelper: ICodecHelper, recipeManager: IRecipeManager): Codec<HTMaterialManager.Entry> =
-        HTMaterialManager.CODEC
+    override fun getCodec(codecHelper: ICodecHelper, recipeManager: IRecipeManager): Codec<HTMaterialManager.Entry> = HTMaterialManager.CODEC
 }

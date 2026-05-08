@@ -91,8 +91,7 @@ class HTFluidResourceType private constructor(private val stack: FluidStack) : H
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
-fun Fluid?.toResource(patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType? =
-    createFluidStack(this, patch = patch).toResource()
+fun Fluid?.toResource(patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType? = createFluidStack(this, patch = patch).toResource()
 
 /**
  * この[FluidStack][this]を[HTFluidResourceType]に変換します。

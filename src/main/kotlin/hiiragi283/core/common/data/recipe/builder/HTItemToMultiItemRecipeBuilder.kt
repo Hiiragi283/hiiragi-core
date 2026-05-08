@@ -9,8 +9,7 @@ import hiiragi283.core.impl.data.recipe.builder.HTMultiOutputRecipeBuilder
 import hiiragi283.core.impl.recipe.HTSerializableRecipe
 import net.minecraft.data.recipes.RecipeOutput
 
-class HTItemToMultiItemRecipeBuilder(prefix: String, private val factory: Factory<out HTSerializableRecipe<*>>) :
-    HTMultiOutputRecipeBuilder(prefix) {
+class HTItemToMultiItemRecipeBuilder(prefix: String, private val factory: Factory<out HTSerializableRecipe<*>>) : HTMultiOutputRecipeBuilder(prefix) {
     companion object {
         @JvmStatic
         inline fun crushing(output: RecipeOutput, builderAction: HTItemToMultiItemRecipeBuilder.() -> Unit) {

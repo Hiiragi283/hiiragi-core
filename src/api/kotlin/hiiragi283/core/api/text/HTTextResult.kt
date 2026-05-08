@@ -110,8 +110,7 @@ fun <T> HTTranslation.toTextResult(color: HTDefaultColor): HTTextResult<T> = HTT
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-fun <T> HTTranslation.toTextResult(color: HTDefaultColor, vararg args: Any?): HTTextResult<T> =
-    HTTextResult.error(this.translateColored(color, *args))
+fun <T> HTTranslation.toTextResult(color: HTDefaultColor, vararg args: Any?): HTTextResult<T> = HTTextResult.error(this.translateColored(color, *args))
 
 /**
  * この[Optional][this]を[HTTextResult]に変換します。
@@ -119,8 +118,7 @@ fun <T> HTTranslation.toTextResult(color: HTDefaultColor, vararg args: Any?): HT
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-fun <T : Any> Optional<T>.toTextResult(error: () -> HTTextResult<T>): HTTextResult<T> =
-    this.map(HTTextResult.Companion::success).orElseGet(error)
+fun <T : Any> Optional<T>.toTextResult(error: () -> HTTextResult<T>): HTTextResult<T> = this.map(HTTextResult.Companion::success).orElseGet(error)
 
 /**
  * この[Optional][this]を[HTTextResult]に変換します。

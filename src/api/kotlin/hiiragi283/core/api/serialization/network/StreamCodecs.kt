@@ -9,8 +9,7 @@ import java.util.Optional
  * @author Hiiragi Tsubasa
  * @since 0.16.0
  */
-fun <B : ByteBuf, V : Any, C : Collection<V>> StreamCodec<B, V>.toCollection(factory: (Int) -> C): StreamCodec<B, C> =
-    ByteBufCodecs.collection(factory, this)
+fun <B : ByteBuf, V : Any, C : Collection<V>> StreamCodec<B, V>.toCollection(factory: (Int) -> C): StreamCodec<B, C> = ByteBufCodecs.collection(factory, this)
 
 /**
  * @author Hiiragi Tsubasa
@@ -34,13 +33,12 @@ fun <B : ByteBuf, V : Any> StreamCodec<B, V>.toOptional(): StreamCodec<B, Option
  * @author Hiiragi Tsubasa
  * @since 0.16.0
  */
-fun <B : ByteBuf, V : Any> StreamCodec<B, V>.recover(onFailure: (Throwable) -> V): StreamCodec<B, V> =
-    this.apply { base: StreamCodec<B, V> ->
-        object : StreamCodec<B, V> {
-            override fun decode(buffer: B): V = runCatching { base.decode(buffer) }.getOrElse(onFailure)
+fun <B : ByteBuf, V : Any> StreamCodec<B, V>.recover(onFailure: (Throwable) -> V): StreamCodec<B, V> = this.apply { base: StreamCodec<B, V> ->
+    object : StreamCodec<B, V> {
+        override fun decode(buffer: B): V = runCatching { base.decode(buffer) }.getOrElse(onFailure)
 
-            override fun encode(buffer: B, value: V) {
-                base.encode(buffer, value)
-            }
+        override fun encode(buffer: B, value: V) {
+            base.encode(buffer, value)
         }
     }
+}

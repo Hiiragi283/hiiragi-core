@@ -17,7 +17,6 @@ class HTPotionBucketItem(content: Fluid, properties: Properties) : HTPotionBased
     }
 
     class BucketHandler(container: ItemStack) : FluidBucketWrapper(container) {
-        override fun getFluid(): FluidStack =
-            HTPotionHelper.getContents(container)?.let(HCPotionFluidHelper::createFluid) ?: FluidStack.EMPTY
+        override fun getFluid(): FluidStack = HTPotionHelper.getContents(container)?.let(HCPotionFluidHelper::createFluid) ?: FluidStack.EMPTY
     }
 }

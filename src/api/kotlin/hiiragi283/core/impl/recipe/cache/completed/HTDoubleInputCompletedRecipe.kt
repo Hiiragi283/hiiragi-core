@@ -16,7 +16,7 @@ abstract class HTDoubleInputCompletedRecipe<
     INPUT_B : Any,
     OUTPUT : Any,
     RECIPE : HTBiRecipeFactory<INPUT_A, INPUT_B, OUTPUT>,
->(
+    >(
     recipe: RECIPE,
     protected val firstInputHandler: HTInputHandler<INPUT_A>,
     protected val secondInputHandler: HTInputHandler<INPUT_B>,
@@ -41,12 +41,12 @@ abstract class HTDoubleInputCompletedRecipe<
         secondInputHandler: HTInputHandler<ItemStack>,
         outputHandler: HTOutputHandler<ItemStack>,
     ) : HTDoubleInputCompletedRecipe<ItemStack, ItemStack, ItemStack, HTDoubleItemToItemRecipe>(
-            recipe,
-            firstInputHandler,
-            secondInputHandler,
-            outputHandler,
-            HTDoubleItemToItemRecipe::getRequiredAmount,
-        ) {
+        recipe,
+        firstInputHandler,
+        secondInputHandler,
+        outputHandler,
+        HTDoubleItemToItemRecipe::getRequiredAmount,
+    ) {
         override fun getProgress(): HTProgressData = listOf(firstInputHandler, secondInputHandler)
             .map(HTInputHandler<ItemStack>::getStack)
             .let(::HTItemListRecipeInput)

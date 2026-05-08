@@ -12,8 +12,7 @@ import hiiragi283.core.setup.HCItems
 import net.minecraft.data.PackOutput
 import net.neoforged.neoforge.common.data.ExistingFileHelper
 
-class HCItemModelProvider(fileHelper: ExistingFileHelper, output: PackOutput) :
-    HTItemModelProvider(fileHelper, output, HiiragiCoreAPI.MOD_ID) {
+class HCItemModelProvider(fileHelper: ExistingFileHelper, output: PackOutput) : HTItemModelProvider(fileHelper, output, HiiragiCoreAPI.MOD_ID) {
     override fun registerModels() {
         trackItem(HCItems.BAMBOO_CHARCOAL)
 

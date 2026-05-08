@@ -40,15 +40,14 @@ open class HTBasicItemOrFluidRecipe(
             )
 
         @JvmStatic
-        fun <T : HTBasicItemOrFluidRecipe> codec(factory: HTItemOrFluidRecipeBuilder.Factory<T>): MapCodec<T> =
-            RecordCodecBuilder.mapCodec { instance ->
-                instance
-                    .group(
-                        INGREDIENT_CODEC.forGetter(HTBasicItemOrFluidRecipe::ingredient),
-                        RESULT_CODEC.forGetter(HTBasicItemOrFluidRecipe::result),
-                        HTProgressData.CODEC.forGetter(HTBasicItemOrFluidRecipe::progressData),
-                    ).apply(instance, factory::create)
-            }
+        fun <T : HTBasicItemOrFluidRecipe> codec(factory: HTItemOrFluidRecipeBuilder.Factory<T>): MapCodec<T> = RecordCodecBuilder.mapCodec { instance ->
+            instance
+                .group(
+                    INGREDIENT_CODEC.forGetter(HTBasicItemOrFluidRecipe::ingredient),
+                    RESULT_CODEC.forGetter(HTBasicItemOrFluidRecipe::result),
+                    HTProgressData.CODEC.forGetter(HTBasicItemOrFluidRecipe::progressData),
+                ).apply(instance, factory::create)
+        }
 
         @JvmField
         val SIMPLE_CODEC: MapCodec<HTBasicItemOrFluidRecipe> = codec(::HTBasicItemOrFluidRecipe)
@@ -65,6 +64,5 @@ open class HTBasicItemOrFluidRecipe(
         return (item?.getRequiredAmount(first) ?: 0) to (fluid?.getRequiredAmount(second) ?: 0)
     }
 
-    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): Ior<ItemStack, FluidStack> =
-        result.mapLeft { it.getOrEmpty() }.mapRight { it.create() }
+    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): Ior<ItemStack, FluidStack> = result.mapLeft { it.getOrEmpty() }.mapRight { it.create() }
 }

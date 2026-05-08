@@ -58,8 +58,7 @@ object HTExperienceHelper {
     //    Player    //
 
     @JvmStatic
-    fun getPlayerExp(player: Player): ExpValue =
-        getExpForLevel(player.experienceLevel) + (player.experienceProgress * player.xpNeededForNextLevel).toLong()
+    fun getPlayerExp(player: Player): ExpValue = getExpForLevel(player.experienceLevel) + (player.experienceProgress * player.xpNeededForNextLevel).toLong()
 
     @JvmStatic
     fun setPlayerExp(player: Player, amount: Long) {
@@ -112,14 +111,12 @@ object HTExperienceHelper {
     fun getStoredExp(stack: ItemStack): ExpValue = stack.getOrDefault(HCDataComponents.EXPERIENCE, 0)
 
     @JvmStatic
-    fun updateStoredExp(stack: ItemStack, operator: LongUnaryOperator): ExpValue? =
-        stack.update(HCDataComponents.EXPERIENCE, 0, operator::applyAsLong)
+    fun updateStoredExp(stack: ItemStack, operator: LongUnaryOperator): ExpValue? = stack.update(HCDataComponents.EXPERIENCE, 0, operator::applyAsLong)
 
     //    Enchantment    //
 
     @JvmStatic
-    inline fun getTotalCost(enchantments: ItemEnchantments, transform: (Enchantment, Int) -> Int): Int =
-        enchantments.entrySet().sumOf { (holder: Holder<Enchantment>, level: Int) -> transform(holder.value(), level) }
+    inline fun getTotalCost(enchantments: ItemEnchantments, transform: (Enchantment, Int) -> Int): Int = enchantments.entrySet().sumOf { (holder: Holder<Enchantment>, level: Int) -> transform(holder.value(), level) }
 
     @JvmStatic
     fun getTotalMinCost(enchantments: ItemEnchantments): Int = getTotalCost(enchantments, Enchantment::getMinCost)

@@ -43,13 +43,11 @@ data object HTItemIngredientCreator {
     fun create(tagKey: TagKey<Item>): Ingredient = Ingredient.of(tagKey)
 
     @JvmName("createFromTags")
-    fun create(tagKeys: Iterable<TagKey<Item>>): Ingredient =
-        tagKeys.sortedWith(HTComparators.TAG_KEY).map(Ingredient::TagValue).let(::create)
+    fun create(tagKeys: Iterable<TagKey<Item>>): Ingredient = tagKeys.sortedWith(HTComparators.TAG_KEY).map(Ingredient::TagValue).let(::create)
 
     // Ingredient
     @JvmName("createValues")
     fun create(values: Iterable<Ingredient.Value>): Ingredient = Ingredient.fromValues(values.toSet().stream())
 
-    inline fun create(strict: Boolean, vararg items: ItemLike, builderAction: DataComponentPredicate.Builder.() -> Unit): Ingredient =
-        DataComponentIngredient.of(strict, buildDataPredicate(builderAction), *items)
+    inline fun create(strict: Boolean, vararg items: ItemLike, builderAction: DataComponentPredicate.Builder.() -> Unit): Ingredient = DataComponentIngredient.of(strict, buildDataPredicate(builderAction), *items)
 }

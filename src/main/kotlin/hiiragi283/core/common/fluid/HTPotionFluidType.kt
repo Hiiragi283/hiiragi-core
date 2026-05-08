@@ -9,6 +9,5 @@ import net.neoforged.neoforge.fluids.FluidStack
 class HTPotionFluidType(properties: Properties) : HTFluidType(properties) {
     override fun getDescriptionId(stack: FluidStack): String = HTPotionHelper.getPotionDescId(stack) ?: super.getDescriptionId(stack)
 
-    override fun getBucket(stack: FluidStack): ItemStack =
-        HTPotionHelper.getContents(stack)?.let(HCPotionFluidHelper::createBucket) ?: super.getBucket(stack)
+    override fun getBucket(stack: FluidStack): ItemStack = HTPotionHelper.getContents(stack)?.let(HCPotionFluidHelper::createBucket) ?: super.getBucket(stack)
 }

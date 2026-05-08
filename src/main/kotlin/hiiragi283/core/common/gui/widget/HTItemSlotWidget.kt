@@ -35,8 +35,7 @@ class HTItemSlotWidget private constructor(
         ): HTItemSlotWidget = container(HTContainerItemSlot.create(slot, x, y, backgroundType), backgroundType)
 
         @JvmStatic
-        fun container(slot: Slot, backgroundType: HTBackgroundType): HTItemSlotWidget =
-            HTItemSlotWidget(Either.Right(slot), backgroundType, HTBounds.createSlot(slot.x - 1, slot.y - 1))
+        fun container(slot: Slot, backgroundType: HTBackgroundType): HTItemSlotWidget = HTItemSlotWidget(Either.Right(slot), backgroundType, HTBounds.createSlot(slot.x - 1, slot.y - 1))
 
         @JvmStatic
         fun fake(

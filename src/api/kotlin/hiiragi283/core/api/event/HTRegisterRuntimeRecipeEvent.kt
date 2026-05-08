@@ -6,6 +6,8 @@ import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.part.HTFluidPart
+import hiiragi283.core.api.recipe.HTRecipeHolder
+import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.registry.HTSimpleFluidHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.HTSimpleItemHolderLike
@@ -27,7 +29,7 @@ import net.neoforged.bus.api.Event
 import net.neoforged.neoforge.common.conditions.ICondition
 
 class HTRegisterRuntimeRecipeEvent(
-    val recipeManager: RecipeManager,
+    recipeManager: RecipeManager,
     provider: HolderLookup.Provider,
     private val patches: MutableList<Result>,
 ) : Event() {
@@ -69,9 +71,21 @@ class HTRegisterRuntimeRecipeEvent(
     @JvmRecord
     data class Result(val key: ResourceLocation, val recipe: Recipe<*>?)
 
+    /**
+     * @since 0.16.0
+     */
+    val lookupContext: HTRecipeLookup.Context = HTRecipeLookup.Context.create {
+        this[HTRecipeLookup.Context.MANAGER] = recipeManager
+        this[HTRecipeLookup.Context.REGISTRY] = provider
+    }
+
+    /**
+     * @since 0.16.0
+     */
+    fun <RECIPE : Any> getAllRecipes(lookup: HTRecipeLookup<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> = lookup.getAllRecipes(lookupContext)
+
     // TagKey
-    fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLike<T>> =
-        HiiragiCoreAccess.INSTANCE.getFirstHolder(context.provider, tagKey)
+    fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLike<T>> = HiiragiCoreAccess.INSTANCE.getFirstHolder(context.provider, tagKey)
 
     fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): HTSimpleHolderLike<T>? = getHolderResult(tagKey)
         .mapOrElse(identity()) { message: Text ->
@@ -82,13 +96,11 @@ class HTRegisterRuntimeRecipeEvent(
     fun <T : Any> isPresentTag(tagKey: TagKey<T>): Boolean = context.provider.holderSetOrNull(tagKey) != null
 
     // Material
-    fun getFirstHolder(prefix: HTTagPrefix, material: HTMaterialLike): HTSimpleItemHolderLike? =
-        getFirstHolder(prefix.itemTagKey(material), true)?.toItemLike()
+    fun getFirstHolder(prefix: HTTagPrefix, material: HTMaterialLike): HTSimpleItemHolderLike? = getFirstHolder(prefix.itemTagKey(material), true)?.toItemLike()
 
     fun isPresentTag(prefix: HTTagPrefix, material: HTMaterialLike): Boolean = isPresentTag(prefix.itemTagKey(material))
 
-    fun getFirstHolder(part: HTFluidPart, material: HTMaterialLike): HTSimpleFluidHolderLike? =
-        getFirstHolder(part.createTagKey(material), true)?.toFluidLike()
+    fun getFirstHolder(part: HTFluidPart, material: HTMaterialLike): HTSimpleFluidHolderLike? = getFirstHolder(part.createTagKey(material), true)?.toFluidLike()
 
     fun isPresentTag(part: HTFluidPart, material: HTMaterialLike): Boolean = isPresentTag(part.createTagKey(material))
 }

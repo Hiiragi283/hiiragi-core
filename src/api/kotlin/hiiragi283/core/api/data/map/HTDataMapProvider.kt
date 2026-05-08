@@ -20,8 +20,7 @@ import java.util.concurrent.CompletableFuture
  * @author Hiiragi Tsubasa
  * @since 0.13.0
  */
-abstract class HTDataMapProvider(packOutput: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) :
-    DataMapProvider(packOutput, lookupProvider) {
+abstract class HTDataMapProvider(packOutput: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : DataMapProvider(packOutput, lookupProvider) {
     protected lateinit var provider: HolderLookup.Provider
         private set
     protected val inputCreator: HTIngredientCreator = HTIngredientCreator
@@ -42,12 +41,10 @@ abstract class HTDataMapProvider(packOutput: PackOutput, lookupProvider: Complet
 
     //    Extensions    //
 
-    protected fun <T : Any, R : Any> Builder<T, R>.addHolder(holder: HTIdLike, value: T, vararg conditions: ICondition): Builder<T, R> =
-        add(holder.getId(), value, false, *conditions)
+    protected fun <T : Any, R : Any> Builder<T, R>.addHolder(holder: HTIdLike, value: T, vararg conditions: ICondition): Builder<T, R> = add(holder.getId(), value, false, *conditions)
 
     // Item
-    protected fun <T : Any> Builder<T, Item>.addItem(item: ItemLike, value: T, vararg conditions: ICondition): Builder<T, Item> =
-        this.addHolder(item.toItemLike(), value, *conditions)
+    protected fun <T : Any> Builder<T, Item>.addItem(item: ItemLike, value: T, vararg conditions: ICondition): Builder<T, Item> = this.addHolder(item.toItemLike(), value, *conditions)
 
     protected fun <T : Any> Builder<T, Item>.add(
         prefix: HTTagPrefix,

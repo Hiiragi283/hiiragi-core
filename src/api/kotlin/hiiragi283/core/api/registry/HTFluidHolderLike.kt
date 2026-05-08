@@ -86,13 +86,12 @@ interface HTFluidHolderLike<FLUID : Fluid> : HTHolderLike<Fluid, FLUID> {
 //    Extensions    //
 
 @Suppress("DEPRECATION")
-fun <FLUID : Fluid> FLUID.toLike(): HTFluidHolderLike<FLUID> =
-    object : HTIntrusiveHolderLike<Fluid, FLUID>(), HTFluidHolderLike.Simple<FLUID> {
-        @Suppress("DEPRECATION")
-        override fun getHolder(value: Fluid): Holder<Fluid> = value.builtInRegistryHolder()
+fun <FLUID : Fluid> FLUID.toLike(): HTFluidHolderLike<FLUID> = object : HTIntrusiveHolderLike<Fluid, FLUID>(), HTFluidHolderLike.Simple<FLUID> {
+    @Suppress("DEPRECATION")
+    override fun getHolder(value: Fluid): Holder<Fluid> = value.builtInRegistryHolder()
 
-        override fun get(): FLUID = this@toLike
-    }
+    override fun get(): FLUID = this@toLike
+}
 
 fun <FLUID : Fluid> HTHolderLike<Fluid, FLUID>.toFluidLike(): HTFluidHolderLike<FLUID> = object : HTFluidHolderLike.Simple<FLUID> {
     override fun unwrap(): Either<ResourceKey<Fluid>, Holder<Fluid>> = this@toFluidLike.unwrap()

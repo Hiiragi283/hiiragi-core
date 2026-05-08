@@ -17,14 +17,12 @@ import java.util.concurrent.CompletableFuture
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-abstract class HTGlobalLootModifierProvider(output: PackOutput, registries: CompletableFuture<HolderLookup.Provider>, modid: String) :
-    GlobalLootModifierProvider(output, registries, modid) {
+abstract class HTGlobalLootModifierProvider(output: PackOutput, registries: CompletableFuture<HolderLookup.Provider>, modid: String) : GlobalLootModifierProvider(output, registries, modid) {
     protected fun add(key: ResourceKey<LootTable>, vararg conditions: LootItemCondition) {
         add(key.location().path, AddTableLootModifier(arrayOf(*conditions), key))
     }
 
     protected fun builder(block: Block): LootTableIdCondition.Builder = LootTableIdCondition.builder(block.lootTable.location())
 
-    protected fun builder(entityType: EntityType<*>): LootTableIdCondition.Builder =
-        LootTableIdCondition.builder(entityType.defaultLootTable.location())
+    protected fun builder(entityType: EntityType<*>): LootTableIdCondition.Builder = LootTableIdCondition.builder(entityType.defaultLootTable.location())
 }

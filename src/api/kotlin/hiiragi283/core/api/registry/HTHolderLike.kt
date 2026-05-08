@@ -101,10 +101,9 @@ typealias HTEntityHolderLike<ENTITY> = HTHolderLike<EntityType<*>, EntityType<EN
  * @author Hiiragi Tsubasa
  * @since 0.15.2
  */
-fun <ENTITY : Entity> EntityType<ENTITY>.toLike(): HTEntityHolderLike<ENTITY> =
-    object : HTIntrusiveHolderLike<EntityType<*>, EntityType<ENTITY>>() {
-        @Suppress("DEPRECATION")
-        override fun getHolder(value: EntityType<*>): Holder<EntityType<*>> = value.builtInRegistryHolder()
+fun <ENTITY : Entity> EntityType<ENTITY>.toLike(): HTEntityHolderLike<ENTITY> = object : HTIntrusiveHolderLike<EntityType<*>, EntityType<ENTITY>>() {
+    @Suppress("DEPRECATION")
+    override fun getHolder(value: EntityType<*>): Holder<EntityType<*>> = value.builtInRegistryHolder()
 
-        override fun get(): EntityType<ENTITY> = this@toLike
-    }
+    override fun get(): EntityType<ENTITY> = this@toLike
+}

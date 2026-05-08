@@ -12,8 +12,7 @@ import net.neoforged.neoforge.fluids.FluidStack
 value class HTListFluidResult(val results: List<HTFluidResult>) : Iterable<FluidStack> {
     companion object {
         @JvmStatic
-        fun codec(maxSize: Int): Codec<HTListFluidResult> =
-            HTFluidResult.CODEC.listOrElement(1, maxSize).xmap(::HTListFluidResult, HTListFluidResult::results)
+        fun codec(maxSize: Int): Codec<HTListFluidResult> = HTFluidResult.CODEC.listOrElement(1, maxSize).xmap(::HTListFluidResult, HTListFluidResult::results)
 
         @JvmField
         val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTListFluidResult> =

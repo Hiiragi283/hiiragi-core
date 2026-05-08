@@ -50,8 +50,7 @@ class HTTreeTapBlock(properties: Properties) : HorizontalDirectionalBlock(proper
         }
     }
 
-    override fun canSurvive(state: BlockState, level: LevelReader, pos: BlockPos): Boolean =
-        level.getBlockState(pos.relative(state.getValue(FACING))).`is`(HiiragiCoreTags.Blocks.LATEX_DRIPPING_LOGS)
+    override fun canSurvive(state: BlockState, level: LevelReader, pos: BlockPos): Boolean = level.getBlockState(pos.relative(state.getValue(FACING))).`is`(HiiragiCoreTags.Blocks.LATEX_DRIPPING_LOGS)
 
     override fun getShape(
         state: BlockState,

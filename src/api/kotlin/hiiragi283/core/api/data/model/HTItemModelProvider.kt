@@ -18,8 +18,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-abstract class HTItemModelProvider(fileHelper: ExistingFileHelper, output: PackOutput, modid: String) :
-    ItemModelProvider(output, modid, fileHelper) {
+abstract class HTItemModelProvider(fileHelper: ExistingFileHelper, output: PackOutput, modid: String) : ItemModelProvider(output, modid, fileHelper) {
     //    Extensions    //
 
     /**

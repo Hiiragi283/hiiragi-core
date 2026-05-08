@@ -4,8 +4,6 @@ import appeng.api.AECapabilities
 import appeng.recipes.handlers.ChargerRecipe
 import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
-import hiiragi283.core.api.property.buildPropertyMap
-import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.common.integration.ae2.storage.HTFluidTankMEStorage
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCRecipeLookups
@@ -45,14 +43,8 @@ data object HCAEIntegration : HTRecipeProviderContext.Delegated() {
     @JvmStatic
     private fun registerRuntimeRecipe(event: HTRegisterRuntimeRecipeEvent) {
         this.delegated = event.context
-        val context = HTRecipeLookup.Context(
-            buildPropertyMap {
-                put(HTRecipeLookup.Context.MANAGER, event.recipeManager)
-                put(HTRecipeLookup.Context.REGISTRY, provider)
-            },
-        )
         // Convert HC Charging recipes into AE2 Charger recipes
-        for ((id: ResourceLocation, recipe: HCChargingRecipe) in HCRecipeLookups.CHARGING.getAllRecipes(context)) {
+        for ((id: ResourceLocation, recipe: HCChargingRecipe) in event.getAllRecipes(HCRecipeLookups.CHARGING)) {
             val result: ItemStack = recipe.result.get(true).value() ?: continue
             output.accept(id.withPrefix("charger/"), ChargerRecipe(recipe.ingredient, result), null)
         }
