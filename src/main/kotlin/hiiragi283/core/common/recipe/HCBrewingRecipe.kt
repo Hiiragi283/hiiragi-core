@@ -10,9 +10,9 @@ import hiiragi283.core.api.recipe.base.HTItemOrFluidRecipe
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.base.HTProgressRecipe
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
+import hiiragi283.core.api.recipe.result.HTItemAndFluidResult
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.serialization.codec.HTCodecs
-import hiiragi283.core.api.util.Ior
 import hiiragi283.core.mixin.PotionBrewingMixAccessor
 import hiiragi283.core.util.HCPotionFluidHelper
 import net.minecraft.core.Holder
@@ -58,7 +58,7 @@ data class HCBrewingRecipe(val potionFrom: Holder<Potion>, val ingredient: Ingre
         else -> 0 to 0
     }
 
-    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): Ior<ItemStack, FluidStack> = Ior.Right(BottledPotionContents(potionTo).let(HCPotionFluidHelper::createFluid))
+    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): HTItemAndFluidResult = BottledPotionContents(potionTo).let(HCPotionFluidHelper::createFluid).let(::HTItemAndFluidResult)
 
     override val progressData: HTProgressData
         get() = HTProgressData.time(200)

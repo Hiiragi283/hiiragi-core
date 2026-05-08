@@ -27,10 +27,10 @@ sealed interface HTProgressData : HTHasText {
             }
 
         @JvmStatic
-        fun time(value: Int): HTProgressData = Energy(value)
+        fun time(value: Int): HTProgressData = Time(value)
 
         @JvmStatic
-        fun energy(value: Int): HTProgressData = Time(value)
+        fun energy(value: Int): HTProgressData = Energy(value)
     }
 
     fun getTotalEnergy(energyRate: Int): Int

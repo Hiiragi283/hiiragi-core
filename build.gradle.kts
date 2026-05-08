@@ -330,7 +330,12 @@ dokka {
 spotless {
     kotlin {
         target("src/**/*.kt")
-        ktlint()
+        ktlint().editorConfigOverride(
+            mapOf(
+                "ktlint_standard_import-ordering" to "disabled",
+                "ktlint_standard_comment-spacing" to "disabled",
+            ),
+        )
     }
     kotlinGradle {
         target("*.gradle.kts")

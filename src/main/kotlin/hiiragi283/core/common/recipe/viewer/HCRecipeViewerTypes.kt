@@ -72,7 +72,7 @@ data object HCRecipeViewerTypes {
         id = recipeType
         title = recipeType
         val iconStack = ItemStack(iconItem)
-        icon = Either.Right(iconStack)
+        icon = Either.right(iconStack)
         bounds = HTBounds(0, 0, width, height)
         workStations += iconStack
         builderAction()

@@ -10,6 +10,7 @@ import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.recipe.result.HTFluidResult
+import hiiragi283.core.api.recipe.result.HTItemAndFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.util.Ior
@@ -64,5 +65,5 @@ open class HTBasicItemOrFluidRecipe(
         return (item?.getRequiredAmount(first) ?: 0) to (fluid?.getRequiredAmount(second) ?: 0)
     }
 
-    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): Ior<ItemStack, FluidStack> = result.mapLeft { it.getOrEmpty() }.mapRight { it.create() }
+    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): HTItemAndFluidResult = result.mapLeft { it.getOrEmpty() }.mapRight { it.create() }.let(::HTItemAndFluidResult)
 }
