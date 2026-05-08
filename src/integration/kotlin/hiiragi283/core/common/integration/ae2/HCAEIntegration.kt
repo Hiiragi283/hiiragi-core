@@ -11,7 +11,6 @@ import hiiragi283.core.setup.HCBlockEntityTypes
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import net.neoforged.bus.api.IEventBus
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
 import net.neoforged.neoforge.common.NeoForge
 
@@ -20,14 +19,10 @@ data object HCAEIntegration : HTRecipeProviderContext.Delegated() {
 
     @JvmStatic
     internal fun init(eventBus: IEventBus) {
-        eventBus.addListener(::commonSetup)
         eventBus.addListener(::registerMeStorage)
 
         NeoForge.EVENT_BUS.addListener(::registerRuntimeRecipe)
     }
-
-    @JvmStatic
-    private fun commonSetup(event: FMLCommonSetupEvent) {}
 
     @JvmStatic
     private fun registerMeStorage(event: RegisterCapabilitiesEvent) {

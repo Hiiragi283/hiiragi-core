@@ -47,6 +47,9 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
                 }.thenBy(HTIdLike::namespace)
         }
 
+        @JvmStatic
+        private val pluginComparator = compareBy(HTMaterialPlugin::priority).thenComparing(HTMaterialPlugin::getId, HTComparators.ID)
+
         @JvmField
         val DEFAULT_POTION_HANDLER: HTPotionFluidManager.Handler = object : HTPotionFluidManager.Handler {
             override fun get(holder: DataComponentHolder): HTBottleType? = holder.get(HCDataComponents.BOTTLE_TYPE)
@@ -63,10 +66,7 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
             .filter {
                 val modId: String = it.namespace
                 modId in HTConst.getBuiltInIdSet(HiiragiCoreAPI.MOD_ID) || ModList.get().isLoaded(modId)
-            }.sortedWith(
-                compareBy(HTMaterialPlugin::priority)
-                    .thenComparing(HTMaterialPlugin::getId, HTComparators.ID),
-            )
+            }.sortedWith(pluginComparator)
     }
 
     override val partManager: Map<String, HTPart> by lazy {
