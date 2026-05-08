@@ -1,5 +1,6 @@
 package hiiragi283.core.api.util
 
+import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.function.identity
 
 /**
@@ -93,9 +94,9 @@ sealed class Ior<A, B> {
      * @return 展開された[Either]のインスタンス
      */
     fun unwrap(): Either<Either<A, B>, Pair<A, B>> = fold(
-        { Either.Left(Either.Left(it)) },
-        { Either.Left(Either.Right(it)) },
-        { left: A, right: B -> Either.Right(left to right) },
+        { Either.left(Either.left(it)) },
+        { Either.left(Either.right(it)) },
+        { left: A, right: B -> Either.right(left to right) },
     )
 
     /**

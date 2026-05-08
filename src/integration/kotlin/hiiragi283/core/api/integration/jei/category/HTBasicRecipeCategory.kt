@@ -177,7 +177,8 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     /**
      * @since 0.16.0
      */
-    protected fun IRecipeExtrasBuilder.addRecipeArrow(progressData: HTProgressData): IPlaceable<*> = progressData.time
-        .map(this::addAnimatedRecipeArrow)
-        .orElseGet { this.addRecipeArrow() }
+    protected fun IRecipeExtrasBuilder.addRecipeArrow(progressData: HTProgressData): IPlaceable<*> = when (progressData) {
+        is HTProgressData.Energy -> this.addRecipeArrow()
+        is HTProgressData.Time -> this.addAnimatedRecipeArrow(progressData.value)
+    }
 }

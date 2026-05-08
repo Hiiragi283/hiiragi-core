@@ -28,12 +28,7 @@ interface HTAmountViewCapability<HANDLER : Any, ITEM_HANDLER : HANDLER> : HTMult
      * 指定した引数から[index]に対応する[HTAmountView]を返します。
      * @return 見つからない場合は`null`
      */
-    fun getCapabilityView(
-        level: Level,
-        pos: BlockPos,
-        side: Direction?,
-        index: Int,
-    ): HTAmountView? = getCapabilityViews(level, pos, side).getOrNull(index)
+    fun getCapabilityView(level: Level, pos: BlockPos, side: Direction?, index: Int): HTAmountView? = getCapabilityViews(level, pos, side).getOrNull(index)
 
     //    Entity    //
 

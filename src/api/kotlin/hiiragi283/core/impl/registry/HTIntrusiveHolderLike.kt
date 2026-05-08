@@ -1,7 +1,7 @@
 package hiiragi283.core.impl.registry
 
+import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.registry.HTHolderLike
-import hiiragi283.core.api.util.Either
 import net.minecraft.core.Holder
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
@@ -18,5 +18,5 @@ abstract class HTIntrusiveHolderLike<R : Any, T : R> : HTHolderLike<R, T> {
      */
     protected abstract fun getHolder(value: R): Holder<R>
 
-    final override fun unwrap(): Either<ResourceKey<R>, Holder<R>> = get().let(::getHolder).let { Either.Right(it) }
+    final override fun unwrap(): Either<ResourceKey<R>, Holder<R>> = get().let(::getHolder).let { Either.right(it) }
 }

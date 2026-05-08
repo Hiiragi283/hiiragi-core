@@ -1,8 +1,8 @@
 package hiiragi283.core.api.registry
 
+import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.resource.SupplierWithId
-import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.unwrap
 import hiiragi283.core.impl.registry.HTDeferredHolderLike
 import hiiragi283.core.impl.registry.HTIntrusiveHolderLike

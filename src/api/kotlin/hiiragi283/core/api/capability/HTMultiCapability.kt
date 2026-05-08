@@ -44,27 +44,9 @@ interface HTMultiCapability<HANDLER : Any, ITEM_HANDLER : HANDLER> {
      */
     fun getCapability(level: Level, pos: BlockPos, side: Direction?): HANDLER? = level.getCapability(block, pos, side)
 
-    fun createCache(level: ServerLevel, pos: BlockPos, side: Direction?): BlockCapabilityCache<HANDLER, Direction?> = BlockCapabilityCache.create(
-        block,
-        level,
-        pos,
-        side,
-    )
+    fun createCache(level: ServerLevel, pos: BlockPos, side: Direction?): BlockCapabilityCache<HANDLER, Direction?> = BlockCapabilityCache.create(block, level, pos, side)
 
-    fun createCache(
-        level: ServerLevel,
-        pos: BlockPos,
-        side: Direction?,
-        validator: BooleanSupplier = BooleanSupplier { true },
-        listener: Runnable = Runnables.doNothing(),
-    ): BlockCapabilityCache<HANDLER, Direction?> = BlockCapabilityCache.create(
-        block,
-        level,
-        pos,
-        side,
-        validator,
-        listener,
-    )
+    fun createCache(level: ServerLevel, pos: BlockPos, side: Direction?, validator: BooleanSupplier = BooleanSupplier { true }, listener: Runnable = Runnables.doNothing()): BlockCapabilityCache<HANDLER, Direction?> = BlockCapabilityCache.create(block, level, pos, side, validator, listener)
 
     //    Entity    //
 

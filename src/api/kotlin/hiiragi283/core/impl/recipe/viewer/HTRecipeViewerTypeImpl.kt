@@ -1,10 +1,10 @@
 package hiiragi283.core.impl.recipe.viewer
 
+import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.text.HTHasText
-import hiiragi283.core.api.util.Either
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 

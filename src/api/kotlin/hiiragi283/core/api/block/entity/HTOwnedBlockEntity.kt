@@ -17,11 +17,12 @@ import java.util.UUID
  */
 fun interface HTOwnedBlockEntity {
     companion object {
+        const val FAKE_NAME = "[Hiiragi Core]"
+
         /**
          * [偽のプレイヤー][FakePlayer]で使用される[プロファイル][GameProfile]のインスタンス
          */
-        @JvmField
-        val FAKE_PROFILE = GameProfile(UUID.fromString("32fe5dc2-f03b-4230-baf2-1ffc07d3d818"), "[Hiiragi Core]")
+        private val FAKE_PROFILE = GameProfile(UUID.fromString("32fe5dc2-f03b-4230-baf2-1ffc07d3d818"), FAKE_NAME)
     }
 
     /**
@@ -34,7 +35,7 @@ fun interface HTOwnedBlockEntity {
      * 保持している所有者の名前を取得します。
      * @return 所有者がいない場合は`???`
      */
-    fun getOwnerName(): String = getOwner()?.let(UsernameCache::getLastKnownUsername) ?: "???"
+    fun getOwnerName(): String = getOwner()?.let(UsernameCache::getLastKnownUsername) ?: FAKE_NAME
 
     /**
      * 保持している所有者の[インスタンス][ServerPlayer]を取得します。

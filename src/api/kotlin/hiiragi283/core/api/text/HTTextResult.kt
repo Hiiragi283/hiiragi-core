@@ -1,7 +1,9 @@
 package hiiragi283.core.api.text
 
+import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.HTDefaultColor
-import hiiragi283.core.api.util.Either
+import hiiragi283.core.api.util.leftOrNull
+import hiiragi283.core.api.util.rightOrNull
 import hiiragi283.core.api.util.unwrap
 import java.util.Optional
 
@@ -11,26 +13,27 @@ import java.util.Optional
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-class HTTextResult<T> private constructor(val contents: Either<Text, T>) {
+@JvmInline
+value class HTTextResult<T> private constructor(val contents: Either<Text, T>) {
     companion object {
         /**
          * 指定した[value]から[HTTextResult]のインスタンスを作成します。
          */
         @JvmStatic
-        fun <T> success(value: T): HTTextResult<T> = HTTextResult(Either.Right(value))
+        fun <T> success(value: T): HTTextResult<T> = HTTextResult(Either.right(value))
 
         /**
          * 指定した[message]から[HTTextResult]のインスタンスを作成します。
          */
         @JvmStatic
-        fun <T> error(message: Text): HTTextResult<T> = HTTextResult(Either.Left(message))
+        fun <T> error(message: Text): HTTextResult<T> = HTTextResult(Either.left(message))
     }
 
     /**
      * 保持している値を返します。
      * @return 値がない場合は`null`
      */
-    fun value(): T? = contents.getRight()
+    fun value(): T? = contents.rightOrNull()
 
     /**
      * 保持している値を返します。
@@ -44,13 +47,13 @@ class HTTextResult<T> private constructor(val contents: Either<Text, T>) {
      * @return 値がない場合は[fallback]の戻り値
      * @since 0.16.0
      */
-    inline fun valueOrElse(fallback: (Text) -> T): T = contents.mapLeft(fallback).unwrap()
+    fun valueOrElse(fallback: (Text) -> T): T = contents.mapLeft(fallback).unwrap()
 
     /**
      * 保持しているエラーを返します。
      * @return 値がある場合は`null`
      */
-    fun message(): Text? = contents.getLeft()
+    fun message(): Text? = contents.leftOrNull()
 
     /**
      * 保持している値を変換します。
@@ -75,7 +78,7 @@ class HTTextResult<T> private constructor(val contents: Either<Text, T>) {
      * @param transform 値を[R]の[HTTextResult]に変換するブロック
      * @return 新しい[HTTextResult]のインスタンス
      */
-    fun <R> flatMap(transform: (T) -> HTTextResult<R>): HTTextResult<R> = contents.map({ HTTextResult(Either.Left(it)) }, { transform(it) })
+    fun <R> flatMap(transform: (T) -> HTTextResult<R>): HTTextResult<R> = contents.map({ HTTextResult(Either.left(it)) }, { transform(it) })
 }
 
 //    Extensions    //

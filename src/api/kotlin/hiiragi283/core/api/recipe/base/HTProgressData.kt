@@ -4,45 +4,64 @@ import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.Text
-import java.util.Optional
 
 /**
  * 処理時間または消費エネルギーを保持するクラスです。
  * @author Hiiragi Tsubasa
  * @since 0.16.0
  */
-@JvmInline
-value class HTProgressData(private val content: Either<Int, Int>) : HTHasText {
+sealed interface HTProgressData : HTHasText {
     companion object {
         @JvmField
         val CODEC: MapCodec<HTProgressData> = Codec
-            .mapEither(HTCodecs.POSITIVE_INT.fieldOf(HTConst.TIME), HTCodecs.NON_NEGATIVE_INT.fieldOf(HTConst.ENERGY))
-            .xmap(::HTProgressData, HTProgressData::content)
+            .mapEither(Time.CODEC, Energy.CODEC)
+            .xmap(Either<Time, Energy>::unwrap) { progressData: HTProgressData ->
+                when (progressData) {
+                    is Energy -> Either.right(progressData)
+                    is Time -> Either.left(progressData)
+                }
+            }
 
         @JvmStatic
-        fun empty(): HTProgressData = energy(0)
+        fun time(value: Int): HTProgressData = Energy(value)
 
         @JvmStatic
-        fun time(value: Int): HTProgressData = HTProgressData(Either.left(value))
-
-        @JvmStatic
-        fun energy(value: Int): HTProgressData = HTProgressData(Either.right(value))
+        fun energy(value: Int): HTProgressData = Time(value)
     }
 
-    val time: Optional<Int> get() = content.left()
-    val energy: Optional<Int> get() = content.right()
+    fun getTotalEnergy(energyRate: Int): Int
 
-    fun getTotalEnergy(energyRate: Int): Int = content.map({ it * energyRate }, identity())
+    fun getProcessTime(energyRate: Int): Int
 
-    fun getProcessTime(energyRate: Int): Int = content.map(identity()) { it / energyRate }
+    @JvmInline
+    value class Time(val value: Int) : HTProgressData {
+        companion object {
+            @JvmField
+            val CODEC: MapCodec<Time> = HTCodecs.NON_NEGATIVE_INT.fieldOf(HTConst.TIME).xmap(::Time, Time::value)
+        }
 
-    override fun getText(): Text = content.map(
-        { HTCommonTranslation.SECONDS.translate(it, it / 20) },
-        { HTCommonTranslation.STORED_FE.translate(it) },
-    )
+        override fun getTotalEnergy(energyRate: Int): Int = value * energyRate
+
+        override fun getProcessTime(energyRate: Int): Int = value
+
+        override fun getText(): Text = HTCommonTranslation.SECONDS.translate(value, value / 20)
+    }
+
+    @JvmInline
+    value class Energy(val value: Int) : HTProgressData {
+        companion object {
+            @JvmField
+            val CODEC: MapCodec<Energy> = HTCodecs.NON_NEGATIVE_INT.fieldOf(HTConst.ENERGY).xmap(::Energy, Energy::value)
+        }
+
+        override fun getTotalEnergy(energyRate: Int): Int = value
+
+        override fun getProcessTime(energyRate: Int): Int = value / energyRate
+
+        override fun getText(): Text = HTCommonTranslation.STORED_FE.translate(value)
+    }
 }
