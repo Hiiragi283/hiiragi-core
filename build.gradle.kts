@@ -365,7 +365,7 @@ tasks {
         }
         from(apiModule.output, clientModule.output, integrationModule.output)
         from(dataModule.output) {
-            this.include("**/core/data/bootsrap/**")
+            this.include("**/core/data/bootstrap/**")
         }
     }
 

@@ -1,4 +1,4 @@
-package hiiragi283.core.api.data
+package hiiragi283.core.api.data.worldgen
 
 import hiiragi283.core.api.registry.createKey
 import net.minecraft.core.registries.Registries

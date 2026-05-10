@@ -1,4 +1,4 @@
-package hiiragi283.core.data.bootsrap
+package hiiragi283.core.data.bootstrap
 
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.setup.HCEnchantments

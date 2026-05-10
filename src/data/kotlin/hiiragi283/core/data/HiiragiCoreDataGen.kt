@@ -6,7 +6,7 @@ import hiiragi283.core.api.data.createLootTables
 import hiiragi283.core.api.data.createProviderWithHelper
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.text.toText
-import hiiragi283.core.data.bootsrap.HCEnchantmentProvider
+import hiiragi283.core.data.bootstrap.HCEnchantmentProvider
 import hiiragi283.core.data.lang.HCEnglishLangProvider
 import hiiragi283.core.data.lang.HCJapaneseLangProvider
 import hiiragi283.core.data.loot.HCBlockLootTableProvider
