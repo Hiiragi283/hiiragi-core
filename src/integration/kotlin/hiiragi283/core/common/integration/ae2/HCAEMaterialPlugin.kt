@@ -19,6 +19,7 @@ import hiiragi283.core.api.plugin.HTPlugin
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.createKey
+import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.integration.HCIConstants
 import hiiragi283.core.common.material.HCIntegrationMaterialKeys
 import net.minecraft.core.Holder
@@ -32,7 +33,7 @@ import net.minecraft.world.level.block.Block
 data object HCAEMaterialPlugin : HTMaterialPlugin {
     override val priority: Int = 0
 
-    override fun getId(): ResourceLocation = HiiragiCoreAPI.id("material_plugin", HCIConstants.AE2)
+    override fun getId(): ResourceLocation = HCIConstants.AE2.toId("material_plugin", HiiragiCoreAPI.MOD_ID)
 
     override fun registerExistingBlock(consumer: HTMaterialPlugin.BlockConsumer) {
         // Gem

@@ -72,5 +72,8 @@ data object HCIntegrationMaterialKeys {
     //    Replication    //
 
     @JvmStatic
+    val REPLICA: HTMaterialKey = create(HCIConstants.REPLICATION, "replica")
+
+    @JvmStatic
     private fun create(namespace: String, path: String): HTMaterialKey = HTMaterialKey.of(namespace.toId(path))
 }

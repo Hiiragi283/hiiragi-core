@@ -4,6 +4,11 @@ import hiiragi283.core.api.material.part.HTDeferredPart
 import hiiragi283.core.api.material.part.HTPartLike
 
 data object HCIntegrationParts {
+    //    Immersive    //
+
+    @JvmField
+    val SHEETMETAL: HTPartLike = HTDeferredPart("sheetmetal")
+
     //    Mekanism    //
 
     @JvmField

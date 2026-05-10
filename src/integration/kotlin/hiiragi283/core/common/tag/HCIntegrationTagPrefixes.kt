@@ -10,6 +10,11 @@ import hiiragi283.core.common.integration.HCIConstants
  * @see mekanism.common.resource.ResourceType
  */
 data object HCIntegrationTagPrefixes {
+    //    Immersive    //
+
+    @JvmField
+    val SHEETMETAL: HTTagPrefix = HTTagPrefix("sheetmetals", "sheetmetals/%s")
+
     //    Mekanism    //
 
     @JvmField
