@@ -2,8 +2,7 @@ package hiiragi283.core.api.data.model
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.util.emptyOptional
-import hiiragi283.core.api.util.wrapOptional
+import java.util.Optional
 import net.minecraft.data.models.model.ModelTemplate
 import net.minecraft.data.models.model.ModelTemplates
 import net.minecraft.data.models.model.TextureSlot
@@ -29,8 +28,8 @@ object HTModelTemplates {
     val LAYERED: ModelTemplate = block(HiiragiCoreAPI.id(HTConst.BLOCK, "layered"), TextureSlot.LAYER0, TextureSlot.LAYER1)
 
     @JvmStatic
-    private fun block(modelId: ResourceLocation, vararg requiredSlots: TextureSlot): ModelTemplate = ModelTemplate(modelId.wrapOptional(), emptyOptional(), *requiredSlots)
+    private fun block(modelId: ResourceLocation, vararg requiredSlots: TextureSlot): ModelTemplate = ModelTemplate(Optional.of(modelId), Optional.empty(), *requiredSlots)
 
     @JvmStatic
-    private fun block(modelId: ResourceLocation, suffix: String, vararg requiredSlots: TextureSlot): ModelTemplate = ModelTemplate(modelId.wrapOptional(), suffix.wrapOptional(), *requiredSlots)
+    private fun block(modelId: ResourceLocation, suffix: String, vararg requiredSlots: TextureSlot): ModelTemplate = ModelTemplate(Optional.of(modelId), Optional.of(suffix), *requiredSlots)
 }

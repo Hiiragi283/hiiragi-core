@@ -7,7 +7,7 @@ import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
-import hiiragi283.core.api.util.wrapOptional
+import hiiragi283.core.api.util.toOptional
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.core.component.DataComponents
@@ -66,8 +66,8 @@ class HTAlmightyPickaxeItem(properties: Properties) :
                 Tool.Rule.deniesDrops(incorrectBlocksForDrops),
                 Tool.Rule(
                     AnyHolderSet(BuiltInRegistries.BLOCK.asLookup()),
-                    40f.wrapOptional(),
-                    true.wrapOptional(),
+                    40f.toOptional(),
+                    true.toOptional(),
                 ),
             ),
             1f,

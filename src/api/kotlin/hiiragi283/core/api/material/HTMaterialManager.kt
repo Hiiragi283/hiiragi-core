@@ -1,9 +1,9 @@
 package hiiragi283.core.api.material
 
 import com.mojang.serialization.Codec
+import com.mojang.serialization.DataResult
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.api.util.wrapResult
 import hiiragi283.core.impl.material.HTMaterialContentsRegister
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.StreamCodec
@@ -27,7 +27,8 @@ interface HTMaterialManager : Iterable<HTMaterialManager.Entry> {
                 getInstance()
                     .entries
                     .firstOrNull { it.asMaterialKey() == key }
-                    .wrapResult { errorMessage(key) }
+                    ?.let { DataResult.success(it) }
+                    ?: DataResult.error { errorMessage(key) }
             },
             Entry::asMaterialKey,
         )

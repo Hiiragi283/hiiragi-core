@@ -5,7 +5,7 @@ import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.serialization.network.toOptional
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.Text
-import hiiragi283.core.api.util.wrapOptional
+import hiiragi283.core.api.util.toOptional
 import hiiragi283.core.common.gui.menu.HTWidgetContainerMenu
 import hiiragi283.core.setup.HCMenuTypes
 import io.netty.buffer.ByteBuf
@@ -85,7 +85,7 @@ data class HTItemWidgetHolderContext(
     override fun createMenu(containerId: Int, playerInventory: Inventory, player: Player): HTWidgetContainerMenu = HTWidgetContainerMenu(HCMenuTypes.ITEM.get(), containerId, playerInventory, this)
 
     override fun writeClientSideData(menu: AbstractContainerMenu, buffer: RegistryFriendlyByteBuf) {
-        HAND_CODEC.encode(buffer, hand.wrapOptional())
+        HAND_CODEC.encode(buffer, hand.toOptional())
         ItemStack.STREAM_CODEC.encode(buffer, stack)
     }
 

@@ -5,7 +5,7 @@ import hiiragi283.core.api.data.recipe.builder.HTRecipeBuilder
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
-import hiiragi283.core.api.util.wrapOptional
+import hiiragi283.core.api.util.toOptional
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import net.minecraft.data.recipes.RecipeOutput
@@ -30,7 +30,7 @@ data object HTTankInteractionRecipeBuilder {
 
         override fun getPrimalId(): ResourceLocation = fluidResult.getId()
 
-        override fun createRecipe(): HCTankEmptyingRecipe = HCTankEmptyingRecipe(ingredient, fluidResult, itemResult.wrapOptional())
+        override fun createRecipe(): HCTankEmptyingRecipe = HCTankEmptyingRecipe(ingredient, fluidResult, itemResult.toOptional())
     }
 
     class Filling : HTRecipeBuilder(HTConst.FILLING) {

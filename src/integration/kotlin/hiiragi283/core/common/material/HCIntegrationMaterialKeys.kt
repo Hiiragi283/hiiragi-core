@@ -20,15 +20,54 @@ data object HCIntegrationMaterialKeys {
 
     //    Create    //
 
+    // Gem
+    @JvmStatic
+    val ROSE_QUARTZ: HTMaterialKey = create(HCIConstants.CREATE, "rose_quartz")
+
+    // Alloy
+    @JvmStatic
+    val ANDESITE_ALLOY: HTMaterialKey = create(HCIConstants.CREATE, "andesite_alloy")
+
+    // Other
+    @JvmStatic
+    val CARDBOARD: HTMaterialKey = create(HCIConstants.CREATE, "cardboard")
+
     //    Ender IO    //
 
     //    Immersive Engineering    //
+
+    @JvmStatic
+    val HOP_GRAPHITE: HTMaterialKey = create(HCIConstants.IMMERSIVE, "hop_graphite")
 
     //    Just Dire Things    //
 
     //    Mekanism    //
 
+    // Alloy
+    @JvmStatic
+    val REFINED_GLOWSTONE: HTMaterialKey = create(HCIConstants.MEKANISM, "refined_glowstone")
+
+    @JvmStatic
+    val REFINED_OBSIDIAN: HTMaterialKey = create(HCIConstants.MEKANISM, "refined_obsidian")
+
     //    Oritech    //
+
+    // Gem
+    @JvmStatic
+    val FLUXITE: HTMaterialKey = create(HCIConstants.ORITECH, "fluxite")
+
+    // Alloy
+    @JvmStatic
+    val ENERGITE: HTMaterialKey = create(HCIConstants.ORITECH, "energite")
+
+    @JvmStatic
+    val ADAMANT: HTMaterialKey = create(HCIConstants.ORITECH, "adamant")
+
+    @JvmStatic
+    val DURATIUM: HTMaterialKey = create(HCIConstants.ORITECH, "duratium")
+
+    @JvmStatic
+    val PROMETHEUM: HTMaterialKey = create(HCIConstants.ORITECH, "prometheum")
 
     //    Replication    //
 

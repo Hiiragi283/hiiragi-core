@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface AbstractCookingRecipeAccessor {
     @Accessor
     Ingredient getIngredient();
-    
+
     @Accessor
     ItemStack getResult();
 }

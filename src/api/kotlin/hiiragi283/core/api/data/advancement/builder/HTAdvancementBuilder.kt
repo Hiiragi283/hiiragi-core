@@ -3,7 +3,7 @@ package hiiragi283.core.api.data.advancement.builder
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
 import hiiragi283.core.api.data.advancement.HTAdvancementOutput
 import hiiragi283.core.api.data.holder.HTConditionHolder
-import hiiragi283.core.api.util.wrapOptional
+import hiiragi283.core.api.util.toOptional
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementRequirements
 import net.minecraft.advancements.AdvancementRewards
@@ -40,8 +40,8 @@ class HTAdvancementBuilder(val key: HTAdvancementKey) {
     fun save(output: HTAdvancementOutput) {
         val id: ResourceLocation = key.getId()
         val adv = Advancement(
-            parent?.getId().wrapOptional(),
-            display.wrapOptional(),
+            parent?.getId().toOptional(),
+            display.toOptional(),
             rewards,
             criteria.toMap(),
             this.requirements ?: criteria.createRequirements(),

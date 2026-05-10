@@ -1,6 +1,6 @@
 package hiiragi283.core.api.data.advancement.builder
 
-import hiiragi283.core.api.util.emptyOptional
+import java.util.Optional
 import net.minecraft.advancements.critereon.InventoryChangeTrigger
 import net.minecraft.advancements.critereon.ItemPredicate
 
@@ -13,7 +13,7 @@ class HTInventoryChangeBuilder {
     var slots: InventoryChangeTrigger.TriggerInstance.Slots = InventoryChangeTrigger.TriggerInstance.Slots.ANY
     val predicates = ItemPredicates()
 
-    fun build(): InventoryChangeTrigger.TriggerInstance = InventoryChangeTrigger.TriggerInstance(emptyOptional(), slots, predicates.toList())
+    fun build(): InventoryChangeTrigger.TriggerInstance = InventoryChangeTrigger.TriggerInstance(Optional.empty(), slots, predicates.toList())
 
     //    ItemPredicates    //
 

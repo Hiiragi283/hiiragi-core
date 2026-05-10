@@ -5,35 +5,11 @@ import net.neoforged.neoforge.fluids.FluidStack
 import java.util.Optional
 
 /**
- * 空の[Optional]を取得します。
- * @author Hiiragi Tsubasa
- * @since 0.12.0
- */
-fun <T : Any> emptyOptional(): Optional<T> = Optional.empty<T>()
-
-/**
  * この[インスタンス][this]を[Optional]で包みます。
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-fun <T : Any> T?.wrapOptional(): Optional<T> = Optional.ofNullable(this)
-
-/**
- * @author Hiiragi Tsubasa
- * @since 0.12.0
- */
-inline fun <T : Any> Optional<T>.onPresent(action: (T) -> Unit): Optional<T> {
-    if (this.isPresent) {
-        action(this.get())
-    }
-    return this
-}
-
-/**
- * @author Hiiragi Tsubasa
- * @since 0.13.0
- */
-fun <T : Any, R : Any> Optional<T>.mapNotNull(transform: (T) -> R?): Optional<R> = this.flatMap { transform(it).wrapOptional() }
+fun <T : Any> T?.toOptional(): Optional<T> = Optional.ofNullable(this)
 
 /**
  * @author Hiiragi Tsubasa

@@ -4,7 +4,6 @@ import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.text.Text
-import hiiragi283.core.api.util.wrapOptional
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -36,7 +35,7 @@ open class HTPotionBasedItem(properties: Properties) :
             .lookupOrThrow(Registries.POTION)
             .filterFeatures(context.enabledFeatures)
             .listElements()
-            .flatMap { BottledPotionContents(it).wrapOptional().stream() }
+            .map(::BottledPotionContents)
             .map { HTPotionHelper.setContents(baseItem.toStack(), it) }
             .forEach(context)
     }

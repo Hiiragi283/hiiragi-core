@@ -2,7 +2,6 @@ package hiiragi283.core.common.data.recipe.builder
 
 import hiiragi283.core.api.data.holder.HTIorHolder
 import hiiragi283.core.api.data.recipe.builder.HTProgressRecipeBuilder
-import hiiragi283.core.api.function.identityLeft
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
@@ -16,7 +15,7 @@ class HTItemOrFluidRecipeBuilder(prefix: String, private val factory: Factory<ou
     val ingredient: HTIorHolder<HTItemIngredient, HTFluidIngredient> = HTIorHolder()
     val result: HTIorHolder<HTItemResult, HTFluidResult> = HTIorHolder()
 
-    override fun getPrimalId(): ResourceLocation = result.toIor().map(HTItemResult::getId, HTFluidResult::getId, identityLeft())
+    override fun getPrimalId(): ResourceLocation = result.toIor().swap().map(HTFluidResult::getId, HTItemResult::getId)
 
     override fun createRecipe(): HTSerializableRecipe<*> = factory.create(
         ingredient.toIor(),

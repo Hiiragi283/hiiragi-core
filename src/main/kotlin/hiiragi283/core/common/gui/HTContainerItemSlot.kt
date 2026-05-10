@@ -11,8 +11,6 @@ import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.storage.item.insert
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.storage.item.toStackOrEmpty
-import hiiragi283.core.api.util.emptyOptional
-import hiiragi283.core.api.util.wrapOptional
 import hiiragi283.core.impl.storage.item.HTItemStackResourceSlot
 import net.minecraft.world.SimpleContainer
 import net.minecraft.world.entity.player.Player
@@ -102,16 +100,16 @@ open class HTContainerItemSlot(
     override fun tryRemove(count: Int, decrement: Int, player: Player): Optional<ItemStack> {
         if (allowPartialRemoval()) {
             if (!mayPickup(player)) {
-                return emptyOptional()
+                return Optional.empty()
             }
             val count: Int = minOf(count, decrement)
             val stack: ItemStack = remove(count)
             if (stack.isEmpty) {
-                return emptyOptional()
+                return Optional.empty()
             } else if (item.isEmpty) {
                 setByPlayer(ItemStack.EMPTY, stack)
             }
-            return stack.wrapOptional()
+            return Optional.of(stack)
         }
 
         return super.tryRemove(count, decrement, player)

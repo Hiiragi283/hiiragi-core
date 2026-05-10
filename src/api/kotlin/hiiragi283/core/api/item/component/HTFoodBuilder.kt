@@ -1,7 +1,7 @@
 package hiiragi283.core.api.item.component
 
 import com.google.common.base.Suppliers
-import hiiragi283.core.api.util.wrapOptional
+import hiiragi283.core.api.util.toOptional
 import net.minecraft.core.Holder
 import net.minecraft.world.effect.MobEffect
 import net.minecraft.world.effect.MobEffectInstance
@@ -78,7 +78,7 @@ class HTFoodBuilder private constructor() {
         FoodConstants.saturationByModifier(nutrition, saturation),
         alwaysEat,
         eatSeconds,
-        convertTo.wrapOptional(),
+        convertTo.toOptional(),
         effects,
     )
 }

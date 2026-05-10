@@ -19,11 +19,9 @@ import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
-import hiiragi283.core.api.serialization.network.toOptional
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.storage.item.toStackOrEmpty
 import hiiragi283.core.api.text.HTTextResult
-import hiiragi283.core.api.util.wrapOptional
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.core.registries.Registries
@@ -36,10 +34,9 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.enchantment.Enchantment
 import net.neoforged.neoforge.common.util.NeoForgeExtraCodecs
 import org.apache.commons.lang3.math.Fraction
-import java.util.Optional
 
 @JvmRecord
-data class HTItemResult(val entry: Entry, val chance: Fraction, val fallback: Optional<Entry>) : HTRecipeResult<ItemStack> {
+data class HTItemResult(val entry: Entry, val chance: Fraction) : HTRecipeResult<ItemStack> {
     companion object {
         @JvmField
         val CODEC: Codec<HTItemResult> = RecordCodecBuilder.create { instance ->
@@ -50,7 +47,6 @@ data class HTItemResult(val entry: Entry, val chance: Fraction, val fallback: Op
                         .validate(Codec.checkRange(Fraction.ZERO, Fraction.ONE))
                         .optionalFieldOf(HTConst.CHANCE, Fraction.ONE)
                         .forGetter(HTItemResult::chance),
-                    Entry.CODEC.optionalFieldOf("fallback").forGetter(HTItemResult::fallback),
                 ).apply(instance, ::HTItemResult)
         }
 
@@ -60,13 +56,9 @@ data class HTItemResult(val entry: Entry, val chance: Fraction, val fallback: Op
             HTItemResult::entry,
             HTStreamCodecs.FRACTION,
             HTItemResult::chance,
-            Entry.STREAM_CODEC.toOptional(),
-            HTItemResult::fallback,
             ::HTItemResult,
         )
     }
-
-    constructor(entry: Entry, chance: Fraction, fallback: Entry? = null) : this(entry, chance, fallback.wrapOptional())
 
     constructor(stack: ItemStack, chance: Fraction) : this(SimpleEntry(stack), chance)
 

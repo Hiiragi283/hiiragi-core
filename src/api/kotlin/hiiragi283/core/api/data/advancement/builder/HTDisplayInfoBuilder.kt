@@ -4,7 +4,7 @@ import hiiragi283.core.api.data.advancement.HTAdvancementKey
 import hiiragi283.core.api.data.holder.HTItemStackHolder
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
-import hiiragi283.core.api.util.wrapOptional
+import hiiragi283.core.api.util.toOptional
 import net.minecraft.advancements.AdvancementType
 import net.minecraft.advancements.DisplayInfo
 import net.minecraft.resources.ResourceLocation
@@ -38,7 +38,7 @@ class HTDisplayInfoBuilder {
         iconStack.stack,
         titleText.text,
         descText.text,
-        backGround.wrapOptional(),
+        backGround.toOptional(),
         type,
         showToast,
         showChat,

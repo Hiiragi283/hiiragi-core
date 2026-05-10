@@ -344,6 +344,9 @@ spotless {
     java {
         target("src/**/*.java")
         palantirJavaFormat("2.90.0")
+        endWithNewline()
+        formatAnnotations()
+        removeUnusedImports()
     }
 }
 

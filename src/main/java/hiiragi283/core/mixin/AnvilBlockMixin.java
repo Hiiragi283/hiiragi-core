@@ -15,7 +15,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(AnvilBlock.class)
 public abstract class AnvilBlockMixin {
     @Inject(method = "onLand", at = @At("TAIL"), require = 1)
-    private void hiiragiCore$onLand(Level level, BlockPos pos, BlockState state, BlockState replaceableState, FallingBlockEntity fallingBlock, CallbackInfo ci) {
+    private void hiiragiCore$onLand(
+            Level level,
+            BlockPos pos,
+            BlockState state,
+            BlockState replaceableState,
+            FallingBlockEntity fallingBlock,
+            CallbackInfo ci) {
         NeoForge.EVENT_BUS.post(new HTAnvilLandEvent(level, pos, replaceableState, state, fallingBlock));
     }
 }

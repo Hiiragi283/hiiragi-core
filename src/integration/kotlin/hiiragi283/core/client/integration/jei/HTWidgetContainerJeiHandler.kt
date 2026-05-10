@@ -6,7 +6,6 @@ import hiiragi283.core.api.gui.toRec2i
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.recipe.viewer.widget.HTGhostWidget
 import hiiragi283.core.api.recipe.viewer.widget.HTIngredientWidget
-import hiiragi283.core.api.util.emptyOptional
 import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.impl.gui.widget.HTGuiWidget
 import mezz.jei.api.gui.builder.IClickableIngredientFactory
@@ -42,7 +41,7 @@ data object HTWidgetContainerJeiHandler : IGuiContainerHandler<HTWidgetContainer
                 else -> return@mapNotNull null
             }.buildWithArea(bounds.toRec2i())
         }.firstOrNull()
-        ?: emptyOptional()
+        ?: Optional.empty()
 
     //    IGhostIngredientHandler    //
 

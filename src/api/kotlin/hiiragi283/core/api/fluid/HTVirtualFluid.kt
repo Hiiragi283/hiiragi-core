@@ -1,6 +1,6 @@
 package hiiragi283.core.api.fluid
 
-import hiiragi283.core.api.util.wrapOptional
+import hiiragi283.core.api.util.toOptional
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.sounds.SoundEvent
@@ -57,5 +57,5 @@ class HTVirtualFluid(private val typeGetter: Supplier<FluidType>, private val bu
 
     override fun getFluidType(): FluidType = typeGetter.get()
 
-    override fun getPickupSound(): Optional<SoundEvent> = fluidType.getSound(SoundActions.BUCKET_FILL).wrapOptional()
+    override fun getPickupSound(): Optional<SoundEvent> = fluidType.getSound(SoundActions.BUCKET_FILL).toOptional()
 }

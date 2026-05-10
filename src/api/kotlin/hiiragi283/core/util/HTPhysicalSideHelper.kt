@@ -1,7 +1,7 @@
 package hiiragi283.core.util
 
 import hiiragi283.core.api.registry.RegistryKey
-import hiiragi283.core.api.util.wrapOptional
+import hiiragi283.core.api.util.toOptional
 import net.minecraft.client.Minecraft
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.RegistryAccess
@@ -28,7 +28,7 @@ data object HTPhysicalSideHelper {
     )
 
     @JvmStatic
-    fun <T : Any> lookup(registryKey: RegistryKey<T>): Optional<HolderLookup.RegistryLookup<T>> = getRegistryAccess().wrapOptional().flatMap { it.lookup(registryKey) }
+    fun <T : Any> lookup(registryKey: RegistryKey<T>): Optional<HolderLookup.RegistryLookup<T>> = getRegistryAccess().toOptional().flatMap { it.lookup(registryKey) }
 
     @JvmStatic
     fun <T : Any> lookupOrThrow(registryKey: RegistryKey<T>): HolderLookup.RegistryLookup<T> = getRegistryAccess()?.lookupOrThrow(registryKey) ?: error("Missing Active Registry")

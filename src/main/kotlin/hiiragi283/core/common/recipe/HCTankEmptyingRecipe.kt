@@ -9,7 +9,7 @@ import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.util.Ior
-import hiiragi283.core.api.util.wrapOptional
+import hiiragi283.core.api.util.toOptional
 import hiiragi283.core.impl.recipe.HTSerializableRecipe
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
@@ -43,7 +43,7 @@ class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidR
     override fun assemble(input: ItemStack): Ior<ItemStack, FluidStack> {
         val fluidStack: FluidStack = fluidResult.create()
         return itemResult
-            .flatMap { it.get().value().wrapOptional() }
+            .flatMap { it.get().value().toOptional() }
             .map { Ior.Both(it, fluidStack) as Ior<ItemStack, FluidStack> }
             .orElseGet { Ior.Right(fluidStack) }
     }

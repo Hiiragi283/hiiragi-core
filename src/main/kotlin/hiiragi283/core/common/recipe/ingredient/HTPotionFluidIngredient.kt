@@ -3,7 +3,6 @@ package hiiragi283.core.common.recipe.ingredient
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.function.generateHash
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
@@ -11,6 +10,7 @@ import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.registry.VanillaFluidContents
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.util.HTPhysicalSideHelper
+import java.util.Objects
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.core.registries.Registries
@@ -73,7 +73,7 @@ class HTPotionFluidIngredient(val potions: HolderSet<Potion>, val bottleType: HT
 
     override fun getType(): FluidIngredientType<*> = TYPE
 
-    override fun hashCode(): Int = generateHash(potions, bottleType)
+    override fun hashCode(): Int = Objects.hash(potions, bottleType)
 
     override fun equals(obj: Any?): Boolean = (obj as? HTPotionFluidIngredient)?.let {
         it.potions == this.potions && it.bottleType == this.bottleType

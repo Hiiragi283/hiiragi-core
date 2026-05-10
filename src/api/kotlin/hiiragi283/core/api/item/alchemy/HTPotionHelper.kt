@@ -6,7 +6,7 @@ import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.toResource
-import hiiragi283.core.api.util.wrapOptional
+import hiiragi283.core.api.util.toOptional
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.core.component.DataComponents
@@ -69,7 +69,7 @@ object HTPotionHelper {
             is HTItemResourceType -> getContents(holder)
             else -> null
         } ?: return null
-        return Potion.getName(contents.potion.wrapOptional(), "${contents.bottleType.asItem().descriptionId}.effect.")
+        return Potion.getName(contents.potion.toOptional(), "${contents.bottleType.asItem().descriptionId}.effect.")
     }
 
     //    ItemStack    //

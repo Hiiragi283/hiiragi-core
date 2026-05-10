@@ -12,8 +12,27 @@ sealed interface Option<out T> {
         fun <T> none(): Option<T> = None as Option<T>
     }
 
+    fun getOrNull(): T? = when (this) {
+        None -> null
+        is Some<T> -> this.value
+    }
+
     val isSome: Boolean get() = this is Some<T>
     val isNone: Boolean get() = this is None
+
+    fun onSome(action: (T) -> Unit): Option<T> {
+        if (this is Some<T>) {
+            action(this.value)
+        }
+        return this
+    }
+
+    fun onNone(action: () -> Unit): Option<T> {
+        if (this is None) {
+            action()
+        }
+        return this
+    }
 
     // filter
     fun filter(predicate: (T) -> Boolean): Option<T> = flatMap { if (predicate(it)) Some(it) else None }

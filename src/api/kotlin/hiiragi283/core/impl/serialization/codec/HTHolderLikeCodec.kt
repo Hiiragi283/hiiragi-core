@@ -8,11 +8,10 @@ import com.mojang.serialization.Lifecycle
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.api.util.wrapResult
 import net.minecraft.core.HolderGetter
 import net.minecraft.resources.RegistryOps
 import net.minecraft.resources.ResourceKey
-import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * @suppress
@@ -26,9 +25,8 @@ internal class HTHolderLikeCodec<R : Any>(private val registryKey: RegistryKey<R
 
     override fun <T : Any> decode(ops: DynamicOps<T>, input: T): DataResult<Pair<HTSimpleHolderLike<R>, T>> {
         if (ops is RegistryOps<T>) {
-            val optional: Optional<HolderGetter<R>> = ops.getter(registryKey)
-            if (optional.isPresent) {
-                val getter: HolderGetter<R> = optional.get()
+            val getter: HolderGetter<R>? = ops.getter(registryKey).getOrNull()
+            if (getter != null) {
                 return keyCodec
                     .decode(ops, input)
                     .flatMap { pair: Pair<ResourceKey<R>, T> ->
@@ -36,7 +34,8 @@ internal class HTHolderLikeCodec<R : Any>(private val registryKey: RegistryKey<R
                         getter
                             .get(pair.first)
                             .map { it.toLike() }
-                            .wrapResult { "Failed to get element ${key.location()}" }
+                            .map { DataResult.success(it) }
+                            .orElseGet { DataResult.error { "Failed to get element ${key.location()}" } }
                             .map { Pair.of(it, pair.second) }
                             .setLifecycle(Lifecycle.stable())
                     }

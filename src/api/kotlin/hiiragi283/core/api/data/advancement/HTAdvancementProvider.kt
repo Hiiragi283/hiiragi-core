@@ -1,6 +1,6 @@
 package hiiragi283.core.api.data.advancement
 
-import hiiragi283.core.api.util.wrapOptional
+import hiiragi283.core.api.util.toOptional
 import net.minecraft.advancements.Advancement
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
@@ -39,7 +39,7 @@ class HTAdvancementProvider(
                     output,
                     provider,
                     Advancement.CONDITIONAL_CODEC,
-                    WithConditions(conditions, adv).wrapOptional(),
+                    WithConditions(conditions, adv).toOptional(),
                     pathProvider.json(id),
                 ),
             )

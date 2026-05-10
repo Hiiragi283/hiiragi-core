@@ -3,7 +3,6 @@ package hiiragi283.core.setup
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.HTSmithingTemplateItem
 import hiiragi283.core.api.registry.HTSimpleItemHolderLike
-import hiiragi283.core.api.util.emptyOptional
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.item.HTAlmightyPickaxeItem
 import hiiragi283.core.common.item.HTAmbrosiaItem
@@ -21,6 +20,7 @@ import hiiragi283.core.common.registry.register.HTDeferredItemRegister
 import hiiragi283.core.common.storage.fluid.HTBasicItemFluidTank
 import hiiragi283.core.common.storage.fluid.HTExperienceTomeFluidTank
 import hiiragi283.core.common.text.HCTranslation
+import java.util.Optional
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.world.food.FoodConstants
@@ -50,7 +50,7 @@ object HCItems {
     }
 
     @JvmField
-    val FAKE_FOOD = FoodProperties(0, 0f, true, 1.6f, emptyOptional(), emptyList())
+    val FAKE_FOOD = FoodProperties(0, 0f, true, 1.6f, Optional.empty(), emptyList())
 
     //    Materials   //
 
