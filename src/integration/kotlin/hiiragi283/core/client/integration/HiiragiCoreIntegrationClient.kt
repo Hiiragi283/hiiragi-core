@@ -13,5 +13,6 @@ import net.neoforged.fml.common.Mod
 data object HiiragiCoreIntegrationClient : HTClientMod() {
     override fun initialize(eventBus: IEventBus, container: ModContainer) {
         HCClientResourceProvider.addSupportedNamespaces(HCIConstants.AE2)
+        HCClientResourceProvider.addSupportedNamespaces(HCIConstants.REPLICATION)
     }
 }

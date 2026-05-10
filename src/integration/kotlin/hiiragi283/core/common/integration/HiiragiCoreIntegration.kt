@@ -13,6 +13,7 @@ import net.neoforged.fml.common.Mod
 data object HiiragiCoreIntegration : HTCommonMod() {
     override fun initialize(eventBus: IEventBus, container: ModContainer) {
         HCServerResourceProvider.addSupportedNamespaces(HCIConstants.AE2)
+        HCServerResourceProvider.addSupportedNamespaces(HCIConstants.REPLICATION)
 
         if (HCIConstants.isLoaded(HCIConstants.AE2)) {
             HCAEIntegration.init(eventBus)
