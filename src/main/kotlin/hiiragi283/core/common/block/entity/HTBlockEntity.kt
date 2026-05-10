@@ -18,12 +18,14 @@ import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
 import hiiragi283.core.api.storage.item.HTItemHandler
 import hiiragi283.core.api.storage.item.HTItemSlot
+import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import hiiragi283.core.common.storage.HTCapabilityCodec
 import hiiragi283.core.impl.storage.resolver.HTEnergyStorageManager
 import hiiragi283.core.impl.storage.resolver.HTFluidHandlerManager
 import hiiragi283.core.impl.storage.resolver.HTItemHandlerManager
+import hiiragi283.core.util.HTItemDropHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.UUIDUtil
@@ -97,7 +99,15 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
 
     protected abstract fun onUpdateServer(level: ServerLevel, pos: BlockPos, state: BlockState): Boolean
 
-    open fun onBlockRemoved(state: BlockState, level: Level, pos: BlockPos) {}
+    open fun onBlockRemoved(state: BlockState, level: Level, pos: BlockPos) {
+        if (shouldDrop(state, level, pos)) {
+            getItemSlots(null)
+                .map(HTItemSlot::getItemStack)
+                .forEach { HTItemDropHelper.dropStackAt(level, pos, it) }
+        }
+    }
+
+    protected open fun shouldDrop(state: BlockState, level: Level, pos: BlockPos): Boolean = true
 
     //    Save & Read    //
 

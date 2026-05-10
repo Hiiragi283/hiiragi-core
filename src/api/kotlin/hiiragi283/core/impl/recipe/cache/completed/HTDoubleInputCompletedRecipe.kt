@@ -2,11 +2,14 @@ package hiiragi283.core.impl.recipe.cache.completed
 
 import hiiragi283.core.api.recipe.HTBiRecipeFactory
 import hiiragi283.core.api.recipe.base.HTDoubleItemToItemRecipe
+import hiiragi283.core.api.recipe.base.HTItemAndFluidToItemRecipe
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.handler.HTInputHandler
 import hiiragi283.core.api.recipe.handler.HTOutputHandler
+import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.recipe.input.HTItemListRecipeInput
 import net.minecraft.world.item.ItemStack
+import net.neoforged.neoforge.fluids.FluidStack
 
 /**
  * @see mekanism.api.recipes.cache.TwoInputCachedRecipe
@@ -33,6 +36,21 @@ abstract class HTDoubleInputCompletedRecipe<
             firstInputHandler.consume(first)
             secondInputHandler.consume(second)
         }
+    }
+
+    class ItemAndFluid(
+        recipe: HTItemAndFluidToItemRecipe,
+        firstInputHandler: HTInputHandler<ItemStack>,
+        secondInputHandler: HTInputHandler<FluidStack>,
+        outputHandler: HTOutputHandler<ItemStack>,
+    ) : HTDoubleInputCompletedRecipe<ItemStack, FluidStack, ItemStack, HTItemAndFluidToItemRecipe>(
+        recipe,
+        firstInputHandler,
+        secondInputHandler,
+        outputHandler,
+        HTItemAndFluidToItemRecipe::getRequiredAmount,
+    ) {
+        override fun getProgress(): HTProgressData = HTItemAndFluidRecipeInput(firstInputHandler.getStack(), secondInputHandler.getStack()).let(recipe::getProgressData)
     }
 
     class DoubleItem(
