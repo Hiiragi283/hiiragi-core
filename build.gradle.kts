@@ -122,6 +122,17 @@ neoForge {
     // This line is optional. Access Transformers are automatically detected
     // accessTransformers = project.files("src/main/resources/META-INF/accesstransformer.cfg")
 
+    interfaceInjectionData {
+        rootProject.fileTree("src")
+            .matching { include("*/resources/META-INF/interfaceinjection.json") }
+            .forEach { atFile ->
+                println("adding interface injection file: $atFile")
+
+                from(atFile)
+                publish(atFile)
+            }
+    }
+
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
     runs {
@@ -317,7 +328,7 @@ dokka {
             sourceRoots.from(
                 listOf(libModule, clientModule, integrationModule)
                     .map { it.kotlin }
-                    .map { it.srcDirs }
+                    .map { it.srcDirs },
             )
         }
     }

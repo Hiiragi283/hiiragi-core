@@ -4,7 +4,9 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.HTConstants
-import hiiragi283.lib.resource.SupplierWithId
+import hiiragi283.lib.resource.HTIdLike
+import hiiragi283.lib.serialization.codec.HTCodecs
+import net.minecraft.core.registries.Registries
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
@@ -16,10 +18,7 @@ import net.minecraft.world.item.crafting.RecipeHolder
  * @since 0.15.0
  */
 @JvmRecord
-data class HTRecipeHolder<RECIPE : Any>(
-    @JvmField val id: Identifier,
-    @JvmField val recipe: RECIPE,
-) : SupplierWithId<RECIPE> {
+data class HTRecipeHolder<RECIPE : Any>(val key: RecipeKey, val recipe: RECIPE) : HTIdLike {
     companion object {
         /**
          * [HTRecipeHolder]の[Codec]を作成します。
@@ -29,7 +28,7 @@ data class HTRecipeHolder<RECIPE : Any>(
         fun <RECIPE : Any> codec(recipeCodec: MapCodec<RECIPE>): Codec<HTRecipeHolder<RECIPE>> = RecordCodecBuilder.create { instance ->
             instance
                 .group(
-                    Identifier.CODEC.fieldOf(HTConstants.ID).forGetter(HTRecipeHolder<RECIPE>::id),
+                    HTCodecs.resourceKey(Registries.RECIPE).fieldOf(HTConstants.ID).forGetter(HTRecipeHolder<RECIPE>::key),
                     recipeCodec.codec().fieldOf("recipe").forGetter(HTRecipeHolder<RECIPE>::recipe),
                 ).apply(instance, ::HTRecipeHolder)
         }
@@ -50,7 +49,7 @@ data class HTRecipeHolder<RECIPE : Any>(
      * @param R 変換後のクラス
      * @param transform [recipe]を[R]に変換するブロック
      */
-    inline fun <R : Any> mapRecipe(transform: (RECIPE) -> R): HTRecipeHolder<R> = HTRecipeHolder(this.id, transform(this.recipe))
+    inline fun <R : Any> mapRecipe(transform: (RECIPE) -> R): HTRecipeHolder<R> = HTRecipeHolder(this.key, transform(this.recipe))
 
     /**
      * レシピの値を変換し，新しいインスタンスを作成します。
@@ -61,18 +60,16 @@ data class HTRecipeHolder<RECIPE : Any>(
      */
     inline fun <R : Any> mapRecipeOrNull(transform: (RECIPE) -> R?): HTRecipeHolder<R>? {
         val recipe: R = transform(this.recipe) ?: return null
-        return HTRecipeHolder(this.id, recipe)
+        return HTRecipeHolder(this.key, recipe)
     }
 
     inline fun <reified R : RECIPE> castRecipe(): HTRecipeHolder<R>? = mapRecipeOrNull { it as? R }
 
-    override fun get(): RECIPE = recipe
-
-    override fun getId(): Identifier = id
+    override fun getId(): Identifier = key.identifier()
 }
 
 /**
  * 現在の[HTRecipeHolder][this]をバニラの[RecipeHolder]に変換します。
  * @param RECIPE [Recipe]を継承したクラス
  */
-fun <RECIPE : Recipe<*>> HTRecipeHolder<RECIPE>.toVanilla(): RecipeHolder<RECIPE> = RecipeHolder(this.id, this.recipe)
+fun <RECIPE : Recipe<*>> HTRecipeHolder<RECIPE>.toVanilla(): RecipeHolder<RECIPE> = RecipeHolder(this.key, this.recipe)
