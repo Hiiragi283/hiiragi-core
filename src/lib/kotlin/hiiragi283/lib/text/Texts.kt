@@ -4,6 +4,7 @@ import net.minecraft.core.Direction
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
 import net.minecraft.network.chat.Style
+import net.minecraft.network.chat.TextColor
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.Identifier
 import net.minecraft.world.level.Level
@@ -83,4 +84,4 @@ fun levelText(key: ResourceKey<Level>): MutableText {
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
-fun MutableText.withStyle(color: HTDefaultColor): MutableText = this.withStyle { style: Style -> style.withColor(color.textColor) }
+fun MutableText.withStyle(color: TextColor): MutableText = this.withStyle { style: Style -> style.withColor(color) }

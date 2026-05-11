@@ -25,6 +25,11 @@ data object HTConstants {
      */
     const val INGOT_AMOUNT = 90
 
+    //    GUI    //
+
+    const val TEXTURES = "textures"
+    const val GUI = "gui"
+
     //    Item    //
 
     /**
@@ -48,6 +53,8 @@ data object HTConstants {
      * 共通タグで使用されるID
      */
     const val COMMON = "c"
+
+    const val MOD_ID = "hiiragi_lib"
 
     @JvmStatic
     fun getBuiltInIdSet(modId: String): Set<String> = setOf(MINECRAFT, NEOFORGE, COMMON, modId)

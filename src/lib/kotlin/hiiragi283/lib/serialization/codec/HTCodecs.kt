@@ -1,6 +1,5 @@
 package hiiragi283.lib.serialization.codec
 
-import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
 import com.mojang.serialization.MapCodec
@@ -16,7 +15,6 @@ import net.minecraft.resources.RegistryFixedCodec
 import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
 import net.minecraft.util.ExtraCodecs
-import org.apache.commons.lang3.math.Fraction
 import java.util.UUID
 import java.util.function.Function
 import kotlin.enums.enumEntries
@@ -27,19 +25,6 @@ import kotlin.enums.enumEntries
  * @since 0.16.0
  */
 data object HTCodecs {
-    @JvmField
-    val FRACTION: Codec<Fraction> = Codec
-        .xor(Codec.STRING, Codec.INT)
-        .xmap(
-            { either: Either<String, Int> -> either.map(Fraction::getFraction, ::fraction) },
-            { fraction: Fraction ->
-                when (fraction.denominator) {
-                    1 -> Either.right(fraction.numerator)
-                    else -> Either.left(fraction.toString())
-                }
-            },
-        )
-
     @JvmField
     val TEXT: Codec<Text> = ComponentSerialization.CODEC
 
@@ -92,17 +77,6 @@ data object HTCodecs {
      */
     @JvmField
     val NON_NEGATIVE_LONG: Codec<Long> = numberRange(Codec.LONG, 0..Long.MAX_VALUE)
-
-    /**
-     * `0`以上の値を対象とする[Fraction]の[Codec]
-     */
-    @JvmField
-    val NON_NEGATIVE_FRACTION: Codec<Fraction> = FRACTION.validate { fraction: Fraction ->
-        when {
-            fraction < Fraction.ZERO -> DataResult.error { "Value must be non-negative: $fraction" }
-            else -> DataResult.success(fraction)
-        }
-    }
 
     /**
      * `1`以上の値を対象とする[Int]の[Codec]
