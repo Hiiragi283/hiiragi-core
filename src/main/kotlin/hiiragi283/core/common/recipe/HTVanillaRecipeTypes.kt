@@ -19,7 +19,7 @@ import net.minecraft.world.item.crafting.RecipeType
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-object HTVanillaRecipeTypes {
+data object HTVanillaRecipeTypes {
     @JvmField
     val SMELTING: HTRecipeType<HCCookingRecipe> = CookingType(RecipeType.SMELTING)
 
@@ -29,7 +29,8 @@ object HTVanillaRecipeTypes {
     @JvmField
     val SMOKING: HTRecipeType<HCCookingRecipe> = CookingType(RecipeType.SMOKING)
 
-    private class CookingType<RECIPE : AbstractCookingRecipe>(private val recipeType: RecipeType<RECIPE>) : HTRecipeType<HCCookingRecipe> {
+    @JvmInline
+    private value class CookingType<RECIPE : AbstractCookingRecipe>(private val recipeType: RecipeType<RECIPE>) : HTRecipeType<HCCookingRecipe> {
         override fun getId(): ResourceLocation = ResourceLocation.parse(recipeType.toString())
 
         override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<HTRecipeHolder<HCCookingRecipe>> = context.getAllRecipes(recipeType).map { holder: HTRecipeHolder<RECIPE> -> holder.mapRecipe(::HCCookingRecipe) }

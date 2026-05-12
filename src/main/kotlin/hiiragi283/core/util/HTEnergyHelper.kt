@@ -4,7 +4,7 @@ import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.energy.HTEnergyBattery
 
-object HTEnergyHelper {
+data object HTEnergyHelper {
     @JvmStatic
     fun moveEnergy(
         from: HTEnergyBattery?,

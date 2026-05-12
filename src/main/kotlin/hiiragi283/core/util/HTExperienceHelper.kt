@@ -22,7 +22,7 @@ typealias ExpLevel = Int
 /**
  * @see me.desht.pneumaticcraft.common.util.EnchantmentUtils
  */
-object HTExperienceHelper {
+data object HTExperienceHelper {
     @JvmStatic
     fun getExpRatio(): Int = HCConfig.COMMON.expConversionRatio.asInt
 

@@ -15,7 +15,7 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent
 import java.util.function.Consumer
 
 @EventBusSubscriber(value = [Dist.CLIENT], modid = HiiragiCoreAPI.MOD_ID)
-object HCTooltipHandler {
+data object HCTooltipHandler {
     @SubscribeEvent
     fun onItemTooltip(event: ItemTooltipEvent) {
         val stack: ItemStack = event.itemStack

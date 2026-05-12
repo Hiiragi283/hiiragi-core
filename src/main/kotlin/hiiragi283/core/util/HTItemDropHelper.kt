@@ -12,10 +12,11 @@ import net.minecraft.world.level.Level
 import net.neoforged.neoforge.items.IItemHandler
 import net.neoforged.neoforge.items.ItemHandlerHelper
 
-object HTItemDropHelper {
+data object HTItemDropHelper {
     /**
      * 指定した[stack]を[entity]のインベントリに入れるか，足元にドロップします
      */
+    @JvmStatic
     fun giveOrDropStack(entity: Entity, stack: ItemStack, offset: Float = 0f) {
         if (entity is Player) {
             giveStackTo(entity, stack)
@@ -30,6 +31,7 @@ object HTItemDropHelper {
     /**
      * 指定した[stack]を[player]のインベントリに入れます。
      */
+    @JvmStatic
     fun giveStackTo(player: Player, stack: ItemStack) {
         if (player.isFakePlayer) {
             player.spawnAtLocation(stack)
@@ -41,6 +43,7 @@ object HTItemDropHelper {
     /**
      * 指定した[stack]を[pos]にドロップします。
      */
+    @JvmStatic
     fun dropStackAt(level: Level, pos: BlockPos, stack: ItemStack) {
         Containers.dropItemStack(level, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), stack)
     }
@@ -48,6 +51,7 @@ object HTItemDropHelper {
     /**
      * 指定した[stack]を[pos]にドロップします。
      */
+    @JvmStatic
     fun dropStackAt(level: Level, pos: Position, stack: ItemStack) {
         ItemEntity(level, pos.x(), pos.y(), pos.z(), stack).let(level::addFreshEntity)
     }

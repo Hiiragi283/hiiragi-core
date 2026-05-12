@@ -6,7 +6,7 @@ import hiiragi283.core.api.config.definePositiveInt
 import net.neoforged.neoforge.common.ModConfigSpec
 import org.apache.commons.lang3.tuple.Pair
 
-object HCConfig {
+data object HCConfig {
     @JvmField
     val COMMON_SPEC: ModConfigSpec
 

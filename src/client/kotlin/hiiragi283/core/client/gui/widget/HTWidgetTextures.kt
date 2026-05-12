@@ -7,7 +7,7 @@ import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 
 @OnlyIn(Dist.CLIENT)
-object HTWidgetTextures {
+data object HTWidgetTextures {
     @JvmField
     val SLOT: ResourceLocation = create("slot")
 

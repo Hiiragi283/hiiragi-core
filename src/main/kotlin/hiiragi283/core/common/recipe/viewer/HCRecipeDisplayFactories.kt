@@ -1,4 +1,4 @@
-package hiiragi283.core.common.recipe.viewer.display
+package hiiragi283.core.common.recipe.viewer
 
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.base.HTProgressData

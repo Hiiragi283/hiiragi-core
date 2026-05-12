@@ -14,7 +14,7 @@ import hiiragi283.core.api.storage.resource.HTResourceType
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
 
-object HTStackSlotHelper {
+data object HTStackSlotHelper {
     @JvmStatic
     fun <RESOURCE : HTResourceType> moveResource(
         from: HTResourceSlot<RESOURCE>?,

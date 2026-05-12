@@ -10,7 +10,7 @@ import hiiragi283.core.setup.HCFluids
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
 
-object HCPotionFluidHelper {
+data object HCPotionFluidHelper {
     /**
      * @return [contents]が`null`の場合，水を返す。
      */

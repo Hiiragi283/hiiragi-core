@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.DispenserBlock
 import net.minecraft.world.phys.Vec3
 
-object HCDispenserBehaviours {
+data object HCDispenserBehaviours {
     @JvmField
     val EXPERIENCE_TOME: DispenseItemBehavior = object : DefaultDispenseItemBehavior() {
         override fun execute(blockSource: BlockSource, item: ItemStack): ItemStack {
