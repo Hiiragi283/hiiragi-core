@@ -1,13 +1,13 @@
 package hiiragi283.core.common.data.recipe.builder
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.data.holder.HTIngredientHolder
 import hiiragi283.core.impl.data.recipe.builder.HTStackRecipeBuilder
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.world.item.crafting.CraftingBookCategory
 import net.minecraft.world.item.crafting.ShapedRecipe
 import net.minecraft.world.item.crafting.ShapedRecipePattern
 import kotlin.collections.contains
+import net.minecraft.world.item.crafting.Ingredient
 
 class HTShapedRecipeBuilder : HTStackRecipeBuilder(HTConst.SHAPED) {
     companion object {
@@ -19,19 +19,19 @@ class HTShapedRecipeBuilder : HTStackRecipeBuilder(HTConst.SHAPED) {
 
     var group: String? = null
     var category: CraftingBookCategory = CraftingBookCategory.MISC
-    private val symbols: MutableMap<Char, HTIngredientHolder.Single> = mutableMapOf()
+    private val symbols: MutableMap<Char, Ingredient> = mutableMapOf()
     private lateinit var patterns: List<String>
 
-    fun define(symbol: Char): HTIngredientHolder.Single {
+    fun define(symbol: Char, ingredient: () -> Ingredient) {
         check(symbol !in symbols) { "Symbol '$symbol' is already used!" }
         check(symbol != ' ') { "Symbol ' ' is not allowed!" }
-        return symbols.computeIfAbsent(symbol) { HTIngredientHolder.Single() }
+        symbols[symbol] = ingredient()
     }
 
     override fun createRecipe(): ShapedRecipe = ShapedRecipe(
         group ?: "",
         category,
-        ShapedRecipePattern.of(symbols.mapValues { (_, value: HTIngredientHolder.Single) -> value.ingredient }, patterns),
+        ShapedRecipePattern.of(symbols, patterns),
         resultStack.stack,
         true,
     )

@@ -207,7 +207,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // レシピを登録
         if (event.isPresentTag(CommonTagPrefixes.STORAGE_BLOCK, entry)) {
             HTShapelessRecipeBuilder.create(output) {
-                ingredients += CommonTagPrefixes.STORAGE_BLOCK to entry
+                ingredients += itemCreator.create(CommonTagPrefixes.STORAGE_BLOCK, entry)
                 resultStack += base to blockProperty.baseCount
                 recipeId replace entry.getId().withSuffix("/${suffix}_from_block")
             }
@@ -218,8 +218,8 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         if (event.isPresentTag(inputTag)) {
             HTShapedRecipeBuilder.create(output) {
                 pattern(pattern)
-                define('A') += inputTag
-                define('B') += base
+                define('A') { itemCreator.create(inputTag) }
+                define('B') { itemCreator.create(base) }
                 resultStack += block
                 recipeId replace entry.getId().withSuffix("/block_from_$suffix")
             }
@@ -251,8 +251,8 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             // レシピを登録
             HTShapedRecipeBuilder.create(output) {
                 hollow4()
-                define('A') += inputTag
-                define('B') += Tags.Items.NUGGETS_IRON
+                define('A') { itemCreator.create(inputTag) }
+                define('B') { itemCreator.create(Tags.Items.NUGGETS_IRON) }
                 resultStack += gear
                 recipeId replace entry.getId().withSuffix("/gear")
             }
@@ -294,14 +294,14 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         if (existingNugget && existingIngot) return
         // レシピを登録
         HTShapelessRecipeBuilder.create(output) {
-            ingredients += CommonTagPrefixes.INGOT to entry
+            ingredients += itemCreator.create(CommonTagPrefixes.INGOT, entry)
             resultStack += nugget to 9
             recipeId replace entry.getId().withSuffix("/nugget_from_ingot")
         }
         HTShapedRecipeBuilder.create(output) {
             hollow8()
-            define('A') += CommonTagPrefixes.NUGGET to entry
-            define('B') += nugget
+            define('A') { itemCreator.create(CommonTagPrefixes.NUGGET, entry) }
+            define('B') { itemCreator.create(nugget) }
             resultStack += ingot
             recipeId replace entry.getId().withSuffix("/ingot_from_nugget")
         }
@@ -328,7 +328,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // レシピを登録
         if (event.isPresentTag(CommonTagPrefixes.RAW_STORAGE_BLOCK, entry)) {
             HTShapelessRecipeBuilder.create(output) {
-                ingredients += CommonTagPrefixes.RAW_STORAGE_BLOCK to entry
+                ingredients += itemCreator.create(CommonTagPrefixes.RAW_STORAGE_BLOCK, entry)
                 resultStack += raw to 9
                 recipeId replace entry.getId().withSuffix("/raw_from_block")
             }
@@ -336,8 +336,8 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         if (event.isPresentTag(CommonTagPrefixes.RAW_MATERIALS, entry)) {
             HTShapedRecipeBuilder.create(output) {
                 hollow8()
-                define('A') += CommonTagPrefixes.RAW_MATERIALS to entry
-                define('B') += raw
+                define('A') { itemCreator.create(CommonTagPrefixes.RAW_MATERIALS, entry) }
+                define('B') { itemCreator.create(raw) }
                 resultStack += rawBlock
                 recipeId replace entry.getId()
             }
@@ -353,7 +353,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // レシピを登録
         if (event.isPresentTag(CommonTagPrefixes.FUEL, entry)) {
             HTShapelessRecipeBuilder.create(output) {
-                ingredients += CommonTagPrefixes.FUEL to entry
+                ingredients += itemCreator.create(CommonTagPrefixes.FUEL, entry)
                 resultStack += tiny to 8
                 recipeId replace entry.getId().withSuffix("/tiny_from_fuel")
             }
@@ -361,7 +361,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         if (event.isPresentTag(CommonTagPrefixes.TINY, entry)) {
             HTShapedRecipeBuilder.create(output) {
                 hollow()
-                define('A') += CommonTagPrefixes.TINY to entry
+                define('A') { itemCreator.create(CommonTagPrefixes.TINY, entry) }
                 resultStack += fuel
                 recipeId replace entry.getId()
             }
@@ -393,8 +393,8 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
                 // Shaped
                 HTShapedRecipeBuilder.create(output) {
                     pattern(toolType.recipePattern)
-                    define('A') += inputTag
-                    define('B') += Tags.Items.RODS_WOODEN
+                    define('A') { itemCreator.create(inputTag) }
+                    define('B') { itemCreator.create(Tags.Items.RODS_WOODEN) }
                     resultStack += tool.get()
                 }
             }

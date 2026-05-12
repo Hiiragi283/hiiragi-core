@@ -39,6 +39,7 @@ import net.minecraft.world.item.Items
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.item.crafting.CraftingBookCategory
+import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient
@@ -59,9 +60,9 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         // Sand + Ash -> Glass Dust
         HTShapelessRecipeBuilder.create(output) {
             repeat(3) {
-                ingredients += Tags.Items.SANDS
+                ingredients += itemCreator.create(Tags.Items.SANDS)
             }
-            ingredients += CommonTagPrefixes.DUST to CommonMaterialKeys.ASH
+            ingredients += itemCreator.create(CommonTagPrefixes.DUST, CommonMaterialKeys.ASH)
             resultStack += getOrThrow(CommonParts.DUST, VanillaMaterialKeys.GLASS) to 4
             recipeId suffix "_from_sand_and_ash"
         }
@@ -77,21 +78,21 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
                 "AAA",
                 "AAA",
             )
-            define('A') += CommonTagPrefixes.ROD to VanillaMaterialKeys.IRON
+            define('A') { itemCreator.create(CommonTagPrefixes.ROD, VanillaMaterialKeys.IRON) }
             resultStack += Items.IRON_BARS to 8
             recipeId suffix "_from_rod"
         }
         // Sticky Piston
         HTShapelessRecipeBuilder.create(output) {
-            ingredients += HiiragiCoreTags.Items.STICKY_BALLS
-            ingredients += Items.PISTON
+            ingredients += itemCreator.create(HiiragiCoreTags.Items.STICKY_BALLS)
+            ingredients += itemCreator.create(Items.PISTON)
             resultStack += Items.STICKY_PISTON
         }
 
         // Steel + Flint
         HTShapelessRecipeBuilder.create(output) {
-            ingredients += CommonTagPrefixes.INGOT to CommonMaterialKeys.STEEL
-            ingredients += Items.FLINT
+            ingredients += itemCreator.create(CommonTagPrefixes.INGOT, CommonMaterialKeys.STEEL)
+            ingredients += itemCreator.create(Items.FLINT)
             resultStack += createItemStack(Items.FLINT_AND_STEEL, DataComponents.MAX_DAMAGE, 64 * 3)
             recipeId replace id("real_flint_and_steel")
         }
@@ -108,24 +109,24 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         // Compressed Sawdust -> Particle Board
         HTShapedRecipeBuilder.create(output) {
             hollow8()
-            define('A') += CommonTagPrefixes.DUST to VanillaMaterialKeys.WOOD
-            define('B') += HiiragiCoreTags.Items.STICKY_BALLS
+            define('A') { itemCreator.create(CommonTagPrefixes.DUST, VanillaMaterialKeys.WOOD) }
+            define('B') { itemCreator.create(HiiragiCoreTags.Items.STICKY_BALLS) }
             resultStack += HCItems.PARTICLE_BOARD to 4
         }
 
         // Steel Compound
         HTShapelessRecipeBuilder.create(output) {
-            ingredients += CommonTagPrefixes.INGOT to VanillaMaterialKeys.IRON
+            ingredients += itemCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON)
             repeat(2) {
-                ingredients += CommonTagPrefixes.DUST to VanillaMaterialKeys.CHARCOAL
+                ingredients += itemCreator.create(CommonTagPrefixes.DUST, VanillaMaterialKeys.CHARCOAL)
             }
             resultStack += HCItems.STEEL_COMPOUND
             recipeId suffix "_with_charcoal"
         }
         HTShapelessRecipeBuilder.create(output) {
-            ingredients += CommonTagPrefixes.INGOT to VanillaMaterialKeys.IRON
+            ingredients += itemCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON)
             repeat(4) {
-                ingredients += CommonTagPrefixes.DUST to VanillaMaterialKeys.COAL
+                ingredients += itemCreator.create(CommonTagPrefixes.DUST, VanillaMaterialKeys.COAL)
             }
             resultStack += HCItems.STEEL_COMPOUND
             recipeId suffix "_with_coal"
@@ -155,13 +156,13 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         // Warped Wart Block
         HTShapedRecipeBuilder.create(output) {
             hollow8()
-            define('A') += HiiragiCoreTags.Items.CROPS_WARPED_WART
-            define('B') += HCBlocks.WARPED_WART
+            define('A') { itemCreator.create(HiiragiCoreTags.Items.CROPS_WARPED_WART) }
+            define('B') { itemCreator.create(HCBlocks.WARPED_WART) }
             resultStack += Items.WARPED_WART_BLOCK
         }
         // Flour + Water -> Dough
         HTShapelessRecipeBuilder.create(output) {
-            ingredients += HiiragiCoreTags.Items.FLOURS_WHEAT
+            ingredients += itemCreator.create(HiiragiCoreTags.Items.FLOURS_WHEAT)
             ingredients += DataComponentIngredient.of(
                 false,
                 DataComponents.POTION_CONTENTS,
@@ -173,9 +174,9 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         }
         HTShapelessRecipeBuilder.create(output) {
             repeat(3) {
-                ingredients += HiiragiCoreTags.Items.FLOURS_WHEAT
+                ingredients += itemCreator.create(HiiragiCoreTags.Items.FLOURS_WHEAT)
             }
-            ingredients += Tags.Items.BUCKETS_WATER
+            ingredients += itemCreator.create(Tags.Items.BUCKETS_WATER)
             resultStack += HCItems.WHEAT_DOUGH to 3
             recipeId suffix "_with_bucket"
         }
@@ -194,8 +195,8 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
                 "BBB",
                 " B ",
             )
-            define('A') += Items.WITHER_SKELETON_SKULL
-            define('B') += ItemTags.SOUL_FIRE_BASE_BLOCKS
+            define('A') { itemCreator.create(Items.WITHER_SKELETON_SKULL) }
+            define('B') { itemCreator.create(ItemTags.SOUL_FIRE_BASE_BLOCKS) }
             resultStack += HCItems.WITHER_DOLL
         }
 
@@ -209,13 +210,14 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
     private fun registerIronAlt(key: HTMaterialKey, multiplier: Fraction) {
         val suffix: String = key.path
         val entry: Pair<HTTagPrefix, HTMaterialKey> = CommonTagPrefixes.INGOT to key
+        val ingredient: Ingredient = itemCreator.create(CommonTagPrefixes.INGOT, key)
         // Bucket
         HTShapedRecipeBuilder.create(output) {
             pattern(
                 "A A",
                 " A ",
             )
-            define('A') += entry
+            define('A') { ingredient }
             resultStack += Items.BUCKET to multiplier.toInt()
             recipeId suffix "_from_$suffix"
             conditions += entry
@@ -227,8 +229,8 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
                 "ABA",
                 " A ",
             )
-            define('A') += entry
-            define('B') += Tags.Items.CHESTS
+            define('A') { ingredient }
+            define('B') { itemCreator.create(Tags.Items.CHESTS) }
             resultStack += Items.HOPPER to multiplier.toInt()
             recipeId suffix "_from_$suffix"
             conditions += entry
@@ -240,10 +242,10 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
                 "BCB",
                 "BDB",
             )
-            define('A') += ItemTags.PLANKS
-            define('B') += ItemTags.STONE_CRAFTING_MATERIALS
-            define('C') += entry
-            define('D') += CommonTagPrefixes.DUST to VanillaMaterialKeys.REDSTONE
+            define('A') { itemCreator.create(ItemTags.PLANKS) }
+            define('B') { itemCreator.create(ItemTags.STONE_CRAFTING_MATERIALS) }
+            define('C') { ingredient }
+            define('D') { itemCreator.create(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE) }
             resultStack += Items.PISTON to multiplier.toInt()
             recipeId suffix "_from_$suffix"
             conditions += entry
@@ -255,8 +257,8 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
                 "ABA",
                 "A A",
             )
-            define('A') += entry
-            define('B') += Tags.Items.RODS_WOODEN
+            define('A') { ingredient }
+            define('B') { itemCreator.create(Tags.Items.RODS_WOODEN) }
             resultStack += Items.RAIL to (16 * multiplier).toInt()
             recipeId suffix "_from_$suffix"
             conditions += entry
@@ -272,17 +274,17 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
                 "B",
                 "C",
             )
-            define('A') += ItemTags.WOOL
-            define('B') += CommonTagPrefixes.INGOT to VanillaMaterialKeys.COPPER
-            define('C') += Tags.Items.RODS_WOODEN
+            define('A') { itemCreator.create(ItemTags.WOOL) }
+            define('B') { itemCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.COPPER) }
+            define('C') { itemCreator.create(Tags.Items.RODS_WOODEN) }
             resultStack += HCItems.PAINT_BRUSH
         }
 
         // Blueprint
         HTShapelessRecipeBuilder.create(output) {
-            ingredients += Items.PAPER
-            ingredients += Tags.Items.DYES_WHITE
-            ingredients += Tags.Items.DYES_BLUE
+            ingredients += itemCreator.create(Items.PAPER)
+            ingredients += itemCreator.create(Tags.Items.DYES_WHITE)
+            ingredients += itemCreator.create(Tags.Items.DYES_BLUE)
             resultStack += HCItems.BLUEPRINT
         }
         save(id(HTConst.SHAPELESS, "blueprint_cloning"), HTBlueprintCloningRecipe(CraftingBookCategory.MISC))
@@ -293,9 +295,9 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
                 "BC ",
                 "CB ",
             )
-            define('A') += Tags.Items.STRINGS
-            define('B') += CommonTagPrefixes.NUGGET to VanillaMaterialKeys.IRON
-            define('C') += Tags.Items.GUNPOWDERS
+            define('A') { itemCreator.create(Tags.Items.STRINGS) }
+            define('B') { itemCreator.create(CommonTagPrefixes.NUGGET, VanillaMaterialKeys.IRON) }
+            define('C') { itemCreator.create(Tags.Items.GUNPOWDERS) }
             resultStack += HCItems.BOMB
         }
         // Slot Cover
@@ -305,23 +307,23 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         }
         // Trader Catalog
         HTShapelessRecipeBuilder.create(output) {
-            ingredients += Items.BOOK
-            ingredients += CommonTagPrefixes.GEM to VanillaMaterialKeys.EMERALD
+            ingredients += itemCreator.create(Items.BOOK)
+            ingredients += itemCreator.create(CommonTagPrefixes.GEM, VanillaMaterialKeys.EMERALD)
             resultStack += HCItems.TRADER_CATALOG
         }
         // Eldritch Egg
         HTShapedRecipeBuilder.create(output) {
             hollow4()
-            define('A') += Tags.Items.EGGS
-            define('B') += CommonTagPrefixes.PEARL to HCMaterialKeys.ELDRITCH
+            define('A') { itemCreator.create(Tags.Items.EGGS) }
+            define('B') { itemCreator.create(CommonTagPrefixes.PEARL, HCMaterialKeys.ELDRITCH) }
             resultStack += HCItems.ELDRITCH_EGG to 4
         }
         // Experience Tome
         HTShapedRecipeBuilder.create(output) {
             cross8()
-            define('A') += Items.EXPERIENCE_BOTTLE
-            define('B') += CommonTagPrefixes.GEM to VanillaMaterialKeys.EMERALD
-            define('C') += Items.BOOK
+            define('A') { itemCreator.create(Items.EXPERIENCE_BOTTLE) }
+            define('B') { itemCreator.create(CommonTagPrefixes.GEM, VanillaMaterialKeys.EMERALD) }
+            define('C') { itemCreator.create(Items.BOOK) }
             resultStack += HCItems.EXPERIENCE_TOME
         }
         save(id(HTConst.SHAPELESS, "experience_tome"), HCExperienceStoringRecipe(CraftingBookCategory.MISC))
@@ -333,20 +335,20 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
                 "ACA",
                 "AAA",
             )
-            define('A') += CommonTagPrefixes.GEM to VanillaMaterialKeys.DIAMOND
-            define('B') += HCItems.ETERNAL_UPGRADE
-            define('C') += HCItems.IRIDESCENT_POWDER
+            define('A') { itemCreator.create(CommonTagPrefixes.GEM, VanillaMaterialKeys.DIAMOND) }
+            define('B') { itemCreator.create(HCItems.ETERNAL_UPGRADE) }
+            define('C') { itemCreator.create(HCItems.IRIDESCENT_POWDER) }
             resultStack += HCItems.ETERNAL_UPGRADE to 2
         }
         save(id(HTConst.SMITHING, "eternal_upgrade"), HCEternalSmithingRecipe)
         // Almighty Pickaxe
         HTShapelessRecipeBuilder.create(output) {
-            ingredients += Items.NETHERITE_SHOVEL
-            ingredients += Items.NETHERITE_PICKAXE
-            ingredients += Items.NETHERITE_AXE
-            ingredients += Items.NETHERITE_HOE
+            ingredients += itemCreator.create(Items.NETHERITE_SHOVEL)
+            ingredients += itemCreator.create(Items.NETHERITE_PICKAXE)
+            ingredients += itemCreator.create(Items.NETHERITE_AXE)
+            ingredients += itemCreator.create(Items.NETHERITE_HOE)
             repeat(4) {
-                ingredients += CommonTagPrefixes.INGOT to CommonMaterialKeys.IRIDIUM
+                ingredients += itemCreator.create(CommonTagPrefixes.INGOT, CommonMaterialKeys.IRIDIUM)
             }
             resultStack += HCItems.ALMIGHTY_PICKAXE
         }
@@ -358,9 +360,9 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         for ((color: HTDefaultColor, content: HTFluidContent) in HCFluids.DyeContents) {
             HTShapelessRecipeBuilder.create(output) {
                 repeat(4) {
-                    ingredients += color.dyesTag
+                    ingredients += itemCreator.create(color.dyesTag)
                 }
-                ingredients += Tags.Items.BUCKETS_WATER
+                ingredients += itemCreator.create(Tags.Items.BUCKETS_WATER)
                 resultStack += content.getBucket()
                 recipeId suffix "_from_bye"
             }
@@ -376,8 +378,8 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
                 "BBB",
                 "B  ",
             )
-            define('A') += Items.LEVER
-            define('B') += CommonTagPrefixes.INGOT to VanillaMaterialKeys.COPPER
+            define('A') { itemCreator.create(Items.LEVER) }
+            define('B') { itemCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.COPPER) }
             resultStack += HCBlocks.TREE_TAP
         }
         // Copper Basin
@@ -387,15 +389,15 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
                 "A A",
                 "BAB",
             )
-            define('A') += CommonTagPrefixes.INGOT to VanillaMaterialKeys.COPPER
-            define('B') += CommonTagPrefixes.STORAGE_BLOCK to VanillaMaterialKeys.COPPER
+            define('A') { itemCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.COPPER) }
+            define('B') { itemCreator.create(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.COPPER) }
             resultStack += HCBlocks.COPPER_BASINS[HTWeatheringLevel.UNAFFECTED]?.first?.get() ?: return
         }
         HCBlocks.COPPER_BASINS.forEach { base: HTBlockHolderLike<*>, waxed: HTBlockHolderLike<*> ->
             // Waxing
             HTShapelessRecipeBuilder.create(output) {
-                ingredients += base.get()
-                ingredients += Items.HONEYCOMB
+                ingredients += itemCreator.create(base.get())
+                ingredients += itemCreator.create(Items.HONEYCOMB)
                 resultStack += waxed.get()
                 recipeId suffix "_from_${base.path}"
             }
