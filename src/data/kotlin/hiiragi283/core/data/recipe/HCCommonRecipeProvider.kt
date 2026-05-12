@@ -67,7 +67,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         }
         // Glass Dust -> Glass
         HTCookingRecipeBuilder.smelting(output) {
-            ingredient += getOrThrow(CommonParts.DUST, VanillaMaterialKeys.GLASS)
+            ingredient = itemCreator.create(getOrThrow(CommonParts.DUST, VanillaMaterialKeys.GLASS))
             resultStack += Items.GLASS
             recipeId suffix "_from_dust"
         }
@@ -101,7 +101,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
     private fun materials() {
         // Bamboo -> Bamboo Charcoal
         HTCookingRecipeBuilder.smelting(output) {
-            ingredient += Items.BAMBOO
+            ingredient = itemCreator.create(Items.BAMBOO)
             resultStack += HCItems.BAMBOO_CHARCOAL
             exp = 0.5f
         }
@@ -131,7 +131,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             recipeId suffix "_with_coal"
         }
         HTCookingRecipeBuilder.blasting(output) {
-            ingredient += HCItems.STEEL_COMPOUND
+            ingredient = itemCreator.create(HCItems.STEEL_COMPOUND)
             resultStack += getOrThrow(CommonParts.INGOT, CommonMaterialKeys.STEEL)
             exp = 0.7f
             recipeId suffix "_from_compound"
@@ -139,7 +139,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
 
         // Polymer Resin -> Plastic Bar
         HTCookingRecipeBuilder.smelting(output) {
-            ingredient += HCItems.POLYMER_RESIN
+            ingredient = itemCreator.create(HCItems.POLYMER_RESIN)
             resultStack += getOrThrow(CommonParts.PLATE, CommonMaterialKeys.PLASTIC)
             exp = 0.7f
             recipeId suffix "_from_resin"
@@ -147,7 +147,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         // Synthetic
         for (item: ItemLike in listOf(HCItems.SYNTHETIC_FEATHER, HCItems.SYNTHETIC_FIBER, HCItems.SYNTHETIC_LEATHER)) {
             HTStonecuttingRecipeBuilder.create(output) {
-                ingredient += HiiragiCoreTags.Items.PLASTICS
+                ingredient = itemCreator.create(HiiragiCoreTags.Items.PLASTICS)
                 resultStack += item
             }
         }
@@ -181,7 +181,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         }
         // Dough -> Bread
         HTCookingRecipeBuilder.smeltingAndSmoking(output) {
-            ingredient += HCItems.WHEAT_DOUGH
+            ingredient = itemCreator.create(HCItems.WHEAT_DOUGH)
             resultStack += Items.BREAD
             exp = 0.3f
             recipeId suffix "_from_dough"
@@ -300,7 +300,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         }
         // Slot Cover
         HTStonecuttingRecipeBuilder.create(output) {
-            ingredient += Items.SMOOTH_STONE_SLAB
+            ingredient = itemCreator.create(Items.SMOOTH_STONE_SLAB)
             resultStack += HCItems.SLOT_COVER to 3
         }
         // Trader Catalog

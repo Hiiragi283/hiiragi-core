@@ -327,7 +327,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         }
         // Raw Rubber -> Rubber Bar
         HTCookingRecipeBuilder.smelting(output) {
-            ingredient += HCItems.RAW_RUBBER
+            ingredient = itemCreator.create(HCItems.RAW_RUBBER)
             resultStack += HCItems.CURED_RUBBER
             exp = 0.7f
         }

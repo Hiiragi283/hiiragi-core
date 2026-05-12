@@ -1,7 +1,7 @@
 package hiiragi283.core.common.data.recipe.builder
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.data.holder.HTIngredientHolder
+import hiiragi283.core.api.util.HTDelegates
 import hiiragi283.core.impl.data.recipe.builder.HTStackRecipeBuilder
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.world.item.crafting.AbstractCookingRecipe
@@ -10,6 +10,7 @@ import net.minecraft.world.item.crafting.CookingBookCategory
 import net.minecraft.world.item.crafting.SmeltingRecipe
 import net.minecraft.world.item.crafting.SmokingRecipe
 import java.util.function.IntUnaryOperator
+import net.minecraft.world.item.crafting.Ingredient
 
 class HTCookingRecipeBuilder(
     private val factory: AbstractCookingRecipe.Factory<*>,
@@ -57,14 +58,14 @@ class HTCookingRecipeBuilder(
 
     var group: String? = null
     var category: CookingBookCategory = CookingBookCategory.MISC
-    val ingredient = HTIngredientHolder.Single()
+    var ingredient: Ingredient by HTDelegates.onceInitialize()
     var exp: Float = 0f
     var time: Int = 20 * 10
 
     override fun createRecipe(): AbstractCookingRecipe = factory.create(
         group ?: "",
         category,
-        ingredient.ingredient,
+        ingredient,
         resultStack.stack,
         exp,
         timeOperator.applyAsInt(time),

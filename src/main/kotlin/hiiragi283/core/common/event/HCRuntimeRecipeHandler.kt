@@ -239,9 +239,9 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             val (template: HTItemHolderLike<*>, base: HTMaterialKey) = smithingProperty
             if (event.isPresentTag(CommonTagPrefixes.GEAR, base)) {
                 HTSmithingRecipeBuilder.create(output) {
-                    this.template += template
-                    this.base += CommonTagPrefixes.GEAR.itemTagKey(base)
-                    this.addition += inputTag
+                    this.template = itemCreator.create(template)
+                    this.base = itemCreator.create(CommonTagPrefixes.GEAR, base)
+                    this.addition = itemCreator.create(inputTag)
                     this.resultStack += gear
                     recipeId replace entry.getId().withSuffix("/gear")
                 }
@@ -383,9 +383,9 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
                 val (template: HTItemHolderLike<*>, base: HTMaterialKey) = smithingProperty
                 val baseTool: HTSimpleItemHolderLike = existing[toolType, base] ?: registered[toolType, base] ?: continue
                 HTSmithingRecipeBuilder.create(output) {
-                    this.template += template
-                    this.base += baseTool.get()
-                    this.addition += inputTag
+                    this.template = itemCreator.create(template)
+                    this.base = itemCreator.create(baseTool.get())
+                    this.addition = itemCreator.create(inputTag)
                     this.resultStack += tool.get()
                 }
             }
@@ -413,7 +413,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         if (existingDust && existingIngot) return
         // Smelting & Blasting
         registerSmelting(entry) {
-            ingredient += dust
+            ingredient = itemCreator.create(dust)
             resultStack += ingot
             exp = 0.35f
             recipeId suffix "_from_${CommonParts.DUST.createId(entry).path}"
@@ -435,7 +435,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         if (oreEntries.isEmpty()) return
         // Smelting & Blasting
         registerSmelting(entry) {
-            ingredient += oreEntries
+            ingredient = itemCreator.create(oreEntries)
             resultStack += base to smeltedPropertyMap.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER).toInt()
             exp = 0.7f
             recipeId suffix "_from_${CommonParts.ORE.asPartName()}"
@@ -459,7 +459,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             HTMaterialLevel.HIGH -> HTCookingRecipeBuilder::blasting
             HTMaterialLevel.HIGHEST -> return
         }(output) {
-            ingredient += ore
+            ingredient = itemCreator.create(ore)
             resultStack += base to smeltedPropertyMap.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER).toInt()
             exp = 0.7f
             recipeId suffix "_from_${part.asPartName()}"
