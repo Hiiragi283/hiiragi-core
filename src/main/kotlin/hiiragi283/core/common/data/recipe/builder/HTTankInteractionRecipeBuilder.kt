@@ -5,6 +5,7 @@ import hiiragi283.core.api.data.recipe.builder.HTRecipeBuilder
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.util.HTDelegates
 import hiiragi283.core.api.util.toOptional
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
@@ -24,8 +25,8 @@ data object HTTankInteractionRecipeBuilder {
     }
 
     class Emptying : HTRecipeBuilder(HTConst.EMPTYING) {
-        lateinit var ingredient: Ingredient
-        lateinit var fluidResult: HTFluidResult
+        var ingredient: Ingredient by HTDelegates.onceInitialize()
+        var fluidResult: HTFluidResult by HTDelegates.onceInitialize()
         var itemResult: HTItemResult? = null
 
         override fun getPrimalId(): ResourceLocation = fluidResult.getId()
@@ -34,9 +35,9 @@ data object HTTankInteractionRecipeBuilder {
     }
 
     class Filling : HTRecipeBuilder(HTConst.FILLING) {
-        lateinit var itemIngredient: Ingredient
-        lateinit var fluidIngredient: HTFluidIngredient
-        lateinit var itemResult: HTItemResult
+        var itemIngredient: Ingredient by HTDelegates.onceInitialize()
+        var fluidIngredient: HTFluidIngredient by HTDelegates.onceInitialize()
+        var itemResult: HTItemResult by HTDelegates.onceInitialize()
 
         override fun getPrimalId(): ResourceLocation = itemResult.getId()
 

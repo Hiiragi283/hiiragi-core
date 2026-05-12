@@ -3,6 +3,7 @@ package hiiragi283.core.common.data.recipe.builder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.builder.HTRecipeBuilder
 import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.util.HTDelegates
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.ResourceLocation
@@ -16,8 +17,8 @@ class HCExplodingRecipeBuilder : HTRecipeBuilder(HTConst.EXPLODING) {
         }
     }
 
-    lateinit var ingredient: Ingredient
-    lateinit var result: HTItemResult
+    var ingredient: Ingredient by HTDelegates.onceInitialize()
+    var result: HTItemResult by HTDelegates.onceInitialize()
 
     override fun getPrimalId(): ResourceLocation = result.getId()
 
