@@ -38,6 +38,7 @@ import hiiragi283.core.common.data.recipe.builder.HTSmithingRecipeBuilder
 import hiiragi283.core.common.recipe.ingredient.HTBluePrintIngredient
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.level.ItemLike
 import net.neoforged.bus.api.SubscribeEvent
@@ -208,7 +209,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         if (event.isPresentTag(CommonTagPrefixes.STORAGE_BLOCK, entry)) {
             HTShapelessRecipeBuilder.create(output) {
                 ingredients += itemCreator.create(CommonTagPrefixes.STORAGE_BLOCK, entry)
-                resultStack += base to blockProperty.baseCount
+                resultStack = ItemStack(base, blockProperty.baseCount)
                 recipeId replace entry.getId().withSuffix("/${suffix}_from_block")
             }
         }
@@ -220,7 +221,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
                 pattern(pattern)
                 define('A') { itemCreator.create(inputTag) }
                 define('B') { itemCreator.create(base) }
-                resultStack += block
+                resultStack = ItemStack(block)
                 recipeId replace entry.getId().withSuffix("/block_from_$suffix")
             }
         }
@@ -231,7 +232,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         val inputTag: TagKey<Item> = entry.getDefaultPart(entry) ?: return
         if (!event.isPresentTag(inputTag)) return
 
-        val gear: ItemLike = event.getFirstHolder(CommonTagPrefixes.GEAR, entry) ?: return
+        val gear: ItemStack = event.getFirstHolder(CommonTagPrefixes.GEAR, entry)?.toStack() ?: return
 
         val smithingProperty: HTSmithingRecipeProperty? = entry[HTMaterialPropertyKeys.SMITHING_RECIPE]
         if (smithingProperty != null) {
@@ -242,7 +243,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
                     this.template = itemCreator.create(template)
                     this.base = itemCreator.create(CommonTagPrefixes.GEAR, base)
                     this.addition = itemCreator.create(inputTag)
-                    this.resultStack += gear
+                    this.resultStack = gear
                     recipeId replace entry.getId().withSuffix("/gear")
                 }
             }
@@ -253,7 +254,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
                 hollow4()
                 define('A') { itemCreator.create(inputTag) }
                 define('B') { itemCreator.create(Tags.Items.NUGGETS_IRON) }
-                resultStack += gear
+                resultStack = gear
                 recipeId replace entry.getId().withSuffix("/gear")
             }
         }
@@ -295,14 +296,14 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // レシピを登録
         HTShapelessRecipeBuilder.create(output) {
             ingredients += itemCreator.create(CommonTagPrefixes.INGOT, entry)
-            resultStack += nugget to 9
+            resultStack = ItemStack(nugget, 9)
             recipeId replace entry.getId().withSuffix("/nugget_from_ingot")
         }
         HTShapedRecipeBuilder.create(output) {
             hollow8()
             define('A') { itemCreator.create(CommonTagPrefixes.NUGGET, entry) }
             define('B') { itemCreator.create(nugget) }
-            resultStack += ingot
+            resultStack = ItemStack(ingot)
             recipeId replace entry.getId().withSuffix("/ingot_from_nugget")
         }
     }
@@ -329,7 +330,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         if (event.isPresentTag(CommonTagPrefixes.RAW_STORAGE_BLOCK, entry)) {
             HTShapelessRecipeBuilder.create(output) {
                 ingredients += itemCreator.create(CommonTagPrefixes.RAW_STORAGE_BLOCK, entry)
-                resultStack += raw to 9
+                resultStack = ItemStack(raw, 9)
                 recipeId replace entry.getId().withSuffix("/raw_from_block")
             }
         }
@@ -338,7 +339,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
                 hollow8()
                 define('A') { itemCreator.create(CommonTagPrefixes.RAW_MATERIALS, entry) }
                 define('B') { itemCreator.create(raw) }
-                resultStack += rawBlock
+                resultStack = ItemStack(rawBlock)
                 recipeId replace entry.getId()
             }
         }
@@ -354,7 +355,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         if (event.isPresentTag(CommonTagPrefixes.FUEL, entry)) {
             HTShapelessRecipeBuilder.create(output) {
                 ingredients += itemCreator.create(CommonTagPrefixes.FUEL, entry)
-                resultStack += tiny to 8
+                resultStack = ItemStack(tiny, 8)
                 recipeId replace entry.getId().withSuffix("/tiny_from_fuel")
             }
         }
@@ -362,7 +363,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             HTShapedRecipeBuilder.create(output) {
                 hollow()
                 define('A') { itemCreator.create(CommonTagPrefixes.TINY, entry) }
-                resultStack += fuel
+                resultStack = ItemStack(fuel)
                 recipeId replace entry.getId()
             }
         }
@@ -386,7 +387,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
                     this.template = itemCreator.create(template)
                     this.base = itemCreator.create(baseTool.get())
                     this.addition = itemCreator.create(inputTag)
-                    this.resultStack += tool.get()
+                    this.resultStack = tool.toStack()
                 }
             }
             if (smithingProperty?.allowCrafting ?: true) {
@@ -395,7 +396,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
                     pattern(toolType.recipePattern)
                     define('A') { itemCreator.create(inputTag) }
                     define('B') { itemCreator.create(Tags.Items.RODS_WOODEN) }
-                    resultStack += tool.get()
+                    resultStack = tool.toStack()
                 }
             }
         }
@@ -414,7 +415,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // Smelting & Blasting
         registerSmelting(entry) {
             ingredient = itemCreator.create(dust)
-            resultStack += ingot
+            resultStack = ItemStack(ingot)
             exp = 0.35f
             recipeId suffix "_from_${CommonParts.DUST.createId(entry).path}"
         }
@@ -436,7 +437,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // Smelting & Blasting
         registerSmelting(entry) {
             ingredient = itemCreator.create(oreEntries)
-            resultStack += base to smeltedPropertyMap.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER).toInt()
+            resultStack = ItemStack(base, smeltedPropertyMap.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER).toInt())
             exp = 0.7f
             recipeId suffix "_from_${CommonParts.ORE.asPartName()}"
         }
@@ -460,7 +461,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             HTMaterialLevel.HIGHEST -> return
         }(output) {
             ingredient = itemCreator.create(ore)
-            resultStack += base to smeltedPropertyMap.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER).toInt()
+            resultStack = ItemStack(base, smeltedPropertyMap.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER).toInt())
             exp = 0.7f
             recipeId suffix "_from_${part.asPartName()}"
         }

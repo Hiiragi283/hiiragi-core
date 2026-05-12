@@ -1,13 +1,14 @@
 package hiiragi283.core.api.data.advancement.builder
 
 import hiiragi283.core.api.data.advancement.HTAdvancementKey
-import hiiragi283.core.api.data.holder.HTItemStackHolder
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
+import hiiragi283.core.api.util.HTDelegates
 import hiiragi283.core.api.util.toOptional
 import net.minecraft.advancements.AdvancementType
 import net.minecraft.advancements.DisplayInfo
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.item.ItemStack
 
 /**
  * [DisplayInfo]のビルダークラスです。
@@ -25,7 +26,7 @@ class HTDisplayInfoBuilder {
             .build()
     }
 
-    val iconStack = HTItemStackHolder()
+    val iconStack: ItemStack by HTDelegates.onceInitialize()
     val titleText = TextHolder()
     val descText = TextHolder()
     var backGround: ResourceLocation? = null
@@ -35,7 +36,7 @@ class HTDisplayInfoBuilder {
     var hidden: Boolean = false
 
     fun build(): DisplayInfo = DisplayInfo(
-        iconStack.stack,
+        iconStack,
         titleText.text,
         descText.text,
         backGround.toOptional(),

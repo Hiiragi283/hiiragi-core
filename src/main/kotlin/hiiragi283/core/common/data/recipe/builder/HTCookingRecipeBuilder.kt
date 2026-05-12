@@ -66,7 +66,7 @@ class HTCookingRecipeBuilder(
         group ?: "",
         category,
         ingredient,
-        resultStack.stack,
+        resultStack,
         exp,
         timeOperator.applyAsInt(time),
     )

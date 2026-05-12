@@ -23,7 +23,7 @@ class HTShapelessRecipeBuilder : HTStackRecipeBuilder(HTConst.SHAPELESS) {
     override fun createRecipe(): ShapelessRecipe = ShapelessRecipe(
         group ?: "",
         category,
-        resultStack.stack,
+        resultStack,
         NonNullList.copyOf(ingredients),
     )
 }

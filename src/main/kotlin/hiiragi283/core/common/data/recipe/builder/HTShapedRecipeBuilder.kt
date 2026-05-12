@@ -32,7 +32,7 @@ class HTShapedRecipeBuilder : HTStackRecipeBuilder(HTConst.SHAPED) {
         group ?: "",
         category,
         ShapedRecipePattern.of(symbols, patterns),
-        resultStack.stack,
+        resultStack,
         true,
     )
 

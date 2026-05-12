@@ -23,6 +23,6 @@ class HTSmithingRecipeBuilder : HTStackRecipeBuilder(HTConst.SMITHING) {
         template,
         base,
         addition,
-        resultStack.stack,
+        resultStack,
     )
 }

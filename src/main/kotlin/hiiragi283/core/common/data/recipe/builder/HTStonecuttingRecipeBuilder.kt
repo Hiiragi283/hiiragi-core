@@ -20,6 +20,6 @@ class HTStonecuttingRecipeBuilder : HTStackRecipeBuilder("stonecutting") {
     override fun createRecipe(): StonecutterRecipe = StonecutterRecipe(
         group ?: "",
         ingredient,
-        resultStack.stack,
+        resultStack,
     )
 }
