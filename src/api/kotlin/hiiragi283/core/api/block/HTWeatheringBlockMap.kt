@@ -9,6 +9,7 @@ import hiiragi283.core.api.registry.HTBlockHolderLike
  * @author Hiiragi Tsubasa
  * @since 0.14.0
  */
+@JvmRecord
 data class HTWeatheringBlockMap(
     val base: Map<HTWeatheringLevel, HTBlockHolderLike<*>>,
     val waxed: Map<HTWeatheringLevel, HTBlockHolderLike<*>>,

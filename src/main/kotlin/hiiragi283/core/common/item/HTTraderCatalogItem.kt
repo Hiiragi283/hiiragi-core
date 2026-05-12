@@ -13,6 +13,7 @@ class HTTraderCatalogItem(properties: Properties) : Item(properties.stacksTo(1))
     override fun use(level: Level, player: Player, usedHand: InteractionHand): InteractionResultHolder<ItemStack> {
         val stack: ItemStack = player.getItemInHand(usedHand)
         val trader: WanderingTrader = EntityType.WANDERING_TRADER.create(level) ?: return InteractionResultHolder.fail(stack)
+        trader.setPos(player.position())
         return InteractionResultHolder(trader.interact(player, usedHand), stack)
     }
 }

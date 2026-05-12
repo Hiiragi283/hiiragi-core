@@ -1,7 +1,6 @@
 package hiiragi283.core.api.data.holder
 
 import hiiragi283.core.api.util.Ior
-import hiiragi283.core.api.util.toIorOrThrow
 
 class HTIorHolder<ITEM : Any, FLUID : Any> {
     private var item: ITEM? = null
@@ -19,5 +18,5 @@ class HTIorHolder<ITEM : Any, FLUID : Any> {
         this.fluid = right
     }
 
-    fun toIor(): Ior<ITEM, FLUID> = (item to fluid).toIorOrThrow()
+    fun toIor(): Ior<ITEM, FLUID> = Ior.fromNullable(item, fluid) ?: error("Either item or fluid value required")
 }

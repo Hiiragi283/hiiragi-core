@@ -9,7 +9,7 @@ import net.minecraft.world.item.DyeColor
  * @author Hiiragi Tsubasa
  * @since 0.15.0
  */
-object VanillaColoredContents {
+data object VanillaColoredContents {
     @JvmField
     val BANNER: HTColoredContents<HTSimpleItemHolderLike> = create("%s_banner")
 

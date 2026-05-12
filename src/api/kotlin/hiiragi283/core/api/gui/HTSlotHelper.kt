@@ -5,7 +5,7 @@ package hiiragi283.core.api.gui
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
-object HTSlotHelper {
+data object HTSlotHelper {
     @JvmStatic
     fun getSlotPosX(index: Int): Int = 8 + index * 18
 

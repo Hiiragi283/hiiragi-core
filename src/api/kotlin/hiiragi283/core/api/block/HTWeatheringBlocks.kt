@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Blocks
  * @author Hiiragi Tsubasa
  * @since 0.14.0
  */
-object HTWeatheringBlocks {
+data object HTWeatheringBlocks {
     @JvmField
     val COPPER_BLOCK: HTWeatheringBlockMap = createMap(
         createMap(Blocks.COPPER_BLOCK, Blocks.EXPOSED_COPPER, Blocks.WEATHERED_COPPER, Blocks.OXIDIZED_COPPER),

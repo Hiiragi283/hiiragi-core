@@ -19,7 +19,7 @@ import org.apache.commons.lang3.math.Fraction
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
-object HTMaterialPropertyKeys {
+data object HTMaterialPropertyKeys {
     /**
      * デフォルトの部品を管理する[プロパティキー][HTPropertyKey]
      */

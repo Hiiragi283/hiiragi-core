@@ -9,7 +9,7 @@ import net.minecraft.tags.TagKey
  * @author Hiiragi Tsubasa
  * @since 0.11.0
  */
-object HTComparators {
+data object HTComparators {
     /**
      * [ID][ResourceLocation]の[Comparator]
      */

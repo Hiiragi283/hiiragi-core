@@ -46,7 +46,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries
 import net.neoforged.neoforge.registries.RegisterEvent
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
-object HTMaterialContentsRegister {
+data object HTMaterialContentsRegister {
     @JvmStatic
     private var hasInit: Boolean = false
 

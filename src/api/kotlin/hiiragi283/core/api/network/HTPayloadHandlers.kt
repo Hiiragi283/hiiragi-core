@@ -11,7 +11,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-object HTPayloadHandlers {
+data object HTPayloadHandlers {
     fun <T : HTCustomPayload.S2C> handleS2C(payload: T, context: IPayloadContext) {
         context
             .enqueueWork {

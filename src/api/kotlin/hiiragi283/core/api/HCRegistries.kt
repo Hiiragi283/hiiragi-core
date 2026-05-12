@@ -14,7 +14,7 @@ import net.neoforged.neoforge.registries.RegistryBuilder
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
-object HCRegistries {
+data object HCRegistries {
     @JvmField
     val ITEM_RESULT_TYPE: Registry<HTItemResult.EntryType<*>> = createRegistry(Keys.ITEM_RESULT_TYPE)
 
@@ -36,7 +36,7 @@ object HCRegistries {
      * @author Hiiragi Tsubasa
      * @since 0.8.0
      */
-    object Keys {
+    data object Keys {
         @JvmField
         val ITEM_RESULT_TYPE: ResourceKey<Registry<HTItemResult.EntryType<*>>> = createKey("item_result_type")
 

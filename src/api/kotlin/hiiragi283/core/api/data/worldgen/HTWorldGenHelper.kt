@@ -20,12 +20,7 @@ data object HTWorldGenHelper {
 
     @JvmStatic
     fun <FC : FeatureConfiguration, F : Feature<FC>> register(context: BootstrapContext<ConfiguredFeature<*, *>>, data: HTWorldGenData, feature: F, config: FC) {
-        register(context, data, ConfiguredFeature(feature, config))
-    }
-
-    @JvmStatic
-    fun register(context: BootstrapContext<ConfiguredFeature<*, *>>, data: HTWorldGenData, feature: ConfiguredFeature<*, *>) {
-        context.register(data.configuredKey, feature)
+        context.register(data.configuredKey, ConfiguredFeature(feature, config))
     }
 
     //    ConfiguredFeature    //

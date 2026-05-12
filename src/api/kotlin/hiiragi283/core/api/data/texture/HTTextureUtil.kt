@@ -18,7 +18,7 @@ import java.util.stream.Stream
  * @author Hiiragi Tsubasa
  * @since 0.7.0
  */
-object HTTextureUtil {
+data object HTTextureUtil {
     @JvmStatic
     private val PALETTE_REGEX = Regex("\\s+")
 

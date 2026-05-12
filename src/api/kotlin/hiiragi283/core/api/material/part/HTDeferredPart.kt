@@ -10,15 +10,9 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-class HTDeferredPart(private val name: String) : HTPartLike {
-    private lateinit var partCache: HTPart
-
-    override fun asPart(): HTPart {
-        if (!::partCache.isInitialized) {
-            partCache = HiiragiCoreAccess.INSTANCE.partManager[name] ?: error("Unregistered part: $name")
-        }
-        return partCache
-    }
+@JvmInline
+value class HTDeferredPart(private val name: String) : HTPartLike {
+    override fun asPart(): HTPart = HiiragiCoreAccess.INSTANCE.partManager[name] ?: error("Unregistered part: $name")
 
     override fun asPartName(): String = name
 

@@ -15,7 +15,8 @@ import net.minecraft.resources.ResourceLocation
  * @since 0.10.0
  * @see TexturedModel
  */
-class HTTexturedModel(val template: ModelTemplate, val texture: TextureMapping) {
+@JvmRecord
+data class HTTexturedModel(val template: ModelTemplate, val texture: TextureMapping) {
     companion object {
         /**
          * 指定された[template]と[transform]から[Provider]を作成します。

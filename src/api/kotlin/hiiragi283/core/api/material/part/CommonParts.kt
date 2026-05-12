@@ -5,7 +5,7 @@ package hiiragi283.core.api.material.part
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-object CommonParts {
+data object CommonParts {
     //    Block    //
 
     @JvmField

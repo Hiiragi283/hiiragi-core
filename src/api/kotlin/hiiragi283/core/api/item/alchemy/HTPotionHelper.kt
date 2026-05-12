@@ -24,7 +24,7 @@ import kotlin.jvm.optionals.getOrNull
  * @author Hiiragi Tsubasa
  * @since 0.3.0
  */
-object HTPotionHelper {
+data object HTPotionHelper {
     //    DataComponentHolder    //
 
     /**

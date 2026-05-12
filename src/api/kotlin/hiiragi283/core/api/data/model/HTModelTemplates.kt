@@ -14,7 +14,7 @@ import net.minecraft.resources.ResourceLocation
  * @since 0.10.0
  * @see ModelTemplates
  */
-object HTModelTemplates {
+data object HTModelTemplates {
     /**
      * すべての面が同じテクスチャかつ着色に対応したブロックのモデル
      */

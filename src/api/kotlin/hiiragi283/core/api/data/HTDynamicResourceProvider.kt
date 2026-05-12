@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.Block
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
-object HTDynamicResourceProvider {
+data object HTDynamicResourceProvider {
     /**
      * クライアント側での動的リソースを提供する抽象クラスです。
      * @author Hiiragi Tsubasa

@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation
  * @since 0.10.0
  * @see TexturedModel
  */
-object HTTexturedModels {
+data object HTTexturedModels {
     //    Block    //
 
     @JvmField
