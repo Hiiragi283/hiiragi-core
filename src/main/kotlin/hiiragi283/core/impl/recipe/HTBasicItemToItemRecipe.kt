@@ -34,5 +34,5 @@ open class HTBasicItemToItemRecipe(val ingredient: HTItemIngredient, val result:
 
     override fun getRequiredAmount(input: ItemStack): Int = ingredient.getRequiredAmount(input)
 
-    override fun assemble(input: ItemStack): ItemStack = result.getOrEmpty()
+    override fun assemble(input: ItemStack): ItemStack = result.createOrEmpty()
 }

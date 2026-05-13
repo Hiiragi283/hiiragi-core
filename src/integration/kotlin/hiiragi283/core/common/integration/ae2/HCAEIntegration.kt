@@ -40,8 +40,10 @@ data object HCAEIntegration : HTRecipeProviderContext.Delegated() {
         this.delegated = event.context
         // Convert HC Charging recipes into AE2 Charger recipes
         for ((id: ResourceLocation, recipe: HCChargingRecipe) in event.getAllRecipes(HCRecipeLookups.CHARGING)) {
-            val result: ItemStack = recipe.result.get(true).value() ?: continue
-            output.accept(id.withPrefix("charger/"), ChargerRecipe(recipe.ingredient, result), null)
+            recipe.result
+                .create(true)
+                .map { result: ItemStack -> ChargerRecipe(recipe.ingredient, result) }
+                .ifSuccess { recipe: ChargerRecipe -> output.accept(id.withPrefix("charger/"), recipe, null) }
         }
     }
 }

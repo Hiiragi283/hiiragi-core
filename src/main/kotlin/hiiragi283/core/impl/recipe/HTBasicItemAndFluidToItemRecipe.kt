@@ -43,5 +43,5 @@ open class HTBasicItemAndFluidToItemRecipe(
 
     override fun getRequiredAmount(first: ItemStack, second: FluidStack): Pair<Int, Int> = itemIngredient.getRequiredAmount(first) to fluidIngredient.getRequiredAmount(second)
 
-    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): ItemStack = result.getOrEmpty()
+    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): ItemStack = result.createOrEmpty()
 }

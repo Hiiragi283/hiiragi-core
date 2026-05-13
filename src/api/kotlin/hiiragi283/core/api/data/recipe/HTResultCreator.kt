@@ -20,7 +20,6 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
-import org.apache.commons.lang3.math.Fraction
 import java.util.function.IntUnaryOperator
 
 /**
@@ -33,22 +32,17 @@ class HTResultCreator(provider: HolderLookup.Provider) {
 
     //    Item    //
 
-    fun create(item: ItemLike, amount: Int = 1, chance: Fraction = Fraction.ONE): HTItemResult = create(ItemStack(item, amount), chance)
+    fun create(item: ItemLike, amount: Int = 1): HTItemResult = create(ItemStack(item, amount))
 
-    fun create(stack: ItemStack, chance: Fraction = Fraction.ONE): HTItemResult = HTItemResult(stack, chance)
+    fun create(stack: ItemStack): HTItemResult = HTItemResult.Simple(stack)
 
-    fun create(tagKey: TagKey<Item>, count: Int = 1, chance: Fraction = Fraction.ONE): HTItemResult = HTItemResult(HTItemResult.TagEntry(itemGetter.getOrThrow(tagKey), count), chance)
+    fun create(tagKey: TagKey<Item>, count: Int = 1): HTItemResult = HTItemResult.Tagged(tagKey, count)
 
     /**
      * 指定した[部品][part]と[素材][material]から[HTItemResult]の新しいインスタンスを作成します。
      * @since 0.12.0
      */
-    fun material(
-        part: HTPartLike,
-        material: HTMaterialLike,
-        amount: Int = 1,
-        chance: Fraction = Fraction.ONE,
-    ): HTItemResult = HTItemResult(HTItemResult.MaterialPartEntry(part, material, amount), chance)
+    fun material(part: HTPartLike, material: HTMaterialLike, amount: Int = 1): HTItemResult = HTItemResult.MaterialPart(part.asPart(), material.asMaterialKey(), amount)
 
     //    Fluid    //
 

@@ -19,7 +19,7 @@ data object HTRecipeDisplayFactories {
     @JvmStatic
     fun itemToMultiItem(holder: HTRecipeHolder<out HTBasicItemToMultiItemRecipe>): HTProgressRecipeDisplay = progress(holder) { recipe ->
         addInput(recipe.ingredient)
-        recipe.results.results.forEach(::addOutput)
+        recipe.results.forEach(::addOutput)
     }
 
     @JvmStatic

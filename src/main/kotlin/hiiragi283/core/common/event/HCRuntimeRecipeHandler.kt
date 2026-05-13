@@ -117,7 +117,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // レシピを登録
         HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(prefix, entry, inputCount)
-            results += resultCreator.create(dust, outputCount)
+            results += resultCreator.create(dust, outputCount).withChance()
             time = getTimeFromHardness(entry, time) ?: return
             recipeId suffix "_from_${part.asPartName()}"
         }
@@ -139,7 +139,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // レシピを登録
         HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(inputTag, inputCount)
-            results += resultCreator.create(dust, outputCount)
+            results += resultCreator.create(dust, outputCount).withChance()
             time = getTimeFromHardness(entry, time) ?: return
             recipeId suffix "_from_${defaultPart.getSuffix()}"
         }
@@ -157,7 +157,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             // 材料
             ingredient = inputCreator.create(prefix, entry)
             // 主産物
-            results += resultCreator.create(crushedOre, part.getScaledAmount(2, entry).toInt())
+            results += resultCreator.create(crushedOre, part.getScaledAmount(2, entry).toInt()).withChance()
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]
                 ?.getResult(resultCreator, HTExtraOreResultMap.Phase.CRUSH_ORE)
@@ -181,7 +181,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             // 材料
             ingredient = inputCreator.create(CommonTagPrefixes.CRUSHED_ORE, entry, inputCount)
             // 主産物
-            results += resultCreator.create(dust, outputCount)
+            results += resultCreator.create(dust, outputCount).withChance()
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]
                 ?.getResult(resultCreator, HTExtraOreResultMap.Phase.CRUSH_CRUSHED)

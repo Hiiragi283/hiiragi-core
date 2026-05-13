@@ -9,6 +9,7 @@ import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemAndFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
+import hiiragi283.core.api.util.getOrEmpty
 import hiiragi283.core.impl.recipe.HTSerializableRecipe
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
@@ -19,7 +20,6 @@ import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.*
-import kotlin.jvm.optionals.getOrNull
 
 class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidResult, val itemResult: Optional<HTItemResult>) :
     HTTankEmptyingRecipe,
@@ -42,7 +42,7 @@ class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidR
 
     override fun assemble(input: ItemStack): HTItemAndFluidResult {
         val fluidStack: FluidStack = fluidResult.create()
-        val itemStack: ItemStack = itemResult.getOrNull()?.get()?.value() ?: ItemStack.EMPTY
+        val itemStack: ItemStack = itemResult.map(HTItemResult::createOrEmpty).getOrEmpty()
         return HTItemAndFluidResult(itemStack, fluidStack)
     }
 

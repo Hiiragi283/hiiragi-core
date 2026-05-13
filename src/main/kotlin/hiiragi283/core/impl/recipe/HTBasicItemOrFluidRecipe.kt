@@ -65,5 +65,5 @@ open class HTBasicItemOrFluidRecipe(
         return (item?.getRequiredAmount(first) ?: 0) to (fluid?.getRequiredAmount(second) ?: 0)
     }
 
-    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): HTItemAndFluidResult = result.mapLeft { it.getOrEmpty() }.mapRight { it.create() }.let(::HTItemAndFluidResult)
+    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): HTItemAndFluidResult = result.mapLeft { it.createOrEmpty() }.mapRight { it.create() }.let(::HTItemAndFluidResult)
 }

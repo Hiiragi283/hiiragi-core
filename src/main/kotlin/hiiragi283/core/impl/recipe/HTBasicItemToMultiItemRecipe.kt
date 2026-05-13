@@ -7,14 +7,16 @@ import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.base.HTProgressRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
-import hiiragi283.core.api.recipe.result.HTListItemResult
+import hiiragi283.core.api.recipe.result.HTChancedItemResult
+import hiiragi283.core.api.serialization.codec.listOrElement
 import hiiragi283.core.common.data.recipe.builder.HTItemToMultiItemRecipeBuilder
+import hiiragi283.core.util.HTShapelessRecipeHelper
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.SingleRecipeInput
 
 open class HTBasicItemToMultiItemRecipe(
     val ingredient: HTItemIngredient,
-    val results: HTListItemResult,
+    val results: List<HTChancedItemResult>,
     override val progressData: HTProgressData,
 ) : HTItemToMultiItemRecipe,
     HTProgressRecipe.Simple<SingleRecipeInput> {
@@ -24,8 +26,8 @@ open class HTBasicItemToMultiItemRecipe(
             instance
                 .group(
                     HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicItemToMultiItemRecipe::ingredient),
-                    HTListItemResult
-                        .codec(maxSize)
+                    HTChancedItemResult.CODEC
+                        .listOrElement(1, maxSize)
                         .fieldOf(HTConst.RESULTS)
                         .forGetter(HTBasicItemToMultiItemRecipe::results),
                     HTProgressData.CODEC.forGetter(HTBasicItemToMultiItemRecipe::progressData),
@@ -37,5 +39,5 @@ open class HTBasicItemToMultiItemRecipe(
 
     override fun getRequiredAmount(input: ItemStack): Int = ingredient.getRequiredAmount(input)
 
-    override fun assemble(input: ItemStack): Iterable<ItemStack> = results
+    override fun assemble(input: ItemStack): Iterable<ItemStack> = results.map(HTChancedItemResult::createOrEmpty).let(HTShapelessRecipeHelper::mergeStacks)
 }

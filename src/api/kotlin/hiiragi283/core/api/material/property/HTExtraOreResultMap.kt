@@ -6,7 +6,7 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTExtraOreResultMap.Phase
 import hiiragi283.core.api.property.getOrDefault
-import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.toFraction
 import org.apache.commons.lang3.math.Fraction
 import java.util.EnumMap
@@ -22,18 +22,19 @@ class HTExtraOreResultMap private constructor(map: Map<Phase, Pair<HTMaterialKey
         inline fun create(builderAction: Builder.() -> Unit): HTExtraOreResultMap = Builder().apply(builderAction).build()
     }
 
-    fun getResult(creator: HTResultCreator, phase: Phase): HTItemResult? {
+    fun getResult(creator: HTResultCreator, phase: Phase): HTChancedItemResult? {
         val (key: HTMaterialKey, chance: Fraction) = this[phase] ?: return null
         return HTMaterialManager
             .getInstance()
             .getOrEmpty(key)
             .getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART)
-            .let { creator.material(it, key, chance = chance) }
+            .let { creator.material(it, key) }
+            .withChance(chance)
     }
 
-    fun getResult(creator: HTResultCreator, phase: Phase, entry: HTMaterialManager.Entry): HTItemResult? {
+    fun getResult(creator: HTResultCreator, phase: Phase, entry: HTMaterialManager.Entry): HTChancedItemResult? {
         val (key: HTMaterialKey, chance: Fraction) = this[phase] ?: return null
-        return creator.material(entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART), key, chance = chance)
+        return creator.material(entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART), key).withChance(chance)
     }
 
     //    Phase    //

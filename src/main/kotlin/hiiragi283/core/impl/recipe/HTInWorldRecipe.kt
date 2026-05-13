@@ -6,21 +6,21 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTRecipeFactories
 import hiiragi283.core.api.recipe.base.HTRecipePredicates
 import hiiragi283.core.api.recipe.ingredient.getRequiredAmount
-import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 
-open class HTInWorldRecipe(val ingredient: Ingredient, val result: HTItemResult) :
+open class HTInWorldRecipe(val ingredient: Ingredient, val result: HTChancedItemResult) :
     HTRecipePredicates.SingleItem,
     HTRecipeFactories.SingleItemTo<ItemStack> {
     companion object {
         @JvmStatic
-        fun <T : HTInWorldRecipe> codec(factory: (Ingredient, HTItemResult) -> T): MapCodec<T> = RecordCodecBuilder.mapCodec { instance ->
+        fun <T : HTInWorldRecipe> codec(factory: (Ingredient, HTChancedItemResult) -> T): MapCodec<T> = RecordCodecBuilder.mapCodec { instance ->
             instance
                 .group(
                     HTCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HTInWorldRecipe::ingredient),
-                    HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HTInWorldRecipe::result),
+                    HTChancedItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HTInWorldRecipe::result),
                 ).apply(instance, factory)
         }
 
@@ -32,5 +32,5 @@ open class HTInWorldRecipe(val ingredient: Ingredient, val result: HTItemResult)
 
     override fun getRequiredAmount(input: ItemStack): Int = ingredient.getRequiredAmount(input)
 
-    override fun assemble(input: ItemStack): ItemStack = result.getOrEmpty()
+    override fun assemble(input: ItemStack): ItemStack = result.createOrEmpty()
 }

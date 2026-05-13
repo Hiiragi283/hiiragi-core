@@ -5,7 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.base.HTProgressRecipe
-import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.impl.recipe.HTInWorldRecipe
 import hiiragi283.core.impl.recipe.HTSerializableRecipe
@@ -16,7 +16,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput
 
-class HCChargingRecipe(ingredient: Ingredient, result: HTItemResult, val energy: Int) :
+class HCChargingRecipe(ingredient: Ingredient, result: HTChancedItemResult, val energy: Int) :
     HTInWorldRecipe(ingredient, result),
     HTProgressRecipe<SingleRecipeInput>,
     HTSerializableRecipe<SingleRecipeInput> {
@@ -28,7 +28,7 @@ class HCChargingRecipe(ingredient: Ingredient, result: HTItemResult, val energy:
             instance
                 .group(
                     HTCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HCChargingRecipe::ingredient),
-                    HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCChargingRecipe::result),
+                    HTChancedItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCChargingRecipe::result),
                     HTCodecs.NON_NEGATIVE_INT.fieldOf(HTConst.ENERGY).forGetter(HCChargingRecipe::energy),
                 ).apply(instance, ::HCChargingRecipe)
         }

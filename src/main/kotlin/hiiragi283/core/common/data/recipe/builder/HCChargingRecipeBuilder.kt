@@ -2,7 +2,7 @@ package hiiragi283.core.common.data.recipe.builder
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.builder.HTRecipeBuilder
-import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.util.HTDelegates
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import net.minecraft.data.recipes.RecipeOutput
@@ -18,7 +18,7 @@ class HCChargingRecipeBuilder : HTRecipeBuilder(HTConst.CHARGING) {
     }
 
     var ingredient: Ingredient by HTDelegates.onceInitialize()
-    var result: HTItemResult by HTDelegates.onceInitialize()
+    var result: HTChancedItemResult by HTDelegates.onceInitialize()
     var energy: Int = HCChargingRecipe.DEFAULT_ENERGY
 
     override fun getPrimalId(): ResourceLocation = result.getId()

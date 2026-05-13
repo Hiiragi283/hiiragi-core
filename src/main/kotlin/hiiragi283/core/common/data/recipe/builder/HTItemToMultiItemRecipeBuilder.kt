@@ -3,7 +3,7 @@ package hiiragi283.core.common.data.recipe.builder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
-import hiiragi283.core.api.recipe.result.HTListItemResult
+import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.util.HTDelegates
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.impl.data.recipe.builder.HTMultiOutputRecipeBuilder
@@ -28,6 +28,6 @@ class HTItemToMultiItemRecipeBuilder(prefix: String, private val factory: Factor
     //    Factory    //
 
     fun interface Factory<RECIPE : Any> {
-        fun create(ingredient: HTItemIngredient, results: HTListItemResult, progressData: HTProgressData): RECIPE
+        fun create(ingredient: HTItemIngredient, results: List<HTChancedItemResult>, progressData: HTProgressData): RECIPE
     }
 }

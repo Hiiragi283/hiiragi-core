@@ -16,7 +16,7 @@ import net.neoforged.neoforge.registries.RegistryBuilder
  */
 data object HCRegistries {
     @JvmField
-    val ITEM_RESULT_TYPE: Registry<HTItemResult.EntryType<*>> = createRegistry(Keys.ITEM_RESULT_TYPE)
+    val ITEM_RESULT_SERIALIZER: Registry<HTItemResult.Serializer<*>> = createRegistry(Keys.ITEM_RESULT_SERIALIZER)
 
     @JvmField
     val SLOT_TYPE: Registry<HTSyncablePayload.Type<*>> = createRegistry(Keys.SLOT_TYPE)
@@ -38,7 +38,7 @@ data object HCRegistries {
      */
     data object Keys {
         @JvmField
-        val ITEM_RESULT_TYPE: ResourceKey<Registry<HTItemResult.EntryType<*>>> = createKey("item_result_type")
+        val ITEM_RESULT_SERIALIZER: ResourceKey<Registry<HTItemResult.Serializer<*>>> = createKey("item_result_serializer")
 
         @JvmField
         val SLOT_TYPE: ResourceKey<Registry<HTSyncablePayload.Type<*>>> = createKey("syncable_slot_type")
