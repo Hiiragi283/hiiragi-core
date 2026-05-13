@@ -248,7 +248,7 @@ dependencies {
     }
 
     implementation(libs.kff)
-    implementation(libs.mek.get().toString() + ":all")
+    // implementation(libs.mek.get().toString() + ":all")
 
     implementation(libs.bundles.common.impl)
     compileOnly(libs.bundles.common.compile)

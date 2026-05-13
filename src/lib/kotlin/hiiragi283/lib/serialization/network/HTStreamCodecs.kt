@@ -18,6 +18,7 @@ import net.minecraft.util.ByIdMap
 import java.util.UUID
 import java.util.function.UnaryOperator
 import net.minecraft.resources.Identifier
+import org.apache.commons.lang3.math.Fraction
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[StreamCodec]をまとめたクラスです。
@@ -25,6 +26,15 @@ import net.minecraft.resources.Identifier
  * @since 0.16.0
  */
 data object HTStreamCodecs {
+    @JvmField
+    val FRACTION: StreamCodec<ByteBuf, Fraction> = StreamCodec.composite(
+        ByteBufCodecs.VAR_INT,
+        Fraction::getNumerator,
+        ByteBufCodecs.VAR_INT,
+        Fraction::getDenominator,
+        Fraction::getFraction,
+    )
+
     @JvmField
     val TEXT: StreamCodec<RegistryFriendlyByteBuf, Text> = ComponentSerialization.STREAM_CODEC
 

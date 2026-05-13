@@ -1,0 +1,48 @@
+package hiiragi283.lib.item.alchemy
+
+import com.mojang.serialization.Codec
+import hiiragi283.lib.serialization.codec.HTCodecs
+import hiiragi283.lib.serialization.network.HTStreamCodecs
+import io.netty.buffer.ByteBuf
+import net.minecraft.core.TypedInstance
+import net.minecraft.network.codec.StreamCodec
+import net.minecraft.util.StringRepresentable
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.Items
+import net.minecraft.world.level.ItemLike
+
+/**
+ * ポーション瓶の種類を管理するクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.10.0
+ */
+enum class HTBottleType :
+    ItemLike,
+    StringRepresentable {
+    DEFAULT,
+    SPLASH,
+    LINGERING,
+    ;
+
+    companion object {
+        @JvmField
+        val CODEC: Codec<HTBottleType> = HTCodecs.stringEnum(HTBottleType::getSerializedName)
+
+        @JvmField
+        val STREAM_CODEC: StreamCodec<ByteBuf, HTBottleType> = HTStreamCodecs.enum()
+
+        /**
+         * @since 0.14.0
+         */
+        @JvmStatic
+        fun getBottleType(instance: TypedInstance<Item>): HTBottleType? = entries.firstOrNull { instance.`is`(it.asItem()) }
+    }
+
+    override fun asItem(): Item = when (this) {
+        DEFAULT -> Items.POTION
+        SPLASH -> Items.SPLASH_POTION
+        LINGERING -> Items.LINGERING_POTION
+    }
+
+    override fun getSerializedName(): String = name.lowercase()
+}

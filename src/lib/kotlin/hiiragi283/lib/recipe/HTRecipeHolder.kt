@@ -12,7 +12,7 @@ import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
 
 /**
- * レシピの[ID][Identifier]とレシピ自身をまとめたクラスです。
+ * レシピの[ID][RecipeKey]とレシピ自身をまとめたクラスです。
  * @param RECIPE レシピのクラス
  * @author Hiiragi Tsubasa
  * @since 0.15.0
@@ -40,9 +40,9 @@ data class HTRecipeHolder<RECIPE : Any>(val key: RecipeKey, val recipe: RECIPE) 
         fun <RECIPE : Recipe<*>> from(holder: RecipeHolder<out RECIPE>): HTRecipeHolder<RECIPE> = HTRecipeHolder(holder.id(), holder.value())
     }
 
-    constructor(pair: Pair<Identifier, RECIPE>) : this(pair.first, pair.second)
+    constructor(pair: Pair<RecipeKey, RECIPE>) : this(pair.first, pair.second)
 
-    constructor(entry: Map.Entry<Identifier, RECIPE>) : this(entry.key, entry.value)
+    constructor(entry: Map.Entry<RecipeKey, RECIPE>) : this(entry.key, entry.value)
 
     /**
      * レシピの値を変換し，新しいインスタンスを作成します。

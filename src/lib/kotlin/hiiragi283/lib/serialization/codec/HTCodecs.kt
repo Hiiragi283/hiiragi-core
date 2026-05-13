@@ -1,5 +1,6 @@
 package hiiragi283.lib.serialization.codec
 
+import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
 import com.mojang.serialization.MapCodec
@@ -17,7 +18,10 @@ import net.minecraft.tags.TagKey
 import net.minecraft.util.ExtraCodecs
 import java.util.UUID
 import java.util.function.Function
+import kotlin.Int
+import kotlin.String
 import kotlin.enums.enumEntries
+import org.apache.commons.lang3.math.Fraction
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[Codec]と[MapCodec]をまとめたクラスです。
@@ -25,6 +29,19 @@ import kotlin.enums.enumEntries
  * @since 0.16.0
  */
 data object HTCodecs {
+    @JvmField
+    val FRACTION: Codec<Fraction> = Codec
+        .xor(Codec.STRING, Codec.INT)
+        .xmap(
+            { either: Either<String, Int> -> either.map(Fraction::getFraction) { Fraction.getFraction(it, 1) } },
+            { fraction: Fraction ->
+                when (fraction.denominator) {
+                    1 -> Either.right(fraction.numerator)
+                    else -> Either.left(fraction.toString())
+                }
+            },
+        )
+
     @JvmField
     val TEXT: Codec<Text> = ComponentSerialization.CODEC
 

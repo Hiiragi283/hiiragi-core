@@ -5,7 +5,7 @@ package hiiragi283.lib.data.lang
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
-object HTLangTypes {
+data object HTLangTypes {
     @JvmStatic
     val EN_US: HTLangType = HTLangType.of("en_us")
 

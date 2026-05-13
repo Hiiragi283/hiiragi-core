@@ -19,21 +19,25 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
+import net.neoforged.neoforge.common.util.NeoForgeExtraCodecs
 
 interface HTItemResult : HTIdLike {
     companion object {
         @JvmField
-        val DISPATCH_CODEC: Codec<HTItemResult> =
-            HTRegistries.ITEM_RESULT_SERIALIZER.byNameCodec().dispatch(HTItemResult::getSerializer, Serializer<*>::codec)
+        val MAP_CODEC: MapCodec<HTItemResult> = NeoForgeExtraCodecs.dispatchMapOrElse(
+            HTRegistries.ITEM_RESULT_SERIALIZER.byNameCodec(),
+            HTItemResult::getSerializer,
+            Serializer<*>::codec,
+            Simple.MAP_CODEC,
+        ).xmap(Either<HTItemResult, Simple>::unwrap) { result: HTItemResult ->
+            when (result) {
+                is Simple -> Either.right(result)
+                else -> Either.left(result)
+            }
+        }
 
         @JvmField
-        val CODEC: Codec<HTItemResult> = Codec.either(Simple.CODEC, DISPATCH_CODEC)
-            .xmap(Either<Simple, HTItemResult>::unwrap) { result: HTItemResult ->
-                when (result) {
-                    is Simple -> Either.left(result)
-                    else -> Either.right(result)
-                }
-            }
+        val CODEC: Codec<HTItemResult> = Codec.lazyInitialized(MAP_CODEC::codec)
 
         @JvmField
         val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemResult> =

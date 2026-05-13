@@ -1,5 +1,6 @@
 package hiiragi283.lib
 
+import kotlin.random.Random
 import net.minecraft.world.item.Item
 import net.neoforged.neoforge.common.NeoForgeMod
 import net.neoforged.neoforge.fluids.FluidType
@@ -8,6 +9,9 @@ import net.neoforged.neoforge.fluids.FluidType
  * Hiiragi Seriesで使用される定数を集めたクラスです。
  */
 data object HTConstants {
+    @JvmField
+    val RANDOM: Random = Random.Default
+
     const val ZERO_CELSIUS = 273
     const val STANDARD_TEMP = 300
 

@@ -21,15 +21,15 @@ open class HTSimpleEnergyHandler(capacity: Int, maxInsert: Int = capacity, maxEx
      */
     protected open fun canExtract(access: HTHandlerAccess): Boolean = true
 
-    override fun insert(amount: Int, access: HTHandlerAccess, transaction: TransactionContext): Int = when {
-        canInsert(access) -> insert(amount, transaction)
+    override fun insert(amount: Int, transaction: TransactionContext, access: HTHandlerAccess): Int = when {
+        canInsert(access) -> super<SimpleEnergyHandler>.insert(amount, transaction)
         else -> 0
     }
 
     override fun insert(amount: Int, transaction: TransactionContext): Int = super<HTEnergyHandler>.insert(amount, transaction)
 
-    override fun extract(amount: Int, access: HTHandlerAccess, transaction: TransactionContext): Int = when {
-        canExtract(access) -> extract(amount, transaction)
+    override fun extract(amount: Int, transaction: TransactionContext, access: HTHandlerAccess): Int = when {
+        canExtract(access) -> super<SimpleEnergyHandler>.extract(amount, transaction)
         else -> 0
     }
 
