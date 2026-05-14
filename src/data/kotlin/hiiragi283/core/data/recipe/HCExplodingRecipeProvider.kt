@@ -11,10 +11,6 @@ import net.minecraft.world.item.Items
 import net.neoforged.neoforge.common.Tags
 
 class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
-    class Runner(packOutput: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : Direct(HiiragiCoreAPI.MOD_ID, packOutput, registries, ::HCExplodingRecipeProvider) {
-        override fun getName(): String = "Exploding Recipes"
-    }
-
     override fun buildRecipes() {
         // Cobblestone -> Cobbled Deepslate
         HCExplodingRecipeBuilder.create {
@@ -48,5 +44,9 @@ class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider
             ingredient = itemCreator.create(Items.SCULK)
             result = resultCreator.create(Items.ECHO_SHARD).withChance(fraction(1, 8))
         }.save(output)
+    }
+
+    class Runner(packOutput: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : Direct(HiiragiCoreAPI.MOD_ID, packOutput, registries, ::HCExplodingRecipeProvider) {
+        override fun getName(): String = "Exploding Recipes"
     }
 }

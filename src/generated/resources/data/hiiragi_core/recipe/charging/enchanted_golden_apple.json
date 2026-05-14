@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:charging",
+  "energy": 1024000,
+  "ingredient": "minecraft:golden_apple",
+  "result": {
+    "chance": "1/8",
+    "id": "minecraft:enchanted_golden_apple"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:charging",
+  "energy": 1024000,
+  "ingredient": "#c:dusts/redstone",
+  "result": {
+    "chance": "3/4",
+    "id": "minecraft:glowstone_dust"
+  }
+}
