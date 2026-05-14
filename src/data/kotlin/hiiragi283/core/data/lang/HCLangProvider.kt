@@ -38,11 +38,13 @@ interface HCLangProvider {
         val waxedCopper: HTLangPatternProvider = HTLangPatternProvider.create("Waxed %s", "錆止めされた%s")
 
         val copperBasin: HTLangName = HTLangName.create("Copper Basin", "銅の鉢")
-        for (state: WeatheringCopper.WeatherState in WeatheringCopper.WeatherState.entries) {
+        for ((state: WeatheringCopper.WeatherState, block: HTHasTranslationKey) in HCBlocks.COPPER_BASIN.weatheringMap) {
             val pattern: HTLangPatternProvider = getCopperLangPattern(state)
-            val (base: HTHasTranslationKey, waxed: HTHasTranslationKey) = HCBlocks.COPPER_BASIN[state]
-            provider.add(base, pattern.translate(langType, copperBasin))
-            provider.add(waxed, waxedCopper.translate(langType, pattern.translate(langType, copperBasin)))
+            provider.add(block, pattern.translate(langType, copperBasin))
+        }
+        for ((state: WeatheringCopper.WeatherState, block: HTHasTranslationKey) in HCBlocks.COPPER_BASIN.waxedMap) {
+            val pattern: HTLangPatternProvider = getCopperLangPattern(state)
+            provider.add(block, waxedCopper.translate(langType, pattern.translate(langType, copperBasin)))
         }
         // Fluid
         /*val dyePattern: HTLangPatternProvider = HTLangPatternProvider.create("%s Dye", "%sの染料")

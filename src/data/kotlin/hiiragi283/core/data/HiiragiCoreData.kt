@@ -2,6 +2,7 @@ package hiiragi283.core.data
 
 import hiiragi283.core.data.lang.HCEnglishLangProvider
 import hiiragi283.core.data.lang.HCJapaneseLangProvider
+import hiiragi283.core.data.model.HCModelProvider
 import hiiragi283.core.data.recipe.HCChargingRecipeProvider
 import hiiragi283.core.data.recipe.HCExplodingRecipeProvider
 import hiiragi283.core.data.recipe.HCVanillaRecipeProvider
@@ -23,6 +24,8 @@ data object HiiragiCoreData {
         event.createProvider(HCExplodingRecipeProvider::Runner)
         event.createProvider(HCVanillaRecipeProvider::Runner)
         // Client
+        event.createProvider(::HCModelProvider)
+
         event.createProvider(::HCEnglishLangProvider)
         event.createProvider(::HCJapaneseLangProvider)
     }

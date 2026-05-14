@@ -1,0 +1,9 @@
+{
+  "parent": "hiiragi_core:block/cauldron_template",
+  "textures": {
+    "bottom": "minecraft:block/oxidized_cut_copper",
+    "inside": "minecraft:block/oxidized_cut_copper",
+    "side": "minecraft:block/oxidized_cut_copper",
+    "top": "minecraft:block/oxidized_chiseled_copper"
+  }
+}

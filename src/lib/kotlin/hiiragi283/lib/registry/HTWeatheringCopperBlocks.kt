@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour
  * @see net.minecraft.world.level.block.WeatheringCopperBlocks
  * @see net.minecraft.world.item.WeatheringCopperItems
  */
-@JvmRecord
 data class HTWeatheringCopperBlocks<WAXED : Block, WEATHERING, ITEM : Item>(
     val unaffected: HTDeferredBlockAndItem<WEATHERING, ITEM>,
     val exposed: HTDeferredBlockAndItem<WEATHERING, ITEM>,
@@ -57,15 +56,17 @@ data class HTWeatheringCopperBlocks<WAXED : Block, WEATHERING, ITEM : Item>(
     val weatheringBlocks: List<HTDeferredBlockAndItem<WEATHERING, ITEM>> get() = listOf(unaffected, exposed, weathered, oxidized)
     val waxedBlocks: List<HTDeferredBlockAndItem<WAXED, ITEM>> get() = listOf(waxed, waxedExposed, waxedWeathered, waxedOxidized)
 
-    operator fun get(state: WeatheringCopper.WeatherState): Pair<HTDeferredBlockAndItem<WEATHERING, ITEM>, HTDeferredBlockAndItem<WAXED, ITEM>> = when (state) {
-        WeatheringCopper.WeatherState.UNAFFECTED -> unaffected to waxed
-        WeatheringCopper.WeatherState.EXPOSED -> exposed to waxedExposed
-        WeatheringCopper.WeatherState.WEATHERED -> weathered to waxedWeathered
-        WeatheringCopper.WeatherState.OXIDIZED -> oxidized to waxedOxidized
-    }
+    val weatheringMap: Map<WeatheringCopper.WeatherState, HTDeferredBlockAndItem<WEATHERING, ITEM>> = mapOf(
+        WeatheringCopper.WeatherState.UNAFFECTED to unaffected,
+        WeatheringCopper.WeatherState.EXPOSED to exposed,
+        WeatheringCopper.WeatherState.WEATHERED to weathered,
+        WeatheringCopper.WeatherState.OXIDIZED to oxidized,
+    )
 
-    fun asSequence(): Sequence<HTDeferredBlockAndItem<*, ITEM>> = sequence {
-        yieldAll(weatheringBlocks)
-        yieldAll(waxedBlocks)
-    }
+    val waxedMap: Map<WeatheringCopper.WeatherState, HTDeferredBlockAndItem<WAXED, ITEM>> = mapOf(
+        WeatheringCopper.WeatherState.UNAFFECTED to waxed,
+        WeatheringCopper.WeatherState.EXPOSED to waxedExposed,
+        WeatheringCopper.WeatherState.WEATHERED to waxedWeathered,
+        WeatheringCopper.WeatherState.OXIDIZED to waxedOxidized,
+    )
 }

@@ -24,8 +24,9 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
             .define('B', Tags.Items.STORAGE_BLOCKS_COPPER)
             .unlockedBy("has_copper", has(Tags.Items.INGOTS_COPPER))
             .save(output)
-        for (state: WeatheringCopper.WeatherState in WeatheringCopper.WeatherState.entries) {
-            val (base: ItemLike, waxed: ItemLike) = HCBlocks.COPPER_BASIN[state]
+
+        for ((state: WeatheringCopper.WeatherState, base: ItemLike) in HCBlocks.COPPER_BASIN.weatheringMap) {
+            val waxed: ItemLike = HCBlocks.COPPER_BASIN.waxedMap[state]!!
             // Waxing
             shapeless(RecipeCategory.BUILDING_BLOCKS, waxed)
                 .requires(base)
