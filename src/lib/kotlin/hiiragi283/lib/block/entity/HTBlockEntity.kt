@@ -4,8 +4,8 @@ import hiiragi283.lib.HTConstants
 import hiiragi283.lib.world.HTItemDropHelper
 import hiiragi283.lib.text.Text
 import hiiragi283.lib.transfer.HTHandlerProvider
-import hiiragi283.lib.transfer.ItemResourceHandler
 import hiiragi283.lib.transfer.indices
+import hiiragi283.lib.transfer.item.ItemResourceHandler
 import java.util.UUID
 import net.minecraft.core.BlockPos
 import net.minecraft.core.UUIDUtil
@@ -25,6 +25,41 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
     HTHandlerProvider,
     HTOwnedBlockEntity,
     HTSoundPlayerBlockEntity {
+    //    Ticking    //
+
+    companion object {
+        /**
+         * @see mekanism.common.tile.base.TileEntityMekanism.tickClient
+         */
+        @JvmStatic
+        fun tickClient(
+            level: Level,
+            pos: BlockPos,
+            state: BlockState,
+            blockEntity: HTBlockEntity,
+        ) {
+            blockEntity.onUpdateClient(level, pos, state)
+            blockEntity.ticks++
+        }
+
+        /**
+         * @see mekanism.common.tile.base.TileEntityMekanism.tickServer
+         */
+        @JvmStatic
+        fun tickServer(
+            level: Level,
+            pos: BlockPos,
+            state: BlockState,
+            blockEntity: HTBlockEntity,
+        ) {
+            val serverLevel: ServerLevel = level as? ServerLevel ?: return
+            val shouldUpdate: Boolean = blockEntity.onUpdateServer(serverLevel, pos, state)
+            blockEntity.ticks++
+            if (shouldUpdate) {
+                blockEntity.sendUpdatePacket(serverLevel)
+            }
+        }
+    }
 
     var ticks: Int = 0
         protected set

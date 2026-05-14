@@ -1,6 +1,7 @@
 package hiiragi283.lib.world
 
-import hiiragi283.lib.transfer.ItemResourceHandler
+import hiiragi283.lib.entity.serverLevel
+import hiiragi283.lib.transfer.item.ItemResourceHandler
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Position
 import net.minecraft.server.level.ServerLevel
@@ -22,13 +23,11 @@ data object HTItemDropHelper {
         if (entity is Player) {
             giveStackTo(entity, stack)
         } else {
-            val level: Level = entity.level()
+            val level: ServerLevel = entity.serverLevel() ?: return
             val remainStack: ItemStack = entity.getCapability(Capabilities.Item.ENTITY)?.let { handler: ItemResourceHandler ->
                 ItemUtil.insertItemReturnRemaining(handler, stack, false, null)
             } ?: stack
-            if (level is ServerLevel) {
-                entity.spawnAtLocation(level, remainStack, offset)
-            }
+            entity.spawnAtLocation(level, remainStack, offset)
         }
     }
 
@@ -37,13 +36,11 @@ data object HTItemDropHelper {
      */
     @JvmStatic
     fun giveStackTo(player: Player, stack: ItemStack) {
-        val level: Level = player.level()
-        if (level is ServerLevel) {
-            if (player.isFakePlayer) {
-                player.spawnAtLocation(level, stack)
-            } else {
-                player.inventory.add(stack)
-            }
+        val level: ServerLevel = player.serverLevel() ?: return
+        if (player.isFakePlayer) {
+            player.spawnAtLocation(level, stack)
+        } else {
+            player.inventory.add(stack)
         }
     }
 

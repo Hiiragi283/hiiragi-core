@@ -11,11 +11,16 @@ import net.minecraft.world.flag.FeatureFlags
 import net.neoforged.neoforge.server.ServerLifecycleHooks
 import thedarkcolour.kotlinforforge.neoforge.forge.runForDist
 import java.util.Optional
+import net.minecraft.world.item.crafting.RecipeMap
+import net.neoforged.bus.api.SubscribeEvent
+import net.neoforged.fml.common.EventBusSubscriber
+import net.neoforged.neoforge.client.event.RecipesReceivedEvent
 
 /**
  * @author Hiiragi Tsubasa
  * @since 0.16.0
  */
+@EventBusSubscriber
 data object HTPhysicalSideHelper {
     /**
      * 現在の[レジストリへのアクセス][RegistryAccess]を取得します。
@@ -51,4 +56,15 @@ data object HTPhysicalSideHelper {
 
     @JvmStatic
     fun <T : FeatureElement> filteredLookupOrThrow(registryKey: RegistryKey<T>): HolderLookup.RegistryLookup<T> = lookupOrThrow(registryKey).filterFeatures(getFeatureFlags())
+
+    //    RecipeMap    //
+
+    @JvmStatic
+    var cachedRecipes: RecipeMap = RecipeMap.EMPTY
+        private set
+
+    @SubscribeEvent
+    fun onRecipeSync(event: RecipesReceivedEvent) {
+        cachedRecipes = event.recipeMap
+    }
 }

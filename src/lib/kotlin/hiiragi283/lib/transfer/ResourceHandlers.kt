@@ -1,19 +1,18 @@
 package hiiragi283.lib.transfer
 
+import hiiragi283.lib.math.fixedFraction
 import net.neoforged.neoforge.transfer.ResourceHandler
-import net.neoforged.neoforge.transfer.fluid.FluidResource
-import net.neoforged.neoforge.transfer.item.ItemResource
+import net.neoforged.neoforge.transfer.resource.Resource
+import net.neoforged.neoforge.transfer.transaction.Transaction
+import net.neoforged.neoforge.transfer.transaction.TransactionContext
+import org.apache.commons.lang3.math.Fraction
 
 val ResourceHandler<*>.indices: IntRange get() = (0..<size())
 
-//    Fluid    //
+fun <T : Resource> ResourceHandler<T>.getFilledLevel(index: Int): Fraction = fixedFraction(this.getAmountAsLong(index), this.getCapacityAsLong(index, this.getResource(index)))
 
-typealias FluidResourceHandler = ResourceHandler<FluidResource>
+fun <T : Resource> ResourceHandler<T>.asResourceSlots(): List<HTHandlerResourceSlot<T>> = this.indices.map { index: Int -> HTHandlerResourceSlot(this, index) }
 
-typealias HTFluidResourceHandler = HTResourceHandler<FluidResource>
+//    Transaction    //
 
-//    Item    //
-
-typealias ItemResourceHandler = ResourceHandler<ItemResource>
-
-typealias HTItemResourceHandler = HTResourceHandler<ItemResource>
+inline fun <T> useTransaction(parent: TransactionContext? = null, action: (Transaction) -> T): Result<T> = runCatching { Transaction.open(parent).use(action) }

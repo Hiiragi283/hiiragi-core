@@ -1,5 +1,7 @@
 package hiiragi283.lib.transfer
 
+import hiiragi283.lib.transfer.fluid.FluidResourceHandler
+import hiiragi283.lib.transfer.item.ItemResourceHandler
 import net.minecraft.core.Direction
 import net.neoforged.neoforge.transfer.energy.EnergyHandler
 

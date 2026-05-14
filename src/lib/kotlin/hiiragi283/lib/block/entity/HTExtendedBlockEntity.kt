@@ -10,9 +10,11 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.ProblemReporter
 import net.minecraft.world.level.ChunkPos
 import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.redstone.Orientation
 import net.minecraft.world.level.storage.TagValueOutput
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
@@ -63,6 +65,16 @@ abstract class HTExtendedBlockEntity(type: BlockEntityType<*>, worldPosition: Bl
     }
 
     protected open fun markDirtyComparator() {}
+
+    /**
+     * ブロックのコンパレータ出力を返します。
+     */
+    open fun getComparatorOutput(state: BlockState, level: Level, pos: BlockPos): Int = 0
+
+    /**
+     * 隣接ブロックが更新された時に呼び出されます。
+     */
+    open fun neighborChanged(state: BlockState, level: Level, pos: BlockPos, block: Block, orientation: Orientation?, movedByPiston: Boolean) {}
 
     //    BlockEntity    //
 
