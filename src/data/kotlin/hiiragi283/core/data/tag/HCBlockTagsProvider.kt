@@ -1,0 +1,18 @@
+package hiiragi283.core.data.tag
+
+import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.setup.HCBlocks
+import java.util.concurrent.CompletableFuture
+import net.minecraft.core.HolderLookup
+import net.minecraft.data.PackOutput
+import net.minecraft.data.tags.TagAppender
+import net.minecraft.tags.BlockTags
+import net.minecraft.world.level.block.Block
+import net.neoforged.neoforge.common.data.BlockTagsProvider
+
+class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : BlockTagsProvider(output, lookupProvider, HiiragiCoreAPI.MOD_ID) {
+    override fun addTags(registries: HolderLookup.Provider) {
+        val pickaxe: TagAppender<Block, Block> = tag(BlockTags.MINEABLE_WITH_PICKAXE)
+        HCBlocks.COPPER_BASIN.asSequence().map { it.get() }.forEach(pickaxe::add)
+    }
+}

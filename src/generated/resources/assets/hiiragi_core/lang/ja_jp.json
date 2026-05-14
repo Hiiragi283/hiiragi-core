@@ -1,0 +1,22 @@
+{
+  "block.hiiragi_core.copper_basin": "銅の鉢",
+  "block.hiiragi_core.exposed_copper_basin": "風化した銅の鉢",
+  "block.hiiragi_core.oxidized_copper_basin": "酸化した銅の鉢",
+  "block.hiiragi_core.waxed_copper_basin": "錆止めされた銅の鉢",
+  "block.hiiragi_core.waxed_exposed_copper_basin": "錆止めされた風化した銅の鉢",
+  "block.hiiragi_core.waxed_oxidized_copper_basin": "錆止めされた酸化した銅の鉢",
+  "block.hiiragi_core.waxed_weathered_copper_basin": "錆止めされた錆びた銅の鉢",
+  "block.hiiragi_core.weathered_copper_basin": "錆びた銅の鉢",
+  "constants.hiiragi_lib.false": "False",
+  "constants.hiiragi_lib.true": "True",
+  "gui.hiiragi_lib.capacity": "Capacity: %1$s",
+  "gui.hiiragi_lib.capacity.fe": "Capacity: %1$s FE",
+  "gui.hiiragi_lib.capacity.mb": "Capacity: %1$s mB",
+  "gui.hiiragi_lib.fraction": "%1$s / %2$s",
+  "gui.hiiragi_lib.percentage": "%1$s %%",
+  "gui.hiiragi_lib.stored": "%1$s: %2$s",
+  "gui.hiiragi_lib.stored.exp": "%1$s Exp",
+  "gui.hiiragi_lib.stored.fe": "%1$s FE",
+  "gui.hiiragi_lib.stored.mb": "%1$s: %2$s mB",
+  "gui.hiiragi_lib.tick": "%1$s ticks"
+}

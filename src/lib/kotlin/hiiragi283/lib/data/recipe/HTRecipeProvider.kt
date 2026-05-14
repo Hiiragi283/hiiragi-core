@@ -47,7 +47,9 @@ abstract class HTRecipeProvider(protected val modId: String, registries: HolderL
         final override fun createRecipeProvider(registries: HolderLookup.Provider, output: RecipeOutput): RecipeProvider {
             val output1: RecipeOutput = object : RecipeOutput {
                 override fun accept(key: RecipeKey, recipe: Recipe<*>, advancement: AdvancementHolder?, vararg conditions: ICondition) {
-                    output.accept(key.identifier().let(::modifyId).let(::RecipeKey), recipe, advancement, *conditions)
+                    val fixedKey: RecipeKey = key.identifier().let(::modifyId).let(::RecipeKey)
+                    val fixedHolder: AdvancementHolder? = advancement?.let { AdvancementHolder(it.id().let(::modifyId), it.value()) }
+                    output.accept(fixedKey, recipe, fixedHolder, *conditions)
                 }
 
                 override fun advancement(): Advancement.Builder = output.advancement()

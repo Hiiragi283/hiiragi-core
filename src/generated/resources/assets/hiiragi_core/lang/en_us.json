@@ -1,0 +1,22 @@
+{
+  "block.hiiragi_core.copper_basin": "Copper Basin",
+  "block.hiiragi_core.exposed_copper_basin": "Exposed Copper Basin",
+  "block.hiiragi_core.oxidized_copper_basin": "Oxidized Copper Basin",
+  "block.hiiragi_core.waxed_copper_basin": "Waxed Copper Basin",
+  "block.hiiragi_core.waxed_exposed_copper_basin": "Waxed Exposed Copper Basin",
+  "block.hiiragi_core.waxed_oxidized_copper_basin": "Waxed Oxidized Copper Basin",
+  "block.hiiragi_core.waxed_weathered_copper_basin": "Waxed Weathered Copper Basin",
+  "block.hiiragi_core.weathered_copper_basin": "Weathered Copper Basin",
+  "constants.hiiragi_lib.false": "False",
+  "constants.hiiragi_lib.true": "True",
+  "gui.hiiragi_lib.capacity": "Capacity: %1$s",
+  "gui.hiiragi_lib.capacity.fe": "Capacity: %1$s FE",
+  "gui.hiiragi_lib.capacity.mb": "Capacity: %1$s mB",
+  "gui.hiiragi_lib.fraction": "%1$s / %2$s",
+  "gui.hiiragi_lib.percentage": "%1$s %%",
+  "gui.hiiragi_lib.stored": "%1$s: %2$s",
+  "gui.hiiragi_lib.stored.exp": "%1$s Exp",
+  "gui.hiiragi_lib.stored.fe": "%1$s FE",
+  "gui.hiiragi_lib.stored.mb": "%1$s: %2$s mB",
+  "gui.hiiragi_lib.tick": "%1$s ticks"
+}

@@ -2,6 +2,7 @@ package hiiragi283.lib.registry
 
 import hiiragi283.lib.resource.toId
 import net.minecraft.resources.Identifier
+import net.minecraft.resources.ResourceKey
 import net.neoforged.neoforge.registries.DeferredHolder
 import net.neoforged.neoforge.registries.DeferredRegister
 
@@ -11,6 +12,8 @@ open class HTDeferredRegister<T : Any>(registryKey: RegistryKey<T>, namespace: S
      * @param path IDの[パス][Identifier.getPath]
      */
     fun createId(path: String): Identifier = namespace.toId(path)
+
+    fun createKey(id: Identifier): ResourceKey<T> = this.registryKey.createKey(id)
 
     /**
      * [名前空間][namespace]に基づいて，IDのエイリアスを登録します。
