@@ -11,8 +11,9 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext
 interface HTInputHandler<STACK : Any> {
     /**
      * 指定した[数量][amount]だけ中身を消費します。
+     * @return 実際に消費される数量
      */
-    fun consume(amount: Int, parent: TransactionContext?)
+    fun extract(amount: Int, parent: TransactionContext?): Result<Int>
 
     fun getStack(): STACK
 }

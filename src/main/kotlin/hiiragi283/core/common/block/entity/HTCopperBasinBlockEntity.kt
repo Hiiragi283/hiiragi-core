@@ -2,6 +2,7 @@ package hiiragi283.core.common.block.entity
 
 import hiiragi283.core.api.recipe.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.HTTankFillingRecipe
+import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCRecipeLookups
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.block.entity.HTBlockEntity
@@ -12,6 +13,7 @@ import hiiragi283.lib.recipe.handler.HTFluidOutputHandler
 import hiiragi283.lib.transfer.fluid.FluidResourceHandler
 import hiiragi283.lib.transfer.getFilledLevel
 import hiiragi283.lib.transfer.item.ItemResourceHandler
+import hiiragi283.lib.transfer.useTransaction
 import hiiragi283.lib.world.HTItemDropHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
@@ -25,9 +27,10 @@ import net.minecraft.world.level.storage.ValueOutput
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.transfer.energy.EnergyHandler
 import net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler
+import net.neoforged.neoforge.transfer.transaction.Transaction
 import org.apache.commons.lang3.math.Fraction
 
-class HTCopperBasinBlockEntity(worldPosition: BlockPos, blockState: BlockState) : HTBlockEntity(TODO(), worldPosition, blockState) {
+class HTCopperBasinBlockEntity(worldPosition: BlockPos, blockState: BlockState) : HTBlockEntity(HCBlockEntityTypes.COPPER_BASIN.get(), worldPosition, blockState) {
     private val fluidHandler = FluidStacksResourceHandler(1, 4000)
 
     private val emptyingCache: HTRecipeCaches.SingleItem<HTTankEmptyingRecipe> = HTRecipeCaches.SingleItem(HCRecipeLookups.EMPTYING)
@@ -42,14 +45,15 @@ class HTCopperBasinBlockEntity(worldPosition: BlockPos, blockState: BlockState) 
         val recipe: HTTankEmptyingRecipe = emptyingCache.findFirstRecipe(stack, level) ?: return false
 
         val (item: ItemStack, fluid: FluidStack) = recipe.assemble(stack)
-        if (fluidOutputHandler.canInsert(fluid, null)) {
-            HTItemDropHelper.giveStackTo(player, item)
-            fluidOutputHandler.insert(fluid, null)
-            stack.consume(1, player)
-            return true
-        } else {
-            return false
+        useTransaction { transaction: Transaction ->
+            if (fluidOutputHandler.insert(fluid, transaction).isSuccess) {
+                transaction.commit()
+                HTItemDropHelper.giveStackTo(player, item)
+                stack.consume(1, player)
+                return true
+            }
         }
+        return false
     }
 
     fun fillContainer(player: Player, hand: InteractionHand): Boolean {
@@ -62,8 +66,12 @@ class HTCopperBasinBlockEntity(worldPosition: BlockPos, blockState: BlockState) 
         recipe
             .getRequiredAmount(itemStack, fluidStack)
             .let { (first: Int, second: Int) ->
-                itemStack.consume(first, player)
-                fluidInputHandler.consume(second, null)
+                useTransaction { transaction: Transaction ->
+                    if (fluidInputHandler.extract(second, transaction).isSuccess) {
+                        transaction.commit()
+                        itemStack.consume(first, player)
+                    }
+                }
             }
         return true
     }

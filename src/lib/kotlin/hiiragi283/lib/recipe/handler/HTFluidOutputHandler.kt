@@ -19,38 +19,18 @@ interface HTFluidOutputHandler : HTOutputHandler<FluidStack> {
     }
 
     private class Single(private val handler: FluidResourceHandler, private val index: Int) : HTFluidOutputHandler {
-        override fun canInsert(stack: FluidStack, parent: TransactionContext?): Boolean {
-            if (stack.isEmpty) return true
+        override fun insert(stack: FluidStack, parent: TransactionContext?): Result<Int> = runCatching {
             val (resource: FluidResource, amount: Int) = stack.toResourcePair()
-            return useTransaction(parent) { transaction: Transaction -> handler.insert(index, resource, amount, transaction) }.map { it > 0 }.getOrDefault(false)
-        }
-
-        override fun insert(stack: FluidStack, parent: TransactionContext?) {
-            if (stack.isEmpty) return
-            val (resource: FluidResource, amount: Int) = stack.toResourcePair()
-            useTransaction(parent) { transaction: Transaction ->
-                handler.insert(index, resource, amount, transaction)
-                transaction.commit()
-            }
+            useTransaction(parent) { transaction: Transaction -> handler.insert(index, resource, amount, transaction) }
         }
     }
 
     private class Multiple(handler: FluidResourceHandler, range: IntRange) : HTFluidOutputHandler {
         private val handler: FluidResourceHandler = RangedResourceHandler.of(handler, range.first, range.last + 1)
 
-        override fun canInsert(stack: FluidStack, parent: TransactionContext?): Boolean {
-            if (stack.isEmpty) return true
+        override fun insert(stack: FluidStack, parent: TransactionContext?): Result<Int> = runCatching {
             val (resource: FluidResource, amount: Int) = stack.toResourcePair()
-            return useTransaction(parent) { transaction -> handler.insert(resource, amount, transaction) }.map { it > 0 }.getOrDefault(false)
-        }
-
-        override fun insert(stack: FluidStack, parent: TransactionContext?) {
-            if (stack.isEmpty) return
-            val (resource: FluidResource, amount: Int) = stack.toResourcePair()
-            useTransaction(parent) { transaction: Transaction ->
-                handler.insert(resource, amount, transaction)
-                transaction.commit()
-            }
+            useTransaction(parent) { transaction: Transaction -> handler.insert(resource, amount, transaction) }
         }
     }
 }

@@ -2,6 +2,7 @@ package hiiragi283.core.common
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCAttachmentTypes
+import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCRecipeLookups
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
@@ -23,6 +24,7 @@ data object HiiragiCore : HTCommonMod() {
         NeoForgeMod.enableMilkFluid()
 
         HCAttachmentTypes.REGISTER.register(eventBus)
+        HCBlockEntityTypes.register(eventBus)
         HCRecipeSerializers.REGISTER.register(eventBus)
         HCRecipeTypes.REGISTER.register(eventBus)
 

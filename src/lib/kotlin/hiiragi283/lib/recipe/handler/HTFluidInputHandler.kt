@@ -11,14 +11,8 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext
 class HTFluidInputHandler(private val handler: FluidResourceHandler, private val index: Int) : HTInputHandler<FluidStack> {
     override fun getStack(): FluidStack = handler.getFluidStack(index)
 
-    override fun consume(amount: Int, parent: TransactionContext?) {
-        if (amount > 0) {
-            val resourceIn: FluidResource = handler.getResource(index)
-            if (resourceIn.isEmpty) return
-            useTransaction(parent) { transaction: Transaction ->
-                handler.extract(index, resourceIn, amount, transaction)
-                transaction.commit()
-            }
-        }
+    override fun extract(amount: Int, parent: TransactionContext?): Result<Int> = runCatching {
+        val resourceIn: FluidResource = handler.getResource(index)
+        useTransaction(parent) { transaction: Transaction -> handler.extract(index, resourceIn, amount, transaction) }
     }
 }

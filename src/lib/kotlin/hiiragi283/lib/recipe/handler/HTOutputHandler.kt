@@ -10,13 +10,8 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext
  */
 interface HTOutputHandler<STACK : Any> {
     /**
-     * 指定した[完成品][stack]を搬入可能かどうか判定します。
-     * @return 過不足なく搬入できる場合は`true`
-     */
-    fun canInsert(stack: STACK, parent: TransactionContext?): Boolean
-
-    /**
      * 指定した[完成品][stack]を搬入します。
+     * @return 実際に搬入される数量
      */
-    fun insert(stack: STACK, parent: TransactionContext?)
+    fun insert(stack: STACK, parent: TransactionContext?): Result<Int>
 }

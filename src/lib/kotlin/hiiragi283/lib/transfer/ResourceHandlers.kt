@@ -15,4 +15,4 @@ fun <T : Resource> ResourceHandler<T>.asResourceSlots(): List<HTHandlerResourceS
 
 //    Transaction    //
 
-inline fun <T> useTransaction(parent: TransactionContext? = null, action: (Transaction) -> T): Result<T> = runCatching { Transaction.open(parent).use(action) }
+inline fun <T> useTransaction(parent: TransactionContext? = null, action: (Transaction) -> T): T = Transaction.open(parent).use(action)
