@@ -1,0 +1,8 @@
+{
+  "type": "hiiragi_core:exploding",
+  "ingredient": "minecraft:sculk",
+  "result": {
+    "chance": "1/8",
+    "id": "minecraft:echo_shard"
+  }
+}

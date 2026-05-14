@@ -11,12 +11,16 @@ import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
+import net.neoforged.neoforge.common.NeoForgeMod
 import net.neoforged.neoforge.registries.NewRegistryEvent
 
 @Mod(HiiragiCoreAPI.MOD_ID)
 data object HiiragiCore : HTCommonMod() {
     override fun initialize(eventBus: IEventBus, container: ModContainer) {
         HiiragiCoreAPI.LOGGER.info("Initializing Hiiragi-Core...")
+
+        NeoForgeMod.enableMergedAttributeTooltips()
+        NeoForgeMod.enableMilkFluid()
 
         HCAttachmentTypes.REGISTER.register(eventBus)
         HCRecipeSerializers.REGISTER.register(eventBus)

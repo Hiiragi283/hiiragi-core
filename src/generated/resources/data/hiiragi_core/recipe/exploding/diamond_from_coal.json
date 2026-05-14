@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:exploding",
+  "ingredient": [
+    "minecraft:coal",
+    "minecraft:charcoal"
+  ],
+  "result": {
+    "chance": "1/64",
+    "id": "minecraft:diamond"
+  }
+}

@@ -28,7 +28,7 @@ data object HTResultHelper {
     /**
      * @since 0.10.0
      */
-    @JvmName("createMapFromItems")
+    @JvmName("createMapFromFluids")
     @JvmStatic
     fun createMap(stacks: Iterable<FluidStack>): Map<FluidResource, Int> = stacks.fold(hashMapOf()) { map: HashMap<FluidResource, Int>, stack: FluidStack ->
         val resource: FluidResource = FluidResource.of(stack)

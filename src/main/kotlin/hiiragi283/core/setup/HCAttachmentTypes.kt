@@ -1,7 +1,7 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.world.HCInWorldRecipeCaches
+import hiiragi283.core.common.world.HCInWorldRecipeCaches
 import hiiragi283.lib.registry.HTDeferredAttachmentRegister
 import hiiragi283.lib.registry.HTDeferredAttachmentType
 import net.neoforged.neoforge.attachment.AttachmentType

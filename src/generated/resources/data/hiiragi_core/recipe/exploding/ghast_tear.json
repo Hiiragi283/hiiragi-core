@@ -1,0 +1,8 @@
+{
+  "type": "hiiragi_core:exploding",
+  "ingredient": "minecraft:quartz_block",
+  "result": {
+    "chance": "1/4",
+    "id": "minecraft:ghast_tear"
+  }
+}

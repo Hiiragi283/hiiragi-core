@@ -7,6 +7,7 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.HTRegistries
+import hiiragi283.lib.math.toFraction
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.serialization.codec.HTCodecs
 import net.minecraft.core.registries.BuiltInRegistries
@@ -20,6 +21,7 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
 import net.neoforged.neoforge.common.util.NeoForgeExtraCodecs
+import org.apache.commons.lang3.math.Fraction
 
 interface HTItemResult : HTIdLike {
     companion object {
@@ -49,6 +51,10 @@ interface HTItemResult : HTIdLike {
     fun create(): DataResult<ItemStack>
 
     fun createOrEmpty(): ItemStack = create().resultOrPartial().orElseGet(ItemStack::EMPTY)
+
+    fun withChance(chance: Float = 1f): HTChancedItemResult = withChance(chance.toFraction())
+
+    fun withChance(chance: Fraction): HTChancedItemResult = HTChancedItemResult(this, chance)
 
     //    Serializer    //
 

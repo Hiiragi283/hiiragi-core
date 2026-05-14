@@ -2,7 +2,7 @@ package hiiragi283.core.common.event
 
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.setup.HCAttachmentTypes
-import hiiragi283.core.world.HCInWorldRecipeCaches
+import hiiragi283.core.common.world.HCInWorldRecipeCaches
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.recipe.result.HTResultHelper
 import net.minecraft.server.level.ServerLevel
