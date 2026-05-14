@@ -10,11 +10,15 @@ import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.lib.HTRegistries
 import hiiragi283.lib.mod.HTCommonMod
+import hiiragi283.lib.network.HTPayloadHandlers
+import hiiragi283.lib.network.HTUpdateBlockEntityPacket
+import hiiragi283.lib.network.HTUpdateMenuPacket
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.neoforge.common.NeoForgeMod
+import net.neoforged.neoforge.network.registration.PayloadRegistrar
 import net.neoforged.neoforge.registries.NewRegistryEvent
 
 @Mod(HiiragiCoreAPI.MOD_ID)
@@ -38,9 +42,15 @@ data object HiiragiCore : HTCommonMod() {
 
     override fun registerRegistries(event: NewRegistryEvent) {
         event.register(HTRegistries.ITEM_RESULT_SERIALIZER)
+        event.register(HTRegistries.SLOT_TYPE)
     }
 
     override fun commonSetup(event: FMLCommonSetupEvent) {
         event.enqueueWork(HCRecipeLookups::init)
+    }
+
+    override fun registerPayload(registrar: PayloadRegistrar) {
+        registrar.playToClient(HTUpdateBlockEntityPacket.TYPE, HTUpdateBlockEntityPacket.STREAM_CODEC, HTPayloadHandlers::handleS2C)
+        registrar.playBidirectional(HTUpdateMenuPacket.TYPE, HTUpdateMenuPacket.STREAM_CODEC, HTPayloadHandlers::handleBoth)
     }
 }
