@@ -1,4 +1,4 @@
-package hiiragi283.lib.recipe.cache
+package hiiragi283.lib.recipe.lookup
 
 import hiiragi283.lib.recipe.HTRecipeHolder
 import net.minecraft.server.level.ServerLevel
@@ -9,7 +9,6 @@ import net.minecraft.util.context.ContextMap
  * @param RECIPE レシピのクラス
  * @author Hiiragi Tsubasa
  * @since 0.11.0
- * @see mekanism.common.recipe.IMekanismRecipeTypeProvider
  */
 fun interface HTRecipeLookup<RECIPE : Any> {
     /**

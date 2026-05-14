@@ -1,7 +1,7 @@
 package hiiragi283.lib.block.entity
 
 import hiiragi283.lib.HTConstants
-import hiiragi283.lib.level.HTItemDropHelper
+import hiiragi283.lib.world.HTItemDropHelper
 import hiiragi283.lib.text.Text
 import hiiragi283.lib.transfer.HTHandlerProvider
 import hiiragi283.lib.transfer.ItemResourceHandler

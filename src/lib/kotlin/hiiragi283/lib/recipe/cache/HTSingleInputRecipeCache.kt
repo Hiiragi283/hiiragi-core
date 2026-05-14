@@ -1,6 +1,8 @@
 package hiiragi283.lib.recipe.cache
 
 import hiiragi283.lib.recipe.HTRecipeHolder
+import hiiragi283.lib.recipe.lookup.HTRecipeLookup
+import hiiragi283.lib.recipe.lookup.HTRecipeLookupContext
 import java.util.function.Predicate
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.context.ContextMap

@@ -5,8 +5,6 @@ import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.resource.HTIdLike
-import hiiragi283.lib.serialization.codec.HTCodecs
-import net.minecraft.core.registries.Registries
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
@@ -28,7 +26,7 @@ data class HTRecipeHolder<RECIPE : Any>(val key: RecipeKey, val recipe: RECIPE) 
         fun <RECIPE : Any> codec(recipeCodec: MapCodec<RECIPE>): Codec<HTRecipeHolder<RECIPE>> = RecordCodecBuilder.create { instance ->
             instance
                 .group(
-                    HTCodecs.resourceKey(Registries.RECIPE).fieldOf(HTConstants.ID).forGetter(HTRecipeHolder<RECIPE>::key),
+                    Identifier.CODEC.fieldOf(HTConstants.ID).forGetter(HTRecipeHolder<RECIPE>::getId),
                     recipeCodec.codec().fieldOf("recipe").forGetter(HTRecipeHolder<RECIPE>::recipe),
                 ).apply(instance, ::HTRecipeHolder)
         }
@@ -39,6 +37,8 @@ data class HTRecipeHolder<RECIPE : Any>(val key: RecipeKey, val recipe: RECIPE) 
         @JvmStatic
         fun <RECIPE : Recipe<*>> from(holder: RecipeHolder<out RECIPE>): HTRecipeHolder<RECIPE> = HTRecipeHolder(holder.id(), holder.value())
     }
+
+    constructor(id: Identifier, recipe: RECIPE) : this(RecipeKey(id), recipe)
 
     constructor(pair: Pair<RecipeKey, RECIPE>) : this(pair.first, pair.second)
 

@@ -1,6 +1,8 @@
 package hiiragi283.lib.recipe.cache
 
 import hiiragi283.lib.recipe.HTRecipeHolder
+import hiiragi283.lib.recipe.lookup.HTRecipeLookup
+import hiiragi283.lib.recipe.lookup.HTRecipeLookupContext
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.context.ContextMap
 import net.neoforged.neoforge.common.util.TriPredicate

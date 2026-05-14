@@ -1,11 +1,11 @@
-package hiiragi283.lib.recipe.cache
+package hiiragi283.lib.recipe.lookup
 
 import hiiragi283.lib.recipe.HTRecipeHolder
+import java.util.function.Supplier
+import net.minecraft.util.context.ContextMap
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeType
-import java.util.function.Supplier
-import net.minecraft.util.context.ContextMap
 
 @JvmInline
 value class HTVanillaRecipeLookup<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(private val recipeType: Supplier<out RecipeType<RECIPE>>) : HTRecipeLookup<RECIPE> {

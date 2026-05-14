@@ -1,5 +1,6 @@
 package hiiragi283.lib.recipe.cache
 
+import hiiragi283.lib.recipe.lookup.HTRecipeLookup
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.BiPredicate

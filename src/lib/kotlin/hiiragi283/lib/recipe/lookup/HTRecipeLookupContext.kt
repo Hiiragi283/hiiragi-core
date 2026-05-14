@@ -1,4 +1,4 @@
-package hiiragi283.lib.recipe.cache
+package hiiragi283.lib.recipe.lookup
 
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.resource.toId

@@ -1,4 +1,4 @@
-package hiiragi283.lib.level
+package hiiragi283.lib.world
 
 import hiiragi283.lib.transfer.ItemResourceHandler
 import net.minecraft.core.BlockPos

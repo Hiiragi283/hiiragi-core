@@ -1,9 +1,7 @@
 package hiiragi283.lib
 
 import kotlin.random.Random
-import net.minecraft.world.item.Item
 import net.neoforged.neoforge.common.NeoForgeMod
-import net.neoforged.neoforge.fluids.FluidType
 
 /**
  * Hiiragi Seriesで使用される定数を集めたクラスです。
@@ -19,27 +17,12 @@ data object HTConstants {
 
     //    Fluid    //
 
-    /**
-     * 液体におけるデフォルトの数量
-     */
-    const val DEFAULT_FLUID_AMOUNT: Int = FluidType.BUCKET_VOLUME
-
-    /**
-     * 1インゴットあたりの液体量
-     */
-    const val INGOT_AMOUNT = 90
-
     //    GUI    //
 
     const val TEXTURES = "textures"
     const val GUI = "gui"
 
     //    Item    //
-
-    /**
-     * アイテムにおけるデフォルトの最大個数
-     */
-    const val ABSOLUTE_MAX_STACK_SIZE: Int = Item.ABSOLUTE_MAX_STACK_SIZE
 
     //    Mod ID    //
 
@@ -97,15 +80,6 @@ data object HTConstants {
     const val SMELTING = "smelting"
     const val SMITHING = "smithing"
     const val SMOKING = "smoking"
-
-    // Hiiragi Core
-    const val CHARGING = "charging"
-    const val CRUSHING = "crushing"
-    const val EXPLODING = "exploding"
-
-    const val COLORING = "coloring"
-    const val EMPTYING = "emptying"
-    const val FILLING = "filling"
 
     // Serialization
     const val ENERGY = "energy"
