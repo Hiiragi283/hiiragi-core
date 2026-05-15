@@ -12,7 +12,7 @@ import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.client.data.HCClientResourceProvider
 import hiiragi283.core.client.gui.widget.HTFluidWidgetRenderer
-import hiiragi283.core.client.gui.widget.HTItemSlotWidgetRenderer
+import hiiragi283.core.client.gui.widget.HTItemWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTProgressWidgetRenderer
 import hiiragi283.core.client.render.block.HTCopperBasinRenderer
 import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
@@ -52,7 +52,7 @@ data object HiiragiCoreClient : HTClientMod() {
 
     override fun registerWidgetRenderer(event: HTRegisterWidgetRendererEvent) {
         event.register(HCWidgetTypes.FLUID.get(), ::HTFluidWidgetRenderer)
-        event.register(HCWidgetTypes.ITEM_SLOT.get(), ::HTItemSlotWidgetRenderer)
+        event.register(HCWidgetTypes.ITEM.get(), ::HTItemWidgetRenderer)
         event.register(HCWidgetTypes.PROGRESS.get(), ::HTProgressWidgetRenderer)
     }
 

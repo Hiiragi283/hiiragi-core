@@ -2,7 +2,7 @@ package hiiragi283.core.client.gui.widget
 
 import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.HTBounds
-import hiiragi283.core.common.gui.widget.HTItemSlotWidget
+import hiiragi283.core.common.gui.widget.HTItemWidget
 import hiiragi283.core.impl.gui.widget.HTAbstractWidgetRenderer
 import hiiragi283.core.util.HTSpriteRenderHelper
 import net.minecraft.client.Minecraft
@@ -13,7 +13,7 @@ import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 
 @OnlyIn(Dist.CLIENT)
-class HTItemSlotWidgetRenderer(gui: HTAbstractGui, widget: HTItemSlotWidget) : HTAbstractWidgetRenderer<HTItemSlotWidget>(gui, widget) {
+class HTItemWidgetRenderer(gui: HTAbstractGui, widget: HTItemWidget) : HTAbstractWidgetRenderer<HTItemWidget>(gui, widget) {
     override fun render(
         bounds: HTBounds,
         guiGraphics: GuiGraphics,
@@ -24,7 +24,7 @@ class HTItemSlotWidgetRenderer(gui: HTAbstractGui, widget: HTItemSlotWidget) : H
         // Render background
         HTSpriteRenderHelper.blit(guiGraphics, widget.backgroundType.slotTexture, bounds)
         // Render stack
-        if (widget.containerSlot != null) return
+        if (widget is HTItemWidget.Container) return
         val font: Font = Minecraft.getInstance().font
         val stack: ItemStack = widget.getStack()
         if (stack.isEmpty) return

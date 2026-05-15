@@ -13,7 +13,7 @@ import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.common.gui.sync.HTFractionSyncSlot
 import hiiragi283.core.common.gui.widget.HTFillDirection
 import hiiragi283.core.common.gui.widget.HTFluidWidget
-import hiiragi283.core.common.gui.widget.HTItemSlotWidget
+import hiiragi283.core.common.gui.widget.HTItemWidget
 import hiiragi283.core.common.gui.widget.HTProgressWidget
 import hiiragi283.core.common.storage.fluid.HTBasicFluidTank
 import hiiragi283.core.common.storage.item.HTBasicItemSlot
@@ -56,28 +56,23 @@ class HTTestBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HCBloc
 
     fun setup(widgetHolder: HTWidgetHolder) {
         // tank
-        widgetHolder += HTFluidWidget
-            .createTank(tank1, HTSlotHelper.getSlotPosX(0), HTSlotHelper.getSlotPosY(0))
-            .setBackground(HTBackgroundType.EXTRA_INPUT)
-        widgetHolder += HTFluidWidget
-            .createSlot(tank2, HTSlotHelper.getSlotPosX(1), HTSlotHelper.getSlotPosY(2))
-            .setBackground(HTBackgroundType.EXTRA_OUTPUT)
-            .setGhost()
-
+        widgetHolder += HTFluidWidget.Tank(tank1, HTSlotHelper.getSlotPosX(0), HTSlotHelper.getSlotPosY(0), HTBackgroundType.EXTRA_INPUT, false)
+        widgetHolder += HTFluidWidget.Slot(tank1, HTSlotHelper.getSlotPosX(1), HTSlotHelper.getSlotPosY(2), HTBackgroundType.EXTRA_OUTPUT, true)
         // slot
-        for (i in (0..2)) {
-            widgetHolder += HTItemSlotWidget.container(
+        for (i: Int in (0..2)) {
+            widgetHolder += HTItemWidget.Container(
                 slot1,
                 HTSlotHelper.getSlotPosX(3),
                 HTSlotHelper.getSlotPosY(i),
                 HTBackgroundType.INPUT,
             )
         }
-        widgetHolder += HTItemSlotWidget.fake(
+        widgetHolder += HTItemWidget.Fake(
             slot2,
             HTSlotHelper.getSlotPosX(2),
             HTSlotHelper.getSlotPosY(2),
             HTBackgroundType.OUTPUT,
+            false,
         )
 
         // progress

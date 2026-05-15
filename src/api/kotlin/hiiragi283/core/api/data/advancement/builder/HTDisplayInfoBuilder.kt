@@ -26,7 +26,7 @@ class HTDisplayInfoBuilder {
             .build()
     }
 
-    val iconStack: ItemStack by HTDelegates.onceInitialize()
+    var iconStack: ItemStack by HTDelegates.onceInitialize()
     val titleText = TextHolder()
     val descText = TextHolder()
     var backGround: ResourceLocation? = null

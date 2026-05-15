@@ -94,7 +94,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         ).forEach { (output: ItemLike, input: Item) ->
             HTItemToMultiItemRecipeBuilder.crushing(this.output) {
                 ingredient = inputCreator.create(input)
-                results += resultCreator.create(output).withChance()
+                results += resultCreator.create(output)
             }
         }
 
@@ -104,7 +104,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         ).forEach { (output: ItemLike, input: Item) ->
             HTItemToMultiItemRecipeBuilder.crushing(this.output) {
                 ingredient = inputCreator.create(input)
-                results += resultCreator.create(output, 3).withChance()
+                results += resultCreator.create(output, 3)
             }
         }
 
@@ -116,7 +116,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         ).forEach { (output: Item, input: Item) ->
             HTItemToMultiItemRecipeBuilder.crushing(this.output) {
                 ingredient = inputCreator.create(input)
-                results += resultCreator.create(output, 4).withChance()
+                results += resultCreator.create(output, 4)
                 recipeId suffix "_from_block"
             }
         }
@@ -124,33 +124,33 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         // Prismarine Bricks -> Prismarine Shard
         HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Items.PRISMARINE_BRICKS)
-            results += resultCreator.create(Items.PRISMARINE_SHARD, 9).withChance()
+            results += resultCreator.create(Items.PRISMARINE_SHARD, 9)
             recipeId suffix "_from_bricks"
         }
         // Beetroot -> Sugar + Molasses
         HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.CROPS_BEETROOT)
-            results += resultCreator.create(Items.SUGAR, 2).withChance()
-            // extraResult += resultCreator.create(RagiumItems.MOLASSES).withChance()
+            results += resultCreator.create(Items.SUGAR, 2)
+            // extraResult += resultCreator.create(RagiumItems.MOLASSES)
             recipeId suffix "_from_beetroot"
         }
         // Sugar Cane -> Sugar + Molasses
         HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.CROPS_SUGAR_CANE)
-            results += resultCreator.create(Items.SUGAR, 4).withChance()
-            // extraResult += resultCreator.create(RagiumItems.MOLASSES).withChance()
+            results += resultCreator.create(Items.SUGAR, 4)
+            // extraResult += resultCreator.create(RagiumItems.MOLASSES)
             recipeId suffix "_from_cane"
         }
         // Ice -> Snowball
         HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Items.ICE)
-            results += resultCreator.create(Items.SNOWBALL, 4).withChance()
+            results += resultCreator.create(Items.SNOWBALL, 4)
             recipeId suffix "_from_ice"
         }
         // Wheat -> Flour
         HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.CROPS_WHEAT)
-            results += resultCreator.create(HCItems.WHEAT_FLOUR).withChance()
+            results += resultCreator.create(HCItems.WHEAT_FLOUR)
         }
 
         crushStones()
@@ -162,32 +162,32 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         // Stone -> Cobblestone
         HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Items.STONE)
-            results += resultCreator.create(Items.COBBLESTONE).withChance()
+            results += resultCreator.create(Items.COBBLESTONE)
             recipeId suffix "_from_stone"
         }
         // Cobblestone -> Gravel
         HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(listOf(Tags.Items.COBBLESTONES_NORMAL, Tags.Items.COBBLESTONES_MOSSY))
-            results += resultCreator.create(Items.GRAVEL).withChance()
+            results += resultCreator.create(Items.GRAVEL)
             recipeId suffix "_from_cobblestone"
         }
         // Gravel -> Sand
         HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.GRAVELS)
-            results += resultCreator.create(Items.SAND).withChance()
+            results += resultCreator.create(Items.SAND)
             recipeId suffix "_from_gravel"
         }
         // Sandstone -> Sand + Saltpeter
         HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.SANDSTONE_UNCOLORED_BLOCKS)
-            results += resultCreator.create(Items.SAND, 2).withChance()
+            results += resultCreator.create(Items.SAND, 2)
             results += resultCreator.material(CommonParts.DUST, CommonMaterialKeys.SALTPETER).withChance(fraction(1, 4))
             recipeId suffix "_from_sandstone"
         }
 
         HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(Tags.Items.SANDSTONE_RED_BLOCKS)
-            results += resultCreator.create(Items.RED_SAND, 2).withChance()
+            results += resultCreator.create(Items.RED_SAND, 2)
             results += resultCreator.material(CommonParts.DUST, CommonMaterialKeys.SALTPETER).withChance(fraction(1, 4))
             recipeId suffix "_from_sandstone"
         }
@@ -199,7 +199,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         fun wood(tagKey: TagKey<Item>, input: Int, output: Int) {
             HTItemToMultiItemRecipeBuilder.crushing(this.output) {
                 ingredient = inputCreator.create(tagKey, input)
-                results += resultCreator.material(CommonParts.DUST, VanillaMaterialKeys.WOOD, output).withChance()
+                results += resultCreator.material(CommonParts.DUST, VanillaMaterialKeys.WOOD, output)
                 recipeId suffix "_from_${tagKey.location().path}"
             }
         }

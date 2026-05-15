@@ -21,9 +21,9 @@ import java.util.function.Consumer
 @OnlyIn(Dist.CLIENT)
 class HTFluidWidgetRenderer(gui: HTAbstractGui, widget: HTFluidWidget) : HTSpriteWidgetRenderer<HTFluidWidget>(gui, widget) {
     override fun renderBackground(bounds: HTBounds, guiGraphics: GuiGraphics) {
-        val texture: ResourceLocation = when (widget.isTank) {
-            true -> widget.backgroundType.tankTexture
-            false -> widget.backgroundType.slotTexture
+        val texture: ResourceLocation = when (widget) {
+            is HTFluidWidget.Slot -> widget.backgroundType.slotTexture
+            is HTFluidWidget.Tank -> widget.backgroundType.tankTexture
         }
         HTSpriteRenderHelper.blit(guiGraphics, texture, bounds)
     }
@@ -34,9 +34,9 @@ class HTFluidWidgetRenderer(gui: HTAbstractGui, widget: HTFluidWidget) : HTSprit
 
     override fun getColor(): Int = widget.getResource()?.getTintColor() ?: -1
 
-    override fun getLevel(): Fraction = when (widget.isTank) {
-        true -> widget.getLevelAsFraction()
-        false -> Fraction.ONE
+    override fun getLevel(): Fraction = when (widget) {
+        is HTFluidWidget.Slot -> Fraction.ONE
+        is HTFluidWidget.Tank -> widget.getLevelAsFraction()
     }.coerceAtMost(Fraction.ONE)
 
     override fun collectTooltips(consumer: Consumer<Text>, flag: TooltipFlag) {
