@@ -3,7 +3,7 @@ package hiiragi283.lib.gui.menu
 import hiiragi283.lib.gui.factory.HTWidgetHolderContext
 import hiiragi283.lib.gui.sync.HTSyncType
 import hiiragi283.lib.gui.sync.HTSyncableSlot
-import hiiragi283.lib.gui.widget.HTItemSlotWidget
+import hiiragi283.lib.gui.widget.HTItemWidget
 import hiiragi283.lib.gui.widget.HTWidget
 import hiiragi283.lib.gui.widget.HTWidgetHolder
 import net.minecraft.world.entity.player.Inventory
@@ -35,8 +35,8 @@ class HTWidgetContainerMenu(
         override fun <WIDGET : HTWidget> addWidget(widget: WIDGET): WIDGET {
             widgets += widget
             widget.setupHolder(this)
-            if (widget is HTItemSlotWidget) {
-                widget.containerSlot?.let(this@HTWidgetContainerMenu::addSlot)
+            if (widget is HTItemWidget.Container) {
+                this@HTWidgetContainerMenu.addSlot(widget.slot)
             }
             return widget
         }

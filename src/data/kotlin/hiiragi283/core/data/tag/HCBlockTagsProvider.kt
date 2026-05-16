@@ -12,6 +12,9 @@ import net.neoforged.neoforge.common.data.BlockTagsProvider
 
 class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : BlockTagsProvider(output, lookupProvider, HiiragiCoreAPI.MOD_ID) {
     override fun addTags(registries: HolderLookup.Provider) {
+        tag(BlockTags.MINEABLE_WITH_AXE).add(HCBlocks.WARPED_WART.get())
+        tag(BlockTags.SWORD_EFFICIENT).add(HCBlocks.WARPED_WART.get())
+
         val pickaxe: TagAppender<Block, Block> = tag(BlockTags.MINEABLE_WITH_PICKAXE)
         sequence {
             yieldAll(HCBlocks.COPPER_BASIN.weatheringBlocks)

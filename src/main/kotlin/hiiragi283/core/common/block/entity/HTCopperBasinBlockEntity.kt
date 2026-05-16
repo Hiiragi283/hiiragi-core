@@ -31,7 +31,11 @@ import net.neoforged.neoforge.transfer.transaction.Transaction
 import org.apache.commons.lang3.math.Fraction
 
 class HTCopperBasinBlockEntity(worldPosition: BlockPos, blockState: BlockState) : HTBlockEntity(HCBlockEntityTypes.COPPER_BASIN.get(), worldPosition, blockState) {
-    private val fluidHandler = FluidStacksResourceHandler(1, 4000)
+    private val fluidHandler: FluidStacksResourceHandler = object : FluidStacksResourceHandler(1, 4000) {
+        override fun onContentsChanged(index: Int, previousContents: FluidStack) {
+            this@HTCopperBasinBlockEntity.setOnlySave()
+        }
+    }
 
     private val emptyingCache: HTRecipeCaches.SingleItem<HTTankEmptyingRecipe> = HTRecipeCaches.SingleItem(HCRecipeLookups.EMPTYING)
     private val fillingCache: HTRecipeCaches.ItemAndFluid<HTTankFillingRecipe> = HTRecipeCaches.ItemAndFluid(HCRecipeLookups.FILLING)

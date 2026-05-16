@@ -5,6 +5,7 @@ import hiiragi283.core.setup.HCAttachmentTypes
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCCreativeTabs
+import hiiragi283.core.setup.HCMiscRegister
 import hiiragi283.core.setup.HCRecipeLookups
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
@@ -26,6 +27,8 @@ data object HiiragiCore : HTCommonMod() {
     override fun initialize(eventBus: IEventBus, container: ModContainer) {
         HiiragiCoreAPI.LOGGER.info("Initializing Hiiragi-Core...")
 
+        eventBus.addListener(HCMiscRegister::register)
+
         NeoForgeMod.enableMergedAttributeTooltips()
         NeoForgeMod.enableMilkFluid()
 
@@ -43,6 +46,7 @@ data object HiiragiCore : HTCommonMod() {
     override fun registerRegistries(event: NewRegistryEvent) {
         event.register(HTRegistries.ITEM_RESULT_SERIALIZER)
         event.register(HTRegistries.SLOT_TYPE)
+        event.register(HTRegistries.WIDGET_TYPE)
     }
 
     override fun commonSetup(event: FMLCommonSetupEvent) {
@@ -51,6 +55,6 @@ data object HiiragiCore : HTCommonMod() {
 
     override fun registerPayload(registrar: PayloadRegistrar) {
         registrar.playToClient(HTUpdateBlockEntityPacket.TYPE, HTUpdateBlockEntityPacket.STREAM_CODEC, HTPayloadHandlers::handleS2C)
-        registrar.playBidirectional(HTUpdateMenuPacket.TYPE, HTUpdateMenuPacket.STREAM_CODEC, HTPayloadHandlers::handleBoth)
+        registrar.playBidirectional(HTUpdateMenuPacket.TYPE, HTUpdateMenuPacket.STREAM_CODEC, HTPayloadHandlers::handleS2C, HTPayloadHandlers::handleC2S)
     }
 }

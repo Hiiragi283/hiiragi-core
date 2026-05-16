@@ -14,34 +14,34 @@ class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider
     override fun buildRecipes() {
         // Cobblestone -> Cobbled Deepslate
         HCExplodingRecipeBuilder.create {
-            ingredient = itemCreator.create(listOf(Tags.Items.STONES, Tags.Items.COBBLESTONES_NORMAL))
+            ingredient = ingredientCreator.create(listOf(Tags.Items.STONES, Tags.Items.COBBLESTONES_NORMAL))
             result = resultCreator.create(Items.COBBLED_DEEPSLATE).withChance(fraction(1, 2))
         }.save(output)
         // Gunpowder -> Blaze Powder
         HCExplodingRecipeBuilder.create {
-            ingredient = itemCreator.create(Tags.Items.GUNPOWDERS)
+            ingredient = ingredientCreator.create(Tags.Items.GUNPOWDERS)
             result = resultCreator.create(Items.BLAZE_POWDER).withChance(fraction(1, 6))
         }.save(output)
         // Glass -> Quartz
         HCExplodingRecipeBuilder.create {
-            ingredient = itemCreator.create(Tags.Items.GLASS_BLOCKS)
+            ingredient = ingredientCreator.create(Tags.Items.GLASS_BLOCKS)
             result = resultCreator.create(Items.QUARTZ).withChance(fraction(1, 4))
         }.save(output)
         // Quartz Block -> Ghast Tear
         HCExplodingRecipeBuilder.create {
-            ingredient = itemCreator.create(Items.QUARTZ_BLOCK)
+            ingredient = ingredientCreator.create(Items.QUARTZ_BLOCK)
             result = resultCreator.create(Items.GHAST_TEAR).withChance(fraction(1, 4))
         }.save(output)
 
         // Diamond
         HCExplodingRecipeBuilder.create {
-            ingredient = itemCreator.create(Items.COAL, Items.CHARCOAL)
+            ingredient = ingredientCreator.create(Items.COAL, Items.CHARCOAL)
             result = resultCreator.create(Items.DIAMOND).withChance(fraction(1, 64))
             recipeId suffix "_from_coal"
         }.save(output)
         // Echo Shard
         HCExplodingRecipeBuilder.create {
-            ingredient = itemCreator.create(Items.SCULK)
+            ingredient = ingredientCreator.create(Items.SCULK)
             result = resultCreator.create(Items.ECHO_SHARD).withChance(fraction(1, 8))
         }.save(output)
     }

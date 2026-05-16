@@ -15,6 +15,14 @@ import net.neoforged.neoforge.common.Tags
 
 class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
     override fun buildRecipes() {
+        // Warped Wart
+        shaped(RecipeCategory.BUILDING_BLOCKS, Items.WARPED_WART_BLOCK)
+            .pattern("AAA")
+            .pattern("AAA")
+            .pattern("AAA")
+            .define('A', HCBlocks.WARPED_WART)
+            .unlockedBy(getHasName(HCBlocks.WARPED_WART), has(HCBlocks.WARPED_WART))
+            .save(output)
         // Copper Basin
         shaped(RecipeCategory.BUILDING_BLOCKS, HCBlocks.COPPER_BASIN.unaffected)
             .pattern("A A")

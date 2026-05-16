@@ -2,14 +2,19 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.block.HTCopperBasinBlock
+import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.block.HTWeatheringCopperBasinBlock
 import hiiragi283.lib.item.HTBlockItem
+import hiiragi283.lib.registry.HTBasicDeferredBlockAndItem
 import hiiragi283.lib.registry.HTDeferredBlockAndItemRegister
 import hiiragi283.lib.registry.HTDeferredBlockRegister
 import hiiragi283.lib.registry.HTWeatheringCopperBlocks
+import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour
+import net.minecraft.world.level.material.MapColor
 import net.neoforged.bus.api.IEventBus
 
 data object HCBlocks {
@@ -24,6 +29,15 @@ data object HCBlocks {
         REGISTER.register(eventBus)
     }
 
+    //    Crops    //
+
+    @JvmField
+    val WARPED_WART: HTBasicDeferredBlockAndItem<HTWarpedWartBlock> = REGISTER.registerSimple(
+        "warped_wart",
+        copyOf(Blocks.NETHER_WART).mapColor(MapColor.WARPED_WART_BLOCK),
+        ::HTWarpedWartBlock,
+    ) { prop: Item.Properties -> prop.food(HCFoods.WARPED_WART, HCConsumables.WARPED_WART) }
+
     //    Misc    //
 
     @JvmField
@@ -31,13 +45,20 @@ data object HCBlocks {
         REGISTER,
         "copper_basin",
         {
-            BlockBehaviour.Properties.of()
+            properties(2f)
                 .requiresCorrectToolForDrops()
-                .strength(2f)
                 .noOcclusion()
                 .sound(SoundType.COPPER)
         },
         ::HTCopperBasinBlock,
         ::HTWeatheringCopperBasinBlock,
     )
+
+    //    Extensions    //
+
+    @JvmStatic
+    private fun copyOf(block: Block): BlockBehaviour.Properties = BlockBehaviour.Properties.ofFullCopy(block)
+
+    @JvmStatic
+    private fun properties(hardness: Float, resistance: Float = hardness): BlockBehaviour.Properties = BlockBehaviour.Properties.of().strength(hardness, resistance)
 }

@@ -21,7 +21,7 @@ import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler
 class HTItemSyncSlot(private val getter: Supplier<ItemStack>, private val setter: Consumer<ItemStack>) : HTIntSyncSlot {
     constructor(property: KMutableProperty0<ItemStack>) : this(property::get, property::set)
 
-    constructor(handler: ItemStacksResourceHandler, index: Int): this(handler, index, handler::set)
+    constructor(handler: ItemStacksResourceHandler, index: Int) : this(handler, index, handler::set)
 
     constructor(handler: ItemResourceHandler, index: Int, modifier: IndexModifier<ItemResource>) : this(
         { handler.getItemStack(index) },

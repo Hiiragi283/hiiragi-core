@@ -2,8 +2,6 @@ package hiiragi283.lib.data
 
 import hiiragi283.lib.registry.RegistryKey
 import hiiragi283.lib.registry.createKey
-import hiiragi283.lib.tag.RawTagKey
-import net.minecraft.core.registries.Registries
 import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
@@ -31,15 +29,6 @@ class HTConditionHolder {
     @JvmName("addModCondition")
     operator fun plusAssign(modId: String) {
         this.plusAssign(ModLoadedCondition(modId))
-    }
-
-    /**
-     * 指定した[rawTagKey]を要求する[ICondition]を追加します。
-     * @since 0.16.0
-     */
-    @JvmName("addTagCondition")
-    operator fun plusAssign(rawTagKey: RawTagKey) {
-        this.plusAssign(rawTagKey.create(Registries.ITEM))
     }
 
     /**

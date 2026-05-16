@@ -1,6 +1,5 @@
 package hiiragi283.lib.data.recipe
 
-import hiiragi283.lib.tag.RawTagKey
 import net.minecraft.core.HolderGetter
 import net.minecraft.core.HolderSet
 import net.minecraft.core.registries.Registries
@@ -32,12 +31,6 @@ class HTIngredientCreator(val itemGetter: HolderGetter<Item>) {
         1 -> tagKeys.first().let(::create)
         else -> tagKeys.map(itemGetter::getOrThrow).map(::create).let { CompoundIngredient(it) }.toVanilla()
     }
-
-    @JvmName("createRawTag")
-    fun create(tagKey: RawTagKey): Ingredient = tagKey.create(Registries.ITEM).let(::create)
-
-    @JvmName("createRawTags")
-    fun create(tagKeys: Iterable<RawTagKey>): Ingredient = tagKeys.map { it.create(Registries.ITEM) }.let(::create)
 
     fun create(holderSet: HolderSet<Item>): Ingredient = Ingredient.of(holderSet)
 

@@ -15,9 +15,12 @@ import net.minecraft.client.resources.model.sprite.Material
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.Identifier
 import net.minecraft.world.level.block.WeatheringCopper
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
 
 class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreAPI.MOD_ID) {
     override fun registerModels(blockModels: BlockModelGenerators, itemModels: ItemModelGenerators) {
+        // Warped Wart
+        blockModels.createCropBlock(HCBlocks.WARPED_WART.get(), BlockStateProperties.AGE_3, 0, 1, 1, 2)
         // Copper Basin
         blockModels.registerCopperBasin(HCBlocks.COPPER_BASIN.weatheringMap)
         blockModels.registerCopperBasin(HCBlocks.COPPER_BASIN.waxedMap)

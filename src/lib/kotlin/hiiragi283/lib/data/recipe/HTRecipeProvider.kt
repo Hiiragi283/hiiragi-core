@@ -8,6 +8,7 @@ import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementHolder
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
+import net.minecraft.core.registries.Registries
 import net.minecraft.data.PackOutput
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.data.recipes.RecipeProvider
@@ -19,7 +20,9 @@ import net.neoforged.neoforge.common.conditions.ICondition
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition
 
 abstract class HTRecipeProvider(protected val modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : RecipeProvider(registries, output) {
-    val itemCreator = HTIngredientCreator(registries)
+    val ingredientCreator = HTIngredientCreator(registries)
+    val fluidCreator: HTFluidIngredientCreator by lazy { HTFluidIngredientCreator(registries.lookupOrThrow(Registries.FLUID)) }
+    val itemCreator: HTItemIngredientCreator by lazy { HTItemIngredientCreator(registries.lookupOrThrow(Registries.ITEM)) }
 
     val resultCreator: HTResultCreator get() = HTResultCreator
 

@@ -1,6 +1,7 @@
 package hiiragi283.lib
 
 import hiiragi283.lib.gui.sync.HTSyncablePayload
+import hiiragi283.lib.gui.widget.HTWidgetType
 import hiiragi283.lib.recipe.result.HTItemResult
 import hiiragi283.lib.resource.toId
 import net.minecraft.core.Registry
@@ -17,6 +18,9 @@ data object HTRegistries {
 
     @JvmField
     val SLOT_TYPE: Registry<HTSyncablePayload.Type<*>> = createRegistry(Keys.SLOT_TYPE)
+
+    @JvmField
+    val WIDGET_TYPE: Registry<HTWidgetType<*>> = createRegistry(Keys.WIDGET_TYPE)
 
     @JvmStatic
     private fun <T : Any> createRegistry(key: ResourceKey<Registry<T>>): Registry<T> = RegistryBuilder(key)
@@ -35,6 +39,9 @@ data object HTRegistries {
 
         @JvmField
         val SLOT_TYPE: ResourceKey<Registry<HTSyncablePayload.Type<*>>> = createKey("syncable_slot_type")
+
+        @JvmField
+        val WIDGET_TYPE: ResourceKey<Registry<HTWidgetType<*>>> = createKey("widget_type")
 
         @JvmStatic
         private fun <T : Any> createKey(path: String): ResourceKey<Registry<T>> = ResourceKey.createRegistryKey(HTConstants.MOD_ID.toId(path))
