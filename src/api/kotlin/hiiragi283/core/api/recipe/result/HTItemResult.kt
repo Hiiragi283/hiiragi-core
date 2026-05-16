@@ -11,6 +11,7 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.tagPrefix
+import hiiragi283.core.api.registry.TypedInstance
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.serialization.codec.HTCodecs
@@ -71,7 +72,9 @@ interface HTItemResult : HTIdLike {
     //    Simple    //
 
     @JvmInline
-    value class Simple(private val template: ItemStack) : HTItemResult {
+    value class Simple(private val template: ItemStack) :
+        HTItemResult,
+        TypedInstance<Item> by template {
         companion object {
             @JvmField
             val MAP_CODEC: MapCodec<Simple> = ItemStack.CODEC.xmap(::Simple, Simple::template).let { MapCodec.assumeMapUnsafe(it) }
@@ -90,7 +93,7 @@ interface HTItemResult : HTIdLike {
 
         override fun create(): DataResult<ItemStack> = DataResult.success(template.copy())
 
-        override fun getId(): ResourceLocation = template.itemHolder.toLike().getId()
+        override fun getId(): ResourceLocation = this.typeHolder().toLike().getId()
     }
 
     //    Tagged    //

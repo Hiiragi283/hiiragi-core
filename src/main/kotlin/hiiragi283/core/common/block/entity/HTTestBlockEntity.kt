@@ -15,6 +15,7 @@ import hiiragi283.core.common.gui.widget.HTFillDirection
 import hiiragi283.core.common.gui.widget.HTFluidWidget
 import hiiragi283.core.common.gui.widget.HTItemWidget
 import hiiragi283.core.common.gui.widget.HTProgressWidget
+import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
 import hiiragi283.core.common.storage.fluid.HTBasicFluidTank
 import hiiragi283.core.common.storage.item.HTBasicItemSlot
 import hiiragi283.core.setup.HCBlockEntityTypes
@@ -82,6 +83,7 @@ class HTTestBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HCBloc
                 HTSlotHelper.getSlotPosX(4),
                 HTSlotHelper.getSlotPosY(1),
             ).setDirection(HTFillDirection.END_TO_TOP)
+            .setSupportedRecipeTypes(HCRecipeViewerTypes.BREWING)
     }
 
     override fun onUpdateServer(level: ServerLevel, pos: BlockPos, state: BlockState): Boolean = true

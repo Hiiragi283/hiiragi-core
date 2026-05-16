@@ -1,9 +1,7 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.storage.HTHandlerProvider
-import hiiragi283.core.common.block.HTBlockWithEntity
 import hiiragi283.core.common.block.entity.HTCopperBasinBlockEntity
 import hiiragi283.core.common.block.entity.HTTestBlockEntity
 import hiiragi283.core.common.capability.HTEnergyCapabilities
@@ -11,6 +9,7 @@ import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.capability.HTItemCapabilities
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import hiiragi283.core.common.registry.register.HTDeferredBlockEntityTypeRegister
+import java.util.function.Supplier
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
@@ -42,11 +41,11 @@ object HCBlockEntityTypes {
     // Supported Blocks
     @JvmStatic
     private fun addSupportedBlocks(event: BlockEntityTypeAddBlocksEvent) {
-        for (holder: HTBlockHolderLike<*> in HCBlocks.REGISTER.asBlockSequence()) {
-            val block: Block = holder.get()
-            if (block is HTBlockWithEntity) {
-                event.modify(block.getBlockEntityType().get(), block)
-            }
+        for (block: Supplier<out Block> in HCBlocks.COPPER_BASIN.waxedBlocks) {
+            event.modify(COPPER_BASIN.get(), block.get())
+        }
+        for (block: Supplier<out Block> in HCBlocks.COPPER_BASIN.weatheringBlocks) {
+            event.modify(COPPER_BASIN.get(), block.get())
         }
         HiiragiCoreAPI.LOGGER.info("Added supported blocks to BlockEntityType!")
     }

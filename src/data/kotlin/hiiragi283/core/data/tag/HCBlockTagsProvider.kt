@@ -3,7 +3,6 @@ package hiiragi283.core.data.tag
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.tag.HTTagBuilder
 import hiiragi283.core.api.data.tag.HTTagsProvider
-import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.setup.HCBlocks
 import net.minecraft.core.HolderLookup
@@ -25,10 +24,8 @@ class HCBlockTagsProvider(fileHelper: ExistingFileHelper, output: PackOutput, lo
             .apply(BlockTags.MINEABLE_WITH_PICKAXE)
             .add(HCBlocks.OIL_SHALE)
             .add(HCBlocks.TREE_TAP)
-        HCBlocks.COPPER_BASINS.forEach { base: HTIdLike, waxed: HTIdLike ->
-            pickaxe.add(base)
-            pickaxe.add(waxed)
-        }
+        HCBlocks.COPPER_BASIN.weatheringBlocks.forEach(pickaxe::add)
+        HCBlocks.COPPER_BASIN.waxedBlocks.forEach(pickaxe::add)
 
         factory
             .apply(BlockTags.MINEABLE_WITH_SHOVEL)

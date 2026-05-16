@@ -21,6 +21,9 @@ fun interface HTLangPatternProvider {
     fun translate(type: HTLangType, provider: HTLangName): String = translate(type, provider.getTranslatedName(type))
 
     companion object {
+        @JvmField
+        val IDENTITY = HTLangPatternProvider { _, value: String -> value }
+
         /**
          * 指定した[enPattern]と[jaPattern]から[HTLangPatternProvider]の新しいインスタンスを作成します。
          * @since 0.7.0

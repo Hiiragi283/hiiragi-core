@@ -14,6 +14,8 @@ import java.util.function.UnaryOperator
 
 typealias BlockFactory<BLOCK> = (BlockBehaviour.Properties) -> BLOCK
 
+typealias BlockWithContextFactory<C, BLOCK> = (C, BlockBehaviour.Properties) -> BLOCK
+
 class HTDeferredBlockAndItemRegister(private val blockRegister: HTDeferredBlockRegister, private val itemRegister: HTDeferredItemRegister) {
     constructor(namespace: String) : this(HTDeferredBlockRegister(namespace))
 

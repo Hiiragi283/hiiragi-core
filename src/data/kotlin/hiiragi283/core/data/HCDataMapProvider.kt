@@ -1,10 +1,9 @@
 package hiiragi283.core.data
 
-import hiiragi283.core.api.block.HTWeatheringBlockMap
-import hiiragi283.core.api.block.HTWeatheringLevel
 import hiiragi283.core.api.data.map.HTDataMapProvider
-import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.common.registry.HTDeferredBlockAndItem
+import hiiragi283.core.common.registry.HTWeatheringCopperBlocks
 import hiiragi283.core.setup.HCBlocks
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
@@ -22,25 +21,25 @@ class HCDataMapProvider(packOutput: PackOutput, lookupProvider: CompletableFutur
             addHolder(HCBlocks.OIL_SHALE, FurnaceFuel(20 * 10 * 4))
         }
 
-        registerOxidizables(HCBlocks.COPPER_BASINS.base)
+        registerOxidizables(HCBlocks.COPPER_BASIN)
 
-        registerWaxed(HCBlocks.COPPER_BASINS)
+        registerWaxed(HCBlocks.COPPER_BASIN)
     }
 
-    private fun registerOxidizables(map: Map<HTWeatheringLevel, HTBlockHolderLike<*>>) {
+    private fun registerOxidizables(block: HTWeatheringCopperBlocks<*, *, *>) {
         val builder: Builder<Oxidizable, Block> = builder(NeoForgeDataMaps.OXIDIZABLES)
-        for (level: HTWeatheringLevel in HTWeatheringLevel.entries) {
-            val previous: HTIdLike = map[level] ?: continue
-            val next: HTBlockHolderLike<*> = HTWeatheringLevel.entries.getOrNull(level.ordinal + 1)?.let(map::get) ?: continue
-            builder.addHolder(previous, Oxidizable(next.get()))
+        val blocks: List<HTDeferredBlockAndItem<*, *>> = block.weatheringBlocks
+        for (i: Int in blocks.indices) {
+            val previous: HTIdLike = blocks[i]
+            val next: HTDeferredBlockAndItem<*, *> = blocks.getOrNull(i + 1) ?: continue
+            builder.add(previous.getId(), Oxidizable(next.get()), false)
         }
     }
 
-    private fun registerWaxed(map: HTWeatheringBlockMap) {
+    private fun registerWaxed(block: HTWeatheringCopperBlocks<*, *, *>) {
         val builder: Builder<Waxable, Block> = builder(NeoForgeDataMaps.WAXABLES)
-        for (level: HTWeatheringLevel in HTWeatheringLevel.entries) {
-            val (base: HTIdLike, waxed: HTBlockHolderLike<*>) = map[level] ?: continue
-            builder.addHolder(base, Waxable(waxed.get()))
+        for ((base: HTIdLike, waxed: HTDeferredBlockAndItem<*, *>) in block.weatheringBlocks.zip(block.waxedBlocks)) {
+            builder.add(base.getId(), Waxable(waxed.get()), false)
         }
     }
 }

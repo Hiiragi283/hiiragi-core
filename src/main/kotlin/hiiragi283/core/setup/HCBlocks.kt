@@ -1,10 +1,9 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.block.HTWeatheringBlockMap
-import hiiragi283.core.api.block.HTWeatheringLevel
-import hiiragi283.core.api.function.partially1
+import hiiragi283.core.api.item.HTBlockItem
 import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.common.block.HTCopperBasinBlock
 import hiiragi283.core.common.block.HTTestBlock
 import hiiragi283.core.common.block.HTTreeTapBlock
 import hiiragi283.core.common.block.HTWarpedWartBlock
@@ -13,12 +12,12 @@ import hiiragi283.core.common.item.block.HTWarpedWartItem
 import hiiragi283.core.common.registry.HTBasicDeferredBlockAndItem
 import hiiragi283.core.common.registry.HTDeferredBlockAndItem
 import hiiragi283.core.common.registry.HTSimpleDeferredBlockAndItem
+import hiiragi283.core.common.registry.HTWeatheringCopperBlocks
 import hiiragi283.core.common.registry.register.HTDeferredBlockAndItemRegister
 import hiiragi283.core.common.registry.register.HTDeferredBlockRegister
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.SoundType
-import net.minecraft.world.level.block.WeatheringCopper
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.MapColor
 import net.minecraft.world.level.material.PushReaction
@@ -74,30 +73,20 @@ object HCBlocks {
         ::HTTreeTapBlock,
     )
 
-    @JvmStatic
-    private fun <BLOCK : Block> createCopperMap(
-        name: String,
-        properties: BlockBehaviour.Properties,
-        factory: (WeatheringCopper.WeatherState, BlockBehaviour.Properties) -> BLOCK,
-    ): HTWeatheringBlockMap = HTWeatheringBlockMap(
-        HTWeatheringLevel.entries.associateWith { level: HTWeatheringLevel ->
-            REGISTER.registerSimple(
-                level.applyPrefix(name),
-                properties.mapColor(level.mapColor).randomTicks(),
-                factory.partially1(level.state),
-            )
-        },
-        HTWeatheringLevel.entries.associateWith { level: HTWeatheringLevel ->
-            REGISTER.registerSimple(
-                "waxed_${level.applyPrefix(name)}",
-                properties.mapColor(level.mapColor),
-                factory.partially1(level.state),
-            )
-        },
-    )
-
     @JvmField
-    val COPPER_BASINS: HTWeatheringBlockMap = createCopperMap("copper_basin", copyOf(Blocks.CAULDRON), ::HTWeatheringCopperBasinBlock)
+    val COPPER_BASIN: HTWeatheringCopperBlocks<HTCopperBasinBlock, HTWeatheringCopperBasinBlock, HTBlockItem<Block>> = HTWeatheringCopperBlocks.createSimple(
+        REGISTER,
+        "copper_basin",
+        {
+            BlockBehaviour.Properties.of()
+                .requiresCorrectToolForDrops()
+                .strength(2f)
+                .noOcclusion()
+                .sound(SoundType.COPPER)
+        },
+        ::HTCopperBasinBlock,
+        ::HTWeatheringCopperBasinBlock,
+    )
 
     @JvmField
     val TEST: HTBlockHolderLike<HTTestBlock> = REGISTER_ONLY_BLOCK.registerBlock(

@@ -4,7 +4,6 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.block.HTWeatheringLevel
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.createItemStack
@@ -13,7 +12,6 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.getOrThrow
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPartLike
-import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTItemLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -41,6 +39,8 @@ import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.item.crafting.CraftingBookCategory
 import net.minecraft.world.item.crafting.Ingredient
+import net.minecraft.world.level.ItemLike
+import net.minecraft.world.level.block.WeatheringCopper
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 import org.apache.commons.lang3.math.Fraction
@@ -391,14 +391,15 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             )
             define('A') { itemCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.COPPER) }
             define('B') { itemCreator.create(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.COPPER) }
-            resultStack = HCBlocks.COPPER_BASINS[HTWeatheringLevel.UNAFFECTED]!!.first.get().let(::ItemStack)
+            resultStack = HCBlocks.COPPER_BASIN.unaffected.toStack()
         }
-        HCBlocks.COPPER_BASINS.forEach { base: HTBlockHolderLike<*>, waxed: HTBlockHolderLike<*> ->
+        for ((state: WeatheringCopper.WeatherState, base) in HCBlocks.COPPER_BASIN.weatheringMap) {
+            val waxed: ItemLike = HCBlocks.COPPER_BASIN.waxedMap[state]!!
             // Waxing
             HTShapelessRecipeBuilder.create(output) {
-                ingredients += itemCreator.create(base.get())
+                ingredients += itemCreator.create(base)
                 ingredients += itemCreator.create(Items.HONEYCOMB)
-                resultStack = ItemStack(waxed.get())
+                resultStack = ItemStack(waxed)
                 recipeId suffix "_from_${base.path}"
             }
         }
