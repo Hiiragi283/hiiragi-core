@@ -1,11 +1,14 @@
 package hiiragi283.core.client.integration.jei
 
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.bounds
 import hiiragi283.core.api.gui.toRec2i
 import hiiragi283.core.api.gui.widget.HTWidget
+import hiiragi283.core.api.integration.jei.HTJeiPlugin
 import hiiragi283.core.api.recipe.viewer.widget.HTGhostWidget
 import hiiragi283.core.api.recipe.viewer.widget.HTIngredientWidget
+import hiiragi283.core.api.recipe.viewer.widget.HTRecipeAreaWidget
 import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.impl.gui.widget.HTGuiWidget
 import mezz.jei.api.gui.builder.IClickableIngredientFactory
@@ -18,6 +21,11 @@ import net.minecraft.client.renderer.Rect2i
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.Optional
+import mezz.jei.api.gui.handlers.IGuiClickableArea
+import mezz.jei.api.recipe.IFocusFactory
+import mezz.jei.api.runtime.IRecipesGui
+import net.minecraft.client.gui.components.events.ContainerEventHandler
+import net.minecraft.client.gui.components.events.GuiEventListener
 
 data object HTWidgetContainerJeiHandler : IGuiContainerHandler<HTWidgetContainerScreen>, IGhostIngredientHandler<HTWidgetContainerScreen> {
     @JvmStatic
@@ -42,6 +50,43 @@ data object HTWidgetContainerJeiHandler : IGuiContainerHandler<HTWidgetContainer
             }.buildWithArea(bounds.toRec2i())
         }.firstOrNull()
         ?: Optional.empty()
+
+    override fun getGuiClickableAreas(containerScreen: HTWidgetContainerScreen, guiMouseX: Double, guiMouseY: Double): Collection<IGuiClickableArea> {
+        val guiMouseX: Double = guiMouseX + containerScreen.guiLeft
+        val guiMouseY: Double = guiMouseY + containerScreen.guiTop
+        return getGuiClickableAreas(containerScreen.children(), guiMouseX, guiMouseY)
+    }
+
+    @JvmStatic
+    private fun getGuiClickableAreas(children: Iterable<GuiEventListener>, guiMouseX: Double, guiMouseY: Double): Collection<IGuiClickableArea> {
+        for (listener: GuiEventListener in children) {
+            if (listener is ContainerEventHandler) {
+                val childrenIn: List<GuiEventListener> = listener.children()
+                if (!childrenIn.isEmpty()) {
+                    return getGuiClickableAreas(childrenIn, guiMouseX, guiMouseY)
+                }
+            }
+            if (listener is HTGuiWidget<*>) {
+                val widget: HTWidget = listener.widget
+                val bounds: HTBounds = listener.bounds
+                if (widget is HTRecipeAreaWidget<*>) {
+                    HiiragiCoreAPI.LOGGER.debug("Widget Bounds: {}", bounds)
+                    HiiragiCoreAPI.LOGGER.debug("Mouse X: {}, Y: {}", guiMouseX, guiMouseY)
+                    if (bounds.contains(guiMouseX.toInt(), guiMouseY.toInt())) {
+                        HiiragiCoreAPI.LOGGER.debug("Found Widget!")
+                        return object : IGuiClickableArea {
+                            override fun getArea(): Rect2i = bounds.toRec2i()
+
+                            override fun onClick(focusFactory: IFocusFactory, recipesGui: IRecipesGui) {
+                                recipesGui.showTypes(widget.getSupportedRecipeTypes().map { HTJeiPlugin.getRecipeType(it) })
+                            }
+                        }.let(::listOf)
+                    }
+                }
+            }
+        }
+        return emptyList()
+    }
 
     //    IGhostIngredientHandler    //
 

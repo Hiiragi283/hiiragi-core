@@ -6,11 +6,9 @@ import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.HTRecipeType
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.mixin.PotionBrewingAccessor
 import net.minecraft.core.Holder
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.alchemy.Potion
-import net.minecraft.world.item.alchemy.PotionBrewing
 import net.minecraft.world.item.crafting.AbstractCookingRecipe
 import net.minecraft.world.item.crafting.RecipeType
 
@@ -41,12 +39,11 @@ data object HTVanillaRecipeTypes {
 
     private data object BrewingType : HTRecipeType<HCBrewingRecipe> {
         override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<HTRecipeHolder<HCBrewingRecipe>> {
-            val potionBrewing: PotionBrewing = context[HTRecipeLookup.Context.BREWING] ?: return emptySequence()
             val builder: ImmutableMultimap.Builder<Holder<Potion>, HCBrewingRecipe> = ImmutableMultimap.builder()
-            (potionBrewing as PotionBrewingAccessor)
-                .potionMixes
-                .map(::HCBrewingRecipe)
-                .forEach { builder.put(it.potionTo, it) }
+            context[HTRecipeLookup.Context.BREWING]
+                ?.potionMixes
+                ?.map(::HCBrewingRecipe)
+                ?.forEach { builder.put(it.potionTo, it) }
             val recipeMap: ImmutableMultimap<Holder<Potion>, HCBrewingRecipe> = builder.build()
             return recipeMap
                 .keySet()

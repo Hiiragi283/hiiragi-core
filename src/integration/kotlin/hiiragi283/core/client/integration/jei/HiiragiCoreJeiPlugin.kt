@@ -16,7 +16,6 @@ import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
-import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.client.integration.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCChargingRecipeCategory
@@ -233,10 +232,10 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             HCRecipeViewerTypes.EXPLODING,
         )
 
-        val copperBasins: List<ItemStack> = HCBlocks.COPPER_BASINS.allBlocks
-            .map(HTBlockHolderLike<*>::get)
-            .map(::ItemStack)
-            .toList()
+        val copperBasins: List<ItemStack> = buildList {
+            addAll(HCBlocks.COPPER_BASIN.weatheringBlocks.map { it.toStack() })
+            addAll(HCBlocks.COPPER_BASIN.waxedBlocks.map { it.toStack() })
+        }
         HTJeiWorkstationHelper.add(registration, HCRecipeViewerTypes.EMPTYING, copperBasins)
         HTJeiWorkstationHelper.add(registration, HCRecipeViewerTypes.FILLING, copperBasins)
     }

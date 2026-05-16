@@ -127,8 +127,27 @@ neoForge {
             .get()
     }
 
-    // This line is optional. Access Transformers are automatically detected
-    // accessTransformers = project.files("src/main/resources/META-INF/accesstransformer.cfg")
+    accessTransformers {
+        rootProject.fileTree("src")
+            .matching { include("*/resources/META-INF/accesstransformer.cfg") }
+            .forEach { atFile ->
+                println("adding access transformer file: $atFile")
+
+                from(atFile)
+                publish(atFile)
+            }
+    }
+
+    interfaceInjectionData {
+        rootProject.fileTree("src")
+            .matching { include("*/resources/META-INF/interfaceinjection.json") }
+            .forEach { atFile ->
+                println("adding interface injection file: $atFile")
+
+                from(atFile)
+                publish(atFile)
+            }
+    }
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -148,7 +167,7 @@ neoForge {
 
         register("integration") {
             client()
-            gameDirectory = project.file("run")
+            gameDirectory = rootProject.file("run")
             sourceSet = integrationModule
 
             jvmArgument("-Dmixin.debug.export=true")
@@ -160,7 +179,7 @@ neoForge {
             sourceSet = dataModule
 
             // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
-            gameDirectory = project.file("run-data")
+            gameDirectory = rootProject.file("run-data")
 
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             programArguments.addAll(

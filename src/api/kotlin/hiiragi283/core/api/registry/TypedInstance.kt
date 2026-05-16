@@ -4,6 +4,7 @@ import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.tags.TagKey
 import java.util.stream.Stream
+import org.jetbrains.annotations.ApiStatus
 
 /**
  * 最新版のMinecraftからバックポートされたインターフェースです。
@@ -14,7 +15,8 @@ import java.util.stream.Stream
  * @see net.minecraft.world.level.material.FluidState
  */
 interface TypedInstance<T : Any> {
-    fun typeHolder(): Holder<T>
+    @ApiStatus.OverrideOnly
+    fun typeHolder(): Holder<T> = throw AssertionError()
 
     fun tags(): Stream<TagKey<T>> = typeHolder().tags()
 

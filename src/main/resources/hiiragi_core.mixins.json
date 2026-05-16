@@ -4,10 +4,8 @@
   "compatibilityLevel": "JAVA_21",
   "client": [],
   "mixins": [
-    "AbstractCookingRecipeAccessor",
     "AnvilBlockMixin",
-    "PotionBrewingAccessor",
-    "PotionBrewingMixAccessor",
+    "ItemStackMixin",
     "RecipeManagerAccessor",
     "ReloadableServerResourcesMixin"
   ],
