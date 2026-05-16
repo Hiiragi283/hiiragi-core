@@ -1,0 +1,38 @@
+package hiiragi283.lib.data.tag
+
+import hiiragi283.lib.registry.RegistryKey
+import hiiragi283.lib.resource.HTIdLike
+import java.util.concurrent.CompletableFuture
+import net.minecraft.core.HolderLookup
+import net.minecraft.data.PackOutput
+import net.minecraft.data.tags.TagAppender
+import net.minecraft.data.tags.TagsProvider
+import net.minecraft.tags.TagBuilder
+import net.minecraft.tags.TagEntry
+import net.minecraft.tags.TagKey
+
+abstract class HTIdLikeTagsProvider<T : Any> : TagsProvider<T> {
+    constructor(output: PackOutput, registryKey: RegistryKey<T>, lookupProvider: CompletableFuture<HolderLookup.Provider>, parentProvider: CompletableFuture<TagLookup<T>>, modId: String) : super(output, registryKey, lookupProvider, parentProvider, modId)
+
+    constructor(output: PackOutput, registryKey: RegistryKey<T>, lookupProvider: CompletableFuture<HolderLookup.Provider>, modId: String) : super(output, registryKey, lookupProvider, modId)
+
+    protected fun tag(tagKey: TagKey<T>): TagAppender<HTIdLike, T> = object : TagAppender<HTIdLike, T> {
+        val builder: TagBuilder = this@HTIdLikeTagsProvider.getOrCreateRawBuilder(tagKey)
+
+        override fun add(element: HTIdLike): TagAppender<HTIdLike, T> = apply { builder.addElement(element.getId()) }
+
+        override fun addOptional(element: HTIdLike): TagAppender<HTIdLike, T> = apply { builder.addOptionalElement(element.getId()) }
+
+        override fun addTag(tag: TagKey<T>): TagAppender<HTIdLike, T> = apply { builder.addTag(tag.location()) }
+
+        override fun addOptionalTag(tag: TagKey<T>): TagAppender<HTIdLike, T> = apply { builder.addOptionalTag(tag.location()) }
+
+        override fun add(entry: TagEntry): TagAppender<HTIdLike, T> = apply { builder.add(entry) }
+
+        override fun replace(value: Boolean): TagAppender<HTIdLike, T> = apply { builder.replace(value) }
+
+        override fun remove(element: HTIdLike): TagAppender<HTIdLike, T> = apply { builder.removeElement(element.getId()) }
+
+        override fun remove(tag: TagKey<T>): TagAppender<HTIdLike, T> = apply { builder.removeTag(tag.location()) }
+    }
+}
