@@ -3,6 +3,7 @@ package hiiragi283.core.data.tag
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreTags
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCItems
 import hiiragi283.lib.data.tag.HTItemTagsProvider
 import hiiragi283.lib.tag.HTCommonTags
 import java.util.concurrent.CompletableFuture
@@ -20,8 +21,9 @@ class HCItemTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<H
         copy(HTCommonTags.Blocks.STORAGE_BLOCKS_AMETHYST, HTCommonTags.Items.STORAGE_BLOCKS_AMETHYST)
         copy(HTCommonTags.Blocks.STORAGE_BLOCKS_ECHO, HTCommonTags.Items.STORAGE_BLOCKS_ECHO)
 
-        tag(Tags.Items.CROPS).addTag(HiiragiCoreTags.Items.CROPS_WARPED_WART)
-        tag(HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)
+        tags(Tags.Items.NUGGETS, HTCommonTags.Items.NUGGETS_NETHERITE).add(HCItems.NETHERITE_NUGGET)
+
+        tags(Tags.Items.CROPS, HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)
 
         tag(HiiragiCoreTags.Items.STICKY_BALLS).addTag(Tags.Items.SLIME_BALLS)
     }

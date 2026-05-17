@@ -17,10 +17,10 @@ data object CommonPartKeys {
     val INGOT = HTMaterialPartKey("ingot")
 
     @JvmStatic
-    val NUGGET = HTMaterialPartKey("nugget")
+    val MISC = HTMaterialPartKey("misc")
 
     @JvmStatic
-    val PEARL = HTMaterialPartKey("pearl")
+    val NUGGET = HTMaterialPartKey("nugget")
 
     @JvmStatic
     val RAW = HTMaterialPartKey("raw")

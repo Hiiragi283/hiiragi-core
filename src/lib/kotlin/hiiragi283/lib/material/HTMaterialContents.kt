@@ -47,15 +47,19 @@ class HTMaterialContents private constructor(
         private var contents: MutableMap<HTMaterialPartKey, Ior<HTMaterialItemEntry, TagKey<Item>>> = hashMapOf()
 
         fun add(key: HTMaterialPartKey, entry: HTMaterialItemEntry) {
-            contents[key] = Ior.Left(entry)
+            add(key, Ior.Left(entry))
         }
 
         fun add(key: HTMaterialPartKey, tagKey: TagKey<Item>) {
-            contents[key] = Ior.Right(tagKey)
+            add(key, Ior.Right(tagKey))
         }
 
         fun add(key: HTMaterialPartKey, entry: HTMaterialItemEntry, tagKey: TagKey<Item>) {
-            contents[key] = Ior.Both(entry, tagKey)
+            add(key, Ior.Both(entry, tagKey))
+        }
+
+        private fun add(key: HTMaterialPartKey, value: Ior<HTMaterialItemEntry, TagKey<Item>>) {
+            check(contents.put(key, value) == null) { "Duplicate material entry: ${key.name}" }
         }
 
         @PublishedApi

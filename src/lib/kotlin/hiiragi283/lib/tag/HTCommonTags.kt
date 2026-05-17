@@ -28,9 +28,6 @@ data object HTCommonTags {
         @JvmField
         val STORAGE_BLOCKS_ECHO: TagKey<Block> = common(HTConstants.STORAGE_BLOCKS, "echo")
 
-        @JvmField
-        val STORAGE_BLOCKS_RESIN: TagKey<Block> = common(HTConstants.STORAGE_BLOCKS, "resin")
-
         @JvmStatic
         private fun common(vararg path: String): TagKey<Block> = BlockTags.create(HTConstants.COMMON.toId(*path))
     }
@@ -54,10 +51,21 @@ data object HTCommonTags {
         @JvmField
         val STORAGE_BLOCKS_ECHO: TagKey<Item> = from(Blocks.STORAGE_BLOCKS_ECHO)
 
-        @JvmField
-        val STORAGE_BLOCKS_RESIN: TagKey<Item> = from(Blocks.STORAGE_BLOCKS_RESIN)
-
         // Dusts
+        @JvmField
+        val DUSTS_COPPER: TagKey<Item> = common(HTConstants.DUSTS, "copper")
+
+        @JvmField
+        val DUSTS_IRON: TagKey<Item> = common(HTConstants.DUSTS, "iron")
+
+        @JvmField
+        val DUSTS_GOLD: TagKey<Item> = common(HTConstants.DUSTS, "gold")
+
+        @JvmField
+        val DUSTS_NETHERITE: TagKey<Item> = common(HTConstants.DUSTS, "netherite")
+
+        @JvmField
+        val DUSTS_OBSIDIAN: TagKey<Item> = common(HTConstants.DUSTS, "obsidian")
 
         // Fuels
 
@@ -70,6 +78,8 @@ data object HTCommonTags {
         // Ingots
 
         // Nuggets
+        @JvmField
+        val NUGGETS_NETHERITE: TagKey<Item> = common(HTConstants.NUGGETS, "netherite")
 
         // Pearls
 

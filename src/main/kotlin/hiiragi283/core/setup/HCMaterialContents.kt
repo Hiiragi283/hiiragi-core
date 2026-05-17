@@ -35,8 +35,6 @@ data object HCMaterialContents {
 
     // Modded
 
-    // Vanilla
-
     //    Minerals    //
 
     // Vanilla
@@ -115,6 +113,7 @@ data object HCMaterialContents {
         add(CommonPartKeys.RAW_BLOCK, HTMaterialItemEntry.block(Blocks.RAW_COPPER_BLOCK), Tags.Items.STORAGE_BLOCKS_RAW_COPPER)
         add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.COPPER_BLOCK), Tags.Items.STORAGE_BLOCKS_COPPER)
 
+        add(CommonPartKeys.DUST, HTCommonTags.Items.DUSTS_COPPER)
         add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(Items.COPPER_INGOT), Tags.Items.INGOTS_COPPER)
         add(CommonPartKeys.NUGGET, HTMaterialItemEntry.item(Items.COPPER_NUGGET), Tags.Items.NUGGETS_COPPER)
         add(CommonPartKeys.RAW, HTMaterialItemEntry.item(Items.RAW_COPPER), Tags.Items.RAW_MATERIALS_COPPER)
@@ -125,6 +124,7 @@ data object HCMaterialContents {
         add(CommonPartKeys.RAW_BLOCK, HTMaterialItemEntry.block(Blocks.RAW_IRON_BLOCK), Tags.Items.STORAGE_BLOCKS_RAW_IRON)
         add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.IRON_BLOCK), Tags.Items.STORAGE_BLOCKS_IRON)
 
+        add(CommonPartKeys.DUST, HTCommonTags.Items.DUSTS_IRON)
         add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(Items.IRON_INGOT), Tags.Items.INGOTS_IRON)
         add(CommonPartKeys.NUGGET, HTMaterialItemEntry.item(Items.IRON_NUGGET), Tags.Items.NUGGETS_IRON)
         add(CommonPartKeys.RAW, HTMaterialItemEntry.item(Items.RAW_IRON), Tags.Items.RAW_MATERIALS_IRON)
@@ -135,6 +135,7 @@ data object HCMaterialContents {
         add(CommonPartKeys.RAW_BLOCK, HTMaterialItemEntry.block(Blocks.RAW_GOLD_BLOCK), Tags.Items.STORAGE_BLOCKS_RAW_GOLD)
         add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.GOLD_BLOCK), Tags.Items.STORAGE_BLOCKS_GOLD)
 
+        add(CommonPartKeys.DUST, HTCommonTags.Items.DUSTS_GOLD)
         add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(Items.GOLD_INGOT), Tags.Items.INGOTS_GOLD)
         add(CommonPartKeys.NUGGET, HTMaterialItemEntry.item(Items.GOLD_NUGGET), Tags.Items.NUGGETS_GOLD)
         add(CommonPartKeys.RAW, HTMaterialItemEntry.item(Items.RAW_GOLD), Tags.Items.RAW_MATERIALS_GOLD)
@@ -151,7 +152,9 @@ data object HCMaterialContents {
     val NETHERITE: HTMaterialContents = REGISTER.registerContents("netherite", CommonPartKeys.INGOT) {
         add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.NETHERITE_BLOCK), Tags.Items.STORAGE_BLOCKS_NETHERITE)
 
+        add(CommonPartKeys.DUST, HTCommonTags.Items.DUSTS_NETHERITE)
         add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(Items.NETHERITE_INGOT), Tags.Items.INGOTS_NETHERITE)
+        add(CommonPartKeys.NUGGET, HTMaterialItemEntry.item(HCItems.NETHERITE_NUGGET), HTCommonTags.Items.NUGGETS_NETHERITE)
     }
 
     // Common
@@ -162,10 +165,36 @@ data object HCMaterialContents {
 
     // Vanilla
     @JvmField
-    val RESIN: HTMaterialContents = REGISTER.registerContents("resin", CommonPartKeys.INGOT) {
-        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.RESIN_BLOCK), HTCommonTags.Items.STORAGE_BLOCKS_RESIN)
+    val BONE_MEAL: HTMaterialContents = REGISTER.registerContents("bone_meal", CommonPartKeys.MISC) {
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.BONE_BLOCK), Tags.Items.STORAGE_BLOCKS_BONE_MEAL)
 
-        add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(Items.RESIN_CLUMP))
+        add(CommonPartKeys.MISC, HTMaterialItemEntry.item(Items.BONE_MEAL))
+    }
+
+    @JvmField
+    val ENDER_PEARL: HTMaterialContents = REGISTER.registerContents("ender_pearl", CommonPartKeys.MISC) {
+        add(CommonPartKeys.MISC, HTMaterialItemEntry.item(Items.ENDER_PEARL), Tags.Items.ENDER_PEARLS)
+    }
+
+    @JvmField
+    val OBSIDIAN: HTMaterialContents = REGISTER.registerContents("obsidian", CommonPartKeys.STORAGE_BLOCK) {
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.OBSIDIAN), Tags.Items.OBSIDIANS_NORMAL)
+
+        add(CommonPartKeys.DUST, HTCommonTags.Items.DUSTS_OBSIDIAN) // TODO
+    }
+
+    @JvmField
+    val SLIME: HTMaterialContents = REGISTER.registerContents("slime", CommonPartKeys.MISC) {
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.SLIME_BLOCK), Tags.Items.STORAGE_BLOCKS_SLIME)
+
+        add(CommonPartKeys.MISC, HTMaterialItemEntry.item(Items.SLIME_BALL), Tags.Items.SLIME_BALLS)
+    }
+
+    @JvmField
+    val RESIN: HTMaterialContents = REGISTER.registerContents("resin", CommonPartKeys.MISC) {
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.RESIN_BLOCK), Tags.Items.STORAGE_BLOCKS_RESIN)
+
+        add(CommonPartKeys.MISC, HTMaterialItemEntry.item(Items.RESIN_CLUMP))
     }
 
     // Common

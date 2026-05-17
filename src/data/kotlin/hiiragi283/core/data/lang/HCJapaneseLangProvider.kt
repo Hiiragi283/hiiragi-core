@@ -2,6 +2,7 @@ package hiiragi283.core.data.lang
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCItems
 import hiiragi283.lib.data.lang.HTLangProvider
 import hiiragi283.lib.data.lang.HTLangTypes
 import net.minecraft.data.PackOutput
@@ -18,5 +19,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCBlocks.ECHO_BLOCK, "残響ブロック")
 
         add(HCBlocks.WARPED_WART, "歪んだウォート")
+        // Item
+        add(HCItems.NETHERITE_NUGGET, "ネザライト塊")
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.data.PackOutput
 import net.minecraft.tags.TagBuilder
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
+import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
 
 /**
@@ -26,6 +27,12 @@ abstract class HTItemTagsProvider : HTIdLikeTagsProvider<Item> {
 
     protected fun copy(blockTag: TagKey<Block>, itemTag: TagKey<Item>) {
         tagsToCopy[blockTag] = itemTag
+    }
+
+    @Suppress("DEPRECATION")
+    protected fun IdAppender<Item>.addItem(item: ItemLike): IdAppender<Item> {
+        this.builder.addElement(item.asItem().builtInRegistryHolder().unwrapKey().orElseThrow().identifier())
+        return this
     }
 
     final override fun createContentsProvider(): CompletableFuture<HolderLookup.Provider> = super.createContentsProvider().thenCombine(blockTags) { provider: HolderLookup.Provider, blockTags1: TagLookup<Block> ->

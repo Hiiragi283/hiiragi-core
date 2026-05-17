@@ -2,6 +2,7 @@ package hiiragi283.core.data.model
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCItems
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.data.model.HTModelProvider
 import hiiragi283.lib.registry.HTDeferredBlockAndItem
@@ -19,7 +20,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties
 
 class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreAPI.MOD_ID) {
     override fun registerModels(blockModels: BlockModelGenerators, itemModels: ItemModelGenerators) {
-        // Resources
+        // Block Resources
         blockModels.createTrivialCube(HCBlocks.CHARCOAL_BLOCK.get())
         blockModels.createTrivialCube(HCBlocks.ECHO_BLOCK.get())
 
@@ -28,6 +29,9 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
         // Copper Basin
         blockModels.registerCopperBasin(HCBlocks.COPPER_BASIN.weatheringMap)
         blockModels.registerCopperBasin(HCBlocks.COPPER_BASIN.waxedMap)
+
+        // Item Resources
+        itemModels.generateFlatItem(HCItems.NETHERITE_NUGGET)
     }
 
     private fun BlockModelGenerators.registerCopperBasin(map: Map<WeatheringCopper.WeatherState, HTDeferredBlockAndItem<*, *>>) {

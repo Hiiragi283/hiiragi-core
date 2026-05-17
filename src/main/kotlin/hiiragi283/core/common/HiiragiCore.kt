@@ -5,6 +5,7 @@ import hiiragi283.core.setup.HCAttachmentTypes
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCCreativeTabs
+import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCMaterialContents
 import hiiragi283.core.setup.HCMiscRegister
 import hiiragi283.core.setup.HCRecipeLookups
@@ -36,6 +37,7 @@ data object HiiragiCore : HTCommonMod() {
         NeoForgeMod.enableMilkFluid()
 
         HCBlocks.register(eventBus)
+        HCItems.register(eventBus)
 
         HCAttachmentTypes.REGISTER.register(eventBus)
         HCBlockEntityTypes.register(eventBus)
