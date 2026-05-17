@@ -16,9 +16,14 @@ abstract class HTIdLikeTagsProvider<T : Any> : TagsProvider<T> {
 
     constructor(output: PackOutput, registryKey: RegistryKey<T>, lookupProvider: CompletableFuture<HolderLookup.Provider>, modId: String) : super(output, registryKey, lookupProvider, modId)
 
-    protected fun tag(tagKey: TagKey<T>): TagAppender<HTIdLike, T> = object : TagAppender<HTIdLike, T> {
-        val builder: TagBuilder = this@HTIdLikeTagsProvider.getOrCreateRawBuilder(tagKey)
+    protected fun tag(tagKey: TagKey<T>): IdAppender<T> = IdAppender(getOrCreateRawBuilder(tagKey))
 
+    protected fun tags(tagKey: TagKey<T>, vararg children: TagKey<T>): IdAppender<T> = children.fold(tag(tagKey)) { appender: IdAppender<T>, tagKeyIn: TagKey<T> ->
+        appender.addTag(tagKeyIn)
+        tag(tagKeyIn)
+    }
+
+    protected class IdAppender<T : Any>(val builder: TagBuilder) : TagAppender<HTIdLike, T> {
         override fun add(element: HTIdLike): TagAppender<HTIdLike, T> = apply { builder.addElement(element.getId()) }
 
         override fun addOptional(element: HTIdLike): TagAppender<HTIdLike, T> = apply { builder.addOptionalElement(element.getId()) }

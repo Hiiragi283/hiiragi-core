@@ -2,6 +2,7 @@ package hiiragi283.lib
 
 import hiiragi283.lib.gui.sync.HTSyncablePayload
 import hiiragi283.lib.gui.widget.HTWidgetType
+import hiiragi283.lib.material.HTMaterialContents
 import hiiragi283.lib.recipe.result.HTItemResult
 import hiiragi283.lib.resource.toId
 import net.minecraft.core.Registry
@@ -15,6 +16,9 @@ import net.neoforged.neoforge.registries.RegistryBuilder
 data object HTRegistries {
     @JvmField
     val ITEM_RESULT_SERIALIZER: Registry<HTItemResult.Serializer<*>> = createRegistry(Keys.ITEM_RESULT_SERIALIZER)
+
+    @JvmField
+    val MATERIAL_CONTENTS: Registry<HTMaterialContents> = createRegistry(Keys.MATERIAL_CONTENTS)
 
     @JvmField
     val SLOT_TYPE: Registry<HTSyncablePayload.Type<*>> = createRegistry(Keys.SLOT_TYPE)
@@ -36,6 +40,9 @@ data object HTRegistries {
     object Keys {
         @JvmField
         val ITEM_RESULT_SERIALIZER: ResourceKey<Registry<HTItemResult.Serializer<*>>> = createKey("item_result_serializer")
+
+        @JvmField
+        val MATERIAL_CONTENTS: ResourceKey<Registry<HTMaterialContents>> = createKey("material_contents")
 
         @JvmField
         val SLOT_TYPE: ResourceKey<Registry<HTSyncablePayload.Type<*>>> = createKey("syncable_slot_type")

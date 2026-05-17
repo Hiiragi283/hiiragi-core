@@ -10,6 +10,7 @@ import hiiragi283.lib.recipe.lookup.HTCompoundRecipeLookup
 import hiiragi283.lib.recipe.lookup.HTRecipeLookup
 import hiiragi283.lib.recipe.lookup.HTVanillaRecipeLookup
 import hiiragi283.lib.recipe.lookup.fromRecipeType
+import hiiragi283.lib.util.identity
 
 data object HCRecipeLookups {
     //    In World    //
@@ -35,8 +36,8 @@ data object HCRecipeLookups {
 
     @JvmStatic
     fun init() {
-        EMPTYING.fromRecipeType(HCRecipeTypes.EMPTYING.get()) { it }
+        EMPTYING.fromRecipeType(HCRecipeTypes.EMPTYING.get(), identity())
 
-        FILLING.fromRecipeType(HCRecipeTypes.FILLING.get()) { it }
+        FILLING.fromRecipeType(HCRecipeTypes.FILLING.get(), identity())
     }
 }

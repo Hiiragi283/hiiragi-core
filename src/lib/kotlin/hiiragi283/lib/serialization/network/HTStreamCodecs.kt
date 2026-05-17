@@ -4,6 +4,7 @@ import hiiragi283.lib.registry.RegistryKey
 import hiiragi283.lib.tag.createTagKey
 import hiiragi283.lib.text.Text
 import hiiragi283.lib.util.Ior
+import hiiragi283.lib.util.identity
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
@@ -16,7 +17,6 @@ import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
 import net.minecraft.util.ByIdMap
 import java.util.UUID
-import java.util.function.UnaryOperator
 import net.minecraft.resources.Identifier
 import org.apache.commons.lang3.math.Fraction
 
@@ -83,7 +83,7 @@ data object HTStreamCodecs {
      * @param T レジストリの要素のクラス
      */
     @JvmStatic
-    fun <T : Any> holder(registryKey: RegistryKey<T>): StreamCodec<RegistryFriendlyByteBuf, Holder<T>> = ByteBufCodecs.holderRegistry(registryKey).map(Holder<T>::getDelegate, UnaryOperator.identity())
+    fun <T : Any> holder(registryKey: RegistryKey<T>): StreamCodec<RegistryFriendlyByteBuf, Holder<T>> = ByteBufCodecs.holderRegistry(registryKey).map(Holder<T>::getDelegate, identity())
 
     /**
      * 指定した[registryKey]から[HolderSet]の[StreamCodec]を返します。

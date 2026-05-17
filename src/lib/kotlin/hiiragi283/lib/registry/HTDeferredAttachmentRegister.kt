@@ -1,11 +1,12 @@
 package hiiragi283.lib.registry
 
+import hiiragi283.lib.util.Identity
+import hiiragi283.lib.util.identity
 import net.neoforged.neoforge.attachment.AttachmentType
 import net.neoforged.neoforge.attachment.IAttachmentHolder
 import net.neoforged.neoforge.registries.NeoForgeRegistries
 import java.util.function.Function
 import java.util.function.Supplier
-import java.util.function.UnaryOperator
 import net.neoforged.neoforge.common.util.ValueIOSerializable
 
 class HTDeferredAttachmentRegister(namespace: String) : HTDeferredRegister<AttachmentType<*>>(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, namespace) {
@@ -14,15 +15,15 @@ class HTDeferredAttachmentRegister(namespace: String) : HTDeferredRegister<Attac
         return HTDeferredAttachmentType(createId(name))
     }
 
-    fun <TYPE : ValueIOSerializable> registerSerializable(
+    inline fun <TYPE : ValueIOSerializable> registerSerializable(
         name: String,
         factory: Function<IAttachmentHolder, TYPE>,
-        operator: UnaryOperator<AttachmentType.Builder<TYPE>> = UnaryOperator.identity(),
-    ): HTDeferredAttachmentType<TYPE> = registerType(name, AttachmentType.serializable(factory).let(operator::apply))
+        operator: Identity<AttachmentType.Builder<TYPE>> = identity(),
+    ): HTDeferredAttachmentType<TYPE> = registerType(name, AttachmentType.serializable(factory).let(operator))
 
-    fun <TYPE : ValueIOSerializable> registerSerializable(
+    inline fun <TYPE : ValueIOSerializable> registerSerializable(
         name: String,
         supplier: Supplier<TYPE>,
-        operator: UnaryOperator<AttachmentType.Builder<TYPE>> = UnaryOperator.identity(),
-    ): HTDeferredAttachmentType<TYPE> = registerType(name, AttachmentType.serializable(supplier).let(operator::apply))
+        operator: Identity<AttachmentType.Builder<TYPE>> = identity(),
+    ): HTDeferredAttachmentType<TYPE> = registerType(name, AttachmentType.serializable(supplier).let(operator))
 }

@@ -141,7 +141,7 @@ sealed class Ior<out A, out B> {
      */
     fun getRight(): B? = fold(
         { null },
-        { it },
+        identity(),
         { _: A, right: B -> right },
     )
 
@@ -150,7 +150,7 @@ sealed class Ior<out A, out B> {
      * @return このインスタンスが[Right]の場合は`null`
      */
     fun getLeft(): A? = fold(
-        { it },
+        identity(),
         { null },
         { left: A, _: B -> left },
     )

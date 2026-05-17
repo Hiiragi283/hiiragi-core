@@ -14,6 +14,8 @@ class HCEnglishLangProvider(output: PackOutput) :
         addPatternTranslations(this)
 
         // Block
+        add(HCBlocks.CHARCOAL_BLOCK, "Block of Charcoal")
+
         add(HCBlocks.WARPED_WART, "Warped Wart")
     }
 }

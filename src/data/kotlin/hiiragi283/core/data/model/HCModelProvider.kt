@@ -19,6 +19,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties
 
 class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreAPI.MOD_ID) {
     override fun registerModels(blockModels: BlockModelGenerators, itemModels: ItemModelGenerators) {
+        // Resources
+        blockModels.createTrivialCube(HCBlocks.CHARCOAL_BLOCK.get())
+
         // Warped Wart
         blockModels.createCropBlock(HCBlocks.WARPED_WART.get(), BlockStateProperties.AGE_3, 0, 1, 1, 2)
         // Copper Basin
@@ -51,7 +54,7 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
                     .put(TextureSlot.INSIDE, cutCopper),
                 this.modelOutput,
             )
-            this.createSimple(block.get(), modelId)
+            this.registerSimple(block.get(), modelId)
         }
     }
 }

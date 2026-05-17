@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreTags
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.lib.data.tag.HTItemTagsProvider
+import hiiragi283.lib.tag.HTCommonTags
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
@@ -12,6 +13,12 @@ import net.neoforged.neoforge.common.Tags
 
 class HCItemTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>, contentsGetter: CompletableFuture<TagLookup<Block>>) : HTItemTagsProvider(output, lookupProvider, contentsGetter, HiiragiCoreAPI.MOD_ID) {
     override fun addTags(registries: HolderLookup.Provider) {
+        copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS)
+        copy(HTCommonTags.Blocks.STORAGE_BLOCKS_CHARCOAL, HTCommonTags.Items.STORAGE_BLOCKS_CHARCOAL)
+        copy(HTCommonTags.Blocks.STORAGE_BLOCKS_GLOWSTONE, HTCommonTags.Items.STORAGE_BLOCKS_GLOWSTONE)
+        copy(HTCommonTags.Blocks.STORAGE_BLOCKS_QUARTZ, HTCommonTags.Items.STORAGE_BLOCKS_QUARTZ)
+        copy(HTCommonTags.Blocks.STORAGE_BLOCKS_AMETHYST, HTCommonTags.Items.STORAGE_BLOCKS_AMETHYST)
+
         tag(Tags.Items.CROPS).addTag(HiiragiCoreTags.Items.CROPS_WARPED_WART)
         tag(HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)
 

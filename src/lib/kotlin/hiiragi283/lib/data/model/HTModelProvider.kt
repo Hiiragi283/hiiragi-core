@@ -13,11 +13,11 @@ abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvide
 
     //    Block    //
 
-    fun BlockModelGenerators.createSimple(block: Block, modelId: Identifier) {
-        this.createSimple(block, BlockModelGenerators.plainVariant(modelId))
+    fun BlockModelGenerators.registerSimple(block: Block, modelId: Identifier) {
+        this.registerSimple(block, BlockModelGenerators.plainVariant(modelId))
     }
 
-    fun BlockModelGenerators.createSimple(block: Block, variant: MultiVariant) {
+    fun BlockModelGenerators.registerSimple(block: Block, variant: MultiVariant) {
         this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, variant))
     }
 

@@ -60,7 +60,7 @@ sealed class Either<out A, out B> {
 
 //    Extension    //
 
-fun <T> Either<T, T>.unwrap(): T = this.fold({ it }, { it })
+fun <T> Either<T, T>.unwrap(): T = this.fold(identity(), identity())
 
 //    DFUEither <-> Either    //
 

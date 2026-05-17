@@ -98,6 +98,19 @@ data object HTConstants {
 
     const val CHANCE = "chance"
 
+    //    TagKey    //
+
+    const val ORES = "ores"
+    const val STORAGE_BLOCKS = "storage_blocks"
+
+    const val DUSTS = "dusts"
+    const val FUELS = "fuels"
+    const val GEARS = "gears"
+    const val GEMS = "gems"
+    const val INGOTS = "ingots"
+    const val NUGGETS = "nuggets"
+    const val PEARLS = "pearls"
+
     //    Text    //
 
     const val CONSTANTS = "constants"

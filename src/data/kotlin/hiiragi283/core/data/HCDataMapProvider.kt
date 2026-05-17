@@ -9,12 +9,16 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.common.data.DataMapProvider
+import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps
 import net.neoforged.neoforge.registries.datamaps.builtin.Oxidizable
 import net.neoforged.neoforge.registries.datamaps.builtin.Waxable
 
 class HCDataMapProvider(packOutput: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : DataMapProvider(packOutput, lookupProvider) {
     override fun gather(provider: HolderLookup.Provider) {
+        builder(NeoForgeDataMaps.FURNACE_FUELS)
+            .add(HCBlocks.CHARCOAL_BLOCK.itemHolder, FurnaceFuel(20 * 10 * 80), false)
+
         registerOxidizables(HCBlocks.COPPER_BASIN)
         registerWaxed(HCBlocks.COPPER_BASIN)
     }

@@ -12,6 +12,7 @@ import hiiragi283.lib.recipe.result.HTChancedItemResult
 import hiiragi283.lib.recipe.result.HTFluidResult
 import hiiragi283.lib.recipe.result.HTItemResult
 import hiiragi283.lib.text.toText
+import hiiragi283.lib.util.identity
 import net.minecraft.core.component.DataComponents
 import net.minecraft.util.ExtraCodecs
 import net.minecraft.world.item.ItemStack
@@ -175,7 +176,7 @@ data class HTRecipeContents(
         fun addOutput(result: HTItemResult) {
             result.create()
                 .mapOrElse(
-                    { it },
+                    identity(),
                     { error: DataResult.Error<ItemStack> -> error.message().let(::createError) },
                 ).let { addOutput(it) }
         }
@@ -183,7 +184,7 @@ data class HTRecipeContents(
         fun addOutput(result: HTChancedItemResult) {
             result.create(true)
                 .mapOrElse(
-                    { it },
+                    identity(),
                     { error: DataResult.Error<ItemStack> -> error.message().let(::createError) },
                 ).let { addOutput(it, result.chance.toFloat()) }
         }

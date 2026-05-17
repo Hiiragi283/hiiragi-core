@@ -14,6 +14,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addPatternTranslations(this)
 
         // Block
+        add(HCBlocks.CHARCOAL_BLOCK, "木炭ブロック")
+
         add(HCBlocks.WARPED_WART, "歪んだウォート")
     }
 }
