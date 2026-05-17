@@ -25,6 +25,12 @@ data object HTCommonTags {
         @JvmField
         val STORAGE_BLOCKS_AMETHYST: TagKey<Block> = common(HTConstants.STORAGE_BLOCKS, "amethyst")
 
+        @JvmField
+        val STORAGE_BLOCKS_ECHO: TagKey<Block> = common(HTConstants.STORAGE_BLOCKS, "echo")
+
+        @JvmField
+        val STORAGE_BLOCKS_RESIN: TagKey<Block> = common(HTConstants.STORAGE_BLOCKS, "resin")
+
         @JvmStatic
         private fun common(vararg path: String): TagKey<Block> = BlockTags.create(HTConstants.COMMON.toId(*path))
     }
@@ -45,6 +51,12 @@ data object HTCommonTags {
         @JvmField
         val STORAGE_BLOCKS_AMETHYST: TagKey<Item> = from(Blocks.STORAGE_BLOCKS_AMETHYST)
 
+        @JvmField
+        val STORAGE_BLOCKS_ECHO: TagKey<Item> = from(Blocks.STORAGE_BLOCKS_ECHO)
+
+        @JvmField
+        val STORAGE_BLOCKS_RESIN: TagKey<Item> = from(Blocks.STORAGE_BLOCKS_RESIN)
+
         // Dusts
 
         // Fuels
@@ -52,6 +64,8 @@ data object HTCommonTags {
         // Gears
 
         // Gems
+        @JvmField
+        val GEMS_ECHO: TagKey<Item> = common(HTConstants.GEMS, "echo")
 
         // Ingots
 

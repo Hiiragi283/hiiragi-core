@@ -2,6 +2,7 @@ package hiiragi283.lib.data.recipe
 
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.recipe.RecipeKey
+import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.resource.toId
 import java.util.concurrent.CompletableFuture
 import net.minecraft.advancements.Advancement
@@ -14,6 +15,7 @@ import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.data.recipes.RecipeProvider
 import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
+import net.minecraft.tags.TagKey
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.enchantment.Enchantment
 import net.neoforged.neoforge.common.conditions.ICondition
@@ -43,6 +45,10 @@ abstract class HTRecipeProvider(protected val modId: String, registries: HolderL
      * @since 0.12.0
      */
     fun getEnchantment(key: ResourceKey<Enchantment>): Holder<Enchantment> = registries.holderOrThrow(key)
+
+    fun getHasName(id: HTIdLike): String = "has_${id.path}"
+
+    fun getHasName(tagKey: TagKey<*>): String = "has_${tagKey.location().path.replace("/", "_")}"
 
     //    Runner    //
 

@@ -26,7 +26,7 @@ data object HCMaterialContents {
 
     @JvmField
     val CHARCOAL: HTMaterialContents = REGISTER.registerContents("charcoal", CommonPartKeys.FUEL) {
-        add(CommonPartKeys.STORAGE_BLOCK, HTCommonTags.Items.STORAGE_BLOCKS_CHARCOAL) // TODO
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(HCBlocks.CHARCOAL_BLOCK), HTCommonTags.Items.STORAGE_BLOCKS_CHARCOAL)
 
         add(CommonPartKeys.FUEL, HTMaterialItemEntry.item(Items.CHARCOAL))
     }
@@ -73,6 +73,34 @@ data object HCMaterialContents {
         add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.QUARTZ_BLOCK), HTCommonTags.Items.STORAGE_BLOCKS_QUARTZ)
 
         add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.QUARTZ), Tags.Items.GEMS_QUARTZ)
+    }
+
+    @JvmField
+    val AMETHYST: HTMaterialContents = REGISTER.registerContents("amethyst", CommonPartKeys.GEM) {
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.AMETHYST_BLOCK), HTCommonTags.Items.STORAGE_BLOCKS_AMETHYST)
+
+        add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.AMETHYST_SHARD), Tags.Items.GEMS_AMETHYST)
+    }
+
+    @JvmField
+    val DIAMOND: HTMaterialContents = REGISTER.registerContents("diamond", CommonPartKeys.GEM) {
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.DIAMOND_BLOCK), Tags.Items.STORAGE_BLOCKS_DIAMOND)
+
+        add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.DIAMOND), Tags.Items.GEMS_DIAMOND)
+    }
+
+    @JvmField
+    val EMERALD: HTMaterialContents = REGISTER.registerContents("emerald", CommonPartKeys.GEM) {
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.EMERALD_BLOCK), Tags.Items.STORAGE_BLOCKS_EMERALD)
+
+        add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.EMERALD), Tags.Items.GEMS_EMERALD)
+    }
+
+    @JvmField
+    val ECHO: HTMaterialContents = REGISTER.registerContents("echo", CommonPartKeys.GEM) {
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(HCBlocks.ECHO_BLOCK), HTCommonTags.Items.STORAGE_BLOCKS_ECHO)
+
+        add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.ECHO_SHARD), HTCommonTags.Items.GEMS_ECHO)
     }
 
     // Common
@@ -124,6 +152,20 @@ data object HCMaterialContents {
         add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.NETHERITE_BLOCK), Tags.Items.STORAGE_BLOCKS_NETHERITE)
 
         add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(Items.NETHERITE_INGOT), Tags.Items.INGOTS_NETHERITE)
+    }
+
+    // Common
+
+    // Modded
+
+    //    Other    //
+
+    // Vanilla
+    @JvmField
+    val RESIN: HTMaterialContents = REGISTER.registerContents("resin", CommonPartKeys.INGOT) {
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.RESIN_BLOCK), HTCommonTags.Items.STORAGE_BLOCKS_RESIN)
+
+        add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(Items.RESIN_CLUMP))
     }
 
     // Common

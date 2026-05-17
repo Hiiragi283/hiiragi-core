@@ -15,6 +15,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         // Block
         add(HCBlocks.CHARCOAL_BLOCK, "木炭ブロック")
+        add(HCBlocks.ECHO_BLOCK, "残響ブロック")
 
         add(HCBlocks.WARPED_WART, "歪んだウォート")
     }

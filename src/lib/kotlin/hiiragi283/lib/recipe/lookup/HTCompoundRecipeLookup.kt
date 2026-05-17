@@ -56,8 +56,17 @@ class HTCompoundRecipeLookup<out RECIPE> private constructor(private val id: Ide
         }
 
         @SubscribeEvent
-        fun clearCache(event: TagsUpdatedEvent) {
+        fun clearCache(event: TagsUpdatedEvent.ServerDataLoad) {
+            // Clear cached recipes
             instances.values.forEach(HTCompoundRecipeLookup<*>::clearCache)
+            // Reload cached recipes (excluding potions)
+            val contextMap: ContextMap = ContextMap.Builder()
+                .withParameter(HTRecipeLookupContext.RECIPES, event.serverResources.recipeManager.recipeMap())
+                .withParameter(HTRecipeLookupContext.REGISTRIES, event.registries)
+                .create(HTRecipeLookupContext.CONTEXT)
+            for (lookup: HTCompoundRecipeLookup<*> in instances.values) {
+                lookup.getAllRecipes(contextMap)
+            }
         }
     }
 }

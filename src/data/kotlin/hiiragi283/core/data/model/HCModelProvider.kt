@@ -21,6 +21,7 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
     override fun registerModels(blockModels: BlockModelGenerators, itemModels: ItemModelGenerators) {
         // Resources
         blockModels.createTrivialCube(HCBlocks.CHARCOAL_BLOCK.get())
+        blockModels.createTrivialCube(HCBlocks.ECHO_BLOCK.get())
 
         // Warped Wart
         blockModels.createCropBlock(HCBlocks.WARPED_WART.get(), BlockStateProperties.AGE_3, 0, 1, 1, 2)

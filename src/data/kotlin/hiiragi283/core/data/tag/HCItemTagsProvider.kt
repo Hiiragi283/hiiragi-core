@@ -18,6 +18,7 @@ class HCItemTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<H
         copy(HTCommonTags.Blocks.STORAGE_BLOCKS_GLOWSTONE, HTCommonTags.Items.STORAGE_BLOCKS_GLOWSTONE)
         copy(HTCommonTags.Blocks.STORAGE_BLOCKS_QUARTZ, HTCommonTags.Items.STORAGE_BLOCKS_QUARTZ)
         copy(HTCommonTags.Blocks.STORAGE_BLOCKS_AMETHYST, HTCommonTags.Items.STORAGE_BLOCKS_AMETHYST)
+        copy(HTCommonTags.Blocks.STORAGE_BLOCKS_ECHO, HTCommonTags.Items.STORAGE_BLOCKS_ECHO)
 
         tag(Tags.Items.CROPS).addTag(HiiragiCoreTags.Items.CROPS_WARPED_WART)
         tag(HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)

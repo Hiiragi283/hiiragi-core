@@ -6,6 +6,7 @@ import hiiragi283.core.data.loot.HCBlockLootTableProvider
 import hiiragi283.core.data.model.HCModelProvider
 import hiiragi283.core.data.recipe.HCChargingRecipeProvider
 import hiiragi283.core.data.recipe.HCExplodingRecipeProvider
+import hiiragi283.core.data.recipe.HCMaterialRecipeProvider
 import hiiragi283.core.data.recipe.HCVanillaRecipeProvider
 import hiiragi283.core.data.tag.HCBlockTagsProvider
 import hiiragi283.core.data.tag.HCItemTagsProvider
@@ -28,6 +29,7 @@ data object HiiragiCoreData {
 
         event.createProvider(HCChargingRecipeProvider::Runner)
         event.createProvider(HCExplodingRecipeProvider::Runner)
+        event.createProvider(HCMaterialRecipeProvider::Runner)
         event.createProvider(HCVanillaRecipeProvider::Runner)
         // Client
         event.createProvider(::HCModelProvider)
