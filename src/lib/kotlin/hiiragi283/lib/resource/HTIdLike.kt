@@ -8,7 +8,7 @@ import net.minecraft.resources.Identifier
  * [ID][Identifier]を保持するインターフェースです。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
- * @see HTKeyLike
+ * @see SupplierWithId
  */
 fun interface HTIdLike {
     /**

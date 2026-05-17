@@ -17,11 +17,9 @@ import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.data.recipes.ShapedRecipeBuilder
 import net.minecraft.data.recipes.ShapelessRecipeBuilder
-import net.minecraft.data.recipes.SimpleCookingRecipeBuilder
 import net.minecraft.resources.Identifier
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
-import net.minecraft.world.item.crafting.CookingBookCategory
 import net.minecraft.world.item.crafting.Ingredient
 
 class HCMaterialRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
@@ -174,18 +172,25 @@ class HCMaterialRecipeProvider(modId: String, registries: HolderLookup.Provider,
         // 基本アイテムは必須
         val base: HTMaterialItemEntry = contents.getEntry(primalKey) ?: return
         val raw: Ior<HTMaterialItemEntry, TagKey<Item>> = contents.getRawEntry(CommonPartKeys.RAW) ?: return
-        val builder: SimpleCookingRecipeBuilder = SimpleCookingRecipeBuilder.smelting(raw.map(Ingredient::of, ::tag), RecipeCategory.MISC, CookingBookCategory.MISC, base, 3.5f, 200)
-        raw.fold(
-            { item: HTMaterialItemEntry ->
-                builder.unlockedBy(getHasName(item), has(item)).save(output, idFrom(base, item))
-            },
-            { itemTag: TagKey<Item> ->
-                builder.unlockedBy(getHasName(itemTag), has(itemTag)).save(output, idFrom(base, itemTag))
-            },
-            { item: HTMaterialItemEntry, itemTag: TagKey<Item> ->
-                builder.unlockedBy(getHasName(item), has(itemTag)).save(output, idFrom(base, item))
-            },
-        )
+        HTCookingRecipeBuilder.smeltingAndBlasting {
+            ingredient = raw.map(Ingredient::of, ::tag)
+            exp = 3.5f
+            result = base.toTemplate().getOrThrow()
+            raw.fold(
+                { item: HTMaterialItemEntry ->
+                    unlocker.unlockedBy(getHasName(item), has(item))
+                    recipeId replace idFrom(base, item)
+                },
+                { itemTag: TagKey<Item> ->
+                    unlocker.unlockedBy(getHasName(itemTag), has(itemTag))
+                    recipeId replace idFrom(base, itemTag)
+                },
+                { item: HTMaterialItemEntry, itemTag: TagKey<Item> ->
+                    unlocker.unlockedBy(getHasName(item), has(itemTag))
+                    recipeId replace idFrom(base, item)
+                },
+            )
+        }.forEach { it.save(output) }
     }
 
     private fun idFrom(after: HTIdLike, before: HTIdLike): Identifier = id("${after.path}_from_${before.path}")

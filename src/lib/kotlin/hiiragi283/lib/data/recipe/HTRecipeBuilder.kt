@@ -62,7 +62,7 @@ abstract class HTRecipeBuilder<out RECIPE : Recipe<*>>(private val prefix: Strin
     /**
      * レシピを生成します。
      */
-    fun save(recipeOutput: RecipeOutput) {
+    open fun save(recipeOutput: RecipeOutput) {
         this.save { id: Identifier, recipe: RECIPE ->
             recipeOutput.accept(RecipeKey(id), recipe, null, *conditions.toArray())
         }
