@@ -5,8 +5,8 @@ import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
 import net.neoforged.neoforge.registries.DeferredHolder
 
-open class HTDeferredHolder<R : Any, T : R> :
-    DeferredHolder<R, T>,
+open class HTDeferredHolder<R : Any, out T : R> :
+    DeferredHolder<R, @UnsafeVariance T>,
     SupplierWithId<T> {
     constructor(key: ResourceKey<R>) : super(key)
 

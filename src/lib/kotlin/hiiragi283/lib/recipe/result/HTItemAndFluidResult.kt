@@ -1,6 +1,6 @@
 package hiiragi283.lib.recipe.result
 
-import com.mojang.datafixers.util.Either
+import hiiragi283.lib.util.Either
 import hiiragi283.lib.util.Ior
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
@@ -11,7 +11,9 @@ data class HTItemAndFluidResult(val item: ItemStack, val fluid: FluidStack) {
 
     constructor(fluid: FluidStack) : this(ItemStack.EMPTY, fluid)
 
-    constructor(either: Either<ItemStack, FluidStack>) : this(either.left().orElseGet(ItemStack::EMPTY), either.right().orElseGet(FluidStack::EMPTY))
+    constructor(pair: Pair<ItemStack, FluidStack>) : this(pair.first, pair.second)
+
+    constructor(either: Either<ItemStack, FluidStack>) : this(either.leftOrNull() ?: ItemStack.EMPTY, either.getOrNull() ?: FluidStack.EMPTY)
 
     constructor(ior: Ior<ItemStack, FluidStack>) : this(ior.getLeft() ?: ItemStack.EMPTY, ior.getRight() ?: FluidStack.EMPTY)
 }

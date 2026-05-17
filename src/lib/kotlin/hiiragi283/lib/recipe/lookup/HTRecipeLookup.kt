@@ -10,7 +10,7 @@ import net.minecraft.util.context.ContextMap
  * @author Hiiragi Tsubasa
  * @since 0.11.0
  */
-fun interface HTRecipeLookup<RECIPE : Any> {
+fun interface HTRecipeLookup<out RECIPE> {
     /**
      * 指定した[context]からレシピの一覧を取得します。
      * @return [HTRecipeHolder]の[Sequence]

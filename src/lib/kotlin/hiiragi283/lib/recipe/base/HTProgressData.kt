@@ -1,6 +1,5 @@
 package hiiragi283.lib.recipe.base
 
-import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import hiiragi283.lib.HTConstants
@@ -8,6 +7,7 @@ import hiiragi283.lib.serialization.codec.HTCodecs
 import hiiragi283.lib.text.HTCommonTranslation
 import hiiragi283.lib.text.HTHasText
 import hiiragi283.lib.text.Text
+import hiiragi283.lib.util.DFUEither
 
 /**
  * 処理時間または消費エネルギーを保持するクラスです。
@@ -19,10 +19,10 @@ sealed interface HTProgressData : HTHasText {
         @JvmField
         val CODEC: MapCodec<HTProgressData> = Codec
             .mapEither(Time.CODEC, Energy.CODEC)
-            .xmap(Either<Time, Energy>::unwrap) { progressData: HTProgressData ->
+            .xmap(DFUEither<Time, Energy>::unwrap) { progressData: HTProgressData ->
                 when (progressData) {
-                    is Energy -> Either.right(progressData)
-                    is Time -> Either.left(progressData)
+                    is Energy -> DFUEither.right(progressData)
+                    is Time -> DFUEither.left(progressData)
                 }
             }
 

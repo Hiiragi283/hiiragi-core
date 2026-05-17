@@ -1,6 +1,5 @@
 package hiiragi283.lib.recipe.result
 
-import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
 import com.mojang.serialization.MapCodec
@@ -10,6 +9,7 @@ import hiiragi283.lib.HTRegistries
 import hiiragi283.lib.math.toFraction
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.serialization.codec.HTCodecs
+import hiiragi283.lib.util.DFUEither
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -31,10 +31,10 @@ interface HTItemResult : HTIdLike {
             HTItemResult::getSerializer,
             Serializer<*>::codec,
             Simple.MAP_CODEC,
-        ).xmap(Either<HTItemResult, Simple>::unwrap) { result: HTItemResult ->
+        ).xmap(DFUEither<HTItemResult, Simple>::unwrap) { result: HTItemResult ->
             when (result) {
-                is Simple -> Either.right(result)
-                else -> Either.left(result)
+                is Simple -> DFUEither.right(result)
+                else -> DFUEither.left(result)
             }
         }
 

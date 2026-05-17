@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Block
 
 typealias HTSimpleDeferredBlock = HTDeferredBlock<Block>
 
-class HTDeferredBlock<BLOCK : Block> :
+class HTDeferredBlock<out BLOCK : Block> :
     HTDeferredHolder<Block, BLOCK>,
     HTIdLike.Translatable {
     constructor(key: ResourceKey<Block>) : super(key)

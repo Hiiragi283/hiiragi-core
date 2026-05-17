@@ -1,7 +1,7 @@
 package hiiragi283.lib.serialization.codec
 
-import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
+import hiiragi283.lib.util.DFUEither
 import java.util.function.UnaryOperator
 
 //    List    //
@@ -21,8 +21,8 @@ fun <A : Any> Codec<A>.listOf(range: IntRange): Codec<List<A>> = this.listOf(ran
  * @since 0.1.0
  */
 fun <A : Any> Codec<A>.listOrElement(): Codec<List<A>> = Codec.either(this.listOf(), this).xmap(
-    { either: Either<List<A>, A> -> either.map(UnaryOperator.identity(), ::listOf) },
-    { list: List<A> -> if (list.size == 1) Either.right(list[0]) else Either.left(list) },
+    { either: DFUEither<List<A>, A> -> either.map(UnaryOperator.identity(), ::listOf) },
+    { list: List<A> -> if (list.size == 1) DFUEither.right(list[0]) else DFUEither.left(list) },
 )
 
 /**
@@ -43,8 +43,8 @@ fun <A : Any> Codec<A>.listOrElement(range: IntRange): Codec<List<A>> = this.lis
  * @since 0.1.0
  */
 fun <A : Any> Codec<A>.listOrElement(min: Int, max: Int): Codec<List<A>> = Codec.either(this.listOf(min, max), this).xmap(
-    { either: Either<List<A>, A> -> either.map(UnaryOperator.identity(), ::listOf) },
-    { list: List<A> -> if (list.size == 1) Either.right(list[0]) else Either.left(list) },
+    { either: DFUEither<List<A>, A> -> either.map(UnaryOperator.identity(), ::listOf) },
+    { list: List<A> -> if (list.size == 1) DFUEither.right(list[0]) else DFUEither.left(list) },
 )
 
 //    Set    //

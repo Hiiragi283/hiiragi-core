@@ -10,7 +10,7 @@ import net.minecraft.world.item.Item
 
 typealias HTSimpleDeferredItem = HTDeferredItem<Item>
 
-class HTDeferredItem<ITEM : Item> :
+class HTDeferredItem<out ITEM : Item> :
     HTDeferredHolder<Item, ITEM>,
     HTIdLike.Translatable,
     HTItemLike<ITEM> {

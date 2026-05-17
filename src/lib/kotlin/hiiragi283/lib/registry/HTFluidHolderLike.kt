@@ -10,14 +10,14 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidStackTemplate
 import net.neoforged.neoforge.fluids.FluidType
 
-interface HTFluidHolderLike<FLUID : Fluid> : SupplierWithId<FLUID> {
+interface HTFluidHolderLike<out FLUID : Fluid> : SupplierWithId<FLUID> {
     /**
      * 保持している液体に対応するバケツを取得します。
      */
     fun getBucket(): HTItemLike<*>
 
     /**
-     * 保持している液体に対応する[net.neoforged.neoforge.fluids.FluidType]を取得します。
+     * 保持している液体に対応する[FluidType]を取得します。
      */
     fun getFluidType(): FluidType
 

@@ -1,11 +1,11 @@
 package hiiragi283.lib.serialization.codec
 
-import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
 import com.mojang.serialization.MapCodec
 import hiiragi283.lib.registry.RegistryKey
 import hiiragi283.lib.text.Text
+import hiiragi283.lib.util.DFUEither
 import hiiragi283.lib.util.Ior
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
@@ -33,11 +33,11 @@ data object HTCodecs {
     val FRACTION: Codec<Fraction> = Codec
         .xor(Codec.STRING, Codec.INT)
         .xmap(
-            { either: Either<String, Int> -> either.map(Fraction::getFraction) { Fraction.getFraction(it, 1) } },
+            { either: DFUEither<String, Int> -> either.map(Fraction::getFraction) { Fraction.getFraction(it, 1) } },
             { fraction: Fraction ->
                 when (fraction.denominator) {
-                    1 -> Either.right(fraction.numerator)
-                    else -> Either.left(fraction.toString())
+                    1 -> DFUEither.right(fraction.numerator)
+                    else -> DFUEither.left(fraction.toString())
                 }
             },
         )
@@ -58,7 +58,7 @@ data object HTCodecs {
      * @return [Ior]の[MapCodec]
      */
     @JvmStatic
-    fun <L : Any, R : Any> ior(left: MapCodec<L>, right: MapCodec<R>): MapCodec<Ior<L, R>> = HTIorMapCodec(left, right)
+    fun <L, R> ior(left: MapCodec<L>, right: MapCodec<R>): MapCodec<Ior<L, R>> = HTIorMapCodec(left, right)
 
     /**
      * [Enum]の[Codec]を返します。

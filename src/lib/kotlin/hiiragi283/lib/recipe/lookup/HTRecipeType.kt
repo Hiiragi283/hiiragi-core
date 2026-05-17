@@ -10,7 +10,7 @@ import hiiragi283.lib.text.translatableText
  * @author Hiiragi Tsubasa
  * @since 0.11.0
  */
-interface HTRecipeType<RECIPE : Any> :
+interface HTRecipeType<out RECIPE> :
     HTRecipeLookup<RECIPE>,
     HTIdLike.Translatable {
     override val translationKey: String

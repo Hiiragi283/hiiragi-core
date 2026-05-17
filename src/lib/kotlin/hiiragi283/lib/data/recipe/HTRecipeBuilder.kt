@@ -13,7 +13,7 @@ import net.neoforged.neoforge.common.conditions.ICondition
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
-abstract class HTRecipeBuilder<RECIPE : Recipe<*>>(private val prefix: String) {
+abstract class HTRecipeBuilder<out RECIPE : Recipe<*>>(private val prefix: String) {
     fun commonInfo(showNotification: Boolean): Recipe.CommonInfo = Recipe.CommonInfo(showNotification)
 
     //    Conditions    //

@@ -15,14 +15,14 @@ import net.neoforged.neoforge.fluids.FluidType
  */
 class HTFluidContent(
     // Required
-    val typeHolder: HTDeferredHolder<FluidType, *>,
-    private val sourceHolder: HTDeferredHolder<Fluid, *>,
+    val typeHolder: HTDeferredHolder<FluidType, FluidType>,
+    private val sourceHolder: HTDeferredHolder<Fluid, Fluid>,
     val bucketHolder: HTSimpleDeferredItem,
     val fluidTag: TagKey<Fluid>,
     val bucketTag: TagKey<Item>,
     // Optional
-    val flowingHolder: HTDeferredHolder<Fluid, out FlowingFluid>?,
-    val blockHolder: HTDeferredBlock<out LiquidBlock>?,
+    val flowingHolder: HTDeferredHolder<Fluid, FlowingFluid>?,
+    val blockHolder: HTDeferredBlock<LiquidBlock>?,
 ) : HTFluidHolderLike<Fluid> {
     override fun getBucket(): HTSimpleDeferredItem = bucketHolder
 

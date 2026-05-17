@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.HTConstants
-import hiiragi283.lib.resource.HTIdLike
+import hiiragi283.lib.resource.SupplierWithId
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
@@ -16,7 +16,7 @@ import net.minecraft.world.item.crafting.RecipeHolder
  * @since 0.15.0
  */
 @JvmRecord
-data class HTRecipeHolder<RECIPE : Any>(val key: RecipeKey, val recipe: RECIPE) : HTIdLike {
+data class HTRecipeHolder<out RECIPE>(@JvmField val key: RecipeKey, @JvmField val recipe: RECIPE) : SupplierWithId<RECIPE> {
     companion object {
         /**
          * [HTRecipeHolder]の[Codec]を作成します。
@@ -63,7 +63,9 @@ data class HTRecipeHolder<RECIPE : Any>(val key: RecipeKey, val recipe: RECIPE) 
         return HTRecipeHolder(this.key, recipe)
     }
 
-    inline fun <reified R : RECIPE> castRecipe(): HTRecipeHolder<R>? = mapRecipeOrNull { it as? R }
+    inline fun <reified R> castRecipe(): HTRecipeHolder<R>? = mapRecipeOrNull { it as? R }
+
+    override fun get(): RECIPE = recipe
 
     override fun getId(): Identifier = key.identifier()
 }

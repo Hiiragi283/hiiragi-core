@@ -23,7 +23,7 @@ import java.util.function.Supplier
  * @author Hiiragi Tsubasa
  * @since 0.9.0
  */
-class HTVirtualFluid(private val typeGetter: Supplier<FluidType>, private val bucketGetter: Supplier<Item>) : Fluid() {
+class HTVirtualFluid(private val typeGetter: Supplier<out FluidType>, private val bucketGetter: Supplier<out Item>) : Fluid() {
     override fun getBucket(): Item = bucketGetter.get()
 
     override fun canBeReplacedWith(

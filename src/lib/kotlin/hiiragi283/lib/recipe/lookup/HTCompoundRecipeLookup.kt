@@ -11,24 +11,24 @@ import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.event.TagsUpdatedEvent
 
-class HTCompoundRecipeLookup<RECIPE : Any> private constructor(private val id: Identifier) : HTRecipeLookup<RECIPE> {
+class HTCompoundRecipeLookup<out RECIPE> private constructor(private val id: Identifier) : HTRecipeLookup<RECIPE> {
     companion object {
         @JvmStatic
         fun <RECIPE : Any> create(id: Identifier): HTCompoundRecipeLookup<RECIPE> = Manager.create(id)
     }
 
     private val lookups: MutableList<HTRecipeLookup<RECIPE>> = mutableListOf()
-    var cachedRecipes: List<HTRecipeHolder<RECIPE>> = listOf()
+    var cachedRecipes: List<HTRecipeHolder<@UnsafeVariance RECIPE>> = listOf()
 
     internal fun clearCache() {
         cachedRecipes = listOf()
     }
 
-    fun addRecipes(vararg recipes: Pair<Identifier, RECIPE>) {
+    fun addRecipes(vararg recipes: Pair<Identifier, @UnsafeVariance RECIPE>) {
         addSubLookup { recipes.asSequence().map { (id: Identifier, recipe: RECIPE) -> HTRecipeHolder(id, recipe) } }
     }
 
-    fun addSubLookup(lookup: HTRecipeLookup<RECIPE>) {
+    fun addSubLookup(lookup: HTRecipeLookup<@UnsafeVariance RECIPE>) {
         this.lookups += lookup
     }
 
