@@ -3,6 +3,7 @@ package hiiragi283.core.data.tag
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.lib.data.tag.HTIdLikeTagsProvider
+import hiiragi283.lib.registry.toLike
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.tag.HTCommonTags
 import java.util.concurrent.CompletableFuture
@@ -37,9 +38,5 @@ class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<
         }.forEach(pickaxe::add)
     }
 
-    @Suppress("DEPRECATION")
-    private fun IdAppender<Block>.addBlock(block: Block): IdAppender<Block> {
-        this.builder.addElement(block.builtInRegistryHolder().unwrapKey().orElseThrow().identifier())
-        return this
-    }
+    private fun IdAppender<Block>.addBlock(block: Block): IdAppender<Block> = this.add(block.toLike())
 }

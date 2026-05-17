@@ -24,20 +24,20 @@ abstract class HTIdLikeTagsProvider<T : Any> : TagsProvider<T> {
     }
 
     protected class IdAppender<T : Any>(val builder: TagBuilder) : TagAppender<HTIdLike, T> {
-        override fun add(element: HTIdLike): TagAppender<HTIdLike, T> = apply { builder.addElement(element.getId()) }
+        override fun add(element: HTIdLike): IdAppender<T> = apply { builder.addElement(element.getId()) }
 
-        override fun addOptional(element: HTIdLike): TagAppender<HTIdLike, T> = apply { builder.addOptionalElement(element.getId()) }
+        override fun addOptional(element: HTIdLike): IdAppender<T> = apply { builder.addOptionalElement(element.getId()) }
 
-        override fun addTag(tag: TagKey<T>): TagAppender<HTIdLike, T> = apply { builder.addTag(tag.location()) }
+        override fun addTag(tag: TagKey<T>): IdAppender<T> = apply { builder.addTag(tag.location()) }
 
-        override fun addOptionalTag(tag: TagKey<T>): TagAppender<HTIdLike, T> = apply { builder.addOptionalTag(tag.location()) }
+        override fun addOptionalTag(tag: TagKey<T>): IdAppender<T> = apply { builder.addOptionalTag(tag.location()) }
 
-        override fun add(entry: TagEntry): TagAppender<HTIdLike, T> = apply { builder.add(entry) }
+        override fun add(entry: TagEntry): IdAppender<T> = apply { builder.add(entry) }
 
-        override fun replace(value: Boolean): TagAppender<HTIdLike, T> = apply { builder.replace(value) }
+        override fun replace(value: Boolean): IdAppender<T> = apply { builder.replace(value) }
 
-        override fun remove(element: HTIdLike): TagAppender<HTIdLike, T> = apply { builder.removeElement(element.getId()) }
+        override fun remove(element: HTIdLike): IdAppender<T> = apply { builder.removeElement(element.getId()) }
 
-        override fun remove(tag: TagKey<T>): TagAppender<HTIdLike, T> = apply { builder.removeTag(tag.location()) }
+        override fun remove(tag: TagKey<T>): IdAppender<T> = apply { builder.removeTag(tag.location()) }
     }
 }
