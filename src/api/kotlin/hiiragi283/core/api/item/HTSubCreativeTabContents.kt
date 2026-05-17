@@ -1,6 +1,6 @@
 package hiiragi283.core.api.item
 
-import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.registry.HTItemLike
 import net.minecraft.core.HolderLookup
 import net.minecraft.world.flag.FeatureFlagSet
 import net.minecraft.world.item.CreativeModeTab
@@ -18,7 +18,7 @@ fun interface HTSubCreativeTabContents {
      * @param baseItem 対象のアイテム
      * @param context 登録時のコンテキスト
      */
-    fun addItems(baseItem: HTItemHolderLike<*>, context: Context)
+    fun addItems(baseItem: HTItemLike<*>, context: Context)
 
     /**
      * デフォルトの[ItemStack]を追加するか判定します。

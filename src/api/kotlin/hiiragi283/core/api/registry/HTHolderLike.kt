@@ -24,7 +24,7 @@ typealias HTSimpleHolderLike<R> = HTHolderLike<R, R>
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-interface HTHolderLike<R : Any, T : R> :
+interface HTHolderLike<R : Any, out T : R> :
     SupplierWithId<T>,
     HTKeyLike<R> {
     /**

@@ -3,7 +3,7 @@ package hiiragi283.core.common.item
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.item.HTSubCreativeTabContents
 import hiiragi283.core.api.item.createItemStack
-import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.registry.HTItemLike
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.common.text.HCTranslation
@@ -61,7 +61,7 @@ class HTBlueprintItem(properties: Properties) :
 
     //    HTSubCreativeTabContents    //
 
-    override fun addItems(baseItem: HTItemHolderLike<*>, context: HTSubCreativeTabContents.Context) {
+    override fun addItems(baseItem: HTItemLike<*>, context: HTSubCreativeTabContents.Context) {
         RANGE
             .map { createItemStack(HCItems.BLUEPRINT, HCDataComponents.BLUEPRINT_NUMBER, it) }
             .forEach(context)

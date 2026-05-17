@@ -27,7 +27,7 @@ typealias HTSimpleFluidHolderLike = HTFluidHolderLike<Fluid>
  * @author Hiiragi Tsubasa
  * @since 0.13.0
  */
-interface HTFluidHolderLike<FLUID : Fluid> : HTHolderLike<Fluid, FLUID> {
+interface HTFluidHolderLike<out FLUID : Fluid> : HTHolderLike<Fluid, FLUID> {
     /**
      * 保持している液体に対応するバケツを取得します。
      */

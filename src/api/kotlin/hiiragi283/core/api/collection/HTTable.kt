@@ -8,7 +8,7 @@ package hiiragi283.core.api.collection
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
-interface HTTable<R, C, V> {
+interface HTTable<R, C, out V> {
     /**
      * 指定した[row]と[column]が含まれているか判定します。
      */
@@ -27,7 +27,7 @@ interface HTTable<R, C, V> {
     /**
      * 指定した[value]が含まれているか判定します。
      */
-    fun containsValue(value: V): Boolean
+    fun containsValue(value: @UnsafeVariance V): Boolean
 
     /**
      * 指定した[row]と[column]から対応する値を返します。
@@ -82,49 +82,49 @@ interface HTTable<R, C, V> {
      * @author Hiiragi Tsubasa
      * @since 0.8.0
      */
-    interface Mutable<R, C, V> : HTTable<R, C, V> {
+    interface Mutable<R, C, out V> : HTTable<R, C, V> {
         /**
          * 指定した値を追加します。
          */
-        fun put(row: R, column: C, value: V): V?
+        fun put(row: R, column: C, value: @UnsafeVariance V): V?
 
         /**
          * 指定した値を追加します。
          */
-        fun put(triple: Triple<R, C, V>): V? = put(triple.first, triple.second, triple.third)
+        fun put(triple: Triple<R, C, @UnsafeVariance V>): V? = put(triple.first, triple.second, triple.third)
 
         /**
          * 指定した値を追加します。
          */
-        operator fun set(row: R, column: C, value: V) {
+        operator fun set(row: R, column: C, value: @UnsafeVariance V) {
             put(row, column, value)
         }
 
         /**
          * 指定した値を追加します。
          */
-        fun putAll(triples: Iterable<Triple<R, C, V>>) {
+        fun putAll(triples: Iterable<Triple<R, C, @UnsafeVariance V>>) {
             triples.forEach(::put)
         }
 
         /**
          * 指定した値を追加します。
          */
-        fun putAll(triples: Sequence<Triple<R, C, V>>) {
+        fun putAll(triples: Sequence<Triple<R, C, @UnsafeVariance V>>) {
             triples.forEach(::put)
         }
 
         /**
          * 指定した値を追加します。
          */
-        fun putAll(triples: Array<out Triple<R, C, V>>) {
+        fun putAll(triples: Array<out Triple<R, C, @UnsafeVariance V>>) {
             triples.forEach(::put)
         }
 
         /**
          * ほかのテーブルから値を追加します。
          */
-        fun putAll(table: HTTable<out R, out C, out V>) {
+        fun putAll(table: HTTable<out R, out C, @UnsafeVariance V>) {
             table.forEach { (r: R, c: C, v: V) -> this.put(r, c, v) }
         }
 

@@ -104,12 +104,12 @@ fun <R, C, V> Iterable<Triple<R, C, V>>.toTable(): HTTable<R, C, V> {
 /**
  * @see Iterable.toMap
  */
-fun <R, C, V, T : HTTable.Mutable<in R, in C, in V>> Iterable<Triple<R, C, V>>.toTable(destination: T): T = destination.apply { putAll(this@toTable) }
+fun <R, C, V, T : HTTable.Mutable<in R, in C, V>> Iterable<Triple<R, C, V>>.toTable(destination: T): T = destination.apply { putAll(this@toTable) }
 
 /**
  * @see Array.toMap
  */
-fun <R, C, V, T : HTTable.Mutable<in R, in C, in V>> Array<out Triple<R, C, V>>.toTable(destination: T): T = destination.apply { putAll(this@toTable) }
+fun <R, C, V, T : HTTable.Mutable<in R, in C, V>> Array<out Triple<R, C, V>>.toTable(destination: T): T = destination.apply { putAll(this@toTable) }
 
 // with transform
 inline fun <K, V, R, C, V1> Map<K, V>.toTable(transform: (Map.Entry<K, V>) -> Triple<R, C, V1>): HTTable<R, C, V1> = this.toTable(HTHashTable(), transform)

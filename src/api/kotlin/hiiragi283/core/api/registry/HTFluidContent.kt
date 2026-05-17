@@ -23,8 +23,8 @@ class HTFluidContent(
     val fluidTag: TagKey<Fluid>,
     val bucketTag: TagKey<Item>,
     // Optional
-    val flowingHolder: HTFluidHolderLike<out FlowingFluid>?,
-    val blockHolder: HTBlockHolderLike<out LiquidBlock>?,
+    val flowingHolder: HTFluidHolderLike<FlowingFluid>?,
+    val blockHolder: HTBlockHolderLike<LiquidBlock>?,
 ) : HTSimpleFluidHolderLike {
     override fun getBucket(): HTSimpleItemHolderLike = bucketHolder
 

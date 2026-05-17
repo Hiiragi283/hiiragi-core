@@ -3,7 +3,6 @@ package hiiragi283.core.api.event
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
-import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.recipe.HTRecipeHolder
@@ -88,10 +87,8 @@ class HTRegisterRuntimeRecipeEvent(
     fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLike<T>> = HiiragiCoreAccess.INSTANCE.getFirstHolder(context.provider, tagKey)
 
     fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): HTSimpleHolderLike<T>? = getHolderResult(tagKey)
-        .mapOrElse(identity()) { message: Text ->
-            if (printLog) HiiragiCoreAPI.LOGGER.debug(message.string)
-            null
-        }
+        .onFailure { error: Text -> if (printLog) HiiragiCoreAPI.LOGGER.debug(error.string) }
+        .getOrNull()
 
     fun <T : Any> isPresentTag(tagKey: TagKey<T>): Boolean = context.provider.holderSetOrNull(tagKey) != null
 

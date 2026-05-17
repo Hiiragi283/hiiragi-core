@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.HalfTransparentBlock
 import net.minecraft.world.level.block.StainedGlassPaneBlock
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.client.model.data.ModelData
-import kotlin.collections.plus
 
 /**
  * @see mekanism.client.render.item.MekanismISTER

@@ -69,7 +69,7 @@ data object HTCodecs {
      * @return [Ior]の[MapCodec]
      */
     @JvmStatic
-    fun <L : Any, R : Any> ior(left: MapCodec<L>, right: MapCodec<R>): MapCodec<Ior<L, R>> = HTIorMapCodec(left, right)
+    fun <L, R> ior(left: MapCodec<L>, right: MapCodec<R>): MapCodec<Ior<L, R>> = HTIorMapCodec(left, right)
 
     /**
      * [Enum]の[Codec]を返します。

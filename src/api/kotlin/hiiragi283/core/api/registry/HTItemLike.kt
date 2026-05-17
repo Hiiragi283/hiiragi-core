@@ -13,7 +13,7 @@ import net.minecraft.world.level.ItemLike
  * @author Hiiragi Tsubasa
  * @since 0.15.1
  */
-interface HTItemLike<ITEM : Item> : ItemLike {
+interface HTItemLike<out ITEM : Item> : ItemLike {
     override fun asItem(): ITEM
 
     /**

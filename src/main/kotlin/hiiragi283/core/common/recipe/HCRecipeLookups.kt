@@ -73,7 +73,7 @@ data object HCRecipeLookups {
     }
 
     @JvmStatic
-    fun coloring(inputTag: TagKey<Item>, contents: HTColoredContents<out SupplierWithId<out ItemLike>>) {
+    fun coloring(inputTag: TagKey<Item>, contents: HTColoredContents<SupplierWithId<ItemLike>>) {
         /*COLORING.addProvider {
             sequenceOf(
                 HTRecipeHolder(

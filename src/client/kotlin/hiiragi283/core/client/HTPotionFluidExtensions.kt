@@ -13,7 +13,7 @@ data object HTPotionFluidExtensions : IClientFluidTypeExtensions {
 
     override fun getStillTexture(): ResourceLocation = sourceTexture
 
-    override fun getFlowingTexture(): ResourceLocation = stillTexture
+    override fun getFlowingTexture(): ResourceLocation = flowingTexture
 
     override fun getTintColor(stack: FluidStack): Int = "ff000000".hexToInt() or HTPotionHelper.getPotion(stack).color
 }

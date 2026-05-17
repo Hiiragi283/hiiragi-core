@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack
  * @since 0.16.0
  * @see mekanism.client.recipe_viewer.type.FakeRVRecipeType
  */
-class HTRecipeViewerTypeImpl<T : Any>(
+class HTRecipeViewerTypeImpl<out T>(
     override val recipeClass: Class<out T>,
     idLike: HTIdLike,
     hasText: HTHasText,

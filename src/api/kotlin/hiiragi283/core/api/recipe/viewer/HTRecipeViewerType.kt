@@ -20,7 +20,7 @@ typealias HTHolderRecipeViewerType<RECIPE> = HTRecipeViewerType<HTRecipeHolder<R
  * @since 0.11.0
  * @see mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType
  */
-interface HTRecipeViewerType<RECIPE : Any> :
+interface HTRecipeViewerType<out RECIPE> :
     HTHasText,
     HTIdLike {
     val recipeClass: Class<out RECIPE>

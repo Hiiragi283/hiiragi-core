@@ -12,7 +12,7 @@ import org.apache.commons.lang3.math.Fraction
  * @author Hiiragi Tsubasa
  * @since 0.13.0
  */
-abstract class HTProgressHandler<T : Any> {
+abstract class HTProgressHandler<out T> {
     companion object {
         @JvmStatic
         inline fun <T : Any> create(builderAction: Builder<T>.() -> Unit): HTProgressHandler<T> = Builder<T>().apply(builderAction).build()
@@ -82,13 +82,13 @@ abstract class HTProgressHandler<T : Any> {
 
     protected abstract fun findRecipe(level: ServerLevel, pos: BlockPos): T?
 
-    protected abstract fun canComplete(level: ServerLevel, pos: BlockPos, recipe: T): Boolean
+    protected abstract fun canComplete(level: ServerLevel, pos: BlockPos, recipe: @UnsafeVariance T): Boolean
 
-    protected abstract fun getMaxProgress(recipe: T): Int
+    protected abstract fun getMaxProgress(recipe: @UnsafeVariance T): Int
 
     protected abstract fun getProgress(level: ServerLevel, pos: BlockPos): Int
 
-    protected abstract fun onComplete(level: ServerLevel, pos: BlockPos, recipe: T)
+    protected abstract fun onComplete(level: ServerLevel, pos: BlockPos, recipe: @UnsafeVariance T)
 
     private fun updateProgress(maxProgress: Int) {
         this.maxProgress = maxProgress

@@ -8,7 +8,7 @@ import hiiragi283.core.api.function.identity
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-sealed class Ior<A, B> {
+sealed class Ior<out A, out B> {
     companion object {
         /**
          * 指定された[pair]を[Ior]に変換します。
@@ -16,7 +16,7 @@ sealed class Ior<A, B> {
          * @since 0.1.0
          */
         @JvmStatic
-        fun <A : Any, B : Any> fromNullable(pair: Pair<A?, B?>?): Ior<A, B>? {
+        fun <A, B> fromNullable(pair: Pair<A?, B?>?): Ior<A, B>? {
             val (first: A?, second: B?) = pair ?: return null
             return fromNullable(first, second)
         }
@@ -27,7 +27,7 @@ sealed class Ior<A, B> {
          * @since 0.1.0
          */
         @JvmStatic
-        fun <A : Any, B : Any> fromNullable(left: A?, right: B?): Ior<A, B>? = when {
+        fun <A, B> fromNullable(left: A?, right: B?): Ior<A, B>? = when {
             left != null -> when {
                 right != null -> Both(left, right)
                 else -> Left(left)
@@ -122,7 +122,7 @@ sealed class Ior<A, B> {
      * 保持している値を[Either]に展開します。
      * @return 展開された[Either]のインスタンス
      */
-    fun unwrap(): Either<Either<A, B>, Pair<A, B>> = fold(
+    fun unwrap(): Either<Either<@UnsafeVariance A, @UnsafeVariance B>, Pair<@UnsafeVariance A, @UnsafeVariance B>> = fold(
         { Either.left(Either.left(it)) },
         { Either.left(Either.right(it)) },
         { left: A, right: B -> Either.right(left to right) },
@@ -161,15 +161,15 @@ sealed class Ior<A, B> {
     /**
      * [A]だけを保持する[Ior]の実装クラスです。
      */
-    data class Left<A, B>(val value: A) : Ior<A, B>()
+    data class Left<out A, out B>(val value: A) : Ior<A, B>()
 
     /**
      * [B]だけを保持する[Ior]の実装クラスです。
      */
-    data class Right<A, B>(val value: B) : Ior<A, B>()
+    data class Right<out A, out B>(val value: B) : Ior<A, B>()
 
     /**
      * [A]と[B]の両方を保持する[Ior]の実装クラスです。
      */
-    data class Both<A, B>(val leftValue: A, val rightValue: B) : Ior<A, B>()
+    data class Both<out A, out B>(val leftValue: A, val rightValue: B) : Ior<A, B>()
 }

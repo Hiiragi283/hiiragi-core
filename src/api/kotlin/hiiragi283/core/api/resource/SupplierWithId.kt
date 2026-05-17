@@ -11,6 +11,6 @@ import java.util.function.Supplier
  * @since 0.15.2
  * @see HTHolderLike
  */
-interface SupplierWithId<T : Any> :
-    Supplier<T>,
+interface SupplierWithId<out T> :
+    Supplier<@UnsafeVariance T>,
     HTIdLike

@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.Block
  * @author Hiiragi Tsubasa
  * @since 0.16.0
  */
-abstract class HTIntrusiveHolderLike<R : Any, T : R> : HTHolderLike<R, T> {
+abstract class HTIntrusiveHolderLike<R : Any, out T : R> : HTHolderLike<R, T> {
     /**
      * [value]が保持している[Holder]を取得します。
      */

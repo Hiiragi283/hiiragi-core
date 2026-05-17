@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation
 
 data object HCRecipeDisplayFactories {
     @JvmStatic
-    fun inWorld(holder: HTRecipeHolder<out HTInWorldRecipe>): HTRecipeDisplay.Simple {
+    fun inWorld(holder: HTRecipeHolder<HTInWorldRecipe>): HTRecipeDisplay.Simple {
         val (id: ResourceLocation, recipe: HTInWorldRecipe) = holder
         return HTRecipeDisplay.Simple(
             id,

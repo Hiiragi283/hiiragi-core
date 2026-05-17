@@ -16,7 +16,7 @@ import net.minecraft.world.item.crafting.RecipeHolder
  * @since 0.15.0
  */
 @JvmRecord
-data class HTRecipeHolder<RECIPE : Any>(
+data class HTRecipeHolder<out RECIPE>(
     @JvmField val id: ResourceLocation,
     @JvmField val recipe: RECIPE,
 ) : SupplierWithId<RECIPE> {
@@ -64,7 +64,7 @@ data class HTRecipeHolder<RECIPE : Any>(
         return HTRecipeHolder(this.id, recipe)
     }
 
-    inline fun <reified R : RECIPE> castRecipe(): HTRecipeHolder<R>? = mapRecipeOrNull { it as? R }
+    inline fun <reified R : @UnsafeVariance RECIPE> castRecipe(): HTRecipeHolder<R>? = mapRecipeOrNull { it as? R }
 
     override fun get(): RECIPE = recipe
 

@@ -11,7 +11,7 @@ import net.neoforged.neoforge.registries.DeferredHolder
  * @author Hiiragi Tsubasa
  * @since 0.16.0
  */
-open class HTDeferredHolderLike<R : Any, T : R>(protected open val holder: DeferredHolder<R, T>) : HTHolderLike<R, T> {
+open class HTDeferredHolderLike<R : Any, out T : R>(protected open val holder: DeferredHolder<R, out T>) : HTHolderLike<R, T> {
     final override fun unwrap(): Either<ResourceKey<R>, Holder<R>> = Either.left(holder.key!!)
 
     final override fun get(): T = holder.get()

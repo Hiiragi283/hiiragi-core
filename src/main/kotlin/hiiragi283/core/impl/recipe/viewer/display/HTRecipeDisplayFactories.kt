@@ -11,19 +11,19 @@ import net.minecraft.resources.ResourceLocation
 
 data object HTRecipeDisplayFactories {
     @JvmStatic
-    fun itemToItem(holder: HTRecipeHolder<out HTBasicItemToItemRecipe>): HTProgressRecipeDisplay = progress(holder) { recipe ->
+    fun itemToItem(holder: HTRecipeHolder<HTBasicItemToItemRecipe>): HTProgressRecipeDisplay = progress(holder) { recipe ->
         addInput(recipe.ingredient)
         addOutput(recipe.result)
     }
 
     @JvmStatic
-    fun itemToMultiItem(holder: HTRecipeHolder<out HTBasicItemToMultiItemRecipe>): HTProgressRecipeDisplay = progress(holder) { recipe ->
+    fun itemToMultiItem(holder: HTRecipeHolder<HTBasicItemToMultiItemRecipe>): HTProgressRecipeDisplay = progress(holder) { recipe ->
         addInput(recipe.ingredient)
         recipe.results.forEach(::addOutput)
     }
 
     @JvmStatic
-    fun itemOrFluid(holder: HTRecipeHolder<out HTBasicItemOrFluidRecipe>): HTProgressRecipeDisplay = progress(holder) { recipe ->
+    fun itemOrFluid(holder: HTRecipeHolder<HTBasicItemOrFluidRecipe>): HTProgressRecipeDisplay = progress(holder) { recipe ->
         recipe.ingredient.mapLeft { addInput(it) }.mapRight { addInput(it) }
         recipe.result.mapLeft { addOutput(it) }.mapRight { addOutput(it) }
     }

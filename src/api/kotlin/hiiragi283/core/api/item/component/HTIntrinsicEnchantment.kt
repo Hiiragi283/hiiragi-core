@@ -3,13 +3,13 @@ package hiiragi283.core.api.item.component
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTDefaultColor
+import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.toTextResult
-import hiiragi283.core.api.text.unwrap
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderGetter
@@ -61,8 +61,7 @@ data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: 
                 context
                     .registries()
                     ?.let(::getFullName)
-                    ?.map(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT::translate)
-                    ?.unwrap()
+                    ?.fold(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT::translate, identity())
             else -> HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION.translateColored(HTDefaultColor.YELLOW)
         }?.let(tooltipAdder::accept)
     }

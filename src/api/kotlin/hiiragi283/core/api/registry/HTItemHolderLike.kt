@@ -25,7 +25,7 @@ typealias HTSimpleItemHolderLike = HTItemHolderLike<Item>
  * @author Hiiragi Tsubasa
  * @since 0.13.0
  */
-interface HTItemHolderLike<ITEM : Item> :
+interface HTItemHolderLike<out ITEM : Item> :
     HTHolderLike<Item, ITEM>,
     HTIdLike.Translatable,
     HTItemLike<ITEM> {

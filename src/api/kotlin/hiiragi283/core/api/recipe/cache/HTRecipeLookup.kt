@@ -27,7 +27,7 @@ import kotlin.jvm.optionals.getOrNull
  * @since 0.11.0
  * @see mekanism.common.recipe.IMekanismRecipeTypeProvider
  */
-fun interface HTRecipeLookup<RECIPE : Any> {
+fun interface HTRecipeLookup<out RECIPE> {
     /**
      * 指定した[context]からレシピの一覧を取得します。
      * @return [HTRecipeHolder]の[Sequence]

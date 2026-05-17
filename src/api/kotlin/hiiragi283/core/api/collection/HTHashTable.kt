@@ -8,7 +8,7 @@ import com.google.common.collect.Table
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
-class HTHashTable<R, C, V> : HTTable.Mutable<R, C, V> {
+class HTHashTable<R, C, out V> : HTTable.Mutable<R, C, V> {
     private val internalTable: Table<R, C, V>
 
     constructor() : this(10, 10)
@@ -27,7 +27,7 @@ class HTHashTable<R, C, V> : HTTable.Mutable<R, C, V> {
         }
     }
 
-    override fun put(row: R, column: C, value: V): V? = internalTable.put(row, column, value)
+    override fun put(row: R, column: C, value: @UnsafeVariance V): V? = internalTable.put(row, column, value)
 
     override fun remove(row: R, column: C): V? = internalTable.remove(row, column)
 
@@ -43,7 +43,7 @@ class HTHashTable<R, C, V> : HTTable.Mutable<R, C, V> {
 
     override fun containsColumn(column: C): Boolean = internalTable.containsColumn(column)
 
-    override fun containsValue(value: V): Boolean = internalTable.containsValue(value)
+    override fun containsValue(value: @UnsafeVariance V): Boolean = internalTable.containsValue(value)
 
     override fun get(row: R, column: C): V? = internalTable.get(row, column)
 

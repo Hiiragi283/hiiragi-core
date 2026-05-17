@@ -153,7 +153,7 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
     /**
      * ハーフブロックのモデルを登録します。
      */
-    protected fun slabBlock(block: HTBlockHolderLike<out SlabBlock>, texture: ResourceLocation) {
+    protected fun slabBlock(block: HTBlockHolderLike<SlabBlock>, texture: ResourceLocation) {
         slabBlock(block.get(), texture, texture)
         itemModels().simpleBlockItem(block.getId())
     }
@@ -161,7 +161,7 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
     /**
      * 階段ブロックのモデルを登録します。
      */
-    protected fun stairsBlock(block: HTBlockHolderLike<out StairBlock>, texture: ResourceLocation) {
+    protected fun stairsBlock(block: HTBlockHolderLike<StairBlock>, texture: ResourceLocation) {
         stairsBlock(block.get(), texture)
         itemModels().simpleBlockItem(block.getId())
     }
@@ -169,7 +169,7 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
     /**
      * 壁ブロックのモデルを登録します。
      */
-    protected fun wallBlock(block: HTBlockHolderLike<out WallBlock>, texture: ResourceLocation) {
+    protected fun wallBlock(block: HTBlockHolderLike<WallBlock>, texture: ResourceLocation) {
         wallBlock(block.get(), texture)
         itemModels().wallInventory(block.path, texture)
     }
