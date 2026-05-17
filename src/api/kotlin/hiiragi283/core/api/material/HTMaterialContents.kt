@@ -1,6 +1,5 @@
 package hiiragi283.core.api.material
 
-import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
@@ -15,6 +14,7 @@ import hiiragi283.core.api.registry.toItemLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.text.Text
+import hiiragi283.core.api.util.Either
 import net.minecraft.core.Holder
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item

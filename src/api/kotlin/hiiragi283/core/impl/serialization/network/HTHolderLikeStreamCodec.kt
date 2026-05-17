@@ -20,15 +20,12 @@ internal class HTHolderLikeStreamCodec<R : Any>(private val registryKey: Registr
     override fun encode(buffer: RegistryFriendlyByteBuf, value: HTSimpleHolderLike<R>) {
         value
             .unwrap()
-            .map(
-                { key: ResourceKey<R> ->
-                    buffer
-                        .registryAccess()
-                        .lookupOrThrow(registryKey)
-                        .getOrThrow(key)
-                        .let { holderCodec.encode(buffer, it) }
-                },
-                { holder: Holder<R> -> holderCodec.encode(buffer, holder) },
-            )
+            .onLeft { key: ResourceKey<R> ->
+                buffer
+                    .registryAccess()
+                    .lookupOrThrow(registryKey)
+                    .getOrThrow(key)
+                    .let { holderCodec.encode(buffer, it) }
+            }.onRight { holder: Holder<R> -> holderCodec.encode(buffer, holder) }
     }
 }

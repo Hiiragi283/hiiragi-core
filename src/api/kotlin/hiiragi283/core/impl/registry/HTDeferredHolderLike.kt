@@ -1,7 +1,7 @@
 package hiiragi283.core.impl.registry
 
-import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.registry.HTHolderLike
+import hiiragi283.core.api.util.Either
 import net.minecraft.core.Holder
 import net.minecraft.resources.ResourceKey
 import net.neoforged.neoforge.registries.DeferredHolder
@@ -12,7 +12,7 @@ import net.neoforged.neoforge.registries.DeferredHolder
  * @since 0.16.0
  */
 open class HTDeferredHolderLike<R : Any, out T : R>(protected open val holder: DeferredHolder<R, out T>) : HTHolderLike<R, T> {
-    final override fun unwrap(): Either<ResourceKey<R>, Holder<R>> = Either.left(holder.key!!)
+    final override fun unwrap(): Either<ResourceKey<R>, Holder<R>> = Either.Left(holder.key!!)
 
     final override fun get(): T = holder.get()
 }

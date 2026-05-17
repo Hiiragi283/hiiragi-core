@@ -1,6 +1,5 @@
 package hiiragi283.core.api.util
 
-import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.function.identity
 
 /**
@@ -43,13 +42,13 @@ sealed class Ior<out A, out B> {
      * このインスタンスが[Left]であるか判定します。
      * @return [Left]の場合は`true`，それ以外の場合は`false`
      */
-    fun isLeft(): Boolean = this is Left<A, B>
+    fun isLeft(): Boolean = this is Left<A>
 
     /**
      * このインスタンスが[Right]であるか判定します。
      * @return [Right]の場合は`true`，それ以外の場合は`false`
      */
-    fun isRight(): Boolean = this is Right<A, B>
+    fun isRight(): Boolean = this is Right<B>
 
     /**
      * このインスタンスが[Both]であるか判定します。
@@ -67,8 +66,8 @@ sealed class Ior<out A, out B> {
      */
     inline fun <C> fold(left: (A) -> C, right: (B) -> C, both: (A, B) -> C): C = when (this) {
         is Both<A, B> -> both(leftValue, rightValue)
-        is Left<A, B> -> left(value)
-        is Right<A, B> -> right(value)
+        is Left<A> -> left(value)
+        is Right<B> -> right(value)
     }
 
     /**
@@ -80,8 +79,8 @@ sealed class Ior<out A, out B> {
      */
     inline fun <C> map(left: (A) -> C, right: (B) -> C): C = when (this) {
         is Both<A, B> -> right(rightValue)
-        is Left<A, B> -> left(value)
-        is Right<A, B> -> right(value)
+        is Left<A> -> left(value)
+        is Right<B> -> right(value)
     }
 
     /**
@@ -92,8 +91,8 @@ sealed class Ior<out A, out B> {
      */
     inline fun <C> mapRight(right: (B) -> C): Ior<A, C> = when (this) {
         is Both<A, B> -> Both(leftValue, right(rightValue))
-        is Left<A, B> -> Left(value)
-        is Right<A, B> -> Right(right(value))
+        is Left<A> -> Left(value)
+        is Right<B> -> Right(right(value))
     }
 
     /**
@@ -104,8 +103,8 @@ sealed class Ior<out A, out B> {
      */
     inline fun <C> mapLeft(left: (A) -> C): Ior<C, B> = when (this) {
         is Both<A, B> -> Both(left(leftValue), rightValue)
-        is Left<A, B> -> Left(left(value))
-        is Right<A, B> -> Right(value)
+        is Left<A> -> Left(left(value))
+        is Right<B> -> Right(value)
     }
 
     /**
@@ -122,10 +121,10 @@ sealed class Ior<out A, out B> {
      * 保持している値を[Either]に展開します。
      * @return 展開された[Either]のインスタンス
      */
-    fun unwrap(): Either<Either<@UnsafeVariance A, @UnsafeVariance B>, Pair<@UnsafeVariance A, @UnsafeVariance B>> = fold(
-        { Either.left(Either.left(it)) },
-        { Either.left(Either.right(it)) },
-        { left: A, right: B -> Either.right(left to right) },
+    fun unwrap(): Either<Either<A, B>, Pair<A, B>> = fold(
+        { Either.Left(Either.Left(it)) },
+        { Either.Left(Either.Right(it)) },
+        { left: A, right: B -> Either.Right(left to right) },
     )
 
     /**
@@ -161,15 +160,15 @@ sealed class Ior<out A, out B> {
     /**
      * [A]だけを保持する[Ior]の実装クラスです。
      */
-    data class Left<out A, out B>(val value: A) : Ior<A, B>()
+    data class Left<A>(val value: A) : Ior<A, Nothing>()
 
     /**
      * [B]だけを保持する[Ior]の実装クラスです。
      */
-    data class Right<out A, out B>(val value: B) : Ior<A, B>()
+    data class Right<B>(val value: B) : Ior<Nothing, B>()
 
     /**
      * [A]と[B]の両方を保持する[Ior]の実装クラスです。
      */
-    data class Both<out A, out B>(val leftValue: A, val rightValue: B) : Ior<A, B>()
+    data class Both<A, B>(val leftValue: A, val rightValue: B) : Ior<A, B>()
 }

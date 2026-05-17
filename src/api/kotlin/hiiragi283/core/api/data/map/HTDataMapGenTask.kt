@@ -1,10 +1,10 @@
 package hiiragi283.core.api.data.map
 
-import com.mojang.datafixers.util.Either
 import com.mojang.serialization.JsonOps
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTServerResourceGenTask
 import hiiragi283.core.api.resource.HTKeyLike
+import hiiragi283.core.api.util.DFUEither
 import hiiragi283.core.api.util.toOptional
 import net.mehvahdjukaar.moonlight.api.resources.ResType
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
@@ -40,10 +40,10 @@ abstract class HTDataMapGenTask<T : Any, R : Any>(private val type: DataMapType<
             false,
             buildMap {
                 for ((tagKey: TagKey<R>, value: DataMapEntry<T>) in tagValues) {
-                    this[Either.left(tagKey)] = WithConditions(value).toOptional()
+                    this[DFUEither.left(tagKey)] = WithConditions(value).toOptional()
                 }
                 for ((key: ResourceKey<R>, value: DataMapEntry<T>) in keyValues) {
-                    this[Either.right(key)] = WithConditions(value).toOptional()
+                    this[DFUEither.right(key)] = WithConditions(value).toOptional()
                 }
             },
             emptyList(),

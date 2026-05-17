@@ -1,6 +1,5 @@
 package hiiragi283.core.api.serialization.codec
 
-import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
 import com.mojang.serialization.MapCodec
@@ -8,6 +7,7 @@ import hiiragi283.core.api.fraction
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.text.Text
+import hiiragi283.core.api.util.DFUEither
 import hiiragi283.core.api.util.Ior
 import hiiragi283.core.impl.serialization.codec.HTHolderLikeCodec
 import hiiragi283.core.impl.serialization.codec.HTIngredientCodec
@@ -38,11 +38,11 @@ data object HTCodecs {
     val FRACTION: Codec<Fraction> = Codec
         .xor(Codec.STRING, Codec.INT)
         .xmap(
-            { either: Either<String, Int> -> either.map(Fraction::getFraction, ::fraction) },
+            { either: DFUEither<String, Int> -> either.map(Fraction::getFraction, ::fraction) },
             { fraction: Fraction ->
                 when (fraction.denominator) {
-                    1 -> Either.right(fraction.numerator)
-                    else -> Either.left(fraction.toString())
+                    1 -> DFUEither.right(fraction.numerator)
+                    else -> DFUEither.left(fraction.toString())
                 }
             },
         )

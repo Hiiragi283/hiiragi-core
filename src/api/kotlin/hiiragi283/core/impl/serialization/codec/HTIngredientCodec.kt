@@ -1,6 +1,5 @@
 package hiiragi283.core.impl.serialization.codec
 
-import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
@@ -8,6 +7,7 @@ import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.registry.getHolderLike
 import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.serialization.codec.listOrElement
+import hiiragi283.core.api.util.DFUEither
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey
@@ -32,7 +32,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries
  */
 internal object HTIngredientCodec {
     @JvmStatic
-    private fun <T : Any> tagOrKeyListCodec(registryKey: RegistryKey<T>): Codec<Either<TagKey<T>, List<ResourceKey<T>>>> = Codec
+    private fun <T : Any> tagOrKeyListCodec(registryKey: RegistryKey<T>): Codec<DFUEither<TagKey<T>, List<ResourceKey<T>>>> = Codec
         .either(
             TagKey.hashedCodec(registryKey),
             ResourceKey.codec(registryKey).listOrElement(),
@@ -49,7 +49,7 @@ internal object HTIngredientCodec {
     private val VALUE_CODEC: Codec<Ingredient.Value> =
         tagOrKeyListCodec(Registries.ITEM)
             .xmap(
-                { either: Either<TagKey<Item>, List<ResourceKey<Item>>> ->
+                { either: DFUEither<TagKey<Item>, List<ResourceKey<Item>>> ->
                     either.map(Ingredient::TagValue) { keys: List<ResourceKey<Item>> ->
                         val items: List<Item> = keys.mapNotNull(BuiltInRegistries.ITEM::get)
                         when {
@@ -60,12 +60,12 @@ internal object HTIngredientCodec {
                 },
                 { value: Ingredient.Value ->
                     when (value) {
-                        is Ingredient.TagValue -> Either.left(value.tag)
+                        is Ingredient.TagValue -> DFUEither.left(value.tag)
                         else ->
                             value.items
                                 .map(ItemStack::getHolderLike)
                                 .map(HTKeyLike<Item>::getResourceKey)
-                                .let { Either.right(it) }
+                                .let { DFUEither.right(it) }
                     }
                 },
             )
@@ -74,7 +74,7 @@ internal object HTIngredientCodec {
     val ITEM: Codec<Ingredient> = Codec
         .either(VALUE_CODEC.listOrElement(), CUSTOM_ITEM_CODEC)
         .xmap(
-            { either: Either<List<Ingredient.Value>, ICustomIngredient> ->
+            { either: DFUEither<List<Ingredient.Value>, ICustomIngredient> ->
                 either.map(
                     { values: List<Ingredient.Value> -> Ingredient.fromValues(values.stream()) },
                     ::Ingredient,
@@ -83,9 +83,9 @@ internal object HTIngredientCodec {
             { ingredient: Ingredient ->
                 val custom: ICustomIngredient? = ingredient.customIngredient
                 if (custom != null) {
-                    Either.right(custom)
+                    DFUEither.right(custom)
                 } else {
-                    Either.left(ingredient.values.toList())
+                    DFUEither.left(ingredient.values.toList())
                 }
             },
         )
@@ -101,7 +101,7 @@ internal object HTIngredientCodec {
     private val FLUID_HOLDER_CODEC: Codec<FluidIngredient> =
         tagOrKeyListCodec(Registries.FLUID)
             .xmap(
-                { either: Either<TagKey<Fluid>, List<ResourceKey<Fluid>>> ->
+                { either: DFUEither<TagKey<Fluid>, List<ResourceKey<Fluid>>> ->
                     either.map(FluidIngredient::tag) { keys: List<ResourceKey<Fluid>> ->
                         val fluids: List<Fluid> = keys.mapNotNull(BuiltInRegistries.FLUID::get)
                         when (fluids.size) {
@@ -113,12 +113,12 @@ internal object HTIngredientCodec {
                 },
                 { ingredient: FluidIngredient ->
                     when (ingredient) {
-                        is TagFluidIngredient -> Either.left(ingredient.tag())
+                        is TagFluidIngredient -> DFUEither.left(ingredient.tag())
                         else ->
                             ingredient.stacks
                                 .map(FluidStack::getHolderLike)
                                 .map(HTKeyLike<Fluid>::getResourceKey)
-                                .let { Either.right(it) }
+                                .let { DFUEither.right(it) }
                     }
                 },
             )
@@ -130,18 +130,18 @@ internal object HTIngredientCodec {
             FluidIngredient::getType,
             FluidIngredientType<*>::codec,
             FLUID_HOLDER_CODEC.fieldOf(HTConst.FLUIDS),
-        ).xmap({ Either.unwrap(it) }) { ingredient: FluidIngredient ->
+        ).xmap({ DFUEither.unwrap(it) }) { ingredient: FluidIngredient ->
             when (ingredient) {
-                is TagFluidIngredient -> Either.right(ingredient)
-                is SingleFluidIngredient -> Either.right(ingredient)
+                is TagFluidIngredient -> DFUEither.right(ingredient)
+                is SingleFluidIngredient -> DFUEither.right(ingredient)
                 is CompoundFluidIngredient -> {
                     val children: List<FluidIngredient> = ingredient.children()
                     when {
-                        children.all { it is SingleFluidIngredient } -> Either.right(ingredient)
-                        else -> Either.left(ingredient)
+                        children.all { it is SingleFluidIngredient } -> DFUEither.right(ingredient)
+                        else -> DFUEither.left(ingredient)
                     }
                 }
-                else -> Either.left(ingredient)
+                else -> DFUEither.left(ingredient)
             }
         }
 }

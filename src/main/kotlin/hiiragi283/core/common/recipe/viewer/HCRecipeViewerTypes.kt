@@ -1,6 +1,5 @@
 package hiiragi283.core.common.recipe.viewer
 
-import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.material.HTMaterialManager
@@ -12,6 +11,7 @@ import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.toText
+import hiiragi283.core.api.util.Either
 import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.impl.recipe.viewer.HTRecipeViewerTypeImpl
@@ -52,7 +52,7 @@ data object HCRecipeViewerTypes {
 
     data object MaterialType : HTRecipeViewerType<HTMaterialManager.Entry> {
         override val recipeClass: Class<HTMaterialManager.Entry> = HTMaterialManager.Entry::class.java
-        override val icon: Either<ResourceLocation, ItemStack> = Either.right(ItemStack(Items.IRON_INGOT))
+        override val icon: Either<ResourceLocation, ItemStack> = Either.Right(ItemStack(Items.IRON_INGOT))
         override val bounds: HTBounds = HTBounds(0, 0, 142, 110)
         override val workStations: List<ItemStack> = emptyList()
 
@@ -72,7 +72,7 @@ data object HCRecipeViewerTypes {
         id = recipeType
         title = recipeType
         val iconStack = ItemStack(iconItem)
-        icon = Either.right(iconStack)
+        icon = Either.Right(iconStack)
         bounds = HTBounds(0, 0, width, height)
         workStations += iconStack
         builderAction()

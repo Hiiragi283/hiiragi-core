@@ -1,6 +1,5 @@
 package hiiragi283.core.api.registry
 
-import com.mojang.datafixers.util.Either
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.function.identity
@@ -8,6 +7,7 @@ import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.toResource
+import hiiragi283.core.api.util.Either
 import hiiragi283.core.impl.registry.HTIntrusiveHolderLike
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentPatch

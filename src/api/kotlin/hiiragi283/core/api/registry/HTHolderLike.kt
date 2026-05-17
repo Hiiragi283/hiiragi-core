@@ -1,8 +1,8 @@
 package hiiragi283.core.api.registry
 
-import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.resource.SupplierWithId
+import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.unwrap
 import hiiragi283.core.impl.registry.HTDeferredHolderLike
 import hiiragi283.core.impl.registry.HTIntrusiveHolderLike
@@ -32,7 +32,7 @@ interface HTHolderLike<R : Any, out T : R> :
      */
     fun unwrap(): Either<ResourceKey<R>, Holder<R>>
 
-    override fun getResourceKey(): ResourceKey<R> = unwrap().mapRight(Holder<R>::getKeyOrThrow).unwrap()
+    override fun getResourceKey(): ResourceKey<R> = unwrap().map(Holder<R>::getKeyOrThrow).unwrap()
 }
 
 //    Extensions    //

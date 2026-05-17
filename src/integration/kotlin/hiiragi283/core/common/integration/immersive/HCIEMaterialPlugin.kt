@@ -3,7 +3,6 @@ package hiiragi283.core.common.integration.immersive
 import blusunrize.immersiveengineering.api.EnumMetals
 import blusunrize.immersiveengineering.common.register.IEBlocks
 import blusunrize.immersiveengineering.common.register.IEItems
-import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
@@ -21,6 +20,7 @@ import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.times
+import hiiragi283.core.api.util.Either
 import hiiragi283.core.common.integration.HCIConstants
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCIntegrationMaterialKeys
@@ -88,13 +88,13 @@ data object HCIEMaterialPlugin : HTMaterialPlugin {
     //    Extensions    //
 
     fun <BLOCK : Block> IEBlocks.BlockEntry<BLOCK>.toLike(): HTBlockHolderLike<BLOCK> = object : HTBlockHolderLike<BLOCK> {
-        override fun unwrap(): Either<ResourceKey<Block>, Holder<Block>> = Either.left(Registries.BLOCK.createKey(this@toLike.id))
+        override fun unwrap(): Either<ResourceKey<Block>, Holder<Block>> = Either.Left(Registries.BLOCK.createKey(this@toLike.id))
 
         override fun get(): BLOCK = this@toLike.get()
     }
 
     fun <ITEM : Item> IEItems.ItemRegObject<ITEM>.toLike(): HTItemHolderLike.Simple<ITEM> = object : HTItemHolderLike.Simple<ITEM> {
-        override fun unwrap(): Either<ResourceKey<Item>, Holder<Item>> = Either.left(Registries.ITEM.createKey(this@toLike.id))
+        override fun unwrap(): Either<ResourceKey<Item>, Holder<Item>> = Either.Left(Registries.ITEM.createKey(this@toLike.id))
 
         override fun get(): ITEM = this@toLike.get()
     }

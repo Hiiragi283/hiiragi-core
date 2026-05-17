@@ -4,7 +4,6 @@ import appeng.core.definitions.AEBlocks
 import appeng.core.definitions.AEItems
 import appeng.core.definitions.BlockDefinition
 import appeng.core.definitions.ItemDefinition
-import com.mojang.datafixers.util.Either
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.property.HTDefaultPart
@@ -20,6 +19,7 @@ import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
 import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.util.Either
 import hiiragi283.core.common.integration.HCIConstants
 import hiiragi283.core.common.material.HCIntegrationMaterialKeys
 import net.minecraft.core.Holder
@@ -78,13 +78,13 @@ data object HCAEMaterialPlugin : HTMaterialPlugin {
     //    Extensions    //
 
     fun <BLOCK : Block> BlockDefinition<BLOCK>.toLike(): HTBlockHolderLike<BLOCK> = object : HTBlockHolderLike<BLOCK> {
-        override fun unwrap(): Either<ResourceKey<Block>, Holder<Block>> = Either.left(Registries.BLOCK.createKey(this@toLike.id()))
+        override fun unwrap(): Either<ResourceKey<Block>, Holder<Block>> = Either.Left(Registries.BLOCK.createKey(this@toLike.id()))
 
         override fun get(): BLOCK = this@toLike.block()
     }
 
     fun <ITEM : Item> ItemDefinition<ITEM>.toLike(): HTItemHolderLike<ITEM> = object : HTItemHolderLike.Simple<ITEM> {
-        override fun unwrap(): Either<ResourceKey<Item>, Holder<Item>> = Either.left(Registries.ITEM.createKey(this@toLike.id()))
+        override fun unwrap(): Either<ResourceKey<Item>, Holder<Item>> = Either.Left(Registries.ITEM.createKey(this@toLike.id()))
 
         override fun get(): ITEM = this@toLike.asItem()
     }

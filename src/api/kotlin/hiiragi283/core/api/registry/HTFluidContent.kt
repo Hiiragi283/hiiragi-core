@@ -1,6 +1,6 @@
 package hiiragi283.core.api.registry
 
-import com.mojang.datafixers.util.Either
+import hiiragi283.core.api.util.Either
 import net.minecraft.core.Holder
 import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
