@@ -15,12 +15,12 @@ import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.registry.HTSimpleHolderLike
-import hiiragi283.core.api.registry.holderSetOrNull
+import hiiragi283.core.api.registry.getResult
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.item.HTItemResourceType
-import hiiragi283.core.api.text.HTCommonTranslation
-import hiiragi283.core.api.text.HTTextResult
-import hiiragi283.core.api.text.toTextResult
+import hiiragi283.core.api.util.HTTextResult
+import hiiragi283.core.api.util.flatMap
+import hiiragi283.core.api.util.right
 import hiiragi283.core.impl.material.HTMaterialContentsImpl
 import hiiragi283.core.impl.material.HTMaterialContentsRegister
 import hiiragi283.core.util.HTPhysicalSideHelper
@@ -176,11 +176,8 @@ abstract class HiiragiCoreAccess {
      * @return [HTSimpleHolderLike]の[結果][HTTextResult]
      */
     fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLike<T>> {
-        val provider1: HolderLookup.Provider =
-            (provider ?: HTPhysicalSideHelper.getRegistryAccess()) ?: return HTCommonTranslation.MISSING_SERVER.toTextResult()
-        val holderSet: HolderSet<T> =
-            provider1.holderSetOrNull(tagKey) ?: return HTCommonTranslation.EMPTY_TAG_KEY.toTextResult(tagKey)
-        return getFirstHolder(holderSet)
+        val provider1: HTTextResult<HolderLookup.Provider> = provider?.right() ?: HTPhysicalSideHelper.getRegistryAccess()
+        return provider1.flatMap { it.asGetterLookup().getResult(tagKey) }.flatMap(::getFirstHolder)
     }
 
     /**

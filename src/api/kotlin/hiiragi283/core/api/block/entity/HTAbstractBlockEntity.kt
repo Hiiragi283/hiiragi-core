@@ -30,7 +30,7 @@ interface HTAbstractBlockEntity {
      * [レジストリへのアクセス][RegistryAccess]を取得します。
      * @return [getServerLevel]の戻り値がない場合，または[HTPhysicalSideHelper.getRegistryAccess]の戻り値がない場合は`null`
      */
-    fun getRegistryAccess(): RegistryAccess? = getLevel()?.registryAccess() ?: HTPhysicalSideHelper.getRegistryAccess()
+    fun getRegistryAccess(): RegistryAccess? = getLevel()?.registryAccess() ?: HTPhysicalSideHelper.getRegistryAccess().getOrNull()
 
     /**
      * [座標][BlockPos]を取得します。

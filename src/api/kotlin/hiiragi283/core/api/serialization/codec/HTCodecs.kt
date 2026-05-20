@@ -7,8 +7,10 @@ import hiiragi283.core.api.fraction
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.text.Text
-import hiiragi283.core.api.util.DFUEither
+import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.Ior
+import hiiragi283.core.api.util.java
+import hiiragi283.core.api.util.kotlin
 import hiiragi283.core.impl.serialization.codec.HTHolderLikeCodec
 import hiiragi283.core.impl.serialization.codec.HTIngredientCodec
 import hiiragi283.core.impl.serialization.codec.HTIorMapCodec
@@ -35,14 +37,13 @@ import kotlin.enums.enumEntries
  */
 data object HTCodecs {
     @JvmField
-    val FRACTION: Codec<Fraction> = Codec
-        .xor(Codec.STRING, Codec.INT)
+    val FRACTION: Codec<Fraction> = xor(Codec.STRING, Codec.INT)
         .xmap(
-            { either: DFUEither<String, Int> -> either.map(Fraction::getFraction, ::fraction) },
+            { either: Either<String, Int> -> either.fold(Fraction::getFraction, ::fraction) },
             { fraction: Fraction ->
                 when (fraction.denominator) {
-                    1 -> DFUEither.right(fraction.numerator)
-                    else -> DFUEither.left(fraction.toString())
+                    1 -> Either.Right(fraction.numerator)
+                    else -> Either.Left(fraction.toString())
                 }
             },
         )
@@ -61,6 +62,15 @@ data object HTCodecs {
 
     @JvmStatic
     fun <K : Any, V : Any> mapOf(keyCodec: Codec<K>, valueCodec: Codec<V>): Codec<Map<K, V>> = Codec.unboundedMap(keyCodec, valueCodec)
+
+    @JvmStatic
+    fun <L, R> either(left: Codec<L>, right: Codec<R>): Codec<Either<L, R>> = Codec.either(left, right).xmap({ it.kotlin }, { it.java })
+
+    @JvmStatic
+    fun <L, R> xor(left: Codec<L>, right: Codec<R>): Codec<Either<L, R>> = Codec.xor(left, right).xmap({ it.kotlin }, { it.java })
+
+    @JvmStatic
+    fun <L, R> either(left: MapCodec<L>, right: MapCodec<R>): MapCodec<Either<L, R>> = Codec.mapEither(left, right).xmap({ it.kotlin }, { it.java })
 
     /**
      * 指定した[left], [right]から，[Ior]の[MapCodec]を返します。

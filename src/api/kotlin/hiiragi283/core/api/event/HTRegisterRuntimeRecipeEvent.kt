@@ -10,12 +10,12 @@ import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.registry.HTSimpleFluidHolderLike
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.HTSimpleItemHolderLike
-import hiiragi283.core.api.registry.holderSetOrNull
+import hiiragi283.core.api.registry.getResult
 import hiiragi283.core.api.registry.toFluidLike
 import hiiragi283.core.api.registry.toItemLike
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.text.HTTextResult
-import hiiragi283.core.api.text.Text
+import hiiragi283.core.api.util.ErrorText
+import hiiragi283.core.api.util.HTTextResult
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementHolder
 import net.minecraft.core.HolderLookup
@@ -87,10 +87,10 @@ class HTRegisterRuntimeRecipeEvent(
     fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLike<T>> = HiiragiCoreAccess.INSTANCE.getFirstHolder(context.provider, tagKey)
 
     fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): HTSimpleHolderLike<T>? = getHolderResult(tagKey)
-        .onFailure { error: Text -> if (printLog) HiiragiCoreAPI.LOGGER.debug(error.string) }
+        .onLeft { errorText: ErrorText -> if (printLog) HiiragiCoreAPI.LOGGER.debug(errorText.value) }
         .getOrNull()
 
-    fun <T : Any> isPresentTag(tagKey: TagKey<T>): Boolean = context.provider.holderSetOrNull(tagKey) != null
+    fun <T : Any> isPresentTag(tagKey: TagKey<T>): Boolean = context.provider.asGetterLookup().getResult(tagKey).isRight()
 
     // Material
     fun getFirstHolder(prefix: HTTagPrefix, material: HTMaterialLike): HTSimpleItemHolderLike? = getFirstHolder(prefix.itemTagKey(material), true)?.toItemLike()

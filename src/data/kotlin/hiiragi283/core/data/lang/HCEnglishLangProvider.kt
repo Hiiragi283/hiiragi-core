@@ -133,13 +133,8 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HTCommonTranslation.WEST, "West")
         add(HTCommonTranslation.EAST, "East")
         // API - Error
-        add(HTCommonTranslation.EMPTY_TAG_KEY, $$"Empty tag key: %1$s")
         add(HTCommonTranslation.INVALID_PACKET_S2C, $$"Invalid packet received from server side: %1$s")
         add(HTCommonTranslation.INVALID_PACKET_C2S, $$"Invalid packet received from client side: %1$s")
-
-        add(HTCommonTranslation.MISSING_SERVER, "Could not find current server")
-        add(HTCommonTranslation.MISSING_REGISTRY, $$"Missing registry: %1$s")
-        add(HTCommonTranslation.MISSING_KEY, $$"Missing key: %1$s")
         // API - GUI
         add(HTCommonTranslation.PROGRESS, $$"Progress: %1$s %%")
         add(HTCommonTranslation.SECONDS, $$"%1$s sec (%2$s ticks)")

@@ -16,9 +16,8 @@ import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.item.HTItemResourceType
-import hiiragi283.core.api.text.HTCommonTranslation
-import hiiragi283.core.api.text.HTTextResult
-import hiiragi283.core.api.text.toTextResult
+import hiiragi283.core.api.util.HTTextResult
+import hiiragi283.core.api.util.right
 import hiiragi283.core.config.HCConfig
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.util.HTPluginLoader
@@ -113,6 +112,6 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
         .map(Holder<T>::toLike)
         .sortedWith(modIdComparator)
         .firstOrNull()
-        ?.let(HTTextResult.Companion::success)
-        ?: HTCommonTranslation.EMPTY.toTextResult()
+        ?.right()
+        ?: HTTextResult("Empty holder set")
 }

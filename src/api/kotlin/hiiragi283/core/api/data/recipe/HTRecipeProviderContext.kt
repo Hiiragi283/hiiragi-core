@@ -53,7 +53,7 @@ abstract class HTRecipeProviderContext {
     /**
      * 完成品を作成するヘルパーを取得します。
      */
-    protected val resultCreator: HTResultCreator by lazy { HTResultCreator(provider) }
+    protected val resultCreator: HTResultCreator get() = HTResultCreator
 
     /**
      * 部品を管理するマネージャを取得します。

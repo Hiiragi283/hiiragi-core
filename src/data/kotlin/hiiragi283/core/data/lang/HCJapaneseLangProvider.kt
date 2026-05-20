@@ -134,13 +134,8 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HTCommonTranslation.WEST, "西")
         add(HTCommonTranslation.EAST, "東")
         // API - Error
-        add(HTCommonTranslation.EMPTY_TAG_KEY, $$"空のタグ: %1$s")
         add(HTCommonTranslation.INVALID_PACKET_S2C, $$"サーバー側からの不正なパケットを受信しました: %1$s")
         add(HTCommonTranslation.INVALID_PACKET_C2S, $$"クライアント側からの不正なパケットを受信しました: %1$s")
-
-        add(HTCommonTranslation.MISSING_SERVER, "サーバーが見つかりません")
-        add(HTCommonTranslation.MISSING_REGISTRY, $$"不明なレジストリ: %1$s")
-        add(HTCommonTranslation.MISSING_KEY, $$"不明なキー: %1$s")
         // API - GUI
         add(HTCommonTranslation.PROGRESS, $$"進捗率: %1$s %%")
         add(HTCommonTranslation.SECONDS, $$"%1$s 秒 (%2$s ticks)")

@@ -1,18 +1,17 @@
 package hiiragi283.core.api.recipe.viewer.display
 
 import com.mojang.serialization.Codec
-import com.mojang.serialization.DataResult
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
-import hiiragi283.core.api.text.toText
+import hiiragi283.core.api.util.ErrorText
+import hiiragi283.core.api.util.unwrap
 import net.minecraft.core.component.DataComponents
 import net.minecraft.util.ExtraCodecs
 import net.minecraft.world.item.ItemStack
@@ -168,17 +167,19 @@ data class HTRecipeContents(
 
         fun addOutput(result: HTItemResult) {
             result.create()
-                .mapOrElse(identity()) { error: DataResult.Error<ItemStack> -> error.message().let(::createError) }
-                .let { addOutput(it) }
+                .mapLeft(::createError)
+                .unwrap()
+                .let(::addOutput)
         }
 
         fun addOutput(result: HTChancedItemResult) {
             result.create(true)
-                .mapOrElse(identity()) { error: DataResult.Error<ItemStack> -> error.message().let(::createError) }
+                .mapLeft(::createError)
+                .unwrap()
                 .let { addOutput(it, result.chance.toFloat()) }
         }
 
-        private fun createError(message: String): ItemStack = createItemStack(Items.BARRIER, DataComponents.CUSTOM_NAME, message.toText())
+        private fun createError(errorText: ErrorText): ItemStack = createItemStack(Items.BARRIER, DataComponents.CUSTOM_NAME, errorText.getText())
 
         // Fluid
         @JvmName("addFluidOutput")

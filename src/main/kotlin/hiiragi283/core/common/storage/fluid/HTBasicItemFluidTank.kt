@@ -1,5 +1,6 @@
 package hiiragi283.core.common.storage.fluid
 
+import hiiragi283.core.api.function.Identity
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
@@ -11,10 +12,9 @@ import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.BiPredicate
 import java.util.function.Predicate
-import java.util.function.UnaryOperator
 
 open class HTBasicItemFluidTank(
-    private val containerUpdater: UnaryOperator<ItemStack>?,
+    private val containerUpdater: Identity<ItemStack>?,
     private val capacity: Int,
     private val canExtract: BiPredicate<HTFluidResourceType, HTStorageAccess>,
     private val canInsert: BiPredicate<HTFluidResourceType, HTStorageAccess>,
@@ -30,7 +30,7 @@ open class HTBasicItemFluidTank(
             canExtract: BiPredicate<HTFluidResourceType, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
             canInsert: BiPredicate<HTFluidResourceType, HTStorageAccess> = HTStoragePredicates.alwaysTrueBi(),
             filter: Predicate<HTFluidResourceType> = HTStoragePredicates.alwaysTrue(),
-            containerUpdater: UnaryOperator<ItemStack>? = null,
+            containerUpdater: Identity<ItemStack>? = null,
         ): HTBasicItemFluidTank = HTBasicItemFluidTank(containerUpdater, HTStorageValidators.validateCapacity(capacity), canExtract, canInsert, filter, container)
     }
 
@@ -42,7 +42,7 @@ open class HTBasicItemFluidTank(
 
     override fun setStackInternal(stack: FluidStack) {
         HTStorageHelper.updateFluid(container, stack)
-        containerUpdater?.apply(container)?.let(::container::set)
+        containerUpdater?.invoke(container)?.let(::container::set)
     }
 
     override fun updateAmount(newAmount: Int) {

@@ -1,5 +1,7 @@
 package hiiragi283.core.common.registry.register
 
+import hiiragi283.core.api.function.Identity
+import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.registry.HTDeferredRegister
 import hiiragi283.core.api.registry.HTItemHolderLike
@@ -10,7 +12,6 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.neoforged.neoforge.registries.DeferredHolder
 import java.util.function.Supplier
-import java.util.function.UnaryOperator
 
 typealias ItemWithContextFactory<C, ITEM> = (C, Item.Properties) -> ITEM
 
@@ -25,19 +26,19 @@ class HTDeferredItemRegister(namespace: String) : HTDeferredRegister<Item>(Regis
     fun <ITEM : Item> registerItem(
         name: String,
         factory: (Item.Properties) -> ITEM,
-        operator: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
+        operator: Identity<Item.Properties> = identity(),
     ): HTItemHolderLike<ITEM> = delegate
-        .register(name) { _: ResourceLocation -> factory(operator.apply(Item.Properties())) }
+        .register(name) { _: ResourceLocation -> Item.Properties().let(operator).let(factory) }
         .let(::DeferredItemLike)
         .also(itemEntries::add)
 
-    fun registerSimpleItem(name: String, operator: UnaryOperator<Item.Properties> = UnaryOperator.identity()): HTSimpleItemHolderLike = registerItem(name, ::Item, operator)
+    fun registerSimpleItem(name: String, operator: Identity<Item.Properties> = identity()): HTSimpleItemHolderLike = registerItem(name, ::Item, operator)
 
     fun <ITEM : Item, C> registerItemWith(
         name: String,
         context: C,
         factory: ItemWithContextFactory<C, ITEM>,
-        operator: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
+        operator: Identity<Item.Properties> = identity(),
     ): HTItemHolderLike<ITEM> = registerItem(name, factory.partially1(context), operator)
 
     fun asItemSequence(): Sequence<HTItemHolderLike<*>> = itemEntries.asSequence()

@@ -1,7 +1,6 @@
 package hiiragi283.core.api.recipe.result
 
 import com.mojang.serialization.Codec
-import com.mojang.serialization.DataResult
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
@@ -9,6 +8,9 @@ import hiiragi283.core.api.compareTo
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
+import hiiragi283.core.api.util.HTTextResult
+import hiiragi283.core.api.util.getOrElse
+import hiiragi283.core.api.util.right
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceLocation
@@ -39,12 +41,12 @@ data class HTChancedItemResult(val base: HTItemResult, val chance: Fraction) : H
         )
     }
 
-    fun create(preview: Boolean): DataResult<ItemStack> = when {
-        !preview && HiiragiCoreAPI.RANDOM.nextFloat() >= chance -> DataResult.success(ItemStack.EMPTY)
+    fun create(preview: Boolean): HTTextResult<ItemStack> = when {
+        !preview && HiiragiCoreAPI.RANDOM.nextFloat() >= chance -> ItemStack.EMPTY.right()
         else -> base.create()
     }
 
-    fun createOrEmpty(): ItemStack = create(false).resultOrPartial().orElseGet(ItemStack::EMPTY)
+    fun createOrEmpty(): ItemStack = create(false).getOrElse { ItemStack.EMPTY }
 
     override fun getId(): ResourceLocation = base.getId()
 }

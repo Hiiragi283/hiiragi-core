@@ -1,7 +1,6 @@
 package hiiragi283.core.api.recipe.result
 
 import com.mojang.serialization.Codec
-import com.mojang.serialization.DataResult
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HCRegistries
@@ -10,12 +9,17 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.tagPrefix
+import hiiragi283.core.api.registry.getResult
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.toFraction
 import hiiragi283.core.api.util.DFUEither
+import hiiragi283.core.api.util.HTTextResult
+import hiiragi283.core.api.util.flatMap
+import hiiragi283.core.api.util.getOrElse
+import hiiragi283.core.api.util.right
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -53,9 +57,9 @@ interface HTItemResult : HTIdLike {
 
     fun getSerializer(): Serializer<*>
 
-    fun create(): DataResult<ItemStack>
+    fun create(): HTTextResult<ItemStack>
 
-    fun createOrEmpty(): ItemStack = create().resultOrPartial().orElseGet(ItemStack::EMPTY)
+    fun createOrEmpty(): ItemStack = create().getOrElse { ItemStack.EMPTY }
 
     fun withChance(chance: Float = 1f): HTChancedItemResult = withChance(chance.toFraction())
 
@@ -88,7 +92,7 @@ interface HTItemResult : HTIdLike {
 
         override fun getSerializer(): Serializer<*> = SERIALIZER
 
-        override fun create(): DataResult<ItemStack> = DataResult.success(template.copy())
+        override fun create(): HTTextResult<ItemStack> = template.copy().right()
 
         override fun getId(): ResourceLocation = template.itemHolder.toLike().getId()
     }
@@ -111,12 +115,11 @@ interface HTItemResult : HTIdLike {
 
         override fun getSerializer(): Serializer<*> = SERIALIZER
 
-        override fun create(): DataResult<ItemStack> = BuiltInRegistries.ITEM
-            .getTagOrEmpty(tagKey)
-            .firstOrNull() // TODO
-            ?.let { ItemStack(it, count) }
-            ?.let { DataResult.success(it) }
-            ?: DataResult.error { "Could not find elements from tag ${getId()}" }
+        override fun create(): HTTextResult<ItemStack> = BuiltInRegistries.ITEM
+            .asLookup()
+            .getResult(tagKey)
+            .flatMap { HiiragiCoreAccess.INSTANCE.getFirstHolder(it) }
+            .map { ItemStack(it.get(), count) }
 
         override fun getId(): ResourceLocation = tagKey.location()
     }
@@ -147,20 +150,20 @@ interface HTItemResult : HTIdLike {
 
         override fun getSerializer(): Serializer<*> = SERIALIZER
 
-        override fun create(): DataResult<ItemStack> {
-            val tagResult: DataResult<ItemStack>? = part.tagPrefix
+        override fun create(): HTTextResult<ItemStack> {
+            val tagResult: HTTextResult<ItemStack>? = part.tagPrefix
                 ?.itemTagKey(material)
                 ?.let { Tagged(it, count) }
                 ?.create()
-            if (tagResult != null && tagResult.isSuccess) {
+            if (tagResult != null && tagResult.isLeft()) {
                 return tagResult
             }
             return HiiragiCoreAccess.INSTANCE
                 .getMaterialBlockOrItem(part, material)
                 .toResource()
                 ?.toStack(count)
-                ?.let { DataResult.success(it) }
-                ?: DataResult.error { "No matching item for part ${part.asPartName()} and material ${material.asMaterialId()}" }
+                ?.right()
+                ?: HTTextResult("No matching item for part ${part.asPartName()} and material ${material.asMaterialId()}")
         }
 
         override fun getId(): ResourceLocation = part.createId(material)

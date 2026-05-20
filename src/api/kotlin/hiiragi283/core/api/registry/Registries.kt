@@ -5,10 +5,8 @@ import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.HolderSet
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.tags.TagKey
 import net.neoforged.neoforge.registries.DeferredRegister
 import net.neoforged.neoforge.registries.datamaps.DataMapType
-import kotlin.jvm.optionals.getOrNull
 import kotlin.streams.asSequence
 
 //    HolderSet    //
@@ -52,8 +50,6 @@ fun <R : Any, T : Any> HolderLookup<R>.getDataSequence(type: DataMapType<R, T>):
     }
 
 fun <R : Any, T : Any> HolderLookup<R>.getHolderDataMap(type: DataMapType<R, T>): Map<HTSimpleHolderLike<R>, T> = this.getDataSequence(type).toMap()
-
-fun <T : Any> HolderLookup.Provider.holderSetOrNull(tagKey: TagKey<T>): HolderSet<T>? = this.lookup(tagKey.registry).flatMap { it.get(tagKey) }.getOrNull()
 
 //    DeferredRegister    //
 

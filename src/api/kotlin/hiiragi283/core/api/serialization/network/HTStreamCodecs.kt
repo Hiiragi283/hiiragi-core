@@ -5,7 +5,10 @@ import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.tag.createTagKey
 import hiiragi283.core.api.text.Text
+import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.Ior
+import hiiragi283.core.api.util.java
+import hiiragi283.core.api.util.kotlin
 import hiiragi283.core.impl.serialization.network.HTHolderLikeStreamCodec
 import hiiragi283.core.impl.serialization.network.HTIorStreamCodec
 import io.netty.buffer.ByteBuf
@@ -51,6 +54,9 @@ data object HTStreamCodecs {
         ByIdMap.continuous<V>(Enum<V>::ordinal, V::class.java.enumConstants, strategy),
         Enum<V>::ordinal,
     )
+
+    @JvmStatic
+    fun <B : ByteBuf, L : Any, R : Any> either(left: StreamCodec<in B, L>, right: StreamCodec<in B, R>): StreamCodec<B, Either<L, R>> = ByteBufCodecs.either(left, right).map({ it.kotlin }, { it.java })
 
     /**
      * 指定した[left], [right]から，[Ior]の[StreamCodec]を返します。

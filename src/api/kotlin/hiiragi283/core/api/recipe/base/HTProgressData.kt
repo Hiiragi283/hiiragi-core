@@ -1,13 +1,13 @@
 package hiiragi283.core.api.recipe.base
 
-import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.Text
-import hiiragi283.core.api.util.DFUEither
+import hiiragi283.core.api.util.Either
+import hiiragi283.core.api.util.unwrap
 
 /**
  * 処理時間または消費エネルギーを保持するクラスです。
@@ -17,12 +17,12 @@ import hiiragi283.core.api.util.DFUEither
 sealed interface HTProgressData : HTHasText {
     companion object {
         @JvmField
-        val CODEC: MapCodec<HTProgressData> = Codec
-            .mapEither(Time.CODEC, Energy.CODEC)
-            .xmap(DFUEither<Time, Energy>::unwrap) { progressData: HTProgressData ->
+        val CODEC: MapCodec<HTProgressData> = HTCodecs
+            .either(Time.CODEC, Energy.CODEC)
+            .xmap(Either<Time, Energy>::unwrap) { progressData: HTProgressData ->
                 when (progressData) {
-                    is Energy -> DFUEither.right(progressData)
-                    is Time -> DFUEither.left(progressData)
+                    is Energy -> Either.Right(progressData)
+                    is Time -> Either.Left(progressData)
                 }
             }
 

@@ -1,5 +1,7 @@
 package hiiragi283.core.common.registry.register
 
+import hiiragi283.core.api.function.Identity
+import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.item.HTBlockItem
 import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTItemHolderLike
@@ -10,7 +12,6 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.neoforged.bus.api.IEventBus
-import java.util.function.UnaryOperator
 
 typealias BlockFactory<BLOCK> = (BlockBehaviour.Properties) -> BLOCK
 
@@ -24,14 +25,14 @@ class HTDeferredBlockAndItemRegister(private val blockRegister: HTDeferredBlockR
     fun registerSimple(
         name: String,
         blockProp: BlockBehaviour.Properties,
-        itemProp: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
+        itemProp: Identity<Item.Properties> = identity(),
     ): HTSimpleDeferredBlockAndItem = registerSimple(name, blockProp, ::Block, itemProp)
 
     fun <BLOCK : Block> registerSimple(
         name: String,
         blockProp: BlockBehaviour.Properties,
         blockFactory: BlockFactory<BLOCK>,
-        itemProp: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
+        itemProp: Identity<Item.Properties> = identity(),
     ): HTBasicDeferredBlockAndItem<BLOCK> = register(name, blockProp, blockFactory, ::HTBlockItem, itemProp)
 
     fun <BLOCK : Block, ITEM : Item> register(
@@ -39,7 +40,7 @@ class HTDeferredBlockAndItemRegister(private val blockRegister: HTDeferredBlockR
         blockProp: BlockBehaviour.Properties,
         blockFactory: BlockFactory<BLOCK>,
         itemFactory: ItemWithContextFactory<BLOCK, ITEM>,
-        itemProp: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
+        itemProp: Identity<Item.Properties> = identity(),
     ): HTDeferredBlockAndItem<BLOCK, ITEM> {
         val blockHolder: HTBlockHolderLike<BLOCK> = blockRegister.registerBlock(name, blockProp, blockFactory)
         val itemHolder: HTItemHolderLike<ITEM> = itemRegister.registerItem(

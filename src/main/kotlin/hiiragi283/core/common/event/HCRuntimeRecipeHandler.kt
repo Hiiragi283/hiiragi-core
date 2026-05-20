@@ -160,7 +160,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             results += resultCreator.create(crushedOre, part.getScaledAmount(2, entry).toInt())
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]
-                ?.getResult(resultCreator, HTExtraOreResultMap.Phase.CRUSH_ORE)
+                ?.getResult(HTExtraOreResultMap.Phase.CRUSH_ORE)
                 ?.let(results::add)
 
             recipeId suffix "_from_${part.asPartName()}"
@@ -184,7 +184,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             results += resultCreator.create(dust, outputCount)
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]
-                ?.getResult(resultCreator, HTExtraOreResultMap.Phase.CRUSH_CRUSHED)
+                ?.getResult(HTExtraOreResultMap.Phase.CRUSH_CRUSHED)
                 ?.let(results::add)
 
             recipeId suffix "_from_crushed_ore"

@@ -17,6 +17,7 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
 import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.util.getOrElse
 import hiiragi283.core.client.integration.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCChargingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCCrushingRecipeCategory
@@ -78,10 +79,11 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         )
         // Potion-Based Item
         HTPhysicalSideHelper
-            .filteredLookupOrThrow(Registries.ITEM)
-            .listElements()
-            .map(Holder<Item>::value)
-            .forEach { item: Item ->
+            .filteredLookup(Registries.ITEM)
+            .getOrNull()
+            ?.listElements()
+            ?.map(Holder<Item>::value)
+            ?.forEach { item: Item ->
                 if (item is HTPotionBasedItem) {
                     registration.registerSubtypeInterpreter(
                         item,
@@ -100,16 +102,15 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     override fun registerExtraIngredients(registration: IExtraIngredientRegistration) {
-        registration.addExtraIngredients(
-            NeoForgeTypes.FLUID_STACK,
-            HTPhysicalSideHelper
-                .filteredLookupOrThrow(Registries.POTION)
-                .listElements()
-                .map(::BottledPotionContents)
-                .filter(BottledPotionContents::isWater.negate())
-                .map(HCPotionFluidHelper::createFluid)
-                .toList(),
-        )
+        HTPhysicalSideHelper
+            .filteredLookup(Registries.POTION)
+            .getOrNull()
+            ?.listElements()
+            ?.map(::BottledPotionContents)
+            ?.filter(BottledPotionContents::isWater.negate())
+            ?.map(HCPotionFluidHelper::createFluid)
+            ?.toList()
+            ?.let { registration.addExtraIngredients(NeoForgeTypes.FLUID_STACK, it) }
     }
 
     override fun registerCategories(registration: IRecipeCategoryRegistration) {
@@ -163,9 +164,10 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             registration,
             HCRecipeViewerTypes.EMPTYING,
             HTPhysicalSideHelper
-                .filteredLookupOrThrow(Registries.POTION)
-                .listElements()
-                .asSequence()
+                .filteredLookup(Registries.POTION)
+                .map { it.listElements() }
+                .map { it.asSequence() }
+                .getOrElse { emptySequence() }
                 .map { potion: Holder<Potion> ->
                     val contents = BottledPotionContents(potion)
                     HTRecipeDisplay.Simple(
@@ -202,9 +204,10 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             registration,
             HCRecipeViewerTypes.FILLING,
             HTPhysicalSideHelper
-                .filteredLookupOrThrow(Registries.POTION)
-                .listElements()
-                .asSequence()
+                .filteredLookup(Registries.POTION)
+                .map { it.listElements() }
+                .map { it.asSequence() }
+                .getOrElse { emptySequence() }
                 .map { potion: Holder<Potion> ->
                     HTRecipeDisplay.Simple(
                         potion.toLike().getId().withPath { "/${HTConst.FILLING}/$prefix/$it" },

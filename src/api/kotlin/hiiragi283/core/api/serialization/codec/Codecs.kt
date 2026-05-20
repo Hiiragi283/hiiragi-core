@@ -1,8 +1,8 @@
 package hiiragi283.core.api.serialization.codec
 
 import com.mojang.serialization.Codec
-import hiiragi283.core.api.function.identity
-import hiiragi283.core.api.util.DFUEither
+import hiiragi283.core.api.util.Either
+import hiiragi283.core.api.util.unwrap
 
 //    List    //
 
@@ -20,9 +20,9 @@ fun <A : Any> Codec<A>.listOf(range: IntRange): Codec<List<A>> = this.listOf(ran
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun <A : Any> Codec<A>.listOrElement(): Codec<List<A>> = Codec.either(this.listOf(), this).xmap(
-    { either: DFUEither<List<A>, A> -> either.map(identity(), ::listOf) },
-    { list: List<A> -> if (list.size == 1) DFUEither.right(list[0]) else DFUEither.left(list) },
+fun <A : Any> Codec<A>.listOrElement(): Codec<List<A>> = HTCodecs.either(this.listOf(), this).xmap(
+    { either: Either<List<A>, A> -> either.map(::listOf).unwrap() },
+    { list: List<A> -> if (list.size == 1) Either.Right(list[0]) else Either.Left(list) },
 )
 
 /**
@@ -42,9 +42,9 @@ fun <A : Any> Codec<A>.listOrElement(range: IntRange): Codec<List<A>> = this.lis
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun <A : Any> Codec<A>.listOrElement(min: Int, max: Int): Codec<List<A>> = Codec.either(this.listOf(min, max), this).xmap(
-    { either: DFUEither<List<A>, A> -> either.map(identity(), ::listOf) },
-    { list: List<A> -> if (list.size == 1) DFUEither.right(list[0]) else DFUEither.left(list) },
+fun <A : Any> Codec<A>.listOrElement(min: Int, max: Int): Codec<List<A>> = HTCodecs.either(this.listOf(min, max), this).xmap(
+    { either: Either<List<A>, A> -> either.map(::listOf).unwrap() },
+    { list: List<A> -> if (list.size == 1) Either.Right(list[0]) else Either.Left(list) },
 )
 
 //    Set    //

@@ -1,15 +1,17 @@
 package hiiragi283.core.api.recipe.cache
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.data.recipe.HTResultCreator
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.buildPropertyMap
-import hiiragi283.core.api.property.getOrThrow
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.registry.RegistryKey
+import hiiragi283.core.api.registry.lookupResult
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.util.HTTextResult
+import hiiragi283.core.api.util.flatMap
+import hiiragi283.core.api.util.right
 import net.minecraft.core.HolderLookup
 import net.minecraft.server.MinecraftServer
 import net.minecraft.world.item.alchemy.PotionBrewing
@@ -18,7 +20,6 @@ import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeManager
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.level.Level
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * レシピの一覧を提供するインターフェースです。
@@ -73,10 +74,6 @@ fun interface HTRecipeLookup<out RECIPE> {
 
         fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(recipeType: RecipeType<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> = this[MANAGER]?.getAllRecipesFor(recipeType)?.asSequence()?.map(HTRecipeHolder.Companion::from) ?: emptySequence()
 
-        fun <T : Any> lookup(key: RegistryKey<T>): HolderLookup.RegistryLookup<T>? = this[REGISTRY]?.lookup(key)?.getOrNull()
-
-        fun <T : Any> lookupOrThrow(key: RegistryKey<T>): HolderLookup.RegistryLookup<T> = this.getOrThrow(REGISTRY).lookupOrThrow(key)
-
-        fun resultCreator(): HTResultCreator? = this[REGISTRY]?.let(::HTResultCreator)
+        fun <T : Any> lookup(key: RegistryKey<T>): HTTextResult<HolderLookup.RegistryLookup<T>> = this[REGISTRY]?.right()?.flatMap { it.lookupResult(key) } ?: HTTextResult("Recipe lookup context does not have registry access")
     }
 }

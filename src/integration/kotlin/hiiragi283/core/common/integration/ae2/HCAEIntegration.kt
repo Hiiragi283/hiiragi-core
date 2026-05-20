@@ -43,7 +43,7 @@ data object HCAEIntegration : HTRecipeProviderContext.Delegated() {
             recipe.result
                 .create(true)
                 .map { result: ItemStack -> ChargerRecipe(recipe.ingredient, result) }
-                .ifSuccess { recipe: ChargerRecipe -> output.accept(id.withPrefix("charger/"), recipe, null) }
+                .onRight { recipe: ChargerRecipe -> output.accept(id.withPrefix("charger/"), recipe, null) }
         }
     }
 }

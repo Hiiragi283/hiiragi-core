@@ -1,8 +1,10 @@
 package hiiragi283.core.impl.serialization.value
 
+import com.mojang.logging.LogUtils
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.serialization.value.HTValueIOAccess
 import hiiragi283.core.api.serialization.value.HTValueInput
+import kotlin.jvm.optionals.getOrNull
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.ListTag
@@ -12,9 +14,14 @@ import net.minecraft.nbt.StringTag
 import net.minecraft.nbt.Tag
 import net.minecraft.nbt.TagType
 import net.minecraft.resources.RegistryOps
-import kotlin.jvm.optionals.getOrNull
+import org.slf4j.Logger
 
 internal class HTTagValueInput(private val provider: HolderLookup.Provider, private val compoundTag: CompoundTag) : HTValueInput {
+    companion object {
+        @JvmStatic
+        private val LOGGER: Logger = LogUtils.getLogger()
+    }
+
     private val registryOps: RegistryOps<Tag> = provider.createSerializationContext(NbtOps.INSTANCE)
 
     private inline fun <reified T : Tag> getTypedTag(key: String, type: TagType<T>): T? {
@@ -32,7 +39,7 @@ internal class HTTagValueInput(private val provider: HolderLookup.Provider, priv
 
     override fun <T : Any> read(key: String, codec: Codec<T>): T? {
         val tagIn: Tag = compoundTag.get(key) ?: return null
-        return codec.parse(registryOps, tagIn).result().getOrNull()
+        return codec.parse(registryOps, tagIn).ifError { LOGGER.error(it.message()) }.result().getOrNull()
     }
 
     override fun child(key: String): HTValueInput? {
@@ -121,7 +128,7 @@ internal class HTTagValueInput(private val provider: HolderLookup.Provider, priv
 
         override fun iterator(): Iterator<T> = list
             .mapNotNull { tag: Tag ->
-                codec.parse(registryOps, tag).result().getOrNull()
+                codec.parse(registryOps, tag).ifError { LOGGER.error(it.message()) }.result().getOrNull()
             }.iterator()
     }
 }

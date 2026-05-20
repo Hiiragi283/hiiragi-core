@@ -4,15 +4,22 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
+import com.mojang.logging.LogUtils
 import com.mojang.serialization.Codec
 import com.mojang.serialization.JsonOps
 import hiiragi283.core.api.serialization.value.HTValueIOAccess
 import hiiragi283.core.api.serialization.value.HTValueInput
+import kotlin.jvm.optionals.getOrNull
 import net.minecraft.core.HolderLookup
 import net.minecraft.resources.RegistryOps
-import kotlin.jvm.optionals.getOrNull
+import org.slf4j.Logger
 
 internal class HTJsonValueInput(private val provider: HolderLookup.Provider, private val jsonObject: JsonObject) : HTValueInput {
+    companion object {
+        @JvmStatic
+        private val LOGGER: Logger = LogUtils.getLogger()
+    }
+
     private val registryOps: RegistryOps<JsonElement> = provider.createSerializationContext(JsonOps.INSTANCE)
 
     private fun getJsonPrimitive(key: String): JsonPrimitive? {
@@ -24,7 +31,7 @@ internal class HTJsonValueInput(private val provider: HolderLookup.Provider, pri
 
     override fun <T : Any> read(key: String, codec: Codec<T>): T? {
         val jsonIn: JsonElement = jsonObject.get(key) ?: return null
-        return codec.parse(registryOps, jsonIn).result().getOrNull()
+        return codec.parse(registryOps, jsonIn).ifError { LOGGER.error(it.message()) }.result().getOrNull()
     }
 
     override fun child(key: String): HTValueInput? {
@@ -83,7 +90,7 @@ internal class HTJsonValueInput(private val provider: HolderLookup.Provider, pri
 
         override fun iterator(): Iterator<T> = list
             .mapNotNull { json: JsonElement ->
-                codec.parse(registryOps, json).result().getOrNull()
+                codec.parse(registryOps, json).ifError { LOGGER.error(it.message()) }.result().getOrNull()
             }.iterator()
     }
 }

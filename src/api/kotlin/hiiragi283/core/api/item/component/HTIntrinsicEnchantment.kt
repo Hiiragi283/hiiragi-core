@@ -4,12 +4,12 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.function.identity
+import hiiragi283.core.api.registry.getResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.text.HTCommonTranslation
-import hiiragi283.core.api.text.HTTextResult
 import hiiragi283.core.api.text.Text
-import hiiragi283.core.api.text.toTextResult
+import hiiragi283.core.api.util.HTTextResult
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderGetter
@@ -46,12 +46,9 @@ data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: 
         )
     }
 
-    fun <T : Any> useInstance(getter: HolderGetter<Enchantment>, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> = getter.get(key).map { holder: Holder<Enchantment> -> action(holder, level) }.toTextResult(HTCommonTranslation.MISSING_KEY)
+    fun <T : Any> useInstance(getter: HolderGetter<Enchantment>, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> = getter.getResult(key).map { holder: Holder<Enchantment> -> action(holder, level) }
 
-    fun <T : Any> useInstance(provider: HolderLookup.Provider, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> = provider
-        .holder(key)
-        .map { holder: Holder<Enchantment> -> action(holder, level) }
-        .toTextResult(HTCommonTranslation.MISSING_KEY)
+    fun <T : Any> useInstance(provider: HolderLookup.Provider, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> = provider.asGetterLookup().getResult(key).map { holder: Holder<Enchantment> -> action(holder, level) }
 
     fun getFullName(provider: HolderLookup.Provider): HTTextResult<Text> = useInstance(provider, Enchantment::getFullname)
 

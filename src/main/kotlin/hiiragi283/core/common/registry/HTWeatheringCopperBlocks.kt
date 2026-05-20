@@ -1,11 +1,12 @@
 package hiiragi283.core.common.registry
 
+import hiiragi283.core.api.function.Identity
+import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.item.HTBlockItem
 import hiiragi283.core.common.registry.register.BlockFactory
 import hiiragi283.core.common.registry.register.BlockWithContextFactory
 import hiiragi283.core.common.registry.register.HTDeferredBlockAndItemRegister
 import hiiragi283.core.common.registry.register.ItemWithContextFactory
-import java.util.function.UnaryOperator
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.WeatheringCopper
@@ -29,7 +30,7 @@ data class HTWeatheringCopperBlocks<WAXED : Block, WEATHERING, ITEM : Item>(
             blockProp: (WeatheringCopper.WeatherState) -> BlockBehaviour.Properties,
             waxedFactory: BlockFactory<WAXED>,
             weatheringFactory: BlockWithContextFactory<WeatheringCopper.WeatherState, WEATHERING>,
-            itemProp: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
+            itemProp: Identity<Item.Properties> = identity(),
         ): HTWeatheringCopperBlocks<WAXED, WEATHERING, HTBlockItem<Block>> where WEATHERING : Block, WEATHERING : WeatheringCopper = create(register, name, blockProp, waxedFactory, weatheringFactory, ::HTBlockItem, itemProp)
 
         @JvmStatic
@@ -40,7 +41,7 @@ data class HTWeatheringCopperBlocks<WAXED : Block, WEATHERING, ITEM : Item>(
             waxedFactory: BlockFactory<WAXED>,
             weatheringFactory: BlockWithContextFactory<WeatheringCopper.WeatherState, WEATHERING>,
             itemFactory: ItemWithContextFactory<Block, ITEM>,
-            itemProp: UnaryOperator<Item.Properties> = UnaryOperator.identity(),
+            itemProp: Identity<Item.Properties> = identity(),
         ): HTWeatheringCopperBlocks<WAXED, WEATHERING, ITEM> where WEATHERING : Block, WEATHERING : WeatheringCopper = HTWeatheringCopperBlocks(
             register.register(name, blockProp(WeatheringCopper.WeatherState.UNAFFECTED), { weatheringFactory(WeatheringCopper.WeatherState.UNAFFECTED, it) }, itemFactory, itemProp),
             register.register("exposed_$name", blockProp(WeatheringCopper.WeatherState.EXPOSED), { weatheringFactory(WeatheringCopper.WeatherState.EXPOSED, it) }, itemFactory, itemProp),

@@ -47,6 +47,8 @@ object HCBlockEntityTypes {
         for (block: Supplier<out Block> in HCBlocks.COPPER_BASIN.weatheringBlocks) {
             event.modify(COPPER_BASIN.get(), block.get())
         }
+
+        event.modify(TEST.get(), HCBlocks.TEST.get())
         HiiragiCoreAPI.LOGGER.info("Added supported blocks to BlockEntityType!")
     }
 

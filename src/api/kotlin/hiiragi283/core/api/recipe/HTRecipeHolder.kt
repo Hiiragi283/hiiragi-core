@@ -64,7 +64,7 @@ data class HTRecipeHolder<out RECIPE>(
         return HTRecipeHolder(this.id, recipe)
     }
 
-    inline fun <reified R : @UnsafeVariance RECIPE> castRecipe(): HTRecipeHolder<R>? = mapRecipeOrNull { it as? R }
+    inline fun <reified R> castRecipe(): HTRecipeHolder<R>? = mapRecipeOrNull { it as? R }
 
     override fun get(): RECIPE = recipe
 

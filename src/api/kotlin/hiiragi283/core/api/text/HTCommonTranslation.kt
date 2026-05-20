@@ -29,13 +29,8 @@ enum class HTCommonTranslation(type: String, vararg path: String) : HTTranslatio
     EAST("direction", "east"),
 
     // Error
-    EMPTY_TAG_KEY(HTConst.ERROR, "empty.tag_key"),
     INVALID_PACKET_S2C(HTConst.ERROR, "invalid_packet", "s2c"),
     INVALID_PACKET_C2S(HTConst.ERROR, "invalid_packet", "c2s"),
-
-    MISSING_SERVER(HTConst.ERROR, "missing", "server"),
-    MISSING_REGISTRY(HTConst.ERROR, "missing", "registry"),
-    MISSING_KEY(HTConst.ERROR, "missing", "key"),
 
     // GUI
     CAPACITY(HTConst.GUI, "capacity"),

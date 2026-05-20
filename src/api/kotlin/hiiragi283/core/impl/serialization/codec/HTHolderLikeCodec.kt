@@ -7,7 +7,9 @@ import com.mojang.serialization.DynamicOps
 import com.mojang.serialization.Lifecycle
 import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.RegistryKey
+import hiiragi283.core.api.registry.getResult
 import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.util.getOrElse
 import net.minecraft.core.HolderGetter
 import net.minecraft.resources.RegistryOps
 import net.minecraft.resources.ResourceKey
@@ -32,10 +34,10 @@ internal class HTHolderLikeCodec<R : Any>(private val registryKey: RegistryKey<R
                     .flatMap { pair: Pair<ResourceKey<R>, T> ->
                         val key: ResourceKey<R> = pair.first
                         getter
-                            .get(pair.first)
+                            .getResult(pair.first)
                             .map { it.toLike() }
                             .map { DataResult.success(it) }
-                            .orElseGet { DataResult.error { "Failed to get element ${key.location()}" } }
+                            .getOrElse { DataResult.error { "Failed to get element ${key.location()}" } }
                             .map { Pair.of(it, pair.second) }
                             .setLifecycle(Lifecycle.stable())
                     }
