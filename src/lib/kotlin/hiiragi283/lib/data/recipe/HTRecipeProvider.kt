@@ -1,7 +1,10 @@
 package hiiragi283.lib.data.recipe
 
 import hiiragi283.lib.HTConstants
+import hiiragi283.lib.material.HTMaterialContents
+import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.recipe.RecipeKey
+import hiiragi283.lib.recipe.ingredient.HTMaterialPartIngredient
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.resource.toId
 import java.util.concurrent.CompletableFuture
@@ -16,6 +19,7 @@ import net.minecraft.data.recipes.RecipeProvider
 import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
+import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.enchantment.Enchantment
 import net.neoforged.neoforge.common.conditions.ICondition
@@ -49,6 +53,8 @@ abstract class HTRecipeProvider(protected val modId: String, registries: HolderL
     fun getHasName(id: HTIdLike): String = "has_${id.path}"
 
     fun getHasName(tagKey: TagKey<*>): String = "has_${tagKey.location().path.replace("/", "_")}"
+
+    fun materialPart(tagKey: TagKey<HTMaterialContents>, vararg parts: HTMaterialPartKey): Ingredient = HTMaterialPartIngredient(registries.getOrThrow(tagKey), listOf(*parts).sorted()).toVanilla()
 
     //    Runner    //
 

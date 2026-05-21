@@ -111,6 +111,9 @@ data object HTConstants {
     const val NUGGETS = "nuggets"
     const val PEARLS = "pearls"
 
+    const val ELEMENTS = "elements"
+    const val MINERALS = "minerals"
+
     //    Text    //
 
     const val CONSTANTS = "constants"

@@ -1,9 +1,13 @@
 {
   "type": "hiiragi_core:exploding",
-  "ingredient": [
-    "minecraft:coal",
-    "minecraft:charcoal"
-  ],
+  "ingredient": {
+    "neoforge:ingredient_type": "hiiragi_core:material_part",
+    "contents": "#c:coals",
+    "parts": [
+      "dust",
+      "fuel"
+    ]
+  },
   "result": {
     "chance": "1/64",
     "id": "minecraft:diamond"

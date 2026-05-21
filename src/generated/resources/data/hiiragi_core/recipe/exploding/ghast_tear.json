@@ -1,6 +1,6 @@
 {
   "type": "hiiragi_core:exploding",
-  "ingredient": "minecraft:quartz_block",
+  "ingredient": "#c:storage_blocks/quartz",
   "result": {
     "chance": "1/4",
     "id": "minecraft:ghast_tear"

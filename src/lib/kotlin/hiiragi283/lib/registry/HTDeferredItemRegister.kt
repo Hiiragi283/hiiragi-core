@@ -4,10 +4,8 @@ import hiiragi283.lib.util.Identity
 import hiiragi283.lib.util.identity
 import java.util.function.Function
 import java.util.function.Supplier
-import net.minecraft.core.Registry
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.Identifier
-import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
 
 typealias ItemWithContextFactory<C, ITEM> = (C, Item.Properties) -> ITEM
@@ -26,7 +24,7 @@ class HTDeferredItemRegister(namespace: String) : HTDeferredRegister<Item>(Regis
 
     //    HTDeferredRegister    //
 
-    override fun <I : Item> createHolder(registryKey: ResourceKey<out Registry<Item>>, key: Identifier): HTDeferredItem<I> = HTDeferredItem(key)
+    override fun <I : Item> createHolder(registryKey: RegistryKey<Item>, key: Identifier): HTDeferredItem<I> = HTDeferredItem(key)
 
     override fun <I : Item> register(name: String, sup: Supplier<out I>): HTDeferredItem<I> = super.register(name, sup) as HTDeferredItem<I>
 

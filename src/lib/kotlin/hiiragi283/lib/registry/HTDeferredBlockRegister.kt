@@ -2,10 +2,8 @@ package hiiragi283.lib.registry
 
 import java.util.function.Function
 import java.util.function.Supplier
-import net.minecraft.core.Registry
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.Identifier
-import net.minecraft.resources.ResourceKey
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockBehaviour
 
@@ -24,7 +22,7 @@ class HTDeferredBlockRegister(namespace: String) : HTDeferredRegister<Block>(Reg
 
     //    HTDeferredRegister    //
 
-    override fun <I : Block> createHolder(registryKey: ResourceKey<out Registry<Block>>, key: Identifier): HTDeferredBlock<I> = HTDeferredBlock(key)
+    override fun <I : Block> createHolder(registryKey: RegistryKey<Block>, key: Identifier): HTDeferredBlock<I> = HTDeferredBlock(key)
 
     override fun <I : Block> register(name: String, sup: Supplier<out I>): HTDeferredBlock<I> = super.register(name, sup) as HTDeferredBlock<I>
 

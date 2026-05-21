@@ -26,20 +26,20 @@ import net.minecraft.world.item.crafting.Ingredient
 class HCMaterialRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
     override fun buildRecipes() {
         // Base <-> Storage Block
-        nineBaseToBlock(HCMaterialContents.CHARCOAL)
-        blockToNineBase(HCMaterialContents.CHARCOAL)
+        nineBaseToBlock(HCMaterialContents.CHARCOAL.get())
+        blockToNineBase(HCMaterialContents.CHARCOAL.get())
 
-        blockToFourBase(HCMaterialContents.GLOWSTONE)
-        blockToFourBase(HCMaterialContents.QUARTZ)
-        blockToFourBase(HCMaterialContents.AMETHYST)
-        fourBaseToBlock(HCMaterialContents.ECHO)
-        blockToFourBase(HCMaterialContents.ECHO)
+        blockToFourBase(HCMaterialContents.GLOWSTONE.get())
+        blockToFourBase(HCMaterialContents.QUARTZ.get())
+        blockToFourBase(HCMaterialContents.AMETHYST.get())
+        fourBaseToBlock(HCMaterialContents.ECHO.get())
+        blockToFourBase(HCMaterialContents.ECHO.get())
 
-        nineBaseToBlock(HCMaterialContents.ENDER_PEARL)
-        blockToNineBase(HCMaterialContents.ENDER_PEARL)
+        nineBaseToBlock(HCMaterialContents.ENDER_PEARL.get())
+        blockToNineBase(HCMaterialContents.ENDER_PEARL.get())
         // Base <-> Nugget
-        nuggetToBase(HCMaterialContents.NETHERITE)
-        baseToNugget(HCMaterialContents.NETHERITE)
+        nuggetToBase(HCMaterialContents.NETHERITE.get())
+        baseToNugget(HCMaterialContents.NETHERITE.get())
 
         // Raw <-> Raw Storage Block
         // Raw -> Base

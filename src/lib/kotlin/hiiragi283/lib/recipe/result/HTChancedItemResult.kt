@@ -46,6 +46,5 @@ data class HTChancedItemResult(val base: HTItemResult, val chance: Fraction) : H
 
     fun createOrEmpty(): ItemStack = create(false).getOrElse { ItemStack.EMPTY }
 
-
     override fun getId(): Identifier = base.getId()
 }

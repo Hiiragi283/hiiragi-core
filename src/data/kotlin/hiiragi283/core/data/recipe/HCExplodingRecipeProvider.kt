@@ -1,8 +1,11 @@
 package hiiragi283.core.data.recipe
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreTags
 import hiiragi283.lib.data.recipe.HTRecipeProvider
+import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.math.fraction
+import hiiragi283.lib.tag.HTCommonTags
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
@@ -29,13 +32,13 @@ class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider
         }.save(output)
         // Quartz Block -> Ghast Tear
         HCExplodingRecipeBuilder.create {
-            ingredient = ingredientCreator.create(Items.QUARTZ_BLOCK)
+            ingredient = ingredientCreator.create(HTCommonTags.Items.STORAGE_BLOCKS_QUARTZ)
             result = resultCreator.create(Items.GHAST_TEAR).withChance(fraction(1, 4))
         }.save(output)
 
         // Diamond
         HCExplodingRecipeBuilder.create {
-            ingredient = ingredientCreator.create(Items.COAL, Items.CHARCOAL)
+            ingredient = materialPart(HiiragiCoreTags.MaterialContents.COALS, CommonPartKeys.FUEL, CommonPartKeys.DUST)
             result = resultCreator.create(Items.DIAMOND).withChance(fraction(1, 64))
             recipeId suffix "_from_coal"
         }.save(output)
