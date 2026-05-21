@@ -2,12 +2,14 @@ package hiiragi283.lib.item.component
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
+import hiiragi283.lib.registry.getResult
 import hiiragi283.lib.serialization.codec.HTCodecs
 import hiiragi283.lib.serialization.network.HTStreamCodecs
 import hiiragi283.lib.text.HTCommonTranslation
 import hiiragi283.lib.text.Text
+import hiiragi283.lib.util.ErrorText
+import hiiragi283.lib.util.HTTextResult
 import io.netty.buffer.ByteBuf
-import java.util.Optional
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderGetter
 import net.minecraft.core.HolderLookup
@@ -45,11 +47,11 @@ data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: 
         )
     }
 
-    fun <T : Any> useInstance(getter: HolderGetter<Enchantment>, action: (Holder<Enchantment>, Int) -> T): Optional<T> = getter.get(key).map { holder: Holder<Enchantment> -> action(holder, level) }
+    fun <T : Any> useInstance(getter: HolderGetter<Enchantment>, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> = getter.getResult(key).map { holder: Holder<Enchantment> -> action(holder, level) }
 
-    fun <T : Any> useInstance(provider: HolderLookup.Provider, action: (Holder<Enchantment>, Int) -> T): Optional<T> = provider.holder(key).map { holder: Holder<Enchantment> -> action(holder, level) }
+    fun <T : Any> useInstance(provider: HolderLookup.Provider, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> = provider.getResult(key).map { holder: Holder<Enchantment> -> action(holder, level) }
 
-    fun getFullName(provider: HolderLookup.Provider): Optional<Text> = useInstance(provider, Enchantment::getFullname)
+    fun getFullName(provider: HolderLookup.Provider): HTTextResult<Text> = useInstance(provider, Enchantment::getFullname)
 
     override fun addToTooltip(context: Item.TooltipContext, consumer: Consumer<Text>, flag: TooltipFlag, components: DataComponentGetter) {
         when {
@@ -57,8 +59,7 @@ data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: 
                 context
                     .registries()
                     ?.let(::getFullName)
-                    ?.map(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT::translate)
-                    ?.orElseGet(HTCommonTranslation.MISSING_KEY::translate)
+                    ?.fold(ErrorText::getText, HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT::translate)
             else -> HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION.translateColored(ChatFormatting.YELLOW)
         }?.let(consumer::accept)
     }

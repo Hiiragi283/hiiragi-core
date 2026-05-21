@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCMaterialContents
 import hiiragi283.lib.data.recipe.HTRecipeProvider
 import hiiragi283.lib.data.recipe.save
+import hiiragi283.lib.item.toTemplate
 import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.HTMaterialContents
 import hiiragi283.lib.material.HTMaterialItemEntry

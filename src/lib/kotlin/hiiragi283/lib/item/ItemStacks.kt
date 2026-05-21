@@ -27,8 +27,5 @@ fun <T : Any> createItemStack(item: ItemLike?, type: DataComponentType<T>, value
  */
 fun createItemStack(item: ItemLike?, count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStack {
     if (item == null) return ItemStack.EMPTY
-    val stack = ItemStack(item, count)
-    if (stack.isEmpty) return ItemStack.EMPTY
-    stack.applyComponents(patch)
-    return stack
+    return createItemTemplate(item, count, patch).map(ItemStackTemplate::create).getOrDefault(ItemStack.EMPTY)
 }

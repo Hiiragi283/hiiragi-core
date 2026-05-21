@@ -47,7 +47,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     HTAbstractGui {
     companion object {
         @JvmStatic
-        protected fun createIcon(guiHelper: IGuiHelper, recipeType: HTRecipeViewerType<*>): IDrawable = recipeType.icon.map(
+        protected fun createIcon(guiHelper: IGuiHelper, recipeType: HTRecipeViewerType<*>): IDrawable = recipeType.icon.fold(
             { id: Identifier -> guiHelper.drawableBuilder(id, 0, 0, 18, 18).setTextureSize(18, 18).build() },
             { stack: ItemStack -> guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, stack) },
         )

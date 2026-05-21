@@ -19,11 +19,11 @@ import net.minecraft.world.level.storage.loot.LootTable
 abstract class HTBlockLootTableProvider(
     registries: HolderLookup.Provider,
     protected val modId: String,
-    private val rawBlocks: Sequence<SupplierWithId<out Block>>,
+    private val rawBlocks: Sequence<SupplierWithId<Block>>,
 ) : BlockLootSubProvider(emptySet(), FeatureFlags.REGISTRY.allFlags(), registries) {
     final override fun getKnownBlocks(): Iterable<Block> = rawBlocks
-        .filter { holder: SupplierWithId<out Block> -> holder.namespace == modId }
-        .map(SupplierWithId<out Block>::get)
+        .filter { holder: SupplierWithId<Block> -> holder.namespace == modId }
+        .map(SupplierWithId<Block>::get)
         .filter { block: Block -> block.lootTable.isPresent }
         .toList()
 

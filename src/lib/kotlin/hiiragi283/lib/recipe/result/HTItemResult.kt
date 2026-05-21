@@ -1,7 +1,6 @@
 package hiiragi283.lib.recipe.result
 
 import com.mojang.serialization.Codec
-import com.mojang.serialization.DataResult
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.HTConstants
@@ -10,6 +9,9 @@ import hiiragi283.lib.math.toFraction
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.serialization.codec.HTCodecs
 import hiiragi283.lib.util.DFUEither
+import hiiragi283.lib.util.HTTextResult
+import hiiragi283.lib.util.getOrElse
+import hiiragi283.lib.util.right
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -48,9 +50,9 @@ interface HTItemResult : HTIdLike {
 
     fun getSerializer(): Serializer<*>
 
-    fun create(): DataResult<ItemStack>
+    fun create(): HTTextResult<ItemStack>
 
-    fun createOrEmpty(): ItemStack = create().resultOrPartial().orElseGet(ItemStack::EMPTY)
+    fun createOrEmpty(): ItemStack = create().getOrElse { ItemStack.EMPTY }
 
     fun withChance(chance: Float = 1f): HTChancedItemResult = withChance(chance.toFraction())
 
@@ -83,7 +85,7 @@ interface HTItemResult : HTIdLike {
 
         override fun getSerializer(): Serializer<*> = SERIALIZER
 
-        override fun create(): DataResult<ItemStack> = DataResult.success(template.create())
+        override fun create(): HTTextResult<ItemStack> = template.create().right()
 
         override fun getId(): Identifier = template.typeHolder().unwrapKey().orElseThrow().identifier()
     }
@@ -106,12 +108,12 @@ interface HTItemResult : HTIdLike {
 
         override fun getSerializer(): Serializer<*> = SERIALIZER
 
-        override fun create(): DataResult<ItemStack> = BuiltInRegistries.ITEM
+        override fun create(): HTTextResult<ItemStack> = BuiltInRegistries.ITEM
             .getTagOrEmpty(tagKey)
             .firstOrNull() // TODO
             ?.let { ItemStack(it, count) }
-            ?.let { DataResult.success(it) }
-            ?: DataResult.error { "Could not find elements from tag ${getId()}" }
+            ?.right()
+            ?: HTTextResult("Could not find elements from tag ${getId()}")
 
         override fun getId(): Identifier = tagKey.location()
     }

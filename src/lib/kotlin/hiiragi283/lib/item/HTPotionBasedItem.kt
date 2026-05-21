@@ -29,13 +29,13 @@ open class HTPotionBasedItem(properties: Properties) :
 
     //    HTSubCreativeTabContents    //
 
-    override fun addItems(baseItem: HTItemLike<*>, context: HTSubCreativeTabContents.Context) {
+    override fun addItems(baseItem: Holder<Item>, context: HTSubCreativeTabContents.Context) {
         context.provider
             .lookupOrThrow(Registries.POTION)
             .filterFeatures(context.enabledFeatures)
             .listElements()
             .map(::BottledPotionContents)
-            .map { HTPotionHelper.setContents(baseItem.toStack(), it) }
+            .map { HTPotionHelper.setContents(ItemStack(baseItem), it) }
             .forEach(context)
     }
 

@@ -3,8 +3,11 @@ package hiiragi283.lib.serialization.network
 import hiiragi283.lib.registry.RegistryKey
 import hiiragi283.lib.tag.createTagKey
 import hiiragi283.lib.text.Text
+import hiiragi283.lib.util.Either
 import hiiragi283.lib.util.Ior
 import hiiragi283.lib.util.identity
+import hiiragi283.lib.util.java
+import hiiragi283.lib.util.kotlin
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
@@ -48,6 +51,9 @@ data object HTStreamCodecs {
         ByIdMap.continuous<V>(Enum<V>::ordinal, V::class.java.enumConstants, strategy),
         Enum<V>::ordinal,
     )
+
+    @JvmStatic
+    fun <B : ByteBuf, L : Any, R : Any> either(left: StreamCodec<in B, L>, right: StreamCodec<in B, R>): StreamCodec<B, Either<L, R>> = ByteBufCodecs.either(left, right).map({ it.kotlin }, { it.java })
 
     /**
      * 指定した[left], [right]から，[Ior]の[StreamCodec]を返します。

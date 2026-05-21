@@ -5,8 +5,10 @@ import com.mojang.serialization.DataResult
 import com.mojang.serialization.MapCodec
 import hiiragi283.lib.registry.RegistryKey
 import hiiragi283.lib.text.Text
-import hiiragi283.lib.util.DFUEither
+import hiiragi283.lib.util.Either
 import hiiragi283.lib.util.Ior
+import hiiragi283.lib.util.java
+import hiiragi283.lib.util.kotlin
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.core.RegistryCodecs
@@ -30,14 +32,13 @@ import org.apache.commons.lang3.math.Fraction
  */
 data object HTCodecs {
     @JvmField
-    val FRACTION: Codec<Fraction> = Codec
-        .xor(Codec.STRING, Codec.INT)
+    val FRACTION: Codec<Fraction> = xor(Codec.STRING, Codec.INT)
         .xmap(
-            { either: DFUEither<String, Int> -> either.map(Fraction::getFraction) { Fraction.getFraction(it, 1) } },
+            { either: Either<String, Int> -> either.fold(Fraction::getFraction) { Fraction.getFraction(it, 1) } },
             { fraction: Fraction ->
                 when (fraction.denominator) {
-                    1 -> DFUEither.right(fraction.numerator)
-                    else -> DFUEither.left(fraction.toString())
+                    1 -> Either.Right(fraction.numerator)
+                    else -> Either.Left(fraction.toString())
                 }
             },
         )
@@ -50,6 +51,15 @@ data object HTCodecs {
 
     @JvmStatic
     fun <K : Any, V : Any> mapOf(keyCodec: Codec<K>, valueCodec: Codec<V>): Codec<Map<K, V>> = Codec.unboundedMap(keyCodec, valueCodec)
+
+    @JvmStatic
+    fun <L, R> either(left: Codec<L>, right: Codec<R>): Codec<Either<L, R>> = Codec.either(left, right).xmap({ it.kotlin }, { it.java })
+
+    @JvmStatic
+    fun <L, R> xor(left: Codec<L>, right: Codec<R>): Codec<Either<L, R>> = Codec.xor(left, right).xmap({ it.kotlin }, { it.java })
+
+    @JvmStatic
+    fun <L, R> either(left: MapCodec<L>, right: MapCodec<R>): MapCodec<Either<L, R>> = Codec.mapEither(left, right).xmap({ it.kotlin }, { it.java })
 
     /**
      * 指定した[left], [right]から，[Ior]の[MapCodec]を返します。

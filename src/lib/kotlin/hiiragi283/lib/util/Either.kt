@@ -60,7 +60,26 @@ sealed class Either<out A, out B> {
 
 //    Extension    //
 
+fun <A> A.left(): Either<A, Nothing> = Either.Left(this)
+
+fun <B> B.right(): Either<Nothing, B> = Either.Right(this)
+
 fun <T> Either<T, T>.unwrap(): T = this.fold(identity(), identity())
+
+inline fun <A, B> Either<A, B>.getOrElse(default: (A) -> B): B = when (this) {
+    is Either.Left<A> -> default(this.value)
+    is Either.Right<B> -> this.value
+}
+
+inline fun <A, B, C> Either<A, B>.flatMap(right: (B) -> Either<A, C>): Either<A, C> = when (this) {
+    is Either.Left<A> -> this
+    is Either.Right<B> -> right(this.value)
+}
+
+inline fun <A, B, C> Either<A, B>.flatMapLeft(left: (A) -> Either<C, B>): Either<C, B> = when (this) {
+    is Either.Left<A> -> left(this.value)
+    is Either.Right<B> -> this
+}
 
 //    DFUEither <-> Either    //
 
