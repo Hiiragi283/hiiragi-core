@@ -1,9 +1,6 @@
 package hiiragi283.lib.material
 
-import hiiragi283.lib.util.Ior
 import net.minecraft.core.Holder
-import net.minecraft.tags.TagKey
-import net.minecraft.world.item.Item
 import net.neoforged.bus.api.Event
 import net.neoforged.fml.event.IModBusEvent
 
@@ -19,8 +16,8 @@ class HTModifyMaterialContentsEvent(val holder: Holder<HTMaterialContents>) :
             val contents: HTMaterialContents = holder.value()
             val addition: HTMaterialContents = HTMaterialContents.create(contents.primalKey, action)
 
-            val entryMap: MutableMap<HTMaterialPartKey, Ior<HTMaterialItemEntry, TagKey<Item>>> = contents.contents.toMutableMap()
-            for ((key: HTMaterialPartKey, entry: Ior<HTMaterialItemEntry, TagKey<Item>>) in addition.contents) {
+            val entryMap: MutableMap<HTMaterialPartKey, HTMaterialRawEntry> = contents.contents.toMutableMap()
+            for ((key: HTMaterialPartKey, entry: HTMaterialRawEntry) in addition.contents) {
                 if (entryMap[key] == null) {
                     entryMap[key] = entry
                 }

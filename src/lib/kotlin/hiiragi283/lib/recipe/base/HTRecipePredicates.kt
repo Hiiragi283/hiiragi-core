@@ -3,13 +3,13 @@ package hiiragi283.lib.recipe.base
 import hiiragi283.lib.recipe.HTRecipePredicate
 import hiiragi283.lib.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.lib.recipe.input.HTSingleFluidRecipeInput
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.neoforged.neoforge.common.util.TriPredicate
-import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.BiPredicate
 import java.util.function.Predicate
+import net.minecraft.world.item.ItemInstance
+import net.neoforged.neoforge.fluids.FluidInstance
 
 data object HTRecipePredicates {
     //    Single Input    //
@@ -22,11 +22,11 @@ data object HTRecipePredicates {
         fun getRequiredAmount(input: INPUT_A): Int
     }
 
-    interface SingleFluid : SingleInput<HTSingleFluidRecipeInput, FluidStack> {
+    interface SingleFluid : SingleInput<HTSingleFluidRecipeInput, FluidInstance> {
         override fun matches(input: HTSingleFluidRecipeInput): Boolean = test(input.fluid)
     }
 
-    interface SingleItem : SingleInput<SingleRecipeInput, ItemStack> {
+    interface SingleItem : SingleInput<SingleRecipeInput, ItemInstance> {
         override fun matches(input: SingleRecipeInput): Boolean = test(input.item())
     }
 
@@ -40,14 +40,14 @@ data object HTRecipePredicates {
         fun getRequiredAmount(first: INPUT_A, second: INPUT_B): Pair<Int, Int>
     }
 
-    interface ItemAndFluid : DoubleInput<HTItemAndFluidRecipeInput, ItemStack, FluidStack> {
+    interface ItemAndFluid : DoubleInput<HTItemAndFluidRecipeInput, ItemInstance, FluidInstance> {
         override fun matches(input: HTItemAndFluidRecipeInput): Boolean {
-            val (item: ItemStack, fluid: FluidStack) = input
+            val (item: ItemInstance, fluid: FluidInstance) = input
             return test(item, fluid)
         }
     }
 
-    interface DoubleItem : DoubleInput<RecipeInput, ItemStack, ItemStack> {
+    interface DoubleItem : DoubleInput<RecipeInput, ItemInstance, ItemInstance> {
         override fun matches(input: RecipeInput): Boolean {
             if (input.size() < 2) return false
             return test(input.getItem(0), input.getItem(1))
@@ -64,7 +64,7 @@ data object HTRecipePredicates {
         fun getRequiredAmount(first: INPUT_A, second: INPUT_B, third: INPUT_C): Triple<Int, Int, Int>
     }
 
-    interface TripleItem : TripleInput<RecipeInput, ItemStack, ItemStack, ItemStack> {
+    interface TripleItem : TripleInput<RecipeInput, ItemInstance, ItemInstance, ItemInstance> {
         override fun matches(input: RecipeInput): Boolean {
             if (input.size() < 3) return false
             return test(input.getItem(0), input.getItem(1), input.getItem(2))

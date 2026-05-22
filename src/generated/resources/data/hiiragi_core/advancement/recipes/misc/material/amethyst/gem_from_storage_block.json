@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_glowstone": {
+    "has_amethyst_block": {
       "conditions": {
         "items": [
           {
-            "items": "#c:storage_blocks/glowstone"
+            "items": "#c:storage_blocks/amethyst"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "hiiragi_core:glowstone_dust_from_glowstone"
+        "recipe": "hiiragi_core:material/amethyst/gem_from_storage_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_glowstone"
+      "has_amethyst_block"
     ]
   ],
   "rewards": {
     "recipes": [
-      "hiiragi_core:glowstone_dust_from_glowstone"
+      "hiiragi_core:material/amethyst/gem_from_storage_block"
     ]
   }
 }

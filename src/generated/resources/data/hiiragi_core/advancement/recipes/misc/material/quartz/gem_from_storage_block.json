@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_amethyst_block": {
+    "has_quartz_block": {
       "conditions": {
         "items": [
           {
-            "items": "#c:storage_blocks/amethyst"
+            "items": "#c:storage_blocks/quartz"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "hiiragi_core:amethyst_shard_from_amethyst_block"
+        "recipe": "hiiragi_core:material/quartz/gem_from_storage_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_amethyst_block"
+      "has_quartz_block"
     ]
   ],
   "rewards": {
     "recipes": [
-      "hiiragi_core:amethyst_shard_from_amethyst_block"
+      "hiiragi_core:material/quartz/gem_from_storage_block"
     ]
   }
 }

@@ -1,7 +1,6 @@
-package hiiragi283.core.data.recipe
+package hiiragi283.lib.data.recipe
 
 import hiiragi283.lib.HTConstants
-import hiiragi283.lib.data.recipe.HTRecipeBuilder
 import hiiragi283.lib.recipe.RecipeKey
 import hiiragi283.lib.util.HTDelegates
 import hiiragi283.lib.util.Identity
@@ -28,13 +27,25 @@ class HTCookingRecipeBuilder(
 ) : HTRecipeBuilder<AbstractCookingRecipe>(prefix) {
     companion object {
         @JvmStatic
-        inline fun smelting(builderAction: HTCookingRecipeBuilder.() -> Unit): HTCookingRecipeBuilder = HTCookingRecipeBuilder(::SmeltingRecipe, identity(), HTConstants.SMELTING).apply(builderAction)
+        inline fun smelting(builderAction: HTCookingRecipeBuilder.() -> Unit): HTCookingRecipeBuilder = HTCookingRecipeBuilder(
+            ::SmeltingRecipe,
+            identity(),
+            HTConstants.SMELTING,
+        ).apply(builderAction)
 
         @JvmStatic
-        inline fun blasting(builderAction: HTCookingRecipeBuilder.() -> Unit): HTCookingRecipeBuilder = HTCookingRecipeBuilder(::BlastingRecipe, identity(), HTConstants.BLASTING).apply(builderAction)
+        inline fun blasting(builderAction: HTCookingRecipeBuilder.() -> Unit): HTCookingRecipeBuilder = HTCookingRecipeBuilder(
+            ::BlastingRecipe,
+            identity(),
+            HTConstants.BLASTING,
+        ).apply(builderAction)
 
         @JvmStatic
-        inline fun smoking(builderAction: HTCookingRecipeBuilder.() -> Unit): HTCookingRecipeBuilder = HTCookingRecipeBuilder(::SmokingRecipe, identity(), HTConstants.SMOKING).apply(builderAction)
+        inline fun smoking(builderAction: HTCookingRecipeBuilder.() -> Unit): HTCookingRecipeBuilder = HTCookingRecipeBuilder(
+            ::SmokingRecipe,
+            identity(),
+            HTConstants.SMOKING,
+        ).apply(builderAction)
 
         @JvmStatic
         inline fun smeltingAndBlasting(builderAction: HTCookingRecipeBuilder.() -> Unit): Sequence<HTCookingRecipeBuilder> = sequenceOf(

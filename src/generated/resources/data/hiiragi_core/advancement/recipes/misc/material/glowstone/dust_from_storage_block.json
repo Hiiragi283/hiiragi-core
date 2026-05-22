@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_echo_shard": {
+    "has_glowstone": {
       "conditions": {
         "items": [
           {
-            "items": "#c:gems/echo"
+            "items": "#c:storage_blocks/glowstone"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "hiiragi_core:echo_block_from_echo_shard"
+        "recipe": "hiiragi_core:material/glowstone/dust_from_storage_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_echo_shard"
+      "has_glowstone"
     ]
   ],
   "rewards": {
     "recipes": [
-      "hiiragi_core:echo_block_from_echo_shard"
+      "hiiragi_core:material/glowstone/dust_from_storage_block"
     ]
   }
 }

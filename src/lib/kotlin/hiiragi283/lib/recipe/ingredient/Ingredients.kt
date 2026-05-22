@@ -7,12 +7,14 @@ import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 
+fun Ingredient.test(instance: TypedInstance<Item>): Boolean = HTIngredientHelper.createStack(instance).let(this::test)
+
 /**
  * @author Hiiragi Tsubasa
  * @since 0.16.0
  */
 fun Ingredient.getRequiredAmount(instance: TypedInstance<Item>): Int = when {
-    HTIngredientHelper.createStack(instance).let(this::test) -> 1
+    this.test(instance) -> 1
     else -> 0
 }
 

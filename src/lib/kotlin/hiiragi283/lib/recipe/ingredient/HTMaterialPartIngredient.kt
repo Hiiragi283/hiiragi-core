@@ -6,11 +6,11 @@ import hiiragi283.lib.HTRegistries
 import hiiragi283.lib.material.HTMaterialContents
 import hiiragi283.lib.material.HTMaterialItemEntry
 import hiiragi283.lib.material.HTMaterialPartKey
+import hiiragi283.lib.material.HTMaterialRawEntry
 import hiiragi283.lib.serialization.codec.HTCodecs
 import hiiragi283.lib.serialization.codec.listOrElement
 import hiiragi283.lib.serialization.network.HTStreamCodecs
 import hiiragi283.lib.serialization.network.listOf
-import hiiragi283.lib.util.Ior
 import java.util.stream.Stream
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
@@ -67,7 +67,7 @@ data class HTMaterialPartIngredient(val contents: HolderSet<HTMaterialContents>,
     override fun items(): Stream<Holder<Item>> = contents
         .map(Holder<HTMaterialContents>::value)
         .flatMap { contents: HTMaterialContents -> parts.mapNotNull(contents::getRawEntry) }
-        .flatMap { ior: Ior<HTMaterialItemEntry, TagKey<Item>> ->
+        .flatMap { ior: HTMaterialRawEntry ->
             buildList {
                 val (entry: HTMaterialItemEntry?, tagKey: TagKey<Item>?) = ior.toPair()
                 if (entry != null) {

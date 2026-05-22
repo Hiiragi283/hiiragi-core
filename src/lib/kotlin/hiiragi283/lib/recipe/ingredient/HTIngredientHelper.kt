@@ -5,7 +5,9 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemInstance
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
+import net.minecraft.world.item.Items
 import net.minecraft.world.level.material.Fluid
+import net.minecraft.world.level.material.Fluids
 import net.neoforged.neoforge.fluids.FluidInstance
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidStackTemplate
@@ -30,6 +32,20 @@ data object HTIngredientHelper {
         else -> FluidStack(instance.typeHolder(), FluidType.BUCKET_VOLUME)
     }
 
+    @JvmName("isEmptyFluid")
+    @JvmStatic
+    fun isEmpty(instance: TypedInstance<Fluid>): Boolean = when (instance) {
+        is FluidInstance -> {
+            when (instance) {
+                is FluidStack -> instance.isEmpty
+                is FluidStackTemplate -> false
+                else -> instance.`is`(Fluids.EMPTY) || instance.amount() <= 0
+            }
+        }
+        is FluidResource -> instance.isEmpty
+        else -> instance.`is`(Fluids.EMPTY)
+    }
+
     //    Item    //
 
     @JvmName("createItemStack")
@@ -44,5 +60,19 @@ data object HTIngredientHelper {
         }
         is ItemResource -> instance.toStack()
         else -> ItemStack(instance.typeHolder())
+    }
+
+    @JvmName("isEmptyItem")
+    @JvmStatic
+    fun isEmpty(instance: TypedInstance<Item>): Boolean = when (instance) {
+        is ItemInstance -> {
+            when (instance) {
+                is ItemStack -> instance.isEmpty
+                is ItemStackTemplate -> false
+                else -> instance.`is`(Items.AIR) || instance.count() <= 0
+            }
+        }
+        is ItemResource -> instance.isEmpty
+        else -> instance.`is`(Items.AIR)
     }
 }

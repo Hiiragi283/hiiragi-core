@@ -2,8 +2,9 @@ package hiiragi283.core.api.recipe
 
 import hiiragi283.lib.recipe.base.HTRecipeFactories
 import hiiragi283.lib.recipe.base.HTRecipePredicates
+import net.minecraft.world.item.ItemInstance
 import net.minecraft.world.item.ItemStack
-import net.neoforged.neoforge.fluids.FluidStack
+import net.neoforged.neoforge.fluids.FluidInstance
 
 /**
  * 空の容器に液体を汲み入れるレシピを表すインターフェースです。
@@ -13,9 +14,9 @@ import net.neoforged.neoforge.fluids.FluidStack
 interface HTTankFillingRecipe :
     HTRecipePredicates.ItemAndFluid,
     HTRecipeFactories.ItemAndFluid<ItemStack> {
-    fun testContainer(stack: ItemStack): Boolean
+    fun testContainer(instance: ItemInstance): Boolean
 
-    fun testFluid(stack: FluidStack): Boolean
+    fun testFluid(instance: FluidInstance): Boolean
 
-    override fun test(first: ItemStack, second: FluidStack): Boolean = testContainer(first) && testFluid(second)
+    override fun test(first: ItemInstance, second: FluidInstance): Boolean = testContainer(first) && testFluid(second)
 }

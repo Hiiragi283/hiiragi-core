@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_netherite_ingot": {
+    "has_charcoal_block": {
       "conditions": {
         "items": [
           {
-            "items": "#c:ingots/netherite"
+            "items": "#c:storage_blocks/charcoal"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "hiiragi_core:netherite_nugget_from_netherite_ingot"
+        "recipe": "hiiragi_core:material/charcoal/fuel_from_storage_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_netherite_ingot"
+      "has_charcoal_block"
     ]
   ],
   "rewards": {
     "recipes": [
-      "hiiragi_core:netherite_nugget_from_netherite_ingot"
+      "hiiragi_core:material/charcoal/fuel_from_storage_block"
     ]
   }
 }

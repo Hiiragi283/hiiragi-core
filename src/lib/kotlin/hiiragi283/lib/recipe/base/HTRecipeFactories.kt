@@ -3,27 +3,27 @@ package hiiragi283.lib.recipe.base
 import hiiragi283.lib.recipe.HTBiRecipeFactory
 import hiiragi283.lib.recipe.HTRecipeFactory
 import hiiragi283.lib.recipe.HTTriRecipeFactory
-import net.minecraft.world.item.ItemStack
-import net.neoforged.neoforge.fluids.FluidStack
+import net.minecraft.world.item.ItemInstance
+import net.neoforged.neoforge.fluids.FluidInstance
 
 data object HTRecipeFactories {
     //    Single Input    //
 
-    fun interface SingleFluidTo<OUTPUT : Any> : HTRecipeFactory<FluidStack, OUTPUT>
+    fun interface SingleFluidTo<OUTPUT : Any> : HTRecipeFactory<FluidInstance, OUTPUT>
 
-    fun interface SingleItemTo<OUTPUT : Any> : HTRecipeFactory<ItemStack, OUTPUT>
+    fun interface SingleItemTo<OUTPUT : Any> : HTRecipeFactory<ItemInstance, OUTPUT>
 
     //    Double Input    //
 
-    fun interface ItemAndFluid<OUTPUT : Any> : HTBiRecipeFactory<ItemStack, FluidStack, OUTPUT>
+    fun interface ItemAndFluid<OUTPUT : Any> : HTBiRecipeFactory<ItemInstance, FluidInstance, OUTPUT>
 
-    fun interface DoubleItem<OUTPUT : Any> : HTBiRecipeFactory<ItemStack, ItemStack, OUTPUT>
+    fun interface DoubleItem<OUTPUT : Any> : HTBiRecipeFactory<ItemInstance, ItemInstance, OUTPUT>
 
     //    Triple Input    //
 
-    fun interface ItemAndDoubleFluid<OUTPUT : Any> : HTTriRecipeFactory<ItemStack, FluidStack, FluidStack, OUTPUT>
+    fun interface ItemAndDoubleFluid<OUTPUT : Any> : HTTriRecipeFactory<ItemInstance, FluidInstance, FluidInstance, OUTPUT>
 
-    fun interface DoubleItemAndFluid<OUTPUT : Any> : HTTriRecipeFactory<ItemStack, ItemStack, FluidStack, OUTPUT>
+    fun interface DoubleItemAndFluid<OUTPUT : Any> : HTTriRecipeFactory<ItemInstance, ItemInstance, FluidInstance, OUTPUT>
 
-    fun interface TripleItem<OUTPUT : Any> : HTTriRecipeFactory<ItemStack, ItemStack, ItemStack, OUTPUT>
+    fun interface TripleItem<OUTPUT : Any> : HTTriRecipeFactory<ItemInstance, ItemInstance, ItemInstance, OUTPUT>
 }

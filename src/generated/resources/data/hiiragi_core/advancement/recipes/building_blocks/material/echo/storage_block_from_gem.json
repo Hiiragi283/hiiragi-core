@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_quartz_block": {
+    "has_echo_shard": {
       "conditions": {
         "items": [
           {
-            "items": "#c:storage_blocks/quartz"
+            "items": "#c:gems/echo"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "hiiragi_core:quartz_from_quartz_block"
+        "recipe": "hiiragi_core:material/echo/storage_block_from_gem"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_quartz_block"
+      "has_echo_shard"
     ]
   ],
   "rewards": {
     "recipes": [
-      "hiiragi_core:quartz_from_quartz_block"
+      "hiiragi_core:material/echo/storage_block_from_gem"
     ]
   }
 }

@@ -9,13 +9,15 @@ import hiiragi283.lib.HTConstants
 import hiiragi283.lib.recipe.HTSerializableRecipe
 import hiiragi283.lib.recipe.ingredient.HTFluidIngredient
 import hiiragi283.lib.recipe.ingredient.getRequiredAmount
+import hiiragi283.lib.recipe.ingredient.test
 import hiiragi283.lib.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.lib.recipe.result.HTItemResult
+import net.minecraft.world.item.ItemInstance
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
-import net.neoforged.neoforge.fluids.FluidStack
+import net.neoforged.neoforge.fluids.FluidInstance
 
 class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: HTFluidIngredient, val result: HTItemResult) :
     HTTankFillingRecipe,
@@ -32,13 +34,13 @@ class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: H
         }
     }
 
-    override fun testContainer(stack: ItemStack): Boolean = itemIngredient.test(stack)
+    override fun testContainer(instance: ItemInstance): Boolean = itemIngredient.test(instance)
 
-    override fun testFluid(stack: FluidStack): Boolean = fluidIngredient.test(stack)
+    override fun testFluid(instance: FluidInstance): Boolean = fluidIngredient.test(instance)
 
-    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): ItemStack = result.createOrEmpty()
+    override fun getRequiredAmount(first: ItemInstance, second: FluidInstance): Pair<Int, Int> = itemIngredient.getRequiredAmount(first) to fluidIngredient.getRequiredAmount(second)
 
-    override fun getRequiredAmount(first: ItemStack, second: FluidStack): Pair<Int, Int> = itemIngredient.getRequiredAmount(first) to fluidIngredient.getRequiredAmount(second)
+    override fun assemble(firstInput: ItemInstance, secondInput: FluidInstance): ItemStack = result.createOrEmpty()
 
     override fun getSerializer(): RecipeSerializer<HCTankFillingRecipe> = HCRecipeSerializers.FILLING
 

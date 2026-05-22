@@ -1,10 +1,11 @@
 package hiiragi283.lib.recipe.cache
 
+import hiiragi283.lib.recipe.ingredient.HTIngredientHelper
 import hiiragi283.lib.recipe.lookup.HTRecipeLookup
-import net.minecraft.world.item.ItemStack
-import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.BiPredicate
 import java.util.function.Predicate
+import net.minecraft.world.item.ItemInstance
+import net.neoforged.neoforge.fluids.FluidInstance
 
 /**
  * @author Hiiragi Tsubasa
@@ -14,25 +15,25 @@ import java.util.function.Predicate
 data object HTRecipeCaches {
     //    Single Input    //
 
-    class SingleFluid<RECIPE : Predicate<FluidStack>>(lookup: HTRecipeLookup<RECIPE>) : HTSingleInputRecipeCache<FluidStack, RECIPE>(lookup) {
-        override fun isEmpty(input: FluidStack): Boolean = input.isEmpty
+    class SingleFluid<RECIPE : Predicate<FluidInstance>>(lookup: HTRecipeLookup<RECIPE>) : HTSingleInputRecipeCache<FluidInstance, RECIPE>(lookup) {
+        override fun isEmpty(input: FluidInstance): Boolean = HTIngredientHelper.isEmpty(input)
     }
 
-    class SingleItem<RECIPE : Predicate<ItemStack>>(lookup: HTRecipeLookup<RECIPE>) : HTSingleInputRecipeCache<ItemStack, RECIPE>(lookup) {
-        override fun isEmpty(input: ItemStack): Boolean = input.isEmpty
+    class SingleItem<RECIPE : Predicate<ItemInstance>>(lookup: HTRecipeLookup<RECIPE>) : HTSingleInputRecipeCache<ItemInstance, RECIPE>(lookup) {
+        override fun isEmpty(input: ItemInstance): Boolean = HTIngredientHelper.isEmpty(input)
     }
 
     //    Double Input    //
 
-    class ItemAndFluid<RECIPE : BiPredicate<ItemStack, FluidStack>>(lookup: HTRecipeLookup<RECIPE>) : HTDoubleInputRecipeCache<ItemStack, FluidStack, RECIPE>(lookup) {
-        override fun isEmpty(firstInput: ItemStack, secondInput: FluidStack): Boolean = firstInput.isEmpty || secondInput.isEmpty
+    class ItemAndFluid<RECIPE : BiPredicate<ItemInstance, FluidInstance>>(lookup: HTRecipeLookup<RECIPE>) : HTDoubleInputRecipeCache<ItemInstance, FluidInstance, RECIPE>(lookup) {
+        override fun isEmpty(firstInput: ItemInstance, secondInput: FluidInstance): Boolean = HTIngredientHelper.isEmpty(firstInput) || HTIngredientHelper.isEmpty(secondInput)
     }
 
-    class ItemOrFluid<RECIPE : BiPredicate<ItemStack, FluidStack>>(lookup: HTRecipeLookup<RECIPE>) : HTDoubleInputRecipeCache<ItemStack, FluidStack, RECIPE>(lookup) {
-        override fun isEmpty(firstInput: ItemStack, secondInput: FluidStack): Boolean = firstInput.isEmpty && secondInput.isEmpty
+    class ItemOrFluid<RECIPE : BiPredicate<ItemInstance, FluidInstance>>(lookup: HTRecipeLookup<RECIPE>) : HTDoubleInputRecipeCache<ItemInstance, FluidInstance, RECIPE>(lookup) {
+        override fun isEmpty(firstInput: ItemInstance, secondInput: FluidInstance): Boolean = HTIngredientHelper.isEmpty(firstInput) && HTIngredientHelper.isEmpty(secondInput)
     }
 
-    class DoubleItem<RECIPE : BiPredicate<ItemStack, ItemStack>>(lookup: HTRecipeLookup<RECIPE>) : HTDoubleInputRecipeCache<ItemStack, ItemStack, RECIPE>(lookup) {
-        override fun isEmpty(firstInput: ItemStack, secondInput: ItemStack): Boolean = firstInput.isEmpty || secondInput.isEmpty
+    class DoubleItem<RECIPE : BiPredicate<ItemInstance, ItemInstance>>(lookup: HTRecipeLookup<RECIPE>) : HTDoubleInputRecipeCache<ItemInstance, ItemInstance, RECIPE>(lookup) {
+        override fun isEmpty(firstInput: ItemInstance, secondInput: ItemInstance): Boolean = HTIngredientHelper.isEmpty(firstInput) || HTIngredientHelper.isEmpty(secondInput)
     }
 }

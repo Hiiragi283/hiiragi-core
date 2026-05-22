@@ -8,6 +8,7 @@ import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.recipe.HTSerializableRecipe
 import hiiragi283.lib.recipe.ingredient.getRequiredAmount
+import hiiragi283.lib.recipe.ingredient.test
 import hiiragi283.lib.recipe.result.HTFluidResult
 import hiiragi283.lib.recipe.result.HTItemAndFluidResult
 import hiiragi283.lib.recipe.result.HTItemResult
@@ -19,6 +20,7 @@ import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.*
+import net.minecraft.world.item.ItemInstance
 
 class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidResult, val itemResult: Optional<HTItemResult>) :
     HTTankEmptyingRecipe,
@@ -35,11 +37,11 @@ class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidR
         }
     }
 
-    override fun test(input: ItemStack): Boolean = ingredient.test(input)
+    override fun test(input: ItemInstance): Boolean = ingredient.test(input)
 
-    override fun getRequiredAmount(input: ItemStack): Int = ingredient.getRequiredAmount(input)
+    override fun getRequiredAmount(input: ItemInstance): Int = ingredient.getRequiredAmount(input)
 
-    override fun assemble(input: ItemStack): HTItemAndFluidResult {
+    override fun assemble(input: ItemInstance): HTItemAndFluidResult {
         val fluidStack: FluidStack = fluidResult.create()
         val itemStack: ItemStack = itemResult.map(HTItemResult::createOrEmpty).getOrEmpty()
         return HTItemAndFluidResult(itemStack, fluidStack)
