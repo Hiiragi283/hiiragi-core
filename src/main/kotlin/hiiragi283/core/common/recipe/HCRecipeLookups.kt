@@ -9,11 +9,11 @@ import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
+import hiiragi283.core.api.registry.HTDeferredRecipeType
 import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.recipe.custom.HTPotionArrowFillingRecipe
 import hiiragi283.core.common.recipe.custom.HTPotionTankInteraction
-import hiiragi283.core.common.registry.HTDeferredRecipeType
 import hiiragi283.core.impl.recipe.cache.HTCompoundRecipeLookup
 import hiiragi283.core.impl.recipe.cache.HTVanillaRecipeLookup
 import hiiragi283.core.impl.recipe.cache.fromRecipeType

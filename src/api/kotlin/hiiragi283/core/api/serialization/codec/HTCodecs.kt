@@ -4,14 +4,12 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.fraction
-import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.Ior
 import hiiragi283.core.api.util.java
 import hiiragi283.core.api.util.kotlin
-import hiiragi283.core.impl.serialization.codec.HTHolderLikeCodec
 import hiiragi283.core.impl.serialization.codec.HTIngredientCodec
 import hiiragi283.core.impl.serialization.codec.HTIorMapCodec
 import net.minecraft.core.Holder
@@ -173,12 +171,4 @@ data object HTCodecs {
      */
     @JvmStatic
     fun <T : Any> holderSet(registryKey: RegistryKey<T>): Codec<HolderSet<T>> = RegistryCodecs.homogeneousList(registryKey)
-
-    /**
-     * 指定した[registryKey]から[HTSimpleHolderLike]の[Codec]を返します。
-     * @param T レジストリの要素のクラス
-     * @since 0.13.0
-     */
-    @JvmStatic
-    fun <T : Any> holderLike(registryKey: RegistryKey<T>): Codec<HTSimpleHolderLike<T>> = HTHolderLikeCodec(registryKey)
 }

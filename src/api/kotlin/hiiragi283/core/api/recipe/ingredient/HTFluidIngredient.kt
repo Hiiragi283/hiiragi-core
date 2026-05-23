@@ -8,6 +8,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
 import net.neoforged.neoforge.fluids.FluidStack
+import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 
 /**
@@ -24,7 +25,7 @@ class HTFluidIngredient(val unsized: FluidIngredient, val amount: Int) : HTIngre
                     HTCodecs.FLUID_INGREDIENT.forGetter(HTFluidIngredient::unsized),
                     HTCodecs.NON_NEGATIVE_INT
                         .fieldOf(HTConst.AMOUNT)
-                        .orElse(HTConst.DEFAULT_FLUID_AMOUNT)
+                        .orElse(FluidType.BUCKET_VOLUME)
                         .forGetter(HTFluidIngredient::amount),
                 ).apply(instance, ::HTFluidIngredient)
         }

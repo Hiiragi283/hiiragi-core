@@ -15,6 +15,7 @@ import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.HTSimpleMaterialContents
 import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
@@ -23,9 +24,6 @@ import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.property.getOrDefault
-import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.HTSimpleFluidHolderLike
-import hiiragi283.core.api.registry.HTSimpleItemHolderLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
@@ -43,6 +41,8 @@ import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Blocks
 import net.neoforged.neoforge.common.Tags
 import java.util.function.Consumer
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.material.Fluid
 
 data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiCoreAPI.MOD_ID) {
     override fun addDynamicTranslations(afterLanguageLoadEvent: AfterLanguageLoadEvent) {}
@@ -193,28 +193,29 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
             val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
             consumer(key.translationKey, materialName.getTranslatedName(langType))
             // Block
-            for ((part: HTPart, block: HTBlockHolderLike<*>) in registered.blocks.column(entry)) {
+            for ((part: HTPart, block: HTMaterialContents.SimpleEntry<Block>) in registered.blocks.column(entry)) {
                 val name: String = translate(langType, part, entry) ?: continue
                 consumer(block.get().descriptionId, name)
             }
             // Fluid
-            val fluids: HTMaterialContents<HTFluidPart, HTMaterialContents.FluidEntry> = HiiragiCoreAccess.INSTANCE.registeredFluids
-            for ((part: HTFluidPart, fluid: HTSimpleFluidHolderLike) in fluids.column(entry)) {
+            val fluids: HTSimpleMaterialContents<HTFluidPart, Fluid> = HiiragiCoreAccess.INSTANCE.registeredFluids
+            for ((part: HTFluidPart, fluid: HTMaterialContents.SimpleEntry<Fluid>) in fluids.column(entry)) {
                 val name: String = translate(langType, part, entry) ?: continue
-                consumer(fluid.getFluidType().descriptionId, name)
+                val fluidIn: Fluid = fluid.get()
+                consumer(fluidIn.fluidType.descriptionId, name)
                 consumer(Tags.getTagTranslationKey(part.createTagKey(entry)), name)
 
                 val bucketName: String = HTLangPatternProvider.create("%s Bucket", "%s入りバケツ").translate(langType, name)
-                consumer(fluid.getBucket().translationKey, bucketName)
+                consumer(fluidIn.bucket.descriptionId, bucketName)
                 consumer(Tags.getTagTranslationKey(part.createBucketTag(entry)), bucketName)
             }
             // Item
-            for ((part: HTPart, item: HTSimpleItemHolderLike) in registered.items.column(entry)) {
+            for ((part: HTPart, item: HTMaterialContents.ItemEntry) in registered.items.column(entry)) {
                 val name: String = translate(langType, part, entry) ?: continue
                 consumer(item.translationKey, name)
             }
             // Tool
-            for ((toolType: HTToolType, tool: HTSimpleItemHolderLike) in registered.tools.column(entry)) {
+            for ((toolType: HTToolType, tool: HTMaterialContents.ItemEntry) in registered.tools.column(entry)) {
                 consumer(tool.translationKey, toolType.langPattern.translate(langType, materialName))
             }
         }

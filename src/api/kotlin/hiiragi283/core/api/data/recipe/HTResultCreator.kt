@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data.recipe
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
@@ -9,7 +8,7 @@ import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.property.getDefaultFluidAmount
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
-import hiiragi283.core.api.registry.HTFluidHolderLike
+import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.VanillaFluidContents
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -18,6 +17,7 @@ import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.IntUnaryOperator
+import net.neoforged.neoforge.fluids.FluidType
 
 /**
  * [HTItemResult]と[HTFluidResult]に関するヘルパークラスです。
@@ -39,29 +39,29 @@ data object HTResultCreator {
     /**
      * 指定した[部品][part]と[素材][material]から[HTItemResult]の新しいインスタンスを作成します。
      * @since 0.12.0
-
-     @_root_ide_package_.kotlin.jvm.JvmStatic */
+     **/
+    @JvmStatic
     fun material(part: HTPartLike, material: HTMaterialLike, amount: Int = 1): HTItemResult = HTItemResult.MaterialPart(part.asPart(), material.asMaterialKey(), amount)
 
     //    Fluid    //
 
     @JvmStatic
-    fun create(fluid: Fluid, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult = create(FluidStack(fluid, amount))
+    fun create(fluid: Fluid, amount: Int = FluidType.BUCKET_VOLUME): HTFluidResult = create(FluidStack(fluid, amount))
 
     @JvmStatic
-    fun create(fluid: HTFluidHolderLike<*>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult = create(fluid.toStack(amount))
+    fun create(fluid: HTFluidContent, amount: Int = FluidType.BUCKET_VOLUME): HTFluidResult = create(fluid.toStack(amount))
 
     @JvmStatic
     fun create(stack: FluidStack): HTFluidResult = HTFluidResult.create(stack)
 
     @JvmStatic
-    fun water(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult = create(VanillaFluidContents.WATER, amount)
+    fun water(amount: Int = FluidType.BUCKET_VOLUME): HTFluidResult = create(VanillaFluidContents.WATER, amount)
 
     @JvmStatic
-    fun lava(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult = create(VanillaFluidContents.LAVA, amount)
+    fun lava(amount: Int = FluidType.BUCKET_VOLUME): HTFluidResult = create(VanillaFluidContents.LAVA, amount)
 
     @JvmStatic
-    fun milk(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidResult = create(VanillaFluidContents.MILK, amount)
+    fun milk(amount: Int = FluidType.BUCKET_VOLUME): HTFluidResult = create(VanillaFluidContents.MILK, amount)
 
     @JvmStatic
     fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidResult = material(HTFluidPart.MOLTEN, material, operator)

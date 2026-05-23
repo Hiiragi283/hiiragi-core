@@ -2,7 +2,7 @@ package hiiragi283.core.api.data.map
 
 import hiiragi283.core.api.data.recipe.HTIngredientCreator
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.registry.toItemLike
+import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.core.HolderLookup
@@ -44,7 +44,7 @@ abstract class HTDataMapProvider(packOutput: PackOutput, lookupProvider: Complet
     protected fun <T : Any, R : Any> Builder<T, R>.addHolder(holder: HTIdLike, value: T, vararg conditions: ICondition): Builder<T, R> = add(holder.getId(), value, false, *conditions)
 
     // Item
-    protected fun <T : Any> Builder<T, Item>.addItem(item: ItemLike, value: T, vararg conditions: ICondition): Builder<T, Item> = this.addHolder(item.toItemLike(), value, *conditions)
+    protected fun <T : Any> Builder<T, Item>.addItem(item: ItemLike, value: T, vararg conditions: ICondition): Builder<T, Item> = this.addHolder(item.asItem().toLike(), value, *conditions)
 
     protected fun <T : Any> Builder<T, Item>.add(
         prefix: HTTagPrefix,

@@ -5,6 +5,7 @@ import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.HTFluidContentRegister
 import hiiragi283.core.api.tag.RawTagKey
 import hiiragi283.core.common.fluid.HTDragonBreathFluidType
 import hiiragi283.core.common.fluid.HTDyedFluidType
@@ -12,7 +13,6 @@ import hiiragi283.core.common.fluid.HTExperienceFluidType
 import hiiragi283.core.common.fluid.HTLatexFluid
 import hiiragi283.core.common.fluid.HTPotionFluidType
 import hiiragi283.core.common.item.HTPotionBucketItem
-import hiiragi283.core.common.registry.register.HTFluidContentRegister
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.world.item.DyeColor

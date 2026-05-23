@@ -3,12 +3,11 @@ package hiiragi283.core.common.item
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.item.HTSubCreativeTabContents
 import hiiragi283.core.api.item.createItemStack
-import hiiragi283.core.api.registry.HTItemLike
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCDataComponents
-import hiiragi283.core.setup.HCItems
+import net.minecraft.core.Holder
 import net.minecraft.world.entity.SlotAccess
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.ClickAction
@@ -61,9 +60,9 @@ class HTBlueprintItem(properties: Properties) :
 
     //    HTSubCreativeTabContents    //
 
-    override fun addItems(baseItem: HTItemLike<*>, context: HTSubCreativeTabContents.Context) {
+    override fun addItems(baseItem: Holder<Item>, context: HTSubCreativeTabContents.Context) {
         RANGE
-            .map { createItemStack(HCItems.BLUEPRINT, HCDataComponents.BLUEPRINT_NUMBER, it) }
+            .map { createItemStack(baseItem.value(), HCDataComponents.BLUEPRINT_NUMBER, it) }
             .forEach(context)
     }
 

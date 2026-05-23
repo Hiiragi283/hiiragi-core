@@ -1,5 +1,1 @@
-{
-  "net/minecraft/world/item/ItemStack": [
-    "hiiragi283/core/api/registry/TypedInstance<net.minecraft.world.item.Item>"
-  ]
-}
+{}

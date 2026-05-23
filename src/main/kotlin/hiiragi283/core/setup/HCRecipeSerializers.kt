@@ -3,6 +3,7 @@ package hiiragi283.core.setup
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.registry.HTDeferredRecipeSerializerRegister
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.crafting.HCExperienceStoringRecipe
 import hiiragi283.core.common.crafting.HTBlueprintCloningRecipe
@@ -11,7 +12,6 @@ import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
-import hiiragi283.core.common.registry.register.HTDeferredRecipeSerializerRegister
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer
 

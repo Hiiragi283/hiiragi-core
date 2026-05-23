@@ -1,7 +1,7 @@
 package hiiragi283.core.common.registry
 
+import hiiragi283.core.api.registry.HTDeferredHolder
 import net.minecraft.core.BlockPos
-import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
@@ -10,13 +10,10 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 
-class HTDeferredBlockEntityType<BE : BlockEntity> : HTBasicHolderLike<BlockEntityType<*>, BlockEntityType<BE>> {
+class HTDeferredBlockEntityType<BE : BlockEntity> : HTDeferredHolder<BlockEntityType<*>, BlockEntityType<BE>> {
     constructor(key: ResourceKey<BlockEntityType<*>>) : super(key)
 
     constructor(id: ResourceLocation) : super(Registries.BLOCK_ENTITY_TYPE, id)
-
-    @Suppress("UNCHECKED_CAST")
-    override fun get(): BlockEntityType<BE> = BuiltInRegistries.BLOCK_ENTITY_TYPE.getOrThrow(key) as BlockEntityType<BE>
 
     fun create(pos: BlockPos, state: BlockState): BE = get().create(pos, state) ?: error("Failed to create Block Entity at $pos")
 
@@ -27,6 +24,4 @@ class HTDeferredBlockEntityType<BE : BlockEntity> : HTBasicHolderLike<BlockEntit
         true -> clientTicker
         false -> serverTicker
     }
-
-    override fun toString(): String = "HTDeferredBlockEntityType(key=$key)"
 }

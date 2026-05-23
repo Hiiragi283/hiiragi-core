@@ -2,19 +2,19 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.HTBlockItem
-import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.registry.HTBasicDeferredBlockAndItem
+import hiiragi283.core.api.registry.HTDeferredBlock
+import hiiragi283.core.api.registry.HTDeferredBlockAndItem
+import hiiragi283.core.api.registry.HTDeferredBlockAndItemRegister
+import hiiragi283.core.api.registry.HTDeferredBlockRegister
+import hiiragi283.core.api.registry.HTSimpleDeferredBlockAndItem
+import hiiragi283.core.api.registry.HTWeatheringCopperBlocks
 import hiiragi283.core.common.block.HTCopperBasinBlock
 import hiiragi283.core.common.block.HTTestBlock
 import hiiragi283.core.common.block.HTTreeTapBlock
 import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.block.HTWeatheringCopperBasinBlock
 import hiiragi283.core.common.item.block.HTWarpedWartItem
-import hiiragi283.core.common.registry.HTBasicDeferredBlockAndItem
-import hiiragi283.core.common.registry.HTDeferredBlockAndItem
-import hiiragi283.core.common.registry.HTSimpleDeferredBlockAndItem
-import hiiragi283.core.common.registry.HTWeatheringCopperBlocks
-import hiiragi283.core.common.registry.register.HTDeferredBlockAndItemRegister
-import hiiragi283.core.common.registry.register.HTDeferredBlockRegister
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.SoundType
@@ -89,7 +89,7 @@ object HCBlocks {
     )
 
     @JvmField
-    val TEST: HTBlockHolderLike<HTTestBlock> = REGISTER_ONLY_BLOCK.registerBlock(
+    val TEST: HTDeferredBlock<HTTestBlock> = REGISTER_ONLY_BLOCK.registerBlock(
         "test",
         unbreakable().requiredFeatures(HiiragiCoreAPI.EXPERIMENTAL).noLootTable(),
         ::HTTestBlock,

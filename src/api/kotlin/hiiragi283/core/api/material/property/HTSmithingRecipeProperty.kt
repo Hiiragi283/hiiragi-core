@@ -1,7 +1,8 @@
 package hiiragi283.core.api.material.property
 
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.resource.SupplierWithId
+import net.minecraft.world.item.Item
 
 /**
  * 素材に基づいた鍛冶型レシピを表すクラスです。
@@ -12,4 +13,4 @@ import hiiragi283.core.api.registry.HTItemHolderLike
  * @since 0.9.0
  */
 @JvmRecord
-data class HTSmithingRecipeProperty(val template: HTItemHolderLike<*>, val base: HTMaterialKey, val allowCrafting: Boolean)
+data class HTSmithingRecipeProperty(val template: SupplierWithId<Item>, val base: HTMaterialKey, val allowCrafting: Boolean)

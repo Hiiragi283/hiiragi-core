@@ -2,10 +2,9 @@ package hiiragi283.core.api.data.model
 
 import com.google.gson.JsonObject
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.HTFluidHolderLike
+import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
@@ -21,7 +20,10 @@ import net.minecraft.data.models.model.ModelTemplates
 import net.minecraft.data.models.model.TextureMapping
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
+import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.properties.Property
+import net.minecraft.world.level.material.Fluid
+import net.neoforged.neoforge.fluids.FluidType
 
 /**
  * BlockState JSONおよびモデルJSONを生成する[ResourceGenTask]の抽象クラスです。
@@ -59,11 +61,11 @@ abstract class HTModelProvider : ResourceGenTask {
         sink.addBlockState(block.getId(), generator.get())
     }
 
-    protected fun addSimpleBlock(block: HTBlockHolderLike<*>, model: HTTexturedModel) {
+    protected fun addSimpleBlock(block: SupplierWithId<Block>, model: HTTexturedModel) {
         addBlockState(createSimpleGenerator(block, model.saveBlock(block, modelOutput)), block)
     }
 
-    protected fun addSimpleBlockAndItem(block: HTBlockHolderLike<*>, model: HTTexturedModel) {
+    protected fun addSimpleBlockAndItem(block: SupplierWithId<Block>, model: HTTexturedModel) {
         addSimpleBlock(block, model)
         sink.addItemModel(block.getId(), DelegatedModel(block.blockId).get())
     }
@@ -71,11 +73,11 @@ abstract class HTModelProvider : ResourceGenTask {
     /**
      * @see net.minecraft.data.models.BlockModelGenerators.createTrivialBlock
      */
-    protected fun addSimpleBlock(block: HTBlockHolderLike<*>, provider: HTTexturedModel.Provider = HTTexturedModels.CUBE_ALL) {
+    protected fun addSimpleBlock(block: SupplierWithId<Block>, provider: HTTexturedModel.Provider = HTTexturedModels.CUBE_ALL) {
         addBlockState(createSimpleGenerator(block, provider.saveBlock(block, modelOutput)), block)
     }
 
-    protected fun addSimpleBlockAndItem(block: HTBlockHolderLike<*>, provider: HTTexturedModel.Provider = HTTexturedModels.CUBE_ALL) {
+    protected fun addSimpleBlockAndItem(block: SupplierWithId<Block>, provider: HTTexturedModel.Provider = HTTexturedModels.CUBE_ALL) {
         addSimpleBlock(block, provider)
         sink.addItemModel(block.getId(), DelegatedModel(block.blockId).get())
     }
@@ -83,20 +85,12 @@ abstract class HTModelProvider : ResourceGenTask {
     /**
      * @see net.minecraft.data.models.BlockModelGenerators.createSimpleBlock
      */
-    protected fun createSimpleGenerator(block: HTBlockHolderLike<*>, modelId: ResourceLocation): MultiVariantGenerator = MultiVariantGenerator.multiVariant(block.get(), Variant.variant().with(VariantProperties.MODEL, modelId))
-
-    protected fun addLiquidBlock(content: HTFluidContent) {
-        val block: HTBlockHolderLike<*> = content.blockHolder ?: return
-        addSimpleBlock(
-            block,
-            HTTexturedModels.particleOnly(HTConst.MINECRAFT.toId(HTConst.BLOCK, "water_still")),
-        )
-    }
+    protected fun createSimpleGenerator(block: SupplierWithId<Block>, modelId: ResourceLocation): MultiVariantGenerator = MultiVariantGenerator.multiVariant(block.get(), Variant.variant().with(VariantProperties.MODEL, modelId))
 
     /**
      * @see net.minecraft.data.models.BlockModelGenerators.createCropBlock
      */
-    protected fun addCropBlock(block: HTBlockHolderLike<*>, ageProperty: Property<Int>, vararg ageToSuffix: Int) {
+    protected fun addCropBlock(block: SupplierWithId<Block>, ageProperty: Property<Int>, vararg ageToSuffix: Int) {
         // Block
         require(ageProperty.possibleValues.size == ageToSuffix.size)
         val map: MutableMap<Int, ResourceLocation> = hashMapOf()
@@ -156,18 +150,18 @@ abstract class HTModelProvider : ResourceGenTask {
     /**
      * @see net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder
      */
-    protected fun addBucketModel(content: HTFluidHolderLike<*>, isDrip: Boolean) {
+    protected fun addBucketModel(fluid: Fluid, isDrip: Boolean, fluidType: FluidType = fluid.fluidType, bucket: HTIdLike = fluid.bucket.toLike()) {
         val parent: ResourceLocation = when {
             isDrip -> "bucket_drip"
             else -> "bucket"
         }.let { HTConst.NEOFORGE.toId(HTConst.ITEM, it) }
         val root = JsonObject()
         root.addProperty("parent", parent.toString())
-        root.addProperty("fluid", content.getId().toString())
+        root.addProperty("fluid", fluid.toString())
         root.addProperty("loader", "neoforge:fluid_container")
-        if (content.getFluidType().isLighterThanAir) {
+        if (fluidType.isLighterThanAir) {
             root.addProperty("flip_gas", "true")
         }
-        sink.addItemModel(content.getBucket().getId(), root)
+        sink.addItemModel(bucket.getId(), root)
     }
 }

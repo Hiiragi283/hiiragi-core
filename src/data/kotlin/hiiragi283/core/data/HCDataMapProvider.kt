@@ -1,9 +1,9 @@
 package hiiragi283.core.data
 
 import hiiragi283.core.api.data.map.HTDataMapProvider
+import hiiragi283.core.api.registry.HTDeferredBlockAndItem
+import hiiragi283.core.api.registry.HTWeatheringCopperBlocks
 import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.common.registry.HTDeferredBlockAndItem
-import hiiragi283.core.common.registry.HTWeatheringCopperBlocks
 import hiiragi283.core.setup.HCBlocks
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput

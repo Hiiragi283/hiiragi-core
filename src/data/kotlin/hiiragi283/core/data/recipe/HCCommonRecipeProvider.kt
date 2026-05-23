@@ -7,13 +7,15 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.createItemStack
+import hiiragi283.core.api.item.toStack
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.getOrThrow
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.HTItemLike
+import hiiragi283.core.api.registry.HTSimpleDeferredItem
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HiiragiCoreTags
@@ -33,6 +35,7 @@ import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.core.component.DataComponents
 import net.minecraft.tags.ItemTags
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.alchemy.PotionContents
@@ -68,7 +71,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         }
         // Glass Dust -> Glass
         HTCookingRecipeBuilder.smelting(output) {
-            ingredient = itemCreator.create(getOrThrow(CommonParts.DUST, VanillaMaterialKeys.GLASS))
+            ingredient = itemCreator.create(getOrThrow(CommonParts.DUST, VanillaMaterialKeys.GLASS).get())
             resultStack = ItemStack(Items.GLASS)
             recipeId suffix "_from_dust"
         }
@@ -146,7 +149,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             recipeId suffix "_from_resin"
         }
         // Synthetic
-        for (item: HTItemLike<*> in listOf(HCItems.SYNTHETIC_FEATHER, HCItems.SYNTHETIC_FIBER, HCItems.SYNTHETIC_LEATHER)) {
+        for (item: HTSimpleDeferredItem in listOf(HCItems.SYNTHETIC_FEATHER, HCItems.SYNTHETIC_FIBER, HCItems.SYNTHETIC_LEATHER)) {
             HTStonecuttingRecipeBuilder.create(output) {
                 ingredient = itemCreator.create(HiiragiCoreTags.Items.PLASTICS)
                 resultStack = item.toStack()
@@ -363,7 +366,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
                     ingredients += itemCreator.create(color.dyesTag)
                 }
                 ingredients += itemCreator.create(Tags.Items.BUCKETS_WATER)
-                resultStack = content.getBucket().toStack()
+                resultStack = content.bucketHolder.toStack()
                 recipeId suffix "_from_bye"
             }
         }
@@ -406,7 +409,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
     }
 
     @JvmStatic
-    private fun getOrThrow(part: HTPartLike, material: HTMaterialLike): HTItemLike<*> = HiiragiCoreAccess.INSTANCE
+    private fun getOrThrow(part: HTPartLike, material: HTMaterialLike): SupplierWithId<Item> = HiiragiCoreAccess.INSTANCE
         .registeredContents
         .items
         .getOrThrow(part, material)

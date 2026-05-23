@@ -1,6 +1,5 @@
 package hiiragi283.core.api.resource
 
-import hiiragi283.core.api.registry.HTHolderLike
 import net.minecraft.resources.ResourceLocation
 import java.util.function.Supplier
 
@@ -9,7 +8,6 @@ import java.util.function.Supplier
  * @param T 保持している値のクラス
  * @author Hiiragi Tsubasa
  * @since 0.15.2
- * @see HTHolderLike
  */
 interface SupplierWithId<out T> :
     Supplier<@UnsafeVariance T>,

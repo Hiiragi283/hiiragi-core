@@ -7,12 +7,8 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
-import hiiragi283.core.api.registry.HTSimpleFluidHolderLike
-import hiiragi283.core.api.registry.HTSimpleHolderLike
-import hiiragi283.core.api.registry.HTSimpleItemHolderLike
 import hiiragi283.core.api.registry.getResult
-import hiiragi283.core.api.registry.toFluidLike
-import hiiragi283.core.api.registry.toItemLike
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.util.ErrorText
 import hiiragi283.core.api.util.HTTextResult
@@ -22,8 +18,10 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeManager
+import net.minecraft.world.level.material.Fluid
 import net.neoforged.bus.api.Event
 import net.neoforged.neoforge.common.conditions.ICondition
 
@@ -84,20 +82,20 @@ class HTRegisterRuntimeRecipeEvent(
     fun <RECIPE : Any> getAllRecipes(lookup: HTRecipeLookup<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> = lookup.getAllRecipes(lookupContext)
 
     // TagKey
-    fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLike<T>> = HiiragiCoreAccess.INSTANCE.getFirstHolder(context.provider, tagKey)
+    fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<SupplierWithId<T>> = HiiragiCoreAccess.INSTANCE.getFirstHolder(context.provider, tagKey)
 
-    fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): HTSimpleHolderLike<T>? = getHolderResult(tagKey)
+    fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): SupplierWithId<T>? = getHolderResult(tagKey)
         .onLeft { errorText: ErrorText -> if (printLog) HiiragiCoreAPI.LOGGER.debug(errorText.value) }
         .getOrNull()
 
     fun <T : Any> isPresentTag(tagKey: TagKey<T>): Boolean = context.provider.asGetterLookup().getResult(tagKey).isRight()
 
     // Material
-    fun getFirstHolder(prefix: HTTagPrefix, material: HTMaterialLike): HTSimpleItemHolderLike? = getFirstHolder(prefix.itemTagKey(material), true)?.toItemLike()
+    fun getFirstHolder(prefix: HTTagPrefix, material: HTMaterialLike): SupplierWithId<Item>? = getFirstHolder(prefix.itemTagKey(material), true)
 
     fun isPresentTag(prefix: HTTagPrefix, material: HTMaterialLike): Boolean = isPresentTag(prefix.itemTagKey(material))
 
-    fun getFirstHolder(part: HTFluidPart, material: HTMaterialLike): HTSimpleFluidHolderLike? = getFirstHolder(part.createTagKey(material), true)?.toFluidLike()
+    fun getFirstHolder(part: HTFluidPart, material: HTMaterialLike): SupplierWithId<Fluid>? = getFirstHolder(part.createTagKey(material), true)
 
     fun isPresentTag(part: HTFluidPart, material: HTMaterialLike): Boolean = isPresentTag(part.createTagKey(material))
 }

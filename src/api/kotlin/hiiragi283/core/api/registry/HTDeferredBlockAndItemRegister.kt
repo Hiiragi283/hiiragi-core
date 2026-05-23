@@ -1,26 +1,20 @@
-package hiiragi283.core.common.registry.register
+package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.function.Identity
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.item.HTBlockItem
-import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.HTItemHolderLike
-import hiiragi283.core.common.registry.HTBasicDeferredBlockAndItem
-import hiiragi283.core.common.registry.HTDeferredBlockAndItem
-import hiiragi283.core.common.registry.HTSimpleDeferredBlockAndItem
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.neoforged.bus.api.IEventBus
 
-typealias BlockFactory<BLOCK> = (BlockBehaviour.Properties) -> BLOCK
-
-typealias BlockWithContextFactory<C, BLOCK> = (C, BlockBehaviour.Properties) -> BLOCK
-
 class HTDeferredBlockAndItemRegister(private val blockRegister: HTDeferredBlockRegister, private val itemRegister: HTDeferredItemRegister) {
     constructor(namespace: String) : this(HTDeferredBlockRegister(namespace))
 
-    constructor(blockRegister: HTDeferredBlockRegister) : this(blockRegister, HTDeferredItemRegister(blockRegister.namespace))
+    constructor(blockRegister: HTDeferredBlockRegister) : this(
+        blockRegister,
+        HTDeferredItemRegister(blockRegister.namespace),
+    )
 
     fun registerSimple(
         name: String,
@@ -42,8 +36,8 @@ class HTDeferredBlockAndItemRegister(private val blockRegister: HTDeferredBlockR
         itemFactory: ItemWithContextFactory<BLOCK, ITEM>,
         itemProp: Identity<Item.Properties> = identity(),
     ): HTDeferredBlockAndItem<BLOCK, ITEM> {
-        val blockHolder: HTBlockHolderLike<BLOCK> = blockRegister.registerBlock(name, blockProp, blockFactory)
-        val itemHolder: HTItemHolderLike<ITEM> = itemRegister.registerItem(
+        val blockHolder: HTDeferredBlock<BLOCK> = blockRegister.registerBlock(name, blockProp, blockFactory)
+        val itemHolder: HTDeferredItem<ITEM> = itemRegister.registerItem(
             name,
             { prop: Item.Properties -> itemFactory(blockHolder.get(), prop) },
             itemProp,
@@ -51,9 +45,9 @@ class HTDeferredBlockAndItemRegister(private val blockRegister: HTDeferredBlockR
         return HTDeferredBlockAndItem(blockHolder, itemHolder)
     }
 
-    fun asBlockSequence(): Sequence<HTBlockHolderLike<*>> = blockRegister.asBlockSequence()
+    fun asBlockSequence(): Sequence<HTDeferredBlock<*>> = blockRegister.asSequence()
 
-    fun asItemSequence(): Sequence<HTItemHolderLike<*>> = itemRegister.asItemSequence()
+    fun asItemSequence(): Sequence<HTDeferredItem<*>> = itemRegister.asSequence()
 
     fun register(bus: IEventBus) {
         blockRegister.register(bus)

@@ -3,18 +3,19 @@ package hiiragi283.core.common.item
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.item.HTSubCreativeTabContents
 import hiiragi283.core.api.item.createItemStack
-import hiiragi283.core.api.registry.HTItemLike
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
 import hiiragi283.core.api.util.toOptional
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.text.HCTranslation
+import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.tags.TagKey
 import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.item.DiggerItem
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Rarity
 import net.minecraft.world.item.Tier
@@ -42,8 +43,8 @@ class HTAlmightyPickaxeItem(properties: Properties) :
 
     //    HTSubCreativeTabContents    //
 
-    override fun addItems(baseItem: HTItemLike<*>, context: HTSubCreativeTabContents.Context) {
-        createItemStack(baseItem, DataComponents.UNBREAKABLE, Unbreakable(true)).let(context)
+    override fun addItems(baseItem: Holder<Item>, context: HTSubCreativeTabContents.Context) {
+        createItemStack(baseItem.value(), DataComponents.UNBREAKABLE, Unbreakable(true)).let(context)
     }
 
     //    Tier    //

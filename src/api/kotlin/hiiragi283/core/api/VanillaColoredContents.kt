@@ -1,9 +1,10 @@
 package hiiragi283.core.api
 
-import hiiragi283.core.api.registry.HTSimpleItemHolderLike
-import hiiragi283.core.api.registry.toItemLike
+import hiiragi283.core.api.registry.HTDeferredItem
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.toId
 import net.minecraft.world.item.DyeColor
+import net.minecraft.world.level.ItemLike
 
 /**
  * @author Hiiragi Tsubasa
@@ -11,54 +12,54 @@ import net.minecraft.world.item.DyeColor
  */
 data object VanillaColoredContents {
     @JvmField
-    val BANNER: HTColoredContents<HTSimpleItemHolderLike> = create("%s_banner")
+    val BANNER: HTColoredContents<SupplierWithId<ItemLike>> = create("%s_banner")
 
     @JvmField
-    val BED: HTColoredContents<HTSimpleItemHolderLike> = create("%s_bed")
+    val BED: HTColoredContents<SupplierWithId<ItemLike>> = create("%s_bed")
 
     @JvmField
-    val CANDLE: HTColoredContents<HTSimpleItemHolderLike> = create("%s_candle")
+    val CANDLE: HTColoredContents<SupplierWithId<ItemLike>> = create("%s_candle")
 
     @JvmField
-    val CARPET: HTColoredContents<HTSimpleItemHolderLike> = create("%s_carpet")
+    val CARPET: HTColoredContents<SupplierWithId<ItemLike>> = create("%s_carpet")
 
     @JvmField
-    val CONCRETE: HTColoredContents<HTSimpleItemHolderLike> = create("%s_concrete")
+    val CONCRETE: HTColoredContents<SupplierWithId<ItemLike>> = create("%s_concrete")
 
     @JvmField
-    val CONCRETE_POWDER: HTColoredContents<HTSimpleItemHolderLike> = create("%s_concrete_powder")
+    val CONCRETE_POWDER: HTColoredContents<SupplierWithId<ItemLike>> = create("%s_concrete_powder")
 
     @JvmField
-    val DYE: HTColoredContents<HTSimpleItemHolderLike> = create("%s_dye")
+    val DYE: HTColoredContents<SupplierWithId<ItemLike>> = create("%s_dye")
 
     @JvmField
-    val GLAZED_TERRACOTTA: HTColoredContents<HTSimpleItemHolderLike> = create("%s_glazed_terracotta")
+    val GLAZED_TERRACOTTA: HTColoredContents<SupplierWithId<ItemLike>> = create("%s_glazed_terracotta")
 
     @JvmField
-    val SHULKER_BOX: HTColoredContents<HTSimpleItemHolderLike> = create("%s_shulker_box")
+    val SHULKER_BOX: HTColoredContents<SupplierWithId<ItemLike>> = create("%s_shulker_box")
 
     @JvmField
-    val STAINED_GLASS: HTColoredContents<HTSimpleItemHolderLike> = create("%s_stained_glass")
+    val STAINED_GLASS: HTColoredContents<SupplierWithId<ItemLike>> = create("%s_stained_glass")
 
     @JvmField
-    val STAINED_GLASS_PANE: HTColoredContents<HTSimpleItemHolderLike> = create("%s_stained_glass_pane")
+    val STAINED_GLASS_PANE: HTColoredContents<SupplierWithId<ItemLike>> = create("%s_stained_glass_pane")
 
     @JvmField
-    val TERRACOTTA: HTColoredContents<HTSimpleItemHolderLike> = create("%s_terracotta")
+    val TERRACOTTA: HTColoredContents<SupplierWithId<ItemLike>> = create("%s_terracotta")
 
     @JvmField
-    val WOOL: HTColoredContents<HTSimpleItemHolderLike> = create("%s_wool")
+    val WOOL: HTColoredContents<SupplierWithId<ItemLike>> = create("%s_wool")
 
     @JvmStatic
-    private fun create(path: String): HTColoredContents<HTSimpleItemHolderLike> = object : HTColoredContents<HTSimpleItemHolderLike> {
-        val map: Map<HTDefaultColor, HTSimpleItemHolderLike> = HTDefaultColor.entries.associateWith {
-            HTConst.MINECRAFT.toId(path.replace("%s", it.serializedName)).toItemLike()
+    private fun create(path: String): HTColoredContents<SupplierWithId<ItemLike>> = object : HTColoredContents<SupplierWithId<ItemLike>> {
+        val map: Map<HTDefaultColor, SupplierWithId<ItemLike>> = HTDefaultColor.entries.associateWith {
+            HTDeferredItem(HTConst.MINECRAFT.toId(path.replace("%s", it.serializedName)))
         }
 
-        override fun get(color: HTDefaultColor): HTSimpleItemHolderLike? = map[color]
+        override fun get(color: HTDefaultColor): SupplierWithId<ItemLike>? = map[color]
 
-        override fun get(color: DyeColor): HTSimpleItemHolderLike? = HTDefaultColor.fromDye(color).let(::get)
+        override fun get(color: DyeColor): SupplierWithId<ItemLike>? = HTDefaultColor.fromDye(color).let(::get)
 
-        override fun iterator(): Iterator<Pair<HTDefaultColor, HTSimpleItemHolderLike>> = map.toList().iterator()
+        override fun iterator(): Iterator<Pair<HTDefaultColor, SupplierWithId<ItemLike>>> = map.toList().iterator()
     }
 }

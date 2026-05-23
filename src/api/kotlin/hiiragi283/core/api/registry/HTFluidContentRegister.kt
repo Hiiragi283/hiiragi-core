@@ -1,20 +1,9 @@
-package hiiragi283.core.common.registry.register
+package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.fluid.HTVirtualFluid
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.function.partially2
-import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.registry.HTFluidHolderLike
-import hiiragi283.core.api.registry.HTHolderLike
-import hiiragi283.core.api.registry.HTItemHolderLike
-import hiiragi283.core.api.registry.HTSimpleHolderLike
-import hiiragi283.core.api.registry.HTSimpleItemHolderLike
-import hiiragi283.core.api.registry.addAlias
-import hiiragi283.core.api.registry.asSequence
-import hiiragi283.core.api.registry.createId
-import hiiragi283.core.api.registry.toFluidLike
-import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.tag.RawTagKey
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey
@@ -29,25 +18,24 @@ import net.minecraft.world.level.material.PushReaction
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.neoforge.fluids.BaseFlowingFluid
+import net.neoforged.neoforge.fluids.BaseFlowingFluid.Flowing
+import net.neoforged.neoforge.fluids.BaseFlowingFluid.Source
 import net.neoforged.neoforge.fluids.DispenseFluidContainer
 import net.neoforged.neoforge.fluids.FluidType
-import net.neoforged.neoforge.registries.DeferredHolder
-import net.neoforged.neoforge.registries.DeferredRegister
-import net.neoforged.neoforge.registries.NeoForgeRegistries
 
 class HTFluidContentRegister(modId: String) {
-    private val fluidRegister: DeferredRegister<Fluid> = DeferredRegister.create(Registries.FLUID, modId)
-    private val typeRegister: DeferredRegister<FluidType> = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, modId)
+    private val fluidRegister: HTDeferredRegister<Fluid> = HTDeferredRegister(Registries.FLUID, modId)
+    private val typeRegister = HTDeferredFluidTypeRegister(modId)
     private val blockRegister = HTDeferredBlockRegister(modId)
     private val itemRegister = HTDeferredItemRegister(modId)
 
-    fun asFluidSequence(): Sequence<HTFluidHolderLike<*>> = fluidRegister.asSequence().map { it.toFluidLike() }
+    fun asFluidSequence(): Sequence<HTDeferredHolder<Fluid, *>> = fluidRegister.asSequence()
 
-    fun asTypeSequence(): Sequence<HTHolderLike<FluidType, *>> = typeRegister.asSequence()
+    fun asTypeSequence(): Sequence<HTDeferredFluidType<*>> = typeRegister.asSequence()
 
-    fun asBlockSequence(): Sequence<HTBlockHolderLike<*>> = blockRegister.asBlockSequence()
+    fun asBlockSequence(): Sequence<HTDeferredBlock<*>> = blockRegister.asSequence()
 
-    fun asItemSequence(): Sequence<HTItemHolderLike<*>> = itemRegister.asItemSequence()
+    fun asItemSequence(): Sequence<HTDeferredItem<*>> = itemRegister.asSequence()
 
     private val contentsCache: MutableMap<ResourceKey<Fluid>, HTFluidContent> = mutableMapOf()
     val keys: Set<ResourceKey<Fluid>> get() = contentsCache.keys
@@ -76,20 +64,20 @@ class HTFluidContentRegister(modId: String) {
 
         eventBus.addListener { event: FMLCommonSetupEvent ->
             event.enqueueWork {
-                for (item: HTItemHolderLike<*> in asItemSequence()) {
+                for (item: HTDeferredItem<*> in asItemSequence()) {
                     DispenserBlock.registerBehavior(item, DispenseFluidContainer.getInstance())
                 }
             }
         }
     }
 
-    inline fun registerVirtual(name: String, builderAction: VirtualBuilder.() -> Unit): HTFluidContent = VirtualBuilder(name).apply(builderAction).build()
+    inline fun registerVirtual(name: String, builderAction: VirtualBuilder.() -> Unit): HTFluidContent.Virtual = VirtualBuilder(name).apply(builderAction).build()
 
-    inline fun registerFlowing(name: String, builderAction: FlowingBuilder.() -> Unit): HTFluidContent = FlowingBuilder(name).apply(builderAction).build()
+    inline fun registerFlowing(name: String, builderAction: FlowingBuilder.() -> Unit): HTFluidContent.Flowing = FlowingBuilder(name).apply(builderAction).build()
 
     //    Builder    //
 
-    abstract inner class Builder<FLUID : Fluid>(protected val name: String) {
+    abstract inner class Builder<FLUID : Fluid, CONTENT : HTFluidContent>(protected val name: String) {
         // Required
         lateinit var properties: FluidType.Properties
         var typeFactory: (FluidType.Properties) -> FluidType = ::FluidType
@@ -98,65 +86,61 @@ class HTFluidContentRegister(modId: String) {
         var bucketTag: RawTagKey = fluidTag.withPrefix("buckets/")
         // Optional
 
-        fun build(): HTFluidContent {
+        fun build(): CONTENT {
             // Fluid Type
-            val typeHolder: DeferredHolder<FluidType, FluidType> = typeRegister.register(name) { _ ->
-                typeFactory(properties.descriptionId("block.${typeRegister.namespace}.$name"))
-            }
+            val typeHolder: HTDeferredFluidType<FluidType> = typeRegister.registerType(name, properties.descriptionId("block.${typeRegister.namespace}.$name"), typeFactory)
             // Fluid Holder
-            val sourceHolder: DeferredHolder<Fluid, FLUID> = DeferredHolder.create(Registries.FLUID, fluidRegister.createId(name))
+            val sourceHolder: HTDeferredHolder<Fluid, FLUID> = HTDeferredHolder(Registries.FLUID, fluidRegister.createId(name))
             // Bucket Item
-            val bucketHolder: HTSimpleItemHolderLike = itemRegister.registerItem(
+            val bucketHolder: HTSimpleDeferredItem = itemRegister.registerItem(
                 "${name}_bucket",
                 { bucketFactory(sourceHolder.get(), it) },
                 { it.stacksTo(1).craftRemainder(Items.BUCKET) },
             )
-            val content: HTFluidContent = createContent(typeHolder.toLike(), sourceHolder.toLike().toFluidLike(), bucketHolder)
+            val content: CONTENT = createContent(typeHolder, sourceHolder, bucketHolder)
             contentsCache[sourceHolder.key!!] = content
             return content
         }
 
         protected abstract fun createContent(
-            typeHolder: HTSimpleHolderLike<FluidType>,
-            sourceHolder: HTFluidHolderLike<FLUID>,
-            bucketHolder: HTSimpleItemHolderLike,
-        ): HTFluidContent
+            typeHolder: HTDeferredFluidType<FluidType>,
+            sourceHolder: HTDeferredHolder<Fluid, FLUID>,
+            bucketHolder: HTSimpleDeferredItem,
+        ): CONTENT
     }
 
-    inner class VirtualBuilder(name: String) : Builder<HTVirtualFluid>(name) {
+    inner class VirtualBuilder(name: String) : Builder<HTVirtualFluid, HTFluidContent.Virtual>(name) {
         override fun createContent(
-            typeHolder: HTSimpleHolderLike<FluidType>,
-            sourceHolder: HTFluidHolderLike<HTVirtualFluid>,
-            bucketHolder: HTSimpleItemHolderLike,
-        ): HTFluidContent {
+            typeHolder: HTDeferredFluidType<FluidType>,
+            sourceHolder: HTDeferredHolder<Fluid, HTVirtualFluid>,
+            bucketHolder: HTSimpleDeferredItem,
+        ): HTFluidContent.Virtual {
             // Content
             fluidRegister.register(name, ::HTVirtualFluid.partially2(typeHolder, bucketHolder))
-            return HTFluidContent(
+            return HTFluidContent.Virtual(
                 typeHolder,
                 sourceHolder,
                 bucketHolder,
                 fluidTag.create(Registries.FLUID),
                 bucketTag.create(Registries.ITEM),
-                null,
-                null,
             )
         }
     }
 
-    inner class FlowingBuilder(name: String) : Builder<BaseFlowingFluid>(name) {
-        var sourceFactory: (BaseFlowingFluid.Properties) -> BaseFlowingFluid.Source = BaseFlowingFluid::Source
-        var flowingFactory: (BaseFlowingFluid.Properties) -> BaseFlowingFluid.Flowing = BaseFlowingFluid::Flowing
+    inner class FlowingBuilder(name: String) : Builder<BaseFlowingFluid, HTFluidContent.Flowing>(name) {
+        var sourceFactory: (BaseFlowingFluid.Properties) -> Source = BaseFlowingFluid::Source
+        var flowingFactory: (BaseFlowingFluid.Properties) -> Flowing = BaseFlowingFluid::Flowing
 
         var blockFactory: ((BaseFlowingFluid, BlockBehaviour.Properties) -> LiquidBlock)? = ::LiquidBlock
         var blockProperties: (BlockBehaviour.Properties) -> BlockBehaviour.Properties = identity()
 
         override fun createContent(
-            typeHolder: HTSimpleHolderLike<FluidType>,
-            sourceHolder: HTFluidHolderLike<BaseFlowingFluid>,
-            bucketHolder: HTSimpleItemHolderLike,
-        ): HTFluidContent {
+            typeHolder: HTDeferredFluidType<FluidType>,
+            sourceHolder: HTDeferredHolder<Fluid, BaseFlowingFluid>,
+            bucketHolder: HTSimpleDeferredItem,
+        ): HTFluidContent.Flowing {
             // Liquid Block
-            val blockHolder: HTBlockHolderLike<LiquidBlock>?
+            val blockHolder: SupplierWithId<LiquidBlock>?
             if (blockFactory == null) {
                 blockHolder = null
             } else {
@@ -174,8 +158,7 @@ class HTFluidContentRegister(modId: String) {
                 ) { prop: BlockBehaviour.Properties -> blockFactory!!(sourceHolder.get(), prop) }
             }
             // Fluid
-            val flowingHolder: DeferredHolder<Fluid, BaseFlowingFluid.Flowing> =
-                DeferredHolder.create(Registries.FLUID, fluidRegister.createId("flowing_$name"))
+            val flowingHolder: HTDeferredHolder<Fluid, Flowing> = HTDeferredHolder(Registries.FLUID, fluidRegister.createId("flowing_$name"))
             val fluidProperties: BaseFlowingFluid.Properties = BaseFlowingFluid
                 .Properties(typeHolder, sourceHolder, flowingHolder)
                 .bucket(bucketHolder)
@@ -183,13 +166,13 @@ class HTFluidContentRegister(modId: String) {
             fluidRegister.register(name) { _ -> sourceFactory(fluidProperties) }
             fluidRegister.register(flowingHolder.id.path) { _ -> flowingFactory(fluidProperties) }
             // Content
-            return HTFluidContent(
+            return HTFluidContent.Flowing(
                 typeHolder,
                 sourceHolder,
                 bucketHolder,
                 fluidTag.create(Registries.FLUID),
                 bucketTag.create(Registries.ITEM),
-                flowingHolder.toLike().toFluidLike(),
+                flowingHolder,
                 blockHolder,
             )
         }

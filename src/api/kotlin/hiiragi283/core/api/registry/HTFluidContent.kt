@@ -1,36 +1,42 @@
 package hiiragi283.core.api.registry
 
-import hiiragi283.core.api.util.Either
-import net.minecraft.core.Holder
-import net.minecraft.resources.ResourceKey
+import hiiragi283.core.api.fluid.createFluidStack
+import hiiragi283.core.api.resource.SupplierWithId
+import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.LiquidBlock
 import net.minecraft.world.level.material.FlowingFluid
 import net.minecraft.world.level.material.Fluid
+import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidType
 
-/**
- * 液体とそれに関する要素を束ねるクラスです。
- * @author Hiiragi Tsubasa
- * @since 0.10.0
- */
-class HTFluidContent(
-    // Required
-    val typeHolder: HTHolderLike<FluidType, *>,
-    private val sourceHolder: HTFluidHolderLike<*>,
-    val bucketHolder: HTSimpleItemHolderLike,
+sealed class HTFluidContent(
+    val typeHolder: HTDeferredFluidType<FluidType>,
+    val sourceHolder: HTDeferredHolder<Fluid, *>,
+    val bucketHolder: HTSimpleDeferredItem,
     val fluidTag: TagKey<Fluid>,
     val bucketTag: TagKey<Item>,
-    // Optional
-    val flowingHolder: HTFluidHolderLike<FlowingFluid>?,
-    val blockHolder: HTBlockHolderLike<LiquidBlock>?,
-) : HTSimpleFluidHolderLike {
-    override fun getBucket(): HTSimpleItemHolderLike = bucketHolder
+) : SupplierWithId<Fluid> by sourceHolder {
+    fun getFluidType(): FluidType = typeHolder.get()
 
-    override fun getFluidType(): FluidType = typeHolder.get()
+    fun toStack(amount: Int = FluidType.BUCKET_VOLUME, patch: DataComponentPatch = DataComponentPatch.EMPTY): FluidStack = createFluidStack(this.get(), amount, patch)
 
-    override fun unwrap(): Either<ResourceKey<Fluid>, Holder<Fluid>> = sourceHolder.unwrap()
+    class Virtual(
+        typeHolder: HTDeferredFluidType<FluidType>,
+        sourceHolder: HTDeferredHolder<Fluid, *>,
+        bucketHolder: HTSimpleDeferredItem,
+        fluidTag: TagKey<Fluid>,
+        bucketTag: TagKey<Item>,
+    ) : HTFluidContent(typeHolder, sourceHolder, bucketHolder, fluidTag, bucketTag)
 
-    override fun get(): Fluid = sourceHolder.get()
+    class Flowing(
+        typeHolder: HTDeferredFluidType<FluidType>,
+        sourceHolder: HTDeferredHolder<Fluid, *>,
+        bucketHolder: HTSimpleDeferredItem,
+        fluidTag: TagKey<Fluid>,
+        bucketTag: TagKey<Item>,
+        val flowingHolder: HTDeferredHolder<Fluid, FlowingFluid>,
+        val blockHolder: HTDeferredBlock<LiquidBlock>?,
+    ) : HTFluidContent(typeHolder, sourceHolder, bucketHolder, fluidTag, bucketTag)
 }

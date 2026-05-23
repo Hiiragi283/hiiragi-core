@@ -5,13 +5,15 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.model.HTBlockStateProvider
 import hiiragi283.core.api.data.model.trackTexture
 import hiiragi283.core.api.data.model.withExistingParent
-import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.NetherWartBlock
 import net.minecraft.world.level.block.WeatheringCopper
 import net.minecraft.world.level.block.state.BlockState
@@ -29,7 +31,7 @@ class HCBlockStateProvider(fileHelper: ExistingFileHelper, output: PackOutput) :
         registerCrops()
 
         // Misc
-        for ((state: WeatheringCopper.WeatherState, block: HTBlockHolderLike<*>) in HCBlocks.COPPER_BASIN.weatheringMap) {
+        for ((state: WeatheringCopper.WeatherState, block: SupplierWithId<Block>) in HCBlocks.COPPER_BASIN.weatheringMap) {
             val cutCopper: ResourceLocation = when (state) {
                 WeatheringCopper.WeatherState.UNAFFECTED -> "cut_copper"
                 WeatheringCopper.WeatherState.EXPOSED -> "exposed_cut_copper"
@@ -49,15 +51,15 @@ class HCBlockStateProvider(fileHelper: ExistingFileHelper, output: PackOutput) :
                 cutCopper,
                 cutCopper,
             )
-            val waxed: HTBlockHolderLike<*> = HCBlocks.COPPER_BASIN.waxedMap[state]!!
+            val waxed: SupplierWithId<Block> = HCBlocks.COPPER_BASIN.waxedMap[state]!!
             simpleBlockAndItem(waxed, models().getExistingFile(block.blockId))
         }
         // Fluids
-        HCFluids.REGISTER.asSequence().forEach(::liquidBlock)
+        HCFluids.REGISTER.asSequence().filterIsInstance<HTFluidContent.Flowing>().forEach(::liquidBlock)
     }
 
     private fun registerCauldron(
-        block: HTBlockHolderLike<*>,
+        block: SupplierWithId<Block>,
         top: ResourceLocation,
         side: ResourceLocation,
         bottom: ResourceLocation,

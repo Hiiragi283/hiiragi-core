@@ -33,7 +33,9 @@ abstract class HTFluidTagsProvider(
 
     fun HTTagBuilder<Fluid>.addContent(content: HTFluidContent): HTTagBuilder<Fluid> {
         this.add(content)
-        content.flowingHolder?.let(this::add)
+        if (content is HTFluidContent.Flowing) {
+            this.add(content.flowingHolder)
+        }
         return this
     }
 

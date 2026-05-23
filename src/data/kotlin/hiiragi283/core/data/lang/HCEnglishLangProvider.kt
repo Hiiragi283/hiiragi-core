@@ -43,7 +43,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.MUSHROOM_STEW, "Mushroom Stew")
         addFluid(HCFluids.DRAGON_BREATH, "Dragon Breath")
         add(HCFluids.POTION.getFluidType().descriptionId, "Invalid Potion Bucket")
-        add(HCFluids.POTION.getBucket(), $$"%1$s Bucket")
+        add(HCFluids.POTION.bucketHolder, $$"%1$s Bucket")
         addFluid(HCFluids.OMINOUS_FLUX, "Ominous Flux")
 
         addFluid(HCFluids.LATEX, "Latex")

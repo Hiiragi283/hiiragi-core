@@ -4,22 +4,14 @@ import hiiragi283.core.api.collection.HTTable
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.tagPrefix
-import hiiragi283.core.api.registry.HTFluidHolderLike
-import hiiragi283.core.api.registry.HTHolderLike
-import hiiragi283.core.api.registry.HTItemHolderLike
-import hiiragi283.core.api.registry.HTSimpleFluidHolderLike
-import hiiragi283.core.api.registry.HTSimpleHolderLike
-import hiiragi283.core.api.registry.HTSimpleItemHolderLike
-import hiiragi283.core.api.registry.toItemLike
 import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.text.Text
-import hiiragi283.core.api.util.Either
-import net.minecraft.core.Holder
-import net.minecraft.resources.ResourceKey
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
-import net.minecraft.world.level.material.Fluid
-import net.neoforged.neoforge.fluids.FluidType
+import net.minecraft.world.level.ItemLike
 
 typealias HTSimpleMaterialContents<R, V> = HTMaterialContents<R, HTMaterialContents.SimpleEntry<V>>
 
@@ -55,13 +47,13 @@ interface HTMaterialContents<R : Any, V : HTMaterialContents.Entry<*>> : HTTable
      * @author Hiiragi Tsubasa
      * @since 0.12.0
      */
-    interface Entry<V : Any> : HTSimpleHolderLike<V> {
+    interface Entry<out V> : SupplierWithId<V> {
         /**
          * 既存の要素である場合は`true`
          */
         val isBuiltIn: Boolean
 
-        operator fun component1(): ResourceKey<V> = getResourceKey()
+        operator fun component1(): ResourceLocation = getId()
 
         operator fun component2(): V = get()
 
@@ -71,45 +63,25 @@ interface HTMaterialContents<R : Any, V : HTMaterialContents.Entry<*>> : HTTable
     /**
      * @since 0.13.0
      */
-    class SimpleEntry<V : Any>(private val holder: HTHolderLike<V, *>, override val isBuiltIn: Boolean) : Entry<V> {
-        override fun unwrap(): Either<ResourceKey<V>, Holder<V>> = holder.unwrap()
-
-        override fun get(): V = holder.get()
-    }
+    class SimpleEntry<V : Any>(private val holder: SupplierWithId<V>, override val isBuiltIn: Boolean) :
+        Entry<V>,
+        SupplierWithId<V> by holder
 
     /**
      * @since 0.13.0
      */
-    class FluidEntry(private val holder: HTFluidHolderLike<*>, override val isBuiltIn: Boolean) :
-        Entry<Fluid>,
-        HTSimpleFluidHolderLike {
-        constructor(fluid: Fluid, isBuiltIn: Boolean) : this(fluid.toLike(), isBuiltIn)
-
-        override fun unwrap(): Either<ResourceKey<Fluid>, Holder<Fluid>> = holder.unwrap()
-
-        override fun get(): Fluid = holder.get()
-
-        override fun getBucket(): HTSimpleItemHolderLike = holder.getBucket()
-
-        override fun getFluidType(): FluidType = holder.getFluidType()
-    }
-
-    /**
-     * @since 0.13.0
-     */
-    class ItemEntry(private val holder: HTItemHolderLike<*>, override val isBuiltIn: Boolean) :
+    class ItemEntry(private val holder: SupplierWithId<Item>, override val isBuiltIn: Boolean) :
         Entry<Item>,
-        HTSimpleItemHolderLike {
-        constructor(item: Item, isBuiltIn: Boolean) : this(item.toItemLike(), isBuiltIn)
+        ItemLike,
+        HTIdLike.Translatable,
+        SupplierWithId<Item> by holder {
+        constructor(item: Item, isBuiltIn: Boolean) : this(item.toLike(), isBuiltIn)
 
-        override fun unwrap(): Either<ResourceKey<Item>, Holder<Item>> = holder.unwrap()
+        override fun asItem(): Item = get()
 
-        override fun get(): Item = holder.get()
+        override val translationKey: String get() = get().descriptionId
 
-        override val translationKey: String
-            get() = holder.translationKey
-
-        override fun getText(): Text = holder.getText()
+        override fun getText(): Text = get().description
     }
 }
 

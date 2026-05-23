@@ -15,7 +15,7 @@ class HTBlueprintCloningRecipe(category: CraftingBookCategory) : HTCustomRecipe(
         var target: ItemStack = ItemStack.EMPTY
         for (stack: ItemStack in input) {
             if (stack.isEmpty) continue
-            if (HCItems.BLUEPRINT.isOf(stack)) {
+            if (stack.`is`(HCItems.BLUEPRINT)) {
                 if (stack.get(HCDataComponents.BLUEPRINT_NUMBER) != 0) {
                     if (!target.isEmpty) {
                         break

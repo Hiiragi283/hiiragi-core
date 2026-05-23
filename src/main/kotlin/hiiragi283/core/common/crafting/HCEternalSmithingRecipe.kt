@@ -20,7 +20,7 @@ data object HCEternalSmithingRecipe : SmithingRecipe {
 
     //    SmithingRecipe    //
 
-    override fun isTemplateIngredient(stack: ItemStack): Boolean = HCItems.ETERNAL_UPGRADE.isOf(stack)
+    override fun isTemplateIngredient(stack: ItemStack): Boolean = stack.`is`(HCItems.ETERNAL_UPGRADE)
 
     override fun isBaseIngredient(stack: ItemStack): Boolean = stack.isDamageableItem
 

@@ -4,10 +4,10 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.alchemy.HTBottleType
+import hiiragi283.core.api.registry.HTDeferredDataComponentRegister
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.text.HTTranslation
 import hiiragi283.core.common.item.HTBlueprintItem
-import hiiragi283.core.common.registry.register.HTDeferredDataComponentRegister
 import hiiragi283.core.common.text.HTSimpleTranslation
 import net.minecraft.core.GlobalPos
 import net.minecraft.core.component.DataComponentType

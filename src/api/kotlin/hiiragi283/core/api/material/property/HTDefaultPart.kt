@@ -5,7 +5,7 @@ import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPart
-import hiiragi283.core.api.registry.HTItemHolderLike
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.tags.TagKey
@@ -38,7 +38,7 @@ sealed interface HTDefaultPart {
      * @author Hiiragi Tsubasa
      * @since 0.8.0
      */
-    data class BuiltIn(val tagKey: TagKey<Item>, val item: HTItemHolderLike<*>?) : HTDefaultPart {
+    data class BuiltIn(val tagKey: TagKey<Item>, val item: SupplierWithId<Item>?) : HTDefaultPart {
         override fun getTag(material: HTMaterialLike): TagKey<Item> = tagKey
 
         override fun getItem(material: HTMaterialLike): HTMaterialContents.ItemEntry? = this.item?.let { HTMaterialContents.ItemEntry(it, true) }

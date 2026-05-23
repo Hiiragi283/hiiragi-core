@@ -4,9 +4,8 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.asSequence
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.registry.HTSimpleHolderLike
-import hiiragi283.core.api.registry.toFluidLike
-import hiiragi283.core.common.registry.register.HTDeferredCreativeTabRegister
+import hiiragi283.core.api.registry.HTDeferredCreativeTabRegister
+import hiiragi283.core.api.registry.HTSimpleDeferredHolder
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.Items
@@ -20,26 +19,27 @@ object HCCreativeTabs {
     val REGISTER = HTDeferredCreativeTabRegister(HiiragiCoreAPI.MOD_ID)
 
     @JvmField
-    val COMMON: HTSimpleHolderLike<CreativeModeTab> = REGISTER.registerSimpleTab(
+    val COMMON: HTSimpleDeferredHolder<CreativeModeTab> = REGISTER.registerSimpleTab(
         "common",
         HCTranslation.HIIRAGI_CORE,
         HCItems.IRIDESCENT_POWDER,
     ) { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
         // Items
-        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCItems.REGISTER.asItemSequence())
+        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCItems.REGISTER.asSequence())
         // Blocks
         HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCBlocks.REGISTER.asItemSequence())
         // Fluids
         HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCFluids.REGISTER.asItemSequence())
     }
 
+    @Suppress("DEPRECATION")
     @JvmField
-    val MATERIAL: HTSimpleHolderLike<CreativeModeTab> = REGISTER.registerTab(
+    val MATERIAL: HTSimpleDeferredHolder<CreativeModeTab> = REGISTER.registerTab(
         "material",
         HCTranslation.CREATIVE_TAB_MATERIAL,
         Items.IRON_INGOT,
     ) {
-        withTabsBefore(COMMON.getResourceKey())
+        withTabsBefore(COMMON.key)
         displayItems { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
             // Items
             HTDeferredCreativeTabRegister.addHoldersToDisplay(
@@ -72,19 +72,18 @@ object HCCreativeTabs {
                     .asSequence()
                     .sortedWith(TRIPLE_COMPARATOR)
                     .map { it.third }
-                    .map { it.toFluidLike() }
-                    .map { it.getBucket() },
+                    .map { it.get().bucket.builtInRegistryHolder() },
             )
         }
     }
 
     @JvmField
-    val EQUIPMENT: HTSimpleHolderLike<CreativeModeTab> = REGISTER.registerTab(
+    val EQUIPMENT: HTSimpleDeferredHolder<CreativeModeTab> = REGISTER.registerTab(
         "equipment",
         HCTranslation.CREATIVE_TAB_EQUIPMENT,
         Items.IRON_PICKAXE,
     ) {
-        withTabsBefore(MATERIAL.getResourceKey())
+        withTabsBefore(MATERIAL.key)
         displayItems { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
             // Items
             HTDeferredCreativeTabRegister.addHoldersToDisplay(

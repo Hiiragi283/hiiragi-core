@@ -1,12 +1,8 @@
-package hiiragi283.core.common.registry
+package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.function.Identity
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.item.HTBlockItem
-import hiiragi283.core.common.registry.register.BlockFactory
-import hiiragi283.core.common.registry.register.BlockWithContextFactory
-import hiiragi283.core.common.registry.register.HTDeferredBlockAndItemRegister
-import hiiragi283.core.common.registry.register.ItemWithContextFactory
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.WeatheringCopper

@@ -23,10 +23,9 @@ import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
-import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.HTItemHolderLike
-import hiiragi283.core.api.registry.toItemLike
+import hiiragi283.core.api.registry.HTDeferredItem
 import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.resource.SupplierWithId
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
@@ -37,6 +36,7 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockBehaviour
+import net.minecraft.world.level.material.Fluid
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.common.SoundActions
@@ -68,7 +68,7 @@ data object HTMaterialContentsRegister {
         private set
 
     @JvmStatic
-    internal lateinit var materialFluids: HTTable<HTFluidPart, HTMaterialKey, HTMaterialContents.FluidEntry>
+    internal lateinit var materialFluids: HTTable<HTFluidPart, HTMaterialKey, HTMaterialContents.SimpleEntry<Fluid>>
         private set
 
     @JvmStatic
@@ -137,7 +137,7 @@ data object HTMaterialContentsRegister {
     @JvmStatic
     private fun registerExistingBlocks() {
         HiiragiCoreAccess.INSTANCE.forEachPlugin("Register Existing Blocks") { plugin: HTMaterialPlugin ->
-            plugin.registerExistingBlock { part: HTPartLike, material: HTMaterialKey, block: HTBlockHolderLike<*> ->
+            plugin.registerExistingBlock { part: HTPartLike, material: HTMaterialKey, block: SupplierWithId<Block> ->
                 existingBlocks.put(part.asPart(), material, HTMaterialContents.SimpleEntry(block, true))
             }
         }
@@ -146,7 +146,7 @@ data object HTMaterialContentsRegister {
     @JvmStatic
     private fun registerExistingItems() {
         HiiragiCoreAccess.INSTANCE.forEachPlugin("Register Existing Items") { plugin: HTMaterialPlugin ->
-            plugin.registerExistingItem { part: HTPartLike, material: HTMaterialKey, item: HTItemHolderLike<*> ->
+            plugin.registerExistingItem { part: HTPartLike, material: HTMaterialKey, item: SupplierWithId<Item> ->
                 existingItems.put(part.asPart(), material, HTMaterialContents.ItemEntry(item, true))
             }
         }
@@ -155,7 +155,7 @@ data object HTMaterialContentsRegister {
     @JvmStatic
     private fun registerExistingTools() {
         HiiragiCoreAccess.INSTANCE.forEachPlugin("Register Existing Items") { plugin: HTMaterialPlugin ->
-            plugin.registerExistingTool { toolType: HTToolType, key: HTMaterialKey, item: HTItemHolderLike<*> ->
+            plugin.registerExistingTool { toolType: HTToolType, key: HTMaterialKey, item: SupplierWithId<Item> ->
                 existingTools.put(toolType, key, HTMaterialContents.ItemEntry(item, true))
             }
         }
@@ -206,14 +206,14 @@ data object HTMaterialContentsRegister {
                         val fluid: HTVirtualFluid = Registry.register(
                             BuiltInRegistries.FLUID,
                             id,
-                            HTVirtualFluid(typeHolder, bucketId.toItemLike()),
+                            HTVirtualFluid(typeHolder, HTDeferredItem(bucketId)),
                         )
                         helper.register(
                             bucketId,
                             BucketItem(fluid, Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)),
                         )
 
-                        Triple(part, entry.asMaterialKey(), HTMaterialContents.FluidEntry(fluid, false))
+                        Triple(part, entry.asMaterialKey(), HTMaterialContents.SimpleEntry(fluid.toLike(), false))
                     }
             }
     }

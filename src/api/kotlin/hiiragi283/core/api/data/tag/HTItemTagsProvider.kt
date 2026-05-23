@@ -1,7 +1,7 @@
 package hiiragi283.core.api.data.tag
 
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.registry.toItemLike
+import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.RawTagKey
 import net.minecraft.core.HolderLookup
@@ -54,7 +54,7 @@ abstract class HTItemTagsProvider(
         tagsToCopy[blockTag] = itemTag
     }
 
-    fun HTTagBuilder<Item>.addItem(item: ItemLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<Item> = this.add(item.toItemLike(), type)
+    fun HTTagBuilder<Item>.addItem(item: ItemLike, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<Item> = this.add(item.asItem().toLike(), type)
 
     //    HTTagsProvider    //
 

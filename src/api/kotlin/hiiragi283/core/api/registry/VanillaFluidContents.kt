@@ -1,8 +1,11 @@
 package hiiragi283.core.api.registry
 
-import net.minecraft.world.item.Items
-import net.minecraft.world.level.material.Fluids
-import net.neoforged.neoforge.common.NeoForgeMod
+import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.resource.toId
+import net.minecraft.core.registries.Registries
+import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
+import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.Tags
 
 /**
@@ -10,38 +13,22 @@ import net.neoforged.neoforge.common.Tags
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
-@Suppress("DEPRECATION")
 data object VanillaFluidContents {
     @JvmField
-    val WATER = HTFluidContent(
-        NeoForgeMod.WATER_TYPE.toLike(),
-        Fluids.WATER.toLike(),
-        Items.WATER_BUCKET.toLike(),
-        Tags.Fluids.WATER,
-        Tags.Items.BUCKETS_WATER,
-        null,
-        null,
-    )
+    val WATER: HTFluidContent.Virtual = create("water", Tags.Fluids.WATER, Tags.Items.BUCKETS_WATER)
 
     @JvmField
-    val LAVA = HTFluidContent(
-        NeoForgeMod.LAVA_TYPE.toLike(),
-        Fluids.LAVA.toLike(),
-        Items.LAVA_BUCKET.toLike(),
-        Tags.Fluids.LAVA,
-        Tags.Items.BUCKETS_LAVA,
-        null,
-        null,
-    )
+    val LAVA: HTFluidContent.Virtual = create("lava", Tags.Fluids.LAVA, Tags.Items.BUCKETS_LAVA)
 
     @JvmField
-    val MILK = HTFluidContent(
-        NeoForgeMod.MILK_TYPE.toLike(),
-        NeoForgeMod.MILK.toLike().toFluidLike(),
-        Items.MILK_BUCKET.toLike(),
-        Tags.Fluids.MILK,
-        Tags.Items.BUCKETS_MILK,
-        null,
-        null,
+    val MILK: HTFluidContent.Virtual = create("milk", Tags.Fluids.MILK, Tags.Items.BUCKETS_MILK)
+
+    @JvmStatic
+    private fun create(name: String, fluidTag: TagKey<Fluid>, bucketTag: TagKey<Item>): HTFluidContent.Virtual = HTFluidContent.Virtual(
+        HTDeferredFluidType(HTConst.MINECRAFT.toId(name)),
+        HTDeferredHolder(Registries.FLUID, HTConst.MINECRAFT.toId(name)),
+        HTDeferredItem(HTConst.MINECRAFT.toId("${name}_bucket")),
+        fluidTag,
+        bucketTag,
     )
 }

@@ -2,7 +2,6 @@ package hiiragi283.core.api.storage.fluid
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.fluid.createFluidStack
 import hiiragi283.core.api.storage.resource.HTResourceType
 import hiiragi283.core.api.text.Text
@@ -25,7 +24,7 @@ class HTFluidResourceType private constructor(private val stack: FluidStack) : H
     companion object {
         @JvmField
         val CODEC: Codec<HTFluidResourceType> =
-            FluidStack.fixedAmountCodec(HTConst.DEFAULT_FLUID_AMOUNT).xmap(::HTFluidResourceType, HTFluidResourceType::stack)
+            FluidStack.fixedAmountCodec(FluidType.BUCKET_VOLUME).xmap(::HTFluidResourceType, HTFluidResourceType::stack)
 
         @JvmField
         val MAP_CODEC: MapCodec<HTFluidResourceType> = MapCodec.assumeMapUnsafe(CODEC)

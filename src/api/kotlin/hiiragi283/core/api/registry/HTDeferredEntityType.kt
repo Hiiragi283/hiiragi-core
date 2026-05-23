@@ -1,27 +1,21 @@
-package hiiragi283.core.common.registry
+package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.text.Text
-import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.EntityType
 
-class HTDeferredEntityType<ENTITY : Entity> :
-    HTBasicHolderLike<EntityType<*>, EntityType<ENTITY>>,
+class HTDeferredEntityType<out TYPE : Entity> :
+    HTDeferredHolder<EntityType<*>, EntityType<@UnsafeVariance TYPE>>,
     HTIdLike.Translatable {
     constructor(key: ResourceKey<EntityType<*>>) : super(key)
 
     constructor(id: ResourceLocation) : super(Registries.ENTITY_TYPE, id)
 
-    @Suppress("UNCHECKED_CAST")
-    override fun get(): EntityType<ENTITY> = BuiltInRegistries.ENTITY_TYPE.getOrThrow(key) as EntityType<ENTITY>
-
     override val translationKey: String get() = get().descriptionId
 
     override fun getText(): Text = get().description
-
-    override fun toString(): String = "HTDeferredEntityType(key=$key)"
 }

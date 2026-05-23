@@ -9,7 +9,6 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.tagPrefix
-import hiiragi283.core.api.registry.getResult
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.serialization.codec.HTCodecs
@@ -17,7 +16,6 @@ import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.toFraction
 import hiiragi283.core.api.util.DFUEither
 import hiiragi283.core.api.util.HTTextResult
-import hiiragi283.core.api.util.flatMap
 import hiiragi283.core.api.util.getOrElse
 import hiiragi283.core.api.util.right
 import net.minecraft.core.registries.BuiltInRegistries
@@ -115,11 +113,7 @@ interface HTItemResult : HTIdLike {
 
         override fun getSerializer(): Serializer<*> = SERIALIZER
 
-        override fun create(): HTTextResult<ItemStack> = BuiltInRegistries.ITEM
-            .asLookup()
-            .getResult(tagKey)
-            .flatMap { HiiragiCoreAccess.INSTANCE.getFirstHolder(it) }
-            .map { ItemStack(it.get(), count) }
+        override fun create(): HTTextResult<ItemStack> = HiiragiCoreAccess.INSTANCE.getFirstHolder(BuiltInRegistries.ITEM.asLookup(), tagKey).map { ItemStack(it.get(), count) }
 
         override fun getId(): ResourceLocation = tagKey.location()
     }

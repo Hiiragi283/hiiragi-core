@@ -6,6 +6,7 @@ import hiiragi283.core.api.component1
 import hiiragi283.core.api.component2
 import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
+import hiiragi283.core.api.item.toStack
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
@@ -26,8 +27,7 @@ import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.api.material.property.getDefaultScale
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
-import hiiragi283.core.api.registry.HTItemHolderLike
-import hiiragi283.core.api.registry.HTSimpleItemHolderLike
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.common.data.recipe.builder.HTCookingRecipeBuilder
@@ -111,13 +111,13 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         if (!event.isPresentTag(prefix, entry)) return
         // 素材のプロパティから完成品を取得
         val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART).tagPrefix ?: return
-        val dust: HTItemHolderLike<*> = event.getFirstHolder(crushedPrefix, entry) ?: return
+        val dust: SupplierWithId<Item> = event.getFirstHolder(crushedPrefix, entry) ?: return
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = part.getScaledAmount(entry.getDefaultScale(), entry)
         // レシピを登録
         HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(prefix, entry, inputCount)
-            results += resultCreator.create(dust, outputCount)
+            results += resultCreator.create(dust.get(), outputCount)
             time = getTimeFromHardness(entry, time) ?: return
             recipeId suffix "_from_${part.asPartName()}"
         }
@@ -133,13 +133,13 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // 加工の前後でタグが一致する場合はパス
         if (inputTag == crushedPrefix.itemTagKey(entry)) return
         // 完成品を取得
-        val dust: HTItemHolderLike<*> = event.getFirstHolder(crushedPrefix, entry) ?: return
+        val dust: SupplierWithId<Item> = event.getFirstHolder(crushedPrefix, entry) ?: return
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = entry.getDefaultScale()
         // レシピを登録
         HTItemToMultiItemRecipeBuilder.crushing(output) {
             ingredient = inputCreator.create(inputTag, inputCount)
-            results += resultCreator.create(dust, outputCount)
+            results += resultCreator.create(dust.get(), outputCount)
             time = getTimeFromHardness(entry, time) ?: return
             recipeId suffix "_from_${defaultPart.getSuffix()}"
         }
@@ -151,13 +151,13 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         // 材料が存在するか判定
         if (!event.isPresentTag(prefix, entry)) return
         // 完成品を取得
-        val crushedOre: HTItemHolderLike<*> = event.getFirstHolder(CommonTagPrefixes.CRUSHED_ORE, entry) ?: return
+        val crushedOre: SupplierWithId<Item> = event.getFirstHolder(CommonTagPrefixes.CRUSHED_ORE, entry) ?: return
         // レシピを登録
         HTItemToMultiItemRecipeBuilder.crushing(output) {
             // 材料
             ingredient = inputCreator.create(prefix, entry)
             // 主産物
-            results += resultCreator.create(crushedOre, part.getScaledAmount(2, entry).toInt())
+            results += resultCreator.create(crushedOre.get(), part.getScaledAmount(2, entry).toInt())
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]
                 ?.getResult(HTExtraOreResultMap.Phase.CRUSH_ORE)
@@ -173,7 +173,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         if (!event.isPresentTag(CommonTagPrefixes.CRUSHED_ORE, entry)) return
         // 完成品を取得
         val crushedPrefix: HTTagPrefix = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART).tagPrefix ?: return
-        val dust: ItemLike = event.getFirstHolder(crushedPrefix, entry) ?: return
+        val dust: SupplierWithId<Item> = event.getFirstHolder(crushedPrefix, entry) ?: return
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = CommonParts.CRUSHED_ORE.getScaledAmount(1, entry)
         // レシピを登録
@@ -181,7 +181,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             // 材料
             ingredient = inputCreator.create(CommonTagPrefixes.CRUSHED_ORE, entry, inputCount)
             // 主産物
-            results += resultCreator.create(dust, outputCount)
+            results += resultCreator.create(dust.get(), outputCount)
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]
                 ?.getResult(HTExtraOreResultMap.Phase.CRUSH_CRUSHED)
@@ -237,10 +237,10 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         val smithingProperty: HTSmithingRecipeProperty? = entry[HTMaterialPropertyKeys.SMITHING_RECIPE]
         if (smithingProperty != null) {
             // レシピを登録
-            val (template: HTItemHolderLike<*>, base: HTMaterialKey) = smithingProperty
+            val (template: SupplierWithId<Item>, base: HTMaterialKey) = smithingProperty
             if (event.isPresentTag(CommonTagPrefixes.GEAR, base)) {
                 HTSmithingRecipeBuilder.create(output) {
-                    this.template = itemCreator.create(template)
+                    this.template = itemCreator.create(template.get())
                     this.base = itemCreator.create(CommonTagPrefixes.GEAR, base)
                     this.addition = itemCreator.create(inputTag)
                     this.resultStack = gear
@@ -377,14 +377,14 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             HiiragiCoreAccess.INSTANCE.registeredContents.tools
 
         val inputTag: TagKey<Item> = entry.getDefaultPart(entry) ?: return
-        for ((toolType: HTToolType, tool: HTSimpleItemHolderLike) in registered.column(entry)) {
+        for ((toolType: HTToolType, tool: SupplierWithId<Item>) in registered.column(entry)) {
             val smithingProperty: HTSmithingRecipeProperty? = entry[HTMaterialPropertyKeys.SMITHING_RECIPE]
             if (smithingProperty != null) {
                 // Smithing
-                val (template: HTItemHolderLike<*>, base: HTMaterialKey) = smithingProperty
-                val baseTool: HTSimpleItemHolderLike = existing[toolType, base] ?: registered[toolType, base] ?: continue
+                val (template: SupplierWithId<Item>, base: HTMaterialKey) = smithingProperty
+                val baseTool: SupplierWithId<Item> = existing[toolType, base] ?: registered[toolType, base] ?: continue
                 HTSmithingRecipeBuilder.create(output) {
-                    this.template = itemCreator.create(template)
+                    this.template = itemCreator.create(template.get())
                     this.base = itemCreator.create(baseTool.get())
                     this.addition = itemCreator.create(inputTag)
                     this.resultStack = tool.toStack()

@@ -10,7 +10,7 @@ import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.computeIfAbsent
 import hiiragi283.core.api.property.getOrDefault
-import hiiragi283.core.api.registry.HTSimpleItemHolderLike
+import hiiragi283.core.api.resource.SupplierWithId
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import org.apache.commons.lang3.math.Fraction
@@ -28,7 +28,7 @@ fun HTPropertyGetter.getDefaultFluidAmount(): Int = this.getOrDefault(HTMaterial
 
 // Mutable
 
-fun HTPropertyMap.Builder.setDefaultPart(tagKey: TagKey<Item>, altItem: HTSimpleItemHolderLike?) {
+fun HTPropertyMap.Builder.setDefaultPart(tagKey: TagKey<Item>, altItem: SupplierWithId<Item>?) {
     this[HTMaterialPropertyKeys.DEFAULT_PART] = HTDefaultPart.BuiltIn(tagKey, altItem)
 }
 

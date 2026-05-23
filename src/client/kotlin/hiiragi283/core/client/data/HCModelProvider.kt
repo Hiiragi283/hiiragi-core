@@ -7,17 +7,18 @@ import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.model.HTModelProvider
 import hiiragi283.core.api.data.model.HTTexturedModels
 import hiiragi283.core.api.material.HTMaterialAccess
+import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
-import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.toFluidLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.material.Fluid
 
 data object HCModelProvider : HTModelProvider() {
     override fun registerModels(manager: ResourceManager) {
@@ -28,7 +29,7 @@ data object HCModelProvider : HTModelProvider() {
     private fun registerMaterials(manager: ResourceManager) {
         val registered: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
         // Block
-        registered.blocks.forEach { (part: HTPart, key: HTMaterialKey, block: HTBlockHolderLike<*>) ->
+        registered.blocks.forEach { (part: HTPart, key: HTMaterialKey, block: HTMaterialContents.SimpleEntry<Block>) ->
             if (HTPartPropertyKeys.IS_ORE in part) {
                 val stoneTexture: ResourceLocation = part[HTPartPropertyKeys.ORE_STONE_TEX] ?: return@forEach
                 addSimpleBlockAndItem(
@@ -45,8 +46,8 @@ data object HCModelProvider : HTModelProvider() {
             }
         }
         // Fluid
-        HiiragiCoreAccess.INSTANCE.registeredFluids.forEach { (part: HTFluidPart, _: HTMaterialKey, fluid) ->
-            addBucketModel(fluid.toFluidLike(), part == HTFluidPart.MOLTEN)
+        HiiragiCoreAccess.INSTANCE.registeredFluids.forEach { (part: HTFluidPart, _, fluid: HTMaterialContents.SimpleEntry<Fluid>) ->
+            addBucketModel(fluid.get(), part == HTFluidPart.MOLTEN)
         }
         // Item
         registered.items.forEach { (part: HTPart, _, item: HTIdLike) ->

@@ -1,6 +1,6 @@
 package hiiragi283.core.api.data.loot
 
-import hiiragi283.core.api.registry.HTBlockHolderLike
+import hiiragi283.core.api.resource.SupplierWithId
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.loot.BlockLootSubProvider
@@ -19,11 +19,11 @@ import net.minecraft.world.level.storage.loot.LootTable
 abstract class HTBlockLootTableProvider(
     registries: HolderLookup.Provider,
     protected val modId: String,
-    private val rawBlocks: Sequence<HTBlockHolderLike<*>>,
+    private val rawBlocks: Sequence<SupplierWithId<Block>>,
 ) : BlockLootSubProvider(emptySet(), FeatureFlags.REGISTRY.allFlags(), registries) {
     final override fun getKnownBlocks(): Iterable<Block> = rawBlocks
-        .filter { holder: HTBlockHolderLike<*> -> holder.namespace == modId }
-        .map(HTBlockHolderLike<*>::get)
+        .filter { holder: SupplierWithId<Block> -> holder.namespace == modId }
+        .map(SupplierWithId<Block>::get)
         .filter { block: Block -> block.lootTable != BuiltInLootTables.EMPTY }
         .toList()
 
@@ -38,15 +38,15 @@ abstract class HTBlockLootTableProvider(
     /**
      * ブロックをそのままドロップするルートテーブルを指定します。
      */
-    protected fun dropSelf(like: HTBlockHolderLike<*>) {
+    protected fun dropSelf(like: SupplierWithId<Block>) {
         dropSelf(like.get())
     }
 
-    protected fun add(like: HTBlockHolderLike<*>, table: LootTable.Builder) {
+    protected fun add(like: SupplierWithId<Block>, table: LootTable.Builder) {
         add(like.get(), table)
     }
 
-    protected inline fun <BLOCK : Block> add(like: HTBlockHolderLike<BLOCK>, factory: (BLOCK) -> LootTable.Builder) {
+    protected inline fun <BLOCK : Block> add(like: SupplierWithId<BLOCK>, factory: (BLOCK) -> LootTable.Builder) {
         val block: BLOCK = like.get()
         add(block, factory(block))
     }

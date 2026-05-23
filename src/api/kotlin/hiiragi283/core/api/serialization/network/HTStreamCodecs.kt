@@ -1,7 +1,6 @@
 package hiiragi283.core.api.serialization.network
 
 import hiiragi283.core.api.function.identity
-import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.tag.createTagKey
 import hiiragi283.core.api.text.Text
@@ -9,7 +8,6 @@ import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.Ior
 import hiiragi283.core.api.util.java
 import hiiragi283.core.api.util.kotlin
-import hiiragi283.core.impl.serialization.network.HTHolderLikeStreamCodec
 import hiiragi283.core.impl.serialization.network.HTIorStreamCodec
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.Holder
@@ -100,12 +98,4 @@ data object HTStreamCodecs {
      */
     @JvmStatic
     fun <T : Any> holderSet(registryKey: RegistryKey<T>): StreamCodec<RegistryFriendlyByteBuf, HolderSet<T>> = ByteBufCodecs.holderSet(registryKey)
-
-    /**
-     * 指定した[registryKey]から[HTSimpleHolderLike]の[StreamCodec]を返します。
-     * @param T レジストリの要素のクラス
-     * @since 0.13.0
-     */
-    @JvmStatic
-    fun <T : Any> holderLike(registryKey: RegistryKey<T>): StreamCodec<RegistryFriendlyByteBuf, HTSimpleHolderLike<T>> = HTHolderLikeStreamCodec(registryKey)
 }

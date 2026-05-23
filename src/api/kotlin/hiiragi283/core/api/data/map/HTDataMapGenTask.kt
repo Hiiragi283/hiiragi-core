@@ -3,7 +3,6 @@ package hiiragi283.core.api.data.map
 import com.mojang.serialization.JsonOps
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.HTServerResourceGenTask
-import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.util.DFUEither
 import hiiragi283.core.api.util.toOptional
 import net.mehvahdjukaar.moonlight.api.resources.ResType
@@ -16,6 +15,7 @@ import net.neoforged.neoforge.common.conditions.ConditionalOps
 import net.neoforged.neoforge.common.conditions.WithConditions
 import net.neoforged.neoforge.common.data.DataMapProvider
 import net.neoforged.neoforge.registries.DataMapLoader
+import net.neoforged.neoforge.registries.DeferredHolder
 import net.neoforged.neoforge.registries.datamaps.DataMapEntry
 import net.neoforged.neoforge.registries.datamaps.DataMapFile
 import net.neoforged.neoforge.registries.datamaps.DataMapType
@@ -64,8 +64,8 @@ abstract class HTDataMapGenTask<T : Any, R : Any>(private val type: DataMapType<
 
     //    Builder    //
 
-    fun add(holder: HTKeyLike<R>, value: T, replace: Boolean = false) {
-        this.add(holder.getResourceKey(), value, replace)
+    fun add(holder: DeferredHolder<R, *>, value: T, replace: Boolean = false) {
+        this.add(holder.key!!, value, replace)
     }
 
     fun add(key: ResourceKey<R>, value: T, replace: Boolean = false) {

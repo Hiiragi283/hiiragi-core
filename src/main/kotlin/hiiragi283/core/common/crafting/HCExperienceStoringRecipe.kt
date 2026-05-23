@@ -18,7 +18,7 @@ class HCExperienceStoringRecipe(category: CraftingBookCategory) : HTCustomRecipe
         var tomeCount = 0
         for (stack: ItemStack in input) {
             if (stack.isEmpty) continue
-            if (HCItems.EXPERIENCE_TOME.isOf(stack)) {
+            if (stack.`is`(HCItems.EXPERIENCE_TOME)) {
                 tomeCount++
             }
         }
@@ -33,7 +33,7 @@ class HCExperienceStoringRecipe(category: CraftingBookCategory) : HTCustomRecipe
         var tomeStack: ItemStack = ItemStack.EMPTY
         for (stack: ItemStack in input) {
             if (stack.isEmpty) continue
-            if (HCItems.EXPERIENCE_TOME.isOf(stack)) {
+            if (stack.`is`(HCItems.EXPERIENCE_TOME)) {
                 tomeStack = stack.copy()
                 break
             }

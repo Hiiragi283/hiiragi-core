@@ -1,16 +1,13 @@
-package hiiragi283.core.common.registry.register
+package hiiragi283.core.api.registry
 
 import com.mojang.serialization.Codec
-import hiiragi283.core.api.registry.HTDeferredRegister
-import hiiragi283.core.api.registry.RegistryKey
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.util.Unit as MCUnit
 
 /**
- * @see net.neoforged.neoforge.registries.DeferredRegister.DataComponents
+ * @see DataComponents
  */
 class HTDeferredDataComponentRegister(registryKey: RegistryKey<DataComponentType<*>>, namespace: String) :
     HTDeferredRegister<DataComponentType<*>>(
@@ -22,7 +19,7 @@ class HTDeferredDataComponentRegister(registryKey: RegistryKey<DataComponentType
             .builder<DATA>()
             .apply(builderAction)
             .build()
-        delegate.register(name) { _: ResourceLocation -> type }
+        this.register(name) { _ -> type }
         return type
     }
 

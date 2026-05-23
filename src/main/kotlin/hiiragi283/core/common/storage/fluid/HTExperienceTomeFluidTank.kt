@@ -4,6 +4,7 @@ import com.google.common.primitives.Ints
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.impl.storage.fluid.HTItemFluidTank
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.util.HTExperienceHelper
@@ -45,7 +46,7 @@ class HTExperienceTomeFluidTank(override val container: ItemStack) : HTItemFluid
         return fixedAmount
     }
 
-    override fun getResource(): HTFluidResourceType? = HCFluids.EXPERIENCE.toResource()
+    override fun getResource(): HTFluidResourceType? = HCFluids.EXPERIENCE.toStack().toResource()
 
     override fun getCapacity(resource: HTFluidResourceType?): Int = Int.MAX_VALUE
 

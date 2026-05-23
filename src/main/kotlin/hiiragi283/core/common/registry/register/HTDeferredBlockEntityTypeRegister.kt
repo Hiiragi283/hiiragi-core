@@ -12,11 +12,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType
 /**
  * Ragiumで使用される[BlockEntityType]向けの[HTDeferredRegister]の実装クラスです。
  */
-@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class HTDeferredBlockEntityTypeRegister(namespace: String) : HTDeferredRegister<BlockEntityType<*>>(Registries.BLOCK_ENTITY_TYPE, namespace) {
+    @Suppress("TYPE_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     fun <BE : BlockEntity> registerType(name: String, factory: BlockEntityType.BlockEntitySupplier<BE>): HTDeferredBlockEntityType<BE> {
         val holder = HTDeferredBlockEntityType<BE>(createId(name))
-        delegate.register(name) { _: ResourceLocation -> BlockEntityType.Builder.of(factory).build(null) }
+        this.register(name) { _: ResourceLocation -> BlockEntityType.Builder.of(factory).build(null) }
         return holder
     }
 

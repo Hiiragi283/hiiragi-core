@@ -4,8 +4,6 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.RegistryKey
-import hiiragi283.core.api.registry.getHolderLike
-import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.codec.listOrElement
 import hiiragi283.core.api.util.DFUEither
@@ -65,8 +63,8 @@ internal object HTIngredientCodec {
                         is Ingredient.TagValue -> Either.Left(value.tag)
                         else ->
                             value.items
-                                .map(ItemStack::getHolderLike)
-                                .map(HTKeyLike<Item>::getResourceKey)
+                                .map(ItemStack::getItemHolder)
+                                .map { it.unwrapKey().orElseThrow() }
                                 .let { Either.Right(it) }
                     }
                 },
@@ -118,8 +116,8 @@ internal object HTIngredientCodec {
                         is TagFluidIngredient -> Either.Left(ingredient.tag())
                         else ->
                             ingredient.stacks
-                                .map(FluidStack::getHolderLike)
-                                .map(HTKeyLike<Fluid>::getResourceKey)
+                                .map(FluidStack::getFluidHolder)
+                                .map { it.unwrapKey().orElseThrow() }
                                 .let { Either.Right(it) }
                     }
                 },

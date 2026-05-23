@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceLocation
  * [ID][ResourceLocation]を保持するインターフェースです。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
- * @see HTKeyLike
  */
 fun interface HTIdLike {
     /**

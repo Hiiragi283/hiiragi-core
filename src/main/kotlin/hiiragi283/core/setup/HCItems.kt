@@ -2,7 +2,8 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.HTSmithingTemplateItem
-import hiiragi283.core.api.registry.HTSimpleItemHolderLike
+import hiiragi283.core.api.registry.HTDeferredItemRegister
+import hiiragi283.core.api.registry.HTSimpleDeferredItem
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.item.HTAlmightyPickaxeItem
 import hiiragi283.core.common.item.HTAmbrosiaItem
@@ -16,7 +17,6 @@ import hiiragi283.core.common.item.HTInfinitePotionItem
 import hiiragi283.core.common.item.HTPaintBrushItem
 import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.common.item.HTTraderCatalogItem
-import hiiragi283.core.common.registry.register.HTDeferredItemRegister
 import hiiragi283.core.common.storage.fluid.HTBasicItemFluidTank
 import hiiragi283.core.common.storage.fluid.HTExperienceTomeFluidTank
 import hiiragi283.core.common.text.HCTranslation
@@ -56,61 +56,61 @@ object HCItems {
 
     // Wood
     @JvmField
-    val BAMBOO_CHARCOAL: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("bamboo_charcoal")
+    val BAMBOO_CHARCOAL: HTSimpleDeferredItem = REGISTER.registerSimpleItem("bamboo_charcoal")
 
     @JvmField
-    val PARTICLE_BOARD: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("particle_board")
+    val PARTICLE_BOARD: HTSimpleDeferredItem = REGISTER.registerSimpleItem("particle_board")
 
     // Metal
     @JvmField
-    val STEEL_COMPOUND: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("steel_compound")
+    val STEEL_COMPOUND: HTSimpleDeferredItem = REGISTER.registerSimpleItem("steel_compound")
 
     // Polymer
     @JvmField
-    val RAW_RUBBER: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("raw_rubber")
+    val RAW_RUBBER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("raw_rubber")
 
     @JvmField
-    val CURED_RUBBER: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("cured_rubber")
+    val CURED_RUBBER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("cured_rubber")
 
     @JvmField
-    val POLYMER_RESIN: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("polymer_resin")
+    val POLYMER_RESIN: HTSimpleDeferredItem = REGISTER.registerSimpleItem("polymer_resin")
 
     @JvmField
-    val SYNTHETIC_FEATHER: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("synthetic_feather")
+    val SYNTHETIC_FEATHER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_feather")
 
     @JvmField
-    val SYNTHETIC_LEATHER: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("synthetic_leather")
+    val SYNTHETIC_LEATHER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_leather")
 
     @JvmField
-    val SYNTHETIC_FIBER: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("synthetic_fiber")
+    val SYNTHETIC_FIBER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_fiber")
 
     // Crops
     @JvmField
-    val WHEAT_FLOUR: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("wheat_flour")
+    val WHEAT_FLOUR: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wheat_flour")
 
     @JvmField
-    val WHEAT_DOUGH: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("wheat_dough")
+    val WHEAT_DOUGH: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wheat_dough")
 
     // Mob
     @JvmField
-    val LUMINOUS_PASTE: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("luminous_paste")
+    val LUMINOUS_PASTE: HTSimpleDeferredItem = REGISTER.registerSimpleItem("luminous_paste")
 
     @JvmField
-    val MAGMA_SHARD: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("magma_shard")
+    val MAGMA_SHARD: HTSimpleDeferredItem = REGISTER.registerSimpleItem("magma_shard")
 
     @JvmField
-    val ELDER_HEART: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("elder_heart")
+    val ELDER_HEART: HTSimpleDeferredItem = REGISTER.registerSimpleItem("elder_heart")
 
     @JvmField
-    val WITHER_DOLL: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("wither_doll")
+    val WITHER_DOLL: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wither_doll")
 
     @JvmField
-    val WITHER_STAR: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("wither_star")
+    val WITHER_STAR: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wither_star")
 
     //    Tools   //
 
     @JvmField
-    val ANCIENT_UPGRADE: HTSimpleItemHolderLike = REGISTER.registerItem("ancient_upgrade") {
+    val ANCIENT_UPGRADE: HTSimpleDeferredItem = REGISTER.registerItem("ancient_upgrade") {
         HTSmithingTemplateItem(
             HCTranslation.ANCIENT_UPGRADE_APPLIES_TO,
             HCTranslation.ANCIENT_UPGRADE_INGREDIENTS,
@@ -121,37 +121,37 @@ object HCItems {
     }
 
     @JvmField
-    val PAINT_BRUSH: HTSimpleItemHolderLike = REGISTER.registerItem("paint_brush", ::HTPaintBrushItem) { it.stacksTo(1) }
+    val PAINT_BRUSH: HTSimpleDeferredItem = REGISTER.registerItem("paint_brush", ::HTPaintBrushItem) { it.stacksTo(1) }
 
     //    Utilities    //
 
     @JvmField
-    val BLUEPRINT: HTSimpleItemHolderLike = REGISTER.registerItem("blueprint", ::HTBlueprintItem) {
+    val BLUEPRINT: HTSimpleDeferredItem = REGISTER.registerItem("blueprint", ::HTBlueprintItem) {
         it.stacksTo(1).component(HCDataComponents.BLUEPRINT_NUMBER, 0)
     }
 
     @JvmField
-    val BOMB: HTSimpleItemHolderLike = REGISTER.registerItem("bomb", ::HTBombItem)
+    val BOMB: HTSimpleDeferredItem = REGISTER.registerItem("bomb", ::HTBombItem)
 
     @JvmField
-    val ELDRITCH_EGG: HTSimpleItemHolderLike = REGISTER.registerItem("eldritch_egg", ::HTCaptureEggItem)
+    val ELDRITCH_EGG: HTSimpleDeferredItem = REGISTER.registerItem("eldritch_egg", ::HTCaptureEggItem)
 
     @JvmField
-    val SLOT_COVER: HTSimpleItemHolderLike = REGISTER.registerSimpleItem("slot_cover")
+    val SLOT_COVER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("slot_cover")
 
     @JvmField
-    val TRADER_CATALOG: HTSimpleItemHolderLike = REGISTER.registerItem("trader_catalog", ::HTTraderCatalogItem)
+    val TRADER_CATALOG: HTSimpleDeferredItem = REGISTER.registerItem("trader_catalog", ::HTTraderCatalogItem)
 
     @JvmField
-    val EXPERIENCE_TOME: HTSimpleItemHolderLike = REGISTER.registerItem("experience_tome", ::HTExperienceTomeItem)
+    val EXPERIENCE_TOME: HTSimpleDeferredItem = REGISTER.registerItem("experience_tome", ::HTExperienceTomeItem)
 
     //    End Game    //
 
     @JvmField
-    val IRIDESCENT_POWDER: HTSimpleItemHolderLike = REGISTER.registerItem("iridescent_powder", ::HTCreativeItem)
+    val IRIDESCENT_POWDER: HTSimpleDeferredItem = REGISTER.registerItem("iridescent_powder", ::HTCreativeItem)
 
     @JvmField
-    val AMBROSIA: HTSimpleItemHolderLike = REGISTER.registerItem("ambrosia", ::HTAmbrosiaItem) {
+    val AMBROSIA: HTSimpleDeferredItem = REGISTER.registerItem("ambrosia", ::HTAmbrosiaItem) {
         it
             .food(
                 FoodProperties
@@ -164,15 +164,15 @@ object HCItems {
     }
 
     @JvmField
-    val UNLIMITED_POTION: HTSimpleItemHolderLike = REGISTER.registerItem("unlimited_potion", ::HTInfinitePotionItem) {
+    val UNLIMITED_POTION: HTSimpleDeferredItem = REGISTER.registerItem("unlimited_potion", ::HTInfinitePotionItem) {
         it.requiredFeatures(HiiragiCoreAPI.EXPERIMENTAL)
     }
 
     @JvmField
-    val ETERNAL_UPGRADE: HTSimpleItemHolderLike = REGISTER.registerItem("eternal_upgrade", ::HTEternalUpgradeItem)
+    val ETERNAL_UPGRADE: HTSimpleDeferredItem = REGISTER.registerItem("eternal_upgrade", ::HTEternalUpgradeItem)
 
     @JvmField
-    val ALMIGHTY_PICKAXE: HTSimpleItemHolderLike = REGISTER.registerItem("almighty_pickaxe", ::HTAlmightyPickaxeItem)
+    val ALMIGHTY_PICKAXE: HTSimpleDeferredItem = REGISTER.registerItem("almighty_pickaxe", ::HTAlmightyPickaxeItem)
 
     //    Event    //
 
@@ -196,7 +196,7 @@ object HCItems {
 
     @JvmStatic
     private fun registerCapabilities(event: RegisterCapabilitiesEvent) {
-        HTFluidCapabilities.registerItem(event, HTPotionBucketItem::BucketHandler, HCFluids.POTION.getBucket())
+        HTFluidCapabilities.registerItem(event, HTPotionBucketItem::BucketHandler, HCFluids.POTION.bucketHolder.get())
 
         HTFluidCapabilities.registerItemTank(
             event,

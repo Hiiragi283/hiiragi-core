@@ -1,6 +1,5 @@
 package hiiragi283.core.data.recipe
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.fraction
@@ -27,6 +26,7 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
+import net.neoforged.neoforge.fluids.FluidType
 
 data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipeInternal() {
@@ -294,7 +294,7 @@ data object HCBasicRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MO
         emptyAndFill(Items.MUSHROOM_STEW, HCFluids.MUSHROOM_STEW, container = Items.BOWL)
         emptyAndFill(Items.DRAGON_BREATH, HCFluids.DRAGON_BREATH)
 
-        emptyAndFill(Items.WET_SPONGE, VanillaFluidContents.WATER, HTConst.DEFAULT_FLUID_AMOUNT, Items.SPONGE)
+        emptyAndFill(Items.WET_SPONGE, VanillaFluidContents.WATER, FluidType.BUCKET_VOLUME, Items.SPONGE)
 
         repeat(5) { amplifier: Int ->
             HTTankInteractionRecipeBuilder.emptying(output) {

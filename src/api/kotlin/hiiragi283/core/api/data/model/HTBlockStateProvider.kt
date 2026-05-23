@@ -3,9 +3,9 @@ package hiiragi283.core.api.data.model
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.function.partially1
-import hiiragi283.core.api.registry.HTBlockHolderLike
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
@@ -48,7 +48,7 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
 
     // Block
 
-    protected fun <BLOCK : HTBlockHolderLike<*>> registerVariants(
+    protected fun <BLOCK : SupplierWithId<Block>> registerVariants(
         block: BLOCK,
         stateDispatcher: (BLOCK, BlockState) -> Array<ConfiguredModel>,
     ) {
@@ -64,7 +64,7 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
     /**
      * フルブロックのモデルを登録します。
      */
-    protected fun simpleBlockAndItem(block: HTBlockHolderLike<*>, model: ModelFile = cubeAll(block.get()), itemModel: ModelFile = model) {
+    protected fun simpleBlockAndItem(block: SupplierWithId<Block>, model: ModelFile = cubeAll(block.get()), itemModel: ModelFile = model) {
         simpleBlock(block.get(), model)
         simpleBlockItem(block.get(), itemModel)
     }
@@ -72,7 +72,7 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
     /**
      * @since 0.14.0
      */
-    protected fun simpleBlockAndItem(block: HTBlockHolderLike<*>, vararg models: ConfiguredModel, itemModel: ModelFile = models[0].model) {
+    protected fun simpleBlockAndItem(block: SupplierWithId<Block>, vararg models: ConfiguredModel, itemModel: ModelFile = models[0].model) {
         simpleBlock(block.get(), *models)
         simpleBlockItem(block.get(), itemModel)
     }
@@ -80,14 +80,14 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
     /**
      * @since 0.14.0
      */
-    protected fun <BLOCK : HTBlockHolderLike<*>> simpleBlockAndItem(block: BLOCK, factory: (BLOCK) -> Array<ConfiguredModel>) {
+    protected fun <BLOCK : SupplierWithId<Block>> simpleBlockAndItem(block: BLOCK, factory: (BLOCK) -> Array<ConfiguredModel>) {
         simpleBlockAndItem(block, *factory(block))
     }
 
     /**
      * @since 0.15.0
      */
-    protected fun <BLOCK : HTBlockHolderLike<*>> simpleBlockAndItem(
+    protected fun <BLOCK : SupplierWithId<Block>> simpleBlockAndItem(
         block: BLOCK,
         factory: (BLOCK) -> Array<ConfiguredModel>,
         itemFactory: (Array<ConfiguredModel>) -> ModelFile,
@@ -99,7 +99,7 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
     /**
      * レイヤーを持ったフルブロックのモデルを登録します。
      */
-    protected fun layeredBlock(block: HTBlockHolderLike<*>, layer0: ResourceLocation, layer1: ResourceLocation) {
+    protected fun layeredBlock(block: SupplierWithId<Block>, layer0: ResourceLocation, layer1: ResourceLocation) {
         simpleBlockAndItem(
             block,
             models()
@@ -113,7 +113,7 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
     /**
      * 水平方向に回転できるモデルを登録します。
      */
-    protected fun horizontalBlock(block: HTBlockHolderLike<*>, model: ModelFile) {
+    protected fun horizontalBlock(block: SupplierWithId<Block>, model: ModelFile) {
         horizontalBlock(block.get(), model)
         itemModels().simpleBlockItem(block.get())
     }
@@ -122,7 +122,7 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
      * 柱状のモデルを登録します。
      */
     protected fun cubeColumn(
-        block: HTBlockHolderLike<*>,
+        block: SupplierWithId<Block>,
         side: ResourceLocation = block.blockId.withSuffix("_side"),
         end: ResourceLocation = block.blockId.withSuffix("_top"),
     ) {
@@ -132,28 +132,28 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
     /**
      * テクスチャに[all]を使用するフルブロックのモデルを登録します。
      */
-    protected fun altTextureBlock(block: HTBlockHolderLike<*>, all: ResourceLocation) {
+    protected fun altTextureBlock(block: SupplierWithId<Block>, all: ResourceLocation) {
         simpleBlockAndItem(block, models().cubeAll(block.path, all))
     }
 
     /**
      * 描画タイプが`cutout`となるフルブロックのモデルを登録します。
      */
-    protected fun cutoutSimpleBlock(block: HTBlockHolderLike<*>, texId: ResourceLocation = block.blockId) {
+    protected fun cutoutSimpleBlock(block: SupplierWithId<Block>, texId: ResourceLocation = block.blockId) {
         simpleBlockAndItem(block, models().cubeAll(block.path, texId).renderType("cutout"))
     }
 
     /**
      * 描画タイプが`translucent`となるフルブロックのモデルを登録します。
      */
-    protected fun translucentSimpleBlock(block: HTBlockHolderLike<*>, texId: ResourceLocation = block.blockId) {
+    protected fun translucentSimpleBlock(block: SupplierWithId<Block>, texId: ResourceLocation = block.blockId) {
         simpleBlockAndItem(block, models().cubeAll(block.path, texId).renderType("translucent"))
     }
 
     /**
      * ハーフブロックのモデルを登録します。
      */
-    protected fun slabBlock(block: HTBlockHolderLike<SlabBlock>, texture: ResourceLocation) {
+    protected fun slabBlock(block: SupplierWithId<SlabBlock>, texture: ResourceLocation) {
         slabBlock(block.get(), texture, texture)
         itemModels().simpleBlockItem(block.getId())
     }
@@ -161,7 +161,7 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
     /**
      * 階段ブロックのモデルを登録します。
      */
-    protected fun stairsBlock(block: HTBlockHolderLike<StairBlock>, texture: ResourceLocation) {
+    protected fun stairsBlock(block: SupplierWithId<StairBlock>, texture: ResourceLocation) {
         stairsBlock(block.get(), texture)
         itemModels().simpleBlockItem(block.getId())
     }
@@ -169,7 +169,7 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
     /**
      * 壁ブロックのモデルを登録します。
      */
-    protected fun wallBlock(block: HTBlockHolderLike<WallBlock>, texture: ResourceLocation) {
+    protected fun wallBlock(block: SupplierWithId<WallBlock>, texture: ResourceLocation) {
         wallBlock(block.get(), texture)
         itemModels().wallInventory(block.path, texture)
     }
@@ -178,7 +178,7 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
      * 液体ブロックのモデルを追加します。
      * @since 0.3.0
      */
-    protected fun liquidBlock(content: HTFluidContent) {
+    protected fun liquidBlock(content: HTFluidContent.Flowing) {
         val block: Block = content.blockHolder?.get() ?: return
         simpleBlock(
             block,

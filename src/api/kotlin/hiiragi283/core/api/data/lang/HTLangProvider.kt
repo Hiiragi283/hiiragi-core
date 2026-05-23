@@ -52,11 +52,11 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
      * 液体の翻訳名を登録します。
      */
     fun addFluid(content: HTFluidContent, value: String) {
-        add(content.getFluidType().descriptionId, value)
+        add(content.typeHolder, value)
         add(content.fluidTag, value)
 
         val bucketName: String = BUCKET_PATTERN.translate(langType, value)
-        add(content.getBucket(), bucketName)
+        add(content.bucketHolder, bucketName)
         add(content.bucketTag, bucketName)
     }
 }

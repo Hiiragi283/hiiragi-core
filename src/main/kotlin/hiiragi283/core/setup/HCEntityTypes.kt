@@ -1,10 +1,10 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.registry.HTDeferredEntityType
+import hiiragi283.core.api.registry.HTDeferredEntityTypeRegister
 import hiiragi283.core.common.entity.HTThrownBomb
 import hiiragi283.core.common.entity.HTThrownCaptureEgg
-import hiiragi283.core.common.registry.HTDeferredEntityType
-import hiiragi283.core.common.registry.register.HTDeferredEntityTypeRegister
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.MobCategory

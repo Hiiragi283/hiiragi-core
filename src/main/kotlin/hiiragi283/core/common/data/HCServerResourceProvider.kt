@@ -11,6 +11,7 @@ import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.HTSimpleMaterialContents
 import hiiragi283.core.api.material.get
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTFluidPart
@@ -19,9 +20,9 @@ import hiiragi283.core.api.material.part.itemTagKey
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.prefixEntries
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
-import hiiragi283.core.api.registry.HTBlockHolderLike
-import hiiragi283.core.api.registry.HTSimpleFluidHolderLike
+import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -76,7 +77,7 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
             // Moonlightが生成時点でレジストリを参照できないのでこの世の終わりみたいな文字列を書くことになった
             // GTCEu Modernをいい感じに参考にしたらなんとかなるんかなこれ
             // それかJSONビルダー作って真面目に書くか
-            registered.blocks.forEach { (part: HTPart, key: HTMaterialKey, block: HTBlockHolderLike<*>) ->
+            registered.blocks.forEach { (part: HTPart, key: HTMaterialKey, block: SupplierWithId<Block>) ->
                 if (HTPartPropertyKeys.IS_ORE in part) {
                     val raw: HTIdLike = registered.items[CommonParts.RAW, key] ?: return@forEach
                     val id: ResourceLocation = block.getId()
@@ -156,7 +157,7 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
                 }
             }
         })
-        val fluids: HTMaterialContents<HTFluidPart, HTMaterialContents.FluidEntry> = HiiragiCoreAccess.INSTANCE.registeredFluids
+        val fluids: HTSimpleMaterialContents<HTFluidPart, Fluid> = HiiragiCoreAccess.INSTANCE.registeredFluids
         executor.accept(object : HTTagsProvider.GenTask<Fluid>(Registries.FLUID) {
             override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Fluid>) {
                 fluids.forEach { (part: HTFluidPart, key: HTMaterialKey, fluid: HTIdLike) ->
@@ -174,8 +175,8 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
                     factory.addMaterial(prefix, key).add(block)
                 }
                 // Material Fluid
-                fluids.forEach { (part: HTFluidPart, key: HTMaterialKey, fluid: HTSimpleFluidHolderLike) ->
-                    factory.addTags(Tags.Items.BUCKETS, part.createBucketTag(key)).add(fluid.getBucket())
+                fluids.forEach { (part: HTFluidPart, key: HTMaterialKey, fluid: HTMaterialContents.SimpleEntry<Fluid>) ->
+                    factory.addTags(Tags.Items.BUCKETS, part.createBucketTag(key)).add(fluid.get().bucket.toLike())
                 }
                 // Material Item
                 existing.items.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->

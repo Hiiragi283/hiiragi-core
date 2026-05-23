@@ -14,8 +14,9 @@ import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.plugin.HTMaterialPlugin
-import hiiragi283.core.api.registry.HTSimpleHolderLike
 import hiiragi283.core.api.registry.getResult
+import hiiragi283.core.api.registry.lookupResult
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.util.HTTextResult
@@ -25,7 +26,6 @@ import hiiragi283.core.impl.material.HTMaterialContentsImpl
 import hiiragi283.core.impl.material.HTMaterialContentsRegister
 import hiiragi283.core.util.HTPhysicalSideHelper
 import net.minecraft.core.HolderLookup
-import net.minecraft.core.HolderSet
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.Block
@@ -33,6 +33,9 @@ import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.Consumer
 import kotlin.time.Duration
 import kotlin.time.measureTime
+import net.minecraft.core.Holder
+import net.minecraft.core.HolderGetter
+import net.minecraft.world.level.material.Fluid
 
 /**
  * モジュールをまたいで実装する要素をまとめたインターフェースです。
@@ -135,7 +138,7 @@ abstract class HiiragiCoreAccess {
         }
     }
 
-    val registeredFluids: HTMaterialContents<HTFluidPart, HTMaterialContents.FluidEntry> by lazy {
+    val registeredFluids: HTSimpleMaterialContents<HTFluidPart, Fluid> by lazy {
         HTMaterialContentsImpl(HTMaterialContentsRegister.materialFluids) { part: HTFluidPart, key: HTMaterialKey ->
             "Unregistered ${part.asPartName()} fluid for ${key.getId()}"
         }
@@ -171,20 +174,38 @@ abstract class HiiragiCoreAccess {
     //    Tag    //
 
     /**
-     * 指定した[provider]から，[tagKey]に紐づいた[HTSimpleHolderLike]を取得します。
+     * 指定した[provider]から，[tagKey]に紐づいた値を取得します。
      * @param T レジストリの種類のクラス
-     * @return [HTSimpleHolderLike]の[結果][HTTextResult]
      */
-    fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<HTSimpleHolderLike<T>> {
+    fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<SupplierWithId<T>> {
         val provider1: HTTextResult<HolderLookup.Provider> = provider?.right() ?: HTPhysicalSideHelper.getRegistryAccess()
-        return provider1.flatMap { it.asGetterLookup().getResult(tagKey) }.flatMap(::getFirstHolder)
+        return provider1.flatMap { it.lookupResult(tagKey.registry()) }.flatMap { getFirstHolder(it, tagKey) }
     }
 
+    fun <T : Any> getFirstHolder(provider: HolderLookup<T>, tagKey: TagKey<T>): HTTextResult<SupplierWithId<T>> = provider
+        .getResult(tagKey)
+        .flatMap {
+            when (it.size()) {
+                0 -> HTTextResult("Could not find first value from empty holder set")
+                else -> it.right()
+            }
+        }
+        .map(::getFirstHolder)
+
+    fun <T : Any> getFirstHolder(getter: HolderGetter<T>, tagKey: TagKey<T>): HTTextResult<SupplierWithId<T>> = getter
+        .getResult(tagKey)
+        .flatMap {
+            when (it.size()) {
+                0 -> HTTextResult("Could not find first value from empty holder set")
+                else -> it.right()
+            }
+        }
+        .map(::getFirstHolder)
+
     /**
-     * 指定した[holderSet]から，最初の[HTSimpleHolderLike]を取得します。
+     * 指定した[holders]から，最初の値を取得します。
      * @param T レジストリの種類のクラス
-     * @return [HTSimpleHolderLike]の[結果][HTTextResult]
      * @since 0.15.2
      */
-    abstract fun <T : Any> getFirstHolder(holderSet: HolderSet<T>): HTTextResult<HTSimpleHolderLike<T>>
+    protected abstract fun <T : Any> getFirstHolder(holders: Iterable<Holder<T>>): SupplierWithId<T>
 }

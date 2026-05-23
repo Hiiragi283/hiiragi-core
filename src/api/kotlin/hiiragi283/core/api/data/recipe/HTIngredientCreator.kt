@@ -1,7 +1,6 @@
 package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTComparators
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.buildDataPredicate
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
@@ -27,6 +26,7 @@ import net.neoforged.neoforge.fluids.crafting.CompoundFluidIngredient
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient
 import java.util.function.IntUnaryOperator
+import net.neoforged.neoforge.fluids.FluidType
 
 /**
  * [HTItemIngredient]と[HTFluidIngredient]を作成するクラスです。
@@ -79,22 +79,22 @@ data object HTIngredientCreator {
     //    Fluid    //
 
     // Fluid
-    fun create(fluid: Fluid, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(FluidIngredient.of(fluid), amount)
+    fun create(fluid: Fluid, amount: Int = FluidType.BUCKET_VOLUME): HTFluidIngredient = create(FluidIngredient.of(fluid), amount)
 
     // Tag
     @JvmName("createFluid")
-    fun create(tagKey: TagKey<Fluid>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(FluidIngredient.tag(tagKey), amount)
+    fun create(tagKey: TagKey<Fluid>, amount: Int = FluidType.BUCKET_VOLUME): HTFluidIngredient = create(FluidIngredient.tag(tagKey), amount)
 
     @JvmName("createFluid")
-    fun create(tagKeys: Iterable<TagKey<Fluid>>, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(CompoundFluidIngredient.of(tagKeys.sortedWith(HTComparators.TAG_KEY).toSet().map(FluidIngredient::tag)), amount)
+    fun create(tagKeys: Iterable<TagKey<Fluid>>, amount: Int = FluidType.BUCKET_VOLUME): HTFluidIngredient = create(CompoundFluidIngredient.of(tagKeys.sortedWith(HTComparators.TAG_KEY).toSet().map(FluidIngredient::tag)), amount)
 
-    fun create(content: HTFluidContent, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(content.fluidTag, amount)
+    fun create(content: HTFluidContent, amount: Int = FluidType.BUCKET_VOLUME): HTFluidIngredient = create(content.fluidTag, amount)
 
-    fun water(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(VanillaFluidContents.WATER, amount)
+    fun water(amount: Int = FluidType.BUCKET_VOLUME): HTFluidIngredient = create(VanillaFluidContents.WATER, amount)
 
-    fun lava(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(VanillaFluidContents.LAVA, amount)
+    fun lava(amount: Int = FluidType.BUCKET_VOLUME): HTFluidIngredient = create(VanillaFluidContents.LAVA, amount)
 
-    fun milk(amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = create(VanillaFluidContents.MILK, amount)
+    fun milk(amount: Int = FluidType.BUCKET_VOLUME): HTFluidIngredient = create(VanillaFluidContents.MILK, amount)
 
     fun molten(material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidIngredient = create(HTFluidPart.MOLTEN, material, operator)
 
@@ -110,5 +110,5 @@ data object HTIngredientCreator {
     // Ingredient
     fun create(ingredient: SizedFluidIngredient): HTFluidIngredient = create(ingredient.ingredient(), ingredient.amount())
 
-    fun create(ingredient: FluidIngredient, amount: Int = HTConst.DEFAULT_FLUID_AMOUNT): HTFluidIngredient = HTFluidIngredient(ingredient, amount)
+    fun create(ingredient: FluidIngredient, amount: Int = FluidType.BUCKET_VOLUME): HTFluidIngredient = HTFluidIngredient(ingredient, amount)
 }

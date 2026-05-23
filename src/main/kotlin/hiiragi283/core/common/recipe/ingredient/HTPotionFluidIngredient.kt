@@ -7,7 +7,6 @@ import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
-import hiiragi283.core.api.registry.VanillaFluidContents
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.util.HTPhysicalSideHelper
 import java.util.Objects
@@ -21,6 +20,8 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import net.neoforged.neoforge.fluids.crafting.FluidIngredientType
 import java.util.stream.Stream
+import net.minecraft.world.level.material.Fluids
+import net.neoforged.neoforge.fluids.FluidType
 
 /**
  * [HTPotionFluidManager]に基づいて液体ポーションを扱う[FluidIngredient]の実装クラスです。
@@ -60,7 +61,7 @@ class HTPotionFluidIngredient(val potions: HolderSet<Potion>, val bottleType: HT
                 .filter { it.value().isEnabled(HTPhysicalSideHelper.getFeatureFlags()) }
                 .map { potion: Holder<Potion> ->
                     when (potion) {
-                        Potions.WATER -> VanillaFluidContents.WATER.toStack()
+                        Potions.WATER -> FluidStack(Fluids.WATER, FluidType.BUCKET_VOLUME)
                         else -> {
                             val stack = FluidStack(fluid, HTConst.DEFAULT_FLUID_AMOUNT)
                             HTPotionHelper.setContents(stack, BottledPotionContents(potion))

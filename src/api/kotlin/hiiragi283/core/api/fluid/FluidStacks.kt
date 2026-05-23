@@ -1,9 +1,9 @@
 package hiiragi283.core.api.fluid
 
-import hiiragi283.core.api.HTConst
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
+import net.neoforged.neoforge.fluids.FluidType
 
 //    FluidStack    //
 
@@ -17,7 +17,7 @@ import net.neoforged.neoforge.fluids.FluidStack
  */
 fun createFluidStack(
     fluid: Fluid?,
-    amount: Int = HTConst.DEFAULT_FLUID_AMOUNT,
+    amount: Int = FluidType.BUCKET_VOLUME,
     patch: DataComponentPatch = DataComponentPatch.EMPTY,
 ): FluidStack {
     if (fluid == null) return FluidStack.EMPTY

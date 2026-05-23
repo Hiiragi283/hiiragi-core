@@ -28,7 +28,7 @@ class HCItemTagsProvider(
     override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Item>) {
         // Buckets
         for (content: HTFluidContent in HCFluids.REGISTER.entries) {
-            factory.addTags(Tags.Items.BUCKETS, content.bucketTag).add(content.getBucket())
+            factory.addTags(Tags.Items.BUCKETS, content.bucketTag).add(content.bucketHolder)
         }
         // Foods
         factory.addTags(Tags.Items.FOODS_DOUGH, HiiragiCoreTags.Items.FOODS_DOUGH_WHEAT).add(HCItems.WHEAT_DOUGH)

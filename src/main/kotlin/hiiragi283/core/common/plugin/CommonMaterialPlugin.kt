@@ -31,7 +31,7 @@ import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.add
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.property.plusAssign
-import hiiragi283.core.api.registry.toItemLike
+import hiiragi283.core.api.registry.HTDeferredItem
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HiiragiCoreTags
@@ -554,7 +554,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(CommonMaterialKeys.PLASTIC).apply {
             setDefaultPart(
                 HiiragiCoreTags.Items.PLASTICS,
-                CommonParts.PLATE.createId(CommonMaterialKeys.PLASTIC).toItemLike(),
+                HTDeferredItem(CommonParts.PLATE.createId(CommonMaterialKeys.PLASTIC)),
             )
             addBlockPrefixes(CommonParts.BLOCK)
             addFluidPrefixes(HTFluidPart.MOLTEN)

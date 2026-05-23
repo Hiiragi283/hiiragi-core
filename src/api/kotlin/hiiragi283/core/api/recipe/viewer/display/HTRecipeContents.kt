@@ -21,6 +21,7 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
+import net.neoforged.neoforge.fluids.FluidType
 
 @JvmRecord
 data class HTRecipeContents(
@@ -202,7 +203,7 @@ data class HTRecipeContents(
             val CODEC: Codec<FluidInput> = FluidStack.CODEC.listOf().xmap(::create, FluidInput::stacks)
 
             @JvmField
-            val EMPTY = FluidInput(emptyList(), HTConst.DEFAULT_FLUID_AMOUNT)
+            val EMPTY = FluidInput(emptyList(), FluidType.BUCKET_VOLUME)
 
             @JvmStatic
             fun create(stacks: List<FluidStack>): FluidInput = when {

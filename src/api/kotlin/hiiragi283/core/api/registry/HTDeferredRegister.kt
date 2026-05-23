@@ -1,34 +1,20 @@
 package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.resource.toId
+import java.util.function.Function
+import java.util.function.Supplier
+import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
-import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.registries.DeferredRegister
 
-/**
- * Hiiragi Coreとそれを前提とするmodで使用される[DeferredRegister]のラッパークラスです。
- * @param R レジストリの要素の値
- * @author Hiiragi Tsubasa
- * @since 0.13.0
- */
-open class HTDeferredRegister<R : Any>(protected val delegate: DeferredRegister<R>) {
-    constructor(registryKey: RegistryKey<R>, namespace: String) : this(DeferredRegister.create(registryKey, namespace))
-
-    @JvmField
-    val registryKey: RegistryKey<R> = delegate.registryKey
-
-    @JvmField
-    val namespace: String = delegate.namespace
-
+open class HTDeferredRegister<T : Any>(registryKey: RegistryKey<T>, namespace: String) : DeferredRegister<T>(registryKey, namespace) {
     /**
      * [名前空間][namespace]に基づいて，[パス][path]から[ID][ResourceLocation]を作成します。
      * @param path IDの[パス][ResourceLocation.getPath]
      */
     fun createId(path: String): ResourceLocation = namespace.toId(path)
 
-    fun addAlias(from: ResourceLocation, to: ResourceLocation) {
-        delegate.addAlias(from, to)
-    }
+    fun createKey(id: ResourceLocation): ResourceKey<T> = this.registryKey.createKey(id)
 
     /**
      * [名前空間][namespace]に基づいて，IDのエイリアスを登録します。
@@ -39,9 +25,11 @@ open class HTDeferredRegister<R : Any>(protected val delegate: DeferredRegister<
         this.addAlias(createId(from), createId(to))
     }
 
-    fun asSequence(): Sequence<HTHolderLike<R, *>> = delegate.entries.asSequence().map { it.toLike() }
+    open fun asSequence(): Sequence<HTDeferredHolder<T, *>> = this.entries.asSequence().filterIsInstance<HTDeferredHolder<T, *>>()
 
-    fun register(bus: IEventBus) {
-        delegate.register(bus)
-    }
+    override fun <I : T> createHolder(registryKey: RegistryKey<T>, key: ResourceLocation): HTDeferredHolder<T, I> = HTDeferredHolder(registryKey, key)
+
+    override fun <I : T> register(name: String, sup: Supplier<out I>): HTDeferredHolder<T, I> = super.register(name, sup) as HTDeferredHolder<T, I>
+
+    override fun <I : T> register(name: String, func: Function<ResourceLocation, out I>): HTDeferredHolder<T, I> = super.register(name, func) as HTDeferredHolder<T, I>
 }
