@@ -8,6 +8,7 @@ import hiiragi283.lib.tag.createTagKey
 import net.minecraft.core.registries.Registries
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
+import net.minecraft.world.level.material.Fluid
 
 data object HiiragiCoreTags {
     data object Items {
@@ -31,6 +32,17 @@ data object HiiragiCoreTags {
 
         @JvmStatic
         private fun mod(vararg path: String): TagKey<Item> = Registries.ITEM.createTagKey(HiiragiCoreAPI.id(*path))
+    }
+
+    data object Fluids {
+        /**
+         * @since 0.13.0
+         */
+        @JvmField
+        val ELDRITCH: TagKey<Fluid> = mod("eldritch")
+
+        @JvmStatic
+        private fun mod(vararg path: String): TagKey<Fluid> = Registries.FLUID.createTagKey(HiiragiCoreAPI.id(*path))
     }
 
     data object MaterialContents {

@@ -11,7 +11,6 @@ import net.minecraft.world.item.ItemStack
  * クリエイティブタブに複数の[ItemStack]を追加するためのインターフェースです。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
- * @see mekanism.common.registration.impl.CreativeTabDeferredRegister.ICustomCreativeTabContents
  */
 fun interface HTSubCreativeTabContents {
     /**

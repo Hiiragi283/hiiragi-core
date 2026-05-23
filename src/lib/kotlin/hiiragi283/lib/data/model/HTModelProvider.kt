@@ -75,7 +75,7 @@ abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvide
                     material(HTConstants.MINECRAFT, "bucket"),
                     material(HTConstants.MINECRAFT, "bucket"),
                     material(HTConstants.NEOFORGE, "mask/bucket_fluid$suffix"),
-                    material(HTConstants.NEOFORGE, "mask/bucket_fluid_cover$suffix"),
+                    Optional.empty(), // material(HTConstants.NEOFORGE, "mask/bucket_fluid_cover$suffix"),
                 ),
                 content.get(),
                 content.getFluidType().isLighterThanAir,

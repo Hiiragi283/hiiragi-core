@@ -1,7 +1,7 @@
 package hiiragi283.lib.fluid
 
 import hiiragi283.lib.text.MutableText
-import hiiragi283.lib.text.translatableText
+import hiiragi283.lib.text.withStyle
 import net.minecraft.core.BlockPos
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.TextColor
@@ -24,10 +24,10 @@ open class HTFluidType(properties: Properties) : FluidType(properties) {
     protected open fun getNameColor(stack: FluidStack): TextColor? = null
 
     override fun getDescription(stack: FluidStack): Component {
-        var name: MutableText = translatableText(getDescriptionId(stack))
+        var name: MutableText = super.getDescription(stack).copy()
         val color: TextColor? = getNameColor(stack)
         if (color != null) {
-            name = name.withColor(color.value)
+            name = name.withStyle(color)
         }
         return name
     }

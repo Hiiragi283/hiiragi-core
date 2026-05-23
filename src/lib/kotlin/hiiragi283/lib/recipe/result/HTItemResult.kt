@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.HTConstants
+import hiiragi283.lib.HTPlatform
 import hiiragi283.lib.HTRegistries
 import hiiragi283.lib.math.toFraction
 import hiiragi283.lib.resource.HTIdLike
@@ -108,12 +109,7 @@ interface HTItemResult : HTIdLike {
 
         override fun getSerializer(): Serializer<*> = SERIALIZER
 
-        override fun create(): HTTextResult<ItemStack> = BuiltInRegistries.ITEM
-            .getTagOrEmpty(tagKey)
-            .firstOrNull() // TODO
-            ?.let { ItemStack(it, count) }
-            ?.right()
-            ?: HTTextResult("Could not find elements from tag ${getId()}")
+        override fun create(): HTTextResult<ItemStack> = HTPlatform.INSTANCE.getFirstHolder(BuiltInRegistries.ITEM, tagKey).map { ItemStack(it.get(), count) }
 
         override fun getId(): Identifier = tagKey.location()
     }

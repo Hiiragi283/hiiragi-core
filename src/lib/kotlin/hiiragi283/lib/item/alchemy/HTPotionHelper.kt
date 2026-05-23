@@ -1,5 +1,6 @@
 package hiiragi283.lib.item.alchemy
 
+import hiiragi283.lib.HTPlatform
 import hiiragi283.lib.item.createItemTemplate
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponents
@@ -87,7 +88,7 @@ data object HTPotionHelper {
      */
     @JvmName("getContentsFromItem")
     @JvmStatic
-    fun getContents(instance: TypedInstance<Item>): BottledPotionContents? = null // TODO
+    fun <T> getContents(instance: T): BottledPotionContents? where T : TypedInstance<Item>, T : DataComponentGetter = HTPlatform.INSTANCE.getContentsFromItem(instance)
 
     /**
      * 指定した[instance]から[BottledPotionContents]を取得します。
@@ -107,7 +108,7 @@ data object HTPotionHelper {
      */
     @JvmStatic
     fun setContents(stack: ItemStack, contents: BottledPotionContents): ItemStack {
-        // HiiragiCoreAccess.INSTANCE.setContents(stack, contents)
+        HTPlatform.INSTANCE.setContents(stack, contents)
         return stack
     }
 
@@ -120,7 +121,7 @@ data object HTPotionHelper {
      */
     @JvmName("getContentsFromFluid")
     @JvmStatic
-    fun getContents(instance: TypedInstance<Fluid>): BottledPotionContents? = null // TODO
+    fun <T> getContents(instance: T): BottledPotionContents? where T : TypedInstance<Fluid>, T : DataComponentGetter = HTPlatform.INSTANCE.getContentsFromFluid(instance)
 
     /**
      * 指定した[stack]に[contents]を設定します。
@@ -128,7 +129,7 @@ data object HTPotionHelper {
      */
     @JvmStatic
     fun setContents(stack: FluidStack, contents: BottledPotionContents): FluidStack {
-        // HiiragiCoreAccess.INSTANCE.setContents(stack, contents)
+        HTPlatform.INSTANCE.setContents(stack, contents)
         return stack
     }
 }

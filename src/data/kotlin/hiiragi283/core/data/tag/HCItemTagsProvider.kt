@@ -9,6 +9,7 @@ import hiiragi283.lib.tag.HTCommonTags
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
+import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.common.Tags
 
@@ -20,6 +21,8 @@ class HCItemTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<H
         copy(HTCommonTags.Blocks.STORAGE_BLOCKS_QUARTZ, HTCommonTags.Items.STORAGE_BLOCKS_QUARTZ)
         copy(HTCommonTags.Blocks.STORAGE_BLOCKS_AMETHYST, HTCommonTags.Items.STORAGE_BLOCKS_AMETHYST)
         copy(HTCommonTags.Blocks.STORAGE_BLOCKS_ECHO, HTCommonTags.Items.STORAGE_BLOCKS_ECHO)
+
+        tags(Tags.Items.GEMS, HTCommonTags.Items.GEMS_ECHO).addItem(Items.ECHO_SHARD)
 
         tags(Tags.Items.NUGGETS, HTCommonTags.Items.NUGGETS_NETHERITE).add(HCItems.NETHERITE_NUGGET)
 

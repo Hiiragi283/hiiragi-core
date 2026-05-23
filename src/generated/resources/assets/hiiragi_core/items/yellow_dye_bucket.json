@@ -5,7 +5,6 @@
     "fluid": "hiiragi_core:yellow_dye",
     "textures": {
       "base": "minecraft:item/bucket",
-      "cover": "neoforge:item/mask/bucket_fluid_cover_drip",
       "fluid": "neoforge:item/mask/bucket_fluid_drip",
       "particle": "minecraft:item/bucket"
     }

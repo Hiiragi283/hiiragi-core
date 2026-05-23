@@ -1,7 +1,6 @@
 package hiiragi283.lib.registry
 
 import hiiragi283.lib.item.HTSubCreativeTabContents
-import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.text.HTTranslation
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries
@@ -14,14 +13,6 @@ import net.neoforged.neoforge.registries.DeferredHolder
 
 class HTDeferredCreativeTabRegister(namespace: String) : HTDeferredRegister<CreativeModeTab>(Registries.CREATIVE_MODE_TAB, namespace) {
     companion object {
-        @Suppress("DEPRECATION")
-        @JvmStatic
-        fun addHoldersToDisplay(parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output, holders: Sequence<SupplierWithId<ItemLike>>) {
-            for (holder: SupplierWithId<ItemLike> in holders) {
-                addToDisplay(parameters, output, holder.get().asItem().builtInRegistryHolder())
-            }
-        }
-
         @JvmStatic
         fun addToDisplay(parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output, items: Sequence<Holder<Item>>) {
             for (item: Holder<Item> in items) {
@@ -29,29 +20,24 @@ class HTDeferredCreativeTabRegister(namespace: String) : HTDeferredRegister<Crea
             }
         }
 
-        /**
-         * @see mekanism.common.registration.impl.CreativeTabDeferredRegister.addToDisplay
-         */
         @JvmStatic
-        fun addToDisplay(parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output, vararg items: Holder<Item>) {
+        fun addToDisplay(parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output, holder: Holder<Item>) {
             val visibility: CreativeModeTab.TabVisibility = when (output) {
                 is BuildCreativeModeTabContentsEvent -> CreativeModeTab.TabVisibility.PARENT_TAB_ONLY
                 else -> CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS
             }
-            for (holder: Holder<Item> in items) {
-                val stack = ItemStack(holder)
-                if (stack.isEmpty) continue
+            val stack = ItemStack(holder)
+            if (stack.isEmpty) return
 
-                val item: Item = stack.item
-                if (!item.isEnabled(parameters.enabledFeatures())) continue
-                if (item is HTSubCreativeTabContents) {
-                    if (item.shouldAddDefault()) {
-                        output.accept(stack, visibility)
-                    }
-                    item.addItems(holder, HTSubCreativeTabContents.Context(parameters, output))
-                } else {
+            val item: Item = stack.item
+            if (!item.isEnabled(parameters.enabledFeatures())) return
+            if (item is HTSubCreativeTabContents) {
+                if (item.shouldAddDefault()) {
                     output.accept(stack, visibility)
                 }
+                item.addItems(holder, HTSubCreativeTabContents.Context(parameters, output))
+            } else {
+                output.accept(stack, visibility)
             }
         }
     }

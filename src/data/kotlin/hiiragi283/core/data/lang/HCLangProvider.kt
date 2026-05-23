@@ -1,10 +1,12 @@
 package hiiragi283.core.data.lang
 
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCFluids
 import hiiragi283.lib.data.lang.HTLangName
 import hiiragi283.lib.data.lang.HTLangPatternProvider
 import hiiragi283.lib.data.lang.HTLangProvider
 import hiiragi283.lib.data.lang.HTLangType
+import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.text.HTCommonTranslation
 import hiiragi283.lib.text.HTHasTranslationKey
 import hiiragi283.lib.text.HTTranslation
@@ -47,10 +49,10 @@ interface HCLangProvider {
             provider.add(block, waxedCopper.translate(langType, pattern.translate(langType, copperBasin)))
         }
         // Fluid
-        /*val dyePattern: HTLangPatternProvider = HTLangPatternProvider.create("%s Dye", "%sの染料")
+        val dyePattern: HTLangPatternProvider = HTLangPatternProvider.create("%s Dye", "%sの染料")
         for ((color: HTLangName, fluid: HTFluidContent) in HCFluids.DyeContents) {
             provider.addFluid(fluid, dyePattern.translate(langType, color))
-        }*/
+        }
     }
 
     private fun getCopperLangPattern(state: WeatheringCopper.WeatherState): HTLangPatternProvider = when (state) {
