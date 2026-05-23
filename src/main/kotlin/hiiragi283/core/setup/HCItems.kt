@@ -1,11 +1,14 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.lib.registry.HTDeferredItemRegister
 import hiiragi283.lib.registry.HTSimpleDeferredItem
 import net.neoforged.bus.api.IEventBus
+import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent
+import net.neoforged.neoforge.transfer.access.ItemAccess
 
 data object HCItems {
     @JvmField
@@ -32,5 +35,10 @@ data object HCItems {
 
     @JvmStatic
     private fun registerCapabilities(event: RegisterCapabilitiesEvent) {
+        event.registerItem(
+            Capabilities.Fluid.ITEM,
+            { _, access: ItemAccess -> HTPotionBucketItem.BucketHandler(access) },
+            HCFluids.POTION.bucketHolder.get(),
+        )
     }
 }

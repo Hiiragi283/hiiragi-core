@@ -2,6 +2,7 @@ package hiiragi283.core.data.lang
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.lib.data.lang.HTLangProvider
 import hiiragi283.lib.data.lang.HTLangTypes
@@ -19,6 +20,17 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCBlocks.ECHO_BLOCK, "残響ブロック")
 
         add(HCBlocks.WARPED_WART, "歪んだウォート")
+        // Fluid
+        addFluid(HCFluids.EXPERIENCE, "液体経験値")
+        addFluid(HCFluids.HONEY, "ハチミツ")
+        addFluid(HCFluids.MUSHROOM_STEW, "キノコシチュー")
+        addFluid(HCFluids.DRAGON_BREATH, "ドラゴンブレス")
+        add(HCFluids.POTION.getFluidType().descriptionId, "無効なポーション入りバケツ")
+        add(HCFluids.POTION.bucketHolder, $$"%1$s入りバケツ")
+        addFluid(HCFluids.OMINOUS_FLUX, "不吉な流動体")
+
+        addFluid(HCFluids.LATEX, "ラテックス")
+        addFluid(HCFluids.MEAT, "肉")
         // Item
         add(HCItems.NETHERITE_NUGGET, "ネザライト塊")
     }

@@ -18,10 +18,10 @@ data object HCCreativeTabs {
         Items.IRON_INGOT,
     ) { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
         // Items
-        // HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCItems.REGISTER.asItemSequence())
+        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCItems.REGISTER.asSequence())
         // Blocks
         HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCBlocks.REGISTER.asItemSequence())
         // Fluids
-        // HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCFluids.REGISTER.asItemSequence())
+        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCFluids.REGISTER.asItemSequence())
     }
 }

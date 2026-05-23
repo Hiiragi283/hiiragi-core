@@ -1,5 +1,6 @@
 package hiiragi283.lib.data.lang
 
+import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.resource.toDescriptionKey
 import hiiragi283.lib.text.HTHasTranslationKey
 import net.minecraft.data.PackOutput
@@ -49,12 +50,12 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
     /**
      * 液体の翻訳名を登録します。
      */
-    /*fun addFluid(content: HTFluidContent, value: String) {
-        add(content.getFluidType().descriptionId, value)
+    fun addFluid(content: HTFluidContent, value: String) {
+        add(content.typeHolder, value)
         add(content.fluidTag, value)
 
         val bucketName: String = BUCKET_PATTERN.translate(langType, value)
-        add(content.getBucket(), bucketName)
+        add(content.bucketHolder, bucketName)
         add(content.bucketTag, bucketName)
-    }*/
+    }
 }

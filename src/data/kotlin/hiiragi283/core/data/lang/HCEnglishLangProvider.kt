@@ -2,6 +2,7 @@ package hiiragi283.core.data.lang
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.lib.data.lang.HTLangProvider
 import hiiragi283.lib.data.lang.HTLangTypes
@@ -19,6 +20,17 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCBlocks.ECHO_BLOCK, "Block of Echo")
 
         add(HCBlocks.WARPED_WART, "Warped Wart")
+        // Fluid
+        addFluid(HCFluids.EXPERIENCE, "Liquid Experience")
+        addFluid(HCFluids.HONEY, "Honey")
+        addFluid(HCFluids.MUSHROOM_STEW, "Mushroom Stew")
+        addFluid(HCFluids.DRAGON_BREATH, "Dragon Breath")
+        add(HCFluids.POTION.getFluidType().descriptionId, "Invalid Potion Bucket")
+        add(HCFluids.POTION.bucketHolder, $$"%1$s Bucket")
+        addFluid(HCFluids.OMINOUS_FLUX, "Ominous Flux")
+
+        addFluid(HCFluids.LATEX, "Latex")
+        addFluid(HCFluids.MEAT, "Meat")
         // Item
         add(HCItems.NETHERITE_NUGGET, "Netherite Nugget")
     }

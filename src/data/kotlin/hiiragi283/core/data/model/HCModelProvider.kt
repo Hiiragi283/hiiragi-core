@@ -2,10 +2,13 @@ package hiiragi283.core.data.model
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.data.model.HTModelProvider
-import hiiragi283.lib.registry.HTDeferredBlockAndItem
+import hiiragi283.lib.registry.HTCopperMap
+import hiiragi283.lib.registry.HTFluidContent
+import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.resource.blockId
 import hiiragi283.lib.resource.toId
 import net.minecraft.client.data.models.BlockModelGenerators
@@ -15,6 +18,7 @@ import net.minecraft.client.data.models.model.TextureSlot
 import net.minecraft.client.resources.model.sprite.Material
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.Identifier
+import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.WeatheringCopper
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
 
@@ -27,15 +31,31 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
         // Warped Wart
         blockModels.createCropBlock(HCBlocks.WARPED_WART.get(), BlockStateProperties.AGE_3, 0, 1, 1, 2)
         // Copper Basin
-        blockModels.registerCopperBasin(HCBlocks.COPPER_BASIN.weatheringMap)
-        blockModels.registerCopperBasin(HCBlocks.COPPER_BASIN.waxedMap)
+        blockModels.registerCopperBasin(HCBlocks.COPPER_BASIN.weathering)
+        blockModels.registerCopperBasin(HCBlocks.COPPER_BASIN.waxed)
+
+        // Fluids
+        val dripFluids: List<HTFluidContent> = buildList {
+            // Vanilla
+            addAll(HCFluids.DyeContents.values)
+
+            add(HCFluids.HONEY)
+        }
+        for (content: HTFluidContent in HCFluids.REGISTER.asSequence()) {
+            // Item
+            itemModels.generateBucketItem(content, content in dripFluids)
+            // Block
+            if (content is HTFluidContent.Flowing) {
+                content.blockHolder?.let { blockModels.registerFluid(it) }
+            }
+        }
 
         // Item Resources
         itemModels.generateFlatItem(HCItems.NETHERITE_NUGGET)
     }
 
-    private fun BlockModelGenerators.registerCopperBasin(map: Map<WeatheringCopper.WeatherState, HTDeferredBlockAndItem<*, *>>) {
-        for ((state: WeatheringCopper.WeatherState, block: HTDeferredBlockAndItem<*, *>) in map) {
+    private fun BlockModelGenerators.registerCopperBasin(map: HTCopperMap<SupplierWithId<Block>>) {
+        for ((state: WeatheringCopper.WeatherState, block: SupplierWithId<Block>) in map) {
             val cutCopper: Material = when (state) {
                 WeatheringCopper.WeatherState.UNAFFECTED -> "cut_copper"
                 WeatheringCopper.WeatherState.EXPOSED -> "exposed_cut_copper"

@@ -24,7 +24,7 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
             .unlockedBy(getHasName(HCBlocks.WARPED_WART), has(HCBlocks.WARPED_WART))
             .save(output)
         // Copper Basin
-        shaped(RecipeCategory.BUILDING_BLOCKS, HCBlocks.COPPER_BASIN.unaffected)
+        shaped(RecipeCategory.BUILDING_BLOCKS, HCBlocks.COPPER_BASIN.weathering.unaffected)
             .pattern("A A")
             .pattern("A A")
             .pattern("BAB")
@@ -33,8 +33,8 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
             .unlockedBy("has_copper", has(Tags.Items.INGOTS_COPPER))
             .save(output)
 
-        for ((state: WeatheringCopper.WeatherState, base: ItemLike) in HCBlocks.COPPER_BASIN.weatheringMap) {
-            val waxed: ItemLike = HCBlocks.COPPER_BASIN.waxedMap[state]!!
+        for ((state: WeatheringCopper.WeatherState, base: ItemLike) in HCBlocks.COPPER_BASIN.weathering) {
+            val waxed: ItemLike = HCBlocks.COPPER_BASIN.waxed[state]
             // Waxing
             shapeless(RecipeCategory.BUILDING_BLOCKS, waxed)
                 .requires(base)

@@ -4,8 +4,8 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.block.entity.HTCopperBasinBlockEntity
 import hiiragi283.lib.registry.HTDeferredBlockEntityType
 import hiiragi283.lib.registry.HTDeferredBlockEntityTypeRegister
+import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.transfer.HTHandlerProvider
-import java.util.function.Supplier
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
@@ -35,10 +35,10 @@ data object HCBlockEntityTypes {
     // Supported Blocks
     @JvmStatic
     private fun addSupportedBlocks(event: BlockEntityTypeAddBlocksEvent) {
-        for (item: Supplier<out Block> in HCBlocks.COPPER_BASIN.waxedBlocks) {
+        for (item: SupplierWithId<Block> in HCBlocks.COPPER_BASIN.waxed.values) {
             event.modify(COPPER_BASIN.get(), item.get())
         }
-        for (item: Supplier<out Block> in HCBlocks.COPPER_BASIN.weatheringBlocks) {
+        for (item: SupplierWithId<Block> in HCBlocks.COPPER_BASIN.weathering.values) {
             event.modify(COPPER_BASIN.get(), item.get())
         }
 

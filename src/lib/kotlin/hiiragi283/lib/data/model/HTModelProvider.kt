@@ -1,8 +1,14 @@
 package hiiragi283.lib.data.model
 
+import hiiragi283.lib.HTConstants
+import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.resource.SupplierWithId
+import hiiragi283.lib.resource.blockId
 import hiiragi283.lib.resource.itemId
+import hiiragi283.lib.resource.toId
+import hiiragi283.lib.util.toOptional
+import java.util.Optional
 import net.minecraft.client.data.models.BlockModelGenerators
 import net.minecraft.client.data.models.ItemModelGenerators
 import net.minecraft.client.data.models.ModelProvider
@@ -16,6 +22,7 @@ import net.minecraft.data.PackOutput
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
+import net.neoforged.neoforge.client.model.item.DynamicFluidContainerModel
 
 abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvider(output, modId) {
     abstract override fun registerModels(blockModels: BlockModelGenerators, itemModels: ItemModelGenerators)
@@ -30,6 +37,17 @@ abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvide
         this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, variant))
     }
 
+    fun BlockModelGenerators.registerFluid(fluidBlock: SupplierWithId<Block>) {
+        this.registerSimple(
+            fluidBlock.get(),
+            HTModelTemplates.FLUID_BLOCK.create(
+                fluidBlock.blockId,
+                TextureMapping.particle(Material(HTConstants.MINECRAFT.toId(HTConstants.BLOCK, "water_still"))),
+                this.modelOutput,
+            ),
+        )
+    }
+
     //    Item    //
 
     fun ItemModelGenerators.generateFlatItem(item: SupplierWithId<Item>, layer: Identifier = item.itemId, template: ModelTemplate = ModelTemplates.FLAT_ITEM) {
@@ -41,4 +59,29 @@ abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvide
         layer: Identifier = item.itemId,
         template: ModelTemplate = ModelTemplates.FLAT_ITEM,
     ): Identifier = template.create(item.itemId, TextureMapping.layer0(Material(layer)), this.modelOutput)
+
+    fun ItemModelGenerators.generateBucketItem(content: HTFluidContent, isDrip: Boolean) {
+        fun material(namespace: String, path: String): Optional<Material> = namespace.toId(HTConstants.ITEM, path).let(::Material).toOptional()
+
+        val suffix: String = when (isDrip) {
+            true -> "_drip"
+            false -> ""
+        }
+
+        this.itemModelOutput.accept(
+            content.bucketHolder.get(),
+            DynamicFluidContainerModel.Unbaked(
+                DynamicFluidContainerModel.Textures(
+                    material(HTConstants.MINECRAFT, "bucket"),
+                    material(HTConstants.MINECRAFT, "bucket"),
+                    material(HTConstants.NEOFORGE, "mask/bucket_fluid$suffix"),
+                    material(HTConstants.NEOFORGE, "mask/bucket_fluid_cover$suffix"),
+                ),
+                content.get(),
+                content.getFluidType().isLighterThanAir,
+                true,
+                false,
+            ),
+        )
+    }
 }

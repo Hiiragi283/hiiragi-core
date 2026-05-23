@@ -33,8 +33,8 @@ class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<
             yield(HCBlocks.CHARCOAL_BLOCK)
             yield(HCBlocks.ECHO_BLOCK)
 
-            yieldAll(HCBlocks.COPPER_BASIN.weatheringBlocks)
-            yieldAll(HCBlocks.COPPER_BASIN.waxedBlocks)
+            yieldAll(HCBlocks.COPPER_BASIN.weathering.values)
+            yieldAll(HCBlocks.COPPER_BASIN.waxed.values)
         }.forEach(pickaxe::add)
     }
 

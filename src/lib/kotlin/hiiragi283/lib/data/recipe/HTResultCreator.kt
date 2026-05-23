@@ -3,7 +3,7 @@ package hiiragi283.lib.data.recipe
 import hiiragi283.lib.item.createItemTemplate
 import hiiragi283.lib.recipe.result.HTFluidResult
 import hiiragi283.lib.recipe.result.HTItemResult
-import hiiragi283.lib.registry.HTFluidHolderLike
+import hiiragi283.lib.registry.HTFluidContent
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStackTemplate
@@ -27,7 +27,7 @@ data object HTResultCreator {
 
     fun create(fluid: Fluid, amount: Int = FluidType.BUCKET_VOLUME): HTFluidResult = create(FluidStackTemplate(fluid, amount))
 
-    fun create(fluid: HTFluidHolderLike<*>, amount: Int = FluidType.BUCKET_VOLUME): HTFluidResult = fluid.toTemplate(amount).map(::create).getOrThrow()
+    fun create(content: HTFluidContent, amount: Int = FluidType.BUCKET_VOLUME): HTFluidResult = content.toTemplate(amount).map(::create).getOrThrow()
 
     fun create(template: FluidStackTemplate): HTFluidResult = HTFluidResult.create(template)
 
