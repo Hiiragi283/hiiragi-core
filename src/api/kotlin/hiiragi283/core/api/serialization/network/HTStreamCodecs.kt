@@ -53,6 +53,9 @@ data object HTStreamCodecs {
         Enum<V>::ordinal,
     )
 
+    /**
+     * @since 0.17.0
+     */
     @JvmStatic
     fun <B : ByteBuf, L : Any, R : Any> either(left: StreamCodec<in B, L>, right: StreamCodec<in B, R>): StreamCodec<B, Either<L, R>> = ByteBufCodecs.either(left, right).map({ it.kotlin }, { it.java })
 

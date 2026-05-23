@@ -34,7 +34,6 @@ import java.util.function.Consumer
 import kotlin.time.Duration
 import kotlin.time.measureTime
 import net.minecraft.core.Holder
-import net.minecraft.core.HolderGetter
 import net.minecraft.world.level.material.Fluid
 
 /**
@@ -176,23 +175,20 @@ abstract class HiiragiCoreAccess {
     /**
      * 指定した[provider]から，[tagKey]に紐づいた値を取得します。
      * @param T レジストリの種類のクラス
+     * @return [SupplierWithId]の[結果][HTTextResult]
      */
     fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<SupplierWithId<T>> {
         val provider1: HTTextResult<HolderLookup.Provider> = provider?.right() ?: HTPhysicalSideHelper.getRegistryAccess()
         return provider1.flatMap { it.lookupResult(tagKey.registry()) }.flatMap { getFirstHolder(it, tagKey) }
     }
 
+    /**
+     * 指定した[provider]から，[tagKey]に紐づいた値を取得します。
+     * @param T レジストリの種類のクラス
+     * @return [SupplierWithId]の[結果][HTTextResult]
+     * @since 0.17.0
+     */
     fun <T : Any> getFirstHolder(provider: HolderLookup<T>, tagKey: TagKey<T>): HTTextResult<SupplierWithId<T>> = provider
-        .getResult(tagKey)
-        .flatMap {
-            when (it.size()) {
-                0 -> HTTextResult("Could not find first value from empty holder set")
-                else -> it.right()
-            }
-        }
-        .map(::getFirstHolder)
-
-    fun <T : Any> getFirstHolder(getter: HolderGetter<T>, tagKey: TagKey<T>): HTTextResult<SupplierWithId<T>> = getter
         .getResult(tagKey)
         .flatMap {
             when (it.size()) {

@@ -61,12 +61,21 @@ data object HTCodecs {
     @JvmStatic
     fun <K : Any, V : Any> mapOf(keyCodec: Codec<K>, valueCodec: Codec<V>): Codec<Map<K, V>> = Codec.unboundedMap(keyCodec, valueCodec)
 
+    /**
+     * @since 0.17.0
+     */
     @JvmStatic
     fun <L, R> either(left: Codec<L>, right: Codec<R>): Codec<Either<L, R>> = Codec.either(left, right).xmap({ it.kotlin }, { it.java })
 
+    /**
+     * @since 0.17.0
+     */
     @JvmStatic
     fun <L, R> xor(left: Codec<L>, right: Codec<R>): Codec<Either<L, R>> = Codec.xor(left, right).xmap({ it.kotlin }, { it.java })
 
+    /**
+     * @since 0.17.0
+     */
     @JvmStatic
     fun <L, R> either(left: MapCodec<L>, right: MapCodec<R>): MapCodec<Either<L, R>> = Codec.mapEither(left, right).xmap({ it.kotlin }, { it.java })
 

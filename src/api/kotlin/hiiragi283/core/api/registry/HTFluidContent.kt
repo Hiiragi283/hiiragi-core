@@ -11,6 +11,11 @@ import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidType
 
+/**
+ * 液体とそれに関する要素を束ねるクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.10.0
+ */
 sealed class HTFluidContent(
     val typeHolder: HTDeferredFluidType<FluidType>,
     val sourceHolder: HTDeferredHolder<Fluid, *>,
@@ -22,6 +27,10 @@ sealed class HTFluidContent(
 
     fun toStack(amount: Int = FluidType.BUCKET_VOLUME, patch: DataComponentPatch = DataComponentPatch.EMPTY): FluidStack = createFluidStack(this.get(), amount, patch)
 
+    /**
+     * 基本的な[HTFluidContent]の実装クラスです。
+     * @since 0.17.0
+     */
     class Virtual(
         typeHolder: HTDeferredFluidType<FluidType>,
         sourceHolder: HTDeferredHolder<Fluid, *>,
@@ -30,9 +39,13 @@ sealed class HTFluidContent(
         bucketTag: TagKey<Item>,
     ) : HTFluidContent(typeHolder, sourceHolder, bucketHolder, fluidTag, bucketTag)
 
+    /**
+     * [FlowingFluid]に基づいた[HTFluidContent]の実装クラスです。
+     * @since 0.17.0
+     */
     class Flowing(
         typeHolder: HTDeferredFluidType<FluidType>,
-        sourceHolder: HTDeferredHolder<Fluid, *>,
+        sourceHolder: HTDeferredHolder<Fluid, FlowingFluid>,
         bucketHolder: HTSimpleDeferredItem,
         fluidTag: TagKey<Fluid>,
         bucketTag: TagKey<Item>,

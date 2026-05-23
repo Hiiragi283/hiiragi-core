@@ -1,6 +1,5 @@
 package hiiragi283.core.api
 
-import hiiragi283.core.api.resource.SupplierWithId
 import net.minecraft.world.item.DyeColor
 
 /**
@@ -9,7 +8,7 @@ import net.minecraft.world.item.DyeColor
  * @author Hiiragi Tsubasa
  * @since 0.15.0
  */
-interface HTColoredContents<out T : SupplierWithId<*>> : Iterable<Pair<HTDefaultColor, T>> {
+interface HTColoredContents<out T> : Iterable<Pair<HTDefaultColor, T>> {
     /**
      * 指定した[色][color]に対応する要素を取得します。
      * @return 対応する要素がない場合は`null`
@@ -27,7 +26,7 @@ interface HTColoredContents<out T : SupplierWithId<*>> : Iterable<Pair<HTDefault
      * @author Hiiragi Tsubasa
      * @since 0.15.0
      */
-    fun interface Simple<out T : SupplierWithId<*>> : HTColoredContents<T> {
+    fun interface Simple<out T> : HTColoredContents<T> {
         override fun get(color: HTDefaultColor): T? = color.dyeColor.let(::get)
 
         override fun iterator(): Iterator<Pair<HTDefaultColor, T>> = HTDefaultColor.entries.mapNotNull { color: HTDefaultColor -> get(color)?.let { color to it } }.iterator()

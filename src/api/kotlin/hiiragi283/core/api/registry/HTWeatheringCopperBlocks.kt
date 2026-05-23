@@ -8,6 +8,16 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.WeatheringCopper
 import net.minecraft.world.level.block.state.BlockBehaviour
 
+/**
+ * 酸化する銅系ブロックとさび止めされた銅系ブロックを束ねたクラスです。
+ * @param WAXED さび止めされた銅系ブロックのクラス
+ * @param WEATHERING 酸化する銅系ブロックのクラス
+ * @param ITEM 銅系アイテムのクラス
+ * @param weathering さび止めされた銅系ブロックの一覧
+ * @param waxed 酸化する銅系ブロックの一覧
+ * @author Hiiragi Tsubas
+ * @since 0.17.0
+ */
 @JvmRecord
 data class HTWeatheringCopperBlocks<WAXED : Block, WEATHERING, ITEM : Item>(
     val weathering: HTCopperMap<HTDeferredBlockAndItem<WEATHERING, ITEM>>,
@@ -49,5 +59,9 @@ data class HTWeatheringCopperBlocks<WAXED : Block, WEATHERING, ITEM : Item>(
         )
     }
 
+    /**
+     * 指定した[WeatheringCopper.WeatherState][state]から対応する銅系ブロックを取得します。
+     * @return 対応する酸化する銅系ブロックとさび止めされた銅系ブロック
+     */
     operator fun get(state: WeatheringCopper.WeatherState): Pair<HTDeferredBlockAndItem<WEATHERING, ITEM>, HTDeferredBlockAndItem<WAXED, ITEM>> = weathering[state] to waxed[state]
 }

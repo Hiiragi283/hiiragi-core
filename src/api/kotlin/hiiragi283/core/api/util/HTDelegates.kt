@@ -4,6 +4,8 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 /**
+ * @author Hiiragi Tsubasa
+ * @since 0.17.0
  * @see kotlin.properties.Delegates
  */
 data object HTDelegates {

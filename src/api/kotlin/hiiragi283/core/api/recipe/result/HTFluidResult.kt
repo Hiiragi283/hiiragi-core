@@ -27,7 +27,6 @@ value class HTFluidResult private constructor(private val stack: FluidStack) : H
         /**
          * 液体流が指定されている場合，液体源に置き換える
          */
-        @Suppress("DEPRECATION")
         @JvmStatic
         private fun validate(stack: FluidStack): FluidStack {
             check(!stack.isEmpty) { "Cannot create HTFluidResult from empty stack" }
