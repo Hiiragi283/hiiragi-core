@@ -8,15 +8,10 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.WeatheringCopper
 import net.minecraft.world.level.block.state.BlockBehaviour
 
+@JvmRecord
 data class HTWeatheringCopperBlocks<WAXED : Block, WEATHERING, ITEM : Item>(
-    val unaffected: HTDeferredBlockAndItem<WEATHERING, ITEM>,
-    val exposed: HTDeferredBlockAndItem<WEATHERING, ITEM>,
-    val weathered: HTDeferredBlockAndItem<WEATHERING, ITEM>,
-    val oxidized: HTDeferredBlockAndItem<WEATHERING, ITEM>,
-    val waxed: HTDeferredBlockAndItem<WAXED, ITEM>,
-    val waxedExposed: HTDeferredBlockAndItem<WAXED, ITEM>,
-    val waxedWeathered: HTDeferredBlockAndItem<WAXED, ITEM>,
-    val waxedOxidized: HTDeferredBlockAndItem<WAXED, ITEM>,
+    val weathering: HTCopperMap<HTDeferredBlockAndItem<WEATHERING, ITEM>>,
+    val waxed: HTCopperMap<HTDeferredBlockAndItem<WAXED, ITEM>>,
 ) where WEATHERING : Block, WEATHERING : WeatheringCopper {
     companion object {
         @JvmStatic
@@ -39,31 +34,20 @@ data class HTWeatheringCopperBlocks<WAXED : Block, WEATHERING, ITEM : Item>(
             itemFactory: ItemWithContextFactory<Block, ITEM>,
             itemProp: Identity<Item.Properties> = identity(),
         ): HTWeatheringCopperBlocks<WAXED, WEATHERING, ITEM> where WEATHERING : Block, WEATHERING : WeatheringCopper = HTWeatheringCopperBlocks(
-            register.register(name, blockProp(WeatheringCopper.WeatherState.UNAFFECTED), { weatheringFactory(WeatheringCopper.WeatherState.UNAFFECTED, it) }, itemFactory, itemProp),
-            register.register("exposed_$name", blockProp(WeatheringCopper.WeatherState.EXPOSED), { weatheringFactory(WeatheringCopper.WeatherState.EXPOSED, it) }, itemFactory, itemProp),
-            register.register("weathered_$name", blockProp(WeatheringCopper.WeatherState.WEATHERED), { weatheringFactory(WeatheringCopper.WeatherState.WEATHERED, it) }, itemFactory, itemProp),
-            register.register("oxidized_$name", blockProp(WeatheringCopper.WeatherState.OXIDIZED), { weatheringFactory(WeatheringCopper.WeatherState.OXIDIZED, it) }, itemFactory, itemProp),
-            register.register("waxed_$name", blockProp(WeatheringCopper.WeatherState.UNAFFECTED), waxedFactory, itemFactory, itemProp),
-            register.register("waxed_exposed_$name", blockProp(WeatheringCopper.WeatherState.EXPOSED), waxedFactory, itemFactory, itemProp),
-            register.register("waxed_weathered_$name", blockProp(WeatheringCopper.WeatherState.WEATHERED), waxedFactory, itemFactory, itemProp),
-            register.register("waxed_oxidized_$name", blockProp(WeatheringCopper.WeatherState.OXIDIZED), waxedFactory, itemFactory, itemProp),
+            HTCopperMap(
+                register.register(name, blockProp(WeatheringCopper.WeatherState.UNAFFECTED), { weatheringFactory(WeatheringCopper.WeatherState.UNAFFECTED, it) }, itemFactory, itemProp),
+                register.register("exposed_$name", blockProp(WeatheringCopper.WeatherState.EXPOSED), { weatheringFactory(WeatheringCopper.WeatherState.EXPOSED, it) }, itemFactory, itemProp),
+                register.register("weathered_$name", blockProp(WeatheringCopper.WeatherState.WEATHERED), { weatheringFactory(WeatheringCopper.WeatherState.WEATHERED, it) }, itemFactory, itemProp),
+                register.register("oxidized_$name", blockProp(WeatheringCopper.WeatherState.OXIDIZED), { weatheringFactory(WeatheringCopper.WeatherState.OXIDIZED, it) }, itemFactory, itemProp),
+            ),
+            HTCopperMap(
+                register.register("waxed_$name", blockProp(WeatheringCopper.WeatherState.UNAFFECTED), waxedFactory, itemFactory, itemProp),
+                register.register("waxed_exposed_$name", blockProp(WeatheringCopper.WeatherState.EXPOSED), waxedFactory, itemFactory, itemProp),
+                register.register("waxed_weathered_$name", blockProp(WeatheringCopper.WeatherState.WEATHERED), waxedFactory, itemFactory, itemProp),
+                register.register("waxed_oxidized_$name", blockProp(WeatheringCopper.WeatherState.OXIDIZED), waxedFactory, itemFactory, itemProp),
+            ),
         )
     }
 
-    val weatheringBlocks: List<HTDeferredBlockAndItem<WEATHERING, ITEM>> get() = listOf(unaffected, exposed, weathered, oxidized)
-    val waxedBlocks: List<HTDeferredBlockAndItem<WAXED, ITEM>> get() = listOf(waxed, waxedExposed, waxedWeathered, waxedOxidized)
-
-    val weatheringMap: Map<WeatheringCopper.WeatherState, HTDeferredBlockAndItem<WEATHERING, ITEM>> = mapOf(
-        WeatheringCopper.WeatherState.UNAFFECTED to unaffected,
-        WeatheringCopper.WeatherState.EXPOSED to exposed,
-        WeatheringCopper.WeatherState.WEATHERED to weathered,
-        WeatheringCopper.WeatherState.OXIDIZED to oxidized,
-    )
-
-    val waxedMap: Map<WeatheringCopper.WeatherState, HTDeferredBlockAndItem<WAXED, ITEM>> = mapOf(
-        WeatheringCopper.WeatherState.UNAFFECTED to waxed,
-        WeatheringCopper.WeatherState.EXPOSED to waxedExposed,
-        WeatheringCopper.WeatherState.WEATHERED to waxedWeathered,
-        WeatheringCopper.WeatherState.OXIDIZED to waxedOxidized,
-    )
+    operator fun get(state: WeatheringCopper.WeatherState): Pair<HTDeferredBlockAndItem<WEATHERING, ITEM>, HTDeferredBlockAndItem<WAXED, ITEM>> = weathering[state] to waxed[state]
 }

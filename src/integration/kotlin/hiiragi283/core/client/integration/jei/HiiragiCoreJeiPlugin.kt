@@ -236,8 +236,8 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         )
 
         val copperBasins: List<ItemStack> = buildList {
-            addAll(HCBlocks.COPPER_BASIN.weatheringBlocks.map { it.toStack() })
-            addAll(HCBlocks.COPPER_BASIN.waxedBlocks.map { it.toStack() })
+            addAll(HCBlocks.COPPER_BASIN.weathering.values.map { it.toStack() })
+            addAll(HCBlocks.COPPER_BASIN.waxed.values.map { it.toStack() })
         }
         HTJeiWorkstationHelper.add(registration, HCRecipeViewerTypes.EMPTYING, copperBasins)
         HTJeiWorkstationHelper.add(registration, HCRecipeViewerTypes.FILLING, copperBasins)

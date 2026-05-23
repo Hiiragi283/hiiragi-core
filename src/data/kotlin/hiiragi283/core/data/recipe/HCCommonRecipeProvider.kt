@@ -13,6 +13,7 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.getOrThrow
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.registry.HTDeferredBlockAndItem
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTSimpleDeferredItem
 import hiiragi283.core.api.resource.SupplierWithId
@@ -42,7 +43,6 @@ import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.item.crafting.CraftingBookCategory
 import net.minecraft.world.item.crafting.Ingredient
-import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.WeatheringCopper
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient
@@ -394,15 +394,14 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             )
             define('A') { itemCreator.create(CommonTagPrefixes.INGOT, VanillaMaterialKeys.COPPER) }
             define('B') { itemCreator.create(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.COPPER) }
-            resultStack = HCBlocks.COPPER_BASIN.unaffected.toStack()
+            resultStack = HCBlocks.COPPER_BASIN.weathering.unaffected.toStack()
         }
-        for ((state: WeatheringCopper.WeatherState, base) in HCBlocks.COPPER_BASIN.weatheringMap) {
-            val waxed: ItemLike = HCBlocks.COPPER_BASIN.waxedMap[state]!!
+        for ((state: WeatheringCopper.WeatherState, base: HTDeferredBlockAndItem<*, *>) in HCBlocks.COPPER_BASIN.weathering) {
             // Waxing
             HTShapelessRecipeBuilder.create(output) {
                 ingredients += itemCreator.create(base)
                 ingredients += itemCreator.create(Items.HONEYCOMB)
-                resultStack = ItemStack(waxed)
+                resultStack = HCBlocks.COPPER_BASIN.waxed[state].toStack()
                 recipeId suffix "_from_${base.path}"
             }
         }

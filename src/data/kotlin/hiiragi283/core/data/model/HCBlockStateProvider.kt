@@ -31,7 +31,7 @@ class HCBlockStateProvider(fileHelper: ExistingFileHelper, output: PackOutput) :
         registerCrops()
 
         // Misc
-        for ((state: WeatheringCopper.WeatherState, block: SupplierWithId<Block>) in HCBlocks.COPPER_BASIN.weatheringMap) {
+        for ((state: WeatheringCopper.WeatherState, block: SupplierWithId<Block>) in HCBlocks.COPPER_BASIN.weathering) {
             val cutCopper: ResourceLocation = when (state) {
                 WeatheringCopper.WeatherState.UNAFFECTED -> "cut_copper"
                 WeatheringCopper.WeatherState.EXPOSED -> "exposed_cut_copper"
@@ -51,8 +51,7 @@ class HCBlockStateProvider(fileHelper: ExistingFileHelper, output: PackOutput) :
                 cutCopper,
                 cutCopper,
             )
-            val waxed: SupplierWithId<Block> = HCBlocks.COPPER_BASIN.waxedMap[state]!!
-            simpleBlockAndItem(waxed, models().getExistingFile(block.blockId))
+            simpleBlockAndItem(HCBlocks.COPPER_BASIN.waxed[state], models().getExistingFile(block.blockId))
         }
         // Fluids
         HCFluids.REGISTER.asSequence().filterIsInstance<HTFluidContent.Flowing>().forEach(::liquidBlock)

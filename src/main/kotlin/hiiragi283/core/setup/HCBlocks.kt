@@ -3,12 +3,12 @@ package hiiragi283.core.setup
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.HTBlockItem
 import hiiragi283.core.api.registry.HTBasicDeferredBlockAndItem
+import hiiragi283.core.api.registry.HTWeatheringCopperBlocks
 import hiiragi283.core.api.registry.HTDeferredBlock
 import hiiragi283.core.api.registry.HTDeferredBlockAndItem
 import hiiragi283.core.api.registry.HTDeferredBlockAndItemRegister
 import hiiragi283.core.api.registry.HTDeferredBlockRegister
 import hiiragi283.core.api.registry.HTSimpleDeferredBlockAndItem
-import hiiragi283.core.api.registry.HTWeatheringCopperBlocks
 import hiiragi283.core.common.block.HTCopperBasinBlock
 import hiiragi283.core.common.block.HTTestBlock
 import hiiragi283.core.common.block.HTTreeTapBlock
