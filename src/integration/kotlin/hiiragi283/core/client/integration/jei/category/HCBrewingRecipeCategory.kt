@@ -1,6 +1,5 @@
 package hiiragi283.core.client.integration.jei.category
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.integration.jei.addFluidStack
 import hiiragi283.core.api.integration.jei.addFluidStacks
@@ -24,6 +23,7 @@ import net.minecraft.network.chat.FormattedText
 import net.minecraft.world.inventory.tooltip.TooltipComponent
 import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.PotionContents
+import net.neoforged.neoforge.fluids.FluidType
 
 class HCBrewingRecipeCategory(guiHelper: IGuiHelper) : HTHolderRecipeCategory<HCBrewingRecipe>(guiHelper, HCRecipeViewerTypes.BREWING, HCBrewingRecipe.CODEC) {
     override fun setupRecipe(builder: IRecipeLayoutBuilder, recipe: HCBrewingRecipe, focuses: IFocusGroup) {
@@ -36,7 +36,7 @@ class HCBrewingRecipeCategory(guiHelper: IGuiHelper) : HTHolderRecipeCategory<HC
                     .let(::HTPotionFluidIngredient)
                     .stacks
                     .toList(),
-            ).setSlotBackground(HTBackgroundType.EXTRA_INPUT, HTConst.DEFAULT_FLUID_AMOUNT)
+            ).setSlotBackground(HTBackgroundType.EXTRA_INPUT, FluidType.BUCKET_VOLUME)
             .addRichTooltipCallback(::addPotionTooltip)
         builder
             .addInputSlot(getPosition(2), getPosition(0))
@@ -46,7 +46,7 @@ class HCBrewingRecipeCategory(guiHelper: IGuiHelper) : HTHolderRecipeCategory<HC
         builder
             .addOutputSlot(getPosition(5), getPosition(0))
             .addFluidStack(recipe.potionTo.let(::BottledPotionContents).let(HCPotionFluidHelper::createFluid))
-            .setSlotBackground(HTBackgroundType.OUTPUT, HTConst.DEFAULT_FLUID_AMOUNT)
+            .setSlotBackground(HTBackgroundType.OUTPUT, FluidType.BUCKET_VOLUME)
             .addRichTooltipCallback(::addPotionTooltip)
     }
 

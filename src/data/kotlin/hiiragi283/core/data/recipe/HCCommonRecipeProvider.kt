@@ -8,19 +8,20 @@ import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.item.toStack
+import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.getOrThrow
+import hiiragi283.core.api.material.getResult
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.registry.HTDeferredBlockAndItem
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTSimpleDeferredItem
-import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.times
+import hiiragi283.core.api.util.getOrThrow
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.crafting.HCExperienceStoringRecipe
 import hiiragi283.core.common.crafting.HTBlueprintCloningRecipe
@@ -36,7 +37,6 @@ import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.core.component.DataComponents
 import net.minecraft.tags.ItemTags
-import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.alchemy.PotionContents
@@ -408,8 +408,9 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
     }
 
     @JvmStatic
-    private fun getOrThrow(part: HTPartLike, material: HTMaterialLike): SupplierWithId<Item> = HiiragiCoreAccess.INSTANCE
+    private fun getOrThrow(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry = HiiragiCoreAccess.INSTANCE
         .registeredContents
         .items
-        .getOrThrow(part, material)
+        .getResult(part, material)
+        .getOrThrow()
 }

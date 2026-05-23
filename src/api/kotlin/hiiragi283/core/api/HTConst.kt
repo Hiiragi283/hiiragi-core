@@ -4,7 +4,6 @@ import net.minecraft.client.renderer.LightTexture
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.inventory.InventoryMenu
 import net.minecraft.world.item.Item
-import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.internal.versions.neoforge.NeoForgeVersion
 
 /**
@@ -30,11 +29,6 @@ data object HTConst {
     const val GUI = "gui"
 
     //    Fluid    //
-
-    /**
-     * 液体におけるデフォルトの数量
-     */
-    const val DEFAULT_FLUID_AMOUNT: Int = FluidType.BUCKET_VOLUME
 
     /**
      * 1インゴットあたりの液体量

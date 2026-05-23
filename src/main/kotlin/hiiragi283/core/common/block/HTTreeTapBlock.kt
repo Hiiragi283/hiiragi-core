@@ -1,7 +1,6 @@
 package hiiragi283.core.common.block
 
 import com.mojang.serialization.MapCodec
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.setup.HCFluids
@@ -23,6 +22,7 @@ import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.pathfinder.PathComputationType
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
+import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.fluids.capability.IFluidHandler
 
 class HTTreeTapBlock(properties: Properties) : HorizontalDirectionalBlock(properties) {
@@ -44,7 +44,7 @@ class HTTreeTapBlock(properties: Properties) : HorizontalDirectionalBlock(proper
         if (random.nextInt(5) == 0) {
             val posBelow: BlockPos = pos.below()
             HTFluidCapabilities.getCapability(level, posBelow, Direction.UP)?.let { handler: IFluidHandler ->
-                handler.fill(HCFluids.LATEX.toStack(HTConst.DEFAULT_FLUID_AMOUNT / 4), IFluidHandler.FluidAction.EXECUTE)
+                handler.fill(HCFluids.LATEX.toStack(FluidType.BUCKET_VOLUME / 4), IFluidHandler.FluidAction.EXECUTE)
             }
             level.levelEvent(1047, posBelow, 0)
         }

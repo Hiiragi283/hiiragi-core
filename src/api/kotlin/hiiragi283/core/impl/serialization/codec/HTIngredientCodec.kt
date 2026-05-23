@@ -4,10 +4,12 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.RegistryKey
+import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.codec.listOrElement
 import hiiragi283.core.api.util.DFUEither
 import hiiragi283.core.api.util.Either
+import net.minecraft.core.Holder
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey
@@ -64,7 +66,7 @@ internal object HTIngredientCodec {
                         else ->
                             value.items
                                 .map(ItemStack::getItemHolder)
-                                .map { it.unwrapKey().orElseThrow() }
+                                .map(Holder<Item>::getKeyOrThrow)
                                 .let { Either.Right(it) }
                     }
                 },
@@ -117,7 +119,7 @@ internal object HTIngredientCodec {
                         else ->
                             ingredient.stacks
                                 .map(FluidStack::getFluidHolder)
-                                .map { it.unwrapKey().orElseThrow() }
+                                .map(Holder<Fluid>::getKeyOrThrow)
                                 .let { Either.Right(it) }
                     }
                 },

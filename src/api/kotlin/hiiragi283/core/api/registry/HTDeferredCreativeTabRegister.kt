@@ -56,20 +56,10 @@ class HTDeferredCreativeTabRegister(namespace: String) : HTDeferredRegister<Crea
     }
 
     fun registerSimpleTab(name: String, title: HTTranslation, icon: ItemLike, builder: CreativeModeTab.DisplayItemsGenerator): HTSimpleDeferredHolder<CreativeModeTab> = this.register(name) { _ ->
-        CreativeModeTab
-            .builder()
-            .title(title.translate())
-            .icon { ItemStack(icon) }
-            .displayItems(builder)
-            .build()
+        CreativeModeTab.builder().title(title.translate()).icon { ItemStack(icon) }.displayItems(builder).build()
     }
 
     fun registerTab(name: String, title: HTTranslation, icon: ItemLike, builderAction: CreativeModeTab.Builder.() -> Unit): HTSimpleDeferredHolder<CreativeModeTab> = this.register(name) { _ ->
-        CreativeModeTab
-            .builder()
-            .title(title.translate())
-            .icon { ItemStack(icon) }
-            .apply(builderAction)
-            .build()
+        CreativeModeTab.builder().title(title.translate()).icon { ItemStack(icon) }.apply(builderAction).build()
     }
 }

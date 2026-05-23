@@ -37,6 +37,7 @@ import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.neoforged.neoforge.common.Tags
+import net.neoforged.neoforge.fluids.FluidType
 
 @HTPlugin
 object VanillaMaterialPlugin : HTMaterialPlugin {
@@ -458,7 +459,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             setDefaultPart(Tags.Items.GLASS_BLOCKS, Items.GLASS.toLike())
             addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.DUST, CommonParts.ROD)
-            put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
+            put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, FluidType.BUCKET_VOLUME)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.NONE)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
 
@@ -477,7 +478,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             setDefaultPart(Tags.Items.OBSIDIANS_NORMAL, Items.OBSIDIAN.toLike())
             addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.DUST)
-            put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, HTConst.DEFAULT_FLUID_AMOUNT)
+            put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, FluidType.BUCKET_VOLUME)
             put(HTMaterialPropertyKeys.DEFAULT_SCALE, fraction(4))
 
             setName("Obsidian", "黒曜石")

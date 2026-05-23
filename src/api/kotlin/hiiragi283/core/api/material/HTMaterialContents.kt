@@ -9,6 +9,8 @@ import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.text.Text
+import hiiragi283.core.api.util.HTTextResult
+import hiiragi283.core.api.util.right
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.ItemLike
@@ -31,9 +33,9 @@ interface HTMaterialContents<R : Any, V : HTMaterialContents.Entry<*>> : HTTable
 
     /**
      * 指定した[row]と[material]から対応する値を返します。
-     * @throws IllegalStateException 対応する値がない場合
+     * @since 0.17.0
      */
-    fun getOrThrow(row: R, material: HTMaterialLike): V = get(row, material) ?: error(getErrorMessage(row, material.asMaterialKey()))
+    fun getResult(row: R, material: HTMaterialLike): HTTextResult<V> = get(row, material)?.right() ?: HTTextResult(getErrorMessage(row, material.asMaterialKey()))
 
     /**
      * 対応する値がない場合のエラーメッセージを作成します。
@@ -95,9 +97,9 @@ operator fun <V : HTMaterialContents.Entry<*>> HTMaterialContents<HTPart, V>.get
 
 /**
  * @author Hiiragi Tsubasa
- * @since 0.12.0
+ * @since 0.17.0
  */
-fun <V : HTMaterialContents.Entry<*>> HTMaterialContents<HTPart, V>.getOrThrow(part: HTPartLike, material: HTMaterialLike): V = this.getOrThrow(part.asPart(), material)
+fun <V : HTMaterialContents.Entry<*>> HTMaterialContents<HTPart, V>.getResult(part: HTPartLike, material: HTMaterialLike): HTTextResult<V> = this.getResult(part.asPart(), material)
 
 /**
  * @author Hiiragi Tsubasa

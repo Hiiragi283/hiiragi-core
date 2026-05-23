@@ -11,10 +11,7 @@ import net.neoforged.bus.api.IEventBus
 class HTDeferredBlockAndItemRegister(private val blockRegister: HTDeferredBlockRegister, private val itemRegister: HTDeferredItemRegister) {
     constructor(namespace: String) : this(HTDeferredBlockRegister(namespace))
 
-    constructor(blockRegister: HTDeferredBlockRegister) : this(
-        blockRegister,
-        HTDeferredItemRegister(blockRegister.namespace),
-    )
+    constructor(blockRegister: HTDeferredBlockRegister) : this(blockRegister, HTDeferredItemRegister(blockRegister.namespace))
 
     fun registerSimple(
         name: String,

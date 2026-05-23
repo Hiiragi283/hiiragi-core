@@ -22,6 +22,7 @@ import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.PotionBrewing
 import net.minecraft.world.item.crafting.Ingredient
 import net.neoforged.neoforge.fluids.FluidStack
+import net.neoforged.neoforge.fluids.FluidType
 
 @JvmRecord
 data class HCBrewingRecipe(val potionFrom: Holder<Potion>, val ingredient: Ingredient, val potionTo: Holder<Potion>) :
@@ -54,7 +55,7 @@ data class HCBrewingRecipe(val potionFrom: Holder<Potion>, val ingredient: Ingre
     }
 
     override fun getRequiredAmount(first: ItemStack, second: FluidStack): Pair<Int, Int> = when {
-        test(first, second) -> 1 to HTConst.DEFAULT_FLUID_AMOUNT
+        test(first, second) -> 1 to FluidType.BUCKET_VOLUME
         else -> 0 to 0
     }
 

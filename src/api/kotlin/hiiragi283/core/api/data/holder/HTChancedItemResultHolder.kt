@@ -5,6 +5,11 @@ import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.resource.HTIdLike
 import net.minecraft.resources.ResourceLocation
 
+/**
+ * [HTChancedItemResult]の[List]を作成するクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.17.0
+ */
 class HTChancedItemResultHolder : HTIdLike {
     val results: List<HTChancedItemResult> get() = _results
     private val _results: MutableList<HTChancedItemResult> = mutableListOf()

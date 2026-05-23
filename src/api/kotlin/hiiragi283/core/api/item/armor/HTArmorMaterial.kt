@@ -1,6 +1,7 @@
 package hiiragi283.core.api.item.armor
 
 import hiiragi283.core.api.item.equipment.HTEquipmentMaterial
+import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.api.resource.HTIdLike
 import net.minecraft.core.Holder
 import net.minecraft.resources.ResourceLocation
@@ -63,6 +64,6 @@ interface HTArmorMaterial : HTEquipmentMaterial {
 
         override fun getRepairIngredient(): Ingredient = getHolder().value().repairIngredient().get()
 
-        override fun getId(): ResourceLocation = getHolder().unwrapKey().orElseThrow().location()
+        override fun getId(): ResourceLocation = getHolder().getKeyOrThrow().location()
     }
 }

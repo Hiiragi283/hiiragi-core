@@ -21,6 +21,9 @@ fun interface HTLangPatternProvider {
     fun translate(type: HTLangType, provider: HTLangName): String = translate(type, provider.getTranslatedName(type))
 
     companion object {
+        /**
+         * @since 0.17.0
+         */
         @JvmField
         val IDENTITY = HTLangPatternProvider { _, value: String -> value }
 

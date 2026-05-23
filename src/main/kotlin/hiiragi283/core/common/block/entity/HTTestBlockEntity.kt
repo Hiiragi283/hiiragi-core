@@ -1,6 +1,5 @@
 package hiiragi283.core.common.block.entity
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.fixedFraction
 import hiiragi283.core.api.gui.HTBackgroundType
@@ -23,14 +22,15 @@ import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.level.block.state.BlockState
+import net.neoforged.neoforge.fluids.FluidType
 
 class HTTestBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HCBlockEntityTypes.TEST, pos, state) {
     private lateinit var tank1: HTBasicFluidTank
     private lateinit var tank2: HTBasicFluidTank
 
     override fun createFluidHandler(listener: HTContentListener): HTFluidTankHolder {
-        tank1 = HTBasicFluidTank.create(listener, HTConst.DEFAULT_FLUID_AMOUNT * 8)
-        tank2 = HTBasicFluidTank.create(listener, HTConst.DEFAULT_FLUID_AMOUNT * 8)
+        tank1 = HTBasicFluidTank.create(listener, FluidType.BUCKET_VOLUME * 8)
+        tank2 = HTBasicFluidTank.create(listener, FluidType.BUCKET_VOLUME * 8)
         return object : HTFluidTankHolder {
             override fun getFluidTank(side: Direction?): List<HTFluidTank> = listOf(tank1, tank2)
 

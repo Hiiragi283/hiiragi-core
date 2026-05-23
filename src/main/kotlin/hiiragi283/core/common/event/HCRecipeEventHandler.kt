@@ -193,7 +193,7 @@ object HCRecipeEventHandler {
     //    Extensions    //
 
     @JvmStatic
-    private fun getCaches(level: Level): HCInWorldRecipeCaches = HCAttachmentTypes.IN_WORLD_RECIPE_CACHES.getData(level)
+    private fun getCaches(level: Level): HCInWorldRecipeCaches = level.getData(HCAttachmentTypes.IN_WORLD_RECIPE_CACHES)
 
     @JvmStatic
     private fun isCompleted(entity: Entity): Boolean = entity.persistentData.getBoolean(HTConst.COMPLETED_RECIPE)

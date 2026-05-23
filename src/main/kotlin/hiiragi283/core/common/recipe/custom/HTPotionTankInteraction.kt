@@ -1,6 +1,5 @@
 package hiiragi283.core.common.recipe.custom
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
@@ -11,9 +10,10 @@ import hiiragi283.core.util.HCPotionFluidHelper
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.neoforged.neoforge.fluids.FluidStack
+import net.neoforged.neoforge.fluids.FluidType
 
 data object HTPotionTankInteraction {
-    const val FLUID_AMOUNT: Int = HTConst.DEFAULT_FLUID_AMOUNT / 4
+    const val FLUID_AMOUNT: Int = FluidType.BUCKET_VOLUME / 4
 
     data object Emptying : HTTankEmptyingRecipe {
         override fun test(input: ItemStack): Boolean {

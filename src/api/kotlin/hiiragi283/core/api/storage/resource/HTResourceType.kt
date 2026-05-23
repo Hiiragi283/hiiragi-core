@@ -1,5 +1,6 @@
 package hiiragi283.core.api.storage.resource
 
+import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.text.HTHasText
 import java.util.stream.Stream
@@ -33,7 +34,7 @@ interface HTResourceType :
         IWithData<TYPE> {
         fun typeHolder(): Holder<TYPE>
 
-        override fun getId(): ResourceLocation = typeHolder().unwrapKey().orElseThrow().location()
+        override fun getId(): ResourceLocation = typeHolder().getKeyOrThrow().location()
 
         fun tags(): Stream<TagKey<TYPE>> = typeHolder().tags()
 

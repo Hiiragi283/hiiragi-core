@@ -51,7 +51,7 @@ interface HTMaterialPlugin : HTIdLike {
         /**
          * @since 0.13.0
          */
-        fun accept(part: HTPartLike, material: HTMaterialKey, holder: Holder<Block>) {
+        fun acceptHolder(part: HTPartLike, material: HTMaterialKey, holder: Holder<Block>) {
             this.accept(part, material, holder.toLike())
         }
     }
@@ -67,7 +67,7 @@ interface HTMaterialPlugin : HTIdLike {
         /**
          * @since 0.13.0
          */
-        fun accept(part: HTPartLike, material: HTMaterialKey, holder: Holder<Item>) {
+        fun acceptHolder(part: HTPartLike, material: HTMaterialKey, holder: Holder<Item>) {
             this.accept(part, material, holder.toLike())
         }
     }
@@ -83,7 +83,7 @@ interface HTMaterialPlugin : HTIdLike {
         /**
          * @since 0.13.0
          */
-        fun accept(toolType: HTToolType, material: HTMaterialKey, holder: Holder<Item>) {
+        fun acceptHolder(toolType: HTToolType, material: HTMaterialKey, holder: Holder<Item>) {
             this.accept(toolType, material, holder.toLike())
         }
     }

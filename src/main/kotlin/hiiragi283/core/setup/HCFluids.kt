@@ -35,9 +35,9 @@ object HCFluids {
 
     //    Vanilla    //
 
-    data object DyeContents : HTColoredContents<HTFluidContent> {
+    data object DyeContents : HTColoredContents<HTFluidContent.Flowing> {
         @JvmStatic
-        private val map: Map<HTDefaultColor, HTFluidContent> = HTDefaultColor.entries.associateWith { color: HTDefaultColor ->
+        private val map: Map<HTDefaultColor, HTFluidContent.Flowing> = HTDefaultColor.entries.associateWith { color: HTDefaultColor ->
             val name: String = color.serializedName
             REGISTER.registerFlowing("${name}_dye") {
                 properties = liquid()
@@ -50,55 +50,55 @@ object HCFluids {
 
         val values: Collection<HTFluidContent> get() = map.values
 
-        override fun get(color: HTDefaultColor): HTFluidContent = map[color]!!
+        override fun get(color: HTDefaultColor): HTFluidContent.Flowing = map[color]!!
 
-        override fun get(color: DyeColor): HTFluidContent = HTDefaultColor.fromDye(color).let(::get)
+        override fun get(color: DyeColor): HTFluidContent.Flowing = HTDefaultColor.fromDye(color).let(::get)
 
-        override fun iterator(): Iterator<Pair<HTDefaultColor, HTFluidContent>> = map.toList().iterator()
+        override fun iterator(): Iterator<Pair<HTDefaultColor, HTFluidContent.Flowing>> = map.toList().iterator()
     }
 
     @JvmField
-    val EXPERIENCE: HTFluidContent = REGISTER.registerFlowing("experience") {
+    val EXPERIENCE: HTFluidContent.Flowing = REGISTER.registerFlowing("experience") {
         properties = liquid()
         typeFactory = ::HTExperienceFluidType
         blockFactory = null
     }
 
     @JvmField
-    val HONEY: HTFluidContent = REGISTER.registerFlowing("honey") {
+    val HONEY: HTFluidContent.Flowing = REGISTER.registerFlowing("honey") {
         properties = create(SoundEvents.HONEY_BLOCK_PLACE, SoundEvents.HONEY_BLOCK_BREAK)
     }
 
     @JvmField
-    val MUSHROOM_STEW: HTFluidContent = REGISTER.registerFlowing("mushroom_stew") { properties = liquid() }
+    val MUSHROOM_STEW: HTFluidContent.Flowing = REGISTER.registerFlowing("mushroom_stew") { properties = liquid() }
 
     @JvmField
-    val DRAGON_BREATH: HTFluidContent = REGISTER.registerFlowing("dragon_breath") {
+    val DRAGON_BREATH: HTFluidContent.Flowing = REGISTER.registerFlowing("dragon_breath") {
         properties = create(SoundEvents.DRAGON_FIREBALL_EXPLODE, SoundEvents.BOTTLE_FILL_DRAGONBREATH).density(-1000)
         typeFactory = ::HTDragonBreathFluidType
         blockFactory = null
     }
 
     @JvmField
-    val POTION: HTFluidContent = REGISTER.registerVirtual("potion") {
+    val POTION: HTFluidContent.Virtual = REGISTER.registerVirtual("potion") {
         properties = liquid()
         typeFactory = ::HTPotionFluidType
         bucketFactory = ::HTPotionBucketItem
     }
 
     @JvmField
-    val OMINOUS_FLUX: HTFluidContent = REGISTER.registerFlowing("ominous_flux") { properties = molten() }
+    val OMINOUS_FLUX: HTFluidContent.Flowing = REGISTER.registerFlowing("ominous_flux") { properties = molten() }
 
     //    Organic    //
 
     @JvmField
-    val LATEX: HTFluidContent = REGISTER.registerFlowing("latex") {
+    val LATEX: HTFluidContent.Flowing = REGISTER.registerFlowing("latex") {
         properties = liquid()
         sourceFactory = ::HTLatexFluid
     }
 
     @JvmField
-    val MEAT: HTFluidContent = REGISTER.registerFlowing("meat") { properties = liquid() }
+    val MEAT: HTFluidContent.Flowing = REGISTER.registerFlowing("meat") { properties = liquid() }
 
     //    Extensions    //
 

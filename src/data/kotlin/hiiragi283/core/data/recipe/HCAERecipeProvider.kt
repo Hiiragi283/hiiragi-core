@@ -5,16 +5,17 @@ import appeng.recipes.transform.TransformRecipeBuilder
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
+import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.getOrThrow
+import hiiragi283.core.api.material.getResult
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.util.getOrThrow
 import hiiragi283.core.common.integration.HCIConstants
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCItems
-import net.minecraft.world.item.Item
 
 data object HCAERecipeProvider : HTSubRecipeProvider.Integration(HiiragiCoreAPI.MOD_ID, HCIConstants.AE2) {
     override fun buildRecipeInternal() {
@@ -76,9 +77,9 @@ data object HCAERecipeProvider : HTSubRecipeProvider.Integration(HiiragiCoreAPI.
     }
 
     @JvmStatic
-    private fun getOrThrow(part: HTPartLike, material: HTMaterialLike): Item = HiiragiCoreAccess.INSTANCE
+    private fun getOrThrow(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry = HiiragiCoreAccess.INSTANCE
         .registeredContents
         .items
-        .getOrThrow(part, material)
-        .get()
+        .getResult(part, material)
+        .getOrThrow()
 }

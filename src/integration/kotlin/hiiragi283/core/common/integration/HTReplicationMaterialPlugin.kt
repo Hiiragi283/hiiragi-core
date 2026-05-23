@@ -20,12 +20,12 @@ data object HTReplicationMaterialPlugin : HTMaterialPlugin {
     override fun getId(): ResourceLocation = HCIConstants.REPLICATION.toId("material_plugin", HiiragiCoreAPI.MOD_ID)
 
     override fun registerExistingBlock(consumer: HTMaterialPlugin.BlockConsumer) {
-        consumer.accept(CommonParts.BLOCK, HCIntegrationMaterialKeys.REPLICA, ReplicationRegistry.Blocks.REPLICA_BLOCK)
+        consumer.acceptHolder(CommonParts.BLOCK, HCIntegrationMaterialKeys.REPLICA, ReplicationRegistry.Blocks.REPLICA_BLOCK)
     }
 
     override fun registerExistingItem(consumer: HTMaterialPlugin.ItemConsumer) {
-        consumer.accept(CommonParts.INGOT, HCIntegrationMaterialKeys.REPLICA, ReplicationRegistry.Items.REPLICA_INGOT)
-        consumer.accept(CommonParts.RAW, HCIntegrationMaterialKeys.REPLICA, ReplicationRegistry.Items.RAW_REPLICA)
+        consumer.acceptHolder(CommonParts.INGOT, HCIntegrationMaterialKeys.REPLICA, ReplicationRegistry.Items.REPLICA_INGOT)
+        consumer.acceptHolder(CommonParts.RAW, HCIntegrationMaterialKeys.REPLICA, ReplicationRegistry.Items.RAW_REPLICA)
     }
 
     override fun modifyMaterial(provider: HTMaterialPlugin.MaterialProvider) {

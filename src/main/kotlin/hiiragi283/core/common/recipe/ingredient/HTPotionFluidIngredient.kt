@@ -2,7 +2,6 @@ package hiiragi283.core.common.recipe.ingredient
 
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
@@ -63,7 +62,7 @@ class HTPotionFluidIngredient(val potions: HolderSet<Potion>, val bottleType: HT
                     when (potion) {
                         Potions.WATER -> FluidStack(Fluids.WATER, FluidType.BUCKET_VOLUME)
                         else -> {
-                            val stack = FluidStack(fluid, HTConst.DEFAULT_FLUID_AMOUNT)
+                            val stack = FluidStack(fluid, FluidType.BUCKET_VOLUME)
                             HTPotionHelper.setContents(stack, BottledPotionContents(potion))
                         }
                     }

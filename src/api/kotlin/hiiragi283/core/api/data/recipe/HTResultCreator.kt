@@ -10,6 +10,7 @@ import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.VanillaFluidContents
+import hiiragi283.core.api.util.getOrThrow
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -69,7 +70,8 @@ data object HTResultCreator {
     @JvmStatic
     fun material(part: HTFluidPart, material: HTMaterialLike, operator: IntUnaryOperator = IntUnaryOperator.identity()): HTFluidResult {
         val fluid: Fluid = HiiragiCoreAccess.INSTANCE.registeredFluids
-            .getOrThrow(part, material)
+            .getResult(part, material)
+            .getOrThrow()
             .get()
         return HTMaterialManager
             .getInstance()
