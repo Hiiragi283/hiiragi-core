@@ -10,9 +10,9 @@ import hiiragi283.lib.entity.serverLevel
 import hiiragi283.lib.recipe.cache.HTRecipeCaches
 import hiiragi283.lib.recipe.handler.HTFluidInputHandler
 import hiiragi283.lib.recipe.handler.HTFluidOutputHandler
-import hiiragi283.lib.transfer.fluid.FluidResourceHandler
-import hiiragi283.lib.transfer.getFilledLevel
-import hiiragi283.lib.transfer.item.ItemResourceHandler
+import hiiragi283.lib.transfer.fluid.HTBasicFluidTank
+import hiiragi283.lib.transfer.fluid.HTFluidTank
+import hiiragi283.lib.transfer.holder.HTResourceSlotHolder
 import hiiragi283.lib.transfer.useTransaction
 import hiiragi283.lib.world.HTItemDropHelper
 import net.minecraft.core.BlockPos
@@ -25,22 +25,28 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 import net.neoforged.neoforge.fluids.FluidStack
-import net.neoforged.neoforge.transfer.energy.EnergyHandler
-import net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler
 import net.neoforged.neoforge.transfer.transaction.Transaction
 import org.apache.commons.lang3.math.Fraction
 
 class HTCopperBasinBlockEntity(worldPosition: BlockPos, blockState: BlockState) : HTBlockEntity(HCBlockEntityTypes.COPPER_BASIN.get(), worldPosition, blockState) {
-    private val fluidHandler: FluidStacksResourceHandler = object : FluidStacksResourceHandler(1, 4000) {
-        override fun onContentsChanged(index: Int, previousContents: FluidStack) {
-            this@HTCopperBasinBlockEntity.setOnlySave()
+    lateinit var tank: HTBasicFluidTank
+        private set
+
+    override fun createFluidHandler(listener: Runnable): HTResourceSlotHolder<HTFluidTank> {
+        tank = HTBasicFluidTank.create(4000, listener)
+        return object : HTResourceSlotHolder<HTFluidTank> {
+            override fun getSlots(side: Direction?): List<HTFluidTank> = listOf(tank)
+
+            override fun canInsert(side: Direction?): Boolean = true
+
+            override fun canExtract(side: Direction?): Boolean = true
         }
     }
 
     private val emptyingCache: HTRecipeCaches.SingleItem<HTTankEmptyingRecipe> = HTRecipeCaches.SingleItem(HCRecipeLookups.EMPTYING)
     private val fillingCache: HTRecipeCaches.ItemAndFluid<HTTankFillingRecipe> = HTRecipeCaches.ItemAndFluid(HCRecipeLookups.FILLING)
-    private val fluidInputHandler: HTFluidInputHandler by lazy { HTFluidInputHandler(fluidHandler, 0) }
-    private val fluidOutputHandler: HTFluidOutputHandler by lazy { HTFluidOutputHandler.single(fluidHandler, 0) }
+    private val fluidInputHandler: HTFluidInputHandler by lazy { HTFluidInputHandler(tank) }
+    private val fluidOutputHandler: HTFluidOutputHandler by lazy { HTFluidOutputHandler.single(tank) }
 
     fun drainContainer(player: Player, hand: InteractionHand): Boolean {
         val stack: ItemStack = player.getItemInHand(hand)
@@ -84,24 +90,24 @@ class HTCopperBasinBlockEntity(worldPosition: BlockPos, blockState: BlockState) 
 
     override fun writeValue(output: ValueOutput) {
         super.writeValue(output)
-        output.putChild(HTConstants.FLUIDS, fluidHandler)
+        output.putChild(HTConstants.FLUIDS, tank) // TODO
     }
 
     override fun readValue(input: ValueInput) {
         super.readValue(input)
-        input.readChild(HTConstants.FLUIDS, fluidHandler)
+        input.readChild(HTConstants.FLUIDS, tank) // TODO
     }
 
     //    Sync    //
 
     override fun writeReducedUpdateTag(output: ValueOutput) {
         super.writeReducedUpdateTag(output)
-        output.putChild(HTConstants.FLUIDS, fluidHandler)
+        output.putChild(HTConstants.FLUIDS, tank)
     }
 
     override fun readUpdateTag(input: ValueInput) {
         super.readUpdateTag(input)
-        input.readChild(HTConstants.FLUIDS, fluidHandler)
+        input.readChild(HTConstants.FLUIDS, tank)
     }
 
     //    Ticking    //
@@ -110,17 +116,11 @@ class HTCopperBasinBlockEntity(worldPosition: BlockPos, blockState: BlockState) 
 
     override fun onUpdateServer(level: ServerLevel, pos: BlockPos, state: BlockState): Boolean {
         // 保持する量の変化があれば更新させる
-        val scale: Fraction = fluidHandler.getFilledLevel(0)
+        val scale: Fraction = tank.getFilledLevel(tank.resource)
         if (scale != this.oldScale) {
             this.oldScale = scale
             return true
         }
         return false
     }
-
-    override fun getItemHandler(direction: Direction?): ItemResourceHandler? = null
-
-    override fun getFluidHandler(direction: Direction?): FluidResourceHandler = fluidHandler
-
-    override fun getEnergyStorage(direction: Direction?): EnergyHandler? = null
 }

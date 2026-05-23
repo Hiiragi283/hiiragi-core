@@ -23,7 +23,7 @@ open class HTCopperBasinBlock(properties: Properties) : HTBasicEntityBlock(HCBlo
         if (!player.isShiftKeyDown) {
             if (!level.isClientSide) {
                 val copperBasin: HTCopperBasinBlockEntity = level.getTypedBlockEntity(pos) ?: return InteractionResult.FAIL
-                val basinHandler: FluidResourceHandler = copperBasin.getFluidHandler(hitResult.direction)
+                val basinHandler: FluidResourceHandler = copperBasin.getFluidHandler(hitResult.direction) ?: return InteractionResult.FAIL
                 val result: InteractionResult.Success = InteractionResult.CONSUME
                 when {
                     copperBasin.drainContainer(player, hand) -> return result

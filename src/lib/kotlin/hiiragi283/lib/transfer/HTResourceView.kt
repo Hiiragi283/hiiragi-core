@@ -7,32 +7,34 @@ import org.apache.commons.lang3.math.Fraction
 
 /**
  * 単一の不変のリソースを保持するインターフェースです。
- * @param T 保持するリソースのクラス
+ * @param RESOURCE 保持するリソースのクラス
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  * @see HTResourceSlot
  */
-interface HTResourceView<T : Resource> {
-    fun getResource(): T
+interface HTResourceView<RESOURCE : Resource> {
+    val resource: RESOURCE
 
-    fun getAmountAsLong(): Long
+    val amountAsLong: Long
 
-    fun getAmountAsInt(): Int = Ints.saturatedCast(getAmountAsLong())
+    val amountAsInt: Int get() = Ints.saturatedCast(amountAsLong)
 
-    fun getCapacityAsLong(resource: T): Long
+    fun isEmpty(): Boolean = resource.isEmpty || amountAsLong <= 0
 
-    fun getCapacityAsInt(resource: T): Int = Ints.saturatedCast(getCapacityAsLong(resource))
+    fun getCapacityAsLong(resource: RESOURCE): Long
+
+    fun getCapacityAsInt(resource: RESOURCE): Int = Ints.saturatedCast(getCapacityAsLong(resource))
 
     /**
      * 指定した[resource]から空き容量を取得します。
      */
-    fun getNeededAsLong(resource: T): Long = maxOf(0, getCapacityAsLong(resource) - getAmountAsLong())
+    fun getNeededAsLong(resource: RESOURCE): Long = maxOf(0, getCapacityAsLong(resource) - amountAsLong)
 
-    fun getNeededAsInt(resource: T): Int = Ints.saturatedCast(getNeededAsLong(resource))
+    fun getNeededAsInt(resource: RESOURCE): Int = Ints.saturatedCast(getNeededAsLong(resource))
 
-    fun getFilledLevel(resource: T): Fraction = fixedFraction(getAmountAsLong(), getCurrentCapacityAsLong())
+    fun getFilledLevel(resource: RESOURCE): Fraction = fixedFraction(amountAsLong, getCurrentCapacityAsLong())
 
-    fun getCurrentCapacityAsLong(): Long = getCapacityAsLong(getResource())
+    fun getCurrentCapacityAsLong(): Long = getCapacityAsLong(resource)
 
     fun getCurrentCapacityAsInt(): Int = Ints.saturatedCast(getCurrentCapacityAsLong())
 }
