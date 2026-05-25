@@ -3,7 +3,6 @@ package hiiragi283.lib.transfer
 import hiiragi283.lib.transfer.fluid.FluidResourceHandler
 import hiiragi283.lib.transfer.item.ItemResourceHandler
 import net.minecraft.core.Direction
-import net.neoforged.neoforge.transfer.energy.EnergyHandler
 
 /**
  * ストレージ関連のキャパビリティを取得できるオブジェクトを表すインターフェースです。
@@ -22,10 +21,4 @@ interface HTHandlerProvider {
      * @return 取得できなかった場合は`null`
      */
     fun getFluidHandler(direction: Direction?): FluidResourceHandler?
-
-    /**
-     * 指定した[面][direction]から[EnergyHandler]を取得します。
-     * @return 取得できなかった場合は`null`
-     */
-    fun getEnergyStorage(direction: Direction?): EnergyHandler?
 }

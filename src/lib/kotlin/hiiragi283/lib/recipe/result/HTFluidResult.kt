@@ -1,6 +1,7 @@
 package hiiragi283.lib.recipe.result
 
 import com.mojang.serialization.Codec
+import hiiragi283.lib.registry.getKeyOrThrow
 import hiiragi283.lib.resource.HTIdLike
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
@@ -40,5 +41,5 @@ value class HTFluidResult private constructor(private val template: FluidStackTe
 
     fun create(): FluidStack = template.create()
 
-    override fun getId(): Identifier = template.typeHolder().unwrapKey().orElseThrow().identifier()
+    override fun getId(): Identifier = template.typeHolder().getKeyOrThrow().identifier()
 }

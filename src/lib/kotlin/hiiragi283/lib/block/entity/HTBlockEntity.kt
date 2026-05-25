@@ -1,6 +1,7 @@
 package hiiragi283.lib.block.entity
 
 import hiiragi283.lib.HTConstants
+import hiiragi283.lib.serialization.readOption
 import hiiragi283.lib.world.HTItemDropHelper
 import hiiragi283.lib.text.Text
 import hiiragi283.lib.transfer.HTHandlerProvider
@@ -23,7 +24,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
-import net.neoforged.neoforge.transfer.energy.EnergyHandler
 import net.neoforged.neoforge.transfer.fluid.FluidResource
 import net.neoforged.neoforge.transfer.item.ItemResource
 import net.neoforged.neoforge.transfer.item.ItemUtil
@@ -101,9 +101,9 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
     override fun readValue(input: ValueInput) {
         super.readValue(input)
         // Custom Name
-        input.read("custom_name", ComponentSerialization.CODEC).ifPresent(::customName::set)
+        input.readOption("custom_name", ComponentSerialization.CODEC).onSome(::customName::set)
         // Owner
-        input.read(HTConstants.OWNER, UUIDUtil.CODEC).ifPresent(::ownerId::set)
+        input.readOption(HTConstants.OWNER, UUIDUtil.CODEC).onSome(::ownerId::set)
     }
 
     //    Nameable    //
@@ -141,9 +141,6 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
     fun getFluidTank(side: Direction?, index: Int): HTFluidTank? = getFluidTanks(side).getOrNull(index)
 
     final override fun getFluidHandler(direction: Direction?): FluidResourceHandler? = fluidHandlerManager?.resolve(direction)
-
-    // Energy
-    final override fun getEnergyStorage(direction: Direction?): EnergyHandler? = null // TODO
 
     // Item
     protected open fun createItemHandler(listener: Runnable): HTResourceSlotHolder<HTItemSlot>? = null

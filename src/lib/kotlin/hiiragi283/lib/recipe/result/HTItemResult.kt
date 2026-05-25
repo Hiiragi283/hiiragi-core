@@ -7,12 +7,15 @@ import hiiragi283.lib.HTConstants
 import hiiragi283.lib.HTPlatform
 import hiiragi283.lib.HTRegistries
 import hiiragi283.lib.math.toFraction
+import hiiragi283.lib.registry.getKeyOrThrow
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.serialization.codec.HTCodecs
-import hiiragi283.lib.util.DFUEither
+import hiiragi283.lib.serialization.codec.convert
+import hiiragi283.lib.util.Either
 import hiiragi283.lib.util.HTTextResult
 import hiiragi283.lib.util.getOrElse
 import hiiragi283.lib.util.right
+import hiiragi283.lib.util.unwrap
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -34,12 +37,15 @@ interface HTItemResult : HTIdLike {
             HTItemResult::getSerializer,
             Serializer<*>::codec,
             Simple.MAP_CODEC,
-        ).xmap(DFUEither<HTItemResult, Simple>::unwrap) { result: HTItemResult ->
-            when (result) {
-                is Simple -> DFUEither.right(result)
-                else -> DFUEither.left(result)
-            }
-        }
+        ).convert().xmap(
+            { it.unwrap() },
+            { result: HTItemResult ->
+                when (result) {
+                    is Simple -> Either.Right(result)
+                    else -> Either.Left(result)
+                }
+            },
+        )
 
         @JvmField
         val CODEC: Codec<HTItemResult> = Codec.lazyInitialized(MAP_CODEC::codec)
@@ -88,7 +94,7 @@ interface HTItemResult : HTIdLike {
 
         override fun create(): HTTextResult<ItemStack> = template.create().right()
 
-        override fun getId(): Identifier = template.typeHolder().unwrapKey().orElseThrow().identifier()
+        override fun getId(): Identifier = template.typeHolder().getKeyOrThrow().identifier()
     }
 
     //    Tagged    //

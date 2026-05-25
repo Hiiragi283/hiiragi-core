@@ -1,6 +1,7 @@
 package hiiragi283.lib.transfer.fluid
 
 import hiiragi283.lib.HTConstants
+import hiiragi283.lib.serialization.readOption
 import hiiragi283.lib.transfer.HTBasicResourceSlot
 import hiiragi283.lib.transfer.HTHandlerAccess
 import hiiragi283.lib.transfer.HTTransferPredicates
@@ -39,7 +40,7 @@ open class HTBasicFluidTank(capacity: Long, canInsert: BiPredicate<FluidResource
     }
 
     final override fun deserialize(input: ValueInput) {
-        input.read(HTConstants.FLUID, FluidResource.CODEC).ifPresent { resource: FluidResource ->
+        input.readOption(HTConstants.FLUID, FluidResource.CODEC).onSome { resource: FluidResource ->
             val amount: Long = input.getLongOr(HTConstants.AMOUNT, 0)
             if (amount > 0) {
                 this.resourceIn = resource

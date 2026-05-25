@@ -1,6 +1,7 @@
 package hiiragi283.lib.transfer.item
 
 import hiiragi283.lib.HTConstants
+import hiiragi283.lib.serialization.readOption
 import hiiragi283.lib.transfer.HTBasicResourceSlot
 import hiiragi283.lib.transfer.HTHandlerAccess
 import java.util.function.BiPredicate
@@ -24,7 +25,7 @@ open class HTBasicItemSlot(capacity: Long, canInsert: BiPredicate<ItemResource, 
     }
 
     final override fun deserialize(input: ValueInput) {
-        input.read(HTConstants.ITEM, ItemResource.CODEC).ifPresent { resource: ItemResource ->
+        input.readOption(HTConstants.ITEM, ItemResource.CODEC).onSome { resource: ItemResource ->
             val amount: Long = input.getLongOr(HTConstants.AMOUNT, 0)
             if (amount > 0) {
                 this.resourceIn = resource

@@ -1,9 +1,16 @@
 package hiiragi283.lib.serialization.network
 
+import hiiragi283.lib.util.DFUEither
+import hiiragi283.lib.util.Either
+import hiiragi283.lib.util.Option
+import hiiragi283.lib.util.java
+import hiiragi283.lib.util.kotlin
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
 import java.util.Optional
+
+//    Collection    //
 
 /**
  * @author Hiiragi Tsubasa
@@ -42,3 +49,9 @@ fun <B : ByteBuf, V : Any> StreamCodec<B, V>.recover(onFailure: (Throwable) -> V
         }
     }
 }
+
+@JvmName("convertToEither")
+fun <B : ByteBuf, L : Any, R : Any> StreamCodec<B, DFUEither<L, R>>.convert(): StreamCodec<B, Either<L, R>> = this.map({ it.kotlin }, { it.java })
+
+@JvmName("convertToOption")
+fun <B : ByteBuf, V : Any> StreamCodec<B, Optional<V>>.convert(): StreamCodec<B, Option<V>> = this.map({ it.kotlin }, { it.java })

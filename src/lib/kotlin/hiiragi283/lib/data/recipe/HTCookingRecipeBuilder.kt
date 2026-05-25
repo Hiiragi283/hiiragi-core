@@ -2,6 +2,7 @@ package hiiragi283.lib.data.recipe
 
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.recipe.RecipeKey
+import hiiragi283.lib.registry.getKeyOrThrow
 import hiiragi283.lib.util.HTDelegates
 import hiiragi283.lib.util.Identity
 import hiiragi283.lib.util.identity
@@ -70,7 +71,7 @@ class HTCookingRecipeBuilder(
 
     val unlocker = RecipeUnlockAdvancementBuilder()
 
-    override fun getPrimalId(): Identifier = result.item().unwrapKey().orElseThrow().identifier()
+    override fun getPrimalId(): Identifier = result.item().getKeyOrThrow().identifier()
 
     override fun createRecipe(): AbstractCookingRecipe = factory.create(
         commonInfo(true),

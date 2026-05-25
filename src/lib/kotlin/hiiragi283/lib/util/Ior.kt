@@ -63,9 +63,9 @@ sealed class Ior<out A, out B> {
      * @return 変換された値
      */
     inline fun <C> fold(left: (A) -> C, right: (B) -> C, both: (A, B) -> C): C = when (this) {
-        is Both<A, B> -> both(leftValue, rightValue)
-        is Left<A> -> left(value)
-        is Right<B> -> right(value)
+        is Both -> both(leftValue, rightValue)
+        is Left -> left(value)
+        is Right -> right(value)
     }
 
     /**
@@ -76,9 +76,9 @@ sealed class Ior<out A, out B> {
      * @return 変換された値
      */
     inline fun <C> map(left: (A) -> C, right: (B) -> C): C = when (this) {
-        is Both<A, B> -> right(rightValue)
-        is Left<A> -> left(value)
-        is Right<B> -> right(value)
+        is Both -> right(rightValue)
+        is Left -> left(value)
+        is Right -> right(value)
     }
 
     /**
@@ -88,9 +88,9 @@ sealed class Ior<out A, out B> {
      * @return 変換された[Ior]のインスタンス
      */
     inline fun <C> mapRight(right: (B) -> C): Ior<A, C> = when (this) {
-        is Both<A, B> -> Both(leftValue, right(rightValue))
-        is Left<A> -> Left(value)
-        is Right<B> -> Right(right(value))
+        is Both -> Both(leftValue, right(rightValue))
+        is Left -> Left(value)
+        is Right -> Right(right(value))
     }
 
     /**
@@ -100,9 +100,9 @@ sealed class Ior<out A, out B> {
      * @return 変換された[Ior]のインスタンス
      */
     inline fun <C> mapLeft(left: (A) -> C): Ior<C, B> = when (this) {
-        is Both<A, B> -> Both(left(leftValue), rightValue)
-        is Left<A> -> Left(left(value))
-        is Right<B> -> Right(value)
+        is Both -> Both(left(leftValue), rightValue)
+        is Left -> Left(left(value))
+        is Right -> Right(value)
     }
 
     /**

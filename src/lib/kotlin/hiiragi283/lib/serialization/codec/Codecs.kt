@@ -1,8 +1,14 @@
 package hiiragi283.lib.serialization.codec
 
 import com.mojang.serialization.Codec
+import com.mojang.serialization.MapCodec
+import hiiragi283.lib.util.DFUEither
 import hiiragi283.lib.util.Either
+import hiiragi283.lib.util.Option
+import hiiragi283.lib.util.java
+import hiiragi283.lib.util.kotlin
 import hiiragi283.lib.util.unwrap
+import java.util.Optional
 
 //    List    //
 
@@ -13,14 +19,14 @@ import hiiragi283.lib.util.unwrap
  * @author Hiiragi Tsubasa
  * @since 0.16.0
  */
-fun <A : Any> Codec<A>.listOf(range: IntRange): Codec<List<A>> = this.listOf(range.first, range.last)
+fun <A> Codec<A>.listOf(range: IntRange): Codec<List<A>> = this.listOf(range.first, range.last)
 
 /**
  * この[Codec][this]を，要素が一つの場合はそのままコーデックする[List]の[Codec]に変換します。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun <A : Any> Codec<A>.listOrElement(): Codec<List<A>> = HTCodecs.either(this.listOf(), this).xmap(
+fun <A> Codec<A>.listOrElement(): Codec<List<A>> = Codec.either(this.listOf(), this).convert().xmap(
     { either: Either<List<A>, A> -> either.map(::listOf).unwrap() },
     { list: List<A> -> if (list.size == 1) Either.Right(list[0]) else Either.Left(list) },
 )
@@ -32,7 +38,7 @@ fun <A : Any> Codec<A>.listOrElement(): Codec<List<A>> = HTCodecs.either(this.li
  * @author Hiiragi Tsubasa
  * @since 0.16.0
  */
-fun <A : Any> Codec<A>.listOrElement(range: IntRange): Codec<List<A>> = this.listOrElement(range.first, range.last)
+fun <A> Codec<A>.listOrElement(range: IntRange): Codec<List<A>> = this.listOrElement(range.first, range.last)
 
 /**
  * この[Codec][this]を，要素が一つの場合はそのままコーデックする[List]の[Codec]に変換します。
@@ -42,7 +48,7 @@ fun <A : Any> Codec<A>.listOrElement(range: IntRange): Codec<List<A>> = this.lis
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun <A : Any> Codec<A>.listOrElement(min: Int, max: Int): Codec<List<A>> = HTCodecs.either(this.listOf(min, max), this).xmap(
+fun <A> Codec<A>.listOrElement(min: Int, max: Int): Codec<List<A>> = Codec.either(this.listOf(min, max), this).convert().xmap(
     { either: Either<List<A>, A> -> either.map(::listOf).unwrap() },
     { list: List<A> -> if (list.size == 1) Either.Right(list[0]) else Either.Left(list) },
 )
@@ -55,4 +61,17 @@ fun <A : Any> Codec<A>.listOrElement(min: Int, max: Int): Codec<List<A>> = HTCod
  * @author Hiiragi Tsubasa
  * @since 0.16.0
  */
-fun <A : Any> Codec<List<A>>.setOf(): Codec<Set<A>> = this.xmap(List<A>::toSet, Set<A>::toList)
+fun <A> Codec<List<A>>.setOf(): Codec<Set<A>> = this.xmap(List<A>::toSet, Set<A>::toList)
+
+//    Either    //
+
+@JvmName("convertToEither")
+fun <A, B> Codec<DFUEither<A, B>>.convert(): Codec<Either<A, B>> = this.xmap({ it.kotlin }, { it.java })
+
+@JvmName("convertToEither")
+fun <A, B> MapCodec<DFUEither<A, B>>.convert(): MapCodec<Either<A, B>> = this.xmap({ it.kotlin }, { it.java })
+
+//    Option    //
+
+@JvmName("convertToOption")
+fun <A : Any> MapCodec<Optional<A>>.convert(): MapCodec<Option<A>> = this.xmap({ it.kotlin }, { it.java })

@@ -7,7 +7,6 @@ import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.resource.blockId
 import hiiragi283.lib.resource.itemId
 import hiiragi283.lib.resource.toId
-import hiiragi283.lib.util.toOptional
 import java.util.Optional
 import net.minecraft.client.data.models.BlockModelGenerators
 import net.minecraft.client.data.models.ItemModelGenerators
@@ -61,7 +60,7 @@ abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvide
     ): Identifier = template.create(item.itemId, TextureMapping.layer0(Material(layer)), this.modelOutput)
 
     fun ItemModelGenerators.generateBucketItem(content: HTFluidContent, isDrip: Boolean) {
-        fun material(namespace: String, path: String): Optional<Material> = namespace.toId(HTConstants.ITEM, path).let(::Material).toOptional()
+        fun material(namespace: String, path: String): Optional<Material> = Optional.of(namespace.toId(HTConstants.ITEM, path).let(::Material))
 
         val suffix: String = when (isDrip) {
             true -> "_drip"

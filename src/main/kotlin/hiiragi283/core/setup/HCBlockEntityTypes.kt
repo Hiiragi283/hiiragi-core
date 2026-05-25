@@ -60,6 +60,5 @@ data object HCBlockEntityTypes {
     ) where BE : BlockEntity, BE : HTHandlerProvider {
         event.registerBlockEntity(Capabilities.Item.BLOCK, type, HTHandlerProvider::getItemHandler)
         event.registerBlockEntity(Capabilities.Fluid.BLOCK, type, HTHandlerProvider::getFluidHandler)
-        event.registerBlockEntity(Capabilities.Energy.BLOCK, type, HTHandlerProvider::getEnergyStorage)
     }
 }
