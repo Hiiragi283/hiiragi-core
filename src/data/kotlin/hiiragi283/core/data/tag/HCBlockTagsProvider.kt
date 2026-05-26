@@ -25,8 +25,11 @@ class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<
         tags(Tags.Blocks.STORAGE_BLOCKS, HTCommonTags.Blocks.STORAGE_BLOCKS_AMETHYST).addBlock(Blocks.AMETHYST_BLOCK)
         tags(Tags.Blocks.STORAGE_BLOCKS, HTCommonTags.Blocks.STORAGE_BLOCKS_ECHO).add(HCBlocks.ECHO_BLOCK)
         // Mineable
-        tag(BlockTags.MINEABLE_WITH_AXE).add(HCBlocks.WARPED_WART)
-        tag(BlockTags.SWORD_EFFICIENT).add(HCBlocks.WARPED_WART)
+        tag(BlockTags.MINEABLE_WITH_AXE)
+            .add(HCBlocks.WARPED_WART)
+            .add(HCBlocks.CHOPPING_BOARD)
+        tag(BlockTags.SWORD_EFFICIENT)
+            .add(HCBlocks.WARPED_WART)
 
         val pickaxe: TagAppender<HTIdLike, Block> = tag(BlockTags.MINEABLE_WITH_PICKAXE)
         sequence<HTIdLike> {

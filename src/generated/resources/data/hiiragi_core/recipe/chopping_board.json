@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "#minecraft:planks",
+    "B": "#minecraft:wooden_slabs"
+  },
+  "pattern": [
+    "A",
+    "B"
+  ],
+  "result": {
+    "id": "hiiragi_core:chopping_board"
+  }
+}

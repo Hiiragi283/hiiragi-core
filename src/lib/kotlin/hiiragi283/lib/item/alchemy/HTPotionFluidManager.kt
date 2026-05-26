@@ -1,6 +1,5 @@
 package hiiragi283.lib.item.alchemy
 
-import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentGetter
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.world.level.material.Fluid
@@ -11,17 +10,16 @@ import net.neoforged.neoforge.common.MutableDataComponentHolder
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
-@Suppress("DEPRECATION")
 data object HTPotionFluidManager {
     /**
      * 登録されている[液体][Fluid]の一覧
      * @since 0.13.0
      */
     @JvmStatic
-    val fluidHandlers: Map<Holder<Fluid>, Handler> get() = _fluidHandlers
+    val handlers: Map<Fluid, Handler> get() = _handlers
 
     @JvmStatic
-    private val _fluidHandlers: MutableMap<Holder<Fluid>, Handler> = hashMapOf()
+    private val _handlers: MutableMap<Fluid, Handler> = hashMapOf()
 
     /**
      * 指定した[fluid]に[handler]を登録します。
@@ -29,17 +27,15 @@ data object HTPotionFluidManager {
      */
     @JvmStatic
     fun register(fluid: Fluid, handler: Handler) {
-        check(_fluidHandlers.put(fluid.builtInRegistryHolder(), handler) == null) {
-            "Duplicated potion fluid registration: $fluid"
-        }
+        check(_handlers.put(fluid, handler) == null) { "Duplicated potion fluid registration: $fluid" }
     }
 
     /**
-     * 指定した[holder]から[Handler]を取得します。
+     * 指定した[fluid]から[Handler]を取得します。
      * @return 対応する[Handler]がない場合は`null`
      */
     @JvmStatic
-    fun getFluidHandler(holder: Holder<Fluid>): Handler? = _fluidHandlers[holder.delegate]
+    fun getFluidHandler(fluid: Fluid): Handler? = _handlers[fluid]
 
     //    Handler    //
 

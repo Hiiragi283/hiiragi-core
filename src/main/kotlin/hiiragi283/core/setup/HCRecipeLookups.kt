@@ -6,6 +6,7 @@ import hiiragi283.core.api.recipe.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.HTTankFillingRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
+import hiiragi283.lib.recipe.base.HTItemToChancedItemsRecipe
 import hiiragi283.lib.recipe.lookup.HTCompoundRecipeLookup
 import hiiragi283.lib.recipe.lookup.HTRecipeLookup
 import hiiragi283.lib.recipe.lookup.HTVanillaRecipeLookup
@@ -17,6 +18,9 @@ data object HCRecipeLookups {
 
     @JvmStatic
     val CHARGING: HTRecipeLookup<HCChargingRecipe> = HTVanillaRecipeLookup(HCRecipeTypes.CHARGING)
+
+    @JvmStatic
+    val CHOPPING: HTCompoundRecipeLookup<HTItemToChancedItemsRecipe> = create(HCConstants.CHOPPING)
 
     @JvmStatic
     val EXPLODING: HTRecipeLookup<HCExplodingRecipe> = HTVanillaRecipeLookup(HCRecipeTypes.EXPLODING)
@@ -36,8 +40,9 @@ data object HCRecipeLookups {
 
     @JvmStatic
     fun init() {
-        EMPTYING.fromRecipeType(HCRecipeTypes.EMPTYING.get(), identity())
+        CHOPPING.fromRecipeType(HCRecipeTypes.CHOPPING.get(), identity())
 
+        EMPTYING.fromRecipeType(HCRecipeTypes.EMPTYING.get(), identity())
         FILLING.fromRecipeType(HCRecipeTypes.FILLING.get(), identity())
     }
 }

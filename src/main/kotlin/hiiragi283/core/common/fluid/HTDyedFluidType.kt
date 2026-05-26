@@ -3,7 +3,6 @@ package hiiragi283.core.common.fluid
 import hiiragi283.lib.color.HTDefaultColor
 import hiiragi283.lib.color.VanillaColoredContents
 import hiiragi283.lib.fluid.HTFluidType
-import hiiragi283.lib.item.toStack
 import hiiragi283.lib.world.HTItemDropHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.network.chat.TextColor

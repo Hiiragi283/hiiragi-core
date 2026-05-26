@@ -1,6 +1,7 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.common.block.HTChoppingBoardBlock
 import hiiragi283.core.common.block.HTCopperBasinBlock
 import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.block.HTWeatheringCopperBasinBlock
@@ -48,6 +49,9 @@ data object HCBlocks {
     ) { prop: Item.Properties -> prop.food(HCFoods.WARPED_WART, HCConsumables.WARPED_WART) }
 
     //    Misc    //
+
+    @JvmField
+    val CHOPPING_BOARD: HTBasicDeferredBlockAndItem<HTChoppingBoardBlock> = REGISTER.registerSimple("chopping_board", copyOf(Blocks.OAK_WOOD), ::HTChoppingBoardBlock)
 
     @JvmField
     val COPPER_BASIN: HTWeatheringCopperBlocks<HTCopperBasinBlock, HTWeatheringCopperBasinBlock, HTBlockItem<Block>> = HTWeatheringCopperBlocks.createSimple(

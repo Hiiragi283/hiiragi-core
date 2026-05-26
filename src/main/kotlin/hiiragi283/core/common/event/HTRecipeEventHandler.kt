@@ -21,10 +21,7 @@ import net.neoforged.neoforge.event.level.ExplosionEvent
 data object HTRecipeEventHandler {
     @SubscribeEvent
     fun onDatapackSync(event: OnDatapackSyncEvent) {
-        event.sendRecipes(
-            HCRecipeTypes.CHARGING.get(),
-            HCRecipeTypes.EXPLODING.get(),
-        )
+        HCRecipeTypes.REGISTER.entries.map { it.get() }.let(event::sendRecipes)
     }
 
     /**

@@ -8,6 +8,7 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput
+import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.WeatheringCopper
@@ -23,8 +24,16 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
             .define('A', HCBlocks.WARPED_WART)
             .unlockedBy(getHasName(HCBlocks.WARPED_WART), has(HCBlocks.WARPED_WART))
             .save(output)
+        // Chopping Board
+        shaped(RecipeCategory.MISC, HCBlocks.CHOPPING_BOARD)
+            .pattern("A")
+            .pattern("B")
+            .define('A', ItemTags.PLANKS)
+            .define('B', ItemTags.WOODEN_SLABS)
+            .unlockedBy("has_axe", has(ItemTags.AXES))
+            .save(output)
         // Copper Basin
-        shaped(RecipeCategory.BUILDING_BLOCKS, HCBlocks.COPPER_BASIN.weathering.unaffected)
+        shaped(RecipeCategory.MISC, HCBlocks.COPPER_BASIN.weathering.unaffected)
             .pattern("A A")
             .pattern("A A")
             .pattern("BAB")
@@ -36,7 +45,7 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
         for ((state: WeatheringCopper.WeatherState, base: ItemLike) in HCBlocks.COPPER_BASIN.weathering) {
             val waxed: ItemLike = HCBlocks.COPPER_BASIN.waxed[state]
             // Waxing
-            shapeless(RecipeCategory.BUILDING_BLOCKS, waxed)
+            shapeless(RecipeCategory.MISC, waxed)
                 .requires(base)
                 .requires(Items.HONEYCOMB)
                 .group("copper_basin")

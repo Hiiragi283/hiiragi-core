@@ -1,0 +1,34 @@
+package hiiragi283.lib.data.recipe
+
+import hiiragi283.lib.recipe.result.HTChancedItemResult
+import hiiragi283.lib.recipe.result.HTItemResult
+import hiiragi283.lib.resource.HTIdLike
+import net.minecraft.resources.Identifier
+
+/**
+ * [HTChancedItemResult]の[List]を作成するクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.17.0
+ */
+class HTChancedItemResultHolder : HTIdLike {
+    val results: List<HTChancedItemResult> get() = _results
+    private val _results: MutableList<HTChancedItemResult> = mutableListOf()
+
+    fun add(result: HTItemResult) {
+        this.add(result.withChance())
+    }
+
+    fun add(result: HTChancedItemResult) {
+        _results += result
+    }
+
+    operator fun plusAssign(result: HTItemResult) {
+        this.add(result)
+    }
+
+    operator fun plusAssign(result: HTChancedItemResult) {
+        this.add(result)
+    }
+
+    override fun getId(): Identifier = results.first().getId()
+}

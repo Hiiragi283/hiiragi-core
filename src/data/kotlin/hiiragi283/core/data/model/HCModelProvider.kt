@@ -30,6 +30,8 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
 
         // Warped Wart
         blockModels.createCropBlock(HCBlocks.WARPED_WART.get(), BlockStateProperties.AGE_3, 0, 1, 1, 2)
+        // Chopping Board
+        blockModels.registerSimple(HCBlocks.CHOPPING_BOARD.get(), HCBlocks.CHOPPING_BOARD.blockId)
         // Copper Basin
         blockModels.registerCopperBasin(HCBlocks.COPPER_BASIN.weathering)
         blockModels.registerCopperBasin(HCBlocks.COPPER_BASIN.waxed)

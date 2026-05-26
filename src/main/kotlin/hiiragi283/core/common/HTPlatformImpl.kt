@@ -59,7 +59,7 @@ class HTPlatformImpl : HTPlatform() {
     override fun <T> getContentsFromFluid(instance: T): BottledPotionContents? where T : TypedInstance<Fluid>, T : DataComponentGetter {
         val handler: HTPotionFluidManager.Handler = when {
             instance.`is`(Tags.Fluids.WATER) -> return BottledPotionContents(Potions.WATER)
-            else -> HTPotionFluidManager.getFluidHandler(instance.typeHolder()) ?: DEFAULT_POTION_HANDLER
+            else -> HTPotionFluidManager.getFluidHandler(instance.typeHolder().value()) ?: DEFAULT_POTION_HANDLER
         }
         val bottleType: HTBottleType = handler[instance] ?: return null
         val contents: PotionContents = HTPotionHelper.getPotion(instance)
@@ -68,7 +68,7 @@ class HTPlatformImpl : HTPlatform() {
 
     override fun setContents(stack: FluidStack, contents: BottledPotionContents) {
         HTPotionHelper.setPotion(stack, contents.contents)
-        val handler: HTPotionFluidManager.Handler = HTPotionFluidManager.getFluidHandler(stack.typeHolder()) ?: DEFAULT_POTION_HANDLER
+        val handler: HTPotionFluidManager.Handler = HTPotionFluidManager.getFluidHandler(stack.typeHolder().value()) ?: DEFAULT_POTION_HANDLER
         handler[stack] = contents.bottleType
     }
 

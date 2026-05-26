@@ -1,0 +1,8 @@
+{
+  "type": "hiiragi_core:chopping",
+  "ingredient": "#minecraft:saplings",
+  "results": {
+    "id": "minecraft:stick"
+  },
+  "time": 200
+}

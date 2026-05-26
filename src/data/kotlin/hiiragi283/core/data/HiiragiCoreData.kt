@@ -5,6 +5,7 @@ import hiiragi283.core.data.lang.HCJapaneseLangProvider
 import hiiragi283.core.data.loot.HCBlockLootTableProvider
 import hiiragi283.core.data.model.HCModelProvider
 import hiiragi283.core.data.recipe.HCChargingRecipeProvider
+import hiiragi283.core.data.recipe.HCChoppingRecipeProvider
 import hiiragi283.core.data.recipe.HCExplodingRecipeProvider
 import hiiragi283.core.data.recipe.HCMaterialRecipeProvider
 import hiiragi283.core.data.recipe.HCVanillaRecipeProvider
@@ -32,6 +33,7 @@ data object HiiragiCoreData {
         event.createBlockAndItemTags(::HCBlockTagsProvider, ::HCItemTagsProvider)
 
         event.createProvider(HCChargingRecipeProvider::Runner)
+        event.createProvider(HCChoppingRecipeProvider::Runner)
         event.createProvider(HCExplodingRecipeProvider::Runner)
         event.createProvider(HCMaterialRecipeProvider::Runner)
         event.createProvider(HCVanillaRecipeProvider::Runner)

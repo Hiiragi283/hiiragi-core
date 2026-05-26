@@ -6,6 +6,7 @@ import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
+import hiiragi283.core.common.recipe.HCChoppingRecipe
 import hiiragi283.lib.registry.HTDeferredRecipeType
 import hiiragi283.lib.registry.HTDeferredRecipeTypeRegister
 
@@ -17,6 +18,9 @@ data object HCRecipeTypes {
 
     @JvmField
     val CHARGING: HTDeferredRecipeType<HCChargingRecipe> = REGISTER.registerType(HCConstants.CHARGING)
+
+    @JvmField
+    val CHOPPING: HTDeferredRecipeType<HCChoppingRecipe> = REGISTER.registerType(HCConstants.CHOPPING)
 
     @JvmField
     val EXPLODING: HTDeferredRecipeType<HCExplodingRecipe> = REGISTER.registerType(HCConstants.EXPLODING)
