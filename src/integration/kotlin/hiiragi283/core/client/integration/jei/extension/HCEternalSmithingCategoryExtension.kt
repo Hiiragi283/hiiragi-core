@@ -1,6 +1,6 @@
 package hiiragi283.core.client.integration.jei.extension
 
-import hiiragi283.core.api.util.getOrEmpty
+import hiiragi283.core.api.util.kotlin
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.setup.HCItems
 import mezz.jei.api.gui.builder.IIngredientAcceptor
@@ -39,12 +39,15 @@ class HCEternalSmithingCategoryExtension(private val manager: IIngredientManager
         outputSlot: IRecipeSlotDrawable,
         focuses: IFocusGroup,
     ) {
-        val baseStack: ItemStack = baseSlot.displayedItemStack.getOrEmpty().copy()
-        if (baseStack.isEmpty) return
-        baseStack.set(DataComponents.UNBREAKABLE, Unbreakable(true))
+        baseSlot.displayedItemStack
+            .kotlin
+            .filterNot(ItemStack::isEmpty)
+            .onSome { baseStack: ItemStack ->
+                baseStack.set(DataComponents.UNBREAKABLE, Unbreakable(true))
 
-        outputSlot
-            .createDisplayOverrides()
-            .addItemStack(baseStack)
+                outputSlot
+                    .createDisplayOverrides()
+                    .addItemStack(baseStack)
+            }
     }
 }

@@ -45,7 +45,7 @@ data object HCRecipeDisplayFactories {
             HTRecipeContents.create {
                 addInput(recipe.ingredient)
                 addOutput(recipe.fluidResult)
-                recipe.itemResult.ifPresent(::addOutput)
+                recipe.itemResult.onSome(::addOutput)
             },
         )
     }

@@ -5,7 +5,7 @@ import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.registry.getKeyOrThrow
-import hiiragi283.core.api.serialization.codec.HTCodecs
+import hiiragi283.core.api.serialization.codec.convert
 import hiiragi283.core.api.serialization.codec.listOrElement
 import hiiragi283.core.api.util.DFUEither
 import hiiragi283.core.api.util.Either
@@ -34,11 +34,11 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries
  */
 internal object HTIngredientCodec {
     @JvmStatic
-    private fun <T : Any> tagOrKeyListCodec(registryKey: RegistryKey<T>): Codec<Either<TagKey<T>, List<ResourceKey<T>>>> = HTCodecs
+    private fun <T : Any> tagOrKeyListCodec(registryKey: RegistryKey<T>): Codec<Either<TagKey<T>, List<ResourceKey<T>>>> = Codec
         .either(
             TagKey.hashedCodec(registryKey),
             ResourceKey.codec(registryKey).listOrElement(),
-        )
+        ).convert()
 
     //    Item    //
 
@@ -73,8 +73,9 @@ internal object HTIngredientCodec {
             )
 
     @JvmField
-    val ITEM: Codec<Ingredient> = HTCodecs
+    val ITEM: Codec<Ingredient> = Codec
         .either(VALUE_CODEC.listOrElement(), CUSTOM_ITEM_CODEC)
+        .convert()
         .xmap(
             { either: Either<List<Ingredient.Value>, ICustomIngredient> ->
                 either.fold(

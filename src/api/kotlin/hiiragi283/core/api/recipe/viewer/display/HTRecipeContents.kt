@@ -10,17 +10,18 @@ import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.util.ErrorText
+import hiiragi283.core.api.util.Option
+import hiiragi283.core.api.util.none
+import hiiragi283.core.api.util.some
 import hiiragi283.core.api.util.unwrap
 import net.minecraft.core.component.DataComponents
-import net.minecraft.util.ExtraCodecs
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.crafting.Ingredient
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
-import java.util.Optional
-import kotlin.jvm.optionals.getOrNull
 import net.neoforged.neoforge.fluids.FluidType
 
 @JvmRecord
@@ -28,7 +29,7 @@ data class HTRecipeContents(
     private val inputItems: List<List<ItemStack>>,
     private val inputFluids: List<FluidInput>,
     private val catalysts: List<List<ItemStack>>,
-    private val outputItems: List<Optional<ChancedItemStack>>,
+    private val outputItems: List<Option<ChancedItemStack>>,
     private val outputFluids: List<FluidStack>,
 ) {
     companion object {
@@ -44,8 +45,8 @@ data class HTRecipeContents(
                         .fieldOf(HTConst.FLUID_INGREDIENT)
                         .forGetter(HTRecipeContents::inputFluids),
                     itemsCodec.listOf().fieldOf(HTConst.CATALYST).forGetter(HTRecipeContents::catalysts),
-                    ExtraCodecs
-                        .optionalEmptyMap(ChancedItemStack.CODEC)
+                    HTCodecs
+                        .option(ChancedItemStack.CODEC)
                         .listOf()
                         .fieldOf(HTConst.ITEM_RESULT)
                         .forGetter(HTRecipeContents::outputItems),
@@ -104,7 +105,7 @@ data class HTRecipeContents(
         private val inputItems: MutableList<List<ItemStack>> = mutableListOf()
         private val inputFluids: MutableList<FluidInput> = mutableListOf()
         private val catalysts: MutableList<List<ItemStack>> = mutableListOf()
-        private val outputItems: MutableList<Optional<ChancedItemStack>> = mutableListOf()
+        private val outputItems: MutableList<Option<ChancedItemStack>> = mutableListOf()
         private val outputFluids: MutableList<FluidStack> = mutableListOf()
 
         //    Input    //
@@ -161,8 +162,8 @@ data class HTRecipeContents(
         @JvmName("addItemOutput")
         fun addOutput(stack: ItemStack, chance: Float = 1f) {
             outputItems += when {
-                stack.isEmpty -> Optional.empty()
-                else -> Optional.of(ChancedItemStack(stack, chance))
+                stack.isEmpty -> none()
+                else -> ChancedItemStack(stack, chance).some()
             }
         }
 

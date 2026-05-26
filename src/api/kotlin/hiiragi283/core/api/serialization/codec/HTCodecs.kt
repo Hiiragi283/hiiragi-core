@@ -2,14 +2,16 @@ package hiiragi283.core.api.serialization.codec
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
+import com.mojang.serialization.DynamicOps
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.Ior
-import hiiragi283.core.api.util.java
+import hiiragi283.core.api.util.Option
 import hiiragi283.core.api.util.kotlin
+import hiiragi283.core.api.util.none
 import hiiragi283.core.impl.serialization.codec.HTIngredientCodec
 import hiiragi283.core.impl.serialization.codec.HTIorMapCodec
 import net.minecraft.core.Holder
@@ -26,6 +28,8 @@ import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import org.apache.commons.lang3.math.Fraction
 import java.util.UUID
 import java.util.function.Function
+import com.mojang.datafixers.util.Pair
+import hiiragi283.core.api.util.some
 import kotlin.enums.enumEntries
 
 /**
@@ -35,7 +39,8 @@ import kotlin.enums.enumEntries
  */
 data object HTCodecs {
     @JvmField
-    val FRACTION: Codec<Fraction> = xor(Codec.STRING, Codec.INT)
+    val FRACTION: Codec<Fraction> = Codec.xor(Codec.STRING, Codec.INT)
+        .convert()
         .xmap(
             { either: Either<String, Int> -> either.fold(Fraction::getFraction, ::fraction) },
             { fraction: Fraction ->
@@ -62,22 +67,25 @@ data object HTCodecs {
     fun <K : Any, V : Any> mapOf(keyCodec: Codec<K>, valueCodec: Codec<V>): Codec<Map<K, V>> = Codec.unboundedMap(keyCodec, valueCodec)
 
     /**
-     * @since 0.17.0
+     * @see ExtraCodecs.optionalEmptyMap
      */
     @JvmStatic
-    fun <L, R> either(left: Codec<L>, right: Codec<R>): Codec<Either<L, R>> = Codec.either(left, right).xmap({ it.kotlin }, { it.java })
+    fun <A> option(codec: Codec<A>): Codec<Option<A>> = object : Codec<Option<A>> {
+        override fun <T> encode(input: Option<A>, ops: DynamicOps<T>, prefix: T): DataResult<T> = input.fold(
+            { DataResult.success(ops.emptyMap()) },
+            { codec.encode(it, ops, prefix) },
+        )
 
-    /**
-     * @since 0.17.0
-     */
-    @JvmStatic
-    fun <L, R> xor(left: Codec<L>, right: Codec<R>): Codec<Either<L, R>> = Codec.xor(left, right).xmap({ it.kotlin }, { it.java })
+        private fun <T> isEmptyMap(ops: DynamicOps<T>, input: T): Boolean = ops.getMap(input).result().kotlin.fold(
+            { false },
+            { it.entries().findAny().isEmpty },
+        )
 
-    /**
-     * @since 0.17.0
-     */
-    @JvmStatic
-    fun <L, R> either(left: MapCodec<L>, right: MapCodec<R>): MapCodec<Either<L, R>> = Codec.mapEither(left, right).xmap({ it.kotlin }, { it.java })
+        override fun <T> decode(ops: DynamicOps<T>, input: T): DataResult<Pair<Option<A>, T>> = when {
+            isEmptyMap(ops, input) -> DataResult.success(Pair.of(none(), input))
+            else -> codec.decode(ops, input).map { pair: Pair<A, T> -> pair.mapFirst { it.some() } }
+        }
+    }
 
     /**
      * 指定した[left], [right]から，[Ior]の[MapCodec]を返します。

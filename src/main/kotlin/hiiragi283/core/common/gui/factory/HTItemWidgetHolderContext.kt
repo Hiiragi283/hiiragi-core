@@ -2,10 +2,11 @@ package hiiragi283.core.common.gui.factory
 
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
-import hiiragi283.core.api.serialization.network.toOptional
+import hiiragi283.core.api.serialization.network.asOption
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.Text
-import hiiragi283.core.api.util.toOptional
+import hiiragi283.core.api.util.Option
+import hiiragi283.core.api.util.toOption
 import hiiragi283.core.common.gui.menu.HTWidgetContainerMenu
 import hiiragi283.core.setup.HCMenuTypes
 import io.netty.buffer.ByteBuf
@@ -20,8 +21,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
-import java.util.Optional
-import kotlin.jvm.optionals.getOrNull
 
 @JvmRecord
 data class HTItemWidgetHolderContext(
@@ -33,8 +32,8 @@ data class HTItemWidgetHolderContext(
     MenuProvider {
     companion object {
         @JvmStatic
-        private val HAND_CODEC: StreamCodec<ByteBuf, Optional<InteractionHand>> =
-            HTStreamCodecs.enum<InteractionHand>().toOptional()
+        private val HAND_CODEC: StreamCodec<ByteBuf, Option<InteractionHand>> =
+            HTStreamCodecs.enum<InteractionHand>().asOption()
 
         @JvmStatic
         fun openMenu(player: ServerPlayer, hand: InteractionHand): Boolean {
@@ -85,7 +84,7 @@ data class HTItemWidgetHolderContext(
     override fun createMenu(containerId: Int, playerInventory: Inventory, player: Player): HTWidgetContainerMenu = HTWidgetContainerMenu(HCMenuTypes.ITEM.get(), containerId, playerInventory, this)
 
     override fun writeClientSideData(menu: AbstractContainerMenu, buffer: RegistryFriendlyByteBuf) {
-        HAND_CODEC.encode(buffer, hand.toOptional())
+        HAND_CODEC.encode(buffer, hand.toOption())
         ItemStack.STREAM_CODEC.encode(buffer, stack)
     }
 

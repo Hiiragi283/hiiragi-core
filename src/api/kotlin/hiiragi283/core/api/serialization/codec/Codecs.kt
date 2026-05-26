@@ -1,8 +1,16 @@
 package hiiragi283.core.api.serialization.codec
 
 import com.mojang.serialization.Codec
+import com.mojang.serialization.MapCodec
+import hiiragi283.core.api.util.DFUEither
 import hiiragi283.core.api.util.Either
+import hiiragi283.core.api.util.Option
+import hiiragi283.core.api.util.java
+import hiiragi283.core.api.util.kotlin
+import hiiragi283.core.api.util.left
+import hiiragi283.core.api.util.right
 import hiiragi283.core.api.util.unwrap
+import java.util.Optional
 
 //    List    //
 
@@ -20,9 +28,9 @@ fun <A : Any> Codec<A>.listOf(range: IntRange): Codec<List<A>> = this.listOf(ran
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun <A : Any> Codec<A>.listOrElement(): Codec<List<A>> = HTCodecs.either(this.listOf(), this).xmap(
+fun <A : Any> Codec<A>.listOrElement(): Codec<List<A>> = Codec.either(this.listOf(), this).convert().xmap(
     { either: Either<List<A>, A> -> either.map(::listOf).unwrap() },
-    { list: List<A> -> if (list.size == 1) Either.Right(list[0]) else Either.Left(list) },
+    { list: List<A> -> list.singleOrNull()?.right() ?: list.left() },
 )
 
 /**
@@ -42,9 +50,9 @@ fun <A : Any> Codec<A>.listOrElement(range: IntRange): Codec<List<A>> = this.lis
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun <A : Any> Codec<A>.listOrElement(min: Int, max: Int): Codec<List<A>> = HTCodecs.either(this.listOf(min, max), this).xmap(
+fun <A : Any> Codec<A>.listOrElement(min: Int, max: Int): Codec<List<A>> = Codec.either(this.listOf(min, max), this).convert().xmap(
     { either: Either<List<A>, A> -> either.map(::listOf).unwrap() },
-    { list: List<A> -> if (list.size == 1) Either.Right(list[0]) else Either.Left(list) },
+    { list: List<A> -> list.singleOrNull()?.right() ?: list.left() },
 )
 
 //    Set    //
@@ -56,3 +64,16 @@ fun <A : Any> Codec<A>.listOrElement(min: Int, max: Int): Codec<List<A>> = HTCod
  * @since 0.16.0
  */
 fun <A : Any> Codec<List<A>>.setOf(): Codec<Set<A>> = this.xmap(List<A>::toSet, Set<A>::toList)
+
+//    Either    //
+
+@JvmName("convertToEither")
+fun <A, B> Codec<DFUEither<A, B>>.convert(): Codec<Either<A, B>> = this.xmap({ it.kotlin }, { it.java })
+
+@JvmName("convertToEither")
+fun <A, B> MapCodec<DFUEither<A, B>>.convert(): MapCodec<Either<A, B>> = this.xmap({ it.kotlin }, { it.java })
+
+//    Option    //
+
+@JvmName("convertToOption")
+fun <A : Any> MapCodec<Optional<A>>.convert(): MapCodec<Option<A>> = this.xmap({ it.kotlin }, { it.java })

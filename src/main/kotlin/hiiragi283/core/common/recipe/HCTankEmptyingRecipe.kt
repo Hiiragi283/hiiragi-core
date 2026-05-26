@@ -9,7 +9,9 @@ import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemAndFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
-import hiiragi283.core.api.util.getOrEmpty
+import hiiragi283.core.api.serialization.codec.convert
+import hiiragi283.core.api.util.Option
+import hiiragi283.core.api.util.getOrElse
 import hiiragi283.core.impl.recipe.HTSerializableRecipe
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
@@ -19,9 +21,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.neoforged.neoforge.fluids.FluidStack
-import java.util.*
 
-class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidResult, val itemResult: Optional<HTItemResult>) :
+class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidResult, val itemResult: Option<HTItemResult>) :
     HTTankEmptyingRecipe,
     HTSerializableRecipe<SingleRecipeInput> {
     companion object {
@@ -31,7 +32,7 @@ class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidR
                 .group(
                     HTCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HCTankEmptyingRecipe::ingredient),
                     HTFluidResult.CODEC.fieldOf(HTConst.FLUID_RESULT).forGetter(HCTankEmptyingRecipe::fluidResult),
-                    HTItemResult.CODEC.optionalFieldOf(HTConst.ITEM_RESULT).forGetter(HCTankEmptyingRecipe::itemResult),
+                    HTItemResult.CODEC.optionalFieldOf(HTConst.ITEM_RESULT).convert().forGetter(HCTankEmptyingRecipe::itemResult),
                 ).apply(instance, ::HCTankEmptyingRecipe)
         }
     }
@@ -42,7 +43,7 @@ class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidR
 
     override fun assemble(input: ItemStack): HTItemAndFluidResult {
         val fluidStack: FluidStack = fluidResult.create()
-        val itemStack: ItemStack = itemResult.map(HTItemResult::createOrEmpty).getOrEmpty()
+        val itemStack: ItemStack = itemResult.map(HTItemResult::createOrEmpty).getOrElse(ItemStack::EMPTY)
         return HTItemAndFluidResult(itemStack, fluidStack)
     }
 

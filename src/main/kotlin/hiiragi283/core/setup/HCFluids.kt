@@ -20,7 +20,7 @@ import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.common.SoundActions
 import net.neoforged.neoforge.fluids.FluidType
 
-object HCFluids {
+data object HCFluids {
     @JvmField
     val REGISTER = HTFluidContentRegister(HiiragiCoreAPI.MOD_ID)
 

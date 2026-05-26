@@ -1,6 +1,8 @@
 package hiiragi283.core.api.serialization.value
 
 import com.mojang.serialization.Codec
+import hiiragi283.core.api.util.Option
+import hiiragi283.core.api.util.toOption
 import hiiragi283.core.api.util.toOptional
 import java.util.Optional
 
@@ -21,6 +23,10 @@ interface HTValueOutput {
 
     fun <T : Any> writeOptional(key: String, codec: Codec<Optional<T>>, value: T?) {
         write(key, codec, value.toOptional())
+    }
+
+    fun <T : Any> writeOption(key: String, codec: Codec<Option<T>>, value: T?) {
+        write(key, codec, value.toOption())
     }
 
     fun isEmpty(): Boolean
