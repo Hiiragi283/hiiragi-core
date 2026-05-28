@@ -1,5 +1,6 @@
 package hiiragi283.core.api.data.worldgen
 
+import hiiragi283.core.api.registry.holderSetOf
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.core.registries.Registries
@@ -41,7 +42,7 @@ data object HTWorldGenHelper {
     @JvmStatic
     fun register(context: BootstrapContext<BiomeModifier>, data: HTWorldGenData, biome: TagKey<Biome>, decoration: GenerationStep.Decoration) {
         val biomes: HolderSet<Biome> = context.lookup(Registries.BIOME).getOrThrow(biome)
-        val placement: HolderSet<PlacedFeature> = context.lookup(Registries.PLACED_FEATURE).getOrThrow(data.placedKey).let { HolderSet.direct(it) }
+        val placement: HolderSet<PlacedFeature> = context.lookup(Registries.PLACED_FEATURE).getOrThrow(data.placedKey).let(::holderSetOf)
         context.register(data.modifierKey, BiomeModifiers.AddFeaturesBiomeModifier(biomes, placement, decoration))
     }
 }

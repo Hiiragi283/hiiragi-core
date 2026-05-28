@@ -6,6 +6,7 @@ import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
+import hiiragi283.core.api.registry.holderSetOf
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.util.HTPhysicalSideHelper
 import java.util.Objects
@@ -44,7 +45,7 @@ class HTPotionFluidIngredient(val potions: HolderSet<Potion>, val bottleType: HT
         val TYPE: FluidIngredientType<HTPotionFluidIngredient> = FluidIngredientType(CODEC)
     }
 
-    constructor(potion: Holder<Potion>) : this(HolderSet.direct(potion.delegate), HTBottleType.DEFAULT)
+    constructor(potion: Holder<Potion>) : this(holderSetOf(potion), HTBottleType.DEFAULT)
 
     override fun test(fluidStack: FluidStack): Boolean {
         val contents: BottledPotionContents = HTPotionHelper.getContents(fluidStack) ?: return false
