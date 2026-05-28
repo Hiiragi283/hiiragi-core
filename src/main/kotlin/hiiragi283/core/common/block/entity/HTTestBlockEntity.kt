@@ -10,6 +10,7 @@ import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
 import hiiragi283.core.api.storage.item.HTItemSlot
+import hiiragi283.core.common.gui.sync.HTFluidSyncSlot
 import hiiragi283.core.common.gui.sync.HTItemSyncSlot
 import hiiragi283.core.common.gui.widget.HTFillDirection
 import hiiragi283.core.common.gui.widget.HTFluidWidget
@@ -60,6 +61,7 @@ class HTTestBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HCBloc
         // tank
         widgetHolder += HTFluidWidget.Tank(tank1, HTSlotHelper.getSlotPosX(0), HTSlotHelper.getSlotPosY(0), HTBackgroundType.EXTRA_INPUT, false)
         widgetHolder += HTFluidWidget.Slot(tank1, HTSlotHelper.getSlotPosX(1), HTSlotHelper.getSlotPosY(2), HTBackgroundType.EXTRA_OUTPUT, true)
+        widgetHolder.track(HTFluidSyncSlot(tank1), HTSyncType.BOTH)
         // slot
         for (i: Int in (0..2)) {
             widgetHolder += HTItemWidget.Container(
