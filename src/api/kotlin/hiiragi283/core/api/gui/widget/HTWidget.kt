@@ -21,8 +21,6 @@ interface HTWidget {
      */
     val bounds: HTBounds
 
-    fun setupHolder(widgetHolder: HTWidgetHolder) {}
-
     /**
      * @since 0.12.0
      */

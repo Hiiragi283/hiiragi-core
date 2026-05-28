@@ -36,7 +36,6 @@ class HTWidgetContainerMenu(
         override fun <WIDGET : HTWidget> addWidget(widget: WIDGET): WIDGET {
             widgets += widget
             HiiragiCoreAPI.LOGGER.debug("Added widget: {}", widget)
-            widget.setupHolder(this)
             if (widget is HTItemWidget.Container) {
                 this@HTWidgetContainerMenu.addSlot(widget.slot)
             }

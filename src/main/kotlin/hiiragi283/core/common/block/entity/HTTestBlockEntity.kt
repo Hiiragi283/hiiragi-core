@@ -4,12 +4,13 @@ import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.fixedFraction
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.gui.HTSlotHelper
+import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
 import hiiragi283.core.api.storage.item.HTItemSlot
-import hiiragi283.core.common.gui.sync.HTFractionSyncSlot
+import hiiragi283.core.common.gui.sync.HTItemSyncSlot
 import hiiragi283.core.common.gui.widget.HTFillDirection
 import hiiragi283.core.common.gui.widget.HTFluidWidget
 import hiiragi283.core.common.gui.widget.HTItemWidget
@@ -68,18 +69,20 @@ class HTTestBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HCBloc
                 HTBackgroundType.INPUT,
             )
         }
+        val itemSlot = HTItemSyncSlot(slot2)
         widgetHolder += HTItemWidget.Fake(
-            slot2,
+            itemSlot,
             HTSlotHelper.getSlotPosX(2),
             HTSlotHelper.getSlotPosY(2),
             HTBackgroundType.OUTPUT,
             false,
         )
+        widgetHolder.track(itemSlot, HTSyncType.C2S)
 
         // progress
         widgetHolder += HTProgressWidget
             .createArrow(
-                HTFractionSyncSlot.create({ fixedFraction(ticks, 20 * 5, true) }, { _ -> ticks }),
+                { fixedFraction(ticks, 20 * 5, true) },
                 HTSlotHelper.getSlotPosX(4),
                 HTSlotHelper.getSlotPosY(1),
             ).setDirection(HTFillDirection.END_TO_TOP)

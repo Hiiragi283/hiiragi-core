@@ -1,24 +1,20 @@
 package hiiragi283.core.api.integration.jei.category
 
-import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.gui.HTBounds
-import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.integration.jei.HTJeiDrawables
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.times
-import hiiragi283.core.impl.gui.widget.HTGuiWidget
 import mezz.jei.api.constants.VanillaTypes
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder
 import mezz.jei.api.gui.drawable.IDrawable
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView
 import mezz.jei.api.gui.placement.IPlaceable
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder
 import mezz.jei.api.helpers.ICodecHelper
@@ -27,10 +23,6 @@ import mezz.jei.api.recipe.IFocusGroup
 import mezz.jei.api.recipe.IRecipeManager
 import mezz.jei.api.recipe.RecipeType
 import mezz.jei.api.recipe.category.IRecipeCategory
-import net.minecraft.client.gui.GuiGraphics
-import net.minecraft.client.gui.components.events.AbstractContainerEventHandler
-import net.minecraft.client.gui.components.events.GuiEventListener
-import net.minecraft.client.gui.navigation.ScreenRectangle
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import org.apache.commons.lang3.math.Fraction
@@ -47,8 +39,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     private val title: Text,
     private val icon: IDrawable,
     private val bounds: HTBounds,
-) : AbstractContainerEventHandler(),
-    IRecipeCategory<RECIPE>,
+) : IRecipeCategory<RECIPE>,
     HTAbstractGui {
     companion object {
         @JvmStatic
@@ -65,17 +56,6 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
         createIcon(guiHelper, recipeType),
         recipeType.bounds,
     )
-
-    private val widgets: MutableList<HTGuiWidget<*>> = mutableListOf()
-
-    protected fun <WIDGET : HTWidget> addWidget(widget: WIDGET): WIDGET {
-        this.widgets += HTGuiWidget(this, widget)
-        return widget
-    }
-
-    override fun children(): List<GuiEventListener> = widgets
-
-    override fun getRectangle(): ScreenRectangle = ScreenRectangle(getGuiLeft(), getGuiTop(), getXSize(), getYSize())
 
     //    HTAbstractGui    //
 
@@ -100,35 +80,6 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     final override fun getIcon(): IDrawable = icon
 
     abstract override fun setRecipe(builder: IRecipeLayoutBuilder, recipe: RECIPE, focuses: IFocusGroup)
-
-    override fun draw(
-        recipe: RECIPE,
-        recipeSlotsView: IRecipeSlotsView,
-        guiGraphics: GuiGraphics,
-        mouseX: Double,
-        mouseY: Double,
-    ) {
-        val pose: PoseStack = guiGraphics.pose()
-        pose.pushPose()
-        pose.translate(bounds.left.toDouble(), bounds.top.toDouble(), 0.0)
-        renderWidgets(recipe, recipeSlotsView, guiGraphics, mouseX.toInt(), mouseY.toInt())
-        pose.popPose()
-    }
-
-    protected fun renderWidgets(
-        recipe: RECIPE,
-        recipeSlotsView: IRecipeSlotsView,
-        guiGraphics: GuiGraphics,
-        mouseX: Int,
-        mouseY: Int,
-    ) {
-        val pose: PoseStack = guiGraphics.pose()
-        for (widget: HTGuiWidget<*> in widgets) {
-            pose.pushPose()
-            widget.render(guiGraphics, mouseX, mouseY, 0f)
-            pose.popPose()
-        }
-    }
 
     abstract override fun getRegistryName(recipe: RECIPE): ResourceLocation?
 

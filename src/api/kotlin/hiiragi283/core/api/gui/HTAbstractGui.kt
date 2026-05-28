@@ -1,6 +1,5 @@
 package hiiragi283.core.api.gui
 
-import net.minecraft.client.gui.components.events.ContainerEventHandler
 import net.minecraft.world.item.ItemStack
 
 /**
@@ -9,7 +8,7 @@ import net.minecraft.world.item.ItemStack
  * @since 0.11.0
  * @see mekanism.client.gui.IGuiWrapper
  */
-interface HTAbstractGui : ContainerEventHandler {
+interface HTAbstractGui {
     /**
      * カーソル上の[アイテム][ItemStack]を取得します。
      */
