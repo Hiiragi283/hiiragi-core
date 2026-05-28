@@ -71,15 +71,14 @@ class HTTestBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HCBloc
                 HTBackgroundType.INPUT,
             )
         }
-        val itemSlot = HTItemSyncSlot(slot2)
         widgetHolder += HTItemWidget.Fake(
-            itemSlot,
+            slot2,
             HTSlotHelper.getSlotPosX(2),
             HTSlotHelper.getSlotPosY(2),
             HTBackgroundType.OUTPUT,
             false,
         )
-        widgetHolder.track(itemSlot, HTSyncType.C2S)
+        widgetHolder.track(HTItemSyncSlot(slot2), HTSyncType.C2S)
 
         // progress
         widgetHolder += HTProgressWidget
