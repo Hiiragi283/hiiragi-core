@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:filling",
+  "fluid_ingredient": {
+    "amount": 1000,
+    "ingredient": "#c:honey"
+  },
+  "item_ingredient": "#c:glass_blocks",
+  "result": {
+    "id": "minecraft:honey_block"
+  }
+}

@@ -8,6 +8,7 @@ import hiiragi283.core.data.recipe.HCChargingRecipeProvider
 import hiiragi283.core.data.recipe.HCChoppingRecipeProvider
 import hiiragi283.core.data.recipe.HCExplodingRecipeProvider
 import hiiragi283.core.data.recipe.HCMaterialRecipeProvider
+import hiiragi283.core.data.recipe.HCTankInteractionRecipeProvider
 import hiiragi283.core.data.recipe.HCVanillaRecipeProvider
 import hiiragi283.core.data.tag.HCBlockTagsProvider
 import hiiragi283.core.data.tag.HCFluidTagsProvider
@@ -36,6 +37,7 @@ data object HiiragiCoreData {
         event.createProvider(HCChoppingRecipeProvider::Runner)
         event.createProvider(HCExplodingRecipeProvider::Runner)
         event.createProvider(HCMaterialRecipeProvider::Runner)
+        event.createProvider(HCTankInteractionRecipeProvider::Runner)
         event.createProvider(HCVanillaRecipeProvider::Runner)
         // Client
         event.createProvider(::HCModelProvider)

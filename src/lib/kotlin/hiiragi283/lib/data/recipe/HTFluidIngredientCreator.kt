@@ -21,7 +21,7 @@ class HTFluidIngredientCreator(getter: HolderGetter<Fluid>) : HTSizedIngredientC
 
     fun milk(size: Int = getDefaultSize()): HTFluidIngredient = tag(Tags.Fluids.MILK, size)
 
-    fun create(ingredient: FluidIngredient, size: Int = getDefaultSize()): HTFluidIngredient = create(SizedFluidIngredient(ingredient, size))
+    fun create(ingredient: FluidIngredient, size: Int = getDefaultSize()): HTFluidIngredient = HTFluidIngredient(ingredient, size)
 
     fun create(ingredient: SizedFluidIngredient): HTFluidIngredient = HTFluidIngredient(ingredient)
 

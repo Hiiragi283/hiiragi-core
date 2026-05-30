@@ -13,5 +13,5 @@ fun interface HTOutputHandler<STACK : Any> {
      * 指定した[完成品][stack]を搬入します。
      * @return 実際に搬入される数量
      */
-    fun insert(stack: STACK, parent: TransactionContext?): Result<Int>
+    fun insert(stack: STACK, transaction: TransactionContext): Result<Int>
 }

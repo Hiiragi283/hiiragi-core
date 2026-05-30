@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:filling",
+  "fluid_ingredient": {
+    "amount": 1000,
+    "ingredient": "#c:water"
+  },
+  "item_ingredient": "minecraft:sponge",
+  "result": {
+    "id": "minecraft:wet_sponge"
+  }
+}

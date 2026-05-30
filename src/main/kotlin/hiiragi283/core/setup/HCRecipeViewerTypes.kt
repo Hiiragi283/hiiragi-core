@@ -29,6 +29,14 @@ data object HCRecipeViewerTypes {
     @JvmField
     val EXPLODING: HTRecipeViewerType<HTRecipeDisplay.Simple> = create(HCRecipeTypes.EXPLODING, Items.TNT, 18 * 4)
 
+    //    Tank Interaction    //
+
+    @JvmField
+    val EMPTYING: HTRecipeViewerType<HTRecipeDisplay.Simple> = create(HCRecipeTypes.EMPTYING, Items.BUCKET, 18 * 6)
+
+    @JvmField
+    val FILLING: HTRecipeViewerType<HTRecipeDisplay.Simple> = create(HCRecipeTypes.FILLING, Items.WATER_BUCKET, 18 * 6)
+
     @JvmStatic
     private inline fun <reified T : Any> create(
         recipeType: HTIdLike.Translatable,

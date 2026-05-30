@@ -15,7 +15,7 @@ class HTItemIngredientCreator(getter: HolderGetter<Item>) : HTSizedIngredientCre
 
     fun items(items: Collection<ItemLike>, size: Int = getDefaultSize()): HTItemIngredient = create(items.map(ItemLike::asItem), size)
 
-    fun create(ingredient: Ingredient, size: Int = getDefaultSize()): HTItemIngredient = create(SizedIngredient(ingredient, size))
+    fun create(ingredient: Ingredient, size: Int = getDefaultSize()): HTItemIngredient = HTItemIngredient(ingredient, size)
 
     fun create(ingredient: SizedIngredient): HTItemIngredient = HTItemIngredient(ingredient)
 

@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:emptying",
+  "fluid_result": {
+    "amount": 250,
+    "id": "hiiragi_core:dragon_breath"
+  },
+  "ingredient": "minecraft:dragon_breath",
+  "item_result": {
+    "id": "minecraft:glass_bottle"
+  }
+}

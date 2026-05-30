@@ -13,5 +13,5 @@ fun interface HTInputHandler<STACK : Any> {
      * 指定した[数量][amount]だけ中身を消費します。
      * @return 実際に消費される数量
      */
-    fun extract(amount: Int, parent: TransactionContext?): Result<Int>
+    fun extract(amount: Int, transaction: TransactionContext): Result<Int>
 }

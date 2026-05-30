@@ -35,7 +35,7 @@ open class HTBasicFluidTank(capacity: Long, canInsert: BiPredicate<FluidResource
     }
 
     final override fun serialize(output: ValueOutput) {
-        output.store(HTConstants.FLUID, FluidResource.CODEC, this.resourceIn)
+        output.store(HTConstants.FLUID, FluidResource.OPTIONAL_CODEC, this.resourceIn)
         output.putLong(HTConstants.AMOUNT, this.amountIn)
     }
 

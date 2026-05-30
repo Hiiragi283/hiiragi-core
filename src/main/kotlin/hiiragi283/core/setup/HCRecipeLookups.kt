@@ -6,11 +6,15 @@ import hiiragi283.core.api.recipe.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.HTTankFillingRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
+import hiiragi283.core.common.recipe.custom.HTPotionArrowFillingRecipe
+import hiiragi283.core.common.recipe.custom.HTPotionTankInteraction
+import hiiragi283.lib.HTConstants
 import hiiragi283.lib.recipe.base.HTItemToChancedItemsRecipe
 import hiiragi283.lib.recipe.lookup.HTCompoundRecipeLookup
 import hiiragi283.lib.recipe.lookup.HTRecipeLookup
 import hiiragi283.lib.recipe.lookup.HTVanillaRecipeLookup
 import hiiragi283.lib.recipe.lookup.fromRecipeType
+import hiiragi283.lib.resource.toId
 import hiiragi283.lib.util.identity
 
 data object HCRecipeLookups {
@@ -43,6 +47,9 @@ data object HCRecipeLookups {
         CHOPPING.fromRecipeType(HCRecipeTypes.CHOPPING.get(), identity())
 
         EMPTYING.fromRecipeType(HCRecipeTypes.EMPTYING.get(), identity())
+        EMPTYING.addRecipes(HTConstants.MINECRAFT.toId(HCConstants.EMPTYING, "potion") to HTPotionTankInteraction.Emptying)
         FILLING.fromRecipeType(HCRecipeTypes.FILLING.get(), identity())
+        FILLING.addRecipes(HTConstants.MINECRAFT.toId(HCConstants.FILLING, "potion") to HTPotionTankInteraction.Filling)
+        FILLING.addRecipes(HTConstants.MINECRAFT.toId(HCConstants.FILLING, "potion_arrow") to HTPotionArrowFillingRecipe)
     }
 }

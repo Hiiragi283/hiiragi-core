@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:emptying",
+  "fluid_result": {
+    "amount": 250,
+    "id": "hiiragi_core:mushroom_stew"
+  },
+  "ingredient": "minecraft:mushroom_stew",
+  "item_result": {
+    "id": "minecraft:bowl"
+  }
+}

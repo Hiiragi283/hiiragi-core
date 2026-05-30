@@ -21,6 +21,8 @@ value class HTItemIngredient(private val delegate: SizedIngredient) : HTIngredie
         val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemIngredient> = SizedIngredient.STREAM_CODEC.map(::HTItemIngredient, HTItemIngredient::delegate)
     }
 
+    constructor(ingredient: Ingredient, count: Int) : this(SizedIngredient(ingredient, count))
+
     val unsized: Ingredient get() = delegate.ingredient()
     val count: Int get() = delegate.count()
 

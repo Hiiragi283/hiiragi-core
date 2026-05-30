@@ -25,7 +25,7 @@ class HTPotionBucketItem(content: Fluid, properties: Properties) : HTPotionBased
     /**
      * @see net.neoforged.neoforge.transfer.fluid.BucketResourceHandler
      */
-    class BucketHandler(itemAccess: ItemAccess) : ItemAccessResourceHandler<FluidResource>(itemAccess, FluidType.BUCKET_VOLUME) {
+    class BucketHandler(itemAccess: ItemAccess) : ItemAccessResourceHandler<FluidResource>(itemAccess, 1) {
         override fun getResourceFrom(accessResource: ItemResource, index: Int): FluidResource = HTPotionHelper.getContents(accessResource)?.let(HCPotionFluidHelper::createResource) ?: FluidResource.EMPTY
 
         override fun getAmountFrom(accessResource: ItemResource, index: Int): Int {

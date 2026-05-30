@@ -20,6 +20,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.core.component.DataComponents
 import net.minecraft.util.context.ContextMap
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.display.SlotDisplayContext
@@ -170,6 +171,14 @@ data class HTRecipeContents(
             outputItems += when {
                 stack.isEmpty -> none()
                 else -> ChancedItemStack(stack, chance).some()
+            }
+        }
+
+        @JvmName("addItemOutput")
+        fun addOutput(template: ItemStackTemplate?, chance: Float = 1f) {
+            outputItems += when {
+                template == null -> none()
+                else -> ChancedItemStack(template.create(), chance).some()
             }
         }
 

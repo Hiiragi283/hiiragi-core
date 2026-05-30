@@ -20,7 +20,7 @@ open class HTBasicItemSlot(capacity: Long, canInsert: BiPredicate<ItemResource, 
     }
 
     final override fun serialize(output: ValueOutput) {
-        output.store(HTConstants.ITEM, ItemResource.CODEC, this.resourceIn)
+        output.store(HTConstants.ITEM, ItemResource.OPTIONAL_CODEC, this.resourceIn)
         output.putLong(HTConstants.AMOUNT, this.amountIn)
     }
 

@@ -14,7 +14,7 @@ abstract class HTBasicResourceSlot<RESOURCE : Resource>(
     private val canExtract: BiPredicate<RESOURCE, HTHandlerAccess>,
     private val filter: Predicate<RESOURCE>,
     private val listener: Runnable?,
-    emptyResource: RESOURCE,
+    private val emptyResource: RESOURCE,
 ) : SnapshotJournal<Pair<RESOURCE, Long>>(),
     HTResourceSlot<RESOURCE> {
     @JvmField
@@ -25,14 +25,17 @@ abstract class HTBasicResourceSlot<RESOURCE : Resource>(
 
     fun setContents(resource: RESOURCE, amount: Long, transaction: TransactionContext?) {
         if (resource != this.resourceIn || amount != this.amountIn) {
-            val snapshot: Pair<RESOURCE, Long> = resource to amount
+            val fixedResource: RESOURCE = when {
+                amount <= 0 -> emptyResource
+                else -> resource
+            }
             if (transaction == null) {
                 val original: Pair<RESOURCE, Long> = createSnapshot()
-                revertToSnapshot(snapshot)
+                revertToSnapshot(fixedResource to amount)
                 onRootCommit(original)
             } else {
                 updateSnapshots(transaction)
-                revertToSnapshot(snapshot)
+                revertToSnapshot(fixedResource to amount)
             }
         }
     }

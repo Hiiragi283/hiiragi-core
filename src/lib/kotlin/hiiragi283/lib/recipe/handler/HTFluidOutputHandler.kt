@@ -4,10 +4,8 @@ import hiiragi283.lib.transfer.HTHandlerAccess
 import hiiragi283.lib.transfer.HTResourceHandler
 import hiiragi283.lib.transfer.fluid.HTFluidTank
 import hiiragi283.lib.transfer.fluid.toResourcePair
-import hiiragi283.lib.transfer.useTransaction
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.transfer.fluid.FluidResource
-import net.neoforged.neoforge.transfer.transaction.Transaction
 import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
 interface HTFluidOutputHandler : HTOutputHandler<FluidStack> {
@@ -23,18 +21,18 @@ interface HTFluidOutputHandler : HTOutputHandler<FluidStack> {
     }
 
     private class Single(private val tank: HTFluidTank) : HTFluidOutputHandler {
-        override fun insert(stack: FluidStack, parent: TransactionContext?): Result<Int> = runCatching {
+        override fun insert(stack: FluidStack, transaction: TransactionContext): Result<Int> = runCatching {
             val (resource: FluidResource, amount: Int) = stack.toResourcePair()
-            useTransaction(parent) { transaction: Transaction -> tank.insert(resource, amount, transaction, HTHandlerAccess.INTERNAL) }
+            tank.insert(resource, amount, transaction, HTHandlerAccess.INTERNAL)
         }
     }
 
     private class Multiple(tanks: List<HTFluidTank>) : HTFluidOutputHandler {
         private val handler = HTResourceHandler { tanks }
 
-        override fun insert(stack: FluidStack, parent: TransactionContext?): Result<Int> = runCatching {
+        override fun insert(stack: FluidStack, transaction: TransactionContext): Result<Int> = runCatching {
             val (resource: FluidResource, amount: Int) = stack.toResourcePair()
-            useTransaction(parent) { transaction: Transaction -> handler.insert(resource, amount, transaction, HTHandlerAccess.INTERNAL) }
+            handler.insert(resource, amount, transaction, HTHandlerAccess.INTERNAL)
         }
     }
 }
