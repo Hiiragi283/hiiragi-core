@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.common.Tags
 
 class HCItemTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>, contentsGetter: CompletableFuture<TagLookup<Block>>) : HTItemTagsProvider(output, lookupProvider, contentsGetter, HiiragiCoreAPI.MOD_ID) {
-    override fun addTags(registries: HolderLookup.Provider) {
+    override fun appendTags(registries: HolderLookup.Provider) {
         copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS)
         copy(HTCommonTags.Blocks.STORAGE_BLOCKS_CHARCOAL, HTCommonTags.Items.STORAGE_BLOCKS_CHARCOAL)
         copy(HTCommonTags.Blocks.STORAGE_BLOCKS_GLOWSTONE, HTCommonTags.Items.STORAGE_BLOCKS_GLOWSTONE)

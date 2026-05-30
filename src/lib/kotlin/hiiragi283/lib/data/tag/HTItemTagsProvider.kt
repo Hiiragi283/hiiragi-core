@@ -31,7 +31,7 @@ abstract class HTItemTagsProvider : HTIdLikeTagsProvider<Item> {
     }
 
     @Suppress("DEPRECATION")
-    protected fun IdAppender<Item>.addItem(item: ItemLike): IdAppender<Item> = this.add(item.asItem().toLike())
+    protected fun IdAppender.addItem(item: ItemLike): IdAppender = this.add(item.asItem().toLike())
 
     final override fun createContentsProvider(): CompletableFuture<HolderLookup.Provider> = super.createContentsProvider().thenCombine(blockTags) { provider: HolderLookup.Provider, blockTags1: TagLookup<Block> ->
         for ((blockTag: TagKey<Block>, itemTag: TagKey<Item>) in this.tagsToCopy) {

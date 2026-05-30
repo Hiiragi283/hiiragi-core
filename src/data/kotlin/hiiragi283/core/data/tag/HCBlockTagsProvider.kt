@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.Blocks
 import net.neoforged.neoforge.common.Tags
 
 class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : HTIdLikeTagsProvider<Block>(output, Registries.BLOCK, lookupProvider, HiiragiCoreAPI.MOD_ID) {
-    override fun addTags(registries: HolderLookup.Provider) {
+    override fun appendTags(registries: HolderLookup.Provider) {
         // Material
         tags(Tags.Blocks.STORAGE_BLOCKS, HTCommonTags.Blocks.STORAGE_BLOCKS_CHARCOAL).add(HCBlocks.CHARCOAL_BLOCK)
         tags(Tags.Blocks.STORAGE_BLOCKS, HTCommonTags.Blocks.STORAGE_BLOCKS_GLOWSTONE).addBlock(Blocks.GLOWSTONE)
@@ -40,5 +40,5 @@ class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<
         }.forEach(pickaxe::add)
     }
 
-    private fun IdAppender<Block>.addBlock(block: Block): IdAppender<Block> = this.add(block.toLike())
+    private fun IdAppender.addBlock(block: Block): IdAppender = this.add(block.toLike())
 }

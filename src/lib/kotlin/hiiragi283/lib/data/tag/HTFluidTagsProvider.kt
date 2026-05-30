@@ -22,7 +22,7 @@ abstract class HTFluidTagsProvider(output: PackOutput, lookupProvider: Completab
         }
     }
 
-    protected fun IdAppender<Fluid>.addContent(content: HTFluidContent): IdAppender<Fluid> {
+    protected fun IdAppender.addContent(content: HTFluidContent): IdAppender {
         this.add(content)
         if (content is HTFluidContent.Flowing) {
             this.add(content.flowingHolder)
@@ -30,5 +30,5 @@ abstract class HTFluidTagsProvider(output: PackOutput, lookupProvider: Completab
         return this
     }
 
-    protected fun IdAppender<Fluid>.addContentTag(content: HTFluidContent): IdAppender<Fluid> = this.addTag(content.fluidTag)
+    protected fun IdAppender.addContentTag(content: HTFluidContent): IdAppender = this.addTag(content.fluidTag)
 }

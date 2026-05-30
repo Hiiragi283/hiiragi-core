@@ -10,7 +10,7 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 
 class HCFluidTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : HTFluidTagsProvider(output, lookupProvider, HiiragiCoreAPI.MOD_ID) {
-    override fun addTags(registries: HolderLookup.Provider) {
+    override fun appendTags(registries: HolderLookup.Provider) {
         addContents(HCFluids.REGISTER.asSequence())
 
         tag(HiiragiCoreTags.Fluids.ELDRITCH)

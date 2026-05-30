@@ -1,7 +1,7 @@
 {
   "values": [
-    "hiiragi_core:iron",
     "hiiragi_core:copper",
-    "hiiragi_core:gold"
+    "hiiragi_core:gold",
+    "hiiragi_core:iron"
   ]
 }

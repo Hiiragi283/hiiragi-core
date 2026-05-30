@@ -1,14 +1,14 @@
 {
   "values": [
     "hiiragi_core:charcoal_block",
-    "hiiragi_core:echo_block",
     "hiiragi_core:copper_basin",
+    "hiiragi_core:echo_block",
     "hiiragi_core:exposed_copper_basin",
-    "hiiragi_core:weathered_copper_basin",
     "hiiragi_core:oxidized_copper_basin",
     "hiiragi_core:waxed_copper_basin",
     "hiiragi_core:waxed_exposed_copper_basin",
+    "hiiragi_core:waxed_oxidized_copper_basin",
     "hiiragi_core:waxed_weathered_copper_basin",
-    "hiiragi_core:waxed_oxidized_copper_basin"
+    "hiiragi_core:weathered_copper_basin"
   ]
 }

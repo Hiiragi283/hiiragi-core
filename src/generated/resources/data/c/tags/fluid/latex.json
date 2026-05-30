@@ -1,6 +1,6 @@
 {
   "values": [
-    "hiiragi_core:latex",
-    "hiiragi_core:flowing_latex"
+    "hiiragi_core:flowing_latex",
+    "hiiragi_core:latex"
   ]
 }
