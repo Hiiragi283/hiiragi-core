@@ -59,6 +59,8 @@ data class HTWeatheringCopperBlocks<WAXED : Block, WEATHERING, ITEM : Item>(
         )
     }
 
+    val allBlocks: List<HTDeferredBlockAndItem<Block, ITEM>> get() = weathering.values + waxed.values
+
     /**
      * 指定した[WeatheringCopper.WeatherState][state]から対応する銅系ブロックを取得します。
      * @return 対応する酸化する銅系ブロックとさび止めされた銅系ブロック

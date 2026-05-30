@@ -2,6 +2,7 @@ package hiiragi283.lib.recipe.viewer.display
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
+import hiiragi283.lib.recipe.RecipeKey
 import hiiragi283.lib.recipe.base.HTProgressData
 import net.minecraft.resources.Identifier
 
@@ -18,3 +19,7 @@ class HTProgressRecipeDisplay(id: Identifier, contents: HTRecipeContents, val pr
         }
     }
 }
+
+//    Extensions    //
+
+inline fun HTProgressRecipeDisplay(key: RecipeKey, progressData: HTProgressData, builderAction: HTRecipeContents.Builder.() -> Unit): HTProgressRecipeDisplay = HTProgressRecipeDisplay(key.identifier(), HTRecipeContents.create(builderAction), progressData)

@@ -3,6 +3,7 @@ package hiiragi283.lib.recipe.viewer.display
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.HTConstants
+import hiiragi283.lib.recipe.RecipeKey
 import hiiragi283.lib.resource.HTIdLike
 import net.minecraft.resources.Identifier
 
@@ -30,4 +31,4 @@ interface HTRecipeDisplay : HTIdLike {
 //    Extensions    //
 
 @Suppress("FunctionName")
-inline fun HTRecipeDisplay(id: Identifier, builderAction: HTRecipeContents.Builder.() -> Unit): HTRecipeDisplay.Simple = HTRecipeDisplay.Simple(id, HTRecipeContents.create(builderAction))
+inline fun HTRecipeDisplay(key: RecipeKey, builderAction: HTRecipeContents.Builder.() -> Unit): HTRecipeDisplay.Simple = HTRecipeDisplay.Simple(key.identifier(), HTRecipeContents.create(builderAction))

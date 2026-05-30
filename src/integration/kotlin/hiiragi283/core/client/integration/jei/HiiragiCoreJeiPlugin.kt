@@ -2,9 +2,14 @@ package hiiragi283.core.client.integration.jei
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.client.integration.jei.category.HCBrewingRecipeCategory
+import hiiragi283.core.client.integration.jei.category.HCChargingRecipeCategory
+import hiiragi283.core.client.integration.jei.category.HCExplodingRecipeCategory
 import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
+import hiiragi283.core.common.recipe.viewer.display.HCRecipeDisplayFactories
+import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
+import hiiragi283.core.setup.HCRecipeLookups
 import hiiragi283.core.setup.HCRecipeViewerTypes
 import hiiragi283.core.util.HCPotionFluidHelper
 import hiiragi283.lib.HTPhysicalSideHelper
@@ -70,7 +75,11 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         val guiHelper: IGuiHelper = registration.jeiHelpers.guiHelper
 
         registration.addRecipeCategories(
+            // Recipes
             HCBrewingRecipeCategory(guiHelper),
+            // HCCrushingRecipeCategory(guiHelper),
+            HCChargingRecipeCategory(guiHelper),
+            HCExplodingRecipeCategory(guiHelper),
         )
     }
 
@@ -79,9 +88,20 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
 
     override fun registerRecipes(registration: IRecipeRegistration) {
         HTJeiRecipeHelper.addLookupRecipes(registration, HCRecipeViewerTypes.BREWING, HTVanillaRecipeTypes.BREWING, HCBrewingRecipe.SORTER)
+        HTJeiRecipeHelper.addDisplayRecipes(registration, HCRecipeViewerTypes.CHARGING, HCRecipeLookups.CHARGING, HCRecipeDisplayFactories::charging)
+
+        HTJeiRecipeHelper.addDisplayRecipes(registration, HCRecipeViewerTypes.EXPLODING, HCRecipeLookups.EXPLODING, HCRecipeDisplayFactories::inWorld)
     }
 
     override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {
-        HTJeiWorkstationHelper.addFromViewerType(registration, HCRecipeViewerTypes.BREWING)
+        HTJeiWorkstationHelper.addFromViewerType(
+            registration,
+            HCRecipeViewerTypes.BREWING,
+            HCRecipeViewerTypes.CHARGING,
+            // HCRecipeViewerTypes.CRUSHING,
+            HCRecipeViewerTypes.EXPLODING,
+        )
+
+        val copperBasins: List<ItemStack> = HCBlocks.COPPER_BASIN.allBlocks.map { it.toStack() }
     }
 }

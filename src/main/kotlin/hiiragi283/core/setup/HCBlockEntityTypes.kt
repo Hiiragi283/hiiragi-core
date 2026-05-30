@@ -10,9 +10,5 @@ data object HCBlockEntityTypes {
     val REGISTER = HTDeferredBlockEntityTypeRegister(HiiragiCoreAPI.MOD_ID)
 
     @JvmField
-    val COPPER_BASIN: HTDeferredBlockEntityType<HTCopperBasinBlockEntity> =
-        REGISTER.registerTick("copper_basin", ::HTCopperBasinBlockEntity) {
-            HCBlocks.COPPER_BASIN.waxed.values.map { it.get() }.let(::addAll)
-            HCBlocks.COPPER_BASIN.weathering.values.map { it.get() }.let(::addAll)
-        }
+    val COPPER_BASIN: HTDeferredBlockEntityType<HTCopperBasinBlockEntity> = REGISTER.registerTick("copper_basin", ::HTCopperBasinBlockEntity) { HCBlocks.COPPER_BASIN.allBlocks.map { it.get() }.let(::addAll) }
 }
