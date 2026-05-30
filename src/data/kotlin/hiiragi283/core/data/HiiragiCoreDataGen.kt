@@ -64,6 +64,8 @@ data object HiiragiCoreDataGen {
         event.createBlockAndItemTags(::HCBlockTagsProvider.partially1(fileHelper), ::HCItemTagsProvider.partially1(fileHelper))
 
         event.createProvider(::HCDataMapProvider)
+
+        event.createProviderWithHelper(::HCCuriosDataProvider)
         // Client
         event.createProvider(::HCEnglishLangProvider)
         event.createProvider(::HCJapaneseLangProvider)

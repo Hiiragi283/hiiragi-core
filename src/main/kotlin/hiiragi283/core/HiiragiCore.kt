@@ -8,10 +8,14 @@ import hiiragi283.core.api.mod.HTCommonMod
 import hiiragi283.core.api.network.HTPayloadHandlers
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.common.block.dispenser.HCDispenserBehaviours
+import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.data.HCServerResourceProvider
+import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
 import hiiragi283.core.common.network.HTUpdateMenuPacket
 import hiiragi283.core.common.recipe.HCRecipeLookups
+import hiiragi283.core.common.storage.fluid.HTBasicItemFluidTank
+import hiiragi283.core.common.storage.fluid.HTExperienceTomeFluidTank
 import hiiragi283.core.config.HCConfig
 import hiiragi283.core.impl.HiiragiCoreAccessImpl
 import hiiragi283.core.setup.HCAttachmentTypes
@@ -31,6 +35,7 @@ import net.mehvahdjukaar.moonlight.api.platform.RegHelper
 import net.minecraft.server.packs.PackType
 import net.minecraft.server.packs.repository.Pack
 import net.minecraft.server.packs.repository.PackSource
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ProjectileItem
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.DispenserBlock
@@ -51,13 +56,13 @@ data object HiiragiCore : HTCommonMod() {
 
         HCDataComponents.REGISTER.register(eventBus)
 
-        HCEntityTypes.register(eventBus)
+        HCEntityTypes.REGISTER.register(eventBus)
         HCFluids.register(eventBus)
         HCBlocks.register(eventBus)
         HCItems.register(eventBus)
 
         HCAttachmentTypes.REGISTER.register(eventBus)
-        HCBlockEntityTypes.register(eventBus)
+        HCBlockEntityTypes.REGISTER.register(eventBus)
         HCCreativeTabs.REGISTER.register(eventBus)
         HCMenuTypes.REGISTER.register(eventBus)
         HCRecipeSerializers.REGISTER.register(eventBus)
@@ -94,6 +99,17 @@ data object HiiragiCore : HTCommonMod() {
     private fun registerPotionHandlers() {
         // Potion Fluid
         HTPotionFluidManager.register(HCFluids.POTION.get(), HiiragiCoreAccessImpl.DEFAULT_POTION_HANDLER)
+    }
+
+    override fun registerCapabilities(helper: CapabilityHelper) {
+        // Block
+        helper.registerBlockEntity(HCBlockEntityTypes.COPPER_BASIN.get())
+
+        helper.registerBlockEntity(HCBlockEntityTypes.TEST.get())
+        // Item
+        helper.registerItem(HTFluidCapabilities, HTPotionBucketItem::BucketHandler, HCFluids.POTION.bucketHolder)
+        helper.registerItemTank({ container: ItemStack -> HTBasicItemFluidTank.create(container, 4000) }, HCItems.PAINT_BRUSH)
+        helper.registerItemTank(::HTExperienceTomeFluidTank, HCItems.EXPERIENCE_TOME)
     }
 
     override fun registerPayload(registrar: PayloadRegistrar) {

@@ -11,19 +11,15 @@ import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.storage.fluid.toStackOrEmpty
 import hiiragi283.core.api.storage.item.HTItemResourceType
-import hiiragi283.core.impl.storage.fluid.HTItemFluidHandler
-import hiiragi283.core.impl.storage.fluid.HTItemFluidTank
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.Level
 import net.neoforged.neoforge.capabilities.BlockCapability
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.capabilities.EntityCapability
 import net.neoforged.neoforge.capabilities.ItemCapability
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
 import net.neoforged.neoforge.fluids.capability.IFluidHandler
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem
 
@@ -71,14 +67,4 @@ object HTFluidCapabilities : HTMultiCapability<IFluidHandler, IFluidHandlerItem>
     fun getFirstTank(stack: ItemStack): HTFluidTank? = getCapability(stack)?.let { wrapAsTank(it, null) }
 
     fun getFirstTank(resource: HTItemResourceType?): HTFluidTank? = getCapability(resource)?.let { wrapAsTank(it, null) }
-
-    //    Register    //
-
-    fun registerItemTank(event: RegisterCapabilitiesEvent, factory: (ItemStack) -> HTItemFluidTank, vararg items: ItemLike) {
-        event.registerItem(
-            item,
-            { stack: ItemStack, _ -> HTItemFluidHandler { factory(stack) } },
-            *items,
-        )
-    }
 }

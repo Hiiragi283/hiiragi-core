@@ -79,10 +79,11 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.EXPERIENCE_TOME, "Experience Tome")
 
         add(HCItems.IRIDESCENT_POWDER, "Iridescent Powder")
-        add(HCItems.AMBROSIA, "Ambrosia")
-        add(HCItems.POTION_OF_INFINITY, "Potion of Infinity")
-        add(HCItems.ETERNAL_UPGRADE, "Eternal Smithing Template")
         add(HCItems.ALMIGHTY_PICKAXE, "Almighty Pickaxe")
+        add(HCItems.AMBROSIA, "Ambrosia")
+        add(HCItems.ETERNAL_UPGRADE, "Eternal Smithing Template")
+        add(HCItems.POTION_OF_INFINITY, "Potion of Infinity")
+        add(HCItems.RING_OF_HYPERION, "Ring of Hyperion")
         // Recipe
         add(HTVanillaRecipeTypes.SMELTING, "Smelting")
         add(HTVanillaRecipeTypes.BLASTING, "Blasting")

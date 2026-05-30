@@ -8,19 +8,10 @@ import hiiragi283.core.common.entity.HTThrownCaptureEgg
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.MobCategory
-import net.neoforged.bus.api.IEventBus
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
 
 object HCEntityTypes {
     @JvmField
     val REGISTER = HTDeferredEntityTypeRegister(HiiragiCoreAPI.MOD_ID)
-
-    @JvmStatic
-    fun register(eventBus: IEventBus) {
-        eventBus.addListener(::registerEntityCapabilities)
-
-        REGISTER.register(eventBus)
-    }
 
     @JvmField
     val BOMB: HTDeferredEntityType<HTThrownBomb> = registerThrowable("bomb", ::HTThrownBomb)
@@ -35,10 +26,4 @@ object HCEntityTypes {
             .clientTrackingRange(4)
             .updateInterval(10)
     }
-
-    //    Event    //
-
-    // Capabilities
-    @JvmStatic
-    private fun registerEntityCapabilities(event: RegisterCapabilitiesEvent) {}
 }

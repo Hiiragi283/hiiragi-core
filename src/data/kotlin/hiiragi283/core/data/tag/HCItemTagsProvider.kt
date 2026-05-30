@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.common.data.ExistingFileHelper
 import java.util.concurrent.CompletableFuture
+import top.theillusivec4.curios.api.CuriosTags
 
 class HCItemTagsProvider(
     fileHelper: ExistingFileHelper,
@@ -71,5 +72,7 @@ class HCItemTagsProvider(
             .apply(HiiragiCoreTags.Items.FORGING_HAMMERS)
             .addTag(HiiragiCoreTags.Items.HAMMERS, HTTagDependType.OPTIONAL)
             .addTag(HiiragiCoreTags.Items.TOOLS_HAMMER, HTTagDependType.OPTIONAL)
+        // Curios
+        factory.apply(CuriosTags.RING).add(HCItems.RING_OF_HYPERION)
     }
 }

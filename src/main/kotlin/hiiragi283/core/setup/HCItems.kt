@@ -4,7 +4,6 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.HTSmithingTemplateItem
 import hiiragi283.core.api.registry.HTDeferredItemRegister
 import hiiragi283.core.api.registry.HTSimpleDeferredItem
-import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.item.endgame.HTAlmightyPickaxeItem
 import hiiragi283.core.common.item.endgame.HTAmbrosiaItem
 import hiiragi283.core.common.item.endgame.HTCreativeItem
@@ -15,19 +14,18 @@ import hiiragi283.core.common.item.HTCaptureEggItem
 import hiiragi283.core.common.item.HTEternalUpgradeItem
 import hiiragi283.core.common.item.HTExperienceTomeItem
 import hiiragi283.core.common.item.HTPaintBrushItem
-import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.common.item.HTTraderCatalogItem
-import hiiragi283.core.common.storage.fluid.HTBasicItemFluidTank
-import hiiragi283.core.common.storage.fluid.HTExperienceTomeFluidTank
 import hiiragi283.core.common.text.HCTranslation
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
+import net.minecraft.world.entity.EquipmentSlotGroup
+import net.minecraft.world.entity.ai.attributes.AttributeModifier
 import net.minecraft.world.food.FoodConstants
 import net.minecraft.world.food.FoodProperties
-import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.component.ItemAttributeModifiers
 import net.minecraft.world.level.ItemLike
 import net.neoforged.bus.api.IEventBus
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
+import net.neoforged.neoforge.common.NeoForgeMod
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent
 
 object HCItems {
@@ -45,7 +43,6 @@ object HCItems {
         REGISTER.register(eventBus)
 
         eventBus.addListener(::modifyComponents)
-        eventBus.addListener(::registerCapabilities)
     }
 
     //    Materials   //
@@ -147,6 +144,9 @@ object HCItems {
     val IRIDESCENT_POWDER: HTSimpleDeferredItem = REGISTER.registerItem("iridescent_powder", ::HTCreativeItem)
 
     @JvmField
+    val ALMIGHTY_PICKAXE: HTSimpleDeferredItem = REGISTER.registerItem("almighty_pickaxe", ::HTAlmightyPickaxeItem)
+
+    @JvmField
     val AMBROSIA: HTSimpleDeferredItem = REGISTER.registerItem("ambrosia", ::HTAmbrosiaItem) {
         it
             .food(
@@ -160,13 +160,27 @@ object HCItems {
     }
 
     @JvmField
-    val POTION_OF_INFINITY: HTSimpleDeferredItem = REGISTER.registerItem("potion_of_infinity", ::HTInfinitePotionItem)
-
-    @JvmField
     val ETERNAL_UPGRADE: HTSimpleDeferredItem = REGISTER.registerItem("eternal_upgrade", ::HTEternalUpgradeItem)
 
     @JvmField
-    val ALMIGHTY_PICKAXE: HTSimpleDeferredItem = REGISTER.registerItem("almighty_pickaxe", ::HTAlmightyPickaxeItem)
+    val POTION_OF_INFINITY: HTSimpleDeferredItem = REGISTER.registerItem("potion_of_infinity", ::HTInfinitePotionItem)
+
+    @JvmField
+    val RING_OF_HYPERION: HTSimpleDeferredItem = REGISTER.registerItem("ring_of_hyperion", ::HTCreativeItem) {
+        it.attributes(
+            ItemAttributeModifiers.builder()
+                .add(
+                    NeoForgeMod.CREATIVE_FLIGHT,
+                    AttributeModifier(
+                        HiiragiCoreAPI.id(""),
+                        1.0,
+                        AttributeModifier.Operation.ADD_VALUE,
+                    ),
+                    EquipmentSlotGroup.OFFHAND,
+                )
+                .build(),
+        )
+    }
 
     //    Event    //
 
@@ -186,17 +200,5 @@ object HCItems {
         modify(IRIDESCENT_POWDER, HCDataComponents.DESCRIPTION, HCTranslation.IRIDESCENT_POWDER)
         modify(SLOT_COVER, HCDataComponents.DESCRIPTION, HCTranslation.SLOT_COVER)
         modify(TRADER_CATALOG, HCDataComponents.DESCRIPTION, HCTranslation.TRADER_CATALOG)
-    }
-
-    @JvmStatic
-    private fun registerCapabilities(event: RegisterCapabilitiesEvent) {
-        HTFluidCapabilities.registerItem(event, HTPotionBucketItem::BucketHandler, HCFluids.POTION.bucketHolder.get())
-
-        HTFluidCapabilities.registerItemTank(
-            event,
-            { container: ItemStack -> HTBasicItemFluidTank.create(container, 4000) },
-            PAINT_BRUSH,
-        )
-        HTFluidCapabilities.registerItemTank(event, ::HTExperienceTomeFluidTank, EXPERIENCE_TOME)
     }
 }

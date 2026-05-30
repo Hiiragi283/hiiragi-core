@@ -79,11 +79,11 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.EXPERIENCE_TOME, "経験の書")
 
         add(HCItems.IRIDESCENT_POWDER, "七色の粉")
-        add(HCItems.AMBROSIA, "アンブロシア")
-        add(HCItems.POTION_OF_INFINITY, "無限のポーション")
-        add(HCItems.ETERNAL_UPGRADE, "永遠の鍛冶型")
         add(HCItems.ALMIGHTY_PICKAXE, "全能なるツルハシ")
-
+        add(HCItems.AMBROSIA, "アンブロシア")
+        add(HCItems.ETERNAL_UPGRADE, "永遠の鍛冶型")
+        add(HCItems.POTION_OF_INFINITY, "無限のポーション")
+        add(HCItems.RING_OF_HYPERION, "ハイペリオンの指輪")
         // Recipe
         add(HTVanillaRecipeTypes.SMELTING, "かまど")
         add(HTVanillaRecipeTypes.BLASTING, "溶鉱炉")

@@ -331,6 +331,17 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
         }
         save(id(HTConst.SHAPELESS, "experience_tome"), HCExperienceStoringRecipe(CraftingBookCategory.MISC))
 
+        // Almighty Pickaxe
+        HTShapelessRecipeBuilder.create(output) {
+            ingredients += itemCreator.create(Items.NETHERITE_SHOVEL)
+            ingredients += itemCreator.create(Items.NETHERITE_PICKAXE)
+            ingredients += itemCreator.create(Items.NETHERITE_AXE)
+            ingredients += itemCreator.create(Items.NETHERITE_HOE)
+            repeat(4) {
+                ingredients += itemCreator.create(CommonTagPrefixes.INGOT, CommonMaterialKeys.IRIDIUM)
+            }
+            resultStack = HCItems.ALMIGHTY_PICKAXE.toStack()
+        }
         // Eternal Upgrade
         HTShapedRecipeBuilder.create(output) {
             pattern(
@@ -344,16 +355,13 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             resultStack = HCItems.ETERNAL_UPGRADE.toStack(2)
         }
         save(id(HTConst.SMITHING, "eternal_upgrade"), HCEternalSmithingRecipe)
-        // Almighty Pickaxe
-        HTShapelessRecipeBuilder.create(output) {
-            ingredients += itemCreator.create(Items.NETHERITE_SHOVEL)
-            ingredients += itemCreator.create(Items.NETHERITE_PICKAXE)
-            ingredients += itemCreator.create(Items.NETHERITE_AXE)
-            ingredients += itemCreator.create(Items.NETHERITE_HOE)
-            repeat(4) {
-                ingredients += itemCreator.create(CommonTagPrefixes.INGOT, CommonMaterialKeys.IRIDIUM)
-            }
-            resultStack = HCItems.ALMIGHTY_PICKAXE.toStack()
+        // Ring of Hyperion
+        HTShapedRecipeBuilder.create(output) {
+            cross8()
+            define('A') { itemCreator.create(Items.WIND_CHARGE) }
+            define('B') { itemCreator.create(Items.ELYTRA) }
+            define('C') { itemCreator.create(HCItems.IRIDESCENT_POWDER) }
+            resultStack = HCItems.RING_OF_HYPERION.toStack()
         }
     }
 
