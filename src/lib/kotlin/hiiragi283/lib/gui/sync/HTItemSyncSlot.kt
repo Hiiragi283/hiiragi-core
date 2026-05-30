@@ -3,12 +3,12 @@ package hiiragi283.lib.gui.sync
 import hiiragi283.lib.transfer.item.ItemResourceHandler
 import hiiragi283.lib.transfer.item.getItemStack
 import hiiragi283.lib.transfer.item.toResourcePair
-import net.minecraft.core.RegistryAccess
-import net.minecraft.world.item.ItemStack
 import java.util.function.Consumer
 import java.util.function.Supplier
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
+import net.minecraft.core.RegistryAccess
+import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.transfer.IndexModifier
 import net.neoforged.neoforge.transfer.item.ItemResource
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler

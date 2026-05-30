@@ -5,8 +5,8 @@ import hiiragi283.core.common.fluid.HTDragonBreathFluidType
 import hiiragi283.core.common.fluid.HTDyedFluidType
 import hiiragi283.core.common.fluid.HTPotionFluidType
 import hiiragi283.core.common.item.HTPotionBucketItem
-import hiiragi283.lib.color.HTColoredContents
 import hiiragi283.lib.HTConstants
+import hiiragi283.lib.color.HTColoredContents
 import hiiragi283.lib.color.HTDefaultColor
 import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.registry.HTFluidContentRegister

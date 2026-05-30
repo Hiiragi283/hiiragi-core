@@ -2,6 +2,7 @@ package hiiragi283.core.common
 
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.lib.HTPlatform
+import hiiragi283.lib.data.buildDataPatch
 import hiiragi283.lib.item.alchemy.BottledPotionContents
 import hiiragi283.lib.item.alchemy.HTBottleType
 import hiiragi283.lib.item.alchemy.HTPotionFluidManager
@@ -13,14 +14,14 @@ import net.minecraft.core.Holder
 import net.minecraft.core.TypedInstance
 import net.minecraft.core.component.DataComponentGetter
 import net.minecraft.core.component.DataComponentMap
+import net.minecraft.core.component.DataComponentPatch
+import net.minecraft.core.component.DataComponents
 import net.minecraft.world.item.Item
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.MutableDataComponentHolder
 import net.neoforged.neoforge.common.Tags
-import net.neoforged.neoforge.fluids.FluidStack
 
 class HTPlatformImpl : HTPlatform() {
     companion object {
@@ -47,6 +48,10 @@ class HTPlatformImpl : HTPlatform() {
             override fun set(builder: DataComponentMap.Builder, bottleType: HTBottleType) {
                 builder.set(HCDataComponents.BOTTLE_TYPE, bottleType)
             }
+
+            override fun set(builder: DataComponentPatch.Builder, bottleType: HTBottleType) {
+                builder.set(HCDataComponents.BOTTLE_TYPE, bottleType)
+            }
         }
     }
 
@@ -66,15 +71,15 @@ class HTPlatformImpl : HTPlatform() {
         return BottledPotionContents(contents, bottleType)
     }
 
-    override fun setContents(stack: FluidStack, contents: BottledPotionContents) {
-        HTPotionHelper.setPotion(stack, contents.contents)
-        val handler: HTPotionFluidManager.Handler = HTPotionFluidManager.getFluidHandler(stack.typeHolder().value()) ?: DEFAULT_POTION_HANDLER
-        handler[stack] = contents.bottleType
+    override fun createFluidPatch(fluid: Fluid, contents: BottledPotionContents): DataComponentPatch = buildDataPatch {
+        set(DataComponents.POTION_CONTENTS, contents.contents)
+        val handler: HTPotionFluidManager.Handler = HTPotionFluidManager.getFluidHandler(fluid) ?: DEFAULT_POTION_HANDLER
+        handler[this] = contents.bottleType
     }
 
-    override fun setContents(stack: ItemStack, contents: BottledPotionContents) {
-        HTPotionHelper.setPotion(stack, contents.contents)
-        DEFAULT_POTION_HANDLER[stack] = contents.bottleType
+    override fun createItemPatch(contents: BottledPotionContents): DataComponentPatch = buildDataPatch {
+        set(DataComponents.POTION_CONTENTS, contents.contents)
+        DEFAULT_POTION_HANDLER[this] = contents.bottleType
     }
 
     override fun <T : Any> getFirstHolder(holders: Iterable<Holder<T>>): SupplierWithId<T> = holders.asSequence().map(Holder<T>::toLike).sortedWith(modIdComparator).first()

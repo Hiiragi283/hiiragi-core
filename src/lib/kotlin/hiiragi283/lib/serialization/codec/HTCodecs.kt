@@ -13,6 +13,11 @@ import hiiragi283.lib.util.Option
 import hiiragi283.lib.util.kotlin
 import hiiragi283.lib.util.none
 import hiiragi283.lib.util.some
+import java.util.UUID
+import java.util.function.Function
+import kotlin.Int
+import kotlin.String
+import kotlin.enums.enumEntries
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.core.RegistryCodecs
@@ -22,11 +27,6 @@ import net.minecraft.resources.RegistryFixedCodec
 import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
 import net.minecraft.util.ExtraCodecs
-import java.util.UUID
-import java.util.function.Function
-import kotlin.Int
-import kotlin.String
-import kotlin.enums.enumEntries
 import org.apache.commons.lang3.math.Fraction
 
 /**

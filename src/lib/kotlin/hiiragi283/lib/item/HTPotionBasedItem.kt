@@ -27,7 +27,8 @@ open class HTPotionBasedItem(properties: Properties) :
             .filterFeatures(context.enabledFeatures)
             .listElements()
             .map(::BottledPotionContents)
-            .map { HTPotionHelper.setContents(ItemStack(baseItem), it) }
+            .map(HTPotionHelper::createItemPatch)
+            .map { ItemStack(baseItem, 1, it) }
             .forEach(context)
     }
 

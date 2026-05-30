@@ -16,16 +16,16 @@ import hiiragi283.lib.util.Option
 import hiiragi283.lib.util.none
 import hiiragi283.lib.util.some
 import hiiragi283.lib.util.unwrap
+import net.minecraft.client.Minecraft
 import net.minecraft.core.component.DataComponents
+import net.minecraft.util.context.ContextMap
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.crafting.Ingredient
-import net.neoforged.neoforge.fluids.FluidStack
-import net.neoforged.neoforge.fluids.crafting.FluidIngredient
-import net.minecraft.client.Minecraft
-import net.minecraft.util.context.ContextMap
 import net.minecraft.world.item.crafting.display.SlotDisplayContext
+import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidType
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import net.neoforged.neoforge.fluids.crafting.display.FluidStackContentsFactory
 
 @JvmRecord

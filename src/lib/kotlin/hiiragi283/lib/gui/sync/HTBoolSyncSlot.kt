@@ -1,9 +1,9 @@
 package hiiragi283.lib.gui.sync
 
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer
-import net.minecraft.core.RegistryAccess
 import java.util.function.BooleanSupplier
 import kotlin.reflect.KMutableProperty0
+import net.minecraft.core.RegistryAccess
 
 /**
  * [Boolean]向けの[HTSyncableSlot]の拡張インターフェースです。

@@ -6,6 +6,7 @@ import hiiragi283.lib.text.Text
 import hiiragi283.lib.util.Ior
 import hiiragi283.lib.util.identity
 import io.netty.buffer.ByteBuf
+import java.util.UUID
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.core.UUIDUtil
@@ -13,11 +14,10 @@ import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.chat.ComponentSerialization
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
+import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
 import net.minecraft.util.ByIdMap
-import java.util.UUID
-import net.minecraft.resources.Identifier
 import org.apache.commons.lang3.math.Fraction
 
 /**

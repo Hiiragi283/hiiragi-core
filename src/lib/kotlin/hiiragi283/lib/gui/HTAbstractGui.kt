@@ -1,6 +1,5 @@
 package hiiragi283.lib.gui
 
-import net.minecraft.client.gui.components.events.ContainerEventHandler
 import net.minecraft.world.item.ItemStack
 
 /**
@@ -8,7 +7,7 @@ import net.minecraft.world.item.ItemStack
  * @author Hiiragi Tsubasa
  * @since 0.11.0
  */
-interface HTAbstractGui : ContainerEventHandler {
+interface HTAbstractGui {
     /**
      * カーソル上の[アイテム][ItemStack]を取得します。
      */

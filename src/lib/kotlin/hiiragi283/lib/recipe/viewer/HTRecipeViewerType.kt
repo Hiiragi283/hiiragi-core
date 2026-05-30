@@ -19,7 +19,7 @@ typealias HTHolderRecipeViewerType<RECIPE> = HTRecipeViewerType<HTRecipeHolder<R
  * @author Hiiragi Tsubasa
  * @since 0.11.0
  */
-interface HTRecipeViewerType<RECIPE : Any> :
+interface HTRecipeViewerType<out RECIPE : Any> :
     HTHasText,
     HTIdLike {
     val recipeClass: Class<out RECIPE>

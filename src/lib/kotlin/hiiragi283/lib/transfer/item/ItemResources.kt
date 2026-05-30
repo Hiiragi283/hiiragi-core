@@ -21,4 +21,6 @@ fun ItemResourceHandler.getItemStack(index: Int): ItemStack = this.getResource(i
 
 typealias HTItemView = HTResourceView<ItemResource>
 
+fun HTItemView.getItemStack(): ItemStack = this.resource.toStack(this.amountAsInt)
+
 typealias HTItemSlot = HTResourceSlot<ItemResource>

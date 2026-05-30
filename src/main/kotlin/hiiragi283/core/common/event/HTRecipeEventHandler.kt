@@ -1,8 +1,8 @@
 package hiiragi283.core.common.event
 
 import hiiragi283.core.common.recipe.HCExplodingRecipe
-import hiiragi283.core.setup.HCAttachmentTypes
 import hiiragi283.core.common.world.HCInWorldRecipeCaches
+import hiiragi283.core.setup.HCAttachmentTypes
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.entity.serverLevel

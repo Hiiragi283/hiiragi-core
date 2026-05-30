@@ -5,15 +5,34 @@ import hiiragi283.lib.util.Ior
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
 
+@ConsistentCopyVisibility
 @JvmRecord
-data class HTItemAndFluidResult(val item: ItemStack, val fluid: FluidStack) {
-    constructor(item: ItemStack) : this(item, FluidStack.EMPTY)
+data class HTItemAndFluidResult private constructor(val item: ItemStack, val fluid: FluidStack) {
+    companion object {
+        @JvmField
+        val EMPTY = HTItemAndFluidResult(ItemStack.EMPTY, FluidStack.EMPTY)
 
-    constructor(fluid: FluidStack) : this(ItemStack.EMPTY, fluid)
+        @JvmStatic
+        fun create(item: ItemStack, fluid: FluidStack): HTItemAndFluidResult = when {
+            item.isEmpty && fluid.isEmpty -> EMPTY
+            else -> HTItemAndFluidResult(item, fluid)
+        }
 
-    constructor(pair: Pair<ItemStack, FluidStack>) : this(pair.first, pair.second)
+        @JvmStatic
+        fun create(item: ItemStack): HTItemAndFluidResult = create(item, FluidStack.EMPTY)
 
-    constructor(either: Either<ItemStack, FluidStack>) : this(either.leftOrNull() ?: ItemStack.EMPTY, either.getOrNull() ?: FluidStack.EMPTY)
+        @JvmStatic
+        fun create(fluid: FluidStack): HTItemAndFluidResult = create(ItemStack.EMPTY, fluid)
 
-    constructor(ior: Ior<ItemStack, FluidStack>) : this(ior.getLeft() ?: ItemStack.EMPTY, ior.getRight() ?: FluidStack.EMPTY)
+        @JvmStatic
+        fun create(pair: Pair<ItemStack, FluidStack>): HTItemAndFluidResult = create(pair.first, pair.second)
+
+        @JvmStatic
+        fun create(either: Either<ItemStack, FluidStack>): HTItemAndFluidResult = either.fold(::create, ::create)
+
+        @JvmStatic
+        fun create(ior: Ior<ItemStack, FluidStack>): HTItemAndFluidResult = ior.fold(::create, ::create, ::create)
+    }
+
+    fun isEmpty(): Boolean = this == EMPTY || item.isEmpty && fluid.isEmpty
 }

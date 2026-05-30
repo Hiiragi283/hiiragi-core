@@ -14,14 +14,12 @@ import hiiragi283.lib.recipe.result.HTItemAndFluidResult
 import hiiragi283.lib.recipe.result.HTItemResult
 import hiiragi283.lib.serialization.codec.convert
 import hiiragi283.lib.util.Option
-import hiiragi283.lib.util.getOrElse
-import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.ItemInstance
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.neoforged.neoforge.fluids.FluidStack
-import net.minecraft.world.item.ItemInstance
 
 class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidResult, val itemResult: Option<HTItemResult>) :
     HTTankEmptyingRecipe,
@@ -44,8 +42,10 @@ class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidR
 
     override fun assemble(input: ItemInstance): HTItemAndFluidResult {
         val fluidStack: FluidStack = fluidResult.create()
-        val itemStack: ItemStack = itemResult.map(HTItemResult::createOrEmpty).getOrElse(ItemStack::EMPTY)
-        return HTItemAndFluidResult(itemStack, fluidStack)
+        return itemResult.map(HTItemResult::createOrEmpty).fold(
+            { HTItemAndFluidResult.create(fluidStack) },
+            { HTItemAndFluidResult.create(it, fluidStack) },
+        )
     }
 
     override fun getSerializer(): RecipeSerializer<HCTankEmptyingRecipe> = HCRecipeSerializers.EMPTYING

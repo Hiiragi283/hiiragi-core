@@ -2,6 +2,8 @@ package hiiragi283.lib.mod
 
 import hiiragi283.lib.event.HTRegisterWidgetRendererEvent
 import hiiragi283.lib.fluid.HTFluidModelRegister
+import net.minecraft.client.color.block.BlockTintSources
+import net.minecraft.client.color.item.ItemTintSource
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.neoforged.bus.api.IEventBus
@@ -9,15 +11,13 @@ import net.neoforged.fml.ModContainer
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.neoforge.client.event.EntityRenderersEvent
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent
+import net.neoforged.neoforge.client.event.RegisterFluidModelsEvent
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent
 import net.neoforged.neoforge.client.gui.ConfigurationScreen
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory
 import thedarkcolour.kotlinforforge.neoforge.forge.LOADING_CONTEXT
-import net.minecraft.client.color.item.ItemTintSource
 import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
-import net.minecraft.client.color.block.BlockTintSources
-import net.neoforged.neoforge.client.event.RegisterFluidModelsEvent
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される，クライアント側のmodの抽象クラスです。

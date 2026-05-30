@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.text.HTHasText
 import hiiragi283.lib.text.Text
+import kotlin.jvm.optionals.getOrNull
 import net.minecraft.core.Holder
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
@@ -11,7 +12,6 @@ import net.minecraft.world.effect.MobEffectInstance
 import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.alchemy.Potions
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * [PotionContents]と[HTBottleType]を束ねたクラスです。

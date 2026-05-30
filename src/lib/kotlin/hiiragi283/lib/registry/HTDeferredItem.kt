@@ -3,6 +3,7 @@ package hiiragi283.lib.registry
 import hiiragi283.lib.item.createItemTemplate
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.text.Text
+import hiiragi283.lib.util.HTTextResult
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.Identifier
@@ -28,7 +29,7 @@ class HTDeferredItem<out ITEM : Item> :
 
     override fun asItem(): ITEM = get()
 
-    fun toTemplate(count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): Result<ItemStackTemplate> = createItemTemplate(this, count, patch)
+    fun toTemplate(count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): HTTextResult<ItemStackTemplate> = createItemTemplate(this, count, patch)
 
     fun toStack(count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStack = ItemStack(this, count, patch)
 }

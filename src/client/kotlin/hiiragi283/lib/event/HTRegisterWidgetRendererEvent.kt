@@ -1,8 +1,8 @@
 package hiiragi283.lib.event
 
 import hiiragi283.lib.HTRegistries
-import hiiragi283.lib.gui.widget.HTWidgetRendererFactory
 import hiiragi283.lib.gui.widget.HTWidget
+import hiiragi283.lib.gui.widget.HTWidgetRendererFactory
 import hiiragi283.lib.gui.widget.HTWidgetType
 import net.minecraft.client.gui.components.Renderable
 import net.neoforged.bus.api.Event

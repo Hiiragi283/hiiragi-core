@@ -2,22 +2,24 @@ package hiiragi283.lib.item.alchemy
 
 import hiiragi283.lib.HTPlatform
 import hiiragi283.lib.item.createItemTemplate
+import hiiragi283.lib.util.HTTextResult
+import hiiragi283.lib.util.getOrThrow
+import kotlin.jvm.optionals.getOrNull
 import net.minecraft.core.Holder
+import net.minecraft.core.TypedInstance
+import net.minecraft.core.component.DataComponentGetter
+import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponents
+import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.level.ItemLike
-import net.neoforged.neoforge.common.MutableDataComponentHolder
-import net.neoforged.neoforge.fluids.FluidStack
-import kotlin.jvm.optionals.getOrNull
-import net.minecraft.core.TypedInstance
-import net.minecraft.core.component.DataComponentGetter
-import net.minecraft.resources.Identifier
-import net.minecraft.world.item.Item
-import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.level.material.Fluid
+import net.neoforged.neoforge.common.MutableDataComponentHolder
 
 /**
  * @author Hiiragi Tsubasa
@@ -70,7 +72,7 @@ data object HTPotionHelper {
      * @param count [ItemStack]の個数
      */
     @JvmStatic
-    fun createPotion(item: ItemLike, potion: Holder<Potion>, count: Int = 1): Result<ItemStackTemplate> = createPotion(item, PotionContents(potion), count)
+    fun createPotion(item: ItemLike, potion: Holder<Potion>, count: Int = 1): HTTextResult<ItemStackTemplate> = createPotion(item, PotionContents(potion), count)
 
     /**
      * 指定した引数からポーションの[ItemStack]を作成します。
@@ -79,7 +81,7 @@ data object HTPotionHelper {
      * @param count [ItemStack]の個数
      */
     @JvmStatic
-    fun createPotion(item: ItemLike, contents: PotionContents, count: Int = 1): Result<ItemStackTemplate> = createItemTemplate(item, DataComponents.POTION_CONTENTS, contents, count)
+    fun createPotion(item: ItemLike, contents: PotionContents, count: Int = 1): HTTextResult<ItemStackTemplate> = createItemTemplate(item, DataComponents.POTION_CONTENTS, contents, count)
 
     /**
      * 指定した[instance]から[BottledPotionContents]を取得します。
@@ -102,15 +104,8 @@ data object HTPotionHelper {
         return BottledPotionContents(contents, bottleType)
     }
 
-    /**
-     * 指定した[stack]に[contents]を設定します。
-     * @since 0.14.0
-     */
     @JvmStatic
-    fun setContents(stack: ItemStack, contents: BottledPotionContents): ItemStack {
-        HTPlatform.INSTANCE.setContents(stack, contents)
-        return stack
-    }
+    fun createItemPatch(contents: BottledPotionContents): DataComponentPatch = HTPlatform.INSTANCE.createItemPatch(contents)
 
     //    FluidStack    //
 
@@ -123,13 +118,9 @@ data object HTPotionHelper {
     @JvmStatic
     fun <T> getContents(instance: T): BottledPotionContents? where T : TypedInstance<Fluid>, T : DataComponentGetter = HTPlatform.INSTANCE.getContentsFromFluid(instance)
 
-    /**
-     * 指定した[stack]に[contents]を設定します。
-     * @since 0.11.0
-     */
     @JvmStatic
-    fun setContents(stack: FluidStack, contents: BottledPotionContents): FluidStack {
-        HTPlatform.INSTANCE.setContents(stack, contents)
-        return stack
-    }
+    fun <T> createFluidPatch(instance: T, contents: BottledPotionContents): DataComponentPatch where T : TypedInstance<Fluid>, T : DataComponentGetter = HTPlatform.INSTANCE.createFluidPatch(instance.typeHolder().value(), contents)
+
+    @JvmStatic
+    fun createFluidPatch(fluid: Fluid, contents: BottledPotionContents): DataComponentPatch = HTPlatform.INSTANCE.createFluidPatch(fluid, contents)
 }

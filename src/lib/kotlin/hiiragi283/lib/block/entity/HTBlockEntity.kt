@@ -2,7 +2,6 @@ package hiiragi283.lib.block.entity
 
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.serialization.readOption
-import hiiragi283.lib.world.HTItemDropHelper
 import hiiragi283.lib.text.Text
 import hiiragi283.lib.transfer.HTHandlerProvider
 import hiiragi283.lib.transfer.fluid.FluidResourceHandler
@@ -12,6 +11,7 @@ import hiiragi283.lib.transfer.indices
 import hiiragi283.lib.transfer.item.HTItemSlot
 import hiiragi283.lib.transfer.item.ItemResourceHandler
 import hiiragi283.lib.transfer.resolver.HTResourceCapabilityManager
+import hiiragi283.lib.world.HTItemDropHelper
 import java.util.UUID
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction

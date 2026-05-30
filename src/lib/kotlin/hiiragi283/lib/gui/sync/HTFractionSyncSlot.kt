@@ -1,10 +1,10 @@
 package hiiragi283.lib.gui.sync
 
-import net.minecraft.core.RegistryAccess
-import org.apache.commons.lang3.math.Fraction
 import java.util.function.Consumer
 import java.util.function.Supplier
 import kotlin.reflect.KMutableProperty0
+import net.minecraft.core.RegistryAccess
+import org.apache.commons.lang3.math.Fraction
 
 /**
  * [Fraction]向けの[HTSyncableSlot]の拡張インターフェースです。

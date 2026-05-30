@@ -4,6 +4,7 @@ import hiiragi283.lib.item.createItemTemplate
 import hiiragi283.lib.recipe.result.HTFluidResult
 import hiiragi283.lib.recipe.result.HTItemResult
 import hiiragi283.lib.registry.HTFluidContent
+import hiiragi283.lib.util.getOrThrow
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStackTemplate

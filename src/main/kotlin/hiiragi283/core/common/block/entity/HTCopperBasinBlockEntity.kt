@@ -12,6 +12,7 @@ import hiiragi283.lib.recipe.handler.HTFluidInputHandler
 import hiiragi283.lib.recipe.handler.HTFluidOutputHandler
 import hiiragi283.lib.transfer.fluid.HTBasicFluidTank
 import hiiragi283.lib.transfer.fluid.HTFluidTank
+import hiiragi283.lib.transfer.fluid.getFluidStack
 import hiiragi283.lib.transfer.holder.HTResourceSlotHolder
 import hiiragi283.lib.transfer.useTransaction
 import hiiragi283.lib.world.HTItemDropHelper
@@ -68,7 +69,7 @@ class HTCopperBasinBlockEntity(worldPosition: BlockPos, blockState: BlockState) 
 
     fun fillContainer(player: Player, hand: InteractionHand): Boolean {
         val itemStack: ItemStack = player.getItemInHand(hand)
-        val fluidStack: FluidStack = fluidInputHandler.getStack()
+        val fluidStack: FluidStack = fluidInputHandler.getFluidStack()
         val level: ServerLevel = player.serverLevel() ?: return false
         val recipe: HTTankFillingRecipe = fillingCache.findFirstRecipe(itemStack, fluidStack, level) ?: return false
 

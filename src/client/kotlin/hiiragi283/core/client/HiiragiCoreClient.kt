@@ -4,9 +4,9 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.color.HTDefaultColor
-import hiiragi283.lib.mod.HTClientMod
 import hiiragi283.lib.fluid.HTFluidModelRegister
 import hiiragi283.lib.item.alchemy.HTPotionHelper
+import hiiragi283.lib.mod.HTClientMod
 import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.resource.vanillaId
 import java.awt.Color

@@ -12,12 +12,12 @@ import net.minecraft.core.RegistryAccess
 import net.minecraft.world.flag.FeatureElement
 import net.minecraft.world.flag.FeatureFlagSet
 import net.minecraft.world.flag.FeatureFlags
-import net.neoforged.neoforge.server.ServerLifecycleHooks
-import thedarkcolour.kotlinforforge.neoforge.forge.runForDist
 import net.minecraft.world.item.crafting.RecipeMap
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.client.event.RecipesReceivedEvent
+import net.neoforged.neoforge.server.ServerLifecycleHooks
+import thedarkcolour.kotlinforforge.neoforge.forge.runForDist
 
 /**
  * @author Hiiragi Tsubasa

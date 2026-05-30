@@ -8,6 +8,7 @@ import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.material.HTMaterialRawEntry
 import hiiragi283.lib.registry.HTDeferredMaterialContents
 import hiiragi283.lib.resource.HTIdLike
+import hiiragi283.lib.util.getOrThrow
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput

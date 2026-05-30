@@ -1,12 +1,6 @@
 package hiiragi283.lib
 
 import hiiragi283.lib.item.alchemy.BottledPotionContents
-import java.util.ServiceLoader
-import net.minecraft.core.TypedInstance
-import net.minecraft.world.item.Item
-import net.minecraft.world.item.ItemStack
-import net.minecraft.world.level.material.Fluid
-import net.neoforged.neoforge.fluids.FluidStack
 import hiiragi283.lib.item.alchemy.HTPotionHelper
 import hiiragi283.lib.registry.getResult
 import hiiragi283.lib.registry.lookupResult
@@ -14,10 +8,15 @@ import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.util.HTTextResult
 import hiiragi283.lib.util.flatMap
 import hiiragi283.lib.util.right
+import java.util.ServiceLoader
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
+import net.minecraft.core.TypedInstance
 import net.minecraft.core.component.DataComponentGetter
+import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
+import net.minecraft.world.level.material.Fluid
 
 abstract class HTPlatform {
     companion object {
@@ -37,14 +36,9 @@ abstract class HTPlatform {
 
     abstract fun <T> getContentsFromFluid(instance: T): BottledPotionContents? where T : TypedInstance<Fluid>, T : DataComponentGetter
 
-    /**
-     * 指定した[stack]に[BottledPotionContents]を設定します。
-     * @since 0.11.0
-     * @see HTPotionHelper.setContents
-     */
-    abstract fun setContents(stack: FluidStack, contents: BottledPotionContents)
+    abstract fun createFluidPatch(fluid: Fluid, contents: BottledPotionContents): DataComponentPatch
 
-    abstract fun setContents(stack: ItemStack, contents: BottledPotionContents)
+    abstract fun createItemPatch(contents: BottledPotionContents): DataComponentPatch
 
     //    Tag    //
 

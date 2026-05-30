@@ -3,12 +3,12 @@ package hiiragi283.lib.gui.sync
 import hiiragi283.lib.transfer.fluid.FluidResourceHandler
 import hiiragi283.lib.transfer.fluid.getFluidStack
 import hiiragi283.lib.transfer.fluid.toResourcePair
-import net.minecraft.core.RegistryAccess
-import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.Consumer
 import java.util.function.Supplier
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
+import net.minecraft.core.RegistryAccess
+import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.transfer.IndexModifier
 import net.neoforged.neoforge.transfer.fluid.FluidResource
 

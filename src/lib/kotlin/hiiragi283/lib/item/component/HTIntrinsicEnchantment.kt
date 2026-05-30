@@ -11,9 +11,11 @@ import hiiragi283.lib.text.Text
 import hiiragi283.lib.util.ErrorText
 import hiiragi283.lib.util.HTTextResult
 import io.netty.buffer.ByteBuf
+import java.util.function.Consumer
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderGetter
 import net.minecraft.core.HolderLookup
+import net.minecraft.core.component.DataComponentGetter
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
@@ -22,8 +24,6 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.item.component.TooltipProvider
 import net.minecraft.world.item.enchantment.Enchantment
-import java.util.function.Consumer
-import net.minecraft.core.component.DataComponentGetter
 
 @JvmRecord
 data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: Int) : TooltipProvider {

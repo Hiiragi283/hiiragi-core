@@ -3,6 +3,7 @@ package hiiragi283.lib.registry
 import hiiragi283.lib.fluid.createFluidStack
 import hiiragi283.lib.fluid.createFluidTemplate
 import hiiragi283.lib.resource.SupplierWithId
+import hiiragi283.lib.util.HTTextResult
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -27,7 +28,7 @@ sealed class HTFluidContent(
 ) : SupplierWithId<Fluid> by sourceHolder {
     fun getFluidType(): FluidType = typeHolder.get()
 
-    fun toTemplate(amount: Int = FluidType.BUCKET_VOLUME, patch: DataComponentPatch = DataComponentPatch.EMPTY): Result<FluidStackTemplate> = createFluidTemplate(this.get(), amount, patch)
+    fun toTemplate(amount: Int = FluidType.BUCKET_VOLUME, patch: DataComponentPatch = DataComponentPatch.EMPTY): HTTextResult<FluidStackTemplate> = createFluidTemplate(this.get(), amount, patch)
 
     fun toStack(amount: Int = FluidType.BUCKET_VOLUME, patch: DataComponentPatch = DataComponentPatch.EMPTY): FluidStack = createFluidStack(this.get(), amount, patch)
 

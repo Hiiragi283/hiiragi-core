@@ -2,6 +2,7 @@ package hiiragi283.lib.item.alchemy
 
 import net.minecraft.core.component.DataComponentGetter
 import net.minecraft.core.component.DataComponentMap
+import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.MutableDataComponentHolder
 
@@ -50,5 +51,7 @@ data object HTPotionFluidManager {
         operator fun set(holder: MutableDataComponentHolder, bottleType: HTBottleType)
 
         operator fun set(builder: DataComponentMap.Builder, bottleType: HTBottleType)
+
+        operator fun set(builder: DataComponentPatch.Builder, bottleType: HTBottleType)
     }
 }

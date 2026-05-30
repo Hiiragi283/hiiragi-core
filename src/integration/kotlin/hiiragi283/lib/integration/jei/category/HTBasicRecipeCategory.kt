@@ -3,7 +3,6 @@ package hiiragi283.lib.integration.jei.category
 import com.mojang.serialization.Codec
 import hiiragi283.lib.gui.HTAbstractGui
 import hiiragi283.lib.gui.HTBackgroundType
-import hiiragi283.lib.gui.widget.HTWidget
 import hiiragi283.lib.integration.jei.HTJeiDrawables
 import hiiragi283.lib.integration.jei.HTJeiPlugin
 import hiiragi283.lib.math.HTBounds
@@ -24,9 +23,6 @@ import mezz.jei.api.recipe.IFocusGroup
 import mezz.jei.api.recipe.IRecipeManager
 import mezz.jei.api.recipe.category.IRecipeCategory
 import mezz.jei.api.recipe.types.IRecipeType
-import net.minecraft.client.gui.components.events.AbstractContainerEventHandler
-import net.minecraft.client.gui.components.events.GuiEventListener
-import net.minecraft.client.gui.navigation.ScreenRectangle
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStack
 import org.apache.commons.lang3.math.Fraction
@@ -42,8 +38,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     private val title: Text,
     private val icon: IDrawable,
     private val bounds: HTBounds,
-) : AbstractContainerEventHandler(),
-    IRecipeCategory<RECIPE>,
+) : IRecipeCategory<RECIPE>,
     HTAbstractGui {
     companion object {
         @JvmStatic
@@ -60,17 +55,6 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
         createIcon(guiHelper, recipeType),
         recipeType.bounds,
     )
-
-    // private val widgets: MutableList<HTGuiWidget<*>> = mutableListOf()
-
-    protected fun <WIDGET : HTWidget> addWidget(widget: WIDGET): WIDGET {
-        // this.widgets += HTGuiWidget(this, widget)
-        return widget
-    }
-
-    override fun children(): List<GuiEventListener> = emptyList()
-
-    override fun getRectangle(): ScreenRectangle = ScreenRectangle(getGuiLeft(), getGuiTop(), getXSize(), getYSize())
 
     //    HTAbstractGui    //
 

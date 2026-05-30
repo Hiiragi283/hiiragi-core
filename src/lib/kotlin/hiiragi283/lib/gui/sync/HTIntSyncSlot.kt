@@ -1,9 +1,9 @@
 package hiiragi283.lib.gui.sync
 
-import net.minecraft.core.RegistryAccess
 import java.util.function.IntConsumer
 import java.util.function.IntSupplier
 import kotlin.reflect.KMutableProperty0
+import net.minecraft.core.RegistryAccess
 
 /**
  * [Int]向けの[HTSyncableSlot]の拡張インターフェースです。
