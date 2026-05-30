@@ -20,7 +20,6 @@ import hiiragi283.core.common.item.HTTraderCatalogItem
 import hiiragi283.core.common.storage.fluid.HTBasicItemFluidTank
 import hiiragi283.core.common.storage.fluid.HTExperienceTomeFluidTank
 import hiiragi283.core.common.text.HCTranslation
-import java.util.Optional
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.world.food.FoodConstants
@@ -48,9 +47,6 @@ object HCItems {
         eventBus.addListener(::modifyComponents)
         eventBus.addListener(::registerCapabilities)
     }
-
-    @JvmField
-    val FAKE_FOOD = FoodProperties(0, 0f, true, 1.6f, Optional.empty(), emptyList())
 
     //    Materials   //
 

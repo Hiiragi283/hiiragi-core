@@ -1,18 +1,19 @@
 package hiiragi283.core.common.item.endgame
 
-import hiiragi283.core.setup.HCItems
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.InteractionResultHolder
 import net.minecraft.world.effect.MobEffectInstance
 import net.minecraft.world.entity.LivingEntity
-import net.minecraft.world.food.FoodProperties
+import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.ItemUtils
 import net.minecraft.world.item.UseAnim
 import net.minecraft.world.level.Level
 
 class HTInfinitePotionItem(properties: Properties) : HTCreativeItem(properties) {
     override fun finishUsingItem(stack: ItemStack, level: Level, livingEntity: LivingEntity): ItemStack {
         // 有限のエフェクトだけを無限化する
-        livingEntity.activeEffects
-            .filterNot(MobEffectInstance::isInfiniteDuration)
+        getFiniteEffects(livingEntity)
             .map {
                 MobEffectInstance(
                     it.effect,
@@ -23,17 +24,19 @@ class HTInfinitePotionItem(properties: Properties) : HTCreativeItem(properties) 
                     it.showIcon(),
                 )
             }.forEach(livingEntity::addEffect)
+        stack.consume(1, livingEntity)
         return super.finishUsingItem(stack, level, livingEntity)
     }
 
     override fun getUseAnimation(stack: ItemStack): UseAnim = UseAnim.DRINK
 
-    override fun getUseDuration(stack: ItemStack, entity: LivingEntity): Int = stack.getFoodProperties(entity)?.eatDurationTicks() ?: super.getUseDuration(stack, entity)
+    override fun getUseDuration(stack: ItemStack, entity: LivingEntity): Int = 32
 
-    override fun getFoodProperties(stack: ItemStack, entity: LivingEntity?): FoodProperties? {
-        if (entity == null) return null
-        // すでに無限化していたら使用できない
-        if (entity.activeEffects.all(MobEffectInstance::isInfiniteDuration)) return null
-        return HCItems.FAKE_FOOD
+    // すべてのエフェクトが永続の場合は使用できない
+    override fun use(level: Level, player: Player, usedHand: InteractionHand): InteractionResultHolder<ItemStack> = when {
+        getFiniteEffects(player).isEmpty() -> InteractionResultHolder.fail(player.getItemInHand(usedHand))
+        else -> ItemUtils.startUsingInstantly(level, player, usedHand)
     }
+
+    private fun getFiniteEffects(livingEntity: LivingEntity): List<MobEffectInstance> = livingEntity.activeEffects.filterNot(MobEffectInstance::isInfiniteDuration)
 }
