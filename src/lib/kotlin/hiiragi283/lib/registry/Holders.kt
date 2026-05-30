@@ -18,8 +18,11 @@ fun <R : Any> Holder<R>.getKeyOrThrow(): ResourceKey<R> = this.unwrapKey().orEls
  * @author Hiiragi Tsubasa
  * @since 0.17.0
  */
-fun <T : Any> Holder<T>.toLike(): SupplierWithId<T> = object : SupplierWithId<T> {
-    override fun get(): T = this@toLike.value()
+fun <T : Any> Holder<T>.toLike(): SupplierWithId<T> = HolderWithId(this)
 
-    override fun getId(): Identifier = this@toLike.getKeyOrThrow().identifier()
+@JvmInline
+private value class HolderWithId<T : Any>(private val holder: Holder<T>) : SupplierWithId<T> {
+    override fun get(): T = holder.value()
+
+    override fun getId(): Identifier = holder.getKeyOrThrow().identifier()
 }

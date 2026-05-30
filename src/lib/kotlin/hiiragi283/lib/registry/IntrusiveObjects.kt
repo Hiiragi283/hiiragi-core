@@ -13,8 +13,11 @@ import net.minecraft.world.level.material.Fluid
  * @author Hiiragi Tsubasa
  * @since 0.17.0
  */
-fun <BLOCK : Block> BLOCK.toLike(): SupplierWithId<BLOCK> = object : SupplierWithId<BLOCK> {
-    override fun get(): BLOCK = this@toLike
+fun <BLOCK : Block> BLOCK.toLike(): SupplierWithId<BLOCK> = BlockWithId(this)
+
+@JvmInline
+private value class BlockWithId<out BLOCK : Block>(private val block: BLOCK) : SupplierWithId<BLOCK> {
+    override fun get(): BLOCK = block
 
     @Suppress("DEPRECATION")
     override fun getId(): Identifier = get().builtInRegistryHolder().getKeyOrThrow().identifier()
@@ -25,11 +28,14 @@ fun <BLOCK : Block> BLOCK.toLike(): SupplierWithId<BLOCK> = object : SupplierWit
  * @author Hiiragi Tsubasa
  * @since 0.17.0
  */
-fun <ENTITY : Entity> EntityType<ENTITY>.toLike(): SupplierWithId<EntityType<ENTITY>> = object : SupplierWithId<EntityType<ENTITY>> {
-    override fun get(): EntityType<ENTITY> = this@toLike
+fun <ENTITY : Entity> EntityType<ENTITY>.toLike(): SupplierWithId<EntityType<ENTITY>> = EntityTypeWithId(this)
+
+@JvmInline
+private value class EntityTypeWithId<out ENTITY : Entity>(private val type: EntityType<ENTITY>) : SupplierWithId<EntityType<@UnsafeVariance ENTITY>> {
+    override fun get(): EntityType<@UnsafeVariance ENTITY> = type
 
     @Suppress("DEPRECATION")
-    override fun getId(): Identifier = this@toLike.builtInRegistryHolder().getKeyOrThrow().identifier()
+    override fun getId(): Identifier = get().builtInRegistryHolder().getKeyOrThrow().identifier()
 }
 
 /**
@@ -37,8 +43,11 @@ fun <ENTITY : Entity> EntityType<ENTITY>.toLike(): SupplierWithId<EntityType<ENT
  * @author Hiiragi Tsubasa
  * @since 0.17.0
  */
-fun <FLUID : Fluid> FLUID.toLike(): SupplierWithId<FLUID> = object : SupplierWithId<FLUID> {
-    override fun get(): FLUID = this@toLike
+fun <FLUID : Fluid> FLUID.toLike(): SupplierWithId<FLUID> = FluidWithId(this)
+
+@JvmInline
+private value class FluidWithId<out FLUID : Fluid>(private val fluid: FLUID) : SupplierWithId<FLUID> {
+    override fun get(): FLUID = fluid
 
     @Suppress("DEPRECATION")
     override fun getId(): Identifier = get().builtInRegistryHolder().getKeyOrThrow().identifier()
@@ -49,8 +58,11 @@ fun <FLUID : Fluid> FLUID.toLike(): SupplierWithId<FLUID> = object : SupplierWit
  * @author Hiiragi Tsubasa
  * @since 0.17.0
  */
-fun <ITEM : Item> ITEM.toLike(): SupplierWithId<ITEM> = object : SupplierWithId<ITEM> {
-    override fun get(): ITEM = this@toLike
+fun <ITEM : Item> ITEM.toLike(): SupplierWithId<ITEM> = ItemWithId(this)
+
+@JvmInline
+private value class ItemWithId<out ITEM : Item>(private val item: ITEM) : SupplierWithId<ITEM> {
+    override fun get(): ITEM = item
 
     @Suppress("DEPRECATION")
     override fun getId(): Identifier = get().builtInRegistryHolder().getKeyOrThrow().identifier()

@@ -35,8 +35,12 @@ class FluidModelBuilder {
         flowing = still
     }
 
+    fun colorTint(color: Int) {
+        tintSource = FluidTintSources.constant(color)
+    }
+
     fun colorTint(color: Color) {
-        tintSource = FluidTintSources.constant(color.rgb)
+        colorTint(color.rgb)
     }
 
     fun build(): FluidModel.Unbaked = FluidModel.Unbaked(still, flowing, overlay, tintSource, customRenderer)

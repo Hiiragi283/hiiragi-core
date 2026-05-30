@@ -28,7 +28,7 @@ data object HiiragiCoreClient : HTClientMod() {
         for ((color: HTDefaultColor, content: HTFluidContent) in HCFluids.DyeContents) {
             register.register(content) {
                 setDull()
-                color.color.let(::Color).let(::colorTint)
+                color.color.let(::colorTint)
             }
         }
 
