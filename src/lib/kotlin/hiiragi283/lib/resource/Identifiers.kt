@@ -22,6 +22,10 @@ fun String.toId(path: String): Identifier = Identifier.fromNamespaceAndPath(this
  */
 fun String.toId(vararg path: String): Identifier = this.toId(path.joinToString(separator = "/"))
 
+fun vanillaId(path: String): Identifier = Identifier.withDefaultNamespace(path)
+
+fun vanillaId(vararg path: String): Identifier = Identifier.withDefaultNamespace(path.joinToString(separator = "/"))
+
 /**
  * この[ID][Identifier]を翻訳キーに変換します。
  * @author Hiiragi Tsubasa

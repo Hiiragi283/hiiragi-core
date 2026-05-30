@@ -1,6 +1,7 @@
 package hiiragi283.core.data.lang
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
@@ -36,6 +37,13 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.MEAT, "Meat")
         // Item
         add(HCItems.NETHERITE_NUGGET, "Netherite Nugget")
+
+        add(HCItems.IRIDESCENT_POWDER, "Iridescent Powder")
+        // add(HCItems.ALMIGHTY_PICKAXE, "Almighty Pickaxe")
+        add(HCItems.AMBROSIA, "Ambrosia")
+        add(HCItems.ETERNAL_UPGRADE, "Eternal Smithing Template")
+        add(HCItems.POTION_OF_INFINITY, "Potion of Infinity")
+        add(HCItems.RING_OF_HYPERION, "Ring of Hyperion")
         // Recipe
         add(HCRecipeTypes.CHARGING, "Charging")
         add(HCRecipeTypes.CHOPPING, "Chopping")
@@ -43,5 +51,15 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         add(HCRecipeTypes.EMPTYING, "Emptying Container")
         add(HCRecipeTypes.FILLING, "Filling Container")
+
+        // Text
+        add(HCTranslation.HIIRAGI_CORE, "Hiiragi Core")
+
+        add(HCTranslation.ETERNAL_PICKAXE, "Eternal Pickaxe")
+
+        add(HCTranslation.ETERNAL_UPGRADE_APPLIES_TO, "Any Equipment")
+        add(HCTranslation.ETERNAL_UPGRADE_INGREDIENTS, "Iridium Ingot")
+        add(HCTranslation.ETERNAL_UPGRADE_BASE_SLOT_DESCRIPTION, "Add any armor, weapon, or tool")
+        add(HCTranslation.ETERNAL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION, "Add Iridium Ingot")
     }
 }

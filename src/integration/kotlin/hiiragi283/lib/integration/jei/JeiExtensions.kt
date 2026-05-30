@@ -1,12 +1,12 @@
 package hiiragi283.lib.integration.jei
 
+import hiiragi283.lib.color.HTDefaultColor
 import hiiragi283.lib.recipe.viewer.display.HTRecipeContents
 import hiiragi283.lib.text.HTCommonTranslation
 import mezz.jei.api.gui.builder.IIngredientAcceptor
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder
 import mezz.jei.api.gui.builder.ITooltipBuilder
 import mezz.jei.api.neoforge.NeoForgeTypes
-import net.minecraft.ChatFormatting
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
 
@@ -24,7 +24,7 @@ fun <T : IIngredientAcceptor<T>> T.add(stack: HTRecipeContents.ChancedItemStack?
     if (this is IRecipeSlotBuilder) {
         if (chance < 1f) {
             this.addRichTooltipCallback { _, builder: ITooltipBuilder ->
-                builder.add(HTCommonTranslation.CHANCE_PRODUCE.translateColored(ChatFormatting.YELLOW, chance * 100))
+                builder.add(HTCommonTranslation.CHANCE_PRODUCE.translateColored(HTDefaultColor.YELLOW, chance * 100))
             }
         }
     }

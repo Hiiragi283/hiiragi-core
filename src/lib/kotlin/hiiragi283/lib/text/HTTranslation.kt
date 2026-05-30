@@ -1,13 +1,11 @@
 package hiiragi283.lib.text
 
-import net.minecraft.ChatFormatting
-import net.minecraft.network.chat.TextColor
+import hiiragi283.lib.color.HTDefaultColor
 
 /**
  * 翻訳を保持するインターフェースです。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
- * @see mekanism.api.text.ILangEntry
  */
 interface HTTranslation : HTHasTranslationKey {
     /**
@@ -24,22 +22,11 @@ interface HTTranslation : HTHasTranslationKey {
     /**
      * [color]で着色された[テキスト][Text]を返します。
      */
-    fun translateColored(color: ChatFormatting): MutableText = translate().withStyle(color)
+    fun translateColored(color: HTDefaultColor): MutableText = translate().withStyle(color)
 
     /**
      * [color]で着色された[テキスト][Text]を返します。
      * @param args テキストの引数
      */
-    fun translateColored(color: ChatFormatting, vararg args: Any?): MutableText = translate(*args).withStyle(color)
-
-    /**
-     * [color]で着色された[テキスト][Text]を返します。
-     */
-    fun translateColored(color: TextColor): MutableText = translate().withStyle(color)
-
-    /**
-     * [color]で着色された[テキスト][Text]を返します。
-     * @param args テキストの引数
-     */
-    fun translateColored(color: TextColor, vararg args: Any?): MutableText = translate(*args).withStyle(color)
+    fun translateColored(color: HTDefaultColor, vararg args: Any?): MutableText = translate(*args).withStyle(color)
 }

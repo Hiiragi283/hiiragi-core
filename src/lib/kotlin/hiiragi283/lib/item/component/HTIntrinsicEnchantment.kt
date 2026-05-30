@@ -2,6 +2,7 @@ package hiiragi283.lib.item.component
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
+import hiiragi283.lib.color.HTDefaultColor
 import hiiragi283.lib.registry.getResult
 import hiiragi283.lib.serialization.codec.HTCodecs
 import hiiragi283.lib.serialization.network.HTStreamCodecs
@@ -22,7 +23,6 @@ import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.item.component.TooltipProvider
 import net.minecraft.world.item.enchantment.Enchantment
 import java.util.function.Consumer
-import net.minecraft.ChatFormatting
 import net.minecraft.core.component.DataComponentGetter
 
 @JvmRecord
@@ -60,7 +60,7 @@ data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: 
                     .registries()
                     ?.let(::getFullName)
                     ?.fold(ErrorText::getText, HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT::translate)
-            else -> HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION.translateColored(ChatFormatting.YELLOW)
+            else -> HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION.translateColored(HTDefaultColor.YELLOW)
         }?.let(consumer::accept)
     }
 }

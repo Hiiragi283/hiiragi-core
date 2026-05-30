@@ -8,7 +8,7 @@ import hiiragi283.lib.mod.HTClientMod
 import hiiragi283.lib.fluid.HTFluidModelRegister
 import hiiragi283.lib.item.alchemy.HTPotionHelper
 import hiiragi283.lib.registry.HTFluidContent
-import hiiragi283.lib.resource.toId
+import hiiragi283.lib.resource.vanillaId
 import java.awt.Color
 import net.minecraft.client.resources.model.sprite.Material
 import net.minecraft.world.level.material.FluidState
@@ -37,7 +37,7 @@ data object HiiragiCoreClient : HTClientMod() {
             colorTint(Color(0x66ff33))
         }
         register.register(HCFluids.HONEY) {
-            still = Material(HTConstants.MINECRAFT.toId(HTConstants.BLOCK, "honey_block_top"), true)
+            still = Material(vanillaId(HTConstants.BLOCK, "honey_block_top"), true)
             copyStillToFlowing()
         }
         register.register(HCFluids.MUSHROOM_STEW) {

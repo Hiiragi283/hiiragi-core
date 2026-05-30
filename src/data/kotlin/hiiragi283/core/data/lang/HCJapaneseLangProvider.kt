@@ -1,6 +1,7 @@
 package hiiragi283.core.data.lang
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
@@ -36,6 +37,13 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.MEAT, "肉")
         // Item
         add(HCItems.NETHERITE_NUGGET, "ネザライト塊")
+
+        add(HCItems.IRIDESCENT_POWDER, "七色の粉")
+        // add(HCItems.ALMIGHTY_PICKAXE, "全能なるツルハシ")
+        add(HCItems.AMBROSIA, "アンブロシア")
+        add(HCItems.ETERNAL_UPGRADE, "永遠の鍛冶型")
+        add(HCItems.POTION_OF_INFINITY, "無限のポーション")
+        add(HCItems.RING_OF_HYPERION, "ハイペリオンの指輪")
         // Recipe
         add(HCRecipeTypes.CHARGING, "帯電")
         add(HCRecipeTypes.CHOPPING, "木こり")
@@ -43,5 +51,15 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HCRecipeTypes.EMPTYING, "容器を空にする")
         add(HCRecipeTypes.FILLING, "容器に汲む")
+
+        // Text
+        add(HCTranslation.HIIRAGI_CORE, "Hiiragi Core")
+
+        add(HCTranslation.ETERNAL_PICKAXE, "永遠のツルハシ")
+
+        add(HCTranslation.ETERNAL_UPGRADE_APPLIES_TO, "任意の装備品")
+        add(HCTranslation.ETERNAL_UPGRADE_INGREDIENTS, "イリジウムインゴット")
+        add(HCTranslation.ETERNAL_UPGRADE_BASE_SLOT_DESCRIPTION, "任意の防具，武器，道具を置いてください")
+        add(HCTranslation.ETERNAL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION, "イリジウムインゴットを置いてください")
     }
 }

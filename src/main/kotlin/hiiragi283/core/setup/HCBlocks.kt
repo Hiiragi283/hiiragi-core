@@ -6,6 +6,7 @@ import hiiragi283.core.common.block.HTCopperBasinBlock
 import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.block.HTWeatheringCopperBasinBlock
 import hiiragi283.lib.item.HTBlockItem
+import hiiragi283.lib.item.component.consumables
 import hiiragi283.lib.registry.HTBasicDeferredBlockAndItem
 import hiiragi283.lib.registry.HTDeferredBlockAndItemRegister
 import hiiragi283.lib.registry.HTDeferredBlockRegister
@@ -46,7 +47,7 @@ data object HCBlocks {
         "warped_wart",
         copyOf(Blocks.NETHER_WART).mapColor(MapColor.WARPED_WART_BLOCK),
         ::HTWarpedWartBlock,
-    ) { prop: Item.Properties -> prop.food(HCFoods.WARPED_WART, HCConsumables.WARPED_WART) }
+    ) { prop: Item.Properties -> prop.consumables(HCConsumables.WARPED_WART) }
 
     //    Misc    //
 

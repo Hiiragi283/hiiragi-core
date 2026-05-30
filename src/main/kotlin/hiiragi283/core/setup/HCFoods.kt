@@ -1,5 +1,6 @@
 package hiiragi283.core.setup
 
+import net.minecraft.world.food.FoodConstants
 import net.minecraft.world.food.FoodProperties
 
 /**
@@ -7,5 +8,10 @@ import net.minecraft.world.food.FoodProperties
  */
 data object HCFoods {
     @JvmField
-    val WARPED_WART: FoodProperties = FoodProperties.Builder().alwaysEdible().build()
+    val AMBROSIA: FoodProperties = FoodProperties
+        .Builder()
+        .nutrition(FoodConstants.MAX_FOOD)
+        .saturationModifier(0.5f)
+        .alwaysEdible()
+        .build()
 }

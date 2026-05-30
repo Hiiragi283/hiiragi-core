@@ -1,14 +1,19 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.common.item.HTPotionBucketItem
+import hiiragi283.core.common.item.endgame.HTAmbrosiaItem
+import hiiragi283.core.common.item.endgame.HTCreativeItem
+import hiiragi283.core.common.item.endgame.HTEternalUpgradeItem
+import hiiragi283.core.common.item.endgame.HTInfinityPotionItem
+import hiiragi283.lib.item.component.buildItemAttributeModifiers
+import hiiragi283.lib.item.component.consumables
 import hiiragi283.lib.registry.HTDeferredItemRegister
 import hiiragi283.lib.registry.HTSimpleDeferredItem
+import net.minecraft.world.entity.EquipmentSlotGroup
+import net.minecraft.world.entity.ai.attributes.AttributeModifier
+import net.minecraft.world.item.component.Consumables
 import net.neoforged.bus.api.IEventBus
-import net.neoforged.neoforge.capabilities.Capabilities
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
-import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent
-import net.neoforged.neoforge.transfer.access.ItemAccess
+import net.neoforged.neoforge.common.NeoForgeMod
 
 data object HCItems {
     @JvmField
@@ -17,9 +22,6 @@ data object HCItems {
     @JvmStatic
     fun register(eventBus: IEventBus) {
         REGISTER.register(eventBus)
-
-        eventBus.addListener(::modifyComponents)
-        eventBus.addListener(::registerCapabilities)
     }
 
     //    Resources    //
@@ -27,18 +29,34 @@ data object HCItems {
     @JvmField
     val NETHERITE_NUGGET: HTSimpleDeferredItem = REGISTER.registerSimpleItem("netherite_nugget") { it.fireResistant() }
 
-    //    Event    //
+    //    Resources    //
 
-    @JvmStatic
-    private fun modifyComponents(event: ModifyDefaultComponentsEvent) {
-    }
+    @JvmField
+    val IRIDESCENT_POWDER: HTSimpleDeferredItem = REGISTER.registerItem("iridescent_powder", ::HTCreativeItem)
 
-    @JvmStatic
-    private fun registerCapabilities(event: RegisterCapabilitiesEvent) {
-        event.registerItem(
-            Capabilities.Fluid.ITEM,
-            { _, access: ItemAccess -> HTPotionBucketItem.BucketHandler(access) },
-            HCFluids.POTION.bucketHolder.get(),
+    @JvmField
+    val AMBROSIA: HTSimpleDeferredItem = REGISTER.registerItem("ambrosia", ::HTAmbrosiaItem) { it.food(HCFoods.AMBROSIA) }
+
+    @JvmField
+    val ETERNAL_UPGRADE: HTSimpleDeferredItem = REGISTER.registerItem("eternal_upgrade", ::HTEternalUpgradeItem)
+
+    @JvmField
+    val POTION_OF_INFINITY: HTSimpleDeferredItem = REGISTER.registerItem("potion_of_infinity", ::HTInfinityPotionItem) { it.consumables(Consumables.DEFAULT_DRINK) }
+
+    @JvmField
+    val RING_OF_HYPERION: HTSimpleDeferredItem = REGISTER.registerItem("ring_of_hyperion", ::HTCreativeItem) {
+        it.attributes(
+            buildItemAttributeModifiers {
+                add(
+                    NeoForgeMod.CREATIVE_FLIGHT,
+                    AttributeModifier(
+                        HiiragiCoreAPI.id("ring_of_hyperion"),
+                        1.0,
+                        AttributeModifier.Operation.ADD_VALUE,
+                    ),
+                    EquipmentSlotGroup.OFFHAND,
+                )
+            },
         )
     }
 }

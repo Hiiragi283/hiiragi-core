@@ -13,10 +13,11 @@ maven-publish = "0.36.0"
 minotaur = "2.+"
 
 ae2 = "26.1.8-alpha"
+curios = "15.0.0-beta.2+26.1.2"
 dire = "7463040"
 immersive = "1.21.1-12.4.2-194"
 jade = "26.1.1+neoforge"
-jei = "29.5.0.28"
+jei = "29.6.2.31"
 mek = "1.21.1-10.7.17.83"
 mi = "2.4.1"
 oritech = "1.2.6"
@@ -27,6 +28,7 @@ replica = "1.21-1.2.7"
 kff = { group = "thedarkcolour", name = "kotlinforforge-neoforge", version.ref = "kff-version" }
 
 ae2 = { group = "org.appliedenergistics", name = "appliedenergistics2", version.ref = "ae2" }
+curios = { group = "top.theillusivec4.curios", name = "curios-neoforge", version.ref = "curios" }
 jade = { group = "maven.modrinth", name = "jade", version.ref = "jade" }
 jei = { group = "mezz.jei", name = "jei-26.1.2-neoforge", version.ref = "jei" }
 jei-api = { group = "mezz.jei", name = "jei-26.1.2-neoforge-api", version.ref = "jei" }
@@ -43,6 +45,7 @@ common-runtime = []
 
 integration-impl = [
     "ae2",
+    "curios",
     "jade",
 ]
 

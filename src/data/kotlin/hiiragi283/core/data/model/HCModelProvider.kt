@@ -11,6 +11,7 @@ import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.resource.blockId
 import hiiragi283.lib.resource.toId
+import hiiragi283.lib.resource.vanillaId
 import net.minecraft.client.data.models.BlockModelGenerators
 import net.minecraft.client.data.models.ItemModelGenerators
 import net.minecraft.client.data.models.model.TextureMapping
@@ -24,18 +25,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties
 
 class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreAPI.MOD_ID) {
     override fun registerModels(blockModels: BlockModelGenerators, itemModels: ItemModelGenerators) {
-        // Block Resources
-        blockModels.createTrivialCube(HCBlocks.CHARCOAL_BLOCK.get())
-        blockModels.createTrivialCube(HCBlocks.ECHO_BLOCK.get())
-
-        // Warped Wart
-        blockModels.createCropBlock(HCBlocks.WARPED_WART.get(), BlockStateProperties.AGE_3, 0, 1, 1, 2)
-        // Chopping Board
-        blockModels.registerSimple(HCBlocks.CHOPPING_BOARD.get(), HCBlocks.CHOPPING_BOARD.blockId)
-        // Copper Basin
-        blockModels.registerCopperBasin(HCBlocks.COPPER_BASIN.weathering)
-        blockModels.registerCopperBasin(HCBlocks.COPPER_BASIN.waxed)
-
         // Fluids
         val dripFluids: List<HTFluidContent> = buildList {
             // Vanilla
@@ -52,8 +41,36 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
             }
         }
 
-        // Item Resources
-        itemModels.generateFlatItem(HCItems.NETHERITE_NUGGET)
+        // Block
+        registerBlockModels(blockModels)
+        // Item
+        registerItemModels(itemModels)
+    }
+
+    private fun registerBlockModels(generators: BlockModelGenerators) {
+        // Resources
+        generators.createTrivialCube(HCBlocks.CHARCOAL_BLOCK.get())
+        generators.createTrivialCube(HCBlocks.ECHO_BLOCK.get())
+
+        // Warped Wart
+        generators.createCropBlock(HCBlocks.WARPED_WART.get(), BlockStateProperties.AGE_3, 0, 1, 1, 2)
+        // Chopping Board
+        generators.registerSimple(HCBlocks.CHOPPING_BOARD.get(), HCBlocks.CHOPPING_BOARD.blockId)
+        // Copper Basin
+        generators.registerCopperBasin(HCBlocks.COPPER_BASIN.weathering)
+        generators.registerCopperBasin(HCBlocks.COPPER_BASIN.waxed)
+    }
+
+    private fun registerItemModels(generators: ItemModelGenerators) {
+        // Resources
+        generators.generateFlatItem(HCItems.NETHERITE_NUGGET)
+
+        // End Game
+        generators.generateFlatItem(HCItems.IRIDESCENT_POWDER)
+        generators.generateFlatItem(HCItems.AMBROSIA)
+        generators.generateFlatItem(HCItems.ETERNAL_UPGRADE)
+        generators.generateLayeredItem(HCItems.POTION_OF_INFINITY, vanillaId(HTConstants.ITEM, "potion"), vanillaId(HTConstants.ITEM, "potion_overlay"))
+        generators.generateFlatItem(HCItems.RING_OF_HYPERION)
     }
 
     private fun BlockModelGenerators.registerCopperBasin(map: HTCopperMap<SupplierWithId<Block>>) {
@@ -63,14 +80,14 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
                 WeatheringCopper.WeatherState.EXPOSED -> "exposed_cut_copper"
                 WeatheringCopper.WeatherState.WEATHERED -> "weathered_cut_copper"
                 WeatheringCopper.WeatherState.OXIDIZED -> "oxidized_cut_copper"
-            }.let { HTConstants.MINECRAFT.toId(HTConstants.BLOCK, it) }
+            }.let { vanillaId(HTConstants.BLOCK, it) }
                 .let(::Material)
             val chiseledCopper: Material = when (state) {
                 WeatheringCopper.WeatherState.UNAFFECTED -> "chiseled_copper"
                 WeatheringCopper.WeatherState.EXPOSED -> "exposed_chiseled_copper"
                 WeatheringCopper.WeatherState.WEATHERED -> "weathered_chiseled_copper"
                 WeatheringCopper.WeatherState.OXIDIZED -> "oxidized_chiseled_copper"
-            }.let { HTConstants.MINECRAFT.toId(HTConstants.BLOCK, it) }
+            }.let { vanillaId(HTConstants.BLOCK, it) }
                 .let(::Material)
             val modelId: Identifier = HCModelTemplates.CAULDRON.create(
                 block.blockId,

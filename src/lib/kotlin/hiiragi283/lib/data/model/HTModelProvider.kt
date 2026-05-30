@@ -7,6 +7,7 @@ import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.resource.blockId
 import hiiragi283.lib.resource.itemId
 import hiiragi283.lib.resource.toId
+import hiiragi283.lib.resource.vanillaId
 import java.util.Optional
 import net.minecraft.client.data.models.BlockModelGenerators
 import net.minecraft.client.data.models.ItemModelGenerators
@@ -41,7 +42,7 @@ abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvide
             fluidBlock.get(),
             HTModelTemplates.FLUID_BLOCK.create(
                 fluidBlock.blockId,
-                TextureMapping.particle(Material(HTConstants.MINECRAFT.toId(HTConstants.BLOCK, "water_still"))),
+                TextureMapping.particle(Material(vanillaId(HTConstants.BLOCK, "water_still"))),
                 this.modelOutput,
             ),
         )
@@ -51,6 +52,16 @@ abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvide
 
     fun ItemModelGenerators.generateFlatItem(item: SupplierWithId<Item>, layer: Identifier = item.itemId, template: ModelTemplate = ModelTemplates.FLAT_ITEM) {
         this.itemModelOutput.accept(item.get(), ItemModelUtils.plainModel(this.createFlatItemModel(item, layer, template)))
+    }
+
+    fun ItemModelGenerators.generateLayeredItem(item: SupplierWithId<Item>, vararg layers: Identifier) {
+        val (mapping: TextureMapping, template: ModelTemplate) = when (layers.size) {
+            1 -> TextureMapping.layer0(Material(layers[0])) to ModelTemplates.FLAT_ITEM
+            2 -> TextureMapping.layered(Material(layers[0]), Material(layers[1])) to ModelTemplates.TWO_LAYERED_ITEM
+            3 -> TextureMapping.layered(Material(layers[0]), Material(layers[1]), Material(layers[2])) to ModelTemplates.THREE_LAYERED_ITEM
+            else -> error("Cannot create item model with ${layers.size} layers")
+        }
+        this.itemModelOutput.accept(item.get(), ItemModelUtils.plainModel(template.create(item.itemId, mapping, this.modelOutput)))
     }
 
     fun ItemModelGenerators.createFlatItemModel(

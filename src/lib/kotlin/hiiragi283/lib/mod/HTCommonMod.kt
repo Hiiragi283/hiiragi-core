@@ -1,8 +1,22 @@
 package hiiragi283.lib.mod
 
+import hiiragi283.lib.transfer.HTHandlerProvider
+import net.minecraft.core.Direction
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.EntityType
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.ItemLike
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.BlockEntityType
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
+import net.neoforged.neoforge.capabilities.BlockCapability
+import net.neoforged.neoforge.capabilities.Capabilities
+import net.neoforged.neoforge.capabilities.EntityCapability
+import net.neoforged.neoforge.capabilities.ICapabilityProvider
+import net.neoforged.neoforge.capabilities.ItemCapability
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent
 import net.neoforged.neoforge.common.NeoForgeMod
 import net.neoforged.neoforge.event.AddPackFindersEvent
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
@@ -37,6 +51,7 @@ abstract class HTCommonMod {
                 .let(event::registrar)
                 .let(::registerPayload)
         }
+        eventBus.addListener { event: RegisterCapabilitiesEvent -> registerCapabilities(CapabilityHelper(event)) }
         eventBus.addListener(::registerPack)
 
         initialize(eventBus, container)
@@ -66,6 +81,37 @@ abstract class HTCommonMod {
      * レジストリへの登録後のセットアップを行います。
      */
     protected open fun commonSetup(event: FMLCommonSetupEvent) {}
+
+    /**
+     * キャパビリティの登録を行います。
+     */
+    protected open fun registerCapabilities(helper: CapabilityHelper) {}
+
+    @JvmInline
+    protected value class CapabilityHelper(val event: RegisterCapabilitiesEvent) {
+        //    Block    //
+
+        fun <T : Any, C, BE : BlockEntity> registerBlockEntity(capability: BlockCapability<T, C>, type: BlockEntityType<BE>, provider: ICapabilityProvider<BE, C, T>) {
+            event.registerBlockEntity(capability, type, provider)
+        }
+
+        fun <BE> registerBlockEntity(type: BlockEntityType<BE>) where BE : BlockEntity, BE : HTHandlerProvider {
+            this.registerBlockEntity(Capabilities.Item.BLOCK, type) { blockEntity: BE, side: Direction? -> blockEntity.getItemHandler(side) }
+            this.registerBlockEntity(Capabilities.Fluid.BLOCK, type) { blockEntity: BE, side: Direction? -> blockEntity.getFluidHandler(side) }
+        }
+
+        //    Entity    //
+
+        fun <T : Any, C, E : Entity> registerEntity(capability: EntityCapability<T, C>, type: EntityType<E>, provider: ICapabilityProvider<E, C, T>) {
+            event.registerEntity(capability, type, provider)
+        }
+
+        //    Item    //
+
+        fun <T : Any, C> registerItem(capability: ItemCapability<T, C>, provider: ICapabilityProvider<ItemStack, C, T>, vararg items: ItemLike) {
+            event.registerItem(capability, provider, *items)
+        }
+    }
 
     /**
      * パケットを登録します。

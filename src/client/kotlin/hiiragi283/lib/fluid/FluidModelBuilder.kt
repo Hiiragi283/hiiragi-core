@@ -2,6 +2,7 @@ package hiiragi283.lib.fluid
 
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.resource.toId
+import hiiragi283.lib.resource.vanillaId
 import hiiragi283.lib.util.HTDelegates
 import java.awt.Color
 import net.minecraft.client.renderer.block.FluidModel
@@ -21,9 +22,9 @@ class FluidModelBuilder {
      * @see net.minecraft.client.renderer.block.FluidStateModelSet.WATER_MODEL
      */
     fun setClear() {
-        still = Material(HTConstants.MINECRAFT.toId(HTConstants.BLOCK, "water_still"))
-        flowing = Material(HTConstants.MINECRAFT.toId(HTConstants.BLOCK, "water_flowing"))
-        overlay = Material(HTConstants.MINECRAFT.toId(HTConstants.BLOCK, "water_overlay"))
+        still = Material(vanillaId(HTConstants.BLOCK, "water_still"))
+        flowing = Material(vanillaId(HTConstants.BLOCK, "water_flowing"))
+        overlay = Material(vanillaId(HTConstants.BLOCK, "water_overlay"))
     }
 
     fun setDull() {

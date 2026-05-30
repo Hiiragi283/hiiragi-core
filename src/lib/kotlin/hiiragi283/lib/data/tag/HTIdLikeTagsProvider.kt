@@ -34,7 +34,7 @@ abstract class HTIdLikeTagsProvider<T : Any> : TagsProvider<T> {
 
         override fun add(entry: TagEntry): IdAppender<T> = apply { builder.add(entry) }
 
-        override fun replace(value: Boolean): IdAppender<T> = apply { builder.replace(value) }
+        override fun replace(value: Boolean): IdAppender<T> = apply { builder.replace() }
 
         override fun remove(element: HTIdLike): IdAppender<T> = apply { builder.removeElement(element.getId()) }
 

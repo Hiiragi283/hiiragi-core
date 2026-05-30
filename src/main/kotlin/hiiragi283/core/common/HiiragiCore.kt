@@ -1,6 +1,7 @@
 package hiiragi283.core.common
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.setup.HCAttachmentTypes
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks
@@ -23,9 +24,11 @@ import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
+import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.common.NeoForgeMod
 import net.neoforged.neoforge.network.registration.PayloadRegistrar
 import net.neoforged.neoforge.registries.NewRegistryEvent
+import net.neoforged.neoforge.transfer.access.ItemAccess
 import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
 
 @Mod(HiiragiCoreAPI.MOD_ID)
@@ -45,7 +48,7 @@ data object HiiragiCore : HTCommonMod() {
         HCItems.register(eventBus)
 
         HCAttachmentTypes.REGISTER.register(eventBus)
-        HCBlockEntityTypes.register(eventBus)
+        HCBlockEntityTypes.REGISTER.register(eventBus)
         HCCreativeTabs.REGISTER.register(eventBus)
         HCMaterialContents.REGISTER.register(eventBus)
         HCRecipeSerializers.REGISTER.register(eventBus)
@@ -69,6 +72,17 @@ data object HiiragiCore : HTCommonMod() {
                 .map(::HTModifyMaterialContentsEvent)
                 .forEach(MOD_BUS::post)
         }
+    }
+
+    override fun registerCapabilities(helper: CapabilityHelper) {
+        // Block
+        helper.registerBlockEntity(HCBlockEntityTypes.COPPER_BASIN.get())
+        // Item
+        helper.registerItem(
+            Capabilities.Fluid.ITEM,
+            { _, access: ItemAccess -> HTPotionBucketItem.BucketHandler(access) },
+            HCFluids.POTION.bucketHolder,
+        )
     }
 
     override fun registerPayload(registrar: PayloadRegistrar) {
