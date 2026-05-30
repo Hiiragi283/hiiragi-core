@@ -38,6 +38,12 @@ class HCEnglishLangProvider(output: PackOutput) :
         // Item
         add(HCItems.NETHERITE_NUGGET, "Netherite Nugget")
 
+        add(HCItems.ELDER_HEART, "Elder Heart")
+
+        add(HCItems.SYNTHETIC_FEATHER, "Synthetic Feather")
+        add(HCItems.SYNTHETIC_FIBER, "Synthetic Fiber")
+        add(HCItems.SYNTHETIC_LEATHER, "Synthetic Leather")
+
         add(HCItems.IRIDESCENT_POWDER, "Iridescent Powder")
         // add(HCItems.ALMIGHTY_PICKAXE, "Almighty Pickaxe")
         add(HCItems.AMBROSIA, "Ambrosia")

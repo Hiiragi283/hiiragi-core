@@ -10,7 +10,6 @@ import hiiragi283.lib.registry.HTCopperMap
 import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.resource.blockId
-import hiiragi283.lib.resource.toId
 import hiiragi283.lib.resource.vanillaId
 import net.minecraft.client.data.models.BlockModelGenerators
 import net.minecraft.client.data.models.ItemModelGenerators
@@ -64,6 +63,12 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
     private fun registerItemModels(generators: ItemModelGenerators) {
         // Resources
         generators.generateFlatItem(HCItems.NETHERITE_NUGGET)
+
+        generators.generateFlatItem(HCItems.ELDER_HEART)
+        // Ingredients
+        generators.generateFlatItem(HCItems.SYNTHETIC_FEATHER)
+        generators.generateFlatItem(HCItems.SYNTHETIC_FIBER)
+        generators.generateFlatItem(HCItems.SYNTHETIC_LEATHER)
 
         // End Game
         generators.generateFlatItem(HCItems.IRIDESCENT_POWDER)

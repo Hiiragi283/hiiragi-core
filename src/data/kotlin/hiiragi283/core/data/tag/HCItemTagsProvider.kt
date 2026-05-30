@@ -29,5 +29,8 @@ class HCItemTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<H
         tags(Tags.Items.CROPS, HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)
 
         tag(HiiragiCoreTags.Items.STICKY_BALLS).addTag(Tags.Items.SLIME_BALLS)
+        tag(Tags.Items.FEATHERS).add(HCItems.SYNTHETIC_FEATHER)
+        tag(Tags.Items.STRINGS).add(HCItems.SYNTHETIC_FIBER)
+        tag(Tags.Items.LEATHERS).add(HCItems.SYNTHETIC_LEATHER)
     }
 }

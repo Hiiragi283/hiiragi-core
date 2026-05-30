@@ -38,6 +38,12 @@ class HCJapaneseLangProvider(output: PackOutput) :
         // Item
         add(HCItems.NETHERITE_NUGGET, "ネザライト塊")
 
+        add(HCItems.ELDER_HEART, "エルダーの心臓")
+
+        add(HCItems.SYNTHETIC_FEATHER, "合成羽")
+        add(HCItems.SYNTHETIC_FIBER, "合成繊維")
+        add(HCItems.SYNTHETIC_LEATHER, "合成皮革")
+
         add(HCItems.IRIDESCENT_POWDER, "七色の粉")
         // add(HCItems.ALMIGHTY_PICKAXE, "全能なるツルハシ")
         add(HCItems.AMBROSIA, "アンブロシア")

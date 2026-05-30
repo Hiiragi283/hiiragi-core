@@ -11,6 +11,7 @@ import hiiragi283.lib.registry.HTDeferredItemRegister
 import hiiragi283.lib.registry.HTSimpleDeferredItem
 import net.minecraft.world.entity.EquipmentSlotGroup
 import net.minecraft.world.entity.ai.attributes.AttributeModifier
+import net.minecraft.world.item.Rarity
 import net.minecraft.world.item.component.Consumables
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.common.NeoForgeMod
@@ -29,7 +30,23 @@ data object HCItems {
     @JvmField
     val NETHERITE_NUGGET: HTSimpleDeferredItem = REGISTER.registerSimpleItem("netherite_nugget") { it.fireResistant() }
 
-    //    Resources    //
+    // Mobs
+    @JvmField
+    val ELDER_HEART: HTSimpleDeferredItem = REGISTER.registerSimpleItem("elder_heart") { it.rarity(Rarity.UNCOMMON) }
+
+    //    Ingredients    //
+
+    // Synthetic
+    @JvmField
+    val SYNTHETIC_FEATHER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_feather")
+
+    @JvmField
+    val SYNTHETIC_FIBER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_fiber")
+
+    @JvmField
+    val SYNTHETIC_LEATHER: HTSimpleDeferredItem = REGISTER.registerSimpleItem("synthetic_leather")
+
+    //    End Game    //
 
     @JvmField
     val IRIDESCENT_POWDER: HTSimpleDeferredItem = REGISTER.registerItem("iridescent_powder", ::HTCreativeItem)
