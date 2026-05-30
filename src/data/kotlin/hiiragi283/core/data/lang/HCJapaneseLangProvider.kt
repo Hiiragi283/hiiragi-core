@@ -80,7 +80,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HCItems.IRIDESCENT_POWDER, "七色の粉")
         add(HCItems.AMBROSIA, "アンブロシア")
-        add(HCItems.UNLIMITED_POTION, "限界突破のポーション")
+        add(HCItems.POTION_OF_INFINITY, "無限のポーション")
         add(HCItems.ETERNAL_UPGRADE, "永遠の鍛冶型")
         add(HCItems.ALMIGHTY_PICKAXE, "全能なるツルハシ")
 

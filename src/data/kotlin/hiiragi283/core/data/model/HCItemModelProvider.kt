@@ -40,6 +40,8 @@ class HCItemModelProvider(fileHelper: ExistingFileHelper, output: PackOutput) : 
             remove(HCItems.STEEL_COMPOUND)
 
             remove(HCItems.BLUEPRINT)
+
+            remove(HCItems.POTION_OF_INFINITY)
         }.forEach { item: HTIdLike -> existTexture(item, ::basicItem) }
 
         existTexture(HCItems.STEEL_COMPOUND) { item: HTIdLike ->
@@ -53,6 +55,8 @@ class HCItemModelProvider(fileHelper: ExistingFileHelper, output: PackOutput) : 
                 HTConst.MINECRAFT.toId(HTConst.ITEM, "filled_map_markings"),
             )
         }
+
+        layeredItem(HCItems.POTION_OF_INFINITY, HTConst.MINECRAFT.toId(HTConst.ITEM, "potion"), HTConst.MINECRAFT.toId(HTConst.ITEM, "potion_overlay"))
 
         registerBuckets()
     }

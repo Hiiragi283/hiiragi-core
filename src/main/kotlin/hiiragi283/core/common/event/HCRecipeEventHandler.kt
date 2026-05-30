@@ -7,7 +7,6 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.item.enchantment.toInstances
-import hiiragi283.core.api.item.toStack
 import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
@@ -75,7 +74,7 @@ object HCRecipeEventHandler {
         event.builder.addRecipe(
             Ingredient.of(Items.DRAGON_BREATH),
             Ingredient.of(HCItems.IRIDESCENT_POWDER),
-            HCItems.UNLIMITED_POTION.toStack(),
+            HCItems.POTION_OF_INFINITY.toStack(),
         )
     }
 

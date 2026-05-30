@@ -80,7 +80,7 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         add(HCItems.IRIDESCENT_POWDER, "Iridescent Powder")
         add(HCItems.AMBROSIA, "Ambrosia")
-        add(HCItems.UNLIMITED_POTION, "Unlimited Potion")
+        add(HCItems.POTION_OF_INFINITY, "Potion of Infinity")
         add(HCItems.ETERNAL_UPGRADE, "Eternal Smithing Template")
         add(HCItems.ALMIGHTY_PICKAXE, "Almighty Pickaxe")
         // Recipe

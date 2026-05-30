@@ -35,7 +35,7 @@ class HCItemTagsProvider(
         factory.addTags(HiiragiCoreTags.Items.FLOURS, HiiragiCoreTags.Items.FLOURS_WHEAT).add(HCItems.WHEAT_FLOUR)
 
         factory.apply(Tags.Items.FOODS_GOLDEN).add(HCItems.AMBROSIA)
-        factory.apply(Tags.Items.DRINKS_MAGIC).add(HCItems.UNLIMITED_POTION)
+        factory.apply(Tags.Items.DRINKS_MAGIC).add(HCItems.POTION_OF_INFINITY)
         // Materials
         factory.apply(ItemTags.COALS).add(HCItems.BAMBOO_CHARCOAL)
         factory.apply(ItemTags.PLANKS).add(HCItems.PARTICLE_BOARD)

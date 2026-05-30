@@ -5,15 +5,15 @@ import hiiragi283.core.api.item.HTSmithingTemplateItem
 import hiiragi283.core.api.registry.HTDeferredItemRegister
 import hiiragi283.core.api.registry.HTSimpleDeferredItem
 import hiiragi283.core.common.capability.HTFluidCapabilities
-import hiiragi283.core.common.item.HTAlmightyPickaxeItem
-import hiiragi283.core.common.item.HTAmbrosiaItem
+import hiiragi283.core.common.item.endgame.HTAlmightyPickaxeItem
+import hiiragi283.core.common.item.endgame.HTAmbrosiaItem
+import hiiragi283.core.common.item.endgame.HTCreativeItem
+import hiiragi283.core.common.item.endgame.HTInfinitePotionItem
 import hiiragi283.core.common.item.HTBlueprintItem
 import hiiragi283.core.common.item.HTBombItem
 import hiiragi283.core.common.item.HTCaptureEggItem
-import hiiragi283.core.common.item.HTCreativeItem
 import hiiragi283.core.common.item.HTEternalUpgradeItem
 import hiiragi283.core.common.item.HTExperienceTomeItem
-import hiiragi283.core.common.item.HTInfinitePotionItem
 import hiiragi283.core.common.item.HTPaintBrushItem
 import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.common.item.HTTraderCatalogItem
@@ -164,9 +164,7 @@ object HCItems {
     }
 
     @JvmField
-    val UNLIMITED_POTION: HTSimpleDeferredItem = REGISTER.registerItem("unlimited_potion", ::HTInfinitePotionItem) {
-        it.requiredFeatures(HiiragiCoreAPI.EXPERIMENTAL)
-    }
+    val POTION_OF_INFINITY: HTSimpleDeferredItem = REGISTER.registerItem("potion_of_infinity", ::HTInfinitePotionItem)
 
     @JvmField
     val ETERNAL_UPGRADE: HTSimpleDeferredItem = REGISTER.registerItem("eternal_upgrade", ::HTEternalUpgradeItem)
