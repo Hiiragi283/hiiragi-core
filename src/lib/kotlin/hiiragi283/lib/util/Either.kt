@@ -80,11 +80,3 @@ inline fun <A, B, C> Either<A, B>.flatMapLeft(left: (A) -> Either<C, B>): Either
     is Either.Left -> left(this.value)
     is Either.Right -> this
 }
-
-//    DFUEither <-> Either    //
-
-typealias DFUEither<A, B> = com.mojang.datafixers.util.Either<A, B>
-
-val <A, B> DFUEither<A, B>.kotlin: Either<A, B> get() = this.map({ Either.Left(it) }, { Either.Right(it) })
-
-val <A, B> Either<A, B>.java: DFUEither<A, B> get() = this.fold({ DFUEither.left(it) }, { DFUEither.right(it) })

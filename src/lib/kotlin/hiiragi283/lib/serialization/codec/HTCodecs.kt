@@ -1,12 +1,12 @@
 package hiiragi283.lib.serialization.codec
 
-import com.mojang.datafixers.util.Pair
 import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
 import com.mojang.serialization.DynamicOps
 import com.mojang.serialization.MapCodec
 import hiiragi283.lib.registry.RegistryKey
 import hiiragi283.lib.text.Text
+import hiiragi283.lib.util.DFUPair
 import hiiragi283.lib.util.Either
 import hiiragi283.lib.util.Ior
 import hiiragi283.lib.util.Option
@@ -61,7 +61,10 @@ data object HTCodecs {
      * @see ExtraCodecs.optionalEmptyMap
      */
     @JvmStatic
-    fun <A> option(codec: Codec<A>): Codec<Option<A>> = object : Codec<Option<A>> {
+    fun <A> option(codec: Codec<A>): Codec<Option<A>> = OptionCodec(codec)
+
+    @JvmInline
+    private value class OptionCodec<A>(private val codec: Codec<A>) : Codec<Option<A>> {
         override fun <T> encode(input: Option<A>, ops: DynamicOps<T>, prefix: T): DataResult<T> = input.fold(
             { DataResult.success(ops.emptyMap()) },
             { codec.encode(it, ops, prefix) },
@@ -72,9 +75,9 @@ data object HTCodecs {
             { it.entries().findAny().isEmpty },
         )
 
-        override fun <T> decode(ops: DynamicOps<T>, input: T): DataResult<Pair<Option<A>, T>> = when {
-            isEmptyMap(ops, input) -> DataResult.success(Pair.of(none(), input))
-            else -> codec.decode(ops, input).map { pair: Pair<A, T> -> pair.mapFirst { it.some() } }
+        override fun <T> decode(ops: DynamicOps<T>, input: T): DataResult<DFUPair<Option<A>, T>> = when {
+            isEmptyMap(ops, input) -> DataResult.success(DFUPair.of(none(), input))
+            else -> codec.decode(ops, input).map { pair: DFUPair<A, T> -> pair.mapFirst { it.some() } }
         }
     }
 
