@@ -1,11 +1,9 @@
 package hiiragi283.core.common.storage
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.function.andThen
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.serialization.value.HTValueSerializable
-import hiiragi283.core.api.storage.energy.HTEnergyBattery
 import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.common.block.entity.HTBlockEntity
@@ -30,14 +28,6 @@ class HTCapabilityCodec<CONTAINER : HTValueSerializable>(
         )
 
         @JvmField
-        val ENERGY: HTCapabilityCodec<HTEnergyBattery> = HTCapabilityCodec(
-            HTConst.BATTERIES,
-            HTConst.SLOT,
-            HTBlockEntity::getEnergyBattery.andThen(::listOfNotNull),
-            HTBlockEntity::hasEnergyStorage,
-        )
-
-        @JvmField
         val FLUID: HTCapabilityCodec<HTFluidTank> = HTCapabilityCodec(
             HTConst.FLUIDS,
             HTConst.TANK,
@@ -46,7 +36,7 @@ class HTCapabilityCodec<CONTAINER : HTValueSerializable>(
         )
 
         @JvmField
-        val TYPES: List<HTCapabilityCodec<*>> = listOf(ITEM, ENERGY, FLUID)
+        val TYPES: List<HTCapabilityCodec<*>> = listOf(ITEM, FLUID)
     }
 
     //    Save & Read    //

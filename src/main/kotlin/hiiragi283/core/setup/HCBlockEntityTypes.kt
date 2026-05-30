@@ -5,7 +5,6 @@ import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.storage.HTHandlerProvider
 import hiiragi283.core.common.block.entity.HTCopperBasinBlockEntity
 import hiiragi283.core.common.block.entity.HTTestBlockEntity
-import hiiragi283.core.common.capability.HTEnergyCapabilities
 import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.capability.HTItemCapabilities
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
@@ -69,6 +68,5 @@ object HCBlockEntityTypes {
     ) where BE : BlockEntity, BE : HTHandlerProvider {
         event.registerBlockEntity(HTItemCapabilities.block, type, HTHandlerProvider::getItemHandler)
         event.registerBlockEntity(HTFluidCapabilities.block, type, HTHandlerProvider::getFluidHandler)
-        event.registerBlockEntity(HTEnergyCapabilities.block, type, HTHandlerProvider::getEnergyStorage)
     }
 }

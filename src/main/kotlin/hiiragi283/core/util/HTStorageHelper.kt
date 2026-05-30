@@ -25,6 +25,7 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.SimpleFluidContent
 import java.util.function.Consumer
 import kotlin.math.roundToInt
+import net.neoforged.neoforge.energy.IEnergyStorage
 
 /**
  * @see mekanism.common.util.StorageUtils
@@ -104,11 +105,8 @@ data object HTStorageHelper {
 
     @JvmStatic
     private fun getEnergyDurability(container: ItemStack): Double {
-        val bestRatio: Double = HTEnergyCapabilities
-            .getBattery(container)
-            ?.getLevelAsFraction()
-            ?.toDouble()
-            ?: 0.0
+        val storage: IEnergyStorage = HTEnergyCapabilities.getCapability(container) ?: return 1.0
+        val bestRatio: Double = fixedFraction(storage.energyStored, storage.maxEnergyStored).toDouble()
         return 1 - bestRatio
     }
 

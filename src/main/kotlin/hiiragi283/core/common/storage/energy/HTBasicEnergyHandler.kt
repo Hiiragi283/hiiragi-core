@@ -6,25 +6,25 @@ import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
-import hiiragi283.core.api.storage.energy.HTEnergyBattery
+import hiiragi283.core.api.storage.amount.HTAmountSlot
+import hiiragi283.core.api.storage.energy.HTEnergyHandler
 import hiiragi283.core.common.storage.HTStorageValidators
 import java.util.function.Predicate
 
-/**
- * @see mekanism.common.capabilities.energy.BasicEnergyContainer
- */
-open class HTBasicEnergyBattery(
+open class HTBasicEnergyHandler(
     private val capacity: Int,
     protected val canExtract: Predicate<HTStorageAccess>,
     protected val canInsert: Predicate<HTStorageAccess>,
     private val listener: HTContentListener?,
-) : HTEnergyBattery.Basic() {
+) : HTAmountSlot.Basic(),
+    HTEnergyHandler,
+    HTContentListener {
     companion object {
         @JvmStatic
-        fun input(listener: HTContentListener?, capacity: Int): HTBasicEnergyBattery = create(listener, capacity, HTStorageAccess.NOT_EXTERNAL, HTStoragePredicates.alwaysTrue())
+        fun input(listener: HTContentListener?, capacity: Int): HTBasicEnergyHandler = create(listener, capacity, HTStorageAccess.NOT_EXTERNAL, HTStoragePredicates.alwaysTrue())
 
         @JvmStatic
-        fun output(listener: HTContentListener?, capacity: Int): HTBasicEnergyBattery = create(listener, capacity, HTStoragePredicates.alwaysTrue(), HTStorageAccess.INTERNAL_ONLY)
+        fun output(listener: HTContentListener?, capacity: Int): HTBasicEnergyHandler = create(listener, capacity, HTStoragePredicates.alwaysTrue(), HTStorageAccess.INTERNAL_ONLY)
 
         @JvmStatic
         fun create(
@@ -32,7 +32,7 @@ open class HTBasicEnergyBattery(
             capacity: Int,
             canExtract: Predicate<HTStorageAccess> = HTStoragePredicates.alwaysTrue(),
             canInsert: Predicate<HTStorageAccess> = HTStoragePredicates.alwaysTrue(),
-        ): HTBasicEnergyBattery = HTBasicEnergyBattery(HTStorageValidators.validateCapacity(capacity), canExtract, canInsert, listener)
+        ): HTBasicEnergyHandler = HTBasicEnergyHandler(HTStorageValidators.validateCapacity(capacity), canExtract, canInsert, listener)
     }
 
     @JvmField
@@ -42,7 +42,7 @@ open class HTBasicEnergyBattery(
         setAmountUnchecked(amount, true)
     }
 
-    fun setAmountUnchecked(amount: Int, validate: Boolean = false) {
+    protected fun setAmountUnchecked(amount: Int, validate: Boolean = false) {
         if (amount == 0) {
             if (this.amount == 0) return
             this.amount = 0
@@ -54,11 +54,11 @@ open class HTBasicEnergyBattery(
         onContentsChanged()
     }
 
-    final override fun canInsert(access: HTStorageAccess): Boolean = this.canInsert.test(access)
+    override fun canInsert(access: HTStorageAccess): Boolean = this.canInsert.test(access)
 
-    final override fun canExtract(access: HTStorageAccess): Boolean = this.canExtract.test(access)
+    override fun canExtract(access: HTStorageAccess): Boolean = this.canExtract.test(access)
 
-    override fun getAmount(): Int = amount
+    final override fun getAmount(): Int = amount
 
     override fun getCapacity(): Int = capacity
 
@@ -67,7 +67,7 @@ open class HTBasicEnergyBattery(
     }
 
     override fun deserialize(input: HTValueInput) {
-        input.getInt(HTConst.AMOUNT, 0).let(::setAmountUnchecked)
+        input.getInt(HTConst.AMOUNT)?.let(::setAmountUnchecked)
     }
 
     final override fun onContentsChanged() {

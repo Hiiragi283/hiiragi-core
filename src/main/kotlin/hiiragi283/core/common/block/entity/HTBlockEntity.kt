@@ -9,11 +9,8 @@ import hiiragi283.core.api.serialization.component.DataComponentGetter
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.HTHandlerProvider
-import hiiragi283.core.api.storage.energy.HTEnergyBattery
-import hiiragi283.core.api.storage.energy.HTEnergyHandler
 import hiiragi283.core.api.storage.fluid.HTFluidHandler
 import hiiragi283.core.api.storage.fluid.HTFluidTank
-import hiiragi283.core.api.storage.holder.HTEnergyBatteryHolder
 import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.api.storage.holder.HTItemSlotHolder
 import hiiragi283.core.api.storage.item.HTItemHandler
@@ -22,7 +19,6 @@ import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import hiiragi283.core.common.storage.HTCapabilityCodec
-import hiiragi283.core.impl.storage.resolver.HTEnergyStorageManager
 import hiiragi283.core.impl.storage.resolver.HTFluidHandlerManager
 import hiiragi283.core.impl.storage.resolver.HTItemHandlerManager
 import hiiragi283.core.util.HTItemDropHelper
@@ -38,7 +34,6 @@ import net.minecraft.world.Nameable
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.state.BlockState
-import net.neoforged.neoforge.energy.IEnergyStorage
 import net.neoforged.neoforge.fluids.capability.IFluidHandler
 import net.neoforged.neoforge.items.IItemHandler
 import java.util.UUID
@@ -50,7 +45,6 @@ import java.util.UUID
 abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, state: BlockState) :
     HTExtendedBlockEntity(type, pos, state),
     Nameable,
-    HTEnergyHandler,
     HTFluidHandler,
     HTHandlerProvider,
     HTItemHandler,
@@ -236,17 +230,16 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     //    Capability    //
 
     protected val fluidHandlerManager: HTFluidHandlerManager?
-    protected val energyHandlerManager: HTEnergyStorageManager?
     protected val itemHandlerManager: HTItemHandlerManager?
 
     init {
-        initializeVariables()
-        fluidHandlerManager = createFluidHandler(::setOnlySave)?.let { HTFluidHandlerManager(it, this) }
-        energyHandlerManager = createEnergyHandler(::setOnlySave)?.let { HTEnergyStorageManager(it, this) }
-        itemHandlerManager = createItemHandler(::setOnlySave)?.let { HTItemHandlerManager(it, this) }
+        val listener = ::setOnlySave
+        initializeVariables(listener)
+        fluidHandlerManager = createFluidHandler(listener)?.let { HTFluidHandlerManager(it, this) }
+        itemHandlerManager = createItemHandler(listener)?.let { HTItemHandlerManager(it, this) }
     }
 
-    protected open fun initializeVariables() {}
+    protected open fun initializeVariables(listener: HTContentListener) {}
 
     // Fluid
 
@@ -263,22 +256,6 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     final override fun getFluidTanks(side: Direction?): List<HTFluidTank> = fluidHandlerManager?.getContainers(side) ?: emptyList()
 
     final override fun getFluidHandler(direction: Direction?): IFluidHandler? = fluidHandlerManager?.resolve(direction)
-
-    // Energy
-
-    /**
-     * @see mekanism.common.tile.base.TileEntityMekanism.getInitialEnergyContainers
-     */
-    protected open fun createEnergyHandler(listener: HTContentListener): HTEnergyBatteryHolder? = null
-
-    /**
-     * @see mekanism.common.tile.base.TileEntityMekanism.canHandleEnergy
-     */
-    final override fun hasEnergyStorage(): Boolean = energyHandlerManager?.canHandle() ?: false
-
-    final override fun getEnergyBattery(side: Direction?): HTEnergyBattery? = energyHandlerManager?.getContainers(side)?.firstOrNull()
-
-    final override fun getEnergyStorage(direction: Direction?): IEnergyStorage? = energyHandlerManager?.resolve(direction)
 
     // Item
 

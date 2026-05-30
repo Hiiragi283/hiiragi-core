@@ -1,7 +1,6 @@
 package hiiragi283.core.api.storage
 
 import net.minecraft.core.Direction
-import net.neoforged.neoforge.energy.IEnergyStorage
 import net.neoforged.neoforge.fluids.capability.IFluidHandler
 import net.neoforged.neoforge.items.IItemHandler
 
@@ -22,10 +21,4 @@ interface HTHandlerProvider {
      * @return 取得できなかった場合は`null`
      */
     fun getFluidHandler(direction: Direction?): IFluidHandler?
-
-    /**
-     * 指定した[面][direction]から[IEnergyStorage]を取得します。
-     * @return 取得できなかった場合は`null`
-     */
-    fun getEnergyStorage(direction: Direction?): IEnergyStorage?
 }

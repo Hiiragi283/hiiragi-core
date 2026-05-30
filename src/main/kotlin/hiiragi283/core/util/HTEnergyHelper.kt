@@ -2,13 +2,13 @@ package hiiragi283.core.util
 
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
-import hiiragi283.core.api.storage.energy.HTEnergyBattery
+import hiiragi283.core.api.storage.energy.HTEnergyHandler
 
 data object HTEnergyHelper {
     @JvmStatic
     fun moveEnergy(
-        from: HTEnergyBattery?,
-        to: HTEnergyBattery?,
+        from: HTEnergyHandler?,
+        to: HTEnergyHandler?,
         onUpdate: Runnable?,
         amount: Int = from?.getAmount() ?: 0,
         access: HTStorageAccess = HTStorageAccess.INTERNAL,
