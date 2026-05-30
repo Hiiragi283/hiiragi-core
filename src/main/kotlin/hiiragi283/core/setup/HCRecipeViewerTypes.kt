@@ -1,5 +1,7 @@
 package hiiragi283.core.setup
 
+import hiiragi283.core.common.recipe.HCBrewingRecipe
+import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.lib.math.HTBounds
 import hiiragi283.lib.recipe.HTRecipeHolder
 import hiiragi283.lib.recipe.viewer.HTHolderRecipeViewerType
@@ -16,7 +18,8 @@ import net.minecraft.world.level.ItemLike
 data object HCRecipeViewerTypes {
     //    Basic    //
 
-    // val BREWING: HTHolderRecipeViewerType<HCBrewingRecipe> = creteHolder(HTVanillaRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 6)
+    @JvmField
+    val BREWING: HTHolderRecipeViewerType<HCBrewingRecipe> = creteHolder(HTVanillaRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 6)
 
     @JvmField
     val CHARGING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD, 18 * 4, 18 * 2)

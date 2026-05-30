@@ -1,10 +1,16 @@
 package hiiragi283.core.client.integration.jei
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.client.integration.jei.category.HCBrewingRecipeCategory
+import hiiragi283.core.common.recipe.HCBrewingRecipe
+import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.setup.HCFluids
+import hiiragi283.core.setup.HCRecipeViewerTypes
 import hiiragi283.core.util.HCPotionFluidHelper
 import hiiragi283.lib.HTPhysicalSideHelper
 import hiiragi283.lib.integration.jei.HTJeiPlugin
+import hiiragi283.lib.integration.jei.HTJeiRecipeHelper
+import hiiragi283.lib.integration.jei.HTJeiWorkstationHelper
 import hiiragi283.lib.item.HTPotionBasedItem
 import hiiragi283.lib.item.alchemy.BottledPotionContents
 import hiiragi283.lib.item.alchemy.HTPotionHelper
@@ -13,6 +19,7 @@ import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.helpers.IPlatformFluidHelper
 import mezz.jei.api.neoforge.NeoForgeTypes
 import mezz.jei.api.registration.IExtraIngredientRegistration
+import mezz.jei.api.registration.IRecipeCatalystRegistration
 import mezz.jei.api.registration.IRecipeCategoryRegistration
 import mezz.jei.api.registration.IRecipeRegistration
 import mezz.jei.api.registration.ISubtypeRegistration
@@ -61,11 +68,20 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
 
     override fun registerCategories(registration: IRecipeCategoryRegistration) {
         val guiHelper: IGuiHelper = registration.jeiHelpers.guiHelper
+
+        registration.addRecipeCategories(
+            HCBrewingRecipeCategory(guiHelper),
+        )
     }
 
     override fun registerVanillaCategoryExtensions(registration: IVanillaCategoryExtensionRegistration) {
     }
 
     override fun registerRecipes(registration: IRecipeRegistration) {
+        HTJeiRecipeHelper.addLookupRecipes(registration, HCRecipeViewerTypes.BREWING, HTVanillaRecipeTypes.BREWING, HCBrewingRecipe.SORTER)
+    }
+
+    override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {
+        HTJeiWorkstationHelper.addFromViewerType(registration, HCRecipeViewerTypes.BREWING)
     }
 }

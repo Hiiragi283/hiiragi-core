@@ -2,6 +2,7 @@ package hiiragi283.core.data.lang
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.text.HCTranslation
+import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
@@ -51,6 +52,11 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.POTION_OF_INFINITY, "Potion of Infinity")
         add(HCItems.RING_OF_HYPERION, "Ring of Hyperion")
         // Recipe
+        add(HTVanillaRecipeTypes.SMELTING, "Smelting")
+        add(HTVanillaRecipeTypes.BLASTING, "Blasting")
+        add(HTVanillaRecipeTypes.SMOKING, "Smoking")
+        add(HTVanillaRecipeTypes.BREWING, "Brewing")
+
         add(HCRecipeTypes.CHARGING, "Charging")
         add(HCRecipeTypes.CHOPPING, "Chopping")
         add(HCRecipeTypes.EXPLODING, "Exploding")

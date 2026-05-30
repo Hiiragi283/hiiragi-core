@@ -20,7 +20,7 @@ import net.minecraft.util.context.ContextMap
  */
 data object HTJeiRecipeHelper {
     @JvmStatic
-    private fun createContext(): ContextMap = Minecraft
+    fun createContext(): ContextMap = Minecraft
         .getInstance()
         .level
         ?.let { HTRecipeLookupContext.create(it, HTPhysicalSideHelper.cachedRecipes) }

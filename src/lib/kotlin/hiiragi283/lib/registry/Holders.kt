@@ -2,6 +2,7 @@ package hiiragi283.lib.registry
 
 import hiiragi283.lib.resource.SupplierWithId
 import net.minecraft.core.Holder
+import net.minecraft.core.HolderSet
 import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
 
@@ -25,4 +26,54 @@ private value class HolderWithId<T : Any>(private val holder: Holder<T>) : Suppl
     override fun get(): T = holder.value()
 
     override fun getId(): Identifier = holder.getKeyOrThrow().identifier()
+}
+
+//    HolderSet    //
+
+fun <T : Any> holderSetOf(): HolderSet<T> = HolderSet.empty()
+
+fun <T : Any> holderSetOf(holder: Holder<T>): HolderSet<T> = buildHolderSet { add(holder) }
+
+fun <T : Any> holderSetOf(vararg holders: Holder<T>): HolderSet<T> = buildHolderSet { addAll(holders) }
+
+inline fun <T : Any> buildHolderSet(builderAction: HolderSetBuilder<T>.() -> Unit): HolderSet<T> = HolderSetBuilder<T>().apply(builderAction).build()
+
+class HolderSetBuilder<T : Any> {
+    private val holders: MutableList<Holder<T>> = mutableListOf()
+
+    fun add(holder: Holder<T>) {
+        val delegate: Holder<T> = holder.delegate
+        check(delegate is Holder.Reference<T>) { "Holder $holder cannot be serialized" }
+        this.holders.add(delegate)
+    }
+
+    fun addAll(holders: Iterable<Holder<T>>) {
+        holders.forEach(::add)
+    }
+
+    fun addAll(holders: Array<out Holder<T>>) {
+        holders.forEach(::add)
+    }
+
+    fun addAll(holders: Sequence<Holder<T>>) {
+        holders.forEach(::add)
+    }
+
+    operator fun plusAssign(holder: Holder<T>) {
+        this.add(holder)
+    }
+
+    operator fun plusAssign(holders: Iterable<Holder<T>>) {
+        this.addAll(holders)
+    }
+
+    operator fun plusAssign(holders: Sequence<Holder<T>>) {
+        this.addAll(holders)
+    }
+
+    @PublishedApi
+    internal fun build(): HolderSet<T> = when {
+        holders.isEmpty() -> HolderSet.empty()
+        else -> HolderSet.direct(holders)
+    }
 }

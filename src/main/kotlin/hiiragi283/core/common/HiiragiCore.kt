@@ -15,6 +15,7 @@ import hiiragi283.core.setup.HCRecipeLookups
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.lib.HTRegistries
+import hiiragi283.lib.item.alchemy.HTPotionFluidManager
 import hiiragi283.lib.material.HTModifyMaterialContentsEvent
 import hiiragi283.lib.mod.HTCommonMod
 import hiiragi283.lib.network.HTPayloadHandlers
@@ -71,6 +72,9 @@ data object HiiragiCore : HTCommonMod() {
                 .listElements()
                 .map(::HTModifyMaterialContentsEvent)
                 .forEach(MOD_BUS::post)
+        }
+        event.enqueueWork {
+            HTPotionFluidManager.register(HCFluids.POTION.get(), HTPlatformImpl.DEFAULT_POTION_HANDLER)
         }
     }
 
