@@ -65,7 +65,7 @@ abstract class HTBasicResourceSlot<RESOURCE : Resource>(
 
     override fun extract(resource: RESOURCE, amount: Int, transaction: TransactionContext, access: HTHandlerAccess): Int {
         TransferPreconditions.checkNonEmptyNonNegative(resource, amount)
-        if (amount == 0 || resource != this.resource || this.canExtract.test(resource, access)) return 0
+        if (amount == 0 || resource != this.resource || !this.canExtract.test(resource, access)) return 0
         val currentAmount: Long = this.amountAsLong
         var toRemove: Int = minOf(amount, this.amountAsInt)
         toRemove = minOf(toRemove, getExtractionRate(access).let(Ints::saturatedCast))
