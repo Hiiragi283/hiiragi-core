@@ -91,12 +91,12 @@ class HTCopperBasinBlockEntity(worldPosition: BlockPos, blockState: BlockState) 
 
     override fun writeReducedUpdateTag(output: ValueOutput) {
         super.writeReducedUpdateTag(output)
-        output.putChild(HTConstants.FLUIDS, tank)
+        output.putChild(HTConstants.FLUID, tank)
     }
 
     override fun readUpdateTag(input: ValueInput) {
         super.readUpdateTag(input)
-        input.readChild(HTConstants.FLUIDS, tank)
+        input.readChild(HTConstants.FLUID, tank)
     }
 
     //    Ticking    //

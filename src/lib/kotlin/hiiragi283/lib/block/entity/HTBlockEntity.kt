@@ -78,17 +78,6 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
 
     protected abstract fun onUpdateServer(level: ServerLevel, pos: BlockPos, state: BlockState): Boolean
 
-    open fun onBlockRemoved(state: BlockState, level: Level, pos: BlockPos) {
-        if (shouldDrop(state, level, pos)) {
-            val handler: ItemResourceHandler = getItemHandler(null) ?: return
-            for (i: Int in handler.indices) {
-                ItemUtil.getStack(handler, i).let { HTItemDropHelper.dropStackAt(level, pos, it) }
-            }
-        }
-    }
-
-    protected open fun shouldDrop(state: BlockState, level: Level, pos: BlockPos): Boolean = true
-
     //    Save & Read    //
 
     override fun writeValue(output: ValueOutput) {
@@ -167,4 +156,20 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
     fun getItemSlot(side: Direction?, index: Int): HTItemSlot? = getItemSlots(side).getOrNull(index)
 
     final override fun getItemHandler(direction: Direction?): ItemResourceHandler? = itemHandlerManager?.resolve(direction)
+
+    override fun preRemoveSideEffects(pos: BlockPos, state: BlockState) {
+        val level: Level = this.level ?: return
+        onBlockRemoved(state, level, pos)
+    }
+
+    open fun onBlockRemoved(state: BlockState, level: Level, pos: BlockPos) {
+        if (shouldDrop(state, level, pos)) {
+            val handler: ItemResourceHandler = getItemHandler(null) ?: return
+            for (i: Int in handler.indices) {
+                ItemUtil.getStack(handler, i).let { HTItemDropHelper.dropStackAt(level, pos, it) }
+            }
+        }
+    }
+
+    protected open fun shouldDrop(state: BlockState, level: Level, pos: BlockPos): Boolean = true
 }

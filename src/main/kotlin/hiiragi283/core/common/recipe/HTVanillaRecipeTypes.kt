@@ -12,8 +12,10 @@ import hiiragi283.lib.recipe.lookup.HTRecipeLookupContext
 import hiiragi283.lib.recipe.lookup.HTRecipeType
 import hiiragi283.lib.registry.toLike
 import net.minecraft.core.Holder
+import net.minecraft.core.TypedInstance
 import net.minecraft.resources.Identifier
 import net.minecraft.util.context.ContextMap
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemInstance
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.alchemy.Potion
@@ -44,9 +46,9 @@ object HTVanillaRecipeTypes {
 
     @JvmInline
     private value class HCCookingRecipe(private val recipe: AbstractCookingRecipe) : HTItemToItemRecipe {
-        override fun test(input: ItemInstance): Boolean = recipe.input().test(input)
+        override fun test(input: TypedInstance<Item>): Boolean = recipe.input().test(input)
 
-        override fun getRequiredAmount(input: ItemInstance): Int = recipe.input().getRequiredAmount(input)
+        override fun getRequiredAmount(input: TypedInstance<Item>): Int = recipe.input().getRequiredAmount(input)
 
         override fun assemble(input: ItemInstance): ItemStack = HTIngredientHelper.createStack(input).let(::SingleRecipeInput).let(recipe::assemble)
 

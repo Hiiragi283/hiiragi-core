@@ -12,18 +12,22 @@ import hiiragi283.lib.item.alchemy.HTPotionHelper
 import hiiragi283.lib.recipe.base.HTItemOrFluidRecipe
 import hiiragi283.lib.recipe.base.HTProgressData
 import hiiragi283.lib.recipe.base.HTProgressRecipe
+import hiiragi283.lib.recipe.ingredient.HTIngredientHelper
 import hiiragi283.lib.recipe.ingredient.test
 import hiiragi283.lib.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.lib.recipe.result.HTItemAndFluidResult
 import hiiragi283.lib.registry.toLike
 import hiiragi283.lib.serialization.codec.HTCodecs
 import net.minecraft.core.Holder
+import net.minecraft.core.TypedInstance
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.Identifier
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemInstance
 import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.PotionBrewing
 import net.minecraft.world.item.crafting.Ingredient
+import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidInstance
 import net.neoforged.neoforge.fluids.FluidType
 
@@ -51,13 +55,13 @@ data class HCBrewingRecipe(val potionFrom: Holder<Potion>, val ingredient: Ingre
     constructor(accessor: PotionBrewing.Mix<Potion>) : this(accessor.from, accessor.ingredient, accessor.to)
 
     @Suppress("DEPRECATION")
-    override fun test(first: ItemInstance, second: FluidInstance): Boolean {
-        val contents: BottledPotionContents = HTPotionHelper.getContents(second) ?: return false
+    override fun test(first: TypedInstance<Item>, second: TypedInstance<Fluid>): Boolean {
+        val contents: BottledPotionContents = HTIngredientHelper.createStack(second).let(HTPotionHelper::getContents) ?: return false
         val potionIn: Holder<Potion> = contents.potion ?: return false
         return ingredient.test(first) && potionIn.`is`(potionFrom)
     }
 
-    override fun getRequiredAmount(first: ItemInstance, second: FluidInstance): Pair<Int, Int> = when {
+    override fun getRequiredAmount(first: TypedInstance<Item>, second: TypedInstance<Fluid>): Pair<Int, Int> = when {
         test(first, second) -> 1 to FluidType.BUCKET_VOLUME
         else -> 0 to 0
     }

@@ -8,6 +8,8 @@ import hiiragi283.lib.recipe.base.HTRecipePredicates
 import hiiragi283.lib.recipe.ingredient.getRequiredAmount
 import hiiragi283.lib.recipe.ingredient.test
 import hiiragi283.lib.recipe.result.HTChancedItemResult
+import net.minecraft.core.TypedInstance
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemInstance
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
@@ -29,9 +31,9 @@ open class HTInWorldRecipe(val ingredient: Ingredient, val result: HTChancedItem
         val SIMPLE_CODEC: MapCodec<HTInWorldRecipe> = codec(::HTInWorldRecipe)
     }
 
-    override fun test(input: ItemInstance): Boolean = ingredient.test(input)
+    override fun test(input: TypedInstance<Item>): Boolean = ingredient.test(input)
 
-    override fun getRequiredAmount(input: ItemInstance): Int = ingredient.getRequiredAmount(input)
+    override fun getRequiredAmount(input: TypedInstance<Item>): Int = ingredient.getRequiredAmount(input)
 
     override fun assemble(input: ItemInstance): ItemStack = result.createOrEmpty()
 }

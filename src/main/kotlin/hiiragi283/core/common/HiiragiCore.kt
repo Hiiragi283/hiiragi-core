@@ -80,6 +80,7 @@ data object HiiragiCore : HTCommonMod() {
 
     override fun registerCapabilities(helper: CapabilityHelper) {
         // Block
+        helper.registerBlockEntity(HCBlockEntityTypes.CHOPPING_BOARD.get())
         helper.registerBlockEntity(HCBlockEntityTypes.COPPER_BASIN.get())
         // Item
         helper.registerItem(

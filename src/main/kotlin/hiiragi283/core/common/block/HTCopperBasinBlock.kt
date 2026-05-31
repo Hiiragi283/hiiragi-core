@@ -16,7 +16,6 @@ import net.minecraft.world.phys.BlockHitResult
 import net.neoforged.neoforge.transfer.fluid.FluidUtil
 
 open class HTCopperBasinBlock(properties: Properties) : HTBasicEntityBlock(HCBlockEntityTypes.COPPER_BASIN, properties) {
-
     override fun useItemOn(itemStack: ItemStack, state: BlockState, level: Level, pos: BlockPos, player: Player, hand: InteractionHand, hitResult: BlockHitResult): InteractionResult {
         val result: InteractionResult = super.useItemOn(itemStack, state, level, pos, player, hand, hitResult)
         if (itemStack.isEmpty) return result

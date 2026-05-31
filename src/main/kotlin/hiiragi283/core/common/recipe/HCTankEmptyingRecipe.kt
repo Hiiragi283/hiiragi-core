@@ -14,6 +14,8 @@ import hiiragi283.lib.recipe.result.HTItemAndFluidResult
 import hiiragi283.lib.recipe.result.HTItemResult
 import hiiragi283.lib.serialization.codec.convert
 import hiiragi283.lib.util.Option
+import net.minecraft.core.TypedInstance
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemInstance
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeSerializer
@@ -36,9 +38,9 @@ class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidR
         }
     }
 
-    override fun test(input: ItemInstance): Boolean = ingredient.test(input)
+    override fun test(input: TypedInstance<Item>): Boolean = ingredient.test(input)
 
-    override fun getRequiredAmount(input: ItemInstance): Int = ingredient.getRequiredAmount(input)
+    override fun getRequiredAmount(input: TypedInstance<Item>): Int = ingredient.getRequiredAmount(input)
 
     override fun assemble(input: ItemInstance): HTItemAndFluidResult {
         val fluidStack: FluidStack = fluidResult.create()

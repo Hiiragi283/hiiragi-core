@@ -11,6 +11,8 @@ import hiiragi283.lib.recipe.ingredient.test
 import hiiragi283.lib.recipe.result.HTChancedItemResult
 import hiiragi283.lib.recipe.result.HTResultHelper
 import hiiragi283.lib.serialization.codec.listOrElement
+import net.minecraft.core.TypedInstance
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemInstance
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
@@ -36,9 +38,9 @@ open class HTBasicItemToChancedItemsRecipe(
         val SIMPLE_CODEC: MapCodec<HTBasicItemToChancedItemsRecipe> = codec(::HTBasicItemToChancedItemsRecipe)
     }
 
-    override fun test(input: ItemInstance): Boolean = ingredient.test(input)
+    override fun test(input: TypedInstance<Item>): Boolean = ingredient.test(input)
 
-    override fun getRequiredAmount(input: ItemInstance): Int = ingredient.getRequiredAmount(input)
+    override fun getRequiredAmount(input: TypedInstance<Item>): Int = ingredient.getRequiredAmount(input)
 
     override fun assemble(input: ItemInstance): List<ItemStack> = results.map(HTChancedItemResult::createOrEmpty).let(HTResultHelper::mergeStacks)
 }

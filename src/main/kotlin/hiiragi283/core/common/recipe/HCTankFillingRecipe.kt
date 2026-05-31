@@ -12,11 +12,14 @@ import hiiragi283.lib.recipe.ingredient.getRequiredAmount
 import hiiragi283.lib.recipe.ingredient.test
 import hiiragi283.lib.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.lib.recipe.result.HTItemResult
+import net.minecraft.core.TypedInstance
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemInstance
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
+import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidInstance
 
 class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: HTFluidIngredient, val result: HTItemResult) :
@@ -34,11 +37,11 @@ class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: H
         }
     }
 
-    override fun testContainer(instance: ItemInstance): Boolean = itemIngredient.test(instance)
+    override fun testContainer(instance: TypedInstance<Item>): Boolean = itemIngredient.test(instance)
 
-    override fun testFluid(instance: FluidInstance): Boolean = fluidIngredient.test(instance)
+    override fun testFluid(instance: TypedInstance<Fluid>): Boolean = fluidIngredient.test(instance)
 
-    override fun getRequiredAmount(first: ItemInstance, second: FluidInstance): Pair<Int, Int> = itemIngredient.getRequiredAmount(first) to fluidIngredient.getRequiredAmount(second)
+    override fun getRequiredAmount(first: TypedInstance<Item>, second: TypedInstance<Fluid>): Pair<Int, Int> = itemIngredient.getRequiredAmount(first) to fluidIngredient.getRequiredAmount(second)
 
     override fun assemble(firstInput: ItemInstance, secondInput: FluidInstance): ItemStack = result.createOrEmpty()
 
