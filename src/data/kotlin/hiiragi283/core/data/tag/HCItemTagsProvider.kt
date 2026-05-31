@@ -24,6 +24,8 @@ class HCItemTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<H
         copy(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.ECHO)
         copy(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.IRIDIUM)
 
+        tags(CommonTagPrefixes.DUST, HCMaterialContents.ENDER_PEARL).addItem(HCItems.ENDER_PEARL_DUST)
+        tags(CommonTagPrefixes.DUST, HCMaterialContents.OBSIDIAN).addItem(HCItems.OBSIDIAN_DUST)
         tags(CommonTagPrefixes.DUST, HCMaterialContents.IRIDIUM).addItem(HCItems.IRIDIUM_DUST)
 
         tags(CommonTagPrefixes.GEM, HCMaterialContents.ECHO).addItem(Items.ECHO_SHARD)

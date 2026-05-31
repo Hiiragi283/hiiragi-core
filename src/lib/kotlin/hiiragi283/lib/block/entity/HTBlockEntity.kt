@@ -3,6 +3,7 @@ package hiiragi283.lib.block.entity
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.serialization.readOption
 import hiiragi283.lib.text.Text
+import hiiragi283.lib.transfer.HTCapabilityCodec
 import hiiragi283.lib.transfer.HTHandlerProvider
 import hiiragi283.lib.transfer.fluid.FluidResourceHandler
 import hiiragi283.lib.transfer.fluid.HTFluidTank
@@ -92,6 +93,12 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
 
     override fun writeValue(output: ValueOutput) {
         super.writeValue(output)
+        // Capability
+        for (type: HTCapabilityCodec<*> in HTCapabilityCodec.TYPES) {
+            if (type.canHandle(this)) {
+                type.saveTo(output, this)
+            }
+        }
         // Custom Name
         output.storeNullable("custom_name", ComponentSerialization.CODEC, this.customName)
         // Owner
@@ -100,6 +107,12 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
 
     override fun readValue(input: ValueInput) {
         super.readValue(input)
+        // Capability
+        for (type: HTCapabilityCodec<*> in HTCapabilityCodec.TYPES) {
+            if (type.canHandle(this)) {
+                type.loadFrom(input, this)
+            }
+        }
         // Custom Name
         input.readOption("custom_name", ComponentSerialization.CODEC).onSome(::customName::set)
         // Owner
@@ -134,6 +147,8 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
     protected open fun initializeVariables() {}
 
     // Fluid
+    fun hasFluidHandler(): Boolean = fluidHandlerManager != null
+
     protected open fun createFluidHandler(listener: Runnable): HTResourceSlotHolder<HTFluidTank>? = null
 
     fun getFluidTanks(side: Direction?): List<HTFluidTank> = fluidHandlerManager?.getContainers(side) ?: emptyList()
@@ -143,6 +158,8 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
     final override fun getFluidHandler(direction: Direction?): FluidResourceHandler? = fluidHandlerManager?.resolve(direction)
 
     // Item
+    fun hasItemHandler(): Boolean = itemHandlerManager != null
+
     protected open fun createItemHandler(listener: Runnable): HTResourceSlotHolder<HTItemSlot>? = null
 
     fun getItemSlots(side: Direction?): List<HTItemSlot> = itemHandlerManager?.getContainers(side) ?: emptyList()

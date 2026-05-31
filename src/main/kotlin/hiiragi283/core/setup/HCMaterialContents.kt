@@ -181,6 +181,7 @@ data object HCMaterialContents {
 
     @JvmField
     val ENDER_PEARL: HTDeferredMaterialContents = REGISTER.registerContents("ender_pearl", CommonPartKeys.MISC) {
+        add(CommonPartKeys.DUST, HTMaterialItemEntry.item(HCItems.ENDER_PEARL_DUST), CommonTagPrefixes.DUST)
         add(CommonPartKeys.MISC, HTMaterialItemEntry.item(Items.ENDER_PEARL), Tags.Items.ENDER_PEARLS)
     }
 
@@ -188,7 +189,7 @@ data object HCMaterialContents {
     val OBSIDIAN: HTDeferredMaterialContents = REGISTER.registerContents("obsidian", CommonPartKeys.STORAGE_BLOCK) {
         add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.OBSIDIAN), Tags.Items.OBSIDIANS_NORMAL)
 
-        add(CommonPartKeys.DUST, CommonTagPrefixes.DUST) // TODO
+        add(CommonPartKeys.DUST, HTMaterialItemEntry.item(HCItems.OBSIDIAN_DUST), CommonTagPrefixes.DUST)
     }
 
     @JvmField

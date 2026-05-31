@@ -47,6 +47,9 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.MEAT, "Meat")
         // Item
         add(HCItems.NETHERITE_NUGGET, "Netherite Nugget")
+        add(HCItems.ENDER_PEARL_DUST, "Ender Pearl Dust")
+        add(HCItems.OBSIDIAN_DUST, "Obsidian Dust")
+
         add(HCItems.IRIDIUM_DUST, "Iridium Dust")
         add(HCItems.IRIDIUM_INGOT, "Iridium Ingot")
         add(HCItems.IRIDIUM_NUGGET, "Iridium Nugget")

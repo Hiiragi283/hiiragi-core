@@ -87,18 +87,6 @@ class HTCopperBasinBlockEntity(worldPosition: BlockPos, blockState: BlockState) 
         return true
     }
 
-    //    Save & Load    //
-
-    override fun writeValue(output: ValueOutput) {
-        super.writeValue(output)
-        output.putChild(HTConstants.FLUIDS, tank) // TODO
-    }
-
-    override fun readValue(input: ValueInput) {
-        super.readValue(input)
-        input.readChild(HTConstants.FLUIDS, tank) // TODO
-    }
-
     //    Sync    //
 
     override fun writeReducedUpdateTag(output: ValueOutput) {

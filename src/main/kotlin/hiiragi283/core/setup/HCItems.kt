@@ -27,9 +27,17 @@ data object HCItems {
 
     //    Resources    //
 
+    // Vanilla
     @JvmField
     val NETHERITE_NUGGET: HTSimpleDeferredItem = REGISTER.registerSimpleItem("netherite_nugget") { it.fireResistant() }
 
+    @JvmField
+    val ENDER_PEARL_DUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("ender_pearl_dust")
+
+    @JvmField
+    val OBSIDIAN_DUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("obsidian_dust")
+
+    // Common
     @JvmField
     val IRIDIUM_DUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("iridium_dust") { it.rarity(Rarity.RARE) }
 
