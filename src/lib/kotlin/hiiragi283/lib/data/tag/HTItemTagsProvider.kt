@@ -1,6 +1,7 @@
 package hiiragi283.lib.data.tag
 
 import hiiragi283.lib.registry.toLike
+import hiiragi283.lib.tag.RawTagKey
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
@@ -24,6 +25,10 @@ abstract class HTItemTagsProvider : HTIdLikeTagsProvider<Item> {
 
     constructor(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>, contentsGetter: CompletableFuture<TagLookup<Block>>, modId: String) : super(output, Registries.ITEM, lookupProvider, modId) {
         this.blockTags = contentsGetter
+    }
+
+    protected fun copy(tagKey: RawTagKey) {
+        this.copy(tagKey.create(Registries.BLOCK), tagKey.create(Registries.ITEM))
     }
 
     protected fun copy(blockTag: TagKey<Block>, itemTag: TagKey<Item>) {

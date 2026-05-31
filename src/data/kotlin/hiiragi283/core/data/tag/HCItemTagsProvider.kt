@@ -16,12 +16,12 @@ import net.neoforged.neoforge.common.Tags
 class HCItemTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>, contentsGetter: CompletableFuture<TagLookup<Block>>) : HTItemTagsProvider(output, lookupProvider, contentsGetter, HiiragiCoreAPI.MOD_ID) {
     override fun appendTags(registries: HolderLookup.Provider) {
         copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS)
-        copy(HTCommonTags.Blocks.STORAGE_BLOCKS_CHARCOAL, HTCommonTags.Items.STORAGE_BLOCKS_CHARCOAL)
-        copy(HTCommonTags.Blocks.STORAGE_BLOCKS_GLOWSTONE, HTCommonTags.Items.STORAGE_BLOCKS_GLOWSTONE)
-        copy(HTCommonTags.Blocks.STORAGE_BLOCKS_QUARTZ, HTCommonTags.Items.STORAGE_BLOCKS_QUARTZ)
-        copy(HTCommonTags.Blocks.STORAGE_BLOCKS_AMETHYST, HTCommonTags.Items.STORAGE_BLOCKS_AMETHYST)
-        copy(HTCommonTags.Blocks.STORAGE_BLOCKS_ECHO, HTCommonTags.Items.STORAGE_BLOCKS_ECHO)
-        copy(HTCommonTags.Blocks.STORAGE_BLOCKS_IRIDIUM, HTCommonTags.Items.STORAGE_BLOCKS_IRIDIUM)
+        copy(HTCommonTags.STORAGE_BLOCKS_CHARCOAL)
+        copy(HTCommonTags.STORAGE_BLOCKS_GLOWSTONE)
+        copy(HTCommonTags.STORAGE_BLOCKS_QUARTZ)
+        copy(HTCommonTags.STORAGE_BLOCKS_AMETHYST)
+        copy(HTCommonTags.STORAGE_BLOCKS_ECHO)
+        copy(HTCommonTags.STORAGE_BLOCKS_IRIDIUM)
 
         tags(Tags.Items.DUSTS, HTCommonTags.Items.DUSTS_IRIDIUM).addItem(HCItems.IRIDIUM_DUST)
 

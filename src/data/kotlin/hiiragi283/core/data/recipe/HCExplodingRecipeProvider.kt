@@ -32,7 +32,7 @@ class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider
         }.save(output)
         // Quartz Block -> Ghast Tear
         HCExplodingRecipeBuilder.create {
-            ingredient = ingredientCreator.create(HTCommonTags.Items.STORAGE_BLOCKS_QUARTZ)
+            ingredient = ingredientCreator.create(HTCommonTags.STORAGE_BLOCKS_QUARTZ)
             result = resultCreator.create(Items.GHAST_TEAR).withChance(fraction(1, 4))
         }.save(output)
 

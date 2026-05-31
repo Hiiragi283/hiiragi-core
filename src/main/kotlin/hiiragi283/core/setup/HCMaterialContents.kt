@@ -26,7 +26,7 @@ data object HCMaterialContents {
 
     @JvmField
     val CHARCOAL: HTDeferredMaterialContents = REGISTER.registerContents("charcoal", CommonPartKeys.FUEL) {
-        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(HCBlocks.CHARCOAL_BLOCK), HTCommonTags.Items.STORAGE_BLOCKS_CHARCOAL)
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(HCBlocks.CHARCOAL_BLOCK), HTCommonTags.STORAGE_BLOCKS_CHARCOAL)
 
         add(CommonPartKeys.FUEL, HTMaterialItemEntry.item(Items.CHARCOAL))
     }
@@ -47,7 +47,7 @@ data object HCMaterialContents {
 
     @JvmField
     val GLOWSTONE: HTDeferredMaterialContents = REGISTER.registerContents("glowstone", CommonPartKeys.DUST) {
-        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.GLOWSTONE), HTCommonTags.Items.STORAGE_BLOCKS_GLOWSTONE)
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.GLOWSTONE), HTCommonTags.STORAGE_BLOCKS_GLOWSTONE)
 
         add(CommonPartKeys.DUST, HTMaterialItemEntry.item(Items.GLOWSTONE_DUST), Tags.Items.DUSTS_GLOWSTONE)
     }
@@ -68,14 +68,14 @@ data object HCMaterialContents {
 
     @JvmField
     val QUARTZ: HTDeferredMaterialContents = REGISTER.registerContents("quartz", CommonPartKeys.GEM) {
-        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.QUARTZ_BLOCK), HTCommonTags.Items.STORAGE_BLOCKS_QUARTZ)
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.QUARTZ_BLOCK), HTCommonTags.STORAGE_BLOCKS_QUARTZ)
 
         add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.QUARTZ), Tags.Items.GEMS_QUARTZ)
     }
 
     @JvmField
     val AMETHYST: HTDeferredMaterialContents = REGISTER.registerContents("amethyst", CommonPartKeys.GEM) {
-        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.AMETHYST_BLOCK), HTCommonTags.Items.STORAGE_BLOCKS_AMETHYST)
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.AMETHYST_BLOCK), HTCommonTags.STORAGE_BLOCKS_AMETHYST)
 
         add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.AMETHYST_SHARD), Tags.Items.GEMS_AMETHYST)
     }
@@ -96,7 +96,7 @@ data object HCMaterialContents {
 
     @JvmField
     val ECHO: HTDeferredMaterialContents = REGISTER.registerContents("echo", CommonPartKeys.GEM) {
-        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(HCBlocks.ECHO_BLOCK), HTCommonTags.Items.STORAGE_BLOCKS_ECHO)
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(HCBlocks.ECHO_BLOCK), HTCommonTags.STORAGE_BLOCKS_ECHO)
 
         add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.ECHO_SHARD), HTCommonTags.Items.GEMS_ECHO)
     }
@@ -144,7 +144,7 @@ data object HCMaterialContents {
     // Common
     @JvmField
     val IRIDIUM: HTDeferredMaterialContents = REGISTER.registerContents("iridium", CommonPartKeys.INGOT) {
-        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(HCBlocks.IRIDIUM_BLOCK), HTCommonTags.Items.STORAGE_BLOCKS_IRIDIUM)
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(HCBlocks.IRIDIUM_BLOCK), HTCommonTags.STORAGE_BLOCKS_IRIDIUM)
 
         add(CommonPartKeys.DUST, HTMaterialItemEntry.item(HCItems.IRIDIUM_DUST), HTCommonTags.Items.DUSTS_IRIDIUM)
         add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(HCItems.IRIDIUM_INGOT), HTCommonTags.Items.INGOTS_IRIDIUM)

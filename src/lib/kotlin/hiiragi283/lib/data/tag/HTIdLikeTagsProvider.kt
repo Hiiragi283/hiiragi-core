@@ -2,6 +2,7 @@ package hiiragi283.lib.data.tag
 
 import hiiragi283.lib.registry.RegistryKey
 import hiiragi283.lib.resource.HTIdLike
+import hiiragi283.lib.tag.RawTagKey
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
@@ -56,6 +57,10 @@ abstract class HTIdLikeTagsProvider<T : Any> : TagsProvider<T> {
         override fun addTag(tag: TagKey<T>): IdAppender = add(TagEntry.tag(tag.location()))
 
         override fun addOptionalTag(tag: TagKey<T>): IdAppender = add(TagEntry.optionalTag(tag.location()))
+
+        fun addTag(tag: RawTagKey): IdAppender = addTag(tag.create(registryKey))
+
+        fun addOptionalTag(tag: RawTagKey): IdAppender = addOptionalTag(tag.create(registryKey))
 
         override fun add(entry: TagEntry): IdAppender = apply { consumer(entry) }
 

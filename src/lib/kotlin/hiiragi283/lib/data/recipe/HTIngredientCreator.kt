@@ -1,5 +1,6 @@
 package hiiragi283.lib.data.recipe
 
+import hiiragi283.lib.tag.RawTagKey
 import net.minecraft.core.HolderGetter
 import net.minecraft.core.HolderSet
 import net.minecraft.core.registries.Registries
@@ -25,6 +26,9 @@ class HTIngredientCreator(val itemGetter: HolderGetter<Item>) {
     // Tag
     @JvmName("createTag")
     fun create(tagKey: TagKey<Item>): Ingredient = itemGetter.getOrThrow(tagKey).let(::create)
+
+    @JvmName("createTag")
+    fun create(tagKey: RawTagKey): Ingredient = create(tagKey.create(Registries.ITEM))
 
     @JvmName("createTags")
     fun create(tagKeys: Iterable<TagKey<Item>>): Ingredient = when (tagKeys.count()) {

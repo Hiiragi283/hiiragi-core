@@ -11,58 +11,38 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 
 data object HTCommonTags {
+    // Ores
+
+    // Storage Blocks
+    // Vanilla
+    @JvmStatic
+    val STORAGE_BLOCKS_CHARCOAL: RawTagKey = common(HTConstants.STORAGE_BLOCKS, "charcoal")
+
+    @JvmStatic
+    val STORAGE_BLOCKS_GLOWSTONE: RawTagKey = common(HTConstants.STORAGE_BLOCKS, "glowstone")
+
+    @JvmStatic
+    val STORAGE_BLOCKS_QUARTZ: RawTagKey = common(HTConstants.STORAGE_BLOCKS, "quartz")
+
+    @JvmStatic
+    val STORAGE_BLOCKS_AMETHYST: RawTagKey = common(HTConstants.STORAGE_BLOCKS, "amethyst")
+
+    @JvmStatic
+    val STORAGE_BLOCKS_ECHO: RawTagKey = common(HTConstants.STORAGE_BLOCKS, "echo")
+
+    // Common
+    @JvmStatic
+    val STORAGE_BLOCKS_IRIDIUM: RawTagKey = common(HTConstants.STORAGE_BLOCKS, "iridium")
+
+    @JvmStatic
+    private fun common(vararg path: String): RawTagKey = RawTagKey.common(*path)
+
     data object Blocks {
-        // Ores
-
-        // Storage Blocks
-        // Vanilla
-        @JvmField
-        val STORAGE_BLOCKS_CHARCOAL: TagKey<Block> = common(HTConstants.STORAGE_BLOCKS, "charcoal")
-
-        @JvmField
-        val STORAGE_BLOCKS_GLOWSTONE: TagKey<Block> = common(HTConstants.STORAGE_BLOCKS, "glowstone")
-
-        @JvmField
-        val STORAGE_BLOCKS_QUARTZ: TagKey<Block> = common(HTConstants.STORAGE_BLOCKS, "quartz")
-
-        @JvmField
-        val STORAGE_BLOCKS_AMETHYST: TagKey<Block> = common(HTConstants.STORAGE_BLOCKS, "amethyst")
-
-        @JvmField
-        val STORAGE_BLOCKS_ECHO: TagKey<Block> = common(HTConstants.STORAGE_BLOCKS, "echo")
-
-        // Common
-        @JvmField
-        val STORAGE_BLOCKS_IRIDIUM: TagKey<Block> = common(HTConstants.STORAGE_BLOCKS, "iridium")
-
         @JvmStatic
         private fun common(vararg path: String): TagKey<Block> = BlockTags.create(HTConstants.COMMON.toId(*path))
     }
 
     data object Items {
-        // Ores
-
-        // Storage Blocks
-        // Vanilla
-        @JvmField
-        val STORAGE_BLOCKS_CHARCOAL: TagKey<Item> = from(Blocks.STORAGE_BLOCKS_CHARCOAL)
-
-        @JvmField
-        val STORAGE_BLOCKS_GLOWSTONE: TagKey<Item> = from(Blocks.STORAGE_BLOCKS_GLOWSTONE)
-
-        @JvmField
-        val STORAGE_BLOCKS_QUARTZ: TagKey<Item> = from(Blocks.STORAGE_BLOCKS_QUARTZ)
-
-        @JvmField
-        val STORAGE_BLOCKS_AMETHYST: TagKey<Item> = from(Blocks.STORAGE_BLOCKS_AMETHYST)
-
-        @JvmField
-        val STORAGE_BLOCKS_ECHO: TagKey<Item> = from(Blocks.STORAGE_BLOCKS_ECHO)
-
-        // Common
-        @JvmField
-        val STORAGE_BLOCKS_IRIDIUM: TagKey<Item> = from(Blocks.STORAGE_BLOCKS_IRIDIUM)
-
         // Dusts
         // Vanilla
         @JvmField
@@ -108,9 +88,6 @@ data object HTCommonTags {
         val NUGGETS_IRIDIUM: TagKey<Item> = common(HTConstants.NUGGETS, "iridium")
 
         // Pearls
-
-        @JvmStatic
-        private fun from(other: TagKey<*>): TagKey<Item> = ItemTags.create(other.location())
 
         @JvmStatic
         private fun common(vararg path: String): TagKey<Item> = ItemTags.create(HTConstants.COMMON.toId(*path))

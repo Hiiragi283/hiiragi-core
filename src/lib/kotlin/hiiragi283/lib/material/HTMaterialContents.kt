@@ -3,8 +3,10 @@ package hiiragi283.lib.material
 import com.mojang.serialization.Codec
 import hiiragi283.lib.HTRegistries
 import hiiragi283.lib.serialization.network.HTStreamCodecs
+import hiiragi283.lib.tag.RawTagKey
 import hiiragi283.lib.util.Ior
 import net.minecraft.core.Holder
+import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
@@ -51,8 +53,16 @@ class HTMaterialContents private constructor(
             add(key, Ior.Right(tagKey))
         }
 
+        fun add(key: HTMaterialPartKey, tagKey: RawTagKey) {
+            add(key, tagKey.create(Registries.ITEM))
+        }
+
         fun add(key: HTMaterialPartKey, entry: HTMaterialItemEntry, tagKey: TagKey<Item>) {
             add(key, Ior.Both(entry, tagKey))
+        }
+
+        fun add(key: HTMaterialPartKey, entry: HTMaterialItemEntry, tagKey: RawTagKey) {
+            add(key, entry, tagKey.create(Registries.ITEM))
         }
 
         private fun add(key: HTMaterialPartKey, value: HTMaterialRawEntry) {
