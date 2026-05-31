@@ -14,7 +14,7 @@ class HTModifyMaterialContentsEvent(val holder: Holder<HTMaterialContents>) :
     inline fun modify(filter: (Holder<HTMaterialContents>) -> Boolean, action: HTMaterialContents.Builder.() -> Unit) {
         if (filter(holder)) {
             val contents: HTMaterialContents = holder.value()
-            val addition: HTMaterialContents = HTMaterialContents.create(contents.material, contents.primalKey, action)
+            val addition: HTMaterialContents = HTMaterialContents.create(contents.asMaterialKey(), contents.primalKey, action)
 
             val entryMap: MutableMap<HTMaterialPartKey, HTMaterialRawEntry> = contents.contents.toMutableMap()
             for ((key: HTMaterialPartKey, entry: HTMaterialRawEntry) in addition.contents) {

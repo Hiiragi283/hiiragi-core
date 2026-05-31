@@ -11,7 +11,7 @@ import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
 
 @JvmRecord
-data class HTDeferredMaterialContents(private val key: ResourceKey<HTMaterialContents>) :
+data class HTDeferredMaterialContents(val key: ResourceKey<HTMaterialContents>) :
     SupplierWithId<HTMaterialContents>,
     HTMaterialContentsLike {
     constructor(id: Identifier) : this(HTRegistries.Keys.MATERIAL_CONTENTS.createKey(id))

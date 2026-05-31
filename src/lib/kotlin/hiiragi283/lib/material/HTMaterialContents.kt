@@ -2,6 +2,7 @@ package hiiragi283.lib.material
 
 import com.mojang.serialization.Codec
 import hiiragi283.lib.HTRegistries
+import hiiragi283.lib.registry.getKeyOrThrow
 import hiiragi283.lib.serialization.network.HTStreamCodecs
 import hiiragi283.lib.tag.HTTagPrefix
 import hiiragi283.lib.tag.RawTagKey
@@ -17,7 +18,6 @@ import net.minecraft.world.item.Item
 typealias HTMaterialRawEntry = Ior<HTMaterialItemEntry, TagKey<Item>>
 
 class HTMaterialContents private constructor(
-    val material: HTMaterialKey,
     val primalKey: HTMaterialPartKey,
     @PublishedApi internal var contents: Map<HTMaterialPartKey, HTMaterialRawEntry>,
 ) : HTMaterialContentsLike {
@@ -42,7 +42,7 @@ class HTMaterialContents private constructor(
 
     override fun getRawEntry(key: HTMaterialPartKey): HTMaterialRawEntry? = contents[key]
 
-    override fun asMaterialKey(): HTMaterialKey = material
+    override fun asMaterialKey(): HTMaterialKey = HTRegistries.MATERIAL_CONTENTS.wrapAsHolder(this).getKeyOrThrow().let(HTMaterialKey::of)
 
     //    Builder    //
 
@@ -84,7 +84,7 @@ class HTMaterialContents private constructor(
         @PublishedApi
         internal fun build(): HTMaterialContents {
             check(primalKey in contents) { "Requires entry for primary part" }
-            return HTMaterialContents(material, primalKey, contents.toSortedMap())
+            return HTMaterialContents(primalKey, contents.toSortedMap())
         }
     }
 }

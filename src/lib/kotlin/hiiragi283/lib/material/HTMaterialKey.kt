@@ -7,6 +7,7 @@ import hiiragi283.lib.text.translatableText
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.Identifier
+import net.minecraft.resources.ResourceKey
 
 /**
  * 素材の種類を表すクラスです。
@@ -22,6 +23,9 @@ value class HTMaterialKey private constructor(private val id: Identifier) :
     HTMaterialLike,
     Comparable<HTMaterialKey> {
     companion object {
+        @JvmStatic
+        fun of(key: ResourceKey<HTMaterialContents>): HTMaterialKey = of(key.identifier())
+
         /**
          * 指定した[id]から[HTMaterialKey]のインスタンスを返します。
          * @return キャッシュから取得した[HTMaterialKey]のインスタンス
