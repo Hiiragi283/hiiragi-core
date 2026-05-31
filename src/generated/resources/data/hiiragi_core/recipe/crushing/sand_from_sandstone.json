@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "#c:sandstone/uncolored_blocks",
+  "results": {
+    "count": 2,
+    "id": "minecraft:sand"
+  },
+  "time": 200
+}

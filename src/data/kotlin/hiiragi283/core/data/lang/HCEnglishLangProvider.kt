@@ -9,6 +9,7 @@ import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.lib.data.lang.HTLangProvider
 import hiiragi283.lib.data.lang.HTLangTypes
+import hiiragi283.lib.text.HTCommonTranslation
 import net.minecraft.data.PackOutput
 
 class HCEnglishLangProvider(output: PackOutput) :
@@ -63,12 +64,39 @@ class HCEnglishLangProvider(output: PackOutput) :
 
         add(HCRecipeTypes.CHARGING, "Charging")
         add(HCRecipeTypes.CHOPPING, "Chopping")
+        add(HCRecipeTypes.CRUSHING, "Crushing")
         add(HCRecipeTypes.EXPLODING, "Exploding")
 
         add(HCRecipeTypes.EMPTYING, "Emptying Container")
         add(HCRecipeTypes.FILLING, "Filling Container")
 
-        // Text
+        // Text - Hiiragi Series
+        add(HTCommonTranslation.ERROR, "Error")
+        add(HTCommonTranslation.INFINITE, "Infinite")
+        add(HTCommonTranslation.NONE, "None")
+        add(HTCommonTranslation.EMPTY, "Empty")
+
+        add(HTCommonTranslation.DOWN, "Down")
+        add(HTCommonTranslation.UP, "Up")
+        add(HTCommonTranslation.NORTH, "North")
+        add(HTCommonTranslation.SOUTH, "South")
+        add(HTCommonTranslation.WEST, "West")
+        add(HTCommonTranslation.EAST, "East")
+
+        add(HTCommonTranslation.INVALID_PACKET_S2C, $$"Invalid packet received from server side: %1$s")
+        add(HTCommonTranslation.INVALID_PACKET_C2S, $$"Invalid packet received from client side: %1$s")
+
+        add(HTCommonTranslation.PROGRESS, $$"Progress: %1$s %%")
+        add(HTCommonTranslation.SECONDS, $$"%1$s sec (%2$s ticks)")
+
+        add(HTCommonTranslation.CHANCE_PRODUCE, $$"Production Chance: %1$s %%")
+
+        add(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT, $$"Always has at least %1$s")
+        add(HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION, "Press Shift to show description")
+        add(HTCommonTranslation.TOOLTIP_SHOW_DETAILS, "Press Ctrl to show details")
+
+        add(HTCommonTranslation.DATAPACK_WIP, "Enables work in progress contents")
+        // Text - Hiiragi Core
         add(HCTranslation.HIIRAGI_CORE, "Hiiragi Core")
 
         add(HCTranslation.ETERNAL_PICKAXE, "Eternal Pickaxe")

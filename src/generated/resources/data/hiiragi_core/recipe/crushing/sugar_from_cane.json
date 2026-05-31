@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "#c:crops/sugar_cane",
+  "results": {
+    "count": 4,
+    "id": "minecraft:sugar"
+  },
+  "time": 200
+}

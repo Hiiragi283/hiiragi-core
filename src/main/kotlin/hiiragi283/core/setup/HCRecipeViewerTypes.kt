@@ -22,9 +22,13 @@ data object HCRecipeViewerTypes {
     val BREWING: HTHolderRecipeViewerType<HCBrewingRecipe> = creteHolder(HTVanillaRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 6)
 
     @JvmField
-    val CHARGING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD, 18 * 4, 18 * 2)
+    val CHARGING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD, 18 * 4)
 
-    // val CRUSHING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CRUSHING, Items.ANVIL, 18 * 5, 18 * 2)
+    @JvmField
+    val CHOPPING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CHOPPING, Items.IRON_AXE, 18 * 5, 18 * 2)
+
+    @JvmField
+    val CRUSHING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CRUSHING, Items.ANVIL, 18 * 5, 18 * 2)
 
     @JvmField
     val EXPLODING: HTRecipeViewerType<HTRecipeDisplay.Simple> = create(HCRecipeTypes.EXPLODING, Items.TNT, 18 * 4)

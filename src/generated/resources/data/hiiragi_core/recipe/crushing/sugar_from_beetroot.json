@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "#c:crops/beetroot",
+  "results": {
+    "count": 2,
+    "id": "minecraft:sugar"
+  },
+  "time": 200
+}

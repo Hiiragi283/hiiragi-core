@@ -9,6 +9,7 @@ import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.lib.data.lang.HTLangProvider
 import hiiragi283.lib.data.lang.HTLangTypes
+import hiiragi283.lib.text.HTCommonTranslation
 import net.minecraft.data.PackOutput
 
 class HCJapaneseLangProvider(output: PackOutput) :
@@ -63,12 +64,39 @@ class HCJapaneseLangProvider(output: PackOutput) :
 
         add(HCRecipeTypes.CHARGING, "帯電")
         add(HCRecipeTypes.CHOPPING, "木こり")
+        add(HCRecipeTypes.CRUSHING, "粉砕")
         add(HCRecipeTypes.EXPLODING, "爆破")
 
         add(HCRecipeTypes.EMPTYING, "容器を空にする")
         add(HCRecipeTypes.FILLING, "容器に汲む")
 
-        // Text
+        // Text - Hiiragi Series
+        add(HTCommonTranslation.ERROR, "エラー")
+        add(HTCommonTranslation.INFINITE, "無限")
+        add(HTCommonTranslation.NONE, "なし")
+        add(HTCommonTranslation.EMPTY, "空")
+
+        add(HTCommonTranslation.DOWN, "下")
+        add(HTCommonTranslation.UP, "上")
+        add(HTCommonTranslation.NORTH, "北")
+        add(HTCommonTranslation.SOUTH, "南")
+        add(HTCommonTranslation.WEST, "西")
+        add(HTCommonTranslation.EAST, "東")
+
+        add(HTCommonTranslation.INVALID_PACKET_S2C, $$"サーバー側からの不正なパケットを受信しました: %1$s")
+        add(HTCommonTranslation.INVALID_PACKET_C2S, $$"クライアント側からの不正なパケットを受信しました: %1$s")
+
+        add(HTCommonTranslation.PROGRESS, $$"進捗率: %1$s %%")
+        add(HTCommonTranslation.SECONDS, $$"%1$s 秒 (%2$s ticks)")
+
+        add(HTCommonTranslation.CHANCE_PRODUCE, $$"生産確率: %1$s %%")
+
+        add(HTCommonTranslation.TOOLTIP_INTRINSIC_ENCHANTMENT, $$"常に少なくとも%1$sがあります")
+        add(HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION, "シフトキーを押して説明を表示")
+        add(HTCommonTranslation.TOOLTIP_SHOW_DETAILS, "シフトキーを押して詳細を表示")
+
+        add(HTCommonTranslation.DATAPACK_WIP, "開発中の要素を有効にします")
+        // Text - Hiiragi Core
         add(HCTranslation.HIIRAGI_CORE, "Hiiragi Core")
 
         add(HCTranslation.ETERNAL_PICKAXE, "永遠のツルハシ")

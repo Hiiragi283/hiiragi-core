@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "minecraft:warped_wart_block",
+  "results": {
+    "count": 3,
+    "id": "hiiragi_core:warped_wart"
+  },
+  "time": 200
+}

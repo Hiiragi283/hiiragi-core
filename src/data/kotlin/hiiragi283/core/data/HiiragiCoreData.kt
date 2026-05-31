@@ -6,6 +6,7 @@ import hiiragi283.core.data.loot.HCBlockLootTableProvider
 import hiiragi283.core.data.model.HCModelProvider
 import hiiragi283.core.data.recipe.HCChargingRecipeProvider
 import hiiragi283.core.data.recipe.HCChoppingRecipeProvider
+import hiiragi283.core.data.recipe.HCCrushingRecipeProvider
 import hiiragi283.core.data.recipe.HCExplodingRecipeProvider
 import hiiragi283.core.data.recipe.HCMaterialRecipeProvider
 import hiiragi283.core.data.recipe.HCTankInteractionRecipeProvider
@@ -35,6 +36,7 @@ data object HiiragiCoreData {
 
         event.createProvider(HCChargingRecipeProvider::Runner)
         event.createProvider(HCChoppingRecipeProvider::Runner)
+        event.createProvider(HCCrushingRecipeProvider::Runner)
         event.createProvider(HCExplodingRecipeProvider::Runner)
         event.createProvider(HCMaterialRecipeProvider::Runner)
         event.createProvider(HCTankInteractionRecipeProvider::Runner)

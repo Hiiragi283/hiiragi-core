@@ -29,13 +29,8 @@ enum class HTCommonTranslation(type: String, vararg path: String) : HTTranslatio
     EAST("direction", "east"),
 
     // Error
-    EMPTY_TAG_KEY(HTConstants.ERROR, "empty.tag_key"),
     INVALID_PACKET_S2C(HTConstants.ERROR, "invalid_packet", "s2c"),
     INVALID_PACKET_C2S(HTConstants.ERROR, "invalid_packet", "c2s"),
-
-    MISSING_SERVER(HTConstants.ERROR, "missing", "server"),
-    MISSING_REGISTRY(HTConstants.ERROR, "missing", "registry"),
-    MISSING_KEY(HTConstants.ERROR, "missing", "key"),
 
     // GUI
     CAPACITY(HTConstants.GUI, "capacity"),
@@ -54,12 +49,7 @@ enum class HTCommonTranslation(type: String, vararg path: String) : HTTranslatio
     TICK(HTConstants.GUI, "tick"),
     SECONDS(HTConstants.GUI, "seconds"),
 
-    CHANCE_CONSUME(HTConstants.GUI, "chance", "consume"),
     CHANCE_PRODUCE(HTConstants.GUI, "chance", "produce"),
-
-    RANGE_MIN(HTConstants.GUI, "range", "min"),
-    RANGE_MAX(HTConstants.GUI, "range", "max"),
-    RANGE_MIN_MAX(HTConstants.GUI, "range", "min_max"),
 
     // Item Description
     TOOLTIP_INTRINSIC_ENCHANTMENT(HTConstants.TOOLTIP, "intrinsic_enchantment"),

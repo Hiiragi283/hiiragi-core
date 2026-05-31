@@ -27,6 +27,9 @@ data object HCRecipeLookups {
     val CHOPPING: HTCompoundRecipeLookup<HTItemToChancedItemsRecipe> = create(HCConstants.CHOPPING)
 
     @JvmStatic
+    val CRUSHING: HTCompoundRecipeLookup<HTItemToChancedItemsRecipe> = create(HCConstants.CRUSHING)
+
+    @JvmStatic
     val EXPLODING: HTRecipeLookup<HCExplodingRecipe> = HTVanillaRecipeLookup(HCRecipeTypes.EXPLODING)
 
     //    Tank Interaction    //
@@ -46,8 +49,11 @@ data object HCRecipeLookups {
     fun init() {
         CHOPPING.fromRecipeType(HCRecipeTypes.CHOPPING.get(), identity())
 
+        CRUSHING.fromRecipeType(HCRecipeTypes.CRUSHING.get(), identity())
+
         EMPTYING.fromRecipeType(HCRecipeTypes.EMPTYING.get(), identity())
         EMPTYING.addRecipes(HTConstants.MINECRAFT.toId(HCConstants.EMPTYING, "potion") to HTPotionTankInteraction.Emptying)
+
         FILLING.fromRecipeType(HCRecipeTypes.FILLING.get(), identity())
         FILLING.addRecipes(HTConstants.MINECRAFT.toId(HCConstants.FILLING, "potion") to HTPotionTankInteraction.Filling)
         FILLING.addRecipes(HTConstants.MINECRAFT.toId(HCConstants.FILLING, "potion_arrow") to HTPotionArrowFillingRecipe)

@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "minecraft:prismarine",
+  "results": {
+    "count": 4,
+    "id": "minecraft:prismarine_shard"
+  },
+  "time": 200
+}

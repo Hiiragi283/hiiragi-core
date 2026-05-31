@@ -1,0 +1,8 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "minecraft:stone",
+  "results": {
+    "id": "minecraft:cobblestone"
+  },
+  "time": 200
+}

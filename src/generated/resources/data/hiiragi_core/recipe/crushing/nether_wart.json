@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "minecraft:nether_wart_block",
+  "results": {
+    "count": 3,
+    "id": "minecraft:nether_wart"
+  },
+  "time": 200
+}

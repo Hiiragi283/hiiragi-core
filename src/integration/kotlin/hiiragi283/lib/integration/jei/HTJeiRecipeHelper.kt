@@ -5,13 +5,18 @@ import hiiragi283.lib.HTPhysicalSideHelper
 import hiiragi283.lib.recipe.HTRecipeHolder
 import hiiragi283.lib.recipe.lookup.HTRecipeLookup
 import hiiragi283.lib.recipe.lookup.HTRecipeLookupContext
+import hiiragi283.lib.recipe.lookup.HTVanillaRecipeLookup
 import hiiragi283.lib.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.lib.recipe.viewer.HTRecipeViewerType
 import hiiragi283.lib.recipe.viewer.display.HTRecipeDisplay
+import java.util.function.Supplier
 import mezz.jei.api.recipe.types.IRecipeType
 import mezz.jei.api.registration.IRecipeRegistration
 import net.minecraft.client.Minecraft
 import net.minecraft.util.context.ContextMap
+import net.minecraft.world.item.crafting.Recipe
+import net.minecraft.world.item.crafting.RecipeInput
+import net.minecraft.world.item.crafting.RecipeType
 
 /**
  * [IRecipeRegistration]へのレシピ登録を簡略化するヘルパークラスです。
@@ -147,6 +152,34 @@ data object HTJeiRecipeHelper {
         this.addRecipes(registration, viewerType, recipes, sorter.thenComparing(DISPLAY_SORTER))
     }
 
+    @JvmStatic
+    fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
+        registration: IRecipeRegistration,
+        viewerType: HTRecipeViewerType<DISPLAY>,
+        recipeType: RecipeType<RECIPE>,
+        transform: (HTRecipeHolder<RECIPE>) -> DISPLAY,
+    ) {
+        this.addDisplayRecipes(
+            registration,
+            viewerType,
+            HTVanillaRecipeLookup(recipeType).getAllRecipes(createContext()).map(transform),
+        )
+    }
+
+    @JvmStatic
+    fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
+        registration: IRecipeRegistration,
+        viewerType: HTRecipeViewerType<DISPLAY>,
+        recipeType: Supplier<out RecipeType<RECIPE>>,
+        transform: (HTRecipeHolder<RECIPE>) -> DISPLAY,
+    ) {
+        this.addDisplayRecipes(
+            registration,
+            viewerType,
+            HTVanillaRecipeLookup(recipeType).getAllRecipes(createContext()).map(transform),
+        )
+    }
+
     /**
      * @since 0.16.0
      */
@@ -184,22 +217,6 @@ data object HTJeiRecipeHelper {
                 .getAllRecipes(createContext())
                 .mapNotNull(transform),
             sorter,
-        )
-    }
-
-    @JvmStatic
-    fun <BASE : Any, DISPLAY : HTRecipeDisplay> addFlatDisplayRecipes(
-        registration: IRecipeRegistration,
-        viewerType: HTRecipeViewerType<DISPLAY>,
-        lookup: HTRecipeLookup<BASE>,
-        transform: (HTRecipeHolder<BASE>) -> Sequence<DISPLAY>,
-    ) {
-        this.addDisplayRecipes(
-            registration,
-            viewerType,
-            lookup
-                .getAllRecipes(createContext())
-                .flatMap(transform),
         )
     }
 }
