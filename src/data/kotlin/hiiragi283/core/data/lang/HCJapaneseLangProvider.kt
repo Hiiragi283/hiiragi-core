@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.text.HCTranslation
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCEnchantments
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
@@ -27,6 +28,12 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCBlocks.WARPED_WART, "歪んだウォート")
 
         add(HCBlocks.CHOPPING_BOARD, "伐採台")
+        // Enchantment
+        add(HCEnchantments.HAMMER_OF_JUSTICE, "正義の鉄槌", "襲撃者に対するダメージを増加させます。")
+        add(HCEnchantments.NOISE_CANCELING, "ノイズキャンセリング", "ウォーデンなどのスカルク系モンスターに対するダメージを増加させます。")
+        add(HCEnchantments.PURIFICATION, "浄化", "ウィザー系モンスターに対するダメージを増加させます。")
+
+        add(HCEnchantments.SONIC_PROTECTION, "音響耐性", "ソニックブームなどの音響攻撃を無効にします。")
         // Fluid
         addFluid(HCFluids.EXPERIENCE, "液体経験値")
         addFluid(HCFluids.HONEY, "ハチミツ")

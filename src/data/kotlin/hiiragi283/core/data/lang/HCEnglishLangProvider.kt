@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.text.HCTranslation
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCEnchantments
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeTypes
@@ -27,6 +28,12 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCBlocks.WARPED_WART, "Warped Wart")
 
         add(HCBlocks.CHOPPING_BOARD, "Chopping Board")
+        // Enchantment
+        add(HCEnchantments.HAMMER_OF_JUSTICE, "Hammer of Justice", "Increases damage against raiders.")
+        add(HCEnchantments.NOISE_CANCELING, "Noise Canceling", "Increases damage against sculk mobs such as Warden.")
+        add(HCEnchantments.PURIFICATION, "Purification", "Increases damage against wither mobs.")
+
+        add(HCEnchantments.SONIC_PROTECTION, "Sonic Protection", "Immune damage from sonic boom.")
         // Fluid
         addFluid(HCFluids.EXPERIENCE, "Liquid Experience")
         addFluid(HCFluids.HONEY, "Honey")

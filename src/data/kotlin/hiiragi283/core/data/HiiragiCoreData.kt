@@ -1,5 +1,6 @@
 package hiiragi283.core.data
 
+import hiiragi283.core.data.bootstrap.HCEnchantmentProvider
 import hiiragi283.core.data.lang.HCEnglishLangProvider
 import hiiragi283.core.data.lang.HCJapaneseLangProvider
 import hiiragi283.core.data.loot.HCBlockLootTableProvider
@@ -18,6 +19,8 @@ import hiiragi283.core.data.tag.HCFluidTagsProvider
 import hiiragi283.core.data.tag.HCItemTagsProvider
 import hiiragi283.core.data.tag.HCMaterialContentsTagsProvider
 import hiiragi283.lib.data.createLootTables
+import net.minecraft.core.RegistrySetBuilder
+import net.minecraft.core.registries.Registries
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
@@ -28,6 +31,11 @@ data object HiiragiCoreData {
     @SubscribeEvent
     fun gatherData(event: GatherDataEvent.Client) {
         // Server
+        event.createDatapackRegistryObjects(
+            RegistrySetBuilder()
+                .add(Registries.ENCHANTMENT, HCEnchantmentProvider),
+        )
+
         event.createProvider(::HCDataMapProvider)
 
         event.createLootTables(
