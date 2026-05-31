@@ -1,9 +1,11 @@
 package hiiragi283.lib.transfer.fluid
 
+import com.mojang.serialization.Codec
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.serialization.readOption
 import hiiragi283.lib.transfer.HTBasicResourceSlot
 import hiiragi283.lib.transfer.HTHandlerAccess
+import hiiragi283.lib.transfer.HTResourceStack
 import hiiragi283.lib.transfer.HTTransferPredicates
 import java.util.function.BiPredicate
 import java.util.function.Predicate
@@ -13,6 +15,9 @@ import net.neoforged.neoforge.transfer.fluid.FluidResource
 
 open class HTBasicFluidTank(capacity: Long, canInsert: BiPredicate<FluidResource, HTHandlerAccess>, canExtract: BiPredicate<FluidResource, HTHandlerAccess>, filter: Predicate<FluidResource>, listener: Runnable?) : HTBasicResourceSlot<FluidResource>(capacity, canInsert, canExtract, filter, listener, FluidResource.EMPTY) {
     companion object {
+        @JvmField
+        val CODEC: Codec<HTResourceStack<FluidResource>> = HTResourceStack.codec(FluidResource.CODEC)
+
         @JvmStatic
         fun create(
             capacity: Long,
@@ -35,17 +40,10 @@ open class HTBasicFluidTank(capacity: Long, canInsert: BiPredicate<FluidResource
     }
 
     final override fun serialize(output: ValueOutput) {
-        output.store(HTConstants.FLUID, FluidResource.OPTIONAL_CODEC, this.resourceIn)
-        output.putLong(HTConstants.AMOUNT, this.amountIn)
+        output.storeNullable(HTConstants.FLUID, CODEC, this.stackIn)
     }
 
     final override fun deserialize(input: ValueInput) {
-        input.readOption(HTConstants.FLUID, FluidResource.CODEC).onSome { resource: FluidResource ->
-            val amount: Long = input.getLongOr(HTConstants.AMOUNT, 0)
-            if (amount > 0) {
-                this.resourceIn = resource
-                this.amountIn = amount
-            }
-        }
+        this.stackIn = input.readOption(HTConstants.FLUID, CODEC).getOrNull()
     }
 }

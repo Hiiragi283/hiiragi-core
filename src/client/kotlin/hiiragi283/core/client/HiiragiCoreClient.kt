@@ -1,6 +1,8 @@
 package hiiragi283.core.client
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.client.renderer.HCCopperBasinRenderer
+import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.color.HTDefaultColor
@@ -16,6 +18,7 @@ import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
+import net.neoforged.neoforge.client.event.EntityRenderersEvent
 import net.neoforged.neoforge.client.fluid.FluidTintSource
 import net.neoforged.neoforge.fluids.FluidStack
 
@@ -66,5 +69,9 @@ data object HiiragiCoreClient : HTClientMod() {
             setDull()
             colorTint(Color(0x993333))
         }
+    }
+
+    override fun registerEntityRenderer(event: EntityRenderersEvent.RegisterRenderers) {
+        event.registerBlockEntityRenderer(HCBlockEntityTypes.COPPER_BASIN.get(), ::HCCopperBasinRenderer)
     }
 }

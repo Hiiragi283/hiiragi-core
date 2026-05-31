@@ -1,6 +1,8 @@
 package hiiragi283.lib.transfer
 
 import com.google.common.primitives.Ints
+import hiiragi283.lib.util.Option
+import hiiragi283.lib.util.toOption
 import java.util.function.BiPredicate
 import java.util.function.Predicate
 import net.neoforged.neoforge.transfer.TransferPreconditions
@@ -14,28 +16,26 @@ abstract class HTBasicResourceSlot<RESOURCE : Resource>(
     private val canExtract: BiPredicate<RESOURCE, HTHandlerAccess>,
     private val filter: Predicate<RESOURCE>,
     private val listener: Runnable?,
-    private val emptyResource: RESOURCE,
-) : SnapshotJournal<Pair<RESOURCE, Long>>(),
+    protected val emptyResource: RESOURCE,
+) : SnapshotJournal<Option<HTResourceStack<RESOURCE>>>(),
     HTResourceSlot<RESOURCE> {
     @JvmField
-    protected var resourceIn: RESOURCE = emptyResource
-
-    @JvmField
-    protected var amountIn: Long = 0
+    protected var stackIn: HTResourceStack<RESOURCE>? = null
 
     fun setContents(resource: RESOURCE, amount: Long, transaction: TransactionContext?) {
-        if (resource != this.resourceIn || amount != this.amountIn) {
-            val fixedResource: RESOURCE = when {
-                amount <= 0 -> emptyResource
-                else -> resource
-            }
+        setContents(HTResourceStack.of(resource, amount), transaction)
+    }
+
+    fun setContents(stack: HTResourceStack<RESOURCE>?, transaction: TransactionContext?) {
+        if (stack != this.stackIn) {
+            val option: Option<HTResourceStack<RESOURCE>> = stack.toOption()
             if (transaction == null) {
-                val original: Pair<RESOURCE, Long> = createSnapshot()
-                revertToSnapshot(fixedResource to amount)
+                val original: Option<HTResourceStack<RESOURCE>> = createSnapshot()
+                revertToSnapshot(option)
                 onRootCommit(original)
             } else {
                 updateSnapshots(transaction)
-                revertToSnapshot(fixedResource to amount)
+                revertToSnapshot(option)
             }
         }
     }
@@ -78,22 +78,21 @@ abstract class HTBasicResourceSlot<RESOURCE : Resource>(
         return toRemove
     }
 
-    final override val resource: RESOURCE get() = resourceIn
-    final override val amountAsLong: Long get() = amountIn
+    final override val resource: RESOURCE get() = stackIn?.resource ?: emptyResource
+    final override val amountAsLong: Long get() = stackIn?.amountAsLong ?: 0
+    override val amountAsInt: Int get() = stackIn?.amountAsInt ?: 0
 
     override fun getCapacityAsLong(resource: RESOURCE): Long = capacity
 
     //    SnapshotJournal    //
 
-    override fun createSnapshot(): Pair<RESOURCE, Long> = resource to amountIn
+    override fun createSnapshot(): Option<HTResourceStack<RESOURCE>> = stackIn.toOption()
 
-    override fun revertToSnapshot(snapshot: Pair<RESOURCE, Long>) {
-        val (resource: RESOURCE, amount: Long) = snapshot
-        resourceIn = resource
-        amountIn = amount
+    override fun revertToSnapshot(snapshot: Option<HTResourceStack<RESOURCE>>) {
+        this.stackIn = snapshot.getOrNull()
     }
 
-    override fun onRootCommit(originalState: Pair<RESOURCE, Long>) {
+    override fun onRootCommit(originalState: Option<HTResourceStack<RESOURCE>>) {
         listener?.run()
     }
 }
