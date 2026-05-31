@@ -22,5 +22,5 @@ data class HTDeferredMaterialContents(val key: ResourceKey<HTMaterialContents>) 
 
     override fun getRawEntry(key: HTMaterialPartKey): HTMaterialRawEntry? = get().getRawEntry(key)
 
-    override fun asMaterialKey(): HTMaterialKey = get().asMaterialKey()
+    override fun asMaterialKey(): HTMaterialKey = HTMaterialKey.of(key)
 }

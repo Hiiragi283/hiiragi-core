@@ -3,6 +3,8 @@ package hiiragi283.core.data
 import hiiragi283.core.data.lang.HCEnglishLangProvider
 import hiiragi283.core.data.lang.HCJapaneseLangProvider
 import hiiragi283.core.data.loot.HCBlockLootTableProvider
+import hiiragi283.core.data.loot.HCGlobalLootModifierProvider
+import hiiragi283.core.data.loot.HCGlobalLootTableProvider
 import hiiragi283.core.data.model.HCModelProvider
 import hiiragi283.core.data.recipe.HCChargingRecipeProvider
 import hiiragi283.core.data.recipe.HCChoppingRecipeProvider
@@ -28,7 +30,11 @@ data object HiiragiCoreData {
         // Server
         event.createProvider(::HCDataMapProvider)
 
-        event.createLootTables(::HCBlockLootTableProvider to LootContextParamSets.BLOCK)
+        event.createLootTables(
+            ::HCBlockLootTableProvider to LootContextParamSets.BLOCK,
+            HCGlobalLootTableProvider::EntityProvider to LootContextParamSets.ENTITY,
+        )
+        event.createProvider(::HCGlobalLootModifierProvider)
 
         event.createProvider(::HCFluidTagsProvider)
         event.createProvider(::HCMaterialContentsTagsProvider)
