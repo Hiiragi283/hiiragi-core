@@ -2,11 +2,11 @@ package hiiragi283.lib.data.recipe
 
 import hiiragi283.lib.recipe.ingredient.HTFluidIngredient
 import hiiragi283.lib.registry.HTFluidContent
+import hiiragi283.lib.registry.VanillaFluidContents
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderGetter
 import net.minecraft.core.HolderSet
 import net.minecraft.world.level.material.Fluid
-import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.fluids.crafting.CompoundFluidIngredient
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
@@ -15,11 +15,11 @@ import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient
 class HTFluidIngredientCreator(getter: HolderGetter<Fluid>) : HTSizedIngredientCreatorImpl<Fluid, HTFluidIngredient>(getter) {
     fun create(content: HTFluidContent, size: Int = getDefaultSize()): HTFluidIngredient = tag(content.fluidTag, size)
 
-    fun water(size: Int = getDefaultSize()): HTFluidIngredient = tag(Tags.Fluids.WATER, size)
+    fun water(size: Int = getDefaultSize()): HTFluidIngredient = create(VanillaFluidContents.WATER, size)
 
-    fun lava(size: Int = getDefaultSize()): HTFluidIngredient = tag(Tags.Fluids.LAVA, size)
+    fun lava(size: Int = getDefaultSize()): HTFluidIngredient = create(VanillaFluidContents.LAVA, size)
 
-    fun milk(size: Int = getDefaultSize()): HTFluidIngredient = tag(Tags.Fluids.MILK, size)
+    fun milk(size: Int = getDefaultSize()): HTFluidIngredient = create(VanillaFluidContents.MILK, size)
 
     fun create(ingredient: FluidIngredient, size: Int = getDefaultSize()): HTFluidIngredient = HTFluidIngredient(ingredient, size)
 

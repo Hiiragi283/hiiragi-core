@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": "#c:nuggets/netherite",
+    "A": "#c:nuggets/iridium",
     "B": "hiiragi_core:iridium_nugget"
   },
   "pattern": [

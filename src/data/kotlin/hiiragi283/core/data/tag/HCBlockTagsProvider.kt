@@ -2,31 +2,29 @@ package hiiragi283.core.data.tag
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCMaterialContents
 import hiiragi283.lib.data.tag.HTIdLikeTagsProvider
 import hiiragi283.lib.registry.toLike
 import hiiragi283.lib.resource.HTIdLike
-import hiiragi283.lib.tag.HTCommonTags
-import hiiragi283.lib.tag.RawTagKey
+import hiiragi283.lib.tag.CommonTagPrefixes
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
 import net.minecraft.data.PackOutput
 import net.minecraft.data.tags.TagAppender
 import net.minecraft.tags.BlockTags
-import net.minecraft.tags.TagKey
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
-import net.neoforged.neoforge.common.Tags
 
 class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : HTIdLikeTagsProvider<Block>(output, Registries.BLOCK, lookupProvider, HiiragiCoreAPI.MOD_ID) {
     override fun appendTags(registries: HolderLookup.Provider) {
         // Material
-        tags(Tags.Blocks.STORAGE_BLOCKS, HTCommonTags.STORAGE_BLOCKS_CHARCOAL).add(HCBlocks.CHARCOAL_BLOCK)
-        tags(Tags.Blocks.STORAGE_BLOCKS, HTCommonTags.STORAGE_BLOCKS_GLOWSTONE).addBlock(Blocks.GLOWSTONE)
-        tags(Tags.Blocks.STORAGE_BLOCKS, HTCommonTags.STORAGE_BLOCKS_QUARTZ).addBlock(Blocks.QUARTZ_BLOCK)
-        tags(Tags.Blocks.STORAGE_BLOCKS, HTCommonTags.STORAGE_BLOCKS_AMETHYST).addBlock(Blocks.AMETHYST_BLOCK)
-        tags(Tags.Blocks.STORAGE_BLOCKS, HTCommonTags.STORAGE_BLOCKS_ECHO).add(HCBlocks.ECHO_BLOCK)
-        tags(Tags.Blocks.STORAGE_BLOCKS, HTCommonTags.STORAGE_BLOCKS_IRIDIUM).add(HCBlocks.IRIDIUM_BLOCK)
+        tags(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.CHARCOAL).add(HCBlocks.CHARCOAL_BLOCK)
+        tags(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.GLOWSTONE).addBlock(Blocks.GLOWSTONE)
+        tags(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.QUARTZ).addBlock(Blocks.QUARTZ_BLOCK)
+        tags(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.AMETHYST).addBlock(Blocks.AMETHYST_BLOCK)
+        tags(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.ECHO).add(HCBlocks.ECHO_BLOCK)
+        tags(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.IRIDIUM).add(HCBlocks.IRIDIUM_BLOCK)
         // Mineable
         tag(BlockTags.MINEABLE_WITH_AXE)
             .add(HCBlocks.WARPED_WART)
@@ -45,6 +43,4 @@ class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<
     }
 
     private fun IdAppender.addBlock(block: Block): IdAppender = this.add(block.toLike())
-
-    private fun tags(parent: TagKey<Block>, child: RawTagKey): IdAppender = tags(parent, child.create(registryKey))
 }

@@ -1,7 +1,9 @@
 package hiiragi283.lib.data.tag
 
+import hiiragi283.lib.material.HTMaterialLike
 import hiiragi283.lib.registry.RegistryKey
 import hiiragi283.lib.resource.HTIdLike
+import hiiragi283.lib.tag.HTTagPrefix
 import hiiragi283.lib.tag.RawTagKey
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
@@ -43,6 +45,8 @@ abstract class HTIdLikeTagsProvider<T : Any> : TagsProvider<T> {
     protected abstract fun appendTags(registries: HolderLookup.Provider)
 
     protected fun tag(tagKey: TagKey<T>): IdAppender = IdAppender { entry: TagEntry -> entryCache.computeIfAbsent(tagKey) { mutableListOf() }.add(entry) }
+
+    protected fun tags(prefix: HTTagPrefix, material: HTMaterialLike): IdAppender = tags(prefix.rawCommonTag.create(registryKey), prefix.createTagKey(registryKey, material))
 
     protected fun tags(tagKey: TagKey<T>, vararg children: TagKey<T>): IdAppender = children.fold(tag(tagKey)) { appender: IdAppender, tagKeyIn: TagKey<T> ->
         appender.addTag(tagKeyIn)

@@ -1,8 +1,10 @@
 package hiiragi283.core.data.recipe
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.setup.HCMaterialContents
 import hiiragi283.lib.data.recipe.HTRecipeProvider
 import hiiragi283.lib.math.fraction
+import hiiragi283.lib.tag.CommonTagPrefixes
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
@@ -24,12 +26,12 @@ class HCChargingRecipeProvider(modId: String, registries: HolderLookup.Provider,
         }.save(output)
         // Quartz -> Prismarine
         HCChargingRecipeBuilder.create {
-            ingredient = ingredientCreator.create(Tags.Items.GEMS_QUARTZ)
+            ingredient = ingredientCreator.create(CommonTagPrefixes.GEM, HCMaterialContents.QUARTZ)
             result = resultCreator.create(Items.PRISMARINE_SHARD).withChance(fraction(3, 4))
         }.save(output)
         // Redstone Dust -> Glowstone Dust
         HCChargingRecipeBuilder.create {
-            ingredient = ingredientCreator.create(Tags.Items.DUSTS_REDSTONE)
+            ingredient = ingredientCreator.create(CommonTagPrefixes.DUST, HCMaterialContents.REDSTONE)
             result = resultCreator.create(Items.GLOWSTONE_DUST).withChance(fraction(3, 4))
         }.save(output)
         // Honey Bottle -> Exp Bottle

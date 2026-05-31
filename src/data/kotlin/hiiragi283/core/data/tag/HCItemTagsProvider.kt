@@ -4,8 +4,9 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreTags
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
+import hiiragi283.core.setup.HCMaterialContents
 import hiiragi283.lib.data.tag.HTItemTagsProvider
-import hiiragi283.lib.tag.HTCommonTags
+import hiiragi283.lib.tag.CommonTagPrefixes
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
@@ -15,22 +16,22 @@ import net.neoforged.neoforge.common.Tags
 
 class HCItemTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>, contentsGetter: CompletableFuture<TagLookup<Block>>) : HTItemTagsProvider(output, lookupProvider, contentsGetter, HiiragiCoreAPI.MOD_ID) {
     override fun appendTags(registries: HolderLookup.Provider) {
-        copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS)
-        copy(HTCommonTags.STORAGE_BLOCKS_CHARCOAL)
-        copy(HTCommonTags.STORAGE_BLOCKS_GLOWSTONE)
-        copy(HTCommonTags.STORAGE_BLOCKS_QUARTZ)
-        copy(HTCommonTags.STORAGE_BLOCKS_AMETHYST)
-        copy(HTCommonTags.STORAGE_BLOCKS_ECHO)
-        copy(HTCommonTags.STORAGE_BLOCKS_IRIDIUM)
+        copy(CommonTagPrefixes.STORAGE_BLOCK.rawCommonTag)
+        copy(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.CHARCOAL)
+        copy(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.GLOWSTONE)
+        copy(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.QUARTZ)
+        copy(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.AMETHYST)
+        copy(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.ECHO)
+        copy(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.IRIDIUM)
 
-        tags(Tags.Items.DUSTS, HTCommonTags.Items.DUSTS_IRIDIUM).addItem(HCItems.IRIDIUM_DUST)
+        tags(CommonTagPrefixes.DUST, HCMaterialContents.IRIDIUM).addItem(HCItems.IRIDIUM_DUST)
 
-        tags(Tags.Items.GEMS, HTCommonTags.Items.GEMS_ECHO).addItem(Items.ECHO_SHARD)
+        tags(CommonTagPrefixes.GEM, HCMaterialContents.ECHO).addItem(Items.ECHO_SHARD)
 
-        tags(Tags.Items.INGOTS, HTCommonTags.Items.INGOTS_IRIDIUM).addItem(HCItems.IRIDIUM_INGOT)
+        tags(CommonTagPrefixes.INGOT, HCMaterialContents.IRIDIUM).addItem(HCItems.IRIDIUM_INGOT)
 
-        tags(Tags.Items.NUGGETS, HTCommonTags.Items.NUGGETS_NETHERITE).add(HCItems.NETHERITE_NUGGET)
-        tags(Tags.Items.NUGGETS, HTCommonTags.Items.NUGGETS_IRIDIUM).add(HCItems.IRIDIUM_NUGGET)
+        tags(CommonTagPrefixes.NUGGET, HCMaterialContents.NETHERITE).add(HCItems.NETHERITE_NUGGET)
+        tags(CommonTagPrefixes.NUGGET, HCMaterialContents.IRIDIUM).add(HCItems.IRIDIUM_NUGGET)
 
         tags(Tags.Items.CROPS, HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)
 
