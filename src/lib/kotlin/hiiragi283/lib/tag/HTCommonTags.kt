@@ -15,6 +15,7 @@ data object HTCommonTags {
         // Ores
 
         // Storage Blocks
+        // Vanilla
         @JvmField
         val STORAGE_BLOCKS_CHARCOAL: TagKey<Block> = common(HTConstants.STORAGE_BLOCKS, "charcoal")
 
@@ -30,6 +31,10 @@ data object HTCommonTags {
         @JvmField
         val STORAGE_BLOCKS_ECHO: TagKey<Block> = common(HTConstants.STORAGE_BLOCKS, "echo")
 
+        // Common
+        @JvmField
+        val STORAGE_BLOCKS_IRIDIUM: TagKey<Block> = common(HTConstants.STORAGE_BLOCKS, "iridium")
+
         @JvmStatic
         private fun common(vararg path: String): TagKey<Block> = BlockTags.create(HTConstants.COMMON.toId(*path))
     }
@@ -38,6 +43,7 @@ data object HTCommonTags {
         // Ores
 
         // Storage Blocks
+        // Vanilla
         @JvmField
         val STORAGE_BLOCKS_CHARCOAL: TagKey<Item> = from(Blocks.STORAGE_BLOCKS_CHARCOAL)
 
@@ -53,7 +59,12 @@ data object HTCommonTags {
         @JvmField
         val STORAGE_BLOCKS_ECHO: TagKey<Item> = from(Blocks.STORAGE_BLOCKS_ECHO)
 
+        // Common
+        @JvmField
+        val STORAGE_BLOCKS_IRIDIUM: TagKey<Item> = from(Blocks.STORAGE_BLOCKS_IRIDIUM)
+
         // Dusts
+        // Vanilla
         @JvmField
         val DUSTS_COPPER: TagKey<Item> = common(HTConstants.DUSTS, "copper")
 
@@ -69,19 +80,32 @@ data object HTCommonTags {
         @JvmField
         val DUSTS_OBSIDIAN: TagKey<Item> = common(HTConstants.DUSTS, "obsidian")
 
+        // Common
+        @JvmField
+        val DUSTS_IRIDIUM: TagKey<Item> = common(HTConstants.DUSTS, "iridium")
+
         // Fuels
 
         // Gears
 
         // Gems
+        // Vanilla
         @JvmField
         val GEMS_ECHO: TagKey<Item> = common(HTConstants.GEMS, "echo")
 
         // Ingots
+        // Common
+        @JvmField
+        val INGOTS_IRIDIUM: TagKey<Item> = common(HTConstants.INGOTS, "iridium")
 
         // Nuggets
+        // Vanilla
         @JvmField
         val NUGGETS_NETHERITE: TagKey<Item> = common(HTConstants.NUGGETS, "netherite")
+
+        // Common
+        @JvmField
+        val NUGGETS_IRIDIUM: TagKey<Item> = common(HTConstants.NUGGETS, "iridium")
 
         // Pearls
 

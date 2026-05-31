@@ -30,6 +30,15 @@ data object HCItems {
     @JvmField
     val NETHERITE_NUGGET: HTSimpleDeferredItem = REGISTER.registerSimpleItem("netherite_nugget") { it.fireResistant() }
 
+    @JvmField
+    val IRIDIUM_DUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("iridium_dust") { it.rarity(Rarity.RARE) }
+
+    @JvmField
+    val IRIDIUM_INGOT: HTSimpleDeferredItem = REGISTER.registerSimpleItem("iridium_ingot") { it.rarity(Rarity.RARE) }
+
+    @JvmField
+    val IRIDIUM_NUGGET: HTSimpleDeferredItem = REGISTER.registerSimpleItem("iridium_nugget") { it.rarity(Rarity.RARE) }
+
     // Mobs
     @JvmField
     val ELDER_HEART: HTSimpleDeferredItem = REGISTER.registerSimpleItem("elder_heart") { it.rarity(Rarity.UNCOMMON) }

@@ -2,6 +2,7 @@
   "values": [
     "hiiragi_core:copper",
     "hiiragi_core:gold",
+    "hiiragi_core:iridium",
     "hiiragi_core:iron"
   ]
 }

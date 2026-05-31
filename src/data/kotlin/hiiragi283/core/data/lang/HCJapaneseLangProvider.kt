@@ -21,6 +21,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         // Block
         add(HCBlocks.CHARCOAL_BLOCK, "木炭ブロック")
         add(HCBlocks.ECHO_BLOCK, "残響ブロック")
+        add(HCBlocks.IRIDIUM_BLOCK, "イリジウムブロック")
 
         add(HCBlocks.WARPED_WART, "歪んだウォート")
 
@@ -38,6 +39,9 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.MEAT, "肉")
         // Item
         add(HCItems.NETHERITE_NUGGET, "ネザライト塊")
+        add(HCItems.IRIDIUM_DUST, "イリジウムの粉")
+        add(HCItems.IRIDIUM_INGOT, "イリジウムインゴット")
+        add(HCItems.IRIDIUM_NUGGET, "イリジウム塊")
 
         add(HCItems.ELDER_HEART, "エルダーの心臓")
 

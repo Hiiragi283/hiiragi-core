@@ -21,10 +21,16 @@ class HCItemTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<H
         copy(HTCommonTags.Blocks.STORAGE_BLOCKS_QUARTZ, HTCommonTags.Items.STORAGE_BLOCKS_QUARTZ)
         copy(HTCommonTags.Blocks.STORAGE_BLOCKS_AMETHYST, HTCommonTags.Items.STORAGE_BLOCKS_AMETHYST)
         copy(HTCommonTags.Blocks.STORAGE_BLOCKS_ECHO, HTCommonTags.Items.STORAGE_BLOCKS_ECHO)
+        copy(HTCommonTags.Blocks.STORAGE_BLOCKS_IRIDIUM, HTCommonTags.Items.STORAGE_BLOCKS_IRIDIUM)
+
+        tags(Tags.Items.DUSTS, HTCommonTags.Items.DUSTS_IRIDIUM).addItem(HCItems.IRIDIUM_DUST)
 
         tags(Tags.Items.GEMS, HTCommonTags.Items.GEMS_ECHO).addItem(Items.ECHO_SHARD)
 
+        tags(Tags.Items.INGOTS, HTCommonTags.Items.INGOTS_IRIDIUM).addItem(HCItems.IRIDIUM_INGOT)
+
         tags(Tags.Items.NUGGETS, HTCommonTags.Items.NUGGETS_NETHERITE).add(HCItems.NETHERITE_NUGGET)
+        tags(Tags.Items.NUGGETS, HTCommonTags.Items.NUGGETS_IRIDIUM).add(HCItems.IRIDIUM_NUGGET)
 
         tags(Tags.Items.CROPS, HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)
 

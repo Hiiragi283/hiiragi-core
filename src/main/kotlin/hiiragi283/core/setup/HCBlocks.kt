@@ -34,11 +34,17 @@ data object HCBlocks {
 
     //    Resources    //
 
+    // Fuels
     @JvmField
     val CHARCOAL_BLOCK: HTSimpleDeferredBlockAndItem = REGISTER.registerSimple("charcoal_block", copyOf(Blocks.COAL_BLOCK).mapColor(MapColor.TERRACOTTA_BROWN))
 
+    // Gems
     @JvmField
     val ECHO_BLOCK: HTSimpleDeferredBlockAndItem = REGISTER.registerSimple("echo_block", copyOf(Blocks.AMETHYST_BLOCK).mapColor(MapColor.COLOR_CYAN))
+
+    // Metals
+    @JvmField
+    val IRIDIUM_BLOCK: HTSimpleDeferredBlockAndItem = REGISTER.registerSimple("iridium_block", copyOf(Blocks.NETHERITE_BLOCK).mapColor(MapColor.NONE))
 
     //    Crops    //
 

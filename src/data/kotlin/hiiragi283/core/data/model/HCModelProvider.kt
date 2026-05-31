@@ -50,6 +50,7 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
         // Resources
         generators.createTrivialCube(HCBlocks.CHARCOAL_BLOCK.get())
         generators.createTrivialCube(HCBlocks.ECHO_BLOCK.get())
+        generators.createTrivialCube(HCBlocks.IRIDIUM_BLOCK.get())
 
         // Warped Wart
         generators.createCropBlock(HCBlocks.WARPED_WART.get(), BlockStateProperties.AGE_3, 0, 1, 1, 2)
@@ -63,6 +64,9 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
     private fun registerItemModels(generators: ItemModelGenerators) {
         // Resources
         generators.generateFlatItem(HCItems.NETHERITE_NUGGET)
+        generators.generateFlatItem(HCItems.IRIDIUM_DUST)
+        generators.generateFlatItem(HCItems.IRIDIUM_INGOT)
+        generators.generateFlatItem(HCItems.IRIDIUM_NUGGET)
 
         generators.generateFlatItem(HCItems.ELDER_HEART)
         // Ingredients

@@ -20,11 +20,17 @@ class HCMaterialRecipeProvider(modId: String, registries: HolderLookup.Provider,
         fourBaseToBlock(HCMaterialContents.ECHO)
         blockToFourBase(HCMaterialContents.ECHO)
 
-        nineBaseToBlock(HCMaterialContents.ENDER_PEARL)
-        blockToNineBase(HCMaterialContents.ENDER_PEARL)
+        fourBaseToBlock(HCMaterialContents.ENDER_PEARL)
+        blockToFourBase(HCMaterialContents.ENDER_PEARL)
+
+        nineBaseToBlock(HCMaterialContents.IRIDIUM)
+        blockToNineBase(HCMaterialContents.IRIDIUM)
         // Base <-> Nugget
         nuggetToBase(HCMaterialContents.NETHERITE)
         baseToNugget(HCMaterialContents.NETHERITE)
+
+        nuggetToBase(HCMaterialContents.IRIDIUM)
+        baseToNugget(HCMaterialContents.IRIDIUM)
     }
 
     class Runner(packOutput: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : Direct(HiiragiCoreAPI.MOD_ID, packOutput, registries, ::HCMaterialRecipeProvider) {

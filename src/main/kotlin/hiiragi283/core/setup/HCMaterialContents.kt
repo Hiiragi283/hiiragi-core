@@ -142,6 +142,14 @@ data object HCMaterialContents {
     }
 
     // Common
+    @JvmField
+    val IRIDIUM: HTDeferredMaterialContents = REGISTER.registerContents("iridium", CommonPartKeys.INGOT) {
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(HCBlocks.IRIDIUM_BLOCK), HTCommonTags.Items.STORAGE_BLOCKS_IRIDIUM)
+
+        add(CommonPartKeys.DUST, HTMaterialItemEntry.item(HCItems.IRIDIUM_DUST), HTCommonTags.Items.DUSTS_IRIDIUM)
+        add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(HCItems.IRIDIUM_INGOT), HTCommonTags.Items.INGOTS_IRIDIUM)
+        add(CommonPartKeys.NUGGET, HTMaterialItemEntry.item(HCItems.IRIDIUM_NUGGET), HTCommonTags.Items.NUGGETS_NETHERITE)
+    }
 
     // Modded
 

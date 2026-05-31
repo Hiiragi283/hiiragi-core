@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#c:ingots/iridium"
+  ],
+  "result": {
+    "count": 9,
+    "id": "hiiragi_core:iridium_nugget"
+  }
+}

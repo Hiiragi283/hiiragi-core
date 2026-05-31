@@ -27,6 +27,7 @@ class HCMaterialContentsTagsProvider(output: PackOutput, lookupProvider: Complet
             .add(HCMaterialContents.IRON)
             .add(HCMaterialContents.COPPER)
             // 6th period
+            .add(HCMaterialContents.IRIDIUM)
             .add(HCMaterialContents.GOLD)
         // tags(HTCommonTags.MaterialContents.ELEMENTS_METAL, HTCommonTags.MaterialContents.ELEMENTS_ALKALI_METAL)
         // tags(HTCommonTags.MaterialContents.ELEMENTS_METAL, HTCommonTags.MaterialContents.ELEMENTS_ALKALI_EARTH_METAL)

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "A": "#c:ingots/iridium",
+    "B": "hiiragi_core:iridium_ingot"
+  },
+  "pattern": [
+    "AAA",
+    "ABA",
+    "AAA"
+  ],
+  "result": {
+    "id": "hiiragi_core:iridium_block"
+  }
+}

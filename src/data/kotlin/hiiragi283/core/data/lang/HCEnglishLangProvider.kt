@@ -21,6 +21,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         // Block
         add(HCBlocks.CHARCOAL_BLOCK, "Block of Charcoal")
         add(HCBlocks.ECHO_BLOCK, "Block of Echo")
+        add(HCBlocks.IRIDIUM_BLOCK, "Block of Iridium")
 
         add(HCBlocks.WARPED_WART, "Warped Wart")
 
@@ -38,6 +39,9 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.MEAT, "Meat")
         // Item
         add(HCItems.NETHERITE_NUGGET, "Netherite Nugget")
+        add(HCItems.IRIDIUM_DUST, "Iridium Dust")
+        add(HCItems.IRIDIUM_INGOT, "Iridium Ingot")
+        add(HCItems.IRIDIUM_NUGGET, "Iridium Nugget")
 
         add(HCItems.ELDER_HEART, "Elder Heart")
 
