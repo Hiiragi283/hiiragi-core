@@ -1,0 +1,11 @@
+{
+  "gives": {
+    "id": "hiiragi_core:elder_heart"
+  },
+  "max_uses": 1.0,
+  "wants": {
+    "count": 32.0,
+    "id": "minecraft:emerald"
+  },
+  "xp": 100.0
+}

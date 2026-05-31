@@ -1,6 +1,5 @@
 package hiiragi283.core.data
 
-import hiiragi283.core.data.bootstrap.HCEnchantmentProvider
 import hiiragi283.core.data.lang.HCEnglishLangProvider
 import hiiragi283.core.data.lang.HCJapaneseLangProvider
 import hiiragi283.core.data.loot.HCBlockLootTableProvider
@@ -15,9 +14,14 @@ import hiiragi283.core.data.recipe.HCMaterialRecipeProvider
 import hiiragi283.core.data.recipe.HCTankInteractionRecipeProvider
 import hiiragi283.core.data.recipe.HCVanillaRecipeProvider
 import hiiragi283.core.data.tag.HCBlockTagsProvider
+import hiiragi283.core.data.tag.HCEnchantmentTagsProvider
+import hiiragi283.core.data.tag.HCEntityTypeTagsProvider
 import hiiragi283.core.data.tag.HCFluidTagsProvider
 import hiiragi283.core.data.tag.HCItemTagsProvider
 import hiiragi283.core.data.tag.HCMaterialContentsTagsProvider
+import hiiragi283.core.data.tag.HCVillagerTradeTagsProvider
+import hiiragi283.core.setup.HCEnchantments
+import hiiragi283.core.setup.HCVillagerTrades
 import hiiragi283.lib.data.createLootTables
 import net.minecraft.core.RegistrySetBuilder
 import net.minecraft.core.registries.Registries
@@ -33,7 +37,8 @@ data object HiiragiCoreData {
         // Server
         event.createDatapackRegistryObjects(
             RegistrySetBuilder()
-                .add(Registries.ENCHANTMENT, HCEnchantmentProvider),
+                .add(Registries.ENCHANTMENT, HCEnchantments)
+                .add(Registries.VILLAGER_TRADE, HCVillagerTrades),
         )
 
         event.createProvider(::HCDataMapProvider)
@@ -44,8 +49,11 @@ data object HiiragiCoreData {
         )
         event.createProvider(::HCGlobalLootModifierProvider)
 
+        event.createProvider(::HCEnchantmentTagsProvider)
+        event.createProvider(::HCEntityTypeTagsProvider)
         event.createProvider(::HCFluidTagsProvider)
         event.createProvider(::HCMaterialContentsTagsProvider)
+        event.createProvider(::HCVillagerTradeTagsProvider)
         event.createBlockAndItemTags(::HCBlockTagsProvider, ::HCItemTagsProvider)
 
         event.createProvider(HCChargingRecipeProvider::Runner)
