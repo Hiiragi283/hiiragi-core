@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "#c:gems/diamond",
+    "B": "hiiragi_core:eternal_upgrade",
+    "C": "hiiragi_core:iridescent_powder"
+  },
+  "pattern": [
+    "ABA",
+    "ACA",
+    "AAA"
+  ],
+  "result": {
+    "count": 2,
+    "id": "hiiragi_core:eternal_upgrade"
+  }
+}

@@ -1,11 +1,16 @@
 package hiiragi283.core.data.recipe
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.common.recipe.custom.HCEternalSmithingRecipe
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.core.setup.HCItems
+import hiiragi283.lib.HTConstants
 import hiiragi283.lib.data.recipe.HTRecipeProvider
+import hiiragi283.lib.recipe.RecipeKey
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
+import net.minecraft.data.recipes.CustomCraftingRecipeBuilder
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.tags.ItemTags
@@ -52,6 +57,21 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
                 .unlockedBy(getHasName(base), has(base))
                 .save(output, getConversionRecipeName(waxed, Items.HONEYCOMB))
         }
+
+        // Eternal Upgrade
+        shaped(RecipeCategory.MISC, HCItems.ETERNAL_UPGRADE, 2)
+            .pattern("ABA")
+            .pattern("ACA")
+            .pattern("AAA")
+            .define('A', Tags.Items.GEMS_DIAMOND)
+            .define('B', HCItems.ETERNAL_UPGRADE)
+            .define('C', HCItems.IRIDESCENT_POWDER)
+            .unlockedBy(getHasName(HCItems.ETERNAL_UPGRADE), has(HCItems.ETERNAL_UPGRADE))
+            .save(output)
+
+        CustomCraftingRecipeBuilder.customCrafting(RecipeCategory.MISC) { _, _ -> HCEternalSmithingRecipe }
+            .unlockedBy(getHasName(HCItems.ETERNAL_UPGRADE), has(HCItems.ETERNAL_UPGRADE))
+            .save(output, RecipeKey(modId, "${HTConstants.SMITHING}/eternal_upgrade"))
     }
 
     class Runner(packOutput: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : Direct(HiiragiCoreAPI.MOD_ID, packOutput, registries, ::HCVanillaRecipeProvider) {

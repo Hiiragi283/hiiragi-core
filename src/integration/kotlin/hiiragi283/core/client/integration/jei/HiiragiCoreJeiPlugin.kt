@@ -11,6 +11,7 @@ import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
+import hiiragi283.core.common.recipe.custom.HCEternalSmithingRecipe
 import hiiragi283.core.common.recipe.viewer.display.HCRecipeDisplayFactories
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
@@ -40,6 +41,7 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration
 import mezz.jei.api.registration.IRecipeRegistration
 import mezz.jei.api.registration.ISubtypeRegistration
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration
+import mezz.jei.api.runtime.IIngredientManager
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.item.Item
@@ -98,6 +100,8 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     override fun registerVanillaCategoryExtensions(registration: IVanillaCategoryExtensionRegistration) {
+        val manager: IIngredientManager = registration.jeiHelpers.ingredientManager
+        registration.smithingCategory.addExtension(HCEternalSmithingRecipe::class.java, HCEternalSmithingCategoryExtension(manager))
     }
 
     override fun registerRecipes(registration: IRecipeRegistration) {

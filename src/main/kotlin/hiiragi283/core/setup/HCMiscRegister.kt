@@ -2,6 +2,7 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.item.consume.HTClearRandomEffectConsumeEffect
+import hiiragi283.core.common.recipe.ingredient.HTDamageableIngredient
 import hiiragi283.lib.recipe.ingredient.HTMaterialPartIngredient
 import hiiragi283.lib.recipe.ingredient.HTPotionFluidIngredient
 import net.minecraft.core.registries.Registries
@@ -19,6 +20,7 @@ internal data object HCMiscRegister {
         // Ingredient Type
         event.register(NeoForgeRegistries.Keys.INGREDIENT_TYPES) { helper ->
             helper.register(HiiragiCoreAPI.id("material_part"), HTMaterialPartIngredient.TYPE)
+            helper.register(HiiragiCoreAPI.id("damageable"), HTDamageableIngredient.TYPE)
         }
         // Fluid Ingredient Type
         event.register(NeoForgeRegistries.Keys.FLUID_INGREDIENT_TYPES) { helper ->
