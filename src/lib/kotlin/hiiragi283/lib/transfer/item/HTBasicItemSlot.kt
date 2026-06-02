@@ -10,9 +10,11 @@ import hiiragi283.lib.transfer.HTTransferPredicates
 import java.util.function.BiPredicate
 import java.util.function.Predicate
 import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 import net.neoforged.neoforge.transfer.item.ItemResource
+import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
 open class HTBasicItemSlot(capacity: Long, canInsert: BiPredicate<ItemResource, HTHandlerAccess>, canExtract: BiPredicate<ItemResource, HTHandlerAccess>, filter: Predicate<ItemResource>, listener: Runnable?) : HTBasicResourceSlot<ItemResource>(capacity, canInsert, canExtract, filter, listener, ItemResource.EMPTY) {
     companion object {
@@ -34,10 +36,17 @@ open class HTBasicItemSlot(capacity: Long, canInsert: BiPredicate<ItemResource, 
             capacity: Long = Item.ABSOLUTE_MAX_STACK_SIZE.toLong(),
             canInsert: Predicate<ItemResource> = HTTransferPredicates.alwaysTrue(),
             filter: Predicate<ItemResource> = canInsert,
-        ): HTBasicItemSlot = create(listener, capacity, canInsert = { resource, _ -> canInsert.test(resource) }, canExtract = HTTransferPredicates.notExternal(), filter = filter)
+        ): HTBasicItemSlot = create(listener, capacity, canInsert = { resource: ItemResource, _ -> canInsert.test(resource) }, canExtract = HTTransferPredicates.notExternal(), filter = filter)
 
         @JvmStatic
         fun output(listener: Runnable?): HTBasicItemSlot = create(listener, canInsert = HTTransferPredicates.internalOnly())
+    }
+
+    fun getStack(): ItemStack = this.createSnapshot().fold(ItemStack::EMPTY) { it.mapAsInt(ItemResource::toStack) }
+
+    fun setStack(stack: ItemStack, transaction: TransactionContext?) {
+        val (resource: ItemResource, amount: Int) = stack.toResourcePair()
+        setContents(resource, amount.toLong(), transaction)
     }
 
     override fun getCapacityAsLong(resource: ItemResource): Long {

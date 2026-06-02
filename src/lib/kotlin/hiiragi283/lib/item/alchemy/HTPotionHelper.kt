@@ -3,7 +3,6 @@ package hiiragi283.lib.item.alchemy
 import hiiragi283.lib.HTPlatform
 import hiiragi283.lib.item.createItemTemplate
 import hiiragi283.lib.util.HTTextResult
-import hiiragi283.lib.util.getOrThrow
 import kotlin.jvm.optionals.getOrNull
 import net.minecraft.core.Holder
 import net.minecraft.core.TypedInstance
@@ -63,7 +62,7 @@ data object HTPotionHelper {
      * @since 0.11.0
      */
     @JvmStatic
-    fun createPotion(contents: BottledPotionContents): ItemStackTemplate = createPotion(contents.bottleType, contents.contents).getOrThrow()
+    fun createPotion(contents: BottledPotionContents): HTTextResult<ItemStackTemplate> = createPotion(contents.bottleType, contents.contents)
 
     /**
      * 指定した引数からポーションの[ItemStack]を作成します。

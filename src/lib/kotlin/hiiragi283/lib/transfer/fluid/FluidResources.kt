@@ -21,6 +21,9 @@ fun FluidResourceHandler.getFluidStack(index: Int): FluidStack = this.getResourc
 
 typealias HTFluidView = HTResourceView<FluidResource>
 
-fun HTFluidView.getFluidStack(): FluidStack = this.resource.toStack(this.amountAsInt)
+fun HTFluidView.getFluidStack(): FluidStack = when (this) {
+    is HTBasicFluidTank -> this.getStack()
+    else -> this.resource.toStack(this.amountAsInt)
+}
 
 typealias HTFluidTank = HTResourceSlot<FluidResource>

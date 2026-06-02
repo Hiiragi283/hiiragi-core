@@ -46,6 +46,7 @@ import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.level.ItemLike
@@ -128,7 +129,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                     HTRecipeDisplay.Simple(
                         potion.toLike().getId().withPath { "/${HCConstants.EMPTYING}/potion/$it" },
                         HTRecipeContents.create {
-                            addInput(HTPotionHelper.createPotion(contents).create())
+                            HTPotionHelper.createPotion(contents).map(ItemStackTemplate::create).onRight(::addInput)
                             addOutput(HCPotionFluidHelper.createFluid(contents, 250))
                             addOutput(ItemStack(Items.GLASS_BOTTLE))
                         },

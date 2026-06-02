@@ -10,7 +10,6 @@ import hiiragi283.lib.recipe.handler.HTItemInputHandler
 import hiiragi283.lib.transfer.holder.HTResourceSlotHolder
 import hiiragi283.lib.transfer.item.HTBasicItemSlot
 import hiiragi283.lib.transfer.item.HTItemSlot
-import hiiragi283.lib.transfer.item.getItemStack
 import hiiragi283.lib.transfer.useTransaction
 import hiiragi283.lib.world.HTItemDropHelper
 import net.minecraft.core.BlockPos
@@ -52,7 +51,7 @@ class HTChoppingBoardBlockEntity(worldPosition: BlockPos, blockState: BlockState
     fun chopItem(player: Player, hand: InteractionHand): Boolean {
         val level: ServerLevel = this.getServerLevel() ?: return false
 
-        val stack: ItemStack = inputHandler.getItemStack()
+        val stack: ItemStack = slot.getStack()
         val axeStack: ItemStack = player.getItemInHand(hand)
         if (axeStack.`is`(ItemTags.AXES)) {
             val recipe: HTItemToChancedItemsRecipe = cache.findFirstRecipe(stack, level) ?: return false

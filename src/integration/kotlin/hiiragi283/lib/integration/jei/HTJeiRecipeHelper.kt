@@ -29,7 +29,7 @@ data object HTJeiRecipeHelper {
         .getInstance()
         .level
         ?.let { HTRecipeLookupContext.create(it, HTPhysicalSideHelper.cachedRecipes) }
-        ?: error("Cannot create recipe lookup context on client side")
+        ?: ContextMap.EMPTY
 
     @JvmField
     val DISPLAY_SORTER: Comparator<in HTRecipeDisplay> = compareBy(HTComparators.ID, HTRecipeDisplay::getId)

@@ -2,6 +2,7 @@ package hiiragi283.core.common.recipe
 
 import com.google.common.collect.ImmutableMultimap
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.lib.getResult
 import hiiragi283.lib.recipe.HTRecipeHolder
 import hiiragi283.lib.recipe.base.HTItemToItemRecipe
 import hiiragi283.lib.recipe.base.HTProgressData
@@ -11,6 +12,7 @@ import hiiragi283.lib.recipe.ingredient.test
 import hiiragi283.lib.recipe.lookup.HTRecipeLookupContext
 import hiiragi283.lib.recipe.lookup.HTRecipeType
 import hiiragi283.lib.registry.toLike
+import hiiragi283.lib.util.getOrElse
 import net.minecraft.core.Holder
 import net.minecraft.core.TypedInstance
 import net.minecraft.resources.Identifier
@@ -19,6 +21,7 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemInstance
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.alchemy.Potion
+import net.minecraft.world.item.alchemy.PotionBrewing
 import net.minecraft.world.item.crafting.AbstractCookingRecipe
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput
@@ -61,10 +64,11 @@ object HTVanillaRecipeTypes {
     private data object BrewingType : HTRecipeType<HCBrewingRecipe> {
         override fun getAllRecipes(contextMap: ContextMap): Sequence<HTRecipeHolder<HCBrewingRecipe>> {
             val builder: ImmutableMultimap.Builder<Holder<Potion>, HCBrewingRecipe> = ImmutableMultimap.builder()
-            contextMap.getOptional(HTRecipeLookupContext.BREWING)
-                ?.potionMixes
-                ?.map(::HCBrewingRecipe)
-                ?.forEach { builder.put(it.potionTo, it) }
+            contextMap.getResult(HTRecipeLookupContext.BREWING)
+                .map(PotionBrewing::potionMixes)
+                .map { it.map(::HCBrewingRecipe) }
+                .getOrElse { emptyList() }
+                .forEach { builder.put(it.potionTo, it) }
             val recipeMap: ImmutableMultimap<Holder<Potion>, HCBrewingRecipe> = builder.build()
             return recipeMap
                 .keySet()

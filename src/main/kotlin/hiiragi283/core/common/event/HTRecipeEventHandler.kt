@@ -1,11 +1,11 @@
 package hiiragi283.core.common.event
 
+import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.world.HCInWorldRecipeCaches
 import hiiragi283.core.setup.HCAttachmentTypes
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.lib.HTConstants
-import hiiragi283.lib.entity.serverLevel
 import hiiragi283.lib.recipe.result.HTResultHelper
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.entity.Entity
@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.event.OnDatapackSyncEvent
+import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent
 import net.neoforged.neoforge.event.level.ExplosionEvent
 
 @EventBusSubscriber
@@ -22,6 +23,27 @@ data object HTRecipeEventHandler {
     @SubscribeEvent
     fun onDatapackSync(event: OnDatapackSyncEvent) {
         HCRecipeTypes.REGISTER.entries.map { it.get() }.let(event::sendRecipes)
+    }
+
+    /**
+     * [HCChargingRecipe]を処理するイベント
+     */
+    @SubscribeEvent
+    fun onStruck(event: EntityStruckByLightningEvent) {
+        val entity: Entity = event.entity
+        if (isCompleted(entity)) {
+            event.isCanceled = true
+            return
+        }
+        val level: Level = entity.level()
+        if (level !is ServerLevel) return
+        if (entity is ItemEntity && entity.isAlive) {
+            val input: ItemStack = entity.item
+            val recipe: HCChargingRecipe = getCaches(level).charging.findFirstRecipe(input, level) ?: return
+            spawnResults(entity, level) { recipe.assemble(input) }
+            entity.discard()
+            event.isCanceled = true
+        }
     }
 
     /**
@@ -37,7 +59,7 @@ data object HTRecipeEventHandler {
             if (entity is ItemEntity && entity.isAlive && !isCompleted(entity)) {
                 val input: ItemStack = entity.item
                 val recipe: HCExplodingRecipe = getCaches(level).exploding.findFirstRecipe(input, level) ?: continue
-                spawnResults(entity) { recipe.assemble(input) }
+                spawnResults(entity, level) { recipe.assemble(input) }
                 if (entity.item.isEmpty) {
                     iterator.remove()
                     entity.discard()
@@ -60,8 +82,7 @@ data object HTRecipeEventHandler {
     }
 
     @JvmStatic
-    private fun spawnResults(entity: ItemEntity, result: () -> ItemStack) {
-        val level: ServerLevel = entity.serverLevel() ?: return
+    private fun spawnResults(entity: ItemEntity, level: ServerLevel, result: () -> ItemStack) {
         (0 until entity.item.count)
             .map { result() }
             .let(HTResultHelper::mergeStacks)

@@ -7,12 +7,7 @@ import hiiragi283.lib.recipe.base.HTItemToChancedItemsRecipe
 import hiiragi283.lib.recipe.cache.HTRecipeCaches
 
 class HCInWorldRecipeCaches {
-    val crushing: HTRecipeCaches.SingleItem<HTItemToChancedItemsRecipe> =
-        HTRecipeCaches.SingleItem(HCRecipeLookups.CRUSHING)
-    val charging: HTRecipeCaches.SingleItem<HCChargingRecipe> =
-        HTRecipeCaches.SingleItem(HCRecipeLookups.CHARGING)
-    val chopping: HTRecipeCaches.SingleItem<HTItemToChancedItemsRecipe> =
-        HTRecipeCaches.SingleItem(HCRecipeLookups.CHOPPING)
-    val exploding: HTRecipeCaches.SingleItem<HCExplodingRecipe> =
-        HTRecipeCaches.SingleItem(HCRecipeLookups.EXPLODING)
+    val crushing: HTRecipeCaches.SingleItem<HTItemToChancedItemsRecipe> = HTRecipeCaches.SingleItem(HCRecipeLookups.CRUSHING)
+    val charging: HTRecipeCaches.SingleItem<HCChargingRecipe> = HTRecipeCaches.SingleItem(HCRecipeLookups.CHARGING)
+    val exploding: HTRecipeCaches.SingleItem<HCExplodingRecipe> = HTRecipeCaches.SingleItem(HCRecipeLookups.EXPLODING)
 }

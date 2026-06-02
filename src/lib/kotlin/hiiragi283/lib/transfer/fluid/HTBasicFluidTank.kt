@@ -11,7 +11,9 @@ import java.util.function.BiPredicate
 import java.util.function.Predicate
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
+import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.transfer.fluid.FluidResource
+import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
 open class HTBasicFluidTank(capacity: Long, canInsert: BiPredicate<FluidResource, HTHandlerAccess>, canExtract: BiPredicate<FluidResource, HTHandlerAccess>, filter: Predicate<FluidResource>, listener: Runnable?) : HTBasicResourceSlot<FluidResource>(capacity, canInsert, canExtract, filter, listener, FluidResource.EMPTY) {
     companion object {
@@ -37,6 +39,13 @@ open class HTBasicFluidTank(capacity: Long, canInsert: BiPredicate<FluidResource
 
         @JvmStatic
         fun output(capacity: Long, listener: Runnable?): HTBasicFluidTank = create(capacity, listener, canInsert = HTTransferPredicates.internalOnly())
+    }
+
+    fun getStack(): FluidStack = this.createSnapshot().fold(FluidStack::EMPTY) { it.mapAsInt(FluidResource::toStack) }
+
+    fun setStack(stack: FluidStack, transaction: TransactionContext?) {
+        val (resource: FluidResource, amount: Int) = stack.toResourcePair()
+        setContents(resource, amount.toLong(), transaction)
     }
 
     final override fun serialize(output: ValueOutput) {

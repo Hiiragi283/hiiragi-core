@@ -40,6 +40,10 @@ abstract class HTBasicResourceSlot<RESOURCE : Resource>(
         }
     }
 
+    fun isValidForInsertion(resource: RESOURCE, access: HTHandlerAccess): Boolean = this.canInsert.test(resource, access)
+
+    fun canResourceExtract(resource: RESOURCE, access: HTHandlerAccess): Boolean = this.canExtract.test(resource, access)
+
     protected open fun getInsertionRate(access: HTHandlerAccess): Long = Long.MAX_VALUE
 
     protected open fun getExtractionRate(access: HTHandlerAccess): Long = Long.MAX_VALUE
@@ -55,7 +59,7 @@ abstract class HTBasicResourceSlot<RESOURCE : Resource>(
         needed = minOf(needed, getInsertionRate(access))
         return when {
             // 空きがない，または搬入条件を満たしていない場合
-            needed <= 0 || !this.canInsert.test(resource, access) -> 0
+            needed <= 0 || !isValidForInsertion(resource, access) -> 0
             // 中身が存在し，resourceと異なる場合
             !isEmpty() && resource != this.resource -> 0
             else -> {
@@ -68,7 +72,7 @@ abstract class HTBasicResourceSlot<RESOURCE : Resource>(
 
     override fun extract(resource: RESOURCE, amount: Int, transaction: TransactionContext, access: HTHandlerAccess): Int {
         TransferPreconditions.checkNonEmptyNonNegative(resource, amount)
-        if (amount == 0 || resource != this.resource || !this.canExtract.test(resource, access)) return 0
+        if (amount == 0 || resource != this.resource || !canResourceExtract(resource, access)) return 0
         val currentAmount: Long = this.amountAsLong
         var toRemove: Int = minOf(amount, this.amountAsInt)
         toRemove = minOf(toRemove, getExtractionRate(access).let(Ints::saturatedCast))

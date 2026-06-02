@@ -8,7 +8,6 @@ import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.material.HTMaterialRawEntry
 import hiiragi283.lib.registry.HTDeferredMaterialContents
 import hiiragi283.lib.resource.HTIdLike
-import hiiragi283.lib.util.getOrThrow
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput
@@ -127,7 +126,7 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
         HTCookingRecipeBuilder.smeltingAndBlasting {
             ingredient = raw.map(Ingredient::of, ::tag)
             exp = 3.5f
-            result = base.toTemplate().getOrThrow()
+            base.toTemplate().onRight(::result::set)
             raw.fold(
                 { item: HTMaterialItemEntry -> unlocker.unlockedBy(getHasName(item), has(item)) },
                 { itemTag: TagKey<Item> -> unlocker.unlockedBy(getHasName(itemTag), has(itemTag)) },

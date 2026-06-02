@@ -6,6 +6,7 @@ import hiiragi283.core.util.HCPotionFluidHelper
 import hiiragi283.lib.item.alchemy.BottledPotionContents
 import hiiragi283.lib.item.alchemy.HTBottleType
 import hiiragi283.lib.item.alchemy.HTPotionHelper
+import hiiragi283.lib.item.createOrEmpty
 import hiiragi283.lib.recipe.ingredient.HTIngredientHelper
 import hiiragi283.lib.recipe.result.HTItemAndFluidResult
 import net.minecraft.core.TypedInstance
@@ -50,7 +51,7 @@ data object HTPotionTankInteraction {
         override fun assemble(firstInput: ItemInstance, secondInput: FluidInstance): ItemStack = HTPotionHelper
             .getContents(secondInput)
             ?.let(HTPotionHelper::createPotion)
-            ?.create()
-            ?: ItemStack.EMPTY
+            ?.getOrNull()
+            .createOrEmpty()
     }
 }
