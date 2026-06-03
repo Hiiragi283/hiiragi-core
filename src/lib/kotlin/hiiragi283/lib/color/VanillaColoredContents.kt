@@ -1,5 +1,6 @@
 package hiiragi283.lib.color
 
+import hiiragi283.lib.collection.mutableEnumMapOf
 import hiiragi283.lib.registry.HTDeferredItem
 import hiiragi283.lib.registry.HTSimpleDeferredItem
 import hiiragi283.lib.resource.vanillaId
@@ -51,7 +52,7 @@ data object VanillaColoredContents {
 
     @JvmInline
     private value class ColoredItemContents(private val map: Map<HTDefaultColor, HTSimpleDeferredItem>) : HTColoredContents<HTSimpleDeferredItem> {
-        constructor(path: String) : this(HTDefaultColor.entries.associateWith { HTDeferredItem(vanillaId(path.replace("%s", it.serializedName))) })
+        constructor(path: String) : this(HTDefaultColor.entries.associateWithTo(mutableEnumMapOf()) { HTDeferredItem(vanillaId(path.replace("%s", it.serializedName))) })
 
         override fun get(color: HTDefaultColor): HTSimpleDeferredItem? = map[color]
 

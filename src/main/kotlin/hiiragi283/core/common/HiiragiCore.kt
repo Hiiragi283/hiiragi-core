@@ -62,7 +62,6 @@ data object HiiragiCore : HTCommonMod() {
         event.register(HTRegistries.ITEM_RESULT_SERIALIZER)
         event.register(HTRegistries.MATERIAL_CONTENTS)
         event.register(HTRegistries.SLOT_TYPE)
-        event.register(HTRegistries.WIDGET_TYPE)
     }
 
     override fun commonSetup(event: FMLCommonSetupEvent) {

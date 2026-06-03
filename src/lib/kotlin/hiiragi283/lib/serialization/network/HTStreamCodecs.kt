@@ -42,10 +42,8 @@ data object HTStreamCodecs {
     val UUID: StreamCodec<ByteBuf, UUID> = UUIDUtil.STREAM_CODEC
 
     @JvmStatic
-    inline fun <reified V : Enum<V>> enum(
-        strategy: ByIdMap.OutOfBoundsStrategy = ByIdMap.OutOfBoundsStrategy.WRAP,
-    ): StreamCodec<ByteBuf, V> = ByteBufCodecs.idMapper(
-        ByIdMap.continuous<V>(Enum<V>::ordinal, V::class.java.enumConstants, strategy),
+    inline fun <reified V : Enum<V>> enum(strategy: ByIdMap.OutOfBoundsStrategy = ByIdMap.OutOfBoundsStrategy.WRAP): StreamCodec<ByteBuf, V> = ByteBufCodecs.idMapper(
+        ByIdMap.continuous(Enum<V>::ordinal, V::class.java.enumConstants, strategy),
         Enum<V>::ordinal,
     )
 

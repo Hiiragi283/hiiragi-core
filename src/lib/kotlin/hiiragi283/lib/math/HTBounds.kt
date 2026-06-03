@@ -11,17 +11,7 @@ package hiiragi283.lib.math
  * @see net.minecraft.client.renderer.Rect2i
  */
 @JvmRecord
-data class HTBounds(
-    val x: Int,
-    val y: Int,
-    val width: Int,
-    val height: Int,
-) {
-    companion object {
-        @JvmStatic
-        fun createSlot(x: Int, y: Int): HTBounds = HTBounds(x, y, 18, 18)
-    }
-
+data class HTBounds(val x: Int, val y: Int, val width: Int, val height: Int) {
     /**
      * x軸方向の範囲の最小値
      */

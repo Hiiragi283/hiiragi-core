@@ -1,5 +1,6 @@
 package hiiragi283.lib.block.entity
 
+import com.mojang.logging.LogUtils
 import hiiragi283.lib.network.HTUpdateBlockEntityPacket
 import net.minecraft.core.BlockPos
 import net.minecraft.core.HolderLookup
@@ -19,10 +20,15 @@ import net.minecraft.world.level.storage.TagValueOutput
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 import net.neoforged.neoforge.network.PacketDistributor
+import org.slf4j.Logger
 
 abstract class HTExtendedBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, blockState: BlockState) :
     BlockEntity(type, worldPosition, blockState),
     HTAbstractBlockEntity {
+    companion object {
+        @JvmField
+        protected val LOGGER: Logger = LogUtils.getLogger()
+    }
 
     //    Extensions    //
 
@@ -30,7 +36,9 @@ abstract class HTExtendedBlockEntity(type: BlockEntityType<*>, worldPosition: Bl
 
     protected open fun readValue(input: ValueInput) {}
 
-    fun createReducedUpdateTag(registries: HolderLookup.Provider): CompoundTag = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, registries)
+    fun createReporter(): ProblemReporter = ProblemReporter.ScopedCollector(this.problemPath(), LOGGER)
+
+    fun createReducedUpdateTag(registries: HolderLookup.Provider): CompoundTag = TagValueOutput.createWithContext(createReporter(), registries)
         .also(::writeReducedUpdateTag)
         .buildResult()
 

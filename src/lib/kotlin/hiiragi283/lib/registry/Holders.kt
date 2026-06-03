@@ -19,7 +19,10 @@ fun <R : Any> Holder<R>.getKeyOrThrow(): ResourceKey<R> = this.unwrapKey().orEls
  * @author Hiiragi Tsubasa
  * @since 0.17.0
  */
-fun <T : Any> Holder<T>.toLike(): SupplierWithId<T> = HolderWithId(this)
+fun <T : Any> Holder<T>.toLike(): SupplierWithId<T> = when (this.kind()) {
+    Holder.Kind.REFERENCE -> HolderWithId(this)
+    Holder.Kind.DIRECT -> error("Cannot convert direct holder to SupplierWithId")
+}
 
 @JvmInline
 private value class HolderWithId<T : Any>(private val holder: Holder<T>) : SupplierWithId<T> {

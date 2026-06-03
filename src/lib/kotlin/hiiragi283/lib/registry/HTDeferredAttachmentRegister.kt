@@ -5,7 +5,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries
 
 class HTDeferredAttachmentRegister(namespace: String) : HTDeferredRegister<AttachmentType<*>>(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, namespace) {
     fun <TYPE : Any> registerType(name: String, builder: AttachmentType.Builder<TYPE>): AttachmentType<TYPE> {
-        val type = builder.build()
+        val type: AttachmentType<TYPE> = builder.build()
         this.register(name) { _ -> type }
         return type
     }

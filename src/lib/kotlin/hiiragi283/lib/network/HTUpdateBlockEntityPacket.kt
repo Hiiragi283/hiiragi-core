@@ -1,8 +1,11 @@
 package hiiragi283.lib.network
 
+import com.mojang.logging.LogUtils
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.block.entity.HTExtendedBlockEntity
 import hiiragi283.lib.resource.toId
+import hiiragi283.lib.util.printError
+import hiiragi283.lib.world.getBlockEntityResult
 import net.minecraft.client.Minecraft
 import net.minecraft.client.player.AbstractClientPlayer
 import net.minecraft.core.BlockPos
@@ -12,15 +15,18 @@ import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload
-import net.minecraft.util.ProblemReporter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.storage.TagValueInput
 import net.minecraft.world.level.storage.ValueInput
+import org.slf4j.Logger
 
 @ConsistentCopyVisibility
 @JvmRecord
 data class HTUpdateBlockEntityPacket private constructor(val pos: BlockPos, val updateTag: CompoundTag) : HTCustomPayload.S2C {
     companion object {
+        @JvmField
+        val LOGGER: Logger = LogUtils.getLogger()
+
         @JvmField
         val TYPE = CustomPacketPayload.Type<HTUpdateBlockEntityPacket>(HTConstants.MOD_ID.toId("update_block_entity"))
 
@@ -44,7 +50,11 @@ data class HTUpdateBlockEntityPacket private constructor(val pos: BlockPos, val 
 
     override fun handle(player: AbstractClientPlayer, minecraft: Minecraft) {
         val level: Level = player.level()
-        val input: ValueInput = TagValueInput.create(ProblemReporter.DISCARDING, level.registryAccess(), updateTag)
-        level.getBlockEntity(pos)?.handleUpdateTag(input)
+        level.getBlockEntityResult<HTExtendedBlockEntity>(pos)
+            .printError(LOGGER)
+            .onRight { blockEntity: HTExtendedBlockEntity ->
+                val input: ValueInput = TagValueInput.create(blockEntity.createReporter(), level.registryAccess(), updateTag)
+                blockEntity.handleUpdateTag(input)
+            }
     }
 }

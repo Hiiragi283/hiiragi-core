@@ -44,7 +44,7 @@ abstract class HTIdLikeTagsProvider<T : Any> : TagsProvider<T> {
 
     protected abstract fun appendTags(registries: HolderLookup.Provider)
 
-    protected fun tag(tagKey: TagKey<T>): IdAppender = IdAppender { entry: TagEntry -> entryCache.computeIfAbsent(tagKey) { mutableListOf() }.add(entry) }
+    protected fun tag(tagKey: TagKey<T>): IdAppender = IdAppender { entry: TagEntry -> entryCache.getOrPut(tagKey, ::mutableListOf).add(entry) }
 
     protected fun tags(prefix: HTTagPrefix, material: HTMaterialLike): IdAppender = tags(prefix.rawCommonTag.create(registryKey), prefix.createTagKey(registryKey, material))
 

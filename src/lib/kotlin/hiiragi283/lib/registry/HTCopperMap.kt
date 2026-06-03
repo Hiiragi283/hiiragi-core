@@ -1,5 +1,6 @@
 package hiiragi283.lib.registry
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap
 import net.minecraft.world.level.block.WeatheringCopper
 
 @JvmRecord
@@ -8,12 +9,7 @@ data class HTCopperMap<out T>(val unaffected: T, val exposed: T, val weathered: 
     override val keys: Set<WeatheringCopper.WeatherState> get() = WeatheringCopper.WeatherState.entries.toSet()
     override val values: Collection<T> get() = listOf(unaffected, exposed, weathered, oxidized)
     override val entries: Set<Map.Entry<WeatheringCopper.WeatherState, T>>
-        get() = keys.mapTo(mutableSetOf()) { key: WeatheringCopper.WeatherState ->
-            object : Map.Entry<WeatheringCopper.WeatherState, T> {
-                override val key: WeatheringCopper.WeatherState = key
-                override val value: T = get(key)
-            }
-        }
+        get() = keys.mapTo(mutableSetOf()) { key: WeatheringCopper.WeatherState -> Object2ObjectMap.entry(key, get(key)) }
 
     override fun isEmpty(): Boolean = false
 

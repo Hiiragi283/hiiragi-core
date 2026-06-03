@@ -4,6 +4,7 @@ import hiiragi283.core.api.recipe.HTTankFillingRecipe
 import hiiragi283.lib.item.alchemy.BottledPotionContents
 import hiiragi283.lib.item.alchemy.HTBottleType
 import hiiragi283.lib.item.alchemy.HTPotionHelper
+import hiiragi283.lib.item.createOrEmpty
 import hiiragi283.lib.recipe.ingredient.HTIngredientHelper
 import hiiragi283.lib.util.flatMap
 import hiiragi283.lib.util.right
@@ -11,7 +12,6 @@ import net.minecraft.core.TypedInstance
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemInstance
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidInstance
@@ -36,7 +36,6 @@ data object HTPotionArrowFillingRecipe : HTTankFillingRecipe {
         ?.right()
         ?.map(BottledPotionContents::contents)
         ?.flatMap { HTPotionHelper.createPotion(Items.TIPPED_ARROW, it) }
-        ?.map(ItemStackTemplate::create)
         ?.getOrNull()
-        ?: ItemStack.EMPTY
+        .createOrEmpty()
 }
