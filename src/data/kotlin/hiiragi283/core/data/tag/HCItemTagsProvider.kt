@@ -35,6 +35,8 @@ class HCItemTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<H
         tags(CommonTagPrefixes.NUGGET, HCMaterialContents.NETHERITE).add(HCItems.NETHERITE_NUGGET)
         tags(CommonTagPrefixes.NUGGET, HCMaterialContents.IRIDIUM).add(HCItems.IRIDIUM_NUGGET)
 
+        tags(CommonTagPrefixes.RAW_MATERIALS, HCMaterialContents.IRIDIUM).addItem(HCItems.RAW_IRIDIUM)
+
         tags(Tags.Items.CROPS, HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)
 
         tag(HiiragiCoreTags.Items.STICKY_BALLS).addTag(Tags.Items.SLIME_BALLS)

@@ -5,6 +5,7 @@
     "#c:storage_blocks/echo",
     "#c:storage_blocks/glowstone",
     "#c:storage_blocks/iridium",
-    "#c:storage_blocks/quartz"
+    "#c:storage_blocks/quartz",
+    "#c:storage_blocks/raw_iridium"
   ]
 }

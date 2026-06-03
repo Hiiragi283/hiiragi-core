@@ -39,6 +39,9 @@ data object HCItems {
 
     // Common
     @JvmField
+    val RAW_IRIDIUM: HTSimpleDeferredItem = REGISTER.registerSimpleItem("raw_iridium") { it.rarity(Rarity.RARE) }
+
+    @JvmField
     val IRIDIUM_DUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("iridium_dust") { it.rarity(Rarity.RARE) }
 
     @JvmField

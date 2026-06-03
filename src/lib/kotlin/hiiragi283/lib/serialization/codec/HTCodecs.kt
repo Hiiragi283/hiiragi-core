@@ -5,6 +5,8 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
 import com.mojang.serialization.DynamicOps
 import com.mojang.serialization.MapCodec
+import com.mojang.serialization.MapLike
+import com.mojang.serialization.RecordBuilder
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.registry.RegistryKey
 import hiiragi283.lib.text.Text
@@ -17,6 +19,7 @@ import hiiragi283.lib.util.none
 import hiiragi283.lib.util.some
 import java.util.UUID
 import java.util.function.Function
+import java.util.stream.Stream
 import kotlin.Int
 import kotlin.String
 import kotlin.enums.enumEntries
@@ -38,8 +41,7 @@ import org.apache.commons.lang3.math.Fraction
  */
 data object HTCodecs {
     @JvmField
-    val FRACTION: Codec<Fraction> = Codec.xor(Codec.STRING, Codec.INT)
-        .convert()
+    val FRACTION: Codec<Fraction> = xor(Codec.STRING, Codec.INT)
         .xmap(
             { either: Either<String, Int> -> either.fold(Fraction::getFraction) { Fraction.getFraction(it, 1) } },
             { fraction: Fraction ->
@@ -83,14 +85,90 @@ data object HTCodecs {
         }
     }
 
+    @JvmStatic
+    fun <A, B> either(left: Codec<A>, right: Codec<B>): Codec<Either<A, B>> = HTEitherCodec(left, right, false)
+
+    @JvmStatic
+    fun <A, B> xor(left: Codec<A>, right: Codec<B>): Codec<Either<A, B>> = HTEitherCodec(left, right, true)
+
+    /**
+     * @see com.mojang.serialization.codecs.EitherCodec
+     * @see com.mojang.serialization.codecs.XorCodec
+     */
+    private class HTEitherCodec<A, B>(val left: Codec<A>, val right: Codec<B>, val isStrict: Boolean) : Codec<Either<A, B>> {
+        override fun <T : Any> encode(input: Either<A, B>, ops: DynamicOps<T>, prefix: T): DataResult<T> = input.fold(
+            { left.encode(it, ops, prefix) },
+            { right.encode(it, ops, prefix) },
+        )
+
+        override fun <T : Any> decode(ops: DynamicOps<T>, input: T): DataResult<DFUPair<Either<A, B>, T>> {
+            val leftRead: DataResult<DFUPair<Either<A, B>, T>> = left.decode(ops, input).map { it.mapFirst { Either.Left(it) } }
+            val rightRead: DataResult<DFUPair<Either<A, B>, T>> = right.decode(ops, input).map { it.mapFirst { Either.Right(it) } }
+            val leftResult: Option<DFUPair<Either<A, B>, T>> = leftRead.result().kotlin
+            val rightResult: Option<DFUPair<Either<A, B>, T>> = rightRead.result().kotlin
+            if (isStrict && (leftResult.isSome() && rightResult.isSome())) {
+                return DataResult.error({ "Both alternatives read successfully, can not pick the correct one; first: ${leftResult.getOrNull()} second: ${rightResult.getOrNull()}" }, leftResult.getOrNull())
+            }
+            if (leftResult.isSome()) {
+                return leftRead
+            }
+            if (rightResult.isSome()) {
+                return rightRead
+            }
+            return leftRead.apply2({ _, second -> second }, rightRead)
+        }
+    }
+
     /**
      * 指定した[left], [right]から，[Ior]の[MapCodec]を返します。
-     * @param left [L]を対象とする[MapCodec]
-     * @param right [R]を対象とする[MapCodec]
+     * @param left [A]を対象とする[MapCodec]
+     * @param right [B]を対象とする[MapCodec]
      * @return [Ior]の[MapCodec]
      */
     @JvmStatic
-    fun <L, R> ior(left: MapCodec<L>, right: MapCodec<R>): MapCodec<Ior<L, R>> = HTIorMapCodec(left, right)
+    fun <A, B> ior(left: MapCodec<A>, right: MapCodec<B>): MapCodec<Ior<A, B>> = HTIorMapCodec(left, right)
+
+    private class HTIorMapCodec<A, B>(val left: MapCodec<A>, val right: MapCodec<B>) : MapCodec<Ior<A, B>>() {
+        override fun <T : Any> keys(ops: DynamicOps<T>): Stream<T> = Stream.concat(left.keys(ops), right.keys(ops))
+
+        override fun <T : Any> decode(ops: DynamicOps<T>, input: MapLike<T>): DataResult<Ior<A, B>> {
+            val leftResult: DataResult<A> = left.decode(ops, input)
+            val rightResult: DataResult<B> = right.decode(ops, input)
+
+            val bothResult: DataResult<Ior<A, B>> = leftResult.flatMap { leftIn: A ->
+                rightResult.map { rightIn: B -> Ior.Both(leftIn, rightIn) }
+            }
+            if (bothResult.isSuccess) return bothResult
+            if (leftResult.isSuccess) {
+                return when {
+                    rightResult.isSuccess ->
+                        leftResult.flatMap { leftIn: A ->
+                            rightResult.map { rightIn: B -> Ior.Both(leftIn, rightIn) }
+                        }
+                    else -> leftResult.map { Ior.Left(it) }
+                }
+            } else {
+                return when {
+                    rightResult.isSuccess -> rightResult.map { Ior.Right(it) }
+                    else ->
+                        DataResult.error {
+                            val leftError: String = leftResult.error().orElseThrow().message()
+                            val rightError: String = rightResult.error().orElseThrow().message()
+                            "Failed to parse ior. Left: $leftError; Right: $rightError;"
+                        }
+                }
+            }
+        }
+
+        override fun <T : Any> encode(input: Ior<A, B>, ops: DynamicOps<T>, prefix: RecordBuilder<T>): RecordBuilder<T> = input.fold(
+            { left.encode(it, ops, prefix) },
+            { right.encode(it, ops, prefix) },
+            { left: A, right: B ->
+                this.left.encode(left, ops, prefix)
+                this.right.encode(right, ops, prefix)
+            },
+        )
+    }
 
     /**
      * [Enum]の[Codec]を返します。

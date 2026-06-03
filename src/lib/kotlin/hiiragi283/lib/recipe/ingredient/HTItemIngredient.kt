@@ -3,7 +3,6 @@ package hiiragi283.lib.recipe.ingredient
 import com.mojang.serialization.Codec
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.serialization.codec.HTCodecs
-import hiiragi283.lib.serialization.codec.convert
 import hiiragi283.lib.util.Either
 import hiiragi283.lib.util.unwrap
 import net.minecraft.core.TypedInstance
@@ -31,7 +30,7 @@ value class HTItemIngredient(private val delegate: SizedIngredient) : HTIngredie
         private val SIMPLE_CODEC: Codec<HTItemIngredient> = Ingredient.CODEC.xmap({ HTItemIngredient(it, 1) }, HTItemIngredient::unsized)
 
         @JvmField
-        val CODEC: Codec<HTItemIngredient> = Codec.either(SIMPLE_CODEC, NESTED_CODEC).convert().xmap(
+        val CODEC: Codec<HTItemIngredient> = HTCodecs.either(SIMPLE_CODEC, NESTED_CODEC).xmap(
             { it.unwrap() },
             { ingredient: HTItemIngredient ->
                 when (ingredient.count) {

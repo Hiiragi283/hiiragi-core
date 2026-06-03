@@ -23,6 +23,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         // Block
         add(HCBlocks.CHARCOAL_BLOCK, "木炭ブロック")
         add(HCBlocks.ECHO_BLOCK, "残響ブロック")
+        add(HCBlocks.RAW_IRIDIUM_BLOCK, "イリジウムの原石ブロック")
         add(HCBlocks.IRIDIUM_BLOCK, "イリジウムブロック")
 
         add(HCBlocks.WARPED_WART, "歪んだウォート")
@@ -50,6 +51,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.ENDER_PEARL_DUST, "エンダーパールの粉")
         add(HCItems.OBSIDIAN_DUST, "黒曜石の粉")
 
+        add(HCItems.RAW_IRIDIUM, "イリジウムの原石")
         add(HCItems.IRIDIUM_DUST, "イリジウムの粉")
         add(HCItems.IRIDIUM_INGOT, "イリジウムインゴット")
         add(HCItems.IRIDIUM_NUGGET, "イリジウム塊")

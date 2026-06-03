@@ -44,6 +44,9 @@ data object HCBlocks {
 
     // Metals
     @JvmField
+    val RAW_IRIDIUM_BLOCK: HTSimpleDeferredBlockAndItem = REGISTER.registerSimple("raw_iridium_block", copyOf(Blocks.NETHERITE_BLOCK).mapColor(MapColor.NONE))
+
+    @JvmField
     val IRIDIUM_BLOCK: HTSimpleDeferredBlockAndItem = REGISTER.registerSimple("iridium_block", copyOf(Blocks.NETHERITE_BLOCK).mapColor(MapColor.NONE))
 
     //    Crops    //

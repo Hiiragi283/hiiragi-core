@@ -50,6 +50,7 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
         // Resources
         generators.createTrivialCube(HCBlocks.CHARCOAL_BLOCK.get())
         generators.createTrivialCube(HCBlocks.ECHO_BLOCK.get())
+        generators.createTrivialCube(HCBlocks.RAW_IRIDIUM_BLOCK.get())
         generators.createTrivialCube(HCBlocks.IRIDIUM_BLOCK.get())
 
         // Warped Wart
@@ -67,6 +68,7 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
         generators.generateFlatItem(HCItems.ENDER_PEARL_DUST)
         generators.generateFlatItem(HCItems.OBSIDIAN_DUST)
 
+        generators.generateFlatItem(HCItems.RAW_IRIDIUM)
         generators.generateFlatItem(HCItems.IRIDIUM_DUST)
         generators.generateFlatItem(HCItems.IRIDIUM_INGOT)
         generators.generateFlatItem(HCItems.IRIDIUM_NUGGET)

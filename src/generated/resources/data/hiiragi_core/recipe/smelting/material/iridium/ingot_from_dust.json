@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.35,
+  "ingredient": "#c:dusts/iridium",
+  "result": {
+    "id": "hiiragi_core:iridium_ingot"
+  }
+}

@@ -25,6 +25,8 @@ class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<
         tags(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.AMETHYST).addBlock(Blocks.AMETHYST_BLOCK)
         tags(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.ECHO).add(HCBlocks.ECHO_BLOCK)
         tags(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.IRIDIUM).add(HCBlocks.IRIDIUM_BLOCK)
+
+        tags(CommonTagPrefixes.RAW_STORAGE_BLOCK, HCMaterialContents.IRIDIUM).add(HCBlocks.RAW_IRIDIUM_BLOCK)
         // Mineable
         tag(BlockTags.MINEABLE_WITH_AXE)
             .add(HCBlocks.WARPED_WART)
@@ -36,6 +38,7 @@ class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<
         sequence<HTIdLike> {
             yield(HCBlocks.CHARCOAL_BLOCK)
             yield(HCBlocks.ECHO_BLOCK)
+            yield(HCBlocks.RAW_IRIDIUM_BLOCK)
             yield(HCBlocks.IRIDIUM_BLOCK)
 
             yieldAll(HCBlocks.COPPER_BASIN.allBlocks)

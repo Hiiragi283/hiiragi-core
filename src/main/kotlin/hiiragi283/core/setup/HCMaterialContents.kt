@@ -145,10 +145,12 @@ data object HCMaterialContents {
     @JvmField
     val IRIDIUM: HTDeferredMaterialContents = REGISTER.registerContents("iridium", CommonPartKeys.INGOT) {
         add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(HCBlocks.IRIDIUM_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
+        add(CommonPartKeys.RAW_BLOCK, HTMaterialItemEntry.block(HCBlocks.RAW_IRIDIUM_BLOCK), CommonTagPrefixes.RAW_STORAGE_BLOCK)
 
         add(CommonPartKeys.DUST, HTMaterialItemEntry.item(HCItems.IRIDIUM_DUST), CommonTagPrefixes.DUST)
         add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(HCItems.IRIDIUM_INGOT), CommonTagPrefixes.INGOT)
         add(CommonPartKeys.NUGGET, HTMaterialItemEntry.item(HCItems.IRIDIUM_NUGGET), CommonTagPrefixes.NUGGET)
+        add(CommonPartKeys.RAW, HTMaterialItemEntry.item(HCItems.RAW_IRIDIUM), CommonTagPrefixes.RAW_MATERIALS)
     }
 
     // Modded
