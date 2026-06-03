@@ -50,6 +50,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.NETHERITE_NUGGET, "Netherite Nugget")
         add(HCItems.ENDER_PEARL_DUST, "Ender Pearl Dust")
         add(HCItems.OBSIDIAN_DUST, "Obsidian Dust")
+        add(HCItems.WOOD_DUST, "Sawdust")
 
         add(HCItems.RAW_IRIDIUM, "Raw Iridium")
         add(HCItems.IRIDIUM_DUST, "Iridium Dust")

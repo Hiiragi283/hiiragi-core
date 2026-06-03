@@ -50,6 +50,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.NETHERITE_NUGGET, "ネザライト塊")
         add(HCItems.ENDER_PEARL_DUST, "エンダーパールの粉")
         add(HCItems.OBSIDIAN_DUST, "黒曜石の粉")
+        add(HCItems.WOOD_DUST, "おがくず")
 
         add(HCItems.RAW_IRIDIUM, "イリジウムの原石")
         add(HCItems.IRIDIUM_DUST, "イリジウムの粉")

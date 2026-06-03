@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "#c:fences/wooden",
+  "results": {
+    "count": 5,
+    "id": "hiiragi_core:wood_dust"
+  },
+  "time": 200
+}

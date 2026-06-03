@@ -1,0 +1,11 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": {
+    "count": 2,
+    "items": "#minecraft:wooden_slabs"
+  },
+  "results": {
+    "id": "hiiragi_core:wood_dust"
+  },
+  "time": 200
+}

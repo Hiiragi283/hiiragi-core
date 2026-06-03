@@ -67,6 +67,7 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
         generators.generateFlatItem(HCItems.NETHERITE_NUGGET)
         generators.generateFlatItem(HCItems.ENDER_PEARL_DUST)
         generators.generateFlatItem(HCItems.OBSIDIAN_DUST)
+        generators.generateFlatItem(HCItems.WOOD_DUST)
 
         generators.generateFlatItem(HCItems.RAW_IRIDIUM)
         generators.generateFlatItem(HCItems.IRIDIUM_DUST)

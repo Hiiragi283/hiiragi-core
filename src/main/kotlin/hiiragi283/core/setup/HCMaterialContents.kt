@@ -6,6 +6,7 @@ import hiiragi283.lib.material.HTMaterialItemEntry
 import hiiragi283.lib.registry.HTDeferredMaterialContents
 import hiiragi283.lib.registry.HTDeferredMaterialContentsRegister
 import hiiragi283.lib.tag.CommonTagPrefixes
+import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Blocks
 import net.neoforged.neoforge.common.Tags
@@ -206,6 +207,12 @@ data object HCMaterialContents {
         add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.RESIN_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
         add(CommonPartKeys.MISC, HTMaterialItemEntry.item(Items.RESIN_CLUMP))
+    }
+
+    @JvmField
+    val WOOD: HTDeferredMaterialContents = REGISTER.registerContents("wood", CommonPartKeys.MISC) {
+        add(CommonPartKeys.DUST, HTMaterialItemEntry.item(HCItems.WOOD_DUST), CommonTagPrefixes.DUST)
+        add(CommonPartKeys.MISC, ItemTags.PLANKS)
     }
 
     // Common

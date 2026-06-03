@@ -27,6 +27,7 @@ class HCItemTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<H
         tags(CommonTagPrefixes.DUST, HCMaterialContents.ENDER_PEARL).addItem(HCItems.ENDER_PEARL_DUST)
         tags(CommonTagPrefixes.DUST, HCMaterialContents.OBSIDIAN).addItem(HCItems.OBSIDIAN_DUST)
         tags(CommonTagPrefixes.DUST, HCMaterialContents.IRIDIUM).addItem(HCItems.IRIDIUM_DUST)
+        tags(CommonTagPrefixes.DUST, HCMaterialContents.WOOD).addItem(HCItems.WOOD_DUST)
 
         tags(CommonTagPrefixes.GEM, HCMaterialContents.ECHO).addItem(Items.ECHO_SHARD)
 

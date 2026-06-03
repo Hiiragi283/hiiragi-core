@@ -31,8 +31,8 @@ class HCMaterialRecipeProvider(modId: String, registries: HolderLookup.Provider,
         // Other
         fourStorageBlock(HCMaterialContents.ENDER_PEARL)
         crushToDust(HCMaterialContents.ENDER_PEARL, CommonPartKeys.MISC)
-
         crushToDust(HCMaterialContents.OBSIDIAN, CommonPartKeys.STORAGE_BLOCK, fraction(4))
+        crushToDust(HCMaterialContents.OBSIDIAN, CommonPartKeys.MISC)
     }
 
     class Runner(packOutput: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : Direct(HiiragiCoreAPI.MOD_ID, packOutput, registries, ::HCMaterialRecipeProvider) {
