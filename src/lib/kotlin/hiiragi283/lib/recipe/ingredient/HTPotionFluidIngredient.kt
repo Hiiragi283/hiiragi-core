@@ -1,7 +1,6 @@
 package hiiragi283.lib.recipe.ingredient
 
 import com.mojang.serialization.MapCodec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.HTPhysicalSideHelper
 import hiiragi283.lib.data.buildDataPatch
 import hiiragi283.lib.fluid.createFluidStack
@@ -39,7 +38,7 @@ import net.neoforged.neoforge.fluids.crafting.display.FluidStackSlotDisplay
 class HTPotionFluidIngredient(val potions: HolderSet<Potion>, val bottleType: HTBottleType) : FluidIngredient() {
     companion object {
         @JvmField
-        val CODEC: MapCodec<HTPotionFluidIngredient> = RecordCodecBuilder.mapCodec { instance ->
+        val CODEC: MapCodec<HTPotionFluidIngredient> = HTCodecs.recordMap { instance ->
             instance
                 .group(
                     HTCodecs.holderSet(Registries.POTION).fieldOf("potions").forGetter(HTPotionFluidIngredient::potions),

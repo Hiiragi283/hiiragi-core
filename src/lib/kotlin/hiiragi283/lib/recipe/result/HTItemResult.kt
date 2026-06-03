@@ -2,7 +2,6 @@ package hiiragi283.lib.recipe.result
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.HTPlatform
 import hiiragi283.lib.HTRegistries
@@ -102,7 +101,7 @@ interface HTItemResult : HTIdLike {
     data class Tagged(val tagKey: TagKey<Item>, val count: Int) : HTItemResult {
         companion object {
             @JvmField
-            val CODEC: MapCodec<Tagged> = RecordCodecBuilder.mapCodec { instance ->
+            val CODEC: MapCodec<Tagged> = HTCodecs.recordMap { instance ->
                 instance.group(
                     HTCodecs.tagKey(Registries.ITEM, true).fieldOf(HTConstants.TAG).forGetter(Tagged::tagKey),
                     HTCodecs.POSITIVE_INT.optionalFieldOf(HTConstants.COUNT, 1).forGetter(Tagged::count),

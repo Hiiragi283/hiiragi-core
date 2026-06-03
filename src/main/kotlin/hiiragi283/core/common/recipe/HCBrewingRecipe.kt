@@ -1,7 +1,6 @@
 package hiiragi283.core.common.recipe
 
 import com.mojang.serialization.MapCodec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.util.HCPotionFluidHelper
 import hiiragi283.lib.HTComparators
 import hiiragi283.lib.HTConstants
@@ -37,7 +36,7 @@ data class HCBrewingRecipe(val potionFrom: Holder<Potion>, val ingredient: Ingre
     HTProgressRecipe.Simple<HTItemAndFluidRecipeInput> {
     companion object {
         @JvmField
-        val CODEC: MapCodec<HCBrewingRecipe> = RecordCodecBuilder.mapCodec { instance ->
+        val CODEC: MapCodec<HCBrewingRecipe> = HTCodecs.recordMap { instance ->
             instance
                 .group(
                     HTCodecs.holder(Registries.POTION).fieldOf("potion_from").forGetter(HCBrewingRecipe::potionFrom),

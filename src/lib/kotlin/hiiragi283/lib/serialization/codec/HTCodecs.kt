@@ -1,9 +1,11 @@
 package hiiragi283.lib.serialization.codec
 
+import com.mojang.datafixers.kinds.App
 import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
 import com.mojang.serialization.DynamicOps
 import com.mojang.serialization.MapCodec
+import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.registry.RegistryKey
 import hiiragi283.lib.text.Text
 import hiiragi283.lib.util.DFUPair
@@ -98,6 +100,18 @@ data object HTCodecs {
      */
     @JvmStatic
     inline fun <reified V : Enum<V>> stringEnum(factory: Function<V, String?>): Codec<V> = Codec.stringResolver(factory) { name: String -> enumEntries<V>().firstOrNull { factory.apply(it) == name } }
+
+    /**
+     * @see RecordCodecBuilder.mapCodec
+     */
+    @JvmStatic
+    inline fun <O> recordMap(builder: (RecordCodecBuilder.Instance<O>) -> App<RecordCodecBuilder.Mu<O>, O>): MapCodec<O> = RecordCodecBuilder.build(builder(RecordCodecBuilder.instance()))
+
+    /**
+     * @see RecordCodecBuilder.create
+     */
+    @JvmStatic
+    inline fun <O> record(builder: (RecordCodecBuilder.Instance<O>) -> App<RecordCodecBuilder.Mu<O>, O>): Codec<O> = recordMap(builder).codec()
 
     //    Ranged    //
 

@@ -1,6 +1,11 @@
 package hiiragi283.lib.recipe.ingredient
 
 import com.mojang.serialization.Codec
+import hiiragi283.lib.HTConstants
+import hiiragi283.lib.serialization.codec.HTCodecs
+import hiiragi283.lib.serialization.codec.convert
+import hiiragi283.lib.util.Either
+import hiiragi283.lib.util.unwrap
 import net.minecraft.core.TypedInstance
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
@@ -14,8 +19,27 @@ import net.neoforged.neoforge.common.crafting.SizedIngredient
 @JvmInline
 value class HTItemIngredient(private val delegate: SizedIngredient) : HTIngredient<Item, ItemStack> {
     companion object {
+        @JvmStatic
+        private val NESTED_CODEC: Codec<HTItemIngredient> = HTCodecs.record { instance ->
+            instance.group(
+                Ingredient.CODEC.fieldOf(HTConstants.ITEMS).forGetter(HTItemIngredient::unsized),
+                HTCodecs.POSITIVE_INT.fieldOf(HTConstants.COUNT).forGetter(HTItemIngredient::count),
+            ).apply(instance, ::HTItemIngredient)
+        }
+
+        @JvmStatic
+        private val SIMPLE_CODEC: Codec<HTItemIngredient> = Ingredient.CODEC.xmap({ HTItemIngredient(it, 1) }, HTItemIngredient::unsized)
+
         @JvmField
-        val CODEC: Codec<HTItemIngredient> = SizedIngredient.NESTED_CODEC.xmap(::HTItemIngredient, HTItemIngredient::delegate)
+        val CODEC: Codec<HTItemIngredient> = Codec.either(SIMPLE_CODEC, NESTED_CODEC).convert().xmap(
+            { it.unwrap() },
+            { ingredient: HTItemIngredient ->
+                when (ingredient.count) {
+                    1 -> Either.Left(ingredient)
+                    else -> Either.Right(ingredient)
+                }
+            },
+        )
 
         @JvmField
         val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemIngredient> = SizedIngredient.STREAM_CODEC.map(::HTItemIngredient, HTItemIngredient::delegate)

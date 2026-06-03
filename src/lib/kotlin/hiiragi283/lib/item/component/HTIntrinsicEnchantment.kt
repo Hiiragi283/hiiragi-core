@@ -1,7 +1,6 @@
 package hiiragi283.lib.item.component
 
 import com.mojang.serialization.Codec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.color.HTDefaultColor
 import hiiragi283.lib.registry.getResult
 import hiiragi283.lib.serialization.codec.HTCodecs
@@ -29,11 +28,11 @@ import net.minecraft.world.item.enchantment.Enchantment
 data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: Int) : TooltipProvider {
     companion object {
         @JvmField
-        val CODEC: Codec<HTIntrinsicEnchantment> = RecordCodecBuilder.create { instance ->
+        val CODEC: Codec<HTIntrinsicEnchantment> = HTCodecs.record { instance ->
             instance
                 .group(
                     HTCodecs.resourceKey(Registries.ENCHANTMENT).fieldOf("enchantment").forGetter(HTIntrinsicEnchantment::key),
-                    Codec.INT.optionalFieldOf("level", 1).forGetter(HTIntrinsicEnchantment::level),
+                    HTCodecs.POSITIVE_INT.optionalFieldOf("level", 1).forGetter(HTIntrinsicEnchantment::level),
                 ).apply(instance, ::HTIntrinsicEnchantment)
         }
 

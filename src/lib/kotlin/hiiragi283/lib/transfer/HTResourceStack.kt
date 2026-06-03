@@ -2,7 +2,7 @@ package hiiragi283.lib.transfer
 
 import com.google.common.primitives.Ints
 import com.mojang.serialization.Codec
-import com.mojang.serialization.codecs.RecordCodecBuilder
+import hiiragi283.lib.HTConstants
 import hiiragi283.lib.serialization.codec.HTCodecs
 import net.neoforged.neoforge.transfer.resource.Resource
 
@@ -11,10 +11,10 @@ import net.neoforged.neoforge.transfer.resource.Resource
 data class HTResourceStack<RESOURCE : Resource> private constructor(val resource: RESOURCE, val amountAsLong: Long) {
     companion object {
         @JvmStatic
-        fun <RESOURCE : Resource> codec(resource: Codec<RESOURCE>): Codec<HTResourceStack<RESOURCE>> = RecordCodecBuilder.create { instance ->
+        fun <RESOURCE : Resource> codec(resource: Codec<RESOURCE>): Codec<HTResourceStack<RESOURCE>> = HTCodecs.record { instance ->
             instance.group(
                 resource.fieldOf("resource").forGetter(HTResourceStack<RESOURCE>::resource),
-                HTCodecs.NON_NEGATIVE_LONG.fieldOf("amount").forGetter(HTResourceStack<RESOURCE>::amountAsLong),
+                HTCodecs.NON_NEGATIVE_LONG.fieldOf(HTConstants.AMOUNT).forGetter(HTResourceStack<RESOURCE>::amountAsLong),
             ).apply(instance, ::HTResourceStack)
         }
 

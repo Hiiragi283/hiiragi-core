@@ -2,7 +2,6 @@ package hiiragi283.lib.recipe.viewer.display
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.item.createItemStack
 import hiiragi283.lib.recipe.ingredient.HTFluidIngredient
@@ -39,7 +38,7 @@ data class HTRecipeContents(
 ) {
     companion object {
         @JvmField
-        val CODEC: MapCodec<HTRecipeContents> = RecordCodecBuilder.mapCodec { instance ->
+        val CODEC: MapCodec<HTRecipeContents> = HTCodecs.recordMap { instance ->
             val itemsCodec: Codec<List<ItemStack>> = ItemStack.CODEC.listOf()
 
             instance
@@ -233,7 +232,7 @@ data class HTRecipeContents(
     data class ChancedItemStack(val stack: ItemStack, val chance: Float) {
         companion object {
             @JvmField
-            val CODEC: Codec<ChancedItemStack> = RecordCodecBuilder.create { instance ->
+            val CODEC: Codec<ChancedItemStack> = HTCodecs.record { instance ->
                 instance
                     .group(
                         MapCodec.assumeMapUnsafe(ItemStack.CODEC).forGetter(ChancedItemStack::stack),

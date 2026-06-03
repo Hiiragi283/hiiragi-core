@@ -3,7 +3,9 @@ package hiiragi283.lib.data.recipe
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.material.HTMaterialContents
 import hiiragi283.lib.material.HTMaterialPartKey
+import hiiragi283.lib.material.HTMaterialRawEntry
 import hiiragi283.lib.recipe.RecipeKey
+import hiiragi283.lib.recipe.ingredient.HTItemIngredient
 import hiiragi283.lib.recipe.ingredient.HTMaterialPartIngredient
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.resource.toId
@@ -55,6 +57,10 @@ abstract class HTRecipeProvider(protected val modId: String, registries: HolderL
     fun getHasName(tagKey: TagKey<*>): String = "has_${tagKey.location().path.replace("/", "_")}"
 
     fun materialPart(tagKey: TagKey<HTMaterialContents>, vararg parts: HTMaterialPartKey): Ingredient = HTMaterialPartIngredient(registries.getOrThrow(tagKey), listOf(*parts).sorted()).toVanilla()
+
+    fun HTMaterialRawEntry.toIngredient(): Ingredient = this.map(Ingredient::of, ::tag)
+
+    fun HTMaterialRawEntry.toItemIngredient(inputCount: Int): HTItemIngredient = this.map({ itemCreator.create(it.asItem(), inputCount) }, { itemCreator.tag(it, inputCount) })
 
     //    Runner    //
 

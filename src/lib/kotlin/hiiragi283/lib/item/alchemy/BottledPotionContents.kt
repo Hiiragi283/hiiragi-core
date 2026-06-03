@@ -1,7 +1,7 @@
 package hiiragi283.lib.item.alchemy
 
 import com.mojang.serialization.Codec
-import com.mojang.serialization.codecs.RecordCodecBuilder
+import hiiragi283.lib.serialization.codec.HTCodecs
 import hiiragi283.lib.text.HTHasText
 import hiiragi283.lib.text.Text
 import kotlin.jvm.optionals.getOrNull
@@ -22,13 +22,11 @@ import net.minecraft.world.item.alchemy.Potions
 data class BottledPotionContents(val contents: PotionContents, val bottleType: HTBottleType) : HTHasText {
     companion object {
         @JvmField
-        val CODEC: Codec<BottledPotionContents> = RecordCodecBuilder.create { instance ->
+        val CODEC: Codec<BottledPotionContents> = HTCodecs.record { instance ->
             instance
                 .group(
                     PotionContents.CODEC.fieldOf("contents").forGetter(BottledPotionContents::contents),
-                    HTBottleType.CODEC
-                        .optionalFieldOf("bottle_type", HTBottleType.DEFAULT)
-                        .forGetter(BottledPotionContents::bottleType),
+                    HTBottleType.CODEC.optionalFieldOf("bottle_type", HTBottleType.DEFAULT).forGetter(BottledPotionContents::bottleType),
                 ).apply(instance, ::BottledPotionContents)
         }
 

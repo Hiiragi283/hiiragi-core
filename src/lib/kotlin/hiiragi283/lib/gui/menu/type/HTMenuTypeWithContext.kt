@@ -9,12 +9,12 @@ class HTMenuTypeWithContext<out MENU : AbstractContainerMenu, out C>(private val
     HTMenuType<MENU, HTContainerFactory<MENU, C>>(factory, constructor),
     HTContainerFactory<MENU, C> by factory {
 
-    fun create(containerId: Int, inventory: Inventory, context: Any): MENU? = when {
+    fun createOrNull(containerId: Int, inventory: Inventory, context: Any): MENU? = when {
         clazz.isInstance(context) -> this.create(containerId, inventory, clazz.cast(context))
         else -> null
     }
 
-    fun create(context: Any): MenuConstructor? = when {
+    fun createOrNull(context: Any): MenuConstructor? = when {
         clazz.isInstance(context) -> MenuConstructor { containerId: Int, inventory: Inventory, _ -> this.create(containerId, inventory, clazz.cast(context)) }
         else -> null
     }

@@ -1,15 +1,15 @@
 package hiiragi283.lib.recipe.viewer.display
 
 import com.mojang.serialization.Codec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.recipe.RecipeKey
 import hiiragi283.lib.recipe.base.HTProgressData
+import hiiragi283.lib.serialization.codec.HTCodecs
 import net.minecraft.resources.Identifier
 
 class HTProgressRecipeDisplay(id: Identifier, contents: HTRecipeContents, val progressData: HTProgressData) : HTRecipeDisplay.Simple(id, contents) {
     companion object {
         @JvmField
-        val CODEC: Codec<HTProgressRecipeDisplay> = RecordCodecBuilder.create { instance ->
+        val CODEC: Codec<HTProgressRecipeDisplay> = HTCodecs.record { instance ->
             instance
                 .group(
                     HTRecipeDisplay.idCodec(),

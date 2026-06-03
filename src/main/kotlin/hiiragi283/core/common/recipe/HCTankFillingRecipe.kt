@@ -1,7 +1,6 @@
 package hiiragi283.core.common.recipe
 
 import com.mojang.serialization.MapCodec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.recipe.HTTankFillingRecipe
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
@@ -12,6 +11,7 @@ import hiiragi283.lib.recipe.ingredient.getRequiredAmount
 import hiiragi283.lib.recipe.ingredient.test
 import hiiragi283.lib.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.lib.recipe.result.HTItemResult
+import hiiragi283.lib.serialization.codec.HTCodecs
 import net.minecraft.core.TypedInstance
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemInstance
@@ -27,7 +27,7 @@ class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: H
     HTSerializableRecipe<HTItemAndFluidRecipeInput> {
     companion object {
         @JvmField
-        val CODEC: MapCodec<HCTankFillingRecipe> = RecordCodecBuilder.mapCodec { instance ->
+        val CODEC: MapCodec<HCTankFillingRecipe> = HTCodecs.recordMap { instance ->
             instance
                 .group(
                     Ingredient.CODEC.fieldOf(HTConstants.ITEM_INGREDIENT).forGetter(HCTankFillingRecipe::itemIngredient),

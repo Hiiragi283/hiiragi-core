@@ -1,7 +1,6 @@
 package hiiragi283.core.common.recipe
 
 import com.mojang.serialization.MapCodec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.lib.HTConstants
@@ -23,7 +22,7 @@ class HCChargingRecipe(ingredient: Ingredient, result: HTChancedItemResult, val 
         const val DEFAULT_ENERGY = 1_024_000
 
         @JvmField
-        val CODEC: MapCodec<HCChargingRecipe> = RecordCodecBuilder.mapCodec { instance ->
+        val CODEC: MapCodec<HCChargingRecipe> = HTCodecs.recordMap { instance ->
             instance
                 .group(
                     Ingredient.CODEC.fieldOf(HTConstants.INGREDIENT).forGetter(HCChargingRecipe::ingredient),

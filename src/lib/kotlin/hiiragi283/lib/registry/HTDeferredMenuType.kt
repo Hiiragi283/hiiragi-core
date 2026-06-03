@@ -1,7 +1,6 @@
 package hiiragi283.lib.registry
 
 import hiiragi283.lib.gui.menu.type.HTMenuTypeWithContext
-import hiiragi283.lib.registry.HTDeferredHolder
 import hiiragi283.lib.text.Text
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -30,7 +29,7 @@ sealed class HTDeferredMenuType<out MENU : AbstractContainerMenu, out TYPE : Men
 
         constructor(id: Identifier) : super(id)
 
-        fun getProvider(title: Text, context: Any): MenuProvider? = get().create(context)?.let { SimpleMenuProvider(it, title) }
+        fun getProvider(title: Text, context: Any): MenuProvider? = get().createOrNull(context)?.let { SimpleMenuProvider(it, title) }
 
         fun openMenu(player: Player, title: Text, context: Any, writer: (RegistryFriendlyByteBuf) -> Unit): InteractionResult {
             if (player.level().isClientSide) {

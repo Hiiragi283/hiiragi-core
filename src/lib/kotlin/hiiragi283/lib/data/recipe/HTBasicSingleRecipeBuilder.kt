@@ -16,7 +16,7 @@ class HTBasicSingleRecipeBuilder<I : Any, O : HTIdLike, out RECIPE : Recipe<*>>(
 
     //    Factory    //
 
-    fun interface Factory<I : Any, O : Any, out RECIPE : Recipe<*>> {
+    fun interface Factory<I : Any, O : Any, out RECIPE> {
         fun create(ingredient: I, result: O, progressData: HTProgressData): RECIPE
     }
 }

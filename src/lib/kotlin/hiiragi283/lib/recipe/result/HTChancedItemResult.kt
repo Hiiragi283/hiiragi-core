@@ -1,7 +1,6 @@
 package hiiragi283.lib.recipe.result
 
 import com.mojang.serialization.Codec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.serialization.codec.HTCodecs
@@ -19,7 +18,7 @@ import org.apache.commons.lang3.math.Fraction
 data class HTChancedItemResult(val base: HTItemResult, val chance: Fraction) : HTIdLike {
     companion object {
         @JvmField
-        val CODEC: Codec<HTChancedItemResult> = RecordCodecBuilder.create { instance ->
+        val CODEC: Codec<HTChancedItemResult> = HTCodecs.record { instance ->
             instance.group(
                 HTItemResult.MAP_CODEC.forGetter(HTChancedItemResult::base),
                 HTCodecs.FRACTION

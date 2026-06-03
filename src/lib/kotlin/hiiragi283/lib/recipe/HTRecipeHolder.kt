@@ -2,9 +2,9 @@ package hiiragi283.lib.recipe
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.resource.SupplierWithId
+import hiiragi283.lib.serialization.codec.HTCodecs
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
@@ -23,7 +23,7 @@ data class HTRecipeHolder<out RECIPE>(@JvmField val key: RecipeKey, @JvmField va
          * @since 0.15.1
          */
         @JvmStatic
-        fun <RECIPE : Any> codec(recipeCodec: MapCodec<RECIPE>): Codec<HTRecipeHolder<RECIPE>> = RecordCodecBuilder.create { instance ->
+        fun <RECIPE : Any> codec(recipeCodec: MapCodec<RECIPE>): Codec<HTRecipeHolder<RECIPE>> = HTCodecs.record { instance ->
             instance
                 .group(
                     Identifier.CODEC.fieldOf(HTConstants.ID).forGetter(HTRecipeHolder<RECIPE>::getId),

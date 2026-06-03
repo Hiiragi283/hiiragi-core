@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.recipe.RecipeKey
 import hiiragi283.lib.resource.HTIdLike
+import hiiragi283.lib.serialization.codec.HTCodecs
 import net.minecraft.resources.Identifier
 
 interface HTRecipeDisplay : HTIdLike {
@@ -18,7 +19,7 @@ interface HTRecipeDisplay : HTIdLike {
     open class Simple(private val id: Identifier, val contents: HTRecipeContents) : HTRecipeDisplay {
         companion object {
             @JvmField
-            val CODEC: Codec<Simple> = RecordCodecBuilder.create { it.group(idCodec(), contentsCodec()).apply(it, ::Simple) }
+            val CODEC: Codec<Simple> = HTCodecs.record { it.group(idCodec(), contentsCodec()).apply(it, ::Simple) }
 
             @JvmStatic
             fun <T : Simple> contentsCodec(): RecordCodecBuilder<T, HTRecipeContents> = HTRecipeContents.CODEC.forGetter(Simple::contents)

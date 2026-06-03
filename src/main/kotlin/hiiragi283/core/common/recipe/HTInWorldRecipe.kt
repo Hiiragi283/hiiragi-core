@@ -1,13 +1,13 @@
 package hiiragi283.core.common.recipe
 
 import com.mojang.serialization.MapCodec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.recipe.base.HTRecipeFactories
 import hiiragi283.lib.recipe.base.HTRecipePredicates
 import hiiragi283.lib.recipe.ingredient.getRequiredAmount
 import hiiragi283.lib.recipe.ingredient.test
 import hiiragi283.lib.recipe.result.HTChancedItemResult
+import hiiragi283.lib.serialization.codec.HTCodecs
 import net.minecraft.core.TypedInstance
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemInstance
@@ -19,7 +19,7 @@ open class HTInWorldRecipe(val ingredient: Ingredient, val result: HTChancedItem
     HTRecipeFactories.SingleItemTo<ItemStack> {
     companion object {
         @JvmStatic
-        fun <T : HTInWorldRecipe> codec(factory: (Ingredient, HTChancedItemResult) -> T): MapCodec<T> = RecordCodecBuilder.mapCodec { instance ->
+        fun <T : HTInWorldRecipe> codec(factory: (Ingredient, HTChancedItemResult) -> T): MapCodec<T> = HTCodecs.recordMap { instance ->
             instance
                 .group(
                     Ingredient.CODEC.fieldOf(HTConstants.INGREDIENT).forGetter(HTInWorldRecipe::ingredient),

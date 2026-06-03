@@ -1,7 +1,6 @@
 package hiiragi283.lib.recipe.ingredient
 
 import com.mojang.serialization.MapCodec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.lib.HTRegistries
 import hiiragi283.lib.material.HTMaterialContents
 import hiiragi283.lib.material.HTMaterialItemEntry
@@ -27,7 +26,7 @@ import net.neoforged.neoforge.common.crafting.IngredientType
 data class HTMaterialPartIngredient(val contents: HolderSet<HTMaterialContents>, val parts: List<HTMaterialPartKey>) : ICustomIngredient {
     companion object {
         @JvmField
-        val CODEC: MapCodec<HTMaterialPartIngredient> = RecordCodecBuilder.mapCodec { instance ->
+        val CODEC: MapCodec<HTMaterialPartIngredient> = HTCodecs.recordMap { instance ->
             instance.group(
                 HTCodecs.holderSet(HTRegistries.Keys.MATERIAL_CONTENTS).fieldOf("contents").forGetter(HTMaterialPartIngredient::contents),
                 HTMaterialPartKey.CODEC.listOrElement().fieldOf("parts").forGetter(HTMaterialPartIngredient::parts),
