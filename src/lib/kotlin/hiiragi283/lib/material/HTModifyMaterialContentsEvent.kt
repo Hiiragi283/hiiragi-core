@@ -1,5 +1,6 @@
 package hiiragi283.lib.material
 
+import hiiragi283.lib.registry.getKeyOrThrow
 import net.minecraft.core.Holder
 import net.neoforged.bus.api.Event
 import net.neoforged.fml.event.IModBusEvent
@@ -14,7 +15,7 @@ class HTModifyMaterialContentsEvent(val holder: Holder<HTMaterialContents>) :
     inline fun modify(filter: (Holder<HTMaterialContents>) -> Boolean, action: HTMaterialContents.Builder.() -> Unit) {
         if (filter(holder)) {
             val contents: HTMaterialContents = holder.value()
-            val addition: HTMaterialContents = HTMaterialContents.create(contents.asMaterialKey(), contents.primalKey, action)
+            val addition: HTMaterialContents = HTMaterialContents.create(holder.getKeyOrThrow(), contents.primalKey, action)
 
             val entryMap: MutableMap<HTMaterialPartKey, HTMaterialRawEntry> = contents.contents.toMutableMap()
             for ((key: HTMaterialPartKey, entry: HTMaterialRawEntry) in addition.contents) {

@@ -44,6 +44,12 @@ data object HCBlocks {
 
     // Metals
     @JvmField
+    val RAW_TIN_BLOCK: HTSimpleDeferredBlockAndItem = REGISTER.registerSimple("raw_tin_block", copyOf(Blocks.COPPER_BLOCK).mapColor(MapColor.WARPED_WART_BLOCK))
+
+    @JvmField
+    val TIN_BLOCK: HTSimpleDeferredBlockAndItem = REGISTER.registerSimple("tin_block", copyOf(Blocks.COPPER_BLOCK).mapColor(MapColor.WARPED_WART_BLOCK))
+
+    @JvmField
     val RAW_IRIDIUM_BLOCK: HTSimpleDeferredBlockAndItem = REGISTER.registerSimple("raw_iridium_block", copyOf(Blocks.NETHERITE_BLOCK).mapColor(MapColor.NONE))
 
     @JvmField

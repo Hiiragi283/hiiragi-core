@@ -9,6 +9,7 @@ import hiiragi283.lib.resource.itemId
 import hiiragi283.lib.resource.toId
 import hiiragi283.lib.resource.vanillaId
 import java.util.Optional
+import java.util.stream.Stream
 import net.minecraft.client.data.models.BlockModelGenerators
 import net.minecraft.client.data.models.ItemModelGenerators
 import net.minecraft.client.data.models.ModelProvider
@@ -18,6 +19,7 @@ import net.minecraft.client.data.models.model.ModelTemplate
 import net.minecraft.client.data.models.model.ModelTemplates
 import net.minecraft.client.data.models.model.TextureMapping
 import net.minecraft.client.resources.model.sprite.Material
+import net.minecraft.core.Holder
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.Item
@@ -26,6 +28,10 @@ import net.neoforged.neoforge.client.model.item.DynamicFluidContainerModel
 
 abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvider(output, modId) {
     abstract override fun registerModels(blockModels: BlockModelGenerators, itemModels: ItemModelGenerators)
+
+    override fun getKnownBlocks(): Stream<out Holder<Block>> = Stream.empty()
+
+    override fun getKnownItems(): Stream<out Holder<Item>> = Stream.empty()
 
     //    Block    //
 

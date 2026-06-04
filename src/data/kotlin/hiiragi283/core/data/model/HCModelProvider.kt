@@ -50,6 +50,8 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
         // Resources
         generators.createTrivialCube(HCBlocks.CHARCOAL_BLOCK.get())
         generators.createTrivialCube(HCBlocks.ECHO_BLOCK.get())
+        generators.createTrivialCube(HCBlocks.RAW_TIN_BLOCK.get())
+        generators.createTrivialCube(HCBlocks.TIN_BLOCK.get())
         generators.createTrivialCube(HCBlocks.RAW_IRIDIUM_BLOCK.get())
         generators.createTrivialCube(HCBlocks.IRIDIUM_BLOCK.get())
 
@@ -64,15 +66,7 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
 
     private fun registerItemModels(generators: ItemModelGenerators) {
         // Resources
-        generators.generateFlatItem(HCItems.NETHERITE_NUGGET)
-        generators.generateFlatItem(HCItems.ENDER_PEARL_DUST)
-        generators.generateFlatItem(HCItems.OBSIDIAN_DUST)
-        generators.generateFlatItem(HCItems.WOOD_DUST)
-
-        generators.generateFlatItem(HCItems.RAW_IRIDIUM)
-        generators.generateFlatItem(HCItems.IRIDIUM_DUST)
-        generators.generateFlatItem(HCItems.IRIDIUM_INGOT)
-        generators.generateFlatItem(HCItems.IRIDIUM_NUGGET)
+        HCItems.RESOURCES.values.forEach { generators.generateFlatItem(it) }
 
         generators.generateFlatItem(HCItems.ELDER_HEART)
         // Ingredients

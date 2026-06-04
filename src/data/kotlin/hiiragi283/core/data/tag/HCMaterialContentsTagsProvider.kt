@@ -26,6 +26,8 @@ class HCMaterialContentsTagsProvider(output: PackOutput, lookupProvider: Complet
             // 4rd period
             .add(HCMaterialContents.IRON)
             .add(HCMaterialContents.COPPER)
+            // 5th period
+            .add(HCMaterialContents.TIN)
             // 6th period
             .add(HCMaterialContents.IRIDIUM)
             .add(HCMaterialContents.GOLD)

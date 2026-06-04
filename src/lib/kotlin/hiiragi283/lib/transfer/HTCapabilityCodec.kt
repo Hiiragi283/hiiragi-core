@@ -17,20 +17,10 @@ class HTCapabilityCodec<CONTAINER : ValueIOSerializable>(
 ) {
     companion object {
         @JvmField
-        val ITEM: HTCapabilityCodec<HTItemSlot> = HTCapabilityCodec(
-            HTConstants.ITEMS,
-            HTConstants.SLOT,
-            HTBlockEntity::getItemSlots,
-            HTBlockEntity::hasItemHandler,
-        )
+        val ITEM: HTCapabilityCodec<HTItemSlot> = HTCapabilityCodec(HTConstants.ITEMS, HTConstants.SLOT, HTBlockEntity::getItemSlots, HTBlockEntity::hasItemHandler)
 
         @JvmField
-        val FLUID: HTCapabilityCodec<HTFluidTank> = HTCapabilityCodec(
-            HTConstants.FLUIDS,
-            HTConstants.TANK,
-            HTBlockEntity::getFluidTanks,
-            HTBlockEntity::hasFluidHandler,
-        )
+        val FLUID: HTCapabilityCodec<HTFluidTank> = HTCapabilityCodec(HTConstants.FLUIDS, HTConstants.TANK, HTBlockEntity::getFluidTanks, HTBlockEntity::hasFluidHandler)
 
         @JvmField
         val TYPES: List<HTCapabilityCodec<*>> = listOf(ITEM, FLUID)
@@ -47,12 +37,13 @@ class HTCapabilityCodec<CONTAINER : ValueIOSerializable>(
     }
 
     private fun save(list: ValueOutput.ValueOutputList, containers: List<CONTAINER>) {
-        containers.forEachIndexed { slot: Int, container: CONTAINER ->
+        for (slot: Int in containers.indices) {
+            val container: CONTAINER = containers[slot]
             val output: ValueOutput = list.addChild()
             container.serialize(output)
             if (output.isEmpty) {
                 list.discardLast()
-                return@forEachIndexed
+                continue
             }
             output.putInt(containerKey, slot)
         }

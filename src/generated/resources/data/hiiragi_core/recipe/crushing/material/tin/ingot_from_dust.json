@@ -1,0 +1,8 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "#c:ingots/tin",
+  "results": {
+    "id": "hiiragi_core:tin_dust"
+  },
+  "time": 200
+}

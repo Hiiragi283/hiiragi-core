@@ -3,6 +3,7 @@
     "hiiragi_core:copper",
     "hiiragi_core:gold",
     "hiiragi_core:iridium",
-    "hiiragi_core:iron"
+    "hiiragi_core:iron",
+    "hiiragi_core:tin"
   ]
 }

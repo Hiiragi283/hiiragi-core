@@ -6,7 +6,7 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 
-interface HTMaterialContentsLike : HTMaterialLike {
+interface HTMaterialContentsLike {
     fun getRawEntry(key: HTMaterialPartKey): HTMaterialRawEntry?
 
     fun getEntry(key: HTMaterialPartKey): HTMaterialItemEntry? = getRawEntry(key)?.getLeft()

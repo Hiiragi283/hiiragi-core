@@ -1,6 +1,7 @@
 package hiiragi283.lib.data.tag
 
-import hiiragi283.lib.material.HTMaterialLike
+import hiiragi283.lib.collection.MutableSetMultiMap
+import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.registry.RegistryKey
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.tag.HTTagPrefix
@@ -29,12 +30,12 @@ abstract class HTIdLikeTagsProvider<T : Any> : TagsProvider<T> {
 
     constructor(output: PackOutput, registryKey: RegistryKey<T>, lookupProvider: CompletableFuture<HolderLookup.Provider>, modId: String) : super(output, registryKey, lookupProvider, modId)
 
-    private val entryCache: MutableMap<TagKey<T>, MutableList<TagEntry>> = hashMapOf()
+    private val entryCache = MutableSetMultiMap<TagKey<T>, TagEntry>()
 
     final override fun addTags(registries: HolderLookup.Provider) {
         appendTags(registries)
 
-        entryCache.forEach { (tagKey: TagKey<T>, entries: List<TagEntry>) ->
+        entryCache.asMap().forEach { (tagKey: TagKey<T>, entries: Set<TagEntry>) ->
             entries
                 .sortedWith(COMPARATOR)
                 .distinctBy(TagEntry::toString)
@@ -44,9 +45,9 @@ abstract class HTIdLikeTagsProvider<T : Any> : TagsProvider<T> {
 
     protected abstract fun appendTags(registries: HolderLookup.Provider)
 
-    protected fun tag(tagKey: TagKey<T>): IdAppender = IdAppender { entry: TagEntry -> entryCache.getOrPut(tagKey, ::mutableListOf).add(entry) }
+    protected fun tag(tagKey: TagKey<T>): IdAppender = IdAppender { entry: TagEntry -> entryCache[tagKey].add(entry) }
 
-    protected fun tags(prefix: HTTagPrefix, material: HTMaterialLike): IdAppender = tags(prefix.rawCommonTag.create(registryKey), prefix.createTagKey(registryKey, material))
+    protected fun tags(prefix: HTTagPrefix, material: HTMaterialKey): IdAppender = tags(prefix.rawCommonTag.create(registryKey), prefix.createTagKey(registryKey, material))
 
     protected fun tags(tagKey: TagKey<T>, vararg children: TagKey<T>): IdAppender = children.fold(tag(tagKey)) { appender: IdAppender, tagKeyIn: TagKey<T> ->
         appender.addTag(tagKeyIn)

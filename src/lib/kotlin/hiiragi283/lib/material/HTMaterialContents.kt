@@ -2,7 +2,6 @@ package hiiragi283.lib.material
 
 import com.mojang.serialization.Codec
 import hiiragi283.lib.HTRegistries
-import hiiragi283.lib.registry.getKeyOrThrow
 import hiiragi283.lib.serialization.network.HTStreamCodecs
 import hiiragi283.lib.tag.HTTagPrefix
 import hiiragi283.lib.tag.RawTagKey
@@ -35,46 +34,44 @@ class HTMaterialContents private constructor(
         val HOLDER_STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, Holder<HTMaterialContents>> = HTStreamCodecs.holder(HTRegistries.Keys.MATERIAL_CONTENTS)
 
         @JvmStatic
-        inline fun create(material: HTMaterialKey, primalKey: HTMaterialPartKey, builderAction: Builder.() -> Unit): HTMaterialContents = Builder(material, primalKey).apply(builderAction).build()
+        inline fun create(key: HTMaterialKey, primalKey: HTMaterialPartKey, builderAction: Builder.() -> Unit): HTMaterialContents = Builder(key, primalKey).apply(builderAction).build()
     }
 
     val primalEntry: HTMaterialRawEntry = getRawEntry(primalKey)!!
 
     override fun getRawEntry(key: HTMaterialPartKey): HTMaterialRawEntry? = contents[key]
 
-    override fun asMaterialKey(): HTMaterialKey = HTRegistries.MATERIAL_CONTENTS.wrapAsHolder(this).getKeyOrThrow().let(HTMaterialKey::of)
-
     //    Builder    //
 
-    class Builder(private val material: HTMaterialKey, private val primalKey: HTMaterialPartKey) {
+    class Builder(val key: HTMaterialKey, private val primalKey: HTMaterialPartKey) {
         private var contents: MutableMap<HTMaterialPartKey, HTMaterialRawEntry> = hashMapOf()
 
-        fun add(key: HTMaterialPartKey, entry: HTMaterialItemEntry) {
-            add(key, Ior.Left(entry))
+        fun add(part: HTMaterialPartKey, entry: HTMaterialItemEntry) {
+            add(part, Ior.Left(entry))
         }
 
-        fun add(key: HTMaterialPartKey, tagKey: TagKey<Item>) {
-            add(key, Ior.Right(tagKey))
+        fun add(part: HTMaterialPartKey, tagKey: TagKey<Item>) {
+            add(part, Ior.Right(tagKey))
         }
 
-        fun add(key: HTMaterialPartKey, tagKey: RawTagKey) {
-            add(key, tagKey.create(Registries.ITEM))
+        fun add(part: HTMaterialPartKey, tagKey: RawTagKey) {
+            add(part, tagKey.create(Registries.ITEM))
         }
 
-        fun add(key: HTMaterialPartKey, prefix: HTTagPrefix) {
-            add(key, prefix.materialTag(material))
+        fun add(part: HTMaterialPartKey, prefix: HTTagPrefix) {
+            add(part, prefix.materialTag(key))
         }
 
-        fun add(key: HTMaterialPartKey, entry: HTMaterialItemEntry, tagKey: TagKey<Item>) {
-            add(key, Ior.Both(entry, tagKey))
+        fun add(part: HTMaterialPartKey, entry: HTMaterialItemEntry, tagKey: TagKey<Item>) {
+            add(part, Ior.Both(entry, tagKey))
         }
 
-        fun add(key: HTMaterialPartKey, entry: HTMaterialItemEntry, tagKey: RawTagKey) {
-            add(key, entry, tagKey.create(Registries.ITEM))
+        fun add(part: HTMaterialPartKey, entry: HTMaterialItemEntry, tagKey: RawTagKey) {
+            add(part, entry, tagKey.create(Registries.ITEM))
         }
 
-        fun add(key: HTMaterialPartKey, entry: HTMaterialItemEntry, prefix: HTTagPrefix) {
-            add(key, entry, prefix.materialTag(material))
+        fun add(part: HTMaterialPartKey, entry: HTMaterialItemEntry, prefix: HTTagPrefix) {
+            add(part, entry, prefix.materialTag(key))
         }
 
         private fun add(key: HTMaterialPartKey, value: HTMaterialRawEntry) {

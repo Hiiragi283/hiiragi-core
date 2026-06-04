@@ -2,9 +2,9 @@ package hiiragi283.core.data.recipe
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreTags
-import hiiragi283.core.setup.HCMaterialContents
 import hiiragi283.lib.data.recipe.HTRecipeProvider
 import hiiragi283.lib.material.CommonPartKeys
+import hiiragi283.lib.material.VanillaMaterialKeys
 import hiiragi283.lib.math.fraction
 import hiiragi283.lib.tag.CommonTagPrefixes
 import java.util.concurrent.CompletableFuture
@@ -33,7 +33,7 @@ class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider
         }.save(output)
         // Quartz Block -> Ghast Tear
         HCExplodingRecipeBuilder.create {
-            ingredient = ingredientCreator.create(CommonTagPrefixes.STORAGE_BLOCK, HCMaterialContents.QUARTZ)
+            ingredient = ingredientCreator.create(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.QUARTZ)
             result = resultCreator.create(Items.GHAST_TEAR).withChance(fraction(1, 4))
         }.save(output)
 

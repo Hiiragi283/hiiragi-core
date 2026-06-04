@@ -1,22 +1,39 @@
 package hiiragi283.core.setup
 
+import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.item.endgame.HTAmbrosiaItem
 import hiiragi283.core.common.item.endgame.HTCreativeItem
 import hiiragi283.core.common.item.endgame.HTEternalUpgradeItem
 import hiiragi283.core.common.item.endgame.HTInfinityPotionItem
+import hiiragi283.lib.collection.Table
+import hiiragi283.lib.collection.buildTable
 import hiiragi283.lib.item.component.buildItemAttributeModifiers
 import hiiragi283.lib.item.component.consumables
+import hiiragi283.lib.material.CommonPartKeys
+import hiiragi283.lib.material.HTMaterialKey
+import hiiragi283.lib.material.HTMaterialPartKey
+import hiiragi283.lib.material.VanillaMaterialKeys
 import hiiragi283.lib.registry.HTDeferredItemRegister
 import hiiragi283.lib.registry.HTSimpleDeferredItem
+import hiiragi283.lib.util.HTTextResult
+import hiiragi283.lib.util.Identity
+import hiiragi283.lib.util.identity
+import hiiragi283.lib.util.printError
+import hiiragi283.lib.util.right
 import net.minecraft.world.entity.EquipmentSlotGroup
 import net.minecraft.world.entity.ai.attributes.AttributeModifier
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.Rarity
 import net.minecraft.world.item.component.Consumables
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.common.NeoForgeMod
+import org.slf4j.Logger
 
 data object HCItems {
+    @JvmField
+    val LOGGER: Logger = LogUtils.getLogger()
+
     @JvmField
     val REGISTER = HTDeferredItemRegister(HiiragiCoreAPI.MOD_ID)
 
@@ -27,10 +44,30 @@ data object HCItems {
 
     //    Resources    //
 
-    // Vanilla
     @JvmField
-    val NETHERITE_NUGGET: HTSimpleDeferredItem = REGISTER.registerSimpleItem("netherite_nugget") { it.fireResistant() }
+    val RESOURCES: Table<HTMaterialPartKey, HTMaterialKey, HTSimpleDeferredItem> = buildTable {
+        fun register(part: HTMaterialPartKey, material: HTMaterialKey, operator: Identity<Item.Properties> = identity()) {
+            this[part, material] = REGISTER.registerSimpleItem("${material.identifier().path}_${part.name}", operator)
+        }
 
+        // Vanilla
+        register(CommonPartKeys.NUGGET, VanillaMaterialKeys.NETHERITE) { it.fireResistant() }
+
+        // Common
+
+        // Hiiragi Core
+    }
+
+    @JvmStatic
+    operator fun get(part: HTMaterialPartKey, material: HTMaterialKey): HTSimpleDeferredItem? = RESOURCES[part, material]
+
+    @JvmStatic
+    fun getResult(part: HTMaterialPartKey, material: HTMaterialKey): HTTextResult<HTSimpleDeferredItem> {
+        val result: HTTextResult<HTSimpleDeferredItem> = get(part, material)?.right() ?: HTTextResult("Unregistered part $part for ${material.identifier()}")
+        return result.printError(LOGGER)
+    }
+
+    // Vanilla
     @JvmField
     val ENDER_PEARL_DUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("ender_pearl_dust")
 
@@ -41,6 +78,18 @@ data object HCItems {
     val WOOD_DUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wood_dust")
 
     // Common
+    @JvmField
+    val RAW_TIN: HTSimpleDeferredItem = REGISTER.registerSimpleItem("raw_tin")
+
+    @JvmField
+    val TIN_DUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("tin_dust")
+
+    @JvmField
+    val TIN_INGOT: HTSimpleDeferredItem = REGISTER.registerSimpleItem("tin_ingot")
+
+    @JvmField
+    val TIN_NUGGET: HTSimpleDeferredItem = REGISTER.registerSimpleItem("tin_nugget")
+
     @JvmField
     val RAW_IRIDIUM: HTSimpleDeferredItem = REGISTER.registerSimpleItem("raw_iridium") { it.rarity(Rarity.RARE) }
 

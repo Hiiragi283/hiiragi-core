@@ -1,6 +1,6 @@
 package hiiragi283.lib.data.recipe
 
-import hiiragi283.lib.material.HTMaterialLike
+import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.tag.HTTagPrefix
 import hiiragi283.lib.tag.RawTagKey
 import net.minecraft.core.HolderGetter
@@ -33,7 +33,7 @@ class HTIngredientCreator(val itemGetter: HolderGetter<Item>) {
     fun create(tagKey: RawTagKey): Ingredient = create(tagKey.create(Registries.ITEM))
 
     @JvmName("createTag")
-    fun create(prefix: HTTagPrefix, material: HTMaterialLike): Ingredient = create(prefix.materialTag(material))
+    fun create(prefix: HTTagPrefix, material: HTMaterialKey): Ingredient = create(prefix.materialTag(material))
 
     @JvmName("createTags")
     fun create(tagKeys: Iterable<TagKey<Item>>): Ingredient = when (tagKeys.count()) {

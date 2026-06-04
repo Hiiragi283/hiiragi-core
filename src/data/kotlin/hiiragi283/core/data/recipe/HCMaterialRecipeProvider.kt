@@ -21,6 +21,13 @@ class HCMaterialRecipeProvider(modId: String, registries: HolderLookup.Provider,
         // Metal
         nineNugget(HCMaterialContents.NETHERITE)
 
+        nineStorageBlock(HCMaterialContents.TIN)
+        nineNugget(HCMaterialContents.TIN)
+        rawStorageBlock(HCMaterialContents.TIN)
+        smeltDustToBase(HCMaterialContents.TIN)
+        smeltRawToBase(HCMaterialContents.TIN, 0.7f)
+        crushBaseToDust(HCMaterialContents.TIN)
+
         nineStorageBlock(HCMaterialContents.IRIDIUM)
         nineNugget(HCMaterialContents.IRIDIUM)
         rawStorageBlock(HCMaterialContents.IRIDIUM)

@@ -2,10 +2,13 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.lib.material.CommonPartKeys
+import hiiragi283.lib.material.HTMaterialContents
 import hiiragi283.lib.material.HTMaterialItemEntry
+import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.registry.HTDeferredMaterialContents
 import hiiragi283.lib.registry.HTDeferredMaterialContentsRegister
 import hiiragi283.lib.tag.CommonTagPrefixes
+import hiiragi283.lib.tag.HTTagPrefix
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Blocks
@@ -14,6 +17,11 @@ import net.neoforged.neoforge.common.Tags
 data object HCMaterialContents {
     @JvmField
     val REGISTER = HTDeferredMaterialContentsRegister(HiiragiCoreAPI.MOD_ID)
+
+    @JvmStatic
+    private fun HTMaterialContents.Builder.addIfPresent(key: HTMaterialPartKey, prefix: HTTagPrefix) {
+        HCItems.getResult(key, this.key).onRight { this.add(key, HTMaterialItemEntry.item(it), prefix) }
+    }
 
     //    Fuel    //
 
@@ -144,6 +152,17 @@ data object HCMaterialContents {
 
     // Common
     @JvmField
+    val TIN: HTDeferredMaterialContents = REGISTER.registerContents("tin", CommonPartKeys.INGOT) {
+        add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(HCBlocks.TIN_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
+        add(CommonPartKeys.RAW_BLOCK, HTMaterialItemEntry.block(HCBlocks.RAW_TIN_BLOCK), CommonTagPrefixes.RAW_STORAGE_BLOCK)
+
+        add(CommonPartKeys.DUST, HTMaterialItemEntry.item(HCItems.TIN_DUST), CommonTagPrefixes.DUST)
+        add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(HCItems.TIN_INGOT), CommonTagPrefixes.INGOT)
+        add(CommonPartKeys.NUGGET, HTMaterialItemEntry.item(HCItems.TIN_NUGGET), CommonTagPrefixes.NUGGET)
+        add(CommonPartKeys.RAW, HTMaterialItemEntry.item(HCItems.RAW_TIN), CommonTagPrefixes.RAW_MATERIALS)
+    }
+
+    @JvmField
     val IRIDIUM: HTDeferredMaterialContents = REGISTER.registerContents("iridium", CommonPartKeys.INGOT) {
         add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(HCBlocks.IRIDIUM_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
         add(CommonPartKeys.RAW_BLOCK, HTMaterialItemEntry.block(HCBlocks.RAW_IRIDIUM_BLOCK), CommonTagPrefixes.RAW_STORAGE_BLOCK)
@@ -163,9 +182,9 @@ data object HCMaterialContents {
     val NETHERITE: HTDeferredMaterialContents = REGISTER.registerContents("netherite", CommonPartKeys.INGOT) {
         add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.NETHERITE_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
-        add(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
+        addIfPresent(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
         add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(Items.NETHERITE_INGOT), CommonTagPrefixes.INGOT)
-        add(CommonPartKeys.NUGGET, HTMaterialItemEntry.item(HCItems.NETHERITE_NUGGET), CommonTagPrefixes.NUGGET)
+        addIfPresent(CommonPartKeys.NUGGET, CommonTagPrefixes.NUGGET)
     }
 
     // Common

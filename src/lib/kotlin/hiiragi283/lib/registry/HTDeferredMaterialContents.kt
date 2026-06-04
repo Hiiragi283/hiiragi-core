@@ -3,7 +3,6 @@ package hiiragi283.lib.registry
 import hiiragi283.lib.HTRegistries
 import hiiragi283.lib.material.HTMaterialContents
 import hiiragi283.lib.material.HTMaterialContentsLike
-import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.material.HTMaterialRawEntry
 import hiiragi283.lib.resource.SupplierWithId
@@ -21,6 +20,4 @@ data class HTDeferredMaterialContents(val key: ResourceKey<HTMaterialContents>) 
     override fun getId(): Identifier = key.identifier()
 
     override fun getRawEntry(key: HTMaterialPartKey): HTMaterialRawEntry? = get().getRawEntry(key)
-
-    override fun asMaterialKey(): HTMaterialKey = HTMaterialKey.of(key)
 }

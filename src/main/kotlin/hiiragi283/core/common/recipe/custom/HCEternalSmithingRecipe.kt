@@ -2,8 +2,8 @@ package hiiragi283.core.common.recipe.custom
 
 import hiiragi283.core.common.recipe.ingredient.HTDamageableIngredient
 import hiiragi283.core.setup.HCItems
-import hiiragi283.core.setup.HCMaterialContents
 import hiiragi283.core.setup.HCRecipeSerializers
+import hiiragi283.lib.material.CommonMaterialKeys
 import hiiragi283.lib.registry.get
 import hiiragi283.lib.tag.CommonTagPrefixes
 import java.util.Optional
@@ -24,7 +24,7 @@ data object HCEternalSmithingRecipe : SmithingRecipe {
 
     override fun baseIngredient(): Ingredient = HTDamageableIngredient.toVanilla()
 
-    override fun additionIngredient(): Optional<Ingredient> = BuiltInRegistries.ITEM.get(CommonTagPrefixes.INGOT, HCMaterialContents.IRIDIUM).map(Ingredient::of)
+    override fun additionIngredient(): Optional<Ingredient> = BuiltInRegistries.ITEM.get(CommonTagPrefixes.INGOT, CommonMaterialKeys.IRIDIUM).map(Ingredient::of)
 
     override fun assemble(input: SmithingRecipeInput): ItemStack {
         val stack: ItemStack = input.base.copy()

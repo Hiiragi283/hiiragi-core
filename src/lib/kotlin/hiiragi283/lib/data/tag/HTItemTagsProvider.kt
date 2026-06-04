@@ -1,6 +1,6 @@
 package hiiragi283.lib.data.tag
 
-import hiiragi283.lib.material.HTMaterialLike
+import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.registry.toLike
 import hiiragi283.lib.tag.HTTagPrefix
 import hiiragi283.lib.tag.RawTagKey
@@ -29,7 +29,7 @@ abstract class HTItemTagsProvider : HTIdLikeTagsProvider<Item> {
         this.blockTags = contentsGetter
     }
 
-    protected fun copy(prefix: HTTagPrefix, material: HTMaterialLike) {
+    protected fun copy(prefix: HTTagPrefix, material: HTMaterialKey) {
         this.copy(prefix.rawCommonTag)
         this.copy(prefix.materialTag(material))
     }

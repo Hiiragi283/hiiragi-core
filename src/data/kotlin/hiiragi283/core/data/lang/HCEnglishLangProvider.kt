@@ -23,6 +23,8 @@ class HCEnglishLangProvider(output: PackOutput) :
         // Block
         add(HCBlocks.CHARCOAL_BLOCK, "Block of Charcoal")
         add(HCBlocks.ECHO_BLOCK, "Block of Echo")
+        add(HCBlocks.RAW_TIN_BLOCK, "Block of Raw Tin")
+        add(HCBlocks.TIN_BLOCK, "Block of Tin")
         add(HCBlocks.RAW_IRIDIUM_BLOCK, "Block of Raw Iridium")
         add(HCBlocks.IRIDIUM_BLOCK, "Block of Iridium")
 
@@ -47,15 +49,8 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.LATEX, "Latex")
         addFluid(HCFluids.MEAT, "Meat")
         // Item
-        add(HCItems.NETHERITE_NUGGET, "Netherite Nugget")
-        add(HCItems.ENDER_PEARL_DUST, "Ender Pearl Dust")
-        add(HCItems.OBSIDIAN_DUST, "Obsidian Dust")
-        add(HCItems.WOOD_DUST, "Sawdust")
-
-        add(HCItems.RAW_IRIDIUM, "Raw Iridium")
-        add(HCItems.IRIDIUM_DUST, "Iridium Dust")
-        add(HCItems.IRIDIUM_INGOT, "Iridium Ingot")
-        add(HCItems.IRIDIUM_NUGGET, "Iridium Nugget")
+        for ((part, material, item) in HCItems.RESOURCES.entries) {
+        }
 
         add(HCItems.ELDER_HEART, "Elder Heart")
 
