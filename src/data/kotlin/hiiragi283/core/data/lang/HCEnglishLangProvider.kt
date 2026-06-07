@@ -26,6 +26,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCBlocks.WARPED_WART, "Warped Wart")
 
         add(HCBlocks.CHOPPING_BOARD, "Chopping Board")
+        add(HCBlocks.FORGING_ANVIL, "Forging Anvil")
         // Enchantment
         add(HCEnchantments.HAMMER_OF_JUSTICE, "Hammer of Justice", "Increases damage against raiders.")
         add(HCEnchantments.NOISE_CANCELING, "Noise Canceling", "Increases damage against sculk mobs such as Warden.")

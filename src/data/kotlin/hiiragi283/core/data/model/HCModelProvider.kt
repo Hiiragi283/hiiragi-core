@@ -54,6 +54,7 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
         generators.createCropBlock(HCBlocks.WARPED_WART.get(), BlockStateProperties.AGE_3, 0, 1, 1, 2)
         // Chopping Board
         generators.createAltModel(HCBlocks.CHOPPING_BOARD)
+        generators.createAltModel(HCBlocks.FORGING_ANVIL)
         // Copper Basin
         generators.createCopperBasin(HCBlocks.COPPER_BASIN.weathering)
         generators.createCopperBasin(HCBlocks.COPPER_BASIN.waxed)

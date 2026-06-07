@@ -79,6 +79,7 @@ data object HiiragiCore : HTCommonMod() {
         // Block
         helper.registerBlockEntity(HCBlockEntityTypes.CHOPPING_BOARD.get())
         helper.registerBlockEntity(HCBlockEntityTypes.COPPER_BASIN.get())
+        helper.registerBlockEntity(HCBlockEntityTypes.FORGING_ANVIL.get())
         // Item
         helper.registerItem(
             Capabilities.Fluid.ITEM,

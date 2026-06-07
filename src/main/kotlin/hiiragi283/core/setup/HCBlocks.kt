@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.block.HTChoppingBoardBlock
 import hiiragi283.core.common.block.HTCopperBasinBlock
+import hiiragi283.core.common.block.HTForgingAnvilBlock
 import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.block.HTWeatheringCopperBasinBlock
 import hiiragi283.lib.collection.Table
@@ -99,6 +100,9 @@ data object HCBlocks {
 
     @JvmField
     val CHOPPING_BOARD: HTBasicDeferredBlockAndItem<HTChoppingBoardBlock> = REGISTER.registerSimple("chopping_board", copyOf(Blocks.OAK_WOOD).noOcclusion(), ::HTChoppingBoardBlock)
+
+    @JvmField
+    val FORGING_ANVIL: HTBasicDeferredBlockAndItem<HTForgingAnvilBlock> = REGISTER.registerSimple("forging_anvil", copyOf(Blocks.SMOOTH_STONE).noOcclusion(), ::HTForgingAnvilBlock)
 
     @JvmField
     val COPPER_BASIN: HTWeatheringCopperBlocks<HTCopperBasinBlock, HTWeatheringCopperBasinBlock, HTBlockItem<Block>> = HTWeatheringCopperBlocks.createSimple(

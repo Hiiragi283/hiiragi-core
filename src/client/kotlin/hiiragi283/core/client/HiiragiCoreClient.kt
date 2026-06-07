@@ -1,8 +1,8 @@
 package hiiragi283.core.client
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.client.renderer.HCChoppingBoardRenderer
 import hiiragi283.core.client.renderer.HCCopperBasinRenderer
+import hiiragi283.core.client.renderer.HTManualProcessingBoardRenderer
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.lib.HTConstants
@@ -73,7 +73,8 @@ data object HiiragiCoreClient : HTClientMod() {
     }
 
     override fun registerEntityRenderer(event: EntityRenderersEvent.RegisterRenderers) {
-        event.registerBlockEntityRenderer(HCBlockEntityTypes.CHOPPING_BOARD.get(), ::HCChoppingBoardRenderer)
+        event.registerBlockEntityRenderer(HCBlockEntityTypes.CHOPPING_BOARD.get(), ::HTManualProcessingBoardRenderer)
         event.registerBlockEntityRenderer(HCBlockEntityTypes.COPPER_BASIN.get(), ::HCCopperBasinRenderer)
+        event.registerBlockEntityRenderer(HCBlockEntityTypes.FORGING_ANVIL.get(), ::HTManualProcessingBoardRenderer)
     }
 }

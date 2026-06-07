@@ -9,10 +9,10 @@ import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.state.BlockState
 
-class HTChoppingBoardBlockEntity(worldPosition: BlockPos, blockState: BlockState) : HTManualProcessingBoardBlockEntity(HCRecipeLookups.CHOPPING, HCBlockEntityTypes.CHOPPING_BOARD.get(), worldPosition, blockState) {
-    override fun canProcessWithTool(tool: ItemStack): Boolean = tool.`is`(ItemTags.AXES)
+class HTForgingAnvilBlockEntity(worldPosition: BlockPos, blockState: BlockState) : HTManualProcessingBoardBlockEntity(HCRecipeLookups.CRUSHING, HCBlockEntityTypes.FORGING_ANVIL.get(), worldPosition, blockState) {
+    override fun canProcessWithTool(tool: ItemStack): Boolean = tool.`is`(ItemTags.PICKAXES)
 
     override fun playCompletedSound() {
-        playSound(SoundEvents.AXE_STRIP)
+        playSound(SoundEvents.STONE_BREAK)
     }
 }

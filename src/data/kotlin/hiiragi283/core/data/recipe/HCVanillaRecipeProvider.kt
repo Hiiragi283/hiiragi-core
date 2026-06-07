@@ -37,6 +37,14 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
             .define('B', Tags.Items.STRIPPED_LOGS)
             .unlockedBy("has_axe", has(ItemTags.AXES))
             .save(output)
+        // Forging Anvil
+        shaped(RecipeCategory.MISC, HCBlocks.FORGING_ANVIL)
+            .pattern("A")
+            .pattern("B")
+            .define('A', Items.STONE_SLAB)
+            .define('B', Items.SMOOTH_STONE)
+            .unlockedBy("has_pickaxe", has(ItemTags.PICKAXES))
+            .save(output)
         // Copper Basin
         shaped(RecipeCategory.MISC, HCBlocks.COPPER_BASIN.weathering.unaffected)
             .pattern("A A")

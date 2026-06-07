@@ -26,6 +26,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCBlocks.WARPED_WART, "歪んだウォート")
 
         add(HCBlocks.CHOPPING_BOARD, "伐採台")
+        add(HCBlocks.FORGING_ANVIL, "鍛造台")
         // Enchantment
         add(HCEnchantments.HAMMER_OF_JUSTICE, "正義の鉄槌", "襲撃者に対するダメージを増加させます。")
         add(HCEnchantments.NOISE_CANCELING, "ノイズキャンセリング", "ウォーデンなどのスカルク系モンスターに対するダメージを増加させます。")

@@ -1,7 +1,7 @@
 package hiiragi283.core.client.renderer
 
 import com.mojang.blaze3d.vertex.PoseStack
-import hiiragi283.core.common.block.entity.HTChoppingBoardBlockEntity
+import hiiragi283.core.api.block.entity.HTManualProcessingBoardBlockEntity
 import hiiragi283.lib.renderer.HTBlockEntityRenderer
 import hiiragi283.lib.renderer.state.HTItemBERenderState
 import net.minecraft.client.renderer.SubmitNodeCollector
@@ -11,24 +11,29 @@ import net.minecraft.client.renderer.item.ItemModelResolver
 import net.minecraft.client.renderer.state.level.CameraRenderState
 import net.minecraft.client.renderer.texture.OverlayTexture
 import net.minecraft.world.item.ItemDisplayContext
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.phys.Vec3
 
-class HCChoppingBoardRenderer(context: BlockEntityRendererProvider.Context) : HTBlockEntityRenderer<HTChoppingBoardBlockEntity, HTItemBERenderState>(context) {
+class HTManualProcessingBoardRenderer(context: BlockEntityRendererProvider.Context) : HTBlockEntityRenderer<HTManualProcessingBoardBlockEntity, HTItemBERenderState>(context) {
     private val itemModelResolver: ItemModelResolver = context.itemModelResolver()
 
     override fun createRenderState(): HTItemBERenderState = HTItemBERenderState()
 
-    override fun extractRenderState(blockEntity: HTChoppingBoardBlockEntity, state: HTItemBERenderState, partialTicks: Float, cameraPosition: Vec3, breakProgress: ModelFeatureRenderer.CrumblingOverlay?) {
+    override fun extractRenderState(blockEntity: HTManualProcessingBoardBlockEntity, state: HTItemBERenderState, partialTicks: Float, cameraPosition: Vec3, breakProgress: ModelFeatureRenderer.CrumblingOverlay?) {
         super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress)
-        state.itemState.clear()
-        itemModelResolver.updateForTopItem(
-            state.itemState,
-            blockEntity.slot.getStack(),
-            ItemDisplayContext.GROUND,
-            blockEntity.level,
-            null,
-            blockEntity.blockPos.asLong().toInt(),
-        )
+        val stackIn: ItemStack = blockEntity.slot.getStack()
+        if (stackIn.isEmpty) {
+            state.itemState.clear()
+        } else {
+            itemModelResolver.updateForTopItem(
+                state.itemState,
+                blockEntity.slot.getStack(),
+                ItemDisplayContext.GROUND,
+                blockEntity.level,
+                null,
+                blockEntity.blockPos.asLong().toInt(),
+            )
+        }
     }
 
     override fun submit(state: HTItemBERenderState, poseStack: PoseStack, submitNodeCollector: SubmitNodeCollector, camera: CameraRenderState) {

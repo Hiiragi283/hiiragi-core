@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "minecraft:stone_slab",
+    "B": "minecraft:smooth_stone"
+  },
+  "pattern": [
+    "A",
+    "B"
+  ],
+  "result": {
+    "id": "hiiragi_core:forging_anvil"
+  }
+}

@@ -43,6 +43,7 @@ class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<
         sequence<HTIdLike> {
             yieldAll(HCBlocks.RESOURCES.values)
 
+            yield(HCBlocks.FORGING_ANVIL)
             yieldAll(HCBlocks.COPPER_BASIN.allBlocks)
         }.forEach(pickaxe::add)
     }
