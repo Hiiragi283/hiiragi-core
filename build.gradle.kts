@@ -377,7 +377,7 @@ tasks {
     }
 
     named<Jar>("sourcesJar") {
-        dependsOn("apiClasses", "clientClasses", "integrationClasses")
+        dependsOn("libClasses", "clientClasses", "integrationClasses")
         duplicatesStrategy = DuplicatesStrategy.FAIL
         from(libModule.allSource, clientModule.allSource, integrationModule.allSource)
     }
