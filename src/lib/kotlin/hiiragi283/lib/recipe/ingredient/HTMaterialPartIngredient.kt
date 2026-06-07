@@ -51,7 +51,7 @@ data class HTMaterialPartIngredient(val contents: HolderSet<HTMaterialContents>,
             val contents: HTMaterialContents = holder.value()
             for (part: HTMaterialPartKey in parts) {
                 val (entry: HTMaterialItemEntry?, tagKey: TagKey<Item>?) = contents.getRawEntry(part)?.toPair() ?: continue
-                if (entry != null && stack.`is`(entry.get().asItem())) {
+                if (entry != null && stack.`is`(entry.asItem())) {
                     return true
                 }
                 if (tagKey != null && stack.`is`(tagKey)) {
@@ -70,7 +70,7 @@ data class HTMaterialPartIngredient(val contents: HolderSet<HTMaterialContents>,
             buildList {
                 val (entry: HTMaterialItemEntry?, tagKey: TagKey<Item>?) = ior.toPair()
                 if (entry != null) {
-                    add(entry.get().asItem().builtInRegistryHolder())
+                    add(entry.asItem().builtInRegistryHolder())
                 }
                 if (tagKey != null) {
                     addAll(BuiltInRegistries.ITEM.getTagOrEmpty(tagKey))

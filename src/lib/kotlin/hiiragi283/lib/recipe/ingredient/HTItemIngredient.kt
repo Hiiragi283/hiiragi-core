@@ -49,7 +49,7 @@ value class HTItemIngredient(private val delegate: SizedIngredient) : HTIngredie
     val unsized: Ingredient get() = delegate.ingredient()
     val count: Int get() = delegate.count()
 
-    override fun test(instance: TypedInstance<Item>): Boolean = HTIngredientHelper.createStack(instance).let(delegate::test)
+    override fun test(instance: TypedInstance<Item>): Boolean = HTIngredientHelper.unwrap(instance).fold(::testOnlyType, delegate::test)
 
     override fun testOnlyType(instance: TypedInstance<Item>): Boolean = HTIngredientHelper.createStack(instance).let(unsized::test)
 

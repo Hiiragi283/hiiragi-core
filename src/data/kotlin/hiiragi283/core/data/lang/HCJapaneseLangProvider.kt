@@ -21,12 +21,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addPatternTranslations(this)
 
         // Block
-        add(HCBlocks.CHARCOAL_BLOCK, "木炭ブロック")
-        add(HCBlocks.ECHO_BLOCK, "残響ブロック")
-        add(HCBlocks.RAW_TIN_BLOCK, "スズの原石ブロック")
-        add(HCBlocks.TIN_BLOCK, "スズブロック")
-        add(HCBlocks.RAW_IRIDIUM_BLOCK, "イリジウムの原石ブロック")
-        add(HCBlocks.IRIDIUM_BLOCK, "イリジウムブロック")
+        addMaterials(HCBlocks.RESOURCES)
 
         add(HCBlocks.WARPED_WART, "歪んだウォート")
 
@@ -49,8 +44,7 @@ class HCJapaneseLangProvider(output: PackOutput) :
         addFluid(HCFluids.LATEX, "ラテックス")
         addFluid(HCFluids.MEAT, "肉")
         // Item
-        for ((part, material, item) in HCItems.RESOURCES.entries) {
-        }
+        addMaterials(HCItems.RESOURCES)
 
         add(HCItems.ELDER_HEART, "エルダーの心臓")
 

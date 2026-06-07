@@ -2,6 +2,7 @@ package hiiragi283.core.common
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.item.HTPotionBucketItem
+import hiiragi283.core.common.material.HCMaterials
 import hiiragi283.core.setup.HCAttachmentTypes
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks
@@ -9,7 +10,6 @@ import hiiragi283.core.setup.HCCreativeTabs
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
-import hiiragi283.core.setup.HCMaterialContents
 import hiiragi283.core.setup.HCMiscRegister
 import hiiragi283.core.setup.HCRecipeLookups
 import hiiragi283.core.setup.HCRecipeSerializers
@@ -51,7 +51,6 @@ data object HiiragiCore : HTCommonMod() {
         HCAttachmentTypes.REGISTER.register(eventBus)
         HCBlockEntityTypes.REGISTER.register(eventBus)
         HCCreativeTabs.REGISTER.register(eventBus)
-        HCMaterialContents.REGISTER.register(eventBus)
         HCRecipeSerializers.REGISTER.register(eventBus)
         HCRecipeTypes.REGISTER.register(eventBus)
 
@@ -72,9 +71,8 @@ data object HiiragiCore : HTCommonMod() {
                 .map(::HTModifyMaterialContentsEvent)
                 .forEach(MOD_BUS::post)
         }
-        event.enqueueWork {
-            HTPotionFluidManager.register(HCFluids.POTION.get(), HTPlatformImpl.DEFAULT_POTION_HANDLER)
-        }
+        event.enqueueWork { HTPotionFluidManager.register(HCFluids.POTION.get(), HTPlatformImpl.DEFAULT_POTION_HANDLER) }
+        event.enqueueWork(HCMaterials::initTags)
     }
 
     override fun registerCapabilities(helper: CapabilityHelper) {

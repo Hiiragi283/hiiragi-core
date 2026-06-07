@@ -16,10 +16,7 @@ import net.minecraft.world.item.Item
 
 typealias HTMaterialRawEntry = Ior<HTMaterialItemEntry, TagKey<Item>>
 
-class HTMaterialContents private constructor(
-    val primalKey: HTMaterialPartKey,
-    @PublishedApi internal var contents: Map<HTMaterialPartKey, HTMaterialRawEntry>,
-) : HTMaterialContentsLike {
+class HTMaterialContents private constructor(val primalKey: HTMaterialPartKey, @PublishedApi internal var contents: Map<HTMaterialPartKey, HTMaterialRawEntry>) {
     companion object {
         @JvmField
         val DIRECT_CODEC: Codec<HTMaterialContents> = Codec.lazyInitialized(HTRegistries.MATERIAL_CONTENTS::byNameCodec)
@@ -39,7 +36,11 @@ class HTMaterialContents private constructor(
 
     val primalEntry: HTMaterialRawEntry = getRawEntry(primalKey)!!
 
-    override fun getRawEntry(key: HTMaterialPartKey): HTMaterialRawEntry? = contents[key]
+    fun getRawEntry(key: HTMaterialPartKey): HTMaterialRawEntry? = contents[key]
+
+    fun getEntry(key: HTMaterialPartKey): HTMaterialItemEntry? = getRawEntry(key)?.getLeft()
+
+    fun getTagKey(key: HTMaterialPartKey): TagKey<Item>? = getRawEntry(key)?.getRight()
 
     //    Builder    //
 

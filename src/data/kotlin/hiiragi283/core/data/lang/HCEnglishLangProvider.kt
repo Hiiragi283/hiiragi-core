@@ -21,12 +21,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         addPatternTranslations(this)
 
         // Block
-        add(HCBlocks.CHARCOAL_BLOCK, "Block of Charcoal")
-        add(HCBlocks.ECHO_BLOCK, "Block of Echo")
-        add(HCBlocks.RAW_TIN_BLOCK, "Block of Raw Tin")
-        add(HCBlocks.TIN_BLOCK, "Block of Tin")
-        add(HCBlocks.RAW_IRIDIUM_BLOCK, "Block of Raw Iridium")
-        add(HCBlocks.IRIDIUM_BLOCK, "Block of Iridium")
+        addMaterials(HCBlocks.RESOURCES)
 
         add(HCBlocks.WARPED_WART, "Warped Wart")
 
@@ -49,8 +44,7 @@ class HCEnglishLangProvider(output: PackOutput) :
         addFluid(HCFluids.LATEX, "Latex")
         addFluid(HCFluids.MEAT, "Meat")
         // Item
-        for ((part, material, item) in HCItems.RESOURCES.entries) {
-        }
+        addMaterials(HCItems.RESOURCES)
 
         add(HCItems.ELDER_HEART, "Elder Heart")
 

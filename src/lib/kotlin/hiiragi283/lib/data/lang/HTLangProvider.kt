@@ -1,5 +1,10 @@
 package hiiragi283.lib.data.lang
 
+import hiiragi283.lib.collection.Table
+import hiiragi283.lib.collection.forEach
+import hiiragi283.lib.material.HTMaterialKey
+import hiiragi283.lib.material.HTMaterialPartKey
+import hiiragi283.lib.material.HTMaterialTranslationManager
 import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.resource.toDescriptionKey
 import hiiragi283.lib.text.HTHasTranslationKey
@@ -57,5 +62,12 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
         val bucketName: String = BUCKET_PATTERN.translate(langType, value)
         add(content.bucketHolder, bucketName)
         add(content.bucketTag, bucketName)
+    }
+
+    fun addMaterials(table: Table<HTMaterialPartKey, HTMaterialKey, HTHasTranslationKey>) {
+        table.forEach { (part: HTMaterialPartKey, material: HTMaterialKey, block: HTHasTranslationKey) ->
+            val name: String = HTMaterialTranslationManager.getName(langType, part, material) ?: return@forEach
+            add(block, name)
+        }
     }
 }

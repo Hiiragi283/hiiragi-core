@@ -6,13 +6,13 @@ import hiiragi283.lib.data.recipe.HTRecipeProvider
 import hiiragi283.lib.data.recipe.save
 import hiiragi283.lib.item.toTemplate
 import hiiragi283.lib.material.CommonPartKeys
+import hiiragi283.lib.material.HTMaterialContents
 import hiiragi283.lib.material.HTMaterialItemEntry
+import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.material.HTMaterialRawEntry
 import hiiragi283.lib.math.component1
 import hiiragi283.lib.math.component2
-import hiiragi283.lib.registry.HTDeferredMaterialContents
-import hiiragi283.lib.resource.HTIdLike
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput
@@ -24,30 +24,33 @@ import net.minecraft.world.item.Item
 import org.apache.commons.lang3.math.Fraction
 
 abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
+    protected fun getContents(material: HTMaterialKey): HTMaterialContents = registries.getOrThrow(material).value()
+
     //    Base <-> Storage Block    //
 
-    protected fun nineStorageBlock(contents: HTDeferredMaterialContents, baseToBlock: Boolean = true, blockToBase: Boolean = true) {
-        val primalKey: HTMaterialPartKey = contents.get().primalKey
+    protected fun nineStorageBlock(material: HTMaterialKey, baseToBlock: Boolean = true, blockToBase: Boolean = true) {
+        val primalKey: HTMaterialPartKey = getContents(material).primalKey
         if (baseToBlock) {
-            baseToBlock(contents, primalKey, CommonPartKeys.STORAGE_BLOCK, "AAA", "ABA", "AAA")
+            baseToBlock(material, primalKey, CommonPartKeys.STORAGE_BLOCK, "AAA", "ABA", "AAA")
         }
         if (blockToBase) {
-            blockToBase(contents, primalKey, CommonPartKeys.STORAGE_BLOCK, 9)
+            blockToBase(material, primalKey, CommonPartKeys.STORAGE_BLOCK, 9)
         }
     }
 
-    protected fun fourStorageBlock(contents: HTDeferredMaterialContents, baseToBlock: Boolean = true, blockToBase: Boolean = true) {
-        val primalKey: HTMaterialPartKey = contents.get().primalKey
+    protected fun fourStorageBlock(material: HTMaterialKey, baseToBlock: Boolean = true, blockToBase: Boolean = true) {
+        val primalKey: HTMaterialPartKey = getContents(material).primalKey
         if (baseToBlock) {
-            baseToBlock(contents, primalKey, CommonPartKeys.STORAGE_BLOCK, "AA", "BA")
+            baseToBlock(material, primalKey, CommonPartKeys.STORAGE_BLOCK, "AA", "BA")
         }
         if (blockToBase) {
-            blockToBase(contents, primalKey, CommonPartKeys.STORAGE_BLOCK, 4)
+            blockToBase(material, primalKey, CommonPartKeys.STORAGE_BLOCK, 4)
         }
     }
 
-    protected fun baseToBlock(contents: HTDeferredMaterialContents, baseKey: HTMaterialPartKey, blockKey: HTMaterialPartKey, vararg pattern: String) {
+    protected fun baseToBlock(material: HTMaterialKey, baseKey: HTMaterialPartKey, blockKey: HTMaterialPartKey, vararg pattern: String) {
         // ブロックと基本アイテムは必須
+        val contents: HTMaterialContents = getContents(material)
         val block: HTMaterialItemEntry = contents.getEntry(blockKey) ?: return
         val base: HTMaterialItemEntry = contents.getEntry(baseKey) ?: return
 
@@ -64,33 +67,35 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
             builder
                 .define('A', baseTag)
                 .unlockedBy(getHasName(base), has(baseTag))
-        }.save(output, idFrom(contents, blockKey, baseKey))
+        }.save(output, idFrom(material, blockKey, baseKey))
     }
 
-    protected fun blockToBase(contents: HTDeferredMaterialContents, baseKey: HTMaterialPartKey, blockKey: HTMaterialPartKey, count: Int) {
+    protected fun blockToBase(material: HTMaterialKey, baseKey: HTMaterialPartKey, blockKey: HTMaterialPartKey, count: Int) {
         // 基本アイテムは必須
+        val contents: HTMaterialContents = getContents(material)
         val base: HTMaterialItemEntry = contents.getEntry(baseKey) ?: return
         val builder: ShapelessRecipeBuilder = shapeless(RecipeCategory.MISC, base, count)
         contents.getRawEntry(blockKey)?.fold(
             { block: HTMaterialItemEntry -> builder.requires(block).unlockedBy(getHasName(block), has(block)) },
             { blockTag: TagKey<Item> -> builder.requires(blockTag).unlockedBy(getHasName(blockTag), has(blockTag)) },
             { block: HTMaterialItemEntry, blockTag: TagKey<Item> -> builder.requires(blockTag).unlockedBy(getHasName(block), has(blockTag)) },
-        )?.save(output, idFrom(contents, baseKey, blockKey))
+        )?.save(output, idFrom(material, baseKey, blockKey))
     }
 
     //    Base <-> Nugger    //
 
-    protected fun nineNugget(contents: HTDeferredMaterialContents, baseToNugget: Boolean = true, nuggetToBase: Boolean = true) {
+    protected fun nineNugget(material: HTMaterialKey, baseToNugget: Boolean = true, nuggetToBase: Boolean = true) {
         if (nuggetToBase) {
-            nuggetToBase(contents)
+            nuggetToBase(material)
         }
         if (baseToNugget) {
-            baseToNugget(contents)
+            baseToNugget(material)
         }
     }
 
-    protected fun nuggetToBase(contents: HTDeferredMaterialContents) {
-        val primalKey: HTMaterialPartKey = contents.get().primalKey
+    protected fun nuggetToBase(material: HTMaterialKey) {
+        val contents: HTMaterialContents = getContents(material)
+        val primalKey: HTMaterialPartKey = contents.primalKey
         // ナゲットと基本アイテムは必須
         val base: HTMaterialItemEntry = contents.getEntry(primalKey) ?: return
         val nugget: HTMaterialItemEntry = contents.getEntry(CommonPartKeys.NUGGET) ?: return
@@ -110,40 +115,42 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
             builder
                 .define('A', nuggetTag)
                 .unlockedBy(getHasName(nugget), has(nuggetTag))
-        }.save(output, idFrom(contents, primalKey, CommonPartKeys.RAW))
+        }.save(output, idFrom(material, primalKey, CommonPartKeys.RAW))
     }
 
-    protected fun baseToNugget(contents: HTDeferredMaterialContents) {
-        val primalKey: HTMaterialPartKey = contents.get().primalKey
+    protected fun baseToNugget(material: HTMaterialKey) {
+        val contents: HTMaterialContents = getContents(material)
+        val primalKey: HTMaterialPartKey = contents.primalKey
         // ナゲットは必須
         val nugget: HTMaterialItemEntry = contents.getEntry(CommonPartKeys.NUGGET) ?: return
         val builder: ShapelessRecipeBuilder = shapeless(RecipeCategory.MISC, nugget, 9)
-        contents.get().primalEntry.fold(
+        contents.primalEntry.fold(
             { base: HTMaterialItemEntry -> builder.requires(base).unlockedBy(getHasName(base), has(base)) },
             { baseTag: TagKey<Item> -> builder.requires(baseTag).unlockedBy(getHasName(baseTag), has(baseTag)) },
             { base: HTMaterialItemEntry, baseTag: TagKey<Item> -> builder.requires(baseTag).unlockedBy(getHasName(base), has(baseTag)) },
-        ).save(output, idFrom(contents, CommonPartKeys.NUGGET, primalKey))
+        ).save(output, idFrom(material, CommonPartKeys.NUGGET, primalKey))
     }
 
     //    Raw <-> Raw Block    //
 
-    protected fun rawStorageBlock(contents: HTDeferredMaterialContents) {
-        baseToBlock(contents, CommonPartKeys.RAW, CommonPartKeys.RAW_BLOCK, "AAA", "ABA", "AAA")
-        blockToBase(contents, CommonPartKeys.RAW, CommonPartKeys.RAW_BLOCK, 9)
+    protected fun rawStorageBlock(material: HTMaterialKey) {
+        baseToBlock(material, CommonPartKeys.RAW, CommonPartKeys.RAW_BLOCK, "AAA", "ABA", "AAA")
+        blockToBase(material, CommonPartKeys.RAW, CommonPartKeys.RAW_BLOCK, 9)
     }
 
     //    XX -> Base    //
 
-    protected fun smeltDustToBase(contents: HTDeferredMaterialContents) {
-        smeltToBase(contents, CommonPartKeys.DUST, 0.35f)
+    protected fun smeltDustToBase(material: HTMaterialKey) {
+        smeltToBase(material, CommonPartKeys.DUST, 0.35f)
     }
 
-    protected fun smeltRawToBase(contents: HTDeferredMaterialContents, exp: Float) {
-        smeltToBase(contents, CommonPartKeys.RAW, exp)
+    protected fun smeltRawToBase(material: HTMaterialKey, exp: Float) {
+        smeltToBase(material, CommonPartKeys.RAW, exp)
     }
 
-    protected fun smeltToBase(contents: HTDeferredMaterialContents, inputKey: HTMaterialPartKey, exp: Float) {
-        val primalKey: HTMaterialPartKey = contents.get().primalKey
+    protected fun smeltToBase(material: HTMaterialKey, inputKey: HTMaterialPartKey, exp: Float) {
+        val contents: HTMaterialContents = getContents(material)
+        val primalKey: HTMaterialPartKey = contents.primalKey
         // 基本アイテムは必須
         val base: HTMaterialItemEntry = contents.getEntry(primalKey) ?: return
         val input: HTMaterialRawEntry = contents.getRawEntry(inputKey) ?: return
@@ -156,17 +163,18 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
                 { itemTag: TagKey<Item> -> unlocker.unlockedBy(getHasName(itemTag), has(itemTag)) },
                 { item: HTMaterialItemEntry, itemTag: TagKey<Item> -> unlocker.unlockedBy(getHasName(item), has(itemTag)) },
             )
-            recipeId replace idFrom(contents, primalKey, inputKey)
+            recipeId replace idFrom(material, primalKey, inputKey)
         }.forEach { it.save(output) }
     }
 
     //    XX -> Dust    //
 
-    protected fun crushBaseToDust(contents: HTDeferredMaterialContents, scale: Fraction = Fraction.ONE) {
-        crushToDust(contents, contents.get().primalKey, scale)
+    protected fun crushBaseToDust(material: HTMaterialKey, scale: Fraction = Fraction.ONE) {
+        crushToDust(material, getContents(material).primalKey, scale)
     }
 
-    protected fun crushToDust(contents: HTDeferredMaterialContents, inputKey: HTMaterialPartKey, scale: Fraction = Fraction.ONE) {
+    protected fun crushToDust(material: HTMaterialKey, inputKey: HTMaterialPartKey, scale: Fraction = Fraction.ONE) {
+        val contents: HTMaterialContents = getContents(material)
         val input: HTMaterialRawEntry = contents.getRawEntry(inputKey) ?: return
         val dust: HTMaterialItemEntry = contents.getEntry(CommonPartKeys.DUST) ?: return
 
@@ -174,9 +182,9 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
         HCRecipeBuilders.crushing {
             ingredient = input.toItemIngredient(inputCount)
             results += resultCreator.create(dust, outputCount)
-            recipeId replace idFrom(contents, inputKey, CommonPartKeys.DUST)
+            recipeId replace idFrom(material, inputKey, CommonPartKeys.DUST)
         }.save(output)
     }
 
-    protected fun idFrom(contents: HTIdLike, after: HTMaterialPartKey, before: HTMaterialPartKey): Identifier = id(HTConstants.MATERIAL, contents.path, "${after.name}_from_${before.name}")
+    protected fun idFrom(material: HTMaterialKey, after: HTMaterialPartKey, before: HTMaterialPartKey): Identifier = id(HTConstants.MATERIAL, material.identifier().path, "${after.name}_from_${before.name}")
 }

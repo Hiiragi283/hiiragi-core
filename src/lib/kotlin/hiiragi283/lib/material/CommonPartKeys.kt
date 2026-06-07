@@ -29,5 +29,8 @@ data object CommonPartKeys {
     val RAW_BLOCK = HTMaterialPartKey("raw_block")
 
     @JvmStatic
+    val ROD = HTMaterialPartKey("rod")
+
+    @JvmStatic
     val STORAGE_BLOCK = HTMaterialPartKey("storage_block")
 }

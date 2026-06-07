@@ -48,12 +48,7 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
 
     private fun registerBlockModels(generators: BlockModelGenerators) {
         // Resources
-        generators.createTrivialCube(HCBlocks.CHARCOAL_BLOCK.get())
-        generators.createTrivialCube(HCBlocks.ECHO_BLOCK.get())
-        generators.createTrivialCube(HCBlocks.RAW_TIN_BLOCK.get())
-        generators.createTrivialCube(HCBlocks.TIN_BLOCK.get())
-        generators.createTrivialCube(HCBlocks.RAW_IRIDIUM_BLOCK.get())
-        generators.createTrivialCube(HCBlocks.IRIDIUM_BLOCK.get())
+        HCBlocks.RESOURCES.values.forEach { generators.createTrivialCube(it.get()) }
 
         // Warped Wart
         generators.createCropBlock(HCBlocks.WARPED_WART.get(), BlockStateProperties.AGE_3, 0, 1, 1, 2)

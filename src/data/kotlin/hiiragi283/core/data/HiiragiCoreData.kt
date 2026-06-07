@@ -1,5 +1,6 @@
 package hiiragi283.core.data
 
+import hiiragi283.core.common.material.HCMaterials
 import hiiragi283.core.data.lang.HCEnglishLangProvider
 import hiiragi283.core.data.lang.HCJapaneseLangProvider
 import hiiragi283.core.data.loot.HCBlockLootTableProvider
@@ -34,6 +35,9 @@ import net.neoforged.neoforge.data.event.GatherDataEvent
 data object HiiragiCoreData {
     @SubscribeEvent
     fun gatherData(event: GatherDataEvent.Client) {
+        HCMaterials.initTags()
+        HCMaterials.initTranslations()
+
         // Server
         event.createDatapackRegistryObjects(
             RegistrySetBuilder()

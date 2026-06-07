@@ -45,11 +45,6 @@ object VanillaMaterialKeys {
     @JvmStatic
     val PRISMARINE: HTMaterialKey = create("prismarine")
 
-    //    Pearls    //
-
-    @JvmStatic
-    val ENDER: HTMaterialKey = create("ender")
-
     //    Metals    //
 
     @JvmStatic
@@ -79,6 +74,9 @@ object VanillaMaterialKeys {
 
     @JvmStatic
     val OBSIDIAN: HTMaterialKey = create("obsidian")
+
+    @JvmStatic
+    val ENDER_PEARL: HTMaterialKey = create("ender_pearl")
 
     @JvmStatic
     val BLAZE: HTMaterialKey = create("blaze")

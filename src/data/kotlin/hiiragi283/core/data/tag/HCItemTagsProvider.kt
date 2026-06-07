@@ -4,10 +4,15 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreTags
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
+import hiiragi283.lib.collection.forEach
 import hiiragi283.lib.data.tag.HTItemTagsProvider
-import hiiragi283.lib.material.CommonMaterialKeys
+import hiiragi283.lib.material.HTMaterialKey
+import hiiragi283.lib.material.HTMaterialPartKey
+import hiiragi283.lib.material.HTPartTagManager
 import hiiragi283.lib.material.VanillaMaterialKeys
+import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.tag.CommonTagPrefixes
+import hiiragi283.lib.tag.HTTagPrefix
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
@@ -17,17 +22,22 @@ import net.neoforged.neoforge.common.Tags
 
 class HCItemTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>, contentsGetter: CompletableFuture<TagLookup<Block>>) : HTItemTagsProvider(output, lookupProvider, contentsGetter, HiiragiCoreAPI.MOD_ID) {
     override fun appendTags(registries: HolderLookup.Provider) {
-        copy(CommonTagPrefixes.STORAGE_BLOCK.rawCommonTag)
-        copy(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.CHARCOAL)
         copy(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.GLOWSTONE)
         copy(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.QUARTZ)
         copy(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.AMETHYST)
-        copy(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.ECHO)
-        copy(CommonTagPrefixes.STORAGE_BLOCK, CommonMaterialKeys.IRIDIUM)
+
+        HCBlocks.RESOURCES.forEach { (part: HTMaterialPartKey, material: HTMaterialKey, _) ->
+            val prefix: HTTagPrefix = HTPartTagManager[part] ?: return@forEach
+            copy(prefix.rawCommonTag)
+            copy(prefix, material)
+        }
+
+        HCItems.RESOURCES.forEach { (part: HTMaterialPartKey, material: HTMaterialKey, item: HTIdLike) ->
+            val prefix: HTTagPrefix = HTPartTagManager[part] ?: return@forEach
+            tags(prefix, material).add(item)
+        }
 
         tags(CommonTagPrefixes.GEM, VanillaMaterialKeys.ECHO).addItem(Items.ECHO_SHARD)
-
-        HCItems.RESOURCES
 
         tags(Tags.Items.CROPS, HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)
 

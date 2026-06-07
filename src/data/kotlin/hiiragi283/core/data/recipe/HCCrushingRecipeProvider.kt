@@ -5,6 +5,8 @@ import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.data.recipe.HTRecipeProvider
+import hiiragi283.lib.material.CommonPartKeys
+import hiiragi283.lib.material.VanillaMaterialKeys
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
@@ -113,11 +115,13 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
     }
 
     private fun crushWoods() {
+        val sawDust: ItemLike = HCItems.get(CommonPartKeys.DUST, VanillaMaterialKeys.WOOD) ?: return
+
         // Wood Dust
         fun wood(tagKey: TagKey<Item>, input: Int, output: Int) {
             HCRecipeBuilders.crushing {
                 ingredient = itemCreator.tag(tagKey, input)
-                results += resultCreator.create(HCItems.WOOD_DUST, output)
+                results += resultCreator.create(sawDust, output)
                 recipeId replace id(HTConstants.MATERIAL, "wood", "from_${tagKey.location().path.replace("/", "_")}")
             }.save(this.output)
         }

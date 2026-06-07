@@ -10,6 +10,7 @@ import hiiragi283.lib.collection.Table
 import hiiragi283.lib.collection.buildTable
 import hiiragi283.lib.item.component.buildItemAttributeModifiers
 import hiiragi283.lib.item.component.consumables
+import hiiragi283.lib.material.CommonMaterialKeys
 import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.material.HTMaterialPartKey
@@ -47,14 +48,31 @@ data object HCItems {
     @JvmField
     val RESOURCES: Table<HTMaterialPartKey, HTMaterialKey, HTSimpleDeferredItem> = buildTable {
         fun register(part: HTMaterialPartKey, material: HTMaterialKey, operator: Identity<Item.Properties> = identity()) {
-            this[part, material] = REGISTER.registerSimpleItem("${material.identifier().path}_${part.name}", operator)
+            val name: String = material.identifier().path
+            val path: String = when (part) {
+                CommonPartKeys.RAW -> "raw_$name"
+                else -> "${name}_${part.name}"
+            }
+            this[part, material] = REGISTER.registerSimpleItem(path, operator)
         }
 
         // Vanilla
         register(CommonPartKeys.NUGGET, VanillaMaterialKeys.NETHERITE) { it.fireResistant() }
 
-        // Common
+        register(CommonPartKeys.DUST, VanillaMaterialKeys.WOOD)
+        register(CommonPartKeys.DUST, VanillaMaterialKeys.OBSIDIAN)
 
+        register(CommonPartKeys.DUST, VanillaMaterialKeys.ENDER_PEARL)
+        // Common
+        register(CommonPartKeys.RAW, CommonMaterialKeys.TIN)
+        register(CommonPartKeys.DUST, CommonMaterialKeys.TIN)
+        register(CommonPartKeys.INGOT, CommonMaterialKeys.TIN)
+        register(CommonPartKeys.NUGGET, CommonMaterialKeys.TIN)
+
+        register(CommonPartKeys.RAW, CommonMaterialKeys.IRIDIUM)
+        register(CommonPartKeys.DUST, CommonMaterialKeys.IRIDIUM)
+        register(CommonPartKeys.INGOT, CommonMaterialKeys.IRIDIUM)
+        register(CommonPartKeys.NUGGET, CommonMaterialKeys.IRIDIUM)
         // Hiiragi Core
     }
 
@@ -66,41 +84,6 @@ data object HCItems {
         val result: HTTextResult<HTSimpleDeferredItem> = get(part, material)?.right() ?: HTTextResult("Unregistered part $part for ${material.identifier()}")
         return result.printError(LOGGER)
     }
-
-    // Vanilla
-    @JvmField
-    val ENDER_PEARL_DUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("ender_pearl_dust")
-
-    @JvmField
-    val OBSIDIAN_DUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("obsidian_dust")
-
-    @JvmField
-    val WOOD_DUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("wood_dust")
-
-    // Common
-    @JvmField
-    val RAW_TIN: HTSimpleDeferredItem = REGISTER.registerSimpleItem("raw_tin")
-
-    @JvmField
-    val TIN_DUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("tin_dust")
-
-    @JvmField
-    val TIN_INGOT: HTSimpleDeferredItem = REGISTER.registerSimpleItem("tin_ingot")
-
-    @JvmField
-    val TIN_NUGGET: HTSimpleDeferredItem = REGISTER.registerSimpleItem("tin_nugget")
-
-    @JvmField
-    val RAW_IRIDIUM: HTSimpleDeferredItem = REGISTER.registerSimpleItem("raw_iridium") { it.rarity(Rarity.RARE) }
-
-    @JvmField
-    val IRIDIUM_DUST: HTSimpleDeferredItem = REGISTER.registerSimpleItem("iridium_dust") { it.rarity(Rarity.RARE) }
-
-    @JvmField
-    val IRIDIUM_INGOT: HTSimpleDeferredItem = REGISTER.registerSimpleItem("iridium_ingot") { it.rarity(Rarity.RARE) }
-
-    @JvmField
-    val IRIDIUM_NUGGET: HTSimpleDeferredItem = REGISTER.registerSimpleItem("iridium_nugget") { it.rarity(Rarity.RARE) }
 
     // Mobs
     @JvmField

@@ -1,5 +1,9 @@
 package hiiragi283.lib.recipe.ingredient
 
+import hiiragi283.lib.util.Either
+import hiiragi283.lib.util.left
+import hiiragi283.lib.util.right
+import hiiragi283.lib.util.unwrap
 import net.minecraft.core.TypedInstance
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemInstance
@@ -20,16 +24,20 @@ data object HTIngredientHelper {
 
     @JvmName("createFluidStack")
     @JvmStatic
-    fun createStack(instance: TypedInstance<Fluid>): FluidStack = when (instance) {
+    fun createStack(instance: TypedInstance<Fluid>): FluidStack = unwrap(instance).mapLeft { it.toStack(FluidType.BUCKET_VOLUME) }.unwrap()
+
+    @JvmName("unwrapFluidInstance")
+    @JvmStatic
+    fun unwrap(instance: TypedInstance<Fluid>): Either<FluidResource, FluidStack> = when (instance) {
         is FluidInstance -> {
             when (instance) {
                 is FluidStack -> instance
                 is FluidStackTemplate -> instance.create()
                 else -> FluidStack(instance.typeHolder(), instance.amount())
-            }
+            }.right()
         }
-        is FluidResource -> instance.toStack(FluidType.BUCKET_VOLUME)
-        else -> FluidStack(instance.typeHolder(), FluidType.BUCKET_VOLUME)
+        is FluidResource -> instance.left()
+        else -> FluidResource.of(instance.typeHolder()).left()
     }
 
     @JvmName("isEmptyFluid")
@@ -60,6 +68,20 @@ data object HTIngredientHelper {
         }
         is ItemResource -> instance.toStack()
         else -> ItemStack(instance.typeHolder())
+    }
+
+    @JvmName("unwrapItemInstance")
+    @JvmStatic
+    fun unwrap(instance: TypedInstance<Item>): Either<ItemResource, ItemStack> = when (instance) {
+        is ItemInstance -> {
+            when (instance) {
+                is ItemStack -> instance
+                is ItemStackTemplate -> instance.create()
+                else -> ItemStack(instance.typeHolder(), instance.count())
+            }.right()
+        }
+        is ItemResource -> instance.left()
+        else -> ItemResource.of(instance.typeHolder()).left()
     }
 
     @JvmName("isEmptyItem")

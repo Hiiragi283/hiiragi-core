@@ -26,7 +26,7 @@ value class HTFluidIngredient(private val delegate: SizedFluidIngredient) : HTIn
     val unsized: FluidIngredient get() = delegate.ingredient()
     val amount: Int get() = delegate.amount()
 
-    override fun test(instance: TypedInstance<Fluid>): Boolean = HTIngredientHelper.createStack(instance).let(delegate::test)
+    override fun test(instance: TypedInstance<Fluid>): Boolean = HTIngredientHelper.unwrap(instance).fold(::testOnlyType, delegate::test)
 
     override fun testOnlyType(instance: TypedInstance<Fluid>): Boolean = HTIngredientHelper.createStack(instance).let(unsized::test)
 
