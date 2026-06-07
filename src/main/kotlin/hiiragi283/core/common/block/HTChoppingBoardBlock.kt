@@ -13,9 +13,12 @@ import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.world.phys.shapes.CollisionContext
+import net.minecraft.world.phys.shapes.VoxelShape
 import net.neoforged.neoforge.transfer.access.ItemAccess
 import net.neoforged.neoforge.transfer.item.ItemResource
 import net.neoforged.neoforge.transfer.transaction.Transaction
@@ -67,4 +70,11 @@ class HTChoppingBoardBlock(properties: Properties) : HTBasicEntityBlock(HCBlockE
         }
         return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult)
     }
+
+    companion object {
+        @JvmField
+        val SHAPE: VoxelShape = box(1.0, 0.0, 1.0, 15.0, 4.0, 15.0)
+    }
+
+    override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape = SHAPE
 }

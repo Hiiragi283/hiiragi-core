@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.neoforged.neoforge.transfer.fluid.FluidResource
 
-class HTFluidBlockEntityRenderState : BlockEntityRenderState() {
+class HTFluidBERenderState : BlockEntityRenderState() {
     var sprite: TextureAtlasSprite? = null
     var color: Int = -1
     var fillingLevel: Float = 0f

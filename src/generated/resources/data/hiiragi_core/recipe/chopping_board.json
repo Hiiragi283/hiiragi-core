@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": "#minecraft:planks",
-    "B": "#minecraft:wooden_slabs"
+    "A": "#minecraft:wooden_slabs",
+    "B": "#c:stripped_logs"
   },
   "pattern": [
     "A",

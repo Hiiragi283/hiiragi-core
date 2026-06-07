@@ -33,8 +33,8 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
         shaped(RecipeCategory.MISC, HCBlocks.CHOPPING_BOARD)
             .pattern("A")
             .pattern("B")
-            .define('A', ItemTags.PLANKS)
-            .define('B', ItemTags.WOODEN_SLABS)
+            .define('A', ItemTags.WOODEN_SLABS)
+            .define('B', Tags.Items.STRIPPED_LOGS)
             .unlockedBy("has_axe", has(ItemTags.AXES))
             .save(output)
         // Copper Basin

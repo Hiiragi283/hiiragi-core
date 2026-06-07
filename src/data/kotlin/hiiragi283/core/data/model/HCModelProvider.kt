@@ -36,7 +36,7 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
             itemModels.generateBucketItem(content, content in dripFluids)
             // Block
             if (content is HTFluidContent.Flowing) {
-                content.blockHolder?.let { blockModels.registerFluid(it) }
+                content.blockHolder?.let { blockModels.createFluid(it) }
             }
         }
 
@@ -53,10 +53,10 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
         // Warped Wart
         generators.createCropBlock(HCBlocks.WARPED_WART.get(), BlockStateProperties.AGE_3, 0, 1, 1, 2)
         // Chopping Board
-        generators.registerSimple(HCBlocks.CHOPPING_BOARD.get(), HCBlocks.CHOPPING_BOARD.blockId)
+        generators.createAltModel(HCBlocks.CHOPPING_BOARD)
         // Copper Basin
-        generators.registerCopperBasin(HCBlocks.COPPER_BASIN.weathering)
-        generators.registerCopperBasin(HCBlocks.COPPER_BASIN.waxed)
+        generators.createCopperBasin(HCBlocks.COPPER_BASIN.weathering)
+        generators.createCopperBasin(HCBlocks.COPPER_BASIN.waxed)
     }
 
     private fun registerItemModels(generators: ItemModelGenerators) {
@@ -77,7 +77,7 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
         generators.generateFlatItem(HCItems.RING_OF_HYPERION)
     }
 
-    private fun BlockModelGenerators.registerCopperBasin(map: HTCopperMap<SupplierWithId<Block>>) {
+    private fun BlockModelGenerators.createCopperBasin(map: HTCopperMap<SupplierWithId<Block>>) {
         for ((state: WeatheringCopper.WeatherState, block: SupplierWithId<Block>) in map) {
             val cutCopper: Material = when (state) {
                 WeatheringCopper.WeatherState.UNAFFECTED -> "cut_copper"
@@ -102,7 +102,7 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
                     .put(TextureSlot.INSIDE, cutCopper),
                 this.modelOutput,
             )
-            this.registerSimple(block.get(), modelId)
+            this.createSimple(block.get(), modelId)
         }
     }
 }

@@ -25,7 +25,7 @@ data object HCRecipeViewerTypes {
     val CHARGING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD, 18 * 4)
 
     @JvmField
-    val CHOPPING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CHOPPING, Items.IRON_AXE, 18 * 5, 18 * 2)
+    val CHOPPING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CHOPPING, HCBlocks.CHOPPING_BOARD, 18 * 5, 18 * 2)
 
     @JvmField
     val CRUSHING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CRUSHING, Items.ANVIL, 18 * 5, 18 * 2)

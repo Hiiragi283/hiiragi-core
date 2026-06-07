@@ -29,17 +29,21 @@ abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvide
 
     //    Block    //
 
-    fun BlockModelGenerators.registerSimple(block: Block, modelId: Identifier) {
-        this.registerSimple(block, BlockModelGenerators.plainVariant(modelId))
+    fun BlockModelGenerators.createSimple(block: Block, modelId: Identifier) {
+        this.createSimple(block, BlockModelGenerators.plainVariant(modelId))
     }
 
-    fun BlockModelGenerators.registerSimple(block: Block, variant: MultiVariant) {
+    fun BlockModelGenerators.createSimple(block: Block, variant: MultiVariant) {
         this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, variant))
     }
 
-    fun BlockModelGenerators.registerFluid(fluidBlock: SupplierWithId<Block>) {
-        this.registerSimple(
-            fluidBlock.get(),
+    fun BlockModelGenerators.createAltModel(block: SupplierWithId<Block>, modelId: Identifier = block.blockId) {
+        this.createSimple(block.get(), modelId)
+    }
+
+    fun BlockModelGenerators.createFluid(fluidBlock: SupplierWithId<Block>) {
+        this.createAltModel(
+            fluidBlock,
             HTModelTemplates.FLUID_BLOCK.create(
                 fluidBlock.blockId,
                 TextureMapping.particle(Material(vanillaId(HTConstants.BLOCK, "water_still"))),
