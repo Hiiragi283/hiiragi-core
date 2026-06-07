@@ -29,7 +29,7 @@ class HCChoppingRecipeProvider(modId: String, registries: HolderLookup.Provider,
             results += resultCreator.create(Items.PAPER, 3)
             results += resultCreator.create(Items.LEATHER)
             recipeId suffix "_from_book"
-        }
+        }.save(output)
     }
 
     class Runner(packOutput: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : Direct(HiiragiCoreAPI.MOD_ID, packOutput, registries, ::HCChoppingRecipeProvider) {

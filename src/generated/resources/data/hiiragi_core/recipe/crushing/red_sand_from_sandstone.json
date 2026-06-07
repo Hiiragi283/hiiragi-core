@@ -1,9 +1,17 @@
 {
   "type": "hiiragi_core:crushing",
   "ingredient": "#c:sandstone/red_blocks",
-  "results": {
-    "count": 2,
-    "id": "minecraft:red_sand"
-  },
+  "results": [
+    {
+      "count": 2,
+      "id": "minecraft:red_sand"
+    },
+    {
+      "type": "hiiragi_core:part",
+      "chance": "1/4",
+      "material": "c:saltpeter",
+      "part": "dust"
+    }
+  ],
   "time": 200
 }

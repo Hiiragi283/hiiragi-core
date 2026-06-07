@@ -1,9 +1,17 @@
 {
   "type": "hiiragi_core:crushing",
   "ingredient": "#c:sandstone/uncolored_blocks",
-  "results": {
-    "count": 2,
-    "id": "minecraft:sand"
-  },
+  "results": [
+    {
+      "count": 2,
+      "id": "minecraft:sand"
+    },
+    {
+      "type": "hiiragi_core:part",
+      "chance": "1/4",
+      "material": "c:saltpeter",
+      "part": "dust"
+    }
+  ],
   "time": 200
 }

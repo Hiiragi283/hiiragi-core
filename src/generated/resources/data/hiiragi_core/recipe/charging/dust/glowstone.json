@@ -3,7 +3,9 @@
   "energy": 1024000,
   "ingredient": "#c:dusts/redstone",
   "result": {
+    "type": "hiiragi_core:part",
     "chance": "3/4",
-    "id": "minecraft:glowstone_dust"
+    "material": "minecraft:glowstone",
+    "part": "dust"
   }
 }

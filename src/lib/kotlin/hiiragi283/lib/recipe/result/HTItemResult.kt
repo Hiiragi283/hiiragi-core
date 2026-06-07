@@ -5,13 +5,18 @@ import com.mojang.serialization.MapCodec
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.HTPlatform
 import hiiragi283.lib.HTRegistries
+import hiiragi283.lib.item.toStack
+import hiiragi283.lib.material.HTMaterialKey
+import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.math.toFraction
 import hiiragi283.lib.registry.getKeyOrThrow
+import hiiragi283.lib.registry.getResult
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.serialization.codec.HTCodecs
 import hiiragi283.lib.serialization.codec.convert
 import hiiragi283.lib.util.Either
 import hiiragi283.lib.util.HTTextResult
+import hiiragi283.lib.util.flatMap
 import hiiragi283.lib.util.getOrElse
 import hiiragi283.lib.util.right
 import hiiragi283.lib.util.unwrap
@@ -98,6 +103,7 @@ interface HTItemResult : HTIdLike {
 
     //    Tagged    //
 
+    @JvmRecord
     data class Tagged(val tagKey: TagKey<Item>, val count: Int) : HTItemResult {
         companion object {
             @JvmField
@@ -117,5 +123,34 @@ interface HTItemResult : HTIdLike {
         override fun create(): HTTextResult<ItemStack> = HTPlatform.INSTANCE.getFirstHolder(BuiltInRegistries.ITEM, tagKey).map { ItemStack(it.get(), count) }
 
         override fun getId(): Identifier = tagKey.location()
+    }
+
+    //    MaterialPart    //
+
+    @JvmRecord
+    data class MaterialPart(val part: HTMaterialPartKey, val material: HTMaterialKey, val count: Int) : HTItemResult {
+        companion object {
+            @JvmField
+            val CODEC: MapCodec<MaterialPart> = HTCodecs.recordMap { instance ->
+                instance.group(
+                    HTMaterialPartKey.CODEC.fieldOf("part").forGetter(MaterialPart::part),
+                    HTCodecs.resourceKey(HTRegistries.Keys.MATERIAL_CONTENTS).fieldOf(HTConstants.MATERIAL).forGetter(MaterialPart::material),
+                    HTCodecs.POSITIVE_INT.optionalFieldOf(HTConstants.COUNT, 1).forGetter(MaterialPart::count),
+                ).apply(instance, ::MaterialPart)
+            }
+
+            @JvmField
+            val SERIALIZER: Serializer<MaterialPart> = Serializer(CODEC)
+        }
+
+        override fun getSerializer(): Serializer<*> = SERIALIZER
+
+        override fun create(): HTTextResult<ItemStack> = HTRegistries.MATERIAL_CONTENTS
+            .getResult(material)
+            .map { it.value() }
+            .flatMap { it.getEntry(part)?.right() ?: HTTextResult("Unknown item for part $part and material $material") }
+            .map { it.toStack(count) }
+
+        override fun getId(): Identifier = material.identifier().withPath { "${part.name}/$it" }
     }
 }

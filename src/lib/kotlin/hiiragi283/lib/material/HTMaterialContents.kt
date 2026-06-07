@@ -36,11 +36,11 @@ class HTMaterialContents private constructor(val primalKey: HTMaterialPartKey, @
 
     val primalEntry: HTMaterialRawEntry = getRawEntry(primalKey)!!
 
-    fun getRawEntry(key: HTMaterialPartKey): HTMaterialRawEntry? = contents[key]
+    fun getRawEntry(part: HTMaterialPartKey): HTMaterialRawEntry? = contents[part]
 
-    fun getEntry(key: HTMaterialPartKey): HTMaterialItemEntry? = getRawEntry(key)?.getLeft()
+    fun getEntry(part: HTMaterialPartKey): HTMaterialItemEntry? = getRawEntry(part)?.getLeft()
 
-    fun getTagKey(key: HTMaterialPartKey): TagKey<Item>? = getRawEntry(key)?.getRight()
+    fun getTagKey(part: HTMaterialPartKey): TagKey<Item>? = getRawEntry(part)?.getRight()
 
     //    Builder    //
 

@@ -2,6 +2,7 @@ package hiiragi283.core.data.recipe
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.lib.data.recipe.HTRecipeProvider
+import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.VanillaMaterialKeys
 import hiiragi283.lib.math.fraction
 import hiiragi283.lib.tag.CommonTagPrefixes
@@ -32,7 +33,7 @@ class HCChargingRecipeProvider(modId: String, registries: HolderLookup.Provider,
         // Redstone Dust -> Glowstone Dust
         HCChargingRecipeBuilder.create {
             ingredient = ingredientCreator.create(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE)
-            result = resultCreator.create(Items.GLOWSTONE_DUST).withChance(fraction(3, 4))
+            result = resultCreator.create(CommonPartKeys.DUST, VanillaMaterialKeys.GLOWSTONE).withChance(fraction(3, 4))
         }.save(output)
         // Honey Bottle -> Exp Bottle
         HCChargingRecipeBuilder.create {

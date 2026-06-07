@@ -13,6 +13,7 @@ import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.material.VanillaMaterialKeys
 import hiiragi283.lib.recipe.ingredient.HTMaterialPartIngredient
 import hiiragi283.lib.recipe.ingredient.HTPotionFluidIngredient
+import hiiragi283.lib.recipe.result.HTItemResult
 import hiiragi283.lib.tag.CommonTagPrefixes
 import hiiragi283.lib.tag.HTTagPrefix
 import net.minecraft.core.registries.Registries
@@ -41,6 +42,11 @@ internal data object HCMiscRegister {
             helper.register(HiiragiCoreAPI.id("potion"), HTPotionFluidIngredient.TYPE)
         }
 
+        // Item Result Serializer
+        event.register(HTRegistries.Keys.ITEM_RESULT_SERIALIZER) { helper ->
+            helper.register(HiiragiCoreAPI.id("tag"), HTItemResult.Tagged.SERIALIZER)
+            helper.register(HiiragiCoreAPI.id("part"), HTItemResult.MaterialPart.SERIALIZER)
+        }
         // Material Contents
         event.register(HTRegistries.Keys.MATERIAL_CONTENTS, ::registerMaterial)
     }

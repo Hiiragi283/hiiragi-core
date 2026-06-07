@@ -2,11 +2,12 @@ package hiiragi283.core.data.recipe
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCBlocks
-import hiiragi283.core.setup.HCItems
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.data.recipe.HTRecipeProvider
+import hiiragi283.lib.material.CommonMaterialKeys
 import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.VanillaMaterialKeys
+import hiiragi283.lib.math.fraction
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
@@ -102,26 +103,24 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
         HCRecipeBuilders.crushing {
             ingredient = itemCreator.tag(Tags.Items.SANDSTONE_UNCOLORED_BLOCKS)
             results += resultCreator.create(Items.SAND, 2)
-            // results += resultCreator.material(CommonParts.DUST, CommonMaterialKeys.SALTPETER).withChance(fraction(1, 4))
+            results += resultCreator.create(CommonPartKeys.DUST, CommonMaterialKeys.SALTPETER).withChance(fraction(1, 4))
             recipeId suffix "_from_sandstone"
         }.save(output)
 
         HCRecipeBuilders.crushing {
             ingredient = itemCreator.tag(Tags.Items.SANDSTONE_RED_BLOCKS)
             results += resultCreator.create(Items.RED_SAND, 2)
-            // results += resultCreator.material(CommonParts.DUST, CommonMaterialKeys.SALTPETER).withChance(fraction(1, 4))
+            results += resultCreator.create(CommonPartKeys.DUST, CommonMaterialKeys.SALTPETER).withChance(fraction(1, 4))
             recipeId suffix "_from_sandstone"
         }.save(output)
     }
 
     private fun crushWoods() {
-        val sawDust: ItemLike = HCItems.get(CommonPartKeys.DUST, VanillaMaterialKeys.WOOD) ?: return
-
         // Wood Dust
         fun wood(tagKey: TagKey<Item>, input: Int, output: Int) {
             HCRecipeBuilders.crushing {
                 ingredient = itemCreator.tag(tagKey, input)
-                results += resultCreator.create(sawDust, output)
+                results += resultCreator.create(CommonPartKeys.DUST, VanillaMaterialKeys.WOOD, output)
                 recipeId replace id(HTConstants.MATERIAL, "wood", "from_${tagKey.location().path.replace("/", "_")}")
             }.save(this.output)
         }

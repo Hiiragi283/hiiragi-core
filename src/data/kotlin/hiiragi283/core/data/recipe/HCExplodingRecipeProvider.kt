@@ -29,7 +29,7 @@ class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider
         // Glass -> Quartz
         HCExplodingRecipeBuilder.create {
             ingredient = ingredientCreator.create(Tags.Items.GLASS_BLOCKS)
-            result = resultCreator.create(Items.QUARTZ).withChance(fraction(1, 4))
+            result = resultCreator.create(CommonPartKeys.GEM, VanillaMaterialKeys.QUARTZ).withChance(fraction(1, 4))
         }.save(output)
         // Quartz Block -> Ghast Tear
         HCExplodingRecipeBuilder.create {
@@ -40,13 +40,13 @@ class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider
         // Diamond
         HCExplodingRecipeBuilder.create {
             ingredient = materialPart(HiiragiCoreTags.MaterialContents.COALS, CommonPartKeys.FUEL, CommonPartKeys.DUST)
-            result = resultCreator.create(Items.DIAMOND).withChance(fraction(1, 64))
+            result = resultCreator.create(CommonPartKeys.GEM, VanillaMaterialKeys.DIAMOND).withChance(fraction(1, 64))
             recipeId suffix "_from_coal"
         }.save(output)
         // Echo Shard
         HCExplodingRecipeBuilder.create {
             ingredient = ingredientCreator.create(Items.SCULK)
-            result = resultCreator.create(Items.ECHO_SHARD).withChance(fraction(1, 8))
+            result = resultCreator.create(CommonPartKeys.GEM, VanillaMaterialKeys.ECHO).withChance(fraction(1, 8))
         }.save(output)
     }
 

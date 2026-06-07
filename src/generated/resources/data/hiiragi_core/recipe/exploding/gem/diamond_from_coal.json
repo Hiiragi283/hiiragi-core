@@ -9,7 +9,9 @@
     ]
   },
   "result": {
+    "type": "hiiragi_core:part",
     "chance": "1/64",
-    "id": "minecraft:diamond"
+    "material": "minecraft:diamond",
+    "part": "gem"
   }
 }

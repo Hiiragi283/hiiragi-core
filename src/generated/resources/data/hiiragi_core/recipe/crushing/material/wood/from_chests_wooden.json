@@ -2,8 +2,10 @@
   "type": "hiiragi_core:crushing",
   "ingredient": "#c:chests/wooden",
   "results": {
+    "type": "hiiragi_core:part",
     "count": 8,
-    "id": "hiiragi_core:wood_dust"
+    "material": "minecraft:wood",
+    "part": "dust"
   },
   "time": 200
 }

@@ -5,7 +5,9 @@
     "items": "#c:rods/wooden"
   },
   "results": {
-    "id": "hiiragi_core:wood_dust"
+    "type": "hiiragi_core:part",
+    "material": "minecraft:wood",
+    "part": "dust"
   },
   "time": 200
 }

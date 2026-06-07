@@ -2,7 +2,9 @@
   "type": "hiiragi_core:exploding",
   "ingredient": "#c:glass_blocks",
   "result": {
+    "type": "hiiragi_core:part",
     "chance": "1/4",
-    "id": "minecraft:quartz"
+    "material": "minecraft:quartz",
+    "part": "gem"
   }
 }

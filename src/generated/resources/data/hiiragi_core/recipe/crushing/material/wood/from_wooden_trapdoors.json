@@ -2,8 +2,10 @@
   "type": "hiiragi_core:crushing",
   "ingredient": "#minecraft:wooden_trapdoors",
   "results": {
+    "type": "hiiragi_core:part",
     "count": 3,
-    "id": "hiiragi_core:wood_dust"
+    "material": "minecraft:wood",
+    "part": "dust"
   },
   "time": 200
 }

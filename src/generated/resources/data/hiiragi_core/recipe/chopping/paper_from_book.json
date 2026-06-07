@@ -1,0 +1,14 @@
+{
+  "type": "hiiragi_core:chopping",
+  "ingredient": "minecraft:book",
+  "results": [
+    {
+      "count": 3,
+      "id": "minecraft:paper"
+    },
+    {
+      "id": "minecraft:leather"
+    }
+  ],
+  "time": 200
+}
