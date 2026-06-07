@@ -141,7 +141,7 @@ neoForge {
             sourceSet = clientModule
 
             jvmArgument("-Dmixin.debug.export=true")
-            // devLogin = true
+            devLogin = true
         }
 
         register("server") {
@@ -155,7 +155,7 @@ neoForge {
             sourceSet = integrationModule
 
             jvmArgument("-Dmixin.debug.export=true")
-            // devLogin = true
+            devLogin = true
         }
 
         register("data") {
