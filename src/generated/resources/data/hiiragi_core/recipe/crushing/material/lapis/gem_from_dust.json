@@ -1,0 +1,8 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "#c:gems/lapis",
+  "results": {
+    "id": "hiiragi_core:lapis_dust"
+  },
+  "time": 200
+}

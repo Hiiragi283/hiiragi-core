@@ -1,0 +1,8 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "#c:ingots/iron",
+  "results": {
+    "id": "hiiragi_core:iron_dust"
+  },
+  "time": 200
+}

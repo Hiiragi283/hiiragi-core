@@ -39,6 +39,12 @@ object CommonMaterialKeys {
     //    Gems    //
 
     @JvmStatic
+    val AMBER: HTMaterialKey = create("amber")
+
+    @JvmStatic
+    val AQUAMARINE: HTMaterialKey = create("aquamarine")
+
+    @JvmStatic
     val FLUORITE: HTMaterialKey = create("fluorite")
 
     @JvmStatic

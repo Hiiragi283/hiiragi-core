@@ -63,11 +63,13 @@ internal data object HCMiscRegister {
         register(VanillaMaterialKeys.COAL, CommonPartKeys.FUEL) {
             add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.COAL_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
+            addItem(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
             add(CommonPartKeys.FUEL, HTMaterialItemEntry.item(Items.COAL))
         }
         register(VanillaMaterialKeys.CHARCOAL, CommonPartKeys.FUEL) {
             addBlock(CommonPartKeys.STORAGE_BLOCK, CommonTagPrefixes.STORAGE_BLOCK)
 
+            addItem(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
             add(CommonPartKeys.FUEL, HTMaterialItemEntry.item(Items.CHARCOAL))
         }
         // Mineral
@@ -85,34 +87,41 @@ internal data object HCMiscRegister {
         register(VanillaMaterialKeys.LAPIS, CommonPartKeys.GEM) {
             add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.LAPIS_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
+            addItem(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
             add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.LAPIS_LAZULI), CommonTagPrefixes.GEM)
         }
         register(VanillaMaterialKeys.QUARTZ, CommonPartKeys.GEM) {
             add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.QUARTZ_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
+            addItem(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
             add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.QUARTZ), CommonTagPrefixes.GEM)
         }
         register(VanillaMaterialKeys.AMETHYST, CommonPartKeys.GEM) {
             add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.AMETHYST_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
+            addItem(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
             add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.AMETHYST_SHARD), CommonTagPrefixes.GEM)
         }
         register(VanillaMaterialKeys.DIAMOND, CommonPartKeys.GEM) {
             add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.DIAMOND_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
+            addItem(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
             add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.DIAMOND), CommonTagPrefixes.GEM)
         }
         register(VanillaMaterialKeys.EMERALD, CommonPartKeys.GEM) {
             add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.EMERALD_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
+            addItem(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
             add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.EMERALD), CommonTagPrefixes.GEM)
         }
         register(VanillaMaterialKeys.ECHO, CommonPartKeys.GEM) {
             addBlock(CommonPartKeys.STORAGE_BLOCK, CommonTagPrefixes.STORAGE_BLOCK)
 
+            addItem(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
             add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.ECHO_SHARD), CommonTagPrefixes.GEM)
         }
         register(VanillaMaterialKeys.PRISMARINE, CommonPartKeys.GEM) {
+            addItem(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
             add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.PRISMARINE_CRYSTALS), CommonTagPrefixes.GEM)
         }
         // Metal
@@ -120,7 +129,7 @@ internal data object HCMiscRegister {
             add(CommonPartKeys.RAW_BLOCK, HTMaterialItemEntry.block(Blocks.RAW_COPPER_BLOCK), CommonTagPrefixes.RAW_STORAGE_BLOCK)
             add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.COPPER_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
-            add(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
+            addItem(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
             add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(Items.COPPER_INGOT), CommonTagPrefixes.INGOT)
             add(CommonPartKeys.NUGGET, HTMaterialItemEntry.item(Items.COPPER_NUGGET), CommonTagPrefixes.NUGGET)
             add(CommonPartKeys.RAW, HTMaterialItemEntry.item(Items.RAW_COPPER), CommonTagPrefixes.RAW_MATERIALS)
@@ -129,7 +138,7 @@ internal data object HCMiscRegister {
             add(CommonPartKeys.RAW_BLOCK, HTMaterialItemEntry.block(Blocks.RAW_IRON_BLOCK), CommonTagPrefixes.RAW_STORAGE_BLOCK)
             add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.IRON_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
-            add(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
+            addItem(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
             add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(Items.IRON_INGOT), CommonTagPrefixes.INGOT)
             add(CommonPartKeys.NUGGET, HTMaterialItemEntry.item(Items.IRON_NUGGET), CommonTagPrefixes.NUGGET)
             add(CommonPartKeys.RAW, HTMaterialItemEntry.item(Items.RAW_IRON), CommonTagPrefixes.RAW_MATERIALS)
@@ -138,7 +147,7 @@ internal data object HCMiscRegister {
             add(CommonPartKeys.RAW_BLOCK, HTMaterialItemEntry.block(Blocks.RAW_GOLD_BLOCK), CommonTagPrefixes.RAW_STORAGE_BLOCK)
             add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.GOLD_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
-            add(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
+            addItem(CommonPartKeys.DUST, CommonTagPrefixes.DUST)
             add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(Items.GOLD_INGOT), CommonTagPrefixes.INGOT)
             add(CommonPartKeys.NUGGET, HTMaterialItemEntry.item(Items.GOLD_NUGGET), CommonTagPrefixes.NUGGET)
             add(CommonPartKeys.RAW, HTMaterialItemEntry.item(Items.RAW_GOLD), CommonTagPrefixes.RAW_MATERIALS)

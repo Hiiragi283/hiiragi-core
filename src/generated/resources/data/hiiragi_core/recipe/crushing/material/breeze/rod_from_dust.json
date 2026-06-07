@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "#c:rods/breeze",
+  "results": {
+    "count": 6,
+    "id": "minecraft:wind_charge"
+  },
+  "time": 200
+}

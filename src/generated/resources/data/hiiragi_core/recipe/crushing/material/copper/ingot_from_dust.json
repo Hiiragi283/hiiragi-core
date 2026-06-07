@@ -1,0 +1,8 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "#c:ingots/copper",
+  "results": {
+    "id": "hiiragi_core:copper_dust"
+  },
+  "time": 200
+}

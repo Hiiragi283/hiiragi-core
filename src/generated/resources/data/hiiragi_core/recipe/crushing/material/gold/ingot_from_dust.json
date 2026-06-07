@@ -1,0 +1,8 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "#c:ingots/gold",
+  "results": {
+    "id": "hiiragi_core:gold_dust"
+  },
+  "time": 200
+}

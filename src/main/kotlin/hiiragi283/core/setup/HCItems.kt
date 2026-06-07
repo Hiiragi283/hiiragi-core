@@ -57,6 +57,21 @@ data object HCItems {
         }
 
         // Vanilla
+        register(CommonPartKeys.DUST, VanillaMaterialKeys.COAL)
+        register(CommonPartKeys.DUST, VanillaMaterialKeys.CHARCOAL)
+
+        register(CommonPartKeys.DUST, VanillaMaterialKeys.LAPIS)
+        register(CommonPartKeys.DUST, VanillaMaterialKeys.QUARTZ)
+        register(CommonPartKeys.DUST, VanillaMaterialKeys.AMETHYST)
+        register(CommonPartKeys.DUST, VanillaMaterialKeys.DIAMOND)
+        register(CommonPartKeys.DUST, VanillaMaterialKeys.EMERALD)
+        register(CommonPartKeys.DUST, VanillaMaterialKeys.ECHO)
+        register(CommonPartKeys.DUST, VanillaMaterialKeys.PRISMARINE)
+
+        register(CommonPartKeys.DUST, VanillaMaterialKeys.COPPER)
+        register(CommonPartKeys.DUST, VanillaMaterialKeys.IRON)
+        register(CommonPartKeys.DUST, VanillaMaterialKeys.GOLD)
+
         register(CommonPartKeys.NUGGET, VanillaMaterialKeys.NETHERITE) { it.fireResistant() }
 
         register(CommonPartKeys.DUST, VanillaMaterialKeys.WOOD)

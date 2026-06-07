@@ -1,0 +1,9 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "#c:rods/blaze",
+  "results": {
+    "count": 6,
+    "id": "minecraft:blaze_powder"
+  },
+  "time": 200
+}

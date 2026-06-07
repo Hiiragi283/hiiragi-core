@@ -14,24 +14,42 @@ class HCMaterialRecipeProvider(modId: String, registries: HolderLookup.Provider,
     override fun buildRecipes() {
         // Fuel
         nineStorageBlock(VanillaMaterialKeys.CHARCOAL)
+
+        crushBaseToDust(VanillaMaterialKeys.COAL)
+        crushBaseToDust(VanillaMaterialKeys.CHARCOAL)
         // Gem
         fourStorageBlock(VanillaMaterialKeys.GLOWSTONE, baseToBlock = false)
         fourStorageBlock(VanillaMaterialKeys.QUARTZ, baseToBlock = false)
         fourStorageBlock(VanillaMaterialKeys.AMETHYST, baseToBlock = false)
         fourStorageBlock(VanillaMaterialKeys.ECHO)
+
+        crushBaseToDust(VanillaMaterialKeys.LAPIS)
+        crushBaseToDust(VanillaMaterialKeys.QUARTZ)
+        crushBaseToDust(VanillaMaterialKeys.AMETHYST)
+        crushBaseToDust(VanillaMaterialKeys.DIAMOND)
+        crushBaseToDust(VanillaMaterialKeys.EMERALD)
+        crushBaseToDust(VanillaMaterialKeys.ECHO)
+        crushBaseToDust(VanillaMaterialKeys.PRISMARINE)
         // Metal
-        nineNugget(VanillaMaterialKeys.NETHERITE)
+        crushBaseToDust(VanillaMaterialKeys.COPPER)
+        crushBaseToDust(VanillaMaterialKeys.IRON)
+        crushBaseToDust(VanillaMaterialKeys.GOLD)
 
         metals(CommonMaterialKeys.TIN, 0.7f)
         metals(CommonMaterialKeys.IRIDIUM, 2f)
         metals(CommonMaterialKeys.PLATINUM, 2f)
         metals(CommonMaterialKeys.LEAD, 0.7f)
         // Alloy
+        nineNugget(VanillaMaterialKeys.NETHERITE)
+
+        crushBaseToDust(VanillaMaterialKeys.NETHERITE)
         // Other
         fourStorageBlock(VanillaMaterialKeys.ENDER_PEARL)
-        crushToDust(VanillaMaterialKeys.ENDER_PEARL, CommonPartKeys.MISC)
-        crushToDust(VanillaMaterialKeys.OBSIDIAN, CommonPartKeys.STORAGE_BLOCK, fraction(4))
+
         crushToDust(VanillaMaterialKeys.OBSIDIAN, CommonPartKeys.MISC)
+        crushToDust(VanillaMaterialKeys.ENDER_PEARL, CommonPartKeys.MISC)
+        crushToDust(VanillaMaterialKeys.BLAZE, CommonPartKeys.ROD, fraction(6))
+        crushToDust(VanillaMaterialKeys.BREEZE, CommonPartKeys.ROD, fraction(6))
     }
 
     class Runner(packOutput: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : Direct(HiiragiCoreAPI.MOD_ID, packOutput, registries, ::HCMaterialRecipeProvider) {

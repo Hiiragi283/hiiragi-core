@@ -1,0 +1,8 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "minecraft:coal",
+  "results": {
+    "id": "hiiragi_core:coal_dust"
+  },
+  "time": 200
+}

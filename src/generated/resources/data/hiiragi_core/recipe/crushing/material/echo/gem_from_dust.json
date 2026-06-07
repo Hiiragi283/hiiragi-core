@@ -1,0 +1,8 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "#c:gems/echo",
+  "results": {
+    "id": "hiiragi_core:echo_dust"
+  },
+  "time": 200
+}
