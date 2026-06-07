@@ -32,9 +32,14 @@ class HCMaterialContentsTagsProvider(output: PackOutput, lookupProvider: Complet
             .add(CommonMaterialKeys.TIN)
             // 6th period
             .add(CommonMaterialKeys.IRIDIUM)
+            .add(CommonMaterialKeys.PLATINUM)
             .add(VanillaMaterialKeys.GOLD)
+            .add(CommonMaterialKeys.LEAD)
         // tags(HTCommonTags.MaterialContents.ELEMENTS_METAL, HTCommonTags.MaterialContents.ELEMENTS_ALKALI_METAL)
         // tags(HTCommonTags.MaterialContents.ELEMENTS_METAL, HTCommonTags.MaterialContents.ELEMENTS_ALKALI_EARTH_METAL)
+        tags(HTCommonTags.MaterialContents.ELEMENTS, HTCommonTags.MaterialContents.ELEMENTS_PLATINUM_GROUP)
+            .add(CommonMaterialKeys.IRIDIUM)
+            .add(CommonMaterialKeys.PLATINUM)
     }
 
     private fun addMineralTags() {

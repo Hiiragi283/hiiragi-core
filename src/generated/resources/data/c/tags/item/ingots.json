@@ -1,6 +1,8 @@
 {
   "values": [
     "#c:ingots/iridium",
+    "#c:ingots/lead",
+    "#c:ingots/platinum",
     "#c:ingots/tin"
   ]
 }

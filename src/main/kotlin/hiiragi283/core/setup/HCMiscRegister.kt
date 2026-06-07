@@ -204,6 +204,14 @@ internal data object HCMiscRegister {
             commonRaw()
             commonMetal()
         }
+        register(CommonMaterialKeys.PLATINUM, CommonPartKeys.INGOT) {
+            commonRaw()
+            commonMetal()
+        }
+        register(CommonMaterialKeys.LEAD, CommonPartKeys.INGOT) {
+            commonRaw()
+            commonMetal()
+        }
         // Alloy
         // Other
     }

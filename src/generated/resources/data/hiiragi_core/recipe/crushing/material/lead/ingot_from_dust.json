@@ -1,0 +1,8 @@
+{
+  "type": "hiiragi_core:crushing",
+  "ingredient": "#c:ingots/lead",
+  "results": {
+    "id": "hiiragi_core:lead_dust"
+  },
+  "time": 200
+}

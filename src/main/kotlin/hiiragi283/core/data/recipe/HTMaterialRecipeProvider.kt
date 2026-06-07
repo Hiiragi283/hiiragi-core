@@ -26,6 +26,16 @@ import org.apache.commons.lang3.math.Fraction
 abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
     protected fun getContents(material: HTMaterialKey): HTMaterialContents = registries.getOrThrow(material).value()
 
+    protected fun metals(material: HTMaterialKey, exp: Float) {
+        nineStorageBlock(material)
+        nineNugget(material)
+
+        rawStorageBlock(material)
+        smeltDustToBase(material)
+        smeltRawToBase(material, exp)
+        crushBaseToDust(material)
+    }
+
     //    Base <-> Storage Block    //
 
     protected fun nineStorageBlock(material: HTMaterialKey, baseToBlock: Boolean = true, blockToBase: Boolean = true) {

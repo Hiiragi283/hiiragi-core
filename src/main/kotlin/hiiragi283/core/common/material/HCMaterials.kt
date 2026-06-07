@@ -53,6 +53,8 @@ data object HCMaterials {
 
         add(CommonMaterialKeys.TIN, HTLangName.create("Tin", "錫"))
         add(CommonMaterialKeys.IRIDIUM, HTLangName.create("Iridium", "イリジウム"))
+        add(CommonMaterialKeys.PLATINUM, HTLangName.create("Platinum", "白金"))
+        add(CommonMaterialKeys.LEAD, HTLangName.create("Lead", "鉛"))
         // Custom
         add(CommonPartKeys.DUST, VanillaMaterialKeys.WOOD, HTLangName.create("Sawdust", "おがくず"))
     }

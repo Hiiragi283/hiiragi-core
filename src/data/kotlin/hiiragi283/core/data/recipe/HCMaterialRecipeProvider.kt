@@ -22,19 +22,10 @@ class HCMaterialRecipeProvider(modId: String, registries: HolderLookup.Provider,
         // Metal
         nineNugget(VanillaMaterialKeys.NETHERITE)
 
-        nineStorageBlock(CommonMaterialKeys.TIN)
-        nineNugget(CommonMaterialKeys.TIN)
-        rawStorageBlock(CommonMaterialKeys.TIN)
-        smeltDustToBase(CommonMaterialKeys.TIN)
-        smeltRawToBase(CommonMaterialKeys.TIN, 0.7f)
-        crushBaseToDust(CommonMaterialKeys.TIN)
-
-        nineStorageBlock(CommonMaterialKeys.IRIDIUM)
-        nineNugget(CommonMaterialKeys.IRIDIUM)
-        rawStorageBlock(CommonMaterialKeys.IRIDIUM)
-        smeltDustToBase(CommonMaterialKeys.IRIDIUM)
-        smeltRawToBase(CommonMaterialKeys.IRIDIUM, 2f)
-        crushBaseToDust(CommonMaterialKeys.IRIDIUM)
+        metals(CommonMaterialKeys.TIN, 0.7f)
+        metals(CommonMaterialKeys.IRIDIUM, 2f)
+        metals(CommonMaterialKeys.PLATINUM, 2f)
+        metals(CommonMaterialKeys.LEAD, 0.7f)
         // Alloy
         // Other
         fourStorageBlock(VanillaMaterialKeys.ENDER_PEARL)

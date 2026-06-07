@@ -4,6 +4,8 @@
     "minecraft:gold",
     "c:iridium",
     "minecraft:iron",
+    "c:lead",
+    "c:platinum",
     "c:tin"
   ]
 }

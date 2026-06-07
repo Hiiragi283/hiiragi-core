@@ -64,15 +64,17 @@ data object HCItems {
 
         register(CommonPartKeys.DUST, VanillaMaterialKeys.ENDER_PEARL)
         // Common
-        register(CommonPartKeys.RAW, CommonMaterialKeys.TIN)
-        register(CommonPartKeys.DUST, CommonMaterialKeys.TIN)
-        register(CommonPartKeys.INGOT, CommonMaterialKeys.TIN)
-        register(CommonPartKeys.NUGGET, CommonMaterialKeys.TIN)
+        fun registerMetals(material: HTMaterialKey, addRaw: Boolean = false) {
+            if (addRaw) register(CommonPartKeys.RAW, material)
+            register(CommonPartKeys.DUST, material)
+            register(CommonPartKeys.INGOT, material)
+            register(CommonPartKeys.NUGGET, material)
+        }
 
-        register(CommonPartKeys.RAW, CommonMaterialKeys.IRIDIUM)
-        register(CommonPartKeys.DUST, CommonMaterialKeys.IRIDIUM)
-        register(CommonPartKeys.INGOT, CommonMaterialKeys.IRIDIUM)
-        register(CommonPartKeys.NUGGET, CommonMaterialKeys.IRIDIUM)
+        registerMetals(CommonMaterialKeys.TIN, true)
+        registerMetals(CommonMaterialKeys.IRIDIUM, true)
+        registerMetals(CommonMaterialKeys.PLATINUM, true)
+        registerMetals(CommonMaterialKeys.LEAD)
         // Hiiragi Core
     }
 

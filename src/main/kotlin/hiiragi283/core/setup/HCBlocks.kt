@@ -58,7 +58,7 @@ data object HCBlocks {
         }
 
         fun registerRawBlock(material: HTMaterialKey, blockProp: BlockBehaviour.Properties, itemProp: Identity<Item.Properties> = identity()) {
-            this[CommonPartKeys.RAW_BLOCK, material] = REGISTER.registerSimple("raw_${material.identifier().path}_block", blockProp, itemProp)
+            this[CommonPartKeys.RAW_BLOCK, material] = REGISTER.registerSimple("raw_${material.identifier().path}_block", blockProp.sound(SoundType.STONE), itemProp)
         }
 
         // Vanilla
@@ -67,10 +67,13 @@ data object HCBlocks {
         registerBlock(VanillaMaterialKeys.ECHO, copyOf(Blocks.AMETHYST_BLOCK).mapColor(MapColor.COLOR_CYAN))
         // Common
         registerRawBlock(CommonMaterialKeys.TIN, copyOf(Blocks.COPPER_BLOCK).mapColor(MapColor.WARPED_WART_BLOCK))
-        registerRawBlock(CommonMaterialKeys.IRIDIUM, copyOf(Blocks.COPPER_BLOCK).mapColor(MapColor.NONE))
+        registerRawBlock(CommonMaterialKeys.IRIDIUM, copyOf(Blocks.NETHERITE_BLOCK).mapColor(MapColor.NONE))
+        registerRawBlock(CommonMaterialKeys.PLATINUM, copyOf(Blocks.NETHERITE_BLOCK).mapColor(MapColor.TERRACOTTA_WHITE))
 
         registerBlock(CommonMaterialKeys.TIN, copyOf(Blocks.COPPER_BLOCK).mapColor(MapColor.WARPED_WART_BLOCK))
-        registerBlock(CommonMaterialKeys.IRIDIUM, copyOf(Blocks.COPPER_BLOCK).mapColor(MapColor.NONE))
+        registerBlock(CommonMaterialKeys.IRIDIUM, copyOf(Blocks.NETHERITE_BLOCK).mapColor(MapColor.NONE))
+        registerBlock(CommonMaterialKeys.PLATINUM, copyOf(Blocks.NETHERITE_BLOCK).mapColor(MapColor.TERRACOTTA_WHITE))
+        registerBlock(CommonMaterialKeys.LEAD, copyOf(Blocks.COPPER_BLOCK).mapColor(MapColor.TERRACOTTA_LIGHT_BLUE))
         // Hiiragi Core
     }
 

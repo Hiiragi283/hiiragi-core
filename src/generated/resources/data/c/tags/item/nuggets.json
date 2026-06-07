@@ -1,7 +1,9 @@
 {
   "values": [
     "#c:nuggets/iridium",
+    "#c:nuggets/lead",
     "#c:nuggets/netherite",
+    "#c:nuggets/platinum",
     "#c:nuggets/tin"
   ]
 }

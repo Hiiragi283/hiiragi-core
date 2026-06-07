@@ -36,6 +36,9 @@ data object HTCommonTags {
         @JvmField
         val ELEMENTS_ALKALI_EARTH_METAL: TagKey<HTMaterialContents> = common(HTConstants.ELEMENTS, "alkali_earth_metal")
 
+        @JvmField
+        val ELEMENTS_PLATINUM_GROUP: TagKey<HTMaterialContents> = common(HTConstants.ELEMENTS, "platinum_group")
+
         // Minerals
         @JvmField
         val MINERALS: TagKey<HTMaterialContents> = common(HTConstants.MINERALS)
