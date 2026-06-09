@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
+import net.neoforged.fml.event.lifecycle.FMLConstructModEvent
 import net.neoforged.neoforge.capabilities.BlockCapability
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.capabilities.EntityCapability
@@ -40,6 +41,7 @@ abstract class HTCommonMod {
         val eventBus: IEventBus = MOD_BUS
         val container: ModContainer = LOADING_CONTEXT.activeContainer
 
+        eventBus.addListener(::onConstruct)
         eventBus.addListener(::registerRegistries)
         eventBus.addListener(::registerDynamicRegistries)
         eventBus.addListener(::registerDataMapTypes)
@@ -61,6 +63,8 @@ abstract class HTCommonMod {
      * 初期化を行います。
      */
     protected abstract fun initialize(eventBus: IEventBus, container: ModContainer)
+
+    protected open fun onConstruct(event: FMLConstructModEvent) {}
 
     /**
      * 新しいレジストリを登録します。

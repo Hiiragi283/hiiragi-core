@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.recipe.viewer.display
 
 import com.mojang.serialization.Codec
@@ -6,6 +8,9 @@ import hiiragi283.lib.HTConstants
 import hiiragi283.lib.recipe.RecipeKey
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.serialization.codec.HTCodecs
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.resources.Identifier
 
 interface HTRecipeDisplay : HTIdLike {
@@ -32,4 +37,9 @@ interface HTRecipeDisplay : HTIdLike {
 //    Extensions    //
 
 @Suppress("FunctionName")
-inline fun HTRecipeDisplay(key: RecipeKey, builderAction: HTRecipeContents.Builder.() -> Unit): HTRecipeDisplay.Simple = HTRecipeDisplay.Simple(key.identifier(), HTRecipeContents.create(builderAction))
+inline fun HTRecipeDisplay(key: RecipeKey, builderAction: HTRecipeContents.Builder.() -> Unit): HTRecipeDisplay.Simple {
+    contract {
+        callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+    }
+    return HTRecipeDisplay.Simple(key.identifier(), HTRecipeContents.create(builderAction))
+}

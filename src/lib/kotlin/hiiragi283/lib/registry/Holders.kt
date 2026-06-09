@@ -1,6 +1,11 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.registry
 
 import hiiragi283.lib.resource.SupplierWithId
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.resources.Identifier
@@ -39,7 +44,12 @@ fun <T : Any> holderSetOf(holder: Holder<T>): HolderSet<T> = buildHolderSet { ad
 
 fun <T : Any> holderSetOf(vararg holders: Holder<T>): HolderSet<T> = buildHolderSet { addAll(holders) }
 
-inline fun <T : Any> buildHolderSet(builderAction: HolderSetBuilder<T>.() -> Unit): HolderSet<T> = HolderSetBuilder<T>().apply(builderAction).build()
+inline fun <T : Any> buildHolderSet(builderAction: HolderSetBuilder<T>.() -> Unit): HolderSet<T> {
+    contract {
+        callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+    }
+    return HolderSetBuilder<T>().apply(builderAction).build()
+}
 
 class HolderSetBuilder<T : Any> {
     private val holders: MutableList<Holder<T>> = mutableListOf()

@@ -17,6 +17,10 @@ data object HCMaterials {
         HTPartTagManager[CommonPartKeys.GEM] = CommonTagPrefixes.GEM
         HTPartTagManager[CommonPartKeys.INGOT] = CommonTagPrefixes.INGOT
         HTPartTagManager[CommonPartKeys.NUGGET] = CommonTagPrefixes.NUGGET
+        HTPartTagManager[CommonPartKeys.ORE] = CommonTagPrefixes.ORE
+        HTPartTagManager[CommonPartKeys.ORE_DEEPSLATE] = CommonTagPrefixes.ORE
+        HTPartTagManager[CommonPartKeys.ORE_NETHER] = CommonTagPrefixes.ORE
+        HTPartTagManager[CommonPartKeys.ORE_END] = CommonTagPrefixes.ORE
         HTPartTagManager[CommonPartKeys.RAW] = CommonTagPrefixes.RAW_MATERIALS
         HTPartTagManager[CommonPartKeys.RAW_BLOCK] = CommonTagPrefixes.RAW_STORAGE_BLOCK
         HTPartTagManager[CommonPartKeys.ROD] = CommonTagPrefixes.ROD
@@ -32,6 +36,10 @@ data object HCMaterials {
         add(CommonPartKeys.GEM, HTLangPatternProvider.IDENTITY)
         add(CommonPartKeys.INGOT, HTLangPatternProvider.create("%s Ingot", "%sインゴット"))
         add(CommonPartKeys.NUGGET, HTLangPatternProvider.create("%s Nugget", "%sナゲット"))
+        add(CommonPartKeys.ORE, HTLangPatternProvider.create("%s Ore", "%s鉱石"))
+        add(CommonPartKeys.ORE_DEEPSLATE, HTLangPatternProvider.create("Deepslate %s Ore", "深層%s鉱石"))
+        add(CommonPartKeys.ORE_NETHER, HTLangPatternProvider.create("Nether %s Ore", "ネザー%s鉱石"))
+        add(CommonPartKeys.ORE_END, HTLangPatternProvider.create("End %s Ore", "エンド%s鉱石"))
         add(CommonPartKeys.RAW, HTLangPatternProvider.create("Raw %s", "%sの原石"))
         add(CommonPartKeys.RAW_BLOCK, HTLangPatternProvider.create("Block of Raw %s", "%sの原石ブロック"))
         add(CommonPartKeys.ROD, HTLangPatternProvider.create("%s Rod", "%sの棒"))

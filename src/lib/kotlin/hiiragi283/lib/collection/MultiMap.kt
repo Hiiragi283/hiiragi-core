@@ -21,22 +21,16 @@ interface MultiMap<K, out V> {
     val entries: Set<Pair<K, V>>
 
     fun asMap(): Map<K, Collection<V>>
-}
 
-interface MutableMultiMap<K, out V> : MultiMap<K, V> {
-    override fun get(key: K): MutableCollection<@UnsafeVariance V>
+    interface Builder<K, out V> {
+        fun put(key: K, value: @UnsafeVariance V): Boolean
 
-    override fun asMap(): Map<K, MutableCollection<@UnsafeVariance V>>
+        operator fun set(key: K, value: @UnsafeVariance V) {
+            put(key, value)
+        }
 
-    fun put(key: K, value: @UnsafeVariance V): Boolean
+        fun putAll(key: K, values: Iterable<@UnsafeVariance V>): Boolean
 
-    operator fun set(key: K, value: @UnsafeVariance V) {
-        put(key, value)
+        fun build(): MultiMap<K, V>
     }
-
-    fun putAll(key: K, values: Iterable<@UnsafeVariance V>): Boolean
-
-    fun removeAll(key: K): MutableCollection<@UnsafeVariance V>
-
-    fun clear()
 }

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.recipe.viewer.display
 
 import com.mojang.serialization.Codec
@@ -15,6 +17,9 @@ import hiiragi283.lib.util.Option
 import hiiragi283.lib.util.none
 import hiiragi283.lib.util.some
 import hiiragi283.lib.util.unwrap
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.client.Minecraft
 import net.minecraft.core.component.DataComponents
 import net.minecraft.util.context.ContextMap
@@ -62,7 +67,12 @@ data class HTRecipeContents(
         }
 
         @JvmStatic
-        inline fun create(builderAction: Builder.() -> Unit): HTRecipeContents = Builder().apply(builderAction).build()
+        inline fun create(builderAction: Builder.() -> Unit): HTRecipeContents {
+            contract {
+                callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+            }
+            return Builder().apply(builderAction).build()
+        }
     }
 
     /**
@@ -78,6 +88,9 @@ data class HTRecipeContents(
     fun inputFluid(index: Int): FluidInput = inputFluids.getOrNull(index) ?: FluidInput.EMPTY
 
     inline fun inputFluid(index: Int, action: (FluidInput) -> Unit) {
+        contract {
+            callsInPlace(action, InvocationKind.EXACTLY_ONCE)
+        }
         inputFluid(index).let(action)
     }
 
@@ -100,6 +113,9 @@ data class HTRecipeContents(
     fun outputFluid(index: Int): FluidStack = outputFluids.getOrNull(index) ?: FluidStack.EMPTY
 
     inline fun outputFluid(index: Int, action: (FluidStack) -> Unit) {
+        contract {
+            callsInPlace(action, InvocationKind.EXACTLY_ONCE)
+        }
         outputFluid(index).let(action)
     }
 

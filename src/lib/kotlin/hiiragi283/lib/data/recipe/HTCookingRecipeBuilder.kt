@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.data.recipe
 
 import hiiragi283.lib.HTConstants
@@ -6,6 +8,9 @@ import hiiragi283.lib.registry.getKeyOrThrow
 import hiiragi283.lib.util.HTDelegates
 import hiiragi283.lib.util.Identity
 import hiiragi283.lib.util.identity
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.data.recipes.RecipeUnlockAdvancementBuilder
@@ -28,25 +33,28 @@ class HTCookingRecipeBuilder(
 ) : HTRecipeBuilder<AbstractCookingRecipe>(prefix) {
     companion object {
         @JvmStatic
-        inline fun smelting(builderAction: HTCookingRecipeBuilder.() -> Unit): HTCookingRecipeBuilder = HTCookingRecipeBuilder(
-            ::SmeltingRecipe,
-            identity(),
-            HTConstants.SMELTING,
-        ).apply(builderAction)
+        inline fun smelting(builderAction: HTCookingRecipeBuilder.() -> Unit): HTCookingRecipeBuilder {
+            contract {
+                callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+            }
+            return HTCookingRecipeBuilder(::SmeltingRecipe, identity(), HTConstants.SMELTING).apply(builderAction)
+        }
 
         @JvmStatic
-        inline fun blasting(builderAction: HTCookingRecipeBuilder.() -> Unit): HTCookingRecipeBuilder = HTCookingRecipeBuilder(
-            ::BlastingRecipe,
-            identity(),
-            HTConstants.BLASTING,
-        ).apply(builderAction)
+        inline fun blasting(builderAction: HTCookingRecipeBuilder.() -> Unit): HTCookingRecipeBuilder {
+            contract {
+                callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+            }
+            return HTCookingRecipeBuilder(::BlastingRecipe, identity(), HTConstants.BLASTING).apply(builderAction)
+        }
 
         @JvmStatic
-        inline fun smoking(builderAction: HTCookingRecipeBuilder.() -> Unit): HTCookingRecipeBuilder = HTCookingRecipeBuilder(
-            ::SmokingRecipe,
-            identity(),
-            HTConstants.SMOKING,
-        ).apply(builderAction)
+        inline fun smoking(builderAction: HTCookingRecipeBuilder.() -> Unit): HTCookingRecipeBuilder {
+            contract {
+                callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+            }
+            return HTCookingRecipeBuilder(::SmokingRecipe, identity(), HTConstants.SMOKING).apply(builderAction)
+        }
 
         @JvmStatic
         inline fun smeltingAndBlasting(builderAction: HTCookingRecipeBuilder.() -> Unit): Sequence<HTCookingRecipeBuilder> = sequenceOf(

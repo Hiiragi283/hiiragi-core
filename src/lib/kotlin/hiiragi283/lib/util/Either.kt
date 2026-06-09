@@ -1,4 +1,10 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.util
+
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 sealed class Either<out A, out B> {
     fun isLeft(): Boolean = this is Left<*>
@@ -16,6 +22,9 @@ sealed class Either<out A, out B> {
     }
 
     inline fun onLeft(action: (A) -> Unit): Either<A, B> {
+        contract {
+            callsInPlace(action, InvocationKind.AT_MOST_ONCE)
+        }
         if (this is Left<A>) {
             action(this.value)
         }
@@ -23,6 +32,9 @@ sealed class Either<out A, out B> {
     }
 
     inline fun onRight(action: (B) -> Unit): Either<A, B> {
+        contract {
+            callsInPlace(action, InvocationKind.AT_MOST_ONCE)
+        }
         if (this is Right<B>) {
             action(this.value)
         }
@@ -38,19 +50,35 @@ sealed class Either<out A, out B> {
 
     fun toIor(): Ior<A, B> = this.fold({ Ior.Left(it) }, { Ior.Right(it) })
 
-    inline fun <C> map(right: (B) -> C): Either<A, C> = when (this) {
-        is Left -> this
-        is Right -> right(this.value).let(::Right)
+    inline fun <C> map(right: (B) -> C): Either<A, C> {
+        contract {
+            callsInPlace(right, InvocationKind.AT_MOST_ONCE)
+        }
+        return when (this) {
+            is Left -> this
+            is Right -> right(this.value).let(::Right)
+        }
     }
 
-    inline fun <C> mapLeft(left: (A) -> C): Either<C, B> = when (this) {
-        is Left -> left(this.value).let(::Left)
-        is Right -> this
+    inline fun <C> mapLeft(left: (A) -> C): Either<C, B> {
+        contract {
+            callsInPlace(left, InvocationKind.AT_MOST_ONCE)
+        }
+        return when (this) {
+            is Left -> left(this.value).let(::Left)
+            is Right -> this
+        }
     }
 
-    inline fun <C> fold(left: (A) -> C, right: (B) -> C): C = when (this) {
-        is Left -> left(this.value)
-        is Right -> right(this.value)
+    inline fun <C> fold(left: (A) -> C, right: (B) -> C): C {
+        contract {
+            callsInPlace(left, InvocationKind.AT_MOST_ONCE)
+            callsInPlace(right, InvocationKind.AT_MOST_ONCE)
+        }
+        return when (this) {
+            is Left -> left(this.value)
+            is Right -> right(this.value)
+        }
     }
 
     data class Left<out A>(val value: A) : Either<A, Nothing>()
@@ -66,17 +94,32 @@ fun <B> B.right(): Either<Nothing, B> = Either.Right(this)
 
 fun <T> Either<T, T>.unwrap(): T = this.fold(identity(), identity())
 
-inline fun <A, B> Either<A, B>.getOrElse(default: (A) -> B): B = when (this) {
-    is Either.Left -> default(this.value)
-    is Either.Right -> this.value
+inline fun <A, B> Either<A, B>.getOrElse(default: (A) -> B): B {
+    contract {
+        callsInPlace(default, InvocationKind.AT_MOST_ONCE)
+    }
+    return when (this) {
+        is Either.Left -> default(this.value)
+        is Either.Right -> this.value
+    }
 }
 
-inline fun <A, B, C> Either<A, B>.flatMap(right: (B) -> Either<A, C>): Either<A, C> = when (this) {
-    is Either.Left -> this
-    is Either.Right -> right(this.value)
+inline fun <A, B, C> Either<A, B>.flatMap(right: (B) -> Either<A, C>): Either<A, C> {
+    contract {
+        callsInPlace(right, InvocationKind.AT_MOST_ONCE)
+    }
+    return when (this) {
+        is Either.Left -> this
+        is Either.Right -> right(this.value)
+    }
 }
 
-inline fun <A, B, C> Either<A, B>.flatMapLeft(left: (A) -> Either<C, B>): Either<C, B> = when (this) {
-    is Either.Left -> left(this.value)
-    is Either.Right -> this
+inline fun <A, B, C> Either<A, B>.flatMapLeft(left: (A) -> Either<C, B>): Either<C, B> {
+    contract {
+        callsInPlace(left, InvocationKind.AT_MOST_ONCE)
+    }
+    return when (this) {
+        is Either.Left -> left(this.value)
+        is Either.Right -> this
+    }
 }

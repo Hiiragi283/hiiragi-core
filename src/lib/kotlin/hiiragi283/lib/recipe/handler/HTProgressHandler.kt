@@ -1,6 +1,11 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.recipe.handler
 
 import hiiragi283.lib.math.fixedFraction
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
 import org.apache.commons.lang3.math.Fraction
@@ -14,7 +19,12 @@ import org.apache.commons.lang3.math.Fraction
 abstract class HTProgressHandler<T : Any> {
     companion object {
         @JvmStatic
-        inline fun <T : Any> create(builderAction: Builder<T>.() -> Unit): HTProgressHandler<T> = Builder<T>().apply(builderAction).build()
+        inline fun <T : Any> create(builderAction: Builder<T>.() -> Unit): HTProgressHandler<T> {
+            contract {
+                callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+            }
+            return Builder<T>().apply(builderAction).build()
+        }
     }
 
     /**

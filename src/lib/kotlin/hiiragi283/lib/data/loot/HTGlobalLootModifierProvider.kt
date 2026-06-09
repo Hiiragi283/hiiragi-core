@@ -1,8 +1,13 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.data.loot
 
 import hiiragi283.lib.util.Option
 import hiiragi283.lib.util.kotlin
 import java.util.concurrent.CompletableFuture
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceKey
@@ -19,7 +24,10 @@ abstract class HTGlobalLootModifierProvider(output: PackOutput, registries: Comp
         add(key.identifier().path, AddTableLootModifier(conditions.toTypedArray(), priority, key))
     }
 
-    protected fun add(key: ResourceKey<LootTable>, priority: Int = 0, builderAction: MutableCollection<LootItemCondition>.() -> Unit) {
+    protected inline fun add(key: ResourceKey<LootTable>, priority: Int = 0, builderAction: MutableCollection<LootItemCondition>.() -> Unit) {
+        contract {
+            callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+        }
         add(key.identifier().path, AddTableLootModifier(buildList(builderAction).toTypedArray(), priority, key))
     }
 

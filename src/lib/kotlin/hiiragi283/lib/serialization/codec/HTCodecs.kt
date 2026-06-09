@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.serialization.codec
 
 import com.mojang.datafixers.kinds.App
@@ -22,6 +24,9 @@ import java.util.function.Function
 import java.util.stream.Stream
 import kotlin.Int
 import kotlin.String
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import kotlin.enums.enumEntries
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
@@ -183,13 +188,23 @@ data object HTCodecs {
      * @see RecordCodecBuilder.mapCodec
      */
     @JvmStatic
-    inline fun <O> recordMap(builder: (RecordCodecBuilder.Instance<O>) -> App<RecordCodecBuilder.Mu<O>, O>): MapCodec<O> = RecordCodecBuilder.build(builder(RecordCodecBuilder.instance()))
+    inline fun <O> recordMap(builder: (RecordCodecBuilder.Instance<O>) -> App<RecordCodecBuilder.Mu<O>, O>): MapCodec<O> {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        return RecordCodecBuilder.build(builder(RecordCodecBuilder.instance()))
+    }
 
     /**
      * @see RecordCodecBuilder.create
      */
     @JvmStatic
-    inline fun <O> record(builder: (RecordCodecBuilder.Instance<O>) -> App<RecordCodecBuilder.Mu<O>, O>): Codec<O> = recordMap(builder).codec()
+    inline fun <O> record(builder: (RecordCodecBuilder.Instance<O>) -> App<RecordCodecBuilder.Mu<O>, O>): Codec<O> {
+        contract {
+            callsInPlace(builder, InvocationKind.EXACTLY_ONCE)
+        }
+        return recordMap(builder).codec()
+    }
 
     //    Ranged    //
 
@@ -255,7 +270,7 @@ data object HTCodecs {
      * @param T レジストリの要素のクラス
      */
     @JvmStatic
-    fun <T : Any> holder(registryKey: RegistryKey<T>): Codec<Holder<T>> = RegistryFixedCodec.create(registryKey).validate { DataResult.success(it.delegate) }
+    fun <T : Any> holder(registryKey: RegistryKey<T>): Codec<Holder<T>> = RegistryFixedCodec.create(registryKey)
 
     /**
      * 指定した[registryKey]から[HolderSet]の[Codec]を返します。

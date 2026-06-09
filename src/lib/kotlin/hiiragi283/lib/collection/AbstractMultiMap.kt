@@ -9,7 +9,7 @@ abstract class AbstractMultiMap<K, out V, out C : Collection<V>>(protected val m
 
     override fun containsValue(value: @UnsafeVariance V): Boolean = map.any { (_, values: C) -> value in values }
 
-    override fun get(key: K): Collection<V> = map[key] ?: emptyCollection()
+    override fun get(key: K): C = map[key] ?: emptyCollection()
 
     protected abstract fun emptyCollection(): C
 
@@ -18,34 +18,14 @@ abstract class AbstractMultiMap<K, out V, out C : Collection<V>>(protected val m
     override val entries: Set<Pair<K, V>> get() = map.entries.flatMapTo(mutableSetOf()) { (key: K, values: C) -> values.map { key to it } }
 
     override fun asMap(): Map<K, C> = map
-}
 
-abstract class AbstractMutableMultiMap<K, out V, out C : MutableCollection<@UnsafeVariance V>>(protected val map: MutableMap<K, @UnsafeVariance C>) : MutableMultiMap<K, V> {
-    override val size: Int get() = map.size
+    abstract class Builder<K, out V, out C : MutableCollection<@UnsafeVariance V>>(protected val map: MutableMap<K, @UnsafeVariance C>) : MultiMap.Builder<K, V> {
+        protected fun get(key: K): C = map.getOrPut(key, ::emptyCollection)
 
-    override fun isEmpty(): Boolean = map.isEmpty()
+        protected abstract fun emptyCollection(): C
 
-    override fun containsKey(key: K): Boolean = key in map
+        override fun put(key: K, value: @UnsafeVariance V): Boolean = this.get(key).add(value)
 
-    override fun containsValue(value: @UnsafeVariance V): Boolean = map.any { (_, values: C) -> value in values }
-
-    override fun get(key: K): MutableCollection<@UnsafeVariance V> = map.getOrPut(key, ::emptyCollection)
-
-    protected abstract fun emptyCollection(): C
-
-    override val keys: Set<K> get() = map.keys
-    override val values: Collection<V> get() = map.values.flatten()
-    override val entries: Set<Pair<K, V>> get() = map.entries.flatMapTo(mutableSetOf()) { (key: K, values: C) -> values.map { key to it } }
-
-    override fun put(key: K, value: @UnsafeVariance V): Boolean = this[key].add(value)
-
-    override fun putAll(key: K, values: Iterable<@UnsafeVariance V>): Boolean = this[key].addAll(values)
-
-    override fun removeAll(key: K): C = map.remove(key) ?: emptyCollection()
-
-    override fun clear() {
-        map.clear()
+        override fun putAll(key: K, values: Iterable<@UnsafeVariance V>): Boolean = this.get(key).addAll(values)
     }
-
-    override fun asMap(): Map<K, C> = map
 }

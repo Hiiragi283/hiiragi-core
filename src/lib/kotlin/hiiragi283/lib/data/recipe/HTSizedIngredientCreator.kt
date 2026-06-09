@@ -19,9 +19,9 @@ interface HTSizedIngredientCreator<TYPE : Any, INGREDIENT : HTIngredient<TYPE, *
     fun tags(tagKeys: Collection<TagKey<TYPE>>, size: Int = getDefaultSize()): INGREDIENT
 
     // from Holder
-    fun holder(holder: Holder<TYPE>, size: Int = getDefaultSize()): INGREDIENT = holderSet(HolderSet.direct(holder.delegate), size)
+    fun holder(holder: Holder<TYPE>, size: Int = getDefaultSize()): INGREDIENT = holderSet(HolderSet.direct(holder), size)
 
-    fun holders(holders: Collection<Holder<TYPE>>, size: Int = getDefaultSize()): INGREDIENT = holderSet(HolderSet.direct(holders.map(Holder<TYPE>::getDelegate)), size)
+    fun holders(holders: Collection<Holder<TYPE>>, size: Int = getDefaultSize()): INGREDIENT = holderSet(HolderSet.direct(holders.toList()), size)
 
     fun holderSet(holderSet: HolderSet<TYPE>, size: Int = getDefaultSize()): INGREDIENT
 

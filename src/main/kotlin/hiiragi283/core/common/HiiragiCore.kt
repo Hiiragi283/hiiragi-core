@@ -25,6 +25,7 @@ import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
+import net.neoforged.fml.event.lifecycle.FMLConstructModEvent
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.common.NeoForgeMod
 import net.neoforged.neoforge.network.registration.PayloadRegistrar
@@ -57,6 +58,10 @@ data object HiiragiCore : HTCommonMod() {
         HiiragiCoreAPI.LOGGER.info("Hiiragi-Core initialized")
     }
 
+    override fun onConstruct(event: FMLConstructModEvent) {
+        event.enqueueWork(HCMaterials::initTags)
+    }
+
     override fun registerRegistries(event: NewRegistryEvent) {
         event.register(HTRegistries.ITEM_RESULT_SERIALIZER)
         event.register(HTRegistries.MATERIAL_CONTENTS)
@@ -72,7 +77,6 @@ data object HiiragiCore : HTCommonMod() {
                 .forEach(MOD_BUS::post)
         }
         event.enqueueWork { HTPotionFluidManager.register(HCFluids.POTION.get(), HTPlatformImpl.DEFAULT_POTION_HANDLER) }
-        event.enqueueWork(HCMaterials::initTags)
     }
 
     override fun registerCapabilities(helper: CapabilityHelper) {

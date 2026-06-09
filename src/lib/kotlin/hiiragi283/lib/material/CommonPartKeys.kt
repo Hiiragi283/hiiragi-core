@@ -1,36 +1,48 @@
 package hiiragi283.lib.material
 
 data object CommonPartKeys {
-    @JvmStatic
+    @JvmField
     val DUST = HTMaterialPartKey("dust")
 
-    @JvmStatic
+    @JvmField
     val FUEL = HTMaterialPartKey("fuel")
 
-    @JvmStatic
+    @JvmField
     val GEAR = HTMaterialPartKey("gear")
 
-    @JvmStatic
+    @JvmField
     val GEM = HTMaterialPartKey("gem")
 
-    @JvmStatic
+    @JvmField
     val INGOT = HTMaterialPartKey("ingot")
 
-    @JvmStatic
+    @JvmField
     val MISC = HTMaterialPartKey("misc")
 
-    @JvmStatic
+    @JvmField
     val NUGGET = HTMaterialPartKey("nugget")
 
-    @JvmStatic
+    @JvmField
+    val ORE = HTMaterialPartKey("ore")
+
+    @JvmField
+    val ORE_DEEPSLATE = HTMaterialPartKey("ore/deepslate")
+
+    @JvmField
+    val ORE_NETHER = HTMaterialPartKey("ore/nether")
+
+    @JvmField
+    val ORE_END = HTMaterialPartKey("ore/end")
+
+    @JvmField
     val RAW = HTMaterialPartKey("raw")
 
-    @JvmStatic
+    @JvmField
     val RAW_BLOCK = HTMaterialPartKey("raw_block")
 
-    @JvmStatic
+    @JvmField
     val ROD = HTMaterialPartKey("rod")
 
-    @JvmStatic
+    @JvmField
     val STORAGE_BLOCK = HTMaterialPartKey("storage_block")
 }

@@ -1,4 +1,10 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.util
+
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 /**
  * [A]と[B]の両方の値または片方だけを保持するクラスです。
@@ -62,10 +68,17 @@ sealed class Ior<out A, out B> {
      * @param both このインスタンスが[Both]の場合の変換ブロック
      * @return 変換された値
      */
-    inline fun <C> fold(left: (A) -> C, right: (B) -> C, both: (A, B) -> C): C = when (this) {
-        is Both -> both(leftValue, rightValue)
-        is Left -> left(value)
-        is Right -> right(value)
+    inline fun <C> fold(left: (A) -> C, right: (B) -> C, both: (A, B) -> C): C {
+        contract {
+            callsInPlace(left, InvocationKind.AT_MOST_ONCE)
+            callsInPlace(right, InvocationKind.AT_MOST_ONCE)
+            callsInPlace(both, InvocationKind.AT_MOST_ONCE)
+        }
+        return when (this) {
+            is Both -> both(leftValue, rightValue)
+            is Left -> left(value)
+            is Right -> right(value)
+        }
     }
 
     /**
@@ -75,10 +88,16 @@ sealed class Ior<out A, out B> {
      * @param right このインスタンスが[Right]の場合の変換ブロック
      * @return 変換された値
      */
-    inline fun <C> map(left: (A) -> C, right: (B) -> C): C = when (this) {
-        is Both -> right(rightValue)
-        is Left -> left(value)
-        is Right -> right(value)
+    inline fun <C> map(left: (A) -> C, right: (B) -> C): C {
+        contract {
+            callsInPlace(left, InvocationKind.AT_MOST_ONCE)
+            callsInPlace(right, InvocationKind.AT_MOST_ONCE)
+        }
+        return when (this) {
+            is Both -> right(rightValue)
+            is Left -> left(value)
+            is Right -> right(value)
+        }
     }
 
     /**
@@ -87,10 +106,15 @@ sealed class Ior<out A, out B> {
      * @param right このインスタンスが[Right]または[Both]の場合の変換ブロック
      * @return 変換された[Ior]のインスタンス
      */
-    inline fun <C> mapRight(right: (B) -> C): Ior<A, C> = when (this) {
-        is Both -> Both(leftValue, right(rightValue))
-        is Left -> Left(value)
-        is Right -> Right(right(value))
+    inline fun <C> mapRight(right: (B) -> C): Ior<A, C> {
+        contract {
+            callsInPlace(right, InvocationKind.AT_MOST_ONCE)
+        }
+        return when (this) {
+            is Both -> Both(leftValue, right(rightValue))
+            is Left -> Left(value)
+            is Right -> Right(right(value))
+        }
     }
 
     /**
@@ -99,10 +123,15 @@ sealed class Ior<out A, out B> {
      * @param left このインスタンスが[Left]または[Both]の場合の変換ブロック
      * @return 変換された[Ior]のインスタンス
      */
-    inline fun <C> mapLeft(left: (A) -> C): Ior<C, B> = when (this) {
-        is Both -> Both(left(leftValue), rightValue)
-        is Left -> Left(left(value))
-        is Right -> Right(value)
+    inline fun <C> mapLeft(left: (A) -> C): Ior<C, B> {
+        contract {
+            callsInPlace(left, InvocationKind.AT_MOST_ONCE)
+        }
+        return when (this) {
+            is Both -> Both(left(leftValue), rightValue)
+            is Left -> Left(left(value))
+            is Right -> Right(value)
+        }
     }
 
     /**

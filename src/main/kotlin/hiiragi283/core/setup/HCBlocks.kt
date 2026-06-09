@@ -16,6 +16,7 @@ import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.material.VanillaMaterialKeys
+import hiiragi283.lib.material.name
 import hiiragi283.lib.registry.HTBasicDeferredBlockAndItem
 import hiiragi283.lib.registry.HTDeferredBlockAndItemRegister
 import hiiragi283.lib.registry.HTDeferredBlockRegister
@@ -54,12 +55,20 @@ data object HCBlocks {
 
     @JvmField
     val RESOURCES: Table<HTMaterialPartKey, HTMaterialKey, HTSimpleDeferredBlockAndItem> = buildTable {
+        fun registerOre(material: HTMaterialKey) {
+            val name: String = material.name
+            this[CommonPartKeys.ORE, material] = REGISTER.registerSimple("${name}_ore", copyOf(Blocks.IRON_ORE))
+            this[CommonPartKeys.ORE_DEEPSLATE, material] = REGISTER.registerSimple("deepslate_${name}_ore", copyOf(Blocks.DEEPSLATE_IRON_ORE))
+            this[CommonPartKeys.ORE_NETHER, material] = REGISTER.registerSimple("nether_${name}_ore", copyOf(Blocks.NETHER_QUARTZ_ORE))
+            this[CommonPartKeys.ORE_END, material] = REGISTER.registerSimple("end_${name}_ore", copyOf(Blocks.END_STONE))
+        }
+
         fun registerBlock(material: HTMaterialKey, blockProp: BlockBehaviour.Properties, itemProp: Identity<Item.Properties> = identity()) {
-            this[CommonPartKeys.STORAGE_BLOCK, material] = REGISTER.registerSimple("${material.identifier().path}_block", blockProp, itemProp)
+            this[CommonPartKeys.STORAGE_BLOCK, material] = REGISTER.registerSimple("${material.name}_block", blockProp, itemProp)
         }
 
         fun registerRawBlock(material: HTMaterialKey, blockProp: BlockBehaviour.Properties, itemProp: Identity<Item.Properties> = identity()) {
-            this[CommonPartKeys.RAW_BLOCK, material] = REGISTER.registerSimple("raw_${material.identifier().path}_block", blockProp.sound(SoundType.STONE), itemProp)
+            this[CommonPartKeys.RAW_BLOCK, material] = REGISTER.registerSimple("raw_${material.name}_block", blockProp.sound(SoundType.STONE), itemProp)
         }
 
         // Vanilla

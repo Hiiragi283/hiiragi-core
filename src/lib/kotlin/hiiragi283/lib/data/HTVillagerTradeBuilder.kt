@@ -1,7 +1,12 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.data
 
 import hiiragi283.lib.util.HTDelegates
 import java.util.Optional
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.core.HolderSet
 import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.enchantment.Enchantment
@@ -13,7 +18,12 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition
 class HTVillagerTradeBuilder {
     companion object {
         @JvmStatic
-        inline fun build(builderAction: HTVillagerTradeBuilder.() -> Unit): VillagerTrade = HTVillagerTradeBuilder().apply(builderAction).build()
+        inline fun build(builderAction: HTVillagerTradeBuilder.() -> Unit): VillagerTrade {
+            contract {
+                callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+            }
+            return HTVillagerTradeBuilder().apply(builderAction).build()
+        }
     }
 
     var wants: TradeCost by HTDelegates.onceInitialize()

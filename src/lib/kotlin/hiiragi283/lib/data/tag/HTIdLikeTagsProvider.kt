@@ -1,6 +1,6 @@
 package hiiragi283.lib.data.tag
 
-import hiiragi283.lib.collection.MutableSetMultiMap
+import hiiragi283.lib.collection.SetMultiMap
 import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.registry.RegistryKey
 import hiiragi283.lib.resource.HTIdLike
@@ -30,12 +30,12 @@ abstract class HTIdLikeTagsProvider<T : Any> : TagsProvider<T> {
 
     constructor(output: PackOutput, registryKey: RegistryKey<T>, lookupProvider: CompletableFuture<HolderLookup.Provider>, modId: String) : super(output, registryKey, lookupProvider, modId)
 
-    private val entryCache = MutableSetMultiMap<TagKey<T>, TagEntry>()
+    private val entryCache = SetMultiMap.Builder<TagKey<T>, TagEntry>()
 
     final override fun addTags(registries: HolderLookup.Provider) {
         appendTags(registries)
 
-        entryCache.asMap().forEach { (tagKey: TagKey<T>, entries: Set<TagEntry>) ->
+        entryCache.build().asMap().forEach { (tagKey: TagKey<T>, entries: Collection<TagEntry>) ->
             entries
                 .sortedWith(COMPARATOR)
                 .distinctBy(TagEntry::toString)
@@ -45,7 +45,7 @@ abstract class HTIdLikeTagsProvider<T : Any> : TagsProvider<T> {
 
     protected abstract fun appendTags(registries: HolderLookup.Provider)
 
-    protected fun tag(tagKey: TagKey<T>): IdAppender = IdAppender { entry: TagEntry -> entryCache[tagKey].add(entry) }
+    protected fun tag(tagKey: TagKey<T>): IdAppender = IdAppender { entry: TagEntry -> entryCache.put(tagKey, entry) }
 
     protected fun tags(prefix: HTTagPrefix, material: HTMaterialKey): IdAppender = tags(prefix.rawCommonTag.create(registryKey), prefix.createTagKey(registryKey, material))
 

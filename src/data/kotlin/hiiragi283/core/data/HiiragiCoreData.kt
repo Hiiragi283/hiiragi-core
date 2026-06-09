@@ -35,7 +35,6 @@ import net.neoforged.neoforge.data.event.GatherDataEvent
 data object HiiragiCoreData {
     @SubscribeEvent
     fun gatherData(event: GatherDataEvent.Client) {
-        HCMaterials.initTags()
         HCMaterials.initTranslations()
 
         // Server

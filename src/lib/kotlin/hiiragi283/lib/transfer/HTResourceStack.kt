@@ -1,9 +1,14 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.transfer
 
 import com.google.common.primitives.Ints
 import com.mojang.serialization.Codec
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.serialization.codec.HTCodecs
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.neoforged.neoforge.transfer.resource.Resource
 
 @ConsistentCopyVisibility
@@ -35,7 +40,17 @@ data class HTResourceStack<RESOURCE : Resource> private constructor(val resource
 
     fun isEmpty(): Boolean = isEmpty(resource, amountAsLong)
 
-    inline fun <T> mapAsLong(transform: (RESOURCE, Long) -> T): T = transform(resource, amountAsLong)
+    inline fun <T> mapAsLong(transform: (RESOURCE, Long) -> T): T {
+        contract {
+            callsInPlace(transform, InvocationKind.EXACTLY_ONCE)
+        }
+        return transform(resource, amountAsLong)
+    }
 
-    inline fun <T> mapAsInt(transform: (RESOURCE, Int) -> T): T = transform(resource, amountAsInt)
+    inline fun <T> mapAsInt(transform: (RESOURCE, Int) -> T): T {
+        contract {
+            callsInPlace(transform, InvocationKind.EXACTLY_ONCE)
+        }
+        return transform(resource, amountAsInt)
+    }
 }

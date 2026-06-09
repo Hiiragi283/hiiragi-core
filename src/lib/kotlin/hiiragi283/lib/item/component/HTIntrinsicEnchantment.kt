@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.item.component
 
 import com.mojang.serialization.Codec
@@ -11,6 +13,9 @@ import hiiragi283.lib.util.ErrorText
 import hiiragi283.lib.util.HTTextResult
 import io.netty.buffer.ByteBuf
 import java.util.function.Consumer
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderGetter
 import net.minecraft.core.HolderLookup
@@ -46,9 +51,19 @@ data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: 
         )
     }
 
-    fun <T : Any> useInstance(getter: HolderGetter<Enchantment>, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> = getter.getResult(key).map { holder: Holder<Enchantment> -> action(holder, level) }
+    fun <T : Any> useInstance(getter: HolderGetter<Enchantment>, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> {
+        contract {
+            callsInPlace(action, InvocationKind.AT_MOST_ONCE)
+        }
+        return getter.getResult(key).map { holder: Holder<Enchantment> -> action(holder, level) }
+    }
 
-    fun <T : Any> useInstance(provider: HolderLookup.Provider, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> = provider.getResult(key).map { holder: Holder<Enchantment> -> action(holder, level) }
+    fun <T : Any> useInstance(provider: HolderLookup.Provider, action: (Holder<Enchantment>, Int) -> T): HTTextResult<T> {
+        contract {
+            callsInPlace(action, InvocationKind.AT_MOST_ONCE)
+        }
+        return provider.getResult(key).map { holder: Holder<Enchantment> -> action(holder, level) }
+    }
 
     fun getFullName(provider: HolderLookup.Provider): HTTextResult<Text> = useInstance(provider, Enchantment::getFullname)
 

@@ -1,7 +1,12 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.data.recipe
 
 import hiiragi283.lib.data.HTConditionHolder
 import hiiragi283.lib.recipe.RecipeKey
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.Recipe
@@ -69,6 +74,9 @@ abstract class HTRecipeBuilder<out RECIPE : Recipe<*>>(private val prefix: Strin
     }
 
     fun save(consumer: (id: Identifier, recipe: RECIPE) -> Unit) {
+        contract {
+            callsInPlace(consumer, InvocationKind.EXACTLY_ONCE)
+        }
         consumer(
             recipeId.id.withPrefix("$prefix/"),
             createRecipe(),

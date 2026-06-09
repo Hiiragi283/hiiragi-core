@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.recipe
 
 import com.mojang.serialization.Codec
@@ -5,6 +7,9 @@ import com.mojang.serialization.MapCodec
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.serialization.codec.HTCodecs
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeHolder
@@ -49,7 +54,12 @@ data class HTRecipeHolder<out RECIPE>(@JvmField val key: RecipeKey, @JvmField va
      * @param R 変換後のクラス
      * @param transform [recipe]を[R]に変換するブロック
      */
-    inline fun <R : Any> mapRecipe(transform: (RECIPE) -> R): HTRecipeHolder<R> = HTRecipeHolder(this.key, transform(this.recipe))
+    inline fun <R : Any> mapRecipe(transform: (RECIPE) -> R): HTRecipeHolder<R> {
+        contract {
+            callsInPlace(transform, InvocationKind.EXACTLY_ONCE)
+        }
+        return HTRecipeHolder(this.key, transform(this.recipe))
+    }
 
     /**
      * レシピの値を変換し，新しいインスタンスを作成します。

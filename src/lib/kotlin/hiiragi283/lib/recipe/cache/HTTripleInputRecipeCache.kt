@@ -7,9 +7,7 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.context.ContextMap
 import net.neoforged.neoforge.common.util.TriPredicate
 
-abstract class HTTripleInputRecipeCache<INPUT_A : Any, INPUT_B : Any, INPUT_C : Any, RECIPE : TriPredicate<INPUT_A, INPUT_B, INPUT_C>>(
-    lookup: HTRecipeLookup<RECIPE>,
-) : HTBasicRecipeCache<RECIPE>(lookup) {
+abstract class HTTripleInputRecipeCache<INPUT_A : Any, INPUT_B : Any, INPUT_C : Any, RECIPE : TriPredicate<INPUT_A, INPUT_B, INPUT_C>>(lookup: HTRecipeLookup<RECIPE>) : HTBasicRecipeCache<RECIPE>(lookup) {
     fun findFirstRecipe(
         firstInput: INPUT_A,
         secondInput: INPUT_B,

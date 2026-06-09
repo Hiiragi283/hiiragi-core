@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.material
 
 import com.mojang.serialization.Codec
@@ -6,6 +8,9 @@ import hiiragi283.lib.serialization.network.HTStreamCodecs
 import hiiragi283.lib.tag.HTTagPrefix
 import hiiragi283.lib.tag.RawTagKey
 import hiiragi283.lib.util.Ior
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -31,7 +36,12 @@ class HTMaterialContents private constructor(val primalKey: HTMaterialPartKey, @
         val HOLDER_STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, Holder<HTMaterialContents>> = HTStreamCodecs.holder(HTRegistries.Keys.MATERIAL_CONTENTS)
 
         @JvmStatic
-        inline fun create(key: HTMaterialKey, primalKey: HTMaterialPartKey, builderAction: Builder.() -> Unit): HTMaterialContents = Builder(key, primalKey).apply(builderAction).build()
+        inline fun create(key: HTMaterialKey, primalKey: HTMaterialPartKey, builderAction: Builder.() -> Unit): HTMaterialContents {
+            contract {
+                callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+            }
+            return Builder(key, primalKey).apply(builderAction).build()
+        }
     }
 
     val primalEntry: HTMaterialRawEntry = getRawEntry(primalKey)!!

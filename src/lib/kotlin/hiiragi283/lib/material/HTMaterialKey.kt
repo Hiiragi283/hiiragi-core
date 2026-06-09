@@ -11,3 +11,5 @@ typealias HTMaterialKey = ResourceKey<HTMaterialContents>
 fun HTMaterialKey(id: Identifier): HTMaterialKey = HTRegistries.Keys.MATERIAL_CONTENTS.createKey(id)
 
 fun HTMaterialKey(namespace: String, path: String): HTMaterialKey = HTMaterialKey(namespace.toId(path))
+
+val HTMaterialKey.name: String get() = this.identifier().path

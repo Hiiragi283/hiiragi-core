@@ -15,6 +15,7 @@ import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.material.VanillaMaterialKeys
+import hiiragi283.lib.material.name
 import hiiragi283.lib.registry.HTDeferredItemRegister
 import hiiragi283.lib.registry.HTSimpleDeferredItem
 import hiiragi283.lib.util.HTTextResult
@@ -48,7 +49,7 @@ data object HCItems {
     @JvmField
     val RESOURCES: Table<HTMaterialPartKey, HTMaterialKey, HTSimpleDeferredItem> = buildTable {
         fun register(part: HTMaterialPartKey, material: HTMaterialKey, operator: Identity<Item.Properties> = identity()) {
-            val name: String = material.identifier().path
+            val name: String = material.name
             val path: String = when (part) {
                 CommonPartKeys.RAW -> "raw_$name"
                 else -> "${name}_${part.name}"

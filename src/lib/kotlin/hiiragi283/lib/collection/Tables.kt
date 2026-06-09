@@ -1,4 +1,10 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.collection
+
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 /**
  * @see emptyMap
@@ -56,7 +62,12 @@ private data object EmptyTable : Table<Nothing, Nothing, Nothing> {
 /**
  * @see buildMap
  */
-inline fun <R, C, V> buildTable(builderAction: MutableTable<R, C, V>.() -> Unit): Table<R, C, V> = MutablePairMapTable<R, C, V>().apply(builderAction)
+inline fun <R, C, V> buildTable(builderAction: MutableTable<R, C, V>.() -> Unit): Table<R, C, V> {
+    contract {
+        callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+    }
+    return MutablePairMapTable<R, C, V>().apply(builderAction)
+}
 
 /**
  * @see Map.forEach

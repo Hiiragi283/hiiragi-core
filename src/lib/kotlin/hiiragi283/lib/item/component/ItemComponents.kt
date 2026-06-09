@@ -1,5 +1,10 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.item.component
 
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.core.component.DataComponents
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.component.Consumable
@@ -9,4 +14,9 @@ fun Item.Properties.consumables(consumable: Consumable): Item.Properties = this.
 
 //    ItemAttributeModifiers    //
 
-inline fun buildItemAttributeModifiers(builderAction: ItemAttributeModifiers.Builder.() -> Unit): ItemAttributeModifiers = ItemAttributeModifiers.builder().apply(builderAction).build()
+inline fun buildItemAttributeModifiers(builderAction: ItemAttributeModifiers.Builder.() -> Unit): ItemAttributeModifiers {
+    contract {
+        callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+    }
+    return ItemAttributeModifiers.builder().apply(builderAction).build()
+}
