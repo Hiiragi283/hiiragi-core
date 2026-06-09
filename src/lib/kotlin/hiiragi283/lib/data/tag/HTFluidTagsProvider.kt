@@ -9,7 +9,7 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.Tags
 
-abstract class HTFluidTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>, modId: String) : HTIdLikeTagsProvider<Fluid>(output, Registries.FLUID, lookupProvider, modId) {
+abstract class HTFluidTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>, modId: String) : HTTagsProvider<Fluid>(output, Registries.FLUID, lookupProvider, modId) {
     //    Extensions    //
 
     fun addContents(contents: Sequence<HTFluidContent>) {
@@ -22,7 +22,7 @@ abstract class HTFluidTagsProvider(output: PackOutput, lookupProvider: Completab
         }
     }
 
-    protected fun IdAppender.addContent(content: HTFluidContent): IdAppender {
+    protected fun HTTagBuilder<Fluid>.addContent(content: HTFluidContent): HTTagBuilder<Fluid> {
         this.add(content)
         if (content is HTFluidContent.Flowing) {
             this.add(content.flowingHolder)
@@ -30,5 +30,5 @@ abstract class HTFluidTagsProvider(output: PackOutput, lookupProvider: Completab
         return this
     }
 
-    protected fun IdAppender.addContentTag(content: HTFluidContent): IdAppender = this.addTag(content.fluidTag)
+    protected fun HTTagBuilder<Fluid>.addContentTag(content: HTFluidContent): HTTagBuilder<Fluid> = this.addTag(content.fluidTag)
 }

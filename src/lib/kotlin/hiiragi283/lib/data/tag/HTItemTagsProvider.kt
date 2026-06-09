@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.Block
 /**
  * @see net.neoforged.neoforge.common.data.BlockTagCopyingItemTagProvider
  */
-abstract class HTItemTagsProvider : HTIdLikeTagsProvider<Item> {
+abstract class HTItemTagsProvider : HTTagsProvider<Item> {
     private val blockTags: CompletableFuture<TagLookup<Block>>
     private val tagsToCopy: MutableMap<TagKey<Block>, TagKey<Item>> = mutableMapOf()
 
@@ -43,7 +43,7 @@ abstract class HTItemTagsProvider : HTIdLikeTagsProvider<Item> {
     }
 
     @Suppress("DEPRECATION")
-    protected fun IdAppender.addItem(item: ItemLike): IdAppender = this.add(item.asItem().toLike())
+    protected fun HTTagBuilder<Item>.addItem(item: ItemLike): HTTagBuilder<Item> = this.add(item.asItem().toLike())
 
     final override fun createContentsProvider(): CompletableFuture<HolderLookup.Provider> = super.createContentsProvider().thenCombine(blockTags) { provider: HolderLookup.Provider, blockTags1: TagLookup<Block> ->
         for ((blockTag: TagKey<Block>, itemTag: TagKey<Item>) in this.tagsToCopy) {

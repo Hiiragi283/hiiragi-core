@@ -3,17 +3,16 @@ package hiiragi283.core.data.tag
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreTags
 import hiiragi283.lib.HTRegistries
-import hiiragi283.lib.data.tag.HTIdLikeTagsProvider
+import hiiragi283.lib.data.tag.HTTagsProvider
 import hiiragi283.lib.material.CommonMaterialKeys
 import hiiragi283.lib.material.HTMaterialContents
-import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.material.VanillaMaterialKeys
 import hiiragi283.lib.tag.HTCommonTags
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 
-class HCMaterialContentsTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : HTIdLikeTagsProvider<HTMaterialContents>(output, HTRegistries.Keys.MATERIAL_CONTENTS, lookupProvider, HiiragiCoreAPI.MOD_ID) {
+class HCMaterialContentsTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : HTTagsProvider<HTMaterialContents>(output, HTRegistries.Keys.MATERIAL_CONTENTS, lookupProvider, HiiragiCoreAPI.MOD_ID) {
     override fun appendTags(registries: HolderLookup.Provider) {
         addElementsTags()
         addMineralTags()
@@ -49,6 +48,4 @@ class HCMaterialContentsTagsProvider(output: PackOutput, lookupProvider: Complet
 
         // tags(HTCommonTags.MaterialContents.MINERALS_ALUMINA, HTCommonTags.MaterialContents.MINERALS_CORUNDUM)
     }
-
-    private fun IdAppender.add(material: HTMaterialKey): IdAppender = this.add { material.identifier() }
 }
