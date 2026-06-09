@@ -11,7 +11,13 @@ class ListMultiMap<K, out V> private constructor(map: Map<K, List<V>>) : Abstrac
 
     override fun emptyCollection(): List<V> = listOf()
 
-    class Builder<K, out V>(map: MutableMap<K, MutableList<V>>) : AbstractMultiMap.Builder<K, V, MutableList<@UnsafeVariance V>>(map) {
+    class Builder<K, out V> : AbstractMultiMap.Builder<K, V, MutableList<@UnsafeVariance V>> {
+        constructor(map: MutableMap<K, MutableList<V>>) : super(map)
+
+        constructor(initialCapacity: Int = 10) : super(initialCapacity)
+
+        constructor(other: MultiMap<K, V>) : super(other)
+
         override fun emptyCollection(): MutableList<@UnsafeVariance V> = mutableListOf()
 
         override fun build(): MultiMap<K, V> = when {

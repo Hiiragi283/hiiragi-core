@@ -88,7 +88,7 @@ class HTFluidContentRegister(modId: String) {
         var typeFactory: (FluidType.Properties) -> FluidType = ::FluidType
         var bucketFactory: ItemWithContextFactory<Fluid, Item> = ::BucketItem
         var fluidTag: Identifier = HTConstants.COMMON.toId(name)
-        var bucketTag: Identifier = HTConstants.COMMON.toId("buckets/$name")
+        var bucketTag: Identifier = HTConstants.COMMON.toId("buckets", name)
         // Optional
 
         fun build(): CONTENT {

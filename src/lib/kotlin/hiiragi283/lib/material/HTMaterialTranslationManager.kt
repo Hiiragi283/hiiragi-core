@@ -1,15 +1,14 @@
 package hiiragi283.lib.material
 
-import hiiragi283.lib.collection.MutableTable
+import hiiragi283.lib.collection.PairMapTable
 import hiiragi283.lib.collection.Table
-import hiiragi283.lib.collection.mutableTableOf
 import hiiragi283.lib.data.lang.HTLangName
 import hiiragi283.lib.data.lang.HTLangPatternProvider
 import hiiragi283.lib.data.lang.HTLangType
 
 data object HTMaterialTranslationManager {
     @JvmStatic
-    fun getName(type: HTLangType, part: HTMaterialPartKey, material: HTMaterialKey): String? = _customName[part, material]?.getTranslatedName(type) ?: _materials[material]?.let { _parts[part]?.translate(type, it) }
+    fun getName(type: HTLangType, part: HTMaterialPartKey, material: HTMaterialKey): String? = customName[part, material]?.getTranslatedName(type) ?: _materials[material]?.let { _parts[part]?.translate(type, it) }
 
     //    Part    //
 
@@ -40,10 +39,10 @@ data object HTMaterialTranslationManager {
     //    Custom Name    //
 
     @JvmStatic
-    val customName: Table<HTMaterialPartKey, HTMaterialKey, HTLangName> get() = _customName
+    val customName: Table<HTMaterialPartKey, HTMaterialKey, HTLangName> get() = _customName.build()
 
     @JvmStatic
-    private val _customName: MutableTable<HTMaterialPartKey, HTMaterialKey, HTLangName> = mutableTableOf()
+    private val _customName: Table.Builder<HTMaterialPartKey, HTMaterialKey, HTLangName> = PairMapTable.Builder()
 
     @JvmStatic
     fun add(part: HTMaterialPartKey, material: HTMaterialKey, name: HTLangName) {

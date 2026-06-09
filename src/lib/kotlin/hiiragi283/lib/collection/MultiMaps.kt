@@ -21,6 +21,10 @@ private data object EmptyMultiMap : MultiMap<Nothing, Nothing> {
     override fun asMap(): Map<Nothing, Collection<Nothing>> = mapOf()
 }
 
-fun <K, V> Map<K, List<V>>.toMultiMap(): MultiMap<K, V> = ListMultiMap.copyOf(this)
+@Suppress("NOTHING_TO_INLINE")
+@JvmName("toListMultiMap")
+inline fun <K, V> Map<K, List<V>>.toMultiMap(): MultiMap<K, V> = ListMultiMap.copyOf(this)
 
-fun <K, V> Map<K, Set<V>>.toMultiMap(): MultiMap<K, V> = SetMultiMap.copyOf(this)
+@Suppress("NOTHING_TO_INLINE")
+@JvmName("toSetMultiMap")
+inline fun <K, V> Map<K, Set<V>>.toMultiMap(): MultiMap<K, V> = SetMultiMap.copyOf(this)

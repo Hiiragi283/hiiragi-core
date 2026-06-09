@@ -12,7 +12,7 @@ import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient
 import net.neoforged.neoforge.fluids.crafting.display.ForFluidStacks
 
 @JvmInline
-value class HTFluidIngredient(private val delegate: SizedFluidIngredient) : HTIngredient<Fluid, FluidStack> {
+value class HTFluidIngredient(@PublishedApi internal val delegate: SizedFluidIngredient) : HTIngredient<Fluid, FluidStack> {
     companion object {
         @JvmField
         val CODEC: Codec<HTFluidIngredient> = SizedFluidIngredient.CODEC.xmap(::HTFluidIngredient, HTFluidIngredient::delegate)
@@ -23,8 +23,8 @@ value class HTFluidIngredient(private val delegate: SizedFluidIngredient) : HTIn
 
     constructor(ingredient: FluidIngredient, amount: Int) : this(SizedFluidIngredient(ingredient, amount))
 
-    val unsized: FluidIngredient get() = delegate.ingredient()
-    val amount: Int get() = delegate.amount()
+    inline val unsized: FluidIngredient get() = delegate.ingredient()
+    inline val amount: Int get() = delegate.amount()
 
     override fun test(instance: TypedInstance<Fluid>): Boolean = HTIngredientHelper.unwrap(instance).fold(::testOnlyType, delegate::test)
 

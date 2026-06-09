@@ -27,6 +27,12 @@ abstract class AbstractMultiMap<K, out V, out C : Collection<V>>(protected val m
 
     @HTBuilderMarker
     abstract class Builder<K, out V, out C : MutableCollection<@UnsafeVariance V>>(protected val map: MutableMap<K, @UnsafeVariance C>) : MultiMap.Builder<K, V> {
+        constructor(initialCapacity: Int = 10) : this(LinkedHashMap(initialCapacity))
+
+        constructor(other: MultiMap<K, V>) : this() {
+            other.asMap().forEach(this::putAll)
+        }
+
         protected fun get(key: K): C = map.getOrPut(key, ::emptyCollection)
 
         protected abstract fun emptyCollection(): C

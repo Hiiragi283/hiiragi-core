@@ -123,63 +123,7 @@ interface Table<R, C, out V> {
         fun putAll(table: Table<out R, out C, @UnsafeVariance V>) {
             table.forEach { (r: R, c: C, v: V) -> this.put(r, c, v) }
         }
+
+        fun build(): Table<R, C, V>
     }
-}
-
-interface MutableTable<R, C, out V> : Table<R, C, V> {
-    /**
-     * 指定した値を追加します。
-     */
-    fun put(row: R, column: C, value: @UnsafeVariance V): V?
-
-    /**
-     * 指定した値を追加します。
-     */
-    fun put(triple: Triple<R, C, @UnsafeVariance V>): V? = put(triple.first, triple.second, triple.third)
-
-    /**
-     * 指定した値を追加します。
-     */
-    operator fun set(row: R, column: C, value: @UnsafeVariance V) {
-        put(row, column, value)
-    }
-
-    /**
-     * 指定した値を追加します。
-     */
-    fun putAll(triples: Iterable<Triple<R, C, @UnsafeVariance V>>) {
-        triples.forEach(::put)
-    }
-
-    /**
-     * 指定した値を追加します。
-     */
-    fun putAll(triples: Sequence<Triple<R, C, @UnsafeVariance V>>) {
-        triples.forEach(::put)
-    }
-
-    /**
-     * 指定した値を追加します。
-     */
-    fun putAll(triples: Array<out Triple<R, C, @UnsafeVariance V>>) {
-        triples.forEach(::put)
-    }
-
-    /**
-     * ほかのテーブルから値を追加します。
-     */
-    fun putAll(table: Table<out R, out C, @UnsafeVariance V>) {
-        table.forEach { (r: R, c: C, v: V) -> this.put(r, c, v) }
-    }
-
-    /**
-     * 指定した[row]と[column]に紐づいた値を削除します。
-     * @return 以前に結びついていた値
-     */
-    fun remove(row: R, column: C): V?
-
-    /**
-     * すべての値を消去します。
-     */
-    fun clear()
 }

@@ -16,10 +16,10 @@ import net.minecraft.tags.TagKey
  * @since 0.16.0
  */
 @JvmInline
-value class RawTagKey private constructor(val location: Identifier) {
+value class RawTagKey(val location: Identifier) {
     companion object {
         @JvmField
-        val CODEC: Codec<RawTagKey> = Identifier.CODEC.xmap(::create, RawTagKey::location)
+        val CODEC: Codec<RawTagKey> = Identifier.CODEC.xmap(::RawTagKey, RawTagKey::location)
 
         @JvmField
         val HASHED_CODEC: Codec<RawTagKey> = Codec.STRING.comapFlatMap(
@@ -29,7 +29,7 @@ value class RawTagKey private constructor(val location: Identifier) {
                         value
                             .substring(1)
                             .let(Identifier::read)
-                            .map(::create)
+                            .map(::RawTagKey)
                     else -> DataResult.error { "Not a tag id" }
                 }
             },
@@ -37,26 +37,29 @@ value class RawTagKey private constructor(val location: Identifier) {
         )
 
         @JvmField
-        val STREAM_CODEC: StreamCodec<ByteBuf, RawTagKey> = Identifier.STREAM_CODEC.map(::create, RawTagKey::location)
+        val STREAM_CODEC: StreamCodec<ByteBuf, RawTagKey> = Identifier.STREAM_CODEC.map(::RawTagKey, RawTagKey::location)
 
         @JvmStatic
-        fun common(path: String): RawTagKey = create(HTConstants.COMMON.toId(path))
+        fun common(path: String): RawTagKey = RawTagKey(HTConstants.COMMON, path)
 
         @JvmStatic
-        fun common(vararg path: String): RawTagKey = create(HTConstants.COMMON.toId(*path))
+        fun common(vararg path: String): RawTagKey = RawTagKey(HTConstants.COMMON, *path)
 
         @JvmStatic
-        fun copy(parent: TagKey<*>): RawTagKey = create(parent.location())
-
-        @JvmStatic
-        fun create(location: Identifier): RawTagKey = RawTagKey(location)
+        fun copy(parent: TagKey<*>): RawTagKey = RawTagKey(parent.location())
     }
 
-    fun withPrefix(prefix: String): RawTagKey = create(location.withPrefix(prefix))
+    fun withPrefix(prefix: String): RawTagKey = RawTagKey(location.withPrefix(prefix))
 
-    fun withSuffix(suffix: String): RawTagKey = create(location.withSuffix(suffix))
+    fun withSuffix(suffix: String): RawTagKey = RawTagKey(location.withSuffix(suffix))
 
-    fun withPath(transform: (String) -> String): RawTagKey = create(location.withPath(transform))
+    fun withPath(transform: (String) -> String): RawTagKey = RawTagKey(location.withPath(transform))
 
     fun <T : Any> create(key: RegistryKey<T>): TagKey<T> = TagKey.create(key, location)
 }
+
+//    Extensions    //
+
+fun RawTagKey(namespace: String, path: String): RawTagKey = RawTagKey(namespace.toId(path))
+
+fun RawTagKey(namespace: String, vararg path: String): RawTagKey = RawTagKey(namespace.toId(*path))

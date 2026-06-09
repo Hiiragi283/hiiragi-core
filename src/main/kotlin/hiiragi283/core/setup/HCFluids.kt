@@ -40,8 +40,8 @@ data object HCFluids {
             REGISTER.registerFlowing("${name}_dye") {
                 properties = liquid()
                 typeFactory = { prop: FluidType.Properties -> HTDyedFluidType(color, prop) }
-                fluidTag = HTConstants.COMMON.toId("dyes/$name")
-                bucketTag = HTConstants.COMMON.toId("buckets/dye/$name")
+                fluidTag = HTConstants.COMMON.toId("dyes", name)
+                bucketTag = HTConstants.COMMON.toId("buckets", "dye", name)
             }
         }
 

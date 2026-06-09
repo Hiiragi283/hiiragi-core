@@ -16,7 +16,7 @@ import net.minecraft.world.item.crafting.display.DisplayContentsFactory
 import net.neoforged.neoforge.common.crafting.SizedIngredient
 
 @JvmInline
-value class HTItemIngredient(private val delegate: SizedIngredient) : HTIngredient<Item, ItemStack> {
+value class HTItemIngredient(@PublishedApi internal val delegate: SizedIngredient) : HTIngredient<Item, ItemStack> {
     companion object {
         @JvmStatic
         private val NESTED_CODEC: Codec<HTItemIngredient> = HTCodecs.record { instance ->
@@ -46,8 +46,8 @@ value class HTItemIngredient(private val delegate: SizedIngredient) : HTIngredie
 
     constructor(ingredient: Ingredient, count: Int) : this(SizedIngredient(ingredient, count))
 
-    val unsized: Ingredient get() = delegate.ingredient()
-    val count: Int get() = delegate.count()
+    inline val unsized: Ingredient get() = delegate.ingredient()
+    inline val count: Int get() = delegate.count()
 
     override fun test(instance: TypedInstance<Item>): Boolean = HTIngredientHelper.unwrap(instance).fold(::testOnlyType, delegate::test)
 

@@ -11,8 +11,12 @@ class SetMultiMap<K, out V> private constructor(map: Map<K, Set<V>>) : AbstractM
 
     override fun emptyCollection(): Set<V> = setOf()
 
-    class Builder<K, out V>(map: MutableMap<K, MutableSet<V>>) : AbstractMultiMap.Builder<K, V, MutableSet<@UnsafeVariance V>>(map) {
-        constructor() : this(mutableMapOf())
+    class Builder<K, out V> : AbstractMultiMap.Builder<K, V, MutableSet<@UnsafeVariance V>> {
+        constructor(map: MutableMap<K, MutableSet<V>>) : super(map)
+
+        constructor(initialCapacity: Int = 10) : super(initialCapacity)
+
+        constructor(other: MultiMap<K, V>) : super(other)
 
         override fun emptyCollection(): MutableSet<@UnsafeVariance V> = mutableSetOf()
 

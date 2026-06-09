@@ -14,6 +14,8 @@ open class HTDeferredRegister<T : Any>(registryKey: RegistryKey<T>, namespace: S
      */
     fun createId(path: String): Identifier = namespace.toId(path)
 
+    fun createKey(path: String): ResourceKey<T> = this.registryKey.createKey(namespace, path)
+
     fun createKey(id: Identifier): ResourceKey<T> = this.registryKey.createKey(id)
 
     /**
