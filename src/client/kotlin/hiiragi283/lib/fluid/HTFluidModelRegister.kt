@@ -1,11 +1,19 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.lib.fluid
 
 import hiiragi283.lib.registry.HTFluidContent
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.client.renderer.block.FluidModel
 import net.neoforged.neoforge.client.event.RegisterFluidModelsEvent
 
 class HTFluidModelRegister(private val event: RegisterFluidModelsEvent) {
     inline fun register(content: HTFluidContent, builderAction: FluidModelBuilder.() -> Unit) {
+        contract {
+            callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+        }
         register(content, FluidModelBuilder().apply(builderAction).build())
     }
 

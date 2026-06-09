@@ -5,6 +5,7 @@ import hiiragi283.lib.fluid.HTVirtualFluid
 import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.resource.toId
 import hiiragi283.lib.tag.createTagKey
+import hiiragi283.lib.util.HTBuilderMarker
 import hiiragi283.lib.util.Identity
 import hiiragi283.lib.util.identity
 import net.minecraft.core.registries.Registries
@@ -80,6 +81,7 @@ class HTFluidContentRegister(modId: String) {
 
     //    Builder    //
 
+    @HTBuilderMarker
     abstract inner class Builder<FLUID : Fluid, CONTENT : HTFluidContent>(protected val name: String) {
         // Required
         lateinit var properties: FluidType.Properties

@@ -3,6 +3,7 @@
 package hiiragi283.lib.registry
 
 import hiiragi283.lib.resource.SupplierWithId
+import hiiragi283.lib.util.HTBuilderMarker
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -51,6 +52,7 @@ inline fun <T : Any> buildHolderSet(builderAction: HolderSetBuilder<T>.() -> Uni
     return HolderSetBuilder<T>().apply(builderAction).build()
 }
 
+@HTBuilderMarker
 class HolderSetBuilder<T : Any> {
     private val holders: MutableList<Holder<T>> = mutableListOf()
 

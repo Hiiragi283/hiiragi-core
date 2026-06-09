@@ -4,6 +4,7 @@ package hiiragi283.lib.data.recipe
 
 import hiiragi283.lib.data.HTConditionHolder
 import hiiragi283.lib.recipe.RecipeKey
+import hiiragi283.lib.util.HTBuilderMarker
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -18,6 +19,7 @@ import net.neoforged.neoforge.common.conditions.ICondition
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
+@HTBuilderMarker
 abstract class HTRecipeBuilder<out RECIPE : Recipe<*>>(private val prefix: String) {
     fun commonInfo(showNotification: Boolean): Recipe.CommonInfo = Recipe.CommonInfo(showNotification)
 

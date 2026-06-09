@@ -2,6 +2,7 @@
 
 package hiiragi283.lib.data
 
+import hiiragi283.lib.util.HTBuilderMarker
 import hiiragi283.lib.util.HTDelegates
 import java.util.Optional
 import kotlin.contracts.ExperimentalContracts
@@ -15,6 +16,7 @@ import net.minecraft.world.item.trading.VillagerTrade
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition
 
+@HTBuilderMarker
 class HTVillagerTradeBuilder {
     companion object {
         @JvmStatic

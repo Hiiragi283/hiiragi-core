@@ -13,6 +13,7 @@ import hiiragi283.lib.recipe.result.HTFluidResult
 import hiiragi283.lib.recipe.result.HTItemResult
 import hiiragi283.lib.serialization.codec.HTCodecs
 import hiiragi283.lib.util.ErrorText
+import hiiragi283.lib.util.HTBuilderMarker
 import hiiragi283.lib.util.Option
 import hiiragi283.lib.util.none
 import hiiragi283.lib.util.some
@@ -121,6 +122,7 @@ data class HTRecipeContents(
 
     //    Builder    //
 
+    @HTBuilderMarker
     class Builder {
         private val inputItems: MutableList<List<ItemStack>> = mutableListOf()
         private val inputFluids: MutableList<FluidInput> = mutableListOf()

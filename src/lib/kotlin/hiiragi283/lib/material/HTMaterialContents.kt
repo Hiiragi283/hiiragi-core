@@ -7,6 +7,7 @@ import hiiragi283.lib.HTRegistries
 import hiiragi283.lib.serialization.network.HTStreamCodecs
 import hiiragi283.lib.tag.HTTagPrefix
 import hiiragi283.lib.tag.RawTagKey
+import hiiragi283.lib.util.HTBuilderMarker
 import hiiragi283.lib.util.Ior
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
@@ -54,6 +55,7 @@ class HTMaterialContents private constructor(val primalKey: HTMaterialPartKey, @
 
     //    Builder    //
 
+    @HTBuilderMarker
     class Builder(val key: HTMaterialKey, private val primalKey: HTMaterialPartKey) {
         private var contents: MutableMap<HTMaterialPartKey, HTMaterialRawEntry> = hashMapOf()
 
