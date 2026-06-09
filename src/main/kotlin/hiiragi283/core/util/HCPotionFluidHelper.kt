@@ -21,8 +21,11 @@ data object HCPotionFluidHelper {
      */
     @JvmStatic
     fun createFluid(contents: BottledPotionContents, amount: Int = FluidType.BUCKET_VOLUME): FluidStack = when {
-        contents.isWater -> VanillaFluidContents.WATER.toStack(amount)
-        else -> HCFluids.POTION.toStack(amount, HTPotionHelper.createFluidPatch(HCFluids.POTION.get(), contents))
+        contents.isWater -> VanillaFluidContents.WATER.toStack { this.amount = amount }
+        else -> HCFluids.POTION.toStack {
+            this.amount = amount
+            patch = HTPotionHelper.createFluidPatch(HCFluids.POTION.get(), contents)
+        }
     }
 
     /**
@@ -31,6 +34,6 @@ data object HCPotionFluidHelper {
     @JvmStatic
     fun createBucket(contents: BottledPotionContents): ItemStack = when {
         contents.isWater -> VanillaFluidContents.WATER.bucketHolder.toStack()
-        else -> HCFluids.POTION.bucketHolder.toStack(patch = HTPotionHelper.createItemPatch(contents))
+        else -> HCFluids.POTION.bucketHolder.toStack { patch = HTPotionHelper.createItemPatch(contents) }
     }
 }

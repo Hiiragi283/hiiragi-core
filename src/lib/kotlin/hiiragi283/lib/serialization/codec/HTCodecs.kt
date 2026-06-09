@@ -20,7 +20,6 @@ import hiiragi283.lib.util.kotlin
 import hiiragi283.lib.util.none
 import hiiragi283.lib.util.some
 import java.util.UUID
-import java.util.function.Function
 import java.util.stream.Stream
 import kotlin.Int
 import kotlin.String
@@ -182,7 +181,10 @@ data object HTCodecs {
      * @return [factory]に基づいた[Codec]
      */
     @JvmStatic
-    inline fun <reified V : Enum<V>> stringEnum(factory: Function<V, String?>): Codec<V> = Codec.stringResolver(factory) { name: String -> enumEntries<V>().firstOrNull { factory.apply(it) == name } }
+    inline fun <reified V : Enum<V>> stringEnum(crossinline factory: (V) -> String?): Codec<V> = Codec.STRING.flatXmap<V>(
+        { name: String -> enumEntries<V>().firstOrNull { factory(it) == name }?.let { DataResult.success(it) } ?: DataResult.error { "Unknown element name: $name" } },
+        { value: V -> factory(value)?.let { DataResult.success(it) } ?: DataResult.error { "Element with unknown name: $value" } },
+    )
 
     /**
      * @see RecordCodecBuilder.mapCodec

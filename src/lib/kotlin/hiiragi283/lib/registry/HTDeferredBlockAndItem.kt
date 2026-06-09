@@ -1,10 +1,10 @@
 package hiiragi283.lib.registry
 
 import hiiragi283.lib.item.HTBlockItem
+import hiiragi283.lib.item.HTItemInstanceBuilder
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.util.HTTextResult
-import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
@@ -21,7 +21,7 @@ data class HTDeferredBlockAndItem<out BLOCK : Block, out ITEM : Item>(val blockH
     ItemLike by itemHolder {
     override fun get(): BLOCK = blockHolder.get()
 
-    fun toTemplate(count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): HTTextResult<ItemStackTemplate> = itemHolder.toTemplate(count, patch)
+    inline fun toTemplate(builderAction: HTItemInstanceBuilder.() -> Unit = {}): HTTextResult<ItemStackTemplate> = itemHolder.toTemplate(builderAction)
 
-    fun toStack(count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStack = itemHolder.toStack(count, patch)
+    inline fun toStack(builderAction: HTItemInstanceBuilder.() -> Unit = {}): ItemStack = itemHolder.toStack(builderAction)
 }

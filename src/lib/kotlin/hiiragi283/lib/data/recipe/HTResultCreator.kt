@@ -1,6 +1,6 @@
 package hiiragi283.lib.data.recipe
 
-import hiiragi283.lib.item.createItemTemplate
+import hiiragi283.lib.item.HTItemInstanceBuilder
 import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.recipe.result.HTFluidResult
@@ -20,7 +20,10 @@ import net.neoforged.neoforge.fluids.FluidType
 data object HTResultCreator {
     //    Item    //
 
-    fun create(item: ItemLike, amount: Int = 1): HTItemResult = createItemTemplate(item, amount).map(::create).getOrThrow()
+    fun create(item: ItemLike, count: Int = 1): HTItemResult = HTItemInstanceBuilder.buildTemplate {
+        this.item += item.asItem()
+        this.count = count
+    }.map(::create).getOrThrow()
 
     fun create(template: ItemStackTemplate): HTItemResult = HTItemResult.Simple(template)
 
@@ -32,7 +35,7 @@ data object HTResultCreator {
 
     fun create(fluid: Fluid, amount: Int = FluidType.BUCKET_VOLUME): HTFluidResult = create(FluidStackTemplate(fluid, amount))
 
-    fun create(content: HTFluidContent, amount: Int = FluidType.BUCKET_VOLUME): HTFluidResult = content.toTemplate(amount).map(::create).getOrThrow()
+    fun create(content: HTFluidContent, amount: Int = FluidType.BUCKET_VOLUME): HTFluidResult = content.toTemplate { this.amount = amount }.map(::create).getOrThrow()
 
     fun create(template: FluidStackTemplate): HTFluidResult = HTFluidResult.create(template)
 

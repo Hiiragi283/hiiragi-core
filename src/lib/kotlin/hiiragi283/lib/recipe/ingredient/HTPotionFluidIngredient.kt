@@ -3,7 +3,7 @@ package hiiragi283.lib.recipe.ingredient
 import com.mojang.serialization.MapCodec
 import hiiragi283.lib.HTPhysicalSideHelper
 import hiiragi283.lib.data.buildDataPatch
-import hiiragi283.lib.fluid.createFluidStack
+import hiiragi283.lib.fluid.HTFluidInstanceBuilder
 import hiiragi283.lib.item.alchemy.BottledPotionContents
 import hiiragi283.lib.item.alchemy.HTBottleType
 import hiiragi283.lib.item.alchemy.HTPotionFluidManager
@@ -68,13 +68,13 @@ class HTPotionFluidIngredient(val potions: HolderSet<Potion>, val bottleType: HT
                 .map { potion ->
                     when (potion) {
                         Potions.WATER -> FluidStack(Fluids.WATER, FluidType.BUCKET_VOLUME)
-                        else -> createFluidStack(
-                            fluid,
+                        else -> HTFluidInstanceBuilder.buildStack {
+                            this.fluid += fluid
                             patch = buildDataPatch {
                                 set(DataComponents.POTION_CONTENTS, PotionContents(potion))
                                 handler[this] = bottleType
-                            },
-                        )
+                            }
+                        }
                     }
                 }
         }.map(::FluidStackSlotDisplay)

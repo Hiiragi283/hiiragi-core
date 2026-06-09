@@ -1,10 +1,8 @@
 package hiiragi283.lib.registry
 
-import hiiragi283.lib.fluid.createFluidStack
-import hiiragi283.lib.fluid.createFluidTemplate
+import hiiragi283.lib.fluid.HTFluidInstanceBuilder
 import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.util.HTTextResult
-import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.LiquidBlock
@@ -28,9 +26,15 @@ sealed class HTFluidContent(
 ) : SupplierWithId<Fluid> by sourceHolder {
     fun getFluidType(): FluidType = typeHolder.get()
 
-    fun toTemplate(amount: Int = FluidType.BUCKET_VOLUME, patch: DataComponentPatch = DataComponentPatch.EMPTY): HTTextResult<FluidStackTemplate> = createFluidTemplate(this.get(), amount, patch)
+    inline fun toTemplate(builderAction: HTFluidInstanceBuilder.() -> Unit = {}): HTTextResult<FluidStackTemplate> = HTFluidInstanceBuilder.buildTemplate {
+        this.fluid += sourceHolder
+        builderAction()
+    }
 
-    fun toStack(amount: Int = FluidType.BUCKET_VOLUME, patch: DataComponentPatch = DataComponentPatch.EMPTY): FluidStack = createFluidStack(this.get(), amount, patch)
+    inline fun toStack(builderAction: HTFluidInstanceBuilder.() -> Unit = {}): FluidStack = HTFluidInstanceBuilder.buildStack {
+        this.fluid += sourceHolder
+        builderAction()
+    }
 
     /**
      * 基本的な[HTFluidContent]の実装クラスです。

@@ -4,7 +4,7 @@ import hiiragi283.lib.HTConstants
 import hiiragi283.lib.data.recipe.HTCookingRecipeBuilder
 import hiiragi283.lib.data.recipe.HTRecipeProvider
 import hiiragi283.lib.data.recipe.save
-import hiiragi283.lib.item.toTemplate
+import hiiragi283.lib.item.HTItemInstanceBuilder
 import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.HTMaterialContents
 import hiiragi283.lib.material.HTMaterialItemEntry
@@ -167,7 +167,7 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
         HTCookingRecipeBuilder.smeltingAndBlasting {
             ingredient = input.toIngredient()
             this.exp = exp
-            base.toTemplate().onRight(::result::set)
+            HTItemInstanceBuilder.buildTemplate { item += base.asItem() }.onRight(::result::set)
             input.fold(
                 { item: HTMaterialItemEntry -> unlocker.unlockedBy(getHasName(item), has(item)) },
                 { itemTag: TagKey<Item> -> unlocker.unlockedBy(getHasName(itemTag), has(itemTag)) },
