@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.lib.data.recipe.HTCookingRecipeBuilder
 import hiiragi283.lib.data.recipe.HTRecipeProvider
+import hiiragi283.lib.recipe.result.HTFluidResult
 import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.registry.VanillaFluidContents
 import java.util.concurrent.CompletableFuture
@@ -30,7 +31,7 @@ class HCTankInteractionRecipeProvider(modId: String, registries: HolderLookup.Pr
         repeat(5) { amplifier: Int ->
             HTTankInteractionRecipeBuilder.emptying {
                 +DataComponentIngredient.of(DataComponents.OMINOUS_BOTTLE_AMPLIFIER, OminousBottleAmplifier(amplifier), Items.OMINOUS_BOTTLE)
-                +resultCreator.create(HCFluids.OMINOUS_FLUX, 250 * (amplifier + 1))
+                HCFluids.OMINOUS_FLUX.toTemplate { amount = 250 * (amplifier + 1) }.map(HTFluidResult::create).onRight { +it }
                 itemResult { +Items.GLASS_BOTTLE }
                 recipeId suffix "_$amplifier"
             }.save(output)
@@ -39,7 +40,7 @@ class HCTankInteractionRecipeProvider(modId: String, registries: HolderLookup.Pr
         // Honey Block <-> Honey
         HTTankInteractionRecipeBuilder.emptying {
             ingredient { items { +Items.HONEY_BLOCK } }
-            +resultCreator.create(HCFluids.HONEY)
+            HCFluids.HONEY.toTemplate().map(HTFluidResult::create).onRight { +it }
             recipeId suffix "_from_block"
         }.save(output)
         HTTankInteractionRecipeBuilder.filling {
@@ -71,7 +72,7 @@ class HCTankInteractionRecipeProvider(modId: String, registries: HolderLookup.Pr
         // Emptying
         HTTankInteractionRecipeBuilder.emptying {
             ingredient { items { +bottle } }
-            +resultCreator.create(fluid, amount)
+            fluid.toTemplate { this.amount = amount }.map(HTFluidResult::create).onRight { +it }
             itemResult { +container }
         }.save(output)
         // Filling

@@ -33,8 +33,6 @@ abstract class HTRecipeProvider(protected val modId: String, registries: HolderL
     val fluidCreator: HTFluidIngredientCreator by lazy { HTFluidIngredientCreator(registries.lookupOrThrow(Registries.FLUID)) }
     val itemCreator: HTItemIngredientCreator by lazy { HTItemIngredientCreator(registries.lookupOrThrow(Registries.ITEM)) }
 
-    val resultCreator: HTResultCreator get() = HTResultCreator
-
     /**
      * 指定した[パス][path]から[ID][Identifier]を作成します。
      * @return [modId]を[名前空間][Identifier.getNamespace]とする[ID][Identifier]

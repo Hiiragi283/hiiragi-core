@@ -191,7 +191,7 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
         val (outputCount: Int, inputCount: Int) = scale
         HCRecipeBuilders.crushing {
             ingredient = input.toItemIngredient(inputCount)
-            results += resultCreator.create(dust, outputCount)
+            result { +(dust to outputCount) }
             recipeId replace idFrom(material, inputKey, CommonPartKeys.DUST)
         }.save(output)
     }
