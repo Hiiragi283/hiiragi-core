@@ -8,7 +8,6 @@ import hiiragi283.lib.material.CommonMaterialKeys
 import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.VanillaMaterialKeys
 import hiiragi283.lib.math.fraction
-import hiiragi283.lib.recipe.ingredient.withSize
 import hiiragi283.lib.recipe.result.HTItemResult
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
@@ -20,7 +19,6 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
-import net.neoforged.neoforge.common.crafting.CompoundIngredient
 
 class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
     override fun buildRecipes() {
@@ -110,7 +108,7 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
         }.save(output)
         // Cobblestone -> Gravel
         HCRecipeBuilders.crushing {
-            +(CompoundIngredient.of(tag(Tags.Items.COBBLESTONES_NORMAL), tag(Tags.Items.COBBLESTONES_MOSSY)) withSize 1)
+            ingredient { +listOf(tag(Tags.Items.COBBLESTONES_NORMAL), tag(Tags.Items.COBBLESTONES_MOSSY)) }
             result { +Items.GRAVEL }
             recipeId suffix "_from_cobblestone"
         }.save(output)

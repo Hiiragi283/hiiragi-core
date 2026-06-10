@@ -14,7 +14,9 @@ import net.minecraft.core.HolderSet
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.level.ItemLike
+import net.neoforged.neoforge.common.crafting.CompoundIngredient
 import net.neoforged.neoforge.common.crafting.ICustomIngredient
+import net.neoforged.neoforge.registries.holdersets.OrHolderSet
 
 @HTBuilderMarker
 class IngredientBuilder {
@@ -25,8 +27,18 @@ class IngredientBuilder {
         contents = Either.Left(this)
     }
 
+    @JvmName("unaryPlusCompound")
+    operator fun List<Ingredient>.unaryPlus() {
+        +CompoundIngredient(this)
+    }
+
     operator fun HolderSet<Item>.unaryPlus() {
         contents = Either.Right(this)
+    }
+
+    @JvmName("unaryPlusOr")
+    operator fun List<HolderSet<Item>>.unaryPlus() {
+        +OrHolderSet(this)
     }
 
     inline fun holderSet(builderAction: HolderSetBuilder<Item>.() -> Unit) {

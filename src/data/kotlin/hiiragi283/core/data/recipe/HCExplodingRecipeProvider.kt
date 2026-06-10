@@ -14,13 +14,12 @@ import net.minecraft.data.PackOutput
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.world.item.Items
 import net.neoforged.neoforge.common.Tags
-import net.neoforged.neoforge.common.crafting.CompoundIngredient
 
 class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
     override fun buildRecipes() {
         // Cobblestone -> Cobbled Deepslate
         HCExplodingRecipeBuilder.create {
-            +CompoundIngredient.of(tag(Tags.Items.STONES), tag(Tags.Items.COBBLESTONES_NORMAL))
+            ingredient { +listOf(tag(Tags.Items.STONES), tag(Tags.Items.COBBLESTONES_NORMAL)) }
             result {
                 +Items.COBBLED_DEEPSLATE
                 chance = fraction(1, 2)
