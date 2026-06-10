@@ -1,14 +1,10 @@
 package hiiragi283.lib.data.recipe
 
 import hiiragi283.lib.item.HTItemInstanceBuilder
-import hiiragi283.lib.material.HTMaterialKey
-import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.recipe.result.HTFluidResult
 import hiiragi283.lib.recipe.result.HTItemResult
 import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.util.getOrThrow
-import net.minecraft.tags.TagKey
-import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.material.Fluid
@@ -26,10 +22,6 @@ data object HTResultCreator {
     }.map(::create).getOrThrow()
 
     fun create(template: ItemStackTemplate): HTItemResult = HTItemResult.Simple(template)
-
-    fun create(tagKey: TagKey<Item>, count: Int = 1): HTItemResult = HTItemResult.Tagged(tagKey, count)
-
-    fun create(part: HTMaterialPartKey, material: HTMaterialKey, count: Int = 1): HTItemResult = HTItemResult.MaterialPart(part, material, count)
 
     //    Fluid    //
 

@@ -8,6 +8,7 @@ import hiiragi283.lib.material.CommonMaterialKeys
 import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.VanillaMaterialKeys
 import hiiragi283.lib.math.fraction
+import hiiragi283.lib.recipe.result.HTItemResult
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
@@ -103,14 +104,14 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
         HCRecipeBuilders.crushing {
             ingredient = itemCreator.tag(Tags.Items.SANDSTONE_UNCOLORED_BLOCKS)
             results += resultCreator.create(Items.SAND, 2)
-            results += resultCreator.create(CommonPartKeys.DUST, CommonMaterialKeys.SALTPETER).withChance(fraction(1, 4))
+            results += HTItemResult.MaterialPart(CommonPartKeys.DUST, CommonMaterialKeys.SALTPETER) withChance fraction(1, 4)
             recipeId suffix "_from_sandstone"
         }.save(output)
 
         HCRecipeBuilders.crushing {
             ingredient = itemCreator.tag(Tags.Items.SANDSTONE_RED_BLOCKS)
             results += resultCreator.create(Items.RED_SAND, 2)
-            results += resultCreator.create(CommonPartKeys.DUST, CommonMaterialKeys.SALTPETER).withChance(fraction(1, 4))
+            results += HTItemResult.MaterialPart(CommonPartKeys.DUST, CommonMaterialKeys.SALTPETER) withChance fraction(1, 4)
             recipeId suffix "_from_sandstone"
         }.save(output)
     }
@@ -120,7 +121,7 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
         fun wood(tagKey: TagKey<Item>, input: Int, output: Int) {
             HCRecipeBuilders.crushing {
                 ingredient = itemCreator.tag(tagKey, input)
-                results += resultCreator.create(CommonPartKeys.DUST, VanillaMaterialKeys.WOOD, output)
+                results += HTItemResult.MaterialPart(CommonPartKeys.DUST, VanillaMaterialKeys.WOOD, output)
                 recipeId replace id(HTConstants.MATERIAL, "wood", "from_${tagKey.location().path.replace("/", "_")}")
             }.save(this.output)
         }

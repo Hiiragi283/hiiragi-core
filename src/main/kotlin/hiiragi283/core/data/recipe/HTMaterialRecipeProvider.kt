@@ -165,7 +165,7 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
         val base: HTMaterialItemEntry = contents.getEntry(primalKey) ?: return
         val input: HTMaterialRawEntry = contents.getRawEntry(inputKey) ?: return
         HTCookingRecipeBuilder.smeltingAndBlasting {
-            ingredient = input.toIngredient()
+            +input.toIngredient()
             this.exp = exp
             HTItemInstanceBuilder.buildTemplate { item += base.asItem() }.onRight(::result::set)
             input.fold(

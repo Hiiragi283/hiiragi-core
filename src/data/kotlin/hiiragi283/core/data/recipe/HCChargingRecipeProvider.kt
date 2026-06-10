@@ -5,6 +5,7 @@ import hiiragi283.lib.data.recipe.HTRecipeProvider
 import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.VanillaMaterialKeys
 import hiiragi283.lib.math.fraction
+import hiiragi283.lib.recipe.result.HTItemResult
 import hiiragi283.lib.tag.CommonTagPrefixes
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
@@ -17,28 +18,43 @@ class HCChargingRecipeProvider(modId: String, registries: HolderLookup.Provider,
     override fun buildRecipes() {
         // Ender Pearl -> Ender Eye
         HCChargingRecipeBuilder.create {
-            ingredient = ingredientCreator.create(Tags.Items.ENDER_PEARLS)
-            result = resultCreator.create(Items.ENDER_EYE).withChance(fraction(1, 2))
+            +tag(Tags.Items.ENDER_PEARLS)
+            result {
+                +Items.ENDER_EYE
+                chance = fraction(1, 2)
+            }
         }.save(output)
         // Golden Apple
         HCChargingRecipeBuilder.create {
-            ingredient = ingredientCreator.create(Items.GOLDEN_APPLE)
-            result = resultCreator.create(Items.ENCHANTED_GOLDEN_APPLE).withChance(fraction(1, 8))
+            ingredient { items { +Items.GOLDEN_APPLE } }
+            result {
+                +Items.ENCHANTED_GOLDEN_APPLE
+                chance = fraction(1, 8)
+            }
         }.save(output)
         // Quartz -> Prismarine
         HCChargingRecipeBuilder.create {
-            ingredient = ingredientCreator.create(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ)
-            result = resultCreator.create(Items.PRISMARINE_SHARD).withChance(fraction(3, 4))
+            +tag(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ)
+            result {
+                +Items.PRISMARINE_SHARD
+                chance = fraction(3, 4)
+            }
         }.save(output)
         // Redstone Dust -> Glowstone Dust
         HCChargingRecipeBuilder.create {
-            ingredient = ingredientCreator.create(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE)
-            result = resultCreator.create(CommonPartKeys.DUST, VanillaMaterialKeys.GLOWSTONE).withChance(fraction(3, 4))
+            +tag(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE)
+            result {
+                +HTItemResult.MaterialPart(CommonPartKeys.DUST, VanillaMaterialKeys.GLOWSTONE)
+                chance = fraction(3, 4)
+            }
         }.save(output)
         // Honey Bottle -> Exp Bottle
         HCChargingRecipeBuilder.create {
-            ingredient = ingredientCreator.create(Tags.Items.DRINKS_HONEY)
-            result = resultCreator.create(Items.EXPERIENCE_BOTTLE).withChance(fraction(1, 2))
+            +tag(Tags.Items.DRINKS_HONEY)
+            result {
+                +Items.EXPERIENCE_BOTTLE
+                chance = fraction(1, 2)
+            }
         }.save(output)
     }
 

@@ -2,7 +2,7 @@
 
 package hiiragi283.lib.data.recipe
 
-import hiiragi283.lib.data.HTConditionHolder
+import hiiragi283.lib.data.ConditionBuilder
 import hiiragi283.lib.recipe.RecipeKey
 import hiiragi283.lib.util.HTBuilderMarker
 import kotlin.contracts.ExperimentalContracts
@@ -28,7 +28,15 @@ abstract class HTRecipeBuilder<out RECIPE : Recipe<*>>(private val prefix: Strin
     /**
      * [ICondition]を保持するインスタンス
      */
-    val conditions = HTConditionHolder()
+    @PublishedApi
+    internal val conditions: MutableList<ICondition> = mutableListOf()
+
+    inline fun condition(builderAction: ConditionBuilder.() -> Unit) {
+        contract {
+            callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+        }
+        ConditionBuilder(conditions).apply(builderAction)
+    }
 
     //    Save    //
 
@@ -71,7 +79,7 @@ abstract class HTRecipeBuilder<out RECIPE : Recipe<*>>(private val prefix: Strin
      */
     open fun save(recipeOutput: RecipeOutput) {
         this.save { id: Identifier, recipe: RECIPE ->
-            recipeOutput.accept(RecipeKey(id), recipe, null, *conditions.toArray())
+            recipeOutput.accept(RecipeKey(id), recipe, null, *conditions.toTypedArray())
         }
     }
 

@@ -4,8 +4,11 @@ package hiiragi283.core.data.recipe
 
 import hiiragi283.core.api.HCConstants
 import hiiragi283.core.common.recipe.HCExplodingRecipe
+import hiiragi283.lib.data.recipe.HTItemResultBuilder
 import hiiragi283.lib.data.recipe.HTRecipeBuilder
+import hiiragi283.lib.data.recipe.IngredientBuilder
 import hiiragi283.lib.recipe.result.HTChancedItemResult
+import hiiragi283.lib.recipe.result.HTItemResult
 import hiiragi283.lib.util.HTDelegates
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
@@ -24,8 +27,35 @@ class HCExplodingRecipeBuilder : HTRecipeBuilder<HCExplodingRecipe>(HCConstants.
         }
     }
 
-    var ingredient: Ingredient by HTDelegates.onceInitialize()
-    var result: HTChancedItemResult by HTDelegates.onceInitialize()
+    @PublishedApi internal var ingredient: Ingredient by HTDelegates.onceInitialize()
+
+    @PublishedApi internal var result: HTChancedItemResult by HTDelegates.onceInitialize()
+
+    operator fun Ingredient.unaryPlus() {
+        ingredient = this
+    }
+
+    operator fun HTItemResult.unaryPlus() {
+        result = this.withChance()
+    }
+
+    operator fun HTChancedItemResult.unaryPlus() {
+        result = this
+    }
+
+    inline fun ingredient(builderAction: IngredientBuilder.() -> Unit) {
+        contract {
+            callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+        }
+        ingredient = IngredientBuilder().apply(builderAction).build()
+    }
+
+    inline fun result(builderAction: HTItemResultBuilder.() -> Unit) {
+        contract {
+            callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+        }
+        result = HTItemResultBuilder().apply(builderAction).buildWithChanced()
+    }
 
     override fun getPrimalId(): Identifier = result.getId()
 

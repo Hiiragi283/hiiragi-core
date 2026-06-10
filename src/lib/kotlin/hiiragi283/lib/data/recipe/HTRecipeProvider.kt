@@ -2,6 +2,7 @@ package hiiragi283.lib.data.recipe
 
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.material.HTMaterialContents
+import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.material.HTMaterialRawEntry
 import hiiragi283.lib.recipe.RecipeKey
@@ -9,6 +10,7 @@ import hiiragi283.lib.recipe.ingredient.HTItemIngredient
 import hiiragi283.lib.recipe.ingredient.HTMaterialPartIngredient
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.resource.toId
+import hiiragi283.lib.tag.HTTagPrefix
 import java.util.concurrent.CompletableFuture
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementHolder
@@ -28,7 +30,6 @@ import net.neoforged.neoforge.common.conditions.ICondition
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition
 
 abstract class HTRecipeProvider(protected val modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : RecipeProvider(registries, output) {
-    val ingredientCreator = HTIngredientCreator(registries)
     val fluidCreator: HTFluidIngredientCreator by lazy { HTFluidIngredientCreator(registries.lookupOrThrow(Registries.FLUID)) }
     val itemCreator: HTItemIngredientCreator by lazy { HTItemIngredientCreator(registries.lookupOrThrow(Registries.ITEM)) }
 
@@ -61,6 +62,8 @@ abstract class HTRecipeProvider(protected val modId: String, registries: HolderL
     fun HTMaterialRawEntry.toIngredient(): Ingredient = this.map(Ingredient::of, ::tag)
 
     fun HTMaterialRawEntry.toItemIngredient(inputCount: Int): HTItemIngredient = this.map({ itemCreator.create(it.asItem(), inputCount) }, { itemCreator.tag(it, inputCount) })
+
+    fun tag(prefix: HTTagPrefix, material: HTMaterialKey): Ingredient = tag(prefix.itemTagKey(material))
 
     //    Runner    //
 

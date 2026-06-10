@@ -6,6 +6,7 @@ import hiiragi283.lib.data.recipe.HTRecipeProvider
 import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.VanillaMaterialKeys
 import hiiragi283.lib.math.fraction
+import hiiragi283.lib.recipe.result.HTItemResult
 import hiiragi283.lib.tag.CommonTagPrefixes
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
@@ -13,40 +14,59 @@ import net.minecraft.data.PackOutput
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.world.item.Items
 import net.neoforged.neoforge.common.Tags
+import net.neoforged.neoforge.common.crafting.CompoundIngredient
 
 class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
     override fun buildRecipes() {
         // Cobblestone -> Cobbled Deepslate
         HCExplodingRecipeBuilder.create {
-            ingredient = ingredientCreator.create(listOf(Tags.Items.STONES, Tags.Items.COBBLESTONES_NORMAL))
-            result = resultCreator.create(Items.COBBLED_DEEPSLATE).withChance(fraction(1, 2))
+            +CompoundIngredient.of(tag(Tags.Items.STONES), tag(Tags.Items.COBBLESTONES_NORMAL))
+            result {
+                +Items.COBBLED_DEEPSLATE
+                chance = fraction(1, 2)
+            }
         }.save(output)
         // Gunpowder -> Blaze Powder
         HCExplodingRecipeBuilder.create {
-            ingredient = ingredientCreator.create(Tags.Items.GUNPOWDERS)
-            result = resultCreator.create(Items.BLAZE_POWDER).withChance(fraction(1, 6))
+            +tag(Tags.Items.GUNPOWDERS)
+            result {
+                +Items.BLAZE_POWDER
+                chance = fraction(1, 6)
+            }
         }.save(output)
         // Glass -> Quartz
         HCExplodingRecipeBuilder.create {
-            ingredient = ingredientCreator.create(Tags.Items.GLASS_BLOCKS)
-            result = resultCreator.create(CommonPartKeys.GEM, VanillaMaterialKeys.QUARTZ).withChance(fraction(1, 4))
+            +tag(Tags.Items.GLASS_BLOCKS)
+            result {
+                +HTItemResult.MaterialPart(CommonPartKeys.GEM, VanillaMaterialKeys.QUARTZ)
+                chance = fraction(1, 4)
+            }
         }.save(output)
         // Quartz Block -> Ghast Tear
         HCExplodingRecipeBuilder.create {
-            ingredient = ingredientCreator.create(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.QUARTZ)
-            result = resultCreator.create(Items.GHAST_TEAR).withChance(fraction(1, 4))
+            +tag(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.QUARTZ)
+            result {
+                +Items.GHAST_TEAR
+                chance = fraction(1, 4)
+            }
         }.save(output)
 
         // Diamond
         HCExplodingRecipeBuilder.create {
-            ingredient = materialPart(HiiragiCoreTags.MaterialContents.COALS, CommonPartKeys.FUEL, CommonPartKeys.DUST)
-            result = resultCreator.create(CommonPartKeys.GEM, VanillaMaterialKeys.DIAMOND).withChance(fraction(1, 64))
+            +materialPart(HiiragiCoreTags.MaterialContents.COALS, CommonPartKeys.FUEL, CommonPartKeys.DUST)
+            result {
+                +HTItemResult.MaterialPart(CommonPartKeys.GEM, VanillaMaterialKeys.DIAMOND)
+                chance = fraction(1, 64)
+            }
             recipeId suffix "_from_coal"
         }.save(output)
         // Echo Shard
         HCExplodingRecipeBuilder.create {
-            ingredient = ingredientCreator.create(Items.SCULK)
-            result = resultCreator.create(CommonPartKeys.GEM, VanillaMaterialKeys.ECHO).withChance(fraction(1, 8))
+            ingredient { items { +Items.SCULK } }
+            result {
+                +HTItemResult.MaterialPart(CommonPartKeys.GEM, VanillaMaterialKeys.ECHO)
+                chance = fraction(1, 8)
+            }
         }.save(output)
     }
 

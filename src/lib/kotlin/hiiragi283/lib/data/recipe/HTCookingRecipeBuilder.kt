@@ -72,12 +72,26 @@ class HTCookingRecipeBuilder(
     var group: String? = null
     var craftingCategory: RecipeCategory = RecipeCategory.MISC
     var category: CookingBookCategory = CookingBookCategory.MISC
-    var ingredient: Ingredient by HTDelegates.onceInitialize()
     var result: ItemStackTemplate by HTDelegates.onceInitialize()
     var exp: Float = 0f
     var time: Int = 20 * 10
 
     val unlocker = RecipeUnlockAdvancementBuilder()
+
+    @PublishedApi internal var ingredient: Ingredient by HTDelegates.onceInitialize()
+
+    operator fun Ingredient.unaryPlus() {
+        ingredient = this
+    }
+
+    inline fun ingredient(builderAction: IngredientBuilder.() -> Unit) {
+        contract {
+            callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+        }
+        ingredient = IngredientBuilder().apply(builderAction).build()
+    }
+
+    //    HTRecipeBuilder    //
 
     override fun getPrimalId(): Identifier = result.item().getKeyOrThrow().identifier()
 

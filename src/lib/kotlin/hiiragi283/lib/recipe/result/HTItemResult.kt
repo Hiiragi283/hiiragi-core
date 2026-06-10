@@ -65,9 +65,9 @@ interface HTItemResult : HTIdLike {
 
     fun createOrEmpty(): ItemStack = create().getOrElse { ItemStack.EMPTY }
 
-    fun withChance(chance: Float = 1f): HTChancedItemResult = withChance(chance.toFraction())
+    infix fun withChance(chance: Float = 1f): HTChancedItemResult = withChance(chance.toFraction())
 
-    fun withChance(chance: Fraction): HTChancedItemResult = HTChancedItemResult(this, chance)
+    infix fun withChance(chance: Fraction): HTChancedItemResult = HTChancedItemResult(this, chance)
 
     //    Serializer    //
 
@@ -104,7 +104,7 @@ interface HTItemResult : HTIdLike {
     //    Tagged    //
 
     @JvmRecord
-    data class Tagged(val tagKey: TagKey<Item>, val count: Int) : HTItemResult {
+    data class Tagged(val tagKey: TagKey<Item>, val count: Int = 1) : HTItemResult {
         companion object {
             @JvmField
             val CODEC: MapCodec<Tagged> = HTCodecs.recordMap { instance ->
@@ -128,7 +128,7 @@ interface HTItemResult : HTIdLike {
     //    MaterialPart    //
 
     @JvmRecord
-    data class MaterialPart(val part: HTMaterialPartKey, val material: HTMaterialKey, val count: Int) : HTItemResult {
+    data class MaterialPart(val part: HTMaterialPartKey, val material: HTMaterialKey, val count: Int = 1) : HTItemResult {
         companion object {
             @JvmField
             val CODEC: MapCodec<MaterialPart> = HTCodecs.recordMap { instance ->
