@@ -14,9 +14,13 @@ import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.Recipe
 
 class HTItemToChancedItemsRecipeBuilder<out RECIPE : Recipe<*>>(prefix: String, private val factory: Factory<RECIPE>) : HTProgressRecipeBuilder<RECIPE>(prefix) {
-    var ingredient: HTItemIngredient by HTDelegates.onceInitialize()
+    @PublishedApi internal var ingredient: HTItemIngredient by HTDelegates.onceInitialize()
 
     @PublishedApi internal val results: MutableList<HTChancedItemResult> = mutableListOf()
+
+    operator fun HTItemIngredient.unaryPlus() {
+        ingredient = this
+    }
 
     operator fun HTItemResult.unaryPlus() {
         results += this.withChance()
@@ -24,6 +28,13 @@ class HTItemToChancedItemsRecipeBuilder<out RECIPE : Recipe<*>>(prefix: String, 
 
     operator fun HTChancedItemResult.unaryPlus() {
         results += this
+    }
+
+    inline fun ingredient(builderAction: IngredientBuilder.() -> Unit) {
+        contract {
+            callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+        }
+        ingredient = IngredientBuilder().apply(builderAction).buildSized()
     }
 
     inline fun result(builderAction: HTItemResultBuilder.() -> Unit) {

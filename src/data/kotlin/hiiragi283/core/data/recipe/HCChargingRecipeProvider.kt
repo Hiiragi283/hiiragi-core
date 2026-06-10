@@ -18,7 +18,7 @@ class HCChargingRecipeProvider(modId: String, registries: HolderLookup.Provider,
     override fun buildRecipes() {
         // Ender Pearl -> Ender Eye
         HCChargingRecipeBuilder.create {
-            +tag(Tags.Items.ENDER_PEARLS)
+            ingredient { +holderSet(Tags.Items.ENDER_PEARLS) }
             result {
                 +Items.ENDER_EYE
                 chance = fraction(1, 2)
@@ -34,7 +34,7 @@ class HCChargingRecipeProvider(modId: String, registries: HolderLookup.Provider,
         }.save(output)
         // Quartz -> Prismarine
         HCChargingRecipeBuilder.create {
-            +tag(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ)
+            ingredient { +holderSet(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ) }
             result {
                 +Items.PRISMARINE_SHARD
                 chance = fraction(3, 4)
@@ -42,7 +42,7 @@ class HCChargingRecipeProvider(modId: String, registries: HolderLookup.Provider,
         }.save(output)
         // Redstone Dust -> Glowstone Dust
         HCChargingRecipeBuilder.create {
-            +tag(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE)
+            ingredient { +holderSet(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE) }
             result {
                 +HTItemResult.MaterialPart(CommonPartKeys.DUST, VanillaMaterialKeys.GLOWSTONE)
                 chance = fraction(3, 4)
@@ -50,7 +50,7 @@ class HCChargingRecipeProvider(modId: String, registries: HolderLookup.Provider,
         }.save(output)
         // Honey Bottle -> Exp Bottle
         HCChargingRecipeBuilder.create {
-            +tag(Tags.Items.DRINKS_HONEY)
+            ingredient { +holderSet(Tags.Items.DRINKS_HONEY) }
             result {
                 +Items.EXPERIENCE_BOTTLE
                 chance = fraction(1, 2)

@@ -28,7 +28,7 @@ class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider
         }.save(output)
         // Gunpowder -> Blaze Powder
         HCExplodingRecipeBuilder.create {
-            +tag(Tags.Items.GUNPOWDERS)
+            ingredient { +holderSet(Tags.Items.GUNPOWDERS) }
             result {
                 +Items.BLAZE_POWDER
                 chance = fraction(1, 6)
@@ -36,7 +36,7 @@ class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider
         }.save(output)
         // Glass -> Quartz
         HCExplodingRecipeBuilder.create {
-            +tag(Tags.Items.GLASS_BLOCKS)
+            ingredient { +holderSet(Tags.Items.GLASS_BLOCKS) }
             result {
                 +HTItemResult.MaterialPart(CommonPartKeys.GEM, VanillaMaterialKeys.QUARTZ)
                 chance = fraction(1, 4)
@@ -44,7 +44,7 @@ class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider
         }.save(output)
         // Quartz Block -> Ghast Tear
         HCExplodingRecipeBuilder.create {
-            +tag(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.QUARTZ)
+            ingredient { +holderSet(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.QUARTZ) }
             result {
                 +Items.GHAST_TEAR
                 chance = fraction(1, 4)

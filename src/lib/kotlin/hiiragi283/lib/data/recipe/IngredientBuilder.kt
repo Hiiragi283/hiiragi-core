@@ -3,6 +3,7 @@
 package hiiragi283.lib.data.recipe
 
 import hiiragi283.lib.data.HolderSetBuilder
+import hiiragi283.lib.recipe.ingredient.HTItemIngredient
 import hiiragi283.lib.util.Either
 import hiiragi283.lib.util.HTBuilderMarker
 import hiiragi283.lib.util.HTDelegates
@@ -18,6 +19,7 @@ import net.neoforged.neoforge.common.crafting.ICustomIngredient
 @HTBuilderMarker
 class IngredientBuilder {
     private var contents: Either<ICustomIngredient, HolderSet<Item>> by HTDelegates.onceInitialize()
+    var count: Int = 1
 
     operator fun ICustomIngredient.unaryPlus() {
         contents = Either.Left(this)
@@ -54,4 +56,6 @@ class IngredientBuilder {
     }
 
     fun build(): Ingredient = contents.fold(ICustomIngredient::toVanilla, Ingredient::of)
+
+    fun buildSized(): HTItemIngredient = HTItemIngredient(build(), count)
 }

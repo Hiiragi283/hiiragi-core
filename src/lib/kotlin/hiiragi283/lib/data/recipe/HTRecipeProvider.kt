@@ -6,8 +6,8 @@ import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.material.HTMaterialRawEntry
 import hiiragi283.lib.recipe.RecipeKey
-import hiiragi283.lib.recipe.ingredient.HTItemIngredient
 import hiiragi283.lib.recipe.ingredient.HTMaterialPartIngredient
+import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.resource.toId
 import hiiragi283.lib.tag.HTTagPrefix
@@ -16,23 +16,22 @@ import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementHolder
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
-import net.minecraft.core.registries.Registries
+import net.minecraft.core.HolderSet
 import net.minecraft.data.PackOutput
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.data.recipes.RecipeProvider
 import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.enchantment.Enchantment
+import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.conditions.ICondition
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition
 
 abstract class HTRecipeProvider(protected val modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : RecipeProvider(registries, output) {
-    val fluidCreator: HTFluidIngredientCreator by lazy { HTFluidIngredientCreator(registries.lookupOrThrow(Registries.FLUID)) }
-    val itemCreator: HTItemIngredientCreator by lazy { HTItemIngredientCreator(registries.lookupOrThrow(Registries.ITEM)) }
-
     /**
      * 指定した[パス][path]から[ID][Identifier]を作成します。
      * @return [modId]を[名前空間][Identifier.getNamespace]とする[ID][Identifier]
@@ -59,9 +58,11 @@ abstract class HTRecipeProvider(protected val modId: String, registries: HolderL
 
     fun HTMaterialRawEntry.toIngredient(): Ingredient = this.map(Ingredient::of, ::tag)
 
-    fun HTMaterialRawEntry.toItemIngredient(inputCount: Int): HTItemIngredient = this.map({ itemCreator.create(it.asItem(), inputCount) }, { itemCreator.tag(it, inputCount) })
+    fun <T : Any> holderSet(tagKey: TagKey<T>): HolderSet<T> = this.registries.getOrThrow(tagKey)
 
-    fun tag(prefix: HTTagPrefix, material: HTMaterialKey): Ingredient = tag(prefix.itemTagKey(material))
+    fun holderSet(prefix: HTTagPrefix, material: HTMaterialKey): HolderSet<Item> = holderSet(prefix.itemTagKey(material))
+
+    fun holderSet(content: HTFluidContent): HolderSet<Fluid> = holderSet(content.fluidTag)
 
     //    Runner    //
 

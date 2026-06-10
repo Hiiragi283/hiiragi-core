@@ -5,6 +5,8 @@ package hiiragi283.core.data.recipe
 import hiiragi283.core.api.HCConstants
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
+import hiiragi283.lib.data.recipe.FluidIngredientBuilder
+import hiiragi283.lib.data.recipe.HTFluidResultBuilder
 import hiiragi283.lib.data.recipe.HTItemResultBuilder
 import hiiragi283.lib.data.recipe.HTRecipeBuilder
 import hiiragi283.lib.data.recipe.IngredientBuilder
@@ -62,6 +64,13 @@ data object HTTankInteractionRecipeBuilder {
             ingredient = IngredientBuilder().apply(builderAction).build()
         }
 
+        inline fun fluidResult(builderAction: HTFluidResultBuilder.() -> Unit) {
+            contract {
+                callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+            }
+            fluidResult = HTFluidResultBuilder().apply(builderAction).build()
+        }
+
         inline fun itemResult(builderAction: HTItemResultBuilder.() -> Unit) {
             contract {
                 callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
@@ -98,6 +107,13 @@ data object HTTankInteractionRecipeBuilder {
                 callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
             }
             itemIngredient = IngredientBuilder().apply(builderAction).build()
+        }
+
+        inline fun fluidIngredient(builderAction: FluidIngredientBuilder.() -> Unit) {
+            contract {
+                callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+            }
+            fluidIngredient = FluidIngredientBuilder().apply(builderAction).buildSized()
         }
 
         inline fun itemResult(builderAction: HTItemResultBuilder.() -> Unit) {

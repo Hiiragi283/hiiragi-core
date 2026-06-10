@@ -13,20 +13,26 @@ class HCChoppingRecipeProvider(modId: String, registries: HolderLookup.Provider,
     override fun buildRecipes() {
         // Sapling -> Stick
         HCRecipeBuilders.chopping {
-            ingredient = itemCreator.tag(ItemTags.SAPLINGS)
+            ingredient { +holderSet(ItemTags.SAPLINGS) }
             result { +Items.STICK }
             recipeId suffix "_from_saplings"
         }.save(output)
         // Slab -> Stick
         HCRecipeBuilders.chopping {
-            ingredient = itemCreator.tag(ItemTags.WOODEN_SLABS)
-            result { +(Items.STICK to 2) }
+            ingredient { +holderSet(ItemTags.WOODEN_SLABS) }
+            result {
+                +Items.STICK
+                count = 2
+            }
             recipeId suffix "_from_wooden_slabs"
         }.save(output)
         // Book -> Paper + Leather
         HCRecipeBuilders.chopping {
-            ingredient = itemCreator.create(Items.BOOK)
-            result { +(Items.PAPER to 3) }
+            ingredient { items { +Items.BOOK } }
+            result {
+                +Items.PAPER
+                count = 3
+            }
             result { +Items.LEATHER }
             recipeId suffix "_from_book"
         }.save(output)

@@ -8,6 +8,7 @@ import hiiragi283.lib.material.CommonMaterialKeys
 import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.VanillaMaterialKeys
 import hiiragi283.lib.math.fraction
+import hiiragi283.lib.recipe.ingredient.withSize
 import hiiragi283.lib.recipe.result.HTItemResult
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
@@ -19,6 +20,7 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
+import net.neoforged.neoforge.common.crafting.CompoundIngredient
 
 class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
     override fun buildRecipes() {
@@ -27,8 +29,11 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
             HCBlocks.WARPED_WART to Items.WARPED_WART_BLOCK,
         ).forEach { (output: ItemLike, input: Item) ->
             HCRecipeBuilders.crushing {
-                ingredient = itemCreator.create(input)
-                result { +(output to 3) }
+                ingredient { items { +input } }
+                result {
+                    +output
+                    count = 3
+                }
             }.save(this.output)
         }
 
@@ -39,41 +44,56 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
             Items.SNOWBALL to Items.SNOW_BLOCK,
         ).forEach { (output: Item, input: Item) ->
             HCRecipeBuilders.crushing {
-                ingredient = itemCreator.create(input)
-                result { +(output to 4) }
+                ingredient { items { +input } }
+                result {
+                    +output
+                    count = 4
+                }
                 recipeId suffix "_from_block"
             }.save(this.output)
         }
 
         // Prismarine Bricks -> Prismarine Shard
         HCRecipeBuilders.crushing {
-            ingredient = itemCreator.create(Items.PRISMARINE_BRICKS)
-            result { +(Items.PRISMARINE_SHARD to 9) }
+            ingredient { items { +Items.PRISMARINE_BRICKS } }
+            result {
+                +Items.PRISMARINE_SHARD
+                count = 9
+            }
             recipeId suffix "_from_bricks"
         }.save(output)
         // Beetroot -> Sugar + Molasses
         HCRecipeBuilders.crushing {
-            ingredient = itemCreator.tag(Tags.Items.CROPS_BEETROOT)
-            result { +(Items.SUGAR to 2) }
+            ingredient { +holderSet(Tags.Items.CROPS_BEETROOT) }
+            result {
+                +Items.SUGAR
+                count = 2
+            }
             // extraResult += resultCreator.create(RagiumItems.MOLASSES)
             recipeId suffix "_from_beetroot"
         }.save(output)
         // Sugar Cane -> Sugar + Molasses
         HCRecipeBuilders.crushing {
-            ingredient = itemCreator.tag(Tags.Items.CROPS_SUGAR_CANE)
-            result { +(Items.SUGAR to 4) }
+            ingredient { +holderSet(Tags.Items.CROPS_SUGAR_CANE) }
+            result {
+                +Items.SUGAR
+                count = 4
+            }
             // extraResult += resultCreator.create(RagiumItems.MOLASSES)
             recipeId suffix "_from_cane"
         }.save(output)
         // Ice -> Snowball
         HCRecipeBuilders.crushing {
-            ingredient = itemCreator.create(Items.ICE)
-            result { +(Items.SNOWBALL to 4) }
+            ingredient { items { +Items.ICE } }
+            result {
+                +Items.SNOWBALL
+                count = 4
+            }
             recipeId suffix "_from_ice"
         }.save(output)
         // Wheat -> Flour
         HCRecipeBuilders.crushing {
-            ingredient = itemCreator.tag(Tags.Items.CROPS_WHEAT)
+            ingredient { +holderSet(Tags.Items.CROPS_WHEAT) }
             // results += resultCreator.create(HCItems.WHEAT_FLOUR)
         }
 
@@ -84,26 +104,29 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
     private fun crushStones() {
         // Stone -> Cobblestone
         HCRecipeBuilders.crushing {
-            ingredient = itemCreator.create(Items.STONE)
+            ingredient { items { +Items.STONE } }
             result { +Items.COBBLESTONE }
             recipeId suffix "_from_stone"
         }.save(output)
         // Cobblestone -> Gravel
         HCRecipeBuilders.crushing {
-            ingredient = itemCreator.tags(listOf(Tags.Items.COBBLESTONES_NORMAL, Tags.Items.COBBLESTONES_MOSSY))
+            +(CompoundIngredient.of(tag(Tags.Items.COBBLESTONES_NORMAL), tag(Tags.Items.COBBLESTONES_MOSSY)) withSize 1)
             result { +Items.GRAVEL }
             recipeId suffix "_from_cobblestone"
         }.save(output)
         // Gravel -> Sand
         HCRecipeBuilders.crushing {
-            ingredient = itemCreator.tag(Tags.Items.GRAVELS)
+            ingredient { +holderSet(Tags.Items.GRAVELS) }
             result { +Items.SAND }
             recipeId suffix "_from_gravel"
         }.save(output)
         // Sandstone -> Sand + Saltpeter
         HCRecipeBuilders.crushing {
-            ingredient = itemCreator.tag(Tags.Items.SANDSTONE_UNCOLORED_BLOCKS)
-            result { +(Items.SAND to 2) }
+            ingredient { +holderSet(Tags.Items.SANDSTONE_UNCOLORED_BLOCKS) }
+            result {
+                +Items.SAND
+                count = 2
+            }
             result {
                 +HTItemResult.MaterialPart(CommonPartKeys.DUST, CommonMaterialKeys.SALTPETER)
                 chance = fraction(1, 4)
@@ -112,8 +135,11 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
         }.save(output)
 
         HCRecipeBuilders.crushing {
-            ingredient = itemCreator.tag(Tags.Items.SANDSTONE_RED_BLOCKS)
-            result { +(Items.RED_SAND to 2) }
+            ingredient { +holderSet(Tags.Items.SANDSTONE_RED_BLOCKS) }
+            result {
+                +Items.RED_SAND
+                count = 2
+            }
             result {
                 +HTItemResult.MaterialPart(CommonPartKeys.DUST, CommonMaterialKeys.SALTPETER)
                 chance = fraction(1, 4)
@@ -126,7 +152,10 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
         // Wood Dust
         fun wood(tagKey: TagKey<Item>, input: Int, output: Int) {
             HCRecipeBuilders.crushing {
-                ingredient = itemCreator.tag(tagKey, input)
+                ingredient {
+                    +holderSet(tagKey)
+                    count = input
+                }
                 result { +HTItemResult.MaterialPart(CommonPartKeys.DUST, VanillaMaterialKeys.WOOD, output) }
                 recipeId replace id(HTConstants.MATERIAL, "wood", "from_${tagKey.location().path.replace("/", "_")}")
             }.save(this.output)

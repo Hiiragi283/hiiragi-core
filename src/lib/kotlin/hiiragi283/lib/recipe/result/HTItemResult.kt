@@ -65,6 +65,10 @@ interface HTItemResult : HTIdLike {
 
     fun createOrEmpty(): ItemStack = create().getOrElse { ItemStack.EMPTY }
 
+    val count: Int
+
+    fun copyWithCount(newCount: Int): HTItemResult
+
     infix fun withChance(chance: Float = 1f): HTChancedItemResult = withChance(chance.toFraction())
 
     infix fun withChance(chance: Fraction): HTChancedItemResult = HTChancedItemResult(this, chance)
@@ -94,9 +98,13 @@ interface HTItemResult : HTIdLike {
             val SERIALIZER: Serializer<Simple> = Serializer(MAP_CODEC, STREAM_CODEC)
         }
 
+        override val count: Int get() = template.count
+
         override fun getSerializer(): Serializer<*> = SERIALIZER
 
         override fun create(): HTTextResult<ItemStack> = template.create().right()
+
+        override fun copyWithCount(newCount: Int): Simple = Simple(template.withCount(newCount))
 
         override fun getId(): Identifier = template.typeHolder().getKeyOrThrow().identifier()
     }
@@ -104,7 +112,7 @@ interface HTItemResult : HTIdLike {
     //    Tagged    //
 
     @JvmRecord
-    data class Tagged(val tagKey: TagKey<Item>, val count: Int = 1) : HTItemResult {
+    data class Tagged(val tagKey: TagKey<Item>, override val count: Int = 1) : HTItemResult {
         companion object {
             @JvmField
             val CODEC: MapCodec<Tagged> = HTCodecs.recordMap { instance ->
@@ -122,13 +130,15 @@ interface HTItemResult : HTIdLike {
 
         override fun create(): HTTextResult<ItemStack> = HTPlatform.INSTANCE.getFirstHolder(BuiltInRegistries.ITEM, tagKey).map { ItemStack(it.get(), count) }
 
+        override fun copyWithCount(newCount: Int): Tagged = this.copy(count = newCount)
+
         override fun getId(): Identifier = tagKey.location()
     }
 
     //    MaterialPart    //
 
     @JvmRecord
-    data class MaterialPart(val part: HTMaterialPartKey, val material: HTMaterialKey, val count: Int = 1) : HTItemResult {
+    data class MaterialPart(val part: HTMaterialPartKey, val material: HTMaterialKey, override val count: Int = 1) : HTItemResult {
         companion object {
             @JvmField
             val CODEC: MapCodec<MaterialPart> = HTCodecs.recordMap { instance ->
@@ -150,6 +160,8 @@ interface HTItemResult : HTIdLike {
             .map { it.value() }
             .flatMap { it.getEntry(part)?.right() ?: HTTextResult("Unknown item for part $part and material $material") }
             .map { HTItemInstanceBuilder.buildStack { item += it.asItem() } }
+
+        override fun copyWithCount(newCount: Int): MaterialPart = this.copy(count = newCount)
 
         override fun getId(): Identifier = material.identifier().withPath { "${part.name}/$it" }
     }

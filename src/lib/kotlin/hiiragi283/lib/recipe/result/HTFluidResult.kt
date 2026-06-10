@@ -12,7 +12,7 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidStackTemplate
 
 @JvmInline
-value class HTFluidResult private constructor(private val template: FluidStackTemplate) : HTIdLike {
+value class HTFluidResult private constructor(@PublishedApi internal val template: FluidStackTemplate) : HTIdLike {
     companion object {
         @JvmField
         val CODEC: Codec<HTFluidResult> = FluidStackTemplate.CODEC.xmap(::create, HTFluidResult::template)
@@ -38,6 +38,10 @@ value class HTFluidResult private constructor(private val template: FluidStackTe
         @JvmStatic
         fun create(template: FluidStackTemplate): HTFluidResult = template.let(::validate).let(::HTFluidResult)
     }
+
+    inline val amount: Int get() = template.amount()
+
+    fun copyWithAmount(newAmount: Int): HTFluidResult = create(template.withAmount(newAmount))
 
     fun create(): FluidStack = template.create()
 

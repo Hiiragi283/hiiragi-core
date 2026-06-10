@@ -18,6 +18,8 @@ fun Ingredient.getRequiredAmount(instance: TypedInstance<Item>): Int = when {
     else -> 0
 }
 
+infix fun Ingredient.withSize(count: Int = 1): HTItemIngredient = HTItemIngredient(this, count)
+
 /**
  * @author Hiiragi Tsubasa
  * @since 0.16.0

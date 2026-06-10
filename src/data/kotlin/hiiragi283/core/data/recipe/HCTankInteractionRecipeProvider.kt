@@ -4,7 +4,6 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.lib.data.recipe.HTCookingRecipeBuilder
 import hiiragi283.lib.data.recipe.HTRecipeProvider
-import hiiragi283.lib.recipe.result.HTFluidResult
 import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.registry.VanillaFluidContents
 import java.util.concurrent.CompletableFuture
@@ -31,7 +30,10 @@ class HCTankInteractionRecipeProvider(modId: String, registries: HolderLookup.Pr
         repeat(5) { amplifier: Int ->
             HTTankInteractionRecipeBuilder.emptying {
                 +DataComponentIngredient.of(DataComponents.OMINOUS_BOTTLE_AMPLIFIER, OminousBottleAmplifier(amplifier), Items.OMINOUS_BOTTLE)
-                HCFluids.OMINOUS_FLUX.toTemplate { amount = 250 * (amplifier + 1) }.map(HTFluidResult::create).onRight { +it }
+                fluidResult {
+                    +HCFluids.OMINOUS_FLUX
+                    amount = 250 * (amplifier + 1)
+                }
                 itemResult { +Items.GLASS_BOTTLE }
                 recipeId suffix "_$amplifier"
             }.save(output)
@@ -40,19 +42,19 @@ class HCTankInteractionRecipeProvider(modId: String, registries: HolderLookup.Pr
         // Honey Block <-> Honey
         HTTankInteractionRecipeBuilder.emptying {
             ingredient { items { +Items.HONEY_BLOCK } }
-            HCFluids.HONEY.toTemplate().map(HTFluidResult::create).onRight { +it }
+            fluidResult { +HCFluids.HONEY }
             recipeId suffix "_from_block"
         }.save(output)
         HTTankInteractionRecipeBuilder.filling {
-            +tag(Tags.Items.GLASS_BLOCKS)
-            +fluidCreator.create(HCFluids.HONEY)
+            itemIngredient { +holderSet(Tags.Items.GLASS_BLOCKS) }
+            fluidIngredient { +holderSet(HCFluids.HONEY) }
             itemResult { +Items.HONEY_BLOCK }
         }.save(output)
 
         // Latex + Bowl -> Raw Rubber
         HTTankInteractionRecipeBuilder.filling {
             itemIngredient { items { +Items.BOWL } }
-            +fluidCreator.create(HCFluids.LATEX)
+            fluidIngredient { +holderSet(HCFluids.LATEX) }
             // +resultCreator.create(HCItems.RAW_RUBBER, 4)
         }
         // Raw Rubber -> Rubber Bar
@@ -72,13 +74,19 @@ class HCTankInteractionRecipeProvider(modId: String, registries: HolderLookup.Pr
         // Emptying
         HTTankInteractionRecipeBuilder.emptying {
             ingredient { items { +bottle } }
-            fluid.toTemplate { this.amount = amount }.map(HTFluidResult::create).onRight { +it }
+            fluidResult {
+                +fluid
+                this.amount = amount
+            }
             itemResult { +container }
         }.save(output)
         // Filling
         HTTankInteractionRecipeBuilder.filling {
             itemIngredient { items { +container } }
-            +fluidCreator.create(fluid, amount)
+            fluidIngredient {
+                +holderSet(fluid)
+                this.amount = amount
+            }
             itemResult { +bottle }
         }.save(output)
     }

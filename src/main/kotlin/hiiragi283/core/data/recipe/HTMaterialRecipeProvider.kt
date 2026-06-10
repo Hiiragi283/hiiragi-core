@@ -13,6 +13,7 @@ import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.material.HTMaterialRawEntry
 import hiiragi283.lib.math.component1
 import hiiragi283.lib.math.component2
+import hiiragi283.lib.recipe.ingredient.withSize
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput
@@ -190,8 +191,11 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
 
         val (outputCount: Int, inputCount: Int) = scale
         HCRecipeBuilders.crushing {
-            ingredient = input.toItemIngredient(inputCount)
-            result { +(dust to outputCount) }
+            +(input.toIngredient() withSize inputCount)
+            result {
+                +dust
+                count = outputCount
+            }
             recipeId replace idFrom(material, inputKey, CommonPartKeys.DUST)
         }.save(output)
     }
