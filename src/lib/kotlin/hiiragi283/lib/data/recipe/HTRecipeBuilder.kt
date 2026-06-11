@@ -8,7 +8,6 @@ import hiiragi283.lib.util.HTBuilderMarker
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
-import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.Recipe
 import net.neoforged.neoforge.common.conditions.ICondition
@@ -77,9 +76,9 @@ abstract class HTRecipeBuilder<out RECIPE : Recipe<*>>(private val prefix: Strin
     /**
      * レシピを生成します。
      */
-    open fun save(recipeOutput: RecipeOutput) {
+    open fun save(exporter: HTRecipeExporter) {
         this.save { id: Identifier, recipe: RECIPE ->
-            recipeOutput.accept(RecipeKey(id), recipe, null, *conditions.toTypedArray())
+            exporter.accept(RecipeKey(id), recipe, conditions)
         }
     }
 

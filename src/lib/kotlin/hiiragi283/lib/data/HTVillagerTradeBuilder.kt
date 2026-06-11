@@ -31,12 +31,14 @@ class HTVillagerTradeBuilder {
 
     var wants: TradeCost by HTDelegates.onceInitialize()
     var additionalWants: TradeCost? = null
+
     @PublishedApi internal var gives: ItemStackTemplate by HTDelegates.onceInitialize()
     var maxUses: Int = 4
     var discount: Float = 0f
     var xp: Int = 1
     var merchantPredicate: LootItemCondition? = null
     val itemModifiers: MutableList<LootItemFunction> = mutableListOf()
+
     @PublishedApi internal var doubleTradePriceEnchantments: HolderSet<Enchantment>? = null
 
     operator fun ItemStackTemplate.unaryPlus() {

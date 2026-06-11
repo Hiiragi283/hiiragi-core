@@ -8,9 +8,8 @@ import hiiragi283.lib.math.fraction
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
-import net.minecraft.data.recipes.RecipeOutput
 
-class HCMaterialRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTMaterialRecipeProvider(modId, registries, output) {
+class HCMaterialRecipeProvider(packOutput: PackOutput, future: CompletableFuture<HolderLookup.Provider>) : HTMaterialRecipeProvider(packOutput, future, HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipes() {
         // Fuel
         nineStorageBlock(VanillaMaterialKeys.CHARCOAL)
@@ -52,7 +51,5 @@ class HCMaterialRecipeProvider(modId: String, registries: HolderLookup.Provider,
         crushToDust(VanillaMaterialKeys.BREEZE, CommonPartKeys.ROD, fraction(6))
     }
 
-    class Runner(packOutput: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : Direct(HiiragiCoreAPI.MOD_ID, packOutput, registries, ::HCMaterialRecipeProvider) {
-        override fun getName(): String = "Material Recipes"
-    }
+    override fun getName(): String = "Material Recipes"
 }

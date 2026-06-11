@@ -12,7 +12,6 @@ import hiiragi283.lib.recipe.result.HTItemResult
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
-import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.tags.ItemTags
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -20,7 +19,7 @@ import net.minecraft.world.item.Items
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.Tags
 
-class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
+class HCCrushingRecipeProvider(packOutput: PackOutput, future: CompletableFuture<HolderLookup.Provider>) : HTRecipeProvider(packOutput, future, HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipes() {
         mapOf(
             Items.NETHER_WART to Items.NETHER_WART_BLOCK,
@@ -32,7 +31,7 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
                     +output
                     count = 3
                 }
-            }.save(this.output)
+            }.save(exporter)
         }
 
         mapOf(
@@ -48,7 +47,7 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
                     count = 4
                 }
                 recipeId suffix "_from_block"
-            }.save(this.output)
+            }.save(exporter)
         }
 
         // Prismarine Bricks -> Prismarine Shard
@@ -59,7 +58,7 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
                 count = 9
             }
             recipeId suffix "_from_bricks"
-        }.save(output)
+        }.save(exporter)
         // Beetroot -> Sugar + Molasses
         HCRecipeBuilders.crushing {
             ingredient { +holderSet(Tags.Items.CROPS_BEETROOT) }
@@ -69,7 +68,7 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
             }
             // extraResult += resultCreator.create(RagiumItems.MOLASSES)
             recipeId suffix "_from_beetroot"
-        }.save(output)
+        }.save(exporter)
         // Sugar Cane -> Sugar + Molasses
         HCRecipeBuilders.crushing {
             ingredient { +holderSet(Tags.Items.CROPS_SUGAR_CANE) }
@@ -79,7 +78,7 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
             }
             // extraResult += resultCreator.create(RagiumItems.MOLASSES)
             recipeId suffix "_from_cane"
-        }.save(output)
+        }.save(exporter)
         // Ice -> Snowball
         HCRecipeBuilders.crushing {
             ingredient { items { +Items.ICE } }
@@ -88,7 +87,7 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
                 count = 4
             }
             recipeId suffix "_from_ice"
-        }.save(output)
+        }.save(exporter)
         // Wheat -> Flour
         HCRecipeBuilders.crushing {
             ingredient { +holderSet(Tags.Items.CROPS_WHEAT) }
@@ -105,19 +104,19 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
             ingredient { items { +Items.STONE } }
             result { +Items.COBBLESTONE }
             recipeId suffix "_from_stone"
-        }.save(output)
+        }.save(exporter)
         // Cobblestone -> Gravel
         HCRecipeBuilders.crushing {
-            ingredient { +listOf(tag(Tags.Items.COBBLESTONES_NORMAL), tag(Tags.Items.COBBLESTONES_MOSSY)) }
+            ingredient { +listOf(holderSet(Tags.Items.COBBLESTONES_NORMAL), holderSet(Tags.Items.COBBLESTONES_MOSSY)) }
             result { +Items.GRAVEL }
             recipeId suffix "_from_cobblestone"
-        }.save(output)
+        }.save(exporter)
         // Gravel -> Sand
         HCRecipeBuilders.crushing {
             ingredient { +holderSet(Tags.Items.GRAVELS) }
             result { +Items.SAND }
             recipeId suffix "_from_gravel"
-        }.save(output)
+        }.save(exporter)
         // Sandstone -> Sand + Saltpeter
         HCRecipeBuilders.crushing {
             ingredient { +holderSet(Tags.Items.SANDSTONE_UNCOLORED_BLOCKS) }
@@ -130,7 +129,7 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
                 chance = fraction(1, 4)
             }
             recipeId suffix "_from_sandstone"
-        }.save(output)
+        }.save(exporter)
 
         HCRecipeBuilders.crushing {
             ingredient { +holderSet(Tags.Items.SANDSTONE_RED_BLOCKS) }
@@ -143,7 +142,7 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
                 chance = fraction(1, 4)
             }
             recipeId suffix "_from_sandstone"
-        }.save(output)
+        }.save(exporter)
     }
 
     private fun crushWoods() {
@@ -156,7 +155,7 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
                 }
                 result { +HTItemResult.MaterialPart(CommonPartKeys.DUST, VanillaMaterialKeys.WOOD, output) }
                 recipeId replace id(HTConstants.MATERIAL, "wood", "from_${tagKey.location().path.replace("/", "_")}")
-            }.save(this.output)
+            }.save(exporter)
         }
 
         wood(ItemTags.BOATS, 1, 5)
@@ -174,7 +173,5 @@ class HCCrushingRecipeProvider(modId: String, registries: HolderLookup.Provider,
         wood(Tags.Items.RODS_WOODEN, 2, 1)
     }
 
-    class Runner(packOutput: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : Direct(HiiragiCoreAPI.MOD_ID, packOutput, registries, ::HCCrushingRecipeProvider) {
-        override fun getName(): String = "Crushing Recipes"
-    }
+    override fun getName(): String = "Crushing Recipes"
 }

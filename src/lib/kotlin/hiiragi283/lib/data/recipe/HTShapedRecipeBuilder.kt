@@ -30,8 +30,11 @@ class HTShapedRecipeBuilder : HTRecipeBuilder<ShapedRecipe>(HTConstants.SHAPED) 
 
     var category: RecipeCategory = RecipeCategory.MISC
     var group: String? = null
+
     @PublishedApi internal val patterns: MutableList<String> = mutableListOf()
+
     @PublishedApi internal val keys: MutableMap<Char, Ingredient> = mutableMapOf()
+
     @PublishedApi internal var result: ItemStackTemplate by HTDelegates.onceInitialize()
 
     operator fun String.unaryPlus() {
@@ -43,7 +46,7 @@ class HTShapedRecipeBuilder : HTRecipeBuilder<ShapedRecipe>(HTConstants.SHAPED) 
 
     infix fun Char.define(ingredient: Ingredient) {
         check(this !in keys) { "Symbol $this is already defined" }
-        check(this != ' ') { "Symbol $this (whitespace) is reserved and cannot be defined"  }
+        check(this != ' ') { "Symbol $this (whitespace) is reserved and cannot be defined" }
         keys[this] = ingredient
     }
 
@@ -71,6 +74,6 @@ class HTShapedRecipeBuilder : HTRecipeBuilder<ShapedRecipe>(HTConstants.SHAPED) 
         RecipeBuilder.createCraftingCommonInfo(true),
         RecipeBuilder.createCraftingBookInfo(category, group),
         ShapedRecipePattern.of(keys, patterns),
-        result
+        result,
     )
 }

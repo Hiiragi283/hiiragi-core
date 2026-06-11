@@ -59,13 +59,13 @@ data object HiiragiCoreData {
         event.createProvider(::HCVillagerTradeTagsProvider)
         event.createBlockAndItemTags(::HCBlockTagsProvider, ::HCItemTagsProvider)
 
-        event.createProvider(HCChargingRecipeProvider::Runner)
-        event.createProvider(HCChoppingRecipeProvider::Runner)
-        event.createProvider(HCCrushingRecipeProvider::Runner)
-        event.createProvider(HCExplodingRecipeProvider::Runner)
-        event.createProvider(HCMaterialRecipeProvider::Runner)
-        event.createProvider(HCTankInteractionRecipeProvider::Runner)
-        event.createProvider(HCVanillaRecipeProvider::Runner)
+        event.createProvider(::HCChargingRecipeProvider)
+        event.createProvider(::HCChoppingRecipeProvider)
+        event.createProvider(::HCCrushingRecipeProvider)
+        event.createProvider(::HCExplodingRecipeProvider)
+        event.createProvider(::HCMaterialRecipeProvider)
+        event.createProvider(::HCTankInteractionRecipeProvider)
+        event.createProvider(::HCVanillaRecipeProvider)
         // Client
         event.createProvider(::HCModelProvider)
 

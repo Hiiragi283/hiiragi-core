@@ -13,16 +13,16 @@ import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.material.HTMaterialRawEntry
 import hiiragi283.lib.math.component1
 import hiiragi283.lib.math.component2
-import hiiragi283.lib.recipe.ingredient.withSize
+import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
+import net.minecraft.data.PackOutput
 import net.minecraft.data.recipes.RecipeCategory
-import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.Identifier
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import org.apache.commons.lang3.math.Fraction
 
-abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
+abstract class HTMaterialRecipeProvider(packOutput: PackOutput, future: CompletableFuture<HolderLookup.Provider>, modId: String) : HTRecipeProvider(packOutput, future, modId) {
     protected fun getContents(material: HTMaterialKey): HTMaterialContents = registries.getOrThrow(material).value()
 
     protected fun metals(material: HTMaterialKey, exp: Float) {
@@ -76,7 +76,7 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
             result { +block }
             category = RecipeCategory.BUILDING_BLOCKS
             recipeId replace idFrom(material, blockKey, baseKey)
-        }.save(output)
+        }.save(exporter)
     }
 
     protected fun blockToBase(material: HTMaterialKey, baseKey: HTMaterialPartKey, blockKey: HTMaterialPartKey, count: Int) {
@@ -96,7 +96,7 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
                 this.count = count
             }
             recipeId replace idFrom(material, baseKey, blockKey)
-        }.save(output)
+        }.save(exporter)
     }
 
     //    Base <-> Nugger    //
@@ -130,7 +130,7 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
                 result { +base }
                 recipeId replace idFrom(material, primalKey, CommonPartKeys.RAW)
             }
-        }.save(output)
+        }.save(exporter)
     }
 
     protected fun baseToNugget(material: HTMaterialKey) {
@@ -150,7 +150,7 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
                 count = 9
             }
             recipeId replace idFrom(material, CommonPartKeys.NUGGET, primalKey)
-        }.save(output)
+        }.save(exporter)
     }
 
     //    Raw <-> Raw Block    //
@@ -177,11 +177,11 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
         val base: HTMaterialItemEntry = contents.getEntry(primalKey) ?: return
         val input: HTMaterialRawEntry = contents.getRawEntry(inputKey) ?: return
         HTCookingRecipeBuilder.smeltingAndBlasting {
-            +input.toIngredient()
+            ingredient { input.setHolderSet(this) }
             this.exp = exp
             result { +base.asItem() }
             recipeId replace idFrom(material, primalKey, inputKey)
-        }.forEach { it.save(output) }
+        }.forEach { it.save(exporter) }
     }
 
     //    XX -> Dust    //
@@ -197,13 +197,16 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
 
         val (outputCount: Int, inputCount: Int) = scale
         HCRecipeBuilders.crushing {
-            +(input.toIngredient() withSize inputCount)
+            ingredient {
+                input.setHolderSet(this)
+                count = inputCount
+            }
             result {
                 +dust
                 count = outputCount
             }
             recipeId replace idFrom(material, inputKey, CommonPartKeys.DUST)
-        }.save(output)
+        }.save(exporter)
     }
 
     protected fun idFrom(material: HTMaterialKey, after: HTMaterialPartKey, before: HTMaterialPartKey): Identifier = id(HTConstants.MATERIAL, material.identifier().path, "${after.name}_from_${before.name}")

@@ -5,18 +5,17 @@ import hiiragi283.lib.data.recipe.HTRecipeProvider
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
-import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
 
-class HCChoppingRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
+class HCChoppingRecipeProvider(packOutput: PackOutput, future: CompletableFuture<HolderLookup.Provider>) : HTRecipeProvider(packOutput, future, HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipes() {
         // Sapling -> Stick
         HCRecipeBuilders.chopping {
             ingredient { +holderSet(ItemTags.SAPLINGS) }
             result { +Items.STICK }
             recipeId suffix "_from_saplings"
-        }.save(output)
+        }.save(exporter)
         // Slab -> Stick
         HCRecipeBuilders.chopping {
             ingredient { +holderSet(ItemTags.WOODEN_SLABS) }
@@ -25,7 +24,7 @@ class HCChoppingRecipeProvider(modId: String, registries: HolderLookup.Provider,
                 count = 2
             }
             recipeId suffix "_from_wooden_slabs"
-        }.save(output)
+        }.save(exporter)
         // Book -> Paper + Leather
         HCRecipeBuilders.chopping {
             ingredient { items { +Items.BOOK } }
@@ -35,10 +34,8 @@ class HCChoppingRecipeProvider(modId: String, registries: HolderLookup.Provider,
             }
             result { +Items.LEATHER }
             recipeId suffix "_from_book"
-        }.save(output)
+        }.save(exporter)
     }
 
-    class Runner(packOutput: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : Direct(HiiragiCoreAPI.MOD_ID, packOutput, registries, ::HCChoppingRecipeProvider) {
-        override fun getName(): String = "Chopping Recipes"
-    }
+    override fun getName(): String = "Chopping Recipes"
 }

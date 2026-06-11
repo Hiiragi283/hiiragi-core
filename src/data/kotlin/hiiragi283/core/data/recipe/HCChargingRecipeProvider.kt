@@ -10,11 +10,10 @@ import hiiragi283.lib.tag.CommonTagPrefixes
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
-import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.world.item.Items
 import net.neoforged.neoforge.common.Tags
 
-class HCChargingRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
+class HCChargingRecipeProvider(packOutput: PackOutput, future: CompletableFuture<HolderLookup.Provider>) : HTRecipeProvider(packOutput, future, HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipes() {
         // Ender Pearl -> Ender Eye
         HCChargingRecipeBuilder.create {
@@ -23,7 +22,7 @@ class HCChargingRecipeProvider(modId: String, registries: HolderLookup.Provider,
                 +Items.ENDER_EYE
                 chance = fraction(1, 2)
             }
-        }.save(output)
+        }.save(exporter)
         // Golden Apple
         HCChargingRecipeBuilder.create {
             ingredient { items { +Items.GOLDEN_APPLE } }
@@ -31,7 +30,7 @@ class HCChargingRecipeProvider(modId: String, registries: HolderLookup.Provider,
                 +Items.ENCHANTED_GOLDEN_APPLE
                 chance = fraction(1, 8)
             }
-        }.save(output)
+        }.save(exporter)
         // Quartz -> Prismarine
         HCChargingRecipeBuilder.create {
             ingredient { +holderSet(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ) }
@@ -39,7 +38,7 @@ class HCChargingRecipeProvider(modId: String, registries: HolderLookup.Provider,
                 +Items.PRISMARINE_SHARD
                 chance = fraction(3, 4)
             }
-        }.save(output)
+        }.save(exporter)
         // Redstone Dust -> Glowstone Dust
         HCChargingRecipeBuilder.create {
             ingredient { +holderSet(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE) }
@@ -47,7 +46,7 @@ class HCChargingRecipeProvider(modId: String, registries: HolderLookup.Provider,
                 +HTItemResult.MaterialPart(CommonPartKeys.DUST, VanillaMaterialKeys.GLOWSTONE)
                 chance = fraction(3, 4)
             }
-        }.save(output)
+        }.save(exporter)
         // Honey Bottle -> Exp Bottle
         HCChargingRecipeBuilder.create {
             ingredient { +holderSet(Tags.Items.DRINKS_HONEY) }
@@ -55,10 +54,8 @@ class HCChargingRecipeProvider(modId: String, registries: HolderLookup.Provider,
                 +Items.EXPERIENCE_BOTTLE
                 chance = fraction(1, 2)
             }
-        }.save(output)
+        }.save(exporter)
     }
 
-    class Runner(packOutput: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : Direct(HiiragiCoreAPI.MOD_ID, packOutput, registries, ::HCChargingRecipeProvider) {
-        override fun getName(): String = "Charging Recipes"
-    }
+    override fun getName(): String = "Charging Recipes"
 }

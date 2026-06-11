@@ -11,20 +11,19 @@ import hiiragi283.lib.tag.CommonTagPrefixes
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
-import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.world.item.Items
 import net.neoforged.neoforge.common.Tags
 
-class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
+class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFuture<HolderLookup.Provider>) : HTRecipeProvider(packOutput, future, HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipes() {
         // Cobblestone -> Cobbled Deepslate
         HCExplodingRecipeBuilder.create {
-            ingredient { +listOf(tag(Tags.Items.STONES), tag(Tags.Items.COBBLESTONES_NORMAL)) }
+            ingredient { +listOf(holderSet(Tags.Items.STONES), holderSet(Tags.Items.COBBLESTONES_NORMAL)) }
             result {
                 +Items.COBBLED_DEEPSLATE
                 chance = fraction(1, 2)
             }
-        }.save(output)
+        }.save(exporter)
         // Gunpowder -> Blaze Powder
         HCExplodingRecipeBuilder.create {
             ingredient { +holderSet(Tags.Items.GUNPOWDERS) }
@@ -32,7 +31,7 @@ class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider
                 +Items.BLAZE_POWDER
                 chance = fraction(1, 6)
             }
-        }.save(output)
+        }.save(exporter)
         // Glass -> Quartz
         HCExplodingRecipeBuilder.create {
             ingredient { +holderSet(Tags.Items.GLASS_BLOCKS) }
@@ -40,7 +39,7 @@ class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider
                 +HTItemResult.MaterialPart(CommonPartKeys.GEM, VanillaMaterialKeys.QUARTZ)
                 chance = fraction(1, 4)
             }
-        }.save(output)
+        }.save(exporter)
         // Quartz Block -> Ghast Tear
         HCExplodingRecipeBuilder.create {
             ingredient { +holderSet(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.QUARTZ) }
@@ -48,7 +47,7 @@ class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider
                 +Items.GHAST_TEAR
                 chance = fraction(1, 4)
             }
-        }.save(output)
+        }.save(exporter)
 
         // Diamond
         HCExplodingRecipeBuilder.create {
@@ -58,7 +57,7 @@ class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider
                 chance = fraction(1, 64)
             }
             recipeId suffix "_from_coal"
-        }.save(output)
+        }.save(exporter)
         // Echo Shard
         HCExplodingRecipeBuilder.create {
             ingredient { items { +Items.SCULK } }
@@ -66,10 +65,8 @@ class HCExplodingRecipeProvider(modId: String, registries: HolderLookup.Provider
                 +HTItemResult.MaterialPart(CommonPartKeys.GEM, VanillaMaterialKeys.ECHO)
                 chance = fraction(1, 8)
             }
-        }.save(output)
+        }.save(exporter)
     }
 
-    class Runner(packOutput: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : Direct(HiiragiCoreAPI.MOD_ID, packOutput, registries, ::HCExplodingRecipeProvider) {
-        override fun getName(): String = "Exploding Recipes"
-    }
+    override fun getName(): String = "Exploding Recipes"
 }

@@ -17,7 +17,6 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.Items
-import net.minecraft.world.level.ItemLike
 
 @HTBuilderMarker
 class ItemInstanceBuilder : HolderAccepter.ItemAccepter {

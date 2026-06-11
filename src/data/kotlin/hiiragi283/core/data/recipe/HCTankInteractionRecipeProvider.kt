@@ -10,7 +10,6 @@ import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponents
 import net.minecraft.data.PackOutput
-import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.component.OminousBottleAmplifier
 import net.minecraft.world.level.ItemLike
@@ -18,7 +17,7 @@ import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 import net.neoforged.neoforge.fluids.FluidType
 
-class HCTankInteractionRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
+class HCTankInteractionRecipeProvider(packOutput: PackOutput, future: CompletableFuture<HolderLookup.Provider>) : HTRecipeProvider(packOutput, future, HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipes() {
         emptyAndFill(Items.EXPERIENCE_BOTTLE, HCFluids.EXPERIENCE)
         emptyAndFill(Items.HONEY_BOTTLE, HCFluids.HONEY)
@@ -36,7 +35,7 @@ class HCTankInteractionRecipeProvider(modId: String, registries: HolderLookup.Pr
                 }
                 itemResult { +Items.GLASS_BOTTLE }
                 recipeId suffix "_$amplifier"
-            }.save(output)
+            }.save(exporter)
         }
 
         // Honey Block <-> Honey
@@ -44,12 +43,12 @@ class HCTankInteractionRecipeProvider(modId: String, registries: HolderLookup.Pr
             ingredient { items { +Items.HONEY_BLOCK } }
             fluidResult { +HCFluids.HONEY }
             recipeId suffix "_from_block"
-        }.save(output)
+        }.save(exporter)
         HTTankInteractionRecipeBuilder.filling {
             itemIngredient { +holderSet(Tags.Items.GLASS_BLOCKS) }
             fluidIngredient { +holderSet(HCFluids.HONEY) }
             itemResult { +Items.HONEY_BLOCK }
-        }.save(output)
+        }.save(exporter)
 
         // Latex + Bowl -> Raw Rubber
         HTTankInteractionRecipeBuilder.filling {
@@ -79,7 +78,7 @@ class HCTankInteractionRecipeProvider(modId: String, registries: HolderLookup.Pr
                 this.amount = amount
             }
             itemResult { +container }
-        }.save(output)
+        }.save(exporter)
         // Filling
         HTTankInteractionRecipeBuilder.filling {
             itemIngredient { items { +container.asItem() } }
@@ -88,10 +87,8 @@ class HCTankInteractionRecipeProvider(modId: String, registries: HolderLookup.Pr
                 this.amount = amount
             }
             itemResult { +bottle }
-        }.save(output)
+        }.save(exporter)
     }
 
-    class Runner(packOutput: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : Direct(HiiragiCoreAPI.MOD_ID, packOutput, registries, ::HCTankInteractionRecipeProvider) {
-        override fun getName(): String = "Tank Interaction Recipes"
-    }
+    override fun getName(): String = "Tank Interaction Recipes"
 }

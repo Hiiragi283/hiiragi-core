@@ -9,21 +9,18 @@ import hiiragi283.lib.data.recipe.HTRecipeProvider
 import hiiragi283.lib.data.recipe.HTShapedRecipeBuilder
 import hiiragi283.lib.data.recipe.HTShapelessRecipeBuilder
 import hiiragi283.lib.material.VanillaMaterialKeys
-import hiiragi283.lib.recipe.RecipeKey
 import hiiragi283.lib.registry.HTDeferredBlockAndItem
 import hiiragi283.lib.tag.CommonTagPrefixes
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
-import net.minecraft.data.recipes.CustomCraftingRecipeBuilder
 import net.minecraft.data.recipes.RecipeCategory
-import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.WeatheringCopper
 import net.neoforged.neoforge.common.Tags
 
-class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
+class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<HolderLookup.Provider>) : HTRecipeProvider(packOutput, future, HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipes() {
         // Warped Wart
         HTShapedRecipeBuilder.create {
@@ -33,7 +30,7 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
             define('A') { items { +HCBlocks.WARPED_WART.itemHolder } }
             result { +Items.WARPED_WART_BLOCK }
             category = RecipeCategory.BUILDING_BLOCKS
-        }.save(output)
+        }.save(exporter)
         // Chopping Board
         HTShapedRecipeBuilder.create {
             +"A"
@@ -41,7 +38,7 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
             define('A') { +holderSet(ItemTags.WOODEN_SLABS) }
             define('B') { +holderSet(Tags.Items.STRIPPED_LOGS) }
             result { +HCBlocks.CHOPPING_BOARD.itemHolder }
-        }.save(output)
+        }.save(exporter)
         // Forging Anvil
         HTShapedRecipeBuilder.create {
             +"A"
@@ -49,7 +46,7 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
             define('A') { items { +Items.STONE_SLAB } }
             define('B') { items { +Items.SMOOTH_STONE } }
             result { +HCBlocks.FORGING_ANVIL.itemHolder }
-        }.save(output)
+        }.save(exporter)
         // Copper Basin
         HTShapedRecipeBuilder.create {
             +"A A"
@@ -58,7 +55,7 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
             define('A') { +holderSet(CommonTagPrefixes.INGOT, VanillaMaterialKeys.COPPER) }
             define('B') { +holderSet(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.COPPER) }
             result { +HCBlocks.COPPER_BASIN.weathering.unaffected.itemHolder }
-        }.save(output)
+        }.save(exporter)
 
         for ((state: WeatheringCopper.WeatherState, base: HTDeferredBlockAndItem<*, *>) in HCBlocks.COPPER_BASIN.weathering) {
             val waxed: HTDeferredBlockAndItem<*, *> = HCBlocks.COPPER_BASIN.waxed[state]
@@ -69,7 +66,7 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
                 result { +waxed.itemHolder }
                 group = "copper_basin"
                 recipeId replace waxed.getId().withSuffix("_from_honeycomb")
-            }.save(output)
+            }.save(exporter)
         }
 
         // Eternal Upgrade
@@ -84,14 +81,10 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
                 +HCItems.ETERNAL_UPGRADE
                 count = 2
             }
-        }.save(output)
+        }.save(exporter)
 
-        CustomCraftingRecipeBuilder.customCrafting(RecipeCategory.MISC) { _, _ -> HCEternalSmithingRecipe }
-            .unlockedBy(getHasName(HCItems.ETERNAL_UPGRADE), has(HCItems.ETERNAL_UPGRADE))
-            .save(output, RecipeKey(modId, HTConstants.SMITHING, "eternal_upgrade"))
+        exporter.accept(id(HTConstants.SMITHING, "eternal_upgrade"), HCEternalSmithingRecipe, listOf())
     }
 
-    class Runner(packOutput: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : Direct(HiiragiCoreAPI.MOD_ID, packOutput, registries, ::HCVanillaRecipeProvider) {
-        override fun getName(): String = "Vanilla Recipes"
-    }
+    override fun getName(): String = "Vanilla Recipes"
 }

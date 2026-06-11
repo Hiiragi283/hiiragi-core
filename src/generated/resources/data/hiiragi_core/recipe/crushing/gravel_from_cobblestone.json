@@ -1,8 +1,8 @@
 {
   "type": "hiiragi_core:crushing",
   "ingredient": {
-    "neoforge:ingredient_type": "neoforge:compound",
-    "children": [
+    "type": "neoforge:or",
+    "values": [
       "#c:cobblestones/normal",
       "#c:cobblestones/mossy"
     ]
