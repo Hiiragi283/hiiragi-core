@@ -6,7 +6,9 @@ import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.data.recipe.HTRecipeProvider
+import hiiragi283.lib.data.recipe.HTShapelessRecipeBuilder
 import hiiragi283.lib.recipe.RecipeKey
+import hiiragi283.lib.registry.HTDeferredBlockAndItem
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
@@ -14,8 +16,8 @@ import net.minecraft.data.recipes.CustomCraftingRecipeBuilder
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.tags.ItemTags
+import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.Items
-import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.WeatheringCopper
 import net.neoforged.neoforge.common.Tags
 
@@ -55,15 +57,16 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
             .unlockedBy("has_copper", has(Tags.Items.INGOTS_COPPER))
             .save(output)
 
-        for ((state: WeatheringCopper.WeatherState, base: ItemLike) in HCBlocks.COPPER_BASIN.weathering) {
-            val waxed: ItemLike = HCBlocks.COPPER_BASIN.waxed[state]
+        for ((state: WeatheringCopper.WeatherState, base: HTDeferredBlockAndItem<*, *>) in HCBlocks.COPPER_BASIN.weathering) {
+            val waxed: HTDeferredBlockAndItem<*, *> = HCBlocks.COPPER_BASIN.waxed[state]
             // Waxing
-            shapeless(RecipeCategory.MISC, waxed)
-                .requires(base)
-                .requires(Items.HONEYCOMB)
-                .group("copper_basin")
-                .unlockedBy(getHasName(base), has(base))
-                .save(output, getConversionRecipeName(waxed, Items.HONEYCOMB))
+            HTShapelessRecipeBuilder.create {
+                ingredient { holderSet { +base.itemHolder } }
+                ingredient { items { +Items.HONEYCOMB } }
+                +ItemStackTemplate(waxed.itemHolder)
+                group = "copper_basin"
+                recipeId replace waxed.getId().withSuffix("_from_honeycomb")
+            }.save(output)
         }
 
         // Eternal Upgrade
@@ -79,7 +82,7 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
 
         CustomCraftingRecipeBuilder.customCrafting(RecipeCategory.MISC) { _, _ -> HCEternalSmithingRecipe }
             .unlockedBy(getHasName(HCItems.ETERNAL_UPGRADE), has(HCItems.ETERNAL_UPGRADE))
-            .save(output, RecipeKey(modId, "${HTConstants.SMITHING}/eternal_upgrade"))
+            .save(output, RecipeKey(modId, HTConstants.SMITHING, "eternal_upgrade"))
     }
 
     class Runner(packOutput: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : Direct(HiiragiCoreAPI.MOD_ID, packOutput, registries, ::HCVanillaRecipeProvider) {

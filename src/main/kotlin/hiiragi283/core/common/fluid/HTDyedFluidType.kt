@@ -17,7 +17,7 @@ class HTDyedFluidType(private val color: HTDefaultColor, properties: Properties)
 
     override fun onVaporize(entity: LivingEntity?, level: Level, pos: BlockPos, stack: FluidStack) {
         super.onVaporize(entity, level, pos, stack)
-        val dye: ItemStack = VanillaColoredContents.DYE[color]?.toStack { count = 4 } ?: return
+        val dye: ItemStack = VanillaColoredContents.DYE[color]?.toStack(count = 4) ?: return
         if (entity != null) {
             HTItemDropHelper.giveOrDropStack(entity, dye)
         } else {

@@ -5,7 +5,6 @@ import com.mojang.serialization.MapCodec
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.HTPlatform
 import hiiragi283.lib.HTRegistries
-import hiiragi283.lib.item.HTItemInstanceBuilder
 import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.math.toFraction
@@ -159,7 +158,7 @@ interface HTItemResult : HTIdLike {
             .getResult(material)
             .map { it.value() }
             .flatMap { it.getEntry(part)?.right() ?: HTTextResult("Unknown item for part $part and material $material") }
-            .map { HTItemInstanceBuilder.buildStack { item += it.asItem() } }
+            .map { it.toStack() }
 
         override fun copyWithCount(newCount: Int): MaterialPart = this.copy(count = newCount)
 

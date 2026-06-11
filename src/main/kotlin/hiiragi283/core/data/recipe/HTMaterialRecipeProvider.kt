@@ -3,8 +3,8 @@ package hiiragi283.core.data.recipe
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.data.recipe.HTCookingRecipeBuilder
 import hiiragi283.lib.data.recipe.HTRecipeProvider
+import hiiragi283.lib.data.recipe.HTShapelessRecipeBuilder
 import hiiragi283.lib.data.recipe.save
-import hiiragi283.lib.item.HTItemInstanceBuilder
 import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.HTMaterialContents
 import hiiragi283.lib.material.HTMaterialItemEntry
@@ -18,10 +18,10 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.data.recipes.ShapedRecipeBuilder
-import net.minecraft.data.recipes.ShapelessRecipeBuilder
 import net.minecraft.resources.Identifier
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStackTemplate
 import org.apache.commons.lang3.math.Fraction
 
 abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
@@ -85,12 +85,17 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
         // 基本アイテムは必須
         val contents: HTMaterialContents = getContents(material)
         val base: HTMaterialItemEntry = contents.getEntry(baseKey) ?: return
-        val builder: ShapelessRecipeBuilder = shapeless(RecipeCategory.MISC, base, count)
-        contents.getRawEntry(blockKey)?.fold(
-            { block: HTMaterialItemEntry -> builder.requires(block).unlockedBy(getHasName(block), has(block)) },
-            { blockTag: TagKey<Item> -> builder.requires(blockTag).unlockedBy(getHasName(blockTag), has(blockTag)) },
-            { block: HTMaterialItemEntry, blockTag: TagKey<Item> -> builder.requires(blockTag).unlockedBy(getHasName(block), has(blockTag)) },
-        )?.save(output, idFrom(material, baseKey, blockKey))
+        val input: HTMaterialRawEntry = contents.getRawEntry(blockKey) ?: return
+        HTShapelessRecipeBuilder.create {
+            ingredient {
+                input.map(
+                    { block: HTMaterialItemEntry -> items { +block } },
+                    { blockTag: TagKey<Item> -> +holderSet(blockTag) },
+                )
+            }
+            +ItemStackTemplate(base.asItem(), count)
+            recipeId replace idFrom(material, baseKey, blockKey)
+        }.save(output)
     }
 
     //    Base <-> Nugger    //
@@ -134,12 +139,16 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
         val primalKey: HTMaterialPartKey = contents.primalKey
         // ナゲットは必須
         val nugget: HTMaterialItemEntry = contents.getEntry(CommonPartKeys.NUGGET) ?: return
-        val builder: ShapelessRecipeBuilder = shapeless(RecipeCategory.MISC, nugget, 9)
-        contents.primalEntry.fold(
-            { base: HTMaterialItemEntry -> builder.requires(base).unlockedBy(getHasName(base), has(base)) },
-            { baseTag: TagKey<Item> -> builder.requires(baseTag).unlockedBy(getHasName(baseTag), has(baseTag)) },
-            { base: HTMaterialItemEntry, baseTag: TagKey<Item> -> builder.requires(baseTag).unlockedBy(getHasName(base), has(baseTag)) },
-        ).save(output, idFrom(material, CommonPartKeys.NUGGET, primalKey))
+        HTShapelessRecipeBuilder.create {
+            ingredient {
+                contents.primalEntry.map(
+                    { base: HTMaterialItemEntry -> items { +base } },
+                    { baseTag: TagKey<Item> -> +holderSet(baseTag) },
+                )
+            }
+            +ItemStackTemplate(nugget.asItem(), 9)
+            recipeId replace idFrom(material, CommonPartKeys.NUGGET, primalKey)
+        }.save(output)
     }
 
     //    Raw <-> Raw Block    //
@@ -168,12 +177,7 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
         HTCookingRecipeBuilder.smeltingAndBlasting {
             +input.toIngredient()
             this.exp = exp
-            HTItemInstanceBuilder.buildTemplate { item += base.asItem() }.onRight(::result::set)
-            input.fold(
-                { item: HTMaterialItemEntry -> unlocker.unlockedBy(getHasName(item), has(item)) },
-                { itemTag: TagKey<Item> -> unlocker.unlockedBy(getHasName(itemTag), has(itemTag)) },
-                { item: HTMaterialItemEntry, itemTag: TagKey<Item> -> unlocker.unlockedBy(getHasName(item), has(itemTag)) },
-            )
+            +base.toTemplate()
             recipeId replace idFrom(material, primalKey, inputKey)
         }.forEach { it.save(output) }
     }

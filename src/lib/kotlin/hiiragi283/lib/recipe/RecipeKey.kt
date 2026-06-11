@@ -11,4 +11,6 @@ typealias RecipeKey = ResourceKey<Recipe<*>>
 
 fun RecipeKey(namespace: String, path: String): RecipeKey = RecipeKey(namespace.toId(path))
 
+fun RecipeKey(namespace: String, vararg path: String): RecipeKey = RecipeKey(namespace.toId(*path))
+
 fun RecipeKey(id: Identifier): RecipeKey = Registries.RECIPE.createKey(id)

@@ -3,7 +3,6 @@
 package hiiragi283.lib.data.recipe
 
 import hiiragi283.lib.HTConstants
-import hiiragi283.lib.recipe.RecipeKey
 import hiiragi283.lib.registry.getKeyOrThrow
 import hiiragi283.lib.util.HTDelegates
 import hiiragi283.lib.util.Identity
@@ -11,9 +10,6 @@ import hiiragi283.lib.util.identity
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
-import net.minecraft.data.recipes.RecipeCategory
-import net.minecraft.data.recipes.RecipeOutput
-import net.minecraft.data.recipes.RecipeUnlockAdvancementBuilder
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.crafting.AbstractCookingRecipe
@@ -70,18 +66,20 @@ class HTCookingRecipeBuilder(
     }
 
     var group: String? = null
-    var craftingCategory: RecipeCategory = RecipeCategory.MISC
     var category: CookingBookCategory = CookingBookCategory.MISC
-    var result: ItemStackTemplate by HTDelegates.onceInitialize()
-    var exp: Float = 0f
-    var time: Int = 20 * 10
-
-    val unlocker = RecipeUnlockAdvancementBuilder()
 
     @PublishedApi internal var ingredient: Ingredient by HTDelegates.onceInitialize()
 
+    @PublishedApi internal var result: ItemStackTemplate by HTDelegates.onceInitialize()
+    var exp: Float = 0f
+    var time: Int = 20 * 10
+
     operator fun Ingredient.unaryPlus() {
         ingredient = this
+    }
+
+    operator fun ItemStackTemplate.unaryPlus() {
+        result = this
     }
 
     inline fun ingredient(builderAction: IngredientBuilder.() -> Unit) {
@@ -103,15 +101,4 @@ class HTCookingRecipeBuilder(
         exp,
         timeOperator(time),
     )
-
-    override fun save(recipeOutput: RecipeOutput) {
-        this.save { id: Identifier, recipe: AbstractCookingRecipe ->
-            val recipeKey: RecipeKey = RecipeKey(id)
-            recipeOutput.accept(
-                recipeKey,
-                recipe,
-                unlocker.build(recipeOutput, recipeKey, craftingCategory),
-            )
-        }
-    }
 }

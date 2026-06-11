@@ -6,8 +6,11 @@ import hiiragi283.lib.util.Either
 import hiiragi283.lib.util.left
 import hiiragi283.lib.util.right
 import hiiragi283.lib.util.unwrap
+import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
 
@@ -34,4 +37,9 @@ value class HTMaterialItemEntry(private val content: Either<SupplierWithId<Block
     override fun getId(): Identifier = content.unwrap().getId()
 
     override fun asItem(): Item = get().asItem()
+
+    fun toTemplate(count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStackTemplate = ItemStackTemplate(asItem(), count, patch)
+
+    @Suppress("DEPRECATION")
+    fun toStack(count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStack = ItemStack(asItem().builtInRegistryHolder(), count, patch)
 }
