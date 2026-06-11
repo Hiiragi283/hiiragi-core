@@ -28,7 +28,7 @@ data object HCVillagerTrades : RegistrySetBuilder.RegistryBootstrap<VillagerTrad
             FISHERMAN_5_EMERALD_ELDER_HEART,
             HTVillagerTradeBuilder.build {
                 wants = TradeCost(Items.EMERALD, 32)
-                gives = HCItems.ELDER_HEART.toTemplate()
+                gives { +HCItems.ELDER_HEART }
                 maxUses = 1
                 xp = 100
             },

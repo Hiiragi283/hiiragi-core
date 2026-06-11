@@ -36,9 +36,9 @@ abstract class HTPlatform {
 
     abstract fun <T> getContentsFromFluid(instance: T): BottledPotionContents? where T : TypedInstance<Fluid>, T : DataComponentGetter
 
-    abstract fun createFluidPatch(fluid: Fluid, contents: BottledPotionContents): DataComponentPatch
+    abstract fun fillFluidPatch(fluid: Fluid, contents: BottledPotionContents, builder: DataComponentPatch.Builder)
 
-    abstract fun createItemPatch(contents: BottledPotionContents): DataComponentPatch
+    abstract fun fillItemPatch(contents: BottledPotionContents, builder: DataComponentPatch.Builder)
 
     //    Tag    //
 

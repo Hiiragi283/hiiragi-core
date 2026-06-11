@@ -5,8 +5,7 @@ package hiiragi283.lib.recipe.viewer.display
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import hiiragi283.lib.HTConstants
-import hiiragi283.lib.data.buildDataPatch
-import hiiragi283.lib.item.HTItemInstanceBuilder
+import hiiragi283.lib.item.ItemInstanceBuilder
 import hiiragi283.lib.recipe.ingredient.HTFluidIngredient
 import hiiragi283.lib.recipe.ingredient.HTItemIngredient
 import hiiragi283.lib.recipe.result.HTChancedItemResult
@@ -214,9 +213,9 @@ data class HTRecipeContents(
                 .let { addOutput(it, result.chance.toFloat()) }
         }
 
-        private fun createError(errorText: ErrorText): ItemStack = HTItemInstanceBuilder.buildStack {
-            item += Items.BARRIER
-            patch = buildDataPatch(DataComponents.CUSTOM_NAME, errorText.getText())
+        private fun createError(errorText: ErrorText): ItemStack = ItemInstanceBuilder.buildStack {
+            +Items.BARRIER
+            components { set(DataComponents.CUSTOM_NAME, errorText.getText()) }
         }
 
         // Fluid

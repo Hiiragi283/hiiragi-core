@@ -2,7 +2,7 @@ package hiiragi283.lib.item.alchemy
 
 import hiiragi283.lib.HTPlatform
 import hiiragi283.lib.data.buildDataPatch
-import hiiragi283.lib.item.HTItemInstanceBuilder
+import hiiragi283.lib.item.ItemInstanceBuilder
 import hiiragi283.lib.util.HTTextResult
 import kotlin.jvm.optionals.getOrNull
 import net.minecraft.core.Holder
@@ -63,7 +63,10 @@ data object HTPotionHelper {
      * @since 0.11.0
      */
     @JvmStatic
-    fun createPotion(contents: BottledPotionContents): HTTextResult<ItemStackTemplate> = createPotion(contents.bottleType, contents.contents)
+    fun createPotion(contents: BottledPotionContents): ItemStackTemplate = ItemInstanceBuilder.buildTemplate {
+        +contents.bottleType.asItem()
+        components { set(DataComponents.POTION_CONTENTS, contents.contents) }
+    }
 
     /**
      * 指定した引数からポーションの[ItemStack]を作成します。
@@ -81,10 +84,10 @@ data object HTPotionHelper {
      * @param count [ItemStack]の個数
      */
     @JvmStatic
-    fun createPotion(item: ItemLike, contents: PotionContents, count: Int = 1): HTTextResult<ItemStackTemplate> = HTItemInstanceBuilder.buildTemplate {
-        this.item += item.asItem()
+    fun createPotion(item: ItemLike, contents: PotionContents, count: Int = 1): HTTextResult<ItemStackTemplate> = ItemInstanceBuilder.buildSafeTemplate {
+        +item.asItem()
         this.count = count
-        patch = buildDataPatch(DataComponents.POTION_CONTENTS, contents)
+        components { set(DataComponents.POTION_CONTENTS, contents) }
     }
 
     /**
@@ -109,7 +112,12 @@ data object HTPotionHelper {
     }
 
     @JvmStatic
-    fun createItemPatch(contents: BottledPotionContents): DataComponentPatch = HTPlatform.INSTANCE.createItemPatch(contents)
+    fun fillItemPatch(contents: BottledPotionContents, builder: DataComponentPatch.Builder) {
+        HTPlatform.INSTANCE.fillItemPatch(contents, builder)
+    }
+
+    @JvmStatic
+    fun createItemPatch(contents: BottledPotionContents): DataComponentPatch = buildDataPatch { fillItemPatch(contents, this) }
 
     //    FluidStack    //
 
@@ -123,8 +131,15 @@ data object HTPotionHelper {
     fun <T> getContents(instance: T): BottledPotionContents? where T : TypedInstance<Fluid>, T : DataComponentGetter = HTPlatform.INSTANCE.getContentsFromFluid(instance)
 
     @JvmStatic
-    fun <T> createFluidPatch(instance: T, contents: BottledPotionContents): DataComponentPatch where T : TypedInstance<Fluid>, T : DataComponentGetter = HTPlatform.INSTANCE.createFluidPatch(instance.typeHolder().value(), contents)
+    fun <T> fillFluidPatch(instance: T, contents: BottledPotionContents, builder: DataComponentPatch.Builder) where T : TypedInstance<Fluid>, T : DataComponentGetter {
+        fillFluidPatch(instance.typeHolder().value(), contents, builder)
+    }
 
     @JvmStatic
-    fun createFluidPatch(fluid: Fluid, contents: BottledPotionContents): DataComponentPatch = HTPlatform.INSTANCE.createFluidPatch(fluid, contents)
+    fun fillFluidPatch(fluid: Fluid, contents: BottledPotionContents, builder: DataComponentPatch.Builder) {
+        HTPlatform.INSTANCE.fillFluidPatch(fluid, contents, builder)
+    }
+
+    @JvmStatic
+    fun createFluidPatch(fluid: Fluid, contents: BottledPotionContents): DataComponentPatch = buildDataPatch { fillFluidPatch(fluid, contents, this) }
 }

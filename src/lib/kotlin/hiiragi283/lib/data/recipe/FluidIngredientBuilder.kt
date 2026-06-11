@@ -2,7 +2,7 @@
 
 package hiiragi283.lib.data.recipe
 
-import hiiragi283.lib.data.HolderSetBuilder
+import hiiragi283.lib.data.HolderAccepter
 import hiiragi283.lib.recipe.ingredient.HTFluidIngredient
 import hiiragi283.lib.util.Either
 import hiiragi283.lib.util.HTBuilderMarker
@@ -33,30 +33,11 @@ class FluidIngredientBuilder {
         contents = Either.Right(this)
     }
 
-    inline fun holderSet(builderAction: HolderSetBuilder<Fluid>.() -> Unit) {
+    inline fun fluids(builderAction: HolderAccepter.FluidSetBuilder.() -> Unit) {
         contract {
             callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
         }
-        +HolderSetBuilder<Fluid>().apply(builderAction).build()
-    }
-
-    inline fun fluids(builderAction: FluidSetBuilder.() -> Unit) {
-        contract {
-            callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
-        }
-        +FluidSetBuilder().apply(builderAction).build()
-    }
-
-    @HTBuilderMarker
-    class FluidSetBuilder {
-        private val fluids: MutableSet<Fluid> = mutableSetOf()
-
-        operator fun Fluid.unaryPlus() {
-            fluids += this
-        }
-
-        @Suppress("DEPRECATION")
-        fun build(): HolderSet<Fluid> = HolderSet.direct(Fluid::builtInRegistryHolder, fluids)
+        +HolderAccepter.FluidSetBuilder().apply(builderAction).build()
     }
 
     fun build(): FluidIngredient = contents.fold(identity(), FluidIngredient::of)

@@ -21,7 +21,6 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder
 import net.minecraft.resources.Identifier
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
-import net.minecraft.world.item.ItemStackTemplate
 import org.apache.commons.lang3.math.Fraction
 
 abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
@@ -89,11 +88,14 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
         HTShapelessRecipeBuilder.create {
             ingredient {
                 input.map(
-                    { block: HTMaterialItemEntry -> items { +block } },
+                    { block: HTMaterialItemEntry -> items { +block.asItem() } },
                     { blockTag: TagKey<Item> -> +holderSet(blockTag) },
                 )
             }
-            +ItemStackTemplate(base.asItem(), count)
+            result {
+                +base.asItem()
+                this.count = count
+            }
             recipeId replace idFrom(material, baseKey, blockKey)
         }.save(output)
     }
@@ -142,11 +144,14 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
         HTShapelessRecipeBuilder.create {
             ingredient {
                 contents.primalEntry.map(
-                    { base: HTMaterialItemEntry -> items { +base } },
+                    { base: HTMaterialItemEntry -> items { +base.asItem() } },
                     { baseTag: TagKey<Item> -> +holderSet(baseTag) },
                 )
             }
-            +ItemStackTemplate(nugget.asItem(), 9)
+            result {
+                +nugget.asItem()
+                count = 9
+            }
             recipeId replace idFrom(material, CommonPartKeys.NUGGET, primalKey)
         }.save(output)
     }
@@ -177,7 +182,7 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
         HTCookingRecipeBuilder.smeltingAndBlasting {
             +input.toIngredient()
             this.exp = exp
-            +base.toTemplate()
+            result { +base.asItem() }
             recipeId replace idFrom(material, primalKey, inputKey)
         }.forEach { it.save(output) }
     }

@@ -16,7 +16,6 @@ import net.minecraft.data.recipes.CustomCraftingRecipeBuilder
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.tags.ItemTags
-import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.WeatheringCopper
 import net.neoforged.neoforge.common.Tags
@@ -61,9 +60,9 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
             val waxed: HTDeferredBlockAndItem<*, *> = HCBlocks.COPPER_BASIN.waxed[state]
             // Waxing
             HTShapelessRecipeBuilder.create {
-                ingredient { holderSet { +base.itemHolder } }
+                ingredient { items { +base.itemHolder } }
                 ingredient { items { +Items.HONEYCOMB } }
-                +ItemStackTemplate(waxed.itemHolder)
+                result { +waxed.itemHolder }
                 group = "copper_basin"
                 recipeId replace waxed.getId().withSuffix("_from_honeycomb")
             }.save(output)

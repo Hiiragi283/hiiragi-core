@@ -21,12 +21,9 @@ data object HCPotionFluidHelper {
      */
     @JvmStatic
     fun createFluid(contents: BottledPotionContents, amount: Int = FluidType.BUCKET_VOLUME): FluidStack = when {
-        contents.isWater -> VanillaFluidContents.WATER.toStack { this.amount = amount }
-        else -> HCFluids.POTION.toStack {
-            this.amount = amount
-            patch = HTPotionHelper.createFluidPatch(HCFluids.POTION.get(), contents)
-        }
-    }
+        contents.isWater -> VanillaFluidContents.WATER.toStack()
+        else -> HCFluids.POTION.toStack(patch = HTPotionHelper.createFluidPatch(HCFluids.POTION.get(), contents))
+    }.copyWithAmount(amount)
 
     /**
      * @return [contents]が`null`の場合，水入りバケツを返す。

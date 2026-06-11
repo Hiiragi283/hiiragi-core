@@ -73,7 +73,7 @@ class HCTankInteractionRecipeProvider(modId: String, registries: HolderLookup.Pr
     ) {
         // Emptying
         HTTankInteractionRecipeBuilder.emptying {
-            ingredient { items { +bottle } }
+            ingredient { items { +bottle.asItem() } }
             fluidResult {
                 +fluid
                 this.amount = amount
@@ -82,7 +82,7 @@ class HCTankInteractionRecipeProvider(modId: String, registries: HolderLookup.Pr
         }.save(output)
         // Filling
         HTTankInteractionRecipeBuilder.filling {
-            itemIngredient { items { +container } }
+            itemIngredient { items { +container.asItem() } }
             fluidIngredient {
                 +holderSet(fluid)
                 this.amount = amount

@@ -2,7 +2,6 @@ package hiiragi283.core.common
 
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.lib.HTPlatform
-import hiiragi283.lib.data.buildDataPatch
 import hiiragi283.lib.item.alchemy.BottledPotionContents
 import hiiragi283.lib.item.alchemy.HTBottleType
 import hiiragi283.lib.item.alchemy.HTPotionFluidManager
@@ -71,15 +70,15 @@ class HTPlatformImpl : HTPlatform() {
         return BottledPotionContents(contents, bottleType)
     }
 
-    override fun createFluidPatch(fluid: Fluid, contents: BottledPotionContents): DataComponentPatch = buildDataPatch {
-        set(DataComponents.POTION_CONTENTS, contents.contents)
+    override fun fillFluidPatch(fluid: Fluid, contents: BottledPotionContents, builder: DataComponentPatch.Builder) {
+        builder.set(DataComponents.POTION_CONTENTS, contents.contents)
         val handler: HTPotionFluidManager.Handler = HTPotionFluidManager.getFluidHandler(fluid) ?: DEFAULT_POTION_HANDLER
-        handler[this] = contents.bottleType
+        handler[builder] = contents.bottleType
     }
 
-    override fun createItemPatch(contents: BottledPotionContents): DataComponentPatch = buildDataPatch {
-        set(DataComponents.POTION_CONTENTS, contents.contents)
-        DEFAULT_POTION_HANDLER[this] = contents.bottleType
+    override fun fillItemPatch(contents: BottledPotionContents, builder: DataComponentPatch.Builder) {
+        builder.set(DataComponents.POTION_CONTENTS, contents.contents)
+        DEFAULT_POTION_HANDLER[builder] = contents.bottleType
     }
 
     override fun <T : Any> getFirstHolder(holders: Iterable<Holder<T>>): SupplierWithId<T> = holders.asSequence().map(Holder<T>::toLike).sortedWith(modIdComparator).first()

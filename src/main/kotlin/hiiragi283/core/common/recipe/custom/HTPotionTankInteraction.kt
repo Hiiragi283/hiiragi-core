@@ -51,7 +51,6 @@ data object HTPotionTankInteraction {
         override fun assemble(firstInput: ItemInstance, secondInput: FluidInstance): ItemStack = HTPotionHelper
             .getContents(secondInput)
             ?.let(HTPotionHelper::createPotion)
-            ?.getOrNull()
             .createOrEmpty()
     }
 }

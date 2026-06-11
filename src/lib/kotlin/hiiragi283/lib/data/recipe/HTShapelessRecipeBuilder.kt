@@ -3,6 +3,7 @@
 package hiiragi283.lib.data.recipe
 
 import hiiragi283.lib.HTConstants
+import hiiragi283.lib.item.ItemInstanceBuilder
 import hiiragi283.lib.registry.getKeyOrThrow
 import hiiragi283.lib.util.HTDelegates
 import kotlin.contracts.ExperimentalContracts
@@ -47,6 +48,13 @@ class HTShapelessRecipeBuilder : HTRecipeBuilder<ShapelessRecipe>(HTConstants.SH
             callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
         }
         ingredients += IngredientBuilder().apply(builderAction).build()
+    }
+
+    inline fun result(builderAction: ItemInstanceBuilder.() -> Unit) {
+        contract {
+            callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+        }
+        result = ItemInstanceBuilder.buildTemplate(builderAction)
     }
 
     override fun getPrimalId(): Identifier = result.item().getKeyOrThrow().identifier()
