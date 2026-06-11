@@ -66,8 +66,8 @@ class HTCookingRecipeBuilder(
         )
     }
 
-    var group: String? = null
     var category: CookingBookCategory = CookingBookCategory.MISC
+    var group: String? = null
 
     @PublishedApi internal var ingredient: Ingredient by HTDelegates.onceInitialize()
 

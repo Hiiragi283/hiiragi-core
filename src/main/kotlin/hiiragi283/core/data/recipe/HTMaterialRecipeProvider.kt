@@ -3,8 +3,8 @@ package hiiragi283.core.data.recipe
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.data.recipe.HTCookingRecipeBuilder
 import hiiragi283.lib.data.recipe.HTRecipeProvider
+import hiiragi283.lib.data.recipe.HTShapedRecipeBuilder
 import hiiragi283.lib.data.recipe.HTShapelessRecipeBuilder
-import hiiragi283.lib.data.recipe.save
 import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.HTMaterialContents
 import hiiragi283.lib.material.HTMaterialItemEntry
@@ -17,7 +17,6 @@ import hiiragi283.lib.recipe.ingredient.withSize
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.data.recipes.RecipeOutput
-import net.minecraft.data.recipes.ShapedRecipeBuilder
 import net.minecraft.resources.Identifier
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -61,23 +60,23 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
     protected fun baseToBlock(material: HTMaterialKey, baseKey: HTMaterialPartKey, blockKey: HTMaterialPartKey, vararg pattern: String) {
         // ブロックと基本アイテムは必須
         val contents: HTMaterialContents = getContents(material)
-        val block: HTMaterialItemEntry = contents.getEntry(blockKey) ?: return
-        val base: HTMaterialItemEntry = contents.getEntry(baseKey) ?: return
+        val block: Item = contents.getEntry(blockKey)?.asItem() ?: return
+        val base: Item = contents.getEntry(baseKey)?.asItem() ?: return
 
-        val builder: ShapedRecipeBuilder = shaped(RecipeCategory.BUILDING_BLOCKS, block)
-        pattern.forEach(builder::pattern)
-        builder.define('B', base)
-        // 基本タグの有無で分岐
-        val baseTag: TagKey<Item>? = contents.getTagKey(baseKey)
-        if (baseTag == null) {
-            builder
-                .define('A', base)
-                .unlockedBy(getHasName(base), has(base))
-        } else {
-            builder
-                .define('A', baseTag)
-                .unlockedBy(getHasName(base), has(baseTag))
-        }.save(output, idFrom(material, blockKey, baseKey))
+        HTShapedRecipeBuilder.create {
+            pattern.forEach { +it }
+            // 基本タグの有無で分岐
+            val baseTag: TagKey<Item>? = contents.getTagKey(baseKey)
+            if (baseTag == null) {
+                define('A') { items { +base } }
+            } else {
+                define('A') { +holderSet(baseTag) }
+            }
+            define('B') { items { +base } }
+            result { +block }
+            category = RecipeCategory.BUILDING_BLOCKS
+            recipeId replace idFrom(material, blockKey, baseKey)
+        }.save(output)
     }
 
     protected fun blockToBase(material: HTMaterialKey, baseKey: HTMaterialPartKey, blockKey: HTMaterialPartKey, count: Int) {
@@ -115,25 +114,23 @@ abstract class HTMaterialRecipeProvider(modId: String, registries: HolderLookup.
         val contents: HTMaterialContents = getContents(material)
         val primalKey: HTMaterialPartKey = contents.primalKey
         // ナゲットと基本アイテムは必須
-        val base: HTMaterialItemEntry = contents.getEntry(primalKey) ?: return
-        val nugget: HTMaterialItemEntry = contents.getEntry(CommonPartKeys.NUGGET) ?: return
-
-        val builder: ShapedRecipeBuilder = shaped(RecipeCategory.MISC, base)
-            .pattern("AAA")
-            .pattern("ABA")
-            .pattern("AAA")
-            .define('B', nugget)
-        // 基本タグの有無で分岐
-        val nuggetTag: TagKey<Item>? = contents.getTagKey(CommonPartKeys.NUGGET)
-        if (nuggetTag == null) {
-            builder
-                .define('A', nugget)
-                .unlockedBy(getHasName(nugget), has(nugget))
-        } else {
-            builder
-                .define('A', nuggetTag)
-                .unlockedBy(getHasName(nugget), has(nuggetTag))
-        }.save(output, idFrom(material, primalKey, CommonPartKeys.RAW))
+        val base: Item = contents.getEntry(primalKey)?.asItem() ?: return
+        val nugget: Item = contents.getEntry(CommonPartKeys.NUGGET)?.asItem() ?: return
+        HTShapedRecipeBuilder.create {
+            +"AAA"
+            +"ABA"
+            +"AAA"
+            // 基本タグの有無で分岐
+            val nuggetTag: TagKey<Item>? = contents.getTagKey(CommonPartKeys.NUGGET)
+            if (nuggetTag == null) {
+                define('A') { items { +nugget } }
+            } else {
+                define('A') { +holderSet(nuggetTag) }
+                define('B') { items { +nugget } }
+                result { +base }
+                recipeId replace idFrom(material, primalKey, CommonPartKeys.RAW)
+            }
+        }.save(output)
     }
 
     protected fun baseToNugget(material: HTMaterialKey) {

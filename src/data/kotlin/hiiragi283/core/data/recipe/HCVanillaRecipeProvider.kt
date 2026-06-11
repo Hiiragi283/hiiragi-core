@@ -6,9 +6,12 @@ import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.data.recipe.HTRecipeProvider
+import hiiragi283.lib.data.recipe.HTShapedRecipeBuilder
 import hiiragi283.lib.data.recipe.HTShapelessRecipeBuilder
+import hiiragi283.lib.material.VanillaMaterialKeys
 import hiiragi283.lib.recipe.RecipeKey
 import hiiragi283.lib.registry.HTDeferredBlockAndItem
+import hiiragi283.lib.tag.CommonTagPrefixes
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
@@ -23,38 +26,39 @@ import net.neoforged.neoforge.common.Tags
 class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, output: RecipeOutput) : HTRecipeProvider(modId, registries, output) {
     override fun buildRecipes() {
         // Warped Wart
-        shaped(RecipeCategory.BUILDING_BLOCKS, Items.WARPED_WART_BLOCK)
-            .pattern("AAA")
-            .pattern("AAA")
-            .pattern("AAA")
-            .define('A', HCBlocks.WARPED_WART)
-            .unlockedBy(getHasName(HCBlocks.WARPED_WART), has(HCBlocks.WARPED_WART))
-            .save(output)
+        HTShapedRecipeBuilder.create {
+            +"AAA"
+            +"AAA"
+            +"AAA"
+            define('A') { items { +HCBlocks.WARPED_WART.itemHolder } }
+            result { +Items.WARPED_WART_BLOCK }
+            category = RecipeCategory.BUILDING_BLOCKS
+        }.save(output)
         // Chopping Board
-        shaped(RecipeCategory.MISC, HCBlocks.CHOPPING_BOARD)
-            .pattern("A")
-            .pattern("B")
-            .define('A', ItemTags.WOODEN_SLABS)
-            .define('B', Tags.Items.STRIPPED_LOGS)
-            .unlockedBy("has_axe", has(ItemTags.AXES))
-            .save(output)
+        HTShapedRecipeBuilder.create {
+            +"A"
+            +"B"
+            define('A') { +holderSet(ItemTags.WOODEN_SLABS) }
+            define('B') { +holderSet(Tags.Items.STRIPPED_LOGS) }
+            result { +HCBlocks.CHOPPING_BOARD.itemHolder }
+        }.save(output)
         // Forging Anvil
-        shaped(RecipeCategory.MISC, HCBlocks.FORGING_ANVIL)
-            .pattern("A")
-            .pattern("B")
-            .define('A', Items.STONE_SLAB)
-            .define('B', Items.SMOOTH_STONE)
-            .unlockedBy("has_pickaxe", has(ItemTags.PICKAXES))
-            .save(output)
+        HTShapedRecipeBuilder.create {
+            +"A"
+            +"B"
+            define('A') { items { +Items.STONE_SLAB } }
+            define('B') { items { +Items.SMOOTH_STONE } }
+            result { +HCBlocks.FORGING_ANVIL.itemHolder }
+        }.save(output)
         // Copper Basin
-        shaped(RecipeCategory.MISC, HCBlocks.COPPER_BASIN.weathering.unaffected)
-            .pattern("A A")
-            .pattern("A A")
-            .pattern("BAB")
-            .define('A', Tags.Items.INGOTS_COPPER)
-            .define('B', Tags.Items.STORAGE_BLOCKS_COPPER)
-            .unlockedBy("has_copper", has(Tags.Items.INGOTS_COPPER))
-            .save(output)
+        HTShapedRecipeBuilder.create {
+            +"A A"
+            +"A A"
+            +"BAB"
+            define('A') { +holderSet(CommonTagPrefixes.INGOT, VanillaMaterialKeys.COPPER) }
+            define('B') { +holderSet(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.COPPER) }
+            result { +HCBlocks.COPPER_BASIN.weathering.unaffected.itemHolder }
+        }.save(output)
 
         for ((state: WeatheringCopper.WeatherState, base: HTDeferredBlockAndItem<*, *>) in HCBlocks.COPPER_BASIN.weathering) {
             val waxed: HTDeferredBlockAndItem<*, *> = HCBlocks.COPPER_BASIN.waxed[state]
@@ -69,15 +73,18 @@ class HCVanillaRecipeProvider(modId: String, registries: HolderLookup.Provider, 
         }
 
         // Eternal Upgrade
-        shaped(RecipeCategory.MISC, HCItems.ETERNAL_UPGRADE, 2)
-            .pattern("ABA")
-            .pattern("ACA")
-            .pattern("AAA")
-            .define('A', Tags.Items.GEMS_DIAMOND)
-            .define('B', HCItems.ETERNAL_UPGRADE)
-            .define('C', HCItems.IRIDESCENT_POWDER)
-            .unlockedBy(getHasName(HCItems.ETERNAL_UPGRADE), has(HCItems.ETERNAL_UPGRADE))
-            .save(output)
+        HTShapedRecipeBuilder.create {
+            +"ABA"
+            +"ACA"
+            +"AAA"
+            define('A') { +holderSet(CommonTagPrefixes.GEM, VanillaMaterialKeys.DIAMOND) }
+            define('B') { items { +HCItems.ETERNAL_UPGRADE } }
+            define('C') { items { +HCItems.IRIDESCENT_POWDER } }
+            result {
+                +HCItems.ETERNAL_UPGRADE
+                count = 2
+            }
+        }.save(output)
 
         CustomCraftingRecipeBuilder.customCrafting(RecipeCategory.MISC) { _, _ -> HCEternalSmithingRecipe }
             .unlockedBy(getHasName(HCItems.ETERNAL_UPGRADE), has(HCItems.ETERNAL_UPGRADE))
