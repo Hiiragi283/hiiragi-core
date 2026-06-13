@@ -1,14 +1,14 @@
 package hiiragi283.lib.color
 
 import hiiragi283.lib.collection.mutableEnumMapOf
-import hiiragi283.lib.registry.HTDeferredItem
 import hiiragi283.lib.registry.HTSimpleDeferredItem
 import hiiragi283.lib.resource.vanillaId
 import net.minecraft.world.item.DyeColor
 
 /**
+ * バニラの色付きアイテム向けに[HTColoredContents]をまとめたクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.15.0
+ * @since 26.1.0
  */
 data object VanillaColoredContents {
     @JvmStatic
@@ -50,9 +50,12 @@ data object VanillaColoredContents {
     @JvmStatic
     val WOOL: ColoredItemContents = ColoredItemContents("%s_wool")
 
+    /**
+     * [HTSimpleDeferredItem]に基づいだ[HTColoredContents]の実装クラスです。
+     */
     @JvmInline
     value class ColoredItemContents(private val map: Map<HTDefaultColor, HTSimpleDeferredItem>) : HTColoredContents<HTSimpleDeferredItem> {
-        constructor(path: String) : this(HTDefaultColor.entries.associateWithTo(mutableEnumMapOf()) { HTDeferredItem(vanillaId(path.replace("%s", it.serializedName))) })
+        constructor(path: String) : this(HTDefaultColor.entries.associateWithTo(mutableEnumMapOf()) { HTSimpleDeferredItem(vanillaId(path.replace("%s", it.serializedName))) })
 
         override fun get(color: HTDefaultColor): HTSimpleDeferredItem? = map[color]
 

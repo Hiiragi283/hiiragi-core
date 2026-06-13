@@ -11,6 +11,10 @@ import net.minecraft.world.level.block.state.BlockState
 
 /**
  * Hiiragi Seriesで使用される[EntityBlock]の拡張インターフェースです。
+ *
+ * 参考 : [Mekanism - IHasTileEntity](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/block/interfaces/IHasTileEntity.java)
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
  **/
 interface HTBlockWithEntity : EntityBlock {
     fun getBlockEntityType(): HTDeferredBlockEntityType<*>

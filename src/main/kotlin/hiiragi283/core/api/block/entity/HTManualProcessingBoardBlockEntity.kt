@@ -10,6 +10,7 @@ import hiiragi283.lib.transfer.holder.HTResourceSlotHolder
 import hiiragi283.lib.transfer.item.HTBasicItemSlot
 import hiiragi283.lib.transfer.item.HTItemSlot
 import hiiragi283.lib.transfer.useTransaction
+import hiiragi283.lib.util.getOrElse
 import hiiragi283.lib.world.HTItemDropHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
@@ -30,8 +31,7 @@ abstract class HTManualProcessingBoardBlockEntity(lookup: HTRecipeLookup<HTItemT
 
     override fun createItemHandler(listener: Runnable): HTResourceSlotHolder<HTItemSlot> {
         slot = HTBasicItemSlot.input(listener, canInsert = { resource: ItemResource ->
-            val level: ServerLevel = this.getServerLevel() ?: return@input false
-            cache.findFirstRecipe(resource, level) != null
+            this.getServerLevel().map { cache.findFirstRecipe(resource, it) != null }.getOrElse { false }
         })
         return object : HTResourceSlotHolder<HTItemSlot> {
             override fun getSlots(side: Direction?): List<HTItemSlot> = listOf(slot)
@@ -48,12 +48,10 @@ abstract class HTManualProcessingBoardBlockEntity(lookup: HTRecipeLookup<HTItemT
     protected val inputHandler: HTItemInputHandler by lazy { HTItemInputHandler(slot) }
 
     fun processItem(player: Player, hand: InteractionHand): Boolean {
-        val level: ServerLevel = this.getServerLevel() ?: return false
-
         val input: ItemStack = slot.getStack()
         val tool: ItemStack = player.getItemInHand(hand)
         if (!canProcessWithTool(tool)) return false
-        val recipe: HTItemToChancedItemsRecipe = cache.findFirstRecipe(input, level) ?: return false
+        val recipe: HTItemToChancedItemsRecipe = this.getServerLevel().map { cache.findFirstRecipe(input, it) }.getOrNull() ?: return false
         // outputs
         for (stackIn: ItemStack in recipe.assemble(input)) {
             HTItemDropHelper.giveStackTo(player, stackIn)

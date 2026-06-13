@@ -12,7 +12,11 @@ import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.Property
 
 /**
- * @see DirectionalBlock
+ * [DirectionalBlock]をコピーした[HTBasicEntityBlock]の拡張クラスです。
+ *
+ * 参考 : [Minecraft - DirectionalBlock][DirectionalBlock]
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
  */
 open class HTDirectionalEntityBlock(type: HTDeferredBlockEntityType<*>, properties: Properties) : HTBasicEntityBlock(type, properties) {
     companion object {

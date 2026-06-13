@@ -18,6 +18,13 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.redstone.Orientation
 import net.minecraft.world.phys.BlockHitResult
 
+/**
+ * Hiiragi Seriesで使用される[HTBlockWithEntity]の実装クラスです。
+ *
+ * 参考 : [Mekanism - BlockTile](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/block/prefab/BlockTile.java)
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, properties: Properties) :
     Block(properties),
     HTBlockWithEntity {

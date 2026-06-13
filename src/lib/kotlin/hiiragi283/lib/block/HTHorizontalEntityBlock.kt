@@ -12,7 +12,11 @@ import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.Property
 
 /**
- * @see HorizontalDirectionalBlock
+ * [HorizontalDirectionalBlock]をコピーした[HTBasicEntityBlock]の拡張クラスです。
+ *
+ * 参考 : [Minecraft - HorizontalDirectionalBlock][HorizontalDirectionalBlock]
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
  */
 open class HTHorizontalEntityBlock(type: HTDeferredBlockEntityType<*>, properties: Properties) : HTBasicEntityBlock(type, properties) {
     companion object {

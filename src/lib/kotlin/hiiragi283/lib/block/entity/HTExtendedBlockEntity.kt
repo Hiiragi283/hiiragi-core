@@ -22,6 +22,13 @@ import net.minecraft.world.level.storage.ValueOutput
 import net.neoforged.neoforge.network.PacketDistributor
 import org.slf4j.Logger
 
+/**
+ * Hiiragi Seriesで使用される[BlockEntity]の拡張クラスです。
+ *
+ * 参考 : [Mekanism - TileEntityUpdateable](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/tile/base/TileEntityUpdateable.java)
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 abstract class HTExtendedBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, blockState: BlockState) :
     BlockEntity(type, worldPosition, blockState),
     HTAbstractBlockEntity {
@@ -32,30 +39,59 @@ abstract class HTExtendedBlockEntity(type: BlockEntityType<*>, worldPosition: Bl
 
     //    Extensions    //
 
+    /**
+     * セーブ時に値を書き込みます。
+     * @param output 値の書き込み先
+     */
     protected open fun writeValue(output: ValueOutput) {}
 
+    /**
+     * ロード時に値を読み取ります。
+     * @param input 値の読み取り元
+     */
     protected open fun readValue(input: ValueInput) {}
 
     fun createReporter(): ProblemReporter = ProblemReporter.ScopedCollector(this.problemPath(), LOGGER)
 
+    /**
+     * [writeReducedUpdateTag]に基づいた更新用のNBTを作成します。
+     */
     fun createReducedUpdateTag(registries: HolderLookup.Provider): CompoundTag = TagValueOutput.createWithContext(createReporter(), registries)
         .also(::writeReducedUpdateTag)
         .buildResult()
 
+    /**
+     * 更新時に値を書き込みます。
+     * @param output 値の書き込み先
+     */
     open fun writeReducedUpdateTag(output: ValueOutput) {}
 
+    /**
+     * 更新時に値を読み取ります。
+     * @param input 値の読み取り元
+     */
     open fun readUpdateTag(input: ValueInput) {}
 
+    /**
+     * 更新用のパケットを送ります。
+     * @param level パケットの送り元となるレベル
+     */
     fun sendUpdatePacket(level: ServerLevel) {
         if (isRemoved) return
         val payload: HTUpdateBlockEntityPacket = HTUpdateBlockEntityPacket.create(this) ?: return
         PacketDistributor.sendToPlayersTrackingChunk(level, ChunkPos.containing(blockPos), payload)
     }
 
+    /**
+     * 赤石信号を更新せずに保存のフラグを立てます。
+     */
     protected fun setOnlySave() {
         setChanged(false)
     }
 
+    /**
+     * 赤石信号を更新しつつ保存のフラグを立てます。
+     */
     override fun setChanged() {
         setChanged(true)
     }
@@ -63,7 +99,7 @@ abstract class HTExtendedBlockEntity(type: BlockEntityType<*>, worldPosition: Bl
     private var lastSaveTime: Long = 0
 
     protected open fun setChanged(updateComparator: Boolean) {
-        val level: Level = this.getLevel() ?: return
+        val level: Level = this.level ?: return
         val time: Long = level.gameTime
         if (lastSaveTime != time) {
             level.blockEntityChanged(blockPos)
@@ -72,6 +108,9 @@ abstract class HTExtendedBlockEntity(type: BlockEntityType<*>, worldPosition: Bl
         if (updateComparator && !level.isClientSide) markDirtyComparator()
     }
 
+    /**
+     * 赤石信号が更新されるときに呼び出されます。
+     */
     protected open fun markDirtyComparator() {}
 
     /**

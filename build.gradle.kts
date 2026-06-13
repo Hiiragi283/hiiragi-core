@@ -364,12 +364,26 @@ publishMods {
 
     file.set(tasks.jar.flatMap { it.archiveFile })
     additionalFiles.from(tasks.named<Jar>("sourcesJar").flatMap { it.archiveFile })
-    type.set(ReleaseType.STABLE)
+    changelog.set(providers.gradleProperty("CHANGELOG").orElse(""))
+    type.set(ReleaseType.ALPHA)
     modLoaders.add("neoforge")
 
+    curseforge {
+        accessToken.set(providers.gradleProperty("CURSEFORGE_TOKEN"))
+        projectId.set(providers.gradleProperty("CURSEFORGE_HIIRAGI_CORE"))
+        minecraftVersions.add(mcVersion)
+        changelogType = "markdown"
+
+        javaVersions.add(JavaVersion.VERSION_25)
+        client = true
+        server = true
+
+        requires("kotlin-for-forge")
+        optional("jei")
+    }
     modrinth {
-        projectId.set(modId)
-        accessToken.set(providers.environmentVariable("MODRINTH_TOKEN"))
+        accessToken.set(providers.gradleProperty("MODRINTH_TOKEN"))
+        projectId.set(providers.gradleProperty("MODRINTH_HIIRAGI_CORE"))
         minecraftVersions.add(mcVersion)
 
         requires("kotlin-for-forge")

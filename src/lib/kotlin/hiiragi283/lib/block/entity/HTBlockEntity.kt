@@ -30,6 +30,13 @@ import net.neoforged.neoforge.transfer.fluid.FluidResource
 import net.neoforged.neoforge.transfer.item.ItemResource
 import net.neoforged.neoforge.transfer.item.ItemUtil
 
+/**
+ * [HTExtendedBlockEntity]の拡張クラスです。
+ *
+ * 参考 : [Mekanism - TileEntityMekanism](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/tile/base/TileEntityMekanism.java)
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, blockState: BlockState) :
     HTExtendedBlockEntity(type, worldPosition, blockState),
     Nameable,
@@ -39,9 +46,6 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
     //    Ticking    //
 
     companion object {
-        /**
-         * @see mekanism.common.tile.base.TileEntityMekanism.tickClient
-         */
         @JvmStatic
         fun tickClient(
             level: Level,
@@ -53,9 +57,6 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
             blockEntity.ticks++
         }
 
-        /**
-         * @see mekanism.common.tile.base.TileEntityMekanism.tickServer
-         */
         @JvmStatic
         fun tickServer(
             level: Level,
@@ -75,8 +76,15 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
     var ticks: Int = 0
         protected set
 
+    /**
+     * クライアント側でのティック処理を行います。
+     */
     protected open fun onUpdateClient(level: Level, pos: BlockPos, state: BlockState) {}
 
+    /**
+     * サーバー側でのティック処理を行います。
+     * @return クライアント側へ更新を同期する場合は`true`
+     */
     protected abstract fun onUpdateServer(level: ServerLevel, pos: BlockPos, state: BlockState): Boolean
 
     //    Save & Read    //
@@ -138,6 +146,9 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
         itemHandlerManager = createItemHandler(::setOnlySave)?.let(::HTResourceCapabilityManager)
     }
 
+    /**
+     * [fluidHandlerManager]や[itemHandlerManager]が初期化される前に変数を初期化します。
+     */
     protected open fun initializeVariables() {}
 
     // Fluid
@@ -167,6 +178,9 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
         onBlockRemoved(state, level, pos)
     }
 
+    /**
+     * ブロックが削除されたときに呼び出されます。
+     */
     open fun onBlockRemoved(state: BlockState, level: Level, pos: BlockPos) {
         if (shouldDrop(state, level, pos)) {
             val handler: ItemResourceHandler = getItemHandler(null) ?: return
@@ -176,5 +190,8 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
         }
     }
 
+    /**
+     * アイテムをドロップするかどうか判定します。
+     */
     protected open fun shouldDrop(state: BlockState, level: Level, pos: BlockPos): Boolean = true
 }

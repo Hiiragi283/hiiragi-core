@@ -6,7 +6,7 @@ import net.minecraft.world.item.DyeColor
  * 色のバリエーションを持つ要素をまとめるインターフェースです。
  * @param T 要素のクラス
  * @author Hiiragi Tsubasa
- * @since 0.15.0
+ * @since 26.1.0
  */
 interface HTColoredContents<out T> : Iterable<Pair<HTDefaultColor, T>> {
     /**
@@ -24,7 +24,7 @@ interface HTColoredContents<out T> : Iterable<Pair<HTDefaultColor, T>> {
     /**
      * [DyeColor]に基づいた[HTColoredContents]の拡張インターフェースです。
      * @author Hiiragi Tsubasa
-     * @since 0.15.0
+     * @since 26.1.0
      */
     fun interface Simple<out T> : HTColoredContents<T> {
         override fun get(color: HTDefaultColor): T? = color.dyeColor.let(::get)

@@ -11,9 +11,10 @@ import net.neoforged.neoforge.common.util.FakePlayerFactory
 
 /**
  * 所有者を保持するインターフェースです。
+ *
+ * 参考 : [Minecraft - OwnableEntity][net.minecraft.world.entity.OwnableEntity]
  * @author Hiiragi Tsubasa
- * @since 0.1.0
- * @see net.minecraft.world.entity.OwnableEntity
+ * @since 26.1.0
  */
 fun interface HTOwnedBlockEntity {
     companion object {
