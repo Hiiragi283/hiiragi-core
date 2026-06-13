@@ -17,6 +17,11 @@ import net.neoforged.neoforge.common.crafting.CompoundIngredient
 import net.neoforged.neoforge.common.crafting.ICustomIngredient
 import net.neoforged.neoforge.registries.holdersets.OrHolderSet
 
+/**
+ * [Ingredient]および[HTItemIngredient]を作成するビルダークラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.1
+ */
 @HTBuilderMarker
 class IngredientBuilder {
     private var contents: Either<ICustomIngredient, HolderSet<Item>> by HTDelegates.onceInitialize()

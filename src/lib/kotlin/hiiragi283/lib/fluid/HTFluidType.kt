@@ -11,15 +11,14 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidType
 
 /**
- * Hiiragi Coreとそれを前提とするmodで使用される[FluidType]の拡張クラスです。
+ * Hiiragi Seriesで使用される[FluidType]の拡張クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.10.0
+ * @since 26.1.0
  */
 open class HTFluidType(properties: Properties) : FluidType(properties) {
     /**
      * 表示名の色を取得します。
      * @return 色を付けない場合は`null`
-     * @since 0.15.2
      */
     protected open fun getNameColor(stack: FluidStack): TextColor? = null
 

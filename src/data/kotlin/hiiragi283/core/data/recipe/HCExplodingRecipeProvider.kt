@@ -51,7 +51,7 @@ class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFutur
 
         // Diamond
         HCExplodingRecipeBuilder.create {
-            +materialPart(HiiragiCoreTags.MaterialContents.COALS, CommonPartKeys.FUEL, CommonPartKeys.DUST)
+            ingredient { +materialPart(HiiragiCoreTags.MaterialContents.COALS, CommonPartKeys.FUEL, CommonPartKeys.DUST) }
             result {
                 +HTItemResult.MaterialPart(CommonPartKeys.GEM, VanillaMaterialKeys.DIAMOND)
                 chance = fraction(1, 64)

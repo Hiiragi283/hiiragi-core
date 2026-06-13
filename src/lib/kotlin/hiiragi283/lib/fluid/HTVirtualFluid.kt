@@ -21,7 +21,7 @@ import net.neoforged.neoforge.fluids.FluidType
 /**
  * 設置不可能な液体を表す[Fluid]の拡張クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.9.0
+ * @since 26.1.0
  */
 class HTVirtualFluid(private val typeGetter: Supplier<out FluidType>, private val bucketGetter: Supplier<out Item>) : Fluid() {
     override fun getBucket(): Item = bucketGetter.get()

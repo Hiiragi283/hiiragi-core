@@ -9,6 +9,11 @@ import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStackTemplate
 import net.neoforged.neoforge.fluids.FluidType
 
+/**
+ * [HTFluidResult]を作成するビルダークラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.1
+ */
 @HTBuilderMarker
 class HTFluidResultBuilder {
     @PublishedApi internal var result: HTFluidResult by Delegates.notNull()

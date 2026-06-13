@@ -20,9 +20,18 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidStackTemplate
 import net.neoforged.neoforge.fluids.FluidType
 
+/**
+ * [FluidStackTemplate]や[FluidStack]向けのビルダークラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.1
+ */
 @HTBuilderMarker
 class FluidInstanceBuilder : HolderAccepter.FluidAccepter {
     companion object {
+        /**
+         * [FluidStackTemplate]を作成します。
+         * @throws IllegalStateException 液体が空の場合，または量が`0`以下の場合
+         */
         @JvmStatic
         inline fun buildTemplate(builderAction: FluidInstanceBuilder.() -> Unit): FluidStackTemplate {
             contract {
@@ -31,6 +40,9 @@ class FluidInstanceBuilder : HolderAccepter.FluidAccepter {
             return FluidInstanceBuilder().apply(builderAction).run { FluidStackTemplate(fluid, amount, patch) }
         }
 
+        /**
+         * [FluidStackTemplate]を作成します。
+         */
         @Suppress("DEPRECATION")
         @JvmStatic
         inline fun buildSafeTemplate(builderAction: FluidInstanceBuilder.() -> Unit): HTTextResult<FluidStackTemplate> {
@@ -44,6 +56,9 @@ class FluidInstanceBuilder : HolderAccepter.FluidAccepter {
             }
         }
 
+        /**
+         * [FluidStack]を作成します。
+         */
         @JvmStatic
         inline fun buildStack(builderAction: FluidInstanceBuilder.() -> Unit): FluidStack {
             contract {

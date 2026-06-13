@@ -10,6 +10,11 @@ import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.level.ItemLike
 import org.apache.commons.lang3.math.Fraction
 
+/**
+ * [HTItemResult]を作成するビルダークラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.1
+ */
 @HTBuilderMarker
 class HTItemResultBuilder {
     @PublishedApi internal var result: HTItemResult by Delegates.notNull()

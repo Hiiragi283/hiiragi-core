@@ -5,8 +5,14 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 import net.minecraft.world.item.crafting.Recipe
 
+/**
+ * [HTProgressData]を使用するレシピ向けの，[HTRecipeBuilder]の拡張クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 abstract class HTProgressRecipeBuilder<out RECIPE : Recipe<*>>(prefix: String) : HTRecipeBuilder<RECIPE>(prefix) {
     protected var progressData: HTProgressData = HTProgressData.time(20 * 10)
+        private set
 
     var energy: Int by object : ReadWriteProperty<Any?, Int> {
         override fun getValue(thisRef: Any?, property: KProperty<*>): Int = when (progressData) {

@@ -9,19 +9,43 @@ import net.minecraft.world.item.crafting.Recipe
 import net.neoforged.neoforge.common.conditions.ICondition
 
 /**
- * @see RecipeOutput
+ * レシピの出力先を表すインターフェースです。
+ *
+ * 参照 : [Minecraft - RecipeOutput][RecipeOutput]
+ * @author Hiiragi Tsubasa
+ * @since 26.1.1
  */
 fun interface HTRecipeExporter {
+    /**
+     * 受け取ったレシピを処理します。
+     * @param key 受け取ったレシピのID
+     * @param recipe 受け取ったレシピの値
+     * @param conditions レシピを読み込む条件の一覧
+     */
     fun accept(key: RecipeKey, recipe: Recipe<*>, conditions: List<ICondition>)
 
+    /**
+     * 受け取ったレシピを処理します。
+     * @param key 受け取ったレシピのID
+     * @param recipe 受け取ったレシピの値
+     */
     fun accept(key: RecipeKey, recipe: Recipe<*>) {
         accept(key, recipe, listOf())
     }
 
+    /**
+     * 受け取ったレシピを処理します。
+     * @param id 受け取ったレシピのID
+     * @param recipe 受け取ったレシピの値
+     * @param conditions レシピを読み込む条件の一覧
+     */
     fun accept(id: Identifier, recipe: Recipe<*>, conditions: List<ICondition> = listOf()) {
         accept(RecipeKey(id), recipe, conditions)
     }
 
+    /**
+     * [RecipeOutput]に変換します。
+     */
     fun asOutput(): RecipeOutput = object : RecipeOutput {
         override fun accept(key: RecipeKey, recipe: Recipe<*>, advancement: AdvancementHolder?, vararg conditions: ICondition) {
             this@HTRecipeExporter.accept(key, recipe, conditions.toList())

@@ -7,7 +7,7 @@ import net.minecraft.resources.Identifier
 /**
  * スロットやタンクの背景の種類を表すクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.8.0
+ * @since 26.1.0
  */
 enum class HTBackgroundType(val isInput: Boolean, val isOutput: Boolean) {
     BOTH(true, true),

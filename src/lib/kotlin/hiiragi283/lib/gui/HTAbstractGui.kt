@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack
 /**
  * GUIを表すインターフェースです。
  * @author Hiiragi Tsubasa
- * @since 0.11.0
+ * @since 26.1.0
  */
 interface HTAbstractGui {
     /**

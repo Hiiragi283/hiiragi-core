@@ -3,7 +3,7 @@ package hiiragi283.lib.gui
 /**
  * GUI上での座標に関するクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.8.0
+ * @since 26.1.0
  */
 data object HTSlotHelper {
     @JvmStatic

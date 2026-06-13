@@ -10,13 +10,19 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import net.minecraft.core.NonNullList
-import net.minecraft.data.recipes.RecipeBuilder
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.ShapelessRecipe
 
+/**
+ * 不定形レシピ向けの[HTRecipeBuilder]の実装クラスです。
+ *
+ * 参照 : [Minecraft - ShapelessRecipeBuilder][net.minecraft.data.recipes.ShapelessRecipeBuilder]
+ * @author Hiiragi Tsubasa
+ * @since 26.1.1
+ */
 class HTShapelessRecipeBuilder : HTRecipeBuilder<ShapelessRecipe>(HTConstants.SHAPELESS) {
     companion object {
         @JvmStatic
@@ -28,7 +34,14 @@ class HTShapelessRecipeBuilder : HTRecipeBuilder<ShapelessRecipe>(HTConstants.SH
         }
     }
 
+    /**
+     * レシピ本のカテゴリ
+     */
     var category: RecipeCategory = RecipeCategory.MISC
+
+    /**
+     * レシピ本でのグループ
+     */
     var group: String? = null
 
     @PublishedApi internal var result: ItemStackTemplate by HTDelegates.onceInitialize()
@@ -60,8 +73,8 @@ class HTShapelessRecipeBuilder : HTRecipeBuilder<ShapelessRecipe>(HTConstants.SH
     override fun getPrimalId(): Identifier = result.item().getKeyOrThrow().identifier()
 
     override fun createRecipe(): ShapelessRecipe = ShapelessRecipe(
-        RecipeBuilder.createCraftingCommonInfo(true),
-        RecipeBuilder.createCraftingBookInfo(category, group),
+        commonInfo(true),
+        bookInfo(category, group),
         result,
         NonNullList.copyOf(ingredients),
     )

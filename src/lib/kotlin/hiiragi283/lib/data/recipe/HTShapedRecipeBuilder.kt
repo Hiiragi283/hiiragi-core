@@ -9,7 +9,6 @@ import hiiragi283.lib.util.HTDelegates
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
-import net.minecraft.data.recipes.RecipeBuilder
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStackTemplate
@@ -17,6 +16,13 @@ import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.ShapedRecipe
 import net.minecraft.world.item.crafting.ShapedRecipePattern
 
+/**
+ * 定形レシピ向けの[HTRecipeBuilder]の実装クラスです。
+ *
+ * 参照 : [Minecraft - ShapedRecipeBuilder][net.minecraft.data.recipes.ShapedRecipeBuilder]
+ * @author Hiiragi Tsubasa
+ * @since 26.1.1
+ */
 class HTShapedRecipeBuilder : HTRecipeBuilder<ShapedRecipe>(HTConstants.SHAPED) {
     companion object {
         @JvmStatic
@@ -28,7 +34,14 @@ class HTShapedRecipeBuilder : HTRecipeBuilder<ShapedRecipe>(HTConstants.SHAPED) 
         }
     }
 
+    /**
+     * レシピ本のカテゴリ
+     */
     var category: RecipeCategory = RecipeCategory.MISC
+
+    /**
+     * レシピ本でのグループ
+     */
     var group: String? = null
 
     @PublishedApi internal val patterns: MutableList<String> = mutableListOf()
@@ -71,8 +84,8 @@ class HTShapedRecipeBuilder : HTRecipeBuilder<ShapedRecipe>(HTConstants.SHAPED) 
     override fun getPrimalId(): Identifier = result.item().getKeyOrThrow().identifier()
 
     override fun createRecipe(): ShapedRecipe = ShapedRecipe(
-        RecipeBuilder.createCraftingCommonInfo(true),
-        RecipeBuilder.createCraftingBookInfo(category, group),
+        commonInfo(true),
+        bookInfo(category, group),
         ShapedRecipePattern.of(keys, patterns),
         result,
     )

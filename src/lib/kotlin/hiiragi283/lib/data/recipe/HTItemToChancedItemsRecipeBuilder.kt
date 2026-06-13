@@ -13,6 +13,11 @@ import kotlin.contracts.contract
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.Recipe
 
+/**
+ * 単一のアイテムから複数の確率付きアイテムを生成するレシピ向けの，[HTProgressRecipeBuilder]の拡張クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 class HTItemToChancedItemsRecipeBuilder<out RECIPE : Recipe<*>>(prefix: String, private val factory: Factory<RECIPE>) : HTProgressRecipeBuilder<RECIPE>(prefix) {
     @PublishedApi internal var ingredient: HTItemIngredient by HTDelegates.onceInitialize()
 
