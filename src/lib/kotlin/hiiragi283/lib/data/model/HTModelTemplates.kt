@@ -6,7 +6,11 @@ import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemp
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder
 
 /**
- * @see TexturedModel
+ * Hiiragi Seriesで使用される[ExtendedModelTemplate]をまとめたクラスです。
+ *
+ * 参照 : [Minecraft - TexturedModel][TexturedModel]
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
  */
 data object HTModelTemplates {
     @JvmField

@@ -11,6 +11,12 @@ import net.minecraft.data.tags.TagsProvider
 import net.minecraft.tags.TagEntry
 import net.minecraft.tags.TagKey
 
+/**
+ * Hiiragi Seriesで使用される[TagsProvider]の拡張クラスです。
+ * @param T レジストリの要素のクラス
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 abstract class HTTagsProvider<T : Any> : TagsProvider<T> {
     companion object {
         /**
@@ -40,12 +46,30 @@ abstract class HTTagsProvider<T : Any> : TagsProvider<T> {
         }
     }
 
+    /**
+     * 生成するタグを登録します。
+     */
     protected abstract fun appendTags(registries: HolderLookup.Provider)
 
+    /**
+     * 新しい[HTTagBuilder]のインスタンスを作成します。
+     * @param tagKey 生成対象のタグ
+     */
     protected fun tag(tagKey: TagKey<T>): HTTagBuilder<T> = HTTagBuilder { entry: TagEntry -> entryCache.put(tagKey, entry) }
 
+    /**
+     * 新しい[HTTagBuilder]のインスタンスを作成します。
+     * @param prefix タグのプレフィックス
+     * @param material タグの種類を表す素材
+     */
     protected fun tags(prefix: HTTagPrefix, material: HTMaterialKey): HTTagBuilder<T> = tags(prefix.rawCommonTag.create(registryKey), prefix.createTagKey(registryKey, material))
 
+    /**
+     * 新しい[HTTagBuilder]のインスタンスを作成します。
+     * @param tagKey 起点となるタグ
+     * @param children [tagKey]からチェインして生成するタグ
+     * @return [children]の最後の値に対する[HTTagBuilder]
+     */
     protected fun tags(tagKey: TagKey<T>, vararg children: TagKey<T>): HTTagBuilder<T> = children.fold(tag(tagKey)) { builder: HTTagBuilder<T>, tagKeyIn: TagKey<T> ->
         builder.addTag(tagKeyIn)
         tag(tagKeyIn)

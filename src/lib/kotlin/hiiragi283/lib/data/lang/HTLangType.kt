@@ -1,9 +1,9 @@
 package hiiragi283.lib.data.lang
 
 /**
- * 言語の種類を表す列挙型クラスです。
+ * 言語の種類を表すクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.8.0
+ * @since 26.1.0
  */
 @JvmInline
 value class HTLangType(val name: String) : Comparable<HTLangType> {

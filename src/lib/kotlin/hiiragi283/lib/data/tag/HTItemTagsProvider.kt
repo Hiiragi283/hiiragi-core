@@ -15,7 +15,11 @@ import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
 
 /**
- * @see net.neoforged.neoforge.common.data.BlockTagCopyingItemTagProvider
+ * [Item]向けの[HTTagBuilder]の拡張クラスです。
+ *
+ * 参照 : [NeoForge - BlockTagCopyingItemTagProvider][net.neoforged.neoforge.common.data.BlockTagCopyingItemTagProvider]
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
  */
 abstract class HTItemTagsProvider : HTTagsProvider<Item> {
     private val blockTags: CompletableFuture<TagLookup<Block>>
@@ -29,19 +33,37 @@ abstract class HTItemTagsProvider : HTTagsProvider<Item> {
         this.blockTags = contentsGetter
     }
 
+    /**
+     * コピーするタグを追加します。
+     * @param prefix タグのプレフィックス
+     * @param material タグの種類を表す素材
+     */
     protected fun copy(prefix: HTTagPrefix, material: HTMaterialKey) {
         this.copy(prefix.rawCommonTag)
         this.copy(prefix.materialTag(material))
     }
 
+    /**
+     * コピーするタグを追加します。
+     * @param tagKey コピーするタグ
+     */
     protected fun copy(tagKey: RawTagKey) {
         this.copy(tagKey.create(Registries.BLOCK), tagKey.create(Registries.ITEM))
     }
 
+    /**
+     * コピーするタグを追加します。
+     * @param blockTag コピー元となるブロックのタグ
+     * @param itemTag コピー先となるアイテムのタグ
+     */
     protected fun copy(blockTag: TagKey<Block>, itemTag: TagKey<Item>) {
         tagsToCopy[blockTag] = itemTag
     }
 
+    /**
+     * 指定した要素をタグに追加します。
+     * @param item アイテムの値
+     */
     @Suppress("DEPRECATION")
     protected fun HTTagBuilder<Item>.addItem(item: ItemLike): HTTagBuilder<Item> = this.add(item.asItem().toLike())
 

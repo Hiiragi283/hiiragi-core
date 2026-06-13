@@ -15,7 +15,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries
  * @param placedKey 構造物を生成する条件を決定する[PlacedFeature]の[ResourceKey]
  * @param modifierKey 構造物を生成する環境や段階を決定する[BiomeModifier]の[ResourceKey]
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 26.1.0
  */
 data class HTWorldGenData(
     val configuredKey: ResourceKey<ConfiguredFeature<*, *>>,

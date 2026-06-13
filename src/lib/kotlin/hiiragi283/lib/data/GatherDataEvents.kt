@@ -9,9 +9,10 @@ import net.minecraft.util.context.ContextKeySet
 import net.neoforged.neoforge.data.event.GatherDataEvent
 
 /**
- * この[GatherDataEvent][this]に[LootTableProvider]を登録します。
+ * [LootTableProvider]を登録します。
+ * @param pairs [LootTableSubProvider]と[ContextKeySet]のペアの一覧
  * @author Hiiragi Tsubasa
- * @since 0.15.2
+ * @since 26.1.0
  */
 fun GatherDataEvent.createLootTables(
     vararg pairs: Pair<(HolderLookup.Provider) -> LootTableSubProvider, ContextKeySet>,

@@ -3,7 +3,7 @@ package hiiragi283.lib.data.lang
 /**
  * 受け取った文字列で`%s`を置換した文字列を返す処理を表すインターフェースです。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 26.1.0
  */
 fun interface HTLangPatternProvider {
     /**
@@ -25,22 +25,25 @@ fun interface HTLangPatternProvider {
         val IDENTITY = HTLangPatternProvider { _, value -> value }
 
         /**
-         * 指定した[enPattern]と[jaPattern]から[HTLangPatternProvider]の新しいインスタンスを作成します。
-         * @since 0.7.0
+         * 新しい[HTLangPatternProvider]のインスタンスを作成します。
+         * @param enPattern 英語での翻訳名のパターン
+         * @param jaPattern 日本語での翻訳名のパターン
          */
         @JvmStatic
         fun create(enPattern: String, jaPattern: String): HTLangPatternProvider = create(enPattern, HTLangTypes.JA_JP to jaPattern)
 
         /**
-         * 指定した[enPattern]と[others]から[HTLangPatternProvider]の新しいインスタンスを作成します。
-         * @since 0.8.0
+         * 新しい[HTLangPatternProvider]のインスタンスを作成します。
+         * @param enPattern 英語での翻訳名のパターン
+         * @param others 英語以外での翻訳名のパターン
          */
         @JvmStatic
         fun create(enPattern: String, vararg others: Pair<HTLangType, String>): HTLangPatternProvider = create(enPattern, mapOf(*others))
 
         /**
-         * 指定した[enPattern]と[others]から[HTLangPatternProvider]の新しいインスタンスを作成します。
-         * @since 0.8.0
+         * 新しい[HTLangPatternProvider]のインスタンスを作成します。
+         * @param enPattern 英語での翻訳名のパターン
+         * @param others 英語以外での翻訳名のパターン
          */
         @JvmStatic
         fun create(enPattern: String, others: Map<HTLangType, String>): HTLangPatternProvider = HTLangPatternProvider { type: HTLangType, value: String -> (others[type] ?: enPattern).replace("%s", value) }

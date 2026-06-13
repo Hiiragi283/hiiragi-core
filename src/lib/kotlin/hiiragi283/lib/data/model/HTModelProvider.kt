@@ -24,23 +24,47 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.client.model.item.DynamicFluidContainerModel
 
+/**
+ * Hiiragi Seriesで使用される[ModelProvider]の拡張クラスです。。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvider(output, modId) {
     abstract override fun registerModels(blockModels: BlockModelGenerators, itemModels: ItemModelGenerators)
 
     //    Block    //
 
+    /**
+     * ブロックJSONを生成します。
+     * @param block ブロックのインスタンス
+     * @param modelId 使用するモデルのID
+     */
     fun BlockModelGenerators.createSimple(block: Block, modelId: Identifier) {
         this.createSimple(block, BlockModelGenerators.plainVariant(modelId))
     }
 
+    /**
+     * ブロックJSONを生成します。
+     * @param block ブロックの提供元
+     * @param variant マルチパート形式のヴァリアント
+     */
     fun BlockModelGenerators.createSimple(block: Block, variant: MultiVariant) {
         this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, variant))
     }
 
+    /**
+     * ブロックJSONを生成します。
+     * @param block ブロックの提供元
+     * @param modelId 使用するモデルのID
+     */
     fun BlockModelGenerators.createAltModel(block: SupplierWithId<Block>, modelId: Identifier = block.blockId) {
         this.createSimple(block.get(), modelId)
     }
 
+    /**
+     * 液体ブロックのブロックJSONを生成します。
+     * @param fluidBlock 液体ブロックの提供元
+     */
     fun BlockModelGenerators.createFluid(fluidBlock: SupplierWithId<Block>) {
         this.createAltModel(
             fluidBlock,
@@ -54,10 +78,22 @@ abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvide
 
     //    Item    //
 
+    /**
+     * アイテムJSONを生成します。
+     * @param item アイテムの提供元
+     * @param layer モデルのテクスチャのパス
+     * @param template 使用するモデルのテンプレート
+     */
     fun ItemModelGenerators.generateFlatItem(item: SupplierWithId<Item>, layer: Identifier = item.itemId, template: ModelTemplate = ModelTemplates.FLAT_ITEM) {
         this.itemModelOutput.accept(item.get(), ItemModelUtils.plainModel(this.createFlatItemModel(item, layer, template)))
     }
 
+    /**
+     * アイテムJSONを生成します。
+     * @param item アイテムのIDの提供元
+     * @param layers モデルのテクスチャのパス
+     * @throws IllegalStateException [layers]のサイズが`0`または`4`以上の場合
+     */
     fun ItemModelGenerators.generateLayeredItem(item: SupplierWithId<Item>, vararg layers: Identifier) {
         val (mapping: TextureMapping, template: ModelTemplate) = when (layers.size) {
             1 -> TextureMapping.layer0(Material(layers[0])) to ModelTemplates.FLAT_ITEM
@@ -68,12 +104,24 @@ abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvide
         this.itemModelOutput.accept(item.get(), ItemModelUtils.plainModel(template.create(item.itemId, mapping, this.modelOutput)))
     }
 
+    /**
+     * アイテムのモデルJSONを生成します。
+     * @param item アイテムのIDの提供元
+     * @param layer モデルのテクスチャのパス
+     * @param template 使用するモデルのテンプレート
+     * @return モデルのパス
+     */
     fun ItemModelGenerators.createFlatItemModel(
         item: HTIdLike,
         layer: Identifier = item.itemId,
         template: ModelTemplate = ModelTemplates.FLAT_ITEM,
     ): Identifier = template.create(item.itemId, TextureMapping.layer0(Material(layer)), this.modelOutput)
 
+    /**
+     * 液体入りバケツのアイテムJSONを登録します。
+     * @param content 液体を保持するインスタンス
+     * @param isDrip `true`の場合，溶岩バケツのようなテクスチャを割り当てる
+     */
     fun ItemModelGenerators.generateBucketItem(content: HTFluidContent, isDrip: Boolean) {
         fun material(namespace: String, path: String): Optional<Material> = Optional.of(namespace.toId(HTConstants.ITEM, path).let(::Material))
 

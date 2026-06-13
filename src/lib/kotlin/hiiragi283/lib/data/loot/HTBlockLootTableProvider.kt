@@ -12,9 +12,10 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.storage.loot.LootTable
 
 /**
- * Hiiragi Coreとそれを前提とするmodで使用される[BlockLootSubProvider]の拡張クラスです。
+ * Hiiragi Seriesで使用される[BlockLootSubProvider]の拡張クラスです。
+ * @param rawBlocks この[HTBlockLootTableProvider]で登録するブロックの一覧
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 26.1.0
  */
 abstract class HTBlockLootTableProvider(
     registries: HolderLookup.Provider,
@@ -31,13 +32,9 @@ abstract class HTBlockLootTableProvider(
 
     /**
      * 幸運エンチャントのインスタンス
-     * @since 0.10.0
      */
     val fortune: Holder<Enchantment> by lazy { registries.holderOrThrow(Enchantments.FORTUNE) }
 
-    /**
-     * ブロックをそのままドロップするルートテーブルを指定します。
-     */
     protected fun dropSelf(like: Supplier<out Block>) {
         dropSelf(like.get())
     }

@@ -15,6 +15,11 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifier
 import net.neoforged.neoforge.common.world.BiomeModifier
 import net.neoforged.neoforge.common.world.BiomeModifiers
 
+/**
+ * [HTWorldGenData]に基づいて地形生成物の登録を補助するクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 data object HTWorldGenHelper {
     //    ConfiguredFeature    //
 

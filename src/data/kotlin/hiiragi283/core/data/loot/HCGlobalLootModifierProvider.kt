@@ -10,10 +10,10 @@ import net.minecraft.world.entity.EntityType
 class HCGlobalLootModifierProvider(output: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : HTGlobalLootModifierProvider(output, registries, HiiragiCoreAPI.MOD_ID) {
     override fun start() {
         // Drops Elder Heart from Elder Guardian
-        add(HCGlobalLootTableProvider.ELDER_HEART, builder(EntityType.ELDER_GUARDIAN).toList())
+        add(HCGlobalLootTableProvider.ELDER_HEART, condition(EntityType.ELDER_GUARDIAN).toList())
         // Drops Eternal Upgrade from Ender Dragon
-        add(HCGlobalLootTableProvider.ETERNAL_UPGRADE, builder(EntityType.ENDER_DRAGON).toList())
+        add(HCGlobalLootTableProvider.ETERNAL_UPGRADE, condition(EntityType.ENDER_DRAGON).toList())
         // Drops Trader Catalog from Wandering Trader
-        add(HCGlobalLootTableProvider.TRADER_CATALOG, builder(EntityType.WANDERING_TRADER).toList())
+        add(HCGlobalLootTableProvider.TRADER_CATALOG, condition(EntityType.WANDERING_TRADER).toList())
     }
 }

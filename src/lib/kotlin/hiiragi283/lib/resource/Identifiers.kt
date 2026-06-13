@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package hiiragi283.lib.resource
 
 import net.minecraft.resources.Identifier
@@ -12,7 +14,7 @@ import net.minecraft.util.Util
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun String.toId(path: String): Identifier = Identifier.fromNamespaceAndPath(this, path)
+inline fun String.toId(path: String): Identifier = Identifier.fromNamespaceAndPath(this, path)
 
 /**
  * この[文字列][this]を[名前空間][Identifier.getNamespace]とした[ID][Identifier]を作成します。
@@ -22,7 +24,7 @@ fun String.toId(path: String): Identifier = Identifier.fromNamespaceAndPath(this
  */
 fun String.toId(vararg path: String): Identifier = this.toId(path.joinToString(separator = "/"))
 
-fun vanillaId(path: String): Identifier = Identifier.withDefaultNamespace(path)
+inline fun vanillaId(path: String): Identifier = Identifier.withDefaultNamespace(path)
 
 fun vanillaId(vararg path: String): Identifier = Identifier.withDefaultNamespace(path.joinToString(separator = "/"))
 
@@ -31,25 +33,25 @@ fun vanillaId(vararg path: String): Identifier = Identifier.withDefaultNamespace
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
-fun Identifier.toDescriptionKey(prefix: String): String = Util.makeDescriptionId(prefix, this)
+inline fun Identifier.toDescriptionKey(prefix: String): String = Util.makeDescriptionId(prefix, this)
 
 /**
  * この[ID][Identifier]を翻訳キーに変換します。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun Identifier.toDescriptionKey(prefix: String, suffix: String): String = "${Util.makeDescriptionId(prefix, this@toDescriptionKey)}.$suffix"
+inline fun Identifier.toDescriptionKey(prefix: String, suffix: String): String = "${Util.makeDescriptionId(prefix, this@toDescriptionKey)}.$suffix"
 
 /**
  * この[ResourceKey]を翻訳キーに変換します。
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
-fun ResourceKey<*>.toDescriptionKey(prefix: String): String = this.identifier().toDescriptionKey(prefix)
+inline fun ResourceKey<*>.toDescriptionKey(prefix: String): String = this.identifier().toDescriptionKey(prefix)
 
 /**
  * この[ResourceKey]を翻訳キーに変換します。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun ResourceKey<*>.toDescriptionKey(prefix: String, suffix: String): String = this.identifier().toDescriptionKey(prefix, suffix)
+inline fun ResourceKey<*>.toDescriptionKey(prefix: String, suffix: String): String = this.identifier().toDescriptionKey(prefix, suffix)

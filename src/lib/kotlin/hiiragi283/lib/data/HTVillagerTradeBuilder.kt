@@ -17,6 +17,11 @@ import net.minecraft.world.item.trading.VillagerTrade
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition
 
+/**
+ * [VillagerTrade]向けのビルダークラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 @HTBuilderMarker
 class HTVillagerTradeBuilder {
     companion object {
@@ -29,16 +34,49 @@ class HTVillagerTradeBuilder {
         }
     }
 
+    /**
+     * 要求される一つ目のアイテム
+     */
     var wants: TradeCost by HTDelegates.onceInitialize()
+
+    /**
+     * 要求される二つ目のアイテム
+     */
     var additionalWants: TradeCost? = null
 
+    /**
+     * 提供されるアイテム
+     */
     @PublishedApi internal var gives: ItemStackTemplate by HTDelegates.onceInitialize()
+
+    /**
+     * 取引可能な回数
+     */
     var maxUses: Int = 4
+
+    /**
+     * 割引の倍率
+     */
     var discount: Float = 0f
+
+    /**
+     * 取引でもらえる経験値量
+     */
     var xp: Int = 1
+
+    /**
+     * 村人の条件
+     */
     var merchantPredicate: LootItemCondition? = null
+
+    /**
+     * 提供品に適応される関数の一覧
+     */
     val itemModifiers: MutableList<LootItemFunction> = mutableListOf()
 
+    /**
+     * 値段が二倍になる[Enchantment]の一覧
+     */
     @PublishedApi internal var doubleTradePriceEnchantments: HolderSet<Enchantment>? = null
 
     operator fun ItemStackTemplate.unaryPlus() {

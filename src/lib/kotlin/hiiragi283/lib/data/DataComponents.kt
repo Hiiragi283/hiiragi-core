@@ -14,7 +14,7 @@ import net.minecraft.core.component.DataComponentType
  * 新しい[DataComponentMap]のインスタンスを作成します。
  * @param builderAction [DataComponentMap]の値を指定するブロック
  * @author Hiiragi Tsubasa
- * @since 0.6.0
+ * @since 26.1.0
  */
 inline fun buildDataMap(builderAction: DataComponentMap.Builder.() -> Unit): DataComponentMap {
     contract {
@@ -27,7 +27,7 @@ inline fun buildDataMap(builderAction: DataComponentMap.Builder.() -> Unit): Dat
  * 新しい[DataComponentPatch]のインスタンスを作成します。
  * @param builderAction [DataComponentPatch]の値を指定するブロック
  * @author Hiiragi Tsubasa
- * @since 0.6.0
+ * @since 26.1.0
  */
 inline fun buildDataPatch(builderAction: DataComponentPatch.Builder.() -> Unit): DataComponentPatch {
     contract {
@@ -42,7 +42,7 @@ fun <T : Any> buildDataPatch(type: DataComponentType<T>, value: T): DataComponen
  * 新しい[DataComponentExactPredicate]のインスタンスを作成します。
  * @param builderAction [DataComponentExactPredicate]の値を指定するブロック
  * @author Hiiragi Tsubasa
- * @since 0.6.0
+ * @since 26.1.0
  */
 inline fun buildDataPredicate(builderAction: DataComponentExactPredicate.Builder.() -> Unit): DataComponentExactPredicate {
     contract {

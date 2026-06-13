@@ -1,9 +1,9 @@
 package hiiragi283.lib.data.lang
 
 /**
- * デフォルトで対応する[HTLangType]をまとめたクラスです。
+ * [HTLangType]をまとめたクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.8.0
+ * @since 26.1.0
  */
 data object HTLangTypes {
     @JvmStatic

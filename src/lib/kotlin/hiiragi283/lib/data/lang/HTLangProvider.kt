@@ -14,11 +14,11 @@ import net.minecraft.world.item.enchantment.Enchantment
 import net.neoforged.neoforge.common.data.LanguageProvider
 
 /**
- * Hiiragi Coreとそれを前提とするmodで使用される[LanguageProvider]の拡張クラスです。
+ * Hiiragi Seriesで使用される[LanguageProvider]の拡張クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 26.1.0
  */
-abstract class HTLangProvider(output: PackOutput, val modId: String, val langType: HTLangType) : LanguageProvider(output, modId, langType.name.lowercase()) {
+abstract class HTLangProvider(output: PackOutput, modId: String, val langType: HTLangType) : LanguageProvider(output, modId, langType.name.lowercase()) {
     companion object {
         @JvmField
         val BUCKET_PATTERN: HTLangPatternProvider = HTLangPatternProvider.create("%s Bucket", "%s入りバケツ")
