@@ -14,7 +14,11 @@ import net.neoforged.neoforge.common.conditions.ICondition
 fun interface HTRecipeExporter {
     fun accept(key: RecipeKey, recipe: Recipe<*>, conditions: List<ICondition>)
 
-    fun accept(id: Identifier, recipe: Recipe<*>, conditions: List<ICondition>) {
+    fun accept(key: RecipeKey, recipe: Recipe<*>) {
+        accept(key, recipe, listOf())
+    }
+
+    fun accept(id: Identifier, recipe: Recipe<*>, conditions: List<ICondition> = listOf()) {
         accept(RecipeKey(id), recipe, conditions)
     }
 

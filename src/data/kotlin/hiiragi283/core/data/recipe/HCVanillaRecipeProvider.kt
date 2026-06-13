@@ -83,7 +83,7 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
             }
         }.save(exporter)
 
-        exporter.accept(id(HTConstants.SMITHING, "eternal_upgrade"), HCEternalSmithingRecipe, listOf())
+        exporter.accept(id(HTConstants.SMITHING, "eternal_upgrade"), HCEternalSmithingRecipe)
     }
 
     override fun getName(): String = "Vanilla Recipes"

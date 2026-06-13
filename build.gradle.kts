@@ -1,4 +1,5 @@
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
+import me.modmuss50.mpp.ReleaseType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.slf4j.event.Level
 
@@ -14,6 +15,7 @@ plugins {
 
     alias(libs.plugins.axion.release)
     alias(libs.plugins.maven.publish)
+    alias(libs.plugins.mod.publish)
 }
 
 val modId = "hiiragi_core"
@@ -354,6 +356,24 @@ spotless {
         endWithNewline()
         formatAnnotations()
         removeUnusedImports()
+    }
+}
+
+publishMods {
+    val mcVersion: Provider<String> = libs.versions.minecraft
+
+    file.set(tasks.jar.flatMap { it.archiveFile })
+    additionalFiles.from(tasks.named<Jar>("sourcesJar").flatMap { it.archiveFile })
+    type.set(ReleaseType.STABLE)
+    modLoaders.add("neoforge")
+
+    modrinth {
+        projectId.set(modId)
+        accessToken.set(providers.environmentVariable("MODRINTH_TOKEN"))
+        minecraftVersions.add(mcVersion)
+
+        requires("kotlin-for-forge")
+        optional("jei")
     }
 }
 

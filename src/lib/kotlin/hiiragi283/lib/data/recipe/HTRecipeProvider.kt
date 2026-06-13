@@ -33,7 +33,9 @@ import net.neoforged.neoforge.common.conditions.WithConditions
 abstract class HTRecipeProvider(packOutput: PackOutput, private val future: CompletableFuture<HolderLookup.Provider>, protected val modId: String) : DataProvider {
     private val pathProvider: PackOutput.PathProvider = packOutput.createRegistryElementsPathProvider(Registries.RECIPE)
     protected lateinit var registries: HolderLookup.Provider
+        private set
     protected lateinit var exporter: HTRecipeExporter
+        private set
 
     override fun run(cache: CachedOutput): CompletableFuture<*> = future.thenCompose { registries: HolderLookup.Provider ->
         val recipes: MutableSet<RecipeKey> = hashSetOf()
