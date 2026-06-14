@@ -15,7 +15,6 @@ import hiiragi283.lib.serialization.codec.HTCodecs
 import hiiragi283.lib.util.ErrorText
 import hiiragi283.lib.util.HTBuilderMarker
 import hiiragi283.lib.util.Option
-import hiiragi283.lib.util.none
 import hiiragi283.lib.util.some
 import hiiragi283.lib.util.unwrap
 import kotlin.contracts.ExperimentalContracts
@@ -186,7 +185,7 @@ data class HTRecipeContents(
         @JvmName("addItemOutput")
         fun addOutput(stack: ItemStack, chance: Float = 1f) {
             outputItems += when {
-                stack.isEmpty -> none()
+                stack.isEmpty -> Option.none()
                 else -> ChancedItemStack(stack, chance).some()
             }
         }
@@ -194,7 +193,7 @@ data class HTRecipeContents(
         @JvmName("addItemOutput")
         fun addOutput(template: ItemStackTemplate?, chance: Float = 1f) {
             outputItems += when {
-                template == null -> none()
+                template == null -> Option.none()
                 else -> ChancedItemStack(template.create(), chance).some()
             }
         }

@@ -15,65 +15,73 @@ import kotlin.contracts.contract
  * @author Hiiragi Tsubasa
  * @since 26.1.0
  */
-sealed class Option<out T> {
+@JvmInline
+value class Option<out T : Any>@PublishedApi internal constructor(@PublishedApi internal val value: Any?) {
     companion object {
-        /**
-         * 新しい[Option]のインスタンスを作成します。
-         * @return [value]が`null`の場合は[None]，それ以外の場合は[Some]
-         */
         @JvmStatic
-        fun <T> fromNullable(value: T?): Option<T> = if (value == null) None else Some(value)
+        private val EMPTY: Option<Nothing> = Option(null)
 
         /**
          * 新しい[Option]のインスタンスを作成します。
+         * @return [value]が`null`の場合は[none]，それ以外の場合は[some]
          */
         @JvmStatic
-        operator fun <T> invoke(value: T): Option<T> = Some(value)
+        fun <T : Any> fromNullable(value: T?): Option<T> = if (value == null) none() else some(value)
+
+        /**
+         * 新しい[Option]のインスタンスを作成します。
+         * @param value 保持している値
+         */
+        @JvmStatic
+        fun <T : Any> some(value: T): Option<T> = Option(value)
+
+        /**
+         * 値を保持しない[Option]のインスタンスを返します。
+         */
+        @JvmStatic
+        fun <T : Any> none(): Option<T> = EMPTY
     }
 
     /**
      * 値があるかどうか判定します。
      * @return 値がある場合は`true`
      */
-    fun isSome(): Boolean = this is Some<T>
+    fun isSome(): Boolean = value != null
 
     /**
      * 値がないかどうか判定します。
      * @return 値がない場合は`true`
      */
-    fun isNone(): Boolean = this is None
+    fun isNone(): Boolean = value == null
 
     /**
      * 値を取得します。
      * @return 値がない場合は`null`
      */
-    fun getOrNull(): T? = getOrElse { null }
+    @Suppress("UNCHECKED_CAST")
+    fun getOrNull(): T? = value as? T
 
     /**
      * 値がある場合に処理を行います。
-     * @param action [Some]の場合に実行されるブロック
+     * @param action [isSome]の場合に実行されるブロック
      */
     inline fun onSome(action: (T) -> Unit): Option<T> {
         contract {
             callsInPlace(action, InvocationKind.AT_MOST_ONCE)
         }
-        if (this is Some<T>) {
-            action(this.value)
-        }
+        getOrNull()?.let(action)
         return this
     }
 
     /**
      * 値がない場合に処理を行います。
-     * @param action [None]の場合に実行されるブロック
+     * @param action [isNone]の場合に実行されるブロック
      */
     inline fun onNone(action: () -> Unit): Option<T> {
         contract {
             callsInPlace(action, InvocationKind.AT_MOST_ONCE)
         }
-        if (this is None) {
-            action()
-        }
+        if (this.isNone()) action()
         return this
     }
 
@@ -82,11 +90,11 @@ sealed class Option<out T> {
      * @param R 変換後のクラス
      * @param transform 値を変換するブロック
      */
-    inline fun <R> map(transform: (T) -> R): Option<R> {
+    inline fun <R : Any> map(transform: (T) -> R): Option<R> {
         contract {
             callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
         }
-        return flatMap { Some(transform(it)) }
+        return flatMap { some(transform(it)) }
     }
 
     /**
@@ -100,10 +108,7 @@ sealed class Option<out T> {
             callsInPlace(empty, InvocationKind.AT_MOST_ONCE)
             callsInPlace(some, InvocationKind.AT_MOST_ONCE)
         }
-        return when (this) {
-            is None -> empty()
-            is Some<T> -> some(this.value)
-        }
+        return getOrNull()?.let(some) ?: empty()
     }
 
     /**
@@ -111,38 +116,35 @@ sealed class Option<out T> {
      * @param R 変換後の値クラス
      * @param transform 値を[Option]に変換するブロック
      */
-    inline fun <R> flatMap(transform: (T) -> Option<R>): Option<R> {
+    inline fun <R : Any> flatMap(transform: (T) -> Option<R>): Option<R> {
         contract {
             callsInPlace(transform, InvocationKind.AT_MOST_ONCE)
         }
-        return when (this) {
-            is None -> this
-            is Some -> transform(this.value)
-        }
+        return getOrNull()?.let(transform) ?: none()
     }
 
     /**
      * 保持している値を制限します。
      * @param predicate 値を制限するブロック
-     * @return [predicate]の戻り値が`false`の場合は[None]
+     * @return [predicate]の戻り値が`false`の場合は[none]
      */
     inline fun filter(predicate: (T) -> Boolean): Option<T> {
         contract {
             callsInPlace(predicate, InvocationKind.AT_MOST_ONCE)
         }
-        return flatMap { if (predicate(it)) Some(it) else None }
+        return flatMap { if (predicate(it)) some(it) else none() }
     }
 
     /**
      * 保持している値を制限します。
      * @param predicate 値を制限するブロック
-     * @return [predicate]の戻り値が`true`の場合は[None]
+     * @return [predicate]の戻り値が`true`の場合は[none]
      */
     inline fun filterNot(predicate: (T) -> Boolean): Option<T> {
         contract {
             callsInPlace(predicate, InvocationKind.AT_MOST_ONCE)
         }
-        return flatMap { if (!predicate(it)) Some(it) else None }
+        return flatMap { if (!predicate(it)) some(it) else none() }
     }
 
     /**
@@ -162,17 +164,6 @@ sealed class Option<out T> {
      * [List]に変換します。
      */
     fun toList(): List<T> = fold(::emptyList, ::listOf)
-
-    /**
-     * 値を保持する[Option]の実装クラスです。
-     * @param value 保持している値
-     */
-    data class Some<out T>(val value: T) : Option<T>()
-
-    /**
-     * 値を保持しない[Option]の実装クラスです。
-     */
-    data object None : Option<Nothing>()
 }
 
 //    Extension    //
@@ -181,37 +172,27 @@ sealed class Option<out T> {
  * 値を取得します。
  * @return 値がない場合は`default`の戻り値
  */
-inline fun <T> Option<T>.getOrElse(default: () -> T): T {
+inline fun <T : Any> Option<T>.getOrElse(default: () -> T): T {
     contract {
         callsInPlace(default, InvocationKind.AT_MOST_ONCE)
     }
-    return when (this) {
-        is Option.None -> default()
-        is Option.Some -> this.value
-    }
+    return getOrNull() ?: default()
 }
 
 /**
  * [Option]に変換します。
- * @return [this]が`null`の場合は[Option.None]，それ以外の場合は[Option.Some]
+ * @return [this]が`null`の場合は[Option.none]，それ以外の場合は[Option.some]
  * @author Hiiragi Tsubasa
  * @since 26.1.0
  */
-fun <T> T?.toOption(): Option<T> = Option.fromNullable(this)
+fun <T : Any> T?.toOption(): Option<T> = Option.fromNullable(this)
 
 /**
- * [Option.Some]に変換します。
+ * [Option.some]に変換します。
  * @author Hiiragi Tsubasa
  * @since 26.1.0
  */
-fun <T> T.some(): Option<T> = Option.Some(this)
-
-/**
- * [Option.None]を[Option]にキャストします。
- * @author Hiiragi Tsubasa
- * @since 26.1.0
- */
-fun <T> none(): Option<T> = Option.None
+fun <T : Any> T.some(): Option<T> = Option.some(this)
 
 /**
  * [Pair]の[Option]を[Map]に変換します。
@@ -227,7 +208,7 @@ fun <K, V> Option<Pair<K, V>>.toMap(): Map<K, V> = this.toList().toMap()
  * @author Hiiragi Tsubasa
  * @since 26.1.0
  */
-val <T : Any> Optional<T>.kotlin: Option<T> get() = this.map { it.some() }.orElseGet { none() }
+val <T : Any> Optional<T>.kotlin: Option<T> get() = this.map { it.some() }.orElseGet { Option.none() }
 
 /**
  * [Option]を[Optional]に変換します。

@@ -1,7 +1,6 @@
 package hiiragi283.lib.serialization.network
 
 import hiiragi283.lib.util.Option
-import hiiragi283.lib.util.none
 import hiiragi283.lib.util.toOption
 import io.netty.buffer.ByteBuf
 import java.util.Optional
@@ -61,6 +60,6 @@ private value class OptionStreamCodec<B : ByteBuf, V : Any>(private val codec: S
 
     override fun decode(input: B): Option<V> = when (input.readBoolean()) {
         true -> codec.decode(input).toOption()
-        false -> none()
+        false -> Option.none()
     }
 }

@@ -17,7 +17,6 @@ import hiiragi283.lib.util.Either
 import hiiragi283.lib.util.Ior
 import hiiragi283.lib.util.Option
 import hiiragi283.lib.util.kotlin
-import hiiragi283.lib.util.none
 import hiiragi283.lib.util.some
 import java.util.UUID
 import java.util.stream.Stream
@@ -84,10 +83,10 @@ data object HTCodecs {
      * @see ExtraCodecs.optionalEmptyMap
      */
     @JvmStatic
-    fun <A> option(codec: Codec<A>): Codec<Option<A>> = OptionCodec(codec)
+    fun <A : Any> option(codec: Codec<A>): Codec<Option<A>> = OptionCodec(codec)
 
     @JvmInline
-    private value class OptionCodec<A>(private val codec: Codec<A>) : Codec<Option<A>> {
+    private value class OptionCodec<A : Any>(private val codec: Codec<A>) : Codec<Option<A>> {
         override fun <T> encode(input: Option<A>, ops: DynamicOps<T>, prefix: T): DataResult<T> = input.fold(
             { DataResult.success(ops.emptyMap()) },
             { codec.encode(it, ops, prefix) },
@@ -99,7 +98,7 @@ data object HTCodecs {
         )
 
         override fun <T> decode(ops: DynamicOps<T>, input: T): DataResult<DFUPair<Option<A>, T>> = when {
-            isEmptyMap(ops, input) -> DataResult.success(DFUPair.of(none(), input))
+            isEmptyMap(ops, input) -> DataResult.success(DFUPair.of(Option.none(), input))
             else -> codec.decode(ops, input).map { pair: DFUPair<A, T> -> pair.mapFirst { it.some() } }
         }
     }
