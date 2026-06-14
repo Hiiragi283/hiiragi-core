@@ -19,6 +19,11 @@ import net.minecraft.world.level.storage.TagValueInput
 import net.minecraft.world.level.storage.ValueInput
 import org.slf4j.Logger
 
+/**
+ * [HTExtendedBlockEntity]におけるサーバー側からクライアント側への同期に使用されるパケットのクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 @ConsistentCopyVisibility
 @JvmRecord
 data class HTUpdateBlockEntityPacket private constructor(val pos: BlockPos, val updateTag: CompoundTag) : HTCustomPayload.S2C {

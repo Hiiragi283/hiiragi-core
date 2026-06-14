@@ -5,13 +5,14 @@ import hiiragi283.lib.item.alchemy.HTPotionHelper
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
+import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 
 /**
- * ポーションに基づいた[アイテム][Item]の拡張クラスです。
+ * ポーションに基づいた[Item]の拡張クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.11.0
+ * @since 26.1.0
  */
 open class HTPotionBasedItem(properties: Properties) :
     Item(properties),
@@ -21,15 +22,15 @@ open class HTPotionBasedItem(properties: Properties) :
 
     //    HTSubCreativeTabContents    //
 
-    override fun addItems(baseItem: Holder<Item>, context: HTSubCreativeTabContents.Context) {
-        context.provider
+    override fun addItems(baseItem: Holder<Item>, parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output) {
+        parameters.holders()
             .lookupOrThrow(Registries.POTION)
-            .filterFeatures(context.enabledFeatures)
+            .filterFeatures(parameters.enabledFeatures())
             .listElements()
             .map(::BottledPotionContents)
             .map(HTPotionHelper::createItemPatch)
             .map { ItemStack(baseItem, 1, it) }
-            .forEach(context)
+            .forEach(output::accept)
     }
 
     override fun shouldAddDefault(): Boolean = false

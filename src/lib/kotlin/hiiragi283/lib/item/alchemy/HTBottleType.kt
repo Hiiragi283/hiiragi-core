@@ -14,7 +14,7 @@ import net.minecraft.world.level.ItemLike
 /**
  * ポーション瓶の種類を管理するクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.10.0
+ * @since 26.1.0
  */
 enum class HTBottleType :
     ItemLike,
@@ -31,9 +31,6 @@ enum class HTBottleType :
         @JvmField
         val STREAM_CODEC: StreamCodec<ByteBuf, HTBottleType> = HTStreamCodecs.enum()
 
-        /**
-         * @since 0.14.0
-         */
         @JvmStatic
         fun getBottleType(instance: TypedInstance<Item>): HTBottleType? = entries.firstOrNull { instance.`is`(it.asItem()) }
     }

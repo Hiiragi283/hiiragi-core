@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
 
 /**
- * Hiiragi Coreとそれを前提とするmodで使用される[Comparator]をまとめたクラスです。
+ * Hiiragi Seriesで使用される[Comparator]をまとめたクラスです。
  * @author Hiiragi Tsubasa
  * @since 0.11.0
  */

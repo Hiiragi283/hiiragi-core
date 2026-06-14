@@ -21,8 +21,6 @@ import hiiragi283.lib.util.none
 import hiiragi283.lib.util.some
 import java.util.UUID
 import java.util.stream.Stream
-import kotlin.Int
-import kotlin.String
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -39,11 +37,14 @@ import net.minecraft.util.ExtraCodecs
 import org.apache.commons.lang3.math.Fraction
 
 /**
- * Hiiragi Coreとそれを前提とするmodで使用される[Codec]と[MapCodec]をまとめたクラスです。
+ * Hiiragi Seriesで使用される[Codec]と[MapCodec]をまとめたクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.16.0
+ * @since 26.1.0
  */
 data object HTCodecs {
+    /**
+     * [分数][Fraction]の[Codec]
+     */
     @JvmField
     val FRACTION: Codec<Fraction> = xor(Codec.STRING, Codec.INT)
         .xmap(
@@ -56,16 +57,30 @@ data object HTCodecs {
             },
         )
 
+    /**
+     * [テキスト][Text]の[Codec]
+     */
     @JvmField
     val TEXT: Codec<Text> = ComponentSerialization.CODEC
 
+    /**
+     * [UUID]の[Codec]
+     */
     @JvmField
     val UUID: Codec<UUID> = UUIDUtil.CODEC
 
+    /**
+     * [Map]の[Codec]を作成します。
+     * @param K キーとなるクラス
+     * @param V 値となるクラス
+     * @param keyCodec キーの[Codec]
+     * @param valueCodec 値の[Codec]
+     */
     @JvmStatic
     fun <K : Any, V : Any> mapOf(keyCodec: Codec<K>, valueCodec: Codec<V>): Codec<Map<K, V>> = Codec.unboundedMap(keyCodec, valueCodec)
 
     /**
+     * [Option]でラップされた[Codec]を作成します。
      * @see ExtraCodecs.optionalEmptyMap
      */
     @JvmStatic
@@ -89,9 +104,25 @@ data object HTCodecs {
         }
     }
 
+    /**
+     * [Either]の[Codec]を作成します。
+     * @param A 左側の値となるクラス
+     * @param B 右側の値となるクラス
+     * @param left 左側の値の[Codec]
+     * @param right 右側の値の[Codec]
+     * @see Codec.either
+     */
     @JvmStatic
     fun <A, B> either(left: Codec<A>, right: Codec<B>): Codec<Either<A, B>> = HTEitherCodec(left, right, false)
 
+    /**
+     * [Either]の[Codec]を作成します。
+     * @param A 左側の値となるクラス
+     * @param B 右側の値となるクラス
+     * @param left 左側の値の[Codec]
+     * @param right 右側の値の[Codec]
+     * @see Codec.xor
+     */
     @JvmStatic
     fun <A, B> xor(left: Codec<A>, right: Codec<B>): Codec<Either<A, B>> = HTEitherCodec(left, right, true)
 
@@ -124,10 +155,11 @@ data object HTCodecs {
     }
 
     /**
-     * 指定した[left], [right]から，[Ior]の[MapCodec]を返します。
-     * @param left [A]を対象とする[MapCodec]
-     * @param right [B]を対象とする[MapCodec]
-     * @return [Ior]の[MapCodec]
+     * [Ior]の[MapCodec]を作成します。
+     * @param A 左側の値となるクラス
+     * @param B 右側の値となるクラス
+     * @param left 左側の値の[MapCodec]
+     * @param right 右側の値の[MapCodec]
      */
     @JvmStatic
     fun <A, B> ior(left: MapCodec<A>, right: MapCodec<B>): MapCodec<Ior<A, B>> = HTIorMapCodec(left, right)
@@ -176,9 +208,8 @@ data object HTCodecs {
 
     /**
      * [Enum]の[Codec]を返します。
-     * @param V [Enum]を実装したクラス
+     * @param V [Enum]を継承したクラス
      * @param factory [V]を[String]に変換するブロック
-     * @return [factory]に基づいた[Codec]
      */
     @JvmStatic
     inline fun <reified V : Enum<V>> stringEnum(crossinline factory: (V) -> String?): Codec<V> = Codec.STRING.flatXmap<V>(
@@ -187,7 +218,7 @@ data object HTCodecs {
     )
 
     /**
-     * @see RecordCodecBuilder.mapCodec
+     * [RecordCodecBuilder.mapCodec]を最適化した代替
      */
     @JvmStatic
     inline fun <O> recordMap(builder: (RecordCodecBuilder.Instance<O>) -> App<RecordCodecBuilder.Mu<O>, O>): MapCodec<O> {
@@ -198,7 +229,7 @@ data object HTCodecs {
     }
 
     /**
-     * @see RecordCodecBuilder.create
+     * [RecordCodecBuilder.create]を最適化した代替
      */
     @JvmStatic
     inline fun <O> record(builder: (RecordCodecBuilder.Instance<O>) -> App<RecordCodecBuilder.Mu<O>, O>): Codec<O> {
@@ -211,10 +242,14 @@ data object HTCodecs {
     //    Ranged    //
 
     /**
+     * [ClosedRange]で値の範囲を制限した[Codec]を作成します。
+     * @param T [Comparable]を実装したクラス
+     * @param codec 元となる[Codec]
+     * @param range 値の範囲
      * @see ExtraCodecs.intRangeWithMessage
      */
     @JvmStatic
-    fun <N> numberRange(codec: Codec<N>, range: ClosedRange<N>): Codec<N> where N : Number, N : Comparable<N> = codec.validate { number: N ->
+    fun <T : Comparable<T>> ranged(codec: Codec<T>, range: ClosedRange<T>): Codec<T> = codec.validate { number: T ->
         when (number) {
             in range -> DataResult.success(number)
             else -> DataResult.error { "Value must be within range $range: $number" }
@@ -229,10 +264,9 @@ data object HTCodecs {
 
     /**
      * `0`以上の値を対象とする[Long]の[Codec]
-     * @see mekanism.api.SerializerHelper.POSITIVE_LONG_CODEC
      */
     @JvmField
-    val NON_NEGATIVE_LONG: Codec<Long> = numberRange(Codec.LONG, 0..Long.MAX_VALUE)
+    val NON_NEGATIVE_LONG: Codec<Long> = ranged(Codec.LONG, 0..Long.MAX_VALUE)
 
     /**
      * `1`以上の値を対象とする[Int]の[Codec]
@@ -242,22 +276,21 @@ data object HTCodecs {
 
     /**
      * `1`以上の値を対象とする[Long]の[Codec]
-     * @see mekanism.api.SerializerHelper.POSITIVE_LONG_CODEC
      */
     @JvmField
-    val POSITIVE_LONG: Codec<Long> = numberRange(Codec.LONG, 1..Long.MAX_VALUE)
+    val POSITIVE_LONG: Codec<Long> = ranged(Codec.LONG, 1..Long.MAX_VALUE)
 
     //    Registry    //
 
     /**
-     * 指定した[registryKey]から[ResourceKey]の[Codec]を返します。
+     * [ResourceKey]の[Codec]を作成します。
      * @param T レジストリの要素のクラス
      */
     @JvmStatic
     fun <T : Any> resourceKey(registryKey: RegistryKey<T>): Codec<ResourceKey<T>> = ResourceKey.codec(registryKey)
 
     /**
-     * 指定した[registryKey]から[TagKey]の[Codec]を返します。
+     * [TagKey]の[Codec]を作成します。
      * @param T レジストリの要素のクラス
      * @param withHash 変換後の文字列の先頭に'#'をつけるかどうか
      */
@@ -268,14 +301,14 @@ data object HTCodecs {
     }
 
     /**
-     * 指定した[registryKey]から[Holder]の[Codec]を返します。
+     * [Holder]の[Codec]を作成します。
      * @param T レジストリの要素のクラス
      */
     @JvmStatic
     fun <T : Any> holder(registryKey: RegistryKey<T>): Codec<Holder<T>> = RegistryFixedCodec.create(registryKey)
 
     /**
-     * 指定した[registryKey]から[HolderSet]の[Codec]を返します。
+     * [HolderSet]の[Codec]を作成します。
      * @param T レジストリの要素のクラス
      */
     @JvmStatic

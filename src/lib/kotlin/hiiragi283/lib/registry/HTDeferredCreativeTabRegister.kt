@@ -35,7 +35,7 @@ class HTDeferredCreativeTabRegister(namespace: String) : HTDeferredRegister<Crea
                 if (item.shouldAddDefault()) {
                     output.accept(stack, visibility)
                 }
-                item.addItems(holder, HTSubCreativeTabContents.Context(parameters, output))
+                item.addItems(holder, parameters, output)
             } else {
                 output.accept(stack, visibility)
             }

@@ -14,9 +14,9 @@ import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.alchemy.Potions
 
 /**
- * [PotionContents]と[HTBottleType]を束ねたクラスです。
+ * ポーションの中身と瓶の形状を束ねたクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.11.0
+ * @since 26.1.0
  */
 @JvmRecord
 data class BottledPotionContents(val contents: PotionContents, val bottleType: HTBottleType) : HTHasText {
@@ -45,23 +45,32 @@ data class BottledPotionContents(val contents: PotionContents, val bottleType: H
     constructor(potion: Holder<Potion>, bottleType: HTBottleType) : this(PotionContents(potion), bottleType)
 
     /**
-     * ポーションのインスタンス
+     * ポーションの値
      */
     val potion: Holder<Potion>? get() = contents.potion().getOrNull()
+
+    /**
+     * カスタム色の値
+     */
     val customColor: Int? get() = contents.customColor().getOrNull()
+
+    /**
+     * カスタムエフェクトの一覧
+     */
     val customEffects: List<MobEffectInstance> get() = contents.customEffects()
 
+    /**
+     * ポーションも含めたすべてのエフェクトの一覧
+     */
     val allEffects: Iterable<MobEffectInstance> get() = contents.allEffects
 
     /**
      * 保持しているエフェクトが空かどうか
-     * @since 0.13.0
      */
     val isEmpty: Boolean get() = contents == PotionContents.EMPTY || allEffects.none()
 
     /**
      * 保持しているエフェクトが水に一致するかどうか
-     * @since 0.13.0
      */
     val isWater: Boolean get() = potion == Potions.WATER && bottleType == HTBottleType.DEFAULT
 

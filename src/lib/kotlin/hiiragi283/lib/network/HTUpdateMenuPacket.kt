@@ -15,7 +15,14 @@ import net.minecraft.server.MinecraftServer
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.entity.player.Player
 
-class HTUpdateMenuPacket private constructor(val containerId: Int, val map: Map<Int, HTSyncablePayload>) :
+/**
+ * [HTContainerMenu]における同期に使用されるパケットのクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
+@ConsistentCopyVisibility
+@JvmRecord
+data class HTUpdateMenuPacket private constructor(val containerId: Int, val map: Map<Int, HTSyncablePayload>) :
     HTCustomPayload.S2C,
     HTCustomPayload.C2S {
     companion object {

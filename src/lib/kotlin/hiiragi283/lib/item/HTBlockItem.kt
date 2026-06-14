@@ -10,10 +10,11 @@ import net.minecraft.world.level.block.Block
 
 /**
  * ブロックのクラスを指定できる[BlockItem]の拡張クラスです。
+ *
+ * 参照 : [Mekanism - ItemBlockMekanism](https://github.com/mekanism/Mekanism/blob/26.1/src/api/java/mekanism/common/item/block/ItemBlockMekanism.java)
  * @param BLOCK [block]のクラス
  * @author Hiiragi Tsubasa
- * @since 0.1.0
- * @see mekanism.common.item.block.ItemBlockMekanism
+ * @since 26.1.0
  */
 open class HTBlockItem<BLOCK : Block>(block: BLOCK, properties: Properties) : BlockItem(block, properties) {
     @Suppress("UNCHECKED_CAST")

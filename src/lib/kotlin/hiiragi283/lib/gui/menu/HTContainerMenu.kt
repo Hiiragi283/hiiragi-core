@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.network.PacketDistributor
 
 /**
- * Hiiragi Coreとそれを前提とするmodで使用される[AbstractContainerMenu]の拡張クラスです。
+ * Hiiragi Seriesで使用される[AbstractContainerMenu]の拡張クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */

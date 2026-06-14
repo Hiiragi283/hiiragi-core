@@ -3,8 +3,6 @@ package hiiragi283.lib.material
 import hiiragi283.lib.registry.toLike
 import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.util.Either
-import hiiragi283.lib.util.left
-import hiiragi283.lib.util.right
 import hiiragi283.lib.util.unwrap
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.resources.Identifier
@@ -14,19 +12,24 @@ import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
 
+/**
+ * ブロックまたはアイテムを表すクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 @JvmInline
 value class HTMaterialItemEntry(private val content: Either<SupplierWithId<Block>, SupplierWithId<Item>>) :
     SupplierWithId<ItemLike>,
     ItemLike {
     companion object {
         @JvmStatic
-        fun block(block: SupplierWithId<Block>): HTMaterialItemEntry = HTMaterialItemEntry(block.left())
+        fun block(block: SupplierWithId<Block>): HTMaterialItemEntry = HTMaterialItemEntry(Either.Left(block))
 
         @JvmStatic
         fun block(block: Block): HTMaterialItemEntry = block(block.toLike())
 
         @JvmStatic
-        fun item(item: SupplierWithId<Item>): HTMaterialItemEntry = HTMaterialItemEntry(item.right())
+        fun item(item: SupplierWithId<Item>): HTMaterialItemEntry = HTMaterialItemEntry(Either.Right(item))
 
         @JvmStatic
         fun item(item: Item): HTMaterialItemEntry = item(item.toLike())
@@ -38,8 +41,14 @@ value class HTMaterialItemEntry(private val content: Either<SupplierWithId<Block
 
     override fun asItem(): Item = get().asItem()
 
+    /**
+     * @since 26.1.1
+     */
     fun toTemplate(count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStackTemplate = ItemStackTemplate(asItem(), count, patch)
 
+    /**
+     * @since 26.1.1
+     */
     @Suppress("DEPRECATION")
     fun toStack(count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStack = ItemStack(asItem().builtInRegistryHolder(), count, patch)
 }

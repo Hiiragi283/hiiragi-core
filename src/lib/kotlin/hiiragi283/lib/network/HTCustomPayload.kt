@@ -7,16 +7,15 @@ import net.minecraft.server.MinecraftServer
 import net.minecraft.server.level.ServerPlayer
 
 /**
- * Hiiragi Coreとそれを前提とするmodで使用される[CustomPacketPayload]の拡張インターフェースです。
+ * Hiiragi Seriesで使用される[CustomPacketPayload]の拡張インターフェースです。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 26.1.0
  */
 sealed interface HTCustomPayload : CustomPacketPayload {
     /**
      * サーバー側からクライアント側に送る[HTCustomPayload]の拡張インターフェースです。
-     * @author Hiiragi Tsubasa
-     * @since 0.1.0
-     * @see appeng.core.network.ClientboundPacket
+     *
+     * 参照 : [Applied Energistics 2 - ClientboundPacket](https://github.com/AppliedEnergistics/Applied-Energistics-2/blob/main/src/main/java/appeng/core/network/ClientboundPacket.java)
      */
     interface S2C : HTCustomPayload {
         /**
@@ -29,9 +28,8 @@ sealed interface HTCustomPayload : CustomPacketPayload {
 
     /**
      * クライアント側からサーバー側に送る[HTCustomPayload]の拡張インターフェースです。
-     * @author Hiiragi Tsubasa
-     * @since 0.1.0
-     * @see appeng.core.network.ServerboundPacket.handleOnServer
+     *
+     * 参照 : [Applied Energistics 2 - ServerboundPacket](https://github.com/AppliedEnergistics/Applied-Energistics-2/blob/main/src/main/java/appeng/core/network/ServerboundPacket.java)
      */
     interface C2S : HTCustomPayload {
         /**

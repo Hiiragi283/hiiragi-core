@@ -7,9 +7,9 @@ import hiiragi283.lib.text.HTTranslation
 import net.minecraft.world.item.SmithingTemplateItem
 
 /**
- * Hiiragi Coreとそれを前提とするmodで使用される[SmithingTemplateItem]の拡張クラスです。
+ * Hiiragi Seriesで使用される[SmithingTemplateItem]の拡張クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.9.0
+ * @since 26.1.0
  */
 open class HTSmithingTemplateItem(
     appliesTo: HTTranslation,

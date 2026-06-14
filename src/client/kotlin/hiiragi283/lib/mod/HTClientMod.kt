@@ -19,7 +19,7 @@ import thedarkcolour.kotlinforforge.neoforge.forge.LOADING_CONTEXT
 import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
 
 /**
- * Hiiragi Coreとそれを前提とするmodで使用される，クライアント側のmodの抽象クラスです。
+ * Hiiragi Seriesで使用される，クライアント側のmodの抽象クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */

@@ -22,6 +22,13 @@ import net.minecraft.world.item.Item
 
 typealias HTMaterialRawEntry = Ior<HTMaterialItemEntry, TagKey<Item>>
 
+/**
+ * 素材アイテムを管理するクラスです。
+ * @param primalKey メインとなる部品の種類
+ * @param contents 部品と対応するアイテムのマップ
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 class HTMaterialContents private constructor(val primalKey: HTMaterialPartKey, @PublishedApi internal var contents: Map<HTMaterialPartKey, HTMaterialRawEntry>) {
     companion object {
         @JvmField
@@ -45,12 +52,27 @@ class HTMaterialContents private constructor(val primalKey: HTMaterialPartKey, @
         }
     }
 
+    /**
+     * [primalKey]に対応する要素
+     */
     val primalEntry: HTMaterialRawEntry = getRawEntry(primalKey)!!
 
+    /**
+     * 部品に対応する要素を返します。
+     * @return 対応する要素がない場合は`null`
+     */
     fun getRawEntry(part: HTMaterialPartKey): HTMaterialRawEntry? = contents[part]
 
+    /**
+     * 部品に対応するアイテムを返します。
+     * @return 対応するアイテムがない場合は`null`
+     */
     fun getEntry(part: HTMaterialPartKey): HTMaterialItemEntry? = getRawEntry(part)?.getLeft()
 
+    /**
+     * 部品に対応するタグを返します。
+     * @return 対応するタグがない場合は`null`
+     */
     fun getTagKey(part: HTMaterialPartKey): TagKey<Item>? = getRawEntry(part)?.getRight()
 
     //    Builder    //

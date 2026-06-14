@@ -4,17 +4,15 @@ import net.minecraft.core.component.DataComponentGetter
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.world.level.material.Fluid
-import net.neoforged.neoforge.common.MutableDataComponentHolder
 
 /**
  * 液体ポーションを管理するクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.10.0
+ * @since 26.1.0
  */
 data object HTPotionFluidManager {
     /**
      * 登録されている[液体][Fluid]の一覧
-     * @since 0.13.0
      */
     @JvmStatic
     val handlers: Map<Fluid, Handler> get() = _handlers
@@ -23,7 +21,7 @@ data object HTPotionFluidManager {
     private val _handlers: MutableMap<Fluid, Handler> = hashMapOf()
 
     /**
-     * 指定した[fluid]に[handler]を登録します。
+     * 新しい液体ポーションを登録します。
      * @throws IllegalStateException 指定した[fluid]が既に登録されいた場合
      */
     @JvmStatic
@@ -32,8 +30,8 @@ data object HTPotionFluidManager {
     }
 
     /**
-     * 指定した[fluid]から[Handler]を取得します。
-     * @return 対応する[Handler]がない場合は`null`
+     * 指定した液体からハンドラを取得します。
+     * @return 対応するハンドラがない場合は`null`
      */
     @JvmStatic
     fun getFluidHandler(fluid: Fluid): Handler? = _handlers[fluid]
@@ -41,14 +39,12 @@ data object HTPotionFluidManager {
     //    Handler    //
 
     /**
-     * [ポーション瓶の種類][HTBottleType]を保持するインターフェースです。
+     * ポーション瓶の種類を保持するインターフェースです。
      * @author Hiiragi Tsubasa
-     * @since 0.10.0
+     * @since 26.1.0
      */
     interface Handler {
         operator fun get(getter: DataComponentGetter): HTBottleType?
-
-        operator fun set(holder: MutableDataComponentHolder, bottleType: HTBottleType)
 
         operator fun set(builder: DataComponentMap.Builder, bottleType: HTBottleType)
 

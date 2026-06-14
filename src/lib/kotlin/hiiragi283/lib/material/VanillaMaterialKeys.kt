@@ -2,6 +2,11 @@ package hiiragi283.lib.material
 
 import hiiragi283.lib.HTConstants
 
+/**
+ * バニラの素材について[HTMaterialKey]をまとめたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 object VanillaMaterialKeys {
     @JvmStatic
     private fun create(path: String): HTMaterialKey = HTMaterialKey(HTConstants.MINECRAFT, path)

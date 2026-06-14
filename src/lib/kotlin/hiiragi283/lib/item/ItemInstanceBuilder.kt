@@ -18,9 +18,18 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.Items
 
+/**
+ * [ItemStackTemplate]や[ItemStack]向けのビルダークラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.1
+ */
 @HTBuilderMarker
 class ItemInstanceBuilder : HolderAccepter.ItemAccepter {
     companion object {
+        /**
+         * [ItemStackTemplate]を作成します。
+         * @throws IllegalStateException アイテムが空の場合，または量個数0`以下の場合
+         */
         @JvmStatic
         inline fun buildTemplate(builderAction: ItemInstanceBuilder.() -> Unit): ItemStackTemplate {
             contract {
@@ -29,6 +38,9 @@ class ItemInstanceBuilder : HolderAccepter.ItemAccepter {
             return ItemInstanceBuilder().apply(builderAction).run { ItemStackTemplate(item, count, patch) }
         }
 
+        /**
+         * [ItemStackTemplate]を作成します。
+         */
         @Suppress("DEPRECATION")
         @JvmStatic
         inline fun buildSafeTemplate(builderAction: ItemInstanceBuilder.() -> Unit): HTTextResult<ItemStackTemplate> {
@@ -42,6 +54,9 @@ class ItemInstanceBuilder : HolderAccepter.ItemAccepter {
             }
         }
 
+        /**
+         * [ItemStack]を作成します。
+         */
         @JvmStatic
         inline fun buildStack(builderAction: ItemInstanceBuilder.() -> Unit): ItemStack {
             contract {

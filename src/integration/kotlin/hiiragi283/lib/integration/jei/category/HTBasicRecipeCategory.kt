@@ -28,7 +28,7 @@ import net.minecraft.world.item.ItemStack
 import org.apache.commons.lang3.math.Fraction
 
 /**
- * Hiiragi Coreとそれを前提とするmodで使用される[IRecipeCategory]の拡張クラスです。
+ * Hiiragi Seriesで使用される[IRecipeCategory]の拡張クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.11.0
  */

@@ -5,7 +5,7 @@ import hiiragi283.lib.resource.toDescriptionKey
 import hiiragi283.lib.resource.toId
 
 /**
- * Hiiragi Coreとそれを前提とするmodで使用される[翻訳][HTTranslation]を集めたクラスです。
+ * Hiiragi Seriesで使用される[翻訳][HTTranslation]を集めたクラスです。
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  * @see mekanism.api.text.APILang

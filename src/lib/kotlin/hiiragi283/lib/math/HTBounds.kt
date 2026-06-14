@@ -2,13 +2,14 @@ package hiiragi283.lib.math
 
 /**
  * 二次元平面上の範囲を表現するクラスです。
+ *
+ * 参照 : [Minecraft - Rect2i][net.minecraft.client.renderer.Rect2i]
  * @param x x軸方向の始点
  * @param y y軸方向の始点
  * @param width x軸方向の長さ
  * @param height y軸方向の長さ
  * @author Hiiragi Tsubasa
- * @since 0.1.0
- * @see net.minecraft.client.renderer.Rect2i
+ * @since 026.1.0
  */
 @JvmRecord
 data class HTBounds(val x: Int, val y: Int, val width: Int, val height: Int) {
@@ -49,7 +50,6 @@ data class HTBounds(val x: Int, val y: Int, val width: Int, val height: Int) {
 
     /**
      * 指定した[x]と[y]だけ始点を移動した[HTBounds]を返します。
-     * @since 0.11.0
      */
     fun offset(x: Int, y: Int): HTBounds = HTBounds(this.x + x, this.y + y, this.width, this.height)
 }

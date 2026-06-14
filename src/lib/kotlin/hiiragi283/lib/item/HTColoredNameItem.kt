@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack
 /**
  * 表示名に色をつける[Item]の拡張クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 26.1.0
  */
 abstract class HTColoredNameItem(properties: Properties) : Item(properties) {
     /**

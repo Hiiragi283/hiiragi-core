@@ -1,7 +1,7 @@
 package hiiragi283.lib.tag
 
 /**
- * Hiiragi Coreとそれを前提とするmodで使用される[HTTagPrefix]の一覧をまとめたクラスです。
+ * Hiiragi Seriesで使用される[HTTagPrefix]の一覧をまとめたクラスです。
  * @author Hiiragi Tsubasa
  * @since 0.7.0
  */

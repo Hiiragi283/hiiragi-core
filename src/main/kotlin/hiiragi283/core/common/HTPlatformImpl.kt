@@ -19,7 +19,6 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.level.material.Fluid
-import net.neoforged.neoforge.common.MutableDataComponentHolder
 import net.neoforged.neoforge.common.Tags
 
 class HTPlatformImpl : HTPlatform() {
@@ -39,10 +38,6 @@ class HTPlatformImpl : HTPlatform() {
         @JvmField
         val DEFAULT_POTION_HANDLER: HTPotionFluidManager.Handler = object : HTPotionFluidManager.Handler {
             override fun get(getter: DataComponentGetter): HTBottleType? = getter.get(HCDataComponents.BOTTLE_TYPE)
-
-            override fun set(holder: MutableDataComponentHolder, bottleType: HTBottleType) {
-                holder.set(HCDataComponents.BOTTLE_TYPE, bottleType)
-            }
 
             override fun set(builder: DataComponentMap.Builder, bottleType: HTBottleType) {
                 builder.set(HCDataComponents.BOTTLE_TYPE, bottleType)

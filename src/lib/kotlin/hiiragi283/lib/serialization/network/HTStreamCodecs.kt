@@ -21,11 +21,14 @@ import net.minecraft.util.ByIdMap
 import org.apache.commons.lang3.math.Fraction
 
 /**
- * Hiiragi Coreとそれを前提とするmodで使用される[StreamCodec]をまとめたクラスです。
+ * Hiiragi Seriesで使用される[StreamCodec]をまとめたクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.16.0
+ * @since 26.1.0
  */
 data object HTStreamCodecs {
+    /**
+     * [分数][Fraction]の[StreamCodec]
+     */
     @JvmField
     val FRACTION: StreamCodec<ByteBuf, Fraction> = StreamCodec.composite(
         ByteBufCodecs.VAR_INT,
@@ -35,26 +38,40 @@ data object HTStreamCodecs {
         Fraction::getFraction,
     )
 
+    /**
+     * [テキスト][Text]の[StreamCodec]
+     */
     @JvmField
     val TEXT: StreamCodec<RegistryFriendlyByteBuf, Text> = ComponentSerialization.STREAM_CODEC
 
+    /**
+     * [UUID]の[StreamCodec]
+     */
     @JvmField
     val UUID: StreamCodec<ByteBuf, UUID> = UUIDUtil.STREAM_CODEC
 
-    @JvmStatic
-    inline fun <reified V : Enum<V>> enum(strategy: ByIdMap.OutOfBoundsStrategy = ByIdMap.OutOfBoundsStrategy.WRAP): StreamCodec<ByteBuf, V> = ByteBufCodecs.idMapper(
-        ByIdMap.continuous(Enum<V>::ordinal, V::class.java.enumConstants, strategy),
-        Enum<V>::ordinal,
-    )
-
     /**
-     * 指定した[left], [right]から，[Either]の[StreamCodec]を返します。
-     * @param left [L]を対象とする[StreamCodec]
-     * @param right [R]を対象とする[StreamCodec]
-     * @return [Either]の[StreamCodec]
+     * [Map]の[StreamCodec]を作成します。
+     * @param B パケットのクラス
+     * @param K キーとなるクラス
+     * @param V 値となるクラス
+     * @param keyCodec キーの[StreamCodec]
+     * @param valueCodec 値の[StreamCodec]
      */
     @JvmStatic
-    fun <B : ByteBuf, L : Any, R : Any> either(left: StreamCodec<in B, L>, right: StreamCodec<in B, R>): StreamCodec<B, Either<L, R>> = EitherCodec(left, right)
+    fun <B : ByteBuf, K : Any, V : Any> mapOf(keyCodec: StreamCodec<in B, K>, valueCodec: StreamCodec<in B, V>): StreamCodec<B, Map<K, V>> = ByteBufCodecs.map(::LinkedHashMap, keyCodec, valueCodec)
+
+    /**
+     * [Either]の[StreamCodec]を作成します。
+     * @param BUF パケットのクラス
+     * @param A 左側の値となるクラス
+     * @param B 右側の値となるクラス
+     * @param left 左側の値の[StreamCodec]
+     * @param right 右側の値の[StreamCodec]
+     * @see ByteBufCodecs.either
+     */
+    @JvmStatic
+    fun <BUF : ByteBuf, A : Any, B : Any> either(left: StreamCodec<in BUF, A>, right: StreamCodec<in BUF, B>): StreamCodec<BUF, Either<A, B>> = EitherCodec(left, right)
 
     private class EitherCodec<B : ByteBuf, L : Any, R : Any>(private val left: StreamCodec<in B, L>, private val right: StreamCodec<in B, R>) : StreamCodec<B, Either<L, R>> {
         override fun encode(output: B, value: Either<L, R>) {
@@ -74,13 +91,15 @@ data object HTStreamCodecs {
     }
 
     /**
-     * 指定した[left], [right]から，[Ior]の[StreamCodec]を返します。
-     * @param left [L]を対象とする[StreamCodec]
-     * @param right [R]を対象とする[StreamCodec]
-     * @return [Ior]の[StreamCodec]
+     * [Ior]の[StreamCodec]を作成します。
+     * @param BUF パケットのクラス
+     * @param A 左側の値となるクラス
+     * @param B 右側の値となるクラス
+     * @param left 左側の値の[StreamCodec]
+     * @param right 右側の値の[StreamCodec]
      */
     @JvmStatic
-    fun <B : ByteBuf, L : Any, R : Any> ior(left: StreamCodec<in B, L>, right: StreamCodec<in B, R>): StreamCodec<B, Ior<L, R>> = HTIorStreamCodec(left, right)
+    fun <BUF : ByteBuf, A : Any, B : Any> ior(left: StreamCodec<in BUF, A>, right: StreamCodec<in BUF, B>): StreamCodec<BUF, Ior<A, B>> = HTIorStreamCodec(left, right)
 
     private class HTIorStreamCodec<B : ByteBuf, L : Any, R : Any>(private val left: StreamCodec<in B, L>, private val right: StreamCodec<in B, R>) : StreamCodec<B, Ior<L, R>> {
         override fun decode(buffer: B): Ior<L, R> = when (buffer.readInt()) {
@@ -112,35 +131,41 @@ data object HTStreamCodecs {
         }
     }
 
+    /**
+     * [Enum]の[StreamCodec]を返します。
+     * @param V [Enum]を継承したクラス
+     */
     @JvmStatic
-    fun <B : ByteBuf, K : Any, V : Any> mapOf(keyCodec: StreamCodec<in B, K>, valueCodec: StreamCodec<in B, V>): StreamCodec<B, Map<K, V>> = ByteBufCodecs.map(::LinkedHashMap, keyCodec, valueCodec)
+    inline fun <reified V : Enum<V>> enum(strategy: ByIdMap.OutOfBoundsStrategy = ByIdMap.OutOfBoundsStrategy.WRAP): StreamCodec<ByteBuf, V> = ByteBufCodecs.idMapper(
+        ByIdMap.continuous(Enum<V>::ordinal, V::class.java.enumConstants, strategy),
+        Enum<V>::ordinal,
+    )
 
     //    Registry    //
 
     /**
-     * 指定した[registryKey]から[ResourceKey]の[StreamCodec]を返します。
+     * [ResourceKey]の[StreamCodec]を作成します。
      * @param T レジストリの要素のクラス
      */
     @JvmStatic
     fun <T : Any> resourceKey(registryKey: RegistryKey<T>): StreamCodec<ByteBuf, ResourceKey<T>> = ResourceKey.streamCodec(registryKey)
 
     /**
-     * 指定した[registryKey]から[TagKey]の[StreamCodec]を返します。
+     * [TagKey]の[StreamCodec]を作成します。
      * @param T レジストリの要素のクラス
-     * @param withHash 変換後の文字列の先頭に'#'をつけるかどうか
      */
     @JvmStatic
-    fun <T : Any> tagKey(registryKey: RegistryKey<T>, withHash: Boolean): StreamCodec<ByteBuf, TagKey<T>> = Identifier.STREAM_CODEC.map(registryKey::createTagKey, TagKey<T>::location)
+    fun <T : Any> tagKey(registryKey: RegistryKey<T>): StreamCodec<ByteBuf, TagKey<T>> = Identifier.STREAM_CODEC.map(registryKey::createTagKey, TagKey<T>::location)
 
     /**
-     * 指定した[registryKey]から[Holder]の[StreamCodec]を返します。
+     * [Holder]の[StreamCodec]を作成します。
      * @param T レジストリの要素のクラス
      */
     @JvmStatic
     fun <T : Any> holder(registryKey: RegistryKey<T>): StreamCodec<RegistryFriendlyByteBuf, Holder<T>> = ByteBufCodecs.holderRegistry(registryKey)
 
     /**
-     * 指定した[registryKey]から[HolderSet]の[StreamCodec]を返します。
+     * [HolderSet]の[StreamCodec]を作成します。
      * @param T レジストリの要素のクラス
      */
     @JvmStatic

@@ -30,9 +30,9 @@ import thedarkcolour.kotlinforforge.neoforge.forge.LOADING_CONTEXT
 import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
 
 /**
- * Hiiragi Coreとそれを前提とするmodで使用される，共通部分のmodの抽象クラスです。
+ * Hiiragi Seriesで使用される，共通部分のmodの抽象クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.8.0
+ * @since 26.1.0
  */
 abstract class HTCommonMod {
     init {
@@ -64,6 +64,10 @@ abstract class HTCommonMod {
      */
     protected abstract fun initialize(eventBus: IEventBus, container: ModContainer)
 
+    /**
+     * 初期化の後にセットアップを行います。
+     * @since 26.1.1
+     */
     protected open fun onConstruct(event: FMLConstructModEvent) {}
 
     /**
@@ -91,6 +95,9 @@ abstract class HTCommonMod {
      */
     protected open fun registerCapabilities(helper: CapabilityHelper) {}
 
+    /**
+     * キャパビリティの登録を補助するクラスです。
+     */
     @JvmInline
     protected value class CapabilityHelper(val event: RegisterCapabilitiesEvent) {
         //    Block    //

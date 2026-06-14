@@ -5,6 +5,11 @@ import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
 
+/**
+ * 素材の部品を表すクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 @JvmRecord
 data class HTMaterialPartKey(val name: String) : Comparable<HTMaterialPartKey> {
     companion object {

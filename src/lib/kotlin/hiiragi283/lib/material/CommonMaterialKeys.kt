@@ -2,6 +2,11 @@ package hiiragi283.lib.material
 
 import hiiragi283.lib.HTConstants
 
+/**
+ * 共通の素材について[HTMaterialKey]をまとめたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 object CommonMaterialKeys {
     @JvmStatic
     private fun create(path: String): HTMaterialKey = HTMaterialKey(HTConstants.COMMON, path)
@@ -38,9 +43,15 @@ object CommonMaterialKeys {
 
     //    Gems    //
 
+    /**
+     * @since 26.1.1
+     */
     @JvmStatic
     val AMBER: HTMaterialKey = create("amber")
 
+    /**
+     * @since 26.1.1
+     */
     @JvmStatic
     val AQUAMARINE: HTMaterialKey = create("aquamarine")
 
