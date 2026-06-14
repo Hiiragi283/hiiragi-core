@@ -7,7 +7,8 @@ import hiiragi283.core.common.item.endgame.HTCreativeItem
 import hiiragi283.core.common.item.endgame.HTEternalUpgradeItem
 import hiiragi283.core.common.item.endgame.HTInfinityPotionItem
 import hiiragi283.lib.collection.Table
-import hiiragi283.lib.collection.buildTable
+import hiiragi283.lib.collection.buildSetMultiMap
+import hiiragi283.lib.collection.flatMapTable
 import hiiragi283.lib.item.component.buildItemAttributeModifiers
 import hiiragi283.lib.item.component.consumables
 import hiiragi283.lib.material.CommonMaterialKeys
@@ -19,13 +20,10 @@ import hiiragi283.lib.material.name
 import hiiragi283.lib.registry.HTDeferredItemRegister
 import hiiragi283.lib.registry.HTSimpleDeferredItem
 import hiiragi283.lib.util.HTTextResult
-import hiiragi283.lib.util.Identity
-import hiiragi283.lib.util.identity
 import hiiragi283.lib.util.printError
 import hiiragi283.lib.util.toTextResult
 import net.minecraft.world.entity.EquipmentSlotGroup
 import net.minecraft.world.entity.ai.attributes.AttributeModifier
-import net.minecraft.world.item.Item
 import net.minecraft.world.item.Rarity
 import net.minecraft.world.item.component.Consumables
 import net.neoforged.bus.api.IEventBus
@@ -47,51 +45,46 @@ data object HCItems {
     //    Resources    //
 
     @JvmField
-    val RESOURCES: Table<HTMaterialPartKey, HTMaterialKey, HTSimpleDeferredItem> = buildTable {
-        fun register(part: HTMaterialPartKey, material: HTMaterialKey, operator: Identity<Item.Properties> = identity()) {
+    val RESOURCES: Table<HTMaterialPartKey, HTMaterialKey, HTSimpleDeferredItem> = buildSetMultiMap {
+        // Vanilla
+        put(VanillaMaterialKeys.COAL, CommonPartKeys.DUST)
+        put(VanillaMaterialKeys.CHARCOAL, CommonPartKeys.DUST)
+
+        put(VanillaMaterialKeys.LAPIS, CommonPartKeys.DUST)
+        put(VanillaMaterialKeys.QUARTZ, CommonPartKeys.DUST)
+        put(VanillaMaterialKeys.AMETHYST, CommonPartKeys.DUST)
+        put(VanillaMaterialKeys.DIAMOND, CommonPartKeys.DUST)
+        put(VanillaMaterialKeys.EMERALD, CommonPartKeys.DUST)
+        put(VanillaMaterialKeys.ECHO, CommonPartKeys.DUST)
+        put(VanillaMaterialKeys.PRISMARINE, CommonPartKeys.DUST)
+
+        put(VanillaMaterialKeys.COPPER, CommonPartKeys.DUST)
+        put(VanillaMaterialKeys.IRON, CommonPartKeys.DUST)
+        put(VanillaMaterialKeys.GOLD, CommonPartKeys.DUST)
+
+        put(VanillaMaterialKeys.NETHERITE, CommonPartKeys.NUGGET)
+
+        put(VanillaMaterialKeys.WOOD, CommonPartKeys.DUST)
+        put(VanillaMaterialKeys.OBSIDIAN, CommonPartKeys.DUST)
+
+        put(VanillaMaterialKeys.ENDER_PEARL, CommonPartKeys.DUST)
+        // Common
+        val rawSet: Set<HTMaterialPartKey> = setOf(CommonPartKeys.RAW)
+        val commonMetals: Set<HTMaterialPartKey> = setOf(CommonPartKeys.DUST, CommonPartKeys.NUGGET, CommonPartKeys.INGOT)
+
+        putAll(CommonMaterialKeys.TIN, rawSet + commonMetals)
+        putAll(CommonMaterialKeys.IRIDIUM, rawSet + commonMetals)
+        putAll(CommonMaterialKeys.PLATINUM, rawSet + commonMetals)
+        putAll(CommonMaterialKeys.LEAD, commonMetals)
+    }.flatMapTable { (material: HTMaterialKey, parts: Collection<HTMaterialPartKey>) ->
+        parts.sorted().map { part: HTMaterialPartKey ->
             val name: String = material.name
             val path: String = when (part) {
                 CommonPartKeys.RAW -> "raw_$name"
                 else -> "${name}_${part.name}"
             }
-            this[part, material] = REGISTER.registerSimpleItem(path, operator)
+            Triple(part, material, REGISTER.registerSimpleItem(path))
         }
-
-        // Vanilla
-        register(CommonPartKeys.DUST, VanillaMaterialKeys.COAL)
-        register(CommonPartKeys.DUST, VanillaMaterialKeys.CHARCOAL)
-
-        register(CommonPartKeys.DUST, VanillaMaterialKeys.LAPIS)
-        register(CommonPartKeys.DUST, VanillaMaterialKeys.QUARTZ)
-        register(CommonPartKeys.DUST, VanillaMaterialKeys.AMETHYST)
-        register(CommonPartKeys.DUST, VanillaMaterialKeys.DIAMOND)
-        register(CommonPartKeys.DUST, VanillaMaterialKeys.EMERALD)
-        register(CommonPartKeys.DUST, VanillaMaterialKeys.ECHO)
-        register(CommonPartKeys.DUST, VanillaMaterialKeys.PRISMARINE)
-
-        register(CommonPartKeys.DUST, VanillaMaterialKeys.COPPER)
-        register(CommonPartKeys.DUST, VanillaMaterialKeys.IRON)
-        register(CommonPartKeys.DUST, VanillaMaterialKeys.GOLD)
-
-        register(CommonPartKeys.NUGGET, VanillaMaterialKeys.NETHERITE) { it.fireResistant() }
-
-        register(CommonPartKeys.DUST, VanillaMaterialKeys.WOOD)
-        register(CommonPartKeys.DUST, VanillaMaterialKeys.OBSIDIAN)
-
-        register(CommonPartKeys.DUST, VanillaMaterialKeys.ENDER_PEARL)
-        // Common
-        fun registerMetals(material: HTMaterialKey, addRaw: Boolean = false) {
-            if (addRaw) register(CommonPartKeys.RAW, material)
-            register(CommonPartKeys.DUST, material)
-            register(CommonPartKeys.INGOT, material)
-            register(CommonPartKeys.NUGGET, material)
-        }
-
-        registerMetals(CommonMaterialKeys.TIN, true)
-        registerMetals(CommonMaterialKeys.IRIDIUM, true)
-        registerMetals(CommonMaterialKeys.PLATINUM, true)
-        registerMetals(CommonMaterialKeys.LEAD)
-        // Hiiragi Core
     }
 
     @JvmStatic
