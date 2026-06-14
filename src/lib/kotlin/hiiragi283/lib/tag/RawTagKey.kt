@@ -13,7 +13,7 @@ import net.minecraft.tags.TagKey
 /**
  * ジェネリクスのない[TagKey]を表すクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.16.0
+ * @since 26.1.0
  */
 @JvmInline
 value class RawTagKey(val location: Identifier) {
@@ -55,11 +55,26 @@ value class RawTagKey(val location: Identifier) {
 
     fun withPath(transform: (String) -> String): RawTagKey = RawTagKey(location.withPath(transform))
 
+    /**
+     * [TagKey]に変換します。
+     * @param T レジストリの要素のクラス
+     * @param key レジストリのキー
+     */
     fun <T : Any> create(key: RegistryKey<T>): TagKey<T> = TagKey.create(key, location)
 }
 
 //    Extensions    //
 
+/**
+ * 新しい[RawTagKey]のインスタンスを作成します。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 fun RawTagKey(namespace: String, path: String): RawTagKey = RawTagKey(namespace.toId(path))
 
+/**
+ * 新しい[RawTagKey]のインスタンスを作成します。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 fun RawTagKey(namespace: String, vararg path: String): RawTagKey = RawTagKey(namespace.toId(*path))

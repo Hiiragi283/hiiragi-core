@@ -1,7 +1,7 @@
 package hiiragi283.lib.fluid
 
 import hiiragi283.lib.util.HTTextResult
-import hiiragi283.lib.util.right
+import hiiragi283.lib.util.toTextResult
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidStackTemplate
 
@@ -32,4 +32,4 @@ fun FluidStack.toTemplateOrNull(): FluidStackTemplate? = when {
  * @author Hiiragi Tsubasa
  * @since 26.1.0
  */
-fun FluidStack.toTemplateResult(): HTTextResult<FluidStackTemplate> = this.toTemplateOrNull()?.right() ?: HTTextResult("FluidStack must be non-empty")
+fun FluidStack.toTemplateResult(): HTTextResult<FluidStackTemplate> = this.toTemplateOrNull().toTextResult { "FluidStack must be non-empty" }

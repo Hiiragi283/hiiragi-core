@@ -22,7 +22,7 @@ import hiiragi283.lib.util.HTTextResult
 import hiiragi283.lib.util.Identity
 import hiiragi283.lib.util.identity
 import hiiragi283.lib.util.printError
-import hiiragi283.lib.util.right
+import hiiragi283.lib.util.toTextResult
 import net.minecraft.world.entity.EquipmentSlotGroup
 import net.minecraft.world.entity.ai.attributes.AttributeModifier
 import net.minecraft.world.item.Item
@@ -99,7 +99,7 @@ data object HCItems {
 
     @JvmStatic
     fun getResult(part: HTMaterialPartKey, material: HTMaterialKey): HTTextResult<HTSimpleDeferredItem> {
-        val result: HTTextResult<HTSimpleDeferredItem> = get(part, material)?.right() ?: HTTextResult("Unregistered part $part for ${material.identifier()}")
+        val result: HTTextResult<HTSimpleDeferredItem> = get(part, material).toTextResult { "Unregistered part $part for ${material.identifier()}" }
         return result.printError(LOGGER)
     }
 

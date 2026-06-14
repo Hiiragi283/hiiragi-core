@@ -7,16 +7,18 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 /**
- * [A]と[B]の両方の値または片方だけを保持するクラスです。
+ * 二つの値のうち，その両方または片方だけを保持するクラスです。
+ *
+ * 参照 : [Arrow - Ior](https://github.com/arrow-kt/arrow/blob/main/arrow-libs/core/arrow-core/src/commonMain/kotlin/arrow/core/Ior.kt)
+ * @param A 左側の値のクラス
+ * @param B 右側の値のクラス
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 26.1.0
  */
 sealed class Ior<out A, out B> {
     companion object {
         /**
          * 指定された[pair]を[Ior]に変換します。
-         * @author Hiiragi Tsubasa
-         * @since 0.1.0
          */
         @JvmStatic
         fun <A, B> fromNullable(pair: Pair<A?, B?>?): Ior<A, B>? {
@@ -26,8 +28,6 @@ sealed class Ior<out A, out B> {
 
         /**
          * 指定された[left]と[right]を[Ior]に変換します。
-         * @author Hiiragi Tsubasa
-         * @since 0.1.0
          */
         @JvmStatic
         fun <A, B> fromNullable(left: A?, right: B?): Ior<A, B>? = when {
@@ -166,7 +166,7 @@ sealed class Ior<out A, out B> {
 
     /**
      * [右側][B]の値を取得します。
-     * @return このインスタンスが[Left]の場合は`null`
+     * @return [Left]の場合は`null`
      */
     fun getRight(): B? = fold(
         { null },
@@ -176,7 +176,7 @@ sealed class Ior<out A, out B> {
 
     /**
      * [左側][A]の値を取得します。
-     * @return このインスタンスが[Right]の場合は`null`
+     * @return [Right]の場合は`null`
      */
     fun getLeft(): A? = fold(
         identity(),

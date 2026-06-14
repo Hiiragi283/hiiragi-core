@@ -10,6 +10,11 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 
+/**
+ * 共通の[TagKey]をまとめたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 data object HTCommonTags {
     data object Blocks {
         @JvmStatic
@@ -36,6 +41,9 @@ data object HTCommonTags {
         @JvmField
         val ELEMENTS_ALKALI_EARTH_METAL: TagKey<HTMaterialContents> = common(HTConstants.ELEMENTS, "alkali_earth_metal")
 
+        /**
+         * @since 26.1.1
+         */
         @JvmField
         val ELEMENTS_PLATINUM_GROUP: TagKey<HTMaterialContents> = common(HTConstants.ELEMENTS, "platinum_group")
 

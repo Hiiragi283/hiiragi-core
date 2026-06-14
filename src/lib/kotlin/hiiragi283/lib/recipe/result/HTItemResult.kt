@@ -18,6 +18,7 @@ import hiiragi283.lib.util.HTTextResult
 import hiiragi283.lib.util.flatMap
 import hiiragi283.lib.util.getOrElse
 import hiiragi283.lib.util.right
+import hiiragi283.lib.util.toTextResult
 import hiiragi283.lib.util.unwrap
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
@@ -157,7 +158,7 @@ interface HTItemResult : HTIdLike {
         override fun create(): HTTextResult<ItemStack> = HTRegistries.MATERIAL_CONTENTS
             .getResult(material)
             .map { it.value() }
-            .flatMap { it.getEntry(part)?.right() ?: HTTextResult("Unknown item for part $part and material $material") }
+            .flatMap { it.getEntry(part).toTextResult { "Unknown item for part $part and material $material" } }
             .map { it.toStack() }
 
         override fun copyWithCount(newCount: Int): MaterialPart = this.copy(count = newCount)

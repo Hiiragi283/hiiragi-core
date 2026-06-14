@@ -4,7 +4,7 @@ import hiiragi283.lib.HTPhysicalSideHelper
 import hiiragi283.lib.util.HTTextResult
 import hiiragi283.lib.util.flatMap
 import hiiragi283.lib.util.flatMapLeft
-import hiiragi283.lib.util.right
+import hiiragi283.lib.util.toTextResult
 import net.minecraft.core.BlockPos
 import net.minecraft.core.RegistryAccess
 import net.minecraft.server.level.ServerLevel
@@ -28,12 +28,12 @@ interface HTAbstractBlockEntity {
     /**
      * レベルを取得します。
      */
-    fun getLevelResult(): HTTextResult<Level> = getLevel()?.right() ?: HTTextResult("Block entity at ${getBlockPos()} is not bounded to level")
+    fun getLevelResult(): HTTextResult<Level> = getLevel().toTextResult { "Block entity at ${getBlockPos()} is not bounded to level" }
 
     /**
      * サーバーレベルを取得します。
      */
-    fun getServerLevel(): HTTextResult<ServerLevel> = getLevelResult().flatMap { level: Level -> (level as? ServerLevel)?.right() ?: HTTextResult("Block entity at ${getBlockPos()} does not exist in server-side") }
+    fun getServerLevel(): HTTextResult<ServerLevel> = getLevelResult().flatMap { level: Level -> (level as? ServerLevel).toTextResult { "Block entity at ${getBlockPos()} does not exist in server-side" } }
 
     /**
      * [レジストリへのアクセス][RegistryAccess]を取得します。

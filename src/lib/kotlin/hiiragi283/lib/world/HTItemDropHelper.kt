@@ -14,9 +14,17 @@ import net.minecraft.world.level.Level
 import net.neoforged.neoforge.capabilities.Capabilities
 import net.neoforged.neoforge.transfer.item.ItemUtil
 
+/**
+ * アイテムのドロップ処理を補助するクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 data object HTItemDropHelper {
     /**
-     * 指定した[stack]を[entity]のインベントリに入れるか，足元にドロップします
+     * アイテムをインベントリに入れるか，足元にドロップします。
+     * @param entity インベントリの所有者
+     * @param stack 対象のアイテム
+     * @param offset ドロップ時のy座標のオフセット
      */
     @JvmStatic
     fun giveOrDropStack(entity: Entity, stack: ItemStack, offset: Float = 0f) {
@@ -32,7 +40,9 @@ data object HTItemDropHelper {
     }
 
     /**
-     * 指定した[stack]を[player]のインベントリに入れます。
+     * アイテムをプレイヤーのインベントリに入れます。
+     * @param player インベントリの所有者
+     * @param stack 対象のアイテム
      */
     @JvmStatic
     fun giveStackTo(player: Player, stack: ItemStack) {
@@ -45,7 +55,10 @@ data object HTItemDropHelper {
     }
 
     /**
-     * 指定した[stack]を[pos]にドロップします。
+     * アイテムをドロップします。
+     * @param level ドロップ先のレベル
+     * @param pos ドロップ先の座標
+     * @param stack 対象のアイテム
      */
     @JvmStatic
     fun dropStackAt(level: Level, pos: BlockPos, stack: ItemStack) {
@@ -53,7 +66,10 @@ data object HTItemDropHelper {
     }
 
     /**
-     * 指定した[stack]を[pos]にドロップします。
+     * アイテムをドロップします。
+     * @param level ドロップ先のレベル
+     * @param pos ドロップ先の座標
+     * @param stack 対象のアイテム
      */
     @JvmStatic
     fun dropStackAt(level: Level, pos: Position, stack: ItemStack) {

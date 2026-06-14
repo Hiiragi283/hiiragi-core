@@ -62,7 +62,7 @@ abstract class HTTagsProvider<T : Any> : TagsProvider<T> {
      * @param prefix タグのプレフィックス
      * @param material タグの種類を表す素材
      */
-    protected fun tags(prefix: HTTagPrefix, material: HTMaterialKey): HTTagBuilder<T> = tags(prefix.rawCommonTag.create(registryKey), prefix.createTagKey(registryKey, material))
+    protected fun tags(prefix: HTTagPrefix, material: HTMaterialKey): HTTagBuilder<T> = tags(prefix.rawCommonTag.create(registryKey), prefix.materialTag(material).create(registryKey))
 
     /**
      * 新しい[HTTagBuilder]のインスタンスを作成します。

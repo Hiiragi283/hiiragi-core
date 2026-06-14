@@ -1,7 +1,7 @@
 package hiiragi283.lib.item
 
 import hiiragi283.lib.util.HTTextResult
-import hiiragi283.lib.util.right
+import hiiragi283.lib.util.toTextResult
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
 
@@ -32,4 +32,4 @@ fun ItemStack.toTemplateOrNull(): ItemStackTemplate? = when {
  * @author Hiiragi Tsubasa
  * @since 26.1.0
  */
-fun ItemStack.toTemplateResult(): HTTextResult<ItemStackTemplate> = this.toTemplateOrNull()?.right() ?: HTTextResult("ItemStack must be non-empty")
+fun ItemStack.toTemplateResult(): HTTextResult<ItemStackTemplate> = this.toTemplateOrNull().toTextResult { "ItemStack must be non-empty" }

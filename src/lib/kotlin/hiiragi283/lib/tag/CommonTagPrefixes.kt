@@ -1,9 +1,9 @@
 package hiiragi283.lib.tag
 
 /**
- * Hiiragi Seriesで使用される[HTTagPrefix]の一覧をまとめたクラスです。
+ * 共通の[HTTagPrefix]をまとめたクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.7.0
+ * @since 26.1.0
  */
 object CommonTagPrefixes {
     //    Block    //

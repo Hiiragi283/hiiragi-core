@@ -4,11 +4,16 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 /**
- * @see kotlin.properties.Delegates
+ * Hiiragi Seriesで使用される委譲プロパティをまとめたクラスです。
+ *
+ * 参照 : [Kotlin - Delegates][kotlin.properties.Delegates]
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
  */
 data object HTDelegates {
     /**
-     * 一度だけ値を代入可能なプロパティを返します。
+     * 一度だけ値を代入可能なプロパティを作成します。
+     * @param T 値のクラス
      */
     fun <T : Any> onceInitialize(): ReadWriteProperty<Any?, T> = OnceInitialize()
 

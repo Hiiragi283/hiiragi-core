@@ -5,6 +5,8 @@ import net.neoforged.neoforge.common.NeoForgeMod
 
 /**
  * Hiiragi Seriesで使用される定数を集めたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
  */
 data object HTConstants {
     @JvmField

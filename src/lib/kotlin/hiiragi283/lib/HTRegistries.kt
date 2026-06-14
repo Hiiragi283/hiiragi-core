@@ -11,6 +11,7 @@ import net.neoforged.neoforge.registries.RegistryBuilder
 /**
  * Hiiragi Seriesで使用される[レジストリ][Registry]を保持するクラスです。
  * @author Hiiragi Tsubasa
+ * @since 26.1.1
  */
 data object HTRegistries {
     @JvmField
@@ -32,6 +33,7 @@ data object HTRegistries {
     /**
      * Hiiragi Seriesで使用される[レジストリ][Registry]の[キー][ResourceKey]を保持するクラスです。
      * @author Hiiragi Tsubasa
+     * @since 26.1.1
      */
     object Keys {
         @JvmField

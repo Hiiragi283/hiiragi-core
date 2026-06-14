@@ -2,7 +2,6 @@ package hiiragi283.core.common.recipe
 
 import com.google.common.collect.ImmutableMultimap
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.lib.getResult
 import hiiragi283.lib.recipe.HTRecipeHolder
 import hiiragi283.lib.recipe.base.HTItemToItemRecipe
 import hiiragi283.lib.recipe.base.HTProgressData
@@ -12,7 +11,6 @@ import hiiragi283.lib.recipe.ingredient.test
 import hiiragi283.lib.recipe.lookup.HTRecipeLookupContext
 import hiiragi283.lib.recipe.lookup.HTRecipeType
 import hiiragi283.lib.registry.toLike
-import hiiragi283.lib.util.getOrElse
 import net.minecraft.core.Holder
 import net.minecraft.core.TypedInstance
 import net.minecraft.resources.Identifier
@@ -64,11 +62,8 @@ object HTVanillaRecipeTypes {
     private data object BrewingType : HTRecipeType<HCBrewingRecipe> {
         override fun getAllRecipes(contextMap: ContextMap): Sequence<HTRecipeHolder<HCBrewingRecipe>> {
             val builder: ImmutableMultimap.Builder<Holder<Potion>, HCBrewingRecipe> = ImmutableMultimap.builder()
-            contextMap.getResult(HTRecipeLookupContext.BREWING)
-                .map(PotionBrewing::potionMixes)
-                .map { it.map(::HCBrewingRecipe) }
-                .getOrElse { emptyList() }
-                .forEach { builder.put(it.potionTo, it) }
+            val recipes: List<HCBrewingRecipe> = contextMap.getOptional(HTRecipeLookupContext.BREWING)?.let(PotionBrewing::potionMixes)?.map(::HCBrewingRecipe) ?: return emptySequence()
+            recipes.forEach { builder.put(it.potionTo, it) }
             val recipeMap: ImmutableMultimap<Holder<Potion>, HCBrewingRecipe> = builder.build()
             return recipeMap
                 .keySet()
