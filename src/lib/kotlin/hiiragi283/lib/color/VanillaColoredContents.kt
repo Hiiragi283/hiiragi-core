@@ -61,6 +61,6 @@ data object VanillaColoredContents {
 
         override fun get(color: DyeColor): HTSimpleDeferredItem? = HTDefaultColor.fromDye(color).let(::get)
 
-        override fun iterator(): Iterator<Pair<HTDefaultColor, HTSimpleDeferredItem>> = map.toList().iterator()
+        override fun iterator(): Iterator<Map.Entry<HTDefaultColor, HTSimpleDeferredItem>> = map.entries.iterator()
     }
 }

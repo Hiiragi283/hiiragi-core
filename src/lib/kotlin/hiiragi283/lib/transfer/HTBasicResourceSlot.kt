@@ -10,6 +10,13 @@ import net.neoforged.neoforge.transfer.resource.Resource
 import net.neoforged.neoforge.transfer.transaction.SnapshotJournal
 import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
+/**
+ * [HTResourceSlot]の基本的な実装クラスです。
+ *
+ * 参照 : [Mekanism - BasicResourceContainer](https://github.com/mekanism/Mekanism/blob/26.1/src/api/java/mekanism/api/resource/BasicResourceContainer.java)
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 abstract class HTBasicResourceSlot<RESOURCE : Resource>(
     protected val capacity: Long,
     private val canInsert: BiPredicate<RESOURCE, HTHandlerAccess>,
@@ -23,7 +30,7 @@ abstract class HTBasicResourceSlot<RESOURCE : Resource>(
     protected var stackIn: HTResourceStack<RESOURCE>? = null
 
     fun setContents(resource: RESOURCE, amount: Long, transaction: TransactionContext?) {
-        setContents(HTResourceStack.of(resource, amount), transaction)
+        setContents(HTResourceStack(resource, amount), transaction)
     }
 
     fun setContents(stack: HTResourceStack<RESOURCE>?, transaction: TransactionContext?) {

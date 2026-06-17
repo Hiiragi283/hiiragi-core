@@ -5,9 +5,8 @@ import hiiragi283.lib.transfer.item.ItemResourceHandler
 import net.minecraft.core.Direction
 
 /**
- * ストレージ関連のキャパビリティを取得できるオブジェクトを表すインターフェースです。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 26.1.0
  */
 interface HTHandlerProvider {
     /**

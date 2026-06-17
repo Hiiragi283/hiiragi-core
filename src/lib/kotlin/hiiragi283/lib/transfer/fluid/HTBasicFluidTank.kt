@@ -15,6 +15,13 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.transfer.fluid.FluidResource
 import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
+/**
+ * [FluidResource]向けの[HTBasicResourceSlot]の基本的な実装クラスです。
+ *
+ * 参照 : [Mekanism - BasicFluidTank](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/capabilities/fluid/BasicFluidTank.java)
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 open class HTBasicFluidTank(capacity: Long, canInsert: BiPredicate<FluidResource, HTHandlerAccess>, canExtract: BiPredicate<FluidResource, HTHandlerAccess>, filter: Predicate<FluidResource>, listener: Runnable?) : HTBasicResourceSlot<FluidResource>(capacity, canInsert, canExtract, filter, listener, FluidResource.EMPTY) {
     companion object {
         @JvmField

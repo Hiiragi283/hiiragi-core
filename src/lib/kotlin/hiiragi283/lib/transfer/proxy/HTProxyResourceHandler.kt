@@ -1,12 +1,23 @@
 package hiiragi283.lib.transfer.proxy
 
 import hiiragi283.lib.transfer.HTResourceHandler
+import hiiragi283.lib.transfer.HTResourceSlot
 import hiiragi283.lib.transfer.holder.HTCapabilityHolder
 import net.minecraft.core.Direction
 import net.neoforged.neoforge.transfer.ResourceHandler
 import net.neoforged.neoforge.transfer.resource.Resource
 import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
+/**
+ * [HTResourceSlot]向けの[HTProxyHandler]の拡張クラスです。
+ *
+ * 参照 : [Mekanism - ProxyResourceHandler](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/capabilities/proxy/ProxyResourceHandler.java)
+ * @param RESOURCE 保持するリソースのクラス
+ * @param side 現在の向き
+ * @param holder 搬入出の制御
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 class HTProxyResourceHandler<RESOURCE : Resource>(private val handler: HTResourceHandler<RESOURCE, *>, side: Direction?, holder: HTCapabilityHolder?) :
     HTProxyHandler(side, holder),
     ResourceHandler<RESOURCE> {

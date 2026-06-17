@@ -9,21 +9,57 @@ import net.neoforged.neoforge.transfer.fluid.FluidResource
 
 //    FluidResource    //
 
+/**
+ * この[FluidStack][this]を[FluidResource]と個数に分解します。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 fun FluidStack.toResourcePair(): Pair<FluidResource, Int> = FluidResource.of(this) to this.amount
 
+/**
+ * この[FluidStackTemplate][this]を[FluidResource]と個数に分解します。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 fun FluidStackTemplate.toResourcePair(): Pair<FluidResource, Int> = FluidResource.of(this) to this.amount
 
 //    ResourceHandler    //
 
+/**
+ * [FluidResource]向けの[ResourceHandler]のエイリアスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 typealias FluidResourceHandler = ResourceHandler<FluidResource>
 
+/**
+ * [FluidStack]のコピーを取得します。
+ * @param index [FluidStack]を取得するスロットのインデックス
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 fun FluidResourceHandler.getFluidStack(index: Int): FluidStack = this.getResource(index).toStack(this.getAmountAsInt(index))
 
+/**
+ * [FluidResource]向けの[HTResourceView]のエイリアスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 typealias HTFluidView = HTResourceView<FluidResource>
 
+/**
+ * [FluidStack]のコピーを取得します。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 fun HTFluidView.getFluidStack(): FluidStack = when (this) {
     is HTBasicFluidTank -> this.getStack()
     else -> this.resource.toStack(this.amountAsInt)
 }
 
+/**
+ * [FluidResource]向けの[HTResourceSlot]のエイリアスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 typealias HTFluidTank = HTResourceSlot<FluidResource>

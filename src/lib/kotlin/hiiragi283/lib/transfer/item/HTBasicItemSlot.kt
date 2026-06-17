@@ -16,6 +16,13 @@ import net.minecraft.world.level.storage.ValueOutput
 import net.neoforged.neoforge.transfer.item.ItemResource
 import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
+/**
+ * [ItemResource]向けの[HTBasicResourceSlot]の基本的な実装クラスです。
+ *
+ * 参照 : [Mekanism - BasicInventorySlot](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/inventory/slot/BasicInventorySlot.java)
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 open class HTBasicItemSlot(capacity: Long, canInsert: BiPredicate<ItemResource, HTHandlerAccess>, canExtract: BiPredicate<ItemResource, HTHandlerAccess>, filter: Predicate<ItemResource>, listener: Runnable?) : HTBasicResourceSlot<ItemResource>(capacity, canInsert, canExtract, filter, listener, ItemResource.EMPTY) {
     companion object {
         @JvmField

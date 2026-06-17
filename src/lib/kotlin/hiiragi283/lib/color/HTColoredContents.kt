@@ -8,7 +8,7 @@ import net.minecraft.world.item.DyeColor
  * @author Hiiragi Tsubasa
  * @since 26.1.0
  */
-interface HTColoredContents<out T> : Iterable<Pair<HTDefaultColor, T>> {
+interface HTColoredContents<out T> : Iterable<Map.Entry<HTDefaultColor, T>> {
     /**
      * 指定した[色][color]に対応する要素を取得します。
      * @return 対応する要素がない場合は`null`
@@ -20,15 +20,4 @@ interface HTColoredContents<out T> : Iterable<Pair<HTDefaultColor, T>> {
      * @return 対応する要素がない場合は`null`
      */
     operator fun get(color: DyeColor): T?
-
-    /**
-     * [DyeColor]に基づいた[HTColoredContents]の拡張インターフェースです。
-     * @author Hiiragi Tsubasa
-     * @since 26.1.0
-     */
-    fun interface Simple<out T> : HTColoredContents<T> {
-        override fun get(color: HTDefaultColor): T? = color.dyeColor.let(::get)
-
-        override fun iterator(): Iterator<Pair<HTDefaultColor, T>> = HTDefaultColor.entries.mapNotNull { color: HTDefaultColor -> get(color)?.let { color to it } }.iterator()
-    }
 }

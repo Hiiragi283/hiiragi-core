@@ -2,14 +2,12 @@ package hiiragi283.lib.transfer
 
 import net.minecraft.core.Direction
 
-@Deprecated("Use 'HTHandlerAccess' instead", ReplaceWith("HTHandlerAccess"), DeprecationLevel.ERROR)
-typealias HTStorageAccess = HTHandlerAccess
-
 /**
- * スロットへのアクセスの種類を表すクラスです。
+ * [HTResourceSlot]へのアクセスの種類を表すクラスです。
+ *
+ * 参照 : [Mekanism - AutomationType](https://github.com/mekanism/Mekanism/blob/26.1/src/api/java/mekanism/api/AutomationType.java)
  * @author Hiiragi Tsubasa
- * @since 0.1.0
- * @see mekanism.api.AutomationType
+ * @since 26.1.0
  */
 enum class HTHandlerAccess {
     /**

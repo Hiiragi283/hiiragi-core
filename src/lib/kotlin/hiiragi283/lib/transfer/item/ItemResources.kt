@@ -9,21 +9,57 @@ import net.neoforged.neoforge.transfer.item.ItemResource
 
 //    ItemResource    //
 
+/**
+ * この[ItemStack][this]を[ItemResource]と個数に分解します。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 fun ItemStack.toResourcePair(): Pair<ItemResource, Int> = ItemResource.of(this) to this.count
 
+/**
+ * この[ItemStackTemplate][this]を[ItemResource]と個数に分解します。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 fun ItemStackTemplate.toResourcePair(): Pair<ItemResource, Int> = ItemResource.of(this) to this.count
 
 //    ResourceHandler    //
 
+/**
+ * [ItemResource]向けの[ResourceHandler]のエイリアスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 typealias ItemResourceHandler = ResourceHandler<ItemResource>
 
+/**
+ * [ItemStack]のコピーを取得します。
+ * @param index [ItemStack]を取得するスロットのインデックス
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 fun ItemResourceHandler.getItemStack(index: Int): ItemStack = this.getResource(index).toStack(this.getAmountAsInt(index))
 
+/**
+ * [ItemResource]向けの[HTResourceView]のエイリアスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 typealias HTItemView = HTResourceView<ItemResource>
 
+/**
+ * [ItemStack]のコピーを取得します。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 fun HTItemView.getItemStack(): ItemStack = when (this) {
     is HTBasicItemSlot -> this.getStack()
     else -> this.resource.toStack(this.amountAsInt)
 }
 
+/**
+ * [ItemResource]向けの[HTResourceSlot]のエイリアスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 typealias HTItemSlot = HTResourceSlot<ItemResource>

@@ -51,7 +51,7 @@ data object HCFluids {
 
         override fun get(color: DyeColor): HTFluidContent.Flowing = HTDefaultColor.fromDye(color).let(::get)
 
-        override fun iterator(): Iterator<Pair<HTDefaultColor, HTFluidContent.Flowing>> = map.toList().iterator()
+        override fun iterator(): Iterator<Map.Entry<HTDefaultColor, HTFluidContent.Flowing>> = map.entries.iterator()
     }
 
     @JvmField

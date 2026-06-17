@@ -4,8 +4,12 @@ import hiiragi283.lib.transfer.holder.HTCapabilityHolder
 import net.minecraft.core.Direction
 
 /**
- * @see mekanism.common.capabilities.resolver.BasicSidedCapabilityResolver
- * @see mekanism.common.capabilities.resolver.manager.CapabilityHandlerManager
+ * [HTCapabilityManager]の実装クラスです。
+ *
+ * 参照 : [Mekanism - CapabilityHandlerManager](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/capabilities/resolver/manager/CapabilityHandlerManager.java)
+ *       [Mekanism - BasicCapabilityResolver](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/capabilities/resolver/BasicCapabilityResolver.java)
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
  */
 open class HTCapabilityManagerImpl<HOLDER : HTCapabilityHolder, SLOT : Any, HANDLER : Any>(
     protected val holder: HOLDER,
