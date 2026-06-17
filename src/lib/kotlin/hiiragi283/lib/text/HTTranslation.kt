@@ -4,8 +4,10 @@ import hiiragi283.lib.color.HTDefaultColor
 
 /**
  * 翻訳を保持するインターフェースです。
+ *
+ * 参照 : [Mekanism - ILangEntry](https://github.com/mekanism/Mekanism/blob/26.1/src/api/java/mekanism/api/text/ILangEntry.java)
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 26.1.0
  */
 interface HTTranslation : HTHasTranslationKey {
     /**

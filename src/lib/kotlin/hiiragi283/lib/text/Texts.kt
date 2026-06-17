@@ -14,42 +14,44 @@ import net.neoforged.neoforge.common.extensions.ILevelExtension
 //    Text    //
 
 /**
+ * [Component]のエイリアスです。
  * @author Hiiragi Tsubasa
- * @since 0.12.0
+ * @since 26.1.0
  */
 typealias Text = Component
 
 /**
+ * [MutableComponent]のエイリアスです。
  * @author Hiiragi Tsubasa
- * @since 0.12.0
+ * @since 26.1.0
  */
 typealias MutableText = MutableComponent
 
 /**
  * 指定した[文字列][this]を[テキスト][MutableText]に変換します。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 26.1.0
  */
 fun String.toText(): MutableText = Text.literal(this)
 
 /**
  * 指定した[文字列][value]を翻訳された[テキスト][MutableText]に変換します。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 26.1.0
  */
 fun translatableText(value: String): MutableText = Text.translatable(value)
 
 /**
  * 指定した[文字列][value]と[引数][args]を翻訳された[テキスト][MutableText]に変換します。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 26.1.0
  */
 fun translatableText(value: String, vararg args: Any): MutableText = Text.translatable(value, *args)
 
 /**
  * 指定した[Boolean]を翻訳された[テキスト][MutableText]に変換します。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 26.1.0
  */
 fun boolText(value: Boolean): MutableText = when (value) {
     true -> HTCommonTranslation.TRUE
@@ -59,7 +61,7 @@ fun boolText(value: Boolean): MutableText = when (value) {
 /**
  * 指定した[Direction]を翻訳された[テキスト][MutableText]に変換します。
  * @author Hiiragi Tsubasa
- * @since 0.7.0
+ * @since 26.1.0
  */
 fun directionText(direction: Direction): MutableText = when (direction) {
     Direction.DOWN -> HTCommonTranslation.DOWN
@@ -72,7 +74,7 @@ fun directionText(direction: Direction): MutableText = when (direction) {
 
 /**
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 26.1.0
  * @see ILevelExtension.getDescription
  */
 fun levelText(key: ResourceKey<Level>): MutableText {
@@ -83,8 +85,13 @@ fun levelText(key: ResourceKey<Level>): MutableText {
 /**
  * 指定した[色][color]を適応します。
  * @author Hiiragi Tsubasa
- * @since 0.6.0
+ * @since 26.1.0
  */
 fun MutableText.withStyle(color: TextColor): MutableText = this.withStyle { style: Style -> style.withColor(color) }
 
+/**
+ * 指定した[色][color]を適応します。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 fun MutableText.withStyle(color: HTDefaultColor): MutableText = this.withStyle(color.textColor)

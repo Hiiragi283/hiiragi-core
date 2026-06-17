@@ -6,10 +6,11 @@ import hiiragi283.lib.resource.toId
 
 /**
  * Hiiragi Seriesで使用される[翻訳][HTTranslation]を集めたクラスです。
+ *
+ * 参照 : [Mekanism - APILang](https://github.com/mekanism/Mekanism/blob/26.1/src/api/java/mekanism/api/text/APILang.java)
+ *       [Mekanism - MekanismLang](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/MekanismLang.java)
  * @author Hiiragi Tsubasa
- * @since 0.1.0
- * @see mekanism.api.text.APILang
- * @see mekanism.common.MekanismLang
+ * @since 26.1.0
  */
 enum class HTCommonTranslation(type: String, vararg path: String) : HTTranslation {
     // Constants

@@ -26,10 +26,11 @@ import org.apache.commons.lang3.text.WordUtils
 
 /**
  * [テキスト][Text]に関するメソッドを集めたクラスです。
+ *
+ * 参照 : [Mekanism - TextComponentUtil](https://github.com/mekanism/Mekanism/blob/26.1/src/api/java/mekanism/api/text/TextComponentUtil.java)
+ *       [Mekanism - TextUtils](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/util/text/TextUtils.java)
  * @author Hiiragi Tsubasa
- * @since 0.1.0
- * @see mekanism.api.text.TextComponentUtil
- * @see mekanism.common.util.text.TextUtils
+ * @since 26.1.0
  */
 object HTTextUtil {
     /**
@@ -66,7 +67,6 @@ object HTTextUtil {
     /**
      * 指定した[翻訳キー][key]と[引数][args]をいい感じにして[テキスト][MutableText]に変換します。
      * @return いい感じになった[テキスト][MutableText]
-     * @see mekanism.api.text.TextComponentUtil.smartTranslate
      */
     @JvmStatic
     fun smartTranslate(key: String, vararg args: Any?): MutableText {
@@ -162,9 +162,6 @@ object HTTextUtil {
         }
     }
 
-    /**
-     * @see mekanism.api.text.TextComponentUtil.hasStyleType
-     */
     @JvmStatic
     private fun hasStyle(style: Style, formatting: ChatFormatting): Boolean = when (formatting) {
         ChatFormatting.OBFUSCATED -> style.isObfuscated
