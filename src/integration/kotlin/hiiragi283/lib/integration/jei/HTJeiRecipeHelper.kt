@@ -18,200 +18,91 @@ import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeType
 
 /**
- * [IRecipeRegistration]へのレシピ登録を簡略化するヘルパークラスです。
+ * [IRecipeRegistration]へのレシピ登録を補助するクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.15.1
+ * @since 26.1.0
  */
-data object HTJeiRecipeHelper {
-    @JvmStatic
-    fun createContext(): ContextMap = HTPhysicalSideHelper.runForSide(HTRecipeLookupContext::createOnClient, HTRecipeLookupContext::create) ?: ContextMap.EMPTY
+@JvmInline
+value class HTJeiRecipeHelper(@PublishedApi internal val registration: IRecipeRegistration) {
+    companion object {
+        @JvmStatic
+        fun createContext(): ContextMap = HTPhysicalSideHelper.runForSide(HTRecipeLookupContext::createOnClient, HTRecipeLookupContext::create) ?: ContextMap.EMPTY
 
-    @JvmField
-    val DISPLAY_SORTER: Comparator<in HTRecipeDisplay> = compareBy(HTComparators.ID, HTRecipeDisplay::getId)
+        @JvmField
+        val DISPLAY_SORTER: Comparator<in HTRecipeDisplay> = compareBy(HTComparators.ID, HTRecipeDisplay::getId)
 
-    @JvmField
-    val HOLDER_SORTER: Comparator<in HTRecipeHolder<*>> = compareBy(HTComparators.ID, HTRecipeHolder<*>::getId)
+        @JvmField
+        val HOLDER_SORTER: Comparator<in HTRecipeHolder<*>> = compareBy(HTComparators.ID, HTRecipeHolder<*>::getId)
+    }
 
-    /**
-     * @since 0.12.0
-     */
-    @JvmStatic
-    fun <T : Any> addRecipes(registration: IRecipeRegistration, recipeType: IRecipeType<T>, recipes: Sequence<T>) {
+    fun <T : Any> addRecipes(recipeType: IRecipeType<T>, recipes: Sequence<T>) {
         val list: List<T> = recipes.toList()
         if (list.isEmpty()) return
         registration.addRecipes(recipeType, list)
     }
 
     // HTRecipeViewerType
-
-    /**
-     * @since 0.15.1
-     */
-    @JvmStatic
-    fun <T : Any> addRecipes(registration: IRecipeRegistration, viewerType: HTRecipeViewerType<T>, recipes: Sequence<T>) {
-        this.addRecipes(registration, HTJeiPlugin.getRecipeType(viewerType), recipes)
+    fun <T : Any> addRecipes(viewerType: HTRecipeViewerType<T>, recipes: Sequence<T>) {
+        this.addRecipes(HTJeiPlugin.getRecipeType(viewerType), recipes)
     }
 
-    /**
-     * @since 0.15.1
-     */
-    @JvmStatic
-    fun <T : Any> addRecipes(
-        registration: IRecipeRegistration,
-        viewerType: HTRecipeViewerType<T>,
-        recipes: Sequence<T>,
-        sorter: Comparator<in T>,
-    ) {
-        this.addRecipes(registration, viewerType, recipes.sortedWith(sorter))
+    fun <T : Any> addRecipes(viewerType: HTRecipeViewerType<T>, recipes: Sequence<T>, sorter: Comparator<in T>) {
+        this.addRecipes(viewerType, recipes.sortedWith(sorter))
     }
 
     // HTRecipeHolder
-
-    /**
-     * @since 0.15.1
-     */
-    @JvmStatic
-    fun <T : Any> addHolderRecipes(
-        registration: IRecipeRegistration,
-        viewerType: HTHolderRecipeViewerType<T>,
-        recipes: Sequence<HTRecipeHolder<T>>,
-    ) {
-        this.addRecipes(registration, viewerType, recipes, HOLDER_SORTER)
+    fun <T : Any> addHolderRecipes(viewerType: HTHolderRecipeViewerType<T>, recipes: Sequence<HTRecipeHolder<T>>) {
+        this.addRecipes(viewerType, recipes, HOLDER_SORTER)
     }
 
-    /**
-     * @since 0.15.1
-     */
-    @JvmStatic
     fun <T : Any> addHolderRecipes(
-        registration: IRecipeRegistration,
         viewerType: HTHolderRecipeViewerType<T>,
         recipes: Sequence<HTRecipeHolder<T>>,
         sorter: Comparator<in T>,
     ) {
-        this.addRecipes(registration, viewerType, recipes, compareBy(sorter, HTRecipeHolder<T>::recipe).thenComparing(HOLDER_SORTER))
+        this.addRecipes(viewerType, recipes, compareBy(sorter, HTRecipeHolder<T>::recipe).thenComparing(HOLDER_SORTER))
     }
 
     // HTRecipeLookup
-
     /**
      * 指定した[viewerType]と[lookup]からレシピを登録します。
      * @param T レシピのクラス
-     * @since 0.11.0
      */
-    @JvmStatic
-    fun <T : Any> addLookupRecipes(registration: IRecipeRegistration, viewerType: HTHolderRecipeViewerType<T>, lookup: HTRecipeLookup<T>) {
-        this.addHolderRecipes(registration, viewerType, lookup.getAllRecipes(createContext()))
+    fun <T : Any> addLookupRecipes(viewerType: HTHolderRecipeViewerType<T>, lookup: HTRecipeLookup<T>) {
+        this.addHolderRecipes(viewerType, lookup.getAllRecipes(createContext()))
     }
 
     /**
      * 指定した[viewerType]と[lookup]からレシピを登録します。
      * @param T レシピのクラス
      * @param sorter レシピの順番の制御
-     * @since 0.11.0
      */
-    @JvmStatic
-    fun <T : Any> addLookupRecipes(
-        registration: IRecipeRegistration,
-        viewerType: HTHolderRecipeViewerType<T>,
-        lookup: HTRecipeLookup<T>,
-        sorter: Comparator<in T>,
-    ) {
-        this.addHolderRecipes(registration, viewerType, lookup.getAllRecipes(createContext()), sorter)
+    fun <T : Any> addLookupRecipes(viewerType: HTHolderRecipeViewerType<T>, lookup: HTRecipeLookup<T>, sorter: Comparator<in T>) {
+        this.addHolderRecipes(viewerType, lookup.getAllRecipes(createContext()), sorter)
     }
 
     // HTRecipeDisplay
-
-    /**
-     * @since 0.16.0
-     */
-    @JvmStatic
-    fun <DISPLAY : HTRecipeDisplay> addDisplayRecipes(
-        registration: IRecipeRegistration,
-        viewerType: HTRecipeViewerType<DISPLAY>,
-        recipes: Sequence<DISPLAY>,
-    ) {
-        this.addRecipes(registration, viewerType, recipes, DISPLAY_SORTER)
+    fun <DISPLAY : HTRecipeDisplay> addDisplayRecipes(viewerType: HTRecipeViewerType<DISPLAY>, recipes: Sequence<DISPLAY>) {
+        this.addRecipes(viewerType, recipes, DISPLAY_SORTER)
     }
 
-    /**
-     * @since 0.16.0
-     */
-    @JvmStatic
-    fun <DISPLAY : HTRecipeDisplay> addDisplayRecipes(
-        registration: IRecipeRegistration,
-        viewerType: HTRecipeViewerType<DISPLAY>,
-        recipes: Sequence<DISPLAY>,
-        sorter: Comparator<DISPLAY>,
-    ) {
-        this.addRecipes(registration, viewerType, recipes, sorter.thenComparing(DISPLAY_SORTER))
+    fun <DISPLAY : HTRecipeDisplay> addDisplayRecipes(viewerType: HTRecipeViewerType<DISPLAY>, recipes: Sequence<DISPLAY>, sorter: Comparator<DISPLAY>) {
+        this.addRecipes(viewerType, recipes, sorter.thenComparing(DISPLAY_SORTER))
     }
 
-    @JvmStatic
-    fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
-        registration: IRecipeRegistration,
-        viewerType: HTRecipeViewerType<DISPLAY>,
-        recipeType: RecipeType<RECIPE>,
-        transform: (HTRecipeHolder<RECIPE>) -> DISPLAY,
-    ) {
-        this.addDisplayRecipes(
-            registration,
-            viewerType,
-            HTVanillaRecipeLookup(recipeType).getAllRecipes(createContext()).map(transform),
-        )
+    fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>, DISPLAY : HTRecipeDisplay> addDisplayRecipes(viewerType: HTRecipeViewerType<DISPLAY>, recipeType: RecipeType<RECIPE>, transform: (HTRecipeHolder<RECIPE>) -> DISPLAY) {
+        this.addDisplayRecipes(viewerType, HTVanillaRecipeLookup(recipeType).getAllRecipes(createContext()).map(transform))
     }
 
-    @JvmStatic
-    fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
-        registration: IRecipeRegistration,
-        viewerType: HTRecipeViewerType<DISPLAY>,
-        recipeType: Supplier<out RecipeType<RECIPE>>,
-        transform: (HTRecipeHolder<RECIPE>) -> DISPLAY,
-    ) {
-        this.addDisplayRecipes(
-            registration,
-            viewerType,
-            HTVanillaRecipeLookup(recipeType).getAllRecipes(createContext()).map(transform),
-        )
+    fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>, DISPLAY : HTRecipeDisplay> addDisplayRecipes(viewerType: HTRecipeViewerType<DISPLAY>, recipeType: Supplier<out RecipeType<RECIPE>>, transform: (HTRecipeHolder<RECIPE>) -> DISPLAY) {
+        this.addDisplayRecipes(viewerType, HTVanillaRecipeLookup(recipeType).getAllRecipes(createContext()).map(transform))
     }
 
-    /**
-     * @since 0.16.0
-     */
-    @JvmStatic
-    fun <BASE : Any, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
-        registration: IRecipeRegistration,
-        viewerType: HTRecipeViewerType<DISPLAY>,
-        lookup: HTRecipeLookup<BASE>,
-        transform: (HTRecipeHolder<BASE>) -> DISPLAY?,
-    ) {
-        this.addDisplayRecipes(
-            registration,
-            viewerType,
-            lookup
-                .getAllRecipes(createContext())
-                .mapNotNull(transform),
-        )
+    fun <BASE : Any, DISPLAY : HTRecipeDisplay> addDisplayRecipes(viewerType: HTRecipeViewerType<DISPLAY>, lookup: HTRecipeLookup<BASE>, transform: (HTRecipeHolder<BASE>) -> DISPLAY?) {
+        this.addDisplayRecipes(viewerType, lookup.getAllRecipes(createContext()).mapNotNull(transform))
     }
 
-    /**
-     * @since 0.16.0
-     */
-    @JvmStatic
-    fun <BASE : Any, DISPLAY : HTRecipeDisplay> addDisplayRecipes(
-        registration: IRecipeRegistration,
-        viewerType: HTRecipeViewerType<DISPLAY>,
-        lookup: HTRecipeLookup<BASE>,
-        sorter: Comparator<DISPLAY>,
-        transform: (HTRecipeHolder<BASE>) -> DISPLAY?,
-    ) {
-        this.addDisplayRecipes(
-            registration,
-            viewerType,
-            lookup
-                .getAllRecipes(createContext())
-                .mapNotNull(transform),
-            sorter,
-        )
+    fun <BASE : Any, DISPLAY : HTRecipeDisplay> addDisplayRecipes(viewerType: HTRecipeViewerType<DISPLAY>, lookup: HTRecipeLookup<BASE>, sorter: Comparator<DISPLAY>, transform: (HTRecipeHolder<BASE>) -> DISPLAY?) {
+        this.addDisplayRecipes(viewerType, lookup.getAllRecipes(createContext()).mapNotNull(transform), sorter)
     }
 }

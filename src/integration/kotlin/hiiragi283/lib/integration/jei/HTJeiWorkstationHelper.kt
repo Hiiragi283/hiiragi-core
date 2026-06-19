@@ -5,40 +5,34 @@ import mezz.jei.api.constants.VanillaTypes
 import mezz.jei.api.recipe.types.IRecipeType
 import mezz.jei.api.registration.IRecipeCatalystRegistration
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.level.ItemLike
 
 /**
- * [IRecipeCatalystRegistration]へのレシピ登録を簡略化するヘルパークラスです。
+ * [IRecipeCatalystRegistration]へのレシピ登録を補助するクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.16.0
+ * @since 26.1.0
  */
-data object HTJeiWorkstationHelper {
-    @JvmStatic
-    fun add(registration: IRecipeCatalystRegistration, recipeType: IRecipeType<*>, workstations: List<ItemStack>) {
+@JvmInline
+value class HTJeiWorkstationHelper(private val registration: IRecipeCatalystRegistration) {
+    /**
+     * 指定した[recipeType]に[workstations]を登録します。
+     */
+    fun add(recipeType: IRecipeType<*>, workstations: List<ItemStack>) {
         registration.addCraftingStations(recipeType, VanillaTypes.ITEM_STACK, workstations)
     }
 
-    @JvmStatic
-    fun add(registration: IRecipeCatalystRegistration, viewerType: HTRecipeViewerType<*>, workstations: List<ItemStack>) {
-        this.add(registration, HTJeiPlugin.getRecipeType(viewerType), workstations)
+    /**
+     * 指定した[viewerType]に[workstations]を登録します。
+     */
+    fun add(viewerType: HTRecipeViewerType<*>, workstations: List<ItemStack>) {
+        this.add(HTJeiPlugin.getRecipeType(viewerType), workstations)
     }
 
-    @JvmName("addFromStacks")
-    @JvmStatic
-    fun add(registration: IRecipeCatalystRegistration, viewerType: HTRecipeViewerType<*>, vararg workstations: ItemStack) {
-        this.add(registration, viewerType, workstations.toList())
-    }
-
-    @JvmName("addFromItems")
-    @JvmStatic
-    fun add(registration: IRecipeCatalystRegistration, viewerType: HTRecipeViewerType<*>, vararg workstations: ItemLike) {
-        this.add(registration, viewerType, workstations.map(::ItemStack))
-    }
-
-    @JvmStatic
-    fun addFromViewerType(registration: IRecipeCatalystRegistration, vararg viewerTypes: HTRecipeViewerType<*>) {
+    /**
+     * [HTRecipeViewerType.workStations]に基づいて登録します。
+     */
+    fun addFromViewerType(vararg viewerTypes: HTRecipeViewerType<*>) {
         for (viewerType: HTRecipeViewerType<*> in viewerTypes) {
-            this.add(registration, viewerType, viewerType.workStations)
+            this.add(viewerType, viewerType.workStations)
         }
     }
 }

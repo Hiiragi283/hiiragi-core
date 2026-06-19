@@ -28,9 +28,11 @@ import net.minecraft.world.item.ItemStack
 import org.apache.commons.lang3.math.Fraction
 
 /**
- * Hiiragi Seriesで使用される[IRecipeCategory]の拡張クラスです。
+ * Hiiragi Seriesで使用される[IRecipeCategory]の抽象クラスです。
+ *
+ * 参照 : [Mekanism - BaseRecipeCategory](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/client/recipe_viewer/jei/BaseRecipeCategory.java)
  * @author Hiiragi Tsubasa
- * @since 0.11.0
+ * @since 26.1.0
  */
 abstract class HTBasicRecipeCategory<RECIPE : Any>(
     private val guiHelper: IGuiHelper,
@@ -124,9 +126,6 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     // IRecipeExtrasBuilder
     protected fun IRecipeExtrasBuilder.addRecipePlus(x: Int, y: Int = getPosition(0)): IPlaceable<*> = this.addRecipePlusSign().setPosition(x + 2, y + 2)
 
-    /**
-     * @since 0.16.0
-     */
     protected fun IRecipeExtrasBuilder.addRecipeArrow(progressData: HTProgressData): IPlaceable<*> = when (progressData) {
         is HTProgressData.Energy -> this.addRecipeArrow()
         is HTProgressData.Time -> this.addAnimatedRecipeArrow(progressData.value)

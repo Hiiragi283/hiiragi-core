@@ -14,8 +14,10 @@ import net.minecraft.resources.Identifier
 
 /**
  * [HTRecipeHolder]に基づいた[HTBasicRecipeCategory]の拡張クラスです。
+ *
+ * 参照 : [Mekanism - HolderRecipeCategory](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/client/recipe_viewer/jei/HolderRecipeCategory.java)
  * @author Hiiragi Tsubasa
- * @since 0.15.1
+ * @since 26.1.0
  */
 abstract class HTHolderRecipeCategory<RECIPE : Any>(
     guiHelper: IGuiHelper,

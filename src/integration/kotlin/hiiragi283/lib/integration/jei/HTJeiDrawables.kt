@@ -6,8 +6,9 @@ import mezz.jei.api.gui.drawable.IDrawable
 import mezz.jei.api.helpers.IGuiHelper
 
 /**
+ * JEIで使用するスプライトをまとめたクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.11.0
+ * @since 26.1.0
  */
 object HTJeiDrawables {
     @JvmStatic
@@ -16,6 +17,9 @@ object HTJeiDrawables {
     @JvmStatic
     private val TANKS: MutableMap<HTBackgroundType, IDrawable> = mutableEnumMapOf()
 
+    /**
+     * スロットの背景スプライトを取得します。
+     */
     @JvmStatic
     fun getSlot(type: HTBackgroundType, guiHelper: IGuiHelper): IDrawable = SLOTS.computeIfAbsent(type) { typeIn: HTBackgroundType ->
         guiHelper
@@ -24,6 +28,9 @@ object HTJeiDrawables {
             .build()
     }
 
+    /**
+     * タンクの背景スプライトを取得します。
+     */
     @JvmStatic
     fun getTank(type: HTBackgroundType, guiHelper: IGuiHelper): IDrawable = TANKS.computeIfAbsent(type) { typeIn: HTBackgroundType ->
         guiHelper

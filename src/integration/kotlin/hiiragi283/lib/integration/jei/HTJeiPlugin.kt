@@ -10,7 +10,7 @@ import net.minecraft.resources.Identifier
  * Hiiragi Seriesで使用される[IModPlugin]の抽象クラスです。
  * @param modId 対象のMOD ID
  * @author Hiiragi Tsubasa
- * @since 0.11.0
+ * @since 26.1.0
  */
 abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
     final override fun getPluginUid(): Identifier = modId.toId("jei_plugin")

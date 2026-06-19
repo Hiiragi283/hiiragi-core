@@ -17,7 +17,7 @@ import net.minecraft.resources.Identifier
 /**
  * [HTRecipeDisplay]に基づいた[HTBasicRecipeCategory]の拡張クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.16.0
+ * @since 26.1.0
  */
 abstract class HTDisplayRecipeCategory<T : HTRecipeDisplay>(
     guiHelper: IGuiHelper,
@@ -30,6 +30,11 @@ abstract class HTDisplayRecipeCategory<T : HTRecipeDisplay>(
 
     final override fun getCodec(codecHelper: ICodecHelper, recipeManager: IRecipeManager): Codec<T> = codec
 
+    /**
+     * [HTRecipeDisplay.Simple]向けの[HTDisplayRecipeCategory]の拡張クラスです。
+     * @author Hiiragi Tsubasa
+     * @since 26.1.0
+     */
     abstract class Basic<T : HTRecipeDisplay.Simple>(guiHelper: IGuiHelper, recipeType: HTRecipeViewerType<T>, codec: Codec<T>) : HTDisplayRecipeCategory<T>(guiHelper, recipeType, codec) {
         final override fun setRecipe(builder: IRecipeLayoutBuilder, recipe: T, focuses: IFocusGroup) {
             setRecipe(builder, recipe.contents, focuses)
@@ -38,8 +43,18 @@ abstract class HTDisplayRecipeCategory<T : HTRecipeDisplay>(
         protected abstract fun setRecipe(builder: IRecipeLayoutBuilder, contents: HTRecipeContents, focuses: IFocusGroup)
     }
 
+    /**
+     * [Basic]の実装クラスです。
+     * @author Hiiragi Tsubasa
+     * @since 26.1.0
+     */
     abstract class Simple(guiHelper: IGuiHelper, recipeType: HTRecipeViewerType<HTRecipeDisplay.Simple>) : Basic<HTRecipeDisplay.Simple>(guiHelper, recipeType, HTRecipeDisplay.Simple.CODEC)
 
+    /**
+     * [HTProgressRecipeDisplay]向けの[Basic]の拡張クラスです。
+     * @author Hiiragi Tsubasa
+     * @since 26.1.0
+     */
     abstract class Progress(guiHelper: IGuiHelper, recipeType: HTRecipeViewerType<HTProgressRecipeDisplay>) : Basic<HTProgressRecipeDisplay>(guiHelper, recipeType, HTProgressRecipeDisplay.CODEC) {
         protected fun IRecipeExtrasBuilder.addRecipeArrow(display: HTProgressRecipeDisplay): IPlaceable<*> = this.addRecipeArrow(display.progressData)
     }

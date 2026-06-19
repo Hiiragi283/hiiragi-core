@@ -107,21 +107,22 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     override fun registerRecipes(registration: IRecipeRegistration) {
-        HTJeiRecipeHelper.addLookupRecipes(registration, HCRecipeViewerTypes.BREWING, HTVanillaRecipeTypes.BREWING, HCBrewingRecipe.SORTER)
-        HTJeiRecipeHelper.addDisplayRecipes(registration, HCRecipeViewerTypes.CHARGING, HCRecipeTypes.CHARGING, HCRecipeDisplayFactories::charging)
-        HTJeiRecipeHelper.addDisplayRecipes(registration, HCRecipeViewerTypes.CHOPPING, HCRecipeTypes.CHOPPING, HTRecipeDisplayFactories::itemToChancedItems)
-        HTJeiRecipeHelper.addDisplayRecipes(registration, HCRecipeViewerTypes.CRUSHING, HCRecipeTypes.CRUSHING, HTRecipeDisplayFactories::itemToChancedItems)
-        HTJeiRecipeHelper.addDisplayRecipes(registration, HCRecipeViewerTypes.EXPLODING, HCRecipeTypes.EXPLODING, HCRecipeDisplayFactories::inWorld)
+        val helper = HTJeiRecipeHelper(registration)
 
-        registerTankEmptying(registration)
-        registerTankFilling(registration)
+        helper.addLookupRecipes(HCRecipeViewerTypes.BREWING, HTVanillaRecipeTypes.BREWING, HCBrewingRecipe.SORTER)
+        helper.addDisplayRecipes(HCRecipeViewerTypes.CHARGING, HCRecipeTypes.CHARGING, HCRecipeDisplayFactories::charging)
+        helper.addDisplayRecipes(HCRecipeViewerTypes.CHOPPING, HCRecipeTypes.CHOPPING, HTRecipeDisplayFactories::itemToChancedItems)
+        helper.addDisplayRecipes(HCRecipeViewerTypes.CRUSHING, HCRecipeTypes.CRUSHING, HTRecipeDisplayFactories::itemToChancedItems)
+        helper.addDisplayRecipes(HCRecipeViewerTypes.EXPLODING, HCRecipeTypes.EXPLODING, HCRecipeDisplayFactories::inWorld)
+
+        registerTankEmptying(helper)
+        registerTankFilling(helper)
     }
 
-    private fun registerTankEmptying(registration: IRecipeRegistration) {
-        HTJeiRecipeHelper.addDisplayRecipes(registration, HCRecipeViewerTypes.EMPTYING, HCRecipeTypes.EMPTYING, HCRecipeDisplayFactories::emptyingTank)
+    private fun registerTankEmptying(helper: HTJeiRecipeHelper) {
+        helper.addDisplayRecipes(HCRecipeViewerTypes.EMPTYING, HCRecipeTypes.EMPTYING, HCRecipeDisplayFactories::emptyingTank)
         // Potion Bottle
-        HTJeiRecipeHelper.addRecipes(
-            registration,
+        helper.addRecipes(
             HCRecipeViewerTypes.EMPTYING,
             getPotionHolders()
                 .map { potion: Holder<Potion> ->
@@ -138,24 +139,23 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         )
     }
 
-    private fun registerTankFilling(registration: IRecipeRegistration) {
-        HTJeiRecipeHelper.addDisplayRecipes(registration, HCRecipeViewerTypes.FILLING, HCRecipeTypes.FILLING, HCRecipeDisplayFactories::fillingTank)
+    private fun registerTankFilling(helper: HTJeiRecipeHelper) {
+        helper.addDisplayRecipes(HCRecipeViewerTypes.FILLING, HCRecipeTypes.FILLING, HCRecipeDisplayFactories::fillingTank)
         // Potion Bottle
-        registerPotionFilling(registration, "potion", Items.GLASS_BOTTLE, Items.POTION)
+        registerPotionFilling(helper, "potion", Items.GLASS_BOTTLE, Items.POTION)
         // Potion Arrow
-        registerPotionFilling(registration, "arrow", Items.ARROW, Items.TIPPED_ARROW, 125, HTBottleType.LINGERING)
+        registerPotionFilling(helper, "arrow", Items.ARROW, Items.TIPPED_ARROW, 125, HTBottleType.LINGERING)
     }
 
     private fun registerPotionFilling(
-        registration: IRecipeRegistration,
+        helper: HTJeiRecipeHelper,
         prefix: String,
         input: ItemLike,
         output: ItemLike,
         amount: Int = 250,
         bottleType: HTBottleType = HTBottleType.DEFAULT,
     ) {
-        HTJeiRecipeHelper.addRecipes(
-            registration,
+        helper.addRecipes(
             HCRecipeViewerTypes.FILLING,
             getPotionHolders()
                 .map { potion: Holder<Potion> ->
@@ -185,8 +185,9 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         .fold({ emptySequence() }, { it.asSequence() })
 
     override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {
-        HTJeiWorkstationHelper.addFromViewerType(
-            registration,
+        val helper = HTJeiWorkstationHelper(registration)
+
+        helper.addFromViewerType(
             HCRecipeViewerTypes.BREWING,
             HCRecipeViewerTypes.CHARGING,
             HCRecipeViewerTypes.CHOPPING,
@@ -195,7 +196,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         )
 
         val copperBasins: List<ItemStack> = HCBlocks.COPPER_BASIN.allBlocks.map { it.toStack() }
-        HTJeiWorkstationHelper.add(registration, HCRecipeViewerTypes.EMPTYING, copperBasins)
-        HTJeiWorkstationHelper.add(registration, HCRecipeViewerTypes.FILLING, copperBasins)
+        helper.add(HCRecipeViewerTypes.EMPTYING, copperBasins)
+        helper.add(HCRecipeViewerTypes.FILLING, copperBasins)
     }
 }
