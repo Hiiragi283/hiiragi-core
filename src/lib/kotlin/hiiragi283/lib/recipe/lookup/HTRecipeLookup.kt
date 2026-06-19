@@ -1,25 +1,20 @@
 package hiiragi283.lib.recipe.lookup
 
 import hiiragi283.lib.recipe.HTRecipeHolder
-import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.context.ContextMap
 
 /**
  * レシピの一覧を提供するインターフェースです。
+ *
+ * 参照 : [Mekanism - IMekanismRecipeTypeProvider](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/recipe/IMekanismRecipeTypeProvider.java)
  * @param RECIPE レシピのクラス
  * @author Hiiragi Tsubasa
- * @since 0.11.0
+ * @since 26.1.0
  */
 fun interface HTRecipeLookup<out RECIPE> {
     /**
-     * 指定した[context]からレシピの一覧を取得します。
-     * @return [HTRecipeHolder]の[Sequence]
+     * レシピの一覧を取得します。
+     * @param contextMap レシピのコンテキスト
      */
     fun getAllRecipes(contextMap: ContextMap): Sequence<HTRecipeHolder<RECIPE>>
-
-    /**
-     * 指定した[level]から，[predicate]に一致するレシピを取得します。
-     * @return [predicate]に一致するレシピがない場合は`null`
-     */
-    fun findFirst(level: ServerLevel, predicate: (RECIPE) -> Boolean): HTRecipeHolder<RECIPE>? = HTRecipeLookupContext.create(level).let(::getAllRecipes).firstOrNull { it.recipe.let(predicate) }
 }

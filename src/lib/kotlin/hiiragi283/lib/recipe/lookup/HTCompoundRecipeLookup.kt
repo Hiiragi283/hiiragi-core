@@ -11,45 +11,23 @@ import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.event.TagsUpdatedEvent
 
+/**
+ * 複数の[HTRecipeLookup]を束ねた[HTRecipeLookup]の実装クラスです。
+ * @param RECIPE レシピのクラス
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 class HTCompoundRecipeLookup<out RECIPE> private constructor(private val id: Identifier) : HTRecipeLookup<RECIPE> {
-    companion object {
-        @JvmStatic
-        fun <RECIPE : Any> create(id: Identifier): HTCompoundRecipeLookup<RECIPE> = Manager.create(id)
-    }
-
-    private val lookups: MutableList<HTRecipeLookup<RECIPE>> = mutableListOf()
-    var cachedRecipes: List<HTRecipeHolder<@UnsafeVariance RECIPE>> = listOf()
-
-    internal fun clearCache() {
-        cachedRecipes = listOf()
-    }
-
-    fun addRecipes(vararg recipes: Pair<Identifier, @UnsafeVariance RECIPE>) {
-        addSubLookup { recipes.asSequence().map { (id: Identifier, recipe: RECIPE) -> HTRecipeHolder(id, recipe) } }
-    }
-
-    fun addSubLookup(lookup: HTRecipeLookup<@UnsafeVariance RECIPE>) {
-        this.lookups += lookup
-    }
-
-    override fun getAllRecipes(contextMap: ContextMap): Sequence<HTRecipeHolder<RECIPE>> {
-        if (cachedRecipes.isEmpty()) {
-            cachedRecipes = lookups.flatMap { it.getAllRecipes(contextMap) }
-        }
-        return cachedRecipes.asSequence()
-    }
-
-    override fun toString(): String = "HTCompoundRecipeLookup(id=$id)"
-
-    //    Manager    //
-
     @EventBusSubscriber
-    data object Manager {
+    companion object {
         @JvmStatic
         private val instances: MutableMap<Identifier, HTCompoundRecipeLookup<*>> = hashMapOf()
 
+        /**
+         * 新しい[HTCompoundRecipeLookup]のインスタンスを作成します。
+         */
         @JvmStatic
-        internal fun <RECIPE : Any> create(id: Identifier): HTCompoundRecipeLookup<RECIPE> {
+        fun <RECIPE : Any> create(id: Identifier): HTCompoundRecipeLookup<RECIPE> {
             val recipeType = HTCompoundRecipeLookup<RECIPE>(id)
             check(instances.put(id, recipeType) == null) { "Duplicated recipe type $id" }
             return recipeType
@@ -69,18 +47,56 @@ class HTCompoundRecipeLookup<out RECIPE> private constructor(private val id: Ide
             }
         }
     }
+
+    private val lookups: MutableList<HTRecipeLookup<RECIPE>> = mutableListOf()
+    private var cachedRecipes: List<HTRecipeHolder<@UnsafeVariance RECIPE>> = listOf()
+
+    private fun clearCache() {
+        cachedRecipes = listOf()
+    }
+
+    /**
+     * レシピの一覧を追加します。
+     */
+    fun addRecipes(vararg recipes: Pair<Identifier, @UnsafeVariance RECIPE>) {
+        addSubLookup { recipes.asSequence().map { (id: Identifier, recipe: RECIPE) -> HTRecipeHolder(id, recipe) } }
+    }
+
+    /**
+     * [HTRecipeLookup]を追加します。
+     */
+    fun addSubLookup(lookup: HTRecipeLookup<@UnsafeVariance RECIPE>) {
+        check(lookup != this)
+        this.lookups += lookup
+    }
+
+    override fun getAllRecipes(contextMap: ContextMap): Sequence<HTRecipeHolder<RECIPE>> {
+        if (cachedRecipes.isEmpty()) {
+            cachedRecipes = lookups.flatMap { it.getAllRecipes(contextMap) }
+        }
+        return cachedRecipes.asSequence()
+    }
+
+    override fun toString(): String = "HTCompoundRecipeLookup(id=$id)"
 }
 
 //    Extensions    //
 
-fun <INPUT : RecipeInput, RECIPE : Any, R : Recipe<INPUT>> HTCompoundRecipeLookup<RECIPE>.fromRecipeType(
-    recipeType: RecipeType<R>,
-    transform: (R) -> RECIPE?,
-) {
+/**
+ * バニラの[RecipeType]からレシピの一覧を追加します。
+ * @param INPUT レシピの入力となるクラス
+ * @param RECIPE [HTCompoundRecipeLookup]のレシピのクラス
+ * @param VANILLA_RECIPE バニラの[Recipe]を継承したクラス
+ * @param recipeType バニラの[RecipeType]
+ * @param transform [VANILLA_RECIPE]を[RECIPE]に変換するブロック
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
+fun <INPUT : RecipeInput, RECIPE : Any, VANILLA_RECIPE : Recipe<INPUT>> HTCompoundRecipeLookup<RECIPE>.fromRecipeType(recipeType: RecipeType<VANILLA_RECIPE>, transform: (VANILLA_RECIPE) -> RECIPE?) {
     this.addSubLookup { contextMap: ContextMap ->
         contextMap.getOrThrow(HTRecipeLookupContext.RECIPES)
             .byType(recipeType)
+            .mapNotNull { holder: RecipeHolder<VANILLA_RECIPE> -> holder.value().let(transform)?.let { HTRecipeHolder(holder.id(), it) } }
             .asSequence()
-            .mapNotNull { holder: RecipeHolder<R> -> holder.value().let(transform)?.let { HTRecipeHolder(holder.id(), it) } }
     }
 }

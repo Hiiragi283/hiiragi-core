@@ -14,6 +14,11 @@ import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStack
 import org.apache.commons.lang3.math.Fraction
 
+/**
+ * 確率付きのアイテムの完成品を提供するクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 @JvmRecord
 data class HTChancedItemResult(val base: HTItemResult, val chance: Fraction) : HTIdLike {
     companion object {
@@ -38,11 +43,19 @@ data class HTChancedItemResult(val base: HTItemResult, val chance: Fraction) : H
         )
     }
 
+    /**
+     * アイテムの完成品を作成します。
+     * @param preview `true`の場合，確率を適応します。
+     */
     fun create(preview: Boolean): HTTextResult<ItemStack> = when {
         !preview && HTConstants.RANDOM.nextFloat() >= chance.toFloat() -> ItemStack.EMPTY.right()
         else -> base.create()
     }
 
+    /**
+     * アイテムの完成品を作成します。
+     * @return チャンスを外した場合，[ItemStack.EMPTY]
+     */
     fun createOrEmpty(): ItemStack = create(false).getOrElse { ItemStack.EMPTY }
 
     override fun getId(): Identifier = base.getId()

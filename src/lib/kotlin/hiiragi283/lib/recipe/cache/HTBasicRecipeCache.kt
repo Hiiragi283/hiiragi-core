@@ -4,8 +4,13 @@ import hiiragi283.lib.recipe.HTRecipeHolder
 import hiiragi283.lib.recipe.lookup.HTRecipeLookup
 
 /**
- * @see mekanism.common.recipe.lookup.cache.AbstractInputRecipeCache
+ * レシピキャッシュの基礎となるクラスです。
+ *
+ * 参照 : [Mekanism - AbstractInputRecipeCache](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/recipe/lookup/cache/AbstractInputRecipeCache.java)
+ * @param RECIPE レシピのクラス
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
  */
-abstract class HTBasicRecipeCache<RECIPE : Any>(protected val lookup: HTRecipeLookup<RECIPE>) {
-    protected var lastRecipe: HTRecipeHolder<RECIPE>? = null
+abstract class HTBasicRecipeCache<out RECIPE>(protected val lookup: HTRecipeLookup<RECIPE>) {
+    protected var lastRecipe: HTRecipeHolder<@UnsafeVariance RECIPE>? = null
 }

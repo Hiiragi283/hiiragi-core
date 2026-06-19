@@ -13,14 +13,27 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import net.minecraft.resources.Identifier
 
+/**
+ * レシピビューワーで使用されるインターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 interface HTRecipeDisplay : HTIdLike {
     companion object {
         @JvmStatic
         fun <T : HTRecipeDisplay> idCodec(): RecordCodecBuilder<T, Identifier> = Identifier.CODEC.fieldOf(HTConstants.ID).forGetter(HTRecipeDisplay::getId)
     }
 
+    /**
+     * レシピビューワーで表示するかどうか判定します。
+     */
     fun isHandled(): Boolean = true
 
+    /**
+     * [HTRecipeContents]を提供する[HTRecipeDisplay]の実装クラスです。
+     * @author Hiiragi Tsubasa
+     * @since 26.1.0
+     */
     open class Simple(private val id: Identifier, val contents: HTRecipeContents) : HTRecipeDisplay {
         companion object {
             @JvmField
@@ -36,6 +49,13 @@ interface HTRecipeDisplay : HTIdLike {
 
 //    Extensions    //
 
+/**
+ * 新しい[HTRecipeDisplay.Simple]のインスタンスを作成します。
+ * @param key ディスプレイのキー
+ * @param builderAction [HTRecipeContents.Builder]を初期化するブロック
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 @Suppress("FunctionName")
 inline fun HTRecipeDisplay(key: RecipeKey, builderAction: HTRecipeContents.Builder.() -> Unit): HTRecipeDisplay.Simple {
     contract {

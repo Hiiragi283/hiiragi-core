@@ -9,8 +9,10 @@ import net.minecraft.world.item.ItemStack
 
 /**
  * [HTRecipeViewerType]の実装クラスです。
+ *
+ * 参照 : [Mekanism - SimpleRVRecipeType](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/client/recipe_viewer/type/SimpleRVRecipeType.java)
  * @author Hiiragi Tsubasa
- * @since 0.16.0
+ * @since 26.1.0
  */
 class HTSimpleRecipeViewerType<out RECIPE : Any>(
     override val recipeClass: Class<out RECIPE>,

@@ -8,7 +8,14 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.context.ContextMap
 
 /**
- * @see mekanism.api.recipes.cache.TwoInputCachedRecipe
+ * 2種類の入力を受け取る[HTBasicRecipeCache]の拡張クラスです。
+ *
+ * 参照 : [Mekanism - TwoInputCachedRecipe](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/recipe/lookup/cache/TwoInputCachedRecipe.java)
+ * @param INPUT_A 1番目のレシピの入力となるクラス
+ * @param INPUT_B 2番目のレシピの入力となるクラス
+ * @param RECIPE レシピのクラス
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
  */
 abstract class HTDoubleInputRecipeCache<INPUT_A : Any, INPUT_B : Any, RECIPE : BiPredicate<INPUT_A, INPUT_B>>(lookup: HTRecipeLookup<RECIPE>) : HTBasicRecipeCache<RECIPE>(lookup) {
     fun findFirstRecipe(firstInput: INPUT_A, secondInput: INPUT_B, level: ServerLevel): RECIPE? = findFirstRecipe(firstInput, secondInput, HTRecipeLookupContext.create(level))

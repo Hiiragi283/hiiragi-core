@@ -12,7 +12,6 @@ import hiiragi283.lib.recipe.viewer.display.HTRecipeDisplay
 import java.util.function.Supplier
 import mezz.jei.api.recipe.types.IRecipeType
 import mezz.jei.api.registration.IRecipeRegistration
-import net.minecraft.client.Minecraft
 import net.minecraft.util.context.ContextMap
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeInput
@@ -25,11 +24,7 @@ import net.minecraft.world.item.crafting.RecipeType
  */
 data object HTJeiRecipeHelper {
     @JvmStatic
-    fun createContext(): ContextMap = Minecraft
-        .getInstance()
-        .level
-        ?.let { HTRecipeLookupContext.create(it, HTPhysicalSideHelper.cachedRecipes) }
-        ?: ContextMap.EMPTY
+    fun createContext(): ContextMap = HTPhysicalSideHelper.runForSide(HTRecipeLookupContext::createOnClient, HTRecipeLookupContext::create) ?: ContextMap.EMPTY
 
     @JvmField
     val DISPLAY_SORTER: Comparator<in HTRecipeDisplay> = compareBy(HTComparators.ID, HTRecipeDisplay::getId)

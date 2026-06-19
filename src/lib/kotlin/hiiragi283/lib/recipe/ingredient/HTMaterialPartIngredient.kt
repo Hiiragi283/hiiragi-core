@@ -22,6 +22,13 @@ import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.common.crafting.ICustomIngredient
 import net.neoforged.neoforge.common.crafting.IngredientType
 
+/**
+ * [HTMaterialContents]に基づいて判定する[ICustomIngredient]の実装クラスです。
+ * @param contents 一致する素材の一覧
+ * @param parts 一致する部品の一覧
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 @JvmRecord
 data class HTMaterialPartIngredient(val contents: HolderSet<HTMaterialContents>, val parts: List<HTMaterialPartKey>) : ICustomIngredient {
     companion object {

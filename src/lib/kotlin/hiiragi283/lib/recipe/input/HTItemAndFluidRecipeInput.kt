@@ -4,15 +4,15 @@ import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
 
 /**
- * 単一の[アイテム][ItemStack]と[液体][FluidStack]を保持する[HTFluidRecipeInput]の実装クラスです。
+ * 一種類のアイテムと液体を保持する[HTFluidRecipeInput]の実装クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.5.0
+ * @since 26.1.0
  */
 @JvmRecord
 data class HTItemAndFluidRecipeInput(val item: ItemStack, val fluid: FluidStack) : HTFluidRecipeInput {
-    override fun getFluid(index: Int): FluidStack = fluid
+    override val fluidSize: Int get() = 1
 
-    override fun getFluidSize(): Int = 1
+    override fun getFluid(index: Int): FluidStack = fluid
 
     override fun getItem(index: Int): ItemStack = item
 

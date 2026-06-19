@@ -19,13 +19,24 @@ import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.transfer.fluid.FluidResource
 import net.neoforged.neoforge.transfer.item.ItemResource
 
+/**
+ * [TypedInstance]の変換を補助するクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 data object HTIngredientHelper {
     //    Fluid    //
 
+    /**
+     * [TypedInstance]を[FluidStack]に変換します。
+     */
     @JvmName("createFluidStack")
     @JvmStatic
-    fun createStack(instance: TypedInstance<Fluid>): FluidStack = unwrap(instance).mapLeft { it.toStack(FluidType.BUCKET_VOLUME) }.unwrap()
+    fun createStack(instance: TypedInstance<Fluid>, amount: Int = FluidType.BUCKET_VOLUME): FluidStack = unwrap(instance).mapLeft { it.toStack(amount) }.unwrap()
 
+    /**
+     * [TypedInstance]を[FluidResource]または[FluidStack]に変換します。
+     */
     @JvmName("unwrapFluidInstance")
     @JvmStatic
     fun unwrap(instance: TypedInstance<Fluid>): Either<FluidResource, FluidStack> = when (instance) {
@@ -40,6 +51,9 @@ data object HTIngredientHelper {
         else -> FluidResource.of(instance.typeHolder()).left()
     }
 
+    /**
+     * [TypedInstance]が空かどうか判定します。
+     */
     @JvmName("isEmptyFluid")
     @JvmStatic
     fun isEmpty(instance: TypedInstance<Fluid>): Boolean = when (instance) {
@@ -56,20 +70,16 @@ data object HTIngredientHelper {
 
     //    Item    //
 
+    /**
+     * [TypedInstance]を[ItemStack]に変換します。
+     */
     @JvmName("createItemStack")
     @JvmStatic
-    fun createStack(instance: TypedInstance<Item>): ItemStack = when (instance) {
-        is ItemInstance -> {
-            when (instance) {
-                is ItemStack -> instance
-                is ItemStackTemplate -> instance.create()
-                else -> ItemStack(instance.typeHolder(), instance.count())
-            }
-        }
-        is ItemResource -> instance.toStack()
-        else -> ItemStack(instance.typeHolder())
-    }
+    fun createStack(instance: TypedInstance<Item>, count: Int = 1): ItemStack = unwrap(instance).mapLeft { it.toStack(count) }.unwrap()
 
+    /**
+     * [TypedInstance]を[ItemResource]または[ItemStack]に変換します。
+     */
     @JvmName("unwrapItemInstance")
     @JvmStatic
     fun unwrap(instance: TypedInstance<Item>): Either<ItemResource, ItemStack> = when (instance) {
@@ -84,6 +94,9 @@ data object HTIngredientHelper {
         else -> ItemResource.of(instance.typeHolder()).left()
     }
 
+    /**
+     * [TypedInstance]が空かどうか判定します。
+     */
     @JvmName("isEmptyItem")
     @JvmStatic
     fun isEmpty(instance: TypedInstance<Item>): Boolean = when (instance) {

@@ -2,8 +2,10 @@ package hiiragi283.lib.recipe.viewer.widget
 
 /**
  * レシピビューワーに保持しているオブジェクトを提供可能なウィジェットを表すインターフェースです。
+ *
+ * 参照 : [Mekanism - IRecipeViewerIngredientHelper](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/client/recipe_viewer/interfaces/IRecipeViewerIngredientHelper.java)
  * @author Hiiragi Tsubasa
- * @since 0.8.0
+ * @since 26.1.0
  */
 fun interface HTIngredientWidget {
     /**

@@ -5,6 +5,11 @@ import hiiragi283.lib.transfer.fluid.HTFluidTank
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
+/**
+ * [FluidStack]向けの[HTInputHandler]の実装クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 class HTFluidInputHandler(tank: HTFluidTank) :
     HTInputHandler<FluidStack>,
     HTFluidTank by tank {

@@ -27,7 +27,7 @@ import net.minecraft.world.level.material.Fluid
 abstract class HTPlatform {
     companion object {
         /**
-         * 単一のインスタンス
+         * [HTPlatform]のインスタンス
          */
         @JvmField
         val INSTANCE: HTPlatform = ServiceLoader.load(HTPlatform::class.java).single()

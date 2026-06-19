@@ -5,7 +5,7 @@ package hiiragi283.lib.recipe
  * @param INPUT レシピの入力となるクラス
  * @param OUTPUT レシピの出力となるクラス
  * @author Hiiragi Tsubasa
- * @since 0.16.0
+ * @since 26.1.0
  */
 fun interface HTRecipeFactory<INPUT : Any, OUTPUT : Any> {
     /**

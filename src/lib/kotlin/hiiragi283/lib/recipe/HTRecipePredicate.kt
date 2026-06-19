@@ -6,7 +6,7 @@ import net.minecraft.world.item.crafting.RecipeInput
  * レシピの判定部分を切り出したインターフェースです。
  * @param INPUT レシピの入力となるクラス
  * @author Hiiragi Tsubasa
- * @since 0.16.0
+ * @since 26.1.0
  */
 fun interface HTRecipePredicate<INPUT : RecipeInput> {
     /**

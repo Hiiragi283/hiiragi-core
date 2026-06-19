@@ -6,8 +6,10 @@ import net.neoforged.neoforge.fluids.FluidStack
 
 /**
  * レシピビューワーからオブジェクトをドラッグ&ドロップ可能なウィジェットを表すインターフェースです。
+ *
+ * 参照 : [Mekanism - IRecipeViewerGhostTarget](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/client/recipe_viewer/interfaces/IRecipeViewerGhostTarget.java)
  * @author Hiiragi Tsubasa
- * @since 0.8.0
+ * @since 26.1.0
  */
 interface HTGhostWidget {
     /**
@@ -18,7 +20,7 @@ interface HTGhostWidget {
     /**
      * ドラッグ&ドロップの処理を担うインターフェースです。
      * @author Hiiragi Tsubasa
-     * @since 0.8.0
+     * @since 26.1.0
      */
     interface GhostIngredientConsumer : Consumer<Any> {
         /**
@@ -31,7 +33,7 @@ interface HTGhostWidget {
     /**
      * [ItemStack]向けの[GhostIngredientConsumer]の拡張インターフェースです。
      * @author Hiiragi Tsubasa
-     * @since 0.8.0
+     * @since 26.1.0
      */
     fun interface ItemConsumer : GhostIngredientConsumer {
         override fun supportedTarget(ingredient: Any): ItemStack? = when (ingredient) {
@@ -43,7 +45,7 @@ interface HTGhostWidget {
     /**
      * [FluidStack]向けの[GhostIngredientConsumer]の拡張インターフェースです。
      * @author Hiiragi Tsubasa
-     * @since 0.8.0
+     * @since 26.1.0
      */
     fun interface FluidConsumer : GhostIngredientConsumer {
         override fun supportedTarget(ingredient: Any): FluidStack? = when (ingredient) {

@@ -15,6 +15,13 @@ import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.display.DisplayContentsFactory
 import net.neoforged.neoforge.common.crafting.SizedIngredient
 
+/**
+ * [Item]向けの[HTIngredient]の実装クラスです。
+ *
+ * 参照 : [Mekanism - ItemStackIngredient](https://github.com/mekanism/Mekanism/blob/26.1/src/api/java/mekanism/api/recipes/ingredients/ItemStackIngredient.java)
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 @JvmInline
 value class HTItemIngredient(@PublishedApi internal val delegate: SizedIngredient) : HTIngredient<Item, ItemStack> {
     companion object {

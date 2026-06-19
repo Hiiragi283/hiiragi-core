@@ -4,9 +4,11 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
 /**
  * レシピの入力スロットを表すインターフェースです。
+ *
+ * 参照 : [Mekanism - IInputHandler](https://github.com/mekanism/Mekanism/blob/26.1/src/api/java/mekanism/api/recipes/inputs/IInputHandler.java)
  * @param STACK 入力となるクラス
  * @author Hiiragi Tsubasa
- * @since 0.5.0
+ * @since 26.1.0
  */
 fun interface HTInputHandler<STACK : Any> {
     /**

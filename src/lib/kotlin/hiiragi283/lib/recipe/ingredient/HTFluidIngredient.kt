@@ -11,6 +11,13 @@ import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient
 import net.neoforged.neoforge.fluids.crafting.display.ForFluidStacks
 
+/**
+ * [Fluid]向けの[HTIngredient]の実装クラスです。
+ *
+ * 参照 : [Mekanism - FluidStackIngredient](https://github.com/mekanism/Mekanism/blob/26.1/src/api/java/mekanism/api/recipes/ingredients/FluidStackIngredient.java)
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 @JvmInline
 value class HTFluidIngredient(@PublishedApi internal val delegate: SizedFluidIngredient) : HTIngredient<Fluid, FluidStack> {
     companion object {

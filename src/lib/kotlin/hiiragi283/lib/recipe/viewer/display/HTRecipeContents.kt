@@ -33,6 +33,11 @@ import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import net.neoforged.neoforge.fluids.crafting.display.FluidStackContentsFactory
 
+/**
+ * レシピビューワーで表示する材料と完成品を管理するクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 @JvmRecord
 data class HTRecipeContents(
     private val inputItems: List<List<ItemStack>>,
@@ -66,6 +71,10 @@ data class HTRecipeContents(
                 ).apply(instance, ::HTRecipeContents)
         }
 
+        /**
+         * 新しい[HTRecipeContents]のインスタンスを作成します。
+         * @param builderAction [HTRecipeContents.Builder]を初期化するブロック
+         */
         @JvmStatic
         inline fun create(builderAction: Builder.() -> Unit): HTRecipeContents {
             contract {
@@ -121,6 +130,11 @@ data class HTRecipeContents(
 
     //    Builder    //
 
+    /**
+     * [HTRecipeContents]のビルダークラスです。
+     * @author Hiiragi Tsubasa
+     * @since 26.1.0
+     */
     @HTBuilderMarker
     class Builder {
         private val inputItems: MutableList<List<ItemStack>> = mutableListOf()
@@ -134,47 +148,93 @@ data class HTRecipeContents(
         //    Input    //
 
         // Item
-        fun addInput(stack: ItemStack) {
-            addInput(listOf(stack))
+        /**
+         * アイテムの材料を追加します。
+         */
+        fun addInput(stack: ItemStack?) {
+            addInput(listOfNotNull(stack))
         }
 
+        /**
+         * アイテムの材料を追加します。
+         */
         @JvmName("addItemInput")
         fun addInput(stacks: List<ItemStack>?) {
             inputItems += stacks?.filterNot(ItemStack::isEmpty) ?: emptyList()
         }
 
+        /**
+         * アイテムの材料を追加します。
+         */
         fun addInput(ingredient: Ingredient?) {
             ingredient?.display()?.resolveForStacks(contextMap).let(::addInput)
         }
 
+        /**
+         * アイテムの材料を追加します。
+         */
         fun addInput(ingredient: HTItemIngredient?) {
             ingredient?.getPreviewStacks(contextMap)?.let(::addInput)
         }
 
         // Fluid
+        /**
+         * 液体の材料を追加します。
+         * @since 26.1.2
+         */
+        fun addInput(stack: FluidStack?) {
+            addInput(listOfNotNull(stack))
+        }
+
+        /**
+         * 液体の材料を追加します。
+         */
         @JvmName("addFluidInput")
         fun addInput(stacks: List<FluidStack>?) {
             inputFluids += stacks?.let(FluidInput::create) ?: FluidInput.EMPTY
         }
 
+        /**
+         * 液体の材料を追加します。
+         */
         fun addInput(ingredient: FluidIngredient?) {
             ingredient?.display()?.resolve(contextMap, FluidStackContentsFactory.INSTANCE)?.toList().let(::addInput)
         }
 
+        /**
+         * 液体の材料を追加します。
+         */
         fun addInput(ingredient: HTFluidIngredient?) {
             ingredient?.getPreviewStacks(contextMap)?.let(::addInput)
         }
 
         //    Catalyst    //
 
+        /**
+         * 触媒を追加します。
+         * @since 26.1.2
+         */
+        fun addCatalyst(stack: ItemStack?) {
+            addCatalyst(listOfNotNull(stack))
+        }
+
+        /**
+         * 触媒を追加します。
+         */
         fun addCatalyst(stacks: List<ItemStack>?) {
             catalysts += stacks?.filterNot(ItemStack::isEmpty) ?: emptyList()
         }
 
+        /**
+         * 触媒を追加します。
+         */
         fun addCatalyst(ingredient: Ingredient?) {
             ingredient?.display()?.resolveForStacks(contextMap).let(::addInput)
         }
 
+        /**
+         * 触媒を追加します。
+         */
         fun addCatalyst(ingredient: HTItemIngredient?) {
             ingredient?.getPreviewStacks(contextMap)?.let(::addCatalyst)
         }
@@ -182,6 +242,9 @@ data class HTRecipeContents(
         //    Output    //
 
         // Item
+        /**
+         * アイテムの完成品を追加します。
+         */
         @JvmName("addItemOutput")
         fun addOutput(stack: ItemStack, chance: Float = 1f) {
             outputItems += when {
@@ -190,6 +253,9 @@ data class HTRecipeContents(
             }
         }
 
+        /**
+         * アイテムの完成品を追加します。
+         */
         @JvmName("addItemOutput")
         fun addOutput(template: ItemStackTemplate?, chance: Float = 1f) {
             outputItems += when {
@@ -198,6 +264,9 @@ data class HTRecipeContents(
             }
         }
 
+        /**
+         * アイテムの完成品を追加します。
+         */
         fun addOutput(result: HTItemResult) {
             result.create()
                 .mapLeft(::createError)
@@ -205,6 +274,9 @@ data class HTRecipeContents(
                 .let(::addOutput)
         }
 
+        /**
+         * アイテムの完成品を追加します。
+         */
         fun addOutput(result: HTChancedItemResult) {
             result.create(true)
                 .mapLeft(::createError)
@@ -218,11 +290,17 @@ data class HTRecipeContents(
         }
 
         // Fluid
+        /**
+         * 液体の完成品を追加します。
+         */
         @JvmName("addFluidOutput")
         fun addOutput(stack: FluidStack) {
             outputFluids += stack
         }
 
+        /**
+         * 液体の完成品を追加します。
+         */
         fun addOutput(result: HTFluidResult) {
             addOutput(result.create())
         }
@@ -230,6 +308,11 @@ data class HTRecipeContents(
         fun build(): HTRecipeContents = HTRecipeContents(inputItems, inputFluids, catalysts, outputItems, outputFluids)
     }
 
+    /**
+     * 液体の材料を管理するクラスです。
+     * @author Hiiragi Tsubasa
+     * @since 26.1.0
+     */
     @ConsistentCopyVisibility
     @JvmRecord
     data class FluidInput private constructor(val stacks: List<FluidStack>, val capacity: Int) {
@@ -248,6 +331,11 @@ data class HTRecipeContents(
         }
     }
 
+    /**
+     * アイテムの完成品を管理するクラスです。
+     * @author Hiiragi Tsubasa
+     * @since 26.1.0
+     */
     @JvmRecord
     data class ChancedItemStack(val stack: ItemStack, val chance: Float) {
         companion object {

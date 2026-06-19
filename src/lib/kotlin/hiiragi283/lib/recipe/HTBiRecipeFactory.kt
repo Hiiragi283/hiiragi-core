@@ -2,11 +2,11 @@ package hiiragi283.lib.recipe
 
 /**
  * レシピの変換部分を切り出したインターフェースです。
- * @param INPUT_A 1つめのレシピの入力となるクラス
- * @param INPUT_B 2つめのレシピの入力となるクラス
+ * @param INPUT_A 1番目のレシピの入力となるクラス
+ * @param INPUT_B 2番目のレシピの入力となるクラス
  * @param OUTPUT レシピの出力となるクラス
  * @author Hiiragi Tsubasa
- * @since 0.16.0
+ * @since 26.1.0
  */
 fun interface HTBiRecipeFactory<INPUT_A : Any, INPUT_B : Any, OUTPUT : Any> {
     /**

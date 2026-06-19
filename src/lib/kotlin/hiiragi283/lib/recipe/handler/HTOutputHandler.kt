@@ -4,9 +4,11 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
 /**
  * レシピの出力スロットを表すインターフェースです。
- * @param STACK 完成品のクラス
+ *
+ * 参照 : [Mekanism - IOutputHandler](https://github.com/mekanism/Mekanism/blob/26.1/src/api/java/mekanism/api/recipes/inputs/IOutputHandler.java)
+ * @param STACK 出力となるクラス
  * @author Hiiragi Tsubasa
- * @since 0.5.0
+ * @since 26.1.0
  */
 fun interface HTOutputHandler<STACK : Any> {
     /**

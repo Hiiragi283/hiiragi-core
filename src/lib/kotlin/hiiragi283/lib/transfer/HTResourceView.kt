@@ -6,7 +6,7 @@ import net.neoforged.neoforge.transfer.resource.Resource
 import org.apache.commons.lang3.math.Fraction
 
 /**
- * 単一のリソースを保持するインターフェースです。
+ * 一種類のリソースを保持するインターフェースです。
  *
  * 参照 : [Mekanism - IResourceContainer](https://github.com/mekanism/Mekanism/blob/26.1/src/api/java/mekanism/api/resource/IResourceContainer.java)
  * @param RESOURCE 保持するリソースのクラス

@@ -33,6 +33,11 @@ import net.minecraft.world.item.ItemStackTemplate
 import net.neoforged.neoforge.common.util.NeoForgeExtraCodecs
 import org.apache.commons.lang3.math.Fraction
 
+/**
+ * アイテムの完成品を提供するインターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 interface HTItemResult : HTIdLike {
     companion object {
         @JvmField
@@ -55,26 +60,53 @@ interface HTItemResult : HTIdLike {
         val CODEC: Codec<HTItemResult> = Codec.lazyInitialized(MAP_CODEC::codec)
 
         @JvmField
-        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemResult> =
-            ByteBufCodecs.registry(HTRegistries.Keys.ITEM_RESULT_SERIALIZER).dispatch(HTItemResult::getSerializer, Serializer<*>::streamCodec)
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemResult> = ByteBufCodecs.registry(HTRegistries.Keys.ITEM_RESULT_SERIALIZER).dispatch(HTItemResult::getSerializer, Serializer<*>::streamCodec)
     }
 
+    /**
+     * シリアライザを取得します。
+     */
     fun getSerializer(): Serializer<*>
 
+    /**
+     * アイテムの完成品を作成します。
+     */
     fun create(): HTTextResult<ItemStack>
 
+    /**
+     * アイテムの完成品を作成します。
+     * @return 正常に作成できなかった場合は[ItemStack.EMPTY]
+     */
     fun createOrEmpty(): ItemStack = create().getOrElse { ItemStack.EMPTY }
 
+    /**
+     * 完成品の個数
+     */
     val count: Int
 
+    /**
+     * このインスタンスのコピーを作成します。
+     * @param newCount 新しい個数
+     */
     fun copyWithCount(newCount: Int): HTItemResult
 
+    /**
+     * 確率付きの完成品に変換します。
+     */
     infix fun withChance(chance: Float = 1f): HTChancedItemResult = withChance(chance.toFraction())
 
+    /**
+     * 確率付きの完成品に変換します。
+     */
     infix fun withChance(chance: Fraction): HTChancedItemResult = HTChancedItemResult(this, chance)
 
     //    Serializer    //
 
+    /**
+     * [HTItemResult]のシリアライザとなるクラスです。
+     * @author Hiiragi Tsubasa
+     * @since 26.1.0
+     */
     @JvmRecord
     data class Serializer<T : HTItemResult>(val codec: MapCodec<T>, val streamCodec: StreamCodec<RegistryFriendlyByteBuf, T>) {
         constructor(codec: MapCodec<T>) : this(codec, ByteBufCodecs.fromCodecWithRegistries(codec.codec()))
@@ -82,6 +114,11 @@ interface HTItemResult : HTIdLike {
 
     //    Simple    //
 
+    /**
+     * [ItemStackTemplate]に基づいだ[HTItemResult]の実装クラスです。
+     * @author Hiiragi Tsubasa
+     * @since 26.1.0
+     */
     @JvmInline
     value class Simple(private val template: ItemStackTemplate) : HTItemResult {
         companion object {
@@ -111,6 +148,11 @@ interface HTItemResult : HTIdLike {
 
     //    Tagged    //
 
+    /**
+     * [TagKey]に基づいだ[HTItemResult]の実装クラスです。
+     * @author Hiiragi Tsubasa
+     * @since 26.1.0
+     */
     @JvmRecord
     data class Tagged(val tagKey: TagKey<Item>, override val count: Int = 1) : HTItemResult {
         companion object {
@@ -137,6 +179,11 @@ interface HTItemResult : HTIdLike {
 
     //    MaterialPart    //
 
+    /**
+     * 部品と素材に基づいだ[HTItemResult]の実装クラスです。
+     * @author Hiiragi Tsubasa
+     * @since 26.1.0
+     */
     @JvmRecord
     data class MaterialPart(val part: HTMaterialPartKey, val material: HTMaterialKey, override val count: Int = 1) : HTItemResult {
         companion object {

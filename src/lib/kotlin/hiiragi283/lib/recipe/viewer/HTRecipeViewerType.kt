@@ -9,15 +9,17 @@ import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStack
 
 /**
- * [HTRecipeHolder]に基づいた[HTRecipeViewerType]の型エイリアスです。
+ * [HTRecipeHolder]に基づいた[HTRecipeViewerType]のエイリアスです。
  * @author Hiiragi Tsubasa
- * @since 0.15.1
+ * @since 26.1.0
  */
 typealias HTHolderRecipeViewerType<RECIPE> = HTRecipeViewerType<HTRecipeHolder<RECIPE>>
 
 /**
+ * 参照 : [Mekanism - IRecipeViewerRecipeType](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/client/recipe_viewer/type/IRecipeViewerRecipeType.java)
+ * @param RECIPE レシピのクラス
  * @author Hiiragi Tsubasa
- * @since 0.11.0
+ * @since 26.1.0
  */
 interface HTRecipeViewerType<out RECIPE : Any> :
     HTHasText,

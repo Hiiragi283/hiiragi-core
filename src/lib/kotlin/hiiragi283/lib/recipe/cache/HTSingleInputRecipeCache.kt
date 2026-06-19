@@ -8,7 +8,13 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.context.ContextMap
 
 /**
- * @see mekanism.common.recipe.lookup.cache.SingleInputRecipeCache
+ * 1種類の入力を受け取る[HTBasicRecipeCache]の拡張クラスです。
+ *
+ * 参照 : [Mekanism - SingleInputRecipeCache](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/recipe/lookup/cache/SingleInputRecipeCache.java)
+ * @param INPUT レシピの入力となるクラス
+ * @param RECIPE レシピのクラス
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
  */
 abstract class HTSingleInputRecipeCache<INPUT : Any, RECIPE : Predicate<INPUT>>(lookup: HTRecipeLookup<RECIPE>) : HTBasicRecipeCache<RECIPE>(lookup) {
     fun findFirstRecipe(input: INPUT, level: ServerLevel): RECIPE? = findFirstRecipe(input, HTRecipeLookupContext.create(level))

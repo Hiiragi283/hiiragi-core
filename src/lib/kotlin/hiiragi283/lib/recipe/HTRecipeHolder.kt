@@ -18,14 +18,13 @@ import net.minecraft.world.item.crafting.RecipeHolder
  * レシピの[ID][RecipeKey]とレシピ自身をまとめたクラスです。
  * @param RECIPE レシピのクラス
  * @author Hiiragi Tsubasa
- * @since 0.15.0
+ * @since 26.1.0
  */
 @JvmRecord
 data class HTRecipeHolder<out RECIPE>(@JvmField val key: RecipeKey, @JvmField val recipe: RECIPE) : SupplierWithId<RECIPE> {
     companion object {
         /**
          * [HTRecipeHolder]の[Codec]を作成します。
-         * @since 0.15.1
          */
         @JvmStatic
         fun <RECIPE : Any> codec(recipeCodec: MapCodec<RECIPE>): Codec<HTRecipeHolder<RECIPE>> = HTCodecs.record { instance ->
@@ -66,7 +65,6 @@ data class HTRecipeHolder<out RECIPE>(@JvmField val key: RecipeKey, @JvmField va
      * @param R 変換後のクラス
      * @param transform [recipe]を[R]に変換するブロック
      * @return [transform]で変換した値が`null`の場合は`null`
-     * @since 0.15.1
      */
     inline fun <R : Any> mapRecipeOrNull(transform: (RECIPE) -> R?): HTRecipeHolder<R>? {
         val recipe: R = transform(this.recipe) ?: return null

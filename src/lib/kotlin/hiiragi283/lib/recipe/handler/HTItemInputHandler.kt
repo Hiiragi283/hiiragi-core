@@ -11,6 +11,11 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
 typealias RemainderSetter = (ItemResource, Int) -> Unit
 
+/**
+ * [ItemStack]向けの[HTInputHandler]の実装クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 class HTItemInputHandler(slot: HTItemSlot, private val remainderConsumer: RemainderSetter? = null) :
     HTInputHandler<ItemStack>,
     HTItemSlot by slot {

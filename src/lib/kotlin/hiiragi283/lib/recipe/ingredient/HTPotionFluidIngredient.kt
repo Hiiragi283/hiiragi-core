@@ -31,7 +31,7 @@ import net.neoforged.neoforge.fluids.crafting.display.FluidStackSlotDisplay
  * @param potions 対象となるポーションの一覧
  * @param bottleType 対象となるポーション瓶の種類
  * @author Hiiragi Tsubasa
- * @since 0.10.0
+ * @since 26.1.0
  */
 class HTPotionFluidIngredient(val potions: HolderSet<Potion>, val bottleType: HTBottleType) : FluidIngredient() {
     companion object {

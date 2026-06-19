@@ -9,21 +9,11 @@ import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 
 fun Ingredient.test(instance: TypedInstance<Item>): Boolean = HTIngredientHelper.createStack(instance).let(this::test)
 
-/**
- * @author Hiiragi Tsubasa
- * @since 0.16.0
- */
 fun Ingredient.getRequiredAmount(instance: TypedInstance<Item>): Int = when {
     this.test(instance) -> 1
     else -> 0
 }
 
-infix fun Ingredient.withSize(count: Int = 1): HTItemIngredient = HTItemIngredient(this, count)
-
-/**
- * @author Hiiragi Tsubasa
- * @since 0.16.0
- */
 fun FluidIngredient.getRequiredAmount(instance: TypedInstance<Fluid>): Int = when {
     HTIngredientHelper.createStack(instance).let(this::test) -> FluidType.BUCKET_VOLUME
     else -> 0

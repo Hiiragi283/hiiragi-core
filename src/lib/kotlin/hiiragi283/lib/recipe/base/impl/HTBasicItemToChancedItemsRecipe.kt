@@ -17,6 +17,11 @@ import net.minecraft.world.item.ItemInstance
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.SingleRecipeInput
 
+/**
+ * [HTItemToChancedItemsRecipe]を実装した抽象クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 open class HTBasicItemToChancedItemsRecipe(
     val ingredient: HTItemIngredient,
     val results: List<HTChancedItemResult>,
