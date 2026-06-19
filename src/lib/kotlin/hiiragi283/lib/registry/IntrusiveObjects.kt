@@ -9,9 +9,9 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.material.Fluid
 
 /**
- * 指定した[Block][this]を[SupplierWithId]に変換します。
+ * この[Block][this]を[SupplierWithId]に変換します。
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 26.1.0
  */
 fun <BLOCK : Block> BLOCK.toLike(): SupplierWithId<BLOCK> = BlockWithId(this)
 
@@ -24,9 +24,9 @@ private value class BlockWithId<out BLOCK : Block>(private val block: BLOCK) : S
 }
 
 /**
- * 指定した[EntityType][this]を[SupplierWithId]に変換します。
+ * この[EntityType][this]を[SupplierWithId]に変換します。
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 26.1.0
  */
 fun <ENTITY : Entity> EntityType<ENTITY>.toLike(): SupplierWithId<EntityType<ENTITY>> = EntityTypeWithId(this)
 
@@ -39,9 +39,9 @@ private value class EntityTypeWithId<out ENTITY : Entity>(private val type: Enti
 }
 
 /**
- * 指定した[Fluid][this]を[SupplierWithId]に変換します。
+ * この[Fluid][this]を[SupplierWithId]に変換します。
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 26.1.0
  */
 fun <FLUID : Fluid> FLUID.toLike(): SupplierWithId<FLUID> = FluidWithId(this)
 
@@ -54,9 +54,9 @@ private value class FluidWithId<out FLUID : Fluid>(private val fluid: FLUID) : S
 }
 
 /**
- * 指定した[Item][this]を[SupplierWithId]に変換します。
+ * この[Item][this]を[SupplierWithId]に変換します。
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 26.1.0
  */
 fun <ITEM : Item> ITEM.toLike(): SupplierWithId<ITEM> = ItemWithId(this)
 

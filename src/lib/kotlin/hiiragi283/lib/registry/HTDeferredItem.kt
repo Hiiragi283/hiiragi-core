@@ -11,8 +11,19 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.level.ItemLike
 
+/**
+ * シンプルな[HTDeferredItem]のエイリアスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 typealias HTSimpleDeferredItem = HTDeferredItem<Item>
 
+/**
+ * [アイテム][Item]向けの[HTDeferredHolder]の拡張クラスです。
+ * @param ITEM アイテムのクラス
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 class HTDeferredItem<out ITEM : Item> :
     HTDeferredHolder<Item, ITEM>,
     HTIdLike.Translatable,
@@ -27,7 +38,13 @@ class HTDeferredItem<out ITEM : Item> :
 
     override fun asItem(): ITEM = get()
 
+    /**
+     * 新しい[ItemStackTemplate]のインスタンスを作成します。
+     */
     fun toTemplate(count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStackTemplate = ItemStackTemplate(this, count, patch)
 
+    /**
+     * 新しい[ItemStack]のインスタンスを作成します。
+     */
     fun toStack(count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStack = ItemStack(this, count, patch)
 }

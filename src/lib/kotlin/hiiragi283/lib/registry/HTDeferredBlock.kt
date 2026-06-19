@@ -7,8 +7,19 @@ import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.level.block.Block
 
+/**
+ * シンプルな[HTDeferredBlock]のエイリアスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 typealias HTSimpleDeferredBlock = HTDeferredBlock<Block>
 
+/**
+ * [ブロック][Block]向けの[HTDeferredHolder]の拡張クラスです。
+ * @param BLOCK ブロックのクラス
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 class HTDeferredBlock<out BLOCK : Block> :
     HTDeferredHolder<Block, BLOCK>,
     HTIdLike.Translatable {

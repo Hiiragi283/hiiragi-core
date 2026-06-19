@@ -6,19 +6,22 @@ import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
 
 /**
- * 指定した[Holder][this]から[ResourceKey]を取得します。
+ * この[Holder][this]から[ResourceKey]を取得します。
+ * @param R 保持する値のクラス
  * @throws IllegalStateException [unwrapKey]の値が空の場合
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 26.1.0
  */
 fun <R : Any> Holder<R>.getKeyOrThrow(): ResourceKey<R> = this.unwrapKey().orElseThrow { error("Unregistered holder: $this") }
 
 /**
- * 指定した[Holder][this]を[SupplierWithId]に変換します。
+ * この[Holder][this]を[SupplierWithId]に変換します。
+ * @param R 保持する値のクラス
+ * @throws IllegalStateException [Holder.kind]が[Holder.Kind.DIRECT]の場合
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 26.1.0
  */
-fun <T : Any> Holder<T>.toLike(): SupplierWithId<T> = when (this.kind()) {
+fun <R : Any> Holder<R>.toLike(): SupplierWithId<R> = when (this.kind()) {
     Holder.Kind.REFERENCE -> HolderWithId(this)
     Holder.Kind.DIRECT -> error("Cannot convert direct holder to SupplierWithId")
 }

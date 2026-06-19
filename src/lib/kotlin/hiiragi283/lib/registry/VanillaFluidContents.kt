@@ -8,9 +8,9 @@ import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.Tags
 
 /**
- * バニラで追加される液体向けの[HTFluidContent]の一覧をまとめたクラスです。
+ * バニラで追加される液体向けの[HTFluidContent]をまとめたクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.6.0
+ * @since 26.1.0
  */
 data object VanillaFluidContents {
     @JvmField

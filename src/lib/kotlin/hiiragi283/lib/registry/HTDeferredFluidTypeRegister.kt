@@ -6,9 +6,28 @@ import net.minecraft.resources.Identifier
 import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.registries.NeoForgeRegistries
 
+/**
+ * [FluidType]向けの[HTDeferredRegister]の拡張クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 class HTDeferredFluidTypeRegister(namespace: String) : HTDeferredRegister<FluidType>(NeoForgeRegistries.Keys.FLUID_TYPES, namespace) {
+    /**
+     * 新しい[FluidType]を登録します。
+     * @param name [FluidType]のIDのパス
+     * @param properties [FluidType]のプロパティ
+     * @return 新しい[HTDeferredFluidType]のインスタンス
+     */
     fun registerSimpleType(name: String, properties: FluidType.Properties): HTDeferredFluidType<FluidType> = registerType(name, properties, ::FluidType)
 
+    /**
+     * 新しい[FluidType]を登録します。
+     * @param TYPE [FluidType]のクラス
+     * @param name [FluidType]のIDのパス
+     * @param properties [FluidType]のプロパティ
+     * @param factory [FluidType.Properties]から[FluidType]を作るブロック
+     * @return 新しい[HTDeferredFluidType]のインスタンス
+     */
     fun <TYPE : FluidType> registerType(name: String, properties: FluidType.Properties, factory: (FluidType.Properties) -> TYPE): HTDeferredFluidType<TYPE> = this.register(name) { _ -> properties.let(factory) }
 
     //    HTDeferredRegister    //

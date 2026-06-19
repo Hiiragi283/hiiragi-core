@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour
  * @param weathering さび止めされた銅系ブロックの一覧
  * @param waxed 酸化する銅系ブロックの一覧
  * @author Hiiragi Tsubas
- * @since 0.17.0
+ * @since 26.1.0
  */
 @JvmRecord
 data class HTWeatheringCopperBlocks<WAXED : Block, WEATHERING, ITEM : Item>(
@@ -24,6 +24,11 @@ data class HTWeatheringCopperBlocks<WAXED : Block, WEATHERING, ITEM : Item>(
     val waxed: HTCopperMap<HTDeferredBlockAndItem<WAXED, ITEM>>,
 ) where WEATHERING : Block, WEATHERING : WeatheringCopper {
     companion object {
+        /**
+         * 新しい[HTWeatheringCopperBlocks]のインスタンスを作成します。
+         * @param WAXED さび止めされた銅系ブロックのクラス
+         * @param WEATHERING 酸化する銅系ブロックのクラス
+         */
         @JvmStatic
         fun <WAXED : Block, WEATHERING> createSimple(
             register: HTDeferredBlockAndItemRegister,
@@ -34,6 +39,12 @@ data class HTWeatheringCopperBlocks<WAXED : Block, WEATHERING, ITEM : Item>(
             itemProp: Identity<Item.Properties> = identity(),
         ): HTWeatheringCopperBlocks<WAXED, WEATHERING, HTBlockItem<Block>> where WEATHERING : Block, WEATHERING : WeatheringCopper = create(register, name, blockProp, waxedFactory, weatheringFactory, ::HTBlockItem, itemProp)
 
+        /**
+         * 新しい[HTWeatheringCopperBlocks]のインスタンスを作成します。
+         * @param WAXED さび止めされた銅系ブロックのクラス
+         * @param WEATHERING 酸化する銅系ブロックのクラス
+         * @param ITEM 銅系アイテムのクラス
+         */
         @JvmStatic
         fun <WAXED : Block, WEATHERING, ITEM : Item> create(
             register: HTDeferredBlockAndItemRegister,

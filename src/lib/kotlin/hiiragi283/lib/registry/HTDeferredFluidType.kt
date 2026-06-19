@@ -7,6 +7,12 @@ import net.minecraft.resources.ResourceKey
 import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.registries.NeoForgeRegistries
 
+/**
+ * [FluidType]向けの[HTDeferredHolder]の拡張クラスです。
+ * @param TYPE [FluidType]のクラス
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 class HTDeferredFluidType<TYPE : FluidType> :
     HTDeferredHolder<FluidType, TYPE>,
     HTIdLike.Translatable {

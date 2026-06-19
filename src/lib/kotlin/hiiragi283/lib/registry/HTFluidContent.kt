@@ -12,9 +12,14 @@ import net.neoforged.neoforge.fluids.FluidStackTemplate
 import net.neoforged.neoforge.fluids.FluidType
 
 /**
- * 液体とそれに関する要素を束ねるクラスです。
+ * 液体に関する要素を束ねたクラスです。
+ * @param typeHolder 液体の種類の[HTDeferredHolder]
+ * @param sourceHolder 液体源の[HTDeferredHolder]
+ * @param bucketHolder 液体入りバケツの[HTDeferredHolder]
+ * @param fluidTag 液体の共通タグ
+ * @param bucketTag 液体入りバケツの共通タグ
  * @author Hiiragi Tsubasa
- * @since 0.10.0
+ * @since 26.1.0
  */
 sealed class HTFluidContent(
     val typeHolder: HTDeferredFluidType<FluidType>,
@@ -23,15 +28,25 @@ sealed class HTFluidContent(
     val fluidTag: TagKey<Fluid>,
     val bucketTag: TagKey<Item>,
 ) : SupplierWithId<Fluid> by sourceHolder {
+    /**
+     * 液体の種類を取得します。
+     */
     fun getFluidType(): FluidType = typeHolder.get()
 
+    /**
+     * 新しい[FluidStackTemplate]のインスタンスを作成します。
+     */
     fun toTemplate(amount: Int = FluidType.BUCKET_VOLUME, patch: DataComponentPatch = DataComponentPatch.EMPTY): FluidStackTemplate = FluidStackTemplate(sourceHolder, amount, patch)
 
+    /**
+     * 新しい[FluidStack]のインスタンスを作成します。
+     */
     fun toStack(amount: Int = FluidType.BUCKET_VOLUME, patch: DataComponentPatch = DataComponentPatch.EMPTY): FluidStack = FluidStack(sourceHolder, amount, patch)
 
     /**
      * 基本的な[HTFluidContent]の実装クラスです。
-     * @since 0.17.0
+     * @author Hiiragi Tsubasa
+     * @since 26.1.0
      */
     class Virtual(
         typeHolder: HTDeferredFluidType<FluidType>,
@@ -43,7 +58,10 @@ sealed class HTFluidContent(
 
     /**
      * [FlowingFluid]に基づいた[HTFluidContent]の実装クラスです。
-     * @since 0.17.0
+     * @param flowingHolder 液体流の[HTDeferredHolder]
+     * @param blockHolder 液体ブロックの[HTDeferredHolder]
+     * @author Hiiragi Tsubasa
+     * @since 26.1.0
      */
     class Flowing(
         typeHolder: HTDeferredFluidType<FluidType>,

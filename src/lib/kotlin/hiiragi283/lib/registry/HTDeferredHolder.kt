@@ -5,6 +5,13 @@ import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
 import net.neoforged.neoforge.registries.DeferredHolder
 
+/**
+ * Hiiragi Seriesで使用される[DeferredHolder]の拡張クラスです。
+ * @param R レジストリの要素のクラス
+ * @param T 要素のクラス
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
+ */
 open class HTDeferredHolder<R : Any, out T : R> :
     DeferredHolder<R, @UnsafeVariance T>,
     SupplierWithId<T> {

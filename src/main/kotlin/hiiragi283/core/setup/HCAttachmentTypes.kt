@@ -10,6 +10,5 @@ object HCAttachmentTypes {
     val REGISTER = HTDeferredAttachmentRegister(HiiragiCoreAPI.MOD_ID)
 
     @JvmField
-    val IN_WORLD_RECIPE_CACHES: AttachmentType<HCInWorldRecipeCaches> =
-        REGISTER.registerType("in_world_recipe_caches", AttachmentType.builder(::HCInWorldRecipeCaches))
+    val IN_WORLD_RECIPE_CACHES: AttachmentType<HCInWorldRecipeCaches> = REGISTER.registerType("in_world_recipe_caches") { AttachmentType.builder(::HCInWorldRecipeCaches) }
 }
