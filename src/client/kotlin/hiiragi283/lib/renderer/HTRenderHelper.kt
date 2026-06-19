@@ -11,9 +11,15 @@ import net.minecraft.core.Direction
 import org.joml.Vector3f
 
 /**
- * @see net.minecraft.client.renderer.blockentity.AbstractEndPortalRenderer.submitCube
+ * Hiiragi Seriesで使用される描画を補助するクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.0
  */
 data object HTRenderHelper {
+    /**
+     * キューブを描画します。
+     * @see net.minecraft.client.renderer.blockentity.AbstractEndPortalRenderer.submitCube
+     */
     @JvmStatic
     fun submitCube(submitNodeCollector: SubmitNodeCollector, poseStack: PoseStack, renderType: RenderType, from: Vector3f, to: Vector3f, sprite: TextureAtlasSprite, color: Int, light: Int) {
         submitNodeCollector.submitCustomGeometry(poseStack, renderType) { pose: PoseStack.Pose, consumer: VertexConsumer ->

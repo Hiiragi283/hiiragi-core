@@ -21,7 +21,7 @@ import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
 /**
  * Hiiragi Seriesで使用される，クライアント側のmodの抽象クラスです。
  * @author Hiiragi Tsubasa
- * @since 0.8.0
+ * @since 26.1.0
  */
 abstract class HTClientMod {
     init {

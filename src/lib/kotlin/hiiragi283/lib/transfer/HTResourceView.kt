@@ -60,7 +60,7 @@ interface HTResourceView<RESOURCE : Resource> {
     fun getNeededAsInt(resource: RESOURCE): Int = Ints.saturatedCast(getNeededAsLong(resource))
 
     /**
-     * 占有率を取得します。
+     * 充填率を取得します。
      */
     fun getFilledLevel(resource: RESOURCE): Fraction = fixedFraction(amountAsLong, getCapacityAsLong(resource))
 }
