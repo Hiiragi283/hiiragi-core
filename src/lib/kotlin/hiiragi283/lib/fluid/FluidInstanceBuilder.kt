@@ -15,7 +15,6 @@ import kotlin.contracts.contract
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.world.level.material.Fluid
-import net.minecraft.world.level.material.Fluids
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidStackTemplate
 import net.neoforged.neoforge.fluids.FluidType
@@ -50,7 +49,7 @@ class FluidInstanceBuilder : HolderAccepter.FluidAccepter {
                 callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
             }
             return FluidInstanceBuilder().apply(builderAction).run {
-                if (fluid.`is`(Fluids.EMPTY.builtInRegistryHolder())) HTTextResult("Fluid must be non-empty")
+                if (fluid.isEmpty) HTTextResult("Fluid must be non-empty")
                 if (amount <= 0) HTTextResult("Amount must be positive")
                 FluidStackTemplate(fluid, amount, patch).right()
             }

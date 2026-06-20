@@ -16,7 +16,6 @@ import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
-import net.minecraft.world.item.Items
 
 /**
  * [ItemStackTemplate]や[ItemStack]向けのビルダークラスです。
@@ -48,7 +47,7 @@ class ItemInstanceBuilder : HolderAccepter.ItemAccepter {
                 callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
             }
             return ItemInstanceBuilder().apply(builderAction).run {
-                if (item.`is`(Items.AIR.builtInRegistryHolder())) HTTextResult("Item must be non-air")
+                if (item.isAir) HTTextResult("Item must be non-air")
                 if (count <= 0) HTTextResult("Count must be positive")
                 ItemStackTemplate(item, count, patch).right()
             }

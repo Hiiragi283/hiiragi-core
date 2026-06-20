@@ -6,7 +6,7 @@ import org.slf4j.event.Level
 plugins {
     idea
     id("signing")
-    kotlin("jvm") version "2.3.10"
+    alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.neo.moddev)
 
     alias(libs.plugins.dokka.asProvider())

@@ -1,6 +1,7 @@
 package hiiragi283.lib.recipe.result
 
 import com.mojang.serialization.Codec
+import hiiragi283.lib.fluid.transmuteCopy
 import hiiragi283.lib.registry.getKeyOrThrow
 import hiiragi283.lib.resource.HTIdLike
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -32,7 +33,7 @@ value class HTFluidResult private constructor(@PublishedApi internal val templat
         private fun validate(template: FluidStackTemplate): FluidStackTemplate {
             val fluid: Fluid = template.typeHolder().value()
             return when {
-                !fluid.isSource(fluid.defaultFluidState()) && fluid is FlowingFluid -> FluidStackTemplate(fluid.source, template.amount, template.components)
+                !fluid.isSource(fluid.defaultFluidState()) && fluid is FlowingFluid -> template.transmuteCopy(fluid.source)!!
                 else -> template
             }
         }

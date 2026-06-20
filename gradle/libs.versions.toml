@@ -5,6 +5,7 @@ neo-moddev = "2.0.141"
 neo-version = "26.1.2.71"
 kff-version = "6.2.0"
 
+kotlin = "2.3.10"
 dokka = "2.1.0"
 spotless = "7.2.1"
 
@@ -61,6 +62,7 @@ integration-runtime = [
 
 neo-moddev = { id = "net.neoforged.moddev", version.ref = "neo-moddev" }
 
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 dokka-javadoc = { id = "org.jetbrains.dokka-javadoc", version.ref = "dokka" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

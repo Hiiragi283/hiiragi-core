@@ -1,5 +1,7 @@
 package hiiragi283.lib.recipe.ingredient
 
+import hiiragi283.lib.fluid.isEmpty
+import hiiragi283.lib.item.isAir
 import hiiragi283.lib.util.Either
 import hiiragi283.lib.util.left
 import hiiragi283.lib.util.right
@@ -9,9 +11,7 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemInstance
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
-import net.minecraft.world.item.Items
 import net.minecraft.world.level.material.Fluid
-import net.minecraft.world.level.material.Fluids
 import net.neoforged.neoforge.fluids.FluidInstance
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidStackTemplate
@@ -61,11 +61,11 @@ data object HTIngredientHelper {
             when (instance) {
                 is FluidStack -> instance.isEmpty
                 is FluidStackTemplate -> false
-                else -> instance.`is`(Fluids.EMPTY) || instance.amount() <= 0
+                else -> instance.typeHolder().isEmpty || instance.amount() <= 0
             }
         }
         is FluidResource -> instance.isEmpty
-        else -> instance.`is`(Fluids.EMPTY)
+        else -> instance.typeHolder().isEmpty
     }
 
     //    Item    //
@@ -104,10 +104,10 @@ data object HTIngredientHelper {
             when (instance) {
                 is ItemStack -> instance.isEmpty
                 is ItemStackTemplate -> false
-                else -> instance.`is`(Items.AIR) || instance.count() <= 0
+                else -> instance.typeHolder().isAir || instance.count() <= 0
             }
         }
         is ItemResource -> instance.isEmpty
-        else -> instance.`is`(Items.AIR)
+        else -> instance.typeHolder().isAir
     }
 }

@@ -69,7 +69,6 @@ data class HTMaterialPartIngredient(val contents: HolderSet<HTMaterialContents>,
         return false
     }
 
-    @Suppress("DEPRECATION")
     override fun items(): Stream<Holder<Item>> = contents
         .map(Holder<HTMaterialContents>::value)
         .flatMap { contents: HTMaterialContents -> parts.mapNotNull(contents::getRawEntry) }
@@ -77,7 +76,7 @@ data class HTMaterialPartIngredient(val contents: HolderSet<HTMaterialContents>,
             buildList {
                 val (entry: HTMaterialItemEntry?, tagKey: TagKey<Item>?) = ior.toPair()
                 if (entry != null) {
-                    add(entry.asItem().builtInRegistryHolder())
+                    add(entry.getItemHolder())
                 }
                 if (tagKey != null) {
                     addAll(BuiltInRegistries.ITEM.getTagOrEmpty(tagKey))
