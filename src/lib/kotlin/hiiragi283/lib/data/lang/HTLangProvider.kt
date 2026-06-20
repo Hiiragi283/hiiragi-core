@@ -6,7 +6,7 @@ import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.material.HTMaterialTranslationManager
 import hiiragi283.lib.registry.HTFluidContent
-import hiiragi283.lib.resource.toDescriptionKey
+import hiiragi283.lib.resource.toLanguageKey
 import hiiragi283.lib.text.HTHasTranslationKey
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceKey
@@ -48,8 +48,8 @@ abstract class HTLangProvider(output: PackOutput, modId: String, val langType: H
      */
     @JvmName("addEnchantment")
     protected fun add(key: ResourceKey<Enchantment>, value: String, desc: String) {
-        add(key.toDescriptionKey("enchantment"), value)
-        add(key.toDescriptionKey("enchantment", "desc"), desc)
+        add(key.toLanguageKey(), value)
+        add(key.toLanguageKey("desc"), desc)
     }
 
     /**

@@ -2,7 +2,7 @@ package hiiragi283.lib.registry
 
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.fluid.HTVirtualFluid
-import hiiragi283.lib.resource.SupplierWithId
+import hiiragi283.lib.resource.SupplierWithKey
 import hiiragi283.lib.resource.toId
 import hiiragi283.lib.tag.createTagKey
 import hiiragi283.lib.util.HTBuilderMarker
@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.BucketItem
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
+import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.DispenserBlock
 import net.minecraft.world.level.block.LiquidBlock
 import net.minecraft.world.level.block.state.BlockBehaviour
@@ -245,7 +246,7 @@ class HTFluidContentRegister(modId: String) {
             bucketHolder: HTSimpleDeferredItem,
         ): HTFluidContent.Flowing {
             // Liquid Block
-            val blockHolder: SupplierWithId<LiquidBlock>?
+            val blockHolder: SupplierWithKey<Block, LiquidBlock>?
             if (blockFactory == null) {
                 blockHolder = null
             } else {

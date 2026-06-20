@@ -1,6 +1,6 @@
 package hiiragi283.lib.registry
 
-import hiiragi283.lib.resource.SupplierWithId
+import hiiragi283.lib.resource.SupplierWithKey
 import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
 import net.neoforged.neoforge.registries.DeferredHolder
@@ -14,8 +14,10 @@ import net.neoforged.neoforge.registries.DeferredHolder
  */
 open class HTDeferredHolder<R : Any, out T : R> :
     DeferredHolder<R, @UnsafeVariance T>,
-    SupplierWithId<T> {
+    SupplierWithKey<R, T> {
     constructor(key: ResourceKey<R>) : super(key)
 
     constructor(key: RegistryKey<R>, id: Identifier) : super(key.createKey(id))
+
+    override fun getId(): Identifier = super<DeferredHolder>.getId()
 }

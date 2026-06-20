@@ -395,11 +395,13 @@ publishMods {
     discord {
         webhookUrl = providers.gradleProperty("DISCORD_TOKEN")
         username = "Hiiragi Series Announcement"
-        content = changelog.map { """
+        content = changelog.map {
+            """
             ## 新しいバージョン「${rootProject.version}」がリリースされました！
             ## Changelog
             $it
-        """.trimIndent() }
+            """.trimIndent()
+        }
         setPlatforms(publishMods.platforms.getByName("curseforge"), publishMods.platforms.getByName("modrinth"))
     }
 }

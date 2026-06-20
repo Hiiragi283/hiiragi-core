@@ -5,7 +5,6 @@ import hiiragi283.core.api.HiiragiCoreTags
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.lib.data.tag.HTFluidTagsProvider
 import hiiragi283.lib.data.tag.HTTagDependType
-import hiiragi283.lib.resource.toId
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
@@ -15,7 +14,7 @@ class HCFluidTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<
         addContents(HCFluids.REGISTER.asSequence())
 
         tag(HiiragiCoreTags.Fluids.ELDRITCH)
-            .add("oritech".toId("still_strange_matter"), HTTagDependType.OPTIONAL)
+            .add(createKey("oritech", "still_strange_matter"), HTTagDependType.OPTIONAL)
             .addContentTag(HCFluids.OMINOUS_FLUX)
     }
 }

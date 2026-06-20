@@ -1,8 +1,6 @@
 package hiiragi283.lib.registry
 
-import hiiragi283.lib.resource.HTIdLike
-import hiiragi283.lib.text.Text
-import hiiragi283.lib.text.translatableText
+import hiiragi283.lib.resource.HTKeyLike
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeType
@@ -15,9 +13,4 @@ import net.minecraft.world.item.crafting.RecipeType
  */
 class HTDeferredRecipeType<RECIPE : Recipe<*>>(key: ResourceKey<RecipeType<*>>) :
     HTDeferredHolder<RecipeType<*>, RecipeType<RECIPE>>(key),
-    HTIdLike.Translatable {
-
-    override val translationKey: String = id.toLanguageKey("recipe_type")
-
-    override fun getText(): Text = translatableText(translationKey)
-}
+    HTKeyLike.SimpleTranslatable<RecipeType<*>>

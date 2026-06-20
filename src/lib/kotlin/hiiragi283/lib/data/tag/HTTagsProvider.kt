@@ -3,11 +3,14 @@ package hiiragi283.lib.data.tag
 import hiiragi283.lib.collection.SetMultiMap
 import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.registry.RegistryKey
+import hiiragi283.lib.registry.createKey
 import hiiragi283.lib.tag.HTTagPrefix
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.data.tags.TagsProvider
+import net.minecraft.resources.Identifier
+import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagEntry
 import net.minecraft.tags.TagKey
 
@@ -74,4 +77,14 @@ abstract class HTTagsProvider<T : Any> : TagsProvider<T> {
         builder.addTag(tagKeyIn)
         tag(tagKeyIn)
     }
+
+    /**
+     * @since 26.1.3
+     */
+    protected fun createKey(id: Identifier): ResourceKey<T> = registryKey.createKey(id)
+
+    /**
+     * @since 26.1.3
+     */
+    protected fun createKey(namespace: String, path: String): ResourceKey<T> = registryKey.createKey(namespace, path)
 }

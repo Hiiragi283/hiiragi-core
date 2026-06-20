@@ -2,8 +2,9 @@ package hiiragi283.lib.registry
 
 import hiiragi283.lib.item.HTBlockItem
 import hiiragi283.lib.resource.HTIdLike
-import hiiragi283.lib.resource.SupplierWithId
+import hiiragi283.lib.resource.SupplierWithKey
 import net.minecraft.core.component.DataComponentPatch
+import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
@@ -33,10 +34,12 @@ typealias HTBasicDeferredBlockAndItem<BLOCK> = HTDeferredBlockAndItem<BLOCK, HTB
  * @since 26.1.0
  */
 data class HTDeferredBlockAndItem<out BLOCK : Block, out ITEM : Item>(val blockHolder: HTDeferredBlock<BLOCK>, val itemHolder: HTDeferredItem<ITEM>) :
-    SupplierWithId<BLOCK>,
+    SupplierWithKey<Block, BLOCK>,
     HTIdLike.Translatable by itemHolder,
     ItemLike by itemHolder {
     override fun get(): BLOCK = blockHolder.get()
+
+    override fun getKey(): ResourceKey<Block> = blockHolder.key
 
     /**
      * 新しい[ItemStackTemplate]のインスタンスを作成します。

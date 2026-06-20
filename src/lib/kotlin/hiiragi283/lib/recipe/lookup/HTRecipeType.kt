@@ -1,8 +1,7 @@
 package hiiragi283.lib.recipe.lookup
 
-import hiiragi283.lib.resource.HTIdLike
-import hiiragi283.lib.text.Text
-import hiiragi283.lib.text.translatableText
+import hiiragi283.lib.resource.HTKeyLike
+import net.minecraft.world.item.crafting.RecipeType
 
 /**
  * [HTRecipeLookup]の拡張インターフェースです。
@@ -14,8 +13,4 @@ import hiiragi283.lib.text.translatableText
  */
 interface HTRecipeType<out RECIPE> :
     HTRecipeLookup<RECIPE>,
-    HTIdLike.Translatable {
-    override val translationKey: String get() = getId().toLanguageKey("recipe_type")
-
-    override fun getText(): Text = translatableText(translationKey)
-}
+    HTKeyLike.SimpleTranslatable<RecipeType<*>>

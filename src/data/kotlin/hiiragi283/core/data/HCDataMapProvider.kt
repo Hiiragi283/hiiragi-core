@@ -3,9 +3,8 @@ package hiiragi283.core.data
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.VanillaMaterialKeys
+import hiiragi283.lib.registry.HTDeferredBlockAndItem
 import hiiragi283.lib.registry.HTWeatheringCopperBlocks
-import hiiragi283.lib.resource.HTIdLike
-import hiiragi283.lib.resource.SupplierWithId
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
@@ -30,17 +29,17 @@ class HCDataMapProvider(packOutput: PackOutput, lookupProvider: CompletableFutur
 
     private fun registerOxidizables(block: HTWeatheringCopperBlocks<*, *, *>) {
         val builder: Builder<Oxidizable, Block> = builder(NeoForgeDataMaps.OXIDIZABLES)
-        val (unaffected: SupplierWithId<Block>, exposed: SupplierWithId<Block>, weathered: SupplierWithId<Block>, oxidized: SupplierWithId<Block>) = block.weathering
-        builder.add(unaffected.getId(), Oxidizable(exposed.get()), false)
-        builder.add(exposed.getId(), Oxidizable(weathered.get()), false)
-        builder.add(weathered.getId(), Oxidizable(oxidized.get()), false)
+        val (unaffected: HTDeferredBlockAndItem<*, *>, exposed: HTDeferredBlockAndItem<*, *>, weathered: HTDeferredBlockAndItem<*, *>, oxidized: HTDeferredBlockAndItem<*, *>) = block.weathering
+        builder.add(unaffected.getKey(), Oxidizable(exposed.get()), false)
+        builder.add(exposed.getKey(), Oxidizable(weathered.get()), false)
+        builder.add(weathered.getKey(), Oxidizable(oxidized.get()), false)
     }
 
     private fun registerWaxed(block: HTWeatheringCopperBlocks<*, *, *>) {
         val builder: Builder<Waxable, Block> = builder(NeoForgeDataMaps.WAXABLES)
         for (state: WeatheringCopper.WeatherState in WeatheringCopper.WeatherState.entries) {
-            val (base: HTIdLike, waxed: SupplierWithId<Block>) = block[state]
-            builder.add(base.getId(), Waxable(waxed.get()), false)
+            val (base: HTDeferredBlockAndItem<*, *>, waxed: HTDeferredBlockAndItem<*, *>) = block[state]
+            builder.add(base.getKey(), Waxable(waxed.get()), false)
         }
     }
 }

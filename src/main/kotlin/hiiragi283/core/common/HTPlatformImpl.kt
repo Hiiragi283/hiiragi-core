@@ -8,7 +8,7 @@ import hiiragi283.lib.item.alchemy.HTPotionFluidManager
 import hiiragi283.lib.item.alchemy.HTPotionHelper
 import hiiragi283.lib.registry.toLike
 import hiiragi283.lib.resource.HTIdLike
-import hiiragi283.lib.resource.SupplierWithId
+import hiiragi283.lib.resource.SimpleSupplierWithKey
 import net.minecraft.core.Holder
 import net.minecraft.core.TypedInstance
 import net.minecraft.core.component.DataComponentGetter
@@ -76,5 +76,5 @@ class HTPlatformImpl : HTPlatform() {
         DEFAULT_POTION_HANDLER[builder] = contents.bottleType
     }
 
-    override fun <T : Any> getFirstHolder(holders: Iterable<Holder<T>>): SupplierWithId<T> = holders.asSequence().map(Holder<T>::toLike).sortedWith(modIdComparator).first()
+    override fun <R : Any> getFirstHolder(holders: Iterable<Holder<R>>): SimpleSupplierWithKey<R> = holders.asSequence().map(Holder<R>::toLike).sortedWith(modIdComparator).first()
 }

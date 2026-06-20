@@ -4,7 +4,7 @@ import hiiragi283.lib.item.alchemy.BottledPotionContents
 import hiiragi283.lib.item.alchemy.HTPotionHelper
 import hiiragi283.lib.registry.getResult
 import hiiragi283.lib.registry.lookupResult
-import hiiragi283.lib.resource.SupplierWithId
+import hiiragi283.lib.resource.SimpleSupplierWithKey
 import hiiragi283.lib.util.HTTextResult
 import hiiragi283.lib.util.flatMap
 import hiiragi283.lib.util.right
@@ -63,23 +63,23 @@ abstract class HTPlatform {
 
     //    Tag    //
 
-    fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<SupplierWithId<T>> {
+    fun <R : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<R>): HTTextResult<SimpleSupplierWithKey<R>> {
         val provider1: HTTextResult<HolderLookup.Provider> = provider?.right() ?: HTPhysicalSideHelper.getRegistryAccess()
         return provider1.flatMap { it.lookupResult(tagKey.registry()) }.flatMap { getFirstHolder(it, tagKey) }
     }
 
     /**
      * タグの最初の値を取得します。
-     * @param T レジストリの種類のクラス
+     * @param R レジストリの種類のクラス
      */
-    fun <T : Any> getFirstHolder(provider: HolderLookup<T>, tagKey: TagKey<T>): HTTextResult<SupplierWithId<T>> = provider
+    fun <R : Any> getFirstHolder(provider: HolderLookup<R>, tagKey: TagKey<R>): HTTextResult<SimpleSupplierWithKey<R>> = provider
         .getResult(tagKey)
         .flatMap { it.takeIf { it.size() > 0 }.toTextResult { "Could not find first value from empty holder set" } }
         .map(::getFirstHolder)
 
     /**
      * 最初の値を取得します。
-     * @param T レジストリの種類のクラス
+     * @param R レジストリの種類のクラス
      */
-    protected abstract fun <T : Any> getFirstHolder(holders: Iterable<Holder<T>>): SupplierWithId<T>
+    protected abstract fun <R : Any> getFirstHolder(holders: Iterable<Holder<R>>): SimpleSupplierWithKey<R>
 }

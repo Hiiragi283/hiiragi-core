@@ -1,7 +1,6 @@
 package hiiragi283.lib.text
 
 import hiiragi283.lib.HTConstants
-import hiiragi283.lib.resource.toDescriptionKey
 import hiiragi283.lib.resource.toId
 
 /**
@@ -60,5 +59,5 @@ enum class HTCommonTranslation(type: String, vararg path: String) : HTTranslatio
     DATAPACK_WIP("datapack", "work_in_progress"),
     ;
 
-    override val translationKey: String = HTConstants.MOD_ID.toId(path.joinToString(separator = ".")).toDescriptionKey(type)
+    override val translationKey: String = HTConstants.MOD_ID.toId(path.joinToString(separator = ".")).toLanguageKey(type)
 }

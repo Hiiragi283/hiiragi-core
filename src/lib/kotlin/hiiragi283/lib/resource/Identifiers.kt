@@ -4,7 +4,6 @@ package hiiragi283.lib.resource
 
 import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
-import net.minecraft.util.Util
 
 //    Identifier    //
 
@@ -40,35 +39,21 @@ inline fun vanillaId(path: String): Identifier = Identifier.withDefaultNamespace
  */
 fun vanillaId(vararg path: String): Identifier = Identifier.withDefaultNamespace(path.joinToString(separator = "/"))
 
-/**
- * この[ID][Identifier]を翻訳キーに変換します。
- * @author Hiiragi Tsubasa
- * @since 26.1.0
- */
-inline fun Identifier.toDescriptionKey(prefix: String): String = Util.makeDescriptionId(prefix, this)
-
-/**
- * この[ID][Identifier]を翻訳キーに変換します。
- * @author Hiiragi Tsubasa
- * @since 26.1.0
- */
-inline fun Identifier.toDescriptionKey(prefix: String, suffix: String): String = "${Util.makeDescriptionId(prefix, this@toDescriptionKey)}.$suffix"
-
 //    ResourceKey    //
 
 /**
  * この[ResourceKey]を翻訳キーに変換します。
  * @author Hiiragi Tsubasa
- * @since 26.1.0
+ * @since 26.1.3
  */
-inline fun ResourceKey<*>.toDescriptionKey(prefix: String): String = this.identifier().toDescriptionKey(prefix)
+inline fun ResourceKey<*>.toLanguageKey(): String = this.identifier().toLanguageKey(this.registryKey().identifier().path)
 
 /**
  * この[ResourceKey]を翻訳キーに変換します。
  * @author Hiiragi Tsubasa
- * @since 26.1.0
+ * @since 26.1.3
  */
-inline fun ResourceKey<*>.toDescriptionKey(prefix: String, suffix: String): String = this.identifier().toDescriptionKey(prefix, suffix)
+inline fun ResourceKey<*>.toLanguageKey(suffix: String): String = this.identifier().toLanguageKey(this.registryKey().identifier().path, suffix)
 
 //    HTIdLike    //
 

@@ -1,6 +1,7 @@
 package hiiragi283.lib.material
 
 import hiiragi283.lib.registry.toLike
+import hiiragi283.lib.resource.SimpleSupplierWithKey
 import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.util.Either
 import hiiragi283.lib.util.unwrap
@@ -18,18 +19,18 @@ import net.minecraft.world.level.block.Block
  * @since 26.1.0
  */
 @JvmInline
-value class HTMaterialItemEntry(private val content: Either<SupplierWithId<Block>, SupplierWithId<Item>>) :
+value class HTMaterialItemEntry(private val content: Either<SimpleSupplierWithKey<Block>, SimpleSupplierWithKey<Item>>) :
     SupplierWithId<ItemLike>,
     ItemLike {
     companion object {
         @JvmStatic
-        fun block(block: SupplierWithId<Block>): HTMaterialItemEntry = HTMaterialItemEntry(Either.Left(block))
+        fun block(block: SimpleSupplierWithKey<Block>): HTMaterialItemEntry = HTMaterialItemEntry(Either.Left(block))
 
         @JvmStatic
         fun block(block: Block): HTMaterialItemEntry = block(block.toLike())
 
         @JvmStatic
-        fun item(item: SupplierWithId<Item>): HTMaterialItemEntry = HTMaterialItemEntry(Either.Right(item))
+        fun item(item: SimpleSupplierWithKey<Item>): HTMaterialItemEntry = HTMaterialItemEntry(Either.Right(item))
 
         @JvmStatic
         fun item(item: Item): HTMaterialItemEntry = item(item.toLike())

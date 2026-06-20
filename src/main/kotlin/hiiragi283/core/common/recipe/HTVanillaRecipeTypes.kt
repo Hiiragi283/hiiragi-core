@@ -10,10 +10,14 @@ import hiiragi283.lib.recipe.ingredient.getRequiredAmount
 import hiiragi283.lib.recipe.ingredient.test
 import hiiragi283.lib.recipe.lookup.HTRecipeLookupContext
 import hiiragi283.lib.recipe.lookup.HTRecipeType
+import hiiragi283.lib.registry.createKey
+import hiiragi283.lib.registry.getKeyOrThrow
 import hiiragi283.lib.registry.toLike
 import net.minecraft.core.Holder
 import net.minecraft.core.TypedInstance
-import net.minecraft.resources.Identifier
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.core.registries.Registries
+import net.minecraft.resources.ResourceKey
 import net.minecraft.util.context.ContextMap
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemInstance
@@ -42,7 +46,7 @@ object HTVanillaRecipeTypes {
             .map(HTRecipeHolder.Companion::from)
             .map { it.mapRecipe(::HCCookingRecipe) }
 
-        override fun getId(): Identifier = Identifier.parse(recipeType.toString())
+        override fun getKey(): ResourceKey<RecipeType<*>> = BuiltInRegistries.RECIPE_TYPE.wrapAsHolder(recipeType).getKeyOrThrow()
     }
 
     @JvmInline
@@ -75,6 +79,6 @@ object HTVanillaRecipeTypes {
                 }
         }
 
-        override fun getId(): Identifier = HiiragiCoreAPI.id("brewing")
+        override fun getKey(): ResourceKey<RecipeType<*>> = Registries.RECIPE_TYPE.createKey(HiiragiCoreAPI.id("brewing"))
     }
 }
