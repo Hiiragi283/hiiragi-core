@@ -17,7 +17,7 @@ fun <T : Any> RegistryKey<T>.createTagKey(id: Identifier): TagKey<T> = TagKey.cr
 
 /**
  * この[TagKey]の名前を取得します。
- * @return 翻訳がない場合は`#`を先頭につけた[ID][location]
+ * @return 翻訳がない場合は`#`を先頭につけた[ID][TagKey.location]
  * @author Hiiragi Tsubasa
  * @since 26.1.0
  */

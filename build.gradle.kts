@@ -330,7 +330,7 @@ dokka {
             sourceRoots.from(
                 listOf(libModule, clientModule, integrationModule)
                     .map { it.kotlin }
-                    .map { it.srcDirs },
+                    .map { it.srcDirs.filter { "lib" in it.path } },
             )
         }
     }
@@ -362,17 +362,19 @@ spotless {
 publishMods {
     val mcVersion: Provider<String> = libs.versions.minecraft
 
-    file.set(tasks.jar.flatMap { it.archiveFile })
+    file = tasks.jar.flatMap { it.archiveFile }
     additionalFiles.from(tasks.named<Jar>("sourcesJar").flatMap { it.archiveFile })
-    changelog.set(providers.gradleProperty("CHANGELOG").orElse(""))
-    type.set(ReleaseType.ALPHA)
+    changelog = providers.gradleProperty("CHANGELOG").orElse("")
+    type = ReleaseType.ALPHA
     modLoaders.add("neoforge")
 
     curseforge {
-        accessToken.set(providers.gradleProperty("CURSEFORGE_TOKEN"))
-        projectId.set(providers.gradleProperty("CURSEFORGE_HIIRAGI_CORE"))
+        accessToken = providers.gradleProperty("CURSEFORGE_TOKEN")
+        projectId = providers.gradleProperty("CURSEFORGE_HIIRAGI_CORE")
         minecraftVersions.add(mcVersion)
         changelogType = "markdown"
+        announcementTitle = "Download from CurseForge"
+        projectSlug = "hiiragi-core"
 
         javaVersions.add(JavaVersion.VERSION_25)
         client = true
@@ -382,12 +384,23 @@ publishMods {
         optional("jei")
     }
     modrinth {
-        accessToken.set(providers.gradleProperty("MODRINTH_TOKEN"))
-        projectId.set(providers.gradleProperty("MODRINTH_HIIRAGI_CORE"))
+        accessToken = providers.gradleProperty("MODRINTH_TOKEN")
+        projectId = providers.gradleProperty("MODRINTH_HIIRAGI_CORE")
         minecraftVersions.add(mcVersion)
+        announcementTitle = "Download from Modrinth"
 
         requires("kotlin-for-forge")
         optional("jei")
+    }
+    discord {
+        webhookUrl = providers.gradleProperty("DISCORD_TOKEN")
+        username = "Hiiragi Series Announcement"
+        content = changelog.map { """
+            ## 新しいバージョン「${rootProject.version}」がリリースされました！
+            ## Changelog
+            $it
+        """.trimIndent() }
+        setPlatforms(publishMods.platforms.getByName("curseforge"), publishMods.platforms.getByName("modrinth"))
     }
 }
 

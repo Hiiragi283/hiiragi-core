@@ -57,14 +57,14 @@ abstract class HTGlobalLootModifierProvider(output: PackOutput, registries: Comp
     /**
      * 新しい[LootItemCondition]のインスタンスを作成します。
      * @param block ルートテーブルの参照先となるブロック
-     * @return [Block.getLootTable]が空の場合は[Option.None]
+     * @return [Block.getLootTable]が空の場合は[Option.none]
      */
     protected fun condition(block: Block): Option<LootItemCondition> = block.lootTable.kotlin.map(::condition)
 
     /**
      * 新しい[LootItemCondition]のインスタンスを作成します。
      * @param entityType ルートテーブルの参照先となるエンティティの種類
-     * @return [EntityType.getDefaultLootTable]が空の場合は[Option.None]
+     * @return [EntityType.getDefaultLootTable]が空の場合は[Option.none]
      */
     protected fun condition(entityType: EntityType<*>): Option<LootItemCondition> = entityType.defaultLootTable.kotlin.map(::condition)
 }

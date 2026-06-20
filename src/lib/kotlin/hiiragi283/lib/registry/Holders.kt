@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceKey
 /**
  * この[Holder][this]から[ResourceKey]を取得します。
  * @param R 保持する値のクラス
- * @throws IllegalStateException [unwrapKey]の値が空の場合
+ * @throws IllegalStateException [Holder.unwrapKey]の値が空の場合
  * @author Hiiragi Tsubasa
  * @since 26.1.0
  */
