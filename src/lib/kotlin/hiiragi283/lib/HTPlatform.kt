@@ -3,11 +3,9 @@ package hiiragi283.lib
 import hiiragi283.lib.item.alchemy.BottledPotionContents
 import hiiragi283.lib.item.alchemy.HTPotionHelper
 import hiiragi283.lib.registry.getResult
-import hiiragi283.lib.registry.lookupResult
 import hiiragi283.lib.resource.SimpleSupplierWithKey
 import hiiragi283.lib.util.HTTextResult
 import hiiragi283.lib.util.flatMap
-import hiiragi283.lib.util.right
 import hiiragi283.lib.util.toTextResult
 import java.util.ServiceLoader
 import net.minecraft.core.Holder
@@ -63,10 +61,7 @@ abstract class HTPlatform {
 
     //    Tag    //
 
-    fun <R : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<R>): HTTextResult<SimpleSupplierWithKey<R>> {
-        val provider1: HTTextResult<HolderLookup.Provider> = provider?.right() ?: HTPhysicalSideHelper.getRegistryAccess()
-        return provider1.flatMap { it.lookupResult(tagKey.registry()) }.flatMap { getFirstHolder(it, tagKey) }
-    }
+    fun <R : Any> getFirstHolder(tagKey: TagKey<R>): HTTextResult<SimpleSupplierWithKey<R>> = HTPhysicalSideHelper.registry(tagKey.registry()).flatMap { getFirstHolder(it, tagKey) }
 
     /**
      * タグの最初の値を取得します。

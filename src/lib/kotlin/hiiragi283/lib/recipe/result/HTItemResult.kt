@@ -20,7 +20,6 @@ import hiiragi283.lib.util.getOrElse
 import hiiragi283.lib.util.right
 import hiiragi283.lib.util.toTextResult
 import hiiragi283.lib.util.unwrap
-import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
@@ -170,7 +169,7 @@ interface HTItemResult : HTIdLike {
 
         override fun getSerializer(): Serializer<*> = SERIALIZER
 
-        override fun create(): HTTextResult<ItemStack> = HTPlatform.INSTANCE.getFirstHolder(BuiltInRegistries.ITEM, tagKey).map { ItemStack(it.get(), count) }
+        override fun create(): HTTextResult<ItemStack> = HTPlatform.INSTANCE.getFirstHolder(tagKey).map { ItemStack(it.get(), count) }
 
         override fun copyWithCount(newCount: Int): Tagged = this.copy(count = newCount)
 

@@ -51,7 +51,7 @@ data object HTPhysicalSideHelper {
     fun getRegistryAccess(): HTTextResult<RegistryAccess> = runForSide(Level::registryAccess, MinecraftServer::registryAccess).toTextResult { "Could not get active registry access" }
 
     @JvmStatic
-    fun <T : Any> lookup(registryKey: RegistryKey<T>): HTTextResult<Registry<T>> = getRegistryAccess().flatMap { it.lookupResult(registryKey) }
+    fun <T : Any> registry(registryKey: RegistryKey<T>): HTTextResult<Registry<T>> = getRegistryAccess().flatMap { it.lookupResult(registryKey) }
 
     //    Feature Flag    //
 
@@ -63,7 +63,7 @@ data object HTPhysicalSideHelper {
     fun getFeatureFlags(): FeatureFlagSet = runForSide(Level::enabledFeatures) { it.worldData.enabledFeatures() } ?: FeatureFlags.DEFAULT_FLAGS
 
     @JvmStatic
-    fun <T : FeatureElement> filteredLookup(registryKey: RegistryKey<T>): HTTextResult<HolderLookup.RegistryLookup<T>> = lookup(registryKey).map { it.filterFeatures(getFeatureFlags()) }
+    fun <T : FeatureElement> filteredLookup(registryKey: RegistryKey<T>): HTTextResult<HolderLookup.RegistryLookup<T>> = registry(registryKey).map { it.filterFeatures(getFeatureFlags()) }
 
     //    RecipeMap    //
 
