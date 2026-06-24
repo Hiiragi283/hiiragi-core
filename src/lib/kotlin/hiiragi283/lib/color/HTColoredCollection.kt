@@ -1,14 +1,11 @@
 package hiiragi283.lib.color
 
-import hiiragi283.lib.collection.mutableEnumMapOf
-
 /**
  * 色のバリエーションを持つ要素をまとめるクラスです。
  * @param T 要素のクラス
  * @author Hiiragi Tsubasa
  * @since 26.1.3
  */
-@JvmRecord
 data class HTColoredCollection<out T>(
     val white: T,
     val orange: T,
@@ -26,7 +23,7 @@ data class HTColoredCollection<out T>(
     val green: T,
     val red: T,
     val black: T,
-) : Iterable<T> {
+) : AbstractCollection<T>() {
     companion object {
         @JvmField
         val VALUES: HTColoredCollection<HTDefaultColor> = HTColoredCollection(
@@ -68,13 +65,15 @@ data class HTColoredCollection<out T>(
         HTDefaultColor.BLACK -> black
     }
 
-    override fun iterator(): Iterator<T> = object : Iterator<T> {
-        private var index: Int = 0
+    fun asSequenceWithColor(): Sequence<Pair<HTDefaultColor, T>> = HTDefaultColor.entries.asSequence().map { it to get(it) }
 
-        override fun next(): T = HTDefaultColor.entries[index++].let(::get)
+    fun asSequence(): Sequence<T> = HTDefaultColor.entries.asSequence().map(::get)
 
-        override fun hasNext(): Boolean = index < HTDefaultColor.entries.size
-    }
+    override val size: Int = 16
+
+    override fun isEmpty(): Boolean = false
+
+    override fun iterator(): Iterator<T> = asSequence().iterator()
 
     inline fun <R> map(transform: (T) -> R): HTColoredCollection<R> = HTColoredCollection(
         transform(white),
@@ -113,6 +112,4 @@ data class HTColoredCollection<out T>(
         transform(red, other.red),
         transform(black, other.black),
     )
-
-    fun asMap(): Map<HTDefaultColor, T> = VALUES.associateWithTo(mutableEnumMapOf(), ::get)
 }

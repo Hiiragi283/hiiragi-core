@@ -1,6 +1,5 @@
 package hiiragi283.lib.registry
 
-import hiiragi283.lib.collection.mutableEnumMapOf
 import net.minecraft.world.level.block.WeatheringCopper
 
 /**
@@ -14,8 +13,7 @@ import net.minecraft.world.level.block.WeatheringCopper
  * @author Hiiragi Tsubasa
  * @since 26.1.0
  */
-@JvmRecord
-data class HTCopperCollection<out T>(val unaffected: T, val exposed: T, val weathered: T, val oxidized: T) : Collection<T> {
+data class HTCopperCollection<out T>(val unaffected: T, val exposed: T, val weathered: T, val oxidized: T) : AbstractCollection<T>() {
     operator fun get(state: WeatheringCopper.WeatherState): T = when (state) {
         WeatheringCopper.WeatherState.UNAFFECTED -> unaffected
         WeatheringCopper.WeatherState.EXPOSED -> exposed
@@ -23,22 +21,13 @@ data class HTCopperCollection<out T>(val unaffected: T, val exposed: T, val weat
         WeatheringCopper.WeatherState.OXIDIZED -> oxidized
     }
 
-    //    Collection    //
+    fun asSequenceWithState(): Sequence<Pair<WeatheringCopper.WeatherState, T>> = WeatheringCopper.WeatherState.entries.asSequence().map { it to get(it) }
 
-    override val size: Int get() = 4
+    fun asSequence(): Sequence<T> = WeatheringCopper.WeatherState.entries.asSequence().map(::get)
+
+    override val size: Int = 4
+
     override fun isEmpty(): Boolean = false
 
-    override fun contains(element: @UnsafeVariance T): Boolean = any { it == element }
-
-    override fun containsAll(elements: Collection<@UnsafeVariance T>): Boolean = elements.all { contains(it) }
-
-    override fun iterator(): Iterator<T> = object : Iterator<T> {
-        private var index: Int = 0
-
-        override fun next(): T = WeatheringCopper.WeatherState.entries[index++].let(::get)
-
-        override fun hasNext(): Boolean = index < WeatheringCopper.WeatherState.entries.size
-    }
-
-    fun asMap(): Map<WeatheringCopper.WeatherState, T> = WeatheringCopper.WeatherState.entries.associateWithTo(mutableEnumMapOf(), ::get)
+    override fun iterator(): Iterator<T> = asSequence().iterator()
 }

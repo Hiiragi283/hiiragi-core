@@ -29,7 +29,7 @@ data object HiiragiCoreClient : HTClientMod() {
     }
 
     override fun registerFluidModels(register: HTFluidModelRegister) {
-        for ((color: HTDefaultColor, content: HTFluidContent) in HCFluids.DYES.asMap()) {
+        for ((color: HTDefaultColor, content: HTFluidContent) in HCFluids.DYES.asSequenceWithColor()) {
             register.register(content) {
                 setDull()
                 color.color.let(::colorTint)
