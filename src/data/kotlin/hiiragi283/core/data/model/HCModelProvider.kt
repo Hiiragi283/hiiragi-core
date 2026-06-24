@@ -27,7 +27,7 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
         // Fluids
         val dripFluids: List<HTFluidContent> = buildList {
             // Vanilla
-            addAll(HCFluids.DyeContents.values)
+            addAll(HCFluids.DYES)
 
             add(HCFluids.HONEY)
         }

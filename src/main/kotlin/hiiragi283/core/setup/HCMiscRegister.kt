@@ -65,135 +65,135 @@ internal data object HCMiscRegister {
         // Fuel
         register(VanillaMaterialKeys.COAL, CommonPartKeys.FUEL) {
             addFromTable()
-            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.COAL_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
-            add(CommonPartKeys.FUEL, HTMaterialItemEntry.item(Items.COAL))
+            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.BlockEntry(Blocks.COAL_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
+            add(CommonPartKeys.FUEL, HTMaterialItemEntry.ItemEntry(Items.COAL))
         }
         register(VanillaMaterialKeys.CHARCOAL, CommonPartKeys.FUEL) {
             addFromTable()
-            add(CommonPartKeys.FUEL, HTMaterialItemEntry.item(Items.CHARCOAL))
+            add(CommonPartKeys.FUEL, HTMaterialItemEntry.ItemEntry(Items.CHARCOAL))
         }
         // Mineral
         register(VanillaMaterialKeys.REDSTONE, CommonPartKeys.DUST) {
-            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.REDSTONE_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
+            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.BlockEntry(Blocks.REDSTONE_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
-            add(CommonPartKeys.DUST, HTMaterialItemEntry.item(Items.REDSTONE), CommonTagPrefixes.DUST)
+            add(CommonPartKeys.DUST, HTMaterialItemEntry.ItemEntry(Items.REDSTONE), CommonTagPrefixes.DUST)
         }
         register(VanillaMaterialKeys.GLOWSTONE, CommonPartKeys.DUST) {
-            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.GLOWSTONE), CommonTagPrefixes.STORAGE_BLOCK)
+            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.BlockEntry(Blocks.GLOWSTONE), CommonTagPrefixes.STORAGE_BLOCK)
 
-            add(CommonPartKeys.DUST, HTMaterialItemEntry.item(Items.GLOWSTONE_DUST), CommonTagPrefixes.DUST)
+            add(CommonPartKeys.DUST, HTMaterialItemEntry.ItemEntry(Items.GLOWSTONE_DUST), CommonTagPrefixes.DUST)
         }
         // Gem
         register(VanillaMaterialKeys.LAPIS, CommonPartKeys.GEM) {
             addFromTable()
-            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.LAPIS_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
+            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.BlockEntry(Blocks.LAPIS_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
-            add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.LAPIS_LAZULI), CommonTagPrefixes.GEM)
+            add(CommonPartKeys.GEM, HTMaterialItemEntry.ItemEntry(Items.LAPIS_LAZULI), CommonTagPrefixes.GEM)
         }
         register(VanillaMaterialKeys.QUARTZ, CommonPartKeys.GEM) {
             addFromTable()
-            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.QUARTZ_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
+            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.BlockEntry(Blocks.QUARTZ_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
-            add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.QUARTZ), CommonTagPrefixes.GEM)
+            add(CommonPartKeys.GEM, HTMaterialItemEntry.ItemEntry(Items.QUARTZ), CommonTagPrefixes.GEM)
         }
         register(VanillaMaterialKeys.AMETHYST, CommonPartKeys.GEM) {
             addFromTable()
-            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.AMETHYST_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
+            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.BlockEntry(Blocks.AMETHYST_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
-            add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.AMETHYST_SHARD), CommonTagPrefixes.GEM)
+            add(CommonPartKeys.GEM, HTMaterialItemEntry.ItemEntry(Items.AMETHYST_SHARD), CommonTagPrefixes.GEM)
         }
         register(VanillaMaterialKeys.DIAMOND, CommonPartKeys.GEM) {
             addFromTable()
-            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.DIAMOND_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
+            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.BlockEntry(Blocks.DIAMOND_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
-            add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.DIAMOND), CommonTagPrefixes.GEM)
+            add(CommonPartKeys.GEM, HTMaterialItemEntry.ItemEntry(Items.DIAMOND), CommonTagPrefixes.GEM)
         }
         register(VanillaMaterialKeys.EMERALD, CommonPartKeys.GEM) {
             addFromTable()
-            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.EMERALD_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
+            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.BlockEntry(Blocks.EMERALD_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
-            add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.EMERALD), CommonTagPrefixes.GEM)
+            add(CommonPartKeys.GEM, HTMaterialItemEntry.ItemEntry(Items.EMERALD), CommonTagPrefixes.GEM)
         }
         register(VanillaMaterialKeys.ECHO, CommonPartKeys.GEM) {
             addFromTable()
-            add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.ECHO_SHARD), CommonTagPrefixes.GEM)
+            add(CommonPartKeys.GEM, HTMaterialItemEntry.ItemEntry(Items.ECHO_SHARD), CommonTagPrefixes.GEM)
         }
         register(VanillaMaterialKeys.PRISMARINE, CommonPartKeys.GEM) {
             addFromTable()
-            add(CommonPartKeys.GEM, HTMaterialItemEntry.item(Items.PRISMARINE_CRYSTALS), CommonTagPrefixes.GEM)
+            add(CommonPartKeys.GEM, HTMaterialItemEntry.ItemEntry(Items.PRISMARINE_CRYSTALS), CommonTagPrefixes.GEM)
         }
         // Metal
         register(VanillaMaterialKeys.COPPER, CommonPartKeys.INGOT) {
             addFromTable()
-            add(CommonPartKeys.RAW_BLOCK, HTMaterialItemEntry.block(Blocks.RAW_COPPER_BLOCK), CommonTagPrefixes.RAW_STORAGE_BLOCK)
-            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.COPPER_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
+            add(CommonPartKeys.RAW_BLOCK, HTMaterialItemEntry.BlockEntry(Blocks.RAW_COPPER_BLOCK), CommonTagPrefixes.RAW_STORAGE_BLOCK)
+            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.BlockEntry(Blocks.COPPER_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
-            add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(Items.COPPER_INGOT), CommonTagPrefixes.INGOT)
-            add(CommonPartKeys.NUGGET, HTMaterialItemEntry.item(Items.COPPER_NUGGET), CommonTagPrefixes.NUGGET)
-            add(CommonPartKeys.RAW, HTMaterialItemEntry.item(Items.RAW_COPPER), CommonTagPrefixes.RAW_MATERIALS)
+            add(CommonPartKeys.INGOT, HTMaterialItemEntry.ItemEntry(Items.COPPER_INGOT), CommonTagPrefixes.INGOT)
+            add(CommonPartKeys.NUGGET, HTMaterialItemEntry.ItemEntry(Items.COPPER_NUGGET), CommonTagPrefixes.NUGGET)
+            add(CommonPartKeys.RAW, HTMaterialItemEntry.ItemEntry(Items.RAW_COPPER), CommonTagPrefixes.RAW_MATERIALS)
         }
         register(VanillaMaterialKeys.IRON, CommonPartKeys.INGOT) {
             addFromTable()
-            add(CommonPartKeys.RAW_BLOCK, HTMaterialItemEntry.block(Blocks.RAW_IRON_BLOCK), CommonTagPrefixes.RAW_STORAGE_BLOCK)
-            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.IRON_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
+            add(CommonPartKeys.RAW_BLOCK, HTMaterialItemEntry.BlockEntry(Blocks.RAW_IRON_BLOCK), CommonTagPrefixes.RAW_STORAGE_BLOCK)
+            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.BlockEntry(Blocks.IRON_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
-            add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(Items.IRON_INGOT), CommonTagPrefixes.INGOT)
-            add(CommonPartKeys.NUGGET, HTMaterialItemEntry.item(Items.IRON_NUGGET), CommonTagPrefixes.NUGGET)
-            add(CommonPartKeys.RAW, HTMaterialItemEntry.item(Items.RAW_IRON), CommonTagPrefixes.RAW_MATERIALS)
+            add(CommonPartKeys.INGOT, HTMaterialItemEntry.ItemEntry(Items.IRON_INGOT), CommonTagPrefixes.INGOT)
+            add(CommonPartKeys.NUGGET, HTMaterialItemEntry.ItemEntry(Items.IRON_NUGGET), CommonTagPrefixes.NUGGET)
+            add(CommonPartKeys.RAW, HTMaterialItemEntry.ItemEntry(Items.RAW_IRON), CommonTagPrefixes.RAW_MATERIALS)
         }
         register(VanillaMaterialKeys.GOLD, CommonPartKeys.INGOT) {
             addFromTable()
-            add(CommonPartKeys.RAW_BLOCK, HTMaterialItemEntry.block(Blocks.RAW_GOLD_BLOCK), CommonTagPrefixes.RAW_STORAGE_BLOCK)
-            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.GOLD_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
+            add(CommonPartKeys.RAW_BLOCK, HTMaterialItemEntry.BlockEntry(Blocks.RAW_GOLD_BLOCK), CommonTagPrefixes.RAW_STORAGE_BLOCK)
+            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.BlockEntry(Blocks.GOLD_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
-            add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(Items.GOLD_INGOT), CommonTagPrefixes.INGOT)
-            add(CommonPartKeys.NUGGET, HTMaterialItemEntry.item(Items.GOLD_NUGGET), CommonTagPrefixes.NUGGET)
-            add(CommonPartKeys.RAW, HTMaterialItemEntry.item(Items.RAW_GOLD), CommonTagPrefixes.RAW_MATERIALS)
+            add(CommonPartKeys.INGOT, HTMaterialItemEntry.ItemEntry(Items.GOLD_INGOT), CommonTagPrefixes.INGOT)
+            add(CommonPartKeys.NUGGET, HTMaterialItemEntry.ItemEntry(Items.GOLD_NUGGET), CommonTagPrefixes.NUGGET)
+            add(CommonPartKeys.RAW, HTMaterialItemEntry.ItemEntry(Items.RAW_GOLD), CommonTagPrefixes.RAW_MATERIALS)
         }
         // Alloy
         register(VanillaMaterialKeys.NETHERITE, CommonPartKeys.INGOT) {
             addFromTable()
-            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.block(Blocks.NETHERITE_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
+            add(CommonPartKeys.STORAGE_BLOCK, HTMaterialItemEntry.BlockEntry(Blocks.NETHERITE_BLOCK), CommonTagPrefixes.STORAGE_BLOCK)
 
-            add(CommonPartKeys.INGOT, HTMaterialItemEntry.item(Items.NETHERITE_INGOT), CommonTagPrefixes.INGOT)
+            add(CommonPartKeys.INGOT, HTMaterialItemEntry.ItemEntry(Items.NETHERITE_INGOT), CommonTagPrefixes.INGOT)
         }
         // Other
         register(VanillaMaterialKeys.WOOD, CommonPartKeys.MISC) {
             addFromTable()
-            add(CommonPartKeys.MISC, HTMaterialItemEntry.item(Items.OAK_PLANKS), ItemTags.PLANKS)
+            add(CommonPartKeys.MISC, HTMaterialItemEntry.ItemEntry(Items.OAK_PLANKS), ItemTags.PLANKS)
         }
         register(VanillaMaterialKeys.GLASS, CommonPartKeys.MISC) {
             addFromTable()
-            add(CommonPartKeys.MISC, HTMaterialItemEntry.block(Blocks.GLASS), Tags.Items.GLASS_BLOCKS_COLORLESS)
+            add(CommonPartKeys.MISC, HTMaterialItemEntry.BlockEntry(Blocks.GLASS), Tags.Items.GLASS_BLOCKS_COLORLESS)
         }
         register(VanillaMaterialKeys.STONE, CommonPartKeys.MISC) {
-            add(CommonPartKeys.MISC, HTMaterialItemEntry.block(Blocks.STONE), Tags.Items.STONES)
+            add(CommonPartKeys.MISC, HTMaterialItemEntry.BlockEntry(Blocks.STONE), Tags.Items.STONES)
         }
         register(VanillaMaterialKeys.OBSIDIAN, CommonPartKeys.MISC) {
             addFromTable()
-            add(CommonPartKeys.MISC, HTMaterialItemEntry.block(Blocks.OBSIDIAN), Tags.Items.OBSIDIANS_NORMAL)
+            add(CommonPartKeys.MISC, HTMaterialItemEntry.BlockEntry(Blocks.OBSIDIAN), Tags.Items.OBSIDIANS_NORMAL)
         }
 
         register(VanillaMaterialKeys.ENDER_PEARL, CommonPartKeys.MISC) {
             addFromTable()
-            add(CommonPartKeys.MISC, HTMaterialItemEntry.item(Items.ENDER_PEARL), Tags.Items.ENDER_PEARLS)
+            add(CommonPartKeys.MISC, HTMaterialItemEntry.ItemEntry(Items.ENDER_PEARL), Tags.Items.ENDER_PEARLS)
         }
         register(VanillaMaterialKeys.BLAZE, CommonPartKeys.ROD) {
-            add(CommonPartKeys.DUST, HTMaterialItemEntry.item(Items.BLAZE_POWDER))
-            add(CommonPartKeys.ROD, HTMaterialItemEntry.item(Items.BLAZE_ROD), Tags.Items.RODS_BLAZE)
+            add(CommonPartKeys.DUST, HTMaterialItemEntry.ItemEntry(Items.BLAZE_POWDER))
+            add(CommonPartKeys.ROD, HTMaterialItemEntry.ItemEntry(Items.BLAZE_ROD), Tags.Items.RODS_BLAZE)
         }
         register(VanillaMaterialKeys.BREEZE, CommonPartKeys.ROD) {
-            add(CommonPartKeys.DUST, HTMaterialItemEntry.item(Items.WIND_CHARGE))
-            add(CommonPartKeys.ROD, HTMaterialItemEntry.item(Items.BREEZE_ROD), Tags.Items.RODS_BREEZE)
+            add(CommonPartKeys.DUST, HTMaterialItemEntry.ItemEntry(Items.WIND_CHARGE))
+            add(CommonPartKeys.ROD, HTMaterialItemEntry.ItemEntry(Items.BREEZE_ROD), Tags.Items.RODS_BREEZE)
         }
 
         register(VanillaMaterialKeys.BRICK, CommonPartKeys.MISC) {
             addFromTable()
-            add(CommonPartKeys.MISC, HTMaterialItemEntry.item(Items.BRICK), Tags.Items.BRICKS_NORMAL)
+            add(CommonPartKeys.MISC, HTMaterialItemEntry.ItemEntry(Items.BRICK), Tags.Items.BRICKS_NORMAL)
         }
         register(VanillaMaterialKeys.NETHER_BRICK, CommonPartKeys.MISC) {
             addFromTable()
-            add(CommonPartKeys.MISC, HTMaterialItemEntry.item(Items.NETHER_BRICK), Tags.Items.BRICKS_NETHER)
+            add(CommonPartKeys.MISC, HTMaterialItemEntry.ItemEntry(Items.NETHER_BRICK), Tags.Items.BRICKS_NETHER)
         }
         //    Common    //
 
@@ -216,18 +216,18 @@ internal data object HCMiscRegister {
         for ((part: HTMaterialPartKey, block: HTSimpleDeferredBlockAndItem) in HCBlocks.RESOURCES.column(this.key)) {
             val prefix: HTTagPrefix? = HTPartTagManager[part]
             if (prefix == null) {
-                this.add(part, HTMaterialItemEntry.block(block))
+                this.add(part, HTMaterialItemEntry.BlockEntry(block))
             } else {
-                this.add(part, HTMaterialItemEntry.block(block), prefix)
+                this.add(part, HTMaterialItemEntry.BlockEntry(block), prefix)
             }
         }
         // Item
         for ((part: HTMaterialPartKey, item: HTSimpleDeferredItem) in HCItems.RESOURCES.column(this.key)) {
             val prefix: HTTagPrefix? = HTPartTagManager[part]
             if (prefix == null) {
-                this.add(part, HTMaterialItemEntry.item(item))
+                this.add(part, HTMaterialItemEntry.ItemEntry(item))
             } else {
-                this.add(part, HTMaterialItemEntry.item(item), prefix)
+                this.add(part, HTMaterialItemEntry.ItemEntry(item), prefix)
             }
         }
     }

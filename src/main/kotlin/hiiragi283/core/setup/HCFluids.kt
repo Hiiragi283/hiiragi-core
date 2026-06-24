@@ -6,14 +6,12 @@ import hiiragi283.core.common.fluid.HTDyedFluidType
 import hiiragi283.core.common.fluid.HTPotionFluidType
 import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.lib.HTConstants
-import hiiragi283.lib.color.HTColoredContents
-import hiiragi283.lib.color.HTDefaultColor
+import hiiragi283.lib.color.HTColoredCollection
 import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.registry.HTFluidContentRegister
 import hiiragi283.lib.resource.toId
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
-import net.minecraft.world.item.DyeColor
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.common.SoundActions
 import net.neoforged.neoforge.fluids.FluidType
@@ -22,10 +20,6 @@ data object HCFluids {
     @JvmField
     val REGISTER = HTFluidContentRegister(HiiragiCoreAPI.MOD_ID)
 
-    init {
-        DyeContents.values
-    }
-
     @JvmStatic
     fun register(eventBus: IEventBus) {
         REGISTER.register(eventBus)
@@ -33,25 +27,15 @@ data object HCFluids {
 
     //    Vanilla    //
 
-    data object DyeContents : HTColoredContents<HTFluidContent.Flowing> {
-        @JvmStatic
-        private val map: Map<HTDefaultColor, HTFluidContent.Flowing> = HTDefaultColor.entries.associateWith { color: HTDefaultColor ->
-            val name: String = color.serializedName
-            REGISTER.registerFlowing("${name}_dye") {
-                properties = liquid()
-                typeFactory = { prop: FluidType.Properties -> HTDyedFluidType(color, prop) }
-                fluidTag = HTConstants.COMMON.toId("dyes", name)
-                bucketTag = HTConstants.COMMON.toId("buckets", "dye", name)
-            }
+    @JvmField
+    val DYES: HTColoredCollection<HTFluidContent.Flowing> = HTColoredCollection.VALUES.map { color ->
+        val name: String = color.serializedName
+        REGISTER.registerFlowing("${name}_dye") {
+            properties = liquid()
+            typeFactory = { prop: FluidType.Properties -> HTDyedFluidType(color, prop) }
+            fluidTag = HTConstants.COMMON.toId("dyes", name)
+            bucketTag = HTConstants.COMMON.toId("buckets", "dye", name)
         }
-
-        val values: Collection<HTFluidContent> get() = map.values
-
-        override fun get(color: HTDefaultColor): HTFluidContent.Flowing = map[color]!!
-
-        override fun get(color: DyeColor): HTFluidContent.Flowing = HTDefaultColor.fromDye(color).let(::get)
-
-        override fun iterator(): Iterator<Map.Entry<HTDefaultColor, HTFluidContent.Flowing>> = map.entries.iterator()
     }
 
     @JvmField

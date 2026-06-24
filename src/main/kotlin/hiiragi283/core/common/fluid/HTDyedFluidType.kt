@@ -1,7 +1,7 @@
 package hiiragi283.core.common.fluid
 
 import hiiragi283.lib.color.HTDefaultColor
-import hiiragi283.lib.color.VanillaColoredContents
+import hiiragi283.lib.color.VanillaColoredCollections
 import hiiragi283.lib.fluid.HTFluidType
 import hiiragi283.lib.world.HTItemDropHelper
 import net.minecraft.core.BlockPos
@@ -17,7 +17,7 @@ class HTDyedFluidType(private val color: HTDefaultColor, properties: Properties)
 
     override fun onVaporize(entity: LivingEntity?, level: Level, pos: BlockPos, stack: FluidStack) {
         super.onVaporize(entity, level, pos, stack)
-        val dye: ItemStack = VanillaColoredContents.DYE[color]?.toStack(count = 4) ?: return
+        val dye: ItemStack = VanillaColoredCollections.DYE[color].toStack(count = 4)
         if (entity != null) {
             HTItemDropHelper.giveOrDropStack(entity, dye)
         } else {
