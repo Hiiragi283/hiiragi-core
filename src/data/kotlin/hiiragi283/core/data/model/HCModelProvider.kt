@@ -6,7 +6,7 @@ import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.data.model.HTModelProvider
-import hiiragi283.lib.registry.HTCopperMap
+import hiiragi283.lib.registry.HTCopperCollection
 import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.resource.blockId
@@ -78,8 +78,8 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
         generators.generateFlatItem(HCItems.RING_OF_HYPERION)
     }
 
-    private fun BlockModelGenerators.createCopperBasin(map: HTCopperMap<SupplierWithId<Block>>) {
-        for ((state: WeatheringCopper.WeatherState, block: SupplierWithId<Block>) in map) {
+    private fun BlockModelGenerators.createCopperBasin(map: HTCopperCollection<SupplierWithId<Block>>) {
+        for ((state: WeatheringCopper.WeatherState, block: SupplierWithId<Block>) in map.asMap()) {
             val cutCopper: Material = when (state) {
                 WeatheringCopper.WeatherState.UNAFFECTED -> "cut_copper"
                 WeatheringCopper.WeatherState.EXPOSED -> "exposed_cut_copper"

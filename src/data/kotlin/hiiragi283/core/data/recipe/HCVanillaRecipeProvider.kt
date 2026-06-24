@@ -57,7 +57,7 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
             result { +HCBlocks.COPPER_BASIN.weathering.unaffected.itemHolder }
         }.save(exporter)
 
-        for ((state: WeatheringCopper.WeatherState, base: HTDeferredBlockAndItem<*, *>) in HCBlocks.COPPER_BASIN.weathering) {
+        for ((state: WeatheringCopper.WeatherState, base: HTDeferredBlockAndItem<*, *>) in HCBlocks.COPPER_BASIN.weathering.asMap()) {
             val waxed: HTDeferredBlockAndItem<*, *> = HCBlocks.COPPER_BASIN.waxed[state]
             // Waxing
             HTShapelessRecipeBuilder.create {

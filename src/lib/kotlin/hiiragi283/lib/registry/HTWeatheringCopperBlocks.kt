@@ -20,8 +20,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour
  */
 @JvmRecord
 data class HTWeatheringCopperBlocks<WAXED : Block, WEATHERING, ITEM : Item>(
-    val weathering: HTCopperMap<HTDeferredBlockAndItem<WEATHERING, ITEM>>,
-    val waxed: HTCopperMap<HTDeferredBlockAndItem<WAXED, ITEM>>,
+    val weathering: HTCopperCollection<HTDeferredBlockAndItem<WEATHERING, ITEM>>,
+    val waxed: HTCopperCollection<HTDeferredBlockAndItem<WAXED, ITEM>>,
 ) where WEATHERING : Block, WEATHERING : WeatheringCopper {
     companion object {
         /**
@@ -55,13 +55,13 @@ data class HTWeatheringCopperBlocks<WAXED : Block, WEATHERING, ITEM : Item>(
             itemFactory: ItemWithContextFactory<Block, ITEM>,
             itemProp: Identity<Item.Properties> = identity(),
         ): HTWeatheringCopperBlocks<WAXED, WEATHERING, ITEM> where WEATHERING : Block, WEATHERING : WeatheringCopper = HTWeatheringCopperBlocks(
-            HTCopperMap(
+            HTCopperCollection(
                 register.register(name, blockProp(WeatheringCopper.WeatherState.UNAFFECTED), { weatheringFactory(WeatheringCopper.WeatherState.UNAFFECTED, it) }, itemFactory, itemProp),
                 register.register("exposed_$name", blockProp(WeatheringCopper.WeatherState.EXPOSED), { weatheringFactory(WeatheringCopper.WeatherState.EXPOSED, it) }, itemFactory, itemProp),
                 register.register("weathered_$name", blockProp(WeatheringCopper.WeatherState.WEATHERED), { weatheringFactory(WeatheringCopper.WeatherState.WEATHERED, it) }, itemFactory, itemProp),
                 register.register("oxidized_$name", blockProp(WeatheringCopper.WeatherState.OXIDIZED), { weatheringFactory(WeatheringCopper.WeatherState.OXIDIZED, it) }, itemFactory, itemProp),
             ),
-            HTCopperMap(
+            HTCopperCollection(
                 register.register("waxed_$name", blockProp(WeatheringCopper.WeatherState.UNAFFECTED), waxedFactory, itemFactory, itemProp),
                 register.register("waxed_exposed_$name", blockProp(WeatheringCopper.WeatherState.EXPOSED), waxedFactory, itemFactory, itemProp),
                 register.register("waxed_weathered_$name", blockProp(WeatheringCopper.WeatherState.WEATHERED), waxedFactory, itemFactory, itemProp),
@@ -70,7 +70,7 @@ data class HTWeatheringCopperBlocks<WAXED : Block, WEATHERING, ITEM : Item>(
         )
     }
 
-    val allBlocks: List<HTDeferredBlockAndItem<Block, ITEM>> get() = weathering.values + waxed.values
+    val allBlocks: List<HTDeferredBlockAndItem<Block, ITEM>> get() = weathering + waxed
 
     /**
      * 指定した[WeatheringCopper.WeatherState][state]から対応する銅系ブロックを取得します。
