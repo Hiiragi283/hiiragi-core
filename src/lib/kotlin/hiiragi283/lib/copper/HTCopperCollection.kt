@@ -28,6 +28,20 @@ data class HTCopperCollection<out T>(val unaffected: T, val exposed: T, val weat
     override fun isEmpty(): Boolean = false
 
     override fun iterator(): Iterator<T> = asSequence().iterator()
+
+    inline fun <R> map(transform: (T) -> R): HTCopperCollection<R> = HTCopperCollection(
+        transform(unaffected),
+        transform(exposed),
+        transform(weathered),
+        transform(oxidized),
+    )
+
+    inline fun <U, R> zip(other: HTCopperCollection<U>, transform: (T, U) -> R): HTCopperCollection<R> = HTCopperCollection(
+        transform(unaffected, other.unaffected),
+        transform(exposed, other.exposed),
+        transform(weathered, other.weathered),
+        transform(oxidized, other.oxidized),
+    )
 }
 
 inline fun <T> HTCopperCollection(init: (phase: HTCopperPhase) -> T): HTCopperCollection<T> = HTCopperCollection(
