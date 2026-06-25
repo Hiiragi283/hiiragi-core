@@ -29,6 +29,7 @@ import hiiragi283.lib.recipe.ingredient.HTFluidIngredient
 import hiiragi283.lib.recipe.viewer.display.HTRecipeContents
 import hiiragi283.lib.recipe.viewer.display.HTRecipeDisplay
 import hiiragi283.lib.recipe.viewer.display.HTRecipeDisplayFactories
+import hiiragi283.lib.registry.allBlocks
 import hiiragi283.lib.registry.toLike
 import kotlin.streams.asSequence
 import mezz.jei.api.JeiPlugin

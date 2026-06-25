@@ -6,6 +6,7 @@ import hiiragi283.core.common.block.entity.HTCopperBasinBlockEntity
 import hiiragi283.core.common.block.entity.HTForgingAnvilBlockEntity
 import hiiragi283.lib.registry.HTDeferredBlockEntityType
 import hiiragi283.lib.registry.HTDeferredBlockEntityTypeRegister
+import hiiragi283.lib.registry.allBlocks
 
 data object HCBlockEntityTypes {
     @JvmField

@@ -1,16 +1,16 @@
 package hiiragi283.core.data
 
 import hiiragi283.core.setup.HCBlocks
+import hiiragi283.lib.copper.HTCopperPhase
 import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.VanillaMaterialKeys
-import hiiragi283.lib.registry.HTDeferredBlockAndItem
 import hiiragi283.lib.registry.HTWeatheringCopperBlocks
+import hiiragi283.lib.resource.SimpleSupplierWithKey
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.WeatheringCopper
 import net.neoforged.neoforge.common.data.DataMapProvider
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps
@@ -27,18 +27,18 @@ class HCDataMapProvider(packOutput: PackOutput, lookupProvider: CompletableFutur
         registerWaxed(HCBlocks.COPPER_BASIN)
     }
 
-    private fun registerOxidizables(block: HTWeatheringCopperBlocks<*, *, *>) {
+    private fun registerOxidizables(block: HTWeatheringCopperBlocks<*, *>) {
         val builder: Builder<Oxidizable, Block> = builder(NeoForgeDataMaps.OXIDIZABLES)
-        val (unaffected: HTDeferredBlockAndItem<*, *>, exposed: HTDeferredBlockAndItem<*, *>, weathered: HTDeferredBlockAndItem<*, *>, oxidized: HTDeferredBlockAndItem<*, *>) = block.weathering
+        val (unaffected: SimpleSupplierWithKey<Block>, exposed: SimpleSupplierWithKey<Block>, weathered: SimpleSupplierWithKey<Block>, oxidized: SimpleSupplierWithKey<Block>) = block.weathering
         builder.add(unaffected.getKey(), Oxidizable(exposed.get()), false)
         builder.add(exposed.getKey(), Oxidizable(weathered.get()), false)
         builder.add(weathered.getKey(), Oxidizable(oxidized.get()), false)
     }
 
-    private fun registerWaxed(block: HTWeatheringCopperBlocks<*, *, *>) {
+    private fun registerWaxed(block: HTWeatheringCopperBlocks<*, *>) {
         val builder: Builder<Waxable, Block> = builder(NeoForgeDataMaps.WAXABLES)
-        for (state: WeatheringCopper.WeatherState in WeatheringCopper.WeatherState.entries) {
-            val (base: HTDeferredBlockAndItem<*, *>, waxed: HTDeferredBlockAndItem<*, *>) = block[state]
+        for (phase: HTCopperPhase in HTCopperPhase.entries) {
+            val (base: SimpleSupplierWithKey<Block>, waxed: SimpleSupplierWithKey<Block>) = block[phase]
             builder.add(base.getKey(), Waxable(waxed.get()), false)
         }
     }

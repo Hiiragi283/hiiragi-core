@@ -5,6 +5,7 @@ import hiiragi283.core.common.recipe.custom.HCEternalSmithingRecipe
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import hiiragi283.lib.HTConstants
+import hiiragi283.lib.copper.HTCopperPhase
 import hiiragi283.lib.data.recipe.HTRecipeProvider
 import hiiragi283.lib.data.recipe.HTShapedRecipeBuilder
 import hiiragi283.lib.data.recipe.HTShapelessRecipeBuilder
@@ -17,7 +18,6 @@ import net.minecraft.data.PackOutput
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.tags.ItemTags
 import net.minecraft.world.item.Items
-import net.minecraft.world.level.block.WeatheringCopper
 import net.neoforged.neoforge.common.Tags
 
 class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<HolderLookup.Provider>) : HTRecipeProvider(packOutput, future, HiiragiCoreAPI.MOD_ID) {
@@ -57,8 +57,8 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
             result { +HCBlocks.COPPER_BASIN.weathering.unaffected.itemHolder }
         }.save(exporter)
 
-        for ((state: WeatheringCopper.WeatherState, base: HTDeferredBlockAndItem<*, *>) in HCBlocks.COPPER_BASIN.weathering.asSequenceWithState()) {
-            val waxed: HTDeferredBlockAndItem<*, *> = HCBlocks.COPPER_BASIN.waxed[state]
+        for ((phase: HTCopperPhase, base: HTDeferredBlockAndItem<*, *>) in HCBlocks.COPPER_BASIN.weathering.asSequenceWithPhase()) {
+            val waxed: HTDeferredBlockAndItem<*, *> = HCBlocks.COPPER_BASIN.waxed[phase]
             // Waxing
             HTShapelessRecipeBuilder.create {
                 ingredient { items { +base.itemHolder } }

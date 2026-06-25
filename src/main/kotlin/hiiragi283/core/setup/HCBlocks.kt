@@ -9,7 +9,8 @@ import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.block.HTWeatheringCopperBasinBlock
 import hiiragi283.lib.collection.Table
 import hiiragi283.lib.collection.buildTable
-import hiiragi283.lib.item.HTBlockItem
+import hiiragi283.lib.copper.HTCopperPhase
+import hiiragi283.lib.copper.HTWeatheringCoppers
 import hiiragi283.lib.item.component.consumables
 import hiiragi283.lib.material.CommonMaterialKeys
 import hiiragi283.lib.material.CommonPartKeys
@@ -114,18 +115,17 @@ data object HCBlocks {
     val FORGING_ANVIL: HTBasicDeferredBlockAndItem<HTForgingAnvilBlock> = REGISTER.registerSimple("forging_anvil", copyOf(Blocks.SMOOTH_STONE).noOcclusion(), ::HTForgingAnvilBlock)
 
     @JvmField
-    val COPPER_BASIN: HTWeatheringCopperBlocks<HTCopperBasinBlock, HTWeatheringCopperBasinBlock, HTBlockItem<Block>> = HTWeatheringCopperBlocks.createSimple(
-        REGISTER,
-        "copper_basin",
-        {
-            properties(2f)
-                .requiresCorrectToolForDrops()
-                .noOcclusion()
-                .sound(SoundType.COPPER)
-        },
-        ::HTCopperBasinBlock,
-        ::HTWeatheringCopperBasinBlock,
-    )
+    val COPPER_BASIN: HTWeatheringCopperBlocks<HTCopperBasinBlock, HTWeatheringCopperBasinBlock> = run {
+        val name = "copper_basin"
+        val prop: BlockBehaviour.Properties = properties(2f)
+            .requiresCorrectToolForDrops()
+            .noOcclusion()
+            .sound(SoundType.COPPER)
+        HTWeatheringCoppers(
+            { phase: HTCopperPhase -> REGISTER.registerSimple(phase.createPath(name), prop, blockFactory = { HTWeatheringCopperBasinBlock(phase.toState(), it) }) },
+            { phase: HTCopperPhase -> REGISTER.registerSimple(phase.createWaxedPath(name), prop, ::HTCopperBasinBlock) },
+        )
+    }
 
     //    Extensions    //
 

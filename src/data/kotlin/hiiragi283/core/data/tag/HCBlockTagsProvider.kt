@@ -9,6 +9,7 @@ import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.material.HTPartTagManager
 import hiiragi283.lib.material.VanillaMaterialKeys
+import hiiragi283.lib.registry.allBlocks
 import hiiragi283.lib.registry.toLike
 import hiiragi283.lib.resource.SimpleSupplierWithKey
 import hiiragi283.lib.tag.CommonTagPrefixes

@@ -2,6 +2,7 @@ package hiiragi283.core.data.lang
 
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
+import hiiragi283.lib.copper.HTCopperPhase
 import hiiragi283.lib.data.lang.HTLangName
 import hiiragi283.lib.data.lang.HTLangPatternProvider
 import hiiragi283.lib.data.lang.HTLangProvider
@@ -11,7 +12,6 @@ import hiiragi283.lib.text.HTCommonTranslation
 import hiiragi283.lib.text.HTHasTranslationKey
 import hiiragi283.lib.text.HTTranslation
 import java.util.function.BiConsumer
-import net.minecraft.world.level.block.WeatheringCopper
 
 interface HCLangProvider {
     fun addCommonTranslations(consumer: BiConsumer<HTTranslation, String>) {
@@ -40,24 +40,16 @@ interface HCLangProvider {
         val waxedCopper: HTLangPatternProvider = HTLangPatternProvider.create("Waxed %s", "錆止めされた%s")
 
         val copperBasin: HTLangName = HTLangName.create("Copper Basin", "銅の鉢")
-        for (state: WeatheringCopper.WeatherState in WeatheringCopper.WeatherState.entries) {
-            val pattern: HTLangPatternProvider = getCopperLangPattern(state)
-            val weathering: HTHasTranslationKey = HCBlocks.COPPER_BASIN.weathering[state]
-            provider.add(weathering, pattern.translate(langType, copperBasin))
-            val waxed: HTHasTranslationKey = HCBlocks.COPPER_BASIN.waxed[state]
-            provider.add(waxed, waxedCopper.translate(langType, pattern.translate(langType, copperBasin)))
+        for (phase: HTCopperPhase in HTCopperPhase.entries) {
+            val weathering: HTHasTranslationKey = HCBlocks.COPPER_BASIN.weathering[phase]
+            provider.add(weathering, phase.translate(langType, copperBasin))
+            val waxed: HTHasTranslationKey = HCBlocks.COPPER_BASIN.waxed[phase]
+            provider.add(waxed, waxedCopper.translate(langType, phase.translate(langType, copperBasin)))
         }
         // Fluid
         val dyePattern: HTLangPatternProvider = HTLangPatternProvider.create("%s Dye", "%sの染料")
         for ((color: HTLangName, content: HTFluidContent) in HCFluids.DYES.asSequenceWithColor()) {
             provider.addFluid(content, dyePattern.translate(langType, color))
         }
-    }
-
-    private fun getCopperLangPattern(state: WeatheringCopper.WeatherState): HTLangPatternProvider = when (state) {
-        WeatheringCopper.WeatherState.UNAFFECTED -> HTLangPatternProvider.IDENTITY
-        WeatheringCopper.WeatherState.EXPOSED -> HTLangPatternProvider.create("Exposed %s", "風化した%s")
-        WeatheringCopper.WeatherState.WEATHERED -> HTLangPatternProvider.create("Weathered %s", "錆びた%s")
-        WeatheringCopper.WeatherState.OXIDIZED -> HTLangPatternProvider.create("Oxidized %s", "酸化した%s")
     }
 }

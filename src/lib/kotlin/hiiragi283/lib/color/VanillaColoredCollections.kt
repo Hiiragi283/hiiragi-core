@@ -49,5 +49,5 @@ data object VanillaColoredCollections {
     val WOOL: HTColoredCollection<HTSimpleDeferredItem> = create("%s_wool")
 
     @JvmStatic
-    private fun create(path: String): HTColoredCollection<HTSimpleDeferredItem> = HTColoredCollection.VALUES.map { HTSimpleDeferredItem(vanillaId(path.replace("%s", it.serializedName))) }
+    private fun create(path: String): HTColoredCollection<HTSimpleDeferredItem> = HTColoredCollection { HTSimpleDeferredItem(vanillaId(path.replace("%s", it.serializedName))) }
 }

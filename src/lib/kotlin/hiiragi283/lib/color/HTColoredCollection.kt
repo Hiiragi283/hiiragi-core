@@ -113,3 +113,5 @@ data class HTColoredCollection<out T>(
         transform(black, other.black),
     )
 }
+
+inline fun <T> HTColoredCollection(init: (color: HTDefaultColor) -> T): HTColoredCollection<T> = HTColoredCollection.VALUES.map(init)

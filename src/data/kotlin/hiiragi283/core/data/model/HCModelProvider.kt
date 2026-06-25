@@ -5,8 +5,9 @@ import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.lib.HTConstants
+import hiiragi283.lib.copper.HTCopperCollection
+import hiiragi283.lib.copper.HTCopperPhase
 import hiiragi283.lib.data.model.HTModelProvider
-import hiiragi283.lib.registry.HTCopperCollection
 import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.resource.blockId
@@ -19,7 +20,6 @@ import net.minecraft.client.resources.model.sprite.Material
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.Identifier
 import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.WeatheringCopper
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
 
 class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreAPI.MOD_ID) {
@@ -79,21 +79,9 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
     }
 
     private fun BlockModelGenerators.createCopperBasin(blocks: HTCopperCollection<SupplierWithId<Block>>) {
-        for ((state: WeatheringCopper.WeatherState, block: SupplierWithId<Block>) in blocks.asSequenceWithState()) {
-            val cutCopper: Material = when (state) {
-                WeatheringCopper.WeatherState.UNAFFECTED -> "cut_copper"
-                WeatheringCopper.WeatherState.EXPOSED -> "exposed_cut_copper"
-                WeatheringCopper.WeatherState.WEATHERED -> "weathered_cut_copper"
-                WeatheringCopper.WeatherState.OXIDIZED -> "oxidized_cut_copper"
-            }.let { vanillaId(HTConstants.BLOCK, it) }
-                .let(::Material)
-            val chiseledCopper: Material = when (state) {
-                WeatheringCopper.WeatherState.UNAFFECTED -> "chiseled_copper"
-                WeatheringCopper.WeatherState.EXPOSED -> "exposed_chiseled_copper"
-                WeatheringCopper.WeatherState.WEATHERED -> "weathered_chiseled_copper"
-                WeatheringCopper.WeatherState.OXIDIZED -> "oxidized_chiseled_copper"
-            }.let { vanillaId(HTConstants.BLOCK, it) }
-                .let(::Material)
+        for ((phase: HTCopperPhase, block: SupplierWithId<Block>) in blocks.asSequenceWithPhase()) {
+            val cutCopper: Material = vanillaId(HTConstants.BLOCK, phase.createPath("cut_copper")).let(::Material)
+            val chiseledCopper: Material = vanillaId(HTConstants.BLOCK, phase.createPath("chiseled_copper")).let(::Material)
             val modelId: Identifier = HCModelTemplates.CAULDRON.create(
                 block.blockId,
                 TextureMapping()
