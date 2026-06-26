@@ -9,7 +9,6 @@ import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.material.HTPartTagManager
 import hiiragi283.lib.material.VanillaMaterialKeys
-import hiiragi283.lib.registry.allBlocks
 import hiiragi283.lib.registry.toLike
 import hiiragi283.lib.resource.SimpleSupplierWithKey
 import hiiragi283.lib.tag.CommonTagPrefixes
@@ -41,11 +40,11 @@ class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<
             .add(HCBlocks.WARPED_WART)
 
         val pickaxe: HTTagBuilder<Block> = tag(BlockTags.MINEABLE_WITH_PICKAXE)
-        sequence<SimpleSupplierWithKey<Block>> {
+        sequence {
             yieldAll(HCBlocks.RESOURCES.values)
 
             yield(HCBlocks.FORGING_ANVIL)
-            yieldAll(HCBlocks.COPPER_BASIN.allBlocks)
+            yieldAll(HCBlocks.COPPER_BASIN.allCoppers)
         }.forEach(pickaxe::add)
     }
 

@@ -2,9 +2,9 @@ package hiiragi283.core.data
 
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.lib.copper.HTCopperPhase
+import hiiragi283.lib.copper.HTWeatheringCoppers
 import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.VanillaMaterialKeys
-import hiiragi283.lib.registry.HTWeatheringCopperBlocks
 import hiiragi283.lib.resource.SimpleSupplierWithKey
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
@@ -27,7 +27,7 @@ class HCDataMapProvider(packOutput: PackOutput, lookupProvider: CompletableFutur
         registerWaxed(HCBlocks.COPPER_BASIN)
     }
 
-    private fun registerOxidizables(block: HTWeatheringCopperBlocks<*, *>) {
+    private fun registerOxidizables(block: HTWeatheringCoppers<SimpleSupplierWithKey<Block>>) {
         val builder: Builder<Oxidizable, Block> = builder(NeoForgeDataMaps.OXIDIZABLES)
         val (unaffected: SimpleSupplierWithKey<Block>, exposed: SimpleSupplierWithKey<Block>, weathered: SimpleSupplierWithKey<Block>, oxidized: SimpleSupplierWithKey<Block>) = block.weathering
         builder.add(unaffected.getKey(), Oxidizable(exposed.get()), false)
@@ -35,7 +35,7 @@ class HCDataMapProvider(packOutput: PackOutput, lookupProvider: CompletableFutur
         builder.add(weathered.getKey(), Oxidizable(oxidized.get()), false)
     }
 
-    private fun registerWaxed(block: HTWeatheringCopperBlocks<*, *>) {
+    private fun registerWaxed(block: HTWeatheringCoppers<SimpleSupplierWithKey<Block>>) {
         val builder: Builder<Waxable, Block> = builder(NeoForgeDataMaps.WAXABLES)
         for (phase: HTCopperPhase in HTCopperPhase.entries) {
             val (base: SimpleSupplierWithKey<Block>, waxed: SimpleSupplierWithKey<Block>) = block[phase]

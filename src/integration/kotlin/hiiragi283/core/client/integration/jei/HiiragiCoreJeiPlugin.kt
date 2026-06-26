@@ -29,7 +29,6 @@ import hiiragi283.lib.recipe.ingredient.HTFluidIngredient
 import hiiragi283.lib.recipe.viewer.display.HTRecipeContents
 import hiiragi283.lib.recipe.viewer.display.HTRecipeDisplay
 import hiiragi283.lib.recipe.viewer.display.HTRecipeDisplayFactories
-import hiiragi283.lib.registry.allBlocks
 import hiiragi283.lib.registry.toLike
 import kotlin.streams.asSequence
 import mezz.jei.api.JeiPlugin
@@ -196,7 +195,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             HCRecipeViewerTypes.EXPLODING,
         )
 
-        val copperBasins: List<ItemStack> = HCBlocks.COPPER_BASIN.allBlocks.map { it.toStack() }
+        val copperBasins: List<ItemStack> = HCBlocks.COPPER_BASIN.allCoppers.map { it.toStack() }
         helper.add(HCRecipeViewerTypes.EMPTYING, copperBasins)
         helper.add(HCRecipeViewerTypes.FILLING, copperBasins)
     }

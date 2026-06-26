@@ -22,7 +22,6 @@ import hiiragi283.lib.registry.HTBasicDeferredBlockAndItem
 import hiiragi283.lib.registry.HTDeferredBlockAndItemRegister
 import hiiragi283.lib.registry.HTDeferredBlockRegister
 import hiiragi283.lib.registry.HTSimpleDeferredBlockAndItem
-import hiiragi283.lib.registry.HTWeatheringCopperBlocks
 import hiiragi283.lib.util.HTTextResult
 import hiiragi283.lib.util.Identity
 import hiiragi283.lib.util.identity
@@ -115,7 +114,7 @@ data object HCBlocks {
     val FORGING_ANVIL: HTBasicDeferredBlockAndItem<HTForgingAnvilBlock> = REGISTER.registerSimple("forging_anvil", copyOf(Blocks.SMOOTH_STONE).noOcclusion(), ::HTForgingAnvilBlock)
 
     @JvmField
-    val COPPER_BASIN: HTWeatheringCopperBlocks<HTCopperBasinBlock, HTWeatheringCopperBasinBlock> = run {
+    val COPPER_BASIN: HTWeatheringCoppers<HTBasicDeferredBlockAndItem<HTCopperBasinBlock>> = run {
         val name = "copper_basin"
         val prop: BlockBehaviour.Properties = properties(2f)
             .requiresCorrectToolForDrops()
