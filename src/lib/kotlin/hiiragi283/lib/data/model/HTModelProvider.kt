@@ -64,10 +64,18 @@ abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvide
         this.createSimple(block.get(), modelId)
     }
 
+    /**
+     * ハーフブロックのブロックJSONを生成します。
+     * @since 26.1.3
+     */
     fun BlockModelGenerators.createSlab(block: SupplierWithId<SlabBlock>, fullModel: Identifier, texture: Material = Material(block.blockId)) {
         this.createSlab(block, fullModel, texture, texture, texture)
     }
 
+    /**
+     * ハーフブロックのブロックJSONを生成します。
+     * @since 26.1.3
+     */
     fun BlockModelGenerators.createSlab(block: SupplierWithId<SlabBlock>, fullModel: Identifier, top: Material, side: Material, bottom: Material) {
         val slab: SlabBlock = block.get()
         val mapping: TextureMapping = TextureMapping().put(TextureSlot.TOP, top).put(TextureSlot.BOTTOM, bottom).put(TextureSlot.SIDE, side)
@@ -84,10 +92,18 @@ abstract class HTModelProvider(output: PackOutput, modId: String) : ModelProvide
         registerSimpleItemModel(slab, modelId)
     }
 
+    /**
+     * 階段ブロックのブロックJSONを生成します。
+     * @since 26.1.3
+     */
     fun BlockModelGenerators.createStairs(block: SupplierWithId<StairBlock>, texture: Material = Material(block.blockId)) {
         this.createStairs(block, texture, texture, texture)
     }
 
+    /**
+     * 階段ブロックのブロックJSONを生成します。
+     * @since 26.1.3
+     */
     fun BlockModelGenerators.createStairs(block: SupplierWithId<StairBlock>, top: Material, side: Material, bottom: Material) {
         val stairs: StairBlock = block.get()
         val mapping: TextureMapping = TextureMapping().put(TextureSlot.TOP, top).put(TextureSlot.BOTTOM, bottom).put(TextureSlot.SIDE, side)

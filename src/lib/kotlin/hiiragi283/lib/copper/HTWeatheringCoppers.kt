@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.WeatheringCopperBlocks
  * @param weathering さび止めされた銅系コンテンツの一覧
  * @param waxed 酸化する銅系コンテンツの一覧
  * @author Hiiragi Tsubas
- * @since 26.1.0
+ * @since 26.1.3
  */
 @JvmRecord
 data class HTWeatheringCoppers<out T>(val weathering: HTCopperCollection<T>, val waxed: HTCopperCollection<T>) {

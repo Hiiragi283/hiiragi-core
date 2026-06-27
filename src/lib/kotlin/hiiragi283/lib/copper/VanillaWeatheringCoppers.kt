@@ -5,6 +5,11 @@ import hiiragi283.lib.resource.SimpleBlockItemSupplierWithKey
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 
+/**
+ * バニラの銅系コンテンツ向けに[HTWeatheringCoppers]をまとめたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.3
+ */
 data object VanillaWeatheringCoppers {
     @JvmField
     val COPPER_BARS: HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = Blocks.COPPER_BARS.convert().map(Block::toLikeWithItem)

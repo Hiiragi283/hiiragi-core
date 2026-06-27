@@ -11,6 +11,7 @@ import net.neoforged.neoforge.fluids.FluidStackTemplate
 //    Fluid    //
 
 /**
+ * この[Fluid][this]が空かどうか判定します。
  * @author Hiiragi Tsubasa
  * @since 26.1.3
  */
@@ -18,6 +19,7 @@ import net.neoforged.neoforge.fluids.FluidStackTemplate
 val Fluid.isEmpty: Boolean get() = this.builtInRegistryHolder().isEmpty
 
 /**
+ * この[Holder][this]が保持している液体が空かどうか判定します。
  * @author Hiiragi Tsubasa
  * @since 26.1.3
  */
@@ -33,6 +35,7 @@ val Holder<Fluid>.isEmpty: Boolean get() = this.`is`(vanillaId("empty"))
 fun FluidStackTemplate?.createOrEmpty(): FluidStack = this?.create() ?: FluidStack.EMPTY
 
 /**
+ * この[FluidStackTemplate][this]をコピーします。
  * @author Hiiragi Tsubasa
  * @since 26.1.3
  */
@@ -45,7 +48,7 @@ fun FluidStackTemplate.transmuteCopy(newFluid: Fluid, newAmount: Int = this.amou
 
 /**
  * [FluidStack]を[FluidStackTemplate]に変換します。
- * @return [isEmpty]の場合は`null`
+ * @return [FluidStack.isEmpty]の場合は`null`
  * @author Hiiragi Tsubasa
  * @since 26.1.0
  */
@@ -62,6 +65,7 @@ fun FluidStack.toTemplateOrNull(): FluidStackTemplate? = when {
 fun FluidStack.toTemplateResult(): HTTextResult<FluidStackTemplate> = this.toTemplateOrNull().toTextResult { "FluidStack must be non-empty" }
 
 /**
+ * この[FluidStack][this]をコピーします。
  * @author Hiiragi Tsubasa
  * @since 26.1.3
  */

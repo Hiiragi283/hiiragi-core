@@ -8,9 +8,9 @@ import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.Identifier
 
 /**
- * バニラの色付きアイテム向けに[HTColoredCollection]をまとめたクラスです。
+ * バニラの色付きコンテンツ向けに[HTColoredCollection]をまとめたクラスです。
  * @author Hiiragi Tsubasa
- * @since 26.1.0
+ * @since 26.1.3
  */
 data object VanillaColoredCollections {
     @JvmField

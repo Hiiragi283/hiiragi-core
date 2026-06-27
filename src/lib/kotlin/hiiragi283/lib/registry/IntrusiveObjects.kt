@@ -28,7 +28,7 @@ private value class BlockWithKey<out BLOCK : Block>(private val block: BLOCK) : 
 /**
  * この[Block][this]を[BlockItemSupplierWithKey]に変換します。
  * @author Hiiragi Tsubasa
- * @since 26.1.0
+ * @since 26.1.3
  */
 fun <BLOCK : Block> BLOCK.toLikeWithItem(): BlockItemSupplierWithKey<BLOCK, Item> = BlockItemWithKey(this)
 

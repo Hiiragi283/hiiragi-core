@@ -9,7 +9,7 @@ package hiiragi283.lib.copper
  * @param oxidized 酸化が3段階目まで進行した要素
  * @see HTWeatheringCoppers
  * @author Hiiragi Tsubasa
- * @since 26.1.0
+ * @since 26.1.3
  */
 data class HTCopperCollection<out T>(val unaffected: T, val exposed: T, val weathered: T, val oxidized: T) : AbstractCollection<T>() {
     operator fun get(phase: HTCopperPhase): T = when (phase) {
