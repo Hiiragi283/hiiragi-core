@@ -46,6 +46,9 @@ class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<
             yield(HCBlocks.FORGING_ANVIL)
             yieldAll(HCBlocks.COPPER_BASIN.allCoppers)
         }.forEach(pickaxe::add)
+        // Category
+        HCBlocks.CONCRETE_SLABS.onEach(pickaxe::add).onEach(tag(BlockTags.SLABS)::add)
+        HCBlocks.CONCRETE_STAIRS.onEach(pickaxe::add).onEach(tag(BlockTags.STAIRS)::add)
     }
 
     private fun HTTagBuilder<Block>.addBlock(block: Block): HTTagBuilder<Block> = this.add(block.toLike())

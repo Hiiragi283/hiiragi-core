@@ -2,7 +2,7 @@
 
 package hiiragi283.lib.fluid
 
-import hiiragi283.lib.data.HolderAccepter
+import hiiragi283.lib.data.HolderAcceptor
 import hiiragi283.lib.data.buildDataPatch
 import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.util.HTBuilderMarker
@@ -25,7 +25,7 @@ import net.neoforged.neoforge.fluids.FluidType
  * @since 26.1.1
  */
 @HTBuilderMarker
-class FluidInstanceBuilder : HolderAccepter.FluidAccepter {
+class FluidInstanceBuilder : HolderAcceptor.FluidAcceptor {
     companion object {
         /**
          * [FluidStackTemplate]を作成します。

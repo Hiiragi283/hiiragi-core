@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "hiiragi_core:block/light_gray_concrete_slab"
+    },
+    "type=double": {
+      "model": "minecraft:block/light_gray_concrete"
+    },
+    "type=top": {
+      "model": "hiiragi_core:block/light_gray_concrete_slab_top"
+    }
+  }
+}

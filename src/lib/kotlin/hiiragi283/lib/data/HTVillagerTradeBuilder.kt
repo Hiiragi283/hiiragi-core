@@ -94,11 +94,11 @@ class HTVillagerTradeBuilder {
         gives = ItemInstanceBuilder.buildTemplate(builderAction)
     }
 
-    inline fun doubleTradePriceEnchantments(builderAction: HolderAccepter.SetBuilder<Enchantment>.() -> Unit) {
+    inline fun doubleTradePriceEnchantments(builderAction: HolderAcceptor.SetBuilder<Enchantment>.() -> Unit) {
         contract {
             callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
         }
-        doubleTradePriceEnchantments = HolderAccepter.SetBuilder<Enchantment>().apply(builderAction).build()
+        doubleTradePriceEnchantments = HolderAcceptor.SetBuilder<Enchantment>().apply(builderAction).build()
     }
 
     fun build(): VillagerTrade = VillagerTrade(wants, Optional.ofNullable(additionalWants), gives, maxUses, xp, discount, Optional.ofNullable(merchantPredicate), itemModifiers, Optional.ofNullable(doubleTradePriceEnchantments))

@@ -2,7 +2,7 @@
 
 package hiiragi283.lib.data.recipe
 
-import hiiragi283.lib.data.HolderAccepter
+import hiiragi283.lib.data.HolderAcceptor
 import hiiragi283.lib.recipe.ingredient.HTItemIngredient
 import hiiragi283.lib.util.Either
 import hiiragi283.lib.util.HTBuilderMarker
@@ -45,11 +45,11 @@ class IngredientBuilder {
         +OrHolderSet(this)
     }
 
-    inline fun items(builderAction: HolderAccepter.ItemSetBuilder.() -> Unit) {
+    inline fun items(builderAction: HolderAcceptor.ItemSetBuilder.() -> Unit) {
         contract {
             callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
         }
-        +HolderAccepter.ItemSetBuilder().apply(builderAction).build()
+        +HolderAcceptor.ItemSetBuilder().apply(builderAction).build()
     }
 
     fun build(): Ingredient = contents.fold(ICustomIngredient::toVanilla, Ingredient::of)

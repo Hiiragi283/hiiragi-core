@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "hiiragi_core:block/pink_concrete_slab"
+    },
+    "type=double": {
+      "model": "minecraft:block/pink_concrete"
+    },
+    "type=top": {
+      "model": "hiiragi_core:block/pink_concrete_slab_top"
+    }
+  }
+}

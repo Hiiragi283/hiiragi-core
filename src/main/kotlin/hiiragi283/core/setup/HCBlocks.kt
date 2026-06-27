@@ -9,6 +9,8 @@ import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.block.HTWeatheringCopperBasinBlock
 import hiiragi283.lib.collection.Table
 import hiiragi283.lib.collection.buildTable
+import hiiragi283.lib.color.HTColoredCollection
+import hiiragi283.lib.color.VanillaColoredCollections
 import hiiragi283.lib.copper.HTCopperPhase
 import hiiragi283.lib.copper.HTWeatheringCoppers
 import hiiragi283.lib.item.component.consumables
@@ -30,7 +32,9 @@ import hiiragi283.lib.util.toTextResult
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.SlabBlock
 import net.minecraft.world.level.block.SoundType
+import net.minecraft.world.level.block.StairBlock
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.MapColor
 import net.neoforged.bus.api.IEventBus
@@ -94,6 +98,24 @@ data object HCBlocks {
     fun getResult(part: HTMaterialPartKey, material: HTMaterialKey): HTTextResult<HTSimpleDeferredBlockAndItem> {
         val result: HTTextResult<HTSimpleDeferredBlockAndItem> = get(part, material).toTextResult { "Unregistered part $part for ${material.identifier()}" }
         return result.printError(LOGGER)
+    }
+
+    //    Buildings    //
+
+    @JvmField
+    val CONCRETE_SLABS: HTColoredCollection<HTBasicDeferredBlockAndItem<SlabBlock>> = VanillaColoredCollections.CONCRETE.map { base ->
+        REGISTER.registerSimple(
+            "${base.path}_slab",
+            blockFactory = { SlabBlock(copyOf(base.get()).setId(REGISTER_ONLY_BLOCK.createKey(it))) },
+        )
+    }
+
+    @JvmField
+    val CONCRETE_STAIRS: HTColoredCollection<HTBasicDeferredBlockAndItem<StairBlock>> = VanillaColoredCollections.CONCRETE.map { base ->
+        REGISTER.registerSimple(
+            "${base.path}_stairs",
+            blockFactory = { StairBlock(base.get().defaultBlockState(), copyOf(base.get()).setId(REGISTER_ONLY_BLOCK.createKey(it))) },
+        )
     }
 
     //    Crops    //

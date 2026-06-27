@@ -2,6 +2,7 @@ package hiiragi283.core.data.lang
 
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
+import hiiragi283.lib.color.HTDefaultColor
 import hiiragi283.lib.copper.HTCopperPhase
 import hiiragi283.lib.data.lang.HTLangName
 import hiiragi283.lib.data.lang.HTLangPatternProvider
@@ -37,13 +38,23 @@ interface HCLangProvider {
     fun addPatternTranslations(provider: HTLangProvider) {
         val langType: HTLangType = provider.langType
         // Block
-        val waxedCopper: HTLangPatternProvider = HTLangPatternProvider.create("Waxed %s", "錆止めされた%s")
+        val slab: HTLangPatternProvider = HTLangPatternProvider.create("%s Slab", "%sのハーフブロック")
+        val stairs: HTLangPatternProvider = HTLangPatternProvider.create("%s Stairs", "%sの階段")
+        val concrete: HTLangPatternProvider = HTLangPatternProvider.create("%s Concrete", "%sのコンクリート")
 
+        for (color: HTDefaultColor in HTDefaultColor.entries) {
+            val concreteSlab: HTHasTranslationKey = HCBlocks.CONCRETE_SLABS[color]
+            provider.add(concreteSlab, slab.translate(langType, concrete.translate(langType, color)))
+
+            val concreteStairs: HTHasTranslationKey = HCBlocks.CONCRETE_STAIRS[color]
+            provider.add(concreteStairs, stairs.translate(langType, concrete.translate(langType, color)))
+        }
+
+        val waxedCopper: HTLangPatternProvider = HTLangPatternProvider.create("Waxed %s", "錆止めされた%s")
         val copperBasin: HTLangName = HTLangName.create("Copper Basin", "銅の鉢")
         for (phase: HTCopperPhase in HTCopperPhase.entries) {
-            val weathering: HTHasTranslationKey = HCBlocks.COPPER_BASIN.weathering[phase]
+            val (weathering: HTHasTranslationKey, waxed: HTHasTranslationKey) = HCBlocks.COPPER_BASIN[phase]
             provider.add(weathering, phase.translate(langType, copperBasin))
-            val waxed: HTHasTranslationKey = HCBlocks.COPPER_BASIN.waxed[phase]
             provider.add(waxed, waxedCopper.translate(langType, phase.translate(langType, copperBasin)))
         }
         // Fluid

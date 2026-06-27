@@ -5,10 +5,14 @@ import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.lib.HTConstants
+import hiiragi283.lib.color.HTDefaultColor
+import hiiragi283.lib.color.VanillaColoredCollections
 import hiiragi283.lib.copper.HTCopperCollection
 import hiiragi283.lib.copper.HTCopperPhase
 import hiiragi283.lib.data.model.HTModelProvider
+import hiiragi283.lib.data.model.createBlock
 import hiiragi283.lib.registry.HTFluidContent
+import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.resource.SupplierWithId
 import hiiragi283.lib.resource.blockId
 import hiiragi283.lib.resource.vanillaId
@@ -50,12 +54,19 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
         // Resources
         HCBlocks.RESOURCES.values.forEach { generators.createTrivialCube(it.get()) }
 
+        // Concrete Stairs
+        for (color: HTDefaultColor in HTDefaultColor.entries) {
+            val concrete: HTIdLike = VanillaColoredCollections.CONCRETE[color]
+            val texture = Material(concrete.blockId)
+            generators.createSlab(HCBlocks.CONCRETE_SLABS[color], concrete.blockId, texture)
+            generators.createStairs(HCBlocks.CONCRETE_STAIRS[color], texture)
+        }
         // Warped Wart
         generators.createCropBlock(HCBlocks.WARPED_WART.get(), BlockStateProperties.AGE_3, 0, 1, 1, 2)
         // Chopping Board
         generators.createAltModel(HCBlocks.CHOPPING_BOARD)
         generators.createAltModel(HCBlocks.FORGING_ANVIL)
-        // Copper Basin
+        // Copper Basins
         generators.createCopperBasin(HCBlocks.COPPER_BASIN.weathering)
         generators.createCopperBasin(HCBlocks.COPPER_BASIN.waxed)
     }
@@ -82,8 +93,8 @@ class HCModelProvider(output: PackOutput) : HTModelProvider(output, HiiragiCoreA
         for ((phase: HTCopperPhase, block: SupplierWithId<Block>) in blocks.asSequenceWithPhase()) {
             val cutCopper: Material = vanillaId(HTConstants.BLOCK, phase.createPath("cut_copper")).let(::Material)
             val chiseledCopper: Material = vanillaId(HTConstants.BLOCK, phase.createPath("chiseled_copper")).let(::Material)
-            val modelId: Identifier = HCModelTemplates.CAULDRON.create(
-                block.blockId,
+            val modelId: Identifier = HCModelTemplates.CAULDRON.createBlock(
+                block,
                 TextureMapping()
                     .put(TextureSlot.TOP, chiseledCopper)
                     .put(TextureSlot.SIDE, cutCopper)

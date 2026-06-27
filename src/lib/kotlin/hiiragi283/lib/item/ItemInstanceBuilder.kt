@@ -2,7 +2,7 @@
 
 package hiiragi283.lib.item
 
-import hiiragi283.lib.data.HolderAccepter
+import hiiragi283.lib.data.HolderAcceptor
 import hiiragi283.lib.data.buildDataPatch
 import hiiragi283.lib.util.HTBuilderMarker
 import hiiragi283.lib.util.HTDelegates
@@ -23,7 +23,7 @@ import net.minecraft.world.item.ItemStackTemplate
  * @since 26.1.1
  */
 @HTBuilderMarker
-class ItemInstanceBuilder : HolderAccepter.ItemAccepter {
+class ItemInstanceBuilder : HolderAcceptor.ItemAcceptor {
     companion object {
         /**
          * [ItemStackTemplate]を作成します。

@@ -1,5 +1,6 @@
 package hiiragi283.lib.data
 
+import hiiragi283.lib.registry.HTDeferredBlockAndItem
 import hiiragi283.lib.util.HTBuilderMarker
 import hiiragi283.lib.util.HTDelegates
 import net.minecraft.core.Holder
@@ -14,16 +15,16 @@ import net.minecraft.world.level.material.Fluid
  * @since 26.1.1
  */
 @HTBuilderMarker
-interface HolderAccepter<T : Any> {
+interface HolderAcceptor<T : Any> {
     /**
      * [Holder]を追加します。
      */
     operator fun Holder<T>.unaryPlus()
 
     /**
-     * [Fluid]向けの[HolderAccepter]の拡張インターフェースです。
+     * [Fluid]向けの[HolderAcceptor]の拡張インターフェースです。
      */
-    interface FluidAccepter : HolderAccepter<Fluid> {
+    interface FluidAcceptor : HolderAcceptor<Fluid> {
         @Suppress("DEPRECATION")
         operator fun Fluid.unaryPlus() {
             +this.builtInRegistryHolder()
@@ -31,21 +32,25 @@ interface HolderAccepter<T : Any> {
     }
 
     /**
-     * [Item]向けの[HolderAccepter]の拡張インターフェースです。
+     * [Item]向けの[HolderAcceptor]の拡張インターフェースです。
      */
-    interface ItemAccepter : HolderAccepter<Item> {
+    interface ItemAcceptor : HolderAcceptor<Item> {
         @Suppress("DEPRECATION")
         operator fun Item.unaryPlus() {
             +this.builtInRegistryHolder()
+        }
+
+        operator fun HTDeferredBlockAndItem<*, *>.unaryPlus() {
+            +this.itemHolder
         }
     }
 
     //    ValueBuilder    //
 
     /**
-     * 単一の[Holder]のみを保持する[HolderAccepter]の実装クラスです。
+     * 単一の[Holder]のみを保持する[HolderAcceptor]の実装クラスです。
      */
-    open class ValueBuilder<T : Any> : HolderAccepter<T> {
+    open class ValueBuilder<T : Any> : HolderAcceptor<T> {
         private var holder: Holder<T> by HTDelegates.onceInitialize()
 
         override fun Holder<T>.unaryPlus() {
@@ -61,21 +66,21 @@ interface HolderAccepter<T : Any> {
      */
     class FluidValueBuilder :
         ValueBuilder<Fluid>(),
-        FluidAccepter
+        FluidAcceptor
 
     /**
      * [Item]向けの[ValueBuilder]の拡張クラスです。
      */
     class ItemValueBuilder :
         ValueBuilder<Item>(),
-        ItemAccepter
+        ItemAcceptor
 
     //    SetBuilder    //
 
     /**
-     * [HolderSet]を作成する[HolderAccepter]の実装クラスです。
+     * [HolderSet]を作成する[HolderAcceptor]の実装クラスです。
      */
-    open class SetBuilder<T : Any> : HolderAccepter<T> {
+    open class SetBuilder<T : Any> : HolderAcceptor<T> {
         private var holders: MutableList<Holder<T>> = mutableListOf()
 
         override fun Holder<T>.unaryPlus() {
@@ -91,12 +96,12 @@ interface HolderAccepter<T : Any> {
      */
     class FluidSetBuilder :
         SetBuilder<Fluid>(),
-        FluidAccepter
+        FluidAcceptor
 
     /**
      * [Item]向けの[SetBuilder]の拡張クラスです。
      */
     class ItemSetBuilder :
         SetBuilder<Item>(),
-        ItemAccepter
+        ItemAcceptor
 }

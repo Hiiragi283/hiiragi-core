@@ -4,6 +4,7 @@ import hiiragi283.lib.item.HTBlockItem
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.resource.SupplierWithKey
 import net.minecraft.core.component.DataComponentPatch
+import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -37,6 +38,8 @@ data class HTDeferredBlockAndItem<out BLOCK : Block, out ITEM : Item>(val blockH
     SupplierWithKey<Block, BLOCK>,
     HTIdLike.Translatable by itemHolder,
     ItemLike by itemHolder {
+    constructor(id: Identifier) : this(HTDeferredBlock(id), HTDeferredItem(id))
+
     override fun get(): BLOCK = blockHolder.get()
 
     override fun getKey(): ResourceKey<Block> = blockHolder.key

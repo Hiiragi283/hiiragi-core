@@ -2,7 +2,7 @@
 
 package hiiragi283.lib.data.recipe
 
-import hiiragi283.lib.data.HolderAccepter
+import hiiragi283.lib.data.HolderAcceptor
 import hiiragi283.lib.recipe.ingredient.HTFluidIngredient
 import hiiragi283.lib.util.HTBuilderMarker
 import hiiragi283.lib.util.HTDelegates
@@ -32,11 +32,11 @@ class FluidIngredientBuilder {
         +FluidIngredient.of(this)
     }
 
-    inline fun fluids(builderAction: HolderAccepter.FluidSetBuilder.() -> Unit) {
+    inline fun fluids(builderAction: HolderAcceptor.FluidSetBuilder.() -> Unit) {
         contract {
             callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
         }
-        +HolderAccepter.FluidSetBuilder().apply(builderAction).build()
+        +HolderAcceptor.FluidSetBuilder().apply(builderAction).build()
     }
 
     fun build(): FluidIngredient = ingredient
