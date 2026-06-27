@@ -1,8 +1,10 @@
 package hiiragi283.lib.color
 
-import hiiragi283.lib.registry.HTSimpleDeferredBlockAndItem
 import hiiragi283.lib.registry.HTSimpleDeferredItem
+import hiiragi283.lib.registry.toLikeWithItem
+import hiiragi283.lib.resource.SimpleBlockItemSupplierWithKey
 import hiiragi283.lib.resource.vanillaId
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.Identifier
 
 /**
@@ -12,46 +14,46 @@ import net.minecraft.resources.Identifier
  */
 data object VanillaColoredCollections {
     @JvmField
-    val BANNER: HTColoredCollection<HTSimpleDeferredBlockAndItem> = block("%s_banner")
+    val BANNER: HTColoredCollection<SimpleBlockItemSupplierWithKey> = block("%s_banner")
 
     @JvmField
-    val BED: HTColoredCollection<HTSimpleDeferredBlockAndItem> = block("%s_bed")
+    val BED: HTColoredCollection<SimpleBlockItemSupplierWithKey> = block("%s_bed")
 
     @JvmField
-    val CANDLE: HTColoredCollection<HTSimpleDeferredBlockAndItem> = block("%s_candle")
+    val CANDLE: HTColoredCollection<SimpleBlockItemSupplierWithKey> = block("%s_candle")
 
     @JvmField
-    val CARPET: HTColoredCollection<HTSimpleDeferredBlockAndItem> = block("%s_carpet")
+    val CARPET: HTColoredCollection<SimpleBlockItemSupplierWithKey> = block("%s_carpet")
 
     @JvmField
-    val CONCRETE: HTColoredCollection<HTSimpleDeferredBlockAndItem> = block("%s_concrete")
+    val CONCRETE: HTColoredCollection<SimpleBlockItemSupplierWithKey> = block("%s_concrete")
 
     @JvmField
-    val CONCRETE_POWDER: HTColoredCollection<HTSimpleDeferredBlockAndItem> = block("%s_concrete_powder")
+    val CONCRETE_POWDER: HTColoredCollection<SimpleBlockItemSupplierWithKey> = block("%s_concrete_powder")
 
     @JvmField
     val DYE: HTColoredCollection<HTSimpleDeferredItem> = item("%s_dye")
 
     @JvmField
-    val GLAZED_TERRACOTTA: HTColoredCollection<HTSimpleDeferredBlockAndItem> = block("%s_glazed_terracotta")
+    val GLAZED_TERRACOTTA: HTColoredCollection<SimpleBlockItemSupplierWithKey> = block("%s_glazed_terracotta")
 
     @JvmField
-    val SHULKER_BOX: HTColoredCollection<HTSimpleDeferredBlockAndItem> = block("%s_shulker_box")
+    val SHULKER_BOX: HTColoredCollection<SimpleBlockItemSupplierWithKey> = block("%s_shulker_box")
 
     @JvmField
-    val STAINED_GLASS: HTColoredCollection<HTSimpleDeferredBlockAndItem> = block("%s_stained_glass")
+    val STAINED_GLASS: HTColoredCollection<SimpleBlockItemSupplierWithKey> = block("%s_stained_glass")
 
     @JvmField
-    val STAINED_GLASS_PANE: HTColoredCollection<HTSimpleDeferredBlockAndItem> = block("%s_stained_glass_pane")
+    val STAINED_GLASS_PANE: HTColoredCollection<SimpleBlockItemSupplierWithKey> = block("%s_stained_glass_pane")
 
     @JvmField
-    val TERRACOTTA: HTColoredCollection<HTSimpleDeferredBlockAndItem> = block("%s_terracotta")
+    val TERRACOTTA: HTColoredCollection<SimpleBlockItemSupplierWithKey> = block("%s_terracotta")
 
     @JvmField
-    val WOOL: HTColoredCollection<HTSimpleDeferredBlockAndItem> = block("%s_wool")
+    val WOOL: HTColoredCollection<SimpleBlockItemSupplierWithKey> = block("%s_wool")
 
     @JvmStatic
-    private fun block(path: String): HTColoredCollection<HTSimpleDeferredBlockAndItem> = create(path, ::HTSimpleDeferredBlockAndItem)
+    private fun block(path: String): HTColoredCollection<SimpleBlockItemSupplierWithKey> = create(path) { BuiltInRegistries.BLOCK.getValue(it).toLikeWithItem() }
 
     @JvmStatic
     private fun item(path: String): HTColoredCollection<HTSimpleDeferredItem> = create(path, ::HTSimpleDeferredItem)

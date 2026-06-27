@@ -24,6 +24,7 @@ import hiiragi283.lib.registry.HTBasicDeferredBlockAndItem
 import hiiragi283.lib.registry.HTDeferredBlockAndItemRegister
 import hiiragi283.lib.registry.HTDeferredBlockRegister
 import hiiragi283.lib.registry.HTSimpleDeferredBlockAndItem
+import hiiragi283.lib.resource.SimpleBlockItemSupplierWithKey
 import hiiragi283.lib.util.HTTextResult
 import hiiragi283.lib.util.Identity
 import hiiragi283.lib.util.identity
@@ -103,19 +104,11 @@ data object HCBlocks {
     //    Buildings    //
 
     @JvmField
-    val CONCRETE_SLABS: HTColoredCollection<HTBasicDeferredBlockAndItem<SlabBlock>> = VanillaColoredCollections.CONCRETE.map { base ->
-        REGISTER.registerSimple(
-            "${base.path}_slab",
-            blockFactory = { SlabBlock(copyOf(base.get()).setId(REGISTER_ONLY_BLOCK.createKey(it))) },
-        )
-    }
+    val CONCRETE_SLABS: HTColoredCollection<HTBasicDeferredBlockAndItem<SlabBlock>> = VanillaColoredCollections.CONCRETE.map { base: SimpleBlockItemSupplierWithKey -> REGISTER.registerSimple("${base.path}_slab", copyOf(base.get()), ::SlabBlock) }
 
     @JvmField
-    val CONCRETE_STAIRS: HTColoredCollection<HTBasicDeferredBlockAndItem<StairBlock>> = VanillaColoredCollections.CONCRETE.map { base ->
-        REGISTER.registerSimple(
-            "${base.path}_stairs",
-            blockFactory = { StairBlock(base.get().defaultBlockState(), copyOf(base.get()).setId(REGISTER_ONLY_BLOCK.createKey(it))) },
-        )
+    val CONCRETE_STAIRS: HTColoredCollection<HTBasicDeferredBlockAndItem<StairBlock>> = VanillaColoredCollections.CONCRETE.map { base: SimpleBlockItemSupplierWithKey ->
+        REGISTER.registerSimple("${base.path}_stairs", copyOf(base.get()), blockFactory = { StairBlock(base.get().defaultBlockState(), it) })
     }
 
     //    Crops    //

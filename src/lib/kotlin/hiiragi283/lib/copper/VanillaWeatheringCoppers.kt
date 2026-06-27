@@ -1,20 +1,22 @@
 package hiiragi283.lib.copper
 
+import hiiragi283.lib.registry.toLikeWithItem
+import hiiragi283.lib.resource.SimpleBlockItemSupplierWithKey
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 
 data object VanillaWeatheringCoppers {
     @JvmField
-    val COPPER_BARS: HTWeatheringCoppers<Block> = Blocks.COPPER_BARS.convert()
+    val COPPER_BARS: HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = Blocks.COPPER_BARS.convert().map(Block::toLikeWithItem)
 
     @JvmField
-    val COPPER_CHAIN: HTWeatheringCoppers<Block> = Blocks.COPPER_CHAIN.convert()
+    val COPPER_CHAIN: HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = Blocks.COPPER_CHAIN.convert().map(Block::toLikeWithItem)
 
     @JvmField
-    val COPPER_LANTERN: HTWeatheringCoppers<Block> = Blocks.COPPER_LANTERN.convert()
+    val COPPER_LANTERN: HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = Blocks.COPPER_LANTERN.convert().map(Block::toLikeWithItem)
 
     @JvmField
-    val COPPER_BLOCK: HTWeatheringCoppers<Block> = HTWeatheringCoppers(
+    val COPPER_BLOCK: HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = create(
         Blocks.COPPER_BLOCK,
         Blocks.EXPOSED_COPPER,
         Blocks.WEATHERED_COPPER,
@@ -26,7 +28,7 @@ data object VanillaWeatheringCoppers {
     )
 
     @JvmField
-    val CUT_COPPER: HTWeatheringCoppers<Block> = HTWeatheringCoppers(
+    val CUT_COPPER: HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = create(
         Blocks.CUT_COPPER,
         Blocks.EXPOSED_CUT_COPPER,
         Blocks.WEATHERED_CUT_COPPER,
@@ -38,7 +40,7 @@ data object VanillaWeatheringCoppers {
     )
 
     @JvmField
-    val CHISELED_COPPER: HTWeatheringCoppers<Block> = HTWeatheringCoppers(
+    val CHISELED_COPPER: HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = create(
         Blocks.CHISELED_COPPER,
         Blocks.EXPOSED_CHISELED_COPPER,
         Blocks.WEATHERED_CHISELED_COPPER,
@@ -50,7 +52,7 @@ data object VanillaWeatheringCoppers {
     )
 
     @JvmField
-    val CUT_COPPER_STAIRS: HTWeatheringCoppers<Block> = HTWeatheringCoppers(
+    val CUT_COPPER_STAIRS: HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = create(
         Blocks.CUT_COPPER_STAIRS,
         Blocks.EXPOSED_CUT_COPPER_STAIRS,
         Blocks.WEATHERED_CUT_COPPER_STAIRS,
@@ -62,7 +64,7 @@ data object VanillaWeatheringCoppers {
     )
 
     @JvmField
-    val CUT_COPPER_SLAB: HTWeatheringCoppers<Block> = HTWeatheringCoppers(
+    val CUT_COPPER_SLAB: HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = create(
         Blocks.CUT_COPPER_SLAB,
         Blocks.EXPOSED_CUT_COPPER_SLAB,
         Blocks.WEATHERED_CUT_COPPER_SLAB,
@@ -74,7 +76,7 @@ data object VanillaWeatheringCoppers {
     )
 
     @JvmField
-    val COPPER_DOOR: HTWeatheringCoppers<Block> = HTWeatheringCoppers(
+    val COPPER_DOOR: HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = create(
         Blocks.COPPER_DOOR,
         Blocks.EXPOSED_COPPER_DOOR,
         Blocks.WEATHERED_COPPER_DOOR,
@@ -86,7 +88,7 @@ data object VanillaWeatheringCoppers {
     )
 
     @JvmField
-    val COPPER_TRAPDOOR: HTWeatheringCoppers<Block> = HTWeatheringCoppers(
+    val COPPER_TRAPDOOR: HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = create(
         Blocks.COPPER_TRAPDOOR,
         Blocks.EXPOSED_COPPER_TRAPDOOR,
         Blocks.WEATHERED_COPPER_TRAPDOOR,
@@ -98,7 +100,7 @@ data object VanillaWeatheringCoppers {
     )
 
     @JvmField
-    val COPPER_GRATE: HTWeatheringCoppers<Block> = HTWeatheringCoppers(
+    val COPPER_GRATE: HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = create(
         Blocks.COPPER_GRATE,
         Blocks.EXPOSED_COPPER_GRATE,
         Blocks.WEATHERED_COPPER_GRATE,
@@ -110,7 +112,7 @@ data object VanillaWeatheringCoppers {
     )
 
     @JvmField
-    val COPPER_BULB: HTWeatheringCoppers<Block> = HTWeatheringCoppers(
+    val COPPER_BULB: HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = create(
         Blocks.COPPER_BULB,
         Blocks.EXPOSED_COPPER_BULB,
         Blocks.WEATHERED_COPPER_BULB,
@@ -122,7 +124,7 @@ data object VanillaWeatheringCoppers {
     )
 
     @JvmField
-    val COPPER_CHEST: HTWeatheringCoppers<Block> = HTWeatheringCoppers(
+    val COPPER_CHEST: HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = create(
         Blocks.COPPER_CHEST,
         Blocks.EXPOSED_COPPER_CHEST,
         Blocks.WEATHERED_COPPER_CHEST,
@@ -134,7 +136,7 @@ data object VanillaWeatheringCoppers {
     )
 
     @JvmField
-    val COPPER_GOLEM_STATUE: HTWeatheringCoppers<Block> = HTWeatheringCoppers(
+    val COPPER_GOLEM_STATUE: HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = create(
         Blocks.COPPER_GOLEM_STATUE,
         Blocks.EXPOSED_COPPER_GOLEM_STATUE,
         Blocks.WEATHERED_COPPER_GOLEM_STATUE,
@@ -146,7 +148,7 @@ data object VanillaWeatheringCoppers {
     )
 
     @JvmField
-    val LIGHTNING_ROD: HTWeatheringCoppers<Block> = HTWeatheringCoppers(
+    val LIGHTNING_ROD: HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = create(
         Blocks.LIGHTNING_ROD,
         Blocks.EXPOSED_LIGHTNING_ROD,
         Blocks.WEATHERED_LIGHTNING_ROD,
@@ -156,4 +158,19 @@ data object VanillaWeatheringCoppers {
         Blocks.WAXED_WEATHERED_LIGHTNING_ROD,
         Blocks.WAXED_OXIDIZED_LIGHTNING_ROD,
     )
+
+    @JvmStatic
+    private fun create(
+        unaffected: Block,
+        exposed: Block,
+        weathered: Block,
+        oxidized: Block,
+        waxedUnaffected: Block,
+        waxedExposed: Block,
+        waxedWeathered: Block,
+        waxedOxidized: Block,
+    ): HTWeatheringCoppers<SimpleBlockItemSupplierWithKey> = HTWeatheringCoppers(
+        HTCopperCollection(unaffected, exposed, weathered, oxidized),
+        HTCopperCollection(waxedUnaffected, waxedExposed, waxedWeathered, waxedOxidized),
+    ).map(Block::toLikeWithItem)
 }

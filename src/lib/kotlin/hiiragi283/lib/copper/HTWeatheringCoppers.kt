@@ -12,34 +12,31 @@ import net.minecraft.world.level.block.WeatheringCopperBlocks
  */
 @JvmRecord
 data class HTWeatheringCoppers<out T>(val weathering: HTCopperCollection<T>, val waxed: HTCopperCollection<T>) {
-    constructor(
-        unaffected: T,
-        exposed: T,
-        weathered: T,
-        oxidized: T,
-        waxedUnaffected: T,
-        waxedExposed: T,
-        waxedWeathered: T,
-        waxedOxidized: T,
-    ) : this(HTCopperCollection(unaffected, exposed, weathered, oxidized), HTCopperCollection(waxedUnaffected, waxedExposed, waxedWeathered, waxedOxidized))
-
     val allCoppers: List<T> get() = weathering + waxed
 
     /**
      * 指定した[phase]から対応する銅系ブロックを取得します。
      */
     operator fun get(phase: HTCopperPhase): Pair<T, T> = weathering[phase] to waxed[phase]
+
+    inline fun <R> map(transform: (T) -> R): HTWeatheringCoppers<R> = HTWeatheringCoppers(weathering.map(transform), waxed.map(transform))
+
+    inline fun <U, R> zip(other: HTWeatheringCoppers<U>, transform: (T, U) -> R): HTWeatheringCoppers<R> = HTWeatheringCoppers(weathering.zip(other.weathering, transform), waxed.zip(other.waxed, transform))
 }
 
 inline fun <T> HTWeatheringCoppers(initWeathering: (HTCopperPhase) -> T, initWaxed: (HTCopperPhase) -> T): HTWeatheringCoppers<T> = HTWeatheringCoppers(HTCopperCollection(initWeathering), HTCopperCollection(initWaxed))
 
 fun WeatheringCopperBlocks.convert(): HTWeatheringCoppers<Block> = HTWeatheringCoppers(
-    this.unaffected(),
-    this.exposed(),
-    this.weathered(),
-    this.oxidized(),
-    this.waxed(),
-    this.waxedExposed(),
-    this.waxedWeathered(),
-    this.waxedOxidized(),
+    HTCopperCollection(
+        this.unaffected(),
+        this.exposed(),
+        this.weathered(),
+        this.oxidized(),
+    ),
+    HTCopperCollection(
+        this.waxed(),
+        this.waxedExposed(),
+        this.waxedWeathered(),
+        this.waxedOxidized(),
+    ),
 )

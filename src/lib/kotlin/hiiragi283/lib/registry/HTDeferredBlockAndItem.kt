@@ -1,6 +1,7 @@
 package hiiragi283.lib.registry
 
 import hiiragi283.lib.item.HTBlockItem
+import hiiragi283.lib.resource.BlockItemSupplierWithKey
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.resource.SupplierWithKey
 import net.minecraft.core.component.DataComponentPatch
@@ -35,10 +36,12 @@ typealias HTBasicDeferredBlockAndItem<BLOCK> = HTDeferredBlockAndItem<BLOCK, HTB
  * @since 26.1.0
  */
 data class HTDeferredBlockAndItem<out BLOCK : Block, out ITEM : Item>(val blockHolder: HTDeferredBlock<BLOCK>, val itemHolder: HTDeferredItem<ITEM>) :
-    SupplierWithKey<Block, BLOCK>,
+    BlockItemSupplierWithKey<BLOCK, ITEM>,
     HTIdLike.Translatable by itemHolder,
     ItemLike by itemHolder {
     constructor(id: Identifier) : this(HTDeferredBlock(id), HTDeferredItem(id))
+
+    override fun getItemSupplier(): SupplierWithKey<Item, ITEM> = itemHolder
 
     override fun get(): BLOCK = blockHolder.get()
 

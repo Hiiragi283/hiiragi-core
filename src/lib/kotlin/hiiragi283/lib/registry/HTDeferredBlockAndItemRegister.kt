@@ -3,7 +3,6 @@ package hiiragi283.lib.registry
 import hiiragi283.lib.item.HTBlockItem
 import hiiragi283.lib.util.Identity
 import hiiragi283.lib.util.identity
-import net.minecraft.resources.Identifier
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockBehaviour
@@ -67,27 +66,6 @@ class HTDeferredBlockAndItemRegister(private val blockRegister: HTDeferredBlockR
         itemProp: Identity<Item.Properties> = identity(),
     ): HTDeferredBlockAndItem<BLOCK, ITEM> {
         val blockHolder: HTDeferredBlock<BLOCK> = blockRegister.registerBlock(name, blockProp, blockFactory)
-        val itemHolder: HTDeferredItem<ITEM> = itemRegister.registerItem(
-            name,
-            { prop: Item.Properties -> itemFactory(blockHolder.get(), prop.useBlockDescriptionPrefix()) },
-            itemProp,
-        )
-        return HTDeferredBlockAndItem(blockHolder, itemHolder)
-    }
-
-    fun <BLOCK : Block> registerSimple(
-        name: String,
-        blockFactory: (Identifier) -> BLOCK,
-        itemProp: Identity<Item.Properties> = identity(),
-    ): HTBasicDeferredBlockAndItem<BLOCK> = register(name, blockFactory, ::HTBlockItem, itemProp)
-
-    fun <BLOCK : Block, ITEM : Item> register(
-        name: String,
-        blockFactory: (Identifier) -> BLOCK,
-        itemFactory: ItemWithContextFactory<BLOCK, ITEM>,
-        itemProp: Identity<Item.Properties> = identity(),
-    ): HTDeferredBlockAndItem<BLOCK, ITEM> {
-        val blockHolder: HTDeferredBlock<BLOCK> = blockRegister.register(name, blockFactory)
         val itemHolder: HTDeferredItem<ITEM> = itemRegister.registerItem(
             name,
             { prop: Item.Properties -> itemFactory(blockHolder.get(), prop.useBlockDescriptionPrefix()) },
