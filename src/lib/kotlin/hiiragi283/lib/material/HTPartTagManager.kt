@@ -9,17 +9,14 @@ import hiiragi283.lib.tag.HTTagPrefix
  */
 data object HTPartTagManager {
     @JvmStatic
-    val prefixes: Map<HTMaterialPartKey, HTTagPrefix> get() = _prefixes
-
-    @JvmStatic
-    private val _prefixes: MutableMap<HTMaterialPartKey, HTTagPrefix> = hashMapOf()
+    val prefixes: Map<HTMaterialPartKey, HTTagPrefix>field: MutableMap<HTMaterialPartKey, HTTagPrefix> = hashMapOf()
 
     /**
      * 部品に対応するタグのプレフィックスを取得します。
      * @return 対応するプレフィックスがない場合は`null`
      */
     @JvmStatic
-    operator fun get(part: HTMaterialPartKey): HTTagPrefix? = _prefixes[part]
+    operator fun get(part: HTMaterialPartKey): HTTagPrefix? = prefixes[part]
 
     /**
      * 部品に対応するタグのプレフィックスを追加します。
@@ -27,7 +24,7 @@ data object HTPartTagManager {
      */
     @JvmStatic
     fun add(part: HTMaterialPartKey, prefix: HTTagPrefix) {
-        check(_prefixes.put(part, prefix) == null) { "Duplicated tag prefix for part $part" }
+        check(prefixes.put(part, prefix) == null) { "Duplicated tag prefix for part $part" }
     }
 
     @JvmStatic

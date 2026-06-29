@@ -15,10 +15,7 @@ data object HTPotionFluidManager {
      * 登録されている[液体][Fluid]の一覧
      */
     @JvmStatic
-    val handlers: Map<Fluid, Handler> get() = _handlers
-
-    @JvmStatic
-    private val _handlers: MutableMap<Fluid, Handler> = hashMapOf()
+    val handlers: Map<Fluid, Handler>field: MutableMap<Fluid, Handler> = hashMapOf()
 
     /**
      * 新しい液体ポーションを登録します。
@@ -26,7 +23,7 @@ data object HTPotionFluidManager {
      */
     @JvmStatic
     fun register(fluid: Fluid, handler: Handler) {
-        check(_handlers.put(fluid, handler) == null) { "Duplicated potion fluid registration: $fluid" }
+        check(handlers.put(fluid, handler) == null) { "Duplicated potion fluid registration: $fluid" }
     }
 
     /**
@@ -34,7 +31,7 @@ data object HTPotionFluidManager {
      * @return 対応するハンドラがない場合は`null`
      */
     @JvmStatic
-    fun getFluidHandler(fluid: Fluid): Handler? = _handlers[fluid]
+    fun getFluidHandler(fluid: Fluid): Handler? = handlers[fluid]
 
     //    Handler    //
 

@@ -17,38 +17,33 @@ data object HTMaterialTranslationManager {
      * @return 対応する翻訳名がない場合は`null`
      */
     @JvmStatic
-    fun getName(type: HTLangType, part: HTMaterialPartKey, material: HTMaterialKey): String? = customName[part, material]?.getTranslatedName(type) ?: _materials[material]?.let { _parts[part]?.translate(type, it) }
+    fun getName(type: HTLangType, part: HTMaterialPartKey, material: HTMaterialKey): String? = customName[part, material]?.getTranslatedName(type) ?: materials[material]?.let { parts[part]?.translate(type, it) }
 
     //    Part    //
 
     @JvmStatic
-    val parts: Map<HTMaterialPartKey, HTLangPatternProvider> get() = _parts
-
-    @JvmStatic
-    private val _parts: MutableMap<HTMaterialPartKey, HTLangPatternProvider> = hashMapOf()
+    val parts: Map<HTMaterialPartKey, HTLangPatternProvider>
+        field: MutableMap<HTMaterialPartKey, HTLangPatternProvider> = hashMapOf()
 
     /**
      * 部品の翻訳パターンを追加します。
      */
     @JvmStatic
     fun add(part: HTMaterialPartKey, provider: HTLangPatternProvider) {
-        check(_parts.put(part, provider) == null) { "Duplicated part name pattern for $part" }
+        check(parts.put(part, provider) == null) { "Duplicated part name pattern for $part" }
     }
 
     //    Material    //
 
     @JvmStatic
-    val materials: Map<HTMaterialKey, HTLangName> get() = _materials
-
-    @JvmStatic
-    private val _materials: MutableMap<HTMaterialKey, HTLangName> = hashMapOf()
+    val materials: Map<HTMaterialKey, HTLangName>field: MutableMap<HTMaterialKey, HTLangName> = hashMapOf()
 
     /**
      * 素材の翻訳名を追加します。
      */
     @JvmStatic
     fun add(material: HTMaterialKey, name: HTLangName) {
-        check(_materials.put(material, name) == null) { "Duplicated material name for $material" }
+        check(materials.put(material, name) == null) { "Duplicated material name for $material" }
     }
 
     //    Custom Name    //

@@ -187,11 +187,10 @@ abstract class HTContainerMenu<C>(
 
     //    Slot Sync    //
 
-    val trackedSlots: MutableList<Pair<HTSyncableSlot, HTSyncType>> get() = _trackedSlots
-    private val _trackedSlots: MutableList<Pair<HTSyncableSlot, HTSyncType>> = mutableListOf()
+    val trackedSlots: List<Pair<HTSyncableSlot, HTSyncType>>field = mutableListOf()
 
     fun addTrackedSlot(slot: HTSyncableSlot, type: HTSyncType) {
-        _trackedSlots += slot to type
+        trackedSlots += slot to type
     }
 
     override fun getTrackedSlot(index: Int): HTSyncableSlot? = trackedSlots.getOrNull(index)?.first

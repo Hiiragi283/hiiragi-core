@@ -320,7 +320,7 @@ kotlin {
 
     compilerOptions {
         jvmTarget = JvmTarget.fromTarget("$jdkVersion")
-        freeCompilerArgs.addAll()
+        freeCompilerArgs.addAll("-Xexplicit-backing-fields")
     }
 }
 
