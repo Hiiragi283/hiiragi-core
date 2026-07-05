@@ -2,12 +2,10 @@ package hiiragi283.core.client.integration.jei
 
 import hiiragi283.core.api.HCConstants
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.client.integration.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCChargingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCExplodingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCTankEmptyingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCTankFillingRecipeCategory
-import hiiragi283.core.client.integration.jei.category.HTItemToChancedItemsRecipeCategory
 import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.common.recipe.custom.HCEternalSmithingRecipe
@@ -21,6 +19,9 @@ import hiiragi283.lib.HTPhysicalSideHelper
 import hiiragi283.lib.integration.jei.HTJeiPlugin
 import hiiragi283.lib.integration.jei.HTJeiRecipeHelper
 import hiiragi283.lib.integration.jei.HTJeiWorkstationHelper
+import hiiragi283.lib.integration.jei.HTRecipeViewerUIFactories
+import hiiragi283.lib.integration.jei.category.HTDisplayRecipeCategoryN
+import hiiragi283.lib.integration.jei.category.HTHolderRecipeCategory
 import hiiragi283.lib.item.HTPotionBasedItem
 import hiiragi283.lib.item.alchemy.BottledPotionContents
 import hiiragi283.lib.item.alchemy.HTBottleType
@@ -90,9 +91,9 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
 
         registration.addRecipeCategories(
             // Recipes
-            HCBrewingRecipeCategory(guiHelper),
-            HTItemToChancedItemsRecipeCategory(guiHelper, HCRecipeViewerTypes.CHOPPING),
-            HTItemToChancedItemsRecipeCategory(guiHelper, HCRecipeViewerTypes.CRUSHING),
+            HTHolderRecipeCategory(guiHelper, HCRecipeViewerTypes.BREWING, HCBrewingRecipe.CODEC, HCRecipeViewerUIFactories::brewing),
+            HTDisplayRecipeCategoryN.Progress(guiHelper, HCRecipeViewerTypes.CHOPPING, HTRecipeViewerUIFactories::itemToChancedItems),
+            HTDisplayRecipeCategoryN.Progress(guiHelper, HCRecipeViewerTypes.CRUSHING, HTRecipeViewerUIFactories::itemToChancedItems),
             HCChargingRecipeCategory(guiHelper),
             HCExplodingRecipeCategory(guiHelper),
             // Tank Interaction

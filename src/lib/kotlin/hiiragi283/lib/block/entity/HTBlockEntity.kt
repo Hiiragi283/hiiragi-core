@@ -1,7 +1,6 @@
 package hiiragi283.lib.block.entity
 
 import hiiragi283.lib.HTConstants
-import hiiragi283.lib.gui.sync.HTSyncableMenu
 import hiiragi283.lib.serialization.readOption
 import hiiragi283.lib.text.Text
 import hiiragi283.lib.transfer.HTCapabilityCodec
@@ -130,10 +129,6 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
     var ownerId: UUID? = null
 
     override fun getOwner(): UUID? = ownerId
-
-    //    Menu    //
-
-    open fun addMenuTrackers(menu: HTSyncableMenu) {}
 
     //    Capability    //
 

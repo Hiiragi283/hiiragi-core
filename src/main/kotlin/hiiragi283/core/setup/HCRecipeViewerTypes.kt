@@ -19,7 +19,7 @@ data object HCRecipeViewerTypes {
     //    Basic    //
 
     @JvmField
-    val BREWING: HTHolderRecipeViewerType<HCBrewingRecipe> = creteHolder(HTVanillaRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 6)
+    val BREWING: HTHolderRecipeViewerType<HCBrewingRecipe> = creteHolder(HTVanillaRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 4, 18 * 2)
 
     @JvmField
     val CHARGING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD, 18 * 4)
