@@ -23,7 +23,7 @@ open class HTHolderRecipeCategory<RECIPE : Any>(
     recipeType: HTRecipeViewerType<HTRecipeHolder<RECIPE>>,
     private val codec: Codec<HTRecipeHolder<RECIPE>>,
     provider: IModularUIProvider<HTRecipeHolder<RECIPE>>,
-) : HTBasicRecipeCategoryN<HTRecipeHolder<RECIPE>>(guiHelper, recipeType, provider) {
+) : HTBasicRecipeCategory<HTRecipeHolder<RECIPE>>(guiHelper, recipeType, provider) {
     constructor(
         guiHelper: IGuiHelper,
         recipeType: HTHolderRecipeViewerType<RECIPE>,

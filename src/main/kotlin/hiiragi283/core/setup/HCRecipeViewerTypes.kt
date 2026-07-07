@@ -1,6 +1,5 @@
 package hiiragi283.core.setup
 
-import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.lib.math.HTBounds
 import hiiragi283.lib.recipe.HTRecipeHolder
@@ -19,10 +18,10 @@ data object HCRecipeViewerTypes {
     //    Basic    //
 
     @JvmField
-    val BREWING: HTHolderRecipeViewerType<HCBrewingRecipe> = creteHolder(HTVanillaRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 4, 18 * 2)
+    val BREWING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HTVanillaRecipeTypes.BREWING, Items.BREWING_STAND, height = 18 * 2)
 
     @JvmField
-    val CHARGING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD, 18 * 4)
+    val CHARGING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD)
 
     @JvmField
     val CHOPPING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CHOPPING, HCBlocks.CHOPPING_BOARD, 18 * 5, 18 * 2)
@@ -31,21 +30,21 @@ data object HCRecipeViewerTypes {
     val CRUSHING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CRUSHING, HCBlocks.FORGING_ANVIL, 18 * 5, 18 * 2)
 
     @JvmField
-    val EXPLODING: HTRecipeViewerType<HTRecipeDisplay.Simple> = create(HCRecipeTypes.EXPLODING, Items.TNT, 18 * 4)
+    val EXPLODING: HTRecipeViewerType<HTRecipeDisplay.Simple> = create(HCRecipeTypes.EXPLODING, Items.TNT)
 
     //    Tank Interaction    //
 
     @JvmField
-    val EMPTYING: HTRecipeViewerType<HTRecipeDisplay.Simple> = create(HCRecipeTypes.EMPTYING, Items.BUCKET, 18 * 6)
+    val EMPTYING: HTRecipeViewerType<HTRecipeDisplay.Simple> = create(HCRecipeTypes.EMPTYING, Items.BUCKET, height = 18 * 2)
 
     @JvmField
-    val FILLING: HTRecipeViewerType<HTRecipeDisplay.Simple> = create(HCRecipeTypes.FILLING, Items.WATER_BUCKET, 18 * 6)
+    val FILLING: HTRecipeViewerType<HTRecipeDisplay.Simple> = create(HCRecipeTypes.FILLING, Items.WATER_BUCKET, height = 18 * 2)
 
     @JvmStatic
     private inline fun <reified T : Any> create(
         recipeType: HTIdLike.Translatable,
         iconItem: ItemLike,
-        width: Int,
+        width: Int = 18 * 4,
         height: Int = 18 * 1,
         builderAction: HTSimpleRecipeViewerType.Builder.() -> Unit = {},
     ): HTRecipeViewerType<T> = HTSimpleRecipeViewerType.create<T> {

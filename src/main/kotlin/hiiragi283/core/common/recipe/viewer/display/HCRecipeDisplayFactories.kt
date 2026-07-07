@@ -1,16 +1,28 @@
 package hiiragi283.core.common.recipe.viewer.display
 
+import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import hiiragi283.core.common.recipe.HTInWorldRecipe
+import hiiragi283.core.util.HCPotionFluidHelper
 import hiiragi283.lib.recipe.HTRecipeHolder
 import hiiragi283.lib.recipe.RecipeKey
 import hiiragi283.lib.recipe.base.HTProgressData
+import hiiragi283.lib.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.lib.recipe.viewer.display.HTProgressRecipeDisplay
 import hiiragi283.lib.recipe.viewer.display.HTRecipeDisplay
+import hiiragi283.lib.recipe.viewer.display.HTRecipeDisplayFactories
 
 data object HCRecipeDisplayFactories {
+    @JvmStatic
+    fun brewing(holder: HTRecipeHolder<HCBrewingRecipe>): HTProgressRecipeDisplay = HTRecipeDisplayFactories.progress(holder) { recipe ->
+        addInput(HTPotionFluidIngredient(recipe.potionFrom))
+        addInput(recipe.ingredient)
+
+        addOutput(HCPotionFluidHelper.createFluid(recipe.potionTo))
+    }
+
     @JvmStatic
     fun inWorld(holder: HTRecipeHolder<HTInWorldRecipe>): HTRecipeDisplay.Simple {
         val (key: RecipeKey, recipe: HTInWorldRecipe) = holder

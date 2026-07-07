@@ -9,7 +9,8 @@ import hiiragi283.lib.block.entity.HTBlockEntity
 import hiiragi283.lib.entity.serverLevel
 import hiiragi283.lib.recipe.cache.HTRecipeCaches
 import hiiragi283.lib.recipe.handler.HTFluidInputHandler
-import hiiragi283.lib.recipe.handler.HTFluidOutputHandler
+import hiiragi283.lib.recipe.handler.HTOutputHandler
+import hiiragi283.lib.recipe.handler.insert
 import hiiragi283.lib.serialization.getFluidOrEmpty
 import hiiragi283.lib.serialization.putFluid
 import hiiragi283.lib.transfer.HTHandlerProvider
@@ -30,6 +31,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 import net.neoforged.neoforge.fluids.FluidStack
+import net.neoforged.neoforge.transfer.fluid.FluidResource
 import net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler
 import net.neoforged.neoforge.transfer.transaction.Transaction
 import org.apache.commons.lang3.math.Fraction
@@ -91,7 +93,7 @@ class HTCopperBasinBlockEntity(worldPosition: BlockPos, blockState: BlockState) 
     private val emptyingCache: HTRecipeCaches.SingleItem<HTTankEmptyingRecipe> = HTRecipeCaches.SingleItem(HCRecipeLookups.EMPTYING)
     private val fillingCache: HTRecipeCaches.ItemAndFluid<HTTankFillingRecipe> = HTRecipeCaches.ItemAndFluid(HCRecipeLookups.FILLING)
     private val fluidInputHandler: HTFluidInputHandler = HTFluidInputHandler(fluidHandler, 0)
-    private val fluidOutputHandler: HTFluidOutputHandler = HTFluidOutputHandler.single(fluidHandler, 0)
+    private val fluidOutputHandler: HTOutputHandler<FluidResource> = HTOutputHandler.single(fluidHandler, 0)
 
     fun drainContainer(player: Player, hand: InteractionHand): Boolean {
         val stack: ItemStack = player.getItemInHand(hand)

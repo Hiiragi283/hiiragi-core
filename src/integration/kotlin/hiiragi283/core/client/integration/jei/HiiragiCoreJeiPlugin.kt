@@ -2,11 +2,6 @@ package hiiragi283.core.client.integration.jei
 
 import hiiragi283.core.api.HCConstants
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.client.integration.jei.category.HCChargingRecipeCategory
-import hiiragi283.core.client.integration.jei.category.HCExplodingRecipeCategory
-import hiiragi283.core.client.integration.jei.category.HCTankEmptyingRecipeCategory
-import hiiragi283.core.client.integration.jei.category.HCTankFillingRecipeCategory
-import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.common.recipe.custom.HCEternalSmithingRecipe
 import hiiragi283.core.common.recipe.viewer.display.HCRecipeDisplayFactories
@@ -20,8 +15,7 @@ import hiiragi283.lib.integration.jei.HTJeiPlugin
 import hiiragi283.lib.integration.jei.HTJeiRecipeHelper
 import hiiragi283.lib.integration.jei.HTJeiWorkstationHelper
 import hiiragi283.lib.integration.jei.HTRecipeViewerUIFactories
-import hiiragi283.lib.integration.jei.category.HTDisplayRecipeCategoryN
-import hiiragi283.lib.integration.jei.category.HTHolderRecipeCategory
+import hiiragi283.lib.integration.jei.category.HTDisplayRecipeCategory
 import hiiragi283.lib.item.HTPotionBasedItem
 import hiiragi283.lib.item.alchemy.BottledPotionContents
 import hiiragi283.lib.item.alchemy.HTBottleType
@@ -91,14 +85,14 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
 
         registration.addRecipeCategories(
             // Recipes
-            HTHolderRecipeCategory(guiHelper, HCRecipeViewerTypes.BREWING, HCBrewingRecipe.CODEC, HCRecipeViewerUIFactories::brewing),
-            HTDisplayRecipeCategoryN.Progress(guiHelper, HCRecipeViewerTypes.CHOPPING, HTRecipeViewerUIFactories::itemToChancedItems),
-            HTDisplayRecipeCategoryN.Progress(guiHelper, HCRecipeViewerTypes.CRUSHING, HTRecipeViewerUIFactories::itemToChancedItems),
-            HCChargingRecipeCategory(guiHelper),
-            HCExplodingRecipeCategory(guiHelper),
+            HTDisplayRecipeCategory.Progress(guiHelper, HCRecipeViewerTypes.BREWING, HTRecipeViewerUIFactories::itemOrFluid),
+            HTDisplayRecipeCategory.Progress(guiHelper, HCRecipeViewerTypes.CHOPPING, HTRecipeViewerUIFactories::itemToChancedItems),
+            HTDisplayRecipeCategory.Progress(guiHelper, HCRecipeViewerTypes.CRUSHING, HTRecipeViewerUIFactories::itemToChancedItems),
+            HTDisplayRecipeCategory.Simple(guiHelper, HCRecipeViewerTypes.CHARGING, HTRecipeViewerUIFactories::itemToItem),
+            HTDisplayRecipeCategory.Simple(guiHelper, HCRecipeViewerTypes.EXPLODING, HTRecipeViewerUIFactories::itemToItem),
             // Tank Interaction
-            HCTankEmptyingRecipeCategory(guiHelper),
-            HCTankFillingRecipeCategory(guiHelper),
+            HTDisplayRecipeCategory.Simple(guiHelper, HCRecipeViewerTypes.EMPTYING, HTRecipeViewerUIFactories::itemOrFluid),
+            HTDisplayRecipeCategory.Simple(guiHelper, HCRecipeViewerTypes.FILLING, HTRecipeViewerUIFactories::itemOrFluid),
         )
     }
 
@@ -110,7 +104,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     override fun registerRecipes(registration: IRecipeRegistration) {
         val helper = HTJeiRecipeHelper(registration)
 
-        helper.addLookupRecipes(HCRecipeViewerTypes.BREWING, HTVanillaRecipeTypes.BREWING, HCBrewingRecipe.SORTER)
+        helper.addDisplayRecipes(HCRecipeViewerTypes.BREWING, HTVanillaRecipeTypes.BREWING, HCRecipeDisplayFactories::brewing)
         helper.addDisplayRecipes(HCRecipeViewerTypes.CHARGING, HCRecipeTypes.CHARGING, HCRecipeDisplayFactories::charging)
         helper.addDisplayRecipes(HCRecipeViewerTypes.CHOPPING, HCRecipeTypes.CHOPPING, HTRecipeDisplayFactories::itemToChancedItems)
         helper.addDisplayRecipes(HCRecipeViewerTypes.CRUSHING, HCRecipeTypes.CRUSHING, HTRecipeDisplayFactories::itemToChancedItems)

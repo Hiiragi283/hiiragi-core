@@ -13,15 +13,9 @@ import java.util.function.Supplier
 import mezz.jei.api.recipe.types.IRecipeType
 import mezz.jei.api.registration.IRecipeRegistration
 import net.minecraft.util.context.ContextMap
-import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeType
-import net.minecraft.world.item.crafting.display.SlotDisplay
-import net.neoforged.neoforge.fluids.FluidStack
-import net.neoforged.neoforge.fluids.crafting.FluidIngredient
-import net.neoforged.neoforge.fluids.crafting.display.FluidStackContentsFactory
 
 /**
  * [IRecipeRegistration]へのレシピ登録を補助するクラスです。
@@ -33,30 +27,6 @@ value class HTJeiRecipeHelper(@PublishedApi internal val registration: IRecipeRe
     companion object {
         @JvmStatic
         fun createContext(): ContextMap = HTPhysicalSideHelper.runForSide(HTRecipeLookupContext::createOnClient, HTRecipeLookupContext::create) ?: ContextMap.EMPTY
-
-        /**
-         * @since 26.1.3
-         */
-        @JvmStatic
-        fun resolveFluids(ingredient: FluidIngredient): List<FluidStack> = resolveFluids(ingredient.display())
-
-        /**
-         * @since 26.1.3
-         */
-        @JvmStatic
-        fun resolveFluids(display: SlotDisplay): List<FluidStack> = display.resolve(createContext(), FluidStackContentsFactory.INSTANCE).toList()
-
-        /**
-         * @since 26.1.3
-         */
-        @JvmStatic
-        fun resolveItems(ingredient: Ingredient): List<ItemStack> = resolveItems(ingredient.display())
-
-        /**
-         * @since 26.1.3
-         */
-        @JvmStatic
-        fun resolveItems(display: SlotDisplay): List<ItemStack> = display.resolveForStacks(createContext())
 
         @JvmField
         val DISPLAY_SORTER: Comparator<in HTRecipeDisplay> = compareBy(HTComparators.ID, HTRecipeDisplay::getId)
