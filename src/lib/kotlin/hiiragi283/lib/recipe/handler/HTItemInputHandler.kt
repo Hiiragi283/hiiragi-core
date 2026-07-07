@@ -26,6 +26,6 @@ class HTItemInputHandler(private val handler: ItemResourceHandler, private val i
                 return@runCatching 1
             }
         }
-        handler.extractSelf(index, amount, transaction)
+        handler.extractSelf(index, transaction, amount)
     }
 }

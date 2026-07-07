@@ -2,7 +2,6 @@ package hiiragi283.lib.recipe.handler
 
 import hiiragi283.lib.transfer.fluid.FluidResourceHandler
 import hiiragi283.lib.transfer.fluid.toResourcePair
-import hiiragi283.lib.transfer.ranged
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.transfer.fluid.FluidResource
 import net.neoforged.neoforge.transfer.transaction.TransactionContext
@@ -16,12 +15,6 @@ interface HTFluidOutputHandler : HTOutputHandler<FluidStack> {
     companion object {
         @JvmStatic
         fun single(handler: FluidResourceHandler, index: Int): HTFluidOutputHandler = Single(handler, index)
-
-        @JvmStatic
-        fun multiple(handler: FluidResourceHandler, start: Int, end: Int): HTFluidOutputHandler = Multiple(handler.ranged(start, end))
-
-        @JvmStatic
-        fun multiple(handler: FluidResourceHandler, range: IntRange): HTFluidOutputHandler = Multiple(handler ranged range)
 
         @JvmStatic
         fun multiple(handler: FluidResourceHandler): HTFluidOutputHandler = Multiple(handler)

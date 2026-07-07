@@ -121,6 +121,7 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, pos: BlockPos, blockState
 
     /**
      * アイテムをドロップします。
+     * @since 26.1.3
      */
     protected fun dropItems(level: Level, pos: BlockPos, handler: ItemResourceHandler, range: Iterable<Int> = handler.indices) {
         for (i: Int in range) {

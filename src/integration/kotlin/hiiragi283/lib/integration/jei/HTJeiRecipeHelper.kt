@@ -34,15 +34,27 @@ value class HTJeiRecipeHelper(@PublishedApi internal val registration: IRecipeRe
         @JvmStatic
         fun createContext(): ContextMap = HTPhysicalSideHelper.runForSide(HTRecipeLookupContext::createOnClient, HTRecipeLookupContext::create) ?: ContextMap.EMPTY
 
+        /**
+         * @since 26.1.3
+         */
         @JvmStatic
         fun resolveFluids(ingredient: FluidIngredient): List<FluidStack> = resolveFluids(ingredient.display())
 
+        /**
+         * @since 26.1.3
+         */
         @JvmStatic
         fun resolveFluids(display: SlotDisplay): List<FluidStack> = display.resolve(createContext(), FluidStackContentsFactory.INSTANCE).toList()
 
+        /**
+         * @since 26.1.3
+         */
         @JvmStatic
         fun resolveItems(ingredient: Ingredient): List<ItemStack> = resolveItems(ingredient.display())
 
+        /**
+         * @since 26.1.3
+         */
         @JvmStatic
         fun resolveItems(display: SlotDisplay): List<ItemStack> = display.resolveForStacks(createContext())
 

@@ -16,7 +16,11 @@ import hiiragi283.lib.integration.jei.HTRecipeViewerUIFactories
 import hiiragi283.lib.recipe.ingredient.HTPotionFluidIngredient
 
 /**
- * @see com.lowdragmc.lowdraglib2.test.xei.TestRecipe.createModularUI
+ * Hiiragi Coreで使用されるをまとめたクラスです。
+ *
+ * 参照 : [LDLib2 - TestRecipe](https://github.com/Low-Drag-MC/LDLib2/blob/26.1/src/main/java/com/lowdragmc/lowdraglib2/test/xei/TestRecipe.java)
+ * @author Hiiragi Tsubasa
+ * @since 26.1.3
  */
 data object HCRecipeViewerUIFactories {
     @JvmStatic

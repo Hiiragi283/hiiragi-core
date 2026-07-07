@@ -11,5 +11,5 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext
  * @since 26.1.0
  */
 class HTFluidInputHandler(private val handler: FluidResourceHandler, private val index: Int) : HTInputHandler<FluidStack> {
-    override fun extract(amount: Int, transaction: TransactionContext): Result<Int> = runCatching { handler.extractSelf(index, amount, transaction) }
+    override fun extract(amount: Int, transaction: TransactionContext): Result<Int> = runCatching { handler.extractSelf(index, transaction, amount) }
 }

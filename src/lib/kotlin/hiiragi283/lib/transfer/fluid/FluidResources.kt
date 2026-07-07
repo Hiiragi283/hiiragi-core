@@ -39,6 +39,13 @@ typealias FluidResourceHandler = ResourceHandler<FluidResource>
  */
 fun FluidResourceHandler.getFluidStack(index: Int): FluidStack = this.getResource(index).toStack(this.getAmountAsInt(index))
 
+/**
+ * この[FluidStacksResourceHandler][this]の中身を直接置き換えます。
+ * @param index 置き換えるスロットのインデックス
+ * @param stack 置き換え後の液体
+ * @author Hiiragi Tsubasa
+ * @since 26.1.3
+ */
 fun FluidStacksResourceHandler.set(index: Int, stack: FluidStack) {
     val (resource: FluidResource, amount: Int) = stack.toResourcePair()
     this.set(index, resource, amount)

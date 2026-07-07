@@ -31,7 +31,7 @@ open class HTManualProcessingBoardBlock(type: HTDeferredBlockEntityType<*>, prop
         if (!itemHandler.isEmpty) {
             val resourceIn: ItemResource = itemHandler.getResource(0)
             useTransaction { transaction: Transaction ->
-                val extracted: Int = itemHandler.extractSelf(0, transaction = transaction)
+                val extracted: Int = itemHandler.extractSelf(0, transaction)
                 if (extracted > 0) {
                     transaction.commit()
                     HTItemDropHelper.giveStackTo(player, resourceIn.toStack(extracted))

@@ -39,6 +39,13 @@ typealias ItemResourceHandler = ResourceHandler<ItemResource>
  */
 fun ItemResourceHandler.getItemStack(index: Int): ItemStack = this.getResource(index).toStack(this.getAmountAsInt(index))
 
+/**
+ * この[ItemStacksResourceHandler][this]の中身を直接置き換えます。
+ * @param index 置き換えるスロットのインデックス
+ * @param stack 置き換え後のアイテム
+ * @author Hiiragi Tsubasa
+ * @since 26.1.3
+ */
 fun ItemStacksResourceHandler.set(index: Int, stack: ItemStack) {
     val (resource: ItemResource, amount: Int) = stack.toResourcePair()
     this.set(index, resource, amount)

@@ -6,6 +6,11 @@ import net.neoforged.neoforge.transfer.ResourceHandler
 import net.neoforged.neoforge.transfer.resource.Resource
 import net.neoforged.neoforge.transfer.transaction.TransactionContext
 
+/**
+ * [HTTransferIO]によって搬入出が制限される[DelegatingResourceHandler]の拡張クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.3
+ */
 class HTStrictResourceHandler<RESOURCE : Resource> : DelegatingResourceHandler<RESOURCE> {
     private val filter: (Int) -> HTTransferIO
 

@@ -27,6 +27,11 @@ import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidType
 
+/**
+ * Hiiragi Seriesで使用されるをまとめたクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.3
+ */
 data object HTRecipeViewerUIFactories {
     @JvmStatic
     fun itemToChancedItems(display: HTProgressRecipeDisplay): ModularUI = display(display) { contents: HTRecipeContents ->
