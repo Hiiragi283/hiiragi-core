@@ -29,8 +29,8 @@ import org.slf4j.Logger
  * @author Hiiragi Tsubasa
  * @since 26.1.0
  */
-abstract class HTExtendedBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, blockState: BlockState) :
-    BlockEntity(type, worldPosition, blockState),
+abstract class HTExtendedBlockEntity(type: BlockEntityType<*>, pos: BlockPos, blockState: BlockState) :
+    BlockEntity(type, pos, blockState),
     HTAbstractBlockEntity {
     companion object {
         @JvmField

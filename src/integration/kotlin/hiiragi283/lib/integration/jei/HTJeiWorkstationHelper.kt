@@ -11,26 +11,27 @@ import net.minecraft.world.item.ItemStack
  * @author Hiiragi Tsubasa
  * @since 26.1.0
  */
+@Suppress("NOTHING_TO_INLINE")
 @JvmInline
-value class HTJeiWorkstationHelper(private val registration: IRecipeCatalystRegistration) {
+value class HTJeiWorkstationHelper(@PublishedApi internal val registration: IRecipeCatalystRegistration) {
     /**
      * 指定した[recipeType]に[workstations]を登録します。
      */
-    fun add(recipeType: IRecipeType<*>, workstations: List<ItemStack>) {
+    inline fun add(recipeType: IRecipeType<*>, workstations: List<ItemStack>) {
         registration.addCraftingStations(recipeType, VanillaTypes.ITEM_STACK, workstations)
     }
 
     /**
      * 指定した[viewerType]に[workstations]を登録します。
      */
-    fun add(viewerType: HTRecipeViewerType<*>, workstations: List<ItemStack>) {
+    inline fun add(viewerType: HTRecipeViewerType<*>, workstations: List<ItemStack>) {
         this.add(HTJeiPlugin.getRecipeType(viewerType), workstations)
     }
 
     /**
      * [HTRecipeViewerType.workStations]に基づいて登録します。
      */
-    fun addFromViewerType(vararg viewerTypes: HTRecipeViewerType<*>) {
+    inline fun addFromViewerType(vararg viewerTypes: HTRecipeViewerType<*>) {
         for (viewerType: HTRecipeViewerType<*> in viewerTypes) {
             this.add(viewerType, viewerType.workStations)
         }

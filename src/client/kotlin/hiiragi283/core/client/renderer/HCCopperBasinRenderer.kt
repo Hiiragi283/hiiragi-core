@@ -24,7 +24,7 @@ class HCCopperBasinRenderer(context: BlockEntityRendererProvider.Context) : HTBl
 
     override fun extractRenderState(blockEntity: HTCopperBasinBlockEntity, state: HTFluidBERenderState, partialTicks: Float, cameraPosition: Vec3, breakProgress: ModelFeatureRenderer.CrumblingOverlay?) {
         super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress)
-        state.extractRenderState(blockEntity.tank)
+        state.extractRenderState(blockEntity.fluidHandler, 0)
     }
 
     override fun submit(state: HTFluidBERenderState, poseStack: PoseStack, submitNodeCollector: SubmitNodeCollector, camera: CameraRenderState) {

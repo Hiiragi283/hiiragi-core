@@ -1,7 +1,9 @@
 package hiiragi283.lib.renderer.state
 
-import hiiragi283.lib.transfer.fluid.HTFluidView
+import hiiragi283.lib.transfer.fluid.FluidResourceHandler
 import hiiragi283.lib.transfer.fluid.getFluidStack
+import hiiragi283.lib.transfer.getFilledLevel
+import hiiragi283.lib.transfer.isEmpty
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.FluidModel
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState
@@ -37,25 +39,28 @@ class HTFluidBERenderState : BlockEntityRenderState() {
     var isLighterThanAir: Boolean = false
 
     /**
-     * 指定した[ビュー][view]から情報を取得します。
+     * [FluidResourceHandler]から情報を取得します。
+     * @param handler 取得元の[FluidResourceHandler]
+     * @param index 取得元のインデックス
+     * @since 26.1.3
      */
-    fun extractRenderState(view: HTFluidView) {
-        if (view.isEmpty()) {
+    fun extractRenderState(handler: FluidResourceHandler, index: Int) {
+        if (handler.isEmpty) {
             sprite = null
             color = -1
             fillingLevel = 0f
             isLighterThanAir = false
             return
         }
-        val resource: FluidResource = view.resource
+        val resource: FluidResource = handler.getResource(index)
 
-        this.fillingLevel = view.getFilledLevel(view.resource).toFloat()
+        this.fillingLevel = handler.getFilledLevel(index).toFloat()
         val model: FluidModel = Minecraft.getInstance()
             .modelManager
             .fluidStateModelSet
             .get(resource.fluid.defaultFluidState())
         model.stillMaterial().sprite().let(this::sprite::set)
-        model.fluidTintSource()?.colorAsStack(view.getFluidStack())?.let(this::color::set)
+        model.fluidTintSource()?.colorAsStack(handler.getFluidStack(index))?.let(this::color::set)
         this.isLighterThanAir = resource.fluidType.isLighterThanAir
     }
 }

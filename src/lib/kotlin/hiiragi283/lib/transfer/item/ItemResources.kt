@@ -1,11 +1,10 @@
 package hiiragi283.lib.transfer.item
 
-import hiiragi283.lib.transfer.HTResourceSlot
-import hiiragi283.lib.transfer.HTResourceView
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
 import net.neoforged.neoforge.transfer.ResourceHandler
 import net.neoforged.neoforge.transfer.item.ItemResource
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler
 
 //    ItemResource    //
 
@@ -40,26 +39,7 @@ typealias ItemResourceHandler = ResourceHandler<ItemResource>
  */
 fun ItemResourceHandler.getItemStack(index: Int): ItemStack = this.getResource(index).toStack(this.getAmountAsInt(index))
 
-/**
- * [ItemResource]向けの[HTResourceView]のエイリアスです。
- * @author Hiiragi Tsubasa
- * @since 26.1.0
- */
-typealias HTItemView = HTResourceView<ItemResource>
-
-/**
- * [ItemStack]のコピーを取得します。
- * @author Hiiragi Tsubasa
- * @since 26.1.0
- */
-fun HTItemView.getItemStack(): ItemStack = when (this) {
-    is HTBasicItemSlot -> this.getStack()
-    else -> this.resource.toStack(this.amountAsInt)
+fun ItemStacksResourceHandler.set(index: Int, stack: ItemStack) {
+    val (resource: ItemResource, amount: Int) = stack.toResourcePair()
+    this.set(index, resource, amount)
 }
-
-/**
- * [ItemResource]向けの[HTResourceSlot]のエイリアスです。
- * @author Hiiragi Tsubasa
- * @since 26.1.0
- */
-typealias HTItemSlot = HTResourceSlot<ItemResource>

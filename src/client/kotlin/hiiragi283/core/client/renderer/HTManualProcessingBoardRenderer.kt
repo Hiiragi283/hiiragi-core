@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack
 import hiiragi283.core.api.block.entity.HTManualProcessingBoardBlockEntity
 import hiiragi283.lib.renderer.HTBlockEntityRenderer
 import hiiragi283.lib.renderer.state.HTItemBERenderState
+import hiiragi283.lib.transfer.item.getItemStack
 import net.minecraft.client.renderer.SubmitNodeCollector
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer
@@ -21,13 +22,13 @@ class HTManualProcessingBoardRenderer(context: BlockEntityRendererProvider.Conte
 
     override fun extractRenderState(blockEntity: HTManualProcessingBoardBlockEntity, state: HTItemBERenderState, partialTicks: Float, cameraPosition: Vec3, breakProgress: ModelFeatureRenderer.CrumblingOverlay?) {
         super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress)
-        val stackIn: ItemStack = blockEntity.slot.getStack()
+        val stackIn: ItemStack = blockEntity.itemHandler.getItemStack(0)
         if (stackIn.isEmpty) {
             state.itemState.clear()
         } else {
             itemModelResolver.updateForTopItem(
                 state.itemState,
-                blockEntity.slot.getStack(),
+                stackIn,
                 ItemDisplayContext.GROUND,
                 blockEntity.level,
                 null,

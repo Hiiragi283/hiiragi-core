@@ -1,9 +1,8 @@
 package hiiragi283.lib.recipe.handler
 
-import hiiragi283.lib.transfer.HTHandlerAccess
-import hiiragi283.lib.transfer.HTResourceHandler
-import hiiragi283.lib.transfer.fluid.HTFluidTank
+import hiiragi283.lib.transfer.fluid.FluidResourceHandler
 import hiiragi283.lib.transfer.fluid.toResourcePair
+import hiiragi283.lib.transfer.ranged
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.transfer.fluid.FluidResource
 import net.neoforged.neoforge.transfer.transaction.TransactionContext
@@ -16,37 +15,35 @@ import net.neoforged.neoforge.transfer.transaction.TransactionContext
 interface HTFluidOutputHandler : HTOutputHandler<FluidStack> {
     companion object {
         @JvmStatic
-        fun single(tank: HTFluidTank): HTFluidOutputHandler = Single(tank)
+        fun single(handler: FluidResourceHandler, index: Int): HTFluidOutputHandler = Single(handler, index)
 
         @JvmStatic
-        fun multiple(vararg tanks: HTFluidTank): HTFluidOutputHandler = Multiple(tanks.toList())
+        fun multiple(handler: FluidResourceHandler, start: Int, end: Int): HTFluidOutputHandler = Multiple(handler.ranged(start, end))
 
         @JvmStatic
-        fun multiple(tanks: List<HTFluidTank>): HTFluidOutputHandler = when (tanks.size) {
-            1 -> single(tanks.first())
-            else -> Multiple(tanks)
+        fun multiple(handler: FluidResourceHandler, range: IntRange): HTFluidOutputHandler = Multiple(handler ranged range)
+
+        @JvmStatic
+        fun multiple(handler: FluidResourceHandler): HTFluidOutputHandler = Multiple(handler)
+    }
+
+    /**
+     * 単一のスロットに対する[HTFluidOutputHandler]の実装クラスです。
+     */
+    private class Single(private val handler: FluidResourceHandler, private val index: Int) : HTFluidOutputHandler {
+        override fun insert(stack: FluidStack, transaction: TransactionContext): Result<Int> = runCatching {
+            val (resource: FluidResource, amount: Int) = stack.toResourcePair()
+            handler.insert(index, resource, amount, transaction)
         }
     }
 
     /**
-     * 単一の[HTFluidTank]に対する[HTFluidOutputHandler]の実装クラスです。
+     * 複数のスロットに対する[HTFluidOutputHandler]の実装クラスです。
      */
-    private class Single(private val tank: HTFluidTank) : HTFluidOutputHandler {
+    private class Multiple(private val handler: FluidResourceHandler) : HTFluidOutputHandler {
         override fun insert(stack: FluidStack, transaction: TransactionContext): Result<Int> = runCatching {
             val (resource: FluidResource, amount: Int) = stack.toResourcePair()
-            tank.insert(resource, amount, transaction, HTHandlerAccess.INTERNAL)
-        }
-    }
-
-    /**
-     * 複数の[HTFluidTank]に対する[HTFluidOutputHandler]の実装クラスです。
-     */
-    private class Multiple(tanks: List<HTFluidTank>) : HTFluidOutputHandler {
-        private val handler = HTResourceHandler { tanks }
-
-        override fun insert(stack: FluidStack, transaction: TransactionContext): Result<Int> = runCatching {
-            val (resource: FluidResource, amount: Int) = stack.toResourcePair()
-            handler.insert(resource, amount, transaction, HTHandlerAccess.INTERNAL)
+            handler.insert(resource, amount, transaction)
         }
     }
 }
