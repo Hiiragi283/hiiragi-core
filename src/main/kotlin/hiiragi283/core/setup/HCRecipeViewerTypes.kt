@@ -2,8 +2,6 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.lib.math.HTBounds
-import hiiragi283.lib.recipe.HTRecipeHolder
-import hiiragi283.lib.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.lib.recipe.viewer.HTRecipeViewerType
 import hiiragi283.lib.recipe.viewer.HTSimpleRecipeViewerType
 import hiiragi283.lib.recipe.viewer.display.HTProgressRecipeDisplay
@@ -56,13 +54,4 @@ data object HCRecipeViewerTypes {
         workStations += iconStack
         builderAction()
     }
-
-    @JvmStatic
-    private inline fun <reified RECIPE : Any> creteHolder(
-        recipeType: HTIdLike.Translatable,
-        iconItem: ItemLike,
-        width: Int,
-        height: Int = 18 * 1,
-        builderAction: HTSimpleRecipeViewerType.Builder.() -> Unit = {},
-    ): HTHolderRecipeViewerType<RECIPE> = create<HTRecipeHolder<RECIPE>>(recipeType, iconItem, width, height, builderAction)
 }

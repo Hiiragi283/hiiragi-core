@@ -20,7 +20,7 @@ data object HCPotionFluidHelper {
     fun createResource(contents: BottledPotionContents): FluidResource = FluidResource.of(createFluid(contents))
 
     @JvmStatic
-    fun createFluid(potion: Holder<Potion>, bottleType: HTBottleType = HTBottleType.DEFAULT, amount: Int = FluidType.BUCKET_VOLUME) = createFluid(BottledPotionContents(potion, bottleType), amount)
+    fun createFluid(potion: Holder<Potion>, bottleType: HTBottleType = HTBottleType.DEFAULT, amount: Int = FluidType.BUCKET_VOLUME): FluidStack = createFluid(BottledPotionContents(potion, bottleType), amount)
 
     /**
      * @return [contents]が`null`の場合，水を返す。

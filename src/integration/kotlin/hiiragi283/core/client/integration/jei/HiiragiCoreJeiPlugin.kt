@@ -17,7 +17,6 @@ import hiiragi283.lib.integration.jei.HTJeiWorkstationHelper
 import hiiragi283.lib.integration.jei.HTRecipeViewerUIFactories
 import hiiragi283.lib.integration.jei.category.HTDisplayRecipeCategory
 import hiiragi283.lib.item.HTPotionBasedItem
-import hiiragi283.lib.item.alchemy.BottledPotionContents
 import hiiragi283.lib.item.alchemy.HTBottleType
 import hiiragi283.lib.item.alchemy.HTPotionHelper
 import hiiragi283.lib.recipe.ingredient.HTFluidIngredient
@@ -44,6 +43,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.alchemy.Potion
+import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.DataComponentFluidIngredient
@@ -73,8 +73,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             .filteredLookup(Registries.POTION)
             .getOrNull()
             ?.listElements()
-            ?.map(::BottledPotionContents)
-            ?.filter { !it.isWater }
+            ?.filter { it != Potions.WATER }
             ?.map(HCPotionFluidHelper::createFluid)
             ?.toList()
             ?.let { registration.addExtraIngredients(NeoForgeTypes.FLUID_STACK, it) }
@@ -121,12 +120,11 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             HCRecipeViewerTypes.EMPTYING,
             getPotionHolders()
                 .map { potion: Holder<Potion> ->
-                    val contents = BottledPotionContents(potion)
                     HTRecipeDisplay.Simple(
                         potion.toLike().getId().withPath { "/${HCConstants.EMPTYING}/potion/$it" },
                         HTRecipeContents.create {
-                            HTPotionHelper.createPotion(contents).let(ItemStackTemplate::create).let(::addInput)
-                            addOutput(HCPotionFluidHelper.createFluid(contents, 250))
+                            HTPotionHelper.createPotion(potion).let(ItemStackTemplate::create).let(::addInput)
+                            addOutput(HCPotionFluidHelper.createFluid(potion, amount = 250))
                             addOutput(ItemStack(Items.GLASS_BOTTLE))
                         },
                     )
@@ -162,7 +160,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                                 HTFluidIngredient(
                                     DataComponentFluidIngredient.of(
                                         false,
-                                        HCPotionFluidHelper.createFluid(BottledPotionContents(potion, bottleType)),
+                                        HCPotionFluidHelper.createFluid(potion, bottleType),
                                     ),
                                     amount,
                                 ),

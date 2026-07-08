@@ -58,6 +58,12 @@ data object HTPotionHelper {
 
     //    ItemStack    //
 
+    @JvmStatic
+    fun createPotion(potion: Holder<Potion>, bottleType: HTBottleType = HTBottleType.DEFAULT): ItemStackTemplate = ItemInstanceBuilder.buildTemplate {
+        +bottleType.asItem()
+        components { set(DataComponents.POTION_CONTENTS, PotionContents(potion)) }
+    }
+
     /**
      * 指定した[contents]からポーションの[ItemStack]を作成します。
      * @since 0.11.0
