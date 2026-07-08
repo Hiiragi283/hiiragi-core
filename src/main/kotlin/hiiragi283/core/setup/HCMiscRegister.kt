@@ -1,9 +1,13 @@
 package hiiragi283.core.setup
 
+import hiiragi283.core.api.HCConstants
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.text.HCTranslation
 import hiiragi283.core.common.item.consume.HTClearRandomEffectConsumeEffect
 import hiiragi283.core.common.recipe.ingredient.HTDamageableIngredient
+import hiiragi283.lib.HTConstants
 import hiiragi283.lib.HTRegistries
+import hiiragi283.lib.item.HTCreativeModeTabHelper
 import hiiragi283.lib.material.CommonMaterialKeys
 import hiiragi283.lib.material.CommonPartKeys
 import hiiragi283.lib.material.HTMaterialContents
@@ -21,6 +25,7 @@ import hiiragi283.lib.tag.CommonTagPrefixes
 import hiiragi283.lib.tag.HTTagPrefix
 import net.minecraft.core.registries.Registries
 import net.minecraft.tags.ItemTags
+import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Blocks
 import net.neoforged.neoforge.common.Tags
@@ -34,7 +39,42 @@ internal data object HCMiscRegister {
         event.register(Registries.CONSUME_EFFECT_TYPE) { helper ->
             helper.register(HiiragiCoreAPI.id("clear_random_effect"), HTClearRandomEffectConsumeEffect.TYPE)
         }
+        // Creative Mode Tab
+        event.register(Registries.CREATIVE_MODE_TAB) { helper ->
+            helper.register(
+                HCCreativeTabs.COMMON,
+                HTCreativeModeTabHelper.createSimpleTab(HCTranslation.HIIRAGI_CORE, HCItems.IRIDESCENT_POWDER) { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
+                    // Items
+                    HTCreativeModeTabHelper.addToDisplay(parameters, output, items = HCItems.REGISTER.asSequence())
+                    // Blocks
+                    HTCreativeModeTabHelper.addToDisplay(parameters, output, items = HCBlocks.REGISTER.asItemSequence())
+                    // Fluids
+                    HTCreativeModeTabHelper.addToDisplay(parameters, output, items = HCFluids.REGISTER.asItemSequence())
+                },
+            )
+        }
+        // Data Component Type
+        event.register(Registries.DATA_COMPONENT_TYPE) { helper ->
+            helper.register(HiiragiCoreAPI.id("bottle_type"), HCDataComponents.BOTTLE_TYPE)
+            helper.register(HiiragiCoreAPI.id(HTConstants.FLUID), HCDataComponents.FLUID)
+        }
+        // Recipe Serializer
+        event.register(Registries.RECIPE_SERIALIZER) { helper ->
+            helper.register(HiiragiCoreAPI.id("eternal_upgrade"), HCRecipeSerializers.ETERNAL_UPGRADE)
 
+            helper.register(HiiragiCoreAPI.id(HCConstants.CHARGING), HCRecipeSerializers.CHARGING)
+            helper.register(HiiragiCoreAPI.id(HCConstants.CHOPPING), HCRecipeSerializers.CHOPPING)
+            helper.register(HiiragiCoreAPI.id(HCConstants.CRUSHING), HCRecipeSerializers.CRUSHING)
+            helper.register(HiiragiCoreAPI.id(HCConstants.EXPLODING), HCRecipeSerializers.EXPLODING)
+
+            helper.register(HiiragiCoreAPI.id(HCConstants.EMPTYING), HCRecipeSerializers.EMPTYING)
+            helper.register(HiiragiCoreAPI.id(HCConstants.FILLING), HCRecipeSerializers.FILLING)
+        }
+
+        // Attachment Type
+        event.register(NeoForgeRegistries.Keys.ATTACHMENT_TYPES) { helper ->
+            helper.register(HiiragiCoreAPI.id("in_world_recipe_caches"), HCAttachmentTypes.IN_WORLD_RECIPE_CACHES)
+        }
         // Ingredient Type
         event.register(NeoForgeRegistries.Keys.INGREDIENT_TYPES) { helper ->
             helper.register(HiiragiCoreAPI.id("material_part"), HTMaterialPartIngredient.TYPE)

@@ -31,13 +31,13 @@ fun <T : Any, R : Any> HolderLookup<T>.getDataMap(type: DataMapType<T, R>): Map<
     return destination
 }
 
-fun <T : Any> Registry<T>.get(prefix: HTTagPrefix, material: HTMaterialKey): Optional<HolderSet.Named<T>> = this.get(prefix.materialTag(material))
+fun <T : Any> HolderLookup.RegistryLookup<T>.get(prefix: HTTagPrefix, material: HTMaterialKey): Optional<HolderSet.Named<T>> = this.get(prefix.materialTag(material))
 
-fun <T : Any> Registry<T>.get(key: RawTagKey): Optional<HolderSet.Named<T>> = this.get(key.create(this.key()))
+fun <T : Any> HolderLookup.RegistryLookup<T>.get(key: RawTagKey): Optional<HolderSet.Named<T>> = this.get(key.create(this.key().toRegistryKey()))
 
-fun <T : Any> Registry<T>.getResult(prefix: HTTagPrefix, material: HTMaterialKey): HTTextResult<HolderSet<T>> = this.getResult(prefix.materialTag(material))
+fun <T : Any> HolderLookup.RegistryLookup<T>.getResult(prefix: HTTagPrefix, material: HTMaterialKey): HTTextResult<HolderSet<T>> = this.getResult(prefix.materialTag(material))
 
-fun <T : Any> Registry<T>.getResult(key: RawTagKey): HTTextResult<HolderSet<T>> = this.getResult(key.create(this.key()))
+fun <T : Any> HolderLookup.RegistryLookup<T>.getResult(key: RawTagKey): HTTextResult<HolderSet<T>> = this.getResult(key.create(this.key().toRegistryKey()))
 
 //    Provider    //
 

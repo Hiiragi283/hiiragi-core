@@ -450,6 +450,7 @@ tasks {
             "neo_version_range" to "[$neoVersion,)",
             "kff_version" to kffVersion,
             "kff_version_range" to "[$kffVersion,)",
+            "ldlib_version_range" to "[${libs.versions.ldlib.get()},)",
             "mod_id" to modId,
             "mod_name" to "Hiiragi Core",
             "mod_license" to "MPL-2.0",

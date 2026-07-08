@@ -1,8 +1,6 @@
 package hiiragi283.core.setup
 
 import com.mojang.serialization.MapCodec
-import hiiragi283.core.api.HCConstants
-import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCChoppingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
@@ -10,35 +8,32 @@ import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import hiiragi283.core.common.recipe.custom.HCEternalSmithingRecipe
-import hiiragi283.lib.registry.HTDeferredRecipeSerializerRegister
+import hiiragi283.lib.recipe.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeSerializer
 
 data object HCRecipeSerializers {
     @JvmField
-    val REGISTER = HTDeferredRecipeSerializerRegister(HiiragiCoreAPI.MOD_ID)
-
-    @JvmField
-    val ETERNAL_UPGRADE: RecipeSerializer<HCEternalSmithingRecipe> = REGISTER.registerSerializer("eternal_upgrade", MapCodec.unit(HCEternalSmithingRecipe))
+    val ETERNAL_UPGRADE: RecipeSerializer<HCEternalSmithingRecipe> = RecipeSerializer(MapCodec.unit(HCEternalSmithingRecipe))
 
     //    In World    //
 
     @JvmField
-    val CHARGING: RecipeSerializer<HCChargingRecipe> = REGISTER.registerSerializer(HCConstants.CHARGING, HCChargingRecipe.CODEC)
+    val CHARGING: RecipeSerializer<HCChargingRecipe> = RecipeSerializer(HCChargingRecipe.CODEC)
 
     @JvmField
-    val CHOPPING: RecipeSerializer<HCChoppingRecipe> = REGISTER.registerSerializer(HCConstants.CHOPPING, HCChoppingRecipe.CODEC)
+    val CHOPPING: RecipeSerializer<HCChoppingRecipe> = RecipeSerializer(HCChoppingRecipe.CODEC)
 
     @JvmField
-    val CRUSHING: RecipeSerializer<HCCrushingRecipe> = REGISTER.registerSerializer(HCConstants.CRUSHING, HCCrushingRecipe.CODEC)
+    val CRUSHING: RecipeSerializer<HCCrushingRecipe> = RecipeSerializer(HCCrushingRecipe.CODEC)
 
     @JvmField
-    val EXPLODING: RecipeSerializer<HCExplodingRecipe> = REGISTER.registerSerializer(HCConstants.EXPLODING, HCExplodingRecipe.CODEC)
+    val EXPLODING: RecipeSerializer<HCExplodingRecipe> = RecipeSerializer(HCExplodingRecipe.CODEC)
 
     //    Tank Interaction    //
 
     @JvmField
-    val EMPTYING: RecipeSerializer<HCTankEmptyingRecipe> = REGISTER.registerSerializer(HCConstants.EMPTYING, HCTankEmptyingRecipe.CODEC)
+    val EMPTYING: RecipeSerializer<HCTankEmptyingRecipe> = RecipeSerializer(HCTankEmptyingRecipe.CODEC)
 
     @JvmField
-    val FILLING: RecipeSerializer<HCTankFillingRecipe> = REGISTER.registerSerializer(HCConstants.FILLING, HCTankFillingRecipe.CODEC)
+    val FILLING: RecipeSerializer<HCTankFillingRecipe> = RecipeSerializer(HCTankFillingRecipe.CODEC)
 }

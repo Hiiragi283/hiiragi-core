@@ -6,8 +6,11 @@
 name: build
 on:
   push:
+    branches:
+      - '26.1'
   pull_request:
-  workflow_dispatch:
+    branches:
+      - '26.1'
 
 permissions:
   contents: read

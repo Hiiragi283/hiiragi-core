@@ -3,16 +3,12 @@ package hiiragi283.core.common
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.common.material.HCMaterials
-import hiiragi283.core.setup.HCAttachmentTypes
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks
-import hiiragi283.core.setup.HCCreativeTabs
-import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCMiscRegister
 import hiiragi283.core.setup.HCRecipeLookups
-import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.lib.HTRegistries
 import hiiragi283.lib.item.alchemy.HTPotionFluidManager
@@ -42,16 +38,11 @@ data object HiiragiCore : HTCommonMod() {
         NeoForgeMod.enableMergedAttributeTooltips()
         NeoForgeMod.enableMilkFluid()
 
-        HCDataComponents.REGISTER.register(eventBus)
-
         HCFluids.register(eventBus)
         HCBlocks.register(eventBus)
         HCItems.register(eventBus)
 
-        HCAttachmentTypes.REGISTER.register(eventBus)
         HCBlockEntityTypes.REGISTER.register(eventBus)
-        HCCreativeTabs.REGISTER.register(eventBus)
-        HCRecipeSerializers.REGISTER.register(eventBus)
         HCRecipeTypes.REGISTER.register(eventBus)
 
         HiiragiCoreAPI.LOGGER.info("Hiiragi-Core initialized")

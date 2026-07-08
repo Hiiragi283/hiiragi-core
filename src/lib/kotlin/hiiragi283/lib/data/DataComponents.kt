@@ -2,6 +2,7 @@
 
 package hiiragi283.lib.data
 
+import com.mojang.serialization.Codec
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -9,6 +10,22 @@ import net.minecraft.core.component.DataComponentExactPredicate
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
+import net.minecraft.network.RegistryFriendlyByteBuf
+import net.minecraft.network.codec.StreamCodec
+
+/**
+ * 新しい[DataComponentType]のインスタンスを作成します。
+ * @param codec セーブとロードで使用されるコーデック
+ * @param streamCodec クライアント側との同期に使用されるコーデック
+ * @author Hiiragi Tsubasa
+ * @since 26.1.3
+ */
+fun <T : Any> DataComponentType(codec: Codec<T>?, streamCodec: StreamCodec<in RegistryFriendlyByteBuf, T>?): DataComponentType<T> {
+    val builder: DataComponentType.Builder<T> = DataComponentType.builder<T>()
+    if (codec != null) builder.persistent(codec)
+    if (streamCodec != null) builder.networkSynchronized(streamCodec)
+    return builder.build()
+}
 
 /**
  * 新しい[DataComponentMap]のインスタンスを作成します。
@@ -35,8 +52,6 @@ inline fun buildDataPatch(builderAction: DataComponentPatch.Builder.() -> Unit):
     }
     return DataComponentPatch.builder().apply(builderAction).build()
 }
-
-fun <T : Any> buildDataPatch(type: DataComponentType<T>, value: T): DataComponentPatch = buildDataPatch { set(type, value) }
 
 /**
  * 新しい[DataComponentExactPredicate]のインスタンスを作成します。

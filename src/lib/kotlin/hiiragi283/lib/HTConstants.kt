@@ -83,6 +83,7 @@ data object HTConstants {
     const val SMELTING = "smelting"
     const val SMITHING = "smithing"
     const val SMOKING = "smoking"
+    const val TRANSMUTE = "transmute"
 
     // Serialization
     const val ENERGY = "energy"
