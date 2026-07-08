@@ -36,5 +36,5 @@ class HCChargingRecipe(ingredient: Ingredient, result: HTChancedItemResult, val 
 
     override fun getSerializer(): RecipeSerializer<HCChargingRecipe> = HCRecipeSerializers.CHARGING
 
-    override fun getType(): RecipeType<HCChargingRecipe> = HCRecipeTypes.CHARGING.get()
+    override fun getType(): RecipeType<HCChargingRecipe> = HCRecipeTypes.CHARGING
 }

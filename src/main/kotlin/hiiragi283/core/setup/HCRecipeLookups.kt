@@ -47,14 +47,14 @@ data object HCRecipeLookups {
 
     @JvmStatic
     fun init() {
-        CHOPPING.fromRecipeType(HCRecipeTypes.CHOPPING.get(), identity())
+        CHOPPING.fromRecipeType(HCRecipeTypes.CHOPPING, identity())
 
-        CRUSHING.fromRecipeType(HCRecipeTypes.CRUSHING.get(), identity())
+        CRUSHING.fromRecipeType(HCRecipeTypes.CRUSHING, identity())
 
-        EMPTYING.fromRecipeType(HCRecipeTypes.EMPTYING.get(), identity())
+        EMPTYING.fromRecipeType(HCRecipeTypes.EMPTYING, identity())
         EMPTYING.addRecipes(HTConstants.MINECRAFT.toId(HCConstants.EMPTYING, "potion") to HTPotionTankInteraction.Emptying)
 
-        FILLING.fromRecipeType(HCRecipeTypes.FILLING.get(), identity())
+        FILLING.fromRecipeType(HCRecipeTypes.FILLING, identity())
         FILLING.addRecipes(HTConstants.MINECRAFT.toId(HCConstants.FILLING, "potion") to HTPotionTankInteraction.Filling)
         FILLING.addRecipes(HTConstants.MINECRAFT.toId(HCConstants.FILLING, "potion_arrow") to HTPotionArrowFillingRecipe)
     }

@@ -22,7 +22,7 @@ import net.neoforged.neoforge.event.level.ExplosionEvent
 data object HTRecipeEventHandler {
     @SubscribeEvent
     fun onDatapackSync(event: OnDatapackSyncEvent) {
-        HCRecipeTypes.REGISTER.entries.map { it.get() }.let(event::sendRecipes)
+        event.sendRecipes(HCRecipeTypes.ALL_TYPES)
     }
 
     /**

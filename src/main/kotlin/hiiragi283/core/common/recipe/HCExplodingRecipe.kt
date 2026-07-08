@@ -20,5 +20,5 @@ class HCExplodingRecipe(ingredient: Ingredient, result: HTChancedItemResult) :
 
     override fun getSerializer(): RecipeSerializer<HCExplodingRecipe> = HCRecipeSerializers.EXPLODING
 
-    override fun getType(): RecipeType<HCExplodingRecipe> = HCRecipeTypes.EXPLODING.get()
+    override fun getType(): RecipeType<HCExplodingRecipe> = HCRecipeTypes.EXPLODING
 }

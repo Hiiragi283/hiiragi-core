@@ -16,6 +16,7 @@ import hiiragi283.lib.material.HTMaterialKey
 import hiiragi283.lib.material.HTMaterialPartKey
 import hiiragi283.lib.material.HTPartTagManager
 import hiiragi283.lib.material.VanillaMaterialKeys
+import hiiragi283.lib.recipe.HTRecipeType
 import hiiragi283.lib.recipe.ingredient.HTMaterialPartIngredient
 import hiiragi283.lib.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.lib.recipe.result.HTItemResult
@@ -69,6 +70,12 @@ internal data object HCMiscRegister {
 
             helper.register(HiiragiCoreAPI.id(HCConstants.EMPTYING), HCRecipeSerializers.EMPTYING)
             helper.register(HiiragiCoreAPI.id(HCConstants.FILLING), HCRecipeSerializers.FILLING)
+        }
+        // Recipe Type
+        event.register(Registries.RECIPE_TYPE) { helper ->
+            for (recipeType: HTRecipeType<*> in HCRecipeTypes.ALL_TYPES) {
+                helper.register(recipeType.getId(), recipeType)
+            }
         }
 
         // Attachment Type

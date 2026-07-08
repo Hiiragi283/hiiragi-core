@@ -52,5 +52,5 @@ class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidR
 
     override fun getSerializer(): RecipeSerializer<HCTankEmptyingRecipe> = HCRecipeSerializers.EMPTYING
 
-    override fun getType(): RecipeType<HCTankEmptyingRecipe> = HCRecipeTypes.EMPTYING.get()
+    override fun getType(): RecipeType<HCTankEmptyingRecipe> = HCRecipeTypes.EMPTYING
 }

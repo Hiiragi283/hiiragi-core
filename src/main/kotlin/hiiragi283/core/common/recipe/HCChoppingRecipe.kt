@@ -22,5 +22,5 @@ class HCChoppingRecipe(ingredient: HTItemIngredient, results: List<HTChancedItem
 
     override fun getSerializer(): RecipeSerializer<HCChoppingRecipe> = HCRecipeSerializers.CHOPPING
 
-    override fun getType(): RecipeType<HCChoppingRecipe> = HCRecipeTypes.CHOPPING.get()
+    override fun getType(): RecipeType<HCChoppingRecipe> = HCRecipeTypes.CHOPPING
 }

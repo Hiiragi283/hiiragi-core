@@ -8,8 +8,8 @@ import hiiragi283.lib.recipe.base.HTProgressData
 import hiiragi283.lib.recipe.ingredient.HTIngredientHelper
 import hiiragi283.lib.recipe.ingredient.getRequiredAmount
 import hiiragi283.lib.recipe.ingredient.test
+import hiiragi283.lib.recipe.lookup.HTRecipeLookup
 import hiiragi283.lib.recipe.lookup.HTRecipeLookupContext
-import hiiragi283.lib.recipe.lookup.HTRecipeType
 import hiiragi283.lib.registry.createKey
 import hiiragi283.lib.registry.getKeyOrThrow
 import hiiragi283.lib.registry.toLike
@@ -28,18 +28,18 @@ import net.minecraft.world.item.crafting.AbstractCookingRecipe
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput
 
-object HTVanillaRecipeTypes {
+data object VanillaRecipeLookups {
     @JvmField
-    val SMELTING: HTRecipeType<HTItemToItemRecipe> = CookingType(RecipeType.SMELTING)
+    val SMELTING: HTRecipeLookup.Translatable<HTItemToItemRecipe> = CookingType(RecipeType.SMELTING)
 
     @JvmField
-    val BLASTING: HTRecipeType<HTItemToItemRecipe> = CookingType(RecipeType.BLASTING)
+    val BLASTING: HTRecipeLookup.Translatable<HTItemToItemRecipe> = CookingType(RecipeType.BLASTING)
 
     @JvmField
-    val SMOKING: HTRecipeType<HTItemToItemRecipe> = CookingType(RecipeType.SMOKING)
+    val SMOKING: HTRecipeLookup.Translatable<HTItemToItemRecipe> = CookingType(RecipeType.SMOKING)
 
     @JvmInline
-    private value class CookingType<RECIPE : AbstractCookingRecipe>(private val recipeType: RecipeType<RECIPE>) : HTRecipeType<HTItemToItemRecipe> {
+    private value class CookingType<RECIPE : AbstractCookingRecipe>(private val recipeType: RecipeType<RECIPE>) : HTRecipeLookup.Translatable<HTItemToItemRecipe> {
         override fun getAllRecipes(contextMap: ContextMap): Sequence<HTRecipeHolder<HTItemToItemRecipe>> = contextMap.getOrThrow(HTRecipeLookupContext.RECIPES)
             .byType(recipeType)
             .asSequence()
@@ -61,9 +61,9 @@ object HTVanillaRecipeTypes {
     }
 
     @JvmField
-    val BREWING: HTRecipeType<HCBrewingRecipe> = BrewingType
+    val BREWING: HTRecipeLookup.Translatable<HCBrewingRecipe> = BrewingType
 
-    private data object BrewingType : HTRecipeType<HCBrewingRecipe> {
+    private data object BrewingType : HTRecipeLookup.Translatable<HCBrewingRecipe> {
         override fun getAllRecipes(contextMap: ContextMap): Sequence<HTRecipeHolder<HCBrewingRecipe>> {
             val builder: ImmutableMultimap.Builder<Holder<Potion>, HCBrewingRecipe> = ImmutableMultimap.builder()
             val recipes: List<HCBrewingRecipe> = contextMap.getOptional(HTRecipeLookupContext.BREWING)?.let(PotionBrewing::potionMixes)?.map(::HCBrewingRecipe) ?: return emptySequence()

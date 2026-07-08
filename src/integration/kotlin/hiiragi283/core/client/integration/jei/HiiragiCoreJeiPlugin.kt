@@ -2,7 +2,7 @@ package hiiragi283.core.client.integration.jei
 
 import hiiragi283.core.api.HCConstants
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
+import hiiragi283.core.common.recipe.VanillaRecipeLookups
 import hiiragi283.core.common.recipe.custom.HCEternalSmithingRecipe
 import hiiragi283.core.common.recipe.viewer.display.HCRecipeDisplayFactories
 import hiiragi283.core.setup.HCBlocks
@@ -103,7 +103,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     override fun registerRecipes(registration: IRecipeRegistration) {
         val helper = HTJeiRecipeHelper(registration)
 
-        helper.addDisplayRecipes(HCRecipeViewerTypes.BREWING, HTVanillaRecipeTypes.BREWING, HCRecipeDisplayFactories::brewing)
+        helper.addDisplayRecipes(HCRecipeViewerTypes.BREWING, VanillaRecipeLookups.BREWING, HCRecipeDisplayFactories::brewing)
         helper.addDisplayRecipes(HCRecipeViewerTypes.CHARGING, HCRecipeTypes.CHARGING, HCRecipeDisplayFactories::charging)
         helper.addDisplayRecipes(HCRecipeViewerTypes.CHOPPING, HCRecipeTypes.CHOPPING, HTRecipeDisplayFactories::itemToChancedItems)
         helper.addDisplayRecipes(HCRecipeViewerTypes.CRUSHING, HCRecipeTypes.CRUSHING, HTRecipeDisplayFactories::itemToChancedItems)

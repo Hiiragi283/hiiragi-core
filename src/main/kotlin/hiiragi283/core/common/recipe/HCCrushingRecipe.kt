@@ -22,5 +22,5 @@ class HCCrushingRecipe(ingredient: HTItemIngredient, results: List<HTChancedItem
 
     override fun getSerializer(): RecipeSerializer<HCCrushingRecipe> = HCRecipeSerializers.CRUSHING
 
-    override fun getType(): RecipeType<HCCrushingRecipe> = HCRecipeTypes.CRUSHING.get()
+    override fun getType(): RecipeType<HCCrushingRecipe> = HCRecipeTypes.CRUSHING
 }

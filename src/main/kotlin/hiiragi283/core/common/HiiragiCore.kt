@@ -9,7 +9,6 @@ import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCMiscRegister
 import hiiragi283.core.setup.HCRecipeLookups
-import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.lib.HTRegistries
 import hiiragi283.lib.item.alchemy.HTPotionFluidManager
 import hiiragi283.lib.material.HTModifyMaterialContentsEvent
@@ -43,7 +42,6 @@ data object HiiragiCore : HTCommonMod() {
         HCItems.register(eventBus)
 
         HCBlockEntityTypes.REGISTER.register(eventBus)
-        HCRecipeTypes.REGISTER.register(eventBus)
 
         HiiragiCoreAPI.LOGGER.info("Hiiragi-Core initialized")
     }

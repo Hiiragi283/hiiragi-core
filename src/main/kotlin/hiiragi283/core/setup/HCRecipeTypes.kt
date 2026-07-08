@@ -8,32 +8,38 @@ import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
-import hiiragi283.lib.registry.HTDeferredRecipeType
-import hiiragi283.lib.registry.HTDeferredRecipeTypeRegister
+import hiiragi283.lib.recipe.HTRecipeType
 
 data object HCRecipeTypes {
-    @JvmField
-    val REGISTER = HTDeferredRecipeTypeRegister(HiiragiCoreAPI.MOD_ID)
-
     //    In World    //
 
     @JvmField
-    val CHARGING: HTDeferredRecipeType<HCChargingRecipe> = REGISTER.registerType(HCConstants.CHARGING)
+    val CHARGING: HTRecipeType<HCChargingRecipe> = HTRecipeType(HiiragiCoreAPI.id(HCConstants.CHARGING))
 
     @JvmField
-    val CHOPPING: HTDeferredRecipeType<HCChoppingRecipe> = REGISTER.registerType(HCConstants.CHOPPING)
+    val CHOPPING: HTRecipeType<HCChoppingRecipe> = HTRecipeType(HiiragiCoreAPI.id(HCConstants.CHOPPING))
 
     @JvmField
-    val CRUSHING: HTDeferredRecipeType<HCCrushingRecipe> = REGISTER.registerType(HCConstants.CRUSHING)
+    val CRUSHING: HTRecipeType<HCCrushingRecipe> = HTRecipeType(HiiragiCoreAPI.id(HCConstants.CRUSHING))
 
     @JvmField
-    val EXPLODING: HTDeferredRecipeType<HCExplodingRecipe> = REGISTER.registerType(HCConstants.EXPLODING)
+    val EXPLODING: HTRecipeType<HCExplodingRecipe> = HTRecipeType(HiiragiCoreAPI.id(HCConstants.EXPLODING))
 
     //    Tank Interaction    //
 
     @JvmField
-    val EMPTYING: HTDeferredRecipeType<HCTankEmptyingRecipe> = REGISTER.registerType(HCConstants.EMPTYING)
+    val EMPTYING: HTRecipeType<HCTankEmptyingRecipe> = HTRecipeType(HiiragiCoreAPI.id(HCConstants.EMPTYING))
 
     @JvmField
-    val FILLING: HTDeferredRecipeType<HCTankFillingRecipe> = REGISTER.registerType(HCConstants.FILLING)
+    val FILLING: HTRecipeType<HCTankFillingRecipe> = HTRecipeType(HiiragiCoreAPI.id(HCConstants.FILLING))
+
+    @JvmField
+    val ALL_TYPES: Set<HTRecipeType<*>> = setOf(
+        CHARGING,
+        CHOPPING,
+        CRUSHING,
+        EXPLODING,
+        EMPTYING,
+        FILLING,
+    )
 }
