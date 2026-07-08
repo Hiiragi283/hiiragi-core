@@ -9,10 +9,16 @@ import hiiragi283.lib.block.entity.HTBlockEntity
 import hiiragi283.lib.entity.serverLevel
 import hiiragi283.lib.recipe.cache.HTRecipeCaches
 import hiiragi283.lib.recipe.handler.HTFluidInputHandler
-import hiiragi283.lib.recipe.handler.HTFluidOutputHandler
-import hiiragi283.lib.transfer.fluid.HTBasicFluidTank
-import hiiragi283.lib.transfer.fluid.HTFluidTank
-import hiiragi283.lib.transfer.holder.HTResourceSlotHolder
+import hiiragi283.lib.recipe.handler.HTOutputHandler
+import hiiragi283.lib.recipe.handler.insert
+import hiiragi283.lib.serialization.getFluidOrEmpty
+import hiiragi283.lib.serialization.putFluid
+import hiiragi283.lib.transfer.HTHandlerProvider
+import hiiragi283.lib.transfer.fluid.FluidResourceHandler
+import hiiragi283.lib.transfer.fluid.getFluidStack
+import hiiragi283.lib.transfer.fluid.set
+import hiiragi283.lib.transfer.getFilledLevel
+import hiiragi283.lib.transfer.item.ItemResourceHandler
 import hiiragi283.lib.transfer.useTransaction
 import hiiragi283.lib.world.HTItemDropHelper
 import net.minecraft.core.BlockPos
@@ -25,28 +31,69 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 import net.neoforged.neoforge.fluids.FluidStack
+import net.neoforged.neoforge.transfer.fluid.FluidResource
+import net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler
 import net.neoforged.neoforge.transfer.transaction.Transaction
 import org.apache.commons.lang3.math.Fraction
 
-class HTCopperBasinBlockEntity(worldPosition: BlockPos, blockState: BlockState) : HTBlockEntity(HCBlockEntityTypes.COPPER_BASIN.get(), worldPosition, blockState) {
-    lateinit var tank: HTBasicFluidTank
-        private set
-
-    override fun createFluidHandler(listener: Runnable): HTResourceSlotHolder<HTFluidTank> {
-        tank = HTBasicFluidTank.create(4000, listener)
-        return object : HTResourceSlotHolder<HTFluidTank> {
-            override fun getSlots(side: Direction?): List<HTFluidTank> = listOf(tank)
-
-            override fun canInsert(side: Direction?): Boolean = true
-
-            override fun canExtract(side: Direction?): Boolean = true
+class HTCopperBasinBlockEntity(worldPosition: BlockPos, blockState: BlockState) :
+    HTBlockEntity(HCBlockEntityTypes.COPPER_BASIN.get(), worldPosition, blockState),
+    HTHandlerProvider {
+    val fluidHandler: FluidResourceHandler
+        field = object : FluidStacksResourceHandler(1, 4000) {
+            override fun onContentsChanged(index: Int, previousContents: FluidStack) {
+                this@HTCopperBasinBlockEntity.setOnlySave()
+            }
         }
+
+    override fun writeValue(output: ValueOutput) {
+        super.writeValue(output)
+        output.putChild(HTConstants.FLUIDS, fluidHandler)
     }
+
+    override fun readValue(input: ValueInput) {
+        super.readValue(input)
+        input.readChild(HTConstants.FLUIDS, fluidHandler)
+    }
+
+    //    HTHandlerProvider    //
+
+    override fun getFluidHandler(direction: Direction?): FluidResourceHandler = fluidHandler
+
+    override fun getItemHandler(direction: Direction?): ItemResourceHandler? = null
+
+    //    Sync    //
+
+    override fun writeReducedUpdateTag(output: ValueOutput) {
+        super.writeReducedUpdateTag(output)
+        output.putFluid(fluidHandler.getFluidStack(0))
+    }
+
+    override fun readUpdateTag(input: ValueInput) {
+        super.readUpdateTag(input)
+        fluidHandler.set(0, input.getFluidOrEmpty())
+    }
+
+    //    Ticking    //
+
+    private var oldScale: Fraction = Fraction.ZERO
+
+    override fun onUpdateServer(level: ServerLevel, pos: BlockPos, state: BlockState): Boolean {
+        // 保持する量の変化があれば更新させる
+        val scale: Fraction = fluidHandler.getFilledLevel(0)
+        if (scale != this.oldScale) {
+            this.oldScale = scale
+            return true
+        }
+        return false
+    }
+
+    //    Recipe    //
 
     private val emptyingCache: HTRecipeCaches.SingleItem<HTTankEmptyingRecipe> = HTRecipeCaches.SingleItem(HCRecipeLookups.EMPTYING)
     private val fillingCache: HTRecipeCaches.ItemAndFluid<HTTankFillingRecipe> = HTRecipeCaches.ItemAndFluid(HCRecipeLookups.FILLING)
-    private val fluidInputHandler: HTFluidInputHandler by lazy { HTFluidInputHandler(tank) }
-    private val fluidOutputHandler: HTFluidOutputHandler by lazy { HTFluidOutputHandler.single(tank) }
+    private val fluidInputHandler: HTFluidInputHandler = HTFluidInputHandler(fluidHandler, 0)
+    private val fluidOutputHandler: HTOutputHandler<FluidResource> = HTOutputHandler.single(fluidHandler, 0)
 
     fun drainContainer(player: Player, hand: InteractionHand): Boolean {
         val stack: ItemStack = player.getItemInHand(hand)
@@ -68,7 +115,7 @@ class HTCopperBasinBlockEntity(worldPosition: BlockPos, blockState: BlockState) 
 
     fun fillContainer(player: Player, hand: InteractionHand): Boolean {
         val itemStack: ItemStack = player.getItemInHand(hand)
-        val fluidStack: FluidStack = tank.getStack()
+        val fluidStack: FluidStack = fluidHandler.getFluidStack(0)
         val level: ServerLevel = player.serverLevel() ?: return false
         val recipe: HTTankFillingRecipe = fillingCache.findFirstRecipe(itemStack, fluidStack, level) ?: return false
 
@@ -84,31 +131,5 @@ class HTCopperBasinBlockEntity(worldPosition: BlockPos, blockState: BlockState) 
                 }
             }
         return true
-    }
-
-    //    Sync    //
-
-    override fun writeReducedUpdateTag(output: ValueOutput) {
-        super.writeReducedUpdateTag(output)
-        output.putChild(HTConstants.FLUID, tank)
-    }
-
-    override fun readUpdateTag(input: ValueInput) {
-        super.readUpdateTag(input)
-        input.readChild(HTConstants.FLUID, tank)
-    }
-
-    //    Ticking    //
-
-    private var oldScale: Fraction = Fraction.ZERO
-
-    override fun onUpdateServer(level: ServerLevel, pos: BlockPos, state: BlockState): Boolean {
-        // 保持する量の変化があれば更新させる
-        val scale: Fraction = tank.getFilledLevel(tank.resource)
-        if (scale != this.oldScale) {
-            this.oldScale = scale
-            return true
-        }
-        return false
     }
 }

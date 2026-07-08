@@ -3,8 +3,9 @@ package hiiragi283.core.api.block
 import hiiragi283.core.api.block.entity.HTManualProcessingBoardBlockEntity
 import hiiragi283.lib.block.HTBasicEntityBlock
 import hiiragi283.lib.registry.HTDeferredBlockEntityType
-import hiiragi283.lib.transfer.HTHandlerAccess
-import hiiragi283.lib.transfer.item.HTBasicItemSlot
+import hiiragi283.lib.transfer.extractSelf
+import hiiragi283.lib.transfer.isEmpty
+import hiiragi283.lib.transfer.item.ItemResourceHandler
 import hiiragi283.lib.transfer.useTransaction
 import hiiragi283.lib.world.HTItemDropHelper
 import hiiragi283.lib.world.getTypedBlockEntity
@@ -26,11 +27,11 @@ import net.neoforged.neoforge.transfer.transaction.Transaction
 open class HTManualProcessingBoardBlock(type: HTDeferredBlockEntityType<*>, properties: Properties) : HTBasicEntityBlock(type, properties) {
     override fun useWithoutItem(state: BlockState, level: Level, pos: BlockPos, player: Player, hitResult: BlockHitResult): InteractionResult {
         val choppingBoard: HTManualProcessingBoardBlockEntity = level.getTypedBlockEntity(pos) ?: return InteractionResult.FAIL
-        val slot: HTBasicItemSlot = choppingBoard.slot
-        if (!slot.isEmpty()) {
-            val resourceIn: ItemResource = slot.resource
+        val itemHandler: ItemResourceHandler = choppingBoard.itemHandler
+        if (!itemHandler.isEmpty) {
+            val resourceIn: ItemResource = itemHandler.getResource(0)
             useTransaction { transaction: Transaction ->
-                val extracted: Int = slot.extract(resourceIn, slot.amountAsInt, transaction, HTHandlerAccess.MANUAL)
+                val extracted: Int = itemHandler.extractSelf(0, transaction)
                 if (extracted > 0) {
                     transaction.commit()
                     HTItemDropHelper.giveStackTo(player, resourceIn.toStack(extracted))
@@ -44,17 +45,17 @@ open class HTManualProcessingBoardBlock(type: HTDeferredBlockEntityType<*>, prop
     override fun useItemOn(itemStack: ItemStack, state: BlockState, level: Level, pos: BlockPos, player: Player, hand: InteractionHand, hitResult: BlockHitResult): InteractionResult {
         if (itemStack.isEmpty) return InteractionResult.TRY_WITH_EMPTY_HAND
         val choppingBoard: HTManualProcessingBoardBlockEntity = level.getTypedBlockEntity(pos) ?: return InteractionResult.FAIL
-        val slot: HTBasicItemSlot = choppingBoard.slot
+        val itemHandler: ItemResourceHandler = choppingBoard.itemHandler
         if (!player.isShiftKeyDown) {
             when {
-                !slot.isEmpty() && choppingBoard.processItem(player, hand) -> return InteractionResult.SUCCESS
+                !itemHandler.isEmpty && choppingBoard.processItem(player, hand) -> return InteractionResult.SUCCESS
                 else -> {
                     val handAccess: ItemAccess = ItemAccess.forPlayerInteraction(player, hand)
                     val handResource: ItemResource = handAccess.resource
                     useTransaction { transaction: Transaction ->
                         val extracted: Int = handAccess.extract(handResource, handAccess.amount, transaction)
                         val inserted: Int = useTransaction(transaction) { transaction1: Transaction ->
-                            val inserted: Int = slot.insert(handResource, extracted, transaction1, HTHandlerAccess.MANUAL)
+                            val inserted: Int = itemHandler.insert(0, handResource, extracted, transaction1)
                             if (inserted > 0) {
                                 transaction1.commit()
                             }

@@ -3,20 +3,14 @@ package hiiragi283.lib.block
 import hiiragi283.lib.block.entity.HTBlockEntity
 import hiiragi283.lib.block.entity.HTExtendedBlockEntity
 import hiiragi283.lib.registry.HTDeferredBlockEntityType
-import hiiragi283.lib.registry.HTDeferredMenuType
-import hiiragi283.lib.text.Text
 import hiiragi283.lib.world.getTypedBlockEntity
 import net.minecraft.core.BlockPos
-import net.minecraft.world.InteractionResult
-import net.minecraft.world.Nameable
 import net.minecraft.world.entity.LivingEntity
-import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.redstone.Orientation
-import net.minecraft.world.phys.BlockHitResult
 
 /**
  * Hiiragi Seriesで使用される[HTBlockWithEntity]の実装クラスです。
@@ -29,7 +23,7 @@ open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, pr
     Block(properties),
     HTBlockWithEntity {
 
-    override fun useWithoutItem(state: BlockState, level: Level, pos: BlockPos, player: Player, hitResult: BlockHitResult): InteractionResult {
+    /*override fun useWithoutItem(state: BlockState, level: Level, pos: BlockPos, player: Player, hitResult: BlockHitResult): InteractionResult {
         val blockEntity: HTExtendedBlockEntity = level.getTypedBlockEntity(pos) ?: return InteractionResult.PASS
         val menuType: HTDeferredMenuType.WithContext<*, *>? = getMenuType()
         if (level.isClientSide) {
@@ -45,9 +39,9 @@ open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, pr
         return menuType
             ?.openMenu(player, name, blockEntity) { it.writeBlockPos(blockEntity.blockPos) }
             ?: InteractionResult.PASS
-    }
+    }*/
 
-    protected open fun getMenuType(): HTDeferredMenuType.WithContext<*, *>? = null
+    // protected open fun getMenuType(): HTDeferredMenuType.WithContext<*, *>? = null
 
     override fun setPlacedBy(
         level: Level,

@@ -30,7 +30,12 @@ fun interface HTLangPatternProvider {
          * @param jaPattern 日本語での翻訳名のパターン
          */
         @JvmStatic
-        fun create(enPattern: String, jaPattern: String): HTLangPatternProvider = create(enPattern, HTLangTypes.JA_JP to jaPattern)
+        fun create(enPattern: String, jaPattern: String): HTLangPatternProvider = HTLangPatternProvider { type: HTLangType, value: String ->
+            when (type) {
+                HTLangTypes.JA_JP -> jaPattern
+                else -> enPattern
+            }.replace("%s", value)
+        }
 
         /**
          * 新しい[HTLangPatternProvider]のインスタンスを作成します。

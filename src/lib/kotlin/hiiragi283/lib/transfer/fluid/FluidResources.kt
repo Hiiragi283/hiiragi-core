@@ -1,11 +1,10 @@
 package hiiragi283.lib.transfer.fluid
 
-import hiiragi283.lib.transfer.HTResourceSlot
-import hiiragi283.lib.transfer.HTResourceView
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidStackTemplate
 import net.neoforged.neoforge.transfer.ResourceHandler
 import net.neoforged.neoforge.transfer.fluid.FluidResource
+import net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler
 
 //    FluidResource    //
 
@@ -41,25 +40,13 @@ typealias FluidResourceHandler = ResourceHandler<FluidResource>
 fun FluidResourceHandler.getFluidStack(index: Int): FluidStack = this.getResource(index).toStack(this.getAmountAsInt(index))
 
 /**
- * [FluidResource]向けの[HTResourceView]のエイリアスです。
+ * この[FluidStacksResourceHandler][this]の中身を直接置き換えます。
+ * @param index 置き換えるスロットのインデックス
+ * @param stack 置き換え後の液体
  * @author Hiiragi Tsubasa
- * @since 26.1.0
+ * @since 26.1.3
  */
-typealias HTFluidView = HTResourceView<FluidResource>
-
-/**
- * [FluidStack]のコピーを取得します。
- * @author Hiiragi Tsubasa
- * @since 26.1.0
- */
-fun HTFluidView.getFluidStack(): FluidStack = when (this) {
-    is HTBasicFluidTank -> this.getStack()
-    else -> this.resource.toStack(this.amountAsInt)
+fun FluidStacksResourceHandler.set(index: Int, stack: FluidStack) {
+    val (resource: FluidResource, amount: Int) = stack.toResourcePair()
+    this.set(index, resource, amount)
 }
-
-/**
- * [FluidResource]向けの[HTResourceSlot]のエイリアスです。
- * @author Hiiragi Tsubasa
- * @since 26.1.0
- */
-typealias HTFluidTank = HTResourceSlot<FluidResource>

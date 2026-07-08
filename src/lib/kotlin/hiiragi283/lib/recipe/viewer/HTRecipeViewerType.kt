@@ -1,19 +1,11 @@
 package hiiragi283.lib.recipe.viewer
 
 import hiiragi283.lib.math.HTBounds
-import hiiragi283.lib.recipe.HTRecipeHolder
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.text.HTHasText
 import hiiragi283.lib.util.Either
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStack
-
-/**
- * [HTRecipeHolder]に基づいた[HTRecipeViewerType]のエイリアスです。
- * @author Hiiragi Tsubasa
- * @since 26.1.0
- */
-typealias HTHolderRecipeViewerType<RECIPE> = HTRecipeViewerType<HTRecipeHolder<RECIPE>>
 
 /**
  * 参照 : [Mekanism - IRecipeViewerRecipeType](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/client/recipe_viewer/type/IRecipeViewerRecipeType.java)

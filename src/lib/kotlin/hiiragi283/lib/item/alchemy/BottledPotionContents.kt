@@ -40,9 +40,8 @@ data class BottledPotionContents(val contents: PotionContents, val bottleType: H
         )
     }
 
-    constructor(potion: Holder<Potion>) : this(potion, HTBottleType.DEFAULT)
-
-    constructor(potion: Holder<Potion>, bottleType: HTBottleType) : this(PotionContents(potion), bottleType)
+    @JvmOverloads
+    constructor(potion: Holder<Potion>, bottleType: HTBottleType = HTBottleType.DEFAULT) : this(PotionContents(potion), bottleType)
 
     /**
      * ポーションの値

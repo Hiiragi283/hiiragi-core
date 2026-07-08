@@ -1,22 +1,13 @@
 package hiiragi283.lib.block.entity
 
 import hiiragi283.lib.HTConstants
-import hiiragi283.lib.gui.sync.HTSyncableMenu
 import hiiragi283.lib.serialization.readOption
 import hiiragi283.lib.text.Text
-import hiiragi283.lib.transfer.HTCapabilityCodec
-import hiiragi283.lib.transfer.HTHandlerProvider
-import hiiragi283.lib.transfer.fluid.FluidResourceHandler
-import hiiragi283.lib.transfer.fluid.HTFluidTank
-import hiiragi283.lib.transfer.holder.HTResourceSlotHolder
 import hiiragi283.lib.transfer.indices
-import hiiragi283.lib.transfer.item.HTItemSlot
 import hiiragi283.lib.transfer.item.ItemResourceHandler
-import hiiragi283.lib.transfer.resolver.HTResourceCapabilityManager
 import hiiragi283.lib.world.HTItemDropHelper
 import java.util.UUID
 import net.minecraft.core.BlockPos
-import net.minecraft.core.Direction
 import net.minecraft.core.UUIDUtil
 import net.minecraft.network.chat.ComponentSerialization
 import net.minecraft.server.level.ServerLevel
@@ -26,8 +17,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
-import net.neoforged.neoforge.transfer.fluid.FluidResource
-import net.neoforged.neoforge.transfer.item.ItemResource
 import net.neoforged.neoforge.transfer.item.ItemUtil
 
 /**
@@ -37,10 +26,9 @@ import net.neoforged.neoforge.transfer.item.ItemUtil
  * @author Hiiragi Tsubasa
  * @since 26.1.0
  */
-abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, blockState: BlockState) :
-    HTExtendedBlockEntity(type, worldPosition, blockState),
+abstract class HTBlockEntity(type: BlockEntityType<*>, pos: BlockPos, blockState: BlockState) :
+    HTExtendedBlockEntity(type, pos, blockState),
     Nameable,
-    HTHandlerProvider,
     HTOwnedBlockEntity,
     HTSoundPlayerBlockEntity {
     //    Ticking    //
@@ -91,12 +79,6 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
 
     override fun writeValue(output: ValueOutput) {
         super.writeValue(output)
-        // Capability
-        for (type: HTCapabilityCodec<*> in HTCapabilityCodec.TYPES) {
-            if (type.canHandle(this)) {
-                type.saveTo(output, this)
-            }
-        }
         // Custom Name
         output.storeNullable("custom_name", ComponentSerialization.CODEC, this.customName)
         // Owner
@@ -105,12 +87,6 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
 
     override fun readValue(input: ValueInput) {
         super.readValue(input)
-        // Capability
-        for (type: HTCapabilityCodec<*> in HTCapabilityCodec.TYPES) {
-            if (type.canHandle(this)) {
-                type.loadFrom(input, this)
-            }
-        }
         // Custom Name
         input.readOption("custom_name", ComponentSerialization.CODEC).onSome(::customName::set)
         // Owner
@@ -131,47 +107,7 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
 
     override fun getOwner(): UUID? = ownerId
 
-    //    Menu    //
-
-    open fun addMenuTrackers(menu: HTSyncableMenu) {}
-
     //    Capability    //
-
-    protected val fluidHandlerManager: HTResourceCapabilityManager<FluidResource, HTFluidTank>?
-    protected val itemHandlerManager: HTResourceCapabilityManager<ItemResource, HTItemSlot>?
-
-    init {
-        initializeVariables()
-        fluidHandlerManager = createFluidHandler(::setOnlySave)?.let(::HTResourceCapabilityManager)
-        itemHandlerManager = createItemHandler(::setOnlySave)?.let(::HTResourceCapabilityManager)
-    }
-
-    /**
-     * [fluidHandlerManager]や[itemHandlerManager]が初期化される前に変数を初期化します。
-     */
-    protected open fun initializeVariables() {}
-
-    // Fluid
-    fun hasFluidHandler(): Boolean = fluidHandlerManager != null
-
-    protected open fun createFluidHandler(listener: Runnable): HTResourceSlotHolder<HTFluidTank>? = null
-
-    fun getFluidTanks(side: Direction?): List<HTFluidTank> = fluidHandlerManager?.getContainers(side) ?: emptyList()
-
-    fun getFluidTank(side: Direction?, index: Int): HTFluidTank? = getFluidTanks(side).getOrNull(index)
-
-    final override fun getFluidHandler(direction: Direction?): FluidResourceHandler? = fluidHandlerManager?.resolve(direction)
-
-    // Item
-    fun hasItemHandler(): Boolean = itemHandlerManager != null
-
-    protected open fun createItemHandler(listener: Runnable): HTResourceSlotHolder<HTItemSlot>? = null
-
-    fun getItemSlots(side: Direction?): List<HTItemSlot> = itemHandlerManager?.getContainers(side) ?: emptyList()
-
-    fun getItemSlot(side: Direction?, index: Int): HTItemSlot? = getItemSlots(side).getOrNull(index)
-
-    final override fun getItemHandler(direction: Direction?): ItemResourceHandler? = itemHandlerManager?.resolve(direction)
 
     override fun preRemoveSideEffects(pos: BlockPos, state: BlockState) {
         val level: Level = this.level ?: return
@@ -181,17 +117,15 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, 
     /**
      * ブロックが削除されたときに呼び出されます。
      */
-    open fun onBlockRemoved(state: BlockState, level: Level, pos: BlockPos) {
-        if (shouldDrop(state, level, pos)) {
-            val handler: ItemResourceHandler = getItemHandler(null) ?: return
-            for (i: Int in handler.indices) {
-                ItemUtil.getStack(handler, i).let { HTItemDropHelper.dropStackAt(level, pos, it) }
-            }
-        }
-    }
+    open fun onBlockRemoved(state: BlockState, level: Level, pos: BlockPos) {}
 
     /**
-     * アイテムをドロップするかどうか判定します。
+     * アイテムをドロップします。
+     * @since 26.1.3
      */
-    protected open fun shouldDrop(state: BlockState, level: Level, pos: BlockPos): Boolean = true
+    protected fun dropItems(level: Level, pos: BlockPos, handler: ItemResourceHandler, range: Iterable<Int> = handler.indices) {
+        for (i: Int in range) {
+            ItemUtil.getStack(handler, i).let { HTItemDropHelper.dropStackAt(level, pos, it) }
+        }
+    }
 }

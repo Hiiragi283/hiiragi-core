@@ -2,13 +2,6 @@ package hiiragi283.core.client.integration.jei
 
 import hiiragi283.core.api.HCConstants
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.client.integration.jei.category.HCBrewingRecipeCategory
-import hiiragi283.core.client.integration.jei.category.HCChargingRecipeCategory
-import hiiragi283.core.client.integration.jei.category.HCExplodingRecipeCategory
-import hiiragi283.core.client.integration.jei.category.HCTankEmptyingRecipeCategory
-import hiiragi283.core.client.integration.jei.category.HCTankFillingRecipeCategory
-import hiiragi283.core.client.integration.jei.category.HTItemToChancedItemsRecipeCategory
-import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
 import hiiragi283.core.common.recipe.custom.HCEternalSmithingRecipe
 import hiiragi283.core.common.recipe.viewer.display.HCRecipeDisplayFactories
@@ -21,8 +14,9 @@ import hiiragi283.lib.HTPhysicalSideHelper
 import hiiragi283.lib.integration.jei.HTJeiPlugin
 import hiiragi283.lib.integration.jei.HTJeiRecipeHelper
 import hiiragi283.lib.integration.jei.HTJeiWorkstationHelper
+import hiiragi283.lib.integration.jei.HTRecipeViewerUIFactories
+import hiiragi283.lib.integration.jei.category.HTDisplayRecipeCategory
 import hiiragi283.lib.item.HTPotionBasedItem
-import hiiragi283.lib.item.alchemy.BottledPotionContents
 import hiiragi283.lib.item.alchemy.HTBottleType
 import hiiragi283.lib.item.alchemy.HTPotionHelper
 import hiiragi283.lib.recipe.ingredient.HTFluidIngredient
@@ -49,6 +43,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.alchemy.Potion
+import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.DataComponentFluidIngredient
@@ -78,8 +73,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             .filteredLookup(Registries.POTION)
             .getOrNull()
             ?.listElements()
-            ?.map(::BottledPotionContents)
-            ?.filter { !it.isWater }
+            ?.filter { it != Potions.WATER }
             ?.map(HCPotionFluidHelper::createFluid)
             ?.toList()
             ?.let { registration.addExtraIngredients(NeoForgeTypes.FLUID_STACK, it) }
@@ -90,14 +84,14 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
 
         registration.addRecipeCategories(
             // Recipes
-            HCBrewingRecipeCategory(guiHelper),
-            HTItemToChancedItemsRecipeCategory(guiHelper, HCRecipeViewerTypes.CHOPPING),
-            HTItemToChancedItemsRecipeCategory(guiHelper, HCRecipeViewerTypes.CRUSHING),
-            HCChargingRecipeCategory(guiHelper),
-            HCExplodingRecipeCategory(guiHelper),
+            HTDisplayRecipeCategory.Progress(guiHelper, HCRecipeViewerTypes.BREWING, HTRecipeViewerUIFactories::itemOrFluid),
+            HTDisplayRecipeCategory.Progress(guiHelper, HCRecipeViewerTypes.CHOPPING, HTRecipeViewerUIFactories::itemToChancedItems),
+            HTDisplayRecipeCategory.Progress(guiHelper, HCRecipeViewerTypes.CRUSHING, HTRecipeViewerUIFactories::itemToChancedItems),
+            HTDisplayRecipeCategory.Simple(guiHelper, HCRecipeViewerTypes.CHARGING, HTRecipeViewerUIFactories::itemToItem),
+            HTDisplayRecipeCategory.Simple(guiHelper, HCRecipeViewerTypes.EXPLODING, HTRecipeViewerUIFactories::itemToItem),
             // Tank Interaction
-            HCTankEmptyingRecipeCategory(guiHelper),
-            HCTankFillingRecipeCategory(guiHelper),
+            HTDisplayRecipeCategory.Simple(guiHelper, HCRecipeViewerTypes.EMPTYING, HTRecipeViewerUIFactories::itemOrFluid),
+            HTDisplayRecipeCategory.Simple(guiHelper, HCRecipeViewerTypes.FILLING, HTRecipeViewerUIFactories::itemOrFluid),
         )
     }
 
@@ -109,7 +103,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     override fun registerRecipes(registration: IRecipeRegistration) {
         val helper = HTJeiRecipeHelper(registration)
 
-        helper.addLookupRecipes(HCRecipeViewerTypes.BREWING, HTVanillaRecipeTypes.BREWING, HCBrewingRecipe.SORTER)
+        helper.addDisplayRecipes(HCRecipeViewerTypes.BREWING, HTVanillaRecipeTypes.BREWING, HCRecipeDisplayFactories::brewing)
         helper.addDisplayRecipes(HCRecipeViewerTypes.CHARGING, HCRecipeTypes.CHARGING, HCRecipeDisplayFactories::charging)
         helper.addDisplayRecipes(HCRecipeViewerTypes.CHOPPING, HCRecipeTypes.CHOPPING, HTRecipeDisplayFactories::itemToChancedItems)
         helper.addDisplayRecipes(HCRecipeViewerTypes.CRUSHING, HCRecipeTypes.CRUSHING, HTRecipeDisplayFactories::itemToChancedItems)
@@ -126,12 +120,11 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             HCRecipeViewerTypes.EMPTYING,
             getPotionHolders()
                 .map { potion: Holder<Potion> ->
-                    val contents = BottledPotionContents(potion)
                     HTRecipeDisplay.Simple(
                         potion.toLike().getId().withPath { "/${HCConstants.EMPTYING}/potion/$it" },
                         HTRecipeContents.create {
-                            HTPotionHelper.createPotion(contents).let(ItemStackTemplate::create).let(::addInput)
-                            addOutput(HCPotionFluidHelper.createFluid(contents, 250))
+                            HTPotionHelper.createPotion(potion).let(ItemStackTemplate::create).let(::addInput)
+                            addOutput(HCPotionFluidHelper.createFluid(potion, amount = 250))
                             addOutput(ItemStack(Items.GLASS_BOTTLE))
                         },
                     )
@@ -167,7 +160,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                                 HTFluidIngredient(
                                     DataComponentFluidIngredient.of(
                                         false,
-                                        HCPotionFluidHelper.createFluid(BottledPotionContents(potion, bottleType)),
+                                        HCPotionFluidHelper.createFluid(potion, bottleType),
                                     ),
                                     amount,
                                 ),

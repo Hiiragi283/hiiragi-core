@@ -6,7 +6,6 @@ import hiiragi283.lib.recipe.HTRecipeHolder
 import hiiragi283.lib.recipe.lookup.HTRecipeLookup
 import hiiragi283.lib.recipe.lookup.HTRecipeLookupContext
 import hiiragi283.lib.recipe.lookup.HTVanillaRecipeLookup
-import hiiragi283.lib.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.lib.recipe.viewer.HTRecipeViewerType
 import hiiragi283.lib.recipe.viewer.display.HTRecipeDisplay
 import java.util.function.Supplier
@@ -48,37 +47,6 @@ value class HTJeiRecipeHelper(@PublishedApi internal val registration: IRecipeRe
 
     fun <T : Any> addRecipes(viewerType: HTRecipeViewerType<T>, recipes: Sequence<T>, sorter: Comparator<in T>) {
         this.addRecipes(viewerType, recipes.sortedWith(sorter))
-    }
-
-    // HTRecipeHolder
-    fun <T : Any> addHolderRecipes(viewerType: HTHolderRecipeViewerType<T>, recipes: Sequence<HTRecipeHolder<T>>) {
-        this.addRecipes(viewerType, recipes, HOLDER_SORTER)
-    }
-
-    fun <T : Any> addHolderRecipes(
-        viewerType: HTHolderRecipeViewerType<T>,
-        recipes: Sequence<HTRecipeHolder<T>>,
-        sorter: Comparator<in T>,
-    ) {
-        this.addRecipes(viewerType, recipes, compareBy(sorter, HTRecipeHolder<T>::recipe).thenComparing(HOLDER_SORTER))
-    }
-
-    // HTRecipeLookup
-    /**
-     * 指定した[viewerType]と[lookup]からレシピを登録します。
-     * @param T レシピのクラス
-     */
-    fun <T : Any> addLookupRecipes(viewerType: HTHolderRecipeViewerType<T>, lookup: HTRecipeLookup<T>) {
-        this.addHolderRecipes(viewerType, lookup.getAllRecipes(createContext()))
-    }
-
-    /**
-     * 指定した[viewerType]と[lookup]からレシピを登録します。
-     * @param T レシピのクラス
-     * @param sorter レシピの順番の制御
-     */
-    fun <T : Any> addLookupRecipes(viewerType: HTHolderRecipeViewerType<T>, lookup: HTRecipeLookup<T>, sorter: Comparator<in T>) {
-        this.addHolderRecipes(viewerType, lookup.getAllRecipes(createContext()), sorter)
     }
 
     // HTRecipeDisplay

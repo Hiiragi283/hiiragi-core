@@ -20,7 +20,6 @@ import hiiragi283.lib.material.HTModifyMaterialContentsEvent
 import hiiragi283.lib.mod.HTCommonMod
 import hiiragi283.lib.network.HTPayloadHandlers
 import hiiragi283.lib.network.HTUpdateBlockEntityPacket
-import hiiragi283.lib.network.HTUpdateMenuPacket
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.Mod
@@ -65,7 +64,6 @@ data object HiiragiCore : HTCommonMod() {
     override fun registerRegistries(event: NewRegistryEvent) {
         event.register(HTRegistries.ITEM_RESULT_SERIALIZER)
         event.register(HTRegistries.MATERIAL_CONTENTS)
-        event.register(HTRegistries.SLOT_TYPE)
     }
 
     override fun commonSetup(event: FMLCommonSetupEvent) {
@@ -94,6 +92,5 @@ data object HiiragiCore : HTCommonMod() {
 
     override fun registerPayload(registrar: PayloadRegistrar) {
         registrar.playToClient(HTUpdateBlockEntityPacket.TYPE, HTUpdateBlockEntityPacket.STREAM_CODEC, HTPayloadHandlers::handleS2C)
-        registrar.playBidirectional(HTUpdateMenuPacket.TYPE, HTUpdateMenuPacket.STREAM_CODEC, HTPayloadHandlers::handleS2C, HTPayloadHandlers::handleC2S)
     }
 }

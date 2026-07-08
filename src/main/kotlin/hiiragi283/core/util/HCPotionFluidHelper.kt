@@ -2,9 +2,12 @@ package hiiragi283.core.util
 
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.lib.item.alchemy.BottledPotionContents
+import hiiragi283.lib.item.alchemy.HTBottleType
 import hiiragi283.lib.item.alchemy.HTPotionHelper
 import hiiragi283.lib.registry.VanillaFluidContents
+import net.minecraft.core.Holder
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.alchemy.Potion
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.transfer.fluid.FluidResource
@@ -15,6 +18,9 @@ data object HCPotionFluidHelper {
      */
     @JvmStatic
     fun createResource(contents: BottledPotionContents): FluidResource = FluidResource.of(createFluid(contents))
+
+    @JvmStatic
+    fun createFluid(potion: Holder<Potion>, bottleType: HTBottleType = HTBottleType.DEFAULT, amount: Int = FluidType.BUCKET_VOLUME): FluidStack = createFluid(BottledPotionContents(potion, bottleType), amount)
 
     /**
      * @return [contents]が`null`の場合，水を返す。

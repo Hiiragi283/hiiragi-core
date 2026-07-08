@@ -1,6 +1,5 @@
 package hiiragi283.lib
 
-import hiiragi283.lib.gui.sync.HTSyncablePayload
 import hiiragi283.lib.material.HTMaterialContents
 import hiiragi283.lib.recipe.result.HTItemResult
 import hiiragi283.lib.resource.toId
@@ -20,9 +19,6 @@ data object HTRegistries {
     @JvmField
     val MATERIAL_CONTENTS: Registry<HTMaterialContents> = createRegistry(Keys.MATERIAL_CONTENTS)
 
-    @JvmField
-    val SLOT_TYPE: Registry<HTSyncablePayload.Type<*>> = createRegistry(Keys.SLOT_TYPE)
-
     @JvmStatic
     private fun <T : Any> createRegistry(key: ResourceKey<Registry<T>>): Registry<T> = RegistryBuilder(key)
         .sync(true)
@@ -41,9 +37,6 @@ data object HTRegistries {
 
         @JvmField
         val MATERIAL_CONTENTS: ResourceKey<Registry<HTMaterialContents>> = createKey("material_contents")
-
-        @JvmField
-        val SLOT_TYPE: ResourceKey<Registry<HTSyncablePayload.Type<*>>> = createKey("syncable_slot_type")
 
         @JvmStatic
         private fun <T : Any> createKey(path: String): ResourceKey<Registry<T>> = ResourceKey.createRegistryKey(HTConstants.MOD_ID.toId(path))

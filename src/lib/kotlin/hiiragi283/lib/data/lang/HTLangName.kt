@@ -18,7 +18,12 @@ fun interface HTLangName {
          * @param jaName 日本語での翻訳名
          */
         @JvmStatic
-        fun create(enName: String, jaName: String): HTLangName = create(enName, HTLangTypes.JA_JP to jaName)
+        fun create(enName: String, jaName: String): HTLangName = HTLangName { type: HTLangType ->
+            when (type) {
+                HTLangTypes.JA_JP -> jaName
+                else -> enName
+            }
+        }
 
         /**
          * 新しい[HTLangName]のインスタンスを作成します。

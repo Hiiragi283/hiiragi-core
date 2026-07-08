@@ -251,6 +251,11 @@ dependencies {
 
     implementation(libs.kff)
     // implementation(libs.mek.get().toString() + ":all")
+    implementation(libs.ldlib) {
+        modules {
+            exclude(group = "net.neoforged")
+        }
+    }
 
     implementation(libs.bundles.common.impl)
     compileOnly(libs.bundles.common.compile)
@@ -320,7 +325,7 @@ kotlin {
 
     compilerOptions {
         jvmTarget = JvmTarget.fromTarget("$jdkVersion")
-        freeCompilerArgs.addAll("-Xexplicit-backing-fields")
+        freeCompilerArgs.addAll()
     }
 }
 
