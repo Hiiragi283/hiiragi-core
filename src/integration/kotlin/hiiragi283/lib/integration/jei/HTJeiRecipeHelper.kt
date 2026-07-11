@@ -29,9 +29,6 @@ value class HTJeiRecipeHelper(@PublishedApi internal val registration: IRecipeRe
 
         @JvmField
         val DISPLAY_SORTER: Comparator<in HTRecipeDisplay> = compareBy(HTComparators.ID, HTRecipeDisplay::getId)
-
-        @JvmField
-        val HOLDER_SORTER: Comparator<in HTRecipeHolder<*>> = compareBy(HTComparators.ID, HTRecipeHolder<*>::getId)
     }
 
     fun <T : Any> addRecipes(recipeType: IRecipeType<T>, recipes: Sequence<T>) {
@@ -59,18 +56,18 @@ value class HTJeiRecipeHelper(@PublishedApi internal val registration: IRecipeRe
     }
 
     fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>, DISPLAY : HTRecipeDisplay> addDisplayRecipes(viewerType: HTRecipeViewerType<DISPLAY>, recipeType: RecipeType<RECIPE>, transform: (HTRecipeHolder<RECIPE>) -> DISPLAY) {
-        this.addDisplayRecipes(viewerType, HTVanillaRecipeLookup(recipeType).getAllRecipes(createContext()).map(transform))
+        this.addDisplayRecipes(viewerType, HTVanillaRecipeLookup(recipeType).asSequence(createContext()).map(transform))
     }
 
     fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>, DISPLAY : HTRecipeDisplay> addDisplayRecipes(viewerType: HTRecipeViewerType<DISPLAY>, recipeType: Supplier<out RecipeType<RECIPE>>, transform: (HTRecipeHolder<RECIPE>) -> DISPLAY) {
-        this.addDisplayRecipes(viewerType, HTVanillaRecipeLookup(recipeType).getAllRecipes(createContext()).map(transform))
+        this.addDisplayRecipes(viewerType, HTVanillaRecipeLookup(recipeType).asSequence(createContext()).map(transform))
     }
 
     fun <BASE : Any, DISPLAY : HTRecipeDisplay> addDisplayRecipes(viewerType: HTRecipeViewerType<DISPLAY>, lookup: HTRecipeLookup<BASE>, transform: (HTRecipeHolder<BASE>) -> DISPLAY?) {
-        this.addDisplayRecipes(viewerType, lookup.getAllRecipes(createContext()).mapNotNull(transform))
+        this.addDisplayRecipes(viewerType, lookup.asSequence(createContext()).mapNotNull(transform))
     }
 
     fun <BASE : Any, DISPLAY : HTRecipeDisplay> addDisplayRecipes(viewerType: HTRecipeViewerType<DISPLAY>, lookup: HTRecipeLookup<BASE>, sorter: Comparator<DISPLAY>, transform: (HTRecipeHolder<BASE>) -> DISPLAY?) {
-        this.addDisplayRecipes(viewerType, lookup.getAllRecipes(createContext()).mapNotNull(transform), sorter)
+        this.addDisplayRecipes(viewerType, lookup.asSequence(createContext()).mapNotNull(transform), sorter)
     }
 }

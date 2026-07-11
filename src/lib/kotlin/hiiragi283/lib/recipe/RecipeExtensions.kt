@@ -49,3 +49,15 @@ fun RecipeKey(id: Identifier): RecipeKey = Registries.RECIPE.createKey(id)
  * @since 26.1.3
  */
 fun <T : Recipe<*>> RecipeSerializer(codec: MapCodec<T>): RecipeSerializer<T> = RecipeSerializer(codec, ByteBufCodecs.fromCodecWithRegistries(codec.codec()))
+
+//    HTRecipeHolder    //
+
+typealias HTRecipeHolder<R> = Pair<RecipeKey, R>
+
+fun <R> HTRecipeHolder(id: Identifier, recipe: R): HTRecipeHolder<R> = RecipeKey(id) to recipe
+
+val <R> HTRecipeHolder<R>.key: RecipeKey get() = this.first
+
+val <R> HTRecipeHolder<R>.id: Identifier get() = this.key.identifier()
+
+val <R> HTRecipeHolder<R>.recipe: R get() = this.second

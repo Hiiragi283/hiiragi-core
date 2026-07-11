@@ -153,7 +153,7 @@ value class Option<out T : Any>@PublishedApi internal constructor(@PublishedApi 
      * @param empty 左側の値を提供するブロック
      * @return 保持している値を右側とする[Either]
      */
-    fun <L> toEither(empty: () -> L): Either<L, T> {
+    inline fun <L> toEither(empty: () -> L): Either<L, T> {
         contract {
             callsInPlace(empty, InvocationKind.AT_MOST_ONCE)
         }

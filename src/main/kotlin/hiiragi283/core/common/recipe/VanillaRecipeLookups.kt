@@ -1,8 +1,10 @@
 package hiiragi283.core.common.recipe
 
-import com.google.common.collect.ImmutableMultimap
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.lib.collection.MultiMap
+import hiiragi283.lib.collection.buildListMultiMap
 import hiiragi283.lib.recipe.HTRecipeHolder
+import hiiragi283.lib.recipe.RecipeKey
 import hiiragi283.lib.recipe.base.HTItemToItemRecipe
 import hiiragi283.lib.recipe.base.HTProgressData
 import hiiragi283.lib.recipe.ingredient.HTIngredientHelper
@@ -25,6 +27,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.PotionBrewing
 import net.minecraft.world.item.crafting.AbstractCookingRecipe
+import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput
 
@@ -40,11 +43,9 @@ data object VanillaRecipeLookups {
 
     @JvmInline
     private value class CookingType<RECIPE : AbstractCookingRecipe>(private val recipeType: RecipeType<RECIPE>) : HTRecipeLookup.Translatable<HTItemToItemRecipe> {
-        override fun getAllRecipes(contextMap: ContextMap): Sequence<HTRecipeHolder<HTItemToItemRecipe>> = contextMap.getOrThrow(HTRecipeLookupContext.RECIPES)
+        override fun getAllRecipes(contextMap: ContextMap): Map<RecipeKey, HTItemToItemRecipe> = contextMap.getOrThrow(HTRecipeLookupContext.RECIPES)
             .byType(recipeType)
-            .asSequence()
-            .map(HTRecipeHolder.Companion::from)
-            .map { it.mapRecipe(::HCCookingRecipe) }
+            .associate { holder: RecipeHolder<RECIPE> -> holder.id() to HCCookingRecipe(holder.value()) }
 
         override fun getKey(): ResourceKey<RecipeType<*>> = BuiltInRegistries.RECIPE_TYPE.wrapAsHolder(recipeType).getKeyOrThrow()
     }
@@ -64,19 +65,19 @@ data object VanillaRecipeLookups {
     val BREWING: HTRecipeLookup.Translatable<HCBrewingRecipe> = BrewingType
 
     private data object BrewingType : HTRecipeLookup.Translatable<HCBrewingRecipe> {
-        override fun getAllRecipes(contextMap: ContextMap): Sequence<HTRecipeHolder<HCBrewingRecipe>> {
-            val builder: ImmutableMultimap.Builder<Holder<Potion>, HCBrewingRecipe> = ImmutableMultimap.builder()
-            val recipes: List<HCBrewingRecipe> = contextMap.getOptional(HTRecipeLookupContext.BREWING)?.let(PotionBrewing::potionMixes)?.map(::HCBrewingRecipe) ?: return emptySequence()
-            recipes.forEach { builder.put(it.potionTo, it) }
-            val recipeMap: ImmutableMultimap<Holder<Potion>, HCBrewingRecipe> = builder.build()
-            return recipeMap
-                .keySet()
-                .asSequence()
-                .flatMap { potionTo: Holder<Potion> ->
-                    recipeMap[potionTo].mapIndexed { index: Int, recipe: HCBrewingRecipe ->
-                        HTRecipeHolder(potionTo.toLike().getId().withSuffix("_$index"), recipe)
-                    }
+        override fun getAllRecipes(contextMap: ContextMap): Map<RecipeKey, HCBrewingRecipe> {
+            val multiMap: MultiMap<Holder<Potion>, HCBrewingRecipe> = buildListMultiMap {
+                contextMap.getOptional(HTRecipeLookupContext.BREWING)
+                    ?.let(PotionBrewing::potionMixes)
+                    ?.map(::HCBrewingRecipe)
+                    ?.forEach { put(it.potionTo, it) }
+            }
+            if (multiMap.isEmpty) return mapOf()
+            return multiMap.keys.flatMap { potionTo: Holder<Potion> ->
+                multiMap[potionTo].mapIndexed { index: Int, recipe: HCBrewingRecipe ->
+                    HTRecipeHolder(potionTo.toLike().getId().withSuffix("_$index"), recipe)
                 }
+            }.toMap()
         }
 
         override fun getKey(): ResourceKey<RecipeType<*>> = Registries.RECIPE_TYPE.createKey(HiiragiCoreAPI.id("brewing"))

@@ -1,6 +1,6 @@
 package hiiragi283.lib.recipe.lookup
 
-import hiiragi283.lib.recipe.HTRecipeHolder
+import hiiragi283.lib.recipe.RecipeKey
 import net.minecraft.resources.Identifier
 import net.minecraft.util.context.ContextMap
 import net.minecraft.world.item.crafting.Recipe
@@ -49,17 +49,17 @@ class HTCompoundRecipeLookup<out RECIPE> private constructor(private val id: Ide
     }
 
     private val lookups: MutableList<HTRecipeLookup<RECIPE>> = mutableListOf()
-    private var cachedRecipes: List<HTRecipeHolder<@UnsafeVariance RECIPE>> = listOf()
+    private var cachedRecipes: Map<RecipeKey, RECIPE> = mapOf()
 
     private fun clearCache() {
-        cachedRecipes = listOf()
+        cachedRecipes = mapOf()
     }
 
     /**
      * レシピの一覧を追加します。
      */
     fun addRecipes(vararg recipes: Pair<Identifier, @UnsafeVariance RECIPE>) {
-        addSubLookup { recipes.asSequence().map { (id: Identifier, recipe: RECIPE) -> HTRecipeHolder(id, recipe) } }
+        addSubLookup { recipes.associate { (id: Identifier, recipe: RECIPE) -> RecipeKey(id) to recipe } }
     }
 
     /**
@@ -70,11 +70,15 @@ class HTCompoundRecipeLookup<out RECIPE> private constructor(private val id: Ide
         this.lookups += lookup
     }
 
-    override fun getAllRecipes(contextMap: ContextMap): Sequence<HTRecipeHolder<RECIPE>> {
+    override fun getAllRecipes(contextMap: ContextMap): Map<RecipeKey, RECIPE> {
         if (cachedRecipes.isEmpty()) {
-            cachedRecipes = lookups.flatMap { it.getAllRecipes(contextMap) }
+            val recipes: MutableMap<RecipeKey, RECIPE> = mutableMapOf()
+            for (lookup in lookups) {
+                recipes += lookup.getAllRecipes(contextMap)
+            }
+            cachedRecipes = recipes
         }
-        return cachedRecipes.asSequence()
+        return cachedRecipes
     }
 
     override fun toString(): String = "HTCompoundRecipeLookup(id=$id)"
@@ -94,9 +98,12 @@ class HTCompoundRecipeLookup<out RECIPE> private constructor(private val id: Ide
  */
 fun <INPUT : RecipeInput, RECIPE : Any, VANILLA_RECIPE : Recipe<INPUT>> HTCompoundRecipeLookup<RECIPE>.fromRecipeType(recipeType: RecipeType<VANILLA_RECIPE>, transform: (VANILLA_RECIPE) -> RECIPE?) {
     this.addSubLookup { contextMap: ContextMap ->
-        contextMap.getOrThrow(HTRecipeLookupContext.RECIPES)
-            .byType(recipeType)
-            .mapNotNull { holder: RecipeHolder<VANILLA_RECIPE> -> holder.value().let(transform)?.let { HTRecipeHolder(holder.id(), it) } }
-            .asSequence()
+        val map: MutableMap<RecipeKey, RECIPE> = mutableMapOf()
+        for (holder: RecipeHolder<VANILLA_RECIPE> in contextMap.getOrThrow(HTRecipeLookupContext.RECIPES).byType(recipeType)) {
+            val recipe: VANILLA_RECIPE = holder.value()
+            val recipe1: RECIPE = transform(recipe) ?: continue
+            map[holder.id()] = recipe1
+        }
+        map
     }
 }

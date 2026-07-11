@@ -1,8 +1,10 @@
 package hiiragi283.lib.recipe.cache
 
 import hiiragi283.lib.recipe.HTRecipeHolder
+import hiiragi283.lib.recipe.RecipeKey
 import hiiragi283.lib.recipe.lookup.HTRecipeLookup
 import hiiragi283.lib.recipe.lookup.HTRecipeLookupContext
+import hiiragi283.lib.recipe.recipe
 import java.util.function.Predicate
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.context.ContextMap
@@ -26,10 +28,12 @@ abstract class HTSingleInputRecipeCache<INPUT : Any, RECIPE : Predicate<INPUT>>(
         if (lastRecipe != null && lastRecipe!!.recipe.test(input)) {
             return lastRecipe
         }
-        lastRecipe = lookup
-            .getAllRecipes(context)
-            .firstOrNull { (_, recipe: RECIPE) -> recipe.test(input) }
-            ?: return null
+        for ((id: RecipeKey, recipe: RECIPE) in lookup.getAllRecipes(context)) {
+            if (recipe.test(input)) {
+                lastRecipe = id to recipe
+                break
+            }
+        }
         return lastRecipe
     }
 
