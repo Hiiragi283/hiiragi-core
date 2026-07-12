@@ -6,28 +6,30 @@ import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
 import hiiragi283.lib.HTConstants
 import hiiragi283.lib.color.HTDefaultColor
-import hiiragi283.lib.color.VanillaColoredCollections
-import hiiragi283.lib.copper.HTCopperPhase
+import hiiragi283.lib.color.get
+import hiiragi283.lib.copper.get
 import hiiragi283.lib.data.recipe.HTRecipeProvider
 import hiiragi283.lib.data.recipe.HTShapedRecipeBuilder
 import hiiragi283.lib.data.recipe.HTShapelessRecipeBuilder
 import hiiragi283.lib.material.VanillaMaterialKeys
 import hiiragi283.lib.registry.HTDeferredBlockAndItem
-import hiiragi283.lib.registry.HTSimpleDeferredBlockAndItem
 import hiiragi283.lib.tag.CommonTagPrefixes
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.data.recipes.RecipeCategory
 import net.minecraft.tags.ItemTags
+import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
+import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.WeatheringCopper
 import net.neoforged.neoforge.common.Tags
 
 class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<HolderLookup.Provider>) : HTRecipeProvider(packOutput, future, HiiragiCoreAPI.MOD_ID) {
     override fun buildRecipes() {
         // Concrete Stairs
         for (color: HTDefaultColor in HTDefaultColor.entries) {
-            val concrete: HTSimpleDeferredBlockAndItem = VanillaColoredCollections.CONCRETE[color]
+            val concrete: Item = Blocks.CONCRETE[color].asItem()
             // Slab
             HTShapedRecipeBuilder.create {
                 +"AAA"
@@ -88,8 +90,8 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
             result { +HCBlocks.COPPER_BASIN.weathering.unaffected }
         }.save(exporter)
 
-        for ((phase: HTCopperPhase, base: HTDeferredBlockAndItem<*, *>) in HCBlocks.COPPER_BASIN.weathering.asSequenceWithPhase()) {
-            val waxed: HTDeferredBlockAndItem<*, *> = HCBlocks.COPPER_BASIN.waxed[phase]
+        for (state in WeatheringCopper.WeatherState.entries) {
+            val (base: HTDeferredBlockAndItem<*, *>, waxed: HTDeferredBlockAndItem<*, *>) = HCBlocks.COPPER_BASIN[state]
             // Waxing
             HTShapelessRecipeBuilder.create {
                 ingredient { items { +base } }

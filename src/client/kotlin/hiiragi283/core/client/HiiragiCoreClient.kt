@@ -14,6 +14,7 @@ import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.resource.vanillaId
 import java.awt.Color
 import net.minecraft.client.resources.model.sprite.Material
+import net.minecraft.world.level.block.ColorCollection
 import net.minecraft.world.level.material.FluidState
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
@@ -29,7 +30,7 @@ data object HiiragiCoreClient : HTClientMod() {
     }
 
     override fun registerFluidModels(register: HTFluidModelRegister) {
-        for ((color: HTDefaultColor, content: HTFluidContent) in HCFluids.DYES.asSequenceWithColor()) {
+        ColorCollection.zipApply(HTDefaultColor.COLLECTION, HCFluids.DYES) { color: HTDefaultColor, content: HTFluidContent ->
             register.register(content) {
                 setDull()
                 color.color.let(::colorTint)

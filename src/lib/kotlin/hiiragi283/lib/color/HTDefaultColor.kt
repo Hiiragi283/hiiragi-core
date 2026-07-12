@@ -13,6 +13,7 @@ import net.minecraft.util.ARGB
 import net.minecraft.util.StringRepresentable
 import net.minecraft.world.item.DyeColor
 import net.minecraft.world.item.Item
+import net.minecraft.world.level.block.ColorCollection
 
 /**
  * Minecraftで使用される様々な「色」をまとめたクラスです。
@@ -79,6 +80,12 @@ enum class HTDefaultColor(
 
         @JvmStatic
         fun fromDye(dyeColor: DyeColor): HTDefaultColor = entries.first { it.dyeColor == dyeColor }
+
+        /**
+         * @since 26.2.0
+         */
+        @JvmField
+        val COLLECTION: ColorCollection<HTDefaultColor> = ColorCollection.VALUES.map(::fromDye)
     }
 
     val dyesTag: TagKey<Item> = dyeColor.tag

@@ -2,11 +2,11 @@ package hiiragi283.lib.material
 
 import hiiragi283.lib.registry.HTDeferredBlock
 import hiiragi283.lib.registry.HTDeferredItem
-import hiiragi283.lib.registry.toLike
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.resource.SimpleSupplierWithKey
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentPatch
+import net.minecraft.references.BlockItemId
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -38,7 +38,7 @@ sealed interface HTMaterialItemEntry :
     class BlockEntry(private val block: SimpleSupplierWithKey<Block>) :
         HTMaterialItemEntry,
         SimpleSupplierWithKey<Block> by block {
-        constructor(block: Block) : this(block.toLike())
+        constructor(id: BlockItemId) : this(id.block())
 
         constructor(key: ResourceKey<Block>) : this(HTDeferredBlock(key))
 
@@ -48,7 +48,7 @@ sealed interface HTMaterialItemEntry :
     class ItemEntry(private val item: SimpleSupplierWithKey<Item>) :
         HTMaterialItemEntry,
         SimpleSupplierWithKey<Item> by item {
-        constructor(item: Item) : this(item.toLike())
+        constructor(id: BlockItemId) : this(id.item())
 
         constructor(key: ResourceKey<Item>) : this(HTDeferredItem(key))
 

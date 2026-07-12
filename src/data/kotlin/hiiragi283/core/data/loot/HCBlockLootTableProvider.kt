@@ -3,7 +3,7 @@ package hiiragi283.core.data.loot
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.lib.data.loot.HTBlockLootTableProvider
-import net.minecraft.advancements.criterion.StatePropertiesPredicate
+import net.minecraft.advancements.predicates.StatePropertiesPredicate
 import net.minecraft.core.HolderLookup
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.NetherWartBlock

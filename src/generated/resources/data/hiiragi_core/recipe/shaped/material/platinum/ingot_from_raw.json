@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "A": "#c:nuggets/platinum",
     "B": "hiiragi_core:platinum_nugget"

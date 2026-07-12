@@ -13,7 +13,7 @@ class HCFluidTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<
     override fun appendTags(registries: HolderLookup.Provider) {
         addContents(HCFluids.REGISTER.asSequence())
 
-        tag(HiiragiCoreTags.Fluids.ELDRITCH)
+        builder(HiiragiCoreTags.Fluids.ELDRITCH)
             .add(createKey("oritech", "still_strange_matter"), HTTagDependType.OPTIONAL)
             .addContentTag(HCFluids.OMINOUS_FLUX)
     }

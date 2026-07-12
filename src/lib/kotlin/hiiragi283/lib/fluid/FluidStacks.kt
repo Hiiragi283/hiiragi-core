@@ -1,10 +1,10 @@
 package hiiragi283.lib.fluid
 
-import hiiragi283.lib.resource.vanillaId
 import hiiragi283.lib.util.HTTextResult
 import hiiragi283.lib.util.toTextResult
 import net.minecraft.core.Holder
 import net.minecraft.world.level.material.Fluid
+import net.minecraft.world.level.material.FluidIds
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidStackTemplate
 
@@ -23,7 +23,7 @@ val Fluid.isEmpty: Boolean get() = this.builtInRegistryHolder().isEmpty
  * @author Hiiragi Tsubasa
  * @since 26.1.3
  */
-val Holder<Fluid>.isEmpty: Boolean get() = this.`is`(vanillaId("empty"))
+val Holder<Fluid>.isEmpty: Boolean get() = this.`is`(FluidIds.EMPTY)
 
 //    FluidStackTemplate    //
 

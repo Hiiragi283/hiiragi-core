@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "A": "#c:nuggets/netherite",
     "B": "hiiragi_core:netherite_nugget"

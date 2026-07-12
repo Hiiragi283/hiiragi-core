@@ -1,6 +1,7 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.common.recipe.VanillaRecipeLookups
+import hiiragi283.lib.copper.base
 import hiiragi283.lib.math.HTBounds
 import hiiragi283.lib.recipe.viewer.HTRecipeViewerType
 import hiiragi283.lib.recipe.viewer.HTSimpleRecipeViewerType
@@ -19,7 +20,7 @@ data object HCRecipeViewerTypes {
     val BREWING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(VanillaRecipeLookups.BREWING, Items.BREWING_STAND, height = 18 * 2)
 
     @JvmField
-    val CHARGING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD)
+    val CHARGING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD.base())
 
     @JvmField
     val CHOPPING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CHOPPING, HCBlocks.CHOPPING_BOARD, 18 * 5, 18 * 2)

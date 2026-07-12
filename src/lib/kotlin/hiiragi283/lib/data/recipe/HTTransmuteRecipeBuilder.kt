@@ -7,7 +7,7 @@ import hiiragi283.lib.util.HTDelegates
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
-import net.minecraft.advancements.criterion.MinMaxBounds
+import net.minecraft.advancements.predicates.MinMaxBounds
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.TransmuteRecipe
 

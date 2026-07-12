@@ -3,7 +3,9 @@ package hiiragi283.core.data.lang
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.lib.color.HTDefaultColor
+import hiiragi283.lib.color.get
 import hiiragi283.lib.copper.HTCopperPhase
+import hiiragi283.lib.copper.get
 import hiiragi283.lib.data.lang.HTLangName
 import hiiragi283.lib.data.lang.HTLangPatternProvider
 import hiiragi283.lib.data.lang.HTLangProvider
@@ -13,6 +15,7 @@ import hiiragi283.lib.text.HTCommonTranslation
 import hiiragi283.lib.text.HTHasTranslationKey
 import hiiragi283.lib.text.HTTranslation
 import java.util.function.BiConsumer
+import net.minecraft.world.level.block.ColorCollection
 
 interface HCLangProvider {
     fun addCommonTranslations(consumer: BiConsumer<HTTranslation, String>) {
@@ -59,7 +62,7 @@ interface HCLangProvider {
         }
         // Fluid
         val dyePattern: HTLangPatternProvider = HTLangPatternProvider.create("%s Dye", "%sの染料")
-        for ((color: HTLangName, content: HTFluidContent) in HCFluids.DYES.asSequenceWithColor()) {
+        ColorCollection.zipApply(HTDefaultColor.COLLECTION, HCFluids.DYES) { color: HTLangName, content: HTFluidContent ->
             provider.addFluid(content, dyePattern.translate(langType, color))
         }
     }

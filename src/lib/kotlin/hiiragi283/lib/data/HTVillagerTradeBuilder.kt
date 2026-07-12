@@ -101,5 +101,5 @@ class HTVillagerTradeBuilder {
         doubleTradePriceEnchantments = HolderAcceptor.SetBuilder<Enchantment>().apply(builderAction).build()
     }
 
-    fun build(): VillagerTrade = VillagerTrade(wants, Optional.ofNullable(additionalWants), gives, maxUses, xp, discount, Optional.ofNullable(merchantPredicate), itemModifiers, Optional.ofNullable(doubleTradePriceEnchantments))
+    fun build(): VillagerTrade = VillagerTrade(wants, Optional.ofNullable(additionalWants), gives, maxUses, xp, discount, Optional.ofNullable(merchantPredicate), itemModifiers, doubleTradePriceEnchantments ?: HolderSet.empty())
 }

@@ -9,10 +9,8 @@ import hiiragi283.core.common.block.HTWarpedWartBlock
 import hiiragi283.core.common.block.HTWeatheringCopperBasinBlock
 import hiiragi283.lib.collection.Table
 import hiiragi283.lib.collection.buildTable
-import hiiragi283.lib.color.HTColoredCollection
-import hiiragi283.lib.color.VanillaColoredCollections
-import hiiragi283.lib.copper.HTCopperPhase
-import hiiragi283.lib.copper.HTWeatheringCoppers
+import hiiragi283.lib.color.HTDefaultColor
+import hiiragi283.lib.copper.base
 import hiiragi283.lib.item.component.consumables
 import hiiragi283.lib.material.CommonMaterialKeys
 import hiiragi283.lib.material.CommonPartKeys
@@ -32,9 +30,12 @@ import hiiragi283.lib.util.toTextResult
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.ColorCollection
 import net.minecraft.world.level.block.SlabBlock
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.StairBlock
+import net.minecraft.world.level.block.WeatheringCopper
+import net.minecraft.world.level.block.WeatheringCopperCollection
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.MapColor
 import net.neoforged.bus.api.IEventBus
@@ -75,19 +76,21 @@ data object HCBlocks {
             this[CommonPartKeys.RAW_BLOCK, material] = REGISTER.registerSimple("raw_${material.name}_block", blockProp.sound(SoundType.STONE), itemProp)
         }
 
+        val copperBlock: BlockBehaviour.Properties = Blocks.COPPER_BLOCK.base().let(::copyOf)
+
         // Vanilla
         registerBlock(VanillaMaterialKeys.CHARCOAL, copyOf(Blocks.COAL_BLOCK).mapColor(MapColor.TERRACOTTA_BROWN))
 
         registerBlock(VanillaMaterialKeys.ECHO, copyOf(Blocks.AMETHYST_BLOCK).mapColor(MapColor.COLOR_CYAN))
         // Common
-        registerRawBlock(CommonMaterialKeys.TIN, copyOf(Blocks.COPPER_BLOCK).mapColor(MapColor.WARPED_WART_BLOCK))
+        registerRawBlock(CommonMaterialKeys.TIN, copperBlock.mapColor(MapColor.WARPED_WART_BLOCK))
         registerRawBlock(CommonMaterialKeys.IRIDIUM, copyOf(Blocks.NETHERITE_BLOCK).mapColor(MapColor.NONE))
         registerRawBlock(CommonMaterialKeys.PLATINUM, copyOf(Blocks.NETHERITE_BLOCK).mapColor(MapColor.TERRACOTTA_WHITE))
 
-        registerBlock(CommonMaterialKeys.TIN, copyOf(Blocks.COPPER_BLOCK).mapColor(MapColor.WARPED_WART_BLOCK))
+        registerBlock(CommonMaterialKeys.TIN, copperBlock.mapColor(MapColor.WARPED_WART_BLOCK))
         registerBlock(CommonMaterialKeys.IRIDIUM, copyOf(Blocks.NETHERITE_BLOCK).mapColor(MapColor.NONE))
         registerBlock(CommonMaterialKeys.PLATINUM, copyOf(Blocks.NETHERITE_BLOCK).mapColor(MapColor.TERRACOTTA_WHITE))
-        registerBlock(CommonMaterialKeys.LEAD, copyOf(Blocks.COPPER_BLOCK).mapColor(MapColor.TERRACOTTA_LIGHT_BLUE))
+        registerBlock(CommonMaterialKeys.LEAD, copperBlock.mapColor(MapColor.TERRACOTTA_LIGHT_BLUE))
         // Hiiragi Core
     }
 
@@ -103,12 +106,13 @@ data object HCBlocks {
     //    Buildings    //
 
     @JvmField
-    val CONCRETE_SLABS: HTColoredCollection<HTBasicDeferredBlockAndItem<SlabBlock>> = VanillaColoredCollections.CONCRETE.map { base: HTSimpleDeferredBlockAndItem -> REGISTER.registerSimple("${base.path}_slab", copyOf(base.get()), ::SlabBlock) }
+    val CONCRETE_SLABS: ColorCollection<HTBasicDeferredBlockAndItem<SlabBlock>> = ColorCollection.zipMap(HTDefaultColor.COLLECTION, Blocks.CONCRETE) { color: HTDefaultColor, concrete: Block ->
+        REGISTER.registerSimple("${color.serializedName}_concrete_slab", copyOf(concrete), ::SlabBlock)
+    }
 
     @JvmField
-    val CONCRETE_STAIRS: HTColoredCollection<HTBasicDeferredBlockAndItem<StairBlock>> = VanillaColoredCollections.CONCRETE.map { base: HTSimpleDeferredBlockAndItem ->
-        val block: Block = base.get()
-        REGISTER.registerSimple("${base.path}_stairs", copyOf(block), blockFactory = { StairBlock(block.defaultBlockState(), it) })
+    val CONCRETE_STAIRS: ColorCollection<HTBasicDeferredBlockAndItem<StairBlock>> = ColorCollection.zipMap(HTDefaultColor.COLLECTION, Blocks.CONCRETE) { color: HTDefaultColor, concrete: Block ->
+        REGISTER.registerSimple("${color.serializedName}_concrete_stairs", copyOf(concrete), blockFactory = { StairBlock(concrete.defaultBlockState(), it) })
     }
 
     //    Crops    //
@@ -129,16 +133,25 @@ data object HCBlocks {
     val FORGING_ANVIL: HTBasicDeferredBlockAndItem<HTForgingAnvilBlock> = REGISTER.registerSimple("forging_anvil", copyOf(Blocks.SMOOTH_STONE).noOcclusion(), ::HTForgingAnvilBlock)
 
     @JvmField
-    val COPPER_BASIN: HTWeatheringCoppers<HTBasicDeferredBlockAndItem<HTCopperBasinBlock>> = run {
-        val name = "copper_basin"
+    val COPPER_BASIN: WeatheringCopperCollection<HTBasicDeferredBlockAndItem<HTCopperBasinBlock>> = run {
         val prop: BlockBehaviour.Properties = properties(2f)
             .requiresCorrectToolForDrops()
             .noOcclusion()
             .sound(SoundType.COPPER)
-        HTWeatheringCoppers(
-            { phase: HTCopperPhase -> REGISTER.registerSimple(phase.createPath(name), prop, blockFactory = { HTWeatheringCopperBasinBlock(phase.toState(), it) }) },
-            { phase: HTCopperPhase -> REGISTER.registerSimple(phase.createWaxedPath(name), prop, ::HTCopperBasinBlock) },
-        )
+        WeatheringCopperCollection.create("copper_basin")
+            .let(WeatheringCopperCollection<*>::prefixWithState)
+            .apply(
+                { byState: WeatheringCopperCollection.ByState<String> ->
+                    WeatheringCopperCollection.zipMap(WeatheringCopperCollection.STATES, byState) { state: WeatheringCopper.WeatherState, path: String ->
+                        REGISTER.registerSimple(path, prop, blockFactory = { HTWeatheringCopperBasinBlock(state, it) })
+                    }
+                },
+                { byState: WeatheringCopperCollection.ByState<String> ->
+                    WeatheringCopperCollection.zipMap(WeatheringCopperCollection.STATES, byState) { _, path: String ->
+                        REGISTER.registerSimple(path, prop, ::HTCopperBasinBlock)
+                    }
+                },
+            )
     }
 
     //    Extensions    //

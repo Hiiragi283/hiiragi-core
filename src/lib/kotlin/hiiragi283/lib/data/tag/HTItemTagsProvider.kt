@@ -1,17 +1,16 @@
 package hiiragi283.lib.data.tag
 
 import hiiragi283.lib.material.HTMaterialKey
-import hiiragi283.lib.registry.toLike
 import hiiragi283.lib.tag.HTTagPrefix
 import hiiragi283.lib.tag.RawTagKey
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
 import net.minecraft.data.PackOutput
+import net.minecraft.tags.BlockItemTagId
 import net.minecraft.tags.TagBuilder
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
-import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
 
 /**
@@ -51,6 +50,10 @@ abstract class HTItemTagsProvider : HTTagsProvider<Item> {
         this.copy(tagKey.create(Registries.BLOCK), tagKey.create(Registries.ITEM))
     }
 
+    protected fun copy(id: BlockItemTagId) {
+        this.copy(id.block(), id.item())
+    }
+
     /**
      * コピーするタグを追加します。
      * @param blockTag コピー元となるブロックのタグ
@@ -59,13 +62,6 @@ abstract class HTItemTagsProvider : HTTagsProvider<Item> {
     protected fun copy(blockTag: TagKey<Block>, itemTag: TagKey<Item>) {
         tagsToCopy[blockTag] = itemTag
     }
-
-    /**
-     * 指定した要素をタグに追加します。
-     * @param item アイテムの値
-     */
-    @Suppress("DEPRECATION")
-    protected fun HTTagBuilder<Item>.addItem(item: ItemLike): HTTagBuilder<Item> = this.add(item.asItem().toLike())
 
     final override fun createContentsProvider(): CompletableFuture<HolderLookup.Provider> = super.createContentsProvider().thenCombine(blockTags) { provider: HolderLookup.Provider, blockTags1: TagLookup<Block> ->
         for ((blockTag: TagKey<Block>, itemTag: TagKey<Item>) in this.tagsToCopy) {

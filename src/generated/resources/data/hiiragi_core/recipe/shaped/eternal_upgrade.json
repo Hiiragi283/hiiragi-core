@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "A": "#c:gems/diamond",
     "B": "hiiragi_core:eternal_upgrade",

@@ -6,13 +6,14 @@ import hiiragi283.core.common.fluid.HTDyedFluidType
 import hiiragi283.core.common.fluid.HTPotionFluidType
 import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.lib.HTConstants
-import hiiragi283.lib.color.HTColoredCollection
+import hiiragi283.lib.color.ColorCollection
 import hiiragi283.lib.color.HTDefaultColor
 import hiiragi283.lib.registry.HTFluidContent
 import hiiragi283.lib.registry.HTFluidContentRegister
 import hiiragi283.lib.resource.toId
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
+import net.minecraft.world.level.block.ColorCollection
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.common.SoundActions
 import net.neoforged.neoforge.fluids.FluidType
@@ -29,7 +30,7 @@ data object HCFluids {
     //    Vanilla    //
 
     @JvmField
-    val DYES: HTColoredCollection<HTFluidContent.Flowing> = HTColoredCollection { color: HTDefaultColor ->
+    val DYES: ColorCollection<HTFluidContent.Flowing> = ColorCollection { color: HTDefaultColor ->
         val name: String = color.serializedName
         REGISTER.registerFlowing("${name}_dye") {
             properties = liquid()

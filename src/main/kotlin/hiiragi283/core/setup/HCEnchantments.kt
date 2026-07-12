@@ -3,9 +3,9 @@ package hiiragi283.core.setup
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreTags
 import hiiragi283.lib.registry.createKey
-import net.minecraft.advancements.criterion.DamageSourcePredicate
-import net.minecraft.advancements.criterion.EntityPredicate
-import net.minecraft.advancements.criterion.TagPredicate
+import net.minecraft.advancements.predicates.DamageSourcePredicate
+import net.minecraft.advancements.predicates.TagPredicate
+import net.minecraft.advancements.predicates.entity.EntityPredicate
 import net.minecraft.core.HolderGetter
 import net.minecraft.core.RegistrySetBuilder
 import net.minecraft.core.registries.Registries

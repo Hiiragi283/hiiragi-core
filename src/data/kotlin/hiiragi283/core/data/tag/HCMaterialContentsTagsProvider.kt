@@ -17,7 +17,7 @@ class HCMaterialContentsTagsProvider(output: PackOutput, lookupProvider: Complet
         addElementsTags()
         addMineralTags()
 
-        tag(HiiragiCoreTags.MaterialContents.COALS)
+        builder(HiiragiCoreTags.MaterialContents.COALS)
             .add(VanillaMaterialKeys.COAL)
             .add(VanillaMaterialKeys.CHARCOAL)
     }

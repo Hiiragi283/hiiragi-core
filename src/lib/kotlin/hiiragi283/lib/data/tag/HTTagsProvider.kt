@@ -9,10 +9,13 @@ import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.data.tags.TagsProvider
+import net.minecraft.references.BlockItemId
 import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagEntry
 import net.minecraft.tags.TagKey
+import net.minecraft.world.item.Item
+import net.minecraft.world.level.block.Block
 
 /**
  * Hiiragi Seriesで使用される[TagsProvider]の拡張クラスです。
@@ -57,8 +60,9 @@ abstract class HTTagsProvider<T : Any> : TagsProvider<T> {
     /**
      * 新しい[HTTagBuilder]のインスタンスを作成します。
      * @param tagKey 生成対象のタグ
+     * @since 26.2.0
      */
-    protected fun tag(tagKey: TagKey<T>): HTTagBuilder<T> = HTTagBuilder { entry: TagEntry -> entryCache.put(tagKey, entry) }
+    protected fun builder(tagKey: TagKey<T>): HTTagBuilder<T> = HTTagBuilder { entry: TagEntry -> entryCache.put(tagKey, entry) }
 
     /**
      * 新しい[HTTagBuilder]のインスタンスを作成します。
@@ -73,9 +77,9 @@ abstract class HTTagsProvider<T : Any> : TagsProvider<T> {
      * @param children [tagKey]からチェインして生成するタグ
      * @return [children]の最後の値に対する[HTTagBuilder]
      */
-    protected fun tags(tagKey: TagKey<T>, vararg children: TagKey<T>): HTTagBuilder<T> = children.fold(tag(tagKey)) { builder: HTTagBuilder<T>, tagKeyIn: TagKey<T> ->
+    protected fun tags(tagKey: TagKey<T>, vararg children: TagKey<T>): HTTagBuilder<T> = children.fold(builder(tagKey)) { builder: HTTagBuilder<T>, tagKeyIn: TagKey<T> ->
         builder.addTag(tagKeyIn)
-        tag(tagKeyIn)
+        builder(tagKeyIn)
     }
 
     /**
@@ -87,4 +91,16 @@ abstract class HTTagsProvider<T : Any> : TagsProvider<T> {
      * @since 26.1.3
      */
     protected fun createKey(namespace: String, path: String): ResourceKey<T> = registryKey.createKey(namespace, path)
+
+    /**
+     * @since 26.2.0
+     */
+    @JvmName("addBlock")
+    fun HTTagBuilder<Block>.add(id: BlockItemId, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<Block> = this.add(id.block(), type)
+
+    /**
+     * @since 26.2.0
+     */
+    @JvmName("addItem")
+    fun HTTagBuilder<Item>.add(id: BlockItemId, type: HTTagDependType = HTTagDependType.REQUIRED): HTTagBuilder<Item> = this.add(id.item(), type)
 }

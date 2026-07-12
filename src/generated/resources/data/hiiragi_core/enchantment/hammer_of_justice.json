@@ -18,7 +18,7 @@
           "condition": "minecraft:entity_properties",
           "entity": "this",
           "predicate": {
-            "type": "#hiiragi_core:sensitive_to_hammer_of_justice"
+            "minecraft:entity_type": "#hiiragi_core:sensitive_to_hammer_of_justice"
           }
         }
       }

@@ -16,8 +16,8 @@ import hiiragi283.lib.tag.HTTagPrefix
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
+import net.minecraft.references.ItemIds
 import net.minecraft.world.item.Item
-import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.common.Tags
 
@@ -38,13 +38,13 @@ class HCItemTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<H
             tags(prefix, material).add(item)
         }
 
-        tags(CommonTagPrefixes.GEM, VanillaMaterialKeys.ECHO).addItem(Items.ECHO_SHARD)
+        tags(CommonTagPrefixes.GEM, VanillaMaterialKeys.ECHO).add(ItemIds.ECHO_SHARD)
 
         tags(Tags.Items.CROPS, HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART.itemHolder)
 
-        tag(HiiragiCoreTags.Items.STICKY_BALLS).addTag(Tags.Items.SLIME_BALLS)
-        tag(Tags.Items.FEATHERS).add(HCItems.SYNTHETIC_FEATHER)
-        tag(Tags.Items.STRINGS).add(HCItems.SYNTHETIC_FIBER)
-        tag(Tags.Items.LEATHERS).add(HCItems.SYNTHETIC_LEATHER)
+        builder(HiiragiCoreTags.Items.STICKY_BALLS).addTag(Tags.Items.SLIME_BALLS)
+        builder(Tags.Items.FEATHERS).add(HCItems.SYNTHETIC_FEATHER)
+        builder(Tags.Items.STRINGS).add(HCItems.SYNTHETIC_FIBER)
+        builder(Tags.Items.LEATHERS).add(HCItems.SYNTHETIC_LEATHER)
     }
 }

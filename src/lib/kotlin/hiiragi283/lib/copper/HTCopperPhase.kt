@@ -3,6 +3,7 @@ package hiiragi283.lib.copper
 import hiiragi283.lib.data.lang.HTLangPatternProvider
 import net.minecraft.util.StringRepresentable
 import net.minecraft.world.level.block.WeatheringCopper
+import net.minecraft.world.level.block.WeatheringCopperCollection
 
 /**
  * 銅系コンテンツの酸化の進行度を表すクラスです。
@@ -21,6 +22,20 @@ enum class HTCopperPhase(private val prefix: String, provider: HTLangPatternProv
     OXIDIZED("oxidized_", "Oxidized %s", "酸化した%s"),
     ;
 
+    companion object {
+        /**
+         * @since 26.2.0
+         */
+        @JvmField
+        val STATES: WeatheringCopperCollection.ByState<HTCopperPhase> = WeatheringCopperCollection.ByState(UNAFFECTED, EXPOSED, WEATHERED, OXIDIZED)
+
+        /**
+         * @since 26.2.0
+         */
+        @JvmField
+        val COLLECTION: WeatheringCopperCollection<HTCopperPhase> = WeatheringCopperCollection(STATES, STATES)
+    }
+
     constructor(prefix: String, enPattern: String, jaPattern: String) : this(prefix, HTLangPatternProvider.create(enPattern, jaPattern))
 
     fun createPath(name: String): String = "$prefix$name"
@@ -35,11 +50,4 @@ enum class HTCopperPhase(private val prefix: String, provider: HTLangPatternProv
     }
 
     override fun getSerializedName(): String = name.lowercase()
-}
-
-fun WeatheringCopper.WeatherState.toPhase(): HTCopperPhase = when (this) {
-    WeatheringCopper.WeatherState.UNAFFECTED -> HTCopperPhase.UNAFFECTED
-    WeatheringCopper.WeatherState.EXPOSED -> HTCopperPhase.EXPOSED
-    WeatheringCopper.WeatherState.WEATHERED -> HTCopperPhase.WEATHERED
-    WeatheringCopper.WeatherState.OXIDIZED -> HTCopperPhase.OXIDIZED
 }

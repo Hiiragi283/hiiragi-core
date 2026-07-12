@@ -15,7 +15,7 @@ data object HCBlockEntityTypes {
     val CHOPPING_BOARD: HTDeferredBlockEntityType<HTChoppingBoardBlockEntity> = REGISTER.registerTick("chopping_board", ::HTChoppingBoardBlockEntity) { add(HCBlocks.CHOPPING_BOARD.get()) }
 
     @JvmField
-    val COPPER_BASIN: HTDeferredBlockEntityType<HTCopperBasinBlockEntity> = REGISTER.registerTick("copper_basin", ::HTCopperBasinBlockEntity) { HCBlocks.COPPER_BASIN.allCoppers.map { it.get() }.let(::addAll) }
+    val COPPER_BASIN: HTDeferredBlockEntityType<HTCopperBasinBlockEntity> = REGISTER.registerTick("copper_basin", ::HTCopperBasinBlockEntity) { HCBlocks.COPPER_BASIN.asList().map { it.get() }.let(::addAll) }
 
     @JvmField
     val FORGING_ANVIL: HTDeferredBlockEntityType<HTForgingAnvilBlockEntity> = REGISTER.registerTick("forging_anvil", ::HTForgingAnvilBlockEntity) { add(HCBlocks.FORGING_ANVIL.get()) }

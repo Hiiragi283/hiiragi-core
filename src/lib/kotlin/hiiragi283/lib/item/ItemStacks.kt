@@ -1,9 +1,9 @@
 package hiiragi283.lib.item
 
-import hiiragi283.lib.resource.vanillaId
 import hiiragi283.lib.util.HTTextResult
 import hiiragi283.lib.util.toTextResult
 import net.minecraft.core.Holder
+import net.minecraft.references.BlockItemIds
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.level.ItemLike
@@ -23,7 +23,7 @@ val ItemLike.isAir: Boolean get() = this.asItem().builtInRegistryHolder().isAir
  * @author Hiiragi Tsubasa
  * @since 26.1.3
  */
-val Holder<out ItemLike>.isAir: Boolean get() = this.`is`(vanillaId("air"))
+val Holder<out ItemLike>.isAir: Boolean get() = this.`is`(BlockItemIds.AIR.item().identifier())
 
 //    ItemStackTemplate    //
 
