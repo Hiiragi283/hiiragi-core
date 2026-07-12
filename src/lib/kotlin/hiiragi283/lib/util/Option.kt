@@ -165,7 +165,7 @@ value class Option<out T : Any>@PublishedApi internal constructor(@PublishedApi 
      * @param L 左側の値のクラス
      * @param empty 左側の値を提供するブロック
      * @return 保持している値を右側とする[Ior]
-     * @since 26.1.4
+     * @since 26.2.0
      */
     inline fun <L> toIor(empty: () -> L): Ior<L, T> = fold({ Ior.Left(empty()) }, { Ior.Both(empty(), it) })
 

@@ -1,15 +1,22 @@
 package hiiragi283.lib.item.alchemy
 
 import com.mojang.serialization.Codec
+import hiiragi283.lib.item.HTSimpleItemLike
+import hiiragi283.lib.item.ItemStack
+import hiiragi283.lib.resource.HTKeyLike
 import hiiragi283.lib.serialization.codec.HTCodecs
 import hiiragi283.lib.serialization.network.HTStreamCodecs
 import io.netty.buffer.ByteBuf
 import net.minecraft.core.TypedInstance
+import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.network.codec.StreamCodec
+import net.minecraft.references.ItemIds
+import net.minecraft.resources.ResourceKey
 import net.minecraft.util.StringRepresentable
 import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.item.Items
-import net.minecraft.world.level.ItemLike
 
 /**
  * ポーション瓶の種類を管理するクラスです。
@@ -17,8 +24,9 @@ import net.minecraft.world.level.ItemLike
  * @since 26.1.0
  */
 enum class HTBottleType :
-    ItemLike,
-    StringRepresentable {
+    StringRepresentable,
+    HTSimpleItemLike,
+    HTKeyLike<Item> {
     DEFAULT,
     SPLASH,
     LINGERING,
@@ -32,13 +40,23 @@ enum class HTBottleType :
         val STREAM_CODEC: StreamCodec<ByteBuf, HTBottleType> = HTStreamCodecs.enum()
 
         @JvmStatic
-        fun getBottleType(instance: TypedInstance<Item>): HTBottleType? = entries.firstOrNull { instance.`is`(it.asItem()) }
+        fun getBottleType(instance: TypedInstance<Item>): HTBottleType? = entries.firstOrNull { instance.`is`(it.getKey()) }
     }
 
     override fun asItem(): Item = when (this) {
         DEFAULT -> Items.POTION
         SPLASH -> Items.SPLASH_POTION
         LINGERING -> Items.LINGERING_POTION
+    }
+
+    override fun toTemplate(count: Int, patch: DataComponentPatch): ItemStackTemplate = ItemStackTemplate(asItem(), count, patch)
+
+    override fun toStack(count: Int, patch: DataComponentPatch): ItemStack = ItemStack(this, count, patch)
+
+    override fun getKey(): ResourceKey<Item> = when (this) {
+        DEFAULT -> ItemIds.POTION
+        SPLASH -> ItemIds.SPLASH_POTION
+        LINGERING -> ItemIds.LINGERING_POTION
     }
 
     override fun getSerializedName(): String = name.lowercase()

@@ -1,16 +1,14 @@
 package hiiragi283.lib.registry
 
 import hiiragi283.lib.item.HTBlockItem
+import hiiragi283.lib.item.HTItemLike
 import hiiragi283.lib.resource.BlockItemSupplierWithKey
 import hiiragi283.lib.resource.HTIdLike
 import hiiragi283.lib.resource.SupplierWithKey
-import net.minecraft.core.component.DataComponentPatch
+import net.minecraft.references.BlockItemId
 import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
-import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.ItemStackTemplate
-import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
 
 /**
@@ -38,7 +36,9 @@ typealias HTBasicDeferredBlockAndItem<BLOCK> = HTDeferredBlockAndItem<BLOCK, HTB
 data class HTDeferredBlockAndItem<out BLOCK : Block, out ITEM : Item>(val blockHolder: HTDeferredBlock<BLOCK>, val itemHolder: HTDeferredItem<ITEM>) :
     BlockItemSupplierWithKey<BLOCK, ITEM>,
     HTIdLike.Translatable by itemHolder,
-    ItemLike by itemHolder {
+    HTItemLike<ITEM> by itemHolder {
+    constructor(id: BlockItemId) : this(HTDeferredBlock(id.block()), HTDeferredItem(id.item()))
+
     constructor(id: Identifier) : this(HTDeferredBlock(id), HTDeferredItem(id))
 
     override fun getItemSupplier(): SupplierWithKey<Item, ITEM> = itemHolder
@@ -46,14 +46,4 @@ data class HTDeferredBlockAndItem<out BLOCK : Block, out ITEM : Item>(val blockH
     override fun get(): BLOCK = blockHolder.get()
 
     override fun getKey(): ResourceKey<Block> = blockHolder.key
-
-    /**
-     * 新しい[ItemStackTemplate]のインスタンスを作成します。
-     */
-    fun toTemplate(count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStackTemplate = itemHolder.toTemplate(count, patch)
-
-    /**
-     * 新しい[ItemStack]のインスタンスを作成します。
-     */
-    fun toStack(count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStack = itemHolder.toStack(count, patch)
 }

@@ -76,7 +76,7 @@ data class HTMaterialPartIngredient(val contents: HolderSet<HTMaterialContents>,
             buildList {
                 val (entry: HTMaterialItemEntry?, tagKey: TagKey<Item>?) = ior.toPair()
                 if (entry != null) {
-                    add(entry.getItemHolder())
+                    add(BuiltInRegistries.ITEM.wrapAsHolder(entry.asItem()))
                 }
                 if (tagKey != null) {
                     addAll(BuiltInRegistries.ITEM.getTagOrEmpty(tagKey))
