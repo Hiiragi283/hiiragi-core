@@ -1,8 +1,5 @@
 package hiiragi283.lib.copper
 
-import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.WeatheringCopperBlocks
-
 /**
  * 酸化する銅系コンテンツとさび止めされた銅系コンテンツを束ねたクラスです。
  * @param weathering さび止めされた銅系コンテンツの一覧
@@ -25,18 +22,3 @@ data class HTWeatheringCoppers<out T>(val weathering: HTCopperCollection<T>, val
 }
 
 inline fun <T> HTWeatheringCoppers(initWeathering: (HTCopperPhase) -> T, initWaxed: (HTCopperPhase) -> T): HTWeatheringCoppers<T> = HTWeatheringCoppers(HTCopperCollection(initWeathering), HTCopperCollection(initWaxed))
-
-fun WeatheringCopperBlocks.convert(): HTWeatheringCoppers<Block> = HTWeatheringCoppers(
-    HTCopperCollection(
-        this.unaffected(),
-        this.exposed(),
-        this.weathered(),
-        this.oxidized(),
-    ),
-    HTCopperCollection(
-        this.waxed(),
-        this.waxedExposed(),
-        this.waxedWeathered(),
-        this.waxedOxidized(),
-    ),
-)

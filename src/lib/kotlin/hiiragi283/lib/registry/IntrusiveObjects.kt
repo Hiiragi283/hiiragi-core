@@ -2,7 +2,6 @@
 
 package hiiragi283.lib.registry
 
-import hiiragi283.lib.resource.BlockItemSupplierWithKey
 import hiiragi283.lib.resource.SupplierWithKey
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.entity.Entity
@@ -20,22 +19,6 @@ fun <BLOCK : Block> BLOCK.toLike(): SupplierWithKey<Block, BLOCK> = BlockWithKey
 
 @JvmInline
 private value class BlockWithKey<out BLOCK : Block>(private val block: BLOCK) : SupplierWithKey<Block, BLOCK> {
-    override fun get(): BLOCK = block
-
-    override fun getKey(): ResourceKey<Block> = get().builtInRegistryHolder().getKeyOrThrow()
-}
-
-/**
- * この[Block][this]を[BlockItemSupplierWithKey]に変換します。
- * @author Hiiragi Tsubasa
- * @since 26.1.3
- */
-fun <BLOCK : Block> BLOCK.toLikeWithItem(): BlockItemSupplierWithKey<BLOCK, Item> = BlockItemWithKey(this)
-
-@JvmInline
-private value class BlockItemWithKey<out BLOCK : Block>(private val block: BLOCK) : BlockItemSupplierWithKey<BLOCK, Item> {
-    override fun getItemSupplier(): SupplierWithKey<Item, Item> = block.asItem().toLike()
-
     override fun get(): BLOCK = block
 
     override fun getKey(): ResourceKey<Block> = get().builtInRegistryHolder().getKeyOrThrow()

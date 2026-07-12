@@ -3,8 +3,6 @@ package hiiragi283.lib.resource
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 
-typealias SimpleBlockItemSupplierWithKey = BlockItemSupplierWithKey<Block, Item>
-
 /**
  * ブロックとアイテム向けの[SupplierWithId]の拡張インターフェースです。
  * @param BLOCK 提供するブロックのクラス

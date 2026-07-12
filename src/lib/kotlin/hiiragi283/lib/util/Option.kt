@@ -160,6 +160,8 @@ value class Option<out T : Any>@PublishedApi internal constructor(@PublishedApi 
         return fold({ empty().left() }, { it.right() })
     }
 
+    inline fun <L> toIor(empty: () -> L): Ior<L, T> = fold({ Ior.Left(empty()) }, { Ior.Both(empty(), it) })
+
     /**
      * [List]に変換します。
      */

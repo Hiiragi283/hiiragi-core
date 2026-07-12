@@ -13,7 +13,7 @@ import hiiragi283.lib.data.recipe.HTShapedRecipeBuilder
 import hiiragi283.lib.data.recipe.HTShapelessRecipeBuilder
 import hiiragi283.lib.material.VanillaMaterialKeys
 import hiiragi283.lib.registry.HTDeferredBlockAndItem
-import hiiragi283.lib.resource.SimpleBlockItemSupplierWithKey
+import hiiragi283.lib.registry.HTSimpleDeferredBlockAndItem
 import hiiragi283.lib.tag.CommonTagPrefixes
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
@@ -27,7 +27,7 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
     override fun buildRecipes() {
         // Concrete Stairs
         for (color: HTDefaultColor in HTDefaultColor.entries) {
-            val concrete: SimpleBlockItemSupplierWithKey = VanillaColoredCollections.CONCRETE[color]
+            val concrete: HTSimpleDeferredBlockAndItem = VanillaColoredCollections.CONCRETE[color]
             // Slab
             HTShapedRecipeBuilder.create {
                 +"AAA"

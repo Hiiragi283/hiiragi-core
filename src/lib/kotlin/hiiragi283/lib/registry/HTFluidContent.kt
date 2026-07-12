@@ -1,6 +1,7 @@
 package hiiragi283.lib.registry
 
 import hiiragi283.lib.resource.SimpleSupplierWithKey
+import hiiragi283.lib.util.getOrThrow
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -36,12 +37,15 @@ sealed class HTFluidContent(
     /**
      * 新しい[FluidStackTemplate]のインスタンスを作成します。
      */
-    fun toTemplate(amount: Int = FluidType.BUCKET_VOLUME, patch: DataComponentPatch = DataComponentPatch.EMPTY): FluidStackTemplate = FluidStackTemplate(sourceHolder, amount, patch)
+    fun toTemplate(amount: Int = FluidType.BUCKET_VOLUME, patch: DataComponentPatch = DataComponentPatch.EMPTY): FluidStackTemplate = sourceHolder.getResult().map { FluidStackTemplate(it, amount, patch) }.getOrThrow()
 
     /**
      * 新しい[FluidStack]のインスタンスを作成します。
      */
-    fun toStack(amount: Int = FluidType.BUCKET_VOLUME, patch: DataComponentPatch = DataComponentPatch.EMPTY): FluidStack = FluidStack(sourceHolder, amount, patch)
+    fun toStack(amount: Int = FluidType.BUCKET_VOLUME, patch: DataComponentPatch = DataComponentPatch.EMPTY): FluidStack = when {
+        sourceHolder.isBound -> FluidStack(sourceHolder, amount, patch)
+        else -> FluidStack.EMPTY
+    }
 
     /**
      * 基本的な[HTFluidContent]の実装クラスです。
