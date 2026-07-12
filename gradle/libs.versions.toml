@@ -6,12 +6,12 @@ neo-version = "26.1.2.78"
 kff-version = "6.3.0"
 
 kotlin = "2.4.0"
-dokka = "2.1.0"
-spotless = "7.2.1"
+dokka = "2.2.0"
+spotless = "8.8.0"
 
-axion-release = "1.21.1"
-maven-publish = "0.36.0"
-mod-publish = "2.0.0"
+axion-release = "1.21.2"
+maven-publish = "0.37.0"
+mod-publish = "2.1.1"
 
 ae2 = "26.1.10-beta"
 curios = "15.0.0-beta.2+26.1.2"
