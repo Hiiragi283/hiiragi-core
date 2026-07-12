@@ -58,7 +58,7 @@ abstract class HTTagsProvider<T : Any> : TagsProvider<T> {
      * 新しい[HTTagBuilder]のインスタンスを作成します。
      * @param tagKey 生成対象のタグ
      */
-    protected fun tag(tagKey: TagKey<T>): HTTagBuilder<T> = HTTagBuilder { entry: TagEntry -> entryCache.put(tagKey, entry) }
+    protected fun builder(tagKey: TagKey<T>): HTTagBuilder<T> = HTTagBuilder { entry: TagEntry -> entryCache.put(tagKey, entry) }
 
     /**
      * 新しい[HTTagBuilder]のインスタンスを作成します。
@@ -73,9 +73,9 @@ abstract class HTTagsProvider<T : Any> : TagsProvider<T> {
      * @param children [tagKey]からチェインして生成するタグ
      * @return [children]の最後の値に対する[HTTagBuilder]
      */
-    protected fun tags(tagKey: TagKey<T>, vararg children: TagKey<T>): HTTagBuilder<T> = children.fold(tag(tagKey)) { builder: HTTagBuilder<T>, tagKeyIn: TagKey<T> ->
+    protected fun tags(tagKey: TagKey<T>, vararg children: TagKey<T>): HTTagBuilder<T> = children.fold(builder(tagKey)) { builder: HTTagBuilder<T>, tagKeyIn: TagKey<T> ->
         builder.addTag(tagKeyIn)
-        tag(tagKeyIn)
+        builder(tagKeyIn)
     }
 
     /**

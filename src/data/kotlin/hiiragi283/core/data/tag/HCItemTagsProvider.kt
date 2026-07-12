@@ -42,9 +42,9 @@ class HCItemTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<H
 
         tags(Tags.Items.CROPS, HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART.itemHolder)
 
-        tag(HiiragiCoreTags.Items.STICKY_BALLS).addTag(Tags.Items.SLIME_BALLS)
-        tag(Tags.Items.FEATHERS).add(HCItems.SYNTHETIC_FEATHER)
-        tag(Tags.Items.STRINGS).add(HCItems.SYNTHETIC_FIBER)
-        tag(Tags.Items.LEATHERS).add(HCItems.SYNTHETIC_LEATHER)
+        builder(HiiragiCoreTags.Items.STICKY_BALLS).addTag(Tags.Items.SLIME_BALLS)
+        builder(Tags.Items.FEATHERS).add(HCItems.SYNTHETIC_FEATHER)
+        builder(Tags.Items.STRINGS).add(HCItems.SYNTHETIC_FIBER)
+        builder(Tags.Items.LEATHERS).add(HCItems.SYNTHETIC_LEATHER)
     }
 }

@@ -4,6 +4,7 @@ import hiiragi283.lib.resource.vanillaId
 import hiiragi283.lib.util.HTTextResult
 import hiiragi283.lib.util.toTextResult
 import net.minecraft.core.Holder
+import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
 import net.minecraft.world.level.ItemLike
@@ -45,6 +46,16 @@ fun ItemStackTemplate.transmuteCopy(newItem: ItemLike, newCount: Int = this.coun
 }
 
 //    ItemStack    //
+
+/**
+ * @author Hiiragi Tsubasa
+ * @since 26.1.4
+ */
+fun ItemStack(item: ItemLike, count: Int, patch: DataComponentPatch): ItemStack {
+    val stack = ItemStack(item, count)
+    stack.applyComponents(patch)
+    return stack
+}
 
 /**
  * [ItemStack]を[ItemStackTemplate]に変換します。

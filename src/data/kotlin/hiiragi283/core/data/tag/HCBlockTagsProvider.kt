@@ -33,13 +33,13 @@ class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<
             tags(prefix, material).add(block)
         }
         // Mineable
-        tag(BlockTags.MINEABLE_WITH_AXE)
+        builder(BlockTags.MINEABLE_WITH_AXE)
             .add(HCBlocks.WARPED_WART)
             .add(HCBlocks.CHOPPING_BOARD)
-        tag(BlockTags.SWORD_EFFICIENT)
+        builder(BlockTags.SWORD_EFFICIENT)
             .add(HCBlocks.WARPED_WART)
 
-        val pickaxe: HTTagBuilder<Block> = tag(BlockTags.MINEABLE_WITH_PICKAXE)
+        val pickaxe: HTTagBuilder<Block> = builder(BlockTags.MINEABLE_WITH_PICKAXE)
         sequence {
             yieldAll(HCBlocks.RESOURCES.values)
 
@@ -47,8 +47,8 @@ class HCBlockTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<
             yieldAll(HCBlocks.COPPER_BASIN.allCoppers)
         }.forEach(pickaxe::add)
         // Category
-        HCBlocks.CONCRETE_SLABS.onEach(pickaxe::add).onEach(tag(BlockTags.SLABS)::add)
-        HCBlocks.CONCRETE_STAIRS.onEach(pickaxe::add).onEach(tag(BlockTags.STAIRS)::add)
+        HCBlocks.CONCRETE_SLABS.onEach(pickaxe::add).onEach(builder(BlockTags.SLABS)::add)
+        HCBlocks.CONCRETE_STAIRS.onEach(pickaxe::add).onEach(builder(BlockTags.STAIRS)::add)
     }
 
     private fun HTTagBuilder<Block>.addBlock(block: Block): HTTagBuilder<Block> = this.add(block.toLike())

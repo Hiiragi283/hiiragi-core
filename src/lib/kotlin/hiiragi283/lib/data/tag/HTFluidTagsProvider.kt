@@ -24,9 +24,9 @@ abstract class HTFluidTagsProvider(output: PackOutput, lookupProvider: Completab
     fun addContents(contents: Sequence<HTFluidContent>) {
         for (content: HTFluidContent in contents) {
             val fluidTag: TagKey<Fluid> = content.fluidTag
-            tag(fluidTag).addContent(content)
+            builder(fluidTag).addContent(content)
             if (content.getFluidType().isLighterThanAir) {
-                tag(Tags.Fluids.GASEOUS).addTag(fluidTag)
+                builder(Tags.Fluids.GASEOUS).addTag(fluidTag)
             }
         }
     }

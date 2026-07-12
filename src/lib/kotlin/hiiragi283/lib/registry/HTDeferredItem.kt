@@ -1,5 +1,6 @@
 package hiiragi283.lib.registry
 
+import hiiragi283.lib.item.HTItemLike
 import hiiragi283.lib.resource.HTKeyLike
 import hiiragi283.lib.text.Text
 import hiiragi283.lib.util.getOrThrow
@@ -10,7 +11,6 @@ import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
-import net.minecraft.world.level.ItemLike
 
 /**
  * シンプルな[HTDeferredItem]のエイリアスです。
@@ -28,7 +28,7 @@ typealias HTSimpleDeferredItem = HTDeferredItem<Item>
 class HTDeferredItem<out ITEM : Item> :
     HTDeferredHolder<Item, ITEM>,
     HTKeyLike.Translatable<Item>,
-    ItemLike {
+    HTItemLike<ITEM> {
     constructor(key: ResourceKey<Item>) : super(key)
 
     constructor(id: Identifier) : super(Registries.ITEM.createKey(id))
@@ -39,15 +39,9 @@ class HTDeferredItem<out ITEM : Item> :
 
     override fun asItem(): ITEM = get()
 
-    /**
-     * 新しい[ItemStackTemplate]のインスタンスを作成します。
-     */
-    fun toTemplate(count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStackTemplate = getResult().map { ItemStackTemplate(it, count, patch) }.getOrThrow()
+    override fun toTemplate(count: Int, patch: DataComponentPatch): ItemStackTemplate = getResult().map { ItemStackTemplate(it, count, patch) }.getOrThrow()
 
-    /**
-     * 新しい[ItemStack]のインスタンスを作成します。
-     */
-    fun toStack(count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStack = when {
+    override fun toStack(count: Int, patch: DataComponentPatch): ItemStack = when {
         this.isBound -> ItemStack(this, count, patch)
         else -> ItemStack.EMPTY
     }

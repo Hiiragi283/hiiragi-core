@@ -15,17 +15,17 @@ import net.neoforged.neoforge.common.Tags
 
 class HCEntityTypeTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : HTTagsProvider<EntityType<*>>(output, Registries.ENTITY_TYPE, lookupProvider, HiiragiCoreAPI.MOD_ID) {
     override fun appendTags(registries: HolderLookup.Provider) {
-        tag(HiiragiCoreTags.EntityTypes.CAPTURE_BLACKLIST)
+        builder(HiiragiCoreTags.EntityTypes.CAPTURE_BLACKLIST)
             .addTag(Tags.EntityTypes.BOSSES)
             .addTag(Tags.EntityTypes.CAPTURING_NOT_SUPPORTED)
 
-        tag(HiiragiCoreTags.EntityTypes.SENSITIVE_TO_HAMMER_OF_JUSTICE)
+        builder(HiiragiCoreTags.EntityTypes.SENSITIVE_TO_HAMMER_OF_JUSTICE)
             .addTag(EntityTypeTags.RAIDERS)
 
-        tag(HiiragiCoreTags.EntityTypes.SENSITIVE_TO_NOISE_CANCELLING)
+        builder(HiiragiCoreTags.EntityTypes.SENSITIVE_TO_NOISE_CANCELLING)
             .addEntity(EntityType.WARDEN)
 
-        tag(HiiragiCoreTags.EntityTypes.SENSITIVE_TO_PURIFICATION)
+        builder(HiiragiCoreTags.EntityTypes.SENSITIVE_TO_PURIFICATION)
             .addEntity(EntityType.WITHER)
             .addEntity(EntityType.WITHER_SKELETON)
     }

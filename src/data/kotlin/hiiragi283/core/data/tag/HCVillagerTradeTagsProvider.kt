@@ -12,6 +12,6 @@ import net.minecraft.world.item.trading.VillagerTrade
 
 class HCVillagerTradeTagsProvider(output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : HTTagsProvider<VillagerTrade>(output, Registries.VILLAGER_TRADE, lookupProvider, HiiragiCoreAPI.MOD_ID) {
     override fun appendTags(registries: HolderLookup.Provider) {
-        tag(VillagerTradeTags.FISHERMAN_LEVEL_5).add(HCVillagerTrades.FISHERMAN_5_EMERALD_ELDER_HEART)
+        builder(VillagerTradeTags.FISHERMAN_LEVEL_5).add(HCVillagerTrades.FISHERMAN_5_EMERALD_ELDER_HEART)
     }
 }
