@@ -386,6 +386,7 @@ publishMods {
         server = true
 
         requires("kotlin-for-forge")
+        requires("ldlib")
         optional("jei")
     }
     modrinth {
@@ -395,6 +396,7 @@ publishMods {
         announcementTitle = "Download from Modrinth"
 
         requires("kotlin-for-forge")
+        requires("ldlib")
         optional("jei")
     }
     discord {

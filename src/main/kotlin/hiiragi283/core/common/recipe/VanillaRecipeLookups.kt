@@ -33,16 +33,16 @@ import net.minecraft.world.item.crafting.SingleRecipeInput
 
 data object VanillaRecipeLookups {
     @JvmField
-    val SMELTING: HTRecipeLookup.Translatable<HTItemToItemRecipe> = CookingType(RecipeType.SMELTING)
+    val SMELTING: HTRecipeLookup.Translatable<HTItemToItemRecipe> = CookingLookup(RecipeType.SMELTING)
 
     @JvmField
-    val BLASTING: HTRecipeLookup.Translatable<HTItemToItemRecipe> = CookingType(RecipeType.BLASTING)
+    val BLASTING: HTRecipeLookup.Translatable<HTItemToItemRecipe> = CookingLookup(RecipeType.BLASTING)
 
     @JvmField
-    val SMOKING: HTRecipeLookup.Translatable<HTItemToItemRecipe> = CookingType(RecipeType.SMOKING)
+    val SMOKING: HTRecipeLookup.Translatable<HTItemToItemRecipe> = CookingLookup(RecipeType.SMOKING)
 
     @JvmInline
-    private value class CookingType<RECIPE : AbstractCookingRecipe>(private val recipeType: RecipeType<RECIPE>) : HTRecipeLookup.Translatable<HTItemToItemRecipe> {
+    private value class CookingLookup<RECIPE : AbstractCookingRecipe>(private val recipeType: RecipeType<RECIPE>) : HTRecipeLookup.Translatable<HTItemToItemRecipe> {
         override fun getAllRecipes(contextMap: ContextMap): Map<RecipeKey, HTItemToItemRecipe> = contextMap.getOrThrow(HTRecipeLookupContext.RECIPES)
             .byType(recipeType)
             .associate { holder: RecipeHolder<RECIPE> -> holder.id() to HCCookingRecipe(holder.value()) }
@@ -62,9 +62,9 @@ data object VanillaRecipeLookups {
     }
 
     @JvmField
-    val BREWING: HTRecipeLookup.Translatable<HCBrewingRecipe> = BrewingType
+    val BREWING: HTRecipeLookup.Translatable<HCBrewingRecipe> = BrewingLookup
 
-    private data object BrewingType : HTRecipeLookup.Translatable<HCBrewingRecipe> {
+    private data object BrewingLookup : HTRecipeLookup.Translatable<HCBrewingRecipe> {
         override fun getAllRecipes(contextMap: ContextMap): Map<RecipeKey, HCBrewingRecipe> {
             val multiMap: MultiMap<Holder<Potion>, HCBrewingRecipe> = buildListMultiMap {
                 contextMap.getOptional(HTRecipeLookupContext.BREWING)
