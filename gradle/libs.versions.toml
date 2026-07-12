@@ -1,8 +1,8 @@
 [versions]
-minecraft = "26.1.2"
+minecraft = "26.2"
 
 neo-moddev = "2.0.141"
-neo-version = "26.1.2.78"
+neo-version = "26.2.0.11-beta"
 kff-version = "6.3.0"
 
 kotlin = "2.4.0"
@@ -15,15 +15,9 @@ mod-publish = "2.1.1"
 
 ae2 = "26.1.10-beta"
 curios = "15.0.0-beta.2+26.1.2"
-dire = "7463040"
-immersive = "1.21.1-12.4.2-194"
-jade = "26.1.8+neoforge"
-jei = "29.12.0.40"
-ldlib = "26.1.2.26"
-mek = "1.21.1-10.7.17.83"
-mi = "2.4.1"
-oritech = "1.2.6"
-replica = "1.21-1.2.7"
+jade = "26.2.8+neoforge"
+jei = "30.10.0.60"
+ldlib = "26.2.2.28"
 
 [libraries]
 
@@ -32,11 +26,9 @@ kff = { group = "thedarkcolour", name = "kotlinforforge-neoforge", version.ref =
 ae2 = { group = "org.appliedenergistics", name = "appliedenergistics2", version.ref = "ae2" }
 curios = { group = "top.theillusivec4.curios", name = "curios-neoforge", version.ref = "curios" }
 jade = { group = "maven.modrinth", name = "jade", version.ref = "jade" }
-jei = { group = "mezz.jei", name = "jei-26.1.2-neoforge", version.ref = "jei" }
-jei-api = { group = "mezz.jei", name = "jei-26.1.2-neoforge-api", version.ref = "jei" }
-ldlib = { group = "com.lowdragmc.ldlib2", name = "ldlib2-neoforge-26.1", version.ref = "ldlib" }
-mek = { group = "mekanism", name = "Mekanism", version.ref = "mek" }
-mi = { group = "aztech", name = "Modern-Industrialization", version.ref = "mi" }
+jei = { group = "mezz.jei", name = "jei-26.2-neoforge", version.ref = "jei" }
+jei-api = { group = "mezz.jei", name = "jei-26.2-neoforge-api", version.ref = "jei" }
+ldlib = { group = "com.lowdragmc.ldlib2", name = "ldlib2-neoforge-26.2", version.ref = "ldlib" }
 
 [bundles]
 
@@ -47,8 +39,8 @@ common-compile = []
 common-runtime = []
 
 integration-impl = [
-    "ae2",
-    "curios",
+    #"ae2",
+    #"curios",
     "jade",
 ]
 
