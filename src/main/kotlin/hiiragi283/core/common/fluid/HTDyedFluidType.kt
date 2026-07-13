@@ -22,7 +22,7 @@ class HTDyedFluidType(private val color: HTDefaultColor, properties: Properties)
         stack: FluidStack,
     ) {
         super.onVaporize(player, level, pos, stack)
-        val dye: ItemStack = VanillaColoredCollections.DYE[color].toStack(4) ?: return
+        val dye: ItemStack = VanillaColoredCollections.DYE[color].toStack(4)
         if (player != null) {
             HTItemDropHelper.giveStackTo(player, dye)
         } else {

@@ -13,7 +13,7 @@ import kotlin.contracts.contract
  * @param A 左側の値のクラス
  * @param B 右側の値のクラス
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 21.1.0
  */
 sealed class Ior<out A, out B> {
     companion object {

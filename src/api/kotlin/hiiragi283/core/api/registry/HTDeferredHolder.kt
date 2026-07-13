@@ -16,7 +16,7 @@ typealias HTSimpleDeferredHolder<R> = HTDeferredHolder<R, R>
  * @param R レジストリの要素のクラス
  * @param T 要素のクラス
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 21.1.0
  */
 open class HTDeferredHolder<R : Any, out T : R> :
     DeferredHolder<R, @UnsafeVariance T>,

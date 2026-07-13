@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "hiiragi_core:block/exposed_copper_basin"
+      "model": "hiiragi_core:block/waxed_exposed_copper_basin"
     }
   }
 }

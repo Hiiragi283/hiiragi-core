@@ -6,7 +6,7 @@ import hiiragi283.core.api.resource.vanillaId
 /**
  * バニラの銅系コンテンツ向けに[HTWeatheringCoppers]をまとめたクラスです。
  * @author Hiiragi Tsubasa
- * @since 26.1.3
+ * @since 21.1.0
  */
 data object VanillaWeatheringCoppers {
     @JvmField

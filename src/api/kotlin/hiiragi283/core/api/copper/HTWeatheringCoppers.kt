@@ -5,7 +5,7 @@ package hiiragi283.core.api.copper
  * @param weathering さび止めされた銅系コンテンツの一覧
  * @param waxed 酸化する銅系コンテンツの一覧
  * @author Hiiragi Tsubas
- * @since 26.1.3
+ * @since 21.1.0
  */
 @JvmRecord
 data class HTWeatheringCoppers<out T>(val weathering: HTCopperCollection<T>, val waxed: HTCopperCollection<T>) {

@@ -1,13 +1,13 @@
 package hiiragi283.core.api.registry
 
-import hiiragi283.core.api.resource.SupplierWithId
+import hiiragi283.core.api.resource.SimpleSupplierWithKey
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.resources.ResourceKey
-import net.minecraft.resources.ResourceLocation
 
 /**
- * 指定した[Holder][this]から[ResourceKey]を取得します。
+ * この[Holder][this]から[ResourceKey]を取得します。
+ * @param R 保持する値のクラス
  * @throws IllegalStateException [Holder.unwrapKey]の値が空の場合
  * @author Hiiragi Tsubasa
  * @since 0.17.0
@@ -15,14 +15,25 @@ import net.minecraft.resources.ResourceLocation
 fun <R : Any> Holder<R>.getKeyOrThrow(): ResourceKey<R> = this.unwrapKey().orElseThrow { error("Unregistered holder: $this") }
 
 /**
- * 指定した[Holder][this]を[SupplierWithId]に変換します。
+ * この[Holder][this]を[SimpleSupplierWithKey]に変換します。
+ * @param R 保持する値のクラス
+ * @throws IllegalStateException [Holder.kind]が[Holder.Kind.DIRECT]の場合
  * @author Hiiragi Tsubasa
  * @since 0.17.0
  */
-fun <T : Any> Holder<T>.toLike(): SupplierWithId<T> = object : SupplierWithId<T> {
-    override fun get(): T = this@toLike.value()
+fun <R : Any> Holder<R>.toLike(): SimpleSupplierWithKey<R> = when (this) {
+    is HTDeferredHolder<R, *> -> this
+    else -> when (this.kind()) {
+        Holder.Kind.REFERENCE -> HolderWithKey(this)
+        Holder.Kind.DIRECT -> error("Cannot convert direct holder to SupplierWithId")
+    }
+}
 
-    override fun getId(): ResourceLocation = this@toLike.getKeyOrThrow().location()
+@JvmInline
+private value class HolderWithKey<R : Any>(private val holder: Holder<R>) : SimpleSupplierWithKey<R> {
+    override fun get(): R = holder.value()
+
+    override fun getKey(): ResourceKey<R> = holder.getKeyOrThrow()
 }
 
 //    HolderSet    //

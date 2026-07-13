@@ -6,7 +6,6 @@ import hiiragi283.core.api.data.createLootTables
 import hiiragi283.core.api.data.createProviderWithHelper
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.text.toText
-import hiiragi283.core.data.bootstrap.HCEnchantmentProvider
 import hiiragi283.core.data.lang.HCEnglishLangProvider
 import hiiragi283.core.data.lang.HCJapaneseLangProvider
 import hiiragi283.core.data.loot.HCBlockLootTableProvider
@@ -19,6 +18,7 @@ import hiiragi283.core.data.tag.HCDamageTypeTagsProvider
 import hiiragi283.core.data.tag.HCEntityTypeTagsProvider
 import hiiragi283.core.data.tag.HCFluidTagsProvider
 import hiiragi283.core.data.tag.HCItemTagsProvider
+import hiiragi283.core.setup.HCEnchantments
 import net.minecraft.core.RegistrySetBuilder
 import net.minecraft.core.registries.Registries
 import net.minecraft.data.metadata.PackMetadataGenerator
@@ -37,7 +37,7 @@ data object HiiragiCoreDataGen {
 
         event.createDatapackRegistryObjects(
             RegistrySetBuilder()
-                .add(Registries.ENCHANTMENT, HCEnchantmentProvider),
+                .add(Registries.ENCHANTMENT, HCEnchantments),
         )
 
         event.generator

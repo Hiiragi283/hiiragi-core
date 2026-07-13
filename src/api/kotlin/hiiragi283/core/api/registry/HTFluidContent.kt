@@ -29,7 +29,7 @@ sealed class HTFluidContent(
 
     /**
      * 基本的な[HTFluidContent]の実装クラスです。
-     * @since 0.17.0
+     * @since 21.1.0
      */
     class Virtual(
         typeHolder: HTDeferredFluidType<FluidType>,
@@ -41,7 +41,7 @@ sealed class HTFluidContent(
 
     /**
      * [FlowingFluid]に基づいた[HTFluidContent]の実装クラスです。
-     * @since 0.17.0
+     * @since 21.1.0
      */
     class Flowing(
         typeHolder: HTDeferredFluidType<FluidType>,

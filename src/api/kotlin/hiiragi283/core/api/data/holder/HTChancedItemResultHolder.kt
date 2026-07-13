@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation
 /**
  * [HTChancedItemResult]の[List]を作成するクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 21.1.0
  */
 class HTChancedItemResultHolder : HTIdLike {
     val results: List<HTChancedItemResult> get() = _results

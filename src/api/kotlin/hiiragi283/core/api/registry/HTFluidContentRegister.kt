@@ -2,7 +2,7 @@ package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.fluid.HTVirtualFluid
-import hiiragi283.core.api.function.identity
+import hiiragi283.core.api.util.identity
 import hiiragi283.core.api.function.partially2
 import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.toId
@@ -101,7 +101,7 @@ class HTFluidContentRegister(modId: String) {
                 { it.stacksTo(1).craftRemainder(Items.BUCKET) },
             )
             val content: CONTENT = createContent(typeHolder, sourceHolder, bucketHolder)
-            contentsCache[sourceHolder.key!!] = content
+            contentsCache[sourceHolder.key] = content
             return content
         }
 

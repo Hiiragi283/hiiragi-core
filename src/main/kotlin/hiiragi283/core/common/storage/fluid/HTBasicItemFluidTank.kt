@@ -1,6 +1,6 @@
 package hiiragi283.core.common.storage.fluid
 
-import hiiragi283.core.api.function.Identity
+import hiiragi283.core.api.util.Identity
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType

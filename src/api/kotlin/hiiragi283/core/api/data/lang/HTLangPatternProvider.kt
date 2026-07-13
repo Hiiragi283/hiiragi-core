@@ -22,7 +22,7 @@ fun interface HTLangPatternProvider {
 
     companion object {
         /**
-         * @since 0.17.0
+         * @since 21.1.0
          */
         @JvmField
         val IDENTITY = HTLangPatternProvider { _, value -> value }

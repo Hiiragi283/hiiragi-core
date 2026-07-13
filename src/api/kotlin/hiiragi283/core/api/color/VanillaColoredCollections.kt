@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation
 /**
  * バニラの色付きコンテンツ向けに[HTColoredCollection]をまとめたクラスです。
  * @author Hiiragi Tsubasa
- * @since 26.1.3
+ * @since 21.1.0
  */
 data object VanillaColoredCollections {
     @JvmField

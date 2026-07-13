@@ -6,14 +6,15 @@ parchment-map = "2024.11.17"
 
 neo-moddev = "2.0.141"
 neo-version = "21.1.230"
-kff-version = "5.11.0"
+kff-version = "5.12.0"
 
+kotlin = "2.4.0"
 dokka = "2.1.0"
 spotless = "7.2.1"
 
-axion-release = "1.21.1"
-maven-publish = "0.36.0"
-minotaur = "2.+"
+axion-release = "1.21.2"
+maven-publish = "0.37.0"
+mod-publish = "2.1.1"
 
 ae2 = "19.2.17"
 curios = "9.5.1+1.21.1"
@@ -81,10 +82,11 @@ integration-runtime = [
 
 neo-moddev = { id = "net.neoforged.moddev", version.ref = "neo-moddev" }
 
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 dokka-javadoc = { id = "org.jetbrains.dokka-javadoc", version.ref = "dokka" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
 axion-release = { id = "pl.allegro.tech.build.axion-release", version.ref = "axion-release" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
-minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
+mod-publish = { id = "me.modmuss50.mod-publish-plugin", version.ref = "mod-publish" }

@@ -9,7 +9,6 @@ import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.item.toStack
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
-import hiiragi283.core.api.registry.HTDeferredBlockAndItem
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTSimpleDeferredItem
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -37,7 +36,6 @@ import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.item.crafting.CraftingBookCategory
 import net.minecraft.world.item.crafting.Ingredient
-import net.minecraft.world.level.block.WeatheringCopper
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.common.crafting.DataComponentIngredient
 import org.apache.commons.lang3.math.Fraction
@@ -406,7 +404,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             define('B') { itemCreator.create(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.COPPER) }
             resultStack = HCBlocks.COPPER_BASIN.weathering.unaffected.toStack()
         }
-        for ((state: WeatheringCopper.WeatherState, base: HTDeferredBlockAndItem<*, *>) in HCBlocks.COPPER_BASIN.weathering) {
+        /*for ((state: WeatheringCopper.WeatherState, base: HTDeferredBlockAndItem<*, *>) in HCBlocks.COPPER_BASIN.weathering) {
             // Waxing
             HTShapelessRecipeBuilder.create(output) {
                 ingredients += itemCreator.create(base)
@@ -414,6 +412,6 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
                 resultStack = HCBlocks.COPPER_BASIN.waxed[state].toStack()
                 recipeId suffix "_from_${base.path}"
             }
-        }
+        }*/
     }
 }

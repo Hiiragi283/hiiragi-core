@@ -1,11 +1,9 @@
 package hiiragi283.core.api.util
 
-import hiiragi283.core.api.function.identity
-
 /**
  * [A]または[B]の値のみを保持するクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 21.1.0
  */
 sealed class Either<out A, out B> {
     /**

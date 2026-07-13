@@ -11,9 +11,6 @@ import org.slf4j.Logger
 import java.util.ServiceLoader
 import kotlin.random.Random
 
-/**
- * @see mekanism.api.MekanismAPI
- */
 data object HiiragiCoreAPI {
     /**
      * Hiiragi CoreのMod ID
@@ -76,5 +73,5 @@ data object HiiragiCoreAPI {
      */
     @Suppress("UnstableApiUsage")
     @JvmStatic
-    internal inline fun <reified SERVICE : Any> getService(): SERVICE = ServiceLoader.load(SERVICE::class.java, HiiragiCoreAPI::class.java.classLoader).first()
+    internal inline fun <reified SERVICE : Any> getService(): SERVICE = ServiceLoader.load(SERVICE::class.java, HiiragiCoreAPI::class.java.classLoader).single()
 }

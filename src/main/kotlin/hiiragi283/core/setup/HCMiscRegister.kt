@@ -34,6 +34,10 @@ internal object HCMiscRegister {
             helper.register(HiiragiCoreAPI.id(HTConst.FLUID), HCDataComponents.FLUID)
         }
 
+        // Attachment Type
+        event.register(NeoForgeRegistries.Keys.ATTACHMENT_TYPES) { helper ->
+            helper.register(HiiragiCoreAPI.id("in_world_recipe_caches"), HCAttachmentTypes.IN_WORLD_RECIPE_CACHES)
+        }
         // Ingredient Type
         event.register(NeoForgeRegistries.Keys.INGREDIENT_TYPES) { helper ->
             helper.register(HiiragiCoreAPI.id("blue_print"), HTBluePrintIngredient.TYPE)

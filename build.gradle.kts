@@ -5,7 +5,7 @@ import org.slf4j.event.Level
 plugins {
     idea
     id("signing")
-    kotlin("jvm") version "2.2.20"
+    alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.neo.moddev)
 
     alias(libs.plugins.dokka.asProvider())
@@ -14,6 +14,7 @@ plugins {
 
     alias(libs.plugins.axion.release)
     alias(libs.plugins.maven.publish)
+    alias(libs.plugins.mod.publish)
 }
 
 val modId = "hiiragi_core"

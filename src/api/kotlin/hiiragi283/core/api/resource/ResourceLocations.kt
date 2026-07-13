@@ -42,14 +42,14 @@ fun vanillaId(vararg path: String): ResourceLocation = ResourceLocation.withDefa
 /**
  * この[ResourceKey]を翻訳キーに変換します。
  * @author Hiiragi Tsubasa
- * @since 26.1.3
+ * @since 21.1.0
  */
 inline fun ResourceKey<*>.toLanguageKey(): String = this.location().toLanguageKey(this.registryKey().location().path)
 
 /**
  * この[ResourceKey]を翻訳キーに変換します。
  * @author Hiiragi Tsubasa
- * @since 26.1.3
+ * @since 21.1.0
  */
 inline fun ResourceKey<*>.toLanguageKey(suffix: String): String = this.location().toLanguageKey(this.registryKey().location().path, suffix)
 

@@ -1,6 +1,6 @@
 package hiiragi283.core.api.serialization.network
 
-import hiiragi283.core.api.function.identity
+import hiiragi283.core.api.util.identity
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.tag.createTagKey
 import hiiragi283.core.api.text.Text
@@ -54,7 +54,7 @@ data object HTStreamCodecs {
     )
 
     /**
-     * @since 0.17.0
+     * @since 21.1.0
      */
     @JvmStatic
     fun <B : ByteBuf, L : Any, R : Any> either(left: StreamCodec<in B, L>, right: StreamCodec<in B, R>): StreamCodec<B, Either<L, R>> = ByteBufCodecs.either(left, right).map({ it.kotlin }, { it.java })

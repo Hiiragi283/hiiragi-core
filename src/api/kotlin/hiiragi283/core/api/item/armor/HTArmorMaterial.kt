@@ -2,9 +2,9 @@ package hiiragi283.core.api.item.armor
 
 import hiiragi283.core.api.item.equipment.HTEquipmentMaterial
 import hiiragi283.core.api.registry.getKeyOrThrow
-import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.HTKeyLike
 import net.minecraft.core.Holder
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.ResourceKey
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.world.item.ArmorItem
 import net.minecraft.world.item.ArmorMaterial
@@ -49,7 +49,7 @@ interface HTArmorMaterial : HTEquipmentMaterial {
      */
     interface Delegated :
         HTArmorMaterial,
-        HTIdLike {
+        HTKeyLike<ArmorMaterial> {
         fun getHolder(): Holder<ArmorMaterial>
 
         override fun getToughness(): Float = getHolder().value().toughness()
@@ -64,6 +64,6 @@ interface HTArmorMaterial : HTEquipmentMaterial {
 
         override fun getRepairIngredient(): Ingredient = getHolder().value().repairIngredient().get()
 
-        override fun getId(): ResourceLocation = getHolder().getKeyOrThrow().location()
+        override fun getKey(): ResourceKey<ArmorMaterial> = getHolder().getKeyOrThrow()
     }
 }

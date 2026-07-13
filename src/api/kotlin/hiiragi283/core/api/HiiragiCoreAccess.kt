@@ -186,7 +186,7 @@ abstract class HiiragiCoreAccess {
      * 指定した[provider]から，[tagKey]に紐づいた値を取得します。
      * @param T レジストリの種類のクラス
      * @return [SupplierWithId]の[結果][HTTextResult]
-     * @since 0.17.0
+     * @since 21.1.0
      */
     fun <T : Any> getFirstHolder(provider: HolderLookup<T>, tagKey: TagKey<T>): HTTextResult<SupplierWithId<T>> = provider
         .getResult(tagKey)

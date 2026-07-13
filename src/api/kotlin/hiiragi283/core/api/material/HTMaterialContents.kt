@@ -33,7 +33,7 @@ interface HTMaterialContents<R : Any, V : HTMaterialContents.Entry<*>> : HTTable
 
     /**
      * 指定した[row]と[material]から対応する値を返します。
-     * @since 0.17.0
+     * @since 21.1.0
      */
     fun getResult(row: R, material: HTMaterialLike): HTTextResult<V> = get(row, material)?.right() ?: HTTextResult(getErrorMessage(row, material.asMaterialKey()))
 
@@ -97,7 +97,7 @@ operator fun <V : HTMaterialContents.Entry<*>> HTMaterialContents<HTPart, V>.get
 
 /**
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 21.1.0
  */
 fun <V : HTMaterialContents.Entry<*>> HTMaterialContents<HTPart, V>.getResult(part: HTPartLike, material: HTMaterialLike): HTTextResult<V> = this.getResult(part.asPart(), material)
 

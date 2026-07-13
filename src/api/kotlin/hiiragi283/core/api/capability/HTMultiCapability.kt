@@ -22,7 +22,7 @@ import java.util.function.BooleanSupplier
  * @since 0.1.0
  * @see mekanism.common.capabilities.IMultiTypeCapability
  */
-@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+@Suppress("TYPE_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 interface HTMultiCapability<HANDLER : Any, ITEM_HANDLER : HANDLER> {
     val block: BlockCapability<HANDLER, Direction?>
     val entity: EntityCapability<HANDLER, Direction?>

@@ -1,7 +1,7 @@
 package hiiragi283.core.api.registry
 
-import hiiragi283.core.api.function.Identity
-import hiiragi283.core.api.function.identity
+import hiiragi283.core.api.util.Identity
+import hiiragi283.core.api.util.identity
 import java.util.function.Function
 import java.util.function.Supplier
 import net.minecraft.core.registries.Registries

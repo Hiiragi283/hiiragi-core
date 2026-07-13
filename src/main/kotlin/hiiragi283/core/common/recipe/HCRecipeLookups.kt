@@ -4,7 +4,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.color.HTColoredCollection
 import hiiragi283.core.api.color.VanillaColoredCollections
-import hiiragi283.core.api.function.identity
+import hiiragi283.core.api.util.identity
 import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe

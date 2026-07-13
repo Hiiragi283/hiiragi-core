@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.WeatheringCopper
  * 参照 : [Minecraft - WeatheringCopper.WeatherState][WeatheringCopper.WeatherState]
  *
  * @author Hiiragi Tsubasa
- * @since 26.1.3
+ * @since 21.1.0
  */
 enum class HTCopperPhase(private val prefix: String, provider: HTLangPatternProvider) :
     StringRepresentable,

@@ -13,7 +13,7 @@ import kotlin.contracts.contract
  * 参照 : [Arrow - Option](https://github.com/arrow-kt/arrow/blob/main/arrow-libs/core/arrow-core/src/commonMain/kotlin/arrow/core/Option.kt)
  * @param T 値のクラス
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 21.1.0
  */
 @JvmInline
 value class Option<out T : Any>@PublishedApi internal constructor(@PublishedApi internal val value: Any?) {
@@ -192,21 +192,21 @@ inline fun <T : Any> Option<T>.getOrElse(default: () -> T): T {
  * [Option]に変換します。
  * @return [this]が`null`の場合は[Option.none]，それ以外の場合は[Option.some]
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 21.1.0
  */
 fun <T : Any> T?.toOption(): Option<T> = Option.fromNullable(this)
 
 /**
  * [Option.some]に変換します。
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 21.1.0
  */
 fun <T : Any> T.some(): Option<T> = Option.some(this)
 
 /**
  * [Pair]の[Option]を[Map]に変換します。
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 21.1.0
  */
 fun <K, V> Option<Pair<K, V>>.toMap(): Map<K, V> = this.toList().toMap()
 
@@ -215,13 +215,13 @@ fun <K, V> Option<Pair<K, V>>.toMap(): Map<K, V> = this.toList().toMap()
 /**
  * [Optional]を[Option]に変換します。
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 21.1.0
  */
 val <T : Any> Optional<T>.kotlin: Option<T> get() = this.map { it.some() }.orElseGet { Option.none() }
 
 /**
  * [Option]を[Optional]に変換します。
  * @author Hiiragi Tsubasa
- * @since 0.17.0
+ * @since 21.1.0
  */
 val <T : Any> Option<T>.java: Optional<T> get() = this.fold({ Optional.empty() }, { Optional.of(it) })

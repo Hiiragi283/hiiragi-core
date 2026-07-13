@@ -18,7 +18,6 @@ import hiiragi283.core.common.storage.fluid.HTBasicItemFluidTank
 import hiiragi283.core.common.storage.fluid.HTExperienceTomeFluidTank
 import hiiragi283.core.config.HCConfig
 import hiiragi283.core.impl.HiiragiCoreAccessImpl
-import hiiragi283.core.setup.HCAttachmentTypes
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCCreativeTabs
@@ -58,7 +57,6 @@ data object HiiragiCore : HTCommonMod() {
         HCBlocks.register(eventBus)
         HCItems.register(eventBus)
 
-        HCAttachmentTypes.REGISTER.register(eventBus)
         HCBlockEntityTypes.REGISTER.register(eventBus)
         HCCreativeTabs.REGISTER.register(eventBus)
         HCMenuTypes.REGISTER.register(eventBus)

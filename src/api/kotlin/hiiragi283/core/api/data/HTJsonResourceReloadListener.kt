@@ -6,7 +6,7 @@ import com.google.gson.JsonElement
 import com.mojang.serialization.Codec
 import com.mojang.serialization.Decoder
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.function.identity
+import hiiragi283.core.api.util.identity
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener

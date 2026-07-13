@@ -1,7 +1,7 @@
 package hiiragi283.core.api.registry
 
-import hiiragi283.core.api.function.Identity
-import hiiragi283.core.api.function.identity
+import hiiragi283.core.api.util.Identity
+import hiiragi283.core.api.util.identity
 import hiiragi283.core.api.item.HTBlockItem
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block

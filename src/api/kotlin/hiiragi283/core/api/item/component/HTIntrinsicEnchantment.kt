@@ -3,7 +3,7 @@ package hiiragi283.core.api.item.component
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.color.HTDefaultColor
-import hiiragi283.core.api.function.identity
+import hiiragi283.core.api.util.identity
 import hiiragi283.core.api.registry.getResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.network.HTStreamCodecs

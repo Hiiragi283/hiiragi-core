@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation
 /**
  * [キー][ResourceKey]を提供するインターフェースです。
  * @author Hiiragi Tsubasa
- * @since 26.1.3
+ * @since 21.1.0
  */
 fun interface HTKeyLike<R : Any> : HTIdLike {
     fun getKey(): ResourceKey<R>
