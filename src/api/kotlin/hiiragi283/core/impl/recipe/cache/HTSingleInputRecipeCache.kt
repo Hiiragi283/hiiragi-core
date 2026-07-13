@@ -2,8 +2,10 @@ package hiiragi283.core.impl.recipe.cache
 
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
+import hiiragi283.core.api.recipe.recipe
 import net.minecraft.world.level.Level
 import java.util.function.Predicate
+import net.minecraft.resources.ResourceLocation
 
 /**
  * @see mekanism.common.recipe.lookup.cache.SingleInputRecipeCache
@@ -18,10 +20,12 @@ abstract class HTSingleInputRecipeCache<INPUT : Any, RECIPE : Predicate<INPUT>>(
         if (lastRecipe != null && lastRecipe!!.recipe.test(input)) {
             return lastRecipe
         }
-        lastRecipe = lookup
-            .getAllRecipes(context)
-            .firstOrNull { (_, recipe: RECIPE) -> recipe.test(input) }
-            ?: return null
+        for ((id: ResourceLocation, recipe: RECIPE) in lookup.getAllRecipes(context)) {
+            if (recipe.test(input)) {
+                lastRecipe = id to recipe
+                break
+            }
+        }
         return lastRecipe
     }
 

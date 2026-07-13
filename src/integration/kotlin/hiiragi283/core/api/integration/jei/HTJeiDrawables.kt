@@ -1,9 +1,9 @@
 package hiiragi283.core.api.integration.jei
 
+import hiiragi283.core.api.collection.mutableEnumMapOf
 import hiiragi283.core.api.gui.HTBackgroundType
 import mezz.jei.api.gui.drawable.IDrawable
 import mezz.jei.api.helpers.IGuiHelper
-import java.util.EnumMap
 
 /**
  * @author Hiiragi Tsubasa
@@ -11,10 +11,10 @@ import java.util.EnumMap
  */
 object HTJeiDrawables {
     @JvmStatic
-    private val SLOTS: MutableMap<HTBackgroundType, IDrawable> = EnumMap(HTBackgroundType::class.java)
+    private val SLOTS: MutableMap<HTBackgroundType, IDrawable> = mutableEnumMapOf()
 
     @JvmStatic
-    private val TANKS: MutableMap<HTBackgroundType, IDrawable> = EnumMap(HTBackgroundType::class.java)
+    private val TANKS: MutableMap<HTBackgroundType, IDrawable> = mutableEnumMapOf()
 
     @JvmStatic
     fun getSlot(type: HTBackgroundType, guiHelper: IGuiHelper): IDrawable = SLOTS.computeIfAbsent(type) { typeIn: HTBackgroundType ->

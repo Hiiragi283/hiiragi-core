@@ -5,7 +5,7 @@ import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.HTCommonTranslation
-import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
+import hiiragi283.core.common.recipe.VanillaRecipeLookups
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCEnchantments
@@ -85,10 +85,10 @@ class HCJapaneseLangProvider(output: PackOutput) :
         add(HCItems.POTION_OF_INFINITY, "無限のポーション")
         add(HCItems.RING_OF_HYPERION, "ハイペリオンの指輪")
         // Recipe
-        add(HTVanillaRecipeTypes.SMELTING, "かまど")
-        add(HTVanillaRecipeTypes.BLASTING, "溶鉱炉")
-        add(HTVanillaRecipeTypes.SMOKING, "燻製器")
-        add(HTVanillaRecipeTypes.BREWING, "醸造")
+        add(VanillaRecipeLookups.SMELTING, "かまど")
+        add(VanillaRecipeLookups.BLASTING, "溶鉱炉")
+        add(VanillaRecipeLookups.SMOKING, "燻製器")
+        add(VanillaRecipeLookups.BREWING, "醸造")
 
         add(HCRecipeTypes.CHARGING, "落雷によるチャージ")
         add(HCRecipeTypes.CRUSHING, "粉砕")

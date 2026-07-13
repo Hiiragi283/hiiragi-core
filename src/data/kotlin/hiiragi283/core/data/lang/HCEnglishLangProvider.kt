@@ -5,7 +5,7 @@ import hiiragi283.core.api.data.lang.HTLangProvider
 import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.HTCommonTranslation
-import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
+import hiiragi283.core.common.recipe.VanillaRecipeLookups
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCEnchantments
@@ -85,10 +85,10 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(HCItems.POTION_OF_INFINITY, "Potion of Infinity")
         add(HCItems.RING_OF_HYPERION, "Ring of Hyperion")
         // Recipe
-        add(HTVanillaRecipeTypes.SMELTING, "Smelting")
-        add(HTVanillaRecipeTypes.BLASTING, "Blasting")
-        add(HTVanillaRecipeTypes.SMOKING, "Smoking")
-        add(HTVanillaRecipeTypes.BREWING, "Brewing")
+        add(VanillaRecipeLookups.SMELTING, "Smelting")
+        add(VanillaRecipeLookups.BLASTING, "Blasting")
+        add(VanillaRecipeLookups.SMOKING, "Smoking")
+        add(VanillaRecipeLookups.BREWING, "Brewing")
 
         add(HCRecipeTypes.CHARGING, "Lightning Charging")
         add(HCRecipeTypes.CRUSHING, "Crushing")

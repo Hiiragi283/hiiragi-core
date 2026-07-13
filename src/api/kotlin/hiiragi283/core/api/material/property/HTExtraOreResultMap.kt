@@ -1,5 +1,6 @@
 package hiiragi283.core.api.material.property
 
+import hiiragi283.core.api.collection.mutableEnumMapOf
 import hiiragi283.core.api.data.recipe.HTResultCreator
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
@@ -9,7 +10,6 @@ import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.toFraction
 import org.apache.commons.lang3.math.Fraction
-import java.util.EnumMap
 
 /**
  * 鉱石処理での副産物を表すクラスです。
@@ -53,7 +53,7 @@ class HTExtraOreResultMap private constructor(map: Map<Phase, Pair<HTMaterialKey
      * @since 0.10.0
      */
     class Builder {
-        private val map: MutableMap<Phase, Pair<HTMaterialKey, Fraction>> = EnumMap(Phase::class.java)
+        private val map: MutableMap<Phase, Pair<HTMaterialKey, Fraction>> = mutableEnumMapOf()
 
         fun all(material: HTMaterialLike, chance: Float) {
             this.all(material, chance.toFraction())

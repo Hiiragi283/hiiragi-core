@@ -1,7 +1,5 @@
 package hiiragi283.core.api.data.model
 
-import hiiragi283.core.api.function.andThen
-import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
 import net.minecraft.data.models.model.ModelTemplates
@@ -19,10 +17,7 @@ data object HTTexturedModels {
     //    Block    //
 
     @JvmField
-    val CUBE_ALL: HTTexturedModel.Provider = HTTexturedModel.create(
-        ModelTemplates.CUBE_ALL,
-        HTIdLike::blockId.andThen(TextureMapping::cube),
-    )
+    val CUBE_ALL: HTTexturedModel.Provider = HTTexturedModel.create(ModelTemplates.CUBE_ALL) { it.blockId.let(TextureMapping::layer0) }
 
     @JvmStatic
     fun crop(texture: ResourceLocation): HTTexturedModel = HTTexturedModel(ModelTemplates.CROP, TextureMapping.crop(texture))
@@ -36,19 +31,13 @@ data object HTTexturedModels {
     //    Item    //
 
     @JvmField
-    val FLAT_ITEM: HTTexturedModel.Provider = HTTexturedModel.create(
-        ModelTemplates.FLAT_ITEM,
-        HTIdLike::itemId.andThen(TextureMapping::layer0),
-    )
+    val FLAT_ITEM: HTTexturedModel.Provider = HTTexturedModel.create(ModelTemplates.FLAT_ITEM) { it.itemId.let(TextureMapping::layer0) }
 
     /**
      * @since 0.15.0
      */
     @JvmField
-    val FLAT_HANDHELD_ITEM: HTTexturedModel.Provider = HTTexturedModel.create(
-        ModelTemplates.FLAT_HANDHELD_ITEM,
-        HTIdLike::itemId.andThen(TextureMapping::layer0),
-    )
+    val FLAT_HANDHELD_ITEM: HTTexturedModel.Provider = HTTexturedModel.create(ModelTemplates.FLAT_HANDHELD_ITEM) { it.itemId.let(TextureMapping::layer0) }
 
     @JvmStatic
     fun flatAlt(layer0: ResourceLocation): HTTexturedModel = HTTexturedModel(ModelTemplates.FLAT_ITEM, TextureMapping.layer0(layer0))

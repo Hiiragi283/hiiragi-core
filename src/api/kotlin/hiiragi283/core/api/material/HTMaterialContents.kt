@@ -1,6 +1,6 @@
 package hiiragi283.core.api.material
 
-import hiiragi283.core.api.collection.HTTable
+import hiiragi283.core.api.collection.Table
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.tagPrefix
@@ -24,7 +24,7 @@ typealias HTSimpleMaterialContents<R, V> = HTMaterialContents<R, HTMaterialConte
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
-interface HTMaterialContents<R : Any, V : HTMaterialContents.Entry<*>> : HTTable<R, HTMaterialKey, V> {
+interface HTMaterialContents<R : Any, V : HTMaterialContents.Entry<*>> : Table<R, HTMaterialKey, V> {
     /**
      * 指定した[row]と[material]から対応する値を返します。
      * @return 対応する値がない場合は`null`

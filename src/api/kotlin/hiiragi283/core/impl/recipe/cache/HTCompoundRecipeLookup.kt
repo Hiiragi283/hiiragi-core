@@ -1,6 +1,5 @@
 package hiiragi283.core.impl.recipe.cache
 
-import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.Recipe
@@ -10,45 +9,23 @@ import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.event.TagsUpdatedEvent
 
-class HTCompoundRecipeLookup<RECIPE : Any> private constructor(private val id: ResourceLocation) : HTRecipeLookup<RECIPE> {
-    companion object {
-        @JvmStatic
-        fun <RECIPE : Any> create(id: ResourceLocation): HTCompoundRecipeLookup<RECIPE> = Manager.create(id)
-    }
-
-    private val lookups: MutableList<HTRecipeLookup<RECIPE>> = mutableListOf()
-    var cachedRecipes: List<HTRecipeHolder<RECIPE>> = listOf()
-
-    internal fun clearCache() {
-        cachedRecipes = listOf()
-    }
-
-    fun addRecipes(vararg recipes: Pair<ResourceLocation, RECIPE>) {
-        addSubLookup { recipes.asSequence().map { (id: ResourceLocation, recipe: RECIPE) -> HTRecipeHolder(id, recipe) } }
-    }
-
-    fun addSubLookup(lookup: HTRecipeLookup<RECIPE>) {
-        this.lookups += lookup
-    }
-
-    override fun getAllRecipes(context: HTRecipeLookup.Context): Sequence<HTRecipeHolder<RECIPE>> {
-        if (cachedRecipes.isEmpty()) {
-            cachedRecipes = lookups.flatMap { it.getAllRecipes(context) }
-        }
-        return cachedRecipes.asSequence()
-    }
-
-    override fun toString(): String = "HTCompoundRecipeLookup(id=$id)"
-
-    //    Manager    //
-
+/**
+ * 複数の[HTRecipeLookup]を束ねた[HTRecipeLookup]の実装クラスです。
+ * @param RECIPE レシピのクラス
+ * @author Hiiragi Tsubasa
+ * @since 21.1.0
+ */
+class HTCompoundRecipeLookup<out RECIPE> private constructor(private val id: ResourceLocation) : HTRecipeLookup<RECIPE> {
     @EventBusSubscriber
-    data object Manager {
+    companion object {
         @JvmStatic
         private val instances: MutableMap<ResourceLocation, HTCompoundRecipeLookup<*>> = hashMapOf()
 
+        /**
+         * 新しい[HTCompoundRecipeLookup]のインスタンスを作成します。
+         */
         @JvmStatic
-        internal fun <RECIPE : Any> create(id: ResourceLocation): HTCompoundRecipeLookup<RECIPE> {
+        fun <RECIPE : Any> create(id: ResourceLocation): HTCompoundRecipeLookup<RECIPE> {
             val recipeType = HTCompoundRecipeLookup<RECIPE>(id)
             check(instances.put(id, recipeType) == null) { "Duplicated recipe type $id" }
             return recipeType
@@ -56,23 +33,69 @@ class HTCompoundRecipeLookup<RECIPE : Any> private constructor(private val id: R
 
         @SubscribeEvent
         fun clearCache(event: TagsUpdatedEvent) {
+            // Clear cached recipes
             instances.values.forEach(HTCompoundRecipeLookup<*>::clearCache)
         }
     }
+
+    private val lookups: MutableList<HTRecipeLookup<RECIPE>> = mutableListOf()
+    private var cachedRecipes: Map<ResourceLocation, RECIPE> = mapOf()
+
+    private fun clearCache() {
+        cachedRecipes = mapOf()
+    }
+
+    /**
+     * レシピの一覧を追加します。
+     */
+    fun addRecipes(vararg recipes: Pair<ResourceLocation, @UnsafeVariance RECIPE>) {
+        addSubLookup { recipes.toMap() }
+    }
+
+    /**
+     * [HTRecipeLookup]を追加します。
+     */
+    fun addSubLookup(lookup: HTRecipeLookup<@UnsafeVariance RECIPE>) {
+        check(lookup != this)
+        this.lookups += lookup
+    }
+
+    override fun getAllRecipes(context: HTRecipeLookup.Context): Map<ResourceLocation, RECIPE> {
+        if (cachedRecipes.isEmpty()) {
+            val recipes: MutableMap<ResourceLocation, RECIPE> = mutableMapOf()
+            for (lookup in lookups) {
+                recipes += lookup.getAllRecipes(context)
+            }
+            cachedRecipes = recipes
+        }
+        return cachedRecipes
+    }
+
+    override fun toString(): String = "HTCompoundRecipeLookup(id=$id)"
 }
 
 //    Extensions    //
 
-fun <INPUT : RecipeInput, RECIPE : Any, R : Recipe<INPUT>> HTCompoundRecipeLookup<RECIPE>.fromRecipeType(
-    recipeType: RecipeType<R>,
-    transform: (R) -> RECIPE?,
+/**
+ * バニラの[RecipeType]からレシピの一覧を追加します。
+ * @param INPUT レシピの入力となるクラス
+ * @param RECIPE [HTCompoundRecipeLookup]のレシピのクラス
+ * @param VANILLA_RECIPE バニラの[Recipe]を継承したクラス
+ * @param recipeType バニラの[RecipeType]
+ * @param transform [VANILLA_RECIPE]を[RECIPE]に変換するブロック
+ * @author Hiiragi Tsubasa
+ * @since 21.1.0
+ */
+fun <INPUT : RecipeInput, RECIPE : Any, VANILLA_RECIPE : Recipe<INPUT>> HTCompoundRecipeLookup<RECIPE>.fromRecipeType(
+    recipeType: RecipeType<VANILLA_RECIPE>,
+    transform: (VANILLA_RECIPE) -> RECIPE?,
 ) {
-    this.addSubLookup { context: HTRecipeLookup.Context ->
-        context
-            .getAllRecipes(recipeType)
-            .mapNotNull { (id: ResourceLocation, recipe: R) ->
-                val recipe1: RECIPE = transform(recipe) ?: return@mapNotNull null
-                HTRecipeHolder(id, recipe1)
-            }
+    this.addSubLookup { context ->
+        val map: MutableMap<ResourceLocation, RECIPE> = mutableMapOf()
+        for ((id: ResourceLocation, recipe: VANILLA_RECIPE) in context.getAllRecipes(recipeType)) {
+            val recipe1: RECIPE = transform(recipe) ?: continue
+            map[id] = recipe1
+        }
+        map
     }
 }

@@ -13,7 +13,7 @@ import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.common.recipe.HCBrewingRecipe
-import hiiragi283.core.common.recipe.HTVanillaRecipeTypes
+import hiiragi283.core.common.recipe.VanillaRecipeLookups
 import hiiragi283.core.impl.recipe.viewer.HTRecipeViewerTypeImpl
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.resources.ResourceLocation
@@ -26,7 +26,7 @@ data object HCRecipeViewerTypes {
 
     @JvmField
     val BREWING: HTHolderRecipeViewerType<HCBrewingRecipe> =
-        creteHolder(HTVanillaRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 6)
+        creteHolder(VanillaRecipeLookups.BREWING, Items.BREWING_STAND, 18 * 6)
 
     @JvmField
     val CHARGING: HTRecipeViewerType<HTProgressRecipeDisplay> =

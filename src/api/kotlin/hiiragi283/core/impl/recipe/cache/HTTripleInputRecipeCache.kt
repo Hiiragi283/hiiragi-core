@@ -2,6 +2,8 @@ package hiiragi283.core.impl.recipe.cache
 
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
+import hiiragi283.core.api.recipe.recipe
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.Level
 import net.neoforged.neoforge.common.util.TriPredicate
 
@@ -32,10 +34,12 @@ abstract class HTTripleInputRecipeCache<INPUT_A : Any, INPUT_B : Any, INPUT_C : 
         if (lastRecipe != null && lastRecipe!!.recipe.test(firstInput, secondInput, thirdInput)) {
             return lastRecipe
         }
-        lastRecipe = lookup
-            .getAllRecipes(context)
-            .firstOrNull { (_, recipe: RECIPE) -> recipe.test(firstInput, secondInput, thirdInput) }
-            ?: return null
+        for ((id: ResourceLocation, recipe: RECIPE) in lookup.getAllRecipes(context)) {
+            if (recipe.test(firstInput, secondInput, thirdInput)) {
+                lastRecipe = id to recipe
+                break
+            }
+        }
         return lastRecipe
     }
 

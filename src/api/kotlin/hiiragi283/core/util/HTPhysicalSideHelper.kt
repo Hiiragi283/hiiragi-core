@@ -7,6 +7,7 @@ import hiiragi283.core.api.util.flatMap
 import hiiragi283.core.api.util.toTextResult
 import net.minecraft.client.Minecraft
 import net.minecraft.core.HolderLookup
+import net.minecraft.core.Registry
 import net.minecraft.core.RegistryAccess
 import net.minecraft.server.MinecraftServer
 import net.minecraft.world.flag.FeatureElement
@@ -58,4 +59,7 @@ data object HTPhysicalSideHelper {
 
     @JvmStatic
     fun <T : FeatureElement> filteredLookup(registryKey: RegistryKey<T>): HTTextResult<HolderLookup.RegistryLookup<T>> = lookup(registryKey).map { it.filterFeatures(getFeatureFlags()) }
+
+    @JvmStatic
+    fun <T : FeatureElement> filteredLookup(registry: Registry<T>): HolderLookup.RegistryLookup<T> = registry.asLookup().filterFeatures(getFeatureFlags())
 }

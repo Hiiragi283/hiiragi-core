@@ -5,7 +5,6 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.part.HTFluidPart
-import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.registry.getResult
 import hiiragi283.core.api.resource.SupplierWithId
@@ -79,7 +78,7 @@ class HTRegisterRuntimeRecipeEvent(
     /**
      * @since 0.16.0
      */
-    fun <RECIPE : Any> getAllRecipes(lookup: HTRecipeLookup<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> = lookup.getAllRecipes(lookupContext)
+    fun <RECIPE : Any> getAllRecipes(lookup: HTRecipeLookup<RECIPE>): Map<ResourceLocation, RECIPE> = lookup.getAllRecipes(lookupContext)
 
     // TagKey
     fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<SupplierWithId<T>> = HiiragiCoreAccess.INSTANCE.getFirstHolder(context.provider, tagKey)

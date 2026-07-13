@@ -3,7 +3,6 @@ package hiiragi283.core.api.registry
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.fluid.HTVirtualFluid
 import hiiragi283.core.api.util.identity
-import hiiragi283.core.api.function.partially2
 import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.createTagKey
@@ -119,7 +118,7 @@ class HTFluidContentRegister(modId: String) {
             bucketHolder: HTSimpleDeferredItem,
         ): HTFluidContent.Virtual {
             // Content
-            fluidRegister.register(name, ::HTVirtualFluid.partially2(typeHolder, bucketHolder))
+            fluidRegister.register(name) { _ -> HTVirtualFluid(typeHolder, bucketHolder) }
             return HTFluidContent.Virtual(
                 typeHolder,
                 sourceHolder,

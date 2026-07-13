@@ -3,6 +3,8 @@ package hiiragi283.core.api.integration.jei
 import hiiragi283.core.api.HTComparators
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
+import hiiragi283.core.api.recipe.id
+import hiiragi283.core.api.recipe.recipe
 import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
@@ -98,7 +100,7 @@ data object HTJeiRecipeHelper {
      */
     @JvmStatic
     fun <T : Any> addLookupRecipes(registration: IRecipeRegistration, viewerType: HTHolderRecipeViewerType<T>, lookup: HTRecipeLookup<T>) {
-        this.addHolderRecipes(registration, viewerType, lookup.getAllRecipes(getContext()))
+        this.addHolderRecipes(registration, viewerType, lookup.asSequence(getContext()))
     }
 
     /**
@@ -114,7 +116,7 @@ data object HTJeiRecipeHelper {
         lookup: HTRecipeLookup<T>,
         sorter: Comparator<in T>,
     ) {
-        this.addHolderRecipes(registration, viewerType, lookup.getAllRecipes(getContext()), sorter)
+        this.addHolderRecipes(registration, viewerType, lookup.asSequence(getContext()), sorter)
     }
 
     // HTRecipeDisplay
@@ -158,7 +160,7 @@ data object HTJeiRecipeHelper {
             registration,
             viewerType,
             lookup
-                .getAllRecipes(getContext())
+                .asSequence(getContext())
                 .mapNotNull(transform),
         )
     }
@@ -178,7 +180,7 @@ data object HTJeiRecipeHelper {
             registration,
             viewerType,
             lookup
-                .getAllRecipes(getContext())
+                .asSequence(getContext())
                 .mapNotNull(transform),
             sorter,
         )
@@ -195,7 +197,7 @@ data object HTJeiRecipeHelper {
             registration,
             viewerType,
             lookup
-                .getAllRecipes(getContext())
+                .asSequence(getContext())
                 .flatMap(transform),
         )
     }

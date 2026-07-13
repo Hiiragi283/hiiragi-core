@@ -7,11 +7,13 @@ import hiiragi283.core.api.property.buildPropertyMap
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.registry.lookupResult
+import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.api.util.HTTextResult
 import hiiragi283.core.api.util.flatMap
 import hiiragi283.core.api.util.right
 import net.minecraft.core.HolderLookup
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.MinecraftServer
 import net.minecraft.world.item.alchemy.PotionBrewing
 import net.minecraft.world.item.crafting.Recipe
@@ -22,23 +24,32 @@ import net.minecraft.world.level.Level
 
 /**
  * レシピの一覧を提供するインターフェースです。
+ *
+ * 参照 : [Mekanism - IMekanismRecipeTypeProvider](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/recipe/IMekanismRecipeTypeProvider.java)
  * @param RECIPE レシピのクラス
  * @author Hiiragi Tsubasa
- * @since 0.11.0
- * @see mekanism.common.recipe.IMekanismRecipeTypeProvider
+ * @since 21.1.0
  */
 fun interface HTRecipeLookup<out RECIPE> {
     /**
-     * 指定した[context]からレシピの一覧を取得します。
-     * @return [HTRecipeHolder]の[Sequence]
+     * レシピの一覧を取得します。
+     * @param context レシピのコンテキスト
      */
-    fun getAllRecipes(context: Context): Sequence<HTRecipeHolder<RECIPE>>
+    fun getAllRecipes(context: Context): Map<ResourceLocation, RECIPE>
+
+    fun asSequence(context: Context): Sequence<HTRecipeHolder<RECIPE>> = getAllRecipes(context).asSequence().map { (id: ResourceLocation, value: RECIPE) -> id to value }
 
     /**
-     * 指定した[level]から，[predicate]に一致するレシピを取得します。
-     * @return [predicate]に一致するレシピがない場合は`null`
+     * [HTRecipeLookup]の拡張インターフェースです。
+     *
+     * 参照 : [Mekanism - IMekanismRecipeTypeProvider](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/recipe/IMekanismRecipeTypeProvider.java)
+     * @param RECIPE レシピのクラス
+     * @author Hiiragi Tsubasa
+     * @since 21.1.0
      */
-    fun findFirst(level: Level, predicate: (RECIPE) -> Boolean): HTRecipeHolder<RECIPE>? = Context.create(level).let(::getAllRecipes).firstOrNull { it.recipe.let(predicate) }
+    interface Translatable<out RECIPE> :
+        HTRecipeLookup<RECIPE>,
+        HTKeyLike.SimpleTranslatable<RecipeType<*>>
 
     class Context(getter: HTPropertyGetter) : HTPropertyGetter by getter {
         companion object {
@@ -71,7 +82,7 @@ fun interface HTRecipeLookup<out RECIPE> {
             inline fun create(builderAction: HTPropertyMap.Builder.() -> Unit): Context = buildPropertyMap(builderAction).let(::Context)
         }
 
-        fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(recipeType: RecipeType<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> = this[MANAGER]?.getAllRecipesFor(recipeType)?.asSequence()?.map(HTRecipeHolder.Companion::from) ?: emptySequence()
+        fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(recipeType: RecipeType<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> = this[MANAGER]?.getAllRecipesFor(recipeType)?.asSequence()?.map(::HTRecipeHolder) ?: emptySequence()
 
         fun <T : Any> lookup(key: RegistryKey<T>): HTTextResult<HolderLookup.RegistryLookup<T>> = this[REGISTRY]?.right()?.flatMap { it.lookupResult(key) } ?: HTTextResult("Recipe lookup context does not have registry access")
     }
