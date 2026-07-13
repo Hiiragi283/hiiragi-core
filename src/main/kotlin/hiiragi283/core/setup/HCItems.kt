@@ -7,11 +7,11 @@ import hiiragi283.core.api.registry.HTSimpleDeferredItem
 import hiiragi283.core.common.item.endgame.HTAlmightyPickaxeItem
 import hiiragi283.core.common.item.endgame.HTAmbrosiaItem
 import hiiragi283.core.common.item.endgame.HTCreativeItem
-import hiiragi283.core.common.item.endgame.HTInfinitePotionItem
+import hiiragi283.core.common.item.endgame.HTInfinityPotionItem
 import hiiragi283.core.common.item.HTBlueprintItem
 import hiiragi283.core.common.item.HTBombItem
 import hiiragi283.core.common.item.HTCaptureEggItem
-import hiiragi283.core.common.item.HTEternalUpgradeItem
+import hiiragi283.core.common.item.endgame.HTEternalUpgradeItem
 import hiiragi283.core.common.item.HTExperienceTomeItem
 import hiiragi283.core.common.item.HTPaintBrushItem
 import hiiragi283.core.common.item.HTTraderCatalogItem
@@ -163,7 +163,7 @@ object HCItems {
     val ETERNAL_UPGRADE: HTSimpleDeferredItem = REGISTER.registerItem("eternal_upgrade", ::HTEternalUpgradeItem)
 
     @JvmField
-    val POTION_OF_INFINITY: HTSimpleDeferredItem = REGISTER.registerItem("potion_of_infinity", ::HTInfinitePotionItem)
+    val POTION_OF_INFINITY: HTSimpleDeferredItem = REGISTER.registerItem("potion_of_infinity", ::HTInfinityPotionItem)
 
     @JvmField
     val RING_OF_HYPERION: HTSimpleDeferredItem = REGISTER.registerItem("ring_of_hyperion", ::HTCreativeItem) {
@@ -172,7 +172,7 @@ object HCItems {
                 .add(
                     NeoForgeMod.CREATIVE_FLIGHT,
                     AttributeModifier(
-                        HiiragiCoreAPI.id(""),
+                        HiiragiCoreAPI.id("ring_of_hyperion"),
                         1.0,
                         AttributeModifier.Operation.ADD_VALUE,
                     ),

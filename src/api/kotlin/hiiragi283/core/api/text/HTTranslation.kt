@@ -1,6 +1,6 @@
 package hiiragi283.core.api.text
 
-import hiiragi283.core.api.HTDefaultColor
+import hiiragi283.core.api.color.HTDefaultColor
 
 /**
  * 翻訳を保持するインターフェースです。

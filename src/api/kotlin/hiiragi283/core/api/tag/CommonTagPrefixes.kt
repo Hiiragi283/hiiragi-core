@@ -35,7 +35,7 @@ object CommonTagPrefixes {
     val GEAR = HTTagPrefix("gears", "gears/%s")
 
     @JvmField
-    val GEM = HTTagPrefix("gem", "gems/%s")
+    val GEM = HTTagPrefix("gems", "gems/%s")
 
     @JvmField
     val INGOT = HTTagPrefix("ingots", "ingots/%s")

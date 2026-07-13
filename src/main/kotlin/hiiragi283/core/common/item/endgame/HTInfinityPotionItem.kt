@@ -1,5 +1,8 @@
 package hiiragi283.core.common.item.endgame
 
+import net.minecraft.advancements.CriteriaTriggers
+import net.minecraft.server.level.ServerPlayer
+import net.minecraft.stats.Stats
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResultHolder
 import net.minecraft.world.effect.MobEffectInstance
@@ -10,8 +13,12 @@ import net.minecraft.world.item.ItemUtils
 import net.minecraft.world.item.UseAnim
 import net.minecraft.world.level.Level
 
-class HTInfinitePotionItem(properties: Properties) : HTCreativeItem(properties) {
+class HTInfinityPotionItem(properties: Properties) : HTCreativeItem(properties) {
     override fun finishUsingItem(stack: ItemStack, level: Level, livingEntity: LivingEntity): ItemStack {
+        if (livingEntity is ServerPlayer) {
+            CriteriaTriggers.CONSUME_ITEM.trigger(livingEntity, stack)
+            livingEntity.awardStat(Stats.ITEM_USED.get(this))
+        }
         // 有限のエフェクトだけを無限化する
         getFiniteEffects(livingEntity)
             .map {

@@ -1,9 +1,9 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.item.HTBlockItem
+import hiiragi283.core.api.copper.HTCopperPhase
+import hiiragi283.core.api.copper.HTWeatheringCoppers
 import hiiragi283.core.api.registry.HTBasicDeferredBlockAndItem
-import hiiragi283.core.api.registry.HTWeatheringCopperBlocks
 import hiiragi283.core.api.registry.HTDeferredBlock
 import hiiragi283.core.api.registry.HTDeferredBlockAndItem
 import hiiragi283.core.api.registry.HTDeferredBlockAndItemRegister
@@ -74,19 +74,17 @@ object HCBlocks {
     )
 
     @JvmField
-    val COPPER_BASIN: HTWeatheringCopperBlocks<HTCopperBasinBlock, HTWeatheringCopperBasinBlock, HTBlockItem<Block>> = HTWeatheringCopperBlocks.createSimple(
-        REGISTER,
-        "copper_basin",
-        {
-            BlockBehaviour.Properties.of()
-                .requiresCorrectToolForDrops()
-                .strength(2f)
-                .noOcclusion()
-                .sound(SoundType.COPPER)
-        },
-        ::HTCopperBasinBlock,
-        ::HTWeatheringCopperBasinBlock,
-    )
+    val COPPER_BASIN: HTWeatheringCoppers<HTBasicDeferredBlockAndItem<HTCopperBasinBlock>> = run {
+        val name = "copper_basin"
+        val prop: BlockBehaviour.Properties = properties(2f)
+            .requiresCorrectToolForDrops()
+            .noOcclusion()
+            .sound(SoundType.COPPER)
+        HTWeatheringCoppers(
+            { phase: HTCopperPhase -> REGISTER.registerSimple(phase.createPath(name), prop, blockFactory = { HTWeatheringCopperBasinBlock(phase.toState(), it) }) },
+            { phase: HTCopperPhase -> REGISTER.registerSimple(phase.createWaxedPath(name), prop, ::HTCopperBasinBlock) },
+        )
+    }
 
     @JvmField
     val TEST: HTDeferredBlock<HTTestBlock> = REGISTER_ONLY_BLOCK.registerBlock(

@@ -1,12 +1,15 @@
 package hiiragi283.core.api.registry
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.fluid.HTVirtualFluid
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.function.partially2
 import hiiragi283.core.api.resource.SupplierWithId
-import hiiragi283.core.api.tag.RawTagKey
+import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.tag.createTagKey
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.BucketItem
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
@@ -82,8 +85,8 @@ class HTFluidContentRegister(modId: String) {
         lateinit var properties: FluidType.Properties
         var typeFactory: (FluidType.Properties) -> FluidType = ::FluidType
         var bucketFactory: ItemWithContextFactory<Fluid, Item> = ::BucketItem
-        var fluidTag: RawTagKey = RawTagKey.common(name)
-        var bucketTag: RawTagKey = fluidTag.withPrefix("buckets/")
+        var fluidTag: ResourceLocation = HTConst.COMMON.toId(name)
+        var bucketTag: ResourceLocation = fluidTag.withPrefix("buckets/")
         // Optional
 
         fun build(): CONTENT {
@@ -121,8 +124,8 @@ class HTFluidContentRegister(modId: String) {
                 typeHolder,
                 sourceHolder,
                 bucketHolder,
-                fluidTag.create(Registries.FLUID),
-                bucketTag.create(Registries.ITEM),
+                Registries.FLUID.createTagKey(fluidTag),
+                Registries.ITEM.createTagKey(bucketTag),
             )
         }
     }
@@ -170,8 +173,8 @@ class HTFluidContentRegister(modId: String) {
                 typeHolder,
                 sourceHolder,
                 bucketHolder,
-                fluidTag.create(Registries.FLUID),
-                bucketTag.create(Registries.ITEM),
+                Registries.FLUID.createTagKey(fluidTag),
+                Registries.ITEM.createTagKey(bucketTag),
                 flowingHolder,
                 blockHolder,
             )

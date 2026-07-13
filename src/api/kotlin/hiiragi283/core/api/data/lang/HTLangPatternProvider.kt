@@ -25,24 +25,35 @@ fun interface HTLangPatternProvider {
          * @since 0.17.0
          */
         @JvmField
-        val IDENTITY = HTLangPatternProvider { _, value: String -> value }
+        val IDENTITY = HTLangPatternProvider { _, value -> value }
 
         /**
-         * 指定した[enPattern]と[jaPattern]から[HTLangPatternProvider]の新しいインスタンスを作成します。
+         * 新しい[HTLangPatternProvider]のインスタンスを作成します。
+         * @param enPattern 英語での翻訳名のパターン
+         * @param jaPattern 日本語での翻訳名のパターン
          * @since 0.7.0
          */
         @JvmStatic
-        fun create(enPattern: String, jaPattern: String): HTLangPatternProvider = create(enPattern, HTLangTypes.JA_JP to jaPattern)
+        fun create(enPattern: String, jaPattern: String): HTLangPatternProvider = HTLangPatternProvider { type: HTLangType, value: String ->
+            when (type) {
+                HTLangTypes.JA_JP -> jaPattern
+                else -> enPattern
+            }.replace("%s", value)
+        }
 
         /**
-         * 指定した[enPattern]と[others]から[HTLangPatternProvider]の新しいインスタンスを作成します。
+         * 新しい[HTLangPatternProvider]のインスタンスを作成します。
+         * @param enPattern 英語での翻訳名のパターン
+         * @param others 英語以外での翻訳名のパターン
          * @since 0.8.0
          */
         @JvmStatic
         fun create(enPattern: String, vararg others: Pair<HTLangType, String>): HTLangPatternProvider = create(enPattern, mapOf(*others))
 
         /**
-         * 指定した[enPattern]と[others]から[HTLangPatternProvider]の新しいインスタンスを作成します。
+         * 新しい[HTLangPatternProvider]のインスタンスを作成します。
+         * @param enPattern 英語での翻訳名のパターン
+         * @param others 英語以外での翻訳名のパターン
          * @since 0.8.0
          */
         @JvmStatic

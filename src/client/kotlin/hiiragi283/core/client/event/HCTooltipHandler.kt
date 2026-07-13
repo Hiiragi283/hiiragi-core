@@ -1,7 +1,7 @@
 package hiiragi283.core.client.event
 
-import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.color.HTDefaultColor
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTranslation
 import hiiragi283.core.api.text.Text

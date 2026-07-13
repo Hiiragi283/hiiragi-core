@@ -1,12 +1,12 @@
 package hiiragi283.core.setup
 
-import hiiragi283.core.api.HTColoredContents
-import hiiragi283.core.api.HTDefaultColor
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.function.partially1
+import hiiragi283.core.api.color.HTColoredCollection
+import hiiragi283.core.api.color.HTDefaultColor
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTFluidContentRegister
-import hiiragi283.core.api.tag.RawTagKey
+import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.fluid.HTDragonBreathFluidType
 import hiiragi283.core.common.fluid.HTDyedFluidType
 import hiiragi283.core.common.fluid.HTExperienceFluidType
@@ -15,7 +15,6 @@ import hiiragi283.core.common.fluid.HTPotionFluidType
 import hiiragi283.core.common.item.HTPotionBucketItem
 import net.minecraft.sounds.SoundEvent
 import net.minecraft.sounds.SoundEvents
-import net.minecraft.world.item.DyeColor
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.common.SoundActions
 import net.neoforged.neoforge.fluids.FluidType
@@ -24,10 +23,6 @@ data object HCFluids {
     @JvmField
     val REGISTER = HTFluidContentRegister(HiiragiCoreAPI.MOD_ID)
 
-    init {
-        DyeContents.values
-    }
-
     @JvmStatic
     fun register(eventBus: IEventBus) {
         REGISTER.register(eventBus)
@@ -35,26 +30,15 @@ data object HCFluids {
 
     //    Vanilla    //
 
-    data object DyeContents : HTColoredContents<HTFluidContent.Flowing> {
-        @JvmStatic
-        private val map: Map<HTDefaultColor, HTFluidContent.Flowing> = HTDefaultColor.entries.associateWith { color: HTDefaultColor ->
-            val name: String = color.serializedName
-            REGISTER.registerFlowing("${name}_dye") {
-                properties = liquid()
-                typeFactory = ::HTDyedFluidType.partially1(color)
-                val oldFluidTag: RawTagKey = fluidTag.withPath { it.removeSuffix("_dye") }
-                fluidTag = oldFluidTag.withPrefix("dyes/")
-                bucketTag = oldFluidTag.withPrefix("buckets/dye/")
-            }
+    @JvmField
+    val DYES: HTColoredCollection<HTFluidContent.Flowing> = HTColoredCollection { color: HTDefaultColor ->
+        val name: String = color.serializedName
+        REGISTER.registerFlowing("${name}_dye") {
+            properties = liquid()
+            typeFactory = { prop: FluidType.Properties -> HTDyedFluidType(color, prop) }
+            fluidTag = HTConst.COMMON.toId("dyes", name)
+            bucketTag = HTConst.COMMON.toId("buckets", "dye", name)
         }
-
-        val values: Collection<HTFluidContent> get() = map.values
-
-        override fun get(color: HTDefaultColor): HTFluidContent.Flowing = map[color]!!
-
-        override fun get(color: DyeColor): HTFluidContent.Flowing = HTDefaultColor.fromDye(color).let(::get)
-
-        override fun iterator(): Iterator<Pair<HTDefaultColor, HTFluidContent.Flowing>> = map.toList().iterator()
     }
 
     @JvmField

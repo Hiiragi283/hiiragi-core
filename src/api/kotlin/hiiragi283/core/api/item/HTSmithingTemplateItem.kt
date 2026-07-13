@@ -1,8 +1,7 @@
 package hiiragi283.core.api.item
 
-import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HTDefaultColor
-import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.color.HTDefaultColor
+import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.api.text.HTTranslation
 import net.minecraft.world.item.SmithingTemplateItem
 
@@ -33,6 +32,6 @@ open class HTSmithingTemplateItem(
         "item/empty_slot_sword",
         "item/empty_slot_shovel",
         "item/empty_slot_pickaxe",
-    ).map(HTConst.MINECRAFT::toId),
-    listOf(HTConst.MINECRAFT.toId("item", "empty_slot_ingot")),
+    ).map(::vanillaId),
+    listOf(vanillaId("item", "empty_slot_ingot")),
 )

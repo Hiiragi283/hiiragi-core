@@ -1,18 +1,24 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.core.api.util
 
-import hiiragi283.core.api.function.identity
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 /**
- * [A]と[B]の両方の値または片方だけを保持するクラスです。
+ * 二つの値のうち，その両方または片方だけを保持するクラスです。
+ *
+ * 参照 : [Arrow - Ior](https://github.com/arrow-kt/arrow/blob/main/arrow-libs/core/arrow-core/src/commonMain/kotlin/arrow/core/Ior.kt)
+ * @param A 左側の値のクラス
+ * @param B 右側の値のクラス
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 0.17.0
  */
 sealed class Ior<out A, out B> {
     companion object {
         /**
          * 指定された[pair]を[Ior]に変換します。
-         * @author Hiiragi Tsubasa
-         * @since 0.1.0
          */
         @JvmStatic
         fun <A, B> fromNullable(pair: Pair<A?, B?>?): Ior<A, B>? {
@@ -22,8 +28,6 @@ sealed class Ior<out A, out B> {
 
         /**
          * 指定された[left]と[right]を[Ior]に変換します。
-         * @author Hiiragi Tsubasa
-         * @since 0.1.0
          */
         @JvmStatic
         fun <A, B> fromNullable(left: A?, right: B?): Ior<A, B>? = when {
@@ -64,10 +68,17 @@ sealed class Ior<out A, out B> {
      * @param both このインスタンスが[Both]の場合の変換ブロック
      * @return 変換された値
      */
-    inline fun <C> fold(left: (A) -> C, right: (B) -> C, both: (A, B) -> C): C = when (this) {
-        is Both<A, B> -> both(leftValue, rightValue)
-        is Left<A> -> left(value)
-        is Right<B> -> right(value)
+    inline fun <C> fold(left: (A) -> C, right: (B) -> C, both: (A, B) -> C): C {
+        contract {
+            callsInPlace(left, InvocationKind.AT_MOST_ONCE)
+            callsInPlace(right, InvocationKind.AT_MOST_ONCE)
+            callsInPlace(both, InvocationKind.AT_MOST_ONCE)
+        }
+        return when (this) {
+            is Both -> both(leftValue, rightValue)
+            is Left -> left(value)
+            is Right -> right(value)
+        }
     }
 
     /**
@@ -77,10 +88,16 @@ sealed class Ior<out A, out B> {
      * @param right このインスタンスが[Right]の場合の変換ブロック
      * @return 変換された値
      */
-    inline fun <C> map(left: (A) -> C, right: (B) -> C): C = when (this) {
-        is Both<A, B> -> right(rightValue)
-        is Left<A> -> left(value)
-        is Right<B> -> right(value)
+    inline fun <C> map(left: (A) -> C, right: (B) -> C): C {
+        contract {
+            callsInPlace(left, InvocationKind.AT_MOST_ONCE)
+            callsInPlace(right, InvocationKind.AT_MOST_ONCE)
+        }
+        return when (this) {
+            is Both -> right(rightValue)
+            is Left -> left(value)
+            is Right -> right(value)
+        }
     }
 
     /**
@@ -89,10 +106,15 @@ sealed class Ior<out A, out B> {
      * @param right このインスタンスが[Right]または[Both]の場合の変換ブロック
      * @return 変換された[Ior]のインスタンス
      */
-    inline fun <C> mapRight(right: (B) -> C): Ior<A, C> = when (this) {
-        is Both<A, B> -> Both(leftValue, right(rightValue))
-        is Left<A> -> Left(value)
-        is Right<B> -> Right(right(value))
+    inline fun <C> mapRight(right: (B) -> C): Ior<A, C> {
+        contract {
+            callsInPlace(right, InvocationKind.AT_MOST_ONCE)
+        }
+        return when (this) {
+            is Both -> Both(leftValue, right(rightValue))
+            is Left -> Left(value)
+            is Right -> Right(right(value))
+        }
     }
 
     /**
@@ -101,10 +123,15 @@ sealed class Ior<out A, out B> {
      * @param left このインスタンスが[Left]または[Both]の場合の変換ブロック
      * @return 変換された[Ior]のインスタンス
      */
-    inline fun <C> mapLeft(left: (A) -> C): Ior<C, B> = when (this) {
-        is Both<A, B> -> Both(left(leftValue), rightValue)
-        is Left<A> -> Left(left(value))
-        is Right<B> -> Right(value)
+    inline fun <C> mapLeft(left: (A) -> C): Ior<C, B> {
+        contract {
+            callsInPlace(left, InvocationKind.AT_MOST_ONCE)
+        }
+        return when (this) {
+            is Both -> Both(left(leftValue), rightValue)
+            is Left -> Left(left(value))
+            is Right -> Right(value)
+        }
     }
 
     /**
@@ -139,7 +166,7 @@ sealed class Ior<out A, out B> {
 
     /**
      * [右側][B]の値を取得します。
-     * @return このインスタンスが[Left]の場合は`null`
+     * @return [Left]の場合は`null`
      */
     fun getRight(): B? = fold(
         { null },
@@ -149,7 +176,7 @@ sealed class Ior<out A, out B> {
 
     /**
      * [左側][A]の値を取得します。
-     * @return このインスタンスが[Right]の場合は`null`
+     * @return [Right]の場合は`null`
      */
     fun getLeft(): A? = fold(
         identity(),

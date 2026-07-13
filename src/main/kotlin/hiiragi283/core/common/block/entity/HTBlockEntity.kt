@@ -218,7 +218,7 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
     //    HTMenuCallback    //
 
     fun openMenu(player: Player) {
-        this.getServerLevel()?.let(::sendUpdatePacket)
+        this.getServerLevel().onRight(::sendUpdatePacket)
     }
 
     //    HTOwnedBlockEntity    //

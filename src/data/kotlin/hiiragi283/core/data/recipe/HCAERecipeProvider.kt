@@ -3,14 +3,8 @@ package hiiragi283.core.data.recipe
 import appeng.recipes.transform.TransformCircumstance
 import appeng.recipes.transform.TransformRecipeBuilder
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
-import hiiragi283.core.api.material.HTMaterialContents
-import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.getResult
 import hiiragi283.core.api.material.part.CommonParts
-import hiiragi283.core.api.material.part.HTPartLike
-import hiiragi283.core.api.util.getOrThrow
 import hiiragi283.core.common.integration.HCIConstants
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
@@ -25,24 +19,26 @@ data object HCAERecipeProvider : HTSubRecipeProvider.Integration(HiiragiCoreAPI.
     @JvmStatic
     private fun transform() {
         // Steel Ingot
-        TransformRecipeBuilder.transform(
-            output,
-            id("transform", "steel_ingot_with_charcoal"),
-            getOrThrow(CommonParts.INGOT, CommonMaterialKeys.STEEL),
-            1,
-            TransformCircumstance.EXPLOSION,
-            itemCreator.create(baseOrDust(VanillaMaterialKeys.IRON)),
-            itemCreator.create(baseOrDust(VanillaMaterialKeys.CHARCOAL)),
-        )
-        TransformRecipeBuilder.transform(
-            output,
-            id("transform", "steel_ingot_with_coal"),
-            getOrThrow(CommonParts.INGOT, CommonMaterialKeys.STEEL),
-            1,
-            TransformCircumstance.EXPLOSION,
-            itemCreator.create(baseOrDust(VanillaMaterialKeys.IRON)),
-            itemCreator.create(baseOrDust(VanillaMaterialKeys.COAL)),
-        )
+        useItem(CommonParts.INGOT, CommonMaterialKeys.STEEL) {
+            TransformRecipeBuilder.transform(
+                output,
+                id("transform", "steel_ingot_with_charcoal"),
+                it,
+                1,
+                TransformCircumstance.EXPLOSION,
+                itemCreator.create(baseOrDust(VanillaMaterialKeys.IRON)),
+                itemCreator.create(baseOrDust(VanillaMaterialKeys.CHARCOAL)),
+            )
+            TransformRecipeBuilder.transform(
+                output,
+                id("transform", "steel_ingot_with_coal"),
+                it,
+                1,
+                TransformCircumstance.EXPLOSION,
+                itemCreator.create(baseOrDust(VanillaMaterialKeys.IRON)),
+                itemCreator.create(baseOrDust(VanillaMaterialKeys.COAL)),
+            )
+        }
         // Cured Rubber
         TransformRecipeBuilder.transform(
             output,
@@ -55,31 +51,28 @@ data object HCAERecipeProvider : HTSubRecipeProvider.Integration(HiiragiCoreAPI.
         )
 
         // Azure Shard
-        TransformRecipeBuilder.transform(
-            output,
-            id("transform", "azure_shard"),
-            getOrThrow(CommonParts.GEM, HCMaterialKeys.AZURE),
-            1,
-            TransformCircumstance.EXPLOSION,
-            itemCreator.create(baseOrDust(VanillaMaterialKeys.AMETHYST)),
-            itemCreator.create(baseOrDust(VanillaMaterialKeys.LAPIS)),
-        )
+        useItem(CommonParts.GEM, HCMaterialKeys.AZURE) {
+            TransformRecipeBuilder.transform(
+                output,
+                id("transform", "azure_shard"),
+                it,
+                1,
+                TransformCircumstance.EXPLOSION,
+                itemCreator.create(baseOrDust(VanillaMaterialKeys.AMETHYST)),
+                itemCreator.create(baseOrDust(VanillaMaterialKeys.LAPIS)),
+            )
+        }
         // Azure Steel
-        TransformRecipeBuilder.transform(
-            output,
-            id("transform", "azure_steel_ingot"),
-            getOrThrow(CommonParts.INGOT, HCMaterialKeys.AZURE_STEEL),
-            1,
-            TransformCircumstance.EXPLOSION,
-            itemCreator.create(baseOrDust(VanillaMaterialKeys.IRON)),
-            itemCreator.create(baseOrDust(HCMaterialKeys.AZURE)),
-        )
+        useItem(CommonParts.INGOT, HCMaterialKeys.AZURE_STEEL) {
+            TransformRecipeBuilder.transform(
+                output,
+                id("transform", "azure_steel_ingot"),
+                it,
+                1,
+                TransformCircumstance.EXPLOSION,
+                itemCreator.create(baseOrDust(VanillaMaterialKeys.IRON)),
+                itemCreator.create(baseOrDust(HCMaterialKeys.AZURE)),
+            )
+        }
     }
-
-    @JvmStatic
-    private fun getOrThrow(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry = HiiragiCoreAccess.INSTANCE
-        .registeredContents
-        .items
-        .getResult(part, material)
-        .getOrThrow()
 }

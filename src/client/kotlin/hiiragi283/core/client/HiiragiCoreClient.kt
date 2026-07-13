@@ -1,15 +1,15 @@
 package hiiragi283.core.client
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.color.HTDefaultColor
 import hiiragi283.core.api.event.HTRegisterWidgetRendererEvent
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.mod.HTClientMod
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.blockId
-import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.client.data.HCClientResourceProvider
 import hiiragi283.core.client.gui.widget.HTFluidWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTItemWidgetRenderer
@@ -67,13 +67,13 @@ data object HiiragiCoreClient : HTClientMod() {
 
     override fun registerClientExtensions(event: RegisterClientExtensionsEvent) {
         // Vanilla
-        for ((color: HTDefaultColor, content: HTFluidContent) in HCFluids.DyeContents) {
+        for ((color: HTDefaultColor, content: HTFluidContent) in HCFluids.DYES.asSequenceWithColor()) {
             event.dull(content, Color(color.color))
         }
 
         event.clear(HCFluids.EXPERIENCE, Color(0x66ff33))
         event.registerFluidType(
-            HTSimpleFluidExtensions(HTConst.MINECRAFT.toId(HTConst.BLOCK, "honey_block_top")),
+            HTSimpleFluidExtensions(vanillaId(HTConst.BLOCK, "honey_block_top")),
             HCFluids.HONEY.getFluidType(),
         )
         event.dull(HCFluids.MUSHROOM_STEW, Color(0xcc9966))

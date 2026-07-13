@@ -1,6 +1,6 @@
 package hiiragi283.core.common.item.endgame
 
-import hiiragi283.core.api.HTDefaultColor
+import hiiragi283.core.api.color.HTDefaultColor
 import hiiragi283.core.api.item.HTSubCreativeTabContents
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.tag.HiiragiCoreTags

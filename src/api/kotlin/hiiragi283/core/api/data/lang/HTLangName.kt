@@ -13,21 +13,32 @@ fun interface HTLangName {
 
     companion object {
         /**
-         * 指定した[enName]と[jaName]から新しい[HTLangName]のインスタンスを作成します。
+         * 新しい[HTLangName]のインスタンスを作成します。
+         * @param enName 英語での翻訳名
+         * @param jaName 日本語での翻訳名
          * @since 0.7.0
          */
         @JvmStatic
-        fun create(enName: String, jaName: String): HTLangName = create(enName, HTLangTypes.JA_JP to jaName)
+        fun create(enName: String, jaName: String): HTLangName = HTLangName { type: HTLangType ->
+            when (type) {
+                HTLangTypes.JA_JP -> jaName
+                else -> enName
+            }
+        }
 
         /**
-         * 指定した[enName]と[others]から新しい[HTLangName]のインスタンスを作成します。
+         * 新しい[HTLangName]のインスタンスを作成します。
+         * @param enName 英語での翻訳名
+         * @param others 英語以外での翻訳名
          * @since 0.8.0
          */
         @JvmStatic
         fun create(enName: String, vararg others: Pair<HTLangType, String>): HTLangName = create(enName, mapOf(*others))
 
         /**
-         * 指定した[enName]と[others]から新しい[HTLangName]のインスタンスを作成します。
+         * 新しい[HTLangName]のインスタンスを作成します。
+         * @param enName 英語での翻訳名
+         * @param others 英語以外での翻訳名
          * @since 0.8.0
          */
         @JvmStatic

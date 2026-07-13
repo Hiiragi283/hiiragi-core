@@ -5,7 +5,6 @@ import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.Option
 import hiiragi283.core.api.util.java
 import hiiragi283.core.api.util.kotlin
-import hiiragi283.core.api.util.none
 import hiiragi283.core.api.util.toOption
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
@@ -59,6 +58,6 @@ fun <B : ByteBuf, V : Any> StreamCodec<B, V>.asOption(): StreamCodec<B, Option<V
 
     override fun decode(input: B): Option<V> = when (input.readBoolean()) {
         true -> this@asOption.decode(input).toOption()
-        false -> none()
+        false -> Option.none()
     }
 }

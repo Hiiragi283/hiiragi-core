@@ -3,7 +3,7 @@
 package hiiragi283.core.api.text
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HTDefaultColor
+import hiiragi283.core.api.color.HTDefaultColor
 import net.minecraft.ChatFormatting
 import net.minecraft.core.Direction
 import net.minecraft.network.chat.ClickEvent

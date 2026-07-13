@@ -61,6 +61,10 @@ internal class HTJsonValueOutput(private val provider: HolderLookup.Provider, pr
         return HTJsonValueOutput(provider, jsonIn)
     }
 
+    override fun discard(key: String) {
+        jsonObject.remove(key)
+    }
+
     override fun childrenList(key: String): HTValueOutput.ValueOutputList {
         val list = JsonArray()
         jsonObject.add(key, list)

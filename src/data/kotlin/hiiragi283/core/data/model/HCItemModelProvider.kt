@@ -6,7 +6,7 @@ import hiiragi283.core.api.data.model.HTItemModelProvider
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
-import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.data.PackOutput
@@ -45,18 +45,18 @@ class HCItemModelProvider(fileHelper: ExistingFileHelper, output: PackOutput) : 
         }.forEach { item: HTIdLike -> existTexture(item, ::basicItem) }
 
         existTexture(HCItems.STEEL_COMPOUND) { item: HTIdLike ->
-            layeredItem(item, HTConst.MINECRAFT.toId(HTConst.ITEM, "iron_ingot"), item.itemId)
+            layeredItem(item, vanillaId(HTConst.ITEM, "iron_ingot"), item.itemId)
         }
 
         existTexture(HCItems.BLUEPRINT) { item: HTIdLike ->
             layeredItem(
                 item,
                 item.itemId,
-                HTConst.MINECRAFT.toId(HTConst.ITEM, "filled_map_markings"),
+                vanillaId(HTConst.ITEM, "filled_map_markings"),
             )
         }
 
-        layeredItem(HCItems.POTION_OF_INFINITY, HTConst.MINECRAFT.toId(HTConst.ITEM, "potion"), HTConst.MINECRAFT.toId(HTConst.ITEM, "potion_overlay"))
+        layeredItem(HCItems.POTION_OF_INFINITY, vanillaId(HTConst.ITEM, "potion"), vanillaId(HTConst.ITEM, "potion_overlay"))
 
         registerBuckets()
     }
@@ -64,7 +64,7 @@ class HCItemModelProvider(fileHelper: ExistingFileHelper, output: PackOutput) : 
     private fun registerBuckets() {
         val dripFluids: List<HTFluidContent> = buildList {
             // Vanilla
-            addAll(HCFluids.DyeContents.values)
+            addAll(HCFluids.DYES)
 
             add(HCFluids.HONEY)
         }

@@ -1,6 +1,6 @@
-package hiiragi283.core.common.item
+package hiiragi283.core.common.item.endgame
 
-import hiiragi283.core.api.HTDefaultColor
+import hiiragi283.core.api.color.HTDefaultColor
 import hiiragi283.core.api.item.HTSmithingTemplateItem
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText

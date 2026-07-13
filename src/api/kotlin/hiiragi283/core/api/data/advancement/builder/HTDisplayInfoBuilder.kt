@@ -1,6 +1,8 @@
 package hiiragi283.core.api.data.advancement.builder
 
-import hiiragi283.core.api.data.advancement.HTAdvancementKey
+import hiiragi283.core.api.data.advancement.AdvancementKey
+import hiiragi283.core.api.data.advancement.descKey
+import hiiragi283.core.api.data.advancement.titleKey
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
 import hiiragi283.core.api.util.HTDelegates
@@ -18,7 +20,7 @@ import net.minecraft.world.item.ItemStack
 class HTDisplayInfoBuilder {
     companion object {
         @JvmStatic
-        inline fun create(key: HTAdvancementKey, builderAction: HTDisplayInfoBuilder.() -> Unit): DisplayInfo = HTDisplayInfoBuilder()
+        inline fun create(key: AdvancementKey, builderAction: HTDisplayInfoBuilder.() -> Unit): DisplayInfo = HTDisplayInfoBuilder()
             .apply {
                 titleText += translatableText(key.titleKey)
                 descText += translatableText(key.descKey)

@@ -1,7 +1,7 @@
 package hiiragi283.core.api.item
 
-import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.block.HTBlockWithDescription
+import hiiragi283.core.api.color.HTDefaultColor
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.Text
 import net.minecraft.world.item.ItemStack

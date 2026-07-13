@@ -1,6 +1,6 @@
 package hiiragi283.core.api.item
 
-import hiiragi283.core.api.HTDefaultColor
+import hiiragi283.core.api.color.HTDefaultColor
 import hiiragi283.core.api.text.MutableText
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText

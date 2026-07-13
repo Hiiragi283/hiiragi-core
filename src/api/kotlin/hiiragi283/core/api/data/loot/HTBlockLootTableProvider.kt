@@ -1,6 +1,7 @@
 package hiiragi283.core.api.data.loot
 
 import hiiragi283.core.api.resource.SupplierWithId
+import java.util.function.Supplier
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.loot.BlockLootSubProvider
@@ -38,15 +39,15 @@ abstract class HTBlockLootTableProvider(
     /**
      * ブロックをそのままドロップするルートテーブルを指定します。
      */
-    protected fun dropSelf(like: SupplierWithId<Block>) {
+    protected fun dropSelf(like: Supplier<out Block>) {
         dropSelf(like.get())
     }
 
-    protected fun add(like: SupplierWithId<Block>, table: LootTable.Builder) {
+    protected fun add(like: Supplier<out Block>, table: LootTable.Builder) {
         add(like.get(), table)
     }
 
-    protected inline fun <BLOCK : Block> add(like: SupplierWithId<BLOCK>, factory: (BLOCK) -> LootTable.Builder) {
+    protected inline fun <BLOCK : Block> add(like: Supplier<BLOCK>, factory: (BLOCK) -> LootTable.Builder) {
         val block: BLOCK = like.get()
         add(block, factory(block))
     }

@@ -1,6 +1,5 @@
 package hiiragi283.core.common.plugin
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.tool.HTToolType
@@ -27,7 +26,7 @@ import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.plugin.HTPlugin
 import hiiragi283.core.api.property.plusAssign
 import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import net.minecraft.resources.ResourceLocation
@@ -43,7 +42,7 @@ import net.neoforged.neoforge.fluids.FluidType
 object VanillaMaterialPlugin : HTMaterialPlugin {
     override val priority: Int = -1000
 
-    override fun getId(): ResourceLocation = HTConst.MINECRAFT.toId("material_plugin")
+    override fun getId(): ResourceLocation = vanillaId("material_plugin")
 
     override fun registerExistingBlock(consumer: HTMaterialPlugin.BlockConsumer) {
         fun accept(part: HTPartLike, material: HTMaterialLike, block: Block) {

@@ -1,9 +1,9 @@
 package hiiragi283.core.common.recipe
 
-import hiiragi283.core.api.HTColoredContents
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.VanillaColoredContents
+import hiiragi283.core.api.color.HTColoredCollection
+import hiiragi283.core.api.color.VanillaColoredCollections
 import hiiragi283.core.api.function.identity
 import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
@@ -11,7 +11,7 @@ import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.registry.HTDeferredRecipeType
 import hiiragi283.core.api.resource.SupplierWithId
-import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.common.recipe.custom.HTPotionArrowFillingRecipe
 import hiiragi283.core.common.recipe.custom.HTPotionTankInteraction
 import hiiragi283.core.impl.recipe.cache.HTCompoundRecipeLookup
@@ -59,21 +59,21 @@ data object HCRecipeLookups {
         CRUSHING.fromRecipeType(HCRecipeTypes.CRUSHING.get(), identity())
 
         EMPTYING.fromRecipeType(HCRecipeTypes.EMPTYING.get(), identity())
-        EMPTYING.addRecipes(HTConst.MINECRAFT.toId(HTConst.EMPTYING, "potion") to HTPotionTankInteraction.Emptying)
+        EMPTYING.addRecipes(vanillaId(HTConst.EMPTYING, "potion") to HTPotionTankInteraction.Emptying)
 
         FILLING.fromRecipeType(HCRecipeTypes.FILLING.get(), identity())
-        FILLING.addRecipes(HTConst.MINECRAFT.toId(HTConst.FILLING, "potion") to HTPotionTankInteraction.Filling)
-        FILLING.addRecipes(HTConst.MINECRAFT.toId(HTConst.FILLING, "potion_arrow") to HTPotionArrowFillingRecipe)
+        FILLING.addRecipes(vanillaId(HTConst.FILLING, "potion") to HTPotionTankInteraction.Filling)
+        FILLING.addRecipes(vanillaId(HTConst.FILLING, "potion_arrow") to HTPotionArrowFillingRecipe)
 
-        coloring(ItemTags.BANNERS, VanillaColoredContents.BANNER)
-        coloring(ItemTags.BEDS, VanillaColoredContents.BED)
-        coloring(ItemTags.WOOL, VanillaColoredContents.WOOL)
-        coloring(ItemTags.WOOL_CARPETS, VanillaColoredContents.CARPET)
-        coloring(Tags.Items.SHULKER_BOXES, VanillaColoredContents.SHULKER_BOX)
+        coloring(ItemTags.BANNERS, VanillaColoredCollections.BANNER)
+        coloring(ItemTags.BEDS, VanillaColoredCollections.BED)
+        coloring(ItemTags.WOOL, VanillaColoredCollections.WOOL)
+        coloring(ItemTags.WOOL_CARPETS, VanillaColoredCollections.CARPET)
+        coloring(Tags.Items.SHULKER_BOXES, VanillaColoredCollections.SHULKER_BOX)
     }
 
     @JvmStatic
-    fun coloring(inputTag: TagKey<Item>, contents: HTColoredContents<SupplierWithId<ItemLike>>) {
+    fun coloring(inputTag: TagKey<Item>, contents: HTColoredCollection<SupplierWithId<ItemLike>>) {
         /*COLORING.addProvider {
             sequenceOf(
                 HTRecipeHolder(

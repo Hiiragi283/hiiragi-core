@@ -1,6 +1,6 @@
 package hiiragi283.core.api.integration.jei
 
-import hiiragi283.core.api.HTDefaultColor
+import hiiragi283.core.api.color.HTDefaultColor
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import hiiragi283.core.api.text.HTCommonTranslation
 import mezz.jei.api.gui.builder.IIngredientConsumer

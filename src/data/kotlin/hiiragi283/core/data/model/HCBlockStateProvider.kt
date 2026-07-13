@@ -2,20 +2,21 @@ package hiiragi283.core.data.model
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.copper.HTCopperCollection
+import hiiragi283.core.api.copper.HTCopperPhase
 import hiiragi283.core.api.data.model.HTBlockStateProvider
 import hiiragi283.core.api.data.model.trackTexture
 import hiiragi283.core.api.data.model.withExistingParent
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.blockId
-import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.NetherWartBlock
-import net.minecraft.world.level.block.WeatheringCopper
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel
 import net.neoforged.neoforge.common.data.ExistingFileHelper
@@ -31,19 +32,16 @@ class HCBlockStateProvider(fileHelper: ExistingFileHelper, output: PackOutput) :
         registerCrops()
 
         // Misc
-        for ((state: WeatheringCopper.WeatherState, block: SupplierWithId<Block>) in HCBlocks.COPPER_BASIN.weathering) {
-            val cutCopper: ResourceLocation = when (state) {
-                WeatheringCopper.WeatherState.UNAFFECTED -> "cut_copper"
-                WeatheringCopper.WeatherState.EXPOSED -> "exposed_cut_copper"
-                WeatheringCopper.WeatherState.WEATHERED -> "weathered_cut_copper"
-                WeatheringCopper.WeatherState.OXIDIZED -> "oxidized_cut_copper"
-            }.let { HTConst.MINECRAFT.toId(HTConst.BLOCK, it) }
-            val chiseledCopper: ResourceLocation = when (state) {
-                WeatheringCopper.WeatherState.UNAFFECTED -> "chiseled_copper"
-                WeatheringCopper.WeatherState.EXPOSED -> "exposed_chiseled_copper"
-                WeatheringCopper.WeatherState.WEATHERED -> "weathered_chiseled_copper"
-                WeatheringCopper.WeatherState.OXIDIZED -> "oxidized_chiseled_copper"
-            }.let { HTConst.MINECRAFT.toId(HTConst.BLOCK, it) }
+        registerBasin(HCBlocks.COPPER_BASIN.weathering)
+        registerBasin(HCBlocks.COPPER_BASIN.waxed)
+        // Fluids
+        HCFluids.REGISTER.asSequence().filterIsInstance<HTFluidContent.Flowing>().forEach(::liquidBlock)
+    }
+
+    private fun registerBasin(blocks: HTCopperCollection<SupplierWithId<Block>>) {
+        for ((phase: HTCopperPhase, block: SupplierWithId<Block>) in blocks.asSequenceWithPhase()) {
+            val cutCopper: ResourceLocation = vanillaId(HTConst.BLOCK, phase.createPath("cut_copper"))
+            val chiseledCopper: ResourceLocation = vanillaId(HTConst.BLOCK, phase.createPath("chiseled_copper"))
             registerCauldron(
                 block,
                 chiseledCopper,
@@ -51,10 +49,7 @@ class HCBlockStateProvider(fileHelper: ExistingFileHelper, output: PackOutput) :
                 cutCopper,
                 cutCopper,
             )
-            simpleBlockAndItem(HCBlocks.COPPER_BASIN.waxed[state], models().getExistingFile(block.blockId))
         }
-        // Fluids
-        HCFluids.REGISTER.asSequence().filterIsInstance<HTFluidContent.Flowing>().forEach(::liquidBlock)
     }
 
     private fun registerCauldron(

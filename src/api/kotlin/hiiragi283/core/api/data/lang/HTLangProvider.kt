@@ -1,8 +1,10 @@
 package hiiragi283.core.api.data.lang
 
-import hiiragi283.core.api.data.advancement.HTAdvancementKey
+import hiiragi283.core.api.data.advancement.AdvancementKey
+import hiiragi283.core.api.data.advancement.descKey
+import hiiragi283.core.api.data.advancement.titleKey
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.resource.toDescriptionKey
+import hiiragi283.core.api.resource.toLanguageKey
 import hiiragi283.core.api.text.HTHasTranslationKey
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceKey
@@ -32,7 +34,7 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
      * @param title 進捗のタイトル名
      * @param desc 進捗の説明
      */
-    protected fun add(key: HTAdvancementKey, title: String, desc: String) {
+    protected fun add(key: AdvancementKey, title: String, desc: String) {
         add(key.titleKey, title)
         add(key.descKey, desc)
     }
@@ -44,8 +46,8 @@ abstract class HTLangProvider(output: PackOutput, val modId: String, val langTyp
      */
     @JvmName("addEnchantment")
     protected fun add(key: ResourceKey<Enchantment>, value: String, desc: String) {
-        add(key.toDescriptionKey("enchantment"), value)
-        add(key.toDescriptionKey("enchantment", "desc"), desc)
+        add(key.toLanguageKey(), value)
+        add(key.toLanguageKey("desc"), desc)
     }
 
     /**

@@ -1,6 +1,5 @@
 package hiiragi283.core.api.recipe.cache
 
-import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.property.HTPropertyMap
@@ -8,7 +7,7 @@ import hiiragi283.core.api.property.buildPropertyMap
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.registry.lookupResult
-import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.api.util.HTTextResult
 import hiiragi283.core.api.util.flatMap
 import hiiragi283.core.api.util.right
@@ -52,7 +51,7 @@ fun interface HTRecipeLookup<out RECIPE> {
             @JvmField
             val REGISTRY: HTPropertyKey<HolderLookup.Provider?> = create("registry")
 
-            private fun <T : Any> create(path: String): HTPropertyKey<T?> = HTPropertyKey.createNullable(HTConst.MINECRAFT.toId("recipe", path))
+            private fun <T : Any> create(path: String): HTPropertyKey<T?> = HTPropertyKey.createNullable(vanillaId("recipe", path))
 
             @JvmStatic
             fun create(level: Level): Context = create {

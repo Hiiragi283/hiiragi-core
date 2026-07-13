@@ -1,6 +1,6 @@
 package hiiragi283.core.util
 
-import hiiragi283.core.api.HTDefaultColor
+import hiiragi283.core.api.color.HTDefaultColor
 import hiiragi283.core.api.fixedFraction
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.registry.toLike

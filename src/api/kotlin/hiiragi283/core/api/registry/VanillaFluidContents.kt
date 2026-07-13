@@ -1,7 +1,6 @@
 package hiiragi283.core.api.registry
 
-import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.resource.vanillaId
 import net.minecraft.core.registries.Registries
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -25,9 +24,9 @@ data object VanillaFluidContents {
 
     @JvmStatic
     private fun create(name: String, fluidTag: TagKey<Fluid>, bucketTag: TagKey<Item>): HTFluidContent.Virtual = HTFluidContent.Virtual(
-        HTDeferredFluidType(HTConst.MINECRAFT.toId(name)),
-        HTDeferredHolder(Registries.FLUID, HTConst.MINECRAFT.toId(name)),
-        HTDeferredItem(HTConst.MINECRAFT.toId("${name}_bucket")),
+        HTDeferredFluidType(vanillaId(name)),
+        HTDeferredHolder(Registries.FLUID, vanillaId(name)),
+        HTDeferredItem(vanillaId("${name}_bucket")),
         fluidTag,
         bucketTag,
     )

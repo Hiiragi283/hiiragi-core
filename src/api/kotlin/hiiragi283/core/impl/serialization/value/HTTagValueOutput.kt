@@ -61,6 +61,10 @@ internal class HTTagValueOutput(private val provider: HolderLookup.Provider, pri
         return HTTagValueOutput(provider, tagIn)
     }
 
+    override fun discard(key: String) {
+        compoundTag.remove(key)
+    }
+
     override fun childrenList(key: String): HTValueOutput.ValueOutputList {
         val list = ListTag()
         compoundTag.put(key, list)

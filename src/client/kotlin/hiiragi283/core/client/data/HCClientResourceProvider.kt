@@ -28,6 +28,7 @@ import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
@@ -62,10 +63,10 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
     }
 
     @JvmStatic
-    private fun vanillaBlockId(vararg path: String): ResourceLocation = HTConst.MINECRAFT.toId(HTConst.BLOCK, *path)
+    private fun vanillaBlockId(vararg path: String): ResourceLocation = vanillaId(HTConst.BLOCK, *path)
 
     @JvmStatic
-    private fun vanillaItemId(vararg path: String): ResourceLocation = HTConst.MINECRAFT.toId(HTConst.ITEM, *path)
+    private fun vanillaItemId(vararg path: String): ResourceLocation = vanillaId(HTConst.ITEM, *path)
 
     @JvmStatic
     private fun blockTextures(executor: Consumer<ResourceGenTask>) {

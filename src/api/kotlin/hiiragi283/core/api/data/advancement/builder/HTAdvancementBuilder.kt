@@ -1,6 +1,6 @@
 package hiiragi283.core.api.data.advancement.builder
 
-import hiiragi283.core.api.data.advancement.HTAdvancementKey
+import hiiragi283.core.api.data.advancement.AdvancementKey
 import hiiragi283.core.api.data.advancement.HTAdvancementOutput
 import hiiragi283.core.api.data.holder.HTConditionHolder
 import hiiragi283.core.api.util.toOptional
@@ -17,15 +17,15 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
-class HTAdvancementBuilder(val key: HTAdvancementKey) {
+class HTAdvancementBuilder(val key: AdvancementKey) {
     companion object {
         @JvmStatic
-        inline fun create(output: HTAdvancementOutput, key: HTAdvancementKey, builderAction: HTAdvancementBuilder.() -> Unit) {
+        inline fun create(output: HTAdvancementOutput, key: AdvancementKey, builderAction: HTAdvancementBuilder.() -> Unit) {
             HTAdvancementBuilder(key).apply(builderAction).save(output)
         }
     }
 
-    var parent: HTAdvancementKey? = null
+    var parent: AdvancementKey? = null
     var display: DisplayInfo? = null
     var rewards: AdvancementRewards = AdvancementRewards.EMPTY
     val criteria: Criterions = Criterions()
@@ -38,9 +38,9 @@ class HTAdvancementBuilder(val key: HTAdvancementKey) {
     }
 
     fun save(output: HTAdvancementOutput) {
-        val id: ResourceLocation = key.getId()
+        val id: ResourceLocation = key.location()
         val adv = Advancement(
-            parent?.getId().toOptional(),
+            parent?.location().toOptional(),
             display.toOptional(),
             rewards,
             criteria.toMap(),

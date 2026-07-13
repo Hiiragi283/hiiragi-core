@@ -11,7 +11,6 @@ import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.Ior
 import hiiragi283.core.api.util.Option
 import hiiragi283.core.api.util.kotlin
-import hiiragi283.core.api.util.none
 import hiiragi283.core.impl.serialization.codec.HTIngredientCodec
 import hiiragi283.core.impl.serialization.codec.HTIorMapCodec
 import net.minecraft.core.Holder
@@ -70,7 +69,7 @@ data object HTCodecs {
      * @see ExtraCodecs.optionalEmptyMap
      */
     @JvmStatic
-    fun <A> option(codec: Codec<A>): Codec<Option<A>> = object : Codec<Option<A>> {
+    fun <A : Any> option(codec: Codec<A>): Codec<Option<A>> = object : Codec<Option<A>> {
         override fun <T> encode(input: Option<A>, ops: DynamicOps<T>, prefix: T): DataResult<T> = input.fold(
             { DataResult.success(ops.emptyMap()) },
             { codec.encode(it, ops, prefix) },
@@ -82,7 +81,7 @@ data object HTCodecs {
         )
 
         override fun <T> decode(ops: DynamicOps<T>, input: T): DataResult<Pair<Option<A>, T>> = when {
-            isEmptyMap(ops, input) -> DataResult.success(Pair.of(none(), input))
+            isEmptyMap(ops, input) -> DataResult.success(Pair.of(Option.none(), input))
             else -> codec.decode(ops, input).map { pair: Pair<A, T> -> pair.mapFirst { it.some() } }
         }
     }

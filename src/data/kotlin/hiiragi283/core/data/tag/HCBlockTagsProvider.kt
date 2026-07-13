@@ -24,8 +24,7 @@ class HCBlockTagsProvider(fileHelper: ExistingFileHelper, output: PackOutput, lo
             .apply(BlockTags.MINEABLE_WITH_PICKAXE)
             .add(HCBlocks.OIL_SHALE)
             .add(HCBlocks.TREE_TAP)
-        HCBlocks.COPPER_BASIN.weathering.values.forEach(pickaxe::add)
-        HCBlocks.COPPER_BASIN.waxed.values.forEach(pickaxe::add)
+        HCBlocks.COPPER_BASIN.allCoppers.forEach(pickaxe::add)
 
         factory
             .apply(BlockTags.MINEABLE_WITH_SHOVEL)

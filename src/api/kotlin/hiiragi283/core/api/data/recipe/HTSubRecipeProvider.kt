@@ -1,11 +1,17 @@
 package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.material.HTMaterialContents
+import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.getResult
+import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.resource.toId
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementHolder
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
+import net.minecraft.data.DataProvider
 import net.minecraft.data.recipes.RecipeOutput
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
@@ -29,6 +35,15 @@ sealed class HTSubRecipeProvider(protected val modId: String) : HTRecipeProvider
      * @since 0.12.0
      */
     fun getEnchantment(key: ResourceKey<Enchantment>): Holder<Enchantment> = provider.holderOrThrow(key)
+
+    protected inline fun useItem(part: HTPartLike, material: HTMaterialLike, action: (HTMaterialContents.ItemEntry) -> Unit) {
+        HiiragiCoreAccess.INSTANCE
+            .registeredContents
+            .items
+            .getResult(part, material)
+            .onLeft { DataProvider.LOGGER.error(it.value) }
+            .onRight(action)
+    }
 
     /**
      * [HTRecipeProvider.buildRecipes]内で呼び出されるメソッドです。

@@ -40,6 +40,8 @@ interface HTValueOutput {
      */
     fun child(key: String): HTValueOutput
 
+    fun discard(key: String)
+
     // List
 
     /**

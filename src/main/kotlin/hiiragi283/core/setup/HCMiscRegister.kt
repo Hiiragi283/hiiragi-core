@@ -5,6 +5,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.common.gui.sync.HTBoolSyncPayload
 import hiiragi283.core.common.gui.sync.HTFluidSyncPayload
 import hiiragi283.core.common.gui.sync.HTFractionSyncPayload
@@ -13,12 +14,26 @@ import hiiragi283.core.common.gui.sync.HTItemSyncPayload
 import hiiragi283.core.common.gui.sync.HTLongSyncPayload
 import hiiragi283.core.common.recipe.ingredient.HTBluePrintIngredient
 import hiiragi283.core.common.recipe.ingredient.HTPotionFluidIngredient
+import net.minecraft.core.registries.Registries
 import net.neoforged.neoforge.registries.NeoForgeRegistries
 import net.neoforged.neoforge.registries.RegisterEvent
 
 internal object HCMiscRegister {
     @JvmStatic
     fun register(event: RegisterEvent) {
+        // Data Component Type
+        event.register(Registries.DATA_COMPONENT_TYPE) { helper ->
+            helper.register(HiiragiCoreAPI.id("blueprint_number"), HCDataComponents.BLUEPRINT_NUMBER)
+            helper.register(HiiragiCoreAPI.id("bottle_type"), HCDataComponents.BOTTLE_TYPE)
+            helper.register(HiiragiCoreAPI.id("color"), HCDataComponents.COLOR)
+            helper.register(HiiragiCoreAPI.id("description"), HCDataComponents.DESCRIPTION)
+            helper.register(HiiragiCoreAPI.id("location"), HCDataComponents.LOCATION)
+            helper.register(HiiragiCoreAPI.id("experience"), HCDataComponents.EXPERIENCE)
+
+            helper.register(HiiragiCoreAPI.id(HTConst.ENERGY), HCDataComponents.ENERGY)
+            helper.register(HiiragiCoreAPI.id(HTConst.FLUID), HCDataComponents.FLUID)
+        }
+
         // Ingredient Type
         event.register(NeoForgeRegistries.Keys.INGREDIENT_TYPES) { helper ->
             helper.register(HiiragiCoreAPI.id("blue_print"), HTBluePrintIngredient.TYPE)
@@ -41,8 +56,8 @@ internal object HCMiscRegister {
             helper.register(HTConst.COMMON.toId("integer"), HTIntSyncPayload.TYPE)
             helper.register(HTConst.COMMON.toId("long"), HTLongSyncPayload.TYPE)
 
-            helper.register(HTConst.MINECRAFT.toId("fluid"), HTFluidSyncPayload.TYPE)
-            helper.register(HTConst.MINECRAFT.toId("item"), HTItemSyncPayload.TYPE)
+            helper.register(vanillaId("fluid"), HTFluidSyncPayload.TYPE)
+            helper.register(vanillaId("item"), HTItemSyncPayload.TYPE)
         }
     }
 }

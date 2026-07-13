@@ -22,7 +22,6 @@ import hiiragi283.core.setup.HCAttachmentTypes
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCCreativeTabs
-import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
@@ -53,8 +52,6 @@ import net.neoforged.neoforge.registries.NewRegistryEvent
 data object HiiragiCore : HTCommonMod() {
     override fun initialize(eventBus: IEventBus, container: ModContainer) {
         eventBus.addListener(HCMiscRegister::register)
-
-        HCDataComponents.REGISTER.register(eventBus)
 
         HCEntityTypes.REGISTER.register(eventBus)
         HCFluids.register(eventBus)

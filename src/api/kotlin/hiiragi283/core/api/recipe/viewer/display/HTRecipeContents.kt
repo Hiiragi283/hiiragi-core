@@ -13,7 +13,6 @@ import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.util.ErrorText
 import hiiragi283.core.api.util.Option
-import hiiragi283.core.api.util.none
 import hiiragi283.core.api.util.some
 import hiiragi283.core.api.util.unwrap
 import net.minecraft.core.component.DataComponents
@@ -162,7 +161,7 @@ data class HTRecipeContents(
         @JvmName("addItemOutput")
         fun addOutput(stack: ItemStack, chance: Float = 1f) {
             outputItems += when {
-                stack.isEmpty -> none()
+                stack.isEmpty -> Option.none()
                 else -> ChancedItemStack(stack, chance).some()
             }
         }

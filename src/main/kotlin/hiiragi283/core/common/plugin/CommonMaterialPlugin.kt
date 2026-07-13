@@ -33,6 +33,7 @@ import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.property.plusAssign
 import hiiragi283.core.api.registry.HTDeferredItem
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.times
@@ -96,7 +97,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
                     .requiresCorrectToolForDrops()
                     .strength(3f, 3f),
             )
-            put(HTPartPropertyKeys.ORE_STONE_TEX, HTConst.MINECRAFT.toId(HTConst.BLOCK, "stone"))
+            put(HTPartPropertyKeys.ORE_STONE_TEX, vanillaId(HTConst.BLOCK, "stone"))
 
             addNamePattern("%s Ore", "%s鉱石")
         }
@@ -110,7 +111,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
                 .requiresCorrectToolForDrops()
                 .strength(4.5f, 3f)
                 .sound(SoundType.DEEPSLATE),
-            HTConst.MINECRAFT.toId(HTConst.BLOCK, "deepslate"),
+            vanillaId(HTConst.BLOCK, "deepslate"),
         )
         registerOre(
             "nether",
@@ -123,7 +124,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
                 .requiresCorrectToolForDrops()
                 .strength(3f, 3f)
                 .sound(SoundType.NETHER_ORE),
-            HTConst.MINECRAFT.toId(HTConst.BLOCK, "netherrack"),
+            vanillaId(HTConst.BLOCK, "netherrack"),
         )
         registerOre(
             "end",
@@ -135,7 +136,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
                 .instrument(NoteBlockInstrument.BASEDRUM)
                 .requiresCorrectToolForDrops()
                 .strength(4.5f, 9f),
-            HTConst.MINECRAFT.toId(HTConst.BLOCK, "end_stone"),
+            vanillaId(HTConst.BLOCK, "end_stone"),
         )
 
         registrar.register("block", "%s_block") {

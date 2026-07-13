@@ -1,19 +1,14 @@
 package hiiragi283.core.data.recipe
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HTDefaultColor
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.color.HTDefaultColor
 import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.item.toStack
-import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.getResult
 import hiiragi283.core.api.material.part.CommonParts
-import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.registry.HTDeferredBlockAndItem
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.HTSimpleDeferredItem
@@ -21,7 +16,6 @@ import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.times
-import hiiragi283.core.api.util.getOrThrow
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.crafting.HCExperienceStoringRecipe
 import hiiragi283.core.common.crafting.HTBlueprintCloningRecipe
@@ -61,19 +55,23 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
     @JvmStatic
     private fun vanilla() {
         // Sand + Ash -> Glass Dust
-        HTShapelessRecipeBuilder.create(output) {
-            repeat(3) {
-                ingredients += itemCreator.create(Tags.Items.SANDS)
+        useItem(CommonParts.DUST, VanillaMaterialKeys.GLASS) {
+            HTShapelessRecipeBuilder.create(output) {
+                repeat(3) {
+                    ingredients += itemCreator.create(Tags.Items.SANDS)
+                }
+                ingredients += itemCreator.create(CommonTagPrefixes.DUST, CommonMaterialKeys.ASH)
+                resultStack = it.toStack(4)
+                recipeId suffix "_from_sand_and_ash"
             }
-            ingredients += itemCreator.create(CommonTagPrefixes.DUST, CommonMaterialKeys.ASH)
-            resultStack = getOrThrow(CommonParts.DUST, VanillaMaterialKeys.GLASS).toStack(4)
-            recipeId suffix "_from_sand_and_ash"
         }
         // Glass Dust -> Glass
-        HTCookingRecipeBuilder.smelting(output) {
-            ingredient = itemCreator.create(getOrThrow(CommonParts.DUST, VanillaMaterialKeys.GLASS).get())
-            resultStack = ItemStack(Items.GLASS)
-            recipeId suffix "_from_dust"
+        useItem(CommonParts.DUST, VanillaMaterialKeys.GLASS) {
+            HTCookingRecipeBuilder.smelting(output) {
+                ingredient = itemCreator.create(it.get())
+                resultStack = ItemStack(Items.GLASS)
+                recipeId suffix "_from_dust"
+            }
         }
         // Iron Rod -> Iron Bar
         HTShapedRecipeBuilder.create(output) {
@@ -134,19 +132,23 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             resultStack = HCItems.STEEL_COMPOUND.toStack()
             recipeId suffix "_with_coal"
         }
-        HTCookingRecipeBuilder.blasting(output) {
-            ingredient = itemCreator.create(HCItems.STEEL_COMPOUND)
-            resultStack = getOrThrow(CommonParts.INGOT, CommonMaterialKeys.STEEL).toStack()
-            exp = 0.7f
-            recipeId suffix "_from_compound"
+        useItem(CommonParts.INGOT, CommonMaterialKeys.STEEL) {
+            HTCookingRecipeBuilder.blasting(output) {
+                ingredient = itemCreator.create(HCItems.STEEL_COMPOUND)
+                resultStack = it.toStack()
+                exp = 0.7f
+                recipeId suffix "_from_compound"
+            }
         }
 
         // Polymer Resin -> Plastic Bar
-        HTCookingRecipeBuilder.smelting(output) {
-            ingredient = itemCreator.create(HCItems.POLYMER_RESIN)
-            resultStack = getOrThrow(CommonParts.PLATE, CommonMaterialKeys.PLASTIC).toStack()
-            exp = 0.7f
-            recipeId suffix "_from_resin"
+        useItem(CommonParts.PLATE, CommonMaterialKeys.PLASTIC) {
+            HTCookingRecipeBuilder.smelting(output) {
+                ingredient = itemCreator.create(HCItems.POLYMER_RESIN)
+                resultStack = it.toStack()
+                exp = 0.7f
+                recipeId suffix "_from_resin"
+            }
         }
         // Synthetic
         for (item: HTSimpleDeferredItem in listOf(HCItems.SYNTHETIC_FEATHER, HCItems.SYNTHETIC_FIBER, HCItems.SYNTHETIC_LEATHER)) {
@@ -368,7 +370,7 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
     @JvmStatic
     private fun buckets() {
         // Dye
-        for ((color: HTDefaultColor, content: HTFluidContent) in HCFluids.DyeContents) {
+        for ((color: HTDefaultColor, content: HTFluidContent) in HCFluids.DYES.asSequenceWithColor()) {
             HTShapelessRecipeBuilder.create(output) {
                 repeat(4) {
                     ingredients += itemCreator.create(color.dyesTag)
@@ -414,11 +416,4 @@ object HCCommonRecipeProvider : HTSubRecipeProvider.Direct(HiiragiCoreAPI.MOD_ID
             }
         }
     }
-
-    @JvmStatic
-    private fun getOrThrow(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry = HiiragiCoreAccess.INSTANCE
-        .registeredContents
-        .items
-        .getResult(part, material)
-        .getOrThrow()
 }

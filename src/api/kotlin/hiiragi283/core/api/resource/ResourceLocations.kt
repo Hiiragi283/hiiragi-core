@@ -1,8 +1,9 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package hiiragi283.core.api.resource
 
-import net.minecraft.Util
-import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.ResourceKey
 
 //    ResourceLocation    //
 
@@ -12,7 +13,7 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun String.toId(path: String): ResourceLocation = ResourceLocation.fromNamespaceAndPath(this, path)
+inline fun String.toId(path: String): ResourceLocation = ResourceLocation.fromNamespaceAndPath(this, path)
 
 /**
  * この[文字列][this]を[名前空間][ResourceLocation.getNamespace]とした[ID][ResourceLocation]を作成します。
@@ -23,29 +24,53 @@ fun String.toId(path: String): ResourceLocation = ResourceLocation.fromNamespace
 fun String.toId(vararg path: String): ResourceLocation = this.toId(path.joinToString(separator = "/"))
 
 /**
- * この[ID][ResourceLocation]を翻訳キーに変換します。
+ * 名前空間が`minecraft`となる[ID][ResourceLocation]を作成します。
+ * @param path IDの[パス][ResourceLocation.getPath]
  * @author Hiiragi Tsubasa
- * @since 0.6.0
  */
-fun ResourceLocation.toDescriptionKey(prefix: String): String = Util.makeDescriptionId(prefix, this)
+inline fun vanillaId(path: String): ResourceLocation = ResourceLocation.withDefaultNamespace(path)
 
 /**
- * この[ID][ResourceLocation]を翻訳キーに変換します。
+ * 名前空間が`minecraft`となる[ID][ResourceLocation]を作成します。
+ * @param path IDの[パス][ResourceLocation.getPath]
  * @author Hiiragi Tsubasa
- * @since 0.1.0
  */
-fun ResourceLocation.toDescriptionKey(prefix: String, suffix: String): String = "${Util.makeDescriptionId(prefix, this@toDescriptionKey)}.$suffix"
+fun vanillaId(vararg path: String): ResourceLocation = ResourceLocation.withDefaultNamespace(path.joinToString(separator = "/"))
 
-/**
- * この[ResourceKey]を翻訳キーに変換します。
- * @author Hiiragi Tsubasa
- * @since 0.6.0
- */
-fun ResourceKey<*>.toDescriptionKey(prefix: String): String = location().toDescriptionKey(prefix)
+//    ResourceKey    //
 
 /**
  * この[ResourceKey]を翻訳キーに変換します。
  * @author Hiiragi Tsubasa
+ * @since 26.1.3
+ */
+inline fun ResourceKey<*>.toLanguageKey(): String = this.location().toLanguageKey(this.registryKey().location().path)
+
+/**
+ * この[ResourceKey]を翻訳キーに変換します。
+ * @author Hiiragi Tsubasa
+ * @since 26.1.3
+ */
+inline fun ResourceKey<*>.toLanguageKey(suffix: String): String = this.location().toLanguageKey(this.registryKey().location().path, suffix)
+
+//    HTIdLike    //
+
+/**
+ * この[HTIdLike]から，`block/`で前置された[ID][HTIdLike.getId]を返します。
+ * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun ResourceKey<*>.toDescriptionKey(prefix: String, suffix: String): String = location().toDescriptionKey(prefix, suffix)
+val HTIdLike.blockId: ResourceLocation get() = when {
+    this.path.startsWith("block/") -> getId()
+    else -> getId().withPrefix("block/")
+}
+
+/**
+ * この[HTIdLike]から，`item/`で前置された[ID][HTIdLike.getId]を返します。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
+val HTIdLike.itemId: ResourceLocation get() = when {
+    this.path.startsWith("item/") -> getId()
+    else -> getId().withPrefix("item/")
+}

@@ -8,7 +8,7 @@ import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
-import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.resource.vanillaId
 import net.minecraft.core.Direction
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceLocation
@@ -184,7 +184,7 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
             block,
             models()
                 .getBuilder(content.blockId)
-                .texture("particle", HTConst.MINECRAFT.toId(HTConst.BLOCK, "water_still")),
+                .texture("particle", vanillaId(HTConst.BLOCK, "water_still")),
         )
     }
 }

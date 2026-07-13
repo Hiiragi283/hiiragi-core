@@ -17,7 +17,7 @@ import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
-import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.resource.vanillaId
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
 import net.mehvahdjukaar.moonlight.api.resources.textures.Palette
@@ -32,7 +32,7 @@ data object HCMaterialTextureProvider : ResourceGenTask {
 
     override fun accept(manager: ResourceManager, sink: ResourceSink) {
         HTTextureUtil.templatePalette = HTTextureUtil.getOrCreateColors(HiiragiCoreAPI.id("template"), manager).getOrThrow()
-        lavaTexture = TextureImage.open(manager, HTConst.MINECRAFT.toId(HTConst.BLOCK, "lava_still"))
+        lavaTexture = TextureImage.open(manager, vanillaId(HTConst.BLOCK, "lava_still"))
 
         val contents: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
         material(manager, sink, HTConst.BLOCK, contents.blocks::column)
@@ -55,7 +55,7 @@ data object HCMaterialTextureProvider : ResourceGenTask {
             if (partMap.isEmpty()) continue
             // テクスチャを生成
             val textureSet: HTMaterialTextureSet = entry.getOrDefault(HTMaterialPropertyKeys.TEXTURE_SET)
-            for ((part: HTPart, element: T) in partMap) {
+            for (part: HTPart in HiiragiCoreAccess.INSTANCE.partManager.values) {
                 if (HTPartPropertyKeys.DISABLE_TEXTURE_GEN in part) continue
                 // パレットを取得
                 val palette: List<Int> = sequence {
@@ -75,7 +75,7 @@ data object HCMaterialTextureProvider : ResourceGenTask {
                     ?: continue
                 copyAndApplyColor(
                     sink,
-                    element.getId().withPrefix("$pathPrefix/"),
+                    part.createId(entry).withPrefix("$pathPrefix/"),
                     palette,
                     template,
                 )

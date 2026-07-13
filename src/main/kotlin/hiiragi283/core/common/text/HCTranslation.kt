@@ -2,7 +2,6 @@ package hiiragi283.core.common.text
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.resource.toDescriptionKey
 import hiiragi283.core.api.text.HTTranslation
 
 enum class HCTranslation(type: String, vararg path: String) : HTTranslation {
@@ -46,5 +45,5 @@ enum class HCTranslation(type: String, vararg path: String) : HTTranslation {
     ETERNAL_UPGRADE_ADDITIONS_SLOT_DESCRIPTION(HTConst.UPGRADE, "eternal_upgrade", "additions_slot_description"),
     ;
 
-    override val translationKey: String = HiiragiCoreAPI.id(path.joinToString(separator = ".")).toDescriptionKey(type)
+    override val translationKey: String = HiiragiCoreAPI.id(path.joinToString(separator = ".")).toLanguageKey(type)
 }

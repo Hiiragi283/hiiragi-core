@@ -6,7 +6,6 @@ import hiiragi283.core.common.block.entity.HTExtendedBlockEntity
 import net.minecraft.client.Minecraft
 import net.minecraft.client.player.AbstractClientPlayer
 import net.minecraft.core.BlockPos
-import net.minecraft.core.RegistryAccess
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
@@ -34,10 +33,7 @@ data class HTUpdateBlockEntityPacket private constructor(val pos: BlockPos, val 
         )
 
         @JvmStatic
-        fun create(blockEntity: HTExtendedBlockEntity): HTUpdateBlockEntityPacket? {
-            val access: RegistryAccess = blockEntity.getRegistryAccess() ?: return null
-            return HTUpdateBlockEntityPacket(blockEntity.blockPos, blockEntity.getReducedUpdateTag(access))
-        }
+        fun create(blockEntity: HTExtendedBlockEntity): HTUpdateBlockEntityPacket? = blockEntity.getRegistryAccess().map { HTUpdateBlockEntityPacket(blockEntity.blockPos, blockEntity.getReducedUpdateTag(it)) }.getOrNull()
     }
 
     override fun type(): CustomPacketPayload.Type<HTUpdateBlockEntityPacket> = TYPE
