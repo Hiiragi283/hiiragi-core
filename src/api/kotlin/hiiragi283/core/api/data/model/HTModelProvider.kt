@@ -1,167 +1,73 @@
 package hiiragi283.core.api.data.model
 
-import com.google.gson.JsonObject
-import hiiragi283.core.api.HTConst
+import com.google.gson.JsonElement
 import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.blockId
-import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.resource.itemId
+import java.util.function.BiConsumer
+import java.util.function.Supplier
+import net.mehvahdjukaar.moonlight.api.resources.ResType
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
+import net.minecraft.data.models.BlockModelGenerators
 import net.minecraft.data.models.blockstates.BlockStateGenerator
-import net.minecraft.data.models.blockstates.MultiVariantGenerator
-import net.minecraft.data.models.blockstates.PropertyDispatch
-import net.minecraft.data.models.blockstates.Variant
-import net.minecraft.data.models.blockstates.VariantProperties
 import net.minecraft.data.models.model.DelegatedModel
-import net.minecraft.data.models.model.ModelTemplate
-import net.minecraft.data.models.model.ModelTemplates
-import net.minecraft.data.models.model.TextureMapping
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
+import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.state.properties.Property
-import net.minecraft.world.level.material.Fluid
-import net.neoforged.neoforge.fluids.FluidType
+import net.minecraft.data.models.ModelProvider
+
+typealias HTModelOutput = BiConsumer<ResourceLocation, Supplier<JsonElement>>
 
 /**
  * BlockState JSONおよびモデルJSONを生成する[ResourceGenTask]の抽象クラスです。
+ *
+ * 参照 : [Minecraft - ModelProvider][ModelProvider]
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
 abstract class HTModelProvider : ResourceGenTask {
-    protected lateinit var sink: ResourceSink
-        private set
-
     final override fun accept(manager: ResourceManager, sink: ResourceSink) {
-        this.sink = sink
-        registerModels(manager)
-    }
-
-    /**
-     * BlockStateやモデルを生成します。
-     */
-    protected abstract fun registerModels(manager: ResourceManager)
-
-    //    Extensions    //
-
-    /**
-     * モデルJSONの出力先のインスタンス
-     */
-    protected val modelOutput: HTModelOutput = HTModelOutput { id, json, type -> sink.addJson(id, json, type) }
-
-    // Block
-
-    /**
-     * BlockState JSONを生成します。
-     * @see net.minecraft.data.models.ModelProvider.run
-     */
-    protected fun addBlockState(generator: BlockStateGenerator, block: HTIdLike) {
-        sink.addBlockState(block.getId(), generator.get())
-    }
-
-    protected fun addSimpleBlock(block: SupplierWithId<Block>, model: HTTexturedModel) {
-        addBlockState(createSimpleGenerator(block, model.saveBlock(block, modelOutput)), block)
-    }
-
-    protected fun addSimpleBlockAndItem(block: SupplierWithId<Block>, model: HTTexturedModel) {
-        addSimpleBlock(block, model)
-        sink.addItemModel(block.getId(), DelegatedModel(block.blockId).get())
-    }
-
-    /**
-     * @see net.minecraft.data.models.BlockModelGenerators.createTrivialBlock
-     */
-    protected fun addSimpleBlock(block: SupplierWithId<Block>, provider: HTTexturedModel.Provider = HTTexturedModels.CUBE_ALL) {
-        addBlockState(createSimpleGenerator(block, provider.saveBlock(block, modelOutput)), block)
-    }
-
-    protected fun addSimpleBlockAndItem(block: SupplierWithId<Block>, provider: HTTexturedModel.Provider = HTTexturedModels.CUBE_ALL) {
-        addSimpleBlock(block, provider)
-        sink.addItemModel(block.getId(), DelegatedModel(block.blockId).get())
-    }
-
-    /**
-     * @see net.minecraft.data.models.BlockModelGenerators.createSimpleBlock
-     */
-    protected fun createSimpleGenerator(block: SupplierWithId<Block>, modelId: ResourceLocation): MultiVariantGenerator = MultiVariantGenerator.multiVariant(block.get(), Variant.variant().with(VariantProperties.MODEL, modelId))
-
-    /**
-     * @see net.minecraft.data.models.BlockModelGenerators.createCropBlock
-     */
-    protected fun addCropBlock(block: SupplierWithId<Block>, ageProperty: Property<Int>, vararg ageToSuffix: Int) {
-        // Block
-        require(ageProperty.possibleValues.size == ageToSuffix.size)
-        val map: MutableMap<Int, ResourceLocation> = hashMapOf()
-        addBlockState(
-            MultiVariantGenerator
-                .multiVariant(block.get())
-                .with(
-                    PropertyDispatch
-                        .property(ageProperty)
-                        .generate { age: Int ->
-                            val suffix: Int = ageToSuffix[age]
-                            val modelId: ResourceLocation = map.computeIfAbsent(suffix) {
-                                addBlockModel(
-                                    block,
-                                    "_stage$it",
-                                    ModelTemplates.CROP,
-                                    TextureMapping::crop,
-                                )
-                            }
-                            Variant.variant().with(VariantProperties.MODEL, modelId)
-                        },
-                ),
-            block,
-        )
-        // Item
-        addSimpleItemModel(block)
-    }
-
-    /**
-     * @see net.minecraft.data.models.BlockModelGenerators.createSuffixedVariant
-     */
-    protected inline fun addBlockModel(
-        block: HTIdLike,
-        suffix: String,
-        model: ModelTemplate,
-        textureFactory: (ResourceLocation) -> TextureMapping,
-    ): ResourceLocation {
-        val id: ResourceLocation = block.blockId
-        return model.create(id.withSuffix(suffix), textureFactory(id), modelOutput)
-    }
-
-    protected fun addBlockModel(block: HTIdLike, provider: HTTexturedModel.Provider): ResourceLocation = provider.saveBlock(block, modelOutput)
-
-    // Item
-    protected fun addItemModel(item: HTIdLike, model: HTTexturedModel) {
-        model.saveItem(item, modelOutput)
-    }
-
-    protected fun addItemModel(item: HTIdLike, provider: HTTexturedModel.Provider) {
-        provider.saveItem(item, modelOutput)
-    }
-
-    protected fun addSimpleItemModel(item: HTIdLike) {
-        addItemModel(item, HTTexturedModels.FLAT_ITEM)
-    }
-
-    /**
-     * @see net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder
-     */
-    protected fun addBucketModel(fluid: Fluid, isDrip: Boolean, fluidType: FluidType = fluid.fluidType, bucket: HTIdLike = fluid.bucket.toLike()) {
-        val parent: ResourceLocation = when {
-            isDrip -> "bucket_drip"
-            else -> "bucket"
-        }.let { HTConst.NEOFORGE.toId(HTConst.ITEM, it) }
-        val root = JsonObject()
-        root.addProperty("parent", parent.toString())
-        root.addProperty("fluid", fluid.toString())
-        root.addProperty("loader", "neoforge:fluid_container")
-        if (fluidType.isLighterThanAir) {
-            root.addProperty("flip_gas", "true")
+        val blockStates: MutableMap<Block, BlockStateGenerator> = hashMapOf()
+        val models: MutableMap<ResourceLocation, Supplier<JsonElement>> = hashMapOf()
+        val itemsSkipped: MutableSet<Item> = hashSetOf()
+        val output: HTModelOutput = HTModelOutput { modelId: ResourceLocation, supplier: Supplier<JsonElement> ->
+            check(models.put(modelId, supplier) == null) { "Duplicate model definition for $modelId" }
         }
-        sink.addItemModel(bucket.getId(), root)
+        // モデルを登録
+        registerModels(
+            BlockModelGenerators(
+                { generator: BlockStateGenerator ->
+                    val block: Block = generator.block
+                    check(blockStates.put(block, generator) == null) { "Duplicate blockstate definition for $block" }
+                },
+                output,
+                itemsSkipped::add,
+            ),
+            manager,
+            output,
+        )
+        // 不足している BlockItem のモデルを登録
+        for (block: Block in blockStates.keys) {
+            val blockItem: Item = Item.BY_BLOCK[block] ?: continue
+            if (blockItem in itemsSkipped) continue
+            val blockItemModelId: ResourceLocation = blockItem.toLike().itemId
+            if (blockItemModelId !in models) {
+                models[blockItemModelId] = DelegatedModel(block.toLike().blockId)
+            }
+        }
+
+        // BlockState JSONを登録
+        for ((block: Block, generator: BlockStateGenerator) in blockStates) {
+            val blockId: ResourceLocation = block.toLike().getId()
+            sink.addBlockState(blockId, generator.get())
+        }
+        // モデルJSONを登録
+        for ((modelId: ResourceLocation, supplier: Supplier<JsonElement>) in models) {
+            sink.addJson(modelId, supplier.get(), ResType.MODELS)
+        }
     }
+
+    protected abstract fun registerModels(blockModels: BlockModelGenerators, manager: ResourceManager, output: HTModelOutput)
 }
