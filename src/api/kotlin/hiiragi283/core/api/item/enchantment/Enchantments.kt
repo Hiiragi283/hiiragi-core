@@ -11,10 +11,7 @@ import net.minecraft.world.item.enchantment.ItemEnchantments
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
-inline fun buildEnchantments(
-    parent: ItemEnchantments = ItemEnchantments.EMPTY,
-    builderAction: ItemEnchantments.Mutable.() -> Unit,
-): ItemEnchantments = ItemEnchantments.Mutable(parent).apply(builderAction).toImmutable()
+inline fun buildEnchantments(parent: ItemEnchantments = ItemEnchantments.EMPTY, builderAction: ItemEnchantments.Mutable.() -> Unit): ItemEnchantments = ItemEnchantments.Mutable(parent).apply(builderAction).toImmutable()
 
 /**
  * @author Hiiragi Tsubasa
@@ -34,9 +31,7 @@ fun ItemEnchantments.toInstances(): List<EnchantmentInstance> = this.toMap().toI
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
-fun Map<Holder<Enchantment>, Int>.toInstances(): List<EnchantmentInstance> = this.map { (holder: Holder<Enchantment>, level: Int) ->
-    EnchantmentInstance(holder, level)
-}
+fun Map<Holder<Enchantment>, Int>.toInstances(): List<EnchantmentInstance> = this.map { (holder: Holder<Enchantment>, level: Int) -> EnchantmentInstance(holder, level) }
 
 /**
  * @author Hiiragi Tsubasa
@@ -49,6 +44,5 @@ fun Map<Holder<Enchantment>, Int>.toItem(parent: ItemEnchantments = ItemEnchantm
  * @since 0.10.0
  */
 fun ItemEnchantments.toMap(): Map<Holder<Enchantment>, Int> = object : AbstractMap<Holder<Enchantment>, Int>() {
-    override val entries: Set<Map.Entry<Holder<Enchantment>, Int>>
-        get() = this@toMap.entrySet()
+    override val entries: Set<Map.Entry<Holder<Enchantment>, Int>> get() = this@toMap.entrySet()
 }

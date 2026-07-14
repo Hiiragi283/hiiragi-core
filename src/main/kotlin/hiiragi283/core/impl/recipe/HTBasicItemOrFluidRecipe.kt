@@ -1,7 +1,6 @@
 package hiiragi283.core.impl.recipe
 
 import com.mojang.serialization.MapCodec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTItemOrFluidRecipe
 import hiiragi283.core.api.recipe.base.HTProgressData
@@ -41,7 +40,7 @@ open class HTBasicItemOrFluidRecipe(
             )
 
         @JvmStatic
-        fun <T : HTBasicItemOrFluidRecipe> codec(factory: HTItemOrFluidRecipeBuilder.Factory<T>): MapCodec<T> = RecordCodecBuilder.mapCodec { instance ->
+        fun <T : HTBasicItemOrFluidRecipe> codec(factory: HTItemOrFluidRecipeBuilder.Factory<T>): MapCodec<T> = HTCodecs.recordMap { instance ->
             instance
                 .group(
                     INGREDIENT_CODEC.forGetter(HTBasicItemOrFluidRecipe::ingredient),

@@ -14,10 +14,9 @@ import net.minecraft.network.codec.StreamCodec
 interface HTSyncablePayload {
     companion object {
         @JvmField
-        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTSyncablePayload> =
-            ByteBufCodecs
-                .registry(HCRegistries.Keys.SLOT_TYPE)
-                .dispatch(HTSyncablePayload::type, Type<*>::streamCodec)
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTSyncablePayload> = ByteBufCodecs
+            .registry(HCRegistries.Keys.SLOT_TYPE)
+            .dispatch(HTSyncablePayload::type, Type<*>::streamCodec)
     }
 
     /**

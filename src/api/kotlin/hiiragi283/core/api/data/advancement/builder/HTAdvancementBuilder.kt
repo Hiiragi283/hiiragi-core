@@ -1,9 +1,15 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.core.api.data.advancement.builder
 
 import hiiragi283.core.api.data.advancement.AdvancementKey
 import hiiragi283.core.api.data.advancement.HTAdvancementOutput
 import hiiragi283.core.api.data.holder.HTConditionHolder
+import hiiragi283.core.api.util.HTBuilderMarker
 import hiiragi283.core.api.util.toOptional
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementRequirements
 import net.minecraft.advancements.AdvancementRewards
@@ -17,10 +23,14 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
+@HTBuilderMarker
 class HTAdvancementBuilder(val key: AdvancementKey) {
     companion object {
         @JvmStatic
         inline fun create(output: HTAdvancementOutput, key: AdvancementKey, builderAction: HTAdvancementBuilder.() -> Unit) {
+            contract {
+                callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+            }
             HTAdvancementBuilder(key).apply(builderAction).save(output)
         }
     }

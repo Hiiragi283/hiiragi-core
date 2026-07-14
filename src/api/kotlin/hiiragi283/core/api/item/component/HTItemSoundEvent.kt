@@ -14,12 +14,10 @@ import net.minecraft.sounds.SoundEvent
 value class HTItemSoundEvent private constructor(val holder: Holder<SoundEvent>) {
     companion object {
         @JvmField
-        val CODEC: Codec<HTItemSoundEvent> =
-            HTCodecs.holder(Registries.SOUND_EVENT).xmap(::HTItemSoundEvent, HTItemSoundEvent::holder)
+        val CODEC: Codec<HTItemSoundEvent> = HTCodecs.holder(Registries.SOUND_EVENT).xmap(::HTItemSoundEvent, HTItemSoundEvent::holder)
 
         @JvmField
-        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemSoundEvent> =
-            HTStreamCodecs.holder(Registries.SOUND_EVENT).map(::HTItemSoundEvent, HTItemSoundEvent::holder)
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemSoundEvent> = HTStreamCodecs.holder(Registries.SOUND_EVENT).map(::HTItemSoundEvent, HTItemSoundEvent::holder)
 
         @JvmStatic
         fun create(sound: SoundEvent): HTItemSoundEvent = create(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(sound))

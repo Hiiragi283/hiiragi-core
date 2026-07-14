@@ -2,7 +2,6 @@ package hiiragi283.core.api.recipe.viewer.display
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
@@ -12,6 +11,7 @@ import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.util.ErrorText
+import hiiragi283.core.api.util.HTBuilderMarker
 import hiiragi283.core.api.util.Option
 import hiiragi283.core.api.util.some
 import hiiragi283.core.api.util.unwrap
@@ -23,6 +23,7 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import net.neoforged.neoforge.fluids.FluidType
 
+@HTBuilderMarker
 @JvmRecord
 data class HTRecipeContents(
     private val inputItems: List<List<ItemStack>>,
@@ -33,7 +34,7 @@ data class HTRecipeContents(
 ) {
     companion object {
         @JvmField
-        val CODEC: MapCodec<HTRecipeContents> = RecordCodecBuilder.mapCodec { instance ->
+        val CODEC: MapCodec<HTRecipeContents> = HTCodecs.recordMap { instance ->
             val itemsCodec: Codec<List<ItemStack>> = ItemStack.CODEC.listOf()
 
             instance
@@ -217,7 +218,7 @@ data class HTRecipeContents(
     data class ChancedItemStack(val stack: ItemStack, val chance: Float) {
         companion object {
             @JvmField
-            val CODEC: Codec<ChancedItemStack> = RecordCodecBuilder.create { instance ->
+            val CODEC: Codec<ChancedItemStack> = HTCodecs.record { instance ->
                 instance
                     .group(
                         MapCodec.assumeMapUnsafe(ItemStack.CODEC).forGetter(ChancedItemStack::stack),

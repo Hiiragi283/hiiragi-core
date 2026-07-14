@@ -24,7 +24,7 @@ import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTDeferredItem
 import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.api.resource.SupplierWithId
+import hiiragi283.core.api.resource.SimpleSupplierWithKey
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
@@ -140,7 +140,7 @@ data object HTMaterialContentsRegister {
     private fun registerExistingBlocks() {
         existingBlocks = buildTable {
             HiiragiCoreAccess.INSTANCE.forEachPlugin("Register Existing Blocks") { plugin: HTMaterialPlugin ->
-                plugin.registerExistingBlock { part: HTPartLike, material: HTMaterialKey, block: SupplierWithId<Block> ->
+                plugin.registerExistingBlock { part: HTPartLike, material: HTMaterialKey, block: SimpleSupplierWithKey<Block> ->
                     put(part.asPart(), material, HTMaterialContents.SimpleEntry(block, true))
                 }
             }
@@ -151,7 +151,7 @@ data object HTMaterialContentsRegister {
     private fun registerExistingItems() {
         existingItems = buildTable {
             HiiragiCoreAccess.INSTANCE.forEachPlugin("Register Existing Items") { plugin: HTMaterialPlugin ->
-                plugin.registerExistingItem { part: HTPartLike, material: HTMaterialKey, item: SupplierWithId<Item> ->
+                plugin.registerExistingItem { part: HTPartLike, material: HTMaterialKey, item: SimpleSupplierWithKey<Item> ->
                     put(part.asPart(), material, HTMaterialContents.ItemEntry(item, true))
                 }
             }
@@ -162,7 +162,7 @@ data object HTMaterialContentsRegister {
     private fun registerExistingTools() {
         existingTools = buildTable {
             HiiragiCoreAccess.INSTANCE.forEachPlugin("Register Existing Items") { plugin: HTMaterialPlugin ->
-                plugin.registerExistingTool { toolType: HTToolType, key: HTMaterialKey, item: SupplierWithId<Item> ->
+                plugin.registerExistingTool { toolType: HTToolType, key: HTMaterialKey, item: SimpleSupplierWithKey<Item> ->
                     put(toolType, key, HTMaterialContents.ItemEntry(item, true))
                 }
             }

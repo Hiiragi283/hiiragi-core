@@ -1,7 +1,7 @@
 package hiiragi283.core.api.item.alchemy
 
 import com.mojang.serialization.Codec
-import com.mojang.serialization.codecs.RecordCodecBuilder
+import hiiragi283.core.api.serialization.codec.HTCodecs
 import net.minecraft.core.Holder
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
@@ -20,7 +20,7 @@ import kotlin.jvm.optionals.getOrNull
 data class BottledPotionContents(val contents: PotionContents, val bottleType: HTBottleType) {
     companion object {
         @JvmField
-        val CODEC: Codec<BottledPotionContents> = RecordCodecBuilder.create { instance ->
+        val CODEC: Codec<BottledPotionContents> = HTCodecs.record { instance ->
             instance
                 .group(
                     PotionContents.CODEC.fieldOf("contents").forGetter(BottledPotionContents::contents),
@@ -45,12 +45,23 @@ data class BottledPotionContents(val contents: PotionContents, val bottleType: H
     constructor(potion: Holder<Potion>, bottleType: HTBottleType) : this(PotionContents(potion), bottleType)
 
     /**
-     * ポーションのインスタンス
+     * ポーションの値
      */
     val potion: Holder<Potion>? get() = contents.potion().getOrNull()
+
+    /**
+     * カスタム色の値
+     */
     val customColor: Int? get() = contents.customColor().getOrNull()
+
+    /**
+     * カスタムエフェクトの一覧
+     */
     val customEffects: List<MobEffectInstance> get() = contents.customEffects()
 
+    /**
+     * ポーションも含めたすべてのエフェクトの一覧
+     */
     val allEffects: Iterable<MobEffectInstance> get() = contents.allEffects
 
     /**

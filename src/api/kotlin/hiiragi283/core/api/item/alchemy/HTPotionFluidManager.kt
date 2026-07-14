@@ -17,10 +17,7 @@ data object HTPotionFluidManager {
      * @since 0.13.0
      */
     @JvmStatic
-    val fluidHandlers: Map<Holder<Fluid>, Handler> get() = _fluidHandlers
-
-    @JvmStatic
-    private val _fluidHandlers: MutableMap<Holder<Fluid>, Handler> = hashMapOf()
+    val fluidHandlers: Map<Holder<Fluid>, Handler>field: MutableMap<Holder<Fluid>, Handler> = hashMapOf()
 
     /**
      * 指定した[fluid]に[handler]を登録します。
@@ -28,7 +25,7 @@ data object HTPotionFluidManager {
      */
     @JvmStatic
     fun register(fluid: Fluid, handler: Handler) {
-        check(_fluidHandlers.put(fluid.builtInRegistryHolder(), handler) == null) {
+        check(fluidHandlers.put(fluid.builtInRegistryHolder(), handler) == null) {
             "Duplicated potion fluid registration: $fluid"
         }
     }
@@ -38,7 +35,7 @@ data object HTPotionFluidManager {
      * @return 対応する[Handler]がない場合は`null`
      */
     @JvmStatic
-    fun getFluidHandler(holder: Holder<Fluid>): Handler? = _fluidHandlers[holder.delegate]
+    fun getFluidHandler(holder: Holder<Fluid>): Handler? = fluidHandlers[holder.delegate]
 
     //    Handler    //
 

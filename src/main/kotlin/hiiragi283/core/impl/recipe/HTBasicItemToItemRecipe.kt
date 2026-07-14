@@ -1,13 +1,13 @@
 package hiiragi283.core.impl.recipe
 
 import com.mojang.serialization.MapCodec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTItemToItemRecipe
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.base.HTProgressRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.common.data.recipe.builder.HTItemToResultRecipeBuilder
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.SingleRecipeInput
@@ -17,7 +17,7 @@ open class HTBasicItemToItemRecipe(val ingredient: HTItemIngredient, val result:
     HTProgressRecipe.Simple<SingleRecipeInput> {
     companion object {
         @JvmStatic
-        fun <T : HTBasicItemToItemRecipe> codec(factory: HTItemToResultRecipeBuilder.Factory<HTItemResult, T>): MapCodec<T> = RecordCodecBuilder.mapCodec { instance ->
+        fun <T : HTBasicItemToItemRecipe> codec(factory: HTItemToResultRecipeBuilder.Factory<HTItemResult, T>): MapCodec<T> = HTCodecs.recordMap { instance ->
             instance
                 .group(
                     HTItemIngredient.CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTBasicItemToItemRecipe::ingredient),

@@ -1,7 +1,6 @@
 package hiiragi283.core.common.recipe
 
 import com.mojang.serialization.MapCodec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
@@ -23,7 +22,7 @@ class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: H
     HTSerializableRecipe<HTItemAndFluidRecipeInput> {
     companion object {
         @JvmField
-        val CODEC: MapCodec<HCTankFillingRecipe> = RecordCodecBuilder.mapCodec { instance ->
+        val CODEC: MapCodec<HCTankFillingRecipe> = HTCodecs.recordMap { instance ->
             instance
                 .group(
                     HTCodecs.INGREDIENT.fieldOf(HTConst.ITEM_INGREDIENT).forGetter(HCTankFillingRecipe::itemIngredient),

@@ -26,8 +26,7 @@ class HTAdvancementProvider(
     output: PackOutput,
     private val registries: CompletableFuture<HolderLookup.Provider>,
 ) : DataProvider {
-    private val pathProvider: PackOutput.PathProvider =
-        output.createRegistryElementsPathProvider(Registries.ADVANCEMENT)
+    private val pathProvider: PackOutput.PathProvider = output.createRegistryElementsPathProvider(Registries.ADVANCEMENT)
 
     override fun run(output: CachedOutput): CompletableFuture<*> = registries.thenCompose { provider: HolderLookup.Provider ->
         val set: MutableSet<ResourceLocation> = mutableSetOf()

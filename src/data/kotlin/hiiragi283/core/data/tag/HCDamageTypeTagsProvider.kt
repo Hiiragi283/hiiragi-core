@@ -16,9 +16,7 @@ class HCDamageTypeTagsProvider(
     output: PackOutput,
     lookupProvider: CompletableFuture<HolderLookup.Provider>,
 ) : HTTagsProvider.DataGen<DamageType>(fileHelper, output, Registries.DAMAGE_TYPE, lookupProvider, HiiragiCoreAPI.MOD_ID) {
-    override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<DamageType>) {
-        factory
-            .apply(HiiragiCoreTags.DamageTypes.IS_SONIC)
-            .add(DamageTypes.SONIC_BOOM)
+    override fun appendTags(registries: HolderLookup.Provider) {
+        builder(HiiragiCoreTags.DamageTypes.IS_SONIC).add(DamageTypes.SONIC_BOOM)
     }
 }

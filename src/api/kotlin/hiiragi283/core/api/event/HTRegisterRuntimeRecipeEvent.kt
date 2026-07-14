@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.core.api.event
 
 import hiiragi283.core.api.HiiragiCoreAPI
@@ -7,10 +9,11 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.registry.getResult
-import hiiragi283.core.api.resource.SupplierWithId
+import hiiragi283.core.api.resource.SimpleSupplierWithKey
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.util.ErrorText
 import hiiragi283.core.api.util.HTTextResult
+import kotlin.contracts.ExperimentalContracts
 import net.minecraft.advancements.Advancement
 import net.minecraft.advancements.AdvancementHolder
 import net.minecraft.core.HolderLookup
@@ -81,20 +84,20 @@ class HTRegisterRuntimeRecipeEvent(
     fun <RECIPE : Any> getAllRecipes(lookup: HTRecipeLookup<RECIPE>): Map<ResourceLocation, RECIPE> = lookup.getAllRecipes(lookupContext)
 
     // TagKey
-    fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<SupplierWithId<T>> = HiiragiCoreAccess.INSTANCE.getFirstHolder(context.provider, tagKey)
+    fun <T : Any> getHolderResult(tagKey: TagKey<T>): HTTextResult<SimpleSupplierWithKey<T>> = HiiragiCoreAccess.INSTANCE.getFirstHolder(context.provider, tagKey)
 
-    fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): SupplierWithId<T>? = getHolderResult(tagKey)
+    fun <T : Any> getFirstHolder(tagKey: TagKey<T>, printLog: Boolean): SimpleSupplierWithKey<T>? = getHolderResult(tagKey)
         .onLeft { errorText: ErrorText -> if (printLog) HiiragiCoreAPI.LOGGER.debug(errorText.value) }
         .getOrNull()
 
     fun <T : Any> isPresentTag(tagKey: TagKey<T>): Boolean = context.provider.asGetterLookup().getResult(tagKey).isRight()
 
     // Material
-    fun getFirstHolder(prefix: HTTagPrefix, material: HTMaterialLike): SupplierWithId<Item>? = getFirstHolder(prefix.itemTagKey(material), true)
+    fun getFirstHolder(prefix: HTTagPrefix, material: HTMaterialLike): SimpleSupplierWithKey<Item>? = getFirstHolder(prefix.itemTagKey(material), true)
 
     fun isPresentTag(prefix: HTTagPrefix, material: HTMaterialLike): Boolean = isPresentTag(prefix.itemTagKey(material))
 
-    fun getFirstHolder(part: HTFluidPart, material: HTMaterialLike): SupplierWithId<Fluid>? = getFirstHolder(part.createTagKey(material), true)
+    fun getFirstHolder(part: HTFluidPart, material: HTMaterialLike): SimpleSupplierWithKey<Fluid>? = getFirstHolder(part.createTagKey(material), true)
 
     fun isPresentTag(part: HTFluidPart, material: HTMaterialLike): Boolean = isPresentTag(part.createTagKey(material))
 }

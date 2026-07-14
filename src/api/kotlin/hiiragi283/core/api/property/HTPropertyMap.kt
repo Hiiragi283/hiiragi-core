@@ -1,4 +1,11 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.core.api.property
+
+import hiiragi283.core.api.util.HTBuilderMarker
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 /**
  * [HTPropertyGetter]の拡張インターフェースです。
@@ -28,6 +35,7 @@ interface HTPropertyMap : HTPropertyGetter {
      * @author Hiiragi Tsubasa
      * @since 0.16.0
      */
+    @HTBuilderMarker
     class Builder private constructor(private val map: MutableMap<HTPropertyKey<*>, Any>, delegate: HTPropertyMap) : HTPropertyMap by delegate {
         constructor() : this(hashMapOf())
 
@@ -81,7 +89,12 @@ interface HTPropertyMap : HTPropertyGetter {
 
 //    Extensions    //
 
-inline fun buildPropertyMap(builderAction: HTPropertyMap.Builder.() -> Unit): HTPropertyMap = HTPropertyMap.Builder().apply(builderAction).build()
+inline fun buildPropertyMap(builderAction: HTPropertyMap.Builder.() -> Unit): HTPropertyMap {
+    contract {
+        callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+    }
+    return HTPropertyMap.Builder().apply(builderAction).build()
+}
 
 /**
  * @since 0.9.0

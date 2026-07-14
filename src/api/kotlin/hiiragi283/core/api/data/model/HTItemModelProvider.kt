@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.core.api.data.model
 
 import hiiragi283.core.api.HTConst
@@ -7,6 +9,9 @@ import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.resource.vanillaId
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder
@@ -35,6 +40,9 @@ abstract class HTItemModelProvider(fileHelper: ExistingFileHelper, output: PackO
      * @param action モデルを登録するブロック
      */
     protected inline fun existTexture(item: HTIdLike, action: (HTIdLike) -> Unit) {
+        contract {
+            callsInPlace(action, InvocationKind.AT_MOST_ONCE)
+        }
         existTexture(item, item.itemId) { itemIn: HTIdLike, _: ResourceLocation -> action(itemIn) }
     }
 
@@ -45,6 +53,9 @@ abstract class HTItemModelProvider(fileHelper: ExistingFileHelper, output: PackO
      * @param action モデルを登録するブロック
      */
     protected inline fun existTexture(item: HTIdLike, id: ResourceLocation, action: (HTIdLike, ResourceLocation) -> Unit) {
+        contract {
+            callsInPlace(action, InvocationKind.AT_MOST_ONCE)
+        }
         if (this.existsTexture(id)) {
             action(item, id)
         } else {

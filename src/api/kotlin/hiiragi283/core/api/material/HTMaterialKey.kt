@@ -39,8 +39,7 @@ value class HTMaterialKey private constructor(private val id: ResourceLocation) 
          * [HTMaterialKey]の[StreamCodec]
          */
         @JvmField
-        val STREAM_CODEC: StreamCodec<ByteBuf, HTMaterialKey> =
-            ResourceLocation.STREAM_CODEC.map(HTMaterialKey::of, HTMaterialKey::getId)
+        val STREAM_CODEC: StreamCodec<ByteBuf, HTMaterialKey> = ResourceLocation.STREAM_CODEC.map(HTMaterialKey::of, HTMaterialKey::getId)
     }
 
     override fun getId(): ResourceLocation = id
@@ -50,8 +49,7 @@ value class HTMaterialKey private constructor(private val id: ResourceLocation) 
     /**
      * @since 0.12.0
      */
-    override val translationKey: String
-        get() = getId().toLanguageKey("material")
+    override val translationKey: String get() = getId().toLanguageKey("material")
 
     /**
      * @since 0.12.0

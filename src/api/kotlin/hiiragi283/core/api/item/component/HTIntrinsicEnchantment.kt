@@ -1,7 +1,6 @@
 package hiiragi283.core.api.item.component
 
 import com.mojang.serialization.Codec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.color.HTDefaultColor
 import hiiragi283.core.api.util.identity
 import hiiragi283.core.api.registry.getResult
@@ -28,7 +27,7 @@ import java.util.function.Consumer
 data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: Int) : TooltipProvider {
     companion object {
         @JvmField
-        val CODEC: Codec<HTIntrinsicEnchantment> = RecordCodecBuilder.create { instance ->
+        val CODEC: Codec<HTIntrinsicEnchantment> = HTCodecs.record { instance ->
             instance
                 .group(
                     HTCodecs.resourceKey(Registries.ENCHANTMENT).fieldOf("enchantment").forGetter(HTIntrinsicEnchantment::key),

@@ -31,16 +31,14 @@ data object HTMaterialPropertyKeys {
      * @since 0.12.0
      */
     @JvmField
-    val DEFAULT_SCALE: HTPropertyKey<Fraction> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("default_scale"), Fraction.ONE)
+    val DEFAULT_SCALE: HTPropertyKey<Fraction> = HTPropertyKey.create(HiiragiCoreAPI.id("default_scale"), Fraction.ONE)
 
     /**
      * デフォルトの[部品][HTPart]あたりの液体量を管理する[プロパティキー][HTPropertyKey]
      * @since 0.7.0
      */
     @JvmField
-    val DEFAULT_FLUID_AMOUNT: HTPropertyKey<Int> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("default_fluid_amount"), HTConst.INGOT_AMOUNT)
+    val DEFAULT_FLUID_AMOUNT: HTPropertyKey<Int> = HTPropertyKey.create(HiiragiCoreAPI.id("default_fluid_amount"), HTConst.INGOT_AMOUNT)
 
     //    Registration    //
 
@@ -85,8 +83,7 @@ data object HTMaterialPropertyKeys {
      * ブロックの必要素材数を管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField
-    val STORAGE_BLOCK: HTPropertyKey<HTStorageBlockProperty> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("storage_block"), HTStorageBlockProperty.THREE_BY_THREE)
+    val STORAGE_BLOCK: HTPropertyKey<HTStorageBlockProperty> = HTPropertyKey.create(HiiragiCoreAPI.id("storage_block"), HTStorageBlockProperty.THREE_BY_THREE)
 
     // Smelting
     /**
@@ -117,8 +114,7 @@ data object HTMaterialPropertyKeys {
      * @since 0.8.0
      */
     @JvmField
-    val CRUSHED_PART: HTPropertyKey<HTPartLike> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("crushed_part"), CommonParts.DUST)
+    val CRUSHED_PART: HTPropertyKey<HTPartLike> = HTPropertyKey.create(HiiragiCoreAPI.id("crushed_part"), CommonParts.DUST)
 
     /**
      * 鉱石粉砕の副産物を管理する[プロパティキー][HTPropertyKey]
@@ -132,24 +128,21 @@ data object HTMaterialPropertyKeys {
      * @since 0.10.0
      */
     @JvmField
-    val HARDNESS: HTPropertyKey<HTMaterialLevel> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("hardness"), HTMaterialLevel.LOW)
+    val HARDNESS: HTPropertyKey<HTMaterialLevel> = HTPropertyKey.create(HiiragiCoreAPI.id("hardness"), HTMaterialLevel.LOW)
 
     /**
      * 素材の融点を管理する[プロパティキー][HTPropertyKey]
      * @since 0.10.0
      */
     @JvmField
-    val MELTING_POINT: HTPropertyKey<HTMaterialLevel> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("melting_point"), HTMaterialLevel.LOW)
+    val MELTING_POINT: HTPropertyKey<HTMaterialLevel> = HTPropertyKey.create(HiiragiCoreAPI.id("melting_point"), HTMaterialLevel.LOW)
 
     /**
      * 鉱石粉砕の主産物の個数の倍率を管理する[プロパティキー][HTPropertyKey]
      * @since 0.8.0
      */
     @JvmField
-    val ORE_RESULT_MULTIPLIER: HTPropertyKey<Fraction> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("ore_result_multiplier"), Fraction.ONE)
+    val ORE_RESULT_MULTIPLIER: HTPropertyKey<Fraction> = HTPropertyKey.create(HiiragiCoreAPI.id("ore_result_multiplier"), Fraction.ONE)
 
     //    Data Gen    //
 
@@ -200,8 +193,7 @@ data object HTMaterialPropertyKeys {
      * テクスチャを生成する際のテンプレートを管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField
-    val TEXTURE_SET: HTPropertyKey<HTMaterialTextureSet> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("texture_set"), HTMaterialTextureSet.DEFAULT)
+    val TEXTURE_SET: HTPropertyKey<HTMaterialTextureSet> = HTPropertyKey.create(HiiragiCoreAPI.id("texture_set"), HTMaterialTextureSet.DEFAULT)
 
     @JvmStatic
     fun <T : Any> createNullable(path: String): HTPropertyKey<T?> = HTPropertyKey.createNullable(HiiragiCoreAPI.id(path))

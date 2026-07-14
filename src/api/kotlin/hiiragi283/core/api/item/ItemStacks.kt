@@ -13,6 +13,16 @@ import net.minecraft.world.level.ItemLike
 
 //    ItemStack    //
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 21.1.0
+ */
+fun ItemStack(item: ItemLike, count: Int, patch: DataComponentPatch): ItemStack {
+    val stack = ItemStack(item, count)
+    stack.applyComponents(patch)
+    return stack
+}
+
 fun <T : Any> createItemStack(
     item: ItemLike?,
     type: DataComponentType<T>,

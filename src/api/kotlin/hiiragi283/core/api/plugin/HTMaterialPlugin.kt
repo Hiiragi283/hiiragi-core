@@ -9,7 +9,7 @@ import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.buildPropertyMap
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.api.resource.SupplierWithId
+import hiiragi283.core.api.resource.SimpleSupplierWithKey
 import net.minecraft.core.Holder
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
@@ -46,7 +46,7 @@ interface HTMaterialPlugin : HTIdLike {
     fun registerExistingBlock(consumer: BlockConsumer) {}
 
     fun interface BlockConsumer {
-        fun accept(part: HTPartLike, material: HTMaterialKey, holder: SupplierWithId<Block>)
+        fun accept(part: HTPartLike, material: HTMaterialKey, holder: SimpleSupplierWithKey<Block>)
 
         /**
          * @since 0.13.0
@@ -62,7 +62,7 @@ interface HTMaterialPlugin : HTIdLike {
     fun registerExistingItem(consumer: ItemConsumer) {}
 
     fun interface ItemConsumer {
-        fun accept(part: HTPartLike, material: HTMaterialKey, holder: SupplierWithId<Item>)
+        fun accept(part: HTPartLike, material: HTMaterialKey, holder: SimpleSupplierWithKey<Item>)
 
         /**
          * @since 0.13.0
@@ -78,7 +78,7 @@ interface HTMaterialPlugin : HTIdLike {
     fun registerExistingTool(consumer: ToolConsumer) {}
 
     fun interface ToolConsumer {
-        fun accept(toolType: HTToolType, material: HTMaterialKey, holder: SupplierWithId<Item>)
+        fun accept(toolType: HTToolType, material: HTMaterialKey, holder: SimpleSupplierWithKey<Item>)
 
         /**
          * @since 0.13.0

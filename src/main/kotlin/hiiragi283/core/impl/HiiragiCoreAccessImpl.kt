@@ -13,7 +13,7 @@ import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.api.resource.SupplierWithId
+import hiiragi283.core.api.resource.SimpleSupplierWithKey
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.config.HCConfig
@@ -104,5 +104,5 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
         DEFAULT_POTION_HANDLER[stack] = contents.bottleType
     }
 
-    override fun <T : Any> getFirstHolder(holders: Iterable<Holder<T>>): SupplierWithId<T> = holders.asSequence().map(Holder<T>::toLike).sortedWith(modIdComparator).first()
+    override fun <T : Any> getFirstHolder(holders: Iterable<Holder<T>>): SimpleSupplierWithKey<T> = holders.asSequence().map(Holder<T>::toLike).sortedWith(modIdComparator).first()
 }

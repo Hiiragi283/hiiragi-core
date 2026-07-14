@@ -1,7 +1,7 @@
 package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.fluid.createFluidStack
-import hiiragi283.core.api.resource.SupplierWithId
+import hiiragi283.core.api.resource.SimpleSupplierWithKey
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -18,11 +18,11 @@ import net.neoforged.neoforge.fluids.FluidType
  */
 sealed class HTFluidContent(
     val typeHolder: HTDeferredFluidType<FluidType>,
-    val sourceHolder: HTDeferredHolder<Fluid, *>,
+    val sourceHolder: HTSimpleDeferredHolder<Fluid>,
     val bucketHolder: HTSimpleDeferredItem,
     val fluidTag: TagKey<Fluid>,
     val bucketTag: TagKey<Item>,
-) : SupplierWithId<Fluid> by sourceHolder {
+) : SimpleSupplierWithKey<Fluid> by sourceHolder {
     fun getFluidType(): FluidType = typeHolder.get()
 
     fun toStack(amount: Int = FluidType.BUCKET_VOLUME, patch: DataComponentPatch = DataComponentPatch.EMPTY): FluidStack = createFluidStack(this.get(), amount, patch)

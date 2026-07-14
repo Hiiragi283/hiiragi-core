@@ -2,7 +2,6 @@ package hiiragi283.core.api.recipe.result
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HCRegistries
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
@@ -100,7 +99,7 @@ interface HTItemResult : HTIdLike {
     data class Tagged(val tagKey: TagKey<Item>, val count: Int) : HTItemResult {
         companion object {
             @JvmField
-            val CODEC: MapCodec<Tagged> = RecordCodecBuilder.mapCodec { instance ->
+            val CODEC: MapCodec<Tagged> = HTCodecs.recordMap { instance ->
                 instance.group(
                     HTCodecs.tagKey(Registries.ITEM, true).fieldOf(HTConst.TAG).forGetter(Tagged::tagKey),
                     HTCodecs.POSITIVE_INT.optionalFieldOf(HTConst.COUNT, 1).forGetter(Tagged::count),
@@ -124,7 +123,7 @@ interface HTItemResult : HTIdLike {
     data class MaterialPart(val part: HTPart, val material: HTMaterialKey, val count: Int) : HTItemResult {
         companion object {
             @JvmField
-            val CODEC: MapCodec<MaterialPart> = RecordCodecBuilder.mapCodec { instance ->
+            val CODEC: MapCodec<MaterialPart> = HTCodecs.recordMap { instance ->
                 instance
                     .group(
                         HiiragiCoreAccess.INSTANCE.partCodec

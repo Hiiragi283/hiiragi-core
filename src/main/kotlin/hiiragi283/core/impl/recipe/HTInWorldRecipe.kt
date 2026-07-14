@@ -1,7 +1,6 @@
 package hiiragi283.core.impl.recipe
 
 import com.mojang.serialization.MapCodec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTRecipeFactories
 import hiiragi283.core.api.recipe.base.HTRecipePredicates
@@ -16,7 +15,7 @@ open class HTInWorldRecipe(val ingredient: Ingredient, val result: HTChancedItem
     HTRecipeFactories.SingleItemTo<ItemStack> {
     companion object {
         @JvmStatic
-        fun <T : HTInWorldRecipe> codec(factory: (Ingredient, HTChancedItemResult) -> T): MapCodec<T> = RecordCodecBuilder.mapCodec { instance ->
+        fun <T : HTInWorldRecipe> codec(factory: (Ingredient, HTChancedItemResult) -> T): MapCodec<T> = HTCodecs.recordMap { instance ->
             instance
                 .group(
                     HTCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HTInWorldRecipe::ingredient),

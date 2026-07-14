@@ -28,7 +28,7 @@ fun <A : Any> Codec<A>.listOf(range: IntRange): Codec<List<A>> = this.listOf(ran
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun <A : Any> Codec<A>.listOrElement(): Codec<List<A>> = Codec.either(this.listOf(), this).convert().xmap(
+fun <A : Any> Codec<A>.listOrElement(): Codec<List<A>> = HTCodecs.either(this.listOf(), this).xmap(
     { either: Either<List<A>, A> -> either.map(::listOf).unwrap() },
     { list: List<A> -> list.singleOrNull()?.right() ?: list.left() },
 )
@@ -50,7 +50,7 @@ fun <A : Any> Codec<A>.listOrElement(range: IntRange): Codec<List<A>> = this.lis
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun <A : Any> Codec<A>.listOrElement(min: Int, max: Int): Codec<List<A>> = Codec.either(this.listOf(min, max), this).convert().xmap(
+fun <A : Any> Codec<A>.listOrElement(min: Int, max: Int): Codec<List<A>> = HTCodecs.either(this.listOf(min, max), this).xmap(
     { either: Either<List<A>, A> -> either.map(::listOf).unwrap() },
     { list: List<A> -> list.singleOrNull()?.right() ?: list.left() },
 )
@@ -66,9 +66,6 @@ fun <A : Any> Codec<A>.listOrElement(min: Int, max: Int): Codec<List<A>> = Codec
 fun <A : Any> Codec<List<A>>.setOf(): Codec<Set<A>> = this.xmap(List<A>::toSet, Set<A>::toList)
 
 //    Either    //
-
-@JvmName("convertToEither")
-fun <A, B> Codec<DFUEither<A, B>>.convert(): Codec<Either<A, B>> = this.xmap({ it.kotlin }, { it.java })
 
 @JvmName("convertToEither")
 fun <A, B> MapCodec<DFUEither<A, B>>.convert(): MapCodec<Either<A, B>> = this.xmap({ it.kotlin }, { it.java })

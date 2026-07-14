@@ -16,12 +16,12 @@ import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.registry.getResult
 import hiiragi283.core.api.registry.lookupResult
-import hiiragi283.core.api.resource.SupplierWithId
+import hiiragi283.core.api.resource.SimpleSupplierWithKey
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.util.HTTextResult
 import hiiragi283.core.api.util.flatMap
-import hiiragi283.core.api.util.right
+import hiiragi283.core.api.util.toTextResult
 import hiiragi283.core.impl.material.HTMaterialContentsImpl
 import hiiragi283.core.impl.material.HTMaterialContentsRegister
 import hiiragi283.core.util.HTPhysicalSideHelper
@@ -173,35 +173,26 @@ abstract class HiiragiCoreAccess {
     //    Tag    //
 
     /**
-     * 指定した[provider]から，[tagKey]に紐づいた値を取得します。
-     * @param T レジストリの種類のクラス
-     * @return [SupplierWithId]の[結果][HTTextResult]
-     */
-    fun <T : Any> getFirstHolder(provider: HolderLookup.Provider?, tagKey: TagKey<T>): HTTextResult<SupplierWithId<T>> {
-        val provider1: HTTextResult<HolderLookup.Provider> = provider?.right() ?: HTPhysicalSideHelper.getRegistryAccess()
-        return provider1.flatMap { it.lookupResult(tagKey.registry()) }.flatMap { getFirstHolder(it, tagKey) }
-    }
-
-    /**
-     * 指定した[provider]から，[tagKey]に紐づいた値を取得します。
-     * @param T レジストリの種類のクラス
-     * @return [SupplierWithId]の[結果][HTTextResult]
      * @since 21.1.0
      */
-    fun <T : Any> getFirstHolder(provider: HolderLookup<T>, tagKey: TagKey<T>): HTTextResult<SupplierWithId<T>> = provider
+    fun <R : Any> getFirstHolder(tagKey: TagKey<R>): HTTextResult<SimpleSupplierWithKey<R>> = HTPhysicalSideHelper.lookup(tagKey.registry()).flatMap { getFirstHolder(it, tagKey) }
+
+    fun <R : Any> getFirstHolder(provider: HolderLookup.Provider, tagKey: TagKey<R>): HTTextResult<SimpleSupplierWithKey<R>> = provider.lookupResult(tagKey.registry()).flatMap { getFirstHolder(it, tagKey) }
+
+    /**
+     * タグの最初の値を取得します。
+     * @param R レジストリの種類のクラス
+     * @since 21.1.0
+     */
+    fun <R : Any> getFirstHolder(lookup: HolderLookup<R>, tagKey: TagKey<R>): HTTextResult<SimpleSupplierWithKey<R>> = lookup
         .getResult(tagKey)
-        .flatMap {
-            when (it.size()) {
-                0 -> HTTextResult("Could not find first value from empty holder set")
-                else -> it.right()
-            }
-        }
+        .flatMap { it.takeIf { it.size() > 0 }.toTextResult { "Could not find first value from empty holder set" } }
         .map(::getFirstHolder)
 
     /**
-     * 指定した[holders]から，最初の値を取得します。
-     * @param T レジストリの種類のクラス
-     * @since 0.15.2
+     * 最初の値を取得します。
+     * @param R レジストリの種類のクラス
+     * @since 21.1.0
      */
-    protected abstract fun <T : Any> getFirstHolder(holders: Iterable<Holder<T>>): SupplierWithId<T>
+    protected abstract fun <R : Any> getFirstHolder(holders: Iterable<Holder<R>>): SimpleSupplierWithKey<R>
 }

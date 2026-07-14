@@ -11,12 +11,7 @@ package hiiragi283.core.api.gui
  * @see net.minecraft.client.renderer.Rect2i
  */
 @JvmRecord
-data class HTBounds(
-    val x: Int,
-    val y: Int,
-    val width: Int,
-    val height: Int,
-) {
+data class HTBounds(val x: Int, val y: Int, val width: Int, val height: Int) {
     companion object {
         @JvmStatic
         fun createSlot(x: Int, y: Int): HTBounds = HTBounds(x, y, 18, 18)

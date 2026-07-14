@@ -1,16 +1,18 @@
 package hiiragi283.core.api.item.alchemy
 
 import com.mojang.serialization.Codec
+import hiiragi283.core.api.item.HTSimpleItemLike
+import hiiragi283.core.api.item.ItemStack
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import io.netty.buffer.ByteBuf
+import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.util.StringRepresentable
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
-import net.minecraft.world.level.ItemLike
 
 /**
  * ポーション瓶の種類を管理するクラスです。
@@ -18,8 +20,8 @@ import net.minecraft.world.level.ItemLike
  * @since 0.10.0
  */
 enum class HTBottleType :
-    ItemLike,
-    StringRepresentable {
+    StringRepresentable,
+    HTSimpleItemLike {
     DEFAULT,
     SPLASH,
     LINGERING,
@@ -32,15 +34,6 @@ enum class HTBottleType :
         @JvmField
         val STREAM_CODEC: StreamCodec<ByteBuf, HTBottleType> = HTStreamCodecs.enum()
 
-        /**
-         * @since 0.14.0
-         */
-        @JvmStatic
-        fun getBottleType(stack: ItemStack): HTBottleType? = entries.firstOrNull { stack.`is`(it.asItem()) }
-
-        /**
-         * @since 0.14.0
-         */
         @JvmStatic
         fun getBottleType(resource: HTItemResourceType): HTBottleType? = entries.firstOrNull { resource.isOf(it.asItem()) }
     }
@@ -50,6 +43,8 @@ enum class HTBottleType :
         SPLASH -> Items.SPLASH_POTION
         LINGERING -> Items.LINGERING_POTION
     }
+
+    override fun toStack(count: Int, patch: DataComponentPatch): ItemStack = ItemStack(this, count, patch)
 
     override fun getSerializedName(): String = name.lowercase()
 }

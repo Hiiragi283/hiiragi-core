@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.core.api.data.model
 
 import hiiragi283.core.api.HTConst
@@ -9,6 +11,9 @@ import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.vanillaId
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.core.Direction
 import net.minecraft.data.PackOutput
 import net.minecraft.resources.ResourceLocation
@@ -81,6 +86,9 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
      * @since 0.14.0
      */
     protected fun <BLOCK : SupplierWithId<Block>> simpleBlockAndItem(block: BLOCK, factory: (BLOCK) -> Array<ConfiguredModel>) {
+        contract {
+            callsInPlace(factory, InvocationKind.EXACTLY_ONCE)
+        }
         simpleBlockAndItem(block, *factory(block))
     }
 
@@ -92,6 +100,10 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
         factory: (BLOCK) -> Array<ConfiguredModel>,
         itemFactory: (Array<ConfiguredModel>) -> ModelFile,
     ) {
+        contract {
+            callsInPlace(factory, InvocationKind.EXACTLY_ONCE)
+            callsInPlace(itemFactory, InvocationKind.EXACTLY_ONCE)
+        }
         val models: Array<ConfiguredModel> = factory(block)
         simpleBlockAndItem(block, *models, itemModel = itemFactory(models))
     }

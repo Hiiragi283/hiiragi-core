@@ -22,7 +22,7 @@ import hiiragi283.core.api.material.prefixEntries
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.api.resource.SupplierWithId
+import hiiragi283.core.api.resource.SimpleSupplierWithKey
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -77,7 +77,7 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
             // Moonlightが生成時点でレジストリを参照できないのでこの世の終わりみたいな文字列を書くことになった
             // GTCEu Modernをいい感じに参考にしたらなんとかなるんかなこれ
             // それかJSONビルダー作って真面目に書くか
-            registered.blocks.forEach { (part: HTPart, key: HTMaterialKey, block: SupplierWithId<Block>) ->
+            registered.blocks.forEach { (part: HTPart, key: HTMaterialKey, block: SimpleSupplierWithKey<Block>) ->
                 if (HTPartPropertyKeys.IS_ORE in part) {
                     val raw: HTIdLike = registered.items[CommonParts.RAW, key] ?: return@forEach
                     val id: ResourceLocation = block.getId()
@@ -146,57 +146,57 @@ data object HCServerResourceProvider : HTDynamicResourceProvider.Server(HiiragiC
         }
         // Tag
         executor.accept(object : HTTagsProvider.GenTask<Block>(Registries.BLOCK) {
-            override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Block>) {
+            override fun appendTags() {
                 // Material Block
-                existing.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
-                    factory.addMaterial(prefix, key).add(block)
+                existing.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: SimpleSupplierWithKey<Block>) ->
+                    tags(prefix, key).add(block)
                 }
-                registered.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
-                    factory.addMaterial(prefix, key).add(block)
-                    factory.apply(BlockTags.MINEABLE_WITH_PICKAXE).add(block)
+                registered.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: SimpleSupplierWithKey<Block>) ->
+                    tags(prefix, key).add(block)
+                    builder(BlockTags.MINEABLE_WITH_PICKAXE).add(block)
                 }
             }
         })
         val fluids: HTSimpleMaterialContents<HTFluidPart, Fluid> = HiiragiCoreAccess.INSTANCE.registeredFluids
         executor.accept(object : HTTagsProvider.GenTask<Fluid>(Registries.FLUID) {
-            override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Fluid>) {
-                fluids.forEach { (part: HTFluidPart, key: HTMaterialKey, fluid: HTIdLike) ->
-                    factory.apply(part.createTagKey(key)).add(fluid)
+            override fun appendTags() {
+                fluids.forEach { (part: HTFluidPart, key: HTMaterialKey, fluid: SimpleSupplierWithKey<Fluid>) ->
+                    builder(part.createTagKey(key)).add(fluid)
                 }
             }
         })
         executor.accept(object : HTTagsProvider.GenTask<Item>(Registries.ITEM) {
-            override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<Item>) {
+            override fun appendTags() {
                 // Material Block
-                existing.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
-                    factory.addMaterial(prefix, key).add(block)
+                existing.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: SimpleSupplierWithKey<Block>) ->
+                    // factory.addMaterial(prefix, key).add(block) TODO
                 }
-                registered.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTIdLike) ->
-                    factory.addMaterial(prefix, key).add(block)
+                registered.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: SimpleSupplierWithKey<Block>) ->
+                    // factory.addMaterial(prefix, key).add(block) TODO
                 }
                 // Material Fluid
                 fluids.forEach { (part: HTFluidPart, key: HTMaterialKey, fluid: HTMaterialContents.SimpleEntry<Fluid>) ->
-                    factory.addTags(Tags.Items.BUCKETS, part.createBucketTag(key)).add(fluid.get().bucket.toLike())
+                    tags(Tags.Items.BUCKETS, part.createBucketTag(key)).add(fluid.get().bucket.toLike())
                 }
                 // Material Item
-                existing.items.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
-                    factory.addMaterial(prefix, key).add(item)
+                existing.items.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: SimpleSupplierWithKey<Item>) ->
+                    tags(prefix, key).add(item)
                 }
-                registered.items.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTIdLike) ->
-                    factory.addMaterial(prefix, key).add(item)
+                registered.items.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: SimpleSupplierWithKey<Item>) ->
+                    tags(prefix, key).add(item)
                     if (prefix == CommonTagPrefixes.GEM || prefix == CommonTagPrefixes.INGOT) {
-                        factory.apply(ItemTags.BEACON_PAYMENT_ITEMS).addTag(prefix, key)
+                        builder(ItemTags.BEACON_PAYMENT_ITEMS).addTag(prefix, key)
                     }
                     if (key == CommonMaterialKeys.PLASTIC) {
                         when (prefix) {
                             CommonTagPrefixes.PLATE -> HiiragiCoreTags.Items.PLASTICS
                             else -> return@forEach
-                        }.let(factory::apply).add(item)
+                        }.let(::builder).add(item)
                     }
                 }
                 // Material Tool
-                registered.tools.forEach { (toolType: HTToolType, _, tool: HTIdLike) ->
-                    toolType.toolTags.map(factory::apply).forEach { it.add(tool) }
+                registered.tools.forEach { (toolType: HTToolType, _, tool: SimpleSupplierWithKey<Item>) ->
+                    toolType.toolTags.map(::builder).forEach { it.add(tool) }
                 }
             }
         })

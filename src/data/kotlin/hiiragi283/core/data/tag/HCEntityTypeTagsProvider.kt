@@ -18,23 +18,19 @@ class HCEntityTypeTagsProvider(
     output: PackOutput,
     lookupProvider: CompletableFuture<HolderLookup.Provider>,
 ) : HTTagsProvider.DataGen<EntityType<*>>(fileHelper, output, Registries.ENTITY_TYPE, lookupProvider, HiiragiCoreAPI.MOD_ID) {
-    override fun addTagsInternal(factory: HTTagsProvider.BuilderFactory<EntityType<*>>) {
-        factory
-            .apply(HiiragiCoreTags.EntityTypes.CAPTURE_BLACKLIST)
+    override fun appendTags(registries: HolderLookup.Provider) {
+        builder(HiiragiCoreTags.EntityTypes.CAPTURE_BLACKLIST)
             // .add(HTConst.MINECRAFT.toId("warden"))
             .addTag(Tags.EntityTypes.BOSSES)
             .addTag(Tags.EntityTypes.CAPTURING_NOT_SUPPORTED)
 
-        factory
-            .apply(HiiragiCoreTags.EntityTypes.SENSITIVE_TO_HAMMER_OF_JUSTICE)
+        builder(HiiragiCoreTags.EntityTypes.SENSITIVE_TO_HAMMER_OF_JUSTICE)
             .addTag(EntityTypeTags.RAIDERS)
 
-        factory
-            .apply(HiiragiCoreTags.EntityTypes.SENSITIVE_TO_NOISE_CANCELLING)
+        builder(HiiragiCoreTags.EntityTypes.SENSITIVE_TO_NOISE_CANCELLING)
             .add(EntityType.WARDEN.toLike())
 
-        factory
-            .apply(HiiragiCoreTags.EntityTypes.SENSITIVE_TO_PURIFICATION)
+        builder(HiiragiCoreTags.EntityTypes.SENSITIVE_TO_PURIFICATION)
             .add(EntityType.WITHER.toLike())
             .add(EntityType.WITHER_SKELETON.toLike())
     }

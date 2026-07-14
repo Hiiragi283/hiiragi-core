@@ -1,7 +1,6 @@
 package hiiragi283.core.api.recipe.ingredient
 
 import com.mojang.serialization.Codec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -19,7 +18,7 @@ import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 class HTFluidIngredient(val unsized: FluidIngredient, val amount: Int) : HTIngredient<FluidStack> {
     companion object {
         @JvmField
-        val CODEC: Codec<HTFluidIngredient> = RecordCodecBuilder.create { instance ->
+        val CODEC: Codec<HTFluidIngredient> = HTCodecs.record { instance ->
             instance
                 .group(
                     HTCodecs.FLUID_INGREDIENT.forGetter(HTFluidIngredient::unsized),

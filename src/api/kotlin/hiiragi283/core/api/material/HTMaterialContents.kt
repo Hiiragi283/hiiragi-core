@@ -1,19 +1,22 @@
 package hiiragi283.core.api.material
 
 import hiiragi283.core.api.collection.Table
+import hiiragi283.core.api.item.HTSimpleItemLike
+import hiiragi283.core.api.item.ItemStack
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.api.resource.SupplierWithId
+import hiiragi283.core.api.resource.SimpleSupplierWithKey
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.HTTextResult
 import hiiragi283.core.api.util.right
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.core.component.DataComponentPatch
+import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
-import net.minecraft.world.level.ItemLike
+import net.minecraft.world.item.ItemStack
 
 typealias HTSimpleMaterialContents<R, V> = HTMaterialContents<R, HTMaterialContents.SimpleEntry<V>>
 
@@ -49,13 +52,13 @@ interface HTMaterialContents<R : Any, V : HTMaterialContents.Entry<*>> : Table<R
      * @author Hiiragi Tsubasa
      * @since 0.12.0
      */
-    interface Entry<out V> : SupplierWithId<V> {
+    interface Entry<V : Any> : SimpleSupplierWithKey<V> {
         /**
          * 既存の要素である場合は`true`
          */
         val isBuiltIn: Boolean
 
-        operator fun component1(): ResourceLocation = getId()
+        operator fun component1(): ResourceKey<V> = getKey()
 
         operator fun component2(): V = get()
 
@@ -65,21 +68,23 @@ interface HTMaterialContents<R : Any, V : HTMaterialContents.Entry<*>> : Table<R
     /**
      * @since 0.13.0
      */
-    class SimpleEntry<V : Any>(private val holder: SupplierWithId<V>, override val isBuiltIn: Boolean) :
+    class SimpleEntry<V : Any>(private val holder: SimpleSupplierWithKey<V>, override val isBuiltIn: Boolean) :
         Entry<V>,
-        SupplierWithId<V> by holder
+        SimpleSupplierWithKey<V> by holder
 
     /**
      * @since 0.13.0
      */
-    class ItemEntry(private val holder: SupplierWithId<Item>, override val isBuiltIn: Boolean) :
+    class ItemEntry(private val holder: SimpleSupplierWithKey<Item>, override val isBuiltIn: Boolean) :
         Entry<Item>,
-        ItemLike,
+        HTSimpleItemLike,
         HTIdLike.Translatable,
-        SupplierWithId<Item> by holder {
+        SimpleSupplierWithKey<Item> by holder {
         constructor(item: Item, isBuiltIn: Boolean) : this(item.toLike(), isBuiltIn)
 
         override fun asItem(): Item = get()
+
+        override fun toStack(count: Int, patch: DataComponentPatch): ItemStack = ItemStack(holder.get(), count, patch)
 
         override val translationKey: String get() = get().descriptionId
 

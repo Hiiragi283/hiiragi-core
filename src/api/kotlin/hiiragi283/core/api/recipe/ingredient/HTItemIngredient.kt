@@ -1,7 +1,6 @@
 package hiiragi283.core.api.recipe.ingredient
 
 import com.mojang.serialization.Codec
-import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -18,7 +17,7 @@ import net.minecraft.world.item.crafting.Ingredient
 class HTItemIngredient(val unsized: Ingredient, val count: Int) : HTIngredient<ItemStack> {
     companion object {
         @JvmField
-        val CODEC: Codec<HTItemIngredient> = RecordCodecBuilder.create { instance ->
+        val CODEC: Codec<HTItemIngredient> = HTCodecs.record { instance ->
             instance
                 .group(
                     HTCodecs.INGREDIENT.fieldOf(HTConst.ITEMS).forGetter(HTItemIngredient::unsized),

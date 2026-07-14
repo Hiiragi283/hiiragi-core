@@ -32,8 +32,7 @@ data class HTItemWidgetHolderContext(
     MenuProvider {
     companion object {
         @JvmStatic
-        private val HAND_CODEC: StreamCodec<ByteBuf, Option<InteractionHand>> =
-            HTStreamCodecs.enum<InteractionHand>().asOption()
+        private val HAND_CODEC: StreamCodec<ByteBuf, Option<InteractionHand>> = HTStreamCodecs.enum<InteractionHand>().asOption()
 
         @JvmStatic
         fun openMenu(player: ServerPlayer, hand: InteractionHand): Boolean {

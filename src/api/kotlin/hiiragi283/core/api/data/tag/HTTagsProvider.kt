@@ -1,116 +1,85 @@
 package hiiragi283.core.api.data.tag
 
+import hiiragi283.core.api.collection.SetMultiMap
 import hiiragi283.core.api.data.HTServerResourceGenTask
-import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.RegistryKey
+import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.tag.RawTagKey
+import java.util.concurrent.CompletableFuture
 import net.mehvahdjukaar.moonlight.api.resources.SimpleTagBuilder
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.data.tags.TagsProvider
+import net.minecraft.resources.ResourceKey
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagEntry
 import net.minecraft.tags.TagKey
 import net.neoforged.neoforge.common.data.ExistingFileHelper
-import java.util.concurrent.CompletableFuture
-import java.util.function.Function
 
-/**
- * [HTTagBuilder]に基づいてタグを生成するインターフェースです。
- * @param T レジストリの要素のクラス
- * @author Hiiragi Tsubasa
- * @since 0.1.0
- * @see GenTask
- * @see DataGen
- */
-sealed interface HTTagsProvider<T : Any> {
+interface HTTagsProvider<T : Any> {
+    val registryKey: RegistryKey<T>
+
     /**
-     * 生成するタグを登録します。
-     * @param factory [TagKey]から[HTTagBuilder]を取得するブロック
+     * 新しい[HTTagBuilder]のインスタンスを作成します。
+     * @param tagKey 生成対象のタグ
+     * @since 26.2.0
      */
-    fun addTagsInternal(factory: BuilderFactory<T>)
+    fun builder(tagKey: TagKey<T>): HTTagBuilder<T>
 
-    //    Factory    //
+    /**
+     * 新しい[HTTagBuilder]のインスタンスを作成します。
+     * @param prefix タグのプレフィックス
+     * @param material タグの種類を表す素材
+     */
+    fun tags(prefix: HTTagPrefix, material: HTMaterialKey): HTTagBuilder<T> = tags(prefix.rawCommonTag.create(registryKey), prefix.materialTag(material).create(registryKey))
 
-    abstract class BuilderFactory<T : Any>(private val registryKey: RegistryKey<T>) : Function<TagKey<T>, HTTagBuilder<T>> {
-        abstract override fun apply(tagKey: TagKey<T>): HTTagBuilder<T>
-
-        /**
-         * @since 0.16.0
-         */
-        fun apply(rawTagKey: RawTagKey): HTTagBuilder<T> = apply(rawTagKey.create(registryKey))
-
-        //    Extensions    //
-
-        /**
-         * タグをチェインして登録します。
-         * @return 最後の[children]に対する[HTTagBuilder]
-         */
-        fun addTags(parent: TagKey<T>, vararg children: TagKey<T>): HTTagBuilder<T> {
-            check(!children.isEmpty()) { "Empty tag key children" }
-            return children.fold(this.apply(parent)) { current: HTTagBuilder<T>, child: TagKey<T> ->
-                current.addTag(child)
-                this.apply(child)
-            }
-        }
-
-        /**
-         * タグをチェインして登録します。
-         * @return [HTTagPrefix.materialTag]に対する[HTTagBuilder]
-         */
-        fun addMaterial(prefix: HTTagPrefix, material: HTMaterialLike): HTTagBuilder<T> {
-            val materialTag: RawTagKey = prefix.materialTag(material)
-            this.apply(prefix.rawCommonTag).addTag(materialTag)
-            return this.apply(materialTag)
-        }
-
-        /**
-         * 指定した[rawTagKey]から[タグ][TagKey]を作成します。
-         * @since 0.16.0
-         */
-        fun tag(rawTagKey: RawTagKey): TagKey<T> = rawTagKey.create(registryKey)
+    /**
+     * 新しい[HTTagBuilder]のインスタンスを作成します。
+     * @param tagKey 起点となるタグ
+     * @param children [tagKey]からチェインして生成するタグ
+     * @return [children]の最後の値に対する[HTTagBuilder]
+     */
+    fun tags(tagKey: TagKey<T>, vararg children: TagKey<T>): HTTagBuilder<T> = children.fold(builder(tagKey)) { builder: HTTagBuilder<T>, tagKeyIn: TagKey<T> ->
+        builder.addTag(tagKeyIn)
+        builder(tagKeyIn)
     }
+
+    fun createKey(id: ResourceLocation): ResourceKey<T> = registryKey.createKey(id)
+
+    fun createKey(namespace: String, path: String): ResourceKey<T> = registryKey.createKey(namespace, path)
 
     //    GenTask    //
 
-    /**
-     * [HTTagsProvider]に基づいて[HTServerResourceGenTask]を実装した抽象クラスです。
-     * @author Hiiragi Tsubasa
-     * @since 0.10.0
-     */
-    abstract class GenTask<T : Any>(private val registryKey: RegistryKey<T>) :
+    abstract class GenTask<T : Any>(override val registryKey: RegistryKey<T>) :
         HTTagsProvider<T>,
         HTServerResourceGenTask {
         private val builderCache: MutableMap<TagKey<T>, SimpleTagBuilder> = hashMapOf()
 
+        final override fun builder(tagKey: TagKey<T>): HTTagBuilder<T> = HTTagBuilder { entry: TagEntry -> builderCache.computeIfAbsent(tagKey, SimpleTagBuilder::of).add(entry) }
+
         final override fun accept(sink: ResourceSink) {
             // タグの値を一時的に保存
-            addTagsInternal(object : BuilderFactory<T>(registryKey) {
-                override fun apply(tagKey: TagKey<T>): HTTagBuilder<T> = HTTagBuilder { entry: TagEntry ->
-                    builderCache
-                        .computeIfAbsent(tagKey) { SimpleTagBuilder.of(tagKey) }
-                        .add(entry)
-                }
-            })
+            appendTags()
             // タグの値を実際に登録
             for (builder: SimpleTagBuilder in builderCache.values) {
                 sink.addTag(builder, registryKey)
             }
         }
+
+        /**
+         * 生成するタグを登録します。
+         */
+        protected abstract fun appendTags()
     }
 
     //    DataGen    //
 
-    /**
-     * [HTTagsProvider]に基づいて[TagsProvider]を実装した抽象クラスです。
-     * @author Hiiragi Tsubasa
-     * @since 0.10.0
-     */
     abstract class DataGen<T : Any>(
         fileHelper: ExistingFileHelper,
         output: PackOutput,
-        registryKey: RegistryKey<T>,
+        override val registryKey: RegistryKey<T>,
         lookupProvider: CompletableFuture<HolderLookup.Provider>,
         modId: String,
     ) : TagsProvider<T>(output, registryKey, lookupProvider, modId, fileHelper),
@@ -126,32 +95,28 @@ sealed interface HTTagsProvider<T : Any> {
                 .thenComparing(TagEntry::getId)
         }
 
-        private val tagEntryMap: MutableMap<TagKey<T>, List<TagEntry>> = mutableMapOf()
-        private val tagKeysToGenerate: MutableSet<TagKey<T>> = mutableSetOf()
+        private val entryCache = SetMultiMap.Builder<TagKey<T>, TagEntry>()
 
-        @Suppress("DEPRECATION")
+        final override fun builder(tagKey: TagKey<T>): HTTagBuilder<T> = HTTagBuilder { entry: TagEntry -> entryCache.put(tagKey, entry) }
+
         final override fun addTags(provider: HolderLookup.Provider) {
-            // タグの値を一時的に保存
-            addTagsInternal(object : BuilderFactory<T>(registryKey) {
-                override fun apply(tagKey: TagKey<T>): HTTagBuilder<T> {
-                    tagKeysToGenerate += tagKey
-                    return createBuilder(tagKey)
-                }
-            })
-            // 空のタグファイルを生成
-            tagKeysToGenerate.forEach(::getOrCreateRawBuilder)
-            // タグの値を実際に登録
-            tagEntryMap.forEach { (tagKey: TagKey<T>, entries: List<TagEntry>) ->
+            createEmptyTags(provider, ::getOrCreateRawBuilder)
+
+            appendTags(provider)
+
+            entryCache.build().asMap().forEach { (tagKey: TagKey<T>, entries: Collection<TagEntry>) ->
                 entries
                     .sortedWith(COMPARATOR)
                     .distinctBy(TagEntry::toString)
-                    .forEach { entry: TagEntry -> tag(tagKey).add(entry) }
+                    .forEach { entry: TagEntry -> getOrCreateRawBuilder(tagKey).add(entry) }
             }
         }
 
-        private fun createBuilder(tagKey: TagKey<T>): HTTagBuilder<T> {
-            tagKeysToGenerate += tagKey
-            return HTTagBuilder { entry: TagEntry -> tagEntryMap[tagKey] = (tagEntryMap[tagKey]?.plus(entry) ?: listOf(entry)) }
-        }
+        protected open fun createEmptyTags(registries: HolderLookup.Provider, consumer: (TagKey<T>) -> Unit) {}
+
+        /**
+         * 生成するタグを登録します。
+         */
+        protected abstract fun appendTags(registries: HolderLookup.Provider)
     }
 }

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.core.api.recipe.cache
 
 import hiiragi283.core.api.property.HTPropertyGetter
@@ -12,6 +14,9 @@ import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.api.util.HTTextResult
 import hiiragi283.core.api.util.flatMap
 import hiiragi283.core.api.util.right
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.core.HolderLookup
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.MinecraftServer
@@ -79,7 +84,12 @@ fun interface HTRecipeLookup<out RECIPE> {
             }
 
             @JvmStatic
-            inline fun create(builderAction: HTPropertyMap.Builder.() -> Unit): Context = buildPropertyMap(builderAction).let(::Context)
+            inline fun create(builderAction: HTPropertyMap.Builder.() -> Unit): Context {
+                contract {
+                    callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+                }
+                return buildPropertyMap(builderAction).let(::Context)
+            }
         }
 
         fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(recipeType: RecipeType<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> = this[MANAGER]?.getAllRecipesFor(recipeType)?.asSequence()?.map(::HTRecipeHolder) ?: emptySequence()

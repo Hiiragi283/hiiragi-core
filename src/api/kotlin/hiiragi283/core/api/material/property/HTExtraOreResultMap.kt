@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.core.api.material.property
 
 import hiiragi283.core.api.collection.mutableEnumMapOf
@@ -9,6 +11,9 @@ import hiiragi283.core.api.material.property.HTExtraOreResultMap.Phase
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.toFraction
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import org.apache.commons.lang3.math.Fraction
 
 /**
@@ -19,7 +24,12 @@ import org.apache.commons.lang3.math.Fraction
 class HTExtraOreResultMap private constructor(map: Map<Phase, Pair<HTMaterialKey, Fraction>>) : Map<Phase, Pair<HTMaterialKey, Fraction>> by map {
     companion object {
         @JvmStatic
-        inline fun create(builderAction: Builder.() -> Unit): HTExtraOreResultMap = Builder().apply(builderAction).build()
+        inline fun create(builderAction: Builder.() -> Unit): HTExtraOreResultMap {
+            contract {
+                callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+            }
+            return Builder().apply(builderAction).build()
+        }
     }
 
     fun getResult(phase: Phase): HTChancedItemResult? {

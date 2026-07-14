@@ -8,6 +8,7 @@ import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.common.data.ExistingFileHelper
 import java.util.concurrent.CompletableFuture
+import net.minecraft.tags.TagKey
 
 /**
  * [液体][Fluid]向けの[HTTagsProvider]の拡張クラスです。
@@ -22,16 +23,25 @@ abstract class HTFluidTagsProvider(
 ) : HTTagsProvider.DataGen<Fluid>(fileHelper, output, Registries.FLUID, lookupProvider, modId) {
     //    Extensions    //
 
-    fun addContents(factory: HTTagsProvider.BuilderFactory<Fluid>, contents: Sequence<HTFluidContent>) {
+    /**
+     * [HTFluidContent.fluidTag]に基づいてタグを生成します。
+     * @param contents 対象となる液体の一覧
+     */
+    fun addContents(contents: Sequence<HTFluidContent>) {
         for (content: HTFluidContent in contents) {
-            factory.apply(content.fluidTag).addContent(content)
+            val fluidTag: TagKey<Fluid> = content.fluidTag
+            builder(fluidTag).addContent(content)
             if (content.getFluidType().isLighterThanAir) {
-                factory.apply(Tags.Fluids.GASEOUS).addTag(content.fluidTag)
+                builder(Tags.Fluids.GASEOUS).addTag(fluidTag)
             }
         }
     }
 
-    fun HTTagBuilder<Fluid>.addContent(content: HTFluidContent): HTTagBuilder<Fluid> {
+    /**
+     * 指定した要素をタグに追加します。[content]が[HTFluidContent.Flowing]の場合，[HTFluidContent.Flowing.flowingHolder]もタグに追加します。
+     * @param content 液体の提供元
+     */
+    protected fun HTTagBuilder<Fluid>.addContent(content: HTFluidContent): HTTagBuilder<Fluid> {
         this.add(content)
         if (content is HTFluidContent.Flowing) {
             this.add(content.flowingHolder)
@@ -40,8 +50,8 @@ abstract class HTFluidTagsProvider(
     }
 
     /**
-     * [HTFluidContent.fluidTag]に基づいてタグの値を追加します。
-     * @since 0.12.0
+     * [HTFluidContent.fluidTag]に基づいて子タグをタグに追加します。
+     * @param content 子タグの提供元
      */
-    fun HTTagBuilder<Fluid>.addContentTag(content: HTFluidContent): HTTagBuilder<Fluid> = this.addTag(content.fluidTag)
+    protected fun HTTagBuilder<Fluid>.addContentTag(content: HTFluidContent): HTTagBuilder<Fluid> = this.addTag(content.fluidTag)
 }

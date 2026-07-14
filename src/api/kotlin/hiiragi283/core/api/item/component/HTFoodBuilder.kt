@@ -1,6 +1,7 @@
 package hiiragi283.core.api.item.component
 
 import com.google.common.base.Suppliers
+import hiiragi283.core.api.util.HTBuilderMarker
 import hiiragi283.core.api.util.toOptional
 import net.minecraft.core.Holder
 import net.minecraft.world.effect.MobEffect
@@ -13,13 +14,14 @@ import java.util.function.Supplier
 
 /**
  * 指定した値から[FoodProperties]を返します。
- * @param nutrition 満腹度
- * @param saturation 隠し満腹度
- * @param alwaysEat 常に食べられるかどうか
- * @param eatSeconds 食べ終わるまでの時間
- * @param convertTo 食べ終わった後に手に入る[ItemStack]
- * @param effects 食べた時の効果の一覧
+ * @property nutrition 満腹度
+ * @property saturation 隠し満腹度
+ * @property alwaysEat 常に食べられるかどうか
+ * @property eatSeconds 食べ終わるまでの時間
+ * @property convertTo 食べ終わった後に手に入る[ItemStack]
+ * @property effects 食べた時の効果の一覧
  */
+@HTBuilderMarker
 class HTFoodBuilder private constructor() {
     companion object {
         @JvmStatic

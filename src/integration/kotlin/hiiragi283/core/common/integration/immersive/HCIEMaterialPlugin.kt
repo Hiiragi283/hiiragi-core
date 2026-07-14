@@ -15,7 +15,8 @@ import hiiragi283.core.api.material.property.setName
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.plugin.HTPlugin
 import hiiragi283.core.api.property.plusAssign
-import hiiragi283.core.api.resource.SupplierWithId
+import hiiragi283.core.api.registry.createKey
+import hiiragi283.core.api.resource.SupplierWithKey
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.times
 import hiiragi283.core.common.integration.HCIConstants
@@ -24,6 +25,8 @@ import hiiragi283.core.common.material.HCIntegrationMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.common.material.part.HCIntegrationParts
 import hiiragi283.core.common.tag.HCIntegrationTagPrefixes
+import net.minecraft.core.registries.Registries
+import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
@@ -82,16 +85,16 @@ data object HCIEMaterialPlugin : HTMaterialPlugin {
     //    Extensions    //
 
     @JvmInline
-    value class BlockEntryWrapper<BLOCK : Block>(val entry: IEBlocks.BlockEntry<BLOCK>) : SupplierWithId<BLOCK> {
+    value class BlockEntryWrapper<BLOCK : Block>(val entry: IEBlocks.BlockEntry<BLOCK>) : SupplierWithKey<Block, BLOCK> {
         override fun get(): BLOCK = entry.get()
 
-        override fun getId(): ResourceLocation = entry.id
+        override fun getKey(): ResourceKey<Block> = Registries.BLOCK.createKey(entry.id)
     }
 
     @JvmInline
-    value class ItemEntryWrapper<ITEM : Item>(val entry: IEItems.ItemRegObject<ITEM>) : SupplierWithId<ITEM> {
+    value class ItemEntryWrapper<ITEM : Item>(val entry: IEItems.ItemRegObject<ITEM>) : SupplierWithKey<Item, ITEM> {
         override fun get(): ITEM = entry.get()
 
-        override fun getId(): ResourceLocation = entry.id
+        override fun getKey(): ResourceKey<Item> = Registries.ITEM.createKey(entry.id)
     }
 }

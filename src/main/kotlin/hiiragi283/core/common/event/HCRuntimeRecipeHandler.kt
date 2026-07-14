@@ -6,7 +6,6 @@ import hiiragi283.core.api.component1
 import hiiragi283.core.api.component2
 import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
 import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
-import hiiragi283.core.api.item.toStack
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
@@ -232,7 +231,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
         val inputTag: TagKey<Item> = entry.getDefaultPart(entry) ?: return
         if (!event.isPresentTag(inputTag)) return
 
-        val gear: ItemStack = event.getFirstHolder(CommonTagPrefixes.GEAR, entry)?.toStack() ?: return
+        val gear: ItemStack = event.getFirstHolder(CommonTagPrefixes.GEAR, entry)?.get()?.let(::ItemStack) ?: return
 
         val smithingProperty: HTSmithingRecipeProperty? = entry[HTMaterialPropertyKeys.SMITHING_RECIPE]
         if (smithingProperty != null) {
@@ -377,7 +376,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             HiiragiCoreAccess.INSTANCE.registeredContents.tools
 
         val inputTag: TagKey<Item> = entry.getDefaultPart(entry) ?: return
-        for ((toolType: HTToolType, tool: SupplierWithId<Item>) in registered.column(entry)) {
+        for ((toolType: HTToolType, tool: HTMaterialContents.ItemEntry) in registered.column(entry)) {
             val smithingProperty: HTSmithingRecipeProperty? = entry[HTMaterialPropertyKeys.SMITHING_RECIPE]
             if (smithingProperty != null) {
                 // Smithing

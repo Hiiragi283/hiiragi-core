@@ -15,10 +15,13 @@ import hiiragi283.core.api.material.property.setName
 import hiiragi283.core.api.material.property.setTextureSet
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.plugin.HTPlugin
-import hiiragi283.core.api.resource.SupplierWithId
+import hiiragi283.core.api.registry.createKey
+import hiiragi283.core.api.resource.SupplierWithKey
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.integration.HCIConstants
 import hiiragi283.core.common.material.HCIntegrationMaterialKeys
+import net.minecraft.core.registries.Registries
+import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
@@ -72,16 +75,16 @@ data object HCAEMaterialPlugin : HTMaterialPlugin {
     //    Extensions    //
 
     @JvmInline
-    value class BlockDefinitionWrapper<BLOCK : Block>(val definition: BlockDefinition<BLOCK>) : SupplierWithId<BLOCK> {
+    value class BlockDefinitionWrapper<BLOCK : Block>(val definition: BlockDefinition<BLOCK>) : SupplierWithKey<Block, BLOCK> {
         override fun get(): BLOCK = definition.block()
 
-        override fun getId(): ResourceLocation = definition.id()
+        override fun getKey(): ResourceKey<Block> = Registries.BLOCK.createKey(definition.id())
     }
 
     @JvmInline
-    value class ItemDefinitionWrapper<ITEM : Item>(val definition: ItemDefinition<ITEM>) : SupplierWithId<ITEM> {
+    value class ItemDefinitionWrapper<ITEM : Item>(val definition: ItemDefinition<ITEM>) : SupplierWithKey<Item, ITEM> {
         override fun get(): ITEM = definition.asItem()
 
-        override fun getId(): ResourceLocation = definition.id()
+        override fun getKey(): ResourceKey<Item> = Registries.ITEM.createKey(definition.id())
     }
 }
