@@ -105,11 +105,10 @@ abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, 
 
     //    Save & Read    //
 
-    val components: List<HTBlockEntityComponent> get() = _components
-    private val _components: MutableList<HTBlockEntityComponent> = mutableListOf()
+    val components: List<HTBlockEntityComponent> field: MutableList<HTBlockEntityComponent> = mutableListOf()
 
     fun addComponent(component: HTBlockEntityComponent) {
-        _components += component
+        components += component
     }
 
     override fun initReducedUpdateTag(output: HTValueOutput) {

@@ -1,11 +1,11 @@
 package hiiragi283.core.api.recipe.result
 
 import com.mojang.serialization.Codec
-import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.registry.getKeyOrThrow
+import hiiragi283.core.api.resource.HTKeyLike
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.ResourceKey
 import net.minecraft.world.level.material.FlowingFluid
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.fluids.FluidStack
@@ -16,7 +16,7 @@ import net.neoforged.neoforge.fluids.FluidStack
  * @since 0.10.0
  */
 @JvmInline
-value class HTFluidResult private constructor(private val stack: FluidStack) : HTIdLike {
+value class HTFluidResult private constructor(private val stack: FluidStack) : HTKeyLike<Fluid> {
     companion object {
         @JvmField
         val CODEC: Codec<HTFluidResult> = FluidStack.CODEC.xmap(::create, HTFluidResult::stack)
@@ -47,5 +47,5 @@ value class HTFluidResult private constructor(private val stack: FluidStack) : H
 
     fun create(): FluidStack = stack.copy()
 
-    override fun getId(): ResourceLocation = stack.fluidHolder.toLike().getId()
+    override fun getKey(): ResourceKey<Fluid> = stack.fluidHolder.getKeyOrThrow()
 }

@@ -3,7 +3,7 @@ package hiiragi283.core.util
 import hiiragi283.core.api.color.HTDefaultColor
 import hiiragi283.core.api.fixedFraction
 import hiiragi283.core.api.item.createItemStack
-import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.api.storage.amount.HTAmountView
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTextUtil
@@ -155,7 +155,7 @@ data object HTStorageHelper {
             HTCommonTranslation.STORED_MB.translate(stack, stack.amount)
         }.let(consumer::accept)
         // Fluid id if advanced
-        val fluidId: ResourceLocation = stack.fluidHolder.toLike().getId()
+        val fluidId: ResourceLocation = stack.fluidHolder.getKeyOrThrow().location()
         if (flag.isAdvanced) {
             fluidId
                 .toString()

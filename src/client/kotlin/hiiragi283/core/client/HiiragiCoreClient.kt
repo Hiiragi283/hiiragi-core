@@ -36,7 +36,6 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent
 import net.neoforged.neoforge.client.model.DynamicFluidContainerModel
 import java.awt.Color
-import net.minecraft.world.level.material.Fluid
 
 @Mod(value = HiiragiCoreAPI.MOD_ID, dist = [Dist.CLIENT])
 data object HiiragiCoreClient : HTClientMod() {
@@ -87,8 +86,8 @@ data object HiiragiCoreClient : HTClientMod() {
         event.dull(HCFluids.LATEX, Color(0xcccccc))
         event.dull(HCFluids.MEAT, Color(0x993333))
 
-        for (holder: HTMaterialContents.SimpleEntry<Fluid> in HiiragiCoreAccess.INSTANCE.registeredFluids.values) {
-            event.registerFluidType(HTSimpleFluidExtensions(holder.blockId), holder.get().fluidType)
+        for (fluid: HTMaterialContents.FluidEntry in HiiragiCoreAccess.INSTANCE.registeredFluids.values) {
+            event.registerFluidType(HTSimpleFluidExtensions(fluid.blockId), fluid.get().fluidType)
         }
     }
 

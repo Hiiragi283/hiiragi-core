@@ -38,6 +38,7 @@ sealed interface HTDefaultPart {
      * @author Hiiragi Tsubasa
      * @since 0.8.0
      */
+    @JvmRecord
     data class BuiltIn(val tagKey: TagKey<Item>, val item: SimpleSupplierWithKey<Item>?) : HTDefaultPart {
         override fun getTag(material: HTMaterialLike): TagKey<Item> = tagKey
 

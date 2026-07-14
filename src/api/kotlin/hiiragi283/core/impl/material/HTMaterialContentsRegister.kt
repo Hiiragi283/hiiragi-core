@@ -23,7 +23,10 @@ import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTDeferredItem
-import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.registry.HTSimpleDeferredBlockAndItem
+import hiiragi283.core.api.registry.HTSimpleDeferredHolder
+import hiiragi283.core.api.registry.HTSimpleDeferredItem
+import hiiragi283.core.api.resource.SimpleBlockItemSupplierWithKey
 import hiiragi283.core.api.resource.SimpleSupplierWithKey
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.BuiltInRegistries
@@ -35,7 +38,6 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockBehaviour
-import net.minecraft.world.level.material.Fluid
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.common.SoundActions
@@ -50,7 +52,7 @@ data object HTMaterialContentsRegister {
     private var hasInit: Boolean = false
 
     @JvmStatic
-    internal lateinit var existingBlocks: Table<HTPart, HTMaterialKey, HTMaterialContents.SimpleEntry<Block>>
+    internal lateinit var existingBlocks: Table<HTPart, HTMaterialKey, HTMaterialContents.BlockEntry>
         private set
 
     @JvmStatic
@@ -66,11 +68,11 @@ data object HTMaterialContentsRegister {
         private set
 
     @JvmStatic
-    internal lateinit var materialBlocks: Table<HTPart, HTMaterialKey, HTMaterialContents.SimpleEntry<Block>>
+    internal lateinit var materialBlocks: Table<HTPart, HTMaterialKey, HTMaterialContents.BlockEntry>
         private set
 
     @JvmStatic
-    internal lateinit var materialFluids: Table<HTFluidPart, HTMaterialKey, HTMaterialContents.SimpleEntry<Fluid>>
+    internal lateinit var materialFluids: Table<HTFluidPart, HTMaterialKey, HTMaterialContents.FluidEntry>
         private set
 
     @JvmStatic
@@ -140,8 +142,8 @@ data object HTMaterialContentsRegister {
     private fun registerExistingBlocks() {
         existingBlocks = buildTable {
             HiiragiCoreAccess.INSTANCE.forEachPlugin("Register Existing Blocks") { plugin: HTMaterialPlugin ->
-                plugin.registerExistingBlock { part: HTPartLike, material: HTMaterialKey, block: SimpleSupplierWithKey<Block> ->
-                    put(part.asPart(), material, HTMaterialContents.SimpleEntry(block, true))
+                plugin.registerExistingBlock { part: HTPartLike, material: HTMaterialKey, block: SimpleBlockItemSupplierWithKey ->
+                    put(part.asPart(), material, HTMaterialContents.BlockEntry(block, true))
                 }
             }
         }
@@ -180,9 +182,9 @@ data object HTMaterialContentsRegister {
                     .getOrDefault(HTMaterialPropertyKeys.BLOCK_PREFIXES)
                     .forEach { part: HTPartLike ->
                         val properties: BlockBehaviour.Properties = part[HTPartPropertyKeys.BLOCK_PROP] ?: return@forEach
-                        val block = Block(properties)
-                        helper.register(part.createId(entry), block)
-                        put(part.asPart(), entry.asMaterialKey(), HTMaterialContents.SimpleEntry(block.toLike(), false))
+                        val id: ResourceLocation = part.createId(entry)
+                        helper.register(id, Block(properties))
+                        put(part.asPart(), entry.asMaterialKey(), HTMaterialContents.BlockEntry(HTSimpleDeferredBlockAndItem(id), false))
                     }
             }
         }
@@ -222,7 +224,7 @@ data object HTMaterialContentsRegister {
                             BucketItem(fluid, Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)),
                         )
 
-                        put(part, entry.asMaterialKey(), HTMaterialContents.SimpleEntry(fluid.toLike(), false))
+                        put(part, entry.asMaterialKey(), HTMaterialContents.FluidEntry(HTSimpleDeferredHolder(Registries.FLUID, id), false))
                     }
             }
         }
@@ -231,19 +233,18 @@ data object HTMaterialContentsRegister {
     @JvmStatic
     private fun registerMaterialItems(manager: HTMaterialManager, helper: RegisterEvent.RegisterHelper<Item>) {
         // 素材ブロックのアイテムを生成する
-        materialBlocks.forEach { (_, _, block: HTMaterialContents.SimpleEntry<Block>) ->
-            val id: ResourceLocation = block.getId()
-            helper.register(id, HTBlockItem(block.get(), Item.Properties()))
+        materialBlocks.forEach { (_, _, block: HTMaterialContents.BlockEntry) ->
+            helper.register(block.getId(), HTBlockItem(block.get(), Item.Properties()))
         }
         // 素材アイテムを生成する
         materialItems = buildTable {
-            for (entry in manager) {
+            for (entry: HTMaterialManager.Entry in manager) {
                 entry
                     .getOrDefault(HTMaterialPropertyKeys.ITEM_PREFIXES)
                     .forEach { part: HTPartLike ->
-                        val item = Item(Item.Properties())
-                        helper.register(part.createId(entry), item)
-                        put(part.asPart(), entry.asMaterialKey(), HTMaterialContents.ItemEntry(item, false))
+                        val id: ResourceLocation = part.createId(entry)
+                        helper.register(id, Item(Item.Properties()))
+                        put(part.asPart(), entry.asMaterialKey(), HTMaterialContents.ItemEntry(HTSimpleDeferredItem(id), false))
                     }
             }
         }
@@ -253,14 +254,14 @@ data object HTMaterialContentsRegister {
     private fun registerMaterialTools(manager: HTMaterialManager, helper: RegisterEvent.RegisterHelper<Item>) {
         // 素材ツールを生成する
         materialTools = buildTable {
-            for (entry in manager) {
+            for (entry: HTMaterialManager.Entry in manager) {
                 val material: HTToolMaterial = entry[HTMaterialPropertyKeys.TOOL_MATERIAL] ?: continue
                 entry
                     .getOrDefault(HTMaterialPropertyKeys.TOOL_PREFIXES)
                     .forEach { toolType: HTToolType ->
-                        val item: Item = toolType.createTool(material)
-                        helper.register(toolType.createKey(entry), item)
-                        put(toolType, entry.asMaterialKey(), HTMaterialContents.ItemEntry(item, false))
+                        val id: ResourceLocation = toolType.createId(entry)
+                        helper.register(id, toolType.createTool(material))
+                        put(toolType, entry.asMaterialKey(), HTMaterialContents.ItemEntry(HTSimpleDeferredItem(id), false))
                     }
             }
         }

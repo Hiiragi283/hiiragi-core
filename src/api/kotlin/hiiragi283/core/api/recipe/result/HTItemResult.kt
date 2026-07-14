@@ -8,20 +8,22 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.tagPrefix
-import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.serialization.codec.HTCodecs
-import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.toFraction
 import hiiragi283.core.api.util.DFUEither
 import hiiragi283.core.api.util.HTTextResult
 import hiiragi283.core.api.util.getOrElse
 import hiiragi283.core.api.util.right
+import hiiragi283.core.api.util.toTextResult
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
+import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -72,7 +74,9 @@ interface HTItemResult : HTIdLike {
     //    Simple    //
 
     @JvmInline
-    value class Simple(private val template: ItemStack) : HTItemResult {
+    value class Simple(private val template: ItemStack) :
+        HTItemResult,
+        HTKeyLike<Item> {
         companion object {
             @JvmField
             val MAP_CODEC: MapCodec<Simple> = ItemStack.CODEC.xmap(::Simple, Simple::template).let { MapCodec.assumeMapUnsafe(it) }
@@ -91,7 +95,7 @@ interface HTItemResult : HTIdLike {
 
         override fun create(): HTTextResult<ItemStack> = template.copy().right()
 
-        override fun getId(): ResourceLocation = template.itemHolder.toLike().getId()
+        override fun getKey(): ResourceKey<Item> = template.itemHolder.getKeyOrThrow()
     }
 
     //    Tagged    //
@@ -153,10 +157,8 @@ interface HTItemResult : HTIdLike {
             }
             return HiiragiCoreAccess.INSTANCE
                 .getMaterialBlockOrItem(part, material)
-                .toResource()
-                ?.toStack(count)
-                ?.right()
-                ?: HTTextResult("No matching item for part ${part.asPartName()} and material ${material.asMaterialId()}")
+                .toTextResult { "No matching item for part ${part.asPartName()} and material ${material.asMaterialId()}" }
+                .map { it.toStack(count) }
         }
 
         override fun getId(): ResourceLocation = part.createId(material)

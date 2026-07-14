@@ -100,5 +100,5 @@ enum class HTDefaultColor(
 
     override fun getSerializedName(): String = name.lowercase()
 
-    override fun asMaterialKey(): HTMaterialKey = HTMaterialKey.of(HiiragiCoreAPI.id(serializedName))
+    override fun asMaterialKey(): HTMaterialKey = HTMaterialKey(HiiragiCoreAPI.id(serializedName))
 }

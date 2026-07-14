@@ -1,14 +1,11 @@
 package hiiragi283.core.api.data.map
 
 import hiiragi283.core.api.data.recipe.HTIngredientCreator
-import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.api.resource.HTKeyLike
+import hiiragi283.core.api.resource.SimpleBlockItemSupplierWithKey
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.world.item.Item
-import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.conditions.ICondition
 import net.neoforged.neoforge.common.data.DataMapProvider
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel
@@ -41,15 +38,7 @@ abstract class HTDataMapProvider(packOutput: PackOutput, lookupProvider: Complet
 
     //    Extensions    //
 
-    protected fun <T : Any, R : Any> Builder<T, R>.addHolder(holder: HTIdLike, value: T, vararg conditions: ICondition): Builder<T, R> = add(holder.getId(), value, false, *conditions)
+    protected fun <T : Any, R : Any> Builder<T, R>.add(holder: HTKeyLike<R>, value: T, vararg conditions: ICondition): Builder<T, R> = add(holder.getKey(), value, false, *conditions)
 
-    // Item
-    protected fun <T : Any> Builder<T, Item>.addItem(item: ItemLike, value: T, vararg conditions: ICondition): Builder<T, Item> = this.addHolder(item.asItem().toLike(), value, *conditions)
-
-    protected fun <T : Any> Builder<T, Item>.add(
-        prefix: HTTagPrefix,
-        material: HTMaterialLike,
-        value: T,
-        vararg conditions: ICondition,
-    ): Builder<T, Item> = add(prefix.itemTagKey(material), value, false, *conditions)
+    protected fun <T : Any> Builder<T, Item>.add(holder: SimpleBlockItemSupplierWithKey, value: T, vararg conditions: ICondition): Builder<T, Item> = add(holder.getItemSupplier().getKey(), value, false, *conditions)
 }

@@ -23,15 +23,13 @@ import net.minecraft.world.level.ItemLike
 class HTItemResourceType private constructor(private val stack: ItemStack) : HTResourceType.DataComponent<Item> {
     companion object {
         @JvmField
-        val CODEC: Codec<HTItemResourceType> =
-            ItemStack.SINGLE_ITEM_CODEC.xmap(::HTItemResourceType, HTItemResourceType::stack)
+        val CODEC: Codec<HTItemResourceType> = ItemStack.SINGLE_ITEM_CODEC.xmap(::HTItemResourceType, HTItemResourceType::stack)
 
         @JvmField
         val MAP_CODEC: MapCodec<HTItemResourceType> = MapCodec.assumeMapUnsafe(CODEC)
 
         @JvmField
-        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemResourceType> =
-            ItemStack.STREAM_CODEC.map(::HTItemResourceType, HTItemResourceType::stack)
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemResourceType> = ItemStack.STREAM_CODEC.map(::HTItemResourceType, HTItemResourceType::stack)
 
         /**
          * 指定した[stack]を[HTItemResourceType]に変換します。

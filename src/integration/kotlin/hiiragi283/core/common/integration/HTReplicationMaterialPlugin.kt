@@ -9,6 +9,8 @@ import hiiragi283.core.api.material.property.setDefaultPart
 import hiiragi283.core.api.material.property.setName
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.plugin.HTPlugin
+import hiiragi283.core.api.registry.toBlockLike
+import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.material.HCIntegrationMaterialKeys
 import net.minecraft.resources.ResourceLocation
@@ -20,12 +22,12 @@ data object HTReplicationMaterialPlugin : HTMaterialPlugin {
     override fun getId(): ResourceLocation = HCIConstants.REPLICATION.toId("material_plugin", HiiragiCoreAPI.MOD_ID)
 
     override fun registerExistingBlock(consumer: HTMaterialPlugin.BlockConsumer) {
-        consumer.acceptHolder(CommonParts.BLOCK, HCIntegrationMaterialKeys.REPLICA, ReplicationRegistry.Blocks.REPLICA_BLOCK)
+        consumer.accept(CommonParts.BLOCK, HCIntegrationMaterialKeys.REPLICA, ReplicationRegistry.Blocks.REPLICA_BLOCK.toBlockLike())
     }
 
     override fun registerExistingItem(consumer: HTMaterialPlugin.ItemConsumer) {
-        consumer.acceptHolder(CommonParts.INGOT, HCIntegrationMaterialKeys.REPLICA, ReplicationRegistry.Items.REPLICA_INGOT)
-        consumer.acceptHolder(CommonParts.RAW, HCIntegrationMaterialKeys.REPLICA, ReplicationRegistry.Items.RAW_REPLICA)
+        consumer.accept(CommonParts.INGOT, HCIntegrationMaterialKeys.REPLICA, ReplicationRegistry.Items.REPLICA_INGOT.toLike())
+        consumer.accept(CommonParts.RAW, HCIntegrationMaterialKeys.REPLICA, ReplicationRegistry.Items.RAW_REPLICA.toLike())
     }
 
     override fun modifyMaterial(provider: HTMaterialPlugin.MaterialProvider) {

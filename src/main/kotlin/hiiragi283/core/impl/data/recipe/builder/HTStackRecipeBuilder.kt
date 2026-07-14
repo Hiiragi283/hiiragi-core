@@ -1,7 +1,7 @@
 package hiiragi283.core.impl.data.recipe.builder
 
 import hiiragi283.core.api.data.recipe.builder.HTRecipeBuilder
-import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.api.util.HTDelegates
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack
  * @since 0.8.0
  */
 abstract class HTStackRecipeBuilder(prefix: String) : HTRecipeBuilder(prefix) {
-    final override fun getPrimalId(): ResourceLocation = resultStack.itemHolder.toLike().getId()
+    final override fun getPrimalId(): ResourceLocation = resultStack.itemHolder.getKeyOrThrow().location()
 
     /**
      * 完成品の[ItemStack]を保持するインスタンス

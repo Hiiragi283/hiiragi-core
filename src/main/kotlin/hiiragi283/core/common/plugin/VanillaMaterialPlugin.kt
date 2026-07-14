@@ -25,6 +25,7 @@ import hiiragi283.core.api.material.property.setTextureSet
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.plugin.HTPlugin
 import hiiragi283.core.api.property.plusAssign
+import hiiragi283.core.api.registry.toBlockLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.common.material.CommonMaterialKeys
@@ -45,8 +46,9 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
     override fun getId(): ResourceLocation = vanillaId("material_plugin")
 
     override fun registerExistingBlock(consumer: HTMaterialPlugin.BlockConsumer) {
+        @Suppress("DEPRECATION")
         fun accept(part: HTPartLike, material: HTMaterialLike, block: Block) {
-            consumer.accept(part, material.asMaterialKey(), block.toLike())
+            consumer.accept(part, material.asMaterialKey(), block.builtInRegistryHolder().toBlockLike())
         }
         // Fuels
         accept(CommonParts.ORE, VanillaMaterialKeys.COAL, Blocks.COAL_ORE)

@@ -4,7 +4,7 @@ import hiiragi283.core.api.collection.Table
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 
-internal class HTMaterialContentsImpl<R : Any, V : HTMaterialContents.Entry<*>>(
+internal class HTMaterialContentsImpl<R : Any, out V>(
     table: Table<R, HTMaterialKey, V>,
     private val errorFactory: (R, HTMaterialKey) -> String,
 ) : HTMaterialContents<R, V>,

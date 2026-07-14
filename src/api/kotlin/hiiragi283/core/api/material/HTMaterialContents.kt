@@ -8,26 +8,20 @@ import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.SimpleBlockItemSupplierWithKey
 import hiiragi283.core.api.resource.SimpleSupplierWithKey
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.HTTextResult
-import hiiragi283.core.api.util.right
+import hiiragi283.core.api.util.toTextResult
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.material.Fluid
 
-typealias HTSimpleMaterialContents<R, V> = HTMaterialContents<R, HTMaterialContents.SimpleEntry<V>>
-
-/**
- * 素材システムに基づいた要素を管理するインターフェースです。
- * @param R 行のクラス
- * @param V 要素のクラス
- * @author Hiiragi Tsubasa
- * @since 0.10.0
- */
-interface HTMaterialContents<R : Any, V : HTMaterialContents.Entry<*>> : Table<R, HTMaterialKey, V> {
+interface HTMaterialContents<R : Any, out V> : Table<R, HTMaterialKey, V> {
     /**
      * 指定した[row]と[material]から対応する値を返します。
      * @return 対応する値がない場合は`null`
@@ -38,7 +32,7 @@ interface HTMaterialContents<R : Any, V : HTMaterialContents.Entry<*>> : Table<R
      * 指定した[row]と[material]から対応する値を返します。
      * @since 21.1.0
      */
-    fun getResult(row: R, material: HTMaterialLike): HTTextResult<V> = get(row, material)?.right() ?: HTTextResult(getErrorMessage(row, material.asMaterialKey()))
+    fun getResult(row: R, material: HTMaterialLike): HTTextResult<V> = get(row, material).toTextResult { getErrorMessage(row, material.asMaterialKey()) }
 
     /**
      * 対応する値がない場合のエラーメッセージを作成します。
@@ -47,48 +41,64 @@ interface HTMaterialContents<R : Any, V : HTMaterialContents.Entry<*>> : Table<R
 
     fun column(material: HTMaterialLike): Map<R, V> = this.column(material.asMaterialKey())
 
-    /**
-     * [HTMaterialContents]で使用される要素を表すクラスです。
-     * @author Hiiragi Tsubasa
-     * @since 0.12.0
-     */
-    interface Entry<V : Any> : SimpleSupplierWithKey<V> {
-        /**
-         * 既存の要素である場合は`true`
-         */
-        val isBuiltIn: Boolean
+    class BlockEntry(delegate: SimpleBlockItemSupplierWithKey, val isBuiltIn: Boolean) :
+        SimpleBlockItemSupplierWithKey by delegate,
+        HTIdLike.Translatable,
+        HTSimpleItemLike {
+        override val translationKey: String get() = get().descriptionId
 
-        operator fun component1(): ResourceKey<V> = getKey()
+        override fun getText(): Text = get().name
 
-        operator fun component2(): V = get()
+        override fun asItem(): Item = get().asItem()
+
+        override fun toStack(count: Int, patch: DataComponentPatch): ItemStack = ItemStack(get(), count, patch)
+
+        operator fun component1(): ResourceKey<Block> = getKey()
+
+        operator fun component2(): Block = get()
 
         operator fun component3(): Boolean = isBuiltIn
+
+        override fun toString(): String = "BlockEntry(id=${getId()},isBuiltIn=$isBuiltIn)"
     }
 
-    /**
-     * @since 0.13.0
-     */
-    class SimpleEntry<V : Any>(private val holder: SimpleSupplierWithKey<V>, override val isBuiltIn: Boolean) :
-        Entry<V>,
-        SimpleSupplierWithKey<V> by holder
+    class FluidEntry(delegate: SimpleSupplierWithKey<Fluid>, val isBuiltIn: Boolean) :
+        SimpleSupplierWithKey<Fluid> by delegate,
+        HTIdLike.Translatable {
+        fun getBucketSupplier(): ItemEntry = ItemEntry(get().bucket.toLike(), isBuiltIn)
 
-    /**
-     * @since 0.13.0
-     */
-    class ItemEntry(private val holder: SimpleSupplierWithKey<Item>, override val isBuiltIn: Boolean) :
-        Entry<Item>,
-        HTSimpleItemLike,
+        override val translationKey: String get() = get().fluidType.descriptionId
+
+        override fun getText(): Text = get().fluidType.description
+
+        operator fun component1(): ResourceKey<Fluid> = getKey()
+
+        operator fun component2(): Fluid = get()
+
+        operator fun component3(): Boolean = isBuiltIn
+
+        override fun toString(): String = "FluidEntry(id=${getId()},isBuiltIn=$isBuiltIn)"
+    }
+
+    class ItemEntry(delegate: SimpleSupplierWithKey<Item>, val isBuiltIn: Boolean) :
+        SimpleSupplierWithKey<Item> by delegate,
         HTIdLike.Translatable,
-        SimpleSupplierWithKey<Item> by holder {
-        constructor(item: Item, isBuiltIn: Boolean) : this(item.toLike(), isBuiltIn)
-
-        override fun asItem(): Item = get()
-
-        override fun toStack(count: Int, patch: DataComponentPatch): ItemStack = ItemStack(holder.get(), count, patch)
-
+        HTSimpleItemLike {
         override val translationKey: String get() = get().descriptionId
 
         override fun getText(): Text = get().description
+
+        override fun asItem(): Item = get()
+
+        override fun toStack(count: Int, patch: DataComponentPatch): ItemStack = ItemStack(get(), count, patch)
+
+        operator fun component1(): ResourceKey<Item> = getKey()
+
+        operator fun component2(): Item = get()
+
+        operator fun component3(): Boolean = isBuiltIn
+
+        override fun toString(): String = "ItemEntry(id=${getId()},isBuiltIn=$isBuiltIn)"
     }
 }
 
@@ -98,19 +108,19 @@ interface HTMaterialContents<R : Any, V : HTMaterialContents.Entry<*>> : Table<R
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-operator fun <V : HTMaterialContents.Entry<*>> HTMaterialContents<HTPart, V>.get(part: HTPartLike, material: HTMaterialLike): V? = this[part.asPart(), material]
+operator fun <V> HTMaterialContents<HTPart, V>.get(part: HTPartLike, material: HTMaterialLike): V? = this[part.asPart(), material]
 
 /**
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */
-fun <V : HTMaterialContents.Entry<*>> HTMaterialContents<HTPart, V>.getResult(part: HTPartLike, material: HTMaterialLike): HTTextResult<V> = this.getResult(part.asPart(), material)
+fun <V> HTMaterialContents<HTPart, V>.getResult(part: HTPartLike, material: HTMaterialLike): HTTextResult<V> = this.getResult(part.asPart(), material)
 
 /**
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-val <V : HTMaterialContents.Entry<*>> HTMaterialContents<HTPart, V>.prefixEntries: Sequence<Triple<HTTagPrefix, HTMaterialKey, V>>
+val <V> HTMaterialContents<HTPart, V>.prefixEntries: Sequence<Triple<HTTagPrefix, HTMaterialKey, V>>
     get() = this
         .entries
         .asSequence()

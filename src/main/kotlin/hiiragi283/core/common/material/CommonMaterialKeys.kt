@@ -5,7 +5,7 @@ import hiiragi283.core.api.material.HTMaterialKey
 
 object CommonMaterialKeys {
     @JvmStatic
-    private fun create(path: String): HTMaterialKey = HTMaterialKey.of((HiiragiCoreAPI.id(path)))
+    private fun create(path: String): HTMaterialKey = HTMaterialKey(HiiragiCoreAPI.id(path))
 
     //    Fuels    //
 

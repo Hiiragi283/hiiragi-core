@@ -15,8 +15,8 @@ import hiiragi283.core.api.material.property.setName
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.plugin.HTPlugin
 import hiiragi283.core.api.property.plusAssign
-import hiiragi283.core.api.registry.createKey
-import hiiragi283.core.api.resource.SupplierWithKey
+import hiiragi283.core.api.registry.HTDeferredBlockAndItem
+import hiiragi283.core.api.registry.HTDeferredItem
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.times
 import hiiragi283.core.common.integration.HCIConstants
@@ -25,8 +25,6 @@ import hiiragi283.core.common.material.HCIntegrationMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.common.material.part.HCIntegrationParts
 import hiiragi283.core.common.tag.HCIntegrationTagPrefixes
-import net.minecraft.core.registries.Registries
-import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
@@ -60,14 +58,14 @@ data object HCIEMaterialPlugin : HTMaterialPlugin {
                 EnumMetals.IRON -> VanillaMaterialKeys.IRON
                 EnumMetals.GOLD -> VanillaMaterialKeys.GOLD
             }
-            consumer.accept(HCIntegrationParts.SHEETMETAL, key, BlockEntryWrapper(block))
+            consumer.accept(HCIntegrationParts.SHEETMETAL, key, block.toHolder())
         }
     }
 
     override fun registerExistingItem(consumer: HTMaterialPlugin.ItemConsumer) {
-        consumer.accept(CommonParts.DUST, HCIntegrationMaterialKeys.HOP_GRAPHITE, ItemEntryWrapper(IEItems.Ingredients.DUST_HOP_GRAPHITE))
+        consumer.accept(CommonParts.DUST, HCIntegrationMaterialKeys.HOP_GRAPHITE, IEItems.Ingredients.DUST_HOP_GRAPHITE.toHolder())
         // consumer.accept(CommonParts.INGOT, HCIntegrationMaterialKeys.HOP_GRAPHITE, ItemEntryWrapper(IEItems.Ingredients.INGOT_HOP_GRAPHITE))
-        consumer.accept(CommonParts.PLATE, HCIntegrationMaterialKeys.HOP_GRAPHITE, ItemEntryWrapper(IEItems.Ingredients.PLATE_HOP_GRAPHITE))
+        consumer.accept(CommonParts.PLATE, HCIntegrationMaterialKeys.HOP_GRAPHITE, IEItems.Ingredients.PLATE_HOP_GRAPHITE.toHolder())
     }
 
     override fun modifyMaterial(provider: HTMaterialPlugin.MaterialProvider) {
@@ -84,17 +82,7 @@ data object HCIEMaterialPlugin : HTMaterialPlugin {
 
     //    Extensions    //
 
-    @JvmInline
-    value class BlockEntryWrapper<BLOCK : Block>(val entry: IEBlocks.BlockEntry<BLOCK>) : SupplierWithKey<Block, BLOCK> {
-        override fun get(): BLOCK = entry.get()
+    fun <BLOCK : Block> IEBlocks.BlockEntry<BLOCK>.toHolder(): HTDeferredBlockAndItem<BLOCK, Item> = HTDeferredBlockAndItem(this.id)
 
-        override fun getKey(): ResourceKey<Block> = Registries.BLOCK.createKey(entry.id)
-    }
-
-    @JvmInline
-    value class ItemEntryWrapper<ITEM : Item>(val entry: IEItems.ItemRegObject<ITEM>) : SupplierWithKey<Item, ITEM> {
-        override fun get(): ITEM = entry.get()
-
-        override fun getKey(): ResourceKey<Item> = Registries.ITEM.createKey(entry.id)
-    }
+    fun <ITEM : Item> IEItems.ItemRegObject<ITEM>.toHolder(): HTDeferredItem<ITEM> = HTDeferredItem(this.id)
 }

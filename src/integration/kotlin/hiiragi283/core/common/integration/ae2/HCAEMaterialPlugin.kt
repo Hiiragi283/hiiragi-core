@@ -15,14 +15,13 @@ import hiiragi283.core.api.material.property.setName
 import hiiragi283.core.api.material.property.setTextureSet
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.plugin.HTPlugin
-import hiiragi283.core.api.registry.createKey
-import hiiragi283.core.api.resource.SupplierWithKey
+import hiiragi283.core.api.registry.HTDeferredBlockAndItem
+import hiiragi283.core.api.registry.HTDeferredItem
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.integration.HCIConstants
 import hiiragi283.core.common.material.HCIntegrationMaterialKeys
-import net.minecraft.core.registries.Registries
-import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 
@@ -34,19 +33,19 @@ data object HCAEMaterialPlugin : HTMaterialPlugin {
 
     override fun registerExistingBlock(consumer: HTMaterialPlugin.BlockConsumer) {
         // Gem
-        consumer.accept(CommonParts.BLOCK, HCIntegrationMaterialKeys.CERTUS_QUARTZ, BlockDefinitionWrapper(AEBlocks.QUARTZ_BLOCK))
-        consumer.accept(CommonParts.BLOCK, HCIntegrationMaterialKeys.FLUIX, BlockDefinitionWrapper(AEBlocks.FLUIX_BLOCK))
+        consumer.accept(CommonParts.BLOCK, HCIntegrationMaterialKeys.CERTUS_QUARTZ, AEBlocks.QUARTZ_BLOCK.toHolder())
+        consumer.accept(CommonParts.BLOCK, HCIntegrationMaterialKeys.FLUIX, AEBlocks.FLUIX_BLOCK.toHolder())
     }
 
     override fun registerExistingItem(consumer: HTMaterialPlugin.ItemConsumer) {
         // Gem
-        consumer.accept(CommonParts.DUST, HCIntegrationMaterialKeys.CERTUS_QUARTZ, ItemDefinitionWrapper(AEItems.CERTUS_QUARTZ_DUST))
-        consumer.accept(CommonParts.GEM, HCIntegrationMaterialKeys.CERTUS_QUARTZ, ItemDefinitionWrapper(AEItems.CERTUS_QUARTZ_CRYSTAL))
+        consumer.accept(CommonParts.DUST, HCIntegrationMaterialKeys.CERTUS_QUARTZ, AEItems.CERTUS_QUARTZ_DUST.toHolder())
+        consumer.accept(CommonParts.GEM, HCIntegrationMaterialKeys.CERTUS_QUARTZ, AEItems.CERTUS_QUARTZ_CRYSTAL.toHolder())
 
-        consumer.accept(CommonParts.DUST, HCIntegrationMaterialKeys.FLUIX, ItemDefinitionWrapper(AEItems.FLUIX_DUST))
-        consumer.accept(CommonParts.GEM, HCIntegrationMaterialKeys.FLUIX, ItemDefinitionWrapper(AEItems.FLUIX_CRYSTAL))
+        consumer.accept(CommonParts.DUST, HCIntegrationMaterialKeys.FLUIX, AEItems.FLUIX_DUST.toHolder())
+        consumer.accept(CommonParts.GEM, HCIntegrationMaterialKeys.FLUIX, AEItems.FLUIX_CRYSTAL.toHolder())
         // Other
-        consumer.accept(CommonParts.DUST, HCIntegrationMaterialKeys.SKY_STONE, ItemDefinitionWrapper(AEItems.SKY_DUST))
+        consumer.accept(CommonParts.DUST, HCIntegrationMaterialKeys.SKY_STONE, AEItems.SKY_DUST.toHolder())
     }
 
     override fun modifyMaterial(provider: HTMaterialPlugin.MaterialProvider) {
@@ -74,17 +73,7 @@ data object HCAEMaterialPlugin : HTMaterialPlugin {
 
     //    Extensions    //
 
-    @JvmInline
-    value class BlockDefinitionWrapper<BLOCK : Block>(val definition: BlockDefinition<BLOCK>) : SupplierWithKey<Block, BLOCK> {
-        override fun get(): BLOCK = definition.block()
+    fun <BLOCK : Block> BlockDefinition<BLOCK>.toHolder(): HTDeferredBlockAndItem<BLOCK, BlockItem> = HTDeferredBlockAndItem(this.id())
 
-        override fun getKey(): ResourceKey<Block> = Registries.BLOCK.createKey(definition.id())
-    }
-
-    @JvmInline
-    value class ItemDefinitionWrapper<ITEM : Item>(val definition: ItemDefinition<ITEM>) : SupplierWithKey<Item, ITEM> {
-        override fun get(): ITEM = definition.asItem()
-
-        override fun getKey(): ResourceKey<Item> = Registries.ITEM.createKey(definition.id())
-    }
+    fun <ITEM : Item> ItemDefinition<ITEM>.toHolder(): HTDeferredItem<ITEM> = HTDeferredItem(this.id())
 }

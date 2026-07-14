@@ -35,9 +35,7 @@ interface HTMaterialManager : Iterable<HTMaterialManager.Entry> {
 
         @JvmField
         val STREAM_CODEC: StreamCodec<ByteBuf, Entry> = HTMaterialKey.STREAM_CODEC.map(
-            { key: HTMaterialKey ->
-                getInstance().entries.firstOrNull { it.asMaterialKey() == key } ?: errorMessage(key).let(::error)
-            },
+            { key: HTMaterialKey -> getInstance().entries.firstOrNull { it.asMaterialKey() == key } ?: errorMessage(key).let(::error) },
             Entry::asMaterialKey,
         )
     }

@@ -17,8 +17,8 @@ import java.util.concurrent.CompletableFuture
 class HCDataMapProvider(packOutput: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : HTDataMapProvider(packOutput, lookupProvider) {
     override fun gatherInternal() {
         furnaceFuel {
-            addHolder(HCBlocks.OIL_SAND, FurnaceFuel(20 * 10 * 4))
-            addHolder(HCBlocks.OIL_SHALE, FurnaceFuel(20 * 10 * 4))
+            add(HCBlocks.OIL_SAND, FurnaceFuel(20 * 10 * 4))
+            add(HCBlocks.OIL_SHALE, FurnaceFuel(20 * 10 * 4))
         }
 
         registerOxidizables(HCBlocks.COPPER_BASIN)

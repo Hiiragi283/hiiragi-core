@@ -17,8 +17,6 @@ import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
-import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.material.Fluid
 
 data object HCModelProvider : HTModelProvider() {
     override fun registerModels(manager: ResourceManager) {
@@ -29,7 +27,7 @@ data object HCModelProvider : HTModelProvider() {
     private fun registerMaterials(manager: ResourceManager) {
         val registered: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
         // Block
-        registered.blocks.forEach { (part: HTPart, key: HTMaterialKey, block: HTMaterialContents.SimpleEntry<Block>) ->
+        registered.blocks.forEach { (part: HTPart, key: HTMaterialKey, block: HTMaterialContents.BlockEntry) ->
             if (HTPartPropertyKeys.IS_ORE in part) {
                 val stoneTexture: ResourceLocation = part[HTPartPropertyKeys.ORE_STONE_TEX] ?: return@forEach
                 addSimpleBlockAndItem(
@@ -46,7 +44,7 @@ data object HCModelProvider : HTModelProvider() {
             }
         }
         // Fluid
-        HiiragiCoreAccess.INSTANCE.registeredFluids.forEach { (part: HTFluidPart, _, fluid: HTMaterialContents.SimpleEntry<Fluid>) ->
+        HiiragiCoreAccess.INSTANCE.registeredFluids.forEach { (part: HTFluidPart, _, fluid: HTMaterialContents.FluidEntry) ->
             addBucketModel(fluid.get(), part == HTFluidPart.MOLTEN)
         }
         // Item

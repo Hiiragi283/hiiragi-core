@@ -15,7 +15,6 @@ import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
-import hiiragi283.core.api.material.HTSimpleMaterialContents
 import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
@@ -42,8 +41,6 @@ import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Blocks
 import net.neoforged.neoforge.common.Tags
 import java.util.function.Consumer
-import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.material.Fluid
 
 data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiCoreAPI.MOD_ID) {
     override fun addDynamicTranslations(afterLanguageLoadEvent: AfterLanguageLoadEvent) {}
@@ -194,20 +191,19 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
             val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
             consumer(key.translationKey, materialName.getTranslatedName(langType))
             // Block
-            for ((part: HTPart, block: HTMaterialContents.SimpleEntry<Block>) in registered.blocks.column(entry)) {
+            for ((part: HTPart, block: HTMaterialContents.BlockEntry) in registered.blocks.column(entry)) {
                 val name: String = translate(langType, part, entry) ?: continue
-                consumer(block.get().descriptionId, name)
+                consumer(block.translationKey, name)
             }
             // Fluid
-            val fluids: HTSimpleMaterialContents<HTFluidPart, Fluid> = HiiragiCoreAccess.INSTANCE.registeredFluids
-            for ((part: HTFluidPart, fluid: HTMaterialContents.SimpleEntry<Fluid>) in fluids.column(entry)) {
+            val fluids: HTMaterialContents<HTFluidPart, HTMaterialContents.FluidEntry> = HiiragiCoreAccess.INSTANCE.registeredFluids
+            for ((part: HTFluidPart, fluid: HTMaterialContents.FluidEntry) in fluids.column(entry)) {
                 val name: String = translate(langType, part, entry) ?: continue
-                val fluidIn: Fluid = fluid.get()
-                consumer(fluidIn.fluidType.descriptionId, name)
+                consumer(fluid.translationKey, name)
                 consumer(Tags.getTagTranslationKey(part.createTagKey(entry)), name)
 
                 val bucketName: String = HTLangPatternProvider.create("%s Bucket", "%s入りバケツ").translate(langType, name)
-                consumer(fluidIn.bucket.descriptionId, bucketName)
+                consumer(fluid.getBucketSupplier().translationKey, bucketName)
                 consumer(Tags.getTagTranslationKey(part.createBucketTag(entry)), bucketName)
             }
             // Item

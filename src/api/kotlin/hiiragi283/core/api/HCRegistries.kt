@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HiiragiCoreAPI.id
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
 import hiiragi283.core.api.gui.widget.HTWidgetType
+import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.recipe.result.HTItemResult
 import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceKey
@@ -39,6 +40,12 @@ data object HCRegistries {
     data object Keys {
         @JvmField
         val ITEM_RESULT_SERIALIZER: ResourceKey<Registry<HTItemResult.Serializer<*>>> = createKey("item_result_serializer")
+
+        /**
+         * @since 21.1.0
+         */
+        @JvmField
+        val MATERIAL: ResourceKey<Registry<HTPropertyGetter>> = createKey("material")
 
         @JvmField
         val SLOT_TYPE: ResourceKey<Registry<HTSyncablePayload.Type<*>>> = createKey("syncable_slot_type")

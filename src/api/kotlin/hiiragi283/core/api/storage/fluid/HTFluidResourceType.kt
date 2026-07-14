@@ -23,15 +23,13 @@ import net.neoforged.neoforge.fluids.FluidType
 class HTFluidResourceType private constructor(private val stack: FluidStack) : HTResourceType.DataComponent<Fluid> {
     companion object {
         @JvmField
-        val CODEC: Codec<HTFluidResourceType> =
-            FluidStack.fixedAmountCodec(FluidType.BUCKET_VOLUME).xmap(::HTFluidResourceType, HTFluidResourceType::stack)
+        val CODEC: Codec<HTFluidResourceType> = FluidStack.fixedAmountCodec(FluidType.BUCKET_VOLUME).xmap(::HTFluidResourceType, HTFluidResourceType::stack)
 
         @JvmField
         val MAP_CODEC: MapCodec<HTFluidResourceType> = MapCodec.assumeMapUnsafe(CODEC)
 
         @JvmField
-        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTFluidResourceType> =
-            FluidStack.STREAM_CODEC.map(::HTFluidResourceType, HTFluidResourceType::stack)
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTFluidResourceType> = FluidStack.STREAM_CODEC.map(::HTFluidResourceType, HTFluidResourceType::stack)
 
         /**
          * 指定した[stack]を[HTFluidResourceType]に変換します。

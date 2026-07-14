@@ -1,7 +1,6 @@
 package hiiragi283.core.common.material
 
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.resource.toId
 import hiiragi283.core.common.integration.HCIConstants
 
 data object HCIntegrationMaterialKeys {
@@ -75,5 +74,5 @@ data object HCIntegrationMaterialKeys {
     val REPLICA: HTMaterialKey = create(HCIConstants.REPLICATION, "replica")
 
     @JvmStatic
-    private fun create(namespace: String, path: String): HTMaterialKey = HTMaterialKey.of(namespace.toId(path))
+    private fun create(namespace: String, path: String): HTMaterialKey = HTMaterialKey(namespace, path)
 }

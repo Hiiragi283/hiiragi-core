@@ -431,7 +431,7 @@ object HCRuntimeRecipeHandler : HTRecipeProviderContext.Delegated() {
             partManager.values
                 .filter { HTPartPropertyKeys.IS_ORE in it }
                 .mapNotNull { getItem(it, entry) }
-                .filterNot(HTMaterialContents.Entry<*>::isBuiltIn)
+                .filterNot(HTMaterialContents.ItemEntry::isBuiltIn)
         if (oreEntries.isEmpty()) return
         // Smelting & Blasting
         registerSmelting(entry) {

@@ -8,7 +8,6 @@ import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.HTSimpleMaterialContents
 import hiiragi283.core.api.material.get
 import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
@@ -28,13 +27,11 @@ import hiiragi283.core.util.HTPhysicalSideHelper
 import net.minecraft.core.HolderLookup
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.Consumer
 import kotlin.time.Duration
 import kotlin.time.measureTime
 import net.minecraft.core.Holder
-import net.minecraft.world.level.material.Fluid
 
 /**
  * モジュールをまたいで実装する要素をまとめたインターフェースです。
@@ -99,7 +96,7 @@ abstract class HiiragiCoreAccess {
      * 既存の素材コンテンツを取得します。
      */
     val existingContents: HTMaterialAccess = object : HTMaterialAccess {
-        override val blocks: HTSimpleMaterialContents<HTPart, Block> by lazy {
+        override val blocks: HTMaterialContents<HTPart, HTMaterialContents.BlockEntry> by lazy {
             HTMaterialContentsImpl(HTMaterialContentsRegister.existingBlocks) { part: HTPart, key: HTMaterialKey ->
                 "Unknown ${part.name} block for ${key.getId()}"
             }
@@ -120,7 +117,7 @@ abstract class HiiragiCoreAccess {
      * 登録された素材コンテンツを取得します。
      */
     val registeredContents: HTMaterialAccess = object : HTMaterialAccess {
-        override val blocks: HTSimpleMaterialContents<HTPart, Block> by lazy {
+        override val blocks: HTMaterialContents<HTPart, HTMaterialContents.BlockEntry> by lazy {
             HTMaterialContentsImpl(HTMaterialContentsRegister.materialBlocks) { part: HTPart, key: HTMaterialKey ->
                 "Unregistered ${part.name} block for ${key.getId()}"
             }
@@ -137,13 +134,13 @@ abstract class HiiragiCoreAccess {
         }
     }
 
-    val registeredFluids: HTSimpleMaterialContents<HTFluidPart, Fluid> by lazy {
+    val registeredFluids: HTMaterialContents<HTFluidPart, HTMaterialContents.FluidEntry> by lazy {
         HTMaterialContentsImpl(HTMaterialContentsRegister.materialFluids) { part: HTFluidPart, key: HTMaterialKey ->
             "Unregistered ${part.asPartName()} fluid for ${key.getId()}"
         }
     }
 
-    fun getMaterialBlock(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.SimpleEntry<Block>? = existingContents.blocks[part, material] ?: registeredContents.blocks[part, material]
+    fun getMaterialBlock(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.BlockEntry? = existingContents.blocks[part, material] ?: registeredContents.blocks[part, material]
 
     fun getMaterialItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry? = existingContents.items[part, material] ?: registeredContents.items[part, material]
 

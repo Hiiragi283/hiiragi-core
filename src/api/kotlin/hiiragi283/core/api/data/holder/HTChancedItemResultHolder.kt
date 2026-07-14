@@ -11,15 +11,14 @@ import net.minecraft.resources.ResourceLocation
  * @since 21.1.0
  */
 class HTChancedItemResultHolder : HTIdLike {
-    val results: List<HTChancedItemResult> get() = _results
-    private val _results: MutableList<HTChancedItemResult> = mutableListOf()
+    val results: List<HTChancedItemResult> field: MutableList<HTChancedItemResult> = mutableListOf()
 
     fun add(result: HTItemResult) {
         this.add(result.withChance())
     }
 
     fun add(result: HTChancedItemResult) {
-        _results += result
+        results += result
     }
 
     operator fun plusAssign(result: HTItemResult) {

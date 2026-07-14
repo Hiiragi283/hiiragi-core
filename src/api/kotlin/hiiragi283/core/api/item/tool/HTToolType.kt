@@ -2,9 +2,7 @@ package hiiragi283.core.api.item.tool
 
 import hiiragi283.core.api.data.lang.HTLangPatternProvider
 import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.registry.createKey
-import net.minecraft.core.registries.Registries
-import net.minecraft.resources.ResourceKey
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.component.ItemAttributeModifiers
@@ -34,10 +32,7 @@ class HTToolType(
         inline fun create(name: String, builderAction: Builder.() -> Unit): HTToolType = Builder(name).apply(builderAction).build()
     }
 
-    fun createKey(material: HTMaterialLike): ResourceKey<Item> = material
-        .asMaterialId()
-        .withPath { idPattern.replace("%s", it) }
-        .let(Registries.ITEM::createKey)
+    fun createId(material: HTMaterialLike): ResourceLocation = material.asMaterialId().withPath { idPattern.replace("%s", it) }
 
     fun createTool(material: HTToolMaterial): Item {
         val properties = Item.Properties()
