@@ -20,15 +20,11 @@ import hiiragi283.core.config.HCConfig
 import hiiragi283.core.impl.HiiragiCoreAccessImpl
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks
-import hiiragi283.core.setup.HCCreativeTabs
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCMenuTypes
 import hiiragi283.core.setup.HCMiscRegister
-import hiiragi283.core.setup.HCRecipeSerializers
-import hiiragi283.core.setup.HCRecipeTypes
-import hiiragi283.core.setup.HCWidgetTypes
 import net.mehvahdjukaar.moonlight.api.platform.RegHelper
 import net.minecraft.server.packs.PackType
 import net.minecraft.server.packs.repository.Pack
@@ -58,11 +54,7 @@ data object HiiragiCore : HTCommonMod() {
         HCItems.register(eventBus)
 
         HCBlockEntityTypes.REGISTER.register(eventBus)
-        HCCreativeTabs.REGISTER.register(eventBus)
         HCMenuTypes.REGISTER.register(eventBus)
-        HCRecipeSerializers.REGISTER.register(eventBus)
-        HCRecipeTypes.REGISTER.register(eventBus)
-        HCWidgetTypes.REGISTER.register(eventBus)
 
         container.registerConfig(ModConfig.Type.COMMON, HCConfig.COMMON_SPEC)
 

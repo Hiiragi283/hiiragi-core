@@ -51,9 +51,9 @@ data object HiiragiCoreClient : HTClientMod() {
     }
 
     override fun registerWidgetRenderer(event: HTRegisterWidgetRendererEvent) {
-        event.register(HCWidgetTypes.FLUID.get(), ::HTFluidWidgetRenderer)
-        event.register(HCWidgetTypes.ITEM.get(), ::HTItemWidgetRenderer)
-        event.register(HCWidgetTypes.PROGRESS.get(), ::HTProgressWidgetRenderer)
+        event.register(HCWidgetTypes.FLUID, ::HTFluidWidgetRenderer)
+        event.register(HCWidgetTypes.ITEM, ::HTItemWidgetRenderer)
+        event.register(HCWidgetTypes.PROGRESS, ::HTProgressWidgetRenderer)
     }
 
     override fun registerItemColors(event: RegisterColorHandlersEvent.Item) {

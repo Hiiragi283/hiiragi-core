@@ -20,7 +20,7 @@ sealed class HTFluidWidget(view: HTFluidView, private val stackSetter: FluidStac
     HTGhostWidget,
     HTIngredientWidget,
     HTFluidView by view {
-    final override fun getType(): HTWidgetType<*> = HCWidgetTypes.FLUID.get()
+    final override fun getType(): HTWidgetType<*> = HCWidgetTypes.FLUID
 
     final override fun mouseClicked(
         access: HTWidget.Access,

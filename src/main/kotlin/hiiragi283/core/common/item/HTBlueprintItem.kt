@@ -12,6 +12,7 @@ import net.minecraft.world.entity.SlotAccess
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.ClickAction
 import net.minecraft.world.inventory.Slot
+import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.TooltipFlag
@@ -60,10 +61,10 @@ class HTBlueprintItem(properties: Properties) :
 
     //    HTSubCreativeTabContents    //
 
-    override fun addItems(baseItem: Holder<Item>, context: HTSubCreativeTabContents.Context) {
+    override fun addItems(baseItem: Holder<Item>, parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output) {
         RANGE
             .map { createItemStack(baseItem.value(), HCDataComponents.BLUEPRINT_NUMBER, it) }
-            .forEach(context)
+            .forEach(output::accept)
     }
 
     override fun shouldAddDefault(): Boolean = false

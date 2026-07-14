@@ -19,7 +19,7 @@ sealed class HTItemWidget(val backgroundType: HTBackgroundType) :
     HTIngredientWidget {
     abstract fun getStack(): ItemStack
 
-    final override fun getType(): HTWidgetType<*> = HCWidgetTypes.ITEM.get()
+    final override fun getType(): HTWidgetType<*> = HCWidgetTypes.ITEM
 
     final override fun getIngredient(): ItemStack = getStack()
 

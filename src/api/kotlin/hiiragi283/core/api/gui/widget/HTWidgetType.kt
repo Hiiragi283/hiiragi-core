@@ -13,5 +13,7 @@ interface HTWidgetType<WIDGET : HTWidget> {
      * @author Hiiragi Tsubasa
      * @since 0.8.0
      */
-    data class Simple<WIDGET : HTWidget>(private val id: ResourceLocation) : HTWidgetType<WIDGET>
+    data class Simple<WIDGET : HTWidget>(val id: ResourceLocation) : HTWidgetType<WIDGET> {
+        override fun toString(): String = id.toString()
+    }
 }

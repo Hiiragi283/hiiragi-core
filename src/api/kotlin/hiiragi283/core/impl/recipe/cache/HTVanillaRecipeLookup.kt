@@ -9,6 +9,8 @@ import net.minecraft.resources.ResourceLocation
 
 @JvmInline
 value class HTVanillaRecipeLookup<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(private val recipeType: Supplier<out RecipeType<RECIPE>>) : HTRecipeLookup<RECIPE> {
+    constructor(recipeType: RecipeType<RECIPE>) : this({ recipeType })
+
     override fun getAllRecipes(context: HTRecipeLookup.Context): Map<ResourceLocation, RECIPE> = context.getAllRecipes(recipeType.get()).toMap()
 
     override fun toString(): String = "HTVanillaRecipeLookup(recipeType=${recipeType.get()})"

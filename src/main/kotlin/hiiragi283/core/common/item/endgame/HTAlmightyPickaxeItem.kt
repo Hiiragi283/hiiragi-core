@@ -14,6 +14,7 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.tags.TagKey
 import net.minecraft.world.damagesource.DamageSource
+import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.DiggerItem
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -43,8 +44,8 @@ class HTAlmightyPickaxeItem(properties: Properties) :
 
     //    HTSubCreativeTabContents    //
 
-    override fun addItems(baseItem: Holder<Item>, context: HTSubCreativeTabContents.Context) {
-        createItemStack(baseItem.value(), DataComponents.UNBREAKABLE, Unbreakable(true)).let(context)
+    override fun addItems(baseItem: Holder<Item>, parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output) {
+        createItemStack(baseItem.value(), DataComponents.UNBREAKABLE, Unbreakable(true)).let(output::accept)
     }
 
     //    Tier    //

@@ -2,34 +2,37 @@ package hiiragi283.core.setup
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.registry.HTDeferredRecipeType
-import hiiragi283.core.api.registry.HTDeferredRecipeTypeRegister
+import hiiragi283.core.api.recipe.HTRecipeType
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
+import net.minecraft.world.item.crafting.Recipe
 
-object HCRecipeTypes {
-    @JvmField
-    val REGISTER = HTDeferredRecipeTypeRegister(HiiragiCoreAPI.MOD_ID)
+data object HCRecipeTypes {
+    @JvmStatic
+    val allTypes: Set<HTRecipeType<*>> field: MutableSet<HTRecipeType<*>> = mutableSetOf()
+
+    @JvmStatic
+    private fun <T : Recipe<*>> create(name: String): HTRecipeType<T> = HTRecipeType<T>(HiiragiCoreAPI.id(name)).also(allTypes::add)
 
     //    Basic    //
 
     @JvmField
-    val CHARGING: HTDeferredRecipeType<HCChargingRecipe> = REGISTER.registerType(HTConst.CHARGING)
+    val CHARGING: HTRecipeType<HCChargingRecipe> = create(HTConst.CHARGING)
 
     @JvmField
-    val CRUSHING: HTDeferredRecipeType<HCCrushingRecipe> = REGISTER.registerType(HTConst.CRUSHING)
+    val CRUSHING: HTRecipeType<HCCrushingRecipe> = create(HTConst.CRUSHING)
 
     @JvmField
-    val EXPLODING: HTDeferredRecipeType<HCExplodingRecipe> = REGISTER.registerType(HTConst.EXPLODING)
+    val EXPLODING: HTRecipeType<HCExplodingRecipe> = create(HTConst.EXPLODING)
 
     //    Tank Interaction    //
 
     @JvmField
-    val EMPTYING: HTDeferredRecipeType<HCTankEmptyingRecipe> = REGISTER.registerType(HTConst.EMPTYING)
+    val EMPTYING: HTRecipeType<HCTankEmptyingRecipe> = create(HTConst.EMPTYING)
 
     @JvmField
-    val FILLING: HTDeferredRecipeType<HCTankFillingRecipe> = REGISTER.registerType(HTConst.FILLING)
+    val FILLING: HTRecipeType<HCTankFillingRecipe> = create(HTConst.FILLING)
 }

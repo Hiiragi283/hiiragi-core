@@ -1,101 +1,22 @@
 package hiiragi283.core.setup
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.collection.asSequence
-import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.registry.HTDeferredCreativeTabRegister
-import hiiragi283.core.api.registry.HTSimpleDeferredHolder
-import hiiragi283.core.common.text.HCTranslation
+import hiiragi283.core.api.registry.createKey
+import net.minecraft.core.registries.Registries
+import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.CreativeModeTab
-import net.minecraft.world.item.Items
 
-object HCCreativeTabs {
+data object HCCreativeTabs {
+    @JvmField
+    val COMMON: ResourceKey<CreativeModeTab> = create(HTConst.COMMON)
+
+    @JvmField
+    val MATERIAL: ResourceKey<CreativeModeTab> = create("material")
+
+    @JvmField
+    val EQUIPMENT: ResourceKey<CreativeModeTab> = create("equipment")
+
     @JvmStatic
-    private val TRIPLE_COMPARATOR: Comparator<Triple<Comparable<*>, HTMaterialKey, *>> =
-        compareBy<Triple<Comparable<*>, HTMaterialKey, *>> { it.first }.thenComparing { it.second }
-
-    @JvmField
-    val REGISTER = HTDeferredCreativeTabRegister(HiiragiCoreAPI.MOD_ID)
-
-    @JvmField
-    val COMMON: HTSimpleDeferredHolder<CreativeModeTab> = REGISTER.registerSimpleTab(
-        "common",
-        HCTranslation.HIIRAGI_CORE,
-        HCItems.IRIDESCENT_POWDER,
-    ) { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
-        // Items
-        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCItems.REGISTER.asSequence())
-        // Blocks
-        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCBlocks.REGISTER.asItemSequence())
-        // Fluids
-        HTDeferredCreativeTabRegister.addToDisplay(parameters, output, items = HCFluids.REGISTER.asItemSequence())
-    }
-
-    @Suppress("DEPRECATION")
-    @JvmField
-    val MATERIAL: HTSimpleDeferredHolder<CreativeModeTab> = REGISTER.registerTab(
-        "material",
-        HCTranslation.CREATIVE_TAB_MATERIAL,
-        Items.IRON_INGOT,
-    ) {
-        withTabsBefore(COMMON.key)
-        displayItems { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
-            // Items
-            HTDeferredCreativeTabRegister.addHoldersToDisplay(
-                parameters,
-                output,
-                HiiragiCoreAccess.INSTANCE
-                    .registeredContents
-                    .items
-                    .asSequence()
-                    .sortedWith(TRIPLE_COMPARATOR)
-                    .map { it.third },
-            )
-            // Blocks
-            HTDeferredCreativeTabRegister.addHoldersToDisplay(
-                parameters,
-                output,
-                HiiragiCoreAccess.INSTANCE
-                    .registeredContents
-                    .blocks
-                    .asSequence()
-                    .sortedWith(TRIPLE_COMPARATOR)
-                    .map { it.third },
-            )
-            // Fluids
-            HTDeferredCreativeTabRegister.addToDisplay(
-                parameters,
-                output,
-                HiiragiCoreAccess.INSTANCE
-                    .registeredFluids
-                    .asSequence()
-                    .sortedWith(TRIPLE_COMPARATOR)
-                    .map { it.third }
-                    .map { it.get().bucket.builtInRegistryHolder() },
-            )
-        }
-    }
-
-    @JvmField
-    val EQUIPMENT: HTSimpleDeferredHolder<CreativeModeTab> = REGISTER.registerTab(
-        "equipment",
-        HCTranslation.CREATIVE_TAB_EQUIPMENT,
-        Items.IRON_PICKAXE,
-    ) {
-        withTabsBefore(MATERIAL.key)
-        displayItems { parameters: CreativeModeTab.ItemDisplayParameters, output: CreativeModeTab.Output ->
-            // Items
-            HTDeferredCreativeTabRegister.addHoldersToDisplay(
-                parameters,
-                output,
-                HiiragiCoreAccess.INSTANCE
-                    .registeredContents
-                    .tools
-                    .asSequence()
-                    .sortedWith(TRIPLE_COMPARATOR)
-                    .map { it.third },
-            )
-        }
-    }
+    private fun create(name: String) = Registries.CREATIVE_MODE_TAB.createKey(HiiragiCoreAPI.id(name))
 }

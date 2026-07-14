@@ -4,12 +4,12 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.color.HTColoredCollection
 import hiiragi283.core.api.color.VanillaColoredCollections
+import hiiragi283.core.api.recipe.HTRecipeType
 import hiiragi283.core.api.util.identity
 import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
-import hiiragi283.core.api.registry.HTDeferredRecipeType
 import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.common.recipe.custom.HTPotionArrowFillingRecipe
@@ -31,7 +31,7 @@ data object HCRecipeLookups {
     private fun <RECIPE : Any> create(path: String): HTCompoundRecipeLookup<RECIPE> = HTCompoundRecipeLookup.create(HiiragiCoreAPI.id(path))
 
     @JvmStatic
-    private fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> create(recipeType: HTDeferredRecipeType<RECIPE>): HTRecipeLookup<RECIPE> = HTVanillaRecipeLookup(recipeType)
+    private fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> create(recipeType: HTRecipeType<RECIPE>): HTRecipeLookup<RECIPE> = HTVanillaRecipeLookup(recipeType)
 
     //    Basic    //
 
@@ -56,12 +56,12 @@ data object HCRecipeLookups {
 
     @JvmStatic
     fun init() {
-        CRUSHING.fromRecipeType(HCRecipeTypes.CRUSHING.get(), identity())
+        CRUSHING.fromRecipeType(HCRecipeTypes.CRUSHING, identity())
 
-        EMPTYING.fromRecipeType(HCRecipeTypes.EMPTYING.get(), identity())
+        EMPTYING.fromRecipeType(HCRecipeTypes.EMPTYING, identity())
         EMPTYING.addRecipes(vanillaId(HTConst.EMPTYING, "potion") to HTPotionTankInteraction.Emptying)
 
-        FILLING.fromRecipeType(HCRecipeTypes.FILLING.get(), identity())
+        FILLING.fromRecipeType(HCRecipeTypes.FILLING, identity())
         FILLING.addRecipes(vanillaId(HTConst.FILLING, "potion") to HTPotionTankInteraction.Filling)
         FILLING.addRecipes(vanillaId(HTConst.FILLING, "potion_arrow") to HTPotionArrowFillingRecipe)
 

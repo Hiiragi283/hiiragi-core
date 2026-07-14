@@ -46,7 +46,7 @@ class HTProgressWidget :
 
     fun getProgress(): Fraction = progressGetter()
 
-    override fun getType(): HTWidgetType<HTProgressWidget> = HCWidgetTypes.PROGRESS.get()
+    override fun getType(): HTWidgetType<HTProgressWidget> = HCWidgetTypes.PROGRESS
 
     //    HTRecipeAreaWidget    //
 
