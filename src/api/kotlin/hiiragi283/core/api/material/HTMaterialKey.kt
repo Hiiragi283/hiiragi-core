@@ -2,7 +2,6 @@ package hiiragi283.core.api.material
 
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.HCRegistries
-import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.api.resource.HTKeyLike
 import io.netty.buffer.ByteBuf
@@ -18,8 +17,8 @@ import net.minecraft.resources.ResourceLocation
  * @since 0.1.0
  */
 @JvmInline
-value class HTMaterialKey private constructor(private val key: ResourceKey<HTPropertyGetter>) :
-    HTKeyLike.SimpleTranslatable<HTPropertyGetter>,
+value class HTMaterialKey private constructor(private val key: ResourceKey<Nothing>) :
+    HTKeyLike.SimpleTranslatable<Nothing>,
     HTMaterialLike,
     Comparable<HTMaterialKey> {
     companion object {
@@ -40,7 +39,7 @@ value class HTMaterialKey private constructor(private val key: ResourceKey<HTPro
 
     constructor(id: ResourceLocation) : this(HCRegistries.Keys.MATERIAL.createKey(id))
 
-    override fun getKey(): ResourceKey<HTPropertyGetter> = key
+    override fun getKey(): ResourceKey<Nothing> = key
 
     override fun asMaterialKey(): HTMaterialKey = this
 

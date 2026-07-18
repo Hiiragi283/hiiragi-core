@@ -1,26 +1,99 @@
 package hiiragi283.core.api.data.recipe
 
-import net.minecraft.core.HolderLookup
-import net.minecraft.data.PackOutput
-import net.minecraft.data.recipes.RecipeOutput
-import net.minecraft.data.recipes.RecipeProvider
+import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.resource.toId
+import java.util.Optional
 import java.util.concurrent.CompletableFuture
-import java.util.function.Consumer
+import net.minecraft.core.HolderLookup
+import net.minecraft.core.registries.Registries
+import net.minecraft.data.CachedOutput
+import net.minecraft.data.DataProvider
+import net.minecraft.data.PackOutput
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.item.crafting.Recipe
+import net.neoforged.neoforge.common.conditions.ICondition
+import net.neoforged.neoforge.common.conditions.ModLoadedCondition
+import net.neoforged.neoforge.common.conditions.WithConditions
 
 /**
- * [HTSubRecipeProvider]に基づいた[RecipeProvider]の拡張クラスです。
+ * Hiiragi Seriesで使用される，レシピ向けの[DataProvider]の抽象クラスです。
+ * 参照 : [Minecraft - RecipeProvider][net.minecraft.data.recipes.RecipeProvider]
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 21.1.0
  */
-abstract class HTRecipeProvider(output: PackOutput, registries: CompletableFuture<HolderLookup.Provider>) : RecipeProvider(output, registries) {
-    final override fun buildRecipes(recipeOutput: RecipeOutput, holderLookup: HolderLookup.Provider) {
-        for (provider: HTSubRecipeProvider in buildList { collectProviders(::add) }) {
-            provider.buildRecipes(recipeOutput, holderLookup)
+abstract class HTRecipeProvider(packOutput: PackOutput, private val future: CompletableFuture<HolderLookup.Provider>, protected val modId: String) :
+    HTRecipeProviderContext(),
+    DataProvider {
+    private val pathProvider: PackOutput.PathProvider = packOutput.createRegistryElementsPathProvider(Registries.RECIPE)
+
+    /**
+     * レジストリへのアクセス
+     *
+     * [buildRecipes]の前に初期化されます。
+     */
+    override lateinit var registries: HolderLookup.Provider
+        internal set
+
+    /**
+     * レシピの出力先
+     *
+     * [buildRecipes]の前に初期化されます。
+     */
+    override lateinit var exporter: HTRecipeExporter
+        internal set
+
+    override fun run(cache: CachedOutput): CompletableFuture<*> = future.thenCompose { registries: HolderLookup.Provider ->
+        val recipes: MutableSet<ResourceLocation> = hashSetOf()
+        val tasks: MutableList<CompletableFuture<*>> = mutableListOf()
+        this.registries = registries
+        this.exporter = HTRecipeExporter { id: ResourceLocation, recipe: Recipe<*>, conditions: List<ICondition> ->
+            val fixedId: ResourceLocation = id.let(::modifyId)
+            check(recipes.add(fixedId)) { "Duplicate recipe $fixedId" }
+            tasks += DataProvider.saveStable(cache, registries, Recipe.CONDITIONAL_CODEC, Optional.of(WithConditions(conditions, recipe)), pathProvider.json(fixedId))
         }
+        buildRecipes()
+        CompletableFuture.allOf(*tasks.toTypedArray())
     }
 
     /**
-     * レシピを生成させたい[HTSubRecipeProvider]を[consumer]に登録します。
+     * レシピを生成します。
      */
-    protected abstract fun collectProviders(consumer: Consumer<HTSubRecipeProvider>)
+    protected abstract fun buildRecipes()
+
+    /**
+     * 受け取った[id]を[exporter]内で変換します。
+     */
+    protected open fun modifyId(id: ResourceLocation): ResourceLocation = modId.toId(id.path)
+
+    //    Extensions    //
+
+    /**
+     * 指定した[パス][path]から[ID][ResourceLocation]を作成します。
+     * @return [modId]を[名前空間][ResourceLocation.getNamespace]とする[ID][ResourceLocation]
+     */
+    protected fun id(path: String): ResourceLocation = modId.toId(path)
+
+    /**
+     * 指定した[パス][path]から[ID][ResourceLocation]を作成します。
+     * @return [modId]を[名前空間][ResourceLocation.getNamespace]とする[ID][ResourceLocation]
+     */
+    protected fun id(vararg path: String): ResourceLocation = modId.toId(*path)
+
+    //    Integration    //
+
+    abstract class Integration(packOutput: PackOutput, future: CompletableFuture<HolderLookup.Provider>, modId: String, integrationModId: String) : HTRecipeProvider(packOutput, future, modId) {
+        val condition = ModLoadedCondition(integrationModId)
+        private val builtInIds: Set<String> = HTConst.getBuiltInIdSet(modId)
+
+        final override fun modifyId(id: ResourceLocation): ResourceLocation {
+            val namespace: String = id.namespace
+            return if (namespace in builtInIds) {
+                val path: List<String> = id.path.split("/", limit = 2)
+                id(path[0], modId, path[1])
+            } else {
+                val path: List<String> = id.path.split("/", limit = 2)
+                id(path[0], namespace, path[1])
+            }
+        }
+    }
 }

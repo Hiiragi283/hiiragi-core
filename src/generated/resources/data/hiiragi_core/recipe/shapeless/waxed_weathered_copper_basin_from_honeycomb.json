@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "copper_basin",
+  "ingredients": [
+    {
+      "item": "hiiragi_core:weathered_copper_basin"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "hiiragi_core:waxed_weathered_copper_basin"
+  }
+}

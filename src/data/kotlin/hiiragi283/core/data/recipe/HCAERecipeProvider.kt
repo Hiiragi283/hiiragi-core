@@ -3,21 +3,24 @@ package hiiragi283.core.data.recipe
 import appeng.recipes.transform.TransformCircumstance
 import appeng.recipes.transform.TransformRecipeBuilder
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.data.recipe.HTSubRecipeProvider
+import hiiragi283.core.api.data.recipe.HTRecipeProvider
+import hiiragi283.core.api.data.recipe.IngredientBuilder
+import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.common.integration.HCIConstants
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCItems
+import java.util.concurrent.CompletableFuture
+import net.minecraft.core.HolderLookup
+import net.minecraft.data.PackOutput
+import net.minecraft.data.recipes.RecipeOutput
+import net.minecraft.world.item.crafting.Ingredient
 
-data object HCAERecipeProvider : HTSubRecipeProvider.Integration(HiiragiCoreAPI.MOD_ID, HCIConstants.AE2) {
-    override fun buildRecipeInternal() {
-        transform()
-    }
-
-    @JvmStatic
-    private fun transform() {
+class HCAERecipeProvider(packOutput: PackOutput, future: CompletableFuture<HolderLookup.Provider>) : HTRecipeProvider.Integration(packOutput, future, HiiragiCoreAPI.MOD_ID, HCIConstants.AE2) {
+    override fun buildRecipes() {
+        val output: RecipeOutput = exporter.asOutput().withConditions(condition)
         // Steel Ingot
         useItem(CommonParts.INGOT, CommonMaterialKeys.STEEL) {
             TransformRecipeBuilder.transform(
@@ -26,8 +29,8 @@ data object HCAERecipeProvider : HTSubRecipeProvider.Integration(HiiragiCoreAPI.
                 it,
                 1,
                 TransformCircumstance.EXPLOSION,
-                itemCreator.create(baseOrDust(VanillaMaterialKeys.IRON)),
-                itemCreator.create(baseOrDust(VanillaMaterialKeys.CHARCOAL)),
+                baseOrDustIngredient(VanillaMaterialKeys.IRON),
+                baseOrDustIngredient(VanillaMaterialKeys.CHARCOAL),
             )
             TransformRecipeBuilder.transform(
                 output,
@@ -35,8 +38,8 @@ data object HCAERecipeProvider : HTSubRecipeProvider.Integration(HiiragiCoreAPI.
                 it,
                 1,
                 TransformCircumstance.EXPLOSION,
-                itemCreator.create(baseOrDust(VanillaMaterialKeys.IRON)),
-                itemCreator.create(baseOrDust(VanillaMaterialKeys.COAL)),
+                baseOrDustIngredient(VanillaMaterialKeys.IRON),
+                baseOrDustIngredient(VanillaMaterialKeys.COAL),
             )
         }
         // Cured Rubber
@@ -46,10 +49,9 @@ data object HCAERecipeProvider : HTSubRecipeProvider.Integration(HiiragiCoreAPI.
             HCItems.CURED_RUBBER,
             2,
             TransformCircumstance.EXPLOSION,
-            itemCreator.create(HCItems.RAW_RUBBER),
-            itemCreator.create(baseOrDust(CommonMaterialKeys.SULFUR)),
+            Ingredient.of(HCItems.RAW_RUBBER),
+            baseOrDustIngredient(CommonMaterialKeys.SULFUR),
         )
-
         // Azure Shard
         useItem(CommonParts.GEM, HCMaterialKeys.AZURE) {
             TransformRecipeBuilder.transform(
@@ -58,8 +60,8 @@ data object HCAERecipeProvider : HTSubRecipeProvider.Integration(HiiragiCoreAPI.
                 it,
                 1,
                 TransformCircumstance.EXPLOSION,
-                itemCreator.create(baseOrDust(VanillaMaterialKeys.AMETHYST)),
-                itemCreator.create(baseOrDust(VanillaMaterialKeys.LAPIS)),
+                baseOrDustIngredient(VanillaMaterialKeys.AMETHYST),
+                baseOrDustIngredient(VanillaMaterialKeys.LAPIS),
             )
         }
         // Azure Steel
@@ -70,9 +72,13 @@ data object HCAERecipeProvider : HTSubRecipeProvider.Integration(HiiragiCoreAPI.
                 it,
                 1,
                 TransformCircumstance.EXPLOSION,
-                itemCreator.create(baseOrDust(VanillaMaterialKeys.IRON)),
-                itemCreator.create(baseOrDust(HCMaterialKeys.AZURE)),
+                baseOrDustIngredient(VanillaMaterialKeys.IRON),
+                baseOrDustIngredient(HCMaterialKeys.AZURE),
             )
         }
     }
+
+    fun baseOrDustIngredient(material: HTMaterialLike): Ingredient = IngredientBuilder().apply { +baseOrDust(material).let(::orHolderSet) }.build()
+
+    override fun getName(): String = "AE2 Recipes"
 }

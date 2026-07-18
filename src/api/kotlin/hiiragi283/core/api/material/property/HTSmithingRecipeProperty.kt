@@ -1,7 +1,7 @@
 package hiiragi283.core.api.material.property
 
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.resource.SupplierWithId
+import hiiragi283.core.api.resource.SimpleSupplierWithKey
 import net.minecraft.world.item.Item
 
 /**
@@ -13,4 +13,4 @@ import net.minecraft.world.item.Item
  * @since 0.9.0
  */
 @JvmRecord
-data class HTSmithingRecipeProperty(val template: SupplierWithId<Item>, val base: HTMaterialKey, val allowCrafting: Boolean)
+data class HTSmithingRecipeProperty(val template: SimpleSupplierWithKey<Item>, val base: HTMaterialKey, val allowCrafting: Boolean)

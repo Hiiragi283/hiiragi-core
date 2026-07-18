@@ -6,7 +6,9 @@ import hiiragi283.core.api.HCRegistries
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.part.HTPart
+import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.api.resource.HTIdLike
@@ -56,13 +58,37 @@ interface HTItemResult : HTIdLike {
 
     fun getSerializer(): Serializer<*>
 
+    /**
+     * アイテムの完成品を作成します。
+     */
     fun create(): HTTextResult<ItemStack>
 
+    /**
+     * アイテムの完成品を作成します。
+     * @return 正常に作成できなかった場合は[ItemStack.EMPTY]
+     */
     fun createOrEmpty(): ItemStack = create().getOrElse { ItemStack.EMPTY }
 
-    fun withChance(chance: Float = 1f): HTChancedItemResult = withChance(chance.toFraction())
+    /**
+     * 完成品の個数
+     */
+    val count: Int
 
-    fun withChance(chance: Fraction): HTChancedItemResult = HTChancedItemResult(this, chance)
+    /**
+     * このインスタンスのコピーを作成します。
+     * @param newCount 新しい個数
+     */
+    fun copyWithCount(newCount: Int): HTItemResult
+
+    /**
+     * 確率付きの完成品に変換します。
+     */
+    infix fun withChance(chance: Float = 1f): HTChancedItemResult = withChance(chance.toFraction())
+
+    /**
+     * 確率付きの完成品に変換します。
+     */
+    infix fun withChance(chance: Fraction): HTChancedItemResult = HTChancedItemResult(this, chance)
 
     //    Serializer    //
 
@@ -91,16 +117,20 @@ interface HTItemResult : HTIdLike {
             val SERIALIZER: Serializer<Simple> = Serializer(MAP_CODEC, STREAM_CODEC)
         }
 
+        override val count: Int get() = template.count
+
         override fun getSerializer(): Serializer<*> = SERIALIZER
 
         override fun create(): HTTextResult<ItemStack> = template.copy().right()
+
+        override fun copyWithCount(newCount: Int): Simple = Simple(template.copyWithCount(newCount))
 
         override fun getKey(): ResourceKey<Item> = template.itemHolder.getKeyOrThrow()
     }
 
     //    Tagged    //
 
-    data class Tagged(val tagKey: TagKey<Item>, val count: Int) : HTItemResult {
+    data class Tagged(val tagKey: TagKey<Item>, override val count: Int) : HTItemResult {
         companion object {
             @JvmField
             val CODEC: MapCodec<Tagged> = HTCodecs.recordMap { instance ->
@@ -118,13 +148,15 @@ interface HTItemResult : HTIdLike {
 
         override fun create(): HTTextResult<ItemStack> = HiiragiCoreAccess.INSTANCE.getFirstHolder(BuiltInRegistries.ITEM.asLookup(), tagKey).map { ItemStack(it.get(), count) }
 
+        override fun copyWithCount(newCount: Int): Tagged = this.copy(count = newCount)
+
         override fun getId(): ResourceLocation = tagKey.location()
     }
 
     //    MaterialPart    //
 
     @JvmRecord
-    data class MaterialPart(val part: HTPart, val material: HTMaterialKey, val count: Int) : HTItemResult {
+    data class MaterialPart(val part: HTPart, val material: HTMaterialKey, override val count: Int) : HTItemResult {
         companion object {
             @JvmField
             val CODEC: MapCodec<MaterialPart> = HTCodecs.recordMap { instance ->
@@ -145,6 +177,8 @@ interface HTItemResult : HTIdLike {
             val SERIALIZER: Serializer<MaterialPart> = Serializer(CODEC)
         }
 
+        constructor(part: HTPartLike, material: HTMaterialLike, count: Int = 1) : this(part.asPart(), material.asMaterialKey(), count)
+
         override fun getSerializer(): Serializer<*> = SERIALIZER
 
         override fun create(): HTTextResult<ItemStack> {
@@ -160,6 +194,8 @@ interface HTItemResult : HTIdLike {
                 .toTextResult { "No matching item for part ${part.asPartName()} and material ${material.asMaterialId()}" }
                 .map { it.toStack(count) }
         }
+
+        override fun copyWithCount(newCount: Int): MaterialPart = this.copy(count = newCount)
 
         override fun getId(): ResourceLocation = part.createId(material)
     }

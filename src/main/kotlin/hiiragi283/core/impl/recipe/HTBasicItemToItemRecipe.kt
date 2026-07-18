@@ -8,7 +8,7 @@ import hiiragi283.core.api.recipe.base.HTProgressRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
-import hiiragi283.core.common.data.recipe.builder.HTItemToResultRecipeBuilder
+import hiiragi283.core.impl.data.recipe.HTItemToResultRecipeBuilder
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.SingleRecipeInput
 

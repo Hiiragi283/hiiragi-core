@@ -16,7 +16,7 @@ import net.neoforged.neoforge.fluids.FluidStack
  * @since 0.10.0
  */
 @JvmInline
-value class HTFluidResult private constructor(private val stack: FluidStack) : HTKeyLike<Fluid> {
+value class HTFluidResult private constructor(@PublishedApi internal val stack: FluidStack) : HTKeyLike<Fluid> {
     companion object {
         @JvmField
         val CODEC: Codec<HTFluidResult> = FluidStack.CODEC.xmap(::create, HTFluidResult::stack)
@@ -45,6 +45,20 @@ value class HTFluidResult private constructor(private val stack: FluidStack) : H
         fun create(stack: FluidStack): HTFluidResult = stack.let(::validate).let(::HTFluidResult)
     }
 
+    /**
+     * 完成品の液体量
+     */
+    inline val amount: Int get() = stack.amount
+
+    /**
+     * このインスタンスのコピーを作成します。
+     * @param newAmount 新しい液体量
+     */
+    fun copyWithAmount(newAmount: Int): HTFluidResult = create(stack.copyWithAmount(newAmount))
+
+    /**
+     * 液体の完成品を取得します。
+     */
     fun create(): FluidStack = stack.copy()
 
     override fun getKey(): ResourceKey<Fluid> = stack.fluidHolder.getKeyOrThrow()

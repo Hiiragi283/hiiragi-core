@@ -13,6 +13,12 @@ import hiiragi283.core.data.loot.HCGlobalLootModifierProvider
 import hiiragi283.core.data.loot.HCGlobalLootProvider
 import hiiragi283.core.data.model.HCBlockStateProvider
 import hiiragi283.core.data.model.HCItemModelProvider
+import hiiragi283.core.data.recipe.HCAERecipeProvider
+import hiiragi283.core.data.recipe.HCChargingRecipeProvider
+import hiiragi283.core.data.recipe.HCCrushingRecipeProvider
+import hiiragi283.core.data.recipe.HCExplodingRecipeProvider
+import hiiragi283.core.data.recipe.HCTankInteractionRecipeProvider
+import hiiragi283.core.data.recipe.HCVanillaRecipeProvider
 import hiiragi283.core.data.tag.HCBlockTagsProvider
 import hiiragi283.core.data.tag.HCDamageTypeTagsProvider
 import hiiragi283.core.data.tag.HCEntityTypeTagsProvider
@@ -56,7 +62,13 @@ data object HiiragiCoreDataGen {
         )
         event.createProvider(::HCGlobalLootModifierProvider)
 
-        event.createProvider(::HCRecipeProvider)
+        event.createProvider(::HCChargingRecipeProvider)
+        event.createProvider(::HCCrushingRecipeProvider)
+        event.createProvider(::HCExplodingRecipeProvider)
+        event.createProvider(::HCTankInteractionRecipeProvider)
+        event.createProvider(::HCVanillaRecipeProvider)
+
+        event.createProvider(::HCAERecipeProvider)
 
         event.createProviderWithHelper(::HCDamageTypeTagsProvider)
         event.createProviderWithHelper(::HCEntityTypeTagsProvider)
