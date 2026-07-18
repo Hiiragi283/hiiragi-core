@@ -5,7 +5,7 @@ parchment-mc = "1.21.1"
 parchment-map = "2024.11.17"
 
 neo-moddev = "2.0.141"
-neo-version = "21.1.230"
+neo-version = "21.1.240"
 kff-version = "5.12.0"
 
 kotlin = "2.4.0"
@@ -21,11 +21,11 @@ curios = "9.5.1+1.21.1"
 dire = "7463040"
 immersive = "1.21.1-12.4.2-194"
 jade = "15.10.5+neoforge"
-jei = "19.27.0.340"
+jei = "19.39.0.368"
 mek = "1.21.1-10.7.19.85"
-mi = "2.4.1"
-moonlight = "1.21.1-3.0.5"
-oritech = "1.2.6"
+mi = "2.5.3"
+moonlight = "1.21.1-3.1.1"
+oritech = "1.2.9"
 replica = "1.21-1.2.7"
 
 [libraries]
@@ -43,22 +43,19 @@ mek = { group = "mekanism", name = "Mekanism", version.ref = "mek" }
 mi = { group = "aztech", name = "Modern-Industrialization", version.ref = "mi" }
 moonlight = { group = "net.mehvahdjukaar", name = "moonlight-common", version.ref = "moonlight" }
 moonlight-neo = { group = "net.mehvahdjukaar", name = "moonlight-neoforge", version.ref = "moonlight" }
-moonlight-runtime = { group = "maven.modrinth", name = "moonlight", version.ref = "moonlight" }
+moonlight-runtime = { group = "maven.modrinth", name = "moonlight", version = "moonlight" }
 oritech = { group = "rearth.oritech", name = "oritech-neoforge-1.21.1", version.ref = "oritech" }
 replica = { group = "maven.modrinth", name = "replication", version.ref = "replica" }
 
 [bundles]
 
-common-impl = []
-
-common-compile = [
-    "moonlight",
-    "moonlight-neo",
+common-impl = [
+    "moonlight-neo"
 ]
 
-common-runtime = [
-    "moonlight-runtime",
-]
+common-compile = []
+
+common-runtime = []
 
 integration-impl = [
     "ae2",
