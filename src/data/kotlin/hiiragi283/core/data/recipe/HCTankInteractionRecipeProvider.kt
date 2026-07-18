@@ -41,19 +41,19 @@ class HCTankInteractionRecipeProvider(packOutput: PackOutput, future: Completabl
 
         // Honey Block <-> Honey
         HTTankInteractionRecipeBuilder.emptying {
-            ingredient { items { +Items.HONEY_BLOCK } }
+            ingredient { +Items.HONEY_BLOCK }
             fluidResult { +HCFluids.HONEY }
             recipeId suffix "_from_block"
         }.save(exporter)
         HTTankInteractionRecipeBuilder.filling {
-            itemIngredient { +holderSet(Tags.Items.GLASS_BLOCKS) }
+            itemIngredient { +Tags.Items.GLASS_BLOCKS }
             fluidIngredient { +HCFluids.HONEY }
             result { +Items.HONEY_BLOCK }
         }.save(exporter)
 
         // Latex + Bowl -> Raw Rubber
         HTTankInteractionRecipeBuilder.filling {
-            itemIngredient { items { +Items.BOWL } }
+            itemIngredient { +Items.BOWL }
             fluidIngredient { +HCFluids.LATEX }
             result {
                 +HCItems.RAW_RUBBER
@@ -62,7 +62,7 @@ class HCTankInteractionRecipeProvider(packOutput: PackOutput, future: Completabl
         }.save(exporter)
         // Raw Rubber -> Rubber Bar
         HTCookingRecipeBuilder.smelting {
-            ingredient { items { +HCItems.RAW_RUBBER } }
+            ingredient { +HCItems.RAW_RUBBER }
             +HCItems.CURED_RUBBER.toStack()
             exp = 0.7f
         }.save(exporter)
@@ -76,7 +76,7 @@ class HCTankInteractionRecipeProvider(packOutput: PackOutput, future: Completabl
     ) {
         // Emptying
         HTTankInteractionRecipeBuilder.emptying {
-            ingredient { items { +bottle.asItem() } }
+            ingredient { +bottle }
             fluidResult {
                 +fluid
                 this.amount = amount
@@ -85,7 +85,7 @@ class HCTankInteractionRecipeProvider(packOutput: PackOutput, future: Completabl
         }.save(exporter)
         // Filling
         HTTankInteractionRecipeBuilder.filling {
-            itemIngredient { items { +container.asItem() } }
+            itemIngredient { +container }
             fluidIngredient {
                 +fluid
                 this.amount = amount

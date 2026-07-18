@@ -51,3 +51,15 @@ val <R> HTRecipeHolder<R>.id: ResourceLocation get() = this.first
  * @since 21.1.0
  */
 val <R> HTRecipeHolder<R>.recipe: R get() = this.second
+
+/**
+ * @author Hiiragi Tsubasa
+ * @since 21.1.0
+ */
+inline fun <T, reified U> HTRecipeHolder<T>.castRecipe(): HTRecipeHolder<U>? {
+    val (id: ResourceLocation, recipe: T) = this
+    return when (recipe) {
+        is U -> id to recipe
+        else -> null
+    }
+}

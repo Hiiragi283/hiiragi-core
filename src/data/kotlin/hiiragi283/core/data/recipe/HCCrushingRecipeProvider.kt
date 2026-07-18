@@ -27,7 +27,7 @@ class HCCrushingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
             HCItems.MAGMA_SHARD to Items.MAGMA_BLOCK,
         ).forEach { (output: ItemLike, input: Item) ->
             HTItemToMultiItemRecipeBuilder.crushing {
-                ingredient { items { +input } }
+                ingredient { +input }
                 result { +output }
             }.save(exporter)
         }
@@ -37,7 +37,7 @@ class HCCrushingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
             HCBlocks.WARPED_WART to Items.WARPED_WART_BLOCK,
         ).forEach { (output: ItemLike, input: Item) ->
             HTItemToMultiItemRecipeBuilder.crushing {
-                ingredient { items { +input } }
+                ingredient { +input }
                 result {
                     +output
                     count = 3
@@ -52,7 +52,7 @@ class HCCrushingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
             Items.SNOWBALL to Items.SNOW_BLOCK,
         ).forEach { (output: Item, input: Item) ->
             HTItemToMultiItemRecipeBuilder.crushing {
-                ingredient { items { +input } }
+                ingredient { +input }
                 result {
                     +output
                     count = 4
@@ -62,7 +62,7 @@ class HCCrushingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
         }
         // Prismarine Bricks -> Prismarine Shard
         HTItemToMultiItemRecipeBuilder.crushing {
-            ingredient { items { +Items.PRISMARINE_BRICKS } }
+            ingredient { +Items.PRISMARINE_BRICKS }
             result {
                 +Items.PRISMARINE_SHARD
                 count = 9
@@ -71,7 +71,7 @@ class HCCrushingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
         }.save(exporter)
         // Beetroot -> Sugar + Molasses
         HTItemToMultiItemRecipeBuilder.crushing {
-            ingredient { +holderSet(Tags.Items.CROPS_BEETROOT) }
+            ingredient { +Tags.Items.CROPS_BEETROOT }
             result {
                 +Items.SUGAR
                 count = 2
@@ -81,7 +81,7 @@ class HCCrushingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
         }.save(exporter)
         // Sugar Cane -> Sugar + Molasses
         HTItemToMultiItemRecipeBuilder.crushing {
-            ingredient { +holderSet(Tags.Items.CROPS_SUGAR_CANE) }
+            ingredient { +Tags.Items.CROPS_SUGAR_CANE }
             result {
                 +Items.SUGAR
                 count = 4
@@ -91,7 +91,7 @@ class HCCrushingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
         }.save(exporter)
         // Ice -> Snowball
         HTItemToMultiItemRecipeBuilder.crushing {
-            ingredient { items { +Items.ICE } }
+            ingredient { +Items.ICE }
             result {
                 +Items.SNOWBALL
                 count = 4
@@ -100,7 +100,7 @@ class HCCrushingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
         }.save(exporter)
         // Wheat -> Flour
         HTItemToMultiItemRecipeBuilder.crushing {
-            ingredient { +holderSet(Tags.Items.CROPS_WHEAT) }
+            ingredient { +Tags.Items.CROPS_WHEAT }
             result { +HCItems.WHEAT_FLOUR }
         }.save(exporter)
 
@@ -111,25 +111,25 @@ class HCCrushingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
     private fun crushStones() {
         // Stone -> Cobblestone
         HTItemToMultiItemRecipeBuilder.crushing {
-            ingredient { items { +Items.STONE } }
+            ingredient { +Items.STONE }
             result { +Items.COBBLESTONE }
             recipeId suffix "_from_stone"
         }.save(exporter)
         // Cobblestone -> Gravel
         HTItemToMultiItemRecipeBuilder.crushing {
-            ingredient { +orHolderSet(Tags.Items.COBBLESTONES_NORMAL, Tags.Items.COBBLESTONES_MOSSY) }
+            ingredient { +listOf(Tags.Items.COBBLESTONES_NORMAL, Tags.Items.COBBLESTONES_MOSSY) }
             result { +Items.GRAVEL }
             recipeId suffix "_from_cobblestone"
         }.save(exporter)
         // Gravel -> Sand
         HTItemToMultiItemRecipeBuilder.crushing {
-            ingredient { +holderSet(Tags.Items.GRAVELS) }
+            ingredient { +Tags.Items.GRAVELS }
             result { +Items.SAND }
             recipeId suffix "_from_gravel"
         }.save(exporter)
         // Sandstone -> Sand + Saltpeter
         HTItemToMultiItemRecipeBuilder.crushing {
-            ingredient { +holderSet(Tags.Items.SANDSTONE_UNCOLORED_BLOCKS) }
+            ingredient { +Tags.Items.SANDSTONE_UNCOLORED_BLOCKS }
             result {
                 +Items.SAND
                 count = 2
@@ -142,7 +142,7 @@ class HCCrushingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
         }.save(exporter)
 
         HTItemToMultiItemRecipeBuilder.crushing {
-            ingredient { +holderSet(Tags.Items.SANDSTONE_RED_BLOCKS) }
+            ingredient { +Tags.Items.SANDSTONE_RED_BLOCKS }
             result {
                 +Items.RED_SAND
                 count = 2
@@ -159,7 +159,7 @@ class HCCrushingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
         fun wood(tagKey: TagKey<Item>, input: Int, output: Int) {
             HTItemToMultiItemRecipeBuilder.crushing {
                 ingredient {
-                    +holderSet(tagKey)
+                    +tagKey
                     count = input
                 }
                 +HTItemResult.MaterialPart(CommonParts.DUST, VanillaMaterialKeys.WOOD, output)

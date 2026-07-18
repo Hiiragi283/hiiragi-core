@@ -20,7 +20,7 @@ class HCChargingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
     override fun buildRecipes() {
         // Ender Pearl -> Ender Eye
         HCChargingRecipeBuilder.create {
-            ingredient { +holderSet(CommonTagPrefixes.PEARL, VanillaMaterialKeys.ENDER) }
+            ingredient { +tag(CommonTagPrefixes.PEARL, VanillaMaterialKeys.ENDER) }
             result {
                 +Items.ENDER_EYE
                 chance = fraction(1, 2)
@@ -28,7 +28,7 @@ class HCChargingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
         }.save(exporter)
         // Golden Apple
         HCChargingRecipeBuilder.create {
-            ingredient { items { +Items.GOLDEN_APPLE } }
+            ingredient { +Items.GOLDEN_APPLE }
             result {
                 +Items.ENCHANTED_GOLDEN_APPLE
                 chance = fraction(1, 8)
@@ -36,7 +36,7 @@ class HCChargingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
         }.save(exporter)
         // Quartz -> Prismarine
         HCChargingRecipeBuilder.create {
-            ingredient { +holderSet(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ) }
+            ingredient { +tag(CommonTagPrefixes.GEM, VanillaMaterialKeys.QUARTZ) }
             result {
                 +Items.PRISMARINE_SHARD
                 chance = fraction(3, 4)
@@ -44,7 +44,7 @@ class HCChargingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
         }.save(exporter)
         // Redstone Dust -> Glowstone Dust
         HCChargingRecipeBuilder.create {
-            ingredient { +holderSet(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE) }
+            ingredient { +tag(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE) }
             result {
                 +HTItemResult.MaterialPart(CommonParts.DUST, VanillaMaterialKeys.GLOWSTONE)
                 chance = fraction(3, 4)
@@ -52,7 +52,7 @@ class HCChargingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
         }.save(exporter)
         // Honey Bottle -> Exp Bottle
         HCChargingRecipeBuilder.create {
-            ingredient { +holderSet(Tags.Items.DRINKS_HONEY) }
+            ingredient { +Tags.Items.DRINKS_HONEY }
             result {
                 +Items.EXPERIENCE_BOTTLE
                 chance = fraction(1, 2)
@@ -61,7 +61,7 @@ class HCChargingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
 
         // End Crystal -> Eldritch Pearl
         HCChargingRecipeBuilder.create {
-            ingredient { items { +Items.END_CRYSTAL } }
+            ingredient { +Items.END_CRYSTAL }
             result {
                 +HTItemResult.MaterialPart(CommonParts.PEARL, HCMaterialKeys.ELDRITCH)
                 chance = fraction(1, 4)
@@ -69,12 +69,12 @@ class HCChargingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
         }.save(exporter)
         // Heart of the Sea
         HCChargingRecipeBuilder.create {
-            ingredient { items { +HCItems.ELDER_HEART } }
+            ingredient { +HCItems.ELDER_HEART }
             result { +Items.HEART_OF_THE_SEA }
         }.save(exporter)
         // End Crystal -> Eldritch Pearl
         HCChargingRecipeBuilder.create {
-            ingredient { items { +HCItems.WITHER_STAR } }
+            ingredient { +HCItems.WITHER_STAR }
             result { +Items.NETHER_STAR }
         }.save(exporter)
     }

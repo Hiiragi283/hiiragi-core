@@ -29,8 +29,7 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.Consumer
-import kotlin.time.Duration
-import kotlin.time.measureTime
+import kotlin.system.measureTimeMillis
 import net.minecraft.core.Holder
 
 /**
@@ -67,7 +66,7 @@ abstract class HiiragiCoreAccess {
      */
     inline fun forEachPlugin(title: String, action: (HTMaterialPlugin) -> Unit) {
         HiiragiCoreAPI.LOGGER.info("{}...", title)
-        val duration: Duration = measureTime {
+        val duration: Long = measureTimeMillis {
             for (plugin: HTMaterialPlugin in materialPlugins) {
                 runCatching {
                     action(plugin)

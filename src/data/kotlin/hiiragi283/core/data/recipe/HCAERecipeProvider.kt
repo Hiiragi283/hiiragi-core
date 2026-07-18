@@ -78,7 +78,7 @@ class HCAERecipeProvider(packOutput: PackOutput, future: CompletableFuture<Holde
         }
     }
 
-    fun baseOrDustIngredient(material: HTMaterialLike): Ingredient = IngredientBuilder().apply { +baseOrDust(material).let(::orHolderSet) }.build()
+    fun baseOrDustIngredient(material: HTMaterialLike): Ingredient = IngredientBuilder().apply { +baseOrDust(material) }.build()
 
     override fun getName(): String = "AE2 Recipes"
 }

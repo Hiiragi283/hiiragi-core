@@ -27,14 +27,6 @@ abstract class HTRecipeProvider(packOutput: PackOutput, private val future: Comp
     private val pathProvider: PackOutput.PathProvider = packOutput.createRegistryElementsPathProvider(Registries.RECIPE)
 
     /**
-     * レジストリへのアクセス
-     *
-     * [buildRecipes]の前に初期化されます。
-     */
-    override lateinit var registries: HolderLookup.Provider
-        internal set
-
-    /**
      * レシピの出力先
      *
      * [buildRecipes]の前に初期化されます。
@@ -45,7 +37,6 @@ abstract class HTRecipeProvider(packOutput: PackOutput, private val future: Comp
     override fun run(cache: CachedOutput): CompletableFuture<*> = future.thenCompose { registries: HolderLookup.Provider ->
         val recipes: MutableSet<ResourceLocation> = hashSetOf()
         val tasks: MutableList<CompletableFuture<*>> = mutableListOf()
-        this.registries = registries
         this.exporter = HTRecipeExporter { id: ResourceLocation, recipe: Recipe<*>, conditions: List<ICondition> ->
             val fixedId: ResourceLocation = id.let(::modifyId)
             check(recipes.add(fixedId)) { "Duplicate recipe $fixedId" }

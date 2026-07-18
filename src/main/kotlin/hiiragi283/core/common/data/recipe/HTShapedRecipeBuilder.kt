@@ -43,6 +43,10 @@ class HTShapedRecipeBuilder : HTCraftingRecipeBuilder<ShapedRecipe>(HTConst.SHAP
         patterns += this
     }
 
+    fun pattern(patterns: Iterable<String>) {
+        patterns.forEach { +it }
+    }
+
     /**
      * 2x2のパターンを指定します。
      */

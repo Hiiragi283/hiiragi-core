@@ -57,8 +57,8 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
         // Sand + Ash -> Glass Dust
         useItem(CommonParts.DUST, VanillaMaterialKeys.GLASS) {
             HTShapelessRecipeBuilder.create {
-                repeat(3) { ingredient { +holderSet(Tags.Items.SANDS) } }
-                ingredient { +holderSet(CommonTagPrefixes.DUST, CommonMaterialKeys.ASH) }
+                repeat(3) { ingredient { +Tags.Items.SANDS } }
+                ingredient { +tag(CommonTagPrefixes.DUST, CommonMaterialKeys.ASH) }
                 +it.toStack(4)
                 recipeId suffix "_from_sand_and_ash"
             }.save(exporter)
@@ -66,7 +66,7 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
         // Glass Dust -> Glass
         useItem(CommonParts.DUST, VanillaMaterialKeys.GLASS) {
             HTCookingRecipeBuilder.smelting {
-                ingredient { items { +it.get() } }
+                ingredient { +it }
                 result { +Items.GLASS }
                 recipeId suffix "_from_dust"
             }.save(exporter)
@@ -75,7 +75,7 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
         HTShapedRecipeBuilder.create {
             +"AAA"
             +"AAA"
-            define('A') { +holderSet(CommonTagPrefixes.ROD, VanillaMaterialKeys.IRON) }
+            define('A') { +tag(CommonTagPrefixes.ROD, VanillaMaterialKeys.IRON) }
             result {
                 +Items.IRON_BARS
                 count = 8
@@ -84,15 +84,15 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
         }.save(exporter)
         // Sticky Piston
         HTShapelessRecipeBuilder.create {
-            ingredient { +holderSet(HiiragiCoreTags.Items.STICKY_BALLS) }
-            ingredient { items { +Items.PISTON } }
+            ingredient { +HiiragiCoreTags.Items.STICKY_BALLS }
+            ingredient { +Items.PISTON }
             result { +Items.STICKY_PISTON }
         }.save(exporter)
 
         // Steel + Flint
         HTShapelessRecipeBuilder.create {
-            ingredient { +holderSet(CommonTagPrefixes.INGOT, CommonMaterialKeys.STEEL) }
-            ingredient { items { +Items.FLINT } }
+            ingredient { +tag(CommonTagPrefixes.INGOT, CommonMaterialKeys.STEEL) }
+            ingredient { +Items.FLINT }
             +createItemStack(Items.FLINT_AND_STEEL, DataComponents.MAX_DAMAGE, 64 * 3)
             recipeId replace id("real_flint_and_steel")
         }.save(exporter)
@@ -101,38 +101,38 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
     private fun materials() {
         // Bamboo -> Bamboo Charcoal
         HTCookingRecipeBuilder.smelting {
-            ingredient { items { +Items.BAMBOO } }
+            ingredient { +Items.BAMBOO }
             +HCItems.BAMBOO_CHARCOAL.toStack()
             exp = 0.5f
         }.save(exporter)
         // Compressed Sawdust -> Particle Board
         HTShapedRecipeBuilder.create {
             hollow8()
-            define('A') { +holderSet(CommonTagPrefixes.DUST, VanillaMaterialKeys.WOOD) }
-            define('B') { +holderSet(HiiragiCoreTags.Items.STICKY_BALLS) }
+            define('A') { +tag(CommonTagPrefixes.DUST, VanillaMaterialKeys.WOOD) }
+            define('B') { +HiiragiCoreTags.Items.STICKY_BALLS }
             +HCItems.PARTICLE_BOARD.toStack(4)
         }.save(exporter)
 
         // Steel Compound
         HTShapelessRecipeBuilder.create {
-            ingredient { +holderSet(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON) }
+            ingredient { +tag(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON) }
             repeat(2) {
-                ingredient { +holderSet(CommonTagPrefixes.DUST, VanillaMaterialKeys.CHARCOAL) }
+                ingredient { +tag(CommonTagPrefixes.DUST, VanillaMaterialKeys.CHARCOAL) }
             }
             +HCItems.STEEL_COMPOUND.toStack()
             recipeId suffix "_with_charcoal"
         }.save(exporter)
         HTShapelessRecipeBuilder.create {
-            ingredient { +holderSet(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON) }
+            ingredient { +tag(CommonTagPrefixes.INGOT, VanillaMaterialKeys.IRON) }
             repeat(4) {
-                ingredient { +holderSet(CommonTagPrefixes.DUST, VanillaMaterialKeys.COAL) }
+                ingredient { +tag(CommonTagPrefixes.DUST, VanillaMaterialKeys.COAL) }
             }
             +HCItems.STEEL_COMPOUND.toStack()
             recipeId suffix "_with_coal"
         }.save(exporter)
         useItem(CommonParts.INGOT, CommonMaterialKeys.STEEL) {
             HTCookingRecipeBuilder.blasting {
-                ingredient { items { +HCItems.STEEL_COMPOUND } }
+                ingredient { +HCItems.STEEL_COMPOUND }
                 +it.toStack()
                 exp = 0.7f
                 recipeId suffix "_from_compound"
@@ -142,7 +142,7 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
         // Polymer Resin -> Plastic Bar
         useItem(CommonParts.PLATE, CommonMaterialKeys.PLASTIC) {
             HTCookingRecipeBuilder.smelting {
-                ingredient { items { +HCItems.POLYMER_RESIN } }
+                ingredient { +HCItems.POLYMER_RESIN }
                 +it.toStack()
                 exp = 0.7f
                 recipeId suffix "_from_resin"
@@ -151,7 +151,7 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
         // Synthetic
         for (item: HTSimpleDeferredItem in listOf(HCItems.SYNTHETIC_FEATHER, HCItems.SYNTHETIC_FIBER, HCItems.SYNTHETIC_LEATHER)) {
             HTStonecuttingRecipeBuilder.create {
-                ingredient { +holderSet(HiiragiCoreTags.Items.PLASTICS) }
+                ingredient { +HiiragiCoreTags.Items.PLASTICS }
                 +item.toStack()
             }.save(exporter)
         }
@@ -159,28 +159,28 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
         // Warped Wart Block
         HTShapedRecipeBuilder.create {
             hollow8()
-            define('A') { +holderSet(HiiragiCoreTags.Items.CROPS_WARPED_WART) }
-            define('B') { items { +HCBlocks.WARPED_WART } }
+            define('A') { +HiiragiCoreTags.Items.CROPS_WARPED_WART }
+            define('B') { +HCBlocks.WARPED_WART }
             result { +Items.WARPED_WART_BLOCK }
         }.save(exporter)
         // Flour + Water -> Dough
         HTShapelessRecipeBuilder.create {
-            ingredient { +holderSet(HiiragiCoreTags.Items.FLOURS_WHEAT) }
+            ingredient { +HiiragiCoreTags.Items.FLOURS_WHEAT }
             +DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, PotionContents(Potions.WATER), Items.POTION)
             +HCItems.WHEAT_DOUGH.toStack()
             recipeId suffix "_with_bottle"
         }.save(exporter)
         HTShapelessRecipeBuilder.create {
             repeat(3) {
-                ingredient { +holderSet(HiiragiCoreTags.Items.FLOURS_WHEAT) }
+                ingredient { +HiiragiCoreTags.Items.FLOURS_WHEAT }
             }
-            ingredient { +holderSet(Tags.Items.BUCKETS_WATER) }
+            ingredient { +Tags.Items.BUCKETS_WATER }
             +HCItems.WHEAT_DOUGH.toStack(3)
             recipeId suffix "_with_bucket"
         }.save(exporter)
         // Dough -> Bread
         HTCookingRecipeBuilder.smeltingAndSmoking {
-            ingredient { items { +HCItems.WHEAT_DOUGH } }
+            ingredient { +HCItems.WHEAT_DOUGH }
             result { +Items.BREAD }
             exp = 0.3f
             recipeId suffix "_from_dough"
@@ -191,8 +191,8 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
             +"AAA"
             +"BBB"
             +" B "
-            define('A') { items { +Items.WITHER_SKELETON_SKULL } }
-            define('B') { +holderSet(ItemTags.SOUL_FIRE_BASE_BLOCKS) }
+            define('A') { +Items.WITHER_SKELETON_SKULL }
+            define('B') { +ItemTags.SOUL_FIRE_BASE_BLOCKS }
             +HCItems.WITHER_DOLL.toStack()
         }.save(exporter)
 
@@ -204,7 +204,7 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
 
     private fun registerIronAlt(key: HTMaterialKey, multiplier: Fraction) {
         val suffix: String = key.path
-        val ingredient: IngredientBuilder.() -> Unit = { +holderSet(CommonTagPrefixes.INGOT, key) }
+        val ingredient: IngredientBuilder.() -> Unit = { +tag(CommonTagPrefixes.INGOT, key) }
         val condition: ConditionBuilder.() -> Unit = { +CommonTagPrefixes.INGOT.itemTagKey(key) }
         // Bucket
         HTShapedRecipeBuilder.create {
@@ -224,7 +224,7 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
             +"ABA"
             +" A "
             define('A', ingredient)
-            define('B') { +holderSet(Tags.Items.CHESTS) }
+            define('B') { +Tags.Items.CHESTS }
             result {
                 +Items.HOPPER
                 count = multiplier.toInt()
@@ -237,10 +237,10 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
             +"AAA"
             +"BCB"
             +"BDB"
-            define('A') { +holderSet(ItemTags.PLANKS) }
-            define('B') { +holderSet(ItemTags.STONE_CRAFTING_MATERIALS) }
+            define('A') { +ItemTags.PLANKS }
+            define('B') { +ItemTags.STONE_CRAFTING_MATERIALS }
             define('C', ingredient)
-            define('D') { +holderSet(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE) }
+            define('D') { +tag(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE) }
             result {
                 +Items.PISTON
                 count = multiplier.toInt()
@@ -254,7 +254,7 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
             +"ABA"
             +"A A"
             define('A', ingredient)
-            define('B') { +holderSet(Tags.Items.RODS_WOODEN) }
+            define('B') { +Tags.Items.RODS_WOODEN }
             result {
                 +Items.RAIL
                 count = (16 * multiplier).toInt()
@@ -270,16 +270,16 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
             +"A"
             +"B"
             +"C"
-            define('A') { +holderSet(ItemTags.WOOL) }
-            define('B') { +holderSet(CommonTagPrefixes.INGOT, VanillaMaterialKeys.COPPER) }
-            define('C') { +holderSet(Tags.Items.RODS_WOODEN) }
+            define('A') { +ItemTags.WOOL }
+            define('B') { +tag(CommonTagPrefixes.INGOT, VanillaMaterialKeys.COPPER) }
+            define('C') { +Tags.Items.RODS_WOODEN }
             +HCItems.PAINT_BRUSH.toStack()
         }.save(exporter)
         // Blueprint
         HTShapelessRecipeBuilder.create {
-            ingredient { items { +Items.PAPER } }
-            ingredient { +holderSet(Tags.Items.DYES_WHITE) }
-            ingredient { +holderSet(Tags.Items.DYES_BLUE) }
+            ingredient { +Items.PAPER }
+            ingredient { +Tags.Items.DYES_WHITE }
+            ingredient { +Tags.Items.DYES_BLUE }
             +HCItems.BLUEPRINT.toStack()
         }.save(exporter)
         exporter.accept(id(HTConst.SHAPELESS, "blueprint_cloning"), HTBlueprintCloningRecipe(CraftingBookCategory.MISC))
@@ -288,46 +288,46 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
             +"  A"
             +"BC "
             +"CB "
-            define('A') { +holderSet(Tags.Items.STRINGS) }
-            define('B') { +holderSet(CommonTagPrefixes.NUGGET, VanillaMaterialKeys.IRON) }
-            define('C') { +holderSet(Tags.Items.GUNPOWDERS) }
+            define('A') { +Tags.Items.STRINGS }
+            define('B') { +tag(CommonTagPrefixes.NUGGET, VanillaMaterialKeys.IRON) }
+            define('C') { +Tags.Items.GUNPOWDERS }
             +HCItems.BOMB.toStack()
         }.save(exporter)
         // Slot Cover
         HTStonecuttingRecipeBuilder.create {
-            ingredient { items { +Items.SMOOTH_STONE_SLAB } }
+            ingredient { +Items.SMOOTH_STONE_SLAB }
             +HCItems.SLOT_COVER.toStack(3)
         }.save(exporter)
         // Trader Catalog
         HTShapelessRecipeBuilder.create {
-            ingredient { items { +Items.BOOK } }
-            ingredient { +holderSet(CommonTagPrefixes.GEM, VanillaMaterialKeys.EMERALD) }
+            ingredient { +Items.BOOK }
+            ingredient { +tag(CommonTagPrefixes.GEM, VanillaMaterialKeys.EMERALD) }
             +HCItems.TRADER_CATALOG.toStack()
         }.save(exporter)
         // Eldritch Egg
         HTShapedRecipeBuilder.create {
             hollow4()
-            define('A') { +holderSet(Tags.Items.EGGS) }
-            define('B') { +holderSet(CommonTagPrefixes.PEARL, HCMaterialKeys.ELDRITCH) }
+            define('A') { +Tags.Items.EGGS }
+            define('B') { +tag(CommonTagPrefixes.PEARL, HCMaterialKeys.ELDRITCH) }
             +HCItems.ELDRITCH_EGG.toStack(4)
         }.save(exporter)
         // Experience Tome
         HTShapedRecipeBuilder.create {
             cross8()
-            define('A') { items { +Items.EXPERIENCE_BOTTLE } }
-            define('B') { +holderSet(CommonTagPrefixes.GEM, VanillaMaterialKeys.EMERALD) }
-            define('C') { items { +Items.BOOK } }
+            define('A') { +Items.EXPERIENCE_BOTTLE }
+            define('B') { +tag(CommonTagPrefixes.GEM, VanillaMaterialKeys.EMERALD) }
+            define('C') { +Items.BOOK }
             +HCItems.EXPERIENCE_TOME.toStack()
         }.save(exporter)
         exporter.accept(id(HTConst.SHAPELESS, "experience_tome"), HCExperienceStoringRecipe(CraftingBookCategory.MISC))
 
         // Almighty Pickaxe
         HTShapelessRecipeBuilder.create {
-            ingredient { items { +Items.NETHERITE_SHOVEL } }
-            ingredient { items { +Items.NETHERITE_PICKAXE } }
-            ingredient { items { +Items.NETHERITE_AXE } }
-            ingredient { items { +Items.NETHERITE_HOE } }
-            repeat(4) { ingredient { +holderSet(CommonTagPrefixes.INGOT, CommonMaterialKeys.IRIDIUM) } }
+            ingredient { +Items.NETHERITE_SHOVEL }
+            ingredient { +Items.NETHERITE_PICKAXE }
+            ingredient { +Items.NETHERITE_AXE }
+            ingredient { +Items.NETHERITE_HOE }
+            repeat(4) { ingredient { +tag(CommonTagPrefixes.INGOT, CommonMaterialKeys.IRIDIUM) } }
             +HCItems.ALMIGHTY_PICKAXE.toStack()
         }.save(exporter)
         // Eternal Upgrade
@@ -335,9 +335,9 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
             +"ABA"
             +"ACA"
             +"AAA"
-            define('A') { +holderSet(CommonTagPrefixes.GEM, VanillaMaterialKeys.DIAMOND) }
-            define('B') { items { +HCItems.ETERNAL_UPGRADE } }
-            define('C') { items { +HCItems.IRIDESCENT_POWDER } }
+            define('A') { +tag(CommonTagPrefixes.GEM, VanillaMaterialKeys.DIAMOND) }
+            define('B') { +HCItems.ETERNAL_UPGRADE }
+            define('C') { +HCItems.IRIDESCENT_POWDER }
             +HCItems.ETERNAL_UPGRADE.toStack(2)
         }.save(exporter)
 
@@ -345,9 +345,9 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
         // Ring of Hyperion
         HTShapedRecipeBuilder.create {
             cross8()
-            define('A') { items { +Items.WIND_CHARGE } }
-            define('B') { items { +Items.ELYTRA } }
-            define('C') { items { +HCItems.IRIDESCENT_POWDER } }
+            define('A') { +Items.WIND_CHARGE }
+            define('B') { +Items.ELYTRA }
+            define('C') { +HCItems.IRIDESCENT_POWDER }
             +HCItems.RING_OF_HYPERION.toStack()
         }.save(exporter)
     }
@@ -356,8 +356,8 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
         // Dye
         for ((color: HTDefaultColor, content: HTFluidContent) in HCFluids.DYES.asSequenceWithColor()) {
             HTShapelessRecipeBuilder.create {
-                repeat(4) { ingredient { +holderSet(color.dyesTag) } }
-                ingredient { +holderSet(Tags.Items.BUCKETS_WATER) }
+                repeat(4) { ingredient { +color.dyesTag } }
+                ingredient { +Tags.Items.BUCKETS_WATER }
                 +content.bucketHolder.toStack()
                 recipeId suffix "_from_bye"
             }.save(exporter)
@@ -370,8 +370,8 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
             +" A "
             +"BBB"
             +"B  "
-            define('A') { items { +Items.LEVER } }
-            define('B') { +holderSet(CommonTagPrefixes.INGOT, VanillaMaterialKeys.COPPER) }
+            define('A') { +Items.LEVER }
+            define('B') { +tag(CommonTagPrefixes.INGOT, VanillaMaterialKeys.COPPER) }
             +HCBlocks.TREE_TAP.toStack()
         }.save(exporter)
         // Copper Basin
@@ -379,8 +379,8 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
             +"A A"
             +"A A"
             +"BAB"
-            define('A') { +holderSet(CommonTagPrefixes.INGOT, VanillaMaterialKeys.COPPER) }
-            define('B') { +holderSet(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.COPPER) }
+            define('A') { +tag(CommonTagPrefixes.INGOT, VanillaMaterialKeys.COPPER) }
+            define('B') { +tag(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.COPPER) }
             result { +HCBlocks.COPPER_BASIN.weathering.unaffected }
         }.save(exporter)
 
@@ -388,8 +388,8 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
             val (base: HTDeferredBlockAndItem<*, *>, waxed: HTDeferredBlockAndItem<*, *>) = HCBlocks.COPPER_BASIN[phase]
             // Waxing
             HTShapelessRecipeBuilder.create {
-                ingredient { items { +base } }
-                ingredient { items { +Items.HONEYCOMB } }
+                ingredient { +base }
+                ingredient { +Items.HONEYCOMB }
                 result { +waxed }
                 group = "copper_basin"
                 recipeId replace waxed.getId().withSuffix("_from_honeycomb")

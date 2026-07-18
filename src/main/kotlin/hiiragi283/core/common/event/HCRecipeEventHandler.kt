@@ -1,48 +1,35 @@
 package hiiragi283.core.common.event
 
-import com.google.common.collect.HashMultimap
-import com.google.common.collect.Multimap
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
-import hiiragi283.core.api.event.HTRegisterRuntimeRecipeEvent
 import hiiragi283.core.api.item.enchantment.toInstances
 import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.world.HCInWorldRecipeCaches
-import hiiragi283.core.mixin.RecipeManagerAccessor
 import hiiragi283.core.setup.HCAttachmentTypes
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.util.HTShapelessRecipeHelper
-import net.minecraft.core.HolderLookup
 import net.minecraft.core.component.DataComponents
-import net.minecraft.resources.ResourceLocation
-import net.minecraft.server.ReloadableServerResources
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.item.EnchantedBookItem
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.crafting.Ingredient
-import net.minecraft.world.item.crafting.Recipe
-import net.minecraft.world.item.crafting.RecipeHolder
-import net.minecraft.world.item.crafting.RecipeManager
-import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.enchantment.ItemEnchantments
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.AABB
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
-import net.neoforged.neoforge.common.NeoForge
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent
 import net.neoforged.neoforge.event.level.ExplosionEvent
 
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 object HCRecipeEventHandler {
-    @JvmStatic
-    fun registerRuntimeRecipe(registries: ReloadableServerResources) {
+    /*fun registerRuntimeRecipe(registries: ReloadableServerResources) {
         val provider: HolderLookup.Provider = registries.fullRegistries().get()
         val recipeManager: RecipeManager = registries.recipeManager
         val patches: MutableList<HTRegisterRuntimeRecipeEvent.Result> = mutableListOf()
@@ -67,7 +54,7 @@ object HCRecipeEventHandler {
 
         accessor.byType = byType
         accessor.byName = byName
-    }
+    }*/
 
     @SubscribeEvent
     fun registerBrewing(event: RegisterBrewingRecipesEvent) {

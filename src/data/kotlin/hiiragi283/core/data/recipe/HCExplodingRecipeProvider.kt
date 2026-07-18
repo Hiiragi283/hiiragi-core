@@ -22,7 +22,7 @@ class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFutur
     override fun buildRecipes() {
         // Cobblestone -> Cobbled Deepslate
         HCExplodingRecipeBuilder.create {
-            ingredient { +orHolderSet(Tags.Items.STONES, Tags.Items.COBBLESTONES_NORMAL) }
+            ingredient { +setOf(Tags.Items.STONES, Tags.Items.COBBLESTONES_NORMAL) }
             result {
                 +Items.COBBLED_DEEPSLATE
                 chance = fraction(1, 2)
@@ -30,12 +30,12 @@ class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFutur
         }.save(exporter)
         // Ancient Debris -> Netherite Scrap
         HCExplodingRecipeBuilder.create {
-            ingredient { +holderSet(Tags.Items.ORES_NETHERITE_SCRAP) }
+            ingredient { +Tags.Items.ORES_NETHERITE_SCRAP }
             result { +HTItemResult.MaterialPart(CommonParts.SCRAP, VanillaMaterialKeys.NETHERITE, 2) }
         }.save(exporter)
         // Gunpowder -> Blaze Powder
         HCExplodingRecipeBuilder.create {
-            ingredient { +holderSet(Tags.Items.GUNPOWDERS) }
+            ingredient { +Tags.Items.GUNPOWDERS }
             result {
                 +Items.BLAZE_POWDER
                 chance = fraction(1, 6)
@@ -43,7 +43,7 @@ class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFutur
         }.save(exporter)
         // Glass -> Quartz// Glass -> Quartz
         HCExplodingRecipeBuilder.create {
-            ingredient { +holderSet(Tags.Items.GLASS_BLOCKS) }
+            ingredient { +Tags.Items.GLASS_BLOCKS }
             result {
                 +HTItemResult.MaterialPart(CommonParts.GEM, VanillaMaterialKeys.QUARTZ)
                 chance = fraction(1, 4)
@@ -51,7 +51,7 @@ class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFutur
         }.save(exporter)
         // Quartz Block -> Ghast Tear
         HCExplodingRecipeBuilder.create {
-            ingredient { +holderSet(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.QUARTZ) }
+            ingredient { +tag(CommonTagPrefixes.STORAGE_BLOCK, VanillaMaterialKeys.QUARTZ) }
             result {
                 +Items.GHAST_TEAR
                 chance = fraction(1, 4)
@@ -65,7 +65,7 @@ class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFutur
             listOf(CommonMaterialKeys.CARBON) to 16,
         ).forEach { (fuels: List<HTMaterialKey>, count: Int) ->
             HCExplodingRecipeBuilder.create {
-                ingredient { +fuels.flatMap(::baseOrDust).let(::orHolderSet) }
+                ingredient { +fuels.flatMap(::baseOrDust) }
                 result {
                     +HTItemResult.MaterialPart(CommonParts.GEM, VanillaMaterialKeys.DIAMOND)
                     chance = fraction(1, count)
@@ -75,7 +75,7 @@ class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFutur
         }
         // Echo Shard
         HCExplodingRecipeBuilder.create {
-            ingredient { items { +Items.SCULK } }
+            ingredient { +Items.SCULK }
             result {
                 +HTItemResult.MaterialPart(CommonParts.GEM, VanillaMaterialKeys.ECHO)
                 chance = fraction(1, 8)
@@ -83,7 +83,7 @@ class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFutur
         }.save(exporter)
         // Crimson Crystal
         HCExplodingRecipeBuilder.create {
-            ingredient { +holderSet(ItemTags.CRIMSON_STEMS) }
+            ingredient { +ItemTags.CRIMSON_STEMS }
             result {
                 +HTItemResult.MaterialPart(CommonParts.GEM, HCMaterialKeys.CRIMSON_CRYSTAL)
                 chance = fraction(1, 8)
@@ -91,7 +91,7 @@ class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFutur
         }.save(exporter)
         // Warped Crystal
         HCExplodingRecipeBuilder.create {
-            ingredient { +holderSet(ItemTags.WARPED_STEMS) }
+            ingredient { +ItemTags.WARPED_STEMS }
             result {
                 +HTItemResult.MaterialPart(CommonParts.GEM, HCMaterialKeys.WARPED_CRYSTAL)
                 chance = fraction(1, 8)
