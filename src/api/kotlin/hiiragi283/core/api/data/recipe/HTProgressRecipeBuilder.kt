@@ -8,7 +8,7 @@ import net.minecraft.world.item.crafting.Recipe
 /**
  * [HTProgressData]を使用するレシピ向けの，[HTRecipeBuilder]の拡張クラスです。
  * @author Hiiragi Tsubasa
- * @since 26.1.0
+ * @since 21.1.0
  */
 abstract class HTProgressRecipeBuilder<out RECIPE : Recipe<*>>(prefix: String) : HTRecipeBuilder<RECIPE>(prefix) {
     protected var progressData: HTProgressData = HTProgressData.time(20 * 10)

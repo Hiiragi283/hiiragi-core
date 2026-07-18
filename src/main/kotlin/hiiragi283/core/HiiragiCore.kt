@@ -3,13 +3,13 @@ package hiiragi283.core
 import hiiragi283.core.api.HCRegistries
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.data.pack.HTDynamicDatapack
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
 import hiiragi283.core.api.mod.HTCommonMod
 import hiiragi283.core.api.network.HTPayloadHandlers
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.common.block.dispenser.HCDispenserBehaviours
 import hiiragi283.core.common.capability.HTFluidCapabilities
-import hiiragi283.core.common.data.HCServerResourceProvider
 import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
 import hiiragi283.core.common.network.HTUpdateMenuPacket
@@ -18,6 +18,7 @@ import hiiragi283.core.common.storage.fluid.HTBasicItemFluidTank
 import hiiragi283.core.common.storage.fluid.HTExperienceTomeFluidTank
 import hiiragi283.core.config.HCConfig
 import hiiragi283.core.impl.HiiragiCoreAccessImpl
+import hiiragi283.core.impl.data.pack.HTPackSource
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCEntityTypes
@@ -25,7 +26,6 @@ import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCMenuTypes
 import hiiragi283.core.setup.HCMiscRegister
-import net.mehvahdjukaar.moonlight.api.platform.RegHelper
 import net.minecraft.server.packs.PackType
 import net.minecraft.server.packs.repository.Pack
 import net.minecraft.server.packs.repository.PackSource
@@ -57,8 +57,6 @@ data object HiiragiCore : HTCommonMod() {
         HCMenuTypes.REGISTER.register(eventBus)
 
         container.registerConfig(ModConfig.Type.COMMON, HCConfig.COMMON_SPEC)
-
-        RegHelper.registerDynamicResourceProvider(HCServerResourceProvider)
 
         HiiragiCoreAPI.LOGGER.info("Hiiragi-Core loaded")
     }
@@ -105,15 +103,37 @@ data object HiiragiCore : HTCommonMod() {
     }
 
     override fun registerPack(event: AddPackFindersEvent) {
-        if (FMLEnvironment.production) return
-        event.addPackFinders(
-            HiiragiCoreAPI.id("data", HiiragiCoreAPI.MOD_ID, "datapacks", HTConst.EXPERIMENTAL),
-            PackType.SERVER_DATA,
-            "Hiiragi Core: Experimental".toText(),
-            PackSource.FEATURE,
-            false,
-            Pack.Position.TOP,
-        )
-        HiiragiCoreAPI.LOGGER.info("Enabled Experimental Feature")
+        val packType: PackType = event.packType
+        when (packType) {
+            PackType.CLIENT_RESOURCES -> {
+            }
+            PackType.SERVER_DATA -> {
+            }
+        }
+        if (packType == PackType.SERVER_DATA) {
+            if (!FMLEnvironment.production) {
+                event.addPackFinders(
+                    HiiragiCoreAPI.id("data", HiiragiCoreAPI.MOD_ID, "datapacks", HTConst.EXPERIMENTAL),
+                    packType,
+                    "Hiiragi Core: Experimental".toText(),
+                    PackSource.FEATURE,
+                    false,
+                    Pack.Position.TOP,
+                )
+                HiiragiCoreAPI.LOGGER.info("Enabled Experimental Feature")
+            }
+
+            HTDynamicDatapack.clear()
+
+            event.addRepositorySource(
+                HTPackSource(
+                    HiiragiCoreAPI.id("data").toString(),
+                    packType,
+                    Pack.Position.TOP,
+                    ::HTDynamicDatapack,
+                ),
+            )
+            HiiragiCoreAPI.LOGGER.info("Added dynamic datapack")
+        }
     }
 }

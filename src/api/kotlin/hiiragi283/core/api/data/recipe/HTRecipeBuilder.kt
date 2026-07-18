@@ -28,9 +28,6 @@ abstract class HTRecipeBuilder<out RECIPE : Recipe<*>>(private val prefix: Strin
     @PublishedApi
     internal val conditions: MutableList<ICondition> = mutableListOf()
 
-    /**
-     * @since 26.1.1
-     */
     inline fun condition(builderAction: ConditionBuilder.() -> Unit) {
         contract {
             callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)

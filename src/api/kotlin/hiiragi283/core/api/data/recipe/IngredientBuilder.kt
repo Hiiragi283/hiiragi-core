@@ -6,6 +6,7 @@ import hiiragi283.core.api.util.HTBuilderMarker
 import hiiragi283.core.api.util.HTDelegates
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.crafting.CompoundIngredient
@@ -40,6 +41,11 @@ class IngredientBuilder {
         +Ingredient.of(this)
     }
 
+    @JvmName("unaryPlusItem")
+    operator fun Iterable<ItemLike>.unaryPlus() {
+        +Ingredient.fromValues(this.map(::ItemStack).stream().map(Ingredient::ItemValue))
+    }
+
     // Tag
     operator fun TagKey<Item>.unaryPlus() {
         +Ingredient.of(this)
@@ -47,7 +53,7 @@ class IngredientBuilder {
 
     @JvmName("unaryPlusTag")
     operator fun Iterable<TagKey<Item>>.unaryPlus() {
-        +Ingredient.fromValues(this.sortedWith(HTComparators.TAG_KEY).map(Ingredient::TagValue).stream())
+        +Ingredient.fromValues(this.sortedWith(HTComparators.TAG_KEY).stream().map(Ingredient::TagValue))
     }
 
     fun build(): Ingredient = ingredient

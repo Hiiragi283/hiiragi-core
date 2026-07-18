@@ -1,30 +1,43 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.core.api.data.tag
 
 import hiiragi283.core.api.collection.SetMultiMap
-import hiiragi283.core.api.data.HTServerResourceGenTask
+import hiiragi283.core.api.data.pack.HTDynamicDataRegister
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.api.tag.HTTagPrefix
 import java.util.concurrent.CompletableFuture
-import net.mehvahdjukaar.moonlight.api.resources.SimpleTagBuilder
-import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.core.HolderLookup
+import net.minecraft.core.registries.Registries
 import net.minecraft.data.PackOutput
 import net.minecraft.data.tags.TagsProvider
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagEntry
+import net.minecraft.tags.TagFile
 import net.minecraft.tags.TagKey
 import net.neoforged.neoforge.common.data.ExistingFileHelper
 
+/**
+ * [HTTagBuilder]に基づいてタグを生成するインターフェースです。
+ * @param T レジストリの要素のクラス
+ * @author Hiiragi Tsubasa
+ * @since 21.1.0
+ */
 interface HTTagsProvider<T : Any> {
+    /**
+     * レジストリのキー
+     */
     val registryKey: RegistryKey<T>
 
     /**
      * 新しい[HTTagBuilder]のインスタンスを作成します。
      * @param tagKey 生成対象のタグ
-     * @since 26.2.0
      */
     fun builder(tagKey: TagKey<T>): HTTagBuilder<T>
 
@@ -46,36 +59,58 @@ interface HTTagsProvider<T : Any> {
         builder(tagKeyIn)
     }
 
+    /**
+     * 新しい[ResourceKey]のインスタンスを作成します。
+     */
     fun createKey(id: ResourceLocation): ResourceKey<T> = registryKey.createKey(id)
 
+    /**
+     * 新しい[ResourceKey]のインスタンスを作成します。
+     */
     fun createKey(namespace: String, path: String): ResourceKey<T> = registryKey.createKey(namespace, path)
 
-    //    GenTask    //
+    //    Dynamic    //
 
-    abstract class GenTask<T : Any>(override val registryKey: RegistryKey<T>) :
-        HTTagsProvider<T>,
-        HTServerResourceGenTask {
-        private val builderCache: MutableMap<TagKey<T>, SimpleTagBuilder> = hashMapOf()
-
-        final override fun builder(tagKey: TagKey<T>): HTTagBuilder<T> = HTTagBuilder { entry: TagEntry -> builderCache.computeIfAbsent(tagKey, SimpleTagBuilder::of).add(entry) }
-
-        final override fun accept(sink: ResourceSink) {
-            // タグの値を一時的に保存
-            appendTags()
-            // タグの値を実際に登録
-            for (builder: SimpleTagBuilder in builderCache.values) {
-                sink.addTag(builder, registryKey)
+    /**
+     * 動的データパック向けの[TagsProvider]の代替クラスです。
+     * @author Hiiragi Tsubasa
+     * @since 21.1.0
+     */
+    class Dynamic<T : Any>(override val registryKey: RegistryKey<T>) : HTTagsProvider<T> {
+        companion object {
+            @JvmStatic
+            inline operator fun <T : Any> invoke(registryKey: RegistryKey<T>, action: Dynamic<T>.() -> Unit) {
+                contract {
+                    callsInPlace(action, InvocationKind.EXACTLY_ONCE)
+                }
+                Dynamic(registryKey).apply(action).addTags()
             }
         }
 
-        /**
-         * 生成するタグを登録します。
-         */
-        protected abstract fun appendTags()
+        private val entryCache = SetMultiMap.Builder<TagKey<T>, TagEntry>()
+
+        override fun builder(tagKey: TagKey<T>): HTTagBuilder<T> = HTTagBuilder { entry: TagEntry -> entryCache.put(tagKey, entry) }
+
+        fun addTags() {
+            entryCache.build().entries.forEach { (tagKey: TagKey<T>, entries: Collection<TagEntry>) ->
+                HTDynamicDataRegister.addToData(
+                    getTagPath(tagKey),
+                    TagFile.CODEC,
+                    TagFile(entries.toList(), false, listOf()),
+                )
+            }
+        }
+
+        private fun getTagPath(tagKey: TagKey<T>): ResourceLocation = tagKey.location().withPrefix("${Registries.tagsDirPath(tagKey.registry())}/")
     }
 
     //    DataGen    //
 
+    /**
+     * [HTTagsProvider]に基づいて[TagsProvider]を実装した抽象クラスです。
+     * @author Hiiragi Tsubasa
+     * @since 0.10.0
+     */
     abstract class DataGen<T : Any>(
         fileHelper: ExistingFileHelper,
         output: PackOutput,

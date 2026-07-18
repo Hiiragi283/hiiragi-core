@@ -6,12 +6,15 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.ItemLike
 
 /**
+ * アイテムのクラスを問わない[HTItemLike]のエイリアスです。
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */
 typealias HTSimpleItemLike = HTItemLike<Item>
 
 /**
+ * Hiiragi Seriesで使用される[ItemLike]の拡張インターフェースです。
+ * @param ITEM [asItem]で返されるアイテムのクラス
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */

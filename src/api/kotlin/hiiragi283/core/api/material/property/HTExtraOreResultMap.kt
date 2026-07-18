@@ -3,13 +3,13 @@
 package hiiragi283.core.api.material.property
 
 import hiiragi283.core.api.collection.mutableEnumMapOf
-import hiiragi283.core.api.data.recipe.HTResultCreator
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTExtraOreResultMap.Phase
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
+import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.toFraction
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
@@ -38,13 +38,13 @@ class HTExtraOreResultMap private constructor(map: Map<Phase, Pair<HTMaterialKey
             .getInstance()
             .getOrEmpty(key)
             .getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART)
-            .let { HTResultCreator.material(it, key) }
+            .let { HTItemResult.MaterialPart(it, key) }
             .withChance(chance)
     }
 
     fun getResult(phase: Phase, entry: HTMaterialManager.Entry): HTChancedItemResult? {
         val (key: HTMaterialKey, chance: Fraction) = this[phase] ?: return null
-        return HTResultCreator.material(entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART), key).withChance(chance)
+        return HTItemResult.MaterialPart(entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART), key) withChance chance
     }
 
     //    Phase    //

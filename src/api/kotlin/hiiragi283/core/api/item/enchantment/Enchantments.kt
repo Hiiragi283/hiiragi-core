@@ -43,6 +43,4 @@ fun Map<Holder<Enchantment>, Int>.toItem(parent: ItemEnchantments = ItemEnchantm
  * @author Hiiragi Tsubasa
  * @since 0.10.0
  */
-fun ItemEnchantments.toMap(): Map<Holder<Enchantment>, Int> = object : AbstractMap<Holder<Enchantment>, Int>() {
-    override val entries: Set<Map.Entry<Holder<Enchantment>, Int>> get() = this@toMap.entrySet()
-}
+fun ItemEnchantments.toMap(): Map<Holder<Enchantment>, Int> = this.keySet().associateWith(this::getLevel)

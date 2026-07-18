@@ -32,6 +32,9 @@ class HTToolType(
         inline fun create(name: String, builderAction: Builder.() -> Unit): HTToolType = Builder(name).apply(builderAction).build()
     }
 
+    /**
+     * @since 21.1.0
+     */
     fun createId(material: HTMaterialLike): ResourceLocation = material.asMaterialId().withPath { idPattern.replace("%s", it) }
 
     fun createTool(material: HTToolMaterial): Item {

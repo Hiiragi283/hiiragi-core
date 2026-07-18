@@ -1,6 +1,7 @@
 package hiiragi283.core.api.recipe.result
 
 import com.mojang.serialization.Codec
+import hiiragi283.core.api.fluid.FluidStack
 import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.api.resource.HTKeyLike
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -32,11 +33,7 @@ value class HTFluidResult private constructor(@PublishedApi internal val stack: 
             check(!stack.isEmpty) { "Cannot create HTFluidResult from empty stack" }
             val fluid: Fluid = stack.fluid
             return when {
-                !fluid.isSource(fluid.defaultFluidState()) && fluid is FlowingFluid -> {
-                    val stack1 = FluidStack(fluid.source, stack.amount)
-                    stack1.applyComponents(stack.componentsPatch)
-                    stack1
-                }
+                !fluid.isSource(fluid.defaultFluidState()) && fluid is FlowingFluid -> FluidStack(fluid.source, stack.amount, stack.componentsPatch)
                 else -> stack
             }
         }

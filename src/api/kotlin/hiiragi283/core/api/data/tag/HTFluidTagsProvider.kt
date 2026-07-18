@@ -52,6 +52,7 @@ abstract class HTFluidTagsProvider(
     /**
      * [HTFluidContent.fluidTag]に基づいて子タグをタグに追加します。
      * @param content 子タグの提供元
+     * @since 0.12.0
      */
     protected fun HTTagBuilder<Fluid>.addContentTag(content: HTFluidContent): HTTagBuilder<Fluid> = this.addTag(content.fluidTag)
 }

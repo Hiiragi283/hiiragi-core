@@ -2,7 +2,7 @@ package hiiragi283.core.api.storage.fluid
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
-import hiiragi283.core.api.fluid.createFluidStack
+import hiiragi283.core.api.fluid.FluidStack
 import hiiragi283.core.api.storage.resource.HTResourceType
 import hiiragi283.core.api.text.Text
 import net.minecraft.core.Holder
@@ -88,7 +88,7 @@ class HTFluidResourceType private constructor(private val stack: FluidStack) : H
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
-fun Fluid?.toResource(patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType? = createFluidStack(this, patch = patch).toResource()
+fun Fluid?.toResource(patch: DataComponentPatch = DataComponentPatch.EMPTY): HTFluidResourceType? = this?.let { FluidStack(it, FluidType.BUCKET_VOLUME, patch) }?.toResource()
 
 /**
  * この[FluidStack][this]を[HTFluidResourceType]に変換します。

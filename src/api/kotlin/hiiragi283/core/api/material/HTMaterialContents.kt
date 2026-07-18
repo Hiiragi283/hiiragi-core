@@ -1,6 +1,8 @@
 package hiiragi283.core.api.material
 
 import hiiragi283.core.api.collection.Table
+import hiiragi283.core.api.fluid.FluidStack
+import hiiragi283.core.api.fluid.HTSimpleFluidLike
 import hiiragi283.core.api.item.HTSimpleItemLike
 import hiiragi283.core.api.item.ItemStack
 import hiiragi283.core.api.material.part.HTPart
@@ -20,6 +22,7 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.material.Fluid
+import net.neoforged.neoforge.fluids.FluidStack
 
 interface HTMaterialContents<R : Any, out V> : Table<R, HTMaterialKey, V> {
     /**
@@ -64,12 +67,17 @@ interface HTMaterialContents<R : Any, out V> : Table<R, HTMaterialKey, V> {
 
     class FluidEntry(delegate: SimpleSupplierWithKey<Fluid>, val isBuiltIn: Boolean) :
         SimpleSupplierWithKey<Fluid> by delegate,
-        HTIdLike.Translatable {
+        HTIdLike.Translatable,
+        HTSimpleFluidLike {
         fun getBucketSupplier(): ItemEntry = ItemEntry(get().bucket.toLike(), isBuiltIn)
 
         override val translationKey: String get() = get().fluidType.descriptionId
 
         override fun getText(): Text = get().fluidType.description
+
+        override fun asFluid(): Fluid = get()
+
+        override fun toStack(amount: Int, patch: DataComponentPatch): FluidStack = FluidStack(this, amount, patch)
 
         operator fun component1(): ResourceKey<Fluid> = getKey()
 
@@ -90,7 +98,7 @@ interface HTMaterialContents<R : Any, out V> : Table<R, HTMaterialKey, V> {
 
         override fun asItem(): Item = get()
 
-        override fun toStack(count: Int, patch: DataComponentPatch): ItemStack = ItemStack(get(), count, patch)
+        override fun toStack(count: Int, patch: DataComponentPatch): ItemStack = ItemStack(this, count, patch)
 
         operator fun component1(): ResourceKey<Item> = getKey()
 

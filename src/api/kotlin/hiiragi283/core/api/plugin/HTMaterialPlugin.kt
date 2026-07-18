@@ -74,4 +74,16 @@ interface HTMaterialPlugin : HTIdLike {
     fun interface MaterialProvider {
         fun getBuilder(key: HTMaterialKey): HTPropertyMap.Builder
     }
+
+    //    Resources    //
+
+    /**
+     * @since 21.1.0
+     */
+    fun registerServerResources() {}
+
+    /**
+     * @since 21.1.0
+     */
+    fun registerClientResources() {}
 }

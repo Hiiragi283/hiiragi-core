@@ -146,7 +146,7 @@ abstract class HTCommonMod {
     protected open fun registerPayload(registrar: PayloadRegistrar) {}
 
     /**
-     * 追加のリソース/データパックを登録します。
+     * 追加のデータパックを登録します。
      */
     protected open fun registerPack(event: AddPackFindersEvent) {}
 }

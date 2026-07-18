@@ -12,7 +12,6 @@ import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import kotlin.collections.toSortedSet
-import net.minecraft.core.HolderSet
 import net.minecraft.data.DataProvider
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -41,6 +40,9 @@ abstract class HTRecipeProviderContext {
      */
     protected val materialManager: HTMaterialManager by lazy(HTMaterialManager::getInstance)
 
+    /**
+     * @since 21.1.0
+     */
     protected inline fun useItem(part: HTPartLike, material: HTMaterialLike, action: (HTMaterialContents.ItemEntry) -> Unit) {
         HiiragiCoreAccess.INSTANCE
             .registeredContents
@@ -51,9 +53,10 @@ abstract class HTRecipeProviderContext {
     }
 
     /**
-     * [HolderSet]を取得します。
+     * [TagKey]を取得します。
      * @param prefix タグのプレフィックス
      * @param material タグの種類を表す素材
+     * @since 21.1.0
      */
     fun tag(prefix: HTTagPrefix, material: HTMaterialLike): TagKey<Item> = prefix.itemTagKey(material)
 

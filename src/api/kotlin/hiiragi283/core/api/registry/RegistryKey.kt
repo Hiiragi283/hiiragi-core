@@ -12,6 +12,10 @@ import net.minecraft.resources.ResourceLocation
  */
 typealias RegistryKey<T> = ResourceKey<out Registry<T>>
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 21.1.0
+ */
 fun <T : Any> RegistryKey<T>.createKey(namespace: String, path: String): ResourceKey<T> = this.createKey(namespace.toId(path))
 
 /**

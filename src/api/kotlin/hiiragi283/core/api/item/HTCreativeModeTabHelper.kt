@@ -10,6 +10,7 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent
 import net.neoforged.neoforge.registries.DeferredHolder
 
 /**
+ * [CreativeModeTab]の作成を補助するクラスです。
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */

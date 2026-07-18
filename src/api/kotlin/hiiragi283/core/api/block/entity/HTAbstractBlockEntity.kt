@@ -26,11 +26,13 @@ interface HTAbstractBlockEntity {
 
     /**
      * レベルを取得します。
+     * @since 21.1.0
      */
     fun getLevelResult(): HTTextResult<Level> = getLevel().toTextResult { "Block entity at ${getBlockPos()} is not bounded to level" }
 
     /**
      * サーバーレベルを取得します。
+     * @since 21.1.0
      */
     fun getServerLevel(): HTTextResult<ServerLevel> = getLevelResult().flatMap { level: Level -> (level as? ServerLevel).toTextResult { "Block entity at ${getBlockPos()} does not exist in server-side" } }
 

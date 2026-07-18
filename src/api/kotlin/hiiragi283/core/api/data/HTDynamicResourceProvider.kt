@@ -8,7 +8,6 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.resource.toId
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicClientResourceProvider
-import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicServerResourceProvider
 import net.mehvahdjukaar.moonlight.api.resources.pack.PackGenerationStrategy
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
@@ -79,14 +78,5 @@ data object HTDynamicResourceProvider {
          * @since 0.13.0
          */
         protected fun resprite(id: ResourceLocation, base: ResourceLocation, palette: Item): ResourceGenTask = resprite(id, base) { manager: ResourceManager -> HTTextureUtil.getTexture(manager, palette).map(Palette::fromImage) }
-    }
-
-    /**
-     * サーバー側での動的リソースを提供する抽象クラスです。
-     * @author Hiiragi Tsubasa
-     * @since 0.10.0
-     */
-    abstract class Server(modId: String) : DynamicServerResourceProvider(modId.toId("dynamic_resources"), PackGenerationStrategy.REGEN_ON_EVERY_RELOAD) {
-        final override fun gatherSupportedNamespaces(): Collection<String> = HTConst.getBuiltInIdSet(name.namespace)
     }
 }

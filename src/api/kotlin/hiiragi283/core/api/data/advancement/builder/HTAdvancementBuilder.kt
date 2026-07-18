@@ -2,9 +2,9 @@
 
 package hiiragi283.core.api.data.advancement.builder
 
+import hiiragi283.core.api.data.ConditionBuilder
 import hiiragi283.core.api.data.advancement.AdvancementKey
 import hiiragi283.core.api.data.advancement.HTAdvancementOutput
-import hiiragi283.core.api.data.holder.HTConditionHolder
 import hiiragi283.core.api.util.HTBuilderMarker
 import hiiragi283.core.api.util.toOptional
 import kotlin.contracts.ExperimentalContracts
@@ -17,6 +17,7 @@ import net.minecraft.advancements.CriteriaTriggers
 import net.minecraft.advancements.Criterion
 import net.minecraft.advancements.DisplayInfo
 import net.minecraft.resources.ResourceLocation
+import net.neoforged.neoforge.common.conditions.ICondition
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[進捗][Advancement]のビルダークラスです。
@@ -41,7 +42,6 @@ class HTAdvancementBuilder(val key: AdvancementKey) {
     val criteria: Criterions = Criterions()
     var requirements: AdvancementRequirements? = null
     var strategy: AdvancementRequirements.Strategy = AdvancementRequirements.Strategy.AND
-    val conditions = HTConditionHolder()
 
     inline fun display(builderAction: HTDisplayInfoBuilder.() -> Unit) {
         display = HTDisplayInfoBuilder.create(key, builderAction)
@@ -57,7 +57,22 @@ class HTAdvancementBuilder(val key: AdvancementKey) {
             this.requirements ?: criteria.createRequirements(),
             true,
         )
-        output.accept(id, adv, conditions.toList())
+        output.accept(id, adv, conditions)
+    }
+
+    //    Conditions    //
+
+    /**
+     * [ICondition]を保持するインスタンス
+     */
+    @PublishedApi
+    internal val conditions: MutableList<ICondition> = mutableListOf()
+
+    inline fun condition(builderAction: ConditionBuilder.() -> Unit) {
+        contract {
+            callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+        }
+        ConditionBuilder(conditions).apply(builderAction)
     }
 
     //    Criterion    //

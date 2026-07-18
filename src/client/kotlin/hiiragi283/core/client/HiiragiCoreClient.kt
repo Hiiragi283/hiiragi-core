@@ -4,17 +4,21 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.color.HTDefaultColor
+import hiiragi283.core.api.data.pack.HTDynamicResourcePack
 import hiiragi283.core.api.event.HTRegisterWidgetRendererEvent
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.mod.HTClientMod
+import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.client.data.HCClientResourceProvider
+import hiiragi283.core.client.data.HCDynamicClientResources
 import hiiragi283.core.client.gui.widget.HTFluidWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTItemWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTProgressWidgetRenderer
 import hiiragi283.core.client.render.block.HTCopperBasinRenderer
+import hiiragi283.core.impl.data.pack.HTPackSource
 import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.impl.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.setup.HCBlockEntityTypes
@@ -36,6 +40,9 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent
 import net.neoforged.neoforge.client.model.DynamicFluidContainerModel
 import java.awt.Color
+import net.minecraft.server.packs.PackType
+import net.minecraft.server.packs.repository.Pack
+import net.neoforged.neoforge.event.AddPackFindersEvent
 
 @Mod(value = HiiragiCoreAPI.MOD_ID, dist = [Dist.CLIENT])
 data object HiiragiCoreClient : HTClientMod() {
@@ -102,6 +109,27 @@ data object HiiragiCoreClient : HTClientMod() {
         // Entity
         event.registerEntityRenderer(HCEntityTypes.BOMB.get(), ::ThrownItemRenderer)
         event.registerEntityRenderer(HCEntityTypes.ELDRITCH_EGG.get(), ::ThrownItemRenderer)
+    }
+
+    override fun registerPack(event: AddPackFindersEvent) {
+        val packType: PackType = event.packType
+        if (packType == PackType.CLIENT_RESOURCES) {
+            HTDynamicResourcePack.clear()
+
+            HCDynamicClientResources.initialize()
+            HiiragiCoreAccess.INSTANCE.forEachPlugin("Registering Client Resources", HTMaterialPlugin::registerClientResources)
+
+            event.addRepositorySource(
+                HTPackSource(
+                    HiiragiCoreAPI.id("asset").toString(),
+                    packType,
+                    Pack.Position.TOP,
+                    ::HTDynamicResourcePack,
+                ),
+            )
+
+            HiiragiCoreAPI.LOGGER.info("Added dynamic resource pack")
+        }
     }
 
     //    Extensions    //

@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data.map
 
-import hiiragi283.core.api.data.recipe.HTIngredientCreator
 import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.resource.SimpleBlockItemSupplierWithKey
 import net.minecraft.core.HolderLookup
@@ -20,7 +19,6 @@ import java.util.concurrent.CompletableFuture
 abstract class HTDataMapProvider(packOutput: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : DataMapProvider(packOutput, lookupProvider) {
     protected lateinit var provider: HolderLookup.Provider
         private set
-    protected val inputCreator: HTIngredientCreator = HTIngredientCreator
 
     final override fun gather(provider: HolderLookup.Provider) {
         this.provider = provider
