@@ -41,7 +41,9 @@ object HTTankInteractionRecipeBuilder {
 
     class Emptying : HTRecipeBuilder<HCTankEmptyingRecipe>(HTConst.EMPTYING) {
         @PublishedApi internal var ingredient: Ingredient by HTDelegates.onceInitialize()
+
         @PublishedApi internal var fluidResult: HTFluidResult by HTDelegates.onceInitialize()
+
         @PublishedApi internal var itemResult: Option<HTItemResult> by HTDelegates.optionalOnceInitialize()
 
         operator fun Ingredient.unaryPlus() {
