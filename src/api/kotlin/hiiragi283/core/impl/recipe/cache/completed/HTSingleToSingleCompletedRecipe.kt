@@ -17,7 +17,7 @@ abstract class HTSingleToSingleCompletedRecipe<INPUT : Any, OUTPUT : Any, RECIPE
     recipe: RECIPE,
     protected val inputHandler: HTInputHandler<INPUT>,
     protected val outputHandler: HTOutputHandler<OUTPUT>,
-    private val amountGetter: (RECIPE, INPUT) -> Int,
+    private val amountGetter: (RECIPE, INPUT) -> INPUT,
 ) : HTCompletedRecipe.WithProgress<RECIPE>(recipe) {
     private val output: OUTPUT = recipe.assemble(inputHandler.getStack())
 
@@ -33,7 +33,7 @@ abstract class HTSingleToSingleCompletedRecipe<INPUT : Any, OUTPUT : Any, RECIPE
             recipe,
             inputHandler,
             outputHandler,
-            HTItemToFluidRecipe::getRequiredAmount,
+            HTItemToFluidRecipe::getMatchingStack,
         ) {
         override fun getProgress(): HTProgressData = inputHandler.getStack().let(::SingleRecipeInput).let(recipe::getProgressData)
     }
@@ -43,7 +43,7 @@ abstract class HTSingleToSingleCompletedRecipe<INPUT : Any, OUTPUT : Any, RECIPE
             recipe,
             inputHandler,
             outputHandler,
-            HTItemToItemRecipe::getRequiredAmount,
+            HTItemToItemRecipe::getMatchingStack,
         ) {
         override fun getProgress(): HTProgressData = inputHandler.getStack().let(::SingleRecipeInput).let(recipe::getProgressData)
     }

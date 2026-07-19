@@ -8,9 +8,11 @@ import net.minecraft.world.item.crafting.RecipeInput
  * @author Hiiragi Tsubasa
  * @since 0.16.0
  */
-fun interface HTRecipePredicate<INPUT : RecipeInput> {
+interface HTRecipePredicate<INPUT : RecipeInput> {
     /**
      * 指定された[input]が，このレシピの条件を満たすか判定します。
      */
     fun matches(input: INPUT): Boolean
+
+    fun isIncomplete(): Boolean
 }

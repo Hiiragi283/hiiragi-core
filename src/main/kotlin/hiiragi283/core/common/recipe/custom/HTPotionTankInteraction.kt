@@ -22,9 +22,9 @@ data object HTPotionTankInteraction {
             return bool1 && bool2
         }
 
-        override fun getRequiredAmount(input: ItemStack): Int = when {
-            test(input) -> 1
-            else -> 0
+        override fun getMatchingStack(input: ItemStack): ItemStack = when {
+            test(input) -> input.copyWithCount(1)
+            else -> ItemStack.EMPTY
         }
 
         override fun assemble(input: ItemStack): HTItemAndFluidResult {
@@ -34,6 +34,8 @@ data object HTPotionTankInteraction {
                 HCPotionFluidHelper.createFluid(contents, FLUID_AMOUNT),
             )
         }
+
+        override fun isIncomplete(): Boolean = false
     }
 
     data object Filling : HTTankFillingRecipe {
@@ -46,6 +48,8 @@ data object HTPotionTankInteraction {
             ?.let(HTPotionHelper::createPotion)
             ?: ItemStack.EMPTY
 
-        override fun getRequiredAmount(first: ItemStack, second: FluidStack): Pair<Int, Int> = 1 to FLUID_AMOUNT
+        override fun getMatchingStacks(first: ItemStack, second: FluidStack): Pair<ItemStack, FluidStack> = first.copyWithCount(1) to second.copyWithAmount(FLUID_AMOUNT)
+
+        override fun isIncomplete(): Boolean = false
     }
 }

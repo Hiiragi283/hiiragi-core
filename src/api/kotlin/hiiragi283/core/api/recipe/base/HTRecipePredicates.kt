@@ -19,7 +19,7 @@ data object HTRecipePredicates {
         Predicate<INPUT_A> {
         override fun test(input: INPUT_A): Boolean
 
-        fun getRequiredAmount(input: INPUT_A): Int
+        fun getMatchingStack(input: INPUT_A): INPUT_A
     }
 
     interface SingleFluid : SingleInput<HTSingleFluidRecipeInput, FluidStack> {
@@ -37,7 +37,7 @@ data object HTRecipePredicates {
         BiPredicate<INPUT_A, INPUT_B> {
         override fun test(first: INPUT_A, second: INPUT_B): Boolean
 
-        fun getRequiredAmount(first: INPUT_A, second: INPUT_B): Pair<Int, Int>
+        fun getMatchingStacks(first: INPUT_A, second: INPUT_B): Pair<INPUT_A, INPUT_B>
     }
 
     interface ItemAndFluid : DoubleInput<HTItemAndFluidRecipeInput, ItemStack, FluidStack> {
@@ -48,10 +48,7 @@ data object HTRecipePredicates {
     }
 
     interface DoubleItem : DoubleInput<RecipeInput, ItemStack, ItemStack> {
-        override fun matches(input: RecipeInput): Boolean {
-            if (input.size() < 2) return false
-            return test(input.getItem(0), input.getItem(1))
-        }
+        override fun matches(input: RecipeInput): Boolean = input.size() >= 2 && test(input.getItem(0), input.getItem(1))
     }
 
     //    Triple Input    //
@@ -61,13 +58,10 @@ data object HTRecipePredicates {
         TriPredicate<INPUT_A, INPUT_B, INPUT_C> {
         override fun test(first: INPUT_A, second: INPUT_B, third: INPUT_C): Boolean
 
-        fun getRequiredAmount(first: INPUT_A, second: INPUT_B, third: INPUT_C): Triple<Int, Int, Int>
+        fun getMatchingStacks(first: INPUT_A, second: INPUT_B, third: INPUT_C): Triple<INPUT_A, INPUT_B, INPUT_C>
     }
 
     interface TripleItem : TripleInput<RecipeInput, ItemStack, ItemStack, ItemStack> {
-        override fun matches(input: RecipeInput): Boolean {
-            if (input.size() < 3) return false
-            return test(input.getItem(0), input.getItem(1), input.getItem(2))
-        }
+        override fun matches(input: RecipeInput): Boolean = input.size() >= 3 && test(input.getItem(0), input.getItem(1), input.getItem(2))
     }
 }

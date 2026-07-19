@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
-import hiiragi283.core.api.recipe.ingredient.getRequiredAmount
+import hiiragi283.core.api.recipe.ingredient.getMatchingStack
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
@@ -38,9 +38,11 @@ class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: H
 
     override fun assemble(firstInput: ItemStack, secondInput: FluidStack): ItemStack = result.createOrEmpty()
 
-    override fun getRequiredAmount(first: ItemStack, second: FluidStack): Pair<Int, Int> = itemIngredient.getRequiredAmount(first) to fluidIngredient.getRequiredAmount(second)
+    override fun getMatchingStacks(first: ItemStack, second: FluidStack): Pair<ItemStack, FluidStack> = itemIngredient.getMatchingStack(first) to fluidIngredient.getMatchingStack(second)
 
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.FILLING
 
     override fun getType(): RecipeType<*> = HCRecipeTypes.FILLING
+
+    override fun isIncomplete(): Boolean = itemIngredient.hasNoItems() || fluidIngredient.isIncomplete() || result.isIncomplete()
 }

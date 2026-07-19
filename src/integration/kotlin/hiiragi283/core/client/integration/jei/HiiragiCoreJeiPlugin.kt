@@ -16,9 +16,11 @@ import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.api.recipe.castRecipe
+import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
 import hiiragi283.core.api.registry.HTSimpleDeferredHolder
+import hiiragi283.core.client.integration.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCChargingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCCrushingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCExplodingRecipeCategory
@@ -27,10 +29,12 @@ import hiiragi283.core.client.integration.jei.category.HCTankEmptyingRecipeCateg
 import hiiragi283.core.client.integration.jei.category.HCTankFillingRecipeCategory
 import hiiragi283.core.client.integration.jei.extension.HCEternalSmithingCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
+import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
+import hiiragi283.core.common.recipe.VanillaRecipeLookups
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
 import hiiragi283.core.common.recipe.viewer.HCRecipeDisplayFactories
 import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
@@ -113,7 +117,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             // Material
             HCMaterialPartCategory(guiHelper),
             // Recipes
-            // HCBrewingRecipeCategory(guiHelper),
+            HCBrewingRecipeCategory(guiHelper),
             HCCrushingRecipeCategory(guiHelper),
             HCChargingRecipeCategory(guiHelper),
             HCExplodingRecipeCategory(guiHelper),
@@ -131,7 +135,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     override fun registerRecipes(helper: HTJeiRecipeHelper) {
-        // helper.addLookupRecipes(HCRecipeViewerTypes.BREWING, VanillaRecipeLookups.BREWING, HCBrewingRecipe.SORTER)
+        helper.addLookupRecipes(HCRecipeViewerTypes.BREWING, VanillaRecipeLookups.BREWING, HCBrewingRecipe.SORTER)
         helper.addDisplayRecipes(HCRecipeViewerTypes.CHARGING, HCRecipeLookups.CHARGING, HCRecipeDisplayFactories::charging)
         helper.addDisplayRecipes(HCRecipeViewerTypes.CRUSHING, HCRecipeLookups.CRUSHING) {
             it.castRecipe<HTItemToMultiItemRecipe, HCCrushingRecipe>()?.let(HTRecipeDisplayFactories::itemToMultiItem)
@@ -193,9 +197,12 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                         HTRecipeContents.create {
                             addInput(ItemStack(input))
                             addInput(
-                                DataComponentFluidIngredient.of(
-                                    false,
-                                    HCPotionFluidHelper.createFluid(BottledPotionContents(potion, bottleType)),
+                                HTFluidIngredient(
+                                    DataComponentFluidIngredient.of(
+                                        false,
+                                        HCPotionFluidHelper.createFluid(BottledPotionContents(potion, bottleType)),
+                                    ),
+                                    amount,
                                 ),
                             )
                             addOutput(HTPotionHelper.createPotion(output, potion))

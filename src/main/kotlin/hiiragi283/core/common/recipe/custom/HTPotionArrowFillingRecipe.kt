@@ -25,5 +25,7 @@ data object HTPotionArrowFillingRecipe : HTTankFillingRecipe {
         return HTPotionHelper.createPotion(Items.TIPPED_ARROW, contents)
     }
 
-    override fun getRequiredAmount(first: ItemStack, second: FluidStack): Pair<Int, Int> = 1 to FLUID_AMOUNT
+    override fun getMatchingStacks(first: ItemStack, second: FluidStack): Pair<ItemStack, FluidStack> = first.copyWithCount(1) to second.copyWithAmount(FLUID_AMOUNT)
+
+    override fun isIncomplete(): Boolean = false
 }

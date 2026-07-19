@@ -93,6 +93,7 @@ fun <INPUT : RecipeInput, RECIPE : Any, VANILLA_RECIPE : Recipe<INPUT>> HTCompou
     this.addSubLookup { context ->
         val map: MutableMap<ResourceLocation, RECIPE> = mutableMapOf()
         for ((id: ResourceLocation, recipe: VANILLA_RECIPE) in context.getAllRecipes(recipeType)) {
+            if (recipe.isIncomplete) continue
             val recipe1: RECIPE = transform(recipe) ?: continue
             map[id] = recipe1
         }

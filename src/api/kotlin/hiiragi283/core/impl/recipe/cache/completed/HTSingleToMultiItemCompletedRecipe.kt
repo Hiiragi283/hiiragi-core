@@ -15,7 +15,7 @@ abstract class HTSingleToMultiItemCompletedRecipe<INPUT : Any, RECIPE : HTRecipe
     recipe: RECIPE,
     protected val inputHandler: HTInputHandler<INPUT>,
     protected val outputHandler: HTOutputHandler<ItemStack>,
-    private val amountGetter: (RECIPE, INPUT) -> Int,
+    private val amountGetter: (RECIPE, INPUT) -> INPUT,
 ) : HTCompletedRecipe.WithProgress<RECIPE>(recipe) {
     private val output: Iterable<ItemStack> = recipe.assemble(inputHandler.getStack())
 
@@ -31,7 +31,7 @@ abstract class HTSingleToMultiItemCompletedRecipe<INPUT : Any, RECIPE : HTRecipe
             recipe,
             inputHandler,
             outputHandler,
-            HTItemToMultiItemRecipe::getRequiredAmount,
+            HTItemToMultiItemRecipe::getMatchingStack,
         ) {
         override fun getProgress(): HTProgressData = inputHandler.getStack().let(::SingleRecipeInput).let(recipe::getProgressData)
     }

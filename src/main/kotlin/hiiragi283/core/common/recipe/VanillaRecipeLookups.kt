@@ -5,11 +5,10 @@ import hiiragi283.core.api.collection.MultiMap
 import hiiragi283.core.api.collection.buildListMultiMap
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
-import hiiragi283.core.api.recipe.id
-import hiiragi283.core.api.recipe.recipe
 import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.api.registry.toLike
+import hiiragi283.core.impl.recipe.cache.HTVanillaRecipeLookup
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
@@ -37,7 +36,9 @@ data object VanillaRecipeLookups {
 
     @JvmRecord
     private data class CookingLookup<RECIPE : AbstractCookingRecipe>(private val recipeType: RecipeType<RECIPE>) : HTRecipeLookup.Translatable<HCCookingRecipe> {
-        override fun getAllRecipes(context: HTRecipeLookup.Context): Map<ResourceLocation, HCCookingRecipe> = context.getAllRecipes(recipeType).associate { holder: HTRecipeHolder<RECIPE> -> holder.id to HCCookingRecipe(holder.recipe) }
+        override fun getAllRecipes(context: HTRecipeLookup.Context): Map<ResourceLocation, HCCookingRecipe> = HTVanillaRecipeLookup(recipeType)
+            .getAllRecipes(context)
+            .mapValues { (_, recipe: RECIPE) -> HCCookingRecipe(recipe) }
 
         override fun getKey(): ResourceKey<RecipeType<*>> = BuiltInRegistries.RECIPE_TYPE.wrapAsHolder(recipeType).getKeyOrThrow()
     }
@@ -50,7 +51,9 @@ data object VanillaRecipeLookups {
             val multiMap: MultiMap<Holder<Potion>, HCBrewingRecipe> = buildListMultiMap {
                 context[HTRecipeLookup.Context.BREWING]
                     ?.let(PotionBrewing::potionMixes)
+                    ?.asSequence()
                     ?.map(::HCBrewingRecipe)
+                    ?.filterNot(HCBrewingRecipe::isIncomplete)
                     ?.forEach { put(it.potionTo, it) }
             }
             if (multiMap.isEmpty) return mapOf()

@@ -59,10 +59,16 @@ open class HTBasicItemOrFluidRecipe(
         { item: Predicate<ItemStack>, fluid: Predicate<FluidStack> -> item.test(first) && fluid.test(second) },
     )
 
-    override fun getRequiredAmount(first: ItemStack, second: FluidStack): Pair<Int, Int> {
+    override fun getMatchingStacks(first: ItemStack, second: FluidStack): Pair<ItemStack, FluidStack> {
         val (item: HTItemIngredient?, fluid: HTFluidIngredient?) = ingredient.toPair()
-        return (item?.getRequiredAmount(first) ?: 0) to (fluid?.getRequiredAmount(second) ?: 0)
+        return (item?.getMatchingStack(first) ?: ItemStack.EMPTY) to (fluid?.getMatchingStack(second) ?: FluidStack.EMPTY)
     }
 
     override fun assemble(firstInput: ItemStack, secondInput: FluidStack): HTItemAndFluidResult = result.mapLeft { it.createOrEmpty() }.mapRight { it.create() }.let(::HTItemAndFluidResult)
+
+    override fun isIncomplete(): Boolean {
+        val bool1: Boolean = ingredient.merge(HTItemIngredient::isIncomplete, HTFluidIngredient::isIncomplete) { item: Boolean, fluid: Boolean -> item || fluid }
+        val bool2: Boolean = result.getLeft()?.isIncomplete() ?: false
+        return bool1 || bool2
+    }
 }

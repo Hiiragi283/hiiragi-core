@@ -48,10 +48,12 @@ class HTFluidIngredient(val unsized: FluidIngredient, val amount: Int) : HTIngre
 
     override fun testOnlyType(stack: FluidStack): Boolean = unsized.test(stack)
 
-    override fun getRequiredAmount(stack: FluidStack): Int = when {
-        testOnlyType(stack) -> amount
-        else -> 0
+    override fun getMatchingStack(stack: FluidStack): FluidStack = when {
+        testOnlyType(stack) -> stack.copyWithAmount(amount)
+        else -> FluidStack.EMPTY
     }
 
     override fun getPreviewStacks(): List<FluidStack> = unsized.stacks.map { it.copyWithAmount(amount) }
+
+    override fun isIncomplete(): Boolean = unsized.hasNoFluids()
 }

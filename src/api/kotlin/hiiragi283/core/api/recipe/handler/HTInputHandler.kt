@@ -7,6 +7,10 @@ package hiiragi283.core.api.recipe.handler
  * @since 0.5.0
  * @see mekanism.api.recipes.inputs.IInputHandler
  */
-interface HTInputHandler<STACK : Any> : HTAmountInputHandler {
+interface HTInputHandler<STACK : Any> {
     fun getStack(): STACK
+
+    fun consume(amount: Int)
+
+    fun consume(stack: STACK)
 }

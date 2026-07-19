@@ -24,7 +24,7 @@ abstract class HTDoubleInputCompletedRecipe<
     protected val firstInputHandler: HTInputHandler<INPUT_A>,
     protected val secondInputHandler: HTInputHandler<INPUT_B>,
     protected val outputHandler: HTOutputHandler<OUTPUT>,
-    private val amountGetter: (RECIPE, INPUT_A, INPUT_B) -> Pair<Int, Int>,
+    private val amountGetter: (RECIPE, INPUT_A, INPUT_B) -> Pair<INPUT_A, INPUT_B>,
 ) : HTCompletedRecipe.WithProgress<RECIPE>(recipe) {
     private val output: OUTPUT = recipe.assemble(firstInputHandler.getStack(), secondInputHandler.getStack())
 
@@ -32,7 +32,7 @@ abstract class HTDoubleInputCompletedRecipe<
 
     override fun complete() {
         outputHandler.insert(output)
-        amountGetter(recipe, firstInputHandler.getStack(), secondInputHandler.getStack()).let { (first: Int, second: Int) ->
+        amountGetter(recipe, firstInputHandler.getStack(), secondInputHandler.getStack()).let { (first: INPUT_A, second: INPUT_B) ->
             firstInputHandler.consume(first)
             secondInputHandler.consume(second)
         }
@@ -48,7 +48,7 @@ abstract class HTDoubleInputCompletedRecipe<
         firstInputHandler,
         secondInputHandler,
         outputHandler,
-        HTItemAndFluidToItemRecipe::getRequiredAmount,
+        HTItemAndFluidToItemRecipe::getMatchingStacks,
     ) {
         override fun getProgress(): HTProgressData = HTItemAndFluidRecipeInput(firstInputHandler.getStack(), secondInputHandler.getStack()).let(recipe::getProgressData)
     }
@@ -63,7 +63,7 @@ abstract class HTDoubleInputCompletedRecipe<
         firstInputHandler,
         secondInputHandler,
         outputHandler,
-        HTDoubleItemToItemRecipe::getRequiredAmount,
+        HTDoubleItemToItemRecipe::getMatchingStacks,
     ) {
         override fun getProgress(): HTProgressData = listOf(firstInputHandler, secondInputHandler)
             .map(HTInputHandler<ItemStack>::getStack)

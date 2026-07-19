@@ -47,10 +47,12 @@ class HTItemIngredient(val unsized: Ingredient, val count: Int) : HTIngredient<I
 
     override fun testOnlyType(stack: ItemStack): Boolean = unsized.test(stack)
 
-    override fun getRequiredAmount(stack: ItemStack): Int = when {
-        testOnlyType(stack) -> count
-        else -> 0
+    override fun getMatchingStack(stack: ItemStack): ItemStack = when {
+        testOnlyType(stack) -> stack.copyWithCount(count)
+        else -> ItemStack.EMPTY
     }
 
     override fun getPreviewStacks(): List<ItemStack> = unsized.items.map { it.copyWithCount(count) }
+
+    override fun isIncomplete(): Boolean = unsized.hasNoItems()
 }

@@ -3,7 +3,7 @@ package hiiragi283.core.common.recipe
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
-import hiiragi283.core.api.recipe.ingredient.getRequiredAmount
+import hiiragi283.core.api.recipe.ingredient.getMatchingStack
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemAndFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
@@ -38,7 +38,7 @@ class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidR
 
     override fun test(input: ItemStack): Boolean = ingredient.test(input)
 
-    override fun getRequiredAmount(input: ItemStack): Int = ingredient.getRequiredAmount(input)
+    override fun getMatchingStack(input: ItemStack): ItemStack = ingredient.getMatchingStack(input)
 
     override fun assemble(input: ItemStack): HTItemAndFluidResult {
         val fluidStack: FluidStack = fluidResult.create()
@@ -49,4 +49,6 @@ class HCTankEmptyingRecipe(val ingredient: Ingredient, val fluidResult: HTFluidR
     override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.EMPTYING
 
     override fun getType(): RecipeType<*> = HCRecipeTypes.EMPTYING
+
+    override fun isIncomplete(): Boolean = ingredient.hasNoItems() || itemResult.fold({ false }, HTItemResult::isIncomplete)
 }

@@ -11,7 +11,13 @@ import net.minecraft.resources.ResourceLocation
 value class HTVanillaRecipeLookup<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(private val recipeType: Supplier<out RecipeType<RECIPE>>) : HTRecipeLookup<RECIPE> {
     constructor(recipeType: RecipeType<RECIPE>) : this({ recipeType })
 
-    override fun getAllRecipes(context: HTRecipeLookup.Context): Map<ResourceLocation, RECIPE> = context.getAllRecipes(recipeType.get()).toMap()
+    override fun getAllRecipes(context: HTRecipeLookup.Context): Map<ResourceLocation, RECIPE> {
+        val map: MutableMap<ResourceLocation, RECIPE> = mutableMapOf()
+        for ((first: ResourceLocation, second: RECIPE) in context.getAllRecipes(recipeType.get())) {
+            if (!second.isIncomplete) map[first] = second
+        }
+        return map
+    }
 
     override fun toString(): String = "HTVanillaRecipeLookup(recipeType=${recipeType.get()})"
 }

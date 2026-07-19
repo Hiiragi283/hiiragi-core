@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTRecipeFactories
 import hiiragi283.core.api.recipe.base.HTRecipePredicates
-import hiiragi283.core.api.recipe.ingredient.getRequiredAmount
+import hiiragi283.core.api.recipe.ingredient.getMatchingStack
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import net.minecraft.world.item.ItemStack
@@ -29,7 +29,9 @@ open class HTInWorldRecipe(val ingredient: Ingredient, val result: HTChancedItem
 
     override fun test(input: ItemStack): Boolean = ingredient.test(input)
 
-    override fun getRequiredAmount(input: ItemStack): Int = ingredient.getRequiredAmount(input)
+    override fun getMatchingStack(input: ItemStack): ItemStack = ingredient.getMatchingStack(input)
 
     override fun assemble(input: ItemStack): ItemStack = result.createOrEmpty()
+
+    override fun isIncomplete(): Boolean = ingredient.hasNoItems() || result.isIncomplete()
 }

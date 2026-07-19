@@ -5,6 +5,7 @@ import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.fluid.getFluidStack
+import hiiragi283.core.api.storage.fluid.toResource
 import net.neoforged.neoforge.fluids.FluidStack
 
 class HTFluidInputHandler(private val tank: HTFluidTank) :
@@ -15,6 +16,12 @@ class HTFluidInputHandler(private val tank: HTFluidTank) :
     override fun consume(amount: Int) {
         if (amount > 0) {
             extract(amount, HTStorageAction.EXECUTE, HTStorageAccess.INTERNAL)
+        }
+    }
+
+    override fun consume(stack: FluidStack) {
+        if (!stack.isEmpty) {
+            extract(stack.toResource(), stack.amount, HTStorageAction.EXECUTE, HTStorageAccess.INTERNAL)
         }
     }
 

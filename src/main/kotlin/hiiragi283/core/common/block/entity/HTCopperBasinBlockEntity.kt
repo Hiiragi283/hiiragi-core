@@ -72,9 +72,9 @@ class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity
 
         HTItemDropHelper.giveStackTo(player, recipe.assemble(itemStack, fluidStack))
         recipe
-            .getRequiredAmount(itemStack, fluidStack)
-            .let { (first: Int, second: Int) ->
-                itemStack.consume(first, player)
+            .getMatchingStacks(itemStack, fluidStack)
+            .let { (first: ItemStack, second: FluidStack) ->
+                itemStack.consume(first.count, player)
                 fluidInputHandler.consume(second)
             }
         return true

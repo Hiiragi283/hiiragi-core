@@ -103,7 +103,7 @@ object HCRecipeEventHandler {
         val level: Level = entity.level()
         val input: ItemStack = entity.item
         val recipe: HTItemToMultiItemRecipe = getCaches(level).crushing.findFirstRecipe(input, level) ?: return
-        val inputAmount: Int = recipe.getRequiredAmount(input)
+        val inputAmount: Int = recipe.getMatchingStack(input).count
         val multiplier: Int = input.count / inputAmount
         (0 until multiplier)
             .flatMap { recipe.assemble(input) }

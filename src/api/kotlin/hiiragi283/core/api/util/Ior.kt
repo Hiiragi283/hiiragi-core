@@ -90,6 +90,19 @@ sealed class Ior<out A, out B> {
         }
     }
 
+    inline fun <C> merge(left: (A) -> C, right: (B) -> C, merging: (C, C) -> C): C {
+        contract {
+            callsInPlace(left, InvocationKind.AT_MOST_ONCE)
+            callsInPlace(right, InvocationKind.AT_MOST_ONCE)
+            callsInPlace(merging, InvocationKind.AT_MOST_ONCE)
+        }
+        return when (this) {
+            is Both -> merging(left(leftValue), right(rightValue))
+            is Left -> left(value)
+            is Right -> right(value)
+        }
+    }
+
     /**
      * 保持している値を変換します。
      * @param C 変換後のクラス

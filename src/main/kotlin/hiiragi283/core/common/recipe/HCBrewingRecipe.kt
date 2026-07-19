@@ -53,13 +53,15 @@ data class HCBrewingRecipe(val potionFrom: Holder<Potion>, val ingredient: Ingre
         return ingredient.test(first) && potionIn.`is`(potionFrom)
     }
 
-    override fun getRequiredAmount(first: ItemStack, second: FluidStack): Pair<Int, Int> = when {
-        test(first, second) -> 1 to FluidType.BUCKET_VOLUME
-        else -> 0 to 0
+    override fun getMatchingStacks(first: ItemStack, second: FluidStack): Pair<ItemStack, FluidStack> = when {
+        test(first, second) -> first.copyWithCount(1) to second.copyWithAmount(FluidType.BUCKET_VOLUME)
+        else -> ItemStack.EMPTY to FluidStack.EMPTY
     }
 
     override fun assemble(firstInput: ItemStack, secondInput: FluidStack): HTItemAndFluidResult = BottledPotionContents(potionTo).let(HCPotionFluidHelper::createFluid).let(::HTItemAndFluidResult)
 
     override val progressData: HTProgressData
         get() = HTProgressData.time(200)
+
+    override fun isIncomplete(): Boolean = ingredient.hasNoItems()
 }

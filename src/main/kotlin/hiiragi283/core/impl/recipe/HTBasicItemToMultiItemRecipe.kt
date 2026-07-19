@@ -37,7 +37,9 @@ open class HTBasicItemToMultiItemRecipe(
 
     override fun test(input: ItemStack): Boolean = ingredient.test(input)
 
-    override fun getRequiredAmount(input: ItemStack): Int = ingredient.getRequiredAmount(input)
+    override fun getMatchingStack(input: ItemStack): ItemStack = ingredient.getMatchingStack(input)
 
     override fun assemble(input: ItemStack): Iterable<ItemStack> = results.map(HTChancedItemResult::createOrEmpty).let(HTRecipeResultHelper::mergeStacks)
+
+    override fun isIncomplete(): Boolean = ingredient.isIncomplete() || results.any { it.isIncomplete() }
 }

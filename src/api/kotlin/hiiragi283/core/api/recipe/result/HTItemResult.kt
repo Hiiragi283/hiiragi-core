@@ -75,6 +75,8 @@ interface HTItemResult : HTIdLike {
      */
     fun createOrEmpty(): ItemStack = create().getOrElse { ItemStack.EMPTY }
 
+    fun isIncomplete(): Boolean = create().isLeft()
+
     /**
      * 完成品の個数
      */

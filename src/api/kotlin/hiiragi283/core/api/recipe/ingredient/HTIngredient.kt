@@ -22,7 +22,9 @@ interface HTIngredient<STACK : Any> : Predicate<STACK> {
      */
     fun testOnlyType(stack: STACK): Boolean
 
-    fun getRequiredAmount(stack: STACK): Int
+    fun getMatchingStack(stack: STACK): STACK
 
     fun getPreviewStacks(): List<STACK>
+
+    fun isIncomplete(): Boolean
 }

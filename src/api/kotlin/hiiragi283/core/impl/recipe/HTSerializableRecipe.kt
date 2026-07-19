@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level
  * @since 0.12.0
  * @see mekanism.api.recipes.MekanismRecipe
  */
+@Suppress("DeprecatedCallableAddReplaceWith")
 interface HTSerializableRecipe<INPUT : RecipeInput> :
     Recipe<INPUT>,
     HTRecipePredicate<INPUT> {
@@ -38,4 +39,6 @@ interface HTSerializableRecipe<INPUT : RecipeInput> :
     override fun getIngredients(): NonNullList<Ingredient> = super.getIngredients()
 
     override fun isSpecial(): Boolean = true
+
+    abstract override fun isIncomplete(): Boolean
 }

@@ -5,6 +5,7 @@ import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.getItemStack
+import hiiragi283.core.api.storage.item.toResource
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 import java.util.function.Consumer
@@ -31,6 +32,19 @@ class HTItemInputHandler(private val slot: HTItemSlot, private val remainderCons
                 }
             }
             extract(amount, HTStorageAction.EXECUTE, HTStorageAccess.INTERNAL)
+        }
+    }
+
+    override fun consume(stack: ItemStack) {
+        if (!stack.isEmpty) {
+            if (remainderConsumer != null && getAmount() == 1) {
+                val stackIn: ItemStack = getStack()
+                if (stackIn.hasCraftingRemainingItem()) {
+                    remainderConsumer.accept(stackIn.craftingRemainingItem)
+                    return
+                }
+            }
+            extract(stack.toResource(), stack.count, HTStorageAction.EXECUTE, HTStorageAccess.INTERNAL)
         }
     }
 

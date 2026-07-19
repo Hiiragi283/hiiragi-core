@@ -47,5 +47,7 @@ data class HTChancedItemResult(val base: HTItemResult, val chance: Fraction) : H
 
     fun createOrEmpty(): ItemStack = create(false).getOrElse { ItemStack.EMPTY }
 
+    fun isIncomplete(): Boolean = base.isIncomplete()
+
     override fun getId(): ResourceLocation = base.getId()
 }
