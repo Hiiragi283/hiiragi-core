@@ -4,13 +4,13 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.event.HTAnvilLandEvent
 import hiiragi283.core.api.item.enchantment.toInstances
+import hiiragi283.core.api.recipe.HTRecipeResultHelper
 import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.world.HCInWorldRecipeCaches
 import hiiragi283.core.setup.HCAttachmentTypes
 import hiiragi283.core.setup.HCItems
-import hiiragi283.core.util.HTShapelessRecipeHelper
 import net.minecraft.core.component.DataComponents
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.item.ItemEntity
@@ -107,7 +107,7 @@ object HCRecipeEventHandler {
         val multiplier: Int = input.count / inputAmount
         (0 until multiplier)
             .flatMap { recipe.assemble(input) }
-            .let(HTShapelessRecipeHelper::mergeStacks)
+            .let(HTRecipeResultHelper::mergeStacks)
             .mapNotNull(entity::spawnAtLocation)
             .forEach(::setComplete)
         val remainder: Int = input.count - (inputAmount * multiplier)
@@ -193,7 +193,7 @@ object HCRecipeEventHandler {
     private fun spawnResults(entity: ItemEntity, result: () -> ItemStack) {
         (0 until entity.item.count)
             .map { result() }
-            .let(HTShapelessRecipeHelper::mergeStacks)
+            .let(HTRecipeResultHelper::mergeStacks)
             .mapNotNull(entity::spawnAtLocation)
             .forEach(::setComplete)
     }

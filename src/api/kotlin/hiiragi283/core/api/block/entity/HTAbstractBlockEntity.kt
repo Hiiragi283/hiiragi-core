@@ -4,7 +4,7 @@ import hiiragi283.core.api.util.HTTextResult
 import hiiragi283.core.api.util.flatMap
 import hiiragi283.core.api.util.flatMapLeft
 import hiiragi283.core.api.util.toTextResult
-import hiiragi283.core.util.HTPhysicalSideHelper
+import hiiragi283.core.api.HTPhysicalSideHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.core.RegistryAccess
 import net.minecraft.server.level.ServerLevel

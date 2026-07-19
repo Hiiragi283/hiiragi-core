@@ -2,6 +2,7 @@ package hiiragi283.core.impl.recipe
 
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.recipe.HTRecipeResultHelper
 import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.base.HTProgressRecipe
@@ -10,7 +11,6 @@ import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.codec.listOrElement
 import hiiragi283.core.common.data.recipe.HTItemToMultiItemRecipeBuilder
-import hiiragi283.core.util.HTShapelessRecipeHelper
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.SingleRecipeInput
 
@@ -39,5 +39,5 @@ open class HTBasicItemToMultiItemRecipe(
 
     override fun getRequiredAmount(input: ItemStack): Int = ingredient.getRequiredAmount(input)
 
-    override fun assemble(input: ItemStack): Iterable<ItemStack> = results.map(HTChancedItemResult::createOrEmpty).let(HTShapelessRecipeHelper::mergeStacks)
+    override fun assemble(input: ItemStack): Iterable<ItemStack> = results.map(HTChancedItemResult::createOrEmpty).let(HTRecipeResultHelper::mergeStacks)
 }

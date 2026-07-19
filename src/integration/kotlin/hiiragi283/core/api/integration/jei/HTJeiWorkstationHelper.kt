@@ -4,40 +4,50 @@ import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import mezz.jei.api.constants.VanillaTypes
 import mezz.jei.api.registration.IRecipeCatalystRegistration
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.level.ItemLike
 
 /**
- * [IRecipeCatalystRegistration]へのレシピ登録を簡略化するヘルパークラスです。
+ * [IRecipeCatalystRegistration]へのレシピ登録を補助するクラスです。
  * @author Hiiragi Tsubasa
- * @since 0.16.0
+ * @since 21.1.0
  */
-data object HTJeiWorkstationHelper {
-    @JvmStatic
-    fun add(registration: IRecipeCatalystRegistration, recipeType: JeiRecipeType<*>, workstations: List<ItemStack>) {
+@Suppress("NOTHING_TO_INLINE")
+@JvmInline
+value class HTJeiWorkstationHelper(@PublishedApi internal val registration: IRecipeCatalystRegistration) {
+    /**
+     * 指定した[recipeType]に[workstation]を登録します。
+     */
+    inline fun add(recipeType: JeiRecipeType<*>, workstation: ItemStack) {
+        this.addAll(recipeType, listOf(workstation))
+    }
+
+    /**
+     * 指定した[viewerType]に[workstation]を登録します。
+     */
+    inline fun add(viewerType: HTRecipeViewerType<*>, workstation: ItemStack) {
+        this.addAll(viewerType, listOf(workstation))
+    }
+
+    /**
+     * 指定した[recipeType]に[workstations]を登録します。
+     */
+    inline fun addAll(recipeType: JeiRecipeType<*>, workstations: List<ItemStack>) {
+        if (workstations.isEmpty()) return
         registration.addRecipeCatalysts(recipeType, VanillaTypes.ITEM_STACK, workstations)
     }
 
-    @JvmStatic
-    fun add(registration: IRecipeCatalystRegistration, viewerType: HTRecipeViewerType<*>, workstations: List<ItemStack>) {
-        this.add(registration, HTJeiPlugin.getRecipeType(viewerType), workstations)
+    /**
+     * 指定した[viewerType]に[workstations]を登録します。
+     */
+    inline fun addAll(viewerType: HTRecipeViewerType<*>, workstations: List<ItemStack>) {
+        this.addAll(HTJeiPlugin.getRecipeType(viewerType), workstations)
     }
 
-    @JvmName("addFromStacks")
-    @JvmStatic
-    fun add(registration: IRecipeCatalystRegistration, viewerType: HTRecipeViewerType<*>, vararg workstations: ItemStack) {
-        this.add(registration, viewerType, workstations.toList())
-    }
-
-    @JvmName("addFromItems")
-    @JvmStatic
-    fun add(registration: IRecipeCatalystRegistration, viewerType: HTRecipeViewerType<*>, vararg workstations: ItemLike) {
-        this.add(registration, viewerType, workstations.map(::ItemStack))
-    }
-
-    @JvmStatic
-    fun addFromViewerType(registration: IRecipeCatalystRegistration, vararg viewerTypes: HTRecipeViewerType<*>) {
+    /**
+     * [HTRecipeViewerType.workStations]に基づいて登録します。
+     */
+    inline fun addFromViewerType(vararg viewerTypes: HTRecipeViewerType<*>) {
         for (viewerType: HTRecipeViewerType<*> in viewerTypes) {
-            this.add(registration, viewerType, viewerType.workStations)
+            this.addAll(viewerType, viewerType.workStations)
         }
     }
 }

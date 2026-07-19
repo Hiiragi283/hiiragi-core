@@ -1,6 +1,5 @@
 package hiiragi283.core.util
 
-import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
@@ -15,32 +14,6 @@ import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
 
 data object HTStackSlotHelper {
-    @JvmStatic
-    fun <RESOURCE : HTResourceType> moveResource(
-        from: HTResourceSlot<RESOURCE>?,
-        to: HTResourceSlot<RESOURCE>?,
-        amount: Int = from?.getAmount() ?: 0,
-        access: HTStorageAccess = HTStorageAccess.INTERNAL,
-    ): HTResourceMoveResult<RESOURCE> {
-        if (from == null || to == null || amount <= 0) return HTResourceMoveResult.failed()
-        val resource: RESOURCE? = from.getResource()
-        val simulatedExtract: Int = from.extract(amount, HTStorageAction.SIMULATE, access)
-        val simulatedRemain: Int = to.insert(resource, simulatedExtract, HTStorageAction.SIMULATE, access)
-        val simulatedAccepted: Int = amount - simulatedRemain
-        if (simulatedAccepted == 0) return HTResourceMoveResult.failed()
-        val extracted: Int = from.extract(simulatedAccepted, HTStorageAction.EXECUTE, access)
-        val remainder: Int = to.insert(resource, extracted, HTStorageAction.EXECUTE, access)
-        if (remainder > 0) {
-            val leftover: Int = from.insert(resource, remainder, HTStorageAction.EXECUTE, access)
-            if (leftover > 0) {
-                HiiragiCoreAPI.LOGGER.error("Stack slot $from did not accept leftover stack from $to! Voiding it.")
-            }
-            return HTResourceMoveResult.succeeded(resource, remainder)
-        } else {
-            return HTResourceMoveResult.succeeded(null, 0)
-        }
-    }
-
     /**
      * 指定した[resource]をすべてのスロットへ搬入します。
      * @return 搬入されない量

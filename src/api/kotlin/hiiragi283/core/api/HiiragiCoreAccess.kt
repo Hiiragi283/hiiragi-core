@@ -23,7 +23,6 @@ import hiiragi283.core.api.util.flatMap
 import hiiragi283.core.api.util.toTextResult
 import hiiragi283.core.impl.material.HTMaterialContentsImpl
 import hiiragi283.core.impl.material.HTMaterialContentsRegister
-import hiiragi283.core.util.HTPhysicalSideHelper
 import net.minecraft.core.HolderLookup
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.ItemStack

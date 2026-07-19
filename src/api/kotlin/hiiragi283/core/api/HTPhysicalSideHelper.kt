@@ -1,4 +1,4 @@
-package hiiragi283.core.util
+package hiiragi283.core.api
 
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.registry.lookupResult

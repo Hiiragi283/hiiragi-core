@@ -3,6 +3,8 @@ package hiiragi283.core.api.integration.jei
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.resource.toId
 import mezz.jei.api.IModPlugin
+import mezz.jei.api.registration.IRecipeCatalystRegistration
+import mezz.jei.api.registration.IRecipeRegistration
 import net.minecraft.resources.ResourceLocation
 
 /**
@@ -15,6 +17,18 @@ import net.minecraft.resources.ResourceLocation
  */
 abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
     final override fun getPluginUid(): ResourceLocation = modId.toId("jei_plugin")
+
+    final override fun registerRecipes(registration: IRecipeRegistration) {
+        registerRecipes(HTJeiRecipeHelper(registration))
+    }
+
+    protected abstract fun registerRecipes(helper: HTJeiRecipeHelper)
+
+    final override fun registerRecipeCatalysts(registration: IRecipeCatalystRegistration) {
+        registerRecipeCatalysts(HTJeiWorkstationHelper(registration))
+    }
+
+    protected abstract fun registerRecipeCatalysts(helper: HTJeiWorkstationHelper)
 
     //    Extensions    //
 

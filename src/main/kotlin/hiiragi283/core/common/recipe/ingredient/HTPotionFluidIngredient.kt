@@ -6,7 +6,7 @@ import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.serialization.codec.HTCodecs
-import hiiragi283.core.util.HTPhysicalSideHelper
+import hiiragi283.core.api.HTPhysicalSideHelper
 import java.util.Objects
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
