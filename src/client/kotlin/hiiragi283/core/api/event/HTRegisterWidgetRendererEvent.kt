@@ -9,12 +9,14 @@ import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 import net.neoforged.bus.api.Event
 import net.neoforged.fml.event.IModBusEvent
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent
 
 /**
  * [HTWidgetType]と[Renderable]を紐づけるイベントクラスです。
+ *
+ * 参照 : [NeoForge - RegisterMenuScreensEvent][RegisterMenuScreensEvent]
  * @author Hiiragi Tsubasa
  * @since 0.8.0
- * @see net.neoforged.neoforge.client.event.RegisterMenuScreensEvent
  */
 @OnlyIn(Dist.CLIENT)
 class HTRegisterWidgetRendererEvent(

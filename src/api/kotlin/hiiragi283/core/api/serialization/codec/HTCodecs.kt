@@ -75,13 +75,14 @@ data object HTCodecs {
 
     /**
      * [Option]でラップされた[Codec]を作成します。
-     * @see ExtraCodecs.optionalEmptyMap
+     *
+     * 参照 : [DataFixerUpper - ExtraCodecs.optionalEmptyMap][ExtraCodecs.optionalEmptyMap]
      */
     @JvmStatic
     fun <A : Any> option(codec: Codec<A>): Codec<Option<A>> = OptionCodec(codec)
 
-    @JvmInline
-    private value class OptionCodec<A : Any>(private val codec: Codec<A>) : Codec<Option<A>> {
+    @JvmRecord
+    private data class OptionCodec<A : Any>(private val codec: Codec<A>) : Codec<Option<A>> {
         override fun <T> encode(input: Option<A>, ops: DynamicOps<T>, prefix: T): DataResult<T> = input.fold(
             { DataResult.success(ops.emptyMap()) },
             { codec.encode(it, ops, prefix) },
@@ -96,6 +97,22 @@ data object HTCodecs {
             isEmptyMap(ops, input) -> DataResult.success(DFUPair.of(Option.none(), input))
             else -> codec.decode(ops, input).map { pair: DFUPair<A, T> -> pair.mapFirst { it.some() } }
         }
+    }
+
+    @JvmStatic
+    fun <A : Any, B : Any> pair(first: Codec<A>, second: Codec<B>): MapCodec<Pair<A, B>> = recordMap { instance ->
+        instance.group(
+            first.fieldOf("first").forGetter(Pair<A, B>::first),
+            second.fieldOf("second").forGetter(Pair<A, B>::second),
+        ).apply(instance, ::Pair)
+    }
+
+    @JvmStatic
+    fun <A : Any, B : Any> mapPair(first: MapCodec<A>, second: MapCodec<B>): MapCodec<Pair<A, B>> = recordMap { instance ->
+        instance.group(
+            first.forGetter(Pair<A, B>::first),
+            second.forGetter(Pair<A, B>::second),
+        ).apply(instance, ::Pair)
     }
 
     /**
@@ -124,7 +141,8 @@ data object HTCodecs {
      * @see com.mojang.serialization.codecs.EitherCodec
      * @see com.mojang.serialization.codecs.XorCodec
      */
-    private class HTEitherCodec<A, B>(val left: Codec<A>, val right: Codec<B>, val isStrict: Boolean) : Codec<Either<A, B>> {
+    @JvmRecord
+    private data class HTEitherCodec<A, B>(val left: Codec<A>, val right: Codec<B>, val isStrict: Boolean) : Codec<Either<A, B>> {
         override fun <T : Any> encode(input: Either<A, B>, ops: DynamicOps<T>, prefix: T): DataResult<T> = input.fold(
             { left.encode(it, ops, prefix) },
             { right.encode(it, ops, prefix) },
@@ -158,7 +176,7 @@ data object HTCodecs {
     @JvmStatic
     fun <A, B> ior(left: MapCodec<A>, right: MapCodec<B>): MapCodec<Ior<A, B>> = HTIorMapCodec(left, right)
 
-    private class HTIorMapCodec<A, B>(val left: MapCodec<A>, val right: MapCodec<B>) : MapCodec<Ior<A, B>>() {
+    private data class HTIorMapCodec<A, B>(val left: MapCodec<A>, val right: MapCodec<B>) : MapCodec<Ior<A, B>>() {
         override fun <T : Any> keys(ops: DynamicOps<T>): Stream<T> = Stream.concat(left.keys(ops), right.keys(ops))
 
         override fun <T : Any> decode(ops: DynamicOps<T>, input: MapLike<T>): DataResult<Ior<A, B>> {

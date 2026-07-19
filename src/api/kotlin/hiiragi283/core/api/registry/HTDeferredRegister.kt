@@ -6,7 +6,12 @@ import java.util.function.Supplier
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.neoforge.registries.DeferredRegister
-
+/**
+ * Hiiragi Seriesで使用される[DeferredRegister]のラッパークラスです。
+ * @param T レジストリの要素のクラス
+ * @author Hiiragi Tsubasa
+ * @since 0.13.0
+ */
 open class HTDeferredRegister<T : Any>(registryKey: RegistryKey<T>, namespace: String) : DeferredRegister<T>(registryKey, namespace) {
     /**
      * [名前空間][namespace]に基づいて，[パス][path]から[ID][ResourceLocation]を作成します。
@@ -14,6 +19,9 @@ open class HTDeferredRegister<T : Any>(registryKey: RegistryKey<T>, namespace: S
      */
     fun createId(path: String): ResourceLocation = namespace.toId(path)
 
+    /**
+     * @since 21.1.0
+     */
     fun createKey(id: ResourceLocation): ResourceKey<T> = this.registryKey.createKey(id)
 
     /**

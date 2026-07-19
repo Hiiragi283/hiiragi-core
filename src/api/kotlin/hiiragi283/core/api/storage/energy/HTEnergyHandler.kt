@@ -6,6 +6,11 @@ import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.amount.HTAmountSlot
 import net.neoforged.neoforge.energy.IEnergyStorage
 
+/**
+ * Hiiragi Seriesで使用される[IEnergyStorage]の拡張インターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 interface HTEnergyHandler :
     HTAmountSlot,
     HTValueSerializable,

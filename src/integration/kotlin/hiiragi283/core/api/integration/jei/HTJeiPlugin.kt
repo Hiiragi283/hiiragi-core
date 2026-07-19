@@ -7,10 +7,11 @@ import net.minecraft.resources.ResourceLocation
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[IModPlugin]の抽象クラスです。
+ *
+ * 参照 : [Mekanism - MekanismJEI](https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/client/recipe_viewer/jei/MekanismJEI.java)
  * @param modId 対象のMOD ID
  * @author Hiiragi Tsubasa
  * @since 0.11.0
- * @see mekanism.client.recipe_viewer.jei.MekanismJEI
  */
 abstract class HTJeiPlugin(protected val modId: String) : IModPlugin {
     final override fun getPluginUid(): ResourceLocation = modId.toId("jei_plugin")

@@ -29,30 +29,37 @@ data class HTRecipeSerializer<T : Recipe<*>>(@JvmField val codec: MapCodec<T>, @
 //    HTRecipeHolder    //
 
 /**
+ * [Recipe]以外も受け付ける[RecipeHolder]のエイリアスです。
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */
 typealias HTRecipeHolder<R> = Pair<ResourceLocation, R>
 
 /**
+ * [RecipeHolder]を[HTRecipeHolder]に変換します。
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */
 fun <T : Recipe<*>> HTRecipeHolder(holder: RecipeHolder<T>): HTRecipeHolder<T> = holder.id() to holder.value()
 
 /**
+ * レシピの[ID][ResourceLocation]を取得します。
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */
 val <R> HTRecipeHolder<R>.id: ResourceLocation get() = this.first
 
 /**
+ * レシピの値を取得します。
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */
 val <R> HTRecipeHolder<R>.recipe: R get() = this.second
 
 /**
+ * [HTRecipeHolder]が保持するレシピの型を変換します。
+ * @param T 変換前のレシピのクラス
+ * @param U 変換後のレシピのクラス
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */

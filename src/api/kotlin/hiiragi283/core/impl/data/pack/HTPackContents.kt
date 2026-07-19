@@ -16,6 +16,7 @@ import kotlin.collections.iterator
  */
 class HTPackContents {
     internal class Node {
+        // GT Modernの実装では`tags/block/ore.json`と`tags/block/ore/xx.json`が共存できないので，それを解決するためにこうした
         val children: MutableMap<String, Node> = hashMapOf()
         internal var contents: IoSupplier<InputStream>? = null
         val terminal: IoSupplier<InputStream> get() = contents ?: error("node has no data")

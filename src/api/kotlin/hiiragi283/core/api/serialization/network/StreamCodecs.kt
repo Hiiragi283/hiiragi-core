@@ -1,7 +1,7 @@
 package hiiragi283.core.api.serialization.network
 
 import hiiragi283.core.api.util.Option
-import hiiragi283.core.api.util.toOption
+import hiiragi283.core.api.util.some
 import io.netty.buffer.ByteBuf
 import java.util.Optional
 import net.minecraft.network.codec.ByteBufCodecs
@@ -59,7 +59,7 @@ private value class OptionStreamCodec<B : ByteBuf, V : Any>(private val codec: S
     }
 
     override fun decode(input: B): Option<V> = when (input.readBoolean()) {
-        true -> codec.decode(input).toOption()
+        true -> codec.decode(input).some()
         false -> Option.none()
     }
 }

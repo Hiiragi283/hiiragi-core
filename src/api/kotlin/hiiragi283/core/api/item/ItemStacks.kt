@@ -17,7 +17,8 @@ import net.minecraft.world.level.ItemLike
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */
-fun ItemStack(item: ItemLike, count: Int, patch: DataComponentPatch): ItemStack {
+fun ItemStack(item: ItemLike?, count: Int, patch: DataComponentPatch): ItemStack {
+    if (item == null) return ItemStack.EMPTY
     val stack = ItemStack(item, count)
     stack.applyComponents(patch)
     return stack
@@ -28,23 +29,7 @@ fun <T : Any> createItemStack(
     type: DataComponentType<T>,
     value: T,
     count: Int = 1,
-): ItemStack = createItemStack(item, count, buildDataPatch { set(type, value) })
-
-/**
- * 指定した引数から新しい[ItemStack]のインスタンスを作成します。
- * @param item アイテムの種類
- * @param count アイテムの量
- * @param patch 適応するコンポーネントの差分
- * @author Hiiragi Tsubasa
- * @since 0.6.0
- */
-fun createItemStack(item: ItemLike?, count: Int = 1, patch: DataComponentPatch = DataComponentPatch.EMPTY): ItemStack {
-    if (item == null) return ItemStack.EMPTY
-    val stack = ItemStack(item, count)
-    if (stack.isEmpty) return ItemStack.EMPTY
-    stack.applyComponents(patch)
-    return stack
-}
+): ItemStack = ItemStack(item, count, buildDataPatch { set(type, value) })
 
 fun createEnchantedBook(enchantment: Holder<Enchantment>, level: Int = enchantment.value().maxLevel): ItemStack {
     val stack = ItemStack(Items.ENCHANTED_BOOK)

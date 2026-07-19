@@ -10,9 +10,10 @@ import net.minecraft.client.gui.components.Renderable
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 import net.neoforged.fml.ModLoader
+import net.minecraft.client.gui.screens.MenuScreens
 
 /**
- * @see net.minecraft.client.gui.screens.MenuScreens
+ * 参照 : [Minecraft - MenuScreens][MenuScreens]
  */
 @OnlyIn(Dist.CLIENT)
 internal object HTWidgetRendererManager {

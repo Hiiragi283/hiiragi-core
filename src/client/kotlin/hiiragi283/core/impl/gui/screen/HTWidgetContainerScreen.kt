@@ -10,9 +10,10 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.entity.player.Inventory
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
+import net.minecraft.client.gui.screens.inventory.ContainerScreen
 
 /**
- * @see net.minecraft.client.gui.screens.inventory.ContainerScreen
+ * 参照 : [Minecraft - ContainerScreen][ContainerScreen]
  */
 @OnlyIn(Dist.CLIENT)
 class HTWidgetContainerScreen(menu: HTWidgetContainerMenu, inventory: Inventory, title: Text) : HTContainerScreen<HTWidgetContainerMenu>(menu, inventory, title) {

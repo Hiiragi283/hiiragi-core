@@ -46,7 +46,7 @@ class HTItemToMultiItemRecipeBuilder<out RECIPE : Recipe<*>>(prefix: String, pri
 
     //    Factory    //
 
-    fun interface Factory<RECIPE : Any> {
+    fun interface Factory<out RECIPE : Any> {
         fun create(ingredient: HTItemIngredient, results: List<HTChancedItemResult>, progressData: HTProgressData): RECIPE
     }
 }

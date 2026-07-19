@@ -8,7 +8,7 @@ import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 
 /**
- * @see mekanism.client.model.ModelPartData
+ * 参照 : [Mekanism - ModelPartData](https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/client/model/ModelPartData.java)
  */
 @OnlyIn(Dist.CLIENT)
 @JvmRecord

@@ -87,6 +87,7 @@ abstract class HTCommonMod {
 
     /**
      * キャパビリティの登録を行います。
+     * @since 21.1.0
      */
     protected open fun registerCapabilities(helper: CapabilityHelper) {}
 

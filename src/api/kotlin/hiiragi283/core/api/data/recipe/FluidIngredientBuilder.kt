@@ -5,6 +5,7 @@ package hiiragi283.core.api.data.recipe
 import hiiragi283.core.api.data.HolderAcceptor
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.registry.VanillaFluidContents
 import hiiragi283.core.api.util.HTBuilderMarker
 import hiiragi283.core.api.util.HTDelegates
 import kotlin.contracts.ExperimentalContracts
@@ -52,6 +53,18 @@ class FluidIngredientBuilder {
             .map { it.value() }
             .map(FluidIngredient::of)
             .let { CompoundFluidIngredient(it) }
+    }
+
+    fun water() {
+        +VanillaFluidContents.WATER
+    }
+
+    fun lava() {
+        +VanillaFluidContents.LAVA
+    }
+
+    fun milk() {
+        +VanillaFluidContents.MILK
     }
 
     fun build(): FluidIngredient = ingredient

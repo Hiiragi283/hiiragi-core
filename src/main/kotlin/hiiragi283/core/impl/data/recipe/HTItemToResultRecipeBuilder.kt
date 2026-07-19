@@ -40,7 +40,7 @@ abstract class HTItemToResultRecipeBuilder<out RECIPE : Recipe<*>, RESULT : HTId
 
     //    Factory    //
 
-    fun interface Factory<RESULT : Any, RECIPE : Any> {
+    fun interface Factory<RESULT : Any, out RECIPE : Any> {
         fun create(ingredient: HTItemIngredient, result: RESULT, progressData: HTProgressData): RECIPE
     }
 }

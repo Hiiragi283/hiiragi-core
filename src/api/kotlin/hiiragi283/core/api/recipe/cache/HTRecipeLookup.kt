@@ -12,8 +12,6 @@ import hiiragi283.core.api.registry.lookupResult
 import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.api.util.HTTextResult
-import hiiragi283.core.api.util.flatMap
-import hiiragi283.core.api.util.right
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -30,7 +28,7 @@ import net.minecraft.world.level.Level
 /**
  * レシピの一覧を提供するインターフェースです。
  *
- * 参照 : [Mekanism - IMekanismRecipeTypeProvider](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/recipe/IMekanismRecipeTypeProvider.java)
+ * 参照 : [Mekanism - IMekanismRecipeTypeProvider](https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/common/recipe/IMekanismRecipeTypeProvider.java)
  * @param RECIPE レシピのクラス
  * @author Hiiragi Tsubasa
  * @since 21.1.0
@@ -47,7 +45,7 @@ fun interface HTRecipeLookup<out RECIPE> {
     /**
      * [HTRecipeLookup]の拡張インターフェースです。
      *
-     * 参照 : [Mekanism - IMekanismRecipeTypeProvider](https://github.com/mekanism/Mekanism/blob/26.1/src/main/java/mekanism/common/recipe/IMekanismRecipeTypeProvider.java)
+     * 参照 : [Mekanism - IMekanismRecipeTypeProvider](https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/common/recipe/IMekanismRecipeTypeProvider.java)
      * @param RECIPE レシピのクラス
      * @author Hiiragi Tsubasa
      * @since 21.1.0
@@ -94,6 +92,6 @@ fun interface HTRecipeLookup<out RECIPE> {
 
         fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(recipeType: RecipeType<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> = this[MANAGER]?.getAllRecipesFor(recipeType)?.asSequence()?.map(::HTRecipeHolder) ?: emptySequence()
 
-        fun <T : Any> lookup(key: RegistryKey<T>): HTTextResult<HolderLookup.RegistryLookup<T>> = this[REGISTRY]?.right()?.flatMap { it.lookupResult(key) } ?: HTTextResult("Recipe lookup context does not have registry access")
+        fun <T : Any> lookup(key: RegistryKey<T>): HTTextResult<HolderLookup.RegistryLookup<T>> = this[REGISTRY]?.lookupResult(key) ?: HTTextResult("Recipe lookup context does not have registry access")
     }
 }

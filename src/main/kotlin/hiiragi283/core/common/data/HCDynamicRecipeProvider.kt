@@ -25,6 +25,7 @@ import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.api.material.property.getDefaultScale
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
+import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.resource.SimpleSupplierWithKey
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -39,9 +40,9 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.crafting.Ingredient
 import net.neoforged.neoforge.common.Tags
 
-internal data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
+data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
     @JvmStatic
-    fun initialize() {
+    internal fun initialize() {
         delegate = HTDynamicDataRegister
         for (entry: HTMaterialManager.Entry in materialManager) {
             crushBaseToDust(entry)
@@ -100,7 +101,6 @@ internal data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated
         if (prefix.itemTagKey(entry) == entry.getDefaultPart(entry)) return
         // 素材のプロパティから完成品を取得
         val crushedPrefix: HTPartLike = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART)
-        val dust: HTMaterialContents.ItemEntry = getItem(crushedPrefix, entry) ?: return
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = part.getScaledAmount(entry.getDefaultScale(), entry)
         // レシピを登録
@@ -109,10 +109,7 @@ internal data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated
                 +tag(prefix, entry)
                 count = inputCount
             }
-            result {
-                +dust
-                count = outputCount
-            }
+            result { +HTItemResult.MaterialPart(crushedPrefix, entry, outputCount) }
             time = getTimeFromHardness(entry, time) ?: return
             recipeId suffix "_from_${part.asPartName()}"
         }.save(exporter)
@@ -126,8 +123,6 @@ internal data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated
         val inputTag: TagKey<Item> = defaultPart.getTag(entry)
         // 加工の前後でタグが一致する場合はパス
         if (inputTag == crushedPrefix.tagPrefix?.itemTagKey(entry)) return
-        // 完成品を取得
-        val dust: HTMaterialContents.ItemEntry = getItem(crushedPrefix, entry) ?: return
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = entry.getDefaultScale()
         // レシピを登録
@@ -136,10 +131,7 @@ internal data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated
                 +inputTag
                 count = inputCount
             }
-            result {
-                +dust
-                count = outputCount
-            }
+            result { +HTItemResult.MaterialPart(crushedPrefix, entry, outputCount) }
             time = getTimeFromHardness(entry, time) ?: return
             recipeId suffix "_from_${defaultPart.getSuffix()}"
         }.save(exporter)
@@ -148,17 +140,12 @@ internal data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated
     @JvmStatic
     private fun crushOreToCrushed(entry: HTMaterialManager.Entry, part: HTPartLike) {
         val prefix: HTTagPrefix = part.tagPrefix ?: return
-        // 完成品を取得
-        val crushedOre: HTMaterialContents.ItemEntry = getItem(CommonParts.CRUSHED_ORE, entry) ?: return
         // レシピを登録
         HTItemToMultiItemRecipeBuilder.crushing {
             // 材料
             ingredient { +tag(prefix, entry) }
             // 主産物
-            result {
-                +crushedOre
-                count = part.getScaledAmount(2, entry).toInt()
-            }
+            result { +HTItemResult.MaterialPart(CommonParts.CRUSHED_ORE, entry, part.getScaledAmount(2, entry).toInt()) }
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]?.getResult(HTExtraOreResultMap.Phase.CRUSH_ORE)?.let { +it }
 
@@ -170,7 +157,6 @@ internal data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated
     private fun crushCrushedToDust(entry: HTMaterialManager.Entry) {
         // 完成品を取得
         val crushedPrefix: HTPartLike = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART)
-        val dust: HTMaterialContents.ItemEntry = getItem(crushedPrefix, entry) ?: return
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = CommonParts.CRUSHED_ORE.getScaledAmount(1, entry)
         // レシピを登録
@@ -181,10 +167,7 @@ internal data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated
                 count = inputCount
             }
             // 主産物
-            result {
-                +dust
-                count = outputCount
-            }
+            result { +HTItemResult.MaterialPart(crushedPrefix, entry, outputCount) }
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]?.getResult(HTExtraOreResultMap.Phase.CRUSH_CRUSHED)?.let { +it }
 

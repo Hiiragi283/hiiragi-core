@@ -28,7 +28,7 @@ import net.minecraft.world.item.Items
 import net.neoforged.neoforge.registries.NeoForgeRegistries
 import net.neoforged.neoforge.registries.RegisterEvent
 
-internal object HCMiscRegister {
+internal data object HCMiscRegister {
     @JvmStatic
     private val TRIPLE_COMPARATOR: Comparator<Triple<Comparable<*>, HTMaterialKey, *>> =
         compareBy<Triple<Comparable<*>, HTMaterialKey, *>> { it.first }.thenComparing { it.second }

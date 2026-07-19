@@ -33,6 +33,11 @@ import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.common.util.NeoForgeExtraCodecs
 import org.apache.commons.lang3.math.Fraction
 
+/**
+ * アイテムの完成品を表すインターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 21.1.0
+ */
 interface HTItemResult : HTIdLike {
     companion object {
         @JvmField
@@ -52,8 +57,9 @@ interface HTItemResult : HTIdLike {
         val CODEC: Codec<HTItemResult> = Codec.lazyInitialized(MAP_CODEC::codec)
 
         @JvmField
-        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemResult> =
-            ByteBufCodecs.registry(HCRegistries.Keys.ITEM_RESULT_SERIALIZER).dispatch(HTItemResult::getSerializer, Serializer<*>::streamCodec)
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemResult> = ByteBufCodecs
+            .registry(HCRegistries.Keys.ITEM_RESULT_SERIALIZER)
+            .dispatch(HTItemResult::getSerializer, Serializer<*>::streamCodec)
     }
 
     fun getSerializer(): Serializer<*>

@@ -14,20 +14,17 @@ data object HTComparators {
      * [ID][ResourceLocation]の[Comparator]
      */
     @JvmField
-    val ID: Comparator<ResourceLocation> =
-        compareBy(ResourceLocation::getNamespace).thenComparing(ResourceLocation::getPath)
+    val ID: Comparator<ResourceLocation> = compareBy(ResourceLocation::getNamespace).thenComparing(ResourceLocation::getPath)
 
     /**
      * [ResourceKey]の[Comparator]
      */
     @JvmField
-    val KEY: Comparator<ResourceKey<*>> =
-        compareBy(ID, ResourceKey<*>::registry).thenComparing(compareBy(ID, ResourceKey<*>::location))
+    val KEY: Comparator<ResourceKey<*>> = compareBy(ID, ResourceKey<*>::registry).thenComparing(compareBy(ID, ResourceKey<*>::location))
 
     /**
      * [TagKey]の[Comparator]
      */
     @JvmField
-    val TAG_KEY: Comparator<TagKey<*>> =
-        compareBy(KEY, TagKey<*>::registry).thenComparing(compareBy(ID, TagKey<*>::location))
+    val TAG_KEY: Comparator<TagKey<*>> = compareBy(KEY, TagKey<*>::registry).thenComparing(compareBy(ID, TagKey<*>::location))
 }

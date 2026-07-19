@@ -2,7 +2,7 @@ package hiiragi283.core.util
 
 import hiiragi283.core.api.color.HTDefaultColor
 import hiiragi283.core.api.fixedFraction
-import hiiragi283.core.api.item.createItemStack
+import hiiragi283.core.api.item.ItemStack
 import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.api.storage.amount.HTAmountView
 import hiiragi283.core.api.text.HTCommonTranslation
@@ -28,14 +28,13 @@ import kotlin.math.roundToInt
 import net.neoforged.neoforge.energy.IEnergyStorage
 
 /**
- * @see mekanism.common.util.StorageUtils
+ * 参照 : [Mekanism - StorageUtils](https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/common/util/StorageUtils.java)
  */
 data object HTStorageHelper {
     //    Amount    //
 
     /**
-     * @see net.neoforged.neoforge.items.ItemHandlerHelper.calcRedstoneFromInventory
-     * @see mekanism.common.util.MekanismUtils.redstoneLevelFromContents
+     * 参照 : [NeoForge - ItemHandlerHelper.calcRedstoneFromInventory][net.neoforged.neoforge.items.ItemHandlerHelper.calcRedstoneFromInventory], [Mekanism - MekanismUtils.redstoneLevelFromContents](https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/common/util/MekanismUtils.java)
      */
     @JvmStatic
     fun calculateRedstoneLevel(views: Iterable<HTAmountView>): Int {
@@ -49,7 +48,7 @@ data object HTStorageHelper {
     }
 
     /**
-     * @see mekanism.common.util.MekanismUtils.redstoneLevelFromContents
+     * 参照 : [Mekanism - MekanismUtils.redstoneLevelFromContents](https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/common/util/MekanismUtils.java)
      */
     @JvmStatic
     fun calculateRedstoneLevel(amount: Int, capacity: Int): Int = Mth.lerpDiscrete(fixedFraction(amount, capacity).toFloat(), Redstone.SIGNAL_NONE, Redstone.SIGNAL_MAX)
@@ -66,7 +65,7 @@ data object HTStorageHelper {
         count: Int = 1,
         patch: DataComponentPatch = DataComponentPatch.EMPTY,
     ): ItemStack {
-        val stack: ItemStack = createItemStack(item, count, patch)
+        val stack = ItemStack(item, count, patch)
         updateEnergy(stack, amount)
         return stack
     }
@@ -119,7 +118,7 @@ data object HTStorageHelper {
         count: Int = 1,
         patch: DataComponentPatch = DataComponentPatch.EMPTY,
     ): ItemStack {
-        val stack: ItemStack = createItemStack(item, count, patch)
+        val stack = ItemStack(item, count, patch)
         updateFluid(stack, fluidStack)
         return stack
     }

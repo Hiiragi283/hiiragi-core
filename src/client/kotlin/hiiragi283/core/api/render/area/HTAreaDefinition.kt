@@ -5,9 +5,10 @@ import net.minecraft.core.GlobalPos
 
 /**
  * 有効範囲を描画するための値を提供するインターフェースです。
+ *
+ * 参照 : [AppliedEnergistics2 - IOverlayDataSource](https://github.com/AppliedEnergistics/Applied-Energistics-2/blob/1.21.1/src/main/java/appeng/client/render/overlay/IOverlayDataSource.java)
  * @author Hiiragi Tsubasa
  * @since 0.5.0
- * @see appeng.client.render.overlay.IOverlayDataSource
  */
 interface HTAreaDefinition {
     /**

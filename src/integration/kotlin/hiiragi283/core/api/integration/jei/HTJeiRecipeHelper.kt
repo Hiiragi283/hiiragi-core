@@ -13,9 +13,10 @@ import net.minecraft.client.Minecraft
 
 /**
  * [IRecipeRegistration]へのレシピ登録を簡略化するヘルパークラスです。
+ *
+ * 参照 : [Mekanism - RecipeRegistryHelper](https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/client/recipe_viewer/jei/RecipeRegistryHelper.java)
  * @author Hiiragi Tsubasa
  * @since 0.15.1
- * @see mekanism.client.recipe_viewer.jei.RecipeRegistryHelper
  */
 data object HTJeiRecipeHelper {
     @JvmStatic

@@ -63,7 +63,7 @@ class HTItemAndFluidToItemRecipeBuilder<out RECIPE : Recipe<*>>(prefix: String, 
 
     //    Factory    //
 
-    fun interface Factory<RECIPE : Any> {
+    fun interface Factory<out RECIPE : Any> {
         fun create(itemIngredient: HTItemIngredient, fluidIngredient: HTFluidIngredient, result: HTItemResult, progressData: HTProgressData): RECIPE
     }
 }

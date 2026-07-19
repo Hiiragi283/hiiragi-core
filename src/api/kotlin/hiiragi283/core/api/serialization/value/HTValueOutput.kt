@@ -25,6 +25,9 @@ interface HTValueOutput {
         write(key, codec, value.toOptional())
     }
 
+    /**
+     * @since 21.1.0
+     */
     fun <T : Any> writeOption(key: String, codec: Codec<Option<T>>, value: T?) {
         write(key, codec, value.toOption())
     }
@@ -40,6 +43,10 @@ interface HTValueOutput {
      */
     fun child(key: String): HTValueOutput
 
+    /**
+     * 指定した[key]から値を削除します。
+     * @since 21.1.0
+     */
     fun discard(key: String)
 
     // List

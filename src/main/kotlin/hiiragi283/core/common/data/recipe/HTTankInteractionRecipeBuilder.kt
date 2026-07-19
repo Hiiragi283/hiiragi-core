@@ -12,7 +12,8 @@ import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.util.HTDelegates
-import hiiragi283.core.api.util.toOption
+import hiiragi283.core.api.util.Option
+import hiiragi283.core.api.util.some
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import kotlin.contracts.ExperimentalContracts
@@ -39,9 +40,9 @@ object HTTankInteractionRecipeBuilder {
     }
 
     class Emptying : HTRecipeBuilder<HCTankEmptyingRecipe>(HTConst.EMPTYING) {
-        var ingredient: Ingredient by HTDelegates.onceInitialize()
-        var fluidResult: HTFluidResult by HTDelegates.onceInitialize()
-        var itemResult: HTItemResult? = null
+        @PublishedApi internal var ingredient: Ingredient by HTDelegates.onceInitialize()
+        @PublishedApi internal var fluidResult: HTFluidResult by HTDelegates.onceInitialize()
+        @PublishedApi internal var itemResult: Option<HTItemResult> by HTDelegates.optionalOnceInitialize()
 
         operator fun Ingredient.unaryPlus() {
             ingredient = this
@@ -52,7 +53,7 @@ object HTTankInteractionRecipeBuilder {
         }
 
         operator fun HTItemResult.unaryPlus() {
-            itemResult = this
+            itemResult = this.some()
         }
 
         inline fun ingredient(builderAction: IngredientBuilder.() -> Unit) {
@@ -73,12 +74,12 @@ object HTTankInteractionRecipeBuilder {
             contract {
                 callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
             }
-            itemResult = HTItemResultBuilder().apply(builderAction).build()
+            +HTItemResultBuilder().apply(builderAction).build()
         }
 
         override fun getPrimalId(): ResourceLocation = fluidResult.getId()
 
-        override fun createRecipe(): HCTankEmptyingRecipe = HCTankEmptyingRecipe(ingredient, fluidResult, itemResult.toOption())
+        override fun createRecipe(): HCTankEmptyingRecipe = HCTankEmptyingRecipe(ingredient, fluidResult, itemResult)
     }
 
     class Filling : HTRecipeBuilder<HCTankFillingRecipe>(HTConst.FILLING) {

@@ -20,7 +20,7 @@ import net.minecraft.world.item.Item
 /**
  * Minecraftで使用される様々な「色」をまとめたクラスです。
  *
- * 参考 : [Mekanism - EnumColor](https://github.com/mekanism/Mekanism/blob/26.1/src/api/java/mekanism/api/text/EnumColor.java)
+ * 参考 : [Mekanism - EnumColor](https://github.com/mekanism/Mekanism/blob/1.21.x/src/api/java/mekanism/api/text/EnumColor.java)
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */

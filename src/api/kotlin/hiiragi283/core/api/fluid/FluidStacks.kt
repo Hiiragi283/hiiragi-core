@@ -10,7 +10,8 @@ import net.neoforged.neoforge.fluids.FluidStack
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */
-fun FluidStack(fluid: Fluid, amount: Int, patch: DataComponentPatch): FluidStack {
+fun FluidStack(fluid: Fluid?, amount: Int, patch: DataComponentPatch): FluidStack {
+    if (fluid == null) return FluidStack.EMPTY
     val stack = FluidStack(fluid, amount)
     stack.applyComponents(patch)
     return stack
@@ -20,4 +21,4 @@ fun FluidStack(fluid: Fluid, amount: Int, patch: DataComponentPatch): FluidStack
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */
-fun FluidStack(fluid: HTFluidLike<*>, amount: Int, patch: DataComponentPatch): FluidStack = FluidStack(fluid.asFluid(), amount, patch)
+fun FluidStack(fluid: HTFluidLike<*>?, amount: Int, patch: DataComponentPatch): FluidStack = FluidStack(fluid?.asFluid(), amount, patch)

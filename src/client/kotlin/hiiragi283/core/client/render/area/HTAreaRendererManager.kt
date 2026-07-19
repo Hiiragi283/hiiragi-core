@@ -13,9 +13,10 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent
 import org.joml.Quaternionf
 
 /**
+ * 参照 : [AppliedEnergistics2 - OverlayManager](https://github.com/AppliedEnergistics/Applied-Energistics-2/blob/1.21.1/src/main/java/appeng/client/render/overlay/OverlayManager.java)
+ *
  * @author Hiiragi Tsubasa
  * @since 0.5.0
- * @see appeng.client.render.overlay.OverlayManager
  */
 @EventBusSubscriber(value = [Dist.CLIENT])
 object HTAreaRendererManager {

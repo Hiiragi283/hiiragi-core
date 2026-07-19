@@ -29,6 +29,7 @@ data object HTPhysicalSideHelper {
      * @param client 物理クライアント側の処理
      * @param server 物理サーバー側の処理
      * @return 各ブロックでの戻り値
+     * @since 21.1.0
      */
     @JvmStatic
     inline fun <T> runForSide(client: (Level) -> T, server: (MinecraftServer) -> T): T? = runForDist(

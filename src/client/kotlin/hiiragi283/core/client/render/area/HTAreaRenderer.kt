@@ -15,9 +15,10 @@ import org.joml.Matrix4f
 import java.util.OptionalDouble
 
 /**
+ * 参照 : [AppliedEnergistics2 - OverlayRenderer](https://github.com/AppliedEnergistics/Applied-Energistics-2/blob/1.21.1/src/main/java/appeng/client/render/overlay/OverlayRenderer.java)
+ *
  * @author Hiiragi Tsubasa
  * @since 0.5.0
- * @see appeng.client.render.overlay.OverlayRenderer
  */
 class HTAreaRenderer(val definition: HTAreaDefinition) {
     companion object {

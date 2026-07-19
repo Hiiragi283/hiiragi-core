@@ -29,7 +29,7 @@ fun HTTextResult(value: String): HTTextResult<Nothing> = ErrorText(value).left()
  * @param T 値のクラス
  * @param message エラーメッセージを提供するブロック
  * @author Hiiragi Tsubasa
- * @since 26.1.0
+ * @since 21.1.0
  */
 inline fun <T> T?.toTextResult(message: () -> String): HTTextResult<T> {
     contract {
@@ -42,7 +42,7 @@ inline fun <T> T?.toTextResult(message: () -> String): HTTextResult<T> {
  * エラーメッセージがある場合，それをログに出力します。
  * @param logger ログの出力先
  * @author Hiiragi Tsubasa
- * @since 26.1.0
+ * @since 21.1.0
  */
 fun <T> HTTextResult<T>.printError(logger: Logger): HTTextResult<T> = this.onLeft { logger.error(it.value) }
 

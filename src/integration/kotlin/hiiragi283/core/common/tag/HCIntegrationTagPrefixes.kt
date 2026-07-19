@@ -6,8 +6,7 @@ import hiiragi283.core.api.tag.RawTagKey
 import hiiragi283.core.common.integration.HCIConstants
 
 /**
- * @see hiiragi283.core.api.tag.CommonTagPrefixes
- * @see mekanism.common.resource.ResourceType
+ * 参照 : [HiiragiCore - CommonTagPrefixes][hiiragi283.core.api.tag.CommonTagPrefixes], [Mekanism - ResourceType](https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/common/resource/ResourceType.java)
  */
 data object HCIntegrationTagPrefixes {
     //    Immersive    //

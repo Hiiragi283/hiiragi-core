@@ -1,6 +1,11 @@
 package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.material.HTMaterialContents
+import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.getResult
+import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.resource.toId
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
@@ -27,6 +32,14 @@ abstract class HTRecipeProvider(packOutput: PackOutput, private val future: Comp
     private val pathProvider: PackOutput.PathProvider = packOutput.createRegistryElementsPathProvider(Registries.RECIPE)
 
     /**
+     * レジストリへのアクセス
+     *
+     * [buildRecipes]の前に初期化されます。
+     */
+    protected lateinit var registries: HolderLookup.Provider
+        private set
+
+    /**
      * レシピの出力先
      *
      * [buildRecipes]の前に初期化されます。
@@ -37,6 +50,7 @@ abstract class HTRecipeProvider(packOutput: PackOutput, private val future: Comp
     override fun run(cache: CachedOutput): CompletableFuture<*> = future.thenCompose { registries: HolderLookup.Provider ->
         val recipes: MutableSet<ResourceLocation> = hashSetOf()
         val tasks: MutableList<CompletableFuture<*>> = mutableListOf()
+        this.registries = registries
         this.exporter = HTRecipeExporter { id: ResourceLocation, recipe: Recipe<*>, conditions: List<ICondition> ->
             val fixedId: ResourceLocation = id.let(::modifyId)
             check(recipes.add(fixedId)) { "Duplicate recipe $fixedId" }
@@ -69,6 +83,18 @@ abstract class HTRecipeProvider(packOutput: PackOutput, private val future: Comp
      * @return [modId]を[名前空間][ResourceLocation.getNamespace]とする[ID][ResourceLocation]
      */
     protected fun id(vararg path: String): ResourceLocation = modId.toId(*path)
+
+    /**
+     * @since 21.1.0
+     */
+    protected inline fun useItem(part: HTPartLike, material: HTMaterialLike, action: (HTMaterialContents.ItemEntry) -> Unit) {
+        HiiragiCoreAccess.INSTANCE
+            .registeredContents
+            .items
+            .getResult(part, material)
+            .onLeft { DataProvider.LOGGER.error(it.value) }
+            .onRight(action)
+    }
 
     //    Integration    //
 

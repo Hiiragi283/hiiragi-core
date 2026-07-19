@@ -92,7 +92,7 @@ object HTSpriteRenderHelper {
     }
 
     /**
-     * @see me.desht.pneumaticcraft.client.util.GuiUtils.drawFluidTexture
+     * 参照 : [PneumaticCraft - GuiUtils.drawFluidTexture](https://github.com/TeamPneumatic/pnc-repressurized/blob/1.21/src/main/java/me/desht/pneumaticcraft/client/util/GuiUtils.java)
      */
     fun drawQuad(
         guiGraphics: GuiGraphics,
@@ -119,7 +119,7 @@ object HTSpriteRenderHelper {
     }
 
     /**
-     * @see rearth.oritech.client.renderers.SmallTankRenderer.drawQuad
+     * 参照 : [Oritech - SmallTankRenderer.drawQuad](https://github.com/Rearth/Oritech/blob/1.21/common/src/main/java/rearth/oritech/client/renderers/SmallTankRenderer.java)
      */
     fun drawQuad(
         direction: Direction,
@@ -149,20 +149,21 @@ object HTSpriteRenderHelper {
     }
 
     /**
-     * @see rearth.oritech.client.renderers.SmallTankRenderer.getFrameU
+     * 参照 : [Oritech - SmallTankRenderer.getFrameU](https://github.com/Rearth/Oritech/blob/1.21/common/src/main/java/rearth/oritech/client/renderers/SmallTankRenderer.java)
      */
     @JvmStatic
     private val FRAME_U: FloatArray = floatArrayOf(0f, 1f, 1f, 0f)
 
     /**
-     * @see rearth.oritech.client.renderers.SmallTankRenderer.getFrameV
+     * 参照 : [Oritech - SmallTankRenderer.getFrameV](https://github.com/Rearth/Oritech/blob/1.21/common/src/main/java/rearth/oritech/client/renderers/SmallTankRenderer.java)
      */
     @JvmStatic
     private val FRAME_V: FloatArray = floatArrayOf(0f, 0f, 1f, 1f)
 
     /**
      * 上の列から左上，右上，右下，左下の順
-     * @see rearth.oritech.client.renderers.SmallTankRenderer.getQuadVerticesByDirection
+     *
+     * 参照 : [Oritech - SmallTankRenderer.getQuadVerticesByDirection](https://github.com/Rearth/Oritech/blob/1.21/common/src/main/java/rearth/oritech/client/renderers/SmallTankRenderer.java)
      */
     @JvmStatic
     private fun getQuadVertices(direction: Direction): Array<FloatArray> = when (direction) {

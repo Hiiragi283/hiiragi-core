@@ -29,9 +29,10 @@ import org.apache.commons.lang3.math.Fraction
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[IRecipeCategory]の拡張クラスです。
+ *
+ * 参照 : [Mekanism - BaseRecipeCategory](https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/client/recipe_viewer/jei/BaseRecipeCategory.java)
  * @author Hiiragi Tsubasa
  * @since 0.11.0
- * @see mekanism.client.recipe_viewer.jei.BaseRecipeCategory
  */
 abstract class HTBasicRecipeCategory<RECIPE : Any>(
     private val guiHelper: IGuiHelper,

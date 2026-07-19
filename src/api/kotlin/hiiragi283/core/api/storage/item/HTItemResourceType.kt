@@ -2,7 +2,7 @@ package hiiragi283.core.api.storage.item
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
-import hiiragi283.core.api.item.createItemStack
+import hiiragi283.core.api.item.ItemStack
 import hiiragi283.core.api.storage.resource.HTResourceType
 import hiiragi283.core.api.text.Text
 import net.minecraft.core.Holder
@@ -86,7 +86,7 @@ class HTItemResourceType private constructor(private val stack: ItemStack) : HTR
  * @author Hiiragi Tsubasa
  * @since 0.8.0
  */
-fun ItemLike?.toResource(patch: DataComponentPatch = DataComponentPatch.EMPTY): HTItemResourceType? = createItemStack(this, patch = patch).toResource()
+fun ItemLike?.toResource(patch: DataComponentPatch = DataComponentPatch.EMPTY): HTItemResourceType? = ItemStack(this, 1, patch).toResource()
 
 /**
  * この[ItemStack][this]を[HTItemResourceType]に変換します。

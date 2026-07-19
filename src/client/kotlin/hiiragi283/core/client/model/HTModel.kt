@@ -10,7 +10,7 @@ import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 
 /**
- * @see mekanism.client.model.MekanismJavaModel
+ * 参照 : [Mekanism - MekanismJavaModel](https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/client/model/MekanismJavaModel.java)
  */
 @OnlyIn(Dist.CLIENT)
 abstract class HTModel(renderType: (ResourceLocation) -> RenderType) : Model(renderType) {

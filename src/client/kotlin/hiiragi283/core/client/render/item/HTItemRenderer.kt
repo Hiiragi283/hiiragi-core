@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.client.model.data.ModelData
 
 /**
- * @see mekanism.client.render.item.MekanismISTER
+ * 参照 : [Mekanism - MekanismISTER](https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/client/render/item/MekanismISTER.java)
  */
 abstract class HTItemRenderer :
     BlockEntityWithoutLevelRenderer(
@@ -47,9 +47,6 @@ abstract class HTItemRenderer :
         poseStack.popPose()
     }
 
-    /**
-     * @see mekanism.client.render.item.MekanismISTER
-     */
     protected fun renderBlockItem(
         stack: ItemStack,
         displayContext: ItemDisplayContext,

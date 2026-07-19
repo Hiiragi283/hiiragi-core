@@ -12,7 +12,7 @@ import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 
 /**
- * @see mekanism.client.gui.element.GuiElement
+ * 参照 : [Mekanism - GuiElement](https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/client/gui/element/GuiElement.java)
  */
 @OnlyIn(Dist.CLIENT)
 class HTGuiWidget<WIDGET : HTWidget>(private val gui: HTAbstractGui, val widget: WIDGET) :

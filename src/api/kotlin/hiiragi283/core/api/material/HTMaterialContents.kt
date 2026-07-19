@@ -44,6 +44,9 @@ interface HTMaterialContents<R : Any, out V> : Table<R, HTMaterialKey, V> {
 
     fun column(material: HTMaterialLike): Map<R, V> = this.column(material.asMaterialKey())
 
+    /**
+     * @since 21.1.0
+     */
     class BlockEntry(delegate: SimpleBlockItemSupplierWithKey, val isBuiltIn: Boolean) :
         SimpleBlockItemSupplierWithKey by delegate,
         HTIdLike.Translatable,
@@ -54,7 +57,7 @@ interface HTMaterialContents<R : Any, out V> : Table<R, HTMaterialKey, V> {
 
         override fun asItem(): Item = get().asItem()
 
-        override fun toStack(count: Int, patch: DataComponentPatch): ItemStack = ItemStack(get(), count, patch)
+        override fun toStack(count: Int, patch: DataComponentPatch): ItemStack = ItemStack(this, count, patch)
 
         operator fun component1(): ResourceKey<Block> = getKey()
 
@@ -65,6 +68,9 @@ interface HTMaterialContents<R : Any, out V> : Table<R, HTMaterialKey, V> {
         override fun toString(): String = "BlockEntry(id=${getId()},isBuiltIn=$isBuiltIn)"
     }
 
+    /**
+     * @since 21.1.0
+     */
     class FluidEntry(delegate: SimpleSupplierWithKey<Fluid>, val isBuiltIn: Boolean) :
         SimpleSupplierWithKey<Fluid> by delegate,
         HTIdLike.Translatable,
@@ -88,6 +94,9 @@ interface HTMaterialContents<R : Any, out V> : Table<R, HTMaterialKey, V> {
         override fun toString(): String = "FluidEntry(id=${getId()},isBuiltIn=$isBuiltIn)"
     }
 
+    /**
+     * @since 21.1.0
+     */
     class ItemEntry(delegate: SimpleSupplierWithKey<Item>, val isBuiltIn: Boolean) :
         SimpleSupplierWithKey<Item> by delegate,
         HTIdLike.Translatable,
