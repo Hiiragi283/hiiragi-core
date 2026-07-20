@@ -389,11 +389,11 @@ spotless {
         target("*.gradle.kts")
         ktlint()
     }
-    /*java {
+    java {
         target("src/**/*.java")
         palantirJavaFormat("2.90.0")
         formatAnnotations()
-    }*/
+    }
 }
 
 tasks {

@@ -8,6 +8,7 @@ import hiiragi283.core.api.data.model.HTBlockStateProvider
 import hiiragi283.core.api.data.model.trackTexture
 import hiiragi283.core.api.data.model.withExistingParent
 import hiiragi283.core.api.registry.HTFluidContent
+import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.vanillaId
@@ -71,7 +72,7 @@ class HCBlockStateProvider(fileHelper: ExistingFileHelper, output: PackOutput) :
     }
 
     private fun registerCrops() {
-        registerVariants(HCBlocks.WARPED_WART) { block, state: BlockState ->
+        registerVariants(HCBlocks.WARPED_WART) { block: HTIdLike, state: BlockState ->
             val age: Int = when (state.getValue(NetherWartBlock.AGE)) {
                 0 -> 0
                 1 -> 1

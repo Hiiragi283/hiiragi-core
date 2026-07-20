@@ -53,9 +53,9 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
 
     // Block
 
-    protected fun <BLOCK : SupplierWithId<Block>> registerVariants(
-        block: BLOCK,
-        stateDispatcher: (BLOCK, BlockState) -> Array<ConfiguredModel>,
+    protected fun <BLOCK : Block> registerVariants(
+        block: SupplierWithId<BLOCK>,
+        stateDispatcher: (SupplierWithId<BLOCK>, BlockState) -> Array<ConfiguredModel>,
     ) {
         getVariantBuilder(block.get()).forAllStates(stateDispatcher.partially1(block))
     }
@@ -85,7 +85,7 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
     /**
      * @since 0.14.0
      */
-    protected fun <BLOCK : SupplierWithId<Block>> simpleBlockAndItem(block: BLOCK, factory: (BLOCK) -> Array<ConfiguredModel>) {
+    protected fun <BLOCK : Block> simpleBlockAndItem(block: SupplierWithId<BLOCK>, factory: (SupplierWithId<BLOCK>) -> Array<ConfiguredModel>) {
         contract {
             callsInPlace(factory, InvocationKind.EXACTLY_ONCE)
         }
@@ -95,9 +95,9 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
     /**
      * @since 0.15.0
      */
-    protected fun <BLOCK : SupplierWithId<Block>> simpleBlockAndItem(
-        block: BLOCK,
-        factory: (BLOCK) -> Array<ConfiguredModel>,
+    protected fun <BLOCK : Block> simpleBlockAndItem(
+        block: SupplierWithId<BLOCK>,
+        factory: (SupplierWithId<BLOCK>) -> Array<ConfiguredModel>,
         itemFactory: (Array<ConfiguredModel>) -> ModelFile,
     ) {
         contract {
@@ -127,7 +127,7 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
      */
     protected fun horizontalBlock(block: SupplierWithId<Block>, model: ModelFile) {
         horizontalBlock(block.get(), model)
-        itemModels().simpleBlockItem(block.get())
+        itemModels().simpleBlockItem(block.getId())
     }
 
     /**

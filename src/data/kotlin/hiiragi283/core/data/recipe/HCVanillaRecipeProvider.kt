@@ -340,7 +340,6 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
             define('C') { +HCItems.IRIDESCENT_POWDER }
             +HCItems.ETERNAL_UPGRADE.toStack(2)
         }.save(exporter)
-
         exporter.accept(id(HTConst.SMITHING, "eternal_upgrade"), HCEternalSmithingRecipe)
         // Ring of Hyperion
         HTShapedRecipeBuilder.create {

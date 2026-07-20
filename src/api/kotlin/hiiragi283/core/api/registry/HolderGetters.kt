@@ -21,13 +21,11 @@ fun <T : Any> HolderGetter<T>.getResult(key: ResourceKey<T>): HTTextResult<Holde
 
 fun <T : Any> HolderGetter<T>.getResult(key: TagKey<T>): HTTextResult<HolderSet<T>> = this.get(key).map(HolderSet<T>::right).getOrElse { HTTextResult("Missing tag $key") }
 
-fun <T : Any, R : Any> HolderLookup<T>.getDataMap(type: DataMapType<T, R>): Map<Holder<T>, R> {
-    val destination: MutableMap<Holder<T>, R> = mutableMapOf()
+fun <T : Any, R : Any> HolderLookup<T>.forEachData(type: DataMapType<T, R>, action: (Holder<T>, R) -> Unit) {
     for (holder: Holder<T> in this.listElements()) {
         val data: R = holder.getData(type) ?: continue
-        destination[holder] = data
+        action(holder, data)
     }
-    return destination
 }
 
 fun <T : Any> HolderLookup.RegistryLookup<T>.get(prefix: HTTagPrefix, material: HTMaterialKey): Optional<HolderSet.Named<T>> = this.get(prefix.materialTag(material))
