@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntity
  * @since 0.4.0
  * @see mekanism.common.tile.interfaces.ITileSound
  */
-interface HTSoundPlayerBlockEntity : HTAbstractBlockEntity {
+interface HTSoundPlayerBlockEntity : HTBlockEntityAccess {
     fun getSoundPos(): BlockPos = getBlockPos()
 
     fun getSoundSource(): SoundSource = SoundSource.BLOCKS

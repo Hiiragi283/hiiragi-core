@@ -72,9 +72,13 @@ base {
 }
 
 val apiModule: SourceSet = sourceSets.register("api").get()
+val supportModule: SourceSet = sourceSets.register("support") {
+    compileClasspath += apiModule.output + apiModule.compileClasspath
+    runtimeClasspath += apiModule.output + apiModule.runtimeClasspath
+}.get()
 val mainModule: SourceSet = sourceSets.named("main") {
-    compileClasspath += apiModule.output
-    runtimeClasspath += apiModule.output
+    compileClasspath += supportModule.output + supportModule.compileClasspath
+    runtimeClasspath += supportModule.output + supportModule.runtimeClasspath
 
     resources {
         srcDirs("src/generated/resources", generateModMetadata.get().outputs.files)
@@ -130,13 +134,6 @@ repositories {
     maven(url = "https://dl.cloudsmith.io/public/klikli-dev/mods/maven/") {
         content { includeGroup("com.klikli_dev") } // Theurgy
     }
-    /*maven(url = "https://maven.pkg.github.com/refinedmods/refinedstorage2") {
-        credentials {
-            username = "anything"
-            password = "\u0067hp_oGjcDFCn8jeTzIj4Ke9pLoEVtpnZMP4VQgaX"
-        }
-    }*/
-    // RS2
 
     mavenCentral()
 }
@@ -245,6 +242,7 @@ neoForge {
         create(modId) {
             sourceSet(sourceSets.main.get())
             sourceSet(apiModule)
+            sourceSet(supportModule)
             sourceSet(clientModule)
             sourceSet(integrationModule)
             sourceSet(dataModule)
@@ -281,12 +279,14 @@ dependencies {
         runtimeClasspath.get().extendsFrom(create("localRuntime"))
 
         val apiCompileClasspath: Configuration = named("apiCompileClasspath").get()
+        val supportCompileClasspath: Configuration = named("supportCompileClasspath").get()
         val compileClasspath: Configuration = named("compileClasspath").get()
         val clientCompileClasspath: Configuration = named("clientCompileClasspath").get()
         val integrationCompileClasspath: Configuration = named("integrationCompileClasspath").get()
         val dataCompileClasspath: Configuration = named("dataCompileClasspath").get()
 
-        apiCompileClasspath.extendsFrom(compileClasspath)
+        apiCompileClasspath.extendsFrom(supportCompileClasspath)
+        supportCompileClasspath.extendsFrom(compileClasspath)
         compileClasspath.extendsFrom(clientCompileClasspath)
         clientCompileClasspath.extendsFrom(integrationCompileClasspath)
         integrationCompileClasspath.extendsFrom(dataCompileClasspath)
@@ -370,7 +370,7 @@ kotlin {
 dokka {
     dokkaSourceSets {
         configureEach {
-            sourceRoots.from(apiModule.kotlin.srcDirs, clientModule.kotlin.srcDirs, integrationModule.kotlin.srcDirs)
+            sourceRoots.from(apiModule.kotlin.srcDirs, supportModule.kotlin.srcDirs, clientModule.kotlin.srcDirs, integrationModule.kotlin.srcDirs)
         }
     }
 }
@@ -380,7 +380,6 @@ spotless {
         target("src/**/*.kt")
         ktlint().editorConfigOverride(
             mapOf(
-                "ktlint_standard_import-ordering" to "disabled",
                 "ktlint_standard_comment-spacing" to "disabled",
             ),
         )
@@ -409,16 +408,16 @@ tasks {
         from("LICENSE") {
             rename { "${it}_hiiragi_core" }
         }
-        from(apiModule.output, clientModule.output, integrationModule.output)
+        from(apiModule.output, supportModule.output, clientModule.output, integrationModule.output)
         from(dataModule.output) {
             this.include("**/core/data/bootstrap/**")
         }
     }
 
     named<Jar>("sourcesJar") {
-        dependsOn("apiClasses", "clientClasses", "integrationClasses")
+        dependsOn("apiClasses", "supportClasses", "clientClasses", "integrationClasses")
         duplicatesStrategy = DuplicatesStrategy.FAIL
-        from(apiModule.allSource, clientModule.allSource, integrationModule.allSource)
+        from(apiModule.allSource, supportModule.allSource, clientModule.allSource, integrationModule.allSource)
     }
 
     /*wrapper {

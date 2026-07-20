@@ -4,6 +4,7 @@ import com.google.common.primitives.Ints
 import hiiragi283.core.config.HCConfig
 import hiiragi283.core.setup.HCDataComponents
 import it.unimi.dsi.fastutil.longs.Long2IntArrayMap
+import java.util.function.LongUnaryOperator
 import net.minecraft.core.Holder
 import net.minecraft.core.Vec3i
 import net.minecraft.server.level.ServerLevel
@@ -14,7 +15,6 @@ import net.minecraft.world.item.enchantment.Enchantment
 import net.minecraft.world.item.enchantment.ItemEnchantments
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.Vec3
-import java.util.function.LongUnaryOperator
 
 typealias ExpValue = Long
 typealias ExpLevel = Int

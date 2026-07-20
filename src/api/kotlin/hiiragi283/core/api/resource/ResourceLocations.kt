@@ -2,8 +2,8 @@
 
 package hiiragi283.core.api.resource
 
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.resources.ResourceKey
+import net.minecraft.resources.ResourceLocation
 
 //    ResourceLocation    //
 

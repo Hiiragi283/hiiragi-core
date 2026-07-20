@@ -1,8 +1,5 @@
-package hiiragi283.core.common.registry.register
+package hiiragi283.core.api.registry
 
-import hiiragi283.core.api.registry.HTDeferredRegister
-import hiiragi283.core.common.block.entity.HTBlockEntity
-import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.Block
@@ -33,8 +30,6 @@ class HTDeferredBlockEntityTypeRegister(namespace: String) : HTDeferredRegister<
         return holder
     }
 
-    fun <BE : HTBlockEntity> registerTick(name: String, factory: BlockEntityType.BlockEntitySupplier<BE>): HTDeferredBlockEntityType<BE> = registerType(name, factory, HTBlockEntity::tickServer, HTBlockEntity::tickClient)
-
     // With supported blocks
     fun <BE : BlockEntity> registerType(name: String, factory: BlockEntityType.BlockEntitySupplier<BE>, blockBuilder: MutableSet<Block>.() -> Unit): HTDeferredBlockEntityType<BE> {
         val holder = HTDeferredBlockEntityType<BE>(createId(name))
@@ -54,6 +49,4 @@ class HTDeferredBlockEntityTypeRegister(namespace: String) : HTDeferredRegister<
         holder.serverTicker = serverTicker
         return holder
     }
-
-    fun <BE : HTBlockEntity> registerTick(name: String, factory: BlockEntityType.BlockEntitySupplier<BE>, blockBuilder: MutableSet<Block>.() -> Unit): HTDeferredBlockEntityType<BE> = registerType(name, factory, HTBlockEntity::tickServer, HTBlockEntity::tickClient, blockBuilder)
 }

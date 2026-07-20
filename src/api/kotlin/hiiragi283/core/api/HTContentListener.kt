@@ -23,6 +23,6 @@ fun interface HTContentListener : Runnable {
      * 何も変更をマークしないことを表すインターフェースです。
      */
     interface Empty : HTContentListener {
-        override fun onContentsChanged() {}
+        override fun onContentsChanged(): Unit = Unit
     }
 }

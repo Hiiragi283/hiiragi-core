@@ -1,17 +1,17 @@
 package hiiragi283.core.common.storage.fluid
 
-import hiiragi283.core.api.util.Identity
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
+import hiiragi283.core.api.util.Identity
 import hiiragi283.core.common.storage.HTStorageValidators
 import hiiragi283.core.impl.storage.fluid.HTFluidStackResourceSlot
 import hiiragi283.core.impl.storage.fluid.HTItemFluidTank
 import hiiragi283.core.util.HTStorageHelper
-import net.minecraft.world.item.ItemStack
-import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.BiPredicate
 import java.util.function.Predicate
+import net.minecraft.world.item.ItemStack
+import net.neoforged.neoforge.fluids.FluidStack
 
 open class HTBasicItemFluidTank(
     private val containerUpdater: Identity<ItemStack>?,

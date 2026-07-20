@@ -5,12 +5,12 @@ import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.impl.storage.item.HTItemStackResourceSlot
+import java.util.function.BiPredicate
+import java.util.function.Predicate
 import net.minecraft.core.NonNullList
 import net.minecraft.core.component.DataComponents
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.component.ItemContainerContents
-import java.util.function.BiPredicate
-import java.util.function.Predicate
 
 /**
  * @see net.neoforged.neoforge.items.ComponentItemHandler

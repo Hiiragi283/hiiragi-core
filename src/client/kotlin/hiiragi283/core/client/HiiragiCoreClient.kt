@@ -26,8 +26,11 @@ import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCMenuTypes
 import hiiragi283.core.setup.HCWidgetTypes
+import java.awt.Color
 import net.mehvahdjukaar.moonlight.api.platform.RegHelper
 import net.minecraft.client.renderer.entity.ThrownItemRenderer
+import net.minecraft.server.packs.PackType
+import net.minecraft.server.packs.repository.Pack
 import net.minecraft.world.level.ItemLike
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
@@ -39,9 +42,6 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent
 import net.neoforged.neoforge.client.model.DynamicFluidContainerModel
-import java.awt.Color
-import net.minecraft.server.packs.PackType
-import net.minecraft.server.packs.repository.Pack
 import net.neoforged.neoforge.event.AddPackFindersEvent
 
 @Mod(value = HiiragiCoreAPI.MOD_ID, dist = [Dist.CLIENT])

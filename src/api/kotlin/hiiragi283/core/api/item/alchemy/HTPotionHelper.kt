@@ -7,6 +7,7 @@ import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.util.toOptional
+import kotlin.jvm.optionals.getOrNull
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.core.component.DataComponents
@@ -18,7 +19,6 @@ import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.common.MutableDataComponentHolder
 import net.neoforged.neoforge.fluids.FluidStack
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * @author Hiiragi Tsubasa

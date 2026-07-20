@@ -1,7 +1,7 @@
 package hiiragi283.core.client.gui.widget
 
-import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.HTBounds
+import hiiragi283.core.api.gui.HTGuiAccess
 import hiiragi283.core.common.gui.widget.HTItemWidget
 import hiiragi283.core.impl.gui.widget.HTAbstractWidgetRenderer
 import hiiragi283.core.util.HTSpriteRenderHelper
@@ -13,7 +13,7 @@ import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 
 @OnlyIn(Dist.CLIENT)
-class HTItemWidgetRenderer(gui: HTAbstractGui, widget: HTItemWidget) : HTAbstractWidgetRenderer<HTItemWidget>(gui, widget) {
+class HTItemWidgetRenderer(gui: HTGuiAccess, widget: HTItemWidget) : HTAbstractWidgetRenderer<HTItemWidget>(gui, widget) {
     override fun render(
         bounds: HTBounds,
         guiGraphics: GuiGraphics,

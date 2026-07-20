@@ -5,6 +5,7 @@ import hiiragi283.core.api.copper.HTWeatheringCoppers
 import hiiragi283.core.api.data.map.HTDataMapProvider
 import hiiragi283.core.api.resource.SimpleSupplierWithKey
 import hiiragi283.core.setup.HCBlocks
+import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.world.level.block.Block
@@ -12,7 +13,6 @@ import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps
 import net.neoforged.neoforge.registries.datamaps.builtin.Oxidizable
 import net.neoforged.neoforge.registries.datamaps.builtin.Waxable
-import java.util.concurrent.CompletableFuture
 
 class HCDataMapProvider(packOutput: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : HTDataMapProvider(packOutput, lookupProvider) {
     override fun gatherInternal() {

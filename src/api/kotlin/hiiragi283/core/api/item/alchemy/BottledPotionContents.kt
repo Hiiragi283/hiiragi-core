@@ -2,6 +2,7 @@ package hiiragi283.core.api.item.alchemy
 
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.serialization.codec.HTCodecs
+import kotlin.jvm.optionals.getOrNull
 import net.minecraft.core.Holder
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
@@ -9,7 +10,6 @@ import net.minecraft.world.effect.MobEffectInstance
 import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.alchemy.Potions
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * [PotionContents]と[HTBottleType]を束ねたクラスです。

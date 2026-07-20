@@ -9,6 +9,7 @@ import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
+import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.tags.ItemTags
@@ -16,7 +17,6 @@ import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.common.data.ExistingFileHelper
-import java.util.concurrent.CompletableFuture
 import top.theillusivec4.curios.api.CuriosTags
 
 class HCItemTagsProvider(

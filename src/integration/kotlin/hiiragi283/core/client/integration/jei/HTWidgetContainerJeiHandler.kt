@@ -11,21 +11,21 @@ import hiiragi283.core.api.recipe.viewer.widget.HTIngredientWidget
 import hiiragi283.core.api.recipe.viewer.widget.HTRecipeAreaWidget
 import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.impl.gui.widget.HTGuiWidget
+import java.util.Optional
 import mezz.jei.api.gui.builder.IClickableIngredientFactory
 import mezz.jei.api.gui.handlers.IGhostIngredientHandler
+import mezz.jei.api.gui.handlers.IGuiClickableArea
 import mezz.jei.api.gui.handlers.IGuiContainerHandler
 import mezz.jei.api.ingredients.ITypedIngredient
 import mezz.jei.api.neoforge.NeoForgeTypes
-import mezz.jei.api.runtime.IClickableIngredient
-import net.minecraft.client.renderer.Rect2i
-import net.minecraft.world.item.ItemStack
-import net.neoforged.neoforge.fluids.FluidStack
-import java.util.Optional
-import mezz.jei.api.gui.handlers.IGuiClickableArea
 import mezz.jei.api.recipe.IFocusFactory
+import mezz.jei.api.runtime.IClickableIngredient
 import mezz.jei.api.runtime.IRecipesGui
 import net.minecraft.client.gui.components.events.ContainerEventHandler
 import net.minecraft.client.gui.components.events.GuiEventListener
+import net.minecraft.client.renderer.Rect2i
+import net.minecraft.world.item.ItemStack
+import net.neoforged.neoforge.fluids.FluidStack
 
 data object HTWidgetContainerJeiHandler : IGuiContainerHandler<HTWidgetContainerScreen>, IGhostIngredientHandler<HTWidgetContainerScreen> {
     @JvmStatic
@@ -110,5 +110,5 @@ data object HTWidgetContainerJeiHandler : IGuiContainerHandler<HTWidgetContainer
             }
         }.toList()
 
-    override fun onComplete() {}
+    override fun onComplete(): Unit = Unit
 }

@@ -18,6 +18,7 @@ import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.vanillaId
+import kotlin.collections.iterator
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
 import net.mehvahdjukaar.moonlight.api.resources.textures.Palette
@@ -25,7 +26,6 @@ import net.mehvahdjukaar.moonlight.api.resources.textures.Respriter
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
-import kotlin.collections.iterator
 
 data object HCMaterialTextureProvider : ResourceGenTask {
     private lateinit var lavaTexture: TextureImage

@@ -1,6 +1,8 @@
 package hiiragi283.core.api.fluid
 
 import hiiragi283.core.api.util.toOptional
+import java.util.Optional
+import java.util.function.Supplier
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.sounds.SoundEvent
@@ -16,8 +18,6 @@ import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
 import net.neoforged.neoforge.common.SoundActions
 import net.neoforged.neoforge.fluids.FluidType
-import java.util.Optional
-import java.util.function.Supplier
 
 /**
  * 設置不可能な液体を表す[Fluid]の拡張クラスです。

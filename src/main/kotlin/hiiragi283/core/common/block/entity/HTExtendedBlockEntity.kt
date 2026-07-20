@@ -1,11 +1,11 @@
 package hiiragi283.core.common.block.entity
 
-import hiiragi283.core.api.block.entity.HTAbstractBlockEntity
+import hiiragi283.core.api.block.entity.HTBlockEntityAccess
 import hiiragi283.core.api.serialization.value.HTValueIOAccess
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
-import hiiragi283.core.common.registry.HTDeferredBlockEntityType
+import java.util.function.Supplier
 import net.minecraft.core.BlockPos
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
@@ -16,6 +16,7 @@ import net.minecraft.world.level.ChunkPos
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.network.PacketDistributor
 
@@ -23,10 +24,10 @@ import net.neoforged.neoforge.network.PacketDistributor
  * Ragiumで使用される[BlockEntity]の拡張クラス
  * @see mekanism.common.tile.base.TileEntityUpdateable
  */
-abstract class HTExtendedBlockEntity(private val type: HTDeferredBlockEntityType<*>, pos: BlockPos, state: BlockState) :
-    BlockEntity(type.get(), pos, state),
-    HTAbstractBlockEntity {
-    fun getDeferredType(): HTDeferredBlockEntityType<*> = type
+abstract class HTExtendedBlockEntity(type: BlockEntityType<*>, pos: BlockPos, state: BlockState) :
+    BlockEntity(type, pos, state),
+    HTBlockEntityAccess {
+    constructor(type: Supplier<out BlockEntityType<*>>, pos: BlockPos, state: BlockState) : this(type.get(), pos, state)
 
     //    Save & Read    //
 

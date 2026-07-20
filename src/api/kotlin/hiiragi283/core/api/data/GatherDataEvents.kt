@@ -3,6 +3,7 @@ package hiiragi283.core.api.data
 import hiiragi283.core.api.data.advancement.HTAdvancementProvider
 import hiiragi283.core.api.data.advancement.HTSubAdvancementProvider
 import hiiragi283.core.api.function.partially1
+import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.DataProvider
 import net.minecraft.data.PackOutput
@@ -11,7 +12,6 @@ import net.minecraft.data.loot.LootTableSubProvider
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet
 import net.neoforged.neoforge.common.data.ExistingFileHelper
 import net.neoforged.neoforge.data.event.GatherDataEvent
-import java.util.concurrent.CompletableFuture
 
 /**
  * この[GatherDataEvent][this]に[DataProvider]を登録します。

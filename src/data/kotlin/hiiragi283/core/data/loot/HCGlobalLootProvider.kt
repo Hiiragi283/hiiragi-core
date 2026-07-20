@@ -3,6 +3,7 @@ package hiiragi283.core.data.loot
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.setup.HCItems
+import java.util.function.BiConsumer
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
@@ -16,7 +17,6 @@ import net.minecraft.world.level.storage.loot.LootTable
 import net.minecraft.world.level.storage.loot.entries.LootItem
 import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
-import java.util.function.BiConsumer
 
 sealed class HCGlobalLootProvider(protected val provider: HolderLookup.Provider) : LootTableSubProvider {
     companion object {

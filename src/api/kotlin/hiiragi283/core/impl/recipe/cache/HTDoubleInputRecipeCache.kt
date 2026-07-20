@@ -3,9 +3,9 @@ package hiiragi283.core.impl.recipe.cache
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.recipe.recipe
-import net.minecraft.world.level.Level
 import java.util.function.BiPredicate
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.level.Level
 
 /**
  * @see mekanism.api.recipes.cache.TwoInputCachedRecipe

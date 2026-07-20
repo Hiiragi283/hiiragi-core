@@ -1,25 +1,25 @@
 package hiiragi283.core.common.recipe.ingredient
 
 import com.mojang.serialization.MapCodec
+import hiiragi283.core.api.HTPhysicalSideHelper
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.serialization.codec.HTCodecs
-import hiiragi283.core.api.HTPhysicalSideHelper
 import java.util.Objects
+import java.util.stream.Stream
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.level.material.Fluid
+import net.minecraft.world.level.material.Fluids
 import net.neoforged.neoforge.fluids.FluidStack
+import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import net.neoforged.neoforge.fluids.crafting.FluidIngredientType
-import java.util.stream.Stream
-import net.minecraft.world.level.material.Fluids
-import net.neoforged.neoforge.fluids.FluidType
 
 /**
  * [HTPotionFluidManager]に基づいて液体ポーションを扱う[FluidIngredient]の実装クラスです。

@@ -1,6 +1,6 @@
 package hiiragi283.core.common.block
 
-import hiiragi283.core.common.registry.HTDeferredBlockEntityType
+import hiiragi283.core.api.registry.HTDeferredBlockEntityType
 import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.DirectionalBlock

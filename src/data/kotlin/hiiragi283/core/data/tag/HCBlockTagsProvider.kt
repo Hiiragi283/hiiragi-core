@@ -5,14 +5,14 @@ import hiiragi283.core.api.data.tag.HTTagBuilder
 import hiiragi283.core.api.data.tag.HTTagsProvider
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.setup.HCBlocks
+import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
 import net.minecraft.data.PackOutput
 import net.minecraft.tags.BlockTags
+import net.minecraft.tags.TagKey
 import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.common.data.ExistingFileHelper
-import java.util.concurrent.CompletableFuture
-import net.minecraft.tags.TagKey
 
 class HCBlockTagsProvider(fileHelper: ExistingFileHelper, output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : HTTagsProvider.DataGen<Block>(fileHelper, output, Registries.BLOCK, lookupProvider, HiiragiCoreAPI.MOD_ID) {
     override fun createEmptyTags(registries: HolderLookup.Provider, consumer: (TagKey<Block>) -> Unit) {

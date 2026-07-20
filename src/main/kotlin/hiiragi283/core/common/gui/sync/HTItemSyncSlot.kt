@@ -3,12 +3,12 @@ package hiiragi283.core.common.gui.sync
 import hiiragi283.core.api.gui.sync.HTChangeType
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
 import hiiragi283.core.impl.storage.item.HTItemStackResourceSlot
-import net.minecraft.core.RegistryAccess
-import net.minecraft.world.item.ItemStack
 import java.util.function.Consumer
 import java.util.function.Supplier
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
+import net.minecraft.core.RegistryAccess
+import net.minecraft.world.item.ItemStack
 
 /**
  * [ItemStack]向けの[HTIntSyncSlot]の実装クラスです。

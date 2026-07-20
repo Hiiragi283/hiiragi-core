@@ -4,6 +4,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.tag.HTTagsProvider
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.tag.HiiragiCoreTags
+import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
 import net.minecraft.data.PackOutput
@@ -11,7 +12,6 @@ import net.minecraft.tags.EntityTypeTags
 import net.minecraft.world.entity.EntityType
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.common.data.ExistingFileHelper
-import java.util.concurrent.CompletableFuture
 
 class HCEntityTypeTagsProvider(
     fileHelper: ExistingFileHelper,

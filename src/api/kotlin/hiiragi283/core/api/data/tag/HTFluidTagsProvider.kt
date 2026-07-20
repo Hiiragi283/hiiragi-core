@@ -1,14 +1,14 @@
 package hiiragi283.core.api.data.tag
 
 import hiiragi283.core.api.registry.HTFluidContent
+import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
 import net.minecraft.data.PackOutput
+import net.minecraft.tags.TagKey
 import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.common.data.ExistingFileHelper
-import java.util.concurrent.CompletableFuture
-import net.minecraft.tags.TagKey
 
 /**
  * [液体][Fluid]向けの[HTTagsProvider]の拡張クラスです。

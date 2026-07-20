@@ -2,9 +2,9 @@ package hiiragi283.core.api.integration.jei.category
 
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.fraction
-import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.HTBackgroundType
 import hiiragi283.core.api.gui.HTBounds
+import hiiragi283.core.api.gui.HTGuiAccess
 import hiiragi283.core.api.integration.jei.HTJeiDrawables
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
 import hiiragi283.core.api.recipe.base.HTProgressData
@@ -41,7 +41,7 @@ abstract class HTBasicRecipeCategory<RECIPE : Any>(
     private val icon: IDrawable,
     private val bounds: HTBounds,
 ) : IRecipeCategory<RECIPE>,
-    HTAbstractGui {
+    HTGuiAccess {
     companion object {
         @JvmStatic
         protected fun createIcon(guiHelper: IGuiHelper, recipeType: HTRecipeViewerType<*>): IDrawable = recipeType.icon.fold(

@@ -3,10 +3,10 @@ package hiiragi283.core.common.gui.sync
 import hiiragi283.core.api.gui.sync.HTChangeType
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
 import hiiragi283.core.api.storage.amount.HTAmountView
-import net.minecraft.core.RegistryAccess
 import java.util.function.IntConsumer
 import java.util.function.IntSupplier
 import kotlin.reflect.KMutableProperty0
+import net.minecraft.core.RegistryAccess
 
 /**
  * [Int]向けの[HTSyncableSlot]の拡張インターフェースです。

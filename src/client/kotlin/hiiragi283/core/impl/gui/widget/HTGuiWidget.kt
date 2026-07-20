@@ -1,6 +1,6 @@
 package hiiragi283.core.impl.gui.widget
 
-import hiiragi283.core.api.gui.HTAbstractGui
+import hiiragi283.core.api.gui.HTGuiAccess
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.text.Text
 import net.minecraft.client.gui.GuiGraphics
@@ -15,7 +15,7 @@ import net.neoforged.api.distmarker.OnlyIn
  * 参照 : [Mekanism - GuiElement](https://github.com/mekanism/Mekanism/blob/1.21.x/src/main/java/mekanism/client/gui/element/GuiElement.java)
  */
 @OnlyIn(Dist.CLIENT)
-class HTGuiWidget<WIDGET : HTWidget>(private val gui: HTAbstractGui, val widget: WIDGET) :
+class HTGuiWidget<WIDGET : HTWidget>(private val gui: HTGuiAccess, val widget: WIDGET) :
     AbstractWidget(
         widget.bounds.x + gui.getGuiLeft(),
         widget.bounds.y + gui.getGuiTop(),

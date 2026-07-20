@@ -6,13 +6,13 @@ import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTTranslation
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.setup.HCDataComponents
+import java.util.function.Consumer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.TooltipFlag
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent
-import java.util.function.Consumer
 
 @EventBusSubscriber(value = [Dist.CLIENT], modid = HiiragiCoreAPI.MOD_ID)
 data object HCTooltipHandler {

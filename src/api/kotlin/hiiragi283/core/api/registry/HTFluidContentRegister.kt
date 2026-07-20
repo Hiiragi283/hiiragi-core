@@ -2,10 +2,10 @@ package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.fluid.HTVirtualFluid
-import hiiragi283.core.api.util.identity
 import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.tag.createTagKey
+import hiiragi283.core.api.util.identity
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation

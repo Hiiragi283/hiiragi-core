@@ -2,10 +2,10 @@ package hiiragi283.core.common.gui.sync
 
 import hiiragi283.core.api.gui.sync.HTChangeType
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
-import net.minecraft.core.RegistryAccess
 import java.util.function.LongConsumer
 import java.util.function.LongSupplier
 import kotlin.reflect.KMutableProperty0
+import net.minecraft.core.RegistryAccess
 
 /**
  * [Long]向けの[HTSyncableSlot]の拡張インターフェースです。

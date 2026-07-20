@@ -1,6 +1,5 @@
-package hiiragi283.core.common.registry
+package hiiragi283.core.api.registry
 
-import hiiragi283.core.api.registry.HTDeferredHolder
 import net.minecraft.core.BlockPos
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey

@@ -1,12 +1,13 @@
 package hiiragi283.core.api.serialization.network
 
-import hiiragi283.core.api.util.identity
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.tag.createTagKey
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.Ior
+import hiiragi283.core.api.util.identity
 import io.netty.buffer.ByteBuf
+import java.util.UUID
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.core.UUIDUtil
@@ -19,7 +20,6 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.util.ByIdMap
 import org.apache.commons.lang3.math.Fraction
-import java.util.UUID
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[StreamCodec]をまとめたクラスです。

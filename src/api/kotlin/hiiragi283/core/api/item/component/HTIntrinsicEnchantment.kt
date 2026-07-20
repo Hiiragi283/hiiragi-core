@@ -2,14 +2,15 @@ package hiiragi283.core.api.item.component
 
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.color.HTDefaultColor
-import hiiragi283.core.api.util.identity
 import hiiragi283.core.api.registry.getResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.HTTextResult
+import hiiragi283.core.api.util.identity
 import io.netty.buffer.ByteBuf
+import java.util.function.Consumer
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderGetter
 import net.minecraft.core.HolderLookup
@@ -21,7 +22,6 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.item.component.TooltipProvider
 import net.minecraft.world.item.enchantment.Enchantment
-import java.util.function.Consumer
 
 @JvmRecord
 data class HTIntrinsicEnchantment(val key: ResourceKey<Enchantment>, val level: Int) : TooltipProvider {

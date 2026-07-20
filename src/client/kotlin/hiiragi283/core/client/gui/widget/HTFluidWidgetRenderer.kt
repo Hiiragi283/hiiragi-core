@@ -1,7 +1,7 @@
 package hiiragi283.core.client.gui.widget
 
-import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.HTBounds
+import hiiragi283.core.api.gui.HTGuiAccess
 import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.api.storage.fluid.getStillTexture
 import hiiragi283.core.api.storage.fluid.getTintColor
@@ -9,6 +9,7 @@ import hiiragi283.core.api.text.Text
 import hiiragi283.core.common.gui.widget.HTFluidWidget
 import hiiragi283.core.util.HTSpriteRenderHelper
 import hiiragi283.core.util.HTStorageHelper
+import java.util.function.Consumer
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.resources.ResourceLocation
@@ -16,10 +17,9 @@ import net.minecraft.world.item.TooltipFlag
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 import org.apache.commons.lang3.math.Fraction
-import java.util.function.Consumer
 
 @OnlyIn(Dist.CLIENT)
-class HTFluidWidgetRenderer(gui: HTAbstractGui, widget: HTFluidWidget) : HTSpriteWidgetRenderer<HTFluidWidget>(gui, widget) {
+class HTFluidWidgetRenderer(gui: HTGuiAccess, widget: HTFluidWidget) : HTSpriteWidgetRenderer<HTFluidWidget>(gui, widget) {
     override fun renderBackground(bounds: HTBounds, guiGraphics: GuiGraphics) {
         val texture: ResourceLocation = when (widget) {
             is HTFluidWidget.Slot -> widget.backgroundType.slotTexture

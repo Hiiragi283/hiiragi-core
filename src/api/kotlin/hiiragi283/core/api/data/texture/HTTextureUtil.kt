@@ -2,6 +2,9 @@ package hiiragi283.core.api.data.texture
 
 import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.resource.HTIdLike
+import java.io.BufferedReader
+import java.io.InputStream
+import java.util.stream.Stream
 import net.mehvahdjukaar.moonlight.api.resources.RPUtils
 import net.mehvahdjukaar.moonlight.api.resources.textures.Palette
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
@@ -10,9 +13,6 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
-import java.io.BufferedReader
-import java.io.InputStream
-import java.util.stream.Stream
 
 /**
  * @author Hiiragi Tsubasa

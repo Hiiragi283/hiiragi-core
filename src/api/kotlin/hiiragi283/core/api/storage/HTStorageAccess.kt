@@ -1,7 +1,7 @@
 package hiiragi283.core.api.storage
 
-import net.minecraft.core.Direction
 import java.util.function.Predicate
+import net.minecraft.core.Direction
 
 /**
  * スロットへのアクセスの種類を表すクラスです。

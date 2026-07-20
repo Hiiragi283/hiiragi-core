@@ -13,11 +13,11 @@ import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
 import net.neoforged.neoforge.common.conditions.WithConditions
+import net.neoforged.neoforge.common.data.DataMapProvider
 import net.neoforged.neoforge.registries.DataMapLoader
 import net.neoforged.neoforge.registries.datamaps.DataMapEntry
 import net.neoforged.neoforge.registries.datamaps.DataMapFile
 import net.neoforged.neoforge.registries.datamaps.DataMapType
-import net.neoforged.neoforge.common.data.DataMapProvider
 
 /**
  * 動的データパック向けの[DataMapProvider]の代替クラスです。

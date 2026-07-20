@@ -5,10 +5,10 @@ import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.common.item.HTBlueprintItem
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCItems
+import java.util.stream.Stream
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.common.crafting.ICustomIngredient
 import net.neoforged.neoforge.common.crafting.IngredientType
-import java.util.stream.Stream
 
 class HTBluePrintIngredient(private val number: Int) : ICustomIngredient {
     companion object {

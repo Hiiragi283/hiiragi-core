@@ -12,13 +12,13 @@ import hiiragi283.core.api.storage.item.insert
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.storage.item.toStackOrEmpty
 import hiiragi283.core.impl.storage.item.HTItemStackResourceSlot
+import java.util.Optional
+import java.util.function.BiPredicate
+import java.util.function.Consumer
 import net.minecraft.world.SimpleContainer
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
-import java.util.Optional
-import java.util.function.BiPredicate
-import java.util.function.Consumer
 
 /**
  * [HTItemSlot]に基づいた[Slot]の実装

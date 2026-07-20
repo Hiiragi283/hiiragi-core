@@ -4,6 +4,7 @@ import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.resource.SimpleBlockItemSupplierWithKey
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.RawTagKey
+import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
 import net.minecraft.data.PackOutput
@@ -12,7 +13,6 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.neoforged.neoforge.common.data.ExistingFileHelper
-import java.util.concurrent.CompletableFuture
 
 /**
  * [アイテム][Item]向けの[HTTagsProvider.DataGen]の拡張クラスです。

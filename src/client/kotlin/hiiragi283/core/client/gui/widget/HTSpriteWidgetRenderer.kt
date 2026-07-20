@@ -2,13 +2,14 @@ package hiiragi283.core.client.gui.widget
 
 import com.mojang.blaze3d.systems.RenderSystem
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.gui.HTAbstractGui
 import hiiragi283.core.api.gui.HTBounds
+import hiiragi283.core.api.gui.HTGuiAccess
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.times
 import hiiragi283.core.impl.gui.widget.HTAbstractWidgetRenderer
 import hiiragi283.core.util.HTSpriteRenderHelper
+import java.util.function.Consumer
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Font
 import net.minecraft.client.gui.GuiGraphics
@@ -20,10 +21,9 @@ import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 import net.neoforged.neoforge.client.ClientTooltipFlag
 import org.apache.commons.lang3.math.Fraction
-import java.util.function.Consumer
 
 @OnlyIn(Dist.CLIENT)
-abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget>(gui: HTAbstractGui, widget: WIDGET) : HTAbstractWidgetRenderer<WIDGET>(gui, widget) {
+abstract class HTSpriteWidgetRenderer<WIDGET : HTWidget>(gui: HTGuiAccess, widget: WIDGET) : HTAbstractWidgetRenderer<WIDGET>(gui, widget) {
     protected val font: Font = Minecraft.getInstance().font
 
     override fun render(

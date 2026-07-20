@@ -1,7 +1,7 @@
 package hiiragi283.core.api.resource
 
-import net.minecraft.resources.ResourceLocation
 import java.util.function.Supplier
+import net.minecraft.resources.ResourceLocation
 
 /**
  * [ResourceLocation]を提供する[Supplier]の拡張インターフェースです。

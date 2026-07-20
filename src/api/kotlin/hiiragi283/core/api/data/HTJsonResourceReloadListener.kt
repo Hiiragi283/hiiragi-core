@@ -7,13 +7,13 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.Decoder
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.util.identity
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener
 import net.minecraft.util.profiling.ProfilerFiller
 import net.neoforged.neoforge.common.conditions.ConditionalOps
-import java.util.Optional
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[SimpleJsonResourceReloadListener]の実装クラスです。

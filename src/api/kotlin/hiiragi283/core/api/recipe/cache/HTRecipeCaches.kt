@@ -2,10 +2,10 @@ package hiiragi283.core.api.recipe.cache
 
 import hiiragi283.core.impl.recipe.cache.HTDoubleInputRecipeCache
 import hiiragi283.core.impl.recipe.cache.HTSingleInputRecipeCache
-import net.minecraft.world.item.ItemStack
-import net.neoforged.neoforge.fluids.FluidStack
 import java.util.function.BiPredicate
 import java.util.function.Predicate
+import net.minecraft.world.item.ItemStack
+import net.neoforged.neoforge.fluids.FluidStack
 
 /**
  * @author Hiiragi Tsubasa

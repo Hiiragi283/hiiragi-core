@@ -13,12 +13,12 @@ import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCItems
+import java.util.function.Consumer
 import net.mehvahdjukaar.moonlight.api.events.AfterLanguageLoadEvent
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Blocks
-import java.util.function.Consumer
 
 data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiCoreAPI.MOD_ID) {
     override fun addDynamicTranslations(afterLanguageLoadEvent: AfterLanguageLoadEvent) {}

@@ -1,19 +1,23 @@
 package hiiragi283.core.common.block
 
+import hiiragi283.core.api.registry.HTDeferredBlockEntityType
 import hiiragi283.core.api.world.getTypedBlockEntity
 import hiiragi283.core.common.block.entity.HTBlockEntity
 import hiiragi283.core.common.block.entity.HTExtendedBlockEntity
-import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import net.minecraft.core.BlockPos
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.EntityBlock
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.BlockEntityTicker
+import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 
 open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, properties: Properties) :
     Block(properties),
-    HTBlockWithEntity {
+    EntityBlock {
     /*override fun useWithoutItem(
         state: BlockState,
         level: Level,
@@ -87,5 +91,11 @@ open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, pr
         level.getTypedBlockEntity<HTExtendedBlockEntity>(pos)?.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston)
     }
 
-    final override fun getBlockEntityType(): HTDeferredBlockEntityType<*> = type
+    final override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = type.create(pos, state)
+
+    @Suppress("UNCHECKED_CAST")
+    final override fun <T : BlockEntity> getTicker(level: Level, state: BlockState, blockEntityType: BlockEntityType<T>): BlockEntityTicker<T>? = when (blockEntityType) {
+        type.get() -> type.getTicker(level.isClientSide) as? BlockEntityTicker<T>
+        else -> null
+    }
 }

@@ -3,10 +3,10 @@ package hiiragi283.core.impl.data.pack
 import hiiragi283.core.api.resource.toId
 import java.io.InputStream
 import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.collections.iterator
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.PackResources
 import net.minecraft.server.packs.resources.IoSupplier
-import kotlin.collections.iterator
 
 /**
  * 参照 : [GregTech Modern - GTDynamicPackContents](https://github.com/GregTechCEu/GregTech-Modern/blob/1.21/src/main/java/com/gregtechceu/gtceu/data/pack/GTDynamicPackContents.java)

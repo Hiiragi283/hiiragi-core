@@ -7,10 +7,10 @@ import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.setup.HCFluids
+import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.neoforged.neoforge.common.data.ExistingFileHelper
-import java.util.concurrent.CompletableFuture
 
 class HCFluidTagsProvider(fileHelper: ExistingFileHelper, output: PackOutput, lookupProvider: CompletableFuture<HolderLookup.Provider>) : HTFluidTagsProvider(fileHelper, output, lookupProvider, HiiragiCoreAPI.MOD_ID) {
     override fun appendTags(registries: HolderLookup.Provider) {

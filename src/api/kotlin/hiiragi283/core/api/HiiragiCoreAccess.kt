@@ -23,13 +23,13 @@ import hiiragi283.core.api.util.flatMap
 import hiiragi283.core.api.util.toTextResult
 import hiiragi283.core.impl.material.HTMaterialContentsImpl
 import hiiragi283.core.impl.material.HTMaterialContentsRegister
+import java.util.function.Consumer
+import kotlin.system.measureTimeMillis
+import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
-import java.util.function.Consumer
-import kotlin.system.measureTimeMillis
-import net.minecraft.core.Holder
 
 /**
  * モジュールをまたいで実装する要素をまとめたインターフェースです。

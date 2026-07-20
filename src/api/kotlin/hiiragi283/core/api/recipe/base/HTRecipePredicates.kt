@@ -3,13 +3,13 @@ package hiiragi283.core.api.recipe.base
 import hiiragi283.core.api.recipe.HTRecipePredicate
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.recipe.input.HTSingleFluidRecipeInput
+import java.util.function.BiPredicate
+import java.util.function.Predicate
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.neoforged.neoforge.common.util.TriPredicate
 import net.neoforged.neoforge.fluids.FluidStack
-import java.util.function.BiPredicate
-import java.util.function.Predicate
 
 data object HTRecipePredicates {
     //    Single Input    //

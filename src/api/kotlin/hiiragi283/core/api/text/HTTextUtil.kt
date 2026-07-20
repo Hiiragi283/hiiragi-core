@@ -4,6 +4,7 @@ package hiiragi283.core.api.text
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.color.HTDefaultColor
+import java.text.NumberFormat
 import net.minecraft.ChatFormatting
 import net.minecraft.core.Direction
 import net.minecraft.network.chat.ClickEvent
@@ -23,7 +24,6 @@ import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforgespi.language.IModInfo
 import org.apache.commons.lang3.math.Fraction
 import org.apache.commons.lang3.text.WordUtils
-import java.text.NumberFormat
 
 /**
  * [テキスト][Text]に関するメソッドを集めたクラスです。

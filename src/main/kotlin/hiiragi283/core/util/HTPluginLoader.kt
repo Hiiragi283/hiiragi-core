@@ -2,10 +2,10 @@ package hiiragi283.core.util
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.plugin.HTPlugin
+import java.lang.reflect.Constructor
 import net.neoforged.fml.ModList
 import net.neoforged.neoforgespi.language.ModFileScanData
 import org.objectweb.asm.Type
-import java.lang.reflect.Constructor
 
 data object HTPluginLoader {
     @JvmField

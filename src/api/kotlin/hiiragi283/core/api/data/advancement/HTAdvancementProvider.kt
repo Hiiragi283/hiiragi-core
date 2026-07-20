@@ -1,6 +1,7 @@
 package hiiragi283.core.api.data.advancement
 
 import hiiragi283.core.api.util.toOptional
+import java.util.concurrent.CompletableFuture
 import net.minecraft.advancements.Advancement
 import net.minecraft.core.HolderLookup
 import net.minecraft.core.registries.Registries
@@ -12,7 +13,6 @@ import net.neoforged.neoforge.common.conditions.ICondition
 import net.neoforged.neoforge.common.conditions.WithConditions
 import net.neoforged.neoforge.common.data.AdvancementProvider
 import net.neoforged.neoforge.common.data.ExistingFileHelper
-import java.util.concurrent.CompletableFuture
 
 /**
  * [HTSubAdvancementProvider]に基づいて進捗を生成する[DataProvider]の抽象クラスです。

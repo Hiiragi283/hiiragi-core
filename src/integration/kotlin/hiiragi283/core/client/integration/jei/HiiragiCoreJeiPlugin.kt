@@ -35,8 +35,8 @@ import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import hiiragi283.core.common.recipe.VanillaRecipeLookups
-import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
 import hiiragi283.core.common.recipe.viewer.HCRecipeDisplayFactories
+import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
 import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.impl.recipe.viewer.display.HTRecipeDisplayFactories
 import hiiragi283.core.setup.HCBlocks
@@ -44,6 +44,7 @@ import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.util.HCPotionFluidHelper
+import kotlin.streams.asSequence
 import mezz.jei.api.JeiPlugin
 import mezz.jei.api.helpers.IGuiHelper
 import mezz.jei.api.helpers.IPlatformFluidHelper
@@ -55,16 +56,15 @@ import mezz.jei.api.registration.ISubtypeRegistration
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponents
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.alchemy.Potion
+import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.DataComponentFluidIngredient
-import kotlin.streams.asSequence
-import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.world.item.alchemy.Potions
 
 @JeiPlugin
 class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {

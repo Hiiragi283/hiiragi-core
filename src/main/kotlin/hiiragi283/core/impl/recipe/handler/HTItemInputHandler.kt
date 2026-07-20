@@ -6,9 +6,9 @@ import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.storage.item.toResource
+import java.util.function.Consumer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
-import java.util.function.Consumer
 
 class HTItemInputHandler(private val slot: HTItemSlot, private val remainderConsumer: Consumer<ItemStack>? = null) :
     HTInputHandler<ItemStack>,

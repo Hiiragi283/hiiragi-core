@@ -5,11 +5,11 @@ import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.RawTagKey
 import hiiragi283.core.api.util.HTBuilderMarker
+import java.util.function.Consumer
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagEntry
 import net.minecraft.tags.TagKey
-import java.util.function.Consumer
 
 /**
  * [HTTagsProvider]で使用されるタグのビルダークラスです。

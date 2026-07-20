@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack
  * @since 0.11.0
  * @see mekanism.client.gui.IGuiWrapper
  */
-interface HTAbstractGui {
+interface HTGuiAccess {
     /**
      * カーソル上の[アイテム][ItemStack]を取得します。
      */

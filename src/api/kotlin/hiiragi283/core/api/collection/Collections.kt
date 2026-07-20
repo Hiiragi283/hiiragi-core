@@ -1,7 +1,7 @@
 package hiiragi283.core.api.collection
 
-import net.minecraft.util.RandomSource
 import kotlin.NoSuchElementException
+import net.minecraft.util.RandomSource
 
 /**
  * この[コレクション][this]から，[乱数][random]に基づいてランダムな要素を返します。

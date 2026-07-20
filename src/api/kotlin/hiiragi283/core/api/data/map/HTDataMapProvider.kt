@@ -5,15 +5,15 @@ import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.resource.SimpleBlockItemSupplierWithKey
 import hiiragi283.core.api.tag.HTTagPrefix
+import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
 import net.minecraft.world.item.Item
+import net.minecraft.world.level.material.Fluid
 import net.neoforged.neoforge.common.conditions.ICondition
 import net.neoforged.neoforge.common.data.DataMapProvider
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps
-import java.util.concurrent.CompletableFuture
-import net.minecraft.world.level.material.Fluid
 
 /**
  * Hiiragi Coreとそれを前提とするmodで使用される[DataMapProvider]の拡張クラスです。

@@ -17,11 +17,12 @@ import hiiragi283.core.api.storage.item.HTItemHandler
 import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.text.Text
-import hiiragi283.core.common.registry.HTDeferredBlockEntityType
 import hiiragi283.core.common.storage.HTCapabilityCodec
 import hiiragi283.core.impl.storage.resolver.HTFluidHandlerManager
 import hiiragi283.core.impl.storage.resolver.HTItemHandlerManager
 import hiiragi283.core.util.HTItemDropHelper
+import java.util.UUID
+import java.util.function.Supplier
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.UUIDUtil
@@ -33,16 +34,16 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.Nameable
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.fluids.capability.IFluidHandler
 import net.neoforged.neoforge.items.IItemHandler
-import java.util.UUID
 
 /**
  * キャパビリティやオーナーを保持する[HTExtendedBlockEntity]の拡張クラス
  * @see mekanism.common.tile.base.TileEntityMekanism
  */
-abstract class HTBlockEntity(type: HTDeferredBlockEntityType<*>, pos: BlockPos, state: BlockState) :
+abstract class HTBlockEntity(type: Supplier<out BlockEntityType<*>>, pos: BlockPos, state: BlockState) :
     HTExtendedBlockEntity(type, pos, state),
     Nameable,
     HTFluidHandler,

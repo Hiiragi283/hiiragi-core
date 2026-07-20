@@ -4,11 +4,11 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.resource.vanillaId
+import java.awt.Color
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions
-import java.awt.Color
 
 @OnlyIn(Dist.CLIENT)
 open class HTSimpleFluidExtensions(val stillTex: ResourceLocation, val color: Color? = null, val flowingTex: ResourceLocation = stillTex) : IClientFluidTypeExtensions {

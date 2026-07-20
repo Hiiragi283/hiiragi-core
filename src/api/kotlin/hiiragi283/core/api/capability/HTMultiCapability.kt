@@ -2,6 +2,7 @@ package hiiragi283.core.api.capability
 
 import com.google.common.util.concurrent.Runnables
 import hiiragi283.core.api.storage.item.HTItemResourceType
+import java.util.function.BooleanSupplier
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
@@ -12,7 +13,6 @@ import net.neoforged.neoforge.capabilities.BlockCapability
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache
 import net.neoforged.neoforge.capabilities.EntityCapability
 import net.neoforged.neoforge.capabilities.ItemCapability
-import java.util.function.BooleanSupplier
 
 /**
  * 複数のキャパビリティを束ねるインターフェース

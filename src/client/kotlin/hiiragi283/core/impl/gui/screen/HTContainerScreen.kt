@@ -1,7 +1,7 @@
 package hiiragi283.core.impl.gui.screen
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.gui.HTAbstractGui
+import hiiragi283.core.api.gui.HTGuiAccess
 import hiiragi283.core.api.gui.sync.HTChangeType
 import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
@@ -22,7 +22,7 @@ import net.neoforged.neoforge.network.PacketDistributor
 @OnlyIn(Dist.CLIENT)
 abstract class HTContainerScreen<MENU : HTContainerMenu<*>>(menu: MENU, inventory: Inventory, title: Text) :
     AbstractContainerScreen<MENU>(menu, inventory, title),
-    HTAbstractGui {
+    HTGuiAccess {
     override fun render(
         guiGraphics: GuiGraphics,
         mouseX: Int,
@@ -55,7 +55,7 @@ abstract class HTContainerScreen<MENU : HTContainerMenu<*>>(menu: MENU, inventor
             )?.let(PacketDistributor::sendToServer)
     }
 
-    //    HTAbstractGui    //
+    //    HTGuiAccess    //
 
     override val carried: ItemStack
         get() = menu.carried

@@ -3,24 +3,24 @@
 package hiiragi283.core.common.data.recipe
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.data.recipe.HTRecipeBuilder
+import hiiragi283.core.api.data.recipe.IngredientBuilder
+import hiiragi283.core.api.item.ItemInstanceBuilder
+import hiiragi283.core.api.registry.getKeyOrThrow
+import hiiragi283.core.api.util.HTDelegates
 import hiiragi283.core.api.util.Identity
+import hiiragi283.core.api.util.identity
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.AbstractCookingRecipe
 import net.minecraft.world.item.crafting.BlastingRecipe
 import net.minecraft.world.item.crafting.CookingBookCategory
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.SmeltingRecipe
 import net.minecraft.world.item.crafting.SmokingRecipe
-import hiiragi283.core.api.data.recipe.HTRecipeBuilder
-import hiiragi283.core.api.data.recipe.IngredientBuilder
-import hiiragi283.core.api.item.ItemInstanceBuilder
-import hiiragi283.core.api.registry.getKeyOrThrow
-import hiiragi283.core.api.util.HTDelegates
-import hiiragi283.core.api.util.identity
-import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.item.ItemStack
 
 /**
  * 精錬レシピ向けの[HTRecipeBuilder]の実装クラスです。
