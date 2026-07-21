@@ -370,7 +370,7 @@ kotlin {
 dokka {
     dokkaSourceSets {
         configureEach {
-            sourceRoots.from(apiModule.kotlin.srcDirs, supportModule.kotlin.srcDirs, clientModule.kotlin.srcDirs, integrationModule.kotlin.srcDirs)
+            sourceRoots.from(apiModule.kotlin.srcDirs, supportModule.kotlin.srcDirs)
         }
     }
 }
@@ -409,9 +409,6 @@ tasks {
             rename { "${it}_hiiragi_core" }
         }
         from(apiModule.output, supportModule.output, clientModule.output, integrationModule.output)
-        from(dataModule.output) {
-            this.include("**/core/data/bootstrap/**")
-        }
     }
 
     named<Jar>("sourcesJar") {
