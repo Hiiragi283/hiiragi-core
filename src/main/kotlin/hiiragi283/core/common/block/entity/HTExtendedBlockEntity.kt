@@ -5,7 +5,6 @@ import hiiragi283.core.api.serialization.value.HTValueIOAccess
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
-import java.util.function.Supplier
 import net.minecraft.core.BlockPos
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
@@ -27,8 +26,6 @@ import net.neoforged.neoforge.network.PacketDistributor
 abstract class HTExtendedBlockEntity(type: BlockEntityType<*>, pos: BlockPos, state: BlockState) :
     BlockEntity(type, pos, state),
     HTBlockEntityAccess {
-    constructor(type: Supplier<out BlockEntityType<*>>, pos: BlockPos, state: BlockState) : this(type.get(), pos, state)
-
     //    Save & Read    //
 
     final override fun saveAdditional(tag: CompoundTag, registries: HolderLookup.Provider) {

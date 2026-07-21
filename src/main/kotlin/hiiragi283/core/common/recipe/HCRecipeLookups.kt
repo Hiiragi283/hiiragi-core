@@ -14,10 +14,10 @@ import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.api.util.identity
 import hiiragi283.core.common.recipe.custom.HTPotionArrowFillingRecipe
 import hiiragi283.core.common.recipe.custom.HTPotionTankInteraction
-import hiiragi283.core.impl.recipe.cache.HTCompoundRecipeLookup
-import hiiragi283.core.impl.recipe.cache.HTVanillaRecipeLookup
-import hiiragi283.core.impl.recipe.cache.fromRecipeType
 import hiiragi283.core.setup.HCRecipeTypes
+import hiiragi283.core.support.recipe.cache.HTCompoundRecipeLookup
+import hiiragi283.core.support.recipe.cache.HTVanillaRecipeLookup
+import hiiragi283.core.support.recipe.cache.fromRecipeType
 import net.minecraft.tags.ItemTags
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item

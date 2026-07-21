@@ -2,8 +2,8 @@ package hiiragi283.core.common.block
 
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.tag.HiiragiCoreTags
-import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.setup.HCFluids
+import hiiragi283.core.support.capability.HTFluidCapabilities
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel

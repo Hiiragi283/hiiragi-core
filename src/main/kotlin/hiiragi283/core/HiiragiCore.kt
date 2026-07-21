@@ -9,7 +9,6 @@ import hiiragi283.core.api.mod.HTCommonMod
 import hiiragi283.core.api.network.HTPayloadHandlers
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.common.block.dispenser.HCDispenserBehaviours
-import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
 import hiiragi283.core.common.network.HTUpdateMenuPacket
@@ -26,6 +25,7 @@ import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCMenuTypes
 import hiiragi283.core.setup.HCMiscRegister
+import hiiragi283.core.support.capability.HTFluidCapabilities
 import net.minecraft.server.packs.PackType
 import net.minecraft.server.packs.repository.Pack
 import net.minecraft.server.packs.repository.PackSource

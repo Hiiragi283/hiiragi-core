@@ -3,7 +3,6 @@ package hiiragi283.core.common.block.entity
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
-import hiiragi283.core.api.recipe.cache.HTRecipeCaches
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.fluid.HTFluidTank
@@ -14,6 +13,7 @@ import hiiragi283.core.common.storage.fluid.HTBasicFluidTank
 import hiiragi283.core.impl.recipe.handler.HTFluidInputHandler
 import hiiragi283.core.impl.recipe.handler.HTFluidOutputHandler
 import hiiragi283.core.setup.HCBlockEntityTypes
+import hiiragi283.core.support.recipe.cache.HTRecipeCaches
 import hiiragi283.core.util.HTItemDropHelper
 import hiiragi283.core.util.HTStorageHelper
 import net.minecraft.core.BlockPos
@@ -27,7 +27,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.fluids.FluidStack
 import org.apache.commons.lang3.math.Fraction
 
-class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HCBlockEntityTypes.COPPER_BASIN, pos, state) {
+class HTCopperBasinBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HCBlockEntityTypes.COPPER_BASIN.get(), pos, state) {
     lateinit var tank: HTBasicFluidTank
         private set
 

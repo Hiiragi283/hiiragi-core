@@ -2,9 +2,9 @@ package hiiragi283.core.common.item
 
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.storage.fluid.getFluidStack
-import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.impl.recipe.handler.HTFluidInputHandler
 import hiiragi283.core.impl.storage.fluid.HTItemFluidTank
+import hiiragi283.core.support.capability.HTFluidCapabilities
 import hiiragi283.core.util.HTItemDropHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.world.InteractionHand

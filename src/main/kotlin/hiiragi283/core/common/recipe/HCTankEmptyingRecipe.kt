@@ -2,6 +2,7 @@ package hiiragi283.core.common.recipe
 
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.recipe.HTSerializableRecipe
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.ingredient.getMatchingStack
 import hiiragi283.core.api.recipe.result.HTFluidResult
@@ -11,7 +12,6 @@ import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.codec.convert
 import hiiragi283.core.api.util.Option
 import hiiragi283.core.api.util.getOrElse
-import hiiragi283.core.impl.recipe.HTSerializableRecipe
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.world.item.ItemStack

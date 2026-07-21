@@ -3,6 +3,8 @@ package hiiragi283.core.common.crafting
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeSerializers
+import hiiragi283.core.support.crafting.HTCustomRecipe
+import hiiragi283.core.support.crafting.ImmutableRecipeInput
 import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.CraftingBookCategory

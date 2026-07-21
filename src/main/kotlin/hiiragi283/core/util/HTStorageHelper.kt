@@ -10,9 +10,9 @@ import hiiragi283.core.api.text.HTTextUtil
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.api.text.withStyle
-import hiiragi283.core.common.capability.HTEnergyCapabilities
-import hiiragi283.core.common.capability.HTFluidCapabilities
 import hiiragi283.core.setup.HCDataComponents
+import hiiragi283.core.support.capability.HTEnergyCapabilities
+import hiiragi283.core.support.capability.HTFluidCapabilities
 import java.util.function.Consumer
 import kotlin.math.roundToInt
 import net.minecraft.ChatFormatting

@@ -3,6 +3,8 @@ package hiiragi283.core.common.crafting
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeSerializers
+import hiiragi283.core.support.crafting.HTCustomRecipe
+import hiiragi283.core.support.crafting.ImmutableRecipeInput
 import hiiragi283.core.util.ExpValue
 import hiiragi283.core.util.HTExperienceHelper
 import hiiragi283.core.util.storedExperience

@@ -1,6 +1,6 @@
 package hiiragi283.core.util
 
-import hiiragi283.core.common.capability.HTItemCapabilities
+import hiiragi283.core.support.capability.HTItemCapabilities
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Position
 import net.minecraft.world.Containers

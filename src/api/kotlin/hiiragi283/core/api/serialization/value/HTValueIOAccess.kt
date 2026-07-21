@@ -1,11 +1,11 @@
 package hiiragi283.core.api.serialization.value
 
 import com.google.gson.JsonObject
-import hiiragi283.core.impl.serialization.value.HTEmptyValueInput
-import hiiragi283.core.impl.serialization.value.HTJsonValueInput
-import hiiragi283.core.impl.serialization.value.HTJsonValueOutput
-import hiiragi283.core.impl.serialization.value.HTTagValueInput
-import hiiragi283.core.impl.serialization.value.HTTagValueOutput
+import hiiragi283.core.internal.serialization.value.HTEmptyValueInput
+import hiiragi283.core.internal.serialization.value.HTJsonValueInput
+import hiiragi283.core.internal.serialization.value.HTJsonValueOutput
+import hiiragi283.core.internal.serialization.value.HTTagValueInput
+import hiiragi283.core.internal.serialization.value.HTTagValueOutput
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
 

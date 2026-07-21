@@ -8,7 +8,7 @@ import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.impl.recipe.cache.HTVanillaRecipeLookup
+import hiiragi283.core.support.recipe.cache.HTVanillaRecipeLookup
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries

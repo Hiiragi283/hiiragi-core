@@ -12,7 +12,6 @@ import com.mojang.serialization.RecordBuilder
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.registry.RegistryKey
-import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.DFUPair
 import hiiragi283.core.api.util.Either
@@ -20,7 +19,7 @@ import hiiragi283.core.api.util.Ior
 import hiiragi283.core.api.util.Option
 import hiiragi283.core.api.util.kotlin
 import hiiragi283.core.api.util.some
-import hiiragi283.core.impl.serialization.codec.HTIngredientCodec
+import hiiragi283.core.internal.serialization.codec.HTIngredientCodec
 import java.util.UUID
 import java.util.stream.Stream
 import kotlin.contracts.ExperimentalContracts

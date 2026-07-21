@@ -26,7 +26,7 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.fluids.FluidType
 
-class HTTestBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HCBlockEntityTypes.TEST, pos, state) {
+class HTTestBlockEntity(pos: BlockPos, state: BlockState) : HTBlockEntity(HCBlockEntityTypes.TEST.get(), pos, state) {
     private lateinit var tank1: HTBasicFluidTank
     private lateinit var tank2: HTBasicFluidTank
 

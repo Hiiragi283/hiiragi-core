@@ -22,7 +22,6 @@ import hiiragi283.core.impl.storage.resolver.HTFluidHandlerManager
 import hiiragi283.core.impl.storage.resolver.HTItemHandlerManager
 import hiiragi283.core.util.HTItemDropHelper
 import java.util.UUID
-import java.util.function.Supplier
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.UUIDUtil
@@ -43,7 +42,7 @@ import net.neoforged.neoforge.items.IItemHandler
  * キャパビリティやオーナーを保持する[HTExtendedBlockEntity]の拡張クラス
  * @see mekanism.common.tile.base.TileEntityMekanism
  */
-abstract class HTBlockEntity(type: Supplier<out BlockEntityType<*>>, pos: BlockPos, state: BlockState) :
+abstract class HTBlockEntity(type: BlockEntityType<*>, pos: BlockPos, state: BlockState) :
     HTExtendedBlockEntity(type, pos, state),
     Nameable,
     HTFluidHandler,

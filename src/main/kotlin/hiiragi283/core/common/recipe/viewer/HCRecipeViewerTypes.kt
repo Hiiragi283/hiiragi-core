@@ -14,8 +14,8 @@ import hiiragi283.core.api.text.toText
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.VanillaRecipeLookups
-import hiiragi283.core.impl.recipe.viewer.HTRecipeViewerTypeImpl
 import hiiragi283.core.setup.HCRecipeTypes
+import hiiragi283.core.support.recipe.viewer.HTSimpleRecipeViewerType
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
@@ -67,8 +67,8 @@ data object HCRecipeViewerTypes {
         iconItem: ItemLike,
         width: Int,
         height: Int = 18 * 1,
-        builderAction: HTRecipeViewerTypeImpl.Builder.() -> Unit = {},
-    ): HTRecipeViewerType<T> = HTRecipeViewerTypeImpl.create<T> {
+        builderAction: HTSimpleRecipeViewerType.Builder.() -> Unit = {},
+    ): HTRecipeViewerType<T> = HTSimpleRecipeViewerType.create<T> {
         id = recipeType
         title = recipeType
         val iconStack = ItemStack(iconItem)
@@ -84,6 +84,6 @@ data object HCRecipeViewerTypes {
         iconItem: ItemLike,
         width: Int,
         height: Int = 18 * 1,
-        builderAction: HTRecipeViewerTypeImpl.Builder.() -> Unit = {},
+        builderAction: HTSimpleRecipeViewerType.Builder.() -> Unit = {},
     ): HTHolderRecipeViewerType<RECIPE> = create<HTRecipeHolder<RECIPE>>(recipeType, iconItem, width, height, builderAction)
 }

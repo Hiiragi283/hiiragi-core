@@ -8,7 +8,7 @@ import hiiragi283.core.api.recipe.recipe
 import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
-import hiiragi283.core.impl.recipe.cache.HTVanillaRecipeLookup
+import hiiragi283.core.support.recipe.cache.HTVanillaRecipeLookup
 import mezz.jei.api.registration.IRecipeRegistration
 import net.minecraft.client.Minecraft
 import net.minecraft.world.item.crafting.Recipe
