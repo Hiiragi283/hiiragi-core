@@ -6,7 +6,7 @@ import hiiragi283.core.api.minus
 import hiiragi283.core.api.times
 import hiiragi283.core.common.gui.widget.HTFillDirection
 import hiiragi283.core.common.gui.widget.HTProgressWidget
-import hiiragi283.core.impl.gui.widget.HTAbstractWidgetRenderer
+import hiiragi283.core.support.gui.widget.HTAbstractWidgetRenderer
 import hiiragi283.core.util.HTSpriteRenderHelper
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.resources.ResourceLocation

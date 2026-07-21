@@ -1,4 +1,4 @@
-package hiiragi283.core.impl.gui.widget
+package hiiragi283.core.support.gui.widget
 
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.HTGuiAccess

@@ -1,5 +1,6 @@
 package hiiragi283.core.support.recipe.cache
 
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import java.util.function.Supplier
 import net.minecraft.resources.ResourceLocation
@@ -11,13 +12,7 @@ import net.minecraft.world.item.crafting.RecipeType
 value class HTVanillaRecipeLookup<INPUT : RecipeInput, RECIPE : Recipe<INPUT>>(private val recipeType: Supplier<out RecipeType<RECIPE>>) : HTRecipeLookup<RECIPE> {
     constructor(recipeType: RecipeType<RECIPE>) : this({ recipeType })
 
-    override fun getAllRecipes(context: HTRecipeLookup.Context): Map<ResourceLocation, RECIPE> {
-        val map: MutableMap<ResourceLocation, RECIPE> = mutableMapOf()
-        for ((first: ResourceLocation, second: RECIPE) in context.getAllRecipes(recipeType.get())) {
-            if (!second.isIncomplete) map[first] = second
-        }
-        return map
-    }
+    override fun getAllRecipes(context: HTRecipeLookup.Context): Map<ResourceLocation, RECIPE> = HiiragiCoreAccess.INSTANCE.getAllRecipes(context, recipeType.get())
 
     override fun toString(): String = "HTVanillaRecipeLookup(recipeType=${recipeType.get()})"
 }

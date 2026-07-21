@@ -1,6 +1,7 @@
 package hiiragi283.core.common.recipe
 
 import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.MultiMap
 import hiiragi283.core.api.collection.buildListMultiMap
 import hiiragi283.core.api.recipe.HTRecipeHolder
@@ -8,7 +9,6 @@ import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.api.registry.toLike
-import hiiragi283.core.support.recipe.cache.HTVanillaRecipeLookup
 import net.minecraft.core.Holder
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
@@ -36,8 +36,8 @@ data object VanillaRecipeLookups {
 
     @JvmRecord
     private data class CookingLookup<RECIPE : AbstractCookingRecipe>(private val recipeType: RecipeType<RECIPE>) : HTRecipeLookup.Translatable<HCCookingRecipe> {
-        override fun getAllRecipes(context: HTRecipeLookup.Context): Map<ResourceLocation, HCCookingRecipe> = HTVanillaRecipeLookup(recipeType)
-            .getAllRecipes(context)
+        override fun getAllRecipes(context: HTRecipeLookup.Context): Map<ResourceLocation, HCCookingRecipe> = HiiragiCoreAccess.INSTANCE
+            .getAllRecipes(context, recipeType)
             .mapValues { (_, recipe: RECIPE) -> HCCookingRecipe(recipe) }
 
         override fun getKey(): ResourceKey<RecipeType<*>> = BuiltInRegistries.RECIPE_TYPE.wrapAsHolder(recipeType).getKeyOrThrow()

@@ -1,11 +1,18 @@
-package hiiragi283.core.api.integration.ae2.storage
+package hiiragi283.core.common.integration.ae2.storage
 
+import appeng.api.config.Actionable
 import appeng.api.stacks.AEFluidKey
 import appeng.api.stacks.AEItemKey
+import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.toResource
+
+fun Actionable.toAction(): HTStorageAction = when (this) {
+    Actionable.MODULATE -> HTStorageAction.EXECUTE
+    Actionable.SIMULATE -> HTStorageAction.SIMULATE
+}
 
 //    Fluid    //
 

@@ -13,6 +13,8 @@ import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.plugin.HTMaterialPlugin
+import hiiragi283.core.api.recipe.HTRecipeHolder
+import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.registry.getResult
 import hiiragi283.core.api.registry.lookupResult
 import hiiragi283.core.api.resource.SimpleSupplierWithKey
@@ -24,11 +26,17 @@ import hiiragi283.core.api.util.toTextResult
 import hiiragi283.core.internal.material.HTMaterialContentsImpl
 import hiiragi283.core.internal.material.HTMaterialContentsRegister
 import java.util.function.Consumer
+import kotlin.collections.component1
+import kotlin.collections.component2
 import kotlin.system.measureTimeMillis
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.crafting.Recipe
+import net.minecraft.world.item.crafting.RecipeInput
+import net.minecraft.world.item.crafting.RecipeType
 import net.neoforged.neoforge.fluids.FluidStack
 
 /**
@@ -190,4 +198,10 @@ abstract class HiiragiCoreAccess {
      * @since 21.1.0
      */
     protected abstract fun <R : Any> getFirstHolder(holders: Iterable<Holder<R>>): SimpleSupplierWithKey<R>
+
+    //    Recipe    //
+
+    abstract fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(context: HTRecipeLookup.Context, recipeType: RecipeType<RECIPE>): Map<ResourceLocation, RECIPE>
+
+    fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> asSequence(context: HTRecipeLookup.Context, recipeType: RecipeType<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> = getAllRecipes(context, recipeType).asSequence().map { (id: ResourceLocation, value: RECIPE) -> id to value }
 }

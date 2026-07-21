@@ -1,6 +1,7 @@
 package hiiragi283.core.api.integration.jei
 
 import hiiragi283.core.api.HTComparators
+import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.recipe.id
@@ -8,7 +9,6 @@ import hiiragi283.core.api.recipe.recipe
 import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
-import hiiragi283.core.support.recipe.cache.HTVanillaRecipeLookup
 import mezz.jei.api.registration.IRecipeRegistration
 import net.minecraft.client.Minecraft
 import net.minecraft.world.item.crafting.Recipe
@@ -80,7 +80,7 @@ value class HTJeiRecipeHelper(@PublishedApi internal val registration: IRecipeRe
     }
 
     fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>, DISPLAY : HTRecipeDisplay> addDisplayRecipes(viewerType: HTRecipeViewerType<DISPLAY>, recipeType: RecipeType<RECIPE>, transform: (HTRecipeHolder<RECIPE>) -> DISPLAY) {
-        this.addDisplayRecipes(viewerType, HTVanillaRecipeLookup(recipeType).asSequence(createContext()).map(transform))
+        this.addDisplayRecipes(viewerType, HiiragiCoreAccess.INSTANCE.asSequence(createContext(), recipeType).map(transform))
     }
 
     fun <BASE : Any, DISPLAY : HTRecipeDisplay> addDisplayRecipes(viewerType: HTRecipeViewerType<DISPLAY>, lookup: HTRecipeLookup<BASE>, transform: (HTRecipeHolder<BASE>) -> DISPLAY?) {

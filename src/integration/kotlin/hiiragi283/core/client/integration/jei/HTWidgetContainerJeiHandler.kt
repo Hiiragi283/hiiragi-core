@@ -10,7 +10,7 @@ import hiiragi283.core.api.recipe.viewer.widget.HTGhostWidget
 import hiiragi283.core.api.recipe.viewer.widget.HTIngredientWidget
 import hiiragi283.core.api.recipe.viewer.widget.HTRecipeAreaWidget
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
-import hiiragi283.core.impl.gui.widget.HTGuiWidget
+import hiiragi283.core.support.gui.widget.HTGuiWidget
 import java.util.Optional
 import mezz.jei.api.gui.builder.IClickableIngredientFactory
 import mezz.jei.api.gui.handlers.IGhostIngredientHandler

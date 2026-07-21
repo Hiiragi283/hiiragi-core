@@ -50,6 +50,8 @@ replica = { group = "maven.modrinth", name = "replication", version.ref = "repli
 [bundles]
 
 common-impl = [
+    "jade",
+    "jei-api",
     "moonlight-neo"
 ]
 
@@ -62,14 +64,11 @@ integration-impl = [
     "curios",
     "dire",
     "immersive",
-    "jade",
     "oritech",
     "replica",
 ]
 
-integration-compile = [
-    "jei-api",
-]
+integration-compile = []
 
 integration-runtime = [
     "jei"

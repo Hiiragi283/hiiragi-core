@@ -7,7 +7,7 @@ import hiiragi283.core.api.gui.HTGuiAccess
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.times
-import hiiragi283.core.impl.gui.widget.HTAbstractWidgetRenderer
+import hiiragi283.core.support.gui.widget.HTAbstractWidgetRenderer
 import hiiragi283.core.util.HTSpriteRenderHelper
 import java.util.function.Consumer
 import net.minecraft.client.Minecraft

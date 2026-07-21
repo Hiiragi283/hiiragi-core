@@ -11,6 +11,7 @@ import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.property.HTPropertyGetter
+import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.SimpleSupplierWithKey
@@ -21,9 +22,13 @@ import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.util.HTPluginLoader
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentHolder
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.alchemy.PotionContents
 import net.minecraft.world.item.alchemy.Potions
+import net.minecraft.world.item.crafting.Recipe
+import net.minecraft.world.item.crafting.RecipeInput
+import net.minecraft.world.item.crafting.RecipeType
 import net.neoforged.fml.ModList
 import net.neoforged.neoforge.common.MutableDataComponentHolder
 import net.neoforged.neoforge.common.Tags
@@ -105,4 +110,12 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
     }
 
     override fun <T : Any> getFirstHolder(holders: Iterable<Holder<T>>): SimpleSupplierWithKey<T> = holders.asSequence().map(Holder<T>::toLike).sortedWith(modIdComparator).first()
+
+    override fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(context: HTRecipeLookup.Context, recipeType: RecipeType<RECIPE>): Map<ResourceLocation, RECIPE> {
+        val map: MutableMap<ResourceLocation, RECIPE> = mutableMapOf()
+        for ((first: ResourceLocation, second: RECIPE) in context.getAllRecipes(recipeType)) {
+            if (!second.isIncomplete) map[first] = second
+        }
+        return map
+    }
 }
