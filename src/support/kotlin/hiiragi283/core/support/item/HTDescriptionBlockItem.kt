@@ -1,7 +1,8 @@
-package hiiragi283.core.api.item
+package hiiragi283.core.support.item
 
 import hiiragi283.core.api.block.HTBlockWithDescription
 import hiiragi283.core.api.color.HTDefaultColor
+import hiiragi283.core.api.item.HTBlockItem
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.Text
 import net.minecraft.world.item.ItemStack
@@ -9,7 +10,7 @@ import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.level.block.Block
 
 /**
- * 説明文付きのブロック向けの[HTBlockItem]の拡張クラスです。
+ * 説明文付きのブロック向けの[hiiragi283.core.api.item.HTBlockItem]の拡張クラスです。
  * @param BLOCK [block]のクラス
  * @author Hiiragi Tsubasa
  * @since 0.3.0

@@ -23,7 +23,6 @@ import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
-import hiiragi283.core.setup.HCMenuTypes
 import hiiragi283.core.setup.HCMiscRegister
 import hiiragi283.core.support.capability.HTFluidCapabilities
 import net.minecraft.server.packs.PackType
@@ -54,7 +53,6 @@ data object HiiragiCore : HTCommonMod() {
         HCItems.register(eventBus)
 
         HCBlockEntityTypes.REGISTER.register(eventBus)
-        HCMenuTypes.REGISTER.register(eventBus)
 
         container.registerConfig(ModConfig.Type.COMMON, HCConfig.COMMON_SPEC)
 

@@ -1,4 +1,4 @@
-package hiiragi283.core.common.gui.sync
+package hiiragi283.core.support.gui.sync
 
 import hiiragi283.core.api.gui.sync.HTSyncableMenu
 import hiiragi283.core.api.gui.sync.HTSyncablePayload

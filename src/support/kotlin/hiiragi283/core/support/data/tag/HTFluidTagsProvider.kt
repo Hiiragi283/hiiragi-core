@@ -1,5 +1,7 @@
-package hiiragi283.core.api.data.tag
+package hiiragi283.core.support.data.tag
 
+import hiiragi283.core.api.data.tag.HTTagBuilder
+import hiiragi283.core.api.data.tag.HTTagsProvider
 import hiiragi283.core.api.registry.HTFluidContent
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup

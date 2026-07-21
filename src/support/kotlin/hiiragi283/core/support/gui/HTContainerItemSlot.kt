@@ -1,4 +1,4 @@
-package hiiragi283.core.common.gui
+package hiiragi283.core.support.gui
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTBackgroundType

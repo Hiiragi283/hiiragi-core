@@ -1,15 +1,19 @@
-package hiiragi283.core.common.gui.factory
+package hiiragi283.core.support.gui.factory
 
+import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
+import hiiragi283.core.api.registry.HTDeferredHolder
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.serialization.network.asOption
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.Option
 import hiiragi283.core.api.util.toOption
-import hiiragi283.core.common.gui.menu.HTWidgetContainerMenu
-import hiiragi283.core.setup.HCMenuTypes
+import hiiragi283.core.support.gui.menu.HTWidgetContainerMenu
 import io.netty.buffer.ByteBuf
+import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.server.level.ServerPlayer
@@ -18,6 +22,7 @@ import net.minecraft.world.MenuProvider
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.world.inventory.MenuType
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
@@ -33,6 +38,9 @@ data class HTItemWidgetHolderContext(
     companion object {
         @JvmStatic
         private val HAND_CODEC: StreamCodec<ByteBuf, Option<InteractionHand>> = HTStreamCodecs.enum<InteractionHand>().asOption()
+
+        @JvmField
+        val MENU_TYPE: SupplierWithId<MenuType<HTWidgetContainerMenu>> = HTDeferredHolder(Registries.MENU, HiiragiCoreAPI.id(HTConst.ITEM))
 
         @JvmStatic
         fun openMenu(player: ServerPlayer, hand: InteractionHand): Boolean {
@@ -63,7 +71,7 @@ data class HTItemWidgetHolderContext(
             val item: Item = stack.item
             if (item is Factory) {
                 val context: HTItemWidgetHolderContext = item.createContext(player, hand, stack)
-                return HTWidgetContainerMenu(HCMenuTypes.ITEM.get(), containerId, inventory, context)
+                return HTWidgetContainerMenu(MENU_TYPE.get(), containerId, inventory, context)
             } else {
                 error("Cannot create menu from $stack in $hand")
             }
@@ -80,7 +88,7 @@ data class HTItemWidgetHolderContext(
 
     override fun getDisplayName(): Text = factory.getDisplayName(this)
 
-    override fun createMenu(containerId: Int, playerInventory: Inventory, player: Player): HTWidgetContainerMenu = HTWidgetContainerMenu(HCMenuTypes.ITEM.get(), containerId, playerInventory, this)
+    override fun createMenu(containerId: Int, playerInventory: Inventory, player: Player): HTWidgetContainerMenu = HTWidgetContainerMenu(MENU_TYPE.get(), containerId, playerInventory, this)
 
     override fun writeClientSideData(menu: AbstractContainerMenu, buffer: RegistryFriendlyByteBuf) {
         HAND_CODEC.encode(buffer, hand.toOption())

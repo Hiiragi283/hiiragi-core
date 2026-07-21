@@ -13,18 +13,21 @@ import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.HTSimpleDeferredItem
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.resource.vanillaId
-import hiiragi283.core.common.gui.sync.HTBoolSyncPayload
-import hiiragi283.core.common.gui.sync.HTFluidSyncPayload
-import hiiragi283.core.common.gui.sync.HTFractionSyncPayload
-import hiiragi283.core.common.gui.sync.HTIntSyncPayload
-import hiiragi283.core.common.gui.sync.HTItemSyncPayload
-import hiiragi283.core.common.gui.sync.HTLongSyncPayload
 import hiiragi283.core.common.recipe.ingredient.HTBluePrintIngredient
 import hiiragi283.core.common.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.common.text.HCTranslation
+import hiiragi283.core.support.gui.factory.HTBlockWidgetHolderContext
+import hiiragi283.core.support.gui.factory.HTItemWidgetHolderContext
+import hiiragi283.core.support.gui.sync.HTBoolSyncPayload
+import hiiragi283.core.support.gui.sync.HTFluidSyncPayload
+import hiiragi283.core.support.gui.sync.HTFractionSyncPayload
+import hiiragi283.core.support.gui.sync.HTIntSyncPayload
+import hiiragi283.core.support.gui.sync.HTItemSyncPayload
+import hiiragi283.core.support.gui.sync.HTLongSyncPayload
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.Items
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension
 import net.neoforged.neoforge.registries.NeoForgeRegistries
 import net.neoforged.neoforge.registries.RegisterEvent
 
@@ -116,6 +119,11 @@ internal data object HCMiscRegister {
 
             helper.register(HiiragiCoreAPI.id(HTConst.ENERGY), HCDataComponents.ENERGY)
             helper.register(HiiragiCoreAPI.id(HTConst.FLUID), HCDataComponents.FLUID)
+        }
+        // Menu Type
+        event.register(Registries.MENU) { helper ->
+            helper.register(HTBlockWidgetHolderContext.MENU_TYPE.getId(), IMenuTypeExtension.create(HTBlockWidgetHolderContext::create))
+            helper.register(HTItemWidgetHolderContext.MENU_TYPE.getId(), IMenuTypeExtension.create(HTItemWidgetHolderContext::create))
         }
         // Recipe Serializer
         event.register(Registries.RECIPE_SERIALIZER) { helper ->

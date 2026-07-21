@@ -1,4 +1,4 @@
-package hiiragi283.core.api.item
+package hiiragi283.core.support.item
 
 import hiiragi283.core.api.color.HTDefaultColor
 import hiiragi283.core.api.resource.vanillaId

@@ -7,8 +7,8 @@ import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
 import hiiragi283.core.api.text.Text
-import hiiragi283.core.common.gui.menu.HTContainerMenu
 import hiiragi283.core.common.network.HTUpdateMenuPacket
+import hiiragi283.core.support.gui.menu.HTContainerMenu
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
 import net.minecraft.core.RegistryAccess

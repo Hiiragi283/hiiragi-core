@@ -2,8 +2,8 @@ package hiiragi283.core.common.block
 
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.common.block.entity.HTTestBlockEntity
-import hiiragi283.core.common.gui.factory.HTBlockWidgetHolderContext
 import hiiragi283.core.setup.HCBlockEntityTypes
+import hiiragi283.core.support.gui.factory.HTBlockWidgetHolderContext
 import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.InteractionResult

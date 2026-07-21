@@ -1,4 +1,4 @@
-package hiiragi283.core.common.gui.factory
+package hiiragi283.core.support.gui.factory
 
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import net.minecraft.world.entity.player.Player

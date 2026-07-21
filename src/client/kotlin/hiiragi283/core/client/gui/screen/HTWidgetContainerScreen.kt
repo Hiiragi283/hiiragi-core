@@ -3,7 +3,7 @@ package hiiragi283.core.client.gui.screen
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.text.Text
-import hiiragi283.core.common.gui.menu.HTWidgetContainerMenu
+import hiiragi283.core.support.gui.menu.HTWidgetContainerMenu
 import hiiragi283.core.support.gui.widget.HTGuiWidget
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.inventory.ContainerScreen

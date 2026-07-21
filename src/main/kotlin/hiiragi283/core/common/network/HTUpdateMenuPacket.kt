@@ -3,7 +3,7 @@ package hiiragi283.core.common.network
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
 import hiiragi283.core.api.network.HTCustomPayload
-import hiiragi283.core.common.gui.menu.HTContainerMenu
+import hiiragi283.core.support.gui.menu.HTContainerMenu
 import net.minecraft.client.Minecraft
 import net.minecraft.client.player.AbstractClientPlayer
 import net.minecraft.network.RegistryFriendlyByteBuf

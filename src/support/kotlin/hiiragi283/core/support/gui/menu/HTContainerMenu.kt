@@ -1,4 +1,4 @@
-package hiiragi283.core.common.gui.menu
+package hiiragi283.core.support.gui.menu
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTBackgroundType
@@ -8,8 +8,8 @@ import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.sync.HTSyncableMenu
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
-import hiiragi283.core.common.gui.HTContainerItemSlot
-import hiiragi283.core.common.network.HTUpdateMenuPacket
+import hiiragi283.core.support.gui.HTContainerItemSlot
+import hiiragi283.core.support.gui.HTWidgetMenuAccess
 import net.minecraft.core.RegistryAccess
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.entity.player.Inventory
@@ -208,8 +208,8 @@ abstract class HTContainerMenu<C>(
         val player: Player = inventory.player
         val access: RegistryAccess = player.registryAccess()
         if (player is ServerPlayer) {
-            HTUpdateMenuPacket
-                .create(containerId) {
+            HTWidgetMenuAccess.INSTANCE
+                .createMenuUpdatePacket(containerId) {
                     val trackedSlots: MutableList<Pair<HTSyncableSlot, HTSyncType>> = this@HTContainerMenu.trackedSlots
                     for (i: Int in trackedSlots.indices) {
                         val (slot: HTSyncableSlot, syncType: HTSyncType) = trackedSlots[i]
@@ -231,8 +231,8 @@ abstract class HTContainerMenu<C>(
         val player: Player = inventory.player
         val access: RegistryAccess = player.registryAccess()
         if (player is ServerPlayer) {
-            HTUpdateMenuPacket
-                .create(containerId) {
+            HTWidgetMenuAccess.INSTANCE
+                .createMenuUpdatePacket(containerId) {
                     for (i: Int in trackedSlots.indices) {
                         val (slot: HTSyncableSlot, _) = trackedSlots[i]
                         slot.getChange()

@@ -24,8 +24,9 @@ import hiiragi283.core.internal.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids
-import hiiragi283.core.setup.HCMenuTypes
 import hiiragi283.core.setup.HCWidgetTypes
+import hiiragi283.core.support.gui.factory.HTBlockWidgetHolderContext
+import hiiragi283.core.support.gui.factory.HTItemWidgetHolderContext
 import java.awt.Color
 import net.mehvahdjukaar.moonlight.api.platform.RegHelper
 import net.minecraft.client.renderer.entity.ThrownItemRenderer
@@ -99,8 +100,8 @@ data object HiiragiCoreClient : HTClientMod() {
     }
 
     override fun registerScreens(event: RegisterMenuScreensEvent) {
-        event.register(HCMenuTypes.BLOCK.get(), ::HTWidgetContainerScreen)
-        event.register(HCMenuTypes.ITEM.get(), ::HTWidgetContainerScreen)
+        event.register(HTBlockWidgetHolderContext.MENU_TYPE.get(), ::HTWidgetContainerScreen)
+        event.register(HTItemWidgetHolderContext.MENU_TYPE.get(), ::HTWidgetContainerScreen)
     }
 
     override fun registerEntityRenderer(event: EntityRenderersEvent.RegisterRenderers) {

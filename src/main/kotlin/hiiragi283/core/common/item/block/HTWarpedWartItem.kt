@@ -1,8 +1,8 @@
 package hiiragi283.core.common.item.block
 
 import hiiragi283.core.api.collection.randomOrNull
-import hiiragi283.core.api.item.HTDescriptionBlockItem
 import hiiragi283.core.common.block.HTWarpedWartBlock
+import hiiragi283.core.support.item.HTDescriptionBlockItem
 import net.minecraft.core.Holder
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResultHolder

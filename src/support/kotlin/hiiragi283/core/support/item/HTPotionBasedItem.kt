@@ -1,5 +1,6 @@
-package hiiragi283.core.api.item
+package hiiragi283.core.support.item
 
+import hiiragi283.core.api.item.HTSubCreativeTabContents
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.text.Text

@@ -1,12 +1,12 @@
-package hiiragi283.core.common.gui.menu
+package hiiragi283.core.support.gui.menu
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.sync.HTSyncType
 import hiiragi283.core.api.gui.sync.HTSyncableSlot
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
-import hiiragi283.core.common.gui.factory.HTWidgetHolderContext
-import hiiragi283.core.common.gui.widget.HTItemWidget
+import hiiragi283.core.support.gui.HTWidgetMenuAccess
+import hiiragi283.core.support.gui.factory.HTWidgetHolderContext
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.MenuType
@@ -36,9 +36,7 @@ class HTWidgetContainerMenu(
         override fun <WIDGET : HTWidget> addWidget(widget: WIDGET): WIDGET {
             widgets += widget
             HiiragiCoreAPI.LOGGER.debug("Added widget: {}", widget)
-            if (widget is HTItemWidget.Container) {
-                this@HTWidgetContainerMenu.addSlot(widget.slot)
-            }
+            HTWidgetMenuAccess.INSTANCE.getContainerSlot(widget)?.let(this@HTWidgetContainerMenu::addSlot)
             return widget
         }
 

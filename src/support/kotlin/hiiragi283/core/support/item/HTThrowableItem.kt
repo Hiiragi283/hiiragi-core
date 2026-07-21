@@ -1,4 +1,4 @@
-package hiiragi283.core.api.item
+package hiiragi283.core.support.item
 
 import net.minecraft.advancements.CriteriaTriggers
 import net.minecraft.core.Direction

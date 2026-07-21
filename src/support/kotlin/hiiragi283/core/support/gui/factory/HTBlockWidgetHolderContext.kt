@@ -1,16 +1,21 @@
-package hiiragi283.core.common.gui.factory
+package hiiragi283.core.support.gui.factory
 
+import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.widget.HTWidgetHolder
+import hiiragi283.core.api.registry.HTDeferredHolder
+import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.text.Text
-import hiiragi283.core.common.gui.menu.HTWidgetContainerMenu
-import hiiragi283.core.setup.HCMenuTypes
+import hiiragi283.core.support.gui.menu.HTWidgetContainerMenu
 import net.minecraft.core.BlockPos
+import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.world.MenuProvider
 import net.minecraft.world.Nameable
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.world.inventory.MenuType
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.entity.BlockEntity
@@ -21,6 +26,9 @@ data class HTBlockWidgetHolderContext(val factory: Factory, val player: Player, 
     HTWidgetHolderContext,
     MenuProvider {
     companion object {
+        @JvmField
+        val MENU_TYPE: SupplierWithId<MenuType<HTWidgetContainerMenu>> = HTDeferredHolder(Registries.MENU, HiiragiCoreAPI.id(HTConst.BLOCK))
+
         @JvmStatic
         fun openMenu(player: Player, pos: BlockPos): Boolean {
             val block: Block = player.level().getBlockState(pos).block
@@ -38,7 +46,7 @@ data class HTBlockWidgetHolderContext(val factory: Factory, val player: Player, 
             val block: Block = player.level().getBlockState(pos).block
             if (block is Factory) {
                 val context: HTBlockWidgetHolderContext = block.createContext(player, pos)
-                return HTWidgetContainerMenu(HCMenuTypes.BLOCK.get(), containerId, inventory, context)
+                return HTWidgetContainerMenu(MENU_TYPE.get(), containerId, inventory, context)
             } else {
                 error("Cannot create menu from $block at $pos")
             }
@@ -57,7 +65,7 @@ data class HTBlockWidgetHolderContext(val factory: Factory, val player: Player, 
 
     override fun getDisplayName(): Text = factory.getDisplayName(this)
 
-    override fun createMenu(containerId: Int, playerInventory: Inventory, player: Player): HTWidgetContainerMenu = HTWidgetContainerMenu(HCMenuTypes.BLOCK.get(), containerId, playerInventory, this)
+    override fun createMenu(containerId: Int, playerInventory: Inventory, player: Player): HTWidgetContainerMenu = HTWidgetContainerMenu(MENU_TYPE.get(), containerId, playerInventory, this)
 
     override fun writeClientSideData(menu: AbstractContainerMenu, buffer: RegistryFriendlyByteBuf) {
         buffer.writeBlockPos(pos)

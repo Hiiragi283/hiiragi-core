@@ -1,4 +1,4 @@
-package hiiragi283.core.api.item
+package hiiragi283.core.support.item
 
 import hiiragi283.core.api.text.MutableText
 import hiiragi283.core.api.text.Text

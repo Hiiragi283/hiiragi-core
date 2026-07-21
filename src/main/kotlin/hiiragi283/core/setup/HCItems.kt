@@ -1,7 +1,6 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.item.HTSmithingTemplateItem
 import hiiragi283.core.api.registry.HTDeferredItemRegister
 import hiiragi283.core.api.registry.HTSimpleDeferredItem
 import hiiragi283.core.common.item.HTBlueprintItem
@@ -16,6 +15,7 @@ import hiiragi283.core.common.item.endgame.HTCreativeItem
 import hiiragi283.core.common.item.endgame.HTEternalUpgradeItem
 import hiiragi283.core.common.item.endgame.HTInfinityPotionItem
 import hiiragi283.core.common.text.HCTranslation
+import hiiragi283.core.support.item.HTSmithingTemplateItem
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.world.entity.EquipmentSlotGroup

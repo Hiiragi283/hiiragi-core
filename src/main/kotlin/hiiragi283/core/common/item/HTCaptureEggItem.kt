@@ -1,7 +1,7 @@
 package hiiragi283.core.common.item
 
-import hiiragi283.core.api.item.HTThrowableItem
 import hiiragi283.core.common.entity.HTThrownCaptureEgg
+import hiiragi283.core.support.item.HTThrowableItem
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.Level
 

@@ -1,11 +1,11 @@
 package hiiragi283.core.common.item.endgame
 
 import hiiragi283.core.api.color.HTDefaultColor
-import hiiragi283.core.api.item.HTSmithingTemplateItem
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
 import hiiragi283.core.api.text.withStyle
 import hiiragi283.core.common.text.HCTranslation
+import hiiragi283.core.support.item.HTSmithingTemplateItem
 import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.item.ItemStack
 
