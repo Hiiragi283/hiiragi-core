@@ -7,8 +7,8 @@ import hiiragi283.core.api.gui.widget.HTWidgetType
 import hiiragi283.core.api.recipe.viewer.widget.HTGhostWidget
 import hiiragi283.core.api.recipe.viewer.widget.HTIngredientWidget
 import hiiragi283.core.common.gui.HTContainerItemSlot
-import hiiragi283.core.impl.storage.item.HTItemStackResourceSlot
 import hiiragi283.core.setup.HCWidgetTypes
+import hiiragi283.core.support.storage.item.HTItemStackResourceSlot
 import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 

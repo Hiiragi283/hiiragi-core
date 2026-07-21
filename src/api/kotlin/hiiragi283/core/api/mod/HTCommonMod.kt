@@ -2,8 +2,8 @@ package hiiragi283.core.api.mod
 
 import hiiragi283.core.api.capability.HTMultiCapability
 import hiiragi283.core.api.storage.HTHandlerProvider
-import hiiragi283.core.impl.storage.fluid.HTItemFluidHandler
-import hiiragi283.core.impl.storage.fluid.HTItemFluidTank
+import hiiragi283.core.api.storage.fluid.HTItemFluidHandler
+import hiiragi283.core.api.storage.fluid.HTItemFluidTank
 import net.minecraft.core.Direction
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.EntityType

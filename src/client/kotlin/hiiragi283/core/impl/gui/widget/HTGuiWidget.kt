@@ -3,6 +3,7 @@ package hiiragi283.core.impl.gui.widget
 import hiiragi283.core.api.gui.HTGuiAccess
 import hiiragi283.core.api.gui.widget.HTWidget
 import hiiragi283.core.api.text.Text
+import hiiragi283.core.internal.gui.widget.HTWidgetRendererManager
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.components.AbstractWidget
 import net.minecraft.client.gui.components.Renderable

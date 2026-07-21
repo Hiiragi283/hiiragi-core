@@ -1,0 +1,22 @@
+package hiiragi283.core.support.storage.item
+
+import hiiragi283.core.api.storage.item.HTItemResourceType
+import hiiragi283.core.api.storage.item.toResource
+import hiiragi283.core.api.storage.item.toStackOrEmpty
+import hiiragi283.core.support.storage.resource.HTStackResourceSlot
+import net.minecraft.world.item.ItemStack
+
+/**
+ * アイテム向けの[HTStackResourceSlot]の拡張クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.15.0
+ */
+abstract class HTItemStackResourceSlot : HTStackResourceSlot<ItemStack, HTItemResourceType>() {
+    final override fun getResourceFrom(stack: ItemStack): HTItemResourceType? = stack.toResource()
+
+    final override fun getAmountFrom(stack: ItemStack): Int = stack.count
+
+    final override fun isSame(stack: ItemStack, resource: HTItemResourceType): Boolean = stack.toResource() == resource
+
+    final override fun createStack(resource: HTItemResourceType?, amount: Int): ItemStack = resource.toStackOrEmpty(amount)
+}

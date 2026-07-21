@@ -6,8 +6,8 @@ import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.widget.HTWidgetType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.widget.HTRecipeAreaWidget
-import hiiragi283.core.impl.gui.widget.HTAbstractWidget
 import hiiragi283.core.setup.HCWidgetTypes
+import hiiragi283.core.support.gui.widget.HTAbstractWidget
 import net.minecraft.resources.ResourceLocation
 import org.apache.commons.lang3.math.Fraction
 

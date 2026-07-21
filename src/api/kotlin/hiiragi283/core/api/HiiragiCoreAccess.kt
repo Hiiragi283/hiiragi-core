@@ -21,8 +21,8 @@ import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.util.HTTextResult
 import hiiragi283.core.api.util.flatMap
 import hiiragi283.core.api.util.toTextResult
-import hiiragi283.core.impl.material.HTMaterialContentsImpl
-import hiiragi283.core.impl.material.HTMaterialContentsRegister
+import hiiragi283.core.internal.material.HTMaterialContentsImpl
+import hiiragi283.core.internal.material.HTMaterialContentsRegister
 import java.util.function.Consumer
 import kotlin.system.measureTimeMillis
 import net.minecraft.core.Holder

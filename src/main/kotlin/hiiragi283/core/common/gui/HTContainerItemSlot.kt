@@ -11,7 +11,7 @@ import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.storage.item.insert
 import hiiragi283.core.api.storage.item.toResource
 import hiiragi283.core.api.storage.item.toStackOrEmpty
-import hiiragi283.core.impl.storage.item.HTItemStackResourceSlot
+import hiiragi283.core.support.storage.item.HTItemStackResourceSlot
 import java.util.Optional
 import java.util.function.BiPredicate
 import java.util.function.Consumer

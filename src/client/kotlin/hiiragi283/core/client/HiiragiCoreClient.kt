@@ -14,13 +14,13 @@ import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.client.data.HCClientResourceProvider
 import hiiragi283.core.client.data.HCDynamicClientResources
+import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.gui.widget.HTFluidWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTItemWidgetRenderer
 import hiiragi283.core.client.gui.widget.HTProgressWidgetRenderer
 import hiiragi283.core.client.render.block.HTCopperBasinRenderer
-import hiiragi283.core.impl.data.pack.HTPackSource
-import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
-import hiiragi283.core.impl.gui.widget.HTWidgetRendererManager
+import hiiragi283.core.common.data.pack.HTPackSource
+import hiiragi283.core.internal.gui.widget.HTWidgetRendererManager
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCEntityTypes
 import hiiragi283.core.setup.HCFluids

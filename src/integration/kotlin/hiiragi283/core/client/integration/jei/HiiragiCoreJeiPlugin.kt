@@ -20,6 +20,7 @@ import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
 import hiiragi283.core.api.registry.HTSimpleDeferredHolder
+import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.integration.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCChargingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCCrushingRecipeCategory
@@ -37,7 +38,6 @@ import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import hiiragi283.core.common.recipe.VanillaRecipeLookups
 import hiiragi283.core.common.recipe.viewer.HCRecipeDisplayFactories
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
-import hiiragi283.core.impl.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.impl.recipe.viewer.display.HTRecipeDisplayFactories
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCDataComponents

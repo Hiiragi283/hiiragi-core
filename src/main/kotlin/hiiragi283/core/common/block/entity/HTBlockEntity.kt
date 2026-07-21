@@ -18,8 +18,8 @@ import hiiragi283.core.api.storage.item.HTItemSlot
 import hiiragi283.core.api.storage.item.getItemStack
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.common.storage.HTCapabilityCodec
-import hiiragi283.core.impl.storage.resolver.HTFluidHandlerManager
-import hiiragi283.core.impl.storage.resolver.HTItemHandlerManager
+import hiiragi283.core.internal.storage.resolver.HTFluidHandlerManager
+import hiiragi283.core.internal.storage.resolver.HTItemHandlerManager
 import hiiragi283.core.util.HTItemDropHelper
 import java.util.UUID
 import net.minecraft.core.BlockPos

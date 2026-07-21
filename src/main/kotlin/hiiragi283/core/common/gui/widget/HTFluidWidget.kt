@@ -7,9 +7,9 @@ import hiiragi283.core.api.recipe.viewer.widget.HTGhostWidget
 import hiiragi283.core.api.recipe.viewer.widget.HTIngredientWidget
 import hiiragi283.core.api.storage.fluid.HTFluidView
 import hiiragi283.core.api.storage.fluid.getFluidStack
-import hiiragi283.core.impl.gui.widget.HTAbstractWidget
-import hiiragi283.core.impl.storage.fluid.HTFluidStackResourceSlot
 import hiiragi283.core.setup.HCWidgetTypes
+import hiiragi283.core.support.gui.widget.HTAbstractWidget
+import hiiragi283.core.support.storage.fluid.HTFluidStackResourceSlot
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidUtil
 

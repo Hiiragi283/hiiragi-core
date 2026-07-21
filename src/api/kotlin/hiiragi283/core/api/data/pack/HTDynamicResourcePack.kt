@@ -15,13 +15,13 @@ import net.minecraft.server.packs.metadata.pack.PackMetadataSection
 import net.minecraft.server.packs.resources.IoSupplier
 
 /**
- * Hiiragi Seriesで使用される動的データパックを管理するクラスです。
+ * Hiiragi Seriesで使用される動的リソースパックを管理するクラスです。
  *
- * 参照 : [GregTech Modern - GTDynamicDataPack](https://github.com/GregTechCEu/GregTech-Modern/blob/1.21/src/main/java/com/gregtechceu/gtceu/data/pack/GTDynamicDataPack.java)
+ * 参照 : [GregTech Modern - GTDynamicResourcePack](https://github.com/GregTechCEu/GregTech-Modern/blob/1.21/src/main/java/com/gregtechceu/gtceu/data/pack/GTDynamicResourcePack.java)
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */
-class HTDynamicDatapack(private val locationInfo: PackLocationInfo) : PackResources {
+class HTDynamicResourcePack(private val locationInfo: PackLocationInfo) : PackResources {
     companion object {
         @JvmStatic
         private val DOMAINS: MutableSet<String> = HTConst.getBuiltInIdSet(HiiragiCoreAPI.MOD_ID).toMutableSet()
@@ -43,6 +43,9 @@ class HTDynamicDatapack(private val locationInfo: PackLocationInfo) : PackResour
         fun addToData(id: ResourceLocation, bytes: ByteArray) {
             CONTENTS.addToData(id, bytes)
         }
+
+        @JvmStatic
+        fun hasResource(location: ResourceLocation): Boolean = CONTENTS.getResource(location) != null
     }
 
     //    PackResources    //
@@ -53,19 +56,19 @@ class HTDynamicDatapack(private val locationInfo: PackLocationInfo) : PackResour
     }
 
     override fun getResource(packType: PackType, location: ResourceLocation): IoSupplier<InputStream>? = when (packType) {
-        PackType.CLIENT_RESOURCES -> null
-        PackType.SERVER_DATA -> CONTENTS.getResource(location)
+        PackType.CLIENT_RESOURCES -> CONTENTS.getResource(location)
+        PackType.SERVER_DATA -> null
     }
 
     override fun listResources(packType: PackType, namespace: String, path: String, resourceOutput: PackResources.ResourceOutput) {
-        if (packType == PackType.SERVER_DATA) {
+        if (packType == PackType.CLIENT_RESOURCES) {
             CONTENTS.listResources(namespace, path, resourceOutput)
         }
     }
 
     override fun getNamespaces(type: PackType): Set<String> = when (type) {
-        PackType.CLIENT_RESOURCES -> setOf()
-        PackType.SERVER_DATA -> DOMAINS
+        PackType.CLIENT_RESOURCES -> DOMAINS
+        PackType.SERVER_DATA -> setOf()
     }
 
     @Suppress("UNCHECKED_CAST")

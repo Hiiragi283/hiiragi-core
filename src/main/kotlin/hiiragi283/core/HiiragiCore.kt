@@ -9,6 +9,7 @@ import hiiragi283.core.api.mod.HTCommonMod
 import hiiragi283.core.api.network.HTPayloadHandlers
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.common.block.dispenser.HCDispenserBehaviours
+import hiiragi283.core.common.data.pack.HTPackSource
 import hiiragi283.core.common.item.HTPotionBucketItem
 import hiiragi283.core.common.network.HTUpdateBlockEntityPacket
 import hiiragi283.core.common.network.HTUpdateMenuPacket
@@ -17,7 +18,6 @@ import hiiragi283.core.common.storage.fluid.HTBasicItemFluidTank
 import hiiragi283.core.common.storage.fluid.HTExperienceTomeFluidTank
 import hiiragi283.core.config.HCConfig
 import hiiragi283.core.impl.HiiragiCoreAccessImpl
-import hiiragi283.core.impl.data.pack.HTPackSource
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCEntityTypes
