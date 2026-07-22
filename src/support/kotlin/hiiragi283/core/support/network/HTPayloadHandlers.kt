@@ -1,5 +1,6 @@
-package hiiragi283.core.api.network
+package hiiragi283.core.support.network
 
+import hiiragi283.core.api.network.HTCustomPayload
 import hiiragi283.core.api.text.HTCommonTranslation
 import net.minecraft.client.Minecraft
 import net.minecraft.client.player.AbstractClientPlayer

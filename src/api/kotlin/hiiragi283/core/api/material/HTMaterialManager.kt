@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.impl.material.HTMaterialContentsRegister
+import hiiragi283.core.internal.material.HTMaterialContentsRegister
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceLocation

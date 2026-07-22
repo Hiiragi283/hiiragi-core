@@ -61,7 +61,7 @@ data object HTCodecs {
     val INGREDIENT: Codec<Ingredient> = HTIngredientCodec.ITEM
 
     @JvmField
-    val FLUID_INGREDIENT: MapCodec<FluidIngredient> = HTIngredientCodec.FLUID
+    val FLUID_INGREDIENT: Codec<FluidIngredient> = HTIngredientCodec.FLUID
 
     @JvmField
     val TEXT: Codec<Text> = ComponentSerialization.CODEC
@@ -216,6 +216,12 @@ data object HTCodecs {
             },
         )
     }
+
+    /**
+     * @see net.neoforged.neoforge.common.util.NeoForgeExtraCodecs.dispatchMapOrElse
+     */
+    @JvmStatic
+    fun <A : Any, E : Any, B : Any> dispatchOrElse(typeCodec: Codec<A>, typeGetter: (E) -> A, codecGetter: (A) -> MapCodec<out E>, fallbackCodec: Codec<B>): Codec<Either<E, B>> = xor(typeCodec.dispatch(typeGetter, codecGetter), fallbackCodec)
 
     /**
      * [Enum]の[Codec]を返します。

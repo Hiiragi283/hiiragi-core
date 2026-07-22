@@ -6,7 +6,6 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.pack.HTDynamicDatapack
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
 import hiiragi283.core.api.mod.HTCommonMod
-import hiiragi283.core.api.network.HTPayloadHandlers
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.common.block.dispenser.HCDispenserBehaviours
 import hiiragi283.core.common.data.pack.HTPackSource
@@ -25,6 +24,7 @@ import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCMiscRegister
 import hiiragi283.core.support.capability.HTFluidCapabilities
+import hiiragi283.core.support.network.HTPayloadHandlers
 import net.minecraft.server.packs.PackType
 import net.minecraft.server.packs.repository.Pack
 import net.minecraft.server.packs.repository.PackSource

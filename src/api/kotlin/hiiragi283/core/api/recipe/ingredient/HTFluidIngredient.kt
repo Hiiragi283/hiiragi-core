@@ -21,7 +21,7 @@ class HTFluidIngredient(val unsized: FluidIngredient, val amount: Int) : HTIngre
         val CODEC: Codec<HTFluidIngredient> = HTCodecs.record { instance ->
             instance
                 .group(
-                    HTCodecs.FLUID_INGREDIENT.forGetter(HTFluidIngredient::unsized),
+                    HTCodecs.FLUID_INGREDIENT.fieldOf(HTConst.FLUIDS).forGetter(HTFluidIngredient::unsized),
                     HTCodecs.NON_NEGATIVE_INT
                         .fieldOf(HTConst.AMOUNT)
                         .orElse(FluidType.BUCKET_VOLUME)
