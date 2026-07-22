@@ -6,7 +6,7 @@ import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.amount.HTAmountSlot
 import hiiragi283.core.api.storage.energy.HTEnergyHandler
-import hiiragi283.core.common.storage.HTStorageValidators
+import hiiragi283.core.support.storage.HTStorageValidators
 import hiiragi283.core.util.HTStorageHelper
 import java.util.function.Predicate
 import net.minecraft.world.item.ItemStack

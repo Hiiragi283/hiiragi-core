@@ -1,4 +1,4 @@
-package hiiragi283.core.common.storage.energy
+package hiiragi283.core.support.storage.energy
 
 import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.HTStorageAccess

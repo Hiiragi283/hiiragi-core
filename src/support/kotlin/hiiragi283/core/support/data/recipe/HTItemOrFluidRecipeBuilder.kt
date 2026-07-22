@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalContracts::class)
 
-package hiiragi283.core.common.data.recipe
+package hiiragi283.core.support.data.recipe
 
 import hiiragi283.core.api.data.recipe.FluidIngredientBuilder
 import hiiragi283.core.api.data.recipe.HTFluidResultBuilder

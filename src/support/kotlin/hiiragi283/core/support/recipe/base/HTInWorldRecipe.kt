@@ -1,4 +1,4 @@
-package hiiragi283.core.impl.recipe
+package hiiragi283.core.support.recipe.base
 
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst

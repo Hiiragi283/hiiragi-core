@@ -1,4 +1,4 @@
-package hiiragi283.core.impl.recipe
+package hiiragi283.core.support.recipe.base
 
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
@@ -13,7 +13,7 @@ import hiiragi283.core.api.recipe.result.HTItemAndFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.util.Ior
-import hiiragi283.core.common.data.recipe.HTItemOrFluidRecipeBuilder
+import hiiragi283.core.support.data.recipe.HTItemOrFluidRecipeBuilder
 import java.util.function.Predicate
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack

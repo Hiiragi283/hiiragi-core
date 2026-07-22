@@ -5,7 +5,7 @@ import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.HTItemFluidTank
 import hiiragi283.core.api.util.Identity
-import hiiragi283.core.common.storage.HTStorageValidators
+import hiiragi283.core.support.storage.HTStorageValidators
 import hiiragi283.core.support.storage.fluid.HTFluidStackResourceSlot
 import hiiragi283.core.util.HTStorageHelper
 import java.util.function.BiPredicate

@@ -1,4 +1,4 @@
-package hiiragi283.core.common.storage.energy
+package hiiragi283.core.support.storage.energy
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HTContentListener
@@ -8,7 +8,7 @@ import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.amount.HTAmountSlot
 import hiiragi283.core.api.storage.energy.HTEnergyHandler
-import hiiragi283.core.common.storage.HTStorageValidators
+import hiiragi283.core.support.storage.HTStorageValidators
 import java.util.function.Predicate
 
 open class HTBasicEnergyHandler(

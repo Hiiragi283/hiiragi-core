@@ -37,12 +37,12 @@ import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import hiiragi283.core.common.recipe.VanillaRecipeLookups
 import hiiragi283.core.common.recipe.viewer.HCRecipeDisplayFactories
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
-import hiiragi283.core.impl.recipe.viewer.display.HTRecipeDisplayFactories
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.support.item.HTPotionBasedItem
+import hiiragi283.core.support.recipe.viewer.display.HTRecipeDisplayFactories
 import hiiragi283.core.util.HCPotionFluidHelper
 import kotlin.streams.asSequence
 import mezz.jei.api.JeiPlugin

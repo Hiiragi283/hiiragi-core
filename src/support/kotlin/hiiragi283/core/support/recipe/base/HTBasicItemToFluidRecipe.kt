@@ -1,4 +1,4 @@
-package hiiragi283.core.impl.recipe
+package hiiragi283.core.support.recipe.base
 
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
@@ -8,7 +8,7 @@ import hiiragi283.core.api.recipe.base.HTProgressRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
-import hiiragi283.core.impl.data.recipe.HTItemToResultRecipeBuilder
+import hiiragi283.core.support.data.recipe.HTItemToResultRecipeBuilder
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.neoforged.neoforge.fluids.FluidStack

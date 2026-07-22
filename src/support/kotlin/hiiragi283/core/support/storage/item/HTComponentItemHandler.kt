@@ -1,4 +1,4 @@
-package hiiragi283.core.common.storage.item
+package hiiragi283.core.support.storage.item
 
 import hiiragi283.core.api.storage.item.HTItemHandler
 import hiiragi283.core.api.storage.item.HTItemSlot

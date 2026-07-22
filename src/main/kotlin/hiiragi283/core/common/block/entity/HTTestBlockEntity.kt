@@ -15,11 +15,11 @@ import hiiragi283.core.common.gui.widget.HTFluidWidget
 import hiiragi283.core.common.gui.widget.HTItemWidget
 import hiiragi283.core.common.gui.widget.HTProgressWidget
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
-import hiiragi283.core.common.storage.fluid.HTBasicFluidTank
-import hiiragi283.core.common.storage.item.HTBasicItemSlot
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.support.gui.sync.HTFluidSyncSlot
 import hiiragi283.core.support.gui.sync.HTItemSyncSlot
+import hiiragi283.core.support.storage.fluid.HTBasicFluidTank
+import hiiragi283.core.support.storage.item.HTBasicItemSlot
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel

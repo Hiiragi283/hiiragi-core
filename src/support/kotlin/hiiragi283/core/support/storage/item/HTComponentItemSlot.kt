@@ -1,10 +1,9 @@
-package hiiragi283.core.common.storage.item
+package hiiragi283.core.support.storage.item
 
 import hiiragi283.core.api.HTContentListener
 import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.item.HTItemResourceType
-import hiiragi283.core.support.storage.item.HTItemStackResourceSlot
 import java.util.function.BiPredicate
 import java.util.function.Predicate
 import net.minecraft.core.NonNullList

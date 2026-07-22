@@ -1,10 +1,9 @@
 @file:OptIn(ExperimentalContracts::class)
 
-package hiiragi283.core.common.data.recipe
+package hiiragi283.core.support.data.recipe
 
 import hiiragi283.core.api.data.recipe.HTFluidResultBuilder
 import hiiragi283.core.api.recipe.result.HTFluidResult
-import hiiragi283.core.impl.data.recipe.HTItemToResultRecipeBuilder
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract

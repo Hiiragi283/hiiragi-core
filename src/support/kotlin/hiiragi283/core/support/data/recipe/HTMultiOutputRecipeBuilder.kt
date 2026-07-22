@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalContracts::class)
 
-package hiiragi283.core.impl.data.recipe
+package hiiragi283.core.support.data.recipe
 
 import hiiragi283.core.api.data.recipe.HTItemResultBuilder
 import hiiragi283.core.api.data.recipe.HTProgressRecipeBuilder

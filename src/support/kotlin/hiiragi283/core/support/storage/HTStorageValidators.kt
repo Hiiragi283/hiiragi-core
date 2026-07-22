@@ -1,4 +1,4 @@
-package hiiragi283.core.common.storage
+package hiiragi283.core.support.storage
 
 data object HTStorageValidators {
     @JvmStatic

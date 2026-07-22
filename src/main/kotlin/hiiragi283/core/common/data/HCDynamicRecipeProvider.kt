@@ -29,8 +29,8 @@ import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.resource.SimpleSupplierWithKey
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
+import hiiragi283.core.common.data.recipe.HCRecipeBuilders
 import hiiragi283.core.common.data.recipe.HTCookingRecipeBuilder
-import hiiragi283.core.common.data.recipe.HTItemToMultiItemRecipeBuilder
 import hiiragi283.core.common.data.recipe.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.HTShapelessRecipeBuilder
 import hiiragi283.core.common.data.recipe.HTSmithingRecipeBuilder
@@ -104,7 +104,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = part.getScaledAmount(entry.getDefaultScale(), entry)
         // レシピを登録
-        HTItemToMultiItemRecipeBuilder.crushing {
+        HCRecipeBuilders.crushing {
             ingredient {
                 +tag(prefix, entry)
                 count = inputCount
@@ -126,7 +126,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = entry.getDefaultScale()
         // レシピを登録
-        HTItemToMultiItemRecipeBuilder.crushing {
+        HCRecipeBuilders.crushing {
             ingredient {
                 +inputTag
                 count = inputCount
@@ -141,7 +141,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
     private fun crushOreToCrushed(entry: HTMaterialManager.Entry, part: HTPartLike) {
         val prefix: HTTagPrefix = part.tagPrefix ?: return
         // レシピを登録
-        HTItemToMultiItemRecipeBuilder.crushing {
+        HCRecipeBuilders.crushing {
             // 材料
             ingredient { +tag(prefix, entry) }
             // 主産物
@@ -160,7 +160,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = CommonParts.CRUSHED_ORE.getScaledAmount(1, entry)
         // レシピを登録
-        HTItemToMultiItemRecipeBuilder.crushing {
+        HCRecipeBuilders.crushing {
             // 材料
             ingredient {
                 +tag(CommonTagPrefixes.CRUSHED_ORE, entry)

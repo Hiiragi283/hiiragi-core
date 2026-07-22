@@ -8,7 +8,7 @@ import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
-import hiiragi283.core.impl.recipe.HTInWorldRecipe
+import hiiragi283.core.support.recipe.base.HTInWorldRecipe
 import net.minecraft.resources.ResourceLocation
 
 data object HCRecipeDisplayFactories {

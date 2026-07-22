@@ -1,12 +1,12 @@
-package hiiragi283.core.impl.recipe.viewer.display
+package hiiragi283.core.support.recipe.viewer.display
 
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.base.HTProgressRecipe
 import hiiragi283.core.api.recipe.viewer.display.HTProgressRecipeDisplay
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
-import hiiragi283.core.impl.recipe.HTBasicItemOrFluidRecipe
-import hiiragi283.core.impl.recipe.HTBasicItemToItemRecipe
-import hiiragi283.core.impl.recipe.HTBasicItemToMultiItemRecipe
+import hiiragi283.core.support.recipe.base.HTBasicItemOrFluidRecipe
+import hiiragi283.core.support.recipe.base.HTBasicItemToItemRecipe
+import hiiragi283.core.support.recipe.base.HTBasicItemToMultiItemRecipe
 import net.minecraft.resources.ResourceLocation
 
 data object HTRecipeDisplayFactories {

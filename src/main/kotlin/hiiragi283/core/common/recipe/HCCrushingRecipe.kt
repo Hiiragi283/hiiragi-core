@@ -6,9 +6,9 @@ import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
-import hiiragi283.core.impl.recipe.HTBasicItemToMultiItemRecipe
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
+import hiiragi283.core.support.recipe.base.HTBasicItemToMultiItemRecipe
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
 import net.minecraft.world.item.crafting.SingleRecipeInput

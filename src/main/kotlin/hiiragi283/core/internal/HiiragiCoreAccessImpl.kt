@@ -1,4 +1,4 @@
-package hiiragi283.core.impl
+package hiiragi283.core.internal
 
 import hiiragi283.core.api.HTComparators
 import hiiragi283.core.api.HTConst

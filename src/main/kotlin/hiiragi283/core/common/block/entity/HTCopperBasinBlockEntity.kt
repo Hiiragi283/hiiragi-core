@@ -9,11 +9,11 @@ import hiiragi283.core.api.storage.fluid.HTFluidTank
 import hiiragi283.core.api.storage.fluid.getFluidStack
 import hiiragi283.core.api.storage.holder.HTFluidTankHolder
 import hiiragi283.core.common.recipe.HCRecipeLookups
-import hiiragi283.core.common.storage.fluid.HTBasicFluidTank
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.support.recipe.cache.HTRecipeCaches
 import hiiragi283.core.support.recipe.handler.HTFluidInputHandler
 import hiiragi283.core.support.recipe.handler.HTFluidOutputHandler
+import hiiragi283.core.support.storage.fluid.HTBasicFluidTank
 import hiiragi283.core.util.HTItemDropHelper
 import hiiragi283.core.util.HTStorageHelper
 import net.minecraft.core.BlockPos
