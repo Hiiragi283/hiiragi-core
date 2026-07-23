@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun interface HTIdLike {
+interface HTIdLike {
     /**
      * 保持している[ID][ResourceLocation]を返します。
      */
@@ -29,4 +29,11 @@ fun interface HTIdLike {
         HTIdLike,
         HTHasTranslationKey,
         HTHasText
+}
+
+fun HTIdLike(id: ResourceLocation): HTIdLike = SimpleIdLike(id)
+
+@JvmRecord
+private data class SimpleIdLike(private val id: ResourceLocation) : HTIdLike {
+    override fun getId(): ResourceLocation = id
 }

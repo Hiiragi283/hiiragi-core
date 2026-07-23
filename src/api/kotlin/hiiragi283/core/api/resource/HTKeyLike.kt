@@ -11,20 +11,25 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */
-fun interface HTKeyLike<R : Any> : HTIdLike {
+interface HTKeyLike<R : Any> : HTIdLike {
     fun getKey(): ResourceKey<R>
 
     fun getRegistryKey(): RegistryKey<R> = getKey().registryKey()
 
     override fun getId(): ResourceLocation = getKey().location()
 
-    interface Translatable<R : Any> :
+    interface SimpleTranslatable<R : Any> :
         HTKeyLike<R>,
-        HTIdLike.Translatable
-
-    fun interface SimpleTranslatable<R : Any> : Translatable<R> {
+        HTIdLike.Translatable {
         override val translationKey: String get() = getKey().toLanguageKey()
 
         override fun getText(): Text = translatableText(translationKey)
     }
+}
+
+fun <R : Any> HTKeyLike(key: ResourceKey<R>): HTKeyLike<R> = SimpleKeyLike(key)
+
+@JvmRecord
+private data class SimpleKeyLike<R : Any>(private val key: ResourceKey<R>) : HTKeyLike<R> {
+    override fun getKey(): ResourceKey<R> = key
 }

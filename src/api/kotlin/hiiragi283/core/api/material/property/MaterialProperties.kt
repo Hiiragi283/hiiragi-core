@@ -71,7 +71,7 @@ fun HTPropertyMap.Builder.addToolPrefixes(material: HTToolMaterial, toolTypes: S
 }
 
 fun HTPropertyMap.Builder.setName(enName: String, jaName: String) {
-    this.setName(HTLangName.create(enName, jaName))
+    this.setName(HTLangName(enName, jaName))
 }
 
 fun HTPropertyMap.Builder.setName(value: HTLangName) {
@@ -79,7 +79,7 @@ fun HTPropertyMap.Builder.setName(value: HTLangName) {
 }
 
 fun HTPropertyMap.Builder.addCustomName(part: HTPartLike, enName: String, jaName: String) {
-    this.addCustomName(part, HTLangName.create(enName, jaName))
+    this.addCustomName(part, HTLangName(enName, jaName))
 }
 
 fun HTPropertyMap.Builder.addCustomName(part: HTPartLike, value: HTLangName) {
@@ -87,7 +87,7 @@ fun HTPropertyMap.Builder.addCustomName(part: HTPartLike, value: HTLangName) {
 }
 
 fun HTPropertyMap.Builder.addCustomFluidName(part: HTFluidPart, enName: String, jaName: String) {
-    this.addCustomFluidName(part, HTLangName.create(enName, jaName))
+    this.addCustomFluidName(part, HTLangName(enName, jaName))
 }
 
 fun HTPropertyMap.Builder.addCustomFluidName(part: HTFluidPart, value: HTLangName) {

@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Block
  * @since 0.1.0
  * @see mekanism.common.block.interfaces.IHasDescription
  */
-fun interface HTBlockWithDescription {
+interface HTBlockWithDescription {
     /**
      * この[ブロック][Block]の説明文の[翻訳][HTTranslation]を返します。
      */

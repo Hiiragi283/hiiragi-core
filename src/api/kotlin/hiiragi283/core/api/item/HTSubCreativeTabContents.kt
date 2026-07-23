@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun interface HTSubCreativeTabContents {
+interface HTSubCreativeTabContents {
     /**
      * 複数の[ItemStack]を追加します。
      * @param baseItem 対象のアイテム

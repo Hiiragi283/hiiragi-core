@@ -38,15 +38,15 @@ interface HCLangProvider {
     fun addPatternTranslations(provider: HTLangProvider) {
         val langType: HTLangType = provider.langType
         // Block
-        val waxedCopper: HTLangPatternProvider = HTLangPatternProvider.create("Waxed %s", "錆止めされた%s")
-        val copperBasin: HTLangName = HTLangName.create("Copper Basin", "銅の鉢")
+        val waxedCopper = HTLangPatternProvider("Waxed %s", "錆止めされた%s")
+        val copperBasin = HTLangName("Copper Basin", "銅の鉢")
         for (phase: HTCopperPhase in HTCopperPhase.entries) {
             val (weathering: HTHasTranslationKey, waxed: HTHasTranslationKey) = HCBlocks.COPPER_BASIN[phase]
             provider.add(weathering, phase.translate(langType, copperBasin))
             provider.add(waxed, waxedCopper.translate(langType, phase.translate(langType, copperBasin)))
         }
         // Fluid
-        val dyePattern: HTLangPatternProvider = HTLangPatternProvider.create("%s Dye", "%sの染料")
+        val dyePattern = HTLangPatternProvider("%s Dye", "%sの染料")
         for ((color: HTLangName, content: HTFluidContent) in HCFluids.DYES.asSequenceWithColor()) {
             provider.addFluid(content, dyePattern.translate(langType, color))
         }
@@ -54,8 +54,8 @@ interface HCLangProvider {
 
     private fun getCopperLangPattern(state: WeatheringCopper.WeatherState): HTLangPatternProvider = when (state) {
         WeatheringCopper.WeatherState.UNAFFECTED -> HTLangPatternProvider.IDENTITY
-        WeatheringCopper.WeatherState.EXPOSED -> HTLangPatternProvider.create("Exposed %s", "風化した%s")
-        WeatheringCopper.WeatherState.WEATHERED -> HTLangPatternProvider.create("Weathered %s", "錆びた%s")
-        WeatheringCopper.WeatherState.OXIDIZED -> HTLangPatternProvider.create("Oxidized %s", "酸化した%s")
+        WeatheringCopper.WeatherState.EXPOSED -> HTLangPatternProvider("Exposed %s", "風化した%s")
+        WeatheringCopper.WeatherState.WEATHERED -> HTLangPatternProvider("Weathered %s", "錆びた%s")
+        WeatheringCopper.WeatherState.OXIDIZED -> HTLangPatternProvider("Oxidized %s", "酸化した%s")
     }
 }

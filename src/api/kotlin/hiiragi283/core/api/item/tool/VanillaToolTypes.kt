@@ -16,7 +16,7 @@ data object VanillaToolTypes {
         attribute = { material: HTToolMaterial ->
             SwordItem.createAttributes(material, material.getSwordDamage(), material.getSwordAttackSpeed())
         }
-        langPattern = HTLangPatternProvider.create("%s Sword", "%sの剣")
+        langPattern = HTLangPatternProvider("%s Sword", "%sの剣")
         recipePattern = listOf("B", "A", "A")
         toolTags += ItemTags.SWORDS
     }
@@ -27,7 +27,7 @@ data object VanillaToolTypes {
         attribute = { material: HTToolMaterial ->
             DiggerItem.createAttributes(material, material.getShovelDamage(), material.getShovelAttackSpeed())
         }
-        langPattern = HTLangPatternProvider.create("%s Shovel", "%sのシャベル")
+        langPattern = HTLangPatternProvider("%s Shovel", "%sのシャベル")
         recipePattern = listOf("B", "B", "A")
         toolTags += ItemTags.SHOVELS
     }
@@ -38,7 +38,7 @@ data object VanillaToolTypes {
         attribute = { material: HTToolMaterial ->
             DiggerItem.createAttributes(material, material.getPickaxeDamage(), material.getPickaxeAttackSpeed())
         }
-        langPattern = HTLangPatternProvider.create("%s Pickaxe", "%sのツルハシ")
+        langPattern = HTLangPatternProvider("%s Pickaxe", "%sのツルハシ")
         recipePattern = listOf(" B ", " B ", "AAA")
         toolTags += ItemTags.PICKAXES
     }
@@ -49,7 +49,7 @@ data object VanillaToolTypes {
         attribute = { material: HTToolMaterial ->
             DiggerItem.createAttributes(material, material.getAxeDamage(), material.getAxeAttackSpeed())
         }
-        langPattern = HTLangPatternProvider.create("%s Axe", "%sの斧")
+        langPattern = HTLangPatternProvider("%s Axe", "%sの斧")
         recipePattern = listOf(" B", "AB", "AA")
         toolTags += ItemTags.AXES
     }
@@ -60,7 +60,7 @@ data object VanillaToolTypes {
         attribute = { material: HTToolMaterial ->
             DiggerItem.createAttributes(material, material.getHoeDamage(), material.getHoeAttackSpeed())
         }
-        langPattern = HTLangPatternProvider.create("%s Hoe", "%sのクワ")
+        langPattern = HTLangPatternProvider("%s Hoe", "%sのクワ")
         recipePattern = listOf(" B", " B", "AA")
         toolTags += ItemTags.HOES
     }

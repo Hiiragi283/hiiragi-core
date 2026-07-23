@@ -78,7 +78,7 @@ internal data object HCDynamicClientResources {
                 consumer(fluid.translationKey, name)
                 consumer(Tags.getTagTranslationKey(part.createTagKey(entry)), name)
 
-                val bucketName: String = HTLangPatternProvider.create("%s Bucket", "%s入りバケツ").translate(langType, name)
+                val bucketName: String = HTLangPatternProvider("%s Bucket", "%s入りバケツ").translate(langType, name)
                 consumer(fluid.getBucketSupplier().translationKey, bucketName)
                 consumer(Tags.getTagTranslationKey(part.createBucketTag(entry)), bucketName)
             }

@@ -73,7 +73,7 @@ object HTPartPropertyKeys {
      */
     @JvmField
     val LANG_PATTERN: HTPropertyKey<HTLangPatternProvider> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("lang_pattern"), HTLangPatternProvider.create("%s", "%s"))
+        HTPropertyKey.create(HiiragiCoreAPI.id("lang_pattern"), HTLangPatternProvider("%s", "%s"))
 
     // Texture
     /**

@@ -5,7 +5,7 @@ package hiiragi283.core.api.data.lang
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun interface HTLangPatternProvider {
+interface HTLangPatternProvider {
     /**
      * @param type 言語の種類
      * @param value `%s`を置換する文字列
@@ -25,38 +25,20 @@ fun interface HTLangPatternProvider {
          * @since 21.1.0
          */
         @JvmField
-        val IDENTITY = HTLangPatternProvider { _, value -> value }
-
-        /**
-         * 新しい[HTLangPatternProvider]のインスタンスを作成します。
-         * @param enPattern 英語での翻訳名のパターン
-         * @param jaPattern 日本語での翻訳名のパターン
-         * @since 0.7.0
-         */
-        @JvmStatic
-        fun create(enPattern: String, jaPattern: String): HTLangPatternProvider = HTLangPatternProvider { type: HTLangType, value: String ->
-            when (type) {
-                HTLangTypes.JA_JP -> jaPattern
-                else -> enPattern
-            }.replace("%s", value)
-        }
-
-        /**
-         * 新しい[HTLangPatternProvider]のインスタンスを作成します。
-         * @param enPattern 英語での翻訳名のパターン
-         * @param others 英語以外での翻訳名のパターン
-         * @since 0.8.0
-         */
-        @JvmStatic
-        fun create(enPattern: String, vararg others: Pair<HTLangType, String>): HTLangPatternProvider = create(enPattern, mapOf(*others))
-
-        /**
-         * 新しい[HTLangPatternProvider]のインスタンスを作成します。
-         * @param enPattern 英語での翻訳名のパターン
-         * @param others 英語以外での翻訳名のパターン
-         * @since 0.8.0
-         */
-        @JvmStatic
-        fun create(enPattern: String, others: Map<HTLangType, String>): HTLangPatternProvider = HTLangPatternProvider { type: HTLangType, value: String -> (others[type] ?: enPattern).replace("%s", value) }
+        val IDENTITY: HTLangPatternProvider = IdentityLangPatternProvider
     }
+}
+
+fun HTLangPatternProvider(enPattern: String, jaPattern: String): HTLangPatternProvider = EnJaLangPatternProvider(enPattern, jaPattern)
+
+private data object IdentityLangPatternProvider : HTLangPatternProvider {
+    override fun translate(type: HTLangType, value: String): String = value
+}
+
+@JvmRecord
+private data class EnJaLangPatternProvider(private val enPattern: String, private val jaPattern: String) : HTLangPatternProvider {
+    override fun translate(type: HTLangType, value: String): String = when (type) {
+        HTLangTypes.JA_JP -> jaPattern
+        else -> enPattern
+    }.replace("%s", value)
 }

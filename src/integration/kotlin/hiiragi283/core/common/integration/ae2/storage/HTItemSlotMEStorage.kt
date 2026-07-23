@@ -15,7 +15,7 @@ import hiiragi283.core.api.text.Text
 class HTItemSlotMEStorage(private val slot: HTItemSlot, title: HTHasText) :
     MEStorage,
     HTHasText by title {
-    constructor(slot: HTItemSlot, title: Text) : this(slot, HTHasText { title })
+    constructor(slot: HTItemSlot, title: Text) : this(slot, HTHasText(title))
 
     override fun isPreferredStorageFor(what: AEKey, source: IActionSource?): Boolean = when (what) {
         is AEItemKey -> slot.getResource() == what.toResource()

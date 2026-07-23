@@ -4,7 +4,7 @@ package hiiragi283.core.api.data.advancement.builder
 
 import hiiragi283.core.api.data.ConditionBuilder
 import hiiragi283.core.api.data.advancement.AdvancementKey
-import hiiragi283.core.api.data.advancement.HTAdvancementOutput
+import hiiragi283.core.api.data.advancement.HTAdvancementExporter
 import hiiragi283.core.api.util.HTBuilderMarker
 import hiiragi283.core.api.util.toOptional
 import kotlin.contracts.ExperimentalContracts
@@ -28,11 +28,11 @@ import net.neoforged.neoforge.common.conditions.ICondition
 class HTAdvancementBuilder(val key: AdvancementKey) {
     companion object {
         @JvmStatic
-        inline fun create(output: HTAdvancementOutput, key: AdvancementKey, builderAction: HTAdvancementBuilder.() -> Unit) {
+        inline fun create(exporter: HTAdvancementExporter, key: AdvancementKey, builderAction: HTAdvancementBuilder.() -> Unit) {
             contract {
                 callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
             }
-            HTAdvancementBuilder(key).apply(builderAction).save(output)
+            HTAdvancementBuilder(key).apply(builderAction).save(exporter)
         }
     }
 
@@ -47,7 +47,7 @@ class HTAdvancementBuilder(val key: AdvancementKey) {
         display = HTDisplayInfoBuilder.create(key, builderAction)
     }
 
-    fun save(output: HTAdvancementOutput) {
+    fun save(exporter: HTAdvancementExporter) {
         val id: ResourceLocation = key.location()
         val adv = Advancement(
             parent?.location().toOptional(),
@@ -57,7 +57,7 @@ class HTAdvancementBuilder(val key: AdvancementKey) {
             this.requirements ?: criteria.createRequirements(),
             true,
         )
-        output.accept(id, adv, conditions)
+        exporter.accept(id, adv, conditions)
     }
 
     //    Conditions    //

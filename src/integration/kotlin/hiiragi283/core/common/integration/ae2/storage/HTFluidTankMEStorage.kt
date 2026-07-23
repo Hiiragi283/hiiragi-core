@@ -15,7 +15,7 @@ import hiiragi283.core.api.text.Text
 class HTFluidTankMEStorage(private val tank: HTFluidTank, title: HTHasText) :
     MEStorage,
     HTHasText by title {
-    constructor(tank: HTFluidTank, title: Text) : this(tank, HTHasText { title })
+    constructor(tank: HTFluidTank, title: Text) : this(tank, HTHasText(title))
 
     override fun isPreferredStorageFor(what: AEKey, source: IActionSource?): Boolean = when (what) {
         is AEFluidKey -> tank.getResource() == what.toResource()

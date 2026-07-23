@@ -21,7 +21,7 @@ enum class HTCopperPhase(private val prefix: String, provider: HTLangPatternProv
     OXIDIZED("oxidized_", "Oxidized %s", "酸化した%s"),
     ;
 
-    constructor(prefix: String, enPattern: String, jaPattern: String) : this(prefix, HTLangPatternProvider.create(enPattern, jaPattern))
+    constructor(prefix: String, enPattern: String, jaPattern: String) : this(prefix, HTLangPatternProvider(enPattern, jaPattern))
 
     fun createPath(name: String): String = "$prefix$name"
 

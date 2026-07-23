@@ -1,7 +1,5 @@
 package hiiragi283.core.api.data
 
-import hiiragi283.core.api.data.advancement.HTAdvancementProvider
-import hiiragi283.core.api.data.advancement.HTSubAdvancementProvider
 import hiiragi283.core.api.function.partially1
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
@@ -44,17 +42,3 @@ fun GatherDataEvent.createLootTables(
         future,
     )
 }
-
-/**
- * この[GatherDataEvent][this]に[HTSubAdvancementProvider]を登録します。
- * @author Hiiragi Tsubasa
- * @since 0.15.2
- */
-fun GatherDataEvent.createAdvancements(vararg subProviders: HTSubAdvancementProvider): HTAdvancementProvider = this.createAdvancements(subProviders.toList())
-
-/**
- * この[GatherDataEvent][this]に[HTSubAdvancementProvider]を登録します。
- * @author Hiiragi Tsubasa
- * @since 0.15.2
- */
-fun GatherDataEvent.createAdvancements(subProviders: List<HTSubAdvancementProvider>): HTAdvancementProvider = this.createProviderWithHelper(::HTAdvancementProvider.partially1(subProviders))

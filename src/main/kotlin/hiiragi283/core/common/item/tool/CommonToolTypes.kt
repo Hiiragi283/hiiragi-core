@@ -14,7 +14,7 @@ data object CommonToolTypes {
     @JvmField
     val HAMMER: HTToolType = HTToolType.create("hammer") {
         factory = ::HTCraftingToolItem
-        langPattern = HTLangPatternProvider.create("%s Hammer", "%sのハンマー")
+        langPattern = HTLangPatternProvider("%s Hammer", "%sのハンマー")
         recipePattern = listOf(" B ", " B ", "ABA")
         toolTags += HiiragiCoreTags.Items.HAMMERS
         toolTags += HiiragiCoreTags.Items.TOOLS_HAMMER
@@ -25,7 +25,7 @@ data object CommonToolTypes {
         factory = { material: HTToolMaterial, prop: Item.Properties ->
             ShearsItem(prop.durability(material.uses).component(DataComponents.TOOL, ShearsItem.createToolProperties()))
         }
-        langPattern = HTLangPatternProvider.create("%s Shear", "%sのハサミ")
+        langPattern = HTLangPatternProvider("%s Shear", "%sのハサミ")
         recipePattern = listOf(" A", "A ")
         toolTags += Tags.Items.TOOLS_SHEAR
     }

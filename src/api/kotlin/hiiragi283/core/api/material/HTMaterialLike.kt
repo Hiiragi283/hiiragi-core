@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-fun interface HTMaterialLike {
+interface HTMaterialLike {
     /**
      * 保持している[素材キー][HTMaterialKey]を返します。
      */

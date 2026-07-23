@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 
-open class HTBasicEntityBlock(private val type: HTDeferredBlockEntityType<*>, properties: Properties) :
+open class HTBasicEntityBlock(val type: HTDeferredBlockEntityType<*>, properties: Properties) :
     Block(properties),
     EntityBlock {
     /*override fun useWithoutItem(

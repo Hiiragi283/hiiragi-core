@@ -26,7 +26,7 @@ fun HTPartLike.getScaledAmount(base: Fraction, getter: HTPropertyGetter): Fracti
 // Mutable
 
 fun HTPropertyMap.Builder.addNamePattern(enPattern: String, jaPattern: String) {
-    this.addNamePattern(HTLangPatternProvider.create(enPattern, jaPattern))
+    this.addNamePattern(HTLangPatternProvider(enPattern, jaPattern))
 }
 
 fun HTPropertyMap.Builder.addNamePattern(value: HTLangPatternProvider) {
