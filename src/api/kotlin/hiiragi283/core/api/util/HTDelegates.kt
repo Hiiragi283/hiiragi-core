@@ -25,6 +25,19 @@ data object HTDelegates {
         }
     }
 
+    fun <T : Any> onceInitialize(defaultValue: () -> T): ReadWriteProperty<Any?, T> = OnceInitializeOr(defaultValue)
+
+    private class OnceInitializeOr<T : Any>(private val defaultValue: () -> T) : ReadWriteProperty<Any?, T> {
+        private var value: T? = null
+
+        override fun getValue(thisRef: Any?, property: KProperty<*>): T = value ?: defaultValue()
+
+        override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+            check(this.value == null) { "Property ${property.name} has already initialized" }
+            this.value = value
+        }
+    }
+
     /**
      * 一度だけ値を代入可能なプロパティを返します。
      */

@@ -61,6 +61,8 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
         }
     }
 
+    override fun getExpRatio(): Int = HCConfig.COMMON.expConversionRatio.get()
+
     override val materialPlugins: Sequence<HTMaterialPlugin> by lazy {
         HTPluginLoader
             .collectPlugins<HTMaterialPlugin>()

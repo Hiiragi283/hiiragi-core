@@ -13,7 +13,7 @@ import net.neoforged.neoforge.registries.DeferredHolder
 /**
  * この[Holder][this]から[ResourceKey]を取得します。
  * @param R 保持する値のクラス
- * @throws IllegalStateException [unwrapKey]の値が空の場合
+ * @throws IllegalStateException [Holder.unwrapKey]の値が空の場合
  * @author Hiiragi Tsubasa
  * @since 0.17.0
  */
@@ -22,7 +22,7 @@ fun <R : Any> Holder<R>.getKeyOrThrow(): ResourceKey<R> = this.unwrapKey().orEls
 /**
  * この[Holder][this]を[SimpleSupplierWithKey]に変換します。
  * @param R 保持する値のクラス
- * @throws IllegalStateException [kind]が[Kind.DIRECT]の場合
+ * @throws IllegalStateException [Holder.kind]が[Holder.Kind.DIRECT]の場合
  * @author Hiiragi Tsubasa
  * @since 0.17.0
  */

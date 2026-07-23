@@ -6,7 +6,9 @@ import hiiragi283.core.api.data.ConditionBuilder
 import hiiragi283.core.api.data.advancement.AdvancementKey
 import hiiragi283.core.api.data.advancement.HTAdvancementExporter
 import hiiragi283.core.api.util.HTBuilderMarker
-import hiiragi283.core.api.util.toOptional
+import hiiragi283.core.api.util.HTDelegates
+import hiiragi283.core.api.util.Option
+import hiiragi283.core.api.util.java
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -15,49 +17,36 @@ import net.minecraft.advancements.AdvancementRequirements
 import net.minecraft.advancements.AdvancementRewards
 import net.minecraft.advancements.CriteriaTriggers
 import net.minecraft.advancements.Criterion
+import net.minecraft.advancements.CriterionTrigger
+import net.minecraft.advancements.CriterionTriggerInstance
 import net.minecraft.advancements.DisplayInfo
-import net.minecraft.resources.ResourceLocation
 import net.neoforged.neoforge.common.conditions.ICondition
 
-/**
- * Hiiragi Coreとそれを前提とするmodで使用される[進捗][Advancement]のビルダークラスです。
- * @author Hiiragi Tsubasa
- * @since 0.8.0
- */
 @HTBuilderMarker
 class HTAdvancementBuilder(val key: AdvancementKey) {
     companion object {
         @JvmStatic
-        inline fun create(exporter: HTAdvancementExporter, key: AdvancementKey, builderAction: HTAdvancementBuilder.() -> Unit) {
+        inline fun create(key: AdvancementKey, builderAction: HTAdvancementBuilder.() -> Unit): HTAdvancementBuilder {
             contract {
                 callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
             }
-            HTAdvancementBuilder(key).apply(builderAction).save(exporter)
+            return HTAdvancementBuilder(key).apply(builderAction)
         }
     }
 
-    var parent: AdvancementKey? = null
-    var display: DisplayInfo? = null
+    var parent: Option<AdvancementKey> by HTDelegates.optionalOnceInitialize()
+
+    operator fun AdvancementKey.unaryPlus() {
+        parent = Option.some(this)
+    }
+
+    @PublishedApi internal var display: Option<DisplayInfo> by HTDelegates.optionalOnceInitialize()
     var rewards: AdvancementRewards = AdvancementRewards.EMPTY
-    val criteria: Criterions = Criterions()
     var requirements: AdvancementRequirements? = null
     var strategy: AdvancementRequirements.Strategy = AdvancementRequirements.Strategy.AND
 
     inline fun display(builderAction: HTDisplayInfoBuilder.() -> Unit) {
-        display = HTDisplayInfoBuilder.create(key, builderAction)
-    }
-
-    fun save(exporter: HTAdvancementExporter) {
-        val id: ResourceLocation = key.location()
-        val adv = Advancement(
-            parent?.location().toOptional(),
-            display.toOptional(),
-            rewards,
-            criteria.toMap(),
-            this.requirements ?: criteria.createRequirements(),
-            true,
-        )
-        exporter.accept(id, adv, conditions)
+        display = Option.some(HTDisplayInfoBuilder.create(key, builderAction))
     }
 
     //    Conditions    //
@@ -65,8 +54,7 @@ class HTAdvancementBuilder(val key: AdvancementKey) {
     /**
      * [ICondition]を保持するインスタンス
      */
-    @PublishedApi
-    internal val conditions: MutableList<ICondition> = mutableListOf()
+    @PublishedApi internal val conditions: MutableList<ICondition> = mutableListOf()
 
     inline fun condition(builderAction: ConditionBuilder.() -> Unit) {
         contract {
@@ -77,23 +65,32 @@ class HTAdvancementBuilder(val key: AdvancementKey) {
 
     //    Criterion    //
 
-    inner class Criterions {
-        private val map: MutableMap<String, Criterion<*>> = mutableMapOf()
+    @PublishedApi internal val criterions: MutableMap<String, Criterion<*>> = mutableMapOf()
 
-        @JvmName("hasItem")
-        operator fun set(key: String, builder: HTInventoryChangeBuilder.() -> Unit) {
-            this[key] = HTInventoryChangeBuilder()
-                .apply(builder)
-                .build()
-                .let(CriteriaTriggers.INVENTORY_CHANGED::createCriterion)
-        }
+    infix fun String.criterion(criterion: Criterion<*>) {
+        check(this !in criterions) { "Duplicated criterion: $this" }
+        criterions[this] = criterion
+    }
 
-        operator fun set(key: String, criterion: Criterion<*>) {
-            map[key] = criterion
-        }
+    fun <T : CriterionTriggerInstance> define(key: String, trigger: CriterionTrigger<T>, instance: T) {
+        key criterion trigger.createCriterion(instance)
+    }
 
-        fun createRequirements(): AdvancementRequirements = strategy.create(map.keys)
+    inline fun inventory(key: String, builderAction: HTInventoryChangeBuilder.() -> Unit) {
+        define(key, CriteriaTriggers.INVENTORY_CHANGED, HTInventoryChangeBuilder().apply(builderAction).build())
+    }
 
-        fun toMap(): Map<String, Criterion<*>> = map
+    //    Save    //
+
+    fun save(exporter: HTAdvancementExporter) {
+        val adv = Advancement(
+            parent.map(AdvancementKey::location).java,
+            display.java,
+            rewards,
+            criterions,
+            this.requirements ?: strategy.create(criterions.keys),
+            true,
+        )
+        exporter.accept(key, adv, conditions)
     }
 }

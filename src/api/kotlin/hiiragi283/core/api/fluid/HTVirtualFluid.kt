@@ -1,6 +1,5 @@
 package hiiragi283.core.api.fluid
 
-import hiiragi283.core.api.util.toOptional
 import java.util.Optional
 import java.util.function.Supplier
 import net.minecraft.core.BlockPos
@@ -57,5 +56,5 @@ class HTVirtualFluid(private val typeGetter: Supplier<out FluidType>, private va
 
     override fun getFluidType(): FluidType = typeGetter.get()
 
-    override fun getPickupSound(): Optional<SoundEvent> = fluidType.getSound(SoundActions.BUCKET_FILL).toOptional()
+    override fun getPickupSound(): Optional<SoundEvent> = Optional.ofNullable(fluidType.getSound(SoundActions.BUCKET_FILL))
 }

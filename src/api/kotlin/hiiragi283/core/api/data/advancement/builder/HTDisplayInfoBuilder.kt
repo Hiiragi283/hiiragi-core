@@ -5,11 +5,12 @@ package hiiragi283.core.api.data.advancement.builder
 import hiiragi283.core.api.data.advancement.AdvancementKey
 import hiiragi283.core.api.data.advancement.descKey
 import hiiragi283.core.api.data.advancement.titleKey
+import hiiragi283.core.api.item.ItemInstanceBuilder
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
-import hiiragi283.core.api.util.HTBuilderMarker
 import hiiragi283.core.api.util.HTDelegates
-import hiiragi283.core.api.util.toOptional
+import hiiragi283.core.api.util.Option
+import hiiragi283.core.api.util.java
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -18,12 +19,6 @@ import net.minecraft.advancements.DisplayInfo
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 
-/**
- * [DisplayInfo]のビルダークラスです。
- * @author Hiiragi Tsubasa
- * @since 0.8.0
- */
-@HTBuilderMarker
 class HTDisplayInfoBuilder {
     companion object {
         @JvmStatic
@@ -31,42 +26,42 @@ class HTDisplayInfoBuilder {
             contract {
                 callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
             }
-            return HTDisplayInfoBuilder()
-                .apply {
-                    titleText += translatableText(key.titleKey)
-                    descText += translatableText(key.descKey)
-                    builderAction()
-                }.build()
+            return HTDisplayInfoBuilder().apply {
+                titleText = translatableText(key.titleKey)
+                descText = translatableText(key.descKey)
+                builderAction()
+            }.build()
         }
     }
 
-    var iconStack: ItemStack by HTDelegates.onceInitialize()
-    val titleText = TextHolder()
-    val descText = TextHolder()
-    var backGround: ResourceLocation? = null
-    var type: AdvancementType = AdvancementType.TASK
+    @PublishedApi internal var icon: ItemStack by HTDelegates.onceInitialize()
+    var titleText: Text by HTDelegates.onceInitialize()
+    var descText: Text by HTDelegates.onceInitialize()
+    var backGround: Option<ResourceLocation> by HTDelegates.optionalOnceInitialize()
+    var type: AdvancementType by HTDelegates.onceInitialize { AdvancementType.TASK }
     var showToast: Boolean = true
     var showChat: Boolean = true
     var hidden: Boolean = false
 
     fun build(): DisplayInfo = DisplayInfo(
-        iconStack,
-        titleText.text,
-        descText.text,
-        backGround.toOptional(),
+        icon,
+        titleText,
+        descText,
+        backGround.java,
         type,
         showToast,
         showChat,
         hidden,
     )
 
-    inner class TextHolder {
-        lateinit var text: Text
-            private set
+    operator fun ItemStack.unaryPlus() {
+        icon = this
+    }
 
-        operator fun plusAssign(text: Text) {
-            check(!::text.isInitialized) { "Text has already been initialized" }
-            this.text = text
+    inline fun icon(builderAction: ItemInstanceBuilder.() -> Unit) {
+        contract {
+            callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
         }
+        icon = ItemInstanceBuilder.buildStack(builderAction)
     }
 }

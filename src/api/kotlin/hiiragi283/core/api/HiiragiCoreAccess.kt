@@ -1,6 +1,7 @@
 package hiiragi283.core.api
 
 import com.mojang.serialization.Codec
+import hiiragi283.core.api.experience.HTExpAmount
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.item.tool.HTToolType
@@ -52,6 +53,12 @@ abstract class HiiragiCoreAccess {
         @JvmField
         val INSTANCE: HiiragiCoreAccess = HiiragiCoreAPI.getService()
     }
+
+    abstract fun getExpRatio(): Int
+
+    fun getPoint(amount: HTExpAmount): Long = amount.getPoint(getExpRatio())
+
+    fun getFluidAmount(amount: HTExpAmount): Int = amount.getFluidAmount(getExpRatio())
 
     //    Material    //
 

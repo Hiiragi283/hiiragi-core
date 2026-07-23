@@ -1,40 +1,47 @@
+@file:OptIn(ExperimentalContracts::class)
+
 package hiiragi283.core.api.data.advancement.builder
 
+import hiiragi283.core.api.util.HTDelegates
 import java.util.Optional
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import net.minecraft.advancements.critereon.InventoryChangeTrigger
 import net.minecraft.advancements.critereon.ItemPredicate
+import net.minecraft.advancements.critereon.MinMaxBounds
 
-/**
- * [InventoryChangeTrigger.TriggerInstance]のビルダークラスです。
- * @author Hiiragi Tsubasa
- * @since 0.8.0
- */
 class HTInventoryChangeBuilder {
-    var slots: InventoryChangeTrigger.TriggerInstance.Slots = InventoryChangeTrigger.TriggerInstance.Slots.ANY
-    val predicates = ItemPredicates()
+    @PublishedApi internal val predicates: MutableList<ItemPredicate> = mutableListOf()
 
-    fun build(): InventoryChangeTrigger.TriggerInstance = InventoryChangeTrigger.TriggerInstance(Optional.empty(), slots, predicates.toList())
+    @PublishedApi internal var slots: InventoryChangeTrigger.TriggerInstance.Slots by HTDelegates.onceInitialize(InventoryChangeTrigger.TriggerInstance.Slots::ANY)
 
-    //    ItemPredicates    //
-
-    class ItemPredicates {
-        private val predicates: MutableList<ItemPredicate> = mutableListOf()
-
-        operator fun plusAssign(builderAction: ItemPredicate.Builder.() -> Unit) {
-            ItemPredicate.Builder
-                .item()
-                .apply(builderAction)
-                .let(this::plusAssign)
-        }
-
-        operator fun plusAssign(builder: ItemPredicate.Builder) {
-            this.plusAssign(builder.build())
-        }
-
-        operator fun plusAssign(predicate: ItemPredicate) {
-            this.predicates += predicate
-        }
-
-        fun toList(): List<ItemPredicate> = predicates
+    operator fun ItemPredicate.unaryPlus() {
+        predicates += this
     }
+
+    operator fun ItemPredicate.Builder.unaryPlus() {
+        +this.build()
+    }
+
+    operator fun InventoryChangeTrigger.TriggerInstance.Slots.unaryPlus() {
+        slots = this
+    }
+
+    inline fun slots(builderAction: SlotsBuilder.() -> Unit) {
+        contract {
+            callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+        }
+        slots = SlotsBuilder().apply(builderAction).build()
+    }
+
+    class SlotsBuilder {
+        var occupied: MinMaxBounds.Ints = MinMaxBounds.Ints.ANY
+        var full: MinMaxBounds.Ints = MinMaxBounds.Ints.ANY
+        var empty: MinMaxBounds.Ints = MinMaxBounds.Ints.ANY
+
+        fun build(): InventoryChangeTrigger.TriggerInstance.Slots = InventoryChangeTrigger.TriggerInstance.Slots(occupied, full, empty)
+    }
+
+    fun build(): InventoryChangeTrigger.TriggerInstance = InventoryChangeTrigger.TriggerInstance(Optional.empty(), slots, predicates)
 }

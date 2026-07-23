@@ -5,7 +5,7 @@ package hiiragi283.core.api.data.map
 import hiiragi283.core.api.data.pack.HTDynamicDataRegister
 import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.util.DFUEither
-import hiiragi283.core.api.util.toOptional
+import java.util.Optional
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -50,10 +50,10 @@ class HTDynamicDataMap<T : Any, R : Any>(private val type: DataMapType<R, T>) {
                 false,
                 buildMap {
                     for ((tagKey: TagKey<R>, value: DataMapEntry<T>) in tagValues) {
-                        this[DFUEither.left(tagKey)] = WithConditions(value).toOptional()
+                        this[DFUEither.left(tagKey)] = Optional.of(WithConditions(value))
                     }
                     for ((key: ResourceKey<R>, value: DataMapEntry<T>) in keyValues) {
-                        this[DFUEither.right(key)] = WithConditions(value).toOptional()
+                        this[DFUEither.right(key)] = Optional.of(WithConditions(value))
                     }
                 },
                 emptyList(),

@@ -43,7 +43,7 @@ class HTFluidResourceType private constructor(private val stack: FluidStack) : H
     }
 
     /**
-     * 保持している[液体][type]の[FluidType]を返します。
+     * 保持している[液体][FluidStack.getFluidType]の[FluidType]を返します。
      */
     fun fluidType(): FluidType = stack.fluidType
 
