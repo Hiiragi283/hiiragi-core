@@ -48,16 +48,18 @@ abstract class HTRecipeProvider(packOutput: PackOutput, private val future: Comp
         internal set
 
     final override fun run(output: CachedOutput): CompletableFuture<*> = future.thenCompose { registries: HolderLookup.Provider ->
-        val recipes: MutableSet<ResourceLocation> = hashSetOf()
-        val tasks: MutableList<CompletableFuture<*>> = mutableListOf()
+        val recipes: MutableMap<ResourceLocation, WithConditions<Recipe<*>>> = hashMapOf()
         this.registries = registries
         this.exporter = HTRecipeExporter { id: ResourceLocation, recipe: Recipe<*>, conditions: List<ICondition> ->
             val fixedId: ResourceLocation = id.let(::modifyId)
-            check(recipes.add(fixedId)) { "Duplicate recipe $fixedId" }
-            tasks += DataProvider.saveStable(output, registries, Recipe.CONDITIONAL_CODEC, Optional.of(WithConditions(conditions, recipe)), pathProvider.json(fixedId))
+            check(recipes.put(fixedId, WithConditions(conditions, recipe)) == null) { "Duplicate recipe $fixedId" }
         }
         buildRecipes()
-        CompletableFuture.allOf(*tasks.toTypedArray())
+        CompletableFuture.allOf(
+            *recipes
+                .map { (id: ResourceLocation, value: WithConditions<Recipe<*>>) -> DataProvider.saveStable(output, registries, Recipe.CONDITIONAL_CODEC, Optional.of(value), pathProvider.json(id)) }
+                .toTypedArray(),
+        )
     }
 
     /**

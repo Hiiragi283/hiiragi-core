@@ -6,7 +6,7 @@ package hiiragi283.core.api.data.lang
  * @since 0.8.0
  */
 @JvmInline
-value class HTLangType(val name: String) : Comparable<HTLangType> {
+value class HTLangType private constructor(val name: String) : Comparable<HTLangType> {
     companion object {
         @JvmStatic
         private val instances: MutableMap<String, HTLangType> = hashMapOf()

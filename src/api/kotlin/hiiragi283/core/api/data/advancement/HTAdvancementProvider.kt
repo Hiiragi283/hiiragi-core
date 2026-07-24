@@ -32,16 +32,15 @@ abstract class HTAdvancementProvider(packOutput: PackOutput, private val future:
         private set
 
     final override fun run(output: CachedOutput): CompletableFuture<*> = future.thenCompose { registries: HolderLookup.Provider ->
-        val advancements: MutableSet<AdvancementKey> = hashSetOf()
-        val tasks: MutableList<CompletableFuture<*>> = mutableListOf()
+        val advancements: MutableMap<ResourceLocation, WithConditions<Advancement>> = hashMapOf()
         this.registries = registries
-        this.exporter = HTAdvancementExporter { key: AdvancementKey, advancement: Advancement, conditions: List<ICondition> ->
-            val id: ResourceLocation = key.location()
-            check(advancements.add(key)) { "Duplicate advancement $id" }
-            tasks += DataProvider.saveStable(output, registries, Advancement.CONDITIONAL_CODEC, Optional.of(WithConditions(conditions, advancement)), pathProvider.json(id))
-        }
+        this.exporter = HTAdvancementExporter { id: ResourceLocation, advancement: Advancement, conditions: List<ICondition> -> check(advancements.put(id, WithConditions(conditions, advancement)) == null) { "Duplicate advancement $id" } }
         buildAdvancements()
-        CompletableFuture.allOf(*tasks.toTypedArray())
+        CompletableFuture.allOf(
+            *advancements
+                .map { (id: ResourceLocation, value: WithConditions<Advancement>) -> DataProvider.saveStable(output, registries, Advancement.CONDITIONAL_CODEC, Optional.of(value), pathProvider.json(id)) }
+                .toTypedArray(),
+        )
     }
 
     /**

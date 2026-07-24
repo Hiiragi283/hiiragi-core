@@ -91,6 +91,6 @@ class HTAdvancementBuilder(val key: AdvancementKey) {
             this.requirements ?: strategy.create(criterions.keys),
             true,
         )
-        exporter.accept(key, adv, conditions)
+        exporter.accept(key.location(), adv, conditions)
     }
 }

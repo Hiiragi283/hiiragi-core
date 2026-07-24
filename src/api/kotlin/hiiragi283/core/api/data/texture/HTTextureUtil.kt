@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data.texture
 
-import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.resource.HTIdLike
 import java.io.BufferedReader
 import java.io.InputStream
@@ -67,11 +66,11 @@ data object HTTextureUtil {
 
     @JvmStatic
     fun getTexture(manager: ResourceManager, block: Block): Result<TextureImage> = runCatching {
-        RPUtils.findFirstBlockTextureLocation(manager, block).let(TextureImage::open.partially1(manager))
+        RPUtils.findFirstBlockTextureLocation(manager, block).let { TextureImage.open(manager, it) }
     }
 
     @JvmStatic
     fun getTexture(manager: ResourceManager, item: Item): Result<TextureImage> = runCatching {
-        RPUtils.findFirstItemTextureLocation(manager, item).let(TextureImage::open.partially1(manager))
+        RPUtils.findFirstItemTextureLocation(manager, item).let { TextureImage.open(manager, it) }
     }
 }

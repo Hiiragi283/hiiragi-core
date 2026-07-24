@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data
 
-import hiiragi283.core.api.function.partially1
 import java.util.concurrent.CompletableFuture
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.DataProvider
@@ -16,7 +15,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent
  * @author Hiiragi Tsubasa
  * @since 0.15.2
  */
-fun <T : DataProvider> GatherDataEvent.createProviderWithHelper(builder: (ExistingFileHelper, PackOutput) -> T): T = this.createProvider(builder.partially1(this.existingFileHelper))
+fun <T : DataProvider> GatherDataEvent.createProviderWithHelper(builder: (ExistingFileHelper, PackOutput) -> T): T = this.createProvider { output: PackOutput -> builder(this.existingFileHelper, output) }
 
 /**
  * この[GatherDataEvent][this]に[DataProvider]を登録します。
@@ -25,7 +24,7 @@ fun <T : DataProvider> GatherDataEvent.createProviderWithHelper(builder: (Existi
  */
 fun <T : DataProvider> GatherDataEvent.createProviderWithHelper(
     builder: (ExistingFileHelper, PackOutput, CompletableFuture<HolderLookup.Provider>) -> T,
-): T = this.createProvider(builder.partially1(this.existingFileHelper))
+): T = this.createProvider { output: PackOutput, future: CompletableFuture<HolderLookup.Provider> -> builder(this.existingFileHelper, output, future) }
 
 /**
  * この[GatherDataEvent][this]に[LootTableProvider]を登録します。

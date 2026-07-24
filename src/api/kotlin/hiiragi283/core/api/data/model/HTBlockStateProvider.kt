@@ -4,7 +4,6 @@ package hiiragi283.core.api.data.model
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.SupplierWithId
@@ -57,7 +56,7 @@ abstract class HTBlockStateProvider(fileHelper: ExistingFileHelper, output: Pack
         block: SupplierWithId<BLOCK>,
         stateDispatcher: (SupplierWithId<BLOCK>, BlockState) -> Array<ConfiguredModel>,
     ) {
-        getVariantBuilder(block.get()).forAllStates(stateDispatcher.partially1(block))
+        getVariantBuilder(block.get()).forAllStates { state: BlockState -> stateDispatcher(block, state) }
     }
 
     /**

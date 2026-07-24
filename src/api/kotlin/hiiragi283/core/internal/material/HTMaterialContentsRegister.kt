@@ -6,7 +6,6 @@ import hiiragi283.core.api.collection.Table
 import hiiragi283.core.api.collection.buildTable
 import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.fluid.HTVirtualFluid
-import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.item.HTBlockItem
 import hiiragi283.core.api.item.tool.HTToolMaterial
 import hiiragi283.core.api.item.tool.HTToolType
@@ -87,11 +86,11 @@ data object HTMaterialContentsRegister {
     fun register(event: RegisterEvent) {
         initMaterials()
 
-        event.register(Registries.BLOCK, ::registerMaterialBlocks.partially1(materialManager))
+        event.register(Registries.BLOCK) { registerMaterialBlocks(materialManager, it) }
 
-        event.register(Registries.ITEM, ::registerMaterialFluids.partially1(materialManager))
-        event.register(Registries.ITEM, ::registerMaterialItems.partially1(materialManager))
-        event.register(Registries.ITEM, ::registerMaterialTools.partially1(materialManager))
+        event.register(Registries.ITEM) { registerMaterialFluids(materialManager, it) }
+        event.register(Registries.ITEM) { registerMaterialItems(materialManager, it) }
+        event.register(Registries.ITEM) { registerMaterialTools(materialManager, it) }
     }
 
     //    Existing    //

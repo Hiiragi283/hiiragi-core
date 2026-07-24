@@ -2,7 +2,6 @@ package hiiragi283.core.api.data
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.texture.HTTextureUtil
-import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
@@ -60,7 +59,7 @@ data object HTDynamicResourceProvider {
         protected fun resprite(id: ResourceLocation, base: ResourceLocation, key: HTMaterialKey): ResourceGenTask {
             val paletteId: ResourceLocation =
                 HTMaterialManager.getInstance().getOrEmpty(key)[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId()
-            return resprite(id, base, HTTextureUtil::getOrCreatePalette.partially1(paletteId))
+            return resprite(id, base) { manager: ResourceManager -> HTTextureUtil.getOrCreatePalette(paletteId, manager) }
         }
 
         /**
