@@ -87,7 +87,7 @@ abstract class HiiragiCoreAccess {
                 }
             }
         }
-        HiiragiCoreAPI.LOGGER.info("{} took {}", title, duration)
+        HiiragiCoreAPI.LOGGER.info("{} took {} ms", title, duration)
     }
 
     /**

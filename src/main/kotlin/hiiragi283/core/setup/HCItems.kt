@@ -16,17 +16,13 @@ import hiiragi283.core.common.item.endgame.HTEternalUpgradeItem
 import hiiragi283.core.common.item.endgame.HTInfinityPotionItem
 import hiiragi283.core.common.text.HCTranslation
 import hiiragi283.core.support.item.HTSmithingTemplateItem
-import net.minecraft.core.component.DataComponentPatch
-import net.minecraft.core.component.DataComponentType
 import net.minecraft.world.entity.EquipmentSlotGroup
 import net.minecraft.world.entity.ai.attributes.AttributeModifier
 import net.minecraft.world.food.FoodConstants
 import net.minecraft.world.food.FoodProperties
 import net.minecraft.world.item.component.ItemAttributeModifiers
-import net.minecraft.world.level.ItemLike
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.common.NeoForgeMod
-import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent
 
 object HCItems {
     @JvmField
@@ -41,8 +37,6 @@ object HCItems {
         REGISTER.addAlias("wood_plate", "particle_board")
 
         REGISTER.register(eventBus)
-
-        eventBus.addListener(::modifyComponents)
     }
 
     //    Materials   //
@@ -180,25 +174,5 @@ object HCItems {
                 )
                 .build(),
         )
-    }
-
-    //    Event    //
-
-    @JvmStatic
-    private fun modifyComponents(event: ModifyDefaultComponentsEvent) {
-        fun <T : Any> modify(item: ItemLike, type: DataComponentType<T>, value: T) {
-            event.modify(item) { builder: DataComponentPatch.Builder -> builder.set(type, value) }
-        }
-
-        modify(AMBROSIA, HCDataComponents.DESCRIPTION, HCTranslation.AMBROSIA)
-        modify(ANCIENT_UPGRADE, HCDataComponents.DESCRIPTION, HCTranslation.ANCIENT_UPGRADE)
-        modify(BLUEPRINT, HCDataComponents.DESCRIPTION, HCTranslation.BLUEPRINT)
-        modify(ELDER_HEART, HCDataComponents.DESCRIPTION, HCTranslation.ELDER_HEART)
-        modify(ELDRITCH_EGG, HCDataComponents.DESCRIPTION, HCTranslation.ELDRITCH_EGG)
-        modify(ETERNAL_UPGRADE, HCDataComponents.DESCRIPTION, HCTranslation.ETERNAL_UPGRADE)
-        modify(EXPERIENCE_TOME, HCDataComponents.DESCRIPTION, HCTranslation.EXPERIENCE_TOME)
-        modify(IRIDESCENT_POWDER, HCDataComponents.DESCRIPTION, HCTranslation.IRIDESCENT_POWDER)
-        modify(SLOT_COVER, HCDataComponents.DESCRIPTION, HCTranslation.SLOT_COVER)
-        modify(TRADER_CATALOG, HCDataComponents.DESCRIPTION, HCTranslation.TRADER_CATALOG)
     }
 }

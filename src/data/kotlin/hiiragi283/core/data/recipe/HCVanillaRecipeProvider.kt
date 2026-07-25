@@ -1,5 +1,6 @@
 package hiiragi283.core.data.recipe
 
+import guideme.Guides
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.color.HTDefaultColor
@@ -51,6 +52,13 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
         buckets()
 
         copper()
+
+        // Guide ME Integration
+        HTShapelessRecipeBuilder.create {
+            ingredient { +Items.PAPER }
+            ingredient { +tag(CommonTagPrefixes.DUST, VanillaMaterialKeys.COPPER) }
+            +Guides.createGuideItem(HiiragiCoreAPI.id("guide"))
+        }.save(exporter)
     }
 
     private fun vanilla() {

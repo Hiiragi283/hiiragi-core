@@ -1,8 +1,8 @@
 package hiiragi283.core.api.registry
 
-import hiiragi283.core.api.item.HTBlockItem
 import hiiragi283.core.api.util.Identity
 import hiiragi283.core.api.util.identity
+import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockBehaviour
@@ -24,7 +24,7 @@ class HTDeferredBlockAndItemRegister(private val blockRegister: HTDeferredBlockR
         blockProp: BlockBehaviour.Properties,
         blockFactory: BlockFactory<BLOCK>,
         itemProp: Identity<Item.Properties> = identity(),
-    ): HTBasicDeferredBlockAndItem<BLOCK> = register(name, blockProp, blockFactory, ::HTBlockItem, itemProp)
+    ): HTBasicDeferredBlockAndItem<BLOCK> = register(name, blockProp, blockFactory, ::BlockItem, itemProp)
 
     fun <BLOCK : Block, ITEM : Item> register(
         name: String,

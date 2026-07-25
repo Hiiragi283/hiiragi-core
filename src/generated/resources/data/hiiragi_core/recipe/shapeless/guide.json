@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "tag": "c:dusts/copper"
+    }
+  ],
+  "result": {
+    "components": {
+      "guideme:guide_id": "hiiragi_core:guide"
+    },
+    "count": 1,
+    "id": "guideme:guide"
+  }
+}

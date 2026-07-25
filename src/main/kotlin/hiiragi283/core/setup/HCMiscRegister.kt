@@ -113,7 +113,6 @@ internal data object HCMiscRegister {
             helper.register(HiiragiCoreAPI.id("blueprint_number"), HCDataComponents.BLUEPRINT_NUMBER)
             helper.register(HiiragiCoreAPI.id("bottle_type"), HCDataComponents.BOTTLE_TYPE)
             helper.register(HiiragiCoreAPI.id("color"), HCDataComponents.COLOR)
-            helper.register(HiiragiCoreAPI.id("description"), HCDataComponents.DESCRIPTION)
             helper.register(HiiragiCoreAPI.id("location"), HCDataComponents.LOCATION)
             helper.register(HiiragiCoreAPI.id("experience"), HCDataComponents.EXPERIENCE)
 

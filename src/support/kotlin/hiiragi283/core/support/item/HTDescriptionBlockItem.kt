@@ -1,23 +1,21 @@
 package hiiragi283.core.support.item
 
-import hiiragi283.core.api.block.HTBlockWithDescription
 import hiiragi283.core.api.color.HTDefaultColor
-import hiiragi283.core.api.item.HTBlockItem
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.Text
+import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.level.block.Block
 
 /**
- * 説明文付きのブロック向けの[hiiragi283.core.api.item.HTBlockItem]の拡張クラスです。
- * @param BLOCK [block]のクラス
+ * 説明文付きのブロック向けの[BlockItem]の拡張クラスです。
  * @author Hiiragi Tsubasa
  * @since 0.3.0
  * @see mekanism.common.item.block.ItemBlockTooltip
  */
-open class HTDescriptionBlockItem<BLOCK>(block: BLOCK, private val hasDetails: Boolean, properties: Properties) : HTBlockItem<BLOCK>(block, properties) where BLOCK : Block, BLOCK : HTBlockWithDescription {
-    constructor(block: BLOCK, properties: Properties) : this(block, false, properties)
+open class HTDescriptionBlockItem(block: Block, private val hasDetails: Boolean, properties: Properties) : BlockItem(block, properties) {
+    constructor(block: Block, properties: Properties) : this(block, false, properties)
 
     final override fun appendHoverText(
         stack: ItemStack,
@@ -25,16 +23,17 @@ open class HTDescriptionBlockItem<BLOCK>(block: BLOCK, private val hasDetails: B
         tooltips: MutableList<Text>,
         flag: TooltipFlag,
     ) {
-        if (flag.hasShiftDown()) {
+        /*if (flag.hasShiftDown()) {
             tooltips.add(block.getDescription().translate())
-        } else if (flag.hasControlDown()) {
+        } else*/
+        if (flag.hasControlDown()) {
             addDetails(stack, context, tooltips, flag)
         } else {
             addStats(stack, context, tooltips, flag)
             if (hasDetails) {
                 tooltips.add(HTCommonTranslation.TOOLTIP_SHOW_DETAILS.translateColored(HTDefaultColor.LIGHT_BLUE))
             }
-            tooltips.add(HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION.translateColored(HTDefaultColor.YELLOW))
+            // tooltips.add(HTCommonTranslation.TOOLTIP_SHOW_DESCRIPTION.translateColored(HTDefaultColor.YELLOW))
         }
     }
 

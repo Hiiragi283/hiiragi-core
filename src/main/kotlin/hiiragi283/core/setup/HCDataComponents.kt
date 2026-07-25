@@ -4,9 +4,7 @@ import hiiragi283.core.api.color.HTDefaultColor
 import hiiragi283.core.api.data.DataComponentType
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.serialization.codec.HTCodecs
-import hiiragi283.core.api.text.HTTranslation
 import hiiragi283.core.common.item.HTBlueprintItem
-import hiiragi283.core.common.text.HTSimpleTranslation
 import net.minecraft.core.GlobalPos
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.network.codec.ByteBufCodecs
@@ -21,9 +19,6 @@ object HCDataComponents {
 
     @JvmField
     val COLOR: DataComponentType<HTDefaultColor> = DataComponentType(HTDefaultColor.CODEC, HTDefaultColor.STREAM_CODEC)
-
-    @JvmField
-    val DESCRIPTION: DataComponentType<HTTranslation> = DataComponentType(HTSimpleTranslation.CODEC, HTSimpleTranslation.STREAM_CODEC)
 
     @JvmField
     val LOCATION: DataComponentType<GlobalPos> = DataComponentType(GlobalPos.CODEC, GlobalPos.STREAM_CODEC)

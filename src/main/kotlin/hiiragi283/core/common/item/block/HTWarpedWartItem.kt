@@ -2,7 +2,6 @@ package hiiragi283.core.common.item.block
 
 import hiiragi283.core.api.collection.randomOrNull
 import hiiragi283.core.common.block.HTWarpedWartBlock
-import hiiragi283.core.support.item.HTDescriptionBlockItem
 import net.minecraft.core.Holder
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResultHolder
@@ -11,12 +10,13 @@ import net.minecraft.world.effect.MobEffectCategory
 import net.minecraft.world.effect.MobEffectInstance
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemUtils
 import net.minecraft.world.item.UseAnim
 import net.minecraft.world.level.Level
 
-class HTWarpedWartItem(block: HTWarpedWartBlock, properties: Properties) : HTDescriptionBlockItem<HTWarpedWartBlock>(block, properties) {
+class HTWarpedWartItem(block: HTWarpedWartBlock, properties: Properties) : BlockItem(block, properties) {
     override fun finishUsingItem(stack: ItemStack, level: Level, livingEntity: LivingEntity): ItemStack {
         val effects: List<Holder<MobEffect>> = getBadEffects(livingEntity)
         val operation: Int = when {

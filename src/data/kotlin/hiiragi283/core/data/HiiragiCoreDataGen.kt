@@ -4,7 +4,6 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.createLootTables
 import hiiragi283.core.api.data.createProviderWithHelper
-import hiiragi283.core.api.function.partially1
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.data.lang.HCEnglishLangProvider
 import hiiragi283.core.data.lang.HCJapaneseLangProvider
@@ -25,10 +24,15 @@ import hiiragi283.core.data.tag.HCEntityTypeTagsProvider
 import hiiragi283.core.data.tag.HCFluidTagsProvider
 import hiiragi283.core.data.tag.HCItemTagsProvider
 import hiiragi283.core.setup.HCEnchantments
+import java.util.concurrent.CompletableFuture
+import net.minecraft.core.HolderLookup
 import net.minecraft.core.RegistrySetBuilder
 import net.minecraft.core.registries.Registries
+import net.minecraft.data.PackOutput
 import net.minecraft.data.metadata.PackMetadataGenerator
+import net.minecraft.data.tags.TagsProvider
 import net.minecraft.world.flag.FeatureFlagSet
+import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
@@ -73,7 +77,10 @@ data object HiiragiCoreDataGen {
         event.createProviderWithHelper(::HCDamageTypeTagsProvider)
         event.createProviderWithHelper(::HCEntityTypeTagsProvider)
         event.createProviderWithHelper(::HCFluidTagsProvider)
-        event.createBlockAndItemTags(::HCBlockTagsProvider.partially1(fileHelper), ::HCItemTagsProvider.partially1(fileHelper))
+        event.createBlockAndItemTags(
+            { output: PackOutput, future: CompletableFuture<HolderLookup.Provider> -> HCBlockTagsProvider(fileHelper, output, future) },
+            { output: PackOutput, future: CompletableFuture<HolderLookup.Provider>, future1: CompletableFuture<TagsProvider.TagLookup<Block>> -> HCItemTagsProvider(fileHelper, output, future, future1) },
+        )
 
         event.createProvider(::HCDataMapProvider)
 

@@ -20,6 +20,7 @@ ae2 = "19.2.17"
 curios = "9.5.1+1.21.1"
 dire = "7463040"
 immersive = "1.21.1-12.4.2-194"
+guideme = "21.1.17"
 jade = "15.10.5+neoforge"
 jei = "19.39.0.368"
 mek = "1.21.1-10.7.19.85"
@@ -36,6 +37,7 @@ ae2 = { group = "org.appliedenergistics", name = "appliedenergistics2", version.
 curios = { group = "top.theillusivec4.curios", name = "curios-neoforge", version.ref = "curios" }
 dire = { group = "curse.maven", name = "just-dire-things-1002348", version.ref = "dire" }
 immersive = { group = "blusunrize.immersiveengineering", name = "ImmersiveEngineering", version.ref = "immersive" }
+guideme = { group = "org.appliedenergistics", name = "guideme", version.ref = "guideme" }
 jade = { group = "maven.modrinth", name = "jade", version.ref = "jade" }
 jei = { group = "mezz.jei", name = "jei-1.21.1-neoforge", version.ref = "jei" }
 jei-api = { group = "mezz.jei", name = "jei-1.21.1-neoforge-api", version.ref = "jei" }
@@ -63,6 +65,7 @@ integration-impl = [
     "ae2",
     "curios",
     "dire",
+    "guideme",
     "immersive",
     "oritech",
     "replica",

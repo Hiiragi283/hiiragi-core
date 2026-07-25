@@ -12,7 +12,6 @@ import hiiragi283.core.api.text.HTTranslation
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import java.util.function.BiConsumer
-import net.minecraft.world.level.block.WeatheringCopper
 
 interface HCLangProvider {
     fun addCommonTranslations(consumer: BiConsumer<HTTranslation, String>) {
@@ -50,12 +49,5 @@ interface HCLangProvider {
         for ((color: HTLangName, content: HTFluidContent) in HCFluids.DYES.asSequenceWithColor()) {
             provider.addFluid(content, dyePattern.translate(langType, color))
         }
-    }
-
-    private fun getCopperLangPattern(state: WeatheringCopper.WeatherState): HTLangPatternProvider = when (state) {
-        WeatheringCopper.WeatherState.UNAFFECTED -> HTLangPatternProvider.IDENTITY
-        WeatheringCopper.WeatherState.EXPOSED -> HTLangPatternProvider("Exposed %s", "風化した%s")
-        WeatheringCopper.WeatherState.WEATHERED -> HTLangPatternProvider("Weathered %s", "錆びた%s")
-        WeatheringCopper.WeatherState.OXIDIZED -> HTLangPatternProvider("Oxidized %s", "酸化した%s")
     }
 }
