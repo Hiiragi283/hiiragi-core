@@ -19,6 +19,7 @@ import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
 import hiiragi283.core.api.registry.HTSimpleDeferredHolder
+import hiiragi283.core.api.resource.modifyPath
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.integration.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCChargingRecipeCategory
@@ -159,7 +160,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                 .map { potion: HTSimpleDeferredHolder<Potion> ->
                     val contents = BottledPotionContents(potion)
                     HTRecipeDisplay.Simple(
-                        potion.getId().withPath { "/${HTConst.EMPTYING}/potion/$it" },
+                        potion.getId().modifyPath { "/${HTConst.EMPTYING}/potion/$it" },
                         HTRecipeContents.create {
                             addInput(HTPotionHelper.createPotion(contents))
                             addOutput(HCPotionFluidHelper.createFluid(contents, 250))
@@ -193,7 +194,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             getPotionHolders()
                 .map { potion: HTSimpleDeferredHolder<Potion> ->
                     HTRecipeDisplay.Simple(
-                        potion.getId().withPath { "/${HTConst.FILLING}/$prefix/$it" },
+                        potion.getId().modifyPath { "/${HTConst.FILLING}/$prefix/$it" },
                         HTRecipeContents.create {
                             addInput(ItemStack(input))
                             addInput(

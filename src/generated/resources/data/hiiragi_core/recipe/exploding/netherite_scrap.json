@@ -4,7 +4,7 @@
   "result": {
     "type": "hiiragi_core:material_part",
     "count": 2,
-    "material": "netherite",
+    "material": "hiiragi_core:netherite",
     "part": "scrap"
   }
 }

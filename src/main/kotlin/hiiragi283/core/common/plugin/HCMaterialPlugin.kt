@@ -53,7 +53,6 @@ object HCMaterialPlugin : HTMaterialPlugin {
 
             setName("Crimson Crystal", "深紅のクリスタリル")
             setTextureSet("emerald")
-            // addCustomFluidName(HTFluidPart.MOLTEN, "Crimson Blood", "深紅の血液")
             put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 10 * 24)
         }
         builder.getBuilder(HCMaterialKeys.WARPED_CRYSTAL).apply {
@@ -64,7 +63,6 @@ object HCMaterialPlugin : HTMaterialPlugin {
 
             setName("Warped Crystal", "歪んだクリスタリル")
             setTextureSet("emerald")
-            // addCustomFluidName(HTFluidPart.MOLTEN, "Dew of the Warp", "歪んだ雫")
         }
     }
 
@@ -78,7 +76,6 @@ object HCMaterialPlugin : HTMaterialPlugin {
 
             setName("Eldritch Pearl", "異質な真珠")
             setTextureSet("pearl", HTMaterialTextureSet.MYSTICAL)
-            // addCustomFluidName(HTFluidPart.MOLTEN, "Eldritch Flux", "異質な流動体")
         }
     }
 

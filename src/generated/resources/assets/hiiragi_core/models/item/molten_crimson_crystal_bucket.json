@@ -1,0 +1,5 @@
+{
+  "parent": "neoforge:item/bucket",
+  "fluid": "hiiragi_core:molten_crimson_crystal",
+  "loader": "neoforge:fluid_container"
+}

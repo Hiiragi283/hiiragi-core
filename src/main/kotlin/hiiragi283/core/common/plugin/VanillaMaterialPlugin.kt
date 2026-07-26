@@ -36,7 +36,6 @@ import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.neoforged.neoforge.common.Tags
-import net.neoforged.neoforge.fluids.FluidType
 
 @HTPlugin
 object VanillaMaterialPlugin : HTMaterialPlugin {
@@ -472,7 +471,6 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(VanillaMaterialKeys.GLASS).apply {
             setDefaultPart(Tags.Items.GLASS_BLOCKS, Items.GLASS.toLike())
             addItemPrefixes(CommonParts.DUST, CommonParts.ROD)
-            put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, FluidType.BUCKET_VOLUME)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.NONE)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
             put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
@@ -487,12 +485,11 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
 
             setName("Stone", "石")
             setTextureSet(HTMaterialTextureSet.DULL)
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.STEEL.toId(HiiragiCoreAPI.MOD_ID))
+            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.STEEL.getId())
         }
         builder.getBuilder(VanillaMaterialKeys.OBSIDIAN).apply {
             setDefaultPart(Tags.Items.OBSIDIANS_NORMAL, Items.OBSIDIAN.toLike())
             addItemPrefixes(CommonParts.DUST)
-            put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, FluidType.BUCKET_VOLUME)
             put(HTMaterialPropertyKeys.DEFAULT_SCALE, fraction(4))
             put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 

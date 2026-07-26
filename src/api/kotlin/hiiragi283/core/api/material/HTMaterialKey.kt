@@ -1,9 +1,11 @@
 package hiiragi283.core.api.material
 
 import com.mojang.serialization.Codec
-import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.text.Text
+import hiiragi283.core.api.text.translatableText
 import io.netty.buffer.ByteBuf
-import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceLocation
 
@@ -15,24 +17,41 @@ import net.minecraft.resources.ResourceLocation
  * @since 0.1.0
  */
 @JvmInline
-value class HTMaterialKey(val name: String) : Comparable<HTMaterialKey> {
+value class HTMaterialKey(private val id: ResourceLocation) :
+    HTIdLike.Translatable,
+    Comparable<HTMaterialKey> {
     companion object {
+        /**
+         * 指定した[id]から[HTMaterialKey]のインスタンスを返します。
+         * @return キャッシュから取得した[HTMaterialKey]のインスタンス
+         */
+        @JvmStatic
+        fun of(id: ResourceLocation): HTMaterialKey = HTMaterialKey(id)
+
         /**
          * [HTMaterialKey]の[Codec]
          */
         @JvmField
-        val CODEC: Codec<HTMaterialKey> = Codec.STRING.xmap(::HTMaterialKey, HTMaterialKey::name)
+        val CODEC: Codec<HTMaterialKey> = ResourceLocation.CODEC.xmap(::HTMaterialKey, HTMaterialKey::getId)
 
         /**
          * [HTMaterialKey]の[StreamCodec]
          */
         @JvmField
-        val STREAM_CODEC: StreamCodec<ByteBuf, HTMaterialKey> = ByteBufCodecs.STRING_UTF8.map(::HTMaterialKey, HTMaterialKey::name)
+        val STREAM_CODEC: StreamCodec<ByteBuf, HTMaterialKey> = ResourceLocation.STREAM_CODEC.map(::HTMaterialKey, HTMaterialKey::getId)
     }
 
-    fun toId(namespace: String): ResourceLocation = namespace.toId(this.name)
+    override fun getId(): ResourceLocation = id
 
-    fun toId(namespace: String, vararg path: String): ResourceLocation = namespace.toId(this.name, *path)
+    /**
+     * @since 0.12.0
+     */
+    override val translationKey: String get() = getId().toLanguageKey(HTConst.MATERIAL)
 
-    override fun compareTo(other: HTMaterialKey): Int = this.name.compareTo(other.name)
+    /**
+     * @since 0.12.0
+     */
+    override fun getText(): Text = translatableText(translationKey)
+
+    override fun compareTo(other: HTMaterialKey): Int = this.id.compareNamespaced(other.id)
 }

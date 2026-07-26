@@ -23,8 +23,6 @@ fun HTPropertyGetter.getDefaultPart(key: HTMaterialKey): TagKey<Item>? = this.ge
  */
 fun HTPropertyGetter.getDefaultScale(): Fraction = this.getOrDefault(HTMaterialPropertyKeys.DEFAULT_SCALE)
 
-fun HTPropertyGetter.getDefaultFluidAmount(): Int = this.getOrDefault(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT)
-
 // Mutable
 
 fun HTPropertyMap.Builder.setDefaultPart(tagKey: TagKey<Item>, altItem: SimpleSupplierWithKey<Item>?) {

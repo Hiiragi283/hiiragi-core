@@ -52,14 +52,14 @@ data object HCMaterialTextureProvider : ResourceGenTask {
             if (partMap.isEmpty()) continue
             // テクスチャを生成
             val textureSet: HTMaterialTextureSet = entry.getOrDefault(HTMaterialPropertyKeys.TEXTURE_SET)
-            for (part: HTPart in HiiragiCoreAccess.INSTANCE.partManager.values) {
+            for (part: HTPart in partMap.keys) {
                 if (HTPartPropertyKeys.DISABLE_TEXTURE_GEN in part) continue
                 // パレットを取得
                 val palette: List<Int> = sequence {
                     if (HTPartPropertyKeys.IS_RAW in part) {
-                        yield(entry[HTMaterialPropertyKeys.TEXTURE_COLOR_RAW] ?: key.toId(HiiragiCoreAPI.MOD_ID).withPrefix("raw_"))
+                        yield(entry[HTMaterialPropertyKeys.TEXTURE_COLOR_RAW] ?: key.getId().withPrefix("raw_"))
                     }
-                    yield(entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.toId(HiiragiCoreAPI.MOD_ID))
+                    yield(entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId())
                 }.firstNotNullOfOrNull { HTTextureUtil.getOrCreateColors(it, manager).getOrNull() }
                     ?: run {
                         missingPalette(key)
@@ -89,7 +89,7 @@ data object HCMaterialTextureProvider : ResourceGenTask {
                 .column(key)
             if (toolMap.isEmpty()) continue
             // パレットを取得
-            val palette: List<Int> = (entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.toId(HiiragiCoreAPI.MOD_ID))
+            val palette: List<Int> = (entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId())
                 .let { HTTextureUtil.getOrCreateColors(it, manager).getOrNull() }
                 ?: run {
                     missingPalette(key)

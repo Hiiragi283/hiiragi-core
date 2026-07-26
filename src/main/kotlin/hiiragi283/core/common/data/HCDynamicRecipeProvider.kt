@@ -357,7 +357,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
             ingredient { +dust }
             +ingot.toStack()
             exp = 0.35f
-            recipeId suffix "_from_${CommonParts.DUST.createPath(key)}"
+            recipeId replace CommonParts.DUST.createId(key).withPrefix("/_from_")
         }
     }
 

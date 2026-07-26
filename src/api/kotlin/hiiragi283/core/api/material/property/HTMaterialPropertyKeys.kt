@@ -32,13 +32,6 @@ data object HTMaterialPropertyKeys {
     @JvmField
     val DEFAULT_SCALE: HTPropertyKey<Fraction> = HTPropertyKey.create(HiiragiCoreAPI.id("default_scale"), Fraction.ONE)
 
-    /**
-     * デフォルトの[部品][HTPart]あたりの液体量を管理する[プロパティキー][HTPropertyKey]
-     * @since 0.7.0
-     */
-    @JvmField
-    val DEFAULT_FLUID_AMOUNT: HTPropertyKey<Int> = HTPropertyKey.create(HiiragiCoreAPI.id("default_fluid_amount"), HTConst.INGOT_AMOUNT)
-
     //    Registration    //
 
     /**

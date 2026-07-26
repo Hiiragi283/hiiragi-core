@@ -5,7 +5,7 @@
     "type": "hiiragi_core:material_part",
     "chance": "1/4",
     "count": 1,
-    "material": "quartz",
+    "material": "hiiragi_core:quartz",
     "part": "gem"
   }
 }

@@ -211,7 +211,7 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
     }
 
     private fun registerIronAlt(key: HTMaterialKey, multiplier: Fraction) {
-        val suffix: String = key.name
+        val suffix: String = key.path
         val ingredient: IngredientBuilder.() -> Unit = { +tag(CommonTagPrefixes.INGOT, key) }
         val condition: ConditionBuilder.() -> Unit = { +CommonTagPrefixes.INGOT.itemTagKey(key) }
         // Bucket

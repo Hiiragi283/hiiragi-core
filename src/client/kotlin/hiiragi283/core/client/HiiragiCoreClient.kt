@@ -92,6 +92,14 @@ data object HiiragiCoreClient : HTClientMod() {
         event.dull(HCFluids.LATEX, Color(0xcccccc))
         event.dull(HCFluids.MEAT, Color(0x993333))
 
+        event.molten(HCFluids.MOLTEN_GLASS, Color(0xffffff))
+        event.molten(HCFluids.MOLTEN_ENDER, Color(0x006666))
+        event.molten(HCFluids.MOLTEN_BLAZE, Color(0xcc9900))
+
+        event.molten(HCFluids.MOLTEN_CRIMSON_CRYSTAL, Color(0xcc3333))
+        event.molten(HCFluids.MOLTEN_WARPED_CRYSTAL, Color(0x33cccc))
+        event.molten(HCFluids.MOLTEN_ELDRITCH, Color(0x6633cc))
+
         /*for (fluid: HTMaterialContents.FluidEntry in HiiragiCoreAccess.INSTANCE.registeredFluids.values) {
             event.registerFluidType(HTSimpleFluidExtensions(fluid.blockId), fluid.get().fluidType)
         }*/

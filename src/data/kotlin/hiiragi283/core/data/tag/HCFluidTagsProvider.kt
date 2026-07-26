@@ -17,6 +17,6 @@ class HCFluidTagsProvider(fileHelper: ExistingFileHelper, output: PackOutput, lo
         builder(HiiragiCoreTags.Fluids.ELDRITCH)
             .add(createKey("oritech", "still_strange_matter"), HTTagDependType.OPTIONAL)
             .addContentTag(HCFluids.OMINOUS_FLUX)
-        // .addTag(HTFluidPart.MOLTEN.createTagKey(HCMaterialKeys.ELDRITCH), HTTagDependType.OPTIONAL)
+            .addContentTag(HCFluids.MOLTEN_ELDRITCH)
     }
 }

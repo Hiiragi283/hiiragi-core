@@ -84,6 +84,28 @@ data object HCFluids {
     @JvmField
     val MEAT: HTFluidContent.Flowing = REGISTER.registerFlowing("meat") { properties = liquid() }
 
+    //    Material    //
+
+    // Vanilla
+    @JvmField
+    val MOLTEN_GLASS: HTFluidContent.Virtual = REGISTER.registerVirtual("molten_glass") { properties = molten() }
+
+    @JvmField
+    val MOLTEN_ENDER: HTFluidContent.Virtual = REGISTER.registerVirtual("molten_ender") { properties = molten() }
+
+    @JvmField
+    val MOLTEN_BLAZE: HTFluidContent.Virtual = REGISTER.registerVirtual("molten_blaze") { properties = molten() }
+
+    // Hiiragi Core
+    @JvmField
+    val MOLTEN_CRIMSON_CRYSTAL: HTFluidContent.Virtual = REGISTER.registerVirtual("molten_crimson_crystal") { properties = molten() }
+
+    @JvmField
+    val MOLTEN_WARPED_CRYSTAL: HTFluidContent.Virtual = REGISTER.registerVirtual("molten_warped_crystal") { properties = molten() }
+
+    @JvmField
+    val MOLTEN_ELDRITCH: HTFluidContent.Virtual = REGISTER.registerVirtual("molten_eldritch") { properties = molten() }
+
     //    Extensions    //
 
     @JvmStatic

@@ -19,8 +19,7 @@ object HTPartPropertyKeys {
      * 基準値に対する数量を管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField
-    val ITEM_SCALE: HTPropertyKey<(Fraction, HTPropertyGetter) -> Fraction> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("item_scale")) { base: Fraction, _ -> base }
+    val ITEM_SCALE: HTPropertyKey<(Fraction, HTPropertyGetter) -> Fraction> = HTPropertyKey.create(HiiragiCoreAPI.id("item_scale")) { base: Fraction, _ -> base }
 
     /**
      * 原石にまつわる部品かどうか管理する[プロパティキー][HTPropertyKey]
@@ -72,8 +71,7 @@ object HTPartPropertyKeys {
      * 翻訳のパターンを管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField
-    val LANG_PATTERN: HTPropertyKey<HTLangPatternProvider> =
-        HTPropertyKey.create(HiiragiCoreAPI.id("lang_pattern"), HTLangPatternProvider("%s", "%s"))
+    val LANG_PATTERN: HTPropertyKey<HTLangPatternProvider> = HTPropertyKey.create(HiiragiCoreAPI.id("lang_pattern"), HTLangPatternProvider("%s", "%s"))
 
     // Texture
     /**

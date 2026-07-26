@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.Tesselator
 import com.mojang.blaze3d.vertex.VertexConsumer
 import com.mojang.blaze3d.vertex.VertexFormat
 import hiiragi283.core.api.gui.HTBounds
+import hiiragi283.core.api.resource.modifyPath
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.core.Direction
@@ -20,7 +21,7 @@ import org.joml.Vector3f
 @OnlyIn(Dist.CLIENT)
 object HTSpriteRenderHelper {
     @JvmStatic
-    fun fixTextureId(id: ResourceLocation): ResourceLocation = id.withPath { path: String ->
+    fun fixTextureId(id: ResourceLocation): ResourceLocation = id.modifyPath { path: String ->
         when {
             path.endsWith(".png") -> path
             else -> "$path.png"

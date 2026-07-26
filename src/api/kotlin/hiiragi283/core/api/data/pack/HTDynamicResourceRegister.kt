@@ -10,6 +10,7 @@ import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
+import hiiragi283.core.api.resource.modifyPath
 import hiiragi283.core.api.resource.toId
 import java.util.function.BiConsumer
 import java.util.function.Supplier
@@ -71,6 +72,6 @@ data object HTDynamicResourceRegister {
     // Texture
     @JvmStatic
     fun addTexture(id: ResourceLocation, image: NativeImage) {
-        HTDynamicResourcePack.addToData(id.withPath { "textures/$it.png" }, image.asByteArray())
+        HTDynamicResourcePack.addToData(id.modifyPath { "textures/$it.png" }, image.asByteArray())
     }
 }

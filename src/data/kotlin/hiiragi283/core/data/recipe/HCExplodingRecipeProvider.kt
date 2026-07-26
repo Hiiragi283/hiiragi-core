@@ -70,7 +70,7 @@ class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFutur
                     +HTItemResult.MaterialPart(CommonParts.GEM, VanillaMaterialKeys.DIAMOND)
                     chance = fraction(1, count)
                 }
-                recipeId suffix "_from_${fuels.joinToString(separator = "_or_", transform = HTMaterialKey::name)}"
+                recipeId suffix "_from_${fuels.joinToString(separator = "_or_", transform = HTMaterialKey::path)}"
             }.save(exporter)
         }
         // Echo Shard

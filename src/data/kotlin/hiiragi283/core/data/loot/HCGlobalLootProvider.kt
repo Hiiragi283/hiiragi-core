@@ -2,6 +2,7 @@ package hiiragi283.core.data.loot
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.registry.createKey
+import hiiragi283.core.api.resource.modifyPath
 import hiiragi283.core.setup.HCItems
 import java.util.function.BiConsumer
 import net.minecraft.core.Holder
@@ -37,7 +38,7 @@ sealed class HCGlobalLootProvider(protected val provider: HolderLookup.Provider)
         private fun create(path: String): ResourceKey<LootTable> = create(HiiragiCoreAPI.id(path))
 
         @JvmStatic
-        private fun create(id: ResourceLocation): ResourceKey<LootTable> = Registries.LOOT_TABLE.createKey(id.withPath { "drop_$it" })
+        private fun create(id: ResourceLocation): ResourceKey<LootTable> = Registries.LOOT_TABLE.createKey(id.modifyPath { "drop_$it" })
     }
 
     protected val fortune: Holder<Enchantment> by lazy { provider.holderOrThrow(Enchantments.FORTUNE) }

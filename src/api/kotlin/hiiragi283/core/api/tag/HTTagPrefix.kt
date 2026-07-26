@@ -17,7 +17,7 @@ class HTTagPrefix(val rawCommonTag: RawTagKey, private val tagPattern: String) {
     /**
      * @since 0.16.0
      */
-    fun materialTag(key: HTMaterialKey): RawTagKey = RawTagKey.common(tagPattern.replace("%s", key.name))
+    fun materialTag(key: HTMaterialKey): RawTagKey = RawTagKey.common(tagPattern.replace("%s", key.path))
 
     /**
      * 指定した[レジストリキー][registryKey]と[素材][key]から，素材の共通タグを生成します。

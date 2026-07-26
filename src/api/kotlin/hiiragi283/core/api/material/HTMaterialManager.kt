@@ -2,15 +2,9 @@ package hiiragi283.core.api.material
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
-import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyMap
-import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.resource.HTIdLike
-import hiiragi283.core.api.resource.toId
-import hiiragi283.core.api.text.Text
-import hiiragi283.core.api.text.translatableText
 import hiiragi283.core.api.util.HTTextResult
 import hiiragi283.core.api.util.toTextResult
 import hiiragi283.core.internal.material.HTMaterialContentsRegister
@@ -78,12 +72,8 @@ interface HTMaterialManager : Iterable<HTMaterialManager.Entry> {
     override fun iterator(): Iterator<Entry> = asSequence().iterator()
 
     data class Entry(val key: HTMaterialKey, val map: HTPropertyMap) :
-        HTIdLike.Translatable,
+        HTIdLike,
         HTPropertyGetter by map {
-        override fun getId(): ResourceLocation = this.getOrDefault(HTMaterialPropertyKeys.ORIGIN_MOD_ID).toId(key.name)
-
-        override val translationKey: String get() = getId().toLanguageKey(HTConst.MATERIAL)
-
-        override fun getText(): Text = translatableText(translationKey)
+        override fun getId(): ResourceLocation = key.getId()
     }
 }

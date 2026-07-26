@@ -5,7 +5,7 @@
     "type": "hiiragi_core:material_part",
     "chance": "1/8",
     "count": 1,
-    "material": "warped_crystal",
+    "material": "hiiragi_core:warped_crystal",
     "part": "gem"
   }
 }

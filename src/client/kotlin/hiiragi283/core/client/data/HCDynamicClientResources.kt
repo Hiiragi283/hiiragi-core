@@ -26,6 +26,7 @@ import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
+import hiiragi283.core.api.resource.modifyPath
 import kotlin.system.measureTimeMillis
 import net.minecraft.data.models.model.DelegatedModel
 import net.minecraft.data.models.model.ModelTemplates
@@ -56,11 +57,10 @@ internal data object HCDynamicClientResources {
     private fun addTranslations(langType: HTLangType, consumer: (String, String) -> Unit) {
         val registered: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
 
-        for (entry: HTMaterialManager.Entry in HTMaterialManager.getInstance()) {
+        for ((key: HTMaterialKey, entry: HTPropertyGetter) in HTMaterialManager.getInstance()) {
             // Material Name
-            val key: HTMaterialKey = entry.key
             val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
-            consumer(entry.translationKey, materialName.getTranslatedName(langType))
+            consumer(key.translationKey, materialName.getTranslatedName(langType))
             // Block
             for ((part: HTPart, block: HTMaterialContents.BlockEntry) in registered.blocks.column(key)) {
                 val name: String = translate(langType, part, entry) ?: continue
@@ -150,7 +150,7 @@ internal data object HCDynamicClientResources {
             val itemId: ResourceLocation = item.itemId
             val textureIcon: String = part[HTPartPropertyKeys.TEXTURE_ICON] ?: part.name
             val overlay: ResourceLocation = HiiragiCoreAPI.id(HTConst.ITEM, "${textureIcon}_overlay")
-            if (HTDynamicResourcePack.hasResource(overlay.withPath { "textures/$it.png" })) {
+            if (HTDynamicResourcePack.hasResource(overlay.modifyPath { "textures/$it.png" })) {
                 HTDynamicResourceRegister.addItemModel(ModelTemplates.TWO_LAYERED_ITEM, item, TextureMapping.layered(itemId, overlay))
             } else {
                 HTDynamicResourceRegister.addItemModel(ModelTemplates.FLAT_ITEM, item, TextureMapping.layer0(itemId))

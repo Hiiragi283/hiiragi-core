@@ -2,6 +2,7 @@
 
 package hiiragi283.core.api.resource
 
+import hiiragi283.core.api.util.Identity
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 
@@ -36,6 +37,8 @@ inline fun vanillaId(path: String): ResourceLocation = ResourceLocation.withDefa
  * @author Hiiragi Tsubasa
  */
 fun vanillaId(vararg path: String): ResourceLocation = ResourceLocation.withDefaultNamespace(path.joinToString(separator = "/"))
+
+inline fun ResourceLocation.modifyPath(operator: Identity<String>): ResourceLocation = this.namespace.toId(operator(this.path))
 
 //    ResourceKey    //
 

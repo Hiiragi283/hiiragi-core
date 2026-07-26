@@ -1,7 +1,6 @@
 package hiiragi283.core.common.plugin
 
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.div
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.tool.HTToolType
@@ -287,7 +286,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
             setName("Coal Coke", "石炭コークス")
             setTextureSet("fuel")
             put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 10 * 16)
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.STEEL.toId(HiiragiCoreAPI.MOD_ID))
+            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.STEEL.getId())
         }
     }
 
@@ -534,7 +533,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
 
             setName("Ash", "灰")
             setTextureSet("mineral", HTMaterialTextureSet.DULL)
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.STEEL.toId(HiiragiCoreAPI.MOD_ID))
+            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.STEEL.getId())
         }
         builder.getBuilder(CommonMaterialKeys.CARBON).apply {
             addItemPrefixes(CommonParts.DUST, CommonParts.PLATE, CommonParts.ROD)
@@ -544,7 +543,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
             setName("Carbon", "炭素")
             // addCustomName(CommonPartsN.WIRE, "Carbon Fiber", "炭素繊維")
             setTextureSet("mineral", HTMaterialTextureSet.DULL)
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, VanillaMaterialKeys.COAL.toId(HiiragiCoreAPI.MOD_ID))
+            put(HTMaterialPropertyKeys.TEXTURE_COLOR, VanillaMaterialKeys.COAL.getId())
         }
         builder.getBuilder(CommonMaterialKeys.PLASTIC).apply {
             setDefaultPart(

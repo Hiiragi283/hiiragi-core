@@ -1,6 +1,7 @@
 package hiiragi283.core.api.data.texture
 
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.modifyPath
 import java.io.BufferedReader
 import java.io.InputStream
 import java.util.stream.Stream
@@ -43,7 +44,7 @@ data object HTTextureUtil {
     @JvmStatic
     fun getOrCreateColors(id: ResourceLocation, manager: ResourceManager): Result<List<Int>> = getCachedColors(id)
         ?.let(Result.Companion::success)
-        ?: runCatching { manager.getResource(id.withPath { "palettes/$it.gpl" }).get().open() }
+        ?: runCatching { manager.getResource(id.modifyPath { "palettes/$it.gpl" }).get().open() }
             .mapCatching(InputStream::bufferedReader)
             .mapCatching(BufferedReader::lines)
             .map(Stream<String>::toList)

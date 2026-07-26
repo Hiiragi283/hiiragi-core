@@ -1,6 +1,5 @@
 package hiiragi283.core.api.material.part
 
-import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.property.HTPropertyGetter
@@ -27,12 +26,10 @@ interface HTPartLike : HTPropertyGetter {
      */
     fun asPartName(): String
 
-    fun createPath(key: HTMaterialKey): String
-
     /**
      * 指定した[素材][key]から[ID][ResourceLocation]を生成します。
      */
-    fun createId(key: HTMaterialKey): ResourceLocation = HiiragiCoreAPI.id(createPath(key))
+    fun createId(key: HTMaterialKey): ResourceLocation
 }
 
 //    Extensions    //

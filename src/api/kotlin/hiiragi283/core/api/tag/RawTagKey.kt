@@ -4,7 +4,9 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.RegistryKey
+import hiiragi283.core.api.resource.modifyPath
 import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.util.Identity
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceLocation
@@ -56,7 +58,7 @@ value class RawTagKey private constructor(val location: ResourceLocation) {
 
     fun withSuffix(suffix: String): RawTagKey = create(location.withSuffix(suffix))
 
-    fun withPath(transform: (String) -> String): RawTagKey = create(location.withPath(transform))
+    inline fun withPath(transform: Identity<String>): RawTagKey = create(location.modifyPath(transform))
 
     fun <T : Any> create(key: RegistryKey<T>): TagKey<T> = TagKey.create(key, location)
 }

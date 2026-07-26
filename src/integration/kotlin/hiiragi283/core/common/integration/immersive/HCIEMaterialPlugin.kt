@@ -77,7 +77,7 @@ data object HCIEMaterialPlugin : HTMaterialPlugin {
             put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HCIConstants.IMMERSIVE)
 
             setName("HOP Graphite", "高配向パイログラファイト")
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.CARBON.toId(HiiragiCoreAPI.MOD_ID))
+            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.CARBON.getId())
         }
     }
 

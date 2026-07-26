@@ -51,7 +51,7 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) : HTBasicRecipeCategory<HTMa
 
     override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HTMaterialManager.Entry, focuses: IFocusGroup) {
         builder
-            .addText(recipe.getText(), width - 22, 20)
+            .addText(recipe.key.getText(), width - 22, 20)
             .setPosition(22, 0)
             .setColor(0x505050)
             .setLineSpacing(0)
