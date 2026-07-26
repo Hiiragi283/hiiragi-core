@@ -1,12 +1,10 @@
 package hiiragi283.core.client.data
 
-import com.google.gson.JsonObject
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.lang.HTLangName
-import hiiragi283.core.api.data.lang.HTLangPatternProvider
 import hiiragi283.core.api.data.lang.HTLangType
 import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.data.model.HTModelTemplates
@@ -18,7 +16,6 @@ import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.part.CommonParts
-import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
@@ -29,7 +26,6 @@ import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
-import hiiragi283.core.api.resource.toId
 import kotlin.system.measureTimeMillis
 import net.minecraft.data.models.model.DelegatedModel
 import net.minecraft.data.models.model.ModelTemplates
@@ -37,7 +33,6 @@ import net.minecraft.data.models.model.TextureMapping
 import net.minecraft.data.models.model.TextureSlot
 import net.minecraft.data.models.model.TexturedModel
 import net.minecraft.resources.ResourceLocation
-import net.neoforged.neoforge.common.Tags
 
 internal data object HCDynamicClientResources {
     @JvmStatic
@@ -63,32 +58,32 @@ internal data object HCDynamicClientResources {
 
         for (entry: HTMaterialManager.Entry in HTMaterialManager.getInstance()) {
             // Material Name
-            val key: HTMaterialKey = entry.asMaterialKey()
+            val key: HTMaterialKey = entry.key
             val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
-            consumer(key.translationKey, materialName.getTranslatedName(langType))
+            consumer(entry.translationKey, materialName.getTranslatedName(langType))
             // Block
-            for ((part: HTPart, block: HTMaterialContents.BlockEntry) in registered.blocks.column(entry)) {
+            for ((part: HTPart, block: HTMaterialContents.BlockEntry) in registered.blocks.column(key)) {
                 val name: String = translate(langType, part, entry) ?: continue
                 consumer(block.translationKey, name)
             }
             // Fluid
-            val fluids: HTMaterialContents<HTFluidPart, HTMaterialContents.FluidEntry> = HiiragiCoreAccess.INSTANCE.registeredFluids
-            for ((part: HTFluidPart, fluid: HTMaterialContents.FluidEntry) in fluids.column(entry)) {
+            /*val fluids: HTMaterialContents<HTFluidPart, HTMaterialContents.FluidEntry> = HiiragiCoreAccess.INSTANCE.registeredFluids
+            for ((part: HTFluidPart, fluid: HTMaterialContents.FluidEntry) in fluids.column(key)) {
                 val name: String = translate(langType, part, entry) ?: continue
                 consumer(fluid.translationKey, name)
-                consumer(Tags.getTagTranslationKey(part.createTagKey(entry)), name)
+                consumer(Tags.getTagTranslationKey(part.createTagKey(key)), name)
 
                 val bucketName: String = HTLangPatternProvider("%s Bucket", "%s入りバケツ").translate(langType, name)
                 consumer(fluid.getBucketSupplier().translationKey, bucketName)
-                consumer(Tags.getTagTranslationKey(part.createBucketTag(entry)), bucketName)
-            }
+                consumer(Tags.getTagTranslationKey(part.createBucketTag(key)), bucketName)
+            }*/
             // Item
-            for ((part: HTPart, item: HTMaterialContents.ItemEntry) in registered.items.column(entry)) {
+            for ((part: HTPart, item: HTMaterialContents.ItemEntry) in registered.items.column(key)) {
                 val name: String = translate(langType, part, entry) ?: continue
                 consumer(item.translationKey, name)
             }
             // Tool
-            for ((toolType: HTToolType, tool: HTMaterialContents.ItemEntry) in registered.tools.column(entry)) {
+            for ((toolType: HTToolType, tool: HTMaterialContents.ItemEntry) in registered.tools.column(key)) {
                 consumer(tool.translationKey, toolType.langPattern.translate(langType, materialName))
             }
         }
@@ -96,9 +91,6 @@ internal data object HCDynamicClientResources {
 
     @JvmStatic
     private fun translate(type: HTLangType, part: HTPart, getter: HTPropertyGetter): String? = translate(type, part, getter, HTMaterialPropertyKeys.CUSTOM_LANG_NAME)
-
-    @JvmStatic
-    private fun translate(type: HTLangType, part: HTFluidPart, getter: HTPropertyGetter): String? = translate(type, part, getter, HTMaterialPropertyKeys.CUSTOM_FLUID_NAME)
 
     @JvmStatic
     private fun <T : HTPartLike> translate(
@@ -139,7 +131,7 @@ internal data object HCDynamicClientResources {
             HTDynamicResourceRegister.MODEL_OUTPUT.accept(block.itemId, DelegatedModel(block.blockId))
         }
         // Fluid
-        HiiragiCoreAccess.INSTANCE.registeredFluids.forEach { (part: HTFluidPart, _, fluid: HTMaterialContents.FluidEntry) ->
+        /*HiiragiCoreAccess.INSTANCE.registeredFluids.forEach { (part: HTFluidPart, _, fluid: HTMaterialContents.FluidEntry) ->
             val parent: ResourceLocation = when {
                 part == HTFluidPart.MOLTEN -> "bucket_drip"
                 else -> "bucket"
@@ -152,7 +144,7 @@ internal data object HCDynamicClientResources {
                 root.addProperty("flip_gas", "true")
             }
             HTDynamicResourceRegister.addToData(fluid.getBucketSupplier().itemId.withPrefix("models/"), root)
-        }
+        }*/
         // Item
         registered.items.forEach { (part: HTPart, _, item: HTIdLike) ->
             val itemId: ResourceLocation = item.itemId

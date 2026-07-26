@@ -8,7 +8,7 @@
     "type": "hiiragi_core:material_part",
     "chance": "1/32",
     "count": 1,
-    "material": "hiiragi_core:diamond",
+    "material": "diamond",
     "part": "gem"
   }
 }

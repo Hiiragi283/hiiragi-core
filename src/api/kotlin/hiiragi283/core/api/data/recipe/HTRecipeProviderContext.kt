@@ -2,22 +2,15 @@ package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTComparators
 import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
-import hiiragi283.core.api.material.part.HTFluidPart
-import hiiragi283.core.api.material.property.getDefaultFluidAmount
 import hiiragi283.core.api.material.property.getDefaultPart
-import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
-import hiiragi283.core.api.util.Identity
-import hiiragi283.core.api.util.getOrThrow
-import hiiragi283.core.api.util.identity
 import kotlin.collections.toSortedSet
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
-import net.minecraft.world.level.material.Fluid
 
 abstract class HTRecipeProviderContext {
     /**
@@ -46,38 +39,20 @@ abstract class HTRecipeProviderContext {
     /**
      * [TagKey]を取得します。
      * @param prefix タグのプレフィックス
-     * @param material タグの種類を表す素材
+     * @param key タグの種類を表す素材
      * @since 21.1.0
      */
-    fun tag(prefix: HTTagPrefix, material: HTMaterialLike): TagKey<Item> = prefix.itemTagKey(material)
+    fun tag(prefix: HTTagPrefix, key: HTMaterialKey): TagKey<Item> = prefix.itemTagKey(key)
 
     /**
      * @since 0.9.0
      */
-    fun baseOrPrefix(material: HTMaterialLike, prefix: HTTagPrefix): Set<TagKey<Item>> = setOfNotNull(prefix.itemTagKey(material), materialManager.getOrEmpty(material).getDefaultPart(material)).toSortedSet(HTComparators.TAG_KEY)
+    fun baseOrPrefix(key: HTMaterialKey, prefix: HTTagPrefix): Set<TagKey<Item>> = setOfNotNull(prefix.itemTagKey(key), materialManager.getOrEmpty(key).getDefaultPart(key)).toSortedSet(HTComparators.TAG_KEY)
 
     /**
      * @since 0.9.0
      */
-    fun baseOrDust(material: HTMaterialLike): Set<TagKey<Item>> = baseOrPrefix(material, CommonTagPrefixes.DUST)
-
-    /**
-     *@since 21.1.0
-     */
-    fun tag(part: HTFluidPart, material: HTMaterialLike): TagKey<Fluid> = part.createTagKey(material)
-
-    /**
-     *@since 21.1.0
-     */
-    fun fluid(part: HTFluidPart, material: HTMaterialLike, operator: Identity<Int> = identity()): HTFluidResult = HTFluidResultBuilder().apply {
-        +HiiragiCoreAccess.INSTANCE.registeredFluids.getResult(part, material).getOrThrow()
-        amount = materialManager.getOrEmpty(material).getDefaultFluidAmount().let(operator)
-    }.build()
-
-    /**
-     *@since 21.1.0
-     */
-    fun molten(material: HTMaterialLike, operator: Identity<Int> = identity()): HTFluidResult = fluid(HTFluidPart.MOLTEN, material, operator)
+    fun baseOrDust(key: HTMaterialKey): Set<TagKey<Item>> = baseOrPrefix(key, CommonTagPrefixes.DUST)
 
     //    Delegated    //
 

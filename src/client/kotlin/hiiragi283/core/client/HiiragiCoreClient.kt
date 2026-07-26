@@ -6,11 +6,9 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.color.HTDefaultColor
 import hiiragi283.core.api.data.pack.HTDynamicResourcePack
 import hiiragi283.core.api.event.HTRegisterWidgetRendererEvent
-import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.mod.HTClientMod
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.registry.HTFluidContent
-import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.client.data.HCClientResourceProvider
 import hiiragi283.core.client.data.HCDynamicClientResources
@@ -94,9 +92,9 @@ data object HiiragiCoreClient : HTClientMod() {
         event.dull(HCFluids.LATEX, Color(0xcccccc))
         event.dull(HCFluids.MEAT, Color(0x993333))
 
-        for (fluid: HTMaterialContents.FluidEntry in HiiragiCoreAccess.INSTANCE.registeredFluids.values) {
+        /*for (fluid: HTMaterialContents.FluidEntry in HiiragiCoreAccess.INSTANCE.registeredFluids.values) {
             event.registerFluidType(HTSimpleFluidExtensions(fluid.blockId), fluid.get().fluidType)
-        }
+        }*/
     }
 
     override fun registerScreens(event: RegisterMenuScreensEvent) {

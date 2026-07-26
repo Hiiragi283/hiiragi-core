@@ -2,8 +2,17 @@ package hiiragi283.core.api.material
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
+import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
+import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyMap
+import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.toId
+import hiiragi283.core.api.text.Text
+import hiiragi283.core.api.text.translatableText
+import hiiragi283.core.api.util.HTTextResult
+import hiiragi283.core.api.util.toTextResult
 import hiiragi283.core.internal.material.HTMaterialContentsRegister
 import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.StreamCodec
@@ -25,59 +34,56 @@ interface HTMaterialManager : Iterable<HTMaterialManager.Entry> {
         val CODEC: Codec<Entry> = HTMaterialKey.CODEC.comapFlatMap(
             { key: HTMaterialKey ->
                 getInstance()
-                    .entries
-                    .firstOrNull { it.asMaterialKey() == key }
+                    .asSequence()
+                    .firstOrNull { it.key == key }
                     ?.let { DataResult.success(it) }
                     ?: DataResult.error { errorMessage(key) }
             },
-            Entry::asMaterialKey,
+            Entry::key,
         )
 
         @JvmField
         val STREAM_CODEC: StreamCodec<ByteBuf, Entry> = HTMaterialKey.STREAM_CODEC.map(
-            { key: HTMaterialKey -> getInstance().entries.firstOrNull { it.asMaterialKey() == key } ?: errorMessage(key).let(::error) },
-            Entry::asMaterialKey,
+            { key: HTMaterialKey -> getInstance().asSequence().firstOrNull { it.key == key } ?: errorMessage(key).let(::error) },
+            Entry::key,
         )
     }
 
     /**
-     * 指定した[素材][material]がプロパティを保持しているか判定します。
+     * 指定した[素材][key]がプロパティを保持しているか判定します。
      */
-    operator fun contains(material: HTMaterialLike): Boolean
+    operator fun contains(key: HTMaterialKey): Boolean
 
     /**
-     * 指定した[素材][material]のプロパティの一覧を取得します。
+     * 指定した[素材][key]のプロパティの一覧を取得します。
      * @return プロパティを保持していない場合は`null`
      */
-    operator fun get(material: HTMaterialLike): HTPropertyMap?
+    operator fun get(key: HTMaterialKey): HTPropertyMap?
+
+    fun getResult(key: HTMaterialKey): HTTextResult<HTPropertyMap> = get(key).toTextResult { "Unregistered material: $key" }
 
     /**
-     * 指定した[素材][material]のプロパティの一覧を取得します。
+     * 指定した[素材][key]のプロパティの一覧を取得します。
      * @return プロパティを保持していない場合は[HTPropertyMap.Empty]
      */
-    fun getOrEmpty(material: HTMaterialLike): HTPropertyMap = get(material) ?: HTPropertyMap.Empty
+    fun getOrEmpty(key: HTMaterialKey): HTPropertyMap = get(key) ?: HTPropertyMap.Empty
 
     /**
      * 登録された[素材][HTMaterialKey]の一覧を取得します。
      */
     val keys: Set<HTMaterialKey>
 
-    /**
-     * 登録された[エントリ][Entry]の一覧を取得します。
-     */
-    val entries: Set<Entry>
+    fun asSequence(): Sequence<Entry> = keys.asSequence().map { Entry(it, getOrEmpty(it)) }
 
-    override fun iterator(): Iterator<Entry> = entries.iterator()
+    override fun iterator(): Iterator<Entry> = asSequence().iterator()
 
-    /**
-     * [HTMaterialLike]と[HTPropertyMap]を束ねたインターフェースです。
-     * @author Hiiragi Tsubasa
-     * @since 0.9.0
-     */
-    interface Entry :
-        HTIdLike,
-        HTMaterialLike,
-        HTPropertyMap {
-        override fun getId(): ResourceLocation = asMaterialId()
+    data class Entry(val key: HTMaterialKey, val map: HTPropertyMap) :
+        HTIdLike.Translatable,
+        HTPropertyGetter by map {
+        override fun getId(): ResourceLocation = this.getOrDefault(HTMaterialPropertyKeys.ORIGIN_MOD_ID).toId(key.name)
+
+        override val translationKey: String get() = getId().toLanguageKey(HTConst.MATERIAL)
+
+        override fun getText(): Text = translatableText(translationKey)
     }
 }

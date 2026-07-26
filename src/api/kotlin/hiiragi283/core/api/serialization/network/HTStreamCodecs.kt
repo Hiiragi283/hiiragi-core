@@ -145,10 +145,9 @@ data object HTStreamCodecs {
     /**
      * 指定した[registryKey]から[TagKey]の[StreamCodec]を返します。
      * @param T レジストリの要素のクラス
-     * @param withHash 変換後の文字列の先頭に'#'をつけるかどうか
      */
     @JvmStatic
-    fun <T : Any> tagKey(registryKey: RegistryKey<T>, withHash: Boolean): StreamCodec<ByteBuf, TagKey<T>> = ResourceLocation.STREAM_CODEC.map(registryKey::createTagKey, TagKey<T>::location)
+    fun <T : Any> tagKey(registryKey: RegistryKey<T>): StreamCodec<ByteBuf, TagKey<T>> = ResourceLocation.STREAM_CODEC.map(registryKey::createTagKey, TagKey<T>::location)
 
     /**
      * 指定した[registryKey]から[Holder]の[StreamCodec]を返します。

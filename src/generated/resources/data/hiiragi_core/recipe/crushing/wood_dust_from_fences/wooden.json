@@ -7,7 +7,7 @@
   "results": {
     "type": "hiiragi_core:material_part",
     "count": 5,
-    "material": "hiiragi_core:wood",
+    "material": "wood",
     "part": "dust"
   },
   "time": 100

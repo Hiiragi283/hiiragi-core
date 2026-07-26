@@ -1,6 +1,6 @@
 package hiiragi283.core.api.data.map
 
-import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.resource.SimpleBlockItemSupplierWithKey
@@ -46,5 +46,5 @@ abstract class HTDataMapProvider(packOutput: PackOutput, lookupProvider: Complet
 
     protected fun <T : Any> Builder<T, Item>.add(holder: SimpleBlockItemSupplierWithKey, value: T, vararg conditions: ICondition): Builder<T, Item> = add(holder.getItemSupplier().getKey(), value, false, *conditions)
 
-    protected fun <T : Any> Builder<T, Item>.add(prefix: HTTagPrefix, material: HTMaterialLike, value: T, vararg conditions: ICondition): Builder<T, Item> = add(prefix.itemTagKey(material), value, false, *conditions)
+    protected fun <T : Any> Builder<T, Item>.add(prefix: HTTagPrefix, key: HTMaterialKey, value: T, vararg conditions: ICondition): Builder<T, Item> = add(prefix.itemTagKey(key), value, false, *conditions)
 }

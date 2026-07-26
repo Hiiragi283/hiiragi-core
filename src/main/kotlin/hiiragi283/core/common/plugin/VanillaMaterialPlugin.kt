@@ -1,12 +1,12 @@
 package hiiragi283.core.common.plugin
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.item.tool.VanillaToolTypes
-import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
-import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTExtraOreResultMap
@@ -17,7 +17,6 @@ import hiiragi283.core.api.material.property.HTSmithingRecipeProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
 import hiiragi283.core.api.material.property.addBlockPrefixes
 import hiiragi283.core.api.material.property.addCustomName
-import hiiragi283.core.api.material.property.addFluidPrefixes
 import hiiragi283.core.api.material.property.addItemPrefixes
 import hiiragi283.core.api.material.property.setDefaultPart
 import hiiragi283.core.api.material.property.setName
@@ -47,8 +46,8 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
 
     override fun registerExistingBlock(consumer: HTMaterialPlugin.BlockConsumer) {
         @Suppress("DEPRECATION")
-        fun accept(part: HTPartLike, material: HTMaterialLike, block: Block) {
-            consumer.accept(part, material.asMaterialKey(), block.builtInRegistryHolder().toBlockLike())
+        fun accept(part: HTPartLike, key: HTMaterialKey, block: Block) {
+            consumer.accept(part, key, block.builtInRegistryHolder().toBlockLike())
         }
         // Fuels
         accept(CommonParts.ORE, VanillaMaterialKeys.COAL, Blocks.COAL_ORE)
@@ -98,8 +97,8 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
     }
 
     override fun registerExistingItem(consumer: HTMaterialPlugin.ItemConsumer) {
-        fun accept(part: HTPartLike, material: HTMaterialLike, item: Item) {
-            consumer.accept(part, material.asMaterialKey(), item.toLike())
+        fun accept(part: HTPartLike, key: HTMaterialKey, item: Item) {
+            consumer.accept(part, key, item.toLike())
         }
 
         // Fuel
@@ -142,8 +141,8 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
     }
 
     override fun registerExistingTool(consumer: HTMaterialPlugin.ToolConsumer) {
-        fun accept(toolType: HTToolType, material: HTMaterialLike, item: Item) {
-            consumer.accept(toolType, material.asMaterialKey(), item.toLike())
+        fun accept(toolType: HTToolType, key: HTMaterialKey, item: Item) {
+            consumer.accept(toolType, key, item.toLike())
         }
 
         // Wooden
@@ -214,6 +213,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             )
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.NONE)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.NONE)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Coal", "石炭")
             setTextureSet("fuel")
@@ -225,6 +225,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             addItemPrefixes(CommonParts.DUST, CommonParts.TINY)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.NONE)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.NONE)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Charcoal", "木炭")
             setTextureSet("fuel")
@@ -235,7 +236,6 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
     @JvmStatic
     private fun mineral(builder: HTMaterialPlugin.MaterialProvider) {
         builder.getBuilder(VanillaMaterialKeys.REDSTONE).apply {
-            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.RAW, CommonParts.CRUSHED_ORE)
             put(
                 HTMaterialPropertyKeys.EXTRA_ORE_RESULTS,
@@ -244,12 +244,13 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
                 },
             )
             put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(4))
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Redstone", "赤石")
         }
         builder.getBuilder(VanillaMaterialKeys.GLOWSTONE).apply {
-            addFluidPrefixes(HTFluidPart.MOLTEN)
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Glowstone", "グロウストーン")
         }
@@ -268,6 +269,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
                 },
             )
             put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(4))
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Lapis", "ラピス")
             setTextureSet("lapis")
@@ -283,6 +285,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             )
             put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(3))
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Quartz", "水晶")
             setTextureSet("quartz", HTMaterialTextureSet.SHINE)
@@ -291,6 +294,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
             addItemPrefixes(itemSet)
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Amethyst", "アメジスト")
             setTextureSet("amethyst")
@@ -304,6 +308,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
                     all(CommonMaterialKeys.CARBON, 1 / 4f)
                 },
             )
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Diamond", "ダイヤモンド")
             setTextureSet("diamond")
@@ -311,6 +316,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(VanillaMaterialKeys.EMERALD).apply {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
             addItemPrefixes(itemSet.plus(CommonParts.GEAR))
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Emerald", "エメラルド")
             setTextureSet("emerald")
@@ -319,12 +325,14 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
             addBlockPrefixes(CommonParts.BLOCK)
             addItemPrefixes(CommonParts.DUST)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Echo Shard", "残響の欠片")
             setTextureSet("echo")
         }
         builder.getBuilder(VanillaMaterialKeys.PRISMARINE).apply {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Prismarine", "プリズマリン")
         }
@@ -335,8 +343,8 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(VanillaMaterialKeys.ENDER).apply {
             setDefaultPart(HTDefaultPart.Prefixed.PEARL)
             addBlockPrefixes(CommonParts.BLOCK)
-            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.DUST)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Ender Pearl", "エンダーパール")
             setTextureSet("pearl")
@@ -365,6 +373,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
                 },
             )
             put(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER, fraction(3, 2))
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Copper", "銅")
             setTextureSet(HTMaterialTextureSet.SHINE)
@@ -388,6 +397,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             )
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Iron", "鉄")
         }
@@ -411,6 +421,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             )
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Gold", "金")
         }
@@ -429,6 +440,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             )
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.HIGH)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.HIGH)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Netherite", "ネザライト")
             setTextureSet(HTMaterialTextureSet.DULL)
@@ -450,6 +462,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             addItemPrefixes(CommonParts.DUST, CommonParts.GEAR)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.NONE)
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Wood", "木")
             addCustomName(CommonParts.DUST, "Sawdust", "おがくず")
@@ -458,11 +471,11 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         }
         builder.getBuilder(VanillaMaterialKeys.GLASS).apply {
             setDefaultPart(Tags.Items.GLASS_BLOCKS, Items.GLASS.toLike())
-            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.DUST, CommonParts.ROD)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, FluidType.BUCKET_VOLUME)
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.NONE)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Glass", "ガラス")
             setTextureSet(HTMaterialTextureSet.SHINE)
@@ -470,17 +483,18 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         }
         builder.getBuilder(VanillaMaterialKeys.STONE).apply {
             setDefaultPart(ItemTags.STONE_CRAFTING_MATERIALS, Items.COBBLESTONE.toLike())
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Stone", "石")
             setTextureSet(HTMaterialTextureSet.DULL)
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.STEEL.getId())
+            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.STEEL.toId(HiiragiCoreAPI.MOD_ID))
         }
         builder.getBuilder(VanillaMaterialKeys.OBSIDIAN).apply {
             setDefaultPart(Tags.Items.OBSIDIANS_NORMAL, Items.OBSIDIAN.toLike())
-            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.DUST)
             put(HTMaterialPropertyKeys.DEFAULT_FLUID_AMOUNT, FluidType.BUCKET_VOLUME)
             put(HTMaterialPropertyKeys.DEFAULT_SCALE, fraction(4))
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Obsidian", "黒曜石")
             setTextureSet(HTMaterialTextureSet.DULL)
@@ -489,12 +503,14 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(VanillaMaterialKeys.BLAZE).apply {
             setDefaultPart(Tags.Items.RODS_BLAZE, Items.BLAZE_ROD.toLike())
             put(HTMaterialPropertyKeys.DEFAULT_SCALE, fraction(4))
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Blaze", "ブレイズ")
         }
         builder.getBuilder(VanillaMaterialKeys.BREEZE).apply {
             setDefaultPart(Tags.Items.RODS_BREEZE, Items.BREEZE_ROD.toLike())
             put(HTMaterialPropertyKeys.DEFAULT_SCALE, fraction(6))
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Breeze", "ブリーズ")
         }
@@ -502,12 +518,14 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(VanillaMaterialKeys.BRICK).apply {
             setDefaultPart(Tags.Items.BRICKS_NORMAL, Items.BRICK.toLike())
             addItemPrefixes(CommonParts.DUST, CommonParts.PLATE)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Brick", "レンガ")
         }
         builder.getBuilder(VanillaMaterialKeys.NETHER_BRICK).apply {
             setDefaultPart(Tags.Items.BRICKS_NETHER, Items.NETHER_BRICK.toLike())
             addItemPrefixes(CommonParts.DUST, CommonParts.PLATE)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Nether Brick", "ネザーレンガ")
         }

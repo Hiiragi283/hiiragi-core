@@ -1,11 +1,10 @@
 package hiiragi283.core.common.material
 
-import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.material.HTMaterialKey
 
 object HCMaterialKeys {
     @JvmStatic
-    private fun create(path: String): HTMaterialKey = HTMaterialKey(HiiragiCoreAPI.id(path))
+    private fun create(path: String): HTMaterialKey = HTMaterialKey(path)
 
     //    Gems    //
 

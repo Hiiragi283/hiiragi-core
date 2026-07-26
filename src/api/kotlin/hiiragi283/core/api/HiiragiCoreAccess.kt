@@ -7,9 +7,7 @@ import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.get
-import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.plugin.HTMaterialPlugin
@@ -104,17 +102,17 @@ abstract class HiiragiCoreAccess {
     val existingContents: HTMaterialAccess = object : HTMaterialAccess {
         override val blocks: HTMaterialContents<HTPart, HTMaterialContents.BlockEntry> by lazy {
             HTMaterialContentsImpl(HTMaterialContentsRegister.existingBlocks) { part: HTPart, key: HTMaterialKey ->
-                "Unknown ${part.name} block for ${key.getId()}"
+                "Unknown ${part.name} block for $key"
             }
         }
         override val items: HTMaterialContents<HTPart, HTMaterialContents.ItemEntry> by lazy {
             HTMaterialContentsImpl(HTMaterialContentsRegister.existingItems) { part: HTPart, key: HTMaterialKey ->
-                "Unknown ${part.name} item for ${key.getId()}"
+                "Unknown ${part.name} item for $key"
             }
         }
         override val tools: HTMaterialContents<HTToolType, HTMaterialContents.ItemEntry> by lazy {
             HTMaterialContentsImpl(HTMaterialContentsRegister.existingTools) { toolType: HTToolType, key: HTMaterialKey ->
-                "Unknown ${toolType.name} item for ${key.getId()}"
+                "Unknown ${toolType.name} item for $key"
             }
         }
     }
@@ -125,32 +123,26 @@ abstract class HiiragiCoreAccess {
     val registeredContents: HTMaterialAccess = object : HTMaterialAccess {
         override val blocks: HTMaterialContents<HTPart, HTMaterialContents.BlockEntry> by lazy {
             HTMaterialContentsImpl(HTMaterialContentsRegister.materialBlocks) { part: HTPart, key: HTMaterialKey ->
-                "Unregistered ${part.name} block for ${key.getId()}"
+                "Unregistered ${part.name} block for $key"
             }
         }
         override val items: HTMaterialContents<HTPart, HTMaterialContents.ItemEntry> by lazy {
             HTMaterialContentsImpl(HTMaterialContentsRegister.materialItems) { part: HTPart, key: HTMaterialKey ->
-                "Unregistered ${part.name} item for ${key.getId()}"
+                "Unregistered ${part.name} item for $key"
             }
         }
         override val tools: HTMaterialContents<HTToolType, HTMaterialContents.ItemEntry> by lazy {
             HTMaterialContentsImpl(HTMaterialContentsRegister.materialTools) { toolType: HTToolType, key: HTMaterialKey ->
-                "Unregistered ${toolType.name} item for ${key.getId()}"
+                "Unregistered ${toolType.name} item for $key"
             }
         }
     }
 
-    val registeredFluids: HTMaterialContents<HTFluidPart, HTMaterialContents.FluidEntry> by lazy {
-        HTMaterialContentsImpl(HTMaterialContentsRegister.materialFluids) { part: HTFluidPart, key: HTMaterialKey ->
-            "Unregistered ${part.asPartName()} fluid for ${key.getId()}"
-        }
-    }
+    fun getMaterialBlock(part: HTPartLike, key: HTMaterialKey): HTMaterialContents.BlockEntry? = existingContents.blocks[part, key] ?: registeredContents.blocks[part, key]
 
-    fun getMaterialBlock(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.BlockEntry? = existingContents.blocks[part, material] ?: registeredContents.blocks[part, material]
+    fun getMaterialItem(part: HTPartLike, key: HTMaterialKey): HTMaterialContents.ItemEntry? = existingContents.items[part, key] ?: registeredContents.items[part, key]
 
-    fun getMaterialItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry? = existingContents.items[part, material] ?: registeredContents.items[part, material]
-
-    fun getMaterialBlockOrItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry? = existingContents.getBlockOrItem(part, material) ?: registeredContents.getBlockOrItem(part, material)
+    fun getMaterialBlockOrItem(part: HTPartLike, key: HTMaterialKey): HTMaterialContents.ItemEntry? = existingContents.getBlockOrItem(part, key) ?: registeredContents.getBlockOrItem(part, key)
 
     //    Potion    //
 

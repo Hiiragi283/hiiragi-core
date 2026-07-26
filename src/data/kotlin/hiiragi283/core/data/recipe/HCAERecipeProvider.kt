@@ -5,7 +5,7 @@ import appeng.recipes.transform.TransformRecipeBuilder
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.recipe.HTRecipeProvider
 import hiiragi283.core.api.data.recipe.IngredientBuilder
-import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.common.integration.HCIConstants
 import hiiragi283.core.common.material.CommonMaterialKeys
@@ -78,7 +78,7 @@ class HCAERecipeProvider(packOutput: PackOutput, future: CompletableFuture<Holde
         }
     }
 
-    fun baseOrDustIngredient(material: HTMaterialLike): Ingredient = IngredientBuilder().apply { +baseOrDust(material) }.build()
+    fun baseOrDustIngredient(key: HTMaterialKey): Ingredient = IngredientBuilder().apply { +baseOrDust(key) }.build()
 
     override fun getName(): String = "AE2 Recipes"
 }

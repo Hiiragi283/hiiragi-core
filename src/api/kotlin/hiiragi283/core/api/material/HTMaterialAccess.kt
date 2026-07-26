@@ -11,5 +11,5 @@ interface HTMaterialAccess {
 
     val tools: HTMaterialContents<HTToolType, HTMaterialContents.ItemEntry>
 
-    fun getBlockOrItem(part: HTPartLike, material: HTMaterialLike): HTMaterialContents.ItemEntry? = blocks[part, material]?.let { HTMaterialContents.ItemEntry(it.getItemSupplier(), it.isBuiltIn) } ?: items[part, material]
+    fun getBlockOrItem(part: HTPartLike, key: HTMaterialKey): HTMaterialContents.ItemEntry? = blocks[part, key]?.let { HTMaterialContents.ItemEntry(it.getItemSupplier(), it.isBuiltIn) } ?: items[part, key]
 }

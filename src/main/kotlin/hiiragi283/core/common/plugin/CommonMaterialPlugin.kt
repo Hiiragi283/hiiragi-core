@@ -1,13 +1,13 @@
 package hiiragi283.core.common.plugin
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.div
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.item.tool.VanillaToolTypes
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
-import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.part.property.addNamePattern
@@ -18,7 +18,6 @@ import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialTextureSet
 import hiiragi283.core.api.material.property.addBlockPrefixes
 import hiiragi283.core.api.material.property.addCustomName
-import hiiragi283.core.api.material.property.addFluidPrefixes
 import hiiragi283.core.api.material.property.addItemPrefixes
 import hiiragi283.core.api.material.property.addToolPrefixes
 import hiiragi283.core.api.material.property.setDefaultPart
@@ -288,7 +287,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
             setName("Coal Coke", "石炭コークス")
             setTextureSet("fuel")
             put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 10 * 16)
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.STEEL.getId())
+            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.STEEL.toId(HiiragiCoreAPI.MOD_ID))
         }
     }
 
@@ -374,7 +373,6 @@ object CommonMaterialPlugin : HTMaterialPlugin {
             builder.getBuilder(key).apply {
                 setDefaultPart(HTDefaultPart.Prefixed.INGOT)
                 addBlockPrefixes(CommonParts.BLOCK)
-                addFluidPrefixes(HTFluidPart.MOLTEN)
                 addItemPrefixes(alloySet)
                 put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.HIGHEST)
                 put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.HIGHEST)
@@ -393,7 +391,6 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(CommonMaterialKeys.ALUMINUM).apply {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(CommonParts.BLOCK)
-            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(alloySet.plus(CommonParts.WIRE))
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
 
@@ -401,7 +398,6 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         }
         builder.getBuilder(CommonMaterialKeys.SILICON).apply {
             setDefaultPart(HiiragiCoreTags.Items.SILICON, null)
-
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.HIGH)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.HIGH)
 
@@ -426,7 +422,6 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(CommonMaterialKeys.ZINC).apply {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(materialBlockSet)
-            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(metalSet)
 
             setName("Zinc", "亜鉛")
@@ -450,7 +445,6 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(CommonMaterialKeys.TIN).apply {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addBlockPrefixes(materialBlockSet)
-            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(metalSet)
 
             setName("Tin", "錫")
@@ -540,7 +534,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
 
             setName("Ash", "灰")
             setTextureSet("mineral", HTMaterialTextureSet.DULL)
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.STEEL.getId())
+            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.STEEL.toId(HiiragiCoreAPI.MOD_ID))
         }
         builder.getBuilder(CommonMaterialKeys.CARBON).apply {
             addItemPrefixes(CommonParts.DUST, CommonParts.PLATE, CommonParts.ROD)
@@ -550,7 +544,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
             setName("Carbon", "炭素")
             // addCustomName(CommonPartsN.WIRE, "Carbon Fiber", "炭素繊維")
             setTextureSet("mineral", HTMaterialTextureSet.DULL)
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, VanillaMaterialKeys.COAL.getId())
+            put(HTMaterialPropertyKeys.TEXTURE_COLOR, VanillaMaterialKeys.COAL.toId(HiiragiCoreAPI.MOD_ID))
         }
         builder.getBuilder(CommonMaterialKeys.PLASTIC).apply {
             setDefaultPart(
@@ -558,7 +552,6 @@ object CommonMaterialPlugin : HTMaterialPlugin {
                 HTDeferredItem(CommonParts.PLATE.createId(CommonMaterialKeys.PLASTIC)),
             )
             addBlockPrefixes(CommonParts.BLOCK)
-            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.PLATE, CommonParts.ROD)
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
@@ -572,7 +565,6 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(CommonMaterialKeys.RUBBER).apply {
             setDefaultPart(HiiragiCoreTags.Items.RUBBERS, HCItems.CURED_RUBBER)
             addBlockPrefixes(CommonParts.BLOCK)
-            addFluidPrefixes(HTFluidPart.MOLTEN)
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
 
             setName("Rubber", "ゴム")

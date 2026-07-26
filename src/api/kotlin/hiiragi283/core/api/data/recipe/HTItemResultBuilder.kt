@@ -41,7 +41,7 @@ class HTItemResultBuilder {
 
     // Tagged
     operator fun TagKey<Item>.unaryPlus() {
-        +HTItemResult.Tagged(this, 1)
+        +HTItemResult.Tagged(this)
     }
 
     fun build(): HTItemResult = result

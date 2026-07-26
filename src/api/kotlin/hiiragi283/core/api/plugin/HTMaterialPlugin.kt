@@ -45,7 +45,7 @@ interface HTMaterialPlugin : HTIdLike {
     fun registerExistingBlock(consumer: BlockConsumer) {}
 
     fun interface BlockConsumer {
-        fun accept(part: HTPartLike, material: HTMaterialKey, holder: SimpleBlockItemSupplierWithKey)
+        fun accept(part: HTPartLike, key: HTMaterialKey, holder: SimpleBlockItemSupplierWithKey)
     }
 
     /**
@@ -54,7 +54,7 @@ interface HTMaterialPlugin : HTIdLike {
     fun registerExistingItem(consumer: ItemConsumer) {}
 
     fun interface ItemConsumer {
-        fun accept(part: HTPartLike, material: HTMaterialKey, holder: SimpleSupplierWithKey<Item>)
+        fun accept(part: HTPartLike, key: HTMaterialKey, holder: SimpleSupplierWithKey<Item>)
     }
 
     /**
@@ -63,7 +63,7 @@ interface HTMaterialPlugin : HTIdLike {
     fun registerExistingTool(consumer: ToolConsumer) {}
 
     fun interface ToolConsumer {
-        fun accept(toolType: HTToolType, material: HTMaterialKey, holder: SimpleSupplierWithKey<Item>)
+        fun accept(toolType: HTToolType, key: HTMaterialKey, holder: SimpleSupplierWithKey<Item>)
     }
 
     /**

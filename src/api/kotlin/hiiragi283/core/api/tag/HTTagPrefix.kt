@@ -1,6 +1,6 @@
 package hiiragi283.core.api.tag
 
-import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.registry.RegistryKey
 import net.minecraft.core.registries.Registries
 import net.minecraft.tags.TagKey
@@ -17,16 +17,16 @@ class HTTagPrefix(val rawCommonTag: RawTagKey, private val tagPattern: String) {
     /**
      * @since 0.16.0
      */
-    fun materialTag(material: HTMaterialLike): RawTagKey = RawTagKey.common(tagPattern.replace("%s", material.asMaterialId().path))
+    fun materialTag(key: HTMaterialKey): RawTagKey = RawTagKey.common(tagPattern.replace("%s", key.name))
 
     /**
-     * 指定した[レジストリキー][key]と[素材][material]から，素材の共通タグを生成します。
+     * 指定した[レジストリキー][registryKey]と[素材][key]から，素材の共通タグを生成します。
      * @param T レジストリの要素のクラス
      */
-    fun <T : Any> createTagKey(key: RegistryKey<T>, material: HTMaterialLike): TagKey<T> = materialTag(material).create(key)
+    fun <T : Any> createTagKey(registryKey: RegistryKey<T>, key: HTMaterialKey): TagKey<T> = materialTag(key).create(registryKey)
 
     /**
-     * 指定した[素材][material]から，[アイテム][Item]の素材の共通タグを生成します。
+     * 指定した[素材][key]から，[アイテム][Item]の素材の共通タグを生成します。
      */
-    fun itemTagKey(material: HTMaterialLike): TagKey<Item> = createTagKey(Registries.ITEM, material)
+    fun itemTagKey(key: HTMaterialKey): TagKey<Item> = createTagKey(Registries.ITEM, key)
 }

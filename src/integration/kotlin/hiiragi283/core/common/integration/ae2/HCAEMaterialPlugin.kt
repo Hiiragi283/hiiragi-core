@@ -54,6 +54,7 @@ data object HCAEMaterialPlugin : HTMaterialPlugin {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
             addItemPrefixes(CommonParts.RAW, CommonParts.CRUSHED_ORE)
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HCIConstants.AE2)
 
             setName("Certus Quartz", "ケルタスクォーツ")
             setTextureSet("amethyst")
@@ -61,12 +62,14 @@ data object HCAEMaterialPlugin : HTMaterialPlugin {
         provider.getBuilder(HCIntegrationMaterialKeys.FLUIX).apply {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HCIConstants.AE2)
 
             setName("Fluix Crystal", "フルーシュ")
             setTextureSet("amethyst")
         }
         // Other
         provider.getBuilder(HCIntegrationMaterialKeys.SKY_STONE).apply {
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HCIConstants.AE2)
             setName("Sky Stone", "スカイストーン")
         }
     }

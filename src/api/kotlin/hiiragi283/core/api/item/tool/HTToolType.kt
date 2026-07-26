@@ -1,7 +1,8 @@
 package hiiragi283.core.api.item.tool
 
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangPatternProvider
-import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -35,7 +36,7 @@ class HTToolType(
     /**
      * @since 21.1.0
      */
-    fun createId(material: HTMaterialLike): ResourceLocation = material.asMaterialId().withPath { idPattern.replace("%s", it) }
+    fun createId(key: HTMaterialKey): ResourceLocation = HiiragiCoreAPI.id(idPattern.replace("%s", key.name))
 
     fun createTool(material: HTToolMaterial): Item {
         val properties = Item.Properties()

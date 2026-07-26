@@ -1,42 +1,44 @@
 package hiiragi283.core.common.material
 
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.common.integration.HCIConstants
 
 data object HCIntegrationMaterialKeys {
+    @JvmStatic
+    private fun create(path: String): HTMaterialKey = HTMaterialKey(path)
+
     //    AE2    //
 
     // Gem
     @JvmStatic
-    val CERTUS_QUARTZ: HTMaterialKey = create(HCIConstants.AE2, "certus_quartz")
+    val CERTUS_QUARTZ: HTMaterialKey = create("certus_quartz")
 
     @JvmStatic
-    val FLUIX: HTMaterialKey = create(HCIConstants.AE2, "fluix")
+    val FLUIX: HTMaterialKey = create("fluix")
 
     // Other
     @JvmStatic
-    val SKY_STONE: HTMaterialKey = create(HCIConstants.AE2, "sky_stone")
+    val SKY_STONE: HTMaterialKey = create("sky_stone")
 
     //    Create    //
 
     // Gem
     @JvmStatic
-    val ROSE_QUARTZ: HTMaterialKey = create(HCIConstants.CREATE, "rose_quartz")
+    val ROSE_QUARTZ: HTMaterialKey = create("rose_quartz")
 
     // Alloy
     @JvmStatic
-    val ANDESITE_ALLOY: HTMaterialKey = create(HCIConstants.CREATE, "andesite_alloy")
+    val ANDESITE_ALLOY: HTMaterialKey = create("andesite_alloy")
 
     // Other
     @JvmStatic
-    val CARDBOARD: HTMaterialKey = create(HCIConstants.CREATE, "cardboard")
+    val CARDBOARD: HTMaterialKey = create("cardboard")
 
     //    Ender IO    //
 
     //    Immersive Engineering    //
 
     @JvmStatic
-    val HOP_GRAPHITE: HTMaterialKey = create(HCIConstants.IMMERSIVE, "hop_graphite")
+    val HOP_GRAPHITE: HTMaterialKey = create("hop_graphite")
 
     //    Just Dire Things    //
 
@@ -44,35 +46,32 @@ data object HCIntegrationMaterialKeys {
 
     // Alloy
     @JvmStatic
-    val REFINED_GLOWSTONE: HTMaterialKey = create(HCIConstants.MEKANISM, "refined_glowstone")
+    val REFINED_GLOWSTONE: HTMaterialKey = create("refined_glowstone")
 
     @JvmStatic
-    val REFINED_OBSIDIAN: HTMaterialKey = create(HCIConstants.MEKANISM, "refined_obsidian")
+    val REFINED_OBSIDIAN: HTMaterialKey = create("refined_obsidian")
 
     //    Oritech    //
 
     // Gem
     @JvmStatic
-    val FLUXITE: HTMaterialKey = create(HCIConstants.ORITECH, "fluxite")
+    val FLUXITE: HTMaterialKey = create("fluxite")
 
     // Alloy
     @JvmStatic
-    val ENERGITE: HTMaterialKey = create(HCIConstants.ORITECH, "energite")
+    val ENERGITE: HTMaterialKey = create("energite")
 
     @JvmStatic
-    val ADAMANT: HTMaterialKey = create(HCIConstants.ORITECH, "adamant")
+    val ADAMANT: HTMaterialKey = create("adamant")
 
     @JvmStatic
-    val DURATIUM: HTMaterialKey = create(HCIConstants.ORITECH, "duratium")
+    val DURATIUM: HTMaterialKey = create("duratium")
 
     @JvmStatic
-    val PROMETHEUM: HTMaterialKey = create(HCIConstants.ORITECH, "prometheum")
+    val PROMETHEUM: HTMaterialKey = create("prometheum")
 
     //    Replication    //
 
     @JvmStatic
-    val REPLICA: HTMaterialKey = create(HCIConstants.REPLICATION, "replica")
-
-    @JvmStatic
-    private fun create(namespace: String, path: String): HTMaterialKey = HTMaterialKey(namespace, path)
+    val REPLICA: HTMaterialKey = create("replica")
 }

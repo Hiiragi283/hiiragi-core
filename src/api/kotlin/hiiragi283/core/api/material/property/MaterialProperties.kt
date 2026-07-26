@@ -3,8 +3,7 @@ package hiiragi283.core.api.material.property
 import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.item.tool.HTToolMaterial
 import hiiragi283.core.api.item.tool.HTToolType
-import hiiragi283.core.api.material.HTMaterialLike
-import hiiragi283.core.api.material.part.HTFluidPart
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyMap
@@ -17,7 +16,7 @@ import org.apache.commons.lang3.math.Fraction
 
 fun HTPropertyGetter.getDefaultPart(): HTDefaultPart? = this[HTMaterialPropertyKeys.DEFAULT_PART]
 
-fun HTPropertyGetter.getDefaultPart(material: HTMaterialLike): TagKey<Item>? = this.getDefaultPart()?.getTag(material.asMaterialKey())
+fun HTPropertyGetter.getDefaultPart(key: HTMaterialKey): TagKey<Item>? = this.getDefaultPart()?.getTag(key)
 
 /**
  * @since 0.12.0
@@ -42,14 +41,6 @@ fun HTPropertyMap.Builder.addBlockPrefixes(vararg parts: HTPartLike) {
 
 fun HTPropertyMap.Builder.addBlockPrefixes(parts: Set<HTPartLike>) {
     this.computeIfAbsent(HTMaterialPropertyKeys.BLOCK_PREFIXES) { it.plus(parts) }
-}
-
-fun HTPropertyMap.Builder.addFluidPrefixes(vararg parts: HTFluidPart) {
-    this.computeIfAbsent(HTMaterialPropertyKeys.FLUID_PREFIXES) { it.plus(parts) }
-}
-
-fun HTPropertyMap.Builder.addFluidPrefixes(parts: Set<HTFluidPart>) {
-    this.computeIfAbsent(HTMaterialPropertyKeys.FLUID_PREFIXES) { it.plus(parts) }
 }
 
 fun HTPropertyMap.Builder.addItemPrefixes(vararg parts: HTPartLike) {
@@ -84,14 +75,6 @@ fun HTPropertyMap.Builder.addCustomName(part: HTPartLike, enName: String, jaName
 
 fun HTPropertyMap.Builder.addCustomName(part: HTPartLike, value: HTLangName) {
     this.computeIfAbsent(HTMaterialPropertyKeys.CUSTOM_LANG_NAME) { it.plus(part.asPart() to value) }
-}
-
-fun HTPropertyMap.Builder.addCustomFluidName(part: HTFluidPart, enName: String, jaName: String) {
-    this.addCustomFluidName(part, HTLangName(enName, jaName))
-}
-
-fun HTPropertyMap.Builder.addCustomFluidName(part: HTFluidPart, value: HTLangName) {
-    this.computeIfAbsent(HTMaterialPropertyKeys.CUSTOM_FLUID_NAME) { it.plus(part to value) }
 }
 
 fun HTPropertyMap.Builder.setTextureSet(name: String) {

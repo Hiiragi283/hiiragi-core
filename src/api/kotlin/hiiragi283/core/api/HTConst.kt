@@ -14,6 +14,7 @@ data object HTConst {
     const val STANDARD_TEMP = 300
 
     const val EXPERIMENTAL = "experimental"
+    const val MATERIAL = "material"
 
     //    GUI    //
 

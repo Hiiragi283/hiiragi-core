@@ -74,9 +74,10 @@ data object HCIEMaterialPlugin : HTMaterialPlugin {
             set(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)
             set(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.NONE)
             this += HTMaterialPropertyKeys.DISABLE_SMELTING
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HCIConstants.IMMERSIVE)
 
             setName("HOP Graphite", "高配向パイログラファイト")
-            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.CARBON.getId())
+            put(HTMaterialPropertyKeys.TEXTURE_COLOR, CommonMaterialKeys.CARBON.toId(HiiragiCoreAPI.MOD_ID))
         }
     }
 

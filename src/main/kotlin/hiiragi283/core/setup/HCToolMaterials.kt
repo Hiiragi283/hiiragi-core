@@ -1,7 +1,7 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.item.tool.HTToolMaterial
-import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.common.material.CommonMaterialKeys
@@ -69,7 +69,7 @@ enum class HCToolMaterials(
         axeAttackSpeed: Float,
         enchantmentValue: Int,
         prefix: HTTagPrefix,
-        material: HTMaterialLike,
+        key: HTMaterialKey,
         durability: Int,
         miningSpeed: Float,
         swordDamage: Float,
@@ -78,7 +78,7 @@ enum class HCToolMaterials(
         axeDamage,
         axeAttackSpeed,
         enchantmentValue,
-        prefix.itemTagKey(material),
+        prefix.itemTagKey(key),
         durability,
         miningSpeed,
         swordDamage,

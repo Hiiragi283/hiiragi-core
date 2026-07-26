@@ -4,6 +4,7 @@ import com.buuz135.replication.ReplicationRegistry
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.property.HTDefaultPart
+import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.addItemPrefixes
 import hiiragi283.core.api.material.property.setDefaultPart
 import hiiragi283.core.api.material.property.setName
@@ -34,6 +35,7 @@ data object HTReplicationMaterialPlugin : HTMaterialPlugin {
         provider.getBuilder(HCIntegrationMaterialKeys.REPLICA).apply {
             setDefaultPart(HTDefaultPart.Prefixed.INGOT)
             addItemPrefixes(CommonParts.DUST, CommonParts.CRUSHED_ORE, CommonParts.NUGGET)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HCIConstants.REPLICATION)
 
             setName("Replica", "レプリカ")
         }

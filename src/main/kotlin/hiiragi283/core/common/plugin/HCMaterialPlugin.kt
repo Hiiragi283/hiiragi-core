@@ -3,15 +3,12 @@ package hiiragi283.core.common.plugin
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.item.tool.VanillaToolTypes
 import hiiragi283.core.api.material.part.CommonParts
-import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTMaterialLevel
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialTextureSet
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
 import hiiragi283.core.api.material.property.addBlockPrefixes
-import hiiragi283.core.api.material.property.addCustomFluidName
-import hiiragi283.core.api.material.property.addFluidPrefixes
 import hiiragi283.core.api.material.property.addItemPrefixes
 import hiiragi283.core.api.material.property.addToolPrefixes
 import hiiragi283.core.api.material.property.setDefaultPart
@@ -43,6 +40,7 @@ object HCMaterialPlugin : HTMaterialPlugin {
             addBlockPrefixes(CommonParts.BLOCK)
             addItemPrefixes(CommonParts.DUST, CommonParts.GEM)
             put(HTMaterialPropertyKeys.STORAGE_BLOCK, HTStorageBlockProperty.TWO_BY_TWO)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HiiragiCoreAPI.MOD_ID)
 
             setName("Azure Shard", "紺碧の欠片")
             setTextureSet("amethyst", HTMaterialTextureSet.SHINE)
@@ -50,23 +48,23 @@ object HCMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(HCMaterialKeys.CRIMSON_CRYSTAL).apply {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
             addBlockPrefixes(CommonParts.BLOCK)
-            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.DUST, CommonParts.GEM)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HiiragiCoreAPI.MOD_ID)
 
             setName("Crimson Crystal", "深紅のクリスタリル")
             setTextureSet("emerald")
-            addCustomFluidName(HTFluidPart.MOLTEN, "Crimson Blood", "深紅の血液")
+            // addCustomFluidName(HTFluidPart.MOLTEN, "Crimson Blood", "深紅の血液")
             put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 10 * 24)
         }
         builder.getBuilder(HCMaterialKeys.WARPED_CRYSTAL).apply {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
             addBlockPrefixes(CommonParts.BLOCK)
-            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.DUST, CommonParts.GEM)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HiiragiCoreAPI.MOD_ID)
 
             setName("Warped Crystal", "歪んだクリスタリル")
             setTextureSet("emerald")
-            addCustomFluidName(HTFluidPart.MOLTEN, "Dew of the Warp", "歪んだ雫")
+            // addCustomFluidName(HTFluidPart.MOLTEN, "Dew of the Warp", "歪んだ雫")
         }
     }
 
@@ -75,12 +73,12 @@ object HCMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(HCMaterialKeys.ELDRITCH).apply {
             setDefaultPart(HTDefaultPart.Prefixed.PEARL)
             addBlockPrefixes(CommonParts.BLOCK)
-            addFluidPrefixes(HTFluidPart.MOLTEN)
             addItemPrefixes(CommonParts.DUST, CommonParts.PEARL)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HiiragiCoreAPI.MOD_ID)
 
             setName("Eldritch Pearl", "異質な真珠")
             setTextureSet("pearl", HTMaterialTextureSet.MYSTICAL)
-            addCustomFluidName(HTFluidPart.MOLTEN, "Eldritch Flux", "異質な流動体")
+            // addCustomFluidName(HTFluidPart.MOLTEN, "Eldritch Flux", "異質な流動体")
         }
     }
 
@@ -100,6 +98,7 @@ object HCMaterialPlugin : HTMaterialPlugin {
             addToolPrefixes(HCToolMaterials.AZURE_STEEL, VanillaToolTypes.VANILLA_SET.plus(CommonToolTypes.HAMMER))
             put(HTMaterialPropertyKeys.HARDNESS, HTMaterialLevel.MEDIUM)
             put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.MEDIUM)
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HiiragiCoreAPI.MOD_ID)
 
             setName("Azure Steel", "紺鉄")
         }

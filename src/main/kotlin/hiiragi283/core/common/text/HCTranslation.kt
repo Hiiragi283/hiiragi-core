@@ -12,7 +12,7 @@ enum class HCTranslation(type: String, vararg path: String) : HTTranslation {
     WARPED_WART(HTConst.DESCRIPTION, "warped_wart"),
 
     // Creative Mode Tab
-    CREATIVE_TAB_MATERIAL(HTConst.ITEM_GROUP, "material"),
+    CREATIVE_TAB_MATERIAL(HTConst.ITEM_GROUP, HTConst.MATERIAL),
     CREATIVE_TAB_EQUIPMENT(HTConst.ITEM_GROUP, "equipment"),
 
     // Item

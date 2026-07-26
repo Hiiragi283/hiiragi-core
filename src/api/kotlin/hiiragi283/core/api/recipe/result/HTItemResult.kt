@@ -6,7 +6,6 @@ import hiiragi283.core.api.HCRegistries
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.tagPrefix
@@ -138,7 +137,7 @@ interface HTItemResult : HTIdLike {
 
     //    Tagged    //
 
-    data class Tagged(val tagKey: TagKey<Item>, override val count: Int) : HTItemResult {
+    data class Tagged(val tagKey: TagKey<Item>, override val count: Int = 1) : HTItemResult {
         companion object {
             @JvmField
             val CODEC: MapCodec<Tagged> = HTCodecs.recordMap { instance ->
@@ -164,7 +163,7 @@ interface HTItemResult : HTIdLike {
     //    MaterialPart    //
 
     @JvmRecord
-    data class MaterialPart(val part: HTPart, val material: HTMaterialKey, override val count: Int) : HTItemResult {
+    data class MaterialPart(val part: HTPart, val key: HTMaterialKey, override val count: Int = 1) : HTItemResult {
         companion object {
             @JvmField
             val CODEC: MapCodec<MaterialPart> = HTCodecs.recordMap { instance ->
@@ -173,7 +172,7 @@ interface HTItemResult : HTIdLike {
                         HiiragiCoreAccess.INSTANCE.partCodec
                             .fieldOf("part")
                             .forGetter(MaterialPart::part),
-                        HTMaterialKey.CODEC.fieldOf("material").forGetter(MaterialPart::material),
+                        HTMaterialKey.CODEC.fieldOf("material").forGetter(MaterialPart::key),
                         HTCodecs.POSITIVE_INT
                             .fieldOf(HTConst.COUNT)
                             .orElse(1)
@@ -185,26 +184,26 @@ interface HTItemResult : HTIdLike {
             val SERIALIZER: Serializer<MaterialPart> = Serializer(CODEC)
         }
 
-        constructor(part: HTPartLike, material: HTMaterialLike, count: Int = 1) : this(part.asPart(), material.asMaterialKey(), count)
+        constructor(part: HTPartLike, key: HTMaterialKey, count: Int = 1) : this(part.asPart(), key, count)
 
         override fun getSerializer(): Serializer<*> = SERIALIZER
 
         override fun create(): HTTextResult<ItemStack> {
             val tagResult: HTTextResult<ItemStack>? = part.tagPrefix
-                ?.itemTagKey(material)
+                ?.itemTagKey(key)
                 ?.let { Tagged(it, count) }
                 ?.create()
             if (tagResult != null && tagResult.isLeft()) {
                 return tagResult
             }
             return HiiragiCoreAccess.INSTANCE
-                .getMaterialBlockOrItem(part, material)
-                .toTextResult { "No matching item for part ${part.asPartName()} and material ${material.asMaterialId()}" }
+                .getMaterialBlockOrItem(part, key)
+                .toTextResult { "No matching item for part ${part.asPartName()} and material $key" }
                 .map { it.toStack(count) }
         }
 
         override fun copyWithCount(newCount: Int): MaterialPart = this.copy(count = newCount)
 
-        override fun getId(): ResourceLocation = part.createId(material)
+        override fun getId(): ResourceLocation = part.createId(key)
     }
 }

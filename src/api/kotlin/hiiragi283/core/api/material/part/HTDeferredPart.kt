@@ -1,7 +1,7 @@
 package hiiragi283.core.api.material.part
 
 import hiiragi283.core.api.HiiragiCoreAccess
-import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.property.HTPropertyKey
 import net.minecraft.resources.ResourceLocation
 
@@ -16,7 +16,9 @@ value class HTDeferredPart(private val name: String) : HTPartLike {
 
     override fun asPartName(): String = name
 
-    override fun createId(material: HTMaterialLike): ResourceLocation = asPart().createId(material)
+    override fun createPath(key: HTMaterialKey): String = asPart().createPath(key)
+
+    override fun createId(key: HTMaterialKey): ResourceLocation = asPart().createId(key)
 
     override fun contains(key: HTPropertyKey<*>): Boolean = asPart().contains(key)
 

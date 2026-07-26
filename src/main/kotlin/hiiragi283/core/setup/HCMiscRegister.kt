@@ -78,7 +78,7 @@ internal data object HCMiscRegister {
                             .map { HTSimpleDeferredItem(it.third.getId()) },
                     )
                     // Fluids
-                    HTCreativeModeTabHelper.addToDisplay(
+                    /*HTCreativeModeTabHelper.addToDisplay(
                         parameters,
                         output,
                         HiiragiCoreAccess.INSTANCE
@@ -87,7 +87,7 @@ internal data object HCMiscRegister {
                             .sortedWith(TRIPLE_COMPARATOR)
                             .map { it.third }
                             .map { HTSimpleDeferredItem(it.getBucketSupplier().getId()) },
-                    )
+                    )*/
                 },
             )
 

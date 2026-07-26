@@ -40,12 +40,6 @@ data object HCRegistries {
         @JvmField
         val ITEM_RESULT_SERIALIZER: ResourceKey<Registry<HTItemResult.Serializer<*>>> = createKey("item_result_serializer")
 
-        /**
-         * @since 21.1.0
-         */
-        @JvmField
-        val MATERIAL: ResourceKey<Registry<Nothing>> = createKey("material")
-
         @JvmField
         val SLOT_TYPE: ResourceKey<Registry<HTSyncablePayload.Type<*>>> = createKey("syncable_slot_type")
 

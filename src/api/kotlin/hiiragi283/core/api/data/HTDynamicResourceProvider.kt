@@ -1,10 +1,12 @@
 package hiiragi283.core.api.data
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.texture.HTTextureUtil
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
+import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.resource.toId
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicClientResourceProvider
 import net.mehvahdjukaar.moonlight.api.resources.pack.PackGenerationStrategy
@@ -57,8 +59,8 @@ data object HTDynamicResourceProvider {
          * @since 0.13.0
          */
         protected fun resprite(id: ResourceLocation, base: ResourceLocation, key: HTMaterialKey): ResourceGenTask {
-            val paletteId: ResourceLocation =
-                HTMaterialManager.getInstance().getOrEmpty(key)[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId()
+            val getter: HTPropertyGetter = HTMaterialManager.getInstance().getOrEmpty(key)
+            val paletteId: ResourceLocation = getter[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.toId(HiiragiCoreAPI.MOD_ID)
             return resprite(id, base) { manager: ResourceManager -> HTTextureUtil.getOrCreatePalette(paletteId, manager) }
         }
 

@@ -2,7 +2,7 @@ package hiiragi283.core.api.material.property
 
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialContents
-import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.resource.SimpleSupplierWithKey
@@ -18,15 +18,15 @@ import net.minecraft.world.item.Item
  */
 sealed interface HTDefaultPart {
     /**
-     * 指定した[素材][material]から素材アイテムのタグを取得します。
+     * 指定した[素材][key]から素材アイテムのタグを取得します。
      */
-    fun getTag(material: HTMaterialLike): TagKey<Item>
+    fun getTag(key: HTMaterialKey): TagKey<Item>
 
     /**
-     * 指定した[素材][material]から素材アイテムを取得します。
+     * 指定した[素材][key]から素材アイテムを取得します。
      * @return 対応するアイテムがない場合は`null`
      */
-    fun getItem(material: HTMaterialLike): HTMaterialContents.ItemEntry?
+    fun getItem(key: HTMaterialKey): HTMaterialContents.ItemEntry?
 
     /**
      * レシピの生成時に使用されるサフィックスを取得します。
@@ -40,9 +40,9 @@ sealed interface HTDefaultPart {
      */
     @JvmRecord
     data class BuiltIn(val tagKey: TagKey<Item>, val item: SimpleSupplierWithKey<Item>?) : HTDefaultPart {
-        override fun getTag(material: HTMaterialLike): TagKey<Item> = tagKey
+        override fun getTag(key: HTMaterialKey): TagKey<Item> = tagKey
 
-        override fun getItem(material: HTMaterialLike): HTMaterialContents.ItemEntry? = this.item?.let { HTMaterialContents.ItemEntry(it, true) }
+        override fun getItem(key: HTMaterialKey): HTMaterialContents.ItemEntry? = this.item?.let { HTMaterialContents.ItemEntry(it, true) }
 
         override fun getSuffix(): String = tagKey.location().path
     }
@@ -74,9 +74,9 @@ sealed interface HTDefaultPart {
             PEARL -> CommonTagPrefixes.PEARL
         }
 
-        override fun getTag(material: HTMaterialLike): TagKey<Item> = prefix.itemTagKey(material)
+        override fun getTag(key: HTMaterialKey): TagKey<Item> = prefix.itemTagKey(key)
 
-        override fun getItem(material: HTMaterialLike): HTMaterialContents.ItemEntry? = HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, material)
+        override fun getItem(key: HTMaterialKey): HTMaterialContents.ItemEntry? = HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, key)
 
         override fun getSuffix(): String = part.name
     }

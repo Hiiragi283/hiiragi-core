@@ -145,7 +145,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         registerTankEmptying(helper)
         registerTankFilling(helper)
 
-        helper.addRecipes(HCRecipeViewerTypes.MaterialType, HTMaterialManager.getInstance().entries.asSequence())
+        helper.addRecipes(HCRecipeViewerTypes.MaterialType, HTMaterialManager.getInstance().asSequence())
     }
 
     private fun registerTankEmptying(helper: HTJeiRecipeHelper) {

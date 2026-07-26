@@ -33,7 +33,7 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) : HTBasicRecipeCategory<HTMa
         .values
         .asSequence()
         .mapNotNull(HTPartLike::tagPrefix)
-        .map { it.itemTagKey(entry) }
+        .map { it.itemTagKey(entry.key) }
         .distinct()
         .map { tagKey: TagKey<Item> -> BuiltInRegistries.ITEM.getTagOrEmpty(tagKey).map(::ItemStack) }
         .filterNot(Iterable<ItemStack>::none)
@@ -41,7 +41,7 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) : HTBasicRecipeCategory<HTMa
     override fun setRecipe(builder: IRecipeLayoutBuilder, recipe: HTMaterialManager.Entry, focuses: IFocusGroup) {
         builder
             .addInputSlot()
-            .addIngredients(recipe.getDefaultPart(recipe)?.let(Ingredient::of) ?: Ingredient.EMPTY)
+            .addIngredients(recipe.getDefaultPart(recipe.key)?.let(Ingredient::of) ?: Ingredient.EMPTY)
             .setStandardSlotBackground()
 
         for (ingredient: Iterable<ItemStack> in getIngredients(recipe)) {
@@ -51,7 +51,7 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) : HTBasicRecipeCategory<HTMa
 
     override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HTMaterialManager.Entry, focuses: IFocusGroup) {
         builder
-            .addText(recipe.asMaterialKey().getText(), width - 22, 20)
+            .addText(recipe.getText(), width - 22, 20)
             .setPosition(22, 0)
             .setColor(0x505050)
             .setLineSpacing(0)
@@ -70,7 +70,7 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) : HTBasicRecipeCategory<HTMa
             .setPosition(widget.screenRectangle.position.x + 1, 1)
     }
 
-    override fun isHandled(recipe: HTMaterialManager.Entry): Boolean = getIngredients(recipe).any() || recipe.getDefaultPart(recipe) != null
+    override fun isHandled(recipe: HTMaterialManager.Entry): Boolean = getIngredients(recipe).any() || recipe.getDefaultPart(recipe.key) != null
 
     override fun getRegistryName(recipe: HTMaterialManager.Entry): ResourceLocation = recipe.getId()
 

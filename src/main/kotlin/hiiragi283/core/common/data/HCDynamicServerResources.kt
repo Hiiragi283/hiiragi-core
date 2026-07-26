@@ -12,13 +12,11 @@ import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.get
 import hiiragi283.core.api.material.part.CommonParts
-import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.itemTagKey
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.prefixEntries
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
-import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.SimpleBlockItemSupplierWithKey
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -37,7 +35,6 @@ import net.minecraft.world.level.storage.loot.LootTable
 import net.minecraft.world.level.storage.loot.entries.LootItem
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue
-import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps
 import org.apache.commons.lang3.math.Fraction
@@ -56,10 +53,11 @@ internal data object HCDynamicServerResources {
         HTDynamicDataMap(NeoForgeDataMaps.FURNACE_FUELS) {
             for (entry: HTMaterialManager.Entry in HTMaterialManager.getInstance()) {
                 val baseTime: Int = entry[HTMaterialPropertyKeys.FUEL_TIME] ?: continue
+                val key: HTMaterialKey = entry.key
                 // Block
-                setOf(registered.blocks.column(entry), registered.items.column(entry)).forEach { map: Map<HTPart, *> ->
+                setOf(registered.blocks.column(key), registered.items.column(key)).forEach { map: Map<HTPart, *> ->
                     for ((part: HTPart, _) in map) {
-                        val tagKey: TagKey<Item> = part.itemTagKey(entry) ?: continue
+                        val tagKey: TagKey<Item> = part.itemTagKey(key) ?: continue
                         val fuelScale: Fraction = part[HTPartPropertyKeys.FUEL_SCALE] ?: continue
                         val fuelTime: Int = (baseTime * fuelScale).toInt()
                         add(tagKey, FurnaceFuel(fuelTime))
@@ -102,11 +100,11 @@ internal data object HCDynamicServerResources {
                 builder(BlockTags.MINEABLE_WITH_PICKAXE).add(block)
             }
         }
-        HTTagsProvider.Dynamic(Registries.FLUID) {
+        /*HTTagsProvider.Dynamic(Registries.FLUID) {
             HiiragiCoreAccess.INSTANCE.registeredFluids.forEach { (part: HTFluidPart, key: HTMaterialKey, fluid: HTMaterialContents.FluidEntry) ->
                 builder(part.createTagKey(key)).add(fluid)
             }
-        }
+        }*/
         HTTagsProvider.Dynamic(Registries.ITEM) {
             // Material Block
             existing.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: SimpleBlockItemSupplierWithKey) ->
@@ -116,9 +114,9 @@ internal data object HCDynamicServerResources {
                 tags(prefix, key).add(block.getItemSupplier())
             }
             // Material Fluid
-            HiiragiCoreAccess.INSTANCE.registeredFluids.forEach { (part: HTFluidPart, key: HTMaterialKey, fluid: HTMaterialContents.FluidEntry) ->
+            /*HiiragiCoreAccess.INSTANCE.registeredFluids.forEach { (part: HTFluidPart, key: HTMaterialKey, fluid: HTMaterialContents.FluidEntry) ->
                 tags(Tags.Items.BUCKETS, part.createBucketTag(key)).add(fluid.get().bucket.toLike())
-            }
+            }*/
             // Material Item
             existing.items.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTMaterialContents.ItemEntry) ->
                 tags(prefix, key).add(item)

@@ -1,10 +1,6 @@
 {
   "values": [
     {
-      "id": "#c:molten_eldritch",
-      "required": false
-    },
-    {
       "id": "oritech:still_strange_matter",
       "required": false
     },

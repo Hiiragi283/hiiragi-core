@@ -1,10 +1,7 @@
 package hiiragi283.core.api.color
 
 import com.mojang.serialization.Codec
-import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangName
-import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import io.netty.buffer.ByteBuf
@@ -31,8 +28,7 @@ enum class HTDefaultColor(
     enName: String,
     jaName: String,
 ) : StringRepresentable,
-    HTLangName by HTLangName(enName, jaName),
-    HTMaterialLike {
+    HTLangName by HTLangName(enName, jaName) {
     WHITE(ChatFormatting.WHITE, DyeColor.WHITE, "White", "白色"),
     ORANGE(intArrayOf(255, 161, 96), DyeColor.ORANGE, "Orange", "橙色"),
     MAGENTA(intArrayOf(213, 94, 203), DyeColor.MAGENTA, "Magenta", "赤紫色"),
@@ -99,6 +95,4 @@ enum class HTDefaultColor(
     val dyedTag: TagKey<Item> = dyeColor.dyedTag
 
     override fun getSerializedName(): String = name.lowercase()
-
-    override fun asMaterialKey(): HTMaterialKey = HTMaterialKey(HiiragiCoreAPI.id(serializedName))
 }

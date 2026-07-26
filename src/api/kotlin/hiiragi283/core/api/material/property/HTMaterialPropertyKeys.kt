@@ -7,7 +7,6 @@ import hiiragi283.core.api.item.tool.HTToolMaterial
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
-import hiiragi283.core.api.material.part.HTFluidPart
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.property.HTPropertyKey
@@ -50,18 +49,14 @@ data object HTMaterialPropertyKeys {
     val BLOCK_PREFIXES: HTPropertyKey<Set<HTPartLike>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("block_prefixes"))
 
     /**
-     * 登録する素材液体を管理する[プロパティキー][HTPropertyKey]
-     * @since 0.10.0
-     */
-    @JvmField
-    val FLUID_PREFIXES: HTPropertyKey<Set<HTFluidPart>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("fluid_prefixes"))
-
-    /**
      * 登録する素材アイテムを管理する[プロパティキー][HTPropertyKey]
      * @since 0.7.0
      */
     @JvmField
     val ITEM_PREFIXES: HTPropertyKey<Set<HTPartLike>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("item_prefixes"))
+
+    @JvmField
+    val ORIGIN_MOD_ID: HTPropertyKey<String> = HTPropertyKey.create(HiiragiCoreAPI.id("origin_mod_id"), HTConst.COMMON)
 
     /**
      * 登録する素材ツールを管理する[プロパティキー][HTPropertyKey]
@@ -167,13 +162,6 @@ data object HTMaterialPropertyKeys {
      */
     @JvmField
     val CUSTOM_LANG_NAME: HTPropertyKey<Map<HTPart, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_lang_name"))
-
-    /**
-     * [部品][HTFluidPart]に依存する[翻訳名][HTLangName]を管理する[プロパティキー][HTPropertyKey]
-     * @since 0.14.0
-     */
-    @JvmField
-    val CUSTOM_FLUID_NAME: HTPropertyKey<Map<HTFluidPart, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_fluid_name"))
 
     // Texture
     /**

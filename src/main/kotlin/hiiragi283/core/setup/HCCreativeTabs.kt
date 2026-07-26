@@ -9,10 +9,10 @@ import net.minecraft.world.item.CreativeModeTab
 
 data object HCCreativeTabs {
     @JvmField
-    val COMMON: ResourceKey<CreativeModeTab> = create(HTConst.COMMON)
+    val COMMON: ResourceKey<CreativeModeTab> = create("common")
 
     @JvmField
-    val MATERIAL: ResourceKey<CreativeModeTab> = create("material")
+    val MATERIAL: ResourceKey<CreativeModeTab> = create(HTConst.MATERIAL)
 
     @JvmField
     val EQUIPMENT: ResourceKey<CreativeModeTab> = create("equipment")

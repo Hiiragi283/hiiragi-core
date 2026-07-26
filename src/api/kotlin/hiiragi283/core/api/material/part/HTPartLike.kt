@@ -1,14 +1,12 @@
 package hiiragi283.core.api.material.part
 
-import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.property.HTPropertyGetter
-import hiiragi283.core.api.registry.RegistryKey
-import hiiragi283.core.api.registry.createKey
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.RawTagKey
 import net.minecraft.core.registries.Registries
-import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -29,15 +27,12 @@ interface HTPartLike : HTPropertyGetter {
      */
     fun asPartName(): String
 
-    /**
-     * 指定した[素材][material]から[ID][ResourceLocation]を生成します。
-     */
-    fun createId(material: HTMaterialLike): ResourceLocation
+    fun createPath(key: HTMaterialKey): String
 
     /**
-     * 指定した[素材][material]から[ResourceKey]を生成します。
+     * 指定した[素材][key]から[ID][ResourceLocation]を生成します。
      */
-    fun <T : Any> createKey(key: RegistryKey<T>, material: HTMaterialLike): ResourceKey<T> = createId(material).let(key::createKey)
+    fun createId(key: HTMaterialKey): ResourceLocation = HiiragiCoreAPI.id(createPath(key))
 }
 
 //    Extensions    //
@@ -49,6 +44,6 @@ interface HTPartLike : HTPropertyGetter {
  */
 val HTPartLike.tagPrefix: HTTagPrefix? get() = this[HTPartPropertyKeys.TAG_PREFIX]
 
-fun HTPartLike.materialTag(material: HTMaterialLike): RawTagKey? = this.tagPrefix?.materialTag(material)
+fun HTPartLike.materialTag(key: HTMaterialKey): RawTagKey? = this.tagPrefix?.materialTag(key)
 
-fun HTPartLike.itemTagKey(material: HTMaterialLike): TagKey<Item>? = this.materialTag(material)?.create(Registries.ITEM)
+fun HTPartLike.itemTagKey(key: HTMaterialKey): TagKey<Item>? = this.materialTag(key)?.create(Registries.ITEM)

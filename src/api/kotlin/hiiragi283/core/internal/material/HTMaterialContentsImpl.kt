@@ -9,5 +9,5 @@ internal class HTMaterialContentsImpl<R : Any, out V>(
     private val errorFactory: (R, HTMaterialKey) -> String,
 ) : HTMaterialContents<R, V>,
     Table<R, HTMaterialKey, V> by table {
-    override fun getErrorMessage(row: R, material: HTMaterialKey): String = errorFactory(row, material.asMaterialKey())
+    override fun getErrorMessage(row: R, key: HTMaterialKey): String = errorFactory(row, key)
 }

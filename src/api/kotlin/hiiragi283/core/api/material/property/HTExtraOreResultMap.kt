@@ -4,7 +4,6 @@ package hiiragi283.core.api.material.property
 
 import hiiragi283.core.api.collection.mutableEnumMapOf
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialLike
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTExtraOreResultMap.Phase
 import hiiragi283.core.api.property.getOrDefault
@@ -65,38 +64,38 @@ class HTExtraOreResultMap private constructor(map: Map<Phase, Pair<HTMaterialKey
     class Builder {
         private val map: MutableMap<Phase, Pair<HTMaterialKey, Fraction>> = mutableEnumMapOf()
 
-        fun all(material: HTMaterialLike, chance: Float) {
-            this.all(material, chance.toFraction())
+        fun all(key: HTMaterialKey, chance: Float) {
+            this.all(key, chance.toFraction())
         }
 
-        fun all(material: HTMaterialLike, chance: Fraction) {
+        fun all(key: HTMaterialKey, chance: Fraction) {
             for (phase: Phase in Phase.entries) {
-                map[phase] = material.asMaterialKey() to chance
+                map[phase] = key to chance
             }
         }
 
-        fun crushOre(material: HTMaterialLike, chance: Float) {
-            this.crushOre(material, chance.toFraction())
+        fun crushOre(key: HTMaterialKey, chance: Float) {
+            this.crushOre(key, chance.toFraction())
         }
 
-        fun crushOre(material: HTMaterialLike, chance: Fraction) {
-            map[Phase.CRUSH_ORE] = material.asMaterialKey() to chance
+        fun crushOre(key: HTMaterialKey, chance: Fraction) {
+            map[Phase.CRUSH_ORE] = key to chance
         }
 
-        fun crushCrushed(material: HTMaterialLike, chance: Float) {
-            this.crushCrushed(material, chance.toFraction())
+        fun crushCrushed(key: HTMaterialKey, chance: Float) {
+            this.crushCrushed(key, chance.toFraction())
         }
 
-        fun crushCrushed(material: HTMaterialLike, chance: Fraction) {
-            map[Phase.CRUSH_CRUSHED] = material.asMaterialKey() to chance
+        fun crushCrushed(key: HTMaterialKey, chance: Fraction) {
+            map[Phase.CRUSH_CRUSHED] = key to chance
         }
 
-        fun washCrushed(material: HTMaterialLike, chance: Float) {
-            this.washCrushed(material, chance.toFraction())
+        fun washCrushed(key: HTMaterialKey, chance: Float) {
+            this.washCrushed(key, chance.toFraction())
         }
 
-        fun washCrushed(material: HTMaterialLike, chance: Fraction) {
-            map[Phase.WASH_CRUSHED] = material.asMaterialKey() to chance
+        fun washCrushed(key: HTMaterialKey, chance: Fraction) {
+            map[Phase.WASH_CRUSHED] = key to chance
         }
 
         fun build(): HTExtraOreResultMap = HTExtraOreResultMap(map)

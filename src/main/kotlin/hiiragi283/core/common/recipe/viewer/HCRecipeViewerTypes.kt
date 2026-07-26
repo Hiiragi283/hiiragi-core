@@ -1,5 +1,6 @@
 package hiiragi283.core.common.recipe.viewer
 
+import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.material.HTMaterialManager
@@ -58,7 +59,7 @@ data object HCRecipeViewerTypes {
 
         override fun getText(): Text = "Material Parts".toText()
 
-        override fun getId(): ResourceLocation = HiiragiCoreAPI.id("material")
+        override fun getId(): ResourceLocation = HiiragiCoreAPI.id(HTConst.MATERIAL)
     }
 
     @JvmStatic

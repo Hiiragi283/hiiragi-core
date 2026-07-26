@@ -3,7 +3,7 @@ package hiiragi283.core.support.data.tag
 import hiiragi283.core.api.data.tag.HTTagBuilder
 import hiiragi283.core.api.data.tag.HTTagDependType
 import hiiragi283.core.api.data.tag.HTTagsProvider
-import hiiragi283.core.api.material.HTMaterialLike
+import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.resource.SimpleBlockItemSupplierWithKey
 import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.RawTagKey
@@ -38,9 +38,9 @@ abstract class HTItemTagsProvider(
     /**
      * [HTTagPrefix.rawCommonTag]と[HTTagPrefix.materialTag]に基づいて，ブロックのタグの値をアイテムのタグにコピーします。
      */
-    protected fun copy(prefix: HTTagPrefix, material: HTMaterialLike) {
+    protected fun copy(prefix: HTTagPrefix, key: HTMaterialKey) {
         copy(prefix.rawCommonTag)
-        copy(prefix.materialTag(material))
+        copy(prefix.materialTag(key))
     }
 
     /**
