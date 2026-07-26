@@ -1,6 +1,9 @@
 package hiiragi283.core.common.plugin
 
 import hiiragi283.core.api.HTConst
+import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.data.model.HTTexturedModelProvider
+import hiiragi283.core.api.data.model.ModelOutput
 import hiiragi283.core.api.div
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.tool.HTToolType
@@ -30,6 +33,8 @@ import hiiragi283.core.api.property.add
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.property.plusAssign
 import hiiragi283.core.api.registry.HTDeferredItem
+import hiiragi283.core.api.resource.HTIdLike
+import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
 import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -40,6 +45,8 @@ import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCToolMaterials
+import net.minecraft.data.models.model.ModelTemplates
+import net.minecraft.data.models.model.TextureMapping
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.SoundType
@@ -239,6 +246,14 @@ object CommonMaterialPlugin : HTMaterialPlugin {
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.WIRE)
 
             addNamePattern("%s Wire", "%sのワイヤ")
+            put(
+                HTPartPropertyKeys.ITEM_MODEL_PROVIDER,
+                HTTexturedModelProvider { value: HTIdLike, output: ModelOutput ->
+                    val itemId: ResourceLocation = value.itemId
+                    val overlay: ResourceLocation = HiiragiCoreAPI.id(HTConst.ITEM, "wire_overlay")
+                    ModelTemplates.TWO_LAYERED_ITEM.create(itemId, TextureMapping.layered(itemId, overlay), output)
+                },
+            )
         }
     }
 

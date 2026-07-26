@@ -48,6 +48,9 @@ data object HTMaterialPropertyKeys {
     @JvmField
     val ITEM_PREFIXES: HTPropertyKey<Set<HTPartLike>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("item_prefixes"))
 
+    /**
+     * @since 21.1.0
+     */
     @JvmField
     val ORIGIN_MOD_ID: HTPropertyKey<String> = HTPropertyKey.create(HiiragiCoreAPI.id("origin_mod_id"), HTConst.COMMON)
 

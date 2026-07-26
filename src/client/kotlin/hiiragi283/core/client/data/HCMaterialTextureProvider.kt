@@ -138,8 +138,7 @@ data object HCMaterialTextureProvider : ResourceGenTask {
 
     @JvmStatic
     private fun getTextureResult(manager: ResourceManager, textureSet: HTMaterialTextureSet, part: HTPart): Result<TextureImage> {
-        val name: String = part[HTPartPropertyKeys.TEXTURE_ICON] ?: part.name
-        val id: ResourceLocation = HiiragiCoreAPI.id("material_set", textureSet.name, "$name.png")
+        val id: ResourceLocation = HiiragiCoreAPI.id("material_set", textureSet.name, "${part.name}.png")
         return runCatching { TextureImage.open(manager, id) }
             .recoverCatching { throwable: Throwable ->
                 val parentSet: HTMaterialTextureSet = textureSet.parent ?: throw throwable

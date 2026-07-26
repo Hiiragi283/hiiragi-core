@@ -1,11 +1,16 @@
 package hiiragi283.core.api.data.model
 
+import com.google.gson.JsonElement
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
+import java.util.function.BiConsumer
+import java.util.function.Supplier
 import net.minecraft.resources.ResourceLocation
 import net.neoforged.neoforge.client.model.generators.ModelBuilder
 import net.neoforged.neoforge.client.model.generators.ModelProvider
+
+typealias ModelOutput = BiConsumer<ResourceLocation, Supplier<JsonElement>>
 
 //    ModelProvider    //
 

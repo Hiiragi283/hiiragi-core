@@ -6,13 +6,14 @@ import com.mojang.blaze3d.platform.NativeImage
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangType
+import hiiragi283.core.api.data.model.HTTexturedModelProvider
+import hiiragi283.core.api.data.model.ModelOutput
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.modifyPath
 import hiiragi283.core.api.resource.toId
-import java.util.function.BiConsumer
 import java.util.function.Supplier
 import kotlin.jvm.optionals.getOrDefault
 import net.minecraft.data.models.BlockModelGenerators
@@ -22,8 +23,6 @@ import net.minecraft.data.models.model.TextureMapping
 import net.minecraft.resources.ResourceLocation
 import org.apache.commons.lang3.function.Consumers
 import org.slf4j.Logger
-
-typealias HTModelOutput = BiConsumer<ResourceLocation, Supplier<JsonElement>>
 
 data object HTDynamicResourceRegister {
     @JvmField
@@ -46,7 +45,7 @@ data object HTDynamicResourceRegister {
 
     // Model
     @JvmField
-    val MODEL_OUTPUT: HTModelOutput = HTModelOutput { id: ResourceLocation, supplier: Supplier<JsonElement> -> addToData(id.withPrefix("models/"), supplier.get()) }
+    val MODEL_OUTPUT: ModelOutput = ModelOutput { id: ResourceLocation, supplier: Supplier<JsonElement> -> addToData(id.withPrefix("models/"), supplier.get()) }
 
     @JvmField
     val BLOCK_MODEL_GENERATOR = BlockModelGenerators(
@@ -54,6 +53,9 @@ data object HTDynamicResourceRegister {
         MODEL_OUTPUT,
         Consumers.nop(),
     )
+
+    @JvmStatic
+    fun addModel(provider: HTTexturedModelProvider, value: HTIdLike): ResourceLocation = provider.create(value, MODEL_OUTPUT)
 
     @JvmStatic
     fun addBlockModel(template: ModelTemplate, block: HTIdLike, texture: TextureMapping): ResourceLocation = template.create(

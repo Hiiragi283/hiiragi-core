@@ -1,14 +1,11 @@
 package hiiragi283.core.client.data
 
-import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.data.lang.HTLangType
 import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.data.model.HTModelTemplates
-import hiiragi283.core.api.data.pack.HTDynamicResourcePack
 import hiiragi283.core.api.data.pack.HTDynamicResourceRegister
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialAccess
@@ -26,7 +23,6 @@ import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
 import hiiragi283.core.api.resource.itemId
-import hiiragi283.core.api.resource.modifyPath
 import kotlin.system.measureTimeMillis
 import net.minecraft.data.models.model.DelegatedModel
 import net.minecraft.data.models.model.ModelTemplates
@@ -147,14 +143,7 @@ internal data object HCDynamicClientResources {
         }*/
         // Item
         registered.items.forEach { (part: HTPart, _, item: HTIdLike) ->
-            val itemId: ResourceLocation = item.itemId
-            val textureIcon: String = part[HTPartPropertyKeys.TEXTURE_ICON] ?: part.name
-            val overlay: ResourceLocation = HiiragiCoreAPI.id(HTConst.ITEM, "${textureIcon}_overlay")
-            if (HTDynamicResourcePack.hasResource(overlay.modifyPath { "textures/$it.png" })) {
-                HTDynamicResourceRegister.addItemModel(ModelTemplates.TWO_LAYERED_ITEM, item, TextureMapping.layered(itemId, overlay))
-            } else {
-                HTDynamicResourceRegister.addItemModel(ModelTemplates.FLAT_ITEM, item, TextureMapping.layer0(itemId))
-            }
+            HTDynamicResourceRegister.addModel(part.getOrDefault(HTPartPropertyKeys.ITEM_MODEL_PROVIDER), item)
         }
         registered.tools.forEach { (_, _, item: HTIdLike) ->
             HTDynamicResourceRegister.addItemModel(ModelTemplates.FLAT_HANDHELD_ITEM, item, TextureMapping.layer0(item.itemId))

@@ -2,6 +2,7 @@ package hiiragi283.core.api.material.part.property
 
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangPatternProvider
+import hiiragi283.core.api.data.model.HTTexturedModelProvider
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.tag.HTTagPrefix
@@ -73,13 +74,11 @@ object HTPartPropertyKeys {
     @JvmField
     val LANG_PATTERN: HTPropertyKey<HTLangPatternProvider> = HTPropertyKey.create(HiiragiCoreAPI.id("lang_pattern"), HTLangPatternProvider("%s", "%s"))
 
-    // Texture
-    /**
-     * テクスチャを生成する際のテクスチャの名前を管理する[プロパティキー][HTPropertyKey]
-     */
+    // Model
     @JvmField
-    val TEXTURE_ICON: HTPropertyKey<String?> = createNullable("texture_icon")
+    val ITEM_MODEL_PROVIDER: HTPropertyKey<HTTexturedModelProvider> = HTPropertyKey.create(HiiragiCoreAPI.id("item_model_provider"), HTTexturedModelProvider.FLAT_ITEM)
 
+    // Texture
     /**
      * テクスチャの生成を無効化する[プロパティキー][HTPropertyKey]
      * @since 0.10.0
