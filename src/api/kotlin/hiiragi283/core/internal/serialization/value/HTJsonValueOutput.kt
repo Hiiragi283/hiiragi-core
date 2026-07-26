@@ -3,7 +3,7 @@ package hiiragi283.core.internal.serialization.value
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import com.mojang.serialization.Codec
+import com.mojang.serialization.Encoder
 import com.mojang.serialization.JsonOps
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import net.minecraft.core.HolderLookup
@@ -14,7 +14,7 @@ internal class HTJsonValueOutput(private val provider: HolderLookup.Provider, pr
 
     //    HTValueOutput    //
 
-    override fun <T : Any> write(key: String, codec: Codec<T>, value: T?) {
+    override fun <T : Any> write(key: String, codec: Encoder<T>, value: T?) {
         if (value == null) return
         codec
             .encodeStart(registryOps, value)
@@ -71,7 +71,7 @@ internal class HTJsonValueOutput(private val provider: HolderLookup.Provider, pr
         return ValueOutputList(provider, list)
     }
 
-    override fun <T : Any> list(key: String, codec: Codec<T>): HTValueOutput.TypedOutputList<T> {
+    override fun <T : Any> list(key: String, codec: Encoder<T>): HTValueOutput.TypedOutputList<T> {
         val list = JsonArray()
         jsonObject.add(key, list)
         return TypedOutputList(provider, list, codec)
@@ -96,7 +96,7 @@ internal class HTJsonValueOutput(private val provider: HolderLookup.Provider, pr
 
     //    TypedOutputList    //
 
-    private class TypedOutputList<T : Any>(provider: HolderLookup.Provider, private val list: JsonArray, private val codec: Codec<T>) : HTValueOutput.TypedOutputList<T> {
+    private class TypedOutputList<T : Any>(provider: HolderLookup.Provider, private val list: JsonArray, private val codec: Encoder<T>) : HTValueOutput.TypedOutputList<T> {
         private val registryOps: RegistryOps<JsonElement> = provider.createSerializationContext(JsonOps.INSTANCE)
 
         override val isEmpty: Boolean

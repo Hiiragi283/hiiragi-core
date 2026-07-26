@@ -2,7 +2,7 @@ package hiiragi283.core.api.data.pack
 
 import com.google.gson.JsonElement
 import com.mojang.logging.LogUtils
-import com.mojang.serialization.Codec
+import com.mojang.serialization.Encoder
 import com.mojang.serialization.JsonOps
 import com.mojang.serialization.Lifecycle
 import hiiragi283.core.api.data.recipe.HTRecipeExporter
@@ -17,6 +17,7 @@ import net.minecraft.core.Registry
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
+import net.minecraft.server.RegistryLayer
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.level.block.Block
@@ -57,52 +58,56 @@ data object HTDynamicDataRegister : HTRecipeProviderContext() {
     }
 
     /**
-     * [Codec]に基づいてデータを追加します。
+     * [Encoder]に基づいてデータを追加します。
      * @param id 追加するデータのパス
      * @param codec データの変換に使用するコーデック
      * @param value 追加するデータ
      */
     @JvmStatic
-    fun <T : Any> addToData(id: ResourceLocation, codec: Codec<T>, value: T) {
+    fun <T : Any> addToData(id: ResourceLocation, codec: Encoder<T>, value: T) {
         codec.encodeStart(FakeLookupProvider.createSerializationContext(JsonOps.INSTANCE), value)
             .ifError { LOGGER.error(it.message()) }
             .ifSuccess { addToData(id, it) }
     }
 
     /**
-     * [Codec]に基づいてデータを追加します。
+     * [Encoder]に基づいてデータを追加します。
      * @param key 追加するデータのパス
      * @param codec データの変換に使用するコーデック
      * @param value 追加するデータ
      */
     @JvmStatic
-    fun <T : Any> addToData(key: ResourceKey<T>, codec: Codec<T>, value: T) {
+    fun <T : Any> addToData(key: ResourceKey<T>, codec: Encoder<T>, value: T) {
         codec.encodeStart(FakeLookupProvider.createSerializationContext(JsonOps.INSTANCE), value)
             .ifError { LOGGER.error(it.message()) }
             .ifSuccess { addToData(key.location().withPrefix("${Registries.elementsDirPath(key.registryKey())}/"), it) }
     }
 
     /**
-     * [Codec]に基づいてデータを追加します。
+     * [Encoder]に基づいてデータを追加します。
      * @param prefix パスのプレフィックス
      * @param id 追加するデータのパス
      * @param codec データの変換に使用するコーデック
      * @param value 追加するデータ
      */
     @JvmStatic
-    fun <T : Any> addToData(prefix: String, id: ResourceLocation, codec: Codec<T>, value: T) {
+    fun <T : Any> addToData(prefix: String, id: ResourceLocation, codec: Encoder<T>, value: T) {
         codec.encodeStart(FakeLookupProvider.createSerializationContext(JsonOps.INSTANCE), value)
             .ifError { LOGGER.error(it.message()) }
             .ifSuccess { addToData(id.withPrefix("$prefix/"), it) }
     }
 
     /**
-     * [Codec]で使用される，偽の[HolderLookup.Provider]の実装クラスです。
+     * [Encoder]で使用される，偽の[HolderLookup.Provider]の実装クラスです。
      */
     private data object FakeLookupProvider : HolderLookup.Provider {
         override fun listRegistries(): Stream<ResourceKey<out Registry<*>>> = Stream.empty()
 
-        override fun <T : Any> lookup(registryKey: ResourceKey<out Registry<out T>>): Optional<HolderLookup.RegistryLookup<T>> = Optional.of(EmptyTagLookup(registryKey))
+        override fun <T : Any> lookup(registryKey: ResourceKey<out Registry<out T>>): Optional<HolderLookup.RegistryLookup<T>> {
+            val staticLookup: Optional<HolderLookup.RegistryLookup<T>> = RegistryLayer.createRegistryAccess().compositeAccess().lookup(registryKey)
+            if (staticLookup.isPresent) return staticLookup
+            return Optional.of(EmptyTagLookup(registryKey))
+        }
     }
 
     /**

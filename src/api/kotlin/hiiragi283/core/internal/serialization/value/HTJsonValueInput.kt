@@ -5,7 +5,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import com.mojang.logging.LogUtils
-import com.mojang.serialization.Codec
+import com.mojang.serialization.Decoder
 import com.mojang.serialization.JsonOps
 import hiiragi283.core.api.serialization.value.HTValueIOAccess
 import hiiragi283.core.api.serialization.value.HTValueInput
@@ -29,7 +29,7 @@ internal class HTJsonValueInput(private val provider: HolderLookup.Provider, pri
 
     //    HTNbtInput    //
 
-    override fun <T : Any> read(key: String, codec: Codec<T>): T? {
+    override fun <T : Any> read(key: String, codec: Decoder<T>): T? {
         val jsonIn: JsonElement = jsonObject.get(key) ?: return null
         return codec.parse(registryOps, jsonIn).ifError { LOGGER.error(it.message()) }.result().getOrNull()
     }
@@ -51,7 +51,7 @@ internal class HTJsonValueInput(private val provider: HolderLookup.Provider, pri
 
     override fun childrenListOrEmpty(key: String): Iterable<HTValueInput> = childrenList(key) ?: emptySet()
 
-    override fun <T : Any> list(key: String, codec: Codec<T>): Iterable<T>? {
+    override fun <T : Any> list(key: String, codec: Decoder<T>): Iterable<T>? {
         val list: JsonArray = jsonObject.get(key) as? JsonArray ?: return null
         return when {
             list.isEmpty -> null
@@ -59,7 +59,7 @@ internal class HTJsonValueInput(private val provider: HolderLookup.Provider, pri
         }
     }
 
-    override fun <T : Any> listOrEmpty(key: String, codec: Codec<T>): Iterable<T> = list(key, codec) ?: emptySet()
+    override fun <T : Any> listOrEmpty(key: String, codec: Decoder<T>): Iterable<T> = list(key, codec) ?: emptySet()
 
     override fun getBoolean(key: String, defaultValue: Boolean): Boolean = getJsonPrimitive(key)?.takeIf(JsonPrimitive::isBoolean)?.asBoolean ?: defaultValue
 
@@ -85,7 +85,7 @@ internal class HTJsonValueInput(private val provider: HolderLookup.Provider, pri
 
     //    TypedInputList    //
 
-    private class TypedInputList<T : Any>(provider: HolderLookup.Provider, private val list: JsonArray, private val codec: Codec<T>) : Iterable<T> {
+    private class TypedInputList<T : Any>(provider: HolderLookup.Provider, private val list: JsonArray, private val codec: Decoder<T>) : Iterable<T> {
         private val registryOps: RegistryOps<JsonElement> = provider.createSerializationContext(JsonOps.INSTANCE)
 
         override fun iterator(): Iterator<T> = list

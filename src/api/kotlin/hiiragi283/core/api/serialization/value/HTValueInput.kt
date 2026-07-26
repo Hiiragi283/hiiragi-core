@@ -1,6 +1,6 @@
 package hiiragi283.core.api.serialization.value
 
-import com.mojang.serialization.Codec
+import com.mojang.serialization.Decoder
 
 /**
  * NBTやJSONから値を読み取るインターフェースです。
@@ -15,7 +15,7 @@ interface HTValueInput {
      * @param codec [T]のコーデック
      * @return 指定した[key]に値がない，または[codec]での変換に失敗した場合は`null`
      */
-    fun <T : Any> read(key: String, codec: Codec<T>): T?
+    fun <T : Any> read(key: String, codec: Decoder<T>): T?
 
     // Compound
 
@@ -54,7 +54,7 @@ interface HTValueInput {
      * @param codec [T]のコーデック
      * @return 指定した[key]に値がない，[codec]での変換に失敗した場合は`null`
      */
-    fun <T : Any> list(key: String, codec: Codec<T>): Iterable<T>?
+    fun <T : Any> list(key: String, codec: Decoder<T>): Iterable<T>?
 
     /**
      * 指定した[key]から[Iterable]を返します。
@@ -62,7 +62,7 @@ interface HTValueInput {
      * @param key 保存先のキー
      * @param codec [T]のコーデック
      */
-    fun <T : Any> listOrEmpty(key: String, codec: Codec<T>): Iterable<T>
+    fun <T : Any> listOrEmpty(key: String, codec: Decoder<T>): Iterable<T>
 
     // Primitives
 

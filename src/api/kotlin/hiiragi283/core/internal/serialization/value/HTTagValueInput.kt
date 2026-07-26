@@ -1,7 +1,7 @@
 package hiiragi283.core.internal.serialization.value
 
 import com.mojang.logging.LogUtils
-import com.mojang.serialization.Codec
+import com.mojang.serialization.Decoder
 import hiiragi283.core.api.serialization.value.HTValueIOAccess
 import hiiragi283.core.api.serialization.value.HTValueInput
 import kotlin.jvm.optionals.getOrNull
@@ -37,7 +37,7 @@ internal class HTTagValueInput(private val provider: HolderLookup.Provider, priv
 
     //    HTNbtInput    //
 
-    override fun <T : Any> read(key: String, codec: Codec<T>): T? {
+    override fun <T : Any> read(key: String, codec: Decoder<T>): T? {
         val tagIn: Tag = compoundTag.get(key) ?: return null
         return codec.parse(registryOps, tagIn).ifError { LOGGER.error(it.message()) }.result().getOrNull()
     }
@@ -59,7 +59,7 @@ internal class HTTagValueInput(private val provider: HolderLookup.Provider, priv
 
     override fun childrenListOrEmpty(key: String): Iterable<HTValueInput> = childrenList(key) ?: emptySet()
 
-    override fun <T : Any> list(key: String, codec: Codec<T>): Iterable<T>? {
+    override fun <T : Any> list(key: String, codec: Decoder<T>): Iterable<T>? {
         val tagIn: ListTag = getTypedTag(key, ListTag.TYPE) ?: return null
         return when {
             tagIn.isEmpty() -> null
@@ -67,7 +67,7 @@ internal class HTTagValueInput(private val provider: HolderLookup.Provider, priv
         }
     }
 
-    override fun <T : Any> listOrEmpty(key: String, codec: Codec<T>): Iterable<T> = list(key, codec) ?: emptySet()
+    override fun <T : Any> listOrEmpty(key: String, codec: Decoder<T>): Iterable<T> = list(key, codec) ?: emptySet()
 
     override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
         val tagIn: NumericTag = getNumericTag(key) ?: return defaultValue
@@ -123,7 +123,7 @@ internal class HTTagValueInput(private val provider: HolderLookup.Provider, priv
 
     //    TypedInputList    //
 
-    private class TypedInputList<T : Any>(provider: HolderLookup.Provider, private val list: ListTag, private val codec: Codec<T>) : Iterable<T> {
+    private class TypedInputList<T : Any>(provider: HolderLookup.Provider, private val list: ListTag, private val codec: Decoder<T>) : Iterable<T> {
         private val registryOps: RegistryOps<Tag> = provider.createSerializationContext(NbtOps.INSTANCE)
 
         override fun iterator(): Iterator<T> = list

@@ -1,10 +1,10 @@
 package hiiragi283.core.internal.serialization.value
 
-import com.mojang.serialization.Codec
+import com.mojang.serialization.Decoder
 import hiiragi283.core.api.serialization.value.HTValueInput
 
 internal object HTEmptyValueInput : HTValueInput {
-    override fun <T : Any> read(key: String, codec: Codec<T>): T? = null
+    override fun <T : Any> read(key: String, codec: Decoder<T>): T? = null
 
     override fun child(key: String): HTValueInput? = null
 
@@ -14,9 +14,9 @@ internal object HTEmptyValueInput : HTValueInput {
 
     override fun childrenListOrEmpty(key: String): Iterable<HTValueInput> = emptySet()
 
-    override fun <T : Any> list(key: String, codec: Codec<T>): Iterable<T>? = null
+    override fun <T : Any> list(key: String, codec: Decoder<T>): Iterable<T>? = null
 
-    override fun <T : Any> listOrEmpty(key: String, codec: Codec<T>): Iterable<T> = emptySet()
+    override fun <T : Any> listOrEmpty(key: String, codec: Decoder<T>): Iterable<T> = emptySet()
 
     override fun getBoolean(key: String, defaultValue: Boolean): Boolean = defaultValue
 

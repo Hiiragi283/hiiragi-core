@@ -1,6 +1,6 @@
 package hiiragi283.core.internal.serialization.value
 
-import com.mojang.serialization.Codec
+import com.mojang.serialization.Encoder
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
@@ -14,7 +14,7 @@ internal class HTTagValueOutput(private val provider: HolderLookup.Provider, pri
 
     //    HTValueOutput    //
 
-    override fun <T : Any> write(key: String, codec: Codec<T>, value: T?) {
+    override fun <T : Any> write(key: String, codec: Encoder<T>, value: T?) {
         if (value == null) return
         codec
             .encodeStart(registryOps, value)
@@ -71,7 +71,7 @@ internal class HTTagValueOutput(private val provider: HolderLookup.Provider, pri
         return ValueOutputList(provider, list)
     }
 
-    override fun <T : Any> list(key: String, codec: Codec<T>): HTValueOutput.TypedOutputList<T> {
+    override fun <T : Any> list(key: String, codec: Encoder<T>): HTValueOutput.TypedOutputList<T> {
         val list = ListTag()
         compoundTag.put(key, list)
         return TypedOutputList(provider, list, codec)
@@ -96,7 +96,7 @@ internal class HTTagValueOutput(private val provider: HolderLookup.Provider, pri
 
     //    TypedOutputList    //
 
-    private class TypedOutputList<T : Any>(provider: HolderLookup.Provider, private val list: ListTag, private val codec: Codec<T>) : HTValueOutput.TypedOutputList<T> {
+    private class TypedOutputList<T : Any>(provider: HolderLookup.Provider, private val list: ListTag, private val codec: Encoder<T>) : HTValueOutput.TypedOutputList<T> {
         private val registryOps: RegistryOps<Tag> = provider.createSerializationContext(NbtOps.INSTANCE)
 
         override val isEmpty: Boolean

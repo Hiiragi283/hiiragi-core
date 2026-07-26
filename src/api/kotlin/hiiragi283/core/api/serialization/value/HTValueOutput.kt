@@ -1,6 +1,6 @@
 package hiiragi283.core.api.serialization.value
 
-import com.mojang.serialization.Codec
+import com.mojang.serialization.Encoder
 import hiiragi283.core.api.util.Option
 import java.util.Optional
 
@@ -17,16 +17,16 @@ interface HTValueOutput {
      * @param codec [T]のコーデック
      * @param value 書き込む値
      */
-    fun <T : Any> write(key: String, codec: Codec<T>, value: T?)
+    fun <T : Any> write(key: String, codec: Encoder<T>, value: T?)
 
-    fun <T : Any> writeOptional(key: String, codec: Codec<Optional<T>>, value: T?) {
+    fun <T : Any> writeOptional(key: String, codec: Encoder<Optional<T>>, value: T?) {
         write(key, codec, Optional.ofNullable(value))
     }
 
     /**
      * @since 21.1.0
      */
-    fun <T : Any> writeOption(key: String, codec: Codec<Option<T>>, value: T?) {
+    fun <T : Any> writeOption(key: String, codec: Encoder<Option<T>>, value: T?) {
         write(key, codec, Option.fromNullable(value))
     }
 
@@ -63,7 +63,7 @@ interface HTValueOutput {
      * @param codec [T]のコーデック
      * @return [key]に紐づけられた[TypedOutputList]
      */
-    fun <T : Any> list(key: String, codec: Codec<T>): TypedOutputList<T>
+    fun <T : Any> list(key: String, codec: Encoder<T>): TypedOutputList<T>
 
     // Primitives
 

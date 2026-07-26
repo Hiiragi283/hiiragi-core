@@ -339,4 +339,7 @@ data object HTCodecs {
      */
     @JvmStatic
     fun <T : Any> holderSet(registryKey: RegistryKey<T>): Codec<HolderSet<T>> = RegistryCodecs.homogeneousList(registryKey)
+
+    @JvmStatic
+    fun <T : Any> holderSet(registryKey: RegistryKey<T>, element: Codec<T>): Codec<HolderSet<T>> = RegistryCodecs.homogeneousList(registryKey, element)
 }
