@@ -1,102 +1,70 @@
-@file:OptIn(ExperimentalContracts::class)
-
 package hiiragi283.core.api.data.model
 
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.HiiragiCoreAPI
+import hiiragi283.core.api.data.allOf
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
 import hiiragi283.core.api.resource.toId
-import hiiragi283.core.api.resource.vanillaId
-import kotlin.contracts.ExperimentalContracts
-import kotlin.contracts.InvocationKind
-import kotlin.contracts.contract
+import java.util.concurrent.CompletableFuture
+import java.util.function.Supplier
+import net.minecraft.data.CachedOutput
+import net.minecraft.data.DataProvider
 import net.minecraft.data.PackOutput
+import net.minecraft.data.models.model.ModelTemplate
+import net.minecraft.data.models.model.ModelTemplates
+import net.minecraft.data.models.model.TextureMapping
 import net.minecraft.resources.ResourceLocation
-import net.neoforged.neoforge.client.model.generators.ItemModelBuilder
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider
-import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder
-import net.neoforged.neoforge.common.data.ExistingFileHelper
 
-/**
- * Hiiragi Coreとそれを前提とするmodで使用される[ItemModelBuilder]の拡張クラスです。
- * @author Hiiragi Tsubasa
- * @since 0.1.0
- */
-abstract class HTItemModelProvider(fileHelper: ExistingFileHelper, output: PackOutput, modid: String) : ItemModelProvider(output, modid, fileHelper) {
+abstract class HTItemModelProvider(output: PackOutput, protected val modId: String) : DataProvider {
+    private val modelPathProvider: PackOutput.PathProvider = output.createPathProvider(PackOutput.Target.RESOURCE_PACK, "models")
+
+    override fun run(output: CachedOutput): CompletableFuture<*> {
+        val map: MutableMap<ResourceLocation, Supplier<JsonElement>> = hashMapOf()
+        registerModels { modelId: ResourceLocation, supplier: Supplier<JsonElement> ->
+            check(map.put(modelId, supplier) == null) { "Duplicate model definition for $modelId" }
+        }
+        return map
+            .map { (modelId: ResourceLocation, supplier: Supplier<JsonElement>) -> DataProvider.saveStable(output, supplier.get(), modelPathProvider.json(modelId)) }
+            .allOf()
+    }
+
+    protected abstract fun registerModels(output: ModelOutput)
+
+    override fun getName(): String = "Item Models - $modId"
+
     //    Extensions    //
 
-    /**
-     * @since 0.10.0
-     */
-    protected fun trackItem(id: HTIdLike) {
-        this.trackTexture(id.itemId)
+    fun basicItem(output: ModelOutput, item: HTIdLike): ResourceLocation = ModelTemplates.FLAT_ITEM.create(item.itemId, TextureMapping.layer0(item.itemId), output)
+
+    fun layeredItem(output: ModelOutput, item: HTIdLike, vararg layers: ResourceLocation): ResourceLocation {
+        val (mapping: TextureMapping, template: ModelTemplate) = when (layers.size) {
+            1 -> TextureMapping.layer0(layers[0]) to ModelTemplates.FLAT_ITEM
+            2 -> TextureMapping.layered(layers[0], layers[1]) to ModelTemplates.TWO_LAYERED_ITEM
+            3 -> TextureMapping.layered(layers[0], layers[1], layers[2]) to ModelTemplates.THREE_LAYERED_ITEM
+            else -> error("Cannot create item model with ${layers.size} layers")
+        }
+        return template.create(item.itemId, mapping, output)
     }
 
-    /**
-     * 指定したテクスチャが存在する場合にのみモデルを登録します。
-     * @param item モデルを登録させるアイテム
-     * @param action モデルを登録するブロック
-     */
-    protected inline fun existTexture(item: HTIdLike, action: (HTIdLike) -> Unit) {
-        contract {
-            callsInPlace(action, InvocationKind.AT_MOST_ONCE)
-        }
-        existTexture(item, item.itemId) { itemIn: HTIdLike, _: ResourceLocation -> action(itemIn) }
-    }
-
-    /**
-     * 指定したテクスチャが存在する場合にのみモデルを登録します。
-     * @param item モデルを登録させるアイテム
-     * @param id テクスチャのID
-     * @param action モデルを登録するブロック
-     */
-    protected inline fun existTexture(item: HTIdLike, id: ResourceLocation, action: (HTIdLike, ResourceLocation) -> Unit) {
-        contract {
-            callsInPlace(action, InvocationKind.AT_MOST_ONCE)
-        }
-        if (this.existsTexture(id)) {
-            action(item, id)
-        } else {
-            HiiragiCoreAPI.LOGGER.debug("Missing texture {} for {}", id, item.getId())
-        }
-    }
-
-    /**
-     * @since 0.7.0
-     */
-    protected fun basicItem(id: HTIdLike): ItemModelBuilder = basicItem(id.getId())
-
-    /**
-     * 複数のレイヤーをもつアイテムモデルを登録します。
-     * @param item モデルを登録させるアイテム
-     * @param layers 各レイヤーのテクスチャID
-     */
-    protected fun layeredItem(item: HTIdLike, vararg layers: ResourceLocation): ItemModelBuilder {
-        val builder: ItemModelBuilder = withExistingParent(item, vanillaId(HTConst.ITEM, "generated"))
-        layers.forEachIndexed { index: Int, layer: ResourceLocation ->
-            builder.texture("layer$index", layer)
-        }
-        return builder
-    }
-
-    /**
-     * 液体バケツのアイテムモデルを登録します。
-     * @since 0.1.0
-     */
-    protected fun bucketItem(content: HTFluidContent, isDrip: Boolean): DynamicFluidContainerModelBuilder<ItemModelBuilder> {
+    fun bucketItem(output: ModelOutput, content: HTFluidContent, isDrip: Boolean): ResourceLocation {
         val parent: ResourceLocation = when {
             isDrip -> "bucket_drip"
             else -> "bucket"
         }.let { HTConst.NEOFORGE.toId(HTConst.ITEM, it) }
-
-        val builder: DynamicFluidContainerModelBuilder<ItemModelBuilder> = withExistingParent(content.bucketHolder, parent)
-            .customLoader(DynamicFluidContainerModelBuilder<ItemModelBuilder>::begin)
-            .fluid(content.get())
-        if (content.getFluidType().isLighterThanAir) {
-            builder.flipGas(true)
+        val modelId: ResourceLocation = content.bucketHolder.itemId
+        output.accept(modelId) {
+            JsonObject().apply {
+                addProperty("parent", parent.toString())
+                addProperty("loader", HTConst.NEOFORGE.toId("fluid_container").toString())
+                addProperty("fluid", content.getId().toString())
+                if (content.getFluidType().isLighterThanAir) {
+                    addProperty("flip_gas", true)
+                }
+            }
         }
-        return builder
+        return modelId
     }
 }

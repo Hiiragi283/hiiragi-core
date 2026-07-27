@@ -41,3 +41,5 @@ fun GatherDataEvent.createLootTables(
         future,
     )
 }
+
+fun List<CompletableFuture<*>>.allOf(): CompletableFuture<*> = CompletableFuture.allOf(*this.toTypedArray())

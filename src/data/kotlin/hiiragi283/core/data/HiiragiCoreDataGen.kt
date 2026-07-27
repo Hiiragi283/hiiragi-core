@@ -90,6 +90,6 @@ data object HiiragiCoreDataGen {
         event.createProvider(::HCJapaneseLangProvider)
 
         event.createProviderWithHelper(::HCBlockStateProvider)
-        event.createProviderWithHelper(::HCItemModelProvider)
+        event.createProvider(::HCItemModelProvider)
     }
 }

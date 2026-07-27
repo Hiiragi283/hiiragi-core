@@ -2,6 +2,7 @@ package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.data.allOf
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.getResult
@@ -55,11 +56,9 @@ abstract class HTRecipeProvider(packOutput: PackOutput, private val future: Comp
             check(recipes.put(fixedId, WithConditions(conditions, recipe)) == null) { "Duplicate recipe $fixedId" }
         }
         buildRecipes()
-        CompletableFuture.allOf(
-            *recipes
-                .map { (id: ResourceLocation, value: WithConditions<Recipe<*>>) -> DataProvider.saveStable(output, registries, Recipe.CONDITIONAL_CODEC, Optional.of(value), pathProvider.json(id)) }
-                .toTypedArray(),
-        )
+        recipes
+            .map { (id: ResourceLocation, value: WithConditions<Recipe<*>>) -> DataProvider.saveStable(output, registries, Recipe.CONDITIONAL_CODEC, Optional.of(value), pathProvider.json(id)) }
+            .allOf()
     }
 
     /**

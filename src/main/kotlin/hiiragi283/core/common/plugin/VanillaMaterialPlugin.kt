@@ -518,6 +518,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Brick", "レンガ")
+            setTextureSet("mineral", HTMaterialTextureSet.DULL)
         }
         builder.getBuilder(VanillaMaterialKeys.NETHER_BRICK).apply {
             setDefaultPart(Tags.Items.BRICKS_NETHER, Items.NETHER_BRICK.toLike())
@@ -525,6 +526,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Nether Brick", "ネザーレンガ")
+            setTextureSet("mineral", HTMaterialTextureSet.DULL)
         }
     }
 }

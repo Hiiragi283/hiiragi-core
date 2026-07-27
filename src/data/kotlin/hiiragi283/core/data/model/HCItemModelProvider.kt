@@ -3,6 +3,7 @@ package hiiragi283.core.data.model
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.model.HTItemModelProvider
+import hiiragi283.core.api.data.model.ModelOutput
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
@@ -10,31 +11,10 @@ import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import net.minecraft.data.PackOutput
-import net.neoforged.neoforge.common.data.ExistingFileHelper
 
-class HCItemModelProvider(fileHelper: ExistingFileHelper, output: PackOutput) : HTItemModelProvider(fileHelper, output, HiiragiCoreAPI.MOD_ID) {
-    override fun registerModels() {
-        trackItem(HCItems.BAMBOO_CHARCOAL)
-
-        trackItem(HCItems.CURED_RUBBER)
-        trackItem(HCItems.RAW_RUBBER)
-        trackItem(HCItems.POLYMER_RESIN)
-        trackItem(HCItems.SYNTHETIC_FEATHER)
-        trackItem(HCItems.SYNTHETIC_FIBER)
-        trackItem(HCItems.SYNTHETIC_LEATHER)
-
-        trackItem(HCItems.WHEAT_FLOUR)
-        trackItem(HCItems.WHEAT_DOUGH)
-
-        trackItem(HCItems.LUMINOUS_PASTE)
-        trackItem(HCItems.ELDER_HEART)
-        trackItem(HCItems.WITHER_STAR)
-
-        trackItem(HCItems.ELDRITCH_EGG)
-
-        trackItem(HCItems.IRIDESCENT_POWDER)
-
-        buildList {
+class HCItemModelProvider(output: PackOutput) : HTItemModelProvider(output, HiiragiCoreAPI.MOD_ID) {
+    override fun registerModels(output: ModelOutput) {
+        buildSet {
             addAll(HCItems.REGISTER.asSequence())
 
             remove(HCItems.STEEL_COMPOUND)
@@ -42,34 +22,25 @@ class HCItemModelProvider(fileHelper: ExistingFileHelper, output: PackOutput) : 
             remove(HCItems.BLUEPRINT)
 
             remove(HCItems.POTION_OF_INFINITY)
-        }.forEach { item: HTIdLike -> existTexture(item, ::basicItem) }
+        }.forEach { item: HTIdLike -> basicItem(output, item) }
 
-        existTexture(HCItems.STEEL_COMPOUND) { item: HTIdLike ->
-            layeredItem(item, vanillaId(HTConst.ITEM, "iron_ingot"), item.itemId)
-        }
+        HCItems.STEEL_COMPOUND.let { layeredItem(output, it, vanillaId(HTConst.ITEM, "iron_ingot"), it.itemId) }
+        HCItems.BLUEPRINT.let { layeredItem(output, it, it.itemId, vanillaId(HTConst.ITEM, "filled_map_markings")) }
 
-        existTexture(HCItems.BLUEPRINT) { item: HTIdLike ->
-            layeredItem(
-                item,
-                item.itemId,
-                vanillaId(HTConst.ITEM, "filled_map_markings"),
-            )
-        }
+        layeredItem(output, HCItems.POTION_OF_INFINITY, vanillaId(HTConst.ITEM, "potion"), vanillaId(HTConst.ITEM, "potion_overlay"))
 
-        layeredItem(HCItems.POTION_OF_INFINITY, vanillaId(HTConst.ITEM, "potion"), vanillaId(HTConst.ITEM, "potion_overlay"))
-
-        registerBuckets()
+        registerBuckets(output)
     }
 
-    private fun registerBuckets() {
-        val dripFluids: List<HTFluidContent> = buildList {
+    private fun registerBuckets(output: ModelOutput) {
+        val dripFluids: Set<HTFluidContent> = buildSet {
             // Vanilla
             addAll(HCFluids.DYES)
 
             add(HCFluids.HONEY)
         }
         for (content: HTFluidContent in HCFluids.REGISTER.entries) {
-            bucketItem(content, content in dripFluids)
+            bucketItem(output, content, content in dripFluids)
         }
     }
 }
