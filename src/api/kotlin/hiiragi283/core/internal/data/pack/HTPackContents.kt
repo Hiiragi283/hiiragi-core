@@ -21,7 +21,7 @@ import net.minecraft.server.packs.resources.IoSupplier
 internal class HTPackContents {
     companion object {
         @JvmStatic
-        fun dumpJson(id: ResourceLocation, parent: Path, bytes: ByteArray) {
+        fun dumpData(id: ResourceLocation, parent: Path, bytes: ByteArray) {
             runCatching {
                 val file: Path = parent.resolve(id.namespace).resolve(id.path)
                 Files.createDirectories(file.parent)

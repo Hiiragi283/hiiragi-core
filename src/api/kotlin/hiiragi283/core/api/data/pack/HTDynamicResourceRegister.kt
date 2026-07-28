@@ -38,8 +38,10 @@ data object HTDynamicResourceRegister {
     // Language
     @JvmStatic
     inline fun addLang(langType: HTLangType, consumer: (HTLangType, (String, String) -> Unit) -> Unit) {
+        val map: MutableMap<String, String> = sortedMapOf()
+        consumer(langType, map::put)
         val root = JsonObject()
-        consumer(langType, root::addProperty)
+        map.forEach(root::addProperty)
         addToData(HiiragiCoreAPI.MOD_ID.toId("lang", langType.name), root)
     }
 

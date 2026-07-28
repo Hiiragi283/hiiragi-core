@@ -5,8 +5,6 @@ import hiiragi283.core.api.resource.modifyPath
 import java.io.BufferedReader
 import java.io.InputStream
 import java.util.stream.Stream
-import net.mehvahdjukaar.moonlight.api.resources.textures.Palette
-import net.mehvahdjukaar.moonlight.api.util.math.colors.RGBColor
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
 
@@ -49,12 +47,6 @@ data object HTTextureUtil {
                     .map { it.split(PALETTE_REGEX, limit = 4).take(3).map(String::toInt) }
                     .map { (red: Int, green: Int, blue: Int) -> combine(255, blue, green, red) }
             }.onSuccess { colorCache[id] = it }
-
-    @JvmStatic
-    fun getOrCreatePalette(id: ResourceLocation, manager: ResourceManager): Result<Palette> = getOrCreateColors(id, manager).map(::wrapToPalette)
-
-    @JvmStatic
-    fun wrapToPalette(colors: List<Int>): Palette = colors.map(::RGBColor).let(Palette::ofColors)
 
     @JvmStatic
     fun combine(alpha: Int, blue: Int, green: Int, red: Int): Int = (alpha shl 24) or (blue shl 16) or (green shl 8) or red

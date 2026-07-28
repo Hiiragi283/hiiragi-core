@@ -44,7 +44,7 @@ class HTDynamicDatapack(private val locationInfo: PackLocationInfo) : PackResour
         fun addToData(id: ResourceLocation, bytes: ByteArray) {
             if (HiiragiCoreAPI.isDevelopment()) {
                 val parent: Path = HiiragiCoreAPI.GAME_DIR.resolve("debug/dumped/data")
-                HTPackContents.dumpJson(id, parent, bytes)
+                HTPackContents.dumpData(id, parent, bytes)
             }
             CONTENTS.addToData(id, bytes)
         }

@@ -53,8 +53,7 @@ replica = { group = "maven.modrinth", name = "replication", version.ref = "repli
 
 common-impl = [
     "jade",
-    "jei-api",
-    "moonlight-neo"
+    "jei-api"
 ]
 
 common-compile = []
