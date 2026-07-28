@@ -7,6 +7,7 @@ import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.resource.toId
+import net.mehvahdjukaar.moonlight.api.resources.RPUtils
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicClientResourceProvider
 import net.mehvahdjukaar.moonlight.api.resources.pack.PackGenerationStrategy
 import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
@@ -69,7 +70,9 @@ data object HTDynamicResourceProvider {
          * @param palette パレットを提供するブロック
          * @since 0.13.0
          */
-        protected fun resprite(id: ResourceLocation, base: ResourceLocation, palette: Block): ResourceGenTask = resprite(id, base) { manager: ResourceManager -> HTTextureUtil.getTexture(manager, palette).map(Palette::fromImage) }
+        protected fun resprite(id: ResourceLocation, base: ResourceLocation, palette: Block): ResourceGenTask = resprite(id, base) { manager: ResourceManager ->
+            runCatching { RPUtils.findFirstBlockTextureLocation(manager, palette).let { TextureImage.open(manager, it) } }.map(Palette::fromImage)
+        }
 
         /**
          * @param id テクスチャの出力先の[ID][ResourceLocation]
@@ -77,6 +80,8 @@ data object HTDynamicResourceProvider {
          * @param palette パレットを提供するアイテム
          * @since 0.13.0
          */
-        protected fun resprite(id: ResourceLocation, base: ResourceLocation, palette: Item): ResourceGenTask = resprite(id, base) { manager: ResourceManager -> HTTextureUtil.getTexture(manager, palette).map(Palette::fromImage) }
+        protected fun resprite(id: ResourceLocation, base: ResourceLocation, palette: Item): ResourceGenTask = resprite(id, base) { manager: ResourceManager ->
+            runCatching { RPUtils.findFirstItemTextureLocation(manager, palette).let { TextureImage.open(manager, it) } }.map(Palette::fromImage)
+        }
     }
 }

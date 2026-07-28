@@ -1,18 +1,14 @@
 package hiiragi283.core.api.data.texture
 
-import hiiragi283.core.api.resource.HTIdLike
+import com.mojang.blaze3d.platform.NativeImage
 import hiiragi283.core.api.resource.modifyPath
 import java.io.BufferedReader
 import java.io.InputStream
 import java.util.stream.Stream
-import net.mehvahdjukaar.moonlight.api.resources.RPUtils
 import net.mehvahdjukaar.moonlight.api.resources.textures.Palette
-import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.mehvahdjukaar.moonlight.api.util.math.colors.RGBColor
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
-import net.minecraft.world.item.Item
-import net.minecraft.world.level.block.Block
 
 /**
  * @author Hiiragi Tsubasa
@@ -36,9 +32,6 @@ data object HTTextureUtil {
     }
 
     @JvmStatic
-    fun getCachedColors(id: HTIdLike): List<Int>? = getCachedColors(id.getId())
-
-    @JvmStatic
     fun getCachedColors(id: ResourceLocation): List<Int>? = colorCache[id]
 
     @JvmStatic
@@ -54,7 +47,7 @@ data object HTTextureUtil {
                 lines
                     .filterNot { it == paletteId || it.startsWith("Name") || it.startsWith("Columns") }
                     .map { it.split(PALETTE_REGEX, limit = 4).take(3).map(String::toInt) }
-                    .map { (red: Int, green: Int, blue: Int) -> RGBColor.combine(255, blue, green, red) }
+                    .map { (red: Int, green: Int, blue: Int) -> combine(255, blue, green, red) }
             }.onSuccess { colorCache[id] = it }
 
     @JvmStatic
@@ -63,15 +56,18 @@ data object HTTextureUtil {
     @JvmStatic
     fun wrapToPalette(colors: List<Int>): Palette = colors.map(::RGBColor).let(Palette::ofColors)
 
-    //    TextureImage    //
+    @JvmStatic
+    fun combine(alpha: Int, blue: Int, green: Int, red: Int): Int = (alpha shr 24) or (blue shr 16) or (green shr 8) or red
+
+    //    NativeImage    //
 
     @JvmStatic
-    fun getTexture(manager: ResourceManager, block: Block): Result<TextureImage> = runCatching {
-        RPUtils.findFirstBlockTextureLocation(manager, block).let { TextureImage.open(manager, it) }
-    }
+    fun openImage(manager: ResourceManager, id: ResourceLocation): Result<NativeImage> = runCatching { manager.getResource(id).orElseThrow().open().use(NativeImage::read) }
 
     @JvmStatic
-    fun getTexture(manager: ResourceManager, item: Item): Result<TextureImage> = runCatching {
-        RPUtils.findFirstItemTextureLocation(manager, item).let { TextureImage.open(manager, it) }
+    fun copyFrom(other: NativeImage): NativeImage {
+        val image = NativeImage(other.width, other.height, true)
+        image.copyFrom(other)
+        return image
     }
 }

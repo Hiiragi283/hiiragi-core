@@ -26,7 +26,7 @@ data object HCClientResourceProvider : HTDynamicResourceProvider.Client(HiiragiC
     override fun regenerateDynamicAssets(executor: Consumer<ResourceGenTask>) {
         // Texture
         HTTextureUtil.clearCache()
-        executor.accept(HCMaterialTextureProvider)
+        // executor.accept(HCMaterialTextureProvider)
 
         blockTextures(executor)
         itemTextures(executor)
