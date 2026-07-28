@@ -1,9 +1,13 @@
 package hiiragi283.core.internal.data.pack
 
+import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.resource.toId
 import java.io.InputStream
+import java.nio.file.Files
+import java.nio.file.Path
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.collections.iterator
+import kotlin.io.path.outputStream
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.PackResources
 import net.minecraft.server.packs.resources.IoSupplier
@@ -15,6 +19,17 @@ import net.minecraft.server.packs.resources.IoSupplier
  * @since 21.1.0
  */
 internal class HTPackContents {
+    companion object {
+        @JvmStatic
+        fun dumpJson(id: ResourceLocation, parent: Path, bytes: ByteArray) {
+            runCatching {
+                val file: Path = parent.resolve(id.namespace).resolve(id.path)
+                Files.createDirectories(file.parent)
+                file.outputStream().use { it.write(bytes) }
+            }.onFailure { HiiragiCoreAPI.LOGGER.error("Failed to dump json for file {}", id, it) }
+        }
+    }
+
     internal class Node {
         // GT Modernの実装では`tags/block/ore.json`と`tags/block/ore/xx.json`が共存できないので，それを解決するためにこうした
         val children: MutableMap<String, Node> = hashMapOf()

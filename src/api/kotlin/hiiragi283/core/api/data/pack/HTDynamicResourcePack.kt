@@ -5,6 +5,7 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.internal.data.pack.HTPackContents
 import java.io.InputStream
+import java.nio.file.Path
 import net.minecraft.SharedConstants
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.PackLocationInfo
@@ -41,6 +42,10 @@ class HTDynamicResourcePack(private val locationInfo: PackLocationInfo) : PackRe
 
         @JvmStatic
         fun addToData(id: ResourceLocation, bytes: ByteArray) {
+            if (HiiragiCoreAPI.isDevelopment()) {
+                val parent: Path = HiiragiCoreAPI.GAME_DIR.resolve("debug/dumped/assets")
+                HTPackContents.dumpJson(id, parent, bytes)
+            }
             CONTENTS.addToData(id, bytes)
         }
 
