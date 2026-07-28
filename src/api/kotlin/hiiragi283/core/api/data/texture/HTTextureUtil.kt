@@ -57,7 +57,7 @@ data object HTTextureUtil {
     fun wrapToPalette(colors: List<Int>): Palette = colors.map(::RGBColor).let(Palette::ofColors)
 
     @JvmStatic
-    fun combine(alpha: Int, blue: Int, green: Int, red: Int): Int = (alpha shr 24) or (blue shr 16) or (green shr 8) or red
+    fun combine(alpha: Int, blue: Int, green: Int, red: Int): Int = (alpha shl 24) or (blue shl 16) or (green shl 8) or red
 
     //    NativeImage    //
 
