@@ -2,6 +2,7 @@ package hiiragi283.core.common.storage.fluid
 
 import com.google.common.primitives.Ints
 import hiiragi283.core.api.HTContentListener
+import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStorageAction
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
@@ -13,7 +14,8 @@ import net.minecraft.world.item.ItemStack
 
 class HTExperienceTomeFluidTank(override val container: ItemStack) :
     HTItemFluidTank,
-    HTContentListener by HTContentListener.NOTHING {
+    HTContentListener by HTContentListener.NOTHING,
+    HTValueSerializable by HTValueSerializable.NOTHING {
     fun getExpRatio(): Int = HTExperienceHelper.getExpRatio()
 
     override fun isValid(resource: HTFluidResourceType): Boolean = resource.typeHolder().`is`(HCFluids.EXPERIENCE.fluidTag)
