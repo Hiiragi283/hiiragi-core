@@ -80,6 +80,9 @@ data object HTCodecs {
     @JvmStatic
     fun <A : Any> option(codec: Codec<A>): Codec<Option<A>> = OptionCodec(codec)
 
+    /**
+     * @suppress
+     */
     @JvmRecord
     private data class OptionCodec<A : Any>(private val codec: Codec<A>) : Codec<Option<A>> {
         override fun <T> encode(input: Option<A>, ops: DynamicOps<T>, prefix: T): DataResult<T> = input.fold(
@@ -137,6 +140,7 @@ data object HTCodecs {
     fun <A, B> xor(left: Codec<A>, right: Codec<B>): Codec<Either<A, B>> = HTEitherCodec(left, right, true)
 
     /**
+     * @suppress
      * @see com.mojang.serialization.codecs.EitherCodec
      * @see com.mojang.serialization.codecs.XorCodec
      */
@@ -175,6 +179,9 @@ data object HTCodecs {
     @JvmStatic
     fun <A, B> ior(left: MapCodec<A>, right: MapCodec<B>): MapCodec<Ior<A, B>> = HTIorMapCodec(left, right)
 
+    /**
+     * @suppress
+     */
     private data class HTIorMapCodec<A, B>(val left: MapCodec<A>, val right: MapCodec<B>) : MapCodec<Ior<A, B>>() {
         override fun <T : Any> keys(ops: DynamicOps<T>): Stream<T> = Stream.concat(left.keys(ops), right.keys(ops))
 

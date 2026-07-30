@@ -14,5 +14,8 @@ interface HTRecipePredicate<INPUT : RecipeInput> {
      */
     fun matches(input: INPUT): Boolean
 
+    /**
+     * @since 21.1.0
+     */
     fun isIncomplete(): Boolean
 }

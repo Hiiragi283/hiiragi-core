@@ -7,6 +7,15 @@ package hiiragi283.core.api
  * @see mekanism.api.IContentsListener
  */
 fun interface HTContentListener : Runnable {
+    companion object {
+        /**
+         * 何も処理を行わない[HTContentListener]のインスタンス
+         * @since 21.1.1.0
+         */
+        @JvmField
+        val NOTHING = HTContentListener { }
+    }
+
     /**
      * 変更をマークします。
      */
@@ -17,12 +26,5 @@ fun interface HTContentListener : Runnable {
      */
     override fun run() {
         onContentsChanged()
-    }
-
-    /**
-     * 何も変更をマークしないことを表すインターフェースです。
-     */
-    interface Empty : HTContentListener {
-        override fun onContentsChanged(): Unit = Unit
     }
 }

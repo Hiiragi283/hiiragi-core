@@ -41,7 +41,7 @@ data object HTItemCapabilities : HTMultiCapability.Simple<IItemHandler> {
         is HTItemHandler -> handler
         else -> HTItemHandler {
             handler.slotRange.map { slot: Int ->
-                object : HTItemSlot, HTContentListener.Empty, HTValueSerializable.Empty {
+                object : HTItemSlot, HTContentListener by HTContentListener.NOTHING, HTValueSerializable by HTValueSerializable.NOTHING {
                     override fun isValid(resource: HTItemResourceType): Boolean = handler.isItemValid(slot, resource.toStack())
 
                     override fun insert(

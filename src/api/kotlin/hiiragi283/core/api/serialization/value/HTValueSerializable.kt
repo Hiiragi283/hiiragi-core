@@ -10,6 +10,19 @@ import net.neoforged.neoforge.common.util.INBTSerializable
  * @since 0.1.0
  */
 interface HTValueSerializable : INBTSerializable<CompoundTag> {
+    companion object {
+        /**
+         * 何も処理を行わない[HTValueSerializable]のインスタンス
+         * @since 21.1.1.0
+         */
+        @JvmField
+        val NOTHING: HTValueSerializable = object : HTValueSerializable {
+            override fun serialize(output: HTValueOutput): Unit = Unit
+
+            override fun deserialize(input: HTValueInput): Unit = Unit
+        }
+    }
+
     /**
      * [output]に値を書き込みます。
      */
@@ -38,16 +51,5 @@ interface HTValueSerializable : INBTSerializable<CompoundTag> {
     override fun deserializeNBT(provider: HolderLookup.Provider, nbt: CompoundTag) {
         val input: HTValueInput = HTValueIOAccess.createInput(provider, nbt)
         deserialize(input)
-    }
-
-    /**
-     * 何も値を読み書きしないことを表すインターフェースです。
-     * @author Hiiragi Tsubasa
-     * @since 0.1.0
-     */
-    interface Empty : HTValueSerializable {
-        override fun serialize(output: HTValueOutput) {}
-
-        override fun deserialize(input: HTValueInput) {}
     }
 }

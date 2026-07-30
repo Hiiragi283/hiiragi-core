@@ -14,6 +14,10 @@ import net.minecraft.core.HolderLookup
 import net.minecraft.resources.RegistryOps
 import org.slf4j.Logger
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 internal class HTJsonValueInput(private val provider: HolderLookup.Provider, private val jsonObject: JsonObject) : HTValueInput {
     companion object {
         @JvmStatic

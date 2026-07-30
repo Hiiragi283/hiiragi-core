@@ -55,6 +55,9 @@ fun interface HTRecipeLookup<out RECIPE> {
         HTRecipeLookup<RECIPE>,
         HTKeyLike.SimpleTranslatable<RecipeType<*>>
 
+    /**
+     * レシピの一覧などを提供するクラスです。
+     */
     class Context(getter: HTPropertyGetter) : HTPropertyGetter by getter {
         companion object {
             @JvmField

@@ -27,8 +27,16 @@ interface HTKeyLike<R : Any> : HTIdLike {
     }
 }
 
+/**
+ * 指定した[key]を[HTKeyLike]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 21.1.0
+ */
 fun <R : Any> HTKeyLike(key: ResourceKey<R>): HTKeyLike<R> = SimpleKeyLike(key)
 
+/**
+ * @suppress
+ */
 @JvmRecord
 private data class SimpleKeyLike<R : Any>(private val key: ResourceKey<R>) : HTKeyLike<R> {
     override fun getKey(): ResourceKey<R> = key

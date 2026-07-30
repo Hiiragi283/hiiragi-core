@@ -19,6 +19,11 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.Block
 
+/**
+ * 素材に紐づいたコンテンツを管理するインターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 0.8.0
+ */
 interface HTMaterialContents<R : Any, out V> : Table<R, HTMaterialKey, V> {
     /**
      * 指定した[row]と[key]から対応する値を返します。

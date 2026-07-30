@@ -25,6 +25,10 @@ data object HTDelegates {
         }
     }
 
+    /**
+     * 一度だけ値を代入可能なプロパティを返します。
+     * @param defaultValue 値が一度も代入されていない場合の値を提供するブロック
+     */
     fun <T : Any> onceInitialize(defaultValue: () -> T): ReadWriteProperty<Any?, T> = OnceInitializeOr(defaultValue)
 
     private class OnceInitializeOr<T : Any>(private val defaultValue: () -> T) : ReadWriteProperty<Any?, T> {

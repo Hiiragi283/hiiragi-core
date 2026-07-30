@@ -9,7 +9,7 @@ import net.neoforged.neoforge.energy.IEnergyStorage
 /**
  * Hiiragi Seriesで使用される[IEnergyStorage]の拡張インターフェースです。
  * @author Hiiragi Tsubasa
- * @since 0.1.0
+ * @since 21.1.0
  */
 interface HTEnergyHandler :
     HTAmountSlot,

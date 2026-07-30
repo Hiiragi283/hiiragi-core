@@ -16,6 +16,11 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import org.apache.commons.lang3.math.Fraction
 
+/**
+ * 確率付きの完成品を表すクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 0.5.0
+ */
 @JvmRecord
 data class HTChancedItemResult(val base: HTItemResult, val chance: Fraction) : HTIdLike {
     companion object {

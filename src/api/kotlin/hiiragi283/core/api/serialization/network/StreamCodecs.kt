@@ -46,6 +46,9 @@ fun <B : ByteBuf, V : Any> StreamCodec<B, V>.setOf(): StreamCodec<B, Set<V>> = t
  */
 fun <B : ByteBuf, V : Any> StreamCodec<B, V>.asOption(): StreamCodec<B, Option<V>> = OptionStreamCodec(this)
 
+/**
+ * @suppress
+ */
 @JvmInline
 private value class OptionStreamCodec<B : ByteBuf, V : Any>(private val codec: StreamCodec<B, V>) : StreamCodec<B, Option<V>> {
     override fun encode(output: B, value: Option<V>) {

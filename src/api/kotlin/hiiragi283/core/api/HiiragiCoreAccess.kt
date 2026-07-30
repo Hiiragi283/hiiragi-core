@@ -164,7 +164,25 @@ abstract class HiiragiCoreAccess {
 
     //    Recipe    //
 
+    /**
+     * レシピの一覧を取得します。
+     * @param context レシピの一覧の提供元
+     * @param recipeType レシピの種類
+     * @param INPUT レシピの入力となるクラス
+     * @param RECIPE レシピのクラス
+     * @return レシピIDとレシピの[Map]
+     * @since 21.1.0
+     */
     abstract fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(context: HTRecipeLookup.Context, recipeType: RecipeType<RECIPE>): Map<ResourceLocation, RECIPE>
 
+    /**
+     * レシピの一覧を取得します。
+     * @param context レシピの一覧の提供元
+     * @param recipeType レシピの種類
+     * @param INPUT レシピの入力となるクラス
+     * @param RECIPE レシピのクラス
+     * @return [HTRecipeHolder]の[Sequence]
+     * @since 21.1.0
+     */
     fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> asSequence(context: HTRecipeLookup.Context, recipeType: RecipeType<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> = getAllRecipes(context, recipeType).asSequence().map { (id: ResourceLocation, value: RECIPE) -> id to value }
 }

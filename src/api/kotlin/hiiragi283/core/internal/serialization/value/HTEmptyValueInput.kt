@@ -3,6 +3,10 @@ package hiiragi283.core.internal.serialization.value
 import com.mojang.serialization.Decoder
 import hiiragi283.core.api.serialization.value.HTValueInput
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 internal object HTEmptyValueInput : HTValueInput {
     override fun <T : Any> read(key: String, codec: Decoder<T>): T? = null
 

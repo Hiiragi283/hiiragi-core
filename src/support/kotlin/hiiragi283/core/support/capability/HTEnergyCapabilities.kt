@@ -24,7 +24,7 @@ data object HTEnergyCapabilities : HTMultiCapability.Simple<IEnergyStorage> {
 
     fun wrap(storage: IEnergyStorage): HTEnergyHandler = when (storage) {
         is HTEnergyHandler -> storage
-        else -> object : HTEnergyHandler, HTValueSerializable.Empty {
+        else -> object : HTEnergyHandler, HTValueSerializable by HTValueSerializable.NOTHING {
             override fun insert(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int = storage.receiveEnergy(amount, action.simulate())
 
             override fun extract(amount: Int, action: HTStorageAction, access: HTStorageAccess): Int = storage.extractEnergy(amount, action.simulate())

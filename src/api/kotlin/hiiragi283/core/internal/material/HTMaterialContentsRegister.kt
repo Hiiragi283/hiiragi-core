@@ -37,6 +37,10 @@ import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.neoforge.registries.RegisterEvent
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.15.0
+ */
 @EventBusSubscriber(modid = HiiragiCoreAPI.MOD_ID)
 data object HTMaterialContentsRegister {
     @JvmStatic

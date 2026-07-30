@@ -16,6 +16,10 @@ import net.minecraft.nbt.TagType
 import net.minecraft.resources.RegistryOps
 import org.slf4j.Logger
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 internal class HTTagValueInput(private val provider: HolderLookup.Provider, private val compoundTag: CompoundTag) : HTValueInput {
     companion object {
         @JvmStatic

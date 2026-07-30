@@ -7,6 +7,10 @@ import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.Block
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 21.1.0
+ */
 class HTMaterialBlockItem(private val material: HTMaterial, block: Block, properties: Properties) : BlockItem(block, properties) {
     override fun getCreatorModId(itemStack: ItemStack): String = material.getOrDefault(HTMaterialPropertyKeys.ORIGIN_MOD_ID)
 }

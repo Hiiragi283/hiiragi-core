@@ -23,8 +23,8 @@ class HTComponentItemSlot(
     private val canInsert: BiPredicate<HTItemResourceType, HTStorageAccess>,
     private val filter: Predicate<HTItemResourceType>,
 ) : HTItemStackResourceSlot(),
-    HTContentListener.Empty,
-    HTValueSerializable.Empty {
+    HTContentListener by HTContentListener.NOTHING,
+    HTValueSerializable by HTValueSerializable.NOTHING {
     private fun createNewList(): NonNullList<ItemStack> = NonNullList.withSize(size, ItemStack.EMPTY)
 
     private fun createContents(list: List<ItemStack>): ItemContainerContents = ItemContainerContents.fromItems(list)

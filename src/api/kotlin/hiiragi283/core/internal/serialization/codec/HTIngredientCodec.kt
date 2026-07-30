@@ -25,6 +25,10 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries
 
 private typealias TagOrHolder<T> = Either<TagKey<T>, Holder<T>>
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.10.0
+ */
 internal object HTIngredientCodec {
     @JvmStatic
     private fun <T : Any> tagOrHolderCodec(registryKey: RegistryKey<T>): Codec<TagOrHolder<T>> = HTCodecs.either(HTCodecs.tagKey(registryKey, true), HTCodecs.holder(registryKey))
