@@ -3,9 +3,9 @@ package hiiragi283.core.api.material.property
 import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.item.tool.HTToolMaterial
 import hiiragi283.core.api.item.tool.HTToolType
+import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.HTPartLike
-import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.computeIfAbsent
 import hiiragi283.core.api.property.getOrDefault
@@ -14,14 +14,14 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import org.apache.commons.lang3.math.Fraction
 
-fun HTPropertyGetter.getDefaultPart(): HTDefaultPart? = this[HTMaterialPropertyKeys.DEFAULT_PART]
+fun HTMaterial.getDefaultPart(): HTDefaultPart? = this[HTMaterialPropertyKeys.DEFAULT_PART]
 
-fun HTPropertyGetter.getDefaultPart(key: HTMaterialKey): TagKey<Item>? = this.getDefaultPart()?.getTag(key)
+fun HTMaterial.getDefaultPart(key: HTMaterialKey): TagKey<Item>? = this.getDefaultPart()?.getTag(key)
 
 /**
  * @since 0.12.0
  */
-fun HTPropertyGetter.getDefaultScale(): Fraction = this.getOrDefault(HTMaterialPropertyKeys.DEFAULT_SCALE)
+fun HTMaterial.getDefaultScale(): Fraction = this.getOrDefault(HTMaterialPropertyKeys.DEFAULT_SCALE)
 
 // Mutable
 

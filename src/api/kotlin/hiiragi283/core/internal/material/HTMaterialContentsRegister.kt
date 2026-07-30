@@ -7,14 +7,18 @@ import hiiragi283.core.api.collection.buildTable
 import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.item.tool.HTToolMaterial
 import hiiragi283.core.api.item.tool.HTToolType
+import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.part.HTPart
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.HTPartManager
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.plugin.HTMaterialPlugin
+import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTSimpleDeferredBlockAndItem
@@ -50,6 +54,10 @@ data object HTMaterialContentsRegister {
         private set
 
     @JvmStatic
+    internal lateinit var partManager: HTPartManager
+        private set
+
+    @JvmStatic
     internal lateinit var materialManager: HTMaterialManager
         private set
 
@@ -81,7 +89,8 @@ data object HTMaterialContentsRegister {
     @JvmStatic
     private fun initMaterials() {
         if (!hasInit) {
-            HiiragiCoreAccess.INSTANCE.partManager
+            // 部品のプロパティを定義する
+            gatherPartProperties()
             // 既存の素材ブロックを登録する
             registerExistingBlocks()
             // 既存の素材アイテムを登録する
@@ -89,29 +98,54 @@ data object HTMaterialContentsRegister {
             // 既存の素材ツールを登録する
             registerExistingTools()
             // 素材のプロパティを定義する
-            gatherProperties()
+            gatherMaterialProperties()
             hasInit = true
         }
     }
 
     @JvmStatic
-    private fun gatherProperties() {
+    private fun gatherPartProperties() {
+        val map: Map<HTPartKey, HTPart> = buildMap {
+            HiiragiCoreAccess.INSTANCE.forEachPlugin("Register Part") { plugin: HTMaterialPlugin ->
+                plugin.registerPart { key: HTPartKey, idPattern: String, getter: HTPropertyGetter ->
+                    val entry = HTPart(key, idPattern, getter)
+                    check(this.put(key, entry) == null) { "Duplicated part registration: $key" }
+                }
+            }
+        }
+        partManager = object : HTPartManager {
+            override fun contains(key: HTPartKey): Boolean = key in map
+
+            override fun get(key: HTPartKey): HTPart? = map[key]
+
+            override val keys: Set<HTPartKey> get() = map.keys
+
+            override val entries: Collection<HTPart> get() = map.values
+        }
+    }
+
+    @JvmStatic
+    private fun gatherMaterialProperties() {
         val builderMap: MutableMap<HTMaterialKey, HTPropertyMap.Builder> = mutableMapOf()
         HiiragiCoreAccess.INSTANCE.forEachPlugin("Modifying Material Properties") {
             it.modifyMaterial { key: HTMaterialKey -> builderMap.computeIfAbsent(key) { HTPropertyMap.Builder() } }
         }
-        materialManager = builderMap
-            .mapValues { (_, builder: HTPropertyMap.Builder) -> builder.build() }
-            .filterValues { !it.isEmpty }
-            .let {
-                object : HTMaterialManager {
-                    override fun contains(key: HTMaterialKey): Boolean = key in it
-
-                    override fun get(key: HTMaterialKey): HTPropertyMap? = it[key]
-
-                    override val keys: Set<HTMaterialKey> = it.keys
-                }
+        val materialMap: MutableMap<HTMaterialKey, HTMaterial> = mutableMapOf()
+        for ((key: HTMaterialKey, builder: HTPropertyMap.Builder) in builderMap) {
+            val propertyMap: HTPropertyMap = builder.build()
+            if (!propertyMap.isEmpty) {
+                materialMap[key] = HTMaterial(key, propertyMap)
             }
+        }
+        materialManager = object : HTMaterialManager {
+            override fun contains(key: HTMaterialKey): Boolean = key in materialMap
+
+            override fun get(key: HTMaterialKey): HTMaterial? = materialMap[key]
+
+            override val keys: Set<HTMaterialKey> = materialMap.keys
+
+            override val entries: Collection<HTMaterial> = materialMap.values
+        }
     }
 
     @JvmStatic
@@ -153,8 +187,9 @@ data object HTMaterialContentsRegister {
     private fun registerMaterialBlocks(manager: HTMaterialManager, helper: RegisterEvent.RegisterHelper<Block>) {
         // 素材ブロックを生成する
         materialBlocks = buildTable {
-            for ((key: HTMaterialKey, map: HTPropertyMap) in manager) {
-                map
+            for (material: HTMaterial in manager) {
+                val key: HTMaterialKey = material.key
+                material
                     .getOrDefault(HTMaterialPropertyKeys.BLOCK_PREFIXES)
                     .forEach { part: HTPartLike ->
                         val properties: BlockBehaviour.Properties = part[HTPartPropertyKeys.BLOCK_PROP] ?: return@forEach
@@ -209,16 +244,17 @@ data object HTMaterialContentsRegister {
     private fun registerMaterialItems(manager: HTMaterialManager, helper: RegisterEvent.RegisterHelper<Item>) {
         // 素材ブロックのアイテムを生成する
         materialBlocks.forEach { (_, key: HTMaterialKey, block: HTMaterialContents.BlockEntry) ->
-            helper.register(block.getId(), HTMaterialBlockItem(manager.getOrEmpty(key), block.get(), Item.Properties()))
+            helper.register(block.getId(), HTMaterialBlockItem(manager.getOrThrow(key), block.get(), Item.Properties()))
         }
         // 素材アイテムを生成する
         materialItems = buildTable {
-            for ((key: HTMaterialKey, map: HTPropertyMap) in manager) {
-                map
+            for (material: HTMaterial in manager) {
+                val key: HTMaterialKey = material.key
+                material
                     .getOrDefault(HTMaterialPropertyKeys.ITEM_PREFIXES)
                     .forEach { part: HTPartLike ->
                         val id: ResourceLocation = part.createId(key)
-                        helper.register(id, HTMaterialItem(map, Item.Properties()))
+                        helper.register(id, HTMaterialItem(material, Item.Properties()))
                         put(part.asPart(), key, HTMaterialContents.ItemEntry(HTSimpleDeferredItem(id), false))
                     }
             }
@@ -229,13 +265,14 @@ data object HTMaterialContentsRegister {
     private fun registerMaterialTools(manager: HTMaterialManager, helper: RegisterEvent.RegisterHelper<Item>) {
         // 素材ツールを生成する
         materialTools = buildTable {
-            for ((key: HTMaterialKey, map: HTPropertyMap) in manager) {
-                val material: HTToolMaterial = map[HTMaterialPropertyKeys.TOOL_MATERIAL] ?: continue
-                map
+            for (material: HTMaterial in manager) {
+                val key: HTMaterialKey = material.key
+                val toolMaterial: HTToolMaterial = material[HTMaterialPropertyKeys.TOOL_MATERIAL] ?: continue
+                material
                     .getOrDefault(HTMaterialPropertyKeys.TOOL_PREFIXES)
                     .forEach { toolType: HTToolType ->
                         val id: ResourceLocation = toolType.createId(key)
-                        helper.register(id, toolType.createTool(material))
+                        helper.register(id, toolType.createTool(toolMaterial))
                         put(toolType, key, HTMaterialContents.ItemEntry(HTSimpleDeferredItem(id), false))
                     }
             }

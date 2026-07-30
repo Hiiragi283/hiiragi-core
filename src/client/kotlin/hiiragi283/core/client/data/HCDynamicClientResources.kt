@@ -8,6 +8,7 @@ import hiiragi283.core.api.data.lang.HTLangTypes
 import hiiragi283.core.api.data.model.HTModelTemplates
 import hiiragi283.core.api.data.pack.HTDynamicResourceRegister
 import hiiragi283.core.api.item.tool.HTToolType
+import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
@@ -17,7 +18,6 @@ import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
-import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.resource.HTIdLike
@@ -53,19 +53,20 @@ internal data object HCDynamicClientResources {
     private fun addTranslations(langType: HTLangType, consumer: (String, String) -> Unit) {
         val registered: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
 
-        for ((key: HTMaterialKey, entry: HTPropertyGetter) in HTMaterialManager.getInstance()) {
+        for (material: HTMaterial in HTMaterialManager.getInstance()) {
+            val key: HTMaterialKey = material.key
             // Material Name
-            val materialName: HTLangName = entry[HTMaterialPropertyKeys.LANG_NAME] ?: continue
+            val materialName: HTLangName = material[HTMaterialPropertyKeys.LANG_NAME] ?: continue
             consumer(key.translationKey, materialName.getTranslatedName(langType))
             // Block
             for ((part: HTPart, block: HTMaterialContents.BlockEntry) in registered.blocks.column(key)) {
-                val name: String = translate(langType, part, entry) ?: continue
+                val name: String = translate(langType, part, material) ?: continue
                 consumer(block.translationKey, name)
             }
             // Fluid
             /*val fluids: HTMaterialContents<HTFluidPart, HTMaterialContents.FluidEntry> = HiiragiCoreAccess.INSTANCE.registeredFluids
             for ((part: HTFluidPart, fluid: HTMaterialContents.FluidEntry) in fluids.column(key)) {
-                val name: String = translate(langType, part, entry) ?: continue
+                val name: String = translate(langType, part, material) ?: continue
                 consumer(fluid.translationKey, name)
                 consumer(Tags.getTagTranslationKey(part.createTagKey(key)), name)
 
@@ -75,7 +76,7 @@ internal data object HCDynamicClientResources {
             }*/
             // Item
             for ((part: HTPart, item: HTMaterialContents.ItemEntry) in registered.items.column(key)) {
-                val name: String = translate(langType, part, entry) ?: continue
+                val name: String = translate(langType, part, material) ?: continue
                 consumer(item.translationKey, name)
             }
             // Tool
@@ -86,16 +87,16 @@ internal data object HCDynamicClientResources {
     }
 
     @JvmStatic
-    private fun translate(type: HTLangType, part: HTPart, getter: HTPropertyGetter): String? = translate(type, part, getter, HTMaterialPropertyKeys.CUSTOM_LANG_NAME)
+    private fun translate(type: HTLangType, part: HTPart, material: HTMaterial): String? = translate(type, part, material, HTMaterialPropertyKeys.CUSTOM_LANG_NAME)
 
     @JvmStatic
     private fun <T : HTPartLike> translate(
         type: HTLangType,
         part: T,
-        getter: HTPropertyGetter,
+        material: HTMaterial,
         key: HTPropertyKey<Map<T, HTLangName>>,
-    ): String? = getter.getOrDefault(key)[part]?.getTranslatedName(type) ?: run {
-        val materialName: HTLangName = getter[HTMaterialPropertyKeys.LANG_NAME] ?: return@run null
+    ): String? = material.getOrDefault(key)[part]?.getTranslatedName(type) ?: run {
+        val materialName: HTLangName = material[HTMaterialPropertyKeys.LANG_NAME] ?: return@run null
         part.getOrDefault(HTPartPropertyKeys.LANG_PATTERN).translate(type, materialName)
     }
 

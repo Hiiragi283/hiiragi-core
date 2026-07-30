@@ -2,6 +2,7 @@ package hiiragi283.core.api.material.part
 
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.property.HTPropertyGetter
+import hiiragi283.core.api.property.HTPropertyManager
 import hiiragi283.core.api.resource.modifyPath
 import net.minecraft.resources.ResourceLocation
 
@@ -10,15 +11,14 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
-class HTPart(val name: String, private val idPattern: String, getter: HTPropertyGetter) :
+class HTPart internal constructor(override val key: HTPartKey, private val idPattern: String, getter: HTPropertyGetter) :
     HTPartLike,
+    HTPropertyManager.Entry<HTPartKey>,
     HTPropertyGetter by getter,
     Comparable<HTPart> {
     override fun asPart(): HTPart = this
 
-    override fun asPartName(): String = name
-
     override fun createId(key: HTMaterialKey): ResourceLocation = key.getId().modifyPath { idPattern.replace("%s", it) }
 
-    override fun compareTo(other: HTPart): Int = this.name.compareTo(other.name)
+    override fun compareTo(other: HTPart): Int = this.key.compareTo(other.key)
 }

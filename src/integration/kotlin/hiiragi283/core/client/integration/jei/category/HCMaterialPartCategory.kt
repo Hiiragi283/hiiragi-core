@@ -1,10 +1,11 @@
 package hiiragi283.core.client.integration.jei.category
 
 import com.mojang.serialization.Codec
-import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.integration.jei.category.HTBasicRecipeCategory
+import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.HTPartManager
 import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
@@ -27,10 +28,9 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 
-class HCMaterialPartCategory(guiHelper: IGuiHelper) : HTBasicRecipeCategory<HTMaterialManager.Entry>(guiHelper, HCRecipeViewerTypes.MaterialType) {
-    private fun getIngredients(entry: HTMaterialManager.Entry): Sequence<List<ItemStack>> = HiiragiCoreAccess.INSTANCE
-        .partManager
-        .values
+class HCMaterialPartCategory(guiHelper: IGuiHelper) : HTBasicRecipeCategory<HTMaterial>(guiHelper, HCRecipeViewerTypes.MaterialType) {
+    private fun getIngredients(entry: HTMaterial): Sequence<List<ItemStack>> = HTPartManager
+        .getInstance()
         .asSequence()
         .mapNotNull(HTPartLike::tagPrefix)
         .map { it.itemTagKey(entry.key) }
@@ -38,7 +38,7 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) : HTBasicRecipeCategory<HTMa
         .map { tagKey: TagKey<Item> -> BuiltInRegistries.ITEM.getTagOrEmpty(tagKey).map(::ItemStack) }
         .filterNot(Iterable<ItemStack>::none)
 
-    override fun setRecipe(builder: IRecipeLayoutBuilder, recipe: HTMaterialManager.Entry, focuses: IFocusGroup) {
+    override fun setRecipe(builder: IRecipeLayoutBuilder, recipe: HTMaterial, focuses: IFocusGroup) {
         builder
             .addInputSlot()
             .addIngredients(recipe.getDefaultPart(recipe.key)?.let(Ingredient::of) ?: Ingredient.EMPTY)
@@ -49,7 +49,7 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) : HTBasicRecipeCategory<HTMa
         }
     }
 
-    override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HTMaterialManager.Entry, focuses: IFocusGroup) {
+    override fun createRecipeExtras(builder: IRecipeExtrasBuilder, recipe: HTMaterial, focuses: IFocusGroup) {
         builder
             .addText(recipe.key.getText(), width - 22, 20)
             .setPosition(22, 0)
@@ -70,9 +70,9 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) : HTBasicRecipeCategory<HTMa
             .setPosition(widget.screenRectangle.position.x + 1, 1)
     }
 
-    override fun isHandled(recipe: HTMaterialManager.Entry): Boolean = getIngredients(recipe).any() || recipe.getDefaultPart(recipe.key) != null
+    override fun isHandled(recipe: HTMaterial): Boolean = getIngredients(recipe).any() || recipe.getDefaultPart(recipe.key) != null
 
-    override fun getRegistryName(recipe: HTMaterialManager.Entry): ResourceLocation = recipe.getId()
+    override fun getRegistryName(recipe: HTMaterial): ResourceLocation = recipe.getId()
 
-    override fun getCodec(codecHelper: ICodecHelper, recipeManager: IRecipeManager): Codec<HTMaterialManager.Entry> = HTMaterialManager.CODEC
+    override fun getCodec(codecHelper: ICodecHelper, recipeManager: IRecipeManager): Codec<HTMaterial> = HTMaterialManager.CODEC
 }

@@ -6,6 +6,15 @@ package hiiragi283.core.api.property
  * @since 0.16.0
  */
 interface HTPropertyGetter {
+    companion object {
+        @JvmField
+        val NOTHING: HTPropertyGetter = object : HTPropertyGetter {
+            override fun contains(key: HTPropertyKey<*>): Boolean = false
+
+            override fun <T> get(key: HTPropertyKey<T>): T? = null
+        }
+    }
+
     /**
      * 指定した[key]が含まれるか判定します。
      */

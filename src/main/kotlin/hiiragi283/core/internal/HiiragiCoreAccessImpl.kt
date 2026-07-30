@@ -8,9 +8,7 @@ import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
-import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.plugin.HTMaterialPlugin
-import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.HTIdLike
@@ -68,18 +66,6 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
                 val modId: String = it.namespace
                 modId in HTConst.getBuiltInIdSet(HiiragiCoreAPI.MOD_ID) || ModList.get().isLoaded(modId)
             }.sortedWith(pluginComparator)
-    }
-
-    override val partManager: Map<String, HTPart> by lazy {
-        buildMap {
-            forEachPlugin("Register Part") { plugin: HTMaterialPlugin ->
-                plugin.registerPart { name: String, idPattern: String, getter: HTPropertyGetter ->
-                    val part = HTPart(name, idPattern, getter)
-                    check(this.put(name, part) == null) { "Duplicated part registration: $name" }
-                    part
-                }
-            }
-        }
     }
 
     override fun getContents(resource: HTFluidResourceType): BottledPotionContents? {

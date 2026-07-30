@@ -49,7 +49,7 @@ data object VanillaRecipeLookups {
     private data object BrewingLookup : HTRecipeLookup.Translatable<HCBrewingRecipe> {
         override fun getAllRecipes(context: HTRecipeLookup.Context): Map<ResourceLocation, HCBrewingRecipe> {
             val multiMap: MultiMap<Holder<Potion>, HCBrewingRecipe> = buildListMultiMap {
-                context[HTRecipeLookup.Context.BREWING]
+                context.brewing
                     ?.let(PotionBrewing::potionMixes)
                     ?.asSequence()
                     ?.map(::HCBrewingRecipe)

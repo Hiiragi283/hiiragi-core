@@ -3,6 +3,7 @@
 package hiiragi283.core.api.material.property
 
 import hiiragi283.core.api.collection.mutableEnumMapOf
+import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.property.HTExtraOreResultMap.Phase
@@ -41,7 +42,7 @@ class HTExtraOreResultMap private constructor(map: Map<Phase, Pair<HTMaterialKey
             .withChance(chance)
     }
 
-    fun getResult(phase: Phase, entry: HTMaterialManager.Entry): HTChancedItemResult? {
+    fun getResult(phase: Phase, entry: HTMaterial): HTChancedItemResult? {
         val (key: HTMaterialKey, chance: Fraction) = this[phase] ?: return null
         return HTItemResult.MaterialPart(entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART), key) withChance chance
     }

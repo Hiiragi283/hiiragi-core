@@ -8,8 +8,10 @@ import hiiragi283.core.api.div
 import hiiragi283.core.api.fraction
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.item.tool.VanillaToolTypes
+import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.part.property.addNamePattern
@@ -27,7 +29,6 @@ import hiiragi283.core.api.material.property.setName
 import hiiragi283.core.api.material.property.setTextureSet
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.plugin.HTPlugin
-import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.add
 import hiiragi283.core.api.property.getOrDefault
@@ -77,19 +78,21 @@ object CommonMaterialPlugin : HTMaterialPlugin {
             jaPrefix: String,
             properties: BlockBehaviour.Properties,
             stoneTexture: ResourceLocation,
-        ): HTPartLike = registrar.register("ore/$name", "${name}_%s_ore") {
-            put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.ORE)
-            add(HTPartPropertyKeys.IS_ORE)
-            add(HTPartPropertyKeys.IS_RAW)
+        ) {
+            registrar.register(HTPartKey("ore/$name"), "${name}_%s_ore") {
+                put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.ORE)
+                add(HTPartPropertyKeys.IS_ORE)
+                add(HTPartPropertyKeys.IS_RAW)
 
-            put(HTPartPropertyKeys.BLOCK_PROP, properties)
-            put(HTPartPropertyKeys.ORE_STONE_TEX, stoneTexture)
+                put(HTPartPropertyKeys.BLOCK_PROP, properties)
+                put(HTPartPropertyKeys.ORE_STONE_TEX, stoneTexture)
 
-            addNamePattern("$enPrefix %s Ore", "$jaPrefix%s鉱石")
-            add(HTPartPropertyKeys.DISABLE_TEXTURE_GEN)
+                addNamePattern("$enPrefix %s Ore", "$jaPrefix%s鉱石")
+                add(HTPartPropertyKeys.DISABLE_TEXTURE_GEN)
+            }
         }
 
-        registrar.register("ore", "%s_ore") {
+        registrar.register(CommonParts.ORE, "%s_ore") {
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.ORE)
             add(HTPartPropertyKeys.IS_ORE)
             add(HTPartPropertyKeys.IS_RAW)
@@ -144,9 +147,9 @@ object CommonMaterialPlugin : HTMaterialPlugin {
             vanillaId(HTConst.BLOCK, "end_stone"),
         )
 
-        registrar.register("block", "%s_block") {
-            put(HTPartPropertyKeys.ITEM_SCALE) { base: Fraction, getter: HTPropertyGetter ->
-                base * getter.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK).baseCount
+        registrar.register(CommonParts.BLOCK, "%s_block") {
+            put(HTPartPropertyKeys.ITEM_SCALE) { base: Fraction, material: HTMaterial ->
+                base * material.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK).baseCount
             }
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.STORAGE_BLOCK)
 
@@ -155,7 +158,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
             addNamePattern("Block of %s", "%sブロック")
             put(HTPartPropertyKeys.FUEL_SCALE, fraction(10))
         }
-        registrar.register("raw_block", "raw_%s_block") {
+        registrar.register(CommonParts.RAW_BLOCK, "raw_%s_block") {
             put(HTPartPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base * 9 }
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.RAW_STORAGE_BLOCK)
             add(HTPartPropertyKeys.IS_RAW)
@@ -168,81 +171,81 @@ object CommonMaterialPlugin : HTMaterialPlugin {
 
     @JvmStatic
     private fun itemPart(registrar: HTMaterialPlugin.PartRegistrar) {
-        registrar.register("crushed_ore", "crushed_%s_ore") {
-            put(HTPartPropertyKeys.ITEM_SCALE) { base: Fraction, getter: HTPropertyGetter ->
-                base * getter.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
+        registrar.register(CommonParts.CRUSHED_ORE, "crushed_%s_ore") {
+            put(HTPartPropertyKeys.ITEM_SCALE) { base: Fraction, material: HTMaterial ->
+                base * material.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER)
             }
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.CRUSHED_ORE)
             add(HTPartPropertyKeys.IS_RAW)
 
             addNamePattern("Crushed %s Ore", "砕かれた%s鉱石")
         }
-        registrar.register("dust", "%s_dust") {
+        registrar.register(CommonParts.DUST, "%s_dust") {
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.DUST)
 
             addNamePattern("%s Dust", "%sの粉")
         }
-        registrar.register("fuel", "%s_fuel") {
+        registrar.register(CommonParts.FUEL, "%s_fuel") {
             put(HTPartPropertyKeys.FUEL_SCALE, fraction(1))
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.FUEL)
         }
-        registrar.register("gear", "%s_gear") {
+        registrar.register(CommonParts.GEAR, "%s_gear") {
             put(HTPartPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base * 4 }
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.GEAR)
 
             addNamePattern("%s Gear", "%sの歯車")
         }
-        registrar.register("gem", "%s_gem") {
+        registrar.register(CommonParts.GEM, "%s_gem") {
             put(HTPartPropertyKeys.FUEL_SCALE, fraction(1))
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.GEM)
         }
-        registrar.register("ingot", "%s_ingot") {
+        registrar.register(CommonParts.INGOT, "%s_ingot") {
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.INGOT)
 
             addNamePattern("%s Ingot", "%sインゴット")
         }
-        registrar.register("nugget", "%s_nugget") {
+        registrar.register(CommonParts.NUGGET, "%s_nugget") {
             put(HTPartPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base / 9 }
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.NUGGET)
 
             addNamePattern("%s Nugget", "%sナゲット")
             put(HTPartPropertyKeys.FUEL_SCALE, fraction(1, 10))
         }
-        registrar.register("pearl", "%s_pearl") {
+        registrar.register(CommonParts.PEARL, "%s_pearl") {
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.PEARL)
 
             put(HTPartPropertyKeys.FUEL_SCALE, fraction(1))
         }
-        registrar.register("plate", "%s_plate") {
+        registrar.register(CommonParts.PLATE, "%s_plate") {
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.PLATE)
 
             addNamePattern("%s Plate", "%sの板")
         }
-        registrar.register("raw", "raw_%s") {
+        registrar.register(CommonParts.RAW, "raw_%s") {
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.RAW_MATERIALS)
             add(HTPartPropertyKeys.IS_RAW)
 
             addNamePattern("Raw %s", "%sの原石")
         }
-        registrar.register("rod", "%s_rod") {
+        registrar.register(CommonParts.ROD, "%s_rod") {
             put(HTPartPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base / 2 }
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.ROD)
 
             addNamePattern("%s Rod", "%sの棒")
         }
-        registrar.register("scrap", "%s_scrap") {
+        registrar.register(CommonParts.SCRAP, "%s_scrap") {
             add(HTPartPropertyKeys.IS_RAW)
 
             addNamePattern("%s Scrap", "%sの欠片")
         }
-        registrar.register("tiny", "tiny_%s") {
+        registrar.register(CommonParts.TINY, "tiny_%s") {
             put(HTPartPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base / 8 }
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.TINY)
 
             addNamePattern("Tiny %s", "小さな%s")
             put(HTPartPropertyKeys.FUEL_SCALE, fraction(1, 8))
         }
-        registrar.register("wire", "%s_wire") {
+        registrar.register(CommonParts.WIRE, "%s_wire") {
             put(HTPartPropertyKeys.TAG_PREFIX, CommonTagPrefixes.WIRE)
 
             addNamePattern("%s Wire", "%sのワイヤ")

@@ -6,6 +6,7 @@ import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.buildPropertyMap
+import hiiragi283.core.api.property.getOrThrow
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.registry.RegistryKey
 import hiiragi283.core.api.registry.lookupResult
@@ -57,28 +58,28 @@ fun interface HTRecipeLookup<out RECIPE> {
     class Context(getter: HTPropertyGetter) : HTPropertyGetter by getter {
         companion object {
             @JvmField
+            val RECIPES: HTPropertyKey<RecipeManager?> = create("recipes")
+
+            @JvmField
+            val REGISTRIES: HTPropertyKey<HolderLookup.Provider?> = create("registries")
+
+            @JvmField
             val BREWING: HTPropertyKey<PotionBrewing?> = create("brewing")
-
-            @JvmField
-            val MANAGER: HTPropertyKey<RecipeManager?> = create("manager")
-
-            @JvmField
-            val REGISTRY: HTPropertyKey<HolderLookup.Provider?> = create("registry")
 
             private fun <T : Any> create(path: String): HTPropertyKey<T?> = HTPropertyKey.createNullable(vanillaId("recipe", path))
 
             @JvmStatic
             fun create(level: Level): Context = create {
+                this[RECIPES] = level.recipeManager
+                this[REGISTRIES] = level.registryAccess()
                 this[BREWING] = level.potionBrewing()
-                this[MANAGER] = level.recipeManager
-                this[REGISTRY] = level.registryAccess()
             }
 
             @JvmStatic
             fun create(server: MinecraftServer): Context = create {
+                this[RECIPES] = server.recipeManager
+                this[REGISTRIES] = server.registryAccess()
                 this[BREWING] = server.potionBrewing()
-                this[MANAGER] = server.recipeManager
-                this[REGISTRY] = server.registryAccess()
             }
 
             @JvmStatic
@@ -90,8 +91,12 @@ fun interface HTRecipeLookup<out RECIPE> {
             }
         }
 
-        fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(recipeType: RecipeType<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> = this[MANAGER]?.getAllRecipesFor(recipeType)?.asSequence()?.map(::HTRecipeHolder) ?: emptySequence()
+        val recipes: RecipeManager get() = this.getOrThrow(RECIPES)
+        val registries: HolderLookup.Provider? get() = this[REGISTRIES]
+        val brewing: PotionBrewing? get() = this[BREWING]
 
-        fun <T : Any> lookup(key: RegistryKey<T>): HTTextResult<HolderLookup.RegistryLookup<T>> = this[REGISTRY]?.lookupResult(key) ?: HTTextResult("Recipe lookup context does not have registry access")
+        fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(recipeType: RecipeType<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> = recipes.getAllRecipesFor(recipeType).asSequence().map(::HTRecipeHolder)
+
+        fun <T : Any> lookup(key: RegistryKey<T>): HTTextResult<HolderLookup.RegistryLookup<T>> = registries?.lookupResult(key) ?: HTTextResult("Recipe lookup context does not have registry access")
     }
 }

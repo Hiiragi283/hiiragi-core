@@ -18,6 +18,11 @@ import net.minecraft.data.models.model.ModelTemplates
 import net.minecraft.data.models.model.TextureMapping
 import net.minecraft.resources.ResourceLocation
 
+/**
+ * Hiiragi Seriesで使用される，アイテムモデルを生成する[DataProvider]の実装クラスです。
+ * @author Hiiragi Tsubasa
+ * @since 21.1.1.0
+ */
 abstract class HTItemModelProvider(output: PackOutput, protected val modId: String) : DataProvider {
     private val modelPathProvider: PackOutput.PathProvider = output.createPathProvider(PackOutput.Target.RESOURCE_PACK, "models")
 
@@ -31,14 +36,28 @@ abstract class HTItemModelProvider(output: PackOutput, protected val modId: Stri
             .allOf()
     }
 
+    /**
+     * モデルを登録します。
+     */
     protected abstract fun registerModels(output: ModelOutput)
 
     override fun getName(): String = "Item Models - $modId"
 
     //    Extensions    //
 
+    /**
+     * 単純なアイテムモデルを登録します。
+     * @param output モデルの出力先
+     * @param item モデルを生成するアイテム
+     */
     fun basicItem(output: ModelOutput, item: HTIdLike): ResourceLocation = ModelTemplates.FLAT_ITEM.create(item.itemId, TextureMapping.layer0(item.itemId), output)
 
+    /**
+     * 複数のレイヤーをもつ単純なアイテムモデルを登録します。
+     * @param output モデルの出力先
+     * @param item モデルを生成するアイテム
+     * @param layers テクスチャのレイヤー
+     */
     fun layeredItem(output: ModelOutput, item: HTIdLike, vararg layers: ResourceLocation): ResourceLocation {
         val (mapping: TextureMapping, template: ModelTemplate) = when (layers.size) {
             1 -> TextureMapping.layer0(layers[0]) to ModelTemplates.FLAT_ITEM
@@ -49,6 +68,12 @@ abstract class HTItemModelProvider(output: PackOutput, protected val modId: Stri
         return template.create(item.itemId, mapping, output)
     }
 
+    /**
+     * 液体入りバケツのアイテムモデルを登録します。
+     * @param output モデルの出力先
+     * @param content 液体バケツを提供するコンテンツ
+     * @param isDrip `true`の場合，溶岩バケツのようなテクスチャを使用します
+     */
     fun bucketItem(output: ModelOutput, content: HTFluidContent, isDrip: Boolean): ResourceLocation {
         val parent: ResourceLocation = when {
             isDrip -> "bucket_drip"

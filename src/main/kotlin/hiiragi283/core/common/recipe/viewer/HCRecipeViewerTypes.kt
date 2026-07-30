@@ -3,7 +3,7 @@ package hiiragi283.core.common.recipe.viewer
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTBounds
-import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
@@ -51,8 +51,8 @@ data object HCRecipeViewerTypes {
 
     //    Material    //
 
-    data object MaterialType : HTRecipeViewerType<HTMaterialManager.Entry> {
-        override val recipeClass: Class<HTMaterialManager.Entry> = HTMaterialManager.Entry::class.java
+    data object MaterialType : HTRecipeViewerType<HTMaterial> {
+        override val recipeClass: Class<HTMaterial> = HTMaterial::class.java
         override val icon: Either<ResourceLocation, ItemStack> = Either.Right(ItemStack(Items.IRON_INGOT))
         override val bounds: HTBounds = HTBounds(0, 0, 142, 110)
         override val workStations: List<ItemStack> = emptyList()

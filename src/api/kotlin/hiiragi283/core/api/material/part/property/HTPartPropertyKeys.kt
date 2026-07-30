@@ -3,7 +3,7 @@ package hiiragi283.core.api.material.part.property
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.data.lang.HTLangPatternProvider
 import hiiragi283.core.api.data.model.HTTexturedModelProvider
-import hiiragi283.core.api.property.HTPropertyGetter
+import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.tag.HTTagPrefix
 import net.minecraft.resources.ResourceLocation
@@ -20,7 +20,7 @@ object HTPartPropertyKeys {
      * 基準値に対する数量を管理する[プロパティキー][HTPropertyKey]
      */
     @JvmField
-    val ITEM_SCALE: HTPropertyKey<(Fraction, HTPropertyGetter) -> Fraction> = HTPropertyKey.create(HiiragiCoreAPI.id("item_scale")) { base: Fraction, _ -> base }
+    val ITEM_SCALE: HTPropertyKey<(Fraction, HTMaterial) -> Fraction> = HTPropertyKey.create(HiiragiCoreAPI.id("item_scale")) { base: Fraction, _ -> base }
 
     /**
      * 原石にまつわる部品かどうか管理する[プロパティキー][HTPropertyKey]

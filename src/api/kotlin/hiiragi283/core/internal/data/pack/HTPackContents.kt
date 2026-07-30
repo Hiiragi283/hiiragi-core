@@ -19,6 +19,9 @@ import net.minecraft.server.packs.resources.IoSupplier
  * @since 21.1.0
  */
 internal class HTPackContents {
+    /**
+     * @since 21.1.1.0
+     */
     companion object {
         @JvmStatic
         fun dumpData(id: ResourceLocation, parent: Path, bytes: ByteArray) {

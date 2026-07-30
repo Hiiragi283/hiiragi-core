@@ -3,6 +3,7 @@ package hiiragi283.core.api.plugin
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.HTPart
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyMap
@@ -32,9 +33,19 @@ interface HTMaterialPlugin : HTIdLike {
     fun registerPart(registrar: PartRegistrar) {}
 
     fun interface PartRegistrar {
-        fun register(name: String, idPattern: String, properties: HTPropertyGetter): HTPartLike
+        fun register(key: HTPartKey, idPattern: String, properties: HTPropertyGetter)
 
-        fun register(name: String, idPattern: String, builderAction: HTPropertyMap.Builder.() -> Unit): HTPartLike = register(name, idPattern, buildPropertyMap(builderAction))
+        fun register(key: HTPartKey, idPattern: String, builderAction: HTPropertyMap.Builder.() -> Unit) {
+            register(key, idPattern, buildPropertyMap(builderAction))
+        }
+
+        fun register(part: HTPartLike, idPattern: String, properties: HTPropertyGetter) {
+            register(part.key, idPattern, properties)
+        }
+
+        fun register(part: HTPartLike, idPattern: String, builderAction: HTPropertyMap.Builder.() -> Unit) {
+            register(part.key, idPattern, buildPropertyMap(builderAction))
+        }
     }
 
     //    Material    //

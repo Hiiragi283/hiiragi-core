@@ -1,6 +1,5 @@
 package hiiragi283.core.api
 
-import com.mojang.serialization.Codec
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.item.tool.HTToolType
@@ -89,53 +88,25 @@ abstract class HiiragiCoreAccess {
     }
 
     /**
-     * 登録された[部品の種類][HTPart]を取得します。
-     * @since 0.12.0
-     */
-    abstract val partManager: Map<String, HTPart>
-
-    val partCodec: Codec<HTPart> = Codec.lazyInitialized { Codec.stringResolver(HTPart::name, partManager::get) }
-
-    /**
      * 既存の素材コンテンツを取得します。
      */
-    val existingContents: HTMaterialAccess = object : HTMaterialAccess {
-        override val blocks: HTMaterialContents<HTPart, HTMaterialContents.BlockEntry> by lazy {
-            HTMaterialContentsImpl(HTMaterialContentsRegister.existingBlocks) { part: HTPart, key: HTMaterialKey ->
-                "Unknown ${part.name} block for $key"
-            }
-        }
-        override val items: HTMaterialContents<HTPart, HTMaterialContents.ItemEntry> by lazy {
-            HTMaterialContentsImpl(HTMaterialContentsRegister.existingItems) { part: HTPart, key: HTMaterialKey ->
-                "Unknown ${part.name} item for $key"
-            }
-        }
-        override val tools: HTMaterialContents<HTToolType, HTMaterialContents.ItemEntry> by lazy {
-            HTMaterialContentsImpl(HTMaterialContentsRegister.existingTools) { toolType: HTToolType, key: HTMaterialKey ->
-                "Unknown ${toolType.name} item for $key"
-            }
-        }
+    val existingContents: HTMaterialAccess by lazy {
+        HTMaterialAccess(
+            HTMaterialContentsImpl(HTMaterialContentsRegister.existingBlocks) { part: HTPart, key: HTMaterialKey -> "Unknown ${part.key} block for $key" },
+            HTMaterialContentsImpl(HTMaterialContentsRegister.existingItems) { part: HTPart, key: HTMaterialKey -> "Unknown ${part.key} item for $key" },
+            HTMaterialContentsImpl(HTMaterialContentsRegister.existingTools) { toolType: HTToolType, key: HTMaterialKey -> "Unknown ${toolType.name} item for $key" },
+        )
     }
 
     /**
      * 登録された素材コンテンツを取得します。
      */
-    val registeredContents: HTMaterialAccess = object : HTMaterialAccess {
-        override val blocks: HTMaterialContents<HTPart, HTMaterialContents.BlockEntry> by lazy {
-            HTMaterialContentsImpl(HTMaterialContentsRegister.materialBlocks) { part: HTPart, key: HTMaterialKey ->
-                "Unregistered ${part.name} block for $key"
-            }
-        }
-        override val items: HTMaterialContents<HTPart, HTMaterialContents.ItemEntry> by lazy {
-            HTMaterialContentsImpl(HTMaterialContentsRegister.materialItems) { part: HTPart, key: HTMaterialKey ->
-                "Unregistered ${part.name} item for $key"
-            }
-        }
-        override val tools: HTMaterialContents<HTToolType, HTMaterialContents.ItemEntry> by lazy {
-            HTMaterialContentsImpl(HTMaterialContentsRegister.materialTools) { toolType: HTToolType, key: HTMaterialKey ->
-                "Unregistered ${toolType.name} item for $key"
-            }
-        }
+    val registeredContents: HTMaterialAccess by lazy {
+        HTMaterialAccess(
+            HTMaterialContentsImpl(HTMaterialContentsRegister.materialBlocks) { part: HTPart, key: HTMaterialKey -> "Unregistered ${part.key} block for $key" },
+            HTMaterialContentsImpl(HTMaterialContentsRegister.materialItems) { part: HTPart, key: HTMaterialKey -> "Unregistered ${part.key} item for $key" },
+            HTMaterialContentsImpl(HTMaterialContentsRegister.materialTools) { toolType: HTToolType, key: HTMaterialKey -> "Unregistered ${toolType.name} item for $key" },
+        )
     }
 
     fun getMaterialBlock(part: HTPartLike, key: HTMaterialKey): HTMaterialContents.BlockEntry? = existingContents.blocks[part, key] ?: registeredContents.blocks[part, key]

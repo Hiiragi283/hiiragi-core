@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.NativeImage
 import hiiragi283.core.api.resource.modifyPath
 import java.io.BufferedReader
 import java.io.InputStream
-import java.util.stream.Stream
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
 
@@ -35,18 +34,20 @@ data object HTTextureUtil {
     @JvmStatic
     fun getOrCreateColors(id: ResourceLocation, manager: ResourceManager): Result<List<Int>> = getCachedColors(id)
         ?.let(Result.Companion::success)
-        ?: runCatching { manager.getResource(id.modifyPath { "palettes/$it.gpl" }).get().open() }
-            .mapCatching(InputStream::bufferedReader)
-            .mapCatching(BufferedReader::lines)
-            .map(Stream<String>::toList)
-            .mapCatching { lines: List<String> ->
-                val paletteId = "GIMP Palette"
-                check(lines.firstOrNull() == paletteId) { "First line must be \"$paletteId\"" }
-                lines
-                    .filterNot { it == paletteId || it.startsWith("Name") || it.startsWith("Columns") }
-                    .map { it.split(PALETTE_REGEX, limit = 4).take(3).map(String::toInt) }
-                    .map { (red: Int, green: Int, blue: Int) -> combine(255, blue, green, red) }
-            }.onSuccess { colorCache[id] = it }
+        ?: runCatching {
+            manager.open(id.modifyPath { "palettes/$it.gpl" })
+                .use(InputStream::bufferedReader)
+                .use(BufferedReader::lines)
+                .toList()
+                .let { lines: List<String> ->
+                    val paletteId = "GIMP Palette"
+                    check(lines.firstOrNull() == paletteId) { "First line must be \"$paletteId\"" }
+                    lines
+                        .filterNot { it == paletteId || it.startsWith("Name") || it.startsWith("Columns") }
+                        .map { it.split(PALETTE_REGEX, limit = 4).take(3).map(String::toInt) }
+                        .map { (red: Int, green: Int, blue: Int) -> combine(255, blue, green, red) }
+                }
+        }.onSuccess { colorCache[id] = it }
 
     @JvmStatic
     fun combine(alpha: Int, blue: Int, green: Int, red: Int): Int = (alpha shl 24) or (blue shl 16) or (green shl 8) or red
@@ -54,7 +55,7 @@ data object HTTextureUtil {
     //    NativeImage    //
 
     @JvmStatic
-    fun openImage(manager: ResourceManager, id: ResourceLocation): Result<NativeImage> = runCatching { manager.getResource(id).orElseThrow().open().use(NativeImage::read) }
+    fun openImage(manager: ResourceManager, id: ResourceLocation): Result<NativeImage> = runCatching { manager.open(id).use(NativeImage::read) }
 
     @JvmStatic
     fun copyFrom(other: NativeImage): NativeImage {

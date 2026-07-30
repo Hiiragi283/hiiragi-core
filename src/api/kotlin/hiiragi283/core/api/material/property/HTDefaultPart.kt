@@ -78,6 +78,6 @@ sealed interface HTDefaultPart {
 
         override fun getItem(key: HTMaterialKey): HTMaterialContents.ItemEntry? = HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, key)
 
-        override fun getSuffix(): String = part.name
+        override fun getSuffix(): String = part.asPartName()
     }
 }

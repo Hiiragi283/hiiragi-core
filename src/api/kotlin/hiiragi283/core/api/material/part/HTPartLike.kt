@@ -16,15 +16,14 @@ import net.minecraft.world.item.Item
  * @since 0.12.0
  */
 interface HTPartLike : HTPropertyGetter {
+    val key: HTPartKey
+
     /**
      * [HTPart]に変換します。
      */
     fun asPart(): HTPart
 
-    /**
-     * [asPart]から部品の名前を取得します。
-     */
-    fun asPartName(): String
+    fun asPartName(): String = key.name
 
     /**
      * 指定した[素材][key]から[ID][ResourceLocation]を生成します。

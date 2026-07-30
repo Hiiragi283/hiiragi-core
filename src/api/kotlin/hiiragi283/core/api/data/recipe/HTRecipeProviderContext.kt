@@ -1,9 +1,9 @@
 package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTComparators
-import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.part.HTPartManager
 import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -29,7 +29,7 @@ abstract class HTRecipeProviderContext {
      * 部品を管理するマネージャを取得します。
      * @since 0.12.0
      */
-    protected val partManager by lazy(HiiragiCoreAccess.INSTANCE::partManager)
+    protected val partManager: HTPartManager by lazy(HTPartManager::getInstance)
 
     /**
      * 素材を管理するマネージャを取得します。
@@ -47,7 +47,7 @@ abstract class HTRecipeProviderContext {
     /**
      * @since 0.9.0
      */
-    fun baseOrPrefix(key: HTMaterialKey, prefix: HTTagPrefix): Set<TagKey<Item>> = setOfNotNull(prefix.itemTagKey(key), materialManager.getOrEmpty(key).getDefaultPart(key)).toSortedSet(HTComparators.TAG_KEY)
+    fun baseOrPrefix(key: HTMaterialKey, prefix: HTTagPrefix): Set<TagKey<Item>> = setOfNotNull(prefix.itemTagKey(key), materialManager[key]?.getDefaultPart(key)).toSortedSet(HTComparators.TAG_KEY)
 
     /**
      * @since 0.9.0
