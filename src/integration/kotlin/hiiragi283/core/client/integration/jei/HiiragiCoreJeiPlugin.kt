@@ -10,7 +10,7 @@ import hiiragi283.core.api.integration.jei.HTSubtypeInterpreter
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
-import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
@@ -146,7 +146,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         registerTankEmptying(helper)
         registerTankFilling(helper)
 
-        helper.addRecipes(HCRecipeViewerTypes.MaterialType, HTMaterialManager.getInstance().asSequence())
+        helper.addRecipes(HCRecipeViewerTypes.MaterialType, HTMaterial.getManager().asSequence())
     }
 
     private fun registerTankEmptying(helper: HTJeiRecipeHelper) {

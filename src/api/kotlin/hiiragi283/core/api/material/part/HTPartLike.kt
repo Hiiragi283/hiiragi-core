@@ -16,6 +16,10 @@ import net.minecraft.world.item.Item
  * @since 0.12.0
  */
 interface HTPartLike : HTPropertyGetter {
+    /**
+     * 部品のキー
+     * @since 21.1.1.0
+     */
     val key: HTPartKey
 
     /**
@@ -23,6 +27,9 @@ interface HTPartLike : HTPropertyGetter {
      */
     fun asPart(): HTPart
 
+    /**
+     * 部品のキーの名前を返します。
+     */
     fun asPartName(): String = key.name
 
     /**

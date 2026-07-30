@@ -5,6 +5,11 @@ import io.netty.buffer.ByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
 
+/**
+ * 部品の種類を表すクラスです。
+ * @author Hiiragi Tsubasa
+ * @since 21.1.1.0
+ */
 @JvmRecord
 data class HTPartKey(val name: String) : Comparable<HTPartKey> {
     companion object {

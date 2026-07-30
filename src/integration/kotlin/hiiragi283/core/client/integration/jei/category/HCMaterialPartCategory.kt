@@ -3,9 +3,8 @@ package hiiragi283.core.client.integration.jei.category
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.integration.jei.category.HTBasicRecipeCategory
 import hiiragi283.core.api.material.HTMaterial
-import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
-import hiiragi283.core.api.material.part.HTPartManager
 import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
@@ -29,8 +28,8 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Ingredient
 
 class HCMaterialPartCategory(guiHelper: IGuiHelper) : HTBasicRecipeCategory<HTMaterial>(guiHelper, HCRecipeViewerTypes.MaterialType) {
-    private fun getIngredients(entry: HTMaterial): Sequence<List<ItemStack>> = HTPartManager
-        .getInstance()
+    private fun getIngredients(entry: HTMaterial): Sequence<List<ItemStack>> = HTPart
+        .getManager()
         .asSequence()
         .mapNotNull(HTPartLike::tagPrefix)
         .map { it.itemTagKey(entry.key) }
@@ -74,5 +73,5 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) : HTBasicRecipeCategory<HTMa
 
     override fun getRegistryName(recipe: HTMaterial): ResourceLocation = recipe.getId()
 
-    override fun getCodec(codecHelper: ICodecHelper, recipeManager: IRecipeManager): Codec<HTMaterial> = HTMaterialManager.CODEC
+    override fun getCodec(codecHelper: ICodecHelper, recipeManager: IRecipeManager): Codec<HTMaterial> = HTMaterial.CODEC
 }

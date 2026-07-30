@@ -10,7 +10,6 @@ import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
@@ -37,7 +36,7 @@ data object HCMaterialTextureProvider {
     @JvmStatic
     private inline fun <T : HTIdLike> material(manager: ResourceManager, pathPrefix: String, factory: (HTMaterialKey) -> Map<HTPart, T>) {
         // すべての素材に対してテクスチャの生成を試みる
-        for (material: HTMaterial in HTMaterialManager.getInstance()) {
+        for (material: HTMaterial in HTMaterial.getManager()) {
             val key: HTMaterialKey = material.key
             // 生成対象がない場合はパス
             val partMap: Map<HTPart, T> = factory(key)
@@ -70,7 +69,7 @@ data object HCMaterialTextureProvider {
     @JvmStatic
     private fun tool(manager: ResourceManager) {
         // すべての素材に対してテクスチャの生成を試みる
-        for (material: HTMaterial in HTMaterialManager.getInstance()) {
+        for (material: HTMaterial in HTMaterial.getManager()) {
             val key: HTMaterialKey = material.key
             if (HTMaterialPropertyKeys.TOOL_MATERIAL !in material) continue
             val toolMap: Map<HTToolType, HTIdLike> = HiiragiCoreAccess.INSTANCE.registeredContents.tools

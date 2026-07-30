@@ -49,14 +49,28 @@ data object HTTextureUtil {
                 }
         }.onSuccess { colorCache[id] = it }
 
+    /**
+     * @since 21.1.1.0
+     */
     @JvmStatic
     fun combine(alpha: Int, blue: Int, green: Int, red: Int): Int = (alpha shl 24) or (blue shl 16) or (green shl 8) or red
 
     //    NativeImage    //
 
+    /**
+     * テクスチャを[NativeImage]として取得します。
+     * @param manager テクスチャの提供元
+     * @param id テクスチャのパス（末尾に`.png`を含むこと）
+     * @since 21.1.1.0
+     */
     @JvmStatic
     fun openImage(manager: ResourceManager, id: ResourceLocation): Result<NativeImage> = runCatching { manager.open(id).use(NativeImage::read) }
 
+    /**
+     * 指定した画像をコピーします。
+     * @return 新しい画像のインスタンス
+     * @since 21.1.1.0
+     */
     @JvmStatic
     fun copyFrom(other: NativeImage): NativeImage {
         val image = NativeImage(other.width, other.height, true)

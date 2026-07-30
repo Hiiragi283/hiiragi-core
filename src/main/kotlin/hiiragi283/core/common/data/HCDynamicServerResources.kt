@@ -10,7 +10,6 @@ import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.get
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPart
@@ -52,7 +51,7 @@ internal data object HCDynamicServerResources {
         val registered: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
         // Data Map
         HTDynamicDataMap(NeoForgeDataMaps.FURNACE_FUELS) {
-            for (entry: HTMaterial in HTMaterialManager.getInstance()) {
+            for (entry: HTMaterial in HTMaterial.getManager()) {
                 val baseTime: Int = entry[HTMaterialPropertyKeys.FUEL_TIME] ?: continue
                 val key: HTMaterialKey = entry.key
                 // Block

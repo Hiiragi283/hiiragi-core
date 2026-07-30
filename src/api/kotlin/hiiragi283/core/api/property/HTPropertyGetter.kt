@@ -7,6 +7,10 @@ package hiiragi283.core.api.property
  */
 interface HTPropertyGetter {
     companion object {
+        /**
+         * 常に値を返さない[HTPropertyGetter]のインスタンス
+         * @since 21.1.1.0
+         */
         @JvmField
         val NOTHING: HTPropertyGetter = object : HTPropertyGetter {
             override fun contains(key: HTPropertyKey<*>): Boolean = false

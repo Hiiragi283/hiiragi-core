@@ -4,7 +4,14 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.DataResult
 import net.minecraft.network.codec.StreamCodec
 
-interface HTPropertyManager<K, E : HTPropertyManager.Entry<K>> : Iterable<E> {
+/**
+ * キーに対応する[HTPropertyGetter]を管理するクラスです。
+ * @param K キーのクラス
+ * @param E [HTPropertyManager.Entry]を実装したクラス
+ * @author Hiiragi Tsubasa
+ * @since 21.1.1.0
+ */
+class HTPropertyManager<K, E : HTPropertyManager.Entry<K>>(private val map: Map<K, E>) : Iterable<E> {
     companion object {
         @JvmStatic
         fun <K, E : Entry<K>> codec(keyCodec: Codec<K>, instance: () -> HTPropertyManager<K, E>, errorMessage: (K) -> String): Codec<E> = keyCodec.comapFlatMap(
@@ -24,21 +31,29 @@ interface HTPropertyManager<K, E : HTPropertyManager.Entry<K>> : Iterable<E> {
         )
     }
 
-    operator fun contains(key: K): Boolean
+    operator fun contains(key: K): Boolean = key in map
 
-    operator fun get(key: K): E?
+    operator fun get(key: K): E? = map[key]
 
     fun getOrEmpty(key: K): HTPropertyGetter = get(key) ?: HTPropertyGetter.NOTHING
 
     fun getOrThrow(key: K): E = get(key) ?: error("Missing entry: $key")
 
-    val keys: Set<K>
+    val keys: Set<K> get() = map.keys
 
-    val entries: Collection<E>
+    val entries: Collection<E> = map.values
 
     override fun iterator(): Iterator<E> = entries.iterator()
 
+    /**
+     * [HTPropertyManager]の値に実装するインターフェースです。
+     * @author Hiiragi Tsubasa
+     * @since 21.1.1.0
+     */
     interface Entry<K> : HTPropertyGetter {
+        /**
+         * 対応するキー
+         */
         val key: K
     }
 }

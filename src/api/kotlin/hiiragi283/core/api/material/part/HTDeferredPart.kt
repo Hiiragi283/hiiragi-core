@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation
 value class HTDeferredPart(override val key: HTPartKey) : HTPartLike {
     constructor(name: String) : this(HTPartKey(name))
 
-    override fun asPart(): HTPart = HTPartManager.getInstance().getOrThrow(key)
+    override fun asPart(): HTPart = HTPart.getManager().getOrThrow(key)
 
     override fun createId(key: HTMaterialKey): ResourceLocation = asPart().createId(key)
 

@@ -19,6 +19,7 @@ import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.property.HTPropertyGetter
+import hiiragi283.core.api.property.HTPropertyManager
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.registry.HTSimpleDeferredBlockAndItem
@@ -105,7 +106,7 @@ data object HTMaterialContentsRegister {
 
     @JvmStatic
     private fun gatherPartProperties() {
-        val map: Map<HTPartKey, HTPart> = buildMap {
+        val partMap: Map<HTPartKey, HTPart> = buildMap {
             HiiragiCoreAccess.INSTANCE.forEachPlugin("Register Part") { plugin: HTMaterialPlugin ->
                 plugin.registerPart { key: HTPartKey, idPattern: String, getter: HTPropertyGetter ->
                     val entry = HTPart(key, idPattern, getter)
@@ -113,15 +114,7 @@ data object HTMaterialContentsRegister {
                 }
             }
         }
-        partManager = object : HTPartManager {
-            override fun contains(key: HTPartKey): Boolean = key in map
-
-            override fun get(key: HTPartKey): HTPart? = map[key]
-
-            override val keys: Set<HTPartKey> get() = map.keys
-
-            override val entries: Collection<HTPart> get() = map.values
-        }
+        partManager = HTPropertyManager(partMap)
     }
 
     @JvmStatic
@@ -137,15 +130,7 @@ data object HTMaterialContentsRegister {
                 materialMap[key] = HTMaterial(key, propertyMap)
             }
         }
-        materialManager = object : HTMaterialManager {
-            override fun contains(key: HTMaterialKey): Boolean = key in materialMap
-
-            override fun get(key: HTMaterialKey): HTMaterial? = materialMap[key]
-
-            override val keys: Set<HTMaterialKey> = materialMap.keys
-
-            override val entries: Collection<HTMaterial> = materialMap.values
-        }
+        materialManager = HTPropertyManager(materialMap)
     }
 
     @JvmStatic

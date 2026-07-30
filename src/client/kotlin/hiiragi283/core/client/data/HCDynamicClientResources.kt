@@ -12,7 +12,6 @@ import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
@@ -53,7 +52,7 @@ internal data object HCDynamicClientResources {
     private fun addTranslations(langType: HTLangType, consumer: (String, String) -> Unit) {
         val registered: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
 
-        for (material: HTMaterial in HTMaterialManager.getInstance()) {
+        for (material: HTMaterial in HTMaterial.getManager()) {
             val key: HTMaterialKey = material.key
             // Material Name
             val materialName: HTLangName = material[HTMaterialPropertyKeys.LANG_NAME] ?: continue

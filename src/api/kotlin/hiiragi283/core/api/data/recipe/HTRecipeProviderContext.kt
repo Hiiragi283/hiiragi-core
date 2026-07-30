@@ -1,8 +1,10 @@
 package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.HTComparators
+import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartManager
 import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.api.resource.HTIdLike
@@ -27,14 +29,14 @@ abstract class HTRecipeProviderContext {
     // Material
     /**
      * 部品を管理するマネージャを取得します。
-     * @since 0.12.0
+     * @since 21.1.1.0
      */
-    protected val partManager: HTPartManager by lazy(HTPartManager::getInstance)
+    protected val partManager: HTPartManager by lazy(HTPart::getManager)
 
     /**
      * 素材を管理するマネージャを取得します。
      */
-    protected val materialManager: HTMaterialManager by lazy(HTMaterialManager::getInstance)
+    protected val materialManager: HTMaterialManager by lazy(HTMaterial::getManager)
 
     /**
      * [TagKey]を取得します。

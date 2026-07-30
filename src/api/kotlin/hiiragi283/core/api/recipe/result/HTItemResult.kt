@@ -8,7 +8,6 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartLike
-import hiiragi283.core.api.material.part.HTPartManager
 import hiiragi283.core.api.material.part.tagPrefix
 import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.api.resource.HTIdLike
@@ -170,7 +169,7 @@ interface HTItemResult : HTIdLike {
             val CODEC: MapCodec<MaterialPart> = HTCodecs.recordMap { instance ->
                 instance
                     .group(
-                        HTPartManager.CODEC
+                        HTPart.CODEC
                             .fieldOf("part")
                             .forGetter(MaterialPart::part),
                         HTMaterialKey.CODEC.fieldOf("material").forGetter(MaterialPart::key),

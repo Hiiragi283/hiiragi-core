@@ -1,13 +1,24 @@
 package hiiragi283.core.api.material.part
 
+import com.mojang.serialization.Codec
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyManager
 import hiiragi283.core.api.resource.modifyPath
+import hiiragi283.core.internal.material.HTMaterialContentsRegister
+import io.netty.buffer.ByteBuf
+import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceLocation
 
 /**
- * 部品の種類を管理するクラスです。
+ * [HTPart]を管理する[HTPropertyManager]のエイリアスです。
+ * @author Hiiragi Tsubasa
+ * @since 21.1.1.0
+ */
+typealias HTPartManager = HTPropertyManager<HTPartKey, HTPart>
+
+/**
+ * 部品のキーとプロパティを管理するクラスです。
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
@@ -16,6 +27,19 @@ class HTPart internal constructor(override val key: HTPartKey, private val idPat
     HTPropertyManager.Entry<HTPartKey>,
     HTPropertyGetter by getter,
     Comparable<HTPart> {
+    companion object {
+        @JvmStatic
+        fun getManager(): HTPartManager = HTMaterialContentsRegister.partManager
+
+        private fun errorMessage(key: HTPartKey): String = "Missing part: $key"
+
+        @JvmField
+        val CODEC: Codec<HTPart> = HTPropertyManager.codec(HTPartKey.CODEC, ::getManager, ::errorMessage)
+
+        @JvmField
+        val STREAM_CODEC: StreamCodec<ByteBuf, HTPart> = HTPropertyManager.streamCodec(HTPartKey.STREAM_CODEC, ::getManager, ::errorMessage)
+    }
+
     override fun asPart(): HTPart = this
 
     override fun createId(key: HTMaterialKey): ResourceLocation = key.getId().modifyPath { idPattern.replace("%s", it) }

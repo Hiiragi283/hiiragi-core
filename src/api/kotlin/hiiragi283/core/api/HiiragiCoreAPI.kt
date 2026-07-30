@@ -29,9 +29,15 @@ data object HiiragiCoreAPI {
     @JvmField
     val RANDOM: Random = Random.Default
 
+    /**
+     * @since 21.1.1.0
+     */
     @JvmField
     val GAME_DIR: Path = FMLPaths.GAMEDIR.get()
 
+    /**
+     * @since 21.1.1.0
+     */
     @JvmStatic
     fun isDevelopment(): Boolean = !FMLEnvironment.production
 
