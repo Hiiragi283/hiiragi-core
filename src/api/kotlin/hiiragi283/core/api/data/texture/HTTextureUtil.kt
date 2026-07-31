@@ -35,11 +35,9 @@ data object HTTextureUtil {
     fun getOrCreateColors(id: ResourceLocation, manager: ResourceManager): Result<List<Int>> = getCachedColors(id)
         ?.let(Result.Companion::success)
         ?: runCatching {
-            manager.open(id.modifyPath { "palettes/$it.gpl" })
-                .use(InputStream::bufferedReader)
-                .use(BufferedReader::lines)
-                .toList()
-                .let { lines: List<String> ->
+            manager.open(id.modifyPath { "palettes/$it.gpl" }).use { inputStream: InputStream ->
+                inputStream.bufferedReader().use { bufferedReader: BufferedReader ->
+                    val lines: List<String> = bufferedReader.lines().toList()
                     val paletteId = "GIMP Palette"
                     check(lines.firstOrNull() == paletteId) { "First line must be \"$paletteId\"" }
                     lines
@@ -47,6 +45,7 @@ data object HTTextureUtil {
                         .map { it.split(PALETTE_REGEX, limit = 4).take(3).map(String::toInt) }
                         .map { (red: Int, green: Int, blue: Int) -> combine(255, blue, green, red) }
                 }
+            }
         }.onSuccess { colorCache[id] = it }
 
     /**
