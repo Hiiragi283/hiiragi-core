@@ -10,12 +10,14 @@ import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.get
+import hiiragi283.core.api.material.columnPart
+import hiiragi283.core.api.material.forEachPart
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPart
-import hiiragi283.core.api.material.part.itemTagKey
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
-import hiiragi283.core.api.material.prefixEntries
+import hiiragi283.core.api.material.part.property.itemTagKey
+import hiiragi283.core.api.material.part.property.tagPrefix
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.resource.SimpleBlockItemSupplierWithKey
 import hiiragi283.core.api.tag.CommonTagPrefixes
@@ -23,7 +25,6 @@ import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.times
 import hiiragi283.core.common.material.CommonMaterialKeys
-import kotlin.sequences.forEach
 import kotlin.system.measureTimeMillis
 import net.minecraft.core.registries.Registries
 import net.minecraft.tags.BlockTags
@@ -55,7 +56,7 @@ internal data object HCDynamicServerResources {
                 val baseTime: Int = entry[HTMaterialPropertyKeys.FUEL_TIME] ?: continue
                 val key: HTMaterialKey = entry.key
                 // Block
-                setOf(registered.blocks.column(key), registered.items.column(key)).forEach { map: Map<HTPart, *> ->
+                setOf(registered.blocks.columnPart(key), registered.items.columnPart(key)).forEach { map ->
                     for ((part: HTPart, _) in map) {
                         val tagKey: TagKey<Item> = part.itemTagKey(key) ?: continue
                         val fuelScale: Fraction = part[HTPartPropertyKeys.FUEL_SCALE] ?: continue
@@ -66,9 +67,9 @@ internal data object HCDynamicServerResources {
             }
         }
         // Loot Table
-        registered.blocks.forEach { (part: HTPart, key: HTMaterialKey, block: HTMaterialContents.BlockEntry) ->
+        registered.blocks.forEachPart { part: HTPart, material: HTMaterial, block: HTMaterialContents.BlockEntry ->
             if (HTPartPropertyKeys.IS_ORE in part) {
-                val raw: HTMaterialContents.ItemEntry? = registered.items[CommonParts.RAW, key]
+                val raw: HTMaterialContents.ItemEntry? = registered.items[CommonParts.RAW, material.key]
                 // 暫定的に幸運は適応しない
                 HTDynamicDataRegister.addLootTable(block.get()) {
                     LootTable.lootTable()
@@ -92,10 +93,10 @@ internal data object HCDynamicServerResources {
         // Tag
         HTTagsProvider.Dynamic(Registries.BLOCK) {
             // Material Block
-            existing.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTMaterialContents.BlockEntry) ->
+            existing.blocks.forEachTag { prefix: HTTagPrefix, key: HTMaterialKey, block: HTMaterialContents.BlockEntry ->
                 tags(prefix, key).add(block)
             }
-            registered.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: HTMaterialContents.BlockEntry) ->
+            registered.blocks.forEachTag { prefix: HTTagPrefix, key: HTMaterialKey, block: HTMaterialContents.BlockEntry ->
                 tags(prefix, key).add(block)
                 builder(BlockTags.MINEABLE_WITH_PICKAXE).add(block)
             }
@@ -107,10 +108,10 @@ internal data object HCDynamicServerResources {
         }*/
         HTTagsProvider.Dynamic(Registries.ITEM) {
             // Material Block
-            existing.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: SimpleBlockItemSupplierWithKey) ->
+            existing.blocks.forEachTag { prefix: HTTagPrefix, key: HTMaterialKey, block: SimpleBlockItemSupplierWithKey ->
                 tags(prefix, key).add(block.getItemSupplier())
             }
-            registered.blocks.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, block: SimpleBlockItemSupplierWithKey) ->
+            registered.blocks.forEachTag { prefix: HTTagPrefix, key: HTMaterialKey, block: SimpleBlockItemSupplierWithKey ->
                 tags(prefix, key).add(block.getItemSupplier())
             }
             // Material Fluid
@@ -118,10 +119,10 @@ internal data object HCDynamicServerResources {
                 tags(Tags.Items.BUCKETS, part.createBucketTag(key)).add(fluid.get().bucket.toLike())
             }*/
             // Material Item
-            existing.items.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTMaterialContents.ItemEntry) ->
+            existing.items.forEachTag { prefix: HTTagPrefix, key: HTMaterialKey, item: HTMaterialContents.ItemEntry ->
                 tags(prefix, key).add(item)
             }
-            registered.items.prefixEntries.forEach { (prefix: HTTagPrefix, key: HTMaterialKey, item: HTMaterialContents.ItemEntry) ->
+            registered.items.forEachTag { prefix: HTTagPrefix, key: HTMaterialKey, item: HTMaterialContents.ItemEntry ->
                 tags(prefix, key).add(item)
                 if (prefix == CommonTagPrefixes.GEM || prefix == CommonTagPrefixes.INGOT) {
                     builder(ItemTags.BEACON_PAYMENT_ITEMS).addTag(prefix, key)
@@ -129,7 +130,7 @@ internal data object HCDynamicServerResources {
                 if (key == CommonMaterialKeys.PLASTIC) {
                     when (prefix) {
                         CommonTagPrefixes.PLATE -> HiiragiCoreTags.Items.PLASTICS
-                        else -> return@forEach
+                        else -> return@forEachTag
                     }.let(::builder).add(item)
                 }
             }
@@ -140,5 +141,12 @@ internal data object HCDynamicServerResources {
         }
         // Recipe
         HCDynamicRecipeProvider.initialize()
+    }
+
+    private inline fun <V> HTMaterialContents<HTPartKey, V>.forEachTag(action: (HTTagPrefix, HTMaterialKey, V) -> Unit) {
+        this.forEachPart { part: HTPart, material: HTMaterial, entry: V ->
+            val prefix: HTTagPrefix = part.tagPrefix ?: return@forEachPart
+            action(prefix, material.key, entry)
+        }
     }
 }

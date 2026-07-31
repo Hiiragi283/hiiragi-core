@@ -7,7 +7,7 @@ import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.item.tool.VanillaToolTypes
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
-import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTExtraOreResultMap
 import hiiragi283.core.api.material.property.HTMaterialLevel
@@ -45,7 +45,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
 
     override fun registerExistingBlock(consumer: HTMaterialPlugin.BlockConsumer) {
         @Suppress("DEPRECATION")
-        fun accept(part: HTPartLike, key: HTMaterialKey, block: Block) {
+        fun accept(part: HTPartKey, key: HTMaterialKey, block: Block) {
             consumer.accept(part, key, block.builtInRegistryHolder().toBlockLike())
         }
         // Fuels
@@ -96,7 +96,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
     }
 
     override fun registerExistingItem(consumer: HTMaterialPlugin.ItemConsumer) {
-        fun accept(part: HTPartLike, key: HTMaterialKey, item: Item) {
+        fun accept(part: HTPartKey, key: HTMaterialKey, item: Item) {
             consumer.accept(part, key, item.toLike())
         }
 
@@ -257,7 +257,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
 
     @JvmStatic
     private fun gem(builder: HTMaterialPlugin.MaterialProvider) {
-        val itemSet: Set<HTPartLike> = setOf(CommonParts.DUST, CommonParts.RAW, CommonParts.CRUSHED_ORE)
+        val itemSet: Set<HTPartKey> = setOf(CommonParts.DUST, CommonParts.RAW, CommonParts.CRUSHED_ORE)
         builder.getBuilder(VanillaMaterialKeys.LAPIS).apply {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
             addItemPrefixes(itemSet)

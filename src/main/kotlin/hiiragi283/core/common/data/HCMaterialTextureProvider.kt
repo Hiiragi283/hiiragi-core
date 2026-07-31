@@ -10,7 +10,9 @@ import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.columnPart
 import hiiragi283.core.api.material.part.HTPart
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialTextureSet
@@ -27,23 +29,23 @@ data object HCMaterialTextureProvider {
         HTTextureUtil.templatePalette = HTTextureUtil.getOrCreateColors(HiiragiCoreAPI.id("template"), manager).getOrThrow()
 
         val contents: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
-        material(manager, HTConst.BLOCK, contents.blocks::column)
-        material(manager, HTConst.ITEM, contents.items::column)
+        material(manager, HTConst.BLOCK, contents.blocks::columnPart)
+        material(manager, HTConst.ITEM, contents.items::columnPart)
         tool(manager)
         // molten(manager)
     }
 
     @JvmStatic
-    private inline fun <T : HTIdLike> material(manager: ResourceManager, pathPrefix: String, factory: (HTMaterialKey) -> Map<HTPart, T>) {
+    private inline fun <T : HTIdLike> material(manager: ResourceManager, pathPrefix: String, factory: (HTMaterialKey) -> Sequence<Pair<HTPart, T>>) {
         // すべての素材に対してテクスチャの生成を試みる
         for (material: HTMaterial in HTMaterial.getManager()) {
             val key: HTMaterialKey = material.key
             // 生成対象がない場合はパス
-            val partMap: Map<HTPart, T> = factory(key)
-            if (partMap.isEmpty()) continue
+            val partMap: Sequence<Pair<HTPart, T>> = factory(key)
+            if (partMap.none()) continue
             // テクスチャを生成
             val textureSet: HTMaterialTextureSet = material.getOrDefault(HTMaterialPropertyKeys.TEXTURE_SET)
-            for (part: HTPart in partMap.keys) {
+            for ((part: HTPart, _) in partMap) {
                 if (HTPartPropertyKeys.DISABLE_TEXTURE_GEN in part) continue
                 // パレットを取得
                 val palette: List<Int> = sequence {
@@ -57,7 +59,7 @@ data object HCMaterialTextureProvider {
                         continue
                     }
                 // テンプレートを取得
-                val template: NativeImage = getTextureResult(manager, textureSet, part)
+                val template: NativeImage = getTextureResult(manager, textureSet, part.key)
                     .onFailure { HiiragiCoreAPI.LOGGER.error("Failed to get template image for part ${part.key}") }
                     .getOrNull()
                     ?: continue
@@ -72,8 +74,7 @@ data object HCMaterialTextureProvider {
         for (material: HTMaterial in HTMaterial.getManager()) {
             val key: HTMaterialKey = material.key
             if (HTMaterialPropertyKeys.TOOL_MATERIAL !in material) continue
-            val toolMap: Map<HTToolType, HTIdLike> = HiiragiCoreAccess.INSTANCE.registeredContents.tools
-                .column(key)
+            val toolMap: Map<HTToolType, HTIdLike> = HiiragiCoreAccess.INSTANCE.registeredContents.tools.column(key)
             if (toolMap.isEmpty()) continue
             // パレットを取得
             val palette: List<Int> = (material[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId())
@@ -124,7 +125,7 @@ data object HCMaterialTextureProvider {
     }*/
 
     @JvmStatic
-    private fun getTextureResult(manager: ResourceManager, textureSet: HTMaterialTextureSet, part: HTPart): Result<NativeImage> = HTTextureUtil.openImage(manager, HiiragiCoreAPI.id("textures", "material_set", textureSet.name, "${part.asPartName()}.png"))
+    private fun getTextureResult(manager: ResourceManager, textureSet: HTMaterialTextureSet, part: HTPartKey): Result<NativeImage> = HTTextureUtil.openImage(manager, HiiragiCoreAPI.id("textures", "material_set", textureSet.name, "${part.name}.png"))
         .recoverCatching { throwable: Throwable ->
             val parentSet: HTMaterialTextureSet = textureSet.parent ?: throw throwable
             getTextureResult(manager, parentSet, part).getOrThrow()

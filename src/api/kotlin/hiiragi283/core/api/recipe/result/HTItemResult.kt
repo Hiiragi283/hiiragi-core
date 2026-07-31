@@ -7,8 +7,8 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.HTPart
-import hiiragi283.core.api.material.part.HTPartLike
-import hiiragi283.core.api.material.part.tagPrefix
+import hiiragi283.core.api.material.part.HTPartKey
+import hiiragi283.core.api.material.part.property.tagPrefix
 import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.HTKeyLike
@@ -184,7 +184,7 @@ interface HTItemResult : HTIdLike {
             val SERIALIZER: Serializer<MaterialPart> = Serializer(CODEC)
         }
 
-        constructor(part: HTPartLike, key: HTMaterialKey, count: Int = 1) : this(part.asPart(), key, count)
+        constructor(part: HTPartKey, key: HTMaterialKey, count: Int = 1) : this(HTPart.getManager().getOrThrow(part), key, count)
 
         override fun getSerializer(): Serializer<*> = SERIALIZER
 
@@ -197,7 +197,7 @@ interface HTItemResult : HTIdLike {
                 return tagResult
             }
             return HiiragiCoreAccess.INSTANCE
-                .getMaterialBlockOrItem(part, key)
+                .getMaterialBlockOrItem(part.key, key)
                 .toTextResult { "No matching item for part ${part.key} and material $key" }
                 .map { it.toStack(count) }
         }

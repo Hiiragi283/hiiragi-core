@@ -12,7 +12,6 @@ import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPartKey
-import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.part.property.addNamePattern
 import hiiragi283.core.api.material.property.HTDefaultPart
@@ -269,28 +268,26 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         other(provider)
     }
 
-    private val materialBlockSet: Set<HTPartLike> by lazy {
-        setOf(
-            CommonParts.ORE,
-            CommonParts.ORE_DEEPSLATE,
-            CommonParts.ORE_NETHER,
-            CommonParts.ORE_END,
-            CommonParts.BLOCK,
-            CommonParts.RAW_BLOCK,
-        )
-    }
+    private val materialBlockSet: Set<HTPartKey> = setOf(
+        CommonParts.ORE,
+        CommonParts.ORE_DEEPSLATE,
+        CommonParts.ORE_NETHER,
+        CommonParts.ORE_END,
+        CommonParts.BLOCK,
+        CommonParts.RAW_BLOCK,
+    )
 
     @JvmStatic
-    private val oreSet: Set<HTPartLike> by lazy { setOf(CommonParts.DUST, CommonParts.RAW, CommonParts.CRUSHED_ORE) }
+    private val oreSet: Set<HTPartKey> = setOf(CommonParts.DUST, CommonParts.RAW, CommonParts.CRUSHED_ORE)
 
     @JvmStatic
-    private val metalSet: Set<HTPartLike> by lazy { oreSet.plus(CommonParts.INGOT).plus(CommonParts.NUGGET) }
+    private val metalSet: Set<HTPartKey> = oreSet.plus(CommonParts.INGOT).plus(CommonParts.NUGGET)
 
     @JvmStatic
-    private val alloySet: Set<HTPartLike> by lazy { metalSet.minus(CommonParts.RAW).minus(CommonParts.CRUSHED_ORE) }
+    private val alloySet: Set<HTPartKey> = metalSet.minus(CommonParts.RAW).minus(CommonParts.CRUSHED_ORE)
 
     @JvmStatic
-    private val partSet: Set<HTPartLike> by lazy { setOf(CommonParts.GEAR, CommonParts.PLATE, CommonParts.ROD) }
+    private val partSet: Set<HTPartKey> = setOf(CommonParts.GEAR, CommonParts.PLATE, CommonParts.ROD)
 
     @JvmStatic
     private fun fuel(builder: HTMaterialPlugin.MaterialProvider) {
@@ -566,7 +563,7 @@ object CommonMaterialPlugin : HTMaterialPlugin {
         builder.getBuilder(CommonMaterialKeys.PLASTIC).apply {
             setDefaultPart(
                 HiiragiCoreTags.Items.PLASTICS,
-                HTDeferredItem(CommonParts.PLATE.createId(CommonMaterialKeys.PLASTIC)),
+                HTDeferredItem(HiiragiCoreAPI.id("plastic_plate")),
             )
             addBlockPrefixes(CommonParts.BLOCK)
             addItemPrefixes(CommonParts.PLATE, CommonParts.ROD)

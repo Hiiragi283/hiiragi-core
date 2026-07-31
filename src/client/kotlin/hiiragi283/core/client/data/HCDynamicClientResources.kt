@@ -12,12 +12,12 @@ import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
+import hiiragi283.core.api.material.columnPart
+import hiiragi283.core.api.material.forEachPart
 import hiiragi283.core.api.material.part.CommonParts
 import hiiragi283.core.api.material.part.HTPart
-import hiiragi283.core.api.material.part.HTPartLike
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
-import hiiragi283.core.api.property.HTPropertyKey
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.blockId
@@ -58,7 +58,7 @@ internal data object HCDynamicClientResources {
             val materialName: HTLangName = material[HTMaterialPropertyKeys.LANG_NAME] ?: continue
             consumer(key.translationKey, materialName.getTranslatedName(langType))
             // Block
-            for ((part: HTPart, block: HTMaterialContents.BlockEntry) in registered.blocks.column(key)) {
+            for ((part: HTPart, block: HTMaterialContents.BlockEntry) in registered.blocks.columnPart(key)) {
                 val name: String = translate(langType, part, material) ?: continue
                 consumer(block.translationKey, name)
             }
@@ -74,7 +74,7 @@ internal data object HCDynamicClientResources {
                 consumer(Tags.getTagTranslationKey(part.createBucketTag(key)), bucketName)
             }*/
             // Item
-            for ((part: HTPart, item: HTMaterialContents.ItemEntry) in registered.items.column(key)) {
+            for ((part: HTPart, item: HTMaterialContents.ItemEntry) in registered.items.columnPart(key)) {
                 val name: String = translate(langType, part, material) ?: continue
                 consumer(item.translationKey, name)
             }
@@ -86,18 +86,12 @@ internal data object HCDynamicClientResources {
     }
 
     @JvmStatic
-    private fun translate(type: HTLangType, part: HTPart, material: HTMaterial): String? = translate(type, part, material, HTMaterialPropertyKeys.CUSTOM_LANG_NAME)
-
-    @JvmStatic
-    private fun <T : HTPartLike> translate(
-        type: HTLangType,
-        part: T,
-        material: HTMaterial,
-        key: HTPropertyKey<Map<T, HTLangName>>,
-    ): String? = material.getOrDefault(key)[part]?.getTranslatedName(type) ?: run {
-        val materialName: HTLangName = material[HTMaterialPropertyKeys.LANG_NAME] ?: return@run null
-        part.getOrDefault(HTPartPropertyKeys.LANG_PATTERN).translate(type, materialName)
-    }
+    private fun translate(type: HTLangType, part: HTPart, material: HTMaterial): String? = material.getOrDefault(HTMaterialPropertyKeys.CUSTOM_LANG_NAME)[part.key]
+        ?.getTranslatedName(type)
+        ?: run {
+            val materialName: HTLangName = material[HTMaterialPropertyKeys.LANG_NAME] ?: return@run null
+            part.getOrDefault(HTPartPropertyKeys.LANG_PATTERN).translate(type, materialName)
+        }
 
     //    Model    //
 
@@ -105,16 +99,16 @@ internal data object HCDynamicClientResources {
     private fun initializeModels() {
         val registered: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
         // Block
-        registered.blocks.forEach { (part: HTPart, key: HTMaterialKey, block: HTMaterialContents.BlockEntry) ->
+        registered.blocks.forEachPart { part: HTPart, material: HTMaterial, block: HTMaterialContents.BlockEntry ->
             if (HTPartPropertyKeys.IS_ORE in part) {
-                val stoneTexture: ResourceLocation = part[HTPartPropertyKeys.ORE_STONE_TEX] ?: return@forEach
+                val stoneTexture: ResourceLocation = part[HTPartPropertyKeys.ORE_STONE_TEX] ?: return@forEachPart
                 HTDynamicResourceRegister.BLOCK_MODEL_GENERATOR.createTrivialBlock(
                     block.get(),
                     TexturedModel.createDefault(
                         { _ ->
                             TextureMapping()
                                 .put(TextureSlot.LAYER0, stoneTexture)
-                                .put(TextureSlot.LAYER1, CommonParts.ORE.createId(key).withPrefix("block/"))
+                                .put(TextureSlot.LAYER1, HTPart.getManager().getOrThrow(CommonParts.ORE).createId(material.key).withPrefix("block/"))
                         },
                         HTModelTemplates.LAYERED,
                     ),
@@ -142,7 +136,7 @@ internal data object HCDynamicClientResources {
             HTDynamicResourceRegister.addToData(fluid.getBucketSupplier().itemId.withPrefix("models/"), root)
         }*/
         // Item
-        registered.items.forEach { (part: HTPart, _, item: HTIdLike) ->
+        registered.items.forEachPart { part: HTPart, _, item: HTIdLike ->
             HTDynamicResourceRegister.addModel(part.getOrDefault(HTPartPropertyKeys.ITEM_MODEL_PROVIDER), item)
         }
         registered.tools.forEach { (_, _, item: HTIdLike) ->

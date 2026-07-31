@@ -4,8 +4,7 @@ import com.mojang.serialization.Codec
 import hiiragi283.core.api.integration.jei.category.HTBasicRecipeCategory
 import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.part.HTPart
-import hiiragi283.core.api.material.part.HTPartLike
-import hiiragi283.core.api.material.part.tagPrefix
+import hiiragi283.core.api.material.part.property.itemTagKey
 import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
@@ -31,8 +30,7 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) : HTBasicRecipeCategory<HTMa
     private fun getIngredients(entry: HTMaterial): Sequence<List<ItemStack>> = HTPart
         .getManager()
         .asSequence()
-        .mapNotNull(HTPartLike::tagPrefix)
-        .map { it.itemTagKey(entry.key) }
+        .mapNotNull { it.itemTagKey(entry.key) }
         .distinct()
         .map { tagKey: TagKey<Item> -> BuiltInRegistries.ITEM.getTagOrEmpty(tagKey).map(::ItemStack) }
         .filterNot(Iterable<ItemStack>::none)

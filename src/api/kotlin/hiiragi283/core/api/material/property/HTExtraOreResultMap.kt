@@ -33,17 +33,15 @@ class HTExtraOreResultMap private constructor(map: Map<Phase, Pair<HTMaterialKey
 
     fun getResult(phase: Phase): HTChancedItemResult? {
         val (key: HTMaterialKey, chance: Fraction) = this[phase] ?: return null
-        return HTMaterial
-            .getManager()
-            .getOrEmpty(key)
+        return HTMaterial.getManager()[key]
             .getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART)
             .let { HTItemResult.MaterialPart(it, key) }
             .withChance(chance)
     }
 
-    fun getResult(phase: Phase, entry: HTMaterial): HTChancedItemResult? {
+    fun getResult(phase: Phase, material: HTMaterial?): HTChancedItemResult? {
         val (key: HTMaterialKey, chance: Fraction) = this[phase] ?: return null
-        return HTItemResult.MaterialPart(entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART), key) withChance chance
+        return HTItemResult.MaterialPart(material.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART), key) withChance chance
     }
 
     //    Phase    //

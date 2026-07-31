@@ -1,7 +1,7 @@
 package hiiragi283.core.api.material.part
 
 /**
- * 一般に使用される[HTPartLike]をまとめたクラスです。
+ * 一般に使用される[HTPartKey]をまとめたクラスです。
  * @author Hiiragi Tsubasa
  * @since 0.12.0
  */
@@ -9,64 +9,64 @@ data object CommonParts {
     //    Block    //
 
     @JvmField
-    val ORE: HTPartLike = HTDeferredPart("ore")
+    val ORE = HTPartKey("ore")
 
     @JvmField
-    val ORE_DEEPSLATE: HTPartLike = HTDeferredPart("ore/deepslate")
+    val ORE_DEEPSLATE = HTPartKey("ore/deepslate")
 
     @JvmField
-    val ORE_NETHER: HTPartLike = HTDeferredPart("ore/nether")
+    val ORE_NETHER = HTPartKey("ore/nether")
 
     @JvmField
-    val ORE_END: HTPartLike = HTDeferredPart("ore/end")
+    val ORE_END = HTPartKey("ore/end")
 
     @JvmField
-    val BLOCK: HTPartLike = HTDeferredPart("block")
+    val BLOCK = HTPartKey("block")
 
     @JvmField
-    val RAW_BLOCK: HTPartLike = HTDeferredPart("raw_block")
+    val RAW_BLOCK = HTPartKey("raw_block")
 
     //    Item    //
 
     @JvmField
-    val CRUSHED_ORE: HTPartLike = HTDeferredPart("crushed_ore")
+    val CRUSHED_ORE = HTPartKey("crushed_ore")
 
     @JvmField
-    val DUST: HTPartLike = HTDeferredPart("dust")
+    val DUST = HTPartKey("dust")
 
     @JvmField
-    val FUEL: HTPartLike = HTDeferredPart("fuel")
+    val FUEL = HTPartKey("fuel")
 
     @JvmField
-    val GEAR: HTPartLike = HTDeferredPart("gear")
+    val GEAR = HTPartKey("gear")
 
     @JvmField
-    val GEM: HTPartLike = HTDeferredPart("gem")
+    val GEM = HTPartKey("gem")
 
     @JvmField
-    val INGOT: HTPartLike = HTDeferredPart("ingot")
+    val INGOT = HTPartKey("ingot")
 
     @JvmField
-    val NUGGET: HTPartLike = HTDeferredPart("nugget")
+    val NUGGET = HTPartKey("nugget")
 
     @JvmField
-    val PEARL: HTPartLike = HTDeferredPart("pearl")
+    val PEARL = HTPartKey("pearl")
 
     @JvmField
-    val PLATE: HTPartLike = HTDeferredPart("plate")
+    val PLATE = HTPartKey("plate")
 
     @JvmField
-    val RAW: HTPartLike = HTDeferredPart("raw")
+    val RAW = HTPartKey("raw")
 
     @JvmField
-    val ROD: HTPartLike = HTDeferredPart("rod")
+    val ROD = HTPartKey("rod")
 
     @JvmField
-    val SCRAP: HTPartLike = HTDeferredPart("scrap")
+    val SCRAP = HTPartKey("scrap")
 
     @JvmField
-    val TINY: HTPartLike = HTDeferredPart("tiny")
+    val TINY = HTPartKey("tiny")
 
     @JvmField
-    val WIRE: HTPartLike = HTDeferredPart("wire")
+    val WIRE = HTPartKey("wire")
 }

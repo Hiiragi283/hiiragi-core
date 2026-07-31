@@ -1,15 +1,14 @@
 package hiiragi283.core.api.material
 
 import hiiragi283.core.api.collection.Table
+import hiiragi283.core.api.collection.forEach
 import hiiragi283.core.api.item.HTSimpleItemLike
 import hiiragi283.core.api.item.ItemStack
 import hiiragi283.core.api.material.part.HTPart
-import hiiragi283.core.api.material.part.HTPartLike
-import hiiragi283.core.api.material.part.tagPrefix
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.SimpleBlockItemSupplierWithKey
 import hiiragi283.core.api.resource.SimpleSupplierWithKey
-import hiiragi283.core.api.tag.HTTagPrefix
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.HTTextResult
 import hiiragi283.core.api.util.toTextResult
@@ -110,27 +109,17 @@ interface HTMaterialContents<R : Any, out V> : Table<R, HTMaterialKey, V> {
 
 //    Extensions    //
 
-/**
- * @author Hiiragi Tsubasa
- * @since 0.12.0
- */
-operator fun <V> HTMaterialContents<HTPart, V>.get(part: HTPartLike, key: HTMaterialKey): V? = this[part.asPart(), key]
+fun <V> HTMaterialContents<HTPartKey, V>.columnPart(key: HTMaterialKey): Sequence<Pair<HTPart, V>> = this.column(key)
+    .asSequence()
+    .mapNotNull { (partKey: HTPartKey, entry: V) ->
+        val part: HTPart = HTPart.getManager()[partKey] ?: return@mapNotNull null
+        part to entry
+    }
 
-/**
- * @author Hiiragi Tsubasa
- * @since 21.1.0
- */
-fun <V> HTMaterialContents<HTPart, V>.getResult(part: HTPartLike, key: HTMaterialKey): HTTextResult<V> = this.getResult(part.asPart(), key)
-
-/**
- * @author Hiiragi Tsubasa
- * @since 0.12.0
- */
-val <V> HTMaterialContents<HTPart, V>.prefixEntries: Sequence<Triple<HTTagPrefix, HTMaterialKey, V>>
-    get() = this
-        .entries
-        .asSequence()
-        .mapNotNull { (part: HTPart, key: HTMaterialKey, entry: V) ->
-            val prefix: HTTagPrefix = part.tagPrefix ?: return@mapNotNull null
-            Triple(prefix, key, entry)
-        }
+inline fun <V> HTMaterialContents<HTPartKey, V>.forEachPart(action: (part: HTPart, material: HTMaterial, entry: V) -> Unit) {
+    this.forEach { (partKey: HTPartKey, materialKey: HTMaterialKey, entry: V) ->
+        val part: HTPart = HTPart.getManager()[partKey] ?: return@forEach
+        val material: HTMaterial = HTMaterial.getManager()[materialKey] ?: return@forEach
+        action(part, material, entry)
+    }
+}

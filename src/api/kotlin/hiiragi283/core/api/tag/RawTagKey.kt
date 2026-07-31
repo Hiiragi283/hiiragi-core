@@ -1,14 +1,8 @@
 package hiiragi283.core.api.tag
 
-import com.mojang.serialization.Codec
-import com.mojang.serialization.DataResult
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.registry.RegistryKey
-import hiiragi283.core.api.resource.modifyPath
 import hiiragi283.core.api.resource.toId
-import hiiragi283.core.api.util.Identity
-import io.netty.buffer.ByteBuf
-import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 
@@ -20,27 +14,6 @@ import net.minecraft.tags.TagKey
 @JvmInline
 value class RawTagKey private constructor(val location: ResourceLocation) {
     companion object {
-        @JvmField
-        val CODEC: Codec<RawTagKey> = ResourceLocation.CODEC.xmap(::create, RawTagKey::location)
-
-        @JvmField
-        val HASHED_CODEC: Codec<RawTagKey> = Codec.STRING.comapFlatMap(
-            { value: String ->
-                when {
-                    value.startsWith("#") ->
-                        value
-                            .substring(1)
-                            .let(ResourceLocation::read)
-                            .map(::create)
-                    else -> DataResult.error { "Not a tag id" }
-                }
-            },
-            { "#${it.location}" },
-        )
-
-        @JvmField
-        val STREAM_CODEC: StreamCodec<ByteBuf, RawTagKey> = ResourceLocation.STREAM_CODEC.map(::create, RawTagKey::location)
-
         @JvmStatic
         fun common(path: String): RawTagKey = create(HTConst.COMMON.toId(path))
 
@@ -53,12 +26,6 @@ value class RawTagKey private constructor(val location: ResourceLocation) {
         @JvmStatic
         fun create(location: ResourceLocation): RawTagKey = RawTagKey(location)
     }
-
-    fun withPrefix(prefix: String): RawTagKey = create(location.withPrefix(prefix))
-
-    fun withSuffix(suffix: String): RawTagKey = create(location.withSuffix(suffix))
-
-    inline fun withPath(transform: Identity<String>): RawTagKey = create(location.modifyPath(transform))
 
     fun <T : Any> create(key: RegistryKey<T>): TagKey<T> = TagKey.create(key, location)
 }

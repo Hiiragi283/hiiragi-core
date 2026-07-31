@@ -23,10 +23,8 @@ typealias HTPartManager = HTPropertyManager<HTPartKey, HTPart>
  * @since 0.12.0
  */
 class HTPart internal constructor(override val key: HTPartKey, private val idPattern: String, getter: HTPropertyGetter) :
-    HTPartLike,
     HTPropertyManager.Entry<HTPartKey>,
-    HTPropertyGetter by getter,
-    Comparable<HTPart> {
+    HTPropertyGetter by getter {
     companion object {
         @JvmStatic
         fun getManager(): HTPartManager = HTMaterialContentsRegister.partManager
@@ -40,9 +38,11 @@ class HTPart internal constructor(override val key: HTPartKey, private val idPat
         val STREAM_CODEC: StreamCodec<ByteBuf, HTPart> = HTPropertyManager.streamCodec(HTPartKey.STREAM_CODEC, ::getManager, ::errorMessage)
     }
 
-    override fun asPart(): HTPart = this
+    fun createId(key: HTMaterialKey): ResourceLocation = key.getId().modifyPath { idPattern.replace("%s", it) }
 
-    override fun createId(key: HTMaterialKey): ResourceLocation = key.getId().modifyPath { idPattern.replace("%s", it) }
+    override fun equals(other: Any?): Boolean = (other as? HTPart)?.key == this.key
 
-    override fun compareTo(other: HTPart): Int = this.key.compareTo(other.key)
+    override fun hashCode(): Int = key.hashCode()
+
+    override fun toString(): String = "HTPart(key=$key)"
 }

@@ -2,13 +2,10 @@ package hiiragi283.core.api
 
 import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
-import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.get
-import hiiragi283.core.api.material.part.HTPart
-import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
@@ -20,7 +17,6 @@ import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.util.HTTextResult
 import hiiragi283.core.api.util.flatMap
 import hiiragi283.core.api.util.toTextResult
-import hiiragi283.core.internal.material.HTMaterialContentsImpl
 import hiiragi283.core.internal.material.HTMaterialContentsRegister
 import java.util.function.Consumer
 import kotlin.collections.component1
@@ -90,30 +86,18 @@ abstract class HiiragiCoreAccess {
     /**
      * 既存の素材コンテンツを取得します。
      */
-    val existingContents: HTMaterialAccess by lazy {
-        HTMaterialAccess(
-            HTMaterialContentsImpl(HTMaterialContentsRegister.existingBlocks) { part: HTPart, key: HTMaterialKey -> "Unknown ${part.key} block for $key" },
-            HTMaterialContentsImpl(HTMaterialContentsRegister.existingItems) { part: HTPart, key: HTMaterialKey -> "Unknown ${part.key} item for $key" },
-            HTMaterialContentsImpl(HTMaterialContentsRegister.existingTools) { toolType: HTToolType, key: HTMaterialKey -> "Unknown ${toolType.name} item for $key" },
-        )
-    }
+    val existingContents: HTMaterialAccess get() = HTMaterialContentsRegister.existingContents
 
     /**
      * 登録された素材コンテンツを取得します。
      */
-    val registeredContents: HTMaterialAccess by lazy {
-        HTMaterialAccess(
-            HTMaterialContentsImpl(HTMaterialContentsRegister.materialBlocks) { part: HTPart, key: HTMaterialKey -> "Unregistered ${part.key} block for $key" },
-            HTMaterialContentsImpl(HTMaterialContentsRegister.materialItems) { part: HTPart, key: HTMaterialKey -> "Unregistered ${part.key} item for $key" },
-            HTMaterialContentsImpl(HTMaterialContentsRegister.materialTools) { toolType: HTToolType, key: HTMaterialKey -> "Unregistered ${toolType.name} item for $key" },
-        )
-    }
+    val registeredContents: HTMaterialAccess get() = HTMaterialContentsRegister.registeredContents
 
-    fun getMaterialBlock(part: HTPartLike, key: HTMaterialKey): HTMaterialContents.BlockEntry? = existingContents.blocks[part, key] ?: registeredContents.blocks[part, key]
+    fun getMaterialBlock(part: HTPartKey, key: HTMaterialKey): HTMaterialContents.BlockEntry? = existingContents.blocks[part, key] ?: registeredContents.blocks[part, key]
 
-    fun getMaterialItem(part: HTPartLike, key: HTMaterialKey): HTMaterialContents.ItemEntry? = existingContents.items[part, key] ?: registeredContents.items[part, key]
+    fun getMaterialItem(part: HTPartKey, key: HTMaterialKey): HTMaterialContents.ItemEntry? = existingContents.items[part, key] ?: registeredContents.items[part, key]
 
-    fun getMaterialBlockOrItem(part: HTPartLike, key: HTMaterialKey): HTMaterialContents.ItemEntry? = existingContents.getBlockOrItem(part, key) ?: registeredContents.getBlockOrItem(part, key)
+    fun getMaterialBlockOrItem(part: HTPartKey, key: HTMaterialKey): HTMaterialContents.ItemEntry? = existingContents.getBlockOrItem(part, key) ?: registeredContents.getBlockOrItem(part, key)
 
     //    Potion    //
 

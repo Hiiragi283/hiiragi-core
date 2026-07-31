@@ -2,7 +2,7 @@ package hiiragi283.core.api.material
 
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.part.HTPart
-import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.HTPartKey
 
 /**
  * 部品と素材に対応するブロックやアイテムを管理するクラスです。
@@ -14,13 +14,13 @@ import hiiragi283.core.api.material.part.HTPartLike
  */
 @JvmRecord
 data class HTMaterialAccess(
-    val blocks: HTMaterialContents<HTPart, HTMaterialContents.BlockEntry>,
-    val items: HTMaterialContents<HTPart, HTMaterialContents.ItemEntry>,
+    val blocks: HTMaterialContents<HTPartKey, HTMaterialContents.BlockEntry>,
+    val items: HTMaterialContents<HTPartKey, HTMaterialContents.ItemEntry>,
     val tools: HTMaterialContents<HTToolType, HTMaterialContents.ItemEntry>,
 ) {
     /**
      * 指定した部品と素材に対応する素材アイテムを取得します。
      * @return 対応するアイテムがない場合は`null`
      */
-    fun getBlockOrItem(part: HTPartLike, key: HTMaterialKey): HTMaterialContents.ItemEntry? = blocks[part, key]?.let { HTMaterialContents.ItemEntry(it.getItemSupplier(), it.isBuiltIn) } ?: items[part, key]
+    fun getBlockOrItem(part: HTPartKey, key: HTMaterialKey): HTMaterialContents.ItemEntry? = blocks[part, key]?.let { HTMaterialContents.ItemEntry(it.getItemSupplier(), it.isBuiltIn) } ?: items[part, key]
 }

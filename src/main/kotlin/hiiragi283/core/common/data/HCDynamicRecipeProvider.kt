@@ -10,10 +10,11 @@ import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
-import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.HTPart
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.part.property.getScaledAmount
-import hiiragi283.core.api.material.part.tagPrefix
+import hiiragi283.core.api.material.part.property.tagPrefix
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTExtraOreResultMap
 import hiiragi283.core.api.material.property.HTMaterialLevel
@@ -94,13 +95,14 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
     //    Crushing    //
 
     @JvmStatic
-    private fun crushPrefixToDust(entry: HTMaterial, part: HTPartLike) {
+    private fun crushPrefixToDust(entry: HTMaterial, partKey: HTPartKey) {
         val key: HTMaterialKey = entry.key
+        val part: HTPart = partManager[partKey] ?: return
         val prefix: HTTagPrefix = part.tagPrefix ?: return
         // 材料が存在するか判定
         if (prefix.itemTagKey(key) == entry.getDefaultPart(key)) return
         // 素材のプロパティから完成品を取得
-        val crushedPrefix: HTPartLike = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART)
+        val crushedPrefix: HTPartKey = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART)
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = part.getScaledAmount(entry.getDefaultScale(), entry)
         // レシピを登録
@@ -111,7 +113,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
             }
             result { +HTItemResult.MaterialPart(crushedPrefix, key, outputCount) }
             time = getTimeFromHardness(entry, time) ?: return
-            recipeId suffix "_from_${part.asPartName()}"
+            recipeId suffix "_from_${partKey.name}"
         }.save(exporter)
     }
 
@@ -120,10 +122,10 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
         val key: HTMaterialKey = entry.key
         // 素材のプロパティから材料を取得
         val defaultPart: HTDefaultPart = entry.getDefaultPart() ?: return
-        val crushedPrefix: HTPartLike = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART)
+        val crushedPart: HTPart = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART).let(partManager::get) ?: return
         val inputTag: TagKey<Item> = defaultPart.getTag(key)
         // 加工の前後でタグが一致する場合はパス
-        if (inputTag == crushedPrefix.tagPrefix?.itemTagKey(key)) return
+        if (inputTag == crushedPart.tagPrefix?.itemTagKey(key)) return
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = entry.getDefaultScale()
         // レシピを登録
@@ -132,15 +134,16 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
                 +inputTag
                 count = inputCount
             }
-            result { +HTItemResult.MaterialPart(crushedPrefix, key, outputCount) }
+            result { +HTItemResult.MaterialPart(crushedPart, key, outputCount) }
             time = getTimeFromHardness(entry, time) ?: return
             recipeId suffix "_from_${defaultPart.getSuffix()}"
         }.save(exporter)
     }
 
     @JvmStatic
-    private fun crushOreToCrushed(entry: HTMaterial, part: HTPartLike) {
+    private fun crushOreToCrushed(entry: HTMaterial, partKey: HTPartKey) {
         val key: HTMaterialKey = entry.key
+        val part: HTPart = partManager[partKey] ?: return
         val prefix: HTTagPrefix = part.tagPrefix ?: return
         // レシピを登録
         HCRecipeBuilders.crushing {
@@ -151,7 +154,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]?.getResult(HTExtraOreResultMap.Phase.CRUSH_ORE)?.let { +it }
 
-            recipeId suffix "_from_${part.asPartName()}"
+            recipeId suffix "_from_${partKey.name}"
         }.save(exporter)
     }
 
@@ -159,9 +162,10 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
     private fun crushCrushedToDust(entry: HTMaterial) {
         val key: HTMaterialKey = entry.key
         // 完成品を取得
-        val crushedPrefix: HTPartLike = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART)
+        val crushedPrefix: HTPartKey = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART)
         // プレフィックスのスケールから個数を算出
-        val (outputCount: Int, inputCount: Int) = CommonParts.CRUSHED_ORE.getScaledAmount(1, entry)
+        val crushedPart: HTPart = partManager[CommonParts.CRUSHED_ORE] ?: return
+        val (outputCount: Int, inputCount: Int) = crushedPart.getScaledAmount(1, entry)
         // レシピを登録
         HCRecipeBuilders.crushing {
             // 材料
@@ -181,7 +185,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
     //    Crafting    //
 
     @JvmStatic
-    private fun getItem(part: HTPartLike, key: HTMaterialKey): HTMaterialContents.ItemEntry? = HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, key)
+    private fun getItem(part: HTPartKey, key: HTMaterialKey): HTMaterialContents.ItemEntry? = HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, key)
 
     @JvmStatic
     private fun baseToBlock(entry: HTMaterial) {
@@ -356,7 +360,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
             ingredient { +dust }
             +ingot.toStack()
             exp = 0.35f
-            recipeId suffix "_from_${CommonParts.DUST.asPartName()}"
+            recipeId suffix "_from_${CommonParts.DUST.name}"
         }
     }
 
@@ -368,26 +372,25 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
         val smeltedPropertyMap: HTMaterial = materialManager[smeltedMaterial] ?: return
         val base: HTMaterialContents.ItemEntry = smeltedPropertyMap.getDefaultPart()?.getItem(smeltedMaterial) ?: return
         // 精錬の前後がどちらも既存アイテムの場合はパス
-        val oreEntries: List<HTMaterialContents.ItemEntry> =
-            partManager
-                .filter { HTPartPropertyKeys.IS_ORE in it }
-                .mapNotNull { getItem(it, key) }
-                .filterNot(HTMaterialContents.ItemEntry::isBuiltIn)
+        val oreEntries: List<HTMaterialContents.ItemEntry> = partManager
+            .filter { HTPartPropertyKeys.IS_ORE in it }
+            .mapNotNull { getItem(it.key, key) }
+            .filterNot(HTMaterialContents.ItemEntry::isBuiltIn)
         if (oreEntries.isEmpty()) return
         // Smelting & Blasting
         registerSmelting(entry) {
             ingredient { +oreEntries }
             +base.toStack(smeltedPropertyMap.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER).toInt())
             exp = 0.7f
-            recipeId suffix "_from_${CommonParts.ORE.asPartName()}"
+            recipeId suffix "_from_${CommonParts.ORE.name}"
         }
     }
 
     @JvmStatic
-    private fun smeltOreToBase(part: HTPartLike, entry: HTMaterial) {
+    private fun smeltOreToBase(partKey: HTPartKey, entry: HTMaterial) {
         if (HTMaterialPropertyKeys.DISABLE_SMELTING in entry) return
         val key: HTMaterialKey = entry.key
-        val ore: HTMaterialContents.ItemEntry = getItem(part, key) ?: return
+        val ore: HTMaterialContents.ItemEntry = getItem(partKey, key) ?: return
         val smeltedMaterial: HTMaterialKey = entry[HTMaterialPropertyKeys.SMELTED_TO] ?: key
         val smeltedPropertyMap: HTMaterial = materialManager[smeltedMaterial] ?: return
         val base: HTMaterialContents.ItemEntry = smeltedPropertyMap.getDefaultPart()?.getItem(smeltedMaterial) ?: return
@@ -398,7 +401,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
             ingredient { +ore }
             +base.toStack(smeltedPropertyMap.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER).toInt())
             exp = 0.7f
-            recipeId suffix "_from_${part.asPartName()}"
+            recipeId suffix "_from_${partKey.name}"
         }
     }
 

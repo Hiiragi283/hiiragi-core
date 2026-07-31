@@ -14,7 +14,7 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-inline fun String.toId(path: String): ResourceLocation = ResourceLocation.fromNamespaceAndPath(this, path)
+inline infix fun String.toId(path: String): ResourceLocation = ResourceLocation.fromNamespaceAndPath(this, path)
 
 /**
  * この[文字列][this]を[名前空間][ResourceLocation.getNamespace]とした[ID][ResourceLocation]を作成します。

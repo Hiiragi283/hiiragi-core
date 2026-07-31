@@ -5,7 +5,7 @@ import hiiragi283.core.api.item.tool.HTToolMaterial
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.computeIfAbsent
 import hiiragi283.core.api.property.getOrDefault
@@ -33,19 +33,19 @@ fun HTPropertyMap.Builder.setDefaultPart(prefixed: HTDefaultPart.Prefixed) {
     this[HTMaterialPropertyKeys.DEFAULT_PART] = prefixed
 }
 
-fun HTPropertyMap.Builder.addBlockPrefixes(vararg parts: HTPartLike) {
+fun HTPropertyMap.Builder.addBlockPrefixes(vararg parts: HTPartKey) {
     this.computeIfAbsent(HTMaterialPropertyKeys.BLOCK_PREFIXES) { it.plus(parts) }
 }
 
-fun HTPropertyMap.Builder.addBlockPrefixes(parts: Set<HTPartLike>) {
+fun HTPropertyMap.Builder.addBlockPrefixes(parts: Set<HTPartKey>) {
     this.computeIfAbsent(HTMaterialPropertyKeys.BLOCK_PREFIXES) { it.plus(parts) }
 }
 
-fun HTPropertyMap.Builder.addItemPrefixes(vararg parts: HTPartLike) {
+fun HTPropertyMap.Builder.addItemPrefixes(vararg parts: HTPartKey) {
     this.computeIfAbsent(HTMaterialPropertyKeys.ITEM_PREFIXES) { it.plus(parts) }
 }
 
-fun HTPropertyMap.Builder.addItemPrefixes(parts: Set<HTPartLike>) {
+fun HTPropertyMap.Builder.addItemPrefixes(parts: Set<HTPartKey>) {
     this.computeIfAbsent(HTMaterialPropertyKeys.ITEM_PREFIXES) { it.plus(parts) }
 }
 
@@ -67,12 +67,12 @@ fun HTPropertyMap.Builder.setName(value: HTLangName) {
     this[HTMaterialPropertyKeys.LANG_NAME] = value
 }
 
-fun HTPropertyMap.Builder.addCustomName(part: HTPartLike, enName: String, jaName: String) {
+fun HTPropertyMap.Builder.addCustomName(part: HTPartKey, enName: String, jaName: String) {
     this.addCustomName(part, HTLangName(enName, jaName))
 }
 
-fun HTPropertyMap.Builder.addCustomName(part: HTPartLike, value: HTLangName) {
-    this.computeIfAbsent(HTMaterialPropertyKeys.CUSTOM_LANG_NAME) { it.plus(part.asPart() to value) }
+fun HTPropertyMap.Builder.addCustomName(part: HTPartKey, value: HTLangName) {
+    this.computeIfAbsent(HTMaterialPropertyKeys.CUSTOM_LANG_NAME) { it.plus(part to value) }
 }
 
 fun HTPropertyMap.Builder.setTextureSet(name: String) {

@@ -6,7 +6,6 @@ import blusunrize.immersiveengineering.common.register.IEItems
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
-import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTMaterialLevel
@@ -38,7 +37,7 @@ data object HCIEMaterialPlugin : HTMaterialPlugin {
     override fun getId(): ResourceLocation = HCIConstants.IMMERSIVE.toId("material_plugin", HiiragiCoreAPI.MOD_ID)
 
     override fun registerPart(registrar: HTMaterialPlugin.PartRegistrar) {
-        registrar.register(HTPartKey("sheetmetal"), "%s_sheetmetal") {
+        registrar.register(HCIntegrationParts.SHEETMETAL, "%s_sheetmetal") {
             put(HTPartPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base * 4 }
             put(HTPartPropertyKeys.TAG_PREFIX, HCIntegrationTagPrefixes.SHEETMETAL)
         }

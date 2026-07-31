@@ -5,8 +5,7 @@ import hiiragi283.core.api.HiiragiCoreAccess
 import hiiragi283.core.api.data.allOf
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.getResult
-import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.resource.toId
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
@@ -88,7 +87,7 @@ abstract class HTRecipeProvider(packOutput: PackOutput, private val future: Comp
     /**
      * @since 21.1.0
      */
-    protected inline fun useItem(part: HTPartLike, key: HTMaterialKey, action: (HTMaterialContents.ItemEntry) -> Unit) {
+    protected inline fun useItem(part: HTPartKey, key: HTMaterialKey, action: (HTMaterialContents.ItemEntry) -> Unit) {
         HiiragiCoreAccess.INSTANCE
             .registeredContents
             .items

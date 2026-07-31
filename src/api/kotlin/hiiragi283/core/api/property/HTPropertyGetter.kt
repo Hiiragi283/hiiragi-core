@@ -6,19 +6,6 @@ package hiiragi283.core.api.property
  * @since 0.16.0
  */
 interface HTPropertyGetter {
-    companion object {
-        /**
-         * 常に値を返さない[HTPropertyGetter]のインスタンス
-         * @since 21.1.1.0
-         */
-        @JvmField
-        val NOTHING: HTPropertyGetter = object : HTPropertyGetter {
-            override fun contains(key: HTPropertyKey<*>): Boolean = false
-
-            override fun <T> get(key: HTPropertyKey<T>): T? = null
-        }
-    }
-
     /**
      * 指定した[key]が含まれるか判定します。
      */
@@ -43,4 +30,4 @@ fun <T : Any> HTPropertyGetter.getOrThrow(key: HTPropertyKey<T?>): T = get(key) 
  * 指定した[key]に紐づいた値を返します。
  * @return 値がない場合は[デフォルト値][HTPropertyKey.defaultValue]
  */
-fun <T : Any> HTPropertyGetter.getOrDefault(key: HTPropertyKey<T>): T = get(key) ?: key.defaultValue
+fun <T : Any> HTPropertyGetter?.getOrDefault(key: HTPropertyKey<T>): T = this?.get(key) ?: key.defaultValue

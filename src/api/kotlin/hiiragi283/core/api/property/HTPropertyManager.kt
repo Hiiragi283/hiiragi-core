@@ -35,8 +35,6 @@ class HTPropertyManager<K, E : HTPropertyManager.Entry<K>>(private val map: Map<
 
     operator fun get(key: K): E? = map[key]
 
-    fun getOrEmpty(key: K): HTPropertyGetter = get(key) ?: HTPropertyGetter.NOTHING
-
     fun getOrThrow(key: K): E = get(key) ?: error("Missing entry: $key")
 
     val keys: Set<K> get() = map.keys
