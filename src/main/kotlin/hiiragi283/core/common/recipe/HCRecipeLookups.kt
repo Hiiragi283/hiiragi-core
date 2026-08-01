@@ -6,7 +6,7 @@ import hiiragi283.core.api.collection.MultiMap
 import hiiragi283.core.api.collection.buildListMultiMap
 import hiiragi283.core.api.color.HTColoredCollection
 import hiiragi283.core.api.color.VanillaColoredCollections
-import hiiragi283.core.api.recipe.HTRecipeHolder
+import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.recipe.HTRecipeType
 import hiiragi283.core.api.recipe.base.HTItemOrFluidRecipe
 import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
@@ -17,13 +17,16 @@ import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.resource.vanillaId
 import hiiragi283.core.api.util.identity
+import hiiragi283.core.common.data.recipe.HCRecipeBuilders
 import hiiragi283.core.common.recipe.custom.HTPotionArrowFillingRecipe
 import hiiragi283.core.common.recipe.custom.HTPotionTankInteraction
+import hiiragi283.core.common.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.core.support.recipe.cache.HTCompoundRecipeLookup
 import hiiragi283.core.support.recipe.cache.HTVanillaRecipeLookup
 import hiiragi283.core.support.recipe.cache.fromRecipeType
-import net.minecraft.core.Holder
+import hiiragi283.core.util.HCPotionFluidHelper
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.ItemTags
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
@@ -68,20 +71,29 @@ data object HCRecipeLookups {
     @JvmStatic
     fun init() {
         BREWING.addSubLookup { context: HTRecipeLookup.Context ->
-            val multiMap: MultiMap<Holder<Potion>, VanillaBrewingRecipe> = buildListMultiMap {
+            val multiMap: MultiMap<ResourceLocation, HCBrewingRecipe> = buildListMultiMap {
                 context.brewing
                     ?.let(PotionBrewing::potionMixes)
                     ?.asSequence()
-                    ?.map(::VanillaBrewingRecipe)
-                    ?.filterNot(VanillaBrewingRecipe::isIncomplete)
-                    ?.forEach { put(it.potionTo, it) }
+                    ?.forEach { mix: PotionBrewing.Mix<Potion> ->
+                        HCRecipeBuilders.brewing {
+                            itemIngredient { +mix.ingredient }
+                            fluidIngredient { +HTPotionFluidIngredient(mix.from()) }
+                            fluidResult { +BottledPotionContents(mix.to()).let(HCPotionFluidHelper::createFluid) }
+                        }.save { _, recipe ->
+                            if (recipe.isIncomplete) return@save
+                            put(mix.to().toLike().getId(), recipe)
+                        }
+                    }
             }
             if (multiMap.isEmpty) return@addSubLookup mapOf()
-            multiMap.keys.flatMap { potionTo: Holder<Potion> ->
-                multiMap[potionTo].mapIndexed { index: Int, recipe: VanillaBrewingRecipe ->
-                    HTRecipeHolder(potionTo.toLike().getId().withSuffix("_$index"), recipe)
+            val recipeMap: MutableMap<ResourceLocation, HCBrewingRecipe> = mutableMapOf()
+            for ((potionTo: ResourceLocation, recipes: Collection<HCBrewingRecipe>) in multiMap.entries) {
+                recipes.forEachIndexed { index: Int, recipe: HCBrewingRecipe ->
+                    recipeMap[potionTo.withSuffix("_$index")] = recipe
                 }
-            }.toMap()
+            }
+            recipeMap
         }
         BREWING.fromRecipeType(HCRecipeTypes.BREWING, identity())
 

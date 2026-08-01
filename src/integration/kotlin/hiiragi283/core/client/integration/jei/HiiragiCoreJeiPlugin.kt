@@ -11,6 +11,7 @@ import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.material.HTMaterial
+import hiiragi283.core.api.recipe.base.HTItemOrFluidRecipe
 import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
@@ -41,6 +42,7 @@ import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.support.item.HTPotionBasedItem
+import hiiragi283.core.support.recipe.base.HTBasicItemOrFluidRecipe
 import hiiragi283.core.support.recipe.viewer.display.HTRecipeDisplayFactories
 import hiiragi283.core.util.HCPotionFluidHelper
 import kotlin.streams.asSequence
@@ -134,7 +136,9 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
     }
 
     override fun registerRecipes(helper: HTJeiRecipeHelper) {
-        helper.addDisplayRecipes(HCRecipeViewerTypes.BREWING, HCRecipeLookups.BREWING, HCRecipeDisplayFactories::brewing)
+        helper.addDisplayRecipes(HCRecipeViewerTypes.BREWING, HCRecipeLookups.BREWING) {
+            it.castRecipe<HTItemOrFluidRecipe, HTBasicItemOrFluidRecipe>()?.let(HTRecipeDisplayFactories::itemOrFluid)
+        }
         helper.addDisplayRecipes(HCRecipeViewerTypes.CHARGING, HCRecipeLookups.CHARGING, HCRecipeDisplayFactories::charging)
         helper.addDisplayRecipes(HCRecipeViewerTypes.CRUSHING, HCRecipeLookups.CRUSHING) {
             it.castRecipe<HTItemToMultiItemRecipe, HCCrushingRecipe>()?.let(HTRecipeDisplayFactories::itemToMultiItem)

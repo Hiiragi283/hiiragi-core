@@ -1,20 +1,14 @@
 package hiiragi283.core.common.recipe.viewer
 
-import hiiragi283.core.api.item.alchemy.BottledPotionContents
 import hiiragi283.core.api.recipe.HTRecipeHolder
-import hiiragi283.core.api.recipe.base.HTItemOrFluidRecipe
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.viewer.display.HTProgressRecipeDisplay
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
-import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
-import hiiragi283.core.common.recipe.VanillaBrewingRecipe
-import hiiragi283.core.common.recipe.ingredient.HTPotionFluidIngredient
 import hiiragi283.core.support.recipe.base.HTInWorldRecipe
-import hiiragi283.core.util.HCPotionFluidHelper
 import net.minecraft.resources.ResourceLocation
 
 data object HCRecipeDisplayFactories {
@@ -28,32 +22,6 @@ data object HCRecipeDisplayFactories {
                 addOutput(recipe.result)
             },
         )
-    }
-
-    @JvmStatic
-    fun brewing(holder: HTRecipeHolder<HTItemOrFluidRecipe>): HTProgressRecipeDisplay? {
-        val (id: ResourceLocation, recipe: HTItemOrFluidRecipe) = holder
-        return when (recipe) {
-            is VanillaBrewingRecipe -> HTProgressRecipeDisplay(
-                id,
-                HTRecipeContents.create {
-                    addInput(recipe.potionFrom.let(::HTPotionFluidIngredient).stacks.toList())
-                    addInput(recipe.ingredient)
-                    addOutput(recipe.potionTo.let(::BottledPotionContents).let(HCPotionFluidHelper::createFluid))
-                },
-                HTProgressData.Time(200),
-            )
-            is HCBrewingRecipe -> HTProgressRecipeDisplay(
-                id,
-                HTRecipeContents.create {
-                    addInput(recipe.itemIngredient)
-                    addInput(recipe.fluidIngredient)
-                    addOutput(recipe.result)
-                },
-                recipe.progressData,
-            )
-            else -> null
-        }
     }
 
     @JvmStatic

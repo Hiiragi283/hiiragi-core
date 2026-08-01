@@ -50,6 +50,20 @@ inline fun <K, V> buildListMultiMap(initialCapacity: Int = 10, builderAction: Li
 }
 
 /**
+ * 新しい[ListMultiMap]のインスタンスを作成します。
+ * @param K キーのクラス
+ * @param V 値のクラス
+ * @author Hiiragi Tsubasa
+ * @since 21.1.1.0
+ */
+inline fun <K, V> buildListMultiMap(map: MutableMap<K, MutableList<V>>, builderAction: ListMultiMap.Builder<K, V>.() -> Unit): MultiMap<K, V> {
+    contract {
+        callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+    }
+    return ListMultiMap.Builder(map).apply(builderAction).build()
+}
+
+/**
  * 新しい[SetMultiMap]のインスタンスを作成します。
  * @param K キーのクラス
  * @param V 値のクラス
@@ -61,6 +75,20 @@ inline fun <K, V> buildSetMultiMap(initialCapacity: Int = 10, builderAction: Set
         callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
     }
     return SetMultiMap.Builder<K, V>(initialCapacity).apply(builderAction).build()
+}
+
+/**
+ * 新しい[SetMultiMap]のインスタンスを作成します。
+ * @param K キーのクラス
+ * @param V 値のクラス
+ * @author Hiiragi Tsubasa
+ * @since 21.1.1.0
+ */
+inline fun <K, V> buildSetMultiMap(map: MutableMap<K, MutableSet<V>>, builderAction: SetMultiMap.Builder<K, V>.() -> Unit): MultiMap<K, V> {
+    contract {
+        callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+    }
+    return SetMultiMap.Builder(map).apply(builderAction).build()
 }
 
 //    Table    //
