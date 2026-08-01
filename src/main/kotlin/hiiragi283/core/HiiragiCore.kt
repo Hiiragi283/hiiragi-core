@@ -25,7 +25,6 @@ import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCMiscRegister
 import hiiragi283.core.support.capability.HTFluidCapabilities
 import hiiragi283.core.support.network.HTPayloadHandlers
-import java.nio.file.Path
 import net.minecraft.server.packs.PackType
 import net.minecraft.server.packs.repository.Pack
 import net.minecraft.server.packs.repository.PackSource
@@ -57,11 +56,9 @@ data object HiiragiCore : HTCommonMod() {
         HCBlockEntityTypes.REGISTER.register(eventBus)
 
         container.registerConfig(ModConfig.Type.COMMON, HCConfig.COMMON_SPEC)
+        container.registerConfig(ModConfig.Type.SERVER, HCConfig.SERVER_SPEC)
 
-        if (HiiragiCoreAPI.isDevelopment()) {
-            val parent: Path = HiiragiCoreAPI.GAME_DIR.resolve("debug/dumped")
-            FileUtils.deleteDirectory(parent.toFile())
-        }
+        HiiragiCoreAPI.GAME_DIR.resolve("debug/dumped").toFile().let(FileUtils::deleteDirectory)
 
         HiiragiCoreAPI.LOGGER.info("Hiiragi-Core loaded")
     }

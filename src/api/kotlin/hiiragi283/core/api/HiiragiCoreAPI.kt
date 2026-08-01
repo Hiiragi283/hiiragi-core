@@ -9,7 +9,6 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.flag.FeatureFlag
 import net.minecraft.world.flag.FeatureFlags
-import net.neoforged.fml.loading.FMLEnvironment
 import net.neoforged.fml.loading.FMLPaths
 import net.neoforged.neoforge.common.CommonHooks
 import org.slf4j.Logger
@@ -34,12 +33,6 @@ data object HiiragiCoreAPI {
      */
     @JvmField
     val GAME_DIR: Path = FMLPaths.GAMEDIR.get()
-
-    /**
-     * @since 21.1.1.0
-     */
-    @JvmStatic
-    fun isDevelopment(): Boolean = !FMLEnvironment.production
 
     @JvmField
     val EXPERIMENTAL: FeatureFlag = FeatureFlags.REGISTRY.getFlag(id(HTConst.EXPERIMENTAL))

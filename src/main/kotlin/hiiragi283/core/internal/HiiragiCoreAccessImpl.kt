@@ -28,6 +28,7 @@ import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeType
 import net.neoforged.fml.ModList
+import net.neoforged.fml.loading.FMLEnvironment
 import net.neoforged.neoforge.common.MutableDataComponentHolder
 import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.fluids.FluidStack
@@ -38,7 +39,7 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
         private val modIdComparator: Comparator<HTIdLike> by lazy {
             Comparator
                 .comparingInt { id: HTIdLike ->
-                    val modIds: List<String> = HCConfig.COMMON.tagOutputPriority.get()
+                    val modIds: List<String> = HCConfig.SERVER.tagOutputPriority.get()
                     when (val priority: Int = modIds.indexOf(id.namespace)) {
                         -1 -> modIds.size
                         else -> priority
@@ -47,7 +48,7 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
         }
 
         @JvmStatic
-        private val pluginComparator = compareBy(HTMaterialPlugin::priority).thenComparing(HTMaterialPlugin::getId, HTComparators.ID)
+        private val pluginComparator: Comparator<HTMaterialPlugin> = compareBy(HTMaterialPlugin::priority).thenComparing(HTMaterialPlugin::getId, HTComparators.ID)
 
         @JvmField
         val DEFAULT_POTION_HANDLER: HTPotionFluidManager.Handler = object : HTPotionFluidManager.Handler {
@@ -58,6 +59,8 @@ class HiiragiCoreAccessImpl : HiiragiCoreAccess() {
             }
         }
     }
+
+    override val enableDebugFeatures: Boolean get() = !FMLEnvironment.production || HCConfig.COMMON.enableDebugFeatures.get()
 
     override val materialPlugins: Sequence<HTMaterialPlugin> by lazy {
         HTPluginLoader

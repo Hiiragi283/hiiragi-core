@@ -7,7 +7,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.collections.iterator
-import kotlin.io.path.outputStream
+import kotlin.io.path.writeBytes
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.PackResources
 import net.minecraft.server.packs.resources.IoSupplier
@@ -28,7 +28,7 @@ internal class HTPackContents {
             runCatching {
                 val file: Path = parent.resolve(id.namespace).resolve(id.path)
                 Files.createDirectories(file.parent)
-                file.outputStream().use { it.write(bytes) }
+                file.writeBytes(bytes)
             }.onFailure { HiiragiCoreAPI.LOGGER.error("Failed to dump json for file {}", id, it) }
         }
     }

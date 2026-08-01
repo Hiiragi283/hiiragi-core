@@ -24,7 +24,7 @@ typealias ExpLevel = Int
  */
 data object HTExperienceHelper {
     @JvmStatic
-    fun getExpRatio(): Int = HCConfig.COMMON.expConversionRatio.asInt
+    fun getExpRatio(): Int = HCConfig.SERVER.expConversionRatio.asInt
 
     @JvmStatic
     fun fluidAmountFromExp(value: Int): Int = value * getExpRatio()

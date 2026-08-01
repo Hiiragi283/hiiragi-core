@@ -46,6 +46,8 @@ abstract class HiiragiCoreAccess {
         val INSTANCE: HiiragiCoreAccess = HiiragiCoreAPI.getService()
     }
 
+    abstract val enableDebugFeatures: Boolean
+
     //    Material    //
 
     /**
