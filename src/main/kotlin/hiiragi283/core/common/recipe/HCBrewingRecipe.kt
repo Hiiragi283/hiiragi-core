@@ -1,67 +1,54 @@
 package hiiragi283.core.common.recipe
 
 import com.mojang.serialization.MapCodec
-import hiiragi283.core.api.HTComparators
 import hiiragi283.core.api.HTConst
-import hiiragi283.core.api.item.alchemy.BottledPotionContents
-import hiiragi283.core.api.item.alchemy.HTPotionHelper
+import hiiragi283.core.api.recipe.HTSerializableRecipe
 import hiiragi283.core.api.recipe.base.HTItemOrFluidRecipe
 import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.base.HTProgressRecipe
+import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
+import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
+import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemAndFluidResult
-import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.serialization.codec.HTCodecs
-import hiiragi283.core.util.HCPotionFluidHelper
-import net.minecraft.core.Holder
-import net.minecraft.core.registries.Registries
-import net.minecraft.resources.ResourceLocation
+import hiiragi283.core.setup.HCRecipeSerializers
+import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.alchemy.Potion
-import net.minecraft.world.item.alchemy.PotionBrewing
-import net.minecraft.world.item.crafting.Ingredient
+import net.minecraft.world.item.crafting.RecipeSerializer
+import net.minecraft.world.item.crafting.RecipeType
 import net.neoforged.neoforge.fluids.FluidStack
-import net.neoforged.neoforge.fluids.FluidType
 
 @JvmRecord
-data class HCBrewingRecipe(val potionFrom: Holder<Potion>, val ingredient: Ingredient, val potionTo: Holder<Potion>) :
-    HTItemOrFluidRecipe,
+data class HCBrewingRecipe(
+    val itemIngredient: HTItemIngredient,
+    val fluidIngredient: HTFluidIngredient,
+    val result: HTFluidResult,
+    override val progressData: HTProgressData,
+) : HTItemOrFluidRecipe,
+    HTSerializableRecipe<HTItemAndFluidRecipeInput>,
     HTProgressRecipe.Simple<HTItemAndFluidRecipeInput> {
     companion object {
         @JvmField
         val CODEC: MapCodec<HCBrewingRecipe> = HTCodecs.recordMap { instance ->
-            instance
-                .group(
-                    HTCodecs.holder(Registries.POTION).fieldOf("potion_from").forGetter(HCBrewingRecipe::potionFrom),
-                    HTCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HCBrewingRecipe::ingredient),
-                    HTCodecs.holder(Registries.POTION).fieldOf("potion_to").forGetter(HCBrewingRecipe::potionFrom),
-                ).apply(instance, ::HCBrewingRecipe)
+            instance.group(
+                HTItemIngredient.CODEC.fieldOf(HTConst.ITEM_INGREDIENT).forGetter(HCBrewingRecipe::itemIngredient),
+                HTFluidIngredient.CODEC.fieldOf(HTConst.FLUID_INGREDIENT).forGetter(HCBrewingRecipe::fluidIngredient),
+                HTFluidResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCBrewingRecipe::result),
+                HTProgressData.CODEC.forGetter(HCBrewingRecipe::progressData),
+            ).apply(instance, ::HCBrewingRecipe)
         }
-
-        @JvmField
-        val SORTER: Comparator<in HCBrewingRecipe> =
-            compareBy<HCBrewingRecipe, ResourceLocation>(HTComparators.ID) { it.potionTo.toLike().getId() }
-                .thenComparing({ it.potionFrom.toLike().getId() }, HTComparators.ID)
     }
 
-    constructor(accessor: PotionBrewing.Mix<Potion>) : this(accessor.from, accessor.ingredient, accessor.to)
+    override fun test(first: ItemStack, second: FluidStack): Boolean = itemIngredient.test(first) && fluidIngredient.test(second)
 
-    @Suppress("DEPRECATION")
-    override fun test(first: ItemStack, second: FluidStack): Boolean {
-        val contents: BottledPotionContents = HTPotionHelper.getContents(second) ?: return false
-        val potionIn: Holder<Potion> = contents.potion ?: return false
-        return ingredient.test(first) && potionIn.`is`(potionFrom)
-    }
+    override fun getMatchingStacks(first: ItemStack, second: FluidStack): Pair<ItemStack, FluidStack> = itemIngredient.getMatchingStack(first) to fluidIngredient.getMatchingStack(second)
 
-    override fun getMatchingStacks(first: ItemStack, second: FluidStack): Pair<ItemStack, FluidStack> = when {
-        test(first, second) -> first.copyWithCount(1) to second.copyWithAmount(FluidType.BUCKET_VOLUME)
-        else -> ItemStack.EMPTY to FluidStack.EMPTY
-    }
+    override fun isIncomplete(): Boolean = fluidIngredient.isIncomplete() || itemIngredient.isIncomplete()
 
-    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): HTItemAndFluidResult = BottledPotionContents(potionTo).let(HCPotionFluidHelper::createFluid).let(::HTItemAndFluidResult)
+    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): HTItemAndFluidResult = HTItemAndFluidResult(result.create())
 
-    override val progressData: HTProgressData
-        get() = HTProgressData.time(200)
+    override fun getSerializer(): RecipeSerializer<*> = HCRecipeSerializers.BREWING
 
-    override fun isIncomplete(): Boolean = ingredient.hasNoItems()
+    override fun getType(): RecipeType<*> = HCRecipeTypes.BREWING
 }

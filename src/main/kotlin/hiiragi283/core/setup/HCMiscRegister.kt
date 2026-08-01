@@ -130,6 +130,7 @@ internal data object HCMiscRegister {
             helper.register(HiiragiCoreAPI.id("blueprint_cloning"), HCRecipeSerializers.BLUEPRINT_CLONING)
             helper.register(HiiragiCoreAPI.id("experience_storing"), HCRecipeSerializers.EXPERIENCE_STORING)
 
+            helper.register(HiiragiCoreAPI.id(HTConst.BREWING), HCRecipeSerializers.BREWING)
             helper.register(HiiragiCoreAPI.id(HTConst.CHARGING), HCRecipeSerializers.CHARGING)
             helper.register(HiiragiCoreAPI.id(HTConst.CRUSHING), HCRecipeSerializers.CRUSHING)
             helper.register(HiiragiCoreAPI.id(HTConst.EXPLODING), HCRecipeSerializers.EXPLODING)

@@ -19,6 +19,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer
  */
 fun <T : Recipe<*>> RecipeSerializer(codec: MapCodec<T>, streamCodec: StreamCodec<RegistryFriendlyByteBuf, T> = ByteBufCodecs.fromCodecWithRegistries(codec.codec())): RecipeSerializer<T> = HTRecipeSerializer(codec, streamCodec)
 
+fun <T : Recipe<*>> RecipeSerializer(recipe: T): RecipeSerializer<T> = HTRecipeSerializer(MapCodec.unit(recipe), StreamCodec.unit(recipe))
+
 /**
  * @suppress
  */

@@ -13,8 +13,6 @@ import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.api.util.Either
-import hiiragi283.core.common.recipe.HCBrewingRecipe
-import hiiragi283.core.common.recipe.VanillaRecipeLookups
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.core.support.recipe.viewer.HTSimpleRecipeViewerType
 import net.minecraft.resources.ResourceLocation
@@ -26,20 +24,16 @@ data object HCRecipeViewerTypes {
     //    Basic    //
 
     @JvmField
-    val BREWING: HTHolderRecipeViewerType<HCBrewingRecipe> =
-        creteHolder(VanillaRecipeLookups.BREWING, Items.BREWING_STAND, 18 * 6)
+    val BREWING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 6)
 
     @JvmField
-    val CHARGING: HTRecipeViewerType<HTProgressRecipeDisplay> =
-        create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD, 18 * 4, 18 * 2)
+    val CHARGING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD, 18 * 4, 18 * 2)
 
     @JvmField
-    val CRUSHING: HTRecipeViewerType<HTProgressRecipeDisplay> =
-        create(HCRecipeTypes.CRUSHING, Items.ANVIL, 18 * 5, 18 * 2)
+    val CRUSHING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CRUSHING, Items.ANVIL, 18 * 5, 18 * 2)
 
     @JvmField
-    val EXPLODING: HTRecipeViewerType<HTRecipeDisplay.Simple> =
-        create(HCRecipeTypes.EXPLODING, Items.TNT, 18 * 4)
+    val EXPLODING: HTRecipeViewerType<HTRecipeDisplay.Simple> = create(HCRecipeTypes.EXPLODING, Items.TNT, 18 * 4)
 
     //    Tank Interaction    //
 

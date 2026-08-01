@@ -98,6 +98,7 @@ data object HTConst {
     const val SMOKING = "smoking"
 
     // Hiiragi Core
+    const val BREWING = "brewing"
     const val CHARGING = "charging"
     const val CRUSHING = "crushing"
     const val EXPLODING = "exploding"
