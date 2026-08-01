@@ -232,7 +232,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
                 addition { +inputTag }
                 +gear.toStack()
                 recipeId suffix "/gear"
-            }
+            }.save(exporter)
         }
         if (smithingProperty?.allowCrafting ?: true) {
             // レシピを登録
@@ -242,7 +242,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
                 define('B') { +tag(CommonTagPrefixes.NUGGET, VanillaMaterialKeys.IRON) }
                 +gear.toStack()
                 recipeId suffix "/gear"
-            }
+            }.save(exporter)
         }
     }
 

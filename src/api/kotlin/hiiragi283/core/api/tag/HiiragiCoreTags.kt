@@ -14,8 +14,8 @@ import net.minecraft.world.level.material.Fluid
  * @author Hiiragi Tsubasa
  * @since 0.4.0
  */
-object HiiragiCoreTags {
-    object Blocks {
+data object HiiragiCoreTags {
+    data object Blocks {
         // Mod
         @JvmField
         val INCORRECT_FOR_ALMIGHTY_PICKAXE: TagKey<Block> = mod("incorrect_for_almighty_pickaxe")
@@ -34,7 +34,7 @@ object HiiragiCoreTags {
      * @author Hiiragi Tsubasa
      * @since 0.15.2
      */
-    object DamageTypes {
+    data object DamageTypes {
         @JvmField
         val IS_SONIC: TagKey<DamageType> = mod("is_sonic")
 
@@ -42,7 +42,7 @@ object HiiragiCoreTags {
         private fun mod(path: String): TagKey<DamageType> = Registries.DAMAGE_TYPE.createTagKey(HiiragiCoreAPI.id(path))
     }
 
-    object EntityTypes {
+    data object EntityTypes {
         /**
          * @since 0.14.0
          */
@@ -71,7 +71,7 @@ object HiiragiCoreTags {
         private fun mod(vararg path: String): TagKey<EntityType<*>> = Registries.ENTITY_TYPE.createTagKey(HiiragiCoreAPI.id(*path))
     }
 
-    object Fluids {
+    data object Fluids {
         /**
          * @since 0.13.0
          */
@@ -82,7 +82,7 @@ object HiiragiCoreTags {
         private fun mod(vararg path: String): TagKey<Fluid> = Registries.FLUID.createTagKey(HiiragiCoreAPI.id(*path))
     }
 
-    object Items {
+    data object Items {
         /**
          * @since 0.10.0
          */
