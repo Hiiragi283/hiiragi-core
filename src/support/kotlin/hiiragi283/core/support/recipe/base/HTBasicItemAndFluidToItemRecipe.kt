@@ -17,6 +17,7 @@ import net.neoforged.neoforge.fluids.FluidStack
 open class HTBasicItemAndFluidToItemRecipe(
     val itemIngredient: HTItemIngredient,
     val fluidIngredient: HTFluidIngredient,
+    val consumeItem: Boolean,
     val result: HTItemResult,
     override val progressData: HTProgressData,
 ) : HTItemAndFluidToItemRecipe,
@@ -32,14 +33,17 @@ open class HTBasicItemAndFluidToItemRecipe(
                     HTProgressData.CODEC.forGetter(HTBasicItemAndFluidToItemRecipe::progressData),
                 ).apply(instance, factory::create)
         }
-
-        @JvmField
-        val SIMPLE_CODEC: MapCodec<HTBasicItemAndFluidToItemRecipe> = codec(::HTBasicItemAndFluidToItemRecipe)
     }
 
     override fun test(first: ItemStack, second: FluidStack): Boolean = itemIngredient.test(first) && fluidIngredient.test(second)
 
-    override fun getMatchingStacks(first: ItemStack, second: FluidStack): Pair<ItemStack, FluidStack> = itemIngredient.getMatchingStack(first) to fluidIngredient.getMatchingStack(second)
+    override fun getMatchingStacks(first: ItemStack, second: FluidStack): Pair<ItemStack, FluidStack> = Pair(
+        when (consumeItem) {
+            true -> itemIngredient.getMatchingStack(first)
+            false -> ItemStack.EMPTY
+        },
+        fluidIngredient.getMatchingStack(second),
+    )
 
     override fun assemble(firstInput: ItemStack, secondInput: FluidStack): ItemStack = result.createOrEmpty()
 

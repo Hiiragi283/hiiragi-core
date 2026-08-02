@@ -111,6 +111,8 @@ data object HTConst {
     const val ENERGY = "energy"
     const val TIME = "time"
 
+    const val PRIMARY = "primary"
+    const val SECONDARY = "secondary"
     const val INGREDIENT = "ingredient"
     const val ITEM_INGREDIENT = "item_ingredient"
     const val FLUID_INGREDIENT = "fluid_ingredient"

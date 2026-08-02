@@ -22,13 +22,13 @@ import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
 import hiiragi283.core.api.registry.HTSimpleDeferredHolder
 import hiiragi283.core.api.resource.modifyPath
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
-import hiiragi283.core.client.integration.jei.category.HCBrewingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCChargingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCCrushingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCExplodingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCMaterialPartCategory
 import hiiragi283.core.client.integration.jei.category.HCTankEmptyingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.HCTankFillingRecipeCategory
+import hiiragi283.core.client.integration.jei.category.base.HTItemOrFluidRecipeCategory
 import hiiragi283.core.client.integration.jei.extension.HCEternalSmithingCategoryExtension
 import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
@@ -118,7 +118,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
             // Material
             HCMaterialPartCategory(guiHelper),
             // Recipes
-            HCBrewingRecipeCategory(guiHelper),
+            HTItemOrFluidRecipeCategory(guiHelper, HCRecipeViewerTypes.BREWING),
             HCCrushingRecipeCategory(guiHelper),
             HCChargingRecipeCategory(guiHelper),
             HCExplodingRecipeCategory(guiHelper),
