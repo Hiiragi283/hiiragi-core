@@ -8,6 +8,7 @@ import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.core.component.DataComponentHolder
 import net.minecraft.core.component.DataComponentPatch
+import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.neoforged.neoforge.registries.datamaps.DataMapType
@@ -36,13 +37,18 @@ interface HTResourceType :
 
         override fun getId(): ResourceLocation = typeHolder().getKeyOrThrow().location()
 
-        fun tags(): Stream<TagKey<TYPE>> = typeHolder().tags()
+        fun isOf(other: TYPE): Boolean = typeHolder().value() == other
+
+        fun isOf(key: ResourceKey<TYPE>): Boolean = typeHolder().`is`(key)
+
+        @Suppress("DEPRECATION")
+        fun isOf(holder: Holder<TYPE>): Boolean = typeHolder().`is`(holder)
 
         fun isOf(tagKey: TagKey<TYPE>): Boolean = typeHolder().`is`(tagKey)
 
-        fun isOf(holderSet: HolderSet<TYPE>): Boolean = typeHolder() in holderSet
+        fun tags(): Stream<TagKey<TYPE>> = typeHolder().tags()
 
-        fun isOf(other: TYPE): Boolean = typeHolder().value() == other
+        fun isOf(holderSet: HolderSet<TYPE>): Boolean = typeHolder() in holderSet
 
         override fun <T : Any> getData(type: DataMapType<TYPE, T>): T? = typeHolder().getData(type)
     }

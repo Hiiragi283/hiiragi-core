@@ -2,7 +2,9 @@ package hiiragi283.core.api.integration.jei
 
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import mezz.jei.api.constants.VanillaTypes
+import mezz.jei.api.helpers.IJeiHelpers
 import mezz.jei.api.registration.IRecipeCatalystRegistration
+import mezz.jei.api.runtime.IIngredientManager
 import net.minecraft.world.item.ItemStack
 
 /**
@@ -13,6 +15,9 @@ import net.minecraft.world.item.ItemStack
 @Suppress("NOTHING_TO_INLINE")
 @JvmInline
 value class HTJeiWorkstationHelper(@PublishedApi internal val registration: IRecipeCatalystRegistration) {
+    val jeiHelpers: IJeiHelpers get() = registration.jeiHelpers
+    val ingredientManager: IIngredientManager get() = registration.ingredientManager
+
     /**
      * 指定した[recipeType]に[workstation]を登録します。
      */

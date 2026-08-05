@@ -2,8 +2,11 @@ package hiiragi283.core.api.data.recipe
 
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.registry.HTSimpleDeferredItem
 import hiiragi283.core.api.util.HTBuilderMarker
-import kotlin.properties.Delegates
+import hiiragi283.core.api.util.HTDelegates
+import net.minecraft.resources.ResourceKey
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -17,34 +20,37 @@ import org.apache.commons.lang3.math.Fraction
  */
 @HTBuilderMarker
 class HTItemResultBuilder {
-    @PublishedApi internal var result: HTItemResult by Delegates.notNull()
+    @PublishedApi internal var entry: HTItemResult.Entry by HTDelegates.onceInitialize()
+    var count: Int by HTDelegates.onceInitialize { 1 }
     var chance: Fraction = Fraction.ONE
 
-    var count: Int
-        get() = result.count
-        set(value) {
-            result = result.copyWithCount(value)
-        }
-
-    operator fun HTItemResult.unaryPlus() {
-        result = this
+    operator fun HTItemResult.Entry.unaryPlus() {
+        entry = this
     }
 
     // Simple
-    operator fun ItemStack.unaryPlus() {
-        +HTItemResult.Simple(this)
+    operator fun ResourceLocation.unaryPlus() {
+        +HTItemResult.SimpleEntry(HTSimpleDeferredItem(this))
+    }
+
+    operator fun ResourceKey<Item>.unaryPlus() {
+        +HTItemResult.SimpleEntry(HTSimpleDeferredItem(this))
     }
 
     operator fun ItemLike.unaryPlus() {
         +ItemStack(this.asItem())
     }
 
-    // Tagged
-    operator fun TagKey<Item>.unaryPlus() {
-        +HTItemResult.Tagged(this)
+    operator fun ItemStack.unaryPlus() {
+        +HTItemResult.SimpleEntry(this)
     }
 
-    fun build(): HTItemResult = result
+    // Tag
+    operator fun TagKey<Item>.unaryPlus() {
+        +HTItemResult.TagEntry(this)
+    }
 
-    fun buildWithChanced(): HTChancedItemResult = result withChance chance
+    fun build(): HTItemResult = HTItemResult(entry, count)
+
+    fun buildWithChanced(): HTChancedItemResult = build() withChance chance
 }

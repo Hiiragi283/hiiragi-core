@@ -46,7 +46,7 @@ class HCChargingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
         HCChargingRecipeBuilder.create {
             ingredient { +tag(CommonTagPrefixes.DUST, VanillaMaterialKeys.REDSTONE) }
             result {
-                +HTItemResult.MaterialPart(CommonParts.DUST, VanillaMaterialKeys.GLOWSTONE)
+                +HTItemResult.MaterialPartEntry(CommonParts.DUST, VanillaMaterialKeys.GLOWSTONE)
                 chance = fraction(3, 4)
             }
         }.save(exporter)
@@ -63,7 +63,7 @@ class HCChargingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
         HCChargingRecipeBuilder.create {
             ingredient { +Items.END_CRYSTAL }
             result {
-                +HTItemResult.MaterialPart(CommonParts.PEARL, HCMaterialKeys.ELDRITCH)
+                +HTItemResult.MaterialPartEntry(CommonParts.PEARL, HCMaterialKeys.ELDRITCH)
                 chance = fraction(1, 4)
             }
         }.save(exporter)

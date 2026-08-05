@@ -159,10 +159,10 @@ internal data object HCMiscRegister {
         }
 
         // Item Result type
-        event.register(HCRegistries.Keys.ITEM_RESULT_SERIALIZER) { helper ->
-            helper.register(HiiragiCoreAPI.id("simple"), HTItemResult.Simple.SERIALIZER)
-            helper.register(HiiragiCoreAPI.id("tag"), HTItemResult.Tagged.SERIALIZER)
-            helper.register(HiiragiCoreAPI.id("material_part"), HTItemResult.MaterialPart.SERIALIZER)
+        event.register(HCRegistries.Keys.ITEM_RESULT_TYPE) { helper ->
+            helper.register(HiiragiCoreAPI.id("simple"), HTItemResult.SimpleEntry.TYPE)
+            helper.register(HiiragiCoreAPI.id("tag"), HTItemResult.TagEntry.TYPE)
+            helper.register(HiiragiCoreAPI.id("material_part"), HTItemResult.MaterialPartEntry.TYPE)
         }
         // Slot Sync Type
         event.register(HCRegistries.Keys.SLOT_TYPE) { helper ->

@@ -1,5 +1,6 @@
 package hiiragi283.core.api
 
+import hiiragi283.core.api.resource.vanillaId
 import net.minecraft.client.renderer.LightTexture
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.inventory.InventoryMenu
@@ -135,4 +136,12 @@ data object HTConst {
 
     const val ITEM_GROUP = "itemGroup"
     const val UPGRADE = "upgrade"
+
+    data object Keys {
+        @JvmField
+        val AIR: ResourceLocation = vanillaId("air")
+
+        @JvmField
+        val EMPTY: ResourceLocation = vanillaId("empty")
+    }
 }

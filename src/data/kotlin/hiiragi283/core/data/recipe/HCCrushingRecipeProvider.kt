@@ -135,7 +135,7 @@ class HCCrushingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
                 count = 2
             }
             result {
-                +HTItemResult.MaterialPart(CommonParts.DUST, CommonMaterialKeys.SALTPETER)
+                +HTItemResult.MaterialPartEntry(CommonParts.DUST, CommonMaterialKeys.SALTPETER)
                 chance = fraction(1, 4)
             }
             recipeId suffix "_from_sandstone"
@@ -148,7 +148,7 @@ class HCCrushingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
                 count = 2
             }
             result {
-                +HTItemResult.MaterialPart(CommonParts.DUST, CommonMaterialKeys.SALTPETER)
+                +HTItemResult.MaterialPartEntry(CommonParts.DUST, CommonMaterialKeys.SALTPETER)
                 chance = fraction(1, 4)
             }
             recipeId suffix "_from_sandstone"
@@ -162,7 +162,10 @@ class HCCrushingRecipeProvider(packOutput: PackOutput, future: CompletableFuture
                     +tagKey
                     count = input
                 }
-                +HTItemResult.MaterialPart(CommonParts.DUST, VanillaMaterialKeys.WOOD, output)
+                result {
+                    +HTItemResult.MaterialPartEntry(CommonParts.DUST, VanillaMaterialKeys.WOOD)
+                    count = output
+                }
                 recipeId suffix "_from_${tagKey.location().path}"
             }.save(exporter)
         }

@@ -13,12 +13,16 @@ import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.HTKeyLike
 import hiiragi283.core.api.serialization.codec.HTCodecs
+import hiiragi283.core.api.serialization.network.HTStreamCodecs
 import hiiragi283.core.api.toFraction
 import hiiragi283.core.api.util.DFUEither
 import hiiragi283.core.api.util.HTTextResult
 import hiiragi283.core.api.util.getOrElse
 import hiiragi283.core.api.util.right
 import hiiragi283.core.api.util.toTextResult
+import io.netty.buffer.ByteBuf
+import net.minecraft.core.Holder
+import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.RegistryFriendlyByteBuf
@@ -37,36 +41,34 @@ import org.apache.commons.lang3.math.Fraction
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */
-interface HTItemResult : HTIdLike {
+@JvmRecord
+data class HTItemResult(val entry: Entry, val count: Int) : HTIdLike {
     companion object {
         @JvmField
-        val MAP_CODEC: MapCodec<HTItemResult> = NeoForgeExtraCodecs.dispatchMapOrElse(
-            HCRegistries.ITEM_RESULT_SERIALIZER.byNameCodec(),
-            HTItemResult::getSerializer,
-            Serializer<*>::codec,
-            Simple.MAP_CODEC,
-        ).xmap(DFUEither<HTItemResult, Simple>::unwrap) { result: HTItemResult ->
-            when (result) {
-                is Simple -> DFUEither.right(result)
-                else -> DFUEither.left(result)
-            }
+        val MAP_CODEC: MapCodec<HTItemResult> = HTCodecs.recordMap { instance ->
+            instance.group(
+                Entry.MAP_CODEC.forGetter(HTItemResult::entry),
+                HTCodecs.POSITIVE_INT.fieldOf(HTConst.COUNT).orElse(1).forGetter(HTItemResult::count),
+            ).apply(instance, ::HTItemResult)
         }
 
         @JvmField
-        val CODEC: Codec<HTItemResult> = Codec.lazyInitialized(MAP_CODEC::codec)
+        val CODEC: Codec<HTItemResult> = Codec.withAlternative(MAP_CODEC.codec(), Entry.MAP_CODEC.codec()) { it.toResult() }
 
         @JvmField
-        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemResult> = ByteBufCodecs
-            .registry(HCRegistries.Keys.ITEM_RESULT_SERIALIZER)
-            .dispatch(HTItemResult::getSerializer, Serializer<*>::streamCodec)
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, HTItemResult> = StreamCodec.composite(
+            Entry.STREAM_CODEC,
+            HTItemResult::entry,
+            ByteBufCodecs.VAR_INT,
+            HTItemResult::count,
+            ::HTItemResult,
+        )
     }
-
-    fun getSerializer(): Serializer<*>
 
     /**
      * アイテムの完成品を作成します。
      */
-    fun create(): HTTextResult<ItemStack>
+    fun create(): HTTextResult<ItemStack> = entry.create().map { it.copyWithCount(count) }
 
     /**
      * アイテムの完成品を作成します。
@@ -77,15 +79,10 @@ interface HTItemResult : HTIdLike {
     fun isIncomplete(): Boolean = create().isLeft()
 
     /**
-     * 完成品の個数
-     */
-    val count: Int
-
-    /**
      * このインスタンスのコピーを作成します。
      * @param newCount 新しい個数
      */
-    fun copyWithCount(newCount: Int): HTItemResult
+    fun copyWithCount(newCount: Int): HTItemResult = HTItemResult(entry, newCount)
 
     /**
      * 確率付きの完成品に変換します。
@@ -97,101 +94,127 @@ interface HTItemResult : HTIdLike {
      */
     infix fun withChance(chance: Fraction): HTChancedItemResult = HTChancedItemResult(this, chance)
 
-    //    Serializer    //
+    override fun getId(): ResourceLocation = entry.getId()
 
-    @JvmRecord
-    data class Serializer<T : HTItemResult>(val codec: MapCodec<T>, val streamCodec: StreamCodec<RegistryFriendlyByteBuf, T>) {
-        constructor(codec: MapCodec<T>) : this(codec, ByteBufCodecs.fromCodecWithRegistries(codec.codec()))
+    //    Entry    //
+
+    interface Entry : HTIdLike {
+        companion object {
+            @JvmField
+            val MAP_CODEC: MapCodec<Entry> = NeoForgeExtraCodecs.dispatchMapOrElse(
+                HCRegistries.ITEM_RESULT_TYPE.byNameCodec(),
+                Entry::type,
+                HTItemResultType<*>::codec,
+                SimpleEntry.MAP_CODEC,
+            ).xmap(
+                { DFUEither.unwrap(it) },
+                { entry: Entry ->
+                    when (entry) {
+                        is SimpleEntry -> DFUEither.right(entry)
+                        else -> DFUEither.left(entry)
+                    }
+                },
+            )
+
+            @JvmField
+            val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, Entry> = ByteBufCodecs.registry(HCRegistries.Keys.ITEM_RESULT_TYPE).dispatch(Entry::type, HTItemResultType<*>::streamCodec)
+        }
+
+        fun type(): HTItemResultType<*>
+
+        fun create(): HTTextResult<ItemStack>
+
+        fun toResult(count: Int = 1): HTItemResult = HTItemResult(this, count)
     }
 
-    //    Simple    //
-
-    @JvmInline
-    value class Simple(private val template: ItemStack) :
-        HTItemResult,
+    @JvmRecord
+    data class SimpleEntry @JvmOverloads constructor(val item: Holder<Item>, val components: DataComponentPatch = DataComponentPatch.EMPTY) :
+        Entry,
         HTKeyLike<Item> {
         companion object {
             @JvmField
-            val MAP_CODEC: MapCodec<Simple> = ItemStack.CODEC.xmap(::Simple, Simple::template).let { MapCodec.assumeMapUnsafe(it) }
-
-            @JvmField
-            val CODEC: Codec<Simple> = Codec.lazyInitialized(MAP_CODEC::codec)
-
-            @JvmField
-            val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, Simple> = ItemStack.STREAM_CODEC.map(::Simple, Simple::template)
-
-            @JvmField
-            val SERIALIZER: Serializer<Simple> = Serializer(MAP_CODEC, STREAM_CODEC)
-        }
-
-        override val count: Int get() = template.count
-
-        override fun getSerializer(): Serializer<*> = SERIALIZER
-
-        override fun create(): HTTextResult<ItemStack> = template.copy().right()
-
-        override fun copyWithCount(newCount: Int): Simple = Simple(template.copyWithCount(newCount))
-
-        override fun getKey(): ResourceKey<Item> = template.itemHolder.getKeyOrThrow()
-    }
-
-    //    Tagged    //
-
-    data class Tagged(val tagKey: TagKey<Item>, override val count: Int = 1) : HTItemResult {
-        companion object {
-            @JvmField
-            val CODEC: MapCodec<Tagged> = HTCodecs.recordMap { instance ->
+            val MAP_CODEC: MapCodec<SimpleEntry> = HTCodecs.recordMap { instance ->
                 instance.group(
-                    HTCodecs.tagKey(Registries.ITEM, true).fieldOf(HTConst.TAG).forGetter(Tagged::tagKey),
-                    HTCodecs.POSITIVE_INT.optionalFieldOf(HTConst.COUNT, 1).forGetter(Tagged::count),
-                ).apply(instance, ::Tagged)
+                    ItemStack.ITEM_NON_AIR_CODEC.fieldOf(HTConst.ID).forGetter(SimpleEntry::item),
+                    DataComponentPatch.CODEC.optionalFieldOf(HTConst.COMPONENTS, DataComponentPatch.EMPTY).forGetter(SimpleEntry::components),
+                ).apply(instance, ::SimpleEntry)
             }
 
             @JvmField
-            val SERIALIZER: Serializer<Tagged> = Serializer(CODEC)
+            val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, SimpleEntry> = StreamCodec.composite(
+                HTStreamCodecs.holder(Registries.ITEM),
+                SimpleEntry::item,
+                DataComponentPatch.STREAM_CODEC,
+                SimpleEntry::components,
+                ::SimpleEntry,
+            )
+
+            @JvmField
+            val TYPE: HTItemResultType<SimpleEntry> = HTItemResultType(MAP_CODEC, STREAM_CODEC)
         }
 
-        override fun getSerializer(): Serializer<*> = SERIALIZER
+        constructor(stack: ItemStack) : this(stack.itemHolder, stack.componentsPatch)
 
-        override fun create(): HTTextResult<ItemStack> = HiiragiCoreAccess.INSTANCE.getFirstHolder(BuiltInRegistries.ITEM.asLookup(), tagKey).map { ItemStack(it.get(), count) }
+        override fun type(): HTItemResultType<*> = TYPE
 
-        override fun copyWithCount(newCount: Int): Tagged = this.copy(count = newCount)
+        override fun create(): HTTextResult<ItemStack> = ItemStack(item, 1, components).right()
+
+        override fun getKey(): ResourceKey<Item> = item.getKeyOrThrow()
+    }
+
+    @JvmInline
+    value class TagEntry(val tagKey: TagKey<Item>) : Entry {
+        companion object {
+            @JvmField
+            val CODEC: MapCodec<TagEntry> = HTCodecs.tagKey(Registries.ITEM, true).fieldOf(HTConst.TAG).xmap(::TagEntry, TagEntry::tagKey)
+
+            @JvmField
+            val STREAM_CODEC: StreamCodec<ByteBuf, TagEntry> = HTStreamCodecs.tagKey(Registries.ITEM).map(::TagEntry, TagEntry::tagKey)
+
+            @JvmField
+            val TYPE: HTItemResultType<TagEntry> = HTItemResultType(CODEC, STREAM_CODEC.cast())
+        }
+
+        override fun type(): HTItemResultType<*> = TYPE
+
+        override fun create(): HTTextResult<ItemStack> = HiiragiCoreAccess.INSTANCE.getFirstHolder(BuiltInRegistries.ITEM.asLookup(), tagKey).map { ItemStack(it.get()) }
 
         override fun getId(): ResourceLocation = tagKey.location()
     }
 
-    //    MaterialPart    //
-
     @JvmRecord
-    data class MaterialPart(val part: HTPart, val key: HTMaterialKey, override val count: Int = 1) : HTItemResult {
+    data class MaterialPartEntry(val part: HTPart, val key: HTMaterialKey) : Entry {
         companion object {
             @JvmField
-            val CODEC: MapCodec<MaterialPart> = HTCodecs.recordMap { instance ->
+            val CODEC: MapCodec<MaterialPartEntry> = HTCodecs.recordMap { instance ->
                 instance
                     .group(
-                        HTPart.CODEC
-                            .fieldOf("part")
-                            .forGetter(MaterialPart::part),
-                        HTMaterialKey.CODEC.fieldOf("material").forGetter(MaterialPart::key),
-                        HTCodecs.POSITIVE_INT
-                            .fieldOf(HTConst.COUNT)
-                            .orElse(1)
-                            .forGetter(MaterialPart::count),
-                    ).apply(instance, ::MaterialPart)
+                        HTPart.CODEC.fieldOf("part").forGetter(MaterialPartEntry::part),
+                        HTMaterialKey.CODEC.fieldOf("material").forGetter(MaterialPartEntry::key),
+                    ).apply(instance, ::MaterialPartEntry)
             }
 
             @JvmField
-            val SERIALIZER: Serializer<MaterialPart> = Serializer(CODEC)
+            val STREAM_CODEC: StreamCodec<ByteBuf, MaterialPartEntry> = StreamCodec.composite(
+                HTPart.STREAM_CODEC,
+                MaterialPartEntry::part,
+                HTMaterialKey.STREAM_CODEC,
+                MaterialPartEntry::key,
+                ::MaterialPartEntry,
+            )
+
+            @JvmField
+            val TYPE: HTItemResultType<MaterialPartEntry> = HTItemResultType(CODEC, STREAM_CODEC.cast())
         }
 
-        constructor(part: HTPartKey, key: HTMaterialKey, count: Int = 1) : this(HTPart.getManager().getOrThrow(part), key, count)
+        constructor(part: HTPartKey, key: HTMaterialKey) : this(HTPart.getManager().getOrThrow(part), key)
 
-        override fun getSerializer(): Serializer<*> = SERIALIZER
+        override fun type(): HTItemResultType<*> = TYPE
 
         override fun create(): HTTextResult<ItemStack> {
             val tagResult: HTTextResult<ItemStack>? = part.tagPrefix
                 ?.itemTagKey(key)
-                ?.let { Tagged(it, count) }
+                ?.let(::TagEntry)
                 ?.create()
             if (tagResult != null && tagResult.isLeft()) {
                 return tagResult
@@ -199,10 +222,8 @@ interface HTItemResult : HTIdLike {
             return HiiragiCoreAccess.INSTANCE
                 .getMaterialBlockOrItem(part.key, key)
                 .toTextResult { "No matching item for part ${part.key} and material $key" }
-                .map { it.toStack(count) }
+                .map { it.toStack() }
         }
-
-        override fun copyWithCount(newCount: Int): MaterialPart = this.copy(count = newCount)
 
         override fun getId(): ResourceLocation = part.createId(key)
     }

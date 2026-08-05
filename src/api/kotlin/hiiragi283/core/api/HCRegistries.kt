@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HiiragiCoreAPI.id
 import hiiragi283.core.api.gui.sync.HTSyncablePayload
 import hiiragi283.core.api.gui.widget.HTWidgetType
-import hiiragi283.core.api.recipe.result.HTItemResult
+import hiiragi283.core.api.recipe.result.HTItemResultType
 import net.minecraft.core.Registry
 import net.minecraft.resources.ResourceKey
 import net.neoforged.neoforge.registries.RegistryBuilder
@@ -16,7 +16,7 @@ import net.neoforged.neoforge.registries.RegistryBuilder
  */
 data object HCRegistries {
     @JvmField
-    val ITEM_RESULT_SERIALIZER: Registry<HTItemResult.Serializer<*>> = createRegistry(Keys.ITEM_RESULT_SERIALIZER)
+    val ITEM_RESULT_TYPE: Registry<HTItemResultType<*>> = createRegistry(Keys.ITEM_RESULT_TYPE)
 
     @JvmField
     val SLOT_TYPE: Registry<HTSyncablePayload.Type<*>> = createRegistry(Keys.SLOT_TYPE)
@@ -38,7 +38,7 @@ data object HCRegistries {
      */
     data object Keys {
         @JvmField
-        val ITEM_RESULT_SERIALIZER: ResourceKey<Registry<HTItemResult.Serializer<*>>> = createKey("item_result_serializer")
+        val ITEM_RESULT_TYPE: ResourceKey<Registry<HTItemResultType<*>>> = createKey("item_result_serializer")
 
         @JvmField
         val SLOT_TYPE: ResourceKey<Registry<HTSyncablePayload.Type<*>>> = createKey("syncable_slot_type")

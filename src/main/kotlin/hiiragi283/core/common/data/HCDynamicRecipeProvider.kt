@@ -111,7 +111,10 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
                 +tag(prefix, key)
                 count = inputCount
             }
-            result { +HTItemResult.MaterialPart(crushedPrefix, key, outputCount) }
+            result {
+                +HTItemResult.MaterialPartEntry(crushedPrefix, key)
+                count = outputCount
+            }
             time = getTimeFromHardness(entry, time) ?: return
             recipeId suffix "_from_${partKey.name}"
         }.save(exporter)
@@ -134,7 +137,10 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
                 +inputTag
                 count = inputCount
             }
-            result { +HTItemResult.MaterialPart(crushedPart, key, outputCount) }
+            result {
+                +HTItemResult.MaterialPartEntry(crushedPart, key)
+                count = outputCount
+            }
             time = getTimeFromHardness(entry, time) ?: return
             recipeId suffix "_from_${defaultPart.getSuffix()}"
         }.save(exporter)
@@ -150,7 +156,10 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
             // 材料
             ingredient { +tag(prefix, key) }
             // 主産物
-            result { +HTItemResult.MaterialPart(CommonParts.CRUSHED_ORE, key, part.getScaledAmount(2, entry).toInt()) }
+            result {
+                +HTItemResult.MaterialPartEntry(CommonParts.CRUSHED_ORE, key)
+                count = part.getScaledAmount(2, entry).toInt()
+            }
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]?.getResult(HTExtraOreResultMap.Phase.CRUSH_ORE)?.let { +it }
 
@@ -174,7 +183,10 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
                 count = inputCount
             }
             // 主産物
-            result { +HTItemResult.MaterialPart(crushedPrefix, key, outputCount) }
+            result {
+                +HTItemResult.MaterialPartEntry(crushedPrefix, key)
+                count = outputCount
+            }
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]?.getResult(HTExtraOreResultMap.Phase.CRUSH_CRUSHED)?.let { +it }
 
