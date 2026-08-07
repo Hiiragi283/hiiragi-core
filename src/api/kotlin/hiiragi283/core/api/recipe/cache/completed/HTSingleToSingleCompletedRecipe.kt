@@ -3,11 +3,10 @@ package hiiragi283.core.api.recipe.cache.completed
 import hiiragi283.core.api.recipe.HTRecipeFactory
 import hiiragi283.core.api.recipe.base.HTItemToFluidRecipe
 import hiiragi283.core.api.recipe.base.HTItemToItemRecipe
-import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.handler.HTInputHandler
 import hiiragi283.core.api.recipe.handler.HTOutputHandler
+import hiiragi283.core.api.recipe.progress.HTProgressData
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.neoforged.neoforge.fluids.FluidStack
 
 /**
@@ -35,7 +34,7 @@ abstract class HTSingleToSingleCompletedRecipe<INPUT : Any, OUTPUT : Any, RECIPE
             outputHandler,
             HTItemToFluidRecipe::getMatchingStack,
         ) {
-        override fun getProgress(): HTProgressData = inputHandler.getStack().let(::SingleRecipeInput).let(recipe::getProgressData)
+        override fun getProgress(): HTProgressData = recipe.getProgressData(inputHandler.getStack())
     }
 
     class ItemToItem(recipe: HTItemToItemRecipe, inputHandler: HTInputHandler<ItemStack>, outputHandler: HTOutputHandler<ItemStack>) :
@@ -45,6 +44,6 @@ abstract class HTSingleToSingleCompletedRecipe<INPUT : Any, OUTPUT : Any, RECIPE
             outputHandler,
             HTItemToItemRecipe::getMatchingStack,
         ) {
-        override fun getProgress(): HTProgressData = inputHandler.getStack().let(::SingleRecipeInput).let(recipe::getProgressData)
+        override fun getProgress(): HTProgressData = recipe.getProgressData(inputHandler.getStack())
     }
 }

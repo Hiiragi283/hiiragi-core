@@ -3,8 +3,8 @@
 package hiiragi283.core.support.data.recipe
 
 import hiiragi283.core.api.data.recipe.IngredientBuilder
-import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.recipe.progress.HTProgressData
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.util.HTDelegates
 import kotlin.contracts.ExperimentalContracts

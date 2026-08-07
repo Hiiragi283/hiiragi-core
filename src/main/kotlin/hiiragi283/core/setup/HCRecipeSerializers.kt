@@ -1,15 +1,15 @@
 package hiiragi283.core.setup
 
 import hiiragi283.core.api.recipe.RecipeSerializer
-import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
-import hiiragi283.core.common.crafting.HCExperienceStoringRecipe
-import hiiragi283.core.common.crafting.HTBlueprintCloningRecipe
 import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
+import hiiragi283.core.common.recipe.custom.HCEternalSmithingRecipe
+import hiiragi283.core.common.recipe.custom.HCExperienceStoringRecipe
+import hiiragi283.core.common.recipe.custom.HTBlueprintCloningRecipe
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer
 

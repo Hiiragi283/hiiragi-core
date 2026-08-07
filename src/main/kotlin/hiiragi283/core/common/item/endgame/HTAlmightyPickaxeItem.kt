@@ -6,7 +6,7 @@ import hiiragi283.core.api.item.createItemStack
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.translatableText
-import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
+import hiiragi283.core.common.recipe.custom.HCEternalSmithingRecipe
 import hiiragi283.core.common.text.HCTranslation
 import java.util.Optional
 import net.minecraft.core.Holder

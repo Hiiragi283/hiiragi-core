@@ -3,11 +3,10 @@ package hiiragi283.core.support.recipe.base
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTItemOrFluidRecipe
-import hiiragi283.core.api.recipe.base.HTProgressData
-import hiiragi283.core.api.recipe.base.HTProgressRecipe
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
-import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
+import hiiragi283.core.api.recipe.progress.HTBiProgressProvider
+import hiiragi283.core.api.recipe.progress.HTProgressData
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemAndFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
@@ -23,7 +22,7 @@ open class HTBasicItemOrFluidRecipe(
     val result: Ior<HTItemResult, HTFluidResult>,
     override val progressData: HTProgressData,
 ) : HTItemOrFluidRecipe,
-    HTProgressRecipe.Simple<HTItemAndFluidRecipeInput> {
+    HTBiProgressProvider.Simple<ItemStack, FluidStack> {
     companion object {
         @JvmField
         val INGREDIENT_CODEC: MapCodec<Ior<HTItemIngredient, HTFluidIngredient>> = HTCodecs

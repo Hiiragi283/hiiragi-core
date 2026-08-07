@@ -2,11 +2,10 @@ package hiiragi283.core.api.recipe.cache.completed
 
 import hiiragi283.core.api.recipe.HTRecipeFactory
 import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
-import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.handler.HTInputHandler
 import hiiragi283.core.api.recipe.handler.HTOutputHandler
+import hiiragi283.core.api.recipe.progress.HTProgressData
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.crafting.SingleRecipeInput
 
 /**
  * @see mekanism.api.recipes.cache.OneInputCachedRecipe
@@ -33,6 +32,6 @@ abstract class HTSingleToMultiItemCompletedRecipe<INPUT : Any, RECIPE : HTRecipe
             outputHandler,
             HTItemToMultiItemRecipe::getMatchingStack,
         ) {
-        override fun getProgress(): HTProgressData = inputHandler.getStack().let(::SingleRecipeInput).let(recipe::getProgressData)
+        override fun getProgress(): HTProgressData = inputHandler.getStack().let(recipe::getProgressData)
     }
 }

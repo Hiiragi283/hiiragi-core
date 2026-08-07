@@ -6,9 +6,9 @@ import hiiragi283.core.api.data.recipe.FluidIngredientBuilder
 import hiiragi283.core.api.data.recipe.HTItemResultBuilder
 import hiiragi283.core.api.data.recipe.HTProgressRecipeBuilder
 import hiiragi283.core.api.data.recipe.IngredientBuilder
-import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.recipe.progress.HTProgressData
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.util.HTDelegates
 import kotlin.contracts.ExperimentalContracts

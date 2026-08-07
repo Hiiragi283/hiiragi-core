@@ -3,14 +3,13 @@ package hiiragi283.core.support.recipe.base
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTDoubleItemToItemRecipe
-import hiiragi283.core.api.recipe.base.HTProgressData
-import hiiragi283.core.api.recipe.base.HTProgressRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.recipe.progress.HTBiProgressProvider
+import hiiragi283.core.api.recipe.progress.HTProgressData
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.support.data.recipe.HTDoubleItemToItemRecipeBuilder
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.crafting.RecipeInput
 
 open class HTBasicDoubleItemToItemRecipe(
     val primary: HTItemIngredient,
@@ -19,7 +18,7 @@ open class HTBasicDoubleItemToItemRecipe(
     val result: HTItemResult,
     final override val progressData: HTProgressData,
 ) : HTDoubleItemToItemRecipe,
-    HTProgressRecipe.Simple<RecipeInput> {
+    HTBiProgressProvider.Simple<ItemStack, ItemStack> {
     companion object {
         @JvmStatic
         fun <RECIPE : HTBasicDoubleItemToItemRecipe> codec(factory: HTDoubleItemToItemRecipeBuilder.Factory<RECIPE>): MapCodec<RECIPE> = HTCodecs.recordMap { instance ->

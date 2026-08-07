@@ -1,7 +1,7 @@
 package hiiragi283.core.support.recipe.viewer.display
 
 import hiiragi283.core.api.recipe.HTRecipeHolder
-import hiiragi283.core.api.recipe.base.HTProgressRecipe
+import hiiragi283.core.api.recipe.progress.HTSimpleProgressProvider
 import hiiragi283.core.api.recipe.viewer.display.HTProgressRecipeDisplay
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import hiiragi283.core.support.recipe.base.HTBasicItemOrFluidRecipe
@@ -29,7 +29,7 @@ data object HTRecipeDisplayFactories {
     }
 
     @JvmStatic
-    inline fun <RECIPE : HTProgressRecipe.Simple<*>> progress(
+    inline fun <RECIPE : HTSimpleProgressProvider> progress(
         holder: HTRecipeHolder<RECIPE>,
         builderAction: HTRecipeContents.Builder.(RECIPE) -> Unit,
     ): HTProgressRecipeDisplay {

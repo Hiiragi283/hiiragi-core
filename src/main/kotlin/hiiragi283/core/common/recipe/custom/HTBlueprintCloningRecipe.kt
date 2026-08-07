@@ -1,4 +1,4 @@
-package hiiragi283.core.common.crafting
+package hiiragi283.core.common.recipe.custom
 
 import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCItems

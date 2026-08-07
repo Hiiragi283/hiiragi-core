@@ -1,6 +1,6 @@
 package hiiragi283.core.api.recipe.cache.completed
 
-import hiiragi283.core.api.recipe.base.HTProgressData
+import hiiragi283.core.api.recipe.progress.HTProgressData
 
 /**
  * @see mekanism.api.recipes.cache.CachedRecipe

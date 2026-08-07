@@ -30,11 +30,11 @@ import hiiragi283.core.client.integration.jei.category.HCTankEmptyingRecipeCateg
 import hiiragi283.core.client.integration.jei.category.HCTankFillingRecipeCategory
 import hiiragi283.core.client.integration.jei.category.base.HTItemOrFluidRecipeCategory
 import hiiragi283.core.client.integration.jei.extension.HCEternalSmithingCategoryExtension
-import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
+import hiiragi283.core.common.recipe.custom.HCEternalSmithingRecipe
 import hiiragi283.core.common.recipe.viewer.HCRecipeDisplayFactories
 import hiiragi283.core.common.recipe.viewer.HCRecipeViewerTypes
 import hiiragi283.core.setup.HCBlocks

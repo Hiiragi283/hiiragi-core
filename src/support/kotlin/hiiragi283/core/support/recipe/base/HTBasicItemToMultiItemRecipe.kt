@@ -4,22 +4,21 @@ import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.HTRecipeResultHelper
 import hiiragi283.core.api.recipe.base.HTItemToMultiItemRecipe
-import hiiragi283.core.api.recipe.base.HTProgressData
-import hiiragi283.core.api.recipe.base.HTProgressRecipe
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
+import hiiragi283.core.api.recipe.progress.HTProgressData
+import hiiragi283.core.api.recipe.progress.HTProgressProvider
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.codec.listOrElement
 import hiiragi283.core.support.data.recipe.HTItemToMultiItemRecipeBuilder
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.crafting.SingleRecipeInput
 
 open class HTBasicItemToMultiItemRecipe(
     val ingredient: HTItemIngredient,
     val results: List<HTChancedItemResult>,
     override val progressData: HTProgressData,
 ) : HTItemToMultiItemRecipe,
-    HTProgressRecipe.Simple<SingleRecipeInput> {
+    HTProgressProvider.Simple<ItemStack> {
     companion object {
         @JvmStatic
         fun <T : HTBasicItemToMultiItemRecipe> codec(maxSize: Int, factory: HTItemToMultiItemRecipeBuilder.Factory<T>): MapCodec<T> = HTCodecs.recordMap { instance ->

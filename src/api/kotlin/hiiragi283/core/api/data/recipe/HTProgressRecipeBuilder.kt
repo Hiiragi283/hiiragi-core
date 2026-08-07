@@ -1,6 +1,6 @@
 package hiiragi283.core.api.data.recipe
 
-import hiiragi283.core.api.recipe.base.HTProgressData
+import hiiragi283.core.api.recipe.progress.HTProgressData
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 import net.minecraft.world.item.crafting.Recipe

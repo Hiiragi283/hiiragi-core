@@ -1,10 +1,9 @@
 package hiiragi283.core.api.recipe.cache.completed
 
 import hiiragi283.core.api.recipe.base.HTItemOrFluidRecipe
-import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.handler.HTInputHandler
 import hiiragi283.core.api.recipe.handler.HTOutputHandler
-import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
+import hiiragi283.core.api.recipe.progress.HTProgressData
 import hiiragi283.core.api.recipe.result.HTItemAndFluidResult
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
@@ -18,8 +17,7 @@ class HTItemOrFluidCompletedRecipe(
 ) : HTCompletedRecipe.WithProgress<HTItemOrFluidRecipe>(recipe) {
     val output: HTItemAndFluidResult = recipe.assemble(itemInputHandler.getStack(), fluidInputHandler.getStack())
 
-    override fun getProgress(): HTProgressData = HTItemAndFluidRecipeInput(itemInputHandler.getStack(), fluidInputHandler.getStack())
-        .let(recipe::getProgressData)
+    override fun getProgress(): HTProgressData = recipe.getProgressData(itemInputHandler.getStack(), fluidInputHandler.getStack())
 
     override fun canComplete(): Boolean = output.let { (item: ItemStack, fluid: FluidStack) -> itemOutputHandler.canInsert(item) && fluidOutputHandler.canInsert(fluid) }
 
