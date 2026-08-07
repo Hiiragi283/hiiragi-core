@@ -24,7 +24,6 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.crafting.Ingredient
 
 class HCMaterialPartCategory(guiHelper: IGuiHelper) : HTBasicRecipeCategory<HTMaterial>(guiHelper, HCRecipeViewerTypes.MaterialType) {
     private fun getIngredients(entry: HTMaterial): Sequence<List<ItemStack>> = HTPart
@@ -38,7 +37,7 @@ class HCMaterialPartCategory(guiHelper: IGuiHelper) : HTBasicRecipeCategory<HTMa
     override fun setRecipe(builder: IRecipeLayoutBuilder, recipe: HTMaterial, focuses: IFocusGroup) {
         builder
             .addInputSlot()
-            .addIngredients(recipe.getDefaultPart(recipe.key)?.let(Ingredient::of) ?: Ingredient.EMPTY)
+            .addItemStacks(recipe.getDefaultPart(recipe.key)?.let(BuiltInRegistries.ITEM::getTagOrEmpty)?.map(::ItemStack) ?: emptyList())
             .setStandardSlotBackground()
 
         for (ingredient: Iterable<ItemStack> in getIngredients(recipe)) {

@@ -4,21 +4,20 @@ import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.base.HTRecipeFactories
 import hiiragi283.core.api.recipe.base.HTRecipePredicates
-import hiiragi283.core.api.recipe.ingredient.getMatchingStack
+import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.crafting.Ingredient
 
-open class HTInWorldRecipe(val ingredient: Ingredient, val result: HTChancedItemResult) :
+open class HTInWorldRecipe(val ingredient: HTItemIngredient, val result: HTChancedItemResult) :
     HTRecipePredicates.SingleItem,
     HTRecipeFactories.SingleItemTo<ItemStack> {
     companion object {
         @JvmStatic
-        fun <T : HTInWorldRecipe> codec(factory: (Ingredient, HTChancedItemResult) -> T): MapCodec<T> = HTCodecs.recordMap { instance ->
+        fun <T : HTInWorldRecipe> codec(factory: (HTItemIngredient, HTChancedItemResult) -> T): MapCodec<T> = HTCodecs.recordMap { instance ->
             instance
                 .group(
-                    HTCodecs.INGREDIENT.fieldOf(HTConst.INGREDIENT).forGetter(HTInWorldRecipe::ingredient),
+                    HTItemIngredient.SINGLE_CODEC.fieldOf(HTConst.INGREDIENT).forGetter(HTInWorldRecipe::ingredient),
                     HTChancedItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HTInWorldRecipe::result),
                 ).apply(instance, factory)
         }
@@ -33,5 +32,5 @@ open class HTInWorldRecipe(val ingredient: Ingredient, val result: HTChancedItem
 
     override fun assemble(input: ItemStack): ItemStack = result.createOrEmpty()
 
-    override fun isIncomplete(): Boolean = ingredient.hasNoItems() || result.isIncomplete()
+    override fun isIncomplete(): Boolean = ingredient.isIncomplete() || result.isIncomplete()
 }

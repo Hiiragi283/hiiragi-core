@@ -29,7 +29,7 @@ class HCTankInteractionRecipeProvider(packOutput: PackOutput, future: Completabl
 
         repeat(5) { amplifier: Int ->
             HTTankInteractionRecipeBuilder.emptying {
-                +DataComponentIngredient.of(false, DataComponents.OMINOUS_BOTTLE_AMPLIFIER, amplifier, Items.OMINOUS_BOTTLE)
+                ingredient { +DataComponentIngredient.of(false, DataComponents.OMINOUS_BOTTLE_AMPLIFIER, amplifier, Items.OMINOUS_BOTTLE) }
                 fluidResult {
                     +HCFluids.OMINOUS_FLUX
                     amount = 250 * (amplifier + 1)

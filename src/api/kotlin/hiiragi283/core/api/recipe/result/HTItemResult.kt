@@ -65,6 +65,8 @@ data class HTItemResult(val entry: Entry, val count: Int) : HTIdLike {
         )
     }
 
+    constructor(stack: ItemStack) : this(SimpleEntry(stack), stack.count)
+
     /**
      * アイテムの完成品を作成します。
      */

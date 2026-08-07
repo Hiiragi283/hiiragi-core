@@ -9,6 +9,7 @@ import hiiragi283.core.api.data.recipe.HTItemResultBuilder
 import hiiragi283.core.api.data.recipe.HTRecipeBuilder
 import hiiragi283.core.api.data.recipe.IngredientBuilder
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
+import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.util.HTDelegates
@@ -20,7 +21,6 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.item.crafting.Ingredient
 
 object HTTankInteractionRecipeBuilder {
     @JvmStatic
@@ -40,13 +40,13 @@ object HTTankInteractionRecipeBuilder {
     }
 
     class Emptying : HTRecipeBuilder<HCTankEmptyingRecipe>(HTConst.EMPTYING) {
-        @PublishedApi internal var ingredient: Ingredient by HTDelegates.onceInitialize()
+        @PublishedApi internal var ingredient: HTItemIngredient by HTDelegates.onceInitialize()
 
         @PublishedApi internal var fluidResult: HTFluidResult by HTDelegates.onceInitialize()
 
         @PublishedApi internal var itemResult: Option<HTItemResult> by HTDelegates.optionalOnceInitialize()
 
-        operator fun Ingredient.unaryPlus() {
+        operator fun HTItemIngredient.unaryPlus() {
             ingredient = this
         }
 
@@ -62,7 +62,7 @@ object HTTankInteractionRecipeBuilder {
             contract {
                 callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
             }
-            ingredient = IngredientBuilder().apply(builderAction).build()
+            ingredient = IngredientBuilder().apply(builderAction).buildSized()
         }
 
         inline fun fluidResult(builderAction: HTFluidResultBuilder.() -> Unit) {
@@ -85,13 +85,13 @@ object HTTankInteractionRecipeBuilder {
     }
 
     class Filling : HTRecipeBuilder<HCTankFillingRecipe>(HTConst.FILLING) {
-        @PublishedApi internal var itemIngredient: Ingredient by HTDelegates.onceInitialize()
+        @PublishedApi internal var itemIngredient: HTItemIngredient by HTDelegates.onceInitialize()
 
         @PublishedApi internal var fluidIngredient: HTFluidIngredient by HTDelegates.onceInitialize()
 
         @PublishedApi internal var result: HTItemResult by HTDelegates.onceInitialize()
 
-        operator fun Ingredient.unaryPlus() {
+        operator fun HTItemIngredient.unaryPlus() {
             itemIngredient = this
         }
 
@@ -107,7 +107,7 @@ object HTTankInteractionRecipeBuilder {
             contract {
                 callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
             }
-            itemIngredient = IngredientBuilder().apply(builderAction).build()
+            itemIngredient = IngredientBuilder().apply(builderAction).buildSized()
         }
 
         inline fun fluidIngredient(builderAction: FluidIngredientBuilder.() -> Unit) {

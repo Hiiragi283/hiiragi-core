@@ -19,7 +19,6 @@ import hiiragi283.core.api.util.Ior
 import hiiragi283.core.api.util.Option
 import hiiragi283.core.api.util.kotlin
 import hiiragi283.core.api.util.some
-import hiiragi283.core.internal.serialization.codec.HTIngredientCodec
 import java.util.UUID
 import java.util.stream.Stream
 import kotlin.contracts.ExperimentalContracts
@@ -35,8 +34,6 @@ import net.minecraft.resources.RegistryFixedCodec
 import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
 import net.minecraft.util.ExtraCodecs
-import net.minecraft.world.item.crafting.Ingredient
-import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import org.apache.commons.lang3.math.Fraction
 
 /**
@@ -56,12 +53,6 @@ data object HTCodecs {
                 }
             },
         )
-
-    @JvmField
-    val INGREDIENT: Codec<Ingredient> = HTIngredientCodec.ITEM
-
-    @JvmField
-    val FLUID_INGREDIENT: Codec<FluidIngredient> = HTIngredientCodec.FLUID
 
     @JvmField
     val TEXT: Codec<Text> = ComponentSerialization.CODEC

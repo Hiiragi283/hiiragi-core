@@ -3,6 +3,7 @@ package hiiragi283.core.api.recipe.ingredient
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.serialization.codec.HTCodecs
+import hiiragi283.core.internal.serialization.codec.HTIngredientCodec
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
@@ -21,11 +22,8 @@ class HTFluidIngredient(val unsized: FluidIngredient, val amount: Int) : HTIngre
         val CODEC: Codec<HTFluidIngredient> = HTCodecs.record { instance ->
             instance
                 .group(
-                    HTCodecs.FLUID_INGREDIENT.fieldOf(HTConst.FLUIDS).forGetter(HTFluidIngredient::unsized),
-                    HTCodecs.NON_NEGATIVE_INT
-                        .fieldOf(HTConst.AMOUNT)
-                        .orElse(FluidType.BUCKET_VOLUME)
-                        .forGetter(HTFluidIngredient::amount),
+                    HTIngredientCodec.FLUID.fieldOf(HTConst.FLUIDS).forGetter(HTFluidIngredient::unsized),
+                    HTCodecs.NON_NEGATIVE_INT.fieldOf(HTConst.AMOUNT).orElse(FluidType.BUCKET_VOLUME).forGetter(HTFluidIngredient::amount),
                 ).apply(instance, ::HTFluidIngredient)
         }
 
