@@ -4,7 +4,6 @@ import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.support.crafting.HTCustomRecipe
-import hiiragi283.core.support.crafting.ImmutableRecipeInput
 import hiiragi283.core.util.ExpValue
 import hiiragi283.core.util.HTExperienceHelper
 import hiiragi283.core.util.storedExperience
@@ -16,7 +15,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.level.Level
 
 class HCExperienceStoringRecipe(category: CraftingBookCategory) : HTCustomRecipe(category) {
-    override fun matches(input: ImmutableRecipeInput, level: Level): Boolean {
+    override fun matches(input: List<ItemStack>, level: Level): Boolean {
         var tomeCount = 0
         for (stack: ItemStack in input) {
             if (stack.isEmpty) continue
@@ -27,7 +26,7 @@ class HCExperienceStoringRecipe(category: CraftingBookCategory) : HTCustomRecipe
         return tomeCount == 1
     }
 
-    override fun assemble(input: ImmutableRecipeInput, registries: HolderLookup.Provider): ItemStack {
+    override fun assemble(input: List<ItemStack>, registries: HolderLookup.Provider): ItemStack {
         val player: Player = HiiragiCoreAPI.getCraftingPlayer() ?: return ItemStack.EMPTY
         val currentExp: ExpValue = player.storedExperience
         if (currentExp <= 0) return ItemStack.EMPTY

@@ -43,5 +43,5 @@ open class HTBasicDoubleItemToItemRecipe(
 
     override fun isIncomplete(): Boolean = primary.isIncomplete() || secondary.isIncomplete() || result.isIncomplete()
 
-    override fun assemble(firstInput: ItemStack, secondInput: ItemStack): ItemStack = result.createOrEmpty()
+    override fun apply(first: ItemStack, second: ItemStack): ItemStack = result.createOrEmpty()
 }

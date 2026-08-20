@@ -44,7 +44,7 @@ open class HTBasicItemAndFluidToItemRecipe(
         fluidIngredient.getMatchingStack(second),
     )
 
-    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): ItemStack = result.createOrEmpty()
+    override fun apply(first: ItemStack, second: FluidStack): ItemStack = result.createOrEmpty()
 
     override fun isIncomplete(): Boolean = itemIngredient.isIncomplete() || fluidIngredient.isIncomplete() || result.isIncomplete()
 }

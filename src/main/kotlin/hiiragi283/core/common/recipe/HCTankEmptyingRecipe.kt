@@ -39,7 +39,7 @@ class HCTankEmptyingRecipe(val ingredient: HTItemIngredient, val fluidResult: HT
 
     override fun getMatchingStack(input: ItemStack): ItemStack = ingredient.getMatchingStack(input)
 
-    override fun assemble(input: ItemStack): HTItemAndFluidResult {
+    override fun apply(input: ItemStack): HTItemAndFluidResult {
         val fluidStack: FluidStack = fluidResult.create()
         val itemStack: ItemStack = itemResult.map(HTItemResult::createOrEmpty).getOrElse(ItemStack::EMPTY)
         return HTItemAndFluidResult(itemStack, fluidStack)

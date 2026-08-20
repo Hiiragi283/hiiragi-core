@@ -80,7 +80,7 @@ object HCRecipeEventHandler {
         if (entity is ItemEntity && entity.isAlive) {
             val input: ItemStack = entity.item
             val recipe: HCChargingRecipe = getCaches(level).charging.findFirstRecipe(input, level) ?: return
-            spawnResults(entity) { recipe.assemble(input) }
+            spawnResults(entity) { recipe.apply(input) }
             entity.discard()
             event.isCanceled = true
         }
@@ -106,7 +106,7 @@ object HCRecipeEventHandler {
         val inputAmount: Int = recipe.getMatchingStack(input).count
         val multiplier: Int = input.count / inputAmount
         (0 until multiplier)
-            .flatMap { recipe.assemble(input) }
+            .flatMap { recipe.apply(input) }
             .let(HTRecipeResultHelper::mergeStacks)
             .mapNotNull(entity::spawnAtLocation)
             .forEach(::setComplete)
@@ -167,7 +167,7 @@ object HCRecipeEventHandler {
             if (entity is ItemEntity && entity.isAlive && !isCompleted(entity)) {
                 val input: ItemStack = entity.item
                 val recipe: HCExplodingRecipe = getCaches(level).exploding.findFirstRecipe(input, level) ?: continue
-                spawnResults(entity) { recipe.assemble(input) }
+                spawnResults(entity) { recipe.apply(input) }
                 if (entity.item.isEmpty) {
                     iterator.remove()
                     entity.discard()

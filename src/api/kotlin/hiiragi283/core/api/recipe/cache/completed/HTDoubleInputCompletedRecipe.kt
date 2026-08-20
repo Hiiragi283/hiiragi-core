@@ -1,11 +1,11 @@
 package hiiragi283.core.api.recipe.cache.completed
 
-import hiiragi283.core.api.recipe.HTBiRecipeFactory
 import hiiragi283.core.api.recipe.base.HTDoubleItemToItemRecipe
 import hiiragi283.core.api.recipe.base.HTItemAndFluidToItemRecipe
 import hiiragi283.core.api.recipe.handler.HTInputHandler
 import hiiragi283.core.api.recipe.handler.HTOutputHandler
 import hiiragi283.core.api.recipe.progress.HTProgressData
+import java.util.function.BiFunction
 import net.minecraft.world.item.ItemStack
 import net.neoforged.neoforge.fluids.FluidStack
 
@@ -16,7 +16,7 @@ abstract class HTDoubleInputCompletedRecipe<
     INPUT_A : Any,
     INPUT_B : Any,
     OUTPUT : Any,
-    RECIPE : HTBiRecipeFactory<INPUT_A, INPUT_B, OUTPUT>,
+    RECIPE : BiFunction<INPUT_A, INPUT_B, OUTPUT>,
     >(
     recipe: RECIPE,
     protected val firstInputHandler: HTInputHandler<INPUT_A>,
@@ -24,7 +24,7 @@ abstract class HTDoubleInputCompletedRecipe<
     protected val outputHandler: HTOutputHandler<OUTPUT>,
     private val amountGetter: (RECIPE, INPUT_A, INPUT_B) -> Pair<INPUT_A, INPUT_B>,
 ) : HTCompletedRecipe.WithProgress<RECIPE>(recipe) {
-    private val output: OUTPUT = recipe.assemble(firstInputHandler.getStack(), secondInputHandler.getStack())
+    private val output: OUTPUT = recipe.apply(firstInputHandler.getStack(), secondInputHandler.getStack())
 
     override fun canComplete(): Boolean = outputHandler.canInsert(output)
 

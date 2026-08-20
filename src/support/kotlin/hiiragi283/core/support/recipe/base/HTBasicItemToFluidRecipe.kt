@@ -37,7 +37,7 @@ open class HTBasicItemToFluidRecipe(
 
     override fun getMatchingStack(input: ItemStack): ItemStack = ingredient.getMatchingStack(input)
 
-    override fun assemble(input: ItemStack): FluidStack = result.create()
+    override fun apply(input: ItemStack): FluidStack = result.create()
 
     override fun isIncomplete(): Boolean = ingredient.isIncomplete()
 }

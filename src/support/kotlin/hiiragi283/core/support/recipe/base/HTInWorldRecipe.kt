@@ -30,7 +30,7 @@ open class HTInWorldRecipe(val ingredient: HTItemIngredient, val result: HTChanc
 
     override fun getMatchingStack(input: ItemStack): ItemStack = ingredient.getMatchingStack(input)
 
-    override fun assemble(input: ItemStack): ItemStack = result.createOrEmpty()
+    override fun apply(input: ItemStack): ItemStack = result.createOrEmpty()
 
     override fun isIncomplete(): Boolean = ingredient.isIncomplete() || result.isIncomplete()
 }

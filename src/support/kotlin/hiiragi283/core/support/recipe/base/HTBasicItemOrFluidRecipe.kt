@@ -63,7 +63,7 @@ open class HTBasicItemOrFluidRecipe(
         return (item?.getMatchingStack(first) ?: ItemStack.EMPTY) to (fluid?.getMatchingStack(second) ?: FluidStack.EMPTY)
     }
 
-    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): HTItemAndFluidResult = result.mapLeft { it.createOrEmpty() }.mapRight { it.create() }.let(::HTItemAndFluidResult)
+    override fun apply(first: ItemStack, second: FluidStack): HTItemAndFluidResult = result.mapLeft { it.createOrEmpty() }.mapRight { it.create() }.let(::HTItemAndFluidResult)
 
     override fun isIncomplete(): Boolean {
         val bool1: Boolean = ingredient.merge(HTItemIngredient::isIncomplete, HTFluidIngredient::isIncomplete) { item: Boolean, fluid: Boolean -> item || fluid }

@@ -15,7 +15,7 @@ class HTItemOrFluidCompletedRecipe(
     private val itemOutputHandler: HTOutputHandler<ItemStack>,
     private val fluidOutputHandler: HTOutputHandler<FluidStack>,
 ) : HTCompletedRecipe.WithProgress<HTItemOrFluidRecipe>(recipe) {
-    val output: HTItemAndFluidResult = recipe.assemble(itemInputHandler.getStack(), fluidInputHandler.getStack())
+    val output: HTItemAndFluidResult = recipe.apply(itemInputHandler.getStack(), fluidInputHandler.getStack())
 
     override fun getProgress(): HTProgressData = recipe.getProgressData(itemInputHandler.getStack(), fluidInputHandler.getStack())
 

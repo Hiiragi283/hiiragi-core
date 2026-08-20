@@ -4,7 +4,6 @@ import hiiragi283.core.setup.HCDataComponents
 import hiiragi283.core.setup.HCItems
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.support.crafting.HTCustomRecipe
-import hiiragi283.core.support.crafting.ImmutableRecipeInput
 import net.minecraft.core.HolderLookup
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.CraftingBookCategory
@@ -12,7 +11,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.level.Level
 
 class HTBlueprintCloningRecipe(category: CraftingBookCategory) : HTCustomRecipe(category) {
-    private fun getBlueprints(input: ImmutableRecipeInput): Pair<Int, ItemStack> {
+    private fun getBlueprints(input: List<ItemStack>): Pair<Int, ItemStack> {
         var empty = 0
         var target: ItemStack = ItemStack.EMPTY
         for (stack: ItemStack in input) {
@@ -31,12 +30,12 @@ class HTBlueprintCloningRecipe(category: CraftingBookCategory) : HTCustomRecipe(
         return empty to target
     }
 
-    override fun matches(input: ImmutableRecipeInput, level: Level): Boolean {
+    override fun matches(input: List<ItemStack>, level: Level): Boolean {
         val (empty: Int, target: ItemStack) = getBlueprints(input)
         return !target.isEmpty && empty > 0
     }
 
-    override fun assemble(input: ImmutableRecipeInput, registries: HolderLookup.Provider): ItemStack {
+    override fun assemble(input: List<ItemStack>, registries: HolderLookup.Provider): ItemStack {
         val (empty: Int, target: ItemStack) = getBlueprints(input)
         return when {
             !target.isEmpty && empty > 0 -> target.copyWithCount(empty + 1)
