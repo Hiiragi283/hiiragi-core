@@ -37,7 +37,7 @@ class HTDisplayInfoBuilder {
     @PublishedApi internal var icon: ItemStack by HTDelegates.onceInitialize()
     var titleText: Text by HTDelegates.onceInitialize()
     var descText: Text by HTDelegates.onceInitialize()
-    var backGround: Option<ResourceLocation> by HTDelegates.optionalOnceInitialize()
+    var backGround: Option<ResourceLocation> by HTDelegates.onceInitialize { Option.none() }
     var type: AdvancementType by HTDelegates.onceInitialize { AdvancementType.TASK }
     var showToast: Boolean = true
     var showChat: Boolean = true

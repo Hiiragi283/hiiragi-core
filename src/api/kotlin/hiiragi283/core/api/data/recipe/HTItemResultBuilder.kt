@@ -29,10 +29,16 @@ class HTItemResultBuilder {
     }
 
     // Simple
+    /**
+     * @since 21.1.1.0
+     */
     operator fun ResourceLocation.unaryPlus() {
         +HTItemResult.SimpleEntry(HTSimpleDeferredItem(this))
     }
 
+    /**
+     * @since 21.1.1.0
+     */
     operator fun ResourceKey<Item>.unaryPlus() {
         +HTItemResult.SimpleEntry(HTSimpleDeferredItem(this))
     }

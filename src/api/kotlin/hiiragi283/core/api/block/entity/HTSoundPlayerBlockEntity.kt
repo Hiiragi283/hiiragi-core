@@ -22,6 +22,9 @@ interface HTSoundPlayerBlockEntity : HTBlockEntityAccess {
         getLevel()?.playSound(null, getSoundPos(), sound, getSoundSource(), volume, pitch)
     }
 
+    /**
+     * @since 21.1.1.0
+     */
     fun playSound(instance: HTSoundInstance) {
         val (sound: Holder<SoundEvent>, volume: Float, pitch: Float) = instance
         playSound(sound.value(), volume, pitch)

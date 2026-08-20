@@ -49,9 +49,6 @@ value class PairMapTable<R, C, out V> private constructor(private val map: Map<P
 
         override fun put(row: R, column: C, value: V): V? = map.put(row to column, value)
 
-        override fun build(): Table<R, C, V> = when {
-            map.isEmpty() -> emptyTableOf()
-            else -> PairMapTable(map)
-        }
+        override fun build(): PairMapTable<R, C, V> = PairMapTable(map)
     }
 }

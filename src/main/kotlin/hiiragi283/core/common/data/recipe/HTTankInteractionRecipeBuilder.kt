@@ -44,7 +44,7 @@ object HTTankInteractionRecipeBuilder {
 
         @PublishedApi internal var fluidResult: HTFluidResult by HTDelegates.onceInitialize()
 
-        @PublishedApi internal var itemResult: Option<HTItemResult> by HTDelegates.optionalOnceInitialize()
+        @PublishedApi internal var itemResult: Option<HTItemResult> by HTDelegates.onceInitialize { Option.none() }
 
         operator fun HTItemIngredient.unaryPlus() {
             ingredient = this

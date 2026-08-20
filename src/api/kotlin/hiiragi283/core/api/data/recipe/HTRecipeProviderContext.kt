@@ -10,7 +10,6 @@ import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HTTagPrefix
-import kotlin.collections.toSortedSet
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 

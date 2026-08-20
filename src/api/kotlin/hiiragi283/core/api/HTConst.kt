@@ -137,6 +137,9 @@ data object HTConst {
     const val ITEM_GROUP = "itemGroup"
     const val UPGRADE = "upgrade"
 
+    /**
+     * @since 21.1.1.0
+     */
     data object Keys {
         @JvmField
         val AIR: ResourceLocation = vanillaId("air")

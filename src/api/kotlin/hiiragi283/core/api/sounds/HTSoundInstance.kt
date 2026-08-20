@@ -10,6 +10,14 @@ import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.sounds.SoundEvent
 
+/**
+ * SEに関するデータをまとめたクラスです。
+ * @param sound SEの種類
+ * @param volume SEの音量
+ * @param pitch SEのピッチ
+ * @author Hiiragi Tsubasa
+ * @since 21.1.1.0
+ */
 @JvmRecord
 data class HTSoundInstance @JvmOverloads constructor(val sound: Holder<SoundEvent>, val volume: Float = 1f, val pitch: Float = 1f) {
     companion object {

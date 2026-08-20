@@ -49,11 +49,26 @@ private data object EmptyTable : Table<Nothing, Nothing, Nothing> {
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */
-inline fun <R, C, V> buildTable(initialCapacity: Int = 10, builderAction: Table.Builder<R, C, V>.() -> Unit): Table<R, C, V> {
+inline fun <R, C, V> buildTable(initialCapacity: Int = 10, builderAction: Table.Builder<R, C, V>.() -> Unit): PairMapTable<R, C, V> {
     contract {
         callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
     }
     return PairMapTable.Builder<R, C, V>(initialCapacity).apply(builderAction).build()
+}
+
+/**
+ * 新しい[PairMapTable]のインスタンスを作成します。
+ * @param R 行のクラス
+ * @param C 列のクラス
+ * @param V 値のクラス
+ * @author Hiiragi Tsubasa
+ * @since 21.1.1.0
+ */
+inline fun <R, C, V> buildTable(map: MutableMap<Pair<R, C>, V>, builderAction: Table.Builder<R, C, V>.() -> Unit): PairMapTable<R, C, V> {
+    contract {
+        callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+    }
+    return PairMapTable.Builder(map).apply(builderAction).build()
 }
 
 /**

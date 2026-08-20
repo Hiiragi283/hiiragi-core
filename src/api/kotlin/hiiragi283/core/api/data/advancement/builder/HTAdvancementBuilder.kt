@@ -34,13 +34,13 @@ class HTAdvancementBuilder(val key: AdvancementKey) {
         }
     }
 
-    var parent: Option<AdvancementKey> by HTDelegates.optionalOnceInitialize()
+    var parent: Option<AdvancementKey> by HTDelegates.onceInitialize { Option.none() }
 
     operator fun AdvancementKey.unaryPlus() {
         parent = Option.some(this)
     }
 
-    @PublishedApi internal var display: Option<DisplayInfo> by HTDelegates.optionalOnceInitialize()
+    @PublishedApi internal var display: Option<DisplayInfo> by HTDelegates.onceInitialize { Option.none() }
     var rewards: AdvancementRewards = AdvancementRewards.EMPTY
     var requirements: AdvancementRequirements? = null
     var strategy: AdvancementRequirements.Strategy = AdvancementRequirements.Strategy.AND

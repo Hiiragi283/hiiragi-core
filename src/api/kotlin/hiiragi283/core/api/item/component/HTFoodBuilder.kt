@@ -55,7 +55,7 @@ class HTFoodBuilder {
 
     @JvmField var eatSeconds: Float = 1.6f
 
-    @PublishedApi internal var convertTo: Option<ItemStack> by HTDelegates.optionalOnceInitialize()
+    @PublishedApi internal var convertTo: Option<ItemStack> by HTDelegates.onceInitialize { Option.none() }
     private val effects: MutableList<FoodProperties.PossibleEffect> = mutableListOf()
 
     operator fun ItemStack.unaryPlus() {

@@ -6,6 +6,11 @@ import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
 import org.apache.commons.lang3.math.Fraction
 
+/**
+ * レシピの処理を表すインターフェースです。
+ * @author Hiiragi Tsubasa
+ * @since 21.1.1.0
+ */
 interface HTProgressHandler {
     /**
      * 現在の進捗量
