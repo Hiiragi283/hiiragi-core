@@ -30,9 +30,7 @@ data object HTDynamicResourceRegister {
 
     @JvmStatic
     fun addToData(id: ResourceLocation, json: JsonElement) {
-        val fixedId: ResourceLocation = id.withSuffix(".json")
-        LOGGER.debug("Added dynamic data at {}", fixedId)
-        HTDynamicResourcePack.addToData(fixedId, json.toString().toByteArray())
+        HTDynamicResourcePack.addToData(id.withSuffix(".json"), json.toString().toByteArray())
     }
 
     // Language

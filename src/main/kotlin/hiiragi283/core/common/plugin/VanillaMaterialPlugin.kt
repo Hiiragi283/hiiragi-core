@@ -27,6 +27,7 @@ import hiiragi283.core.api.property.plusAssign
 import hiiragi283.core.api.registry.toBlockLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.vanillaId
+import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import net.minecraft.resources.ResourceLocation
@@ -467,6 +468,19 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             addCustomName(CommonParts.DUST, "Sawdust", "おがくず")
             setTextureSet("mineral")
             put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 15)
+        }
+        builder.getBuilder(VanillaMaterialKeys.PAPER).apply {
+            setDefaultPart(HiiragiCoreTags.Items.PAPERS, Items.PAPER.toLike())
+            addItemPrefixes(CommonParts.DUST)
+            put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.NONE)
+            this += HTMaterialPropertyKeys.DISABLE_SMELTING
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
+
+            setName("Paper", "紙")
+            addCustomName(CommonParts.DUST, "Paper Pulp", "紙パルプ")
+            setTextureSet("mineral")
+            put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("white"))
+            put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 5)
         }
         builder.getBuilder(VanillaMaterialKeys.GLASS).apply {
             setDefaultPart(Tags.Items.GLASS_BLOCKS, Items.GLASS.toLike())

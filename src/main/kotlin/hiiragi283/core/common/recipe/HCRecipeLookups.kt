@@ -2,7 +2,7 @@ package hiiragi283.core.common.recipe
 
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.collection.MultiMap
+import hiiragi283.core.api.collection.ListMultiMap
 import hiiragi283.core.api.collection.buildListMultiMap
 import hiiragi283.core.api.color.HTColoredCollection
 import hiiragi283.core.api.color.VanillaColoredCollections
@@ -71,7 +71,7 @@ data object HCRecipeLookups {
     @JvmStatic
     fun init() {
         BREWING.addSubLookup { context: HTRecipeLookup.Context ->
-            val multiMap: MultiMap<ResourceLocation, HCBrewingRecipe> = buildListMultiMap {
+            val multiMap: ListMultiMap<ResourceLocation, HCBrewingRecipe> = buildListMultiMap {
                 context.brewing
                     ?.let(PotionBrewing::potionMixes)
                     ?.asSequence()

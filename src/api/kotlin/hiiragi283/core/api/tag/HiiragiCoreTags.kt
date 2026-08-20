@@ -113,6 +113,9 @@ data object HiiragiCoreTags {
         @JvmField
         val HAMMERS: TagKey<Item> = common("hammers")
 
+        @JvmField
+        val PAPERS: TagKey<Item> = common("papers")
+
         /**
          * @since 0.11.0
          */

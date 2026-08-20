@@ -73,6 +73,9 @@ object VanillaMaterialKeys {
     val WOOD: HTMaterialKey = create("wood")
 
     @JvmStatic
+    val PAPER: HTMaterialKey = create("paper")
+
+    @JvmStatic
     val GLASS: HTMaterialKey = create("glass")
 
     @JvmStatic

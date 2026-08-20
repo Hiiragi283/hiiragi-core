@@ -55,7 +55,7 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
 
         // Guide ME Integration
         HTShapelessRecipeBuilder.create {
-            ingredient { +Items.PAPER }
+            ingredient { +HiiragiCoreTags.Items.PAPERS }
             ingredient { +tag(CommonTagPrefixes.DUST, VanillaMaterialKeys.COPPER) }
             +Guides.createGuideItem(HiiragiCoreAPI.id("guide"))
         }.save(exporter)
@@ -285,7 +285,7 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
         }.save(exporter)
         // Blueprint
         HTShapelessRecipeBuilder.create {
-            ingredient { +Items.PAPER }
+            ingredient { +HiiragiCoreTags.Items.PAPERS }
             ingredient { +Tags.Items.DYES_WHITE }
             ingredient { +Tags.Items.DYES_BLUE }
             +HCItems.BLUEPRINT.toStack()

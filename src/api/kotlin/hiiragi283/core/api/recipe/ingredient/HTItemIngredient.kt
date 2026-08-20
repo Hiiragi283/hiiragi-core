@@ -3,7 +3,6 @@ package hiiragi283.core.api.recipe.ingredient
 import com.mojang.serialization.Codec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.serialization.codec.HTCodecs
-import hiiragi283.core.internal.serialization.codec.HTIngredientCodec
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
@@ -18,13 +17,13 @@ import net.minecraft.world.item.crafting.Ingredient
 class HTItemIngredient(val unsized: Ingredient, val count: Int) : HTIngredient<ItemStack> {
     companion object {
         @JvmField
-        val SINGLE_CODEC: Codec<HTItemIngredient> = HTIngredientCodec.ITEM.xmap({ HTItemIngredient(it, 1) }, HTItemIngredient::unsized)
+        val SINGLE_CODEC: Codec<HTItemIngredient> = HTCodecs.INGREDIENT.xmap({ HTItemIngredient(it, 1) }, HTItemIngredient::unsized)
 
         @JvmField
         val CODEC: Codec<HTItemIngredient> = HTCodecs.record { instance ->
             instance
                 .group(
-                    HTIngredientCodec.ITEM.fieldOf(HTConst.ITEMS).forGetter(HTItemIngredient::unsized),
+                    HTCodecs.INGREDIENT.fieldOf(HTConst.ITEMS).forGetter(HTItemIngredient::unsized),
                     HTCodecs.NON_NEGATIVE_INT.fieldOf(HTConst.AMOUNT).orElse(1).forGetter(HTItemIngredient::count),
                 ).apply(instance, ::HTItemIngredient)
         }
