@@ -1,9 +1,9 @@
 package hiiragi283.core.common.recipe
 
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
-import hiiragi283.core.api.recipe.progress.HTProgressData
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.registry.getKeyOrThrow
 import hiiragi283.core.support.recipe.base.HTBasicItemToItemRecipe

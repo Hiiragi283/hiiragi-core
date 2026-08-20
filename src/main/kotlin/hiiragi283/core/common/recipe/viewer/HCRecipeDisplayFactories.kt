@@ -1,7 +1,6 @@
 package hiiragi283.core.common.recipe.viewer
 
 import hiiragi283.core.api.recipe.HTRecipeHolder
-import hiiragi283.core.api.recipe.progress.HTProgressData
 import hiiragi283.core.api.recipe.viewer.display.HTProgressRecipeDisplay
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeContents
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
@@ -9,6 +8,7 @@ import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
 import hiiragi283.core.support.recipe.base.HTInWorldRecipe
+import hiiragi283.core.support.recipe.viewer.display.HTRecipeDisplayFactories
 import net.minecraft.resources.ResourceLocation
 
 data object HCRecipeDisplayFactories {
@@ -25,16 +25,9 @@ data object HCRecipeDisplayFactories {
     }
 
     @JvmStatic
-    fun charging(holder: HTRecipeHolder<HCChargingRecipe>): HTProgressRecipeDisplay {
-        val (id: ResourceLocation, recipe: HCChargingRecipe) = holder
-        return HTProgressRecipeDisplay(
-            id,
-            HTRecipeContents.create {
-                addInput(recipe.ingredient)
-                addOutput(recipe.result)
-            },
-            HTProgressData.energy(recipe.energy),
-        )
+    fun charging(holder: HTRecipeHolder<HCChargingRecipe>): HTProgressRecipeDisplay = HTRecipeDisplayFactories.progress(holder) {
+        addInput(it.ingredient)
+        addOutput(it.result)
     }
 
     @JvmStatic

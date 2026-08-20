@@ -3,6 +3,7 @@ package hiiragi283.core.api.recipe.base
 import hiiragi283.core.api.recipe.HTRecipePredicate
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.recipe.input.HTSingleFluidRecipeInput
+import hiiragi283.core.api.recipe.input.getItemOrEmpty
 import java.util.function.BiPredicate
 import java.util.function.Predicate
 import net.minecraft.world.item.ItemStack
@@ -19,15 +20,21 @@ data object HTRecipePredicates {
         Predicate<INPUT_A> {
         override fun test(input: INPUT_A): Boolean
 
+        fun getMatchingStack(input: INPUT): INPUT_A
+
         fun getMatchingStack(input: INPUT_A): INPUT_A
     }
 
     interface SingleFluid : SingleInput<HTSingleFluidRecipeInput, FluidStack> {
         override fun matches(input: HTSingleFluidRecipeInput): Boolean = test(input.fluid)
+
+        override fun getMatchingStack(input: HTSingleFluidRecipeInput): FluidStack = getMatchingStack(input.fluid)
     }
 
     interface SingleItem : SingleInput<SingleRecipeInput, ItemStack> {
         override fun matches(input: SingleRecipeInput): Boolean = test(input.item())
+
+        override fun getMatchingStack(input: SingleRecipeInput): ItemStack = getMatchingStack(input.item())
     }
 
     //    Double Input    //
@@ -37,6 +44,8 @@ data object HTRecipePredicates {
         BiPredicate<INPUT_A, INPUT_B> {
         override fun test(first: INPUT_A, second: INPUT_B): Boolean
 
+        fun getMatchingStacks(input: INPUT): Pair<INPUT_A, INPUT_B>
+
         fun getMatchingStacks(first: INPUT_A, second: INPUT_B): Pair<INPUT_A, INPUT_B>
     }
 
@@ -45,10 +54,14 @@ data object HTRecipePredicates {
             val (item: ItemStack, fluid: FluidStack) = input
             return test(item, fluid)
         }
+
+        override fun getMatchingStacks(input: HTItemAndFluidRecipeInput): Pair<ItemStack, FluidStack> = getMatchingStacks(input.item, input.fluid)
     }
 
     interface DoubleItem : DoubleInput<RecipeInput, ItemStack, ItemStack> {
-        override fun matches(input: RecipeInput): Boolean = input.size() >= 2 && test(input.getItem(0), input.getItem(1))
+        override fun matches(input: RecipeInput): Boolean = test(input.getItemOrEmpty(0), input.getItemOrEmpty(1))
+
+        override fun getMatchingStacks(input: RecipeInput): Pair<ItemStack, ItemStack> = getMatchingStacks(input.getItemOrEmpty(0), input.getItemOrEmpty(1))
     }
 
     //    Triple Input    //
@@ -58,10 +71,14 @@ data object HTRecipePredicates {
         TriPredicate<INPUT_A, INPUT_B, INPUT_C> {
         override fun test(first: INPUT_A, second: INPUT_B, third: INPUT_C): Boolean
 
+        fun getMatchingStacks(input: INPUT): Triple<INPUT_A, INPUT_B, INPUT_C>
+
         fun getMatchingStacks(first: INPUT_A, second: INPUT_B, third: INPUT_C): Triple<INPUT_A, INPUT_B, INPUT_C>
     }
 
     interface TripleItem : TripleInput<RecipeInput, ItemStack, ItemStack, ItemStack> {
-        override fun matches(input: RecipeInput): Boolean = input.size() >= 3 && test(input.getItem(0), input.getItem(1), input.getItem(2))
+        override fun matches(input: RecipeInput): Boolean = test(input.getItemOrEmpty(0), input.getItemOrEmpty(1), input.getItemOrEmpty(2))
+
+        override fun getMatchingStacks(input: RecipeInput): Triple<ItemStack, ItemStack, ItemStack> = getMatchingStacks(input.getItemOrEmpty(0), input.getItemOrEmpty(1), input.getItemOrEmpty(2))
     }
 }

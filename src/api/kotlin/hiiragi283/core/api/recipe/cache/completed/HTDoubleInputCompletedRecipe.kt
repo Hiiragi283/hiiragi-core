@@ -1,12 +1,14 @@
 package hiiragi283.core.api.recipe.cache.completed
 
+import hiiragi283.core.api.recipe.HTRecipeFactory
 import hiiragi283.core.api.recipe.base.HTDoubleItemToItemRecipe
 import hiiragi283.core.api.recipe.base.HTItemAndFluidToItemRecipe
+import hiiragi283.core.api.recipe.base.HTProgressRecipe
 import hiiragi283.core.api.recipe.handler.HTInputHandler
 import hiiragi283.core.api.recipe.handler.HTOutputHandler
-import hiiragi283.core.api.recipe.progress.HTProgressData
-import java.util.function.BiFunction
+import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.crafting.RecipeInput
 import net.neoforged.neoforge.fluids.FluidStack
 
 /**
@@ -16,21 +18,22 @@ abstract class HTDoubleInputCompletedRecipe<
     INPUT_A : Any,
     INPUT_B : Any,
     OUTPUT : Any,
-    RECIPE : BiFunction<INPUT_A, INPUT_B, OUTPUT>,
+    INPUT : RecipeInput,
+    RECIPE,
     >(
     recipe: RECIPE,
     protected val firstInputHandler: HTInputHandler<INPUT_A>,
     protected val secondInputHandler: HTInputHandler<INPUT_B>,
     protected val outputHandler: HTOutputHandler<OUTPUT>,
-    private val amountGetter: (RECIPE, INPUT_A, INPUT_B) -> Pair<INPUT_A, INPUT_B>,
-) : HTCompletedRecipe.WithProgress<RECIPE>(recipe) {
-    private val output: OUTPUT = recipe.apply(firstInputHandler.getStack(), secondInputHandler.getStack())
+    private val amountGetter: (RECIPE, INPUT) -> Pair<INPUT_A, INPUT_B>,
+) : HTCompletedRecipe.WithProgress<INPUT, RECIPE>(recipe) where RECIPE : HTRecipeFactory<INPUT, OUTPUT>, RECIPE : HTProgressRecipe<INPUT> {
+    private val output: OUTPUT = recipe.assemble(input)
 
     override fun canComplete(): Boolean = outputHandler.canInsert(output)
 
     override fun complete() {
         outputHandler.insert(output)
-        amountGetter(recipe, firstInputHandler.getStack(), secondInputHandler.getStack()).let { (first: INPUT_A, second: INPUT_B) ->
+        amountGetter(recipe, input).let { (first: INPUT_A, second: INPUT_B) ->
             firstInputHandler.consume(first)
             secondInputHandler.consume(second)
         }
@@ -41,14 +44,14 @@ abstract class HTDoubleInputCompletedRecipe<
         firstInputHandler: HTInputHandler<ItemStack>,
         secondInputHandler: HTInputHandler<FluidStack>,
         outputHandler: HTOutputHandler<ItemStack>,
-    ) : HTDoubleInputCompletedRecipe<ItemStack, FluidStack, ItemStack, HTItemAndFluidToItemRecipe>(
+    ) : HTDoubleInputCompletedRecipe<ItemStack, FluidStack, ItemStack, HTItemAndFluidRecipeInput, HTItemAndFluidToItemRecipe>(
         recipe,
         firstInputHandler,
         secondInputHandler,
         outputHandler,
         HTItemAndFluidToItemRecipe::getMatchingStacks,
     ) {
-        override fun getProgress(): HTProgressData = recipe.getProgressData(firstInputHandler.getStack(), secondInputHandler.getStack())
+        override fun createInput(): HTItemAndFluidRecipeInput = HTItemAndFluidRecipeInput(firstInputHandler.getStack(), secondInputHandler.getStack())
     }
 
     class DoubleItem(
@@ -56,13 +59,13 @@ abstract class HTDoubleInputCompletedRecipe<
         firstInputHandler: HTInputHandler<ItemStack>,
         secondInputHandler: HTInputHandler<ItemStack>,
         outputHandler: HTOutputHandler<ItemStack>,
-    ) : HTDoubleInputCompletedRecipe<ItemStack, ItemStack, ItemStack, HTDoubleItemToItemRecipe>(
+    ) : HTDoubleInputCompletedRecipe<ItemStack, ItemStack, ItemStack, RecipeInput, HTDoubleItemToItemRecipe>(
         recipe,
         firstInputHandler,
         secondInputHandler,
         outputHandler,
         HTDoubleItemToItemRecipe::getMatchingStacks,
     ) {
-        override fun getProgress(): HTProgressData = recipe.getProgressData(firstInputHandler.getStack(), secondInputHandler.getStack())
+        override fun createInput(): RecipeInput = TODO()
     }
 }

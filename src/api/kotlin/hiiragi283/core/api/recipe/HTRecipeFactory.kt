@@ -9,7 +9,7 @@ import net.minecraft.world.item.crafting.RecipeInput
  * @author Hiiragi Tsubasa
  * @since 0.16.0
  */
-interface HTRecipeFactory<INPUT : RecipeInput, OUTPUT : Any> {
+interface HTRecipeFactory<INPUT : RecipeInput, out OUTPUT : Any> {
     /**
      * 指定された[input]から完成品を作成します。
      */

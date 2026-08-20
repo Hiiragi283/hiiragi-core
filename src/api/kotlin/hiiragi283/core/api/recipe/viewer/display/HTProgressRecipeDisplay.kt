@@ -1,7 +1,7 @@
 package hiiragi283.core.api.recipe.viewer.display
 
 import com.mojang.serialization.Codec
-import hiiragi283.core.api.recipe.progress.HTProgressData
+import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import net.minecraft.resources.ResourceLocation
 

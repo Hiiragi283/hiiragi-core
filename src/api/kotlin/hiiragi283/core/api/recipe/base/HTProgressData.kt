@@ -1,4 +1,4 @@
-package hiiragi283.core.api.recipe.progress
+package hiiragi283.core.api.recipe.base
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec

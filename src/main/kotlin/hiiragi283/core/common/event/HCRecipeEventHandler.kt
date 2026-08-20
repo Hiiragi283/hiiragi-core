@@ -18,6 +18,7 @@ import net.minecraft.world.item.EnchantedBookItem
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.crafting.Ingredient
+import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.minecraft.world.item.enchantment.ItemEnchantments
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.AABB
@@ -103,7 +104,7 @@ object HCRecipeEventHandler {
         val level: Level = entity.level()
         val input: ItemStack = entity.item
         val recipe: HTItemToMultiItemRecipe = getCaches(level).crushing.findFirstRecipe(input, level) ?: return
-        val inputAmount: Int = recipe.getMatchingStack(input).count
+        val inputAmount: Int = recipe.getMatchingStack(SingleRecipeInput(input)).count
         val multiplier: Int = input.count / inputAmount
         (0 until multiplier)
             .flatMap { recipe.apply(input) }

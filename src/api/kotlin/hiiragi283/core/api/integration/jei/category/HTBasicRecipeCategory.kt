@@ -7,7 +7,7 @@ import hiiragi283.core.api.gui.HTBounds
 import hiiragi283.core.api.gui.HTGuiAccess
 import hiiragi283.core.api.integration.jei.HTJeiDrawables
 import hiiragi283.core.api.integration.jei.HTJeiPlugin
-import hiiragi283.core.api.recipe.progress.HTProgressData
+import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.times
