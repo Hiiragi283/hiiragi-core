@@ -1,6 +1,6 @@
 package hiiragi283.core.api.registry
 
-import hiiragi283.core.api.item.HTItemLike
+import hiiragi283.core.api.item.HTItemInstanceLike
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.text.Text
 import net.minecraft.core.component.DataComponentPatch
@@ -9,13 +9,15 @@ import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.ItemLike
 
 typealias HTSimpleDeferredItem = HTDeferredItem<Item>
 
 class HTDeferredItem<out ITEM : Item> :
     HTDeferredHolder<Item, ITEM>,
     HTIdLike.Translatable,
-    HTItemLike<ITEM> {
+    ItemLike,
+    HTItemInstanceLike {
     constructor(key: ResourceKey<Item>) : super(key)
 
     constructor(id: ResourceLocation) : super(Registries.ITEM.createKey(id))

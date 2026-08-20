@@ -1,15 +1,13 @@
 package hiiragi283.core.api.serialization.component
 
-import net.minecraft.core.component.DataComponentMap
-
 interface DataComponentSerializable {
-    fun applyComponents(input: DataComponentGetter)
+    fun applyComponents(getter: DataComponentGetter)
 
-    fun collectComponents(builder: DataComponentMap.Builder)
+    fun collectComponents(setter: DataComponentSetter)
 
     interface Empty : DataComponentSerializable {
-        override fun applyComponents(input: DataComponentGetter) {}
+        override fun applyComponents(getter: DataComponentGetter) {}
 
-        override fun collectComponents(builder: DataComponentMap.Builder) {}
+        override fun collectComponents(setter: DataComponentSetter) {}
     }
 }

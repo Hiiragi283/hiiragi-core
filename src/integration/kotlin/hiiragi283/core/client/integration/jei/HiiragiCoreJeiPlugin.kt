@@ -44,7 +44,6 @@ import hiiragi283.core.setup.HCItems
 import hiiragi283.core.support.item.HTPotionBasedItem
 import hiiragi283.core.support.recipe.base.HTBasicItemOrFluidRecipe
 import hiiragi283.core.support.recipe.viewer.display.HTRecipeDisplayFactories
-import hiiragi283.core.util.HCPotionFluidHelper
 import kotlin.streams.asSequence
 import mezz.jei.api.JeiPlugin
 import mezz.jei.api.helpers.IGuiHelper
@@ -62,7 +61,6 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.alchemy.Potion
-import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.level.ItemLike
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.crafting.DataComponentFluidIngredient
@@ -105,8 +103,9 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         HTPhysicalSideHelper
             .filteredLookup(BuiltInRegistries.POTION)
             .listElements()
-            .filter { it != Potions.WATER }
-            .map(HCPotionFluidHelper::createFluid)
+            .map(::BottledPotionContents)
+            .filter { !it.isWater }
+            .map(BottledPotionContents::toFluidStack)
             .toList()
             .let { registration.addExtraIngredients(NeoForgeTypes.FLUID_STACK, it) }
     }
@@ -165,7 +164,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                         potion.getId().modifyPath { "/${HTConst.EMPTYING}/potion/$it" },
                         HTRecipeContents.create {
                             addInput(HTPotionHelper.createPotion(contents))
-                            addOutput(HCPotionFluidHelper.createFluid(contents, 250))
+                            addOutput(contents.toFluidStack(250))
                             addOutput(ItemStack(Items.GLASS_BOTTLE))
                         },
                     )
@@ -203,7 +202,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                                 HTFluidIngredient(
                                     DataComponentFluidIngredient.of(
                                         false,
-                                        HCPotionFluidHelper.createFluid(BottledPotionContents(potion, bottleType)),
+                                        BottledPotionContents(potion, bottleType).toFluidStack(),
                                     ),
                                     amount,
                                 ),

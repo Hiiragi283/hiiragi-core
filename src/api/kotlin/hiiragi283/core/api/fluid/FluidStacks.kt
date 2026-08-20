@@ -16,9 +16,3 @@ fun FluidStack(fluid: Fluid?, amount: Int, patch: DataComponentPatch): FluidStac
     stack.applyComponents(patch)
     return stack
 }
-
-/**
- * @author Hiiragi Tsubasa
- * @since 21.1.0
- */
-fun FluidStack(fluid: HTFluidLike<*>?, amount: Int, patch: DataComponentPatch): FluidStack = FluidStack(fluid?.asFluid(), amount, patch)

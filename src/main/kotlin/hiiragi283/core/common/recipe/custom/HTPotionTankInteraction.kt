@@ -6,7 +6,6 @@ import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.api.recipe.result.HTItemAndFluidResult
-import hiiragi283.core.util.HCPotionFluidHelper
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.neoforged.neoforge.fluids.FluidStack
@@ -31,7 +30,7 @@ data object HTPotionTankInteraction {
             val contents: BottledPotionContents = HTPotionHelper.getContentsFromBottle(input) ?: return HTItemAndFluidResult(FluidStack.EMPTY)
             return HTItemAndFluidResult(
                 ItemStack(Items.GLASS_BOTTLE),
-                HCPotionFluidHelper.createFluid(contents, FLUID_AMOUNT),
+                contents.toFluidStack(FLUID_AMOUNT),
             )
         }
 

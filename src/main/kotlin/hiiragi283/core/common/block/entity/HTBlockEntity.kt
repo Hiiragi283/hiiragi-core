@@ -6,6 +6,7 @@ import hiiragi283.core.api.block.entity.HTBlockEntityComponent
 import hiiragi283.core.api.block.entity.HTOwnedBlockEntity
 import hiiragi283.core.api.block.entity.HTSoundPlayerBlockEntity
 import hiiragi283.core.api.serialization.component.DataComponentGetter
+import hiiragi283.core.api.serialization.component.DataComponentSetter
 import hiiragi283.core.api.serialization.value.HTValueInput
 import hiiragi283.core.api.serialization.value.HTValueOutput
 import hiiragi283.core.api.storage.HTHandlerProvider
@@ -179,7 +180,7 @@ abstract class HTBlockEntity(type: BlockEntityType<*>, pos: BlockPos, state: Blo
         super.collectImplicitComponents(builder)
         // Components
         for (component: HTBlockEntityComponent in components) {
-            component.collectComponents(builder)
+            component.collectComponents(DataComponentSetter(builder))
         }
         // Custom Name
         builder.set(DataComponents.CUSTOM_NAME, this.customName)

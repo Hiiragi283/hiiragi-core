@@ -23,7 +23,6 @@ import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.core.support.recipe.cache.HTCompoundRecipeLookup
 import hiiragi283.core.support.recipe.cache.HTVanillaRecipeLookup
 import hiiragi283.core.support.recipe.cache.fromRecipeType
-import hiiragi283.core.util.HCPotionFluidHelper
 import net.minecraft.core.Holder
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.ItemTags
@@ -77,7 +76,7 @@ data object HCRecipeLookups {
                     HCRecipeBuilders.brewing {
                         itemIngredient { +mix.ingredient }
                         fluidIngredient { +HTPotionFluidIngredient(mix.from()) }
-                        fluidResult { +BottledPotionContents(mix.to()).let(HCPotionFluidHelper::createFluid) }
+                        fluidResult { +BottledPotionContents(mix.to()).toFluidStack() }
                     }.save { _, recipe ->
                         if (recipe.isIncomplete) return@save
                         recipeMap[potionTo.toLike().getId().withSuffix("_$index")] = recipe

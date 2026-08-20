@@ -1,7 +1,7 @@
 package hiiragi283.core.api.item.alchemy
 
 import com.mojang.serialization.Codec
-import hiiragi283.core.api.item.HTSimpleItemLike
+import hiiragi283.core.api.item.HTItemInstanceLike
 import hiiragi283.core.api.item.ItemStack
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
@@ -13,6 +13,7 @@ import net.minecraft.util.StringRepresentable
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
+import net.minecraft.world.level.ItemLike
 
 /**
  * ポーション瓶の種類を管理するクラスです。
@@ -21,7 +22,8 @@ import net.minecraft.world.item.Items
  */
 enum class HTBottleType :
     StringRepresentable,
-    HTSimpleItemLike {
+    ItemLike,
+    HTItemInstanceLike {
     DEFAULT,
     SPLASH,
     LINGERING,

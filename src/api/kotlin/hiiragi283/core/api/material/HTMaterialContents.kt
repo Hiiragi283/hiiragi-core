@@ -2,7 +2,7 @@ package hiiragi283.core.api.material
 
 import hiiragi283.core.api.collection.Table
 import hiiragi283.core.api.collection.forEach
-import hiiragi283.core.api.item.HTSimpleItemLike
+import hiiragi283.core.api.item.HTItemInstanceLike
 import hiiragi283.core.api.item.ItemStack
 import hiiragi283.core.api.material.part.HTPart
 import hiiragi283.core.api.material.part.HTPartKey
@@ -16,6 +16,7 @@ import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
 
 /**
@@ -41,7 +42,8 @@ interface HTMaterialContents<R : Any, out V> : Table<R, HTMaterialKey, V> {
     class BlockEntry(delegate: SimpleBlockItemSupplierWithKey, val isBuiltIn: Boolean) :
         SimpleBlockItemSupplierWithKey by delegate,
         HTIdLike.Translatable,
-        HTSimpleItemLike {
+        ItemLike,
+        HTItemInstanceLike {
         override val translationKey: String get() = get().descriptionId
 
         override fun getText(): Text = get().name
@@ -88,7 +90,8 @@ interface HTMaterialContents<R : Any, out V> : Table<R, HTMaterialKey, V> {
     class ItemEntry(delegate: SimpleSupplierWithKey<Item>, val isBuiltIn: Boolean) :
         SimpleSupplierWithKey<Item> by delegate,
         HTIdLike.Translatable,
-        HTSimpleItemLike {
+        ItemLike,
+        HTItemInstanceLike {
         override val translationKey: String get() = get().descriptionId
 
         override fun getText(): Text = get().description
