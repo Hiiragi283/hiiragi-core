@@ -1,23 +1,28 @@
 package hiiragi283.core.api.item.alchemy
 
-import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.data.buildDataPatch
 import hiiragi283.core.api.item.createItemStack
+import hiiragi283.core.api.serialization.component.DataComponentSetter
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
 import hiiragi283.core.api.storage.fluid.toResource
 import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.storage.item.toResource
+import hiiragi283.core.api.util.flatMap
+import hiiragi283.core.api.util.kotlin
 import java.util.Optional
-import kotlin.jvm.optionals.getOrNull
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentHolder
+import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.core.component.DataComponents
 import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.alchemy.Potion
 import net.minecraft.world.item.alchemy.PotionContents
+import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.level.ItemLike
-import net.neoforged.neoforge.common.MutableDataComponentHolder
+import net.minecraft.world.level.material.Fluid
+import net.neoforged.neoforge.common.Tags
 import net.neoforged.neoforge.fluids.FluidStack
 
 /**
@@ -36,20 +41,13 @@ data object HTPotionHelper {
     fun getPotion(holder: DataComponentHolder): PotionContents = holder.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY)
 
     /**
-     * @since 0.14.0
-     */
-    @JvmStatic
-    fun setPotion(holder: MutableDataComponentHolder, contents: PotionContents?) {
-        holder.set(DataComponents.POTION_CONTENTS, contents)
-    }
-
-    /**
      * 指定した[holder]からポーションのMod IDを取得します。
      * @since 0.11.0
      */
     @JvmStatic
     fun getPotionModId(holder: DataComponentHolder): String? = getPotion(holder)
         .potion()
+        .kotlin
         .flatMap(Holder<Potion>::unwrapKey)
         .map(ResourceKey<Potion>::location)
         .map(ResourceLocation::getNamespace)
@@ -73,13 +71,6 @@ data object HTPotionHelper {
     }
 
     //    ItemStack    //
-
-    /**
-     * 指定した[contents]からポーションの[ItemStack]を作成します。
-     * @since 0.11.0
-     */
-    @JvmStatic
-    fun createPotion(contents: BottledPotionContents): ItemStack = createPotion(contents.bottleType, contents.contents)
 
     /**
      * 指定した引数からポーションの[ItemStack]を作成します。
@@ -113,7 +104,11 @@ data object HTPotionHelper {
      * @since 0.14.0
      */
     @JvmStatic
-    fun getContents(resource: HTItemResourceType): BottledPotionContents? = HiiragiCoreAccess.INSTANCE.getContents(resource)
+    fun getContents(resource: HTItemResourceType): BottledPotionContents? {
+        val bottleType: HTBottleType = HTPotionFluidManager.Handler.DEFAULT[resource] ?: return null
+        val contents: PotionContents = getPotion(resource)
+        return BottledPotionContents(contents, bottleType)
+    }
 
     /**
      * 指定した[stack]から[BottledPotionContents]を取得します。
@@ -135,14 +130,13 @@ data object HTPotionHelper {
         return BottledPotionContents(contents, bottleType)
     }
 
-    /**
-     * 指定した[stack]に[contents]を設定します。
-     * @since 0.14.0
-     */
     @JvmStatic
-    fun setContents(stack: ItemStack, contents: BottledPotionContents): ItemStack {
-        HiiragiCoreAccess.INSTANCE.setContents(stack, contents)
-        return stack
+    fun createItemPatch(contents: BottledPotionContents): DataComponentPatch = buildDataPatch { fillItemPatch(DataComponentSetter(this), contents) }
+
+    @JvmStatic
+    fun fillItemPatch(setter: DataComponentSetter, contents: BottledPotionContents) {
+        setter[DataComponents.POTION_CONTENTS] = contents.contents
+        HTPotionFluidManager.Handler.DEFAULT[setter] = contents.bottleType
     }
 
     //    FluidStack    //
@@ -161,15 +155,22 @@ data object HTPotionHelper {
      * @since 0.14.0
      */
     @JvmStatic
-    fun getContents(resource: HTFluidResourceType): BottledPotionContents? = HiiragiCoreAccess.INSTANCE.getContents(resource)
+    fun getContents(resource: HTFluidResourceType): BottledPotionContents? {
+        val handler: HTPotionFluidManager.Handler = when {
+            resource.isOf(Tags.Fluids.WATER) -> return BottledPotionContents(Potions.WATER)
+            else -> HTPotionFluidManager.getHandlerOrDefault(resource.typeHolder().value())
+        }
+        val bottleType: HTBottleType = handler[resource] ?: return null
+        val contents: PotionContents = getPotion(resource)
+        return BottledPotionContents(contents, bottleType)
+    }
 
-    /**
-     * 指定した[stack]に[contents]を設定します。
-     * @since 0.11.0
-     */
     @JvmStatic
-    fun setContents(stack: FluidStack, contents: BottledPotionContents): FluidStack {
-        HiiragiCoreAccess.INSTANCE.setContents(stack, contents)
-        return stack
+    fun createFluidPatch(fluid: Fluid, contents: BottledPotionContents): DataComponentPatch = buildDataPatch { fillFluidPatch(fluid, DataComponentSetter(this), contents) }
+
+    @JvmStatic
+    fun fillFluidPatch(fluid: Fluid, setter: DataComponentSetter, contents: BottledPotionContents) {
+        setter[DataComponents.POTION_CONTENTS] = contents.contents
+        HTPotionFluidManager.getHandlerOrDefault(fluid)[setter] = contents.bottleType
     }
 }

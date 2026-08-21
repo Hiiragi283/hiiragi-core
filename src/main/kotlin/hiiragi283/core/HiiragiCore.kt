@@ -16,7 +16,6 @@ import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.storage.fluid.HTBasicItemFluidTank
 import hiiragi283.core.common.storage.fluid.HTExperienceTomeFluidTank
 import hiiragi283.core.config.HCConfig
-import hiiragi283.core.internal.HiiragiCoreAccessImpl
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCEntityTypes
@@ -85,7 +84,7 @@ data object HiiragiCore : HTCommonMod() {
 
     private fun registerPotionHandlers() {
         // Potion Fluid
-        HTPotionFluidManager.register(HCFluids.POTION.get(), HiiragiCoreAccessImpl.DEFAULT_POTION_HANDLER)
+        HTPotionFluidManager.register(HCFluids.POTION.get(), HTPotionFluidManager.Handler.DEFAULT)
     }
 
     override fun registerCapabilities(helper: CapabilityHelper) {

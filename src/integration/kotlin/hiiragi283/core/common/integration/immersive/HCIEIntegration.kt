@@ -5,10 +5,10 @@ import blusunrize.immersiveengineering.common.register.IEDataComponents
 import blusunrize.immersiveengineering.common.register.IEFluids
 import hiiragi283.core.api.item.alchemy.HTBottleType
 import hiiragi283.core.api.item.alchemy.HTPotionFluidManager
-import net.minecraft.core.component.DataComponentHolder
+import hiiragi283.core.api.serialization.component.DataComponentGetter
+import hiiragi283.core.api.serialization.component.DataComponentSetter
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
-import net.neoforged.neoforge.common.MutableDataComponentHolder
 
 data object HCIEIntegration {
     //    Setup    //
@@ -24,22 +24,19 @@ data object HCIEIntegration {
             HTPotionFluidManager.register(
                 IEFluids.POTION.get(),
                 object : HTPotionFluidManager.Handler {
-                    override fun get(holder: DataComponentHolder): HTBottleType? = when (holder.get(IEDataComponents.POTION_BOTTLE_TYPE)) {
+                    override fun get(getter: DataComponentGetter): HTBottleType? = when (getter.get(IEDataComponents.POTION_BOTTLE_TYPE.get())) {
                         PotionFluid.PotionBottleType.REGULAR -> HTBottleType.DEFAULT
                         PotionFluid.PotionBottleType.SPLASH -> HTBottleType.SPLASH
                         PotionFluid.PotionBottleType.LINGERING -> HTBottleType.LINGERING
                         else -> null
                     }
 
-                    override fun set(holder: MutableDataComponentHolder, bottleType: HTBottleType) {
-                        holder.set(
-                            IEDataComponents.POTION_BOTTLE_TYPE,
-                            when (bottleType) {
-                                HTBottleType.DEFAULT -> PotionFluid.PotionBottleType.REGULAR
-                                HTBottleType.SPLASH -> PotionFluid.PotionBottleType.SPLASH
-                                HTBottleType.LINGERING -> PotionFluid.PotionBottleType.LINGERING
-                            },
-                        )
+                    override fun set(setter: DataComponentSetter, bottleType: HTBottleType) {
+                        setter[IEDataComponents.POTION_BOTTLE_TYPE.get()] = when (bottleType) {
+                            HTBottleType.DEFAULT -> PotionFluid.PotionBottleType.REGULAR
+                            HTBottleType.SPLASH -> PotionFluid.PotionBottleType.SPLASH
+                            HTBottleType.LINGERING -> PotionFluid.PotionBottleType.LINGERING
+                        }
                     }
                 },
             )

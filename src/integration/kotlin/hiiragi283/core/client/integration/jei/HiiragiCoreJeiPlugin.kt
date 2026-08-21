@@ -163,7 +163,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
                     HTRecipeDisplay.Simple(
                         potion.getId().modifyPath { "/${HTConst.EMPTYING}/potion/$it" },
                         HTRecipeContents.create {
-                            addInput(HTPotionHelper.createPotion(contents))
+                            addInput(contents.toBottleItem())
                             addOutput(contents.toFluidStack(250))
                             addOutput(ItemStack(Items.GLASS_BOTTLE))
                         },

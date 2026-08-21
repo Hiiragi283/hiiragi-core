@@ -1,7 +1,5 @@
 package hiiragi283.core.api
 
-import hiiragi283.core.api.item.alchemy.BottledPotionContents
-import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
@@ -12,8 +10,6 @@ import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.registry.getResult
 import hiiragi283.core.api.registry.lookupResult
 import hiiragi283.core.api.resource.SimpleSupplierWithKey
-import hiiragi283.core.api.storage.fluid.HTFluidResourceType
-import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.util.HTTextResult
 import hiiragi283.core.api.util.flatMap
 import hiiragi283.core.api.util.toTextResult
@@ -26,11 +22,9 @@ import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeType
-import net.neoforged.neoforge.fluids.FluidStack
 
 /**
  * モジュールをまたいで実装する要素をまとめたインターフェースです。
@@ -100,27 +94,6 @@ abstract class HiiragiCoreAccess {
     fun getMaterialItem(part: HTPartKey, key: HTMaterialKey): HTMaterialContents.ItemEntry? = existingContents.items[part, key] ?: registeredContents.items[part, key]
 
     fun getMaterialBlockOrItem(part: HTPartKey, key: HTMaterialKey): HTMaterialContents.ItemEntry? = existingContents.getBlockOrItem(part, key) ?: registeredContents.getBlockOrItem(part, key)
-
-    //    Potion    //
-
-    /**
-     * 指定した[resource]から[BottledPotionContents]を取得します。
-     * @return 取得できなかった場合は`null`
-     * @since 0.11.0
-     * @see HTPotionHelper.getContents
-     */
-    abstract fun getContents(resource: HTFluidResourceType): BottledPotionContents?
-
-    abstract fun getContents(resource: HTItemResourceType): BottledPotionContents?
-
-    /**
-     * 指定した[stack]に[BottledPotionContents]を設定します。
-     * @since 0.11.0
-     * @see HTPotionHelper.setContents
-     */
-    abstract fun setContents(stack: FluidStack, contents: BottledPotionContents)
-
-    abstract fun setContents(stack: ItemStack, contents: BottledPotionContents)
 
     //    Tag    //
 

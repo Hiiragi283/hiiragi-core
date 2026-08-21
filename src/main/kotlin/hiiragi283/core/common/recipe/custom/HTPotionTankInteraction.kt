@@ -44,7 +44,7 @@ data object HTPotionTankInteraction {
 
         override fun apply(first: ItemStack, second: FluidStack): ItemStack = HTPotionHelper
             .getContents(second)
-            ?.let(HTPotionHelper::createPotion)
+            ?.toBottleItem()
             ?: ItemStack.EMPTY
 
         override fun getMatchingStacks(first: ItemStack, second: FluidStack): Pair<ItemStack, FluidStack> = first.copyWithCount(1) to second.copyWithAmount(FLUID_AMOUNT)

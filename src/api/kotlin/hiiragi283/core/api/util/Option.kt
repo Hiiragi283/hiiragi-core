@@ -225,3 +225,7 @@ val <T : Any> Optional<T>.kotlin: Option<T> get() = this.map { it.some() }.orEls
  * @since 21.1.0
  */
 val <T : Any> Option<T>.java: Optional<T> get() = this.fold({ Optional.empty() }, { Optional.of(it) })
+
+fun <T : Any> Option<Optional<out T>>.flatten(): Option<T> = this.flatMap { it.kotlin }
+
+fun <T : Any, R : Any> Option<T>.flatMap(transform: (T) -> Optional<out R>): Option<R> = this.map(transform).flatten()

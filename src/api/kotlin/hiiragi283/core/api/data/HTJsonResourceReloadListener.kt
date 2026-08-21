@@ -6,9 +6,9 @@ import com.google.gson.JsonElement
 import com.mojang.serialization.Codec
 import com.mojang.serialization.Decoder
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.util.identity
+import hiiragi283.core.api.util.flatten
+import hiiragi283.core.api.util.kotlin
 import java.util.Optional
-import kotlin.jvm.optionals.getOrNull
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener
@@ -49,7 +49,8 @@ class HTJsonResourceReloadListener<T : Any>(directory: String, codec: Codec<T>, 
                             id,
                             it,
                         )
-                    }.flatMap(identity())
+                    }.kotlin
+                    .flatten()
                     .getOrNull()
                     ?.let { id to it }
             }.toMap()
