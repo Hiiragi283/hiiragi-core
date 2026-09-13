@@ -1,10 +1,8 @@
 package hiiragi283.core.api.recipe.base
 
-import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.serialization.codec.HTCodecs
-import hiiragi283.core.api.serialization.codec.convert
 import hiiragi283.core.api.text.HTCommonTranslation
 import hiiragi283.core.api.text.HTHasText
 import hiiragi283.core.api.text.Text
@@ -19,9 +17,8 @@ import hiiragi283.core.api.util.unwrap
 sealed interface HTProgressData : HTHasText {
     companion object {
         @JvmField
-        val CODEC: MapCodec<HTProgressData> = Codec
+        val CODEC: MapCodec<HTProgressData> = HTCodecs
             .mapEither(Time.CODEC, Energy.CODEC)
-            .convert()
             .xmap(Either<Time, Energy>::unwrap) { progressData: HTProgressData ->
                 when (progressData) {
                     is Energy -> Either.Right(progressData)

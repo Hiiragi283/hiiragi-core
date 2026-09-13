@@ -7,6 +7,7 @@ import hiiragi283.core.api.recipe.base.HTProgressRecipe
 import hiiragi283.core.api.recipe.handler.HTInputHandler
 import hiiragi283.core.api.recipe.handler.HTOutputHandler
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
+import hiiragi283.core.api.recipe.input.HTItemListRecipeInput
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeInput
 import net.neoforged.neoforge.fluids.FluidStack
@@ -66,6 +67,6 @@ abstract class HTDoubleInputCompletedRecipe<
         outputHandler,
         HTDoubleItemToItemRecipe::getMatchingStacks,
     ) {
-        override fun createInput(): RecipeInput = TODO()
+        override fun createInput(): RecipeInput = HTItemListRecipeInput(firstInputHandler.getStack(), secondInputHandler.getStack())
     }
 }

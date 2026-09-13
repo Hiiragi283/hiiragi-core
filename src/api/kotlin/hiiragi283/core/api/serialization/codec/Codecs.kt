@@ -2,7 +2,6 @@ package hiiragi283.core.api.serialization.codec
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
-import hiiragi283.core.api.util.DFUEither
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.Option
 import hiiragi283.core.api.util.java
@@ -54,21 +53,6 @@ fun <A : Any> Codec<A>.listOrElement(min: Int, max: Int): Codec<List<A>> = HTCod
     { either: Either<List<A>, A> -> either.map(::listOf).unwrap() },
     { list: List<A> -> list.singleOrNull()?.right() ?: list.left() },
 )
-
-//    Set    //
-
-/**
- * この[Codec][this]を[Set]の[Codec]に変換します。
- * @return [Set]の[Codec]
- * @author Hiiragi Tsubasa
- * @since 0.16.0
- */
-fun <A : Any> Codec<List<A>>.setOf(): Codec<Set<A>> = this.xmap(List<A>::toSet, Set<A>::toList)
-
-//    Either    //
-
-@JvmName("convertToEither")
-fun <A, B> MapCodec<DFUEither<A, B>>.convert(): MapCodec<Either<A, B>> = this.xmap({ it.kotlin }, { it.java })
 
 //    Option    //
 

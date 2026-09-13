@@ -42,6 +42,18 @@ sealed class Ior<out A, out B> {
         }
 
         /**
+         * 指定された[pair]を[Ior]に変換します。
+         */
+        @JvmStatic
+        fun <A, B> fromPair(pair: Pair<A, B>): Both<A, B> = Both(pair.first, pair.second)
+
+        /**
+         * 指定された[either]を[Ior]に変換します。
+         */
+        @JvmStatic
+        fun <A, B> fromEither(either: Either<A, B>): Ior<A, B> = either.fold({ Left(it) }, { Right(it) })
+
+        /**
          * 指定された[left]と[right]を[Ior]に変換します。
          */
         @JvmStatic

@@ -2,7 +2,6 @@ package hiiragi283.core.api.recipe.base
 
 import com.mojang.datafixers.util.Function3
 import hiiragi283.core.api.recipe.HTRecipeFactory
-import hiiragi283.core.api.recipe.input.HTFluidRecipeInput
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.recipe.input.HTSingleFluidRecipeInput
 import hiiragi283.core.api.recipe.input.getItemOrEmpty
@@ -64,14 +63,6 @@ data object HTRecipeFactories {
         HTRecipeFactory<INPUT, OUTPUT>,
         Function3<INPUT_A, INPUT_B, INPUT_C, OUTPUT> {
         override fun apply(first: INPUT_A, second: INPUT_B, third: INPUT_C): OUTPUT
-    }
-
-    fun interface ItemAndDoubleFluid<INPUT : HTFluidRecipeInput, OUTPUT : Any> : TripleInput<INPUT, ItemStack, FluidStack, FluidStack, OUTPUT> {
-        override fun assemble(input: INPUT): OUTPUT = TODO("Not yet implemented")
-    }
-
-    fun interface DoubleItemAndFluid<INPUT : HTFluidRecipeInput, OUTPUT : Any> : TripleInput<INPUT, ItemStack, ItemStack, FluidStack, OUTPUT> {
-        override fun assemble(input: INPUT): OUTPUT = TODO("Not yet implemented")
     }
 
     /**
