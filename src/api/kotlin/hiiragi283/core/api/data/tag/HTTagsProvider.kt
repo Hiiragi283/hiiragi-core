@@ -30,6 +30,17 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper
  * @since 21.1.0
  */
 interface HTTagsProvider<T : Any> {
+    companion object {
+        /**
+         * タグの生成時に使用されるソーター
+         */
+        @JvmField
+        val TAG_ENTRY_COMPARATOR: Comparator<TagEntry> = Comparator
+            .comparing(TagEntry::isRequired)
+            .thenComparing(TagEntry::isTag, Comparator.reverseOrder())
+            .thenComparing(TagEntry::getId)
+    }
+
     /**
      * レジストリのキー
      */
@@ -87,7 +98,7 @@ interface HTTagsProvider<T : Any> {
             }
         }
 
-        private val entryCache = SetMultiMap.Builder<TagKey<T>, TagEntry>()
+        private val entryCache = SetMultiMap.SortedBuilder<TagKey<T>, TagEntry>(TAG_ENTRY_COMPARATOR)
 
         override fun builder(tagKey: TagKey<T>): HTTagBuilder<T> = HTTagBuilder { entry: TagEntry -> entryCache.put(tagKey, entry) }
 
@@ -119,18 +130,7 @@ interface HTTagsProvider<T : Any> {
         modId: String,
     ) : TagsProvider<T>(output, registryKey, lookupProvider, modId, fileHelper),
         HTTagsProvider<T> {
-        companion object {
-            /**
-             * タグの生成時に使用されるソーター
-             */
-            @JvmField
-            val COMPARATOR: Comparator<TagEntry> = Comparator
-                .comparing(TagEntry::isRequired)
-                .thenComparing(TagEntry::isTag, Comparator.reverseOrder())
-                .thenComparing(TagEntry::getId)
-        }
-
-        private val entryCache = SetMultiMap.Builder<TagKey<T>, TagEntry>()
+        private val entryCache = SetMultiMap.SortedBuilder<TagKey<T>, TagEntry>(TAG_ENTRY_COMPARATOR)
 
         final override fun builder(tagKey: TagKey<T>): HTTagBuilder<T> = HTTagBuilder { entry: TagEntry -> entryCache.put(tagKey, entry) }
 
@@ -141,7 +141,6 @@ interface HTTagsProvider<T : Any> {
 
             entryCache.build().asMap().forEach { (tagKey: TagKey<T>, entries: Collection<TagEntry>) ->
                 entries
-                    .sortedWith(COMPARATOR)
                     .distinctBy(TagEntry::toString)
                     .forEach { entry: TagEntry -> getOrCreateRawBuilder(tagKey).add(entry) }
             }

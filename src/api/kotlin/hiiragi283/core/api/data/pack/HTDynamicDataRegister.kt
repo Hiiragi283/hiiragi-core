@@ -52,9 +52,7 @@ data object HTDynamicDataRegister : HTRecipeProviderContext() {
      */
     @JvmStatic
     fun addToData(id: ResourceLocation, json: JsonElement) {
-        val fixedId: ResourceLocation = id.withSuffix(".json")
-        LOGGER.debug("Added dynamic data at {}", fixedId)
-        HTDynamicDatapack.addToData(fixedId, json.toString().toByteArray())
+        HTDynamicDatapack.addToData(id.withSuffix(".json"), json.toString().toByteArray())
     }
 
     /**

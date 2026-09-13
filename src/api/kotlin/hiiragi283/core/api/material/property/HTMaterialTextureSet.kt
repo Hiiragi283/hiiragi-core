@@ -1,7 +1,7 @@
 package hiiragi283.core.api.material.property
 
 import hiiragi283.core.api.HiiragiCoreAPI
-import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.HTPartKey
 import net.minecraft.resources.ResourceLocation
 
 /**
@@ -27,5 +27,5 @@ class HTMaterialTextureSet(val name: String, val parent: HTMaterialTextureSet?) 
         val MYSTICAL = HTMaterialTextureSet("mystical", SHINE)
     }
 
-    operator fun get(part: HTPartLike): ResourceLocation = parent?.get(part) ?: HiiragiCoreAPI.id(name, part.asPartName())
+    operator fun get(part: HTPartKey): ResourceLocation = parent?.get(part) ?: HiiragiCoreAPI.id(name, part.name)
 }

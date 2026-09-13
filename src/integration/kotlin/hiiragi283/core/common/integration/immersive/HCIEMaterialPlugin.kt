@@ -37,7 +37,7 @@ data object HCIEMaterialPlugin : HTMaterialPlugin {
     override fun getId(): ResourceLocation = HCIConstants.IMMERSIVE.toId("material_plugin", HiiragiCoreAPI.MOD_ID)
 
     override fun registerPart(registrar: HTMaterialPlugin.PartRegistrar) {
-        registrar.register("sheetmetal", "%s_sheetmetal") {
+        registrar.register(HCIntegrationParts.SHEETMETAL, "%s_sheetmetal") {
             put(HTPartPropertyKeys.ITEM_SCALE) { base: Fraction, _ -> base * 4 }
             put(HTPartPropertyKeys.TAG_PREFIX, HCIntegrationTagPrefixes.SHEETMETAL)
         }

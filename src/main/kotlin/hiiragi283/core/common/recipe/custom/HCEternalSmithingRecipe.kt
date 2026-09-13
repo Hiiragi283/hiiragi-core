@@ -1,4 +1,4 @@
-package hiiragi283.core.common.crafting
+package hiiragi283.core.common.recipe.custom
 
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.common.material.CommonMaterialKeys

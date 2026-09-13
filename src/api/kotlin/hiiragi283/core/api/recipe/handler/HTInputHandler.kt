@@ -12,5 +12,8 @@ interface HTInputHandler<STACK : Any> {
 
     fun consume(amount: Int)
 
+    /**
+     * @since 21.1.0
+     */
     fun consume(stack: STACK)
 }

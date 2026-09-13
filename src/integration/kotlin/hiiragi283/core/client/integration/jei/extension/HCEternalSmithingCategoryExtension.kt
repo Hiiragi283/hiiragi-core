@@ -1,7 +1,7 @@
 package hiiragi283.core.client.integration.jei.extension
 
 import hiiragi283.core.api.util.kotlin
-import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
+import hiiragi283.core.common.recipe.custom.HCEternalSmithingRecipe
 import hiiragi283.core.setup.HCItems
 import mezz.jei.api.gui.builder.IIngredientAcceptor
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable

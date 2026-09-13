@@ -1,95 +1,83 @@
-package hiiragi283.core.client.data
+package hiiragi283.core.common.data
 
+import com.mojang.blaze3d.platform.NativeImage
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.HiiragiCoreAccess
+import hiiragi283.core.api.data.pack.HTDynamicResourceRegister
 import hiiragi283.core.api.data.texture.HTTextureUtil
 import hiiragi283.core.api.item.tool.HTToolType
+import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.columnPart
 import hiiragi283.core.api.material.part.HTPart
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialPropertyKeys
 import hiiragi283.core.api.material.property.HTMaterialTextureSet
-import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.itemId
-import hiiragi283.core.api.resource.vanillaId
 import kotlin.collections.iterator
-import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceGenTask
-import net.mehvahdjukaar.moonlight.api.resources.pack.ResourceSink
-import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
 
-data object HCMaterialTextureProvider : ResourceGenTask {
-    private lateinit var lavaTexture: TextureImage
-
-    override fun accept(manager: ResourceManager, sink: ResourceSink) {
+data object HCMaterialTextureProvider {
+    @JvmStatic
+    fun reload(manager: ResourceManager) {
         HTTextureUtil.templatePalette = HTTextureUtil.getOrCreateColors(HiiragiCoreAPI.id("template"), manager).getOrThrow()
-        lavaTexture = TextureImage.open(manager, vanillaId(HTConst.BLOCK, "lava_still"))
 
         val contents: HTMaterialAccess = HiiragiCoreAccess.INSTANCE.registeredContents
-        material(manager, sink, HTConst.BLOCK, contents.blocks::column)
-        material(manager, sink, HTConst.ITEM, contents.items::column)
-        tool(manager, sink)
-        // molten(manager, sink)
+        material(manager, HTConst.BLOCK, contents.blocks::columnPart)
+        material(manager, HTConst.ITEM, contents.items::columnPart)
+        tool(manager)
+        // molten(manager)
     }
 
     @JvmStatic
-    private inline fun <T : HTIdLike> material(
-        manager: ResourceManager,
-        sink: ResourceSink,
-        pathPrefix: String,
-        factory: (HTMaterialKey) -> Map<HTPart, T>,
-    ) {
+    private inline fun <T : HTIdLike> material(manager: ResourceManager, pathPrefix: String, factory: (HTMaterialKey) -> Sequence<Pair<HTPart, T>>) {
         // すべての素材に対してテクスチャの生成を試みる
-        for ((key: HTMaterialKey, entry: HTPropertyGetter) in HTMaterialManager.getInstance()) {
+        for (material: HTMaterial in HTMaterial.getManager()) {
+            val key: HTMaterialKey = material.key
             // 生成対象がない場合はパス
-            val partMap: Map<HTPart, T> = factory(key)
-            if (partMap.isEmpty()) continue
+            val partMap: Sequence<Pair<HTPart, T>> = factory(key)
+            if (partMap.none()) continue
             // テクスチャを生成
-            val textureSet: HTMaterialTextureSet = entry.getOrDefault(HTMaterialPropertyKeys.TEXTURE_SET)
-            for (part: HTPart in partMap.keys) {
+            val textureSet: HTMaterialTextureSet = material.getOrDefault(HTMaterialPropertyKeys.TEXTURE_SET)
+            for ((part: HTPart, _) in partMap) {
                 if (HTPartPropertyKeys.DISABLE_TEXTURE_GEN in part) continue
                 // パレットを取得
                 val palette: List<Int> = sequence {
                     if (HTPartPropertyKeys.IS_RAW in part) {
-                        yield(entry[HTMaterialPropertyKeys.TEXTURE_COLOR_RAW] ?: key.getId().withPrefix("raw_"))
+                        yield(material[HTMaterialPropertyKeys.TEXTURE_COLOR_RAW] ?: key.getId().withPrefix("raw_"))
                     }
-                    yield(entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId())
+                    yield(material[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId())
                 }.firstNotNullOfOrNull { HTTextureUtil.getOrCreateColors(it, manager).getOrNull() }
                     ?: run {
                         missingPalette(key)
                         continue
                     }
                 // テンプレートを取得
-                val template: TextureImage = getTextureResult(manager, textureSet, part)
-                    .onFailure { HiiragiCoreAPI.LOGGER.error("Failed to get template image for part ${part.name}") }
+                val template: NativeImage = getTextureResult(manager, textureSet, part.key)
+                    .onFailure { HiiragiCoreAPI.LOGGER.error("Failed to get template image for part ${part.key}") }
                     .getOrNull()
                     ?: continue
-                copyAndApplyColor(
-                    sink,
-                    part.createId(key).withPrefix("$pathPrefix/"),
-                    palette,
-                    template,
-                )
+                copyAndApplyColor(part.createId(key).withPrefix("$pathPrefix/"), palette, template)
             }
         }
     }
 
     @JvmStatic
-    private fun tool(manager: ResourceManager, sink: ResourceSink) {
+    private fun tool(manager: ResourceManager) {
         // すべての素材に対してテクスチャの生成を試みる
-        for ((key: HTMaterialKey, entry: HTPropertyGetter) in HTMaterialManager.getInstance()) {
-            if (HTMaterialPropertyKeys.TOOL_MATERIAL !in entry) continue
-            val toolMap: Map<HTToolType, HTIdLike> = HiiragiCoreAccess.INSTANCE.registeredContents.tools
-                .column(key)
+        for (material: HTMaterial in HTMaterial.getManager()) {
+            val key: HTMaterialKey = material.key
+            if (HTMaterialPropertyKeys.TOOL_MATERIAL !in material) continue
+            val toolMap: Map<HTToolType, HTIdLike> = HiiragiCoreAccess.INSTANCE.registeredContents.tools.column(key)
             if (toolMap.isEmpty()) continue
             // パレットを取得
-            val palette: List<Int> = (entry[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId())
+            val palette: List<Int> = (material[HTMaterialPropertyKeys.TEXTURE_COLOR] ?: key.getId())
                 .let { HTTextureUtil.getOrCreateColors(it, manager).getOrNull() }
                 ?: run {
                     missingPalette(key)
@@ -98,12 +86,12 @@ data object HCMaterialTextureProvider : ResourceGenTask {
             // テンプレートを取得
             for ((toolType: HTToolType, item: HTIdLike) in toolMap) {
                 val toolTypeName: String = toolType.name
-                val textureId: ResourceLocation = HiiragiCoreAPI.id("tool_set", "$toolTypeName.png")
-                val template: TextureImage = runCatching { TextureImage.open(manager, textureId) }
+                val textureId: ResourceLocation = HiiragiCoreAPI.id("textures", "tool_set", "$toolTypeName.png")
+                val template: NativeImage = HTTextureUtil.openImage(manager, textureId)
                     .onFailure { HiiragiCoreAPI.LOGGER.error("Failed to get template image for tool type $toolTypeName") }
                     .getOrNull()
                     ?: continue
-                copyAndApplyColor(sink, item.itemId, palette, template)
+                copyAndApplyColor(item.itemId, palette, template)
             }
         }
     }
@@ -137,36 +125,28 @@ data object HCMaterialTextureProvider : ResourceGenTask {
     }*/
 
     @JvmStatic
-    private fun getTextureResult(manager: ResourceManager, textureSet: HTMaterialTextureSet, part: HTPart): Result<TextureImage> {
-        val id: ResourceLocation = HiiragiCoreAPI.id("material_set", textureSet.name, "${part.name}.png")
-        return runCatching { TextureImage.open(manager, id) }
-            .recoverCatching { throwable: Throwable ->
-                val parentSet: HTMaterialTextureSet = textureSet.parent ?: throw throwable
-                getTextureResult(manager, parentSet, part).getOrThrow()
-            }
-    }
+    private fun getTextureResult(manager: ResourceManager, textureSet: HTMaterialTextureSet, part: HTPartKey): Result<NativeImage> = HTTextureUtil.openImage(manager, HiiragiCoreAPI.id("textures", "material_set", textureSet.name, "${part.name}.png"))
+        .recoverCatching { throwable: Throwable ->
+            val parentSet: HTMaterialTextureSet = textureSet.parent ?: throw throwable
+            getTextureResult(manager, parentSet, part).getOrThrow()
+        }
 
     @JvmStatic
-    private fun copyAndApplyColor(
-        sink: ResourceSink,
-        id: ResourceLocation,
-        palette: List<Int>,
-        template: TextureImage,
-    ) {
-        val image: TextureImage = template.makeCopy()
+    private fun copyAndApplyColor(id: ResourceLocation, palette: List<Int>, template: NativeImage) {
+        val image: NativeImage = HTTextureUtil.copyFrom(template)
         for ((index: Int, pixels: Set<Pair<Int, Int>>) in createTemplate(template)) {
             for ((x: Int, y: Int) in pixels) {
-                image.setPixel(x, y, palette[index])
+                image.setPixelRGBA(x, y, palette[index])
             }
         }
-        sink.addTexture(id, image)
+        HTDynamicResourceRegister.addTexture(id, image)
     }
 
     @JvmStatic
-    private fun createTemplate(image: TextureImage): Map<Int, Set<Pair<Int, Int>>> = buildMap {
-        for (x: Int in (0..<image.imageWidth())) {
-            for (y: Int in (0..<image.imageHeight())) {
-                val index: Int = HTTextureUtil.templatePalette.indexOf(image.getPixel(x, y))
+    private fun createTemplate(image: NativeImage): Map<Int, Set<Pair<Int, Int>>> = buildMap {
+        for (x: Int in (0..<image.width)) {
+            for (y: Int in (0..<image.height)) {
+                val index: Int = HTTextureUtil.templatePalette.indexOf(image.getPixelRGBA(x, y))
                 if (index >= 0) {
                     this[index] = (this[index]?.plus(x to y) ?: setOf(x to y))
                 }

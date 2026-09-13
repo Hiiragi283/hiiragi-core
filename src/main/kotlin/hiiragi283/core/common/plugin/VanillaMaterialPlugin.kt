@@ -7,7 +7,7 @@ import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.item.tool.VanillaToolTypes
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
-import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTExtraOreResultMap
 import hiiragi283.core.api.material.property.HTMaterialLevel
@@ -27,6 +27,7 @@ import hiiragi283.core.api.property.plusAssign
 import hiiragi283.core.api.registry.toBlockLike
 import hiiragi283.core.api.registry.toLike
 import hiiragi283.core.api.resource.vanillaId
+import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
 import net.minecraft.resources.ResourceLocation
@@ -45,7 +46,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
 
     override fun registerExistingBlock(consumer: HTMaterialPlugin.BlockConsumer) {
         @Suppress("DEPRECATION")
-        fun accept(part: HTPartLike, key: HTMaterialKey, block: Block) {
+        fun accept(part: HTPartKey, key: HTMaterialKey, block: Block) {
             consumer.accept(part, key, block.builtInRegistryHolder().toBlockLike())
         }
         // Fuels
@@ -96,7 +97,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
     }
 
     override fun registerExistingItem(consumer: HTMaterialPlugin.ItemConsumer) {
-        fun accept(part: HTPartLike, key: HTMaterialKey, item: Item) {
+        fun accept(part: HTPartKey, key: HTMaterialKey, item: Item) {
             consumer.accept(part, key, item.toLike())
         }
 
@@ -257,7 +258,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
 
     @JvmStatic
     private fun gem(builder: HTMaterialPlugin.MaterialProvider) {
-        val itemSet: Set<HTPartLike> = setOf(CommonParts.DUST, CommonParts.RAW, CommonParts.CRUSHED_ORE)
+        val itemSet: Set<HTPartKey> = setOf(CommonParts.DUST, CommonParts.RAW, CommonParts.CRUSHED_ORE)
         builder.getBuilder(VanillaMaterialKeys.LAPIS).apply {
             setDefaultPart(HTDefaultPart.Prefixed.GEM)
             addItemPrefixes(itemSet)
@@ -468,6 +469,19 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             setTextureSet("mineral")
             put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 15)
         }
+        builder.getBuilder(VanillaMaterialKeys.PAPER).apply {
+            setDefaultPart(HiiragiCoreTags.Items.PAPERS, Items.PAPER.toLike())
+            addItemPrefixes(CommonParts.DUST)
+            put(HTMaterialPropertyKeys.MELTING_POINT, HTMaterialLevel.NONE)
+            this += HTMaterialPropertyKeys.DISABLE_SMELTING
+            put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
+
+            setName("Paper", "紙")
+            addCustomName(CommonParts.DUST, "Paper Pulp", "紙パルプ")
+            setTextureSet("mineral")
+            put(HTMaterialPropertyKeys.TEXTURE_COLOR, HiiragiCoreAPI.id("white"))
+            put(HTMaterialPropertyKeys.FUEL_TIME, 20 * 5)
+        }
         builder.getBuilder(VanillaMaterialKeys.GLASS).apply {
             setDefaultPart(Tags.Items.GLASS_BLOCKS, Items.GLASS.toLike())
             addItemPrefixes(CommonParts.DUST, CommonParts.ROD)
@@ -518,6 +532,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Brick", "レンガ")
+            setTextureSet("mineral", HTMaterialTextureSet.DULL)
         }
         builder.getBuilder(VanillaMaterialKeys.NETHER_BRICK).apply {
             setDefaultPart(Tags.Items.BRICKS_NETHER, Items.NETHER_BRICK.toLike())
@@ -525,6 +540,7 @@ object VanillaMaterialPlugin : HTMaterialPlugin {
             put(HTMaterialPropertyKeys.ORIGIN_MOD_ID, HTConst.MINECRAFT)
 
             setName("Nether Brick", "ネザーレンガ")
+            setTextureSet("mineral", HTMaterialTextureSet.DULL)
         }
     }
 }

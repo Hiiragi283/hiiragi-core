@@ -3,9 +3,9 @@ package hiiragi283.core.api.material.property
 import hiiragi283.core.api.data.lang.HTLangName
 import hiiragi283.core.api.item.tool.HTToolMaterial
 import hiiragi283.core.api.item.tool.HTToolType
+import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.part.HTPartLike
-import hiiragi283.core.api.property.HTPropertyGetter
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.computeIfAbsent
 import hiiragi283.core.api.property.getOrDefault
@@ -14,14 +14,14 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.Item
 import org.apache.commons.lang3.math.Fraction
 
-fun HTPropertyGetter.getDefaultPart(): HTDefaultPart? = this[HTMaterialPropertyKeys.DEFAULT_PART]
+fun HTMaterial.getDefaultPart(): HTDefaultPart? = this[HTMaterialPropertyKeys.DEFAULT_PART]
 
-fun HTPropertyGetter.getDefaultPart(key: HTMaterialKey): TagKey<Item>? = this.getDefaultPart()?.getTag(key)
+fun HTMaterial.getDefaultPart(key: HTMaterialKey): TagKey<Item>? = this.getDefaultPart()?.getTag(key)
 
 /**
  * @since 0.12.0
  */
-fun HTPropertyGetter.getDefaultScale(): Fraction = this.getOrDefault(HTMaterialPropertyKeys.DEFAULT_SCALE)
+fun HTMaterial.getDefaultScale(): Fraction = this.getOrDefault(HTMaterialPropertyKeys.DEFAULT_SCALE)
 
 // Mutable
 
@@ -33,19 +33,19 @@ fun HTPropertyMap.Builder.setDefaultPart(prefixed: HTDefaultPart.Prefixed) {
     this[HTMaterialPropertyKeys.DEFAULT_PART] = prefixed
 }
 
-fun HTPropertyMap.Builder.addBlockPrefixes(vararg parts: HTPartLike) {
+fun HTPropertyMap.Builder.addBlockPrefixes(vararg parts: HTPartKey) {
     this.computeIfAbsent(HTMaterialPropertyKeys.BLOCK_PREFIXES) { it.plus(parts) }
 }
 
-fun HTPropertyMap.Builder.addBlockPrefixes(parts: Set<HTPartLike>) {
+fun HTPropertyMap.Builder.addBlockPrefixes(parts: Set<HTPartKey>) {
     this.computeIfAbsent(HTMaterialPropertyKeys.BLOCK_PREFIXES) { it.plus(parts) }
 }
 
-fun HTPropertyMap.Builder.addItemPrefixes(vararg parts: HTPartLike) {
+fun HTPropertyMap.Builder.addItemPrefixes(vararg parts: HTPartKey) {
     this.computeIfAbsent(HTMaterialPropertyKeys.ITEM_PREFIXES) { it.plus(parts) }
 }
 
-fun HTPropertyMap.Builder.addItemPrefixes(parts: Set<HTPartLike>) {
+fun HTPropertyMap.Builder.addItemPrefixes(parts: Set<HTPartKey>) {
     this.computeIfAbsent(HTMaterialPropertyKeys.ITEM_PREFIXES) { it.plus(parts) }
 }
 
@@ -67,12 +67,12 @@ fun HTPropertyMap.Builder.setName(value: HTLangName) {
     this[HTMaterialPropertyKeys.LANG_NAME] = value
 }
 
-fun HTPropertyMap.Builder.addCustomName(part: HTPartLike, enName: String, jaName: String) {
+fun HTPropertyMap.Builder.addCustomName(part: HTPartKey, enName: String, jaName: String) {
     this.addCustomName(part, HTLangName(enName, jaName))
 }
 
-fun HTPropertyMap.Builder.addCustomName(part: HTPartLike, value: HTLangName) {
-    this.computeIfAbsent(HTMaterialPropertyKeys.CUSTOM_LANG_NAME) { it.plus(part.asPart() to value) }
+fun HTPropertyMap.Builder.addCustomName(part: HTPartKey, value: HTLangName) {
+    this.computeIfAbsent(HTMaterialPropertyKeys.CUSTOM_LANG_NAME) { it.plus(part to value) }
 }
 
 fun HTPropertyMap.Builder.setTextureSet(name: String) {

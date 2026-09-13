@@ -5,12 +5,16 @@ import hiiragi283.core.api.tag.createTagKey
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.Ior
+import hiiragi283.core.api.util.Option
 import hiiragi283.core.api.util.identity
+import hiiragi283.core.api.util.java
+import hiiragi283.core.api.util.kotlin
 import io.netty.buffer.ByteBuf
 import java.util.UUID
 import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.core.UUIDUtil
+import net.minecraft.network.FriendlyByteBuf
 import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.chat.ComponentSerialization
 import net.minecraft.network.codec.ByteBufCodecs
@@ -54,6 +58,35 @@ data object HTStreamCodecs {
     fun <B : ByteBuf, K : Any, V : Any> mapOf(keyCodec: StreamCodec<in B, K>, valueCodec: StreamCodec<in B, V>): StreamCodec<B, Map<K, V>> = ByteBufCodecs.map(::LinkedHashMap, keyCodec, valueCodec)
 
     /**
+     * [Option]でラップされた[StreamCodec]を作成します。
+     */
+    @JvmStatic
+    fun <B : ByteBuf, V : Any> option(codec: StreamCodec<in B, V>): StreamCodec<B, Option<V>> = object : StreamCodec<B, Option<V>> {
+        override fun encode(output: B, value: Option<V>) {
+            FriendlyByteBuf.writeNullable(output, value.getOrNull(), codec)
+        }
+
+        override fun decode(input: B): Option<V> = Option.fromNullable(FriendlyByteBuf.readNullable(input, codec))
+    }
+
+    /**
+     * [Pair]の[StreamCodec]を作成します。
+     * @param BUF パケットのクラス
+     * @param A 左側の値となるクラス
+     * @param B 右側の値となるクラス
+     * @param left 左側の値の[StreamCodec]
+     * @param right 右側の値の[StreamCodec]
+     */
+    @JvmStatic
+    fun <BUF : ByteBuf, A : Any, B : Any> pair(left: StreamCodec<in BUF, A>, right: StreamCodec<in BUF, B>): StreamCodec<BUF, Pair<A, B>> = StreamCodec.composite(
+        left,
+        Pair<A, B>::first,
+        right,
+        Pair<A, B>::second,
+        ::Pair,
+    )
+
+    /**
      * [Either]の[StreamCodec]を作成します。
      * @param BUF パケットのクラス
      * @param A 左側の値となるクラス
@@ -63,24 +96,7 @@ data object HTStreamCodecs {
      * @see ByteBufCodecs.either
      */
     @JvmStatic
-    fun <BUF : ByteBuf, A : Any, B : Any> either(left: StreamCodec<in BUF, A>, right: StreamCodec<in BUF, B>): StreamCodec<BUF, Either<A, B>> = EitherCodec(left, right)
-
-    private class EitherCodec<B : ByteBuf, L : Any, R : Any>(private val left: StreamCodec<in B, L>, private val right: StreamCodec<in B, R>) : StreamCodec<B, Either<L, R>> {
-        override fun encode(output: B, value: Either<L, R>) {
-            value.onLeft {
-                output.writeBoolean(true)
-                left.encode(output, it)
-            }.onRight {
-                output.writeBoolean(false)
-                right.encode(output, it)
-            }
-        }
-
-        override fun decode(input: B): Either<L, R> = when (input.readBoolean()) {
-            true -> Either.Left(left.decode(input))
-            false -> Either.Right(right.decode(input))
-        }
-    }
+    fun <BUF : ByteBuf, A : Any, B : Any> either(left: StreamCodec<in BUF, A>, right: StreamCodec<in BUF, B>): StreamCodec<BUF, Either<A, B>> = ByteBufCodecs.either(left, right).map({ it.kotlin }, { it.java })
 
     /**
      * [Ior]の[StreamCodec]を作成します。

@@ -6,7 +6,6 @@ import hiiragi283.core.api.gui.widget.HTWidgetHolder
 import hiiragi283.core.api.registry.HTDeferredHolder
 import hiiragi283.core.api.resource.SupplierWithId
 import hiiragi283.core.api.serialization.network.HTStreamCodecs
-import hiiragi283.core.api.serialization.network.asOption
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.util.Option
@@ -37,7 +36,7 @@ data class HTItemWidgetHolderContext(
     MenuProvider {
     companion object {
         @JvmStatic
-        private val HAND_CODEC: StreamCodec<ByteBuf, Option<InteractionHand>> = HTStreamCodecs.enum<InteractionHand>().asOption()
+        private val HAND_CODEC: StreamCodec<ByteBuf, Option<InteractionHand>> = HTStreamCodecs.option(HTStreamCodecs.enum<InteractionHand>())
 
         @JvmField
         val MENU_TYPE: SupplierWithId<MenuType<HTWidgetContainerMenu>> = HTDeferredHolder(Registries.MENU, HiiragiCoreAPI.id(HTConst.ITEM))

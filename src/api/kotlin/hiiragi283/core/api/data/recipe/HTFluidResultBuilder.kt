@@ -1,6 +1,5 @@
 package hiiragi283.core.api.data.recipe
 
-import hiiragi283.core.api.fluid.HTFluidLike
 import hiiragi283.core.api.recipe.result.HTFluidResult
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.registry.VanillaFluidContents
@@ -31,10 +30,6 @@ class HTFluidResultBuilder {
 
     operator fun Fluid.unaryPlus() {
         +FluidStack(this, FluidType.BUCKET_VOLUME)
-    }
-
-    operator fun HTFluidLike<*>.unaryPlus() {
-        +this.toStack()
     }
 
     operator fun HTFluidContent.unaryPlus() {

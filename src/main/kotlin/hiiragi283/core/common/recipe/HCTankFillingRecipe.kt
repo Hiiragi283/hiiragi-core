@@ -5,19 +5,18 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.recipe.HTSerializableRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.api.recipe.ingredient.HTFluidIngredient
-import hiiragi283.core.api.recipe.ingredient.getMatchingStack
+import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.serialization.codec.HTCodecs
 import hiiragi283.core.setup.HCRecipeSerializers
 import hiiragi283.core.setup.HCRecipeTypes
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.RecipeType
 import net.neoforged.neoforge.fluids.FluidStack
 
-class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: HTFluidIngredient, val result: HTItemResult) :
+class HCTankFillingRecipe(val itemIngredient: HTItemIngredient, val fluidIngredient: HTFluidIngredient, val result: HTItemResult) :
     HTTankFillingRecipe,
     HTSerializableRecipe<HTItemAndFluidRecipeInput> {
     companion object {
@@ -25,7 +24,7 @@ class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: H
         val CODEC: MapCodec<HCTankFillingRecipe> = HTCodecs.recordMap { instance ->
             instance
                 .group(
-                    HTCodecs.INGREDIENT.fieldOf(HTConst.ITEM_INGREDIENT).forGetter(HCTankFillingRecipe::itemIngredient),
+                    HTItemIngredient.SINGLE_CODEC.fieldOf(HTConst.ITEM_INGREDIENT).forGetter(HCTankFillingRecipe::itemIngredient),
                     HTFluidIngredient.CODEC.fieldOf(HTConst.FLUID_INGREDIENT).forGetter(HCTankFillingRecipe::fluidIngredient),
                     HTItemResult.CODEC.fieldOf(HTConst.RESULT).forGetter(HCTankFillingRecipe::result),
                 ).apply(instance, ::HCTankFillingRecipe)
@@ -36,7 +35,7 @@ class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: H
 
     override fun testFluid(stack: FluidStack): Boolean = fluidIngredient.test(stack)
 
-    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): ItemStack = result.createOrEmpty()
+    override fun apply(first: ItemStack, second: FluidStack): ItemStack = result.createOrEmpty()
 
     override fun getMatchingStacks(first: ItemStack, second: FluidStack): Pair<ItemStack, FluidStack> = itemIngredient.getMatchingStack(first) to fluidIngredient.getMatchingStack(second)
 
@@ -44,5 +43,5 @@ class HCTankFillingRecipe(val itemIngredient: Ingredient, val fluidIngredient: H
 
     override fun getType(): RecipeType<*> = HCRecipeTypes.FILLING
 
-    override fun isIncomplete(): Boolean = itemIngredient.hasNoItems() || fluidIngredient.isIncomplete() || result.isIncomplete()
+    override fun isIncomplete(): Boolean = itemIngredient.isIncomplete() || fluidIngredient.isIncomplete() || result.isIncomplete()
 }

@@ -7,8 +7,7 @@ import hiiragi283.core.api.item.tool.HTToolMaterial
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.CommonParts
-import hiiragi283.core.api.material.part.HTPart
-import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.property.HTPropertyKey
 import net.minecraft.resources.ResourceLocation
 import org.apache.commons.lang3.math.Fraction
@@ -39,14 +38,14 @@ data object HTMaterialPropertyKeys {
      * @since 0.7.0
      */
     @JvmField
-    val BLOCK_PREFIXES: HTPropertyKey<Set<HTPartLike>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("block_prefixes"))
+    val BLOCK_PREFIXES: HTPropertyKey<Set<HTPartKey>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("block_prefixes"))
 
     /**
      * 登録する素材アイテムを管理する[プロパティキー][HTPropertyKey]
      * @since 0.7.0
      */
     @JvmField
-    val ITEM_PREFIXES: HTPropertyKey<Set<HTPartLike>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("item_prefixes"))
+    val ITEM_PREFIXES: HTPropertyKey<Set<HTPartKey>> = HTPropertyKey.createSet(HiiragiCoreAPI.id("item_prefixes"))
 
     /**
      * @since 21.1.0
@@ -101,11 +100,11 @@ data object HTMaterialPropertyKeys {
 
     // Processing
     /**
-     * 粉砕後の[部品][HTPartLike]を管理する[プロパティキー][HTPropertyKey]
+     * 粉砕後の[部品][HTPartKey]を管理する[プロパティキー][HTPropertyKey]
      * @since 0.8.0
      */
     @JvmField
-    val CRUSHED_PART: HTPropertyKey<HTPartLike> = HTPropertyKey.create(HiiragiCoreAPI.id("crushed_part"), CommonParts.DUST)
+    val CRUSHED_PART: HTPropertyKey<HTPartKey> = HTPropertyKey.create(HiiragiCoreAPI.id("crushed_part"), CommonParts.DUST)
 
     /**
      * 鉱石粉砕の副産物を管理する[プロパティキー][HTPropertyKey]
@@ -153,11 +152,11 @@ data object HTMaterialPropertyKeys {
     val LANG_NAME: HTPropertyKey<HTLangName?> = createNullable("lang_name")
 
     /**
-     * [部品][HTPart]に依存する[翻訳名][HTLangName]を管理する[プロパティキー][HTPropertyKey]
+     * [部品][HTPartKey]に依存する[翻訳名][HTLangName]を管理する[プロパティキー][HTPropertyKey]
      * @since 0.7.0
      */
     @JvmField
-    val CUSTOM_LANG_NAME: HTPropertyKey<Map<HTPart, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_lang_name"))
+    val CUSTOM_LANG_NAME: HTPropertyKey<Map<HTPartKey, HTLangName>> = HTPropertyKey.createMap(HiiragiCoreAPI.id("custom_lang_name"))
 
     // Texture
     /**

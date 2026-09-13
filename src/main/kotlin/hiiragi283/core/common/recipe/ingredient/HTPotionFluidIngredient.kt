@@ -13,11 +13,8 @@ import net.minecraft.core.Holder
 import net.minecraft.core.HolderSet
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.item.alchemy.Potion
-import net.minecraft.world.item.alchemy.Potions
 import net.minecraft.world.level.material.Fluid
-import net.minecraft.world.level.material.Fluids
 import net.neoforged.neoforge.fluids.FluidStack
-import net.neoforged.neoforge.fluids.FluidType
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 import net.neoforged.neoforge.fluids.crafting.FluidIngredientType
 
@@ -47,25 +44,18 @@ class HTPotionFluidIngredient(val potions: HolderSet<Potion>, val bottleType: HT
 
     override fun test(fluidStack: FluidStack): Boolean {
         val contents: BottledPotionContents = HTPotionHelper.getContents(fluidStack) ?: return false
-        if (contents.bottleType != bottleType) return false
-        return contents.potion?.let(potions::contains) ?: false
+        return contents.bottleType == bottleType && contents.potion?.let(potions::contains) ?: false
     }
 
     override fun generateStacks(): Stream<FluidStack> = HTPotionFluidManager
         .fluidHandlers
         .keys
-        .flatMap { fluid: Holder<Fluid> ->
+        .flatMap { fluid: Fluid ->
             potions
+                .asSequence()
                 .filter { it.value().isEnabled(HTPhysicalSideHelper.getFeatureFlags()) }
-                .map { potion: Holder<Potion> ->
-                    when (potion) {
-                        Potions.WATER -> FluidStack(Fluids.WATER, FluidType.BUCKET_VOLUME)
-                        else -> {
-                            val stack = FluidStack(fluid, FluidType.BUCKET_VOLUME)
-                            HTPotionHelper.setContents(stack, BottledPotionContents(potion))
-                        }
-                    }
-                }
+                .map { BottledPotionContents(it, bottleType) }
+                .map { it.toFluidStack(fluid) }
         }.stream()
 
     override fun isSimple(): Boolean = false

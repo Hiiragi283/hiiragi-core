@@ -3,7 +3,7 @@ package hiiragi283.core.api.plugin
 import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialKey
 import hiiragi283.core.api.material.part.HTPart
-import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.HTPropertyMap
 import hiiragi283.core.api.property.buildPropertyMap
@@ -32,9 +32,11 @@ interface HTMaterialPlugin : HTIdLike {
     fun registerPart(registrar: PartRegistrar) {}
 
     fun interface PartRegistrar {
-        fun register(name: String, idPattern: String, properties: HTPropertyGetter): HTPartLike
+        fun register(key: HTPartKey, idPattern: String, properties: HTPropertyGetter)
 
-        fun register(name: String, idPattern: String, builderAction: HTPropertyMap.Builder.() -> Unit): HTPartLike = register(name, idPattern, buildPropertyMap(builderAction))
+        fun register(key: HTPartKey, idPattern: String, builderAction: HTPropertyMap.Builder.() -> Unit) {
+            register(key, idPattern, buildPropertyMap(builderAction))
+        }
     }
 
     //    Material    //
@@ -45,7 +47,7 @@ interface HTMaterialPlugin : HTIdLike {
     fun registerExistingBlock(consumer: BlockConsumer) {}
 
     fun interface BlockConsumer {
-        fun accept(part: HTPartLike, key: HTMaterialKey, holder: SimpleBlockItemSupplierWithKey)
+        fun accept(part: HTPartKey, key: HTMaterialKey, holder: SimpleBlockItemSupplierWithKey)
     }
 
     /**
@@ -54,7 +56,7 @@ interface HTMaterialPlugin : HTIdLike {
     fun registerExistingItem(consumer: ItemConsumer) {}
 
     fun interface ItemConsumer {
-        fun accept(part: HTPartLike, key: HTMaterialKey, holder: SimpleSupplierWithKey<Item>)
+        fun accept(part: HTPartKey, key: HTMaterialKey, holder: SimpleSupplierWithKey<Item>)
     }
 
     /**

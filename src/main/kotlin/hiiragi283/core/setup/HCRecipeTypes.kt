@@ -3,6 +3,7 @@ package hiiragi283.core.setup
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.recipe.HTRecipeType
+import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
@@ -18,6 +19,9 @@ data object HCRecipeTypes {
     private fun <T : Recipe<*>> create(name: String): HTRecipeType<T> = HTRecipeType<T>(HiiragiCoreAPI.id(name)).also(allTypes::add)
 
     //    Basic    //
+
+    @JvmField
+    val BREWING: HTRecipeType<HCBrewingRecipe> = create(HTConst.BREWING)
 
     @JvmField
     val CHARGING: HTRecipeType<HCChargingRecipe> = create(HTConst.CHARGING)

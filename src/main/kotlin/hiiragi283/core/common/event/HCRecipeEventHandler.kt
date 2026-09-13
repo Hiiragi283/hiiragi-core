@@ -18,6 +18,7 @@ import net.minecraft.world.item.EnchantedBookItem
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.crafting.Ingredient
+import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.minecraft.world.item.enchantment.ItemEnchantments
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.AABB
@@ -80,7 +81,7 @@ object HCRecipeEventHandler {
         if (entity is ItemEntity && entity.isAlive) {
             val input: ItemStack = entity.item
             val recipe: HCChargingRecipe = getCaches(level).charging.findFirstRecipe(input, level) ?: return
-            spawnResults(entity) { recipe.assemble(input) }
+            spawnResults(entity) { recipe.apply(input) }
             entity.discard()
             event.isCanceled = true
         }
@@ -103,10 +104,10 @@ object HCRecipeEventHandler {
         val level: Level = entity.level()
         val input: ItemStack = entity.item
         val recipe: HTItemToMultiItemRecipe = getCaches(level).crushing.findFirstRecipe(input, level) ?: return
-        val inputAmount: Int = recipe.getMatchingStack(input).count
+        val inputAmount: Int = recipe.getMatchingStack(SingleRecipeInput(input)).count
         val multiplier: Int = input.count / inputAmount
         (0 until multiplier)
-            .flatMap { recipe.assemble(input) }
+            .flatMap { recipe.apply(input) }
             .let(HTRecipeResultHelper::mergeStacks)
             .mapNotNull(entity::spawnAtLocation)
             .forEach(::setComplete)
@@ -167,7 +168,7 @@ object HCRecipeEventHandler {
             if (entity is ItemEntity && entity.isAlive && !isCompleted(entity)) {
                 val input: ItemStack = entity.item
                 val recipe: HCExplodingRecipe = getCaches(level).exploding.findFirstRecipe(input, level) ?: continue
-                spawnResults(entity) { recipe.assemble(input) }
+                spawnResults(entity) { recipe.apply(input) }
                 if (entity.item.isEmpty) {
                     iterator.remove()
                     entity.discard()

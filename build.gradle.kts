@@ -36,7 +36,6 @@ val generateModMetadata: TaskProvider<ProcessResources> = tasks.register<Process
         "kff_version" to kffVersion,
         "kff_version_range" to "[$kffVersion,)",
         "loader_version_range" to "[1,)",
-        "moonlight_version_range" to "[${libs.versions.moonlight.get()},)",
         "mod_id" to modId,
         "mod_name" to "Hiiragi Core",
         "mod_license" to "MPL-2.0",
@@ -406,8 +405,8 @@ publishMods {
     modLoaders.add("neoforge")
 
     curseforge {
-        accessToken = providers.gradleProperty("CURSEFORGE_TOKEN")
-        projectId = providers.gradleProperty("CURSEFORGE_HIIRAGI_CORE")
+        accessToken = providers.environmentVariable("CURSEFORGE")
+        projectId = "1432470"
         minecraftVersions.add(mcVersion)
         changelogType = "markdown"
         announcementTitle = "Download from CurseForge"
@@ -423,8 +422,8 @@ publishMods {
         optional("guideme")
     }
     modrinth {
-        accessToken = providers.gradleProperty("MODRINTH_TOKEN")
-        projectId = providers.gradleProperty("MODRINTH_HIIRAGI_CORE")
+        accessToken = providers.environmentVariable("MODRINTH")
+        projectId = "SPPkDMjB"
         minecraftVersions.add(mcVersion)
         announcementTitle = "Download from Modrinth"
 
@@ -434,11 +433,12 @@ publishMods {
         optional("guideme")
     }
     discord {
-        webhookUrl = providers.gradleProperty("DISCORD_TOKEN")
-        username = "Hiiragi Series Announcement"
+        webhookUrl = providers.environmentVariable("DISCORD")
+        username = "Hiiragi Core Announcement"
+        avatarUrl = "https://github.com/hiiragi283.png"
         content = changelog.map {
             """
-            ## 新しいバージョン「${rootProject.version}」がリリースされました！
+            ## Hiiragi Corenの新しいバージョン「${rootProject.version}」がリリースされました！
             ## Changelog
             $it
             """.trimIndent()

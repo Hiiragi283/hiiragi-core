@@ -9,6 +9,10 @@ import net.minecraft.nbt.NbtOps
 import net.minecraft.nbt.Tag
 import net.minecraft.resources.RegistryOps
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 internal class HTTagValueOutput(private val provider: HolderLookup.Provider, private val compoundTag: CompoundTag) : HTValueOutput {
     private val registryOps: RegistryOps<Tag> = provider.createSerializationContext(NbtOps.INSTANCE)
 

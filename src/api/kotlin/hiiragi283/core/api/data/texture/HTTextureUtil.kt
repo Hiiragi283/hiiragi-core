@@ -1,18 +1,11 @@
 package hiiragi283.core.api.data.texture
 
-import hiiragi283.core.api.resource.HTIdLike
+import com.mojang.blaze3d.platform.NativeImage
 import hiiragi283.core.api.resource.modifyPath
 import java.io.BufferedReader
 import java.io.InputStream
-import java.util.stream.Stream
-import net.mehvahdjukaar.moonlight.api.resources.RPUtils
-import net.mehvahdjukaar.moonlight.api.resources.textures.Palette
-import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
-import net.mehvahdjukaar.moonlight.api.util.math.colors.RGBColor
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
-import net.minecraft.world.item.Item
-import net.minecraft.world.level.block.Block
 
 /**
  * @author Hiiragi Tsubasa
@@ -36,42 +29,51 @@ data object HTTextureUtil {
     }
 
     @JvmStatic
-    fun getCachedColors(id: HTIdLike): List<Int>? = getCachedColors(id.getId())
-
-    @JvmStatic
     fun getCachedColors(id: ResourceLocation): List<Int>? = colorCache[id]
 
     @JvmStatic
     fun getOrCreateColors(id: ResourceLocation, manager: ResourceManager): Result<List<Int>> = getCachedColors(id)
         ?.let(Result.Companion::success)
-        ?: runCatching { manager.getResource(id.modifyPath { "palettes/$it.gpl" }).get().open() }
-            .mapCatching(InputStream::bufferedReader)
-            .mapCatching(BufferedReader::lines)
-            .map(Stream<String>::toList)
-            .mapCatching { lines: List<String> ->
-                val paletteId = "GIMP Palette"
-                check(lines.firstOrNull() == paletteId) { "First line must be \"$paletteId\"" }
-                lines
-                    .filterNot { it == paletteId || it.startsWith("Name") || it.startsWith("Columns") }
-                    .map { it.split(PALETTE_REGEX, limit = 4).take(3).map(String::toInt) }
-                    .map { (red: Int, green: Int, blue: Int) -> RGBColor.combine(255, blue, green, red) }
-            }.onSuccess { colorCache[id] = it }
+        ?: runCatching {
+            manager.open(id.modifyPath { "palettes/$it.gpl" }).use { inputStream: InputStream ->
+                inputStream.bufferedReader().use { bufferedReader: BufferedReader ->
+                    val lines: List<String> = bufferedReader.lines().toList()
+                    val paletteId = "GIMP Palette"
+                    check(lines.firstOrNull() == paletteId) { "First line must be \"$paletteId\"" }
+                    lines
+                        .filterNot { it == paletteId || it.startsWith("Name") || it.startsWith("Columns") }
+                        .map { it.split(PALETTE_REGEX, limit = 4).take(3).map(String::toInt) }
+                        .map { (red: Int, green: Int, blue: Int) -> combine(255, blue, green, red) }
+                }
+            }
+        }.onSuccess { colorCache[id] = it }
 
+    /**
+     * @since 21.1.1.0
+     */
     @JvmStatic
-    fun getOrCreatePalette(id: ResourceLocation, manager: ResourceManager): Result<Palette> = getOrCreateColors(id, manager).map(::wrapToPalette)
+    fun combine(alpha: Int, blue: Int, green: Int, red: Int): Int = (alpha shl 24) or (blue shl 16) or (green shl 8) or red
 
+    //    NativeImage    //
+
+    /**
+     * テクスチャを[NativeImage]として取得します。
+     * @param manager テクスチャの提供元
+     * @param id テクスチャのパス（末尾に`.png`を含むこと）
+     * @since 21.1.1.0
+     */
     @JvmStatic
-    fun wrapToPalette(colors: List<Int>): Palette = colors.map(::RGBColor).let(Palette::ofColors)
+    fun openImage(manager: ResourceManager, id: ResourceLocation): Result<NativeImage> = runCatching { manager.open(id).use(NativeImage::read) }
 
-    //    TextureImage    //
-
+    /**
+     * 指定した画像をコピーします。
+     * @return 新しい画像のインスタンス
+     * @since 21.1.1.0
+     */
     @JvmStatic
-    fun getTexture(manager: ResourceManager, block: Block): Result<TextureImage> = runCatching {
-        RPUtils.findFirstBlockTextureLocation(manager, block).let { TextureImage.open(manager, it) }
-    }
-
-    @JvmStatic
-    fun getTexture(manager: ResourceManager, item: Item): Result<TextureImage> = runCatching {
-        RPUtils.findFirstItemTextureLocation(manager, item).let { TextureImage.open(manager, it) }
+    fun copyFrom(other: NativeImage): NativeImage {
+        val image = NativeImage(other.width, other.height, true)
+        image.copyFrom(other)
+        return image
     }
 }

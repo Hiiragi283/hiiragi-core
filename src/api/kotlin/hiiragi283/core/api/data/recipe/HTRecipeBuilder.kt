@@ -98,5 +98,5 @@ abstract class HTRecipeBuilder<out RECIPE : Recipe<*>>(private val prefix: Strin
     /**
      * レシピを生成します。
      */
-    protected abstract fun createRecipe(): RECIPE
+    abstract fun createRecipe(): RECIPE
 }

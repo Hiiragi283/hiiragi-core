@@ -31,7 +31,10 @@ class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFutur
         // Ancient Debris -> Netherite Scrap
         HCExplodingRecipeBuilder.create {
             ingredient { +Tags.Items.ORES_NETHERITE_SCRAP }
-            result { +HTItemResult.MaterialPart(CommonParts.SCRAP, VanillaMaterialKeys.NETHERITE, 2) }
+            result {
+                +HTItemResult.MaterialPartEntry(CommonParts.SCRAP, VanillaMaterialKeys.NETHERITE)
+                count = 2
+            }
         }.save(exporter)
         // Gunpowder -> Blaze Powder
         HCExplodingRecipeBuilder.create {
@@ -45,7 +48,7 @@ class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFutur
         HCExplodingRecipeBuilder.create {
             ingredient { +Tags.Items.GLASS_BLOCKS }
             result {
-                +HTItemResult.MaterialPart(CommonParts.GEM, VanillaMaterialKeys.QUARTZ)
+                +HTItemResult.MaterialPartEntry(CommonParts.GEM, VanillaMaterialKeys.QUARTZ)
                 chance = fraction(1, 4)
             }
         }.save(exporter)
@@ -67,7 +70,7 @@ class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFutur
             HCExplodingRecipeBuilder.create {
                 ingredient { +fuels.flatMap(::baseOrDust) }
                 result {
-                    +HTItemResult.MaterialPart(CommonParts.GEM, VanillaMaterialKeys.DIAMOND)
+                    +HTItemResult.MaterialPartEntry(CommonParts.GEM, VanillaMaterialKeys.DIAMOND)
                     chance = fraction(1, count)
                 }
                 recipeId suffix "_from_${fuels.joinToString(separator = "_or_", transform = HTMaterialKey::path)}"
@@ -77,7 +80,7 @@ class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFutur
         HCExplodingRecipeBuilder.create {
             ingredient { +Items.SCULK }
             result {
-                +HTItemResult.MaterialPart(CommonParts.GEM, VanillaMaterialKeys.ECHO)
+                +HTItemResult.MaterialPartEntry(CommonParts.GEM, VanillaMaterialKeys.ECHO)
                 chance = fraction(1, 8)
             }
         }.save(exporter)
@@ -85,7 +88,7 @@ class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFutur
         HCExplodingRecipeBuilder.create {
             ingredient { +ItemTags.CRIMSON_STEMS }
             result {
-                +HTItemResult.MaterialPart(CommonParts.GEM, HCMaterialKeys.CRIMSON_CRYSTAL)
+                +HTItemResult.MaterialPartEntry(CommonParts.GEM, HCMaterialKeys.CRIMSON_CRYSTAL)
                 chance = fraction(1, 8)
             }
         }.save(exporter)
@@ -93,7 +96,7 @@ class HCExplodingRecipeProvider(packOutput: PackOutput, future: CompletableFutur
         HCExplodingRecipeBuilder.create {
             ingredient { +ItemTags.WARPED_STEMS }
             result {
-                +HTItemResult.MaterialPart(CommonParts.GEM, HCMaterialKeys.WARPED_CRYSTAL)
+                +HTItemResult.MaterialPartEntry(CommonParts.GEM, HCMaterialKeys.WARPED_CRYSTAL)
                 chance = fraction(1, 8)
             }
         }.save(exporter)

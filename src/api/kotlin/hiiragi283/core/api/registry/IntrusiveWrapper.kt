@@ -11,6 +11,9 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.material.Fluid
 
+/**
+ * @suppress
+ */
 private class IntrusiveWrapper<R : Any, out T : R>(private val value: T, private val holderGetter: (T) -> Holder<R>) : SupplierWithKey<R, T> {
     override fun get(): T = value
 

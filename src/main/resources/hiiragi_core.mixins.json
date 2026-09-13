@@ -5,6 +5,7 @@
   "client": [],
   "mixins": [
     "AnvilBlockMixin",
+    "ReloadableResourceManagerMixin",
     "ReloadableServerResourcesMixin"
   ],
   "minVersion": "0.8"

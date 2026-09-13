@@ -16,7 +16,6 @@ import hiiragi283.core.common.recipe.HCRecipeLookups
 import hiiragi283.core.common.storage.fluid.HTBasicItemFluidTank
 import hiiragi283.core.common.storage.fluid.HTExperienceTomeFluidTank
 import hiiragi283.core.config.HCConfig
-import hiiragi283.core.internal.HiiragiCoreAccessImpl
 import hiiragi283.core.setup.HCBlockEntityTypes
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCEntityTypes
@@ -41,6 +40,7 @@ import net.neoforged.fml.loading.FMLEnvironment
 import net.neoforged.neoforge.event.AddPackFindersEvent
 import net.neoforged.neoforge.network.registration.PayloadRegistrar
 import net.neoforged.neoforge.registries.NewRegistryEvent
+import org.apache.commons.io.FileUtils
 
 @Mod(HiiragiCoreAPI.MOD_ID)
 data object HiiragiCore : HTCommonMod() {
@@ -55,12 +55,15 @@ data object HiiragiCore : HTCommonMod() {
         HCBlockEntityTypes.REGISTER.register(eventBus)
 
         container.registerConfig(ModConfig.Type.COMMON, HCConfig.COMMON_SPEC)
+        container.registerConfig(ModConfig.Type.SERVER, HCConfig.SERVER_SPEC)
+
+        HiiragiCoreAPI.GAME_DIR.resolve("debug/dumped").toFile().let(FileUtils::deleteDirectory)
 
         HiiragiCoreAPI.LOGGER.info("Hiiragi-Core loaded")
     }
 
     override fun registerRegistries(event: NewRegistryEvent) {
-        event.register(HCRegistries.ITEM_RESULT_SERIALIZER)
+        event.register(HCRegistries.ITEM_RESULT_TYPE)
         event.register(HCRegistries.SLOT_TYPE)
         event.register(HCRegistries.WIDGET_TYPE)
     }
@@ -81,7 +84,7 @@ data object HiiragiCore : HTCommonMod() {
 
     private fun registerPotionHandlers() {
         // Potion Fluid
-        HTPotionFluidManager.register(HCFluids.POTION.get(), HiiragiCoreAccessImpl.DEFAULT_POTION_HANDLER)
+        HTPotionFluidManager.register(HCFluids.POTION.get(), HTPotionFluidManager.Handler.DEFAULT)
     }
 
     override fun registerCapabilities(helper: CapabilityHelper) {

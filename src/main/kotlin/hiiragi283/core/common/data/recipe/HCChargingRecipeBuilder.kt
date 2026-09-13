@@ -6,6 +6,7 @@ import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.data.recipe.HTItemResultBuilder
 import hiiragi283.core.api.data.recipe.HTRecipeBuilder
 import hiiragi283.core.api.data.recipe.IngredientBuilder
+import hiiragi283.core.api.recipe.ingredient.HTItemIngredient
 import hiiragi283.core.api.recipe.result.HTChancedItemResult
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.util.HTDelegates
@@ -14,7 +15,6 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.item.crafting.Ingredient
 
 class HCChargingRecipeBuilder : HTRecipeBuilder<HCChargingRecipe>(HTConst.CHARGING) {
     companion object {
@@ -27,12 +27,12 @@ class HCChargingRecipeBuilder : HTRecipeBuilder<HCChargingRecipe>(HTConst.CHARGI
         }
     }
 
-    @PublishedApi internal var ingredient: Ingredient by HTDelegates.onceInitialize()
+    @PublishedApi internal var ingredient: HTItemIngredient by HTDelegates.onceInitialize()
 
     @PublishedApi internal var result: HTChancedItemResult by HTDelegates.onceInitialize()
     var energy: Int = HCChargingRecipe.DEFAULT_ENERGY
 
-    operator fun Ingredient.unaryPlus() {
+    operator fun HTItemIngredient.unaryPlus() {
         ingredient = this
     }
 
@@ -44,7 +44,7 @@ class HCChargingRecipeBuilder : HTRecipeBuilder<HCChargingRecipe>(HTConst.CHARGI
         contract {
             callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
         }
-        ingredient = IngredientBuilder().apply(builderAction).build()
+        ingredient = IngredientBuilder().apply(builderAction).buildSized()
     }
 
     inline fun result(builderAction: HTItemResultBuilder.() -> Unit) {

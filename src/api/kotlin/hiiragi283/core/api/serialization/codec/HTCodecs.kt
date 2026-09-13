@@ -17,6 +17,7 @@ import hiiragi283.core.api.util.DFUPair
 import hiiragi283.core.api.util.Either
 import hiiragi283.core.api.util.Ior
 import hiiragi283.core.api.util.Option
+import hiiragi283.core.api.util.java
 import hiiragi283.core.api.util.kotlin
 import hiiragi283.core.api.util.some
 import hiiragi283.core.internal.serialization.codec.HTIngredientCodec
@@ -80,6 +81,9 @@ data object HTCodecs {
     @JvmStatic
     fun <A : Any> option(codec: Codec<A>): Codec<Option<A>> = OptionCodec(codec)
 
+    /**
+     * @suppress
+     */
     @JvmRecord
     private data class OptionCodec<A : Any>(private val codec: Codec<A>) : Codec<Option<A>> {
         override fun <T> encode(input: Option<A>, ops: DynamicOps<T>, prefix: T): DataResult<T> = input.fold(
@@ -123,7 +127,7 @@ data object HTCodecs {
      * @see Codec.either
      */
     @JvmStatic
-    fun <A, B> either(left: Codec<A>, right: Codec<B>): Codec<Either<A, B>> = HTEitherCodec(left, right, false)
+    fun <A, B> either(left: Codec<A>, right: Codec<B>): Codec<Either<A, B>> = Codec.either(left, right).xmap({ it.kotlin }, { it.java })
 
     /**
      * [Either]の[Codec]を作成します。
@@ -134,36 +138,18 @@ data object HTCodecs {
      * @see Codec.xor
      */
     @JvmStatic
-    fun <A, B> xor(left: Codec<A>, right: Codec<B>): Codec<Either<A, B>> = HTEitherCodec(left, right, true)
+    fun <A, B> xor(left: Codec<A>, right: Codec<B>): Codec<Either<A, B>> = Codec.xor(left, right).xmap({ it.kotlin }, { it.java })
 
     /**
-     * @see com.mojang.serialization.codecs.EitherCodec
-     * @see com.mojang.serialization.codecs.XorCodec
+     * [Either]の[Codec]を作成します。
+     * @param A 左側の値となるクラス
+     * @param B 右側の値となるクラス
+     * @param left 左側の値の[Codec]
+     * @param right 右側の値の[Codec]
+     * @see Codec.mapEither
      */
-    @JvmRecord
-    private data class HTEitherCodec<A, B>(val left: Codec<A>, val right: Codec<B>, val isStrict: Boolean) : Codec<Either<A, B>> {
-        override fun <T : Any> encode(input: Either<A, B>, ops: DynamicOps<T>, prefix: T): DataResult<T> = input.fold(
-            { left.encode(it, ops, prefix) },
-            { right.encode(it, ops, prefix) },
-        )
-
-        override fun <T : Any> decode(ops: DynamicOps<T>, input: T): DataResult<DFUPair<Either<A, B>, T>> {
-            val leftRead: DataResult<DFUPair<Either<A, B>, T>> = left.decode(ops, input).map { it.mapFirst { Either.Left(it) } }
-            val rightRead: DataResult<DFUPair<Either<A, B>, T>> = right.decode(ops, input).map { it.mapFirst { Either.Right(it) } }
-            val leftResult: Option<DFUPair<Either<A, B>, T>> = leftRead.result().kotlin
-            val rightResult: Option<DFUPair<Either<A, B>, T>> = rightRead.result().kotlin
-            if (isStrict && (leftResult.isSome() && rightResult.isSome())) {
-                return DataResult.error({ "Both alternatives read successfully, can not pick the correct one; first: ${leftResult.getOrNull()} second: ${rightResult.getOrNull()}" }, leftResult.getOrNull())
-            }
-            if (leftResult.isSome()) {
-                return leftRead
-            }
-            if (rightResult.isSome()) {
-                return rightRead
-            }
-            return leftRead.apply2({ _, second -> second }, rightRead)
-        }
-    }
+    @JvmStatic
+    fun <A : Any, B : Any> mapEither(left: MapCodec<A>, right: MapCodec<B>): MapCodec<Either<A, B>> = Codec.mapEither(left, right).xmap({ it.kotlin }, { it.java })
 
     /**
      * [Ior]の[MapCodec]を作成します。
@@ -175,6 +161,9 @@ data object HTCodecs {
     @JvmStatic
     fun <A, B> ior(left: MapCodec<A>, right: MapCodec<B>): MapCodec<Ior<A, B>> = HTIorMapCodec(left, right)
 
+    /**
+     * @suppress
+     */
     private data class HTIorMapCodec<A, B>(val left: MapCodec<A>, val right: MapCodec<B>) : MapCodec<Ior<A, B>>() {
         override fun <T : Any> keys(ops: DynamicOps<T>): Stream<T> = Stream.concat(left.keys(ops), right.keys(ops))
 

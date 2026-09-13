@@ -20,8 +20,8 @@ data object HTPotionArrowFillingRecipe : HTTankFillingRecipe {
         return !contents.isEmpty && contents.bottleType == HTBottleType.LINGERING
     }
 
-    override fun assemble(firstInput: ItemStack, secondInput: FluidStack): ItemStack {
-        val (contents: PotionContents, _) = HTPotionHelper.getContents(secondInput) ?: return ItemStack.EMPTY
+    override fun apply(first: ItemStack, second: FluidStack): ItemStack {
+        val (contents: PotionContents, _) = HTPotionHelper.getContents(second) ?: return ItemStack.EMPTY
         return HTPotionHelper.createPotion(Items.TIPPED_ARROW, contents)
     }
 

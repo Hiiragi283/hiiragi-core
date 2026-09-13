@@ -1,6 +1,6 @@
 package hiiragi283.core.api.registry
 
-import hiiragi283.core.api.item.HTItemLike
+import hiiragi283.core.api.item.HTItemInstanceLike
 import hiiragi283.core.api.resource.BlockItemSupplierWithKey
 import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.resource.SupplierWithKey
@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.Item
+import net.minecraft.world.level.ItemLike
 import net.minecraft.world.level.block.Block
 
 /**
@@ -35,7 +36,8 @@ typealias HTBasicDeferredBlockAndItem<BLOCK> = HTDeferredBlockAndItem<BLOCK, Blo
 data class HTDeferredBlockAndItem<out BLOCK : Block, out ITEM : Item>(val blockHolder: HTDeferredBlock<BLOCK>, val itemHolder: HTDeferredItem<ITEM>) :
     BlockItemSupplierWithKey<BLOCK, ITEM>,
     HTIdLike.Translatable by itemHolder,
-    HTItemLike<ITEM> by itemHolder {
+    ItemLike by itemHolder,
+    HTItemInstanceLike by itemHolder {
     constructor(id: ResourceLocation) : this(HTDeferredBlock(id), HTDeferredItem(id))
 
     override fun get(): BLOCK = blockHolder.get()

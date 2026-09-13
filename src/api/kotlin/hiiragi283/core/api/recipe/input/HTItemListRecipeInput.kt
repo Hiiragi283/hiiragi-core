@@ -3,13 +3,13 @@ package hiiragi283.core.api.recipe.input
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.RecipeInput
 
-@JvmInline
-value class HTItemListRecipeInput(val stacks: List<ItemStack>) : RecipeInput {
-    constructor(vararg stacks: ItemStack) : this(stacks.toList())
+@JvmRecord
+data class HTItemListRecipeInput(val items: List<ItemStack>) : RecipeInput {
+    constructor(vararg items: ItemStack) : this(items.toList())
 
-    override fun getItem(index: Int): ItemStack = stacks[index]
+    override fun getItem(index: Int): ItemStack = items[index]
 
-    override fun size(): Int = stacks.size
+    override fun size(): Int = items.size
 
-    override fun isEmpty(): Boolean = stacks.isEmpty() || stacks.all(ItemStack::isEmpty)
+    override fun isEmpty(): Boolean = items.isEmpty()
 }

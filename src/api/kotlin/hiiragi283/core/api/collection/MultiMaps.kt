@@ -42,11 +42,25 @@ private data object EmptyMultiMap : MultiMap<Nothing, Nothing> {
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */
-inline fun <K, V> buildListMultiMap(initialCapacity: Int = 10, builderAction: ListMultiMap.Builder<K, V>.() -> Unit): MultiMap<K, V> {
+inline fun <K, V> buildListMultiMap(initialCapacity: Int = 10, builderAction: ListMultiMap.Builder<K, V>.() -> Unit): ListMultiMap<K, V> {
     contract {
         callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
     }
     return ListMultiMap.Builder<K, V>(initialCapacity).apply(builderAction).build()
+}
+
+/**
+ * 新しい[ListMultiMap]のインスタンスを作成します。
+ * @param K キーのクラス
+ * @param V 値のクラス
+ * @author Hiiragi Tsubasa
+ * @since 21.1.1.0
+ */
+inline fun <K, V> buildListMultiMap(map: MutableMap<K, MutableList<V>>, builderAction: ListMultiMap.Builder<K, V>.() -> Unit): ListMultiMap<K, V> {
+    contract {
+        callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+    }
+    return ListMultiMap.Builder(map).apply(builderAction).build()
 }
 
 /**
@@ -56,11 +70,25 @@ inline fun <K, V> buildListMultiMap(initialCapacity: Int = 10, builderAction: Li
  * @author Hiiragi Tsubasa
  * @since 21.1.0
  */
-inline fun <K, V> buildSetMultiMap(initialCapacity: Int = 10, builderAction: SetMultiMap.Builder<K, V>.() -> Unit): MultiMap<K, V> {
+inline fun <K, V> buildSetMultiMap(initialCapacity: Int = 10, builderAction: SetMultiMap.Builder<K, V>.() -> Unit): SetMultiMap<K, V> {
     contract {
         callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
     }
     return SetMultiMap.Builder<K, V>(initialCapacity).apply(builderAction).build()
+}
+
+/**
+ * 新しい[SetMultiMap]のインスタンスを作成します。
+ * @param K キーのクラス
+ * @param V 値のクラス
+ * @author Hiiragi Tsubasa
+ * @since 21.1.1.0
+ */
+inline fun <K, V> buildSetMultiMap(map: MutableMap<K, MutableSet<V>>, builderAction: SetMultiMap.Builder<K, V>.() -> Unit): SetMultiMap<K, V> {
+    contract {
+        callsInPlace(builderAction, InvocationKind.EXACTLY_ONCE)
+    }
+    return SetMultiMap.Builder(map).apply(builderAction).build()
 }
 
 //    Table    //

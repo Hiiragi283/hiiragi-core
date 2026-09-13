@@ -1,27 +1,18 @@
 package hiiragi283.core.api
 
-import com.mojang.serialization.Codec
-import hiiragi283.core.api.item.alchemy.BottledPotionContents
-import hiiragi283.core.api.item.alchemy.HTPotionHelper
-import hiiragi283.core.api.item.tool.HTToolType
 import hiiragi283.core.api.material.HTMaterialAccess
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.get
-import hiiragi283.core.api.material.part.HTPart
-import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.cache.HTRecipeLookup
 import hiiragi283.core.api.registry.getResult
 import hiiragi283.core.api.registry.lookupResult
 import hiiragi283.core.api.resource.SimpleSupplierWithKey
-import hiiragi283.core.api.storage.fluid.HTFluidResourceType
-import hiiragi283.core.api.storage.item.HTItemResourceType
 import hiiragi283.core.api.util.HTTextResult
 import hiiragi283.core.api.util.flatMap
 import hiiragi283.core.api.util.toTextResult
-import hiiragi283.core.internal.material.HTMaterialContentsImpl
 import hiiragi283.core.internal.material.HTMaterialContentsRegister
 import java.util.function.Consumer
 import kotlin.collections.component1
@@ -31,11 +22,9 @@ import net.minecraft.core.Holder
 import net.minecraft.core.HolderLookup
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.TagKey
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeInput
 import net.minecraft.world.item.crafting.RecipeType
-import net.neoforged.neoforge.fluids.FluidStack
 
 /**
  * モジュールをまたいで実装する要素をまとめたインターフェースです。
@@ -50,6 +39,8 @@ abstract class HiiragiCoreAccess {
         @JvmField
         val INSTANCE: HiiragiCoreAccess = HiiragiCoreAPI.getService()
     }
+
+    abstract val enableDebugFeatures: Boolean
 
     //    Material    //
 
@@ -89,81 +80,20 @@ abstract class HiiragiCoreAccess {
     }
 
     /**
-     * 登録された[部品の種類][HTPart]を取得します。
-     * @since 0.12.0
-     */
-    abstract val partManager: Map<String, HTPart>
-
-    val partCodec: Codec<HTPart> = Codec.lazyInitialized { Codec.stringResolver(HTPart::name, partManager::get) }
-
-    /**
      * 既存の素材コンテンツを取得します。
      */
-    val existingContents: HTMaterialAccess = object : HTMaterialAccess {
-        override val blocks: HTMaterialContents<HTPart, HTMaterialContents.BlockEntry> by lazy {
-            HTMaterialContentsImpl(HTMaterialContentsRegister.existingBlocks) { part: HTPart, key: HTMaterialKey ->
-                "Unknown ${part.name} block for $key"
-            }
-        }
-        override val items: HTMaterialContents<HTPart, HTMaterialContents.ItemEntry> by lazy {
-            HTMaterialContentsImpl(HTMaterialContentsRegister.existingItems) { part: HTPart, key: HTMaterialKey ->
-                "Unknown ${part.name} item for $key"
-            }
-        }
-        override val tools: HTMaterialContents<HTToolType, HTMaterialContents.ItemEntry> by lazy {
-            HTMaterialContentsImpl(HTMaterialContentsRegister.existingTools) { toolType: HTToolType, key: HTMaterialKey ->
-                "Unknown ${toolType.name} item for $key"
-            }
-        }
-    }
+    val existingContents: HTMaterialAccess get() = HTMaterialContentsRegister.existingContents
 
     /**
      * 登録された素材コンテンツを取得します。
      */
-    val registeredContents: HTMaterialAccess = object : HTMaterialAccess {
-        override val blocks: HTMaterialContents<HTPart, HTMaterialContents.BlockEntry> by lazy {
-            HTMaterialContentsImpl(HTMaterialContentsRegister.materialBlocks) { part: HTPart, key: HTMaterialKey ->
-                "Unregistered ${part.name} block for $key"
-            }
-        }
-        override val items: HTMaterialContents<HTPart, HTMaterialContents.ItemEntry> by lazy {
-            HTMaterialContentsImpl(HTMaterialContentsRegister.materialItems) { part: HTPart, key: HTMaterialKey ->
-                "Unregistered ${part.name} item for $key"
-            }
-        }
-        override val tools: HTMaterialContents<HTToolType, HTMaterialContents.ItemEntry> by lazy {
-            HTMaterialContentsImpl(HTMaterialContentsRegister.materialTools) { toolType: HTToolType, key: HTMaterialKey ->
-                "Unregistered ${toolType.name} item for $key"
-            }
-        }
-    }
+    val registeredContents: HTMaterialAccess get() = HTMaterialContentsRegister.registeredContents
 
-    fun getMaterialBlock(part: HTPartLike, key: HTMaterialKey): HTMaterialContents.BlockEntry? = existingContents.blocks[part, key] ?: registeredContents.blocks[part, key]
+    fun getMaterialBlock(part: HTPartKey, key: HTMaterialKey): HTMaterialContents.BlockEntry? = existingContents.blocks[part, key] ?: registeredContents.blocks[part, key]
 
-    fun getMaterialItem(part: HTPartLike, key: HTMaterialKey): HTMaterialContents.ItemEntry? = existingContents.items[part, key] ?: registeredContents.items[part, key]
+    fun getMaterialItem(part: HTPartKey, key: HTMaterialKey): HTMaterialContents.ItemEntry? = existingContents.items[part, key] ?: registeredContents.items[part, key]
 
-    fun getMaterialBlockOrItem(part: HTPartLike, key: HTMaterialKey): HTMaterialContents.ItemEntry? = existingContents.getBlockOrItem(part, key) ?: registeredContents.getBlockOrItem(part, key)
-
-    //    Potion    //
-
-    /**
-     * 指定した[resource]から[BottledPotionContents]を取得します。
-     * @return 取得できなかった場合は`null`
-     * @since 0.11.0
-     * @see HTPotionHelper.getContents
-     */
-    abstract fun getContents(resource: HTFluidResourceType): BottledPotionContents?
-
-    abstract fun getContents(resource: HTItemResourceType): BottledPotionContents?
-
-    /**
-     * 指定した[stack]に[BottledPotionContents]を設定します。
-     * @since 0.11.0
-     * @see HTPotionHelper.setContents
-     */
-    abstract fun setContents(stack: FluidStack, contents: BottledPotionContents)
-
-    abstract fun setContents(stack: ItemStack, contents: BottledPotionContents)
+    fun getMaterialBlockOrItem(part: HTPartKey, key: HTMaterialKey): HTMaterialContents.ItemEntry? = existingContents.getBlockOrItem(part, key) ?: registeredContents.getBlockOrItem(part, key)
 
     //    Tag    //
 
@@ -193,7 +123,25 @@ abstract class HiiragiCoreAccess {
 
     //    Recipe    //
 
+    /**
+     * レシピの一覧を取得します。
+     * @param context レシピの一覧の提供元
+     * @param recipeType レシピの種類
+     * @param INPUT レシピの入力となるクラス
+     * @param RECIPE レシピのクラス
+     * @return レシピIDとレシピの[Map]
+     * @since 21.1.0
+     */
     abstract fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> getAllRecipes(context: HTRecipeLookup.Context, recipeType: RecipeType<RECIPE>): Map<ResourceLocation, RECIPE>
 
+    /**
+     * レシピの一覧を取得します。
+     * @param context レシピの一覧の提供元
+     * @param recipeType レシピの種類
+     * @param INPUT レシピの入力となるクラス
+     * @param RECIPE レシピのクラス
+     * @return [HTRecipeHolder]の[Sequence]
+     * @since 21.1.0
+     */
     fun <INPUT : RecipeInput, RECIPE : Recipe<INPUT>> asSequence(context: HTRecipeLookup.Context, recipeType: RecipeType<RECIPE>): Sequence<HTRecipeHolder<RECIPE>> = getAllRecipes(context, recipeType).asSequence().map { (id: ResourceLocation, value: RECIPE) -> id to value }
 }

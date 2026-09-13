@@ -96,8 +96,8 @@ class HCEnglishLangProvider(output: PackOutput) :
         add(VanillaRecipeLookups.SMELTING, "Smelting")
         add(VanillaRecipeLookups.BLASTING, "Blasting")
         add(VanillaRecipeLookups.SMOKING, "Smoking")
-        add(VanillaRecipeLookups.BREWING, "Brewing")
 
+        add(HCRecipeTypes.BREWING, "Brewing")
         add(HCRecipeTypes.CHARGING, "Lightning Charging")
         add(HCRecipeTypes.CRUSHING, "Crushing")
         add(HCRecipeTypes.EXPLODING, "Exploding")

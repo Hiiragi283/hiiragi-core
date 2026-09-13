@@ -1,31 +1,30 @@
 package hiiragi283.core.common.material.part
 
-import hiiragi283.core.api.material.part.HTDeferredPart
-import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.HTPartKey
 
 data object HCIntegrationParts {
     //    Immersive    //
 
     @JvmField
-    val SHEETMETAL: HTPartLike = HTDeferredPart("sheetmetal")
+    val SHEETMETAL = HTPartKey("sheetmetal")
 
     //    Mekanism    //
 
     @JvmField
-    val ALLOY: HTPartLike = HTDeferredPart("alloy")
+    val ALLOY = HTPartKey("alloy")
 
     @JvmField
-    val CIRCUIT: HTPartLike = HTDeferredPart("mek_circuit")
+    val CIRCUIT = HTPartKey("mek_circuit")
 
     @JvmField
-    val DIRTY_DUST: HTPartLike = HTDeferredPart("dirty_dust")
+    val DIRTY_DUST = HTPartKey("dirty_dust")
 
     @JvmField
-    val CLUMP: HTPartLike = HTDeferredPart("clump")
+    val CLUMP = HTPartKey("clump")
 
     @JvmField
-    val SHARD: HTPartLike = HTDeferredPart("shard")
+    val SHARD = HTPartKey("shard")
 
     @JvmField
-    val CRYSTAL: HTPartLike = HTDeferredPart("crystal")
+    val CRYSTAL = HTPartKey("crystal")
 }

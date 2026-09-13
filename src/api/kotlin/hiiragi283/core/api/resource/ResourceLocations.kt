@@ -14,7 +14,7 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-inline fun String.toId(path: String): ResourceLocation = ResourceLocation.fromNamespaceAndPath(this, path)
+inline infix fun String.toId(path: String): ResourceLocation = ResourceLocation.fromNamespaceAndPath(this, path)
 
 /**
  * この[文字列][this]を[名前空間][ResourceLocation.getNamespace]とした[ID][ResourceLocation]を作成します。
@@ -28,6 +28,7 @@ fun String.toId(vararg path: String): ResourceLocation = this.toId(path.joinToSt
  * 名前空間が`minecraft`となる[ID][ResourceLocation]を作成します。
  * @param path IDの[パス][ResourceLocation.getPath]
  * @author Hiiragi Tsubasa
+ * @since 21.1.0
  */
 inline fun vanillaId(path: String): ResourceLocation = ResourceLocation.withDefaultNamespace(path)
 
@@ -35,6 +36,7 @@ inline fun vanillaId(path: String): ResourceLocation = ResourceLocation.withDefa
  * 名前空間が`minecraft`となる[ID][ResourceLocation]を作成します。
  * @param path IDの[パス][ResourceLocation.getPath]
  * @author Hiiragi Tsubasa
+ * @since 21.1.0
  */
 fun vanillaId(vararg path: String): ResourceLocation = ResourceLocation.withDefaultNamespace(path.joinToString(separator = "/"))
 

@@ -3,7 +3,7 @@ package hiiragi283.core.common.recipe.viewer
 import hiiragi283.core.api.HTConst
 import hiiragi283.core.api.HiiragiCoreAPI
 import hiiragi283.core.api.gui.HTBounds
-import hiiragi283.core.api.material.HTMaterialManager
+import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.recipe.HTRecipeHolder
 import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
@@ -13,8 +13,6 @@ import hiiragi283.core.api.resource.HTIdLike
 import hiiragi283.core.api.text.Text
 import hiiragi283.core.api.text.toText
 import hiiragi283.core.api.util.Either
-import hiiragi283.core.common.recipe.HCBrewingRecipe
-import hiiragi283.core.common.recipe.VanillaRecipeLookups
 import hiiragi283.core.setup.HCRecipeTypes
 import hiiragi283.core.support.recipe.viewer.HTSimpleRecipeViewerType
 import net.minecraft.resources.ResourceLocation
@@ -26,20 +24,16 @@ data object HCRecipeViewerTypes {
     //    Basic    //
 
     @JvmField
-    val BREWING: HTHolderRecipeViewerType<HCBrewingRecipe> =
-        creteHolder(VanillaRecipeLookups.BREWING, Items.BREWING_STAND, 18 * 6)
+    val BREWING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.BREWING, Items.BREWING_STAND, 18 * 8)
 
     @JvmField
-    val CHARGING: HTRecipeViewerType<HTProgressRecipeDisplay> =
-        create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD, 18 * 4, 18 * 2)
+    val CHARGING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CHARGING, Items.LIGHTNING_ROD, 18 * 4, 18 * 2)
 
     @JvmField
-    val CRUSHING: HTRecipeViewerType<HTProgressRecipeDisplay> =
-        create(HCRecipeTypes.CRUSHING, Items.ANVIL, 18 * 5, 18 * 2)
+    val CRUSHING: HTRecipeViewerType<HTProgressRecipeDisplay> = create(HCRecipeTypes.CRUSHING, Items.ANVIL, 18 * 5, 18 * 2)
 
     @JvmField
-    val EXPLODING: HTRecipeViewerType<HTRecipeDisplay.Simple> =
-        create(HCRecipeTypes.EXPLODING, Items.TNT, 18 * 4)
+    val EXPLODING: HTRecipeViewerType<HTRecipeDisplay.Simple> = create(HCRecipeTypes.EXPLODING, Items.TNT, 18 * 4)
 
     //    Tank Interaction    //
 
@@ -51,8 +45,8 @@ data object HCRecipeViewerTypes {
 
     //    Material    //
 
-    data object MaterialType : HTRecipeViewerType<HTMaterialManager.Entry> {
-        override val recipeClass: Class<HTMaterialManager.Entry> = HTMaterialManager.Entry::class.java
+    data object MaterialType : HTRecipeViewerType<HTMaterial> {
+        override val recipeClass: Class<HTMaterial> = HTMaterial::class.java
         override val icon: Either<ResourceLocation, ItemStack> = Either.Right(ItemStack(Items.IRON_INGOT))
         override val bounds: HTBounds = HTBounds(0, 0, 142, 110)
         override val workStations: List<ItemStack> = emptyList()

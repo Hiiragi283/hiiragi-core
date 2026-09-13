@@ -16,8 +16,8 @@ import net.minecraft.resources.ResourceLocation
  * @author Hiiragi Tsubasa
  * @since 0.1.0
  */
-@JvmInline
-value class HTMaterialKey(private val id: ResourceLocation) :
+@JvmRecord
+data class HTMaterialKey(private val id: ResourceLocation) :
     HTIdLike.Translatable,
     Comparable<HTMaterialKey> {
     companion object {

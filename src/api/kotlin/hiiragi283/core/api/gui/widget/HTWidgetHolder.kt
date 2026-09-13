@@ -5,9 +5,10 @@ import hiiragi283.core.api.gui.sync.HTSyncableSlot
 
 /**
  * [HTWidget]を保持するインターフェースです。
+ *
+ * 参照 : [EMI - WidgetHolder](https://github.com/emilyploszaj/emi/blob/1.21/xplat/src/main/java/dev/emi/emi/api/widget/WidgetHolder.java)
  * @author Hiiragi Tsubasa
  * @since 0.8.0
- * @see dev.emi.emi.api.widget.WidgetHolder
  */
 interface HTWidgetHolder : Iterable<HTWidget> {
     /**

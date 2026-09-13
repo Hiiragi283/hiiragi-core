@@ -1,7 +1,6 @@
 package hiiragi283.core.api.recipe.cache.completed
 
 import hiiragi283.core.api.recipe.base.HTItemOrFluidRecipe
-import hiiragi283.core.api.recipe.base.HTProgressData
 import hiiragi283.core.api.recipe.handler.HTInputHandler
 import hiiragi283.core.api.recipe.handler.HTOutputHandler
 import hiiragi283.core.api.recipe.input.HTItemAndFluidRecipeInput
@@ -15,11 +14,10 @@ class HTItemOrFluidCompletedRecipe(
     private val fluidInputHandler: HTInputHandler<FluidStack>,
     private val itemOutputHandler: HTOutputHandler<ItemStack>,
     private val fluidOutputHandler: HTOutputHandler<FluidStack>,
-) : HTCompletedRecipe.WithProgress<HTItemOrFluidRecipe>(recipe) {
-    val output: HTItemAndFluidResult = recipe.assemble(itemInputHandler.getStack(), fluidInputHandler.getStack())
+) : HTCompletedRecipe.WithProgress<HTItemAndFluidRecipeInput, HTItemOrFluidRecipe>(recipe) {
+    val output: HTItemAndFluidResult = recipe.assemble(input)
 
-    override fun getProgress(): HTProgressData = HTItemAndFluidRecipeInput(itemInputHandler.getStack(), fluidInputHandler.getStack())
-        .let(recipe::getProgressData)
+    override fun createInput(): HTItemAndFluidRecipeInput = HTItemAndFluidRecipeInput(itemInputHandler.getStack(), fluidInputHandler.getStack())
 
     override fun canComplete(): Boolean = output.let { (item: ItemStack, fluid: FluidStack) -> itemOutputHandler.canInsert(item) && fluidOutputHandler.canInsert(fluid) }
 
@@ -30,7 +28,7 @@ class HTItemOrFluidCompletedRecipe(
             fluidOutputHandler.insert(fluid)
         }
         // inputs
-        recipe.getMatchingStacks(itemInputHandler.getStack(), fluidInputHandler.getStack()).let { (item: ItemStack, fluid: FluidStack) ->
+        recipe.getMatchingStacks(input).let { (item: ItemStack, fluid: FluidStack) ->
             itemInputHandler.consume(item)
             fluidInputHandler.consume(fluid)
         }

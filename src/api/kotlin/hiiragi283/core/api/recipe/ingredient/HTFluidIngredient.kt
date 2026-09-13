@@ -22,10 +22,7 @@ class HTFluidIngredient(val unsized: FluidIngredient, val amount: Int) : HTIngre
             instance
                 .group(
                     HTCodecs.FLUID_INGREDIENT.fieldOf(HTConst.FLUIDS).forGetter(HTFluidIngredient::unsized),
-                    HTCodecs.NON_NEGATIVE_INT
-                        .fieldOf(HTConst.AMOUNT)
-                        .orElse(FluidType.BUCKET_VOLUME)
-                        .forGetter(HTFluidIngredient::amount),
+                    HTCodecs.NON_NEGATIVE_INT.fieldOf(HTConst.AMOUNT).orElse(FluidType.BUCKET_VOLUME).forGetter(HTFluidIngredient::amount),
                 ).apply(instance, ::HTFluidIngredient)
         }
 

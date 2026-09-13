@@ -19,8 +19,13 @@ import net.minecraft.world.item.crafting.RecipeSerializer
  */
 fun <T : Recipe<*>> RecipeSerializer(codec: MapCodec<T>, streamCodec: StreamCodec<RegistryFriendlyByteBuf, T> = ByteBufCodecs.fromCodecWithRegistries(codec.codec())): RecipeSerializer<T> = HTRecipeSerializer(codec, streamCodec)
 
+fun <T : Recipe<*>> RecipeSerializer(recipe: T): RecipeSerializer<T> = HTRecipeSerializer(MapCodec.unit(recipe), StreamCodec.unit(recipe))
+
+/**
+ * @suppress
+ */
 @JvmRecord
-data class HTRecipeSerializer<T : Recipe<*>>(@JvmField val codec: MapCodec<T>, @JvmField val streamCodec: StreamCodec<RegistryFriendlyByteBuf, T>) : RecipeSerializer<T> {
+private data class HTRecipeSerializer<T : Recipe<*>>(@JvmField val codec: MapCodec<T>, @JvmField val streamCodec: StreamCodec<RegistryFriendlyByteBuf, T>) : RecipeSerializer<T> {
     override fun codec(): MapCodec<T> = codec
 
     override fun streamCodec(): StreamCodec<RegistryFriendlyByteBuf, T> = streamCodec

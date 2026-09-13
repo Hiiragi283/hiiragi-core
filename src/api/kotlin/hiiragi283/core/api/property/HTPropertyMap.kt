@@ -12,7 +12,7 @@ import kotlin.contracts.contract
  * @author Hiiragi Tsubasa
  * @since 0.6.0
  */
-interface HTPropertyMap : HTPropertyGetter {
+sealed interface HTPropertyMap : HTPropertyGetter {
     val size: Int
 
     val isEmpty: Boolean get() = size == 0

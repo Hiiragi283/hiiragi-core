@@ -6,14 +6,15 @@ import hiiragi283.core.api.component2
 import hiiragi283.core.api.data.pack.HTDynamicDataRegister
 import hiiragi283.core.api.data.recipe.HTRecipeProviderContext
 import hiiragi283.core.api.item.tool.HTToolType
+import hiiragi283.core.api.material.HTMaterial
 import hiiragi283.core.api.material.HTMaterialContents
 import hiiragi283.core.api.material.HTMaterialKey
-import hiiragi283.core.api.material.HTMaterialManager
 import hiiragi283.core.api.material.part.CommonParts
-import hiiragi283.core.api.material.part.HTPartLike
+import hiiragi283.core.api.material.part.HTPart
+import hiiragi283.core.api.material.part.HTPartKey
 import hiiragi283.core.api.material.part.property.HTPartPropertyKeys
 import hiiragi283.core.api.material.part.property.getScaledAmount
-import hiiragi283.core.api.material.part.tagPrefix
+import hiiragi283.core.api.material.part.property.tagPrefix
 import hiiragi283.core.api.material.property.HTDefaultPart
 import hiiragi283.core.api.material.property.HTExtraOreResultMap
 import hiiragi283.core.api.material.property.HTMaterialLevel
@@ -22,7 +23,6 @@ import hiiragi283.core.api.material.property.HTSmithingRecipeProperty
 import hiiragi283.core.api.material.property.HTStorageBlockProperty
 import hiiragi283.core.api.material.property.getDefaultPart
 import hiiragi283.core.api.material.property.getDefaultScale
-import hiiragi283.core.api.property.HTPropertyGetter
 import hiiragi283.core.api.property.getOrDefault
 import hiiragi283.core.api.recipe.result.HTItemResult
 import hiiragi283.core.api.resource.SimpleSupplierWithKey
@@ -44,7 +44,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
     @JvmStatic
     internal fun initialize() {
         delegate = HTDynamicDataRegister
-        for (entry: HTMaterialManager.Entry in materialManager) {
+        for (entry: HTMaterial in materialManager) {
             crushBaseToDust(entry)
             crushOreToCrushed(entry, CommonParts.ORE)
             crushOreToCrushed(entry, CommonParts.RAW)
@@ -74,10 +74,10 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
     }
 
     @JvmStatic
-    fun getTimeFromHardness(getter: HTPropertyGetter, time: Int = 20 * 10): Int? = (getter.getOrDefault(HTMaterialPropertyKeys.HARDNESS) * time)?.toInt()
+    fun getTimeFromHardness(material: HTMaterial, time: Int = 20 * 10): Int? = (material.getOrDefault(HTMaterialPropertyKeys.HARDNESS) * time)?.toInt()
 
     @JvmStatic
-    fun getTimeFromMelting(getter: HTPropertyGetter, time: Int = 20 * 10): Int? = (getter.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT) * time)?.toInt()
+    fun getTimeFromMelting(material: HTMaterial, time: Int = 20 * 10): Int? = (material.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT) * time)?.toInt()
 
     @JvmStatic
     fun getBlueprint(prefix: HTTagPrefix): Ingredient = when (prefix) {
@@ -95,13 +95,14 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
     //    Crushing    //
 
     @JvmStatic
-    private fun crushPrefixToDust(entry: HTMaterialManager.Entry, part: HTPartLike) {
+    private fun crushPrefixToDust(entry: HTMaterial, partKey: HTPartKey) {
         val key: HTMaterialKey = entry.key
+        val part: HTPart = partManager[partKey] ?: return
         val prefix: HTTagPrefix = part.tagPrefix ?: return
         // 材料が存在するか判定
         if (prefix.itemTagKey(key) == entry.getDefaultPart(key)) return
         // 素材のプロパティから完成品を取得
-        val crushedPrefix: HTPartLike = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART)
+        val crushedPrefix: HTPartKey = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART)
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = part.getScaledAmount(entry.getDefaultScale(), entry)
         // レシピを登録
@@ -110,21 +111,24 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
                 +tag(prefix, key)
                 count = inputCount
             }
-            result { +HTItemResult.MaterialPart(crushedPrefix, key, outputCount) }
+            result {
+                +HTItemResult.MaterialPartEntry(crushedPrefix, key)
+                count = outputCount
+            }
             time = getTimeFromHardness(entry, time) ?: return
-            recipeId suffix "_from_${part.asPartName()}"
+            recipeId suffix "_from_${partKey.name}"
         }.save(exporter)
     }
 
     @JvmStatic
-    private fun crushBaseToDust(entry: HTMaterialManager.Entry) {
+    private fun crushBaseToDust(entry: HTMaterial) {
         val key: HTMaterialKey = entry.key
         // 素材のプロパティから材料を取得
         val defaultPart: HTDefaultPart = entry.getDefaultPart() ?: return
-        val crushedPrefix: HTPartLike = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART)
+        val crushedPart: HTPart = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART).let(partManager::get) ?: return
         val inputTag: TagKey<Item> = defaultPart.getTag(key)
         // 加工の前後でタグが一致する場合はパス
-        if (inputTag == crushedPrefix.tagPrefix?.itemTagKey(key)) return
+        if (inputTag == crushedPart.tagPrefix?.itemTagKey(key)) return
         // プレフィックスのスケールから個数を算出
         val (outputCount: Int, inputCount: Int) = entry.getDefaultScale()
         // レシピを登録
@@ -133,36 +137,44 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
                 +inputTag
                 count = inputCount
             }
-            result { +HTItemResult.MaterialPart(crushedPrefix, key, outputCount) }
+            result {
+                +HTItemResult.MaterialPartEntry(crushedPart, key)
+                count = outputCount
+            }
             time = getTimeFromHardness(entry, time) ?: return
             recipeId suffix "_from_${defaultPart.getSuffix()}"
         }.save(exporter)
     }
 
     @JvmStatic
-    private fun crushOreToCrushed(entry: HTMaterialManager.Entry, part: HTPartLike) {
+    private fun crushOreToCrushed(entry: HTMaterial, partKey: HTPartKey) {
         val key: HTMaterialKey = entry.key
+        val part: HTPart = partManager[partKey] ?: return
         val prefix: HTTagPrefix = part.tagPrefix ?: return
         // レシピを登録
         HCRecipeBuilders.crushing {
             // 材料
             ingredient { +tag(prefix, key) }
             // 主産物
-            result { +HTItemResult.MaterialPart(CommonParts.CRUSHED_ORE, key, part.getScaledAmount(2, entry).toInt()) }
+            result {
+                +HTItemResult.MaterialPartEntry(CommonParts.CRUSHED_ORE, key)
+                count = part.getScaledAmount(2, entry).toInt()
+            }
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]?.getResult(HTExtraOreResultMap.Phase.CRUSH_ORE)?.let { +it }
 
-            recipeId suffix "_from_${part.asPartName()}"
+            recipeId suffix "_from_${partKey.name}"
         }.save(exporter)
     }
 
     @JvmStatic
-    private fun crushCrushedToDust(entry: HTMaterialManager.Entry) {
+    private fun crushCrushedToDust(entry: HTMaterial) {
         val key: HTMaterialKey = entry.key
         // 完成品を取得
-        val crushedPrefix: HTPartLike = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART)
+        val crushedPrefix: HTPartKey = entry.getOrDefault(HTMaterialPropertyKeys.CRUSHED_PART)
         // プレフィックスのスケールから個数を算出
-        val (outputCount: Int, inputCount: Int) = CommonParts.CRUSHED_ORE.getScaledAmount(1, entry)
+        val crushedPart: HTPart = partManager[CommonParts.CRUSHED_ORE] ?: return
+        val (outputCount: Int, inputCount: Int) = crushedPart.getScaledAmount(1, entry)
         // レシピを登録
         HCRecipeBuilders.crushing {
             // 材料
@@ -171,7 +183,10 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
                 count = inputCount
             }
             // 主産物
-            result { +HTItemResult.MaterialPart(crushedPrefix, key, outputCount) }
+            result {
+                +HTItemResult.MaterialPartEntry(crushedPrefix, key)
+                count = outputCount
+            }
             // 副産物
             entry[HTMaterialPropertyKeys.EXTRA_ORE_RESULTS]?.getResult(HTExtraOreResultMap.Phase.CRUSH_CRUSHED)?.let { +it }
 
@@ -182,10 +197,10 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
     //    Crafting    //
 
     @JvmStatic
-    private fun getItem(part: HTPartLike, key: HTMaterialKey): HTMaterialContents.ItemEntry? = HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, key)
+    private fun getItem(part: HTPartKey, key: HTMaterialKey): HTMaterialContents.ItemEntry? = HiiragiCoreAccess.INSTANCE.getMaterialBlockOrItem(part, key)
 
     @JvmStatic
-    private fun baseToBlock(entry: HTMaterialManager.Entry) {
+    private fun baseToBlock(entry: HTMaterial) {
         val key: HTMaterialKey = entry.key
         val blockProperty: HTStorageBlockProperty = entry.getOrDefault(HTMaterialPropertyKeys.STORAGE_BLOCK)
         val block: HTMaterialContents.ItemEntry = getItem(CommonParts.BLOCK, key) ?: return
@@ -214,7 +229,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
     }
 
     @JvmStatic
-    private fun baseToGear(entry: HTMaterialManager.Entry) {
+    private fun baseToGear(entry: HTMaterial) {
         val key: HTMaterialKey = entry.key
         val inputTag: TagKey<Item> = entry.getDefaultPart(key) ?: return
         val gear: HTMaterialContents.ItemEntry = getItem(CommonParts.GEAR, key) ?: return
@@ -229,7 +244,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
                 addition { +inputTag }
                 +gear.toStack()
                 recipeId suffix "/gear"
-            }
+            }.save(exporter)
         }
         if (smithingProperty?.allowCrafting ?: true) {
             // レシピを登録
@@ -239,12 +254,12 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
                 define('B') { +tag(CommonTagPrefixes.NUGGET, VanillaMaterialKeys.IRON) }
                 +gear.toStack()
                 recipeId suffix "/gear"
-            }
+            }.save(exporter)
         }
     }
 
     @JvmStatic
-    private fun ingotToNugget(entry: HTMaterialManager.Entry) {
+    private fun ingotToNugget(entry: HTMaterial) {
         val key: HTMaterialKey = entry.key
         val nugget: HTMaterialContents.ItemEntry = getItem(CommonParts.NUGGET, key) ?: return
         val ingot: HTMaterialContents.ItemEntry = getItem(CommonParts.INGOT, key) ?: return
@@ -266,7 +281,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
     }
 
     @JvmStatic
-    private fun rawToBlock(entry: HTMaterialManager.Entry) {
+    private fun rawToBlock(entry: HTMaterial) {
         val key: HTMaterialKey = entry.key
         val raw: HTMaterialContents.ItemEntry = getItem(CommonParts.RAW, key) ?: return
         val rawBlock: HTMaterialContents.ItemEntry = getItem(CommonParts.RAW_BLOCK, key) ?: return
@@ -287,7 +302,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
     }
 
     @JvmStatic
-    private fun tinyToFuel(entry: HTMaterialManager.Entry) {
+    private fun tinyToFuel(entry: HTMaterial) {
         val key: HTMaterialKey = entry.key
         val tiny: HTMaterialContents.ItemEntry = getItem(CommonParts.TINY, key) ?: return
         val fuel: HTMaterialContents.ItemEntry = getItem(CommonParts.FUEL, key) ?: return
@@ -308,7 +323,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
     }
 
     @JvmStatic
-    private fun tool(entry: HTMaterialManager.Entry) {
+    private fun tool(entry: HTMaterial) {
         val existing: HTMaterialContents<HTToolType, HTMaterialContents.ItemEntry> =
             HiiragiCoreAccess.INSTANCE.existingContents.tools
         val registered: HTMaterialContents<HTToolType, HTMaterialContents.ItemEntry> =
@@ -344,7 +359,7 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
     //    Smelting    //
 
     @JvmStatic
-    private fun smeltDustToIngot(entry: HTMaterialManager.Entry) {
+    private fun smeltDustToIngot(entry: HTMaterial) {
         if (HTMaterialPropertyKeys.DISABLE_SMELTING in entry) return
         val key: HTMaterialKey = entry.key
         val dust: HTMaterialContents.ItemEntry = getItem(CommonParts.DUST, key) ?: return
@@ -357,40 +372,39 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
             ingredient { +dust }
             +ingot.toStack()
             exp = 0.35f
-            recipeId replace CommonParts.DUST.createId(key).withPrefix("/_from_")
+            recipeId suffix "_from_${CommonParts.DUST.name}"
         }
     }
 
     @JvmStatic
-    private fun smeltOresToBase(entry: HTMaterialManager.Entry) {
+    private fun smeltOresToBase(entry: HTMaterial) {
         if (HTMaterialPropertyKeys.DISABLE_SMELTING in entry) return
         val key: HTMaterialKey = entry.key
         val smeltedMaterial: HTMaterialKey = entry[HTMaterialPropertyKeys.SMELTED_TO] ?: key
-        val smeltedPropertyMap: HTPropertyGetter = materialManager[smeltedMaterial] ?: return
+        val smeltedPropertyMap: HTMaterial = materialManager[smeltedMaterial] ?: return
         val base: HTMaterialContents.ItemEntry = smeltedPropertyMap.getDefaultPart()?.getItem(smeltedMaterial) ?: return
         // 精錬の前後がどちらも既存アイテムの場合はパス
-        val oreEntries: List<HTMaterialContents.ItemEntry> =
-            partManager.values
-                .filter { HTPartPropertyKeys.IS_ORE in it }
-                .mapNotNull { getItem(it, key) }
-                .filterNot(HTMaterialContents.ItemEntry::isBuiltIn)
+        val oreEntries: List<HTMaterialContents.ItemEntry> = partManager
+            .filter { HTPartPropertyKeys.IS_ORE in it }
+            .mapNotNull { getItem(it.key, key) }
+            .filterNot(HTMaterialContents.ItemEntry::isBuiltIn)
         if (oreEntries.isEmpty()) return
         // Smelting & Blasting
         registerSmelting(entry) {
             ingredient { +oreEntries }
             +base.toStack(smeltedPropertyMap.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER).toInt())
             exp = 0.7f
-            recipeId suffix "_from_${CommonParts.ORE.asPartName()}"
+            recipeId suffix "_from_${CommonParts.ORE.name}"
         }
     }
 
     @JvmStatic
-    private fun smeltOreToBase(part: HTPartLike, entry: HTMaterialManager.Entry) {
+    private fun smeltOreToBase(partKey: HTPartKey, entry: HTMaterial) {
         if (HTMaterialPropertyKeys.DISABLE_SMELTING in entry) return
         val key: HTMaterialKey = entry.key
-        val ore: HTMaterialContents.ItemEntry = getItem(part, key) ?: return
+        val ore: HTMaterialContents.ItemEntry = getItem(partKey, key) ?: return
         val smeltedMaterial: HTMaterialKey = entry[HTMaterialPropertyKeys.SMELTED_TO] ?: key
-        val smeltedPropertyMap: HTPropertyGetter = materialManager[smeltedMaterial] ?: return
+        val smeltedPropertyMap: HTMaterial = materialManager[smeltedMaterial] ?: return
         val base: HTMaterialContents.ItemEntry = smeltedPropertyMap.getDefaultPart()?.getItem(smeltedMaterial) ?: return
         // 精錬の前後がどちらも既存アイテムの場合はパス
         if (ore.isBuiltIn && base.isBuiltIn) return
@@ -399,12 +413,12 @@ data object HCDynamicRecipeProvider : HTRecipeProviderContext.Delegated() {
             ingredient { +ore }
             +base.toStack(smeltedPropertyMap.getOrDefault(HTMaterialPropertyKeys.ORE_RESULT_MULTIPLIER).toInt())
             exp = 0.7f
-            recipeId suffix "_from_${part.asPartName()}"
+            recipeId suffix "_from_${partKey.name}"
         }
     }
 
     @JvmStatic
-    private inline fun registerSmelting(entry: HTMaterialManager.Entry, builderAction: HTCookingRecipeBuilder.() -> Unit) {
+    private inline fun registerSmelting(entry: HTMaterial, builderAction: HTCookingRecipeBuilder.() -> Unit) {
         when (entry.getOrDefault(HTMaterialPropertyKeys.MELTING_POINT)) {
             HTMaterialLevel.NONE -> emptySequence()
             HTMaterialLevel.LOW -> HTCookingRecipeBuilder.smeltingAndBlasting(builderAction)

@@ -31,8 +31,16 @@ interface HTIdLike {
         HTHasText
 }
 
+/**
+ * 指定した[id]を[HTIdLike]に変換します。
+ * @author Hiiragi Tsubasa
+ * @since 21.1.0
+ */
 fun HTIdLike(id: ResourceLocation): HTIdLike = SimpleIdLike(id)
 
+/**
+ * @suppress
+ */
 @JvmRecord
 private data class SimpleIdLike(private val id: ResourceLocation) : HTIdLike {
     override fun getId(): ResourceLocation = id

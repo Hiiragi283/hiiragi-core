@@ -54,6 +54,8 @@ class HCItemTagsProvider(
 
         tags(Tags.Items.CROPS, HiiragiCoreTags.Items.CROPS_WARPED_WART).add(HCBlocks.WARPED_WART)
 
+        builder(HiiragiCoreTags.Items.PAPERS).add(Items.PAPER.toLike())
+
         builder(HiiragiCoreTags.Items.RUBBERS).add(HCItems.CURED_RUBBER)
 
         builder(HiiragiCoreTags.Items.STICKY_BALLS).add(HCItems.RAW_RUBBER).addTag(Tags.Items.SLIME_BALLS)

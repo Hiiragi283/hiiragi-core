@@ -9,6 +9,10 @@ import hiiragi283.core.api.serialization.value.HTValueOutput
 import net.minecraft.core.HolderLookup
 import net.minecraft.resources.RegistryOps
 
+/**
+ * @author Hiiragi Tsubasa
+ * @since 0.1.0
+ */
 internal class HTJsonValueOutput(private val provider: HolderLookup.Provider, private val jsonObject: JsonObject) : HTValueOutput {
     private val registryOps: RegistryOps<JsonElement> = provider.createSerializationContext(JsonOps.INSTANCE)
 

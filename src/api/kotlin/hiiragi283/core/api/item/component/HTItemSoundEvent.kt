@@ -10,8 +10,9 @@ import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.sounds.SoundEvent
 
-@JvmInline
-value class HTItemSoundEvent private constructor(val holder: Holder<SoundEvent>) {
+@ConsistentCopyVisibility
+@JvmRecord
+data class HTItemSoundEvent private constructor(val holder: Holder<SoundEvent>) {
     companion object {
         @JvmField
         val CODEC: Codec<HTItemSoundEvent> = HTCodecs.holder(Registries.SOUND_EVENT).xmap(::HTItemSoundEvent, HTItemSoundEvent::holder)

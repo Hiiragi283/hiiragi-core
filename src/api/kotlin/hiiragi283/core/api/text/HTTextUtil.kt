@@ -47,8 +47,9 @@ object HTTextUtil {
 
     /**
      * 指定した[MOD ID][modId]からMOD名を取得します。
+     *
+     * 参照 : [EMI - EmiAgnosNeoForge.getModNameAgnos](https://github.com/emilyploszaj/emi/blob/1.21/xplat/src/main/java/dev/emi/emi/platform/neoforge/EmiAgnosNeoForge.java)
      * @return [MOD ID][modId]が["common"][HTConst.COMMON]の場合は`Common`，それ以外の場合は登録されたMODから取得した値
-     * @see dev.emi.emi.platform.neoforge.EmiAgnosNeoForge.getModNameAgnos
      */
     @JvmStatic
     fun getModName(modId: String): String = when (modId) {

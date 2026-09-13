@@ -1,7 +1,7 @@
 package hiiragi283.core.api.registry
 
 import hiiragi283.core.api.fluid.FluidStack
-import hiiragi283.core.api.fluid.HTSimpleFluidLike
+import hiiragi283.core.api.fluid.HTFluidInstanceLike
 import hiiragi283.core.api.resource.SimpleSupplierWithKey
 import net.minecraft.core.component.DataComponentPatch
 import net.minecraft.tags.TagKey
@@ -24,15 +24,13 @@ sealed class HTFluidContent(
     val fluidTag: TagKey<Fluid>,
     val bucketTag: TagKey<Item>,
 ) : SimpleSupplierWithKey<Fluid> by sourceHolder,
-    HTSimpleFluidLike {
+    HTFluidInstanceLike {
     fun getFluidType(): FluidType = typeHolder.get()
 
-    override fun asFluid(): Fluid = sourceHolder.get()
-
-    override fun toStack(amount: Int, patch: DataComponentPatch): FluidStack = when {
-        sourceHolder.isBound -> FluidStack(this, amount, patch)
-        else -> FluidStack.EMPTY
-    }
+    override fun toStack(amount: Int, patch: DataComponentPatch): FluidStack = sourceHolder
+        .getOrNull()
+        ?.let { FluidStack(it, amount, patch) }
+        ?: FluidStack.EMPTY
 
     /**
      * 基本的な[HTFluidContent]の実装クラスです。

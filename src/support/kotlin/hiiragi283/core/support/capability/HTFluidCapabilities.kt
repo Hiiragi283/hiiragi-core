@@ -31,7 +31,7 @@ data object HTFluidCapabilities : HTMultiCapability<IFluidHandler, IFluidHandler
     fun wrapAsTank(handler: IFluidHandler, context: Direction?): HTFluidTank? = when {
         handler is HTFluidHandler -> handler.getFluidTank(0, context)
         handler.tanks == 0 -> null
-        else -> object : HTFluidTank, HTContentListener.Empty, HTValueSerializable.Empty {
+        else -> object : HTFluidTank, HTContentListener by HTContentListener.NOTHING, HTValueSerializable by HTValueSerializable.NOTHING {
             override fun isValid(resource: HTFluidResourceType): Boolean = handler.isFluidValid(0, resource.toStack(1))
 
             override fun insert(

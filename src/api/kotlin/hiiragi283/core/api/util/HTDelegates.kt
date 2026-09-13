@@ -25,6 +25,10 @@ data object HTDelegates {
         }
     }
 
+    /**
+     * 一度だけ値を代入可能なプロパティを返します。
+     * @param defaultValue 値が一度も代入されていない場合の値を提供するブロック
+     */
     fun <T : Any> onceInitialize(defaultValue: () -> T): ReadWriteProperty<Any?, T> = OnceInitializeOr(defaultValue)
 
     private class OnceInitializeOr<T : Any>(private val defaultValue: () -> T) : ReadWriteProperty<Any?, T> {
@@ -34,23 +38,6 @@ data object HTDelegates {
 
         override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
             check(this.value == null) { "Property ${property.name} has already initialized" }
-            this.value = value
-        }
-    }
-
-    /**
-     * 一度だけ値を代入可能なプロパティを返します。
-     */
-    fun <T : Any> optionalOnceInitialize(): ReadWriteProperty<Any?, Option<T>> = OptionalOnceInitialize()
-
-    private class OptionalOnceInitialize<T : Any> : ReadWriteProperty<Any?, Option<T>> {
-        private var value: Option<T> = Option.none()
-        private var initialized: Boolean = false
-
-        override fun getValue(thisRef: Any?, property: KProperty<*>): Option<T> = value
-
-        override fun setValue(thisRef: Any?, property: KProperty<*>, value: Option<T>) {
-            check(!initialized) { "Property ${property.name} has already initialized" }
             this.value = value
         }
     }

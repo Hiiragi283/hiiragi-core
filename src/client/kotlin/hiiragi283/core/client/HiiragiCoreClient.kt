@@ -10,7 +10,6 @@ import hiiragi283.core.api.mod.HTClientMod
 import hiiragi283.core.api.plugin.HTMaterialPlugin
 import hiiragi283.core.api.registry.HTFluidContent
 import hiiragi283.core.api.resource.vanillaId
-import hiiragi283.core.client.data.HCClientResourceProvider
 import hiiragi283.core.client.data.HCDynamicClientResources
 import hiiragi283.core.client.gui.screen.HTWidgetContainerScreen
 import hiiragi283.core.client.gui.widget.HTFluidWidgetRenderer
@@ -26,7 +25,6 @@ import hiiragi283.core.setup.HCWidgetTypes
 import hiiragi283.core.support.gui.factory.HTBlockWidgetHolderContext
 import hiiragi283.core.support.gui.factory.HTItemWidgetHolderContext
 import java.awt.Color
-import net.mehvahdjukaar.moonlight.api.platform.RegHelper
 import net.minecraft.client.renderer.entity.ThrownItemRenderer
 import net.minecraft.server.packs.PackType
 import net.minecraft.server.packs.repository.Pack
@@ -48,7 +46,6 @@ data object HiiragiCoreClient : HTClientMod() {
     override fun initialize(eventBus: IEventBus, container: ModContainer) {
         configScreen(container)
 
-        RegHelper.registerDynamicResourceProvider(HCClientResourceProvider)
         HiiragiCoreAPI.LOGGER.info("Hiiragi-Core loaded on client side")
     }
 

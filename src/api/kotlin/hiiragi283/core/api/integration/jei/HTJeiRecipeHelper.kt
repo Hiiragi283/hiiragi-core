@@ -9,7 +9,9 @@ import hiiragi283.core.api.recipe.recipe
 import hiiragi283.core.api.recipe.viewer.HTHolderRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.HTRecipeViewerType
 import hiiragi283.core.api.recipe.viewer.display.HTRecipeDisplay
+import mezz.jei.api.helpers.IJeiHelpers
 import mezz.jei.api.registration.IRecipeRegistration
+import mezz.jei.api.runtime.IIngredientManager
 import net.minecraft.client.Minecraft
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeInput
@@ -36,6 +38,9 @@ value class HTJeiRecipeHelper(@PublishedApi internal val registration: IRecipeRe
         @JvmField
         val HOLDER_SORTER: Comparator<in HTRecipeHolder<*>> = compareBy(HTComparators.ID, HTRecipeHolder<*>::id)
     }
+
+    val jeiHelpers: IJeiHelpers get() = registration.jeiHelpers
+    val ingredientManager: IIngredientManager get() = registration.ingredientManager
 
     fun <T : Any> addRecipes(recipeType: JeiRecipeType<T>, recipes: Sequence<T>) {
         val list: List<T> = recipes.toList()

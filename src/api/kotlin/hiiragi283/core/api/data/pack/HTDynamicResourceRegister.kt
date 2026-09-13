@@ -30,16 +30,16 @@ data object HTDynamicResourceRegister {
 
     @JvmStatic
     fun addToData(id: ResourceLocation, json: JsonElement) {
-        val fixedId: ResourceLocation = id.withSuffix(".json")
-        LOGGER.debug("Added dynamic data at {}", fixedId)
-        HTDynamicResourcePack.addToData(fixedId, json.toString().toByteArray())
+        HTDynamicResourcePack.addToData(id.withSuffix(".json"), json.toString().toByteArray())
     }
 
     // Language
     @JvmStatic
     inline fun addLang(langType: HTLangType, consumer: (HTLangType, (String, String) -> Unit) -> Unit) {
+        val map: MutableMap<String, String> = sortedMapOf()
+        consumer(langType, map::put)
         val root = JsonObject()
-        consumer(langType, root::addProperty)
+        map.forEach(root::addProperty)
         addToData(HiiragiCoreAPI.MOD_ID.toId("lang", langType.name), root)
     }
 

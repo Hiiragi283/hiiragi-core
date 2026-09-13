@@ -1,15 +1,15 @@
 package hiiragi283.core.setup
 
-import com.mojang.serialization.MapCodec
 import hiiragi283.core.api.recipe.RecipeSerializer
-import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
-import hiiragi283.core.common.crafting.HCExperienceStoringRecipe
-import hiiragi283.core.common.crafting.HTBlueprintCloningRecipe
+import hiiragi283.core.common.recipe.HCBrewingRecipe
 import hiiragi283.core.common.recipe.HCChargingRecipe
 import hiiragi283.core.common.recipe.HCCrushingRecipe
 import hiiragi283.core.common.recipe.HCExplodingRecipe
 import hiiragi283.core.common.recipe.HCTankEmptyingRecipe
 import hiiragi283.core.common.recipe.HCTankFillingRecipe
+import hiiragi283.core.common.recipe.custom.HCEternalSmithingRecipe
+import hiiragi283.core.common.recipe.custom.HCExperienceStoringRecipe
+import hiiragi283.core.common.recipe.custom.HTBlueprintCloningRecipe
 import net.minecraft.world.item.crafting.RecipeSerializer
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer
 
@@ -17,7 +17,7 @@ data object HCRecipeSerializers {
     //    Custom    //
 
     @JvmField
-    val ETERNAL_UPGRADE: RecipeSerializer<HCEternalSmithingRecipe> = RecipeSerializer(MapCodec.unit(HCEternalSmithingRecipe))
+    val ETERNAL_UPGRADE: RecipeSerializer<HCEternalSmithingRecipe> = RecipeSerializer(HCEternalSmithingRecipe)
 
     @JvmField
     val BLUEPRINT_CLONING: SimpleCraftingRecipeSerializer<HTBlueprintCloningRecipe> = SimpleCraftingRecipeSerializer(::HTBlueprintCloningRecipe)
@@ -26,6 +26,9 @@ data object HCRecipeSerializers {
     val EXPERIENCE_STORING: SimpleCraftingRecipeSerializer<HCExperienceStoringRecipe> = SimpleCraftingRecipeSerializer(::HCExperienceStoringRecipe)
 
     //    Basic    //
+
+    @JvmField
+    val BREWING: RecipeSerializer<HCBrewingRecipe> = RecipeSerializer(HCBrewingRecipe.CODEC)
 
     @JvmField
     val CHARGING: RecipeSerializer<HCChargingRecipe> = RecipeSerializer(HCChargingRecipe.CODEC)

@@ -130,6 +130,7 @@ internal data object HCMiscRegister {
             helper.register(HiiragiCoreAPI.id("blueprint_cloning"), HCRecipeSerializers.BLUEPRINT_CLONING)
             helper.register(HiiragiCoreAPI.id("experience_storing"), HCRecipeSerializers.EXPERIENCE_STORING)
 
+            helper.register(HiiragiCoreAPI.id(HTConst.BREWING), HCRecipeSerializers.BREWING)
             helper.register(HiiragiCoreAPI.id(HTConst.CHARGING), HCRecipeSerializers.CHARGING)
             helper.register(HiiragiCoreAPI.id(HTConst.CRUSHING), HCRecipeSerializers.CRUSHING)
             helper.register(HiiragiCoreAPI.id(HTConst.EXPLODING), HCRecipeSerializers.EXPLODING)
@@ -158,10 +159,10 @@ internal data object HCMiscRegister {
         }
 
         // Item Result type
-        event.register(HCRegistries.Keys.ITEM_RESULT_SERIALIZER) { helper ->
-            helper.register(HiiragiCoreAPI.id("simple"), HTItemResult.Simple.SERIALIZER)
-            helper.register(HiiragiCoreAPI.id("tag"), HTItemResult.Tagged.SERIALIZER)
-            helper.register(HiiragiCoreAPI.id("material_part"), HTItemResult.MaterialPart.SERIALIZER)
+        event.register(HCRegistries.Keys.ITEM_RESULT_TYPE) { helper ->
+            helper.register(HiiragiCoreAPI.id("simple"), HTItemResult.SimpleEntry.TYPE)
+            helper.register(HiiragiCoreAPI.id("tag"), HTItemResult.TagEntry.TYPE)
+            helper.register(HiiragiCoreAPI.id("material_part"), HTItemResult.MaterialPartEntry.TYPE)
         }
         // Slot Sync Type
         event.register(HCRegistries.Keys.SLOT_TYPE) { helper ->

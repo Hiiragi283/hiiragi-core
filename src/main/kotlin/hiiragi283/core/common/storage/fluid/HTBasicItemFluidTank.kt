@@ -1,5 +1,7 @@
 package hiiragi283.core.common.storage.fluid
 
+import hiiragi283.core.api.HTContentListener
+import hiiragi283.core.api.serialization.value.HTValueSerializable
 import hiiragi283.core.api.storage.HTStorageAccess
 import hiiragi283.core.api.storage.HTStoragePredicates
 import hiiragi283.core.api.storage.fluid.HTFluidResourceType
@@ -21,7 +23,9 @@ open class HTBasicItemFluidTank(
     private val filter: Predicate<HTFluidResourceType>,
     override var container: ItemStack,
 ) : HTFluidStackResourceSlot(),
-    HTItemFluidTank {
+    HTItemFluidTank,
+    HTContentListener by HTContentListener.NOTHING,
+    HTValueSerializable by HTValueSerializable.NOTHING {
     companion object {
         @JvmStatic
         fun create(

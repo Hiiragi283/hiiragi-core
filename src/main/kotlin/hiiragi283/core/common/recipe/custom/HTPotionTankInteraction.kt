@@ -6,7 +6,6 @@ import hiiragi283.core.api.item.alchemy.HTPotionHelper
 import hiiragi283.core.api.recipe.base.HTTankEmptyingRecipe
 import hiiragi283.core.api.recipe.base.HTTankFillingRecipe
 import hiiragi283.core.api.recipe.result.HTItemAndFluidResult
-import hiiragi283.core.util.HCPotionFluidHelper
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.neoforged.neoforge.fluids.FluidStack
@@ -27,11 +26,11 @@ data object HTPotionTankInteraction {
             else -> ItemStack.EMPTY
         }
 
-        override fun assemble(input: ItemStack): HTItemAndFluidResult {
+        override fun apply(input: ItemStack): HTItemAndFluidResult {
             val contents: BottledPotionContents = HTPotionHelper.getContentsFromBottle(input) ?: return HTItemAndFluidResult(FluidStack.EMPTY)
             return HTItemAndFluidResult(
                 ItemStack(Items.GLASS_BOTTLE),
-                HCPotionFluidHelper.createFluid(contents, FLUID_AMOUNT),
+                contents.toFluidStack(FLUID_AMOUNT),
             )
         }
 
@@ -43,9 +42,9 @@ data object HTPotionTankInteraction {
 
         override fun testFluid(stack: FluidStack): Boolean = HTPotionHelper.getContents(stack) != null
 
-        override fun assemble(firstInput: ItemStack, secondInput: FluidStack): ItemStack = HTPotionHelper
-            .getContents(secondInput)
-            ?.let(HTPotionHelper::createPotion)
+        override fun apply(first: ItemStack, second: FluidStack): ItemStack = HTPotionHelper
+            .getContents(second)
+            ?.toBottleItem()
             ?: ItemStack.EMPTY
 
         override fun getMatchingStacks(first: ItemStack, second: FluidStack): Pair<ItemStack, FluidStack> = first.copyWithCount(1) to second.copyWithAmount(FLUID_AMOUNT)

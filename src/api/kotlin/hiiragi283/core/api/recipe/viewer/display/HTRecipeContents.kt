@@ -18,10 +18,8 @@ import hiiragi283.core.api.util.unwrap
 import net.minecraft.core.component.DataComponents
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
-import net.minecraft.world.item.crafting.Ingredient
 import net.neoforged.neoforge.fluids.FluidStack
 import net.neoforged.neoforge.fluids.FluidType
-import net.neoforged.neoforge.fluids.crafting.FluidIngredient
 
 @HTBuilderMarker
 @JvmRecord
@@ -116,12 +114,8 @@ data class HTRecipeContents(
         }
 
         @JvmName("addItemInput")
-        fun addInput(stacks: List<ItemStack>?) {
-            inputItems += stacks?.filterNot(ItemStack::isEmpty) ?: emptyList()
-        }
-
-        fun addInput(ingredient: Ingredient?) {
-            ingredient?.items?.toList()?.let(::addInput)
+        fun addInput(stacks: List<ItemStack>) {
+            inputItems += stacks.filterNot(ItemStack::isEmpty).takeUnless { it.isEmpty() } ?: emptyList()
         }
 
         fun addInput(ingredient: HTItemIngredient?) {
@@ -134,22 +128,14 @@ data class HTRecipeContents(
             inputFluids += stacks?.let(FluidInput::create) ?: FluidInput.EMPTY
         }
 
-        fun addInput(ingredient: FluidIngredient?) {
-            ingredient?.stacks?.toList()?.let(::addInput)
-        }
-
         fun addInput(ingredient: HTFluidIngredient?) {
             ingredient?.getPreviewStacks()?.let(::addInput)
         }
 
         //    Catalyst    //
 
-        fun addCatalyst(stacks: List<ItemStack>?) {
-            catalysts += stacks?.filterNot(ItemStack::isEmpty) ?: emptyList()
-        }
-
-        fun addCatalyst(ingredient: Ingredient?) {
-            ingredient?.items?.toList()?.let(::addCatalyst)
+        fun addCatalyst(stacks: List<ItemStack>) {
+            catalysts += stacks.filterNot(ItemStack::isEmpty).takeUnless { it.isEmpty() } ?: emptyList()
         }
 
         fun addCatalyst(ingredient: HTItemIngredient?) {

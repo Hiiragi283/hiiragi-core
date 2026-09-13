@@ -2,12 +2,14 @@ package hiiragi283.core.api
 
 import com.mojang.logging.LogUtils
 import hiiragi283.core.api.resource.toId
+import java.nio.file.Path
 import java.util.ServiceLoader
 import kotlin.random.Random
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.flag.FeatureFlag
 import net.minecraft.world.flag.FeatureFlags
+import net.neoforged.fml.loading.FMLPaths
 import net.neoforged.neoforge.common.CommonHooks
 import org.slf4j.Logger
 
@@ -25,6 +27,12 @@ data object HiiragiCoreAPI {
      */
     @JvmField
     val RANDOM: Random = Random.Default
+
+    /**
+     * @since 21.1.1.0
+     */
+    @JvmField
+    val GAME_DIR: Path = FMLPaths.GAMEDIR.get()
 
     @JvmField
     val EXPERIMENTAL: FeatureFlag = FeatureFlags.REGISTRY.getFlag(id(HTConst.EXPERIMENTAL))

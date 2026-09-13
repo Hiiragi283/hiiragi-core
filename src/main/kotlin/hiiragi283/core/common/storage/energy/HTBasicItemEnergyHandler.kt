@@ -18,8 +18,8 @@ open class HTBasicItemEnergyHandler(
     protected val container: ItemStack,
 ) : HTAmountSlot.Basic(),
     HTEnergyHandler,
-    HTContentListener.Empty,
-    HTValueSerializable.Empty {
+    HTContentListener by HTContentListener.NOTHING,
+    HTValueSerializable by HTValueSerializable.NOTHING {
     companion object {
         @JvmStatic
         fun input(container: ItemStack, capacity: Int): HTBasicItemEnergyHandler = create(container, capacity, HTStorageAccess.NOT_EXTERNAL, HTStoragePredicates.alwaysTrue())

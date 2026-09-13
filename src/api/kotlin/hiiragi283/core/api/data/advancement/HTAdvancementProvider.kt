@@ -1,5 +1,6 @@
 package hiiragi283.core.api.data.advancement
 
+import hiiragi283.core.api.data.allOf
 import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import net.minecraft.advancements.Advancement
@@ -36,11 +37,9 @@ abstract class HTAdvancementProvider(packOutput: PackOutput, private val future:
         this.registries = registries
         this.exporter = HTAdvancementExporter { id: ResourceLocation, advancement: Advancement, conditions: List<ICondition> -> check(advancements.put(id, WithConditions(conditions, advancement)) == null) { "Duplicate advancement $id" } }
         buildAdvancements()
-        CompletableFuture.allOf(
-            *advancements
-                .map { (id: ResourceLocation, value: WithConditions<Advancement>) -> DataProvider.saveStable(output, registries, Advancement.CONDITIONAL_CODEC, Optional.of(value), pathProvider.json(id)) }
-                .toTypedArray(),
-        )
+        advancements
+            .map { (id: ResourceLocation, value: WithConditions<Advancement>) -> DataProvider.saveStable(output, registries, Advancement.CONDITIONAL_CODEC, Optional.of(value), pathProvider.json(id)) }
+            .allOf()
     }
 
     /**

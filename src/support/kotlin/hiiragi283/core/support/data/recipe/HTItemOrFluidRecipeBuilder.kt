@@ -23,13 +23,13 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.crafting.Recipe
 
 class HTItemOrFluidRecipeBuilder<out RECIPE : Recipe<*>>(prefix: String, private val factory: Factory<RECIPE>) : HTProgressRecipeBuilder<RECIPE>(prefix) {
-    @PublishedApi internal var itemIngredient: Option<HTItemIngredient> by HTDelegates.optionalOnceInitialize()
+    @PublishedApi internal var itemIngredient: Option<HTItemIngredient> by HTDelegates.onceInitialize { Option.none() }
 
-    @PublishedApi internal var fluidIngredient: Option<HTFluidIngredient> by HTDelegates.optionalOnceInitialize()
+    @PublishedApi internal var fluidIngredient: Option<HTFluidIngredient> by HTDelegates.onceInitialize { Option.none() }
 
-    @PublishedApi internal var itemResult: Option<HTItemResult> by HTDelegates.optionalOnceInitialize()
+    @PublishedApi internal var itemResult: Option<HTItemResult> by HTDelegates.onceInitialize { Option.none() }
 
-    @PublishedApi internal var fluidResult: Option<HTFluidResult> by HTDelegates.optionalOnceInitialize()
+    @PublishedApi internal var fluidResult: Option<HTFluidResult> by HTDelegates.onceInitialize { Option.none() }
 
     operator fun HTItemIngredient.unaryPlus() {
         itemIngredient = this.some()

@@ -18,9 +18,6 @@ import hiiragi283.core.api.registry.HTSimpleDeferredItem
 import hiiragi283.core.api.tag.CommonTagPrefixes
 import hiiragi283.core.api.tag.HiiragiCoreTags
 import hiiragi283.core.api.times
-import hiiragi283.core.common.crafting.HCEternalSmithingRecipe
-import hiiragi283.core.common.crafting.HCExperienceStoringRecipe
-import hiiragi283.core.common.crafting.HTBlueprintCloningRecipe
 import hiiragi283.core.common.data.recipe.HTCookingRecipeBuilder
 import hiiragi283.core.common.data.recipe.HTShapedRecipeBuilder
 import hiiragi283.core.common.data.recipe.HTShapelessRecipeBuilder
@@ -28,6 +25,9 @@ import hiiragi283.core.common.data.recipe.HTStonecuttingRecipeBuilder
 import hiiragi283.core.common.material.CommonMaterialKeys
 import hiiragi283.core.common.material.HCMaterialKeys
 import hiiragi283.core.common.material.VanillaMaterialKeys
+import hiiragi283.core.common.recipe.custom.HCEternalSmithingRecipe
+import hiiragi283.core.common.recipe.custom.HCExperienceStoringRecipe
+import hiiragi283.core.common.recipe.custom.HTBlueprintCloningRecipe
 import hiiragi283.core.setup.HCBlocks
 import hiiragi283.core.setup.HCFluids
 import hiiragi283.core.setup.HCItems
@@ -55,7 +55,7 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
 
         // Guide ME Integration
         HTShapelessRecipeBuilder.create {
-            ingredient { +Items.PAPER }
+            ingredient { +HiiragiCoreTags.Items.PAPERS }
             ingredient { +tag(CommonTagPrefixes.DUST, VanillaMaterialKeys.COPPER) }
             +Guides.createGuideItem(HiiragiCoreAPI.id("guide"))
         }.save(exporter)
@@ -285,7 +285,7 @@ class HCVanillaRecipeProvider(packOutput: PackOutput, future: CompletableFuture<
         }.save(exporter)
         // Blueprint
         HTShapelessRecipeBuilder.create {
-            ingredient { +Items.PAPER }
+            ingredient { +HiiragiCoreTags.Items.PAPERS }
             ingredient { +Tags.Items.DYES_WHITE }
             ingredient { +Tags.Items.DYES_BLUE }
             +HCItems.BLUEPRINT.toStack()
