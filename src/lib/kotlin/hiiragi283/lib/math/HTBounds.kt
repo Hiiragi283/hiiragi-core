@@ -9,7 +9,7 @@ package hiiragi283.lib.math
  * @param width x軸方向の長さ
  * @param height y軸方向の長さ
  * @author Hiiragi Tsubasa
- * @since 026.1.0
+ * @since 26.1.0
  */
 @JvmRecord
 data class HTBounds(val x: Int, val y: Int, val width: Int, val height: Int) {

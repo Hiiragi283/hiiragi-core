@@ -189,7 +189,7 @@ class HiiragiCoreJeiPlugin : HTJeiPlugin(HiiragiCoreAPI.MOD_ID) {
         )
 
         val copperBasins: List<ItemStack> = HCBlocks.COPPER_BASIN.allCoppers.map { it.toStack() }
-        helper.add(HCRecipeViewerTypes.EMPTYING, copperBasins)
-        helper.add(HCRecipeViewerTypes.FILLING, copperBasins)
+        helper.addAll(HCRecipeViewerTypes.EMPTYING, copperBasins)
+        helper.addAll(HCRecipeViewerTypes.FILLING, copperBasins)
     }
 }

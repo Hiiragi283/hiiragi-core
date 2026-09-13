@@ -20,9 +20,8 @@ import net.minecraft.network.codec.StreamCodec
  * @author Hiiragi Tsubasa
  * @since 26.1.3
  */
-fun <T : Any> DataComponentType(codec: Codec<T>?, streamCodec: StreamCodec<in RegistryFriendlyByteBuf, T>?): DataComponentType<T> {
-    val builder: DataComponentType.Builder<T> = DataComponentType.builder<T>()
-    if (codec != null) builder.persistent(codec)
+fun <T : Any> DataComponentType(codec: Codec<T>, streamCodec: StreamCodec<in RegistryFriendlyByteBuf, T>?): DataComponentType<T> {
+    val builder: DataComponentType.Builder<T> = DataComponentType.builder<T>().persistent(codec)
     if (streamCodec != null) builder.networkSynchronized(streamCodec)
     return builder.build()
 }

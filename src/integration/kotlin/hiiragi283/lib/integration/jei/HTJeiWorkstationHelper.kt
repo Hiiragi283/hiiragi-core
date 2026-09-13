@@ -15,17 +15,32 @@ import net.minecraft.world.item.ItemStack
 @JvmInline
 value class HTJeiWorkstationHelper(@PublishedApi internal val registration: IRecipeCatalystRegistration) {
     /**
+     * 指定した[recipeType]に[workstation]を登録します。
+     */
+    inline fun add(recipeType: IRecipeType<*>, workstation: ItemStack) {
+        this.addAll(recipeType, listOf(workstation))
+    }
+
+    /**
+     * 指定した[viewerType]に[workstation]を登録します。
+     */
+    inline fun add(viewerType: HTRecipeViewerType<*>, workstation: ItemStack) {
+        this.addAll(viewerType, listOf(workstation))
+    }
+
+    /**
      * 指定した[recipeType]に[workstations]を登録します。
      */
-    inline fun add(recipeType: IRecipeType<*>, workstations: List<ItemStack>) {
+    inline fun addAll(recipeType: IRecipeType<*>, workstations: List<ItemStack>) {
+        if (workstations.isEmpty()) return
         registration.addCraftingStations(recipeType, VanillaTypes.ITEM_STACK, workstations)
     }
 
     /**
      * 指定した[viewerType]に[workstations]を登録します。
      */
-    inline fun add(viewerType: HTRecipeViewerType<*>, workstations: List<ItemStack>) {
-        this.add(HTJeiPlugin.getRecipeType(viewerType), workstations)
+    inline fun addAll(viewerType: HTRecipeViewerType<*>, workstations: List<ItemStack>) {
+        this.addAll(HTJeiPlugin.getRecipeType(viewerType), workstations)
     }
 
     /**
@@ -33,7 +48,7 @@ value class HTJeiWorkstationHelper(@PublishedApi internal val registration: IRec
      */
     inline fun addFromViewerType(vararg viewerTypes: HTRecipeViewerType<*>) {
         for (viewerType: HTRecipeViewerType<*> in viewerTypes) {
-            this.add(viewerType, viewerType.workStations)
+            this.addAll(viewerType, viewerType.workStations)
         }
     }
 }

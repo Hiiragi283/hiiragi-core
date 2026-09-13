@@ -344,12 +344,7 @@ dokka {
 spotless {
     kotlin {
         target("src/**/*.kt")
-        ktlint().editorConfigOverride(
-            mapOf(
-                // "ktlint_standard_import-ordering" to "disabled",
-                "ktlint_standard_comment-spacing" to "disabled",
-            ),
-        )
+        ktlint().editorConfigOverride(mapOf("ktlint_standard_comment-spacing" to "disabled"))
     }
     kotlinGradle {
         target("*.gradle.kts")
@@ -357,10 +352,10 @@ spotless {
     }
     java {
         target("src/**/*.java")
-        palantirJavaFormat("2.90.0")
-        endWithNewline()
-        formatAnnotations()
-        removeUnusedImports()
+        googleJavaFormat("1.36.1")
+            .aosp()
+            .reflowLongStrings()
+            .reorderImports(true)
     }
 }
 
