@@ -30,6 +30,7 @@ value class RawTagKey(val location: Identifier) {
                             .substring(1)
                             .let(Identifier::read)
                             .map(::RawTagKey)
+
                     else -> DataResult.error { "Not a tag id" }
                 }
             },

@@ -22,6 +22,7 @@ fun <R : Any> Holder<R>.getKeyOrThrow(): ResourceKey<R> = this.unwrapKey().orEls
  */
 fun <R : Any> Holder<R>.toLike(): SimpleSupplierWithKey<R> = when (this) {
     is HTDeferredHolder<R, *> -> this
+
     else -> when (this.kind()) {
         Holder.Kind.REFERENCE -> HolderWithKey(this)
         Holder.Kind.DIRECT -> error("Cannot convert direct holder to SupplierWithId")

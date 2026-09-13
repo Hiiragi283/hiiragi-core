@@ -49,6 +49,7 @@ open class HTManualProcessingBoardBlock(type: HTDeferredBlockEntityType<*>, prop
         if (!player.isShiftKeyDown) {
             when {
                 !itemHandler.isEmpty && choppingBoard.processItem(player, hand) -> return InteractionResult.SUCCESS
+
                 else -> {
                     val handAccess: ItemAccess = ItemAccess.forPlayerInteraction(player, hand)
                     val handResource: ItemResource = handAccess.resource

@@ -57,6 +57,7 @@ class HTDeferredBlockEntityTypeRegister(namespace: String) : HTDeferredRegister<
     fun <BE : HTBlockEntity> registerTick(name: String, factory: BlockEntityType.BlockEntitySupplier<BE>): HTDeferredBlockEntityType<BE> = registerType(name, factory, HTBlockEntity::tickServer, HTBlockEntity::tickClient)
 
     // With supported blocks
+
     /**
      * 新しい[BlockEntityType]を登録します。
      * @param BE [BlockEntity]のクラス

@@ -64,5 +64,5 @@ data class HTItemAndFluidResult private constructor(val item: ItemStack, val flu
     /**
      * 完成品が空かどうか判定します。
      */
-    fun isEmpty(): Boolean = this == EMPTY || item.isEmpty && fluid.isEmpty
+    fun isEmpty(): Boolean = this == EMPTY || (item.isEmpty && fluid.isEmpty)
 }

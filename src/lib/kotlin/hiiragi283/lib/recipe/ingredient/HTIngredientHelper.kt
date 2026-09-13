@@ -47,7 +47,9 @@ data object HTIngredientHelper {
                 else -> FluidStack(instance.typeHolder(), instance.amount())
             }.right()
         }
+
         is FluidResource -> instance.left()
+
         else -> FluidResource.of(instance.typeHolder()).left()
     }
 
@@ -64,7 +66,9 @@ data object HTIngredientHelper {
                 else -> instance.typeHolder().isEmpty || instance.amount() <= 0
             }
         }
+
         is FluidResource -> instance.isEmpty
+
         else -> instance.typeHolder().isEmpty
     }
 
@@ -90,7 +94,9 @@ data object HTIngredientHelper {
                 else -> ItemStack(instance.typeHolder(), instance.count())
             }.right()
         }
+
         is ItemResource -> instance.left()
+
         else -> ItemResource.of(instance.typeHolder()).left()
     }
 
@@ -107,7 +113,9 @@ data object HTIngredientHelper {
                 else -> instance.typeHolder().isAir || instance.count() <= 0
             }
         }
+
         is ItemResource -> instance.isEmpty
+
         else -> instance.typeHolder().isAir
     }
 }

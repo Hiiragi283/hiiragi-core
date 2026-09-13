@@ -148,6 +148,7 @@ data class HTRecipeContents(
         //    Input    //
 
         // Item
+
         /**
          * アイテムの材料を追加します。
          */
@@ -178,6 +179,7 @@ data class HTRecipeContents(
         }
 
         // Fluid
+
         /**
          * 液体の材料を追加します。
          * @since 26.1.2
@@ -242,6 +244,7 @@ data class HTRecipeContents(
         //    Output    //
 
         // Item
+
         /**
          * アイテムの完成品を追加します。
          */
@@ -290,6 +293,7 @@ data class HTRecipeContents(
         }
 
         // Fluid
+
         /**
          * 液体の完成品を追加します。
          */

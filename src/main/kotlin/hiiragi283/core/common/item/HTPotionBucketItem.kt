@@ -38,7 +38,9 @@ class HTPotionBucketItem(content: Fluid, properties: Properties) : HTPotionBased
 
         override fun update(accessResource: ItemResource, index: Int, newResource: FluidResource, newAmount: Int): ItemResource = when {
             newAmount == 0 -> ItemResource.of(Items.BUCKET)
+
             newAmount != FluidType.BUCKET_VOLUME -> ItemResource.EMPTY
+
             else -> {
                 val newStack: FluidStack = newResource.toStack(newAmount)
                 ItemResource.of(newStack.fluidType.getBucket(newStack))

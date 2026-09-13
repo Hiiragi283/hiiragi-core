@@ -180,11 +180,13 @@ data object HTCodecs {
                         leftResult.flatMap { leftIn: A ->
                             rightResult.map { rightIn: B -> Ior.Both(leftIn, rightIn) }
                         }
+
                     else -> leftResult.map { Ior.Left(it) }
                 }
             } else {
                 return when {
                     rightResult.isSuccess -> rightResult.map { Ior.Right(it) }
+
                     else ->
                         DataResult.error {
                             val leftError: String = leftResult.error().orElseThrow().message()

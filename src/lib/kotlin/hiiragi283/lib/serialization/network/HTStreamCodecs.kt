@@ -104,7 +104,9 @@ data object HTStreamCodecs {
     private class HTIorStreamCodec<B : ByteBuf, L : Any, R : Any>(private val left: StreamCodec<in B, L>, private val right: StreamCodec<in B, R>) : StreamCodec<B, Ior<L, R>> {
         override fun decode(buffer: B): Ior<L, R> = when (buffer.readInt()) {
             1 -> Ior.Left(left.decode(buffer))
+
             2 -> Ior.Right(right.decode(buffer))
+
             else -> {
                 val leftIn: L = left.decode(buffer)
                 val rightIn: R = right.decode(buffer)

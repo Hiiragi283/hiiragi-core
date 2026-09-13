@@ -66,6 +66,7 @@ class HTPotionFluidIngredient(val potions: HolderSet<Potion>, val bottleType: HT
                 .map { potion: Holder<Potion> ->
                     when (potion) {
                         Potions.WATER -> FluidStack(Fluids.WATER, FluidType.BUCKET_VOLUME)
+
                         else -> FluidInstanceBuilder.buildStack {
                             +fluid
                             components {

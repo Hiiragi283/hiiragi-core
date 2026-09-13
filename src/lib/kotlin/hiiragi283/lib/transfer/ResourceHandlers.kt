@@ -72,6 +72,7 @@ fun <T : Resource> ResourceHandler<T>.getFilledLevel(index: Int, resource: T = g
 fun <T : Resource> ResourceHandler<T>.extractSelf(index: Int, transaction: TransactionContext, amount: Int = this.getAmountAsInt(index)): Int = this.extract(index, this.getResource(index), amount, transaction)
 
 // Ranged
+
 /**
  * この[ResourceHandler][this]をスロットが制限された[ResourceHandler]に変換します。
  * @param start スロットのインデックスの範囲の下限，含まれる
